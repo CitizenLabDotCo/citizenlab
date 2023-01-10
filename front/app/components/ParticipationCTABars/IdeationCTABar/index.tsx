@@ -14,9 +14,11 @@ import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
 import { getIdeaPostingRules } from 'services/actionTakingRules';
 
 // utils
-import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import { CTABarProps } from 'components/ParticipationCTABars/utils';
+import {
+  CTABarProps,
+  hasRrojectEndedOrIsArchived,
+} from 'components/ParticipationCTABars/utils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -26,22 +28,15 @@ export const IdeationCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
   const authUser = useAuthUser();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
-  const hasProjectEnded = currentPhase
-    ? pastPresentOrFuture([
-        currentPhase.attributes.start_at,
-        currentPhase.attributes.end_at,
-      ]) === 'past'
-    : false;
 
   useEffect(() => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
   }, [phases]);
 
-  const { publication_status } = project.attributes;
   const isPhaseIdeation =
     currentPhase?.attributes.participation_method === 'ideation';
 
-  if (hasProjectEnded || publication_status === 'archived') {
+  if (hasRrojectEndedOrIsArchived(project, currentPhase)) {
     return null;
   }
 

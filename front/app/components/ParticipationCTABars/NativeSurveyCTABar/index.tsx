@@ -14,25 +14,20 @@ import { getIdeaPostingRules } from 'services/actionTakingRules';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { pastPresentOrFuture } from 'utils/dateUtils';
-import { CTABarProps } from 'components/ParticipationCTABars/utils';
+import {
+  CTABarProps,
+  hasRrojectEndedOrIsArchived,
+} from 'components/ParticipationCTABars/utils';
 
 export const NativeSurveyCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
   const authUser = useAuthUser();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
-  const hasProjectEnded = currentPhase
-    ? pastPresentOrFuture([
-        currentPhase.attributes.start_at,
-        currentPhase.attributes.end_at,
-      ]) === 'past'
-    : false;
 
   useEffect(() => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
   }, [phases]);
 
-  const { publication_status } = project.attributes;
   const isPhaseNativeSurvey =
     currentPhase?.attributes.participation_method === 'native_survey';
   const { disabledReason } = getIdeaPostingRules({
@@ -42,7 +37,7 @@ export const NativeSurveyCTABar = ({ phases, project }: CTABarProps) => {
   });
   const hasUserParticipated = disabledReason === 'postingLimitedMaxReached';
 
-  if (hasProjectEnded || publication_status === 'archived') {
+  if (hasRrojectEndedOrIsArchived(project, currentPhase)) {
     return null;
   }
 

@@ -9,10 +9,12 @@ import { useTheme } from 'styled-components';
 
 // services
 import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
-import { CTABarProps } from 'components/ParticipationCTABars/utils';
+import {
+  CTABarProps,
+  hasRrojectEndedOrIsArchived,
+} from 'components/ParticipationCTABars/utils';
 
 // utils
-import { pastPresentOrFuture } from 'utils/dateUtils';
 import { scrollToElement } from 'utils/scroll';
 
 // i18n
@@ -22,12 +24,6 @@ import messages from '../messages';
 export const VolunteeringCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
-  const hasProjectEnded = currentPhase
-    ? pastPresentOrFuture([
-        currentPhase.attributes.start_at,
-        currentPhase.attributes.end_at,
-      ]) === 'past'
-    : false;
 
   useEffect(() => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
@@ -42,9 +38,7 @@ export const VolunteeringCTABar = ({ phases, project }: CTABarProps) => {
     scrollTo('volunteering')(event);
   };
 
-  const { publication_status } = project.attributes;
-
-  if (hasProjectEnded || publication_status === 'archived') {
+  if (hasRrojectEndedOrIsArchived(project, currentPhase)) {
     return null;
   }
 

@@ -12,10 +12,11 @@ import useBasket from 'hooks/useBasket';
 import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
-import { pastPresentOrFuture } from 'utils/dateUtils';
 import { scrollToElement } from 'utils/scroll';
-import { CTABarProps } from 'components/ParticipationCTABars/utils';
+import {
+  CTABarProps,
+  hasRrojectEndedOrIsArchived,
+} from 'components/ParticipationCTABars/utils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -24,18 +25,9 @@ import messages from '../messages';
 export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
-  const hasProjectEnded = currentPhase
-    ? pastPresentOrFuture([
-        currentPhase.attributes.start_at,
-        currentPhase.attributes.end_at,
-      ]) === 'past'
-    : false;
-
   let basketId: string | null = null;
   if (currentPhase) {
-    basketId = !isNilOrError(currentPhase)
-      ? currentPhase.relationships.user_basket?.data?.id || null
-      : null;
+    basketId = currentPhase.relationships.user_basket?.data?.id || null;
   } else {
     basketId = project.relationships.user_basket?.data?.id || null;
   }
@@ -46,9 +38,7 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
   }, [phases]);
 
-  const { publication_status } = project.attributes;
-
-  if (hasProjectEnded || publication_status === 'archived') {
+  if (hasRrojectEndedOrIsArchived(project, currentPhase)) {
     return null;
   }
 

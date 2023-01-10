@@ -14,9 +14,11 @@ import { getSurveyTakingRules } from 'services/actionTakingRules';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { pastPresentOrFuture } from 'utils/dateUtils';
 import { scrollToElement } from 'utils/scroll';
-import { CTABarProps } from 'components/ParticipationCTABars/utils';
+import {
+  CTABarProps,
+  hasRrojectEndedOrIsArchived,
+} from 'components/ParticipationCTABars/utils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -34,12 +36,6 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
   const authUser = useAuthUser();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
   const { pathname, hash: divId } = useLocation();
-  const hasProjectEnded = currentPhase
-    ? pastPresentOrFuture([
-        currentPhase.attributes.start_at,
-        currentPhase.attributes.end_at,
-      ]) === 'past'
-    : false;
 
   useEffect(() => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
@@ -70,8 +66,6 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
       },
     [currentPhase, project, pathname]
   );
-
-  const { publication_status } = project.attributes;
 
   const { enabled, disabledReason } = getSurveyTakingRules({
     project,
@@ -104,7 +98,7 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
     }
   };
 
-  if (hasProjectEnded || publication_status === 'archived') {
+  if (hasRrojectEndedOrIsArchived(project, currentPhase)) {
     return null;
   }
 
