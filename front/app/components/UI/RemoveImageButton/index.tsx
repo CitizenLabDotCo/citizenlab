@@ -20,8 +20,8 @@ const RemoveButton = styled.button`
   padding: 0;
   margin: 0;
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 12px;
+  right: 12px;
   z-index: 1;
   cursor: pointer;
   border-radius: 50%;
