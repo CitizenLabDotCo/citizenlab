@@ -147,6 +147,7 @@ Rails.application.routes.draw do
           get :users_search, on: :collection
         end
 
+        get 'copy/:id', on: :collection, to: 'projects#copy'
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
         get 'survey_results', on: :member
         get 'submission_count', on: :member

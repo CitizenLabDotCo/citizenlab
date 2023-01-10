@@ -111,6 +111,10 @@ class ProjectPolicy < ApplicationPolicy
     update?
   end
 
+  def copy?
+    create?
+  end
+
   def destroy?
     active? && admin?
   end

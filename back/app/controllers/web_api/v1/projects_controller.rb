@@ -99,6 +99,14 @@ class WebApi::V1::ProjectsController < ApplicationController
     end
   end
 
+  def copy
+    @project = Project.find(params[:id])
+    authorize @project
+    puts '==============================='
+    puts @project.id
+    puts '==============================='
+  end
+
   def destroy
     sidefx.before_destroy(@project, current_user)
     if @project.destroy
