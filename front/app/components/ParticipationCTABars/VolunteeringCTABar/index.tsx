@@ -1,4 +1,4 @@
-import React, { useEffect, useState, FormEvent, useCallback } from 'react';
+import React, { useEffect, useState, FormEvent } from 'react';
 
 // Components
 import { Button } from '@citizenlab/cl2-component-library';
@@ -19,9 +19,6 @@ import { scrollToElement } from 'utils/scroll';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-// router
-import { useLocation } from 'react-router-dom';
-
 type CTAProps = {
   project: IProjectData;
   phases: Error | IPhaseData[] | null | undefined;
@@ -29,7 +26,6 @@ type CTAProps = {
 
 export const VolunteeringCTABar = ({ phases, project }: CTAProps) => {
   const theme = useTheme();
-  const { pathname } = useLocation();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
   const hasProjectEnded = currentPhase
     ? pastPresentOrFuture([
@@ -42,14 +38,10 @@ export const VolunteeringCTABar = ({ phases, project }: CTAProps) => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
   }, [phases]);
 
-  const scrollTo = useCallback(
-    (id: string) => (event: FormEvent) => {
-      event.preventDefault();
-
-      scrollToElement({ id, shouldFocus: true });
-    },
-    [currentPhase, project, pathname]
-  );
+  const scrollTo = (id: string) => (event: FormEvent) => {
+    event.preventDefault();
+    scrollToElement({ id, shouldFocus: true });
+  };
 
   const handleVolunteerClick = (event: FormEvent) => {
     scrollTo('volunteering')(event);

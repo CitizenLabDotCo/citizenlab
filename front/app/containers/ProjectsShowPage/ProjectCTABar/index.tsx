@@ -2,11 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 // Components
-import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  colors,
+  useBreakpoint,
+  useWindowSize,
+} from '@citizenlab/cl2-component-library';
 import MainHeader from 'containers/MainHeader';
 
 // hooks
-import { useWindowSize } from '@citizenlab/cl2-component-library';
 import usePhases from 'hooks/usePhases';
 import useProject from 'hooks/useProject';
 
@@ -16,9 +20,11 @@ import { lighten } from 'polished';
 import { media, viewportWidths } from 'utils/styleUtils';
 
 // utils
-import { getMethodConfig } from 'utils/participationMethodUtils';
+import {
+  getMethodConfig,
+  getParticipationMethod,
+} from 'utils/participationMethodUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import { getParticipationMethod } from 'utils/participationMethodUtils';
 
 const Container = styled.div`
   width: 100vw;

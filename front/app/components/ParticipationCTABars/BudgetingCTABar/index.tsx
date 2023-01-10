@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, FormEvent } from 'react';
+import React, { useEffect, useState, FormEvent } from 'react';
 
 // Components
 import { Button } from '@citizenlab/cl2-component-library';
@@ -21,9 +21,6 @@ import { scrollToElement } from 'utils/scroll';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-// router
-import { useLocation } from 'react-router-dom';
-
 type CTAProps = {
   project: IProjectData;
   phases: Error | IPhaseData[] | null | undefined;
@@ -31,7 +28,6 @@ type CTAProps = {
 
 export const BudgetingCTABar = ({ phases, project }: CTAProps) => {
   const theme = useTheme();
-  const { pathname } = useLocation();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
   const hasProjectEnded = currentPhase
     ? pastPresentOrFuture([
@@ -61,14 +57,11 @@ export const BudgetingCTABar = ({ phases, project }: CTAProps) => {
     return null;
   }
 
-  const scrollTo = useCallback(
-    (id: string) => (event: FormEvent) => {
-      event.preventDefault();
+  const scrollTo = (id: string) => (event: FormEvent) => {
+    event.preventDefault();
 
-      scrollToElement({ id, shouldFocus: true });
-    },
-    [currentPhase, project, pathname]
-  );
+    scrollToElement({ id, shouldFocus: true });
+  };
 
   const handleAllocateBudgetClick = (event: FormEvent) => {
     scrollTo('pb-expenses')(event);
