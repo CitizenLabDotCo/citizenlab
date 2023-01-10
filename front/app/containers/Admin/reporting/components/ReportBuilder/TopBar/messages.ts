@@ -6,19 +6,19 @@ export default defineMessages({
     defaultMessage: 'Report builder',
   },
   quitReportConfirmationQuestion: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.quitReport',
+    id: 'app.containers.AdminPage.ProjectEdit.survey.quitReportConfirmationQuestion',
     defaultMessage: 'Are you sure you want to leave?',
   },
   quitReportInfo: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.quitReport',
+    id: 'app.containers.AdminPage.ProjectEdit.survey.quitReportInfo',
     defaultMessage: 'Current change won’t be saved',
   },
   confirmQuitButtonText: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.quitReport',
+    id: 'app.containers.AdminPage.ProjectEdit.survey.confirmQuitButtonText',
     defaultMessage: 'Yes, i want to leave',
   },
   cancelQuitButtonText: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.quitReport',
+    id: 'app.containers.AdminPage.ProjectEdit.survey.cancelQuitButtonText',
     defaultMessage: 'Cancel',
   },
 });
