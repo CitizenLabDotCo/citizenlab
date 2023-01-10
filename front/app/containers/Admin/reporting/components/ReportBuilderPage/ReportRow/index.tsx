@@ -49,7 +49,8 @@ const ReportRow = ({ report }: Props) => {
   };
 
   const handleViewReport = () => {
-    clHistory.push(`${reportPath}/viewer`);
+    // clHistory.push(`${reportPath}/viewer`);
+    window.open(`${reportPath}/viewer`, '_blank');
   };
 
   return (
