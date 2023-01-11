@@ -28,7 +28,7 @@ import ShareReportButton from '../../ReportBuilderPage/ReportRow/ShareReportButt
 import styled from 'styled-components';
 import { colors, stylingConsts } from 'utils/styleUtils';
 
-const LocaleBadge = styled.div`
+const LocaleBadge = styled(Box)`
   display: inline-block;
   color: ${colors.textSecondary};
   background-color: ${colors.grey200};
