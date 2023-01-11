@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { reject } from 'lodash-es';
+import { reject, some } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
@@ -44,6 +44,7 @@ import { IProjectData } from 'services/projects';
 // utils
 import { insertConfiguration } from 'utils/moduleUtils';
 import {
+  getAllParticipationMethods,
   getMethodConfig,
   showInputManager,
 } from 'utils/participationMethodUtils';
@@ -118,6 +119,11 @@ export class AdminProjectsProjectIndex extends PureComponent<
           name: 'ideas',
         },
         {
+          label: formatMessage(messages.inputFormTab),
+          url: 'ideaform',
+          name: 'ideaform',
+        },
+        {
           label: formatMessage(messages.pollTab),
           url: 'poll',
           feature: 'polls',
@@ -174,6 +180,17 @@ export class AdminProjectsProjectIndex extends PureComponent<
         },
         ideas: function isIdeaTabHidden(project, phases) {
           return !showInputManager(project, phases);
+        },
+        ideaform: function isIdeaFormTabHidden(project, phases) {
+          const allParticipationMethods = getAllParticipationMethods(
+            project,
+            phases !== undefined ? phases : null
+          );
+          return !some(
+            allParticipationMethods,
+            (method) =>
+              getMethodConfig(method).formEditor === 'simpleFormEditor'
+          );
         },
         poll: function isPollTabHidden(project, phases) {
           const processType = project?.attributes.process_type;

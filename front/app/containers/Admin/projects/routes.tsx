@@ -1,6 +1,8 @@
 import React, { lazy } from 'react';
 import moduleConfiguration from 'modules';
 import PageLoading from 'components/UI/PageLoading';
+import { nativeSurveyConfig } from './project/nativeSurvey/utils';
+import { ideationConfig } from './project/inputForm/utils';
 
 const AdminProjectsAndFolders = lazy(() => import('.'));
 const AdminProjectsList = lazy(() => import('./all'));
@@ -16,10 +18,13 @@ const AdminProjectPermissions = lazy(() => import('./project/permissions'));
 const AdminProjectSurveyResults = lazy(() => import('./project/surveyResults'));
 const AdminProjectPoll = lazy(() => import('./project/poll'));
 const AdminProjectsSurvey = lazy(() => import('./project/nativeSurvey'));
-const AdminProjectsSurveyEdit = lazy(
-  () => import('../../../components/FormBuilder/edit')
+const AdminProjectsFormBuilder = lazy(
+  () => import('components/FormBuilder/edit')
 );
 const AdminProjectDescription = lazy(() => import('./project/description'));
+const AdminProjectIdeaEditFormComponent = lazy(
+  () => import('./project/inputForm')
+);
 const AdminProjectIdeas = lazy(() => import('./project/ideas'));
 const AdminProjectVolunteering = lazy(() => import('./project/volunteering'));
 const AdminProjectVolunteeringNew = lazy(
@@ -161,6 +166,14 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
+            path: 'ideaform',
+            element: (
+              <PageLoading>
+                <AdminProjectIdeaEditFormComponent />
+              </PageLoading>
+            ),
+          },
+          {
             path: 'volunteering',
             element: (
               <PageLoading>
@@ -193,12 +206,22 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
+            path: 'ideaform/edit',
+            element: (
+              <AdminProjectsFormBuilder builderConfig={ideationConfig} />
+            ),
+          },
+          {
             path: 'native-survey/edit',
-            element: <AdminProjectsSurveyEdit />,
+            element: (
+              <AdminProjectsFormBuilder builderConfig={nativeSurveyConfig} />
+            ),
           },
           {
             path: 'phases/:phaseId/native-survey/edit',
-            element: <AdminProjectsSurveyEdit />,
+            element: (
+              <AdminProjectsFormBuilder builderConfig={nativeSurveyConfig} />
+            ),
           },
           {
             path: 'volunteering/causes/:causeId',

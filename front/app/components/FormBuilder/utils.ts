@@ -1,4 +1,5 @@
 // Services
+import { ReactNode } from 'react';
 import { IPhaseData, updatePhase } from 'services/phases';
 import { IProjectData, updateProject } from 'services/projects';
 
@@ -7,6 +8,10 @@ import { Multiloc } from 'typings';
 
 // Utils
 import { isNilOrError } from 'utils/helperUtils';
+
+export type FormBuilderConfig = {
+  getFormBuilderTitle: () => ReactNode | JSX.Element | null;
+};
 
 type FormActionsConfig = {
   phaseId?: string;

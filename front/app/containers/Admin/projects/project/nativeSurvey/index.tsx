@@ -10,7 +10,7 @@ import FormResults from 'components/FormBuilder/components/FormResults';
 import Button from 'components/UI/Button';
 
 // i18n
-import messages from '../../../../../components/FormBuilder/messages';
+import messages from 'components/FormBuilder/messages';
 
 // hooks
 import useProject from 'hooks/useProject';
