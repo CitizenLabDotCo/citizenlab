@@ -675,6 +675,7 @@
   "app.containers.Admin.reporting.containers.ReportBuilderPage.viewReports": "Visa rapporter",
   "app.containers.Admin.reporting.helmetDescription": "Rapporteringssida för administratörer",
   "app.containers.Admin.reporting.helmetTitle": "Rapportering",
+  "app.containers.Admin.reporting.printPrepare": "Preparing to print...",
   "app.containers.Admin.reporting.reportBuilder": "Rapportbyggare",
   "app.containers.Admin.reporting.reportHeader": "Rapportrubrik",
   "app.containers.AdminPage.DashboardPage.Report.participants": "deltagare",
