@@ -102,6 +102,7 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
 
   const CTAButton = enabled ? (
     <Button
+      id="e2e-take-survey-button"
       buttonStyle="primary"
       onClick={handleTakeSurveyClick}
       fontWeight="500"
