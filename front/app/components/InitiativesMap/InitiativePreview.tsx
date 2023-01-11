@@ -163,7 +163,7 @@ class InitiativePreview extends PureComponent<
   };
 
   render() {
-    const { initiative, locale, className, localize } = this.props;
+    const { initiative, className, localize } = this.props;
 
     if (!isNilOrError(initiative)) {
       const initiativeAddress = get(
@@ -186,12 +186,7 @@ class InitiativePreview extends PureComponent<
           )}
 
           <Description>
-            <Body
-              postId={initiative.id}
-              postType="initiative"
-              locale={locale}
-              body={initiativeBody}
-            />
+            <Body postType="initiative" body={initiativeBody} />
           </Description>
 
           <Footer>

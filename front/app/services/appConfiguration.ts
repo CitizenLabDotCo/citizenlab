@@ -1,7 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { ImageSizes, Multiloc, Locale } from 'typings';
-import { TCategory } from 'components/ConsentManager/destinations';
 import { THomepageSettingKeyMap } from 'services/homepageSettings';
 export const currentAppConfigurationEndpoint = `${API_PATH}/app_configuration`;
 
@@ -50,9 +49,6 @@ export type IAppConfigurationSettingsCore = {
   color_menu_bg?: string | null;
   currency: TCurrency;
   reply_to_email: string;
-  custom_onboarding_message?: Multiloc | null;
-  custom_onboarding_button?: Multiloc | null;
-  custom_onboarding_link?: string | null;
   currently_working_on_text?: Multiloc | null;
   segment_destinations_blacklist: string[] | null;
   areas_term?: Multiloc;
@@ -72,10 +68,6 @@ export type ProposalsSettings = {
 };
 export interface IAppConfigurationSettings {
   core: IAppConfigurationSettingsCore;
-  customizable_homepage_banner: {
-    allowed: boolean;
-    enabled: boolean;
-  };
   advanced_custom_pages: {
     allowed: boolean;
     enabled: boolean;
@@ -137,8 +129,6 @@ export interface IAppConfigurationSettings {
   workshops?: AppConfigurationFeature;
   smart_groups?: AppConfigurationFeature;
   manual_emailing?: AppConfigurationFeature;
-  insights_manual_flow?: AppConfigurationFeature;
-  insights_nlp_flow?: AppConfigurationFeature;
   automated_emailing_control?: AppConfigurationFeature;
   typeform_surveys?: {
     allowed: boolean;
@@ -175,24 +165,8 @@ export interface IAppConfigurationSettings {
   custom_idea_statuses?: AppConfigurationFeature;
   idea_author_change?: AppConfigurationFeature;
   idea_custom_copy?: AppConfigurationFeature;
-  intercom?: AppConfigurationFeature;
   satismeter?: AppConfigurationFeature & {
     write_key: string;
-  };
-  google_analytics?: AppConfigurationFeature & {
-    tracking_id: string;
-  };
-  segment?: AppConfigurationFeature & {
-    destinations: string;
-  };
-  google_tag_manager?: AppConfigurationFeature & {
-    destinations: string;
-    container_id: string;
-    category: TCategory;
-  };
-  matomo?: AppConfigurationFeature & {
-    tenant_site_id: string;
-    product_site_id: string;
   };
   redirects?: AppConfigurationFeature & {
     rules: {

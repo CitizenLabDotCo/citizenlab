@@ -17,7 +17,3 @@ export interface IVerificationMethodMap {
 
 export type TVerificationMethod =
   IVerificationMethodMap[keyof IVerificationMethodMap];
-
-export interface IVerificationMethods {
-  data: TVerificationMethod[];
-}

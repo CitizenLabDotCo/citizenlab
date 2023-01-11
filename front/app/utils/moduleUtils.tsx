@@ -1,11 +1,6 @@
 import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 import { Moment } from 'moment';
-import React, {
-  FunctionComponent,
-  KeyboardEvent,
-  MouseEvent,
-  ReactElement,
-} from 'react';
+import React, { FunctionComponent, ReactElement } from 'react';
 
 import PageLoading from 'components/UI/PageLoading';
 import { OutletRenderProps } from 'components/Outlet';
@@ -23,17 +18,9 @@ import { Point } from 'components/UI/LeafletMap/typings';
 import { TVerificationStep } from 'events/verificationModal';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import { NavItem } from 'containers/Admin/sideBar';
-import { BannerButtonStyle } from 'components/LandingPages/citizen/BannerButton';
 import { LatLngTuple } from 'leaflet';
-import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
-import { GetIdeaChildProps } from 'resources/GetIdea';
-import { GetInitiativeChildProps } from 'resources/GetInitiative';
-import { GetLocaleChildProps } from 'resources/GetLocale';
-import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
-import { CustomizedButtonConfig } from 'services/appConfiguration';
-import { ICommentData } from 'services/comments';
+
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
-import { THomepageBannerLayout } from 'services/homepageSettings';
 import { TNotificationData } from 'services/notifications';
 import { IPhaseData } from 'services/phases';
 import { TVerificationMethod } from 'services/verificationMethods';
@@ -115,10 +102,6 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.dashboard.summary.proposals': StatCardProps;
   'app.containers.Admin.dashboard.summary.invitations': StatCardProps;
   'app.containers.Admin.dashboard.summary.events': StatCardProps;
-  'app.containers.IdeasShow.MetaInformation': {
-    ideaId: string;
-    compact?: boolean;
-  };
   'app.containers.Admin.project.edit.permissions.participationRights': {
     project: IProjectData;
     projectId: string;
@@ -181,52 +164,7 @@ export interface OutletsPropertyMap {
     inModal: boolean;
     activeStep: TVerificationStep;
   };
-  'app.components.PostShowComponents.ActionBar.right': {
-    translateButtonClicked: boolean;
-    onClick: () => void;
-    initiative: GetInitiativeChildProps;
-    locale: GetLocaleChildProps;
-  };
-  'app.components.PostShowComponents.CommentFooter.left': {
-    comment: ICommentData;
-    locale: GetLocaleChildProps;
-    tenantLocales: GetAppConfigurationLocalesChildProps;
-  };
-  'app.containers.InitiativesShow.left': {
-    windowSize: GetWindowSizeChildProps;
-    translateButtonClicked: boolean;
-    onClick: () => void;
-    initiative: GetInitiativeChildProps;
-    locale: GetLocaleChildProps;
-  };
-  'app.containers.IdeasShow.left': {
-    translateButtonClicked: boolean;
-    onClick: () => void;
-    idea: GetIdeaChildProps;
-    locale: GetLocaleChildProps;
-  };
-  'app.components.PostShowComponents.CommentBody.translation': {
-    translateButtonClicked: boolean;
-    commentContent: string;
-    locale: GetLocaleChildProps;
-    commentId: string;
-  };
-  'app.components.PostShowComponents.Body.translation': {
-    postId: string;
-    body: string;
-    locale: GetLocaleChildProps;
-    translateButtonClicked?: boolean;
-    postType: 'idea' | 'initiative';
-  };
-  'app.components.PostShowComponents.Title.translation': {
-    postId: string;
-    postType: 'idea' | 'initiative';
-    title: string;
-    locale?: GetLocaleChildProps;
-    translateButtonClicked?: boolean;
-    color?: string;
-    align: 'left' | 'center';
-  };
+
   'app.containers.Admin.settings.general.form': {
     onSettingChange: (settingName: string, settingValue: any) => void;
   };
@@ -250,17 +188,6 @@ export interface OutletsPropertyMap {
     notification: TNotificationData;
   };
   'app.containers.HomePage.EventsWidget': Record<string, any>;
-  'app.containers.HomePage.SignedOutHeader.index': {
-    homepageBannerLayout: THomepageBannerLayout;
-  };
-  'app.containers.HomePage.SignedOutHeader.CTA': {
-    buttonStyle: BannerButtonStyle;
-    signUpIn: (event: MouseEvent | KeyboardEvent) => void;
-  };
-  'app.containers.HomePage.SignedInHeader.CTA': {
-    customizedButtonConfig?: CustomizedButtonConfig;
-    buttonStyle: BannerButtonStyle;
-  };
 }
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];

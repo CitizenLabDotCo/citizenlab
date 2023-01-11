@@ -20,7 +20,6 @@ const MODERATOR_ROUTES = [
   '/admin/workshops',
   '/admin/processing',
   '/admin/moderation',
-  '/admin/insights',
   '/admin/content-builder',
 ];
 

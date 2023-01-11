@@ -24,7 +24,6 @@ import GetInitiativesPermissions, {
 // style
 import styled from 'styled-components';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
-import Outlet from 'components/Outlet';
 
 const footerHeight = '30px';
 const footerTopMargin = '6px';
@@ -168,12 +167,6 @@ class CommentFooter extends PureComponent<Props, State> {
               post={post}
               comment={comment}
               commentingPermissionInitiative={commentingPermissionInitiative}
-            />
-            <Outlet
-              id="app.components.PostShowComponents.CommentFooter.left"
-              comment={comment}
-              locale={locale}
-              tenantLocales={tenantLocales}
             />
           </Left>
           <Right>

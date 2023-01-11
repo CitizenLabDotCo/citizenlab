@@ -118,15 +118,6 @@ export interface IIdeaData {
   };
 }
 
-export interface IMinimalIdeaData {
-  id: string;
-  type: string;
-  attributes: {
-    slug: string;
-    title_multiloc: Multiloc;
-  };
-}
-
 export interface IIdeaMarkerData {
   id: string;
   type: string;
@@ -221,17 +212,6 @@ export function ideasFilterCountsStream(
 export function ideasMarkersStream(streamParams: IStreamParams | null = null) {
   return streams.get<{ data: IIdeaMarkerData[]; links: IIdeaLinks }>({
     apiEndpoint: `${API_PATH}/ideas/as_markers`,
-    ...streamParams,
-    cacheStream: false,
-  });
-}
-
-export function similarIdeasStream(
-  ideaId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<{ data: IMinimalIdeaData[] }>({
-    apiEndpoint: `${API_PATH}/ideas/${ideaId}/similar`,
     ...streamParams,
     cacheStream: false,
   });
