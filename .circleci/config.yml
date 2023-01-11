@@ -480,7 +480,7 @@ jobs:
       - run:
           name: Run tests with JUnit as reporter
           environment:
-            JEST_JUNIT_OUTPUT: "reports/junit/js-test-results.xml"
+            JEST_JUNIT_OUTPUT_FILE: "reports/junit/js-test-results.xml"
           command: npm run test:ci
       - store_test_results:
           path: ./reports/junit
@@ -591,7 +591,7 @@ jobs:
       - run: git config --global user.name "CircleCI"
       - add_ssh_keys:
           fingerprints:
-            - "58:ea:55:fb:4f:97:df:77:2f:aa:02:54:ae:57:4d:d2"
+            - "b8:7b:38:ee:7d:8c:8c:e0:84:74:88:b6:98:2d:0f:f6"
       - run: git diff --quiet app/translations && git diff --staged --quiet app/translations || git commit -m "Translations updated by CI (extract-intl)"
       - run: git push origin $CIRCLE_BRANCH
 

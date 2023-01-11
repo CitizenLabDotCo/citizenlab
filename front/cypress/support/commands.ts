@@ -12,6 +12,8 @@ declare global {
       signUp: typeof signUp;
       apiLogin: typeof apiLogin;
       setAdminLoginCookie: typeof setAdminLoginCookie;
+      setConsentCookie: typeof setConsentCookie;
+      setConsentAndAdminLoginCookies: typeof setConsentAndAdminLoginCookies;
       setLoginCookie: typeof setLoginCookie;
       apiSignup: typeof apiSignup;
       apiCreateAdmin: typeof apiCreateAdmin;
@@ -159,6 +161,18 @@ export function setLoginCookie(email: string, password: string) {
 
 export function setAdminLoginCookie() {
   cy.setLoginCookie('admin@citizenlab.co', 'democracy2.0');
+}
+
+export function setConsentCookie() {
+  cy.setCookie(
+    'cl2_consent',
+    '{%22analytics%22:true%2C%22advertising%22:true%2C%22functional%22:true%2C%22savedChoices%22:{%22google_tag_manager%22:true%2C%22matomo%22:true%2C%22google_analytics%22:true%2C%22intercom%22:true%2C%22segment%22:true}}'
+  );
+}
+
+export function setConsentAndAdminLoginCookies() {
+  cy.setConsentCookie();
+  cy.setAdminLoginCookie();
 }
 
 function emailSignup(
@@ -1336,6 +1350,11 @@ Cypress.Commands.add('apiCreateCustomField', apiCreateCustomField);
 Cypress.Commands.add('apiRemoveCustomField', apiRemoveCustomField);
 Cypress.Commands.add('apiAddPoll', apiAddPoll);
 Cypress.Commands.add('setAdminLoginCookie', setAdminLoginCookie);
+Cypress.Commands.add(
+  'setConsentAndAdminLoginCookies',
+  setConsentAndAdminLoginCookies
+);
+Cypress.Commands.add('setConsentCookie', setConsentCookie);
 Cypress.Commands.add('setLoginCookie', setLoginCookie);
 Cypress.Commands.add('apiVerifyBogus', apiVerifyBogus);
 Cypress.Commands.add('apiCreateEvent', apiCreateEvent);

@@ -93,7 +93,9 @@ export class AdminProjectsProjectIndex extends PureComponent<
   Props & WrappedComponentProps & InjectedLocalized & WithRouterProps,
   State
 > {
-  constructor(props) {
+  constructor(
+    props: Props & WrappedComponentProps & InjectedLocalized & WithRouterProps
+  ) {
     super(props);
     const {
       intl: { formatMessage },
@@ -135,6 +137,12 @@ export class AdminProjectsProjectIndex extends PureComponent<
           label: formatMessage(messages.surveyResultsTab),
           url: 'survey-results',
           name: 'survey-results',
+        },
+        {
+          label: formatMessage(messages.allowedInputTopicsTab),
+          name: 'topics',
+          url: 'allowed-input-topics',
+          feature: 'custom_topics',
         },
         {
           label: formatMessage(messages.phasesTab),
@@ -237,6 +245,27 @@ export class AdminProjectsProjectIndex extends PureComponent<
             return true;
           }
 
+          return false;
+        },
+        topics: function topicsTabHidden(project, phases) {
+          const processType = project.attributes.process_type;
+          const participationMethod = project.attributes.participation_method;
+          const hideTab =
+            (processType === 'continuous' &&
+              participationMethod !== 'ideation' &&
+              participationMethod !== 'budgeting') ||
+            (processType === 'timeline' &&
+              !isNilOrError(phases) &&
+              phases.filter((phase) => {
+                return (
+                  phase.attributes.participation_method === 'ideation' ||
+                  phase.attributes.participation_method === 'budgeting'
+                );
+              }).length === 0);
+
+          if (hideTab) {
+            return true;
+          }
           return false;
         },
         phases: function isPhasesTabHidden(project) {

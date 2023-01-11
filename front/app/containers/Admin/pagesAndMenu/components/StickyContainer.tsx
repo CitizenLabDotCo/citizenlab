@@ -9,6 +9,7 @@ const StickyContainer = styled.div`
   width: calc(100% + 8rem);
 
   position: sticky;
+  z-index: 1;
   bottom: 0;
   margin-left: -4rem;
   margin-bottom: -4rem;
