@@ -76,6 +76,39 @@ class WebApi::V1::ProjectsController < ApplicationController
     end
   end
 
+  def copy
+    source_project = Project.find(params[:id])
+
+    src_title_ml = source_project.title_multiloc
+    title_suffix_multiloc = MultilocService.new.i18n_to_multiloc('project_copy.title_suffix')
+    copy_title_ml = src_title_ml.each { |k, v| src_title_ml[k] = "#{v} - #{title_suffix_multiloc[k]}" }
+
+    slug = SlugService.new.generate_slug Project.new, copy_title_ml.values.first
+
+    options = {
+      include_ideas: false,
+      anonymize_users: false,
+      new_slug: slug,
+      new_title_multiloc: copy_title_ml,
+      timeline_start_at: nil,
+      new_publication_status: 'draft'
+    }
+
+    template = AdminApi::ProjectCopyService.new.export source_project, **options
+
+    folder_id = ProjectFolders::Folder.find(source_project.folder_id) if source_project.folder_id
+    AdminApi::ProjectCopyService.new.import(template, folder: folder_id)
+
+    @project = Project.find_by(slug: slug)
+    authorize @project
+
+    render json: WebApi::V1::ProjectSerializer.new(
+      @project,
+      params: fastjson_params,
+      include: [:admin_publication]
+    ).serialized_json, status: :created
+  end
+
   def update
     params[:project][:area_ids] ||= [] if params[:project].key?(:area_ids)
     params[:project][:topic_ids] ||= [] if params[:project].key?(:topic_ids)
