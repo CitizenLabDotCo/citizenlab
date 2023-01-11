@@ -11,7 +11,7 @@ import SlugInput from 'components/admin/SlugInput';
 import ProjectTypePicker from './components/ProjectTypePicker';
 import TopicInputs from './components/TopicInputs';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
-import HeaderBgInput from './components/HeaderBgInput';
+import HeaderBgUploader from './components/HeaderBgUploader';
 import ProjectImageDropzone from './components/ProjectImageDropzone';
 import AttachmentsDropzone from './components/AttachmentsDropzone';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
@@ -567,7 +567,7 @@ const AdminProjectsProjectGeneral = () => {
           />
         )}
 
-        <HeaderBgInput
+        <HeaderBgUploader
           imageUrl={project?.attributes.header_bg.large}
           onImageChange={handleHeaderBgChange}
         />

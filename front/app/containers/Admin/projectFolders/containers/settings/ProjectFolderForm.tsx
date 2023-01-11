@@ -34,7 +34,7 @@ import useProjectFolderFiles from 'hooks/useProjectFolderFiles';
 import useAdminPublication from 'hooks/useAdminPublication';
 import SlugInput from 'components/admin/SlugInput';
 import { validateSlug } from 'utils/textUtils';
-import HeaderBgInput from './HeaderBgInput';
+import HeaderBgUploader from './HeaderBgUploader';
 
 interface Props {
   mode: 'edit' | 'new';
@@ -492,7 +492,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         </SectionField>
 
         <SectionField>
-          <HeaderBgInput
+          <HeaderBgUploader
             imageUrl={projectFolder?.attributes.header_bg?.large}
             onImageChange={handleHeaderBgChange}
           />

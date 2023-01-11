@@ -60,10 +60,10 @@ const HeaderBgInput = ({ imageUrl, onImageChange }: Props) => {
         </Box>
       ) : (
         <ImagesDropzone
+          images={headerBg}
           acceptedFileTypes={{
             'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
           }}
-          images={headerBg}
           imagePreviewRatio={1 / HEADER_BG_ASPECT_RATIO}
           onAdd={handleImageAdd}
           onRemove={handleImageRemove}

@@ -58,6 +58,7 @@ const HeaderBgInput = ({ imageUrl, onImageChange }: Props) => {
         <FormattedMessage {...messages.headerImageLabelText} />
         <ImageInfoTooltip />
       </SubSectionTitle>
+
       {imageIsNotSaved ? (
         <Box display="flex" flexDirection="column" gap="8px">
           <ImageCropperContainer
@@ -70,10 +71,10 @@ const HeaderBgInput = ({ imageUrl, onImageChange }: Props) => {
       ) : (
         <StyledImagesDropzone
           images={projectHeaderImage}
-          imagePreviewRatio={1 / HEADER_BG_ASPECT_RATIO}
           acceptedFileTypes={{
             'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
           }}
+          imagePreviewRatio={1 / HEADER_BG_ASPECT_RATIO}
           maxImagePreviewWidth="500px"
           onAdd={handleImageAdd}
           onRemove={handleImageRemove}
