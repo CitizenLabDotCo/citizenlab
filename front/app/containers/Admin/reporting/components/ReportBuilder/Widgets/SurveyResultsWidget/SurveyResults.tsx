@@ -5,7 +5,7 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 import FormResultsQuestion from 'containers/Admin/formBuilder/components/FormResults/FormResultsQuestion';
 import NoResults from './NoResults';
 import Dot from './Dot';
-import PageBreakBox from '../PageBreakBox';
+import PageBreakBox from '../../../../../../../components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 // messages
 import messages from './messages';

@@ -10,7 +10,7 @@ import TenantLogo from 'containers/MobileNavbar/TenantLogo';
 import { NoWidgetSettings } from 'components/admin/ContentBuilder/Widgets/NoWidgetSettings';
 import { Element } from '@craftjs/core';
 import { Box } from '@citizenlab/cl2-component-library';
-import PageBreakBox from '../PageBreakBox';
+import PageBreakBox from '../../../../../../../components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 // hooks
 import useReport from 'hooks/useReport';

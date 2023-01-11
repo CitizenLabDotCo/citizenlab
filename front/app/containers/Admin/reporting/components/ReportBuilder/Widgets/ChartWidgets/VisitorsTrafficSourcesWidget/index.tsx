@@ -2,7 +2,7 @@ import React from 'react';
 
 // components
 import VisitorsTrafficSourcesCard from './VisitorTrafficSourcesCard';
-import PageBreakBox from '../../PageBreakBox';
+import PageBreakBox from '../../../../../../../../components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 // styling
 import { stylingConsts } from 'utils/styleUtils';
