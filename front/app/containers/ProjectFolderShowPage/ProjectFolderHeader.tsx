@@ -5,7 +5,7 @@ import ProjectFolderShareButton from '../../components/ProjectFolders/ProjectFol
 import {
   HeaderImage,
   HeaderImageContainer,
-} from 'containers/ProjectsShowPage/shared/header/ProjectHeader';
+} from 'components/ProjectableHeader';
 
 // hooks
 import { useWindowSize } from '@citizenlab/cl2-component-library';

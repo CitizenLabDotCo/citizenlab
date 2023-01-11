@@ -9,9 +9,12 @@ import ContentContainer from 'components/ContentContainer';
 import ProjectInfo from './ProjectInfo';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import Button from 'components/UI/Button';
-import Image from 'components/UI/Image';
 import Outlet from 'components/Outlet';
 import ProjectFolderGoBackButton from './ProjectFolderGoBackButton';
+import {
+  HeaderImage,
+  HeaderImageContainer,
+} from 'components/ProjectableHeader';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -27,7 +30,6 @@ import messages from 'containers/ProjectsShowPage/messages';
 import styled from 'styled-components';
 import { media, isRtl } from 'utils/styleUtils';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
-import { HEADER_BG_ASPECT_RATIO } from 'services/projects';
 
 const Container = styled.div`
   padding-top: 30px;
@@ -59,28 +61,6 @@ const EditButton = styled(Button)`
 
   ${isRtl`
     margin: 0 0 auto 10px;
-  `}
-`;
-
-export const HeaderImageContainer = styled.div`
-  width: 100%;
-  aspect-ratio: ${HEADER_BG_ASPECT_RATIO} / 1; // This line is not required because image is cropped to this ratio anyway; just for the reference.
-  margin-bottom: 30px;
-  border-radius: ${(props) => props.theme.borderRadius};
-  overflow: hidden;
-  position: relative; // It's used to display elements inside (e.g. share button for folders).
-
-  ${media.phone`
-    aspect-ratio: ${HEADER_BG_ASPECT_RATIO - 1} / 1;
-    margin-bottom: 20px;
-  `}
-`;
-
-export const HeaderImage = styled(Image)`
-  width: 100%;
-
-  ${media.phone`
-    height: 100%;
   `}
 `;
 
