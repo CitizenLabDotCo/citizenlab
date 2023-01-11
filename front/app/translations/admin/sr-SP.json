@@ -675,6 +675,7 @@
   "app.containers.Admin.reporting.containers.ReportBuilderPage.viewReports": "Прегледај извештаје",
   "app.containers.Admin.reporting.helmetDescription": "Страница са извештајима администратора",
   "app.containers.Admin.reporting.helmetTitle": "Reporting",
+  "app.containers.Admin.reporting.printPrepare": "Preparing to print...",
   "app.containers.Admin.reporting.reportBuilder": "Пријави алатку за израду",
   "app.containers.Admin.reporting.reportHeader": "Заглавље извештаја",
   "app.containers.AdminPage.DashboardPage.Report.participants": "participants",
