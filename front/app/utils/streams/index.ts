@@ -42,7 +42,6 @@ import { Observer, Observable, Subscription } from 'rxjs';
 // constants
 import { authApiEndpoint } from 'services/auth';
 import { currentAppConfigurationEndpoint } from 'services/appConfiguration';
-import { currentOnboardingCampaignsApiEndpoint } from 'services/onboardingCampaigns';
 
 export type pureFn<T> = (arg: T) => T;
 
@@ -427,10 +426,7 @@ class Streams {
           // but rather the back-end telling us the user needs to be logged in to use the endpoint.
           // We can therefore view errors from these 2 endpoints as valid return values
           // and exclude them from the error-handling logic.
-          if (
-            streamId !== authApiEndpoint &&
-            streamId !== currentOnboardingCampaignsApiEndpoint
-          ) {
+          if (streamId !== authApiEndpoint) {
             // push the error reponse into the stream
             this.streams[streamId].observer.next(error);
             // destroy the stream
