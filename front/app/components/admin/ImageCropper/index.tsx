@@ -39,7 +39,12 @@ const ImageCropper = ({
   );
 
   return (
-    <Box position="relative" height="300px" data-cy="e2e-image-cropper">
+    <Box
+      position="relative"
+      height="300px"
+      data-cy="e2e-image-cropper"
+      data-testid="image-cropper"
+    >
       {image && image[0] && (
         <div>
           <Cropper
