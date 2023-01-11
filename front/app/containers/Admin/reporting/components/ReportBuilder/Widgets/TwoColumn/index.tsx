@@ -14,8 +14,11 @@ import Container from 'components/admin/ContentBuilder/Widgets/Container';
 // i18n
 import messages from 'components/admin/ContentBuilder/Widgets/TwoColumn/messages';
 
+// typings
+import { ColumnLayout } from 'components/admin/ContentBuilder/typings';
+
 type TwoColumnProps = {
-  columnLayout: string;
+  columnLayout: ColumnLayout;
   children?: React.ReactNode;
 };
 

@@ -13,12 +13,15 @@ import { colors, media } from 'utils/styleUtils';
 import { useNode, Element } from '@craftjs/core';
 import Container from '../Container';
 
-// Intl
+// intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+// typings
+import { ColumnLayout } from '../../typings';
+
 type TwoColumnProps = {
-  columnLayout: string;
+  columnLayout: ColumnLayout;
   children?: React.ReactNode;
 };
 

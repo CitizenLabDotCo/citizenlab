@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -20,6 +20,9 @@ import {
 } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import Frame from 'components/admin/ContentBuilder/Frame';
 import Settings from 'components/admin/ContentBuilder/Settings';
+
+// templates
+import ProjectTemplate from '../../components/ReportBuilder/Templates/ProjectTemplate';
 
 // styling
 import { stylingConsts } from 'utils/styleUtils';
@@ -51,6 +54,10 @@ const ReportBuilder = ({ reportId }: Props) => {
   const reportLayout = useReportLayout(reportId);
   const reportLocale = useReportLocale(reportLayout);
   const platformLocale = useLocale();
+  const [initialized, setInitialized] = useState(false);
+  const [initialData, setInitialData] = useState<SerializedNodes | undefined>();
+  const [search] = useSearchParams();
+  const projectId = search.get('projectId');
 
   // Note: selectedLocale is kept to keep compatibility with content builder
   // although there is currently only one locale allowed per report
@@ -99,11 +106,21 @@ const ReportBuilder = ({ reportId }: Props) => {
     return previewData;
   }, [draftData, selectedLocale]);
 
-  if (!selectedLocale) return null;
+  useEffect(() => {
+    if (initialized) return;
+    if (!selectedLocale) return;
+    if (reportLayout === undefined) return;
 
-  const initialData = isNilOrError(reportLayout)
-    ? undefined
-    : reportLayout.attributes.craftjs_jsonmultiloc[selectedLocale];
+    if (!isNilOrError(reportLayout)) {
+      setInitialData(
+        reportLayout.attributes.craftjs_jsonmultiloc[selectedLocale]
+      );
+    }
+
+    setInitialized(true);
+  }, [initialized, selectedLocale, reportLayout]);
+
+  if (!selectedLocale) return null;
 
   return (
     <FullscreenContentBuilder
@@ -124,6 +141,7 @@ const ReportBuilder = ({ reportId }: Props) => {
           selectedLocale={selectedLocale}
           draftEditorData={draftData}
           reportId={reportId}
+          projectId={projectId ?? undefined}
         />
         <Box
           mt={`${stylingConsts.menuHeight}px`}
@@ -144,7 +162,14 @@ const ReportBuilder = ({ reportId }: Props) => {
                   reportLocale={reportLocale}
                   platformLocale={platformLocale}
                 >
-                  <Frame editorData={initialData} />
+                  <Frame editorData={initialData}>
+                    {projectId && (
+                      <ProjectTemplate
+                        reportId={reportId}
+                        projectId={projectId}
+                      />
+                    )}
+                  </Frame>
                 </ReportLanguageProvider>
               </Box>
             </Box>

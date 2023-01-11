@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // services
 import { updateReportLayout } from 'services/reports';
@@ -51,6 +51,7 @@ type ContentBuilderTopBarProps = {
   selectedLocale: Locale | undefined;
   draftEditorData?: Record<string, SerializedNodes>;
   reportId: string;
+  projectId?: string;
 };
 
 const ContentBuilderTopBar = ({
@@ -61,7 +62,9 @@ const ContentBuilderTopBar = ({
   localesWithError,
   hasPendingState,
   reportId,
+  projectId,
 }: ContentBuilderTopBarProps) => {
+  const [initialized, setInitialized] = useState(false);
   const [loading, setLoading] = useState(false);
   const { query } = useEditor();
   const report = useReport(reportId);
@@ -86,6 +89,39 @@ const ContentBuilderTopBar = ({
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (initialized) return;
+
+    if (!projectId) {
+      setInitialized(true);
+      return;
+    }
+
+    const nodes = query.getSerializedNodes();
+    const firstNode = nodes.ROOT?.nodes[0];
+    const numberOfNodes = Object.keys(nodes).length;
+
+    if (!firstNode || !selectedLocale || numberOfNodes < 5) return;
+
+    if (nodes?.[firstNode].displayName === 'ProjectTemplate') {
+      setTimeout(() => {
+        updateReportLayout(reportId, {
+          ...draftEditorData,
+          [selectedLocale]: query.getSerializedNodes(),
+        });
+      }, 5000);
+    }
+
+    setInitialized(true);
+  }, [
+    projectId,
+    query,
+    draftEditorData,
+    initialized,
+    reportId,
+    selectedLocale,
+  ]);
 
   const handleTogglePreview = () => {
     setPreviewEnabled((previewEnabled) => !previewEnabled);

@@ -41,6 +41,7 @@ export type PostingDisabledReason =
   | 'project_inactive'
   | 'not_ideation'
   | 'posting_disabled'
+  | 'posting_limited_max_reached'
   | 'not_permitted'
   | 'not_verified'
   | 'not_signed_in';

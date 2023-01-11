@@ -171,4 +171,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.url',
     defaultMessage: 'URL',
   },
+  topicInputsTooltipExtraCopy: {
+    id: 'app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipExtraCopy',
+    defaultMessage: 'Tags can be configured {topicManagerLink}.',
+  },
+  topicInputsTooltipLink: {
+    id: 'app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipLink',
+    defaultMessage: 'here',
+  },
 });
