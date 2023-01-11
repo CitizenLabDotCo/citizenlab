@@ -10,22 +10,38 @@ import useReport from 'hooks/useReport';
 // components
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
-import LocaleSwitcher from 'components/admin/ContentBuilder/TopBar/LocaleSwitcher';
 import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import { Box, Text, Title } from '@citizenlab/cl2-component-library';
+import ShareReportButton from '../../ReportBuilderPage/ReportRow/ShareReportButton';
 
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
+// styling
+import { fontSizes, colors, stylingConsts } from 'utils/styleUtils';
+import styled from 'styled-components';
+
 // routing
 import clHistory from 'utils/cl-router/history';
 
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+
 // types
 import { Locale } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
-import ShareReportButton from '../../ReportBuilderPage/ReportRow/ShareReportButton';
+
+const LocaleBadge = styled(Box)`
+  display: inline-block;
+  color: ${colors.textSecondary};
+  background-color: ${colors.grey200};
+  font-weight: bold;
+  font-size: ${fontSizes.xs}px;
+  padding: 0px 6px;
+  margin-left: 15px;
+  border-radius: ${stylingConsts.borderRadius};
+`;
 
 type ContentBuilderTopBarProps = {
   hasPendingState?: boolean;
@@ -36,17 +52,12 @@ type ContentBuilderTopBarProps = {
   draftEditorData?: Record<string, SerializedNodes>;
   reportId: string;
   projectId?: string;
-  onSelectLocale: (args: {
-    locale: Locale;
-    editorData: SerializedNodes;
-  }) => void;
 };
 
 const ContentBuilderTopBar = ({
   previewEnabled,
   setPreviewEnabled,
   selectedLocale,
-  onSelectLocale,
   draftEditorData,
   localesWithError,
   hasPendingState,
@@ -112,11 +123,6 @@ const ContentBuilderTopBar = ({
     selectedLocale,
   ]);
 
-  const handleSelectLocale = (locale: Locale) => {
-    const editorData = query.getSerializedNodes();
-    onSelectLocale({ locale, editorData });
-  };
-
   const handleTogglePreview = () => {
     setPreviewEnabled((previewEnabled) => !previewEnabled);
   };
@@ -131,13 +137,9 @@ const ContentBuilderTopBar = ({
           </Text>
           <Title variant="h4" as="h1" color="primary">
             {isNilOrError(report) ? <></> : report.attributes.name}
+            <LocaleBadge>{selectedLocale?.toUpperCase()}</LocaleBadge>
           </Title>
         </Box>
-        <LocaleSwitcher
-          selectedLocale={selectedLocale}
-          localesWithError={localesWithError}
-          onSelectLocale={handleSelectLocale}
-        />
         <Box mx="24px">
           <PreviewToggle
             checked={previewEnabled}
