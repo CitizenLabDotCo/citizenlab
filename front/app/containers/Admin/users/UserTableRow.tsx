@@ -214,7 +214,9 @@ class UserTableRow extends PureComponent<Props & WrappedComponentProps, State> {
         <Td>{user.attributes.email}</Td>
         <RegisteredAt>
           {user.attributes.invite_status === 'pending' ? (
-            <FormattedMessage {...messages.userInvitationPending} />
+            <i>
+              <FormattedMessage {...messages.userInvitationPending} />
+            </i>
           ) : (
             this.state.registeredAt
           )}
