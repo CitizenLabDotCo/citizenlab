@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
 // components
-import { Text, Spinner } from '@citizenlab/cl2-component-library';
+import { Text, Spinner, Box } from '@citizenlab/cl2-component-library';
 import FullScreenReport from '../FullScreenReport';
 import styled from 'styled-components';
+import messages from '../../messages';
+import { FormattedMessage } from '../../../../../utils/cl-intl';
 
-const PreparingBox = styled.div`
+const PreparingBox = styled(Box)`
   position: fixed;
   top: 0;
   left: 0;
@@ -39,7 +41,9 @@ const PrintReport = () => {
       {!isPrintReady && (
         <PreparingBox>
           <Spinner />
-          <Text color="primary">Preparing to print...</Text>
+          <Text color="primary">
+            <FormattedMessage {...messages.printPrepare} />
+          </Text>
         </PreparingBox>
       )}
       <FullScreenReport />
