@@ -24,6 +24,7 @@ const Centerer = styled.div`
   align-items: center;
 
   @media print {
+    margin-top: -20px;
     display: block;
     position: absolute;
     @page {
