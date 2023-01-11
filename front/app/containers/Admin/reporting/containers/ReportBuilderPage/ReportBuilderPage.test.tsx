@@ -18,8 +18,8 @@ jest.mock('services/reports', () => ({
   deleteReport: jest.fn(),
 }));
 
-let mockUser1 = { attributes: { first_name: 'User 1' } };
-let mockUser2 = { attributes: { first_name: 'User 2' } };
+const mockUser1 = { attributes: { first_name: 'User 1' } };
+const mockUser2 = { attributes: { first_name: 'User 2' } };
 jest.mock('hooks/useUser', () =>
   jest.fn(({ userId }) => (userId === '_1' ? mockUser1 : mockUser2))
 );

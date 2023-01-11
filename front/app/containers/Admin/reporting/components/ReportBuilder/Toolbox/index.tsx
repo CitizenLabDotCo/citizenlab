@@ -5,6 +5,7 @@ import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import { Box, Title, Accordion } from '@citizenlab/cl2-component-library';
 import TwoColumn from '../../../components/ReportBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import TitleWidget from 'components/admin/ContentBuilder/Widgets/Title';
 import Text from 'components/admin/ContentBuilder/Widgets/Text';
 import Image from 'components/admin/ContentBuilder/Widgets/Image';
 import AboutReportWidget from '../Widgets/AboutReportWidget';
@@ -86,13 +87,20 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
           <DraggableElement
             id="e2e-draggable-about-report"
             component={
-              <AboutReportWidget
-                reportId={reportId}
-                projectId={undefined} // TODO: Plug in project when available
-              />
+              <AboutReportWidget reportId={reportId} projectId={undefined} />
             }
             icon="section-image-text"
             label={formatMessage(AboutReportWidget.craft.custom.title)}
+          />
+          <DraggableElement
+            id="e2e-draggable-title"
+            component={
+              <TitleWidget
+                text={formatMessage(TitleWidget.craft.custom.title)}
+              />
+            }
+            icon="text"
+            label={formatMessage(TitleWidget.craft.custom.title)}
           />
           <DraggableElement
             id="e2e-draggable-text"

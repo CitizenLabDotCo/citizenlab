@@ -27,6 +27,18 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel',
     defaultMessage: 'Report title',
   },
+  reportTemplate: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.reportTemplate',
+    defaultMessage: 'Report template',
+  },
+  blankTemplate: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.blankTemplate',
+    defaultMessage: 'Start with a blank page',
+  },
+  projectTemplate: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.projectTemplate',
+    defaultMessage: 'Start with a project template',
+  },
   shareReportTitle: {
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.shareReportTitle',
     defaultMessage: 'Share',

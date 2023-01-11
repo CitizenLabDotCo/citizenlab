@@ -112,9 +112,8 @@ export class RegistrationFieldsToGraphs extends PureComponent<
       if (field.attributes.enabled) {
         if (field.attributes.code === 'birthyear') {
           return (
-            <Box width="50%">
+            <Box width="50%" key={index}>
               <AgeChart
-                key={index}
                 startAt={startAt}
                 endAt={endAt}
                 currentGroupFilter={currentGroupFilter}
@@ -128,9 +127,8 @@ export class RegistrationFieldsToGraphs extends PureComponent<
         }
         if (field.attributes.code === 'gender') {
           return (
-            <Box width="50%">
+            <Box width="50%" key={index}>
               <GenderChart
-                key={index}
                 startAt={startAt}
                 endAt={endAt}
                 currentGroupFilter={currentGroupFilter}
