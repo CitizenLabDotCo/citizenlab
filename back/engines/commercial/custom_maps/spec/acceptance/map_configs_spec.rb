@@ -68,9 +68,7 @@ resource 'Map Configs' do
   end
 
   context 'when logged in as a normal user' do
-    before do
-      user_header_token
-    end
+    before { resident_header_token }
 
     include_examples 'successful GET map config'
     include_examples 'unauthorized POST, PATCH and DELETE map config'

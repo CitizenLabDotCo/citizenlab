@@ -32,9 +32,7 @@ resource 'IdeaStatuses' do
   end
 
   context 'when signed in as a non-admin user' do
-    before do
-      user_header_token
-    end
+    before { resident_header_token }
 
     get 'web_api/v1/idea_statuses' do
       example_request 'List all idea statuses', document: false do

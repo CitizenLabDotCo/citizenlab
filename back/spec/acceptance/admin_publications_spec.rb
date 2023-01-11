@@ -210,9 +210,7 @@ resource 'AdminPublication' do
   end
 
   context 'when citizen' do
-    before do
-      user_header_token
-    end
+    before { resident_header_token }
 
     let(:project_statuses) { %w[published published draft draft published archived] }
     let!(:_custom_folder) { create(:project_folder, projects: projects.take(3)) }

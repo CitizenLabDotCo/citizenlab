@@ -19,7 +19,7 @@ resource 'Batch category assignments for view inputs' do
     end
 
     context 'when normal user' do
-      before { user_header_token }
+      before { resident_header_token }
 
       example 'unauthorized', document: false do
         do_request
