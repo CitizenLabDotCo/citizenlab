@@ -16,8 +16,6 @@ import impactTrackingConfiguration from './commercial/impact_tracking';
 import widgetsConfiguration from './commercial/widgets';
 import eventsWidgetConfiguration from './commercial/events_widget';
 
-import representativenessConfiguration from './commercial/representativeness';
-
 // eslint-disable-next-line no-var
 declare var CITIZENLAB_EE: string;
 
@@ -70,11 +68,6 @@ export default loadModules([
   },
   {
     configuration: eventsWidgetConfiguration,
-    isEnabled,
-  },
-
-  {
-    configuration: representativenessConfiguration,
     isEnabled,
   },
   {

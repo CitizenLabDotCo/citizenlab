@@ -1,11 +1,9 @@
 import React, { memo, useState, useEffect } from 'react';
-import { insertConfiguration } from 'utils/moduleUtils';
 import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
 import DashboardTabs from './components/DashboardTabs';
-import Outlet from 'components/Outlet';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -22,7 +20,7 @@ import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { InsertConfigurationOptions, ITab } from 'typings';
+import { ITab } from 'typings';
 
 export const DashboardsPage = memo(
   ({ intl: { formatMessage } }: WrappedComponentProps) => {
@@ -64,10 +62,6 @@ export const DashboardsPage = memo(
       subtitle: formatMessage(messages.subtitleDashboard),
     };
 
-    const handleData = (data: InsertConfigurationOptions<ITab>) => {
-      setTabs((tabs) => insertConfiguration(data)(tabs));
-    };
-
     if (
       isNilOrError(authUser) ||
       (authUser &&
@@ -79,11 +73,6 @@ export const DashboardsPage = memo(
 
     return (
       <>
-        <Outlet
-          id="app.containers.Admin.dashboards.tabs"
-          onData={handleData}
-          formatMessage={formatMessage}
-        />
         {/* Filter out project tab when insights module is active */}
         <DashboardTabs resource={resource} tabs={tabs}>
           <HelmetIntl
