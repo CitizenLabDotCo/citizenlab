@@ -675,6 +675,7 @@
   "app.containers.Admin.reporting.containers.ReportBuilderPage.viewReports": "Rapporten bekijken",
   "app.containers.Admin.reporting.helmetDescription": "Beheerderspagina voor rapporten",
   "app.containers.Admin.reporting.helmetTitle": "Rapportering",
+  "app.containers.Admin.reporting.printPrepare": "Preparing to print...",
   "app.containers.Admin.reporting.reportBuilder": "Rapportbouwer",
   "app.containers.Admin.reporting.reportHeader": "Koptekst rapport",
   "app.containers.AdminPage.DashboardPage.Report.participants": "deelnemers",
