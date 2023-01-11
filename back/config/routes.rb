@@ -76,18 +76,27 @@ Rails.application.routes.draw do
       post 'user_token' => 'user_token#create'
 
       resources :users, only: %i[index create update destroy] do
-        get :me, on: :collection
-        post :complete_registration, on: :collection
-        get :as_xlsx, on: :collection, action: 'index_xlsx'
-        post 'reset_password_email' => 'reset_password#reset_password_email', on: :collection
-        post 'reset_password' => 'reset_password#reset_password', on: :collection
-        get 'by_slug/:slug', on: :collection, to: 'users#by_slug'
-        get 'by_invite/:token', on: :collection, to: 'users#by_invite'
         get 'ideas_count', on: :member
         get 'initiatives_count', on: :member
         get 'comments_count', on: :member
 
         resources :comments, only: [:index], controller: 'user_comments'
+
+        collection do
+          get :me
+          post :complete_registration
+          get :as_xlsx, action: 'index_xlsx'
+          post 'reset_password_email' => 'reset_password#reset_password_email'
+          post 'reset_password' => 'reset_password#reset_password'
+          get 'by_slug/:slug', to: 'users#by_slug'
+          get 'by_invite/:token', to: 'users#by_invite'
+
+          resources :custom_fields, controller: 'user_custom_fields', only: %i[index show update] do
+            patch 'reorder', on: :member
+            get 'schema', on: :collection
+            get 'json_forms_schema', on: :collection
+          end
+        end
       end
       get 'users/:id', to: 'users#show', constraints: { id: /\b(?!custom_fields|me)\b\S+/ }
 
