@@ -675,6 +675,7 @@
   "app.containers.Admin.reporting.containers.ReportBuilderPage.viewReports": "Se rapporter",
   "app.containers.Admin.reporting.helmetDescription": "Admin-rapporteringsside",
   "app.containers.Admin.reporting.helmetTitle": "Indsigt",
+  "app.containers.Admin.reporting.printPrepare": "Preparing to print...",
   "app.containers.Admin.reporting.reportBuilder": "Rapportbygger",
   "app.containers.Admin.reporting.reportHeader": "Rapports overskrift",
   "app.containers.AdminPage.DashboardPage.Report.participants": "deltagere",
