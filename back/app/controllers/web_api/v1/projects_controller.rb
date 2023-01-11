@@ -120,6 +120,9 @@ class WebApi::V1::ProjectsController < ApplicationController
     # TODO: Move much of this code to sidefx.after_copy
     source_project.project_images.each { |image| ProjectImage.create(project_id: @project.id, image: image.image) }
     source_project.topics.each { |topic| ProjectsTopic.create(project_id: @project.id, topic_id: topic.id) }
+    source_project.permissions.each do |permission|
+      Permission.create(permission.attributes.except('id').merge(permission_scope_id: @project.id, groups: permission.groups))
+    end
 
     authorize @project
     show
