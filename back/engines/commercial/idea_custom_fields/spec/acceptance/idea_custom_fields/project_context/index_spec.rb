@@ -10,14 +10,14 @@ resource 'Idea Custom Fields' do
     SettingsService.new.activate_feature! 'idea_custom_fields'
   end
 
-  context 'when admin' do
-    before { admin_header_token }
+  get 'web_api/v1/admin/projects/:project_id/custom_fields' do
+    let(:context) { create :project }
+    let(:project_id) { context.id }
+    let(:form) { create :custom_form, participation_context: context }
+    let!(:custom_field) { create :custom_field, resource: form, key: 'extra_field1' }
 
-    get 'web_api/v1/admin/projects/:project_id/custom_fields' do
-      let(:context) { create :project }
-      let(:project_id) { context.id }
-      let(:form) { create :custom_form, participation_context: context }
-      let!(:custom_field) { create :custom_field, resource: form, key: 'extra_field1' }
+    context 'when admin' do
+      before { admin_header_token }
 
       example_request 'List all allowed custom fields for a project' do
         assert_status 200
