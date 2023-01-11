@@ -268,11 +268,6 @@ describe('Embedded survey CTA', () => {
       });
   });
 
-  beforeEach(() => {
-    cy.setAdminLoginCookie();
-    cy.visit(`/projects/${projectSlug}`);
-  });
-
   it('shows the CTA button on visting the project page of an active survey project', () => {
     cy.visit(`/en/projects/${projectSlug}`);
     cy.acceptCookies();
