@@ -24,7 +24,7 @@ module IdeaCustomFields
     }
 
     before_action :verify_feature_flag
-    before_action :set_custom_field, only: %i[show update]
+    before_action :set_custom_field, only: %i[show]
     before_action :set_custom_form, only: %i[index update_all]
     skip_after_action :verify_policy_scoped
     rescue_from UpdatingFormWithInputError, with: :render_updating_form_with_input_error
@@ -47,15 +47,6 @@ module IdeaCustomFields
       ).serialized_json
     end
 
-    # `update` by ID is not possible for default custom fields that have not been persisted yet,
-    # because default fields have a randomly generated ID. `upsert_by_code` should be used for
-    # default fields.
-    def update
-      update_field do |custom_form|
-        IdeaCustomFieldsService.new(custom_form).find_field_by_id(params[:id])
-      end
-    end
-
     def update_all
       authorize CustomField.new(resource: @custom_form), :update_all?, policy_class: IdeaCustomFieldPolicy
       participation_method = Factory.instance.participation_method_for @custom_form.participation_context
@@ -70,14 +61,6 @@ module IdeaCustomFields
       ).serialized_json
     rescue UpdateAllFailedError => e
       render json: { errors: e.errors }, status: :unprocessable_entity
-    end
-
-    # `upsert_by_code` cannot be used for extra fields, because they do not have a code.
-    # `update` should be used for extra fields.
-    def upsert_by_code
-      update_field do |custom_form|
-        IdeaCustomFieldsService.new(custom_form).find_or_build_field(params[:code])
-      end
     end
 
     private
@@ -100,7 +83,7 @@ module IdeaCustomFields
         option_temp_ids_to_ids_mapping = {}
         given_fields.each_with_index do |field_params, index|
           options_params = field_params.delete :options
-          if field_params[:id]
+          if field_params[:id] # field_params[:id] && field_persisted?)
             field = fields_by_id[field_params[:id]]
             field.assign_attributes field_params
             SideFxCustomFieldService.new.before_update(field, current_user)
@@ -138,41 +121,6 @@ module IdeaCustomFields
           end
         end
         raise UpdateAllFailedError, errors if errors.present?
-      end
-    end
-
-    def update_field(&_block)
-      # Wrapping this in a transaction, to avoid the race condition where
-      # simultaneous requests, when custom_form does not exist yet, make
-      # multiple custom_forms and the last form gets associated to the project
-      custom_field = ActiveRecord::Base.transaction do
-        # Row-level locking of the project record
-        # See https://www.2ndquadrant.com/en/blog/postgresql-anti-patterns-read-modify-write-cycles/
-        project = Project.lock.find(params[:project_id])
-        custom_form = CustomForm.find_or_initialize_by(participation_context: project)
-        custom_form.save! unless custom_form.persisted?
-
-        (yield custom_form).tap do |field|
-          assign_attributes_to(field)
-        end
-      end
-
-      authorize custom_field, policy_class: IdeaCustomFieldPolicy
-      already_existed = custom_field.persisted?
-
-      SideFxCustomFieldService.new.before_update custom_field, current_user
-      if custom_field.save
-        if already_existed
-          SideFxCustomFieldService.new.after_update(custom_field, current_user)
-        else
-          SideFxCustomFieldService.new.after_create(custom_field, current_user)
-        end
-        render json: ::WebApi::V1::CustomFieldSerializer.new(
-          custom_field.reload,
-          params: fastjson_params
-        ).serialized_json, status: :ok
-      else
-        render json: { errors: custom_field.errors.details }, status: :unprocessable_entity
       end
     end
 
@@ -219,13 +167,6 @@ module IdeaCustomFields
       errors[field_index.to_s] ||= {}
       errors[field_index.to_s][:options] ||= {}
       errors[field_index.to_s][:options][option_index.to_s] = options_errors
-    end
-
-    def assign_attributes_to(custom_field)
-      field_params = params
-        .require(:custom_field)
-        .permit(IdeaCustomFieldPolicy.new(current_user, custom_field).permitted_attributes)
-      custom_field.assign_attributes field_params
     end
 
     def update_all_params
