@@ -56,6 +56,7 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
       bgColor={theme.colors.white}
       textColor={theme.colors.tenantText}
       iconColor={theme.colors.tenantText}
+      data-cy="budgeting-cta-button"
     >
       <FormattedMessage {...messages.allocateYourBudget} />
     </Button>

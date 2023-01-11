@@ -436,7 +436,8 @@ export function apiCreateIdea(
   ideaContent: string,
   locationGeoJSON?: { type: string; coordinates: number[] },
   locationDescription?: string,
-  jwt?: string
+  jwt?: string,
+  budget?: number
 ) {
   let headers: { 'Content-Type': string; Authorization: string } | null = null;
 
@@ -471,6 +472,7 @@ export function apiCreateIdea(
           },
           location_point_geojson: locationGeoJSON,
           location_description: locationDescription,
+          budget,
         },
       },
     });
