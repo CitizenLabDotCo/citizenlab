@@ -37,17 +37,6 @@ export function userCustomFieldOptionsStream(
   });
 }
 
-export function userCustomFieldOptionStream(
-  customFieldId: string,
-  customFieldOptionId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IUserCustomFieldOption>({
-    apiEndpoint: `${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options/${customFieldOptionId}`,
-    ...streamParams,
-  });
-}
-
 export async function deleteUserCustomFieldOption(
   customFieldId: string,
   optionId: string
