@@ -234,21 +234,6 @@ const OverviewDashboard = ({ projects }: DataProps) => {
             {...legacyProps}
           />
         </Column>
-
-        {userIsAdmin && (
-          <>
-            <Title
-              ml="12px"
-              mt="40px"
-              width="100%"
-              variant="h2"
-              color="primary"
-              fontWeight="normal"
-            >
-              {formatMessage(overviewMessages.management)}
-            </Title>
-          </>
-        )}
       </GraphsContainer>
     </>
   );
