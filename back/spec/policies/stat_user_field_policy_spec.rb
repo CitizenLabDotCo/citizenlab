@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe UserCustomFields::StatUserPolicy do
+RSpec.describe StatUserFieldPolicy do
   subject(:policy) { described_class.new(user, nil) }
 
   context 'when the user has admin rights' do

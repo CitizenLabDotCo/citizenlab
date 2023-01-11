@@ -272,6 +272,26 @@ Rails.application.routes.draw do
         get 'votes_by_time_as_xlsx', **route_params
         get 'votes_by_topic_as_xlsx', **route_params
         get 'votes_by_project_as_xlsx', **route_params
+
+        with_options controller: 'stats_user_fields' do
+          get 'users_by_domicile'
+          get 'users_by_domicile_as_xlsx'
+
+          with_options action: :users_by_custom_field do
+            get 'users_by_gender'
+            get 'users_by_birthyear'
+            get 'users_by_education'
+            get 'users_by_custom_field/:custom_field_id'
+          end
+
+          with_options action: :users_by_custom_field_as_xlsx do
+            get 'users_by_gender_as_xlsx'
+            get 'users_by_birthyear_as_xlsx'
+            get 'users_by_education_as_xlsx'
+            get 'users_by_custom_field_as_xlsx/:custom_field_id'
+          end
+        end
+
       end
 
       scope 'mentions', controller: 'mentions' do

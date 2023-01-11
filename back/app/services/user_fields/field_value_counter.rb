@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module UserCustomFields
+module UserFields
   # This module can be used to count the number of times each custom field option
   # has been selected by a user (within a group of users).
   module FieldValueCounter
