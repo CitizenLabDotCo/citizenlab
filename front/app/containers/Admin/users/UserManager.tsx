@@ -54,7 +54,7 @@ const initialState: State = {
 export class UserManager extends PureComponent<Props, State> {
   subscriptions: Subscription[] = [];
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = initialState;
   }

@@ -3,7 +3,7 @@ import useCustomPages from './useCustomPages';
 import { Observable, Subscription } from 'rxjs';
 import { waitFor } from 'utils/testUtils/rtl';
 import { delay } from 'rxjs/operators';
-import pages from './fixtures/customPages';
+import pages from 'services/__mocks__/customPages';
 import { listCustomPages, customPageByIdStream } from 'services/customPages';
 
 const mockInputListPages = {
