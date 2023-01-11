@@ -110,10 +110,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription',
     defaultMessage: 'The project will show on selected area filter(s).',
   },
-  headerImageLabelText: {
-    id: 'app.containers.AdminPage.ProjectEdit.headerImageLabelText',
-    defaultMessage: 'Header image',
-  },
   projectCardImageLabelText: {
     id: 'app.containers.AdminPage.ProjectEdit.projectCardImageLabelText',
     defaultMessage: 'Project card image',

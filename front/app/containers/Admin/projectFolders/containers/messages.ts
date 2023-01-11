@@ -43,10 +43,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.descriptionInputLabel',
     defaultMessage: 'Description',
   },
-  headerImageInputLabel: {
-    id: 'app.containers.AdminPage.FoldersEdit.headerImageInputLabel',
-    defaultMessage: 'Header image',
-  },
   projectFolderCardImageLabel: {
     id: 'app.containers.AdminPage.FoldersEdit.projectFolderCardImageLabel',
     defaultMessage: 'Folder card image',

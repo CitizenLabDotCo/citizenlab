@@ -34,7 +34,7 @@ import useProjectFolderFiles from 'hooks/useProjectFolderFiles';
 import useAdminPublication from 'hooks/useAdminPublication';
 import SlugInput from 'components/admin/SlugInput';
 import { validateSlug } from 'utils/textUtils';
-import HeaderBgUploader from './HeaderBgUploader';
+import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
 
 interface Props {
   mode: 'edit' | 'new';

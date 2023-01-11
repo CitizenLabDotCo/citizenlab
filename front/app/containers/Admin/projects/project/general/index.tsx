@@ -11,7 +11,7 @@ import SlugInput from 'components/admin/SlugInput';
 import ProjectTypePicker from './components/ProjectTypePicker';
 import TopicInputs from './components/TopicInputs';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
-import HeaderBgUploader from './components/HeaderBgUploader';
+import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
 import ProjectImageDropzone from './components/ProjectImageDropzone';
 import AttachmentsDropzone from './components/AttachmentsDropzone';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';

@@ -10,7 +10,7 @@ import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from './messages';
 
 interface Props {
   imageUrl: string | null | undefined;
