@@ -298,13 +298,6 @@ class CustomFields extends Component<Props & WrappedComponentProps, State> {
             );
           })}
         </CustomFieldsList>
-        <Button
-          buttonStyle="cl-blue"
-          icon="plus-circle"
-          linkTo="/admin/settings/registration/custom-fields/new"
-        >
-          <FormattedMessage {...messages.addAFieldButton} />
-        </Button>
       </Section>
     );
   }

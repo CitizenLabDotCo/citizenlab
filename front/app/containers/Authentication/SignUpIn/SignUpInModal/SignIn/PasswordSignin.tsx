@@ -82,8 +82,6 @@ interface DataProps {
   passwordLoginEnabled: boolean | null;
   googleLoginEnabled: boolean | null;
   facebookLoginEnabled: boolean | null;
-  azureAdLoginEnabled: boolean | null;
-  franceconnectLoginEnabled: boolean | null;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -265,8 +263,6 @@ class PasswordSignin extends PureComponent<
       passwordLoginEnabled,
       googleLoginEnabled,
       facebookLoginEnabled,
-      azureAdLoginEnabled,
-      franceconnectLoginEnabled,
     } = this.props;
     const { formatMessage } = this.props.intl;
     const phoneLoginEnabled =
@@ -277,8 +273,6 @@ class PasswordSignin extends PureComponent<
       passwordLoginEnabled,
       googleLoginEnabled,
       facebookLoginEnabled,
-      azureAdLoginEnabled,
-      franceconnectLoginEnabled,
     ].filter((provider) => provider === true);
     const isDesktop = windowSize ? windowSize > viewportWidths.tablet : true;
 
@@ -399,8 +393,6 @@ const Data = adopt<DataProps>({
   passwordLoginEnabled: <GetFeatureFlag name="password_login" />,
   googleLoginEnabled: <GetFeatureFlag name="google_login" />,
   facebookLoginEnabled: <GetFeatureFlag name="facebook_login" />,
-  azureAdLoginEnabled: <GetFeatureFlag name="azure_ad_login" />,
-  franceconnectLoginEnabled: <GetFeatureFlag name="franceconnect_login" />,
 });
 
 export default (inputProps: InputProps) => (

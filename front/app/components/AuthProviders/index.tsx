@@ -7,7 +7,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
 import Or from 'components/UI/Or';
 import FranceConnectButton from 'components/UI/FranceConnectButton';
-import Outlet from 'components/Outlet';
 import Error from 'components/UI/Error';
 
 // resources
@@ -73,29 +72,19 @@ const AuthProviders = memo<Props & WrappedComponentProps>(
     onAuthProviderSelected,
     passwordLoginEnabled,
     tenant,
-    viennaCitizenLoginEnabled,
   }) => {
     const { flow } = metaData;
-    const azureProviderName = !isNilOrError(tenant)
-      ? tenant?.attributes?.settings?.azure_ad_login?.login_mechanism_name
-      : null;
 
     useEffect(() => {
       if (
         isBoolean(passwordLoginEnabled) &&
         isBoolean(googleLoginEnabled) &&
-        isBoolean(facebookLoginEnabled) &&
-        isBoolean(azureAdLoginEnabled) &&
-        isBoolean(franceconnectLoginEnabled) &&
-        isBoolean(viennaCitizenLoginEnabled)
+        isBoolean(facebookLoginEnabled)
       ) {
         const enabledProviders = [
           passwordLoginEnabled,
           googleLoginEnabled,
           facebookLoginEnabled,
-          azureAdLoginEnabled,
-          franceconnectLoginEnabled,
-          viennaCitizenLoginEnabled,
         ].filter((provider) => provider === true);
 
         if (enabledProviders.length === 1 && passwordLoginEnabled) {
@@ -106,9 +95,6 @@ const AuthProviders = memo<Props & WrappedComponentProps>(
       passwordLoginEnabled,
       googleLoginEnabled,
       facebookLoginEnabled,
-      azureAdLoginEnabled,
-      franceconnectLoginEnabled,
-      viennaCitizenLoginEnabled,
       onAuthProviderSelected,
     ]);
 
@@ -168,12 +154,6 @@ const AuthProviders = memo<Props & WrappedComponentProps>(
           franceconnectLoginEnabled &&
           !metaData.error && <Or />}
 
-        <Outlet
-          id="app.components.SignUpIn.AuthProviders.ContainerStart"
-          flow={flow}
-          onContinue={onAuthProviderSelected}
-        />
-
         {isPasswordSigninOrSignupAllowed && (
           <StyledAuthProviderButton
             flow={flow}
@@ -220,20 +200,6 @@ const AuthProviders = memo<Props & WrappedComponentProps>(
           </StyledAuthProviderButton>
         )}
 
-        {azureAdLoginEnabled && (
-          <StyledAuthProviderButton
-            icon="microsoft-windows"
-            flow={flow}
-            authProvider="azureactivedirectory"
-            onContinue={onAuthProviderSelected}
-          >
-            <FormattedMessage
-              {...messages.continueWithAzure}
-              values={{ azureProviderName }}
-            />
-          </StyledAuthProviderButton>
-        )}
-
         <Options>
           <Option>
             <FormattedMessage
@@ -261,12 +227,9 @@ const AuthProvidersWithHoC = injectIntl(AuthProviders);
 
 const Data = adopt<DataProps>({
   tenant: <GetAppConfiguration />,
-  azureAdLoginEnabled: <GetFeatureFlag name="azure_ad_login" />,
   facebookLoginEnabled: <GetFeatureFlag name="facebook_login" />,
-  franceconnectLoginEnabled: <GetFeatureFlag name="franceconnect_login" />,
   googleLoginEnabled: <GetFeatureFlag name="google_login" />,
   passwordLoginEnabled: <GetFeatureFlag name="password_login" />,
-  viennaCitizenLoginEnabled: <GetFeatureFlag name="vienna_citizen_login" />,
 });
 
 export default (inputProps: InputProps) => (

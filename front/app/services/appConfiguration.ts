@@ -99,21 +99,6 @@ export interface IAppConfigurationSettings {
     client_id: string;
     enabled: boolean;
   };
-  azure_ad_login?: {
-    allowed: boolean;
-    enabled: boolean;
-    tenant: string;
-    client_id: string;
-    logo_url: string;
-    login_mechanism_name: string;
-  };
-  franceconnect_login?: {
-    allowed: boolean;
-    enabled: boolean;
-    environment: string;
-    identifier: string;
-    secret: string;
-  };
   custom_accessibility_statement_link: {
     allowed: boolean;
     enabled: boolean;
