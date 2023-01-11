@@ -52,6 +52,7 @@ export const HeaderTitle = styled.h1<{
   ${HeadingFontStyle};
   text-align: ${({ align }) => align};
   padding: 0;
+  margin: 0;
   margin-bottom: 10px;
 
   ${media.phone`
