@@ -62,6 +62,7 @@ export const IdeationCTABar = ({ phases, project }: CTABarProps) => {
     CTAButton = enabled ? (
       <Box display="flex" justifyContent="flex-end">
         <IdeaButton
+          id="e2e-ideation-cta-button"
           projectId={project.id}
           participationContextType={isPhaseIdeation ? 'phase' : 'project'}
           phaseId={isPhaseIdeation ? currentPhase.id : ''}
@@ -72,6 +73,7 @@ export const IdeationCTABar = ({ phases, project }: CTABarProps) => {
       </Box>
     ) : (
       <Button
+        id="e2e-ideation-see-ideas-button"
         buttonStyle="secondary"
         onClick={scrollToIdeas}
         fontWeight="500"

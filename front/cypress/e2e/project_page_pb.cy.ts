@@ -30,6 +30,7 @@ describe('Budgeting CTA bar', () => {
   const description = randomString();
   const ideaTitle = randomString();
   const ideaContent = Math.random().toString(36);
+  let ideaId: string;
 
   before(() => {
     cy.setAdminLoginCookie();
@@ -41,19 +42,30 @@ describe('Budgeting CTA bar', () => {
       publicationStatus: 'published',
       participationMethod: 'budgeting',
       maxBudget: 100,
-    }).then((project) => {
-      projectId = project.body.data.id;
-      projectSlug = project.body.data.attributes.slug;
-      cy.apiCreateIdea(
-        projectId,
-        ideaTitle,
-        ideaContent,
-        undefined,
-        undefined,
-        undefined,
-        21
-      );
-    });
+    })
+      .then((project) => {
+        projectId = project.body.data.id;
+        projectSlug = project.body.data.attributes.slug;
+      })
+      .then(() => {
+        return cy.apiCreateIdea(
+          projectId,
+          ideaTitle,
+          ideaContent,
+          undefined,
+          undefined,
+          undefined,
+          21
+        );
+      })
+      .then((idea) => {
+        ideaId = idea.body.data.id;
+      });
+  });
+
+  after(() => {
+    cy.apiRemoveIdea(ideaId);
+    cy.apiRemoveProject(projectId);
   });
 
   it('shows the CTA to the user to allocate their budget when the user has not yet participated', () => {
