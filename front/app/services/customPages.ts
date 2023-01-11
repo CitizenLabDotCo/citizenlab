@@ -33,7 +33,8 @@ export type TCustomPageEnabledSetting = keyof ICustomPageEnabledSettings;
 export type TCustomPageBannerLayout =
   | 'full_width_banner_layout'
   | 'two_column_layout'
-  | 'two_row_layout';
+  | 'two_row_layout'
+  | 'fixed_ratio_layout';
 
 export type TCustomPageCTAType = 'customized_button' | 'no_button';
 

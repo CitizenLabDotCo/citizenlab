@@ -30,12 +30,6 @@ interface Props {
   apiErrors: CLErrors | null;
 }
 
-declare module 'utils/moduleUtils' {
-  export interface OutletsPropertyMap {
-    'app.containers.Admin.settings.customize.headerSectionEnd': Props;
-  }
-}
-
 declare module 'components/UI/Error' {
   interface TFieldNameMap {
     banner_cta_signed_out_text_multiloc: 'banner_cta_signed_out_text_multiloc';
