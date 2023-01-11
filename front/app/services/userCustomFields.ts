@@ -129,12 +129,6 @@ export function userJsonFormSchemasStream(
   });
 }
 
-export function addCustomFieldForUsers(data) {
-  return streams.add<IUserCustomField>(`${API_PATH}/users/custom_fields`, {
-    custom_field: data,
-  });
-}
-
 export function updateCustomFieldForUsers(customFieldId: string, object) {
   return streams.update<IUserCustomField>(
     `${API_PATH}/users/custom_fields/${customFieldId}`,

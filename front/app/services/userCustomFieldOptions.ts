@@ -48,27 +48,6 @@ export function userCustomFieldOptionStream(
   });
 }
 
-export function addUserCustomFieldOption(customFieldId: string, data) {
-  return streams.add<IUserCustomFieldOption>(
-    `${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options`,
-    { custom_field_option: data }
-  );
-}
-
-export function updateUserCustomFieldOption(
-  customFieldId: string,
-  optionId: string,
-  params: {
-    title_multiloc: Multiloc;
-  }
-) {
-  return streams.update<IUserCustomFieldOptions>(
-    `${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options/${optionId}`,
-    optionId,
-    { custom_field_option: params }
-  );
-}
-
 export async function deleteUserCustomFieldOption(
   customFieldId: string,
   optionId: string
