@@ -5,9 +5,7 @@ import ideaCustomFieldsConfiguration from './commercial/idea_custom_fields';
 import granularPermissionsConfiguration from './commercial/granular_permissions';
 import ideaAssignmentConfiguration from './commercial/idea_assignment';
 import moderationConfiguration from './commercial/moderation';
-import flagInappropriateContentConfiguration from './commercial/flag_inappropriate_content';
 import adminProjectTemplatesConfiguration from './commercial/admin_project_templates';
-import similarIdeaConfiguration from './commercial/similar_ideas';
 
 import customMapsConfiguration from './commercial/custom_maps';
 import contentBuilderConfiguration from './commercial/content_builder';
@@ -18,7 +16,6 @@ import impactTrackingConfiguration from './commercial/impact_tracking';
 import widgetsConfiguration from './commercial/widgets';
 import eventsWidgetConfiguration from './commercial/events_widget';
 
-import insightsConfiguration from './commercial/insights';
 import analyticsConfiguration from './commercial/analytics';
 
 import representativenessConfiguration from './commercial/representativeness';
@@ -46,10 +43,6 @@ export default loadModules([
     isEnabled,
   },
   {
-    configuration: flagInappropriateContentConfiguration,
-    isEnabled,
-  },
-  {
     configuration: ideaAssignmentConfiguration,
     isEnabled,
   },
@@ -70,10 +63,6 @@ export default loadModules([
     isEnabled,
   },
   {
-    configuration: similarIdeaConfiguration,
-    isEnabled,
-  },
-  {
     configuration: customMapsConfiguration,
     isEnabled,
   },
@@ -83,10 +72,6 @@ export default loadModules([
   },
   {
     configuration: eventsWidgetConfiguration,
-    isEnabled,
-  },
-  {
-    configuration: insightsConfiguration,
     isEnabled,
   },
   {

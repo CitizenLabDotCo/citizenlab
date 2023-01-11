@@ -67,7 +67,6 @@ import {
   IProjectFolderModerationRightsReceivedNotificationData,
 } from 'services/notifications';
 import styled from 'styled-components';
-import Outlet from 'components/Outlet';
 
 export const DeletedUser = styled.span`
   font-style: italic;
@@ -300,12 +299,7 @@ const Notification = ({ notification }: Props) => {
         return null;
       }
     default:
-      return (
-        <Outlet
-          id="app.components.NotificationMenu.Notification"
-          notification={notification as TNotificationData}
-        />
-      );
+      return null;
   }
 };
 

@@ -102,10 +102,6 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.dashboard.summary.proposals': StatCardProps;
   'app.containers.Admin.dashboard.summary.invitations': StatCardProps;
   'app.containers.Admin.dashboard.summary.events': StatCardProps;
-  'app.containers.IdeasShow.MetaInformation': {
-    ideaId: string;
-    compact?: boolean;
-  };
   'app.containers.Admin.project.edit.permissions.participationRights': {
     project: IProjectData;
     projectId: string;
