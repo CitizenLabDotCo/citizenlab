@@ -675,6 +675,7 @@
   "app.containers.Admin.reporting.containers.ReportBuilderPage.viewReports": "Vizualizați rapoartele",
   "app.containers.Admin.reporting.helmetDescription": "Pagina de raportare a administratorului",
   "app.containers.Admin.reporting.helmetTitle": "Reporting",
+  "app.containers.Admin.reporting.printPrepare": "Preparing to print...",
   "app.containers.Admin.reporting.reportBuilder": "Constructor de rapoarte",
   "app.containers.Admin.reporting.reportHeader": "Antetul raportului",
   "app.containers.AdminPage.DashboardPage.Report.participants": "participants",
