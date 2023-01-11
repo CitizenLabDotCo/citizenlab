@@ -140,6 +140,7 @@ const ReportBuilder = ({ reportId }: Props) => {
           setPreviewEnabled={setPreviewEnabled}
           selectedLocale={selectedLocale}
           draftEditorData={draftData}
+          initialData={initialData}
           reportId={reportId}
           projectId={projectId ?? undefined}
         />

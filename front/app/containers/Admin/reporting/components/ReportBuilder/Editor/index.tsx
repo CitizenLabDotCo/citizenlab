@@ -22,6 +22,7 @@ import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
 import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
 import AgeWidget from '../Widgets/ChartWidgets/AgeWidget';
 import GenderWidget from '../Widgets/ChartWidgets/GenderWidget';
+import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
 
 // templates
 import ProjectTemplate from '../Templates/ProjectTemplate';
@@ -46,6 +47,7 @@ const resolver = {
   VisitorsTrafficSourcesWidget,
   AgeWidget,
   GenderWidget,
+  ActiveUsersWidget,
   ProjectTemplate,
 };
 
