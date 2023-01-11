@@ -675,6 +675,7 @@
   "app.containers.Admin.reporting.containers.ReportBuilderPage.viewReports": "View reports",
   "app.containers.Admin.reporting.helmetDescription": "Admin reporting page",
   "app.containers.Admin.reporting.helmetTitle": "Nalunaarusiorneq",
+  "app.containers.Admin.reporting.printPrepare": "Preparing to print...",
   "app.containers.Admin.reporting.reportBuilder": "Report builder",
   "app.containers.Admin.reporting.reportHeader": "Report header",
   "app.containers.AdminPage.DashboardPage.Report.participants": "peqataasut",
