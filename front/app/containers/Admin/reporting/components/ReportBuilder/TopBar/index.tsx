@@ -10,22 +10,40 @@ import useReport from 'hooks/useReport';
 // components
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
-import LocaleSwitcher from 'components/admin/ContentBuilder/TopBar/LocaleSwitcher';
 import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import { Box, Text, Title } from '@citizenlab/cl2-component-library';
+import Modal from 'components/UI/Modal';
+import Button from 'components/UI/Button';
+import ShareReportButton from '../../ReportBuilderPage/ReportRow/ShareReportButton';
 
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
+// styling
+import { fontSizes, colors, stylingConsts } from 'utils/styleUtils';
+import styled from 'styled-components';
+
 // routing
 import clHistory from 'utils/cl-router/history';
 
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+
 // types
 import { Locale } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
-import ShareReportButton from '../../ReportBuilderPage/ReportRow/ShareReportButton';
+
+const LocaleBadge = styled(Box)`
+  display: inline-block;
+  color: ${colors.textSecondary};
+  background-color: ${colors.grey200};
+  font-weight: bold;
+  font-size: ${fontSizes.xs}px;
+  padding: 0px 6px;
+  margin-left: 15px;
+  border-radius: ${stylingConsts.borderRadius};
+`;
 
 type ContentBuilderTopBarProps = {
   hasPendingState?: boolean;
@@ -36,17 +54,12 @@ type ContentBuilderTopBarProps = {
   draftEditorData?: Record<string, SerializedNodes>;
   reportId: string;
   projectId?: string;
-  onSelectLocale: (args: {
-    locale: Locale;
-    editorData: SerializedNodes;
-  }) => void;
 };
 
 const ContentBuilderTopBar = ({
   previewEnabled,
   setPreviewEnabled,
   selectedLocale,
-  onSelectLocale,
   draftEditorData,
   localesWithError,
   hasPendingState,
@@ -55,15 +68,28 @@ const ContentBuilderTopBar = ({
 }: ContentBuilderTopBarProps) => {
   const [initialized, setInitialized] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showQuitModal, setShowQuitModal] = useState(false);
   const { query } = useEditor();
   const report = useReport(reportId);
 
   const disableSave = localesWithError.length > 0;
 
+  const closeModal = () => {
+    setShowQuitModal(false);
+  };
+  const openModal = () => {
+    setShowQuitModal(true);
+  };
   const goBack = () => {
+    if (draftEditorData === undefined) {
+      doGoBack();
+    } else {
+      openModal();
+    }
+  };
+  const doGoBack = () => {
     clHistory.push('/admin/reporting/report-builder');
   };
-
   const handleSave = async () => {
     if (selectedLocale) {
       try {
@@ -79,6 +105,15 @@ const ContentBuilderTopBar = ({
     }
   };
 
+  useEffect(() => {
+    if (draftEditorData !== undefined) {
+      window.onbeforeunload = () => true;
+    }
+    return () => {
+      window.onbeforeunload = null;
+    };
+  }, [draftEditorData]);
+  
   useEffect(() => {
     if (initialized) return;
 
@@ -112,17 +147,44 @@ const ContentBuilderTopBar = ({
     selectedLocale,
   ]);
 
-  const handleSelectLocale = (locale: Locale) => {
-    const editorData = query.getSerializedNodes();
-    onSelectLocale({ locale, editorData });
-  };
-
   const handleTogglePreview = () => {
     setPreviewEnabled((previewEnabled) => !previewEnabled);
   };
 
   return (
     <Container>
+      <Modal opened={showQuitModal} close={closeModal}>
+        <Box display="flex" flexDirection="column" width="100%" p="20px">
+          <Box mb="40px">
+            <Title variant="h3" color="primary">
+              <FormattedMessage {...messages.quitReportConfirmationQuestion} />
+            </Title>
+            <Text color="primary" fontSize="l">
+              <FormattedMessage {...messages.quitReportInfo} />
+            </Text>
+          </Box>
+          <Box
+            display="flex"
+            flexDirection="row"
+            width="100%"
+            alignItems="center"
+          >
+            <Button
+              icon="delete"
+              data-cy="e2e-confirm-delete-survey-results"
+              buttonStyle="delete"
+              width="auto"
+              mr="20px"
+              onClick={doGoBack}
+            >
+              <FormattedMessage {...messages.confirmQuitButtonText} />
+            </Button>
+            <Button buttonStyle="secondary" width="auto" onClick={closeModal}>
+              <FormattedMessage {...messages.cancelQuitButtonText} />
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
       <GoBackButton onClick={goBack} />
       <Box display="flex" p="15px" flexGrow={1} alignItems="center">
         <Box flexGrow={2}>
@@ -131,13 +193,9 @@ const ContentBuilderTopBar = ({
           </Text>
           <Title variant="h4" as="h1" color="primary">
             {isNilOrError(report) ? <></> : report.attributes.name}
+            <LocaleBadge>{selectedLocale?.toUpperCase()}</LocaleBadge>
           </Title>
         </Box>
-        <LocaleSwitcher
-          selectedLocale={selectedLocale}
-          localesWithError={localesWithError}
-          onSelectLocale={handleSelectLocale}
-        />
         <Box mx="24px">
           <PreviewToggle
             checked={previewEnabled}
