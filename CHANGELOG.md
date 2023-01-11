@@ -1,9 +1,16 @@
 # Changelog
 
+## 2023-01-11
+
+### Fixed
+
+- [CL-2555] Fixed broken two-column layout
+
 ## 2023-01-10
+
 ### Added
 
-- [CL-1849] Add new banner type to home and custom pages: fixed ration
+- [CL-1849] Add new banner type to home and custom pages: fixed ratio
 
 ### Fixed
 
