@@ -148,7 +148,7 @@ class App extends PureComponent<Props, State> {
   subscriptions: Subscription[];
   unlisten: () => void;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       previousPathname: null,

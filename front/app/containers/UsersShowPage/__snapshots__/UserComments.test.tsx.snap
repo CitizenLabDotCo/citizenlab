@@ -40,10 +40,10 @@ exports[`<UserComments /> renders correctly with actual comments 1`] = `
   </a11y__ScreenReaderOnly>
   <WrappedPostComments
     comments={
-      Array [
-        Object {
-          "attributes": Object {
-            "body_multiloc": Object {
+      [
+        {
+          "attributes": {
+            "body_multiloc": {
               "en": "Just a comment",
             },
             "children_count": 0,
@@ -54,23 +54,23 @@ exports[`<UserComments /> renders correctly with actual comments 1`] = `
             "upvotes_count": 0,
           },
           "id": "commentId",
-          "relationships": Object {
-            "author": Object {
-              "data": Object {
+          "relationships": {
+            "author": {
+              "data": {
                 "id": "authorId",
                 "type": "user",
               },
             },
-            "parent": Object {
+            "parent": {
               "data": null,
             },
-            "post": Object {
-              "data": Object {
+            "post": {
+              "data": {
                 "id": "idea1",
                 "type": "idea",
               },
             },
-            "user_vote": Object {
+            "user_vote": {
               "data": null,
             },
           },
@@ -84,10 +84,10 @@ exports[`<UserComments /> renders correctly with actual comments 1`] = `
   />
   <WrappedPostComments
     comments={
-      Array [
-        Object {
-          "attributes": Object {
-            "body_multiloc": Object {
+      [
+        {
+          "attributes": {
+            "body_multiloc": {
               "en": "Just a comment",
             },
             "children_count": 0,
@@ -98,31 +98,31 @@ exports[`<UserComments /> renders correctly with actual comments 1`] = `
             "upvotes_count": 0,
           },
           "id": "commentId",
-          "relationships": Object {
-            "author": Object {
-              "data": Object {
+          "relationships": {
+            "author": {
+              "data": {
                 "id": "authorId",
                 "type": "user",
               },
             },
-            "parent": Object {
+            "parent": {
               "data": null,
             },
-            "post": Object {
-              "data": Object {
+            "post": {
+              "data": {
                 "id": "idea2",
                 "type": "idea",
               },
             },
-            "user_vote": Object {
+            "user_vote": {
               "data": null,
             },
           },
           "type": "comment",
         },
-        Object {
-          "attributes": Object {
-            "body_multiloc": Object {
+        {
+          "attributes": {
+            "body_multiloc": {
               "en": "Just a comment",
             },
             "children_count": 0,
@@ -133,23 +133,23 @@ exports[`<UserComments /> renders correctly with actual comments 1`] = `
             "upvotes_count": 0,
           },
           "id": "commentId",
-          "relationships": Object {
-            "author": Object {
-              "data": Object {
+          "relationships": {
+            "author": {
+              "data": {
                 "id": "authorId",
                 "type": "user",
               },
             },
-            "parent": Object {
+            "parent": {
               "data": null,
             },
-            "post": Object {
-              "data": Object {
+            "post": {
+              "data": {
                 "id": "idea2",
                 "type": "idea",
               },
             },
-            "user_vote": Object {
+            "user_vote": {
               "data": null,
             },
           },
@@ -177,10 +177,10 @@ exports[`<UserComments /> renders correctly with actual comments and load more b
   </a11y__ScreenReaderOnly>
   <WrappedPostComments
     comments={
-      Array [
-        Object {
-          "attributes": Object {
-            "body_multiloc": Object {
+      [
+        {
+          "attributes": {
+            "body_multiloc": {
               "en": "Just a comment",
             },
             "children_count": 0,
@@ -191,23 +191,23 @@ exports[`<UserComments /> renders correctly with actual comments and load more b
             "upvotes_count": 0,
           },
           "id": "commentId",
-          "relationships": Object {
-            "author": Object {
-              "data": Object {
+          "relationships": {
+            "author": {
+              "data": {
                 "id": "authorId",
                 "type": "user",
               },
             },
-            "parent": Object {
+            "parent": {
               "data": null,
             },
-            "post": Object {
-              "data": Object {
+            "post": {
+              "data": {
                 "id": "idea1",
                 "type": "idea",
               },
             },
-            "user_vote": Object {
+            "user_vote": {
               "data": null,
             },
           },

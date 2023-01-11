@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import { Popup } from 'semantic-ui-react';
 import { IIdeaStatusData } from 'services/ideaStatuses';
 import T from 'components/T';
@@ -26,11 +26,11 @@ type Props = {
 };
 
 class IdeasStatusSelector extends React.PureComponent<Props> {
-  isActive = (statusId) => {
+  isActive = (statusId: string) => {
     return this.props.selectedStatus === statusId;
   };
 
-  handleStatusClick = (statusId) => (event) => {
+  handleStatusClick = (statusId: string) => (event: MouseEvent) => {
     event.stopPropagation();
     this.props.onUpdateStatus(statusId);
   };

@@ -77,6 +77,58 @@ describe('Admin: update Hero Banner content', () => {
     );
   });
 
+  it('uploads, crops, and displays banner image', () => {
+    cy.intercept('PATCH', '**/home_page').as('saveHomePage');
+    cy.setConsentAndAdminLoginCookies();
+
+    // Test two-row-layout
+    cy.visit('admin/pages-menu/homepage/homepage-banner/');
+    cy.get('[data-cy="e2e-two-row-layout-option"]').click();
+    cy.get('[data-cy="e2e-remove-image-button"]').click();
+    cy.get('[data-cy="e2e-homepage-banner-image-dropzone"] input').attachFile(
+      'testimage.png'
+    );
+    cy.get('.e2e-submit-wrapper-button').click();
+    // Image is displayed when signed-in
+    cy.visit('/');
+    cy.get('[data-cy="e2e-fixed-ratio-header-image-parent"]'); // without this line, the next one always passes
+    cy.get('[data-cy="e2e-fixed-ratio-header-image"]').should('exist');
+
+    // Test fixed-ratio-layout
+    cy.visit('admin/pages-menu/homepage/homepage-banner/');
+    cy.get('[data-cy="e2e-fixed-ratio-layout-option"]').click();
+    cy.get('[data-cy="e2e-remove-image-button"]').click();
+    cy.get('[data-cy="e2e-homepage-banner-image-dropzone"] input').attachFile(
+      'testimage.png'
+    );
+    cy.get('[data-cy="e2e-image-cropper"]'); // wait until image cropper is loaded and visible (image is cropped). The test is flaky without this line.
+    cy.get('.e2e-submit-wrapper-button').click();
+    cy.wait('@saveHomePage').then((interception) => {
+      const img = new Image();
+      img.src = interception.request.body.home_page.header_bg;
+      img.decode().then(() => {
+        // test that cropping is really performed on the FE
+        expect(img.width / img.height).to.eq(3);
+      });
+    });
+    cy.get('.e2e-submit-wrapper-button').contains('Success');
+    // Image is NOT displayed when signed-in
+    cy.visit('/');
+    cy.get('[data-cy="e2e-fixed-ratio-header-image-parent"]'); // without this line, the next one always passes
+    cy.get('[data-cy="e2e-fixed-ratio-header-image"]').should('not.exist');
+    // Image is displayed when signed-out
+    cy.clearCookies();
+    cy.reload();
+    cy.get('[data-cy="e2e-fixed-ratio-header-image"]')
+      .should('exist')
+      .then((element) => {
+        const ratio =
+          Math.round((element[0].clientWidth / element[0].clientHeight) * 100) /
+          100;
+        expect(ratio).to.eq(3);
+      });
+  });
+
   it('updates and persists hero banner settings correctly', () => {
     cy.intercept('PATCH', '**/home_page').as('saveHomePage');
     cy.intercept('GET', '**/home_page').as('getHomePage');
@@ -93,8 +145,8 @@ describe('Admin: update Hero Banner content', () => {
     // click hero banner edit button
     cy.get('[data-cy="e2e-admin-edit-button-homepage_banner"]').first().click();
 
-    // click two-column banner layout
-    cy.get('[data-cy="e2e-two-column-layout-option"]').click();
+    // click two-row banner layout
+    cy.get('[data-cy="e2e-two-row-layout-option"]').click();
 
     // fill in header and subheader
     cy.get('[data-cy="e2e-signed-out-header-section"]')
@@ -154,7 +206,7 @@ describe('Admin: update Hero Banner content', () => {
 
     // check that the data we entered earlier is persisted in the form
     // layout chooser
-    cy.get('#banner-two-column-layout').should('have.attr', 'checked');
+    cy.get('#banner-two-row-layout').should('have.attr', 'checked');
 
     // signed-out header and subheader
     cy.get('[data-cy="e2e-signed-out-header-section"]')
