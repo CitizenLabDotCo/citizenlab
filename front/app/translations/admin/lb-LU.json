@@ -675,6 +675,7 @@
   "app.containers.Admin.reporting.containers.ReportBuilderPage.viewReports": "Rapporten ukucken",
   "app.containers.Admin.reporting.helmetDescription": "Verwalterrapportssäit",
   "app.containers.Admin.reporting.helmetTitle": "Reporting",
+  "app.containers.Admin.reporting.printPrepare": "Preparing to print...",
   "app.containers.Admin.reporting.reportBuilder": "Report Builder",
   "app.containers.Admin.reporting.reportHeader": "Header vum Rapport",
   "app.containers.AdminPage.DashboardPage.Report.participants": "participants",
