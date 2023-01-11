@@ -89,7 +89,7 @@ class CommentBody extends PureComponent<Props, State> {
   subscriptions: Subscription[] = [];
   textAreaRef: HTMLTextAreaElement;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       commentContent: '',

@@ -102,6 +102,7 @@ const IdeaShowPageTopBar = ({
         </Left>
         <Right>
           <VoteControl
+            size="1"
             styleType="border"
             ideaId={ideaId}
             disabledVoteClick={onDisabledVoteClick}

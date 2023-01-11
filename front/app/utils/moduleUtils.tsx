@@ -1,11 +1,6 @@
 import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 import { Moment } from 'moment';
-import React, {
-  FunctionComponent,
-  KeyboardEvent,
-  MouseEvent,
-  ReactElement,
-} from 'react';
+import React, { FunctionComponent, ReactElement } from 'react';
 
 import PageLoading from 'components/UI/PageLoading';
 import { OutletRenderProps } from 'components/Outlet';
@@ -19,20 +14,16 @@ import { ManagerType } from 'components/admin/PostManager';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/header/IdeaHeaderRow';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/Row/IdeaRow';
 import { IResolution } from 'components/admin/ResolutionControl';
-import { AuthProvider } from 'components/AuthProviders';
 import { Point } from 'components/UI/LeafletMap/typings';
 import { TVerificationStep } from 'events/verificationModal';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import { NavItem } from 'containers/Admin/sideBar';
-import { BannerButtonStyle } from 'components/LandingPages/citizen/BannerButton';
 import { LatLngTuple } from 'leaflet';
-import { CustomizedButtonConfig } from 'services/appConfiguration';
+
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
-import { THomepageBannerLayout } from 'services/homepageSettings';
 import { TNotificationData } from 'services/notifications';
 import { IPhaseData } from 'services/phases';
 import { TVerificationMethod } from 'services/verificationMethods';
-import { TSignUpInFlow } from 'events/openSignUpInModal';
 import {
   CellConfiguration,
   InsertConfigurationOptions,
@@ -169,10 +160,6 @@ export interface OutletsPropertyMap {
     projectId?: string | null;
     className?: string;
   };
-  'app.components.VerificationModal.buttons': {
-    onClick: (method: TVerificationMethod) => void;
-    verificationMethods: TVerificationMethod[];
-  };
   'app.components.VerificationModal.methodSteps': {
     method: TVerificationMethod | null;
     onCancel: () => void;
@@ -205,21 +192,6 @@ export interface OutletsPropertyMap {
     notification: TNotificationData;
   };
   'app.containers.HomePage.EventsWidget': Record<string, any>;
-  'app.containers.HomePage.SignedOutHeader.index': {
-    homepageBannerLayout: THomepageBannerLayout;
-  };
-  'app.containers.HomePage.SignedOutHeader.CTA': {
-    buttonStyle: BannerButtonStyle;
-    signUpIn: (event: MouseEvent | KeyboardEvent) => void;
-  };
-  'app.containers.HomePage.SignedInHeader.CTA': {
-    customizedButtonConfig?: CustomizedButtonConfig;
-    buttonStyle: BannerButtonStyle;
-  };
-  'app.components.SignUpIn.AuthProviders.ContainerStart': {
-    flow: TSignUpInFlow;
-    onContinue: (authProvider: AuthProvider) => void;
-  };
 }
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];

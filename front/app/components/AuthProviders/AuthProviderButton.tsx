@@ -158,18 +158,15 @@ const AuthProviderButton = memo<Props>(
     );
 
     const handleContinueClicked = useCallback(() => {
-      if (!tacAccepted && authProvider !== 'id_vienna_saml') {
+      if (!tacAccepted) {
         setTacError(true);
       }
 
-      if (!privacyAccepted && authProvider !== 'id_vienna_saml') {
+      if (!privacyAccepted) {
         setPrivacyError(true);
       }
 
-      if (
-        (tacAccepted && privacyAccepted) ||
-        authProvider === 'id_vienna_saml'
-      ) {
+      if (tacAccepted && privacyAccepted) {
         trackEventByName(tracks.signUpWithSSOClicked, { authProvider });
         onContinue(authProvider);
       }
@@ -188,8 +185,7 @@ const AuthProviderButton = memo<Props>(
       []
     );
 
-    const isContinueEnabled =
-      authProvider === 'id_vienna_saml' || (tacAccepted && privacyAccepted);
+    const isContinueEnabled = tacAccepted && privacyAccepted;
 
     return (
       <Container className={className} id={id}>

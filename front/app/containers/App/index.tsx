@@ -148,7 +148,7 @@ class App extends PureComponent<Props, State> {
   subscriptions: Subscription[];
   unlisten: () => void;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       previousPathname: null,
@@ -398,8 +398,12 @@ class App extends PureComponent<Props, State> {
   };
 
   render() {
-    const { location, children, windowSize, fullscreenModalEnabled } =
-      this.props;
+    const {
+      location,
+      children,
+      windowSize,
+      fullscreenModalEnabled = false,
+    } = this.props;
     const {
       previousPathname,
       appConfiguration,
@@ -532,8 +536,6 @@ class App extends PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   windowSize: <GetWindowSize />,
   redirectsEnabled: <GetFeatureFlag name="redirects" />,
-  // CL-1101, FranceConnect platforms have full screen login experience
-  fullscreenModalEnabled: <GetFeatureFlag name="franceconnect_login" />,
 });
 
 const AppWithHoC = withRouter(App);

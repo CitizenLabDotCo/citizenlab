@@ -14,7 +14,7 @@ export default function useAdminPublication(adminPublicationId: string | null) {
   useEffect(() => {
     setAdminPublication(undefined);
 
-    let observable: Observable<{ data: IAdminPublicationData } | null> =
+    let observable: Observable<{ data: IAdminPublicationData } | null | Error> =
       of(null);
 
     if (adminPublicationId) {
