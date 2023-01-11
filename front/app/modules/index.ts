@@ -16,8 +16,6 @@ import impactTrackingConfiguration from './commercial/impact_tracking';
 import widgetsConfiguration from './commercial/widgets';
 import eventsWidgetConfiguration from './commercial/events_widget';
 
-import analyticsConfiguration from './commercial/analytics';
-
 import representativenessConfiguration from './commercial/representativeness';
 
 // eslint-disable-next-line no-var
@@ -74,10 +72,7 @@ export default loadModules([
     configuration: eventsWidgetConfiguration,
     isEnabled,
   },
-  {
-    configuration: analyticsConfiguration,
-    isEnabled,
-  },
+
   {
     configuration: representativenessConfiguration,
     isEnabled,

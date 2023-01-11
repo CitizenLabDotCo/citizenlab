@@ -1,5 +1,4 @@
 import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
-import { Moment } from 'moment';
 import React, { FunctionComponent, ReactElement } from 'react';
 
 import PageLoading from 'components/UI/PageLoading';
@@ -13,7 +12,6 @@ import { IProjectData } from 'services/projects';
 import { ManagerType } from 'components/admin/PostManager';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/header/IdeaHeaderRow';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/Row/IdeaRow';
-import { IResolution } from 'components/admin/ResolutionControl';
 import { Point } from 'components/UI/LeafletMap/typings';
 import { TVerificationStep } from 'events/verificationModal';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
@@ -32,7 +30,6 @@ import {
   Multiloc,
 } from 'typings';
 import { IntlFormatters } from 'react-intl';
-import { StatCardProps } from '../modules/commercial/analytics/admin/hooks/useStatCard/typings';
 
 export type ITabsOutlet = {
   formatMessage: IntlFormatters['formatMessage'];
@@ -86,22 +83,7 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.users.UsersHeader.icon': {
     type: GroupCreationModal;
   };
-  'app.containers.Admin.dashboard.summary.inputStatus': {
-    projectId: string | undefined;
-    startAtMoment: Moment | null | undefined;
-    endAtMoment: Moment | null;
-    resolution: IResolution;
-  };
-  'app.containers.Admin.dashboard.summary.emailDeliveries': {
-    projectId: string | undefined;
-    startAtMoment: Moment | null | undefined;
-    endAtMoment: Moment | null;
-    resolution: IResolution;
-  };
-  'app.containers.Admin.dashboard.summary.projectStatus': StatCardProps;
-  'app.containers.Admin.dashboard.summary.proposals': StatCardProps;
-  'app.containers.Admin.dashboard.summary.invitations': StatCardProps;
-  'app.containers.Admin.dashboard.summary.events': StatCardProps;
+
   'app.containers.Admin.project.edit.permissions.participationRights': {
     project: IProjectData;
     projectId: string;
