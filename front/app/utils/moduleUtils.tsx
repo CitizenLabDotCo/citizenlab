@@ -1,11 +1,6 @@
 import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 import { Moment } from 'moment';
-import React, {
-  FunctionComponent,
-  KeyboardEvent,
-  MouseEvent,
-  ReactElement,
-} from 'react';
+import React, { FunctionComponent, ReactElement } from 'react';
 
 import PageLoading from 'components/UI/PageLoading';
 import { OutletRenderProps } from 'components/Outlet';
@@ -19,25 +14,17 @@ import { ManagerType } from 'components/admin/PostManager';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/header/IdeaHeaderRow';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/Row/IdeaRow';
 import { IResolution } from 'components/admin/ResolutionControl';
-import { AuthProvider } from 'components/AuthProviders';
 import { Point } from 'components/UI/LeafletMap/typings';
 import { TVerificationStep } from 'events/verificationModal';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import { NavItem } from 'containers/Admin/sideBar';
-import { BannerButtonStyle } from 'components/LandingPages/citizen/BannerButton';
 import { LatLngTuple } from 'leaflet';
-import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
-import { GetIdeaChildProps } from 'resources/GetIdea';
-import { GetInitiativeChildProps } from 'resources/GetInitiative';
-import { GetLocaleChildProps } from 'resources/GetLocale';
-import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
-import { CustomizedButtonConfig } from 'services/appConfiguration';
-import { ICommentData } from 'services/comments';
+
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
+import { TNotificationData } from 'services/notifications';
 import { THomepageBannerLayout } from 'services/homepageSettings';
 import { IPhaseData } from 'services/phases';
 import { TVerificationMethod } from 'services/verificationMethods';
-import { TSignUpInFlow } from 'events/openSignUpInModal';
 import {
   CellConfiguration,
   InsertConfigurationOptions,
@@ -170,10 +157,6 @@ export interface OutletsPropertyMap {
     projectId?: string | null;
     className?: string;
   };
-  'app.components.VerificationModal.buttons': {
-    onClick: (method: TVerificationMethod) => void;
-    verificationMethods: TVerificationMethod[];
-  };
   'app.components.VerificationModal.methodSteps': {
     method: TVerificationMethod | null;
     onCancel: () => void;
@@ -181,6 +164,29 @@ export interface OutletsPropertyMap {
     showHeader?: boolean;
     inModal: boolean;
     activeStep: TVerificationStep;
+  };
+
+  'app.containers.Admin.settings.general.form': {
+    onSettingChange: (settingName: string, settingValue: any) => void;
+  };
+  'app.modules.commercial.moderation.admin.containers.ModerationRow.content': {
+    inappropriateContentFlagId: string | undefined;
+  };
+  'app.modules.commercial.moderation.admin.components.EmptyMessage': {
+    isWarningsTabSelected: boolean;
+  };
+  'app.modules.commercial.moderation.admin.containers.actionbar.buttons': {
+    selectedActiveFlagsCount: number;
+    processing: boolean;
+    onRemoveFlags: () => void;
+    isWarningsTabSelected: boolean;
+  };
+  'app.modules.commercial.moderation.admin.containers.tabs': {
+    onData: (data: InsertConfigurationOptions<ITabItem>) => void;
+    activeFlagsCount: number;
+  };
+  'app.components.NotificationMenu.Notification': {
+    notification: TNotificationData;
   };
   'app.components.PostShowComponents.ActionBar.right': {
     translateButtonClicked: boolean;
@@ -229,21 +235,6 @@ export interface OutletsPropertyMap {
     align: 'left' | 'center';
   };
   'app.containers.HomePage.EventsWidget': Record<string, any>;
-  'app.containers.HomePage.SignedOutHeader.index': {
-    homepageBannerLayout: THomepageBannerLayout;
-  };
-  'app.containers.HomePage.SignedOutHeader.CTA': {
-    buttonStyle: BannerButtonStyle;
-    signUpIn: (event: MouseEvent | KeyboardEvent) => void;
-  };
-  'app.containers.HomePage.SignedInHeader.CTA': {
-    customizedButtonConfig?: CustomizedButtonConfig;
-    buttonStyle: BannerButtonStyle;
-  };
-  'app.components.SignUpIn.AuthProviders.ContainerStart': {
-    flow: TSignUpInFlow;
-    onContinue: (authProvider: AuthProvider) => void;
-  };
 }
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];

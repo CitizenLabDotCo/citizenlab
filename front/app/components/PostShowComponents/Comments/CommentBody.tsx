@@ -1,7 +1,6 @@
 // Libraries
 import React, { PureComponent, FormEvent } from 'react';
 import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
 import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
@@ -15,8 +14,6 @@ import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
-
-import { commentTranslateButtonClicked$ } from './events';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
@@ -35,8 +32,6 @@ import styled, { withTheme } from 'styled-components';
 // Typings
 import { CLErrorsJSON, CLErrors } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
-
-import Outlet from 'components/Outlet';
 
 const Container = styled.div``;
 
@@ -85,7 +80,6 @@ interface Props extends InputProps, DataProps {
 export interface State {
   commentContent: string;
   editableCommentContent: string;
-  translateButtonClicked: boolean;
   processing: boolean;
   apiErrors: CLErrors | null;
   textAreaRef?: HTMLTextAreaElement | null;
@@ -95,12 +89,11 @@ class CommentBody extends PureComponent<Props, State> {
   subscriptions: Subscription[] = [];
   textAreaRef: HTMLTextAreaElement;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       commentContent: '',
       editableCommentContent: '',
-      translateButtonClicked: false,
       processing: false,
       apiErrors: null,
       textAreaRef: null,
@@ -110,20 +103,6 @@ class CommentBody extends PureComponent<Props, State> {
   componentDidMount() {
     this.setCommentContent();
     this.setEditableCommentContent();
-
-    this.subscriptions = [
-      commentTranslateButtonClicked$
-        .pipe(
-          filter(
-            ({ eventValue: commentId }) => commentId === this.props.commentId
-          )
-        )
-        .subscribe(() => {
-          this.setState(({ translateButtonClicked }) => ({
-            translateButtonClicked: !translateButtonClicked,
-          }));
-        }),
-    ];
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -247,16 +226,10 @@ class CommentBody extends PureComponent<Props, State> {
   };
 
   render() {
-    const { editing, commentType, locale, commentId, className, theme } =
-      this.props;
+    const { editing, commentType, locale, className, theme } = this.props;
 
-    const {
-      commentContent,
-      editableCommentContent,
-      translateButtonClicked,
-      processing,
-      apiErrors,
-    } = this.state;
+    const { commentContent, editableCommentContent, processing, apiErrors } =
+      this.state;
 
     let content: JSX.Element | null = null;
 
@@ -269,23 +242,9 @@ class CommentBody extends PureComponent<Props, State> {
               textColor={theme.colors.tenantText}
             >
               <div aria-live="polite">
-                <Outlet
-                  id="app.components.PostShowComponents.CommentBody.translation"
-                  translateButtonClicked={translateButtonClicked}
-                  commentContent={commentContent}
-                  locale={locale}
-                  commentId={commentId}
-                >
-                  {(outletComponents) =>
-                    outletComponents.length > 0 ? (
-                      <>{outletComponents}</>
-                    ) : (
-                      <CommentText
-                        dangerouslySetInnerHTML={{ __html: commentContent }}
-                      />
-                    )
-                  }
-                </Outlet>
+                <CommentText
+                  dangerouslySetInnerHTML={{ __html: commentContent }}
+                />
               </div>
             </QuillEditedContent>
           </CommentWrapper>

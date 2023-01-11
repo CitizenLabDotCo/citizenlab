@@ -37,10 +37,6 @@ export const getAppConfigurationData = (
         reply_to_email: 'not-support@citizenlab.co',
         authentication_token_lifetime_in_days: 30,
       },
-      customizable_homepage_banner: {
-        allowed: true,
-        enabled: true,
-      },
       advanced_custom_pages: {
         allowed: true,
         enabled: true,
@@ -52,12 +48,6 @@ export const getAppConfigurationData = (
       custom_accessibility_statement_link: {
         allowed: false,
         enabled: false,
-      },
-      matomo: {
-        allowed: true,
-        enabled: true,
-        tenant_site_id: '13',
-        product_site_id: '14',
       },
     },
     logo: {

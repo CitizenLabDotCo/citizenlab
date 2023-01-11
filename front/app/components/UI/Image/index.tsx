@@ -118,7 +118,7 @@ export default class Image extends PureComponent<Props, State> {
       />
     );
 
-    if (cover && !(window['CSS'] && CSS.supports('object-fit: cover'))) {
+    if (cover) {
       image = <Fallback src={src} className={className} />;
     }
 

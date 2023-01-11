@@ -1,36 +1,35 @@
 import React from 'react';
 import FullWidthBannerLayout from './FullWidthBannerLayout';
 import { isNilOrError } from 'utils/helperUtils';
-import Outlet from 'components/Outlet';
 import useHomepageSettings from 'hooks/useHomepageSettings';
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import TwoColumnLayout from './TwoColumnLayout';
+import TwoRowLayout from './TwoRowLayout';
+import FixedRatioLayout from './FixedRatioLayout';
 
 const SignedOutHeaderIndex = () => {
   const homepageSettings = useHomepageSettings();
-  // Flag should not be here, but inside module (not sure now)
-  const customizableHomepageBannerEnabled = useFeatureFlag({
-    name: 'customizable_homepage_banner',
-  });
 
   if (!isNilOrError(homepageSettings)) {
     const layoutSetting = homepageSettings.attributes.banner_layout;
-    // Mistake, we should rather use a mechanism similar to
-    // navbarModuleActive. The core should not know about
-    // a feature flag of a modularized feature.
-    const homepageBannerLayout =
-      customizableHomepageBannerEnabled && layoutSetting
-        ? layoutSetting
-        : 'full_width_banner_layout';
+
+    const homepageBannerLayout = layoutSetting
+      ? layoutSetting
+      : 'full_width_banner_layout';
 
     return (
       <>
         {homepageBannerLayout === 'full_width_banner_layout' && (
-          <FullWidthBannerLayout />
+          <FullWidthBannerLayout homepageSettings={homepageSettings} />
         )}
-        <Outlet
-          id="app.containers.HomePage.SignedOutHeader.index"
-          homepageBannerLayout={homepageBannerLayout}
-        />
+        {homepageBannerLayout === 'two_column_layout' && (
+          <TwoColumnLayout homepageSettings={homepageSettings} />
+        )}
+        {homepageBannerLayout === 'two_row_layout' && (
+          <TwoRowLayout homepageSettings={homepageSettings} />
+        )}
+        {homepageBannerLayout === 'fixed_ratio_layout' && (
+          <FixedRatioLayout homepageSettings={homepageSettings} />
+        )}
       </>
     );
   }

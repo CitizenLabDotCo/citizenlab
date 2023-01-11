@@ -46,10 +46,6 @@ const ConsentText = styled.div`
   }
 `;
 
-const BoldConsentText = styled(ConsentText)`
-  font-weight: bold;
-`;
-
 interface Props {
   termsAndConditionsAccepted: boolean;
   privacyPolicyAccepted: boolean;
@@ -71,7 +67,6 @@ const Consent = memo(
     privacyPolicyAccepted,
     onTacAcceptedChange,
     onPrivacyAcceptedChange,
-    authProvider,
   }: Props & WrappedComponentProps) => {
     const handleTermsAndConditionsOnChange = () => {
       onTacAcceptedChange(!termsAndConditionsAccepted);
@@ -81,108 +76,71 @@ const Consent = memo(
       onPrivacyAcceptedChange(!privacyPolicyAccepted);
     };
 
-    if (authProvider === 'id_vienna_saml') {
-      return (
-        <Container className={className}>
-          <ConsentText>
-            <FormattedMessage
-              {...messages.viennaConsentHeader}
-              values={{ br: <br /> }}
-            />
-            <ul>
-              <li>{formatMessage(messages.viennaConsentEmail)}</li>
-              <li>{formatMessage(messages.viennaConsentFirstName)}</li>
-              <li>{formatMessage(messages.viennaConsentLastName)}</li>
-              <li>{formatMessage(messages.viennaConsentUserName)}</li>
-            </ul>
-            <FormattedMessage {...messages.viennaConsentFooter} />
-          </ConsentText>
+    return (
+      <Container className={className}>
+        <Box id="e2e-terms-and-conditions-container">
+          <Checkbox
+            className="e2e-terms-and-conditions"
+            size="20px"
+            checked={termsAndConditionsAccepted}
+            onChange={handleTermsAndConditionsOnChange}
+            label={
+              <ConsentText>
+                <FormattedMessage
+                  {...messages.iHaveReadAndAgreeTo}
+                  values={{
+                    link: (
+                      <Link target="_blank" to="/pages/terms-and-conditions">
+                        <FormattedMessage {...messages.theTermsAndConditions} />
+                      </Link>
+                    ),
+                  }}
+                />
+              </ConsentText>
+            }
+          />
+          <Error
+            text={
+              termsAndConditionsError ? formatMessage(messages.tacError) : null
+            }
+          />
+        </Box>
 
-          <BoldConsentText>
-            <FormattedMessage
-              {...messages.iHaveReadAndAgreeToVienna}
-              values={{
-                link: (
-                  <Link target="_blank" to="/pages/privacy-policy">
-                    <FormattedMessage {...messages.viennaDataProtection} />
-                  </Link>
-                ),
-              }}
-            />
-          </BoldConsentText>
-        </Container>
-      );
-    } else {
-      return (
-        <Container className={className}>
-          <Box id="e2e-terms-and-conditions-container">
-            <Checkbox
-              className="e2e-terms-and-conditions"
-              size="20px"
-              checked={termsAndConditionsAccepted}
-              onChange={handleTermsAndConditionsOnChange}
-              label={
-                <ConsentText>
-                  <FormattedMessage
-                    {...messages.iHaveReadAndAgreeTo}
-                    values={{
-                      link: (
-                        <Link target="_blank" to="/pages/terms-and-conditions">
-                          <FormattedMessage
-                            {...messages.theTermsAndConditions}
-                          />
-                        </Link>
-                      ),
-                    }}
-                  />
-                </ConsentText>
-              }
-            />
-            <Error
-              text={
-                termsAndConditionsError
-                  ? formatMessage(messages.tacError)
-                  : null
-              }
-            />
-          </Box>
+        <Box id="e2e-privacy-container">
+          <Checkbox
+            className="e2e-privacy-checkbox"
+            size="20px"
+            checked={privacyPolicyAccepted}
+            onChange={handlePrivacyPolicyOnChange}
+            label={
+              <ConsentText>
+                <FormattedMessage
+                  {...messages.iHaveReadAndAgreeTo}
+                  values={{
+                    link: (
+                      <Link target="_blank" to="/pages/privacy-policy">
+                        <FormattedMessage {...messages.thePrivacyPolicy} />
+                      </Link>
+                    ),
+                  }}
+                />
+              </ConsentText>
+            }
+          />
+          <Error
+            text={
+              privacyPolicyError
+                ? formatMessage(messages.privacyPolicyNotAcceptedError)
+                : null
+            }
+          />
+        </Box>
 
-          <Box id="e2e-privacy-container">
-            <Checkbox
-              className="e2e-privacy-checkbox"
-              size="20px"
-              checked={privacyPolicyAccepted}
-              onChange={handlePrivacyPolicyOnChange}
-              label={
-                <ConsentText>
-                  <FormattedMessage
-                    {...messages.iHaveReadAndAgreeTo}
-                    values={{
-                      link: (
-                        <Link target="_blank" to="/pages/privacy-policy">
-                          <FormattedMessage {...messages.thePrivacyPolicy} />
-                        </Link>
-                      ),
-                    }}
-                  />
-                </ConsentText>
-              }
-            />
-            <Error
-              text={
-                privacyPolicyError
-                  ? formatMessage(messages.privacyPolicyNotAcceptedError)
-                  : null
-              }
-            />
-          </Box>
-
-          <ConsentText>
-            <FormattedMessage {...messages.emailConsent} />
-          </ConsentText>
-        </Container>
-      );
-    }
+        <ConsentText>
+          <FormattedMessage {...messages.emailConsent} />
+        </ConsentText>
+      </Container>
+    );
   }
 );
 

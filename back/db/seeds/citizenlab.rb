@@ -23,10 +23,6 @@ AppConfiguration.create!(
       currency: ENV.fetch('CL_SETTINGS_CORE_CURRENCY', 'EUR'),
       reply_to_email: ENV.fetch('DEFAULT_FROM_EMAIL')
     },
-    customizable_homepage_banner: {
-      allowed: true,
-      enabled: true
-    },
     password_login: {
       enabled: true,
       allowed: true,
@@ -162,10 +158,6 @@ AppConfiguration.create!(
       allowed: true
     },
     private_projects: {
-      enabled: true,
-      allowed: true
-    },
-    project_visibility: {
       enabled: true,
       allowed: true
     },

@@ -1,7 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { ImageSizes, Multiloc, Locale } from 'typings';
-import { TCategory } from 'components/ConsentManager/destinations';
 import { THomepageSettingKeyMap } from 'services/homepageSettings';
 export const currentAppConfigurationEndpoint = `${API_PATH}/app_configuration`;
 
@@ -50,9 +49,6 @@ export type IAppConfigurationSettingsCore = {
   color_menu_bg?: string | null;
   currency: TCurrency;
   reply_to_email: string;
-  custom_onboarding_message?: Multiloc | null;
-  custom_onboarding_button?: Multiloc | null;
-  custom_onboarding_link?: string | null;
   currently_working_on_text?: Multiloc | null;
   segment_destinations_blacklist: string[] | null;
   areas_term?: Multiloc;
@@ -72,10 +68,6 @@ export type ProposalsSettings = {
 };
 export interface IAppConfigurationSettings {
   core: IAppConfigurationSettingsCore;
-  customizable_homepage_banner: {
-    allowed: boolean;
-    enabled: boolean;
-  };
   advanced_custom_pages: {
     allowed: boolean;
     enabled: boolean;
@@ -106,21 +98,6 @@ export interface IAppConfigurationSettings {
     allowed: boolean;
     client_id: string;
     enabled: boolean;
-  };
-  azure_ad_login?: {
-    allowed: boolean;
-    enabled: boolean;
-    tenant: string;
-    client_id: string;
-    logo_url: string;
-    login_mechanism_name: string;
-  };
-  franceconnect_login?: {
-    allowed: boolean;
-    enabled: boolean;
-    environment: string;
-    identifier: string;
-    secret: string;
   };
   custom_accessibility_statement_link: {
     allowed: boolean;
@@ -188,24 +165,8 @@ export interface IAppConfigurationSettings {
   custom_idea_statuses?: AppConfigurationFeature;
   idea_author_change?: AppConfigurationFeature;
   idea_custom_copy?: AppConfigurationFeature;
-  intercom?: AppConfigurationFeature;
   satismeter?: AppConfigurationFeature & {
     write_key: string;
-  };
-  google_analytics?: AppConfigurationFeature & {
-    tracking_id: string;
-  };
-  segment?: AppConfigurationFeature & {
-    destinations: string;
-  };
-  google_tag_manager?: AppConfigurationFeature & {
-    destinations: string;
-    container_id: string;
-    category: TCategory;
-  };
-  matomo?: AppConfigurationFeature & {
-    tenant_site_id: string;
-    product_site_id: string;
   };
   redirects?: AppConfigurationFeature & {
     rules: {
