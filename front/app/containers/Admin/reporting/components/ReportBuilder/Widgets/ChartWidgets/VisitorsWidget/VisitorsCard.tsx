@@ -77,6 +77,7 @@ const VisitorsCard = ({
               endAtMoment={endAtMoment}
               resolution={currentResolution}
               innerRef={graphRef}
+              hideTooltip={true}
             />
           </Box>
         </Box>

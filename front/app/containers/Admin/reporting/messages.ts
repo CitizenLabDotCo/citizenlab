@@ -21,4 +21,8 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.reportHeader',
     defaultMessage: 'Report header',
   },
+  printPrepare: {
+    id: 'app.containers.Admin.reporting.printPrepare',
+    defaultMessage: 'Preparing to print...',
+  },
 });

@@ -5,6 +5,7 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 import FormResultsQuestion from 'containers/Admin/formBuilder/components/FormResults/FormResultsQuestion';
 import NoResults from './NoResults';
 import Dot from './Dot';
+import PageBreakBox from '../../../../../../../components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 // messages
 import messages from './messages';
@@ -84,7 +85,12 @@ const SurveyResults = ({ projectId, phaseId, shownQuestions }: Props) => {
         </Text>
       </Box>
       {resultRows.map((row, rowIndex) => (
-        <Box width="100%" display="flex" flexDirection="row" key={rowIndex}>
+        <PageBreakBox
+          width="100%"
+          display="flex"
+          flexDirection="row"
+          key={rowIndex}
+        >
           {row.map((result, index) => (
             <Box
               px="20px"
@@ -96,7 +102,7 @@ const SurveyResults = ({ projectId, phaseId, shownQuestions }: Props) => {
               <FormResultsQuestion locale={locale} {...result} />
             </Box>
           ))}
-        </Box>
+        </PageBreakBox>
       ))}
     </>
   );

@@ -1,8 +1,8 @@
 import React from 'react';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
 import AgeCard from './AgeCard';
+import PageBreakBox from '../../../../../../../../components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 // styling
 import { stylingConsts } from 'utils/styleUtils';
@@ -19,7 +19,7 @@ import { ChartWidgetProps } from '../typings';
 
 const AgeWidget = ({ title, projectId, startAt, endAt }: ChartWidgetProps) => {
   return (
-    <Box
+    <PageBreakBox
       minHeight="26px"
       border={BORDER}
       borderRadius={stylingConsts.borderRadius}
@@ -32,7 +32,7 @@ const AgeWidget = ({ title, projectId, startAt, endAt }: ChartWidgetProps) => {
         startAt={startAt}
         endAt={endAt ?? null}
       />
-    </Box>
+    </PageBreakBox>
   );
 };
 

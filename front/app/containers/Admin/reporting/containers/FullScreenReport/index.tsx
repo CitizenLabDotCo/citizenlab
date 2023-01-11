@@ -24,12 +24,13 @@ const Centerer = styled.div`
   align-items: center;
 
   @media print {
+    margin-top: -20px;
     display: block;
-  }
-
-  @page {
-    size: auto;
-    margin: 0mm;
+    position: absolute;
+    @page {
+      size: auto;
+      margin: 30px 0;
+    }
   }
 `;
 
