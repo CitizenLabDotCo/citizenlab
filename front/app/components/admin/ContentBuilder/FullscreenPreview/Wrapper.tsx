@@ -12,7 +12,7 @@ import styled from 'styled-components';
 
 interface Props {
   onUpdateDraftData: (serializedNodes: SerializedNodes | undefined) => void;
-  onUpdateLocale: (locale: Locale) => void;
+  onUpdateLocale?: (locale: Locale) => void;
   children: React.ReactNode;
 }
 
@@ -41,7 +41,11 @@ export const FullScreenPreviewWrapper = ({
       if (e.origin === window.location.origin && e.data.ROOT) {
         onUpdateDraftData(e.data);
       }
-      if (e.origin === window.location.origin && e.data.selectedLocale) {
+      if (
+        onUpdateLocale &&
+        e.origin === window.location.origin &&
+        e.data.selectedLocale
+      ) {
         onUpdateLocale(e.data.selectedLocale);
       }
     };

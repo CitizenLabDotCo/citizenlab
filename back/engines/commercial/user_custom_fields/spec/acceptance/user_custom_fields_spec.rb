@@ -58,7 +58,8 @@ resource 'User Custom Fields' do
           ordering: custom_field.ordering,
           code: custom_field.code,
           created_at: custom_field.created_at.as_json,
-          updated_at: custom_field.updated_at.as_json
+          updated_at: custom_field.updated_at.as_json,
+          logic: {}
         },
         relationships: {
           current_ref_distribution: expected_ref_distribution_linkage,

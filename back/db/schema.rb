@@ -259,6 +259,7 @@ ActiveRecord::Schema.define(version: 2022_12_05_112729) do
     t.integer "maximum"
     t.jsonb "minimum_label_multiloc", default: {}, null: false
     t.jsonb "maximum_label_multiloc", default: {}, null: false
+    t.jsonb "logic", default: {}, null: false
     t.index ["resource_type", "resource_id"], name: "index_custom_fields_on_resource_type_and_resource_id"
   end
 
@@ -921,6 +922,8 @@ ActiveRecord::Schema.define(version: 2022_12_05_112729) do
     t.integer "min_budget", default: 0
     t.string "downvoting_method", default: "unlimited", null: false
     t.integer "downvoting_limited_max", default: 10
+    t.string "posting_method", default: "unlimited", null: false
+    t.integer "posting_limited_max", default: 1
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
@@ -1056,6 +1059,8 @@ ActiveRecord::Schema.define(version: 2022_12_05_112729) do
     t.string "downvoting_method", default: "unlimited", null: false
     t.integer "downvoting_limited_max", default: 10
     t.boolean "include_all_areas", default: false, null: false
+    t.string "posting_method", default: "unlimited", null: false
+    t.integer "posting_limited_max", default: 1
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 

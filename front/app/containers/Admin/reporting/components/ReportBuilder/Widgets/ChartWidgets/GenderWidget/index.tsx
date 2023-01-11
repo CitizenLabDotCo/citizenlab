@@ -35,7 +35,7 @@ const GenderWidget = ({
         title={title}
         projectId={projectId}
         startAt={startAt}
-        endAt={endAt}
+        endAt={endAt ?? null}
       />
     </PageBreakBox>
   );
@@ -45,8 +45,8 @@ GenderWidget.craft = {
   props: {
     title: '',
     projectFilter: undefined,
-    startAtMoment: undefined,
-    endAtMoment: null,
+    startAt: undefined,
+    endAt: null,
   },
   related: {
     settings: ChartWidgetSettings,

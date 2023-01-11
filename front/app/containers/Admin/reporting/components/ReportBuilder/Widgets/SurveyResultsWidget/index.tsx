@@ -46,7 +46,12 @@ const SurveyResultsWidget = ({
   shownQuestions,
 }: Props) => {
   return (
-    <PageBreakBox border={BORDER} mt="4px" mb="4px">
+    <PageBreakBox
+      border={BORDER}
+      mt="4px"
+      mb="4px"
+      data-testid="survey-results-widget"
+    >
       <Box>
         <Title variant="h3" color="primary" m="16px" mb="8px">
           {title}

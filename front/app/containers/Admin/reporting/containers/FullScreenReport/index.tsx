@@ -3,9 +3,11 @@ import styled from 'styled-components';
 
 // hooks
 import useReportLayout from 'hooks/useReportLayout';
-import useLocale from 'hooks/useLocale';
 import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
+import useReportLocale from '../../hooks/useReportLocale';
+import ReportLanguageProvider from '../ReportLanguageProvider';
 
 // components
 import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview/Wrapper';
@@ -15,7 +17,6 @@ import Content from './Content';
 
 // types
 import { SerializedNodes } from '@craftjs/core';
-import { Locale } from 'typings';
 
 const Centerer = styled.div`
   display: flex;
@@ -39,35 +40,36 @@ interface Props {
 
 const FullScreenReport = ({ reportId }: Props) => {
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
-  const [selectedLocale, setSelectedLocale] = useState<Locale | undefined>();
-  const platformLocale = useLocale();
   const reportLayout = useReportLayout(reportId);
+  const reportLocale = useReportLocale(reportLayout);
+  const platformLocale = useLocale();
 
-  if (isNilOrError(platformLocale)) {
+  if (isNilOrError(reportLocale)) {
     return null;
   }
 
-  const locale = selectedLocale || platformLocale;
   const isLoadingLayout = reportLayout === undefined;
 
   const savedEditorData = !isNilOrError(reportLayout)
-    ? reportLayout.attributes.craftjs_jsonmultiloc[locale]
+    ? reportLayout.attributes.craftjs_jsonmultiloc[reportLocale]
     : undefined;
 
   const editorData = draftData || savedEditorData;
 
   return (
-    <FullScreenWrapper
-      onUpdateDraftData={setDraftData}
-      onUpdateLocale={setSelectedLocale}
+    <ReportLanguageProvider
+      reportLocale={reportLocale}
+      platformLocale={platformLocale}
     >
-      {isLoadingLayout && <Spinner />}
-      {!isLoadingLayout && (
-        <Centerer>
-          <Content editorData={editorData} />
-        </Centerer>
-      )}
-    </FullScreenWrapper>
+      <FullScreenWrapper onUpdateDraftData={setDraftData}>
+        {isLoadingLayout && <Spinner />}
+        {!isLoadingLayout && (
+          <Centerer>
+            <Content editorData={editorData} />
+          </Centerer>
+        )}
+      </FullScreenWrapper>
+    </ReportLanguageProvider>
   );
 };
 

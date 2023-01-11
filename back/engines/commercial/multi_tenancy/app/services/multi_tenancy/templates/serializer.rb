@@ -420,6 +420,8 @@ module MultiTenancy
           'presentation_mode' => context.presentation_mode,
           'participation_method' => context.participation_method,
           'posting_enabled' => context.posting_enabled,
+          'posting_method' => context.posting_method,
+          'posting_limited_max' => context.posting_limited_max,
           'commenting_enabled' => context.commenting_enabled,
           'voting_enabled' => context.voting_enabled,
           'upvoting_method' => context.upvoting_method,
