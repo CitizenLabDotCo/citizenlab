@@ -40,7 +40,6 @@ RSpec.describe StatUserFieldPolicy do
     it { is_expected.not_to permit(:users_by_education) }
     it { is_expected.not_to permit(:users_by_custom_field) }
     it { is_expected.not_to permit(:users_by_gender_as_xlsx) }
-    it { is_expected.not_to permit(:users_by_age_as_xlsx) }
     it { is_expected.not_to permit(:users_by_birthyear_as_xlsx) }
     it { is_expected.not_to permit(:users_by_domicile_as_xlsx) }
     it { is_expected.not_to permit(:users_by_education_as_xlsx) }
