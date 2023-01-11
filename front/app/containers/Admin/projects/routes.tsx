@@ -22,9 +22,7 @@ const AdminProjectsFormBuilder = lazy(
   () => import('components/FormBuilder/edit')
 );
 const AdminProjectDescription = lazy(() => import('./project/description'));
-const AdminProjectIdeaEditFormComponent = lazy(
-  () => import('./project/inputForm')
-);
+const AdminProjectIdeaForm = lazy(() => import('./project/inputForm'));
 const AdminProjectIdeas = lazy(() => import('./project/ideas'));
 const AdminProjectVolunteering = lazy(() => import('./project/volunteering'));
 const AdminProjectVolunteeringNew = lazy(
@@ -169,7 +167,7 @@ const createAdminProjectsRoutes = () => {
             path: 'ideaform',
             element: (
               <PageLoading>
-                <AdminProjectIdeaEditFormComponent />
+                <AdminProjectIdeaForm />
               </PageLoading>
             ),
           },
