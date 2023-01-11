@@ -417,7 +417,7 @@ describe('Ideation CTA bar', () => {
     cy.get('#e2e-ideation-cta-button').should('exist');
   });
 
-  it('shows the CTA to the user to submit their idea when the user has not yet participated', () => {
+  it('shows the see ideas button to the user if posting is not enabled', () => {
     cy.visit(`/en/projects/${postingRestrictedProjectSlug}`);
     cy.acceptCookies();
     cy.get('#e2e-ideation-see-ideas-button').should('exist');
