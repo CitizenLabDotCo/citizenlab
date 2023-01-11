@@ -15,7 +15,6 @@ import {
   ideasByTimeStream,
   usersByTimeXlsxEndpoint,
 } from 'services/stats';
-import { isAdmin } from 'services/permissions/roles';
 
 // resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
@@ -145,8 +144,6 @@ const OverviewDashboard = ({ projects }: DataProps) => {
     currentResourceByTopic,
     currentResourceByProject,
   };
-
-  const userIsAdmin = isAdmin({ data: user });
 
   return (
     <>
