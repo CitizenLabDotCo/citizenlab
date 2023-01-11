@@ -26,6 +26,7 @@ const PreparingBox = styled(Box)`
 
 const PrintReport = () => {
   const [isPrintReady, setIsPrintReady] = useState(false);
+
   useEffect(() => {
     if (isPrintReady) {
       window.print();
@@ -34,7 +35,7 @@ const PrintReport = () => {
         setIsPrintReady(true);
       }, 5000);
     }
-  });
+  }, [isPrintReady]);
 
   return (
     <>
