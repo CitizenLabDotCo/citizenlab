@@ -3,10 +3,11 @@ import React from 'react';
 // components
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import QuillEditor from 'components/UI/QuillEditor';
+import PageBreakBox from '../PageBreakBox';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // craft
 import { useNode } from '@craftjs/core';
-import { Box } from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from './messages';
@@ -18,11 +19,11 @@ const Text = ({ text }) => {
   const theme = useTheme();
 
   return (
-    <Box id="e2e-text-box" minHeight="26px">
+    <PageBreakBox id="e2e-text-box" minHeight="26px">
       <QuillEditedContent textColor={theme.colors.tenantText}>
         <div dangerouslySetInnerHTML={{ __html: text }} />
       </QuillEditedContent>
-    </Box>
+    </PageBreakBox>
   );
 };
 

@@ -31,7 +31,7 @@ import { stylingConsts } from 'utils/styleUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 // constants
-import { A4_WIDTH, A4_MARGIN_X, A4_MARGIN_Y } from '../../constants';
+import { A4_WIDTH } from '../../constants';
 
 // typings
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
@@ -153,8 +153,8 @@ const ReportBuilder = ({ reportId }: Props) => {
               <ErrorMessage localesWithError={localesWithError} />
               <Box
                 background="white"
-                px={A4_MARGIN_X}
-                py={A4_MARGIN_Y}
+                px="30px"
+                py="30px"
                 width="100%"
                 height="100%"
               >

@@ -12,6 +12,7 @@ import {
   Input,
   Title as TitleComponent,
 } from '@citizenlab/cl2-component-library';
+import PageBreakBox from '../PageBreakBox';
 
 // i18n
 import messages from './messages';
@@ -30,9 +31,9 @@ const Title = ({ text }: Props) => {
   const theme = useTheme();
 
   return (
-    <Box id="e2e-text-box" minHeight="26px" mb="12px" mt="12px">
+    <PageBreakBox id="e2e-text-box" minHeight="26px" mb="12px" mt="12px">
       <H3 color={theme.colors.tenantPrimary}>{text}</H3>
-    </Box>
+    </PageBreakBox>
   );
 };
 

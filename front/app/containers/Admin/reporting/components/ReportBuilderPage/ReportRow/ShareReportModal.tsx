@@ -46,7 +46,7 @@ const ShareReportModal = ({ open, onClose, reportPath }: Props) => {
       close={onClose}
       width="640px"
       header={
-        <Title variant="h2" color="primary" my="0px">
+        <Title variant="h3" color="primary" my="0px">
           <FormattedMessage {...messages.shareReportTitle} />
         </Title>
       }
@@ -59,7 +59,7 @@ const ShareReportModal = ({ open, onClose, reportPath }: Props) => {
         pb="30px"
         alignItems="flex-start"
       >
-        <Title variant="h3" color="primary" mb="10px">
+        <Title variant="h4" color="primary" mb="10px">
           <FormattedMessage {...messages.shareAsWebLink} />
         </Title>
 
@@ -86,7 +86,7 @@ const ShareReportModal = ({ open, onClose, reportPath }: Props) => {
           <FormattedMessage {...messages.copyLink} />
         </Button>
 
-        <Title variant="h3" color="primary" mt="30px" mb="10px">
+        <Title variant="h4" color="primary" mt="30px" mb="10px">
           <FormattedMessage {...messages.shareAsPdf} />
         </Title>
 

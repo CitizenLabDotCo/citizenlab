@@ -6,7 +6,7 @@ import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // constants
-import { A4_WIDTH, A4_MARGIN_Y } from '../../constants';
+import { A4_WIDTH } from '../../constants';
 
 // typings
 import { SerializedNodes } from '@craftjs/core';
@@ -23,8 +23,8 @@ const Content = ({ editorData }: Props) => {
     <Box
       width={A4_WIDTH}
       pl="5mm"
-      pr="15mm"
-      py={A4_MARGIN_Y}
+      pr="10mm"
+      position="absolute"
       background="white"
     >
       <Box>

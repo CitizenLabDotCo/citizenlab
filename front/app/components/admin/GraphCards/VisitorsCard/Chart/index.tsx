@@ -25,6 +25,7 @@ type Props = Dates &
   Resolution & {
     timeSeries: TimeSeries | NilOrError;
     innerRef: React.RefObject<any>;
+    hideTooltip?: boolean;
   };
 
 const emptyLineConfig = { strokeWidths: [0, 0] };
@@ -39,6 +40,7 @@ const Chart = ({
   endAtMoment,
   resolution,
   innerRef,
+  hideTooltip,
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -83,7 +85,7 @@ const Chart = ({
       lines={noData ? emptyLineConfig : lineConfig}
       grid={{ vertical: true }}
       xaxis={{ tickFormatter: formatTick }}
-      tooltip={noData ? undefined : renderTooltip(resolution)}
+      tooltip={noData || hideTooltip ? undefined : renderTooltip(resolution)}
       legend={{
         marginTop: 16,
         items: legendItems,
