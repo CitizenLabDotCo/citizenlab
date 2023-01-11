@@ -146,7 +146,7 @@ lv:
         project:
           title: Kāds ir jūsu projekts?
         issue:
-          title: Kāda ir jūsu problēma?
+          title: Kāds ir jūsu komentārs?
         option:
           title: Kāda ir jūsu izvēle?
       details:
