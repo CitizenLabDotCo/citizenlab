@@ -675,6 +675,7 @@
   "app.containers.Admin.reporting.containers.ReportBuilderPage.viewReports": "عرض التقارير",
   "app.containers.Admin.reporting.helmetDescription": "صفحة تقارير المسؤول",
   "app.containers.Admin.reporting.helmetTitle": "تقديم بلاغات",
+  "app.containers.Admin.reporting.printPrepare": "Preparing to print...",
   "app.containers.Admin.reporting.reportBuilder": "أداة إنشاء التقرير",
   "app.containers.Admin.reporting.reportHeader": "ترويسة التقرير",
   "app.containers.AdminPage.DashboardPage.Report.participants": "مشاركين",
