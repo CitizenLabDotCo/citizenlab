@@ -91,7 +91,7 @@ const ShareReportModal = ({ open, onClose, reportPath }: Props) => {
         </Title>
 
         <Text color="textSecondary" fontSize="s" mt="0">
-          <FormattedMessage {...messages.shareAsWebLinkDesc} />
+          <FormattedMessage {...messages.shareAsPdfDesc} />
         </Text>
 
         <Button
