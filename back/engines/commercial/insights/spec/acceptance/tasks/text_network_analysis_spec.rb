@@ -12,7 +12,7 @@ resource 'Text-network-analysis tasks' do
       end
     end
 
-    context 'when normal user' do
+    context 'when resident' do
       before { resident_header_token }
 
       example 'unauthorized', document: false do

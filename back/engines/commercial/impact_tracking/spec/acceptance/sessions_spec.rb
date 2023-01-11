@@ -22,7 +22,7 @@ resource 'Impact tracking session' do
       })
     end
 
-    example 'Track the start of a session of a normal user' do
+    example 'Track the start of a session of a resident' do
       resident_header_token
       do_request
       expect(response_status).to eq 201
@@ -74,7 +74,7 @@ resource 'Impact tracking session' do
       @created_at = session.created_at
     end
 
-    example 'Upgrade the current session from a visitor to an authenticated user' do
+    example 'Upgrade the current session from a visitor to a resident' do
       header 'User-Agent', @user_agent
       header 'X-Forwarded-For', @ip
       resident_header_token

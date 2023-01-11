@@ -65,7 +65,7 @@ resource 'IdeaStatuses' do
     end
   end
 
-  context 'when signed in as a non-admin user' do
+  context 'when resident' do
     before { resident_header_token }
 
     post 'web_api/v1/idea_statuses' do

@@ -209,7 +209,7 @@ resource 'AdminPublication' do
     end
   end
 
-  context 'when citizen' do
+  context 'when resident' do
     before { resident_header_token }
 
     let(:project_statuses) { %w[published published draft draft published archived] }
