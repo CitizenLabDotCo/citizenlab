@@ -93,16 +93,14 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
       });
     }
 
-    if (enabled === true) {
-      scrollTo('project-survey')(event);
-    }
+    scrollTo('project-survey')(event);
   };
 
   if (hasRrojectEndedOrIsArchived(project, currentPhase)) {
     return null;
   }
 
-  const CTAButton = (
+  const CTAButton = enabled ? (
     <Button
       buttonStyle="primary"
       onClick={handleTakeSurveyClick}
@@ -113,7 +111,7 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
     >
       <FormattedMessage {...messages.takeTheSurvey} />
     </Button>
-  );
+  ) : null;
 
   return (
     <ParticipationCTAContent
