@@ -15,7 +15,7 @@ import { useIntl } from 'utils/cl-intl';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { toThreeLetterMonth } from 'utils/dateUtils';
 import { generateEmptyData } from './generateEmptyData';
-import { MARGINS } from '../RegistrationsCard/Chart';
+import { MARGINS } from '../_utils/style';
 
 // typings
 import { Dates, Resolution, Layout } from 'components/admin/GraphCards/typings';

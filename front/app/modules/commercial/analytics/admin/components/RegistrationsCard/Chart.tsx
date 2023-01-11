@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 
 // styling
 import { colors } from 'components/admin/Graphs/styling';
+import { MARGINS } from 'components/admin/GraphCards/_utils/style';
 
 // components
 import LineChart from 'components/admin/Graphs/LineChart';
@@ -25,7 +26,6 @@ import {
 } from 'components/admin/GraphCards/typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import { TimeSeries } from './useRegistrations/typings';
-import { Margin } from 'components/admin/Graphs/typings';
 
 type Props = ProjectId &
   Dates &
@@ -34,15 +34,6 @@ type Props = ProjectId &
     innerRef: React.RefObject<any>;
     layout?: Layout;
   };
-
-export const MARGINS: Record<Layout, Margin | undefined> = {
-  wide: { top: 10 },
-  narrow: {
-    top: 10,
-    left: -25,
-    right: 35,
-  },
-};
 
 const emptyLineConfig = { strokeWidths: [0] };
 const lineConfig = {

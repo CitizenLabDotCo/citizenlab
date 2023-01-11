@@ -2,7 +2,7 @@ import moment, { Moment } from 'moment';
 
 // utils
 import { timeSeriesParser } from 'components/admin/GraphCards/_utils/timeSeries';
-import { roundPercentage } from 'utils/math';
+import { getConversionRate } from 'components/admin/GraphCards/_utils/parse';
 import { keys, get } from 'utils/helperUtils';
 import { RESOLUTION_TO_MESSAGE_KEY } from 'components/admin/GraphCards/_utils/resolution';
 
@@ -77,11 +77,6 @@ export const parseStats = (data: Response['data']): Stats => {
       lastPeriod: registrationRateLastPeriod,
     },
   };
-};
-
-export const getConversionRate = (from: number, to: number) => {
-  if (to <= 0) return `0%`;
-  return `${Math.min(100, roundPercentage(from, to))}%`;
 };
 
 export const parseExcelData = (

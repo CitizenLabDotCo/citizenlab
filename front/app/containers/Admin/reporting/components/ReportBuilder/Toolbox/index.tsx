@@ -14,6 +14,7 @@ import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
 import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
 import AgeWidget from '../Widgets/ChartWidgets/AgeWidget';
 import GenderWidget from '../Widgets/ChartWidgets/GenderWidget';
+import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
 
 // types
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
@@ -179,6 +180,19 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             }
             icon="chart-bar"
             label={formatMessage(AgeWidget.craft.custom.title)}
+          />
+          <DraggableElement
+            id="e2e-draggable-active-users-widget"
+            component={
+              <ActiveUsersWidget
+                title={formatMessage(ActiveUsersWidget.craft.custom.title)}
+                projectId={undefined}
+                startAt={undefined}
+                endAt={chartEndDate}
+              />
+            }
+            icon="chart-bar"
+            label={formatMessage(ActiveUsersWidget.craft.custom.title)}
           />
           {
             // TODO: CL-2307 Only show this if there are surveys in the platform
