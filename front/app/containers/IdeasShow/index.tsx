@@ -7,8 +7,6 @@ import { adopt } from 'react-adopt';
 import { getInputTerm } from 'services/participationContexts';
 
 // analytics
-import { trackEvent } from 'utils/analytics';
-import tracks from './tracks';
 
 // components
 import IdeaSharingButton from './Buttons/IdeaSharingButton';
@@ -68,7 +66,6 @@ import clHistory from 'utils/cl-router/history';
 import styled from 'styled-components';
 import { media, viewportWidths, isRtl } from 'utils/styleUtils';
 import { columnsGapDesktop, pageContentMaxWidth } from './styleConstants';
-import Outlet from 'components/Outlet';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
@@ -193,8 +190,6 @@ export const IdeasShow = ({
   intl: { formatMessage },
 }: Props & WrappedComponentProps & InjectedLocalized & WithRouterProps) => {
   const [newIdeaId, setNewIdeaId] = useState<string | null>(null);
-  const [translateButtonIsClicked, setTranslateButtonIsClicked] =
-    useState<boolean>(false);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -232,16 +227,6 @@ export const IdeasShow = ({
 
   const closeIdeaSocialSharingModal = () => {
     setNewIdeaId(null);
-  };
-
-  const onTranslateIdea = () => {
-    // analytics
-    if (translateButtonIsClicked === true) {
-      trackEvent(tracks.clickGoBackToOriginalIdeaCopyButton);
-    } else if (translateButtonIsClicked === false) {
-      trackEvent(tracks.clickTranslateIdeaButton);
-    }
-    setTranslateButtonIsClicked(!translateButtonIsClicked);
   };
 
   const handleContainerRef = (element: HTMLDivElement) => {
@@ -292,13 +277,7 @@ export const IdeasShow = ({
         <Box display="flex" id="e2e-idea-show-page-content">
           <Box flex="1 1 100%">
             <IdeaHeader>
-              <Title
-                postType="idea"
-                postId={ideaId}
-                title={ideaTitle}
-                locale={locale}
-                translateButtonClicked={translateButtonIsClicked}
-              />
+              <Title postType="idea" postId={ideaId} title={ideaTitle} />
               {isCompactView && (
                 <Box ml="30px">
                   {' '}
@@ -310,14 +289,6 @@ export const IdeasShow = ({
             {ideaImageLarge && (
               <Image src={ideaImageLarge} alt="" id="e2e-idea-image" />
             )}
-
-            <Outlet
-              id="app.containers.IdeasShow.left"
-              idea={idea}
-              locale={locale}
-              onClick={onTranslateIdea}
-              translateButtonClicked={translateButtonIsClicked}
-            />
 
             {proposedBudgetEnabled && proposedBudget && (
               <>
@@ -334,13 +305,7 @@ export const IdeasShow = ({
             )}
 
             <Box mb="40px">
-              <Body
-                postType="idea"
-                postId={ideaId}
-                locale={locale}
-                body={ideaBody}
-                translateButtonClicked={translateButtonIsClicked}
-              />
+              <Body postType="idea" body={ideaBody} />
             </Box>
             {isCompactView && (
               <Box my="30px">

@@ -432,8 +432,6 @@
   "app.components.SideModal.closeButtonAria": "Schließen",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Ausgewählt {numberOfSelectedTopics, plural, =0 {Null Themenfilter} ein { ein Themenfilter} other {# Themenfilter}}. {selectedTopicNames}",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Entfernen",
-  "app.components.UI.TranslateButton.original": "Original",
-  "app.components.UI.TranslateButton.translate": "Übersetzen",
   "app.components.Upload.errorImageMaxSizeExceeded": "Das gewählte Bild ist größer als {maxFileSize}MB",
   "app.components.Upload.errorImagesMaxSizeExceeded": "Eins oder mehrere der ausgewählten Bilder überschreitet die maximal zulässige Größe von {maxFileSize} Mb pro Bild",
   "app.components.Upload.onlyOneImage": "Es kann nur 1 Bild hochgeladen werden",

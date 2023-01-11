@@ -432,8 +432,6 @@
   "app.components.SideModal.closeButtonAria": "Stäng",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Valde {numberOfSelectedTopics, plural, =0 {noll ämnen} one {ett ämne} other {# ämnen}}. {selectedTopicNames}",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Ta bort",
-  "app.components.UI.TranslateButton.original": "Original",
-  "app.components.UI.TranslateButton.translate": "Översätt",
   "app.components.Upload.errorImageMaxSizeExceeded": "Bilden du valde är större än {maxFileSize} MB",
   "app.components.Upload.errorImagesMaxSizeExceeded": "En eller flera bilder som du valde är större än {maxFileSize} MB",
   "app.components.Upload.onlyOneImage": "Du kan bara ladda upp en bild",

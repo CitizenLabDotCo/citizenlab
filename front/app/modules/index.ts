@@ -7,7 +7,6 @@ import ideaAssignmentConfiguration from './commercial/idea_assignment';
 import moderationConfiguration from './commercial/moderation';
 import flagInappropriateContentConfiguration from './commercial/flag_inappropriate_content';
 import adminProjectTemplatesConfiguration from './commercial/admin_project_templates';
-import machineTranslationsConfiguration from './commercial/machine_translations';
 import similarIdeaConfiguration from './commercial/similar_ideas';
 
 import customMapsConfiguration from './commercial/custom_maps';
@@ -76,10 +75,6 @@ export default loadModules([
   },
   {
     configuration: customMapsConfiguration,
-    isEnabled,
-  },
-  {
-    configuration: machineTranslationsConfiguration,
     isEnabled,
   },
   {

@@ -208,10 +208,8 @@ export class InitiativeContent extends PureComponent<
                 />
 
                 <StyledBody
-                  postId={initiativeId}
                   postType="initiative"
                   body={localize(initiative.attributes.body_multiloc)}
-                  locale={locale}
                 />
 
                 {initiativeGeoPosition && initiativeAddress && (

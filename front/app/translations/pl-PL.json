@@ -432,8 +432,6 @@
   "app.components.SideModal.closeButtonAria": "Zamknij",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Zaznaczono {numberOfSelectedTopics, plural, =0 {zero tematów} one {jeden temat} few {# tematy} many {# tematów} other {# tematy}}. {selectedTopicNames}",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Usuń",
-  "app.components.UI.TranslateButton.original": "Oryginał",
-  "app.components.UI.TranslateButton.translate": "Przetłumacz",
   "app.components.Upload.errorImageMaxSizeExceeded": "Wybrany obraz jest większy niż {maxFileSize}MB",
   "app.components.Upload.errorImagesMaxSizeExceeded": "Jeden obraz jest większy lub kilka wybranych obrazów są większe niż {maxFileSize}MB",
   "app.components.Upload.onlyOneImage": "Można przesłać tylko 1 zdjęcie",
