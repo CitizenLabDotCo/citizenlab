@@ -1,7 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { ImageSizes, Multiloc, Locale } from 'typings';
-import { TCategory } from 'components/ConsentManager/destinations';
 import { THomepageSettingKeyMap } from 'services/homepageSettings';
 export const currentAppConfigurationEndpoint = `${API_PATH}/app_configuration`;
 
@@ -183,24 +182,8 @@ export interface IAppConfigurationSettings {
   custom_idea_statuses?: AppConfigurationFeature;
   idea_author_change?: AppConfigurationFeature;
   idea_custom_copy?: AppConfigurationFeature;
-  intercom?: AppConfigurationFeature;
   satismeter?: AppConfigurationFeature & {
     write_key: string;
-  };
-  google_analytics?: AppConfigurationFeature & {
-    tracking_id: string;
-  };
-  segment?: AppConfigurationFeature & {
-    destinations: string;
-  };
-  google_tag_manager?: AppConfigurationFeature & {
-    destinations: string;
-    container_id: string;
-    category: TCategory;
-  };
-  matomo?: AppConfigurationFeature & {
-    tenant_site_id: string;
-    product_site_id: string;
   };
   redirects?: AppConfigurationFeature & {
     rules: {

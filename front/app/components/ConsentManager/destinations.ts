@@ -59,7 +59,7 @@ export const isDestinationActive = (
 };
 
 function isFeatureActive(
-  featureName: TConsentManagerFeature,
+  featureName: string,
   appConfig: IAppConfigurationData
 ) {
   return (

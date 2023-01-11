@@ -11,12 +11,6 @@ import machineTranslationsConfiguration from './commercial/machine_translations'
 import similarIdeaConfiguration from './commercial/similar_ideas';
 
 import customMapsConfiguration from './commercial/custom_maps';
-import googleTagManagerConfiguration from './commercial/google_tag_manager';
-import googleAnalyticsConfiguration from './commercial/google_analytics';
-import intercomConfiguration from './commercial/intercom';
-import satismeterConfiguration from './commercial/satismeter';
-import segmentConfiguration from './commercial/segment';
-import matomoConfiguration from './commercial/matomo';
 import contentBuilderConfiguration from './commercial/content_builder';
 import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
 import bulkIdeaImportConfiguration from './commercial/bulk_idea_import';
@@ -53,30 +47,6 @@ export default loadModules([
   },
   {
     configuration: ideaCustomFieldsConfiguration,
-    isEnabled,
-  },
-  {
-    configuration: googleTagManagerConfiguration,
-    isEnabled,
-  },
-  {
-    configuration: matomoConfiguration,
-    isEnabled,
-  },
-  {
-    configuration: googleAnalyticsConfiguration,
-    isEnabled,
-  },
-  {
-    configuration: intercomConfiguration,
-    isEnabled,
-  },
-  {
-    configuration: satismeterConfiguration,
-    isEnabled,
-  },
-  {
-    configuration: segmentConfiguration,
     isEnabled,
   },
   {

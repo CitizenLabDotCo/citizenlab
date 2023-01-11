@@ -65,7 +65,6 @@ const tenantDataAllEnabled = getAppConfigurationData({
     google_analytics: { allowed: true, enabled: true },
     segment: { allowed: true, enabled: true },
     intercom: { allowed: true, enabled: true },
-    google_tag_manager: { allowed: true, enabled: true },
   },
 });
 
@@ -75,7 +74,6 @@ const tenantDataAllDisabled = getAppConfigurationData({
     google_analytics: { allowed: false, enabled: false },
     segment: { allowed: false, enabled: false },
     intercom: { allowed: false, enabled: false },
-    google_tag_manager: { allowed: false, enabled: false },
   },
 });
 

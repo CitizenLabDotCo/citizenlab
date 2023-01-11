@@ -49,12 +49,6 @@ export const getAppConfigurationData = (
         allowed: false,
         enabled: false,
       },
-      matomo: {
-        allowed: true,
-        enabled: true,
-        tenant_site_id: '13',
-        product_site_id: '14',
-      },
     },
     logo: {
       small: 'http://zah.cy/wof.jpg',
