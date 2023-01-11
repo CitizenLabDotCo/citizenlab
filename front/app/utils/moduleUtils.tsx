@@ -22,7 +22,6 @@ import { LatLngTuple } from 'leaflet';
 
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { TNotificationData } from 'services/notifications';
-import { THomepageBannerLayout } from 'services/homepageSettings';
 import { IPhaseData } from 'services/phases';
 import { TVerificationMethod } from 'services/verificationMethods';
 import {
@@ -187,52 +186,6 @@ export interface OutletsPropertyMap {
   };
   'app.components.NotificationMenu.Notification': {
     notification: TNotificationData;
-  };
-  'app.components.PostShowComponents.ActionBar.right': {
-    translateButtonClicked: boolean;
-    onClick: () => void;
-    initiative: GetInitiativeChildProps;
-    locale: GetLocaleChildProps;
-  };
-  'app.components.PostShowComponents.CommentFooter.left': {
-    comment: ICommentData;
-    locale: GetLocaleChildProps;
-    tenantLocales: GetAppConfigurationLocalesChildProps;
-  };
-  'app.containers.InitiativesShow.left': {
-    windowSize: GetWindowSizeChildProps;
-    translateButtonClicked: boolean;
-    onClick: () => void;
-    initiative: GetInitiativeChildProps;
-    locale: GetLocaleChildProps;
-  };
-  'app.containers.IdeasShow.left': {
-    translateButtonClicked: boolean;
-    onClick: () => void;
-    idea: GetIdeaChildProps;
-    locale: GetLocaleChildProps;
-  };
-  'app.components.PostShowComponents.CommentBody.translation': {
-    translateButtonClicked: boolean;
-    commentContent: string;
-    locale: GetLocaleChildProps;
-    commentId: string;
-  };
-  'app.components.PostShowComponents.Body.translation': {
-    postId: string;
-    body: string;
-    locale: GetLocaleChildProps;
-    translateButtonClicked?: boolean;
-    postType: 'idea' | 'initiative';
-  };
-  'app.components.PostShowComponents.Title.translation': {
-    postId: string;
-    postType: 'idea' | 'initiative';
-    title: string;
-    locale?: GetLocaleChildProps;
-    translateButtonClicked?: boolean;
-    color?: string;
-    align: 'left' | 'center';
   };
   'app.containers.HomePage.EventsWidget': Record<string, any>;
 }

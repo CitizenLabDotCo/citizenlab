@@ -6,9 +6,6 @@ import granularPermissionsConfiguration from './commercial/granular_permissions'
 import ideaAssignmentConfiguration from './commercial/idea_assignment';
 import moderationConfiguration from './commercial/moderation';
 import adminProjectTemplatesConfiguration from './commercial/admin_project_templates';
-import machineTranslationsConfiguration from './commercial/machine_translations';
-import customizableHomepageBannerConfiguration from './commercial/customizable_homepage_banner';
-import similarIdeaConfiguration from './commercial/similar_ideas';
 
 import customMapsConfiguration from './commercial/custom_maps';
 import contentBuilderConfiguration from './commercial/content_builder';
@@ -43,10 +40,6 @@ export default loadModules([
   },
   {
     configuration: moderationConfiguration,
-    isEnabled,
-  },
-  {
-    configuration: flagInappropriateContentConfiguration,
     isEnabled,
   },
   {
