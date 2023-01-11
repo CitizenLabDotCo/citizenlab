@@ -102,16 +102,15 @@ class WebApi::V1::ProjectsController < ApplicationController
   def copy
     source_project = Project.find(params[:id])
 
-    # TODO: Move much of this code to sidefx.before_copy
-    source_title = source_project.title_multiloc
+    src_title_ml = source_project.title_multiloc
     title_suffix_multiloc = MultilocService.new.i18n_to_multiloc('project_copy.title_suffix')
-    title_of_copy = source_title.each { |k, v| source_title[k] = "#{v} - #{title_suffix_multiloc[k]}" }
+    copy_title_ml = src_title_ml.each { |k, v| src_title_ml[k] = "#{v} - #{title_suffix_multiloc[k]}" }
 
     @project = Project.create(
       source_project.attributes
       .except('id', 'slug', 'title_multiloc', 'admin_publication_attributes')
       .merge(
-        title_multiloc: title_of_copy,
+        title_multiloc: copy_title_ml,
         admin_publication_attributes: { publication_status: 'draft' },
         header_bg: source_project.header_bg,
         folder_id: source_project.folder_id
