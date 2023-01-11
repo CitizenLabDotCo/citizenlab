@@ -105,7 +105,7 @@ class PasswordSignin extends PureComponent<
   emailInputElement: HTMLInputElement | null;
   passwordInputElement: HTMLInputElement | null;
 
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       email: null,

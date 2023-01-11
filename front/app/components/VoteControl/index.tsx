@@ -9,7 +9,6 @@ import {
 } from 'rxjs';
 import { filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
 import ScreenReaderContent from './ScreenReaderContent';
@@ -86,7 +85,7 @@ interface State {
   loaded: boolean;
 }
 
-class VoteControl extends PureComponent<Props & WithRouterProps, State> {
+class VoteControl extends PureComponent<Props, State> {
   voting$: BehaviorSubject<'up' | 'down' | null>;
   id$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
@@ -97,7 +96,7 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
     ariaHidden: false,
   };
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       showVoteControl: false,
@@ -572,4 +571,4 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
   }
 }
 
-export default withRouter(VoteControl);
+export default VoteControl;
