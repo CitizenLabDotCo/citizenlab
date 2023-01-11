@@ -111,23 +111,13 @@ const ContentBuilderTopBar = ({
   };
 
   useEffect(() => {
-    let draftEditorDataLocale =
-      draftEditorData && selectedLocale
-        ? draftEditorData[selectedLocale]
-        : draftEditorData;
-    initialData = initialData === undefined ? {} : initialData;
-    draftEditorDataLocale =
-      draftEditorDataLocale === undefined ? {} : draftEditorDataLocale;
-    if (
-      isEqual(
-        JSON.parse(JSON.stringify(initialData)),
-        JSON.parse(JSON.stringify(draftEditorDataLocale))
+    if (!selectedLocale || !draftEditorData) return;
+    setHasChange(
+      !isEqual(
+        JSON.parse(JSON.stringify(initialData) ?? {}),
+        JSON.parse(JSON.stringify(draftEditorData[selectedLocale] ?? {}))
       )
-    ) {
-      setHasChange(false);
-    } else {
-      setHasChange(true);
-    }
+    );
   }, [initialData, draftEditorData]);
 
   useEffect(() => {
