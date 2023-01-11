@@ -6,21 +6,17 @@ import {
 import HeaderContent from 'containers/HomePage/SignedOutHeader/HeaderContent';
 import React from 'react';
 import { IHomepageSettingsData } from 'services/homepageSettings';
-import styled from 'styled-components';
+import { Box } from '@citizenlab/cl2-component-library';
 
 interface Props {
   homepageSettings: IHomepageSettingsData;
 }
 
-const TwoRowLayoutContainer = styled.div`
-  width: 100%;
-`;
-
 const TwoRowLayout = ({ homepageSettings }: Props) => {
   const headerImage = homepageSettings.attributes.header_bg?.large;
 
   return (
-    <TwoRowLayoutContainer data-testid="two-row-layout">
+    <Box data-testid="two-row-layout" width="100%" background="white">
       {headerImage && (
         <HeaderImage
           src={headerImage}
@@ -36,7 +32,7 @@ const TwoRowLayout = ({ homepageSettings }: Props) => {
           <HeaderContent fontColors="dark" />
         </Container>
       </ContentContainer>
-    </TwoRowLayoutContainer>
+    </Box>
   );
 };
 
