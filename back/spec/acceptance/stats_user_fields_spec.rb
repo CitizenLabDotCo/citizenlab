@@ -39,7 +39,7 @@ resource 'Stats - Users by field' do
   let_it_be(:end_at) { (now - 1.year).in_time_zone(timezone).end_of_year }
 
   before_all do
-    Tenant.current.update!(created_at: now - 2.years)
+    AppConfiguration.isntance.update!(created_at: now - 2.years)
 
     create(:custom_field_birthyear)
     create(:custom_field_gender, :with_options)
