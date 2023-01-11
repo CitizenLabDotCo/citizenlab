@@ -3,8 +3,8 @@ import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useLocale from 'hooks/useLocale';
 import useReportLayout from 'hooks/useReportLayout';
+import useReportLocale from '../../hooks/useReportLocale';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -37,6 +37,8 @@ import { A4_WIDTH, A4_MARGIN_X, A4_MARGIN_Y } from '../../constants';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import { SerializedNodes } from '@craftjs/core';
 import { Locale } from 'typings';
+import ReportLanguageProvider from '../ReportLanguageProvider';
+import useLocale from '../../../../../hooks/useLocale';
 
 interface Props {
   reportId: string;
@@ -49,18 +51,21 @@ const ReportBuilder = ({ reportId }: Props) => {
   const [imageUploading, setImageUploading] = useState(false);
   const [selectedLocale, setSelectedLocale] = useState<Locale | undefined>();
   const [draftData, setDraftData] = useState<Record<string, SerializedNodes>>();
+  const reportLayout = useReportLayout(reportId);
+  const reportLocale = useReportLocale(reportLayout);
+  const platformLocale = useLocale();
   const [initialized, setInitialized] = useState(false);
   const [initialData, setInitialData] = useState<SerializedNodes | undefined>();
-  const locale = useLocale();
-  const reportLayout = useReportLayout(reportId);
   const [search] = useSearchParams();
   const projectId = search.get('projectId');
 
+  // Note: selectedLocale is kept to keep compatibility with content builder
+  // although there is currently only one locale allowed per report
   useEffect(() => {
-    if (!isNilOrError(locale)) {
-      setSelectedLocale(locale);
+    if (!isNilOrError(reportLocale)) {
+      setSelectedLocale(reportLocale);
     }
-  }, [locale]);
+  }, [reportLocale]);
 
   const localesWithError = useMemo(() => {
     return Object.values(contentBuilderErrors)
@@ -90,26 +95,6 @@ const ReportBuilder = ({ reportId }: Props) => {
         ...draftData,
         [selectedLocale]: nodes,
       }));
-    },
-    [selectedLocale]
-  );
-
-  const handleSelectedLocaleChange = useCallback(
-    ({
-      locale,
-      editorData,
-    }: {
-      locale: Locale;
-      editorData: SerializedNodes;
-    }) => {
-      if (selectedLocale && selectedLocale !== locale) {
-        setDraftData((draftData) => ({
-          ...draftData,
-          [selectedLocale]: editorData,
-        }));
-      }
-
-      setSelectedLocale(locale);
     },
     [selectedLocale]
   );
@@ -154,7 +139,6 @@ const ReportBuilder = ({ reportId }: Props) => {
           previewEnabled={previewEnabled}
           setPreviewEnabled={setPreviewEnabled}
           selectedLocale={selectedLocale}
-          onSelectLocale={handleSelectedLocaleChange}
           draftEditorData={draftData}
           reportId={reportId}
           projectId={projectId ?? undefined}
@@ -174,14 +158,19 @@ const ReportBuilder = ({ reportId }: Props) => {
                 width="100%"
                 height="100%"
               >
-                <Frame editorData={initialData}>
-                  {projectId && (
-                    <ProjectTemplate
-                      reportId={reportId}
-                      projectId={projectId}
-                    />
-                  )}
-                </Frame>
+                <ReportLanguageProvider
+                  reportLocale={reportLocale}
+                  platformLocale={platformLocale}
+                >
+                  <Frame editorData={initialData}>
+                    {projectId && (
+                      <ProjectTemplate
+                        reportId={reportId}
+                        projectId={projectId}
+                      />
+                    )}
+                  </Frame>
+                </ReportLanguageProvider>
               </Box>
             </Box>
           </StyledRightColumn>
@@ -200,7 +189,12 @@ const ReportBuilder = ({ reportId }: Props) => {
           <StyledRightColumn>
             <Box width={A4_WIDTH} background="white" px={'15mm'} py={'15mm'}>
               <Editor isPreview={true}>
-                <Frame editorData={previewData} />
+                <ReportLanguageProvider
+                  reportLocale={reportLocale}
+                  platformLocale={platformLocale}
+                >
+                  <Frame editorData={previewData} />
+                </ReportLanguageProvider>
               </Editor>
             </Box>
           </StyledRightColumn>
