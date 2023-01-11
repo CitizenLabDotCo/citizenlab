@@ -28,8 +28,7 @@ const Centerer = styled.div`
     position: absolute;
     @page {
       size: auto;
-      margin-top: 0;
-      margin-bottom: 0;
+      margin: 30px 0;
     }
   }
 `;
