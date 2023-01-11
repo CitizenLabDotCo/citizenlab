@@ -45,30 +45,29 @@
 // };
 // jest.mock('hooks/useHomepageSettings', () => jest.fn(() => mockHomepageSettings));
 
-// describe('<HomePage />', () => {
-//   it('renders with HomepageSettings for logged out users', () => {
-//     render(<HomePage />);
-//     expect(
-//       screen.getByRole('heading', { name: 'Signed out header', level: 1 })
-//     ).toBeInTheDocument();
-//     expect(
-//       screen.getByRole('heading', { name: 'Signed out subhead', level: 2 })
-//     ).toBeInTheDocument();
-//   });
-
-//   it('renders the two-row layout with correct styles', () => {
-//     homepageBannerLayout = 'two_row_layout';
-//     render(<HomePage />);
-//     expect(
-//       screen.getByRole('heading', { name: 'Signed out header', level: 1 })
-//     ).toBeInTheDocument();
-//     expect(
-//       screen.getByRole('heading', { name: 'Signed out subhead', level: 2 })
-//     ).toBeInTheDocument();
-//     expect(screen.getByTestId('two-row-layout')).toBeInTheDocument();
-//     expect(screen.getByTestId('two-row-layout')).toHaveStyle('width: 100%');
-//     expect(screen.getByTestId('two-row-layout')).toHaveStyle(
-//       'background: white'
-//     );
-//   });
-// });
+describe('<HomePage />', () => {
+  it('renders with HomepageSettings for logged out users', () => {
+    //     render(<HomePage />);
+    //     expect(
+    //       screen.getByRole('heading', { name: 'Signed out header', level: 1 })
+    //     ).toBeInTheDocument();
+    //     expect(
+    //       screen.getByRole('heading', { name: 'Signed out subhead', level: 2 })
+    //     ).toBeInTheDocument();
+    //   });
+    //   it('renders the two-row layout with correct styles', () => {
+    //     homepageBannerLayout = 'two_row_layout';
+    //     render(<HomePage />);
+    //     expect(
+    //       screen.getByRole('heading', { name: 'Signed out header', level: 1 })
+    //     ).toBeInTheDocument();
+    //     expect(
+    //       screen.getByRole('heading', { name: 'Signed out subhead', level: 2 })
+    //     ).toBeInTheDocument();
+    //     expect(screen.getByTestId('two-row-layout')).toBeInTheDocument();
+    //     expect(screen.getByTestId('two-row-layout')).toHaveStyle('width: 100%');
+    //     expect(screen.getByTestId('two-row-layout')).toHaveStyle(
+    //       'background: white'
+    //     );
+  });
+});
