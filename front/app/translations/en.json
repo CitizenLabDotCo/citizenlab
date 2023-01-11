@@ -600,7 +600,6 @@
   "app.containers.Admin.Insights.helmetTitle": "Platform Insights",
   "app.containers.Admin.Insights.tabInsights": "Insights",
   "app.containers.Admin.Insights.tabReports": "Reports",
-  "app.containers.AdminPage.ProjectEdit.form.inputForm": "Input form",
   "app.containers.AdminPage.ProjectEdit.survey.Page": "Page",
   "app.containers.AdminPage.ProjectEdit.survey.addAnswer": "Add answer",
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent": "Add survey content",
