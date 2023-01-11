@@ -30,6 +30,7 @@ import clHistory from 'utils/cl-router/history';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { isEqual } from 'lodash-es';
 
 // types
 import { Locale } from 'typings';
@@ -52,6 +53,7 @@ type ContentBuilderTopBarProps = {
   setPreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
   selectedLocale: Locale | undefined;
   draftEditorData?: Record<string, SerializedNodes>;
+  initialData: SerializedNodes | undefined;
   reportId: string;
   projectId?: string;
 };
@@ -61,6 +63,7 @@ const ContentBuilderTopBar = ({
   setPreviewEnabled,
   selectedLocale,
   draftEditorData,
+  initialData,
   localesWithError,
   hasPendingState,
   reportId,
@@ -69,6 +72,7 @@ const ContentBuilderTopBar = ({
   const [initialized, setInitialized] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showQuitModal, setShowQuitModal] = useState(false);
+  const [hasChange, setHasChange] = useState(false);
   const { query } = useEditor();
   const report = useReport(reportId);
 
@@ -81,10 +85,10 @@ const ContentBuilderTopBar = ({
     setShowQuitModal(true);
   };
   const goBack = () => {
-    if (draftEditorData === undefined) {
-      doGoBack();
-    } else {
+    if (hasChange) {
       openModal();
+    } else {
+      doGoBack();
     }
   };
   const doGoBack = () => {
@@ -93,6 +97,7 @@ const ContentBuilderTopBar = ({
   const handleSave = async () => {
     if (selectedLocale) {
       try {
+        setHasChange(false);
         setLoading(true);
         await updateReportLayout(reportId, {
           ...draftEditorData,
@@ -106,14 +111,36 @@ const ContentBuilderTopBar = ({
   };
 
   useEffect(() => {
-    if (draftEditorData !== undefined) {
+    let draftEditorDataLocale =
+      draftEditorData && selectedLocale
+        ? draftEditorData[selectedLocale]
+        : draftEditorData;
+    initialData = initialData === undefined ? {} : initialData;
+    draftEditorDataLocale =
+      draftEditorDataLocale === undefined ? {} : draftEditorDataLocale;
+    if (
+      isEqual(
+        JSON.parse(JSON.stringify(initialData)),
+        JSON.parse(JSON.stringify(draftEditorDataLocale))
+      )
+    ) {
+      setHasChange(false);
+    } else {
+      setHasChange(true);
+    }
+  }, [initialData, draftEditorData]);
+
+  useEffect(() => {
+    if (hasChange) {
       window.onbeforeunload = () => true;
+    } else {
+      window.onbeforeunload = null;
     }
     return () => {
       window.onbeforeunload = null;
     };
-  }, [draftEditorData]);
-  
+  }, [hasChange]);
+
   useEffect(() => {
     if (initialized) return;
 
