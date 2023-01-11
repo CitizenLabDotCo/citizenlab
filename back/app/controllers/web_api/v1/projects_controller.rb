@@ -106,7 +106,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     title_suffix_multiloc = MultilocService.new.i18n_to_multiloc('project_copy.title_suffix')
     copy_title_ml = src_title_ml.each { |k, v| src_title_ml[k] = "#{v} - #{title_suffix_multiloc[k]}" }
 
-    @project = Project.create(
+    @project = Project.new(
       source_project.attributes
       .except('id', 'slug', 'title_multiloc', 'admin_publication_attributes')
       .merge(
@@ -117,15 +117,28 @@ class WebApi::V1::ProjectsController < ApplicationController
       )
     )
 
-    # TODO: Move much of this code to sidefx.after_copy
-    source_project.project_images.each { |image| ProjectImage.create(project_id: @project.id, image: image.image) }
-    source_project.topics.each { |topic| ProjectsTopic.create(project_id: @project.id, topic_id: topic.id) }
-    source_project.permissions.each do |permission|
-      Permission.create(permission.attributes.except('id').merge(permission_scope_id: @project.id, groups: permission.groups))
+    if ActiveRecord::Base.transaction do
+      authorize @project
+      @project.save
+    end
+      # TODO: Move much of this code to sidefx.after_copy
+      source_project.project_images.each { |image| ProjectImage.create(project_id: @project.id, image: image.image) }
+      source_project.topics.each { |topic| ProjectsTopic.create(project_id: @project.id, topic_id: topic.id) }
+      source_project.permissions.each do |permission|
+        Permission.create(permission.attributes.except('id').merge(permission_scope_id: @project.id, groups: permission.groups))
+      end
+
+      render json: WebApi::V1::ProjectSerializer.new(
+        @project,
+        params: fastjson_params,
+        include: [:admin_publication]
+      ).serialized_json, status: :ok
+    else
+      render json: { errors: @project.errors.details }, status: :unprocessable_entity, include: ['project_images']
     end
 
-    authorize @project
-    show
+    # authorize @project
+    # show
   end
 
   def destroy
