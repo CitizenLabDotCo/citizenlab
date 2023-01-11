@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -20,6 +20,9 @@ import {
 } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import Frame from 'components/admin/ContentBuilder/Frame';
 import Settings from 'components/admin/ContentBuilder/Settings';
+
+// templates
+import ProjectTemplate from '../../components/ReportBuilder/Templates/ProjectTemplate';
 
 // styling
 import { stylingConsts } from 'utils/styleUtils';
@@ -46,8 +49,12 @@ const ReportBuilder = ({ reportId }: Props) => {
   const [imageUploading, setImageUploading] = useState(false);
   const [selectedLocale, setSelectedLocale] = useState<Locale | undefined>();
   const [draftData, setDraftData] = useState<Record<string, SerializedNodes>>();
+  const [initialized, setInitialized] = useState(false);
+  const [initialData, setInitialData] = useState<SerializedNodes | undefined>();
   const locale = useLocale();
   const reportLayout = useReportLayout(reportId);
+  const [search] = useSearchParams();
+  const projectId = search.get('projectId');
 
   useEffect(() => {
     if (!isNilOrError(locale)) {
@@ -114,11 +121,21 @@ const ReportBuilder = ({ reportId }: Props) => {
     return previewData;
   }, [draftData, selectedLocale]);
 
-  if (!selectedLocale) return null;
+  useEffect(() => {
+    if (initialized) return;
+    if (!selectedLocale) return;
+    if (reportLayout === undefined) return;
 
-  const initialData = isNilOrError(reportLayout)
-    ? undefined
-    : reportLayout.attributes.craftjs_jsonmultiloc[selectedLocale];
+    if (!isNilOrError(reportLayout)) {
+      setInitialData(
+        reportLayout.attributes.craftjs_jsonmultiloc[selectedLocale]
+      );
+    }
+
+    setInitialized(true);
+  }, [initialized, selectedLocale, reportLayout]);
+
+  if (!selectedLocale) return null;
 
   return (
     <FullscreenContentBuilder
@@ -140,6 +157,7 @@ const ReportBuilder = ({ reportId }: Props) => {
           onSelectLocale={handleSelectedLocaleChange}
           draftEditorData={draftData}
           reportId={reportId}
+          projectId={projectId ?? undefined}
         />
         <Box
           mt={`${stylingConsts.menuHeight}px`}
@@ -156,7 +174,14 @@ const ReportBuilder = ({ reportId }: Props) => {
                 width="100%"
                 height="100%"
               >
-                <Frame editorData={initialData} />
+                <Frame editorData={initialData}>
+                  {projectId && (
+                    <ProjectTemplate
+                      reportId={reportId}
+                      projectId={projectId}
+                    />
+                  )}
+                </Frame>
               </Box>
             </Box>
           </StyledRightColumn>

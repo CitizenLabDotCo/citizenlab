@@ -9,3 +9,5 @@ export type ContentBuilderErrors = Record<
 export type JsonMultiloc = {
   [key in Locale]?: Record<string, SerializedNode>;
 };
+
+export type ColumnLayout = '1-1' | '2-1' | '1-2';

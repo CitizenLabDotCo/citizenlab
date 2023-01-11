@@ -51,8 +51,8 @@ VisitorsWidget.craft = {
   props: {
     title: '',
     projectFilter: undefined,
-    startAtMoment: undefined,
-    endAtMoment: null,
+    startAt: undefined,
+    endAt: undefined,
   },
   related: {
     settings: ChartWidgetSettings,
