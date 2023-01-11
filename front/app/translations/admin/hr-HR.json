@@ -675,6 +675,7 @@
   "app.containers.Admin.reporting.containers.ReportBuilderPage.viewReports": "Prikaz izvješća",
   "app.containers.Admin.reporting.helmetDescription": "Stranica s administratorskim izvještavanjem",
   "app.containers.Admin.reporting.helmetTitle": "Izvještavanje",
+  "app.containers.Admin.reporting.printPrepare": "Preparing to print...",
   "app.containers.Admin.reporting.reportBuilder": "Alat za izgradnju izvješća",
   "app.containers.Admin.reporting.reportHeader": "Zaglavlje izvješća",
   "app.containers.AdminPage.DashboardPage.Report.participants": "sudionici",
