@@ -53,6 +53,13 @@ export interface IHomepageSettingsAttributes extends IHomepageEnabledSettings {
   banner_signed_out_header_overlay_opacity: number | null;
   header_bg: ImageSizes | null;
   pinned_admin_publication_ids: string[];
+  banner_cta_signed_in_text_multiloc: Multiloc;
+  banner_cta_signed_in_type: CTASignedInType;
+  banner_cta_signed_in_url: string | null;
+  // cta_signed_out
+  banner_cta_signed_out_text_multiloc: Multiloc;
+  banner_cta_signed_out_type: CTASignedOutType;
+  banner_cta_signed_out_url: string | null;
 }
 
 export interface IHomepageEnabledSettings {
@@ -75,16 +82,6 @@ interface CTASignedOutTypeMap {
   no_button: 'no_button';
 }
 export type CTASignedOutType = CTASignedOutTypeMap[keyof CTASignedOutTypeMap];
-
-export interface IHomepageSettingsAttributes {
-  banner_cta_signed_in_text_multiloc: Multiloc;
-  banner_cta_signed_in_type: CTASignedInType;
-  banner_cta_signed_in_url: string | null;
-  // cta_signed_out
-  banner_cta_signed_out_text_multiloc: Multiloc;
-  banner_cta_signed_out_type: CTASignedOutType;
-  banner_cta_signed_out_url: string | null;
-}
 
 // streams
 export function homepageSettingsStream() {
