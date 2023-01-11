@@ -1,9 +1,5 @@
 import React from 'react';
 
-// craft
-import { Element } from '@craftjs/core';
-import { Box } from '@citizenlab/cl2-component-library';
-
 // i18n
 import messages from './messages';
 
@@ -12,6 +8,9 @@ import Container from 'components/admin/ContentBuilder/Widgets/Container';
 import Text from 'components/admin/ContentBuilder/Widgets/Text';
 import TenantLogo from 'containers/MobileNavbar/TenantLogo';
 import { NoWidgetSettings } from 'components/admin/ContentBuilder/Widgets/NoWidgetSettings';
+import { Element } from '@craftjs/core';
+import { Box } from '@citizenlab/cl2-component-library';
+import PageBreakBox from '../PageBreakBox';
 
 // hooks
 import useReport from 'hooks/useReport';
@@ -68,7 +67,7 @@ const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
       : formatMessage(messages.continuousProject);
 
   return (
-    <Box>
+    <PageBreakBox>
       <Box
         width="100%"
         display="flex"
@@ -111,7 +110,7 @@ const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
           />
         </Element>
       )}
-    </Box>
+    </PageBreakBox>
   );
 };
 
