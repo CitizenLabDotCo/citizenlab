@@ -64,6 +64,7 @@ const HeaderBgInput = ({ imageUrl, onImageChange }: Props) => {
             image={projectHeaderImage}
             onComplete={onImageChange} // projectHeaderImage is not updated, but we don't need it
             aspect={HEADER_BG_ASPECT_RATIO}
+            onRemove={handleImageRemove}
           />
         </Box>
       ) : (

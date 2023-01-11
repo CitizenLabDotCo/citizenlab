@@ -5,11 +5,11 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import ImageCropper, { ImageCropperProps } from '.';
 import messages from './messages';
 
-const Container = ({ image, onComplete, aspect }: ImageCropperProps) => {
+const Container = ({ aspect, ...otherProps }: ImageCropperProps) => {
   const { formatMessage } = useIntl();
   return (
     <Box>
-      <ImageCropper image={image} onComplete={onComplete} aspect={aspect} />
+      <ImageCropper aspect={aspect} {...otherProps} />
       <Warning>
         <Text>
           <FormattedMessage

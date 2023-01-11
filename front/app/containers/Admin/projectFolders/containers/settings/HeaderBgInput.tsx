@@ -55,6 +55,7 @@ const HeaderBgInput = ({ imageUrl, onImageChange }: Props) => {
             image={headerBg}
             onComplete={onImageChange}
             aspect={HEADER_BG_ASPECT_RATIO}
+            onRemove={handleImageRemove}
           />
         </Box>
       ) : (
