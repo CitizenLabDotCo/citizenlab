@@ -142,17 +142,17 @@ ar-MA:
         question:
           title: ما سؤالك؟
         contribution:
-          title: ما مساهمتك؟
+          title: ما هي مساهمتك؟
         project:
           title: ما مشروعك؟
         issue:
-          title: ما مشكلتك؟
+          title: ما هي مشكلتك؟
         option:
           title: ما خيارك؟
       details:
         title: التفاصيل 
       attachements:
-        title: الصور والمرفقات
+        title: الصور والمُرفقات
       extra:
         title: معلومات إضافية
   custom_field_options:
