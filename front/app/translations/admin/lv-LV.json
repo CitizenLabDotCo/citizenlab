@@ -1,5 +1,10 @@
 {
   "UI.FormComponents.required": "nepieciešams",
+  "app.components.Admin.ImageCropper.imageSupportPageText": "apmeklējiet mūsu atbalsta centru",
+  "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "app.components.Admin.ImageCropper.imageTooltip": "Vairāk informācijas par ieteicamo attēlu izšķirtspēju, {supportPageLink}.",
+  "app.components.Admin.ImageCropper.info": "This image is always cropped to a certain ratio to make sure all crucial aspects are on display at all times. The {link} for this image type is {aspect}:1.",
+  "app.components.Admin.ImageCropper.infoLinkText": "recommended ratio",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Galvenes teksts reģistrētajiem lietotājiem",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Brīdinājums: izvēlētajai krāsai nav pietiekami liela kontrasta. Tā rezultātā teksts var būt grūti salasāms. Lai optimizētu lasāmību, izvēlieties tumšāku krāsu.",
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "Pievienot Notikumus navigācijas joslai",
