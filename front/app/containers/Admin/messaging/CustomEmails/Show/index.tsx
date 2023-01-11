@@ -22,7 +22,7 @@ import GetAppConfiguration, {
 import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
-import localize, { InjectedLocalized } from 'utils/localize';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 // components
 import Button from 'components/UI/Button';
@@ -139,20 +139,20 @@ interface DataProps {
   tenant: GetAppConfigurationChildProps;
 }
 
-interface Props
-  extends InputProps,
-    DataProps,
-    WithRouterProps,
-    WrappedComponentProps,
-    InjectedLocalized {}
+interface Props extends InputProps, DataProps {}
 
 interface State {
   showSendConfirmationModal: boolean;
   isCampaignSending: boolean;
 }
 
-class Show extends React.Component<Props, State> {
-  constructor(props) {
+class Show extends React.Component<
+  Props & WithRouterProps & WrappedComponentProps & InjectedLocalized,
+  State
+> {
+  constructor(
+    props: Props & WithRouterProps & WrappedComponentProps & InjectedLocalized
+  ) {
     super(props);
     this.state = {
       showSendConfirmationModal: false,
@@ -385,7 +385,7 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   tenant: ({ render }) => <GetAppConfiguration>{render}</GetAppConfiguration>,
 });
 
-const ShowWithHOCs = injectIntl(localize(Show));
+const ShowWithHOCs = injectIntl(injectLocalize(Show));
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>

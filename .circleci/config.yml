@@ -480,7 +480,7 @@ jobs:
       - run:
           name: Run tests with JUnit as reporter
           environment:
-            JEST_JUNIT_OUTPUT: "reports/junit/js-test-results.xml"
+            JEST_JUNIT_OUTPUT_FILE: "reports/junit/js-test-results.xml"
           command: npm run test:ci
       - store_test_results:
           path: ./reports/junit

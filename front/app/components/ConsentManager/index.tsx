@@ -49,7 +49,7 @@ interface State {
 }
 
 export class ConsentManager extends PureComponent<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
 
     const cookieConsent = getConsent();

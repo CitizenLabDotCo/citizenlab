@@ -103,7 +103,7 @@ export default class SubmitWrapper extends PureComponent<Props> {
   secondaryButton: HTMLButtonElement | null;
 
   constructor(props: Props) {
-    super(props as any);
+    super(props);
     this.submitButton = null;
     this.secondaryButton = null;
   }

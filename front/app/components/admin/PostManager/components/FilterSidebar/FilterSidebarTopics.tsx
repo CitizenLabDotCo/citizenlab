@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import { xor } from 'lodash-es';
 import { Menu, Divider } from 'semantic-ui-react';
 import FilterSidebarTopicsItem from './FilterSidebarTopicsItem';
@@ -17,7 +17,7 @@ const FilterSidebarTopics = ({
   selectedTopics,
   onChangeTopicsFilter,
 }: Props) => {
-  const handleItemClick = (id: string) => (event) => {
+  const handleItemClick = (id: string) => (event: MouseEvent) => {
     if (event.ctrlKey) {
       onChangeTopicsFilter &&
         onChangeTopicsFilter(xor(selectedTopics || [], [id]));
