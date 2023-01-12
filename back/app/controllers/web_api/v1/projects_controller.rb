@@ -79,12 +79,8 @@ class WebApi::V1::ProjectsController < ApplicationController
   def copy
     source_project = Project.find(params[:id])
 
-    src_title_ml = source_project.title_multiloc
-    title_suffix_multiloc = MultilocService.new.i18n_to_multiloc('project_copy.title_suffix')
-    copy_title_ml = src_title_ml.each { |k, v| src_title_ml[k] = "#{v} - #{title_suffix_multiloc[k]}" }
-
-    # Assign UUID to slug, to use to find the project that will be created
-    temp_slug = SecureRandom.urlsafe_base64(32).downcase
+    copy_title_ml = add_copy_title_suffix(source_project.title_multiloc)
+    temp_slug = SecureRandom.urlsafe_base64(32).downcase # Use to find created project
 
     options = {
       include_ideas: false,
@@ -103,6 +99,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     @project = Project.find_by(slug: "#{temp_slug}-1")
     authorize @project
 
+    # Replace the temporary UUID slug with a human-readable slug based on the title_mulitloc
     @project.slug = SlugService.new.generate_slug(@project, copy_title_ml.values.first)
 
     if @project.save
@@ -199,5 +196,10 @@ class WebApi::V1::ProjectsController < ApplicationController
   def set_project
     @project = Project.find(params[:id])
     authorize @project
+  end
+
+  def add_copy_title_suffix(multiloc)
+    title_suffix_multiloc = MultilocService.new.i18n_to_multiloc('project_copy.title_suffix')
+    multiloc.each { |k, v| multiloc[k] = "#{v} - #{title_suffix_multiloc[k]}" }
   end
 end
