@@ -344,7 +344,9 @@ export class InitiativesShow extends PureComponent<
   officialFeedbackElement = createRef<HTMLDivElement>();
   timeoutRef: NodeJS.Timeout;
 
-  constructor(props) {
+  constructor(
+    props: Props & WrappedComponentProps & InjectedLocalized & WithRouterProps
+  ) {
     super(props);
     this.state = {
       loaded: false,

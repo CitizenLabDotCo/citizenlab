@@ -20,9 +20,8 @@ const TwoRowLayout = ({ pageData }: Props) => {
   const isTablet = useBreakpoint('tablet');
 
   return (
-    <>
+    <Box data-testid="two-row-layout" width="100%" background="white">
       <Box
-        width="100%"
         position="relative"
         // Needed when the Hero banner is turned on, but there is no image yet
         // Otherwise the AdminCustomPageEditButton is not clickable.
@@ -53,7 +52,7 @@ const TwoRowLayout = ({ pageData }: Props) => {
           />
         </Container>
       </ContentContainer>
-    </>
+    </Box>
   );
 };
 

@@ -15,7 +15,10 @@ const TwoColumnLayout = ({ pageData }: Props) => {
   const pageAttributes = pageData.attributes;
   const imageUrl = pageAttributes.header_bg?.large;
   return (
-    <Container data-cy="e2e-two-column-layout-container">
+    <Container
+      data-testid="two-column-layout"
+      data-cy="e2e-two-column-layout-container"
+    >
       {imageUrl && (
         <HeaderImage
           src={imageUrl}
