@@ -675,7 +675,7 @@
   "app.containers.Admin.reporting.containers.ReportBuilderPage.viewReports": "Berichte ansehen",
   "app.containers.Admin.reporting.helmetDescription": "Berichtseite für Admins",
   "app.containers.Admin.reporting.helmetTitle": "Berichterstattung",
-  "app.containers.Admin.reporting.printPrepare": "Preparing to print...",
+  "app.containers.Admin.reporting.printPrepare": "Vorbereitung auf den Druck...",
   "app.containers.Admin.reporting.reportBuilder": "Berichtsersteller",
   "app.containers.Admin.reporting.reportHeader": "Berichtskopf",
   "app.containers.AdminPage.DashboardPage.Report.participants": "Teilnehmende",
