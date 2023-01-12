@@ -148,7 +148,6 @@ class AdminProjectTimelineEdit extends PureComponent<
                     ) {
                       return combineLatest(
                         phaseFiles.data.map((phaseFile) => {
-                          console.log('phaseFile', phaseFile);
                           const url = phaseFile.attributes.file.url;
                           const filename = phaseFile.attributes.name;
                           const size = phaseFile.attributes.size;
