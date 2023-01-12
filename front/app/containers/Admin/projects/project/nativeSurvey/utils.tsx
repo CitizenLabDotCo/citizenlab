@@ -1,10 +1,19 @@
-// types
-import { FormBuilderConfig } from 'components/FormBuilder/utils';
+import React from 'react';
+
+// services
 import { IFlatCustomField } from 'services/formCustomFields';
 import { IPhaseData, updatePhase } from 'services/phases';
 import { IProjectData, updateProject } from 'services/projects';
+
+// typing
 import { Multiloc } from 'typings';
+
+// utils
 import { isNilOrError } from 'utils/helperUtils';
+
+// components
+import DeleteFormResultsNotice from './DeleteFormResultsNotice';
+import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
 // intl
 import messages from './messages';
@@ -22,13 +31,28 @@ export const nativeSurveyConfig: FormBuilderConfig = {
   viewFormLinkCopy: messages.viewSurvey,
   toolboxTitle: messages.addSurveyContent,
   formSavedSuccessMessage: messages.successMessage,
+  supportArticleLink: messages.supportArticleLink,
+  formEndPageLogicOption: messages.surveyEnd,
+  questionLogicHelperText: messages.questionLogicHelperText,
+  pagesLogicHelperText: messages.pagesLogicHelperText,
+
   toolboxFieldsToExclude: [],
   formCustomFields: undefined,
+
   showStatusBadge: true,
   isLogicEnabled: true,
   isEditPermittedAfterSubmissions: false,
+
   getGoBackUrl: (projectId: string) => {
     return `/admin/projects/${projectId}/native-survey`;
+  },
+  getDeleteFormResultsNotice: (projectId: string) => {
+    return (
+      <DeleteFormResultsNotice
+        projectId={projectId}
+        redirectToSurveyPage={true}
+      />
+    );
   },
 };
 

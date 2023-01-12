@@ -19,7 +19,6 @@ import FormBuilderSettings from 'components/FormBuilder/components/FormBuilderSe
 import FormFields from 'components/FormBuilder/components/FormFields';
 import Error from 'components/UI/Error';
 import Feedback from 'components/HookForm/Feedback';
-import DeleteFormResultsNotice from 'containers/Admin/projects/project/nativeSurvey/DeleteFormResultsNotice';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -261,12 +260,9 @@ export const FormEdit = ({
                         builderConfig.formSavedSuccessMessage
                       )}
                     />
-                    {isEditingDisabled && (
-                      <DeleteFormResultsNotice
-                        projectId={projectId}
-                        redirectToSurveyPage
-                      />
-                    )}
+                    {isEditingDisabled &&
+                      builderConfig.getDeleteFormResultsNotice &&
+                      builderConfig?.getDeleteFormResultsNotice(projectId)}
                     <Box
                       borderRadius="3px"
                       boxShadow="0px 2px 4px rgba(0, 0, 0, 0.2)"
@@ -278,6 +274,7 @@ export const FormEdit = ({
                         selectedFieldId={selectedField?.id}
                         isEditingDisabled={isEditingDisabled}
                         handleDragEnd={reorderFields}
+                        builderConfig={builderConfig}
                       />
                     </Box>
                   </Box>

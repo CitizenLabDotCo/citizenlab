@@ -9,11 +9,14 @@ export const ideationConfig: FormBuilderConfig = {
   viewFormLinkCopy: messages.viewFormLinkCopy,
   formSavedSuccessMessage: messages.successMessage,
   toolboxTitle: messages.addFormContent,
+
   toolboxFieldsToExclude: ['page', 'file_upload'],
   formCustomFields: undefined,
+
   showStatusBadge: false,
   isLogicEnabled: false,
   isEditPermittedAfterSubmissions: true,
+
   getGoBackUrl: (projectId: string) => {
     return `/admin/projects/${projectId}/ideaform`;
   },

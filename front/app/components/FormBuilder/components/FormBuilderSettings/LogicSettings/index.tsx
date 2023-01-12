@@ -16,11 +16,15 @@ import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
 import { useFormContext } from 'react-hook-form';
 
+// types
+import { FormBuilderConfig } from 'components/FormBuilder/utils';
+
 import { get } from 'lodash-es';
 
 type LogicSettingsProps = {
   pageOptions: { value: string; label: string }[];
   field: IFlatCustomFieldWithIndex;
+  builderConfig: FormBuilderConfig | undefined;
 };
 
 export type AnswersType =
@@ -30,7 +34,11 @@ export type AnswersType =
     }[]
   | undefined;
 
-export const LogicSettings = ({ pageOptions, field }: LogicSettingsProps) => {
+export const LogicSettings = ({
+  pageOptions,
+  field,
+  builderConfig,
+}: LogicSettingsProps) => {
   const { formatMessage } = useIntl();
   const {
     watch,
@@ -75,24 +83,27 @@ export const LogicSettings = ({ pageOptions, field }: LogicSettingsProps) => {
       {field.input_type === 'page' ? (
         <>
           <Box mb="24px">
-            <Warning>
-              <FormattedMessage
-                {...messages.pagesLogicHelperText}
-                values={{
-                  supportPageLink: (
-                    <a
-                      href={formatMessage(messages.surveySupportArticle)}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <FormattedMessage
-                        {...messages.surveySupportArticleLinkText}
-                      />
-                    </a>
-                  ),
-                }}
-              />
-            </Warning>
+            {builderConfig && !isNilOrError(builderConfig.supportArticleLink) && (
+              <Warning>
+                <FormattedMessage
+                  {...(builderConfig?.pagesLogicHelperText ||
+                    messages.pagesLogicHelperText)}
+                  values={{
+                    supportPageLink: (
+                      <a
+                        href={formatMessage(builderConfig.supportArticleLink)}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <FormattedMessage
+                          {...messages.supportArticleLinkText}
+                        />
+                      </a>
+                    ),
+                  }}
+                />
+              </Warning>
+            )}
           </Box>
           <PageRuleInput
             fieldId={field.temp_id || field.id}
@@ -104,24 +115,27 @@ export const LogicSettings = ({ pageOptions, field }: LogicSettingsProps) => {
       ) : (
         <>
           <Box mb="24px">
-            <Warning>
-              <FormattedMessage
-                {...messages.questionLogicHelperText}
-                values={{
-                  supportPageLink: (
-                    <a
-                      href={formatMessage(messages.surveySupportArticle)}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <FormattedMessage
-                        {...messages.surveySupportArticleLinkText}
-                      />
-                    </a>
-                  ),
-                }}
-              />
-            </Warning>
+            {builderConfig && !isNilOrError(builderConfig.supportArticleLink) && (
+              <Warning>
+                <FormattedMessage
+                  {...(builderConfig?.questionLogicHelperText ||
+                    messages.questionLogicHelperText)}
+                  values={{
+                    supportPageLink: (
+                      <a
+                        href={formatMessage(builderConfig.supportArticleLink)}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <FormattedMessage
+                          {...messages.supportArticleLinkText}
+                        />
+                      </a>
+                    ),
+                  }}
+                />
+              </Warning>
+            )}
           </Box>
           {answers &&
             answers.map((answer) => (

@@ -46,7 +46,7 @@ export default defineMessages({
     defaultMessage: 'Linear scale',
   },
   fileUpload: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.fileUpload',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.fileUpload',
     defaultMessage: 'File upload',
   },
   default: {
@@ -114,18 +114,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.formBuilder.confirmDeleteFieldWithLogicButtonText',
     defaultMessage: 'Yes, delete page',
   },
-  multiselect: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.multiselectText',
-    defaultMessage: 'Multiple choice - choose many',
-  },
-  select: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.selectText',
-    defaultMessage: 'Multiple choice - choose one',
-  },
-  linear_scale: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.linear_scale',
-    defaultMessage: 'Linear scale',
-  },
   invalidLogicBadgeMessage: {
     id: 'app.containers.AdminPage.ProjectEdit.formBuilder.invalidLogicBadgeMessage',
     defaultMessage: 'Invalid logic',
@@ -147,19 +135,19 @@ export default defineMessages({
     defaultMessage: 'Cancel',
   },
   // Logic Settings
-  surveyEnd: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd',
-    defaultMessage: 'Survey end',
+  formEnd: {
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.formEnd',
+    defaultMessage: 'Form end',
   },
   questionLogicHelperText: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.questionLogicHelperText',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.questionLogicHelperTextDefault',
     defaultMessage:
-      'If no logic is added to an answer, the survey will follow its normal flow. Adding logic to a question will make it required by default. For more information, visit {supportPageLink}',
+      'If no logic is added to an answer, the form will follow its normal flow. Adding logic to a question will make it required by default. For more information, visit {supportPageLink}',
   },
   pagesLogicHelperText: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.pagesLogicHelperText',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.pagesLogicHelperTextDefault',
     defaultMessage:
-      'If no logic is added, the survey will follow its normal flow. For more information, visit {supportPageLink}',
+      'If no logic is added, the form will follow its normal flow. For more information, visit {supportPageLink}',
   },
   goToPageInputLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.formBuilder.goToPageInputLabel',
@@ -177,13 +165,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.formBuilder.nextPageLabel',
     defaultMessage: 'Next:',
   },
-  surveySupportArticle: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.surveySupportArticle',
-    defaultMessage:
-      'https://support.citizenlab.co/en/articles/6673873-creating-an-in-platform-survey',
-  },
-  surveySupportArticleLinkText: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.surveySupportArticleLinkText',
+  supportArticleLinkText: {
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.supportArticleLinkText',
     defaultMessage: 'this page',
   },
 });

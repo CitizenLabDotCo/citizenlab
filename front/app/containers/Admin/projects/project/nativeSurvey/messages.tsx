@@ -105,4 +105,35 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.successMessage',
     defaultMessage: 'Survey successfully saved',
   },
+  supportArticleLink: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.supportArticleLink',
+    defaultMessage:
+      'https://support.citizenlab.co/en/articles/6673873-creating-an-in-platform-survey',
+  },
+  surveyEnd: {
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd',
+    defaultMessage: 'Survey end',
+  },
+  questionLogicHelperText: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.questionLogicHelperText',
+    defaultMessage:
+      'If no logic is added to an answer, the survey will follow its normal flow. Adding logic to a question will make it required by default. For more information, visit {supportPageLink}',
+  },
+  pagesLogicHelperText: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText',
+    defaultMessage:
+      'If no logic is added, the survey will follow its normal flow. For more information, visit {supportPageLink}',
+  },
+  multiselect: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.multiselectText',
+    defaultMessage: 'Multiple choice - choose many',
+  },
+  select: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.selectText',
+    defaultMessage: 'Multiple choice - choose one',
+  },
+  linear_scale: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.linear_scale',
+    defaultMessage: 'Linear scale',
+  },
 });

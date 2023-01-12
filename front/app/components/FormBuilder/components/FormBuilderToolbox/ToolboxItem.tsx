@@ -4,13 +4,19 @@ import styled from 'styled-components';
 // Components
 import { Box, Icon, IconNames, Text } from '@citizenlab/cl2-component-library';
 
+// utils
 import { colors } from 'utils/styleUtils';
+
+// services
+import { ICustomFieldInputType } from 'services/formCustomFields';
 
 interface Props {
   label: string;
   icon: IconNames;
   onClick: () => void;
   'data-cy'?: string;
+  fieldsToExclude: ICustomFieldInputType[] | undefined;
+  inputType: ICustomFieldInputType;
 }
 
 const AddIcon = styled(Icon).attrs({ name: 'plus' })`
@@ -35,7 +41,18 @@ const StyledBox = styled(Box)`
   }
 `;
 
-const ToolboxItem = ({ icon, label, onClick, ...rest }: Props) => {
+const ToolboxItem = ({
+  icon,
+  label,
+  onClick,
+  fieldsToExclude,
+  inputType,
+  ...rest
+}: Props) => {
+  if (fieldsToExclude && fieldsToExclude.includes(inputType)) {
+    return null;
+  }
+
   return (
     <StyledBox
       display="flex"

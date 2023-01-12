@@ -14,7 +14,8 @@ export function generateTempId() {
   return `TEMP-ID-${uuid4()}`;
 }
 
-export const surveyEndOption = 'survey_end';
+// TODO: BE key for survey end options should be replaced with form_end, then we can update this value.
+export const formEndOption = 'survey_end';
 
 // Function to return additional settings based on input type
 export function getAdditionalSettings(

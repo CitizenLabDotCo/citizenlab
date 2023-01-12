@@ -1,4 +1,4 @@
-// Services
+// services
 import {
   ICustomFieldInputType,
   IFlatCustomField,
@@ -6,7 +6,7 @@ import {
 import { IPhaseData } from 'services/phases';
 import { IProjectData } from 'services/projects';
 
-// Utils
+// utils
 import { isNilOrError } from 'utils/helperUtils';
 
 type MessageType = { id: string; defaultMessage: string };
@@ -16,11 +16,19 @@ export type FormBuilderConfig = {
   viewFormLinkCopy: MessageType;
   formSavedSuccessMessage: MessageType;
   toolboxTitle: MessageType;
+  supportArticleLink?: MessageType;
+  formEndPageLogicOption?: MessageType;
+  questionLogicHelperText?: MessageType;
+  pagesLogicHelperText?: MessageType;
+
   toolboxFieldsToExclude: ICustomFieldInputType[];
   formCustomFields: IFlatCustomField[] | undefined | Error;
+
   showStatusBadge: boolean;
   isLogicEnabled: boolean;
   isEditPermittedAfterSubmissions: boolean;
+
+  getDeleteFormResultsNotice?: (projectId: string) => void;
   getGoBackUrl: (projectId: string) => string;
 };
 

@@ -6,11 +6,11 @@ import messages from '../messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { DragAndDropResult, PageStructure } from '../../edit/utils';
 
 // components
 import { Box, colors } from '@citizenlab/cl2-component-library';
-
-// components
+import { FormBuilderConfig } from 'components/FormBuilder/utils';
 import { FieldElement } from './FieldElement';
 
 // hooks and services
@@ -21,7 +21,6 @@ import {
 } from 'services/formCustomFields';
 
 import { DragAndDrop, Drag, Drop } from '../DragAndDrop';
-import { DragAndDropResult, PageStructure } from '../../edit/utils';
 
 // Assign field badge text
 const getTranslatedFieldType = (field) => {
@@ -58,6 +57,7 @@ interface FormFieldsProps {
   ) => void;
   isEditingDisabled: boolean;
   selectedFieldId?: string;
+  builderConfig: FormBuilderConfig | undefined;
 }
 
 const FormFields = ({
@@ -65,6 +65,7 @@ const FormFields = ({
   selectedFieldId,
   isEditingDisabled,
   handleDragEnd,
+  builderConfig,
 }: FormFieldsProps) => {
   const { watch, trigger } = useFormContext();
   const locale = useLocale();
@@ -112,8 +113,8 @@ const FormFields = ({
                   getTranslatedFieldType={getTranslatedFieldType}
                   selectedFieldId={selectedFieldId}
                   onEditField={onEditField}
+                  builderConfig={builderConfig}
                 />
-
                 <Drop
                   key={pageGrouping.id}
                   id={pageGrouping.id}
@@ -138,6 +139,7 @@ const FormFields = ({
                                 getTranslatedFieldType={getTranslatedFieldType}
                                 selectedFieldId={selectedFieldId}
                                 onEditField={onEditField}
+                                builderConfig={builderConfig}
                               />
                             </Drag>
                           );
