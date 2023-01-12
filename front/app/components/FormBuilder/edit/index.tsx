@@ -19,7 +19,7 @@ import FormBuilderSettings from 'components/FormBuilder/components/FormBuilderSe
 import FormFields from 'components/FormBuilder/components/FormFields';
 import Error from 'components/UI/Error';
 import Feedback from 'components/HookForm/Feedback';
-import DeleteFormResultsNotice from 'components/FormBuilder/components/DeleteFormResultsNotice';
+import DeleteFormResultsNotice from 'containers/Admin/projects/project/nativeSurvey/DeleteFormResultsNotice';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -218,80 +218,88 @@ export const FormEdit = ({
     }
   };
 
-  return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      w="100%"
-      zIndex="10000"
-      position="fixed"
-      bgColor={colors.background}
-      h="100vh"
-    >
-      <FocusOn>
-        <FormProvider {...methods}>
-          <form onSubmit={handleSubmit(onFormSubmit)}>
-            <FormBuilderTopBar
-              isSubmitting={isSubmitting}
-              isEditingDisabled={isEditingDisabled}
-              builderConfig={builderConfig}
-            />
-            <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
-              <FormBuilderToolbox
-                onAddField={onAddField}
+  if (!isNilOrError(builderConfig)) {
+    return (
+      <Box
+        display="flex"
+        flexDirection="column"
+        w="100%"
+        zIndex="10000"
+        position="fixed"
+        bgColor={colors.background}
+        h="100vh"
+      >
+        <FocusOn>
+          <FormProvider {...methods}>
+            <form onSubmit={handleSubmit(onFormSubmit)}>
+              <FormBuilderTopBar
+                isSubmitting={isSubmitting}
                 isEditingDisabled={isEditingDisabled}
+                builderConfig={builderConfig}
               />
-              <StyledRightColumn>
-                <Box width="1000px">
-                  {hasErrors && (
-                    <Box mb="16px">
-                      <Error
-                        marginTop="8px"
-                        marginBottom="8px"
-                        text={formatMessage(messages.errorMessage)}
-                        scrollIntoView={false}
+              <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
+                <FormBuilderToolbox
+                  onAddField={onAddField}
+                  isEditingDisabled={isEditingDisabled}
+                  builderConfig={builderConfig}
+                />
+                <StyledRightColumn>
+                  <Box width="1000px">
+                    {hasErrors && (
+                      <Box mb="16px">
+                        <Error
+                          marginTop="8px"
+                          marginBottom="8px"
+                          text={formatMessage(messages.errorMessage)}
+                          scrollIntoView={false}
+                        />
+                      </Box>
+                    )}
+                    <Feedback
+                      successMessage={formatMessage(
+                        builderConfig.formSavedSuccessMessage
+                      )}
+                    />
+                    {isEditingDisabled && (
+                      <DeleteFormResultsNotice
+                        projectId={projectId}
+                        redirectToSurveyPage
+                      />
+                    )}
+                    <Box
+                      borderRadius="3px"
+                      boxShadow="0px 2px 4px rgba(0, 0, 0, 0.2)"
+                      bgColor="white"
+                      minHeight="300px"
+                    >
+                      <FormFields
+                        onEditField={setSelectedField}
+                        selectedFieldId={selectedField?.id}
+                        isEditingDisabled={isEditingDisabled}
+                        handleDragEnd={reorderFields}
                       />
                     </Box>
-                  )}
-                  <Feedback
-                    successMessage={formatMessage(messages.successMessage)}
-                  />
-                  {isEditingDisabled && (
-                    <DeleteFormResultsNotice
-                      projectId={projectId}
-                      redirectToSurveyPage
-                    />
-                  )}
-                  <Box
-                    borderRadius="3px"
-                    boxShadow="0px 2px 4px rgba(0, 0, 0, 0.2)"
-                    bgColor="white"
-                    minHeight="300px"
-                  >
-                    <FormFields
-                      onEditField={setSelectedField}
-                      selectedFieldId={selectedField?.id}
-                      isEditingDisabled={isEditingDisabled}
-                      handleDragEnd={reorderFields}
-                    />
                   </Box>
-                </Box>
-              </StyledRightColumn>
-              {!isNilOrError(selectedField) && (
-                <FormBuilderSettings
-                  key={selectedField.id}
-                  field={selectedField}
-                  onDelete={handleDelete}
-                  onClose={closeSettings}
-                  isDeleteDisabled={isDeleteDisabled}
-                />
-              )}
-            </Box>
-          </form>
-        </FormProvider>
-      </FocusOn>
-    </Box>
-  );
+                </StyledRightColumn>
+                {!isNilOrError(selectedField) && (
+                  <FormBuilderSettings
+                    key={selectedField.id}
+                    field={selectedField}
+                    onDelete={handleDelete}
+                    onClose={closeSettings}
+                    isDeleteDisabled={isDeleteDisabled}
+                    builderConfig={builderConfig}
+                  />
+                )}
+              </Box>
+            </form>
+          </FormProvider>
+        </FocusOn>
+      </Box>
+    );
+  }
+
+  return null;
 };
 
 type FormBuilderPageProps = {

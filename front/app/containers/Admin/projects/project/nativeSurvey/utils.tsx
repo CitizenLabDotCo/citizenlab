@@ -19,8 +19,14 @@ export const getUpdatedConfiguration = (
 
 export const nativeSurveyConfig: FormBuilderConfig = {
   formBuilderTitle: messages.survey,
+  viewFormLinkCopy: messages.viewSurvey,
+  toolboxTitle: messages.addSurveyContent,
+  formSavedSuccessMessage: messages.successMessage,
+  toolboxFieldsToExclude: [],
   formCustomFields: undefined,
   showStatusBadge: true,
+  isLogicEnabled: true,
+  isEditPermittedAfterSubmissions: false,
   getGoBackUrl: (projectId: string) => {
     return `/admin/projects/${projectId}/native-survey`;
   },

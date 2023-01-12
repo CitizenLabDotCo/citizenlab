@@ -32,12 +32,14 @@ import { useFormContext } from 'react-hook-form';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { surveyEndOption } from './utils';
+import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
 interface Props {
   field: IFlatCustomFieldWithIndex;
   onDelete: (fieldIndex: number) => void;
   onClose: () => void;
   isDeleteDisabled?: boolean;
+  builderConfig?: FormBuilderConfig;
 }
 
 const FormBuilderSettings = ({
@@ -45,6 +47,7 @@ const FormBuilderSettings = ({
   onDelete,
   onClose,
   isDeleteDisabled = false,
+  builderConfig,
 }: Props) => {
   const locales = useAppConfigurationLocales();
   const [currentTab, setCurrentTab] = useState<'content' | 'logic'>('content');
@@ -197,7 +200,7 @@ const FormBuilderSettings = ({
             <FormattedMessage {...translatedStringKey} />
           </Title>
         )}
-        {showTabbedSettings && (
+        {showTabbedSettings && builderConfig?.isLogicEnabled && (
           <Box display="flex" width="100%" mb="40px">
             <Box
               flexGrow={1}
@@ -231,6 +234,7 @@ const FormBuilderSettings = ({
           </Box>
         )}
         {(!showTabbedSettings ||
+          !builderConfig?.isLogicEnabled ||
           (showTabbedSettings && currentTab === 'content')) && (
           <ContentSettings
             field={field}

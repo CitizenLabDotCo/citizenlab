@@ -64,7 +64,7 @@ const FormBuilderTopBar = ({
   }
 
   const isPostingEnabled = getIsPostingEnabled(project, phase);
-  const viewSurveyLInk = phaseId
+  const viewFormLink = phaseId
     ? `/projects/${project?.attributes.slug}/ideas/new?phase_id=${phaseId}`
     : `/projects/${project?.attributes.slug}/ideas/new`;
 
@@ -131,11 +131,11 @@ const FormBuilderTopBar = ({
           icon="eye"
           mx="20px"
           disabled={!project}
-          linkTo={viewSurveyLInk}
+          linkTo={viewFormLink}
           openLinkInNewTab
           data-cy="e2e-preview-form-button"
         >
-          <FormattedMessage {...messages.viewSurvey} />
+          <FormattedMessage {...builderConfig?.viewFormLinkCopy} />
         </Button>
         <Button
           buttonStyle="admin-dark"
