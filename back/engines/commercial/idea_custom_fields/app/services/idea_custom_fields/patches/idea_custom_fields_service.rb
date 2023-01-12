@@ -11,7 +11,7 @@ module IdeaCustomFields
         return unless custom_form
 
         custom_form.custom_fields.find_by(code: code) ||
-          participation_method.default_fields.find { |default_field| default_field.code == code }
+          participation_method.default_fields(custom_form).find { |default_field| default_field.code == code }
       end
 
       def find_field_by_id(id)
@@ -29,7 +29,7 @@ module IdeaCustomFields
           []
         end
         [
-          *participation_method.default_fields.map do |default_field|
+          *participation_method.default_fields(custom_form).map do |default_field|
             persisted_fields.find { |c| default_field.code == c.code } || default_field
           end,
           *persisted_fields.reject(&:built_in?).sort_by(&:ordering)

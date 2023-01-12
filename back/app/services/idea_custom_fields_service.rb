@@ -7,7 +7,7 @@ class IdeaCustomFieldsService
   end
 
   def all_fields
-    participation_method.default_fields
+    participation_method.default_fields custom_form
   end
 
   def configurable_fields

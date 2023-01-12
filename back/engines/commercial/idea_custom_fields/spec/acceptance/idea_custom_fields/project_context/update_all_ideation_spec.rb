@@ -27,16 +27,16 @@ resource 'Idea Custom Fields' do
       parameter :title_multiloc, 'A title of the option, as shown to users, in multiple locales', required: false
     end
 
+    let(:context) { create :continuous_project, participation_method: 'ideation' }
+    let(:custom_form) { create :custom_form, participation_context: context }
+    let(:project_id) { context.id }
+
     # Built-in fields
     # Do not allow logic
     # Allow when inputs present
 
     context 'when admin' do
       before { admin_header_token }
-
-      let(:context) { create :continuous_project, participation_method: 'ideation' }
-      let(:custom_form) { create :custom_form, participation_context: context }
-      let(:project_id) { context.id }
 
       example 'Updating custom fields when there are responses' do
         create :idea, project: context

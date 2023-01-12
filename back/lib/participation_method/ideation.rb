@@ -14,7 +14,7 @@ module ParticipationMethod
       input.idea_status ||= IdeaStatus.find_by!(code: 'proposed')
     end
 
-    def default_fields
+    def default_fields(custom_form)
       multiloc_service = MultilocService.new
       [
         CustomField.new(
