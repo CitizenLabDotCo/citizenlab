@@ -79,14 +79,15 @@ class WebApi::V1::ProjectsController < ApplicationController
   def copy
     source_project = Project.find(params[:id])
 
-    copy_title_multiloc = add_copy_title_suffix(source_project.title_multiloc)
+    new_title_multiloc = add_copy_title_suffix(source_project.title_multiloc)
     temporary_slug = SecureRandom.urlsafe_base64(32).downcase # Use to find created project
 
     options = {
+      local_copy: true,
       include_ideas: false,
       anonymize_users: false,
       new_slug: temporary_slug,
-      new_title_multiloc: copy_title_multiloc,
+      new_title_multiloc: new_title_multiloc,
       timeline_start_at: Time.now.to_s,
       new_publication_status: 'draft'
     }
@@ -99,7 +100,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     authorize @project
 
     # Replace the temporary UUID slug with a human-readable slug based on the title_mulitloc
-    @project.slug = SlugService.new.generate_slug(@project, copy_title_multiloc.values.first)
+    @project.slug = SlugService.new.generate_slug(@project, new_title_multiloc.values.first)
 
     if @project.save
       sidefx.after_copy(source_project, @project)
