@@ -2,11 +2,7 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { Multiloc } from 'typings';
 
-export type OnboardingCampaignName =
-  | 'complete_profile'
-  | 'custom_cta'
-  | 'default'
-  | 'verification';
+export type OnboardingCampaignName = 'default';
 
 export const currentOnboardingCampaignsApiEndpoint = `${API_PATH}/onboarding_campaigns/current`;
 
@@ -31,15 +27,4 @@ export function currentOnboardingCampaignsStream(
     apiEndpoint: currentOnboardingCampaignsApiEndpoint,
     ...streamParams,
   });
-}
-
-export async function dismissOnboardingCampaign(name: OnboardingCampaignName) {
-  const response = await streams.add<OnboardingCampaignData>(
-    `${API_PATH}/onboarding_campaigns/${name}/dismissal`,
-    {}
-  );
-  await streams.fetchAllWith({
-    apiEndpoint: [currentOnboardingCampaignsApiEndpoint],
-  });
-  return response;
 }
