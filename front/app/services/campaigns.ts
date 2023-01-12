@@ -46,15 +46,6 @@ export interface CampaignUpdate {
   enabled?: boolean;
 }
 
-export interface CampaignCreation {
-  campaign_name: string;
-  subject_multiloc: Multiloc;
-  body_multiloc: Multiloc;
-  sender: string;
-  reply_to?: string;
-  group_ids?: string[];
-}
-
 export interface ICampaign {
   data: ICampaignData;
 }
@@ -110,35 +101,5 @@ export function updateCampaign(
 ) {
   return streams.update<ICampaign>(`${apiEndpoint}/${campaignId}`, campaignId, {
     campaign: campaignData,
-  });
-}
-
-export function campaignByIdStream(
-  campaignId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<ICampaign>({
-    apiEndpoint: `${apiEndpoint}/${campaignId}`,
-    ...streamParams,
-  });
-}
-
-export function listCampaignDeliveries(
-  campaignId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IDeliveriesData>({
-    apiEndpoint: `${apiEndpoint}/${campaignId}/deliveries`,
-    ...streamParams,
-  });
-}
-
-export function getCampaignStats(
-  campaignId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<ICampaignStats>({
-    apiEndpoint: `${apiEndpoint}/${campaignId}/stats`,
-    ...streamParams,
   });
 }
