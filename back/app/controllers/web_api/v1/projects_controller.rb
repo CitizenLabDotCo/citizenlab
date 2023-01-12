@@ -102,6 +102,19 @@ class WebApi::V1::ProjectsController < ApplicationController
     @project.slug = SlugService.new.generate_slug(@project, copy_title_multiloc.values.first)
 
     if @project.save
+      source_project.permissions.each do |permission|
+        next unless permission.permitted_by == 'groups'
+
+        copied_permission = @project.permissions.where(action: permission.action).first
+        next unless copied_permission
+
+        permission.groups.each do |group|
+          GroupsPermission.create(permission_id: copied_permission.id, group_id: group.id)
+        end
+      end
+
+      # Need to also set groups for group permissions for each/any phase that has such permissions
+
       render json: WebApi::V1::ProjectSerializer.new(
         @project,
         params: fastjson_params,
