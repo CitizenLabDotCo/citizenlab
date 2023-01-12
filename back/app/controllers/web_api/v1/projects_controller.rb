@@ -79,7 +79,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   def copy
     source_project = Project.find(params[:id])
 
-    new_title_multiloc = add_copy_title_suffix(source_project.title_multiloc)
+    new_title_multiloc = add_suffix_to_title(source_project.title_multiloc)
     temporary_slug = SecureRandom.urlsafe_base64(32).downcase # Use to find created project
 
     options = {
@@ -200,7 +200,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     authorize @project
   end
 
-  def add_copy_title_suffix(multiloc)
+  def add_suffix_to_title(multiloc)
     title_suffix_multiloc = MultilocService.new.i18n_to_multiloc('project_copy.title_suffix')
     multiloc.each { |k, v| multiloc[k] = "#{v} - #{title_suffix_multiloc[k]}" }
   end
