@@ -50,10 +50,6 @@ export interface ICampaign {
   data: ICampaignData;
 }
 
-export interface IDeliveriesData {
-  data: IDeliveryData[];
-  links: ILinks;
-}
 export interface IDeliveryData {
   id: string;
   type: string;
@@ -75,17 +71,6 @@ export interface IDeliveryData {
       data: IRelationship;
     };
   };
-}
-
-export interface ICampaignStats {
-  sent: number;
-  bounced: number;
-  failed: number;
-  accepted: number;
-  delivered: number;
-  opened: number;
-  clicked: number;
-  all: number;
 }
 
 export function listCampaigns(streamParams: IStreamParams | null = null) {
