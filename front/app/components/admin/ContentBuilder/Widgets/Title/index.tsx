@@ -46,7 +46,6 @@ const TitleSettings = () => {
     <Box background="#ffffff" marginBottom="20px">
       <Input
         id="e2e-title-text-input"
-        label={formatMessage(messages.title)}
         placeholder={formatMessage(messages.title)}
         type="text"
         value={text}
