@@ -128,25 +128,24 @@ namespace :templates do
   end
 
   def verify_template(template, max_time)
-    service = MultiTenancy::TenantTemplateService.new
-    locales = service.required_locales(template, external_subfolder: 'test')
+    template_service = MultiTenancy::TenantTemplateService.new
+    locales = template_service.required_locales(template, external_subfolder: 'test')
     locales = ['en'] if locales.blank?
-    name = template.split('_').join
-    tn_attributes = {
-      name: name,
-      host: "#{name}.localhost",
-      settings: SettingsService.new.minimal_required_settings(
-        locales: locales,
-        lifecycle_stage: 'demo'
-      )
-    }
-    tn = Tenant.create! tn_attributes
 
-    Apartment::Tenant.switch(tn.schema_name) do
+    settings = SettingsService.new.minimal_required_settings(
+      locales: locales,
+      lifecycle_stage: 'demo'
+    )
+
+    tenant_attrs = { name: host, host: "#{template.split('_').join}.localhost" }
+    config_attrs = { settings: settings }.with_indifferent_access
+    _success, tenant, _app_config = MultiTenancy::TenantService.initialize_tenant(tenant_attrs, config_attrs)
+
+    tenant.switch do
       puts "Verifying #{template}"
-      service.resolve_and_apply_template template, external_subfolder: 'test', max_time: max_time
+      template_service.resolve_and_apply_template(template, external_subfolder: 'test', max_time: max_time)
     end
 
-    tn.destroy!
+    tenant.destroy!
   end
 end
