@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.formBuilder.page',
     defaultMessage: 'Page',
   },
+  section: {
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.section',
+    defaultMessage: 'Section',
+  },
   surveyEnd: {
     id: 'app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd',
     defaultMessage: 'Survey end',

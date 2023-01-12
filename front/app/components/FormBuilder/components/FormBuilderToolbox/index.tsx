@@ -110,6 +110,11 @@ const FormBuilderToolbox = ({
             data-cy="e2e-page"
           />
           <ToolboxItem
+            icon="section"
+            label={formatMessage(messages.section)}
+            onClick={() => addField('section')}
+          />
+          <ToolboxItem
             icon="survey-short-answer-2"
             label={formatMessage(messages.shortAnswer)}
             onClick={() => addField('text')}

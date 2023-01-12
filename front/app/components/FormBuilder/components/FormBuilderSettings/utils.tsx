@@ -33,6 +33,7 @@ export function getAdditionalSettings(
         />
       );
     case 'page':
+    case 'section':
       return <PageSettings locale={platformLocale} field={field} />;
     case 'linear_scale':
       return (

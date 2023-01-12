@@ -50,9 +50,13 @@ export const getIndexForTitle = (
 ) => {
   const fieldIndex = formCustomFields
     .filter((customField) => {
-      return field.input_type === 'page'
-        ? customField.input_type === 'page'
-        : customField.input_type !== 'page';
+      if (field.input_type === 'section') {
+        return customField.input_type === 'section';
+      } else if (field.input_type === 'page') {
+        return customField.input_type === 'page';
+      }
+
+      return !['page', 'section'].includes(customField.input_type);
     })
     .findIndex((f) => f.id === field.id);
 
