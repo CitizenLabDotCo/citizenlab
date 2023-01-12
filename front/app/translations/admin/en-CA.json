@@ -1139,6 +1139,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.emptyTitleError": "Provide a question title",
   "app.containers.AdminPage.ProjectEdit.survey.errorMessage": "There is a problem, please fix the issue to be able to save your changes",
   "app.containers.AdminPage.ProjectEdit.survey.fieldLabel": "Answer choices",
+  "app.containers.AdminPage.ProjectEdit.survey.fileUpload": "File upload",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.labels": "Labels",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.labelsTooltipContent": "Choose optional labels for your minimum and maximum values.",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.page.description": "Description (optional)",
