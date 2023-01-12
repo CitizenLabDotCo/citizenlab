@@ -7,14 +7,6 @@ describe IdeaCustomFieldsService do
   let(:service) { described_class.new custom_form }
 
   describe '#find_field_by_id' do
-    context 'when the custom form is nil' do
-      let(:custom_form) { nil }
-
-      it 'returns nil' do
-        expect(service.find_field_by_id('some_id')).to be_nil
-      end
-    end
-
     it 'returns the field with the given id if the field exists' do
       custom_field = create(:custom_field, resource: custom_form, code: 'title_multiloc')
       expect(service.find_field_by_id(custom_field.id)).to eq custom_field
@@ -27,14 +19,6 @@ describe IdeaCustomFieldsService do
   end
 
   describe '#find_or_build_field' do
-    context 'when the custom form is nil' do
-      let(:custom_form) { nil }
-
-      it 'returns nil' do
-        expect(service.find_or_build_field('some_id')).to be_nil
-      end
-    end
-
     it 'returns the default field with the given code if the field is persisted' do
       custom_field = create(:custom_field, resource: custom_form, code: 'title_multiloc')
       expect(service.find_or_build_field(custom_field.code)).to eq custom_field
@@ -100,23 +84,6 @@ describe IdeaCustomFieldsService do
         idea_files_attributes
         extra_field1
         extra_field2
-      ]
-    end
-
-    it 'only returns default fields when there is no custom form' do
-      custom_form.destroy!
-      service = described_class.new nil
-      output = service.all_fields
-      expect(output.map(&:code)).to eq %w[
-        title_multiloc
-        body_multiloc
-        author_id
-        budget
-        proposed_budget
-        topic_ids
-        location_description
-        idea_images_attributes
-        idea_files_attributes
       ]
     end
   end

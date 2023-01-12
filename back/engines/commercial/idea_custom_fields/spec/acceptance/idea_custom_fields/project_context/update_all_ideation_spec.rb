@@ -30,10 +30,23 @@ resource 'Idea Custom Fields' do
     let(:context) { create :continuous_project, participation_method: 'ideation' }
     let(:custom_form) { create :custom_form, participation_context: context }
     let(:project_id) { context.id }
+    let(:participation_method) { Factory.instance.participation_method_for context }
+    let(:default_fields_param) do
+      attributes = %i[id key code input_type title_multiloc description_multiloc required enabled]
+      participation_method.default_fields(custom_form).map do |field|
+        {}.tap do |field_param|
+          attributes.each do |attribute|
+            field_param[attribute] = field[attribute]
+          end
+        end
+      end
+    end
 
     # Built-in fields
     # Do not allow logic
     # Allow when inputs present
+    # key and code should be preserved
+    # input_type cannot be updated
 
     context 'when admin' do
       before { admin_header_token }
@@ -41,7 +54,11 @@ resource 'Idea Custom Fields' do
       example 'Updating custom fields when there are responses' do
         create :idea, project: context
 
-        do_request(custom_fields: [])
+        do_request(
+          custom_fields: default_fields_param.tap do |params|
+            params.first[:title_multiloc] = { 'en' => 'Custom title' }
+          end
+        )
 
         assert_status 200
       end
