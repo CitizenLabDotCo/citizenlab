@@ -8,7 +8,7 @@ import FilterSelector from 'components/FilterSelector';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // i18n
-import localize, { InjectedLocalized } from 'utils/localize';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 type DataProps = {
   projects: GetProjectsChildProps;
@@ -31,7 +31,7 @@ class ProjectFilterDropdown extends PureComponent<
   Props & InjectedLocalized,
   State
 > {
-  constructor(props) {
+  constructor(props: Props & InjectedLocalized) {
     super(props);
     this.state = {
       selectedValues: [],
@@ -83,7 +83,7 @@ const Data = adopt<DataProps, InputProps>({
   projects: <GetProjects publicationStatuses={['published']} sort="new" />,
 });
 
-const ProjectFilterDropdownWithLocalize = localize(ProjectFilterDropdown);
+const ProjectFilterDropdownWithLocalize = injectLocalize(ProjectFilterDropdown);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

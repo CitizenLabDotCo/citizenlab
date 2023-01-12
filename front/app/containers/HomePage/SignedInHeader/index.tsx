@@ -145,11 +145,7 @@ export const Icons = styled.div`
   `}
 `;
 
-interface Props {
-  className?: string;
-}
-
-const SignedInHeader = ({ className }: Props) => {
+const SignedInHeader = () => {
   const currentOnboardingCampaign = useCurrentOnboardingCampaign();
 
   const handleSkip = (name: OnboardingCampaignName) => () => {
@@ -164,7 +160,7 @@ const SignedInHeader = ({ className }: Props) => {
       currentOnboardingCampaign.data.attributes.name;
 
     return (
-      <Header className={`e2e-signed-in-header ${className}`} id="hook-header">
+      <Header className={`e2e-signed-in-header`} id="hook-header">
         <HeaderImage />
         <Suspense fallback={null}>
           <VerificationOnboardingStep
@@ -175,7 +171,10 @@ const SignedInHeader = ({ className }: Props) => {
             currentOnboardingCampaignName={onboardingCampaignName}
             onSkip={handleSkip('complete_profile')}
           />
-          {/* Do we even use this step? */}
+          {/*
+            This step is configured via AdminHQ.
+            See https://citizenlab.atlassian.net/browse/CL-2289
+          */}
           <CustomCTAStep
             currentOnboardingCampaignName={onboardingCampaignName}
             onSkip={handleSkip('custom_cta')}

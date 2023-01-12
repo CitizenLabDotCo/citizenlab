@@ -9,7 +9,7 @@ interface Props {
 }
 
 class Pagination extends React.PureComponent<Props> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.handleItemClick = this.handleItemClick.bind(this);
   }
