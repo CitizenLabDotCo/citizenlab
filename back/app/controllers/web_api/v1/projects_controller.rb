@@ -87,7 +87,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       anonymize_users: false,
       new_slug: temporary_slug,
       new_title_multiloc: copy_title_multiloc,
-      timeline_start_at: nil,
+      timeline_start_at: Time.now.to_s,
       new_publication_status: 'draft'
     }
 
