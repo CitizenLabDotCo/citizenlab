@@ -92,7 +92,7 @@ class AdminProjectTimelineEdit extends PureComponent<
   params$: BehaviorSubject<IParams | null>;
   subscriptions: Subscription[];
 
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps & WithRouterProps) {
     super(props);
     this.state = {
       locale: null,

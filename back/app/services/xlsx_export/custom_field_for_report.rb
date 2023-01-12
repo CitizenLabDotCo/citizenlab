@@ -22,6 +22,10 @@ module XlsxExport
       visitor.visit self
     end
 
+    def hyperlink?
+      custom_field.input_type == 'file_upload'
+    end
+
     private
 
     attr_reader :custom_field, :scope, :options

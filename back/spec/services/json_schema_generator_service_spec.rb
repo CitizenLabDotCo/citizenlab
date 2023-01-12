@@ -377,4 +377,22 @@ RSpec.describe JsonSchemaGeneratorService do
       expect(generator.visit_page(field)).to be_nil
     end
   end
+
+  describe '#visit_file_upload' do
+    let(:field) { create :custom_field, input_type: 'file_upload', key: field_key }
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_file_upload(field)).to eq({
+        type: 'object',
+        properties: {
+          content: {
+            type: 'string'
+          },
+          name: {
+            type: 'string'
+          }
+        }
+      })
+    end
+  end
 end

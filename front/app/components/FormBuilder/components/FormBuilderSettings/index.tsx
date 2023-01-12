@@ -163,6 +163,9 @@ const FormBuilderSettings = ({
     case 'linear_scale':
       translatedStringKey = messages.linearScale;
       break;
+    case 'file_upload':
+      translatedStringKey = messages.fileUpload;
+      break;
   }
 
   const tabNotActiveBorder = `1px solid ${colors.grey400}`;
