@@ -1,17 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  viewSurvey: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurvey',
-    defaultMessage: 'View survey',
-  },
   save: {
     id: 'app.containers.AdminPage.ProjectEdit.formBuilder.save',
     defaultMessage: 'Save',
-  },
-  addSurveyContent: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.addSurveyContent',
-    defaultMessage: 'Add survey content',
   },
   shortAnswer: {
     id: 'app.containers.AdminPage.ProjectEdit.formBuilder.shortAnswer',
@@ -105,14 +97,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.formBuilder.questionDescriptionOptional',
     defaultMessage: 'Question description (optional)',
   },
-  required: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.required',
-    defaultMessage: 'Required',
-  },
-  optional: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.optional',
-    defaultMessage: 'Optional',
-  },
   requiredToggleLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.formBuilder.requiredToggleLabel',
     defaultMessage: 'Make answering this question required',
@@ -125,46 +109,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.formBuilder.editButtonLabel',
     defaultMessage: 'Edit',
   },
-  viewSurveyResults: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurveyResults',
-    defaultMessage: 'View survey results ({count})',
-  },
-  editSurveyContent: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.editSurveyContent',
-    defaultMessage: 'Edit survey content',
-  },
-  viewSurveyText: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurveyText',
-    defaultMessage: 'View survey',
-  },
-  openForResponses: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.openForResponses',
-    defaultMessage: 'Open for responses',
-  },
-  surveyResults: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.surveyResults',
-    defaultMessage: 'Survey results',
-  },
-  deleteSurveyResults: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResults',
-    defaultMessage: 'Delete survey results',
-  },
-  deleteResultsConfirmationQuestion: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation',
-    defaultMessage: 'Are you sure you want to delete all survey results?',
-  },
-  deleteResultsInfo: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.deleteResultsInfo',
-    defaultMessage: 'This cannot be undone',
-  },
-  cancelDeleteButtonText: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.cancelDeleteButtonText',
-    defaultMessage: 'Cancel',
-  },
-  confirmDeleteButtonText: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.confirmDeleteButtonText',
-    defaultMessage: 'Yes, delete survey results',
-  },
   deleteFieldWithLogicConfirmationQuestion: {
     id: 'app.containers.AdminPage.ProjectEdit.formBuilder.deleteFieldWithLogicConfirmationQuestion',
     defaultMessage:
@@ -173,23 +117,6 @@ export default defineMessages({
   confirmDeleteFieldWithLogicButtonText: {
     id: 'app.containers.AdminPage.ProjectEdit.formBuilder.confirmDeleteFieldWithLogicButtonText',
     defaultMessage: 'Yes, delete page',
-  },
-  totalSurveyResponses: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses',
-    defaultMessage: 'Total {count} responses',
-  },
-  noSurveyResponses: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses',
-    defaultMessage: 'No survey responses yet',
-  },
-  downloadResults: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.downloadResults',
-    defaultMessage: 'Download survey results',
-  },
-  informationText: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.informationText',
-    defaultMessage:
-      'Responses to short and long answer questions are currently only available in the survey download',
   },
   multiselect: {
     id: 'app.containers.AdminPage.ProjectEdit.formBuilder.multiselectText',
@@ -203,25 +130,31 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.formBuilder.linear_scale',
     defaultMessage: 'Linear scale',
   },
-  disabledSurveyMessage: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage',
-    defaultMessage:
-      "Survey content can't be edited as survey results have started coming in.",
-  },
-  deleteResultsLink: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.deleteResultsLink',
-    defaultMessage: 'Delete the results if you need to make changes.',
-  },
-  choiceCount: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.choiceCount',
-    defaultMessage:
-      '{percentage}% ({choiceCount, plural, no {# choices} one {# choice} other {# choices}})',
-  },
   invalidLogicBadgeMessage: {
     id: 'app.containers.AdminPage.ProjectEdit.formBuilder.invalidLogicBadgeMessage',
     defaultMessage: 'Invalid logic',
   },
+  required: {
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.required',
+    defaultMessage: 'Required',
+  },
+  optional: {
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.optional',
+    defaultMessage: 'Optional',
+  },
+  deleteResultsInfo: {
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.deleteResultsInfo',
+    defaultMessage: 'This cannot be undone',
+  },
+  cancelDeleteButtonText: {
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.cancelDeleteButtonText',
+    defaultMessage: 'Cancel',
+  },
   // Logic Settings
+  surveyEnd: {
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd',
+    defaultMessage: 'Survey end',
+  },
   questionLogicHelperText: {
     id: 'app.containers.AdminPage.ProjectEdit.formBuilder.questionLogicHelperText',
     defaultMessage:

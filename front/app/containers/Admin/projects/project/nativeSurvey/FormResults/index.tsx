@@ -20,7 +20,7 @@ import CompletionBar from 'containers/Admin/projects/project/nativeSurvey/FormRe
 import T from 'components/T';
 
 // i18n
-import messages from 'components/FormBuilder/components/messages';
+import messages from '../messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

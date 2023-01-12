@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectIdeaForm.inputForm',
     defaultMessage: 'Input form',
   },
+  viewFormLinkCopy: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy',
+    defaultMessage: 'View form',
+  },
   inputFormDescription: {
     id: 'app.containers.AdminPage.ProjectIdeaForm.inputFormDescription',
     defaultMessage:
@@ -62,5 +66,13 @@ export default defineMessages({
   requiredTooltipContent: {
     id: 'app.containers.AdminPage.ProjectIdeaForm.requiredTooltipContent',
     defaultMessage: 'Require this field to be filled in.',
+  },
+  addFormContent: {
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.addFormContent',
+    defaultMessage: 'Add form content',
+  },
+  successMessage: {
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.successMessage',
+    defaultMessage: 'Form successfully saved',
   },
 });

@@ -11,7 +11,7 @@ import Button from 'components/UI/Button';
 const FormBuilder = lazy(() => import('components/FormBuilder/edit'));
 
 // i18n
-import messages from 'components/FormBuilder/messages';
+import messages from './messages';
 
 // hooks
 import useProject from 'hooks/useProject';

@@ -25,6 +25,7 @@ import useLocale from 'hooks/useLocale';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { generateTempId } from '../FormBuilderSettings/utils';
+import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
 const DraggableElement = styled.div`
   cursor: move;
@@ -33,12 +34,14 @@ const DraggableElement = styled.div`
 interface FormBuilderToolboxProps {
   onAddField: (field: IFlatCreateCustomField) => void;
   isEditingDisabled: boolean;
+  builderConfig?: FormBuilderConfig;
 }
 
 const FormBuilderToolbox = ({
   intl: { formatMessage },
   onAddField,
   isEditingDisabled,
+  builderConfig,
 }: FormBuilderToolboxProps & WrappedComponentProps) => {
   const locale = useLocale();
 
@@ -99,16 +102,18 @@ const FormBuilderToolbox = ({
           color="textSecondary"
           style={{ textTransform: 'uppercase' }}
         >
-          <FormattedMessage {...messages.addSurveyContent} />
+          <FormattedMessage {...builderConfig?.toolboxTitle} />
         </Title>
 
         <DraggableElement>
-          <ToolboxItem
-            icon="page"
-            label={formatMessage(messages.page)}
-            onClick={() => addField('page')}
-            data-cy="e2e-page"
-          />
+          {!builderConfig?.toolboxFieldsToExclude.includes('page') && (
+            <ToolboxItem
+              icon="page"
+              label={formatMessage(messages.page)}
+              onClick={() => addField('page')}
+              data-cy="e2e-page"
+            />
+          )}
           <ToolboxItem
             icon="section"
             label={formatMessage(messages.section)}
