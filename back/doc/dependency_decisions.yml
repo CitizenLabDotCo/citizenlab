@@ -125,12 +125,6 @@
     :versions: []
     :when: 2021-02-24 13:56:18.297371212 Z
 - - :approve
-  - onboarding
-  - :who: 
-    :why: 
-    :versions: []
-    :when: 2021-02-24 13:56:18.596411203 Z
-- - :approve
   - polls
   - :who: 
     :why: 

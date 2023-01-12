@@ -18,10 +18,7 @@ export async function confirm(confirmation: Partial<IConfirmation>) {
     await streams.add(confirmationApiEndpoint, bodyData);
 
     await streams.fetchAllWith({
-      apiEndpoint: [
-        `${API_PATH}/users/me`,
-        `${API_PATH}/onboarding_campaigns/current`,
-      ],
+      apiEndpoint: [`${API_PATH}/users/me`],
     });
 
     return true;

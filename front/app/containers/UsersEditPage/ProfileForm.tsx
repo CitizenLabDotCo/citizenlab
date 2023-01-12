@@ -190,9 +190,6 @@ const ProfileForm = ({
 
     try {
       await updateUser(authUser.id, { ...newFormValues, avatar });
-      streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/onboarding_campaigns/current`],
-      });
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }
