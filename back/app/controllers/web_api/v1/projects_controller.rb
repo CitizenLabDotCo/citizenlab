@@ -113,7 +113,21 @@ class WebApi::V1::ProjectsController < ApplicationController
         end
       end
 
-      # Need to also set groups for group permissions for each/any phase that has such permissions
+      source_phases = source_project.phases.order(:start_at)
+      copied_phases = @project.phases.order(:start_at)
+
+      source_phases.each_with_index do |phase, index|
+        phase.permissions.each do |permission|
+          next unless permission.permitted_by == 'groups'
+
+          copied_permission = copied_phases[index].permissions.where(action: permission.action).first
+          next unless copied_permission
+
+          permission.groups.each do |group|
+            GroupsPermission.create(permission_id: copied_permission.id, group_id: group.id)
+          end
+        end
+      end
 
       render json: WebApi::V1::ProjectSerializer.new(
         @project,
