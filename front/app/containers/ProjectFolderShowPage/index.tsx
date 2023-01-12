@@ -15,8 +15,6 @@ import ContentContainer from 'components/ContentContainer';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import useLocale from 'hooks/useLocale';
-import useAppConfiguration from 'hooks/useAppConfiguration';
 import useProjectFolder from 'hooks/useProjectFolder';
 import useAdminPublications from 'hooks/useAdminPublications';
 
@@ -80,6 +78,7 @@ const ButtonBar = styled.div`
 
 const EditButton = styled(Button)`
   margin-left: 30px;
+  margin-bottom: 16px;
 `;
 
 const Content = styled.div`
@@ -149,9 +148,6 @@ const ProjectFolderShowPage = memo<{
   projectFolder: IProjectFolderData;
 }>(({ projectFolder }) => {
   const authUser = useAuthUser();
-  const locale = useLocale();
-  const appConfig = useAppConfiguration();
-
   const { list: adminPublicationsList } = useAdminPublications({
     publicationStatusFilter: publicationStatuses,
   });
@@ -160,10 +156,7 @@ const ProjectFolderShowPage = memo<{
   const folderNotFound = isError(projectFolder);
 
   const loading =
-    isUndefined(locale) ||
-    isUndefined(appConfig) ||
-    isUndefined(projectFolder) ||
-    isUndefined(adminPublicationsList);
+    isUndefined(projectFolder) || isUndefined(adminPublicationsList);
 
   const userCanEditFolder =
     !isNilOrError(authUser) && userModeratesFolder(authUser, projectFolder.id);
@@ -187,23 +180,23 @@ const ProjectFolderShowPage = memo<{
           <Loading>
             <Spinner />
           </Loading>
-        ) : !isNilOrError(projectFolder) && !isNilOrError(locale) ? (
+        ) : !isNilOrError(projectFolder) ? (
           <>
-            {!smallerThan1280px ? (
-              <StyledContentContainer maxWidth={maxPageWidth}>
-                {userCanEditFolder && (
-                  <ButtonBar>
-                    <EditButton
-                      icon="edit"
-                      linkTo={`/admin/projects/folders/${projectFolder.id}/settings`}
-                      buttonStyle="secondary"
-                      padding="5px 8px"
-                    >
-                      <FormattedMessage {...messages.editFolder} />
-                    </EditButton>
-                  </ButtonBar>
-                )}
-                <ProjectFolderHeader projectFolder={projectFolder} />
+            <StyledContentContainer maxWidth={maxPageWidth}>
+              {userCanEditFolder && (
+                <ButtonBar>
+                  <EditButton
+                    icon="edit"
+                    linkTo={`/admin/projects/folders/${projectFolder.id}/settings`}
+                    buttonStyle="secondary"
+                    padding="5px 8px"
+                  >
+                    <FormattedMessage {...messages.editFolder} />
+                  </EditButton>
+                </ButtonBar>
+              )}
+              <ProjectFolderHeader projectFolder={projectFolder} />
+              {!smallerThan1280px ? (
                 <Content>
                   <StyledProjectFolderDescription
                     projectFolder={projectFolder}
@@ -212,23 +205,19 @@ const ProjectFolderShowPage = memo<{
                     folderId={projectFolder.id}
                   />
                 </Content>
-              </StyledContentContainer>
-            ) : (
-              <>
-                <StyledContentContainer maxWidth={maxPageWidth}>
-                  <ProjectFolderHeader projectFolder={projectFolder} />
-                  <StyledProjectFolderDescription
-                    projectFolder={projectFolder}
+              ) : (
+                <StyledProjectFolderDescription projectFolder={projectFolder} />
+              )}
+            </StyledContentContainer>
+
+            {smallerThan1280px && (
+              <CardsWrapper>
+                <ContentContainer maxWidth={maxPageWidth}>
+                  <StyledProjectFolderProjectCards
+                    folderId={projectFolder.id}
                   />
-                </StyledContentContainer>
-                <CardsWrapper>
-                  <ContentContainer maxWidth={maxPageWidth}>
-                    <StyledProjectFolderProjectCards
-                      folderId={projectFolder.id}
-                    />
-                  </ContentContainer>
-                </CardsWrapper>
-              </>
+                </ContentContainer>
+              </CardsWrapper>
             )}
           </>
         ) : null}
