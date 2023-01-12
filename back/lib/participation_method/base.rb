@@ -23,6 +23,10 @@ module ParticipationMethod
       # Default is to do nothing.
     end
 
+    def default_fields
+      []
+    end
+
     def validate_built_in_fields?
       # Most participation methods do not have built-in fields,
       # so return false.
