@@ -102,6 +102,7 @@ describe('Admin: update Hero Banner content', () => {
       'testimage.png'
     );
     cy.get('[data-cy="e2e-image-cropper"]'); // wait until image cropper is loaded and visible (image is cropped). The test is flaky without this line.
+    cy.get('#overlay-toggle').should('not.exist');
     cy.get('.e2e-submit-wrapper-button').click();
     cy.wait('@saveHomePage').then((interception) => {
       const img = new Image();
@@ -112,6 +113,7 @@ describe('Admin: update Hero Banner content', () => {
       });
     });
     cy.get('.e2e-submit-wrapper-button').contains('Success');
+    cy.get('#overlay-toggle').should('exist');
     // Image is NOT displayed when signed-in
     cy.visit('/');
     cy.get('[data-cy="e2e-fixed-ratio-header-image-parent"]'); // without this line, the next one always passes
