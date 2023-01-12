@@ -67,4 +67,14 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.printToPdf',
     defaultMessage: 'Print to PDF',
   },
+  reportTitleAlreadyExists: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.reportTitleAlreadyExists',
+    defaultMessage:
+      'A report with this title already exists. Please pick a different title.',
+  },
+  anErrorOccurred: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.anErrorOccurred',
+    defaultMessage:
+      'An error occurred when trying to create this report. Please try again later.',
+  },
 });
