@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Box, Radio, Title, Icon } from '@citizenlab/cl2-component-library';
+import { Box, Radio, Icon, Label } from '@citizenlab/cl2-component-library';
 
 // styles
 import styled from 'styled-components';
@@ -66,9 +66,9 @@ export const TwoColumnSettings = () => {
 
   return (
     <Box mb="30px">
-      <Title variant="h4" as="h3">
+      <Label>
         <FormattedMessage {...messages.columnLayoutRadioLabel} />
-      </Title>
+      </Label>
       <Radio
         onChange={(value) => {
           setProp((props) => (props.columnLayout = value));

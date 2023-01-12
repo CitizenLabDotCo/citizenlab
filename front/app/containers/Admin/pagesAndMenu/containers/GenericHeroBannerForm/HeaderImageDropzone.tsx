@@ -2,8 +2,8 @@ import React from 'react';
 
 // components and theming
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import styled, { useTheme } from 'styled-components';
-import { PreviewDevice } from './BannerImageFields';
+import styled from 'styled-components';
+import { TPreviewDevice } from './BannerImageFields';
 
 // types
 import { ICustomPageAttributes } from 'services/customPages';
@@ -37,14 +37,14 @@ interface Props {
   onRemove: () => void;
   headerError: string | null;
   header_bg: UploadFile[] | null;
-  previewDevice: PreviewDevice;
+  previewDevice: TPreviewDevice;
   layout: THomepageBannerLayout;
 }
 
 // move this to homepage settings resource?
 export const homepageBannerLayoutHeights: {
   [key in THomepageBannerLayout]: {
-    [key in PreviewDevice]: number;
+    [key in TPreviewDevice]: number;
   };
 } = {
   full_width_banner_layout: {
@@ -62,6 +62,11 @@ export const homepageBannerLayoutHeights: {
     tablet: 200,
     phone: 200,
   },
+  fixed_ratio_layout: {
+    desktop: 450,
+    tablet: 450,
+    phone: 225,
+  },
 };
 
 const HeaderImageDropzone = ({
@@ -77,7 +82,7 @@ const HeaderImageDropzone = ({
   const getImagePreviewRatio = () => {
     const layoutHeightOnDevice =
       homepageBannerLayoutHeights[layout][previewDevice];
-    const standardWidthPerDeviceType: { [key in PreviewDevice]: number } = {
+    const standardWidthPerDeviceType: { [key in TPreviewDevice]: number } = {
       desktop: 1530,
       tablet: 768,
       phone: 375,
@@ -91,18 +96,20 @@ const HeaderImageDropzone = ({
     return ratio;
   };
 
-  const theme = useTheme();
-  const displayOverlayColor = overlayColor ?? theme.colors.tenantPrimary;
-  const displayOverlayOpacity =
-    overlayOpacity ?? theme.signedOutHeaderOverlayOpacity;
+  // Ideally, this condition is not here. On changing the layout,
+  // We should set the color/opacity to null. This should be refactored
+  // at the next convenience.
+  const isBannerWithOverlay =
+    layout === 'full_width_banner_layout' || layout === 'fixed_ratio_layout';
 
   const previewOverlayElement =
-    layout === 'full_width_banner_layout' &&
-    displayOverlayColor &&
-    displayOverlayOpacity ? (
+    //  We check for typeof of opacity because 0 would coerce to false.
+    isBannerWithOverlay &&
+    typeof overlayOpacity === 'number' &&
+    overlayColor ? (
       <HeaderImageOverlay
-        overlayColor={displayOverlayColor}
-        overlayOpacity={displayOverlayOpacity}
+        overlayColor={overlayColor}
+        overlayOpacity={overlayOpacity}
       />
     ) : null;
 

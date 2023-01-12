@@ -161,12 +161,6 @@
     :versions: []
     :when: 2021-02-24 14:15:04.392754008 Z
 - - :approve
-  - project_permissions
-  - :who: 
-    :why: 
-    :versions: []
-    :when: 2021-03-30 20:05:18.586364420 Z
-- - :approve
   - user_confirmation
   - :who: 
     :why: 

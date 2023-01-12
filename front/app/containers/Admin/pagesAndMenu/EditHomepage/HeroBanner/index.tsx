@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { CLErrors, Multiloc } from 'typings';
+import { CLErrors } from 'typings';
 
 // components
 import { ISubmitState } from 'components/admin/SubmitWrapper';
-import Outlet from 'components/Outlet';
 import {
   homeBreadcrumb,
   pagesAndMenuBreadcrumb,
@@ -18,6 +17,7 @@ import AvatarsField from '../../containers/GenericHeroBannerForm/AvatarsField';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import {
   IHomepageSettingsAttributes,
+  THomepageBannerLayout,
   updateHomepageSettings,
 } from 'services/homepageSettings';
 
@@ -26,13 +26,13 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import HelmetIntl from 'components/HelmetIntl';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from '../../containers/GenericHeroBannerForm/messages';
+import CTASettings from '../../containers/GenericHeroBannerForm//CTASettings';
+import LayoutSettingField from '../../containers/GenericHeroBannerForm/LayoutSettingField';
 
-const EditHomepageHeroBannerForm = ({
-  intl: { formatMessage },
-}: WrappedComponentProps) => {
+const EditHomepageHeroBannerForm = () => {
+  const { formatMessage } = useIntl();
   const [isLoading, setIsLoading] = useState(false);
   const [apiErrors, setApiErrors] = useState<CLErrors | null>(null);
   const [formStatus, setFormStatus] = useState<ISubmitState>('enabled');
@@ -95,14 +95,14 @@ const EditHomepageHeroBannerForm = ({
 
   // signed in handlers
   const handleBannerSignedInMultilocOnChange = (
-    signedInHeaderMultiloc: Multiloc
+    signedInHeaderMultiloc: IHomepageSettingsAttributes['banner_signed_in_header_multiloc']
   ) => {
     handleOnChange('banner_signed_in_header_multiloc', signedInHeaderMultiloc);
   };
 
   // signed out handlers
   const handleHeaderSignedOutMultilocOnChange = (
-    signedOutHeaderMultiloc: Multiloc
+    signedOutHeaderMultiloc: IHomepageSettingsAttributes['banner_signed_out_header_multiloc']
   ) => {
     handleOnChange(
       'banner_signed_out_header_multiloc',
@@ -110,22 +110,31 @@ const EditHomepageHeroBannerForm = ({
     );
   };
   const handleSubheaderSignedOutMultilocOnChange = (
-    signedOutSubheaderMultiloc: Multiloc
+    signedOutSubheaderMultiloc: IHomepageSettingsAttributes['banner_signed_out_subheader_multiloc']
   ) => {
     handleOnChange(
       'banner_signed_out_subheader_multiloc',
       signedOutSubheaderMultiloc
     );
   };
-  const handleOverlayColorOnChange = (color: string) => {
-    handleOnChange('banner_signed_out_header_overlay_color', color);
-  };
-  const handleOverlayOpacityOnChange = (opacity: number) => {
-    handleOnChange('banner_signed_out_header_overlay_opacity', opacity);
+
+  const handleOnOverlayChange = (
+    opacity: IHomepageSettingsAttributes['banner_signed_out_header_overlay_opacity'],
+    color: IHomepageSettingsAttributes['banner_signed_out_header_overlay_color']
+  ) => {
+    if (!isNilOrError(localSettings)) {
+      setFormStatus('enabled');
+
+      setLocalSettings({
+        ...localSettings,
+        banner_signed_out_header_overlay_color: color,
+        banner_signed_out_header_overlay_opacity: opacity,
+      });
+    }
   };
 
   const handleOnChangeBannerAvatarsEnabled = (
-    bannerAvatarsEnabled: boolean
+    bannerAvatarsEnabled: IHomepageSettingsAttributes['banner_avatars_enabled']
   ) => {
     handleOnChange('banner_avatars_enabled', bannerAvatarsEnabled);
   };
@@ -186,8 +195,7 @@ const EditHomepageHeroBannerForm = ({
               setFormStatus={setFormStatus}
               onAddImage={handleOnBannerImageAdd}
               onRemoveImage={handleOnBannerImageRemove}
-              onOverlayColorChange={handleOverlayColorOnChange}
-              onOverlayOpacityChange={handleOverlayOpacityOnChange}
+              onOverlayChange={handleOnOverlayChange}
             />
           }
           bannerHeaderFieldsComponent={
@@ -207,13 +215,14 @@ const EditHomepageHeroBannerForm = ({
               )}
             />
           }
-          outletSectionStart={
-            <Outlet
-              id="app.containers.Admin.settings.customize.headerSectionStart"
+          layoutSettingFieldComponent={
+            <LayoutSettingField
               bannerLayout={
                 localSettings.banner_layout ?? 'full_width_banner_layout'
               }
-              onChange={handleOnChange}
+              onChange={(bannerLayout: THomepageBannerLayout) => {
+                handleOnChange('banner_layout', bannerLayout);
+              }}
             />
           }
           bannerMultilocFieldComponent={
@@ -228,9 +237,8 @@ const EditHomepageHeroBannerForm = ({
               onChange={handleOnChangeBannerAvatarsEnabled}
             />
           }
-          outletSectionEnd={
-            <Outlet
-              id="app.containers.Admin.settings.customize.headerSectionEnd"
+          ctaSettingsComponent={
+            <CTASettings
               localHomepageSettings={localSettings}
               onChange={handleOnChange}
               apiErrors={apiErrors}
@@ -244,4 +252,4 @@ const EditHomepageHeroBannerForm = ({
   return null;
 };
 
-export default injectIntl(EditHomepageHeroBannerForm);
+export default EditHomepageHeroBannerForm;

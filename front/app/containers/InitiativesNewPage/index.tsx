@@ -49,7 +49,7 @@ export class InitiativesNewPage extends React.PureComponent<
   Props & WithRouterProps,
   State
 > {
-  constructor(props) {
+  constructor(props: Props & WithRouterProps) {
     super(props);
     this.state = {
       locationInfo: undefined,

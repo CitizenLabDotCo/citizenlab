@@ -18,7 +18,36 @@ describe('LayoutSettingField', () => {
     );
   });
 
-  it('calls the onChange handler properly', async () => {
+  it('two_column_layout option is visible when the banner layout is two_column_layout', async () => {
+    const onChange = jest.fn();
+
+    render(
+      <LayoutSettingField
+        bannerLayout={'two_column_layout'}
+        onChange={onChange}
+      />
+    );
+
+    await waitFor(() => {
+      screen.getAllByRole('radio')[0].click();
+    });
+
+    await waitFor(() => {
+      screen.getAllByRole('radio')[2].click();
+    });
+
+    await waitFor(() => {
+      screen.getAllByRole('radio')[3].click();
+    });
+
+    expect(onChange).toHaveBeenCalledTimes(3);
+
+    expect(onChange).toHaveBeenCalledWith('full_width_banner_layout');
+    expect(onChange).toHaveBeenCalledWith('two_row_layout');
+    expect(onChange).toHaveBeenCalledWith('fixed_ratio_layout');
+  });
+
+  it('two_column_layout option is hidden when the banner layout is not two_column_layout option', async () => {
     const onChange = jest.fn();
 
     render(
@@ -37,7 +66,8 @@ describe('LayoutSettingField', () => {
     });
 
     expect(onChange).toHaveBeenCalledTimes(2);
-    expect(onChange).toHaveBeenCalledWith('two_column_layout');
+
     expect(onChange).toHaveBeenCalledWith('two_row_layout');
+    expect(onChange).toHaveBeenCalledWith('fixed_ratio_layout');
   });
 });
