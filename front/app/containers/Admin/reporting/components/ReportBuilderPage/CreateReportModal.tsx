@@ -14,6 +14,7 @@ import {
   Radio,
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
 import ProjectFilter from 'containers/Admin/dashboard/components/filters/ProjectFilter';
 
 // styling
@@ -24,7 +25,7 @@ import clHistory from 'utils/cl-router/history';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { IOption } from 'typings';
 
 interface Props {
@@ -44,11 +45,17 @@ const RadioLabel = ({ message }: RadioLabelProps) => (
   </Text>
 );
 
+const reportTitleIsTaken = (error: any) => {
+  return error?.json?.errors?.name?.[0]?.error === 'taken';
+};
+
 const CreateReportModal = ({ open, onClose }: Props) => {
   const [reportTitle, setReportTitle] = useState('');
   const [template, setTemplate] = useState<Template>('blank');
   const [selectedProject, setSelectedProject] = useState<string | undefined>();
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | undefined>();
+  const { formatMessage } = useIntl();
   const reportTitleTooShort = reportTitle.length <= 2;
 
   const blockSubmit =
@@ -66,6 +73,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
   const onCreateReport = async () => {
     if (blockSubmit) return;
     setLoading(true);
+    setErrorMessage(undefined);
 
     try {
       const report = await createReport(reportTitle);
@@ -79,8 +87,13 @@ const CreateReportModal = ({ open, onClose }: Props) => {
           : '';
 
       clHistory.push(path + params);
-    } catch {
-      // TODO handle error
+    } catch (e) {
+      if (reportTitleIsTaken(e)) {
+        setErrorMessage(formatMessage(messages.reportTitleAlreadyExists));
+      } else {
+        setErrorMessage(formatMessage(messages.anErrorOccurred));
+      }
+
       setLoading(false);
     }
   };
@@ -89,7 +102,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
     <Modal opened={open} close={onClose} width="640px">
       <Box display="flex" flexDirection="column" alignItems="center" px="100px">
         <Title variant="h2" color="primary" mt="40px">
-          <FormattedMessage {...messages.createReportModalTitle} />
+          {formatMessage(messages.createReportModalTitle)}
         </Title>
         <Text
           color="primary"
@@ -98,19 +111,17 @@ const CreateReportModal = ({ open, onClose }: Props) => {
           mt="0px"
           mb="32px"
         >
-          <FormattedMessage {...messages.createReportModalDescription} />
+          {formatMessage(messages.createReportModalDescription)}
         </Text>
         <Input
           value={reportTitle}
           type="text"
-          label={<FormattedMessage {...messages.createReportModalInputLabel} />}
+          label={formatMessage(messages.createReportModalInputLabel)}
           onChange={setReportTitle}
           disabled={loading}
         />
         <Box as="fieldset" border="0px" width="100%" p="0px" mt="28px">
-          <Label>
-            <FormattedMessage {...messages.reportTemplate} />
-          </Label>
+          <Label>{formatMessage(messages.reportTemplate)}</Label>
           <Radio
             id="blank-template-radio"
             name="blank-template-radio"
@@ -139,6 +150,11 @@ const CreateReportModal = ({ open, onClose }: Props) => {
             />
           </Box>
         )}
+        {errorMessage && (
+          <Box mt="12px">
+            <Error text={errorMessage} />
+          </Box>
+        )}
         <Button
           bgColor={colors.primary}
           width="auto"
@@ -149,7 +165,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
           data-testid="create-report-button"
           onClick={onCreateReport}
         >
-          <FormattedMessage {...messages.emptyStateButtonText} />
+          {formatMessage(messages.emptyStateButtonText)}
         </Button>
       </Box>
     </Modal>
