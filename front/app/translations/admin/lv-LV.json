@@ -1139,6 +1139,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.emptyTitleError": "Norādiet jautājuma virsrakstu",
   "app.containers.AdminPage.ProjectEdit.survey.errorMessage": "Ir problēma. Lūdzu, novērsiet to, lai varētu saglabāt izmaiņas.",
   "app.containers.AdminPage.ProjectEdit.survey.fieldLabel": "Atbildes variantu izvēle",
+  "app.containers.AdminPage.ProjectEdit.survey.fileUpload": "File upload",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.labels": "Etiķetes",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.labelsTooltipContent": "Izvēlieties minimālās un maksimālās vērtības izvēles etiķetes.",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.page.description": "Apraksts (pēc izvēles)",
