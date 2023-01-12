@@ -1139,6 +1139,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.emptyTitleError": "أدخل عنوان سؤال",
   "app.containers.AdminPage.ProjectEdit.survey.errorMessage": "توجد مشكلة، يرجى حل المشكلة لتتمكن من حفظ التغييرات التي أجريتها",
   "app.containers.AdminPage.ProjectEdit.survey.fieldLabel": "خيارات الإجابة",
+  "app.containers.AdminPage.ProjectEdit.survey.fileUpload": "File upload",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.labels": "ملصقات",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.labelsTooltipContent": "حدد ملصقات اختيارية للقيمتين الدنيا والقصوى.",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.page.description": "الوصف (اختياري)",
