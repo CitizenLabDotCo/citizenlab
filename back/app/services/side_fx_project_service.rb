@@ -25,6 +25,8 @@ class SideFxProjectService
 
   def after_copy(source_project, copied_project)
     copy_project_and_phases_groups_permissions(source_project, copied_project)
+    source_project.topics.each { |topic| ProjectsTopic.create(project_id: copied_project.id, topic_id: topic.id) }
+    source_project.areas.each { |area| AreasProject.create(project_id: copied_project.id, area_id: area.id) }
   end
 
   def before_update(project, user)

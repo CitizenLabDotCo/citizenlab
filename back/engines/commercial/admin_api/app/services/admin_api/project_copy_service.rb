@@ -48,8 +48,8 @@ module AdminApi
       @template['models']['custom_maps/legend_item'] = yml_maps_legend_items shift_timestamps: shift_timestamps
 
       unless local_copy
-        @template['models']['event']                   = yml_events shift_timestamps: shift_timestamps
-        @template['models']['event_file']              = yml_event_files shift_timestamps: shift_timestamps
+        @template['models']['event']      = yml_events shift_timestamps: shift_timestamps
+        @template['models']['event_file'] = yml_event_files shift_timestamps: shift_timestamps
       end
 
       if include_ideas
