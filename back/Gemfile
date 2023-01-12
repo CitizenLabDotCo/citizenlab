@@ -197,7 +197,6 @@ CitizenLab.ee do
 
   commercial_engines = [
     'admin_api',
-    'analytics',
     'bulk_import_ideas',
     'content_builder',
     'custom_idea_statuses',
@@ -219,7 +218,6 @@ CitizenLab.ee do
     'report_builder',
     'smart_groups',
     'texting',
-    'user_custom_fields',
 
     # ID verification engines.
     # Engines that registers verification methods must be installed before the
