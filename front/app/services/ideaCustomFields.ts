@@ -58,25 +58,3 @@ export function ideaCustomFieldsStream(
   const apiEndpoint = `${API_PATH}/admin/projects/${projectId}/custom_fields`;
   return streams.get<IIdeaCustomFields>({ apiEndpoint, ...streamParams });
 }
-
-export async function updateIdeaCustomField(
-  projectId: string,
-  ideaCustomFieldId: string,
-  code: string | undefined,
-  object: IUpdatedIdeaCustomFieldProperties
-) {
-  const apiEndpoint = code
-    ? `${API_PATH}/admin/projects/${projectId}/custom_fields/by_code/${code}`
-    : `${API_PATH}/admin/projects/${projectId}/custom_fields/update/${ideaCustomFieldId}`;
-  const updateObject = { custom_field: object };
-  return streams.update<IIdeaCustomField>(
-    apiEndpoint,
-    ideaCustomFieldId,
-    updateObject
-  );
-}
-
-export async function refetchCustomFields(projectId) {
-  const apiEndpoint = `${API_PATH}/admin/projects/${projectId}/custom_fields`;
-  streams.fetchAllWith({ apiEndpoint: [apiEndpoint] });
-}
