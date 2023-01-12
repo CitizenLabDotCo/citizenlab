@@ -1139,6 +1139,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.emptyTitleError": "Angiv en spørgsmålstitel",
   "app.containers.AdminPage.ProjectEdit.survey.errorMessage": "Der er et problem, venligst løser du problemet for at kunne gemme dine ændringer",
   "app.containers.AdminPage.ProjectEdit.survey.fieldLabel": "Svarvalg",
+  "app.containers.AdminPage.ProjectEdit.survey.fileUpload": "File upload",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.labels": "Etiketter",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.labelsTooltipContent": "Vælg valgfrie etiketter for dine minimums- og maksimumsværdier.",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.page.description": "Beskrivelse (valgfrit)",
