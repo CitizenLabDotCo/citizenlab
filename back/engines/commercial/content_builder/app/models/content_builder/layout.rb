@@ -25,6 +25,9 @@ module ContentBuilder
 
     validates :content_buildable, :code, presence: true
     validates :craftjs_jsonmultiloc, multiloc: { presence: false, value_type: Hash }
+    validates :craftjs_jsonmultiloc, length: { maximum: 1 }, if: lambda { |layout|
+      layout.content_buildable_type == 'ReportBuilder::Report' # mvp of report builder only allows 1 locale
+    }
     validate :validate_craftjs_jsonmultiloc
 
     private
