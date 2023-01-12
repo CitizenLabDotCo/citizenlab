@@ -150,12 +150,14 @@ const FormBuilderToolbox = ({
             onClick={() => addField('number')}
             data-cy="e2e-number-field"
           />
-          <ToolboxItem
-            icon="upload-file"
-            label={formatMessage(messages.fileUpload)}
-            onClick={() => addField('file_upload')}
-            data-cy="e2e-file-upload-field"
-          />
+          {!builderConfig?.toolboxFieldsToExclude.includes('file_upload') && (
+            <ToolboxItem
+              icon="upload-file"
+              label={formatMessage(messages.fileUpload)}
+              onClick={() => addField('file_upload')}
+              data-cy="e2e-file-upload-field"
+            />
+          )}
         </DraggableElement>
       </Box>
     </Box>
