@@ -104,10 +104,6 @@ export function listCampaigns(streamParams: IStreamParams | null = null) {
   });
 }
 
-export function createCampaign(campaignData: CampaignCreation) {
-  return streams.add<ICampaign>(`${apiEndpoint}`, { campaign: campaignData });
-}
-
 export function updateCampaign(
   campaignId: string,
   campaignData: CampaignUpdate
@@ -115,28 +111,6 @@ export function updateCampaign(
   return streams.update<ICampaign>(`${apiEndpoint}/${campaignId}`, campaignId, {
     campaign: campaignData,
   });
-}
-
-export async function sendCampaign(campaignId: string) {
-  const stream = await streams.add<ICampaign>(
-    `${apiEndpoint}/${campaignId}/send`,
-    {}
-  );
-  await streams.fetchAllWith({
-    apiEndpoint: [`${apiEndpoint}/${campaignId}`, `${API_PATH}/campaigns`],
-  });
-  return stream;
-}
-
-export function sendCampaignPreview(campaignId: string) {
-  return streams.add<ICampaign>(
-    `${apiEndpoint}/${campaignId}/send_preview`,
-    {}
-  );
-}
-
-export function deleteCampaign(campaignId: string) {
-  return streams.delete(`${apiEndpoint}/${campaignId}`, campaignId);
 }
 
 export function campaignByIdStream(
@@ -167,8 +141,4 @@ export function getCampaignStats(
     apiEndpoint: `${apiEndpoint}/${campaignId}/stats`,
     ...streamParams,
   });
-}
-
-export function isDraft(campaign: ICampaignData) {
-  return campaign.attributes.deliveries_count === 0;
 }
