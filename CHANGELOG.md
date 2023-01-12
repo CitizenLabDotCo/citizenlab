@@ -17,7 +17,6 @@
 ### Added
 
 - [CL-1849] Add new banner type to home and custom pages: fixed ratio
-  > > > > > > > master
 
 ### Fixed
 
