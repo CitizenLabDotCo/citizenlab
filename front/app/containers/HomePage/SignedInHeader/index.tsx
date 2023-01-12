@@ -1,25 +1,10 @@
 import React, { lazy, Suspense } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
-const CompleteProfileStep = lazy(() => import('./CompleteProfileStep'));
-const VerificationOnboardingStep = lazy(
-  () => import('./VerificationOnboardingStep')
-);
-const CustomCTAStep = lazy(() => import('./CustomCTAStep'));
 const FallbackStep = lazy(() => import('./FallbackStep'));
+
 import HeaderImage from './HeaderImage';
 import Avatar from 'components/Avatar';
-
-// services
-import {
-  dismissOnboardingCampaign,
-  OnboardingCampaignName,
-} from 'services/onboardingCampaigns';
-
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../tracks';
 
 // style
 import styled from 'styled-components';
@@ -148,13 +133,6 @@ export const Icons = styled.div`
 const SignedInHeader = () => {
   const currentOnboardingCampaign = useCurrentOnboardingCampaign();
 
-  const handleSkip = (name: OnboardingCampaignName) => () => {
-    trackEventByName(tracks.clickSkipButton, {
-      extra: { location: 'signed-in header', context: name },
-    });
-    dismissOnboardingCampaign(name);
-  };
-
   if (!isNilOrError(currentOnboardingCampaign)) {
     const onboardingCampaignName =
       currentOnboardingCampaign.data.attributes.name;
@@ -163,22 +141,6 @@ const SignedInHeader = () => {
       <Header className={`e2e-signed-in-header`} id="hook-header">
         <HeaderImage />
         <Suspense fallback={null}>
-          <VerificationOnboardingStep
-            currentOnboardingCampaignName={onboardingCampaignName}
-            onSkip={handleSkip('verification')}
-          />
-          <CompleteProfileStep
-            currentOnboardingCampaignName={onboardingCampaignName}
-            onSkip={handleSkip('complete_profile')}
-          />
-          {/*
-            This step is configured via AdminHQ.
-            See https://citizenlab.atlassian.net/browse/CL-2289
-          */}
-          <CustomCTAStep
-            currentOnboardingCampaignName={onboardingCampaignName}
-            onSkip={handleSkip('custom_cta')}
-          />
           <FallbackStep
             currentOnboardingCampaignName={onboardingCampaignName}
           />

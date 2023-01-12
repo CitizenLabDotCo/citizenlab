@@ -16,17 +16,6 @@ resource 'Onboarding campaigns' do
   get 'web_api/v1/onboarding_campaigns/current' do
     response_field :name, "One of #{Onboarding::OnboardingService.campaigns.join(' or ')}", scope: :attributes
 
-    context 'for a user with an incomplete profile' do
-      example_request 'Get the current onboarding campaign' do
-        assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:data][:attributes][:name]).to eq 'complete_profile'
-        expect(json_response[:data][:attributes][:cta_message_multiloc]).to be_nil
-        expect(json_response[:data][:attributes][:cta_button_multiloc]).to be_nil
-        expect(json_response[:data][:attributes][:cta_button_link]).to be_nil
-      end
-    end
-
     context 'for a user with a complete profile' do
       before do
         @user.update!(bio_multiloc: { en: 'I love scrabble' })
@@ -35,16 +24,6 @@ resource 'Onboarding campaigns' do
           cfg.settings['core']['custom_onboarding_button'] = { en: 'Click here' }
           cfg.settings['core']['custom_onboarding_link'] = '/ideas'
         end.save
-      end
-
-      example 'Get the current onboarding campaign for a user with a complete profile' do
-        do_request
-        assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:data][:attributes][:name]).to eq 'custom_cta'
-        expect(json_response[:data][:attributes][:cta_message_multiloc][:en]).to eq 'Dance like noone is watching'
-        expect(json_response[:data][:attributes][:cta_button_multiloc][:en]).to eq 'Click here'
-        expect(json_response[:data][:attributes][:cta_button_link]).to eq '/ideas'
       end
     end
 
@@ -55,30 +34,6 @@ resource 'Onboarding campaigns' do
 
       example_request '[error] returns 401 Unauthorized response' do
         assert_status 401
-      end
-    end
-  end
-
-  post 'web_api/v1/onboarding_campaigns/:campaign_name/dismissal' do
-    context 'for a user with an incomplete profile' do
-      let(:campaign_name) { 'complete_profile' }
-
-      describe 'the first time' do
-        example_request 'Create an onboarding campaign dismissal' do
-          assert_status 200
-        end
-      end
-
-      context 'a campaign was dismissed before' do
-        before do
-          Onboarding::CampaignDismissal.create(campaign_name: campaign_name, user: @user)
-        end
-
-        example_request '[error] Create an onboarding campaign dismissal for the same campaign twice' do
-          assert_status 422
-          json_response = json_parse response_body
-          expect(json_response).to include_response_error(:campaign_name, 'taken', value: 'complete_profile')
-        end
       end
     end
   end

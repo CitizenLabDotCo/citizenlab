@@ -38,7 +38,6 @@
 #
 class User < ApplicationRecord
   include EmailCampaigns::UserDecorator
-  include Onboarding::UserDecorator
   include Polls::UserDecorator
   include Volunteering::UserDecorator
   include PgSearch::Model

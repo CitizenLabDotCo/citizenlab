@@ -866,15 +866,6 @@ ActiveRecord::Schema.define(version: 2022_12_05_112729) do
     t.index ["user_id"], name: "index_official_feedbacks_on_user_id"
   end
 
-  create_table "onboarding_campaign_dismissals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "user_id"
-    t.string "campaign_name", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["campaign_name", "user_id"], name: "index_dismissals_on_campaign_name_and_user_id", unique: true
-    t.index ["user_id"], name: "index_onboarding_campaign_dismissals_on_user_id"
-  end
-
   create_table "permissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "action", null: false
     t.string "permitted_by", null: false
