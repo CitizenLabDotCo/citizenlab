@@ -132,14 +132,16 @@ namespace :templates do
     locales = template_service.required_locales(template, external_subfolder: 'test')
     locales = ['en'] if locales.blank?
 
-    settings = SettingsService.new.minimal_required_settings(
+    name = template.split('_').join
+    tenant_attrs = { name: name, host: "#{name}.localhost" }
+    config_attrs = { settings: SettingsService.new.minimal_required_settings(
       locales: locales,
       lifecycle_stage: 'demo'
-    )
+    ) }.with_indifferent_access
 
-    tenant_attrs = { name: host, host: "#{template.split('_').join}.localhost" }
-    config_attrs = { settings: settings }.with_indifferent_access
-    _success, tenant, _app_config = MultiTenancy::TenantService.initialize_tenant(tenant_attrs, config_attrs)
+    _success, tenant, _app_config = MultiTenancy::TenantService.new.initialize_tenant(
+      tenant_attrs, config_attrs
+    )
 
     tenant.switch do
       puts "Verifying #{template}"
