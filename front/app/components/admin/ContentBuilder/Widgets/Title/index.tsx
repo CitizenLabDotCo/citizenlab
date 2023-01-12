@@ -7,11 +7,7 @@ import styled, { useTheme } from 'styled-components';
 import { useNode } from '@craftjs/core';
 
 // components
-import {
-  Box,
-  Input,
-  Title as TitleComponent,
-} from '@citizenlab/cl2-component-library';
+import { Box, Input } from '@citizenlab/cl2-component-library';
 import PageBreakBox from '../PageBreakBox';
 
 // i18n
@@ -50,11 +46,7 @@ const TitleSettings = () => {
     <Box background="#ffffff" marginBottom="20px">
       <Input
         id="e2e-title-text-input"
-        label={
-          <TitleComponent variant="h4" as="h3">
-            {formatMessage(messages.title)}
-          </TitleComponent>
-        }
+        label={formatMessage(messages.title)}
         placeholder={formatMessage(messages.title)}
         type="text"
         value={text}

@@ -2,7 +2,6 @@ import React from 'react';
 
 // component
 import { RightColumn } from 'containers/Admin';
-import { Box } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 
 // styling
@@ -45,19 +44,3 @@ export const ErrorMessage = ({
     />
   );
 };
-
-interface Props {
-  localesWithError: Locale[];
-  children: React.ReactNode;
-}
-
-const FrameWrapper = ({ localesWithError, children }: Props) => (
-  <StyledRightColumn>
-    <Box>
-      <ErrorMessage localesWithError={localesWithError} />
-      {children}
-    </Box>
-  </StyledRightColumn>
-);
-
-export default FrameWrapper;
