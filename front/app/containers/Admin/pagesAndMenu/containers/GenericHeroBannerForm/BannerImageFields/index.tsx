@@ -72,10 +72,7 @@ const BannerImageField = ({
   useEffect(() => {
     // https://stackoverflow.com/questions/54954385/react-useeffect-causing-cant-perform-a-react-state-update-on-an-unmounted-comp
     const ac = new AbortController();
-    // the image file sent from the API needs to be converted
-    // to a format that can be displayed. this is done locally
-    // when the image is changed but needs to be done manually
-    // to process the initial API response
+
     if (typeof headerBg === 'string') return;
     const headerFileInfo = headerBg?.large;
     console.log('headerBg');
@@ -83,13 +80,7 @@ const BannerImageField = ({
     console.log(headerBg?.large);
 
     (async () => {
-      // console.log('headerFileInfo');
-      // console.log(headerFileInfo);
-
       const tenantHeaderBg = await convertHeaderToUploadFile(headerFileInfo);
-      // console.log('tenantHeaderBg');
-      // console.log(tenantHeaderBg);
-
       setHeaderLocalDisplayImage(
         !isNilOrError(tenantHeaderBg) ? tenantHeaderBg : null
       );
