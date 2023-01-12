@@ -83,7 +83,8 @@ export const FormEdit = ({
     IFlatCustomFieldWithIndex | undefined
   >(undefined);
 
-  const isEditingDisabled = totalSubmissions > 0;
+  const isEditingDisabled =
+    totalSubmissions > 0 && !builderConfig?.isEditPermittedAfterSubmissions;
 
   const schema = object().shape({
     customFields: array().of(
