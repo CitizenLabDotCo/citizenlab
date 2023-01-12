@@ -657,6 +657,7 @@
   "app.containers.AdminPage.ProjectEdit.formBuilder.singleChoice": "Single choice",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Survey end",
   "app.containers.AdminPage.ProjectEdit.formBuilder.toLabel": "to",
+  "app.containers.AdminPage.ProjectEdit.survey.fileUpload": "File upload",
   "app.containers.AdminPage.ProjectEdit.survey.surveySupportArticle": "https://support.citizenlab.co/en/articles/6673873-creating-an-in-platform-survey",
   "app.containers.AdminPage.ProjectEdit.survey.surveySupportArticleLinkText": "this page",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Create a smart group",
