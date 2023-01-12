@@ -106,7 +106,7 @@
   "app.components.admin.PostManager.inputsExportFileName": "input",
   "app.components.admin.PostManager.inputsNeedFeedbackToggle": "Only show posts that need feedback",
   "app.components.admin.PostManager.latestFeedbackMode": "Use the latest existing official update as an explanation",
-  "app.components.admin.PostManager.losePhaseInfoConfirmation": "Moving '{ideaTitle}' away from its current project will lose the information about its assigned phases. Do you want to proceed?",
+  "app.components.admin.PostManager.losePhaseInfoConfirmation": "'{ideaTitle}' vum aktuelle Projet ewechzehuelen, féiert zum Verloscht vu sengen zougeuerdente Phasen. Wëllt Dir weiderfueren?",
   "app.components.admin.PostManager.multipleInitiatives": "{initiativesCount} proposals",
   "app.components.admin.PostManager.multipleInputs": "{ideaCount} posts",
   "app.components.admin.PostManager.newFeedbackMode": "Write a new update to explain this change",
