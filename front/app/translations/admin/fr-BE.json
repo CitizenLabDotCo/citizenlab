@@ -1139,6 +1139,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.emptyTitleError": "Donnez un titre à la question",
   "app.containers.AdminPage.ProjectEdit.survey.errorMessage": "Il y a un problème, veuillez le résoudre pour pouvoir enregistrer vos modifications",
   "app.containers.AdminPage.ProjectEdit.survey.fieldLabel": "Options de réponses",
+  "app.containers.AdminPage.ProjectEdit.survey.fileUpload": "File upload",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.labels": "Étiquettes",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.labelsTooltipContent": "Choisissez des étiquettes facultatives pour vos valeurs minimales et maximales.",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.page.description": "Description (facultatif)",
