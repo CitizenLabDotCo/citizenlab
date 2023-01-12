@@ -78,6 +78,7 @@ const ButtonBar = styled.div`
 
 const EditButton = styled(Button)`
   margin-left: 30px;
+  margin-bottom: 16px;
 `;
 
 const Content = styled.div`
