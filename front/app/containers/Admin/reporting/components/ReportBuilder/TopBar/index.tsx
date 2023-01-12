@@ -114,11 +114,11 @@ const ContentBuilderTopBar = ({
     if (!selectedLocale || !draftEditorData) return;
     setHasChange(
       !isEqual(
-        JSON.parse(JSON.stringify(initialData) ?? {}),
+        JSON.parse(JSON.stringify(initialData ?? {})),
         JSON.parse(JSON.stringify(draftEditorData[selectedLocale] ?? {}))
       )
     );
-  }, [initialData, draftEditorData]);
+  }, [initialData, draftEditorData, selectedLocale]);
 
   useEffect(() => {
     if (hasChange) {
