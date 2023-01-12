@@ -23,6 +23,10 @@ class SideFxProjectService
     @sfx_pc.after_create project, user if project.participation_context?
   end
 
+  def after_copy(source_project, copied_project)
+    copy_project_and_phases_groups_permissions(source_project, copied_project)
+  end
+
   def before_update(project, user)
     @folder_id_was = project.admin_publication.parent_id_was
     project.description_multiloc = TextImageService.new.swap_data_images(project, :description_multiloc)
@@ -74,6 +78,32 @@ class SideFxProjectService
   def after_folder_changed(project, current_user)
     # Defined in core app to eliminate dependency between
     # idea assignment and folder engine.
+  end
+end
+
+def copy_project_and_phases_groups_permissions(source_project, copied_project)
+  # Copy groups_permissions of non-timeline project
+  copy_groups_permissions(source_project, copied_project)
+
+  # Copy groups_permissions of phases of timeline project
+  source_phases = source_project.phases.order(:start_at)
+  copied_phases = copied_project.phases.order(:start_at)
+
+  source_phases.each_with_index do |phase, index|
+    copy_groups_permissions(phase, copied_phases[index])
+  end
+end
+
+def copy_groups_permissions(source_object, copied_object)
+  source_object.permissions.each do |permission|
+    next unless permission.permitted_by == 'groups'
+
+    copied_permission = copied_object.permissions.where(action: permission.action).first
+    next unless copied_permission
+
+    permission.groups.each do |group|
+      GroupsPermission.create(permission_id: copied_permission.id, group_id: group.id)
+    end
   end
 end
 

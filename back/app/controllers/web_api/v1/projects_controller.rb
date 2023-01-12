@@ -102,32 +102,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     @project.slug = SlugService.new.generate_slug(@project, copy_title_multiloc.values.first)
 
     if @project.save
-      source_project.permissions.each do |permission|
-        next unless permission.permitted_by == 'groups'
-
-        copied_permission = @project.permissions.where(action: permission.action).first
-        next unless copied_permission
-
-        permission.groups.each do |group|
-          GroupsPermission.create(permission_id: copied_permission.id, group_id: group.id)
-        end
-      end
-
-      source_phases = source_project.phases.order(:start_at)
-      copied_phases = @project.phases.order(:start_at)
-
-      source_phases.each_with_index do |phase, index|
-        phase.permissions.each do |permission|
-          next unless permission.permitted_by == 'groups'
-
-          copied_permission = copied_phases[index].permissions.where(action: permission.action).first
-          next unless copied_permission
-
-          permission.groups.each do |group|
-            GroupsPermission.create(permission_id: copied_permission.id, group_id: group.id)
-          end
-        end
-      end
+      sidefx.after_copy(source_project, @project)
 
       render json: WebApi::V1::ProjectSerializer.new(
         @project,
