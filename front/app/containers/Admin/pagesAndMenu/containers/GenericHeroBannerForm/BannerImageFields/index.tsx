@@ -135,8 +135,8 @@ const BannerImageField = ({
     setHeaderLocalDisplayImage(null);
   };
 
-  const imageIsSaved = headerLocalDisplayImage?.[0]
-    ? isUploadFile(headerLocalDisplayImage[0])
+  const imageIsSaved = headerLocalDisplayImage
+    ? isUploadFile(headerLocalDisplayImage)
     : false;
   const hasLocalHeaderImage = !isNilOrError(headerLocalDisplayImage);
 
