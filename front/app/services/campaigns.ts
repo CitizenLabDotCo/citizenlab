@@ -50,29 +50,6 @@ export interface ICampaign {
   data: ICampaignData;
 }
 
-export interface IDeliveryData {
-  id: string;
-  type: string;
-  attributes: {
-    delivery_status:
-      | 'sent'
-      | 'bounced'
-      | 'failed'
-      | 'accepted'
-      | 'delivered'
-      | 'opened'
-      | 'clicked';
-    sent_at: string;
-    created_at: string;
-    updated_at: string;
-  };
-  relationships: {
-    user: {
-      data: IRelationship;
-    };
-  };
-}
-
 export function listCampaigns(streamParams: IStreamParams | null = null) {
   return streams.get<ICampaignsData>({
     apiEndpoint: `${apiEndpoint}`,
