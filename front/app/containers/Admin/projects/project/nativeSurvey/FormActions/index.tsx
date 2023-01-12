@@ -14,7 +14,7 @@ import DeleteFormResultsNotice from 'components/FormBuilder/components/DeleteFor
 import clHistory from 'utils/cl-router/history';
 
 // i18n
-import messages from '../messages';
+import messages from '../../../../../../components/FormBuilder/components/messages';
 import { Multiloc } from 'typings';
 
 // utils

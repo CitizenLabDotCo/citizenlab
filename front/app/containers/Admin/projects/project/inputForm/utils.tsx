@@ -8,4 +8,7 @@ export const ideationConfig: FormBuilderConfig = {
   formBuilderTitle: messages.inputForm,
   formCustomFields: undefined,
   showStatusBadge: false,
+  getGoBackUrl: (projectId: string) => {
+    return `/admin/projects/${projectId}/ideaform`;
+  },
 };

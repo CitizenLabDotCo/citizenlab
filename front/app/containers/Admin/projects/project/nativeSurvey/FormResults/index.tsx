@@ -16,11 +16,11 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import CompletionBar from 'components/FormBuilder/components/FormResults/CompletionBar';
+import CompletionBar from 'containers/Admin/projects/project/nativeSurvey/FormResults/CompletionBar';
 import T from 'components/T';
 
 // i18n
-import messages from '../messages';
+import messages from 'components/FormBuilder/components/messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

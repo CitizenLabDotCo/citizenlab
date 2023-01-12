@@ -5,8 +5,8 @@ import { useParams, useLocation } from 'react-router-dom';
 
 // components
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
-import FormActions from 'components/FormBuilder/components/FormActions';
-import FormResults from 'components/FormBuilder/components/FormResults';
+import FormActions from './FormActions';
+import FormResults from './FormResults';
 import Button from 'components/UI/Button';
 const FormBuilder = lazy(() => import('components/FormBuilder/edit'));
 
@@ -20,14 +20,17 @@ import useLocale from 'hooks/useLocale';
 
 // Utils
 import { isNilOrError } from 'utils/helperUtils';
-import { getFormActionsConfig } from 'components/FormBuilder/utils';
+import {
+  getUpdatedConfiguration,
+  getFormActionsConfig,
+  nativeSurveyConfig,
+} from './utils';
 
 // Styles
 import { colors } from 'utils/styleUtils';
 
 // Services
 import { downloadSurveyResults } from 'services/formCustomFields';
-import { getUpdatedConfiguration, nativeSurveyConfig } from './utils';
 import useFormCustomFields from 'hooks/useFormCustomFields';
 
 const Forms = ({ intl: { formatMessage } }: WrappedComponentProps) => {

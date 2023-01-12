@@ -69,7 +69,9 @@ const FormBuilderTopBar = ({
     : `/projects/${project?.attributes.slug}/ideas/new`;
 
   const goBack = () => {
-    clHistory.push(`/admin/projects/${projectId}/native-survey`);
+    clHistory.push(
+      builderConfig?.getGoBackUrl(projectId) || `/admin/projects/${projectId}`
+    );
   };
 
   return (
