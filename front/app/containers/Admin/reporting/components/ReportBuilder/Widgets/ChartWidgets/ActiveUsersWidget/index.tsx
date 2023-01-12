@@ -15,7 +15,7 @@ import messages from '../messages';
 
 // types
 import { IResolution } from 'components/admin/ResolutionControl';
-import { ChartWidgetSettings } from '../ChartWidgetSettings';
+import { ChartWidgetSettings } from './ChartWidgetSettings';
 import { ChartWidgetProps } from '../typings';
 import PageBreakBox from '../../../../../../../../components/admin/ContentBuilder/Widgets/PageBreakBox';
 
