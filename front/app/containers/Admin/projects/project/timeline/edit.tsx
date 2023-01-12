@@ -148,14 +148,19 @@ class AdminProjectTimelineEdit extends PureComponent<
                     ) {
                       return combineLatest(
                         phaseFiles.data.map((phaseFile) => {
-                          const url = phaseFile.attributes.file.url;
-                          const filename = phaseFile.attributes.name;
-                          const size = phaseFile.attributes.size;
-                          const id = phaseFile.id;
+                          const {
+                            id,
+                            attributes: {
+                              name,
+                              size,
+                              file: { url },
+                            },
+                          } = phaseFile;
+
                           return of({
                             id,
                             url,
-                            name: filename,
+                            name,
                             size,
                             remote: true,
                           });
@@ -241,13 +246,13 @@ class AdminProjectTimelineEdit extends PureComponent<
         base64: newFile.base64,
       };
 
-      const isNewDuplicate = prevState.inStatePhaseFiles.some(
+      const isDuplicate = prevState.inStatePhaseFiles.some(
         (file) => file.name === newFile.name
       );
-      const inStatePhaseFiles = isNewDuplicate
+      const inStatePhaseFiles = isDuplicate
         ? prevState.inStatePhaseFiles
         : [...(prevState.inStatePhaseFiles || []), modifiedNewFile];
-      const submitState = isNewDuplicate ? prevState.submitState : 'enabled';
+      const submitState = isDuplicate ? prevState.submitState : 'enabled';
 
       return {
         inStatePhaseFiles,

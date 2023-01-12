@@ -82,7 +82,7 @@ export interface FileType {
 }
 
 interface Props {
-  file?: FileType;
+  file: FileType;
   onDeleteClick: (event: React.MouseEvent) => void;
 }
 
@@ -91,7 +91,6 @@ const FileDisplay = ({
   intl: { formatMessage },
   onDeleteClick,
 }: Props & WrappedComponentProps) => {
-  if (!file) return null;
   const { url, size, name: filename, error } = file;
   return (
     <Container error={!!error}>

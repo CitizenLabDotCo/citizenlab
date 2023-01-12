@@ -25,7 +25,7 @@ export interface FileUploaderProps {
   className?: string;
   onFileAdd: (fileToAdd: UploadFile) => void;
   onFileRemove: (fileToRemove: FileType) => void;
-  files?: FileType[] | null;
+  files: FileType[] | null;
   apiErrors?: { [fieldName: string]: CLError[] } | null;
 }
 
@@ -57,11 +57,11 @@ const FileUploader = ({
       <Error fieldName="file" apiErrors={apiErrors?.file} />
 
       {files &&
-        files.map((fila) => (
+        files.map((file) => (
           <FileDisplay
-            key={fila.id || fila.name}
-            onDeleteClick={handleFileOnRemove(fila)}
-            file={fila}
+            key={file.id || file.name}
+            onDeleteClick={handleFileOnRemove(file)}
+            file={file}
           />
         ))}
       <ScreenReaderOnly aria-live="polite">
@@ -69,7 +69,7 @@ const FileUploader = ({
           {...(files && files.length > 0
             ? messages.a11y_filesToBeUploaded
             : messages.a11y_noFiles)}
-          values={{ fileNames: fileNames }}
+          values={{ fileNames }}
         />
       </ScreenReaderOnly>
     </Container>
