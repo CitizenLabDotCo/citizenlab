@@ -63,7 +63,6 @@ const HeaderContent = ({
 
   if (!isNilOrError(homepageSettings)) {
     const homepageAttributes = homepageSettings.attributes;
-
     const headerTitle = homepageAttributes.banner_signed_out_header_multiloc
       ? localize(homepageAttributes.banner_signed_out_header_multiloc)
       : formatMessage(messages.titleCity);
