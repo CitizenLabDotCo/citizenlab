@@ -6,8 +6,6 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
 import Or from 'components/UI/Or';
-import FranceConnectButton from 'components/UI/FranceConnectButton';
-import Error from 'components/UI/Error';
 
 // resources
 import GetAppConfiguration, {
@@ -46,9 +44,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  azureAdLoginEnabled: boolean | null;
   facebookLoginEnabled: boolean | null;
-  franceconnectLoginEnabled: boolean | null;
   googleLoginEnabled: boolean | null;
   passwordLoginEnabled: boolean | null;
   tenant: GetAppConfigurationChildProps;
@@ -61,10 +57,8 @@ export type AuthProvider = 'email' | SSOProvider;
 
 const AuthProviders = memo<Props & WrappedComponentProps>(
   ({
-    azureAdLoginEnabled,
     className,
     facebookLoginEnabled,
-    franceconnectLoginEnabled,
     goToOtherFlow,
     googleLoginEnabled,
     intl: { formatMessage },
@@ -98,14 +92,6 @@ const AuthProviders = memo<Props & WrappedComponentProps>(
       onAuthProviderSelected,
     ]);
 
-    const handleOnFranceConnectSelected = useCallback(
-      (event: React.FormEvent) => {
-        event.preventDefault();
-        onAuthProviderSelected('franceconnect');
-      },
-      [onAuthProviderSelected]
-    );
-
     const handleGoToOtherFlow = useCallback(
       (event: React.FormEvent) => {
         event.preventDefault();
@@ -127,31 +113,7 @@ const AuthProviders = memo<Props & WrappedComponentProps>(
 
     return (
       <Container className={className}>
-        {franceconnectLoginEnabled &&
-          (metaData.error?.code === 'franceconnect_merging_failed' ? (
-            <Error
-              text={
-                <FormattedMessage
-                  {...messages.franceConnectMergingFailed}
-                  values={{ br: <br /> }}
-                />
-              }
-              animate={false}
-              marginBottom="30px"
-            />
-          ) : (
-            <FranceConnectButton
-              onClick={handleOnFranceConnectSelected}
-              logoAlt={formatMessage(messages.signUpButtonAltText, {
-                loginMechanismName: 'FranceConnect',
-              })}
-            />
-          ))}
-
-        {(isPasswordSigninOrSignupAllowed ||
-          facebookLoginEnabled ||
-          azureAdLoginEnabled) &&
-          franceconnectLoginEnabled &&
+        {(isPasswordSigninOrSignupAllowed || facebookLoginEnabled) &&
           !metaData.error && <Or />}
 
         {isPasswordSigninOrSignupAllowed && (
