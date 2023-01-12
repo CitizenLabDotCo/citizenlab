@@ -18,19 +18,19 @@ type Props = {
   locale: Locale;
 };
 
-const PageSettings = ({ field, locale }: Props) => {
+const FieldGroupSettings = ({ field, locale }: Props) => {
   return (
     <>
       <SectionField>
         <InputMultilocWithLocaleSwitcher
           initiallySelectedLocale={locale}
-          id="e2e-page-title-multiloc"
+          id="e2e-field-group-title-multiloc"
           name={`customFields.${field.index}.title_multiloc`}
           label={<FormattedMessage {...messages.titleLabel} />}
           type="text"
         />
       </SectionField>
-      <SectionField data-cy="e2e-page-description-multiloc">
+      <SectionField data-cy="e2e-field-group-description-multiloc">
         <QuillMultilocWithLocaleSwitcher
           name={`customFields.${field.index}.description_multiloc`}
           label={<FormattedMessage {...messages.descriptionLabel} />}
@@ -40,4 +40,4 @@ const PageSettings = ({ field, locale }: Props) => {
   );
 };
 
-export default PageSettings;
+export default FieldGroupSettings;
