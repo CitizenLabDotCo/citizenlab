@@ -1,5 +1,4 @@
 import React, { lazy, Suspense } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 const FallbackStep = lazy(() => import('./FallbackStep'));
 
@@ -10,7 +9,6 @@ import styled from 'styled-components';
 import { media, isRtl } from 'utils/styleUtils';
 
 // hooks
-import useCurrentOnboardingCampaign from 'hooks/useCurrentOnboardingCampaign';
 
 const Header = styled.div`
   width: 100%;
@@ -62,25 +60,14 @@ export const Right = styled.div`
 `;
 
 const SignedInHeader = () => {
-  const currentOnboardingCampaign = useCurrentOnboardingCampaign();
-
-  if (!isNilOrError(currentOnboardingCampaign)) {
-    const onboardingCampaignName =
-      currentOnboardingCampaign.data.attributes.name;
-
-    return (
-      <Header className={`e2e-signed-in-header`} id="hook-header">
-        <HeaderImage />
-        <Suspense fallback={null}>
-          <FallbackStep
-            currentOnboardingCampaignName={onboardingCampaignName}
-          />
-        </Suspense>
-      </Header>
-    );
-  }
-
-  return null;
+  return (
+    <Header className={`e2e-signed-in-header`} id="hook-header">
+      <HeaderImage />
+      <Suspense fallback={null}>
+        <FallbackStep />
+      </Suspense>
+    </Header>
+  );
 };
 
 export default SignedInHeader;

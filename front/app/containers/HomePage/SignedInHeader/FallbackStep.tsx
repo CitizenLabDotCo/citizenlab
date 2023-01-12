@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { OnboardingCampaignName } from 'services/onboardingCampaigns';
 import { Left, Right } from './';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import { isEmpty } from 'lodash-es';
@@ -50,11 +49,7 @@ const HeaderContent = styled.div`
   `}
 `;
 
-interface Props {
-  currentOnboardingCampaignName: OnboardingCampaignName;
-}
-
-const FallbackStep = ({ currentOnboardingCampaignName }: Props) => {
+const FallbackStep = () => {
   const homepageSettings = useHomepageSettings();
   const authUser = useAuthUser();
 
@@ -63,9 +58,7 @@ const FallbackStep = ({ currentOnboardingCampaignName }: Props) => {
       homepageSettings.attributes.banner_signed_in_header_multiloc;
 
     return (
-      <OnboardingStep
-        isIncomingStep={currentOnboardingCampaignName === 'default'}
-      >
+      <OnboardingStep isIncomingStep={true}>
         <HeaderContent id="e2e-signed-in-header-default-cta">
           <Left>
             {defaultMessage && !isEmpty(defaultMessage) ? (
