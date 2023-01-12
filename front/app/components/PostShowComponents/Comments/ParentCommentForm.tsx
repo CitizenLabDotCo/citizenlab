@@ -138,7 +138,7 @@ class ParentCommentForm extends PureComponent<
 > {
   textareaElement: HTMLTextAreaElement | null = null;
 
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       inputValue: '',

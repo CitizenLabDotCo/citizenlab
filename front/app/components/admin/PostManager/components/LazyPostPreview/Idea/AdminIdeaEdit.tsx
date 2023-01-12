@@ -107,7 +107,7 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
   subscriptions: Subscription[];
 
   constructor(props: Props) {
-    super(props as any);
+    super(props);
     this.state = {
       projectId: null,
       authorId: null,

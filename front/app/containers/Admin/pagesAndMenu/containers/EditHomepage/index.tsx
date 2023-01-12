@@ -114,17 +114,17 @@ const EditHomepage = () => {
         />
       }
     >
+      <Box mb="28px">
+        <Warning>
+          <FormattedMessage {...messages.sectionDescription} />
+        </Warning>
+      </Box>
       <Box display="flex" alignItems="center" mb="12px">
         <Title variant="h2">
           <FormattedMessage {...messages.sectionsTitle} />
         </Title>
       </Box>
       <Box display="flex" flexDirection="column">
-        <Box mb="28px">
-          <Warning>
-            <FormattedMessage {...messages.sectionDescription} />
-          </Warning>
-        </Box>
         {sectionTogglesData.map((sectionToggleData, index) => {
           return (
             <SectionToggle

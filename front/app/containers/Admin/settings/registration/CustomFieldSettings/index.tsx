@@ -84,7 +84,7 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 class CustomFields extends Component<Props & WrappedComponentProps, State> {
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       itemsWhileDragging: null,

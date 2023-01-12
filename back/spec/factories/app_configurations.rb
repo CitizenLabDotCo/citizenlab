@@ -32,10 +32,6 @@ FactoryBot.define do
           'color_text' => Faker::Color.hex_color,
           'authentication_token_lifetime_in_days' => 30
         },
-        'customizable_homepage_banner' => {
-          'allowed' => true,
-          'enabled' => true
-        },
         'initiatives' => {
           'enabled' => true,
           'allowed' => true,
@@ -75,10 +71,6 @@ FactoryBot.define do
           'color_secondary' => Faker::Color.hex_color,
           'color_text' => Faker::Color.hex_color,
           'authentication_token_lifetime_in_days' => 30
-        },
-        'customizable_homepage_banner' => {
-          'allowed' => true,
-          'enabled' => true
         },
         'initiatives' => {
           'enabled' => true,
