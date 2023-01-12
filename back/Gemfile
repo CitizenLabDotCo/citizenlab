@@ -204,7 +204,6 @@ CitizenLab.ee do
     'content_builder',
     'custom_idea_statuses',
     'custom_maps',
-    'custom_topics',
     'flag_inappropriate_content',
     'geographic_dashboard',
     'google_tag_manager',
