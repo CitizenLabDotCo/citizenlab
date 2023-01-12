@@ -21,10 +21,6 @@ namespace :cl2_back do
             en: 'If you don\'t want to register, use hello@citizenlab.co/democrazy as email/password'
           }
         },
-        customizable_homepage_banner: {
-          enabled: true,
-          allowed: true
-        },
         private_projects: {
           enabled: true,
           allowed: true

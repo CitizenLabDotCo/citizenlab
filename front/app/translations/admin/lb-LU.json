@@ -997,7 +997,6 @@
   "app.containers.AdminPage.SettingsPage.headerBgTooltip": "For more information on recommended image resolutions, {supportPageLink}.",
   "app.containers.AdminPage.SettingsPage.headerDescription": "Individualiséiert d’Bild an den Text vum Homepagebanner.",
   "app.containers.AdminPage.SettingsPage.headerImageSupportPageText": "visit our support center",
-  "app.containers.AdminPage.SettingsPage.headerImageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.AdminPage.SettingsPage.header_bg": "Banner image",
   "app.containers.AdminPage.SettingsPage.helmetDescription": "Admin settings page",
   "app.containers.AdminPage.SettingsPage.helmetTitle": "Admin settings page",
