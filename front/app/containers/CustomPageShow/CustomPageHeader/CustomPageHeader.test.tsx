@@ -1,6 +1,5 @@
 import React from 'react';
-import { ICustomPageData } from 'services/customPages';
-import { THomepageBannerLayout } from 'services/homepageSettings';
+import { ICustomPageData, TCustomPageBannerLayout } from 'services/customPages';
 import { render, screen } from 'utils/testUtils/rtl';
 import CustomPageHeader from '.';
 
@@ -9,7 +8,7 @@ jest.mock('services/appConfiguration');
 
 const headerBgUrl = 'https://example.com/image.png';
 
-function mockPageData(bannerLayout: THomepageBannerLayout) {
+function mockPageData(bannerLayout: TCustomPageBannerLayout) {
   return {
     id: '1',
     attributes: {
@@ -43,6 +42,10 @@ describe('<CustomPageHeader />', () => {
     expect(screen.getByText('Header')).toBeInTheDocument();
     expect(screen.getByText('Subheader')).toBeInTheDocument();
     expect(screen.getByTestId('two-row-layout')).toBeInTheDocument();
+    expect(screen.getByTestId('two-row-layout')).toHaveStyle('width: 100%');
+    expect(screen.getByTestId('two-row-layout')).toHaveStyle(
+      'background: white'
+    );
   });
 
   it('renders fixed_ratio_layout', () => {

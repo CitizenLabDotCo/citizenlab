@@ -6,6 +6,7 @@ import {
 import HeaderContent from 'containers/HomePage/SignedOutHeader/HeaderContent';
 import React from 'react';
 import { IHomepageSettingsData } from 'services/homepageSettings';
+import { Box } from '@citizenlab/cl2-component-library';
 
 interface Props {
   homepageSettings: IHomepageSettingsData;
@@ -15,7 +16,7 @@ const TwoRowLayout = ({ homepageSettings }: Props) => {
   const headerImage = homepageSettings.attributes.header_bg?.large;
 
   return (
-    <div data-testid="two-row-layout">
+    <Box data-testid="two-row-layout" width="100%" background="white">
       {headerImage && (
         <HeaderImage
           src={headerImage}
@@ -31,7 +32,7 @@ const TwoRowLayout = ({ homepageSettings }: Props) => {
           <HeaderContent fontColors="dark" />
         </Container>
       </ContentContainer>
-    </div>
+    </Box>
   );
 };
 
