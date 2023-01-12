@@ -1,8 +1,8 @@
 import React, { lazy } from 'react';
 import moduleConfiguration from 'modules';
 import PageLoading from 'components/UI/PageLoading';
-import { nativeSurveyConfig } from './project/nativeSurvey/utils';
-import { ideationConfig } from './project/inputForm/utils';
+import { IdeaFormBuilder } from './project/inputForm';
+import { SurveyFormBuilder } from './project/nativeSurvey';
 
 const AdminProjectsAndFolders = lazy(() => import('.'));
 const AdminProjectsList = lazy(() => import('./all'));
@@ -18,9 +18,7 @@ const AdminProjectPermissions = lazy(() => import('./project/permissions'));
 const AdminProjectSurveyResults = lazy(() => import('./project/surveyResults'));
 const AdminProjectPoll = lazy(() => import('./project/poll'));
 const AdminProjectsSurvey = lazy(() => import('./project/nativeSurvey'));
-const AdminProjectsFormBuilder = lazy(
-  () => import('components/FormBuilder/edit')
-);
+
 const AdminProjectDescription = lazy(() => import('./project/description'));
 const AdminProjectIdeaForm = lazy(() => import('./project/inputForm'));
 const AdminProjectIdeas = lazy(() => import('./project/ideas'));
@@ -205,21 +203,15 @@ const createAdminProjectsRoutes = () => {
           },
           {
             path: 'ideaform/edit',
-            element: (
-              <AdminProjectsFormBuilder builderConfig={ideationConfig} />
-            ),
+            element: <IdeaFormBuilder />,
           },
           {
             path: 'native-survey/edit',
-            element: (
-              <AdminProjectsFormBuilder builderConfig={nativeSurveyConfig} />
-            ),
+            element: <SurveyFormBuilder />,
           },
           {
             path: 'phases/:phaseId/native-survey/edit',
-            element: (
-              <AdminProjectsFormBuilder builderConfig={nativeSurveyConfig} />
-            ),
+            element: <SurveyFormBuilder />,
           },
           {
             path: 'volunteering/causes/:causeId',

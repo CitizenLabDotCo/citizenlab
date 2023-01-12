@@ -22,7 +22,10 @@ import {
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { getIsPostingEnabled } from 'components/FormBuilder/utils';
+import {
+  FormBuilderConfig,
+  getIsPostingEnabled,
+} from 'components/FormBuilder/utils';
 
 // i18n
 import messages from '../messages';
@@ -40,11 +43,13 @@ const StyledStatusLabel = styled(StatusLabel)`
 type FormBuilderTopBarProps = {
   isSubmitting: boolean;
   isEditingDisabled: boolean;
+  builderConfig?: FormBuilderConfig;
 };
 
 const FormBuilderTopBar = ({
   isSubmitting,
   isEditingDisabled,
+  builderConfig,
 }: FormBuilderTopBarProps) => {
   const localize = useLocalize();
   const { projectId, phaseId } = useParams() as {
@@ -63,7 +68,6 @@ const FormBuilderTopBar = ({
     ? `/projects/${project?.attributes.slug}/ideas/new?phase_id=${phaseId}`
     : `/projects/${project?.attributes.slug}/ideas/new`;
 
-  // TODO : Generalize this form builder and use new ParticipationMethod abstraction to control method specific copy, etc.
   const goBack = () => {
     clHistory.push(`/admin/projects/${projectId}/native-survey`);
   };
@@ -97,24 +101,26 @@ const FormBuilderTopBar = ({
           </Text>
           <Box display="flex" alignContent="center" mt="4px">
             <Title marginRight="8px" marginTop="0" variant="h4" as="h1">
-              <FormattedMessage {...messages.surveyTitle} />
+              <FormattedMessage {...builderConfig?.formBuilderTitle} />
             </Title>
-            <StyledStatusLabel
-              text={
-                isPostingEnabled ? (
-                  <span style={{ color: colors.success }}>
-                    <FormattedMessage {...messages.open} />
-                  </span>
-                ) : (
-                  <span style={{ color: colors.red400 }}>
-                    <FormattedMessage {...messages.closed} />
-                  </span>
-                )
-              }
-              backgroundColor={
-                isPostingEnabled ? colors.successLight : colors.errorLight
-              }
-            />
+            {builderConfig?.showStatusBadge && (
+              <StyledStatusLabel
+                text={
+                  isPostingEnabled ? (
+                    <span style={{ color: colors.success }}>
+                      <FormattedMessage {...messages.open} />
+                    </span>
+                  ) : (
+                    <span style={{ color: colors.red400 }}>
+                      <FormattedMessage {...messages.closed} />
+                    </span>
+                  )
+                }
+                backgroundColor={
+                  isPostingEnabled ? colors.successLight : colors.errorLight
+                }
+              />
+            )}
           </Box>
         </Box>
         <Box ml="24px" />

@@ -1,14 +1,20 @@
-import React from 'react';
-
 // types
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
+import { IFlatCustomField } from 'services/formCustomFields';
 
 // intl
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+export const getUpdatedConfiguration = (
+  config: FormBuilderConfig,
+  formCustomFields: IFlatCustomField[] | undefined | Error
+) => {
+  config.formCustomFields = formCustomFields;
+  return config;
+};
+
 export const nativeSurveyConfig: FormBuilderConfig = {
-  getFormBuilderTitle: () => {
-    return <FormattedMessage {...messages.survey} />;
-  },
+  formBuilderTitle: messages.survey,
+  formCustomFields: undefined,
+  showStatusBadge: true,
 };

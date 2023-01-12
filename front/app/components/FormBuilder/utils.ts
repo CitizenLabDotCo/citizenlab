@@ -1,5 +1,5 @@
 // Services
-import { ReactNode } from 'react';
+import { IFlatCustomField } from 'services/formCustomFields';
 import { IPhaseData, updatePhase } from 'services/phases';
 import { IProjectData, updateProject } from 'services/projects';
 
@@ -10,7 +10,9 @@ import { Multiloc } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 
 export type FormBuilderConfig = {
-  getFormBuilderTitle: () => ReactNode | JSX.Element | null;
+  formBuilderTitle: { id: string; defaultMessage: string };
+  formCustomFields: IFlatCustomField[] | undefined | Error;
+  showStatusBadge: boolean;
 };
 
 type FormActionsConfig = {

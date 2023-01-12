@@ -1,16 +1,12 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  surveyTitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.surveyTitle',
-    defaultMessage: 'Survey',
-  },
   viewSurvey: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurvey',
     defaultMessage: 'View survey',
   },
   save: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.save',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.save',
     defaultMessage: 'Save',
   },
   addSurveyContent: {
@@ -18,111 +14,111 @@ export default defineMessages({
     defaultMessage: 'Add survey content',
   },
   shortAnswer: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.shortAnswer',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.shortAnswer',
     defaultMessage: 'Short answer',
   },
   longAnswer: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.longAnswer',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.longAnswer',
     defaultMessage: 'Long answer',
   },
   page: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.page',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.page',
     defaultMessage: 'Page',
   },
   surveyEnd: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.surveyEnd',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd',
     defaultMessage: 'Survey end',
   },
   question: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.question',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.question',
     defaultMessage: 'Question',
   },
   multipleChoice: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.multipleChoice',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.multipleChoice',
     defaultMessage: 'Multiple choice',
   },
   singleChoice: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.singleChoice',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.singleChoice',
     defaultMessage: 'Single choice',
   },
   chooseOne: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.chooseOne',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.chooseOne',
     defaultMessage: 'Choose one',
   },
   chooseMany: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.chooseMany',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.chooseMany',
     defaultMessage: 'Choose many',
   },
   number: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.number',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.number',
     defaultMessage: 'Number',
   },
   linearScale: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.linearScale',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.linearScale',
     defaultMessage: 'Linear scale',
   },
   default: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.default',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.default',
     defaultMessage: 'Default',
   },
   newField: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.newField',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.newField',
     defaultMessage: 'New field',
   },
   closed: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.closed',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.closed',
     defaultMessage: 'Closed',
   },
   open: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.open',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.open',
     defaultMessage: 'Open',
   },
   close: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.close',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.close',
     defaultMessage: 'Close',
   },
   delete: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.delete',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.delete',
     defaultMessage: 'Delete',
   },
   logic: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.logic',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.logic',
     defaultMessage: 'Logic',
   },
   content: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.content',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.content',
     defaultMessage: 'Content',
   },
   done: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.done',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.done',
     defaultMessage: 'Done',
   },
   questionTitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.questionTitle',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.questionTitle',
     defaultMessage: 'Question title',
   },
   questionDescriptionOptional: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.questionDescriptionOptional',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.questionDescriptionOptional',
     defaultMessage: 'Question description (optional)',
   },
   required: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.required',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.required',
     defaultMessage: 'Required',
   },
   optional: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.optional',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.optional',
     defaultMessage: 'Optional',
   },
   requiredToggleLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.requiredToggleLabel',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.requiredToggleLabel',
     defaultMessage: 'Make answering this question required',
   },
   deleteButtonLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.deleteButtonLabel',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.deleteButtonLabel',
     defaultMessage: 'Delete',
   },
   editButtonLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.editButtonLabel',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.editButtonLabel',
     defaultMessage: 'Edit',
   },
   viewSurveyResults: {
@@ -166,12 +162,12 @@ export default defineMessages({
     defaultMessage: 'Yes, delete survey results',
   },
   deleteFieldWithLogicConfirmationQuestion: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.deleteFieldWithLogicConfirmationQuestion',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.deleteFieldWithLogicConfirmationQuestion',
     defaultMessage:
       'Deleting this page will also delete the logic associated with it. Are you sure you want to delete it?',
   },
   confirmDeleteFieldWithLogicButtonText: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.confirmDeleteFieldWithLogicButtonText',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.confirmDeleteFieldWithLogicButtonText',
     defaultMessage: 'Yes, delete page',
   },
   totalSurveyResponses: {
@@ -192,15 +188,15 @@ export default defineMessages({
       'Responses to short and long answer questions are currently only available in the survey download',
   },
   multiselect: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.multiselectText',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.multiselectText',
     defaultMessage: 'Multiple choice - choose many',
   },
   select: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.selectText',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.selectText',
     defaultMessage: 'Multiple choice - choose one',
   },
   linear_scale: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.linear_scale',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.linear_scale',
     defaultMessage: 'Linear scale',
   },
   disabledSurveyMessage: {
@@ -218,34 +214,34 @@ export default defineMessages({
       '{percentage}% ({choiceCount, plural, no {# choices} one {# choice} other {# choices}})',
   },
   invalidLogicBadgeMessage: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.invalidLogicBadgeMessage',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.invalidLogicBadgeMessage',
     defaultMessage: 'Invalid logic',
   },
   // Logic Settings
   questionLogicHelperText: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.questionLogicHelperText',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.questionLogicHelperText',
     defaultMessage:
       'If no logic is added to an answer, the survey will follow its normal flow. Adding logic to a question will make it required by default. For more information, visit {supportPageLink}',
   },
   pagesLogicHelperText: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.pagesLogicHelperText',
     defaultMessage:
       'If no logic is added, the survey will follow its normal flow. For more information, visit {supportPageLink}',
   },
   goToPageInputLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.goToPageInputLabel',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.goToPageInputLabel',
     defaultMessage: 'Then next page is:',
   },
   ruleForAnswerLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.ruleForAnswerLabel',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.ruleForAnswerLabel',
     defaultMessage: 'If answer is:',
   },
   pageRuleLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.pageRuleLabel',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.pageRuleLabel',
     defaultMessage: 'Next page is:',
   },
   nextPageLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.nextPageLabel',
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.nextPageLabel',
     defaultMessage: 'Next:',
   },
   surveySupportArticle: {
