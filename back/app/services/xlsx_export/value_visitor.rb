@@ -79,6 +79,14 @@ module XlsxExport
       # The field does not capture data, so there is no value.
     end
 
+    def visit_file_upload(field)
+      file_id = value_for(field)
+      return unless file_id
+
+      idea_file = model.idea_files.detect { |file| file.id == file_id }
+      idea_file.file.url
+    end
+
     private
 
     attr_reader :model, :option_index

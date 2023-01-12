@@ -62,6 +62,9 @@ import SingleSelectRadioControl, {
 import LinearScaleControl, {
   linearScaleControlTester,
 } from './LinearScaleControl';
+import SingleAttachmentControl, {
+  singleAttachmentControlTester,
+} from './SingleAttachmentControl';
 
 export {
   CLCategoryLayout,
@@ -106,4 +109,6 @@ export {
   multilocInputTester,
   LinearScaleControl,
   linearScaleControlTester,
+  SingleAttachmentControl,
+  singleAttachmentControlTester,
 };
