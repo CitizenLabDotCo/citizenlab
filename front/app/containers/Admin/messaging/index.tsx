@@ -14,10 +14,7 @@ import { Outlet as RouterOutlet } from 'react-router-dom';
 
 type Props = {
   canManageAutomatedCampaigns: boolean | null;
-  canManageManualCampaigns: boolean | null;
-  manualEmailingEnabled: boolean | null;
   automatedEmailingEnabled: boolean | null;
-  textingEnabled: boolean | null;
 };
 
 interface State {}
@@ -38,24 +35,6 @@ class MessagingDashboard extends React.PureComponent<
       statusLabel?: string;
     }[] = [];
 
-    if (
-      this.props.canManageManualCampaigns &&
-      this.props.manualEmailingEnabled
-    ) {
-      tabs.push({
-        name: 'manual-emails',
-        label: formatMessage(messages.tabCustomEmail),
-        url: '/admin/messaging/emails/custom',
-      });
-    }
-    if (this.props.textingEnabled) {
-      tabs.push({
-        name: 'texting',
-        label: formatMessage(messages.tabTexting),
-        url: '/admin/messaging/texting',
-        statusLabel: 'Beta',
-      });
-    }
     if (
       this.props.canManageAutomatedCampaigns &&
       this.props.automatedEmailingEnabled
@@ -112,14 +91,9 @@ const Data = adopt<Props>({
   canManageAutomatedCampaigns: (
     <GetPermission item="automatedCampaign" action="manage" />
   ),
-  canManageManualCampaigns: (
-    <GetPermission item="manualCampaign" action="manage" />
-  ),
-  manualEmailingEnabled: <GetFeatureFlag name="manual_emailing" />,
   automatedEmailingEnabled: (
     <GetFeatureFlag name="automated_emailing_control" />
   ),
-  textingEnabled: <GetFeatureFlag name="texting" />,
 });
 
 export default (inputProps) => (
