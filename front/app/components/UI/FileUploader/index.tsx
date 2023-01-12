@@ -2,7 +2,7 @@ import React from 'react';
 
 // components
 import FileInput from './FileInput';
-import FileDisplay from './FileDisplay';
+import FileDisplay, { FileType } from './FileDisplay';
 import Error from 'components/UI/Error';
 
 // typings
@@ -24,8 +24,8 @@ export interface FileUploaderProps {
   id: string;
   className?: string;
   onFileAdd: (fileToAdd: UploadFile) => void;
-  onFileRemove: (fileToRemove: UploadFile) => void;
-  files: UploadFile[] | null;
+  onFileRemove: (fileToRemove: FileType) => void;
+  files?: FileType[] | null;
   apiErrors?: { [fieldName: string]: CLError[] } | null;
 }
 
@@ -44,24 +44,24 @@ const FileUploader = ({
   };
 
   const handleFileOnRemove =
-    (fileToRemove: UploadFile) => (event: React.FormEvent) => {
+    (fileToRemove: FileType) => (event: React.FormEvent) => {
       event.preventDefault();
       event.stopPropagation();
       onFileRemove(fileToRemove);
     };
+  const fileNames = files ? files.map((file) => file.name).join(', ') : '';
 
-  const fileNames = files ? files.map((file) => file.filename).join(', ') : '';
   return (
     <Container className={className} key={id}>
       <FileInput onAdd={handleFileOnAdd} id={id} />
       <Error fieldName="file" apiErrors={apiErrors?.file} />
 
       {files &&
-        files.map((file) => (
+        files.map((fila) => (
           <FileDisplay
-            key={file.id || file.filename}
-            onDeleteClick={handleFileOnRemove(file)}
-            file={file}
+            key={fila.id || fila.name}
+            onDeleteClick={handleFileOnRemove(fila)}
+            file={fila}
           />
         ))}
       <ScreenReaderOnly aria-live="polite">
@@ -69,7 +69,7 @@ const FileUploader = ({
           {...(files && files.length > 0
             ? messages.a11y_filesToBeUploaded
             : messages.a11y_noFiles)}
-          values={{ fileNames }}
+          values={{ fileNames: fileNames }}
         />
       </ScreenReaderOnly>
     </Container>

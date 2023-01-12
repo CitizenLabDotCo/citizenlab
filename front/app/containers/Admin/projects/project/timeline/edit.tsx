@@ -26,7 +26,6 @@ import eventEmitter from 'utils/eventEmitter';
 
 // Utils
 import shallowCompare from 'utils/shallowCompare';
-import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
 
 // Components
 import { Label } from '@citizenlab/cl2-component-library';
@@ -51,10 +50,10 @@ import styled from 'styled-components';
 
 // Typings
 import { CLError, Locale, UploadFile, Multiloc } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
 
 // Resources
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+import { FileType } from 'components/UI/FileUploader/FileDisplay';
 
 const PhaseForm = styled.form``;
 
@@ -80,8 +79,8 @@ interface State {
   processing: boolean;
   saved: boolean;
   loaded: boolean;
-  phaseFiles: UploadFile[];
-  phaseFilesToRemove: UploadFile[];
+  inStatePhaseFiles: FileType[];
+  phaseFilesToRemove: FileType[];
   submitState: 'disabled' | 'enabled' | 'error' | 'success';
 }
 
@@ -103,7 +102,7 @@ class AdminProjectTimelineEdit extends PureComponent<
       processing: false,
       saved: false,
       loaded: false,
-      phaseFiles: [],
+      inStatePhaseFiles: [],
       phaseFilesToRemove: [],
       submitState: 'disabled',
     };
@@ -149,14 +148,18 @@ class AdminProjectTimelineEdit extends PureComponent<
                     ) {
                       return combineLatest(
                         phaseFiles.data.map((phaseFile) => {
+                          console.log('phaseFile', phaseFile);
                           const url = phaseFile.attributes.file.url;
                           const filename = phaseFile.attributes.name;
+                          const size = phaseFile.attributes.size;
                           const id = phaseFile.id;
-                          return convertUrlToUploadFileObservable(
-                            url,
+                          return of({
                             id,
-                            filename
-                          );
+                            url,
+                            name: filename,
+                            size,
+                            remote: true,
+                          });
                         })
                       );
                     }
@@ -168,11 +171,7 @@ class AdminProjectTimelineEdit extends PureComponent<
           })
         )
         .subscribe((phaseFiles) => {
-          this.setState({
-            phaseFiles: phaseFiles.filter(
-              (file) => !isNilOrError(file)
-            ) as UploadFile[],
-          });
+          this.setState({ inStatePhaseFiles: phaseFiles as FileType[] });
         }),
     ];
   }
@@ -236,25 +235,32 @@ class AdminProjectTimelineEdit extends PureComponent<
 
   handlePhaseFileOnAdd = (newFile: UploadFile) => {
     this.setState((prevState) => {
-      const isDuplicate = prevState.phaseFiles.some(
-        (file) => file.base64 === newFile.base64
+      const modifiedNewFile = {
+        name: newFile.name || newFile.filename,
+        size: newFile.size,
+        remote: false,
+        base64: newFile.base64,
+      };
+
+      const isNewDuplicate = prevState.inStatePhaseFiles.some(
+        (file) => file.name === newFile.name
       );
-      const phaseFiles = isDuplicate
-        ? prevState.phaseFiles
-        : [...(prevState.phaseFiles || []), newFile];
-      const submitState = isDuplicate ? prevState.submitState : 'enabled';
+      const inStatePhaseFiles = isNewDuplicate
+        ? prevState.inStatePhaseFiles
+        : [...(prevState.inStatePhaseFiles || []), modifiedNewFile];
+      const submitState = isNewDuplicate ? prevState.submitState : 'enabled';
 
       return {
-        phaseFiles,
+        inStatePhaseFiles,
         submitState,
       };
     });
   };
 
-  handlePhaseFileOnRemove = (fileToRemove: UploadFile) => {
+  handlePhaseFileOnRemove = (fileToRemove: FileType) => {
     this.setState((prevState) => {
-      const phaseFiles = prevState.phaseFiles.filter(
-        (file) => file.base64 !== fileToRemove.base64
+      const inStatePhaseFiles = prevState.inStatePhaseFiles.filter(
+        (file) => file.name !== fileToRemove.name
       );
       const phaseFilesToRemove = [
         ...(prevState.phaseFilesToRemove || []),
@@ -262,7 +268,7 @@ class AdminProjectTimelineEdit extends PureComponent<
       ];
 
       return {
-        phaseFiles,
+        inStatePhaseFiles,
         phaseFilesToRemove,
         submitState: 'enabled',
       };
@@ -310,7 +316,7 @@ class AdminProjectTimelineEdit extends PureComponent<
   ) => {
     if (!isEmpty(attributeDiff) && !this.state.processing) {
       try {
-        const { phaseFiles, phaseFilesToRemove } = this.state;
+        const { inStatePhaseFiles, phaseFilesToRemove } = this.state;
         let phaseResponse = phase;
         let redirect = false;
 
@@ -328,8 +334,8 @@ class AdminProjectTimelineEdit extends PureComponent<
 
         if (phaseResponse) {
           const phaseId = phaseResponse.data.id;
-          const filesToAddPromises = phaseFiles
-            .filter((file) => !file.remote)
+          const filesToAddPromises = inStatePhaseFiles
+            .filter((file): file is UploadFile => !file.remote)
             .map((file) => addPhaseFile(phaseId, file.base64, file.name));
           const filesToRemovePromises = phaseFilesToRemove
             .filter((file) => file.remote)
@@ -411,7 +417,7 @@ class AdminProjectTimelineEdit extends PureComponent<
         phase,
         attributeDiff,
         processing,
-        phaseFiles,
+        inStatePhaseFiles,
         submitState,
       } = this.state;
       const phaseAttrs = phase
@@ -481,7 +487,7 @@ class AdminProjectTimelineEdit extends PureComponent<
                   id="project-timeline-edit-form-file-uploader"
                   onFileAdd={this.handlePhaseFileOnAdd}
                   onFileRemove={this.handlePhaseFileOnRemove}
-                  files={phaseFiles}
+                  files={inStatePhaseFiles}
                   apiErrors={errors}
                 />
               </SectionField>
