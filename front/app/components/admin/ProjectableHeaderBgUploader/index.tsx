@@ -40,7 +40,7 @@ const HeaderBgInput = ({ imageUrl, onImageChange }: Props) => {
     setHeaderBg(null);
   };
 
-  const imageIsNotSaved = headerBg && !headerBg[0].remote;
+  const imageShouldBeSaved = headerBg && !headerBg[0].remote;
 
   return (
     <SectionField>
@@ -49,7 +49,7 @@ const HeaderBgInput = ({ imageUrl, onImageChange }: Props) => {
         <ImageInfoTooltip />
       </SubSectionTitle>
 
-      {imageIsNotSaved ? (
+      {imageShouldBeSaved ? (
         <Box display="flex" flexDirection="column" gap="8px">
           <ImageCropperContainer
             image={headerBg}
