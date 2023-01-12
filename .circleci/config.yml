@@ -479,13 +479,13 @@ jobs:
           key: v1-npm-cache-{{ checksum "package.json" }}
       - run:
           name: Run tests with JUnit as reporter
-          environment:
-            JEST_JUNIT_OUTPUT_FILE: "reports/junit/js-test-results.xml"
           command: npm run test:ci
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: ./reports/
       - store_test_results:
-          path: ./reports/junit
+          path: ./reports/
       - store_artifacts:
-          path: ./reports/junit
+          path: ./reports/
 
   front-detect-deadcode:
     docker:
@@ -631,13 +631,13 @@ jobs:
           key: v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
       - run:
           name: Run tests with JUnit as reporter
-          environment:
-            JEST_JUNIT_OUTPUT: "reports/junit/js-test-results.xml"
           command: cd citizenlab/front && npm run test:ci
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: ./reports/
       - store_test_results:
-          path: ./reports/junit
+          path: ./citizenlab/front/reports/
       - store_artifacts:
-          path: ./reports/junit
+          path: ./citizenlab/front/reports/
 
   front-ee-trigger-deploy:
     resource_class: small

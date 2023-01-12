@@ -6,6 +6,10 @@
 
 - [CL-2340] Added file upload fields to survey forms.
 
+### Changed
+
+- [CL-2344] Removes content builder iframe URL whitelist.
+
 ## 2023-01-11
 
 ### Fixed
