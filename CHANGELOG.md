@@ -12,6 +12,10 @@
 
 ## 2023-01-11
 
+### Added
+
+- [CL-2255] Show 'Invitation pending' in user group list, for users added to user group when invited, and who have not yet accepted the invitation.
+
 ### Fixed
 
 - [CL-2555] Fixed broken two-column layout
