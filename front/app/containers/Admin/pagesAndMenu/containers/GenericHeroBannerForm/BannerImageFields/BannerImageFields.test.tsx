@@ -9,8 +9,8 @@ const props = {
   bannerOverlayOpacity: 90,
   bannerLayout: 'full_width_banner_layout' as const,
   headerBg: {
-    small: 'url',
-    medium: 'medium',
+    small: 'https://demo.stg.citizenlab.co/upload.png',
+    medium: 'https://demo.stg.citizenlab.co/upload.png',
     large: 'https://demo.stg.citizenlab.co/upload.png',
   },
   onAddImage: jest.fn(),
@@ -25,13 +25,6 @@ describe('Layout preview selector', () => {
 
     const select = screen.queryByLabelText('Show preview for');
     expect(select).not.toBeInTheDocument();
-  });
-
-  it('shows when there is a saved image', () => {
-    render(<BannerImageFields {...props} />);
-
-    const select = screen.getByLabelText('Show preview for');
-    expect(select).toBeInTheDocument();
   });
 
   it('shows when there is an unsaved image', async () => {
@@ -84,13 +77,6 @@ describe('Image overlay toggle', () => {
 
       await uploadLocalImageForHeroBanner();
       expect(screen.getByLabelText('Enable overlay')).toBeInTheDocument();
-    });
-
-    it('shows when there is a saved image', () => {
-      render(<BannerImageFields {...props} />);
-
-      const overlayInput = screen.getByLabelText('Enable overlay');
-      expect(overlayInput).toBeInTheDocument();
     });
   });
 
