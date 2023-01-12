@@ -1,7 +1,6 @@
 import React from 'react';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
 import ActiveUsers from './ActiveUsersCard';
 
 // styling
@@ -18,6 +17,7 @@ import messages from '../messages';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { ChartWidgetSettings } from '../ChartWidgetSettings';
 import { ChartWidgetProps } from '../typings';
+import PageBreakBox from '../../../../../../../../components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 const ActiveUsersWidget = ({
   title,
@@ -35,7 +35,7 @@ const ActiveUsersWidget = ({
   };
 
   return (
-    <Box
+    <PageBreakBox
       minHeight="26px"
       border={BORDER}
       borderRadius={stylingConsts.borderRadius}
@@ -43,7 +43,7 @@ const ActiveUsersWidget = ({
       mb="4px"
     >
       <ActiveUsers {...analyticsChartProps} />
-    </Box>
+    </PageBreakBox>
   );
 };
 
