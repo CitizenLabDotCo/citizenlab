@@ -33,10 +33,12 @@ describe('HeaderBgUploader', () => {
 
     expect(screen.getByTestId('images-dropzone')).toBeInTheDocument();
 
+    // userEvent.upload(dropZone, file); // causes lots of warnings
+    fireEvent.change(dropZone, {
+      target: { files: [file] },
+    });
+
     await waitFor(() => {
-      fireEvent.change(dropZone, {
-        target: { files: [file] },
-      });
       expect(screen.getByTestId('image-cropper')).toBeInTheDocument();
     });
   });
