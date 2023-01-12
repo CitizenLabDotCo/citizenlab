@@ -69,10 +69,6 @@ export type ProposalsSettings = {
 };
 export interface IAppConfigurationSettings {
   core: IAppConfigurationSettingsCore;
-  customizable_homepage_banner: {
-    allowed: boolean;
-    enabled: boolean;
-  };
   advanced_custom_pages: {
     allowed: boolean;
     enabled: boolean;

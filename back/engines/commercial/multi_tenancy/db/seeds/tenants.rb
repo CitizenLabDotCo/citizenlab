@@ -11,12 +11,15 @@ module MultiTenancy
       end
 
       def create_localhost_tenant
-        Tenant.create!(
+        tenant_attrs = {
           id: 'c72c5211-8e03-470b-9564-04ec0a8c322b',
           name: 'local',
           host: 'localhost',
+          created_at: Faker::Date.between(from: 1.year.ago, to: Time.zone.now)
+        }
+
+        config_attrs = tenant_attrs.merge(
           logo: Rails.root.join('spec/fixtures/logo.png').open,
-          created_at: Faker::Date.between(from: 1.year.ago, to: Time.zone.now),
           settings: SettingsService.new.minimal_required_settings(
             locales: runner.seed_locales,
             lifecycle_stage: 'active'
@@ -25,10 +28,6 @@ module MultiTenancy
               organization_type: "#{runner.seed_size}_city",
               organization_name: runner.create_for_tenant_locales { Faker::Address.city },
               currency: CL2_SUPPORTED_CURRENCIES.sample
-            },
-            customizable_homepage_banner: {
-              allowed: true,
-              enabled: true
             },
             password_login: {
               allowed: true,
@@ -383,17 +382,24 @@ module MultiTenancy
             }
           })
         )
+
+        TenantService.new.initialize_tenant(tenant_attrs, config_attrs)
       end
 
       def create_empty_localhost_tenant
-        Tenant.create!(
+        tenant_attrs = {
           id: '07ff8088-cc78-4307-9a1c-ebb6fb836f96',
           name: 'empty',
           host: 'empty.localhost',
+          created_at: Faker::Date.between(from: 1.year.ago, to: Time.zone.now)
+        }
+
+        config_attrs = tenant_attrs.merge(
           logo: Rails.root.join('spec/fixtures/logo.png').open,
-          created_at: Faker::Date.between(from: 1.year.ago, to: Time.zone.now),
           settings: SettingsService.new.minimal_required_settings(locales: %w[en nl-BE], lifecycle_stage: 'active')
         )
+
+        TenantService.new.initialize_tenant(tenant_attrs, config_attrs)
       end
     end
   end

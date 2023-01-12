@@ -15,7 +15,8 @@ module XlsxExport
     end
 
     def generate_sheet(workbook, sheetname)
-      sheetname = Utils.new.sanitize_sheetname sheetname
+      utils = Utils.new
+      sheetname = utils.sanitize_sheetname sheetname
       workbook.styles do |styles|
         column_header = styles.add_style(
           b: true,
@@ -36,6 +37,10 @@ module XlsxExport
               end
             end
           end
+          hyperlink_indexes = all_report_fields.each_index.select do |idx|
+            all_report_fields[idx].hyperlink?
+          end
+          utils.add_hyperlinks sheet, hyperlink_indexes
         end
       end
     end
@@ -101,7 +106,8 @@ module XlsxExport
     def input_url_report_field
       ComputedFieldForReport.new(
         column_header_for('input_url'),
-        ->(input) { Frontend::UrlService.new.model_to_url(input) }
+        ->(input) { Frontend::UrlService.new.model_to_url(input) },
+        hyperlink: true
       )
     end
 
