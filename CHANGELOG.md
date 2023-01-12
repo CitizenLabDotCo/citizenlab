@@ -1,5 +1,11 @@
 # Changelog
 
+## Next
+
+### Changed
+
+- [CL-2344] Removes content builder iframe URL whitelist.
+
 ## 2023-01-11
 
 ### Fixed
