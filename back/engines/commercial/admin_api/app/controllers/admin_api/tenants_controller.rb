@@ -34,9 +34,10 @@ module AdminApi
     def remove_locale
       tenant_service.replace_locale_occurences! @tenant, remove_locale_params[:remove_locale], remove_locale_params[:replacing_locale]
 
-      settings = @tenant.settings
+      app_config = @tenant.configuration
+      settings = app_config.settings
       settings['core']['locales'].delete remove_locale_params[:remove_locale]
-      update_tenant settings: settings
+      update_tenant(settings: settings)
     end
 
     def destroy
