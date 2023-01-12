@@ -75,16 +75,15 @@ const BannerImageField = ({
 
     if (typeof headerBg === 'string') return;
     const headerFileInfo = headerBg?.large;
-    console.log('headerBg');
-    console.log(headerBg);
-    console.log(headerBg?.large);
+    // console.log('headerBg');
+    // console.log(headerBg);
+    // console.log(headerBg?.large);
 
     (async () => {
       const tenantHeaderBg = await convertHeaderToUploadFile(headerFileInfo);
       setHeaderLocalDisplayImage(
         !isNilOrError(tenantHeaderBg) ? tenantHeaderBg : null
       );
-      setBannerError(null);
     })();
 
     // https://stackoverflow.com/questions/54954385/react-useeffect-causing-cant-perform-a-react-state-update-on-an-unmounted-comp
@@ -98,8 +97,6 @@ const BannerImageField = ({
       setBannerError(formatMessage(messages.noHeader));
       return;
     }
-
-    setBannerError(null);
   }, [headerBg, formatMessage, setFormStatus]);
 
   const convertHeaderToUploadFile = async (
@@ -119,6 +116,7 @@ const BannerImageField = ({
     onAddImage(newImages[0].base64);
     // this value is used for local display
     setHeaderLocalDisplayImage(newImages[0]);
+    setBannerError(null);
   };
 
   const handleOnRemoveImageFromUploader = () => {
