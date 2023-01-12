@@ -5,16 +5,11 @@
 ### Added
 
 - [CL-2340] Added file upload fields to survey forms.
+- [CL-2255] Show 'Invitation pending' in user group list, for users added to user group when invited, and who have not yet accepted the invitation.
 
 ### Changed
 
 - [CL-2344] Removes content builder iframe URL whitelist.
-
-## 2023-01-11
-
-### Added
-
-- [CL-2255] Show 'Invitation pending' in user group list, for users added to user group when invited, and who have not yet accepted the invitation.
 
 ### Fixed
 
