@@ -50,12 +50,12 @@ const Chart = ({
   const legendItems: LegendItem[] = [
     {
       icon: 'circle',
-      color: colors.categorical01,
+      color: colors.categorical03,
       label: formatMessage(messages.customEmails),
     },
     {
       icon: 'circle',
-      color: colors.categorical03,
+      color: colors.categorical01,
       label: formatMessage(messages.automatedEmails),
     },
   ];

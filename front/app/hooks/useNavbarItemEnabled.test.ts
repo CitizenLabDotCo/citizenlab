@@ -2,7 +2,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import useNavbarItemEnabled from './useNavbarItemEnabled';
 import { Observable, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import navbarItems from './fixtures/navbarItems';
+import navbarItems from 'services/__mocks__/navbarItems';
 import { navbarItemsStream } from 'services/navbar';
 
 const mockInput = {

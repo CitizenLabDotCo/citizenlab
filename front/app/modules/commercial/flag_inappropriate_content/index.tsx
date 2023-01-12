@@ -24,10 +24,18 @@ const NLPFlagNotification = React.lazy(
   () => import('./citizen/components/NLPFlagNotification')
 );
 
-type RenderOnSelectedTabValueProps = {
+interface RenderOnSelectedTabValueProps {
   isTabSelected: boolean;
   children: ReactNode;
-};
+}
+
+interface RenderOnFeatureFlagProps {
+  children: ReactNode;
+}
+
+interface RenderOnAllowedProps {
+  children: ReactNode;
+}
 
 const RenderOnSelectedTabValue = ({
   isTabSelected,
@@ -37,7 +45,7 @@ const RenderOnSelectedTabValue = ({
   return <>{children}</>;
 };
 
-const RenderOnFeatureFlag = ({ children }) => {
+const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
   const featureFlag = useFeatureFlag({
     name: 'flag_inappropriate_content',
   });
@@ -45,7 +53,7 @@ const RenderOnFeatureFlag = ({ children }) => {
   return featureFlag ? <>{children}</> : null;
 };
 
-const RenderOnAllowed = ({ children }) => {
+const RenderOnAllowed = ({ children }: RenderOnAllowedProps) => {
   const allowed = useFeatureFlag({
     name: 'flag_inappropriate_content',
     onlyCheckAllowed: true,

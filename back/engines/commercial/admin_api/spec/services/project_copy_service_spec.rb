@@ -96,5 +96,32 @@ describe AdminApi::ProjectCopyService do
         ]
       )
     end
+
+    it 'skips custom field values with ID references' do
+      project = create :continuous_native_survey_project
+      custom_form = create :custom_form, participation_context: project
+      supported_fields = %i[custom_field_number custom_field_linear_scale custom_field_checkbox].map do |factory|
+        create factory, :for_custom_form, resource: custom_form
+      end
+      unsupported_field = create :custom_field, :for_custom_form, input_type: 'file_upload', resource: custom_form
+      response = create :native_survey_response, project: project
+      custom_field_values = {
+        supported_fields[0].key => 7,
+        supported_fields[1].key => 1,
+        unsupported_field.key => create(:file_upload, idea: response).id,
+        supported_fields[2].key => false
+      }
+      response.update! custom_field_values: custom_field_values
+
+      template = service.export project.reload, include_ideas: true
+
+      expected_custom_field_values = {
+        supported_fields[0].key => 7,
+        supported_fields[1].key => 1,
+        supported_fields[2].key => false
+      }
+      expect(template['models']['idea'].size).to eq 1
+      expect(template['models']['idea'].first['custom_field_values']).to match expected_custom_field_values
+    end
   end
 end

@@ -13,7 +13,10 @@ import FullscreenContentBuilder from 'components/admin/ContentBuilder/Fullscreen
 import Editor from '../components/Editor';
 import ContentBuilderToolbox from '../components/ContentBuilderToolbox';
 import ContentBuilderTopBar from '../components/ContentBuilderTopBar';
-import FrameWrapper from 'components/admin/ContentBuilder/Frame/FrameWrapper';
+import {
+  StyledRightColumn,
+  ErrorMessage,
+} from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import ContentBuilderSettings from 'components/admin/ContentBuilder/Settings';
 
@@ -151,9 +154,12 @@ export const ContentBuilderPage = () => {
           {selectedLocale && (
             <ContentBuilderToolbox selectedLocale={selectedLocale} />
           )}
-          <FrameWrapper localesWithError={localesWithError}>
-            <ContentBuilderFrame editorData={getEditorData()} />
-          </FrameWrapper>
+          <StyledRightColumn>
+            <Box width="1000px">
+              <ErrorMessage localesWithError={localesWithError} />
+              <ContentBuilderFrame editorData={getEditorData()} />
+            </Box>
+          </StyledRightColumn>
           <ContentBuilderSettings />
         </Box>
       </Editor>
