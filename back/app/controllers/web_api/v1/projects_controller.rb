@@ -83,12 +83,13 @@ class WebApi::V1::ProjectsController < ApplicationController
     title_suffix_multiloc = MultilocService.new.i18n_to_multiloc('project_copy.title_suffix')
     copy_title_ml = src_title_ml.each { |k, v| src_title_ml[k] = "#{v} - #{title_suffix_multiloc[k]}" }
 
-    slug = SlugService.new.generate_slug Project.new, copy_title_ml.values.first
+    # Assign UUID to slug, to use to find the project that will be created
+    temp_slug = SecureRandom.urlsafe_base64(32).downcase
 
     options = {
       include_ideas: false,
       anonymize_users: false,
-      new_slug: slug,
+      new_slug: temp_slug,
       new_title_multiloc: copy_title_ml,
       timeline_start_at: nil,
       new_publication_status: 'draft'
@@ -99,14 +100,20 @@ class WebApi::V1::ProjectsController < ApplicationController
     folder_id = ProjectFolders::Folder.find(source_project.folder_id) if source_project.folder_id
     AdminApi::ProjectCopyService.new.import(template, folder: folder_id)
 
-    @project = Project.find_by(slug: slug)
+    @project = Project.find_by(slug: "#{temp_slug}-1")
     authorize @project
 
-    render json: WebApi::V1::ProjectSerializer.new(
-      @project,
-      params: fastjson_params,
-      include: [:admin_publication]
-    ).serialized_json, status: :created
+    @project.slug = SlugService.new.generate_slug(@project, copy_title_ml.values.first)
+
+    if @project.save
+      render json: WebApi::V1::ProjectSerializer.new(
+        @project,
+        params: fastjson_params,
+        include: [:admin_publication]
+      ).serialized_json, status: :created
+    else
+      render json: { errors: @project.errors.details }, status: :unprocessable_entity
+    end
   end
 
   def update
