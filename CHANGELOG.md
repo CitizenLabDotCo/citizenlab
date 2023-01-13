@@ -1,5 +1,11 @@
 # Changelog
 
+## 2023-01-13
+
+### Fixed
+
+- [CL-2339] Fixed slow displaying of attachments in timeline projects on a phase
+
 ## 2023-01-12
 
 ### Added
