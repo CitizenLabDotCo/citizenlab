@@ -61,6 +61,9 @@ const reports = [
 global.window.confirm = jest.fn(() => true);
 jest.mock('utils/cl-router/history');
 
+const mockOpen = jest.fn();
+global.window.open = mockOpen;
+
 describe('<ReportBuilderPage />', () => {
   describe('empty state', () => {
     it('renders if reports is empty array', () => {
@@ -136,14 +139,15 @@ describe('<ReportBuilderPage />', () => {
       );
     });
 
-    it('calls clHistory.push with correct arg when clicking "view"', () => {
+    it('calls window.open with correct args when clicking "view"', () => {
       mockReports = reports;
       render(<ReportBuilderPage />);
       const viewButtonSecondReport = screen.getAllByText('View')[1];
       fireEvent.click(viewButtonSecondReport);
 
-      expect(clHistory.push).toHaveBeenCalledWith(
-        '/admin/reporting/report-builder/r2/viewer'
+      expect(mockOpen).toHaveBeenCalledWith(
+        '/admin/reporting/report-builder/r2/viewer',
+        '_blank'
       );
     });
   });

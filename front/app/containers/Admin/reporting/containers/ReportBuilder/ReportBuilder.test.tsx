@@ -16,6 +16,7 @@ jest.mock('hooks/useReport', () =>
     attributes: { name: 'Report 1' },
   }))
 );
+jest.mock('../../hooks/useReportLocale', () => jest.fn(() => 'en'));
 
 const surveyResultsNodes = {
   ROOT: {
