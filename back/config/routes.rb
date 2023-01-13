@@ -285,7 +285,6 @@ Rails.application.routes.draw do
             get 'users_by_custom_field_as_xlsx/:custom_field_id'
           end
         end
-
       end
 
       scope 'mentions', controller: 'mentions' do

@@ -593,7 +593,6 @@ resource 'Users' do
       example_request 'Get the authenticated user' do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq(@user.id)
-        expect(json_response.dig(:data, :attributes, :verified)).to be false if CitizenLab.ee?
       end
     end
 
@@ -749,55 +748,6 @@ resource 'Users' do
           expect(@user.reload.avatar_url).to be_nil
         end
       end
-
-      describe do
-        let(:cf) { create(:custom_field) }
-        let(:birthyear_cf) { create(:custom_field_birthyear) }
-        let(:custom_field_values) do
-          {
-            cf.key => 'new value',
-            birthyear_cf.key => birthyear
-          }
-        end
-        let(:first_name) { 'Raymond' }
-        let(:last_name) { 'Betancourt' }
-        let(:email) { 'ray.mond@rocks.com' }
-        let(:locale) { 'fr-FR' }
-        let(:birthyear) { 1969 }
-
-        example 'Can change many attributes of a user verified with FranceConnect', document: false, skip: !CitizenLab.ee? do
-          create(:verification, method_name: 'franceconnect', user: @user)
-          do_request
-          expect(response_status).to eq 200
-          @user.reload
-          expect(@user.first_name).to eq first_name
-          expect(@user.last_name).to eq last_name
-          expect(@user.email).to eq email
-          expect(@user.locale).to eq locale
-          expect(@user.birthyear).to eq birthyear
-        end
-      end
-
-      describe do
-        let(:cf) { create(:custom_field) }
-        let(:gender_cf) { create(:custom_field_gender) }
-        let(:custom_field_values) do
-          {
-            cf.key => 'new value',
-            gender_cf.key => 'female'
-          }
-        end
-
-        example "Can't change gender of a user verified with Bogus", document: false, skip: !CitizenLab.ee? do
-          create(:verification, method_name: 'bogus', user: @user)
-          @user.update!(custom_field_values: { cf.key => 'original value', gender_cf.key => 'male' })
-          do_request
-          expect(response_status).to eq 200
-          @user.reload
-          expect(@user.custom_field_values[cf.key]).to eq 'new value'
-          expect(@user.custom_field_values[gender_cf.key]).to eq 'male'
-        end
-      end
     end
 
     post 'web_api/v1/users/complete_registration' do
@@ -839,19 +789,6 @@ resource 'Users' do
             cf.key => 'new value',
             gender_cf.key => 'female'
           }
-        end
-
-        example "Can't change some custom_field_values of a user verified with Bogus", document: false, skip: !CitizenLab.ee? do
-          @user.update!(
-            registration_completed_at: nil,
-            custom_field_values: { cf.key => 'original value', gender_cf.key => 'male' }
-          )
-          create(:verification, method_name: 'bogus', user: @user)
-          do_request
-          expect(response_status).to eq 200
-          @user.reload
-          expect(@user.custom_field_values[cf.key]).to eq 'new value'
-          expect(@user.custom_field_values[gender_cf.key]).to eq 'male'
         end
       end
     end
