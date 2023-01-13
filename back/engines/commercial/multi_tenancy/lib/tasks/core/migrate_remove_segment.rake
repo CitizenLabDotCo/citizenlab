@@ -13,7 +13,7 @@ namespace :fix_existing_tenants do
     Tenant.where(id: blacklists.keys).all.each do |tenant|
       puts "Processing tenant #{tenant.host}..."
       Apartment::Tenant.switch(tenant.schema_name) do
-        s = tenant.settings
+        s = tenant.configuration.settings
         destinations = blacklists[tenant.id]
 
         destinations.each do |_destination|
@@ -25,7 +25,7 @@ namespace :fix_existing_tenants do
           end
         end
 
-        tenant.update!(settings: s)
+        tenant.configuration.update!(settings: settings)
       end
     end
   end

@@ -9,9 +9,9 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import T from 'components/T';
 import useAuthUser from 'hooks/useAuthUser';
-import Outlet from 'components/Outlet';
 import { media, isRtl, fontSizes } from 'utils/styleUtils';
 import OnboardingStep from './OnboardingStep';
+import CTA from './CTA';
 
 const HeaderContent = styled.div`
   position: absolute;
@@ -79,10 +79,7 @@ const FallbackStep = ({ currentOnboardingCampaignName }: Props) => {
             )}
           </Left>
           <Right>
-            <Outlet
-              id="app.containers.HomePage.SignedInHeader.CTA"
-              buttonStyle="primary-inverse"
-            />
+            <CTA signedIn buttonStyle="primary-inverse" />
           </Right>
         </HeaderContent>
       </OnboardingStep>

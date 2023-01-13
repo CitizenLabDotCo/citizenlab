@@ -17,24 +17,41 @@ module MultiTenancy
       tenant_side_fx.before_create(tenant)
 
       config = ActiveRecord::Base.transaction do
-        tenant.disable_auto_config.save!
+        tenant.save!
         # The tenant must be saved before proceeding with the AppConfiguration because:
         # - the app configuration creation and its side effects must run within the tenant context,
         # - we want to reuse the same id for app configuration.
         tenant.switch do
-          config = AppConfiguration.send(:new, config_attrs.merge(id: tenant.id))
+          config_attrs = config_attrs.reverse_merge(tenant_attrs).merge(id: tenant.id, created_at: tenant.created_at)
+          config = AppConfiguration.send(:new, config_attrs)
           config_side_fx.before_create(config)
+
           config.save! # The config-tenant sync implicitly initializes (shared) tenant attributes.
+          tenant.reload
+
+          tenant_side_fx.after_create(tenant)
+          config_side_fx.after_create(config)
           config
         end
       end
 
-      tenant.reload
-      tenant_side_fx.after_create(tenant)
-      tenant.switch { config_side_fx.after_create(config) }
       [true, tenant, config]
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
       [false, tenant, config]
+    end
+
+    # @return [Array(Boolean, Tenant, AppConfiguration)]
+    def initialize_with_template(tenant_attrs, config_attrs, template_name, apply_template_sync: false)
+      locales = config_attrs.dig('settings', 'core', 'locales')
+      validate_locales(template_name, locales)
+
+      success, tenant, _config = result = initialize_tenant(tenant_attrs, config_attrs)
+      if success && apply_template_sync
+        ApplyTenantTemplateJob.perform_now(template_name, tenant)
+      elsif success
+        ApplyTenantTemplateJob.perform_later(template_name, tenant)
+      end
+      result
     end
 
     def finalize_creation(tenant)
@@ -47,16 +64,6 @@ module MultiTenancy
       tenant.update! creation_finalized_at: Time.zone.now
     end
 
-    # @return [Array(Boolean, Tenant, AppConfiguration)]
-    def initialize_with_template(tenant_attrs, config_attrs, template_name)
-      locales = config_attrs.dig('settings', 'core', 'locales')
-      validate_locales(template_name, locales)
-
-      success, tenant, _config = result = initialize_tenant(tenant_attrs, config_attrs)
-      ApplyTenantTemplateJob.perform_later(template_name, tenant) if success
-      result
-    end
-
     # @param [Tenant] tenant
     def update_tenant(tenant, attrs)
       config = tenant.configuration
@@ -65,14 +72,8 @@ module MultiTenancy
 
       tenant.switch do
         config_side_fx.before_update(config)
-
-        ActiveRecord::Base.transaction do
-          config.save!
-          tenant.reload # after sync
-          tenant.attributes = attrs.slice(:host, :name)
-          tenant_side_fx.before_update(tenant)
-          tenant.disable_config_sync.save!
-        end
+        config.save!
+        tenant.reload # after sync
 
         config_side_fx.after_update(config)
         tenant_side_fx.after_update(tenant)
@@ -86,7 +87,7 @@ module MultiTenancy
     # @param [ActiveSupport::Duration,nil] retry_interval
     def delete(tenant, retry_interval: nil)
       tenant_side_fx.before_destroy(tenant)
-      tenant.update!(deleted_at: Time.zone.now) # Mark the tenant as deleted.
+      tenant.update!(deleted_at: Time.zone.now)
 
       # Users must be removed before the tenant to ensure PII is removed from
       # third-party services.

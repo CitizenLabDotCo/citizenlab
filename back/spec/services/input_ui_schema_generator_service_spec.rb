@@ -65,7 +65,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 elements: [
                   {
                     type: 'VerticalLayout',
-                    options: { render: 'multiloc' },
+                    options: { input_type: field2.input_type, render: 'multiloc' },
                     elements: [
                       {
                         type: 'Control',
@@ -117,6 +117,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                     scope: "#/properties/#{field1.key}",
                     label: 'Text title',
                     options: {
+                      input_type: field1.input_type,
                       description: 'Text description',
                       isAdminField: false,
                       hasRule: false,
@@ -141,7 +142,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 elements: [
                   {
                     type: 'VerticalLayout',
-                    options: { render: 'multiloc' },
+                    options: { input_type: field2.input_type, render: 'multiloc' },
                     elements: [
                       {
                         type: 'Control',
@@ -193,6 +194,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                     scope: "#/properties/#{field1.key}",
                     label: 'Text titre',
                     options: {
+                      input_type: field1.input_type,
                       description: 'Text description',
                       isAdminField: false,
                       hasRule: false,
@@ -217,7 +219,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 elements: [
                   {
                     type: 'VerticalLayout',
-                    options: { render: 'multiloc' },
+                    options: { input_type: field2.input_type, render: 'multiloc' },
                     elements: [
                       {
                         type: 'Control',
@@ -269,6 +271,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                     scope: "#/properties/#{field1.key}",
                     label: 'Text titel',
                     options: {
+                      input_type: field1.input_type,
                       description: 'Text description',
                       isAdminField: false,
                       hasRule: false,
@@ -370,6 +373,7 @@ RSpec.describe InputUiSchemaGeneratorService do
               scope: "#/properties/#{field.key}",
               label: 'Did you attend',
               options: {
+                input_type: field.input_type,
                 description: 'Which councils are you attending in our city?',
                 isAdminField: false,
                 hasRule: false,
@@ -442,6 +446,7 @@ RSpec.describe InputUiSchemaGeneratorService do
             {
               type: 'Page',
               options: {
+                input_type: page1.input_type,
                 id: page1.id,
                 title: 'About you',
                 description: 'Please fill in some <strong>personal details</strong>.'
@@ -451,6 +456,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 scope: "#/properties/#{field_in_page1.key}",
                 label: 'What is your age?',
                 options: {
+                  input_type: field_in_page1.input_type,
                   description: 'Enter a number.',
                   isAdminField: false,
                   hasRule: false,
@@ -461,6 +467,7 @@ RSpec.describe InputUiSchemaGeneratorService do
             {
               type: 'Page',
               options: {
+                input_type: page2.input_type,
                 id: page2.id,
                 title: 'About your cycling habits',
                 description: 'Please indicate how you use <strong>a bike</strong>.'
@@ -470,6 +477,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 scope: "#/properties/#{field_in_page2.key}",
                 label: 'Do you own a bike?',
                 options: {
+                  input_type: field_in_page2.input_type,
                   description: 'Enter Yes or No.',
                   isAdminField: false,
                   hasRule: false,
@@ -480,6 +488,7 @@ RSpec.describe InputUiSchemaGeneratorService do
             {
               type: 'Page',
               options: {
+                input_type: page3.input_type,
                 id: page3.id,
                 title: 'This is the end of the survey',
                 description: 'Thank you for participating 🚀'
@@ -598,6 +607,7 @@ RSpec.describe InputUiSchemaGeneratorService do
             {
               type: 'Page',
               options: {
+                input_type: page1.input_type,
                 id: page1.id,
                 title: '',
                 description: ''
@@ -607,6 +617,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 scope: "#/properties/#{field_in_page1.key}",
                 label: 'Hold old are you?',
                 options: {
+                  input_type: field_in_page1.input_type,
                   description: '',
                   isAdminField: false,
                   hasRule: true,
@@ -618,6 +629,7 @@ RSpec.describe InputUiSchemaGeneratorService do
             {
               type: 'Page',
               options: {
+                input_type: page2.input_type,
                 id: page2.id,
                 title: '',
                 description: ''
@@ -627,6 +639,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 scope: "#/properties/#{field_in_page2.key}",
                 label: 'When considering travel near your home, how often do you choose to CYCLE?',
                 options: {
+                  input_type: field_in_page2.input_type,
                   description: '',
                   isAdminField: false,
                   hasRule: true
@@ -647,6 +660,7 @@ RSpec.describe InputUiSchemaGeneratorService do
             {
               type: 'Page',
               options: {
+                input_type: page3.input_type,
                 id: page3.id,
                 title: '',
                 description: ''
@@ -715,6 +729,7 @@ RSpec.describe InputUiSchemaGeneratorService do
           scope: "#/properties/#{field_key}",
           label: 'Text field title',
           options: {
+            input_type: field.input_type,
             description: 'Text field description',
             transform: 'trim_on_blur',
             isAdminField: true,
@@ -731,6 +746,7 @@ RSpec.describe InputUiSchemaGeneratorService do
           scope: "#/properties/#{field_key}",
           label: 'Text field title',
           options: {
+            input_type: field.input_type,
             description: 'Text field description',
             transform: 'trim_on_blur',
             isAdminField: false,
@@ -763,6 +779,7 @@ RSpec.describe InputUiSchemaGeneratorService do
           scope: "#/properties/#{field_key}",
           label: 'Number field title',
           options: {
+            input_type: field.input_type,
             description: 'Number field description',
             isAdminField: true,
             hasRule: false
@@ -778,6 +795,7 @@ RSpec.describe InputUiSchemaGeneratorService do
           scope: "#/properties/#{field_key}",
           label: 'Number field title',
           options: {
+            input_type: field.input_type,
             description: 'Number field description',
             isAdminField: false,
             hasRule: false
@@ -812,7 +830,7 @@ RSpec.describe InputUiSchemaGeneratorService do
         I18n.with_locale('en') do
           expect(generator.visit_html_multiloc(field)).to eq({
             type: 'VerticalLayout',
-            options: { render: 'multiloc' },
+            options: { input_type: field.input_type, render: 'multiloc' },
             elements: [
               {
                 type: 'Control',
@@ -856,7 +874,7 @@ RSpec.describe InputUiSchemaGeneratorService do
         I18n.with_locale('fr-FR') do
           expect(generator.visit_html_multiloc(field)).to eq({
             type: 'VerticalLayout',
-            options: { render: 'multiloc' },
+            options: { input_type: field.input_type, render: 'multiloc' },
             elements: [
               {
                 type: 'Control',
@@ -900,7 +918,7 @@ RSpec.describe InputUiSchemaGeneratorService do
         I18n.with_locale('nl-NL') do
           expect(generator.visit_html_multiloc(field)).to eq({
             type: 'VerticalLayout',
-            options: { render: 'multiloc' },
+            options: { input_type: field.input_type, render: 'multiloc' },
             elements: [
               {
                 type: 'Control',
@@ -958,7 +976,7 @@ RSpec.describe InputUiSchemaGeneratorService do
       it 'returns the schema for the given field' do
         expect(generator.visit_html_multiloc(field)).to eq({
           type: 'VerticalLayout',
-          options: { render: 'multiloc' },
+          options: { input_type: field.input_type, render: 'multiloc' },
           elements: [
             {
               type: 'Control',
@@ -1020,6 +1038,7 @@ RSpec.describe InputUiSchemaGeneratorService do
       expect(generator.visit_page(field)).to eq({
         type: 'Page',
         options: {
+          input_type: field.input_type,
           id: field.id,
           title: 'Page field title',
           description: 'Page field description'
