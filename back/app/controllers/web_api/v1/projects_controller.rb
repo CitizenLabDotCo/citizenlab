@@ -96,10 +96,11 @@ class WebApi::V1::ProjectsController < ApplicationController
     folder_id = ProjectFolders::Folder.find(source_project.folder_id) if source_project.folder_id
     AdminApi::ProjectCopyService.new.import(template, folder: folder_id)
 
+    # We don't search for an exact match as ProjectCopyService#import may well add a numbered suffix.
     @project = Project.where('slug LIKE ?', "%#{temporary_slug}%").first
     authorize @project
 
-    # Replace the temporary UUID slug with a human-readable slug based on the title_mulitloc
+    # Replace the temporary UUID slug with one based on the new_title_mulitloc.
     @project.slug = SlugService.new.generate_slug(@project, new_title_multiloc.values.first)
 
     if @project.save
