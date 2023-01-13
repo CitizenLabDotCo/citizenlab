@@ -83,7 +83,7 @@ module IdeaCustomFields
         option_temp_ids_to_ids_mapping = {}
         given_fields.each_with_index do |field_params, index|
           options_params = field_params.delete :options
-          if field_params[:id] # field_params[:id] && field_persisted?)
+          if field_params[:id] && fields_by_id.key?(field_params[:id])
             field = fields_by_id[field_params[:id]]
             field.assign_attributes field_params
             SideFxCustomFieldService.new.before_update(field, current_user)
