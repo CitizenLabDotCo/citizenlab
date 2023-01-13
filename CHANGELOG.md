@@ -6,6 +6,10 @@
 
 - [CL-2339] Fixed slow displaying of attachments in timeline projects on a phase
 
+### Changed
+
+- [CL-2465] Allow project moderators to all dashboard data
+
 ## 2023-01-12
 
 ### Added
