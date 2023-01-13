@@ -280,6 +280,5 @@ end
 Idea.include_if_ee 'FlagInappropriateContent::Concerns::Flaggable'
 Idea.include_if_ee 'Insights::Concerns::Input'
 Idea.include_if_ee 'Moderation::Concerns::Moderatable'
-Idea.include_if_ee 'MachineTranslations::Concerns::Translatable'
 Idea.include_if_ee 'IdeaAssignment::Extensions::Idea'
 Idea.include_if_ee 'IdeaCustomFields::Extensions::Idea'
