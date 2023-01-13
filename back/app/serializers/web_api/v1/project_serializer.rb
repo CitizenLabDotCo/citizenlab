@@ -148,5 +148,3 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     current_user(params) && UserRoleService.new.can_moderate_project?(object, current_user(params))
   end
 end
-
-WebApi::V1::ProjectSerializer.include_if_ee('IdeaAssignment::Extensions::WebApi::V1::ProjectSerializer')

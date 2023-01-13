@@ -76,5 +76,3 @@ class SideFxProjectService
     # idea assignment and folder engine.
   end
 end
-
-SideFxProjectService.prepend_if_ee 'IdeaAssignment::Patches::SideFxProjectService'
