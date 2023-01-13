@@ -24,6 +24,11 @@ const PreparingBox = styled(Box)`
   }
 `;
 
+const ReadyBox = styled(PreparingBox)`
+  opacity: 0.5;
+  background: #c00;
+`;
+
 const PrintReport = () => {
   const [isPrintReady, setIsPrintReady] = useState(false);
 
@@ -37,9 +42,16 @@ const PrintReport = () => {
     }
   }, [isPrintReady]);
 
+  const disableMouseHover = () => {
+    console.log('Mouse over');
+    // e.preventDefault();
+  };
+
   return (
     <>
-      {!isPrintReady && (
+      {isPrintReady ? (
+        <ReadyBox onMouseOver={disableMouseHover} />
+      ) : (
         <PreparingBox>
           <Spinner />
           <Text color="primary">
