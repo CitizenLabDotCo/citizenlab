@@ -179,9 +179,4 @@ class WebApi::V1::ProjectsController < ApplicationController
     @project = Project.find(params[:id])
     authorize @project
   end
-
-  def add_suffix_to_title(multiloc)
-    title_suffix_multiloc = MultilocService.new.i18n_to_multiloc('project_copy.title_suffix')
-    multiloc.each { |k, v| multiloc[k] = "#{v} - #{title_suffix_multiloc[k]}" }
-  end
 end
