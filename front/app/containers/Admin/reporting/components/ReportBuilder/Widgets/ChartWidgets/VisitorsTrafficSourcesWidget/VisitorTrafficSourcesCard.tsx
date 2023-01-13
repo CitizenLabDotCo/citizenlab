@@ -6,7 +6,7 @@ import useNarrow from 'containers/Admin/reporting/hooks/useNarrow';
 
 // components
 import { Box, Title } from '@citizenlab/cl2-component-library';
-import PieChart from 'components/admin/Graphs/PieChart';
+import Chart from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/Chart';
 import NoChartData from '../NoChartData';
 
 // utils
@@ -18,7 +18,6 @@ import {
   Dates,
   ChartDisplay,
 } from 'components/admin/GraphCards/typings';
-import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 
 type Props = ProjectId & Dates & ChartDisplay;
 
@@ -37,39 +36,20 @@ const VisitorsTrafficSourcesCard = ({
 
   if (isNilOrError(pieData)) return <NoChartData title={title} />;
 
-  const legend = pieData.map(
-    (row): LegendItem => ({
-      icon: 'circle',
-      color: row.color,
-      label: `${row.name} (${row.percentage}%)`,
-    })
-  );
-
   return (
     <Box width="100%" height="260px" pb="20px">
       <Title variant="h3" color="primary" m="16px">
         {title}
       </Title>
       <Box height="200px">
-        <PieChart
-          width={164}
-          height={195}
-          data={pieData}
-          mapping={{
-            angle: 'value',
-            name: 'name',
-          }}
-          pie={{
+        <Chart
+          pieData={pieData}
+          pieConfig={{
             startAngle: 0,
             endAngle: 360,
             outerRadius: 60,
           }}
-          legend={{
-            items: legend,
-            marginLeft: narrow ? 10 : 50,
-            maintainGraphSize: true,
-            position: 'right-center',
-          }}
+          narrow={narrow}
         />
       </Box>
     </Box>

@@ -4,11 +4,13 @@ import React, { useRef, useState } from 'react';
 import useVisitorReferrerTypes from './useVisitorReferrerTypes';
 
 // components
+import { Box } from '@citizenlab/cl2-component-library';
 import GraphCard from 'components/admin/GraphCard';
 import EmptyPieChart from '../EmptyPieChart';
 import Chart from './Chart';
 import Table from './Table';
 import TableModal from './TableModal';
+import ReferrerListLink from './RefferListLink';
 
 // i18n
 import messages from './messages';
@@ -83,7 +85,14 @@ const VisitorsTrafficSourcesCard = ({
       }}
     >
       {currentView === 'chart' && (
-        <Chart pieData={pieData} innerRef={graphRef} onOpenModal={openModal} />
+        <>
+          <Box width="100%" height="initial" display="flex" alignItems="center">
+            <Chart pieData={pieData} innerRef={graphRef} />
+          </Box>
+          <Box ml="20px" mt="40px">
+            <ReferrerListLink onOpenModal={openModal} />
+          </Box>
+        </>
       )}
 
       {currentView === 'table' && (
