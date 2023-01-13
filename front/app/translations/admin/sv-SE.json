@@ -1140,7 +1140,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.emptyTitleError": "Ange en frågetitel",
   "app.containers.AdminPage.ProjectEdit.survey.errorMessage": "Det finns ett problem – åtgärda problemet för att kunna spara dina ändringar",
   "app.containers.AdminPage.ProjectEdit.survey.fieldLabel": "Svarsval",
-  "app.containers.AdminPage.ProjectEdit.survey.fileUpload": "File upload",
+  "app.containers.AdminPage.ProjectEdit.survey.fileUpload": "Filuppladdning",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.labels": "Etiketter",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.labelsTooltipContent": "Välj valfria etiketter för dina minimi- och maximivärden.",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.page.description": "Beskrivning (valfritt)",
