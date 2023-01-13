@@ -416,7 +416,7 @@ const Categories = ({
             buttonStyle="white"
             mb="8px"
             textColor={colors.primary}
-            linkTo={`/admin/insights/${viewId}/detect`}
+            linkTo={`/admin/reporting/insights/${viewId}/detect`}
             data-testid="insightsDetectCategories"
           >
             {formatMessage(messages.detectCategories)}
