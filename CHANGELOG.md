@@ -1,5 +1,11 @@
 # Changelog
 
+## 2023-01-13 (2)
+
+### Added
+
+- [CL-2214] Report builder MVP (behind feature flag)
+
 ## 2023-01-13
 
 ### Fixed
