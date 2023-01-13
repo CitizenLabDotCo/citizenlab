@@ -1140,7 +1140,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.emptyTitleError": "Voer een vraagtitel in",
   "app.containers.AdminPage.ProjectEdit.survey.errorMessage": "Er is een probleem opgetreden, los de fout op om je wijzigingen op te slaan",
   "app.containers.AdminPage.ProjectEdit.survey.fieldLabel": "Antwoordmogelijkheden",
-  "app.containers.AdminPage.ProjectEdit.survey.fileUpload": "File upload",
+  "app.containers.AdminPage.ProjectEdit.survey.fileUpload": "Bestanden uploaden",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.labels": "Labels",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.labelsTooltipContent": "Kies optionele labels voor je minimale en maximale waarden.",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.page.description": "Beschrijving (optioneel)",
