@@ -1,7 +1,8 @@
 import React from 'react';
 
 // styling
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 // craft
 import { useNode } from '@craftjs/core';
@@ -24,11 +25,9 @@ interface Props {
 }
 
 const Title = ({ text }: Props) => {
-  const theme = useTheme();
-
   return (
     <PageBreakBox id="e2e-text-box" minHeight="26px" mb="12px" mt="12px">
-      <H3 color={theme.colors.tenantPrimary}>{text}</H3>
+      <H3 color={colors.primary}>{text}</H3>
     </PageBreakBox>
   );
 };
