@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+
+// services
+import { LocaleSubject } from 'services/locale';
 
 // hooks
 import useReportLayout from 'hooks/useReportLayout';
@@ -43,6 +46,12 @@ const FullScreenReport = ({ reportId }: Props) => {
   const reportLayout = useReportLayout(reportId);
   const reportLocale = useReportLocale(reportLayout);
   const platformLocale = useLocale();
+
+  useEffect(() => {
+    if (isNilOrError(reportLocale) || isNilOrError(platformLocale)) return;
+    if (reportLocale === platformLocale) return;
+    LocaleSubject.next(reportLocale);
+  }, [reportLocale, platformLocale]);
 
   if (isNilOrError(reportLocale)) {
     return null;
