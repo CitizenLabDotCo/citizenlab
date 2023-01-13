@@ -24,6 +24,14 @@ const PreparingBox = styled(Box)`
   }
 `;
 
+const EVENTS = [
+  'mousemove',
+  'mouseenter',
+  'mouseover',
+  'mouseleave',
+  'mouseout',
+];
+
 const PrintReport = () => {
   const [isPrintReady, setIsPrintReady] = useState(false);
 
@@ -36,6 +44,24 @@ const PrintReport = () => {
       }, 5000);
     }
   }, [isPrintReady]);
+
+  useEffect(() => {
+    const blockEvent = (e: MouseEvent) => {
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      e.preventDefault();
+    };
+
+    EVENTS.forEach((event) => {
+      document.addEventListener(event, blockEvent, true);
+    });
+
+    return () => {
+      EVENTS.forEach((event) => {
+        document.removeEventListener(event, blockEvent);
+      });
+    };
+  }, []);
 
   return (
     <>

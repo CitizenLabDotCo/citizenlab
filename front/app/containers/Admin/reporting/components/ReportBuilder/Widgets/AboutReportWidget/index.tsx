@@ -62,9 +62,7 @@ const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
     : localize(project.attributes.title_multiloc);
 
   const projectPeriodString =
-    startAt && endAt
-      ? toPeriodString({ startAt, endAt })
-      : formatMessage(messages.continuousProject);
+    startAt && endAt ? toPeriodString({ startAt, endAt }) : '';
 
   return (
     <PageBreakBox>

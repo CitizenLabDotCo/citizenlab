@@ -10,9 +10,6 @@ import {
   Button,
 } from '@citizenlab/cl2-component-library';
 
-// utils
-import clHistory from 'utils/cl-router/history';
-
 // i18n
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -37,7 +34,7 @@ const ShareReportModal = ({ open, onClose, reportPath }: Props) => {
   };
 
   const printToPdf = () => {
-    clHistory.push(`${reportPath}/print`);
+    window.open(`${reportPath}/print`, '_blank');
   };
 
   return (
