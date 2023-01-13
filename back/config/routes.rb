@@ -70,18 +70,27 @@ Rails.application.routes.draw do
       post 'user_token' => 'user_token#create'
 
       resources :users, only: %i[index create update destroy] do
-        get :me, on: :collection
-        post :complete_registration, on: :collection
-        get :as_xlsx, on: :collection, action: 'index_xlsx'
-        post 'reset_password_email' => 'reset_password#reset_password_email', on: :collection
-        post 'reset_password' => 'reset_password#reset_password', on: :collection
-        get 'by_slug/:slug', on: :collection, to: 'users#by_slug'
-        get 'by_invite/:token', on: :collection, to: 'users#by_invite'
         get 'ideas_count', on: :member
         get 'initiatives_count', on: :member
         get 'comments_count', on: :member
 
         resources :comments, only: [:index], controller: 'user_comments'
+
+        collection do
+          get :me
+          post :complete_registration
+          get :as_xlsx, action: 'index_xlsx'
+          post 'reset_password_email' => 'reset_password#reset_password_email'
+          post 'reset_password' => 'reset_password#reset_password'
+          get 'by_slug/:slug', to: 'users#by_slug'
+          get 'by_invite/:token', to: 'users#by_invite'
+
+          resources :custom_fields, controller: 'user_custom_fields', only: %i[index show update] do
+            patch 'reorder', on: :member
+            get 'schema', on: :collection
+            get 'json_forms_schema', on: :collection
+          end
+        end
       end
       get 'users/:id', to: 'users#show', constraints: { id: /\b(?!custom_fields|me)\b\S+/ }
 
@@ -257,6 +266,25 @@ Rails.application.routes.draw do
         get 'votes_by_time_as_xlsx', **route_params
         get 'votes_by_topic_as_xlsx', **route_params
         get 'votes_by_project_as_xlsx', **route_params
+
+        with_options controller: 'stats_user_fields' do
+          get 'users_by_domicile'
+          get 'users_by_domicile_as_xlsx'
+
+          with_options action: :users_by_custom_field do
+            get 'users_by_gender'
+            get 'users_by_birthyear'
+            get 'users_by_education'
+            get 'users_by_custom_field/:custom_field_id'
+          end
+
+          with_options action: :users_by_custom_field_as_xlsx do
+            get 'users_by_gender_as_xlsx'
+            get 'users_by_birthyear_as_xlsx'
+            get 'users_by_education_as_xlsx'
+            get 'users_by_custom_field_as_xlsx/:custom_field_id'
+          end
+        end
       end
 
       scope 'mentions', controller: 'mentions' do

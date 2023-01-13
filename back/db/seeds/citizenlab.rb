@@ -384,6 +384,89 @@ end
   Topic.create! attrs
 end
 
+# Creates default user fields and their options
+[
+  {
+    resource_type: 'User',
+    key: 'gender',
+    code: 'gender',
+    title_multiloc: 'custom_fields.users.gender.title',
+    input_type: 'select',
+    required: false,
+    enabled: true,
+    ordering: 0
+  },
+  {
+    resource_type: 'User',
+    key: 'birthyear',
+    code: 'birthyear',
+    title_multiloc: 'custom_fields.users.birthyear.title',
+    input_type: 'number',
+    required: false,
+    enabled: true,
+    ordering: 1
+  },
+  {
+    resource_type: 'User',
+    key: 'domicile',
+    code: 'domicile',
+    title_multiloc: 'custom_fields.users.domicile.title',
+    input_type: 'select',
+    required: false,
+    enabled: true,
+    ordering: 2
+  },
+  {
+    resource_type: 'User',
+    key: 'education',
+    code: 'education',
+    title_multiloc: 'custom_fields.users.education.title',
+    input_type: 'select',
+    required: false,
+    enabled: true,
+    ordering: 3
+  }
+].each do |attrs|
+  attrs[:title_multiloc] = MultilocService.new.i18n_to_multiloc(attrs[:title_multiloc], locales: CL2_SUPPORTED_LOCALES)
+  CustomField.create!(attrs)
+end
+
+[
+  {
+    key: 'male',
+    title_multiloc: 'custom_field_options.gender.male',
+    ordering: 0
+  },
+  {
+    key: 'female',
+    title_multiloc: 'custom_field_options.gender.female',
+    ordering: 1
+  },
+  {
+    key: 'unspecified',
+    title_multiloc: 'custom_field_options.gender.unspecified',
+    ordering: 2
+  }
+].each do |attrs|
+  attrs[:custom_field] = CustomField.find_by(code: 'gender')
+  attrs[:title_multiloc] = MultilocService.new.i18n_to_multiloc(attrs[:title_multiloc], locales: CL2_SUPPORTED_LOCALES)
+  CustomFieldOption.create!(attrs)
+end
+
+[
+  { key: '2', title_multiloc: 'custom_field_options.education.ISCED2', ordering: 0 },
+  { key: '3', title_multiloc: 'custom_field_options.education.ISCED3', ordering: 1 },
+  { key: '4', title_multiloc: 'custom_field_options.education.ISCED4', ordering: 2 },
+  { key: '5', title_multiloc: 'custom_field_options.education.ISCED5', ordering: 3 },
+  { key: '6', title_multiloc: 'custom_field_options.education.ISCED6', ordering: 4 },
+  { key: '7', title_multiloc: 'custom_field_options.education.ISCED7', ordering: 5 },
+  { key: '8', title_multiloc: 'custom_field_options.education.ISCED8', ordering: 6 },
+].each do |attrs|
+  attrs[:custom_field] = CustomField.find_by(code: 'education')
+  attrs[:title_multiloc] = MultilocService.new.i18n_to_multiloc(attrs[:title_multiloc], locales: CL2_SUPPORTED_LOCALES)
+  CustomFieldOption.create!(attrs)
+end
+
 # Creates static pages.
 [
   {
