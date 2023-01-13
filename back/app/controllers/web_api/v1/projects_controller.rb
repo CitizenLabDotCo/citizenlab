@@ -79,22 +79,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   def copy
     source_project = Project.find(params[:id])
 
-    new_title_multiloc = add_suffix_to_title(source_project.title_multiloc)
-
-    options = {
-      local_copy: true,
-      include_ideas: false,
-      anonymize_users: false,
-      new_title_multiloc: new_title_multiloc,
-      timeline_start_at: Time.now.to_s,
-      new_publication_status: 'draft'
-    }
-
-    template = AdminApi::ProjectCopyService.new.export source_project, **options
-    folder_id = ProjectFolders::Folder.find(source_project.folder_id) if source_project.folder_id
-    import_details = AdminApi::ProjectCopyService.new.import(template, folder: folder_id)
-
-    @project = Project.find(import_details.first.id)
+    @project = LocalProjectCopyService.new.copy(source_project)
     authorize @project
 
     if @project.save
