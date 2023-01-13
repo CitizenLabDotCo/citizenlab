@@ -2,7 +2,7 @@
 
 module AdminApi
   class ProjectCopyService < ::TemplateService
-    def import(template, folder: nil, project_copy_mode: false)
+    def import(template, folder: nil)
       service = MultiTenancy::TenantTemplateService.new
       same_template = service.translate_and_fix_locales template
 
