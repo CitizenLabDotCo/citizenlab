@@ -42,7 +42,15 @@ const VisitorsTrafficSourcesCard = ({
         {title}
       </Title>
       <Box height="200px">
-        <Chart pieData={pieData} narrow={narrow} />
+        <Chart
+          pieData={pieData}
+          pieConfig={{
+            startAngle: 0,
+            endAngle: 360,
+            outerRadius: 60,
+          }}
+          narrow={narrow}
+        />
       </Box>
     </Box>
   );
