@@ -80,13 +80,11 @@ class WebApi::V1::ProjectsController < ApplicationController
     source_project = Project.find(params[:id])
 
     new_title_multiloc = add_suffix_to_title(source_project.title_multiloc)
-    temporary_slug = SecureRandom.urlsafe_base64(32).downcase # Use to find created project
 
     options = {
       local_copy: true,
       include_ideas: false,
       anonymize_users: false,
-      new_slug: temporary_slug,
       new_title_multiloc: new_title_multiloc,
       timeline_start_at: Time.now.to_s,
       new_publication_status: 'draft'
@@ -94,14 +92,10 @@ class WebApi::V1::ProjectsController < ApplicationController
 
     template = AdminApi::ProjectCopyService.new.export source_project, **options
     folder_id = ProjectFolders::Folder.find(source_project.folder_id) if source_project.folder_id
-    AdminApi::ProjectCopyService.new.import(template, folder: folder_id)
+    import_details = AdminApi::ProjectCopyService.new.import(template, folder: folder_id)
 
-    # We don't search for an exact match as ProjectCopyService#import may well add a numbered suffix.
-    @project = Project.where('slug LIKE ?', "%#{temporary_slug}%").first
+    @project = Project.find(import_details.first.id)
     authorize @project
-
-    # Replace the temporary UUID slug with one based on the new_title_mulitloc.
-    @project.slug = SlugService.new.generate_slug(@project, new_title_multiloc.values.first)
 
     if @project.save
       sidefx.after_copy(source_project, @project)
