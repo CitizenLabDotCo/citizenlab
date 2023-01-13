@@ -41,12 +41,16 @@ module MultiTenancy
     end
 
     # @return [Array(Boolean, Tenant, AppConfiguration)]
-    def initialize_with_template(tenant_attrs, config_attrs, template_name)
+    def initialize_with_template(tenant_attrs, config_attrs, template_name, apply_template_sync: false)
       locales = config_attrs.dig('settings', 'core', 'locales')
       validate_locales(template_name, locales)
 
       success, tenant, _config = result = initialize_tenant(tenant_attrs, config_attrs)
-      ApplyTenantTemplateJob.perform_later(template_name, tenant) if success
+      if success && apply_template_sync
+        ApplyTenantTemplateJob.perform_now(template_name, tenant)
+      elsif success
+        ApplyTenantTemplateJob.perform_later(template_name, tenant)
+      end
       result
     end
 

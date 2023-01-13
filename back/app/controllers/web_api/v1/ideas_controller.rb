@@ -140,7 +140,9 @@ class WebApi::V1::IdeasController < ApplicationController
     custom_form = participation_context_for_form.custom_form || CustomForm.new(participation_context: participation_context_for_form)
 
     extract_custom_field_values_from_params! custom_form
-    input = Idea.new idea_params(custom_form, is_moderator)
+    params_for_create = idea_params(custom_form, is_moderator)
+    params_for_file_upload_fields = extract_params_for_file_upload_fields(custom_form, params_for_create)
+    input = Idea.new params_for_create
     if project.timeline?
       input.creation_phase = (participation_context if participation_method.form_in_phase?)
       input.phase_ids = [participation_context.id] if phase_ids.empty?
@@ -155,6 +157,17 @@ class WebApi::V1::IdeasController < ApplicationController
     save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
     ActiveRecord::Base.transaction do
       if input.save save_options
+        params_for_file_upload_fields.each do |key, params_for_files_field|
+          idea_file = FileUpload.create!(
+            idea: input,
+            file_by_content: {
+              name: params_for_files_field['name'],
+              content: params_for_files_field['content']
+            }
+          )
+          input.custom_field_values[key] = idea_file.id
+        end
+        input.save!
         service.after_create(input, current_user)
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
@@ -165,6 +178,13 @@ class WebApi::V1::IdeasController < ApplicationController
         render json: { errors: input.errors.details }, status: :unprocessable_entity
       end
     end
+  end
+
+  def extract_params_for_file_upload_fields(custom_form, params_for_create)
+    return {} if params_for_create['custom_field_values'].blank?
+
+    file_upload_field_keys = IdeaCustomFieldsService.new(custom_form).all_fields.select(&:file_upload?).map(&:key)
+    params_for_create['custom_field_values'].extract!(*file_upload_field_keys)
   end
 
   def update
@@ -256,7 +276,6 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def idea_attributes(custom_form, user_can_moderate_project)
     enabled_field_keys = IdeaCustomFieldsService.new(custom_form).enabled_fields.map { |field| field.key.to_sym }
-
     attributes = idea_simple_attributes(enabled_field_keys)
     complex_attributes = idea_complex_attributes(custom_form, enabled_field_keys)
     attributes << complex_attributes if complex_attributes.any?
