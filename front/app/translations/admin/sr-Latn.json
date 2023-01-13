@@ -1140,7 +1140,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.emptyTitleError": "Navedi naslov pitanja",
   "app.containers.AdminPage.ProjectEdit.survey.errorMessage": "Došlo je do problema, rešite problem kako bi vaše promene bile sačuvane",
   "app.containers.AdminPage.ProjectEdit.survey.fieldLabel": "Opcije odgovora",
-  "app.containers.AdminPage.ProjectEdit.survey.fileUpload": "File upload",
+  "app.containers.AdminPage.ProjectEdit.survey.fileUpload": "Otpremanje datoteke",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.labels": "Oznake",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.labelsTooltipContent": "Izaberite opcionalne oznake za svoje minimalne i maksimalne vrednosti.",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.page.description": "Opis (opcionalno)",
