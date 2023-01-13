@@ -260,9 +260,9 @@ resource 'Stats - Users by field' do
         expect(response_status).to eq 200
 
         expected_users = CustomField.find_by(key: 'education')
-                                    .options.to_h { |option| [option.key, 0] }
-                                    .merge('3': 2, '5': 1, _blank: 0)
-                                    .symbolize_keys
+          .options.to_h { |option| [option.key, 0] }
+          .merge('3': 2, '5': 1, _blank: 0)
+          .symbolize_keys
 
         expect(json_response_body).to include(
           series: {
