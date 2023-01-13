@@ -246,9 +246,12 @@ class AdminProjectTimelineEdit extends PureComponent<
         base64: newFile.base64,
       };
 
-      const isDuplicate = prevState.inStatePhaseFiles.some(
-        (file) => file.name === newFile.name
-      );
+      const isDuplicate = prevState.inStatePhaseFiles.some((file) => {
+        if (file.base64 && newFile.base64) {
+          return file.base64 === newFile.base64;
+        }
+        return file.name === newFile.name;
+      });
       const inStatePhaseFiles = isDuplicate
         ? prevState.inStatePhaseFiles
         : [...(prevState.inStatePhaseFiles || []), modifiedNewFile];
