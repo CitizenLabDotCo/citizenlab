@@ -24,10 +24,13 @@ const PreparingBox = styled(Box)`
   }
 `;
 
-const ReadyBox = styled(PreparingBox)`
-  opacity: 0.5;
-  background: #c00;
-`;
+const EVENTS = [
+  'mousemove',
+  'mouseenter',
+  'mouseover',
+  'mouseleave',
+  'mouseout',
+];
 
 const PrintReport = () => {
   const [isPrintReady, setIsPrintReady] = useState(false);
@@ -42,16 +45,27 @@ const PrintReport = () => {
     }
   }, [isPrintReady]);
 
-  const disableMouseHover = () => {
-    console.log('Mouse over');
-    // e.preventDefault();
-  };
+  useEffect(() => {
+    const blockEvent = (e: MouseEvent) => {
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      e.preventDefault();
+    };
+
+    EVENTS.forEach((event) => {
+      document.addEventListener(event, blockEvent, true);
+    });
+
+    return () => {
+      EVENTS.forEach((event) => {
+        document.removeEventListener(event, blockEvent);
+      });
+    };
+  }, []);
 
   return (
     <>
-      {isPrintReady ? (
-        <ReadyBox onMouseOver={disableMouseHover} />
-      ) : (
+      {!isPrintReady && (
         <PreparingBox>
           <Spinner />
           <Text color="primary">
