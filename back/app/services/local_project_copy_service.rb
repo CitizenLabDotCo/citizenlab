@@ -16,9 +16,7 @@ class LocalProjectCopyService
 
     template = AdminApi::ProjectCopyService.new.export source_project, **options
     folder_id = ProjectFolders::Folder.find(source_project.folder_id) if source_project.folder_id
-    import_details = AdminApi::ProjectCopyService.new.import(template, folder: folder_id)
-
-    Project.find(import_details.first.id)
+    AdminApi::ProjectCopyService.new.import(template, folder: folder_id)
   end
 
   private

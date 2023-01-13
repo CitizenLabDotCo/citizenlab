@@ -2,18 +2,20 @@
 
 module AdminApi
   class ProjectCopyService < ::TemplateService
-    def import(template, folder: nil)
+    def import(template, folder: nil, project_copy_mode: false)
       service = MultiTenancy::TenantTemplateService.new
       same_template = service.translate_and_fix_locales template
-      project_ids_before = Project.ids
-      ActiveRecord::Base.transaction do
-        service.resolve_and_apply_template same_template, validate: false
+
+      new_projects_ids = ActiveRecord::Base.transaction do
+        service.resolve_and_apply_template same_template, validate: false, project_copy_mode: true
       end
-      Project.where.not(id: project_ids_before).each do |project|
-        project.update!(slug: SlugService.new.generate_slug(project, project.slug))
-        project.set_default_topics!
-        project.update! folder: folder if folder
-      end
+
+      project = Project.find(new_projects_ids.first)
+      project.update!(slug: SlugService.new.generate_slug(project, project.slug))
+      project.set_default_topics!
+      project.update! folder: folder if folder
+
+      project
     end
 
     def export(
