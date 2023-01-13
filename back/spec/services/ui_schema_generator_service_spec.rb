@@ -44,13 +44,13 @@ RSpec.describe UiSchemaGeneratorService do
               type: 'Control',
               scope: "#/properties/#{field1.key}",
               label: 'Field1 title',
-              options: { description: 'Field1 description', transform: 'trim_on_blur' }
+              options: { input_type: field1.input_type, description: 'Field1 description', transform: 'trim_on_blur' }
             },
             {
               type: 'Control',
               scope: "#/properties/#{field2.key}",
               label: 'Field2 title',
-              options: { description: 'Field2 description' }
+              options: { input_type: field2.input_type, description: 'Field2 description' }
             }
           ]
         },
@@ -60,13 +60,13 @@ RSpec.describe UiSchemaGeneratorService do
               type: 'Control',
               scope: "#/properties/#{field1.key}",
               label: 'Field1 titre',
-              options: { description: 'Field1 description', transform: 'trim_on_blur' }
+              options: { input_type: field1.input_type, description: 'Field1 description', transform: 'trim_on_blur' }
             },
             {
               type: 'Control',
               scope: "#/properties/#{field2.key}",
               label: 'Field2 titre',
-              options: { description: 'Field2 description' }
+              options: { input_type: field2.input_type, description: 'Field2 description' }
             }
           ]
         },
@@ -76,13 +76,13 @@ RSpec.describe UiSchemaGeneratorService do
               type: 'Control',
               scope: "#/properties/#{field1.key}",
               label: 'Field1 titel',
-              options: { description: 'Field1 description', transform: 'trim_on_blur' }
+              options: { input_type: field1.input_type, description: 'Field1 description', transform: 'trim_on_blur' }
             },
             {
               type: 'Control',
               scope: "#/properties/#{field2.key}",
               label: 'Field2 titel',
-              options: { description: 'Field2 description' }
+              options: { input_type: field2.input_type, description: 'Field2 description' }
             }
           ]
         }
@@ -106,7 +106,7 @@ RSpec.describe UiSchemaGeneratorService do
         type: 'Control',
         scope: "#/properties/#{field_key}",
         label: 'Text field title',
-        options: { description: 'Text field description', transform: 'trim_on_blur' }
+        options: { input_type: field.input_type, description: 'Text field description', transform: 'trim_on_blur' }
       })
     end
   end
@@ -127,7 +127,7 @@ RSpec.describe UiSchemaGeneratorService do
         type: 'Control',
         scope: "#/properties/#{field_key}",
         label: 'Number field title',
-        options: { description: 'Number field description' }
+        options: { input_type: field.input_type, description: 'Number field description' }
       })
     end
   end
@@ -148,7 +148,7 @@ RSpec.describe UiSchemaGeneratorService do
         type: 'Control',
         scope: "#/properties/#{field_key}",
         label: 'Multiline field title',
-        options: { description: 'Multiline field description', textarea: true, transform: 'trim_on_blur' }
+        options: { input_type: field.input_type, description: 'Multiline field description', textarea: true, transform: 'trim_on_blur' }
       })
     end
   end
@@ -169,7 +169,7 @@ RSpec.describe UiSchemaGeneratorService do
         type: 'Control',
         scope: "#/properties/#{field_key}",
         label: 'HTML field title',
-        options: { description: 'HTML field description', render: 'WYSIWYG' }
+        options: { input_type: field.input_type, description: 'HTML field description', render: 'WYSIWYG' }
       })
     end
   end
@@ -188,7 +188,7 @@ RSpec.describe UiSchemaGeneratorService do
     it 'returns the schema for the given field' do
       expect(generator.visit_text_multiloc(field)).to eq({
         type: 'VerticalLayout',
-        options: { render: 'multiloc' },
+        options: { input_type: field.input_type, render: 'multiloc' },
         elements: [
           {
             type: 'Control',
@@ -227,7 +227,7 @@ RSpec.describe UiSchemaGeneratorService do
     it 'returns the schema for the given field' do
       expect(generator.visit_multiline_text_multiloc(field)).to eq({
         type: 'VerticalLayout',
-        options: { render: 'multiloc' },
+        options: { input_type: field.input_type, render: 'multiloc' },
         elements: [
           {
             type: 'Control',
@@ -266,7 +266,7 @@ RSpec.describe UiSchemaGeneratorService do
     it 'returns the schema for the given field' do
       expect(generator.visit_html_multiloc(field)).to eq({
         type: 'VerticalLayout',
-        options: { render: 'multiloc' },
+        options: { input_type: field.input_type, render: 'multiloc' },
         elements: [
           {
             type: 'Control',
@@ -308,7 +308,7 @@ RSpec.describe UiSchemaGeneratorService do
           type: 'Control',
           scope: "#/properties/#{field_key}",
           label: 'Select field title',
-          options: { description: 'Select field description' }
+          options: { input_type: field.input_type, description: 'Select field description' }
         })
       end
     end
@@ -330,7 +330,7 @@ RSpec.describe UiSchemaGeneratorService do
           type: 'Control',
           scope: "#/properties/#{field_key}",
           label: 'Select field title',
-          options: { description: 'Select field description' }
+          options: { input_type: field.input_type, description: 'Select field description' }
         })
       end
     end
@@ -353,7 +353,7 @@ RSpec.describe UiSchemaGeneratorService do
           type: 'Control',
           scope: "#/properties/#{field_key}",
           label: 'Multiselect field title',
-          options: { description: 'Multiselect field description' }
+          options: { input_type: field.input_type, description: 'Multiselect field description' }
         })
       end
     end
@@ -375,7 +375,7 @@ RSpec.describe UiSchemaGeneratorService do
           type: 'Control',
           scope: "#/properties/#{field_key}",
           label: 'Multiselect field title',
-          options: { description: 'Multiselect field description' }
+          options: { input_type: field.input_type, description: 'Multiselect field description' }
         })
       end
     end
@@ -398,7 +398,7 @@ RSpec.describe UiSchemaGeneratorService do
           type: 'Control',
           scope: "#/properties/#{field_key}",
           label: 'Multiselect field title',
-          options: { description: 'Multiselect field description' }
+          options: { input_type: field.input_type, description: 'Multiselect field description' }
         })
       end
     end
@@ -419,7 +419,7 @@ RSpec.describe UiSchemaGeneratorService do
         type: 'Control',
         scope: "#/properties/#{field_key}",
         label: 'Checkbox field title',
-        options: { description: 'Checkbox field description' }
+        options: { input_type: field.input_type, description: 'Checkbox field description' }
       })
     end
   end
@@ -439,7 +439,7 @@ RSpec.describe UiSchemaGeneratorService do
         type: 'Control',
         scope: "#/properties/#{field_key}",
         label: 'Date field title',
-        options: { description: 'Date field description' }
+        options: { input_type: field.input_type, description: 'Date field description' }
       })
     end
   end
@@ -460,7 +460,7 @@ RSpec.describe UiSchemaGeneratorService do
         type: 'Control',
         scope: "#/properties/#{field_key}",
         label: 'File field title',
-        options: { description: 'File field description' }
+        options: { input_type: field.input_type, description: 'File field description' }
       })
     end
   end
@@ -481,7 +481,7 @@ RSpec.describe UiSchemaGeneratorService do
         type: 'Control',
         scope: "#/properties/#{field_key}",
         label: 'Image field title',
-        options: { description: 'Image field description' }
+        options: { input_type: field.input_type, description: 'Image field description' }
       })
     end
   end
@@ -516,6 +516,7 @@ RSpec.describe UiSchemaGeneratorService do
         scope: "#/properties/#{field_key}",
         label: 'We need a swimming pool.',
         options: {
+          input_type: field.input_type,
           description: 'Please indicate how strong you agree or disagree.',
           minimum_label: 'Strongly disagree',
           maximum_label: 'Strongly agree'
@@ -529,6 +530,27 @@ RSpec.describe UiSchemaGeneratorService do
 
     it 'returns the schema for the given field' do
       expect(generator.visit_page(field)).to be_nil
+    end
+  end
+
+  describe '#visit_file_upload' do
+    let(:field) do
+      create(
+        :custom_field,
+        input_type: 'file_upload',
+        key: field_key,
+        title_multiloc: { 'en' => 'File upload field title' },
+        description_multiloc: { 'en' => 'File upload field description' }
+      )
+    end
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_file_upload(field)).to eq({
+        type: 'Control',
+        scope: "#/properties/#{field_key}",
+        label: 'File upload field title',
+        options: { input_type: field.input_type, description: 'File upload field description' }
+      })
     end
   end
 end

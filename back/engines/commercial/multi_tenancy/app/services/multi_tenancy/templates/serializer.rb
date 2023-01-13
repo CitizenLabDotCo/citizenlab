@@ -2,10 +2,10 @@
 
 module MultiTenancy
   module Templates
-    class Serializer
+    class Serializer < ::TemplateService
       def initialize(tenant)
+        super()
         @tenant = tenant
-        @refs = {}
       end
 
       def run
@@ -72,24 +72,6 @@ module MultiTenancy
       end
 
       private
-
-      def lookup_ref(id, model_name)
-        return nil unless id
-
-        if model_name.is_a?(Array)
-          model_name.each do |n|
-            return @refs.dig(n, id) if @refs.dig(n, id)
-          end
-          nil
-        else
-          @refs[model_name][id]
-        end
-      end
-
-      def store_ref(yml_obj, id, model_name)
-        @refs[model_name] ||= {}
-        @refs[model_name][id] = yml_obj
-      end
 
       def yml_home_pages
         HomePage.all.map do |hp|
@@ -690,22 +672,22 @@ module MultiTenancy
       end
 
       def yml_ideas
-        Idea.published.map do |i|
+        Idea.published.map do |idea|
           yml_idea = {
-            'title_multiloc' => i.title_multiloc,
-            'body_multiloc' => i.body_multiloc,
-            'publication_status' => i.publication_status,
-            'published_at' => i.published_at.to_s,
-            'project_ref' => lookup_ref(i.project_id, :project),
-            'author_ref' => lookup_ref(i.author_id, :user),
-            'created_at' => i.created_at.to_s,
-            'updated_at' => i.updated_at.to_s,
-            'location_point_geojson' => i.location_point_geojson,
-            'location_description' => i.location_description,
-            'idea_status_ref' => lookup_ref(i.idea_status_id, :idea_status),
-            'budget' => i.budget,
-            'proposed_budget' => i.proposed_budget,
-            'text_images_attributes' => i.text_images.map do |img|
+            'title_multiloc' => idea.title_multiloc,
+            'body_multiloc' => idea.body_multiloc,
+            'publication_status' => idea.publication_status,
+            'published_at' => idea.published_at.to_s,
+            'project_ref' => lookup_ref(idea.project_id, :project),
+            'author_ref' => lookup_ref(idea.author_id, :user),
+            'created_at' => idea.created_at.to_s,
+            'updated_at' => idea.updated_at.to_s,
+            'location_point_geojson' => idea.location_point_geojson,
+            'location_description' => idea.location_description,
+            'idea_status_ref' => lookup_ref(idea.idea_status_id, :idea_status),
+            'budget' => idea.budget,
+            'proposed_budget' => idea.proposed_budget,
+            'text_images_attributes' => idea.text_images.map do |img|
               {
                 'imageable_field' => img.imageable_field,
                 'remote_image_url' => img.image_url,
@@ -714,10 +696,13 @@ module MultiTenancy
                 'updated_at' => img.updated_at.to_s
               }
             end,
-            'custom_field_values' => i.custom_field_values,
-            'creation_phase_ref' => lookup_ref(i.creation_phase_id, :phase)
+            'creation_phase_ref' => lookup_ref(idea.creation_phase_id, :phase)
           }
-          store_ref yml_idea, i.id, :idea
+          custom_fields = CustomField.where(
+            resource: CustomForm.where(participation_context_id: [idea.project_id, idea.creation_phase_id].compact)
+          )
+          yml_idea['custom_field_values'] = filter_custom_field_values(idea.custom_field_values, custom_fields) if custom_fields
+          store_ref yml_idea, idea.id, :idea
           yml_idea
         end
       end
