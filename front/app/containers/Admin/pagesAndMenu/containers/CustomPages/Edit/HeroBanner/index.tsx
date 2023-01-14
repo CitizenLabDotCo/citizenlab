@@ -234,7 +234,6 @@ const EditCustomPageHeroBannerForm = ({
               bannerOverlayColor={localSettings.banner_overlay_color}
               bannerOverlayOpacity={localSettings.banner_overlay_opacity}
               headerBg={localSettings.header_bg}
-              setFormStatus={setFormStatus}
               onAddImage={handleOnBannerImageAdd}
               onRemoveImage={handleOnBannerImageRemove}
               onOverlayChange={handleOnOverlayChange}

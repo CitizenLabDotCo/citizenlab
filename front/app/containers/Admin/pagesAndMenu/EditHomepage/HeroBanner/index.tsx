@@ -192,7 +192,6 @@ const EditHomepageHeroBannerForm = () => {
                 localSettings.banner_signed_out_header_overlay_opacity
               }
               headerBg={localSettings.header_bg}
-              setFormStatus={setFormStatus}
               onAddImage={handleOnBannerImageAdd}
               onRemoveImage={handleOnBannerImageRemove}
               onOverlayChange={handleOnOverlayChange}
