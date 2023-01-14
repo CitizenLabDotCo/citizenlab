@@ -15,7 +15,6 @@ const props = {
   },
   onAddImage: jest.fn(),
   onRemoveImage: jest.fn(),
-  setFormStatus: jest.fn(),
   onOverlayChange: jest.fn(),
 };
 
@@ -36,23 +35,14 @@ describe('Layout preview selector', () => {
   });
 
   describe('when layout is fixed-ratio layout', () => {
-    const bannerLayout = 'fixed_ratio_layout';
-
-    it('does not show when there is no image', () => {
-      render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
-      const select = screen.queryByLabelText('Show preview for');
-      expect(select).not.toBeInTheDocument();
-    });
-
-    it('does not show when there is a saved image', () => {
-      render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
-
-      const select = screen.queryByLabelText('Show preview for');
-      expect(select).not.toBeInTheDocument();
-    });
-
     it('does not show when there is an unsaved image', async () => {
-      render(<BannerImageFields {...props} headerBg={null} />);
+      render(
+        <BannerImageFields
+          {...props}
+          bannerLayout={'fixed_ratio_layout'}
+          headerBg={null}
+        />
+      );
 
       await uploadLocalImageForHeroBanner();
       const select = screen.queryByRole('select', {
