@@ -9,7 +9,6 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import OverlayControls from './OverlayControls';
 import ImageUploader from './ImageUploader';
 
-import { ISubmitState } from 'components/admin/SubmitWrapper';
 import { UploadFile } from 'typings';
 
 // i18n
@@ -45,7 +44,6 @@ export interface Props {
   headerBg:
     | IHomepageSettingsAttributes['header_bg']
     | ICustomPageAttributes['header_bg'];
-  setFormStatus: (submitState: ISubmitState) => void;
 }
 
 export type TPreviewDevice = 'phone' | 'tablet' | 'desktop';
@@ -59,7 +57,6 @@ const BannerImageField = ({
   headerBg,
   onAddImage,
   onRemoveImage,
-  setFormStatus,
   onOverlayChange,
 }: Props) => {
   const { formatMessage } = useIntl();
