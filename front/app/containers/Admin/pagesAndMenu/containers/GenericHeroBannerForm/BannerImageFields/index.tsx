@@ -15,11 +15,14 @@ import { UploadFile } from 'typings';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
-import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNil, isNilOrError } from 'utils/helperUtils';
 
 import { ICustomPageAttributes } from 'services/customPages';
-import { IHomepageSettingsAttributes } from 'services/homepageSettings';
+import {
+  IHomepageSettingsAttributes,
+  THomepageBannerLayout,
+} from 'services/homepageSettings';
 
 export interface Props {
   onAddImage: (newImageBase64: string) => void;
@@ -128,18 +131,32 @@ const BannerImageField = ({
     ? headerLocalDisplayImage.remote
     : false;
 
-  const displayImageCropper =
-    hasLocalHeaderImage &&
-    !imageIsSaved &&
-    bannerLayout === 'fixed_ratio_layout';
-
-  const displayPreviewDevice =
-    hasLocalHeaderImage && bannerLayout !== 'fixed_ratio_layout';
-
-  const displayOverlayControls =
-    hasLocalHeaderImage &&
-    (bannerLayout === 'full_width_banner_layout' ||
-      (bannerLayout === 'fixed_ratio_layout' && imageIsSaved));
+  const showConditions = (bannerLayout: THomepageBannerLayout) => {
+    return {
+      full_width_banner_layout: {
+        displayImageCropper: false,
+        displayPreviewDevice: hasLocalHeaderImage,
+        displayOverlayControls: hasLocalHeaderImage,
+      },
+      two_row_layout: {
+        displayImageCropper: false,
+        displayPreviewDevice: hasLocalHeaderImage,
+        displayOverlayControls: false,
+      },
+      two_column_layout: {
+        displayImageCropper: false,
+        displayPreviewDevice: hasLocalHeaderImage,
+        displayOverlayControls: false,
+      },
+      fixed_ratio_banner_layout: {
+        displayImageCropper: hasLocalHeaderImage && imageShouldBeSaved,
+        displayPreviewDevice: false,
+        // For the fixed_ratio_layout we only show it for a saved image.
+        // An unsaved image should show the image cropper instead.
+        displayOverlayControls: hasLocalHeaderImage && imageShouldBeSaved,
+      },
+    }[bannerLayout];
+  };
 
   return (
     <>
@@ -167,7 +184,7 @@ const BannerImageField = ({
         />
       </SubSectionTitle>
       <SectionField>
-        {displayPreviewDevice && (
+        {showConditions(bannerLayout).displayPreviewDevice && (
           <Box mb="20px">
             <Select
               label={formatMessage(messages.bgHeaderPreviewSelectLabel)}
@@ -195,8 +212,10 @@ const BannerImageField = ({
           bannerLayout={bannerLayout}
           bannerOverlayColor={bannerOverlayColor}
           bannerOverlayOpacity={bannerOverlayOpacity}
-          displayImageCropper={displayImageCropper}
-          displayOverlayControls={displayOverlayControls}
+          displayImageCropper={showConditions(bannerLayout).displayImageCropper}
+          displayOverlayControls={
+            showConditions(bannerLayout).displayOverlayControls
+          }
           onAddImage={onAddImage}
           onAddImageToUploader={handleOnAddImageToUploader}
           onRemoveImageFromUploader={handleOnRemoveImageFromUploader}
@@ -205,7 +224,7 @@ const BannerImageField = ({
           headerLocalDisplayImage={headerLocalDisplayImage}
         />
         {/* We only allow the overlay for the full-width and fixed-ratio banner layout for the moment. */}
-        {displayOverlayControls && (
+        {showConditions(bannerLayout).displayOverlayControls && (
           <OverlayControls
             bannerOverlayColor={bannerOverlayColor}
             bannerOverlayOpacity={bannerOverlayOpacity}
