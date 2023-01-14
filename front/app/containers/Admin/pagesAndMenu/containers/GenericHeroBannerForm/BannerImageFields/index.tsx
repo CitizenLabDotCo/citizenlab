@@ -123,10 +123,10 @@ const BannerImageField = ({
     setHeaderLocalDisplayImage(null);
   };
 
-  const imageIsSaved = headerLocalDisplayImage
-    ? isUploadFile(headerLocalDisplayImage)
-    : false;
   const hasLocalHeaderImage = !isNilOrError(headerLocalDisplayImage);
+  const imageShouldBeSaved = headerLocalDisplayImage
+    ? headerLocalDisplayImage.remote
+    : false;
 
   const displayImageCropper =
     hasLocalHeaderImage &&
