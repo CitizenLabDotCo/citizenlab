@@ -88,6 +88,7 @@ const BannerImageField = ({
 
     // https://stackoverflow.com/questions/54954385/react-useeffect-causing-cant-perform-a-react-state-update-on-an-unmounted-comp
     return () => ac.abort();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stringifiedHeaderBg]);
 
   // set error and disable save button if header is removed,
@@ -97,7 +98,8 @@ const BannerImageField = ({
       setBannerError(formatMessage(messages.noHeader));
       return;
     }
-  }, [headerBg, formatMessage, setFormStatus]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stringifiedHeaderBg, formatMessage]);
 
   const convertHeaderToUploadFile = async (
     fileInfo: string | null | undefined
