@@ -7,6 +7,7 @@ export const Container = styled.div`
   width: 100%;
   background: ${colors.background};
   padding-top: 24px;
+  padding-bottom: 24px;
 
   ${media.tablet`
     padding-top: 0;

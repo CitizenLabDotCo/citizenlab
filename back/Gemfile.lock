@@ -137,14 +137,6 @@ PATH
       ros-apartment (>= 2.9.0)
 
 PATH
-  remote: engines/commercial/custom_topics
-  specs:
-    custom_topics (0.1.0)
-      active_model_serializers (~> 0.10.7)
-      pundit (~> 2.0)
-      rails (~> 6.1)
-
-PATH
   remote: engines/commercial/flag_inappropriate_content
   specs:
     flag_inappropriate_content (0.1.0)
@@ -223,7 +215,7 @@ PATH
   remote: engines/commercial/id_gent_rrn
   specs:
     id_gent_rrn (0.1.0)
-      httparty (~> 0.16.2)
+      httparty
       rails (~> 6.1)
       verification
 
@@ -240,7 +232,7 @@ PATH
   remote: engines/commercial/id_oostende_rrn
   specs:
     id_oostende_rrn (0.1.0)
-      httparty (~> 0.16.2)
+      httparty
       rails (~> 6.1)
       verification
 
@@ -315,7 +307,7 @@ PATH
   specs:
     nlp (0.1.0)
       bunny
-      httparty (~> 0.16.2)
+      httparty
       rails (~> 6.1)
 
 PATH
@@ -425,7 +417,7 @@ PATH
   specs:
     surveys (0.1.0)
       active_model_serializers (~> 0.10.7)
-      httparty (~> 0.16.2)
+      httparty
       kaminari (~> 1.2)
       pundit (~> 2.0)
       rails (~> 6.1)
@@ -705,8 +697,8 @@ GEM
     http-accept (1.7.0)
     http-cookie (1.0.4)
       domain_name (~> 0.5)
-    httparty (0.16.4)
-      mime-types (~> 3.0)
+    httparty (0.21.0)
+      mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
     httpclient (2.8.3)
     httpi (2.5.0)
@@ -1179,7 +1171,6 @@ DEPENDENCIES
   counter_culture (~> 3.2)
   custom_idea_statuses!
   custom_maps!
-  custom_topics!
   dalli (~> 3.2.3)
   database_cleaner (~> 2.0.1)
   email_campaigns!

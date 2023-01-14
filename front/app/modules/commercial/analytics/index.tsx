@@ -13,11 +13,15 @@ const Tab = React.lazy(() => import('./admin/components/Tab'));
 const VisitorsContainer = React.lazy(
   () => import('./admin/containers/Visitors')
 );
-const Proposals = React.lazy(() => import('./admin/containers/Proposals'));
-const Invitations = React.lazy(() => import('./admin/containers/Invitations'));
-const Events = React.lazy(() => import('./admin/containers/Events'));
-const ProjectStatus = React.lazy(
-  () => import('./admin/containers/ProjectStatus')
+const ProposalsCard = React.lazy(
+  () => import('./admin/components/ProposalsCard')
+);
+const InvitationsCard = React.lazy(
+  () => import('./admin/components/InvitationsCard')
+);
+const EventsCard = React.lazy(() => import('./admin/components/EventsCard'));
+const ProjectStatusCard = React.lazy(
+  () => import('./admin/components/ProjectStatusCard')
 );
 
 const configuration: ModuleConfiguration = {
@@ -34,10 +38,10 @@ const configuration: ModuleConfiguration = {
     'app.containers.Admin.dashboards.tabs': Tab,
     'app.containers.Admin.dashboard.summary.emailDeliveries':
       EmailDeliveriesCard,
-    'app.containers.Admin.dashboard.summary.proposals': Proposals,
-    'app.containers.Admin.dashboard.summary.invitations': Invitations,
-    'app.containers.Admin.dashboard.summary.events': Events,
-    'app.containers.Admin.dashboard.summary.projectStatus': ProjectStatus,
+    'app.containers.Admin.dashboard.summary.proposals': ProposalsCard,
+    'app.containers.Admin.dashboard.summary.invitations': InvitationsCard,
+    'app.containers.Admin.dashboard.summary.events': EventsCard,
+    'app.containers.Admin.dashboard.summary.projectStatus': ProjectStatusCard,
   },
 };
 

@@ -26,7 +26,7 @@ interface Tracks {
 
 export class UsersDashboard extends PureComponent<Props & Tracks, State> {
   constructor(props: Props & Tracks) {
-    super(props as any);
+    super(props);
     this.state = {
       startAtMoment: undefined,
       endAtMoment: moment(),

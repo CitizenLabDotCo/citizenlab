@@ -37,152 +37,154 @@ import eventsWidgetConfiguration from './commercial/events_widget';
 
 import insightsConfiguration from './commercial/insights';
 import analyticsConfiguration from './commercial/analytics';
-
-import idViennaSamlConfiguration from './commercial/id_vienna_saml';
 import representativenessConfiguration from './commercial/representativeness';
 
+import idViennaSamlConfiguration from './commercial/id_vienna_saml';
+
 // eslint-disable-next-line no-var
-declare var CITIZENLAB_EE: boolean;
+declare var CITIZENLAB_EE: string;
+
+const isEnabled = CITIZENLAB_EE === 'true';
 
 export default loadModules([
   {
     configuration: smartGroupsConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: ideaCustomFieldsConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: googleTagManagerConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: matomoConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: googleAnalyticsConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: intercomConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: satismeterConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: segmentConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: granularPermissionsConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: moderationConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: flagInappropriateContentConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: ideaAssignmentConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: contentBuilderConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: customIdeaStatusesConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: bulkIdeaImportConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: adminProjectTemplatesConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: similarIdeaConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: customMapsConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: idAuth0Configuration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: idBosaFasConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: idCowConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: idBogusConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: idIdCardLookupConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: IdFranceConnectConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: IdGentRrnConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: IdOostendeRrnConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: IdClaveUnicaConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: machineTranslationsConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: widgetsConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: eventsWidgetConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: insightsConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: analyticsConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: idViennaSamlConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: representativenessConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
   {
     configuration: impactTrackingConfiguration,
-    isEnabled: CITIZENLAB_EE,
+    isEnabled,
   },
 ]);

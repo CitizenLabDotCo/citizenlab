@@ -3,13 +3,15 @@ import Cropper from 'react-easy-crop';
 import { Box } from '@citizenlab/cl2-component-library';
 import { UploadFile } from 'typings';
 import getCroppedImage from './getCroppedImage';
+import RemoveImageButton from 'components/UI/RemoveImageButton';
 
 type ImageCropperProps = {
   image: UploadFile | null;
   onComplete: (image: string) => void;
+  onRemove: () => void;
 };
 
-const ImageCropper = ({ image, onComplete }: ImageCropperProps) => {
+const ImageCropper = ({ image, onComplete, onRemove }: ImageCropperProps) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
 
   const onCropComplete = useCallback(
@@ -38,15 +40,18 @@ const ImageCropper = ({ image, onComplete }: ImageCropperProps) => {
       data-testid="image-cropper"
     >
       {image && (
-        <Cropper
-          image={image.base64}
-          crop={crop}
-          zoom={1}
-          aspect={3}
-          onCropChange={setCrop}
-          onCropComplete={onCropComplete}
-          objectFit="contain"
-        />
+        <div>
+          <Cropper
+            image={image.base64}
+            crop={crop}
+            zoom={1}
+            aspect={3}
+            onCropChange={setCrop}
+            onCropComplete={onCropComplete}
+            objectFit="contain"
+          />
+          <RemoveImageButton onClick={onRemove} />
+        </div>
       )}
     </Box>
   );

@@ -11,11 +11,15 @@ const getImage = async () =>
 describe('ImageCropper', () => {
   it('renders image when there is an image', async () => {
     const image = (await getImage()) as UploadFile;
-    render(<ImageCropper image={image} onComplete={jest.fn()} />);
+    render(
+      <ImageCropper image={image} onComplete={jest.fn()} onRemove={jest.fn()} />
+    );
     expect(screen.getByRole('img')).toBeInTheDocument();
   });
   it('does not render when there is no image', () => {
-    render(<ImageCropper image={null} onComplete={jest.fn()} />);
+    render(
+      <ImageCropper image={null} onComplete={jest.fn()} onRemove={jest.fn()} />
+    );
     expect(screen.queryByRole('img')).not.toBeInTheDocument();
   });
 });

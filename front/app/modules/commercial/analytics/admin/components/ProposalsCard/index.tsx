@@ -1,8 +1,14 @@
 import React from 'react';
-
-import { StatCardProps } from '../../hooks/useStatCard/typings';
-import StatCard from '../StatCard';
 import { proposalsConfig } from './config';
+
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+// components
+import StatCard from '../StatCard';
+
+// typings
+import { StatCardProps } from '../StatCard/useStatCard/typings';
 
 const ProposalsCard = ({
   projectId,
@@ -10,6 +16,9 @@ const ProposalsCard = ({
   endAtMoment,
   resolution,
 }: StatCardProps) => {
+  const proposalsActive = useFeatureFlag({ name: 'initiatives' });
+  if (!proposalsActive) return null;
+
   return (
     <StatCard
       config={proposalsConfig}
