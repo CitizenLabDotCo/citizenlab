@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { StatCardProps } from '../../hooks/useStatCard/typings';
+import { StatCardProps } from '../StatCard/useStatCard/typings';
 import StatCard from '../StatCard';
 import { eventsConfig } from './config';
 

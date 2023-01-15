@@ -1,5 +1,21 @@
 # Changelog
 
+## 2023-01-13 (2)
+
+### Added
+
+- [CL-2214] Report builder MVP (behind feature flag)
+
+## 2023-01-13
+
+### Fixed
+
+- [CL-2339] Fixed slow displaying of attachments in timeline projects on a phase
+
+### Changed
+
+- [CL-2465] Allow project moderators to all dashboard data
+
 ## 2023-01-12
 
 ### Added
