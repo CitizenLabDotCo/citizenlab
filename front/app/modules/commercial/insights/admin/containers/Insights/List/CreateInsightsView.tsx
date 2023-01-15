@@ -169,7 +169,7 @@ export const CreateInsightsView = ({
         });
         if (!isNilOrError(result)) {
           closeCreateModal();
-          clHistory.push(`/admin/insights/${result.data.id}`);
+          clHistory.push(`/admin/reporting/insights/${result.data.id}`);
         }
       } catch (errors) {
         setErrors(errors.json.errors);

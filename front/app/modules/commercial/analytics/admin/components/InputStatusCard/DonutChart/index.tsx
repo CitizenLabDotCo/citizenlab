@@ -8,14 +8,14 @@ import CenterLabel from './CenterLabel';
 import { colors } from 'components/admin/Graphs/styling';
 
 // i18n
-import messages from '../../../hooks/usePostsFeedback/messages';
+import messages from '../usePostsFeedback/messages';
 import { useIntl } from 'utils/cl-intl';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings
-import { PostFeedback } from '../../../hooks/usePostsFeedback/typings';
+import { PostFeedback } from '../usePostsFeedback/typings';
 
 interface Props {
   data: PostFeedback | NilOrError;
