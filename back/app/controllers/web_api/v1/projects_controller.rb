@@ -79,7 +79,8 @@ class WebApi::V1::ProjectsController < ApplicationController
   def copy
     source_project = Project.find(params[:id])
 
-    @project = LocalProjectCopyService.new.copy(source_project)
+    copy_service = LocalProjectCopyService.new
+    @project = copy_service.copy(source_project)
     authorize @project
 
     if @project.save
