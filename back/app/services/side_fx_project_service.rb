@@ -24,7 +24,11 @@ class SideFxProjectService
   end
 
   def after_copy(source_project, copied_project)
-    copy_project_and_phases_groups_permissions(source_project, copied_project)
+    copy_project_visibility_permission_groups(source_project, copied_project)
+
+    # Copy actions groups_permissions of project or project phases. For example, groups that can 'Vote on ideas'.
+    copy_project_and_phases_actions_groups_permissions(source_project, copied_project)
+
     source_project.topics.each { |topic| ProjectsTopic.create(project_id: copied_project.id, topic_id: topic.id) }
     source_project.areas.each { |area| AreasProject.create(project_id: copied_project.id, area_id: area.id) }
   end
@@ -83,20 +87,28 @@ class SideFxProjectService
   end
 end
 
-def copy_project_and_phases_groups_permissions(source_project, copied_project)
-  # Copy groups_permissions of non-timeline project
-  copy_groups_permissions(source_project, copied_project)
+def copy_project_visibility_permission_groups(source_project, copied_project)
+  return unless source_project.visible_to == 'groups'
 
-  # Copy groups_permissions of phases of timeline project
+  GroupsProject.where(project_id: source_project.id).each do |record|
+    GroupsProject.create(project_id: copied_project.id, group_id: record.group_id)
+  end
+end
+
+def copy_project_and_phases_actions_groups_permissions(source_project, copied_project)
+  # Copy actions groups_permissions of non-timeline project. For example, groups that can 'Vote on ideas'.
+  copy_actions_groups_permissions(source_project, copied_project)
+
+  # Copy actions groups_permissions of phases of timeline project. For example, groups that can 'Vote on ideas'.
   source_phases = source_project.phases.order(:start_at)
   copied_phases = copied_project.phases.order(:start_at)
 
   source_phases.each_with_index do |phase, index|
-    copy_groups_permissions(phase, copied_phases[index])
+    copy_actions_groups_permissions(phase, copied_phases[index])
   end
 end
 
-def copy_groups_permissions(source_object, copied_object)
+def copy_actions_groups_permissions(source_object, copied_object)
   source_object.permissions.each do |permission|
     next unless permission.permitted_by == 'groups'
 
