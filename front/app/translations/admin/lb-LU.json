@@ -1381,7 +1381,7 @@
   "app.containers.AdminPage.SettingsPage.fixedRatioBannerTooltip": "Dëse Bannertyp funktionéiert am beschte mat net zougeschnidde Biller, wéi Biller mat Text, engem Logo oder bestëmmten Elementer, déi wichteg fir Är Awunner sinn. Dëse Banner gëtt duerch eng zolidd Case an der ursprénglecher Faarf ersat, wa Benotzer ugemellt sinn. Dir kënnt dës Faarf an den Astellunge festleeën. Weider Informatiounen iwwer déi recommandéiert Billernotzung fannt Dir op {link}.",
   "app.containers.AdminPage.SettingsPage.fixedRatioBannerTooltipLink": "datebank",
   "app.containers.AdminPage.SettingsPage.fixedRatioImageCropperInfo": "De Banner gëtt ëmmer an engem bestëmmte Verhältnis zougeschnidden, fir sécherzegoen, datt all wichteg Aspekter zu jidder Zäit ugewise ginn. De {link} fir dëse Bannertyp ass 3:1.",
-  "app.containers.AdminPage.SettingsPage.fixedRatioImageCropperInfoLink": "recommandéiert Verhältnis",
+  "app.containers.AdminPage.SettingsPage.fixedRatioImageCropperInfoLink": "recommended ratio",
   "app.containers.AdminPage.SettingsPage.fullWidthBannerLayout": "Banner a voller Breet",
   "app.containers.AdminPage.SettingsPage.fullWidthBannerTooltip": "Dëse Banner erstreckt sech iwwer déi ganz Längt fir e flotte visuellen Effekt. D’Bild probéiert sou vill Plaz wéi méiglech ze bedecken, wouduerch et net ëmmer zu jidderzäit siichtbar ass. Dir kënnt dëse Banner mat enger Deckschicht an all Faarf kombinéieren. Weider Informatiounen iwwer déi recommandéiert Billernotzung fannt Dir op {link}.",
   "app.containers.AdminPage.SettingsPage.fullWidthBannerTooltipLink": "datebank",
