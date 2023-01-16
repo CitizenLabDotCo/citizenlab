@@ -349,5 +349,3 @@ class WebApi::V1::IdeasController < ApplicationController
     input.participation_method_on_creation.sign_in_required_for_posting?
   end
 end
-
-::WebApi::V1::IdeasController.prepend_if_ee 'IdeaAssignment::Patches::WebApi::V1::IdeasController'

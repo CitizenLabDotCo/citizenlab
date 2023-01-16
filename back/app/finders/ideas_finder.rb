@@ -130,5 +130,3 @@ class IdeasFinder < ApplicationFinder
     @user_role_service ||= UserRoleService.new
   end
 end
-
-IdeasFinder.include_if_ee('IdeaAssignment::Extensions::IdeasFinder')
