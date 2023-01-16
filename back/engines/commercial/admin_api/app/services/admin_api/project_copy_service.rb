@@ -6,13 +6,11 @@ module AdminApi
       service = MultiTenancy::TenantTemplateService.new
       same_template = service.translate_and_fix_locales template
 
-      new_objects_ids = ActiveRecord::Base.transaction do
+      created_objects_ids = ActiveRecord::Base.transaction do
         service.resolve_and_apply_template same_template, validate: false
       end
 
-      # project = Project.find(new_projects_ids.first)
-      # id = new_objects_ids.select { |hash| hash[:model_class] == 'Project' }.pick(:id)
-      project = Project.find(new_objects_ids.select { |hash| hash[:model_class] == 'Project' }.pick(:id))
+      project = Project.find(created_objects_ids[:project].first)
       project.update!(slug: SlugService.new.generate_slug(project, project.slug))
       project.set_default_topics!
       project.update! folder: folder if folder
