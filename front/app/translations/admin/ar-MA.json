@@ -616,8 +616,6 @@
   "app.containers.AdminPage.ProjectEdit.saveProject": "حفظ",
   "app.containers.AdminPage.ProjectEdit.saveSuccess": "تم الحفظ!",
   "app.containers.AdminPage.ProjectEdit.saveSuccessMessage": "تم حفظ نموذجك!",
-  "app.containers.AdminPage.ProjectEdit.searchPlaceholder": "البحث في القوالب",
-  "app.containers.AdminPage.ProjectEdit.selectGroups": "حدّد مجموعة/ مجموعات",
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Share information",
   "app.containers.AdminPage.ProjectEdit.shareInformationDescription": "Provide information to participants.",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",

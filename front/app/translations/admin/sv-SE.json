@@ -784,8 +784,6 @@
   "app.containers.AdminPage.ProjectEdit.saveProject": "Spara",
   "app.containers.AdminPage.ProjectEdit.saveSuccess": "Sparad!",
   "app.containers.AdminPage.ProjectEdit.saveSuccessMessage": "Ditt formulär har sparats!",
-  "app.containers.AdminPage.ProjectEdit.searchPlaceholder": "Sök i mallarna",
-  "app.containers.AdminPage.ProjectEdit.selectGroups": "Välj grupp(er)",
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Dela information",
   "app.containers.AdminPage.ProjectEdit.shareInformationDescription": "Ge information till deltagare.",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",

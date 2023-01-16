@@ -784,8 +784,6 @@
   "app.containers.AdminPage.ProjectEdit.saveProject": "Guardar",
   "app.containers.AdminPage.ProjectEdit.saveSuccess": "¡guardado!",
   "app.containers.AdminPage.ProjectEdit.saveSuccessMessage": "¡Su formulario ha sido guardado!",
-  "app.containers.AdminPage.ProjectEdit.searchPlaceholder": "Buscar las plantillas",
-  "app.containers.AdminPage.ProjectEdit.selectGroups": "Selecciona el(los) grupo(s)",
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Comparte información",
   "app.containers.AdminPage.ProjectEdit.shareInformationDescription": "Proporciona información a los participantes.",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",

@@ -781,8 +781,6 @@
   "app.containers.AdminPage.ProjectEdit.saveProject": "Αποθήκευση",
   "app.containers.AdminPage.ProjectEdit.saveSuccess": "Επιτυχία!",
   "app.containers.AdminPage.ProjectEdit.saveSuccessMessage": "Η φόρμα σας έχει αποθηκευτεί!",
-  "app.containers.AdminPage.ProjectEdit.searchPlaceholder": "Αναζήτηση στα πρότυπα",
-  "app.containers.AdminPage.ProjectEdit.selectGroups": "Επιλέξτε ομάδα(ες)",
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Κοινοποιείστε πληροφορίες",
   "app.containers.AdminPage.ProjectEdit.shareInformationDescription": "Παροχή πληροφοριών στους συμμετέχοντες.",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",

@@ -784,8 +784,6 @@
   "app.containers.AdminPage.ProjectEdit.saveProject": "Lagre",
   "app.containers.AdminPage.ProjectEdit.saveSuccess": "Vellykket!",
   "app.containers.AdminPage.ProjectEdit.saveSuccessMessage": "Skjemaet er lagret!",
-  "app.containers.AdminPage.ProjectEdit.searchPlaceholder": "Søk i maler",
-  "app.containers.AdminPage.ProjectEdit.selectGroups": "Velg gruppe(r)",
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Del informasjon",
   "app.containers.AdminPage.ProjectEdit.shareInformationDescription": "Gi informasjon til deltakerne.",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",

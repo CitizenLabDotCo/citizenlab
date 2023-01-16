@@ -783,8 +783,6 @@
   "app.containers.AdminPage.ProjectEdit.saveProject": "Zapisz",
   "app.containers.AdminPage.ProjectEdit.saveSuccess": "Zapisane!",
   "app.containers.AdminPage.ProjectEdit.saveSuccessMessage": "Twój formularz został zapisany!",
-  "app.containers.AdminPage.ProjectEdit.searchPlaceholder": "Przeszukaj szablony",
-  "app.containers.AdminPage.ProjectEdit.selectGroups": "Wybierz grupę (grupy)",
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Podziel się informacjami",
   "app.containers.AdminPage.ProjectEdit.shareInformationDescription": "Udziel informacji uczestnikom.",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",

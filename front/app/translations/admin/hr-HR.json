@@ -784,8 +784,6 @@
   "app.containers.AdminPage.ProjectEdit.saveProject": "Spremi",
   "app.containers.AdminPage.ProjectEdit.saveSuccess": "Uspjeh!",
   "app.containers.AdminPage.ProjectEdit.saveSuccessMessage": "Vaš obrazac je spremljen!",
-  "app.containers.AdminPage.ProjectEdit.searchPlaceholder": "Pretraži predloške",
-  "app.containers.AdminPage.ProjectEdit.selectGroups": "Odaberi grupu(e)",
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Podijelite informacije",
   "app.containers.AdminPage.ProjectEdit.shareInformationDescription": "Informirajte sudionike.",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",
