@@ -3,7 +3,6 @@ import { loadModules } from 'utils/moduleUtils';
 import smartGroupsConfiguration from './commercial/smart_groups';
 import ideaCustomFieldsConfiguration from './commercial/idea_custom_fields';
 import moderationConfiguration from './commercial/moderation';
-import adminProjectTemplatesConfiguration from './commercial/admin_project_templates';
 
 import contentBuilderConfiguration from './commercial/content_builder';
 
@@ -30,10 +29,6 @@ export default loadModules([
   },
   {
     configuration: contentBuilderConfiguration,
-    isEnabled,
-  },
-  {
-    configuration: adminProjectTemplatesConfiguration,
     isEnabled,
   },
   {

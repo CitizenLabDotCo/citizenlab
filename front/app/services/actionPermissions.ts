@@ -1,5 +1,3 @@
-import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship } from 'typings';
 
 export type IGlobalPermissionAction =
@@ -51,43 +49,10 @@ export interface IPCPermissionData {
   };
 }
 
-export type IPermissionData = IPCPermissionData | IGlobalPermissionData;
-
-export interface IPCPermission {
-  data: IPCPermissionData;
-}
-
 export interface IPCPermissions {
   data: IPCPermissionData[];
 }
 
 export interface IGlobalPermissions {
   data: IGlobalPermissionData[];
-}
-
-export function phasePermissions(
-  phaseId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IPCPermissions>({
-    apiEndpoint: `${API_PATH}/phases/${phaseId}/permissions`,
-    ...streamParams,
-  });
-}
-
-export function projectPermissions(
-  projectId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IPCPermissions>({
-    apiEndpoint: `${API_PATH}/projects/${projectId}/permissions`,
-    ...streamParams,
-  });
-}
-
-export function globalPermissions(streamParams: IStreamParams | null = null) {
-  return streams.get<IGlobalPermissions>({
-    apiEndpoint: `${API_PATH}/permissions`, // or `${API_PATH}/action_descriptors/initiatives`
-    ...streamParams,
-  });
 }

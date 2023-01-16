@@ -8,7 +8,6 @@ import { castArray, clamp, isNil, mergeWith, omitBy } from 'lodash-es';
 import { IProjectData } from 'services/projects';
 
 import { TVerificationStep } from 'events/verificationModal';
-import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import { NavItem } from 'containers/Admin/sideBar';
 
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
@@ -24,15 +23,6 @@ export type ITabsOutlet = {
 };
 
 export interface OutletsPropertyMap {
-  'app.containers.Admin.projects.all.createProject': {
-    selectedTabValue: TTabName;
-  };
-  'app.containers.Admin.projects.all.createProject.tabs': {
-    onData: (data: InsertConfigurationOptions<ITabItem>) => void;
-  };
-  'app.containers.Admin.projects.all.container': {
-    onRender: (hasRendered: boolean) => void;
-  };
   'app.containers.Admin.projects.edit.description.contentBuilder': {
     onMount: () => void;
     valueMultiloc: Multiloc | null | undefined;
