@@ -784,8 +784,6 @@
   "app.containers.AdminPage.ProjectEdit.saveProject": "Enregistrer",
   "app.containers.AdminPage.ProjectEdit.saveSuccess": "Enregistré !",
   "app.containers.AdminPage.ProjectEdit.saveSuccessMessage": "Votre projet a été enregistré !",
-  "app.containers.AdminPage.ProjectEdit.searchPlaceholder": "Rechercher dans les modèles",
-  "app.containers.AdminPage.ProjectEdit.selectGroups": "Choisir les groupes",
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Partager l'information",
   "app.containers.AdminPage.ProjectEdit.shareInformationDescription": "Fournissez des informations aux participants.",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",

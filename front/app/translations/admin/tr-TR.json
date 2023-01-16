@@ -783,8 +783,6 @@
   "app.containers.AdminPage.ProjectEdit.saveProject": "Kaydet",
   "app.containers.AdminPage.ProjectEdit.saveSuccess": "Başarılı!",
   "app.containers.AdminPage.ProjectEdit.saveSuccessMessage": "Formunuz kaydedildi!",
-  "app.containers.AdminPage.ProjectEdit.searchPlaceholder": "Şablonlarda arama yapın",
-  "app.containers.AdminPage.ProjectEdit.selectGroups": "Grup seçin",
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Bilgi paylaşın",
   "app.containers.AdminPage.ProjectEdit.shareInformationDescription": "Katılımcılara bilgi sağlayın.",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",

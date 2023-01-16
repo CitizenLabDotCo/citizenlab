@@ -781,8 +781,6 @@
   "app.containers.AdminPage.ProjectEdit.saveProject": "Desar",
   "app.containers.AdminPage.ProjectEdit.saveSuccess": "Èxit!",
   "app.containers.AdminPage.ProjectEdit.saveSuccessMessage": "El vostre formulari s'ha desat!",
-  "app.containers.AdminPage.ProjectEdit.searchPlaceholder": "Cercar les plantilles",
-  "app.containers.AdminPage.ProjectEdit.selectGroups": "Seleccioneu els grups",
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Compartir informació",
   "app.containers.AdminPage.ProjectEdit.shareInformationDescription": "Proporcionar informació als participants.",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",

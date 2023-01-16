@@ -783,8 +783,6 @@
   "app.containers.AdminPage.ProjectEdit.saveProject": "Saglabāt",
   "app.containers.AdminPage.ProjectEdit.saveSuccess": "Veiksmīgi!",
   "app.containers.AdminPage.ProjectEdit.saveSuccessMessage": "Jūsu veidlapa ir saglabāta!",
-  "app.containers.AdminPage.ProjectEdit.searchPlaceholder": "Meklēt veidnes",
-  "app.containers.AdminPage.ProjectEdit.selectGroups": "Izvēlēties grupu(-as)",
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Kopīgot informāciju",
   "app.containers.AdminPage.ProjectEdit.shareInformationDescription": "Sniegt informāciju dalībniekiem.",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",
