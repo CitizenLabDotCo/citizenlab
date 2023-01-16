@@ -73,36 +73,18 @@ module IdeaCustomFields
       given_field_ids = given_fields.pluck(:id)
 
       ActiveRecord::Base.transaction do
-        deleted_fields = fields.reject { |field| given_field_ids.include? field.id }
-        deleted_fields.each do |field|
-          SideFxCustomFieldService.new.before_destroy(field, current_user)
-          field.destroy!
-          SideFxCustomFieldService.new.after_destroy(field, current_user)
-        end
+        delete_fields = fields.reject { |field| given_field_ids.include? field.id }
+        delete_fields.each { |field| delete_field! field }
         page_temp_ids_to_ids_mapping = {}
         option_temp_ids_to_ids_mapping = {}
         given_fields.each_with_index do |field_params, index|
           options_params = field_params.delete :options
           if field_params[:id] && fields_by_id.key?(field_params[:id])
             field = fields_by_id[field_params[:id]]
-            field.assign_attributes field_params
-            SideFxCustomFieldService.new.before_update(field, current_user)
-            unless field.save
-              errors[index.to_s] = field.errors.details
-              next
-            end
-            SideFxCustomFieldService.new.after_update(field, current_user)
+            next unless update_field! field, field_params, errors, index
           else
-            create_params = field_params.except('temp_id')
-            field = CustomField.new create_params.merge(resource: @custom_form)
-            SideFxCustomFieldService.new.before_create(field, current_user)
-            if field.save
-              page_temp_ids_to_ids_mapping[field_params[:temp_id]] = field.id if field_params[:temp_id]
-            else
-              errors[index.to_s] = field.errors.details
-              next
-            end
-            SideFxCustomFieldService.new.after_create(field, current_user)
+            field = create_field! field_params, errors, page_temp_ids_to_ids_mapping, index
+            next unless field
           end
           if options_params
             option_temp_ids_to_ids_mapping_in_field_logic = update_options field, options_params, errors, index
@@ -124,6 +106,39 @@ module IdeaCustomFields
       end
     end
 
+    def create_field!(field_params, errors, page_temp_ids_to_ids_mapping, index)
+      create_params = field_params.except 'temp_id'
+      field = CustomField.new create_params.merge(resource: @custom_form)
+      SideFxCustomFieldService.new.before_create field, current_user
+      if field.save
+        page_temp_ids_to_ids_mapping[field_params[:temp_id]] = field.id if field_params[:temp_id]
+        SideFxCustomFieldService.new.after_create field, current_user
+        field
+      else
+        errors[index.to_s] = field.errors.details
+        false
+      end
+    end
+
+    def update_field!(field, field_params, errors, index)
+      field.assign_attributes field_params
+      SideFxCustomFieldService.new.before_update field, current_user
+      if field.save
+        SideFxCustomFieldService.new.after_update field, current_user
+        field
+      else
+        errors[index.to_s] = field.errors.details
+        false
+      end
+    end
+
+    def delete_field!(field)
+      SideFxCustomFieldService.new.before_destroy field, current_user
+      field.destroy!
+      SideFxCustomFieldService.new.after_destroy field, current_user
+      field
+    end
+
     def update_options(field, options_params, errors, field_index)
       {}.tap do |option_temp_ids_to_ids_mapping|
         options = field.options
@@ -131,36 +146,51 @@ module IdeaCustomFields
         given_ids = options_params.pluck :id
 
         deleted_options = options.reject { |option| given_ids.include? option.id }
-        deleted_options.each do |option|
-          SideFxCustomFieldOptionService.new.before_destroy option, current_user
-          option.destroy!
-          SideFxCustomFieldOptionService.new.after_destroy option, current_user
-        end
+        deleted_options.each { |option| delete_option! option }
         options_params.each_with_index do |option_params, option_index|
           if option_params[:id]
             option = options_by_id[option_params[:id]]
-            option.assign_attributes option_params
-            SideFxCustomFieldOptionService.new.before_update option, current_user
-            unless option.save
-              add_options_errors option.errors.details, errors, field_index, option_index
-              next
-            end
-            SideFxCustomFieldOptionService.new.after_update option, current_user
+            next unless update_option! option, option_params, errors, field_index, option_index
           else
-            create_params = option_params.except('temp_id')
-            option = CustomFieldOption.new create_params.merge(custom_field: field)
-            SideFxCustomFieldOptionService.new.before_create option, current_user
-            if option.save
-              option_temp_ids_to_ids_mapping[option_params[:temp_id]] = option.id if option_params[:temp_id]
-            else
-              add_options_errors option.errors.details, errors, field_index, option_index
-              next
-            end
-            SideFxCustomFieldOptionService.new.after_create option, current_user
+            option = create_option! option_params, field, errors, option_temp_ids_to_ids_mapping, field_index, option_index
+            next unless option
           end
           option.move_to_bottom
         end
       end
+    end
+
+    def create_option!(option_params, field, errors, option_temp_ids_to_ids_mapping, field_index, option_index)
+      create_params = option_params.except('temp_id')
+      option = CustomFieldOption.new create_params.merge(custom_field: field)
+      SideFxCustomFieldOptionService.new.before_create option, current_user
+      if option.save
+        option_temp_ids_to_ids_mapping[option_params[:temp_id]] = option.id if option_params[:temp_id]
+        SideFxCustomFieldOptionService.new.after_create option, current_user
+        option
+      else
+        add_options_errors option.errors.details, errors, field_index, option_index
+        false
+      end
+    end
+
+    def update_option!(option, option_params, errors, field_index, option_index)
+      option.assign_attributes option_params
+      SideFxCustomFieldOptionService.new.before_update option, current_user
+      if option.save
+        SideFxCustomFieldOptionService.new.after_update option, current_user
+        option
+      else
+        add_options_errors option.errors.details, errors, field_index, option_index
+        false
+      end
+    end
+
+    def delete_option!(option)
+      SideFxCustomFieldOptionService.new.before_destroy option, current_user
+      option.destroy!
+      SideFxCustomFieldOptionService.new.after_destroy option, current_user
+      option
     end
 
     def add_options_errors(options_errors, errors, field_index, option_index)
