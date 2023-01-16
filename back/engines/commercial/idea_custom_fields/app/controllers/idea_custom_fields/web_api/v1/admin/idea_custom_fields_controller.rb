@@ -49,8 +49,8 @@ module IdeaCustomFields
 
     def update_all
       authorize CustomField.new(resource: @custom_form), :update_all?, policy_class: IdeaCustomFieldPolicy
-      participation_method = Factory.instance.participation_method_for @custom_form.participation_context
-      verify_no_responses participation_method
+      @participation_method = Factory.instance.participation_method_for @custom_form.participation_context
+      verify_no_responses @participation_method
 
       update_fields
       @custom_form.reload if @custom_form.persisted?
@@ -107,7 +107,13 @@ module IdeaCustomFields
     end
 
     def create_field!(field_params, errors, page_temp_ids_to_ids_mapping, index)
-      create_params = field_params.except 'temp_id'
+      create_params = field_params.except('temp_id').to_h
+      if create_params.key? 'code'
+        default_field = @participation_method.default_fields(@custom_form).find do |field|
+          field.code == create_params['code']
+        end
+        create_params['key'] = default_field.key
+      end
       field = CustomField.new create_params.merge(resource: @custom_form)
       SideFxCustomFieldService.new.before_create field, current_user
       if field.save

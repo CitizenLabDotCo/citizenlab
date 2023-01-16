@@ -95,14 +95,14 @@ resource 'Idea Custom Fields' do
         expect(json_response[:data].pluck(:id)).not_to include(deleted_field.id)
         expect(json_response[:data][0]).to match(hash_including(
           attributes: hash_including(
+            code: 'title_multiloc',
             key: 'title_multiloc',
             input_type: 'text_multiloc',
             title_multiloc: { en: 'New input title' },
             description_multiloc: { en: 'Input description' },
-            required: true,
             ordering: 0,
+            required: true,
             enabled: true,
-            code: 'title_multiloc',
             created_at: an_instance_of(String),
             updated_at: an_instance_of(String),
             logic: {}
@@ -112,14 +112,31 @@ resource 'Idea Custom Fields' do
         ))
         expect(json_response[:data][1]).to match(hash_including(
           attributes: hash_including(
+            code: 'body_multiloc',
             key: 'body_multiloc',
             input_type: 'html_multiloc',
+            ordering: 1,
             title_multiloc: hash_including(en: 'Description'),
             description_multiloc: {},
             required: true,
-            ordering: 1,
             enabled: true,
-            code: 'body_multiloc',
+            created_at: an_instance_of(String),
+            updated_at: an_instance_of(String),
+            logic: {}
+          ),
+          type: 'custom_field',
+          relationships: { options: { data: [] } }
+        ))
+        expect(json_response[:data][2]).to match(hash_including(
+          attributes: hash_including(
+            code: 'proposed_budget',
+            key: 'proposed_budget',
+            input_type: 'number',
+            ordering: 2,
+            title_multiloc: hash_including(en: 'Proposed Budget'),
+            description_multiloc: {},
+            required: false,
+            enabled: false,
             created_at: an_instance_of(String),
             updated_at: an_instance_of(String),
             logic: {}
@@ -147,51 +164,7 @@ resource 'Idea Custom Fields' do
         # })
 
         # {:data=>
-        #   [{:id=>"bcf2eb59-214a-4a2a-93ef-24abbe466f7d",
-        #     :type=>"custom_field",
-        #     :attributes=>
-        #      {:key=>"body_multiloc",
-        #       :input_type=>"html_multiloc",
-        #       :title_multiloc=>
-        #        {:en=>"Description",
-        #         :"ar-MA"=>"الوصف",
-        #         :"ar-SA"=>"الوصف",
-        #         :"ca-ES"=>"Descripció",
-        #         :"da-DK"=>"Beskrivelse",
-        #         :"de-DE"=>"Beschreibung",
-        #         :"el-GR"=>"Περιγραφή",
-        #         :"en-CA"=>"Description",
-        #         :"en-GB"=>"Description",
-        #         :"es-CL"=>"Descripción",
-        #         :"es-ES"=>"Descripción",
-        #         :"fr-BE"=>"Description complète",
-        #         :"fr-FR"=>"Description",
-        #         :"hr-HR"=>"Opis",
-        #         :"hu-HU"=>"Description",
-        #         :"it-IT"=>"Descrizione",
-        #         :"kl-GL"=>"Nassuiaat",
-        #         :"lb-LU"=>"Beschreiwung",
-        #         :"lv-LV"=>"Apraksts",
-        #         :mi=>"Description",
-        #         :"nb-NO"=>"Beskrivelse",
-        #         :"nl-BE"=>"Beschrijving",
-        #         :"nl-NL"=>"Beschrijving",
-        #         :"pl-PL"=>"Opis",
-        #         :"pt-BR"=>"Descrição",
-        #         :"ro-RO"=>"Descriere",
-        #         :"sr-Latn"=>"Opis",
-        #         :"sr-SP"=>"Опис",
-        #         :"sv-SE"=>"Beskrivning",
-        #         :"tr-TR"=>"Açıklama"},
-        #       :required=>true,
-        #       :ordering=>1,
-        #       :enabled=>true,
-        #       :code=>"body_multiloc",
-        #       :created_at=>nil,
-        #       :updated_at=>nil,
-        #       :logic=>{},
-        #       :description_multiloc=>{}},
-        #     :relationships=>{:options=>{:data=>[]}}},
+        #   [
         #    {:id=>"1af7040d-9ff6-463d-8bb8-58c53356b9f1",
         #     :type=>"custom_field",
         #     :attributes=>

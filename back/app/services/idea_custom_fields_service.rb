@@ -7,7 +7,11 @@ class IdeaCustomFieldsService
   end
 
   def all_fields
-    participation_method.default_fields custom_form
+    if @custom_form.custom_field_ids.empty?
+      participation_method.default_fields custom_form
+    else
+      @custom_form.custom_fields
+    end
   end
 
   def configurable_fields
@@ -57,4 +61,4 @@ class IdeaCustomFieldsService
   attr_reader :custom_form, :participation_method
 end
 
-IdeaCustomFieldsService.prepend_if_ee('IdeaCustomFields::Patches::IdeaCustomFieldsService')
+# IdeaCustomFieldsService.prepend_if_ee('IdeaCustomFields::Patches::IdeaCustomFieldsService')
