@@ -72,28 +72,12 @@ const BannerImageField = ({
     useState<TLocalHeaderImage>(null);
   const [bannerError, setBannerError] = useState<TBannerError>(null);
 
-  const stringifiedHeaderBg = JSON.stringify(headerBg);
   useEffect(() => {
-    // https://stackoverflow.com/questions/54954385/react-useeffect-causing-cant-perform-a-react-state-update-on-an-unmounted-comp
-    const ac = new AbortController();
-
-    if (typeof headerBg === 'string') return;
+    // if (typeof headerBg === 'string') return;
     const headerFileInfo = headerBg?.large;
-    // console.log('headerBg');
-    // console.log(headerBg);
-    // console.log(headerBg?.large);
 
-    (async () => {
-      const tenantHeaderBg = await convertHeaderToUploadFile(headerFileInfo);
-      setHeaderLocalDisplayImage(
-        !isNilOrError(tenantHeaderBg) ? tenantHeaderBg : null
-      );
-    })();
-
-    // https://stackoverflow.com/questions/54954385/react-useeffect-causing-cant-perform-a-react-state-update-on-an-unmounted-comp
-    return () => ac.abort();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stringifiedHeaderBg]);
+    convertHeaderToUploadFile(headerFileInfo);
+  }, [headerBg]);
 
   // set error and disable save button if header is removed,
   // the form cannot be saved without an image
@@ -102,8 +86,7 @@ const BannerImageField = ({
       setBannerError(formatMessage(messages.noHeader));
       return;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stringifiedHeaderBg, formatMessage]);
+  }, [headerBg, formatMessage]);
 
   const convertHeaderToUploadFile = async (
     fileInfo: string | null | undefined
@@ -111,10 +94,10 @@ const BannerImageField = ({
     if (fileInfo) {
       const tenantHeaderBg = await convertUrlToUploadFile(fileInfo);
 
-      return tenantHeaderBg;
+      setHeaderLocalDisplayImage(
+        !isNilOrError(tenantHeaderBg) ? tenantHeaderBg : null
+      );
     }
-
-    return null;
   };
 
   const handleOnAddImageToUploader = (newImages: UploadFile[]) => {
