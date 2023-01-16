@@ -13,10 +13,6 @@ import bulkIdeaImportConfiguration from './commercial/bulk_idea_import';
 import widgetsConfiguration from './commercial/widgets';
 import eventsWidgetConfiguration from './commercial/events_widget';
 
-import analyticsConfiguration from './commercial/analytics';
-
-import representativenessConfiguration from './commercial/representativeness';
-
 // eslint-disable-next-line no-var
 declare var CITIZENLAB_EE: string;
 
@@ -61,14 +57,6 @@ export default loadModules([
   },
   {
     configuration: eventsWidgetConfiguration,
-    isEnabled,
-  },
-  {
-    configuration: analyticsConfiguration,
-    isEnabled,
-  },
-  {
-    configuration: representativenessConfiguration,
     isEnabled,
   },
 ]);

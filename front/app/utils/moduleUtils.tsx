@@ -1,4 +1,3 @@
-import { Moment } from 'moment';
 import React, { FunctionComponent, ReactElement } from 'react';
 
 import PageLoading from 'components/UI/PageLoading';
@@ -9,7 +8,6 @@ import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import { castArray, clamp, isNil, mergeWith, omitBy } from 'lodash-es';
 import { IProjectData } from 'services/projects';
 
-import { IResolution } from 'components/admin/ResolutionControl';
 import { TVerificationStep } from 'events/verificationModal';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import { NavItem } from 'containers/Admin/sideBar';
@@ -20,7 +18,6 @@ import { IPhaseData } from 'services/phases';
 import { TVerificationMethod } from 'services/verificationMethods';
 import { InsertConfigurationOptions, ITab, Locale, Multiloc } from 'typings';
 import { IntlFormatters } from 'react-intl';
-import { StatCardProps } from '../modules/commercial/analytics/admin/hooks/useStatCard/typings';
 
 export type ITabsOutlet = {
   formatMessage: IntlFormatters['formatMessage'];
@@ -74,22 +71,7 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.users.UsersHeader.icon': {
     type: GroupCreationModal;
   };
-  'app.containers.Admin.dashboard.summary.inputStatus': {
-    projectId: string | undefined;
-    startAtMoment: Moment | null | undefined;
-    endAtMoment: Moment | null;
-    resolution: IResolution;
-  };
-  'app.containers.Admin.dashboard.summary.emailDeliveries': {
-    projectId: string | undefined;
-    startAtMoment: Moment | null | undefined;
-    endAtMoment: Moment | null;
-    resolution: IResolution;
-  };
-  'app.containers.Admin.dashboard.summary.projectStatus': StatCardProps;
-  'app.containers.Admin.dashboard.summary.proposals': StatCardProps;
-  'app.containers.Admin.dashboard.summary.invitations': StatCardProps;
-  'app.containers.Admin.dashboard.summary.events': StatCardProps;
+
   'app.containers.Admin.project.edit.permissions.participationRights': {
     project: IProjectData;
     projectId: string;
@@ -105,7 +87,6 @@ export interface OutletsPropertyMap {
   };
   'app.containers.Admin.initiatives.tabs': ITabsOutlet;
   'app.containers.Admin.ideas.tabs': ITabsOutlet;
-  'app.containers.Admin.dashboards.tabs': ITabsOutlet;
   'app.containers.Admin.sideBar.navItems': {
     onData: (data: InsertConfigurationOptions<NavItem>) => void;
   };
