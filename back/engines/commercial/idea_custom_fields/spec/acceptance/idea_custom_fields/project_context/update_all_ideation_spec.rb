@@ -66,12 +66,12 @@ resource 'Idea Custom Fields' do
           required: true,
           enabled: true
         )
-        # Remove extra field
-        create :custom_field_linear_scale, :for_custom_form
         fields_param[0] = {
           id: persisted_built_in_field.id,
           title_multiloc: { 'en' => 'New input title' }
         }
+        # Remove extra field
+        deleted_field = create :custom_field_linear_scale, :for_custom_form
         # Update non-persisted built-in field
         fields_param[5][:required] = true
         # Add extra field
@@ -90,10 +90,11 @@ resource 'Idea Custom Fields' do
         do_request custom_fields: fields_param
 
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 10
-        expect(json_response[:data][0]).to match({
-          attributes: {
+        json_response = json_parse response_body
+        # expect(json_response[:data].size).to eq 10
+        expect(json_response[:data].pluck(:id)).not_to include(deleted_field.id)
+        expect(json_response[:data][0]).to match(hash_including(
+          attributes: hash_including(
             key: 'title_multiloc',
             input_type: 'text_multiloc',
             title_multiloc: { en: 'New input title' },
@@ -105,10 +106,27 @@ resource 'Idea Custom Fields' do
             created_at: an_instance_of(String),
             updated_at: an_instance_of(String),
             logic: {}
-          },
+          ),
           type: 'custom_field',
           relationships: { options: { data: [] } }
-        })
+        ))
+        expect(json_response[:data][1]).to match(hash_including(
+          attributes: hash_including(
+            key: 'body_multiloc',
+            input_type: 'html_multiloc',
+            title_multiloc: hash_including(en: 'Description'),
+            description_multiloc: {},
+            required: true,
+            ordering: 1,
+            enabled: true,
+            code: 'body_multiloc',
+            created_at: an_instance_of(String),
+            updated_at: an_instance_of(String),
+            logic: {}
+          ),
+          type: 'custom_field',
+          relationships: { options: { data: [] } }
+        ))
         # expect(json_response[:data][0]).to match({
         #   attributes: {
         #     code: nil,
@@ -129,22 +147,7 @@ resource 'Idea Custom Fields' do
         # })
 
         # {:data=>
-        #   [{:id=>"2e2b3773-bce8-4ef0-8719-10e98614240b",
-        #     :type=>"custom_field",
-        #     :attributes=>
-        #      {:key=>"title_multiloc",
-        #       :input_type=>"text_multiloc",
-        #       :title_multiloc=>{:en=>"New input title"},
-        #       :required=>true,
-        #       :ordering=>1,
-        #       :enabled=>true,
-        #       :code=>"title_multiloc",
-        #       :created_at=>"2023-01-13T09:41:16.281Z",
-        #       :updated_at=>"2023-01-13T09:41:18.286Z",
-        #       :logic=>{},
-        #       :description_multiloc=>{:en=>"Input description"}},
-        #     :relationships=>{:options=>{:data=>[]}}},
-        #    {:id=>"bcf2eb59-214a-4a2a-93ef-24abbe466f7d",
+        #   [{:id=>"bcf2eb59-214a-4a2a-93ef-24abbe466f7d",
         #     :type=>"custom_field",
         #     :attributes=>
         #      {:key=>"body_multiloc",

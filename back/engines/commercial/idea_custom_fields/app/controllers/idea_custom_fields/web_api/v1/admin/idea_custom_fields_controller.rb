@@ -93,8 +93,8 @@ module IdeaCustomFields
             end
             SideFxCustomFieldService.new.after_update(field, current_user)
           else
-            update_params = field_params.except('temp_id')
-            field = CustomField.new update_params.merge(resource: @custom_form)
+            create_params = field_params.except('temp_id')
+            field = CustomField.new create_params.merge(resource: @custom_form)
             SideFxCustomFieldService.new.before_create(field, current_user)
             if field.save
               page_temp_ids_to_ids_mapping[field_params[:temp_id]] = field.id if field_params[:temp_id]
@@ -173,6 +173,7 @@ module IdeaCustomFields
       params.permit(custom_fields: [
         :id,
         :temp_id,
+        :code,
         :input_type,
         :required,
         :enabled,
