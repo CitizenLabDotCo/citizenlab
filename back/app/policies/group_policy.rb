@@ -84,4 +84,3 @@ class GroupPolicy < ApplicationPolicy
     end
   end
 end
-
