@@ -18,7 +18,10 @@ import messages from '../messages';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNil, isNilOrError } from 'utils/helperUtils';
 
-import { ICustomPageAttributes } from 'services/customPages';
+import {
+  ICustomPageAttributes,
+  TCustomPageBannerLayout,
+} from 'services/customPages';
 import {
   IHomepageSettingsAttributes,
   THomepageBannerLayout,
@@ -123,7 +126,7 @@ const BannerImageField = ({
 
   const showConditions = (bannerLayout: THomepageBannerLayout) => {
     const conditions: {
-      [key in THomepageBannerLayout]: {
+      [key in THomepageBannerLayout | TCustomPageBannerLayout]: {
         [key in TBannerLayoutComponent]: boolean;
       };
     } = {
