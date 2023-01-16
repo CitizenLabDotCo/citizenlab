@@ -6,6 +6,10 @@
 
 - [CL-2214] Report builder MVP (behind feature flag)
 
+### Fixed
+
+- [CL-2597] Custom tags tab is once again visible in both projects and platform settings
+
 ## 2023-01-13
 
 ### Fixed
