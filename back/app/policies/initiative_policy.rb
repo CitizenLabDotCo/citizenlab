@@ -77,5 +77,3 @@ class InitiativePolicy < ApplicationPolicy
     user && record.author_id == user.id
   end
 end
-
-InitiativePolicy.prepend_if_ee('GranularPermissions::Patches::InitiativePolicy')

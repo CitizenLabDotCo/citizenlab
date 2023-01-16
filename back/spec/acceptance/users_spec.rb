@@ -394,27 +394,6 @@ resource 'Users' do
           end
         end
 
-        describe 'List all users in group', skip: !CitizenLab.ee? do
-          example 'with correct pagination', document: false do
-            page_size = 5
-            project = create(:project)
-            group = create(
-              :smart_group,
-              rules: [
-                { ruleType: 'participated_in_project', predicate: 'in', value: [project.id] }
-              ]
-            )
-            Array.new(page_size + 1) do |_i|
-              create(:idea, project: project, author: create(:user))
-            end
-
-            do_request(group: group.id, page: { number: 1, size: page_size })
-            json_response = json_parse(response_body)
-
-            expect(json_response[:links][:next]).to be_present
-          end
-        end
-
         example 'List all users who can moderate a project' do
           p = create(:project)
           a = create(:admin)
@@ -617,31 +596,9 @@ resource 'Users' do
         let(:custom_field_values) { { birthyear: 1984 } }
         let(:project) { create(:continuous_project) }
 
-        before do
-          if CitizenLab.ee?
-            old_timers = create(:smart_group, rules: [
-              {
-                ruleType: 'custom_field_number',
-                customFieldId: create(:custom_field_number, title_multiloc: { 'en' => 'Birthyear?' }, key: 'birthyear', code: 'birthyear').id,
-                predicate: 'is_smaller_than_or_equal',
-                value: 1988
-              }
-            ])
-
-            project.permissions.find_by(action: 'posting_idea')
-              .update!(permitted_by: 'groups', groups: [old_timers])
-          end
-        end
-
         example_request 'Update a user' do
           expect(response_status).to eq 200
           expect(response_data.dig(:attributes, :first_name)).to eq(first_name)
-
-          if CitizenLab.ee?
-            expect(json_response_body[:included].find { |i| i[:type] == 'project' }&.dig(:attributes, :slug)).to eq project.slug
-            expect(json_response_body[:included].find { |i| i[:type] == 'permission' }&.dig(:attributes, :permitted_by)).to eq 'groups'
-            expect(response_data.dig(:relationships, :granted_permissions, :data).size).to eq(1)
-          end
         end
       end
 

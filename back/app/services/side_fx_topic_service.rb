@@ -23,5 +23,3 @@ class SideFxTopicService
       payload: { topic: serialized_topic })
   end
 end
-
-SideFxTopicService.prepend_if_ee('SmartGroups::Patches::SideFxTopicService')

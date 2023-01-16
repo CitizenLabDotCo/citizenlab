@@ -181,5 +181,4 @@ class CustomField < ApplicationRecord
   end
 end
 
-CustomField.include_if_ee('SmartGroups::Extensions::CustomField')
 CustomField.include_if_ee('UserCustomFields::Patches::CustomField')

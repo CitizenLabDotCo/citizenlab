@@ -20,17 +20,14 @@
         </a>
       <% end %>
     </mj-text>
-
-    <% unless remove_vendor_branding? %>
-      <mj-text color="#84939E">
-        <span style="font-style: italic;
-                      font-weight: bold;
-                      font-size: 12px;
-                      display: inline-block;
-                      margin-bottom: 10px"><%= t('email_campaigns.footer.powered_by') %></span>
-      </mj-text>
-      <mj-image align="left" width="155px" padding-top="0" href="https://www.citizenlab.co/"
-        src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/citizenlab_email_logo.png" alt="CitizenLab logo" />
-    <% end %>
+    <mj-text color="#84939E">
+      <span style="font-style: italic;
+                    font-weight: bold;
+                    font-size: 12px;
+                    display: inline-block;
+                    margin-bottom: 10px"><%= t('email_campaigns.footer.powered_by') %></span>
+    </mj-text>
+    <mj-image align="left" width="155px" padding-top="0" href="https://www.citizenlab.co/"
+      src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/citizenlab_email_logo.png" alt="CitizenLab logo" />
   </mj-column>
 </mj-section>

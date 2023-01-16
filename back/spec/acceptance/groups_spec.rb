@@ -9,7 +9,6 @@ resource 'Groups' do
   before do
     header 'Content-Type', 'application/json'
     @groups = create_list(:group, 3)
-    create(:smart_group) if CitizenLab.ee?
   end
 
   context 'when authenticated' do
@@ -32,21 +31,8 @@ resource 'Groups' do
         do_request
         expect(status).to eq(200)
         json_response = json_parse(response_body)
-        if CitizenLab.ee?
-          expect(json_response[:data].size).to eq 5
-        else
-          expect(json_response[:data].size).to eq 4
-        end
+        expect(json_response[:data].size).to eq 4
         expect(json_response[:data][0][:id]).to eq g1.id
-      end
-
-      if CitizenLab.ee?
-        example "List all groups with membership_type 'rules'" do
-          do_request(membership_type: 'rules')
-          expect(status).to eq(200)
-          json_response = json_parse(response_body)
-          expect(json_response[:data].size).to eq 1
-        end
       end
     end
 
@@ -65,10 +51,6 @@ resource 'Groups' do
         parameter :title_multiloc, 'The title of the group in multiple locales', required: true
         parameter :membership_type,
           "Whether members are manually or automatically added. Either #{Group.membership_types.join(', ')}. Defaults to 'manual'"
-        if CitizenLab.ee?
-          parameter :rules,
-            "In case of 'rules' membership type, the user criteria to be a member. Conforms to this json schema: #{JSON.pretty_generate(SmartGroups::RulesService.new.generate_rules_json_schema)}"
-        end
       end
       ValidationErrorHelper.new.error_fields(self, Group)
 
@@ -126,10 +108,6 @@ resource 'Groups' do
         parameter :title_multiloc, 'The title of the group in multiple locales'
         parameter :membership_type,
           "Whether members are manually or automatically added. Either #{Group.membership_types.join(', ')}"
-        if CitizenLab.ee?
-          parameter :rules,
-            "In case of 'rules' membership type, the user criteria to be a member. Conforms to this json schema: #{JSON.pretty_generate(SmartGroups::RulesService.new.generate_rules_json_schema)}"
-        end
       end
       ValidationErrorHelper.new.error_fields(self, Group)
 
