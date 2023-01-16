@@ -73,15 +73,14 @@ const BannerImageField = ({
   const [bannerError, setBannerError] = useState<TBannerError>(null);
 
   useEffect(() => {
-    // if (typeof headerBg === 'string') return;
     const headerFileInfo = headerBg?.large;
 
     convertHeaderToUploadFile(headerFileInfo);
   }, [headerBg]);
 
-  // set error and disable save button if header is removed,
-  // the form cannot be saved without an image
   useEffect(() => {
+    // set error and disable save button if header is removed,
+    // the form cannot be saved without an image
     if (isNil(headerBg)) {
       setBannerError(formatMessage(messages.noHeader));
       return;
@@ -91,6 +90,10 @@ const BannerImageField = ({
   const convertHeaderToUploadFile = async (
     fileInfo: string | null | undefined
   ) => {
+    // the image file sent from the API needs to be converted
+    // to a format that can be displayed. this is done locally
+    // when the image is changed but needs to be done manually
+    // to process the initial API response
     if (fileInfo) {
       const tenantHeaderBg = await convertUrlToUploadFile(fileInfo);
 
