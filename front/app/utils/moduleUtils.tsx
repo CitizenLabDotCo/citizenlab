@@ -1,5 +1,3 @@
-import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
-import { Moment } from 'moment';
 import React, { FunctionComponent, ReactElement } from 'react';
 
 import PageLoading from 'components/UI/PageLoading';
@@ -10,29 +8,16 @@ import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import { castArray, clamp, isNil, mergeWith, omitBy } from 'lodash-es';
 import { IProjectData } from 'services/projects';
 
-import { ManagerType } from 'components/admin/PostManager';
-import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/header/IdeaHeaderRow';
-import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/Row/IdeaRow';
-import { IResolution } from 'components/admin/ResolutionControl';
-import { Point } from 'components/UI/LeafletMap/typings';
 import { TVerificationStep } from 'events/verificationModal';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import { NavItem } from 'containers/Admin/sideBar';
-import { LatLngTuple } from 'leaflet';
 
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { TNotificationData } from 'services/notifications';
 import { IPhaseData } from 'services/phases';
 import { TVerificationMethod } from 'services/verificationMethods';
-import {
-  CellConfiguration,
-  InsertConfigurationOptions,
-  ITab,
-  Locale,
-  Multiloc,
-} from 'typings';
+import { InsertConfigurationOptions, ITab, Locale, Multiloc } from 'typings';
 import { IntlFormatters } from 'react-intl';
-import { StatCardProps } from '../modules/commercial/analytics/admin/hooks/useStatCard/typings';
 
 export type ITabsOutlet = {
   formatMessage: IntlFormatters['formatMessage'];
@@ -86,28 +71,9 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.users.UsersHeader.icon': {
     type: GroupCreationModal;
   };
-  'app.containers.Admin.dashboard.summary.inputStatus': {
-    projectId: string | undefined;
-    startAtMoment: Moment | null | undefined;
-    endAtMoment: Moment | null;
-    resolution: IResolution;
-  };
-  'app.containers.Admin.dashboard.summary.emailDeliveries': {
-    projectId: string | undefined;
-    startAtMoment: Moment | null | undefined;
-    endAtMoment: Moment | null;
-    resolution: IResolution;
-  };
-  'app.containers.Admin.dashboard.summary.projectStatus': StatCardProps;
-  'app.containers.Admin.dashboard.summary.proposals': StatCardProps;
-  'app.containers.Admin.dashboard.summary.invitations': StatCardProps;
-  'app.containers.Admin.dashboard.summary.events': StatCardProps;
+
   'app.containers.Admin.project.edit.permissions.participationRights': {
     project: IProjectData;
-    projectId: string;
-    children: OutletRenderProps;
-  };
-  'app.containers.Admin.project.edit.permissions.moderatorRights': {
     projectId: string;
     children: OutletRenderProps;
   };
@@ -121,40 +87,8 @@ export interface OutletsPropertyMap {
   };
   'app.containers.Admin.initiatives.tabs': ITabsOutlet;
   'app.containers.Admin.ideas.tabs': ITabsOutlet;
-  'app.containers.Admin.dashboards.tabs': ITabsOutlet;
   'app.containers.Admin.sideBar.navItems': {
     onData: (data: InsertConfigurationOptions<NavItem>) => void;
-  };
-  'app.components.admin.PostManager.topActionBar': {
-    assignee?: string | null;
-    projectId?: string | null;
-    handleAssigneeFilterChange: (value: string) => void;
-    type: ManagerType;
-  };
-  'app.components.admin.PostManager.components.PostTable.IdeaRow.cells': {
-    onData: (
-      data: InsertConfigurationOptions<
-        CellConfiguration<IdeaCellComponentProps>
-      >
-    ) => void;
-  };
-  'app.components.admin.PostManager.components.PostTable.IdeaHeaderRow.cells': {
-    onData: (
-      data: InsertConfigurationOptions<
-        CellConfiguration<IdeaHeaderCellComponentProps>
-      >
-    ) => void;
-  };
-  'app.components.Map.leafletConfig': {
-    onLeafletConfigChange: (newLeafletConfig: ILeafletMapConfig) => void;
-    projectId?: string | null;
-    centerLatLng?: LatLngTuple;
-    zoomLevel?: number;
-    points?: Point[];
-  };
-  'app.components.Map.Legend': {
-    projectId?: string | null;
-    className?: string;
   };
   'app.components.VerificationModal.methodSteps': {
     method: TVerificationMethod | null;
