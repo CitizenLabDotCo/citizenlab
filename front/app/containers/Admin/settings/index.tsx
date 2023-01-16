@@ -54,7 +54,6 @@ class SettingsPage extends React.PureComponent<
           label: formatMessage(messages.tabTopics),
           name: 'topics',
           url: '/admin/settings/topics',
-          feature: 'custom_topics',
         },
         {
           name: 'areas',
