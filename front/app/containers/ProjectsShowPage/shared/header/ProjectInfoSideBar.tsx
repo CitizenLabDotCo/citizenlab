@@ -20,6 +20,7 @@ import clHistory from 'utils/cl-router/history';
 
 // services
 import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
+import { getIdeaPostingRules } from 'services/actionTakingRules';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
@@ -192,6 +193,12 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
       project?.attributes?.participation_method;
     const currentPhaseParticipationMethod =
       currentPhase?.attributes?.participation_method;
+    const { disabledReason } = getIdeaPostingRules({
+      project,
+      phase: !isNilOrError(currentPhase) ? currentPhase : null,
+      authUser,
+    });
+    const hasUserParticipated = disabledReason === 'postingLimitedMaxReached';
 
     return (
       <Container id="e2e-project-sidebar" className={className || ''}>
@@ -375,7 +382,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               !hasProjectEnded && (
                 <ListItem>
                   <ListItemIcon ariaHidden name="survey" />
-                  {!isNilOrError(authUser) ? (
+                  {!isNilOrError(authUser) && !hasUserParticipated ? (
                     <ListItemButton
                       id="e2e-project-sidebar-surveys-count"
                       onClick={() => {

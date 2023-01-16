@@ -63,17 +63,6 @@ export interface IUsersByBirthyear {
   };
 }
 
-export interface IUsersByAge {
-  total_user_count: number;
-  unknown_age_count: number;
-  series: {
-    user_counts: number[];
-    expected_user_counts: number[];
-    reference_population: number[];
-    bins: (number | null)[];
-  };
-}
-
 export const usersByRegFieldXlsxEndpoint = (customFieldId: string) =>
   `${apiEndpoint}/users_by_custom_field_as_xlsx/${customFieldId}`;
 
@@ -120,14 +109,3 @@ export function usersByDomicileStream(
     ...streamParams,
   });
 }
-
-export function usersByAgeStream(
-  streamParams: ICustomFieldParams | null = null
-) {
-  return streams.get<IUsersByAge>({
-    apiEndpoint: `${apiEndpoint}/users_by_age`,
-    ...streamParams,
-  });
-}
-
-export const usersByAgeXlsxEndpoint = `${apiEndpoint}/users_by_age_as_xlsx`;

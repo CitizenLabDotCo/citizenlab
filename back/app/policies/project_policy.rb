@@ -174,4 +174,3 @@ class ProjectPolicy < ApplicationPolicy
 end
 
 ProjectPolicy.prepend(Polls::Patches::ProjectPolicy)
-ProjectPolicy.prepend_if_ee('IdeaAssignment::Patches::ProjectPolicy')

@@ -27,7 +27,9 @@ describe('<SignedOutHeader />', () => {
     render(<SignedOutHeader />);
     expect(screen.getByText('Signed out header')).toBeInTheDocument();
     expect(screen.getByText('Signed out subhead')).toBeInTheDocument();
-    expect(screen.getByTestId('full-width-banner-layout')).toBeInTheDocument();
+    expect(screen.getByTestId('full-width-banner-layout')).toHaveStyle(
+      'width: 100%'
+    );
   });
 
   it('renders two_column_layout', () => {
@@ -37,6 +39,10 @@ describe('<SignedOutHeader />', () => {
     expect(screen.getByText('Signed out header')).toBeInTheDocument();
     expect(screen.getByText('Signed out subhead')).toBeInTheDocument();
     expect(screen.getByTestId('two-column-layout')).toBeInTheDocument();
+    expect(screen.getByTestId('two-column-layout')).toHaveStyle('width: 100%');
+    expect(screen.getByTestId('two-column-layout')).toHaveStyle(
+      'background: white'
+    );
   });
 
   it('renders two_row_layout', () => {
@@ -45,7 +51,10 @@ describe('<SignedOutHeader />', () => {
     render(<SignedOutHeader />);
     expect(screen.getByText('Signed out header')).toBeInTheDocument();
     expect(screen.getByText('Signed out subhead')).toBeInTheDocument();
-    expect(screen.getByTestId('two-row-layout')).toBeInTheDocument();
+    expect(screen.getByTestId('two-row-layout')).toHaveStyle('width: 100%');
+    expect(screen.getByTestId('two-row-layout')).toHaveStyle(
+      'background: white'
+    );
   });
 
   it('renders fixed_ratio_layout', () => {

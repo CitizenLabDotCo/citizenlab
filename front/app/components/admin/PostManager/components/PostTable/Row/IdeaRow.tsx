@@ -17,7 +17,6 @@ import StyledRow from './StyledRow';
 import SubRow from './SubRow';
 import { Icon } from 'semantic-ui-react';
 import T from 'components/T';
-import Outlet from 'components/Outlet';
 import Checkbox from 'components/UI/Checkbox';
 import FeatureFlag from 'components/FeatureFlag';
 
@@ -33,13 +32,7 @@ import messages from '../../../messages';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../../tracks';
 import { TFilterMenu, ManagerType } from '../../..';
-import {
-  CellConfiguration,
-  InsertConfigurationOptions,
-  Locale,
-  Override,
-} from 'typings';
-import { insertConfiguration } from 'utils/moduleUtils';
+import { CellConfiguration, Locale, Override } from 'typings';
 
 // hooks
 import { isNilOrError } from 'utils/helperUtils';
@@ -81,9 +74,7 @@ const IdeaRow = ({
   selection,
   locale,
 }: Props & WrappedComponentProps) => {
-  const [cells, setCells] = useState<
-    CellConfiguration<IdeaCellComponentProps>[]
-  >([
+  const [cells] = useState<CellConfiguration<IdeaCellComponentProps>[]>([
     {
       name: 'selection',
       cellProps: { collapsing: true },
@@ -164,14 +155,6 @@ const IdeaRow = ({
     },
   ]);
 
-  const handleData = (
-    insertCellOptions: InsertConfigurationOptions<
-      CellConfiguration<IdeaCellComponentProps>
-    >
-  ) => {
-    setCells((cells) => insertConfiguration(insertCellOptions)(cells));
-  };
-
   const selectedPhases = idea.relationships.phases.data.map((p) => p.id);
   const selectedTopics = idea.relationships.topics?.data.map((p) => p.id);
   const active = selection.has(idea.id);
@@ -244,10 +227,6 @@ const IdeaRow = ({
 
   return (
     <>
-      <Outlet
-        id="app.components.admin.PostManager.components.PostTable.IdeaRow.cells"
-        onData={handleData}
-      />
       <StyledRow
         className={`${className} e2e-idea-manager-idea-row`}
         undraggable={false}

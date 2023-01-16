@@ -149,7 +149,7 @@ export type NavItem = {
   name: string;
   link: string;
   iconName: IconNames;
-  message: string;
+  message: keyof typeof messages;
   featureNames?: TAppConfigurationSetting[];
   count?: number;
   onlyCheckAllowed?: boolean;

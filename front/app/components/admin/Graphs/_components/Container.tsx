@@ -31,7 +31,13 @@ interface Props {
 
 const warn = console.warn.bind(console);
 function wrapWarn(...args) {
-  if (args && args[0] && args[0].includes('ResponsiveContainer')) return;
+  if (
+    typeof args[0] === 'string' &&
+    (args[0].includes('ResponsiveContainer') ||
+      args[0].includes('minWidth(undefined) or minHeight(undefined) '))
+  ) {
+    return;
+  }
   warn(...args);
 }
 

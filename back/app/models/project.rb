@@ -315,8 +315,6 @@ class Project < ApplicationRecord
   end
 end
 
-Project.include_if_ee('CustomMaps::Extensions::Project')
-Project.include_if_ee('IdeaAssignment::Extensions::Project')
 Project.include_if_ee('Insights::Patches::Project')
 Project.include_if_ee('SmartGroups::Patches::Project')
 Project.include_if_ee('ContentBuilder::Patches::Project')
