@@ -27,21 +27,20 @@ module MultiTenancy
       template_names
     end
 
-    def resolve_and_apply_template(template_name, external_subfolder: 'release', validate: true, max_time: nil, project_copy_mode: false)
+    def resolve_and_apply_template(template_name, external_subfolder: 'release', validate: true, max_time: nil)
       Rails.logger.tagged('loading template', template_name: template_name) do
         apply_template(
           resolve_template(template_name, external_subfolder: external_subfolder),
           validate: validate,
-          max_time: max_time,
-          project_copy_mode: project_copy_mode
+          max_time: max_time
         )
       end
     end
 
-    def apply_template(template, validate: true, max_time: nil, project_copy_mode: false)
+    def apply_template(template, validate: true, max_time: nil)
       t1 = Time.zone.now
       obj_to_id_and_class = {}
-      copied_projects_ids = []
+      created_objects_ids = []
       template['models'].each do |model_name, fields|
         LogActivityJob.perform_later(Tenant.current, 'loading_template', nil, Time.now.to_i, payload: {
           model_name: model_name,
@@ -113,16 +112,13 @@ module MultiTenancy
           end
           obj_to_id_and_class[attributes.object_id] = [model.id, model_class]
 
-          # If we called this method as part of project copy action, then we return a list
-          # of project ids so we can reliably find the newly created project(s)
-          copied_projects_ids << model.id if project_copy_mode && model.instance_of?(::Project)
+          created_objects_ids << { model_class: model_class.name, id: model.id }
         end
       end
 
       DumpTenantJob.perform_later(Tenant.current)
-      return copied_projects_ids unless copied_projects_ids.empty?
 
-      nil
+      created_objects_ids
     end
 
     def restore_template_attributes(attributes, obj_to_id_and_class, app_settings, model_class: nil)
