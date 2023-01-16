@@ -1,16 +1,8 @@
-import React, {
-  memo,
-  useMemo,
-  useState,
-  lazy,
-  Suspense,
-  useCallback,
-} from 'react';
+import React, { memo, useMemo, useState, lazy, Suspense } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
-import Outlet from 'components/Outlet';
 const LeafletMap = lazy(() => import('components/UI/LeafletMap'));
 
 // hooks
@@ -122,7 +114,6 @@ export interface IMapProps {
 
 const Map = memo<IMapProps & IMapConfigProps>(
   ({
-    projectId,
     centerLatLng,
     zoomLevel,
     mapHeight,
@@ -134,12 +125,10 @@ const Map = memo<IMapProps & IMapConfigProps>(
     onInit,
     onBoxClose,
     className,
-    hideLegend,
   }) => {
     const appConfig = useAppConfiguration();
 
-    const [additionalLeafletConfig, setAdditionalLeafletConfig] =
-      useState<ILeafletMapConfig | null>(null);
+    const [additionalLeafletConfig] = useState<ILeafletMapConfig | null>(null);
 
     const center = useMemo(() => {
       return getCenter(centerLatLng, appConfig);
@@ -182,13 +171,6 @@ const Map = memo<IMapProps & IMapConfigProps>(
       additionalLeafletConfig,
     ]);
 
-    const handleLeafletConfigChange = useCallback(
-      (leafletConfig: ILeafletMapConfig) => {
-        setAdditionalLeafletConfig(leafletConfig);
-      },
-      []
-    );
-
     const handleBoxOnClose = (event: React.FormEvent) => {
       event.preventDefault();
       onBoxClose?.(event);
@@ -220,19 +202,7 @@ const Map = memo<IMapProps & IMapConfigProps>(
               {...leafletConfig}
             />
           </Suspense>
-          <Outlet
-            id="app.components.Map.leafletConfig"
-            projectId={projectId}
-            onLeafletConfigChange={handleLeafletConfigChange}
-            centerLatLng={centerLatLng}
-            zoomLevel={zoomLevel}
-            points={points}
-          />
         </MapWrapper>
-
-        {!hideLegend && (
-          <Outlet id="app.components.Map.Legend" projectId={projectId} />
-        )}
       </Container>
     );
   }

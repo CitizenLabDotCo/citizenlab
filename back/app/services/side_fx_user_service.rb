@@ -82,8 +82,6 @@ class SideFxUserService
     new_roles.to_a - old_roles.to_a
   end
 
-  # Ideally this method should be moved to the IdeaAssignmentService
-  # but this would create a dependency from the core to the engine.
   def clean_initiative_assignees_for_user!(user)
     return if UserRoleService.new.can_moderate_initiatives?(user)
 
@@ -92,6 +90,3 @@ class SideFxUserService
 end
 
 ::SideFxUserService.prepend UserConfirmation::Patches::SideFxUserService
-
-SideFxUserService.prepend_if_ee 'IdeaAssignment::Patches::SideFxUserService'
-SideFxUserService.prepend_if_ee 'Matomo::Patches::SideFxUserService'

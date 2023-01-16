@@ -460,7 +460,7 @@ end
   { key: '5', title_multiloc: 'custom_field_options.education.ISCED5', ordering: 3 },
   { key: '6', title_multiloc: 'custom_field_options.education.ISCED6', ordering: 4 },
   { key: '7', title_multiloc: 'custom_field_options.education.ISCED7', ordering: 5 },
-  { key: '8', title_multiloc: 'custom_field_options.education.ISCED8', ordering: 6 },
+  { key: '8', title_multiloc: 'custom_field_options.education.ISCED8', ordering: 6 }
 ].each do |attrs|
   attrs[:custom_field] = CustomField.find_by(code: 'education')
   attrs[:title_multiloc] = MultilocService.new.i18n_to_multiloc(attrs[:title_multiloc], locales: CL2_SUPPORTED_LOCALES)
