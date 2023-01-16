@@ -65,11 +65,6 @@ export interface IGlobalPermissions {
   data: IGlobalPermissionData[];
 }
 
-export interface IPermissionUpdate {
-  group_ids: string[];
-  permitted_by: IPermissionData['attributes']['permitted_by'];
-}
-
 export function phasePermissions(
   phaseId: string,
   streamParams: IStreamParams | null = null
@@ -95,42 +90,4 @@ export function globalPermissions(streamParams: IStreamParams | null = null) {
     apiEndpoint: `${API_PATH}/permissions`, // or `${API_PATH}/action_descriptors/initiatives`
     ...streamParams,
   });
-}
-
-export function updateGlobalPermission(
-  permissionId: string,
-  action: string,
-  permission: Partial<IPermissionUpdate>
-) {
-  return streams.update<IPCPermission>(
-    `${API_PATH}/permissions/${action}`,
-    permissionId,
-    { permission }
-  );
-}
-
-export function updatePhasePermission(
-  permissionId: string,
-  phaseId: string,
-  action: string,
-  permission: Partial<IPermissionUpdate>
-) {
-  return streams.update<IPCPermission>(
-    `${API_PATH}/phases/${phaseId}/permissions/${action}`,
-    permissionId,
-    { permission }
-  );
-}
-
-export function updateProjectPermission(
-  permissionId: string,
-  projectId: string,
-  action: string,
-  permission: Partial<IPermissionUpdate>
-) {
-  return streams.update<IPCPermission>(
-    `${API_PATH}/projects/${projectId}/permissions/${action}`,
-    permissionId,
-    { permission }
-  );
 }

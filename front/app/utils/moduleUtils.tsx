@@ -5,6 +5,7 @@ import { ITabItem } from 'components/UI/Tabs';
 import { GroupCreationModal } from 'containers/Admin/users';
 import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import { castArray, clamp, isNil, mergeWith, omitBy } from 'lodash-es';
+import { IProjectData } from 'services/projects';
 
 import { TVerificationStep } from 'events/verificationModal';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
@@ -12,6 +13,7 @@ import { NavItem } from 'containers/Admin/sideBar';
 
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { TNotificationData } from 'services/notifications';
+import { IPhaseData } from 'services/phases';
 import { TVerificationMethod } from 'services/verificationMethods';
 import { InsertConfigurationOptions, ITab, Locale, Multiloc } from 'typings';
 import { IntlFormatters } from 'react-intl';
@@ -67,6 +69,11 @@ export interface OutletsPropertyMap {
   };
   'app.containers.Admin.users.UsersHeader.icon': {
     type: GroupCreationModal;
+  };
+  'app.containers.Admin.projects.edit': {
+    onData: (data: InsertConfigurationOptions<ITab>) => void;
+    project: IProjectData;
+    phases: IPhaseData[] | null;
   };
   'app.containers.Admin.settings.tabs': {
     onData: (data: InsertConfigurationOptions<ITab>) => void;
