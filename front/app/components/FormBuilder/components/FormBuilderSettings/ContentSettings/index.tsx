@@ -49,7 +49,7 @@ export const ContentSettings = ({
       <Box mt="16px">
         {field.input_type !== 'page' && (
           <>
-            <SectionField id="e2e-show-response-toggle">
+            <SectionField>
               <Toggle
                 name={`customFields.${field.index}.enabled`}
                 disabled={
@@ -107,7 +107,7 @@ export const ContentSettings = ({
                 }
               />
             </SectionField>
-            <SectionField id="e2e-show-response-toggle">
+            <SectionField>
               <Toggle
                 name={`customFields.${field.index}.showResponseToUsers`}
                 disabled={
