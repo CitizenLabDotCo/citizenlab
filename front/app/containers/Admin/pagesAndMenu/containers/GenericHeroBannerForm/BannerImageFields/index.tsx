@@ -52,6 +52,10 @@ export interface Props {
 export type TPreviewDevice = 'phone' | 'tablet' | 'desktop';
 export type TLocalHeaderImage = UploadFile | null;
 export type TBannerError = string | null;
+type TBannerLayoutComponent =
+  | 'image_cropper'
+  | 'preview_device'
+  | 'overlay_controls';
 
 const BannerImageField = ({
   bannerOverlayColor,
@@ -132,30 +136,36 @@ const BannerImageField = ({
     : false;
 
   const showConditions = (bannerLayout: THomepageBannerLayout) => {
-    return {
+    const conditions: {
+      [key in THomepageBannerLayout]: {
+        [key in TBannerLayoutComponent]: boolean;
+      };
+    } = {
       full_width_banner_layout: {
-        displayImageCropper: false,
-        displayPreviewDevice: hasLocalHeaderImage,
-        displayOverlayControls: hasLocalHeaderImage,
+        image_cropper: false,
+        preview_device: hasLocalHeaderImage,
+        overlay_controls: hasLocalHeaderImage,
       },
       two_row_layout: {
-        displayImageCropper: false,
-        displayPreviewDevice: hasLocalHeaderImage,
-        displayOverlayControls: false,
+        image_cropper: false,
+        preview_device: hasLocalHeaderImage,
+        overlay_controls: false,
       },
       two_column_layout: {
-        displayImageCropper: false,
-        displayPreviewDevice: hasLocalHeaderImage,
-        displayOverlayControls: false,
+        image_cropper: false,
+        preview_device: hasLocalHeaderImage,
+        overlay_controls: false,
       },
-      fixed_ratio_banner_layout: {
-        displayImageCropper: hasLocalHeaderImage && imageShouldBeSaved,
-        displayPreviewDevice: false,
+      fixed_ratio_layout: {
+        image_cropper: hasLocalHeaderImage && imageShouldBeSaved,
+        preview_device: false,
         // For the fixed_ratio_layout we only show it for a saved image.
         // An unsaved image should show the image cropper instead.
-        displayOverlayControls: hasLocalHeaderImage && imageShouldBeSaved,
+        overlay_controls: hasLocalHeaderImage && imageShouldBeSaved,
       },
-    }[bannerLayout];
+    };
+
+    return conditions[bannerLayout];
   };
 
   return (
@@ -184,7 +194,7 @@ const BannerImageField = ({
         />
       </SubSectionTitle>
       <SectionField>
-        {showConditions(bannerLayout).displayPreviewDevice && (
+        {showConditions(bannerLayout).preview_device && (
           <Box mb="20px">
             <Select
               label={formatMessage(messages.bgHeaderPreviewSelectLabel)}
@@ -212,10 +222,8 @@ const BannerImageField = ({
           bannerLayout={bannerLayout}
           bannerOverlayColor={bannerOverlayColor}
           bannerOverlayOpacity={bannerOverlayOpacity}
-          displayImageCropper={showConditions(bannerLayout).displayImageCropper}
-          displayOverlayControls={
-            showConditions(bannerLayout).displayOverlayControls
-          }
+          displayImageCropper={showConditions(bannerLayout).image_cropper}
+          displayOverlayControls={showConditions(bannerLayout).overlay_controls}
           onAddImage={onAddImage}
           onAddImageToUploader={handleOnAddImageToUploader}
           onRemoveImageFromUploader={handleOnRemoveImageFromUploader}
@@ -224,7 +232,7 @@ const BannerImageField = ({
           headerLocalDisplayImage={headerLocalDisplayImage}
         />
         {/* We only allow the overlay for the full-width and fixed-ratio banner layout for the moment. */}
-        {showConditions(bannerLayout).displayOverlayControls && (
+        {showConditions(bannerLayout).overlay_controls && (
           <OverlayControls
             bannerOverlayColor={bannerOverlayColor}
             bannerOverlayOpacity={bannerOverlayOpacity}
