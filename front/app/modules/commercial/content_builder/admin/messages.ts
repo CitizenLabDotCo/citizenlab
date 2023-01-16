@@ -5,14 +5,6 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.sections',
     defaultMessage: 'SECTIONS',
   },
-  content: {
-    id: 'app.containers.admin.ContentBuilder.content',
-    defaultMessage: 'CONTENT',
-  },
-  layout: {
-    id: 'app.containers.admin.ContentBuilder.layout',
-    defaultMessage: 'LAYOUT',
-  },
   projectDescription: {
     id: 'app.containers.admin.ContentBuilder.projectDescription',
     defaultMessage: 'Project description',
@@ -20,11 +12,6 @@ export default defineMessages({
   oneColumn: {
     id: 'app.containers.admin.ContentBuilder.oneColumnLayout',
     defaultMessage: '1 column',
-  },
-  errorMessage: {
-    id: 'app.containers.admin.ContentBuilder.errorMessage',
-    defaultMessage:
-      'There is an error on { locale } content, please fix the issue to be able to save your changes',
   },
   imageTextCards: {
     id: 'app.containers.admin.ContentBuilder.imageTextCards',

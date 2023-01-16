@@ -21,10 +21,6 @@ namespace :cl2_back do
             en: 'If you don\'t want to register, use hello@citizenlab.co/democrazy as email/password'
           }
         },
-        customizable_homepage_banner: {
-          enabled: true,
-          allowed: true
-        },
         private_projects: {
           enabled: true,
           allowed: true
@@ -266,15 +262,15 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        custom_topics: {
-          enabled: true,
-          allowed: true
-        },
         smart_groups: {
           enabled: true,
           allowed: true
         },
         project_management: {
+          enabled: true,
+          allowed: true
+        },
+        project_visibility: {
           enabled: true,
           allowed: true
         },
@@ -322,7 +318,7 @@ namespace :cl2_back do
     }.with_indifferent_access
 
     _success, tenant, _app_config = MultiTenancy::TenantService.new.initialize_with_template(
-      tenant_attrs, config_attrs, tenant_template
+      tenant_attrs, config_attrs, tenant_template, apply_template_sync: true
     )
 
     tenant.switch do

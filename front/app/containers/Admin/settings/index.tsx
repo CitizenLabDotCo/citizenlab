@@ -29,7 +29,7 @@ class SettingsPage extends React.PureComponent<
   Props & WrappedComponentProps & WithRouterProps,
   State
 > {
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps & WithRouterProps) {
     super(props);
     const { formatMessage } = this.props.intl;
 
@@ -54,7 +54,6 @@ class SettingsPage extends React.PureComponent<
           label: formatMessage(messages.tabTopics),
           name: 'topics',
           url: '/admin/settings/topics',
-          feature: 'custom_topics',
         },
         {
           name: 'areas',

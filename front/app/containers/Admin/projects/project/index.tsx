@@ -93,7 +93,9 @@ export class AdminProjectsProjectIndex extends PureComponent<
   Props & WrappedComponentProps & InjectedLocalized & WithRouterProps,
   State
 > {
-  constructor(props) {
+  constructor(
+    props: Props & WrappedComponentProps & InjectedLocalized & WithRouterProps
+  ) {
     super(props);
     const {
       intl: { formatMessage },
@@ -140,7 +142,6 @@ export class AdminProjectsProjectIndex extends PureComponent<
           label: formatMessage(messages.allowedInputTopicsTab),
           name: 'topics',
           url: 'allowed-input-topics',
-          feature: 'custom_topics',
         },
         {
           label: formatMessage(messages.phasesTab),

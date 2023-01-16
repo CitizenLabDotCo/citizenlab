@@ -83,7 +83,7 @@ class CommentsMoreActions extends PureComponent<
   private comment$: BehaviorSubject<ICommentData>;
   private subscriptions: Subscription[];
 
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       modalVisible_spam: false,

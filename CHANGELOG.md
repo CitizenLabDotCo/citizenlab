@@ -1,10 +1,57 @@
 # Changelog
 
+## 2023-01-16
+
+### Added
+
+- [CL-2320] Image dimensions i2: folder & project banner images
+
+## 2023-01-13 (2)
+
+### Added
+
+- [CL-2214] Report builder MVP (behind feature flag)
+
+### Fixed
+
+- [CL-2597] Custom tags tab is once again visible in both projects and platform settings
+
+## 2023-01-13
+
+### Fixed
+
+- [CL-2339] Fixed slow displaying of attachments in timeline projects on a phase
+
+### Changed
+
+- [CL-2465] Allow project moderators to all dashboard data
+
+## 2023-01-12
+
+### Added
+
+- [CL-2340] Added file upload fields to survey forms.
+- [CL-2255] Show 'Invitation pending' in user group list, for users added to user group when invited, and who have not yet accepted the invitation.
+
+### Changed
+
+- [CL-2344] Removes content builder iframe URL whitelist.
+
+### Fixed
+
+- [CL-2555] Fixed broken two-column layout
+
+## 2023-01-10
+
+### Added
+
+- [CL-1849] Add new banner type to home and custom pages: fixed ratio
+
 ### Fixed
 
 - [CL-1956] Fixed issue with ideation location pin moving to closest geocoded building.
 
-### 2022-12-30
+## 2022-12-30
 
 - [CL-1893] Added survey logic and new long text field.
 

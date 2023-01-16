@@ -9,7 +9,6 @@ import flagInappropriateContentConfiguration from './commercial/flag_inappropria
 import adminProjectTemplatesConfiguration from './commercial/admin_project_templates';
 import machineTranslationsConfiguration from './commercial/machine_translations';
 import similarIdeaConfiguration from './commercial/similar_ideas';
-import customizableHomepageBannerConfiguration from './commercial/customizable_homepage_banner';
 
 import customMapsConfiguration from './commercial/custom_maps';
 import googleTagManagerConfiguration from './commercial/google_tag_manager';
@@ -38,9 +37,9 @@ import eventsWidgetConfiguration from './commercial/events_widget';
 
 import insightsConfiguration from './commercial/insights';
 import analyticsConfiguration from './commercial/analytics';
+import representativenessConfiguration from './commercial/representativeness';
 
 import idViennaSamlConfiguration from './commercial/id_vienna_saml';
-import representativenessConfiguration from './commercial/representativeness';
 
 // eslint-disable-next-line no-var
 declare var CITIZENLAB_EE: string;
@@ -106,10 +105,6 @@ export default loadModules([
   },
   {
     configuration: bulkIdeaImportConfiguration,
-    isEnabled,
-  },
-  {
-    configuration: customizableHomepageBannerConfiguration,
     isEnabled,
   },
   {

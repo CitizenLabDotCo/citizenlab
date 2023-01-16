@@ -69,10 +69,6 @@ export type ProposalsSettings = {
 };
 export interface IAppConfigurationSettings {
   core: IAppConfigurationSettingsCore;
-  customizable_homepage_banner: {
-    allowed: boolean;
-    enabled: boolean;
-  };
   advanced_custom_pages: {
     allowed: boolean;
     enabled: boolean;
@@ -173,7 +169,6 @@ export interface IAppConfigurationSettings {
   ideaflow_social_sharing?: AppConfigurationFeature;
   initiativeflow_social_sharing?: AppConfigurationFeature;
   machine_translations?: AppConfigurationFeature;
-  custom_topics?: AppConfigurationFeature;
   custom_maps?: AppConfigurationFeature;
   similar_ideas?: AppConfigurationFeature;
   polls?: AppConfigurationFeature;
@@ -221,6 +216,7 @@ export interface IAppConfigurationSettings {
   analytics?: AppConfigurationFeature;
   visitors_dashboard?: AppConfigurationFeature;
   user_confirmation?: AppConfigurationFeature;
+  report_builder?: AppConfigurationFeature;
 }
 
 interface AppConfigurationMapSettings extends AppConfigurationFeature {

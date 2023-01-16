@@ -40,6 +40,13 @@ const SubscriptionEndedPage = lazy(
 );
 const EmailSettingsPage = lazy(() => import('containers/EmailSettingsPage'));
 
+const ReportViewerPage = lazy(
+  () => import('containers/Admin/reporting/containers/FullScreenReport')
+);
+const ReportPrintPage = lazy(
+  () => import('containers/Admin/reporting/containers/PrintReport')
+);
+
 export default function createRoutes() {
   return [
     {
@@ -213,7 +220,7 @@ export default function createRoutes() {
           path: 'folders/:slug',
           element: (
             <PageLoading>
-              <ProjectFolderShowPage />,
+              <ProjectFolderShowPage />
             </PageLoading>
           ),
         },
@@ -279,6 +286,22 @@ export default function createRoutes() {
           element: (
             <PageLoading>
               <EmailSettingsPage />
+            </PageLoading>
+          ),
+        },
+        {
+          path: 'admin/reporting/report-builder/:reportId/viewer',
+          element: (
+            <PageLoading>
+              <ReportViewerPage />
+            </PageLoading>
+          ),
+        },
+        {
+          path: 'admin/reporting/report-builder/:reportId/print',
+          element: (
+            <PageLoading>
+              <ReportPrintPage />
             </PageLoading>
           ),
         },

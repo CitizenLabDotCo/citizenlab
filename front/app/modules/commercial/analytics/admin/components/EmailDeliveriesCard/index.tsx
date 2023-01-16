@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 
 // hooks
-import useEmailDeliveries from '../../hooks/useEmailDeliveries';
+import useEmailDeliveries from './useEmailDeliveries';
 
 // components
 import GraphCard from 'components/admin/GraphCard';
@@ -14,7 +14,11 @@ import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
 // typings
-import { ProjectId, Dates, Resolution } from '../../typings';
+import {
+  ProjectId,
+  Dates,
+  Resolution,
+} from 'components/admin/GraphCards/typings';
 import { isNilOrError } from 'utils/helperUtils';
 
 type Props = ProjectId & Dates & Resolution;
