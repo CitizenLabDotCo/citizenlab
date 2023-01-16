@@ -27,22 +27,6 @@ export interface IIdeaStatusData {
   };
 }
 
-export interface IIdeaStatusAdd {
-  title_multiloc: Multiloc;
-  description_multiloc?: Multiloc;
-  color?: string;
-  code?: TIdeaStatusCode;
-  ordering?: number;
-}
-
-export interface IIdeaStatusUpdate {
-  title_multiloc: Multiloc;
-  description_multiloc?: Multiloc;
-  color?: string;
-  code?: TIdeaStatusCode;
-  ordering?: number;
-}
-
 export interface IIdeaStatus {
   data: IIdeaStatusData;
 }
@@ -61,42 +45,4 @@ export function ideaStatusesStream() {
   return streams.get<IIdeaStatuses>({
     apiEndpoint: `${API_PATH}/idea_statuses`,
   });
-}
-
-export function addIdeaStatus(ideaStatus: IIdeaStatusAdd) {
-  const response = streams.add<IIdeaStatusAdd>(`${API_PATH}/idea_statuses/`, {
-    idea_status: ideaStatus,
-  });
-  return response;
-}
-
-export async function updateIdeaStatus(
-  ideaStatusId: string,
-  ideaStatus: Partial<IIdeaStatusUpdate>
-) {
-  const response = await streams.update<IIdeaStatusUpdate>(
-    `${API_PATH}/idea_statuses/${ideaStatusId}`,
-    ideaStatusId,
-    {
-      idea_status: ideaStatus,
-    },
-    true
-  );
-
-  return response;
-}
-
-export async function deleteIdeaStatus(ideaStatusId: string) {
-  const response = await streams.delete(
-    `${API_PATH}/idea_statuses/${ideaStatusId}`,
-    ideaStatusId,
-    true
-  );
-
-  streams.fetchAllWith({
-    dataId: [ideaStatusId],
-    apiEndpoint: [`${API_PATH}/idea_statuses`],
-  });
-
-  return response;
 }
