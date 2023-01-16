@@ -596,8 +596,6 @@
   "app.containers.AccessibilityStatement.title": "Beskrivelse av tilgjengelighet",
   "app.containers.AccessibilityStatement.userGeneratedContent": "Brukergenerert innhold",
   "app.containers.AccessibilityStatement.workshops": "Seminarer",
-  "app.containers.Admin.Insights.helmetDescription": "Side for innsikt til administrator",
-  "app.containers.Admin.Insights.helmetTitle": "Plattform innsikt",
   "app.containers.Admin.Insights.tabInsights": "Innsikt",
   "app.containers.Admin.Insights.tabReports": "Rapporter",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Opprett en smart-gruppe",
