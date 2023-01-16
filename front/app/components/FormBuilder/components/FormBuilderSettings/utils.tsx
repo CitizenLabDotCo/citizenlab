@@ -14,6 +14,38 @@ export function generateTempId() {
   return `TEMP-ID-${uuid4()}`;
 }
 
+export function isRequiredToggleAllowed(field: IFlatCustomFieldWithIndex) {
+  const keysAlwaysRequired: string[] = ['title_multiloc', 'body_multiloc'];
+  return keysAlwaysRequired.includes(field.key);
+}
+
+export function isResponseToggleAllowed(field: IFlatCustomFieldWithIndex) {
+  const keysResponsesAlwaysShown: string[] = [
+    'title_multiloc',
+    'body_multiloc',
+    'idea_images_attributes',
+  ];
+  return keysResponsesAlwaysShown.includes(field.key);
+}
+
+export function isEnabledToggleAllowed(field: IFlatCustomFieldWithIndex) {
+  const keysAlwaysEnabled: string[] = [
+    'title_multiloc',
+    'body_multiloc',
+    'idea_images_attributes',
+  ];
+  return keysAlwaysEnabled.includes(field.key);
+}
+
+export function isTitleConfigurable(field: IFlatCustomFieldWithIndex) {
+  const keysWithoutConfigurableTitle: string[] = [
+    'title_multiloc',
+    'body_multiloc',
+    'idea_images_attributes',
+  ];
+  return !keysWithoutConfigurableTitle.includes(field.key);
+}
+
 // TODO: BE key for survey end options should be replaced with form_end, then we can update this value.
 export const formEndOption = 'survey_end';
 

@@ -1,5 +1,4 @@
 import { getUpdatedConfiguration } from 'components/FormBuilder/utils';
-import useFormCustomFields from 'hooks/useFormCustomFields';
 import React, { lazy } from 'react';
 import { useParams } from 'react-router-dom';
 import { ICustomFieldInputType } from 'services/formCustomFields';
@@ -8,17 +7,10 @@ import { ideationConfig } from '../utils';
 const FormBuilder = lazy(() => import('components/FormBuilder/edit'));
 
 const IdeaFormBuilder = () => {
-  const { projectId, phaseId } = useParams() as {
+  const { projectId } = useParams() as {
     projectId: string;
     phaseId?: string;
   };
-
-  const actualFormCustomFields = useFormCustomFields({
-    projectId,
-    phaseId,
-  });
-
-  console.log({ actualFormCustomFields });
 
   const goBackUrl = `/admin/projects/${projectId}/ideaform`;
 
@@ -97,6 +89,7 @@ const IdeaFormBuilder = () => {
       updated_at: '2023-01-10T08:10:09.783Z',
       logic: {},
       description_multiloc: {},
+      showResponseToUsers: true,
       relationships: {
         options: {
           data: [],
@@ -107,7 +100,7 @@ const IdeaFormBuilder = () => {
       id: '5b9940a4-ba83-40da-9a2d-51287f38411a',
       type: 'custom_field',
       key: 'body_multiloc',
-      input_type: 'text' as ICustomFieldInputType,
+      input_type: 'multiline_text' as ICustomFieldInputType,
       temp_id: '',
       minimum_label_multiloc: {},
       maximum_label_multiloc: {},
@@ -150,6 +143,7 @@ const IdeaFormBuilder = () => {
       code: 'body_multiloc',
       created_at: '2023-01-10T08:10:09.783Z',
       updated_at: '2023-01-10T08:10:09.783Z',
+      showResponseToUsers: true,
       logic: {},
       description_multiloc: {},
       relationships: {
@@ -213,61 +207,61 @@ const IdeaFormBuilder = () => {
         },
       },
     },
-    {
-      id: 'f805c9cf-f47a-4da8-ba14-faf57610fff0',
-      type: 'custom_field',
-      key: 'topic_ids',
-      input_type: 'select' as ICustomFieldInputType,
-      temp_id: '',
-      minimum_label_multiloc: {},
-      maximum_label_multiloc: {},
-      maximum: 0,
-      title_multiloc: {
-        en: 'Tags',
-        'ar-MA': 'الموضوعات',
-        'ar-SA': 'الموضوعات',
-        'ca-ES': 'Etiquetes',
-        'da-DK': 'Emner',
-        'de-DE': 'Themen',
-        'el-GR': 'Ετικέτες',
-        'en-CA': 'Tags',
-        'en-GB': 'Tags',
-        'es-CL': 'Temas',
-        'es-ES': 'Temas',
-        'fr-BE': 'Étiquettes',
-        'fr-FR': 'Étiquettes',
-        'hr-HR': 'Oznake',
-        'hu-HU': 'Topics',
-        'it-IT': 'Argomenti',
-        'kl-GL': 'Pineqartut',
-        'lb-LU': 'Sujeten',
-        'lv-LV': 'Tagi',
-        mi: 'Topics',
-        'nb-NO': 'Emner',
-        'nl-BE': 'Tags',
-        'nl-NL': 'Tags',
-        'pl-PL': 'Tematy',
-        'pt-BR': 'Tópicos',
-        'ro-RO': 'Subiecte',
-        'sr-Latn': 'Tema',
-        'sr-SP': 'Теме',
-        'sv-SE': 'Topics',
-        'tr-TR': 'Etiketler',
-      },
-      required: false,
-      ordering: 5,
-      enabled: true,
-      code: 'topic_ids',
-      created_at: '2023-01-10T08:10:09.783Z',
-      updated_at: '2023-01-10T08:10:09.783Z',
-      logic: {},
-      description_multiloc: {},
-      relationships: {
-        options: {
-          data: [],
-        },
-      },
-    },
+    // {
+    //   id: 'f805c9cf-f47a-4da8-ba14-faf57610fff0',
+    //   type: 'custom_field',
+    //   key: 'topic_ids',
+    //   input_type: 'select' as ICustomFieldInputType,
+    //   temp_id: '',
+    //   minimum_label_multiloc: {},
+    //   maximum_label_multiloc: {},
+    //   maximum: 0,
+    //   title_multiloc: {
+    //     en: 'Tags',
+    //     'ar-MA': 'الموضوعات',
+    //     'ar-SA': 'الموضوعات',
+    //     'ca-ES': 'Etiquetes',
+    //     'da-DK': 'Emner',
+    //     'de-DE': 'Themen',
+    //     'el-GR': 'Ετικέτες',
+    //     'en-CA': 'Tags',
+    //     'en-GB': 'Tags',
+    //     'es-CL': 'Temas',
+    //     'es-ES': 'Temas',
+    //     'fr-BE': 'Étiquettes',
+    //     'fr-FR': 'Étiquettes',
+    //     'hr-HR': 'Oznake',
+    //     'hu-HU': 'Topics',
+    //     'it-IT': 'Argomenti',
+    //     'kl-GL': 'Pineqartut',
+    //     'lb-LU': 'Sujeten',
+    //     'lv-LV': 'Tagi',
+    //     mi: 'Topics',
+    //     'nb-NO': 'Emner',
+    //     'nl-BE': 'Tags',
+    //     'nl-NL': 'Tags',
+    //     'pl-PL': 'Tematy',
+    //     'pt-BR': 'Tópicos',
+    //     'ro-RO': 'Subiecte',
+    //     'sr-Latn': 'Tema',
+    //     'sr-SP': 'Теме',
+    //     'sv-SE': 'Topics',
+    //     'tr-TR': 'Etiketler',
+    //   },
+    //   required: false,
+    //   ordering: 5,
+    //   enabled: true,
+    //   code: 'topic_ids',
+    //   created_at: '2023-01-10T08:10:09.783Z',
+    //   updated_at: '2023-01-10T08:10:09.783Z',
+    //   logic: {},
+    //   description_multiloc: {},
+    //   relationships: {
+    //     options: {
+    //       data: [],
+    //     },
+    //   },
+    // },
     {
       id: 'b860287f-d9e9-4684-bcfb-e70f53045493',
       type: 'custom_field',
@@ -327,7 +321,7 @@ const IdeaFormBuilder = () => {
       id: '66136efe-5e07-4050-9b75-452ef9e79e10',
       type: 'custom_field',
       key: 'idea_images_attributes',
-      input_type: 'text' as ICustomFieldInputType,
+      input_type: 'image_files' as ICustomFieldInputType,
       temp_id: '',
       minimum_label_multiloc: {},
       maximum_label_multiloc: {},
@@ -370,6 +364,7 @@ const IdeaFormBuilder = () => {
       code: 'idea_images_attributes',
       created_at: '2023-01-10T08:10:09.783Z',
       updated_at: '2023-01-10T08:10:09.783Z',
+      showResponseToUsers: true,
       logic: {},
       description_multiloc: {},
       relationships: {

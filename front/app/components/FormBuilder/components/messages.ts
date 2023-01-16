@@ -89,6 +89,10 @@ export default defineMessages({
     id: 'app.components.formBuilder.done',
     defaultMessage: 'Done',
   },
+  enable: {
+    id: 'app.components.formBuilder.enable',
+    defaultMessage: 'Enable',
+  },
   questionTitle: {
     id: 'app.components.formBuilder.questionTitle',
     defaultMessage: 'Question title',
@@ -100,6 +104,10 @@ export default defineMessages({
   requiredToggleLabel: {
     id: 'app.components.formBuilder.requiredToggleLabel',
     defaultMessage: 'Make answering this question required',
+  },
+  showResponseToUsersToggleLabel: {
+    id: 'app.components.formBuilder.showResponseToUsersToggleLabel',
+    defaultMessage: 'Show response to users',
   },
   deleteButtonLabel: {
     id: 'app.components.formBuilder.deleteButtonLabel',

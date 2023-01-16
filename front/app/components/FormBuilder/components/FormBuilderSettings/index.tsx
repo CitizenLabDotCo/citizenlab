@@ -168,6 +168,9 @@ const FormBuilderSettings = ({
     case 'file_upload':
       translatedStringKey = messages.fileUpload;
       break;
+    case 'image_files':
+      translatedStringKey = messages.imageUpload;
+      break;
   }
 
   const tabNotActiveBorder = `1px solid ${colors.grey400}`;

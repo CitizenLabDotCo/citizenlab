@@ -16,7 +16,13 @@ import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import { getAdditionalSettings } from '../utils';
+import {
+  isTitleConfigurable,
+  getAdditionalSettings,
+  isEnabledToggleAllowed,
+  isResponseToggleAllowed,
+  isRequiredToggleAllowed,
+} from '../utils';
 import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
@@ -46,26 +52,28 @@ export const ContentSettings = ({
       <Box mt="16px">
         {field.input_type !== 'page' && (
           <>
-            <SectionField id="e2e-required-toggle">
+            <SectionField id="e2e-show-response-toggle">
               <Toggle
-                name={`customFields.${field.index}.required`}
-                disabled={hasRules}
+                name={`customFields.${field.index}.enabled`}
+                disabled={isEnabledToggleAllowed(field)}
                 label={
                   <Text as="span" color="primary" variant="bodyM" my="0px">
-                    <FormattedMessage {...messages.requiredToggleLabel} />
+                    <FormattedMessage {...messages.enable} />
                   </Text>
                 }
               />
             </SectionField>
-            <SectionField>
-              <InputMultilocWithLocaleSwitcher
-                initiallySelectedLocale={platformLocale}
-                id="e2e-title-multiloc"
-                name={`customFields.${field.index}.title_multiloc`}
-                label={<FormattedMessage {...messages.questionTitle} />}
-                type="text"
-              />
-            </SectionField>
+            {isTitleConfigurable(field) && (
+              <SectionField>
+                <InputMultilocWithLocaleSwitcher
+                  initiallySelectedLocale={platformLocale}
+                  id="e2e-title-multiloc"
+                  name={`customFields.${field.index}.title_multiloc`}
+                  label={<FormattedMessage {...messages.questionTitle} />}
+                  type="text"
+                />
+              </SectionField>
+            )}
             <SectionField>
               <InputMultilocWithLocaleSwitcher
                 initiallySelectedLocale={platformLocale}
@@ -79,6 +87,34 @@ export const ContentSettings = ({
           </>
         )}
         {getAdditionalSettings(field, locales, platformLocale)}
+        {field.input_type !== 'page' && (
+          <>
+            <SectionField id="e2e-required-toggle">
+              <Toggle
+                name={`customFields.${field.index}.required`}
+                disabled={hasRules || isRequiredToggleAllowed(field)}
+                label={
+                  <Text as="span" color="primary" variant="bodyM" my="0px">
+                    <FormattedMessage {...messages.requiredToggleLabel} />
+                  </Text>
+                }
+              />
+            </SectionField>
+            <SectionField id="e2e-show-response-toggle">
+              <Toggle
+                name={`customFields.${field.index}.showResponseToUsers`}
+                disabled={isResponseToggleAllowed(field)}
+                label={
+                  <Text as="span" color="primary" variant="bodyM" my="0px">
+                    <FormattedMessage
+                      {...messages.showResponseToUsersToggleLabel}
+                    />
+                  </Text>
+                }
+              />
+            </SectionField>
+          </>
+        )}
         <Box
           display="flex"
           justifyContent="space-between"
