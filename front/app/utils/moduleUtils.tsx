@@ -122,6 +122,13 @@ export interface OutletsPropertyMap {
     notification: TNotificationData;
   };
   'app.containers.HomePage.EventsWidget': Record<string, any>;
+  'app.containers.Admin.projects.edit.general.components.TopicInputs.tooltipExtraCopy': Record<
+    string,
+    any
+  >;
+  'app.containers.Admin.reporting.components.Tabs': {
+    onData: (tabs: ITab[]) => void;
+  };
 }
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
@@ -162,6 +169,7 @@ interface Routes {
   'admin.dashboards': RouteConfiguration[];
   'admin.project_templates': RouteConfiguration[];
   'admin.settings': RouteConfiguration[];
+  'admin.reporting': RouteConfiguration[];
 }
 
 export interface ParsedModuleConfiguration {
@@ -287,6 +295,10 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
       ),
       'admin.settings': parseModuleRoutes(
         mergedRoutes?.['admin.settings'],
+        RouteTypes.ADMIN
+      ),
+      'admin.reporting': parseModuleRoutes(
+        mergedRoutes?.['admin.reporting'],
         RouteTypes.ADMIN
       ),
     },

@@ -94,7 +94,9 @@ Rails.application.routes.draw do
       end
       get 'users/:id', to: 'users#show', constraints: { id: /\b(?!custom_fields|me)\b\S+/ }
 
-      resources :topics, only: %i[index show]
+      resources :topics do
+        patch 'reorder', on: :member
+      end
 
       resources :areas do
         patch 'reorder', on: :member

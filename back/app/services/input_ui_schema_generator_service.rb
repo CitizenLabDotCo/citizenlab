@@ -27,6 +27,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
     {
       type: 'Page',
       options: {
+        input_type: field.input_type,
         id: field.id,
         title: multiloc_service.t(field.title_multiloc),
         description: description_option(field)

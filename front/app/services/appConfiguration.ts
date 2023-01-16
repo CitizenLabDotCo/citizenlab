@@ -145,13 +145,13 @@ export interface IAppConfigurationSettings {
   survey_xact_surveys?: AppConfigurationFeature;
   snap_survey_surveys?: AppConfigurationFeature;
   project_folders?: AppConfigurationFeature;
-  bulk_import_ideas?: AppConfigurationFeature;
   widgets?: AppConfigurationFeature;
   granular_permissions?: AppConfigurationFeature;
   ideaflow_social_sharing?: AppConfigurationFeature;
   initiativeflow_social_sharing?: AppConfigurationFeature;
   machine_translations?: AppConfigurationFeature;
   custom_topics?: AppConfigurationFeature;
+  custom_maps?: AppConfigurationFeature;
   similar_ideas?: AppConfigurationFeature;
   polls?: AppConfigurationFeature;
   moderation?: AppConfigurationFeature;
@@ -179,6 +179,7 @@ export interface IAppConfigurationSettings {
   native_surveys?: AppConfigurationFeature;
   visitors_dashboard?: AppConfigurationFeature;
   user_confirmation?: AppConfigurationFeature;
+  report_builder?: AppConfigurationFeature;
 }
 
 interface AppConfigurationMapSettings extends AppConfigurationFeature {
