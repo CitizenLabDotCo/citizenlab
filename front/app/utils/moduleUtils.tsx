@@ -10,9 +10,6 @@ import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import { castArray, clamp, isNil, mergeWith, omitBy } from 'lodash-es';
 import { IProjectData } from 'services/projects';
 
-import { ManagerType } from 'components/admin/PostManager';
-import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/header/IdeaHeaderRow';
-import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/Row/IdeaRow';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { Point } from 'components/UI/LeafletMap/typings';
 import { TVerificationStep } from 'events/verificationModal';
@@ -24,13 +21,7 @@ import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { TNotificationData } from 'services/notifications';
 import { IPhaseData } from 'services/phases';
 import { TVerificationMethod } from 'services/verificationMethods';
-import {
-  CellConfiguration,
-  InsertConfigurationOptions,
-  ITab,
-  Locale,
-  Multiloc,
-} from 'typings';
+import { InsertConfigurationOptions, ITab, Locale, Multiloc } from 'typings';
 import { IntlFormatters } from 'react-intl';
 import { StatCardProps } from '../modules/commercial/analytics/admin/hooks/useStatCard/typings';
 
@@ -107,10 +98,6 @@ export interface OutletsPropertyMap {
     projectId: string;
     children: OutletRenderProps;
   };
-  'app.containers.Admin.project.edit.permissions.moderatorRights': {
-    projectId: string;
-    children: OutletRenderProps;
-  };
   'app.containers.Admin.projects.edit': {
     onData: (data: InsertConfigurationOptions<ITab>) => void;
     project: IProjectData;
@@ -124,26 +111,6 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.dashboards.tabs': ITabsOutlet;
   'app.containers.Admin.sideBar.navItems': {
     onData: (data: InsertConfigurationOptions<NavItem>) => void;
-  };
-  'app.components.admin.PostManager.topActionBar': {
-    assignee?: string | null;
-    projectId?: string | null;
-    handleAssigneeFilterChange: (value: string) => void;
-    type: ManagerType;
-  };
-  'app.components.admin.PostManager.components.PostTable.IdeaRow.cells': {
-    onData: (
-      data: InsertConfigurationOptions<
-        CellConfiguration<IdeaCellComponentProps>
-      >
-    ) => void;
-  };
-  'app.components.admin.PostManager.components.PostTable.IdeaHeaderRow.cells': {
-    onData: (
-      data: InsertConfigurationOptions<
-        CellConfiguration<IdeaHeaderCellComponentProps>
-      >
-    ) => void;
   };
   'app.components.Map.leafletConfig': {
     onLeafletConfigChange: (newLeafletConfig: ILeafletMapConfig) => void;

@@ -62,21 +62,6 @@ const ProjectPermissions = memo(
           {isProjectVisibilityEnabled && (
             <ProjectVisibility projectId={projectId} />
           )}
-          <Outlet
-            id="app.containers.Admin.project.edit.permissions.moderatorRights"
-            projectId={projectId}
-          >
-            {(outletComponents) =>
-              outletComponents.length > 0 ? (
-                <StyledSection>
-                  <StyledSectionTitle>
-                    <FormattedMessage {...messages.moderationRightsTitle} />
-                  </StyledSectionTitle>
-                  {outletComponents}
-                </StyledSection>
-              ) : null
-            }
-          </Outlet>
           {isProjectManagementEnabled && (
             <ProjectManagement projectId={projectId} />
           )}
