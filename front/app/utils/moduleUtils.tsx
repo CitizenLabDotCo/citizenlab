@@ -1,4 +1,3 @@
-import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 import { Moment } from 'moment';
 import React, { FunctionComponent, ReactElement } from 'react';
 
@@ -11,11 +10,9 @@ import { castArray, clamp, isNil, mergeWith, omitBy } from 'lodash-es';
 import { IProjectData } from 'services/projects';
 
 import { IResolution } from 'components/admin/ResolutionControl';
-import { Point } from 'components/UI/LeafletMap/typings';
 import { TVerificationStep } from 'events/verificationModal';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import { NavItem } from 'containers/Admin/sideBar';
-import { LatLngTuple } from 'leaflet';
 
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { TNotificationData } from 'services/notifications';
@@ -111,17 +108,6 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.dashboards.tabs': ITabsOutlet;
   'app.containers.Admin.sideBar.navItems': {
     onData: (data: InsertConfigurationOptions<NavItem>) => void;
-  };
-  'app.components.Map.leafletConfig': {
-    onLeafletConfigChange: (newLeafletConfig: ILeafletMapConfig) => void;
-    projectId?: string | null;
-    centerLatLng?: LatLngTuple;
-    zoomLevel?: number;
-    points?: Point[];
-  };
-  'app.components.Map.Legend': {
-    projectId?: string | null;
-    className?: string;
   };
   'app.components.VerificationModal.methodSteps': {
     method: TVerificationMethod | null;

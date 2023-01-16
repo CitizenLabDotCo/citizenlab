@@ -6,7 +6,6 @@ import granularPermissionsConfiguration from './commercial/granular_permissions'
 import moderationConfiguration from './commercial/moderation';
 import adminProjectTemplatesConfiguration from './commercial/admin_project_templates';
 
-import customMapsConfiguration from './commercial/custom_maps';
 import contentBuilderConfiguration from './commercial/content_builder';
 import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
 import bulkIdeaImportConfiguration from './commercial/bulk_idea_import';
@@ -54,10 +53,6 @@ export default loadModules([
   },
   {
     configuration: adminProjectTemplatesConfiguration,
-    isEnabled,
-  },
-  {
-    configuration: customMapsConfiguration,
     isEnabled,
   },
   {
