@@ -2,7 +2,7 @@ import React from 'react';
 
 // components
 import FileInput from './FileInput';
-import FileDisplay from './FileDisplay';
+import FileDisplay, { FileType } from './FileDisplay';
 import Error from 'components/UI/Error';
 
 // typings
@@ -24,8 +24,8 @@ export interface FileUploaderProps {
   id: string;
   className?: string;
   onFileAdd: (fileToAdd: UploadFile) => void;
-  onFileRemove: (fileToRemove: UploadFile) => void;
-  files: UploadFile[] | null;
+  onFileRemove: (fileToRemove: FileType) => void;
+  files: FileType[] | null;
   apiErrors?: { [fieldName: string]: CLError[] } | null;
 }
 
@@ -44,13 +44,13 @@ const FileUploader = ({
   };
 
   const handleFileOnRemove =
-    (fileToRemove: UploadFile) => (event: React.FormEvent) => {
+    (fileToRemove: FileType) => (event: React.FormEvent) => {
       event.preventDefault();
       event.stopPropagation();
       onFileRemove(fileToRemove);
     };
+  const fileNames = files ? files.map((file) => file.name).join(', ') : '';
 
-  const fileNames = files ? files.map((file) => file.filename).join(', ') : '';
   return (
     <Container className={className} key={id}>
       <FileInput onAdd={handleFileOnAdd} id={id} />
@@ -59,7 +59,7 @@ const FileUploader = ({
       {files &&
         files.map((file) => (
           <FileDisplay
-            key={file.id || file.filename}
+            key={file.id || file.name}
             onDeleteClick={handleFileOnRemove(file)}
             file={file}
           />

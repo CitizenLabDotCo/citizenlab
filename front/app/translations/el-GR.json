@@ -577,6 +577,8 @@
   "app.containers.AccessibilityStatement.title": "Δήλωση προσβασιμότητας",
   "app.containers.AccessibilityStatement.userGeneratedContent": "Περιεχόμενο που δημιουργείται από χρήστες",
   "app.containers.AccessibilityStatement.workshops": "Σεμινάρια",
+  "app.containers.Admin.Insights.tabInsights": "Πληροφορίες",
+  "app.containers.Admin.Insights.tabReports": "Αναφορές",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Δημιουργία μιας έξυπνης ομάδας",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Οι χρήστες που πληρούν όλες τις παρακάτω προϋποθέσεις θα προστεθούν αυτόματα στην ομάδα:",
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Παρέχετε τουλάχιστον έναν κανόνα",
