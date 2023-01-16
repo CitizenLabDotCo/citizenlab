@@ -24,6 +24,8 @@ class SideFxProjectService
   end
 
   def after_copy(source_project, copied_project)
+    copy_project_visibility_permission_groups(source_project, copied_project)
+
     # Copy actions groups_permissions of project or project phases. For example, groups that can 'Vote on ideas'.
     copy_project_and_phases_actions_groups_permissions(source_project, copied_project)
 
@@ -82,6 +84,14 @@ class SideFxProjectService
   def after_folder_changed(project, current_user)
     # Defined in core app to eliminate dependency between
     # idea assignment and folder engine.
+  end
+end
+
+def copy_project_visibility_permission_groups(source_project, copied_project)
+  return unless source_project.visible_to == 'groups'
+
+  GroupsProject.where(project_id: source_project.id).each do |record|
+    GroupsProject.create(project_id: copied_project.id, group_id: record.group_id)
   end
 end
 

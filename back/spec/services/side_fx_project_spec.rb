@@ -90,6 +90,13 @@ describe SideFxProjectService do
   end
 
   describe 'after_copy' do
+    it "associates correct groups with copied project's groups visibility permission" do
+      source_project = create(:private_groups_project)
+
+      service.after_copy source_project, project
+      expect(project.groups).to eq source_project.groups
+    end
+
     it 'associates correct groups with actions group permissions of copied continuous ideation project' do
       groups = create_list(:group, 3)
       source_project = create(:project, participation_method: 'ideation')
