@@ -38,7 +38,7 @@ const GraphCard = ({
         alignItems="center"
         justifyContent="space-between"
         mb="20px"
-        p="20px"
+        px="20px"
       >
         <Box display="flex" flexDirection="row" alignItems="center">
           <Title m="0px" mb="0px" variant="h2" as="h3" color="primary">

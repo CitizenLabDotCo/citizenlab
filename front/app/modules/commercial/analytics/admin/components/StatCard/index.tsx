@@ -7,13 +7,13 @@ import EmptyState from 'components/admin/Graphs/_components/EmptyState';
 import Statistic from 'components/admin/Graphs/Statistic';
 
 // hooks
-import useStatCard from '../../hooks/useStatCard';
+import useStatCard from './useStatCard';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { StatCardTemplateProps } from '../../hooks/useStatCard/typings';
+import { StatCardTemplateProps } from './useStatCard/typings';
 import { useIntl } from 'utils/cl-intl';
 
 const StatCard = ({

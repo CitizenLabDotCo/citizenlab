@@ -8,12 +8,27 @@ import { Box } from '@citizenlab/cl2-component-library';
 // types
 import { SerializedNodes } from '@craftjs/core';
 import { Locale } from 'typings';
+import styled from 'styled-components';
 
 interface Props {
   onUpdateDraftData: (serializedNodes: SerializedNodes | undefined) => void;
-  onUpdateLocale: (locale: Locale) => void;
+  onUpdateLocale?: (locale: Locale) => void;
   children: React.ReactNode;
 }
+
+export const StyledPreviewBox = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  z-index: 10000;
+  position: absolute;
+  height: 100vh;
+  background-color: #fff;
+  overflow-y: auto;
+  @media print {
+    overflow-y: visible;
+  }
+`;
 
 export const FullScreenPreviewWrapper = ({
   onUpdateDraftData,
@@ -26,7 +41,11 @@ export const FullScreenPreviewWrapper = ({
       if (e.origin === window.location.origin && e.data.ROOT) {
         onUpdateDraftData(e.data);
       }
-      if (e.origin === window.location.origin && e.data.selectedLocale) {
+      if (
+        onUpdateLocale &&
+        e.origin === window.location.origin &&
+        e.data.selectedLocale
+      ) {
         onUpdateLocale(e.data.selectedLocale);
       }
     };
@@ -38,19 +57,9 @@ export const FullScreenPreviewWrapper = ({
 
   return (
     <FocusOn>
-      <Box
-        display="flex"
-        flexDirection="column"
-        w="100%"
-        zIndex="10000"
-        position="fixed"
-        height="100vh"
-        bgColor="#fff"
-        overflowY="auto"
-        data-testid="contentBuilderEditModePreviewContent"
-      >
+      <StyledPreviewBox data-testid="contentBuilderEditModePreviewContent">
         <Box p="20px">{children}</Box>
-      </Box>
+      </StyledPreviewBox>
     </FocusOn>
   );
 };
