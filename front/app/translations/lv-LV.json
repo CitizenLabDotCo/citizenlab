@@ -577,8 +577,6 @@
   "app.containers.AccessibilityStatement.title": "Paziņojums par pieejamību",
   "app.containers.AccessibilityStatement.userGeneratedContent": "Lietotāja ģenerēts saturs",
   "app.containers.AccessibilityStatement.workshops": "Semināri",
-  "app.containers.Admin.Insights.tabInsights": "Ieskati",
-  "app.containers.Admin.Insights.tabReports": "Ziņojumi",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Izveidot viedo grupu",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Lietotāji, kas atbilst visiem šiem nosacījumiem, tiks automātiski pievienoti grupai:",
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Norādīt vismaz vienu noteikumu",

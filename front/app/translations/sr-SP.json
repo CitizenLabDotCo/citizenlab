@@ -577,8 +577,6 @@
   "app.containers.AccessibilityStatement.title": "Изјава о приступачности",
   "app.containers.AccessibilityStatement.userGeneratedContent": "Садржај који генерише корисник",
   "app.containers.AccessibilityStatement.workshops": "Workshops",
-  "app.containers.Admin.Insights.tabInsights": "Увиди",
-  "app.containers.Admin.Insights.tabReports": "Извштаји",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Направите паметну групу",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Корисници који испуњавају све од наведених услова аутоматски ће бити додати у групу:",
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Наведите барем једно правило",

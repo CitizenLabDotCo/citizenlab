@@ -577,8 +577,6 @@
   "app.containers.AccessibilityStatement.title": "Tillgänglighetsförklaring",
   "app.containers.AccessibilityStatement.userGeneratedContent": "Användargenererat innehåll",
   "app.containers.AccessibilityStatement.workshops": "Workshops",
-  "app.containers.Admin.Insights.tabInsights": "Insikter",
-  "app.containers.Admin.Insights.tabReports": "Projekt",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Skapa en smart grupp",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Användare som matchar samtliga följande villkor läggs automatiskt till i gruppen:",
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Ange minst en regel",
