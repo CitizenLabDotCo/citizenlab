@@ -98,5 +98,4 @@ class Permission < ApplicationRecord
   end
 end
 
-Permission.prepend_if_ee('SmartGroups::Patches::Permission')
 Permission.prepend_if_ee('Verification::Patches::Permission')

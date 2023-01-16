@@ -316,5 +316,4 @@ class Project < ApplicationRecord
 end
 
 Project.include_if_ee('Insights::Patches::Project')
-Project.include_if_ee('SmartGroups::Patches::Project')
 Project.include_if_ee('ContentBuilder::Patches::Project')
