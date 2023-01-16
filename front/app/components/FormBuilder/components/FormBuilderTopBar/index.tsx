@@ -43,7 +43,7 @@ const StyledStatusLabel = styled(StatusLabel)`
 type FormBuilderTopBarProps = {
   isSubmitting: boolean;
   isEditingDisabled: boolean;
-  builderConfig?: FormBuilderConfig;
+  builderConfig: FormBuilderConfig;
 };
 
 const FormBuilderTopBar = ({
@@ -64,14 +64,16 @@ const FormBuilderTopBar = ({
   }
 
   const isPostingEnabled = getIsPostingEnabled(project, phase);
-  const viewFormLink = phaseId
+  let viewFormLink = phaseId
     ? `/projects/${project?.attributes.slug}/ideas/new?phase_id=${phaseId}`
     : `/projects/${project?.attributes.slug}/ideas/new`;
 
+  if (builderConfig.viewFormLink) {
+    viewFormLink = builderConfig.viewFormLink;
+  }
+
   const goBack = () => {
-    clHistory.push(
-      builderConfig?.getGoBackUrl(projectId) || `/admin/projects/${projectId}`
-    );
+    clHistory.push(builderConfig.goBackUrl || `/admin/projects/${projectId}`);
   };
 
   return (
@@ -103,9 +105,9 @@ const FormBuilderTopBar = ({
           </Text>
           <Box display="flex" alignContent="center" mt="4px">
             <Title marginRight="8px" marginTop="0" variant="h4" as="h1">
-              <FormattedMessage {...builderConfig?.formBuilderTitle} />
+              <FormattedMessage {...builderConfig.formBuilderTitle} />
             </Title>
-            {builderConfig?.showStatusBadge && (
+            {builderConfig.showStatusBadge && (
               <StyledStatusLabel
                 text={
                   isPostingEnabled ? (
@@ -135,7 +137,7 @@ const FormBuilderTopBar = ({
           openLinkInNewTab
           data-cy="e2e-preview-form-button"
         >
-          <FormattedMessage {...builderConfig?.viewFormLinkCopy} />
+          <FormattedMessage {...builderConfig.viewFormLinkCopy} />
         </Button>
         <Button
           buttonStyle="admin-dark"

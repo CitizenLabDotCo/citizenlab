@@ -31,7 +31,7 @@ import { useFormContext } from 'react-hook-form';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { surveyEndOption } from './utils';
+import { formEndOption } from './utils';
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
 interface Props {
@@ -39,7 +39,7 @@ interface Props {
   onDelete: (fieldIndex: number) => void;
   onClose: () => void;
   isDeleteDisabled?: boolean;
-  builderConfig?: FormBuilderConfig;
+  builderConfig: FormBuilderConfig;
 }
 
 const FormBuilderSettings = ({
@@ -72,17 +72,17 @@ const FormBuilderSettings = ({
     setFieldIndexToDelete(fieldIndex);
 
     // Check if deleted field has linked logic
-    const doesPageHaveLinkedLogic = formCustomFields.some((surveyField) => {
-      if (surveyField.logic && surveyField.logic.rules) {
-        return surveyField.logic.rules.some(
+    const doesPageHaveLinkedLogic = formCustomFields.some((formField) => {
+      if (formField.logic && formField.logic.rules) {
+        return formField.logic.rules.some(
           (rule) =>
             rule.goto_page_id === field.id ||
             rule.goto_page_id === field.temp_id
         );
-      } else if (surveyField.logic && surveyField.logic?.next_page_id) {
+      } else if (formField.logic && formField.logic?.next_page_id) {
         return (
-          surveyField.logic?.next_page_id === field.id ||
-          surveyField.logic?.next_page_id === field.temp_id
+          formField.logic?.next_page_id === field.id ||
+          formField.logic?.next_page_id === field.temp_id
         );
       }
       return false;
@@ -97,18 +97,18 @@ const FormBuilderSettings = ({
 
   const removeLogicAndDelete = () => {
     if (fieldIndexToDelete !== undefined) {
-      formCustomFields.map((surveyField, i) => {
-        if (surveyField.logic && surveyField.logic.rules) {
-          const updatedRules = surveyField.logic.rules.filter(
+      formCustomFields.map((formField, i) => {
+        if (formField.logic && formField.logic.rules) {
+          const updatedRules = formField.logic.rules.filter(
             (rule) =>
               rule.goto_page_id !== field.id &&
               rule.goto_page_id !== field.temp_id
           );
           setValue(`customFields.${i}.logic.rules`, updatedRules);
-        } else if (surveyField.logic && surveyField.logic.next_page_id) {
+        } else if (formField.logic && formField.logic.next_page_id) {
           if (
-            surveyField.logic.next_page_id === field.id ||
-            surveyField.logic.next_page_id === field.temp_id
+            formField.logic.next_page_id === field.id ||
+            formField.logic.next_page_id === field.temp_id
           ) {
             setValue(`customFields.${i}.logic`, {});
           }
@@ -134,8 +134,10 @@ const FormBuilderSettings = ({
       }
     });
     pageArray.push({
-      value: surveyEndOption,
-      label: `${formatMessage(messages.surveyEnd)}`,
+      value: formEndOption,
+      label: `${formatMessage(
+        builderConfig.formEndPageLogicOption || messages.formEnd
+      )}`,
     });
     return pageArray;
   };
@@ -165,6 +167,9 @@ const FormBuilderSettings = ({
       break;
     case 'linear_scale':
       translatedStringKey = messages.linearScale;
+      break;
+    case 'file_upload':
+      translatedStringKey = messages.fileUpload;
       break;
   }
 
@@ -203,7 +208,7 @@ const FormBuilderSettings = ({
             <FormattedMessage {...translatedStringKey} />
           </Title>
         )}
-        {showTabbedSettings && builderConfig?.isLogicEnabled && (
+        {showTabbedSettings && builderConfig.isLogicEnabled && (
           <Box display="flex" width="100%" mb="40px">
             <Box
               flexGrow={1}
@@ -237,7 +242,7 @@ const FormBuilderSettings = ({
           </Box>
         )}
         {(!showTabbedSettings ||
-          !builderConfig?.isLogicEnabled ||
+          !builderConfig.isLogicEnabled ||
           (showTabbedSettings && currentTab === 'content')) && (
           <ContentSettings
             field={field}
@@ -252,6 +257,7 @@ const FormBuilderSettings = ({
             pageOptions={getPageList()}
             field={field}
             key={field.index}
+            builderConfig={builderConfig}
           />
         )}
         <Modal opened={showDeleteModal} close={closeModal}>

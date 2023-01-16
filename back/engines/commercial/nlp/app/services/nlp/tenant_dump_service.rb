@@ -4,12 +4,14 @@ module NLP
   class TenantDumpService
     def dump(tenant)
       Apartment::Tenant.switch(tenant.schema_name) do
+        app_config = AppConfiguration.instance
+
         {
           id: tenant.id,
           name: tenant.name,
           host: tenant.host,
-          osm_relation_id: tenant.settings.dig('maps', 'osm_relation_id'),
-          locales: AppConfiguration.instance.settings('core', 'locales'),
+          osm_relation_id: app_config.settings('maps', 'osm_relation_id'),
+          locales: app_config.settings('core', 'locales'),
           topics: encode_topics,
           ideas: encode_ideas,
           areas: encode_areas,

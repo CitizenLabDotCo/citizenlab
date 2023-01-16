@@ -16,6 +16,7 @@ import {
   getTitleFromAnswerId,
   getTitleFromPageId,
 } from './utils';
+import { isPageRuleValid, isRuleValid } from 'utils/yup/validateLogic';
 
 // components
 import {
@@ -28,6 +29,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 import { FlexibleRow } from '../FlexibleRow';
+import { FieldRuleDisplay } from './FieldRuleDisplay';
+import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
 // styling
 import styled from 'styled-components';
@@ -40,8 +43,6 @@ import {
   IFlatCustomFieldWithIndex,
 } from 'services/formCustomFields';
 import useLocale from 'hooks/useLocale';
-import { FieldRuleDisplay } from './FieldRuleDisplay';
-import { isPageRuleValid, isRuleValid } from 'utils/yup/validateLogic';
 
 const FormFieldsContainer = styled(Box)`
   &:hover {
@@ -56,8 +57,10 @@ type Props = {
   onEditField: (field: IFlatCustomFieldWithIndex) => void;
   getTranslatedFieldType: (fieldType: string) => MessageDescriptor;
   selectedFieldId?: string;
+  builderConfig: FormBuilderConfig;
 };
 
+// TODO: Rename icons in component library to "form" for clarity
 const getFieldIcon = (inputType: ICustomFieldInputType): IconNames => {
   switch (inputType) {
     case 'text':
@@ -74,6 +77,8 @@ const getFieldIcon = (inputType: ICustomFieldInputType): IconNames => {
       return 'survey-linear-scale';
     case 'section':
       return 'section';
+    case 'file_upload':
+      return 'upload-file';
     default:
       return 'survey';
   }
@@ -86,6 +91,7 @@ export const FieldElement = (props: Props) => {
     onEditField,
     getTranslatedFieldType,
     selectedFieldId,
+    builderConfig,
   } = props;
   const {
     watch,
@@ -195,7 +201,10 @@ export const FieldElement = (props: Props) => {
                             targetPage={getTitleFromPageId(
                               formCustomFields,
                               getOptionRule(option, field)?.goto_page_id,
-                              formatMessage(messages.surveyEnd),
+                              formatMessage(
+                                builderConfig.formEndPageLogicOption ||
+                                  messages.formEnd
+                              ),
                               formatMessage(messages.page)
                             )}
                           />
@@ -221,7 +230,10 @@ export const FieldElement = (props: Props) => {
                             targetPage={getTitleFromPageId(
                               formCustomFields,
                               getLinearScaleRule(option, field)?.goto_page_id,
-                              formatMessage(messages.surveyEnd),
+                              formatMessage(
+                                builderConfig.formEndPageLogicOption ||
+                                  messages.formEnd
+                              ),
                               formatMessage(messages.page)
                             )}
                           />
@@ -240,7 +252,10 @@ export const FieldElement = (props: Props) => {
                       targetPage={getTitleFromPageId(
                         formCustomFields,
                         field.logic.next_page_id,
-                        formatMessage(messages.surveyEnd),
+                        formatMessage(
+                          builderConfig.formEndPageLogicOption ||
+                            messages.formEnd
+                        ),
                         formatMessage(messages.page)
                       )}
                       textColor={getIndexTitleColor(field.input_type)}

@@ -94,7 +94,9 @@ export class AdminProjectsProjectIndex extends PureComponent<
   Props & WrappedComponentProps & InjectedLocalized & WithRouterProps,
   State
 > {
-  constructor(props) {
+  constructor(
+    props: Props & WrappedComponentProps & InjectedLocalized & WithRouterProps
+  ) {
     super(props);
     const {
       intl: { formatMessage },
@@ -184,7 +186,7 @@ export class AdminProjectsProjectIndex extends PureComponent<
         ideaform: function isIdeaFormTabHidden(project, phases) {
           const allParticipationMethods = getAllParticipationMethods(
             project,
-            phases !== undefined ? phases : null
+            phases || null
           );
           return !some(
             allParticipationMethods,

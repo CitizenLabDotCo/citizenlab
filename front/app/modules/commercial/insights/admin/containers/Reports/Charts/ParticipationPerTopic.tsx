@@ -17,8 +17,7 @@ import { IParticipationByTopic } from 'typings';
 import { fontSizes, colors } from 'utils/styleUtils';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import useLocalize from 'hooks/useLocalize';
 import {
@@ -114,7 +113,7 @@ const getCellColor = (value, participationType) => {
   return `hsl(185, ${saturation}%, ${luminosity}%)`;
 };
 
-interface Props extends InputProps, DataProps, InjectedLocalized {}
+interface Props extends InputProps, DataProps {}
 
 const ParticipationPerTopic = (props: Props) => {
   const { votesByTopic, commentsByTopic, ideasByTopic, className } = props;
@@ -251,14 +250,10 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const ParticipationPerTopicWithHOCs = injectIntl(
-  injectLocalize(ParticipationPerTopic)
-);
-
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
     {(serie) => {
-      return <ParticipationPerTopicWithHOCs {...serie} {...inputProps} />;
+      return <ParticipationPerTopic {...serie} {...inputProps} />;
     }}
   </Data>
 );

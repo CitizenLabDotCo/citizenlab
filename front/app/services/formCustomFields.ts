@@ -18,7 +18,8 @@ export type ICustomFieldInputType =
   | 'select'
   | 'linear_scale'
   | 'section'
-  | 'page';
+  | 'page'
+  | 'file_upload';
 export type IOptionsType = {
   id?: string;
   title_multiloc: Multiloc;

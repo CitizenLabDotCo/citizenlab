@@ -7,17 +7,15 @@ describe MultiTenancy::Templates::Serializer do
     it 'successfully generates a tenant template from a given tenant' do
       load Rails.root.join('db/seeds.rb')
       localhost = Tenant.find_by(host: 'localhost')
-      settings = localhost.settings
-      settings['core']['locales'] = AppConfiguration.instance.settings('core', 'locales')
-      localhost.update!(settings: settings) # TODO: OS how will tenant templates work?
-      Apartment::Tenant.switch('localhost') do
-        load Rails.root.join('db/seeds.rb')
-      end
-      serializer = described_class.new(Tenant.find_by(host: 'localhost'))
-      template = serializer.run
-      tenant = create :tenant, locales: localhost.settings.dig('core', 'locales')
-      Apartment::Tenant.switch(tenant.schema_name) do
-        MultiTenancy::TenantTemplateService.new.apply_template template
+      localhost.switch { MultiTenancy::Seeds::Runner.new.execute }
+      template = described_class.new(localhost).run
+
+      locales = localhost.configuration.settings('core', 'locales')
+      tenant = create(:tenant, locales: locales)
+
+      tenant.switch do
+        MultiTenancy::TenantTemplateService.new.apply_template(template)
+
         expect(HomePage.count).to be 1
         expect(Area.count).to be > 0
         expect(Comment.count).to be > 0
@@ -77,7 +75,7 @@ describe MultiTenancy::Templates::Serializer do
 
       serializer = described_class.new Tenant.current
       template = serializer.run
-      tenant = create :tenant, locales: Tenant.current.settings.dig('core', 'locales')
+      tenant = create :tenant, locales: AppConfiguration.instance.settings('core', 'locales')
       Apartment::Tenant.switch(tenant.schema_name) do
         MultiTenancy::TenantTemplateService.new.apply_template template
         expect(Comment.count).to eq 1
@@ -171,6 +169,34 @@ describe MultiTenancy::Templates::Serializer do
           )
         ]
       )
+    end
+
+    it 'skips custom field values with ID references' do
+      project = create :continuous_native_survey_project
+      custom_form = create :custom_form, participation_context: project
+      supported_fields = %i[custom_field_number custom_field_linear_scale custom_field_checkbox].map do |factory|
+        create factory, :for_custom_form, resource: custom_form
+      end
+      unsupported_field = create :custom_field, :for_custom_form, input_type: 'file_upload', resource: custom_form
+      response = create :native_survey_response, project: project
+      custom_field_values = {
+        supported_fields[0].key => 7,
+        supported_fields[1].key => 1,
+        unsupported_field.key => create(:file_upload, idea: response).id,
+        supported_fields[2].key => false
+      }
+      response.update! custom_field_values: custom_field_values
+
+      serializer = described_class.new Tenant.current
+      template = serializer.run
+
+      expected_custom_field_values = {
+        supported_fields[0].key => 7,
+        supported_fields[1].key => 1,
+        supported_fields[2].key => false
+      }
+      expect(template['models']['idea'].size).to eq 1
+      expect(template['models']['idea'].first['custom_field_values']).to match expected_custom_field_values
     end
   end
 end

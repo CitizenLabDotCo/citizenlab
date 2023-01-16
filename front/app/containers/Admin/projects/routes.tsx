@@ -1,8 +1,8 @@
 import React, { lazy } from 'react';
 import moduleConfiguration from 'modules';
 import PageLoading from 'components/UI/PageLoading';
-import { IdeaFormBuilder } from './project/inputForm';
-import { SurveyFormBuilder } from './project/nativeSurvey';
+import IdeaFormBuilder from './project/inputForm/IdeaFormBuilder';
+import SurveyFormBuilder from './project/nativeSurvey/SurveyFormBuilder';
 
 const AdminProjectsAndFolders = lazy(() => import('.'));
 const AdminProjectsList = lazy(() => import('./all'));

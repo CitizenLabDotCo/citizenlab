@@ -16,7 +16,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // types
 import { Locale } from 'typings';
-import { surveyEndOption } from '../FormBuilderSettings/utils';
+import { formEndOption } from '../FormBuilderSettings/utils';
 
 export const isFieldSelected = (
   selectedFieldId: string | undefined,
@@ -127,13 +127,13 @@ export const getTitleFromAnswerId = (
 export const getTitleFromPageId = (
   formCustomFields: IFlatCustomField[],
   pageId: string | number | undefined,
-  surveyEndMessage: string,
+  formEndMessage: string,
   pageMessage: string
 ) => {
   if (pageId) {
     // Return the related page title for the provided ID
-    if (pageId === surveyEndOption) {
-      return surveyEndMessage;
+    if (pageId === formEndOption) {
+      return formEndMessage;
     }
     const page = formCustomFields.find(
       (field) => field.id === pageId || field.temp_id === pageId

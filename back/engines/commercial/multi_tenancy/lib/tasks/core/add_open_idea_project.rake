@@ -6,13 +6,14 @@ namespace :fix_existing_tenants do
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.host.tr('.', '_')) do
         puts "Processing tenant #{tenant.host}..."
+        app_config = AppConfiguration.instance
 
         open_idea_project = Project.create({
-          title_multiloc: tenant.settings.dig('core', 'locales').to_h do |locale|
+          title_multiloc: app_config.settings('core', 'locales').to_h do |locale|
                             translation = I18n.with_locale(locale) { I18n.t!('projects.open_idea_project_title') }
                             [locale, translation]
                           end,
-          description_multiloc: tenant.settings.dig('core', 'locales').to_h do |locale|
+          description_multiloc: app_config.settings('core', 'locales').to_h do |locale|
                                   translation = I18n.with_locale(locale) do
                                     I18n.t!('projects.open_idea_project_description')
                                   end
