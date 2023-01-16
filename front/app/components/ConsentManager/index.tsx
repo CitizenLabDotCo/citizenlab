@@ -186,6 +186,26 @@ export class ConsentManager extends PureComponent<Props, State> {
     );
   };
 
+  reject = () => {
+    this.setState(
+      (state) => {
+        const rejected = allCategories().reduce(
+          (acc, category) => ({
+            ...acc,
+            [category]: false,
+          }),
+          {} as Record<TCategory, false>
+        );
+
+        return {
+          ...state,
+          preferences: rejected,
+        };
+      },
+      () => this.saveConsent()
+    );
+  };
+
   toggleDefault = (modalOpened) => {
     this.setState((state) => {
       const newPreferences = {};
@@ -231,6 +251,7 @@ export class ConsentManager extends PureComponent<Props, State> {
       return (
         <Container
           accept={this.accept}
+          reject={this.reject}
           onToggleModal={this.toggleDefault}
           setPreferences={this.setPreferences}
           resetPreferences={this.resetPreferences}

@@ -28,6 +28,7 @@ interface Props {
   setPreferences: (arg: Record<string, unknown>) => void;
   resetPreferences: () => void;
   accept: () => void;
+  reject: () => void;
   saveConsent: () => void;
   isConsentRequired: boolean;
   preferences: IPreferences;
@@ -141,8 +142,13 @@ export default class Container extends PureComponent<Props, State> {
   };
 
   render() {
-    const { preferences, isConsentRequired, categorizedDestinations, accept } =
-      this.props;
+    const {
+      preferences,
+      isConsentRequired,
+      categorizedDestinations,
+      accept,
+      reject,
+    } = this.props;
     const { isDialogOpen, isCancelling } = this.state;
     const noDestinations = Object.values(categorizedDestinations).every(
       (array) => array.length === 0
@@ -184,7 +190,11 @@ export default class Container extends PureComponent<Props, State> {
         </Modal>
 
         {isConsentRequired && (
-          <Banner onAccept={accept} onChangePreferences={this.openDialog} />
+          <Banner
+            onAccept={accept}
+            onChangePreferences={this.openDialog}
+            onClose={reject}
+          />
         )}
       </>
     );

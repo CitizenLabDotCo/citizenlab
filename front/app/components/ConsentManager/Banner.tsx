@@ -144,9 +144,10 @@ const StyledCloseIconButton = styled(CloseIconButton)`
 interface Props {
   onAccept: () => void;
   onChangePreferences: () => void;
+  onClose: () => void;
 }
 
-const Banner = ({ onAccept, onChangePreferences }: Props) => {
+const Banner = ({ onAccept, onChangePreferences, onClose }: Props) => {
   return (
     <Container tabIndex={0} role="dialog" id="e2e-cookie-banner">
       <ContentContainer mode="page">
@@ -192,7 +193,7 @@ const Banner = ({ onAccept, onChangePreferences }: Props) => {
       </ContentContainer>
       <StyledCloseIconButton
         a11y_buttonActionMessage={messages.ariaButtonClose}
-        onClick={onAccept}
+        onClick={onClose}
         iconColor={rgba(255, 255, 255, 0.7)}
         iconColorOnHover={'#fff'}
       />
