@@ -83,8 +83,6 @@ class WebApi::V1::ProjectsController < ApplicationController
     authorize @project
 
     if @project.save
-      sidefx.after_copy(source_project, @project)
-
       render json: WebApi::V1::ProjectSerializer.new(
         @project,
         params: fastjson_params,

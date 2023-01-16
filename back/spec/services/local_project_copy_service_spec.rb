@@ -40,5 +40,72 @@ describe LocalProjectCopyService do
 
       expect(copied_project.admin_publication.publication_status).to eq 'draft'
     end
+
+    it "associates correct groups with copied project's groups visibility permission" do
+      source_project = create(:private_groups_project)
+
+      copied_project = service.copy(source_project)
+      expect(copied_project.groups).to eq source_project.groups
+    end
+
+    it 'associates correct groups with actions group permissions of copied continuous ideation project' do
+      groups = create_list(:group, 3)
+      source_project = create(:project, participation_method: 'ideation')
+
+      permission = build(
+        :permission,
+        action: 'posting_idea',
+        permission_scope_type: 'Project',
+        permission_scope_id: source_project.id,
+        permitted_by: 'groups',
+        groups: groups
+      )
+      # Skip validation to avoid Validation failed: Action has already been taken
+      permission.save!(validate: false)
+
+      copied_project = service.copy(source_project)
+      expect(copied_project.permissions.first.groups).to eq source_project.permissions.first.groups
+    end
+
+    it 'associates correct groups with actions group permissions of copied ideation phase' do
+      groups = create_list(:group, 3)
+      source_project = create(:project_with_active_ideation_phase)
+
+      permission = build(
+        :permission,
+        action: 'posting_idea',
+        permission_scope_type: 'Phase',
+        permission_scope_id: source_project.phases.first.id,
+        permitted_by: 'groups',
+        groups: groups
+      )
+      # Skip validation to avoid Validation failed: Action has already been taken
+      permission.save!(validate: false)
+
+      # This prevents flakiness, whereby source project phase would have no groups
+      # associated with the permission evaluated in the expectation, in approx 1 out of 3 test runs.
+      source_project.phases.first.permissions = [permission]
+
+      copied_project = service.copy(source_project)
+      expect(copied_project.phases.first.permissions.first.groups).to eq source_project.phases.first.permissions.first.groups
+    end
+
+    it 'associates areas of source project with copied project' do
+      area1 = create(:area)
+      area2 = create(:area)
+      source_project = build(:project, areas: [area1, area2])
+
+      copied_project = service.copy(source_project)
+      expect(copied_project.areas).to eq source_project.areas
+    end
+
+    it 'associates topics of source project with copied project' do
+      topic1 = create(:topic)
+      topic2 = create(:topic)
+      source_project = build(:project, topics: [topic1, topic2])
+
+      copied_project = service.copy(source_project)
+      expect(copied_project.topics).to eq source_project.topics
+    end
   end
 end
