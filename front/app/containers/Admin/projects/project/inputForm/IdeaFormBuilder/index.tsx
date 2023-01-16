@@ -1,4 +1,5 @@
 import { getUpdatedConfiguration } from 'components/FormBuilder/utils';
+import useFormCustomFields from 'hooks/useFormCustomFields';
 import React, { lazy } from 'react';
 import { useParams } from 'react-router-dom';
 import { ICustomFieldInputType } from 'services/formCustomFields';
@@ -7,9 +8,17 @@ import { ideationConfig } from '../utils';
 const FormBuilder = lazy(() => import('components/FormBuilder/edit'));
 
 const IdeaFormBuilder = () => {
-  const { projectId } = useParams() as {
+  const { projectId, phaseId } = useParams() as {
     projectId: string;
+    phaseId?: string;
   };
+
+  const actualFormCustomFields = useFormCustomFields({
+    projectId,
+    phaseId,
+  });
+
+  console.log({ actualFormCustomFields });
 
   const goBackUrl = `/admin/projects/${projectId}/ideaform`;
 

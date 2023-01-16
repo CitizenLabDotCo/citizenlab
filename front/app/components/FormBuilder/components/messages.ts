@@ -49,6 +49,10 @@ export default defineMessages({
     id: 'app.components.formBuilder.fileUpload',
     defaultMessage: 'File upload',
   },
+  imageUpload: {
+    id: 'app.components.formBuilder.imageUpload',
+    defaultMessage: 'Image',
+  },
   default: {
     id: 'app.components.formBuilder.default',
     defaultMessage: 'Default',

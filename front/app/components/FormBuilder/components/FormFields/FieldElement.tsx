@@ -77,6 +77,8 @@ const getFieldIcon = (inputType: ICustomFieldInputType): IconNames => {
       return 'survey-linear-scale';
     case 'file_upload':
       return 'upload-file';
+    case 'image_files':
+      return 'image';
     default:
       return 'survey';
   }
