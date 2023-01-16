@@ -86,7 +86,7 @@ export const LogicSettings = ({
             {builderConfig && !isNilOrError(builderConfig.supportArticleLink) && (
               <Warning>
                 <FormattedMessage
-                  {...(builderConfig?.pagesLogicHelperText ||
+                  {...(builderConfig.pagesLogicHelperText ||
                     messages.pagesLogicHelperText)}
                   values={{
                     supportPageLink: (
@@ -118,7 +118,7 @@ export const LogicSettings = ({
             {builderConfig && !isNilOrError(builderConfig.supportArticleLink) && (
               <Warning>
                 <FormattedMessage
-                  {...(builderConfig?.questionLogicHelperText ||
+                  {...(builderConfig.questionLogicHelperText ||
                     messages.questionLogicHelperText)}
                   values={{
                     supportPageLink: (

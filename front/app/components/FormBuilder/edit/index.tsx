@@ -67,7 +67,7 @@ type FormEditProps = {
   projectId: string;
   phaseId?: string;
   totalSubmissions: number;
-  builderConfig?: FormBuilderConfig;
+  builderConfig: FormBuilderConfig;
 } & WrappedComponentProps;
 
 export const FormEdit = ({
@@ -83,7 +83,7 @@ export const FormEdit = ({
   >(undefined);
 
   const isEditingDisabled =
-    totalSubmissions > 0 && !builderConfig?.isEditPermittedAfterSubmissions;
+    totalSubmissions > 0 && !builderConfig.isEditPermittedAfterSubmissions;
 
   const schema = object().shape({
     customFields: array().of(
@@ -262,7 +262,7 @@ export const FormEdit = ({
                     />
                     {isEditingDisabled &&
                       builderConfig.getDeleteFormResultsNotice &&
-                      builderConfig?.getDeleteFormResultsNotice(projectId)}
+                      builderConfig.getDeleteFormResultsNotice(projectId)}
                     <Box
                       borderRadius="3px"
                       boxShadow="0px 2px 4px rgba(0, 0, 0, 0.2)"

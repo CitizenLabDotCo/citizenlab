@@ -2,171 +2,171 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   save: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.save',
+    id: 'app.components.formBuilder.save',
     defaultMessage: 'Save',
   },
   shortAnswer: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.shortAnswer',
+    id: 'app.components.formBuilder.shortAnswer',
     defaultMessage: 'Short answer',
   },
   longAnswer: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.longAnswer',
+    id: 'app.components.formBuilder.longAnswer',
     defaultMessage: 'Long answer',
   },
   page: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.page',
+    id: 'app.components.formBuilder.page',
     defaultMessage: 'Page',
   },
   question: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.question',
+    id: 'app.components.formBuilder.question',
     defaultMessage: 'Question',
   },
   multipleChoice: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.multipleChoice',
+    id: 'app.components.formBuilder.multipleChoice',
     defaultMessage: 'Multiple choice',
   },
   singleChoice: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.singleChoice',
+    id: 'app.components.formBuilder.singleChoice',
     defaultMessage: 'Single choice',
   },
   chooseOne: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.chooseOne',
+    id: 'app.components.formBuilder.chooseOne',
     defaultMessage: 'Choose one',
   },
   chooseMany: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.chooseMany',
+    id: 'app.components.formBuilder.chooseMany',
     defaultMessage: 'Choose many',
   },
   number: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.number',
+    id: 'app.components.formBuilder.number',
     defaultMessage: 'Number',
   },
   linearScale: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.linearScale',
+    id: 'app.components.formBuilder.linearScale',
     defaultMessage: 'Linear scale',
   },
   fileUpload: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.fileUpload',
+    id: 'app.components.formBuilder.fileUpload',
     defaultMessage: 'File upload',
   },
   default: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.default',
+    id: 'app.components.formBuilder.default',
     defaultMessage: 'Default',
   },
   newField: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.newField',
+    id: 'app.components.formBuilder.newField',
     defaultMessage: 'New field',
   },
   closed: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.closed',
+    id: 'app.components.formBuilder.closed',
     defaultMessage: 'Closed',
   },
   open: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.open',
+    id: 'app.components.formBuilder.open',
     defaultMessage: 'Open',
   },
   close: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.close',
+    id: 'app.components.formBuilder.close',
     defaultMessage: 'Close',
   },
   delete: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.delete',
+    id: 'app.components.formBuilder.delete',
     defaultMessage: 'Delete',
   },
   logic: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.logic',
+    id: 'app.components.formBuilder.logic',
     defaultMessage: 'Logic',
   },
   content: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.content',
+    id: 'app.components.formBuilder.content',
     defaultMessage: 'Content',
   },
   done: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.done',
+    id: 'app.components.formBuilder.done',
     defaultMessage: 'Done',
   },
   questionTitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.questionTitle',
+    id: 'app.components.formBuilder.questionTitle',
     defaultMessage: 'Question title',
   },
   questionDescriptionOptional: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.questionDescriptionOptional',
+    id: 'app.components.formBuilder.questionDescriptionOptional',
     defaultMessage: 'Question description (optional)',
   },
   requiredToggleLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.requiredToggleLabel',
+    id: 'app.components.formBuilder.requiredToggleLabel',
     defaultMessage: 'Make answering this question required',
   },
   deleteButtonLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.deleteButtonLabel',
+    id: 'app.components.formBuilder.deleteButtonLabel',
     defaultMessage: 'Delete',
   },
   editButtonLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.editButtonLabel',
+    id: 'app.components.formBuilder.editButtonLabel',
     defaultMessage: 'Edit',
   },
   deleteFieldWithLogicConfirmationQuestion: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.deleteFieldWithLogicConfirmationQuestion',
+    id: 'app.components.formBuilder.deleteFieldWithLogicConfirmationQuestion',
     defaultMessage:
       'Deleting this page will also delete the logic associated with it. Are you sure you want to delete it?',
   },
   confirmDeleteFieldWithLogicButtonText: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.confirmDeleteFieldWithLogicButtonText',
+    id: 'app.components.formBuilder.confirmDeleteFieldWithLogicButtonText',
     defaultMessage: 'Yes, delete page',
   },
   invalidLogicBadgeMessage: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.invalidLogicBadgeMessage',
+    id: 'app.components.formBuilder.invalidLogicBadgeMessage',
     defaultMessage: 'Invalid logic',
   },
   required: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.required',
+    id: 'app.components.formBuilder.required',
     defaultMessage: 'Required',
   },
   optional: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.optional',
+    id: 'app.components.formBuilder.optional',
     defaultMessage: 'Optional',
   },
   deleteResultsInfo: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.deleteResultsInfo',
+    id: 'app.components.formBuilder.deleteResultsInfo',
     defaultMessage: 'This cannot be undone',
   },
   cancelDeleteButtonText: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.cancelDeleteButtonText',
+    id: 'app.components.formBuilder.cancelDeleteButtonText',
     defaultMessage: 'Cancel',
   },
   // Logic Settings
   formEnd: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.formEnd',
+    id: 'app.components.formBuilder.formEnd',
     defaultMessage: 'Form end',
   },
   questionLogicHelperText: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.questionLogicHelperTextDefault',
+    id: 'app.components.formBuilder.questionLogicHelperTextDefault',
     defaultMessage:
       'If no logic is added to an answer, the form will follow its normal flow. Adding logic to a question will make it required by default. For more information, visit {supportPageLink}',
   },
   pagesLogicHelperText: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.pagesLogicHelperTextDefault',
+    id: 'app.components.formBuilder.pagesLogicHelperTextDefault',
     defaultMessage:
       'If no logic is added, the form will follow its normal flow. For more information, visit {supportPageLink}',
   },
   goToPageInputLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.goToPageInputLabel',
+    id: 'app.components.formBuilder.goToPageInputLabel',
     defaultMessage: 'Then next page is:',
   },
   ruleForAnswerLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.ruleForAnswerLabel',
+    id: 'app.components.formBuilder.ruleForAnswerLabel',
     defaultMessage: 'If answer is:',
   },
   pageRuleLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.pageRuleLabel',
+    id: 'app.components.formBuilder.pageRuleLabel',
     defaultMessage: 'Next page is:',
   },
   nextPageLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.nextPageLabel',
+    id: 'app.components.formBuilder.nextPageLabel',
     defaultMessage: 'Next:',
   },
   supportArticleLinkText: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.supportArticleLinkText',
+    id: 'app.components.formBuilder.supportArticleLinkText',
     defaultMessage: 'this page',
   },
 });

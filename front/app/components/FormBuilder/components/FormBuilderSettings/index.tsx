@@ -39,7 +39,7 @@ interface Props {
   onDelete: (fieldIndex: number) => void;
   onClose: () => void;
   isDeleteDisabled?: boolean;
-  builderConfig?: FormBuilderConfig;
+  builderConfig: FormBuilderConfig;
 }
 
 const FormBuilderSettings = ({
@@ -136,7 +136,7 @@ const FormBuilderSettings = ({
     pageArray.push({
       value: formEndOption,
       label: `${formatMessage(
-        builderConfig?.formEndPageLogicOption || messages.formEnd
+        builderConfig.formEndPageLogicOption || messages.formEnd
       )}`,
     });
     return pageArray;
@@ -205,7 +205,7 @@ const FormBuilderSettings = ({
             <FormattedMessage {...translatedStringKey} />
           </Title>
         )}
-        {showTabbedSettings && builderConfig?.isLogicEnabled && (
+        {showTabbedSettings && builderConfig.isLogicEnabled && (
           <Box display="flex" width="100%" mb="40px">
             <Box
               flexGrow={1}
@@ -239,7 +239,7 @@ const FormBuilderSettings = ({
           </Box>
         )}
         {(!showTabbedSettings ||
-          !builderConfig?.isLogicEnabled ||
+          !builderConfig.isLogicEnabled ||
           (showTabbedSettings && currentTab === 'content')) && (
           <ContentSettings
             field={field}

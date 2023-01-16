@@ -186,7 +186,7 @@ export class AdminProjectsProjectIndex extends PureComponent<
         ideaform: function isIdeaFormTabHidden(project, phases) {
           const allParticipationMethods = getAllParticipationMethods(
             project,
-            phases !== undefined ? phases : null
+            phases || null
           );
           return !some(
             allParticipationMethods,

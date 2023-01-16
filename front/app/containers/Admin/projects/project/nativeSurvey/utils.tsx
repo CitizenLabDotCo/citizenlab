@@ -1,7 +1,6 @@
 import React from 'react';
 
 // services
-import { IFlatCustomField } from 'services/formCustomFields';
 import { IPhaseData, updatePhase } from 'services/phases';
 import { IProjectData, updateProject } from 'services/projects';
 
@@ -17,14 +16,6 @@ import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
 // intl
 import messages from './messages';
-
-export const getUpdatedConfiguration = (
-  config: FormBuilderConfig,
-  formCustomFields: IFlatCustomField[] | undefined | Error
-) => {
-  config.formCustomFields = formCustomFields;
-  return config;
-};
 
 export const nativeSurveyConfig: FormBuilderConfig = {
   formBuilderTitle: messages.survey,
@@ -43,9 +34,6 @@ export const nativeSurveyConfig: FormBuilderConfig = {
   isLogicEnabled: true,
   isEditPermittedAfterSubmissions: false,
 
-  getGoBackUrl: (projectId: string) => {
-    return `/admin/projects/${projectId}/native-survey`;
-  },
   getDeleteFormResultsNotice: (projectId: string) => {
     return (
       <DeleteFormResultsNotice

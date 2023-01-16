@@ -57,7 +57,7 @@ interface FormFieldsProps {
   ) => void;
   isEditingDisabled: boolean;
   selectedFieldId?: string;
-  builderConfig: FormBuilderConfig | undefined;
+  builderConfig: FormBuilderConfig;
 }
 
 const FormFields = ({

@@ -9,17 +9,18 @@ import { IProjectData } from 'services/projects';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
-type MessageType = { id: string; defaultMessage: string };
+// types
+import { MessageDescriptor } from 'utils/cl-intl';
 
 export type FormBuilderConfig = {
-  formBuilderTitle: MessageType;
-  viewFormLinkCopy: MessageType;
-  formSavedSuccessMessage: MessageType;
-  toolboxTitle: MessageType;
-  supportArticleLink?: MessageType;
-  formEndPageLogicOption?: MessageType;
-  questionLogicHelperText?: MessageType;
-  pagesLogicHelperText?: MessageType;
+  formBuilderTitle: MessageDescriptor;
+  viewFormLinkCopy: MessageDescriptor;
+  formSavedSuccessMessage: MessageDescriptor;
+  toolboxTitle: MessageDescriptor;
+  supportArticleLink?: MessageDescriptor;
+  formEndPageLogicOption?: MessageDescriptor;
+  questionLogicHelperText?: MessageDescriptor;
+  pagesLogicHelperText?: MessageDescriptor;
 
   toolboxFieldsToExclude: ICustomFieldInputType[];
   formCustomFields: IFlatCustomField[] | undefined | Error;
@@ -28,8 +29,20 @@ export type FormBuilderConfig = {
   isLogicEnabled: boolean;
   isEditPermittedAfterSubmissions: boolean;
 
+  viewFormLink?: string;
+
   getDeleteFormResultsNotice?: (projectId: string) => void;
-  getGoBackUrl: (projectId: string) => string;
+  goBackUrl?: string;
+};
+
+export const getUpdatedConfiguration = (
+  config: FormBuilderConfig,
+  formCustomFields?: IFlatCustomField[] | undefined | Error,
+  goBackUrl?: string | undefined
+) => {
+  config.goBackUrl = goBackUrl;
+  config.formCustomFields = formCustomFields;
+  return config;
 };
 
 export const getIsPostingEnabled = (

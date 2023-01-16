@@ -34,7 +34,7 @@ const DraggableElement = styled.div`
 interface FormBuilderToolboxProps {
   onAddField: (field: IFlatCreateCustomField) => void;
   isEditingDisabled: boolean;
-  builderConfig?: FormBuilderConfig;
+  builderConfig: FormBuilderConfig;
 }
 
 const FormBuilderToolbox = ({
@@ -102,7 +102,7 @@ const FormBuilderToolbox = ({
           color="textSecondary"
           style={{ textTransform: 'uppercase' }}
         >
-          <FormattedMessage {...builderConfig?.toolboxTitle} />
+          <FormattedMessage {...builderConfig.toolboxTitle} />
         </Title>
 
         <DraggableElement>
@@ -111,7 +111,7 @@ const FormBuilderToolbox = ({
             label={formatMessage(messages.page)}
             onClick={() => addField('page')}
             data-cy="e2e-page"
-            fieldsToExclude={builderConfig?.toolboxFieldsToExclude}
+            fieldsToExclude={builderConfig.toolboxFieldsToExclude}
             inputType="page"
           />
           <ToolboxItem
@@ -119,7 +119,7 @@ const FormBuilderToolbox = ({
             label={formatMessage(messages.shortAnswer)}
             onClick={() => addField('text')}
             data-cy="e2e-short-answer"
-            fieldsToExclude={builderConfig?.toolboxFieldsToExclude}
+            fieldsToExclude={builderConfig.toolboxFieldsToExclude}
             inputType="text"
           />
           <ToolboxItem
@@ -127,7 +127,7 @@ const FormBuilderToolbox = ({
             label={formatMessage(messages.longAnswer)}
             onClick={() => addField('multiline_text')}
             data-cy="e2e-long-answer"
-            fieldsToExclude={builderConfig?.toolboxFieldsToExclude}
+            fieldsToExclude={builderConfig.toolboxFieldsToExclude}
             inputType="multiline_text"
           />
           <ToolboxItem
@@ -135,7 +135,7 @@ const FormBuilderToolbox = ({
             label={formatMessage(messages.singleChoice)}
             onClick={() => addField('select')}
             data-cy="e2e-single-choice"
-            fieldsToExclude={builderConfig?.toolboxFieldsToExclude}
+            fieldsToExclude={builderConfig.toolboxFieldsToExclude}
             inputType="select"
           />
           <ToolboxItem
@@ -143,7 +143,7 @@ const FormBuilderToolbox = ({
             label={formatMessage(messages.multipleChoice)}
             onClick={() => addField('multiselect')}
             data-cy="e2e-multiple-choice"
-            fieldsToExclude={builderConfig?.toolboxFieldsToExclude}
+            fieldsToExclude={builderConfig.toolboxFieldsToExclude}
             inputType="multiselect"
           />
           <ToolboxItem
@@ -151,7 +151,7 @@ const FormBuilderToolbox = ({
             label={formatMessage(messages.linearScale)}
             onClick={() => addField('linear_scale')}
             data-cy="e2e-linear-scale"
-            fieldsToExclude={builderConfig?.toolboxFieldsToExclude}
+            fieldsToExclude={builderConfig.toolboxFieldsToExclude}
             inputType="linear_scale"
           />
           <ToolboxItem
@@ -159,19 +159,17 @@ const FormBuilderToolbox = ({
             label={formatMessage(messages.number)}
             onClick={() => addField('number')}
             data-cy="e2e-number-field"
-            fieldsToExclude={builderConfig?.toolboxFieldsToExclude}
+            fieldsToExclude={builderConfig.toolboxFieldsToExclude}
             inputType="number"
           />
-          {!builderConfig?.toolboxFieldsToExclude.includes('file_upload') && (
-            <ToolboxItem
-              icon="upload-file"
-              label={formatMessage(messages.fileUpload)}
-              onClick={() => addField('file_upload')}
-              data-cy="e2e-file-upload-field"
-              fieldsToExclude={builderConfig?.toolboxFieldsToExclude}
-              inputType="file_upload"
-            />
-          )}
+          <ToolboxItem
+            icon="upload-file"
+            label={formatMessage(messages.fileUpload)}
+            onClick={() => addField('file_upload')}
+            data-cy="e2e-file-upload-field"
+            fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+            inputType="file_upload"
+          />
         </DraggableElement>
       </Box>
     </Box>

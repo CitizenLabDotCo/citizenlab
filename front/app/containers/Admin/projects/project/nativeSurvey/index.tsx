@@ -1,4 +1,4 @@
-import React, { Fragment, lazy, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import { useParams, useLocation } from 'react-router-dom';
@@ -8,7 +8,6 @@ import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import FormActions from './FormActions';
 import FormResults from './FormResults';
 import Button from 'components/UI/Button';
-const FormBuilder = lazy(() => import('components/FormBuilder/edit'));
 
 // i18n
 import messages from './messages';
@@ -20,18 +19,13 @@ import useLocale from 'hooks/useLocale';
 
 // Utils
 import { isNilOrError } from 'utils/helperUtils';
-import {
-  getUpdatedConfiguration,
-  getFormActionsConfig,
-  nativeSurveyConfig,
-} from './utils';
+import { getFormActionsConfig } from './utils';
 
 // Styles
 import { colors } from 'utils/styleUtils';
 
 // Services
 import { downloadSurveyResults } from 'services/formCustomFields';
-import useFormCustomFields from 'hooks/useFormCustomFields';
 
 const Forms = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const { projectId } = useParams() as { projectId: string };
@@ -126,27 +120,6 @@ const Forms = ({ intl: { formatMessage } }: WrappedComponentProps) => {
         )}
       </Box>
     </>
-  );
-};
-
-export const SurveyFormBuilder = () => {
-  const { projectId, phaseId } = useParams() as {
-    projectId: string;
-    phaseId?: string;
-  };
-
-  const formCustomFields = useFormCustomFields({
-    projectId,
-    phaseId,
-  });
-
-  return (
-    <FormBuilder
-      builderConfig={getUpdatedConfiguration(
-        nativeSurveyConfig,
-        formCustomFields
-      )}
-    />
   );
 };
 

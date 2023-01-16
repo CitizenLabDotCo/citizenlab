@@ -57,7 +57,7 @@ type Props = {
   onEditField: (field: IFlatCustomFieldWithIndex) => void;
   getTranslatedFieldType: (fieldType: string) => MessageDescriptor;
   selectedFieldId?: string;
-  builderConfig: FormBuilderConfig | undefined;
+  builderConfig: FormBuilderConfig;
 };
 
 // TODO: Rename icons in component library to "form" for clarity
@@ -197,7 +197,7 @@ export const FieldElement = (props: Props) => {
                               formCustomFields,
                               getOptionRule(option, field)?.goto_page_id,
                               formatMessage(
-                                builderConfig?.formEndPageLogicOption ||
+                                builderConfig.formEndPageLogicOption ||
                                   messages.formEnd
                               ),
                               formatMessage(messages.page)
@@ -226,7 +226,7 @@ export const FieldElement = (props: Props) => {
                               formCustomFields,
                               getLinearScaleRule(option, field)?.goto_page_id,
                               formatMessage(
-                                builderConfig?.formEndPageLogicOption ||
+                                builderConfig.formEndPageLogicOption ||
                                   messages.formEnd
                               ),
                               formatMessage(messages.page)
@@ -248,7 +248,7 @@ export const FieldElement = (props: Props) => {
                         formCustomFields,
                         field.logic.next_page_id,
                         formatMessage(
-                          builderConfig?.formEndPageLogicOption ||
+                          builderConfig.formEndPageLogicOption ||
                             messages.formEnd
                         ),
                         formatMessage(messages.page)
