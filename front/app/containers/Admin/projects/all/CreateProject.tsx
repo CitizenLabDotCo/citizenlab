@@ -2,10 +2,7 @@ import React, { memo, useState, useCallback, useEffect } from 'react';
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
-import { insertConfiguration } from 'utils/moduleUtils';
-import { InsertConfigurationOptions } from 'typings';
 // components
-import Outlet from 'components/Outlet';
 import { Icon } from '@citizenlab/cl2-component-library';
 import AdminProjectsProjectGeneral from 'containers/Admin/projects/project/general';
 import { HeaderTitle } from './StyledComponents';
@@ -160,7 +157,7 @@ export type TTabName = ITabNamesMap[keyof ITabNamesMap];
 
 const CreateProject = memo<Props & WrappedComponentProps>(
   ({ className, intl: { formatMessage } }) => {
-    const [tabs, setTabs] = useState<ITabItem[]>([
+    const [tabs] = useState<ITabItem[]>([
       {
         name: 'scratch',
         label: formatMessage(messages.fromScratch),
@@ -218,11 +215,6 @@ const CreateProject = memo<Props & WrappedComponentProps>(
       [selectedTabValue]
     );
 
-    const handleData = (data: InsertConfigurationOptions<ITabItem>) =>
-      setTabs((tabs) => {
-        return insertConfiguration(data)(tabs);
-      });
-
     return (
       <Container className={className}>
         <CreateProjectButton
@@ -257,10 +249,6 @@ const CreateProject = memo<Props & WrappedComponentProps>(
             className={`${expanded ? 'expanded' : 'collapsed'}`}
           >
             <CreateProjectContentInner>
-              <Outlet
-                id="app.containers.Admin.projects.all.createProject.tabs"
-                onData={handleData}
-              />
               {tabs.length > 1 && (
                 <StyledTabs
                   className="e2e-create-project-tabs"
@@ -269,10 +257,6 @@ const CreateProject = memo<Props & WrappedComponentProps>(
                   onClick={handleTabOnClick}
                 />
               )}
-              <Outlet
-                id="app.containers.Admin.projects.all.createProject"
-                selectedTabValue={selectedTabValue}
-              />
               {selectedTabValue === 'scratch' && (
                 <AdminProjectsProjectGeneral />
               )}
