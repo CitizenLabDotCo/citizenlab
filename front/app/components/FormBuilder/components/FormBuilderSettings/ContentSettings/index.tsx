@@ -97,8 +97,8 @@ export const ContentSettings = ({
                 name={`customFields.${field.index}.required`}
                 disabled={
                   hasRules ||
-                  (builderConfig.isRequiredToggleAllowed &&
-                    builderConfig.isRequiredToggleAllowed(field))
+                  (builderConfig.isRequiredToggleDisabled &&
+                    builderConfig.isRequiredToggleDisabled(field))
                 }
                 label={
                   <Text as="span" color="primary" variant="bodyM" my="0px">
@@ -111,8 +111,8 @@ export const ContentSettings = ({
               <Toggle
                 name={`customFields.${field.index}.showResponseToUsers`}
                 disabled={
-                  builderConfig.isResponseToggleAllowed &&
-                  builderConfig.isResponseToggleAllowed(field)
+                  builderConfig.isResponseToggleDisabled &&
+                  builderConfig.isResponseToggleDisabled(field)
                 }
                 label={
                   <Text as="span" color="primary" variant="bodyM" my="0px">

@@ -26,9 +26,9 @@ export type FormBuilderConfig = {
   toolboxFieldsToExclude: ICustomFieldInputType[];
   formCustomFields: IFlatCustomField[] | undefined | Error;
 
-  isRequiredToggleAllowed?: (field: IFlatCustomFieldWithIndex) => boolean;
-  isResponseToggleAllowed?: (field: IFlatCustomFieldWithIndex) => boolean;
-  isEnabledToggleAllowed?: (field: IFlatCustomFieldWithIndex) => boolean;
+  isRequiredToggleDisabled?: (field: IFlatCustomFieldWithIndex) => boolean;
+  isResponseToggleDisabled?: (field: IFlatCustomFieldWithIndex) => boolean;
+  isEnableToggleDisabled?: (field: IFlatCustomFieldWithIndex) => boolean;
   isTitleConfigurable?: (field: IFlatCustomFieldWithIndex) => boolean;
 
   showStatusBadge: boolean;

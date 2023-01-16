@@ -16,11 +16,11 @@ export const ideationConfig: FormBuilderConfig = {
   isLogicEnabled: false,
   isEditPermittedAfterSubmissions: true,
 
-  isRequiredToggleAllowed: (field: IFlatCustomFieldWithIndex) => {
+  isRequiredToggleDisabled: (field: IFlatCustomFieldWithIndex) => {
     const keysAlwaysRequired: string[] = ['title_multiloc', 'body_multiloc'];
     return keysAlwaysRequired.includes(field.key);
   },
-  isResponseToggleAllowed: (field: IFlatCustomFieldWithIndex) => {
+  isResponseToggleDisabled: (field: IFlatCustomFieldWithIndex) => {
     const keysResponsesAlwaysShown: string[] = [
       'title_multiloc',
       'body_multiloc',
@@ -28,7 +28,7 @@ export const ideationConfig: FormBuilderConfig = {
     ];
     return keysResponsesAlwaysShown.includes(field.key);
   },
-  isEnabledToggleAllowed: (field: IFlatCustomFieldWithIndex) => {
+  isEnableToggleDisabled: (field: IFlatCustomFieldWithIndex) => {
     const keysAlwaysEnabled: string[] = [
       'title_multiloc',
       'body_multiloc',
