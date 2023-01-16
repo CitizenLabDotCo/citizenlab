@@ -2,6 +2,7 @@
 import {
   ICustomFieldInputType,
   IFlatCustomField,
+  IFlatCustomFieldWithIndex,
 } from 'services/formCustomFields';
 import { IPhaseData } from 'services/phases';
 import { IProjectData } from 'services/projects';
@@ -24,6 +25,11 @@ export type FormBuilderConfig = {
 
   toolboxFieldsToExclude: ICustomFieldInputType[];
   formCustomFields: IFlatCustomField[] | undefined | Error;
+
+  isRequiredToggleAllowed?: (field: IFlatCustomFieldWithIndex) => boolean;
+  isResponseToggleAllowed?: (field: IFlatCustomFieldWithIndex) => boolean;
+  isEnabledToggleAllowed?: (field: IFlatCustomFieldWithIndex) => boolean;
+  isTitleConfigurable?: (field: IFlatCustomFieldWithIndex) => boolean;
 
   showStatusBadge: boolean;
   isLogicEnabled: boolean;

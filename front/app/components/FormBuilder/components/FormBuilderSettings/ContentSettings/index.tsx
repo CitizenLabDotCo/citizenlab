@@ -16,16 +16,11 @@ import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import {
-  isTitleConfigurable,
-  getAdditionalSettings,
-  isEnabledToggleAllowed,
-  isResponseToggleAllowed,
-  isRequiredToggleAllowed,
-} from '../utils';
+import { getAdditionalSettings } from '../utils';
 import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
+import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
 type ContentSettingsProps = {
   field: IFlatCustomFieldWithIndex;
@@ -33,6 +28,7 @@ type ContentSettingsProps = {
   onClose: () => void;
   isDeleteDisabled?: boolean;
   locales: Locale[];
+  builderConfig: FormBuilderConfig;
 };
 
 export const ContentSettings = ({
@@ -41,6 +37,7 @@ export const ContentSettings = ({
   onClose,
   isDeleteDisabled,
   onDelete,
+  builderConfig,
 }: ContentSettingsProps) => {
   const { watch } = useFormContext();
   const logic = watch(`customFields.${field.index}.logic`);
@@ -55,7 +52,11 @@ export const ContentSettings = ({
             <SectionField id="e2e-show-response-toggle">
               <Toggle
                 name={`customFields.${field.index}.enabled`}
-                disabled={isEnabledToggleAllowed(field)}
+                disabled={
+                  (builderConfig.isEnabledToggleAllowed &&
+                    builderConfig.isEnabledToggleAllowed(field)) ||
+                  false
+                }
                 label={
                   <Text as="span" color="primary" variant="bodyM" my="0px">
                     <FormattedMessage {...messages.enable} />
@@ -63,7 +64,9 @@ export const ContentSettings = ({
                 }
               />
             </SectionField>
-            {isTitleConfigurable(field) && (
+            {((builderConfig.isTitleConfigurable &&
+              builderConfig.isTitleConfigurable(field)) ||
+              true) && (
               <SectionField>
                 <InputMultilocWithLocaleSwitcher
                   initiallySelectedLocale={platformLocale}
@@ -92,7 +95,11 @@ export const ContentSettings = ({
             <SectionField id="e2e-required-toggle">
               <Toggle
                 name={`customFields.${field.index}.required`}
-                disabled={hasRules || isRequiredToggleAllowed(field)}
+                disabled={
+                  hasRules ||
+                  (builderConfig.isRequiredToggleAllowed &&
+                    builderConfig.isRequiredToggleAllowed(field))
+                }
                 label={
                   <Text as="span" color="primary" variant="bodyM" my="0px">
                     <FormattedMessage {...messages.requiredToggleLabel} />
@@ -103,7 +110,10 @@ export const ContentSettings = ({
             <SectionField id="e2e-show-response-toggle">
               <Toggle
                 name={`customFields.${field.index}.showResponseToUsers`}
-                disabled={isResponseToggleAllowed(field)}
+                disabled={
+                  builderConfig.isResponseToggleAllowed &&
+                  builderConfig.isResponseToggleAllowed(field)
+                }
                 label={
                   <Text as="span" color="primary" variant="bodyM" my="0px">
                     <FormattedMessage
