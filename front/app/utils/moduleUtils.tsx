@@ -1,7 +1,6 @@
 import React, { FunctionComponent, ReactElement } from 'react';
 
 import PageLoading from 'components/UI/PageLoading';
-import { OutletRenderProps } from 'components/Outlet';
 import { ITabItem } from 'components/UI/Tabs';
 import { GroupCreationModal } from 'containers/Admin/users';
 import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
@@ -61,12 +60,6 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.users.UsersHeader.icon': {
     type: GroupCreationModal;
   };
-
-  'app.containers.Admin.project.edit.permissions.participationRights': {
-    project: IProjectData;
-    projectId: string;
-    children: OutletRenderProps;
-  };
   'app.containers.Admin.projects.edit': {
     onData: (data: InsertConfigurationOptions<ITab>) => void;
     project: IProjectData;
@@ -75,7 +68,6 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.settings.tabs': {
     onData: (data: InsertConfigurationOptions<ITab>) => void;
   };
-  'app.containers.Admin.initiatives.tabs': ITabsOutlet;
   'app.containers.Admin.sideBar.navItems': {
     onData: (data: InsertConfigurationOptions<NavItem>) => void;
   };

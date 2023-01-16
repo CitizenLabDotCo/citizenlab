@@ -2,7 +2,6 @@ import { loadModules } from 'utils/moduleUtils';
 
 import smartGroupsConfiguration from './commercial/smart_groups';
 import ideaCustomFieldsConfiguration from './commercial/idea_custom_fields';
-import granularPermissionsConfiguration from './commercial/granular_permissions';
 import moderationConfiguration from './commercial/moderation';
 
 import contentBuilderConfiguration from './commercial/content_builder';
@@ -22,10 +21,6 @@ export default loadModules([
   },
   {
     configuration: ideaCustomFieldsConfiguration,
-    isEnabled,
-  },
-  {
-    configuration: granularPermissionsConfiguration,
     isEnabled,
   },
   {
