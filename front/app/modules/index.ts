@@ -8,7 +8,6 @@ import adminProjectTemplatesConfiguration from './commercial/admin_project_templ
 
 import contentBuilderConfiguration from './commercial/content_builder';
 import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
-import bulkIdeaImportConfiguration from './commercial/bulk_idea_import';
 
 import widgetsConfiguration from './commercial/widgets';
 import eventsWidgetConfiguration from './commercial/events_widget';
@@ -41,10 +40,6 @@ export default loadModules([
   },
   {
     configuration: customIdeaStatusesConfiguration,
-    isEnabled,
-  },
-  {
-    configuration: bulkIdeaImportConfiguration,
     isEnabled,
   },
   {

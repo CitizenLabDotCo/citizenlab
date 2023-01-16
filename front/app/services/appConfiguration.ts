@@ -145,7 +145,6 @@ export interface IAppConfigurationSettings {
   survey_xact_surveys?: AppConfigurationFeature;
   snap_survey_surveys?: AppConfigurationFeature;
   project_folders?: AppConfigurationFeature;
-  bulk_import_ideas?: AppConfigurationFeature;
   widgets?: AppConfigurationFeature;
   granular_permissions?: AppConfigurationFeature;
   ideaflow_social_sharing?: AppConfigurationFeature;
