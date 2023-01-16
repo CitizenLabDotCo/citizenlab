@@ -11,7 +11,6 @@ import customMapsConfiguration from './commercial/custom_maps';
 import contentBuilderConfiguration from './commercial/content_builder';
 import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
 import bulkIdeaImportConfiguration from './commercial/bulk_idea_import';
-import impactTrackingConfiguration from './commercial/impact_tracking';
 
 import widgetsConfiguration from './commercial/widgets';
 import eventsWidgetConfiguration from './commercial/events_widget';
@@ -80,10 +79,6 @@ export default loadModules([
   },
   {
     configuration: representativenessConfiguration,
-    isEnabled,
-  },
-  {
-    configuration: impactTrackingConfiguration,
     isEnabled,
   },
 ]);
