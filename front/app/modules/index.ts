@@ -3,7 +3,6 @@ import { loadModules } from 'utils/moduleUtils';
 import smartGroupsConfiguration from './commercial/smart_groups';
 import ideaCustomFieldsConfiguration from './commercial/idea_custom_fields';
 import granularPermissionsConfiguration from './commercial/granular_permissions';
-import ideaAssignmentConfiguration from './commercial/idea_assignment';
 import moderationConfiguration from './commercial/moderation';
 import adminProjectTemplatesConfiguration from './commercial/admin_project_templates';
 
@@ -39,10 +38,6 @@ export default loadModules([
   },
   {
     configuration: moderationConfiguration,
-    isEnabled,
-  },
-  {
-    configuration: ideaAssignmentConfiguration,
     isEnabled,
   },
   {
