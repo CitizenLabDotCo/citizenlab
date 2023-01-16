@@ -177,12 +177,6 @@ class Sidebar extends PureComponent<
           message: 'projects',
         },
         {
-          name: 'reporting',
-          link: `/admin/reporting`,
-          iconName: 'sidebar-reporting',
-          message: 'reporting',
-        },
-        {
           name: 'workshops',
           link: '/admin/workshops',
           iconName: 'sidebar-workshops',

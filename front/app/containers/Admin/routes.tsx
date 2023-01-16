@@ -13,7 +13,6 @@ import ideasRoutes from './ideas/routes';
 import pagesAndMenuRoutes from './pagesAndMenu/routes';
 import customFieldRoutes from './settings/registration/CustomFieldRoutes/routes';
 import projectFoldersRoutes from './projectFolders/routes';
-import reportingRoutes from './reporting/routes';
 
 // components
 import PageLoading from 'components/UI/PageLoading';
@@ -125,7 +124,6 @@ const createAdminRoutes = () => {
       ideasRoutes(),
       customFieldRoutes(),
       projectFoldersRoutes(),
-      reportingRoutes(),
       {
         path: 'workshops',
         element: (

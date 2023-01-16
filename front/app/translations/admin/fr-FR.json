@@ -1475,10 +1475,6 @@
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Certains groupes d'utilisateurs",
   "app.containers.admin.project.permissions.permissionsUsersLabel": "Tous les utilisateurs",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Qui peut voir ce projet ?",
-<<<<<<< HEAD
-  "app.modules.commercial.events_widget.admin.eventsWidgetSetting": "Evénements",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSettingDescription": "Affichez un aperçu des événements à venir sur la page d'accueil.",
-=======
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.activeUsers": "Utilisateurs actifs",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage": "Le nombre d'utilisateurs qui ont participé à un ou plusieurs projet(s). Les participants aux sondages et aux enquêtes intégrées ne seront pas comptabilisés ici.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Taux de participation",
@@ -1582,7 +1578,6 @@
   "app.modules.commercial.flag_inappropriate_content.admin.components.userFlaggedWarningText": "Contenu signalé par un utilisateur.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.warnings": "Alertes",
   "app.modules.commercial.report_builder.admin.components.TopBar.reportBuilder": "Constructeur de rapports",
->>>>>>> master
   "app.modules.granular_permissions.admin.components.projectPermissionsTab": "Droits d'accès",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Pages affichées dans votre barre de navigation",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Créer une page personnalisée",
