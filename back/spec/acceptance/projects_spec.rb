@@ -736,6 +736,109 @@ resource 'Projects' do
       end
     end
 
+    if CitizenLab.ee?
+      post 'web_api/v1/projects/copy/:id' do
+        describe do
+          let(:source_project) do
+            create(
+              :continuous_project,
+              admin_publication_attributes: { publication_status: 'published' },
+              title_multiloc: { en: 'Copy me' },
+              slug: 'copy-me',
+              participation_method: 'ideation',
+              posting_enabled: true,
+              posting_method: 'unlimited',
+              posting_limited_max: 1,
+              commenting_enabled: true,
+              voting_enabled: true,
+              upvoting_method: 'unlimited',
+              upvoting_limited_max: 10,
+              downvoting_enabled: true,
+              downvoting_method: 'limited',
+              downvoting_limited_max: 3,
+              presentation_mode: 'card',
+              min_budget: 0,
+              max_budget: nil,
+              ideas_order: 'trending',
+              input_term: 'idea',
+              description_preview_multiloc: { en: 'Description preview text' },
+              comments_count: 0,
+              ideas_count: 0,
+              include_all_areas: false,
+              internal_role: nil,
+              process_type: 'continuous',
+              visible_to: 'public',
+              folder_id: nil
+            )
+          end
+
+          let(:id) { source_project.id }
+
+          example_request 'Copy a continuous project' do
+            assert_status 201
+
+            copied_project = Project.find(json_response[:data][:id])
+
+            # TODO: still to include:
+            # header_bg
+            # Do we also test areas, topics, etc? project_images, project_files, phase_files? Maybe.
+
+            # Copied project should always have publication_status: 'draft'
+            expect(copied_project.admin_publication.publication_status).to eq 'draft'
+
+            expect(copied_project.title_multiloc['en']).to eq "#{source_project.title_multiloc['en']} - Copy"
+            expect(copied_project.slug).to eq "#{source_project.slug}-copy-1"
+
+            expect(copied_project.participation_method).to eq source_project.participation_method
+            expect(copied_project.posting_enabled).to eq source_project.posting_enabled
+            expect(copied_project.posting_method).to eq source_project.posting_method
+            expect(copied_project.posting_limited_max).to eq source_project.posting_limited_max
+            expect(copied_project.commenting_enabled).to eq source_project.commenting_enabled
+            expect(copied_project.voting_enabled).to eq source_project.voting_enabled
+            expect(copied_project.upvoting_method).to eq source_project.upvoting_method
+            expect(copied_project.upvoting_limited_max).to eq source_project.upvoting_limited_max
+            expect(copied_project.downvoting_enabled).to eq source_project.downvoting_enabled
+            expect(copied_project.downvoting_method).to eq source_project.downvoting_method
+            expect(copied_project.downvoting_limited_max).to eq source_project.downvoting_limited_max
+            expect(copied_project.presentation_mode).to eq source_project.presentation_mode
+            expect(copied_project.min_budget).to eq source_project.min_budget
+            expect(copied_project.max_budget).to eq source_project.max_budget
+            expect(copied_project.ideas_order).to eq source_project.ideas_order
+            expect(copied_project.input_term).to eq source_project.input_term
+            expect(copied_project.description_preview_multiloc).to eq source_project.description_preview_multiloc
+            expect(copied_project.comments_count).to eq source_project.comments_count
+            expect(copied_project.ideas_count).to eq source_project.ideas_count
+            expect(copied_project.include_all_areas).to eq source_project.include_all_areas
+            expect(copied_project.internal_role).to eq source_project.internal_role
+            expect(copied_project.process_type).to eq source_project.process_type
+            expect(copied_project.visible_to).to eq source_project.visible_to
+            expect(copied_project.folder_id).to eq source_project.folder_id
+          end
+        end
+
+        describe do
+          let(:source_project) do
+            create(
+              :project_with_active_ideation_phase,
+              visible_to: 'admins'
+            )
+          end
+
+          let(:id) { source_project.id }
+
+          example_request 'Copy a timeline project' do
+            assert_status 201
+
+            copied_project = Project.find(json_response[:data][:id])
+
+            # Unfinished. POC simple test.
+
+            expect(copied_project.visible_to).to eq source_project.visible_to
+          end
+        end
+      end
+    end
+
     get 'web_api/v1/projects/:id/submission_count' do
       let(:project) { create(:continuous_native_survey_project) }
       let(:form) { create(:custom_form, participation_context: project) }
