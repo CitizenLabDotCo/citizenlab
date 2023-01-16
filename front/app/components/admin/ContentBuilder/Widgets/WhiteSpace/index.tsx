@@ -4,7 +4,7 @@ import React from 'react';
 import {
   Box,
   Radio,
-  Title,
+  Label,
   Toggle,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
@@ -56,9 +56,9 @@ const WhiteSpaceSettings = () => {
 
   return (
     <Box mb="30px">
-      <Title variant="h4" as="h3">
+      <Label>
         <FormattedMessage {...messages.whiteSpaceRadioLabel} />
-      </Title>
+      </Label>
       <Radio
         onChange={(value) => {
           setProp((props) => (props.size = value));

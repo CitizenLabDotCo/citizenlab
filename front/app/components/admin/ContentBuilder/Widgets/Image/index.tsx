@@ -8,6 +8,7 @@ import {
   colors,
   Icon,
 } from '@citizenlab/cl2-component-library';
+import PageBreakBox from '../PageBreakBox';
 
 // image upload
 import { addContentBuilderImage } from 'services/contentBuilderImages';
@@ -42,7 +43,7 @@ const Image = ({
   });
 
   return (
-    <Box
+    <PageBreakBox
       width="100%"
       display="flex"
       id="e2e-image"
@@ -68,7 +69,7 @@ const Image = ({
           name="image"
         />
       )}
-    </Box>
+    </PageBreakBox>
   );
 };
 

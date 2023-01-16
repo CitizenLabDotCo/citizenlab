@@ -151,6 +151,7 @@ export interface IAppConfigurationSettings {
   initiativeflow_social_sharing?: AppConfigurationFeature;
   machine_translations?: AppConfigurationFeature;
   custom_topics?: AppConfigurationFeature;
+  custom_maps?: AppConfigurationFeature;
   similar_ideas?: AppConfigurationFeature;
   polls?: AppConfigurationFeature;
   moderation?: AppConfigurationFeature;
@@ -178,6 +179,7 @@ export interface IAppConfigurationSettings {
   native_surveys?: AppConfigurationFeature;
   visitors_dashboard?: AppConfigurationFeature;
   user_confirmation?: AppConfigurationFeature;
+  report_builder?: AppConfigurationFeature;
 }
 
 interface AppConfigurationMapSettings extends AppConfigurationFeature {

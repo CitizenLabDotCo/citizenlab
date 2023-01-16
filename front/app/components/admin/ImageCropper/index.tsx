@@ -8,10 +8,16 @@ import RemoveImageButton from 'components/UI/RemoveImageButton';
 type ImageCropperProps = {
   image: UploadFile[] | null;
   onComplete: (image: string) => void;
+  aspect: number;
   onRemove: () => void;
 };
 
-const ImageCropper = ({ image, onComplete, onRemove }: ImageCropperProps) => {
+const ImageCropper = ({
+  image,
+  onComplete,
+  aspect,
+  onRemove,
+}: ImageCropperProps) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
 
   const onCropComplete = useCallback(
@@ -33,14 +39,19 @@ const ImageCropper = ({ image, onComplete, onRemove }: ImageCropperProps) => {
   );
 
   return (
-    <Box position="relative" height="300px" data-cy="e2e-image-cropper">
+    <Box
+      position="relative"
+      height="300px"
+      data-cy="e2e-image-cropper"
+      data-testid="image-cropper"
+    >
       {image && image[0] && (
         <div>
           <Cropper
             image={image[0].base64}
             crop={crop}
             zoom={1}
-            aspect={3}
+            aspect={aspect}
             onCropChange={setCrop}
             onCropComplete={onCropComplete}
             objectFit="contain"
@@ -52,4 +63,4 @@ const ImageCropper = ({ image, onComplete, onRemove }: ImageCropperProps) => {
   );
 };
 
-export default ImageCropper;
+export { ImageCropper as default, ImageCropperProps };
