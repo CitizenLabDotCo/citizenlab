@@ -27,22 +27,6 @@ export interface IIdeaStatusData {
   };
 }
 
-export interface IIdeaStatusAdd {
-  title_multiloc: Multiloc;
-  description_multiloc?: Multiloc;
-  color?: string;
-  code?: TIdeaStatusCode;
-  ordering?: number;
-}
-
-export interface IIdeaStatusUpdate {
-  title_multiloc: Multiloc;
-  description_multiloc?: Multiloc;
-  color?: string;
-  code?: TIdeaStatusCode;
-  ordering?: number;
-}
-
 export interface IIdeaStatus {
   data: IIdeaStatusData;
 }
