@@ -42,5 +42,3 @@ class SideFxParticipationContextService
 
   def after_destroy(frozen_pc, user); end
 end
-
-SideFxParticipationContextService.prepend_if_ee('GranularPermissions::Patches::SideFxParticipationContextService')

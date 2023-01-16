@@ -49,5 +49,3 @@ class InitiativeVotePolicy < ApplicationPolicy
     :not_signed_in unless user
   end
 end
-
-InitiativeVotePolicy.prepend_if_ee('GranularPermissions::Patches::InitiativeVotePolicy')

@@ -57,5 +57,3 @@ class CommentVotePolicy < ApplicationPolicy
     :not_signed_in unless user
   end
 end
-
-CommentVotePolicy.prepend_if_ee('GranularPermissions::Patches::CommentVotePolicy')

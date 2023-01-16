@@ -15,5 +15,3 @@ class WebApi::V1::ActionDescriptorsController < ApplicationController
     render(json: descriptors)
   end
 end
-
-WebApi::V1::ActionDescriptorsController.prepend_if_ee('GranularPermissions::Patches::WebApi::V1::ActionDescriptorsController')
