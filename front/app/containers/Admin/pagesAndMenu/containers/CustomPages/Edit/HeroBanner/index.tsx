@@ -140,6 +140,7 @@ const EditCustomPageHeroBannerForm = ({
   };
   const handleOnBannerImageRemove = () => {
     handleOnChange('header_bg', null);
+    handleOnOverlayChange(null, null);
   };
 
   const handleOnOverlayChange = (
