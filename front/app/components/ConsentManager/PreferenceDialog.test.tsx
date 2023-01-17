@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from 'utils/testUtils/rtl';
+import { fireEvent, render } from 'utils/testUtils/rtl';
 import { CategorizedDestinations } from './typings';
 
 // component to test
@@ -57,5 +57,28 @@ describe('<ConsentManager />', () => {
 
     const categoryCards = container.querySelectorAll('.e2e-category');
     expect(categoryCards).toHaveLength(1);
+  });
+
+  it('is possible to change preference for analytics cookies', () => {
+    const { container } = render(
+      <PreferencesDialog
+        onChange={onChange}
+        categoryDestinations={categoryDestinations}
+        preferences={preferences}
+      />
+    );
+
+    const allowAnalyticsInput = container.querySelector(
+      '#analytics-radio-true'
+    );
+    expect(allowAnalyticsInput).toBeChecked();
+
+    const disallowAnalyticsInput = container.querySelector(
+      '#analytics-radio-false'
+    );
+    fireEvent.click(disallowAnalyticsInput);
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith('analytics', false);
   });
 });

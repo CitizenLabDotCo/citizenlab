@@ -114,6 +114,8 @@ const CategoryCard = ({
 }: Props) => {
   const appConfig = useAppConfiguration();
 
+  console.log(`rendering CategoryCard: ${category}`);
+
   return (
     <Container className="e2e-category">
       <TextContainer>
