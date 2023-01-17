@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import clHistory from 'utils/cl-router/history';
 import { isEmpty, isEqual } from 'lodash-es';
 import { CLErrors, Multiloc, UploadFile } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isError } from 'utils/helperUtils';
 import { addProjectFolder, updateProjectFolder } from 'services/projectFolders';
 import {
   addProjectFolderImage,
@@ -34,6 +34,7 @@ import useProjectFolderFiles from 'hooks/useProjectFolderFiles';
 import useAdminPublication from 'hooks/useAdminPublication';
 import SlugInput from 'components/admin/SlugInput';
 import { validateSlug } from 'utils/textUtils';
+import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
 
 interface Props {
   mode: 'edit' | 'new';
@@ -59,15 +60,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         setShortDescriptionMultiloc(
           projectFolder.attributes.description_preview_multiloc
         );
-
-        if (projectFolder.attributes?.header_bg?.large) {
-          const headerFile = await convertUrlToUploadFile(
-            projectFolder.attributes?.header_bg?.large,
-            null,
-            null
-          );
-          setHeaderBg(headerFile);
-        }
       }
     })();
   }, [mode, projectFolder]);
@@ -125,7 +117,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     useState<Multiloc | null>(null);
   const [descriptionMultiloc, setDescriptionMultiloc] =
     useState<Multiloc | null>(null);
-  const [headerBg, setHeaderBg] = useState<UploadFile | null>(null);
+  const [headerBgBase64, setHeaderBgBase64] = useState<string | null>(null);
   const [publicationStatus, setPublicationStatus] = useState<
     'published' | 'draft' | 'archived'
   >('published');
@@ -162,18 +154,11 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     }
   }, []);
 
-  const handleHeaderBgOnAdd = useCallback((newImage: UploadFile[]) => {
+  const handleHeaderBgChange = useCallback((newImageBase64: string | null) => {
     setStatus('enabled');
 
     setChangedHeaderBg(true);
-    setHeaderBg(newImage[0]);
-  }, []);
-
-  const handleHeaderBgOnRemove = useCallback(() => {
-    setStatus('enabled');
-
-    setChangedHeaderBg(true);
-    setHeaderBg(null);
+    setHeaderBgBase64(newImageBase64);
   }, []);
 
   const handleProjectFolderImageOnRemove = useCallback(
@@ -270,7 +255,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               slug,
               description_multiloc: descriptionMultiloc,
               description_preview_multiloc: shortDescriptionMultiloc,
-              header_bg: headerBg?.base64,
+              header_bg: headerBgBase64,
               admin_publication_attributes: {
                 publication_status: publicationStatus,
               },
@@ -373,9 +358,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                   description_preview_multiloc: changedShortDescriptionMultiloc
                     ? shortDescriptionMultiloc
                     : undefined,
-                  header_bg: changedHeaderBg
-                    ? headerBg?.base64 || null
-                    : undefined,
+                  header_bg: changedHeaderBg ? headerBgBase64 : undefined,
                   admin_publication_attributes: {
                     publication_status: publicationStatus,
                   },
@@ -401,6 +384,10 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
       }
     }
   };
+
+  if (isError(projectFolder)) {
+    return null;
+  }
 
   return (
     <form onSubmit={onSubmit}>
@@ -504,25 +491,10 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           </Box>
         </SectionField>
 
-        <SectionField key={'header_bg'}>
-          <SubSectionTitle>
-            <FormattedMessage {...messages.headerImageInputLabel} />
-            <IconTooltip
-              content={
-                <FormattedMessage
-                  {...messages.projectFolderHeaderImageLabelTooltip}
-                />
-              }
-            />
-          </SubSectionTitle>
-          <ImagesDropzone
-            acceptedFileTypes={{
-              'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
-            }}
-            images={headerBg ? [headerBg] : null}
-            imagePreviewRatio={250 / 1380}
-            onAdd={handleHeaderBgOnAdd}
-            onRemove={handleHeaderBgOnRemove}
+        <SectionField>
+          <HeaderBgUploader
+            imageUrl={projectFolder?.attributes.header_bg?.large}
+            onImageChange={handleHeaderBgChange}
           />
         </SectionField>
 

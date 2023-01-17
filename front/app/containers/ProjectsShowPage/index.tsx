@@ -48,6 +48,7 @@ import { getMethodConfig, getPhase } from 'utils/participationMethodUtils';
 import EventsViewer from 'containers/EventsPage/EventsViewer';
 import messages from 'utils/messages';
 import { scrollToElement } from 'utils/scroll';
+import useURLQuery from 'utils/cl-router/useUrlQuery';
 
 const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;
@@ -104,6 +105,8 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
   const appConfig = useAppConfiguration();
   const phases = usePhases(projectId);
 
+  const queryParams = useURLQuery();
+
   const { events } = useEvents({
     projectIds: projectId ? [projectId] : undefined,
     sort: 'newest',
@@ -129,7 +132,6 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
 
   // UseEffect to handle modal state and phase parameters
   useEffect(() => {
-    const queryParams = new URLSearchParams(window.location.search);
     const showModalParam = queryParams.get('show_modal');
     const phaseIdParam = queryParams.get('phase_id');
     // Set phase id
@@ -152,7 +154,7 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
     ) {
       window.history.replaceState(null, '', window.location.pathname);
     }
-  }, [project, showModal, phaseIdUrl]);
+  }, [project, showModal, phaseIdUrl, queryParams]);
 
   const user = useAuthUser();
 

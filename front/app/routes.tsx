@@ -220,7 +220,7 @@ export default function createRoutes() {
           path: 'folders/:slug',
           element: (
             <PageLoading>
-              <ProjectFolderShowPage />,
+              <ProjectFolderShowPage />
             </PageLoading>
           ),
         },
