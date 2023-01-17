@@ -44,5 +44,3 @@ class SideFxAppConfigurationService
     LogActivityJob.perform_later(app_config, action, user, update_time, options)
   end
 end
-
-SideFxAppConfigurationService.prepend_if_ee('MultiTenancy::Patches::SideFxAppConfigurationService')

@@ -126,5 +126,3 @@ module UserCustomFields
     end
   end
 end
-
-UserCustomFields::WebApi::V1::UserCustomFieldsController.prepend_if_ee('Verification::Patches::WebApi::V1::UserCustomFieldsController')

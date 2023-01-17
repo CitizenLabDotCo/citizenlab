@@ -97,5 +97,3 @@ class Permission < ApplicationRecord
     self.permitted_by ||= 'users'
   end
 end
-
-Permission.prepend_if_ee('Verification::Patches::Permission')

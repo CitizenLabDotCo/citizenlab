@@ -17,5 +17,3 @@ class LogoUploader < BaseImageUploader
     process resize_to_limit: [nil, 160]
   end
 end
-
-LogoUploader.prepend_if_ee('MultiTenancy::Patches::LogoUploader')

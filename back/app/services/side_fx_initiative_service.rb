@@ -89,5 +89,3 @@ class SideFxInitiativeService
     (user.initiatives.size == 1) && (user.initiatives.first.id == initiative.id)
   end
 end
-
-::SideFxInitiativeService.prepend_if_ee('FlagInappropriateContent::Patches::SideFxInitiativeService')

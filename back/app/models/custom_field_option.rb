@@ -73,5 +73,3 @@ class CustomFieldOption < ApplicationRecord
     end
   end
 end
-
-CustomFieldOption.include_if_ee('UserCustomFields::Patches::CustomFieldOption')

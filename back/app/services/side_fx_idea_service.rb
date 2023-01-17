@@ -104,5 +104,3 @@ class SideFxIdeaService
     Seo::ScrapeFacebookJob.perform_later(url_with_utm)
   end
 end
-
-::SideFxIdeaService.prepend_if_ee('FlagInappropriateContent::Patches::SideFxIdeaService')

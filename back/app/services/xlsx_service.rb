@@ -329,4 +329,3 @@ class XlsxService
 end
 
 XlsxService.prepend_if_ee 'IdeaCustomFields::Patches::XlsxService'
-XlsxService.prepend_if_ee 'Verification::Patches::XlsxService'

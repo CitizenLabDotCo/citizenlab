@@ -46,5 +46,3 @@ module EmailCampaigns
     end
   end
 end
-
-EmailCampaigns::TasksService.prepend_if_ee('MultiTenancy::Patches::EmailCampaigns::TasksService')
