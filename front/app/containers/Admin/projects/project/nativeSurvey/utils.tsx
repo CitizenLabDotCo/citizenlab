@@ -33,6 +33,7 @@ export const nativeSurveyConfig: FormBuilderConfig = {
   showStatusBadge: true,
   isLogicEnabled: true,
   isEditPermittedAfterSubmissions: false,
+  showEnableToggle: false,
 
   getDeleteFormResultsNotice: (projectId: string) => {
     return (

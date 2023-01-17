@@ -20,6 +20,7 @@ import { getAdditionalSettings } from '../utils';
 import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
+import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
 type ContentSettingsProps = {
   field: IFlatCustomFieldWithIndex;
@@ -27,6 +28,7 @@ type ContentSettingsProps = {
   onClose: () => void;
   isDeleteDisabled?: boolean;
   locales: Locale[];
+  builderConfig: FormBuilderConfig;
 };
 
 export const ContentSettings = ({
@@ -35,32 +37,36 @@ export const ContentSettings = ({
   onClose,
   isDeleteDisabled,
   onDelete,
+  builderConfig,
 }: ContentSettingsProps) => {
   const { watch } = useFormContext();
   const logic = watch(`customFields.${field.index}.logic`);
   const platformLocale = useLocale();
   const hasRules = logic && logic.rules && logic.rules.length > 0;
 
+  console.log(field.isRequiredEditable);
   if (!isNilOrError(platformLocale)) {
     return (
       <Box mt="16px">
         {field.input_type !== 'page' && (
           <>
-            <SectionField>
-              <Toggle
-                name={`customFields.${field.index}.enabled`}
-                disabled={
-                  !isNilOrError(field.isEnabledEditable)
-                    ? !field.isEnabledEditable
-                    : false
-                }
-                label={
-                  <Text as="span" color="primary" variant="bodyM" my="0px">
-                    <FormattedMessage {...messages.enable} />
-                  </Text>
-                }
-              />
-            </SectionField>
+            {builderConfig.showEnableToggle && (
+              <SectionField>
+                <Toggle
+                  name={`customFields.${field.index}.enabled`}
+                  disabled={
+                    !isNilOrError(field.isEnabledEditable)
+                      ? !field.isEnabledEditable
+                      : false
+                  }
+                  label={
+                    <Text as="span" color="primary" variant="bodyM" my="0px">
+                      <FormattedMessage {...messages.enable} />
+                    </Text>
+                  }
+                />
+              </SectionField>
+            )}
             {!isNilOrError(field.isTitleEditable)
               ? field.isTitleEditable
               : true && (
@@ -92,7 +98,11 @@ export const ContentSettings = ({
             <SectionField id="e2e-required-toggle">
               <Toggle
                 name={`customFields.${field.index}.required`}
-                disabled={hasRules || !field.isRequiredEditable}
+                disabled={
+                  field.isRequiredEditable
+                    ? !field.isRequiredEditable
+                    : hasRules
+                }
                 label={
                   <Text as="span" color="primary" variant="bodyM" my="0px">
                     <FormattedMessage {...messages.requiredToggleLabel} />
