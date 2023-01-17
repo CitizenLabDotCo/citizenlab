@@ -77,7 +77,7 @@ describe('<Container />', () => {
     ).not.toBeInTheDocument();
   });
 
-  describe.only('shows the banner is and only if consent is required', () => {
+  describe('shows the banner is and only if consent is required', () => {
     it('consent is required, it shows the banner', () => {
       const { container } = render(
         <Container
@@ -133,6 +133,7 @@ describe('<Container />', () => {
       );
       expect(wrapper.find('Modal').props().opened).toBe(false);
     });
+
     it("modal is initially closed when consent is't required", () => {
       const wrapper = shallow(
         <Container
