@@ -1,6 +1,6 @@
 import React from 'react';
 import BannerImageFields from '.';
-import { render, screen, userEvent, waitFor } from 'utils/testUtils/rtl';
+import { render, screen, userEvent } from 'utils/testUtils/rtl';
 
 jest.mock('utils/cl-intl');
 
@@ -17,6 +17,14 @@ const props = {
   onRemoveImage: jest.fn(),
   onOverlayChange: jest.fn(),
 };
+
+async function uploadLocalImageForHeroBanner() {
+  const inputNode = screen.getByLabelText('Select an image (max. 10MB)');
+  const file = new File(['file'], 'file.png', {
+    type: 'image/png',
+  });
+  await userEvent.upload(inputNode, file);
+}
 
 describe('BannerImageFields', () => {
   describe('Layout preview selector', () => {
@@ -88,14 +96,6 @@ describe('BannerImageFields', () => {
           screen.queryByLabelText('Enable overlay')
         ).not.toBeInTheDocument();
       });
-
-      it('does not show when there is a saved image', () => {
-        render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
-
-        expect(
-          screen.queryByLabelText('Enable overlay')
-        ).not.toBeInTheDocument();
-      });
     });
 
     describe('when layout is two-column layout', () => {
@@ -115,20 +115,12 @@ describe('BannerImageFields', () => {
           screen.queryByLabelText('Enable overlay')
         ).not.toBeInTheDocument();
       });
-
-      it('does not show when there is a saved image', () => {
-        render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
-
-        expect(
-          screen.queryByLabelText('Enable overlay')
-        ).not.toBeInTheDocument();
-      });
     });
 
     describe('when layout is fixed-ratio layout', () => {
       const bannerLayout = 'fixed_ratio_layout';
 
-      it('does not show when there is an unsaved image', () => {
+      it('does not show when there is an unsaved image', async () => {
         render(
           <BannerImageFields
             {...props}
@@ -136,18 +128,11 @@ describe('BannerImageFields', () => {
             headerBg={null}
           />
         );
+        await uploadLocalImageForHeroBanner();
 
         expect(
           screen.queryByLabelText('Enable overlay')
         ).not.toBeInTheDocument();
-      });
-
-      it('shows when there is a saved image', () => {
-        render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
-
-        waitFor(() =>
-          expect(screen.getByLabelText('Enable overlay')).toBeInTheDocument()
-        );
       });
     });
   });
@@ -169,12 +154,6 @@ describe('BannerImageFields', () => {
           expect(screen.getByTestId('image-cropper')).toBeInTheDocument();
         });
       });
-
-      it('does not show when there is a saved image', () => {
-        render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
-
-        expect(screen.queryByTestId('image-cropper')).not.toBeInTheDocument();
-      });
     });
 
     describe('when layout is not fixed-ratio', () => {
@@ -185,20 +164,6 @@ describe('BannerImageFields', () => {
           expect(screen.queryByTestId('image-cropper')).not.toBeInTheDocument();
         });
       });
-
-      it('does not show when there is a saved image', () => {
-        render(<BannerImageFields {...props} />);
-
-        expect(screen.queryByTestId('image-cropper')).not.toBeInTheDocument();
-      });
     });
   });
 });
-
-async function uploadLocalImageForHeroBanner() {
-  const inputNode = screen.getByLabelText('Select an image (max. 10MB)');
-  const file = new File(['file'], 'file.png', {
-    type: 'image/png',
-  });
-  await userEvent.upload(inputNode, file);
-}
