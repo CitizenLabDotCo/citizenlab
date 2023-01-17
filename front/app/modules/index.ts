@@ -4,8 +4,6 @@ import smartGroupsConfiguration from './commercial/smart_groups';
 import ideaCustomFieldsConfiguration from './commercial/idea_custom_fields';
 import moderationConfiguration from './commercial/moderation';
 
-import contentBuilderConfiguration from './commercial/content_builder';
-
 import widgetsConfiguration from './commercial/widgets';
 import eventsWidgetConfiguration from './commercial/events_widget';
 
@@ -25,10 +23,6 @@ export default loadModules([
   },
   {
     configuration: moderationConfiguration,
-    isEnabled,
-  },
-  {
-    configuration: contentBuilderConfiguration,
     isEnabled,
   },
   {
