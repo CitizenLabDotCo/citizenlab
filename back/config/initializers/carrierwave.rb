@@ -37,6 +37,12 @@ module ProcessableUriDownloader
   rescue URI::InvalidURIError, Addressable::URI::InvalidURIError
     raise CarrierWave::DownloadError, "couldn't parse URL: #{uri}"
   end
+
+  def skip_ssrf_protection?(uri)
+    return false unless Rails.env.development?
+
+    uri.hostname == 'localhost'
+  end
 end
 
 CarrierWave::Downloader::Base.prepend(ProcessableUriDownloader)
