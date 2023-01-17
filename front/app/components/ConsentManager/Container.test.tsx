@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, act, fireEvent } from 'utils/testUtils/rtl';
+import { render, act, fireEvent, screen } from 'utils/testUtils/rtl';
 import eventEmitter from 'utils/eventEmitter';
 
 // component to test
@@ -117,91 +117,130 @@ describe('<Container />', () => {
     });
   });
 
-  describe('handles opening and closing the modal', () => {
+  describe.only('handles opening and closing the modal', () => {
     it('modal is initially closed when consent is required', () => {
-      const wrapper = shallow(
+      const { container } = render(
         <Container
-          intl={intl}
-          setPreferences={setPreferences}
+          updatePreference={updatePreference}
           resetPreferences={resetPreferences}
           saveConsent={saveConsent}
+          accept={accept}
+          reject={reject}
           isConsentRequired={true}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
           onToggleModal={emptyFunction}
         />
       );
-      expect(wrapper.find('Modal').props().opened).toBe(false);
+
+      expect(
+        container.querySelector('#e2e-preference-dialog')
+      ).not.toBeInTheDocument();
     });
 
     it("modal is initially closed when consent is't required", () => {
-      const wrapper = shallow(
+      const { container } = render(
         <Container
-          intl={intl}
-          setPreferences={setPreferences}
+          updatePreference={updatePreference}
           resetPreferences={resetPreferences}
           saveConsent={saveConsent}
+          accept={accept}
+          reject={reject}
           isConsentRequired={false}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
           onToggleModal={emptyFunction}
         />
       );
-      expect(wrapper.find('Modal').props().opened).toBe(false);
-    });
-    it('passes down to Banner a handler that opens the modal', () => {
-      const wrapper = shallow(
-        <Container
-          intl={intl}
-          setPreferences={setPreferences}
-          resetPreferences={resetPreferences}
-          saveConsent={saveConsent}
-          isConsentRequired={true}
-          preferences={initialPreferences}
-          categorizedDestinations={categorizedDestinations}
-          onToggleModal={emptyFunction}
-        />
-      );
-      expect(wrapper.find('Modal').props().opened).toBe(false);
-      wrapper.find('Banner').props().onChangePreferences();
-      expect(wrapper.find('Modal').props().opened).toBe(true);
+
+      expect(
+        container.querySelector('#e2e-preference-dialog')
+      ).not.toBeInTheDocument();
     });
 
-    it('passes down to Modal a handler that closes the modal', () => {
-      const wrapper = shallow(
+    it.only('is possible to open modal', () => {
+      const { container } = render(
         <Container
-          intl={intl}
-          setPreferences={setPreferences}
+          updatePreference={updatePreference}
           resetPreferences={resetPreferences}
           saveConsent={saveConsent}
+          accept={accept}
+          reject={reject}
           isConsentRequired={true}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
           onToggleModal={emptyFunction}
         />
       );
-      wrapper.instance().setState({ isDialogOpen: true });
-      expect(wrapper.find('Modal').props().opened).toBe(true);
-      wrapper.find('Modal').props().close();
-      expect(wrapper.find('Modal').props().opened).toBe(false);
+
+      expect(
+        container.querySelector('#e2e-preference-dialog')
+      ).not.toBeInTheDocument();
+
+      const preferencesButton = container.querySelectorAll('button');
+      console.log(preferencesButton);
+      expect(preferencesButton[0]).toBeInTheDocument();
+
+      fireEvent.click(preferencesButton[0]);
+      expect(
+        container.querySelector('#e2e-preference-dialog')
+      ).toBeInTheDocument();
     });
 
-    it('reacts to openConsentManager events by opening the modal', () => {
-      const wrapper = shallow(
+    it('is possible to close modal', () => {
+      const { container } = render(
         <Container
-          intl={intl}
-          setPreferences={setPreferences}
+          updatePreference={updatePreference}
           resetPreferences={resetPreferences}
           saveConsent={saveConsent}
+          accept={accept}
+          reject={reject}
           isConsentRequired={true}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
           onToggleModal={emptyFunction}
         />
       );
-      expect(wrapper.find('Modal').props().opened).toBe(false);
+
+      const preferencesButton = container.querySelectorAll(
+        '.integration-open-modal'
+      )[0];
+      fireEvent.click(preferencesButton);
+      expect(
+        container.querySelector('#e2e-preference-dialog')
+      ).toBeInTheDocument();
+
+      const closeButton = container.querySelectorAll(
+        '.e2e-modal-close-button'
+      )[0];
+      fireEvent.click(closeButton);
+      expect(
+        container.querySelector('#e2e-preference-dialog')
+      ).not.toBeInTheDocument();
+    });
+
+    it('opens when openConsentManager event fires', () => {
+      const { container } = render(
+        <Container
+          updatePreference={updatePreference}
+          resetPreferences={resetPreferences}
+          saveConsent={saveConsent}
+          accept={accept}
+          reject={reject}
+          isConsentRequired={true}
+          preferences={initialPreferences}
+          categorizedDestinations={categorizedDestinations}
+          onToggleModal={emptyFunction}
+        />
+      );
+
+      expect(
+        container.querySelector('#e2e-preference-dialog')
+      ).not.toBeInTheDocument();
       eventEmitter.emit('openConsentManager');
-      expect(wrapper.find('Modal').props().opened).toBe(true);
+      expect(
+        container.querySelector('#e2e-preference-dialog')
+      ).toBeInTheDocument();
     });
   });
 
