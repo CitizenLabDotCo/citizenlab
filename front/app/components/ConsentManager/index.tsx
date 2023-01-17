@@ -1,275 +1,164 @@
-import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 
-import {
-  allCategories,
-  getDestinationConfigs,
-  IDestination,
-  IDestinationConfig,
-  isDestinationActive,
-  TCategory,
-} from './destinations';
+// hooks
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAuthUser from 'hooks/useAuthUser';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
-// resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+// components
 import Container from './Container';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
+
+// cookies
 import {
   getConsent,
   IConsentCookie,
   ISavedDestinations,
   setConsent,
 } from './consent';
+import { allCategories } from './destinations';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
 import eventEmitter from 'utils/eventEmitter';
-import { IAppConfigurationData } from 'services/appConfiguration';
+import {
+  getCurrentPreferences,
+  getActiveDestinations,
+  getCategory,
+  categorizeDestinations,
+  getConsentRequired,
+} from './utils';
 
-// the format in which the user will make its choices,
-export type IPreferences = Partial<Record<TCategory, boolean>>;
+// typings
+import { IPreferences } from './typings';
 
-// the format in which we'll present the destinations to the user
-export type CategorizedDestinations = Record<TCategory, IDestination[]>;
+const ConsentManager = () => {
+  const [preferences, setPreferences] = useState<IPreferences>({});
+  const [cookieConsent, setCookieConsent] = useState<IConsentCookie | null>(
+    null
+  );
 
-interface InputProps {}
-interface DataProps {
-  tenant: GetAppConfigurationChildProps;
-  authUser: GetAuthUserChildProps;
-}
-interface Props extends InputProps, DataProps {}
+  const appConfiguration = useAppConfiguration();
+  const authUser = useAuthUser();
 
-interface State {
-  preferences: IPreferences;
-  cookieConsent: IConsentCookie | null;
-}
-
-export class ConsentManager extends PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
+  useEffect(() => {
     const cookieConsent = getConsent();
-
-    this.state = {
-      cookieConsent,
-      preferences: this.getCurrentPreferences(cookieConsent),
-    };
+    setCookieConsent(cookieConsent);
 
     eventEmitter.emit<ISavedDestinations>(
       'destinationConsentChanged',
       cookieConsent?.savedChoices || {}
     );
-  }
+  }, []);
 
-  getActiveDestinations(): IDestinationConfig[] {
-    const { authUser, tenant } = this.props;
-    if (isNilOrError(tenant)) return [];
-    return getDestinationConfigs().filter((config) =>
-      isDestinationActive(config, tenant, authUser)
+  const resetPreferences = useCallback(() => {
+    setPreferences(
+      getCurrentPreferences(appConfiguration, authUser, cookieConsent)
     );
-  }
+  }, [appConfiguration, authUser, cookieConsent]);
 
-  getCategory(
-    tenant: IAppConfigurationData,
-    destinationConfig: IDestinationConfig
-  ) {
-    return typeof destinationConfig.category === 'function'
-      ? destinationConfig.category(tenant)
-      : destinationConfig.category;
-  }
+  const saveConsent = useCallback(
+    (newPreferences: IPreferences) => {
+      if (isNilOrError(appConfiguration)) return;
+      const newChoices: ISavedDestinations = {};
 
-  categorizeDestinations(
-    destinations: IDestinationConfig[]
-  ): CategorizedDestinations {
-    const { tenant } = this.props;
-    const output = {};
-    allCategories().forEach((category) => (output[category] = []));
-
-    if (isNilOrError(tenant)) {
-      return output as CategorizedDestinations;
-    }
-
-    destinations.forEach((destinationConfig) => {
-      const category = this.getCategory(tenant, destinationConfig);
-      output[category].push(destinationConfig.key);
-    });
-
-    return output as CategorizedDestinations;
-  }
-
-  getCurrentPreferences(cookieConsent: IConsentCookie | null) {
-    const newDestinations = this.getActiveDestinations().filter(
-      (config) => cookieConsent?.savedChoices[config.key] === undefined
-    );
-
-    const output = {};
-    allCategories().forEach((category) => {
-      // if it was enabled and there's a new destination
-      if (
-        !cookieConsent ||
-        (cookieConsent[category] &&
-          newDestinations.find((config) => config.category === category))
-      ) {
-        // reset the category
-        output[category] = undefined;
-      } else {
-        // keep the previous value
-        output[category] = cookieConsent[category];
-      }
-    });
-    return output;
-  }
-
-  setPreferences = (changedPreference) => {
-    this.setState((state) => ({
-      ...state,
-      preferences: { ...state.preferences, ...changedPreference },
-    }));
-  };
-
-  resetPreferences = () => {
-    this.setState((state) => ({
-      ...state,
-      preferences: this.getCurrentPreferences(state.cookieConsent),
-    }));
-  };
-
-  saveConsent = () => {
-    const { preferences, cookieConsent } = this.state;
-    const { tenant } = this.props;
-
-    if (isNilOrError(tenant)) return;
-
-    const newChoices: ISavedDestinations = {};
-    this.getActiveDestinations().forEach((config) => {
-      newChoices[config.key] = preferences[this.getCategory(tenant, config)];
-    });
-
-    setConsent({
-      ...preferences,
-      savedChoices: {
-        ...cookieConsent?.savedChoices,
-        ...newChoices,
-      },
-    });
-
-    eventEmitter.emit<ISavedDestinations>(
-      'destinationConsentChanged',
-      newChoices
-    );
-
-    this.setState({ cookieConsent: getConsent() });
-  };
-
-  accept = () => {
-    this.setState(
-      (state) => {
-        const newPreferences = {};
-        allCategories().forEach((category) => {
-          if (state.preferences[category] === undefined) {
-            newPreferences[category] = true;
-          }
-        });
-        return {
-          ...state,
-          preferences: {
-            ...state.preferences,
-            ...newPreferences,
-          },
-        };
-      },
-      () => this.saveConsent()
-    );
-  };
-
-  reject = () => {
-    this.setState(
-      (state) => {
-        const rejected = {
-          advertising: false,
-          analytics: false,
-          functional: false,
-        };
-
-        return {
-          ...state,
-          preferences: rejected,
-        };
-      },
-      () => this.saveConsent()
-    );
-  };
-
-  toggleDefault = (modalOpened) => {
-    this.setState((state) => {
-      const newPreferences = {};
-      allCategories().forEach((category) => {
-        // set to false when opening the modal
-        if (!modalOpened) {
-          if (state.preferences[category] === undefined) {
-            newPreferences[category] = false;
-          }
-        }
-        // reset false to undefined when closing the modal
-        else if (state.preferences[category] === false) {
-          newPreferences[category] = undefined;
-        }
+      getActiveDestinations(appConfiguration, authUser).forEach((config) => {
+        newChoices[config.key] =
+          newPreferences[getCategory(appConfiguration, config)];
       });
-      return {
-        ...state,
-        preferences: {
-          ...state.preferences,
-          ...newPreferences,
+
+      setConsent({
+        ...newPreferences,
+        savedChoices: {
+          ...cookieConsent?.savedChoices,
+          ...newChoices,
         },
-      };
+      });
+
+      eventEmitter.emit<ISavedDestinations>(
+        'destinationConsentChanged',
+        newChoices
+      );
+
+      setCookieConsent(getConsent());
+    },
+    [appConfiguration, authUser]
+  );
+
+  const onSaveConsent = () => saveConsent(preferences);
+
+  const accept = useCallback(() => {
+    const newPreferences: IPreferences = {};
+
+    allCategories().forEach((category) => {
+      newPreferences[category] =
+        preferences[category] === undefined ? true : preferences[category];
     });
-  };
 
-  render() {
-    const { tenant, authUser } = this.props;
-    const { preferences, cookieConsent } = this.state;
+    setPreferences(newPreferences);
+    saveConsent(newPreferences);
+  }, [preferences, saveConsent]);
 
-    const activeDestinations = this.getActiveDestinations();
+  const reject = useCallback(() => {
+    const newPreferences = {
+      advertising: false,
+      analytics: false,
+      functional: false,
+    };
 
-    const activeCategorizedDestinations =
-      this.categorizeDestinations(activeDestinations);
+    setPreferences(newPreferences);
+    saveConsent(newPreferences);
+  }, [saveConsent]);
 
-    const isConsentRequired =
-      !cookieConsent ||
-      !!activeDestinations.find(
-        (destination) =>
-          !Object.keys(cookieConsent?.savedChoices).includes(destination.key)
-      );
+  const toggleDefault = useCallback((modalOpened: boolean) => {
+    const newPreferences: IPreferences = {};
+    const modalIsCurrentlyOpening = !modalOpened;
 
-    if (!isNilOrError(tenant) && authUser !== undefined) {
-      return (
-        <Container
-          accept={this.accept}
-          reject={this.reject}
-          onToggleModal={this.toggleDefault}
-          setPreferences={this.setPreferences}
-          resetPreferences={this.resetPreferences}
-          saveConsent={this.saveConsent}
-          isConsentRequired={isConsentRequired}
-          preferences={preferences}
-          categorizedDestinations={activeCategorizedDestinations}
-        />
-      );
+    // If modal is currently opening: overwrite undefined preferences with false
+    if (modalIsCurrentlyOpening) {
+      allCategories().forEach((category) => {
+        newPreferences[category] =
+          preferences[category] === undefined ? false : preferences[category];
+      });
     }
 
-    return null;
-  }
-}
+    // If modal is currently closing: overwrite false preferences with undefined
+    if (!modalIsCurrentlyOpening) {
+      allCategories().forEach((category) => {
+        newPreferences[category] =
+          preferences[category] === false ? undefined : preferences[category];
+      });
+    }
 
-const Data = adopt<DataProps, InputProps>({
-  tenant: <GetAppConfiguration />,
-  authUser: <GetAuthUser />,
-});
+    setPreferences(newPreferences);
+  }, []);
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <ConsentManager {...inputProps} {...dataProps} />}
-  </Data>
-);
+  const activeDestinations = useMemo(
+    () => getActiveDestinations(appConfiguration, authUser),
+    [appConfiguration, authUser]
+  );
+
+  const activeCategorizedDestinations = useMemo(
+    () => categorizeDestinations(appConfiguration, activeDestinations),
+    [appConfiguration, activeDestinations]
+  );
+
+  const isConsentRequired = useMemo(
+    () => getConsentRequired(cookieConsent, activeDestinations),
+    [cookieConsent, activeDestinations]
+  );
+
+  return (
+    <Container
+      accept={accept}
+      reject={reject}
+      onToggleModal={toggleDefault}
+      setPreferences={setPreferences}
+      resetPreferences={resetPreferences}
+      saveConsent={onSaveConsent}
+      isConsentRequired={isConsentRequired}
+      preferences={preferences}
+      categorizedDestinations={activeCategorizedDestinations}
+    />
+  );
+};
+
+export default ConsentManager;
