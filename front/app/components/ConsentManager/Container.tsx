@@ -13,7 +13,7 @@ import Modal from 'components/UI/Modal';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-import { CategorizedDestinations, IPreferences } from './';
+import { CategorizedDestinations, IPreferences } from './typings';
 
 import styled from 'styled-components';
 

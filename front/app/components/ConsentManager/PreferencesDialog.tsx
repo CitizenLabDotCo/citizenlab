@@ -4,7 +4,7 @@ import React from 'react';
 import CategoryCard from './CategoryCard';
 
 // Typing
-import { CategorizedDestinations, IPreferences } from '.';
+import { CategorizedDestinations, IPreferences } from './typings';
 
 // Styling
 import styled from 'styled-components';
