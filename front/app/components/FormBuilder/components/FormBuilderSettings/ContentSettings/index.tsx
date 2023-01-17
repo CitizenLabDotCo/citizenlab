@@ -100,23 +100,6 @@ export const ContentSettings = ({
                 }
               />
             </SectionField>
-            <SectionField>
-              <Toggle
-                name={`customFields.${field.index}.showResponseToUsers`}
-                disabled={
-                  !isNilOrError(field.isResponseShownToUsersEditable)
-                    ? !field.isResponseShownToUsersEditable
-                    : false
-                }
-                label={
-                  <Text as="span" color="primary" variant="bodyM" my="0px">
-                    <FormattedMessage
-                      {...messages.showResponseToUsersToggleLabel}
-                    />
-                  </Text>
-                }
-              />
-            </SectionField>
           </>
         )}
         <Box

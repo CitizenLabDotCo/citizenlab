@@ -44,7 +44,6 @@ export interface IAttributes {
   required: boolean;
   showResponseToUsers?: boolean;
   isRequiredEditable?: boolean;
-  isResponseShownToUsersEditable?: boolean;
   isEnabledEditable?: boolean;
   isTitleEditable?: boolean;
   enabled: boolean;
