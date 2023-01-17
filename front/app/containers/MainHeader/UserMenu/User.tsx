@@ -7,7 +7,6 @@ import { isNilOrError } from 'utils/helperUtils';
 // style
 import { colors, media, fontSizes } from 'utils/styleUtils';
 import useAuthUser from 'hooks/useAuthUser';
-import VerificationBadge from './VerificationBadge';
 
 const UserNameContainer = styled.div`
   display: flex;
@@ -41,11 +40,6 @@ const User = ({ userId }: Props) => {
     return null;
   }
 
-  const isVerified =
-    typeof authUser.attributes.verified === 'boolean'
-      ? authUser.attributes.verified
-      : false;
-
   return (
     <>
       <UserNameContainer>
@@ -54,7 +48,6 @@ const User = ({ userId }: Props) => {
           userId={userId}
           hideLastName
         />
-        <VerificationBadge isVerified={isVerified} />
       </UserNameContainer>
 
       <Avatar

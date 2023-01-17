@@ -8,7 +8,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
-import FeatureFlag from 'components/FeatureFlag';
 import Link from 'utils/cl-router/Link';
 
 // hooks
@@ -129,7 +128,7 @@ const Avatar = memo(
     isLinkToProfile,
     moderator,
     className,
-    addVerificationBadge,
+
     userId,
     hideIfNoAvatar,
     ...props
@@ -137,7 +136,7 @@ const Avatar = memo(
     const user = useUser({ userId });
 
     if (!isNilOrError(user)) {
-      const { slug, avatar, verified } = user.attributes;
+      const { slug, avatar } = user.attributes;
       const profileLink = `/profile/${slug}`;
       // In dev mode, slug is sometimes undefined,
       // while !isNilOrError(user) passes... To be solved properly
@@ -199,16 +198,6 @@ const Avatar = memo(
               size={badgeSize}
               fill={colors.red600}
             />
-          )}
-
-          {verified && addVerificationBadge && (
-            <FeatureFlag name="verification">
-              <BadgeIcon
-                name="check-circle"
-                size={badgeSize}
-                fill={colors.success}
-              />
-            </FeatureFlag>
           )}
         </Container>
       );

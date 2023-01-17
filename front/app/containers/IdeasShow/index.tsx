@@ -220,6 +220,7 @@ export const IdeasShow = ({
     inputId: ideaId,
   });
 
+  console.log(ideaCustomFieldsSchemas);
   const isLoaded =
     !isNilOrError(idea) &&
     !isUndefined(ideaImages) &&
@@ -240,7 +241,7 @@ export const IdeasShow = ({
     !isNilOrError(project) &&
     !isNilOrError(idea) &&
     !isNilOrError(locale) &&
-    !isNilOrError(ideaCustomFieldsSchemas) &&
+    // !isNilOrError(ideaCustomFieldsSchemas) &&
     isLoaded
   ) {
     // If the user deletes their profile, authorId can be null

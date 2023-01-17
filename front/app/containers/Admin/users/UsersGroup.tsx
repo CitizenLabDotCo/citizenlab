@@ -27,9 +27,6 @@ import { WrappedComponentProps } from 'react-intl';
 
 // Resources
 import GetGroup, { GetGroupChildProps } from 'resources/GetGroup';
-import GetFeatureFlag, {
-  GetFeatureFlagChildProps,
-} from 'resources/GetFeatureFlag';
 
 // Services
 import { deleteGroup, updateGroup, MembershipType } from 'services/groups';
@@ -43,7 +40,6 @@ export interface InputProps {}
 
 interface DataProps {
   group: GetGroupChildProps;
-  isVerificationEnabled: GetFeatureFlagChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -206,7 +202,6 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   group: ({ params, render }) => (
     <GetGroup id={params.groupId}>{render}</GetGroup>
   ),
-  isVerificationEnabled: <GetFeatureFlag name="verification" />,
 });
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
