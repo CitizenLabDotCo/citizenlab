@@ -43,6 +43,10 @@ export interface IAttributes {
   input_type: ICustomFieldInputType;
   required: boolean;
   showResponseToUsers?: boolean;
+  isRequiredEditable?: boolean;
+  isResponseShownToUsersEditable?: boolean;
+  isEnabledEditable?: boolean;
+  isTitleEditable?: boolean;
   enabled: boolean;
   ordering: number;
   created_at: string;

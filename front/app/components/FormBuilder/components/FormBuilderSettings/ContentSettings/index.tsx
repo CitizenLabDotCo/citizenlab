@@ -20,7 +20,6 @@ import { getAdditionalSettings } from '../utils';
 import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
-import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
 type ContentSettingsProps = {
   field: IFlatCustomFieldWithIndex;
@@ -28,7 +27,6 @@ type ContentSettingsProps = {
   onClose: () => void;
   isDeleteDisabled?: boolean;
   locales: Locale[];
-  builderConfig: FormBuilderConfig;
 };
 
 export const ContentSettings = ({
@@ -37,18 +35,11 @@ export const ContentSettings = ({
   onClose,
   isDeleteDisabled,
   onDelete,
-  builderConfig,
 }: ContentSettingsProps) => {
   const { watch } = useFormContext();
   const logic = watch(`customFields.${field.index}.logic`);
   const platformLocale = useLocale();
   const hasRules = logic && logic.rules && logic.rules.length > 0;
-  const {
-    isEnableToggleDisabled,
-    isTitleConfigurable,
-    isRequiredToggleDisabled,
-    isResponseToggleDisabled,
-  } = builderConfig;
 
   if (!isNilOrError(platformLocale)) {
     return (
@@ -59,8 +50,9 @@ export const ContentSettings = ({
               <Toggle
                 name={`customFields.${field.index}.enabled`}
                 disabled={
-                  (isEnableToggleDisabled && isEnableToggleDisabled(field)) ||
-                  false
+                  !isNilOrError(field.isEnabledEditable)
+                    ? !field.isEnabledEditable
+                    : false
                 }
                 label={
                   <Text as="span" color="primary" variant="bodyM" my="0px">
@@ -69,17 +61,19 @@ export const ContentSettings = ({
                 }
               />
             </SectionField>
-            {((isTitleConfigurable && isTitleConfigurable(field)) || true) && (
-              <SectionField>
-                <InputMultilocWithLocaleSwitcher
-                  initiallySelectedLocale={platformLocale}
-                  id="e2e-title-multiloc"
-                  name={`customFields.${field.index}.title_multiloc`}
-                  label={<FormattedMessage {...messages.questionTitle} />}
-                  type="text"
-                />
-              </SectionField>
-            )}
+            {!isNilOrError(field.isTitleEditable)
+              ? field.isTitleEditable
+              : true && (
+                  <SectionField>
+                    <InputMultilocWithLocaleSwitcher
+                      initiallySelectedLocale={platformLocale}
+                      id="e2e-title-multiloc"
+                      name={`customFields.${field.index}.title_multiloc`}
+                      label={<FormattedMessage {...messages.questionTitle} />}
+                      type="text"
+                    />
+                  </SectionField>
+                )}
             <SectionField>
               <InputMultilocWithLocaleSwitcher
                 initiallySelectedLocale={platformLocale}
@@ -98,10 +92,7 @@ export const ContentSettings = ({
             <SectionField id="e2e-required-toggle">
               <Toggle
                 name={`customFields.${field.index}.required`}
-                disabled={
-                  hasRules ||
-                  (isRequiredToggleDisabled && isRequiredToggleDisabled(field))
-                }
+                disabled={hasRules || !field.isRequiredEditable}
                 label={
                   <Text as="span" color="primary" variant="bodyM" my="0px">
                     <FormattedMessage {...messages.requiredToggleLabel} />
@@ -113,7 +104,9 @@ export const ContentSettings = ({
               <Toggle
                 name={`customFields.${field.index}.showResponseToUsers`}
                 disabled={
-                  isResponseToggleDisabled && isResponseToggleDisabled(field)
+                  !isNilOrError(field.isResponseShownToUsersEditable)
+                    ? !field.isResponseShownToUsersEditable
+                    : false
                 }
                 label={
                   <Text as="span" color="primary" variant="bodyM" my="0px">
