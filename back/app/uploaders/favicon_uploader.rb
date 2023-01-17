@@ -20,5 +20,3 @@ class FaviconUploader < BaseImageUploader
     process convert: :png
   end
 end
-
-FaviconUploader.prepend_if_ee('MultiTenancy::Patches::FaviconUploader')

@@ -164,5 +164,3 @@ module EmailCampaigns
     end
   end
 end
-
-EmailCampaigns::DeliveryService.prepend_if_ee('FlagInappropriateContent::Patches::EmailCampaigns::DeliveryService')

@@ -116,5 +116,3 @@ class UserPolicy < ApplicationPolicy
       .not_hidden
   end
 end
-
-UserPolicy.prepend_if_ee('Verification::Patches::UserPolicy')

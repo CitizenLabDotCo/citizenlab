@@ -180,5 +180,3 @@ class CustomField < ApplicationRecord
     self.description_multiloc = service.linkify_multiloc description_multiloc
   end
 end
-
-CustomField.include_if_ee('UserCustomFields::Patches::CustomField')

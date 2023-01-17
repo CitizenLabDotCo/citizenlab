@@ -443,7 +443,3 @@ class User < ApplicationRecord
 end
 
 User.include(UserConfirmation::Extensions::User)
-
-User.include_if_ee('Verification::Patches::User')
-User.prepend_if_ee('MultiTenancy::Patches::User')
-User.prepend_if_ee('MultiTenancy::Patches::UserConfirmation::User')

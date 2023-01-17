@@ -118,5 +118,3 @@ class Comment < ApplicationRecord
     end
   end
 end
-
-Comment.include_if_ee 'FlagInappropriateContent::Concerns::Flaggable'

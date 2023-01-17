@@ -73,5 +73,3 @@ class WebApi::V1::NotificationsController < ApplicationController
     %i[recipient initiating_user post post_status comment project phase official_feedback spam_report invite]
   end
 end
-
-WebApi::V1::NotificationsController.prepend_if_ee('FlagInappropriateContent::Patches::WebApi::V1::NotificationsController')

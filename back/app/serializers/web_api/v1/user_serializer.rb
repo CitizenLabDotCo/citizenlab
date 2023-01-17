@@ -39,4 +39,3 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
 end
 
 WebApi::V1::UserSerializer.include(UserConfirmation::Extensions::WebApi::V1::UserSerializer)
-WebApi::V1::UserSerializer.include_if_ee('Verification::Patches::WebApi::V1::UserSerializer')
