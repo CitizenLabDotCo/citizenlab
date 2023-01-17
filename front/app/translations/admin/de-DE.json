@@ -1,5 +1,10 @@
 {
   "UI.FormComponents.required": "erforderlich",
+  "app.components.Admin.ImageCropper.imageSupportPageText": "Besuchen Sie unsere Wissensdatenbank",
+  "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.citizenlab.co/de/articles/1346397-welche-dimensionen-und-grossen-sind-fur-bilder-auf-der-plattform-empfohlen",
+  "app.components.Admin.ImageCropper.imageTooltip": "Weitere Informationen zu empfohlenen Bildauflösungen finden Sie unter {supportPageLink}.",
+  "app.components.Admin.ImageCropper.info": "This image is always cropped to a certain ratio to make sure all crucial aspects are on display at all times. The {link} for this image type is {aspect}:1.",
+  "app.components.Admin.ImageCropper.infoLinkText": "empfohlenes Verhältnis",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Kopfzeilentext für registrierte BenutzerInnen",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Warnung: Die von Ihnen gewählte Farbe hat keinen ausreichend hohen Kontrast. Dies kann dazu führen, dass der Text schwer zu lesen ist. Wählen Sie eine dunklere Farbe, um die Lesbarkeit zu optimieren.",
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "Veranstaltungen zur Navigationsleiste hinzufügen",
@@ -138,6 +143,7 @@
   "app.components.admin.PostManager.topicsTabTooltipText": "Fügen Sie Themen per Drag & Drop zu einem Eintrag hinzu.",
   "app.components.admin.PostManager.up": "Dafür",
   "app.components.admin.PostManager.votes": "Stimmen",
+  "app.components.admin.ProjectableHeaderBgUploader.headerImageInputLabel": "Header image",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "von",
   "app.components.admin.ReportExportMenu.FileName.groupFilter": "gruppe",
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "projekt",

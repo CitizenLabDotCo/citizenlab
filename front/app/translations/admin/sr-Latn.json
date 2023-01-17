@@ -1,5 +1,10 @@
 {
   "UI.FormComponents.required": "obavezno",
+  "app.components.Admin.ImageCropper.imageSupportPageText": "visit our support center",
+  "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "app.components.Admin.ImageCropper.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}.",
+  "app.components.Admin.ImageCropper.info": "Ova slika uvek je isečena na određene proporcije kako bi se osiguralo da će svi ključni aspekti biti prikazani u svakom trenutku. {link} za ovaj tip slike je {aspect}:1.",
+  "app.components.Admin.ImageCropper.infoLinkText": "recommended ratio",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Tekst zaglavlja za registrovane posetioce",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Upozorenje: izabrane boje nisu u međusobnom kontrastu. To može uticati na smanjenu čitljivost teksta. Odaberite tamniju boju da biste povećali čitljivost.",
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "Dodajte događaje u navigacioni meni",
@@ -138,6 +143,7 @@
   "app.components.admin.PostManager.topicsTabTooltipText": "Kliknite i prevucite kako biste dodali teme ovom unosu.",
   "app.components.admin.PostManager.up": "Gore",
   "app.components.admin.PostManager.votes": "Glasovi",
+  "app.components.admin.ProjectableHeaderBgUploader.headerImageInputLabel": "Header image",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "od",
   "app.components.admin.ReportExportMenu.FileName.groupFilter": "grupa",
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "projekat",

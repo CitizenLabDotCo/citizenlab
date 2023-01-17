@@ -1,5 +1,10 @@
 {
   "UI.FormComponents.required": "påkrævet",
+  "app.components.Admin.ImageCropper.imageSupportPageText": "visit our support center",
+  "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "app.components.Admin.ImageCropper.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}.",
+  "app.components.Admin.ImageCropper.info": "This image is always cropped to a certain ratio to make sure all crucial aspects are on display at all times. The {link} for this image type is {aspect}:1.",
+  "app.components.Admin.ImageCropper.infoLinkText": "recommended ratio",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Overskriftstekst for registrerede brugere",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Advarsel: Den ududvalgte farve har ikke tilstrækkelig høj kontrast. Dette kan resultere i tekst, der er svær at læse. udvalgt en mørkere farve for at optimere læsbarheden.",
   "app.components.AdminPage.SettingsPage.eventsPageSetting": "Tilføj begivenheder til navigationslinjen",
@@ -138,6 +143,7 @@
   "app.components.admin.PostManager.topicsTabTooltipText": "Føj emner til et input ved hjælp af træk og slip.",
   "app.components.admin.PostManager.up": "Op",
   "app.components.admin.PostManager.votes": "Stemmer",
+  "app.components.admin.ProjectableHeaderBgUploader.headerImageInputLabel": "Header image",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "fra",
   "app.components.admin.ReportExportMenu.FileName.groupFilter": "gruppe",
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "projekt",
