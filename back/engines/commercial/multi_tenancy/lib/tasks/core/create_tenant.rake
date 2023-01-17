@@ -270,6 +270,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        project_visibility: {
+          enabled: true,
+          allowed: true
+        },
         moderation: {
           enabled: true,
           allowed: true
