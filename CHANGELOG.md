@@ -1,10 +1,24 @@
 # Changelog
 
+### Fixed
+
+[CL-2611] Show projects nested in folders on custom pages
+
+## 2023-01-16
+
+### Added
+
+- [CL-2320] Image dimensions i2: folder & project banner images
+
 ## 2023-01-13 (2)
 
 ### Added
 
 - [CL-2214] Report builder MVP (behind feature flag)
+
+### Fixed
+
+- [CL-2597] Custom tags tab is once again visible in both projects and platform settings
 
 ## 2023-01-13
 
