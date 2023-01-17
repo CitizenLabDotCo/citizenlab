@@ -34,14 +34,14 @@ export const getFieldBackgroundColor = (
     return rgba(colors.tealLight, 0.7);
   } else if (hasErrors) {
     return colors.errorLight;
-  } else if (field.input_type === 'page') {
+  } else if (['page', 'section'].includes(field.input_type)) {
     return rgba(colors.coolGrey300, 0.15);
   }
   return undefined;
 };
 
 export const getIndexTitleColor = (inputType: ICustomFieldInputType) => {
-  return inputType === 'page' ? 'blue500' : 'teal400';
+  return ['page', 'section'].includes(inputType) ? 'blue500' : 'teal400';
 };
 
 export const getIndexForTitle = (
@@ -50,9 +50,13 @@ export const getIndexForTitle = (
 ) => {
   const fieldIndex = formCustomFields
     .filter((customField) => {
-      return field.input_type === 'page'
-        ? customField.input_type === 'page'
-        : customField.input_type !== 'page';
+      if (field.input_type === 'section') {
+        return customField.input_type === 'section';
+      } else if (field.input_type === 'page') {
+        return customField.input_type === 'page';
+      }
+
+      return !['page', 'section'].includes(customField.input_type);
     })
     .findIndex((f) => f.id === field.id);
 

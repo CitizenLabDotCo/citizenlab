@@ -77,6 +77,8 @@ const getFieldIcon = (inputType: ICustomFieldInputType): IconNames => {
       return 'survey-number-field';
     case 'linear_scale':
       return 'survey-linear-scale';
+    case 'section':
+      return 'section';
     case 'file_upload':
       return 'upload-file';
     case 'image_files':
@@ -109,6 +111,13 @@ export const FieldElement = (props: Props) => {
   const hasErrors = !!errors.customFields?.[index];
   const showLogicOnRow =
     field.input_type !== 'page' ? field.logic.rules : field.logic;
+  const isFieldGrouping = ['page', 'section'].includes(field.input_type);
+  let rowTitle: MessageDescriptor = messages.question;
+  if (field.input_type === 'page') {
+    rowTitle = messages.page;
+  } else if (field.input_type === 'section') {
+    rowTitle = messages.section;
+  }
 
   const editFieldAndValidate = () => {
     onEditField({ ...field, index });
@@ -125,13 +134,13 @@ export const FieldElement = (props: Props) => {
       }}
       data-cy="e2e-field-row"
     >
-      <FlexibleRow rowHeight={field.input_type === 'page' ? '50px' : '70px'}>
+      <FlexibleRow rowHeight={isFieldGrouping ? '50px' : '70px'}>
         <Box
           display="flex"
           justifyContent="space-between"
           className="expand"
           width="100%"
-          ml={field.input_type === 'page' ? '8px' : '32px'}
+          ml={isFieldGrouping ? '8px' : '32px'}
         >
           <Box display="flex" alignItems="center" height="100%">
             <Box display="block">
@@ -161,11 +170,7 @@ export const FieldElement = (props: Props) => {
                   mx="12px"
                 >
                   <>
-                    <FormattedMessage
-                      {...(field.input_type === 'page'
-                        ? messages.page
-                        : messages.question)}
-                    />
+                    <FormattedMessage {...rowTitle} />
                     {getIndexForTitle(formCustomFields, field)}
                   </>
                 </Text>
@@ -281,7 +286,7 @@ export const FieldElement = (props: Props) => {
                 </Badge>
               </Box>
             )}
-            {field.input_type !== 'page' && (
+            {!isFieldGrouping && (
               <Box my="auto" ml="12px">
                 {' '}
                 <Badge className="inverse" color={colors.grey200}>

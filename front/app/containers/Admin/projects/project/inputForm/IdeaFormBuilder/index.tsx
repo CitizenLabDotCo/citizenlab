@@ -1,5 +1,4 @@
 import { getUpdatedConfiguration } from 'components/FormBuilder/utils';
-import useFormCustomFields from 'hooks/useFormCustomFields';
 import React, { lazy } from 'react';
 import { useParams } from 'react-router-dom';
 import { ICustomFieldInputType } from 'services/formCustomFields';
@@ -20,8 +19,10 @@ const IdeaFormBuilder = () => {
       id: 'f5f4d0bb-3059-4cc2-aadf-fc5eb828399d',
       type: 'custom_field',
       key: 'page_1',
-      input_type: 'page' as ICustomFieldInputType,
-      title_multiloc: {},
+      input_type: 'section' as ICustomFieldInputType,
+      title_multiloc: {
+        en: 'What is your idea?',
+      },
       required: false,
       ordering: 9,
       enabled: true,

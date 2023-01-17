@@ -5,7 +5,7 @@ import { Locale } from 'typings';
 // Components
 import ConfigSelectWithLocaleSwitcher from './ConfigSelectWithLocaleSwitcher';
 import LinearScaleSettings from './LinearScaleSettings';
-import PageSettings from './PageSettings';
+import FieldGroupSettings from './FieldGroupSettings';
 
 // utils
 import { uuid4 } from '@sentry/utils';
@@ -34,7 +34,8 @@ export function getAdditionalSettings(
         />
       );
     case 'page':
-      return <PageSettings locale={platformLocale} field={field} />;
+    case 'section':
+      return <FieldGroupSettings locale={platformLocale} field={field} />;
     case 'linear_scale':
       return (
         <LinearScaleSettings

@@ -35,6 +35,7 @@ export const nativeSurveyConfig: FormBuilderConfig = {
   isEditPermittedAfterSubmissions: false,
   showEnableToggle: false,
 
+  groupingType: 'page',
   getDeleteFormResultsNotice: (projectId: string) => {
     return (
       <DeleteFormResultsNotice

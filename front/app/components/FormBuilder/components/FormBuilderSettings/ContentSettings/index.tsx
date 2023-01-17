@@ -43,11 +43,12 @@ export const ContentSettings = ({
   const logic = watch(`customFields.${field.index}.logic`);
   const platformLocale = useLocale();
   const hasRules = logic && logic.rules && logic.rules.length > 0;
+  const isFieldGrouping = ['page', 'section'].includes(field.input_type);
 
   if (!isNilOrError(platformLocale)) {
     return (
       <Box mt="16px">
-        {field.input_type !== 'page' && (
+        {!isFieldGrouping && (
           <>
             {builderConfig.showEnableToggle && (
               <SectionField>

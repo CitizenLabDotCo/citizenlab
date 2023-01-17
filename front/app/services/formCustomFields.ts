@@ -17,6 +17,7 @@ export type ICustomFieldInputType =
   | 'number'
   | 'select'
   | 'linear_scale'
+  | 'section'
   | 'page'
   | 'file_upload'
   | 'title_multiloc'

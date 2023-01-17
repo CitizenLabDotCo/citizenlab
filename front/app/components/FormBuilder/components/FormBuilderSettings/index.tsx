@@ -165,6 +165,9 @@ const FormBuilderSettings = ({
     case 'page':
       translatedStringKey = messages.page;
       break;
+    case 'section':
+      translatedStringKey = messages.section;
+      break;
     case 'number':
       translatedStringKey = messages.number;
       break;
