@@ -31,7 +31,7 @@ const BlickingIcon = styled(Icon)<{ showAnimation: boolean }>`
   animation-duration: ${({ showAnimation }) => (showAnimation ? '1.8s' : '0s')};
   animation-delay: 1s;
   animation-timing-function: ease-in-out;
-  animation-iteration-count: 10;
+  animation-iteration-count: 2;
 
   @keyframes blink-animation {
     0% {
