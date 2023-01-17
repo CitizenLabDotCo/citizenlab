@@ -92,7 +92,6 @@ const IdeaFormBuilder = () => {
       isRequiredEditable: false,
       isEnabledEditable: false,
       isTitleEditable: false,
-      showResponseToUsers: true,
       relationships: {
         options: {
           data: [],
@@ -146,7 +145,6 @@ const IdeaFormBuilder = () => {
       code: 'body_multiloc',
       created_at: '2023-01-10T08:10:09.783Z',
       updated_at: '2023-01-10T08:10:09.783Z',
-      showResponseToUsers: true,
       logic: {},
       isRequiredEditable: false,
       isEnabledEditable: false,
@@ -379,7 +377,6 @@ const IdeaFormBuilder = () => {
       code: 'idea_images_attributes',
       created_at: '2023-01-10T08:10:09.783Z',
       updated_at: '2023-01-10T08:10:09.783Z',
-      showResponseToUsers: true,
       logic: {},
       isRequiredEditable: true,
       isEnabledEditable: false,

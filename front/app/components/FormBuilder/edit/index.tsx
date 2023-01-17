@@ -173,7 +173,6 @@ export const FormEdit = ({
           logic: field.logic,
         }),
         required: field.required,
-        showResponseToUsers: field.showResponseToUsers,
         enabled: field.enabled,
         title_multiloc: field.title_multiloc || {},
         description_multiloc: field.description_multiloc || {},

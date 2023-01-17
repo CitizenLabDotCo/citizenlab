@@ -45,7 +45,6 @@ export interface IAttributes {
   description_multiloc: Multiloc;
   input_type: ICustomFieldInputType;
   required: boolean;
-  showResponseToUsers?: boolean;
   isRequiredEditable?: boolean;
   isEnabledEditable?: boolean;
   isTitleEditable?: boolean;
@@ -128,7 +127,6 @@ export type IFlatCreateCustomField = Optional<
   | 'updated_at'
   | 'minimum_label_multiloc'
   | 'maximum_label_multiloc'
-  | 'showResponseToUsers'
   | 'maximum'
 > & {
   isLocalOnly: boolean;
