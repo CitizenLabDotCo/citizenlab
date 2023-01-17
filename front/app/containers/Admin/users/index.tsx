@@ -64,8 +64,6 @@ import messages from './messages';
 // Services
 import { IGroupData, addGroup, MembershipType } from 'services/groups';
 
-import Outlet from 'components/Outlet';
-
 export interface Props {
   isVerificationEnabled: GetFeatureFlagChildProps;
 }
@@ -113,19 +111,7 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
   };
 
   renderModalHeader = () => {
-    const { groupCreationModal } = this.state;
-    if (groupCreationModal === 'step1') {
-      return <FormattedMessage {...messages.modalHeaderStep1} />;
-    }
-    if (groupCreationModal === 'manual') {
-      return <FormattedMessage {...messages.modalHeaderStep1} />;
-    }
-    return (
-      <Outlet
-        id="app.containers.Admin.users.header"
-        type={groupCreationModal}
-      />
-    );
+    return <FormattedMessage {...messages.modalHeaderStep1} />;
   };
 
   render() {
@@ -168,13 +154,6 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
                 onSubmit={this.handleSubmitForm}
               />
             )}
-
-            <Outlet
-              id="app.containers.Admin.users.form"
-              type={groupCreationModal}
-              onSubmit={this.handleSubmitForm}
-              isVerificationEnabled={this.props.isVerificationEnabled}
-            />
           </>
         </Modal>
       </>
