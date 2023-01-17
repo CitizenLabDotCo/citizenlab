@@ -22,6 +22,30 @@ import { getPeriodRemainingUntil } from 'utils/dateUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
+// styling
+import styled from 'styled-components';
+
+const BlickingIcon = styled(Icon)<{ showAnimation: boolean }>`
+  animation-name: blink-animation;
+  animation-duration: 1.8s;
+  animation-duration: ${({ showAnimation }) => (showAnimation ? '1.8s' : '0s')};
+  animation-delay: 1s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 10;
+
+  @keyframes blink-animation {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+`;
+
 type Props = {
   timeLeft?: string;
   hasUserParticipated?: boolean;
@@ -104,12 +128,13 @@ export const ParticipationCTAContent = ({
       p="20px"
     >
       <Box display="flex" justifyContent="center" alignItems="center">
-        <Icon
+        <BlickingIcon
           name={hasUserParticipated ? 'check-circle' : 'dot'}
           width="16px"
           height="16px"
           fill={colors.white}
           mr="6px"
+          showAnimation={!hasUserParticipated}
         />
         <Text color="white" fontWeight="bold" fontSize="s">
           <FormattedMessage {...message} />
