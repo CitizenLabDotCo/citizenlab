@@ -143,10 +143,11 @@ const BannerImageField = ({
         overlay_controls: false,
       },
       fixed_ratio_layout: {
+        // Only show for an unsaved image
         image_cropper: hasLocalHeaderImage && imageShouldBeSaved,
         preview_device: false,
-        // For the fixed_ratio_layout we only show it for a saved image.
-        // An unsaved image should show the image cropper instead.
+        // Only show when we have the image uploader. For this layout
+        // that means: image is saved (for an unsaved image we show the cropper)
         overlay_controls: hasLocalHeaderImage && !imageShouldBeSaved,
       },
     };
