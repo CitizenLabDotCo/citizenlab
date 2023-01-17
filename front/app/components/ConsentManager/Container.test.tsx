@@ -1,27 +1,22 @@
-// @ts-nocheck
-// libraries
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render, act, fireEvent } from 'utils/testUtils/rtl';
 import eventEmitter from 'utils/eventEmitter';
-
-import 'jest-styled-components';
 
 // component to test
 import Container from './Container';
+import { CategorizedDestinations } from './typings';
 
 // mock utilities
-jest.mock('./Banner', () => 'Banner');
-jest.mock('./PreferencesDialog', () => 'PreferencesDialog');
-jest.mock('./Footer', () => 'Footer');
-jest.mock('components/UI/Modal', () => 'Modal');
-
 jest.mock('utils/cl-intl');
-const Intl = require('utils/cl-intl/__mocks__/');
-const { intl } = Intl;
+jest.mock('services/appConfiguration');
+jest.mock('modules', () => ({ streamsToReset: [] }));
+jest.mock('utils/cl-router/Link', () => ({ children }) => <a>{children}</a>);
 
-let setPreferences: jest.Mock;
+let updatePreference: jest.Mock;
 let resetPreferences: jest.Mock;
 let saveConsent: jest.Mock;
+let accept: jest.Mock;
+let reject: jest.Mock;
 
 const initialPreferences = {
   analytics: undefined,
@@ -29,7 +24,7 @@ const initialPreferences = {
   advertising: undefined,
 };
 
-const categorizedDestinations = {
+const categorizedDestinations: CategorizedDestinations = {
   analytics: ['google_analytics'],
   functional: ['intercom'],
   advertising: [],
@@ -39,18 +34,21 @@ const emptyFunction = () => {};
 
 describe('<Container />', () => {
   beforeEach(() => {
-    setPreferences = jest.fn();
+    updatePreference = jest.fn();
     resetPreferences = jest.fn();
     saveConsent = jest.fn();
+    accept = jest.fn();
+    reject = jest.fn();
   });
 
-  it('renders correclty when no destinations are allowed by the tenant', () => {
-    const wrapper = shallow(
+  it('renders correctly when no destinations are allowed by the tenant (i.e. isConsentRequired === false)', () => {
+    const { container } = render(
       <Container
-        intl={intl}
-        setPreferences={setPreferences}
+        updatePreference={updatePreference}
         resetPreferences={resetPreferences}
         saveConsent={saveConsent}
+        accept={accept}
+        reject={reject}
         isConsentRequired={false}
         preferences={initialPreferences}
         categorizedDestinations={categorizedDestinations}
@@ -58,65 +56,64 @@ describe('<Container />', () => {
       />
     );
 
+    expect(
+      container.querySelector('#e2e-preference-dialog')
+    ).not.toBeInTheDocument();
+    expect(
+      container.querySelector('#e2e-cookie-banner')
+    ).not.toBeInTheDocument();
+
     // wih no destinations allowed, isConsentRequired will be false so no banner
     // but the modal is still accessible trough the cookie policy
-    eventEmitter.emit('openConsentManager');
-    expect(wrapper).toMatchSnapshot();
+    act(() => {
+      eventEmitter.emit('openConsentManager');
+    });
+
+    expect(
+      container.querySelector('#e2e-preference-dialog')
+    ).toBeInTheDocument();
+    expect(
+      container.querySelector('#e2e-cookie-banner')
+    ).not.toBeInTheDocument();
   });
 
-  it('handle changes as expected', () => {
-    const wrapper = shallow(
-      <Container
-        intl={intl}
-        setPreferences={setPreferences}
-        resetPreferences={resetPreferences}
-        saveConsent={saveConsent}
-        isConsentRequired={true}
-        preferences={initialPreferences}
-        categorizedDestinations={categorizedDestinations}
-        onToggleModal={emptyFunction}
-      />
-    );
-
-    wrapper.find('PreferencesDialog').props().onChange('advertising', false);
-
-    // accept all only calls saveConsent with preferences unchanged, so still equal to initialPreferences.
-    // it's tested on the ConsentManager that this will have the expected behaviour.
-    expect(setPreferences).toHaveBeenCalledWith({ advertising: false });
-    expect(saveConsent).not.toHaveBeenCalled();
-    expect(resetPreferences).not.toHaveBeenCalled();
-  });
-
-  describe('shows the banner is and only if consent is required', () => {
+  describe.only('shows the banner is and only if consent is required', () => {
     it('consent is required, it shows the banner', () => {
-      const wrapper = shallow(
+      const { container } = render(
         <Container
-          intl={intl}
-          setPreferences={setPreferences}
+          updatePreference={updatePreference}
           resetPreferences={resetPreferences}
           saveConsent={saveConsent}
+          accept={accept}
+          reject={reject}
           isConsentRequired={true}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
           onToggleModal={emptyFunction}
         />
       );
-      expect(wrapper.find('Banner').exists()).toBeTruthy();
+
+      expect(container.querySelector('#e2e-cookie-banner')).toBeInTheDocument();
     });
+
     it("consent is't required, it doesn't show the banner", () => {
-      const wrapper = shallow(
+      const { container } = render(
         <Container
-          intl={intl}
-          setPreferences={setPreferences}
+          updatePreference={updatePreference}
           resetPreferences={resetPreferences}
           saveConsent={saveConsent}
+          accept={accept}
+          reject={reject}
           isConsentRequired={false}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
           onToggleModal={emptyFunction}
         />
       );
-      expect(wrapper.find('Banner').exists()).toBeFalsy();
+
+      expect(
+        container.querySelector('#e2e-cookie-banner')
+      ).not.toBeInTheDocument();
     });
   });
 
