@@ -11,7 +11,7 @@ import SlugInput from 'components/admin/SlugInput';
 import ProjectTypePicker from './components/ProjectTypePicker';
 import TopicInputs from './components/TopicInputs';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
-import HeaderImageDropzone from './components/HeaderImageDropzone';
+import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
 import ProjectImageDropzone from './components/ProjectImageDropzone';
 import AttachmentsDropzone from './components/AttachmentsDropzone';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
@@ -92,8 +92,6 @@ const AdminProjectsProjectGeneral = () => {
   // both in projectAttributesDiff and as separate state.
   const [projectType, setProjectType] =
     useState<IProjectFormState['projectType']>('timeline');
-  const [projectHeaderImage, setProjectHeaderImage] =
-    useState<IProjectFormState['projectHeaderImage']>(null);
   const [projectFiles, setProjectFiles] = useState<
     IProjectFormState['projectFiles']
   >([]);
@@ -118,11 +116,6 @@ const AdminProjectsProjectGeneral = () => {
         setPublicationStatus(project.attributes.publication_status);
         setProjectType(project.attributes.process_type);
         setSlug(project.attributes.slug);
-        const headerUrl = project.attributes.header_bg.large;
-        const projectHeaderImage = headerUrl
-          ? await convertUrlToUploadFile(headerUrl, null, null)
-          : null;
-        setProjectHeaderImage(projectHeaderImage ? [projectHeaderImage] : null);
       }
     })();
   }, [project]);
@@ -207,24 +200,12 @@ const AdminProjectsProjectGeneral = () => {
     setProjectType(projectType);
   };
 
-  const handleHeaderOnAdd = (newHeader: UploadFile[]) => {
-    const newHeaderFile = newHeader[0];
-
-    setSubmitState('enabled');
+  const handleHeaderBgChange = (newImageBase64: string | null) => {
     setProjectAttributesDiff((projectAttributesDiff) => ({
       ...projectAttributesDiff,
-      header_bg: newHeaderFile.base64,
-    }));
-    setProjectHeaderImage([newHeaderFile]);
-  };
-
-  const handleHeaderOnRemove = async () => {
-    setProjectAttributesDiff((projectAttributesDiff) => ({
-      ...projectAttributesDiff,
-      header_bg: null,
+      header_bg: newImageBase64,
     }));
     setSubmitState('enabled');
-    setProjectHeaderImage(null);
   };
 
   const handleProjectImagesOnAdd = (projectImages: UploadFile[]) => {
@@ -580,10 +561,9 @@ const AdminProjectsProjectGeneral = () => {
           />
         )}
 
-        <HeaderImageDropzone
-          projectHeaderImage={projectHeaderImage}
-          handleHeaderOnAdd={handleHeaderOnAdd}
-          handleHeaderOnRemove={handleHeaderOnRemove}
+        <HeaderBgUploader
+          imageUrl={project?.attributes.header_bg.large}
+          onImageChange={handleHeaderBgChange}
         />
 
         <ProjectImageDropzone

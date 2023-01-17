@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  IconTooltip,
-  IOption,
-  Select,
-} from '@citizenlab/cl2-component-library';
+import { Box, IOption, Select } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import OverlayControls from './OverlayControls';
 import ImageUploader from './ImageUploader';
@@ -26,6 +21,8 @@ import {
   IHomepageSettingsAttributes,
   THomepageBannerLayout,
 } from 'services/homepageSettings';
+
+import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
 
 export interface Props {
   onAddImage: (newImageBase64: string) => void;
@@ -161,26 +158,7 @@ const BannerImageField = ({
     <>
       <SubSectionTitle>
         <FormattedMessage {...messages.header_bg} />
-        <IconTooltip
-          content={
-            <FormattedMessage
-              {...messages.headerBgTooltip}
-              values={{
-                supportPageLink: (
-                  <a
-                    href={formatMessage(messages.imageSupportPageURL)}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <FormattedMessage
-                      {...messages.headerImageSupportPageText}
-                    />
-                  </a>
-                ),
-              }}
-            />
-          }
-        />
+        <ImageInfoTooltip />
       </SubSectionTitle>
       <SectionField>
         {showConditions(bannerLayout).preview_device && (

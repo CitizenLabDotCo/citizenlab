@@ -169,7 +169,6 @@ export interface IAppConfigurationSettings {
   ideaflow_social_sharing?: AppConfigurationFeature;
   initiativeflow_social_sharing?: AppConfigurationFeature;
   machine_translations?: AppConfigurationFeature;
-  custom_topics?: AppConfigurationFeature;
   custom_maps?: AppConfigurationFeature;
   similar_ideas?: AppConfigurationFeature;
   polls?: AppConfigurationFeature;

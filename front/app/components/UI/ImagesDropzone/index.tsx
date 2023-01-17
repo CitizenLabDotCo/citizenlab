@@ -379,7 +379,7 @@ class ImagesDropzone extends PureComponent<
     const objectFit = this.props.objectFit || 'cover';
 
     return (
-      <Container className={className || ''}>
+      <Container className={className || ''} data-testid="images-dropzone">
         <ContentWrapper>
           {(maxNumberOfImages > 1 ||
             (maxNumberOfImages === 1 && isEmpty(images))) && (
