@@ -3,7 +3,6 @@ import { loadModules } from 'utils/moduleUtils';
 import ideaCustomFieldsConfiguration from './commercial/idea_custom_fields';
 import moderationConfiguration from './commercial/moderation';
 
-import widgetsConfiguration from './commercial/widgets';
 import eventsWidgetConfiguration from './commercial/events_widget';
 
 // eslint-disable-next-line no-var
@@ -18,10 +17,6 @@ export default loadModules([
   },
   {
     configuration: moderationConfiguration,
-    isEnabled,
-  },
-  {
-    configuration: widgetsConfiguration,
     isEnabled,
   },
   {

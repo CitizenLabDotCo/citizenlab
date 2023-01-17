@@ -15,7 +15,6 @@ import { injectIntl } from 'utils/cl-intl';
 
 import { InsertConfigurationOptions, ITab } from 'typings';
 import { insertConfiguration } from 'utils/moduleUtils';
-import Outlet from 'components/Outlet';
 
 export interface InputProps {}
 
@@ -83,21 +82,15 @@ class SettingsPage extends React.PureComponent<
     };
 
     return (
-      <>
-        <Outlet
-          id="app.containers.Admin.settings.tabs"
-          onData={this.handleData}
+      <TabbedResource resource={resource} tabs={this.state.tabs}>
+        <HelmetIntl
+          title={messages.helmetTitle}
+          description={messages.helmetDescription}
         />
-        <TabbedResource resource={resource} tabs={this.state.tabs}>
-          <HelmetIntl
-            title={messages.helmetTitle}
-            description={messages.helmetDescription}
-          />
-          <div id="e2e-settings-container">
-            <RouterOutlet />
-          </div>
-        </TabbedResource>
-      </>
+        <div id="e2e-settings-container">
+          <RouterOutlet />
+        </div>
+      </TabbedResource>
     );
   }
 }
