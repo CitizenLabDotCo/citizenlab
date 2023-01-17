@@ -24,8 +24,8 @@ describe LocalProjectCopyService do
         downvoting_method: 'limited',
         downvoting_limited_max: 3,
         presentation_mode: 'card',
-        min_budget: 0,
-        max_budget: nil,
+        min_budget: 1000,
+        max_budget: 5000,
         ideas_order: 'trending',
         input_term: 'idea',
         description_preview_multiloc: { en: 'Description preview text' },
@@ -40,6 +40,7 @@ describe LocalProjectCopyService do
     end
 
     let!(:timeline_project) { create :project_with_past_ideation_and_current_information_phase }
+    let!(:folder) { create :project_folder }
 
     it 'works' do
       project_count = Project.count
@@ -92,6 +93,13 @@ describe LocalProjectCopyService do
       expect(copied_project.folder_id).to eq continuous_project.folder_id
     end
 
+    it 'copies project to same folder as source project' do
+      source_project = build(:project, folder_id: folder.id)
+
+      copied_project = service.copy(source_project)
+      expect(copied_project.folder_id).to eq source_project.folder_id
+    end
+
     it 'associates areas of source project with copied project' do
       source_project = build(:project, areas: create_list(:area, 2))
 
@@ -129,6 +137,34 @@ describe LocalProjectCopyService do
 
       copied_project = service.copy(source_project)
       expect(copied_project.permissions.first.groups).to eq source_project.permissions.first.groups
+    end
+
+    it 'copies basic phase attributes' do
+      copied_project = service.copy(timeline_project)
+
+      puts timeline_project.phases.first.inspect
+
+      expect(copied_project.phases.first.project_id).to eq copied_project.id
+      expect(copied_project.phases.first.title_multiloc).to eq timeline_project.phases.first.title_multiloc
+      expect(copied_project.phases.first.description_multiloc).to eq timeline_project.phases.first.description_multiloc
+      expect(copied_project.phases.first.participation_method).to eq timeline_project.phases.first.participation_method
+      expect(copied_project.phases.first.posting_enabled).to eq timeline_project.phases.first.posting_enabled
+      expect(copied_project.phases.first.commenting_enabled).to eq timeline_project.phases.first.commenting_enabled
+      expect(copied_project.phases.first.voting_enabled).to eq timeline_project.phases.first.voting_enabled
+      expect(copied_project.phases.first.upvoting_method).to eq timeline_project.phases.first.upvoting_method
+      expect(copied_project.phases.first.upvoting_limited_max).to eq timeline_project.phases.first.upvoting_limited_max
+      expect(copied_project.phases.first.presentation_mode).to eq timeline_project.phases.first.presentation_mode
+      expect(copied_project.phases.first.max_budget).to eq timeline_project.phases.first.max_budget
+      expect(copied_project.phases.first.poll_anonymous).to eq timeline_project.phases.first.poll_anonymous
+      expect(copied_project.phases.first.downvoting_enabled).to eq timeline_project.phases.first.downvoting_enabled
+      expect(copied_project.phases.first.ideas_count).to eq timeline_project.phases.first.ideas_count
+      expect(copied_project.phases.first.ideas_order).to eq timeline_project.phases.first.ideas_order
+      expect(copied_project.phases.first.input_term).to eq timeline_project.phases.first.input_term
+      expect(copied_project.phases.first.min_budget).to eq timeline_project.phases.first.min_budget
+      expect(copied_project.phases.first.downvoting_method).to eq timeline_project.phases.first.downvoting_method
+      expect(copied_project.phases.first.downvoting_limited_max).to eq timeline_project.phases.first.downvoting_limited_max
+      expect(copied_project.phases.first.posting_method).to eq timeline_project.phases.first.posting_method
+      expect(copied_project.phases.first.posting_limited_max).to eq timeline_project.phases.first.posting_limited_max
     end
 
     it 'associates correct groups with actions group permissions of copied ideation phase' do
