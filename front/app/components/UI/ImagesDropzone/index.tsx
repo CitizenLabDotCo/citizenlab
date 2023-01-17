@@ -176,6 +176,8 @@ export interface Props {
   errorMessage?: string | null | undefined;
   objectFit?: 'cover' | 'contain' | undefined;
   onAdd: (arg: UploadFile[]) => void;
+  // The type of arg is wrong, the returned File object's attributes don't match
+  // UploadFile. Leaving the note for someone working on this in the future.
   onRemove: (arg: UploadFile) => void;
   borderRadius?: string;
   removeIconAriaTitle?: string;
