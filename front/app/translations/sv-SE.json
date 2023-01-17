@@ -281,6 +281,7 @@
   "app.components.ParticipationCTABars.participationTimeLeft": "{timeLeft} veckor kvar",
   "app.components.ParticipationCTABars.projectOpenForSubmission": "Det här projektet är för närvarande öppet för deltagande.",
   "app.components.ParticipationCTABars.seeIdeas": "Se idéer",
+  "app.components.ParticipationCTABars.submitIdea": "Submit idea",
   "app.components.ParticipationCTABars.takeTheSurvey": "Gör undersökningen",
   "app.components.ParticipationCTABars.userHasParticipated": "Du har deltagit i det här projektet.",
   "app.components.ParticipationCTABars.volunteer": "Anmäler sig frivilligt",
