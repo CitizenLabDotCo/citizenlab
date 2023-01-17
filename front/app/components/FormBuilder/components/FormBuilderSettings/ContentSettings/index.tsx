@@ -20,6 +20,7 @@ import { getAdditionalSettings } from '../utils';
 import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
+import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
 type ContentSettingsProps = {
   field: IFlatCustomFieldWithIndex;
@@ -27,6 +28,7 @@ type ContentSettingsProps = {
   onClose: () => void;
   isDeleteDisabled?: boolean;
   locales: Locale[];
+  builderConfig: FormBuilderConfig;
 };
 
 export const ContentSettings = ({
@@ -35,6 +37,7 @@ export const ContentSettings = ({
   onClose,
   isDeleteDisabled,
   onDelete,
+  builderConfig,
 }: ContentSettingsProps) => {
   const { watch } = useFormContext();
   const logic = watch(`customFields.${field.index}.logic`);
@@ -47,26 +50,36 @@ export const ContentSettings = ({
       <Box mt="16px">
         {!isFieldGrouping && (
           <>
-            <SectionField id="e2e-required-toggle">
-              <Toggle
-                name={`customFields.${field.index}.required`}
-                disabled={hasRules}
-                label={
-                  <Text as="span" color="primary" variant="bodyM" my="0px">
-                    <FormattedMessage {...messages.requiredToggleLabel} />
-                  </Text>
-                }
-              />
-            </SectionField>
-            <SectionField>
-              <InputMultilocWithLocaleSwitcher
-                initiallySelectedLocale={platformLocale}
-                id="e2e-title-multiloc"
-                name={`customFields.${field.index}.title_multiloc`}
-                label={<FormattedMessage {...messages.questionTitle} />}
-                type="text"
-              />
-            </SectionField>
+            {builderConfig.showEnableToggle && (
+              <SectionField>
+                <Toggle
+                  name={`customFields.${field.index}.enabled`}
+                  disabled={
+                    !isNilOrError(field.isEnabledEditable)
+                      ? !field.isEnabledEditable
+                      : false
+                  }
+                  label={
+                    <Text as="span" color="primary" variant="bodyM" my="0px">
+                      <FormattedMessage {...messages.enable} />
+                    </Text>
+                  }
+                />
+              </SectionField>
+            )}
+            {!isNilOrError(field.isTitleEditable)
+              ? field.isTitleEditable
+              : true && (
+                  <SectionField>
+                    <InputMultilocWithLocaleSwitcher
+                      initiallySelectedLocale={platformLocale}
+                      id="e2e-title-multiloc"
+                      name={`customFields.${field.index}.title_multiloc`}
+                      label={<FormattedMessage {...messages.questionTitle} />}
+                      type="text"
+                    />
+                  </SectionField>
+                )}
             <SectionField>
               <InputMultilocWithLocaleSwitcher
                 initiallySelectedLocale={platformLocale}
@@ -80,6 +93,25 @@ export const ContentSettings = ({
           </>
         )}
         {getAdditionalSettings(field, locales, platformLocale)}
+        {!isFieldGrouping && (
+          <>
+            <SectionField id="e2e-required-toggle">
+              <Toggle
+                name={`customFields.${field.index}.required`}
+                disabled={
+                  !isNilOrError(field.isRequiredEditable)
+                    ? !field.isRequiredEditable
+                    : hasRules
+                }
+                label={
+                  <Text as="span" color="primary" variant="bodyM" my="0px">
+                    <FormattedMessage {...messages.requiredToggleLabel} />
+                  </Text>
+                }
+              />
+            </SectionField>
+          </>
+        )}
         <Box
           display="flex"
           justifyContent="space-between"

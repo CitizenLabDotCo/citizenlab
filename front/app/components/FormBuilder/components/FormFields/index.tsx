@@ -26,8 +26,10 @@ import { DragAndDrop, Drag, Drop } from '../DragAndDrop';
 const getTranslatedFieldType = (field) => {
   switch (field) {
     case 'text':
+    case 'title_multiloc':
       return messages.shortAnswer;
     case 'multiline_text':
+    case 'html_multiloc':
       return messages.longAnswer;
     case 'multiselect':
       return messages.multipleChoice;
@@ -41,6 +43,8 @@ const getTranslatedFieldType = (field) => {
       return messages.linearScale;
     case 'file_upload':
       return messages.fileUpload;
+    case 'image_files':
+      return messages.imageUpload;
     default:
       return messages.default;
   }

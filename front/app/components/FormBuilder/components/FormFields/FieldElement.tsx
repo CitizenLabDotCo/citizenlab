@@ -64,8 +64,10 @@ type Props = {
 const getFieldIcon = (inputType: ICustomFieldInputType): IconNames => {
   switch (inputType) {
     case 'text':
+    case 'title_multiloc':
       return 'survey-short-answer-2';
     case 'multiline_text':
+    case 'html_multiloc':
       return 'survey-long-answer-2';
     case 'multiselect':
       return 'survey-multiple-choice-2';
@@ -79,6 +81,8 @@ const getFieldIcon = (inputType: ICustomFieldInputType): IconNames => {
       return 'section';
     case 'file_upload':
       return 'upload-file';
+    case 'image_files':
+      return 'image';
     default:
       return 'survey';
   }

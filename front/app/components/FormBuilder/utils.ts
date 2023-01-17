@@ -28,6 +28,7 @@ export type FormBuilderConfig = {
   showStatusBadge: boolean;
   isLogicEnabled: boolean;
   isEditPermittedAfterSubmissions: boolean;
+  showEnableToggle: boolean;
 
   viewFormLink?: string;
 

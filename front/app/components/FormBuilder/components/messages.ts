@@ -57,6 +57,18 @@ export default defineMessages({
     id: 'app.components.formBuilder.fileUpload',
     defaultMessage: 'File upload',
   },
+  title: {
+    id: 'app.components.formBuilder.title',
+    defaultMessage: 'Title',
+  },
+  description: {
+    id: 'app.components.formBuilder.description',
+    defaultMessage: 'Description',
+  },
+  imageUpload: {
+    id: 'app.components.formBuilder.imageUpload',
+    defaultMessage: 'Image',
+  },
   default: {
     id: 'app.components.formBuilder.default',
     defaultMessage: 'Default',
@@ -93,6 +105,10 @@ export default defineMessages({
     id: 'app.components.formBuilder.done',
     defaultMessage: 'Done',
   },
+  enable: {
+    id: 'app.components.formBuilder.enable',
+    defaultMessage: 'Enable',
+  },
   questionTitle: {
     id: 'app.components.formBuilder.questionTitle',
     defaultMessage: 'Question title',
@@ -104,6 +120,10 @@ export default defineMessages({
   requiredToggleLabel: {
     id: 'app.components.formBuilder.requiredToggleLabel',
     defaultMessage: 'Make answering this question required',
+  },
+  showResponseToUsersToggleLabel: {
+    id: 'app.components.formBuilder.showResponseToUsersToggleLabel',
+    defaultMessage: 'Show response to users',
   },
   deleteButtonLabel: {
     id: 'app.components.formBuilder.deleteButtonLabel',
