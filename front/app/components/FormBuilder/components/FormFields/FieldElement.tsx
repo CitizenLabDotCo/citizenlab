@@ -80,6 +80,7 @@ const getFieldIcon = (inputType: ICustomFieldInputType): IconNames => {
     case 'section':
       return 'section';
     case 'file_upload':
+    case 'files':
       return 'upload-file';
     case 'image_files':
       return 'image';

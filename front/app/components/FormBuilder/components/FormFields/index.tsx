@@ -42,9 +42,10 @@ const getTranslatedFieldType = (field) => {
     case 'linear_scale':
       return messages.linearScale;
     case 'file_upload':
+    case 'files':
       return messages.fileUpload;
     case 'image_files':
-      return messages.imageUpload;
+      return messages.imageFileUpload;
     default:
       return messages.default;
   }
