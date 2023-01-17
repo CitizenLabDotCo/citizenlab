@@ -216,9 +216,7 @@ const EditHomepageHeroBannerForm = () => {
           }
           layoutSettingFieldComponent={
             <LayoutSettingField
-              bannerLayout={
-                localSettings.banner_layout ?? 'full_width_banner_layout'
-              }
+              bannerLayout={localSettings.banner_layout}
               onChange={(bannerLayout: THomepageBannerLayout) => {
                 handleOnChange('banner_layout', bannerLayout);
               }}
