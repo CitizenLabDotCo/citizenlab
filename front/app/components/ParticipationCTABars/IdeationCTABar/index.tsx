@@ -69,6 +69,7 @@ export const IdeationCTABar = ({ phases, project }: CTABarProps) => {
           fontWeight="500"
           bgColor={theme.colors.white}
           textColor={theme.colors.tenantText}
+          textHoverColor={theme.colors.black}
         />
       </Box>
     ) : (

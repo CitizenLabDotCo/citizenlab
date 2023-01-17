@@ -54,6 +54,7 @@ export const NativeSurveyCTABar = ({ phases, project }: CTABarProps) => {
       icon="arrow-right"
       iconPos="right"
       iconColor={theme.colors.tenantText}
+      textHoverColor={theme.colors.black}
     />
   );
 
