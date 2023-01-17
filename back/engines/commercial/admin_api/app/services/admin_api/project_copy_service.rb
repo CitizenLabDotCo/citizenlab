@@ -2,7 +2,7 @@
 
 module AdminApi
   class ProjectCopyService < ::TemplateService
-    def import(template, folder: nil)
+    def import(template, folder: nil, local_copy: false)
       service = MultiTenancy::TenantTemplateService.new
       same_template = service.translate_and_fix_locales template
 
@@ -11,8 +11,11 @@ module AdminApi
       end
 
       project = Project.find(created_objects_ids[:project].first)
-      project.set_default_topics!
-      project.update! folder: folder if folder
+      unless local_copy
+        project.update!(slug: SlugService.new.generate_slug(project, project.slug))
+        project.set_default_topics!
+        project.update! folder: folder if folder
+      end
 
       project
     end

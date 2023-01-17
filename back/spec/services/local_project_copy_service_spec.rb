@@ -65,7 +65,7 @@ describe LocalProjectCopyService do
     it 'copies basic project attributes' do
       copied_project = service.copy(continuous_project)
 
-      expect(copied_project.slug).to eq "#{continuous_project.slug}-copy-1"
+      expect(copied_project.slug).to eq "#{continuous_project.slug}-copy"
       expect(copied_project.participation_method).to eq continuous_project.participation_method
       expect(copied_project.posting_enabled).to eq continuous_project.posting_enabled
       expect(copied_project.posting_method).to eq continuous_project.posting_method
