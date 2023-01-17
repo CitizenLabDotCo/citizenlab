@@ -14,7 +14,7 @@ const Container = styled.div`
   bottom: 0;
   color: white;
   background: ${colors.primary};
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   z-index: 1001;
   width: 100%;
   display: flex;
