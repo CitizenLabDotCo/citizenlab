@@ -6,7 +6,10 @@ import styled from 'styled-components';
 import { TPreviewDevice } from './BannerImageFields';
 
 // types
-import { ICustomPageAttributes } from 'services/customPages';
+import {
+  ICustomPageAttributes,
+  TCustomPageBannerLayout,
+} from 'services/customPages';
 import {
   IHomepageSettingsAttributes,
   THomepageBannerLayout,
@@ -96,9 +99,26 @@ const HeaderImageDropzone = ({
     return ratio;
   };
 
+  const showPreviewOverlayForLayout = (
+    layout: THomepageBannerLayout | TCustomPageBannerLayout
+  ) => {
+    const conditions: {
+      [key in THomepageBannerLayout | TCustomPageBannerLayout]: boolean;
+    } = {
+      full_width_banner_layout: true,
+      two_row_layout: false,
+      two_column_layout: false,
+      fixed_ratio_layout: true,
+    };
+
+    return conditions[layout];
+  };
+
   const previewOverlayElement =
-    //  We check for typeof of opacity because 0 would coerce to false.
-    typeof overlayOpacity === 'number' && overlayColor ? (
+    showPreviewOverlayForLayout(layout) &&
+    // We check for typeof of opacity because 0 would coerce to false.
+    typeof overlayOpacity === 'number' &&
+    overlayColor ? (
       <HeaderImageOverlay
         overlayColor={overlayColor}
         overlayOpacity={overlayOpacity}
