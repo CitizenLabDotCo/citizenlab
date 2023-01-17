@@ -78,15 +78,6 @@ const BannerImageField = ({
     convertHeaderToUploadFile(headerFileInfo);
   }, [headerBg]);
 
-  useEffect(() => {
-    // set error and disable save button if header is removed,
-    // the form cannot be saved without an image
-    if (isNil(headerBg)) {
-      setBannerError(formatMessage(messages.noHeader));
-      return;
-    }
-  }, [headerBg, formatMessage]);
-
   const convertHeaderToUploadFile = async (
     fileInfo: string | null | undefined
   ) => {
@@ -114,6 +105,7 @@ const BannerImageField = ({
   const handleOnRemoveImageFromUploader = () => {
     onRemoveImage();
     setHeaderLocalDisplayImage(null);
+    setBannerError(formatMessage(messages.noHeader));
   };
 
   const hasLocalHeaderImage = !isNilOrError(headerLocalDisplayImage);
