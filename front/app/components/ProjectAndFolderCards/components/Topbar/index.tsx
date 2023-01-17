@@ -29,12 +29,12 @@ import messages from './messages';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { getShowFilters, getShowFiltersLabel } from './show';
-import { useSearchParams } from 'react-router-dom';
 import clHistory from 'utils/cl-router/history';
 
 // typings
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
 import { PublicationTab } from '../..';
+import useURLQuery from 'utils/cl-router/useUrlQuery';
 
 const Title = styled.h2<{ hasPublications: boolean }>`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -160,7 +160,7 @@ const Header = ({
   const localize = useLocalize();
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
-  const [searchParams] = useSearchParams();
+  const searchParams = useURLQuery();
   const [searchInputRef, setSearchInputRef] = useState<HTMLInputElement | null>(
     null
   );

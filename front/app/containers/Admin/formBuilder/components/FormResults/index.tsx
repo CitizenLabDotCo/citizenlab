@@ -26,6 +26,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import useFormResults from 'hooks/useFormResults';
 import useProject from 'hooks/useProject';
 import usePhase from 'hooks/usePhase';
+import useURLQuery from 'utils/cl-router/useUrlQuery';
 
 // Services
 import { downloadSurveyResults } from 'services/formCustomFields';
@@ -37,8 +38,7 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   };
   const [isDownloading, setIsDownloading] = useState(false);
   const locale = useLocale();
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
+  const urlParams = useURLQuery();
   const phaseId = urlParams.get('phase_id');
   const project = useProject({ projectId });
   const phase = usePhase(phaseId);
