@@ -120,4 +120,3 @@ class Comment < ApplicationRecord
 end
 
 Comment.include_if_ee 'FlagInappropriateContent::Concerns::Flaggable'
-Comment.include_if_ee 'Moderation::Concerns::Moderatable'
