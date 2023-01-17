@@ -118,7 +118,7 @@ module MultiTenancy
 
       puts '========================'
       puts 'tenant_host:'
-      puts "#{Tenant.current.host}"
+      puts Tenant.current.host.to_s
       puts '========================'
 
       DumpTenantJob.perform_later(Tenant.current)

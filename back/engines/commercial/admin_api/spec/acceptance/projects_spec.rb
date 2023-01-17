@@ -61,10 +61,7 @@ resource 'Project', admin_api: true do
       do_request(tenant_id: tenant.id, project: { template_yaml: template.to_yaml, folder_id: folder.id })
 
       expect(status).to eq(200)
-
-      # Temporarily permit more than one job enqueued action, by adding '.at_least(1).times',
-      # while I work out why this fails on CI if not permitted, but passes locally, on my CL-2542 branch.
-      expect(DumpTenantJob).to have_been_enqueued.at_least(1).times if defined?(NLP)
+      expect(DumpTenantJob).to have_been_enqueued if defined?(NLP)
 
       tenant.switch do
         project = Project.first
