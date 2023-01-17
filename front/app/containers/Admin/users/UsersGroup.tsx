@@ -183,10 +183,12 @@ export class UsersGroup extends React.PureComponent<
             opened={groupEditionModal !== false}
             close={this.closeGroupEditionModal}
           >
-            <NormalGroupForm
-              defaultValues={group.attributes}
-              onSubmit={this.handleSubmitForm(group.id)}
-            />
+            {groupEditionModal === 'manual' && (
+              <NormalGroupForm
+                defaultValues={group.attributes}
+                onSubmit={this.handleSubmitForm(group.id)}
+              />
+            )}
           </Modal>
         </>
       );

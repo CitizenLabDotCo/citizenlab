@@ -111,11 +111,6 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
   };
 
   renderModalHeader = () => {
-    const { groupCreationModal } = this.state;
-    if (groupCreationModal === 'step1') {
-      return <FormattedMessage {...messages.modalHeaderStep1} />;
-    }
-
     return <FormattedMessage {...messages.modalHeaderStep1} />;
   };
 
@@ -151,12 +146,14 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
               <GroupCreationStep1 onOpenStep2={this.openStep2} />
             )}
 
-            <NormalGroupForm
-              defaultValues={{
-                membership_type: 'manual',
-              }}
-              onSubmit={this.handleSubmitForm}
-            />
+            {groupCreationModal === 'manual' && (
+              <NormalGroupForm
+                defaultValues={{
+                  membership_type: 'manual',
+                }}
+                onSubmit={this.handleSubmitForm}
+              />
+            )}
           </>
         </Modal>
       </>
