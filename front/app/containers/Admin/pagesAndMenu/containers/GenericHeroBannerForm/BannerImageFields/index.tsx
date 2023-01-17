@@ -11,7 +11,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 import { convertUrlToUploadFile } from 'utils/fileUtils';
-import { isNil, isNilOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 import {
   ICustomPageAttributes,
@@ -73,6 +73,10 @@ const BannerImageField = ({
   const [bannerError, setBannerError] = useState<TBannerError>(null);
 
   useEffect(() => {
+    // Not needed when the headerBg is a new, unsaved image.
+    // In that case it's a base64 string.
+    if (typeof headerBg === 'string') return;
+
     const headerFileInfo = headerBg?.large;
 
     convertHeaderToUploadFile(headerFileInfo);
