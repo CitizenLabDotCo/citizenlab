@@ -53,8 +53,8 @@ export const ContentSettings = ({
               <Toggle
                 name={`customFields.${field.index}.enabled`}
                 disabled={
-                  (builderConfig.isEnabledToggleAllowed &&
-                    builderConfig.isEnabledToggleAllowed(field)) ||
+                  (builderConfig.isEnableToggleDisabled &&
+                    builderConfig.isEnableToggleDisabled(field)) ||
                   false
                 }
                 label={
