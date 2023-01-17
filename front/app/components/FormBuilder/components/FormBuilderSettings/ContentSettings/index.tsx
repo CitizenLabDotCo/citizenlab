@@ -43,6 +43,12 @@ export const ContentSettings = ({
   const logic = watch(`customFields.${field.index}.logic`);
   const platformLocale = useLocale();
   const hasRules = logic && logic.rules && logic.rules.length > 0;
+  const {
+    isEnableToggleDisabled,
+    isTitleConfigurable,
+    isRequiredToggleDisabled,
+    isResponseToggleDisabled,
+  } = builderConfig;
 
   if (!isNilOrError(platformLocale)) {
     return (
@@ -53,8 +59,7 @@ export const ContentSettings = ({
               <Toggle
                 name={`customFields.${field.index}.enabled`}
                 disabled={
-                  (builderConfig.isEnableToggleDisabled &&
-                    builderConfig.isEnableToggleDisabled(field)) ||
+                  (isEnableToggleDisabled && isEnableToggleDisabled(field)) ||
                   false
                 }
                 label={
@@ -64,9 +69,7 @@ export const ContentSettings = ({
                 }
               />
             </SectionField>
-            {((builderConfig.isTitleConfigurable &&
-              builderConfig.isTitleConfigurable(field)) ||
-              true) && (
+            {((isTitleConfigurable && isTitleConfigurable(field)) || true) && (
               <SectionField>
                 <InputMultilocWithLocaleSwitcher
                   initiallySelectedLocale={platformLocale}
@@ -97,8 +100,7 @@ export const ContentSettings = ({
                 name={`customFields.${field.index}.required`}
                 disabled={
                   hasRules ||
-                  (builderConfig.isRequiredToggleDisabled &&
-                    builderConfig.isRequiredToggleDisabled(field))
+                  (isRequiredToggleDisabled && isRequiredToggleDisabled(field))
                 }
                 label={
                   <Text as="span" color="primary" variant="bodyM" my="0px">
@@ -111,8 +113,7 @@ export const ContentSettings = ({
               <Toggle
                 name={`customFields.${field.index}.showResponseToUsers`}
                 disabled={
-                  builderConfig.isResponseToggleDisabled &&
-                  builderConfig.isResponseToggleDisabled(field)
+                  isResponseToggleDisabled && isResponseToggleDisabled(field)
                 }
                 label={
                   <Text as="span" color="primary" variant="bodyM" my="0px">
