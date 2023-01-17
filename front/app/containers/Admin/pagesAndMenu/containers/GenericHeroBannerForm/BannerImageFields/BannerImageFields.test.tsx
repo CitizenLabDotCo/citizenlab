@@ -8,11 +8,7 @@ const props = {
   bannerOverlayColor: '#fff',
   bannerOverlayOpacity: 90,
   bannerLayout: 'full_width_banner_layout' as const,
-  headerBg: {
-    small: 'https://demo.stg.citizenlab.co/upload.png',
-    medium: 'https://demo.stg.citizenlab.co/upload.png',
-    large: 'https://demo.stg.citizenlab.co/upload.png',
-  },
+  headerBg: null,
   onAddImage: jest.fn(),
   onRemoveImage: jest.fn(),
   onOverlayChange: jest.fn(),
@@ -29,14 +25,14 @@ async function uploadLocalImageForHeroBanner() {
 describe('BannerImageFields', () => {
   describe('Layout preview selector', () => {
     it('does not show when there is no image', () => {
-      render(<BannerImageFields {...props} headerBg={null} />);
+      render(<BannerImageFields {...props} />);
 
       const select = screen.queryByLabelText('Show preview for');
       expect(select).not.toBeInTheDocument();
     });
 
     it('shows when there is an unsaved image', async () => {
-      render(<BannerImageFields {...props} headerBg={null} />);
+      render(<BannerImageFields {...props} />);
 
       await uploadLocalImageForHeroBanner();
       const select = screen.getByLabelText('Show preview for');
@@ -46,11 +42,7 @@ describe('BannerImageFields', () => {
     describe('when layout is fixed-ratio layout', () => {
       it('does not show when there is an unsaved image', async () => {
         render(
-          <BannerImageFields
-            {...props}
-            bannerLayout={'fixed_ratio_layout'}
-            headerBg={null}
-          />
+          <BannerImageFields {...props} bannerLayout={'fixed_ratio_layout'} />
         );
 
         await uploadLocalImageForHeroBanner();
@@ -65,14 +57,14 @@ describe('BannerImageFields', () => {
   describe('Image overlay toggle', () => {
     describe('when layout is full-width banner layout', () => {
       it('does not show if there is no image', () => {
-        render(<BannerImageFields {...props} headerBg={null} />);
+        render(<BannerImageFields {...props} />);
 
         const overlayInput = screen.queryByLabelText('Enable overlay');
         expect(overlayInput).not.toBeInTheDocument();
       });
 
       it('shows when there is an unsaved image', async () => {
-        render(<BannerImageFields {...props} headerBg={null} />);
+        render(<BannerImageFields {...props} />);
 
         await uploadLocalImageForHeroBanner();
         expect(screen.getByLabelText('Enable overlay')).toBeInTheDocument();
@@ -83,13 +75,7 @@ describe('BannerImageFields', () => {
       const bannerLayout = 'two_row_layout';
 
       it('does not show when there is an unsaved image', async () => {
-        render(
-          <BannerImageFields
-            {...props}
-            bannerLayout={bannerLayout}
-            headerBg={null}
-          />
-        );
+        render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
 
         await uploadLocalImageForHeroBanner();
         expect(
@@ -102,13 +88,7 @@ describe('BannerImageFields', () => {
       const bannerLayout = 'two_column_layout';
 
       it('does not show when there is an unsaved image', async () => {
-        render(
-          <BannerImageFields
-            {...props}
-            bannerLayout={bannerLayout}
-            headerBg={null}
-          />
-        );
+        render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
 
         await uploadLocalImageForHeroBanner();
         expect(
@@ -121,13 +101,7 @@ describe('BannerImageFields', () => {
       const bannerLayout = 'fixed_ratio_layout';
 
       it('does not show when there is an unsaved image', async () => {
-        render(
-          <BannerImageFields
-            {...props}
-            bannerLayout={bannerLayout}
-            headerBg={null}
-          />
-        );
+        render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
         await uploadLocalImageForHeroBanner();
 
         expect(
@@ -142,13 +116,7 @@ describe('BannerImageFields', () => {
       const bannerLayout = 'fixed_ratio_layout';
 
       it('shows when there is an unsaved image', () => {
-        render(
-          <BannerImageFields
-            {...props}
-            bannerLayout={bannerLayout}
-            headerBg={null}
-          />
-        );
+        render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
 
         uploadLocalImageForHeroBanner().then(() => {
           expect(screen.getByTestId('image-cropper')).toBeInTheDocument();
@@ -158,7 +126,7 @@ describe('BannerImageFields', () => {
 
     describe('when layout is not fixed-ratio', () => {
       it('does not show with an unsaved image', () => {
-        render(<BannerImageFields {...props} headerBg={null} />);
+        render(<BannerImageFields {...props} />);
 
         uploadLocalImageForHeroBanner().then(() => {
           expect(screen.queryByTestId('image-cropper')).not.toBeInTheDocument();
