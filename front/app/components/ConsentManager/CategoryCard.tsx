@@ -1,4 +1,4 @@
-import React, { Fragment, FormEvent } from 'react';
+import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 import { transparentize } from 'polished';
@@ -82,10 +82,7 @@ interface Props {
   destinations: IDestination[];
   checked: boolean;
   disableUncheck?: boolean;
-  handleChange: (
-    category: TConsentCategory,
-    value: boolean
-  ) => (e: FormEvent<HTMLInputElement>) => void;
+  onChange: (category: TCategory, value: boolean) => void;
 }
 
 const DestinationName = ({
@@ -109,12 +106,14 @@ const CategoryCard = ({
   category,
   destinations,
   checked,
-  handleChange,
+  onChange,
   disableUncheck,
 }: Props) => {
   const appConfig = useAppConfiguration();
 
-  console.log(`rendering CategoryCard: ${category}`);
+  const handleChange = (category: TCategory, value: boolean) => (_event) => {
+    onChange(category, value);
+  };
 
   return (
     <Container className="e2e-category">
@@ -130,7 +129,9 @@ const CategoryCard = ({
         />
         <StyledFieldset>
           <Radio
-            onChange={handleChange(category, true)}
+            onChange={
+              category === 'required' ? undefined : handleChange(category, true)
+            }
             currentValue={checked}
             value={true}
             name={category}
@@ -139,7 +140,11 @@ const CategoryCard = ({
             isRequired
           />
           <Radio
-            onChange={handleChange(category, false)}
+            onChange={
+              category === 'required'
+                ? undefined
+                : handleChange(category, false)
+            }
             currentValue={checked}
             value={false}
             name={category}

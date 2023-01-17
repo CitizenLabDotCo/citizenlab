@@ -37,17 +37,13 @@ interface Props {
   preferences: IPreferences;
 }
 
-const doNothing = () => () => {};
+const doNothing = () => {};
 
 const PreferencesDialog = ({
   categoryDestinations,
   preferences,
   onChange,
 }: Props) => {
-  const handleChange = (category: TCategory, value: boolean) => (_event) => {
-    onChange(category, value);
-  };
-
   return (
     <ContentContainer id="e2e-preference-dialog">
       {Object.keys(categoryDestinations)
@@ -61,7 +57,7 @@ const PreferencesDialog = ({
               category={category}
               destinations={categoryDestinations[category]}
               checked={!!preferences[category]}
-              handleChange={handleChange}
+              onChange={onChange}
             />
           );
         })}
@@ -70,7 +66,7 @@ const PreferencesDialog = ({
         category={'required'}
         destinations={[]}
         checked={true}
-        handleChange={doNothing}
+        onChange={doNothing}
         disableUncheck={true}
       />
     </ContentContainer>

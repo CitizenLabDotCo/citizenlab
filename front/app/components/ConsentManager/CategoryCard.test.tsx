@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from 'utils/testUtils/rtl';
+import { fireEvent, render } from 'utils/testUtils/rtl';
 import { IDestination, registerDestination } from './destinations';
 
 // component to test
@@ -24,57 +24,61 @@ describe('<CategoryCard />', () => {
   const handleChange = jest.fn();
 
   it('renders correctly when allowed', () => {
-    render(
+    const { container } = render(
       <CategoryCard
         key={category}
         category={category}
         destinations={destinations}
         checked={true}
-        handleChange={handleChange}
+        onChange={handleChange}
       />
     );
 
-    // TODO
-    // expect(wrapper).toMatchSnapshot();
+    const allowButton = container.querySelector('#analytics-radio-true');
+    const disallowButton = container.querySelector('#analytics-radio-false');
+
+    expect(allowButton).toBeChecked();
+    expect(disallowButton).not.toBeChecked();
   });
+
   it('renders correctly when disallowed', () => {
-    render(
+    const { container } = render(
       <CategoryCard
         key={category}
         category={category}
         destinations={destinations}
         checked={false}
-        handleChange={handleChange}
+        onChange={handleChange}
       />
     );
 
-    // TODO
-    // expect(wrapper).toMatchSnapshot();
+    const allowButton = container.querySelector('#analytics-radio-true');
+    const disallowButton = container.querySelector('#analytics-radio-false');
+
+    expect(allowButton).not.toBeChecked();
+    expect(disallowButton).toBeChecked();
   });
+
   it('lets you change your preference', () => {
-    // TODO
-
-    const mockOnChange = jest.fn();
-    handleChange.mockImplementation(() => mockOnChange);
-
-    const wrapper = render(
+    const { container } = render(
       <CategoryCard
         key={category}
         category={category}
         destinations={destinations}
         checked={false}
-        handleChange={handleChange}
+        onChange={handleChange}
       />
     );
-    // when you render the component, handle change is called to calculate the onchange handlers.
-    expect(handleChange).toHaveBeenCalledWith(category, false);
-    expect(handleChange).toHaveBeenCalledWith(category, true);
 
     // when you change the value these onchange handlers should be called
-    wrapper.find(`#${category}-radio-false`).simulate('change');
-    expect(mockOnChange).toHaveBeenCalledTimes(1);
+    const allowButton = container.querySelector('#analytics-radio-true');
+    fireEvent.click(allowButton);
+    expect(handleChange).toHaveBeenCalledTimes(1);
+    expect(handleChange).toHaveBeenCalledWith('analytics', true);
 
-    wrapper.find(`#${category}-radio-true`).simulate('change');
-    expect(mockOnChange).toHaveBeenCalledTimes(2);
+    const disallowButton = container.querySelector('#analytics-radio-false');
+    fireEvent.click(disallowButton);
+    expect(handleChange).toHaveBeenCalledTimes(2);
+    expect(handleChange).toHaveBeenCalledWith('analytics', false);
   });
 });
