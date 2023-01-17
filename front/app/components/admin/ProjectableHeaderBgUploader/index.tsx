@@ -40,7 +40,7 @@ const HeaderBgInput = ({ imageUrl, onImageChange }: Props) => {
     setHeaderBg(null);
   };
 
-  const imageShouldBeSaved = headerBg ? !headerBg[0].remote : false;
+  const imageShouldBeSaved = headerBg ? !headerBg.remote : false;
 
   return (
     <SectionField>
