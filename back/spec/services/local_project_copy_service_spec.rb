@@ -114,6 +114,16 @@ describe LocalProjectCopyService do
       expect(copied_project.topics).to eq source_project.topics
     end
 
+    it 'copies associated projects_allowed_input_topics' do
+      topics = create_list(:topic, 3)
+      source_project = create(:project)
+      create(:projects_allowed_input_topic, project_id: source_project.id, topic_id: topics.first.id)
+      create(:projects_allowed_input_topic, project_id: source_project.id, topic_id: topics.second.id)
+
+      copied_project = service.copy(source_project)
+      expect(copied_project.allowed_input_topics).to eq [topics.first, topics.second]
+    end
+
     it "associates correct groups with copied project's groups visibility permission" do
       source_project = create(:private_groups_project)
 
@@ -141,8 +151,6 @@ describe LocalProjectCopyService do
 
     it 'copies basic phase attributes' do
       copied_project = service.copy(timeline_project)
-
-      puts timeline_project.phases.first.inspect
 
       expect(copied_project.phases.first.project_id).to eq copied_project.id
       expect(copied_project.phases.first.title_multiloc).to eq timeline_project.phases.first.title_multiloc
