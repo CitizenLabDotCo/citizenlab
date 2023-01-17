@@ -67,9 +67,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectIdeaForm.requiredTooltipContent',
     defaultMessage: 'Require this field to be filled in.',
   },
-  addFormContent: {
-    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.addFormContent',
-    defaultMessage: 'Add form content',
+  customise: {
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.customise',
+    defaultMessage: 'Customise',
   },
   successMessage: {
     id: 'app.containers.AdminPage.ProjectEdit.formBuilder.successMessage',

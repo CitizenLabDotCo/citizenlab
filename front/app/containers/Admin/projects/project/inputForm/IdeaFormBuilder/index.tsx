@@ -158,6 +158,32 @@ const IdeaFormBuilder = () => {
       },
     },
     {
+      id: 'f5f4d0bb-3059-4cc2-aadf-fc5eb828399d',
+      type: 'custom_field',
+      key: 'page_1',
+      input_type: 'section' as ICustomFieldInputType,
+      title_multiloc: {
+        en: 'Details',
+      },
+      required: false,
+      ordering: 9,
+      enabled: true,
+      code: null,
+      created_at: '2023-01-10T08:10:09.783Z',
+      updated_at: '2023-01-10T08:10:09.783Z',
+      logic: {},
+      description_multiloc: {},
+      temp_id: '',
+      minimum_label_multiloc: {},
+      maximum_label_multiloc: {},
+      maximum: 0,
+      relationships: {
+        options: {
+          data: [],
+        },
+      },
+    },
+    {
       id: 'f7959714-bf96-4537-8d51-e7686e2dc699',
       type: 'custom_field',
       key: 'proposed_budget',
@@ -325,6 +351,32 @@ const IdeaFormBuilder = () => {
       isEnabledEditable: true,
       isTitleEditable: false,
       description_multiloc: {},
+      relationships: {
+        options: {
+          data: [],
+        },
+      },
+    },
+    {
+      id: 'f5f4d0bb-3059-4cc2-aadf-fc5eb828399d',
+      type: 'custom_field',
+      key: 'page_1',
+      input_type: 'section' as ICustomFieldInputType,
+      title_multiloc: {
+        en: 'Images and attachments',
+      },
+      required: false,
+      ordering: 9,
+      enabled: true,
+      code: null,
+      created_at: '2023-01-10T08:10:09.783Z',
+      updated_at: '2023-01-10T08:10:09.783Z',
+      logic: {},
+      description_multiloc: {},
+      temp_id: '',
+      minimum_label_multiloc: {},
+      maximum_label_multiloc: {},
+      maximum: 0,
       relationships: {
         options: {
           data: [],
