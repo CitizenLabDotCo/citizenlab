@@ -1,202 +1,170 @@
-import React, { PureComponent, FormEvent } from 'react';
-import { Subscription } from 'rxjs';
+import React, { FormEvent, useState, useEffect, useCallback } from 'react';
 
-// Events
-import eventEmitter from 'utils/eventEmitter';
-
-// Components
+// components
 import Banner from './Banner';
 import PreferencesDialog, { ContentContainer } from './PreferencesDialog';
 import Footer from './Footer';
 import Modal from 'components/UI/Modal';
 
+// events
+import eventEmitter from 'utils/eventEmitter';
+
+// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+// utils
+import { keys } from 'utils/helperUtils';
+
+// typings
 import { CategorizedDestinations, IPreferences } from './typings';
-
-import styled from 'styled-components';
-
-export const ButtonContainer = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-`;
+import { TCategory } from './destinations';
 
 interface Props {
-  setPreferences: (arg: Record<string, unknown>) => void;
+  preferences: IPreferences;
+  categorizedDestinations: CategorizedDestinations;
+  isConsentRequired: boolean;
+  onToggleModal: (opened: boolean) => void;
+  updatePreference: (category: TCategory, value: boolean) => void;
   resetPreferences: () => void;
   accept: () => void;
   reject: () => void;
   saveConsent: () => void;
-  isConsentRequired: boolean;
-  preferences: IPreferences;
-  categorizedDestinations: CategorizedDestinations;
-  onToggleModal: (opened: boolean) => void;
 }
 
-interface State {
-  isDialogOpen: boolean;
-  isCancelling: boolean;
-}
+const Container = ({
+  preferences,
+  categorizedDestinations,
+  isConsentRequired,
+  onToggleModal,
+  updatePreference,
+  resetPreferences,
+  accept,
+  reject,
+  saveConsent,
+}: Props) => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isCancelling, setIsCancelling] = useState(false);
 
-export default class Container extends PureComponent<Props, State> {
-  subscriptions: Subscription[] = [];
+  const openDialog = useCallback(() => {
+    onToggleModal(false);
+    setIsDialogOpen(true);
+  }, [onToggleModal]);
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      isDialogOpen: false,
-      isCancelling: false,
-    };
-  }
+  const closeDialog = useCallback(() => {
+    onToggleModal(true);
+    setIsDialogOpen(false);
+  }, [onToggleModal]);
 
-  componentDidMount() {
-    this.subscriptions = [
-      eventEmitter
-        .observeEvent('openConsentManager')
-        .subscribe(this.openDialog),
-    ];
-  }
+  useEffect(() => {
+    const subscription = eventEmitter
+      .observeEvent('openConsentManager')
+      .subscribe(openDialog);
 
-  componentWillUnmount() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }
+    return () => subscription.unsubscribe();
+  }, []);
 
-  openDialog = () => {
-    this.props.onToggleModal(false);
-    this.setState({
-      isDialogOpen: true,
-    });
-  };
+  const validate = useCallback(() => {
+    for (const category of keys(categorizedDestinations)) {
+      const categoryHasDestinations =
+        categorizedDestinations[category].length > 0;
+      const preferenceIsUndefined = preferences[category] === undefined;
 
-  closeDialog = () => {
-    this.props.onToggleModal(true);
-    this.setState({
-      isDialogOpen: false,
-    });
-  };
-
-  handleCategoryChange = (category: string, value: boolean) => {
-    const { setPreferences } = this.props;
-
-    setPreferences({
-      [category]: value,
-    });
-  };
-
-  validate = () => {
-    let res = true;
-    const { preferences, categorizedDestinations } = this.props;
-    for (const category of Object.keys(categorizedDestinations)) {
-      if (categorizedDestinations[category].length > 0) {
-        res = res && !(preferences[category] === undefined);
+      if (categoryHasDestinations && preferenceIsUndefined) {
+        return false;
       }
     }
-    return res;
-  };
 
-  handleSave = (e: FormEvent<any>) => {
-    e.preventDefault();
+    return true;
+  }, []);
 
-    if (!this.validate()) {
-      return;
-    }
+  const handleSave = useCallback(
+    (e: FormEvent<any>) => {
+      e.preventDefault();
 
-    const { saveConsent } = this.props;
+      if (validate()) {
+        return;
+      }
 
-    this.setState({
-      isDialogOpen: false,
-    });
-    saveConsent();
-  };
+      setIsDialogOpen(false);
+      saveConsent();
+    },
+    [validate, saveConsent]
+  );
 
-  handleCancel = () => {
-    const { resetPreferences, isConsentRequired, preferences } = this.props;
-
+  const handleCancel = useCallback(() => {
     const isEmpty = Object.values(preferences).every((e) => e === undefined);
 
     // Only show the cancel confirmation if there's unconsented destinations...
     // or if the user made a choice and we want to confirm aborting it
     if (isConsentRequired && !isEmpty) {
-      this.setState({ isCancelling: true });
+      setIsCancelling(true);
     } else {
-      this.setState({ isDialogOpen: false });
+      setIsDialogOpen(false);
       resetPreferences();
     }
-  };
+  }, [preferences, isConsentRequired, resetPreferences]);
 
-  handleCancelBack = () => {
-    this.setState({ isCancelling: false });
-  };
+  const handleCancelBack = useCallback(() => {
+    setIsCancelling(false);
+  }, []);
 
-  handleCancelConfirm = () => {
-    const { resetPreferences } = this.props;
+  const handleCancelConfirm = useCallback(() => {
+    setIsCancelling(false);
+    setIsDialogOpen(false);
 
-    this.setState({
-      isCancelling: false,
-      isDialogOpen: false,
-    });
     resetPreferences();
-  };
+  }, [resetPreferences]);
 
-  render() {
-    const {
-      preferences,
-      isConsentRequired,
-      categorizedDestinations,
-      accept,
-      reject,
-    } = this.props;
-    const { isDialogOpen, isCancelling } = this.state;
-    const noDestinations = Object.values(categorizedDestinations).every(
-      (array) => array.length === 0
-    );
-    const mode = noDestinations
-      ? 'noDestinations'
-      : !isCancelling
-      ? 'preferenceForm'
-      : 'cancelling';
+  const noDestinations = Object.values(categorizedDestinations).every(
+    (array) => array.length === 0
+  );
 
-    return (
-      <>
-        <Modal
-          opened={isDialogOpen}
-          close={this.closeDialog}
-          header={<FormattedMessage {...messages.title} />}
-          footer={
-            <Footer
-              validate={this.validate}
-              mode={mode}
-              handleCancelBack={this.handleCancelBack}
-              handleCancelConfirm={this.handleCancelConfirm}
-              handleCancel={this.handleCancel}
-              handleSave={this.handleSave}
-            />
-          }
-        >
-          {!isCancelling ? (
-            <PreferencesDialog
-              onChange={this.handleCategoryChange}
-              categoryDestinations={categorizedDestinations}
-              preferences={preferences}
-            />
-          ) : (
-            <ContentContainer role="dialog" aria-modal>
-              <FormattedMessage {...messages.confirmation} tagName="h1" />
-            </ContentContainer>
-          )}
-        </Modal>
+  const mode = noDestinations
+    ? 'noDestinations'
+    : !isCancelling
+    ? 'preferenceForm'
+    : 'cancelling';
 
-        {isConsentRequired && (
-          <Banner
-            onAccept={accept}
-            onChangePreferences={this.openDialog}
-            onClose={reject}
+  return (
+    <>
+      <Modal
+        opened={isDialogOpen}
+        close={closeDialog}
+        header={<FormattedMessage {...messages.title} />}
+        footer={
+          <Footer
+            validate={validate}
+            mode={mode}
+            handleCancelBack={handleCancelBack}
+            handleCancelConfirm={handleCancelConfirm}
+            handleCancel={handleCancel}
+            handleSave={handleSave}
           />
+        }
+      >
+        {!isCancelling ? (
+          <PreferencesDialog
+            onChange={updatePreference}
+            categoryDestinations={categorizedDestinations}
+            preferences={preferences}
+          />
+        ) : (
+          <ContentContainer role="dialog" aria-modal>
+            <FormattedMessage {...messages.confirmation} tagName="h1" />
+          </ContentContainer>
         )}
-      </>
-    );
-  }
-}
+      </Modal>
+
+      {isConsentRequired && (
+        <Banner
+          onAccept={accept}
+          onChangePreferences={openDialog}
+          onClose={reject}
+        />
+      )}
+    </>
+  );
+};
+
+export default Container;

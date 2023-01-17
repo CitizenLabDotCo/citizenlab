@@ -14,11 +14,13 @@ import {
   ISavedDestinations,
   setConsent,
 } from './consent';
-import { allCategories } from './destinations';
+import { allCategories, TCategory } from './destinations';
+
+// events
+import eventEmitter from 'utils/eventEmitter';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import eventEmitter from 'utils/eventEmitter';
 import {
   getCurrentPreferences,
   getActiveDestinations,
@@ -54,6 +56,16 @@ const ConsentManager = () => {
       getCurrentPreferences(appConfiguration, authUser, cookieConsent)
     );
   }, [appConfiguration, authUser, cookieConsent]);
+
+  const updatePreference = useCallback(
+    (category: TCategory, value: boolean) => {
+      setPreferences((preferences) => ({
+        ...preferences,
+        [category]: value,
+      }));
+    },
+    []
+  );
 
   const saveConsent = useCallback(
     (newPreferences: IPreferences) => {
@@ -151,7 +163,7 @@ const ConsentManager = () => {
       accept={accept}
       reject={reject}
       onToggleModal={toggleDefault}
-      setPreferences={setPreferences}
+      updatePreference={updatePreference}
       resetPreferences={resetPreferences}
       saveConsent={onSaveConsent}
       isConsentRequired={isConsentRequired}
