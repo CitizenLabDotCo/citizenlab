@@ -14,7 +14,6 @@ import messages from './messages';
 // Styling
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import Outlet from 'components/Outlet';
 import { MembershipType } from 'services/groups';
 
 const TitleWrapper = styled.div`
@@ -82,76 +81,68 @@ interface Props {
   onSearch: (newValue: string) => void;
 }
 
-const UsersHeader = memo(
-  ({ title, groupType, onEdit, onDelete, onSearch }: Props) => {
-    const handleSearchChange = (newValue: string) => {
-      onSearch(newValue);
-    };
+const UsersHeader = memo(({ title, onEdit, onDelete, onSearch }: Props) => {
+  const handleSearchChange = (newValue: string) => {
+    onSearch(newValue);
+  };
 
-    if (title) {
-      return (
-        <OnlyRow>
-          {groupType && (
-            <Outlet
-              id="app.containers.Admin.users.UsersHeader.icon"
-              type={groupType}
-            />
-          )}
-          <TextAndButtons>
-            <T as="h1" value={title} />
-            <Buttons>
-              <EditGroupButton
-                hiddenText={<FormattedMessage {...messages.editGroup} />}
-                padding=".65em"
-                icon="edit"
-                buttonStyle="secondary"
-                onClick={onEdit}
-              />
-              <DeleteGroupButton
-                hiddenText={<FormattedMessage {...messages.deleteGroup} />}
-                padding=".65em"
-                icon="delete"
-                buttonStyle="text"
-                onClick={onDelete}
-              />
-            </Buttons>
-          </TextAndButtons>
-          <Spacer />
-          <StyledSearchInput
-            onChange={handleSearchChange}
-            // Not important here. Requires quite some refactoring
-            // to get users here in a nice and consistent manner.
-            // This a11y_... prop needs to be a required one
-            // so we always have it on the citizen side.
-            // Whenever this components is touched,
-            // you can give it the right value (number of users resulting from the search) here.
-            a11y_numberOfSearchResults={0}
-          />
-        </OnlyRow>
-      );
-    }
-
+  if (title) {
     return (
-      <TitleWrapper>
-        <FirstRow>
-          <TextAndButtons>
-            <FormattedMessage tagName="h1" {...messages.allUsers} />
-          </TextAndButtons>
-          <Spacer />
-          <StyledSearchInput
-            onChange={handleSearchChange}
-            // Not important here. Requires quite some refactoring
-            // to get users here in a nice and consistent manner.
-            // This a11y_... prop needs to be required so we always have it
-            // on the citizen side. Whenever this components is touched,
-            // you can give it the right value (number of users resulting from the search) here.
-            a11y_numberOfSearchResults={0}
-          />
-        </FirstRow>
-        <FormattedMessage tagName="h2" {...messages.usersSubtitle} />
-      </TitleWrapper>
+      <OnlyRow>
+        <TextAndButtons>
+          <T as="h1" value={title} />
+          <Buttons>
+            <EditGroupButton
+              hiddenText={<FormattedMessage {...messages.editGroup} />}
+              padding=".65em"
+              icon="edit"
+              buttonStyle="secondary"
+              onClick={onEdit}
+            />
+            <DeleteGroupButton
+              hiddenText={<FormattedMessage {...messages.deleteGroup} />}
+              padding=".65em"
+              icon="delete"
+              buttonStyle="text"
+              onClick={onDelete}
+            />
+          </Buttons>
+        </TextAndButtons>
+        <Spacer />
+        <StyledSearchInput
+          onChange={handleSearchChange}
+          // Not important here. Requires quite some refactoring
+          // to get users here in a nice and consistent manner.
+          // This a11y_... prop needs to be a required one
+          // so we always have it on the citizen side.
+          // Whenever this components is touched,
+          // you can give it the right value (number of users resulting from the search) here.
+          a11y_numberOfSearchResults={0}
+        />
+      </OnlyRow>
     );
   }
-);
+
+  return (
+    <TitleWrapper>
+      <FirstRow>
+        <TextAndButtons>
+          <FormattedMessage tagName="h1" {...messages.allUsers} />
+        </TextAndButtons>
+        <Spacer />
+        <StyledSearchInput
+          onChange={handleSearchChange}
+          // Not important here. Requires quite some refactoring
+          // to get users here in a nice and consistent manner.
+          // This a11y_... prop needs to be required so we always have it
+          // on the citizen side. Whenever this components is touched,
+          // you can give it the right value (number of users resulting from the search) here.
+          a11y_numberOfSearchResults={0}
+        />
+      </FirstRow>
+      <FormattedMessage tagName="h2" {...messages.usersSubtitle} />
+    </TitleWrapper>
+  );
+});
 
 export default UsersHeader;

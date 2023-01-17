@@ -39,8 +39,6 @@ import { deleteMembershipByUserId } from 'services/groupMemberships';
 import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
 
-import Outlet from 'components/Outlet';
-
 export interface InputProps {}
 
 interface DataProps {
@@ -154,16 +152,7 @@ export class UsersGroup extends React.PureComponent<
   };
 
   renderModalHeader = () => {
-    const { groupEditionModal } = this.state;
-    if (groupEditionModal === 'manual') {
-      return <FormattedMessage {...messages.modalHeaderManual} />;
-    }
-    return (
-      <Outlet
-        id="app.containers.Admin.users.UsersGroup.header"
-        type={groupEditionModal}
-      />
-    );
+    return <FormattedMessage {...messages.modalHeaderManual} />;
   };
 
   render() {
@@ -194,22 +183,12 @@ export class UsersGroup extends React.PureComponent<
             opened={groupEditionModal !== false}
             close={this.closeGroupEditionModal}
           >
-            <>
-              {groupEditionModal === 'manual' && (
-                <NormalGroupForm
-                  defaultValues={group.attributes}
-                  onSubmit={this.handleSubmitForm(group.id)}
-                />
-              )}
-
-              <Outlet
-                id="app.containers.Admin.users.UsersGroup.form"
-                initialValues={group.attributes}
-                type={groupEditionModal}
+            {groupEditionModal === 'manual' && (
+              <NormalGroupForm
+                defaultValues={group.attributes}
                 onSubmit={this.handleSubmitForm(group.id)}
-                isVerificationEnabled={this.props.isVerificationEnabled}
               />
-            </>
+            )}
           </Modal>
         </>
       );

@@ -87,7 +87,6 @@ export const Step2Button = styled(Button)``;
 
 // Typings
 import { IGroupData, MembershipType } from 'services/groups';
-import Outlet from 'components/Outlet';
 
 export interface Props {
   onOpenStep2: (groupType: IGroupData['attributes']['membership_type']) => void;
@@ -126,11 +125,6 @@ const GroupCreationStep1 = memo(
             <FormattedMessage {...messages.step1CreateButtonNormal} />
           </Step2Button>
         </GroupType>
-        <Outlet
-          id="app.containers.Admin.users.GroupCreationStep1.type"
-          onClick={createStep2Handler}
-          formattedLink={formattedLink}
-        />
       </Container>
     );
   }

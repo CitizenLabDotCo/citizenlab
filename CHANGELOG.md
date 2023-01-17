@@ -1,5 +1,11 @@
 # Changelog
 
+## 2023-01-16
+
+### Added
+
+- [CL-2320] Image dimensions i2: folder & project banner images
+
 ## 2023-01-13 (2)
 
 ### Added

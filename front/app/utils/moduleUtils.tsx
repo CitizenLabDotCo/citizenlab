@@ -2,15 +2,12 @@ import React, { FunctionComponent, ReactElement } from 'react';
 
 import PageLoading from 'components/UI/PageLoading';
 import { ITabItem } from 'components/UI/Tabs';
-import { GroupCreationModal } from 'containers/Admin/users';
-import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import { castArray, clamp, isNil, mergeWith, omitBy } from 'lodash-es';
 import { IProjectData } from 'services/projects';
 
 import { TVerificationStep } from 'events/verificationModal';
 import { NavItem } from 'containers/Admin/sideBar';
 
-import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { TNotificationData } from 'services/notifications';
 import { IPhaseData } from 'services/phases';
 import { TVerificationMethod } from 'services/verificationMethods';
@@ -23,33 +20,6 @@ export type ITabsOutlet = {
 };
 
 export interface OutletsPropertyMap {
-  'app.containers.Admin.users.GroupsListPanel.listitem.icon': {
-    type: MembershipType;
-  };
-  'app.containers.Admin.users.GroupCreationStep1.type': {
-    onClick: (groupType: MembershipType) => () => void;
-    formattedLink: string;
-  };
-  'app.containers.Admin.users.form': {
-    type: GroupCreationModal;
-    onSubmit: (values: NormalFormValues) => void;
-    isVerificationEnabled: boolean;
-  };
-  'app.containers.Admin.users.header': {
-    type: GroupCreationModal;
-  };
-  'app.containers.Admin.users.UsersGroup.form': {
-    initialValues: IGroupDataAttributes;
-    type: GroupCreationModal;
-    onSubmit: (values: NormalFormValues) => void;
-    isVerificationEnabled: boolean;
-  };
-  'app.containers.Admin.users.UsersGroup.header': {
-    type: GroupCreationModal;
-  };
-  'app.containers.Admin.users.UsersHeader.icon': {
-    type: GroupCreationModal;
-  };
   'app.containers.Admin.projects.edit': {
     onData: (data: InsertConfigurationOptions<ITab>) => void;
     project: IProjectData;
