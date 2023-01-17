@@ -6,7 +6,6 @@ describe LocalProjectCopyService do
   let(:service) { described_class.new }
 
   describe 'project copy', slow_test: true do
-    # let!(:project) { create :project }
     let!(:continuous_project) do
       create(
         :continuous_project,
@@ -93,6 +92,20 @@ describe LocalProjectCopyService do
       expect(copied_project.folder_id).to eq continuous_project.folder_id
     end
 
+    it 'associates areas of source project with copied project' do
+      source_project = build(:project, areas: create_list(:area, 2))
+
+      copied_project = service.copy(source_project)
+      expect(copied_project.areas).to eq source_project.areas
+    end
+
+    it 'associates topics of source project with copied project' do
+      source_project = build(:project, topics: create_list(:topic, 2))
+
+      copied_project = service.copy(source_project)
+      expect(copied_project.topics).to eq source_project.topics
+    end
+
     it "associates correct groups with copied project's groups visibility permission" do
       source_project = create(:private_groups_project)
 
@@ -101,7 +114,6 @@ describe LocalProjectCopyService do
     end
 
     it 'associates correct groups with actions group permissions of copied continuous ideation project' do
-      groups = create_list(:group, 3)
       source_project = create(:project, participation_method: 'ideation')
 
       permission = build(
@@ -110,7 +122,7 @@ describe LocalProjectCopyService do
         permission_scope_type: 'Project',
         permission_scope_id: source_project.id,
         permitted_by: 'groups',
-        groups: groups
+        groups: create_list(:group, 2)
       )
       # Skip validation to avoid Validation failed: Action has already been taken
       permission.save!(validate: false)
@@ -120,7 +132,6 @@ describe LocalProjectCopyService do
     end
 
     it 'associates correct groups with actions group permissions of copied ideation phase' do
-      groups = create_list(:group, 3)
       source_project = create(:project_with_active_ideation_phase)
 
       permission = build(
@@ -129,7 +140,7 @@ describe LocalProjectCopyService do
         permission_scope_type: 'Phase',
         permission_scope_id: source_project.phases.first.id,
         permitted_by: 'groups',
-        groups: groups
+        groups: create_list(:group, 2)
       )
       # Skip validation to avoid Validation failed: Action has already been taken
       permission.save!(validate: false)
@@ -142,33 +153,18 @@ describe LocalProjectCopyService do
       expect(copied_project.phases.first.permissions.first.groups).to eq source_project.phases.first.permissions.first.groups
     end
 
-    it 'associates areas of source project with copied project' do
-      area1 = create(:area)
-      area2 = create(:area)
-      source_project = build(:project, areas: [area1, area2])
-
-      copied_project = service.copy(source_project)
-      expect(copied_project.areas).to eq source_project.areas
-    end
-
-    it 'associates topics of source project with copied project' do
-      topic1 = create(:topic)
-      topic2 = create(:topic)
-      source_project = build(:project, topics: [topic1, topic2])
-
-      copied_project = service.copy(source_project)
-      expect(copied_project.topics).to eq source_project.topics
-    end
-
     it 'shifts timelines of phases to start first phase on day of copying' do
       phase1_start = timeline_project.phases.order(:start_at).first.start_at
       phase2_end = timeline_project.phases.order(:start_at).second.end_at
-      today = Time.zone.today # Use saved value, just in case test runs as midnight passes
-      expected_shift = (today - phase1_start).days
-      copied_project = service.copy(timeline_project)
 
-      expect(copied_project.phases.order(:start_at).first.start_at).to eq today
-      expect(copied_project.phases.order(:start_at).second.end_at).to eq phase2_end + expected_shift
+      travel_to Time.now do
+        today = Time.zone.today
+        expected_shift = (today - phase1_start).days
+        copied_project = service.copy(timeline_project)
+
+        expect(copied_project.phases.order(:start_at).first.start_at).to eq today
+        expect(copied_project.phases.order(:start_at).second.end_at).to eq phase2_end + expected_shift
+      end
     end
   end
 end
