@@ -147,7 +147,7 @@ const BannerImageField = ({
         preview_device: false,
         // For the fixed_ratio_layout we only show it for a saved image.
         // An unsaved image should show the image cropper instead.
-        overlay_controls: hasLocalHeaderImage && imageShouldBeSaved,
+        overlay_controls: hasLocalHeaderImage && !imageShouldBeSaved,
       },
     };
 
