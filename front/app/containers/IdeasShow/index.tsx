@@ -220,7 +220,6 @@ export const IdeasShow = ({
     inputId: ideaId,
   });
 
-  console.log(ideaCustomFieldsSchemas);
   const isLoaded =
     !isNilOrError(idea) &&
     !isUndefined(ideaImages) &&
