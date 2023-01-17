@@ -44,7 +44,6 @@ export const ContentSettings = ({
   const platformLocale = useLocale();
   const hasRules = logic && logic.rules && logic.rules.length > 0;
 
-  console.log(field.isRequiredEditable);
   if (!isNilOrError(platformLocale)) {
     return (
       <Box mt="16px">
@@ -99,7 +98,7 @@ export const ContentSettings = ({
               <Toggle
                 name={`customFields.${field.index}.required`}
                 disabled={
-                  field.isRequiredEditable
+                  !isNilOrError(field.isRequiredEditable)
                     ? !field.isRequiredEditable
                     : hasRules
                 }
