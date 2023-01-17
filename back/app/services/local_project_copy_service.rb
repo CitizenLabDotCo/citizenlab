@@ -16,7 +16,7 @@ class LocalProjectCopyService
 
     template = AdminApi::ProjectCopyService.new.export source_project, **options
     folder_id = ProjectFolders::Folder.find(source_project.folder_id) if source_project.folder_id
-    copied_project = AdminApi::ProjectCopyService.new.import(template, folder: folder_id, local_copy: true)
+    copied_project = AdminApi::ProjectCopyService.new.import(template, folder: folder_id)
 
     copy_project_visibility_permission_groups(source_project, copied_project)
 
