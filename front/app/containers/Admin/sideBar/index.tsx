@@ -214,11 +214,7 @@ class Sidebar extends PureComponent<
           link: '/admin/messaging',
           iconName: 'sidebar-messaging',
           message: 'messaging',
-          featureNames: [
-            'manual_emailing',
-            'automated_emailing_control',
-            'texting',
-          ],
+          featureNames: ['automated_emailing_control'],
         },
         {
           name: 'menu',

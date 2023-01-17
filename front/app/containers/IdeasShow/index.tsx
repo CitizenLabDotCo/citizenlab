@@ -240,7 +240,7 @@ export const IdeasShow = ({
     !isNilOrError(project) &&
     !isNilOrError(idea) &&
     !isNilOrError(locale) &&
-    !isNilOrError(ideaCustomFieldsSchemas) &&
+    // !isNilOrError(ideaCustomFieldsSchemas) &&
     isLoaded
   ) {
     // If the user deletes their profile, authorId can be null

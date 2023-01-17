@@ -3,9 +3,6 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // Resources
-import GetFeatureFlag, {
-  GetFeatureFlagChildProps,
-} from 'resources/GetFeatureFlag';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
@@ -64,9 +61,7 @@ import messages from './messages';
 // Services
 import { IGroupData, addGroup, MembershipType } from 'services/groups';
 
-export interface Props {
-  isVerificationEnabled: GetFeatureFlagChildProps;
-}
+export interface Props {}
 
 export type GroupCreationModal = false | 'step1' | MembershipType;
 
@@ -163,13 +158,4 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
 
 const UsersPageWithHocs = withRouter(UsersPage);
 
-export default (props) => (
-  <GetFeatureFlag name="verification">
-    {(isVerificationEnabled) => (
-      <UsersPageWithHocs
-        {...props}
-        isVerificationEnabled={isVerificationEnabled}
-      />
-    )}
-  </GetFeatureFlag>
-);
+export default UsersPageWithHocs;
