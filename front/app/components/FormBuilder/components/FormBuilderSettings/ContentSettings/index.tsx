@@ -123,22 +123,31 @@ export const ContentSettings = ({
             buttonStyle="secondary"
             onClick={onClose}
             minWidth="160px"
+            width={
+              !isNilOrError(field.isDeleteEnabled) && !field.isDeleteEnabled
+                ? '100%'
+                : 'auto'
+            }
           >
             <FormattedMessage {...messages.done} />
           </Button>
-          <Button
-            icon="delete"
-            buttonStyle="primary-outlined"
-            borderColor={colors.error}
-            textColor={colors.error}
-            iconColor={colors.error}
-            onClick={() => onDelete(field.index)}
-            minWidth="160px"
-            data-cy="e2e-delete-field"
-            disabled={isDeleteDisabled}
-          >
-            <FormattedMessage {...messages.delete} />
-          </Button>
+          {(!isNilOrError(field.isDeleteEnabled)
+            ? field.isDeleteEnabled
+            : true) && (
+            <Button
+              icon="delete"
+              buttonStyle="primary-outlined"
+              borderColor={colors.error}
+              textColor={colors.error}
+              iconColor={colors.error}
+              onClick={() => onDelete(field.index)}
+              minWidth="160px"
+              data-cy="e2e-delete-field"
+              disabled={isDeleteDisabled}
+            >
+              <FormattedMessage {...messages.delete} />
+            </Button>
+          )}
         </Box>
       </Box>
     );
