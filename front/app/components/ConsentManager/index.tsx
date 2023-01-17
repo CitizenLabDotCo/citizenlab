@@ -189,13 +189,11 @@ export class ConsentManager extends PureComponent<Props, State> {
   reject = () => {
     this.setState(
       (state) => {
-        const rejected = allCategories().reduce(
-          (acc, category) => ({
-            ...acc,
-            [category]: false,
-          }),
-          {} as Record<TCategory, false>
-        );
+        const rejected = {
+          advertising: false,
+          analytics: false,
+          functional: false,
+        };
 
         return {
           ...state,
