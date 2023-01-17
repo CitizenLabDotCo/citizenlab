@@ -281,6 +281,7 @@
   "app.components.ParticipationCTABars.participationTimeLeft": "{timeLeft} Wochen iwwereg",
   "app.components.ParticipationCTABars.projectOpenForSubmission": "Dëse Projet ass aktuell op fir Bedeelegung.",
   "app.components.ParticipationCTABars.seeIdeas": "Iddien ukucken",
+  "app.components.ParticipationCTABars.submitIdea": "Submit idea",
   "app.components.ParticipationCTABars.takeTheSurvey": "Un der Ëmfro deelhuelen",
   "app.components.ParticipationCTABars.userHasParticipated": "Dir hutt Iech un dësem Projet bedeelegt.",
   "app.components.ParticipationCTABars.volunteer": "Volontaire",
