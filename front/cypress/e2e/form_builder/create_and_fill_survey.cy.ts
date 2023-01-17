@@ -463,13 +463,13 @@ describe('Survey builder', () => {
 
     // Add second page
     cy.get('[data-cy="e2e-page"]').click();
-    cy.get('#e2e-page-title-multiloc').type(page2Title, { force: true });
+    cy.get('#e2e-field-group-title-multiloc').type(page2Title, { force: true });
     cy.get('[data-cy="e2e-short-answer"]').click();
     cy.get('#e2e-title-multiloc').type(question2Title, { force: true });
 
     // Add third page
     cy.get('[data-cy="e2e-page"]').click();
-    cy.get('#e2e-page-title-multiloc').type(page3Title, { force: true });
+    cy.get('#e2e-field-group-title-multiloc').type(page3Title, { force: true });
     cy.get('[data-cy="e2e-short-answer"]').click();
     cy.get('#e2e-title-multiloc').type(question3Title, { force: true });
 
@@ -612,7 +612,7 @@ describe('Survey builder', () => {
 
     // Add second page
     cy.get('[data-cy="e2e-page"]').click();
-    cy.get('#e2e-page-title-multiloc').type(page2Title, { force: true });
+    cy.get('#e2e-field-group-title-multiloc').type(page2Title, { force: true });
     cy.get('[data-cy="e2e-short-answer"]').click();
     cy.get('#e2e-title-multiloc').type(question2Title, { force: true });
 
@@ -627,7 +627,7 @@ describe('Survey builder', () => {
 
     // Add third page
     cy.get('[data-cy="e2e-page"]').click();
-    cy.get('#e2e-page-title-multiloc').type(page3Title, { force: true });
+    cy.get('#e2e-field-group-title-multiloc').type(page3Title, { force: true });
     cy.get('[data-cy="e2e-short-answer"]').click();
     cy.get('#e2e-title-multiloc').type(question3Title, { force: true });
 
@@ -704,19 +704,19 @@ describe('Survey builder', () => {
 
     // Add second page
     cy.get('[data-cy="e2e-page"]').click();
-    cy.get('#e2e-page-title-multiloc').type(page2Title, { force: true });
+    cy.get('#e2e-field-group-title-multiloc').type(page2Title, { force: true });
     cy.get('[data-cy="e2e-short-answer"]').click();
     cy.get('#e2e-title-multiloc').type(question2Title, { force: true });
 
     // Add third page
     cy.get('[data-cy="e2e-page"]').click();
-    cy.get('#e2e-page-title-multiloc').type(page3Title, { force: true });
+    cy.get('#e2e-field-group-title-multiloc').type(page3Title, { force: true });
     cy.get('[data-cy="e2e-short-answer"]').click();
     cy.get('#e2e-title-multiloc').type(question3Title, { force: true });
 
     // Add fourth page
     cy.get('[data-cy="e2e-page"]').click();
-    cy.get('#e2e-page-title-multiloc').type(page4Title, { force: true });
+    cy.get('#e2e-field-group-title-multiloc').type(page4Title, { force: true });
     cy.get('[data-cy="e2e-short-answer"]').click();
     cy.get('#e2e-title-multiloc').type(question4Title, { force: true });
 
@@ -780,7 +780,7 @@ describe('Survey builder', () => {
 
     // Add second page
     cy.get('[data-cy="e2e-page"]').click();
-    cy.get('#e2e-page-title-multiloc').type(page2Title, { force: true });
+    cy.get('#e2e-field-group-title-multiloc').type(page2Title, { force: true });
     cy.get('[data-cy="e2e-short-answer"]').click();
     cy.get('#e2e-title-multiloc').type(question2Title, { force: true });
 
@@ -795,13 +795,13 @@ describe('Survey builder', () => {
 
     // Add third page
     cy.get('[data-cy="e2e-page"]').click();
-    cy.get('#e2e-page-title-multiloc').type(page3Title, { force: true });
+    cy.get('#e2e-field-group-title-multiloc').type(page3Title, { force: true });
     cy.get('[data-cy="e2e-short-answer"]').click();
     cy.get('#e2e-title-multiloc').type(question3Title, { force: true });
 
     // Add fourth page
     cy.get('[data-cy="e2e-page"]').click();
-    cy.get('#e2e-page-title-multiloc').type(page4Title, { force: true });
+    cy.get('#e2e-field-group-title-multiloc').type(page4Title, { force: true });
     cy.get('[data-cy="e2e-short-answer"]').click();
     cy.get('#e2e-title-multiloc').type(question4Title, { force: true });
 

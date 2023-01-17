@@ -26,7 +26,11 @@ import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMulti
 import validateElementTitle from 'utils/yup/validateElementTitle';
 import validateLogic from 'utils/yup/validateLogic';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import { PageStructure, getReorderedFields, DragAndDropResult } from './utils';
+import {
+  NestedGroupingStructure,
+  getReorderedFields,
+  DragAndDropResult,
+} from './utils';
 
 // services
 import {
@@ -81,9 +85,14 @@ export const FormEdit = ({
   const [selectedField, setSelectedField] = useState<
     IFlatCustomFieldWithIndex | undefined
   >(undefined);
+  const {
+    groupingType,
+    isEditPermittedAfterSubmissions,
+    formSavedSuccessMessage,
+  } = builderConfig;
 
   const isEditingDisabled =
-    totalSubmissions > 0 && !builderConfig.isEditPermittedAfterSubmissions;
+    totalSubmissions > 0 && !isEditPermittedAfterSubmissions;
 
   const schema = object().shape({
     customFields: array().of(
@@ -132,12 +141,13 @@ export const FormEdit = ({
   const handleDelete = (fieldIndex: number) => {
     const field = fields[fieldIndex];
 
-    // When the first page is deleted, it's questions go to the next page
-    if (fieldIndex === 0 && field.input_type === 'page') {
-      const nextPageIndex = fields.findIndex(
-        (feild, fieldIndex) => feild.input_type === 'page' && fieldIndex !== 0
+    // When the first group is deleted, it's questions go to the next group
+    if (fieldIndex === 0 && field.input_type === groupingType) {
+      const nextGroupIndex = fields.findIndex(
+        (feild, fieldIndex) =>
+          feild.input_type === groupingType && fieldIndex !== 0
       );
-      move(nextPageIndex, 0);
+      move(nextGroupIndex, 0);
       remove(1);
     } else {
       remove(fieldIndex);
@@ -194,18 +204,18 @@ export const FormEdit = ({
     }
   };
 
-  // Page is only deletable when we have more than one page
-  const isPageDeletable =
-    fields.filter((field) => field.input_type === 'page').length > 1;
+  // Group is only deletable when we have more than one group
+  const isGroupDeletable =
+    fields.filter((field) => field.input_type === groupingType).length > 1;
   const isDeleteDisabled = !(
-    selectedField?.input_type !== 'page' || isPageDeletable
+    selectedField?.input_type !== groupingType || isGroupDeletable
   );
 
   const reorderFields = (
     result: DragAndDropResult,
-    nestedPageData: PageStructure[]
+    nestedGroupData: NestedGroupingStructure[]
   ) => {
-    const reorderedFields = getReorderedFields(result, nestedPageData);
+    const reorderedFields = getReorderedFields(result, nestedGroupData);
     if (reorderedFields) {
       replace(reorderedFields);
     }
@@ -256,9 +266,7 @@ export const FormEdit = ({
                       </Box>
                     )}
                     <Feedback
-                      successMessage={formatMessage(
-                        builderConfig.formSavedSuccessMessage
-                      )}
+                      successMessage={formatMessage(formSavedSuccessMessage)}
                     />
                     {isEditingDisabled &&
                       builderConfig.getDeleteFormResultsNotice &&

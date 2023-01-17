@@ -17,6 +17,14 @@ export default defineMessages({
     id: 'app.components.formBuilder.page',
     defaultMessage: 'Page',
   },
+  section: {
+    id: 'app.components.formBuilder.section',
+    defaultMessage: 'Section',
+  },
+  surveyEnd: {
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd',
+    defaultMessage: 'Survey end',
+  },
   question: {
     id: 'app.components.formBuilder.question',
     defaultMessage: 'Question',
