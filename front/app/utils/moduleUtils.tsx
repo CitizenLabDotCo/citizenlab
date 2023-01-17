@@ -14,7 +14,7 @@ import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { TNotificationData } from 'services/notifications';
 import { IPhaseData } from 'services/phases';
 import { TVerificationMethod } from 'services/verificationMethods';
-import { InsertConfigurationOptions, ITab, Locale, Multiloc } from 'typings';
+import { InsertConfigurationOptions, ITab } from 'typings';
 import { IntlFormatters } from 'react-intl';
 
 export type ITabsOutlet = {
@@ -23,16 +23,6 @@ export type ITabsOutlet = {
 };
 
 export interface OutletsPropertyMap {
-  'app.containers.Admin.projects.edit.description.contentBuilder': {
-    onMount: () => void;
-    valueMultiloc: Multiloc | null | undefined;
-    onChange: (description_multiloc: Multiloc, _locale: Locale) => void;
-    label: string;
-    labelTooltipText: string;
-  };
-  'app.ProjectsShowPage.shared.header.ProjectInfo.contentBuilder': {
-    onMount: () => void;
-  };
   'app.containers.Admin.users.GroupsListPanel.listitem.icon': {
     type: MembershipType;
   };

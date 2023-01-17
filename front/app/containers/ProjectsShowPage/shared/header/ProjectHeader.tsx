@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { memo } from 'react';
 
 import { isNilOrError } from 'utils/helperUtils';
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
@@ -9,7 +9,6 @@ import ContentContainer from 'components/ContentContainer';
 import ProjectInfo from './ProjectInfo';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import Button from 'components/UI/Button';
-import Outlet from 'components/Outlet';
 import ProjectFolderGoBackButton from './ProjectFolderGoBackButton';
 import {
   HeaderImage,
@@ -82,7 +81,6 @@ interface Props {
 
 const ProjectHeader = memo<Props & WrappedComponentProps>(
   ({ projectId, className, intl: { formatMessage } }) => {
-    const [moduleActive, setModuleActive] = useState(false);
     const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
     const project = useProject({ projectId });
     const authUser = useAuthUser();
@@ -93,8 +91,6 @@ const ProjectHeader = memo<Props & WrappedComponentProps>(
       const userCanEditProject =
         !isNilOrError(authUser) &&
         canModerateProject(project.id, { data: authUser });
-
-      const setModuleToActive = () => setModuleActive(true);
 
       return (
         <Container className={className || ''}>
@@ -135,11 +131,7 @@ const ProjectHeader = memo<Props & WrappedComponentProps>(
               projectId={projectId}
               hasHeaderImage={!!projectHeaderImageLargeUrl}
             />
-            {!moduleActive && <ProjectInfo projectId={projectId} />}
-            <Outlet
-              id="app.ProjectsShowPage.shared.header.ProjectInfo.contentBuilder"
-              onMount={setModuleToActive}
-            />
+            <ProjectInfo projectId={projectId} />
           </ContentContainer>
         </Container>
       );

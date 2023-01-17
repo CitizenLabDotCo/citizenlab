@@ -32,7 +32,6 @@ import styled from 'styled-components';
 
 // Typing
 import { Multiloc, Locale } from 'typings';
-import Outlet from 'components/Outlet';
 
 const Container = styled.div``;
 
@@ -56,7 +55,7 @@ const ProjectDescription = memo<
     intl: { formatMessage },
   } = props;
 
-  const [moduleActive, setModuleActive] = useState(false);
+  const [moduleActive] = useState(false);
   const [touched, setTouched] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -66,7 +65,6 @@ const ProjectDescription = memo<
     description_multiloc: null,
   });
 
-  const setModuleToActive = () => setModuleActive(true);
   const project = useProject({ projectId: props.params.projectId });
 
   useEffect(() => {
@@ -173,14 +171,6 @@ const ProjectDescription = memo<
                 withCTAButton
               />
             )}
-            <Outlet
-              id="app.containers.Admin.projects.edit.description.contentBuilder"
-              onMount={setModuleToActive}
-              valueMultiloc={formValues.description_multiloc}
-              onChange={handleDescriptionOnChange}
-              label={formatMessage(messages.descriptionLabel)}
-              labelTooltipText={formatMessage(messages.descriptionTooltip)}
-            />
             <Error
               fieldName="description_multiloc"
               apiErrors={errors?.description_multiloc}
