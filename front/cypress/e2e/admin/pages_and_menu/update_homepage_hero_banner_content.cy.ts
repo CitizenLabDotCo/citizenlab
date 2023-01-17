@@ -81,6 +81,23 @@ describe('Admin: update Hero Banner content', () => {
     cy.intercept('PATCH', '**/home_page').as('saveHomePage');
     cy.setConsentAndAdminLoginCookies();
 
+    /* ========================
+       Full-width banner layout
+    ========================= */
+    cy.visit('admin/pages-menu/homepage/homepage-banner/');
+    cy.get('[data-cy="e2e-full-width-banner-layout-option"]').click();
+    cy.get('[data-cy="e2e-remove-image-button"]').click();
+    cy.get('[data-cy="e2e-homepage-banner-image-dropzone"] input').attachFile(
+      'testimage.png'
+    );
+    // Should exist before saving
+    cy.get('[data-cy="e2e-overlay-toggle"]').should('exist');
+    cy.get('.e2e-submit-wrapper-button').click().contains('Success');
+    cy.wait('@saveHomePage');
+    cy.get('.e2e-submit-wrapper-button').contains('Success');
+    // Should exist after saving
+    cy.get('[data-cy="e2e-overlay-toggle"]').should('exist');
+
     /* ==================
        Two-row layout
     ================== */
