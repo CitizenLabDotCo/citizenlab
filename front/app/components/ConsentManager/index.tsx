@@ -13,8 +13,6 @@ import {
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
-
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import Container from './Container';
