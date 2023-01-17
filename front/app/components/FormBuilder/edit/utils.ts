@@ -33,27 +33,27 @@ export type DragAndDropResult = {
   destination: DragOrDroValues | null;
 };
 
-const getFlatPageStructure = (
-  nestedPageStructure: NestedGroupingStructure[]
+const getFlatGroupStructure = (
+  nestedGroupStructure: NestedGroupingStructure[]
 ): IFlatCustomField[] => {
-  const flattenedPageStructure: IFlatCustomField[] = [];
-  nestedPageStructure.forEach((page) => {
-    flattenedPageStructure.push(page.groupElement);
-    page.questions.forEach((question) => {
-      flattenedPageStructure.push(question);
+  const flattenedGroupStructure: IFlatCustomField[] = [];
+  nestedGroupStructure.forEach((group) => {
+    flattenedGroupStructure.push(group.groupElement);
+    group.questions.forEach((question) => {
+      flattenedGroupStructure.push(question);
     });
   });
-  return flattenedPageStructure;
+  return flattenedGroupStructure;
 };
 
-const getPageQuestions = (
-  pages: NestedGroupingStructure[],
-  pageId: string
+const getGroupQuestions = (
+  groups: NestedGroupingStructure[],
+  groupId: string
 ): IFlatCustomField[] => {
-  const page = pages.find(
-    (page) => page.id === pageId
+  const group = groups.find(
+    (group) => group.id === groupId
   ) as NestedGroupingStructure;
-  return page.questions;
+  return group.questions;
 };
 
 export const getReorderedFields = (
@@ -63,50 +63,50 @@ export const getReorderedFields = (
   const { type, source, destination } = result;
   if (!destination) return;
 
-  const sourcePageId = source.droppableId;
-  const destinationPageId = destination.droppableId;
+  const sourceGroupId = source.droppableId;
+  const destinationGroupId = destination.droppableId;
 
   if (type === questionDNDType) {
-    if (sourcePageId === destinationPageId) {
+    if (sourceGroupId === destinationGroupId) {
       const updatedOrder = reorder<IFlatCustomField>(
-        getPageQuestions(nestedGroupData, sourcePageId),
+        getGroupQuestions(nestedGroupData, sourceGroupId),
         source.index,
         destination.index
       );
-      const updatedPages = nestedGroupData.map((field) =>
-        field.id !== sourcePageId
+      const updatedGroups = nestedGroupData.map((field) =>
+        field.id !== sourceGroupId
           ? field
           : { ...field, questions: updatedOrder }
       );
 
-      return getFlatPageStructure(updatedPages);
+      return getFlatGroupStructure(updatedGroups);
     } else {
-      const sourceOrder = getPageQuestions(nestedGroupData, sourcePageId);
-      const destinationOrder = getPageQuestions(
+      const sourceOrder = getGroupQuestions(nestedGroupData, sourceGroupId);
+      const destinationOrder = getGroupQuestions(
         nestedGroupData,
-        destinationPageId
+        destinationGroupId
       );
 
       const [removed] = sourceOrder.splice(source.index, 1);
       destinationOrder.splice(destination.index, 0, removed);
 
-      const updatedPages = nestedGroupData.map((page) =>
-        page.id === sourcePageId
-          ? { ...page, questions: sourceOrder }
-          : page.id === destinationPageId
-          ? { ...page, questions: destinationOrder }
-          : page
+      const updatedGroups = nestedGroupData.map((group) =>
+        group.id === sourceGroupId
+          ? { ...group, questions: sourceOrder }
+          : group.id === destinationGroupId
+          ? { ...group, questions: destinationOrder }
+          : group
       );
 
-      return getFlatPageStructure(updatedPages);
+      return getFlatGroupStructure(updatedGroups);
     }
   }
 
-  const updatedPages = reorder<NestedGroupingStructure>(
+  const updatedGroups = reorder<NestedGroupingStructure>(
     nestedGroupData,
     source.index,
     destination.index
   );
 
-  return getFlatPageStructure(updatedPages);
+  return getFlatGroupStructure(updatedGroups);
 };
