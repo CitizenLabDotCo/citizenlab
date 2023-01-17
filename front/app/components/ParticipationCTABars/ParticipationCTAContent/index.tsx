@@ -9,9 +9,6 @@ import {
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 
-// hooks
-import { useTheme } from 'styled-components';
-
 // services
 import { IPhaseData } from 'services/phases';
 
@@ -23,7 +20,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // styling
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 
 const BlickingIcon = styled(Icon)<{ showAnimation: boolean }>`
   animation-name: blink-animation;
@@ -99,6 +96,7 @@ export const ParticipationCTAContent = ({
               m="0px"
               width="100%"
               fontSize="xs"
+              my="0px"
             >
               <FormattedMessage
                 {...messages.participationTimeLeft}
@@ -136,7 +134,7 @@ export const ParticipationCTAContent = ({
           mr="6px"
           showAnimation={!hasUserParticipated}
         />
-        <Text color="white" fontWeight="bold" fontSize="s">
+        <Text color="white" fontSize="s" my="0px">
           <FormattedMessage {...message} />
         </Text>
       </Box>
@@ -146,7 +144,9 @@ export const ParticipationCTAContent = ({
             color="white"
             style={{ textTransform: 'uppercase' }}
             mr="12px"
+            my="0px"
             fontSize="xs"
+            fontWeight="bold"
           >
             <FormattedMessage
               {...messages.participationTimeLeft}

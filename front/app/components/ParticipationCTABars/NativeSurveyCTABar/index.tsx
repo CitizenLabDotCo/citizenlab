@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 // Components
 import IdeaButton from 'components/IdeaButton';
 import { ParticipationCTAContent } from 'components/ParticipationCTABars/ParticipationCTAContent';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // hooks
 import { useTheme } from 'styled-components';
@@ -22,6 +23,7 @@ import {
 export const NativeSurveyCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
   const authUser = useAuthUser();
+  const isSmallerThanXlPhone = useBreakpoint('phone');
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
 
   useEffect(() => {
@@ -51,10 +53,11 @@ export const NativeSurveyCTABar = ({ phases, project }: CTABarProps) => {
       fontWeight="500"
       bgColor={theme.colors.white}
       textColor={theme.colors.tenantText}
-      icon="arrow-right"
       iconPos="right"
+      icon={!isSmallerThanXlPhone ? 'arrow-right' : undefined}
       iconColor={theme.colors.tenantText}
       textHoverColor={theme.colors.black}
+      iconHoverColor={theme.colors.black}
     />
   );
 
