@@ -25,9 +25,6 @@ export interface OutletsPropertyMap {
     project: IProjectData;
     phases: IPhaseData[] | null;
   };
-  'app.containers.Admin.settings.tabs': {
-    onData: (data: InsertConfigurationOptions<ITab>) => void;
-  };
   'app.containers.Admin.sideBar.navItems': {
     onData: (data: InsertConfigurationOptions<NavItem>) => void;
   };
