@@ -100,9 +100,8 @@ const OverlayControls = ({
 
   return (
     <>
-      <Box mb={overlayEnabled ? '20px' : '0'}>
+      <Box mb={overlayEnabled ? '20px' : '0'} data-cy="e2e-overlay-toggle">
         <Toggle
-          data-cy="e2e-overlay-toggle"
           id="overlay-toggle"
           onChange={handleOverlayEnabling}
           checked={overlayEnabled}
