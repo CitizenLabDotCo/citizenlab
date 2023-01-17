@@ -144,8 +144,14 @@ const FormBuilderSettings = ({
 
   let translatedStringKey: MessageDescriptor | null = null;
   switch (field.input_type) {
+    case 'title_multiloc':
+      translatedStringKey = messages.title;
+      break;
     case 'text':
       translatedStringKey = messages.shortAnswer;
+      break;
+    case 'html_multiloc':
+      translatedStringKey = messages.description;
       break;
     case 'multiline_text':
       translatedStringKey = messages.longAnswer;

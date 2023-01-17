@@ -19,6 +19,9 @@ export type ICustomFieldInputType =
   | 'linear_scale'
   | 'page'
   | 'file_upload'
+  | 'title_multiloc'
+  | 'html_multiloc'
+  | 'files'
   | 'image_files';
 
 export type IOptionsType = {

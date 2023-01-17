@@ -26,8 +26,10 @@ import { DragAndDrop, Drag, Drop } from '../DragAndDrop';
 const getTranslatedFieldType = (field) => {
   switch (field) {
     case 'text':
+    case 'title_multiloc':
       return messages.shortAnswer;
     case 'multiline_text':
+    case 'html_multiloc':
       return messages.longAnswer;
     case 'multiselect':
       return messages.multipleChoice;

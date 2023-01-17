@@ -1,4 +1,5 @@
 import { getUpdatedConfiguration } from 'components/FormBuilder/utils';
+import useFormCustomFields from 'hooks/useFormCustomFields';
 import React, { lazy } from 'react';
 import { useParams } from 'react-router-dom';
 import { ICustomFieldInputType } from 'services/formCustomFields';
@@ -9,7 +10,6 @@ const FormBuilder = lazy(() => import('components/FormBuilder/edit'));
 const IdeaFormBuilder = () => {
   const { projectId } = useParams() as {
     projectId: string;
-    phaseId?: string;
   };
 
   const goBackUrl = `/admin/projects/${projectId}/ideaform`;
@@ -44,7 +44,7 @@ const IdeaFormBuilder = () => {
       id: '5fa13807-86b8-4a62-904e-a0de5419d6ae',
       type: 'custom_field',
       key: 'title_multiloc',
-      input_type: 'text' as ICustomFieldInputType,
+      input_type: 'title_multiloc' as ICustomFieldInputType,
       temp_id: '',
       minimum_label_multiloc: {},
       maximum_label_multiloc: {},
@@ -103,7 +103,7 @@ const IdeaFormBuilder = () => {
       id: '5b9940a4-ba83-40da-9a2d-51287f38411a',
       type: 'custom_field',
       key: 'body_multiloc',
-      input_type: 'multiline_text' as ICustomFieldInputType,
+      input_type: 'html_multiloc' as ICustomFieldInputType,
       temp_id: '',
       minimum_label_multiloc: {},
       maximum_label_multiloc: {},
@@ -220,7 +220,7 @@ const IdeaFormBuilder = () => {
       id: 'f805c9cf-f47a-4da8-ba14-faf57610fff0',
       type: 'custom_field',
       key: 'topic_ids',
-      input_type: 'text' as ICustomFieldInputType,
+      input_type: 'multiselect' as ICustomFieldInputType,
       temp_id: '',
       minimum_label_multiloc: {},
       maximum_label_multiloc: {},
@@ -395,7 +395,7 @@ const IdeaFormBuilder = () => {
       id: '3f202dcf-288a-4fd4-8f3f-e9c63ffde804',
       type: 'custom_field',
       key: 'idea_files_attributes',
-      input_type: 'text' as ICustomFieldInputType,
+      input_type: 'files' as ICustomFieldInputType,
       temp_id: '',
       minimum_label_multiloc: {},
       maximum_label_multiloc: {},
