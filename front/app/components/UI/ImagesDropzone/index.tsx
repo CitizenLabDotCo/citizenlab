@@ -39,7 +39,12 @@ const ErrorWrapper = styled.div`
   display: flex;
 `;
 
-const DropzoneLabel = styled.label`
+/*
+  Changing this to a label causes unexpected behavior when selecting files,
+  which isn't easy to solve. Sometimes my system's file picker would reopen
+  after trying to select a picture.
+*/
+const DropzoneLabel = styled.span`
   color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   line-height: normal;
@@ -412,10 +417,14 @@ class ImagesDropzone extends PureComponent<
                           : ''
                       }
                     >
-                      <DropzoneInput {...getInputProps()} id={id} />
+                      <DropzoneInput
+                        {...getInputProps()}
+                        id={id}
+                        data-testid="dropzone-input"
+                      />
                       <DropzoneContentInner>
                         <DropzoneLabelIcon name="upload-image" ariaHidden />
-                        <DropzoneLabel htmlFor={id}>{label}</DropzoneLabel>
+                        <DropzoneLabel>{label}</DropzoneLabel>
                         {remainingImages && (
                           <DropzoneImagesRemaining>
                             {remainingImages}

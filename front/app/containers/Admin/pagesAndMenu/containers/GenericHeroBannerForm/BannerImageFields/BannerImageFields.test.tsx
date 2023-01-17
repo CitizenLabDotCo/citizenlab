@@ -15,7 +15,7 @@ const props = {
 };
 
 async function uploadLocalImageForHeroBanner() {
-  const inputNode = screen.getByLabelText('Select an image (max. 10MB)');
+  const inputNode = screen.getByTestId('dropzone-input');
   const file = new File(['file'], 'file.png', {
     type: 'image/png',
   });
