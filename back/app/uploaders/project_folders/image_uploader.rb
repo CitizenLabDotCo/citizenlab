@@ -2,12 +2,19 @@
 
 module ProjectFolders
   class ImageUploader < BaseImageUploader
-    version :medium do
-      process safe_resize_to_fill_for_gif: [300, 150]
+    # used for small cards on desktop
+    version :small do
+      process safe_resize_to_fill_for_gif: [370, 370]
     end
 
-    version :large do
+    # used for mobile
+    version :medium do
       process safe_resize_to_fill_for_gif: [740, 370]
+    end
+
+    # used for large and medium cards on desktop
+    version :large do
+      process safe_resize_to_fill_for_gif: [575, 575]
     end
   end
 end

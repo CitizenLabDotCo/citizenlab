@@ -9,7 +9,7 @@ import bowser from 'bowser';
 import Link from 'utils/cl-router/Link';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Image from 'components/UI/Image';
 import AvatarBubbles from 'components/AvatarBubbles';
 
@@ -470,6 +470,7 @@ const ProjectCard = memo<Props>(
     const phase = usePhase(currentPhaseId);
     const phases = usePhases(projectId);
     const theme = useTheme();
+    const isPhone = useBreakpoint('phone');
 
     const [visible, setVisible] = useState(false);
 
@@ -508,10 +509,19 @@ const ProjectCard = memo<Props>(
       const canVote = project.attributes.action_descriptor.voting_idea.enabled;
       const canComment =
         project.attributes.action_descriptor.commenting_idea.enabled;
-      const imageUrl =
-        !isNilOrError(projectImages) && projectImages.length > 0
-          ? projectImages[0].attributes.versions.medium
-          : null;
+
+      const imageVersions = isNilOrError(projectImages)
+        ? null
+        : projectImages[0]?.attributes.versions;
+
+      const imageUrl = imageVersions
+        ? isPhone
+          ? imageVersions.medium
+          : size === 'small' // image size is approximately the same for both medium and large desktop card sizes
+          ? imageVersions.small
+          : imageVersions.large
+        : null;
+
       const projectUrl = getProjectUrl(project);
       const isFinished = project.attributes.timeline_active === 'past';
       const isArchived = project.attributes.publication_status === 'archived';

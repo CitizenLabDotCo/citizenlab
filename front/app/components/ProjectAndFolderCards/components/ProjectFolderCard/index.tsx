@@ -7,7 +7,7 @@ import bowser from 'bowser';
 import Link from 'utils/cl-router/Link';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Image from 'components/UI/Image';
 
 // i18n
@@ -308,11 +308,19 @@ const ProjectFolderCard = memo<Props>(
       },
       []
     );
+    const isPhone = useBreakpoint('phone');
 
-    const imageUrl =
-      !isNilOrError(projectFolderImages) && projectFolderImages.data.length > 0
-        ? projectFolderImages.data?.[0].attributes?.versions.medium
-        : null;
+    const imageVersions = isNilOrError(projectFolderImages)
+      ? null
+      : projectFolderImages.data[0]?.attributes.versions;
+
+    const imageUrl = imageVersions
+      ? isPhone
+        ? imageVersions.medium
+        : size === 'small' // image size is approximately the same for both medium and large desktop card sizes
+        ? imageVersions.small
+        : imageVersions.large
+      : null;
 
     const folderUrl = `/folders/${publication.attributes.publication_slug}`;
     const numberOfProjectsInFolder =
