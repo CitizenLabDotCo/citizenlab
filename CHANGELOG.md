@@ -1,5 +1,9 @@
 # Changelog
 
+### Fixed
+
+[CL-2611] Show projects nested in folders on custom pages
+
 ## 2023-01-16
 
 ### Added
