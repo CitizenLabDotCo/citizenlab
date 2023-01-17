@@ -118,7 +118,7 @@ const BannerImageField = ({
 
   const hasLocalHeaderImage = !isNilOrError(headerLocalDisplayImage);
   const imageShouldBeSaved = headerLocalDisplayImage
-    ? headerLocalDisplayImage.remote
+    ? !headerLocalDisplayImage.remote
     : false;
 
   const showConditions = (bannerLayout: THomepageBannerLayout) => {
