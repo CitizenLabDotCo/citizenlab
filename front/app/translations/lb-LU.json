@@ -66,7 +66,6 @@
   "app.components.ConfirmationModal.verifyAndContinue": "Iwwerpréiwen a weidergoen",
   "app.components.ConfirmationModal.wrongEmail": "Falsch E-Mail-Adress",
   "app.components.ConsentManager.Banner.accept": "Akzeptéieren",
-  "app.components.ConsentManager.Banner.ariaButtonClose": "Richtlinnen akzeptéieren a Banner zoumaachen",
   "app.components.ConsentManager.Banner.close": "Zoumaachen",
   "app.components.ConsentManager.Banner.mainText": "Dësen Internetsite benotzt Cookieë geméiss eiser {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Beaarbechten",

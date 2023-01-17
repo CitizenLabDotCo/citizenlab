@@ -66,7 +66,6 @@
   "app.components.ConfirmationModal.verifyAndContinue": "Verificar i continuar",
   "app.components.ConfirmationModal.wrongEmail": "Correu electrònic incorrecte?",
   "app.components.ConsentManager.Banner.accept": "Acceptar",
-  "app.components.ConsentManager.Banner.ariaButtonClose": "Accepteu la política i tanqueu el banner",
   "app.components.ConsentManager.Banner.close": "Tancar",
   "app.components.ConsentManager.Banner.mainText": "Aquesta plataforma utilitza galetes d'acord amb el nostre {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Gestionar",
