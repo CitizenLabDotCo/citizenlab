@@ -93,7 +93,7 @@ export const ContentSettings = ({
           </>
         )}
         {getAdditionalSettings(field, locales, platformLocale)}
-        {field.input_type !== 'page' && (
+        {!isFieldGrouping && (
           <>
             <SectionField id="e2e-required-toggle">
               <Toggle
