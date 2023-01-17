@@ -19,8 +19,10 @@ const IdeaFormBuilder = () => {
       id: 'f5f4d0bb-3059-4cc2-aadf-fc5eb828399d',
       type: 'custom_field',
       key: 'page_1',
-      input_type: 'page' as ICustomFieldInputType,
-      title_multiloc: {},
+      input_type: 'section' as ICustomFieldInputType,
+      title_multiloc: {
+        en: 'What is your idea?',
+      },
       required: false,
       ordering: 9,
       enabled: true,

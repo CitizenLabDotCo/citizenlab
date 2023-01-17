@@ -6,7 +6,7 @@ import messages from '../messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { DragAndDropResult, PageStructure } from '../../edit/utils';
+import { DragAndDropResult, NestedGroupingStructure } from '../../edit/utils';
 
 // components
 import { Box, colors } from '@citizenlab/cl2-component-library';
@@ -53,7 +53,7 @@ interface FormFieldsProps {
   onEditField: (field: IFlatCustomFieldWithIndex) => void;
   handleDragEnd: (
     result: DragAndDropResult,
-    nestedPageData: PageStructure[]
+    nestedGroupData: NestedGroupingStructure[]
   ) => void;
   isEditingDisabled: boolean;
   selectedFieldId?: string;
@@ -75,17 +75,17 @@ const FormFields = ({
     return null;
   }
 
-  const nestedPageData: PageStructure[] = [];
+  const nestedGroupData: NestedGroupingStructure[] = [];
   formCustomFields.forEach((field) => {
-    if (field.input_type === 'page') {
-      nestedPageData.push({
-        page: field,
+    if (['page', 'section'].includes(field.input_type)) {
+      nestedGroupData.push({
+        groupElement: field,
         questions: [],
         id: field.id,
       });
     } else {
-      const lastPage = nestedPageData[nestedPageData.length - 1];
-      lastPage.questions.push({
+      const lastGroupElement = nestedGroupData[nestedGroupData.length - 1];
+      lastGroupElement.questions.push({
         ...field,
       });
     }
@@ -95,12 +95,12 @@ const FormFields = ({
     <Box height="100%">
       <DragAndDrop
         onDragEnd={(result: DragAndDropResult) => {
-          handleDragEnd(result, nestedPageData);
+          handleDragEnd(result, nestedGroupData);
           trigger();
         }}
       >
         <Drop id="droppable" type={pageDNDType}>
-          {nestedPageData.map((pageGrouping, pageIndex) => {
+          {nestedGroupData.map((pageGrouping, pageIndex) => {
             return (
               <Drag
                 key={pageGrouping.id}
@@ -108,7 +108,7 @@ const FormFields = ({
                 index={pageIndex}
               >
                 <FieldElement
-                  field={pageGrouping.page}
+                  field={pageGrouping.groupElement}
                   isEditingDisabled={isEditingDisabled}
                   getTranslatedFieldType={getTranslatedFieldType}
                   selectedFieldId={selectedFieldId}

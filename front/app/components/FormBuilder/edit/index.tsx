@@ -26,7 +26,11 @@ import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMulti
 import validateElementTitle from 'utils/yup/validateElementTitle';
 import validateLogic from 'utils/yup/validateLogic';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import { PageStructure, getReorderedFields, DragAndDropResult } from './utils';
+import {
+  NestedGroupingStructure,
+  getReorderedFields,
+  DragAndDropResult,
+} from './utils';
 
 // services
 import {
@@ -203,9 +207,9 @@ export const FormEdit = ({
 
   const reorderFields = (
     result: DragAndDropResult,
-    nestedPageData: PageStructure[]
+    nestedGroupData: NestedGroupingStructure[]
   ) => {
-    const reorderedFields = getReorderedFields(result, nestedPageData);
+    const reorderedFields = getReorderedFields(result, nestedGroupData);
     if (reorderedFields) {
       replace(reorderedFields);
     }

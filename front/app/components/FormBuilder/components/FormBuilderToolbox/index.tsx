@@ -106,21 +106,24 @@ const FormBuilderToolbox = ({
         </Title>
 
         <DraggableElement>
-          <ToolboxItem
-            icon="page"
-            label={formatMessage(messages.page)}
-            onClick={() => addField('page')}
-            data-cy="e2e-page"
-            fieldsToExclude={builderConfig.toolboxFieldsToExclude}
-            inputType="page"
-          />
-          <ToolboxItem
-            icon="section"
-            label={formatMessage(messages.section)}
-            onClick={() => addField('section')}
-            fieldsToExclude={builderConfig.toolboxFieldsToExclude}
-            inputType="section"
-          />
+          {builderConfig.groupingType === 'section' ? (
+            <ToolboxItem
+              icon="section"
+              label={formatMessage(messages.section)}
+              onClick={() => addField('section')}
+              fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+              inputType="section"
+            />
+          ) : (
+            <ToolboxItem
+              icon="page"
+              label={formatMessage(messages.page)}
+              onClick={() => addField('page')}
+              data-cy="e2e-page"
+              fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+              inputType="page"
+            />
+          )}
           <ToolboxItem
             icon="survey-short-answer-2"
             label={formatMessage(messages.shortAnswer)}

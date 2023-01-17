@@ -282,7 +282,7 @@ export const FieldElement = (props: Props) => {
                 </Badge>
               </Box>
             )}
-            {field.input_type !== 'page' && (
+            {!isFieldGrouping && (
               <Box my="auto" ml="12px">
                 {' '}
                 <Badge className="inverse" color={colors.grey200}>

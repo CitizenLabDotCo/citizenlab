@@ -33,6 +33,7 @@ export type FormBuilderConfig = {
 
   getDeleteFormResultsNotice?: (projectId: string) => void;
   goBackUrl?: string;
+  groupingType: 'page' | 'section';
 };
 
 export const getUpdatedConfiguration = (
