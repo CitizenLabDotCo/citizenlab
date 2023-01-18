@@ -56,6 +56,13 @@ class IdeaCustomFieldsService
     ]
   end
 
+  def populate_default_fields!
+    participation_method.default_fields(custom_form).reverse_each do |field|
+      field.save!
+      field.move_to_top
+    end
+  end
+
   private
 
   attr_reader :custom_form, :participation_method
