@@ -276,5 +276,3 @@ class Idea < ApplicationRecord
     )
   end
 end
-
-Idea.include_if_ee 'IdeaCustomFields::Extensions::Idea'

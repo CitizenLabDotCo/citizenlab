@@ -171,12 +171,7 @@ class XlsxService
     ]
     columns.concat user_custom_field_columns :author, view_private_attributes
     columns.reject! { |c| %w[author_email assignee_email author_id].include?(c[:header]) } unless view_private_attributes
-
-    if AppConfiguration.instance.feature_activated? 'idea_custom_fields'
-      columns + custom_form_custom_field_columns(ideas)
-    else
-      columns
-    end
+    columns
   end
 
   def generate_ideas_xlsx(ideas, view_private_attributes: false, with_tags: false)
@@ -332,32 +327,4 @@ class XlsxService
   def namespace(field_id, option_key)
     "#{field_id}/#{option_key}"
   end
-
-  def custom_form_custom_field_columns(ideas)
-    idea_custom_fields = ideas.map(&:project).flat_map do |project|
-      ::IdeaCustomFieldsService.new(project.custom_form).reportable_fields
-    end
-
-    # options keys are only unique in the scope of their field, namespacing to avoid collisions
-    options = CustomFieldOption.where(custom_field: idea_custom_fields).index_by { |option| namespace(option.custom_field_id, option.key) }
-
-    idea_custom_fields.map do |field|
-      column_name = multiloc_service.t(field.title_multiloc)
-      { header: column_name, f: value_getter_for_custom_form_custom_field_columns(field, options) }
-    end
-  end
-
-  def value_getter_for_custom_form_custom_field_columns(field, options)
-    if field.support_options?
-      lambda do |idea|
-        title_multiloc_for idea, field, options
-      end
-    else
-      lambda do |idea|
-        idea && idea.custom_field_values[field.key]
-      end
-    end
-  end
 end
-
-XlsxService.prepend_if_ee 'IdeaCustomFields::Patches::XlsxService'

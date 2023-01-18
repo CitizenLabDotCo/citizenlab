@@ -55,9 +55,7 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     }
   end
 
-  attribute :custom_field_values, if: proc {
-    AppConfiguration.instance.feature_activated? 'idea_custom_fields'
-  } do |idea|
+  attribute :custom_field_values do |idea|
     CustomFieldService.remove_disabled_custom_fields(idea.custom_field_values)
   end
 

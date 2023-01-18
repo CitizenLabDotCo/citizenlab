@@ -185,42 +185,6 @@
         }
       },
 
-      "dynamic_idea_form": {
-        "type": "object",
-        "title": "Dynamic idea form",
-        "description": "Changes the idea form from the hard-coded version to the generated version.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "idea_custom_fields": {
-        "type": "object",
-        "title": "Custom Idea Fields",
-        "description": "Admin and project managers can specify which idea form fields to enable/disable or make mandatory.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "jsonforms_custom_fields": {
-        "type": "object",
-        "title": "Rework of user custom fields (experimental)",
-        "description":  "Replaces react-json-forms with jsonforms for user custom fields form. Don't turn this on unless you know what you're doing.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
       "advanced_custom_pages": {
         "type": "object",
         "title": "Advanced Custom Pages",
