@@ -159,7 +159,7 @@ ro:
     gender:
       male: Masculin
       female: Femeie
-      unspecified: Nespecificat
+      unspecified: Alte
     domicile:
       outside: Altundeva
     education:
@@ -208,3 +208,5 @@ ro:
     survey_end_page:
       title: 'Survey end'
       description: "Please submit your answers by selecting 'Submit survey' below."
+  project_copy:
+    title_suffix: 'Copy'
