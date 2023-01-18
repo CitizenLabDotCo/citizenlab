@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import clHistory from 'utils/cl-router/history';
 
 // Components
@@ -23,6 +22,7 @@ import { IProjectData } from 'services/projects';
 
 // Styles
 import { colors } from 'utils/styleUtils';
+import useURLQuery from 'utils/cl-router/useUrlQuery';
 
 type Props = {
   project: IProjectData;
@@ -37,7 +37,7 @@ export const Heading = ({
   canUserEditProject,
   isSurvey,
 }: Props) => {
-  const [searchParams] = useSearchParams();
+  const searchParams = useURLQuery();
   const phaseId =
     searchParams.get('phase_id') ||
     project.relationships.current_phase?.data?.id;

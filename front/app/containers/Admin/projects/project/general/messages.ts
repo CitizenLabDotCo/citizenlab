@@ -110,15 +110,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription',
     defaultMessage: 'The project will show on selected area filter(s).',
   },
-  headerImageLabelText: {
-    id: 'app.containers.AdminPage.ProjectEdit.headerImageLabelText',
-    defaultMessage: 'Header image',
-  },
-  headerImageLabelTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.headerImageLabelTooltip',
-    defaultMessage:
-      'This image will be shown on top of the project page. The ideal dimensions are described in {imageSupportArticleLink}.',
-  },
   projectCardImageLabelText: {
     id: 'app.containers.AdminPage.ProjectEdit.projectCardImageLabelText',
     defaultMessage: 'Project card image',
@@ -153,15 +144,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.saveErrorMessage',
     defaultMessage:
       'An error occurred while saving your data. Please try again.',
-  },
-  imageSupportArticleLinkTarget: {
-    id: 'app.containers.AdminPage.ProjectEdit.imageSupportArticleLinkTarget',
-    defaultMessage:
-      'http://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
-  },
-  imageSupportArticleLinkText: {
-    id: 'app.containers.AdminPage.ProjectEdit.imageSupportArticleLinkText',
-    defaultMessage: 'this article',
   },
   projectName: {
     id: 'app.containers.AdminPage.ProjectEdit.projectName',
