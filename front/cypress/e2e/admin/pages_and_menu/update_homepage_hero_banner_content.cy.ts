@@ -119,7 +119,7 @@ describe('Admin: update Hero Banner content', () => {
     // Image is displayed when signed-out
     cy.clearCookies();
     cy.reload();
-    cy.get('[data-cy="e2e-header-image"]')
+    cy.get('[data-cy="e2e-fixed-ratio-header-image"]')
       .should('exist')
       .then((element) => {
         const ratio =
