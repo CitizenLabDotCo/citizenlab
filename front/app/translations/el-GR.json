@@ -284,7 +284,7 @@
   "app.components.ParticipationCTABars.submitIdea": "Υποβολή ιδέας",
   "app.components.ParticipationCTABars.takeTheSurvey": "Πάρτε μέρος στην έρευνα",
   "app.components.ParticipationCTABars.userHasParticipated": "You have participated in this project.",
-  "app.components.ParticipationCTABars.volunteer": "Volunteer",
+  "app.components.ParticipationCTABars.volunteer": "Εθελοντής",
   "app.components.PasswordInput.a11y_passwordHidden": "Κωδικός πρόσβασης κρυφός",
   "app.components.PasswordInput.a11y_passwordVisible": "Κωδικός πρόσβασης ορατός",
   "app.components.PasswordInput.a11y_strength1Password": "Κακή ισχύς κωδικού πρόσβασης",
