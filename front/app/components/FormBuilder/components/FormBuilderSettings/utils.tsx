@@ -62,8 +62,14 @@ const getBuiltInFieldStringKey = (
 ): MessageDescriptor | undefined => {
   let translatedStringKey: MessageDescriptor | undefined;
   switch (key) {
+    case 'body_multiloc':
+      translatedStringKey = messages.description;
+      break;
     case 'location_description':
       translatedStringKey = messages.locationDescription;
+      break;
+    case 'idea_images_attributes':
+      translatedStringKey = messages.imageUpload;
       break;
   }
 
@@ -80,9 +86,6 @@ const getInputTypeStringKey = (
       break;
     case 'text':
       translatedStringKey = messages.shortAnswer;
-      break;
-    case 'html_multiloc':
-      translatedStringKey = messages.description;
       break;
     case 'multiline_text':
       translatedStringKey = messages.longAnswer;
@@ -107,12 +110,6 @@ const getInputTypeStringKey = (
       break;
     case 'file_upload':
       translatedStringKey = messages.fileUpload;
-      break;
-    case 'image_files':
-      translatedStringKey = messages.imageUpload;
-      break;
-    case 'image_files':
-      translatedStringKey = messages.locationDescription;
       break;
   }
 
