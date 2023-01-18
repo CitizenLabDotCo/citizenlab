@@ -583,6 +583,7 @@
   "app.components.formBuilder.labels": "Labels",
   "app.components.formBuilder.labelsTooltipContent": "Choose optional labels for your minimum and maximum values.",
   "app.components.formBuilder.linearScale": "Linear scale",
+  "app.components.formBuilder.locationDescription": "Location",
   "app.components.formBuilder.logic": "Logic",
   "app.components.formBuilder.logicValidationError": "Logic may not link to prior pages",
   "app.components.formBuilder.longAnswer": "Long answer",
