@@ -140,7 +140,7 @@ el:
         idea:
           title: Ποια είναι η ιδέα σας;
         question:
-          title: What is your question ?
+          title: Ποια είναι η ερώτησή σας;
         contribution:
           title: Ποια είναι η συνεισφορά σας;
         project:
@@ -154,14 +154,14 @@ el:
       attachements:
         title: Εικόνες και συνημμένα αρχεία
       extra:
-        title: Additional information
+        title: Πρόσθετες πληροφορίες
   custom_field_options:
     gender:
       male: Άνδρας
       female: Γυναίκα
       unspecified: Άλλο
     domicile:
-      outside: Somewhere else
+      outside: Κάπου αλλού
     education:
       ISCED2: Lower secondary education
       ISCED3: Upper secondary education
@@ -178,28 +178,28 @@ el:
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Επαναφορά του κωδικού πρόσβασής σας'
-      message_you_reset_your_password: 'You requested a password reset for the participation platform of %{organizationName}. Click the button below to choose a new, safe password. The link expires in 1 hour.'
-      subject: '%{organizationName}: Reset your password'
+      message_you_reset_your_password: 'Ζητήσατε επαναφορά κωδικού πρόσβασης για την πλατφόρμα συμμετοχής %{organizationName}. Κάντε κλικ στο παρακάτω κουμπί για να επιλέξετε έναν νέο, ασφαλή κωδικό πρόσβασης. Ο σύνδεσμος λήγει σε 1 ώρα.'
+      subject: '%{organizationName}: Επαναφέρετε τον κωδικό πρόσβασής σας'
       title_reset_your_password: 'Επιλογή νέου κωδικού πρόσβασης'
   xlsx_export:
     column_headers:
       input_id: 'ID'
-      latitude: 'Latitude'
-      longitude: 'Longitude'
-      author_fullname: 'Author name'
-      author_email: 'Author email'
-      author_id: 'Author ID'
-      created_at: 'Submitted at'
+      latitude: 'Γεωγραφικό πλάτος'
+      longitude: 'Γεωγραφικό μήκος'
+      author_fullname: 'Όνομα συγγραφέα'
+      author_email: 'Συγγραφέας email'
+      author_id: 'Ταυτότητα συγγραφέα'
+      created_at: 'Υποβλήθηκε στο'
       published_at: 'Δημοσιεύθηκε στις'
       comments_count: 'Σχόλια'
       upvotes_count: 'Επιδοκιμασίες'
       downvotes_count: 'Αποδοκιμασίες'
-      baskets_count: 'Baskets'
+      baskets_count: 'Καλάθια'
       input_url: 'ΔΙΕΎΘΥΝΣΗ URL'
       project: 'Έργο'
       status: 'Κατάσταση'
       assignee_fullname: 'Αποδέκτης'
-      assignee_email: 'Assignee email'
+      assignee_email: 'Email παραλήπτη'
   form_builder:
     default_select_field:
       title: 'Ερώτηση δημοσκόπησης'
@@ -207,6 +207,6 @@ el:
       option2: 'Επιλογή'
     survey_end_page:
       title: 'Survey end'
-      description: "Please submit your answers by selecting 'Submit survey' below."
+      description: "Υποβάλετε τις απαντήσεις σας επιλέγοντας \"Υποβολή έρευνας\" παρακάτω."
   project_copy:
-    title_suffix: 'Copy'
+    title_suffix: 'Αντιγραφή'
