@@ -51,11 +51,10 @@ const HeaderImage = () => {
 
     return (
       <HeaderImageContainer>
-        -{' '}
         <HeaderImageContainerInner data-cy="e2e-header-image-parent">
           {/*
             With the fixed ratio layout, the image would be pixeled so we
-            don't show it for that layout.
+            don't show it for that layout.π
             Ticket: https://citizenlab.atlassian.net/browse/CL-2215
           */}
           {tenantHeaderImage && !isFixedBannerLayout && (
