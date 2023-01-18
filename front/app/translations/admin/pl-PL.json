@@ -1192,8 +1192,6 @@
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Każdy",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Niektóre grupy użytkowników",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Kto może zobaczyć ten projekt?",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSetting": "Wydarzenia",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSettingDescription": "Wyświetlaj podgląd nadchodzących wydarzeń na stronie głównej.",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Strony wyświetlane na pasku nawigacyjnym",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Utwórz własną stronę",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Czy na pewno chcesz usunąć tę stronę? Nie można tego cofnąć. Możesz również usunąć stronę z paska nawigacyjnego, jeśli nie jesteś jeszcze gotowy, aby ją usunąć.",

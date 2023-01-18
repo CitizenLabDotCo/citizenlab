@@ -1194,8 +1194,6 @@
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Cualquiera",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Algunos grupos de usuarios",
   "app.containers.admin.project.permissions.viewingRightsTitle": "¿Quién puede ver este proyecto?",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSetting": "Eventos",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSettingDescription": "Mostrar una vista previa de los próximos eventos en la página de inicio.",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Páginas que se muestran en la barra de navegación",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Crear página personalizada",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "¿Está seguro de que quiere eliminar esta página? Este paso no podrá deshacerse. También puede eliminar la página de la barra de navegación si aún no está listo para eliminarla.",
