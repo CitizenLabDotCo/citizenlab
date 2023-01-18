@@ -1,5 +1,4 @@
 import React, { lazy } from 'react';
-import moduleConfiguration from 'modules';
 import PageLoading from 'components/UI/PageLoading';
 
 const AdminProjectsAndFolders = lazy(() => import('.'));
@@ -55,8 +54,6 @@ const createAdminProjectsRoutes = () => {
           </PageLoading>
         ),
       },
-      ...moduleConfiguration.routes['admin.project_templates'],
-      ...moduleConfiguration.routes['admin.projects'],
       {
         path: ':projectId',
         element: (
@@ -214,7 +211,6 @@ const createAdminProjectsRoutes = () => {
             path: 'allowed-input-topics',
             element: <AdminAllowedTopicsComponent />,
           },
-          ...moduleConfiguration.routes['admin.projects.project'],
         ],
       },
     ],

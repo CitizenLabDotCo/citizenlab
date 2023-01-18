@@ -13,7 +13,6 @@ jest.mock('./WrongOptionsIndicator', () => ({
   StyledIconTooltip: 'StyledIconTooltip',
   Indicator: 'Indicator',
 }));
-jest.mock('modules', () => ({ streamsToReset: [] }));
 
 const pollOptions = ['Vanilla', 'Pistachio', 'Raspberry'].map((item, index) =>
   mockOption(index, item)

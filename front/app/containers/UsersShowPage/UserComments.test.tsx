@@ -11,7 +11,6 @@ import { UserComments } from './UserComments';
 // mock utilities
 jest.mock('utils/cl-intl');
 jest.mock('services/comments');
-jest.mock('modules', () => ({ streamsToReset: [] }));
 
 import { makeComments } from 'services/comments';
 

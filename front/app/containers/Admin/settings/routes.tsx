@@ -1,6 +1,5 @@
 import React, { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
-import moduleConfiguration from 'modules';
 import PageLoading from 'components/UI/PageLoading';
 import registrationRoutes from './registration/routes';
 
@@ -119,6 +118,5 @@ export default () => ({
         },
       ],
     },
-    ...moduleConfiguration.routes['admin.settings'],
   ],
 });

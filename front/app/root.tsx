@@ -10,8 +10,6 @@ import LanguageProvider from 'containers/LanguageProvider';
 import createRoutes from './routes';
 import * as Sentry from '@sentry/react';
 import { BrowserTracing } from '@sentry/tracing';
-import OutletsProvider from 'containers/OutletsProvider';
-import modules from 'modules';
 import history from 'utils/browserHistory';
 
 import {
@@ -46,33 +44,23 @@ const useSentryRoutes = wrapUseRoutes(useRoutes);
 const routes = createRoutes();
 
 function Routes() {
-  useEffect(() => {
-    modules.afterMountApplication();
-  }, []);
-
   return useSentryRoutes(routes);
 }
 
 const Root = () => {
   return (
-    <OutletsProvider>
-      <LanguageProvider>
-        <HistoryRouter history={history}>
-          <App>
-            <Routes />
-          </App>
-        </HistoryRouter>
-      </LanguageProvider>
-    </OutletsProvider>
+    <LanguageProvider>
+      <HistoryRouter history={history}>
+        <App>
+          <Routes />
+        </App>
+      </HistoryRouter>
+    </LanguageProvider>
   );
 };
 
 const mountApplication = () => {
-  try {
-    modules.beforeMountApplication();
-  } finally {
-    render(<Root />, document.getElementById('app'));
-  }
+  render(<Root />, document.getElementById('app'));
 };
 
 mountApplication();

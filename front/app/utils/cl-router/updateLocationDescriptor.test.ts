@@ -2,8 +2,6 @@ import updateLocationDescriptor from 'utils/cl-router/updateLocationDescriptor';
 
 import * as serviceLocale from 'services/locale';
 
-jest.mock('modules', () => ({ streamsToReset: [] }));
-
 const serviceSpy = jest.spyOn(serviceLocale, 'getUrlLocale');
 
 test('updates / to /nl-BE/ : updates home with no locale as expected', () => {

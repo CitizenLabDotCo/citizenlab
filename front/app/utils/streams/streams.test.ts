@@ -9,7 +9,6 @@ const request = _request as jest.MockedFunction<any>;
 jest.mock('utils/request');
 jest.mock('services/auth');
 jest.mock('services/appConfiguration');
-jest.mock('modules', () => ({ streamsToReset: [] }));
 
 let streams: Streams;
 

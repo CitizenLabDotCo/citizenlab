@@ -274,25 +274,6 @@ export function getMethodConfig(
   return methodToConfig[participationMethod];
 }
 
-/** Given the project and its phases, returns an array of all participation methods
- * used in the project
- */
-export function getAllParticipationMethods(
-  project: IProjectData,
-  phases: IPhaseData[] | null
-): ParticipationMethod[] {
-  const { process_type, participation_method } = project.attributes;
-  if (process_type === 'continuous') {
-    return [participation_method];
-  } else if (process_type === 'timeline' && !phases) {
-    return [];
-  } else if (process_type === 'timeline' && phases) {
-    return phases.map((phase) => phase.attributes.participation_method);
-  } else {
-    throw `Unknown process_type ${project.attributes.process_type}`;
-  }
-}
-
 /** Given the project and its phases, it returns the participation method
  * used in the project, or current phase if phases are provided and phaseId is not provided.
  * If the phaseId is provided, then it returns the participation method of the phase whose

@@ -14,7 +14,6 @@ const areaByIdStream = areaServices.areaByIdStream as jest.Mock;
 const __setMockArea = areaServices.__setMockArea;
 
 jest.mock('services/areas');
-jest.mock('modules', () => ({ streamsToReset: [] }));
 
 describe('<GetArea />', () => {
   let child: jest.Mock;

@@ -1,10 +1,9 @@
-import { MouseEvent } from 'react';
+import { MouseEvent, FC } from 'react';
 import { TFieldName } from 'components/UI/Error';
 import {
   appGraphqlLocalePairs,
   appLocalePairs,
 } from 'containers/App/constants';
-import { FC } from 'react';
 import { TableCellProps } from 'semantic-ui-react';
 import {
   TAppConfigurationSetting,
@@ -77,12 +76,6 @@ export type CellConfiguration<ComponentProps> = {
   cellProps?: TableCellProps;
   Component: FC<ComponentProps>;
 };
-
-export interface InsertConfigurationOptions<T extends { name: string }> {
-  configuration: T;
-  insertAfterName?: string;
-  insertBeforeName?: string;
-}
 
 export interface ILinks {
   self: string;

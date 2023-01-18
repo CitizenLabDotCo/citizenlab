@@ -1,5 +1,4 @@
 import React, { lazy } from 'react';
-import moduleConfiguration from 'modules';
 
 // routes
 import createDashboardRoutes from './dashboard/routes';
@@ -143,7 +142,6 @@ const createAdminRoutes = () => {
           </PageLoading>
         ),
       },
-      ...moduleConfiguration.routes.admin,
     ],
   };
 };

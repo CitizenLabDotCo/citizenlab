@@ -36,12 +36,11 @@ import tracks from './tracks';
 import styled from 'styled-components';
 
 // typings
-import { InsertConfigurationOptions, ITab } from 'typings';
+import { ITab } from 'typings';
 import { getInputTerm } from 'services/participationContexts';
 import { IProjectData } from 'services/projects';
 
 // utils
-import { insertConfiguration } from 'utils/moduleUtils';
 import {
   getMethodConfig,
   showInputManager,
@@ -345,12 +344,6 @@ export class AdminProjectsProjectIndex extends PureComponent<
     trackEventByName(tracks.clickNewIdea.name, {
       extra: { pathnameFrom: pathname },
     });
-  };
-
-  handleData = (insertTabOptions: InsertConfigurationOptions<ITab>) => {
-    this.setState(({ tabs }) => ({
-      tabs: insertConfiguration(insertTabOptions)(tabs),
-    }));
   };
 
   render() {

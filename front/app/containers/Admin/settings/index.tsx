@@ -13,8 +13,7 @@ import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
-import { InsertConfigurationOptions, ITab } from 'typings';
-import { insertConfiguration } from 'utils/moduleUtils';
+import { ITab } from 'typings';
 
 export interface InputProps {}
 
@@ -67,12 +66,6 @@ class SettingsPage extends React.PureComponent<
       ],
     };
   }
-
-  handleData = (insertTabOptions: InsertConfigurationOptions<ITab>) => {
-    this.setState(({ tabs }) => ({
-      tabs: insertConfiguration(insertTabOptions)(tabs),
-    }));
-  };
 
   render() {
     const { formatMessage } = this.props.intl;
