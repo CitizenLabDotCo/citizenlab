@@ -15,6 +15,7 @@ import {
   getOptionRule,
   getTitleFromAnswerId,
   getTitleFromPageId,
+  getFieldIcon,
 } from './utils';
 import { isPageRuleValid, isRuleValid } from 'utils/yup/validateLogic';
 
@@ -25,15 +26,11 @@ import {
   Text,
   colors,
   Icon,
-  IconNames,
 } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 import { FlexibleRow } from '../FlexibleRow';
 import { FieldRuleDisplay } from './FieldRuleDisplay';
-import {
-  FormBuilderConfig,
-  builtInFieldKeys,
-} from 'components/FormBuilder/utils';
+import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
 // styling
 import styled from 'styled-components';
@@ -41,7 +38,6 @@ import { rgba } from 'polished';
 
 // hooks and services
 import {
-  ICustomFieldInputType,
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
 } from 'services/formCustomFields';
@@ -58,43 +54,9 @@ type Props = {
   field: IFlatCustomField;
   isEditingDisabled: boolean;
   onEditField: (field: IFlatCustomFieldWithIndex) => void;
-  getTranslatedFieldType: (field: IFlatCustomField) => MessageDescriptor;
+  getTranslatedFieldBadgeLabel: (field: IFlatCustomField) => MessageDescriptor;
   selectedFieldId?: string;
   builderConfig: FormBuilderConfig;
-};
-
-// TODO: Rename icons in component library to "form" for clarity
-const getFieldIcon = (
-  inputType: ICustomFieldInputType,
-  key: string
-): IconNames => {
-  const switchKey = builtInFieldKeys.includes(key) ? key : inputType;
-  switch (switchKey) {
-    case 'text':
-    case 'title_multiloc':
-      return 'survey-short-answer-2';
-    case 'multiline_text':
-    case 'body_multiloc':
-      return 'survey-long-answer-2';
-    case 'multiselect':
-      return 'survey-multiple-choice-2';
-    case 'select':
-      return 'survey-single-choice';
-    case 'number':
-      return 'survey-number-field';
-    case 'linear_scale':
-      return 'survey-linear-scale';
-    case 'section':
-      return 'section';
-    case 'file_upload':
-      return 'upload-file';
-    case 'idea_images_attributes':
-      return 'image';
-    case 'location_description':
-      return 'location-simple';
-    default:
-      return 'survey';
-  }
 };
 
 export const FieldElement = (props: Props) => {
@@ -102,7 +64,7 @@ export const FieldElement = (props: Props) => {
     field,
     isEditingDisabled,
     onEditField,
-    getTranslatedFieldType,
+    getTranslatedFieldBadgeLabel,
     selectedFieldId,
     builderConfig,
   } = props;
@@ -320,7 +282,9 @@ export const FieldElement = (props: Props) => {
                       ml="4px"
                       whiteSpace="nowrap"
                     >
-                      <FormattedMessage {...getTranslatedFieldType(field)} />
+                      <FormattedMessage
+                        {...getTranslatedFieldBadgeLabel(field)}
+                      />
                     </Text>
                   </Box>
                 </Badge>
