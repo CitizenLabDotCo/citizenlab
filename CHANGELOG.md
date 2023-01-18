@@ -1,5 +1,11 @@
 # Changelog
 
+## 2023-01-18 (2)
+
+### Fixed
+
+- [CL-2617] Showing native survey confimation modal multiple times after submission even after closing the modal
+
 ## 2023-01-18
 
 ### Fixed
