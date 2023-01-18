@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 // components
-import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { SubSectionTitle } from 'components/admin/Section';
 import { StyledSectionField } from './styling';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
@@ -13,6 +12,7 @@ import messages from '../messages';
 
 // typings
 import { UploadFile } from 'typings';
+import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
 
 // Would have loved to put this in styling.ts, but
 // that results in some arcane typescript error
@@ -35,15 +35,11 @@ export default ({
   <StyledSectionField>
     <SubSectionTitle>
       <FormattedMessage {...messages.projectCardImageLabelText} />
-      <IconTooltip
-        content={
-          <FormattedMessage {...messages.projectCardImageLabelTooltip} />
-        }
-      />
+      <ImageInfoTooltip />
     </SubSectionTitle>
     <StyledImagesDropzone
       images={projectImages}
-      imagePreviewRatio={960 / 1440}
+      imagePreviewRatio={1 / 2}
       maxImagePreviewWidth="240px"
       acceptedFileTypes={{
         'image/*': ['.jpg', '.jpeg', '.png', '.gif'],

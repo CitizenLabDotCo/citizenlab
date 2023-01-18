@@ -35,6 +35,8 @@ import useAdminPublication from 'hooks/useAdminPublication';
 import SlugInput from 'components/admin/SlugInput';
 import { validateSlug } from 'utils/textUtils';
 import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
+import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
+import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 
 interface Props {
   mode: 'edit' | 'new';
@@ -125,6 +127,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const [projectFolderImages, setProjectFolderImages] = useState<UploadFile[]>(
     []
   );
+  const [projectFolderImagesBase64, setProjectFolderImagesBase64] = useState<
+    string | null
+  >(null);
   const [projectFolderImagesToRemove, setProjectFolderImagesToRemove] =
     useState<string[]>([]);
   const [projectFolderFiles, setProjectFolderFiles] = useState<UploadFile[]>(
@@ -179,6 +184,10 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     },
     []
   );
+
+  const handleProjectFolderImagesOnRemoveNoArgs = useCallback(() => {
+    handleProjectFolderImageOnRemove(projectFolderImages[0]);
+  }, [projectFolderImages]);
 
   const handleProjectFolderFileOnAdd = useCallback((fileToAdd: UploadFile) => {
     setStatus('enabled');
@@ -261,9 +270,14 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               },
             });
             if (!isNilOrError(projectFolder)) {
-              const imagesToAddPromises = projectFolderImages.map((file) =>
-                addProjectFolderImage(projectFolder.id, file.base64)
-              );
+              const imagesToAddPromises = projectFolderImagesBase64
+                ? projectFolderImages.map((file) =>
+                    addProjectFolderImage(
+                      projectFolder.id,
+                      projectFolderImagesBase64
+                    )
+                  )
+                : [];
               const filesToAddPromises = projectFolderFiles.map((file) =>
                 addProjectFolderFile(projectFolder.id, file.base64, file.name)
               );
@@ -288,11 +302,16 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             shortDescriptionMultiloc &&
             !isNilOrError(projectFolder)
           ) {
-            const imagesToAddPromises = projectFolderImages
-              .filter((file) => !file.remote)
-              .map((file) =>
-                addProjectFolderImage(projectFolderId as string, file.base64)
-              );
+            const imagesToAddPromises = projectFolderImagesBase64
+              ? projectFolderImages
+                  .filter((file) => !file.remote)
+                  .map((file) =>
+                    addProjectFolderImage(
+                      projectFolderId as string,
+                      projectFolderImagesBase64
+                    )
+                  )
+              : [];
             const imagesToRemovePromises = projectFolderImagesToRemove.map(
               (id) => deleteProjectFolderImage(projectFolderId as string, id)
             );
@@ -388,6 +407,11 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   if (isError(projectFolder)) {
     return null;
   }
+
+  const projectFolderImagesShouldBeSaved =
+    projectFolderImages && projectFolderImages.length > 0
+      ? !projectFolderImages[0].remote
+      : false;
 
   return (
     <form onSubmit={onSubmit}>
@@ -501,22 +525,29 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         <SectionField>
           <SubSectionTitle>
             <FormattedMessage {...messages.projectFolderCardImageLabel} />
-            <IconTooltip
-              content={
-                <FormattedMessage {...messages.projectFolderCardImageTooltip} />
-              }
-            />
+            <ImageInfoTooltip />
           </SubSectionTitle>
-          <ImagesDropzone
-            images={projectFolderImages}
-            imagePreviewRatio={960 / 1440}
-            maxImagePreviewWidth="240px"
-            acceptedFileTypes={{
-              'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
-            }}
-            onAdd={getHandler(setProjectFolderImages)}
-            onRemove={handleProjectFolderImageOnRemove}
-          />
+          {projectFolderImagesShouldBeSaved ? (
+            <Box display="flex" flexDirection="column" gap="8px">
+              <ImageCropperContainer
+                image={projectFolderImages[0]}
+                onComplete={getHandler(setProjectFolderImagesBase64)}
+                aspect={2 / 1}
+                onRemove={handleProjectFolderImagesOnRemoveNoArgs}
+              />
+            </Box>
+          ) : (
+            <ImagesDropzone
+              images={projectFolderImages}
+              imagePreviewRatio={1 / 2}
+              maxImagePreviewWidth="240px"
+              acceptedFileTypes={{
+                'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+              }}
+              onAdd={getHandler(setProjectFolderImages)}
+              onRemove={handleProjectFolderImageOnRemove}
+            />
+          )}
         </SectionField>
         <SectionField>
           <SubSectionTitle>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Multiloc, UploadFile } from 'typings';
 import { isEmpty, get, isString } from 'lodash-es';
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -31,6 +31,7 @@ import {
   ParticipationContextWrapper,
 } from './components/styling';
 import ProjectFolderSelect from './components/ProjectFolderSelect';
+import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -61,6 +62,7 @@ import validateTitle from './utils/validateTitle';
 import { isNilOrError } from 'utils/helperUtils';
 import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
+import { Box } from '@citizenlab/cl2-component-library';
 
 export const TIMEOUT = 350;
 
@@ -109,6 +111,9 @@ const AdminProjectsProjectGeneral = () => {
     useState<IProjectFormState['showSlugErrorMessage']>(false);
   const [publicationStatus, setPublicationStatus] =
     useState<IProjectFormState['publicationStatus']>('draft');
+  const [projectImagesBase64, setProjectImagesBase64] = useState<string | null>(
+    null
+  );
 
   useEffect(() => {
     (async () => {
@@ -225,6 +230,15 @@ const AdminProjectsProjectGeneral = () => {
     setSubmitState('enabled');
   };
 
+  const handleProjectImagesOnComplete = (base64: string) => {
+    setSubmitState('enabled');
+    setProjectImagesBase64(base64);
+  };
+
+  const handleProjectImagesOnRemoveNoArgs = useCallback(() => {
+    handleProjectImageOnRemove(projectImages[0]);
+  }, [projectImages]);
+
   const handleProjectFileOnAdd = (newProjectFile: UploadFile) => {
     let isDuplicate = false;
 
@@ -290,15 +304,17 @@ const AdminProjectsProjectGeneral = () => {
           }
         }
 
-        const imagesToAddPromises = projectImages
-          .filter((file) => !file.remote)
-          .map((file) => {
-            if (latestProjectId) {
-              return addProjectImage(latestProjectId, file.base64);
-            }
+        const imagesToAddPromises = projectImagesBase64
+          ? projectImages
+              .filter((file) => !file.remote)
+              .map((file) => {
+                if (latestProjectId) {
+                  return addProjectImage(latestProjectId, projectImagesBase64);
+                }
 
-            return;
-          });
+                return;
+              })
+          : [];
         const imagesToRemovePromises = projectImagesToRemove
           .filter((file) => file.remote === true && isString(file.id))
           .map((file) => {
@@ -452,6 +468,11 @@ const AdminProjectsProjectGeneral = () => {
     !isNilOrError(project) ? project : null
   );
 
+  const projectImagesShouldBeSaved =
+    projectImages && projectImages.length > 0
+      ? !projectImages[0].remote
+      : false;
+
   return (
     <StyledForm className="e2e-project-general-form" onSubmit={onSubmit}>
       <Section>
@@ -565,12 +586,22 @@ const AdminProjectsProjectGeneral = () => {
           imageUrl={project?.attributes.header_bg.large}
           onImageChange={handleHeaderBgChange}
         />
-
-        <ProjectImageDropzone
-          projectImages={projectImages}
-          handleProjectImagesOnAdd={handleProjectImagesOnAdd}
-          handleProjectImageOnRemove={handleProjectImageOnRemove}
-        />
+        {projectImagesShouldBeSaved ? (
+          <Box display="flex" flexDirection="column" gap="8px">
+            <ImageCropperContainer
+              image={projectImages[0]}
+              onComplete={handleProjectImagesOnComplete}
+              aspect={2 / 1}
+              onRemove={handleProjectImagesOnRemoveNoArgs}
+            />
+          </Box>
+        ) : (
+          <ProjectImageDropzone
+            projectImages={projectImages}
+            handleProjectImagesOnAdd={handleProjectImagesOnAdd}
+            handleProjectImageOnRemove={handleProjectImageOnRemove}
+          />
+        )}
 
         <AttachmentsDropzone
           projectFiles={projectFiles}
