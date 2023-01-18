@@ -10,7 +10,10 @@ import { DragAndDropResult, NestedGroupingStructure } from '../../edit/utils';
 
 // components
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import { FormBuilderConfig } from 'components/FormBuilder/utils';
+import {
+  builtInFieldKeys,
+  FormBuilderConfig,
+} from 'components/FormBuilder/utils';
 import { FieldElement } from './FieldElement';
 
 // hooks and services
@@ -23,13 +26,16 @@ import {
 import { DragAndDrop, Drag, Drop } from '../DragAndDrop';
 
 // Assign field badge text
-const getTranslatedFieldType = (field) => {
-  switch (field) {
+const getTranslatedFieldType = (field: IFlatCustomField) => {
+  const switchKey = builtInFieldKeys.includes(field.key)
+    ? field.key
+    : field.input_type;
+  switch (switchKey) {
     case 'text':
     case 'title_multiloc':
       return messages.shortAnswer;
     case 'multiline_text':
-    case 'html_multiloc':
+    case 'body_multiloc':
       return messages.longAnswer;
     case 'multiselect':
       return messages.multipleChoice;
@@ -43,8 +49,10 @@ const getTranslatedFieldType = (field) => {
       return messages.linearScale;
     case 'file_upload':
       return messages.fileUpload;
-    case 'image_files':
+    case 'idea_images_attributes':
       return messages.imageUpload;
+    case 'location_description':
+      return messages.locationDescription;
     default:
       return messages.default;
   }

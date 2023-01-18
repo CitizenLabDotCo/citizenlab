@@ -57,3 +57,13 @@ export const getIsPostingEnabled = (
 
   return project.attributes.posting_enabled;
 };
+
+export const builtInFieldKeys = [
+  'text_multiloc',
+  'body_multiloc',
+  'proposed_budget',
+  'topic_ids',
+  'location_description',
+  'idea_images_attributes',
+  'idea_files_attributes',
+];

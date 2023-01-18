@@ -30,7 +30,10 @@ import {
 import T from 'components/T';
 import { FlexibleRow } from '../FlexibleRow';
 import { FieldRuleDisplay } from './FieldRuleDisplay';
-import { FormBuilderConfig } from 'components/FormBuilder/utils';
+import {
+  FormBuilderConfig,
+  builtInFieldKeys,
+} from 'components/FormBuilder/utils';
 
 // styling
 import styled from 'styled-components';
@@ -55,19 +58,23 @@ type Props = {
   field: IFlatCustomField;
   isEditingDisabled: boolean;
   onEditField: (field: IFlatCustomFieldWithIndex) => void;
-  getTranslatedFieldType: (fieldType: string) => MessageDescriptor;
+  getTranslatedFieldType: (field: IFlatCustomField) => MessageDescriptor;
   selectedFieldId?: string;
   builderConfig: FormBuilderConfig;
 };
 
 // TODO: Rename icons in component library to "form" for clarity
-const getFieldIcon = (inputType: ICustomFieldInputType): IconNames => {
-  switch (inputType) {
+const getFieldIcon = (
+  inputType: ICustomFieldInputType,
+  key: string
+): IconNames => {
+  const switchKey = builtInFieldKeys.includes(key) ? key : inputType;
+  switch (switchKey) {
     case 'text':
     case 'title_multiloc':
       return 'survey-short-answer-2';
     case 'multiline_text':
-    case 'html_multiloc':
+    case 'body_multiloc':
       return 'survey-long-answer-2';
     case 'multiselect':
       return 'survey-multiple-choice-2';
@@ -81,8 +88,10 @@ const getFieldIcon = (inputType: ICustomFieldInputType): IconNames => {
       return 'section';
     case 'file_upload':
       return 'upload-file';
-    case 'image_files':
+    case 'idea_images_attributes':
       return 'image';
+    case 'location_description':
+      return 'location-simple';
     default:
       return 'survey';
   }
@@ -300,7 +309,7 @@ export const FieldElement = (props: Props) => {
                       fill={colors.coolGrey600}
                       width="16px"
                       height="16px"
-                      name={getFieldIcon(field.input_type)}
+                      name={getFieldIcon(field.input_type, field.key)}
                     />
                     <Text
                       color="coolGrey600"
@@ -311,9 +320,7 @@ export const FieldElement = (props: Props) => {
                       ml="4px"
                       whiteSpace="nowrap"
                     >
-                      <FormattedMessage
-                        {...getTranslatedFieldType(field.input_type)}
-                      />
+                      <FormattedMessage {...getTranslatedFieldType(field)} />
                     </Text>
                   </Box>
                 </Badge>

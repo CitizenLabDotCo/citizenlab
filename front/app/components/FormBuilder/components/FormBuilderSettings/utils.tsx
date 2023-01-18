@@ -1,6 +1,10 @@
 import React from 'react';
-import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
+import {
+  ICustomFieldInputType,
+  IFlatCustomFieldWithIndex,
+} from 'services/formCustomFields';
 import { Locale } from 'typings';
+import messages from '../messages';
 
 // Components
 import ConfigSelectWithLocaleSwitcher from './ConfigSelectWithLocaleSwitcher';
@@ -9,6 +13,8 @@ import FieldGroupSettings from './FieldGroupSettings';
 
 // utils
 import { uuid4 } from '@sentry/utils';
+import { MessageDescriptor } from 'react-intl';
+import { builtInFieldKeys } from 'components/FormBuilder/utils';
 
 export function generateTempId() {
   return `TEMP-ID-${uuid4()}`;
@@ -50,3 +56,74 @@ export function getAdditionalSettings(
       return null;
   }
 }
+
+const getBuiltInFieldStringKey = (
+  key: string
+): MessageDescriptor | undefined => {
+  let translatedStringKey: MessageDescriptor | undefined;
+  switch (key) {
+    case 'location_description':
+      translatedStringKey = messages.locationDescription;
+      break;
+  }
+
+  return translatedStringKey;
+};
+
+const getInputTypeStringKey = (
+  inputType: ICustomFieldInputType
+): MessageDescriptor | undefined => {
+  let translatedStringKey: MessageDescriptor | undefined;
+  switch (inputType) {
+    case 'title_multiloc':
+      translatedStringKey = messages.title;
+      break;
+    case 'text':
+      translatedStringKey = messages.shortAnswer;
+      break;
+    case 'html_multiloc':
+      translatedStringKey = messages.description;
+      break;
+    case 'multiline_text':
+      translatedStringKey = messages.longAnswer;
+      break;
+    case 'select':
+      translatedStringKey = messages.singleChoice;
+      break;
+    case 'multiselect':
+      translatedStringKey = messages.multipleChoice;
+      break;
+    case 'page':
+      translatedStringKey = messages.page;
+      break;
+    case 'section':
+      translatedStringKey = messages.section;
+      break;
+    case 'number':
+      translatedStringKey = messages.number;
+      break;
+    case 'linear_scale':
+      translatedStringKey = messages.linearScale;
+      break;
+    case 'file_upload':
+      translatedStringKey = messages.fileUpload;
+      break;
+    case 'image_files':
+      translatedStringKey = messages.imageUpload;
+      break;
+    case 'image_files':
+      translatedStringKey = messages.locationDescription;
+      break;
+  }
+
+  return translatedStringKey;
+};
+
+export const getTranslatedStringKey = (
+  inputType: ICustomFieldInputType,
+  key: string
+): MessageDescriptor | undefined => {
+  return builtInFieldKeys.includes(key)
+    ? getBuiltInFieldStringKey(key)
+    : getInputTypeStringKey(inputType);
+};
