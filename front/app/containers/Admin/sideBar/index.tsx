@@ -28,7 +28,6 @@ import GetInitiativesCount, {
   GetInitiativesCountChildProps,
 } from 'resources/GetInitiativesCount';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import Outlet from 'components/Outlet';
 import { InsertConfigurationOptions } from 'typings';
 import { insertConfiguration } from 'utils/moduleUtils';
 import { TAppConfigurationSetting } from 'services/appConfiguration';
@@ -177,13 +176,6 @@ class Sidebar extends PureComponent<
           message: 'projects',
         },
         {
-          name: 'workshops',
-          link: '/admin/workshops',
-          iconName: 'sidebar-workshops',
-          message: 'workshops',
-          featureNames: ['workshops'],
-        },
-        {
           name: 'ideas',
           link: '/admin/ideas',
           iconName: 'sidebar-input-manager',
@@ -280,10 +272,6 @@ class Sidebar extends PureComponent<
 
     return (
       <Menu>
-        <Outlet
-          id="app.containers.Admin.sideBar.navItems"
-          onData={this.handleData}
-        />
         <MenuInner id="sidebar">
           {navItems.map((navItem) => (
             <MenuItem navItem={navItem} key={navItem.name} />

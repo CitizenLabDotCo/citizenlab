@@ -1,16 +1,10 @@
 import React, { FunctionComponent, ReactElement } from 'react';
 
 import PageLoading from 'components/UI/PageLoading';
-import { ITabItem } from 'components/UI/Tabs';
 import { castArray, clamp, isNil, mergeWith, omitBy } from 'lodash-es';
 import { IProjectData } from 'services/projects';
 
-import { TVerificationStep } from 'events/verificationModal';
-import { NavItem } from 'containers/Admin/sideBar';
-
-import { TNotificationData } from 'services/notifications';
 import { IPhaseData } from 'services/phases';
-import { TVerificationMethod } from 'services/verificationMethods';
 import { InsertConfigurationOptions, ITab } from 'typings';
 import { IntlFormatters } from 'react-intl';
 
@@ -24,47 +18,6 @@ export interface OutletsPropertyMap {
     onData: (data: InsertConfigurationOptions<ITab>) => void;
     project: IProjectData;
     phases: IPhaseData[] | null;
-  };
-  'app.containers.Admin.sideBar.navItems': {
-    onData: (data: InsertConfigurationOptions<NavItem>) => void;
-  };
-  'app.components.VerificationModal.methodSteps': {
-    method: TVerificationMethod | null;
-    onCancel: () => void;
-    onVerified: () => void;
-    showHeader?: boolean;
-    inModal: boolean;
-    activeStep: TVerificationStep;
-  };
-
-  'app.containers.Admin.settings.general.form': {
-    onSettingChange: (settingName: string, settingValue: any) => void;
-  };
-  'app.modules.commercial.moderation.admin.containers.ModerationRow.content': {
-    inappropriateContentFlagId: string | undefined;
-  };
-  'app.modules.commercial.moderation.admin.components.EmptyMessage': {
-    isWarningsTabSelected: boolean;
-  };
-  'app.modules.commercial.moderation.admin.containers.actionbar.buttons': {
-    selectedActiveFlagsCount: number;
-    processing: boolean;
-    onRemoveFlags: () => void;
-    isWarningsTabSelected: boolean;
-  };
-  'app.modules.commercial.moderation.admin.containers.tabs': {
-    onData: (data: InsertConfigurationOptions<ITabItem>) => void;
-    activeFlagsCount: number;
-  };
-  'app.components.NotificationMenu.Notification': {
-    notification: TNotificationData;
-  };
-  'app.containers.Admin.projects.edit.general.components.TopicInputs.tooltipExtraCopy': Record<
-    string,
-    any
-  >;
-  'app.containers.Admin.reporting.components.Tabs': {
-    onData: (tabs: ITab[]) => void;
   };
 }
 

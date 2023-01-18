@@ -113,7 +113,6 @@ export interface IAppConfigurationSettings {
   jsonforms_custom_fields?: AppConfigurationFeature;
   idea_custom_fields?: AppConfigurationFeature;
   volunteering?: AppConfigurationFeature;
-  workshops?: AppConfigurationFeature;
   automated_emailing_control?: AppConfigurationFeature;
   typeform_surveys?: {
     allowed: boolean;
@@ -133,11 +132,9 @@ export interface IAppConfigurationSettings {
   ideaflow_social_sharing?: AppConfigurationFeature;
   initiativeflow_social_sharing?: AppConfigurationFeature;
   polls?: AppConfigurationFeature;
-  moderation?: AppConfigurationFeature;
   disable_downvoting?: AppConfigurationFeature;
   project_visibility?: AppConfigurationFeature;
   project_management?: AppConfigurationFeature;
-  blocking_profanity?: AppConfigurationFeature;
   idea_author_change?: AppConfigurationFeature;
   idea_custom_copy?: AppConfigurationFeature;
   satismeter?: AppConfigurationFeature & {
@@ -150,7 +147,6 @@ export interface IAppConfigurationSettings {
     }[];
   };
   disable_user_bios?: AppConfigurationFeature;
-  remove_vendor_branding?: AppConfigurationFeature;
   native_surveys?: AppConfigurationFeature;
   user_confirmation?: AppConfigurationFeature;
 }
