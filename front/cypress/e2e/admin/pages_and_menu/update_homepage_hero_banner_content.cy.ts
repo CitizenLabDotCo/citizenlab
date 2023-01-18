@@ -81,27 +81,62 @@ describe('Admin: update Hero Banner content', () => {
     cy.intercept('PATCH', '**/home_page').as('saveHomePage');
     cy.setConsentAndAdminLoginCookies();
 
-    // Test two-row-layout
+    /* ========================
+       Full-width banner layout
+    ========================= */
+    cy.visit('admin/pages-menu/homepage/homepage-banner/');
+    cy.get('[data-cy="e2e-full-width-banner-layout-option"]').click();
+    cy.get('[data-cy="e2e-remove-image-button"]').click();
+    cy.get('[data-cy="e2e-homepage-banner-image-dropzone"] input').attachFile(
+      'testimage.png'
+    );
+    // Should exist before saving
+    cy.get('[data-cy="e2e-overlay-toggle"]').should('exist');
+    cy.get('.e2e-submit-wrapper-button').click().contains('Success');
+    cy.wait('@saveHomePage');
+    cy.get('.e2e-submit-wrapper-button').contains('Success');
+    // Should exist after saving
+    cy.get('[data-cy="e2e-overlay-toggle"]').should('exist');
+
+    /* ==================
+       Two-row layout
+    ================== */
     cy.visit('admin/pages-menu/homepage/homepage-banner/');
     cy.get('[data-cy="e2e-two-row-layout-option"]').click();
     cy.get('[data-cy="e2e-remove-image-button"]').click();
     cy.get('[data-cy="e2e-homepage-banner-image-dropzone"] input').attachFile(
       'testimage.png'
     );
-    cy.get('.e2e-submit-wrapper-button').click();
+    // Should only exist for fixed-ratio layout
+    cy.get('[data-cy="e2e-image-cropper"]').should('not.exist');
+    // Should not exist before saving
+    cy.get('[data-cy="e2e-overlay-toggle"]').should('not.exist');
+    cy.get('.e2e-submit-wrapper-button').click().contains('Success');
+    cy.wait('@saveHomePage');
+    cy.get('.e2e-submit-wrapper-button').contains('Success');
+
+    // Should not exist after saving
+    cy.get('[data-cy="e2e-overlay-toggle"]').should('not.exist');
+
     // Image is displayed when signed-in
     cy.visit('/');
     cy.get('[data-cy="e2e-signed-in-header-image-parent"]'); // without this line, the next one always passes
     cy.get('[data-cy="e2e-signed-in-header-image"]').should('exist');
 
-    // Test fixed-ratio-layout
+    /* ==================
+     Fixed-ratio layout
+    ================== */
     cy.visit('admin/pages-menu/homepage/homepage-banner/');
     cy.get('[data-cy="e2e-fixed-ratio-layout-option"]').click();
     cy.get('[data-cy="e2e-remove-image-button"]').click();
     cy.get('[data-cy="e2e-homepage-banner-image-dropzone"] input').attachFile(
       'testimage.png'
     );
-    cy.get('[data-cy="e2e-image-cropper"]'); // wait until image cropper is loaded and visible (image is cropped). The test is flaky without this line.
+    // wait until image cropper is loaded and visible (image is cropped).
+    // The test is flaky without this line.
+    cy.get('[data-cy="e2e-image-cropper"]').should('exist');
+    // The toggle should not exist when the image is not saved.
+    cy.get('[data-cy="e2e-overlay-toggle"]').should('not.exist');
     cy.get('.e2e-submit-wrapper-button').click();
     cy.wait('@saveHomePage').then((interception) => {
       const img = new Image();
@@ -112,6 +147,11 @@ describe('Admin: update Hero Banner content', () => {
       });
     });
     cy.get('.e2e-submit-wrapper-button').contains('Success');
+    // Image cropper should not exist after saving the image
+    cy.get('[data-cy="e2e-image-cropper"]').should('not.exist');
+    // The toggle should only be there when the image is saved.
+    cy.get('[data-cy="e2e-overlay-toggle"]').should('exist');
+
     // Image is NOT displayed when signed-in
     cy.visit('/');
     cy.get('[data-cy="e2e-signed-in-header-image-parent"]'); // without this line, the next one always passes
