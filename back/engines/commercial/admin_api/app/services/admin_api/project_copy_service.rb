@@ -11,8 +11,10 @@ module AdminApi
       end
 
       project = Project.find(created_objects_ids[:project].first)
-      project.update!(slug: SlugService.new.generate_slug(project, project.slug))
-      project.set_default_topics! unless local_copy
+      unless local_copy
+        project.update!(slug: SlugService.new.generate_slug(project, project.slug))
+        project.set_default_topics!
+      end
       project.update! folder: folder if folder
 
       project

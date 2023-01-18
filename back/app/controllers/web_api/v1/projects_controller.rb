@@ -82,15 +82,11 @@ class WebApi::V1::ProjectsController < ApplicationController
     @project = LocalProjectCopyService.new.copy(source_project)
     authorize @project
 
-    if @project.save
-      render json: WebApi::V1::ProjectSerializer.new(
-        @project,
-        params: fastjson_params,
-        include: [:admin_publication]
-      ).serialized_json, status: :created
-    else
-      render json: { errors: @project.errors.details }, status: :unprocessable_entity
-    end
+    render json: WebApi::V1::ProjectSerializer.new(
+      @project,
+      params: fastjson_params,
+      include: [:admin_publication]
+    ).serialized_json, status: :created
   end
 
   def update
