@@ -50,7 +50,7 @@ const HeaderImage = () => {
       homepageSettings.attributes.banner_layout === 'fixed_ratio_layout';
 
     return (
-      <HeaderImageContainer>
+      <HeaderImageContainer data-testid="signed-in-header-image-container">
         <HeaderImageContainerInner data-cy="e2e-signed-in-header-image-parent">
           {/*
             With the fixed ratio layout, the image would be pixeled so we

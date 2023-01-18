@@ -1,7 +1,7 @@
 import { THomepageBannerLayout } from 'services/homepageSettings';
 
 export const mockHomepageSettings = (
-  homepageBannerLayout: THomepageBannerLayout
+  homepageBannerLayout: THomepageBannerLayout = 'full_width_banner_layout'
 ) => ({
   attributes: {
     banner_layout: homepageBannerLayout,
