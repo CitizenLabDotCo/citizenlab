@@ -2,9 +2,7 @@ import React, { FunctionComponent, ReactElement } from 'react';
 
 import PageLoading from 'components/UI/PageLoading';
 import { castArray, clamp, isNil, mergeWith, omitBy } from 'lodash-es';
-import { IProjectData } from 'services/projects';
 
-import { IPhaseData } from 'services/phases';
 import { InsertConfigurationOptions, ITab } from 'typings';
 import { IntlFormatters } from 'react-intl';
 
@@ -13,13 +11,7 @@ export type ITabsOutlet = {
   onData: (data: InsertConfigurationOptions<ITab>) => void;
 };
 
-export interface OutletsPropertyMap {
-  'app.containers.Admin.projects.edit': {
-    onData: (data: InsertConfigurationOptions<ITab>) => void;
-    project: IProjectData;
-    phases: IPhaseData[] | null;
-  };
-}
+export interface OutletsPropertyMap {}
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
 
