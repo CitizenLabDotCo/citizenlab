@@ -123,17 +123,11 @@ export const ContentSettings = ({
             buttonStyle="secondary"
             onClick={onClose}
             minWidth="160px"
-            width={
-              !isNilOrError(field.isDeleteEnabled) && !field.isDeleteEnabled
-                ? '100%'
-                : 'auto'
-            }
+            width={field.isDeleteEnabled === false ? '100%' : 'auto'}
           >
             <FormattedMessage {...messages.done} />
           </Button>
-          {(!isNilOrError(field.isDeleteEnabled)
-            ? field.isDeleteEnabled
-            : true) && (
+          {(field.isDeleteEnabled === false ? field.isDeleteEnabled : true) && (
             <Button
               icon="delete"
               buttonStyle="primary-outlined"
