@@ -11,7 +11,6 @@ jest.mock('components/admin/ResourceList', () => ({
 }));
 jest.mock('components/UI/Button', () => 'Button');
 jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
-jest.mock('modules', () => ({ streamsToReset: [] }));
 
 import { FormQuestionRow, Props, State } from './FormQuestionRow';
 import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';

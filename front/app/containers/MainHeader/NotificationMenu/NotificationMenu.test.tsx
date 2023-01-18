@@ -11,7 +11,6 @@ jest.mock('utils/cl-intl');
 jest.mock('utils/analytics', () => ({ trackEventByName: () => {} }));
 
 import { makeUser } from 'services/__mocks__/users';
-jest.mock('modules', () => ({ streamsToReset: [] }));
 
 const mockUserFromResource: GetAuthUserChildProps = makeUser({
   unread_notifications: 0,

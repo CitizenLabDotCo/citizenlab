@@ -17,7 +17,6 @@ jest.mock('./FormOptionRow', () => 'FormOptionRow');
 jest.mock('./OptionRow', () => 'OptionRow');
 jest.mock('./QuestionDetailsForm', () => 'QuestionDetailsForm');
 jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
-jest.mock('modules', () => ({ streamsToReset: [] }));
 
 const question = mockQuestion(
   'questionId',

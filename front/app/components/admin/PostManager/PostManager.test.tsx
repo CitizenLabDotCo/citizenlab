@@ -26,7 +26,6 @@ jest.mock(
   () => 'FeedbackToggle'
 );
 jest.mock('./components/LazyPostPreview', () => 'LazyPostPreview');
-jest.mock('modules', () => ({ streamsToReset: [] }));
 
 import { PostManager } from './';
 
