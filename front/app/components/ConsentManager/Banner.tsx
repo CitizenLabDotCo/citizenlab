@@ -1,13 +1,19 @@
 import React from 'react';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+
+// styling
+import styled from 'styled-components';
+import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
+import { rgba } from 'polished';
+
+// components
 import ContentContainer from 'components/ContentContainer';
 import Link from 'utils/cl-router/Link';
 import Button from 'components/UI/Button';
 import CloseIconButton from 'components/UI/CloseIconButton';
-import styled from 'styled-components';
-import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
-import { rgba } from 'polished';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 const Container = styled.div`
   position: fixed;
