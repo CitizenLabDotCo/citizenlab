@@ -1192,8 +1192,6 @@
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Anyone",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Seçim",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Bu projeyi kimler görebilir?",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSetting": "Etkinlikler",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSettingDescription": "Ana sayfada yaklaşan etkinliklerin önizlemesini görüntüleyin.",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Gezinme çubuğunuzda gösterilen sayfalar",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Create custom page",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Bu sayfayı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz. Henüz sayfayı silmeye hazır değilseniz gezinme çubuğundan da silebilirsiniz.",

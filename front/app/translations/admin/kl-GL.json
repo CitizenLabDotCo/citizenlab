@@ -1160,8 +1160,6 @@
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Anyone",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Toqqaaneq",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Kikkut suliniut una takusinnaavaat?",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSetting": "Pisussat",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSettingDescription": "Piffissami aggersumi pisussat iseqqaarfimmi saqqummersikkit.",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Quppernerit illit iserfigisinnaasanni takusinnaasatit",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Quppernermik nammineq aaqqissuunneqarsinnaasumik pilersitsigit",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Ilumut qupperneq una peerniarpiuk? Uterteqqissinnaanavianngilaq. Peernissaanut piareersimanngikkuit qupperneq navigationslinjemiit peersinnaavat.",

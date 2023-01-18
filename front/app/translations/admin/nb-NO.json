@@ -1194,8 +1194,6 @@
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Hvem som helst",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Valg",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Hvem kan se dette prosjektet?",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSetting": "Hendelser",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSettingDescription": "Vis en forhåndsvisning av kommende hendelser på startsiden.",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Sider som vises på navigasjonslinjen",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Opprett en egendefinert side",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Er du sikker på at du vil slette denne siden? Dette kan ikke angres. Du kan også fjerne siden fra navigasjonslinjen hvis du ikke er klar til å slette den ennå.",

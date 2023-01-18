@@ -1194,8 +1194,6 @@
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Bilo ko",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Određene grupe korisnika",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Ko može videti ovaj projekat?",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSetting": "Događaji",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSettingDescription": "Prikaži preged predstojećih događaja na početnoj stranici.",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Stranice prikazane u traci za navigaciju",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Kreiraj prilagođenu stranicu",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Da li ste sigurni da želite da izbrišete ovu stranicu? Ova radnja ne može se poništiti. Takođe možete da uklonite stranicu iz trake za navigaciju, ako još uvek niste spremni da je izbrišete.",

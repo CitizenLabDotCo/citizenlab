@@ -1193,8 +1193,6 @@
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Iedereen",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Bepaalde groepen gebruikers",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Wie kan dit project zien?",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSetting": "Activiteiten",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSettingDescription": "Toon een voorweergave van aankomende activiteiten op de startpagina.",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Pagina's weergegeven op je navigatiebalk",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Aanpasbare pagina aanmaken",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Weet je zeker dat je deze pagina wilt verwijderen? Dit kan niet ongedaan gemaakt worden. Je kunt de pagina ook uit de navigatiebalk verwijderen als je nog niet klaar bent om deze te verwijderen.",
