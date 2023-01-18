@@ -24,7 +24,6 @@ export function getConsent(): IConsentCookie | null {
 }
 
 export function setConsent(consent: IConsentCookie) {
-  JSON.stringify(consent);
   set(COOKIE_NAME, consent, { expires: 60, secure: SECURE_COOKIE });
 }
 
