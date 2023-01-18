@@ -8,15 +8,20 @@ import {
 } from 'services/formCustomFields';
 
 // styling
-import { colors } from '@citizenlab/cl2-component-library';
+import { colors, IconNames } from '@citizenlab/cl2-component-library';
 import { rgba } from 'polished';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { builtInFieldKeys } from 'components/FormBuilder/utils';
+import { MessageDescriptor } from 'utils/cl-intl';
 
 // types
 import { Locale } from 'typings';
 import { formEndOption } from '../FormBuilderSettings/utils';
+
+// intl
+import messages from '../messages';
 
 export const isFieldSelected = (
   selectedFieldId: string | undefined,
@@ -143,4 +148,103 @@ export const getTitleFromPageId = (
     }
   }
   return undefined;
+};
+
+const getBuiltinFieldIcon = (key: string): IconNames => {
+  switch (key) {
+    case 'location_description':
+      return 'location-simple';
+    case 'body_multiloc':
+      return 'survey-long-answer-2';
+    case 'idea_images_attributes':
+      return 'image';
+    case 'idea_files_attributes':
+      return 'upload-file';
+    default:
+      return 'survey';
+  }
+};
+
+// TODO: Rename icons in component library to "form" for clarity
+const getCustomFieldIcon = (inputType: ICustomFieldInputType): IconNames => {
+  switch (inputType) {
+    case 'text':
+    case 'title_multiloc':
+      return 'survey-short-answer-2';
+    case 'multiline_text':
+      return 'survey-long-answer-2';
+    case 'multiselect':
+      return 'survey-multiple-choice-2';
+    case 'select':
+      return 'survey-single-choice';
+    case 'number':
+      return 'survey-number-field';
+    case 'linear_scale':
+      return 'survey-linear-scale';
+    case 'section':
+      return 'section';
+    case 'file_upload':
+    case 'files':
+      return 'upload-file';
+    default:
+      return 'survey';
+  }
+};
+
+export const getFieldIcon = (
+  inputType: ICustomFieldInputType,
+  key: string
+): IconNames => {
+  return builtInFieldKeys.includes(key)
+    ? getBuiltinFieldIcon(key)
+    : getCustomFieldIcon(inputType);
+};
+
+const getBuiltinFieldBadgeLabel = (key: string): MessageDescriptor => {
+  switch (key) {
+    case 'idea_images_attributes':
+      return messages.imageFileUpload;
+    case 'location_description':
+      return messages.locationDescription;
+    case 'body_multiloc':
+      return messages.longAnswer;
+    case 'idea_files_attributes':
+      return messages.fileUpload;
+    default:
+      return messages.default;
+  }
+};
+
+const getCustomFieldBadgeLabel = (
+  inputType: ICustomFieldInputType
+): MessageDescriptor => {
+  switch (inputType) {
+    case 'text':
+    case 'title_multiloc':
+      return messages.shortAnswer;
+    case 'multiline_text':
+      return messages.longAnswer;
+    case 'multiselect':
+      return messages.multipleChoice;
+    case 'select':
+      return messages.singleChoice;
+    case 'page':
+      return messages.page;
+    case 'number':
+      return messages.number;
+    case 'linear_scale':
+      return messages.linearScale;
+    case 'file_upload':
+      return messages.fileUpload;
+    default:
+      return messages.default;
+  }
+};
+
+export const getTranslatedFieldBadgeLabel = (
+  field: IFlatCustomField
+): MessageDescriptor => {
+  return builtInFieldKeys.includes(field.key)
+    ? getBuiltinFieldBadgeLabel(field.key)
+    : getCustomFieldBadgeLabel(field.input_type);
 };

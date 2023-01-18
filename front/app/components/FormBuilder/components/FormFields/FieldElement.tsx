@@ -15,6 +15,7 @@ import {
   getOptionRule,
   getTitleFromAnswerId,
   getTitleFromPageId,
+  getFieldIcon,
 } from './utils';
 import { isPageRuleValid, isRuleValid } from 'utils/yup/validateLogic';
 
@@ -25,7 +26,6 @@ import {
   Text,
   colors,
   Icon,
-  IconNames,
 } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 import { FlexibleRow } from '../FlexibleRow';
@@ -38,7 +38,6 @@ import { rgba } from 'polished';
 
 // hooks and services
 import {
-  ICustomFieldInputType,
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
 } from 'services/formCustomFields';
@@ -55,38 +54,9 @@ type Props = {
   field: IFlatCustomField;
   isEditingDisabled: boolean;
   onEditField: (field: IFlatCustomFieldWithIndex) => void;
-  getTranslatedFieldType: (fieldType: string) => MessageDescriptor;
+  getTranslatedFieldBadgeLabel: (field: IFlatCustomField) => MessageDescriptor;
   selectedFieldId?: string;
   builderConfig: FormBuilderConfig;
-};
-
-// TODO: Rename icons in component library to "form" for clarity
-const getFieldIcon = (inputType: ICustomFieldInputType): IconNames => {
-  switch (inputType) {
-    case 'text':
-    case 'title_multiloc':
-      return 'survey-short-answer-2';
-    case 'multiline_text':
-    case 'html_multiloc':
-      return 'survey-long-answer-2';
-    case 'multiselect':
-      return 'survey-multiple-choice-2';
-    case 'select':
-      return 'survey-single-choice';
-    case 'number':
-      return 'survey-number-field';
-    case 'linear_scale':
-      return 'survey-linear-scale';
-    case 'section':
-      return 'section';
-    case 'file_upload':
-    case 'files':
-      return 'upload-file';
-    case 'image_files':
-      return 'image';
-    default:
-      return 'survey';
-  }
 };
 
 export const FieldElement = (props: Props) => {
@@ -94,7 +64,7 @@ export const FieldElement = (props: Props) => {
     field,
     isEditingDisabled,
     onEditField,
-    getTranslatedFieldType,
+    getTranslatedFieldBadgeLabel,
     selectedFieldId,
     builderConfig,
   } = props;
@@ -301,7 +271,7 @@ export const FieldElement = (props: Props) => {
                       fill={colors.coolGrey600}
                       width="16px"
                       height="16px"
-                      name={getFieldIcon(field.input_type)}
+                      name={getFieldIcon(field.input_type, field.key)}
                     />
                     <Text
                       color="coolGrey600"
@@ -313,7 +283,7 @@ export const FieldElement = (props: Props) => {
                       whiteSpace="nowrap"
                     >
                       <FormattedMessage
-                        {...getTranslatedFieldType(field.input_type)}
+                        {...getTranslatedFieldBadgeLabel(field)}
                       />
                     </Text>
                   </Box>

@@ -17,7 +17,7 @@ import Modal from 'components/UI/Modal';
 
 // intl
 import messages from '../messages';
-import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // types
 import {
@@ -31,7 +31,7 @@ import { useFormContext } from 'react-hook-form';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { formEndOption } from './utils';
+import { formEndOption, getTranslatedStringKey } from './utils';
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
 interface Props {
@@ -142,47 +142,10 @@ const FormBuilderSettings = ({
     return pageArray;
   };
 
-  let translatedStringKey: MessageDescriptor | null = null;
-  switch (field.input_type) {
-    case 'title_multiloc':
-      translatedStringKey = messages.title;
-      break;
-    case 'text':
-      translatedStringKey = messages.shortAnswer;
-      break;
-    case 'html_multiloc':
-      translatedStringKey = messages.description;
-      break;
-    case 'multiline_text':
-      translatedStringKey = messages.longAnswer;
-      break;
-    case 'select':
-      translatedStringKey = messages.singleChoice;
-      break;
-    case 'multiselect':
-      translatedStringKey = messages.multipleChoice;
-      break;
-    case 'page':
-      translatedStringKey = messages.page;
-      break;
-    case 'section':
-      translatedStringKey = messages.section;
-      break;
-    case 'number':
-      translatedStringKey = messages.number;
-      break;
-    case 'linear_scale':
-      translatedStringKey = messages.linearScale;
-      break;
-    case 'file_upload':
-    case 'files':
-      translatedStringKey = messages.fileUpload;
-      break;
-    case 'image_files':
-      translatedStringKey = messages.imageFileUpload;
-      break;
-  }
-
+  const translatedStringKey = getTranslatedStringKey(
+    field.input_type,
+    field.key
+  );
   const tabNotActiveBorder = `1px solid ${colors.grey400}`;
   const tabActiveBorder = `4px solid ${colors.primary}`;
   const fieldType = watch(`customFields.${field.index}.input_type`);

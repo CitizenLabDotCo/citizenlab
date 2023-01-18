@@ -1,12 +1,10 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
-// intl
-import messages from '../messages';
-
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { DragAndDropResult, NestedGroupingStructure } from '../../edit/utils';
+import { getTranslatedFieldBadgeLabel } from './utils';
 
 // components
 import { Box, colors } from '@citizenlab/cl2-component-library';
@@ -21,35 +19,6 @@ import {
 } from 'services/formCustomFields';
 
 import { DragAndDrop, Drag, Drop } from '../DragAndDrop';
-
-// Assign field badge text
-const getTranslatedFieldType = (field) => {
-  switch (field) {
-    case 'text':
-    case 'title_multiloc':
-      return messages.shortAnswer;
-    case 'multiline_text':
-    case 'html_multiloc':
-      return messages.longAnswer;
-    case 'multiselect':
-      return messages.multipleChoice;
-    case 'select':
-      return messages.singleChoice;
-    case 'page':
-      return messages.page;
-    case 'number':
-      return messages.number;
-    case 'linear_scale':
-      return messages.linearScale;
-    case 'file_upload':
-    case 'files':
-      return messages.fileUpload;
-    case 'image_files':
-      return messages.imageFileUpload;
-    default:
-      return messages.default;
-  }
-};
 
 export const pageDNDType = 'droppable-page';
 export const questionDNDType = 'droppable-question';
@@ -115,7 +84,7 @@ const FormFields = ({
                 <FieldElement
                   field={pageGrouping.groupElement}
                   isEditingDisabled={isEditingDisabled}
-                  getTranslatedFieldType={getTranslatedFieldType}
+                  getTranslatedFieldBadgeLabel={getTranslatedFieldBadgeLabel}
                   selectedFieldId={selectedFieldId}
                   onEditField={onEditField}
                   builderConfig={builderConfig}
@@ -141,7 +110,9 @@ const FormFields = ({
                                 key={question.id}
                                 field={question}
                                 isEditingDisabled={isEditingDisabled}
-                                getTranslatedFieldType={getTranslatedFieldType}
+                                getTranslatedFieldBadgeLabel={
+                                  getTranslatedFieldBadgeLabel
+                                }
                                 selectedFieldId={selectedFieldId}
                                 onEditField={onEditField}
                                 builderConfig={builderConfig}
