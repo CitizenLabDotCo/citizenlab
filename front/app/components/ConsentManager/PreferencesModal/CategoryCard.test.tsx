@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render } from 'utils/testUtils/rtl';
-import { IDestination, registerDestination } from './destinations';
+import { IDestination, registerDestination } from '../destinations';
 
 // component to test
 import CategoryCard from './CategoryCard';

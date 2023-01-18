@@ -1,16 +1,16 @@
 import React from 'react';
 import { fireEvent, render } from 'utils/testUtils/rtl';
-import { CategorizedDestinations } from './typings';
+import { CategorizedDestinations } from '../typings';
 
 // component to test
-import PreferencesDialog from './PreferencesDialog';
+import Preferences from './Preferences';
 
 // mock utilities
 jest.mock('utils/cl-intl');
 jest.mock('services/appConfiguration');
 jest.mock('modules', () => ({ streamsToReset: [] }));
 
-describe('<ConsentManager />', () => {
+describe('<Preferences />', () => {
   let onChange;
 
   const categoryDestinations: CategorizedDestinations = {
@@ -31,7 +31,7 @@ describe('<ConsentManager />', () => {
 
   it('renders correctly when there are destinations', () => {
     const { container } = render(
-      <PreferencesDialog
+      <Preferences
         onChange={onChange}
         categoryDestinations={categoryDestinations}
         preferences={preferences}
@@ -44,7 +44,7 @@ describe('<ConsentManager />', () => {
 
   it('renders correctly when there are no destinations', () => {
     const { container } = render(
-      <PreferencesDialog
+      <Preferences
         onChange={onChange}
         categoryDestinations={{
           analytics: [],
@@ -61,7 +61,7 @@ describe('<ConsentManager />', () => {
 
   it('is possible to change preference for analytics cookies', () => {
     const { container } = render(
-      <PreferencesDialog
+      <Preferences
         onChange={onChange}
         categoryDestinations={categoryDestinations}
         preferences={preferences}

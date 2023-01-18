@@ -1,17 +1,11 @@
 import React, { FormEvent, useState, useEffect, useCallback } from 'react';
 
 // components
+import PreferencesModal from './PreferencesModal';
 import Banner from './Banner';
-import PreferencesDialog, { ContentContainer } from './PreferencesDialog';
-import Footer from './Footer';
-import Modal from 'components/UI/Modal';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
 // utils
 import { keys } from 'utils/helperUtils';
@@ -128,33 +122,19 @@ const Container = ({
 
   return (
     <>
-      <Modal
+      <PreferencesModal
         opened={isDialogOpen}
-        close={closeDialog}
-        header={<FormattedMessage {...messages.title} />}
-        footer={
-          <Footer
-            validate={validate}
-            mode={mode}
-            handleCancelBack={handleCancelBack}
-            handleCancelConfirm={handleCancelConfirm}
-            handleCancel={handleCancel}
-            handleSave={handleSave}
-          />
-        }
-      >
-        {!isCancelling ? (
-          <PreferencesDialog
-            onChange={updatePreference}
-            categoryDestinations={categorizedDestinations}
-            preferences={preferences}
-          />
-        ) : (
-          <ContentContainer role="dialog" aria-modal>
-            <FormattedMessage {...messages.confirmation} tagName="h1" />
-          </ContentContainer>
-        )}
-      </Modal>
+        mode={mode}
+        categorizedDestinations={categorizedDestinations}
+        preferences={preferences}
+        isCancelling={isCancelling}
+        handleCancelBack={handleCancelBack}
+        handleCancelConfirm={handleCancelConfirm}
+        handleCancel={handleCancel}
+        handleSave={handleSave}
+        onClose={closeDialog}
+        updatePreference={updatePreference}
+      />
 
       {isConsentRequired && (
         <Banner

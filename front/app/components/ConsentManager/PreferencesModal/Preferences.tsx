@@ -1,45 +1,22 @@
 import React from 'react';
 
-// Components
+// components
 import CategoryCard from './CategoryCard';
+import ContentContainer from './ContentContainer';
 
-// Typing
-import { CategorizedDestinations, IPreferences } from './typings';
-
-// Styling
-import styled from 'styled-components';
-import { fontSizes, media } from 'utils/styleUtils';
-
-// services
-import { TCategory } from './destinations';
-
-export const ContentContainer = styled.div`
-  padding: 30px;
-  background: white;
-
-  h1 {
-    font-size: ${fontSizes.m}px;
-  }
-
-  h2 {
-    font-size: ${fontSizes.l}px;
-  }
-
-  ${media.phone`
-    margin: 0;
-    padding: 20px;
-  `}
-`;
+// typings
+import { CategorizedDestinations, IPreferences } from '../typings';
+import { TCategory } from '../destinations';
 
 interface Props {
-  onChange: (category: TCategory, value) => void;
+  onChange: (category: TCategory, value: boolean) => void;
   categoryDestinations: CategorizedDestinations;
   preferences: IPreferences;
 }
 
 const doNothing = () => {};
 
-const PreferencesDialog = ({
+const Preferences = ({
   categoryDestinations,
   preferences,
   onChange,
@@ -73,4 +50,4 @@ const PreferencesDialog = ({
   );
 };
 
-export default PreferencesDialog;
+export default Preferences;

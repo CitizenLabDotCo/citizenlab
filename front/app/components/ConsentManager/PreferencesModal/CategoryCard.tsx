@@ -1,13 +1,25 @@
 import React, { Fragment } from 'react';
+
+// hooks
+import useAppConfiguration from 'hooks/useAppConfiguration';
+
+// styling
 import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 import { transparentize } from 'polished';
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+
+// components
 import { Radio } from '@citizenlab/cl2-component-library';
-import { getDestinationConfig, IDestination, TCategory } from './destinations';
-import useAppConfiguration from 'hooks/useAppConfiguration';
+
+// i18n
+import messages from '../messages';
+import { FormattedMessage } from 'utils/cl-intl';
+
+// utils
+import { getDestinationConfig, IDestination, TCategory } from '../destinations';
 import { isNilOrError } from 'utils/helperUtils';
+
+// typings
 import { IAppConfigurationData } from 'services/appConfiguration';
 
 const Container = styled.div`
