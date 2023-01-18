@@ -55,10 +55,6 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     }
   end
 
-  attribute :custom_field_values do |idea|
-    CustomFieldService.remove_disabled_custom_fields(idea.custom_field_values)
-  end
-
   has_many :topics
   has_many :idea_images, serializer: WebApi::V1::ImageSerializer
   has_many :phases
@@ -83,16 +79,5 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     else
       object.votes.where(user_id: current_user(params)&.id).first
     end
-  end
-
-  def self.attributes_hash(record, fieldset = nil, params = {})
-    with_custom_fields_at_attributes_level(super)
-  end
-
-  private_class_method def self.with_custom_fields_at_attributes_level(hash)
-    custom_field_hash = hash.delete :custom_field_values
-    return hash unless custom_field_hash
-
-    hash.merge custom_field_hash.symbolize_keys
   end
 end
