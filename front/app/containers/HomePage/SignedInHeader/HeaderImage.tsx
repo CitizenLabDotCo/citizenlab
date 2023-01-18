@@ -32,24 +32,15 @@ const StyledImage = styled(Image)`
   height: auto;
 
   ${media.tablet`
-    &.objectFitCoverSupported {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    &:not(.objectFitCoverSupported) {
-      width: auto;
-      height: 100%;
-    }
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   `}
 `;
 
 const HeaderImage = () => {
   const homepageSettings = useHomepageSettings();
   const theme = useTheme();
-  const objectFitCoverSupported =
-    window['CSS'] && CSS.supports('object-fit: cover');
 
   if (!isNilOrError(homepageSettings)) {
     const tenantHeaderImage = homepageSettings.attributes.header_bg
@@ -70,9 +61,6 @@ const HeaderImage = () => {
               data-cy="e2e-fixed-ratio-header-image"
               alt="" // Image is decorative, so alt tag is empty
               src={tenantHeaderImage}
-              className={
-                objectFitCoverSupported ? 'objectFitCoverSupported' : ''
-              }
             />
           )}
           {/* Image overlay */}
