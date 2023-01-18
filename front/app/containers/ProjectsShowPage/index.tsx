@@ -42,7 +42,12 @@ import { IProjectData } from 'services/projects';
 
 // other
 import { isValidPhase } from './phaseParam';
-import { anyIsUndefined, isNilOrError, isApiError } from 'utils/helperUtils';
+import {
+  anyIsUndefined,
+  isNilOrError,
+  isApiError,
+  isNil,
+} from 'utils/helperUtils';
 import { getCurrentPhase } from 'services/phases';
 import { getMethodConfig, getPhase } from 'utils/participationMethodUtils';
 import EventsViewer from 'containers/EventsPage/EventsViewer';
@@ -98,14 +103,14 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
 
   const smallerThanMinTablet = useBreakpoint('tablet');
   const { formatMessage } = useIntl();
+  const queryParams = useURLQuery();
+  const showModalParam = queryParams.get('show_modal');
   const [showModal, setShowModal] = useState<boolean>(false);
   const [phaseIdUrl, setPhaseIdUrl] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
   const locale = useLocale();
   const appConfig = useAppConfiguration();
   const phases = usePhases(projectId);
-
-  const queryParams = useURLQuery();
 
   const { events } = useEvents({
     projectIds: projectId ? [projectId] : undefined,
@@ -121,6 +126,22 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (!isNil(showModalParam)) {
+      // TODO: Handle animation when modal is open by default in Modal component
+      timer = setTimeout(() => {
+        if (!showModal) {
+          setShowModal(!!showModalParam);
+        }
+      }, 1500);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [showModalParam]);
+
   // UseEffect to scroll to event when provided
   useEffect(() => {
     if (scrollToEventId && mounted && !loading) {
@@ -132,20 +153,12 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
 
   // UseEffect to handle modal state and phase parameters
   useEffect(() => {
-    const showModalParam = queryParams.get('show_modal');
     const phaseIdParam = queryParams.get('phase_id');
     // Set phase id
     if (!isNilOrError(phaseIdParam) && phaseIdUrl === null) {
       setPhaseIdUrl(phaseIdParam);
     }
-    // Set modal state
-    if (!isNilOrError(showModalParam)) {
-      setTimeout(() => {
-        if (!showModal) {
-          setShowModal(JSON.parse(showModalParam));
-        }
-      }, 1500);
-    }
+
     // Clear URL parameters for continuous projects
     // (handled elsewhere for timeline projects)
     if (
