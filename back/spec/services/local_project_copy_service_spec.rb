@@ -198,10 +198,10 @@ describe LocalProjectCopyService do
     end
 
     it 'shifts timelines of phases to start first phase on day of copying' do
-      phase1_start = timeline_project.phases.order(:start_at).first.start_at
-      phase2_end = timeline_project.phases.order(:start_at).second.end_at
-
       travel_to Time.now do
+        phase1_start = timeline_project.phases.order(:start_at).first.start_at
+        phase2_end = timeline_project.phases.order(:start_at).second.end_at
+
         today = Time.zone.today
         expected_shift = (today - phase1_start).days
         copied_project = service.copy(timeline_project)
