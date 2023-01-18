@@ -148,11 +148,7 @@ describe IdeaCustomFieldsService do
       )
 
       output = service.allowed_extra_field_keys
-      if CitizenLab.ee?
-        expect(output).to match_array [:required_field, :optional_field, { multiselect_field: [] }]
-      else
-        expect(output).to match_array [{}]
-      end
+      expect(output).to match_array [:required_field, :optional_field, { multiselect_field: [] }]
     end
   end
 
