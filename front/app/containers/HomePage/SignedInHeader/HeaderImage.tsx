@@ -51,7 +51,7 @@ const HeaderImage = () => {
 
     return (
       <HeaderImageContainer>
-        <HeaderImageContainerInner data-cy="e2e-header-image-parent">
+        <HeaderImageContainerInner data-cy="e2e-signed-in-header-image-parent">
           {/*
             With the fixed ratio layout, the image would be pixeled so we
             don't show it for that layout.
@@ -59,7 +59,7 @@ const HeaderImage = () => {
           */}
           {tenantHeaderImage && !isFixedBannerLayout && (
             <StyledImage
-              data-cy="e2e-header-image"
+              data-cy="e2e-signed-in-header-image"
               alt="" // Image is decorative, so alt tag is empty
               src={tenantHeaderImage}
             />
