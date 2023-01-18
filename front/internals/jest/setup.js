@@ -8,7 +8,6 @@ configure({ adapter: new Adapter() });
 global.ResizeObserver = require('resize-observer-polyfill');
 
 jest.mock('polished');
-jest.mock('modules');
 jest.mock('quill-blot-formatter');
 jest.mock('history', () => ({
   createBrowserHistory: () => ({
