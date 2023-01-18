@@ -100,6 +100,22 @@ FactoryBot.define do
       enabled { true }
     end
 
+    factory :custom_field_section do
+      title_multiloc do
+        {
+          'en' => 'A section'
+        }
+      end
+      description_multiloc do
+        {
+          'en' => 'This is a section.'
+        }
+      end
+      required { false }
+      input_type { 'section' }
+      enabled { true }
+    end
+
     factory :custom_field_multiselect do
       title_multiloc do
         {
