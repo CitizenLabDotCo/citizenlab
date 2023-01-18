@@ -145,6 +145,7 @@ const EditHomepageHeroBannerForm = () => {
 
   const handleOnBannerImageRemove = () => {
     handleOnChange('header_bg', null);
+    handleOnOverlayChange(null, null);
   };
 
   const handleOnChange = (
@@ -192,7 +193,6 @@ const EditHomepageHeroBannerForm = () => {
                 localSettings.banner_signed_out_header_overlay_opacity
               }
               headerBg={localSettings.header_bg}
-              setFormStatus={setFormStatus}
               onAddImage={handleOnBannerImageAdd}
               onRemoveImage={handleOnBannerImageRemove}
               onOverlayChange={handleOnOverlayChange}
@@ -217,9 +217,7 @@ const EditHomepageHeroBannerForm = () => {
           }
           layoutSettingFieldComponent={
             <LayoutSettingField
-              bannerLayout={
-                localSettings.banner_layout ?? 'full_width_banner_layout'
-              }
+              bannerLayout={localSettings.banner_layout}
               onChange={(bannerLayout: THomepageBannerLayout) => {
                 handleOnChange('banner_layout', bannerLayout);
               }}
