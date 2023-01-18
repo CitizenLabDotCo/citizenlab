@@ -142,17 +142,17 @@ ar-MA:
         question:
           title: ما سؤالك؟
         contribution:
-          title: ما مساهمتك؟
+          title: ما هي مساهمتك؟
         project:
           title: ما مشروعك؟
         issue:
-          title: ما مشكلتك؟
+          title: ما هي مشكلتك؟
         option:
           title: ما خيارك؟
       details:
         title: التفاصيل 
       attachements:
-        title: الصور والمرفقات
+        title: الصور والمُرفقات
       extra:
         title: معلومات إضافية
   custom_field_options:
@@ -208,3 +208,5 @@ ar-MA:
     survey_end_page:
       title: 'انتهى الاستبيان'
       description: "يرجى إرسال إجاباتك من خلال تحديد \"إرسال الاستبيان\" أدناه."
+  project_copy:
+    title_suffix: 'نسخ'
