@@ -1194,8 +1194,6 @@
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Vem som helst",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Urval",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Vilka kan se det här projektet?",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSetting": "Evenemang",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSettingDescription": "Visa en förhandsvisning av kommande evenemang på startsidan.",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Sidor som visas i navigeringsfältet",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Skapa anpassad sida",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Är du säker på att du vill ta bort den här sidan? Du kan inte ångra den här åtgärden. Du kan också ta bort sidan från navigeringsfältet om du inte är redo att ta bort den ännu.",

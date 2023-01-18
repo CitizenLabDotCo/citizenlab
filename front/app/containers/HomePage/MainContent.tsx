@@ -2,7 +2,6 @@ import React from 'react';
 import ContentContainer from 'components/ContentContainer';
 import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
 import FeatureFlag from 'components/FeatureFlag';
-import Outlet from 'components/Outlet';
 import InitiativesCTABox from './InitiativesCTABox';
 
 // style
@@ -49,8 +48,6 @@ const MainContent = () => {
           />
         </SectionContainer>
       </ProjectSection>
-
-      <Outlet id="app.containers.HomePage.EventsWidget" />
 
       <FeatureFlag name="initiatives">
         {postingProposalsEnabled && <StyledInitiativesCTABox />}

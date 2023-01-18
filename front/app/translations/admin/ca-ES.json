@@ -1160,8 +1160,6 @@
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Ningú",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Selecció",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Qui pot veure aquest projecte?",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSetting": "Esdeveniments",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSettingDescription": "Mostra una vista prèvia dels propers esdeveniments a la pàgina d'inici.",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Pàgines que es mostren a la barra de navegació",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Crear una pàgina personalitzada",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Esteu segur que voleu eliminar aquesta pàgina? Això no es pot desfer. També podeu eliminar la pàgina de la barra de navegació si encara no esteu preparat per eliminar-la.",

@@ -14,7 +14,6 @@ import sectionToggleMessages from 'containers/Admin/pagesAndMenu/components/Sect
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // services, hooks, resources, and types
-import Outlet from 'components/Outlet';
 import {
   updateHomepageSettings,
   THomepageEnabledSetting,
@@ -23,8 +22,6 @@ import useHomepageSettings from 'hooks/useHomepageSettings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { insertConfiguration } from 'utils/moduleUtils';
-import { InsertConfigurationOptions } from 'typings';
 import clHistory from 'utils/cl-router/history';
 import { ISectionToggleData } from 'containers/Admin/pagesAndMenu/components/SectionToggle';
 
@@ -35,9 +32,7 @@ export interface IHomepageSectionToggleData extends ISectionToggleData {
 const EditHomepage = () => {
   const { formatMessage } = useIntl();
   const homepageSettings = useHomepageSettings();
-  const [sectionTogglesData, setSectionTogglesData] = useState<
-    IHomepageSectionToggleData[]
-  >([
+  const [sectionTogglesData] = useState<IHomepageSectionToggleData[]>([
     {
       name: 'homepage_banner',
       titleMessage: formatMessage(sectionToggleMessages.heroBanner),
@@ -76,14 +71,6 @@ const EditHomepage = () => {
         console.error(error);
       }
     };
-
-  const handleOnData = (
-    sectionToggleData: InsertConfigurationOptions<IHomepageSectionToggleData>
-  ) => {
-    setSectionTogglesData((currentSectionTogglesData) => {
-      return insertConfiguration(sectionToggleData)(currentSectionTogglesData);
-    });
-  };
 
   const handleOnClick = (url: string) => {
     if (url) {
@@ -139,10 +126,6 @@ const EditHomepage = () => {
             />
           );
         })}
-        <Outlet
-          id="app.containers.Admin.flexible-pages.EditHomepage.sectionToggles"
-          onData={handleOnData}
-        />
       </Box>
     </SectionFormWrapper>
   );

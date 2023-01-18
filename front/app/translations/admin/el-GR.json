@@ -1160,8 +1160,6 @@
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Οποιοσδήποτε",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Επιλογή",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Ποιος μπορεί να δει αυτό το έργο;",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSetting": "Εκδηλώσεις",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSettingDescription": "Εμφάνιση μιας προεπισκόπησης των επερχόμενων εκδηλώσεων στην αρχική σελίδα.",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Σελίδες που εμφανίζονται στη γραμμή πλοήγησης",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Δημιουργία προσαρμοσμένης σελίδας",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτή τη σελίδα; Αυτό δεν μπορεί να αναιρεθεί. Μπορείτε επίσης να καταργήσετε τη σελίδα από τη γραμμή πλοήγησης αν δεν είστε ακόμα έτοιμοι να τη διαγράψετε.",

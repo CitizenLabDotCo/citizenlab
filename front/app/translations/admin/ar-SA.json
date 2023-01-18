@@ -1194,8 +1194,6 @@
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "أي شخص",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "مجموعات مستخدمين محددة",
   "app.containers.admin.project.permissions.viewingRightsTitle": "من يمكنه رؤية هذا المشروع؟",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSetting": "الأحداث",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSettingDescription": "اعرض معاينة للأحداث القادمة في الصفحة الرئيسية.",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "صفحات معروضة في شريط التنقل",
   "app.modules.navbar.admin.containers.createCustomPageButton": "إنشاء صفحة مخصصة",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "هل تريد بالتأكيد حذف هذه الصفحة؟ لا يمكن التراجع عن هذا الإجراء. يمكنك أيضًا إزالة الصفحة من شريط التنقل إذا لم تكن قد حذفتها حتى الآن.",

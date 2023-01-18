@@ -1,7 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { ImageSizes, Multiloc, Locale } from 'typings';
-import { THomepageSettingKeyMap } from 'services/homepageSettings';
+
 export const currentAppConfigurationEndpoint = `${API_PATH}/app_configuration`;
 
 export interface AppConfigurationFeature {
@@ -11,15 +11,8 @@ export interface AppConfigurationFeature {
 
 export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
 
-// Settings that have their enabled values in homepageSettings.
-// Their allowed value is still in appConfiguration.
-export type THomepageSetting = keyof THomepageSettingKeyMap;
-
 // All appConfig setting names except those in THomepageSetting
-export type TAppConfigurationSettingWithEnabled = Exclude<
-  TAppConfigurationSetting,
-  THomepageSetting
->;
+export type TAppConfigurationSettingWithEnabled = TAppConfigurationSetting;
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
 
