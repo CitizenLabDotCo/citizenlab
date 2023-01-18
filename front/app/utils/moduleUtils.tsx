@@ -59,7 +59,6 @@ export interface OutletsPropertyMap {
   'app.components.NotificationMenu.Notification': {
     notification: TNotificationData;
   };
-  'app.containers.HomePage.EventsWidget': Record<string, any>;
   'app.containers.Admin.projects.edit.general.components.TopicInputs.tooltipExtraCopy': Record<
     string,
     any
