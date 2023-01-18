@@ -14,7 +14,6 @@ import {
 import styled from 'styled-components';
 import { CLErrors, Multiloc } from 'typings';
 import { FormattedMessage } from 'utils/cl-intl';
-import 'utils/moduleUtils';
 import { colors } from 'utils/styleUtils';
 import messages from './messages';
 
