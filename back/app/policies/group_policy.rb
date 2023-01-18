@@ -84,5 +84,3 @@ class GroupPolicy < ApplicationPolicy
     end
   end
 end
-
-GroupPolicy.prepend_if_ee('SmartGroups::Patches::GroupPolicy')

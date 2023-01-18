@@ -24,5 +24,3 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     end&.first
   end
 end
-
-WebApi::V1::PhaseSerializer.include_if_ee('GranularPermissions::WebApi::V1::Patches::PhaseSerializer')

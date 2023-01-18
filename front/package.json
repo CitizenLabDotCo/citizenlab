@@ -46,7 +46,6 @@
     }
   },
   "dependencies": {
-    "@apollo/client": "^3.5.6",
     "@babel/runtime": "7.x",
     "@citizenlab/cl2-component-library": "^0.10.22",
     "@craftjs/core": "^0.2.0-beta.5",
@@ -173,6 +172,7 @@
     "@types/react-jsonschema-form": "^1.7.8",
     "@types/react-loadable": "^5.5.6",
     "@types/react-places-autocomplete": "7.x",
+    "@types/react-select": "^5.0.1",
     "@types/react-transition-group": "4.4.4",
     "@types/segment-analytics": "0.0.34",
     "@types/shelljs": "0.8.11",

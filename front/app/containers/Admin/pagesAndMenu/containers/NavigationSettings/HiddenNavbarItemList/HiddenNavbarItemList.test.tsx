@@ -1,5 +1,5 @@
 import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
-import allNavbarItems from 'hooks/fixtures/navbarItems';
+import allNavbarItems from 'services/__mocks__/navbarItems';
 import { deleteCustomPage } from 'services/customPages';
 import React from 'react';
 import clHistory from 'utils/cl-router/history';

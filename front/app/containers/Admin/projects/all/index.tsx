@@ -1,4 +1,4 @@
-import React, { memo, Suspense, useState } from 'react';
+import React, { memo, Suspense } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // resources
@@ -18,7 +18,6 @@ import PageWrapper from 'components/admin/PageWrapper';
 import { PageTitle, SectionDescription } from 'components/admin/Section';
 import HasPermission from 'components/HasPermission';
 import { Spinner } from '@citizenlab/cl2-component-library';
-import Outlet from 'components/Outlet';
 
 const ModeratorProjectList = React.lazy(
   () => import('./Lists/ModeratorProjectList')
@@ -70,16 +69,9 @@ const AdminProjectsList = memo(({ className }: Props) => {
     : false;
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
 
-  const [containerOutletRendered, setContainerOutletRendered] = useState(false);
-  const handleContainerOutletOnRender = (hasRendered: boolean) => {
-    setContainerOutletRendered(hasRendered);
-  };
-
   return (
     <Container className={className}>
-      <CreateAndEditProjectsContainer
-        className={containerOutletRendered ? 'hidden' : ''}
-      >
+      <CreateAndEditProjectsContainer>
         <PageTitle>
           <FormattedMessage {...messages.overviewPageTitle} />
         </PageTitle>
@@ -111,10 +103,6 @@ const AdminProjectsList = memo(({ className }: Props) => {
           </ListsContainer>
         </PageWrapper>
       </CreateAndEditProjectsContainer>
-      <Outlet
-        id="app.containers.Admin.projects.all.container"
-        onRender={handleContainerOutletOnRender}
-      />
     </Container>
   );
 });

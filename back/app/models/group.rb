@@ -98,5 +98,3 @@ class Group < ApplicationRecord
     end
   end
 end
-
-Group.prepend_if_ee('SmartGroups::Patches::Group')

@@ -10,7 +10,6 @@ import { Outlet as RouterOutlet } from 'react-router-dom';
 import GoBackButton from 'components/UI/GoBackButton';
 import Button from 'components/UI/Button';
 import TabbedResource from 'components/admin/TabbedResource';
-import Outlet from 'components/Outlet';
 import { Box } from '@citizenlab/cl2-component-library';
 import NewIdeaButton from './ideas/NewIdeaButton';
 import NewIdeaButtonDropdown from './ideas/NewIdeaButtonDropdown';
@@ -142,7 +141,6 @@ export class AdminProjectsProjectIndex extends PureComponent<
           label: formatMessage(messages.allowedInputTopicsTab),
           name: 'topics',
           url: 'allowed-input-topics',
-          feature: 'custom_topics',
         },
         {
           label: formatMessage(messages.phasesTab),
@@ -401,13 +399,6 @@ export class AdminProjectsProjectIndex extends PureComponent<
 
       return (
         <>
-          <Outlet
-            id="app.containers.Admin.projects.edit"
-            onData={this.handleData}
-            project={project}
-            phases={phases}
-          />
-
           <TopContainer>
             <GoBackButton onClick={this.goBack} />
             <ActionsContainer>

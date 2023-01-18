@@ -1,7 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { ImageSizes, Multiloc, Locale } from 'typings';
-import { THomepageSettingKeyMap } from 'services/homepageSettings';
+
 export const currentAppConfigurationEndpoint = `${API_PATH}/app_configuration`;
 
 export interface AppConfigurationFeature {
@@ -11,15 +11,8 @@ export interface AppConfigurationFeature {
 
 export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
 
-// Settings that have their enabled values in homepageSettings.
-// Their allowed value is still in appConfiguration.
-export type THomepageSetting = keyof THomepageSettingKeyMap;
-
 // All appConfig setting names except those in THomepageSetting
-export type TAppConfigurationSettingWithEnabled = Exclude<
-  TAppConfigurationSetting,
-  THomepageSetting
->;
+export type TAppConfigurationSettingWithEnabled = TAppConfigurationSetting;
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
 
@@ -105,7 +98,6 @@ export interface IAppConfigurationSettings {
     url?: string;
   };
   manual_project_sorting?: AppConfigurationFeature;
-  admin_project_templates?: AppConfigurationFeature;
   pages?: AppConfigurationFeature;
   project_reports?: AppConfigurationFeature;
   private_projects?: AppConfigurationFeature;
@@ -117,18 +109,11 @@ export interface IAppConfigurationSettings {
     enabled: boolean;
     enabled_fragments: string[];
   };
-  verification?: {
-    allowed: boolean;
-    enabled: boolean;
-    verification_methods: string[];
-  };
   dynamic_idea_form?: AppConfigurationFeature;
   jsonforms_custom_fields?: AppConfigurationFeature;
   idea_custom_fields?: AppConfigurationFeature;
   volunteering?: AppConfigurationFeature;
   workshops?: AppConfigurationFeature;
-  smart_groups?: AppConfigurationFeature;
-  manual_emailing?: AppConfigurationFeature;
   automated_emailing_control?: AppConfigurationFeature;
   typeform_surveys?: {
     allowed: boolean;
@@ -145,24 +130,14 @@ export interface IAppConfigurationSettings {
   survey_xact_surveys?: AppConfigurationFeature;
   snap_survey_surveys?: AppConfigurationFeature;
   project_folders?: AppConfigurationFeature;
-  bulk_import_ideas?: AppConfigurationFeature;
-  widgets?: AppConfigurationFeature;
-  granular_permissions?: AppConfigurationFeature;
   ideaflow_social_sharing?: AppConfigurationFeature;
   initiativeflow_social_sharing?: AppConfigurationFeature;
-  machine_translations?: AppConfigurationFeature;
-  custom_topics?: AppConfigurationFeature;
-  custom_maps?: AppConfigurationFeature;
-  similar_ideas?: AppConfigurationFeature;
   polls?: AppConfigurationFeature;
   moderation?: AppConfigurationFeature;
-  flag_inappropriate_content?: AppConfigurationFeature;
   disable_downvoting?: AppConfigurationFeature;
   project_visibility?: AppConfigurationFeature;
   project_management?: AppConfigurationFeature;
-  idea_assignment?: AppConfigurationFeature;
   blocking_profanity?: AppConfigurationFeature;
-  custom_idea_statuses?: AppConfigurationFeature;
   idea_author_change?: AppConfigurationFeature;
   idea_custom_copy?: AppConfigurationFeature;
   satismeter?: AppConfigurationFeature & {
@@ -175,13 +150,8 @@ export interface IAppConfigurationSettings {
     }[];
   };
   disable_user_bios?: AppConfigurationFeature;
-  texting?: AppConfigurationFeature;
-  content_builder?: AppConfigurationFeature;
-  representativeness?: AppConfigurationFeature;
   remove_vendor_branding?: AppConfigurationFeature;
   native_surveys?: AppConfigurationFeature;
-  analytics?: AppConfigurationFeature;
-  visitors_dashboard?: AppConfigurationFeature;
   user_confirmation?: AppConfigurationFeature;
 }
 

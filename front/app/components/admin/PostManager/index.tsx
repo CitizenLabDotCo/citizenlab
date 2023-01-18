@@ -42,7 +42,6 @@ import { Input } from 'semantic-ui-react';
 import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
 import LazyPostPreview from './components/LazyPostPreview';
 import LazyStatusChangeModal from './components/StatusChangeModal/LazyStatusChangeModal';
-import Outlet from 'components/Outlet';
 
 const StyledExportMenu = styled(ExportMenu)`
   margin-left: auto;
@@ -284,7 +283,6 @@ export class PostManager extends React.PureComponent<Props, State> {
     } = this.state;
     const {
       type,
-      projectId,
       projects,
       posts,
       phases,
@@ -297,7 +295,6 @@ export class PostManager extends React.PureComponent<Props, State> {
       onChangeTopics,
       onChangeStatus,
       queryParameters,
-      onChangeAssignee,
       onChangeFeedbackFilter,
       onResetParams,
     } = posts;
@@ -315,13 +312,6 @@ export class PostManager extends React.PureComponent<Props, State> {
       return (
         <>
           <TopActionBar>
-            <Outlet
-              id="app.components.admin.PostManager.topActionBar"
-              assignee={selectedAssignee}
-              projectId={type === 'ProjectIdeas' ? projectId : null}
-              handleAssigneeFilterChange={onChangeAssignee}
-              type={type}
-            />
             <FeedbackToggle
               type={type}
               value={feedbackNeeded}

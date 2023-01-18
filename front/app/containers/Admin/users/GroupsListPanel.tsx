@@ -30,7 +30,6 @@ import tracks from './tracks';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
-import Outlet from 'components/Outlet';
 
 const Container = styled.div`
   flex: 1;
@@ -249,10 +248,6 @@ export class GroupsListPanel extends React.PureComponent<
                   `${highlightedGroups.has(group.id) ? 'highlight' : ''}`
                 }
               >
-                <Outlet
-                  id="app.containers.Admin.users.GroupsListPanel.listitem.icon"
-                  type={group.attributes.membership_type}
-                />
                 <GroupName>
                   <T value={group.attributes.title_multiloc} />
                 </GroupName>

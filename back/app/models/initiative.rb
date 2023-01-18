@@ -171,7 +171,3 @@ class Initiative < ApplicationRecord
     initiative_status_changes.build(initiative_status: initial_status)
   end
 end
-
-Initiative.include_if_ee 'FlagInappropriateContent::Concerns::Flaggable'
-Initiative.include_if_ee 'Moderation::Concerns::Moderatable'
-Initiative.include_if_ee 'MachineTranslations::Concerns::Translatable'

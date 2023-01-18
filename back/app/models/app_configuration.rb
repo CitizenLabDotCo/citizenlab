@@ -206,5 +206,3 @@ class AppConfiguration < ApplicationRecord
     errors.add(:base, 'there can be only one instance of AppConfiguration') if AppConfiguration.count.positive?
   end
 end
-
-AppConfiguration.include_if_ee('MultiTenancy::Extensions::AppConfiguration')

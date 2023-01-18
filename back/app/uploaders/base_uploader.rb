@@ -20,5 +20,3 @@ class BaseUploader < CarrierWave::Uploader::Base
     end
   end
 end
-
-BaseUploader.prepend_if_ee('MultiTenancy::Patches::BaseUploader')

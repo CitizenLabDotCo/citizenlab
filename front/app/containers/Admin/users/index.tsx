@@ -3,9 +3,6 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // Resources
-import GetFeatureFlag, {
-  GetFeatureFlagChildProps,
-} from 'resources/GetFeatureFlag';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
@@ -64,11 +61,7 @@ import messages from './messages';
 // Services
 import { IGroupData, addGroup, MembershipType } from 'services/groups';
 
-import Outlet from 'components/Outlet';
-
-export interface Props {
-  isVerificationEnabled: GetFeatureFlagChildProps;
-}
+export interface Props {}
 
 export type GroupCreationModal = false | 'step1' | MembershipType;
 
@@ -113,19 +106,7 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
   };
 
   renderModalHeader = () => {
-    const { groupCreationModal } = this.state;
-    if (groupCreationModal === 'step1') {
-      return <FormattedMessage {...messages.modalHeaderStep1} />;
-    }
-    if (groupCreationModal === 'manual') {
-      return <FormattedMessage {...messages.modalHeaderStep1} />;
-    }
-    return (
-      <Outlet
-        id="app.containers.Admin.users.header"
-        type={groupCreationModal}
-      />
-    );
+    return <FormattedMessage {...messages.modalHeaderStep1} />;
   };
 
   render() {
@@ -168,13 +149,6 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
                 onSubmit={this.handleSubmitForm}
               />
             )}
-
-            <Outlet
-              id="app.containers.Admin.users.form"
-              type={groupCreationModal}
-              onSubmit={this.handleSubmitForm}
-              isVerificationEnabled={this.props.isVerificationEnabled}
-            />
           </>
         </Modal>
       </>
@@ -184,13 +158,4 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
 
 const UsersPageWithHocs = withRouter(UsersPage);
 
-export default (props) => (
-  <GetFeatureFlag name="verification">
-    {(isVerificationEnabled) => (
-      <UsersPageWithHocs
-        {...props}
-        isVerificationEnabled={isVerificationEnabled}
-      />
-    )}
-  </GetFeatureFlag>
-);
+export default UsersPageWithHocs;

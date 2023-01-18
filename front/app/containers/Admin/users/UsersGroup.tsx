@@ -27,9 +27,6 @@ import { WrappedComponentProps } from 'react-intl';
 
 // Resources
 import GetGroup, { GetGroupChildProps } from 'resources/GetGroup';
-import GetFeatureFlag, {
-  GetFeatureFlagChildProps,
-} from 'resources/GetFeatureFlag';
 
 // Services
 import { deleteGroup, updateGroup, MembershipType } from 'services/groups';
@@ -39,13 +36,10 @@ import { deleteMembershipByUserId } from 'services/groupMemberships';
 import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
 
-import Outlet from 'components/Outlet';
-
 export interface InputProps {}
 
 interface DataProps {
   group: GetGroupChildProps;
-  isVerificationEnabled: GetFeatureFlagChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -154,16 +148,7 @@ export class UsersGroup extends React.PureComponent<
   };
 
   renderModalHeader = () => {
-    const { groupEditionModal } = this.state;
-    if (groupEditionModal === 'manual') {
-      return <FormattedMessage {...messages.modalHeaderManual} />;
-    }
-    return (
-      <Outlet
-        id="app.containers.Admin.users.UsersGroup.header"
-        type={groupEditionModal}
-      />
-    );
+    return <FormattedMessage {...messages.modalHeaderManual} />;
   };
 
   render() {
@@ -194,22 +179,12 @@ export class UsersGroup extends React.PureComponent<
             opened={groupEditionModal !== false}
             close={this.closeGroupEditionModal}
           >
-            <>
-              {groupEditionModal === 'manual' && (
-                <NormalGroupForm
-                  defaultValues={group.attributes}
-                  onSubmit={this.handleSubmitForm(group.id)}
-                />
-              )}
-
-              <Outlet
-                id="app.containers.Admin.users.UsersGroup.form"
-                initialValues={group.attributes}
-                type={groupEditionModal}
+            {groupEditionModal === 'manual' && (
+              <NormalGroupForm
+                defaultValues={group.attributes}
                 onSubmit={this.handleSubmitForm(group.id)}
-                isVerificationEnabled={this.props.isVerificationEnabled}
               />
-            </>
+            )}
           </Modal>
         </>
       );
@@ -227,7 +202,6 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   group: ({ params, render }) => (
     <GetGroup id={params.groupId}>{render}</GetGroup>
   ),
-  isVerificationEnabled: <GetFeatureFlag name="verification" />,
 });
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (

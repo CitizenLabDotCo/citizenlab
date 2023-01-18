@@ -1,38 +1,18 @@
-import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
-import { Moment } from 'moment';
 import React, { FunctionComponent, ReactElement } from 'react';
 
 import PageLoading from 'components/UI/PageLoading';
-import { OutletRenderProps } from 'components/Outlet';
 import { ITabItem } from 'components/UI/Tabs';
-import { GroupCreationModal } from 'containers/Admin/users';
-import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import { castArray, clamp, isNil, mergeWith, omitBy } from 'lodash-es';
 import { IProjectData } from 'services/projects';
 
-import { ManagerType } from 'components/admin/PostManager';
-import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/header/IdeaHeaderRow';
-import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/Row/IdeaRow';
-import { IResolution } from 'components/admin/ResolutionControl';
-import { Point } from 'components/UI/LeafletMap/typings';
 import { TVerificationStep } from 'events/verificationModal';
-import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import { NavItem } from 'containers/Admin/sideBar';
-import { LatLngTuple } from 'leaflet';
 
-import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { TNotificationData } from 'services/notifications';
 import { IPhaseData } from 'services/phases';
 import { TVerificationMethod } from 'services/verificationMethods';
-import {
-  CellConfiguration,
-  InsertConfigurationOptions,
-  ITab,
-  Locale,
-  Multiloc,
-} from 'typings';
+import { InsertConfigurationOptions, ITab } from 'typings';
 import { IntlFormatters } from 'react-intl';
-import { StatCardProps } from '../modules/commercial/analytics/admin/hooks/useStatCard/typings';
 
 export type ITabsOutlet = {
   formatMessage: IntlFormatters['formatMessage'];
@@ -40,121 +20,13 @@ export type ITabsOutlet = {
 };
 
 export interface OutletsPropertyMap {
-  'app.containers.Admin.projects.all.createProject': {
-    selectedTabValue: TTabName;
-  };
-  'app.containers.Admin.projects.all.createProject.tabs': {
-    onData: (data: InsertConfigurationOptions<ITabItem>) => void;
-  };
-  'app.containers.Admin.projects.all.container': {
-    onRender: (hasRendered: boolean) => void;
-  };
-  'app.containers.Admin.projects.edit.description.contentBuilder': {
-    onMount: () => void;
-    valueMultiloc: Multiloc | null | undefined;
-    onChange: (description_multiloc: Multiloc, _locale: Locale) => void;
-    label: string;
-    labelTooltipText: string;
-  };
-  'app.ProjectsShowPage.shared.header.ProjectInfo.contentBuilder': {
-    onMount: () => void;
-  };
-  'app.containers.Admin.users.GroupsListPanel.listitem.icon': {
-    type: MembershipType;
-  };
-  'app.containers.Admin.users.GroupCreationStep1.type': {
-    onClick: (groupType: MembershipType) => () => void;
-    formattedLink: string;
-  };
-  'app.containers.Admin.users.form': {
-    type: GroupCreationModal;
-    onSubmit: (values: NormalFormValues) => void;
-    isVerificationEnabled: boolean;
-  };
-  'app.containers.Admin.users.header': {
-    type: GroupCreationModal;
-  };
-  'app.containers.Admin.users.UsersGroup.form': {
-    initialValues: IGroupDataAttributes;
-    type: GroupCreationModal;
-    onSubmit: (values: NormalFormValues) => void;
-    isVerificationEnabled: boolean;
-  };
-  'app.containers.Admin.users.UsersGroup.header': {
-    type: GroupCreationModal;
-  };
-  'app.containers.Admin.users.UsersHeader.icon': {
-    type: GroupCreationModal;
-  };
-  'app.containers.Admin.dashboard.summary.inputStatus': {
-    projectId: string | undefined;
-    startAtMoment: Moment | null | undefined;
-    endAtMoment: Moment | null;
-    resolution: IResolution;
-  };
-  'app.containers.Admin.dashboard.summary.emailDeliveries': {
-    projectId: string | undefined;
-    startAtMoment: Moment | null | undefined;
-    endAtMoment: Moment | null;
-    resolution: IResolution;
-  };
-  'app.containers.Admin.dashboard.summary.projectStatus': StatCardProps;
-  'app.containers.Admin.dashboard.summary.proposals': StatCardProps;
-  'app.containers.Admin.dashboard.summary.invitations': StatCardProps;
-  'app.containers.Admin.dashboard.summary.events': StatCardProps;
-  'app.containers.Admin.project.edit.permissions.participationRights': {
-    project: IProjectData;
-    projectId: string;
-    children: OutletRenderProps;
-  };
-  'app.containers.Admin.project.edit.permissions.moderatorRights': {
-    projectId: string;
-    children: OutletRenderProps;
-  };
   'app.containers.Admin.projects.edit': {
     onData: (data: InsertConfigurationOptions<ITab>) => void;
     project: IProjectData;
     phases: IPhaseData[] | null;
   };
-  'app.containers.Admin.settings.tabs': {
-    onData: (data: InsertConfigurationOptions<ITab>) => void;
-  };
-  'app.containers.Admin.initiatives.tabs': ITabsOutlet;
-  'app.containers.Admin.ideas.tabs': ITabsOutlet;
-  'app.containers.Admin.dashboards.tabs': ITabsOutlet;
   'app.containers.Admin.sideBar.navItems': {
     onData: (data: InsertConfigurationOptions<NavItem>) => void;
-  };
-  'app.components.admin.PostManager.topActionBar': {
-    assignee?: string | null;
-    projectId?: string | null;
-    handleAssigneeFilterChange: (value: string) => void;
-    type: ManagerType;
-  };
-  'app.components.admin.PostManager.components.PostTable.IdeaRow.cells': {
-    onData: (
-      data: InsertConfigurationOptions<
-        CellConfiguration<IdeaCellComponentProps>
-      >
-    ) => void;
-  };
-  'app.components.admin.PostManager.components.PostTable.IdeaHeaderRow.cells': {
-    onData: (
-      data: InsertConfigurationOptions<
-        CellConfiguration<IdeaHeaderCellComponentProps>
-      >
-    ) => void;
-  };
-  'app.components.Map.leafletConfig': {
-    onLeafletConfigChange: (newLeafletConfig: ILeafletMapConfig) => void;
-    projectId?: string | null;
-    centerLatLng?: LatLngTuple;
-    zoomLevel?: number;
-    points?: Point[];
-  };
-  'app.components.Map.Legend': {
-    projectId?: string | null;
-    className?: string;
   };
   'app.components.VerificationModal.methodSteps': {
     method: TVerificationMethod | null;
@@ -187,7 +59,13 @@ export interface OutletsPropertyMap {
   'app.components.NotificationMenu.Notification': {
     notification: TNotificationData;
   };
-  'app.containers.HomePage.EventsWidget': Record<string, any>;
+  'app.containers.Admin.projects.edit.general.components.TopicInputs.tooltipExtraCopy': Record<
+    string,
+    any
+  >;
+  'app.containers.Admin.reporting.components.Tabs': {
+    onData: (tabs: ITab[]) => void;
+  };
 }
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
@@ -228,6 +106,7 @@ interface Routes {
   'admin.dashboards': RouteConfiguration[];
   'admin.project_templates': RouteConfiguration[];
   'admin.settings': RouteConfiguration[];
+  'admin.reporting': RouteConfiguration[];
 }
 
 export interface ParsedModuleConfiguration {
@@ -353,6 +232,10 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
       ),
       'admin.settings': parseModuleRoutes(
         mergedRoutes?.['admin.settings'],
+        RouteTypes.ADMIN
+      ),
+      'admin.reporting': parseModuleRoutes(
+        mergedRoutes?.['admin.reporting'],
         RouteTypes.ADMIN
       ),
     },

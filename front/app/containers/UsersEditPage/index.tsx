@@ -24,7 +24,6 @@ import { ScreenReaderOnly } from 'utils/a11y';
 // Hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAuthUser from 'hooks/useAuthUser';
-import VerificationStatus from './VerificationStatus';
 
 const Container = styled.main`
   width: 100%;
@@ -62,7 +61,6 @@ export default () => {
           />
         </ScreenReaderOnly>
         <Wrapper>
-          <VerificationStatus />
           <ProfileForm />
           <FragmentForm />
           <ProfileDeletion />

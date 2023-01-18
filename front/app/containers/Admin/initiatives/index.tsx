@@ -17,13 +17,11 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // styles
-import { InsertConfigurationOptions, ITab } from 'typings';
-import Outlet from 'components/Outlet';
-import { insertConfiguration } from 'utils/moduleUtils';
+import { ITab } from 'typings';
 
 const InitiativesPage = memo<WrappedComponentProps & WithRouterProps>(
   ({ intl: { formatMessage }, location }) => {
-    const [tabs, setTabs] = useState<ITab[]>([
+    const [tabs] = useState<ITab[]>([
       {
         label: formatMessage(messages.settingsTab),
         name: 'settings',
@@ -42,43 +40,33 @@ const InitiativesPage = memo<WrappedComponentProps & WithRouterProps>(
       });
     };
 
-    const handleData = (data: InsertConfigurationOptions<ITab>) =>
-      setTabs(insertConfiguration<ITab>(data));
-
     const { pathname } = location;
 
     return (
-      <>
-        <Outlet
-          id="app.containers.Admin.initiatives.tabs"
-          onData={handleData}
-          formatMessage={formatMessage}
+      <TabbedResource
+        resource={{
+          title: formatMessage(messages.titleInitiatives),
+          rightSideCTA: (
+            <Button
+              id="e2e-new-proposal"
+              buttonStyle="cl-blue"
+              icon="initiatives"
+              linkTo={`/initiatives/new`}
+              text={formatMessage(messages.addNewProposal)}
+              onClick={onNewProposal(pathname)}
+            />
+          ),
+        }}
+        tabs={tabs}
+      >
+        <HelmetIntl
+          title={messages.metaTitle}
+          description={messages.metaDescription}
         />
-        <TabbedResource
-          resource={{
-            title: formatMessage(messages.titleInitiatives),
-            rightSideCTA: (
-              <Button
-                id="e2e-new-proposal"
-                buttonStyle="cl-blue"
-                icon="initiatives"
-                linkTo={`/initiatives/new`}
-                text={formatMessage(messages.addNewProposal)}
-                onClick={onNewProposal(pathname)}
-              />
-            ),
-          }}
-          tabs={tabs}
-        >
-          <HelmetIntl
-            title={messages.metaTitle}
-            description={messages.metaDescription}
-          />
-          <div id="e2e-initiatives-admin-container">
-            <RouterOutlet />
-          </div>
-        </TabbedResource>
-      </>
+        <div id="e2e-initiatives-admin-container">
+          <RouterOutlet />
+        </div>
+      </TabbedResource>
     );
   }
 );

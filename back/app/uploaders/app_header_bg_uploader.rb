@@ -18,5 +18,3 @@ class AppHeaderBgUploader < BaseImageUploader
     process safe_resize_to_fill_for_gif: [520, 250]
   end
 end
-
-AppHeaderBgUploader.prepend_if_ee('MultiTenancy::Patches::AppHeaderBgUploader')

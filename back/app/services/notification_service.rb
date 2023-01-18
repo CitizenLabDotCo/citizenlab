@@ -50,6 +50,3 @@ class NotificationService
     end
   end
 end
-
-NotificationService.prepend_if_ee('FlagInappropriateContent::Patches::NotificationService')
-NotificationService.prepend_if_ee('IdeaAssignment::Patches::NotificationService')

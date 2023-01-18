@@ -3,7 +3,6 @@ import {
   currentAppConfigurationStream,
   IAppConfiguration,
   TAppConfigurationSettingWithEnabled,
-  THomepageSetting,
 } from 'services/appConfiguration';
 
 export type Parameters = HomepageSettingProps | AppConfigSettingProps;
@@ -11,7 +10,7 @@ export type Parameters = HomepageSettingProps | AppConfigSettingProps;
 // For THomepageSetting, you can only use
 // this hook to check the allowed value, which still resides in appConfiguration
 type HomepageSettingProps = {
-  name: THomepageSetting;
+  name: TAppConfigurationSettingWithEnabled;
   onlyCheckAllowed: true;
 };
 

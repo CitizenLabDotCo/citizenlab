@@ -321,5 +321,3 @@ class ParticipationContextService
     'not_signed_in' unless user
   end
 end
-
-ParticipationContextService.prepend_if_ee('GranularPermissions::Patches::ParticipationContextService')
