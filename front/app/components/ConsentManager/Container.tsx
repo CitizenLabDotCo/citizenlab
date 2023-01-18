@@ -81,10 +81,13 @@ const Container = ({
   const handleSave = useCallback(
     (e: FormEvent<any>) => {
       e.preventDefault();
+      console.log('calling handleSave');
 
       if (!validate()) {
         return;
       }
+
+      console.log('handleSave: validation passed');
 
       setIsDialogOpen(false);
       saveConsent();
