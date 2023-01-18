@@ -76,13 +76,13 @@ const Container = ({
     }
 
     return true;
-  }, []);
+  }, [categorizedDestinations, preferences]);
 
   const handleSave = useCallback(
     (e: FormEvent<any>) => {
       e.preventDefault();
 
-      if (validate()) {
+      if (!validate()) {
         return;
       }
 

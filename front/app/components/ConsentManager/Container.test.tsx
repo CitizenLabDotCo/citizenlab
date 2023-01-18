@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, act, fireEvent, screen } from 'utils/testUtils/rtl';
+import { render, act, fireEvent } from 'utils/testUtils/rtl';
 import eventEmitter from 'utils/eventEmitter';
 
 // component to test
@@ -11,6 +11,7 @@ jest.mock('utils/cl-intl');
 jest.mock('services/appConfiguration');
 jest.mock('modules', () => ({ streamsToReset: [] }));
 jest.mock('utils/cl-router/Link', () => ({ children }) => <a>{children}</a>);
+jest.mock('hooks/useLocale');
 
 let updatePreference: jest.Mock;
 let resetPreferences: jest.Mock;
@@ -117,7 +118,7 @@ describe('<Container />', () => {
     });
   });
 
-  describe.only('handles opening and closing the modal', () => {
+  describe('handles opening and closing the modal', () => {
     it('modal is initially closed when consent is required', () => {
       const { container } = render(
         <Container
@@ -158,7 +159,7 @@ describe('<Container />', () => {
       ).not.toBeInTheDocument();
     });
 
-    it.only('is possible to open modal', () => {
+    it('is possible to open modal', () => {
       const { container } = render(
         <Container
           updatePreference={updatePreference}
@@ -177,11 +178,13 @@ describe('<Container />', () => {
         container.querySelector('#e2e-preference-dialog')
       ).not.toBeInTheDocument();
 
-      const preferencesButton = container.querySelectorAll('button');
+      const preferencesButton = container.querySelector(
+        '.integration-open-modal'
+      );
       console.log(preferencesButton);
-      expect(preferencesButton[0]).toBeInTheDocument();
+      expect(preferencesButton).toBeInTheDocument();
 
-      fireEvent.click(preferencesButton[0]);
+      fireEvent.click(preferencesButton);
       expect(
         container.querySelector('#e2e-preference-dialog')
       ).toBeInTheDocument();
@@ -245,7 +248,7 @@ describe('<Container />', () => {
   });
 
   describe('handles preferences form validation', () => {
-    it('is invalid when when some field is empty', () => {
+    it.only('is invalid when when some field is empty', () => {
       const wrapper = shallow(
         <Container
           intl={intl}
@@ -263,6 +266,7 @@ describe('<Container />', () => {
       );
       expect((wrapper.instance() as any).validate()).toBeFalsy();
     });
+
     it('is valid when when no field is empty', () => {
       const wrapper = shallow(
         <Container
