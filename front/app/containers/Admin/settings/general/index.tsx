@@ -223,43 +223,6 @@ class SettingsGeneralTab extends PureComponent<
   handleOrganizatioNameOnChange =
     this.handleCoreMultilocSettingOnChange('organization_name');
 
-  onToggleBlockProfanitySetting = () => {
-    const { appConfiguration } = this.state;
-
-    if (
-      !isNilOrError(appConfiguration) &&
-      appConfiguration.attributes.settings.blocking_profanity
-    ) {
-      const oldProfanityBlockerEnabled =
-        appConfiguration.attributes.settings.blocking_profanity.enabled;
-      this.setState({
-        settingsSavingError: false,
-      });
-      updateAppConfiguration({
-        settings: {
-          blocking_profanity: {
-            enabled: !oldProfanityBlockerEnabled,
-          },
-        },
-      })
-        .then(() => {
-          this.setState({
-            settingsUpdatedSuccessFully: true,
-          });
-          setTimeout(() => {
-            this.setState({
-              settingsUpdatedSuccessFully: false,
-            });
-          }, 2000);
-        })
-        .catch((_error) => {
-          this.setState({
-            settingsSavingError: true,
-          });
-        });
-    }
-  };
-
   handleSettingChange = (settingName: TAppConfigurationSettingWithEnabled) => {
     const { appConfiguration } = this.state;
 
@@ -347,8 +310,6 @@ class SettingsGeneralTab extends PureComponent<
       );
       const localeOptions = this.localeOptions();
       const selectedLocaleOptions = this.localesToOptions(appConfigLocales);
-      const profanityBlockerSetting =
-        appConfiguration.attributes.settings.blocking_profanity;
 
       return (
         <form onSubmit={this.save}>
@@ -424,26 +385,6 @@ class SettingsGeneralTab extends PureComponent<
             <SubSectionTitle>
               <FormattedMessage {...messages.contentModeration} />
             </SubSectionTitle>
-            {profanityBlockerSetting && profanityBlockerSetting.allowed && (
-              <Setting>
-                <ToggleLabel>
-                  <StyledToggle
-                    checked={profanityBlockerSetting.enabled}
-                    onChange={this.onToggleBlockProfanitySetting}
-                  />
-                  <LabelContent>
-                    <LabelTitle>
-                      {formatMessage(messages.profanityBlockerSetting)}
-                    </LabelTitle>
-                    <LabelDescription>
-                      {formatMessage(
-                        messages.profanityBlockerSettingDescription
-                      )}
-                    </LabelDescription>
-                  </LabelContent>
-                </ToggleLabel>
-              </Setting>
-            )}
             {settingsUpdatedSuccessFully && (
               <Success
                 showBackground

@@ -250,9 +250,6 @@ const PlatformFooter = ({
 
   const hasCustomizedA11yFooterLink = getHasCustomizedA11yFooterLink();
   const customizedA11yHref = getCustomizedA11yHref();
-  const removeVendorBranding = useFeatureFlag({
-    name: 'remove_vendor_branding',
-  });
 
   return (
     <Container insideModal={insideModal} id="hook-footer" className={className}>
@@ -299,16 +296,14 @@ const PlatformFooter = ({
         </PagesNav>
 
         <Right>
-          {!removeVendorBranding && (
-            <PoweredBy>
-              <PoweredByText>
-                <FormattedMessage {...messages.poweredBy} />
-              </PoweredByText>
-              <CitizenlabLink href="https://www.citizenlab.co/" target="_blank">
-                <CitizenLabLogo name="cl-logo" title="CitizenLab" />
-              </CitizenlabLink>
-            </PoweredBy>
-          )}
+          <PoweredBy>
+            <PoweredByText>
+              <FormattedMessage {...messages.poweredBy} />
+            </PoweredByText>
+            <CitizenlabLink href="https://www.citizenlab.co/" target="_blank">
+              <CitizenLabLogo name="cl-logo" title="CitizenLab" />
+            </CitizenlabLink>
+          </PoweredBy>
         </Right>
       </FooterContainer>
     </Container>
