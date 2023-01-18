@@ -1,5 +1,4 @@
 import React, { lazy } from 'react';
-import moduleConfiguration from 'modules';
 import PageLoading from 'components/UI/PageLoading';
 const DashboardWrapper = lazy(() => import('.'));
 const Overview = lazy(() => import('./overview'));
@@ -30,7 +29,6 @@ const createAdminDashboardRoutes = () => {
           </PageLoading>
         ),
       },
-      ...moduleConfiguration.routes['admin.dashboards'],
     ],
   };
 };

@@ -1,6 +1,5 @@
 import PageLoading from 'components/UI/PageLoading';
 import createAdminRoutes from 'containers/Admin/routes';
-import moduleConfiguration from 'modules';
 import React, { lazy } from 'react';
 
 const HomePage = lazy(() => import('containers/HomePage'));
@@ -282,7 +281,6 @@ export default function createRoutes() {
             </PageLoading>
           ),
         },
-        ...moduleConfiguration.routes.citizen,
       ],
     },
   ];

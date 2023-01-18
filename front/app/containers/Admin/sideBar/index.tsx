@@ -28,8 +28,6 @@ import GetInitiativesCount, {
   GetInitiativesCountChildProps,
 } from 'resources/GetInitiativesCount';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import { InsertConfigurationOptions } from 'typings';
-import { insertConfiguration } from 'utils/moduleUtils';
 import { TAppConfigurationSetting } from 'services/appConfiguration';
 
 const Menu = styled.div`
@@ -255,12 +253,6 @@ class Sidebar extends PureComponent<
     }
     return prevState;
   }
-
-  handleData = (insertNavItemOptions: InsertConfigurationOptions<NavItem>) => {
-    this.setState(({ navItems }) => ({
-      navItems: insertConfiguration(insertNavItemOptions)(navItems),
-    }));
-  };
 
   render() {
     const { formatMessage } = this.props.intl;

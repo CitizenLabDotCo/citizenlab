@@ -6,7 +6,6 @@ import {
   refCount,
   publishReplay,
 } from 'rxjs/operators';
-import modules from 'modules';
 
 // utils
 import {
@@ -154,10 +153,7 @@ class Streams {
         // we inlcude the stream in the list of streams to refetch.
         // Otherwise we include the stream in the list of streams that will be removed,
         // with the exception of the custom fields stream
-        if (
-          this.isActiveStream(streamId) ||
-          modules?.streamsToReset?.includes(streamId)
-        ) {
+        if (this.isActiveStream(streamId)) {
           promises.push(this.streams[streamId].fetch());
         } else {
           this.deleteStream(streamId, this.streams[streamId].apiEndpoint);
