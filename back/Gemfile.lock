@@ -95,15 +95,6 @@ PATH
       rails (~> 6.1)
 
 PATH
-  remote: engines/free/onboarding
-  specs:
-    onboarding (0.1.0)
-      active_model_serializers (~> 0.10.7)
-      kaminari (~> 1.2)
-      pundit (~> 2.0)
-      rails (~> 6.1)
-
-PATH
   remote: engines/free/polls
   specs:
     polls (0.1.0)
@@ -859,7 +850,6 @@ DEPENDENCIES
   omniauth-rails_csrf_protection
   omniauth-saml (~> 1.10.3)
   omniauth_openid_connect (~> 0.4.0)
-  onboarding!
   openid_connect!
   order_as_specified
   pg

@@ -478,7 +478,6 @@ Style/OpenStructUse:
   Exclude:
     - 'app/mailers/application_mailer.rb'
     - 'engines/commercial/verification/spec/services/verification_service_spec.rb'
-    - 'engines/free/onboarding/app/controllers/onboarding/web_api/v1/campaigns_controller.rb'
     - 'engines/free/surveys/spec/services/typeform_api_parser_spec.rb'
     - 'spec/lib/omniauth_methods/azure_active_directory_spec.rb'
     - 'spec/lib/omniauth_methods/google_spec.rb'

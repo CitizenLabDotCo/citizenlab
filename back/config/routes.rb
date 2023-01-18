@@ -4,7 +4,6 @@ Rails.application.routes.draw do
   mount UserConfirmation::Engine => '', as: 'user_confirmation'
   mount EmailCampaigns::Engine => '', as: 'email_campaigns'
   mount Frontend::Engine => '', as: 'frontend'
-  mount Onboarding::Engine => '', as: 'onboarding'
   mount Polls::Engine => '', as: 'polls'
   mount Seo::Engine => '', as: 'seo'
   mount Surveys::Engine => '', as: 'surveys'

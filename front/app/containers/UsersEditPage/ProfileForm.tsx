@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
-import streams from 'utils/streams';
 
 // services
 import { updateUser } from 'services/users';
@@ -39,7 +38,7 @@ import Feedback from 'components/HookForm/Feedback';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // i18n
-import { appLocalePairs, API_PATH } from 'containers/App/constants';
+import { appLocalePairs } from 'containers/App/constants';
 import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -190,9 +189,6 @@ const ProfileForm = ({
 
     try {
       await updateUser(authUser.id, { ...newFormValues, avatar });
-      streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/onboarding_campaigns/current`],
-      });
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }
