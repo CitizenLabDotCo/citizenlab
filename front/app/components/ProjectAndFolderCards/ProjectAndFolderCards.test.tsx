@@ -122,10 +122,7 @@ jest.mock('components/ProjectCard', () => ({
   __esModule: true,
   default: () => <></>,
 }));
-jest.mock('components/Outlet', () => ({
-  __esModule: true,
-  default: () => <></>,
-}));
+
 jest.mock('utils/cl-intl');
 jest.mock('components/T', () => ({
   __esModule: true,
