@@ -131,9 +131,7 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
     if (!isNil(showModalParam)) {
       // TODO: Handle animation when modal is open by default in Modal component
       timer = setTimeout(() => {
-        if (!showModal) {
-          setShowModal(!!showModalParam);
-        }
+        setShowModal(!!showModalParam);
       }, 1500);
     }
 
@@ -167,7 +165,7 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
     ) {
       window.history.replaceState(null, '', window.location.pathname);
     }
-  }, [project, showModal, phaseIdUrl, queryParams]);
+  }, [project, phaseIdUrl, queryParams]);
 
   const user = useAuthUser();
 
