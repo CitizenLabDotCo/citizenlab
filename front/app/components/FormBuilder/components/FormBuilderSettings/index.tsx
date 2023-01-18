@@ -175,10 +175,11 @@ const FormBuilderSettings = ({
       translatedStringKey = messages.linearScale;
       break;
     case 'file_upload':
+    case 'files':
       translatedStringKey = messages.fileUpload;
       break;
     case 'image_files':
-      translatedStringKey = messages.imageUpload;
+      translatedStringKey = messages.imageFileUpload;
       break;
   }
 

@@ -93,6 +93,7 @@ const IdeaFormBuilder = () => {
       isRequiredEditable: false,
       isEnabledEditable: false,
       isTitleEditable: false,
+      isDeleteEnabled: false,
       relationships: {
         options: {
           data: [],
@@ -150,6 +151,7 @@ const IdeaFormBuilder = () => {
       isRequiredEditable: false,
       isEnabledEditable: false,
       isTitleEditable: false,
+      isDeleteEnabled: false,
       description_multiloc: {},
       relationships: {
         options: {
@@ -434,6 +436,7 @@ const IdeaFormBuilder = () => {
       isRequiredEditable: true,
       isEnabledEditable: false,
       isTitleEditable: false,
+      isDeleteEnabled: false,
       description_multiloc: {},
       relationships: {
         options: {
