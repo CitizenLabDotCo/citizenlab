@@ -120,8 +120,8 @@ describe('Admin: update Hero Banner content', () => {
 
     // Image is displayed when signed-in
     cy.visit('/');
-    cy.get('[data-cy="e2e-fixed-ratio-header-image-parent"]'); // without this line, the next one always passes
-    cy.get('[data-cy="e2e-fixed-ratio-header-image"]').should('exist');
+    cy.get('[data-cy="e2e-signed-in-header-image-parent"]'); // without this line, the next one always passes
+    cy.get('[data-cy="e2e-signed-in-header-image"]').should('exist');
 
     /* ==================
      Fixed-ratio layout
@@ -154,9 +154,8 @@ describe('Admin: update Hero Banner content', () => {
 
     // Image is NOT displayed when signed-in
     cy.visit('/');
-    cy.get('[data-cy="e2e-fixed-ratio-header-image-parent"]'); // without this line, the next one always passes
-    cy.get('[data-cy="e2e-fixed-ratio-header-image"]').should('not.exist');
-
+    cy.get('[data-cy="e2e-signed-in-header-image-parent"]'); // without this line, the next one always passes
+    cy.get('[data-cy="e2e-signed-in-header-image"]').should('not.exist');
     // Image is displayed when signed-out
     cy.clearCookies();
     cy.reload();
