@@ -65,9 +65,9 @@ export default defineMessages({
     id: 'app.components.formBuilder.description',
     defaultMessage: 'Description',
   },
-  imageUpload: {
-    id: 'app.components.formBuilder.imageUpload',
-    defaultMessage: 'Image',
+  imageFileUpload: {
+    id: 'app.components.formBuilder.imageFileUpload',
+    defaultMessage: 'Image upload',
   },
   locationDescription: {
     id: 'app.components.formBuilder.locationDescription',

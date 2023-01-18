@@ -49,6 +49,7 @@ export interface IAttributes {
   isRequiredEditable?: boolean;
   isEnabledEditable?: boolean;
   isTitleEditable?: boolean;
+  isDeleteEnabled?: boolean;
   enabled: boolean;
   ordering: number;
   created_at: string;
