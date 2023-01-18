@@ -63,7 +63,7 @@ const ImageUploader = ({
             headerError={bannerError}
             header_bg={headerLocalDisplayImage}
             previewDevice={previewDevice}
-            layout={bannerLayout || 'full_width_banner_layout'}
+            layout={bannerLayout}
           />
         </Box>
       )}

@@ -9,7 +9,7 @@ import ProjectFilter from 'containers/Admin/dashboard/components/filters/Project
 import { useIntl } from 'utils/cl-intl';
 import { useNode } from '@craftjs/core';
 
-//styling
+// styling
 import { colors, stylingConsts } from 'utils/styleUtils';
 
 // utils
