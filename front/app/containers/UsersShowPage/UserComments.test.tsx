@@ -12,7 +12,6 @@ import { UserComments } from './UserComments';
 jest.mock('utils/cl-intl');
 jest.mock('services/comments');
 jest.mock('modules', () => ({ streamsToReset: [] }));
-jest.mock('components/Outlet', () => 'Outlet');
 
 import { makeComments } from 'services/comments';
 
