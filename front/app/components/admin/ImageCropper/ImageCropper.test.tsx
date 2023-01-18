@@ -13,9 +13,9 @@ describe('ImageCropper', () => {
     const image = (await getImage()) as UploadFile;
     render(
       <ImageCropper
-        image={[image]}
-        onComplete={jest.fn()}
+        image={image}
         aspect={3 / 1}
+        onComplete={jest.fn()}
         onRemove={jest.fn()}
       />
     );
