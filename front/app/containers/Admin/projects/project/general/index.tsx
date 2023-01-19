@@ -151,7 +151,7 @@ const AdminProjectsProjectGeneral = () => {
       if (!isNilOrError(remoteProjectImages)) {
         const nextProjectImagesPromises = remoteProjectImages.map(
           (projectImage) => {
-            const url = projectImage.attributes.versions.large;
+            const url = projectImage.attributes.versions.medium;
             // to be tested
             if (url) {
               return convertUrlToUploadFile(url, projectImage.id, null);

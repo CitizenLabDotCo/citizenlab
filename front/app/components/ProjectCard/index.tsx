@@ -9,7 +9,7 @@ import bowser from 'bowser';
 import Link from 'utils/cl-router/Link';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Image from 'components/UI/Image';
 import AvatarBubbles from 'components/AvatarBubbles';
 
@@ -35,6 +35,9 @@ import messages from './messages';
 // tracking
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
+
+// types
+import { ImageSizes } from 'typings';
 
 // style
 import styled, { useTheme } from 'styled-components';
@@ -131,27 +134,21 @@ const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
 
 const ProjectImageContainer = styled.div`
   width: 100%;
-  height: 254px;
-  flex-grow: 0;
-  flex-shrink: 0;
-  flex-basis: 254px;
   display: flex;
+  aspect-ratio: 1 / 1;
   margin-right: 10px;
   overflow: hidden;
   position: relative;
 
   &.large {
     width: 50%;
-    height: 100%;
-    flex-basis: 50%;
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
   }
 
-  &.small {
-    height: 224px;
-    flex-basis: 224px;
-  }
+  ${media.phone`
+    aspect-ratio: 2 / 1;
+  `}
 `;
 
 const ProjectImagePlaceholder = styled.div`
@@ -476,6 +473,7 @@ const ProjectCard = memo<Props>(
     const phase = usePhase(currentPhaseId);
     const phases = usePhases(projectId);
     const theme = useTheme();
+    const isPhone = useBreakpoint('phone');
 
     const [visible, setVisible] = useState(false);
 
@@ -514,10 +512,24 @@ const ProjectCard = memo<Props>(
       const canVote = project.attributes.action_descriptor.voting_idea.enabled;
       const canComment =
         project.attributes.action_descriptor.commenting_idea.enabled;
-      const imageUrl =
-        !isNilOrError(projectImages) && projectImages.length > 0
-          ? projectImages[0].attributes.versions.medium
-          : null;
+
+      const imageVersions = isNilOrError(projectImages)
+        ? null
+        : projectImages[0]?.attributes.versions;
+
+      const getImageUrl = (imageVersions: ImageSizes) => {
+        if (isPhone) {
+          return imageVersions.medium;
+        } else if (size === 'small') {
+          return imageVersions.small;
+        } else {
+          // image size is approximately the same for both medium and large desktop card sizes
+          return imageVersions.large;
+        }
+      };
+
+      const imageUrl = imageVersions ? getImageUrl(imageVersions) : null;
+
       const projectUrl = getProjectUrl(project);
       const isFinished = project.attributes.timeline_active === 'past';
       const isArchived = project.attributes.publication_status === 'archived';

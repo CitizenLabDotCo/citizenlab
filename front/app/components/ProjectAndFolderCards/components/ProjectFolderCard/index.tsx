@@ -7,7 +7,7 @@ import bowser from 'bowser';
 import Link from 'utils/cl-router/Link';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Image from 'components/UI/Image';
 
 // i18n
@@ -18,6 +18,9 @@ import messages from './messages';
 // tracking
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
+
+// types
+import { ImageSizes } from 'typings';
 
 // style
 import styled from 'styled-components';
@@ -105,11 +108,8 @@ const Container = styled(Link)`
 
 const FolderImageContainer = styled.div`
   width: 100%;
-  height: 254px;
-  flex-grow: 0;
-  flex-shrink: 0;
-  flex-basis: 254px;
   display: flex;
+  aspect-ratio: 1 / 1;
   margin-right: 10px;
   overflow: hidden;
   position: relative;
@@ -117,15 +117,13 @@ const FolderImageContainer = styled.div`
   &.large {
     width: 50%;
     height: 100%;
-    flex-basis: 50%;
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
   }
 
-  &.small {
-    height: 224px;
-    flex-basis: 224px;
-  }
+  ${media.phone`
+    aspect-ratio: 2 / 1;
+  `}
 `;
 
 const FolderImagePlaceholder = styled.div`
@@ -313,11 +311,24 @@ const ProjectFolderCard = memo<Props>(
       },
       []
     );
+    const isPhone = useBreakpoint('phone');
 
-    const imageUrl =
-      !isNilOrError(projectFolderImages) && projectFolderImages.data.length > 0
-        ? projectFolderImages.data?.[0].attributes?.versions.medium
-        : null;
+    const imageVersions = isNilOrError(projectFolderImages)
+      ? null
+      : projectFolderImages.data[0]?.attributes.versions;
+
+    const getImageUrl = (imageVersions: ImageSizes) => {
+      if (isPhone) {
+        return imageVersions.medium;
+      } else if (size === 'small') {
+        return imageVersions.small;
+      } else {
+        // image size is approximately the same for both medium and large desktop card sizes
+        return imageVersions.large;
+      }
+    };
+
+    const imageUrl = imageVersions ? getImageUrl(imageVersions) : null;
 
     const folderUrl = `/folders/${publication.attributes.publication_slug}`;
     const numberOfProjectsInFolder =

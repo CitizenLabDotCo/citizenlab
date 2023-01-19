@@ -74,9 +74,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     (async () => {
       if (mode === 'edit' && !isNilOrError(projectFolderImagesRemote)) {
         const imagePromises = projectFolderImagesRemote.data.map((img) =>
-          img.attributes.versions.large
+          img.attributes.versions.medium
             ? convertUrlToUploadFile(
-                img.attributes.versions.large,
+                img.attributes.versions.medium,
                 img.id,
                 null
               )
