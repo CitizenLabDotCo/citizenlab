@@ -5,6 +5,7 @@ import Modal from 'components/UI/Modal';
 import Footer from './Footer';
 import Preferences from './Preferences';
 import ContentContainer from './ContentContainer';
+import { Title } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -64,7 +65,9 @@ const PreferencesModal = ({
         />
       ) : (
         <ContentContainer role="dialog" aria-modal>
-          <FormattedMessage {...messages.confirmation} tagName="h1" />
+          <Title variant="h5" as="h1">
+            <FormattedMessage {...messages.confirmation} />
+          </Title>
         </ContentContainer>
       )}
     </Modal>

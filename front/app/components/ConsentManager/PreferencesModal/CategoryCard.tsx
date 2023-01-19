@@ -9,7 +9,7 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 import { transparentize } from 'polished';
 
 // components
-import { Radio } from '@citizenlab/cl2-component-library';
+import { Radio, Title } from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from '../messages';
@@ -130,15 +130,16 @@ const CategoryCard = ({
   return (
     <Container className="e2e-category">
       <TextContainer>
-        <FormattedMessage
-          tagName="h2"
-          {...{
-            functional: messages.functional,
-            advertising: messages.advertising,
-            analytics: messages.analytics,
-            required: messages.required,
-          }[category]}
-        />
+        <Title variant="h4" as="h2">
+          <FormattedMessage
+            {...{
+              functional: messages.functional,
+              advertising: messages.advertising,
+              analytics: messages.analytics,
+              required: messages.required,
+            }[category]}
+          />
+        </Title>
         <StyledFieldset>
           <Radio
             onChange={
