@@ -421,22 +421,6 @@
         }
       },
 
-      "segment": {
-        "type": "object",
-        "title": "Segment Integration",
-        "description":  "Integrates segment data collection",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false},
-          "destinations": {
-            "type": "string",
-            "description": "As more tools can be activated through Segment, here you can specify them using comma separated text, shown in the cookie consent"
-          }
-        }
-      },
-
       "satismeter": {
         "type": "object",
         "title": "Satismeter Integration",

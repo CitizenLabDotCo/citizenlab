@@ -65,10 +65,5 @@ describe SideFxUserService do
     it 'logs a UpdateMemberCountJob' do
       expect { service.after_destroy(user, current_user) }.to have_enqueued_job(UpdateMemberCountJob)
     end
-
-    it 'successfully enqueues PII data deletion job for Segment' do
-      expect { service.after_destroy(user, current_user) }
-        .to have_enqueued_job(RemoveUsersFromSegmentJob).with([user.id])
-    end
   end
 end
