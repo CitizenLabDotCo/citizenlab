@@ -14,6 +14,5 @@ export const ideationConfig: FormBuilderConfig = {
   showStatusBadge: false,
   isLogicEnabled: false,
   isEditPermittedAfterSubmissions: true,
-  showEnableToggle: true,
   groupingType: 'section',
 };

@@ -21,7 +21,6 @@ import { getAdditionalSettings } from '../utils';
 import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
-import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
 type ContentSettingsProps = {
   field: IFlatCustomFieldWithIndex;
@@ -29,7 +28,6 @@ type ContentSettingsProps = {
   onClose: () => void;
   isDeleteDisabled?: boolean;
   locales: Locale[];
-  builderConfig: FormBuilderConfig;
 };
 
 export const ContentSettings = ({
@@ -38,7 +36,6 @@ export const ContentSettings = ({
   onClose,
   isDeleteDisabled,
   onDelete,
-  builderConfig,
 }: ContentSettingsProps) => {
   const { watch } = useFormContext();
   const logic = watch(`customFields.${field.index}.logic`);
@@ -52,23 +49,6 @@ export const ContentSettings = ({
       <Box mt="16px">
         {!isFieldGrouping && (
           <>
-            {builderConfig.showEnableToggle && (
-              <SectionField>
-                <Toggle
-                  name={`customFields.${field.index}.enabled`}
-                  disabled={
-                    !isNilOrError(field.isEnabledEditable)
-                      ? !field.isEnabledEditable
-                      : false
-                  }
-                  label={
-                    <Text as="span" color="primary" variant="bodyM" my="0px">
-                      <FormattedMessage {...messages.enable} />
-                    </Text>
-                  }
-                />
-              </SectionField>
-            )}
             {!isNilOrError(field.isTitleEditable)
               ? field.isTitleEditable
               : true && (
