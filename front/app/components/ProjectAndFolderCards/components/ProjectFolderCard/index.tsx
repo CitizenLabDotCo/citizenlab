@@ -19,6 +19,9 @@ import messages from './messages';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
+// types
+import { ImageSizes } from 'typings';
+
 // style
 import styled from 'styled-components';
 import {
@@ -314,13 +317,18 @@ const ProjectFolderCard = memo<Props>(
       ? null
       : projectFolderImages.data[0]?.attributes.versions;
 
-    const imageUrl = imageVersions
-      ? isPhone
-        ? imageVersions.medium
-        : size === 'small' // image size is approximately the same for both medium and large desktop card sizes
-        ? imageVersions.small
-        : imageVersions.large
-      : null;
+    const getImageUrl = (imageVersions: ImageSizes) => {
+      if (isPhone) {
+        return imageVersions.medium;
+      } else if (size === 'small') {
+        return imageVersions.small;
+      } else {
+        // image size is approximately the same for both medium and large desktop card sizes
+        return imageVersions.large;
+      }
+    };
+
+    const imageUrl = imageVersions ? getImageUrl(imageVersions) : null;
 
     const folderUrl = `/folders/${publication.attributes.publication_slug}`;
     const numberOfProjectsInFolder =
