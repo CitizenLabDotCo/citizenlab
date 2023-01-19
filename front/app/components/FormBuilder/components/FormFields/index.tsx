@@ -52,28 +52,28 @@ const FormFields = ({
     return null;
   }
 
+  const shouldShowField = (field: IFlatCustomField) => {
+    if (builtInFieldKeys.includes(field.key)) {
+      return field.enabled;
+    }
+    return true;
+  };
+
   const nestedGroupData: NestedGroupingStructure[] = [];
-  formCustomFields
-    .filter((field) => {
-      if (builtInFieldKeys.includes(field.key)) {
-        return field.enabled;
-      }
-      return true;
-    })
-    .forEach((field) => {
-      if (['page', 'section'].includes(field.input_type)) {
-        nestedGroupData.push({
-          groupElement: field,
-          questions: [],
-          id: field.id,
-        });
-      } else {
-        const lastGroupElement = nestedGroupData[nestedGroupData.length - 1];
-        lastGroupElement.questions.push({
-          ...field,
-        });
-      }
-    });
+  formCustomFields.forEach((field) => {
+    if (['page', 'section'].includes(field.input_type)) {
+      nestedGroupData.push({
+        groupElement: field,
+        questions: [],
+        id: field.id,
+      });
+    } else {
+      const lastGroupElement = nestedGroupData[nestedGroupData.length - 1];
+      lastGroupElement.questions.push({
+        ...field,
+      });
+    }
+  });
 
   return (
     <Box height="100%">
@@ -102,7 +102,7 @@ const FormFields = ({
                     ) : (
                       <>
                         {grouping.questions.map((question, index) => {
-                          return (
+                          return shouldShowField(question) ? (
                             <Drag
                               key={question.id}
                               id={question.id}
@@ -120,7 +120,7 @@ const FormFields = ({
                                 builderConfig={builderConfig}
                               />
                             </Drag>
-                          );
+                          ) : null;
                         })}
                       </>
                     )}
