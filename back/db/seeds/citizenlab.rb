@@ -172,7 +172,7 @@ AppConfiguration.create!(
     user_confirmation: {
       allowed: true,
       enabled: true
-    }
+    },
     idea_author_change: {
       allowed: true,
       enabled: true
