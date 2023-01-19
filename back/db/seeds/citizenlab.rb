@@ -173,6 +173,10 @@ AppConfiguration.create!(
       allowed: true,
       enabled: true
     }
+    idea_author_change: {
+      allowed: true,
+      enabled: true
+    }
   })
 )
 
