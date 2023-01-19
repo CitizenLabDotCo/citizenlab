@@ -421,24 +421,6 @@
         }
       },
 
-      "satismeter": {
-        "type": "object",
-        "title": "Satismeter Integration",
-        "description":  "Integrates Satismeter polls and data collection to the front-end",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "required-settings": ["write_key"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true},
-          "write_key": {
-            "type": "string",
-            "description": "The write key the front-end send its data to.",
-            "default": "<%= ENV.fetch('DEFAULT_SATISMETER_WRITE_KEY', '')%>"
-          }
-        }
-      },
-
       "google_analytics": {
         "type": "object",
         "title": "Google Analytics Integration",
