@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Product Feedback' do
-  explanation 'User feedback about the product itself, that is logged to segment by the backend'
+  explanation 'User feedback about the product itself, that is logged by the backend'
 
   before do
     header 'Content-Type', 'application/json'

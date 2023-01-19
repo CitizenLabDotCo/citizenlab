@@ -169,7 +169,6 @@ gem 'rack-attack', '~> 6'
 # mjml-rails cannot find the MJML parser when installed
 # through the emails engine and is therefore specified
 # in the main app.
-gem 'intercom', '~> 4.1'
 gem 'mjml-rails', '~> 4.4'
 
 # Included here because of CVE-2022-32209.
