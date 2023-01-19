@@ -625,7 +625,7 @@ resource 'Phases' do
 
       context 'for an ideation phase with persisted form' do
         let(:project) { create(:project, process_type: 'timeline') }
-        let(:project_form) { create(:custom_form, participation_context: project) }
+        let(:project_form) { create(:custom_form, :with_default_fields, participation_context: project) }
         let(:ideation_phase) do
           create(
             :phase,
@@ -967,7 +967,7 @@ resource 'Phases' do
 
       context 'for an ideation phase' do
         let(:project) { create(:project, process_type: 'timeline') }
-        let(:project_form) { create(:custom_form, participation_context: project) }
+        let(:project_form) { create(:custom_form, :with_default_fields, participation_context: project) }
         let(:ideation_phase) do
           create(
             :phase,
