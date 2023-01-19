@@ -51,8 +51,8 @@ describe LocalProjectCopyService do
 
     it 'copies basic project attributes' do
       copied_project = service.copy(continuous_project)
-      expect(copied_project.to_json(except: %i[id title_mutliloc slug updated_at created_at]))
-        .to eq continuous_project.to_json(except: %i[id title_mutliloc slug updated_at created_at])
+      expect(copied_project.as_json(except: %i[id title_mutliloc slug updated_at created_at]))
+        .to eq continuous_project.as_json(except: %i[id title_mutliloc slug updated_at created_at])
     end
 
     it 'creates a copied project with an associated publication status of draft' do
@@ -114,11 +114,11 @@ describe LocalProjectCopyService do
 
       copied_project = service.copy(continuous_project)
       expect(copied_project.map_config.center).to eq continuous_project.map_config.center
-      expect(copied_project.map_config.layers.first.to_json(except: %i[id map_config_id updated_at created_at]))
-        .to eq continuous_project.map_config.layers.first.to_json(except: %i[id map_config_id updated_at created_at])
+      expect(copied_project.map_config.layers.first.as_json(except: %i[id map_config_id updated_at created_at]))
+        .to eq continuous_project.map_config.layers.first.as_json(except: %i[id map_config_id updated_at created_at])
       expect(copied_project.map_config.layers.first.map_config_id).to eq copied_project.map_config.id
-      expect(copied_project.map_config.legend_items.first.to_json(except: %i[id map_config_id updated_at created_at]))
-        .to eq continuous_project.map_config.legend_items.first.to_json(except: %i[id map_config_id updated_at created_at])
+      expect(copied_project.map_config.legend_items.first.as_json(except: %i[id map_config_id updated_at created_at]))
+        .to eq continuous_project.map_config.legend_items.first.as_json(except: %i[id map_config_id updated_at created_at])
       expect(copied_project.map_config.legend_items.first.map_config_id).to eq copied_project.map_config.id
     end
 
@@ -128,8 +128,8 @@ describe LocalProjectCopyService do
 
       copied_project = service.copy(source_project)
       expect(copied_project.causes.first.participation_context_id).to eq copied_project.id
-      expect(copied_project.causes.first.to_json(except: %i[id participation_context_id image updated_at created_at]))
-        .to eq source_project.causes.first.to_json(except: %i[id participation_context_id image updated_at created_at])
+      expect(copied_project.causes.first.as_json(except: %i[id participation_context_id image updated_at created_at]))
+        .to eq source_project.causes.first.as_json(except: %i[id participation_context_id image updated_at created_at])
     end
 
     it 'copies associated custom_forms & related custom_fields & custom_field_options' do
@@ -140,10 +140,10 @@ describe LocalProjectCopyService do
       copied_project = service.copy(source_project)
 
       expect(copied_project.custom_form.participation_context_type).to eq source_project.custom_form.participation_context_type
-      expect(copied_project.custom_form.custom_fields.first.to_json(except: %i[id resource_id ordering updated_at created_at]))
-        .to eq source_project.custom_form.custom_fields.first.to_json(except: %i[id resource_id ordering updated_at created_at])
-      expect(copied_project.custom_form.custom_fields.first.options.first.to_json(except: %i[id custom_field_id updated_at created_at]))
-        .to eq source_project.custom_form.custom_fields.first.options.first.to_json(except: %i[id custom_field_id updated_at created_at])
+      expect(copied_project.custom_form.custom_fields.first.as_json(except: %i[id resource_id ordering updated_at created_at]))
+        .to eq source_project.custom_form.custom_fields.first.as_json(except: %i[id resource_id ordering updated_at created_at])
+      expect(copied_project.custom_form.custom_fields.first.options.first.as_json(except: %i[id custom_field_id updated_at created_at]))
+        .to eq source_project.custom_form.custom_fields.first.options.first.as_json(except: %i[id custom_field_id updated_at created_at])
     end
 
     it "associates correct groups with copied project's groups visibility permission" do
@@ -175,8 +175,8 @@ describe LocalProjectCopyService do
       copied_project = service.copy(timeline_project)
 
       expect(copied_project.phases.first.project_id).to eq copied_project.id
-      expect(copied_project.phases.first.to_json(except: %i[id project_id start_at end_at updated_at created_at]))
-        .to eq timeline_project.phases.first.to_json(except: %i[id project_id start_at end_at updated_at created_at])
+      expect(copied_project.phases.first.as_json(except: %i[id project_id start_at end_at updated_at created_at]))
+        .to eq timeline_project.phases.first.as_json(except: %i[id project_id start_at end_at updated_at created_at])
     end
 
     it 'associates correct groups with actions group permissions of copied ideation phase' do
