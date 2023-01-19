@@ -31,6 +31,7 @@ const Container = styled.div`
 
   ${media.tablet`
     bottom: ${(props) => props.theme.mobileMenuHeight}px;
+    padding-right: 40px;
   `}
 `;
 
@@ -141,10 +142,6 @@ const StyledCloseIconButton = styled(CloseIconButton)`
   transform: translateY(-50%);
   border: none;
   background: none;
-
-  ${media.tablet`
-    display: none;
-  `}
 `;
 
 interface Props {
