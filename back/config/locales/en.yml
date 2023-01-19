@@ -134,6 +134,15 @@ en:
       attachments:
         title: Attachments
         description:
+      section1:
+        title: What is your idea?
+        description:
+      section2:
+        title: Images and attachments
+        description:
+      section3:
+        title: Details
+        description:
   custom_forms:
     categories:
       main_content:

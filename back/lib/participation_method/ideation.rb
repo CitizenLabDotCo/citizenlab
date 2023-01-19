@@ -20,6 +20,26 @@ module ParticipationMethod
         CustomField.new(
           id: SecureRandom.uuid,
           resource: custom_form,
+          input_type: 'section',
+          title_multiloc: multiloc_service.i18n_to_multiloc(
+            'custom_fields.ideas.section1.title',
+            locales: CL2_SUPPORTED_LOCALES
+          ),
+          description_multiloc: begin
+            multiloc_service.i18n_to_multiloc(
+              'custom_fields.ideas.section1.description',
+              locales: CL2_SUPPORTED_LOCALES
+            )
+          rescue StandardError
+            {}
+          end,
+          required: false,
+          enabled: false,
+          ordering: 0
+        ),
+        CustomField.new(
+          id: SecureRandom.uuid,
+          resource: custom_form,
           key: 'title_multiloc',
           code: 'title_multiloc',
           input_type: 'text_multiloc',
@@ -37,7 +57,7 @@ module ParticipationMethod
           end,
           required: true,
           enabled: true,
-          ordering: 0
+          ordering: 1
         ),
         CustomField.new(
           id: SecureRandom.uuid,
@@ -59,65 +79,19 @@ module ParticipationMethod
           end,
           required: true,
           enabled: true,
-          ordering: 1
-        ),
-        CustomField.new(
-          id: SecureRandom.uuid,
-          resource: custom_form,
-          key: 'author_id',
-          code: 'author_id',
-          input_type: 'text',
-          title_multiloc: multiloc_service.i18n_to_multiloc(
-            'custom_fields.ideas.author_id.title',
-            locales: CL2_SUPPORTED_LOCALES
-          ),
-          description_multiloc: begin
-            multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.author_id.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue StandardError
-            {}
-          end,
-          required: false,
-          enabled: true,
           ordering: 2
         ),
         CustomField.new(
           id: SecureRandom.uuid,
           resource: custom_form,
-          key: 'budget',
-          code: 'budget',
-          input_type: 'number',
+          input_type: 'section',
           title_multiloc: multiloc_service.i18n_to_multiloc(
-            'custom_fields.ideas.budget.title',
+            'custom_fields.ideas.section2.title',
             locales: CL2_SUPPORTED_LOCALES
           ),
           description_multiloc: begin
             multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.budget.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue StandardError
-            {}
-          end,
-          required: false,
-          enabled: true,
-          ordering: 3
-        ),
-        CustomField.new(
-          id: SecureRandom.uuid,
-          resource: custom_form,
-          key: 'proposed_budget',
-          code: 'proposed_budget',
-          input_type: 'number',
-          title_multiloc: multiloc_service.i18n_to_multiloc(
-            'custom_fields.ideas.proposed_budget.title',
-            locales: CL2_SUPPORTED_LOCALES
-          ),
-          description_multiloc: begin
-            multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.proposed_budget.description',
+              'custom_fields.ideas.section2.description',
               locales: CL2_SUPPORTED_LOCALES
             )
           rescue StandardError
@@ -125,51 +99,7 @@ module ParticipationMethod
           end,
           required: false,
           enabled: false,
-          ordering: 4
-        ),
-        CustomField.new(
-          id: SecureRandom.uuid,
-          resource: custom_form,
-          key: 'topic_ids',
-          code: 'topic_ids',
-          input_type: 'multiselect',
-          title_multiloc: multiloc_service.i18n_to_multiloc(
-            'custom_fields.ideas.topic_ids.title',
-            locales: CL2_SUPPORTED_LOCALES
-          ),
-          description_multiloc: begin
-            multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.topic_ids.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue StandardError
-            {}
-          end,
-          required: false,
-          enabled: true,
-          ordering: 5
-        ),
-        CustomField.new(
-          id: SecureRandom.uuid,
-          resource: custom_form,
-          key: 'location_description',
-          code: 'location_description',
-          input_type: 'text',
-          title_multiloc: multiloc_service.i18n_to_multiloc(
-            'custom_fields.ideas.location.title',
-            locales: CL2_SUPPORTED_LOCALES
-          ),
-          description_multiloc: begin
-            multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.location.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue StandardError
-            {}
-          end,
-          required: false,
-          enabled: true,
-          ordering: 6
+          ordering: 3
         ),
         CustomField.new(
           id: SecureRandom.uuid,
@@ -191,7 +121,7 @@ module ParticipationMethod
           end,
           required: false,
           enabled: true,
-          ordering: 7
+          ordering: 4
         ),
         CustomField.new(
           id: SecureRandom.uuid,
@@ -213,7 +143,137 @@ module ParticipationMethod
           end,
           required: false,
           enabled: true,
+          ordering: 5
+        ),
+        CustomField.new(
+          id: SecureRandom.uuid,
+          resource: custom_form,
+          input_type: 'section',
+          title_multiloc: multiloc_service.i18n_to_multiloc(
+            'custom_fields.ideas.section3.title',
+            locales: CL2_SUPPORTED_LOCALES
+          ),
+          description_multiloc: begin
+            multiloc_service.i18n_to_multiloc(
+              'custom_fields.ideas.section3.description',
+              locales: CL2_SUPPORTED_LOCALES
+            )
+          rescue StandardError
+            {}
+          end,
+          required: false,
+          enabled: false,
+          ordering: 6
+        ),
+        CustomField.new(
+          id: SecureRandom.uuid,
+          resource: custom_form,
+          key: 'topic_ids',
+          code: 'topic_ids',
+          input_type: 'multiselect',
+          title_multiloc: multiloc_service.i18n_to_multiloc(
+            'custom_fields.ideas.topic_ids.title',
+            locales: CL2_SUPPORTED_LOCALES
+          ),
+          description_multiloc: begin
+            multiloc_service.i18n_to_multiloc(
+              'custom_fields.ideas.topic_ids.description',
+              locales: CL2_SUPPORTED_LOCALES
+            )
+          rescue StandardError
+            {}
+          end,
+          required: false,
+          enabled: true,
+          ordering: 7
+        ),
+        CustomField.new(
+          id: SecureRandom.uuid,
+          resource: custom_form,
+          key: 'location_description',
+          code: 'location_description',
+          input_type: 'text',
+          title_multiloc: multiloc_service.i18n_to_multiloc(
+            'custom_fields.ideas.location.title',
+            locales: CL2_SUPPORTED_LOCALES
+          ),
+          description_multiloc: begin
+            multiloc_service.i18n_to_multiloc(
+              'custom_fields.ideas.location.description',
+              locales: CL2_SUPPORTED_LOCALES
+            )
+          rescue StandardError
+            {}
+          end,
+          required: false,
+          enabled: true,
           ordering: 8
+        ),
+        CustomField.new(
+          id: SecureRandom.uuid,
+          resource: custom_form,
+          key: 'budget',
+          code: 'budget',
+          input_type: 'number',
+          title_multiloc: multiloc_service.i18n_to_multiloc(
+            'custom_fields.ideas.budget.title',
+            locales: CL2_SUPPORTED_LOCALES
+          ),
+          description_multiloc: begin
+            multiloc_service.i18n_to_multiloc(
+              'custom_fields.ideas.budget.description',
+              locales: CL2_SUPPORTED_LOCALES
+            )
+          rescue StandardError
+            {}
+          end,
+          required: false,
+          enabled: true,
+          ordering: 9
+        ),
+        CustomField.new(
+          id: SecureRandom.uuid,
+          resource: custom_form,
+          key: 'proposed_budget',
+          code: 'proposed_budget',
+          input_type: 'number',
+          title_multiloc: multiloc_service.i18n_to_multiloc(
+            'custom_fields.ideas.proposed_budget.title',
+            locales: CL2_SUPPORTED_LOCALES
+          ),
+          description_multiloc: begin
+            multiloc_service.i18n_to_multiloc(
+              'custom_fields.ideas.proposed_budget.description',
+              locales: CL2_SUPPORTED_LOCALES
+            )
+          rescue StandardError
+            {}
+          end,
+          required: false,
+          enabled: false,
+          ordering: 10
+        ),
+        CustomField.new(
+          id: SecureRandom.uuid,
+          resource: custom_form,
+          key: 'author_id',
+          code: 'author_id',
+          input_type: 'text',
+          title_multiloc: multiloc_service.i18n_to_multiloc(
+            'custom_fields.ideas.author_id.title',
+            locales: CL2_SUPPORTED_LOCALES
+          ),
+          description_multiloc: begin
+            multiloc_service.i18n_to_multiloc(
+              'custom_fields.ideas.author_id.description',
+              locales: CL2_SUPPORTED_LOCALES
+            )
+          rescue StandardError
+            {}
+          end,
+          required: false,
+          enabled: true,
+          ordering: 11
         )
       ]
     end
