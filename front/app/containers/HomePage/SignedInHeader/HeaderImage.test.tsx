@@ -1,6 +1,5 @@
 import React from 'react';
 import HeaderImage from './HeaderImage';
-import { mockHomepageSettings } from 'services/__mocks__/homepageSettings';
 import { THomepageBannerLayout } from 'services/homepageSettings';
 import { render, screen } from 'utils/testUtils/rtl';
 
@@ -8,7 +7,13 @@ let mockHomepageBannerLayout: THomepageBannerLayout =
   'full_width_banner_layout';
 
 jest.mock('hooks/useHomepageSettings', () =>
-  jest.fn(() => mockHomepageSettings(mockHomepageBannerLayout))
+  jest.fn(() => {
+    return {
+      attributes: {
+        banner_layout: mockHomepageBannerLayout,
+      },
+    };
+  })
 );
 
 describe('HeaderImage', () => {
