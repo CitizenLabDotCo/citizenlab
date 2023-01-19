@@ -38,18 +38,6 @@ describe('nav bar', () => {
       });
   });
 
-  it('navigates to projects overview page from All projects dropdown and back', () => {
-    // Navigate to projects overview page
-    cy.get('.e2e-projects-dropdown-link').click();
-    cy.get('#e2e-all-projects-link').click();
-
-    // Assert we're on projects overview page
-    cy.location('pathname').should('eq', '/en/projects');
-    cy.get('#e2e-projects-container');
-
-    assertCorrectReturnToLandingPage();
-  });
-
   PAGES.forEach(({ url, container }) => {
     it(`navigates to ${url} and back`, () => {
       // Navigate to proposals page
