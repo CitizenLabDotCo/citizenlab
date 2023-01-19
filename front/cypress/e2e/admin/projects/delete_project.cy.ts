@@ -33,7 +33,7 @@ describe('Admin: delete project', () => {
         .find('.e2e-admin-delete-publication')
         .click();
       cy.on('window:confirm', () => true);
-
+      cy.wait(1000);
       cy.contains('.e2e-admin-projects-list-item', folderTitleToDelete).should(
         'not.exist'
       );
