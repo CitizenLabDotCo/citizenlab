@@ -17,7 +17,7 @@ export const Container = styled.div`
 
 export const HeaderImage = styled(Image)`
   height: ${homepageBannerLayoutHeights.two_column_layout.desktop}px;
-  width: 50%;
+  min-width: 50%;
   overflow: hidden;
 
   ${media.phone`
