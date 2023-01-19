@@ -24,7 +24,6 @@ class LogActivityJob < ApplicationJob
     trigger_notifications
     trigger_campaigns
     publish_activity_to_rabbit
-    trigger_track_activity_job
   end
 
   def instantiate_activity
@@ -60,12 +59,5 @@ class LogActivityJob < ApplicationJob
 
   def publish_activity_to_rabbit
     PublishActivityToRabbitJob.perform_later(activity)
-  end
-
-  def trigger_track_activity_job
-    # We're no longer logging notifications to segment, as there are mass
-    # notifications that count as segment's monthly active users, which is too
-    # expensive
-    TrackEventJob.perform_later(activity) unless item.is_a?(Notification)
   end
 end

@@ -6,7 +6,6 @@ class SideFxUserService
   def before_create(user, current_user); end
 
   def after_create(user, current_user)
-    TrackUserJob.perform_later(user)
     GenerateUserAvatarJob.perform_later(user)
     LogActivityJob.set(wait: 10.seconds).perform_later(user, 'created', user, user.created_at.to_i)
     UpdateMemberCountJob.perform_later
@@ -19,7 +18,6 @@ class SideFxUserService
   def before_update(user, current_user); end
 
   def after_update(user, current_user)
-    TrackUserJob.perform_later(user)
     LogActivityJob.perform_later(user, 'changed', current_user, user.updated_at.to_i)
     if user.registration_completed_at_previously_changed?
       LogActivityJob.perform_later(user, 'completed_registration', current_user, user.updated_at.to_i)
@@ -32,8 +30,6 @@ class SideFxUserService
   def after_destroy(frozen_user, current_user)
     LogActivityJob.perform_later(encode_frozen_resource(frozen_user), 'deleted', current_user, Time.now.to_i)
     UpdateMemberCountJob.perform_later
-    RemoveUserFromIntercomJob.perform_later(frozen_user.id)
-    RemoveUsersFromSegmentJob.perform_later([frozen_user.id])
   end
 
   private

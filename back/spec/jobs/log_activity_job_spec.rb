@@ -60,17 +60,5 @@ RSpec.describe LogActivityJob, type: :job do
       user = create(:user)
       expect { job.perform(idea, 'created', user, Time.now) }.to have_enqueued_job(PublishActivityToRabbitJob)
     end
-
-    it 'enqueues a TrackEventJob when Analytics is initialized' do
-      idea = create(:idea)
-      user = create(:user)
-      expect { job.perform(idea, 'created', user, Time.now) }.to have_enqueued_job(TrackEventJob)
-    end
-
-    it "doesn't enqueue a TrackEventJob when the item is a notification" do
-      item = create(:notification)
-      user = create(:user)
-      expect { job.perform(item, 'created', user, Time.now) }.not_to have_enqueued_job(TrackEventJob)
-    end
   end
 end
