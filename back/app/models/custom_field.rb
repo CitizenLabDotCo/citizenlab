@@ -165,7 +165,7 @@ class CustomField < ApplicationRecord
 
   # Special behaviour for ideation section 1
   def title_multiloc
-    if key == 'ideation_section_1'
+    if code == 'ideation_section_1'
       input_term = resource.participation_context.input_term
       key = "custom_forms.categories.main_content.#{input_term}.title"
       I18n.available_locales.index_with do |locale|
