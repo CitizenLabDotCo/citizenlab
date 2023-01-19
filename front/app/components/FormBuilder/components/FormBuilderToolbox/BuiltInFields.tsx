@@ -29,9 +29,14 @@ const BuiltInFields = ({
 }: BuiltInFieldsProps & WrappedComponentProps) => {
   const { watch, trigger, setValue } = useFormContext();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
-  const hasDisabledFields = formCustomFields.some((field) => {
-    return builtInFieldKeys.includes(field.key) && !field.enabled;
-  });
+  const enabledBuiltInFieldKeys = formCustomFields
+    .filter((field) => {
+      return builtInFieldKeys.includes(field.key) && !field.enabled;
+    })
+    .map((builtInField) => {
+      return builtInField.key;
+    });
+  const hasDisabledFields = enabledBuiltInFieldKeys.length > 0;
 
   if (!hasDisabledFields) return null;
 
@@ -65,13 +70,21 @@ const BuiltInFields = ({
         <FormattedMessage {...messages.defaultField} />
       </Title>
 
-      {builtInFieldKeys.includes('proposed_budget') && (
+      {enabledBuiltInFieldKeys.includes('proposed_budget') && (
         <DraggableElement>
           <ToolboxItem
             icon="money-bag"
             label={formatMessage(messages.proposedBudget)}
             onClick={() => enableField('proposed_budget')}
-            inputType="text"
+          />
+        </DraggableElement>
+      )}
+      {enabledBuiltInFieldKeys.includes('idea_files_attributes') && (
+        <DraggableElement>
+          <ToolboxItem
+            icon="upload-file"
+            label={formatMessage(messages.fileUpload)}
+            onClick={() => enableField('idea_files_attributes')}
           />
         </DraggableElement>
       )}
