@@ -160,6 +160,8 @@ const getBuiltinFieldIcon = (key: string): IconNames => {
       return 'image';
     case 'idea_files_attributes':
       return 'upload-file';
+    case 'proposed_budget':
+      return 'money-bag';
     default:
       return 'survey';
   }
@@ -210,6 +212,8 @@ const getBuiltinFieldBadgeLabel = (key: string): MessageDescriptor => {
       return messages.longAnswer;
     case 'idea_files_attributes':
       return messages.fileUpload;
+    case 'proposed_budget':
+      return messages.proposedBudget;
     default:
       return messages.default;
   }

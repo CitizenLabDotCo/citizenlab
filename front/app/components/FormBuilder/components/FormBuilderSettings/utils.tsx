@@ -74,6 +74,9 @@ const getBuiltInFieldStringKey = (
     case 'idea_files_attributes':
       translatedStringKey = messages.fileUpload;
       break;
+    case 'proposed_budget':
+      translatedStringKey = messages.proposedBudget;
+      break;
   }
 
   return translatedStringKey;
