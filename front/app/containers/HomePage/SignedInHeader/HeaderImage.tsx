@@ -50,7 +50,7 @@ const HeaderImage = () => {
       homepageSettings.attributes.banner_layout === 'fixed_ratio_layout';
 
     return (
-      <HeaderImageContainer data-testid="signed-in-header-image-container">
+      <HeaderImageContainer>
         <HeaderImageContainerInner data-cy="e2e-signed-in-header-image-parent">
           {/*
             With the fixed ratio layout, the image would be pixeled so we
@@ -66,6 +66,7 @@ const HeaderImage = () => {
           )}
           {/* Image overlay */}
           <Box
+            data-testid="signed-in-header-image-overlay"
             background={
               theme.signedInHeaderOverlayColor || theme.colors.tenantPrimary
             }
