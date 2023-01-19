@@ -15,7 +15,7 @@ export const ReportingPage = () => (
       description={messages.helmetDescription}
     />
     <Tabs>
-      <div id="e2e-insights-container">
+      <div id="e2e-reporting-container">
         <RouterOutlet />
       </div>
     </Tabs>
