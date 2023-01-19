@@ -1,9 +1,19 @@
 import React from 'react';
-import { fireEvent, render } from 'utils/testUtils/rtl';
+import { fireEvent, render, act } from 'utils/testUtils/rtl';
 import ConsentManager from '.';
-import { IConsentCookie } from './consent';
+
+// events
+import eventEmitter from 'utils/eventEmitter';
+
+// utils
 import { registerDestination } from './destinations';
 import { isAdmin, isModerator } from 'services/permissions/roles';
+
+// typings
+import { IConsentCookie } from './consent';
+import { IUserData } from 'services/users';
+
+// mocked functions
 import { setConsent } from './consent';
 
 // mocks
@@ -13,7 +23,7 @@ jest.mock('modules', () => ({ streamsToReset: [] }));
 jest.mock('utils/cl-router/Link', () => ({ children }) => <a>{children}</a>);
 jest.mock('hooks/useLocale');
 
-let mockAuthUser = null;
+let mockAuthUser: IUserData | null = null;
 jest.mock('hooks/useAuthUser', () => () => mockAuthUser);
 
 let mockAppConfiguration = {
@@ -25,6 +35,10 @@ let mockAppConfiguration = {
         enabled: true,
       },
       google_analytics: {
+        allowed: true,
+        enabled: true,
+      },
+      intercom: {
         allowed: true,
         enabled: true,
       },
@@ -66,6 +80,7 @@ registerDestination({
 describe('<ConsentManager />', () => {
   describe('logged out, no cookie exists yet', () => {
     beforeEach(() => {
+      mockAuthUser = null;
       mockCookie = null;
     });
 
@@ -89,7 +104,7 @@ describe('<ConsentManager />', () => {
       });
     });
 
-    it('rejects all cookies except function if banner is closed', () => {
+    it('rejects all cookies except functional if banner is closed', () => {
       const { container } = render(<ConsentManager />);
       fireEvent.click(container.querySelector('.e2e-close-cookie-banner'));
 
@@ -103,10 +118,44 @@ describe('<ConsentManager />', () => {
         },
       });
     });
+
+    it('rejects all cookies except functional if preference modal is openend and confirmed without changes', () => {
+      const { container } = render(<ConsentManager />);
+      fireEvent.click(container.querySelector('.integration-open-modal'));
+      fireEvent.click(container.querySelector('#e2e-preferences-save'));
+
+      expect(setConsent).toHaveBeenCalledWith({
+        functional: true,
+        analytics: false,
+        advertising: false,
+        savedChoices: {
+          matomo: false,
+          google_analytics: false,
+        },
+      });
+    });
+
+    it('accepts only functional and analytics cookies if analytics is enabled in preference modal', () => {
+      const { container } = render(<ConsentManager />);
+      fireEvent.click(container.querySelector('.integration-open-modal'));
+      fireEvent.click(container.querySelector('#analytics-radio-true'));
+      fireEvent.click(container.querySelector('#e2e-preferences-save'));
+
+      expect(setConsent).toHaveBeenCalledWith({
+        functional: true,
+        analytics: true,
+        advertising: false,
+        savedChoices: {
+          matomo: true,
+          google_analytics: true,
+        },
+      });
+    });
   });
 
   describe('logged out, cookie exists', () => {
-    it('does not render banner', () => {
+    beforeEach(() => {
+      mockAuthUser = null;
       mockCookie = {
         functional: true,
         analytics: true,
@@ -116,19 +165,77 @@ describe('<ConsentManager />', () => {
           google_analytics: true,
         },
       };
+    });
+
+    it('does not render banner', () => {
+      const { container } = render(<ConsentManager />);
+      expect(
+        container.querySelector('#e2e-cookie-banner')
+      ).not.toBeInTheDocument();
+    });
+
+    it('still allows cookies to be changes through modal', () => {
+      const { container } = render(<ConsentManager />);
+      expect(
+        container.querySelector('#e2e-preference-dialog')
+      ).not.toBeInTheDocument();
+
+      act(() => eventEmitter.emit('openConsentManager'));
+      expect(
+        container.querySelector('#e2e-preference-dialog')
+      ).toBeInTheDocument();
+
+      fireEvent.click(container.querySelector('#analytics-radio-false'));
+      fireEvent.click(container.querySelector('#e2e-preferences-save'));
+
+      expect(setConsent).toHaveBeenCalledWith({
+        functional: true,
+        analytics: false,
+        advertising: false,
+        savedChoices: {
+          matomo: false,
+          google_analytics: false,
+        },
+      });
+    });
+  });
+
+  describe('logged in, cookie exists', () => {
+    beforeEach(() => {
+      mockCookie = {
+        functional: true,
+        analytics: true,
+        advertising: false,
+        savedChoices: {
+          matomo: true,
+          google_analytics: true,
+        },
+      };
+    });
+
+    it('does not show banner if no new permissions required', () => {
+      mockAuthUser = {
+        attributes: {
+          roles: [],
+          highest_role: 'user',
+        },
+      } as any;
 
       const { container } = render(<ConsentManager />);
       expect(
         container.querySelector('#e2e-cookie-banner')
       ).not.toBeInTheDocument();
     });
+
+    it('shows banner if new permissions required', () => {
+      mockAuthUser = {
+        attributes: {
+          roles: [{ type: 'admin' }],
+        },
+      } as any;
+
+      const { container } = render(<ConsentManager />);
+      expect(container.querySelector('#e2e-cookie-banner')).toBeInTheDocument();
+    });
   });
-
-  // describe('logged in, no cookie exists yet', () => {
-  //   // TODO
-  // });
-
-  // describe('logged in, cookie exists', () => {
-  //   // TODO
-  // });
 });
