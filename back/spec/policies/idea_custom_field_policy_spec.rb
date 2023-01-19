@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe IdeaCustomFields::IdeaCustomFieldPolicy do
+describe IdeaCustomFieldPolicy do
   subject(:policy) { described_class.new(user, idea_custom_field) }
 
   let(:custom_form) { create(:custom_form) }
