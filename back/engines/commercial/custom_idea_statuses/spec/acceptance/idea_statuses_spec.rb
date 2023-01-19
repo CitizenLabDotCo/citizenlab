@@ -65,10 +65,8 @@ resource 'IdeaStatuses' do
     end
   end
 
-  context 'when signed in as a non-admin user' do
-    before do
-      user_header_token
-    end
+  context 'when resident' do
+    before { resident_header_token }
 
     post 'web_api/v1/idea_statuses' do
       with_options scope: :idea_status do

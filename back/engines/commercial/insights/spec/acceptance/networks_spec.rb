@@ -18,8 +18,8 @@ resource 'Text networks' do
       end
     end
 
-    context 'when normal user' do
-      before { user_header_token }
+    context 'when resident' do
+      before { resident_header_token }
 
       example 'unauthorized', document: false do
         do_request
