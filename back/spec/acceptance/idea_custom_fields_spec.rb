@@ -7,7 +7,6 @@ resource 'Idea Custom Fields' do
   explanation 'Fields in idea forms which are customized by the city, scoped on the project level.'
   before do
     header 'Content-Type', 'application/json'
-    SettingsService.new.activate_feature! 'idea_custom_fields'
   end
 
   context 'when the participation context is a project' do
@@ -130,16 +129,6 @@ resource 'Idea Custom Fields' do
               expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
               expect(CustomField.count).to eq 1
             end
-          end
-        end
-
-        context 'when the idea_custom_fields feature is deactivated' do
-          before { SettingsService.new.deactivate_feature! 'idea_custom_fields' }
-
-          example_request '[error] Updating is not authorized' do
-            assert_status 401
-            json_response = json_parse response_body
-            expect(json_response).to include_response_error(:base, '"idea_custom_fields" feature is not activated')
           end
         end
 

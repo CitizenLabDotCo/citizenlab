@@ -101,22 +101,13 @@ resource 'Project level Custom Fields' do
       ]
     end
 
-    if CitizenLab.ee?
-      let(:expected_jsonschema_form_field_keys) do
-        enabled_built_in_field_keys + [custom_field.key.to_sym]
-      end
-      let(:expected_json_forms_field_keys) do
-        invisible_field_keys = %i[author_id budget proposed_budget]
-        enabled_built_in_field_keys - invisible_field_keys + [custom_field.key.to_sym]
-      end
-    else
-      let(:expected_jsonschema_form_field_keys) do
-        enabled_built_in_field_keys
-      end
-      let(:expected_json_forms_field_keys) do
-        invisible_field_keys = %i[author_id budget proposed_budget]
-        enabled_built_in_field_keys - invisible_field_keys
-      end
+    let(:expected_jsonschema_form_field_keys) do
+      enabled_built_in_field_keys + [custom_field.key.to_sym]
+    end
+
+    let(:expected_json_forms_field_keys) do
+      invisible_field_keys = %i[author_id budget proposed_budget]
+      enabled_built_in_field_keys - invisible_field_keys + [custom_field.key.to_sym]
     end
 
     get 'web_api/v1/projects/:project_id/custom_fields/schema' do
@@ -162,22 +153,12 @@ resource 'Project level Custom Fields' do
       ]
     end
 
-    if CitizenLab.ee?
-      let(:expected_jsonschema_form_field_keys) do
-        enabled_built_in_field_keys + [custom_field.key.to_sym]
-      end
-      let(:expected_json_forms_field_keys) do
-        invisible_field_keys = %i[author_id budget proposed_budget]
-        enabled_built_in_field_keys - invisible_field_keys + [custom_field.key.to_sym]
-      end
-    else
-      let(:expected_jsonschema_form_field_keys) do
-        enabled_built_in_field_keys
-      end
-      let(:expected_json_forms_field_keys) do
-        invisible_field_keys = %i[author_id budget proposed_budget]
-        enabled_built_in_field_keys - invisible_field_keys
-      end
+    let(:expected_jsonschema_form_field_keys) do
+      enabled_built_in_field_keys + [custom_field.key.to_sym]
+    end
+    let(:expected_json_forms_field_keys) do
+      invisible_field_keys = %i[author_id budget proposed_budget]
+      enabled_built_in_field_keys - invisible_field_keys + [custom_field.key.to_sym]
     end
 
     get 'web_api/v1/projects/:project_id/custom_fields/schema' do
@@ -215,52 +196,49 @@ resource 'Project level Custom Fields' do
       example_request 'Get the react-jsonschema-form json schema and ui schema for the custom fields' do
         expect(status).to eq 200
         json_response = json_parse(response_body)
-        if CitizenLab.ee?
-          expect(json_response).to eq({
-            json_schema_multiloc: {
-              en: {
-                type: 'object',
-                additionalProperties: false,
-                properties: {
-                  extra_field: {
-                    title: 'An extra question',
-                    description: 'Which councils are you attending in our city?',
-                    type: 'string'
-                  }
-                }
-              },
-              'fr-FR': {
-                type: 'object',
-                additionalProperties: false,
-                properties: {
-                  extra_field: {
-                    title: 'An extra question',
-                    description: 'Which councils are you attending in our city?',
-                    type: 'string'
-                  }
-                }
-              },
-              'nl-NL': {
-                type: 'object',
-                additionalProperties: false,
-                properties: {
-                  extra_field: {
-                    title: 'An extra question',
-                    description: 'Which councils are you attending in our city?',
-                    type: 'string'
-                  }
+
+        expect(json_response).to eq({
+          json_schema_multiloc: {
+            en: {
+              type: 'object',
+              additionalProperties: false,
+              properties: {
+                extra_field: {
+                  title: 'An extra question',
+                  description: 'Which councils are you attending in our city?',
+                  type: 'string'
                 }
               }
             },
-            ui_schema_multiloc: {
-              en: { extra_field: {}, 'ui:order': ['extra_field'] },
-              'fr-FR': { extra_field: {}, 'ui:order': ['extra_field'] },
-              'nl-NL': { extra_field: {}, 'ui:order': ['extra_field'] }
+            'fr-FR': {
+              type: 'object',
+              additionalProperties: false,
+              properties: {
+                extra_field: {
+                  title: 'An extra question',
+                  description: 'Which councils are you attending in our city?',
+                  type: 'string'
+                }
+              }
+            },
+            'nl-NL': {
+              type: 'object',
+              additionalProperties: false,
+              properties: {
+                extra_field: {
+                  title: 'An extra question',
+                  description: 'Which councils are you attending in our city?',
+                  type: 'string'
+                }
+              }
             }
-          })
-        else
-          expect(json_response).to eq schemas_without_fields
-        end
+          },
+          ui_schema_multiloc: {
+            en: { extra_field: {}, 'ui:order': ['extra_field'] },
+            'fr-FR': { extra_field: {}, 'ui:order': ['extra_field'] },
+            'nl-NL': { extra_field: {}, 'ui:order': ['extra_field'] }
+          }
+        })
       end
     end
 
@@ -268,15 +246,11 @@ resource 'Project level Custom Fields' do
       example_request 'Get the jsonforms.io json schema and ui schema for the custom fields' do
         expect(status).to eq 200
         json_response = json_parse(response_body)
-        if CitizenLab.ee?
-          expect(json_response[:json_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
-          %i[en fr-FR nl-NL].each do |locale|
-            expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq([custom_field.key.to_sym])
-          end
-          expect(json_response[:ui_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
-        else
-          expect(json_response).to be_nil
+        expect(json_response[:json_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
+        %i[en fr-FR nl-NL].each do |locale|
+          expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq([custom_field.key.to_sym])
         end
+        expect(json_response[:ui_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
       end
     end
   end

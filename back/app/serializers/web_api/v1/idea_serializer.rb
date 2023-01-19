@@ -81,5 +81,3 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     end
   end
 end
-
-::WebApi::V1::IdeaSerializer.include_if_ee('IdeaCustomFields::Extensions::WebApi::V1::IdeaSerializer')

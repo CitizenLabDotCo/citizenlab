@@ -558,14 +558,9 @@ resource 'Ideas' do
           idea_images_attributes
           idea_files_attributes
         ]
-        if CitizenLab.ee?
-          %i[en fr-FR nl-NL].each do |locale|
-            expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq(built_in_field_keys + [custom_field.key.to_sym])
-          end
-        else
-          %i[en fr-FR nl-NL].each do |locale|
-            expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq built_in_field_keys
-          end
+
+        %i[en fr-FR nl-NL].each do |locale|
+          expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq(built_in_field_keys + [custom_field.key.to_sym])
         end
       end
 
@@ -589,14 +584,9 @@ resource 'Ideas' do
             idea_images_attributes
             idea_files_attributes
           ]
-          if CitizenLab.ee?
-            %i[en fr-FR nl-NL].each do |locale|
-              expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq(visible_built_in_field_keys + [custom_field.key.to_sym])
-            end
-          else
-            %i[en fr-FR nl-NL].each do |locale|
-              expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq visible_built_in_field_keys
-            end
+
+          %i[en fr-FR nl-NL].each do |locale|
+            expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq(visible_built_in_field_keys + [custom_field.key.to_sym])
           end
         end
       end

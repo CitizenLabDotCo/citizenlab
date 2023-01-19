@@ -64,14 +64,8 @@ resource 'Phase level Custom Fields' do
           idea_images_attributes
           idea_files_attributes
         ]
-        if CitizenLab.ee?
-          %i[en fr-FR nl-NL].each do |locale|
-            expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq(built_in_field_keys + [custom_field.key.to_sym])
-          end
-        else
-          %i[en fr-FR nl-NL].each do |locale|
-            expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq built_in_field_keys
-          end
+        %i[en fr-FR nl-NL].each do |locale|
+          expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq(built_in_field_keys + [custom_field.key.to_sym])
         end
       end
     end
@@ -90,24 +84,19 @@ resource 'Phase level Custom Fields' do
           idea_images_attributes
           idea_files_attributes
         ]
-        if CitizenLab.ee?
-          %i[en fr-FR nl-NL].each do |locale|
-            expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq(visible_built_in_field_keys + [custom_field.key.to_sym])
-          end
-          ui_schema = json_response[:ui_schema_multiloc][:en]
-          expect(ui_schema.keys).to eq %i[type options elements]
-          expect(ui_schema[:type]).to eq 'Categorization'
-          expect(ui_schema[:options]).to eq({ formId: 'idea-form', inputTerm: 'question' })
-          expect(ui_schema[:elements][0]).to include(
-            type: 'Category',
-            label: 'What is your question ?',
-            options: { id: 'mainContent' }
-          )
-        else
-          %i[en fr-FR nl-NL].each do |locale|
-            expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq visible_built_in_field_keys
-          end
+
+        %i[en fr-FR nl-NL].each do |locale|
+          expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq(visible_built_in_field_keys + [custom_field.key.to_sym])
         end
+        ui_schema = json_response[:ui_schema_multiloc][:en]
+        expect(ui_schema.keys).to eq %i[type options elements]
+        expect(ui_schema[:type]).to eq 'Categorization'
+        expect(ui_schema[:options]).to eq({ formId: 'idea-form', inputTerm: 'question' })
+        expect(ui_schema[:elements][0]).to include(
+          type: 'Category',
+          label: 'What is your question ?',
+          options: { id: 'mainContent' }
+        )
       end
     end
   end
@@ -122,52 +111,49 @@ resource 'Phase level Custom Fields' do
       example_request 'Get the react-jsonschema-form json schema and ui schema for the custom fields' do
         expect(status).to eq 200
         json_response = json_parse(response_body)
-        if CitizenLab.ee?
-          expect(json_response).to eq({
-            json_schema_multiloc: {
-              en: {
-                type: 'object',
-                additionalProperties: false,
-                properties: {
-                  extra_field: {
-                    title: 'An extra question',
-                    description: 'Which councils are you attending in our city?',
-                    type: 'string'
-                  }
-                }
-              },
-              'fr-FR': {
-                type: 'object',
-                additionalProperties: false,
-                properties: {
-                  extra_field: {
-                    title: 'An extra question',
-                    description: 'Which councils are you attending in our city?',
-                    type: 'string'
-                  }
-                }
-              },
-              'nl-NL': {
-                type: 'object',
-                additionalProperties: false,
-                properties: {
-                  extra_field: {
-                    title: 'An extra question',
-                    description: 'Which councils are you attending in our city?',
-                    type: 'string'
-                  }
+
+        expect(json_response).to eq({
+          json_schema_multiloc: {
+            en: {
+              type: 'object',
+              additionalProperties: false,
+              properties: {
+                extra_field: {
+                  title: 'An extra question',
+                  description: 'Which councils are you attending in our city?',
+                  type: 'string'
                 }
               }
             },
-            ui_schema_multiloc: {
-              en: { extra_field: {}, 'ui:order': ['extra_field'] },
-              'fr-FR': { extra_field: {}, 'ui:order': ['extra_field'] },
-              'nl-NL': { extra_field: {}, 'ui:order': ['extra_field'] }
+            'fr-FR': {
+              type: 'object',
+              additionalProperties: false,
+              properties: {
+                extra_field: {
+                  title: 'An extra question',
+                  description: 'Which councils are you attending in our city?',
+                  type: 'string'
+                }
+              }
+            },
+            'nl-NL': {
+              type: 'object',
+              additionalProperties: false,
+              properties: {
+                extra_field: {
+                  title: 'An extra question',
+                  description: 'Which councils are you attending in our city?',
+                  type: 'string'
+                }
+              }
             }
-          })
-        else
-          expect(json_response).to eq schemas_without_fields
-        end
+          },
+          ui_schema_multiloc: {
+            en: { extra_field: {}, 'ui:order': ['extra_field'] },
+            'fr-FR': { extra_field: {}, 'ui:order': ['extra_field'] },
+            'nl-NL': { extra_field: {}, 'ui:order': ['extra_field'] }
+          }
+        })
       end
     end
 
@@ -175,15 +161,12 @@ resource 'Phase level Custom Fields' do
       example_request 'Get the jsonforms.io json schema and ui schema for the custom fields' do
         expect(status).to eq 200
         json_response = json_parse(response_body)
-        if CitizenLab.ee?
-          expect(json_response[:json_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
-          %i[en fr-FR nl-NL].each do |locale|
-            expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq([custom_field.key.to_sym])
-          end
-          expect(json_response[:ui_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
-        else
-          expect(json_response).to be_nil
+
+        expect(json_response[:json_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
+        %i[en fr-FR nl-NL].each do |locale|
+          expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq([custom_field.key.to_sym])
         end
+        expect(json_response[:ui_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
       end
     end
   end

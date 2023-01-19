@@ -29,7 +29,7 @@
 #
 
 # support table :
-# Jsonforms (under dynamic_idea_form and jsonforms_custom_fields) supports all INPUT_TYPES
+# Jsonforms supports all INPUT_TYPES
 # The older react json form version works only with text number multiline_text select multiselect checkbox date
 # The other types will fail for user custom fields and render a shallow schema for idea custom fields with only the required, hidden, title and description.
 class CustomField < ApplicationRecord
