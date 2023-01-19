@@ -136,7 +136,7 @@ describe LocalProjectCopyService do
       custom_form = create(:custom_form)
       custom_field = create(:custom_field, resource_type: 'CustomForm', input_type: 'select', resource_id: custom_form.id)
       create(:custom_field_option, custom_field_id: custom_field.id)
-      source_project = Project.find(custom_form.participation_context_id)
+      source_project = custom_form.participation_context
       copied_project = service.copy(source_project)
 
       expect(copied_project.custom_form.participation_context_type).to eq source_project.custom_form.participation_context_type
