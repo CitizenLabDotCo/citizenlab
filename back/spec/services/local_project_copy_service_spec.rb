@@ -67,30 +67,8 @@ describe LocalProjectCopyService do
       copied_project = service.copy(continuous_project)
 
       expect(copied_project.slug).to eq "#{continuous_project.slug}-copy"
-      expect(copied_project.participation_method).to eq continuous_project.participation_method
-      expect(copied_project.posting_enabled).to eq continuous_project.posting_enabled
-      expect(copied_project.posting_method).to eq continuous_project.posting_method
-      expect(copied_project.posting_limited_max).to eq continuous_project.posting_limited_max
-      expect(copied_project.commenting_enabled).to eq continuous_project.commenting_enabled
-      expect(copied_project.voting_enabled).to eq continuous_project.voting_enabled
-      expect(copied_project.upvoting_method).to eq continuous_project.upvoting_method
-      expect(copied_project.upvoting_limited_max).to eq continuous_project.upvoting_limited_max
-      expect(copied_project.downvoting_enabled).to eq continuous_project.downvoting_enabled
-      expect(copied_project.downvoting_method).to eq continuous_project.downvoting_method
-      expect(copied_project.downvoting_limited_max).to eq continuous_project.downvoting_limited_max
-      expect(copied_project.presentation_mode).to eq continuous_project.presentation_mode
-      expect(copied_project.min_budget).to eq continuous_project.min_budget
-      expect(copied_project.max_budget).to eq continuous_project.max_budget
-      expect(copied_project.ideas_order).to eq continuous_project.ideas_order
-      expect(copied_project.input_term).to eq continuous_project.input_term
-      expect(copied_project.description_preview_multiloc).to eq continuous_project.description_preview_multiloc
-      expect(copied_project.comments_count).to eq continuous_project.comments_count
-      expect(copied_project.ideas_count).to eq continuous_project.ideas_count
-      expect(copied_project.include_all_areas).to eq continuous_project.include_all_areas
-      expect(copied_project.internal_role).to eq continuous_project.internal_role
-      expect(copied_project.process_type).to eq continuous_project.process_type
-      expect(copied_project.visible_to).to eq continuous_project.visible_to
-      expect(copied_project.folder_id).to eq continuous_project.folder_id
+      expect(copied_project.to_json(except: %i[id title_mutliloc slug updated_at created_at]))
+        .to eq continuous_project.to_json(except: %i[id title_mutliloc slug updated_at created_at])
     end
 
     it 'copies project to same folder as source project' do
@@ -168,26 +146,8 @@ describe LocalProjectCopyService do
       copied_project = service.copy(timeline_project)
 
       expect(copied_project.phases.first.project_id).to eq copied_project.id
-      expect(copied_project.phases.first.title_multiloc).to eq timeline_project.phases.first.title_multiloc
-      expect(copied_project.phases.first.description_multiloc).to eq timeline_project.phases.first.description_multiloc
-      expect(copied_project.phases.first.participation_method).to eq timeline_project.phases.first.participation_method
-      expect(copied_project.phases.first.posting_enabled).to eq timeline_project.phases.first.posting_enabled
-      expect(copied_project.phases.first.commenting_enabled).to eq timeline_project.phases.first.commenting_enabled
-      expect(copied_project.phases.first.voting_enabled).to eq timeline_project.phases.first.voting_enabled
-      expect(copied_project.phases.first.upvoting_method).to eq timeline_project.phases.first.upvoting_method
-      expect(copied_project.phases.first.upvoting_limited_max).to eq timeline_project.phases.first.upvoting_limited_max
-      expect(copied_project.phases.first.presentation_mode).to eq timeline_project.phases.first.presentation_mode
-      expect(copied_project.phases.first.max_budget).to eq timeline_project.phases.first.max_budget
-      expect(copied_project.phases.first.poll_anonymous).to eq timeline_project.phases.first.poll_anonymous
-      expect(copied_project.phases.first.downvoting_enabled).to eq timeline_project.phases.first.downvoting_enabled
-      expect(copied_project.phases.first.ideas_count).to eq timeline_project.phases.first.ideas_count
-      expect(copied_project.phases.first.ideas_order).to eq timeline_project.phases.first.ideas_order
-      expect(copied_project.phases.first.input_term).to eq timeline_project.phases.first.input_term
-      expect(copied_project.phases.first.min_budget).to eq timeline_project.phases.first.min_budget
-      expect(copied_project.phases.first.downvoting_method).to eq timeline_project.phases.first.downvoting_method
-      expect(copied_project.phases.first.downvoting_limited_max).to eq timeline_project.phases.first.downvoting_limited_max
-      expect(copied_project.phases.first.posting_method).to eq timeline_project.phases.first.posting_method
-      expect(copied_project.phases.first.posting_limited_max).to eq timeline_project.phases.first.posting_limited_max
+      expect(copied_project.phases.first.to_json(except: %i[id project_id start_at end_at updated_at created_at]))
+        .to eq timeline_project.phases.first.to_json(except: %i[id project_id start_at end_at updated_at created_at])
     end
 
     it 'associates correct groups with actions group permissions of copied ideation phase' do
