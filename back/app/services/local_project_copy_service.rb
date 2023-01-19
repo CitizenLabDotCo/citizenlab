@@ -49,7 +49,7 @@ class LocalProjectCopyService
   end
 
   def copy_project_and_phases_actions_groups_permissions(source_project, copied_project)
-    # Copy actions groups_permissions of non-timeline project. For example, groups that can 'Vote on ideas'.
+    # Copy actions groups_permissions of continuous project. For example, groups that can 'Vote on ideas'.
     copy_actions_groups_permissions(source_project, copied_project)
 
     # Copy actions groups_permissions of phases of timeline project. For example, groups that can 'Vote on ideas'.

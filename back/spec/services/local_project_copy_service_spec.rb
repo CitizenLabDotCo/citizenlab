@@ -124,6 +124,21 @@ describe LocalProjectCopyService do
       expect(copied_project.allowed_input_topics).to eq [topics.first, topics.second]
     end
 
+    it 'copies associated maps configs, layers and legend items' do
+      map_config = create(:map_config, project_id: continuous_project.id, tile_provider: 'https://groovy_map_tiles')
+      create(:layer, map_config_id: map_config.id)
+      create(:legend_item, map_config_id: map_config.id)
+
+      copied_project = service.copy(continuous_project)
+      expect(copied_project.map_config.center).to eq continuous_project.map_config.center
+      expect(copied_project.map_config.layers.first.to_json(except: %i[id map_config_id updated_at created_at]))
+        .to eq continuous_project.map_config.layers.first.to_json(except: %i[id map_config_id updated_at created_at])
+      expect(copied_project.map_config.layers.first.map_config_id).to eq copied_project.map_config.id
+      expect(copied_project.map_config.legend_items.first.to_json(except: %i[id map_config_id updated_at created_at]))
+        .to eq continuous_project.map_config.legend_items.first.to_json(except: %i[id map_config_id updated_at created_at])
+      expect(copied_project.map_config.legend_items.first.map_config_id).to eq copied_project.map_config.id
+    end
+
     it "associates correct groups with copied project's groups visibility permission" do
       source_project = create(:private_groups_project)
 
