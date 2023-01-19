@@ -1,5 +1,6 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
+import { get } from 'lodash-es';
 
 // components
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
@@ -44,6 +45,7 @@ export const ContentSettings = ({
   const platformLocale = useLocale();
   const hasRules = logic && logic.rules && logic.rules.length > 0;
   const isFieldGrouping = ['page', 'section'].includes(field.input_type);
+  const isDeleteEnabled = get(field, 'isDeleteEnabled', true);
 
   if (!isNilOrError(platformLocale)) {
     return (
@@ -123,22 +125,25 @@ export const ContentSettings = ({
             buttonStyle="secondary"
             onClick={onClose}
             minWidth="160px"
+            width={isDeleteEnabled ? 'auto' : '100%'}
           >
             <FormattedMessage {...messages.done} />
           </Button>
-          <Button
-            icon="delete"
-            buttonStyle="primary-outlined"
-            borderColor={colors.error}
-            textColor={colors.error}
-            iconColor={colors.error}
-            onClick={() => onDelete(field.index)}
-            minWidth="160px"
-            data-cy="e2e-delete-field"
-            disabled={isDeleteDisabled}
-          >
-            <FormattedMessage {...messages.delete} />
-          </Button>
+          {isDeleteEnabled && (
+            <Button
+              icon="delete"
+              buttonStyle="primary-outlined"
+              borderColor={colors.error}
+              textColor={colors.error}
+              iconColor={colors.error}
+              onClick={() => onDelete(field.index)}
+              minWidth="160px"
+              data-cy="e2e-delete-field"
+              disabled={isDeleteDisabled}
+            >
+              <FormattedMessage {...messages.delete} />
+            </Button>
+          )}
         </Box>
       </Box>
     );

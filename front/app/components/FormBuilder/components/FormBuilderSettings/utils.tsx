@@ -73,7 +73,10 @@ const getBuiltInFieldStringKey = (
       translatedStringKey = messages.locationDescription;
       break;
     case 'idea_images_attributes':
-      translatedStringKey = messages.imageUpload;
+      translatedStringKey = messages.imageFileUpload;
+      break;
+    case 'idea_files_attributes':
+      translatedStringKey = messages.fileUpload;
       break;
     case 'topic_ids':
       translatedStringKey = messages.tags;

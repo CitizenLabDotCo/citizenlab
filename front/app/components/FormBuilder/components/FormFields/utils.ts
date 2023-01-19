@@ -160,6 +160,8 @@ const getBuiltinFieldIcon = (key: string): IconNames => {
       return 'image';
     case 'topic_ids':
       return 'label';
+    case 'idea_files_attributes':
+      return 'upload-file';
     default:
       return 'survey';
   }
@@ -184,6 +186,7 @@ const getCustomFieldIcon = (inputType: ICustomFieldInputType): IconNames => {
     case 'section':
       return 'section';
     case 'file_upload':
+    case 'files':
       return 'upload-file';
     default:
       return 'survey';
@@ -202,13 +205,15 @@ export const getFieldIcon = (
 const getBuiltinFieldBadgeLabel = (key: string): MessageDescriptor => {
   switch (key) {
     case 'idea_images_attributes':
-      return messages.imageUpload;
+      return messages.imageFileUpload;
     case 'location_description':
       return messages.locationDescription;
     case 'body_multiloc':
       return messages.longAnswer;
     case 'topic_ids':
       return messages.tags;
+    case 'idea_files_attributes':
+      return messages.fileUpload;
     default:
       return messages.default;
   }
