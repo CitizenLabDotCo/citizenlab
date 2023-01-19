@@ -97,6 +97,15 @@ const BuiltInFields = ({
           />
         </DraggableElement>
       )}
+      {enabledBuiltInFieldKeys.includes('topic_ids') && (
+        <DraggableElement>
+          <ToolboxItem
+            icon="label"
+            label={formatMessage(messages.tags)}
+            onClick={() => enableField('topic_ids')}
+          />
+        </DraggableElement>
+      )}
     </Box>
   );
 };
