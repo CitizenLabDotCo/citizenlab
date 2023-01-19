@@ -27,6 +27,10 @@ module ParticipationMethod
       []
     end
 
+    def field_value_locks
+      {}
+    end
+
     def validate_built_in_fields?
       # Most participation methods do not have built-in fields,
       # so return false.

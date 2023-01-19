@@ -280,6 +280,19 @@ module ParticipationMethod
       ]
     end
 
+    # Why do they have a key and a code?
+    # locks mirror the name of the fields whose values cannot be changed (ie are locked)
+    def field_value_locks
+      {
+        'title_multiloc' => %w[enabled required title],
+        'body_multiloc' => %w[enabled required title],
+        'idea_images_attributes' => %w[enabled title],
+        'idea_files_attributes' => %w[title],
+        'topic_ids' => %w[title],
+        'location_description' => %w[title]
+      }
+    end
+
     def validate_built_in_fields?
       true
     end

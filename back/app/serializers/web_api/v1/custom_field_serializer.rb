@@ -12,6 +12,11 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
     object.resource_type == 'User'
   }
 
+  attribute :field_value_locks do |object|
+    @participation_method = Factory.instance.participation_method_for object.resource.participation_context
+    @participation_method.field_value_locks[object.key] || []
+  end
+
   attributes :maximum, :minimum_label_multiloc, :maximum_label_multiloc, if: proc { |object, _params|
     object.input_type == 'linear_scale'
   }
