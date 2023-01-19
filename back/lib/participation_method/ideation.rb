@@ -34,7 +34,7 @@ module ParticipationMethod
             {}
           end,
           required: false,
-          enabled: false,
+          enabled: true,
           ordering: 0
         ),
         CustomField.new(
@@ -98,7 +98,7 @@ module ParticipationMethod
             {}
           end,
           required: false,
-          enabled: false,
+          enabled: true,
           ordering: 3
         ),
         CustomField.new(
@@ -162,7 +162,7 @@ module ParticipationMethod
             {}
           end,
           required: false,
-          enabled: false,
+          enabled: true,
           ordering: 6
         ),
         CustomField.new(
