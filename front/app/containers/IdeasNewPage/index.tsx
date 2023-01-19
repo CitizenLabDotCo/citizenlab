@@ -48,7 +48,6 @@ import { trackEventByName } from 'utils/analytics';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import { UploadFile } from 'typings';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
@@ -423,9 +422,6 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
 });
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => {
-  const isDynamicIdeaFormEnabled = useFeatureFlag({
-    name: 'dynamic_idea_form',
-  });
   const isSmallerThanXlPhone = useBreakpoint('phone');
   const project = useProject({ projectSlug: inputProps.params.slug });
   const phases = usePhases(project?.id);
@@ -436,7 +432,7 @@ export default withRouter((inputProps: InputProps & WithRouterProps) => {
   const portalElement = document?.getElementById('modal-portal');
   const isSurvey = participationMethod === 'native_survey';
 
-  if (isDynamicIdeaFormEnabled || isSurvey) {
+  if (isSurvey) {
     return portalElement && isSmallerThanXlPhone && isSurvey ? (
       createPortal(
         <Box
