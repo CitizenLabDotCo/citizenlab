@@ -76,7 +76,10 @@ resource 'Project', admin_api: true do
 
       if defined?(NLP)
         example 'it enqueues DumpTenantJob once if NLP defined' do
-          expect { do_request(tenant_id: tenant.id, project: { template_yaml: template.to_yaml, folder_id: folder.id }) }.to have_enqueued_job(DumpTenantJob)
+          expect do
+            do_request(tenant_id: tenant.id, project: { template_yaml: template.to_yaml, folder_id: folder.id })
+          end
+            .to have_enqueued_job(DumpTenantJob)
         end
       end
     end
