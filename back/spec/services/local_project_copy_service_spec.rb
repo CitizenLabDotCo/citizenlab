@@ -122,6 +122,16 @@ describe LocalProjectCopyService do
       expect(copied_project.map_config.legend_items.first.map_config_id).to eq copied_project.map_config.id
     end
 
+    it 'copies associated volunteering_causes' do
+      cause = create(:cause, title_multiloc: { en: 'Test cause' })
+      source_project = Project.find(cause.participation_context_id)
+
+      copied_project = service.copy(source_project)
+      expect(copied_project.causes.first.participation_context_id).to eq copied_project.id
+      expect(copied_project.causes.first.to_json(except: %i[id participation_context_id image updated_at created_at]))
+        .to eq source_project.causes.first.to_json(except: %i[id participation_context_id image updated_at created_at])
+    end
+
     it "associates correct groups with copied project's groups visibility permission" do
       source_project = create(:private_groups_project)
 
