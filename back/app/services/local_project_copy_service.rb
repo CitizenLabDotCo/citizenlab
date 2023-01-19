@@ -19,8 +19,6 @@ class LocalProjectCopyService
     copied_project = AdminApi::ProjectCopyService.new.import(template, folder: folder_id, local_copy: true)
 
     copy_project_visibility_permission_groups(source_project, copied_project)
-
-    # Copy actions groups_permissions of project or project phases. For example, groups that can 'Vote on ideas'.
     copy_project_and_phases_actions_groups_permissions(source_project, copied_project)
 
     source_project.allowed_input_topics.each do |topic|
