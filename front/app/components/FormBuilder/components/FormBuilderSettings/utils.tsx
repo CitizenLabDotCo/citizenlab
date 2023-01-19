@@ -29,6 +29,10 @@ export function getAdditionalSettings(
   locales: Locale[],
   platformLocale: Locale
 ) {
+  if (builtInFieldKeys.includes(field.key)) {
+    return null;
+  }
+
   switch (field.input_type) {
     case 'multiselect':
     case 'select':
@@ -70,6 +74,9 @@ const getBuiltInFieldStringKey = (
       break;
     case 'idea_images_attributes':
       translatedStringKey = messages.imageUpload;
+      break;
+    case 'topic_ids':
+      translatedStringKey = messages.tags;
       break;
   }
 

@@ -158,6 +158,8 @@ const getBuiltinFieldIcon = (key: string): IconNames => {
       return 'survey-long-answer-2';
     case 'idea_images_attributes':
       return 'image';
+    case 'topic_ids':
+      return 'label';
     default:
       return 'survey';
   }
@@ -205,6 +207,8 @@ const getBuiltinFieldBadgeLabel = (key: string): MessageDescriptor => {
       return messages.locationDescription;
     case 'body_multiloc':
       return messages.longAnswer;
+    case 'topic_ids':
+      return messages.tags;
     default:
       return messages.default;
   }
