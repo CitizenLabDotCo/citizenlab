@@ -163,6 +163,19 @@ class CustomField < ApplicationRecord
     end
   end
 
+  # Special behaviour for ideation section 1
+  def title_multiloc
+    if key == 'ideation_section_1'
+      input_term = resource.participation_context.input_term
+      key = "custom_forms.categories.main_content.#{input_term}.title"
+      I18n.available_locales.index_with { |locale|
+        I18n.t(key, default: '', locale: locale)
+      }
+    else
+      super
+    end
+  end
+
   private
 
   def set_default_enabled

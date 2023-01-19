@@ -21,6 +21,8 @@ module ParticipationMethod
           id: SecureRandom.uuid,
           resource: custom_form,
           input_type: 'section',
+          code: 'ideation_section_1',
+          key: 'ideation_section_1',
           title_multiloc: multiloc_service.i18n_to_multiloc(
             'custom_fields.ideas.section1.title',
             locales: CL2_SUPPORTED_LOCALES
