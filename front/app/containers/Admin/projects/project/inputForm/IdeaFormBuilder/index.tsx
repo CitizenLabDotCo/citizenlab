@@ -34,7 +34,6 @@ const IdeaFormBuilder = () => {
       temp_id: '',
       minimum_label_multiloc: {},
       maximum_label_multiloc: {},
-      isTitleEditable: false,
       maximum: 0,
       relationships: {
         options: {
@@ -179,7 +178,6 @@ const IdeaFormBuilder = () => {
       temp_id: '',
       minimum_label_multiloc: {},
       maximum_label_multiloc: {},
-      isTitleEditable: false,
       maximum: 0,
       relationships: {
         options: {
@@ -380,7 +378,6 @@ const IdeaFormBuilder = () => {
       temp_id: '',
       minimum_label_multiloc: {},
       maximum_label_multiloc: {},
-      isTitleEditable: false,
       maximum: 0,
       relationships: {
         options: {
