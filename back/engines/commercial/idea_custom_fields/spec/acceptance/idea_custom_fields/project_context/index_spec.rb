@@ -13,7 +13,7 @@ resource 'Idea Custom Fields' do
   get 'web_api/v1/admin/projects/:project_id/custom_fields' do
     let(:context) { create :project }
     let(:project_id) { context.id }
-    let(:form) { create :custom_form, participation_context: context }
+    let!(:form) { create :custom_form, :with_default_fields, participation_context: context }
     let!(:custom_field) { create :custom_field, resource: form, key: 'extra_field1' }
 
     context 'when admin' do
@@ -30,7 +30,6 @@ resource 'Idea Custom Fields' do
       end
 
       example 'List custom fields in the correct order', document: false do
-        create :custom_field, resource: form, code: 'title_multiloc', key: 'title_multiloc'
         create :custom_field, resource: form, key: 'extra_field2'
         do_request
         assert_status 200

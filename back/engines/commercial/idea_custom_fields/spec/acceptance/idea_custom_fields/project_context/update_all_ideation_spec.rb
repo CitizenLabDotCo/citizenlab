@@ -29,12 +29,22 @@ resource 'Idea Custom Fields' do
     end
 
     let(:context) { create :continuous_project, participation_method: 'ideation' }
-    let(:custom_form) { create :custom_form, participation_context: context }
+    let!(:custom_form) { create :custom_form, :with_default_fields, participation_context: context }
     let(:project_id) { context.id }
     let(:participation_method) { Factory.instance.participation_method_for context }
+    # let(:default_fields_param) do
+    #   attributes = %i[id code input_type title_multiloc description_multiloc required enabled]
+    #   participation_method.default_fields(custom_form).map do |field|
+    #     {}.tap do |field_param|
+    #       attributes.each do |attribute|
+    #         field_param[attribute] = field[attribute]
+    #       end
+    #     end
+    #   end
+    # end
     let(:default_fields_param) do
       attributes = %i[id code input_type title_multiloc description_multiloc required enabled]
-      participation_method.default_fields(custom_form).map do |field|
+      IdeaCustomFieldsService.new(custom_form).configurable_fields.map do |field|
         {}.tap do |field_param|
           attributes.each do |attribute|
             field_param[attribute] = field[attribute]
@@ -43,6 +53,7 @@ resource 'Idea Custom Fields' do
       end
     end
 
+    # First time, when not persisted yet
     # Built-in fields
     # Do not allow logic
     # key and code should be preserved
@@ -54,26 +65,12 @@ resource 'Idea Custom Fields' do
       example 'Add, update and remove a field' do
         fields_param = default_fields_param # https://stackoverflow.com/a/58695857/3585671
         # Update persisted built-in field
-        persisted_built_in_field = create(
-          :custom_field,
-          :for_custom_form,
-          resource: custom_form,
-          key: 'title_multiloc',
-          code: 'title_multiloc',
-          input_type: 'text_multiloc',
-          title_multiloc: { 'en' => 'Input title' },
-          description_multiloc: { 'en' => 'Input description' },
-          required: true,
-          enabled: true
-        )
         fields_param[0] = {
-          id: persisted_built_in_field.id,
+          id: custom_form.custom_fields.find_by(code: 'title_multiloc').id,
           title_multiloc: { 'en' => 'New input title' }
         }
         # Remove extra field
         deleted_field = create :custom_field_linear_scale, :for_custom_form
-        # Update non-persisted built-in field
-        fields_param[5][:required] = true
         # Add extra field
         fields_param += [{
           input_type: 'select',

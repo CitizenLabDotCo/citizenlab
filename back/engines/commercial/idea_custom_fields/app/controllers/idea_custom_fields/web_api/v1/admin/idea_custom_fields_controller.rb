@@ -52,8 +52,12 @@ module IdeaCustomFields
       @participation_method = Factory.instance.participation_method_for @custom_form.participation_context
       verify_no_responses @participation_method
 
-      update_fields
+      page_temp_ids_to_ids_mapping = {}
+      option_temp_ids_to_ids_mapping = {}
+      errors = {}
+      update_fields! page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors
       @custom_form.reload if @custom_form.persisted?
+      update_logic! page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         IdeaCustomFieldsService.new(@custom_form).configurable_fields,
         params: fastjson_params,
@@ -65,8 +69,7 @@ module IdeaCustomFields
 
     private
 
-    def update_fields
-      errors = {}
+    def update_fields!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors)
       fields = IdeaCustomFieldsService.new(@custom_form).configurable_fields
       fields_by_id = fields.index_by(&:id)
       given_fields = update_all_params.fetch :custom_fields, []
@@ -75,8 +78,6 @@ module IdeaCustomFields
       ActiveRecord::Base.transaction do
         delete_fields = fields.reject { |field| given_field_ids.include? field.id }
         delete_fields.each { |field| delete_field! field }
-        page_temp_ids_to_ids_mapping = {}
-        option_temp_ids_to_ids_mapping = {}
         given_fields.each_with_index do |field_params, index|
           options_params = field_params.delete :options
           if field_params[:id] && fields_by_id.key?(field_params[:id])
@@ -87,20 +88,10 @@ module IdeaCustomFields
             next unless field
           end
           if options_params
-            option_temp_ids_to_ids_mapping_in_field_logic = update_options field, options_params, errors, index
+            option_temp_ids_to_ids_mapping_in_field_logic = update_options! field, options_params, errors, index
             option_temp_ids_to_ids_mapping.merge! option_temp_ids_to_ids_mapping_in_field_logic
           end
           field.move_to_bottom
-        end
-        raise UpdateAllFailedError, errors if errors.present?
-
-        fields = IdeaCustomFieldsService.new(@custom_form).configurable_fields
-        form_logic = FormLogicService.new(fields)
-        form_logic.replace_temp_ids!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping)
-        unless form_logic.valid?
-          fields.each_with_index do |field, index|
-            errors[index.to_s] = field.errors.details
-          end
         end
         raise UpdateAllFailedError, errors if errors.present?
       end
@@ -145,7 +136,7 @@ module IdeaCustomFields
       field
     end
 
-    def update_options(field, options_params, errors, field_index)
+    def update_options!(field, options_params, errors, field_index)
       {}.tap do |option_temp_ids_to_ids_mapping|
         options = field.options
         options_by_id = options.index_by(&:id)
@@ -197,6 +188,18 @@ module IdeaCustomFields
       option.destroy!
       SideFxCustomFieldOptionService.new.after_destroy option, current_user
       option
+    end
+
+    def update_logic!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors)
+      fields = IdeaCustomFieldsService.new(@custom_form).configurable_fields
+      form_logic = FormLogicService.new fields
+      form_logic.replace_temp_ids! page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping
+      unless form_logic.valid?
+        fields.each_with_index do |field, index|
+          errors[index.to_s] = field.errors.details
+        end
+      end
+      raise UpdateAllFailedError, errors if errors.present?
     end
 
     def add_options_errors(options_errors, errors, field_index, option_index)
