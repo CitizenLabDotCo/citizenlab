@@ -88,6 +88,15 @@ const BuiltInFields = ({
           />
         </DraggableElement>
       )}
+      {enabledBuiltInFieldKeys.includes('location_description') && (
+        <DraggableElement>
+          <ToolboxItem
+            icon="location-simple"
+            label={formatMessage(messages.locationDescription)}
+            onClick={() => enableField('location_description')}
+          />
+        </DraggableElement>
+      )}
     </Box>
   );
 };
