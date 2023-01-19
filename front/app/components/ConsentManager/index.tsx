@@ -33,7 +33,9 @@ import {
 import { IPreferences } from './typings';
 
 const ConsentManager = () => {
-  const [preferences, setPreferences] = useState<IPreferences>({});
+  const [preferences, setPreferences] = useState<IPreferences>({
+    functional: true,
+  });
   const [cookieConsent, setCookieConsent] = useState<IConsentCookie | null>(
     null
   );
@@ -113,7 +115,7 @@ const ConsentManager = () => {
     const newPreferences = {
       advertising: false,
       analytics: false,
-      functional: false,
+      functional: true,
     };
 
     setPreferences(newPreferences);

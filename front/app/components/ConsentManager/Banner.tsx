@@ -198,6 +198,7 @@ const Banner = ({ onAccept, onChangePreferences, onClose }: Props) => {
         </ContentContainerInner>
       </ContentContainer>
       <StyledCloseIconButton
+        className="e2e-close-cookie-banner"
         a11y_buttonActionMessage={messages.ariaButtonClose}
         onClick={onClose}
         iconColor={rgba(255, 255, 255, 0.7)}
