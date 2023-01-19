@@ -612,6 +612,7 @@
   "app.components.formBuilder.showResponseToUsersToggleLabel": "Show response to users",
   "app.components.formBuilder.singleChoice": "Single choice",
   "app.components.formBuilder.supportArticleLinkText": "this page",
+  "app.components.formBuilder.tags": "Tags",
   "app.components.formBuilder.title": "Title",
   "app.components.formBuilder.toLabel": "to",
   "app.container.IdeaForm.budgetIsTooBig": "The provided budget is too big",
