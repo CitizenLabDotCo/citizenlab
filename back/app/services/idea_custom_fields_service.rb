@@ -15,10 +15,11 @@ class IdeaCustomFieldsService
   end
 
   def configurable_fields
-    disallowed_fields = %w[author_id budget]
-    all_fields.reject do |field|
-      disallowed_fields.include? field.code
-    end
+    all_fields
+    # disallowed_fields = %w[author_id budget]
+    # all_fields.reject do |field|
+    #   disallowed_fields.include? field.code
+    # end
   end
 
   def reportable_fields

@@ -96,7 +96,7 @@ resource 'Idea Custom Fields' do
             key: 'title_multiloc',
             input_type: 'text_multiloc',
             title_multiloc: { en: 'New input title' },
-            description_multiloc: { en: 'Input description' },
+            description_multiloc: {},
             ordering: 0,
             required: true,
             enabled: true,
@@ -124,12 +124,14 @@ resource 'Idea Custom Fields' do
           type: 'custom_field',
           relationships: { options: { data: [] } }
         ))
-        expect(json_response[:data][2]).to match(hash_including(
+        # author
+        # budget
+        expect(json_response[:data][4]).to match(hash_including(
           attributes: hash_including(
             code: 'proposed_budget',
             key: 'proposed_budget',
             input_type: 'number',
-            ordering: 2,
+            ordering: 4,
             title_multiloc: hash_including(en: 'Proposed Budget'),
             description_multiloc: {},
             required: false,
