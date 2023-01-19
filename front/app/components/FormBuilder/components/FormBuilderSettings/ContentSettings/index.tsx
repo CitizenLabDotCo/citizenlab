@@ -22,6 +22,7 @@ import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
+import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 
 type ContentSettingsProps = {
   field: IFlatCustomFieldWithIndex;
@@ -83,13 +84,13 @@ export const ContentSettings = ({
                   </SectionField>
                 )}
             <SectionField>
-              <InputMultilocWithLocaleSwitcher
-                initiallySelectedLocale={platformLocale}
+              <QuillMultilocWithLocaleSwitcher
                 name={`customFields.${field.index}.description_multiloc`}
                 label={
                   <FormattedMessage {...messages.questionDescriptionOptional} />
                 }
-                type="text"
+                noAlign={true}
+                maxHeight="200px"
               />
             </SectionField>
           </>

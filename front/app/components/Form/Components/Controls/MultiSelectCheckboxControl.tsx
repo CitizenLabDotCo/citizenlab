@@ -17,7 +17,7 @@ import { FormLabel } from 'components/UI/FormComponents';
 import ErrorDisplay from '../ErrorDisplay';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { getOptions } from './controlUtils';
+import { getOptions, getSubtextElement } from './controlUtils';
 
 const MultiSelectCheckboxControl = ({
   data,
@@ -46,7 +46,7 @@ const MultiSelectCheckboxControl = ({
         htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
-        subtextValue={uischema.options?.description}
+        subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
       />
       <Box display="block" id="e2e-multiselect-control">
