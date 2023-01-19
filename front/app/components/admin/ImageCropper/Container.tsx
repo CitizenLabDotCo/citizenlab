@@ -24,7 +24,7 @@ const Container = ({ aspect, ...otherProps }: ImageCropperProps) => {
                   <FormattedMessage {...messages.infoLinkText} />
                 </a>
               ),
-              aspect: aspect,
+              aspect,
             }}
           />
         </Text>

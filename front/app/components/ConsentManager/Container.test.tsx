@@ -10,7 +10,9 @@ import { CategorizedDestinations } from './typings';
 jest.mock('utils/cl-intl');
 jest.mock('services/appConfiguration');
 jest.mock('modules', () => ({ streamsToReset: [] }));
-jest.mock('utils/cl-router/Link', () => ({ children }) => <a>{children}</a>);
+jest.mock('utils/cl-router/Link', () => ({ children }) => (
+  <button>{children}</button>
+));
 jest.mock('hooks/useLocale');
 
 let updatePreference: jest.Mock;

@@ -56,7 +56,7 @@ const Container = ({
       .subscribe(openDialog);
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [openDialog]);
 
   const validate = useCallback(() => {
     for (const category of keys(categorizedDestinations)) {

@@ -10,23 +10,24 @@ import { registerDestination } from './destinations';
 import { isAdmin, isModerator } from 'services/permissions/roles';
 
 // typings
-import { IConsentCookie } from './consent';
 import { IUserData } from 'services/users';
 
 // mocked functions
-import { setConsent } from './consent';
+import { setConsent, IConsentCookie } from './consent';
 
 // mocks
 jest.mock('utils/cl-intl');
 jest.mock('services/appConfiguration');
 jest.mock('modules', () => ({ streamsToReset: [] }));
-jest.mock('utils/cl-router/Link', () => ({ children }) => <a>{children}</a>);
+jest.mock('utils/cl-router/Link', () => ({ children }) => (
+  <button>{children}</button>
+));
 jest.mock('hooks/useLocale');
 
 let mockAuthUser: IUserData | null = null;
 jest.mock('hooks/useAuthUser', () => () => mockAuthUser);
 
-let mockAppConfiguration = {
+const mockAppConfiguration = {
   id: '1',
   attributes: {
     settings: {
