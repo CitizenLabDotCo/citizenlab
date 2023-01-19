@@ -1,4 +1,5 @@
 import React from 'react';
+import { get } from 'lodash-es';
 
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -43,7 +44,11 @@ const FormBuilderToolbox = ({
   move,
 }: FormBuilderToolboxProps & WrappedComponentProps) => {
   const locale = useLocale();
-
+  const customToolBoxTitle = get(
+    builderConfig,
+    'toolboxTitle',
+    messages.content
+  );
   if (isNilOrError(locale)) return null;
 
   const addField = (inputType: ICustomFieldInputType) => {
@@ -91,20 +96,7 @@ const FormBuilderToolbox = ({
       borderRight={`1px solid ${colors.borderLight}`}
     >
       <Box w="100%" display="inline">
-        {/* <Title
-          fontWeight="normal"
-          mb="4px"
-          mt="24px"
-          ml="16px"
-          variant="h6"
-          as="h3"
-          color="textSecondary"
-          style={{ textTransform: 'uppercase' }}
-        >
-          <FormattedMessage {...builderConfig.toolboxTitle} />
-        </Title> */}
         <BuiltInFields isEditingDisabled={isEditingDisabled} move={move} />
-
         <Title
           fontWeight="normal"
           mb="4px"
@@ -115,7 +107,7 @@ const FormBuilderToolbox = ({
           color="textSecondary"
           style={{ textTransform: 'uppercase' }}
         >
-          <FormattedMessage {...messages.content} />
+          <FormattedMessage {...customToolBoxTitle} />
         </Title>
 
         <DraggableElement>

@@ -16,7 +16,7 @@ export type FormBuilderConfig = {
   formBuilderTitle: MessageDescriptor;
   viewFormLinkCopy: MessageDescriptor;
   formSavedSuccessMessage: MessageDescriptor;
-  toolboxTitle: MessageDescriptor;
+  toolboxTitle?: MessageDescriptor;
   supportArticleLink?: MessageDescriptor;
   formEndPageLogicOption?: MessageDescriptor;
   questionLogicHelperText?: MessageDescriptor;
