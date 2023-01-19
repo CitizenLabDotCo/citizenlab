@@ -7,9 +7,6 @@ import Banner from './Banner';
 // events
 import eventEmitter from 'utils/eventEmitter';
 
-// utils
-import { keys } from 'utils/helperUtils';
-
 // typings
 import { CategorizedDestinations, IPreferences } from './typings';
 import { TCategory } from './destinations';
@@ -58,32 +55,14 @@ const Container = ({
     return () => subscription.unsubscribe();
   }, [openDialog]);
 
-  const validate = useCallback(() => {
-    for (const category of keys(categorizedDestinations)) {
-      const categoryHasDestinations =
-        categorizedDestinations[category].length > 0;
-      const preferenceIsUndefined = preferences[category] === undefined;
-
-      if (categoryHasDestinations && preferenceIsUndefined) {
-        return false;
-      }
-    }
-
-    return true;
-  }, [categorizedDestinations, preferences]);
-
   const handleSave = useCallback(
     (e: FormEvent<any>) => {
       e.preventDefault();
 
-      if (!validate()) {
-        return;
-      }
-
       setIsDialogOpen(false);
       saveConsent();
     },
-    [validate, saveConsent]
+    [saveConsent]
   );
 
   const handleCancel = useCallback(() => {
