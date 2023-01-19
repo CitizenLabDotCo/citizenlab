@@ -60,7 +60,7 @@ import { validateSlug } from 'utils/textUtils';
 import validateTitle from './utils/validateTitle';
 import { isNilOrError } from 'utils/helperUtils';
 import eventEmitter from 'utils/eventEmitter';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
 
 export const TIMEOUT = 350;
 
@@ -169,12 +169,6 @@ const AdminProjectsProjectGeneral = () => {
       }
     })();
   }, [remoteProjectImages]);
-
-  function isUploadFile(
-    file: UploadFile | null | undefined
-  ): file is UploadFile {
-    return file !== null && file !== undefined;
-  }
 
   const handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
     setSubmitState('enabled');

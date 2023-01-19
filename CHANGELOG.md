@@ -1,5 +1,18 @@
 # Changelog
 
+## 2023-01-19
+
+### Fixed
+
+- [CL-2617] Showing native survey confimation modal multiple times after submission even after closing the modal
+
+## 2023-01-18
+
+### Fixed
+
+- [CL-2611] Show projects nested in folders on custom pages
+- [CL-2604] The signed in banner opacity is fixed when its opacity is set to 0 in AdminHQ
+
 ## 2023-01-16
 
 ### Added

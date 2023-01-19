@@ -115,7 +115,7 @@ const ProjectHeader = memo<Props & WrappedComponentProps>(
               </TopBar>
             )}
             {projectHeaderImageLargeUrl && (
-              <HeaderImageContainer>
+              <HeaderImageContainer id="e2e-project-header-image">
                 <HeaderImage
                   id="e2e-project-header-image"
                   src={projectHeaderImageLargeUrl}
