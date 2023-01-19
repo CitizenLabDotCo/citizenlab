@@ -153,22 +153,20 @@ describe LocalProjectCopyService do
       expect(copied_project.groups).to eq source_project.groups
     end
 
-    it 'associates correct groups with actions group permissions of copied continuous ideation project' do
-      source_project = create(:project, participation_method: 'ideation')
+    describe 'when a certain project action is permitted only for groups' do
+      let(:groups) { create_list(:group, 2) }
+      let(:permission) do
+        ParticipationContextService.new
+          .get_participation_context(continuous_project).permissions
+          .find_by(action: 'commenting_idea')
+      end
 
-      permission = build(
-        :permission,
-        action: 'posting_idea',
-        permission_scope_type: 'Project',
-        permission_scope_id: source_project.id,
-        permitted_by: 'groups',
-        groups: create_list(:group, 2)
-      )
-      # Skip validation to avoid Validation failed: Action has already been taken
-      permission.save!(validate: false)
+      it 'copies the action groups permission' do
+        permission.update!(permitted_by: 'groups', groups: groups)
 
-      copied_project = service.copy(source_project)
-      expect(copied_project.permissions.first.groups).to eq source_project.permissions.first.groups
+        copied_project = service.copy(continuous_project)
+        expect(copied_project.permissions.find_by(action: 'commenting_idea').groups).to eq groups
+      end
     end
 
     it 'copies basic phase attributes' do
@@ -179,26 +177,21 @@ describe LocalProjectCopyService do
         .to eq timeline_project.phases.first.as_json(except: %i[id project_id start_at end_at updated_at created_at])
     end
 
-    it 'associates correct groups with actions group permissions of copied ideation phase' do
-      source_project = create(:project_with_active_ideation_phase)
+    describe 'when a certain phase action is permitted only for groups' do
+      let(:source_project) { create(:project_with_active_ideation_phase) }
+      let(:groups) { create_list(:group, 2) }
+      let(:permission) do
+        ParticipationContextService.new
+          .get_participation_context(source_project).permissions
+          .find_by(action: 'commenting_idea')
+      end
 
-      permission = build(
-        :permission,
-        action: 'posting_idea',
-        permission_scope_type: 'Phase',
-        permission_scope_id: source_project.phases.first.id,
-        permitted_by: 'groups',
-        groups: create_list(:group, 2)
-      )
-      # Skip validation to avoid Validation failed: Action has already been taken
-      permission.save!(validate: false)
+      it 'copies the action groups permission' do
+        permission.update!(permitted_by: 'groups', groups: groups)
 
-      # This prevents flakiness, whereby source project phase would have no groups
-      # associated with the permission evaluated in the expectation, in approx 1 out of 3 test runs.
-      source_project.phases.first.permissions = [permission]
-
-      copied_project = service.copy(source_project)
-      expect(copied_project.phases.first.permissions.first.groups).to eq source_project.phases.first.permissions.first.groups
+        copied_project = service.copy(source_project)
+        expect(copied_project.phases.first.permissions.find_by(action: 'commenting_idea').groups).to eq groups
+      end
     end
 
     it 'shifts timelines of phases to start first phase on day of copying' do
