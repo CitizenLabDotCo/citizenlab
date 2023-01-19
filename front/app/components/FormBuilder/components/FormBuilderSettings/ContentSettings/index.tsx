@@ -90,7 +90,7 @@ export const ContentSettings = ({
                   <FormattedMessage {...messages.questionDescriptionOptional} />
                 }
                 noAlign={true}
-                maxHeight="200px"
+                maxHeight="150px"
               />
             </SectionField>
           </>
