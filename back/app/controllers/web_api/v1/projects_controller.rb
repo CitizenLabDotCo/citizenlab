@@ -79,8 +79,9 @@ class WebApi::V1::ProjectsController < ApplicationController
   def copy
     source_project = Project.find(params[:id])
 
-    @project = LocalProjectCopyService.new.copy(source_project)
+    @project = Project.new
     authorize @project
+    @project = LocalProjectCopyService.new.copy(source_project)
 
     render json: WebApi::V1::ProjectSerializer.new(
       @project,
