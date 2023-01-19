@@ -1,10 +1,10 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
 import HeaderImage from './HeaderImage';
 import { mockHomepageSettings } from 'services/__mocks__/homepageSettings';
 import { getTheme } from '@citizenlab/cl2-component-library';
 import * as styledComponents from 'styled-components';
 import { THomepageBannerLayout } from 'services/homepageSettings';
+import { render, screen } from 'utils/testUtils/rtl';
 
 let mockHomepageBannerLayout: THomepageBannerLayout =
   'full_width_banner_layout';
