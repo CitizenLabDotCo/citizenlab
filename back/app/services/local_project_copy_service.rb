@@ -21,12 +21,9 @@ class LocalProjectCopyService
     copy_project_visibility_permission_groups(source_project, copied_project)
     copy_project_and_phases_actions_groups_permissions(source_project, copied_project)
 
-    source_project.allowed_input_topics.each do |topic|
-      input_topic = ProjectsAllowedInputTopic.find_by(topic_id: topic.id)
-      ProjectsAllowedInputTopic.create(project_id: copied_project.id, topic_id: topic.id, ordering: input_topic.ordering)
-    end
-    source_project.topics.each { |topic| ProjectsTopic.create(project_id: copied_project.id, topic_id: topic.id) }
-    source_project.areas.each { |area| AreasProject.create(project_id: copied_project.id, area_id: area.id) }
+    source_project.projects_allowed_input_topics.each { |p_a_i_t| p_a_i_t.dup.update!(project_id: copied_project.id) }
+    source_project.projects_topics.each { |projects_topic| projects_topic.dup.update!(project_id: copied_project.id) }
+    source_project.areas_projects.each { |areas_project| areas_project.dup.update!(project_id: copied_project.id) }
 
     copied_project
   end
@@ -41,9 +38,7 @@ class LocalProjectCopyService
   def copy_project_visibility_permission_groups(source_project, copied_project)
     return unless source_project.visible_to == 'groups'
 
-    GroupsProject.where(project_id: source_project.id).each do |record|
-      GroupsProject.create(project_id: copied_project.id, group_id: record.group_id)
-    end
+    source_project.groups_projects.each { |g_p| g_p.dup.update!(project_id: copied_project.id) }
   end
 
   def copy_project_and_phases_actions_groups_permissions(source_project, copied_project)
@@ -66,9 +61,7 @@ class LocalProjectCopyService
       copied_permission = copied_object.permissions.where(action: permission.action).first
       next unless copied_permission
 
-      permission.groups.each do |group|
-        GroupsPermission.create(permission_id: copied_permission.id, group_id: group.id)
-      end
+      permission.groups_permissions.each { |g_p| g_p.dup.update!(permission_id: copied_permission.id) }
     end
   end
 end
