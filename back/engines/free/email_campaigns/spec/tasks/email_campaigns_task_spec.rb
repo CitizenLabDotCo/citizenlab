@@ -29,7 +29,7 @@ describe Rake::Task do
     it 'creates the missing campaign records' do
       expect { task.execute }
         .to change(EmailCampaigns::Campaign, :count)
-        .by(EmailCampaigns::DeliveryService.new.campaign_types.size - 1)
+        .by(EmailCampaigns::DeliveryService.new.campaign_types.size)
     end
   end
 end

@@ -13,51 +13,18 @@ module EmailCampaigns
       def resolve
         if user&.active? && user&.admin?
           scope.all
-        elsif user&.active? && user&.project_moderator?
-          projects = Project.where(id: user.moderatable_project_ids)
-          if projects.any? { |p| p.visible_to == 'public' }
-            scope.where(type: EmailCampaigns::Campaigns::Manual.name)
-          else
-            accessible_group_ids = GroupPolicy::Scope.new(user, Group).resolve.ids
-            campaigns_with_wrong_groups = CampaignsGroup
-              .where.not(group_id: accessible_group_ids)
-              .pluck(:campaign_id)
-            campaigns_without_groups = Campaigns::Manual
-              .left_outer_joins(:campaigns_groups)
-              .where(email_campaigns_campaigns_groups: { id: nil })
-              .ids
-            scope
-              .where(type: EmailCampaigns::Campaigns::Manual.name)
-              .where.not(id: [*campaigns_with_wrong_groups, *campaigns_without_groups].uniq)
-          end
         else
           scope.none
         end
       end
     end
 
-    def create?
-      record.instance_of?(EmailCampaigns::Campaigns::Manual) && can_access_and_modify?
-    end
-
     def show?
-      if record.instance_of?(EmailCampaigns::Campaigns::Manual)
-        can_access_and_modify?
-      else
-        user&.active? && user&.admin?
-      end
+      user&.active? && user&.admin?
     end
 
     def update?
-      if record.instance_of?(EmailCampaigns::Campaigns::Manual)
-        !(record.respond_to?(:sent?) && record.sent?) && can_access_and_modify?
-      else
-        user&.active? && user&.admin?
-      end
-    end
-
-    def do_send?
-      update?
+      user&.active? && user&.admin?
     end
 
     def send_preview?
@@ -74,10 +41,6 @@ module EmailCampaigns
 
     def stats?
       show?
-    end
-
-    def destroy?
-      update?
     end
 
     private

@@ -1,23 +1,6 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :manual_campaign, class: EmailCampaigns::Campaigns::Manual do
-    enabled { true }
-    author
-    sender { 'author' }
-    reply_to { 'someguy@somecity.com' }
-    subject_multiloc do
-      {
-        'en' => "We're almost done with your feedback"
-      }
-    end
-    body_multiloc do
-      {
-        'en' => 'Time to check it all out!'
-      }
-    end
-  end
-
   factory :admin_rights_received_campaign, class: EmailCampaigns::Campaigns::AdminRightsReceived do
     enabled { true }
   end

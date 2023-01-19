@@ -79,7 +79,7 @@ resource 'Campaign consents' do
     parameter :unsubscription_token, 'A token passed through by e-mail unsubscribe links, giving unauthenticated access', required: false
     ValidationErrorHelper.new.error_fields(self, EmailCampaigns::Consent)
 
-    let(:campaign) { create(:manual_campaign) }
+    let(:campaign) { create(:comment_on_your_idea_campaign) }
     let(:consent) { create(:consent, user: @user, campaign_type: campaign.type) }
     let(:id) { consent.id }
     let(:consented) { false }
@@ -115,7 +115,7 @@ resource 'Campaign consents' do
     parameter :unsubscription_token, 'A token passed through by e-mail unsubscribe links, giving unauthenticated access', required: false
     ValidationErrorHelper.new.error_fields(self, EmailCampaigns::Consent)
 
-    let(:campaign) { create(:manual_campaign) }
+    let(:campaign) { create(:comment_on_your_idea_campaign) }
     let!(:consent) { create(:consent, user: @user, campaign_type: campaign.type) }
     let(:campaign_id) { campaign.id }
     let(:consented) { false }

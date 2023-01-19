@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :consent, class: EmailCampaigns::Consent do
-    campaign_type { 'ManualCampaign' }
+    campaign_type { 'AdminDigest' }
     user
     consented { true }
   end

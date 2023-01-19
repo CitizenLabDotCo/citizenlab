@@ -2,7 +2,7 @@
 
 module EmailCampaigns
   class WebApi::V1::CampaignsController < EmailCampaignsController
-    before_action :set_campaign, only: %i[show update do_send send_preview preview deliveries stats destroy]
+    before_action :set_campaign, only: %i[show update send_preview preview deliveries stats]
     rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
     def index
@@ -29,36 +29,15 @@ module EmailCampaigns
       render json: WebApi::V1::CampaignSerializer.new(@campaign, params: fastjson_params).serialized_json
     end
 
-    def create
-      @campaign = EmailCampaigns::DeliveryService.new.campaign_classes.find do |claz|
-        claz.campaign_name == params[:campaign][:campaign_name]
-      end.new(campaign_params)
-      @campaign.author ||= current_user
-
-      authorize @campaign
-      SideFxCampaignService.new.before_create(@campaign, current_user)
-      if @campaign.save
-        SideFxCampaignService.new.after_create(@campaign, current_user)
-        render json: WebApi::V1::CampaignSerializer.new(
-          @campaign,
-          params: fastjson_params
-        ).serialized_json, status: :created
-      else
-        render json: { errors: @campaign.errors.details }, status: :unprocessable_entity
-      end
-    end
-
     def update
       params[:campaign][:group_ids] ||= [] if params[:campaign].key?(:group_ids)
 
-      saved = nil
-      ActiveRecord::Base.transaction do
+      saved = ActiveRecord::Base.transaction do
         @campaign.assign_attributes(campaign_params)
         authorize @campaign
 
         SideFxCampaignService.new.before_update(@campaign, current_user)
-
-        saved = @campaign.save
+        @campaign.save
       end
 
       if saved
@@ -67,31 +46,6 @@ module EmailCampaigns
           @campaign,
           params: fastjson_params
         ).serialized_json, status: :ok
-      else
-        render json: { errors: @campaign.errors.details }, status: :unprocessable_entity
-      end
-    end
-
-    def destroy
-      SideFxCampaignService.new.before_destroy(@campaign, current_user)
-      campaign = @campaign.destroy
-      if campaign.destroyed?
-        SideFxCampaignService.new.after_destroy(campaign, current_user)
-        head :ok
-      else
-        head :internal_server_error
-      end
-    end
-
-    def do_send
-      if @campaign.valid?
-        SideFxCampaignService.new.before_send(@campaign, current_user)
-        EmailCampaigns::DeliveryService.new.send_now(@campaign)
-        SideFxCampaignService.new.after_send(@campaign, current_user)
-        render json: WebApi::V1::CampaignSerializer.new(
-          @campaign.reload,
-          params: fastjson_params
-        ).serialized_json
       else
         render json: { errors: @campaign.errors.details }, status: :unprocessable_entity
       end
@@ -133,18 +87,11 @@ module EmailCampaigns
     end
 
     def campaign_params
-      params.require(:campaign).permit(
-        :enabled,
-        :sender,
-        :reply_to,
-        group_ids: [],
-        subject_multiloc: I18n.available_locales,
-        body_multiloc: I18n.available_locales
-      )
+      params.require(:campaign).permit(:enabled)
     end
 
     def user_not_authorized(exception)
-      return unless %w[create? update? destroy? do_send? send_preview? deliveries? stats?].include? exception.query
+      return unless %w[update? send_preview? deliveries? stats?].include? exception.query
 
       if !current_user.admin? && current_user.project_moderator?
         render json: { errors: { group_ids: [{ error: 'unauthorized_choice_moderator' }] } }, status: :unauthorized
