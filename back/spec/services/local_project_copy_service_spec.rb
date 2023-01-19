@@ -51,14 +51,12 @@ describe LocalProjectCopyService do
 
     it 'copies basic project attributes' do
       copied_project = service.copy(continuous_project)
-
       expect(copied_project.to_json(except: %i[id title_mutliloc slug updated_at created_at]))
         .to eq continuous_project.to_json(except: %i[id title_mutliloc slug updated_at created_at])
     end
 
     it 'creates a copied project with an associated publication status of draft' do
       copied_project = service.copy(continuous_project)
-
       expect(copied_project.admin_publication.publication_status).to eq 'draft'
     end
 
@@ -71,13 +69,11 @@ describe LocalProjectCopyService do
     end
 
     it 'ensures uniqueness of slug(s)' do
-      continuous_project.update!(title_multiloc: { en: 'Test title' }, slug: 'test-title')
       copied_project1 = service.copy(continuous_project)
-      expect(copied_project1.slug).to eq 'test-title-copy'
+      expect(copied_project1.slug).to eq "#{continuous_project.slug}-copy"
 
-      continuous_project.update!(title_multiloc: { en: 'Test title' }, slug: 'test-title')
-      copied_project2 = service.copy(continuous_project)
-      expect(copied_project2.slug).to eq 'test-title-copy-1'
+      copied_project2 = service.copy(continuous_project.reload)
+      expect(copied_project2.slug).to eq "#{continuous_project.slug}-copy-1"
     end
 
     it 'copies project to same folder as source project' do
