@@ -132,6 +132,20 @@ describe LocalProjectCopyService do
         .to eq source_project.causes.first.to_json(except: %i[id participation_context_id image updated_at created_at])
     end
 
+    it 'copies associated custom_forms & related custom_fields & custom_field_options' do
+      custom_form = create(:custom_form)
+      custom_field = create(:custom_field, resource_type: 'CustomForm', input_type: 'select', resource_id: custom_form.id)
+      create(:custom_field_option, custom_field_id: custom_field.id)
+      source_project = Project.find(custom_form.participation_context_id)
+      copied_project = service.copy(source_project)
+
+      expect(copied_project.custom_form.participation_context_type).to eq source_project.custom_form.participation_context_type
+      expect(copied_project.custom_form.custom_fields.first.to_json(except: %i[id resource_id ordering updated_at created_at]))
+        .to eq source_project.custom_form.custom_fields.first.to_json(except: %i[id resource_id ordering updated_at created_at])
+      expect(copied_project.custom_form.custom_fields.first.options.first.to_json(except: %i[id custom_field_id updated_at created_at]))
+        .to eq source_project.custom_form.custom_fields.first.options.first.to_json(except: %i[id custom_field_id updated_at created_at])
+    end
+
     it "associates correct groups with copied project's groups visibility permission" do
       source_project = create(:private_groups_project)
 
