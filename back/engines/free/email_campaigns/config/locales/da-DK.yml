@@ -11,7 +11,6 @@ da:
       "first_idea_published": Publicering af min første idé
       "idea_marked_as_spam": Rapportering af idé-spam
       "idea_published": Publicering af min idé
-      "initiative_assigned_to_you": Tildeling af et borgerforslag til mig
       "initiative_marked_as_spam": Rapportering af borgerforslag-spam
       "initiative_published": Publicering af mit borgerforslag
       "invite_received": Invitation
@@ -45,7 +44,6 @@ da:
       "welcome": Efter registrering
       "admin_digest": Ugentlig oversigt for administratorer
       "moderator_digest": Ugentlig oversigt for projektledere
-      "assignee_digest": Ugentlig oversigt over tildelte ideer
       "user_digest": Ugentlig oversigt
       "your_proposed_initiatives_digest": Ugentlig oversigt over dine borgerforslag
     admin_campaign_type_description:
@@ -59,7 +57,6 @@ da:
       "first_idea_published": Offentliggørelse af din første idé - alle brugere
       "idea_marked_as_spam": Rapportering af spam om ideer - administratorer og projektledere
       "idea_published": Offentliggørelse af din idé - alle brugere
-      "initiative_assigned_to_you": Tildeling af et forslag - administratorer
       "initiative_marked_as_spam": Rapport om forslagsspam - administratorer
       "initiative_published": Offentliggørelse af din forslag - alle brugere
       "invite_received": Indbydelse - alle brugere
@@ -94,7 +91,6 @@ da:
       "welcome": Velkomstmail til nye brugere - alle brugere
       "admin_digest": Ugentlig oversigt - administratorer
       "moderator_digest": Ugentlig oversigt - projektledere
-      "assignee_digest": Ugentlig oversigt over tildelte idéer - administratorer og projektledere
       "user_digest": Ugentlig oversigt - alle brugere
       "your_proposed_initiatives_digest": Ugentlig oversigt over dine egne forslag - alle brugere
     footer:
@@ -165,21 +161,6 @@ da:
       main_header: '%{commentAuthor} kommenterede dit borgerforslag'
       subject: 'Du har modtaget en kommentar på %{organizationName}s platform'
       preheader: '%{authorName} efterlod en kommentar til dit borgerforslag for %{organizationName}'
-    assignee_digest:
-      subject: 'Ideer der kræver din tilbagemelding: %{numberIdeas}'
-      preheader: 'Repræsentantsammenfatning for %{organizationName}'
-      title_your_weekly_report: '%{firstName}, borgerinput venter på din feedback'
-      cta_manage_your_input: 'Administrer dine input'
-      assigned_ideas: 'Idéer mangler din feedback'
-      title_assignment_past_week: 'Seneste idéer, der er tildelt dig'
-      title_no_assignment_past_week: 'Ingen nye idéer er tildelt dig i den sidste uge'
-      yesterday_by_author: 'I går af %{author}'
-      today_by_author: 'I dag af %{author}'
-      x_days_ago_by_author: '%{x} dage siden af %{author}'
-      idea_section: Idéer
-      initiative_section: Borgerforslag
-      title_initiatives_past_week: 'Nye borgerforslag tildelt dig'
-      title_successful_initiatives_past_week: 'Borgerforslag tildelt dig, som har nået tærskelgrænsen'
     idea_marked_as_spam:
       by_author: 'af %{authorName}'
       cta_review_idea: 'Bedøm idé'
@@ -198,13 +179,6 @@ da:
       preheader: 'Tag handling ud fra denne spamrapport'
       reported_this_because: '%{reporterFirstName} rapporterede dette fordi:'
       title_spam_report: '%{firstName} %{lastName} rapporterede spam'
-    initiative_assigned_to_you:
-      by_author: 'af %{authorName}'
-      cta_reply_to: 'Giv feedback til %{authorName}'
-      event_description_initiative: 'Et borgerforslag er blevet tildelt dig. Giv feedback ved at skrive en opdatering eller ved at ændre dens status.'
-      main_header: '%{firstName}, du har en ny tildeling'
-      subject: 'Du har en ny tildeling på platformen for %{organizationName}'
-      preheader_initiative: 'Du er blevet tildelt %{authorName}s borgerforslag'
     invite_reminder:
       cta_accept_invitation: 'Acceptér din invitation'
       invitation_header: 'Din invitation er afventende'

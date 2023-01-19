@@ -45,10 +45,6 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :initiative_assigned_to_you_campaign, class: EmailCampaigns::Campaigns::InitiativeAssignedToYou do
-    enabled { true }
-  end
-
   factory :initiative_marked_as_spam_campaign, class: EmailCampaigns::Campaigns::InitiativeMarkedAsSpam do
     enabled { true }
   end
@@ -167,11 +163,6 @@ FactoryBot.define do
   end
 
   factory :moderator_digest_campaign, class: EmailCampaigns::Campaigns::ModeratorDigest do
-    enabled { true }
-    schedule { weekly_schedule }
-  end
-
-  factory :assignee_digest_campaign, class: EmailCampaigns::Campaigns::AssigneeDigest do
     enabled { true }
     schedule { weekly_schedule }
   end

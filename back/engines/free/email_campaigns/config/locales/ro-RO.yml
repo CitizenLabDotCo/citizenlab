@@ -11,7 +11,6 @@ ro:
       "first_idea_published": Publicarea primei mele idei
       "idea_marked_as_spam": Raportul spam despre idei
       "idea_published": Publicarea ideii mele
-      "initiative_assigned_to_you": Atribuirea unei propuneri mie
       "initiative_marked_as_spam": Propunere raport de spam
       "initiative_published": Publicarea propunerii mele
       "invite_received": Invitație
@@ -45,7 +44,6 @@ ro:
       "welcome": După înregistrare
       "admin_digest": Rezumate săptămânale pentru admini
       "moderator_digest": Prezentarea săptămânală pentru managerii de proiect
-      "assignee_digest": Rezumate săptămânale ale ideilor atribuite
       "user_digest": Rezumate săptămânale
       "your_proposed_initiatives_digest": Rezumate săptămânale ale propunerilor dumneavoastră
     admin_campaign_type_description:
@@ -59,7 +57,6 @@ ro:
       "first_idea_published": Publicarea primei tale idei - toți utilizatorii
       "idea_marked_as_spam": Raport spam de idei - administratori și manageri de proiect
       "idea_published": Publicarea ideii dvs. - toți utilizatorii
-      "initiative_assigned_to_you": Atribuirea unei propuneri - administratori
       "initiative_marked_as_spam": Raport spam al propunerii - administratori
       "initiative_published": Publicarea propunerii dvs. - toți utilizatorii
       "invite_received": Invitație - toți utilizatorii
@@ -94,7 +91,6 @@ ro:
       "welcome": Utilizator nou - administratori
       "admin_digest": Prezentare săptămânală - administratori
       "moderator_digest": Prezentare săptămânală - manageri de proiect
-      "assignee_digest": Prezentare săptămânală a ideilor atribuite - administratori și manageri de proiect
       "user_digest": Prezentare săptămânală - toți utilizatorii
       "your_proposed_initiatives_digest": Prezentare săptămânală a propriilor dvs. propuneri - toți utilizatorii
     footer:
@@ -165,21 +161,6 @@ ro:
       main_header: '%{commentAuthor} a comentat inițiativa dvs.'
       subject: 'Ați primit un comentariu pe platforma %{organizationName}'
       preheader: '%{authorName} a lăsat un comentariu la inițiativa dvs. pentru %{organizationName}'
-    assignee_digest:
-      subject: 'Idei care necesită feedback'
-      preheader: 'Analiza reprezentantului %{organizationName}'
-      title_your_weekly_report: 'Contribuția cetățeanului așteaptă feedback-ul dvs.'
-      cta_manage_your_input: 'Gestionați datele introduse'
-      assigned_ideas: 'Ideile au nevoie de feedback-ul dvs.'
-      title_assignment_past_week: 'Ultimele idei care v-au fost atribuite'
-      title_no_assignment_past_week: 'Nu vi s-au atribuit idei noi săptămâna trecută'
-      yesterday_by_author: 'Ieri de %{author}'
-      today_by_author: 'Astăzi de %{author}'
-      x_days_ago_by_author: 'Cu %{x} zile în urmă de %{author}'
-      idea_section: Idei
-      initiative_section: Propuneri
-      title_initiatives_past_week: 'Noile propuneri atribuite dvs.'
-      title_successful_initiatives_past_week: 'Propunerile atribuite dvs. care au atins pragul'
     idea_marked_as_spam:
       by_author: 'De către %{authorName}'
       cta_review_idea: 'Ideea de recenzie'
@@ -198,13 +179,6 @@ ro:
       preheader: 'Acționați asupra acestui raport de spam'
       reported_this_because: '%{reporterFirstName} a raportat acest lucru, deoarece:'
       title_spam_report: '%{firstName} %{lastName} a raportat spam'
-    initiative_assigned_to_you:
-      by_author: 'De către %{authorName}'
-      cta_reply_to: 'Trimiteți feedback la %{authorName}'
-      event_description_initiative: 'Ți-a fost atribuită o propunere. Trimiteți feedback prin scrierea unei actualizări oficiale sau schimbarea statusului ei.'
-      main_header: '%{firstName}, aveți o sarcină nouă'
-      subject: 'Aveți o misiune pe platforma %{organizationName}'
-      preheader_initiative: 'Propunerea de %{authorName} v-a fost atribuită'
     invite_reminder:
       cta_accept_invitation: 'Acceptați invitația'
       invitation_header: 'Invitația dvs. este în așteptare'

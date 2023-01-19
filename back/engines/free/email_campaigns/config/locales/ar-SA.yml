@@ -11,7 +11,6 @@ ar:
       "first_idea_published": نشر فكرتي الأولى
       "idea_marked_as_spam": الإبلاغ عن الفكرة كـ مزعجة
       "idea_published": نشر فكرتي
-      "initiative_assigned_to_you": تعيين مُقترح إلي
       "initiative_marked_as_spam": الإبلاغ عن المُقترح كـ مزعج
       "initiative_published": نشر مُقترحي
       "invite_received": دعوة
@@ -45,7 +44,6 @@ ar:
       "welcome": بعد التسجيل
       "admin_digest": نظرة عامة أسبوعية للمسؤولين
       "moderator_digest": نظرة عامة أسبوعية لمديري المشاريع
-      "assignee_digest": نظرة عامة أسبوعية على الأفكار المعيّنة
       "user_digest": نظرة عامة أسبوعية
       "your_proposed_initiatives_digest": نظرة عامة أسبوعية على مُقترحاتك
     admin_campaign_type_description:
@@ -59,7 +57,6 @@ ar:
       "first_idea_published": نشر فكرتك الأولى - جميع المستخدمين
       "idea_marked_as_spam": الإبلاغ عن الفكرة كـ مزعجة - المسؤولين ومديري المشاريع
       "idea_published": نشر فكرتك - جميع المستخدمين
-      "initiative_assigned_to_you": تعيين المُقترح - المسؤولين
       "initiative_marked_as_spam": الإبلاغ عن المُقترح كـ مزعج - المسؤولين
       "initiative_published": نشر مُقترحك - جميع المستخدمين
       "invite_received": الدعوة - جميع المستخدمين
@@ -94,7 +91,6 @@ ar:
       "welcome": مستخدم جديد - المسؤولين
       "admin_digest": نظرة عامة أسبوعية - المسؤولين
       "moderator_digest": نظرة عامة أسبوعية - مديري المشاريع
-      "assignee_digest": نظرة عامة أسبوعية على الأفكار المعيّنة - المسؤولين ومديري المشاريع
       "user_digest": نظرة عامة أسبوعية - جميع المستخدمين
       "your_proposed_initiatives_digest": نظرة عامة أسبوعية على مقترحاتك الخاصة - جميع المستخدمين
     footer:
@@ -165,21 +161,6 @@ ar:
       main_header: 'علّق %{commentAuthor} على مبادرتك'
       subject: 'لقد استلمت تعليقًا على المنصة الخاصة بـ %{organizationName}'
       preheader: 'ترك %{authorName} تعليقًا على مبادرتك لـ %{organizationName}'
-    assignee_digest:
-      subject: 'أفكار بانتظار ملاحظاتك: %{numberIdeas}'
-      preheader: 'ملخص التعيين لـ %{organizationName}'
-      title_your_weekly_report: '%{firstName}، مُدخلات المواطنين بانتظار ملاحظاتك'
-      cta_manage_your_input: 'إدارة مُدخلاتك'
-      assigned_ideas: 'أفكار بحاجة إلى ملاحظاتك'
-      title_assignment_past_week: 'آخر الأفكار المعيّنة إليك'
-      title_no_assignment_past_week: 'لم يتم تعيين أي أفكار جديدة إليك في الأسبوع الماضي'
-      yesterday_by_author: 'الأمس بواسطة %{author}'
-      today_by_author: 'اليوم بواسطة %{author}'
-      x_days_ago_by_author: 'قبل %{x} يوم بواسطة %{author}'
-      idea_section: الأفكار
-      initiative_section: المُقترحات
-      title_initiatives_past_week: 'المُقترحات الجديدة المُعيّنة إليك'
-      title_successful_initiatives_past_week: 'المُقترحات المعيّنة إليك والتي وصلت إلى الحد المطلوب'
     idea_marked_as_spam:
       by_author: 'بواسطة %{authorName}'
       cta_review_idea: 'مراجعة الفكرة'
@@ -198,13 +179,6 @@ ar:
       preheader: 'تصرف بناءً على تقرير الإزعاج هذا'
       reported_this_because: 'قام %{reporterFirstName} بالإبلاغ لأن:'
       title_spam_report: 'أبلغ %{firstName}%{lastName} عن إزعاج'
-    initiative_assigned_to_you:
-      by_author: 'بواسطة %{authorName}'
-      cta_reply_to: 'قدّم ملاحظاتك لـ %{authorName}'
-      event_description_initiative: 'تم تعيين مُقترح إليك. قدّم ملاحظاتك من خلال كتابة تحديث رسمي أو بتغيير حالته.'
-      main_header: '%{firstName}، لديك مهمة جديدة'
-      subject: 'لديك مهمة على المنصة الخاصة بـ %{organizationName}'
-      preheader_initiative: 'تم تعيين مُقترح %{authorName} إليك'
     invite_reminder:
       cta_accept_invitation: 'اقبل دعوتك'
       invitation_header: 'دعوتك قيد الانتظار'

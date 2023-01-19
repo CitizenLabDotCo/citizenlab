@@ -11,7 +11,6 @@ lb:
       "first_idea_published": Verëffentlechung vu menger éischter Iddi
       "idea_marked_as_spam": Spambericht iwwer d'Iddien
       "idea_published": Verëffentlechung vu menger Iddi
-      "initiative_assigned_to_you": E Virschlag gouf mir zougewisen
       "initiative_marked_as_spam": Spambericht iwwer d'Virschléi
       "initiative_published": Verëffentlechung vu mengem Virschlag
       "invite_received": Invitatioun
@@ -45,7 +44,6 @@ lb:
       "welcome": No der Aschreiwung
       "admin_digest": Wéchentlechen Iwwerbléck fir Verwalteren
       "moderator_digest": Wéchentlech Iwwersiicht fir Projetsmanageren
-      "assignee_digest": Wéchentlech Iwwersiicht iwwer zougewisen Iddien
       "user_digest": Wéchentlech Iwwersiicht
       "your_proposed_initiatives_digest": Wéchentlech Iwwersiicht vun Äre Virschléi
     admin_campaign_type_description:
@@ -59,7 +57,6 @@ lb:
       "first_idea_published": Är éischt Iddi verëffentlechen – all Benotzer
       "idea_marked_as_spam": Spamrapport Iddien - Verwalter a Projetsmanager
       "idea_published": Verëffentlechung vun Ärer Iddi – all Benotzer
-      "initiative_assigned_to_you": Zouuerdnung vun Ärer Propositioun - Verwalter
       "initiative_marked_as_spam": Spamrapport Propositioun - Verwalter
       "initiative_published": Verëffentlechung vun Ärer Propositioun – all Benotzer
       "invite_received": Invitatioun - all Benotzer
@@ -94,7 +91,6 @@ lb:
       "welcome": Wëllkomm-E-Mail fir all nei Benotzer - all Benotzer
       "admin_digest": Wéchentlechen Iwwerbléck - Verwalter
       "moderator_digest": Wéchentlechen Iwwerbléck - Projetsmanageren
-      "assignee_digest": Wéchentlechen Iwwerbléck iwwer zougeuerdent Iddien - Verwalter a Projetsmanager
       "user_digest": Wéchentlechen Iwwerbléck - all Benotzer
       "your_proposed_initiatives_digest": Wéchentlechen Iwwerbléck iwwer Är eege Propositiounen - all Benotzer
     footer:
@@ -165,21 +161,6 @@ lb:
       main_header: '%{commentAuthor} huet Äre Virschlag kommentéiert'
       subject: 'Dir hutt e Kommentar op der Plattform %{organizationName} kritt'
       preheader: '%{authorName} huet e Kommentar zu Ärem Virschlag op %{organizationName} hannerlooss'
-    assignee_digest:
-      subject: 'Iddien, déi Äre Feedback erfuerderen: %{numberIdeas}'
-      preheader: 'Iwwersiicht vun den Elementer déi Iech zougewise goufen %{organizationName}'
-      title_your_weekly_report: '%{firstName}, de Bäitrag vun de Benotzer waart op Äre Feedback'
-      cta_manage_your_input: 'Är Bäiträg verwalten'
-      assigned_ideas: 'Iddie brauchen Äre Feedback'
-      title_assignment_past_week: 'Neist Iddien, déi Iech zougewise goufen'
-      title_no_assignment_past_week: 'D''lescht Woch goufen Iech keng nei Iddien zougewisen'
-      yesterday_by_author: 'Gëschter vun %{author}'
-      today_by_author: 'Haut vun %{author}'
-      x_days_ago_by_author: 'Virun %{x} Deeg %{author} vun'
-      idea_section: Iddien
-      initiative_section: Propositioun
-      title_initiatives_past_week: 'Neist Virschléi, déi Iech zougewise goufen'
-      title_successful_initiatives_past_week: 'Virschléi, déi Iech zougewise goufen an déi d''Schwell erreecht hunn'
     idea_marked_as_spam:
       by_author: 'vun %{authorName}'
       cta_review_idea: 'Iddi iwwerpréiwen'
@@ -198,13 +179,6 @@ lb:
       preheader: 'Reagéiert op dës Spammeldung'
       reported_this_because: '%{reporterFirstName} huet dëst gemellt, well:'
       title_spam_report: '%{firstName} %{lastName} huet Spam gemellt'
-    initiative_assigned_to_you:
-      by_author: 'vun %{authorName}'
-      cta_reply_to: '%{authorName} Feedback ginn'
-      event_description_initiative: 'Eng Propositioun gouf Iech zougewisen. Gitt Feedback, andeem Dir en offiziellen Update schreift oder de Status ännert.'
-      main_header: '%{firstName}, Dir hutt eng nei Zouweisung'
-      subject: 'Dir hutt eng Zouweisung op der Plattform vun %{organizationName}'
-      preheader_initiative: 'De Virschlag vum %{authorName} gouf Iech zougewisen'
     invite_reminder:
       cta_accept_invitation: 'Invitatioun unhuelen'
       invitation_header: 'Är Invitatioun steet aus'

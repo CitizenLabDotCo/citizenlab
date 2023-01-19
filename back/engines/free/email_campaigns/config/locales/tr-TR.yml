@@ -11,7 +11,6 @@ tr:
       "first_idea_published": İlk fikrimin yayımlanması
       "idea_marked_as_spam": Fikrin spam olarak bildirilmesi
       "idea_published": Fikrimin yayımlanması
-      "initiative_assigned_to_you": Bana öneri atanması
       "initiative_marked_as_spam": Önerinin spam olarak bildirilmesi
       "initiative_published": Önerimin yayımlanması
       "invite_received": Davetiye
@@ -45,7 +44,6 @@ tr:
       "welcome": Kayıttan sonra
       "admin_digest": Yöneticiler için haftalık genel bakış
       "moderator_digest": Proje yöneticileri için haftalık genel bakış
-      "assignee_digest": Atanmış fikirlere haftalık genel bakış
       "user_digest": Haftalık genel bakış
       "your_proposed_initiatives_digest": Önerilerinize haftalık genel bakış
     admin_campaign_type_description:
@@ -59,7 +57,6 @@ tr:
       "first_idea_published": İlk fikrinizin yayımlanması - tüm kullanıcılar
       "idea_marked_as_spam": Fikrin spam olarak bildirilmesi - yöneticiler ve proje yöneticileri
       "idea_published": Fikrinizin yayımlanması - tüm kullanıcılar
-      "initiative_assigned_to_you": Bir önerinin atanması - yöneticiler
       "initiative_marked_as_spam": Önerinin spam olarak bildirilmesi - yöneticiler
       "initiative_published": Önerinizin yayımlanması - tüm kullanıcılar
       "invite_received": Davetiye - tüm kullanıcılar
@@ -94,7 +91,6 @@ tr:
       "welcome": Yeni kullanıcılar için karşılama e-postası - tüm kullanıcılar
       "admin_digest": Haftalık genel bakış - yöneticiler
       "moderator_digest": Haftalık genel bakış - proje yöneticileri
-      "assignee_digest": Atanmış fikirlere haftalık genel bakış - yöneticiler ve proje yöneticileri
       "user_digest": Haftalık genel bakış - tüm kullanıcılar
       "your_proposed_initiatives_digest": Kendi önerilerinize haftalık genel bakış - tüm kullanıcılar
     footer:
@@ -165,21 +161,6 @@ tr:
       main_header: '%{commentAuthor} girişiminiz hakkında yorum yaptı'
       subject: '%{organizationName} platformunda bir yorum aldınız'
       preheader: '%{authorName}, %{organizationName} ile ilgili girişiminiz hakkında bir yorum bıraktı'
-    assignee_digest:
-      subject: 'Geri bildiriminizi gerektiren fikir sayısı: %{numberIdeas}'
-      preheader: '%{organizationName} için atanan özeti'
-      title_your_weekly_report: '%{firstName}, vatandaş girdisi geri bildiriminizi bekliyor'
-      cta_manage_your_input: 'Girdilerinizi yönetin'
-      assigned_ideas: 'Fikirler için geri bildiriminiz gerekiyor'
-      title_assignment_past_week: 'Size atanan en son fikirler'
-      title_no_assignment_past_week: 'Geçen hafta size yeni fikir atanmadı'
-      yesterday_by_author: '%{author} tarafından dün'
-      today_by_author: '%{author} tarafından bugün'
-      x_days_ago_by_author: '%{author} tarafından %{x} gün önce'
-      idea_section: Fikirler
-      initiative_section: Öneriler
-      title_initiatives_past_week: 'Size atanan yeni öneriler'
-      title_successful_initiatives_past_week: 'Size atanan ve eşiğe ulaşan öneriler'
     idea_marked_as_spam:
       by_author: '%{authorName} tarafından'
       cta_review_idea: 'Fikri inceleyin'
@@ -198,13 +179,6 @@ tr:
       preheader: 'Bu spam bildirimi ile ilgili işlem yapın'
       reported_this_because: '%{reporterFirstName} bunu bildirdi:'
       title_spam_report: '%{firstName} %{lastName} spam bildirdi'
-    initiative_assigned_to_you:
-      by_author: '%{authorName} tarafından'
-      cta_reply_to: '%{authorName} için geri bildirim sağlayın'
-      event_description_initiative: 'Size bir öneri atandı. Resmi bilgilendirme yazarak veya önerinin durumunu değiştirerek geri bildirim sağlayın.'
-      main_header: '%{firstName}, yeni bir atamanız var'
-      subject: '%{organizationName} platformunda bir atamanız var'
-      preheader_initiative: '%{authorName} adlı kişinin önerisi size atandı'
     invite_reminder:
       cta_accept_invitation: 'Davetiyenizi kabul edin'
       invitation_header: 'Davetiyeniz beklemede'

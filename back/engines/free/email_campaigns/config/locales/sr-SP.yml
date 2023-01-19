@@ -11,7 +11,6 @@ sr-SP:
       "first_idea_published": Објава моје прве идеје
       "idea_marked_as_spam": Извештај о спам идеји
       "idea_published": Објава моје идеје
-      "initiative_assigned_to_you": Додељен ми је предлог
       "initiative_marked_as_spam": Извештај о спам предлогу
       "initiative_published": Објава мог предлога
       "invite_received": Позивница
@@ -45,7 +44,6 @@ sr-SP:
       "welcome": Након регистрације
       "admin_digest": Недељни преглед за администраторе
       "moderator_digest": Недељни преглед за менаџере пројеката
-      "assignee_digest": Недељни преглед додељених идеја
       "user_digest": Недељни преглед
       "your_proposed_initiatives_digest": Недељни преглед ваших предлога
     admin_campaign_type_description:
@@ -59,7 +57,6 @@ sr-SP:
       "first_idea_published": Објављивање ваше прве идеје - сви корисници
       "idea_marked_as_spam": Извештај о нежељеној идеји- администратори и менаџери пројекта
       "idea_published": Објављивање ваше идеје - сви корисници
-      "initiative_assigned_to_you": Додељивање понуде - администратори
       "initiative_marked_as_spam": Извештај о нежељеној понуди - администратори
       "initiative_published": Објављивање ваше понуде - сви корисници
       "invite_received": Позив - сви корисници
@@ -94,7 +91,6 @@ sr-SP:
       "welcome": Е-порука добродошлице за нове кориснике - сви корисници
       "admin_digest": Недељни преглед - администратори
       "moderator_digest": Недељни преглед - менаџери пројекта
-      "assignee_digest": Недељни преглед додељених идеја - администратори и менаџери пројекта
       "user_digest": Недељни преглед - сви корисници
       "your_proposed_initiatives_digest": Недељни преглед ваших понуда - сви корисници
     footer:
@@ -165,21 +161,6 @@ sr-SP:
       main_header: '%{commentAuthor} је коментарисао/ла вашу иницијативу'
       subject: 'Добили сте коментар на платформи %{organizationName}'
       preheader: '%{authorName} је оставио коментар на вашу иницијативу за %{organizationName}'
-    assignee_digest:
-      subject: 'Објаве за које су потребне ваше повратне информације: %{numberIdeas}'
-      preheader: '%{organizationName} сажетак'
-      title_your_weekly_report: '%{firstName}, унос корисника чека на ваше повратне информације'
-      cta_manage_your_input: 'Управљајте својим уносом'
-      assigned_ideas: 'Идеје којима су потребне повратне информације'
-      title_assignment_past_week: 'Најновији постови који су вам додељени'
-      title_no_assignment_past_week: 'Претходне недеље вам није додељена ниједна нова идеја'
-      yesterday_by_author: 'Јуче од аутора %{author}'
-      today_by_author: 'Данас од аутора %{author}'
-      x_days_ago_by_author: 'пре %{x} дана од %{author}'
-      idea_section: Идеје
-      initiative_section: Предлози
-      title_initiatives_past_week: 'Додељени су вам нови предлози'
-      title_successful_initiatives_past_week: 'Додељени предлози који су достигли потребан број гласова'
     idea_marked_as_spam:
       by_author: 'од %{authorName}'
       cta_review_idea: 'Прегледајте идеју'
@@ -198,13 +179,6 @@ sr-SP:
       preheader: 'Реагујте спрам овог спам извештаја'
       reported_this_because: '%{reporterFirstName} је пријавио/ла ово јер:'
       title_spam_report: '%{firstName} %{lastName} је пријавио/ла нежељену пошту'
-    initiative_assigned_to_you:
-      by_author: 'од %{authorName}'
-      cta_reply_to: 'Пошаљите утиске за %{authorName}'
-      event_description_initiative: 'Додељен вам је предлог. Ажурирајте информације писањем званичног обавештења или променом његовог статуса.'
-      main_header: '%{firstName}, имате нови задатак'
-      subject: 'Имате задатак на %{organizationName} платформи'
-      preheader_initiative: 'Додељен вам је предлог од %{authorName}'
     invite_reminder:
       cta_accept_invitation: 'Прихватите позивницу'
       invitation_header: 'Позивница је на чекању'

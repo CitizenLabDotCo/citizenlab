@@ -11,7 +11,6 @@ fr:
       "first_idea_published": Publication de ma première idée
       "idea_marked_as_spam": Rapport sur le spam d'idées
       "idea_published": Publication de mon idée
-      "initiative_assigned_to_you": Attribution en ma faveur d'une proposition
       "initiative_marked_as_spam": Rapport sur le spam de proposition
       "initiative_published": Publication de mon proposition
       "invite_received": Invitation
@@ -45,7 +44,6 @@ fr:
       "welcome": Après inscription
       "admin_digest": Aperçu hebdomadaire pour les administrateurs
       "moderator_digest": Aperçu hebdomadaire pour les administrateurs projet
-      "assignee_digest": Aperçu hebdomadaire des idées attribuées
       "user_digest": Aperçu hebdomadaire
       "your_proposed_initiatives_digest": Aperçu hebdomadaire de vos propositions
     admin_campaign_type_description:
@@ -59,7 +57,6 @@ fr:
       "first_idea_published": Publication de votre première idée (tous les utilisateurs)
       "idea_marked_as_spam": Rapport de spam d'idées - administrateurs et administrateurs projet
       "idea_published": Publication de votre idée (tous les utilisateurs)
-      "initiative_assigned_to_you": Attribution d'une proposition - admins
       "initiative_marked_as_spam": Rapport de spam de proposition - admins
       "initiative_published": Publication de votre proposition - tous les utilisateurs
       "invite_received": Invitation (tous les utilisateurs)
@@ -94,7 +91,6 @@ fr:
       "welcome": Courriel de bienvenue aux nouveaux utilisateurs (tous les utilisateurs)
       "admin_digest": Vue d'ensemble hebdomadaire - administrateurs
       "moderator_digest": Aperçu hebdomadaire - administrateurs projet
-      "assignee_digest": Aperçu hebdomadaire des idées attribuées - administrateurs et administrateurs projet
       "user_digest": Aperçu hebdomadaire (tous les utilisateurs)
       "your_proposed_initiatives_digest": Aperçu hebdomadaire de vos propres propositions - tous les utilisateurs
     footer:
@@ -165,21 +161,6 @@ fr:
       main_header: '%{commentAuthor} a commenté votre proposition'
       subject: 'Vous avez reçu un commentaire sur la plateforme de %{organizationName}'
       preheader: '%{authorName} a commenté votre proposition pour %{organizationName}'
-    assignee_digest:
-      subject: 'Idées en attente de mise à jour: %{numberIdeas}'
-      preheader: 'Rapport de gestion de %{organizationName}'
-      title_your_weekly_report: '%{firstName}, la contribution des citoyens est en attente de votre mise à jour'
-      cta_manage_your_input: 'Gérer vos contributions'
-      assigned_ideas: 'Idées nécessitant une mise à jour'
-      title_assignment_past_week: 'Dernières idées qui vous ont été attribuées'
-      title_no_assignment_past_week: 'Aucune nouvelles idées vous ont été attribuées la semaine dernière'
-      yesterday_by_author: 'Hier par %{author}'
-      today_by_author: 'Aujourd''hui par %{author}'
-      x_days_ago_by_author: 'Il y a %{x} jours par %{author}'
-      idea_section: Idées
-      initiative_section: Propositions
-      title_initiatives_past_week: 'Nouvelles propositions qui vous sont confiées'
-      title_successful_initiatives_past_week: 'Les propositions qui vous sont confiées et qui ont atteint le nombre de voix requis'
     idea_marked_as_spam:
       by_author: 'par %{authorName}'
       cta_review_idea: 'Examiner cette idée'
@@ -198,13 +179,6 @@ fr:
       preheader: 'Agir sur ce rapport de spam'
       reported_this_because: '%{reporterFirstName} a signalé ceci parce que :'
       title_spam_report: '%{firstName} %{lastName} a signalé spam'
-    initiative_assigned_to_you:
-      by_author: 'par %{authorName}'
-      cta_reply_to: 'Donner un feedback à %{authorName}'
-      event_description_initiative: 'Une proposition vous a été attribuée. Envoyer une mise à jour en écrivant un commentaire officiel ou en changeant son statut.'
-      main_header: '%{firstName}, vous avez une nouvelle attribution'
-      subject: 'Vous avez une attribution sur la plate-forme de %{organizationName}'
-      preheader_initiative: 'La proposition de %{authorName} vous a été attribuée'
     invite_reminder:
       cta_accept_invitation: 'Accepter votre invitation'
       invitation_header: 'Votre invitation est en attente'

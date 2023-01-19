@@ -60,11 +60,6 @@ module EmailCampaigns
 
     def generate_commands(recipient:, activity:, time: nil)
       notification = activity.item
-      assignee_attributes = {}
-      if notification.post.assignee_id
-        assignee_attributes[:assignee_first_name] = notification.post.assignee.first_name
-        assignee_attributes[:assignee_last_name] = notification.post.assignee.last_name
-      end
       [{
         event_payload: {
           post_title_multiloc: notification.post.title_multiloc,
@@ -82,8 +77,7 @@ module EmailCampaigns
           end,
           initiative_header_bg: {
             versions: notification.post.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
-          },
-          **assignee_attributes
+          }
         }
       }]
     end
