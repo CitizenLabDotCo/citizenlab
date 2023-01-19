@@ -35,6 +35,7 @@ const IdeaFormBuilder = () => {
       minimum_label_multiloc: {},
       maximum_label_multiloc: {},
       maximum: 0,
+      isTitleEditable: false,
       relationships: {
         options: {
           data: [],
