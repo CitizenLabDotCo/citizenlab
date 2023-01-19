@@ -19,7 +19,7 @@ describe('HeaderImage', () => {
     );
   });
 
-  describe('When layout is fixed-layout banner', () => {
+  describe('When layout is fixed-ratio', () => {
     it('the overlay has the right opacity', () => {
       mockHomepageBannerLayout = 'fixed_ratio_layout';
       render(<HeaderImage />);
