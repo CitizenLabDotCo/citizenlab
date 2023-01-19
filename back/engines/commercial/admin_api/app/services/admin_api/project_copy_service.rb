@@ -10,7 +10,7 @@ module AdminApi
         service.resolve_and_apply_template same_template, validate: false
       end
 
-      project = Project.find(created_objects_ids[:project].first)
+      project = Project.find(created_objects_ids['Project'].first)
       unless local_copy
         project.update!(slug: SlugService.new.generate_slug(project, project.slug))
         project.set_default_topics!

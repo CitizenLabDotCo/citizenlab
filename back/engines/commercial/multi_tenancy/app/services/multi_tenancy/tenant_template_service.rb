@@ -378,12 +378,10 @@ module MultiTenancy
     end
 
     def update_created_objects_ids(created_objects_ids, model_name, model_id)
-      key = model_name.downcase.to_sym
-
-      if created_objects_ids.key?(key)
-        created_objects_ids[key] << model_id
+      if created_objects_ids.key?(model_name)
+        created_objects_ids[model_name] << model_id
       else
-        created_objects_ids[key] = [model_id]
+        created_objects_ids[model_name] = [model_id]
       end
 
       created_objects_ids
