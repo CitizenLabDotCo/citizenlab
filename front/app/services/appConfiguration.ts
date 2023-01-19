@@ -109,8 +109,6 @@ export interface IAppConfigurationSettings {
     enabled: boolean;
     enabled_fragments: string[];
   };
-  dynamic_idea_form?: AppConfigurationFeature;
-  jsonforms_custom_fields?: AppConfigurationFeature;
   idea_custom_fields?: AppConfigurationFeature;
   volunteering?: AppConfigurationFeature;
   automated_emailing_control?: AppConfigurationFeature;

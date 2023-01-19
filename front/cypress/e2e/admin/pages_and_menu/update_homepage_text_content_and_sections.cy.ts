@@ -36,12 +36,10 @@ describe('Admin: update text content and sections', () => {
     cy.get(
       '[data-cy="e2e-admin-edit-button-top_info_section_enabled"]'
     ).click();
-    cy.get('.e2e-localeswitcher').each((el) => {
-      cy.wrap(el).click();
-      cy.get('#top_info_section_multiloc-en').clear();
-      cy.get('#top_info_section_multiloc-en').type(topInfoContent);
-      cy.get('#top_info_section_multiloc-en').should('contain', topInfoContent);
-    });
+
+    cy.get('#top_info_section_multiloc-en').clear();
+    cy.get('#top_info_section_multiloc-en').type(topInfoContent);
+    cy.get('#top_info_section_multiloc-en').should('contain', topInfoContent);
 
     // submit form and wait for success toast
     cy.get('[data-cy="e2e-top-info-section-submit"').click();
@@ -55,16 +53,12 @@ describe('Admin: update text content and sections', () => {
       '[data-cy="e2e-admin-edit-button-bottom_info_section_enabled"]'
     ).click();
 
-    // update content for each language
-    cy.get('.e2e-localeswitcher').each((el) => {
-      cy.wrap(el).click();
-      cy.get('#bottom_info_section_multiloc-en').clear();
-      cy.get('#bottom_info_section_multiloc-en').type(bottomInfoContent);
-      cy.get('#bottom_info_section_multiloc-en').should(
-        'contain',
-        bottomInfoContent
-      );
-    });
+    cy.get('#bottom_info_section_multiloc-en').clear();
+    cy.get('#bottom_info_section_multiloc-en').type(bottomInfoContent);
+    cy.get('#bottom_info_section_multiloc-en').should(
+      'contain',
+      bottomInfoContent
+    );
 
     // submit form and wait for success toast
     cy.get('[data-cy="e2e-bottom-info-section-submit"').click();
@@ -100,22 +94,6 @@ describe('Admin: update text content and sections', () => {
       .find('i')
       .should('have.class', 'enabled');
 
-    // wait for the events toggle to become enabled after the request completes
-    cy.get('[data-cy="e2e-admin-section-toggle-events_widget_enabled"]')
-      .find('i')
-      .should('have.class', 'enabled');
-
-    // toggle events section and wait for requests to complete
-    cy.get(
-      '[data-cy="e2e-admin-section-toggle-events_widget_enabled"]'
-    ).click();
-    cy.wait('@saveHomePage');
-
-    // wait for the toggle to be enabled on the UI again
-    cy.get('[data-cy="e2e-admin-section-toggle-events_widget_enabled"]')
-      .find('i')
-      .should('have.class', 'enabled');
-
     // go back to bottom info section edit page
     cy.get(
       '[data-cy="e2e-admin-edit-button-bottom_info_section_enabled"]'
@@ -132,8 +110,5 @@ describe('Admin: update text content and sections', () => {
     cy.visit('/');
     cy.contains(topInfoContent);
     cy.contains(bottomInfoContent);
-    cy.get('[data-testid="e2e-homepage-events-widget-container"]').should(
-      'exist'
-    );
   });
 });

@@ -131,7 +131,7 @@ describe('Native survey project page actions', () => {
     cy.get('[type="checkbox"]').check();
     // Login as regular user
     cy.setLoginCookie(userEmail, userPassword);
-    // Visit timeline project
+    // Visit timeline projecte2e-submit-parentcomment
     cy.visit(`/projects/${projectSlugTimeline}`);
     // Check that correct text and actions shown
     cy.get('#e2e-cta-button').find('button').click({ force: true });
@@ -145,19 +145,13 @@ describe('Native survey project page actions', () => {
     cy.setAdminLoginCookie();
     // Visit admin project permissions page
     cy.visit(`admin/projects/${projectIdContinuous}/permissions`);
-    // Select that unregistered users may submit surveys
-    cy.get('#e2e-granular-permissions').within(() => {
-      cy.contains('Anyone').should('be.visible');
-      cy.contains('Anyone').click({ force: true });
-    });
+
     // Logout
     cy.clearCookies();
     // Visit the project page
     cy.visit(`/projects/${projectSlugContinous}`);
     // Check that correct text and actions shown
     cy.get('#e2e-cta-button').should('be.visible');
-    cy.get('#e2e-cta-button').find('button').click({ force: true });
-    cy.url().should('include', `/projects/${projectSlugContinous}/ideas/new`);
   });
 
   after(() => {

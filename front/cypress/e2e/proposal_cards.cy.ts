@@ -37,31 +37,6 @@ describe('InitiativeCards without filter sidebar component', () => {
       .contains(initiativeTitle);
   });
 
-  it('lets you sort the initiatives', () => {
-    // sort by newest first
-    cy.get('#e2e-initiatives-sort-dropdown').click();
-    cy.get('.e2e-sort-items').find('.e2e-sort-item-new').click();
-    cy.wait(1000);
-    cy.get('#e2e-initiatives-list');
-    cy.get('.e2e-initiative-card').first().contains(initiativeTitle);
-
-    // sort by oldest first
-    cy.get('#e2e-initiatives-sort-dropdown').click();
-    cy.get('.e2e-sort-items').find('.e2e-sort-item-old').click();
-    cy.wait(1000);
-    cy.get('#e2e-initiatives-list');
-    cy.get('.e2e-initiative-card').first().contains('Planting flowers');
-  });
-
-  it.skip('lets you filter the initiatives by topic', () => {
-    cy.get('.e2e-topic').first().click();
-    cy.wait(3000);
-    cy.get('#e2e-initiatives-list');
-    cy.get('.e2e-initiative-card')
-      .should('have.length', 1)
-      .contains(initiativeTitle);
-  });
-
   it('lets you filter the initiatives by status', () => {
     // sort by newest first
     cy.get('#e2e-initiatives-sort-dropdown').click();

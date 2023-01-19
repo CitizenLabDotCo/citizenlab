@@ -25,12 +25,7 @@ describe('Admin: create, update, and view custom page', () => {
     // go to custom page creation form
     cy.get('#create-custom-page').click();
 
-    // type title in each language
-
-    cy.get('.e2e-localeswitcher').each((button) => {
-      cy.wrap(button).click();
-      cy.get('#title_multiloc').type(pageName);
-    });
+    cy.get('#title_multiloc').type(pageName);
 
     // submit
     cy.get('[data-cy="e2e-submit-custom-page"]').click();
@@ -77,38 +72,28 @@ describe('Admin: create, update, and view custom page', () => {
 
     // update the header text
     cy.get('[data-cy="e2e-signed-out-header-section"]').scrollIntoView();
+    cy.get('[data-cy="e2e-signed-out-header-section"]');
+
     cy.get('[data-cy="e2e-signed-out-header-section"]')
-      .find('.e2e-localeswitcher')
-      .each((button) => {
-        cy.wrap(button).click();
-        cy.get('[data-cy="e2e-signed-out-header-section"]')
-          .find('input')
-          .type(headerContent);
-      });
+      .find('input')
+      .type(headerContent);
 
     // update the subheader text
     cy.get('[data-cy="e2e-signed-out-subheader-section"]').scrollIntoView();
+
     cy.get('[data-cy="e2e-signed-out-subheader-section"]')
-      .find('.e2e-localeswitcher')
-      .each((button) => {
-        cy.wrap(button).click();
-        cy.get('[data-cy="e2e-signed-out-subheader-section"]')
-          .find('input')
-          .type(subheaderContent);
-      });
+      .find('input')
+      .type(subheaderContent);
 
     // enable custom button
     cy.get('[data-cy="e2e-cta-settings-custom-customized_button"]').click();
 
     // enter button multiloc content
-    cy.get('[data-cy="e2e-cta-settings-custom-customized_button"]')
-      .find('.e2e-localeswitcher')
-      .each((button) => {
-        cy.wrap(button).click();
-        cy.get('[data-testid="inputMultilocLocaleSwitcher"]')
-          .find('input')
-          .type(ctaContent);
-      });
+    cy.get('[data-cy="e2e-cta-settings-custom-customized_button"]');
+
+    cy.get('[data-testid="inputMultilocLocaleSwitcher"]')
+      .find('input')
+      .type(ctaContent);
 
     // type the url
     cy.get('#buttonConfigInput').type('https://www.coolwebsite.biz');
@@ -127,14 +112,7 @@ describe('Admin: create, update, and view custom page', () => {
     // check for enabled banner to exist
     cy.contains('Shown on page').should('exist');
 
-    // fill out top info section
-    cy.get('[data-cy="e2e-top-info-form"]')
-      .find('.e2e-localeswitcher')
-      .each((button) => {
-        cy.wrap(button).click();
-        cy.get('#top_info_section_multiloc-en').type(topInfoContent);
-        cy.wrap(button).get('.notEmpty');
-      });
+    cy.get('#top_info_section_multiloc-en').type(topInfoContent);
 
     // submit
     cy.get('[data-cy="e2e-top-info-section-submit"]').click();

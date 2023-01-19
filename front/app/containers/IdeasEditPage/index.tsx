@@ -15,7 +15,6 @@ import GoBackToIdeaPage from 'containers/IdeasEditPage/GoBackToIdeaPage';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // feature flag variant
-import IdeasEditPageWithJSONForm from './WithJSONForm';
 
 // services
 import { localeStream } from 'services/locale';
@@ -64,7 +63,6 @@ import GetAppConfiguration, {
 import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.div`
   background: ${colors.background};
@@ -579,14 +577,6 @@ const Data = adopt<DataProps, InputProps>({
 const IdeaEditPageWithHOCs = injectLocalize<Props>(IdeaEditPage);
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => {
-  const isDynamicIdeaFormEnabled = useFeatureFlag({
-    name: 'dynamic_idea_form',
-  });
-
-  if (isDynamicIdeaFormEnabled) {
-    return <IdeasEditPageWithJSONForm {...inputProps} />;
-  }
-
   return (
     <Data {...inputProps}>
       {(dataProps) => <IdeaEditPageWithHOCs {...inputProps} {...dataProps} />}

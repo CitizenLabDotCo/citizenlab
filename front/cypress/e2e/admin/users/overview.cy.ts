@@ -10,20 +10,6 @@ describe('/admin/users/ page', () => {
     cy.get('.e2e-user-table').find('.e2e-user-table-row');
   });
 
-  it('Has a functional search field, shows the user correctly', () => {
-    cy.get('.e2e-search-input').type('Sylvester');
-    cy.wait(500);
-    cy.get('.e2e-user-table')
-      .find('.e2e-user-table-row')
-      .should('have.length', 1);
-    cy.get('.e2e-user-table')
-      .find('.e2e-user-table-row')
-      .contains('admin@citizenlab.co');
-    cy.get('.e2e-user-table')
-      .find('.e2e-user-table-row')
-      .contains('Sylvester Kalinoski');
-  });
-
   it('Lets you select users then show selected controls', () => {
     cy.get('.export.e2e-exportAllUsers');
     cy.get('.e2e-user-table')

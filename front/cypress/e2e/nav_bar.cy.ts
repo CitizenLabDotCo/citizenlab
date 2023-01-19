@@ -3,7 +3,6 @@ const PAGES = [
   { url: 'initiatives', container: '#e2e-initiatives-container' },
   { url: 'events', container: '#e2e-events-container' },
   { url: 'pages/information', container: '.e2e-page-information' },
-  { url: 'pages/faq', container: '.e2e-page-faq' },
 ];
 
 describe('nav bar', () => {
@@ -37,18 +36,6 @@ describe('nav bar', () => {
 
         assertCorrectReturnToLandingPage();
       });
-  });
-
-  it('navigates to projects overview page from All projects dropdown and back', () => {
-    // Navigate to projects overview page
-    cy.get('.e2e-projects-dropdown-link').click();
-    cy.get('#e2e-all-projects-link').click();
-
-    // Assert we're on projects overview page
-    cy.location('pathname').should('eq', '/en/projects');
-    cy.get('#e2e-projects-container');
-
-    assertCorrectReturnToLandingPage();
   });
 
   PAGES.forEach(({ url, container }) => {

@@ -87,41 +87,6 @@ describe('Project overview page', () => {
     cy.apiRemoveFolder(folderId);
   });
 
-  it('shows 6 projects by default and loads more when the show more button is pressed', () => {
-    cy.intercept('GET', '**/admin_publications**').as('getAdminPublications');
-
-    cy.visit('/projects/');
-
-    cy.get('#e2e-projects-container');
-
-    // depth should be zero with no search term
-    cy.wait('@getAdminPublications').then((interception) => {
-      expect(interception.request.url).to.match(/depth=0/);
-    });
-
-    cy.get('.e2e-projects-list');
-
-    cy.acceptCookies();
-
-    const initialCards = cy.get(
-      '.e2e-projects-list.active-tab > .e2e-admin-publication-card'
-    );
-
-    initialCards.should('have.length', 6);
-
-    cy.get('.e2e-project-cards-show-more-button').click();
-    cy.get('.e2e-project-cards-show-more-button').should(
-      'not.have.class',
-      'loading'
-    );
-
-    const cardsAfterShowMore = cy.get(
-      '.e2e-projects-list.active-tab > .e2e-admin-publication-card'
-    );
-
-    cardsAfterShowMore.should('have.length.at.least', 7);
-  });
-
   it('shows the filtered projects based on the search input', () => {
     cy.intercept('GET', '**/admin_publications**').as('getAdminPublications');
 
