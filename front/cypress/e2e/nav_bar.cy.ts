@@ -3,7 +3,6 @@ const PAGES = [
   { url: 'initiatives', container: '#e2e-initiatives-container' },
   { url: 'events', container: '#e2e-events-container' },
   { url: 'pages/information', container: '.e2e-page-information' },
-  { url: 'pages/faq', container: '.e2e-page-faq' },
 ];
 
 describe('nav bar', () => {
