@@ -2,11 +2,14 @@ import React from 'react';
 
 // components and theming
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import styled, { useTheme } from 'styled-components';
-import { PreviewDevice } from './BannerImageFields';
+import styled from 'styled-components';
+import { TPreviewDevice } from './BannerImageFields';
 
 // types
-import { ICustomPageAttributes } from 'services/customPages';
+import {
+  ICustomPageAttributes,
+  TCustomPageBannerLayout,
+} from 'services/customPages';
 import {
   IHomepageSettingsAttributes,
   THomepageBannerLayout,
@@ -36,15 +39,15 @@ interface Props {
   onAdd: (newImage: UploadFile[]) => void;
   onRemove: () => void;
   headerError: string | null;
-  header_bg: UploadFile[] | null;
-  previewDevice: PreviewDevice;
+  header_bg: UploadFile | null;
+  previewDevice: TPreviewDevice;
   layout: THomepageBannerLayout;
 }
 
 // move this to homepage settings resource?
 export const homepageBannerLayoutHeights: {
   [key in THomepageBannerLayout]: {
-    [key in PreviewDevice]: number;
+    [key in TPreviewDevice]: number;
   };
 } = {
   full_width_banner_layout: {
@@ -62,6 +65,11 @@ export const homepageBannerLayoutHeights: {
     tablet: 200,
     phone: 200,
   },
+  fixed_ratio_layout: {
+    desktop: 450,
+    tablet: 450,
+    phone: 225,
+  },
 };
 
 const HeaderImageDropzone = ({
@@ -77,7 +85,7 @@ const HeaderImageDropzone = ({
   const getImagePreviewRatio = () => {
     const layoutHeightOnDevice =
       homepageBannerLayoutHeights[layout][previewDevice];
-    const standardWidthPerDeviceType: { [key in PreviewDevice]: number } = {
+    const standardWidthPerDeviceType: { [key in TPreviewDevice]: number } = {
       desktop: 1530,
       tablet: 768,
       phone: 375,
@@ -91,18 +99,29 @@ const HeaderImageDropzone = ({
     return ratio;
   };
 
-  const theme = useTheme();
-  const displayOverlayColor = overlayColor ?? theme.colors.tenantPrimary;
-  const displayOverlayOpacity =
-    overlayOpacity ?? theme.signedOutHeaderOverlayOpacity;
+  const showPreviewOverlayForLayout = (
+    layout: THomepageBannerLayout | TCustomPageBannerLayout
+  ) => {
+    const conditions: {
+      [key in THomepageBannerLayout | TCustomPageBannerLayout]: boolean;
+    } = {
+      full_width_banner_layout: true,
+      two_row_layout: false,
+      two_column_layout: false,
+      fixed_ratio_layout: true,
+    };
+
+    return conditions[layout];
+  };
 
   const previewOverlayElement =
-    layout === 'full_width_banner_layout' &&
-    displayOverlayColor &&
-    displayOverlayOpacity ? (
+    showPreviewOverlayForLayout(layout) &&
+    // We check for typeof of opacity because 0 would coerce to false.
+    typeof overlayOpacity === 'number' &&
+    overlayColor ? (
       <HeaderImageOverlay
-        overlayColor={displayOverlayColor}
-        overlayOpacity={displayOverlayOpacity}
+        overlayColor={overlayColor}
+        overlayOpacity={overlayOpacity}
       />
     ) : null;
 
@@ -112,7 +131,7 @@ const HeaderImageDropzone = ({
       acceptedFileTypes={{
         'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
       }}
-      images={header_bg}
+      images={header_bg ? [header_bg] : null}
       imagePreviewRatio={getImagePreviewRatio()}
       onAdd={onAdd}
       onRemove={onRemove}

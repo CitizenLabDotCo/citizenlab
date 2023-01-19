@@ -9,12 +9,4 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.tabReports',
     defaultMessage: 'Reports',
   },
-  helmetTitle: {
-    id: 'app.containers.Admin.Insights.helmetTitle',
-    defaultMessage: 'Platform Insights',
-  },
-  helmetDescription: {
-    id: 'app.containers.Admin.Insights.helmetDescription',
-    defaultMessage: 'Admin insights page',
-  },
 });

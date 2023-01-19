@@ -22,6 +22,7 @@ import {
 } from './participationContexts';
 
 export const apiEndpoint = `${API_PATH}/projects`;
+export const HEADER_BG_ASPECT_RATIO = 4 / 1;
 
 type Visibility = 'public' | 'groups' | 'admins';
 export type ProcessType = 'continuous' | 'timeline';
@@ -41,6 +42,7 @@ export type PostingDisabledReason =
   | 'project_inactive'
   | 'not_ideation'
   | 'posting_disabled'
+  | 'posting_limited_max_reached'
   | 'not_permitted'
   | 'not_verified'
   | 'not_signed_in';

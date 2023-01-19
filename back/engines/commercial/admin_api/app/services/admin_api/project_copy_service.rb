@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module AdminApi
-  class ProjectCopyService
+  class ProjectCopyService < ::TemplateService
     def import(template, folder: nil)
       service = MultiTenancy::TenantTemplateService.new
       same_template = service.translate_and_fix_locales template
@@ -18,7 +18,6 @@ module AdminApi
 
     def export(project, include_ideas: false, anonymize_users: true, shift_timestamps: 0, new_slug: nil, new_title_multiloc: nil, timeline_start_at: nil, new_publication_status: nil)
       @project = project
-      init_refs
       @template = { 'models' => {} }
 
       # TODO: deal with linking idea_statuses, topics, custom field values and maybe areas and groups
@@ -57,27 +56,6 @@ module AdminApi
     end
 
     private
-
-    def init_refs
-      @refs = {}
-    end
-
-    def lookup_ref(id, model_name)
-      return nil unless id
-
-      if model_name.is_a?(Array)
-        model_name.each do |n|
-          return @refs[n][id] if @refs[n][id]
-        end
-      else
-        @refs[model_name][id]
-      end
-    end
-
-    def store_ref(yml_obj, id, model_name)
-      @refs[model_name] ||= {}
-      @refs[model_name][id] = yml_obj
-    end
 
     def yml_custom_forms(shift_timestamps: 0)
       ([@project.custom_form] + @project.phases.map(&:custom_form)).compact.map do |cf|
@@ -146,6 +124,8 @@ module AdminApi
         'presentation_mode' => pc.presentation_mode,
         'participation_method' => pc.participation_method,
         'posting_enabled' => pc.posting_enabled,
+        'posting_method' => pc.posting_method,
+        'posting_limited_max' => pc.posting_limited_max,
         'commenting_enabled' => pc.commenting_enabled,
         'voting_enabled' => pc.voting_enabled,
         'upvoting_method' => pc.upvoting_method,
@@ -470,21 +450,22 @@ module AdminApi
     end
 
     def yml_ideas(shift_timestamps: 0)
-      @project.ideas.published.where.not(author_id: nil).map do |i|
+      custom_fields = CustomField.where(resource: CustomForm.where(participation_context: (@project.phases + [@project])))
+      @project.ideas.published.map do |idea|
         yml_idea = {
-          'title_multiloc' => i.title_multiloc,
-          'body_multiloc' => i.body_multiloc,
-          'publication_status' => i.publication_status,
-          'published_at' => shift_timestamp(i.published_at, shift_timestamps)&.iso8601,
-          'project_ref' => lookup_ref(i.project_id, :project),
-          'author_ref' => lookup_ref(i.author_id, :user),
-          'created_at' => shift_timestamp(i.created_at, shift_timestamps)&.iso8601,
-          'updated_at' => shift_timestamp(i.updated_at, shift_timestamps)&.iso8601,
-          'location_point_geojson' => i.location_point_geojson,
-          'location_description' => i.location_description,
-          'budget' => i.budget,
-          'proposed_budget' => i.proposed_budget,
-          'text_images_attributes' => i.text_images.map do |text_image|
+          'title_multiloc' => idea.title_multiloc,
+          'body_multiloc' => idea.body_multiloc,
+          'publication_status' => idea.publication_status,
+          'published_at' => shift_timestamp(idea.published_at, shift_timestamps)&.iso8601,
+          'project_ref' => lookup_ref(idea.project_id, :project),
+          'author_ref' => lookup_ref(idea.author_id, :user),
+          'created_at' => shift_timestamp(idea.created_at, shift_timestamps)&.iso8601,
+          'updated_at' => shift_timestamp(idea.updated_at, shift_timestamps)&.iso8601,
+          'location_point_geojson' => idea.location_point_geojson,
+          'location_description' => idea.location_description,
+          'budget' => idea.budget,
+          'proposed_budget' => idea.proposed_budget,
+          'text_images_attributes' => idea.text_images.map do |text_image|
             {
               'imageable_field' => text_image.imageable_field,
               'remote_image_url' => text_image.image_url,
@@ -493,10 +474,10 @@ module AdminApi
               'updated_at' => text_image.updated_at.to_s
             }
           end,
-          'custom_field_values' => i.custom_field_values,
-          'creation_phase_ref' => lookup_ref(i.creation_phase_id, :phase)
+          'creation_phase_ref' => lookup_ref(idea.creation_phase_id, :phase)
         }
-        store_ref yml_idea, i.id, :idea
+        yml_idea['custom_field_values'] = filter_custom_field_values(idea.custom_field_values, custom_fields) if custom_fields
+        store_ref yml_idea, idea.id, :idea
         yml_idea
       end
     end

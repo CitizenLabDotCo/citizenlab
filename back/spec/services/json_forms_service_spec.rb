@@ -160,6 +160,7 @@ describe JsonFormsService do
             scope: '#/properties/field1',
             label: 'Did you attend',
             options: {
+              input_type: 'text',
               description: 'Which councils are you attending in our city?',
               transform: 'trim_on_blur'
             }
@@ -169,6 +170,7 @@ describe JsonFormsService do
             scope: '#/properties/field2',
             label: 'Did you attend',
             options: {
+              input_type: 'multiline_text',
               description: 'Which councils are you attending in our city?',
               textarea: true,
               transform: 'trim_on_blur'
@@ -178,6 +180,7 @@ describe JsonFormsService do
             type: 'Control',
             label: 'Did you attend',
             options: {
+              input_type: 'select',
               description: 'Which councils are you attending in our city?'
             },
             scope: '#/properties/field3'
@@ -186,6 +189,7 @@ describe JsonFormsService do
             type: 'Control',
             label: 'Did you attend',
             options: {
+              input_type: 'multiselect',
               description: 'Which councils are you attending in our city?'
             },
             scope: '#/properties/field4'
@@ -194,6 +198,7 @@ describe JsonFormsService do
             type: 'Control',
             label: 'Did you attend',
             options: {
+              input_type: 'checkbox',
               description: 'Which councils are you attending in our city?'
             },
             scope: '#/properties/field5'
@@ -202,6 +207,7 @@ describe JsonFormsService do
             type: 'Control',
             label: 'Did you attend',
             options: {
+              input_type: 'date',
               description: 'Which councils are you attending in our city?'
             },
             scope: '#/properties/field6'
@@ -289,8 +295,10 @@ describe JsonFormsService do
                         scope: '#/properties/topic_ids',
                         label: build_in_required_field.title_multiloc['en'],
                         options: {
+                          input_type: build_in_required_field.input_type,
                           description: build_in_required_field.description_multiloc['en'],
-                          isAdminField: false
+                          isAdminField: false,
+                          hasRule: false
                         }
                       }
                     ]
@@ -305,8 +313,10 @@ describe JsonFormsService do
                         scope: '#/properties/idea_files_attributes',
                         label: build_in_optional_field.title_multiloc['en'],
                         options: {
+                          input_type: build_in_optional_field.input_type,
                           description: build_in_optional_field.description_multiloc['en'],
-                          isAdminField: false
+                          isAdminField: false,
+                          hasRule: false
                         }
                       }
                     ]
@@ -321,8 +331,10 @@ describe JsonFormsService do
                         scope: "#/properties/#{required_field.key}",
                         label: required_field.title_multiloc['en'],
                         options: {
+                          input_type: required_field.input_type,
                           description: required_field.description_multiloc['en'],
-                          isAdminField: false
+                          isAdminField: false,
+                          hasRule: false
                         }
                       },
                       {
@@ -330,8 +342,10 @@ describe JsonFormsService do
                         scope: "#/properties/#{optional_field.key}",
                         label: optional_field.title_multiloc['en'],
                         options: {
+                          input_type: optional_field.input_type,
                           description: optional_field.description_multiloc['en'],
-                          isAdminField: false
+                          isAdminField: false,
+                          hasRule: false
                         }
                       }
                     ]

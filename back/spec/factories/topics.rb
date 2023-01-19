@@ -39,4 +39,8 @@ FactoryBot.define do
       title_multiloc { { 'en' => 'Economy' } }
     end
   end
+
+  factory :custom_topic, parent: :topic do
+    code { 'custom' }
+  end
 end

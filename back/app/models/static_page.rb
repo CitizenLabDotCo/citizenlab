@@ -69,7 +69,7 @@ class StaticPage < ApplicationRecord
   validates :code, uniqueness: true, unless: :custom?
 
   validates :banner_enabled, inclusion: [true, false]
-  validates :banner_layout, inclusion: %w[full_width_banner_layout two_column_layout two_row_layout]
+  validates :banner_layout, inclusion: %w[full_width_banner_layout two_column_layout two_row_layout fixed_ratio_layout]
   validates :banner_overlay_color, css_color: true
   validates :banner_overlay_opacity, numericality: { only_integer: true,
                                                      in: [0..100],

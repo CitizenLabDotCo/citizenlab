@@ -226,7 +226,7 @@ namespace :complex_migrations do
       logs += ['------------']
       logs += [tenant.host]
       Apartment::Tenant.switch(tenant.schema_name) do
-        locale = tenant.settings.dig('core', 'locales').first
+        locale = tenant.configuration.settings('core', 'locales').first
         Topic.order(:ordering).each do |tp|
           logs += ["#{tp.ordering}. #{tp.title_multiloc[locale]} (#{tp.code})"]
         end

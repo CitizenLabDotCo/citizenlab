@@ -78,6 +78,7 @@ import useLocale from 'hooks/useLocale';
 import usePhases from 'hooks/usePhases';
 import useIdea from 'hooks/useIdea';
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
+import useURLQuery from 'utils/cl-router/useUrlQuery';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -195,9 +196,9 @@ export const IdeasShow = ({
   const [newIdeaId, setNewIdeaId] = useState<string | null>(null);
   const [translateButtonIsClicked, setTranslateButtonIsClicked] =
     useState<boolean>(false);
+  const queryParams = useURLQuery();
 
   useEffect(() => {
-    const queryParams = new URLSearchParams(window.location.search);
     const newIdeaId = queryParams.get('new_idea_id');
     let timeout: NodeJS.Timeout;
     if (isString(newIdeaId)) {
@@ -209,7 +210,7 @@ export const IdeasShow = ({
     return () => {
       clearTimeout(timeout);
     };
-  }, []);
+  }, [queryParams]);
 
   const phases = usePhases(projectId);
   const idea = useIdea({ ideaId });

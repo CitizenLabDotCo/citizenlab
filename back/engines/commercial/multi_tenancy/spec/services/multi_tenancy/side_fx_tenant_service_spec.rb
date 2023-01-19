@@ -5,19 +5,16 @@ require 'rails_helper'
 describe MultiTenancy::SideFxTenantService do
   let(:service) { described_class.new }
   let(:current_user) { create(:user) }
+  let(:tenant) { Tenant.current }
 
   describe 'after_create' do
     it "logs a 'created' action" do
-      tenant = Tenant.current
-      expect { service.after_create(tenant, current_user) }.to(
-        have_enqueued_job(LogActivityJob).and(have_enqueued_job(Seo::UpdateGoogleHostJob))
-      )
+      expect { service.after_create(tenant, current_user) }.to enqueue_job(LogActivityJob)
     end
   end
 
   describe 'around_apply_template' do
     it 'logs a created_failed activity if loading of the templates raises an error' do
-      tenant = Tenant.current
       expect do
         service.around_apply_template(tenant, 'base') do
           raise RuntimeError
@@ -27,8 +24,7 @@ describe MultiTenancy::SideFxTenantService do
       )
     end
 
-    it 'does not log a ceation_failed activity when no error is raised in the block' do
-      tenant = Tenant.current
+    it 'does not log a creation_failed activity when no error is raised in the block' do
       expect { service.around_apply_template(tenant, 'base') {} }.not_to(
         have_enqueued_job(LogActivityJob).with(tenant, 'creation_failed')
       )
@@ -37,11 +33,7 @@ describe MultiTenancy::SideFxTenantService do
 
   describe 'after_update' do
     it "logs a 'changed' action job when the tenant has changed" do
-      # MT_TODO to refactor
-      tenant = Tenant.current
-      settings = tenant.settings
-      settings['core']['organization_name'] = { 'en' => 'New name' }
-      tenant.update!(settings: settings)
+      tenant.update!(name: "new-#{tenant.name}")
       expect { service.after_update(tenant, current_user) }
         .to have_enqueued_job(LogActivityJob).with(tenant, 'changed', current_user, tenant.updated_at.to_i)
     end
@@ -55,32 +47,6 @@ describe MultiTenancy::SideFxTenantService do
       expect { service.after_update(tenant, current_user) }
         .to have_enqueued_job(LogActivityJob).with(tenant, 'changed_host', current_user, tenant.updated_at.to_i,
           payload: { changes: [old_host, 'some-domain.net'] })
-        .and have_enqueued_job(Seo::UpdateGoogleHostJob)
-    end
-
-    it "logs a 'changed_lifecycle_stage' action job when the tenant has changed" do
-      tenant = Tenant.current
-      settings = tenant.settings
-      old_lifecycle_stage = settings['core']['lifecycle_stage']
-      settings['core']['lifecycle_stage'] = 'churned'
-      tenant.update!(settings: settings)
-      expect { service.after_update(tenant, current_user) }
-        .to have_enqueued_job(LogActivityJob).with(tenant, 'changed_lifecycle_stage', current_user,
-          tenant.updated_at.to_i, payload: { changes: [old_lifecycle_stage, 'churned'] })
-    end
-
-    it "logs a 'changed_lifecycle_stage' action job when an active tenant has changed" do
-      tenant = Tenant.current
-      settings = tenant.settings
-      settings['core']['lifecycle_stage'] = 'churned'
-      tenant.update!(settings: settings)
-      old_lifecycle_stage = settings['core']['lifecycle_stage']
-      settings['core']['lifecycle_stage'] = 'active'
-      tenant.update!(settings: settings)
-      expect { service.after_update(tenant, current_user) }
-        .to have_enqueued_job(LogActivityJob).with(tenant, 'changed_lifecycle_stage', current_user,
-          tenant.updated_at.to_i, payload: { changes: [old_lifecycle_stage, 'active'] })
-        .and have_enqueued_job(Seo::UpdateGoogleHostJob)
     end
   end
 
