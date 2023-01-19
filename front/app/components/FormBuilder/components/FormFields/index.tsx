@@ -120,7 +120,9 @@ const FormFields = ({
                                 builderConfig={builderConfig}
                               />
                             </Drag>
-                          ) : null;
+                          ) : (
+                            <Box height="1px" />
+                          );
                         })}
                       </>
                     )}
