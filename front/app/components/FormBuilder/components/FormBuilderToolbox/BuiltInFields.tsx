@@ -10,36 +10,30 @@ import messages from '../messages';
 import ToolboxItem from './ToolboxItem';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 
-// styles
-import styled from 'styled-components';
-
 // types
 import { IFlatCustomField } from 'services/formCustomFields';
 
-// Hooks
-import useLocale from 'hooks/useLocale';
-
 // utils
-import { isNilOrError } from 'utils/helperUtils';
-import { BuiltInKeyType } from 'components/FormBuilder/utils';
-
-const DraggableElement = styled.div`
-  cursor: move;
-`;
+import { builtInFieldKeys, BuiltInKeyType } from 'components/FormBuilder/utils';
+import { DraggableElement } from './utils';
 
 interface BuiltInFieldsProps {
   isEditingDisabled: boolean;
+  move: (indexA: number, indexB: number) => void;
 }
 
 const BuiltInFields = ({
   intl: { formatMessage },
   isEditingDisabled,
+  move,
 }: BuiltInFieldsProps & WrappedComponentProps) => {
-  const locale = useLocale();
-  const { watch, trigger } = useFormContext();
+  const { watch, trigger, setValue } = useFormContext();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
+  const hasDisabledFields = formCustomFields.some((field) => {
+    return builtInFieldKeys.includes(field.key) && !field.enabled;
+  });
 
-  if (isNilOrError(locale)) return null;
+  if (!hasDisabledFields) return null;
 
   const enableField = (key: BuiltInKeyType) => {
     if (isEditingDisabled) {
@@ -47,8 +41,11 @@ const BuiltInFields = ({
     }
 
     const field = formCustomFields.find((field) => field.key === key);
+    const fieldIndex = formCustomFields.findIndex((field) => field.key === key);
     if (field) {
-      field.enabled = true;
+      const updatedField = { ...field, enabled: true };
+      setValue(`customFields.${fieldIndex}`, updatedField);
+      move(fieldIndex, formCustomFields.length - 1);
       trigger();
     }
   };
@@ -68,14 +65,16 @@ const BuiltInFields = ({
         <FormattedMessage {...messages.defaultField} />
       </Title>
 
-      <DraggableElement>
-        <ToolboxItem
-          icon="money-bag"
-          label={formatMessage(messages.proposedBudget)}
-          onClick={() => enableField('proposed_budget')}
-          inputType="text"
-        />
-      </DraggableElement>
+      {builtInFieldKeys.includes('proposed_budget') && (
+        <DraggableElement>
+          <ToolboxItem
+            icon="money-bag"
+            label={formatMessage(messages.proposedBudget)}
+            onClick={() => enableField('proposed_budget')}
+            inputType="text"
+          />
+        </DraggableElement>
+      )}
     </Box>
   );
 };

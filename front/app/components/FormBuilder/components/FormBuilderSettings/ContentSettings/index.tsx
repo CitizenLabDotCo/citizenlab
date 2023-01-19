@@ -43,7 +43,7 @@ export const ContentSettings = ({
   onDelete,
   builderConfig,
 }: ContentSettingsProps) => {
-  const { watch, trigger } = useFormContext();
+  const { watch, trigger, setValue } = useFormContext();
   const logic = watch(`customFields.${field.index}.logic`);
   const platformLocale = useLocale();
   const hasRules = logic && logic.rules && logic.rules.length > 0;
@@ -51,7 +51,8 @@ export const ContentSettings = ({
   const isDeleteEnabled = get(field, 'isDeleteEnabled', true);
   const handleDelete = () => {
     if (builtInFieldKeys.includes(field.key)) {
-      field.enabled = false;
+      const newField = { ...field, enabled: false };
+      setValue(`customFields.${field.index}`, newField);
       trigger();
       onClose();
     } else {

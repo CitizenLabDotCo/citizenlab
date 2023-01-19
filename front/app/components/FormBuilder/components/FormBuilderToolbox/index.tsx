@@ -11,7 +11,6 @@ import { Box, Title } from '@citizenlab/cl2-component-library';
 import BuiltInFields from './BuiltInFields';
 
 // styles
-import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // types
@@ -27,15 +26,13 @@ import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
 import { generateTempId } from '../FormBuilderSettings/utils';
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
-
-const DraggableElement = styled.div`
-  cursor: move;
-`;
+import { DraggableElement } from './utils';
 
 interface FormBuilderToolboxProps {
   onAddField: (field: IFlatCreateCustomField) => void;
   isEditingDisabled: boolean;
   builderConfig: FormBuilderConfig;
+  move: (indexA: number, indexB: number) => void;
 }
 
 const FormBuilderToolbox = ({
@@ -43,6 +40,7 @@ const FormBuilderToolbox = ({
   onAddField,
   isEditingDisabled,
   builderConfig,
+  move,
 }: FormBuilderToolboxProps & WrappedComponentProps) => {
   const locale = useLocale();
 
@@ -105,7 +103,7 @@ const FormBuilderToolbox = ({
         >
           <FormattedMessage {...builderConfig.toolboxTitle} />
         </Title> */}
-        <BuiltInFields isEditingDisabled={isEditingDisabled} />
+        <BuiltInFields isEditingDisabled={isEditingDisabled} move={move} />
 
         <Title
           fontWeight="normal"
