@@ -15,7 +15,7 @@ interface Props {
   icon: IconNames;
   onClick: () => void;
   'data-cy'?: string;
-  fieldsToExclude: ICustomFieldInputType[] | undefined;
+  fieldsToExclude?: ICustomFieldInputType[];
   inputType: ICustomFieldInputType;
 }
 

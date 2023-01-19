@@ -67,3 +67,5 @@ export const builtInFieldKeys = [
   'idea_images_attributes',
   'idea_files_attributes',
 ];
+
+export type BuiltInKeyType = typeof builtInFieldKeys[number];

@@ -8,6 +8,7 @@ import messages from '../messages';
 // components
 import ToolboxItem from './ToolboxItem';
 import { Box, Title } from '@citizenlab/cl2-component-library';
+import BuiltInFields from './BuiltInFields';
 
 // styles
 import styled from 'styled-components';
@@ -92,7 +93,7 @@ const FormBuilderToolbox = ({
       borderRight={`1px solid ${colors.borderLight}`}
     >
       <Box w="100%" display="inline">
-        <Title
+        {/* <Title
           fontWeight="normal"
           mb="4px"
           mt="24px"
@@ -103,6 +104,20 @@ const FormBuilderToolbox = ({
           style={{ textTransform: 'uppercase' }}
         >
           <FormattedMessage {...builderConfig.toolboxTitle} />
+        </Title> */}
+        <BuiltInFields isEditingDisabled={isEditingDisabled} />
+
+        <Title
+          fontWeight="normal"
+          mb="4px"
+          mt="24px"
+          ml="16px"
+          variant="h6"
+          as="h3"
+          color="textSecondary"
+          style={{ textTransform: 'uppercase' }}
+        >
+          <FormattedMessage {...messages.content} />
         </Title>
 
         <DraggableElement>
