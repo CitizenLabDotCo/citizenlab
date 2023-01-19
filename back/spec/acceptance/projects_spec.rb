@@ -737,12 +737,15 @@ resource 'Projects' do
     end
 
     if CitizenLab.ee?
-      post 'web_api/v1/projects/copy/:id' do
+      post 'web_api/v1/projects/:id/copy' do
         let(:source_project) { create(:continuous_project) }
         let(:id) { source_project.id }
 
         example_request 'Copy a continuous project' do
           assert_status 201
+
+          copied_project = Project.find(json_response.dig(:data, :id))
+          expect(copied_project.title_multiloc['en']).to include(source_project.title_multiloc['en'])
         end
       end
     end
