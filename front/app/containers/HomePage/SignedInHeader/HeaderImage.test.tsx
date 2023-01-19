@@ -1,8 +1,6 @@
 import React from 'react';
 import HeaderImage from './HeaderImage';
 import { mockHomepageSettings } from 'services/__mocks__/homepageSettings';
-import { getTheme } from '@citizenlab/cl2-component-library';
-import * as styledComponents from 'styled-components';
 import { THomepageBannerLayout } from 'services/homepageSettings';
 import { render, screen } from 'utils/testUtils/rtl';
 
@@ -12,8 +10,6 @@ let mockHomepageBannerLayout: THomepageBannerLayout =
 jest.mock('hooks/useHomepageSettings', () =>
   jest.fn(() => mockHomepageSettings(mockHomepageBannerLayout))
 );
-
-jest.spyOn(styledComponents, 'useTheme').mockReturnValue(getTheme());
 
 describe('HeaderImage', () => {
   it('the overlay has the right opacity', () => {
