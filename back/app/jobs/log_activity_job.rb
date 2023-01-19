@@ -24,7 +24,6 @@ class LogActivityJob < ApplicationJob
     trigger_notifications
     trigger_campaigns
     publish_activity_to_rabbit
-    trigger_track_activity_job
   end
 
   def instantiate_activity
