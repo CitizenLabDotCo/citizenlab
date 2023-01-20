@@ -117,7 +117,7 @@ export const ContentSettings = ({
             buttonStyle="secondary"
             onClick={onClose}
             minWidth="160px"
-            width={isDeleteEnabled ? '100%' : '100%'}
+            width="100%"
           >
             <FormattedMessage {...messages.done} />
           </Button>
