@@ -36,9 +36,6 @@ const BuiltInFields = ({
     .map((builtInField) => {
       return builtInField.key;
     });
-  const hasDisabledFields = enabledBuiltInFieldKeys.length > 0;
-
-  if (!hasDisabledFields) return null;
 
   const enableField = (key: BuiltInKeyType) => {
     if (isEditingDisabled) {
@@ -69,43 +66,50 @@ const BuiltInFields = ({
       >
         <FormattedMessage {...messages.defaultField} />
       </Title>
-
-      {enabledBuiltInFieldKeys.includes('proposed_budget') && (
-        <DraggableElement>
-          <ToolboxItem
-            icon="money-bag"
-            label={formatMessage(messages.proposedBudget)}
-            onClick={() => enableField('proposed_budget')}
-          />
-        </DraggableElement>
-      )}
-      {enabledBuiltInFieldKeys.includes('idea_files_attributes') && (
-        <DraggableElement>
-          <ToolboxItem
-            icon="upload-file"
-            label={formatMessage(messages.fileUpload)}
-            onClick={() => enableField('idea_files_attributes')}
-          />
-        </DraggableElement>
-      )}
-      {enabledBuiltInFieldKeys.includes('location_description') && (
-        <DraggableElement>
-          <ToolboxItem
-            icon="location-simple"
-            label={formatMessage(messages.locationDescription)}
-            onClick={() => enableField('location_description')}
-          />
-        </DraggableElement>
-      )}
-      {enabledBuiltInFieldKeys.includes('topic_ids') && (
-        <DraggableElement>
-          <ToolboxItem
-            icon="label"
-            label={formatMessage(messages.tags)}
-            onClick={() => enableField('topic_ids')}
-          />
-        </DraggableElement>
-      )}
+      <DraggableElement>
+        <ToolboxItem
+          icon="money-bag"
+          label={formatMessage(messages.proposedBudget)}
+          onClick={() => enableField('proposed_budget')}
+          disabled={
+            enabledBuiltInFieldKeys.includes('proposed_budget') ? false : true
+          }
+        />
+      </DraggableElement>
+      <DraggableElement>
+        <ToolboxItem
+          icon="upload-file"
+          label={formatMessage(messages.fileUpload)}
+          onClick={() => enableField('idea_files_attributes')}
+          disabled={
+            enabledBuiltInFieldKeys.includes('idea_files_attributes')
+              ? false
+              : true
+          }
+        />
+      </DraggableElement>
+      <DraggableElement>
+        <ToolboxItem
+          icon="location-simple"
+          label={formatMessage(messages.locationDescription)}
+          onClick={() => enableField('location_description')}
+          disabled={
+            enabledBuiltInFieldKeys.includes('location_description')
+              ? false
+              : true
+          }
+        />
+      </DraggableElement>
+      <DraggableElement>
+        <ToolboxItem
+          icon="label"
+          label={formatMessage(messages.tags)}
+          onClick={() => enableField('topic_ids')}
+          disabled={
+            enabledBuiltInFieldKeys.includes('topic_ids') ? false : true
+          }
+        />
+      </DraggableElement>
     </Box>
   );
 };
