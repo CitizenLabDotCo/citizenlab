@@ -271,7 +271,7 @@ const AdminProjectsProjectGeneral = () => {
   };
 
   async function saveForm(
-    participationContextConfig: IParticipationContextConfig | null
+    participationContextConfig: IParticipationContextConfig | null = null
   ) {
     // Should be split. Same func for existing/new project
     // Makes things unnecessarily complicated (e.g. projectId below).
@@ -381,14 +381,14 @@ const AdminProjectsProjectGeneral = () => {
     if (projectType === 'continuous') {
       eventEmitter.emit('getParticipationContext');
     } else {
-      save();
+      saveForm();
     }
   };
 
   const handleParticipationContextOnSubmit = (
     participationContextConfig: IParticipationContextConfig
   ) => {
-    save(participationContextConfig);
+    saveForm(participationContextConfig);
   };
 
   const handleStatusChange = (
@@ -433,14 +433,6 @@ const AdminProjectsProjectGeneral = () => {
     const formIsValid = !hasTitleError;
 
     return formIsValid;
-  };
-
-  // We should look into only having 1 save function (saveForm)
-  // And refactor this out
-  const save = async (
-    participationContextConfig: IParticipationContextConfig | null = null
-  ) => {
-    await saveForm(participationContextConfig);
   };
 
   const handleProjectAttributeDiffOnChange: TOnProjectAttributesDiffChangeFunction =
