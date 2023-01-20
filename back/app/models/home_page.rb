@@ -50,7 +50,6 @@ class HomePage < ApplicationRecord
   validates :bottom_info_section_enabled, inclusion: [true, false]
   validates :bottom_info_section_multiloc, multiloc: { presence: false, html: true }
 
-  validates :events_widget_enabled, inclusion: [true, false]
   validates :projects_enabled, inclusion: [true, false]
 
   validates :projects_header_multiloc, multiloc: true

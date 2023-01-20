@@ -52,7 +52,6 @@ class StaticPagePolicy < ApplicationPolicy
       :files_section_enabled,
       :projects_enabled,
       :projects_filter_type,
-      :events_widget_enabled,
       :bottom_info_section_enabled,
       { bottom_info_section_multiloc: CL2_SUPPORTED_LOCALES },
       :header_bg,
