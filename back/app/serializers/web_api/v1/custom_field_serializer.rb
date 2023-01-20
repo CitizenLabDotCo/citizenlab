@@ -12,9 +12,10 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
     object.resource_type == 'User'
   }
 
+  # Is this best on the serializer or could we add it to the model?
   attribute :field_constraints do |object|
     @participation_method = Factory.instance.participation_method_for object.resource.participation_context
-    @participation_method.field_constraints[object.key] || {}
+    @participation_method.field_constraints[object.code] || {}
   end
 
   attributes :maximum, :minimum_label_multiloc, :maximum_label_multiloc, if: proc { |object, _params|
