@@ -1216,7 +1216,7 @@
   "app.containers.AdminPage.ProjectEdit.useTemplate": "Vorlage verwenden",
   "app.containers.AdminPage.ProjectEdit.viewPublicProject": "Projekt ansehen",
   "app.containers.AdminPage.ProjectEdit.volunteeringTab": "Teilnahme",
-  "app.containers.AdminPage.ProjectEdit.xGroupsHaveAccess": "{groupCount, plural, no {# Gruppe kann sehen} one {# Gruppe kann sehen} other {# Gruppen können sehen}}",
+  "app.containers.AdminPage.ProjectEdit.xGroupsHaveAccess": "{groupCount, plural, no {sichtbar für # Gruppen} one {sichtbar für # Gruppe} other {sichtbar für # Gruppen}}",
   "app.containers.AdminPage.ProjectEvents.addEventButton": "Veranstaltung hinzufügen",
   "app.containers.AdminPage.ProjectEvents.dateStartLabel": "Start",
   "app.containers.AdminPage.ProjectEvents.datesEndLabel": "Ende",
