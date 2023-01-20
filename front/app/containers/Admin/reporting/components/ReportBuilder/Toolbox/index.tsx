@@ -3,6 +3,8 @@ import React from 'react';
 // components
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import { Box, Title, Accordion } from '@citizenlab/cl2-component-library';
+
+// widgets
 import TwoColumn from '../../../components/ReportBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import TitleWidget from 'components/admin/ContentBuilder/Widgets/Title';
@@ -15,6 +17,7 @@ import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTraffi
 import AgeWidget from '../Widgets/ChartWidgets/AgeWidget';
 import GenderWidget from '../Widgets/ChartWidgets/GenderWidget';
 import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
+import MostVotedIdeasWidget from '../Widgets/MostVotedIdeasWidget';
 
 // types
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
@@ -207,6 +210,12 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             }
             icon="survey"
             label={formatMessage(SurveyResultsWidget.craft.custom.title)}
+          />
+          <DraggableElement
+            id="e2e-most-voted-ideas-widget"
+            component={<MostVotedIdeasWidget />}
+            icon="idea"
+            label={formatMessage(MostVotedIdeasWidget.craft.custom.title)}
           />
         </Accordion>
       </Box>
