@@ -12,7 +12,7 @@ import { IConsentCookie } from './consent';
 
 // typings
 import { IAppConfigurationData } from 'services/appConfiguration';
-import { CategorizedDestinations } from './typings';
+import { CategorizedDestinations, IPreferences } from './typings';
 import { TAuthUser } from 'hooks/useAuthUser';
 
 export const getCategory = (
@@ -71,7 +71,7 @@ export const getCurrentPreferences = (
     authUser
   ).filter((config) => cookieConsent?.savedChoices[config.key] === undefined);
 
-  const output = {};
+  const output: IPreferences = {};
   allCategories().forEach((category) => {
     // if it was enabled and there's a new destination
     if (

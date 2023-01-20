@@ -135,7 +135,7 @@ const CategoryCard = ({
 }: Props) => {
   const appConfig = useAppConfiguration();
 
-  const handleChange = (category: TCategory, value: boolean) => (_event) => {
+  const handleChange = (category: TCategory, value: boolean) => () => {
     onChange(category, value);
   };
 
