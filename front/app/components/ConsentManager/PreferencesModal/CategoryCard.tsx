@@ -114,6 +114,18 @@ const DestinationName = ({
   }
 };
 
+const RADIO_IDS_TRUE: Record<TCategory, string> = {
+  advertising: 'advertising-radio-true',
+  analytics: 'analytics-radio-true',
+  functional: 'functional-radio-true',
+};
+
+const RADIO_IDS_FALSE: Record<TCategory, string> = {
+  advertising: 'advertising-radio-false',
+  analytics: 'analytics-radio-false',
+  functional: 'functional-radio-false',
+};
+
 const CategoryCard = ({
   category,
   destinations,
@@ -148,7 +160,7 @@ const CategoryCard = ({
             currentValue={checked}
             value={true}
             name={category}
-            id={`${category}-radio-true`}
+            id={RADIO_IDS_TRUE[category]}
             label={<FormattedMessage {...messages.allow} />}
             isRequired
           />
@@ -161,7 +173,7 @@ const CategoryCard = ({
             currentValue={checked}
             value={false}
             name={category}
-            id={`${category}-radio-false`}
+            id={RADIO_IDS_FALSE[category]}
             label={<FormattedMessage {...messages.disallow} />}
             isRequired
             disabled={disableUncheck}

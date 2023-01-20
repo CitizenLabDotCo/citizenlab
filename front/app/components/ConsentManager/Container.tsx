@@ -1,15 +1,13 @@
-import React, { FormEvent, useState, useEffect, useCallback } from 'react';
+import React, { FormEvent, useState, useCallback } from 'react';
 
 // components
 import PreferencesModal from './PreferencesModal';
 import Banner from './Banner';
 
-// events
-import eventEmitter from 'utils/eventEmitter';
-
 // typings
 import { CategorizedDestinations, IPreferences } from './typings';
 import { TCategory } from './destinations';
+import useObserveEvent from 'hooks/useObserveEvent';
 
 interface Props {
   preferences: IPreferences;
@@ -47,16 +45,10 @@ const Container = ({
     setIsDialogOpen(false);
   }, [onToggleModal]);
 
-  useEffect(() => {
-    const subscription = eventEmitter
-      .observeEvent('openConsentManager')
-      .subscribe(openDialog);
-
-    return () => subscription.unsubscribe();
-  }, [openDialog]);
+  useObserveEvent('openConsentManager', openDialog);
 
   const handleSave = useCallback(
-    (e: FormEvent<any>) => {
+    (e: FormEvent) => {
       e.preventDefault();
 
       setIsDialogOpen(false);

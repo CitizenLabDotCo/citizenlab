@@ -17,7 +17,7 @@ describe('<CategoryCard />', () => {
 
   registerDestination({
     key: 'google_analytics',
-    category: 'analytics',
+    category,
     name: () => 'Google Analytics',
   });
 

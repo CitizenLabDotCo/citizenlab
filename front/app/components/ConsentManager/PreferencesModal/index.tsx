@@ -25,7 +25,7 @@ interface Props {
   handleCancelBack: () => void;
   handleCancelConfirm: () => void;
   handleCancel: () => void;
-  handleSave: (e: FormEvent<any>) => void;
+  handleSave: (e: FormEvent) => void;
   updatePreference: (category: TCategory, value: boolean) => void;
 }
 

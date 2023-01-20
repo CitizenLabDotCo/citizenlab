@@ -1,5 +1,5 @@
 import { getActiveDestinations } from './utils';
-import { registerDestination } from './destinations';
+import { registerDestination, IDestinationConfig } from './destinations';
 import { isAdmin, isModerator } from 'services/permissions/roles';
 
 const mockAppConfiguration = {
@@ -20,64 +20,58 @@ const mockAppConfiguration = {
       },
     },
   },
-};
+} as any;
 
-const matomoConfig = {
+const matomoConfig: IDestinationConfig = {
   key: 'matomo',
   category: 'analytics',
   feature_flag: 'matomo',
   name: () => 'Matomo',
-} as any;
+};
 registerDestination(matomoConfig);
 
-const gaConfig = {
+const gaConfig: IDestinationConfig = {
   key: 'google_analytics',
   category: 'analytics',
   feature_flag: 'google_analytics',
   name: () => 'Google Analytics',
-} as any;
+};
 registerDestination(gaConfig);
 
-const intercomConfig = {
+const intercomConfig: IDestinationConfig = {
   key: 'intercom',
   category: 'functional',
   feature_flag: 'intercom',
   hasPermission: (user) =>
     !!user && (isAdmin({ data: user }) || isModerator({ data: user })),
   name: () => 'Intercom',
-} as any;
+};
 registerDestination(intercomConfig);
 
 describe('getActiveDestinations', () => {
   it('works correctly without user', () => {
-    const output = getActiveDestinations(mockAppConfiguration as any, null);
+    const output = getActiveDestinations(mockAppConfiguration, null);
 
     expect(output).toEqual([matomoConfig, gaConfig]);
   });
 
   it('works correctly with regular user', () => {
-    const output = getActiveDestinations(
-      mockAppConfiguration as any,
-      {
-        attributes: {
-          roles: [],
-          highest_role: 'user',
-        },
-      } as any
-    );
+    const output = getActiveDestinations(mockAppConfiguration, {
+      attributes: {
+        roles: [],
+        highest_role: 'user',
+      },
+    } as any);
 
     expect(output).toEqual([matomoConfig, gaConfig]);
   });
 
   it('works correctly with admin user', () => {
-    const output = getActiveDestinations(
-      mockAppConfiguration as any,
-      {
-        attributes: {
-          roles: [{ type: 'admin' }],
-        },
-      } as any
-    );
+    const output = getActiveDestinations(mockAppConfiguration, {
+      attributes: {
+        roles: [{ type: 'admin' }],
+      },
+    } as any);
 
     expect(output).toEqual([matomoConfig, gaConfig, intercomConfig]);
   });
