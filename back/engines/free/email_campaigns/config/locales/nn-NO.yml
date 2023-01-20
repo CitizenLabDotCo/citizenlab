@@ -11,7 +11,6 @@ nn:
       "first_idea_published": Publisering av min  første idé
       "idea_marked_as_spam": Rapportere idé-spam
       "idea_published": Publisering av min idé
-      "initiative_assigned_to_you": Et forslag tildelt meg
       "initiative_marked_as_spam": Forslag til spam-rapport
       "initiative_published": Publisering av mitt forslag
       "invite_received": Invitasjon
@@ -45,7 +44,6 @@ nn:
       "welcome": Etter registrering
       "admin_digest": Ukentlig oversikt for administratorer
       "moderator_digest": Ukentlig oversikt for prosjektledere
-      "assignee_digest": Ukentlig oversikt over tildelte ideer
       "user_digest": Ukentlig oversikt
       "your_proposed_initiatives_digest": Ukentlig oversikt over dine forslag
     admin_campaign_type_description:
@@ -59,7 +57,6 @@ nn:
       "first_idea_published": Publication of your first idea - all users
       "idea_marked_as_spam": Idea spam report - admins and project managers
       "idea_published": Publication of your idea - all users
-      "initiative_assigned_to_you": Assignment of a proposal - admins
       "initiative_marked_as_spam": Proposal spam report - admins
       "initiative_published": Publication of your proposal - all users
       "invite_received": Invitation - all users
@@ -94,7 +91,6 @@ nn:
       "welcome": Welcome email to new users - all users
       "admin_digest": Weekly overview - admins
       "moderator_digest": Weekly overview - project managers
-      "assignee_digest": Weekly overview of assigned ideas - admins and project managers
       "user_digest": Weekly overview - all users
       "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
     footer:
@@ -165,21 +161,6 @@ nn:
       main_header: '%{commentAuthor} kommenterte ditt forslag'
       subject: 'Du har fått en kommentar på plattformen til %{organizationName}'
       preheader: '%{authorName} la igjen en kommentar på ditt forslag til %{organizationName}'
-    assignee_digest:
-      subject: 'Ideer som du må gi en tilbakemelding på: %{numberIdeas}'
-      preheader: 'Assignee digest of %{organizationName}'
-      title_your_weekly_report: '%{firstName}, venter på en tilbakemelding'
-      cta_manage_your_input: 'Manage your input'
-      assigned_ideas: 'Ideer som du må gi en tilbakemelding på'
-      title_assignment_past_week: 'De siste ideene som ble tidelt deg'
-      title_no_assignment_past_week: 'Du fikk ingen nye ideer tildelt forrige uke'
-      yesterday_by_author: 'I går av %{author}'
-      today_by_author: 'I dag av %{author}'
-      x_days_ago_by_author: '%{x} dager siden av %{author}'
-      idea_section: Idéer
-      initiative_section: Initiatives
-      title_initiatives_past_week: 'New initiatives assigned to you'
-      title_successful_initiatives_past_week: 'Initiatives assigned to you that reached the threshold'
     idea_marked_as_spam:
       by_author: 'av %{authorName}'
       cta_review_idea: 'Gjennomgå idé'
@@ -198,13 +179,6 @@ nn:
       preheader: 'Håndter spamrapporten'
       reported_this_because: '%{reporterFirstName} rapporterte dette fordi:'
       title_spam_report: '%{firstName} %{lastName} rapporterte spa'
-    initiative_assigned_to_you:
-      by_author: 'av %{authorName}'
-      cta_reply_to: 'Gi en tilbakemelding til %{authorName}'
-      event_description_initiative: 'An initiative has been assigned to you. Give feedback by writing an official update or by changing its status.'
-      main_header: '%{firstName}, du har en ny oppgave'
-      subject: 'Du har en ny oppgave på plattformen til %{organizationName}'
-      preheader_initiative: 'The initiative of %{authorName} has been assigned to you'
     invite_reminder:
       cta_accept_invitation: 'Godta invitasjonen'
       invitation_header: 'Din inivtasjon venter'

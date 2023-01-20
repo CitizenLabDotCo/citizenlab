@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :campaigns_group, class: EmailCampaigns::CampaignsGroup do
-    association :campaign, factory: :manual_campaign
+    association :campaign, factory: :admin_digest_campaign
     group
   end
 end

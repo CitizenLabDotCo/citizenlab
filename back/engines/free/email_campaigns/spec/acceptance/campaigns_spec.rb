@@ -16,7 +16,7 @@ resource 'Campaigns' do
 
   get '/web_api/v1/campaigns' do
     before do
-      @campaigns = create_list(:manual_campaign, 3)
+      @campaigns = create_list(:admin_rights_received_campaign, 3)
       create_list(:official_feedback_on_voted_initiative_campaign, 2)
     end
 
@@ -33,21 +33,15 @@ resource 'Campaigns' do
       expect(json_response[:data].size).to eq 5
     end
 
-    example 'List all manual campaigns' do
-      do_request(campaign_names: ['manual'])
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 3
-    end
-
-    example 'List all non-manual campaigns' do
-      do_request(without_campaign_names: ['manual'])
+    example 'List all campaigns except admin_rights_received' do
+      do_request(without_campaign_names: ['admin_rights_received'])
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
     end
   end
 
   get '/web_api/v1/campaigns/:id' do
-    let(:campaign) { create(:manual_campaign) }
+    let(:campaign) { create(:admin_rights_received_campaign) }
     let(:id) { campaign.id }
 
     example_request 'Get one campaign by id' do
@@ -58,7 +52,7 @@ resource 'Campaigns' do
   end
 
   get '/web_api/v1/campaigns/:id/preview' do
-    let(:campaign) { create(:manual_campaign) }
+    let(:campaign) { create(:admin_digest_campaign) }
     let(:id) { campaign.id }
 
     example_request 'Get a campaign HTML preview' do
@@ -68,108 +62,13 @@ resource 'Campaigns' do
     end
   end
 
-  post 'web_api/v1/campaigns' do
-    with_options scope: :campaign do
-      parameter :campaign_name, "The type of campaign. One of #{EmailCampaigns::DeliveryService.new.campaign_classes.map(&:campaign_name).join(', ')}", required: true
-      parameter :sender, "Who is shown as the sender towards the recipients, either #{EmailCampaigns::SenderConfigurable::SENDERS.join(' or ')}", required: true
-      parameter :reply_to, 'The e-mail of the reply-to address. Defaults to the author', required: false
-      parameter :subject_multiloc, 'The of the email, as a multiloc string', required: true
-      parameter :body_multiloc, 'The body of the email campaign, as a multiloc string. Supports basic HTML', required: true
-      parameter :group_ids, 'Array of group ids to whom the email should be sent', required: false
-    end
-    ValidationErrorHelper.new.error_fields self, EmailCampaigns::Campaign
-
-    let(:campaign) { build(:manual_campaign) }
-    let(:campaign_name) { 'manual' }
-    let(:subject_multiloc) { campaign.subject_multiloc }
-    let(:body_multiloc) { campaign.body_multiloc }
-    let(:sender) { 'author' }
-    let(:reply_to) { 'test@emailer.com' }
-    let(:group_ids) { [create(:group).id] }
-
-    example_request 'Create a campaign' do
-      expect(response_status).to eq 201
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :attributes, :subject_multiloc).stringify_keys).to match subject_multiloc
-      expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
-      expect(json_response.dig(:data, :attributes, :sender)).to match sender
-      expect(json_response.dig(:data, :attributes, :reply_to)).to match reply_to
-      expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq @user.id
-      expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to eq group_ids
-    end
-  end
-
-  patch 'web_api/v1/campaigns/:id' do
-    with_options scope: :campaign do
-      parameter :sender, "Who is shown as the sender towards the recipients, either #{EmailCampaigns::SenderConfigurable::SENDERS.join(' or ')}", required: true
-      parameter :reply_to, 'The e-mail of the reply-to address. Defaults to the author', required: true
-      parameter :subject_multiloc, 'The of the email, as a multiloc string', required: true
-      parameter :body_multiloc, 'The body of the email campaign, as a multiloc string. Supports basic HTML', required: true
-      parameter :group_ids, 'Array of group ids to whom the email should be sent', required: false
-    end
-    ValidationErrorHelper.new.error_fields self, EmailCampaigns::Campaign
-
-    let(:campaign) { create(:manual_campaign) }
-    let(:id) { campaign.id }
-    let(:subject_multiloc) { { 'en' => 'New subject' } }
-    let(:body_multiloc) { { 'en' => 'New body' } }
-    let(:sender) { 'organization' }
-    let(:reply_to) { 'otherguy@organization.net' }
-    let(:group_ids) { [create(:group).id] }
-
-    example_request 'Update a campaign' do
-      assert_status 200
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :attributes, :subject_multiloc).stringify_keys).to match subject_multiloc
-      expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
-      expect(json_response.dig(:data, :attributes, :sender)).to match sender
-      expect(json_response.dig(:data, :attributes, :admin_campaign_description_multiloc).stringify_keys).to eq campaign.class.admin_campaign_description_multiloc
-      expect(json_response.dig(:data, :attributes, :reply_to)).to match reply_to
-      expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq campaign.author_id
-      expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to eq group_ids
-    end
-  end
-
-  delete 'web_api/v1/campaigns/:id' do
-    let!(:id) { create(:manual_campaign).id }
-
-    example 'Delete a campaign' do
-      old_count = EmailCampaigns::Campaign.count
-      do_request
-      assert_status 200
-      expect { EmailCampaigns::Campaign.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
-      expect(EmailCampaigns::Campaign.count).to eq(old_count - 1)
-    end
-  end
-
-  post 'web_api/v1/campaigns/:id/send' do
-    ValidationErrorHelper.new.error_fields self, EmailCampaigns::Campaign
-
-    let(:campaign) { create :manual_campaign }
-    let(:id) { campaign.id }
-
-    example_request 'Send out the campaign now' do
-      assert_status 200
-      json_response = json_parse response_body
-      expect(json_response.dig(:data, :attributes, :deliveries_count)).to eq User.count
-    end
-
-    example '[error] Send out the campaign without an author' do
-      campaign.update_columns(author_id: nil, sender: 'author')
-      do_request
-      assert_status 422
-      json_response = json_parse response_body
-      expect(json_response).to include_response_error(:author, 'blank')
-    end
-  end
-
   get 'web_api/v1/campaigns/:id/deliveries' do
     with_options scope: :page do
       parameter :number, 'Page number'
       parameter :size, 'Number of deliveries per page'
     end
 
-    let(:campaign) { create :manual_campaign }
+    let(:campaign) { create :admin_rights_received_campaign }
     let!(:id) { campaign.id }
     let!(:deliveries) { create_list :delivery, 5, campaign: campaign }
 
@@ -182,7 +81,7 @@ resource 'Campaigns' do
   end
 
   get 'web_api/v1/campaigns/:id/stats' do
-    let(:campaign) { create(:manual_campaign) }
+    let(:campaign) { create(:admin_rights_received_campaign) }
     let!(:id) { campaign.id }
     let!(:deliveries) do
       create_list(

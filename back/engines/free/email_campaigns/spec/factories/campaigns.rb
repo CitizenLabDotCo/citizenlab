@@ -1,23 +1,6 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :manual_campaign, class: EmailCampaigns::Campaigns::Manual do
-    enabled { true }
-    author
-    sender { 'author' }
-    reply_to { 'someguy@somecity.com' }
-    subject_multiloc do
-      {
-        'en' => "We're almost done with your feedback"
-      }
-    end
-    body_multiloc do
-      {
-        'en' => 'Time to check it all out!'
-      }
-    end
-  end
-
   factory :admin_rights_received_campaign, class: EmailCampaigns::Campaigns::AdminRightsReceived do
     enabled { true }
   end
@@ -59,10 +42,6 @@ FactoryBot.define do
   end
 
   factory :invite_reminder_campaign, class: EmailCampaigns::Campaigns::InviteReminder do
-    enabled { true }
-  end
-
-  factory :initiative_assigned_to_you_campaign, class: EmailCampaigns::Campaigns::InitiativeAssignedToYou do
     enabled { true }
   end
 
@@ -184,11 +163,6 @@ FactoryBot.define do
   end
 
   factory :moderator_digest_campaign, class: EmailCampaigns::Campaigns::ModeratorDigest do
-    enabled { true }
-    schedule { weekly_schedule }
-  end
-
-  factory :assignee_digest_campaign, class: EmailCampaigns::Campaigns::AssigneeDigest do
     enabled { true }
     schedule { weekly_schedule }
   end

@@ -49,7 +49,7 @@ describe EmailCampaigns::DeliveryService do
     end
 
     it 'returns campaign_types that are all instantiatable without extra arguments, except for Manual campaign' do
-      (service.campaign_types - ['EmailCampaigns::Campaigns::Manual']).each do |campaign_type|
+      service.campaign_types.each do |campaign_type|
         expect { campaign_type.constantize.create! }.not_to raise_error
       end
     end
@@ -119,24 +119,6 @@ describe EmailCampaigns::DeliveryService do
             .at(Time.now + 8.hours)
         end
       end
-    end
-  end
-
-  describe 'send_now' do
-    let!(:campaign) { create(:manual_campaign) }
-    let!(:users) { create_list(:user, 3) }
-
-    it 'created a different command for each recipient' do
-      expect(service.send_now(campaign).length).to eq User.count
-    end
-
-    it 'launches deliver_later on an ActionMailer' do
-      expect { service.send_now(campaign) }.to have_enqueued_job(ActionMailer::MailDeliveryJob).exactly(User.count).times
-    end
-
-    it 'creates deliveries for a Trackable campaign' do
-      service.send_now(campaign)
-      expect(EmailCampaigns::Delivery.count).to eq User.count
     end
   end
 

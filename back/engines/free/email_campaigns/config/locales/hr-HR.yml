@@ -11,7 +11,6 @@ hr:
       "first_idea_published": Objava moje prve ideje
       "idea_marked_as_spam": Izvješće o neželjenoj ideji
       "idea_published": Objava moje ideje
-      "initiative_assigned_to_you": Dodijeljen mi je prijedlog
       "initiative_marked_as_spam": Izvješće o neželjenom prijedlogu
       "initiative_published": Objava mog prijedloga
       "invite_received": Pozivnica
@@ -45,7 +44,6 @@ hr:
       "welcome": Nakon registracije
       "admin_digest": Tjedni pregled za administratore
       "moderator_digest": Tjedni pregled za voditelja projekata
-      "assignee_digest": Tjedni pregled dodijeljenih ideja
       "user_digest": Tjedni pregled
       "your_proposed_initiatives_digest": Tjedni pregled vaših prijedloga
     admin_campaign_type_description:
@@ -59,7 +57,6 @@ hr:
       "first_idea_published": Objava vaše prve ideje – svi korisnici
       "idea_marked_as_spam": Izvješće o neželjenoj ideji – administratori i voditelji projekta
       "idea_published": Objava vaše ideje – svi korisnici
-      "initiative_assigned_to_you": Dodjeljivanje prijedloga – administratori
       "initiative_marked_as_spam": Izvješće o neželjenoj pošti – administratori
       "initiative_published": Objava vašeg prijedloga – svi korisnici
       "invite_received": Pozivnica – svi korisnici
@@ -94,7 +91,6 @@ hr:
       "welcome": Novi korisnik – administratori
       "admin_digest": Tjedni pregled – administratori
       "moderator_digest": Tjedni pregled – voditelji projekata
-      "assignee_digest": Tjedni pregled dodijeljenih ideja – administratori i voditelji projekata
       "user_digest": Tjedni pregled – svi korisnici
       "your_proposed_initiatives_digest": Tjedni pregled vlastitih prijedloga – svi korisnici
     footer:
@@ -165,21 +161,6 @@ hr:
       main_header: '%{commentAuthor} je komentirao/la vašu inicijativu'
       subject: 'Dobili ste komentar na platformi %{organizationName}'
       preheader: '%{authorName} je ostavio komentar na vašu inicijativu za %{organizationName}'
-    assignee_digest:
-      subject: 'Objave za koje su potrebne vaše povratne informacije: %{numberIdeas}'
-      preheader: 'Sažetak primatelja %{organizationName}'
-      title_your_weekly_report: '%{firstName}, unos korisnika čeka na vaše povratne informacije'
-      cta_manage_your_input: 'Upravljajte svojim unosom'
-      assigned_ideas: 'Ideje za koje su potrebne povratne informacije'
-      title_assignment_past_week: 'Najnovije ideje dodijeljene vama'
-      title_no_assignment_past_week: 'Prethodnog tjedna nije vam dodijeljena nijedna nova ideja'
-      yesterday_by_author: 'Jučer od autora %{author}'
-      today_by_author: 'Danas od autora %{author}'
-      x_days_ago_by_author: 'prije %{x} dana od %{author}'
-      idea_section: Ideje
-      initiative_section: Prijedlozi
-      title_initiatives_past_week: 'Dodijeljeni su vam novi prijedlozi'
-      title_successful_initiatives_past_week: 'Dodijeljeni prijedlozi koji su dosegli prag'
     idea_marked_as_spam:
       by_author: 'od %{authorName}'
       cta_review_idea: 'Pregledajte ideju'
@@ -198,13 +179,6 @@ hr:
       preheader: 'Reagirajte na ovaj izvještaj o neželjenom sadržaju'
       reported_this_because: '%{reporterFirstName} je prijavio/la ovo jer:'
       title_spam_report: '%{firstName} %{lastName} je prijavio/la neželjeni sadržaj'
-    initiative_assigned_to_you:
-      by_author: 'od %{authorName}'
-      cta_reply_to: 'Pošaljite povratne informacije za %{authorName}'
-      event_description_initiative: 'Dodijeljen vam je prijedlog. Ažurirajte informacije pisanjem službenog ažuriranja ili promjenom njegovog statusa.'
-      main_header: '%{firstName}, imate novi zadatak'
-      subject: 'Imate zadatak na %{organizationName} platformi '
-      preheader_initiative: 'Dodijeljen vam je prijedlog od %{authorName}'
     invite_reminder:
       cta_accept_invitation: 'Prihvatite pozivnicu'
       invitation_header: 'Pozivnica je na čekanju'

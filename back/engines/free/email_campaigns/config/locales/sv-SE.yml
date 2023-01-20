@@ -11,7 +11,6 @@ sv:
       "first_idea_published": Publicering av min första idé
       "idea_marked_as_spam": Skräppostrapport för idé
       "idea_published": Publicering av min idé
-      "initiative_assigned_to_you": Tilldelning av ett förslag till mig
       "initiative_marked_as_spam": Skräppostrapport för förslag
       "initiative_published": Publicering av mitt förslag
       "invite_received": Inbjudan
@@ -45,7 +44,6 @@ sv:
       "welcome": Efter registrering
       "admin_digest": Veckoöversikt för administratörer
       "moderator_digest": Veckoöversikt för projektledare
-      "assignee_digest": Veckoöversikt över tilldelade idéer
       "user_digest": Veckoöversikt
       "your_proposed_initiatives_digest": Veckoöversikt över dina förslag
     admin_campaign_type_description:
@@ -59,7 +57,6 @@ sv:
       "first_idea_published": Publicering av din första idé – alla användare
       "idea_marked_as_spam": Skräppostrapport för idé – administratörer och projektledare
       "idea_published": Publicering av din idé – alla användare
-      "initiative_assigned_to_you": Tilldelning av ett förslag – administratörer
       "initiative_marked_as_spam": Skräppostrapport för förslag – administratörer
       "initiative_published": Publicering av ditt förslag – alla användare
       "invite_received": Inbjudan – alla användare
@@ -94,7 +91,6 @@ sv:
       "welcome": Välkomstmejl till nya användare – alla användare
       "admin_digest": Veckoöversikt – administratörer
       "moderator_digest": Veckoöversikt – projektledare
-      "assignee_digest": Veckoöversikt över tilldelade idéer – administratörer och projektledare
       "user_digest": Veckoöversikt – alla användare
       "your_proposed_initiatives_digest": Veckoöversikt över dina egna förslag – alla användare
     footer:
@@ -165,21 +161,6 @@ sv:
       main_header: '%{commentAuthor} kommenterade ditt initiativ'
       subject: 'Du har fått en kommentar på %{organizationName}s plattform'
       preheader: '%{authorName} lämnade en kommentar för ditt initiativ för %{organizationName}'
-    assignee_digest:
-      subject: 'Idéer som kräver din återkoppling: %{numberIdeas}'
-      preheader: 'Sammanfattning av tilldelad person för %{organizationName}'
-      title_your_weekly_report: '%{firstName}, indata från medborgare väntar på din återkoppling'
-      cta_manage_your_input: 'Hantera dina indata'
-      assigned_ideas: 'Idéer behöver din återkoppling'
-      title_assignment_past_week: 'De senaste idéerna som tilldelats dig'
-      title_no_assignment_past_week: 'Inga nya idéer tilldelades dig förra veckan'
-      yesterday_by_author: 'Igår av %{author}'
-      today_by_author: 'Idag av %{author}'
-      x_days_ago_by_author: '%{x} dagar sedan av %{author}'
-      idea_section: Idéer
-      initiative_section: Förslag
-      title_initiatives_past_week: 'Nya förslag som tilldelats dig'
-      title_successful_initiatives_past_week: 'Förslag som tilldelats dig som nådde tröskeln'
     idea_marked_as_spam:
       by_author: 'av %{authorName}'
       cta_review_idea: 'Granska idé'
@@ -198,13 +179,6 @@ sv:
       preheader: 'Agera på den här skräppostrapporten'
       reported_this_because: '%{reporterFirstName} rapporterade det här eftersom:'
       title_spam_report: '%{firstName} %{lastName} rapporterade skräppost'
-    initiative_assigned_to_you:
-      by_author: 'av %{authorName}'
-      cta_reply_to: 'Ge återkoppling till %{authorName}'
-      event_description_initiative: 'Ett förslag har tilldelats dig. Ge återkoppling genom att skriva en officiell uppdatering eller genom att ändra statusen.'
-      main_header: '%{firstName}, du har ett nytt uppdrag'
-      subject: 'Du har ett uppdrag på plattformen för %{organizationName}'
-      preheader_initiative: 'Förslaget från %{authorName} har tilldelats dig'
     invite_reminder:
       cta_accept_invitation: 'Acceptera din inbjudan'
       invitation_header: 'Din inbjudan väntar'

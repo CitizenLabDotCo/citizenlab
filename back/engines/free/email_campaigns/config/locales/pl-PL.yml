@@ -11,7 +11,6 @@ pl:
       "first_idea_published": Publikacja mojego pierwszego pomysłu
       "idea_marked_as_spam": Raport dot. pomysłów oznaczonych jako spam
       "idea_published": Publikacja mojego pomysłu
-      "initiative_assigned_to_you": Przydzielenie mi propozycji
       "initiative_marked_as_spam": Raport dot. propozycji oznaczonych jako spam
       "initiative_published": Publikacja mojej propozycji
       "invite_received": Zaproszenie
@@ -45,7 +44,6 @@ pl:
       "welcome": Po rejestracji
       "admin_digest": Tygodniowy przegląd dla administratorów
       "moderator_digest": Tygodniowy przegląd dla menadżerów projektu
-      "assignee_digest": Tygodniowy przegląd przydzielonych pomysłów
       "user_digest": Tygodniowy przegląd
       "your_proposed_initiatives_digest": Tygodniowy przegląd Twoich propozycji
     admin_campaign_type_description:
@@ -59,7 +57,6 @@ pl:
       "first_idea_published": Publikacja Twojego pierwszego pomysłu - wszyscy użytkownicy
       "idea_marked_as_spam": Zgłaszania pomysłu jako spamu - administratorzy i menadżerowie projektu
       "idea_published": Publikacja Twojego pomysłu - wszyscy użytkownicy
-      "initiative_assigned_to_you": Przydzielenie propozycji - administratorzy
       "initiative_marked_as_spam": Zgłaszanie propozycji jako spamu - administratorzy
       "initiative_published": Publikacja Twojej propozycji - wszyscy użytkownicy
       "invite_received": Zaproszenie - wszyscy użytkownicy
@@ -94,7 +91,6 @@ pl:
       "welcome": Nowy użytkownik - administratorzy
       "admin_digest": Przegląd tygodniowy - administratorzy
       "moderator_digest": Przegląd tygodniowy - menadżerowie projektu
-      "assignee_digest": Cotygodniowy przegląd przydzielonych pomysłów - administratorzy i menadżerowie projektu
       "user_digest": Przegląd tygodniowy - wszyscy użytkownicy
       "your_proposed_initiatives_digest": Tygodniowy przegląd własnych propozycji - wszyscy użytkownicy
     footer:
@@ -165,21 +161,6 @@ pl:
       main_header: '%{commentAuthor} skomentował Twoją inicjatywę'
       subject: 'Otrzymałeś komentarz na platformie %{organizationName}'
       preheader: '%{authorName} skomentował Twoją inicjatywę na platformie %{organizationName}'
-    assignee_digest:
-      subject: 'Pomysły wymagające Twojej opinii: %{numberIdeas}'
-      preheader: 'Skrót dla pełnomocnika %{organizationName}'
-      title_your_weekly_report: '%{firstName}, głos mieszkańca czeka na Twoją opinię'
-      cta_manage_your_input: 'Zarządzaj swoimi treściami'
-      assigned_ideas: 'Pomysły wymagające Twojej opinii'
-      title_assignment_past_week: 'Najnowsze pomysły przydzielone do Ciebie'
-      title_no_assignment_past_week: 'Brak nowych pomysłów przypisanych do Ciebie w zeszłym tygodniu'
-      yesterday_by_author: 'Wczoraj przez %{author}'
-      today_by_author: 'Dzisiaj wg %{author}'
-      x_days_ago_by_author: '%{x} dni temu wg %{author}'
-      idea_section: Pomysły
-      initiative_section: Propozycje
-      title_initiatives_past_week: 'Nowe propozycje przypisane do Ciebie'
-      title_successful_initiatives_past_week: 'Propozycje przypisane do Ciebie, które osiągnęły próg poparcia'
     idea_marked_as_spam:
       by_author: 'przez %{authorName}'
       cta_review_idea: 'Przejrzyj pomysł'
@@ -198,13 +179,6 @@ pl:
       preheader: 'Podejmij działanie w związku ze zgłoszeniem spamu'
       reported_this_because: '%{reporterFirstName} zgłosił to, ponieważ:'
       title_spam_report: '%{firstName} %{lastName} zgłosił spam'
-    initiative_assigned_to_you:
-      by_author: 'wg %{authorName}'
-      cta_reply_to: 'Przekaż informację zwrotną do %{authorName}'
-      event_description_initiative: 'Przydzielono Ci propozycję. Przekaż informację zwrotną, pisząc oficjalną aktualizację lub zmieniając jej status.'
-      main_header: '%{firstName}, masz nowe zadanie'
-      subject: 'Zostałeś przypisany na platformie %{organizationName}'
-      preheader_initiative: 'Przypisano do Ciebie propozycję %{authorName}'
     invite_reminder:
       cta_accept_invitation: 'Przyjmij zaproszenie'
       invitation_header: 'Twoje zaproszenie jest w toku'

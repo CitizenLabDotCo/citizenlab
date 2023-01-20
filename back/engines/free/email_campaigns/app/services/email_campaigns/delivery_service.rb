@@ -5,7 +5,6 @@ module EmailCampaigns
     CAMPAIGN_CLASSES = [
       Campaigns::AdminDigest,
       Campaigns::AdminRightsReceived,
-      Campaigns::AssigneeDigest,
       Campaigns::CommentDeletedByAdmin,
       Campaigns::CommentMarkedAsSpam,
       Campaigns::CommentOnYourComment,
@@ -14,12 +13,10 @@ module EmailCampaigns
       Campaigns::FirstIdeaPublished,
       Campaigns::IdeaMarkedAsSpam,
       Campaigns::IdeaPublished,
-      Campaigns::InitiativeAssignedToYou,
       Campaigns::InitiativeMarkedAsSpam,
       Campaigns::InitiativePublished,
       Campaigns::InviteReceived,
       Campaigns::InviteReminder,
-      Campaigns::Manual,
       Campaigns::MentionInOfficialFeedback,
       Campaigns::ModeratorDigest,
       Campaigns::NewCommentForAdmin,
@@ -75,11 +72,6 @@ module EmailCampaigns
     def send_on_activity(activity)
       campaign_candidates = Campaign.where(type: campaign_types)
       apply_send_pipeline(campaign_candidates, activity: activity)
-    end
-
-    #  called when explicit send is requested by human
-    def send_now(campaign)
-      apply_send_pipeline([campaign])
     end
 
     def send_preview(campaign, recipient)

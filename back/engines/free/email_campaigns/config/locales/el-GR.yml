@@ -11,7 +11,6 @@ el:
       "first_idea_published": Δημοσίευση της πρώτης μου ιδέας
       "idea_marked_as_spam": Αναφορά spam ιδεών
       "idea_published": Δημοσίευση της ιδέας μου
-      "initiative_assigned_to_you": Ανάθεση πρότασης σε μένα
       "initiative_marked_as_spam": Έκθεση για την ανεπιθύμητη αλληλογραφία της πρότασης
       "initiative_published": Δημοσίευση της πρότασής μου
       "invite_received": Προσκλήσεις
@@ -45,7 +44,6 @@ el:
       "welcome": Μετά την εγγραφή
       "admin_digest": Εβδομαδιαία επισκόπηση για τους διαχειριστές
       "moderator_digest": Εβδομαδιαία επισκόπηση για τους διαχειριστές έργων
-      "assignee_digest": Εβδομαδιαία επισκόπηση των ιδεών που έχουν ανατεθεί
       "user_digest": Εβδομαδιαία επισκόπηση
       "your_proposed_initiatives_digest": Εβδομαδιαία επισκόπηση των προτάσεών σας
     admin_campaign_type_description:
@@ -59,7 +57,6 @@ el:
       "first_idea_published": Δημοσίευση της πρώτης σας ιδέας - όλοι οι χρήστες
       "idea_marked_as_spam": Αναφορά spam ιδεών - διαχειριστές και διαχειριστές έργων
       "idea_published": Δημοσίευση της ιδέας σας - όλοι οι χρήστες
-      "initiative_assigned_to_you": Ανάθεση πρότασης - admins
       "initiative_marked_as_spam": Πρόταση αναφοράς spam - admins
       "initiative_published": Δημοσίευση της πρότασής σας - όλοι οι χρήστες
       "invite_received": Πρόσκληση - όλοι οι χρήστες
@@ -94,7 +91,6 @@ el:
       "welcome": Welcome email to new users - all users
       "admin_digest": Weekly overview - admins
       "moderator_digest": Weekly overview - project managers
-      "assignee_digest": Weekly overview of assigned ideas - admins and project managers
       "user_digest": Weekly overview - all users
       "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
     footer:
@@ -165,21 +161,6 @@ el:
       main_header: '%{commentAuthor} σχολίασε την πρωτοβουλία σας'
       subject: 'Έχετε λάβει ένα σχόλιο στην πλατφόρμα %{organizationName}''s'
       preheader: '%{authorName} άφησε ένα σχόλιο στην πρωτοβουλία σας για το %{organizationName}'
-    assignee_digest:
-      subject: 'Ιδέες που απαιτούν τα σχόλιά σας: %{numberIdeas}'
-      preheader: 'Ψηφίδα παραλήπτη της ιστοσελίδας %{organizationName}'
-      title_your_weekly_report: '%{firstName}, η συμβολή των πολιτών περιμένει τα σχόλιά σας'
-      cta_manage_your_input: 'Διαχειριστείτε τις εισροές σας'
-      assigned_ideas: 'Οι ιδέες χρειάζονται τα σχόλιά σας'
-      title_assignment_past_week: 'Τελευταίες ιδέες που σας έχουν ανατεθεί'
-      title_no_assignment_past_week: 'Δεν σας ανατέθηκαν νέες ιδέες την περασμένη εβδομάδα'
-      yesterday_by_author: 'Χθες από %{author}'
-      today_by_author: 'Σήμερα από %{author}'
-      x_days_ago_by_author: '%{x} πριν από μέρες από %{author}'
-      idea_section: Ιδέες
-      initiative_section: Προτάσεις
-      title_initiatives_past_week: 'Νέες προτάσεις που σας έχουν ανατεθεί'
-      title_successful_initiatives_past_week: 'Προτάσεις που σας ανατέθηκαν και έφτασαν το όριο'
     idea_marked_as_spam:
       by_author: 'από %{authorName}'
       cta_review_idea: 'Ιδέα αναθεώρησης'
@@ -198,13 +179,6 @@ el:
       preheader: 'Ενεργήστε βάσει αυτής της έκθεσης spam'
       reported_this_because: '%{reporterFirstName} το ανέφερε αυτό επειδή:'
       title_spam_report: '%{firstName} %{lastName} αναφερθείσα ανεπιθύμητη αλληλογραφία'
-    initiative_assigned_to_you:
-      by_author: 'από %{authorName}'
-      cta_reply_to: 'Ανατροφοδότηση στο %{authorName}'
-      event_description_initiative: 'Σας έχει ανατεθεί μια πρόταση. Δώστε σχόλια γράφοντας μια επίσημη ενημέρωση ή αλλάζοντας την κατάστασή της.'
-      main_header: '%{firstName}, έχετε μια νέα αποστολή'
-      subject: 'Έχετε μια αποστολή στην πλατφόρμα %{organizationName}'
-      preheader_initiative: 'Σας έχει ανατεθεί η πρόταση της ιστοσελίδας %{authorName}'
     invite_reminder:
       cta_accept_invitation: 'Αποδεχτείτε την πρόσκλησή σας'
       invitation_header: 'Η πρόσκλησή σας εκκρεμεί'

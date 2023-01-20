@@ -11,7 +11,6 @@ en-GB:
       "first_idea_published": Publication of my first idea
       "idea_marked_as_spam": Idea spam report
       "idea_published": Publication of my idea
-      "initiative_assigned_to_you": Assignment of a proposal to me
       "initiative_marked_as_spam": Proposal spam report
       "initiative_published": Publication of my proposal
       "invite_received": Invitation
@@ -45,7 +44,6 @@ en-GB:
       "welcome": After registration
       "admin_digest": Weekly overview for admins
       "moderator_digest": Weekly overview for project managers
-      "assignee_digest": Weekly overview of assigned ideas
       "user_digest": Weekly overview
       "your_proposed_initiatives_digest": Weekly overview of your proposals
     admin_campaign_type_description:
@@ -59,7 +57,6 @@ en-GB:
       "first_idea_published": Publication of your first idea - all users
       "idea_marked_as_spam": Idea spam report - admins and project managers
       "idea_published": Publication of your idea - all users
-      "initiative_assigned_to_you": Assignment of a proposal - admins
       "initiative_marked_as_spam": Proposal spam report - admins
       "initiative_published": Publication of your proposal - all users
       "invite_received": Invitation - all users
@@ -94,7 +91,6 @@ en-GB:
       "welcome": Welcome email to new users - all users
       "admin_digest": Weekly overview - admins
       "moderator_digest": Weekly overview - project managers
-      "assignee_digest": Weekly overview of assigned ideas - admins and project managers
       "user_digest": Weekly overview - all users
       "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
     footer:
@@ -165,21 +161,6 @@ en-GB:
       main_header: '%{commentAuthor} commented on your petition'
       subject: 'You''ve received a comment on %{organizationName}''s platform'
       preheader: '%{authorName} left a comment on your petition for %{organizationName}'
-    assignee_digest:
-      subject: 'Ideas requiring your feedback: %{numberIdeas}'
-      preheader: 'Assignee digest of %{organizationName}'
-      title_your_weekly_report: '%{firstName}, citizen input is awaiting your feedback'
-      cta_manage_your_input: 'Manage your input'
-      assigned_ideas: 'Ideas need your feedback'
-      title_assignment_past_week: 'Latest ideas assigned to you'
-      title_no_assignment_past_week: 'No new ideas assigned to you last week'
-      yesterday_by_author: 'Yesterday by %{author}'
-      today_by_author: 'Today by %{author}'
-      x_days_ago_by_author: '%{x} days ago by %{author}'
-      idea_section: Ideas
-      initiative_section: Proposals
-      title_initiatives_past_week: 'New initiatives assigned to you'
-      title_successful_initiatives_past_week: 'Initiatives assigned to you that reached the threshold'
     idea_marked_as_spam:
       by_author: 'by %{authorName}'
       cta_review_idea: 'Review idea'
@@ -198,13 +179,6 @@ en-GB:
       preheader: 'Act upon this spam report'
       reported_this_because: '%{reporterFirstName} reported this because:'
       title_spam_report: '%{firstName} %{lastName} reported spam'
-    initiative_assigned_to_you:
-      by_author: 'by %{authorName}'
-      cta_reply_to: 'Give feedback to %{authorName}'
-      event_description_initiative: 'A petition has been assigned to you. Give feedback by writing an official update or by changing its status.'
-      main_header: '%{firstName}, you have a new assignment'
-      subject: 'You have an assignment on the platform of %{organizationName}'
-      preheader_initiative: 'The petition of %{authorName} has been assigned to you'
     invite_reminder:
       cta_accept_invitation: 'Accept your invitation'
       invitation_header: 'Your invitation is pending'
