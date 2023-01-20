@@ -6,7 +6,10 @@ import styled from 'styled-components';
 import { TPreviewDevice } from './BannerImageFields';
 
 // types
-import { ICustomPageAttributes } from 'services/customPages';
+import {
+  ICustomPageAttributes,
+  TCustomPageBannerLayout,
+} from 'services/customPages';
 import {
   IHomepageSettingsAttributes,
   THomepageBannerLayout,
@@ -36,7 +39,7 @@ interface Props {
   onAdd: (newImage: UploadFile[]) => void;
   onRemove: () => void;
   headerError: string | null;
-  header_bg: UploadFile[] | null;
+  header_bg: UploadFile | null;
   previewDevice: TPreviewDevice;
   layout: THomepageBannerLayout;
 }
@@ -96,15 +99,24 @@ const HeaderImageDropzone = ({
     return ratio;
   };
 
-  // Ideally, this condition is not here. On changing the layout,
-  // We should set the color/opacity to null. This should be refactored
-  // at the next convenience.
-  const isBannerWithOverlay =
-    layout === 'full_width_banner_layout' || layout === 'fixed_ratio_layout';
+  const showPreviewOverlayForLayout = (
+    layout: THomepageBannerLayout | TCustomPageBannerLayout
+  ) => {
+    const conditions: {
+      [key in THomepageBannerLayout | TCustomPageBannerLayout]: boolean;
+    } = {
+      full_width_banner_layout: true,
+      two_row_layout: false,
+      two_column_layout: false,
+      fixed_ratio_layout: true,
+    };
+
+    return conditions[layout];
+  };
 
   const previewOverlayElement =
-    //  We check for typeof of opacity because 0 would coerce to false.
-    isBannerWithOverlay &&
+    showPreviewOverlayForLayout(layout) &&
+    // We check for typeof of opacity because 0 would coerce to false.
     typeof overlayOpacity === 'number' &&
     overlayColor ? (
       <HeaderImageOverlay
@@ -119,7 +131,7 @@ const HeaderImageDropzone = ({
       acceptedFileTypes={{
         'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
       }}
-      images={header_bg}
+      images={header_bg ? [header_bg] : null}
       imagePreviewRatio={getImagePreviewRatio()}
       onAdd={onAdd}
       onRemove={onRemove}

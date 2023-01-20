@@ -12,7 +12,7 @@ import { useIntl } from 'utils/cl-intl';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings
-import { Stats } from '../../hooks/useEmailDeliveries/typings';
+import { Stats } from './useEmailDeliveries/typings';
 
 interface Props {
   stats: NilOrError | Stats;

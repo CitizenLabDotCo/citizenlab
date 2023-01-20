@@ -1,5 +1,50 @@
 # Changelog
 
+## Next release
+
+### Fixed
+
+- [CL-2648] Two-column layout image width on tablet is fixed.
+
+## 2023-01-19
+
+### Fixed
+
+- [CL-2617] Showing native survey confimation modal multiple times after submission even after closing the modal
+
+## 2023-01-18
+
+### Fixed
+
+- [CL-2611] Show projects nested in folders on custom pages
+- [CL-2604] The signed in banner opacity is fixed when its opacity is set to 0 in AdminHQ
+
+## 2023-01-16
+
+### Added
+
+- [CL-2320] Image dimensions i2: folder & project banner images
+
+## 2023-01-13 (2)
+
+### Added
+
+- [CL-2214] Report builder MVP (behind feature flag)
+
+### Fixed
+
+- [CL-2597] Custom tags tab is once again visible in both projects and platform settings
+
+## 2023-01-13
+
+### Fixed
+
+- [CL-2339] Fixed slow displaying of attachments in timeline projects on a phase
+
+### Changed
+
+- [CL-2465] Allow project moderators to all dashboard data
+
 ## 2023-01-12
 
 ### Added

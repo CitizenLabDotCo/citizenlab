@@ -1,4 +1,4 @@
-import { randomString, randomEmail } from '../support/commands';
+import { randomString } from '../support/commands';
 
 describe('Continuous PB project', () => {
   before(() => {

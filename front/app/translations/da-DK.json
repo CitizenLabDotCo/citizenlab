@@ -596,8 +596,6 @@
   "app.containers.AccessibilityStatement.title": "Tilgængelighedserklæring",
   "app.containers.AccessibilityStatement.userGeneratedContent": "Brugergenereret indhold",
   "app.containers.AccessibilityStatement.workshops": "Workshops",
-  "app.containers.Admin.Insights.helmetDescription": "Indsigt side for administratorer",
-  "app.containers.Admin.Insights.helmetTitle": "Platform indsigt",
   "app.containers.Admin.Insights.tabInsights": "Indsigt",
   "app.containers.Admin.Insights.tabReports": "Rapporter",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Opret en smart gruppe",

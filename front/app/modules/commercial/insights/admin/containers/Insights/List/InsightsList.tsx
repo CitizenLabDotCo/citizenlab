@@ -161,7 +161,7 @@ const InsightsList: React.FC<InsightsList & WrappedComponentProps> = ({
                 <Button
                   buttonStyle="secondary"
                   icon="edit"
-                  linkTo={`/admin/insights/${view.id}`}
+                  linkTo={`/admin/reporting/insights/${view.id}`}
                 >
                   {formatMessage(messages.listManage)}
                 </Button>
