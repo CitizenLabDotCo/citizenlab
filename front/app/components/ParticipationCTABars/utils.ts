@@ -7,7 +7,7 @@ export type CTABarProps = {
   phases: Error | IPhaseData[] | null | undefined;
 };
 
-export const hasRrojectEndedOrIsArchived = (
+export const hasProjectEndedOrIsArchived = (
   project: IProjectData,
   currentPhase: IPhaseData | null
 ) => {

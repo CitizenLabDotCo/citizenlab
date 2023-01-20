@@ -11,7 +11,7 @@ import { useTheme } from 'styled-components';
 import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
 import {
   CTABarProps,
-  hasRrojectEndedOrIsArchived,
+  hasProjectEndedOrIsArchived,
 } from 'components/ParticipationCTABars/utils';
 
 // utils
@@ -34,7 +34,7 @@ export const VolunteeringCTABar = ({ phases, project }: CTABarProps) => {
     scrollToElement({ id: 'volunteering', shouldFocus: true });
   };
 
-  if (hasRrojectEndedOrIsArchived(project, currentPhase)) {
+  if (hasProjectEndedOrIsArchived(project, currentPhase)) {
     return null;
   }
 

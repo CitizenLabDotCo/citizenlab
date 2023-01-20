@@ -17,7 +17,7 @@ import { getIdeaPostingRules } from 'services/actionTakingRules';
 import { isNilOrError } from 'utils/helperUtils';
 import {
   CTABarProps,
-  hasRrojectEndedOrIsArchived,
+  hasProjectEndedOrIsArchived,
 } from 'components/ParticipationCTABars/utils';
 
 export const NativeSurveyCTABar = ({ phases, project }: CTABarProps) => {
@@ -39,7 +39,7 @@ export const NativeSurveyCTABar = ({ phases, project }: CTABarProps) => {
   });
   const hasUserParticipated = disabledReason === 'postingLimitedMaxReached';
 
-  if (hasRrojectEndedOrIsArchived(project, currentPhase)) {
+  if (hasProjectEndedOrIsArchived(project, currentPhase)) {
     return null;
   }
 

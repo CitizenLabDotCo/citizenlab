@@ -17,7 +17,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { scrollToElement } from 'utils/scroll';
 import {
   CTABarProps,
-  hasRrojectEndedOrIsArchived,
+  hasProjectEndedOrIsArchived,
 } from 'components/ParticipationCTABars/utils';
 
 // i18n
@@ -96,7 +96,7 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
     scrollTo('project-survey')(event);
   };
 
-  if (hasRrojectEndedOrIsArchived(project, currentPhase)) {
+  if (hasProjectEndedOrIsArchived(project, currentPhase)) {
     return null;
   }
 

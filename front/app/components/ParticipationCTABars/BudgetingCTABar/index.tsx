@@ -15,7 +15,7 @@ import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
 import { scrollToElement } from 'utils/scroll';
 import {
   CTABarProps,
-  hasRrojectEndedOrIsArchived,
+  hasProjectEndedOrIsArchived,
 } from 'components/ParticipationCTABars/utils';
 
 // i18n
@@ -38,7 +38,7 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
   }, [phases]);
 
-  if (hasRrojectEndedOrIsArchived(project, currentPhase)) {
+  if (hasProjectEndedOrIsArchived(project, currentPhase)) {
     return null;
   }
 
