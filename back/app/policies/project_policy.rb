@@ -115,6 +115,10 @@ class ProjectPolicy < ApplicationPolicy
     active? && admin?
   end
 
+  def copy?
+    create?
+  end
+
   def shared_permitted_attributes
     shared = [
       :slug,
