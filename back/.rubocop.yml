@@ -77,6 +77,9 @@ RSpec/MultipleExpectations:
 Style/DoubleNegation:
   Enabled: false
 
+Style/NegatedIf:
+  Enabled: false
+
 Rails/DynamicFindBy:
   AllowedMethods:
     - find_by_cimail
