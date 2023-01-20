@@ -74,7 +74,7 @@ export const ParticipationCTAContent = ({
       <Box
         display="flex"
         alignItems="center"
-        justifyContent="space-around"
+        justifyContent="space-between"
         flexDirection="row"
         width="100%"
         bgColor={theme.colors.tenantPrimary}
