@@ -38,6 +38,14 @@ import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
 import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 
+type IProjectFolderSubmitState =
+  | 'disabled'
+  | 'enabled'
+  | 'error'
+  | 'apiError'
+  | 'success'
+  | 'loading';
+
 interface Props {
   mode: 'edit' | 'new';
   projectFolderId: string;
@@ -141,26 +149,26 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
 
   const getHandler = useCallback(
     (setter: (value: any) => void) => (value: any) => {
-      setStatus('enabled');
+      setSubmitState('enabled');
       setter(value);
     },
     []
   );
 
   const handleSlugOnChange = useCallback((slug: string) => {
-    setStatus('enabled');
+    setSubmitState('enabled');
     setSlug(slug);
 
     if (validateSlug(slug)) {
       setShowSlugErrorMessage(false);
     } else {
       setShowSlugErrorMessage(true);
-      setStatus('error');
+      setSubmitState('error');
     }
   }, []);
 
   const handleHeaderBgChange = useCallback((newImageBase64: string | null) => {
-    setStatus('enabled');
+    setSubmitState('enabled');
 
     setChangedHeaderBg(true);
     setHeaderBgBase64(newImageBase64);
@@ -168,7 +176,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
 
   const handleProjectFolderImageOnRemove = useCallback(
     (imageToRemove: UploadFile) => {
-      setStatus('enabled');
+      setSubmitState('enabled');
 
       if (imageToRemove.remote && imageToRemove.id) {
         setProjectFolderImagesToRemove((previous) => {
@@ -190,7 +198,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   }, [projectFolderImages]);
 
   const handleProjectFolderFileOnAdd = useCallback((fileToAdd: UploadFile) => {
-    setStatus('enabled');
+    setSubmitState('enabled');
 
     setProjectFolderFiles((previous) => {
       const isDuplicate = previous.some(
@@ -203,7 +211,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
 
   const handleProjectFolderFileOnRemove = useCallback(
     (fileToRemove: UploadFile) => {
-      setStatus('enabled');
+      setSubmitState('enabled');
       if (fileToRemove.remote && fileToRemove.id) {
         setProjectFolderFilesToRemove((previous) => [
           ...previous,
@@ -218,9 +226,8 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   );
 
   // form status
-  const [status, setStatus] = useState<
-    'enabled' | 'error' | 'apiError' | 'success' | 'disabled' | 'loading'
-  >('disabled');
+  const [submitState, setSubmitState] =
+    useState<IProjectFolderSubmitState>('disabled');
 
   // validation
   const tenantLocales = useAppConfigurationLocales();
@@ -237,7 +244,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
       );
     }
     if (!valid) {
-      setStatus('error');
+      setSubmitState('error');
     }
 
     return valid;
@@ -248,10 +255,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     shortDescriptionMultiloc,
   ]);
 
-  // form submission
-  const onSubmit = async () => {
+  const saveForm = async () => {
     if (validate()) {
-      setStatus('loading');
+      setSubmitState('loading');
       if (mode === 'new') {
         try {
           if (
@@ -292,7 +298,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           }
         } catch (errors) {
           setErrors(errors.json.errors);
-          setStatus('apiError');
+          setSubmitState('apiError');
         }
       } else {
         try {
@@ -388,17 +394,17 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               );
 
               if (isNilOrError(res)) {
-                setStatus('apiError');
+                setSubmitState('apiError');
               }
             }
             setProjectFolderFilesToRemove([]);
-            setStatus('success');
+            setSubmitState('success');
           } else {
-            setStatus('apiError');
+            setSubmitState('apiError');
           }
         } catch (errors) {
           setErrors(errors.json.errors);
-          setStatus('apiError');
+          setSubmitState('apiError');
         }
       }
     }
@@ -414,7 +420,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
       : false;
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={saveForm}>
       <Section>
         <SectionField>
           <SubSectionTitle>
@@ -566,20 +572,20 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           />
         </SectionField>
         <SubmitWrapper
-          loading={status === 'loading'}
+          loading={submitState === 'loading'}
           status={
-            status === 'loading'
+            submitState === 'loading'
               ? 'disabled'
-              : status === 'apiError'
+              : submitState === 'apiError'
               ? 'error'
-              : status
+              : submitState
           }
-          onClick={onSubmit}
+          onClick={saveForm}
           messages={{
             buttonSave: messages.save,
             buttonSuccess: messages.saveSuccess,
             messageError:
-              status === 'apiError'
+              submitState === 'apiError'
                 ? messages.saveErrorMessage
                 : messages.multilocError,
             messageSuccess: messages.saveSuccessMessage,
