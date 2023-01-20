@@ -20,7 +20,7 @@ import SurveyResults from './SurveyResults';
 import ProjectFilter from '../_shared/ProjectFilter';
 import PhaseFilter from '../_shared/PhaseFilter';
 import QuestionFilter from './QuestionFilter';
-import PageBreakBox from '../../../../../../../components/admin/ContentBuilder/Widgets/PageBreakBox';
+import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 // messages
 import messages from './messages';
