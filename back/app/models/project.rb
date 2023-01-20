@@ -69,7 +69,7 @@ class Project < ApplicationRecord
 
   has_many :phases, -> { order(:start_at) }, dependent: :destroy
   has_many :events, -> { order(:start_at) }, dependent: :destroy
-  has_many :project_images, -> { order(:ordering) }, dependent: :destroy
+  has_many :project_images, -> { order(:ordering) }, dependent: :destroy # it always stores one project card
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy

@@ -100,20 +100,20 @@ const AdminProjectsProjectGeneral = () => {
   const [projectFilesToRemove, setProjectFilesToRemove] = useState<
     IProjectFormState['projectFilesToRemove']
   >([]);
-  const [projectImages, setProjectImages] = useState<
-    IProjectFormState['projectImages']
-  >([]);
-  const [projectImagesToRemove, setProjectImagesToRemove] = useState<
-    IProjectFormState['projectImagesToRemove']
-  >([]);
+  const [projectCard, setProjectCard] =
+    useState<IProjectFormState['projectCard']>(null);
+  const [projectCardToRemove, setProjectCardToRemove] =
+    useState<IProjectFormState['projectCardToRemove']>(null);
   const [slug, setSlug] = useState<IProjectFormState['slug']>(null);
   const [showSlugErrorMessage, setShowSlugErrorMessage] =
     useState<IProjectFormState['showSlugErrorMessage']>(false);
   const [publicationStatus, setPublicationStatus] =
     useState<IProjectFormState['publicationStatus']>('draft');
-  const [projectImagesBase64, setProjectImagesBase64] = useState<string | null>(
-    null
-  );
+  // If we use cropper, we need to store two different images:
+  // original and cropped.
+  const [croppedProjectCardBase64, setCroppedProjectCardBase64] = useState<
+    string | null
+  >(null);
 
   useEffect(() => {
     (async () => {
@@ -170,7 +170,7 @@ const AdminProjectsProjectGeneral = () => {
           await Promise.all(nextProjectImagesPromises)
         ).filter(isUploadFile);
 
-        setProjectImages(nextProjectImages);
+        setProjectCard(nextProjectImages[0]);
       }
     })();
   }, [remoteProjectImages]);
@@ -215,29 +215,23 @@ const AdminProjectsProjectGeneral = () => {
 
   const handleProjectImagesOnAdd = (projectImages: UploadFile[]) => {
     setSubmitState('enabled');
-    setProjectImages(projectImages);
+    setProjectCard(projectImages[0]);
   };
 
   const handleProjectImageOnRemove = (projectImageToRemove: UploadFile) => {
-    setProjectImages((projectImages) => {
-      return projectImages.filter(
-        (image) => image.base64 !== projectImageToRemove.base64
-      );
-    });
-    setProjectImagesToRemove((projectImagesToRemove) => {
-      return [...projectImagesToRemove, projectImageToRemove];
-    });
+    setProjectCard(null);
+    projectImageToRemove.remote && setProjectCardToRemove(projectImageToRemove);
     setSubmitState('enabled');
   };
 
   const handleProjectImagesOnComplete = (base64: string) => {
     setSubmitState('enabled');
-    setProjectImagesBase64(base64);
+    setCroppedProjectCardBase64(base64);
   };
 
   const handleProjectImagesOnRemoveNoArgs = useCallback(() => {
-    handleProjectImageOnRemove(projectImages[0]);
-  }, [projectImages]);
+    projectCard && handleProjectImageOnRemove(projectCard);
+  }, [projectCard]);
 
   const handleProjectFileOnAdd = (newProjectFile: UploadFile) => {
     let isDuplicate = false;
@@ -304,26 +298,22 @@ const AdminProjectsProjectGeneral = () => {
           }
         }
 
-        const imagesToAddPromises = projectImagesBase64
-          ? projectImages
-              .filter((file) => !file.remote)
-              .map((file) => {
-                if (latestProjectId) {
-                  return addProjectImage(latestProjectId, projectImagesBase64);
-                }
+        const imageToAddPromise =
+          croppedProjectCardBase64 &&
+          projectCard &&
+          !projectCard.remote &&
+          latestProjectId
+            ? [addProjectImage(latestProjectId, croppedProjectCardBase64)]
+            : null;
+        const imageToRemovePromise =
+          projectCardToRemove &&
+          projectCardToRemove.remote &&
+          projectCardToRemove.id &&
+          isString(projectCardToRemove.id) &&
+          latestProjectId
+            ? deleteProjectImage(latestProjectId, projectCardToRemove.id)
+            : null;
 
-                return;
-              })
-          : [];
-        const imagesToRemovePromises = projectImagesToRemove
-          .filter((file) => file.remote === true && isString(file.id))
-          .map((file) => {
-            if (latestProjectId && file.id) {
-              return deleteProjectImage(latestProjectId, file.id);
-            }
-
-            return;
-          });
         const filesToAddPromises = projectFiles
           .filter((file) => !file.remote)
           .map((file) => {
@@ -344,14 +334,14 @@ const AdminProjectsProjectGeneral = () => {
           });
 
         await Promise.all([
-          ...imagesToAddPromises,
-          ...imagesToRemovePromises,
+          imageToAddPromise,
+          imageToRemovePromise,
           ...filesToAddPromises,
           ...filesToRemovePromises,
         ] as Promise<any>[]);
 
         setSubmitState('success');
-        setProjectImagesToRemove([]);
+        setProjectCardToRemove(null);
         setProjectFilesToRemove([]);
         setProcessing(false);
 
@@ -460,10 +450,7 @@ const AdminProjectsProjectGeneral = () => {
     !isNilOrError(project) ? project : null
   );
 
-  const projectImagesShouldBeSaved =
-    projectImages && projectImages.length > 0
-      ? !projectImages[0].remote
-      : false;
+  const projectCardShouldBeSaved = projectCard ? !projectCard.remote : false;
 
   return (
     <StyledForm className="e2e-project-general-form" onSubmit={onSubmit}>
@@ -578,10 +565,10 @@ const AdminProjectsProjectGeneral = () => {
           imageUrl={project?.attributes.header_bg.large}
           onImageChange={handleHeaderBgChange}
         />
-        {projectImagesShouldBeSaved ? (
+        {projectCardShouldBeSaved ? (
           <Box display="flex" flexDirection="column" gap="8px">
             <ImageCropperContainer
-              image={projectImages[0]}
+              image={projectCard}
               onComplete={handleProjectImagesOnComplete}
               aspect={2 / 1}
               onRemove={handleProjectImagesOnRemoveNoArgs}
@@ -589,7 +576,7 @@ const AdminProjectsProjectGeneral = () => {
           </Box>
         ) : (
           <ProjectImageDropzone
-            projectImages={projectImages}
+            projectImages={projectCard && [projectCard]}
             handleProjectImagesOnAdd={handleProjectImagesOnAdd}
             handleProjectImageOnRemove={handleProjectImageOnRemove}
           />

@@ -22,7 +22,7 @@ const StyledImagesDropzone = styled(ImagesDropzone)`
 `;
 
 interface Props {
-  projectImages: UploadFile[];
+  projectImages: UploadFile[] | null;
   handleProjectImagesOnAdd: (projectImages: UploadFile[]) => void;
   handleProjectImageOnRemove: (projectImageToRemove: UploadFile) => void;
 }
