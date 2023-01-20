@@ -123,7 +123,7 @@ export const ParticipationCTAContent = ({
       flexDirection="row"
       width="100%"
       bgColor={theme.colors.tenantPrimary}
-      height="62px"
+      height="64px"
       p="20px"
     >
       <Box
@@ -140,7 +140,7 @@ export const ParticipationCTAContent = ({
             width="16px"
             height="16px"
             fill={colors.white}
-            mr="6px"
+            mr="8px"
             showAnimation={!hasUserParticipated}
           />
           <Text color="white" fontSize="s" my="0px">
