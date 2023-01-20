@@ -102,18 +102,21 @@ const AdminProjectsProjectGeneral = () => {
   >([]);
   const [projectCard, setProjectCard] =
     useState<IProjectFormState['projectCard']>(null);
+  // project_images should always store one record, but in practice it's different (maybe because of a bug)
+  // https://citizenlabco.slack.com/archives/C015M14HYSF/p1674228018666059
   const [projectCardToRemove, setProjectCardToRemove] =
     useState<IProjectFormState['projectCardToRemove']>(null);
-  const [slug, setSlug] = useState<IProjectFormState['slug']>(null);
-  const [showSlugErrorMessage, setShowSlugErrorMessage] =
-    useState<IProjectFormState['showSlugErrorMessage']>(false);
-  const [publicationStatus, setPublicationStatus] =
-    useState<IProjectFormState['publicationStatus']>('draft');
   // If we use cropper, we need to store two different images:
   // original and cropped.
   const [croppedProjectCardBase64, setCroppedProjectCardBase64] = useState<
     string | null
   >(null);
+
+  const [slug, setSlug] = useState<IProjectFormState['slug']>(null);
+  const [showSlugErrorMessage, setShowSlugErrorMessage] =
+    useState<IProjectFormState['showSlugErrorMessage']>(false);
+  const [publicationStatus, setPublicationStatus] =
+    useState<IProjectFormState['publicationStatus']>('draft');
 
   useEffect(() => {
     (async () => {
@@ -213,25 +216,25 @@ const AdminProjectsProjectGeneral = () => {
     setSubmitState('enabled');
   };
 
-  const handleProjectImagesOnAdd = (projectImages: UploadFile[]) => {
+  const handleProjectCardOnAdd = (projectImages: UploadFile[]) => {
     setSubmitState('enabled');
     setProjectCard(projectImages[0]);
   };
 
-  const handleProjectImageOnRemove = (projectImageToRemove: UploadFile) => {
+  const handleProjectCardOnRemove = (projectCardToRemove: UploadFile) => {
     setProjectCard(null);
-    projectImageToRemove.remote && setProjectCardToRemove(projectImageToRemove);
+    projectCardToRemove.remote && setProjectCardToRemove(projectCardToRemove);
     setSubmitState('enabled');
   };
 
-  const handleProjectImagesOnComplete = (base64: string) => {
+  const handleStoredProjectCardOnRemove = () => {
+    projectCard && handleProjectCardOnRemove(projectCard);
+  };
+
+  const handleProjectCardOnCompleteCropping = (base64: string) => {
     setSubmitState('enabled');
     setCroppedProjectCardBase64(base64);
   };
-
-  const handleProjectImagesOnRemoveNoArgs = useCallback(() => {
-    projectCard && handleProjectImageOnRemove(projectCard);
-  }, [projectCard]);
 
   const handleProjectFileOnAdd = (newProjectFile: UploadFile) => {
     let isDuplicate = false;
@@ -298,14 +301,14 @@ const AdminProjectsProjectGeneral = () => {
           }
         }
 
-        const imageToAddPromise =
+        const cardToAddPromise =
           croppedProjectCardBase64 &&
           projectCard &&
           !projectCard.remote &&
           latestProjectId
             ? [addProjectImage(latestProjectId, croppedProjectCardBase64)]
             : null;
-        const imageToRemovePromise =
+        const cardToRemovePromise =
           projectCardToRemove &&
           projectCardToRemove.remote &&
           projectCardToRemove.id &&
@@ -334,8 +337,8 @@ const AdminProjectsProjectGeneral = () => {
           });
 
         await Promise.all([
-          imageToAddPromise,
-          imageToRemovePromise,
+          cardToAddPromise,
+          cardToRemovePromise,
           ...filesToAddPromises,
           ...filesToRemovePromises,
         ] as Promise<any>[]);
@@ -569,16 +572,16 @@ const AdminProjectsProjectGeneral = () => {
           <Box display="flex" flexDirection="column" gap="8px">
             <ImageCropperContainer
               image={projectCard}
-              onComplete={handleProjectImagesOnComplete}
+              onComplete={handleProjectCardOnCompleteCropping}
               aspect={2 / 1}
-              onRemove={handleProjectImagesOnRemoveNoArgs}
+              onRemove={handleStoredProjectCardOnRemove}
             />
           </Box>
         ) : (
           <ProjectImageDropzone
             projectImages={projectCard && [projectCard]}
-            handleProjectImagesOnAdd={handleProjectImagesOnAdd}
-            handleProjectImageOnRemove={handleProjectImageOnRemove}
+            handleProjectImagesOnAdd={handleProjectCardOnAdd}
+            handleProjectImageOnRemove={handleProjectCardOnRemove}
           />
         )}
 
