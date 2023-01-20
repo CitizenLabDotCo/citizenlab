@@ -21,4 +21,12 @@ export default defineMessages({
     id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.showMore',
     defaultMessage: 'Show more',
   },
+  title: {
+    id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.title',
+    defaultMessage: 'Title',
+  },
+  ideationPhases: {
+    id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.ideationPhases',
+    defaultMessage: 'Ideation phases',
+  },
 });

@@ -7,7 +7,11 @@ import Settings from './Settings';
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
-const MostVotedIdeasWidget = () => {
+// typings
+import { Props } from './typings';
+
+const MostVotedIdeasWidget = ({}: // TODO
+Props) => {
   const { formatMessage } = useIntl();
 
   return <>{formatMessage(messages.mostVotedIdeas)}</>;

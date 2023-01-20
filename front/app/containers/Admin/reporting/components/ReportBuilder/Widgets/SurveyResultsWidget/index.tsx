@@ -17,8 +17,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import NoResults from './NoResults';
 import SurveyResults from './SurveyResults';
-import ProjectFilter from './ProjectFilter';
-import PhaseFilter from './PhaseFilter';
+import ProjectFilter from '../_shared/ProjectFilter';
+import PhaseFilter from '../_shared/PhaseFilter';
 import QuestionFilter from './QuestionFilter';
 import PageBreakBox from '../../../../../../../components/admin/ContentBuilder/Widgets/PageBreakBox';
 
@@ -176,6 +176,7 @@ const SurveyResultsWidgetSettings = () => {
       {projectId !== undefined && (
         <>
           <PhaseFilter
+            label={formatMessage(messages.surveyPhases)}
             projectId={projectId}
             phaseId={phaseId}
             onPhaseFilter={handlePhaseFilter}
