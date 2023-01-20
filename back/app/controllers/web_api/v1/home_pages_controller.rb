@@ -33,7 +33,6 @@ class WebApi::V1::HomePagesController < ApplicationController
     params.require(:home_page).permit(
       :top_info_section_enabled,
       :bottom_info_section_enabled,
-      :events_widget_enabled,
       :projects_enabled,
       :banner_avatars_enabled,
       :banner_layout,
