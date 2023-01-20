@@ -55,6 +55,8 @@ class CustomField < ApplicationRecord
   validates :hidden, inclusion: { in: [true, false] }
   validates :code, inclusion: { in: CODES }, uniqueness: { scope: %i[resource_type resource_id] }, allow_nil: true
 
+  validates_with FieldConstraintValidator
+
   before_validation :set_default_enabled
   before_validation :generate_key, on: :create
   before_validation :sanitize_description_multiloc
@@ -201,6 +203,20 @@ class CustomField < ApplicationRecord
     )
     self.description_multiloc = service.remove_multiloc_empty_trailing_tags description_multiloc
     self.description_multiloc = service.linkify_multiloc description_multiloc
+  end
+end
+
+# Where is this best put in the codebase?
+# field constraints is maybe confusing - maybe just constraints?
+class FieldConstraintValidator < ActiveModel::Validator
+  def validate(field)
+    @participation_method = Factory.instance.participation_method_for field.resource.participation_context
+    field_constraints = @participation_method.field_constraints[field.code]
+    field_constraints['locks']&.each do |key, value|
+      if field.changed_attributes.key?(key) && value == true
+        field.errors.add :base, "Cannot change #{key}. It is locked."
+      end
+    end
   end
 end
 
