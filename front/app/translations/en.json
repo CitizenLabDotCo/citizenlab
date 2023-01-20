@@ -276,7 +276,7 @@
   "app.components.PagesForm.savePage": "Save page",
   "app.components.PagesForm.saveSuccess": "Page successfully saved.",
   "app.components.PagesForm.titleMissingOneLanguageError": "Provide title for at least one language",
-  "app.components.ParticipationCTABars.allocateYourBudget": "Allocate your budget.",
+  "app.components.ParticipationCTABars.allocateBudget": "Allocate your budget",
   "app.components.ParticipationCTABars.mobileProjectOpenForSubmission": "Open for participation",
   "app.components.ParticipationCTABars.participationTimeLeft": "{timeLeft}  weeks left",
   "app.components.ParticipationCTABars.projectOpenForSubmission": "This project is currently open for participation.",
