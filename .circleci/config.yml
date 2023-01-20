@@ -3,14 +3,6 @@ version: 2.1
 orbs:
   slack: circleci/slack@4.3.3
 
-# REUSABLE YAML FRAGMENTS (yml anchors)
-slack-fail-post-step-inconsistent-data: &slack-fail-post-step-inconsistent-data
-  post-steps:
-    - slack/notify:
-        event: fail
-        mentions: ":boom: FAILURE: Some data is likely invalid."
-        template: basic_fail_1
-
 parameters:
   # This parameter is used to trigger the main workflow
   trigger:
@@ -127,15 +119,6 @@ jobs:
     steps:
       - checkout
       - run: danger ci
-
-  slack-invalid-data-success:
-    resource_class: small
-    docker:
-      - image: cimg/base:2021.03
-    steps:
-      - slack/notify:
-          event: pass
-          template: basic_success_1
 
   # BACK-END ESSENTIAL
   back-build-essential-docker-image:
@@ -374,25 +357,6 @@ jobs:
           command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker pull citizenlabdotco/back-ee:$CIRCLE_BRANCH && docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH rake db:migrate cl2back:clean_tenant_settings email_campaigns:assure_campaign_records fix_existing_tenants:update_permissions cl2back:clear_cache_store email_campaigns:remove_deprecated"
       - deploy:
           command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "cd cl2-deployment && docker stack deploy --compose-file << parameters.compose_file >> << parameters.stack_name >> --with-registry-auth"
-
-  check-for-inconsistent-data:
-    resource_class: small
-    docker:
-      - image: cimg/base:2021.03
-    parameters:
-      ssh_host:
-        type: string
-      ssh_user:
-        type: string
-        default: ubuntu
-      env_file:
-        type: string
-        default: .env-production
-    steps:
-      - run:
-          name: Check for inconsistent data
-          command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH rake checks:invalid_data"
-          no_output_timeout: 60m
 
   # FRONT-END ESSENTIAL
   front-test:
@@ -1116,50 +1080,3 @@ workflows:
                 event: fail
                 mentions: ":boom: FAILURE: Some tests failed."
                 template: basic_fail_1
-
-  check-for-inconsistent-data:
-    triggers:
-      - schedule:
-          cron: "0 2 * * 1"
-          filters:
-            branches:
-              only:
-                - production
-    jobs:
-      - check-for-inconsistent-data:
-          <<: *slack-fail-post-step-inconsistent-data
-          name: "South America"
-          context:
-            - slack-dev-notifications-inconsistent-data
-          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_SAM
-          env_file: ".env-web"
-      - check-for-inconsistent-data:
-          <<: *slack-fail-post-step-inconsistent-data
-          name: "Canada"
-          context:
-            - slack-dev-notifications-inconsistent-data
-          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CANADA
-          env_file: ".env-production-canada"
-      - check-for-inconsistent-data:
-          <<: *slack-fail-post-step-inconsistent-data
-          name: "US West"
-          context:
-            - slack-dev-notifications-inconsistent-data
-          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_USW
-          env_file: ".env-web"
-      - check-for-inconsistent-data:
-          <<: *slack-fail-post-step-inconsistent-data
-          name: "UK"
-          context:
-            - slack-dev-notifications-inconsistent-data
-          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_UK
-          env_file: ".env-web"
-      - slack-invalid-data-success:
-          name: ":tada: SUCCESS: No invalid data was detected!" # Mentions are not supported for basic_success_1
-          context:
-            - slack-dev-notifications-inconsistent-data
-          requires:
-            - "South America"
-            - "Canada"
-            - "US West"
-            - "UK"
