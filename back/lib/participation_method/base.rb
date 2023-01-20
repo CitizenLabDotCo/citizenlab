@@ -27,7 +27,7 @@ module ParticipationMethod
       []
     end
 
-    def field_value_locks
+    def field_constraints
       {}
     end
 

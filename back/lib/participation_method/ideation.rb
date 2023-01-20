@@ -277,16 +277,16 @@ module ParticipationMethod
       ]
     end
 
-    # Why do they have a key and a code?
-    # locks mirror the name of the fields whose values cannot be changed (ie are locked)
-    def field_value_locks
+    # Locks mirror the name of the fields whose values cannot be changed (ie are locked)
+    def field_constraints
       {
-        'title_multiloc' => %w[enabled required title],
-        'body_multiloc' => %w[enabled required title],
-        'idea_images_attributes' => %w[enabled title],
-        'idea_files_attributes' => %w[title],
-        'topic_ids' => %w[title],
-        'location_description' => %w[title]
+        'ideation_section_1' => { 'locks' => { 'enabled' => true, 'title_multiloc' => true } },
+        'title_multiloc' => { 'locks' => { 'enabled' => true, 'required' => true, 'title_multiloc' => true } },
+        'body_multiloc' => { 'locks' => { 'enabled' => true, 'required' => true, 'title_multiloc' => true } },
+        'idea_images_attributes' => { 'locks' => { 'enabled' => true, 'title_multiloc' => true } },
+        'idea_files_attributes' => { 'locks' => { 'title_multiloc' => true } },
+        'topic_ids' => { 'locks' => { 'title_multiloc' => true } },
+        'location_description' => { 'locks' => { 'title_multiloc' => true } }
       }
     end
 
