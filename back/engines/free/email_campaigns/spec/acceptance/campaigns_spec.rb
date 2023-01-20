@@ -32,6 +32,12 @@ resource 'Campaigns' do
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 5
     end
+
+    example 'List all campaigns except admin_rights_received' do
+      do_request(without_campaign_names: ['admin_rights_received'])
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 2
+    end
   end
 
   get '/web_api/v1/campaigns/:id' do
