@@ -34,6 +34,24 @@ RSpec.describe ParticipationMethod::Budgeting do
     end
   end
 
+  describe '#default_fields' do
+    it 'returns the default ideation fields' do
+      expect(
+        participation_method.default_fields(create(:custom_form, participation_context: project)).map(&:code)
+      ).to eq %w[
+        title_multiloc
+        body_multiloc
+        author_id
+        budget
+        proposed_budget
+        topic_ids
+        location_description
+        idea_images_attributes
+        idea_files_attributes
+      ]
+    end
+  end
+
   describe '#validate_built_in_fields?' do
     it 'returns true' do
       expect(participation_method.validate_built_in_fields?).to be true

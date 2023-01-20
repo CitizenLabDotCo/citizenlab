@@ -10,8 +10,8 @@ RSpec.shared_examples 'not authorized to visitors' do
 end
 
 RSpec.shared_examples 'not authorized to normal users' do
-  context 'when normal user (logged in)' do
-    before { user_header_token }
+  context 'when resident' do
+    before { resident_header_token }
 
     example 'returns 401 (Unauthorized)', document: false do
       do_request

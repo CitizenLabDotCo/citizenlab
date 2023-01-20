@@ -144,8 +144,8 @@ export const FormEdit = ({
     // When the first group is deleted, it's questions go to the next group
     if (fieldIndex === 0 && field.input_type === groupingType) {
       const nextGroupIndex = fields.findIndex(
-        (feild, fieldIndex) =>
-          feild.input_type === groupingType && fieldIndex !== 0
+        (field, fieldIndex) =>
+          field.input_type === groupingType && fieldIndex !== 0
       );
       move(nextGroupIndex, 0);
       remove(1);
@@ -252,6 +252,7 @@ export const FormEdit = ({
                   onAddField={onAddField}
                   isEditingDisabled={isEditingDisabled}
                   builderConfig={builderConfig}
+                  move={move}
                 />
                 <StyledRightColumn>
                   <Box width="1000px">

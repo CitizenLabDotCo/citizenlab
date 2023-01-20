@@ -8,7 +8,10 @@ import { getTranslatedFieldBadgeLabel } from './utils';
 
 // components
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import { FormBuilderConfig } from 'components/FormBuilder/utils';
+import {
+  builtInFieldKeys,
+  FormBuilderConfig,
+} from 'components/FormBuilder/utils';
 import { FieldElement } from './FieldElement';
 
 // hooks and services
@@ -49,6 +52,13 @@ const FormFields = ({
     return null;
   }
 
+  const shouldShowField = (field: IFlatCustomField) => {
+    if (builtInFieldKeys.includes(field.key)) {
+      return field.enabled;
+    }
+    return true;
+  };
+
   const nestedGroupData: NestedGroupingStructure[] = [];
   formCustomFields.forEach((field) => {
     if (['page', 'section'].includes(field.input_type)) {
@@ -74,33 +84,25 @@ const FormFields = ({
         }}
       >
         <Drop id="droppable" type={pageDNDType}>
-          {nestedGroupData.map((pageGrouping, pageIndex) => {
+          {nestedGroupData.map((grouping, pageIndex) => {
             return (
-              <Drag
-                key={pageGrouping.id}
-                id={pageGrouping.id}
-                index={pageIndex}
-              >
+              <Drag key={grouping.id} id={grouping.id} index={pageIndex}>
                 <FieldElement
-                  field={pageGrouping.groupElement}
+                  field={grouping.groupElement}
                   isEditingDisabled={isEditingDisabled}
                   getTranslatedFieldBadgeLabel={getTranslatedFieldBadgeLabel}
                   selectedFieldId={selectedFieldId}
                   onEditField={onEditField}
                   builderConfig={builderConfig}
                 />
-                <Drop
-                  key={pageGrouping.id}
-                  id={pageGrouping.id}
-                  type={questionDNDType}
-                >
+                <Drop key={grouping.id} id={grouping.id} type={questionDNDType}>
                   <Box height="100%">
-                    {pageGrouping.questions.length === 0 ? (
+                    {grouping.questions.length === 0 ? (
                       <Box height="0.5px" />
                     ) : (
                       <>
-                        {pageGrouping.questions.map((question, index) => {
-                          return (
+                        {grouping.questions.map((question, index) => {
+                          return shouldShowField(question) ? (
                             <Drag
                               key={question.id}
                               id={question.id}
@@ -118,6 +120,8 @@ const FormFields = ({
                                 builderConfig={builderConfig}
                               />
                             </Drag>
+                          ) : (
+                            <Box height="1px" />
                           );
                         })}
                       </>
