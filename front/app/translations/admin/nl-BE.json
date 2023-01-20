@@ -836,7 +836,7 @@
   "app.containers.AdminPage.FoldersEdit.titleSettingsTab": "Instellingen",
   "app.containers.AdminPage.FoldersEdit.url": "URL",
   "app.containers.AdminPage.FoldersEdit.viewPublicProjectFolder": "Bekijk de map",
-  "app.containers.AdminPage.HeroBannerForm.heroBannerInfoBar": "e hero-banner-afbeelding en -tekst bewerken",
+  "app.containers.AdminPage.HeroBannerForm.heroBannerInfoBar": "De bannerafbeelding en -tekst bewerken.",
   "app.containers.AdminPage.HeroBannerForm.heroBannerTitle": "Hero-banner",
   "app.containers.AdminPage.HeroBannerForm.saveHeroBanner": "Hero-banner opslaan",
   "app.containers.AdminPage.PagesEdition.policiesSubtitle": "Wijzig de algemene voorwaarden van je platform. Andere pagina's, waaronder de Over en FAQ pagina's, kunnen gewijzigd worden in de {navigationLink} tab.",
