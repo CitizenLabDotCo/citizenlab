@@ -213,23 +213,6 @@ jobs:
       - deploy:
           command: docker push citizenlabdotco/back-essential
 
-  # BACK-END EE
-  back-build-ee-docker-image:
-    working_directory: ~/
-    docker:
-      - image: cimg/base:2021.03
-    steps:
-      - echo_pipeline_parameters
-      - checkout:
-          path: ./citizenlab
-      - setup_remote_docker:
-          docker_layer_caching: true
-      - run: |
-          docker build -t citizenlabdotco/back-ee:$CIRCLE_SHA1 --build-arg CITIZENLAB_EE=true -f citizenlab/back/Dockerfile citizenlab/.
-      - run: |
-          docker login -u $DOCKER_USER -p $DOCKER_PASS
-          docker push citizenlabdotco/back-ee:$CIRCLE_SHA1
-
   back-lint:
     resource_class: medium
     executor:
@@ -631,20 +614,6 @@ workflows:
               ignore:
                 - crowdin_master
                 - /l10n_.*/
-
-  # BACK-END EE
-  back-ee:
-    when:
-      and:
-        - not: <<pipeline.parameters.run_deploy>>
-        - << pipeline.parameters.back >>
-    jobs:
-      - back-build-ee-docker-image:
-          context:
-            - docker-hub-access
-            - citizenlab-ee-environment
-
-
 
   # FRONT-END ESSENTIAL
   front-essential:
