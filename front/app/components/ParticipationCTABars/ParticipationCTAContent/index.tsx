@@ -78,8 +78,8 @@ export const ParticipationCTAContent = ({
         flexDirection="row"
         width="100%"
         bgColor={theme.colors.tenantPrimary}
-        height="62px"
-        p="20px"
+        px="20px"
+        py="8px"
       >
         <Box
           display="flex"
