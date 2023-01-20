@@ -109,8 +109,6 @@ export interface IAppConfigurationSettings {
     enabled: boolean;
     enabled_fragments: string[];
   };
-  dynamic_idea_form?: AppConfigurationFeature;
-  jsonforms_custom_fields?: AppConfigurationFeature;
   idea_custom_fields?: AppConfigurationFeature;
   volunteering?: AppConfigurationFeature;
   automated_emailing_control?: AppConfigurationFeature;
@@ -170,6 +168,8 @@ export interface IAppConfigurationStyle {
   navbarBorderColor?: string;
   signedOutHeaderTitleFontSize?: number;
   signedOutHeaderTitleFontWeight?: number;
+  // These signed in variables are used via the theme in the
+  // component library and can be set via AdminHQ.
   signedInHeaderOverlayColor?: string;
   // Number between 0 and 100, inclusive
   signedInHeaderOverlayOpacity?: number;

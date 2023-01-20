@@ -47,19 +47,18 @@ resource 'Home Page' do
         parameter :header_bg, 'image for the header background'
         parameter :top_info_section_enabled, 'if the top info section is enabled'
         parameter :top_info_section_multiloc, 'multiloc content for the top info section'
-        parameter :events_widget_enabled, 'if events are enabled'
         parameter :projects_enabled, 'if projects are enabled'
         parameter :projects_header_multiloc, 'multiloc content for the projects header'
         parameter :pinned_admin_publication_ids, 'the IDs of admin publications that are pinned to the page', type: :array
       end
       ValidationErrorHelper.new.error_fields(self, HomePage)
 
-      let(:events_widget_enabled) { true }
+      let(:top_info_section_enabled) { true }
 
       example_request 'Update the current home page' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :events_widget_enabled)).to be true
+        expect(json_response.dig(:data, :attributes, :top_info_section_enabled)).to be true
       end
 
       describe 'when banner_cta_signed_out_type: \'customized_button\' and button text and url both blank' do

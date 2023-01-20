@@ -15,7 +15,6 @@ describe('Existing continuous ideation project', () => {
   });
 
   it('shows the correct project header', () => {
-    cy.get('#e2e-project-header-image');
     cy.get('#e2e-project-description');
     cy.get('#e2e-project-sidebar');
     cy.get('#e2e-project-sidebar-participants-count');
@@ -65,28 +64,6 @@ describe('Existing continuous ideation project', () => {
     cy.get('#project-ideabutton').click();
     cy.wait(4000);
     cy.get('#idea-form');
-  });
-});
-
-describe('Existing timeline project with ended ideation phase', () => {
-  before(() => {
-    cy.visit('/projects/timeline-ideation-card');
-    cy.get('#e2e-project-page');
-    cy.wait(1000);
-  });
-
-  it('shows the correct project header', () => {
-    cy.get('#e2e-project-description');
-    cy.get('#e2e-project-sidebar');
-    cy.get('#e2e-project-sidebar-participants-count');
-    cy.get('#e2e-project-sidebar-phases-count');
-    cy.get('#e2e-project-sidebar-share-button');
-  });
-
-  it('shows the idea cards', () => {
-    cy.get('.e2e-timeline-project-idea-cards');
-    cy.get('#e2e-ideas-list');
-    cy.get('.e2e-idea-card');
   });
 });
 

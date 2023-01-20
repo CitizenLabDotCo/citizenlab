@@ -150,7 +150,6 @@ interface DataProps {
   pbEnabled: GetFeatureFlagChildProps;
   ideaAuthorChangeEnabled: GetFeatureFlagChildProps;
   isIdeaCustomFieldsEnabled: GetFeatureFlagChildProps;
-  isDynamicIdeaFormEnabled: GetFeatureFlagChildProps;
   allowedTopics: GetTopicsChildProps;
   project: GetProjectChildProps;
   phases: GetPhasesChildProps;
@@ -228,13 +227,8 @@ class IdeaForm extends PureComponent<
   }
 
   componentDidMount() {
-    const {
-      projectId,
-      ideaId,
-      phaseId,
-      isIdeaCustomFieldsEnabled,
-      isDynamicIdeaFormEnabled,
-    } = this.props;
+    const { projectId, ideaId, phaseId, isIdeaCustomFieldsEnabled } =
+      this.props;
     const locale$ = localeStream().observable;
     const tenant$ = currentAppConfigurationStream().observable;
     const project$: Observable<IProject | null> =
@@ -244,7 +238,7 @@ class IdeaForm extends PureComponent<
       IIdeaFormSchemas | IIdeaJsonFormSchemas | Error | null
     > = of(null);
 
-    if (isIdeaCustomFieldsEnabled && isDynamicIdeaFormEnabled) {
+    if (isIdeaCustomFieldsEnabled) {
       ideaCustomFieldsSchemas$ = ideaJsonFormsSchemaStream(
         projectId as string,
         phaseId,
@@ -1126,7 +1120,6 @@ const Data = adopt<DataProps, InputProps>({
   pbEnabled: <GetFeatureFlag name="participatory_budgeting" />,
   ideaAuthorChangeEnabled: <GetFeatureFlag name="idea_author_change" />,
   isIdeaCustomFieldsEnabled: <GetFeatureFlag name="idea_custom_fields" />,
-  isDynamicIdeaFormEnabled: <GetFeatureFlag name="dynamic_idea_form" />,
   project: ({ projectId, render }) => (
     <GetProject projectId={projectId}>{render}</GetProject>
   ),

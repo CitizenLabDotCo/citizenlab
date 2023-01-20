@@ -36,36 +36,43 @@ describe('Admin project participation method settings', () => {
     // Information
     cy.get('#participationmethod-information').click({ force: true });
     cy.get('.e2e-submit-wrapper-button').find('button').click();
+    cy.wait(1000);
     cy.visit(`admin/projects/${projectIdContinuous}`);
+
     cy.get('#participationmethod-information').should('be.checked');
 
     // Ideation
     cy.get('#participationmethod-ideation').click({ force: true });
     cy.get('.e2e-submit-wrapper-button').find('button').click();
+    cy.wait(1000);
     cy.visit(`admin/projects/${projectIdContinuous}`);
     cy.get('#participationmethod-ideation').should('be.checked');
 
     // Poll
     cy.get('#participationmethod-poll').click({ force: true });
     cy.get('.e2e-submit-wrapper-button').find('button').click();
+    cy.wait(1000);
     cy.visit(`admin/projects/${projectIdContinuous}`);
     cy.get('#participationmethod-poll').should('be.checked');
 
     // Budgeting
     cy.get('#participationmethod-budgeting').click({ force: true });
     cy.get('.e2e-submit-wrapper-button').find('button').click();
+    cy.wait(1000);
     cy.visit(`admin/projects/${projectIdContinuous}`);
     cy.get('#participationmethod-budgeting').should('be.checked');
 
     // Volunteering
     cy.get('#participationmethod-volunteering').click({ force: true });
     cy.get('.e2e-submit-wrapper-button').find('button').click();
+    cy.wait(1000);
     cy.visit(`admin/projects/${projectIdContinuous}`);
     cy.get('#participationmethod-volunteering').should('be.checked');
 
     // Native survey
     cy.get('#participationmethod-native_survey').click({ force: true });
     cy.get('.e2e-submit-wrapper-button').find('button').click();
+    cy.wait(1000);
     cy.visit(`admin/projects/${projectIdContinuous}`);
     cy.get('#participationmethod-native_survey').should('not.exist');
   });

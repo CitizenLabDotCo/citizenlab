@@ -90,8 +90,6 @@ class StaticPage < ApplicationRecord
     validates :projects_filter_type, presence: true
   end
 
-  validates :events_widget_enabled, inclusion: [true, false]
-
   validates :bottom_info_section_enabled, inclusion: [true, false]
   validates :bottom_info_section_multiloc, multiloc: { presence: false, html: true }
   validates :areas, length: { is: 1 }, if: -> { projects_filter_type == self.class.projects_filter_types.fetch(:areas) }

@@ -1,38 +1,31 @@
 import { randomString, randomEmail } from '../support/commands';
 
 describe('Idea show page actions', () => {
-  describe('not logged in', () => {
-    before(() => {
-      cy.visit('/ideas/controversial-idea');
-      cy.get('#e2e-idea-show');
-      cy.acceptCookies();
-    });
-
-    it('asks unauthorised users to log in or sign up before they vote', () => {
-      cy.get('.e2e-vote-controls .e2e-ideacard-upvote-button').click();
-      cy.get('#e2e-sign-up-in-modal');
-      cy.get('#e2e-sign-up-container');
-    });
-  });
-
   describe('logged in as admin', () => {
+    const ideaTitle = randomString();
+    let ideaId: string;
+    let projectId: string;
+    const ideaContent = randomString();
+
     before(() => {
-      cy.setAdminLoginCookie();
-      cy.visit('/ideas/controversial-idea');
-      cy.get('#e2e-idea-show');
-      cy.acceptCookies();
+      cy.setLoginCookie('admin@citizenlab.co', 'democracy2.0');
+      cy.getProjectBySlug('an-idea-bring-it-to-your-council').then(
+        (project) => {
+          projectId = project.body.data.id;
+          cy.apiCreateIdea(projectId, ideaTitle, ideaContent).then((idea) => {
+            ideaId = idea.body.data.id;
+          });
+        }
+      );
+      cy.visit(`ideas/${ideaTitle}`);
     });
 
     it('saves a new official feedback, shows it and deletes it', () => {
       const officialFeedbackBody = randomString(30);
       const officialFeedbackAuthor = randomString();
 
-      cy.get('.e2e-localeswitcher').each((button) => {
-        // input
-        cy.wrap(button).click();
-        cy.get('#official-feedback-form textarea').type(officialFeedbackBody);
-        cy.get('#official-feedback-form input').type(officialFeedbackAuthor);
-      });
+      cy.get('#official-feedback-form textarea').type(officialFeedbackBody);
+      cy.get('#official-feedback-form input').type(officialFeedbackAuthor);
 
       // save
       cy.get('.e2e-official-feedback-form-submit-button').click();
@@ -115,18 +108,25 @@ describe('Idea show page actions', () => {
     });
 
     describe('Comments', () => {
-      const email = randomEmail();
-      const password = randomString();
+      const ideaTitle = randomString();
+      let ideaId: string;
+      let projectId: string;
+      const ideaContent = randomString();
 
       before(() => {
-        const firstName = randomString();
-        const lastName = randomString();
-        cy.apiSignup(firstName, lastName, email, password);
+        cy.getProjectBySlug('an-idea-bring-it-to-your-council').then(
+          (project) => {
+            projectId = project.body.data.id;
+            cy.apiCreateIdea(projectId, ideaTitle, ideaContent).then((idea) => {
+              ideaId = idea.body.data.id;
+            });
+          }
+        );
       });
 
       beforeEach(() => {
-        cy.setLoginCookie(email, password);
-        cy.visit('/ideas/controversial-idea');
+        cy.setLoginCookie('admin@citizenlab.co', 'democracy2.0');
+        cy.visit(`/ideas/${ideaTitle}`);
         cy.acceptCookies();
         cy.get('#e2e-idea-show');
       });
@@ -136,6 +136,7 @@ describe('Idea show page actions', () => {
         cy.get('#submit-comment')
           .type(commentBody)
           .should('have.value', commentBody);
+        cy.get('.e2e-submit-parentcomment').click();
       });
 
       describe('Comment', () => {

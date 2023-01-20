@@ -59,6 +59,7 @@ describe('Idea creation', () => {
     cy.get(`#e2e-phase-${phaseId}`).click({ force: true });
 
     cy.get('#e2e-idea-new-page');
+    cy.acceptCookies();
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist');
     // add a title and description

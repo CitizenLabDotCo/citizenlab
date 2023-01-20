@@ -28,24 +28,17 @@ export default function useIdeaCustomFieldsSchemas({
   const ideaCustomFieldsIsEnabled = useFeatureFlag({
     name: 'idea_custom_fields',
   });
-  const dynamicIdeaFormIsEnabled = useFeatureFlag({
-    name: 'dynamic_idea_form',
-  });
 
   useEffect(() => {
     let observable: Observable<
       IIdeaFormSchemas | IIdeaJsonFormSchemas | Error | null
     > = of(null);
 
-    if (
-      !projectId ||
-      typeof ideaCustomFieldsIsEnabled !== 'boolean' ||
-      typeof dynamicIdeaFormIsEnabled !== 'boolean'
-    ) {
+    if (!projectId) {
       return;
     }
 
-    if (dynamicIdeaFormIsEnabled && ideaCustomFieldsIsEnabled) {
+    if (ideaCustomFieldsIsEnabled) {
       observable = ideaJsonFormsSchemaStream(
         projectId,
         phaseId,
@@ -60,13 +53,7 @@ export default function useIdeaCustomFieldsSchemas({
     });
 
     return () => subscription.unsubscribe();
-  }, [
-    projectId,
-    inputId,
-    phaseId,
-    ideaCustomFieldsIsEnabled,
-    dynamicIdeaFormIsEnabled,
-  ]);
+  }, [projectId, inputId, phaseId, ideaCustomFieldsIsEnabled]);
 
   return ideaCustomFieldsSchemas;
 }
