@@ -17,8 +17,14 @@ export type ICustomFieldInputType =
   | 'number'
   | 'select'
   | 'linear_scale'
+  | 'section'
   | 'page'
-  | 'file_upload';
+  | 'file_upload'
+  | 'title_multiloc'
+  | 'html_multiloc'
+  | 'files'
+  | 'image_files';
+
 export type IOptionsType = {
   id?: string;
   title_multiloc: Multiloc;
@@ -40,6 +46,10 @@ export interface IAttributes {
   description_multiloc: Multiloc;
   input_type: ICustomFieldInputType;
   required: boolean;
+  isRequiredEditable?: boolean;
+  isEnabledEditable?: boolean;
+  isTitleEditable?: boolean;
+  isDeleteEnabled?: boolean;
   enabled: boolean;
   ordering: number;
   created_at: string;
