@@ -21,8 +21,11 @@ import { getAdditionalSettings } from '../utils';
 import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
-import { FormBuilderConfig } from 'components/FormBuilder/utils';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+import {
+  builtInFieldKeys,
+  FormBuilderConfig,
+} from 'components/FormBuilder/utils';
 
 type ContentSettingsProps = {
   field: IFlatCustomFieldWithIndex;
@@ -41,12 +44,22 @@ export const ContentSettings = ({
   onDelete,
   builderConfig,
 }: ContentSettingsProps) => {
-  const { watch } = useFormContext();
+  const { watch, trigger, setValue } = useFormContext();
   const logic = watch(`customFields.${field.index}.logic`);
   const platformLocale = useLocale();
   const hasRules = logic && logic.rules && logic.rules.length > 0;
   const isFieldGrouping = ['page', 'section'].includes(field.input_type);
   const isDeleteEnabled = get(field, 'isDeleteEnabled', true);
+  const handleDelete = () => {
+    if (builtInFieldKeys.includes(field.key)) {
+      const newField = { ...field, enabled: false };
+      setValue(`customFields.${field.index}`, newField);
+      trigger();
+      onClose();
+    } else {
+      onDelete(field.index);
+    }
+  };
 
   if (!isNilOrError(platformLocale)) {
     return (
@@ -137,7 +150,7 @@ export const ContentSettings = ({
               borderColor={colors.error}
               textColor={colors.error}
               iconColor={colors.error}
-              onClick={() => onDelete(field.index)}
+              onClick={handleDelete}
               minWidth="160px"
               data-cy="e2e-delete-field"
               disabled={isDeleteDisabled}

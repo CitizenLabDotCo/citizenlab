@@ -16,7 +16,7 @@ export type FormBuilderConfig = {
   formBuilderTitle: MessageDescriptor;
   viewFormLinkCopy: MessageDescriptor;
   formSavedSuccessMessage: MessageDescriptor;
-  toolboxTitle: MessageDescriptor;
+  toolboxTitle?: MessageDescriptor;
   supportArticleLink?: MessageDescriptor;
   formEndPageLogicOption?: MessageDescriptor;
   questionLogicHelperText?: MessageDescriptor;
@@ -68,3 +68,5 @@ export const builtInFieldKeys = [
   'idea_files_attributes',
   'topic_ids',
 ];
+
+export type BuiltInKeyType = typeof builtInFieldKeys[number];

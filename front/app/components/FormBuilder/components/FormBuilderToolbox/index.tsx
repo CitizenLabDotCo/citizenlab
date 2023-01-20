@@ -1,4 +1,5 @@
 import React from 'react';
+import { get } from 'lodash-es';
 
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -8,9 +9,9 @@ import messages from '../messages';
 // components
 import ToolboxItem from './ToolboxItem';
 import { Box, Title } from '@citizenlab/cl2-component-library';
+import BuiltInFields from './BuiltInFields';
 
 // styles
-import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // types
@@ -26,15 +27,13 @@ import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
 import { generateTempId } from '../FormBuilderSettings/utils';
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
-
-const DraggableElement = styled.div`
-  cursor: move;
-`;
+import { DraggableElement } from './utils';
 
 interface FormBuilderToolboxProps {
   onAddField: (field: IFlatCreateCustomField) => void;
   isEditingDisabled: boolean;
   builderConfig: FormBuilderConfig;
+  move: (indexA: number, indexB: number) => void;
 }
 
 const FormBuilderToolbox = ({
@@ -42,9 +41,14 @@ const FormBuilderToolbox = ({
   onAddField,
   isEditingDisabled,
   builderConfig,
+  move,
 }: FormBuilderToolboxProps & WrappedComponentProps) => {
   const locale = useLocale();
-
+  const customToolBoxTitle = get(
+    builderConfig,
+    'toolboxTitle',
+    messages.content
+  );
   if (isNilOrError(locale)) return null;
 
   const addField = (inputType: ICustomFieldInputType) => {
@@ -92,6 +96,7 @@ const FormBuilderToolbox = ({
       borderRight={`1px solid ${colors.borderLight}`}
     >
       <Box w="100%" display="inline">
+        <BuiltInFields isEditingDisabled={isEditingDisabled} move={move} />
         <Title
           fontWeight="normal"
           mb="4px"
@@ -102,7 +107,7 @@ const FormBuilderToolbox = ({
           color="textSecondary"
           style={{ textTransform: 'uppercase' }}
         >
-          <FormattedMessage {...builderConfig.toolboxTitle} />
+          <FormattedMessage {...customToolBoxTitle} />
         </Title>
 
         <DraggableElement>

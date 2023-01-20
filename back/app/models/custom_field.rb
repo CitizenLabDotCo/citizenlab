@@ -33,7 +33,7 @@
 # The older react json form version works only with text number multiline_text select multiselect checkbox date
 # The other types will fail for user custom fields and render a shallow schema for idea custom fields with only the required, hidden, title and description.
 class CustomField < ApplicationRecord
-  acts_as_list column: :ordering, top_of_list: 0, scope: [:resource_type]
+  acts_as_list column: :ordering, top_of_list: 0, scope: [:resource_id]
 
   has_many :options, -> { order(:ordering) }, dependent: :destroy, class_name: 'CustomFieldOption', inverse_of: :custom_field
   has_many :text_images, as: :imageable, dependent: :destroy
@@ -41,14 +41,14 @@ class CustomField < ApplicationRecord
   belongs_to :resource, polymorphic: true, optional: true
 
   FIELDABLE_TYPES = %w[User CustomForm].freeze
-  INPUT_TYPES = %w[text number multiline_text html text_multiloc multiline_text_multiloc html_multiloc select multiselect checkbox date files image_files point linear_scale page file_upload].freeze
+  INPUT_TYPES = %w[text number multiline_text html text_multiloc multiline_text_multiloc html_multiloc select multiselect checkbox date files image_files point linear_scale page file_upload section].freeze
   CODES = %w[gender birthyear domicile education title_multiloc body_multiloc topic_ids location_description proposed_budget idea_images_attributes idea_files_attributes author_id budget].freeze
 
   validates :resource_type, presence: true, inclusion: { in: FIELDABLE_TYPES }
   validates :key, presence: true, uniqueness: { scope: %i[resource_type resource_id] }, format: { with: /\A[a-zA-Z0-9_]+\z/,
                                                                                                   message: 'only letters, numbers and underscore' }
   validates :input_type, presence: true, inclusion: INPUT_TYPES
-  validates :title_multiloc, presence: true, multiloc: { presence: true }, unless: :page?
+  validates :title_multiloc, presence: true, multiloc: { presence: true }, unless: :page_or_section?
   validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :required, inclusion: { in: [true, false] }
   validates :enabled, inclusion: { in: [true, false] }
@@ -104,6 +104,14 @@ class CustomField < ApplicationRecord
     input_type == 'page'
   end
 
+  def section?
+    input_type == 'section'
+  end
+
+  def page_or_section?
+    page? || section?
+  end
+
   def multiloc?
     %w[
       text_multiloc
@@ -146,10 +154,25 @@ class CustomField < ApplicationRecord
       visitor.visit_linear_scale self
     when 'page'
       visitor.visit_page self
+    when 'section'
+      visitor.visit_section self
     when 'file_upload'
       visitor.visit_file_upload self
     else
       raise "Unsupported input type: #{input_type}"
+    end
+  end
+
+  # Special behaviour for ideation section 1
+  def title_multiloc
+    if code == 'ideation_section_1'
+      input_term = resource.participation_context.input_term
+      key = "custom_forms.categories.main_content.#{input_term}.title"
+      I18n.available_locales.index_with do |locale|
+        I18n.t(key, default: '', locale: locale)
+      end
+    else
+      super
     end
   end
 

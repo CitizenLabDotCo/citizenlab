@@ -67,6 +67,10 @@ class TestVisitor < FieldVisitorService
     'page from visitor'
   end
 
+  def visit_section(_field)
+    'section from visitor'
+  end
+
   def visit_file_upload(_field)
     'file_upload from visitor'
   end
@@ -142,6 +146,18 @@ RSpec.describe CustomField, type: :model do
     end
   end
 
+  describe '#section?' do
+    it 'returns true when the input_type is "section"' do
+      page_field = described_class.new input_type: 'section'
+      expect(page_field.section?).to be true
+    end
+
+    it 'returns false otherwise' do
+      other_field = described_class.new input_type: 'something_else'
+      expect(other_field.section?).to be false
+    end
+  end
+
   describe 'title_multiloc validation' do
     let(:form) { create :custom_form }
 
@@ -181,6 +197,22 @@ RSpec.describe CustomField, type: :model do
 
       page_field.title_multiloc = nil
       expect(page_field.valid?).to be true
+    end
+
+    it 'does not happen when the field is a section' do
+      section_field = described_class.new(
+        resource: form,
+        input_type: 'section',
+        key: 'field_key',
+        title_multiloc: { 'en' => '' }
+      )
+      expect(section_field.valid?).to be true
+
+      section_field.title_multiloc = {}
+      expect(section_field.valid?).to be true
+
+      section_field.title_multiloc = nil
+      expect(section_field.valid?).to be true
     end
   end
 

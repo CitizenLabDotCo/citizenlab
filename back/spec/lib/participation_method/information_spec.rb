@@ -31,6 +31,14 @@ RSpec.describe ParticipationMethod::Information do
     end
   end
 
+  describe '#default_fields' do
+    it 'returns an empty list' do
+      expect(
+        participation_method.default_fields(create(:custom_form, participation_context: project)).map(&:code)
+      ).to eq []
+    end
+  end
+
   describe '#validate_built_in_fields?' do
     it 'returns false' do
       expect(participation_method.validate_built_in_fields?).to be false

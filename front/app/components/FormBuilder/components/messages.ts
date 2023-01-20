@@ -57,6 +57,10 @@ export default defineMessages({
     id: 'app.components.formBuilder.fileUpload',
     defaultMessage: 'File upload',
   },
+  proposedBudget: {
+    id: 'app.components.formBuilder.proposedBudget',
+    defaultMessage: 'Proposed budget',
+  },
   title: {
     id: 'app.components.formBuilder.title',
     defaultMessage: 'Title',
@@ -204,5 +208,9 @@ export default defineMessages({
   supportArticleLinkText: {
     id: 'app.components.formBuilder.supportArticleLinkText',
     defaultMessage: 'this page',
+  },
+  defaultField: {
+    id: 'app.components.formBuilder.defaultField',
+    defaultMessage: 'Default field',
   },
 });
