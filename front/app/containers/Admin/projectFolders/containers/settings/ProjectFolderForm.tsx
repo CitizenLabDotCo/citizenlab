@@ -193,9 +193,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     []
   );
 
-  const handleProjectFolderImagesOnRemoveNoArgs = useCallback(() => {
+  const handleProjectFolderImagesOnRemoveNoArgs = () => {
     handleProjectFolderImageOnRemove(projectFolderImages[0]);
-  }, [projectFolderImages]);
+  };
 
   const handleProjectFolderFileOnAdd = useCallback((fileToAdd: UploadFile) => {
     setSubmitState('enabled');
@@ -277,7 +277,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             });
             if (!isNilOrError(projectFolder)) {
               const imagesToAddPromises = projectFolderImagesBase64
-                ? projectFolderImages.map((file) =>
+                ? projectFolderImages.map(() =>
                     addProjectFolderImage(
                       projectFolder.id,
                       projectFolderImagesBase64
@@ -311,7 +311,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             const imagesToAddPromises = projectFolderImagesBase64
               ? projectFolderImages
                   .filter((file) => !file.remote)
-                  .map((file) =>
+                  .map(() =>
                     addProjectFolderImage(
                       projectFolderId as string,
                       projectFolderImagesBase64
