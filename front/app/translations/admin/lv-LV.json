@@ -744,7 +744,7 @@
   "app.containers.AdminPage.DashboardPage.components.Field.saved": "Saglabāts",
   "app.containers.AdminPage.DashboardPage.components.Field.setAgeGroups": "Lai sāktu ievadīt pamatdatus, vispirms lūdzu, iestatiet {setAgeGroupsLink}.",
   "app.containers.AdminPage.DashboardPage.components.Field.setAgeGroupsLink": "noteikt vecuma grupas",
-  "app.containers.AdminPage.DashboardPage.components.PostFeedback.averageTime": "Vidējais atbilžu sniegšanas laiks: {dienas} dienas",
+  "app.containers.AdminPage.DashboardPage.components.PostFeedback.averageTime": "Vidējais atbildes laiks: {days} dienas",
   "app.containers.AdminPage.DashboardPage.components.PostFeedback.averageTimeColumnName": "Vidējais dienu skaits līdz atbildēšanai",
   "app.containers.AdminPage.DashboardPage.components.PostFeedback.feedbackGiven": "Sniegtās atsauksmes",
   "app.containers.AdminPage.DashboardPage.components.PostFeedback.inputStatus": "Ievades datu statuss",
