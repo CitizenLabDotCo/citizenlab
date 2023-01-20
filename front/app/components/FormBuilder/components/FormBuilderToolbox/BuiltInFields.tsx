@@ -71,9 +71,7 @@ const BuiltInFields = ({
           icon="money-bag"
           label={formatMessage(messages.proposedBudget)}
           onClick={() => enableField('proposed_budget')}
-          disabled={
-            enabledBuiltInFieldKeys.includes('proposed_budget') ? false : true
-          }
+          disabled={!enabledBuiltInFieldKeys.includes('proposed_budget')}
         />
       </DraggableElement>
       <DraggableElement>
@@ -81,11 +79,7 @@ const BuiltInFields = ({
           icon="upload-file"
           label={formatMessage(messages.fileUpload)}
           onClick={() => enableField('idea_files_attributes')}
-          disabled={
-            enabledBuiltInFieldKeys.includes('idea_files_attributes')
-              ? false
-              : true
-          }
+          disabled={!enabledBuiltInFieldKeys.includes('idea_files_attributes')}
         />
       </DraggableElement>
       <DraggableElement>
@@ -93,11 +87,7 @@ const BuiltInFields = ({
           icon="location-simple"
           label={formatMessage(messages.locationDescription)}
           onClick={() => enableField('location_description')}
-          disabled={
-            enabledBuiltInFieldKeys.includes('location_description')
-              ? false
-              : true
-          }
+          disabled={!enabledBuiltInFieldKeys.includes('location_description')}
         />
       </DraggableElement>
       <DraggableElement>
@@ -105,9 +95,7 @@ const BuiltInFields = ({
           icon="label"
           label={formatMessage(messages.tags)}
           onClick={() => enableField('topic_ids')}
-          disabled={
-            enabledBuiltInFieldKeys.includes('topic_ids') ? false : true
-          }
+          disabled={!enabledBuiltInFieldKeys.includes('topic_ids')}
         />
       </DraggableElement>
     </Box>
