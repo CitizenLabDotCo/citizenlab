@@ -21,10 +21,7 @@ import { getAdditionalSettings } from '../utils';
 import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
-import {
-  builtInFieldKeys,
-  FormBuilderConfig,
-} from 'components/FormBuilder/utils';
+import { builtInFieldKeys } from 'components/FormBuilder/utils';
 
 type ContentSettingsProps = {
   field: IFlatCustomFieldWithIndex;
