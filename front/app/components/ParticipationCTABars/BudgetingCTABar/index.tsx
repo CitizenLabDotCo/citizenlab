@@ -21,6 +21,7 @@ import {
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
+import { isNilOrError } from 'utils/helperUtils';
 
 export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
@@ -32,7 +33,13 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
     basketId = project.relationships.user_basket?.data?.id || null;
   }
   const basket = useBasket(basketId);
-  const hasUserParticipated = !!basket?.attributes.total_budget;
+  const submittedAt = !isNilOrError(basket)
+    ? basket.attributes.submitted_at
+    : null;
+  const spentBudget = !isNilOrError(basket)
+    ? basket.attributes.total_budget
+    : 0;
+  const hasUserParticipated = !!submittedAt && spentBudget > 0;
 
   useEffect(() => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
