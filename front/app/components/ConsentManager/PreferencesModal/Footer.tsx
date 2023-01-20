@@ -18,7 +18,7 @@ const ButtonContainer = ({ children }: { children: React.ReactNode }) => (
     width="100%"
     display="flex"
     alignItems="center"
-    justify-content="flex-end"
+    justifyContent="flex-end"
   >
     {children}
   </Box>
