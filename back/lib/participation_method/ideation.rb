@@ -23,10 +23,7 @@ module ParticipationMethod
           input_type: 'section',
           code: 'ideation_section_1',
           key: 'ideation_section_1',
-          title_multiloc: multiloc_service.i18n_to_multiloc(
-            'custom_fields.ideas.section1.title',
-            locales: CL2_SUPPORTED_LOCALES
-          ),
+          title_multiloc: {},
           description_multiloc: begin
             multiloc_service.i18n_to_multiloc(
               'custom_fields.ideas.section1.description',
