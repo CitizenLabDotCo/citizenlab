@@ -14,7 +14,13 @@ const MostVotedIdeasWidget = () => {
 };
 
 MostVotedIdeasWidget.craft = {
-  props: {}, // TODO
+  props: {
+    title: undefined,
+    projectId: undefined,
+    phaseId: undefined,
+    numberOfIdeas: 5,
+    collapseLongText: false,
+  },
   related: {
     settings: Settings,
   },
