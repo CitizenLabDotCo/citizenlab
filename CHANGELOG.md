@@ -2,6 +2,10 @@
 
 ## Next release
 
+/
+
+## 2023-01-20
+
 ### Fixed
 
 - [CL-2648] Two-column layout image width on tablet is fixed.
