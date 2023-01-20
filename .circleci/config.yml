@@ -241,65 +241,6 @@ jobs:
     steps:
       - run: bundle exec rubocop -P --format simple
 
-  back-ee-test:
-    resource_class: small
-    executor:
-      name: cl2-back
-      image-tag: $CIRCLE_SHA1
-    working_directory: /cl2_back
-    parallelism: 4
-    environment:
-      RAILS_ENV: test
-      COVERAGE: ON
-    steps:
-      - wait-for-postgres
-      - run: |
-          rake db:create
-          rake db:schema:load
-      - run: |
-          TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" "engines/*/*/spec/**/*_spec.rb" | circleci tests split  --split-by=timings)
-          echo $TESTFILES
-          bundle exec rspec --format documentation --profile --format RspecJunitFormatter -o spec/reports/rspec.xml -- ${TESTFILES}
-      - store_test_results:
-          path: spec/reports
-
-  back-ee-slow-tests:
-    resource_class: small
-    executor:
-      name: cl2-back
-      image-tag: $CIRCLE_SHA1
-    working_directory: /cl2_back
-    environment:
-      RAILS_ENV: test
-    steps:
-      - wait-for-postgres
-      - run: |
-          rake db:create
-          rake db:schema:load
-      - run: |
-          bundle exec rspec --format documentation --format RspecJunitFormatter -o spec/reports/rspec.xml -t slow_test -P "spec/**/*_spec.rb,engines/*/*/spec/**/*_spec.rb"
-      - store_test_results:
-          path: spec/reports
-
-  back-ee-web-api-docs:
-    resource_class: small
-    executor:
-      name: cl2-back
-      image-tag: $CIRCLE_SHA1
-    working_directory: /cl2_back
-    environment:
-      RAILS_ENV: test
-    steps:
-      - wait-for-postgres
-      - run: |
-          rake db:create
-          rake db:schema:load
-      - run: bundle exec rake web_api:docs:generate
-      - run: bundle exec rake admin_api:docs:generate
-      - run: apt-get -y install awscli
-      - run: aws s3 sync doc/api s3://developers.citizenlab.co/api-docs/ee/frontweb_api/$CIRCLE_BRANCH --delete --acl public-read
-      - run: aws s3 sync doc/admin_api s3://developers.citizenlab.co/api-docs/ee/admin_api/$CIRCLE_BRANCH --delete --acl public-read
-
   # FRONT-END ESSENTIAL
   front-test:
     docker:
@@ -706,24 +647,6 @@ workflows:
               ignore:
                 - crowdin_master
                 - /l10n_.*/
-      - back-ee-test:
-          context:
-            - docker-hub-access
-            - citizenlab-ee-environment
-          requires:
-            - back-build-ee-docker-image
-      - back-ee-web-api-docs:
-          context:
-            - docker-hub-access
-            - citizenlab-ee-environment
-          requires:
-            - back-ee-test
-      - back-ee-slow-tests:
-          context:
-            - docker-hub-access
-            - citizenlab-ee-environment
-          requires:
-            - back-build-ee-docker-image
 
 
   # FRONT-END ESSENTIAL
