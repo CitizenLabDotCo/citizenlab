@@ -1394,7 +1394,7 @@ resource 'Projects' do
       end
     end
 
-    # if CitizenLab.ee?
+    if CitizenLab.ee?
       post 'web_api/v1/projects/:id/copy' do
         let!(:project_in_folder_user_moderates) { create(:continuous_project, folder: project_folder) }
         let!(:project_in_other_folder) { create(:continuous_project, folder: create(:project_folder)) }
@@ -1429,6 +1429,6 @@ resource 'Projects' do
           end
         end
       end
-    # end
+    end
   end
 end
