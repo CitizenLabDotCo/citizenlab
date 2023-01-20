@@ -1,7 +1,11 @@
 import React, { useCallback } from 'react';
 
 // components
-import { Select } from '@citizenlab/cl2-component-library';
+import { Label, Select } from '@citizenlab/cl2-component-library';
+
+// i18n
+import messages from '../messages';
+import { useIntl } from 'utils/cl-intl';
 
 // typings
 import { IOption } from 'typings';
@@ -19,6 +23,8 @@ const OPTIONS: IOption[] = Array(8)
   });
 
 const NumberOfIdeasDropdown = ({ numberOfIdeas, onChange }: Props) => {
+  const { formatMessage } = useIntl();
+
   const handleChange = useCallback(
     (option: IOption) => {
       onChange(option.value);
@@ -27,7 +33,10 @@ const NumberOfIdeasDropdown = ({ numberOfIdeas, onChange }: Props) => {
   );
 
   return (
-    <Select options={OPTIONS} value={numberOfIdeas} onChange={handleChange} />
+    <>
+      <Label>{formatMessage(messages.numberOfIdeas)}</Label>
+      <Select options={OPTIONS} value={numberOfIdeas} onChange={handleChange} />
+    </>
   );
 };
 

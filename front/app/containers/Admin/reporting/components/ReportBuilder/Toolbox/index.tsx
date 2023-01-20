@@ -213,7 +213,12 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
           />
           <DraggableElement
             id="e2e-most-voted-ideas-widget"
-            component={<MostVotedIdeasWidget />}
+            component={
+              <MostVotedIdeasWidget
+                numberOfIdeas={5}
+                collapseLongText={false}
+              />
+            }
             icon="idea"
             label={formatMessage(MostVotedIdeasWidget.craft.custom.title)}
           />

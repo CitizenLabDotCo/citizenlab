@@ -5,16 +5,17 @@ import { useNode } from '@craftjs/core';
 
 // components
 import { Box, Input } from '@citizenlab/cl2-component-library';
-import ProjectFilter from '../_shared/ProjectFilter';
-import PhaseFilter from '../_shared/PhaseFilter';
+import ProjectFilter from '../../_shared/ProjectFilter';
+import PhaseFilter from '../../_shared/PhaseFilter';
 import NumberOfIdeasDropdown from './NumberOfIdeasDropdown';
+import CollapseLongTextToggle from './CollapseLongTextToggle';
 
 // i18n
-import messages from './messages';
+import messages from '../messages';
 import { useIntl } from 'utils/cl-intl';
 
 // typings
-import { Props } from './typings';
+import { Props } from '../typings';
 import { IOption } from 'typings';
 
 const Settings = () => {
@@ -72,6 +73,15 @@ const Settings = () => {
     [setProp]
   );
 
+  const handleChangeCollapseLongText = useCallback(
+    (collapseLongText: boolean) => {
+      setProp((props) => {
+        props.collapseLongText = collapseLongText;
+      });
+    },
+    [setProp]
+  );
+
   return (
     <Box>
       <Box mb="20px">
@@ -103,6 +113,13 @@ const Settings = () => {
         numberOfIdeas={numberOfIdeas}
         onChange={handleChangeNumberOfIdeas}
       />
+
+      <Box my="28px">
+        <CollapseLongTextToggle
+          collapseLongText={collapseLongText}
+          onChange={handleChangeCollapseLongText}
+        />
+      </Box>
     </Box>
   );
 };
