@@ -21,7 +21,7 @@ Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Box border={BORDER} mt="4px" mb="4px" data-testid="survey-results-widget">
+    <Box border={BORDER} mt="4px" mb="4px">
       <Box>
         <Title variant="h3" color="primary" m="16px" mb="8px">
           {title || formatMessage(messages.mostVotedIdeas)}
