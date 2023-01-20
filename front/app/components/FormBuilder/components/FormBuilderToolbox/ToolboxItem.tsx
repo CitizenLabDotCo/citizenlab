@@ -68,7 +68,7 @@ const ToolboxItem = ({
       // remove the role attribute when we add drag and drop functionality
       role="button"
       data-cy={rest['data-cy']}
-      disabled={disabled ? true : false}
+      disabled={!!disabled}
     >
       <Icon
         fill={disabled ? colors.coolGrey500 : colors.primary}
@@ -79,8 +79,7 @@ const ToolboxItem = ({
       <Text
         fontSize="s"
         ml="12px"
-        mt="0"
-        mb="0"
+        my="0"
         color={disabled ? 'coolGrey500' : 'textPrimary'}
       >
         {label}

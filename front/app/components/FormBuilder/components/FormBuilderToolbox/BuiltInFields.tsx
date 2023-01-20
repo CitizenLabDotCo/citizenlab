@@ -42,6 +42,10 @@ const BuiltInFields = ({
       return;
     }
 
+    if (!enabledBuiltInFieldKeys.includes(key)) {
+      return;
+    }
+
     const field = formCustomFields.find((field) => field.key === key);
     const fieldIndex = formCustomFields.findIndex((field) => field.key === key);
     if (field) {
