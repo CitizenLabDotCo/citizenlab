@@ -29,7 +29,6 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import messages from './messages';
-import { getInputTermMessage } from 'utils/i18n';
 
 // utils
 import { openSignUpInModal } from 'events/openSignUpInModal';
@@ -49,6 +48,7 @@ import { darken } from 'polished';
 // typings
 import { LatLng } from 'leaflet';
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
+import { getButtonMessage } from './utils';
 
 const Container = styled.div``;
 
@@ -307,19 +307,12 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
           phases
         );
 
-        const buttonMessage = buttonText
-          ? buttonText
-          : project.attributes.participation_method === 'native_survey' ||
-            phase?.attributes.participation_method === 'native_survey'
-          ? messages.takeTheSurvey
-          : getInputTermMessage(inputTerm, {
-              idea: messages.submitYourIdea,
-              option: messages.addAnOption,
-              project: messages.addAProject,
-              question: messages.addAQuestion,
-              issue: messages.submitAnIssue,
-              contribution: messages.addAContribution,
-            });
+        const buttonMessage = getButtonMessage(
+          project,
+          phase,
+          buttonText,
+          inputTerm
+        );
 
         return (
           <Container id={id} className={className || ''}>
