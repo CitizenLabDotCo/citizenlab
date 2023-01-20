@@ -81,6 +81,9 @@ const getBuiltInFieldStringKey = (
     case 'topic_ids':
       translatedStringKey = messages.tags;
       break;
+    case 'proposed_budget':
+      translatedStringKey = messages.proposedBudget;
+      break;
   }
 
   return translatedStringKey;

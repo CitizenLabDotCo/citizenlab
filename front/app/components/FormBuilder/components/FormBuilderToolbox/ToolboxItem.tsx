@@ -15,8 +15,8 @@ interface Props {
   icon: IconNames;
   onClick: () => void;
   'data-cy'?: string;
-  fieldsToExclude: ICustomFieldInputType[] | undefined;
-  inputType: ICustomFieldInputType;
+  fieldsToExclude?: ICustomFieldInputType[];
+  inputType?: ICustomFieldInputType;
 }
 
 const AddIcon = styled(Icon).attrs({ name: 'plus' })`
@@ -49,7 +49,7 @@ const ToolboxItem = ({
   inputType,
   ...rest
 }: Props) => {
-  if (fieldsToExclude && fieldsToExclude.includes(inputType)) {
+  if (fieldsToExclude && inputType && fieldsToExclude.includes(inputType)) {
     return null;
   }
 
