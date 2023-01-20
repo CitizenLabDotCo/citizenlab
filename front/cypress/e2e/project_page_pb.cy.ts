@@ -68,7 +68,7 @@ describe('Budgeting CTA bar', () => {
     cy.apiRemoveProject(projectId);
   });
 
-  it('shows the CTA to the user to allocate their budget when the user has not yet participated', () => {
+  it('shows the CTA to the user to allocate their budget when the user has not yet participated and no CTA when they have particpated', () => {
     cy.visit(`/en/projects/${projectSlug}`);
     cy.get('[data-cy="budgeting-cta-button"]').should('exist');
     cy.wait(2000);
