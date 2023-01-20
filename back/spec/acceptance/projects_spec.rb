@@ -1169,6 +1169,17 @@ resource 'Projects' do
         assert_status 200
         expect(json_response[:data].size).to eq 0
       end
+
+      if CitizenLab.ee?
+        post 'web_api/v1/projects/:id/copy' do
+          let(:source_project) { create(:continuous_project) }
+          let(:id) { source_project.id }
+
+          example_request 'Copy a continuous project' do
+            assert_status 401
+          end
+        end
+      end
     end
   end
 
