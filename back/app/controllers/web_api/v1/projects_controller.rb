@@ -78,8 +78,10 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def copy
     source_project = Project.find(params[:id])
+    folder = source_project.folder
 
-    @project = Project.new
+    @project = folder ? Project.new(folder: folder) : Project.new
+
     authorize @project
     @project = LocalProjectCopyService.new.copy(source_project)
 
