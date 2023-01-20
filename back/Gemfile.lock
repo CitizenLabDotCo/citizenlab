@@ -606,7 +606,7 @@ GEM
     easy_translate (0.5.1)
       thread
       thread_safe
-    erubi (1.10.0)
+    erubi (1.12.0)
     excon (0.92.3)
     factory_bot (6.2.1)
       activesupport (>= 5.0.0)
@@ -656,7 +656,7 @@ GEM
       nokogiri (>= 1.5.11, < 2.0.0)
     formatador (1.1.0)
     gems (1.2.0)
-    globalid (1.0.0)
+    globalid (1.0.1)
       activesupport (>= 5.0)
     google-api-client (0.53.0)
       google-apis-core (~> 0.1)
@@ -771,7 +771,7 @@ GEM
       rake
     mini_magick (4.11.0)
     mini_mime (1.1.2)
-    minitest (5.16.3)
+    minitest (5.17.0)
     mjml-rails (4.7.2)
     msgpack (1.5.2)
     multi_json (1.15.0)
@@ -782,13 +782,13 @@ GEM
       ruby2_keywords (~> 0.0.1)
     netrc (0.11.0)
     nio4r (2.5.8)
-    nokogiri (1.13.10-aarch64-linux)
+    nokogiri (1.14.0-aarch64-linux)
       racc (~> 1.4)
-    nokogiri (1.13.10-arm64-darwin)
+    nokogiri (1.14.0-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.13.10-x86_64-darwin)
+    nokogiri (1.14.0-x86_64-darwin)
       racc (~> 1.4)
-    nokogiri (1.13.10-x86_64-linux)
+    nokogiri (1.14.0-x86_64-linux)
       racc (~> 1.4)
     nori (2.6.0)
     oauth2 (1.4.9)
@@ -866,8 +866,8 @@ GEM
     que-web (0.9.3)
       que (~> 1.0.0.beta3)
       sinatra
-    racc (1.6.1)
-    rack (2.2.4)
+    racc (1.6.2)
+    rack (2.2.6.2)
     rack-attack (6.6.1)
       rack (>= 1.0, < 3)
     rack-cors (1.1.1)
@@ -1136,7 +1136,7 @@ GEM
     with_env (1.1.0)
     xml-simple (1.1.9)
       rexml
-    zeitwerk (2.6.0)
+    zeitwerk (2.6.6)
 
 PLATFORMS
   aarch64-linux
