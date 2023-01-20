@@ -88,6 +88,7 @@ export const IdeationCTABar = ({ phases, project }: CTABarProps) => {
         bgColor={theme.colors.white}
         textColor={theme.colors.tenantText}
         iconColor={theme.colors.tenantText}
+        textHoverColor={theme.colors.black}
       >
         <FormattedMessage {...messages.seeIdeas} />
       </Button>

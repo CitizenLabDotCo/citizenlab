@@ -47,6 +47,7 @@ export const VolunteeringCTABar = ({ phases, project }: CTABarProps) => {
       bgColor={theme.colors.white}
       textColor={theme.colors.tenantText}
       iconColor={theme.colors.tenantText}
+      textHoverColor={theme.colors.black}
     >
       <FormattedMessage {...messages.volunteer} />
     </Button>

@@ -21,9 +21,9 @@ export default defineMessages({
     id: 'app.components.ParticipationCTABars.participationTimeLeft',
     defaultMessage: '{timeLeft}  weeks left',
   },
-  allocateYourBudget: {
-    id: 'app.components.ParticipationCTABars.allocateYourBudget',
-    defaultMessage: 'Allocate your budget.',
+  allocateBudget: {
+    id: 'app.components.ParticipationCTABars.allocateBudget',
+    defaultMessage: 'Allocate your budget',
   },
   volunteer: {
     id: 'app.components.ParticipationCTABars.volunteer',
