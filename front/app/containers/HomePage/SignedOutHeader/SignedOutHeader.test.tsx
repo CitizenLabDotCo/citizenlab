@@ -25,8 +25,12 @@ describe('<SignedOutHeader />', () => {
     mockHomepageSettings.attributes.banner_layout = 'full_width_banner_layout';
 
     render(<SignedOutHeader />);
-    expect(screen.getByText('Signed out header')).toBeInTheDocument();
-    expect(screen.getByText('Signed out subhead')).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'Signed out header', level: 1 })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'Signed out subhead', level: 2 })
+    ).toBeInTheDocument();
     expect(screen.getByTestId('full-width-banner-layout')).toHaveStyle(
       'width: 100%'
     );
@@ -36,33 +40,44 @@ describe('<SignedOutHeader />', () => {
     mockHomepageSettings.attributes.banner_layout = 'two_column_layout';
 
     render(<SignedOutHeader />);
-    expect(screen.getByText('Signed out header')).toBeInTheDocument();
-    expect(screen.getByText('Signed out subhead')).toBeInTheDocument();
-    expect(screen.getByTestId('two-column-layout')).toBeInTheDocument();
-    expect(screen.getByTestId('two-column-layout')).toHaveStyle('width: 100%');
-    expect(screen.getByTestId('two-column-layout')).toHaveStyle(
-      'background: white'
-    );
+    expect(
+      screen.getByRole('heading', { name: 'Signed out header', level: 1 })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'Signed out subhead', level: 2 })
+    ).toBeInTheDocument();
+    expect(screen.getByTestId('two-column-layout')).toHaveStyle({
+      width: '100%',
+      background: 'white',
+    });
   });
 
   it('renders two_row_layout', () => {
     mockHomepageSettings.attributes.banner_layout = 'two_row_layout';
 
     render(<SignedOutHeader />);
-    expect(screen.getByText('Signed out header')).toBeInTheDocument();
-    expect(screen.getByText('Signed out subhead')).toBeInTheDocument();
-    expect(screen.getByTestId('two-row-layout')).toHaveStyle('width: 100%');
-    expect(screen.getByTestId('two-row-layout')).toHaveStyle(
-      'background: white'
-    );
+    expect(
+      screen.getByRole('heading', { name: 'Signed out header', level: 1 })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'Signed out subhead', level: 2 })
+    ).toBeInTheDocument();
+    expect(screen.getByTestId('two-row-layout')).toHaveStyle({
+      width: '100%',
+      background: 'white',
+    });
   });
 
   it('renders fixed_ratio_layout', () => {
     mockHomepageSettings.attributes.banner_layout = 'fixed_ratio_layout';
 
     render(<SignedOutHeader />);
-    expect(screen.getByText('Signed out header')).toBeInTheDocument();
-    expect(screen.getByText('Signed out subhead')).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'Signed out header', level: 1 })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'Signed out subhead', level: 2 })
+    ).toBeInTheDocument();
     expect(screen.getByTestId('header-image-background')).toHaveStyle(
       `background-image: url(${mockHomepageSettings.attributes.header_bg?.large})`
     );
