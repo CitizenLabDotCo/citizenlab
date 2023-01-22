@@ -169,6 +169,19 @@ describe LocalProjectCopyService do
       end
     end
 
+    describe 'when source project has file attachments' do
+      before { create_list(:project_file, 2, project: continuous_project) }
+
+      it 'creates associated copies of the file attachments' do
+        copied_project = service.copy(continuous_project)
+
+        expect(copied_project.project_files.count).to eq 2
+        expect(copied_project.project_files.as_json(except: %i[id project_id file updated_at created_at]))
+          .to eq continuous_project.project_files.as_json(except: %i[id project_id file updated_at created_at])
+        expect(copied_project.project_files.first.file.url).to include(continuous_project.project_files.first.name)
+      end
+    end
+
     it 'copies basic phase attributes' do
       copied_project = service.copy(timeline_project)
 
@@ -191,6 +204,22 @@ describe LocalProjectCopyService do
 
         copied_project = service.copy(source_project)
         expect(copied_project.phases.first.permissions.find_by(action: 'commenting_idea').groups).to eq groups
+      end
+    end
+
+    describe 'when source project phase has file attachments' do
+      let(:source_phase) { timeline_project.phases.order(:start_at).first }
+
+      before { create_list(:phase_file, 2, phase: source_phase) }
+
+      it 'creates associated copies of the file attachments' do
+        copied_project = service.copy(timeline_project)
+        copied_phase = copied_project.phases.order(:start_at).first
+
+        expect(copied_phase.phase_files.count).to eq 2
+        expect(copied_phase.phase_files.as_json(except: %i[id phase_id file updated_at created_at]))
+          .to eq source_phase.phase_files.as_json(except: %i[id phase_id file updated_at created_at])
+        expect(copied_phase.phase_files.first.file.url).to include(source_phase.phase_files.first.name)
       end
     end
 
