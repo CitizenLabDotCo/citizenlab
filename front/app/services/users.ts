@@ -34,7 +34,7 @@ export interface IUserAttributes {
 
 export interface IUserData {
   id: string;
-  type: string;
+  type: 'user';
   attributes: IUserAttributes;
 }
 
