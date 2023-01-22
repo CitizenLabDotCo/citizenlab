@@ -29,7 +29,7 @@ const NotificationMenu = () => {
       <Suspense fallback={null}>
         <NotificationsDropdown
           dropdownOpened={dropdownOpened}
-          toggleDropdown={toggleDropdown}
+          onClickOutside={toggleDropdown}
         />
       </Suspense>
     </Box>

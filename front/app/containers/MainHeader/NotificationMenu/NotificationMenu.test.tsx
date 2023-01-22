@@ -6,18 +6,18 @@ jest.mock('services/appConfiguration');
 jest.mock('services/auth');
 
 describe('NotificationMenu', () => {
-  it('Opens the dropdown when clicking the notifications icon', async () => {
+  it('Opens and closes the dropdown when clicking the notifications icon', async () => {
     const user = userEvent.setup();
     render(<NotificationMenu />);
     const notificationsIcon = screen.getByRole('button');
-    const dropdownContent = screen.queryByTestId(
-      'notifications-dropdown-content'
-    );
 
-    expect(screen.queryByTestId('notifications-dropdown-content')).toBeNull();
+    // Open the dropdown
     await user.click(notificationsIcon);
-    expect(
-      screen.findByTestId('notifications-dropdown-content')
-    ).toBeInTheDocument();
+    const dropdown = await screen.findByTestId('notifications-dropdown');
+    expect(dropdown).toBeInTheDocument();
+
+    // Close the dropdown
+    await user.click(notificationsIcon);
+    expect(dropdown).not.toBeInTheDocument();
   });
 });

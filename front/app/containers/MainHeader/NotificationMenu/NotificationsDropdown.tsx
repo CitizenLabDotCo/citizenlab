@@ -51,7 +51,7 @@ const EmptyStateText = styled.div`
 
 interface InputProps {
   dropdownOpened: boolean;
-  toggleDropdown: () => void;
+  onClickOutside: () => void;
 }
 
 interface DataProps {
@@ -61,15 +61,10 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 const NotificationsDropdown = ({
-  toggleDropdown,
+  onClickOutside,
   dropdownOpened,
   notifications,
 }: Props) => {
-  const handleToggleDropdown = (event: React.FormEvent) => {
-    event.preventDefault();
-    toggleDropdown();
-  };
-
   return (
     <Dropdown
       id="notifications-dropdown"
@@ -79,21 +74,21 @@ const NotificationsDropdown = ({
       right="-5px"
       mobileRight="-15px"
       opened={dropdownOpened}
-      onClickOutside={handleToggleDropdown}
+      onClickOutside={onClickOutside}
       content={
-        <InfiniteScroll
-          pageStart={0}
-          loadMore={notifications.onLoadMore}
-          useWindow={false}
-          hasMore={notifications.hasMore}
-          threshold={50}
-          loader={
-            <LoadingContainer key="0">
-              <Spinner />
-            </LoadingContainer>
-          }
-        >
-          <Box data-testid="notifications-dropdown-content">
+        <Box data-testid="notifications-dropdown">
+          <InfiniteScroll
+            pageStart={0}
+            loadMore={notifications.onLoadMore}
+            useWindow={false}
+            hasMore={notifications.hasMore}
+            threshold={50}
+            loader={
+              <LoadingContainer key="0">
+                <Spinner />
+              </LoadingContainer>
+            }
+          >
             {!isNilOrError(notifications?.list) &&
               notifications.list.length > 0 && (
                 <>
@@ -120,8 +115,8 @@ const NotificationsDropdown = ({
                 </EmptyStateText>
               </EmptyStateContainer>
             )}
-          </Box>
-        </InfiniteScroll>
+          </InfiniteScroll>
+        </Box>
       }
     />
   );
