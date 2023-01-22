@@ -155,6 +155,7 @@
     "@types/enzyme": "3.10.12",
     "@types/enzyme-adapter-react-16": "1.0.6",
     "@types/file-saver": "2.0.5",
+    "@types/formatcoords": "^1.1.0",
     "@types/geojson": "7946.0.8",
     "@types/googlemaps": "3.43.3",
     "@types/jest": "^29.2.5",
