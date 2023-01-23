@@ -5,8 +5,8 @@ class AnonymizeUserService
   # this is still here after May 2022.
 
   # MALE_AVATAR_URLS = [
-  #   'http://res.cloudinary.com/citizenlabco/image/upload/v1515573977/man-388104_960_720_dfehjy.jpg',
-  #   'http://res.cloudinary.com/citizenlabco/image/upload/v1515574041/man-838636_960_720_f3i6ki.jpg',
+  #   'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/avatars/avatar01_male.jpeg',
+  #   'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/avatars/avatar26_male.jpeg',
   #   'https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/7ca644b8-4ebf-4e74-a266-c8f9f945fc28/profile-1474295964-7c5694e2fc409f9ba430e094fee7f906.jpg',
   #   'https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/7937ab55-2985-4d6e-a4ab-db25d605ef72/66c297f1dcd085d2304f63c5ed612c0a--beauty-portrait-male-portraits.jpg',
   #   'https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/84184598-6aac-408a-a49b-26ec0176a94b/49cd4c44d562e92d90a3a4c81ced02dc.jpg',
@@ -28,8 +28,8 @@ class AnonymizeUserService
   # ]
 
   # FEMALE_AVATAR_URLS = [
-  #   'http://res.cloudinary.com/citizenlabco/image/upload/v1515573998/smiling-woman_kdsaal.jpg',
-  #   'http://res.cloudinary.com/citizenlabco/image/upload/v1515574018/tiamorrison-profile-photo-2-copy_pcnsxm.png',
+  #   'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/avatars/avatar18_female.jpeg',
+  #   'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/avatars/avatar27_female.jpeg',
   #   'https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/1ded0d3c-a50f-4b68-b7ff-f1ca23dc185a/Portrait-8.jpg',
   #   'https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/c6896f8d-2128-403a-82f0-fa04647173c6/popin_2016.jpg',
   #   'https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/ffdc4756-2a6e-4f3d-b147-b259ea519e4c/89c81ca5da657d45d323eff5b8ad7c69.jpg',

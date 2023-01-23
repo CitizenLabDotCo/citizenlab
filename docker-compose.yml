@@ -20,13 +20,18 @@ services:
       # - 'memcached'
     build:
       context: .
-      dockerfile: back/Dockerfile
+      dockerfile: back/Dockerfile.development
     ports:
       - "4000:4000"
     volumes:
       - "./back:/cl2_back"
+      - bundle_path:/bundle
     env_file:
-      - ".env-back"
+      - "env_files/back-safe.env"
+      - "env_files/back-secret.env"
+    environment:
+      BUNDLE_PATH: /bundle
+    tty: true
     stdin_open: true
 
   que:
@@ -37,12 +42,16 @@ services:
       - "rabbitmq"
     build:
       context: .
-      dockerfile: back/Dockerfile
+      dockerfile: back/Dockerfile.development
     command: bundle exec que
     volumes:
       - "./back:/cl2_back"
+      - bundle_path:/bundle
     env_file:
-      - ".env-back"
+      - "env_files/back-safe.env"
+      - "env_files/back-secret.env"
+    environment:
+      BUNDLE_PATH: /bundle
     tty: true
     stdin_open: true
 
@@ -68,6 +77,7 @@ services:
 
 volumes:
   postgres:
+  bundle_path:
 
 networks:
   default:

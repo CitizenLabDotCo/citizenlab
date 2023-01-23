@@ -23,9 +23,9 @@ const TextingHeader = ({
         justify="left"
         onClick={onClickGoBack}
         buttonStyle="text"
-        icon="arrow-back"
+        icon="arrow-left"
         padding="0"
-        size="2"
+        size="m"
         mb="2rem"
         text={'Go back'}
       />

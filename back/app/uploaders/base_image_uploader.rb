@@ -3,6 +3,8 @@
 class BaseImageUploader < BaseUploader
   include CarrierWave::MiniMagick
 
+  ALLOWED_TYPES = %w[jpg jpeg gif png webp svg]
+
   # We're not caching, since the external image optimization process will
   # quickly generate a new version that should replace this one asap
   def fog_attributes
@@ -14,8 +16,12 @@ class BaseImageUploader < BaseUploader
     "#{secure_token}.#{file.extension}" if original_filename.present?
   end
 
+  def content_type_allowlist
+    ALLOWED_TYPES
+  end
+
   def extension_allowlist
-    %w[jpg jpeg gif png]
+    ALLOWED_TYPES
   end
 
   protected

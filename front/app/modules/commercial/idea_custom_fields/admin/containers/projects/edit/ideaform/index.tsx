@@ -28,7 +28,7 @@ import {
 // i18n
 import messages from './messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // styling
 import styled from 'styled-components';
@@ -92,7 +92,7 @@ interface IChanges {
   };
 }
 
-const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(
+const IdeaForm = memo<Props & WithRouterProps & WrappedComponentProps>(
   ({ params, className, intl: { formatMessage } }) => {
     const projectId = params.projectId;
 

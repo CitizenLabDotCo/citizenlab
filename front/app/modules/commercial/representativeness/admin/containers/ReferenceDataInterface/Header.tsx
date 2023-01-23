@@ -10,10 +10,10 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 const Header = () => (
   <>
-    <Title variant="h2">
+    <Title color="primary" variant="h2">
       <FormattedMessage {...messages.pageTitle} />
     </Title>
-    <Text color="label">
+    <Text color="textSecondary">
       <FormattedMessage
         {...messages.pageDescription}
         values={{

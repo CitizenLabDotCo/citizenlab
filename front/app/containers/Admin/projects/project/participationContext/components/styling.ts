@@ -85,7 +85,7 @@ export const LabelText = styled.div`
   }
 
   .description {
-    color: ${colors.adminSecondaryTextColor};
+    color: ${colors.textSecondary};
   }
 `;
 

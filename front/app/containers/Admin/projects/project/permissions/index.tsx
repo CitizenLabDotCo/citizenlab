@@ -8,9 +8,12 @@ import messages from './messages';
 
 // components
 import { Section, SectionTitle } from 'components/admin/Section';
+import ProjectManagement from './containers/ProjectManagement';
+import ProjectVisibility from './containers/ProjectVisibility';
 
 // hooks
 import useProject from 'hooks/useProject';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // style
 import styled from 'styled-components';
@@ -24,11 +27,16 @@ export const StyledSectionTitle = styled(SectionTitle)`
   margin-bottom: 30px;
 `;
 
-interface Props {}
-
 const ProjectPermissions = memo(
-  ({ params: { projectId } }: Props & WithRouterProps) => {
+  ({ params: { projectId } }: WithRouterProps) => {
     const project = useProject({ projectId });
+    const isProjectManagementEnabled = useFeatureFlag({
+      name: 'project_management',
+    });
+
+    const isProjectVisibilityEnabled = useFeatureFlag({
+      name: 'project_visibility',
+    });
 
     if (!isNilOrError(project)) {
       return (
@@ -39,7 +47,7 @@ const ProjectPermissions = memo(
             project={project}
           >
             {(outletComponents) =>
-              outletComponents.length > 0 ? (
+              outletComponents.length > 0 || isProjectVisibilityEnabled ? (
                 <StyledSection>
                   <StyledSectionTitle>
                     <FormattedMessage
@@ -51,6 +59,9 @@ const ProjectPermissions = memo(
               ) : null
             }
           </Outlet>
+          {isProjectVisibilityEnabled && (
+            <ProjectVisibility projectId={projectId} />
+          )}
           <Outlet
             id="app.containers.Admin.project.edit.permissions.moderatorRights"
             projectId={projectId}
@@ -66,6 +77,9 @@ const ProjectPermissions = memo(
               ) : null
             }
           </Outlet>
+          {isProjectManagementEnabled && (
+            <ProjectManagement projectId={projectId} />
+          )}
         </>
       );
     }

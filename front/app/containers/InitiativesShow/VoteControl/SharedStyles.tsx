@@ -4,22 +4,22 @@ import { fontSizes, colors, media } from 'utils/styleUtils';
 export const StatusWrapper = styled.div`
   display: flex;
   flex-direction: row-reverse;
-  font-size: ${fontSizes.s};
+  font-size: ${fontSizes.s}px;
   text-transform: uppercase;
-  color: ${colors.clGreyOnGreyBackground};
+  color: ${colors.coolGrey600};
 
   &.answered {
-    color: ${colors.clGreen};
+    color: ${colors.success};
   }
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;
 
 export const StatusExplanation = styled.div`
   font-size: ${fontSizes.base}px;
-  color: ${(props) => props.theme.colorText};
+  color: ${(props) => props.theme.colors.tenantText};
   line-height: 23px;
 
   .tooltip-icon {

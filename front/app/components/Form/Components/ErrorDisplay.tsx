@@ -37,9 +37,7 @@ const ErrorMessageText = styled.div`
 `;
 
 const ErrorIcon = styled(Icon)`
-  flex: 0 0 20px;
-  width: 20px;
-  height: 20px;
+  flex: 0 0 24px;
   fill: ${colors.red600};
   padding: 0px;
   margin: 0px;
@@ -57,7 +55,7 @@ const ContainerInner = styled.div`
   justify-content: space-between;
   padding: 10px 13px;
   border-radius: ${(props) => props.theme.borderRadius};
-  background: ${colors.red100};
+  background: ${colors.errorLight};
 
   ${isRtl`
     flex-direction: row-reverse;
@@ -159,7 +157,7 @@ export default ({ fieldPath, ajvErrors, didBlur }: Props) => {
     >
       <Container role="alert" className="e2e-error-message">
         <ContainerInner>
-          <ErrorIcon name="error" />
+          <ErrorIcon name="alert-circle" fill={colors.error} />
 
           <ErrorMessageText>
             <ErrorList>

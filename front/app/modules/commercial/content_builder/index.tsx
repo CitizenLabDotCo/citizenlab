@@ -1,10 +1,25 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import ContentBuilderToggle from 'modules/commercial/content_builder/admin/components/ContentBuilderToggle';
-import ContentBuilderPreview from 'modules/commercial/content_builder/admin/components/ContentBuilderPreview';
-import EditModePreview from 'modules/commercial/content_builder/admin/components/ContentBuilderEditModePreview/EditModePreview';
 
 const ContentBuilderComponent = React.lazy(() => import('./admin/containers'));
+const FullscreenPreview = React.lazy(
+  () =>
+    import(
+      'modules/commercial/content_builder/admin/containers/FullscreenPreview'
+    )
+);
+
+const ContentViewer = React.lazy(
+  () =>
+    import('modules/commercial/content_builder/admin/components/ContentViewer')
+);
+
+const ContentBuilderToggle = React.lazy(
+  () =>
+    import(
+      'modules/commercial/content_builder/admin/components/ContentBuilderToggle'
+    )
+);
 
 const configuration: ModuleConfiguration = {
   routes: {
@@ -15,7 +30,7 @@ const configuration: ModuleConfiguration = {
       },
       {
         path: 'content-builder/projects/:projectId/preview',
-        element: <EditModePreview />,
+        element: <FullscreenPreview />,
       },
     ],
   },
@@ -28,7 +43,7 @@ const configuration: ModuleConfiguration = {
     'app.ProjectsShowPage.shared.header.ProjectInfo.contentBuilder': (
       props
     ) => {
-      return <ContentBuilderPreview {...props} />;
+      return <ContentViewer {...props} />;
     },
   },
 };

@@ -5,7 +5,7 @@ import moment from 'moment';
 // components
 import Link from 'utils/cl-router/Link';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, Text, Box } from '@citizenlab/cl2-component-library';
 import FileAttachments from 'components/UI/FileAttachments';
 
 // hooks
@@ -18,7 +18,7 @@ import { IEventData } from 'services/events';
 // i18n
 import T from 'components/T';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // styling
@@ -44,25 +44,25 @@ const EventTitleAndAttributes = styled.div`
 
 const StyledLink = styled(Link)`
   cursor: pointer;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.xs}px;
   display: block;
   margin: 0 0 5px 0;
 
   &:hover {
-    color: ${({ theme }) => theme.colorMain};
+    color: ${({ theme }) => theme.colors.tenantPrimary};
   }
 `;
 
 const EventTitle = styled.h3<{ fontSize?: number }>`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${({ fontSize }) => fontSize ?? fontSizes.xl}px;
   font-weight: 700;
   line-height: normal;
   margin: 0 0 9px 0 !important;
 
   &:hover {
-    color: ${({ theme }) => theme.colorMain};
+    color: ${({ theme }) => theme.colors.tenantPrimary};
   }
 `;
 
@@ -70,18 +70,18 @@ const EventTimeAndLocationContainer = styled.div`
   display: flex;
   flex-direction: row;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     flex-direction: column;
   `}
 
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.xs}px;
 `;
 
 const Time = styled.time`
   margin-right: 23px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-bottom: 5px;
     margin-right: 0px;
   `}
@@ -93,7 +93,7 @@ const StyledIcon = styled(Icon)`
   flex: 0 0 24px;
   margin-top: -1.5px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-right: 6px;
   `}
 `;
@@ -133,7 +133,7 @@ const StyledT = styled(T)<IStyledT>`
     line-height: ${SMALL_LINE_HEIGHT}px;
   }
 
-  color: ${(props: any) => props.theme.colorText};
+  color: ${(props) => props.theme.colors.tenantText};
   position: relative;
   display: block;
 `;
@@ -141,13 +141,13 @@ const StyledT = styled(T)<IStyledT>`
 const ShowMoreOrLessButton = styled.button`
   margin-top: 18px;
   padding: 0;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   cursor: pointer;
   font-weight: 600;
   text-decoration-line: underline;
 
   &:hover {
-    color: ${({ theme }) => theme.colorMain};
+    color: ${({ theme }) => theme.colors.tenantPrimary};
     text-decoration-line: none;
   }
 `;
@@ -165,7 +165,7 @@ interface Props {
   onClickTitleGoToProjectAndScrollToEvent?: boolean;
 }
 
-const EventInformation = memo<Props & InjectedIntlProps>((props) => {
+const EventInformation = memo<Props & WrappedComponentProps>((props) => {
   const {
     event,
     isMultiDayEvent,
@@ -180,7 +180,7 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
     intl,
   } = props;
 
-  const theme: any = useTheme();
+  const theme = useTheme();
 
   const eventFiles = useResourceFiles({
     resourceType: 'event',
@@ -233,12 +233,20 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
   return (
     <EventInformationContainer data-testid="EventInformation">
       <EventTitleAndAttributes>
-        {showProjectTitle && projectTitle && (
-          <StyledLink to={`/projects/${projectSlug}`}>
-            <T value={projectTitle} />
-          </StyledLink>
-        )}
-
+        {showProjectTitle &&
+          projectTitle &&
+          onClickTitleGoToProjectAndScrollToEvent && (
+            <StyledLink to={`/projects/${projectSlug}`}>
+              <T value={projectTitle} />
+            </StyledLink>
+          )}
+        {showProjectTitle &&
+          projectTitle &&
+          !onClickTitleGoToProjectAndScrollToEvent && (
+            <Text color="textSecondary" fontSize="xs" margin="0 0  5px 0">
+              <T value={projectTitle} />
+            </Text>
+          )}
         {onClickTitleGoToProjectAndScrollToEvent && (
           <Link to={`/projects/${projectSlug}?scrollToEventId=${event.id}`}>
             <EventTitle fontSize={titleFontSize}>
@@ -256,10 +264,8 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
         <EventTimeAndLocationContainer>
           <Time>
             <StyledIcon
-              name="clock-solid"
-              fill={colors.label}
-              width={`${fontSizes.m}px`}
-              height={`${fontSizes.m}px`}
+              name="clock"
+              fill={colors.textSecondary}
               marginRight="6px"
             />
             {eventDateTime}
@@ -267,12 +273,7 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
 
           {hasLocation && showLocation && (
             <Location>
-              <StyledIcon
-                name="mapmarker"
-                width={`${fontSizes.m}px`}
-                height={`${fontSizes.m}px`}
-                marginRight="6px"
-              />
+              <StyledIcon name="position" marginRight="6px" />
               <T value={event.attributes.location_multiloc} />
             </Location>
           )}
@@ -283,7 +284,7 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
         <EventDescription>
           <QuillEditedContent
             disableTabbing={hideTextOverflow && textOverflow}
-            textColor={theme.colorText}
+            textColor={theme.colors.tenantText}
           >
             <StyledT
               value={event.attributes.description_multiloc}
@@ -309,9 +310,11 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
         </EventDescription>
       )}
 
-      {!isNilOrError(eventFiles) &&
-        eventFiles.length > 0 &&
-        showAttachments && <FileAttachments files={eventFiles} />}
+      {!isNilOrError(eventFiles) && eventFiles.length > 0 && showAttachments && (
+        <Box mb="25px">
+          <FileAttachments files={eventFiles} />
+        </Box>
+      )}
     </EventInformationContainer>
   );
 });

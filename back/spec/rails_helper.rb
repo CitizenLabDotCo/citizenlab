@@ -74,8 +74,22 @@ RSpec.configure do |config|
   config.include ApiHelper
   config.include ApiAuthenticationHelper
   config.include Base64Helper
-  config.include TenantHelper
+  config.include RakeHelper
+  config.include XlsxHelper
   config.include AppConfigurationHelper
+
+  # If we do not include the following module, the controller tests do not reset the
+  # `CurrentAttributes` before and after each test.
+  # Per: https://bytemeta.vip/repo/rspec/rspec-rails/issues/2503, rspec-rails should in
+  # theory load the helpers automatically, but for some reason this does not seem to
+  # work.
+  # > If you add type: :model the problem should similarly go away, we don't include
+  # > rails helpers except when running a rails test, so currently you'd need to pick
+  # > one of the rails types.
+  #
+  # As a quick fix, we import the module explicitly. A tech-debt ticket has been logged
+  # here: https://citizenlab.atlassian.net/browse/CL-1860
+  config.include ActiveSupport::CurrentAttributes::TestHelper, type: :controller
 end
 
 ActiveJob::Base.queue_adapter = :test

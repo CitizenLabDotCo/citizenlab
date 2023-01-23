@@ -1,12 +1,4 @@
 const path = require('path');
-const clConfig = require(path.join(process.cwd(), '../citizenlab.config.json'));
-try {
-  const clConfigEe = require(path.join(
-    process.cwd(),
-    '../citizenlab.config.ee.json'
-  ));
-  clConfig['modules'] = { ...clConfig['modules'], ...clConfigEe['modules'] };
-} catch (e) {}
 
 module.exports = {
   verbose: true,
@@ -30,7 +22,7 @@ module.exports = {
   ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
   transformIgnorePatterns: [
-    '<rootDir>/node_modules/(?!(lodash-es|d3-format)).+\\.js$',
+    '<rootDir>/node_modules/(?!(lodash-es|d3-format|@hookform/resolvers)).+\\.js$',
   ],
   snapshotSerializers: ['enzyme-to-json/serializer'],
   reporters: ['default', 'jest-junit'],
@@ -44,7 +36,7 @@ module.exports = {
     url: 'https://demo.stg.citizenlab.co/en/',
   },
   globals: {
-    CL_CONFIG: clConfig,
+    CITIZENLAB_EE: JSON.stringify(process.env.CITIZENLAB_EE),
   },
   resolver: `${__dirname}/internals/jest/resolver.js`,
 };

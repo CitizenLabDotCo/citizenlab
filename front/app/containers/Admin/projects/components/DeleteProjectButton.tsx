@@ -1,7 +1,7 @@
 import React, { memo, FormEvent } from 'react';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
@@ -22,7 +22,7 @@ interface Props extends ButtonContainerProps {
   setDeletionError: (error: string) => void;
 }
 
-const DeleteProjectButton = memo<Props & InjectedIntlProps>(
+const DeleteProjectButton = memo<Props & WrappedComponentProps>(
   ({
     publication,
     setDeleteIsProcessing,

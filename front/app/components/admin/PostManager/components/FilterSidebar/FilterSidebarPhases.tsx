@@ -28,7 +28,12 @@ export default class FilterSidebarPhases extends React.PureComponent<Props> {
   render() {
     const { phases, selectedPhase } = this.props;
     return (
-      <Menu secondary={true} vertical={true} fluid={true}>
+      <Menu
+        secondary={true}
+        vertical={true}
+        fluid={true}
+        className="intercom-admin-input-manager-phases"
+      >
         <Menu.Item onClick={this.clearFilter} active={!selectedPhase}>
           <FormattedMessage {...messages.allPhases} />
         </Menu.Item>

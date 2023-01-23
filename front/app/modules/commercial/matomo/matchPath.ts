@@ -1,4 +1,4 @@
-// Adapted from https://github.com/ReactTraining/react-router/blob/master/packages/react-router/modules/matchPath.js
+// Adapted from https://github.com/ReactTraining/react-router/blob/master/packages/react-router/modules/commercial/matchPath.js
 // Because I couldn't find an equivalent in react router v3
 
 import { pathToRegexp } from 'path-to-regexp';

@@ -37,7 +37,7 @@ const Container = styled(Link)`
     );
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     min-height: unset;
     flex-direction: column;
     align-items: stretch;
@@ -53,13 +53,13 @@ const IdeaCardImageWrapper = styled.div<{ hasImage: boolean }>`
   justify-content: center;
   margin-right: 18px;
   overflow: hidden;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
 
   @media (max-width: 1220px) and (min-width: 1023px) {
     height: ${cardInnerHeightExtended};
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     width: 100%;
     margin-bottom: 18px;
   `}
@@ -84,7 +84,7 @@ const ContentWrapper = styled.div`
     height: ${cardInnerHeightExtended};
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     height: unset;
   `}
 `;
@@ -94,13 +94,13 @@ const Header = styled.header`
   margin: 0;
   margin-bottom: 12px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-bottom: 15px;
   `}
 `;
 
 const Title = styled.h3`
-  color: ${(props) => props.theme.colorText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: 21px;
   font-weight: 500;
   display: -webkit-box;
@@ -119,7 +119,7 @@ const Title = styled.h3`
 const Body = styled.div`
   flex-grow: 1;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-bottom: 25px;
   `}
 `;

@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // hooks
@@ -30,11 +30,11 @@ const Logo = styled(Image)`
   cursor: pointer;
 `;
 
-const TenantLogo = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const TenantLogo = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const appConfiguration = useAppConfiguration();
 
   if (!isNilOrError(appConfiguration)) {
-    const tenantLogo = appConfiguration.data.attributes.logo?.medium;
+    const tenantLogo = appConfiguration.attributes.logo?.medium;
 
     if (tenantLogo) {
       return (

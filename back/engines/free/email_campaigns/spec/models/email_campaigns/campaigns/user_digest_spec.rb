@@ -55,6 +55,14 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest, type: :model do
 
       # @todo No new initiatives and successful initiatives in this digest
     end
+
+    it 'does not include native survey responses' do
+      IdeaStatus.create_defaults
+      response = create :idea, project: create(:continuous_native_survey_project)
+
+      command = campaign.generate_commands(recipient: user).first
+      expect(command.dig(:tracked_content, :idea_ids)).not_to include response.id
+    end
   end
 
   describe 'before_send_hooks' do

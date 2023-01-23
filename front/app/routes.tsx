@@ -1,10 +1,9 @@
-import React, { lazy } from 'react';
 import PageLoading from 'components/UI/PageLoading';
 import createAdminRoutes from 'containers/Admin/routes';
 import moduleConfiguration from 'modules';
+import React, { lazy } from 'react';
 
-const LandingPage = lazy(() => import('containers/LandingPage'));
-const SignUpInPage = lazy(() => import('containers/SignUpInPage'));
+const HomePage = lazy(() => import('containers/HomePage'));
 const SiteMap = lazy(() => import('containers/SiteMap'));
 const UsersEditPage = lazy(() => import('containers/UsersEditPage'));
 const UsersShowPage = lazy(() => import('containers/UsersShowPage'));
@@ -24,18 +23,29 @@ const InitiativesShowPage = lazy(
 const IdeasNewPage = lazy(() => import('containers/IdeasNewPage'));
 const ProjectsIndexPage = lazy(() => import('containers/ProjectsIndexPage'));
 const ProjectsShowPage = lazy(() => import('containers/ProjectsShowPage'));
+const ProjectFolderShowPage = lazy(
+  () => import('containers/ProjectFolderShowPage')
+);
 const EventsPage = lazy(() => import('containers/EventsPage'));
 const CookiePolicy = lazy(() => import('containers/CookiePolicy'));
 const AccessibilityStatement = lazy(
   () => import('containers/AccessibilityStatement')
 );
-const PagesShowPage = lazy(() => import('containers/PagesShowPage'));
+const CustomPageShow = lazy(() => import('containers/CustomPageShow'));
+
 const PasswordRecovery = lazy(() => import('containers/PasswordRecovery'));
 const PasswordReset = lazy(() => import('containers/PasswordReset'));
 const SubscriptionEndedPage = lazy(
   () => import('containers/SubscriptionEndedPage')
 );
 const EmailSettingsPage = lazy(() => import('containers/EmailSettingsPage'));
+
+const ReportViewerPage = lazy(
+  () => import('containers/Admin/reporting/containers/FullScreenReport')
+);
+const ReportPrintPage = lazy(
+  () => import('containers/Admin/reporting/containers/PrintReport')
+);
 
 export default function createRoutes() {
   return [
@@ -46,23 +56,7 @@ export default function createRoutes() {
           index: true,
           element: (
             <PageLoading>
-              <LandingPage />
-            </PageLoading>
-          ),
-        },
-        {
-          path: 'sign-in',
-          element: (
-            <PageLoading>
-              <SignUpInPage />
-            </PageLoading>
-          ),
-        },
-        {
-          path: 'sign-up',
-          element: (
-            <PageLoading>
-              <SignUpInPage />
+              <HomePage />
             </PageLoading>
           ),
         },
@@ -70,7 +64,7 @@ export default function createRoutes() {
           path: 'invite',
           element: (
             <PageLoading>
-              <LandingPage />
+              <HomePage />
             </PageLoading>
           ),
         },
@@ -78,7 +72,7 @@ export default function createRoutes() {
           path: 'complete-signup',
           element: (
             <PageLoading>
-              <LandingPage />
+              <HomePage />
             </PageLoading>
           ),
         },
@@ -86,7 +80,7 @@ export default function createRoutes() {
           path: 'authentication-error',
           element: (
             <PageLoading>
-              <LandingPage />
+              <HomePage />
             </PageLoading>
           ),
         },
@@ -223,6 +217,14 @@ export default function createRoutes() {
           ],
         },
         {
+          path: 'folders/:slug',
+          element: (
+            <PageLoading>
+              <ProjectFolderShowPage />
+            </PageLoading>
+          ),
+        },
+        {
           path: 'events',
           element: (
             <PageLoading>
@@ -250,7 +252,7 @@ export default function createRoutes() {
           path: 'pages/:slug',
           element: (
             <PageLoading>
-              <PagesShowPage />
+              <CustomPageShow />
             </PageLoading>
           ),
         },
@@ -287,15 +289,23 @@ export default function createRoutes() {
             </PageLoading>
           ),
         },
-        ...moduleConfiguration.routes.citizen,
         {
-          path: '*',
+          path: 'admin/reporting/report-builder/:reportId/viewer',
           element: (
             <PageLoading>
-              <PagesShowPage />
+              <ReportViewerPage />
             </PageLoading>
           ),
         },
+        {
+          path: 'admin/reporting/report-builder/:reportId/print',
+          element: (
+            <PageLoading>
+              <ReportPrintPage />
+            </PageLoading>
+          ),
+        },
+        ...moduleConfiguration.routes.citizen,
       ],
     },
   ];

@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  permissionsEveryoneLabel: {
-    id: 'app.containers.admin.project.permissions.permissionsEveryoneLabel',
-    defaultMessage: 'Everyone',
+  permissionsAnyoneLabel: {
+    id: 'app.containers.admin.project.permissions.permissionsAnyoneLabel',
+    defaultMessage: 'Anyone',
   },
   permissionsAdministrators: {
     id: 'app.containers.admin.project.permissions.permissionsAdministrators',

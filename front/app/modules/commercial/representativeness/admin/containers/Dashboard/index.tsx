@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useUserCustomFields from 'modules/commercial/user_custom_fields/hooks/useUserCustomFields';
+import useUserCustomFields from 'hooks/useUserCustomFields';
 
 // typings
-import { IUserCustomFieldData } from 'modules/commercial/user_custom_fields/services/userCustomFields';
+import { IUserCustomFieldData } from 'services/userCustomFields';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -69,12 +69,11 @@ const RepresentativenessDashboard = () => {
 };
 
 const RepresentativenessDashboardFeatureFlagWrapper = () => {
-  const userCustomFieldsActive = useFeatureFlag({ name: 'user_custom_fields' });
   const representativenessActive = useFeatureFlag({
     name: 'representativeness',
   });
 
-  if (!userCustomFieldsActive || !representativenessActive) {
+  if (!representativenessActive) {
     return null;
   }
 

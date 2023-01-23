@@ -60,7 +60,7 @@ class Permission < ApplicationRecord
   def denied_reason(user)
     return if permitted_by == 'everyone'
     return if user&.admin?
-    return if moderator? user
+    return if user && UserRoleService.new.can_moderate?(permission_scope, user)
 
     reason = case permitted_by
     when 'users' then :not_signed_in unless user
@@ -95,15 +95,6 @@ class Permission < ApplicationRecord
 
   def set_permitted_by
     self.permitted_by ||= 'users'
-  end
-
-  # @param [User] user
-  # @return [Boolean]
-  def moderator?(user)
-    return if user.nil?
-    return unless permission_scope.respond_to?(:moderators)
-
-    permission_scope.moderators.include?(user)
   end
 end
 

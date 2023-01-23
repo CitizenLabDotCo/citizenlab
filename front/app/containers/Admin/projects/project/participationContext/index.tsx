@@ -4,14 +4,14 @@ import { filter } from 'rxjs/operators';
 import { isEqual } from 'lodash-es';
 
 // components
-import ParticipationMethodPicker from './components/ParticipationMethodPicker';
+import { ParticipationMethodPicker } from './components/ParticipationMethodPicker';
 import ParticipatoryBudgetingInputs from './components/ParticipatoryBudgetingInputs';
 import PollInputs from './components/PollInputs';
 import SurveyInputs from './components/SurveyInputs';
 import { Container, StyledSection } from './components/styling';
 
 // services
-import { projectByIdStream, IProject } from 'services/projects';
+import { projectByIdStream, IProject, IProjectData } from 'services/projects';
 import { phaseStream, IPhase } from 'services/phases';
 import {
   ParticipationMethod,
@@ -30,7 +30,7 @@ import GetFeatureFlag, {
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import messages from '../messages';
 
 // typings
@@ -85,6 +85,8 @@ interface InputProps {
   onSubmit: (arg: IParticipationContextConfig) => void;
   projectId?: string | undefined | null;
   phaseId?: string | undefined | null;
+  phase?: IPhase | undefined | null;
+  project?: IProjectData | undefined | null;
   apiErrors: ApiErrors;
 }
 
@@ -99,12 +101,12 @@ export interface State extends IParticipationContextConfig {
 }
 
 class ParticipationContext extends PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   subscriptions: Subscription[];
 
-  constructor(props: Props & InjectedIntlProps) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       participation_method: 'ideation',
@@ -351,7 +353,7 @@ class ParticipationContext extends PureComponent<
   getInputTermOptions = () => {
     return INPUT_TERMS.map((inputTerm: InputTerm) => {
       const labelMessages: {
-        [key in InputTerm]: ReactIntl.FormattedMessage.MessageDescriptor;
+        [key in InputTerm]: MessageDescriptor;
       } = {
         idea: messages.ideaTerm,
         contribution: messages.contributionTerm,
@@ -432,6 +434,8 @@ class ParticipationContext extends PureComponent<
         <Container className={className}>
           <StyledSection>
             <ParticipationMethodPicker
+              phase={this.props.phase}
+              project={this.props.project}
               participation_method={participation_method}
               showSurveys={showSurveys}
               apiErrors={apiErrors}

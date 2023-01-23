@@ -128,3 +128,7 @@ export function returnFileSize(size: number) {
   }
   return;
 }
+
+export function isUploadFile(file: UploadFile | null): file is UploadFile {
+  return file !== null;
+}

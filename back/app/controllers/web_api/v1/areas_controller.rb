@@ -12,6 +12,18 @@ class WebApi::V1::AreasController < ApplicationController
     @areas = @areas.order(created_at: :desc)
     @areas = paginate @areas
 
+    include_static_pages = params[:include]&.split(',')&.include?('static_pages')
+
+    if include_static_pages
+      render json: linked_json(
+        @areas.includes([static_pages: :nav_bar_item]),
+        WebApi::V1::AreaSerializer,
+        include: [:static_pages],
+        params: fastjson_params(include_static_pages: true)
+      )
+      return
+    end
+
     render json: linked_json(@areas, WebApi::V1::AreaSerializer, params: fastjson_params)
   end
 
@@ -52,12 +64,11 @@ class WebApi::V1::AreasController < ApplicationController
 
   def destroy
     @side_fx_service.before_destroy(@area, current_user)
-    area = @area.destroy
-    if area.destroyed?
-      @side_fx_service.after_destroy(area, current_user)
+    if @area.destroy
+      @side_fx_service.after_destroy(@area, current_user)
       head :ok
     else
-      head :internal_server_error
+      render json: { errors: @area.errors.details }, status: :unprocessable_entity
     end
   end
 

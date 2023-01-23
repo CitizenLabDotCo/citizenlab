@@ -16,8 +16,4 @@ class IdeaImageUploader < BaseImageUploader
   version :fb do
     process resize_to_fill: [1200, 630]
   end
-
-  def extension_allowlist
-    %w[jpg jpeg gif png bmp]
-  end
 end

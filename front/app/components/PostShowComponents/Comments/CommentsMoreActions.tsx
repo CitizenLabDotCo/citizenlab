@@ -8,7 +8,7 @@ import { get } from 'lodash-es';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import injectIntl from 'utils/cl-intl/injectIntl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // Services
 import { ICommentData, markForDeletion } from 'services/comments';
@@ -77,13 +77,13 @@ export interface State {
 }
 
 class CommentsMoreActions extends PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   private comment$: BehaviorSubject<ICommentData>;
   private subscriptions: Subscription[];
 
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       modalVisible_spam: false,

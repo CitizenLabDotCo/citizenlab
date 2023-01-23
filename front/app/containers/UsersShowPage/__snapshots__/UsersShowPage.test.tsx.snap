@@ -4,17 +4,17 @@ exports[`<UsersShowPage /> renders correctly by default 1`] = `
 <Fragment>
   <WrappedUsersShowPageMeta
     user={
-      Object {
-        "attributes": Object {
-          "avatar": Object {
+      {
+        "attributes": {
+          "avatar": {
             "large": null,
             "medium": null,
             "small": null,
           },
-          "bio_multiloc": Object {},
+          "bio_multiloc": {},
           "confirmation_required": false,
           "created_at": "2018-11-26T15:41:19.782Z",
-          "custom_field_values": Object {
+          "custom_field_values": {
             "birthyear": 1990,
             "domicile": "outside",
             "gender": "female",
@@ -27,15 +27,15 @@ exports[`<UsersShowPage /> renders correctly by default 1`] = `
           "last_name": "Citizenlab",
           "locale": "en",
           "registration_completed_at": "2018-11-26T15:40:54.355Z",
-          "roles": Array [],
+          "roles": [],
           "slug": "test-citizenlab",
           "unread_notifications": 0,
           "updated_at": "2018-11-26T15:41:19.782Z",
         },
         "id": "522ae8cc-a5ed-4d31-9aa0-470904934ec6",
-        "relationships": Object {
-          "granted_permissions": Object {
-            "data": Array [],
+        "relationships": {
+          "granted_permissions": {
+            "data": [],
           },
         },
         "type": "user",
@@ -45,7 +45,7 @@ exports[`<UsersShowPage /> renders correctly by default 1`] = `
   <UsersShowPage__Container
     id="e2e-usersshowpage"
   >
-    <WrappedUserHeader
+    <UserHeader
       userSlug="test-citizenlab"
     />
     <WrappedUserNavbar
@@ -60,7 +60,7 @@ exports[`<UsersShowPage /> renders correctly by default 1`] = `
         <Memo()
           authorId="522ae8cc-a5ed-4d31-9aa0-470904934ec6"
           invisibleTitleMessage={
-            Object {
+            {
               "defaultMessage": "All posts submitted by this participant",
               "id": "app.containers.UsersShowPage.invisibleTitlePostsList",
             }
@@ -77,17 +77,17 @@ exports[`<UsersShowPage /> renders correctly on the other tab 1`] = `
 <Fragment>
   <WrappedUsersShowPageMeta
     user={
-      Object {
-        "attributes": Object {
-          "avatar": Object {
+      {
+        "attributes": {
+          "avatar": {
             "large": null,
             "medium": null,
             "small": null,
           },
-          "bio_multiloc": Object {},
+          "bio_multiloc": {},
           "confirmation_required": false,
           "created_at": "2018-11-26T15:41:19.782Z",
-          "custom_field_values": Object {
+          "custom_field_values": {
             "birthyear": 1990,
             "domicile": "outside",
             "gender": "female",
@@ -100,15 +100,15 @@ exports[`<UsersShowPage /> renders correctly on the other tab 1`] = `
           "last_name": "Citizenlab",
           "locale": "en",
           "registration_completed_at": "2018-11-26T15:40:54.355Z",
-          "roles": Array [],
+          "roles": [],
           "slug": "test-citizenlab",
           "unread_notifications": 0,
           "updated_at": "2018-11-26T15:41:19.782Z",
         },
         "id": "522ae8cc-a5ed-4d31-9aa0-470904934ec6",
-        "relationships": Object {
-          "granted_permissions": Object {
-            "data": Array [],
+        "relationships": {
+          "granted_permissions": {
+            "data": [],
           },
         },
         "type": "user",
@@ -118,7 +118,7 @@ exports[`<UsersShowPage /> renders correctly on the other tab 1`] = `
   <UsersShowPage__Container
     id="e2e-usersshowpage"
   >
-    <WrappedUserHeader
+    <UserHeader
       userSlug="test-citizenlab"
     />
     <WrappedUserNavbar
@@ -133,7 +133,7 @@ exports[`<UsersShowPage /> renders correctly on the other tab 1`] = `
         <Memo()
           authorId="522ae8cc-a5ed-4d31-9aa0-470904934ec6"
           invisibleTitleMessage={
-            Object {
+            {
               "defaultMessage": "All posts submitted by this participant",
               "id": "app.containers.UsersShowPage.invisibleTitlePostsList",
             }
@@ -163,7 +163,7 @@ exports[`<UsersShowPage /> renders correctly with an erroneous user 1`] = `
     We couldn't find this user's profile. If it was here before, it may have been deleted.
   </p>
   <ButtonWrapper
-    icon="arrow-back"
+    icon="arrow-left"
     linkTo="/"
     text="Go back to the previous page"
   />

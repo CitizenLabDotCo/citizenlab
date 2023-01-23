@@ -57,6 +57,49 @@ FactoryBot.define do
       end
     end
 
+    factory :custom_field_linear_scale do
+      title_multiloc do
+        {
+          'en' => 'We need a swimming pool.'
+        }
+      end
+      description_multiloc do
+        {
+          'en' => 'Please indicate how strong you agree or disagree.'
+        }
+      end
+      required { false }
+      input_type { 'linear_scale' }
+      enabled { true }
+      maximum { 5 }
+      minimum_label_multiloc do
+        {
+          'en' => 'Strongly disagree'
+        }
+      end
+      maximum_label_multiloc do
+        {
+          'en' => 'Strongly agree'
+        }
+      end
+    end
+
+    factory :custom_field_page do
+      title_multiloc do
+        {
+          'en' => 'Cycling survey'
+        }
+      end
+      description_multiloc do
+        {
+          'en' => 'This is a survey on your cycling habits.'
+        }
+      end
+      required { false }
+      input_type { 'page' }
+      enabled { true }
+    end
+
     factory :custom_field_multiselect do
       title_multiloc do
         {

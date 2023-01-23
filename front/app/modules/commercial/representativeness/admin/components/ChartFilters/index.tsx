@@ -2,7 +2,7 @@ import React from 'react';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import ProjectFilter from 'containers/Admin/dashboard/components/ChartFilters/ProjectFilter';
+import ProjectFilter from 'containers/Admin/dashboard/components/filters/ProjectFilter';
 import Button from 'components/UI/Button';
 
 // styling
@@ -35,7 +35,7 @@ const ChartFilters = ({
       <Button
         linkTo="/admin/dashboard/representation/edit-base-data"
         text={<FormattedMessage {...messages.editBaseData} />}
-        bgColor={colors.clBlueDark}
+        bgColor={colors.teal}
       />
     )}
   </Box>

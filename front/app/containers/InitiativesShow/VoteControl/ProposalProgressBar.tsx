@@ -26,13 +26,13 @@ const ProposalProgressBar = ({
   bgShaded = false,
   className,
 }: Props) => {
-  const theme: any = useTheme();
+  const theme = useTheme();
   return (
     <div className={className}>
       <StyledProgressBar
         progress={voteCount / voteLimit}
-        color={barColor || theme.colorText}
-        bgColor={colors.lightGreyishBlue}
+        color={barColor || theme.colors.tenantText}
+        bgColor={colors.grey200}
         bgShaded={bgShaded}
       />
       <ScreenReaderOnly>

@@ -18,7 +18,11 @@ import {
   IEventFileData,
   IEventFiles,
 } from 'services/eventFiles';
-import { pageFilesStream, IPageFileData, IPageFiles } from 'services/pageFiles';
+import {
+  pageFilesStream,
+  ICustomPageFileData,
+  ICustomPageFiles,
+} from 'services/pageFiles';
 import { ideaFilesStream, IIdeaFileData, IIdeaFiles } from 'services/ideaFiles';
 import {
   initiativeFilesStream,
@@ -40,7 +44,7 @@ export type TResourceFileData =
   | IProjectFileData
   | IPhaseFileData
   | IEventFileData
-  | IPageFileData
+  | ICustomPageFileData
   | IIdeaFileData
   | IInitiativeFileData;
 
@@ -48,7 +52,7 @@ export type TResourceFiles =
   | IProjectFiles
   | IPhaseFiles
   | IEventFiles
-  | IPageFiles
+  | ICustomPageFiles
   | IIdeaFiles
   | IInitiativeFiles;
 

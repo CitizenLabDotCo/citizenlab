@@ -19,7 +19,8 @@ import {
   IdeaDefaultSortMethod,
 } from 'services/participationContexts';
 import { InputProps as GetIdeasInputProps } from 'resources/GetIdeas';
-import { MessageDescriptor, IParticipationContextType } from 'typings';
+import { IParticipationContextType } from 'typings';
+import { MessageDescriptor } from 'react-intl';
 
 const Container = styled.div`
   width: 100%;

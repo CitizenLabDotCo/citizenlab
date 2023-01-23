@@ -4,7 +4,14 @@ require 'faker'
 
 FactoryBot.define do
   factory :app_configuration do
+    transient do
+      lifecycle { 'active' }
+      locales { %w[en nl-BE fr-FR] }
+    end
+
     host { 'localhost' }
+    name { Faker::Address.city }
+
     settings do
       {
         'core' => {
@@ -16,20 +23,14 @@ FactoryBot.define do
             'nl-BE' => Faker::Address.city,
             'fr-FR' => Faker::Address.city
           },
+          'lifecycle_stage' => lifecycle,
           'timezone' => 'Brussels',
           'currency' => 'EUR',
-          'locales' => %w[en nl-BE fr-FR],
+          'locales' => locales,
           'color_main' => '#335533',
           'color_secondary' => Faker::Color.hex_color,
           'color_text' => Faker::Color.hex_color,
-          'display_header_avatars' => true
-        },
-        'customizable_homepage_banner' => {
-          'allowed' => true,
-          'enabled' => true,
-          'layout' => 'full_width_banner_layout',
-          'cta_signed_out_type' => 'sign_up_button',
-          'cta_signed_in_type' => 'no_button'
+          'authentication_token_lifetime_in_days' => 30
         },
         'initiatives' => {
           'enabled' => true,
@@ -42,7 +43,6 @@ FactoryBot.define do
           'eligibility_criteria' =>
             MultilocService.new.i18n_to_multiloc('initiatives.default_eligibility_criteria',
               locales: %i[en nl-BE fr-FR])
-
         }
       }
     end
@@ -63,21 +63,14 @@ FactoryBot.define do
             'nl-NL' => 'Luik',
             'fr-FR' => 'Liege'
           },
-          lifecycle_stage: 'active',
+          'lifecycle_stage' => 'active',
           'locales' => %w[en fr-FR nl-NL],
           'timezone' => 'Brussels',
           'currency' => 'EUR',
           'color_main' => '#335533',
           'color_secondary' => Faker::Color.hex_color,
           'color_text' => Faker::Color.hex_color,
-          'display_header_avatars' => true
-        },
-        'customizable_homepage_banner' => {
-          'allowed' => true,
-          'enabled' => true,
-          'layout' => 'full_width_banner_layout',
-          'cta_signed_out_type' => 'sign_up_button',
-          'cta_signed_in_type' => 'no_button'
+          'authentication_token_lifetime_in_days' => 30
         },
         'initiatives' => {
           'enabled' => true,

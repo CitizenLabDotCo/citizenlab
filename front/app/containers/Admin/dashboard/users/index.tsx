@@ -3,10 +3,9 @@ import React, { PureComponent } from 'react';
 import moment, { Moment } from 'moment';
 
 // components
-import ChartFilters from '../components/ChartFilters';
-import { GraphsContainer, ControlBar } from 'components/admin/GraphWrappers';
-import TimeControl from '../components/TimeControl';
-import Outlet from 'components/Outlet';
+import ChartFilters from './ChartFilters';
+import { GraphsContainer } from 'components/admin/GraphWrappers';
+import Charts from './Charts';
 
 // tracking
 import { injectTracks } from 'utils/analytics';
@@ -27,7 +26,7 @@ interface Tracks {
 
 export class UsersDashboard extends PureComponent<Props & Tracks, State> {
   constructor(props: Props & Tracks) {
-    super(props as any);
+    super(props);
     this.state = {
       startAtMoment: undefined,
       endAtMoment: moment(),
@@ -63,22 +62,16 @@ export class UsersDashboard extends PureComponent<Props & Tracks, State> {
 
     return (
       <>
-        <ControlBar>
-          <TimeControl
-            startAtMoment={startAtMoment}
-            endAtMoment={endAtMoment}
-            onChange={this.handleChangeTimeRange}
-          />
-        </ControlBar>
-
         <ChartFilters
+          startAtMoment={startAtMoment}
+          endAtMoment={endAtMoment}
           currentGroupFilter={currentGroupFilter}
+          onChangeTimeRange={this.handleChangeTimeRange}
           onGroupFilter={this.handleOnGroupFilter}
         />
 
         <GraphsContainer>
-          <Outlet
-            id="app.containers.Admin.dashboard.users.graphs"
+          <Charts
             startAt={startAt}
             endAt={endAt}
             currentGroupFilter={currentGroupFilter}

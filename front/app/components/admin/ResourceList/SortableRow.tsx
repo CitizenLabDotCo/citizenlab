@@ -3,8 +3,7 @@ import styled from 'styled-components';
 import { findDOMNode } from 'react-dom';
 import { DragSource, DropTarget } from 'react-dnd-cjs';
 import { Row } from 'components/admin/ResourceList';
-import { Icon } from 'semantic-ui-react';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Icon } from '@citizenlab/cl2-component-library';
 
 const DragHandle = styled.div`
   cursor: move;
@@ -21,9 +20,12 @@ export interface Props {
   id: string;
   className?: string;
   isLastItem?: boolean;
+  iconMargin?: string;
+  iconFill?: string;
   noStyling?: boolean;
   moveRow: (fromIndex: number, toIndex: number) => void;
   dropRow: (itemId: string, toIndex: number) => void;
+  children?: React.ReactNode;
 }
 
 interface State {}
@@ -35,6 +37,8 @@ class SortableRow extends React.Component<Props, State> {
       connectDragSource,
       isDragging,
       isLastItem,
+      iconMargin,
+      iconFill,
       className,
       noStyling,
       children,
@@ -51,7 +55,7 @@ class SortableRow extends React.Component<Props, State> {
           {noStyling && (
             <Box display="flex" alignItems="center">
               <DragHandle className="sortablerow-draghandle">
-                <Icon name="sort" />
+                <Icon m={iconMargin} fill={iconFill} width="12px" name="sort" />
               </DragHandle>
               {children}
             </Box>
@@ -60,7 +64,7 @@ class SortableRow extends React.Component<Props, State> {
           {!noStyling && (
             <Row isLastItem={isLastItem}>
               <DragHandle className="sortablerow-draghandle">
-                <Icon name="sort" />
+                <Icon m={iconMargin} fill={iconFill} width="12px" name="sort" />
               </DragHandle>
               {children}
             </Row>

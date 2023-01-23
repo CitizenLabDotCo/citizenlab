@@ -30,7 +30,7 @@
                       margin-bottom: 10px"><%= t('email_campaigns.footer.powered_by') %></span>
       </mj-text>
       <mj-image align="left" width="155px" padding-top="0" href="https://www.citizenlab.co/"
-        src="https://res.cloudinary.com/citizenlabco/image/upload/v1593689890/logo-email-x2_wbnwkf.png" alt="CitizenLab logo" />
+        src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/citizenlab_email_logo.png" alt="CitizenLab logo" />
     <% end %>
   </mj-column>
 </mj-section>

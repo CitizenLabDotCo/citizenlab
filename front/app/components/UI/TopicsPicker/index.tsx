@@ -29,7 +29,7 @@ const TopicsContainer = styled.div`
 `;
 
 const TopicSwitch = styled.button`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   line-height: normal;
@@ -44,31 +44,32 @@ const TopicSwitch = styled.button`
   margin-bottom: 8px;
   cursor: pointer;
   user-select: none;
-  border: solid 1px ${colors.separationDark};
+  border: solid 1px ${colors.divider};
   border-radius: 5px;
   transition: all 80ms ease-out;
 
   &:not(.selected):not(:disabled) {
     &:hover {
-      color: ${({ theme }) => theme.colorSecondary};
-      border-color: ${({ theme }) => theme.colorSecondary};
+      color: ${({ theme }) => theme.colors.tenantSecondary};
+      border-color: ${({ theme }) => theme.colors.tenantSecondary};
     }
   }
 
   &.selected {
     color: #fff;
-    background: ${({ theme }) => theme.colorSecondary};
-    border-color: ${({ theme }) => theme.colorSecondary};
+    background: ${({ theme }) => theme.colors.tenantSecondary};
+    border-color: ${({ theme }) => theme.colors.tenantSecondary};
 
     &:hover {
-      background: ${({ theme }) => darken(0.15, theme.colorSecondary)};
-      border-color: ${({ theme }) => darken(0.15, theme.colorSecondary)};
+      background: ${({ theme }) => darken(0.15, theme.colors.tenantSecondary)};
+      border-color: ${({ theme }) =>
+        darken(0.15, theme.colors.tenantSecondary)};
     }
   }
 
   &:disabled {
-    color: ${({ theme }) => lighten(0.4, theme.colors.label)};
-    border-color: ${({ theme }) => lighten(0.45, theme.colors.label)};
+    color: ${({ theme }) => lighten(0.4, theme.colors.textSecondary)};
+    border-color: ${({ theme }) => lighten(0.45, theme.colors.textSecondary)};
     cursor: not-allowed;
   }
 `;

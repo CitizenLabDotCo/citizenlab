@@ -95,7 +95,7 @@ class CommentBody extends PureComponent<Props, State> {
   subscriptions: Subscription[] = [];
   textAreaRef: HTMLTextAreaElement;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       commentContent: '',
@@ -264,7 +264,10 @@ class CommentBody extends PureComponent<Props, State> {
       if (!editing) {
         content = (
           <CommentWrapper className={`e2e-comment-body ${commentType}`}>
-            <QuillEditedContent fontWeight={400} textColor={theme.colorText}>
+            <QuillEditedContent
+              fontWeight={400}
+              textColor={theme.colors.tenantText}
+            >
               <div aria-live="polite">
                 <Outlet
                   id="app.components.PostShowComponents.CommentBody.translation"
@@ -290,7 +293,10 @@ class CommentBody extends PureComponent<Props, State> {
       } else {
         content = (
           <StyledForm onSubmit={this.onSubmit}>
-            <QuillEditedContent fontWeight={400} textColor={theme.colorText}>
+            <QuillEditedContent
+              fontWeight={400}
+              textColor={theme.colors.tenantText}
+            >
               <MentionsTextArea
                 name="body"
                 value={editableCommentContent}

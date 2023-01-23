@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // intl
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 import { injectIntl } from 'utils/cl-intl';
 
@@ -30,7 +30,7 @@ const Container = styled.div`
   width: 100%;
   max-width: 400px;
   margin: 40px auto;
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
 `;
 
 const Title = styled.h1`
@@ -55,7 +55,7 @@ const ButtonContainer = styled.div`
 type RenameCategoryProps = {
   closeRenameModal: () => void;
   originalCategoryName: string;
-} & InjectedIntlProps &
+} & WrappedComponentProps &
   WithRouterProps;
 
 const RenameCategory = ({
@@ -113,7 +113,7 @@ const RenameCategory = ({
             processing={loading}
             disabled={!name}
             onClick={handleSubmit}
-            bgColor={colors.adminTextColor}
+            bgColor={colors.primary}
           >
             {formatMessage(messages.renameCategoryModalSave)}
           </Button>

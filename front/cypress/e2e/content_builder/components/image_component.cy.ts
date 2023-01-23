@@ -47,7 +47,11 @@ describe('Content builder Image component', () => {
 
     cy.get('#e2e-image').parent().click();
     cy.get('input[type="file"]').attachFile('icon.png');
-    cy.get('#imageAltTextInput').click().type('Image alt text.');
+    cy.get('#imageAltTextInput')
+      .click()
+      .focus()
+      .clear()
+      .type('Image alt text.');
 
     cy.get('[alt="Image alt text."]').should('exist');
     cy.get('#e2e-content-builder-topbar-save').click();

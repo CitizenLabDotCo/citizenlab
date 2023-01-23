@@ -33,7 +33,7 @@ export default ({
       />
     </SubSectionTitle>
     <StyledFileUploader
-      id="test-to-fix"
+      id="e2e-project-file-uploader"
       onFileAdd={handleProjectFileOnAdd}
       onFileRemove={handleProjectFileOnRemove}
       files={projectFiles}

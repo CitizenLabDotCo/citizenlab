@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
-import { fontSizes, isRtl } from 'utils/styleUtils';
+import { fontSizes, isRtl, colors } from 'utils/styleUtils';
 
 const GlobalStyle = createGlobalStyle`
   html {
@@ -16,11 +16,6 @@ const GlobalStyle = createGlobalStyle`
     &:not(.focus-visible) {
       outline: none;
     }
-  }
-
-  *::placeholder {
-    opacity: 1;
-    color: #767676;
   }
 
   html,
@@ -48,7 +43,7 @@ const GlobalStyle = createGlobalStyle`
     }
 
   html, body, h1, h2, h3, h4, h5, button, input, optgroup, select, textarea, .ql-container, .ql-toolbar.ql-snow {
-    font-family: ${(props: any) =>
+    font-family: ${(props) =>
       props.theme
         .fontFamily}, 'Public Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
   }
@@ -60,6 +55,12 @@ const GlobalStyle = createGlobalStyle`
   p,
   label {
     line-height: 1.5em;
+  }
+
+  ::placeholder,
+  :-ms-input-placeholder,
+  ::-webkit-input-placeholder {
+    color: ${colors.placeholder};
   }
 `;
 

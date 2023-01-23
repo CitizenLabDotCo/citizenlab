@@ -15,10 +15,8 @@
 #
 class Topic < ApplicationRecord
   DEFAULT_CODES = %w[nature waste sustainability mobility technology economy housing public_space safety education culture health inclusion community services other].freeze
-
-  def self.codes
-    DEFAULT_CODES
-  end
+  CUSTOM_CODE = 'custom'
+  CODES = DEFAULT_CODES + [CUSTOM_CODE]
 
   acts_as_list column: :ordering, top_of_list: 0, add_new_at: :top
 
@@ -30,16 +28,28 @@ class Topic < ApplicationRecord
   has_many :initiatives_topics, dependent: :destroy
   has_many :initiatives, through: :initiatives_topics
 
+  has_many :static_pages_topics, dependent: :restrict_with_error
+  has_many :static_pages, through: :static_pages_topics
+
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false }
-  validates :code, inclusion: { in: ->(_record) { codes } }
+  validates :code, inclusion: { in: CODES }
 
+  before_validation :set_code
   before_validation :strip_title
 
   scope :order_new, ->(direction = :desc) { order(created_at: direction, id: direction) }
   scope :defaults, -> { where(code: DEFAULT_CODES) }
 
+  def custom?
+    code == CUSTOM_CODE
+  end
+
   private
+
+  def set_code
+    self.code ||= CUSTOM_CODE
+  end
 
   def strip_title
     title_multiloc.each do |key, value|
@@ -47,5 +57,3 @@ class Topic < ApplicationRecord
     end
   end
 end
-
-Topic.prepend_if_ee('CustomTopics::Patches::Topic')

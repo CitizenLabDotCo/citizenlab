@@ -27,6 +27,7 @@ const AttachmentsControl = ({
   required,
   id,
   schema,
+  visible,
 }: ControlProps) => {
   const { inputId } = useContext(FormContext);
   const remoteFiles = useResourceFiles({
@@ -36,10 +37,11 @@ const AttachmentsControl = ({
   const [didBlur, setDidBlur] = useState(false);
   const [files, setFiles] = useState<UploadFile[]>([]);
 
-  const handleFileOnAdd = (fileToAdd: UploadFile) => {
+  const handleFileOnAdd = async (fileToAdd: UploadFile) => {
     const oldData = data ?? [];
     if (inputId) {
       addIdeaFile(inputId, fileToAdd.base64, fileToAdd.name);
+      handleChange(path, [...oldData, fileToAdd]);
     } else {
       handleChange(path, [
         ...oldData,
@@ -58,6 +60,12 @@ const AttachmentsControl = ({
   const handleFileOnRemove = (fileToRemove: UploadFile) => {
     if (inputId && fileToRemove.remote) {
       deleteIdeaFile(inputId, fileToRemove.id as string);
+      handleChange(
+        path,
+        data?.length === 1
+          ? undefined
+          : data.filter((file) => file.id !== fileToRemove.id)
+      );
     } else {
       handleChange(
         path,
@@ -92,6 +100,10 @@ const AttachmentsControl = ({
       })();
     }
   }, [remoteFiles, inputId]);
+
+  if (!visible) {
+    return null;
+  }
 
   return (
     <Box id="e2e-idea-file-upload">

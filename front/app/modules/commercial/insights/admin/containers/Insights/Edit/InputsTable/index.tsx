@@ -16,7 +16,15 @@ import useScanInsightsCategory from 'modules/commercial/insights/hooks/useScanIn
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
-import { Table, Icon, Box } from '@citizenlab/cl2-component-library';
+import {
+  Table,
+  Thead,
+  Tbody,
+  Th,
+  Tr,
+  Icon,
+  Box,
+} from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import InputsTableRow from './InputsTableRow';
 import EmptyState from './EmptyState';
@@ -37,7 +45,7 @@ import { colors } from 'utils/styleUtils';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
 const Inputs = styled.div`
@@ -46,7 +54,7 @@ const Inputs = styled.div`
   overflow-x: auto;
   overflow-y: auto;
   padding: 40px;
-  border-left: 1px solid ${colors.separation};
+  border-left: 1px solid ${colors.divider};
 `;
 
 const StyledActions = styled(Actions)`
@@ -55,28 +63,6 @@ const StyledActions = styled(Actions)`
 
 const StyledDivider = styled(Divider)`
   margin-top: 6px;
-`;
-
-const StyledTable = styled(Table)`
-  thead {
-    tr {
-      th {
-        padding: 12px 4px;
-        font-weight: bold;
-      }
-    }
-  }
-`;
-
-const StyledSort = styled.div`
-  display: flex;
-  align-items: center !important;
-  cursor: pointer;
-  font-weight: bold;
-  svg {
-    width: 10px;
-    margin-left: 4px;
-  }
 `;
 
 const StyledPagination = styled(Pagination)`
@@ -92,14 +78,14 @@ const SearchContainer = styled.div`
 `;
 
 const RecentlyPostedInfoBox = styled.div`
-  color: ${colors.adminTextColor};
-  background-color: ${colors.clBlueLightest};
+  color: ${colors.primary};
+  background-color: ${colors.teal100};
   padding: 20px;
   border-radius: 3px;
   text-align: center;
   margin-bottom: 28px;
   svg {
-    fill: ${colors.clBlue};
+    fill: ${colors.teal};
     margin-right: 8px;
   }
 `;
@@ -108,7 +94,7 @@ const InputsTable = ({
   params: { viewId },
   location: { pathname, query },
   intl: { formatMessage },
-}: WithRouterProps & InjectedIntlProps) => {
+}: WithRouterProps & WrappedComponentProps) => {
   // State
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
   const [isSideModalOpen, setIsSideModalOpen] = useState(false);
@@ -402,8 +388,9 @@ const InputsTable = ({
           {inputs.length > 0 && nlpFeatureFlag && status === 'isIdle' && (
             <Box alignItems="center" mr="16px">
               <Button
+                className="intercom-insights-edit-scan-button"
                 buttonStyle="secondary"
-                textColor={colors.adminTextColor}
+                textColor={colors.primary}
                 onClick={triggerScan}
                 data-testid="insightsScanCategory-button"
               >
@@ -412,9 +399,10 @@ const InputsTable = ({
             </Box>
           )}
           <Button
+            className="intercom-insights-edit-done-button"
             buttonStyle="admin-dark"
-            bgColor={colors.clBlue}
-            linkTo={`/admin/insights/${viewId}`}
+            bgColor={colors.teal}
+            linkTo={`/admin/reporting/insights/${viewId}`}
           >
             {formatMessage(messages.inputsDone)}
           </Button>
@@ -422,7 +410,7 @@ const InputsTable = ({
       </SearchContainer>
       {inputsCategoryFilter === 'recentlyPosted' && inputs.length !== 0 && (
         <RecentlyPostedInfoBox data-testid="insightsRecentlyAddedInfobox">
-          <Icon name="showMore" />
+          <Icon name="refresh" />
           {formatMessage(messages.inputsTableRecentlyPostedInfoBox)}
         </RecentlyPostedInfoBox>
       )}
@@ -455,18 +443,13 @@ const InputsTable = ({
         <EmptyState />
       ) : (
         <>
-          <StyledTable>
-            <colgroup>
-              <col span={1} style={{ width: '2.5%' }} />
-              <col span={1} style={{ width: '30%' }} />
-              {query.category ? (
-                <col span={1} style={{ width: '2.5%' }} />
-              ) : null}
-              <col span={1} style={{ width: '65%' }} />
-            </colgroup>
-            <thead>
-              <tr>
-                <th>
+          <Table
+            borderBottom={`1px solid ${colors.grey200}`}
+            innerBorders={{ bodyRows: true }}
+          >
+            <Thead>
+              <Tr>
+                <Th width="2.5%" px="4px">
                   <CheckboxWithPartialCheck
                     onChange={handleCheckboxChange}
                     checked={
@@ -478,34 +461,30 @@ const InputsTable = ({
                     }
                     data-testid="headerCheckBox"
                   />
-                </th>
-                <th>{formatMessage(messages.inputsTableInputs)}</th>
-                <th>
-                  {query.category ? (
-                    <StyledSort
-                      onClick={onSort}
-                      as="button"
-                      data-testid="insightsSortButton"
-                    >
-                      {formatMessage(messages.inputsTableCategories)}
-                      <Icon
-                        name={
-                          query.sort === '-approval'
-                            ? 'chevron-up'
-                            : 'chevron-down'
-                        }
-                      />
-                    </StyledSort>
-                  ) : (
-                    formatMessage(messages.inputsTableCategories)
-                  )}
-                </th>
+                </Th>
+                <Th width="30%">{formatMessage(messages.inputsTableInputs)}</Th>
                 {query.category ? (
-                  <th>{formatMessage(messages.inputsTableAlsoIn)}</th>
+                  <Th
+                    clickable
+                    sortDirection={
+                      query.sort === '-approval' ? 'ascending' : 'descending'
+                    }
+                    onClick={onSort}
+                    data-testid="insightsSortButton"
+                  >
+                    {formatMessage(messages.inputsTableCategories)}
+                  </Th>
+                ) : (
+                  <Th>{formatMessage(messages.inputsTableCategories)}</Th>
+                )}
+                {query.category ? (
+                  <Th width="65%">
+                    {formatMessage(messages.inputsTableAlsoIn)}
+                  </Th>
                 ) : null}
-              </tr>
-            </thead>
-            <tbody>
+              </Tr>
+            </Thead>
+            <Tbody>
               {inputs.map((input) => (
                 <InputsTableRow
                   input={input}
@@ -515,8 +494,8 @@ const InputsTable = ({
                   onPreview={previewInput(input)}
                 />
               ))}
-            </tbody>
-          </StyledTable>
+            </Tbody>
+          </Table>
           <StyledPagination
             currentPage={pageNumber || 1}
             totalPages={lastPage || 1}

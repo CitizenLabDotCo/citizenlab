@@ -82,7 +82,7 @@ pl:
       "password_reset": Zmiana hasła - wszyscy użytkownicy
       "project_moderation_rights_received": Otrzymanie prawa do zarządzania projektem - menadżerowie projektu
       "project_folder_moderation_rights_received": Przydzielono uprawnienia menedżera folderów
-      "project_phase_started": Nowy etap projektu - wszyscy użytkownicy
+      "project_phase_started": Nowy etap projektu - uczestnicy projektu
       "project_phase_upcoming": Nowy etap projektu - administratorzy i menadżerowie projektu
       "status_change_of_commented_idea": Zmiana statusu pomysłu, który skomentowałeś - wszyscy użytkownicy
       "status_change_of_commented_initiative": Zmiana statusu propozycji, którą skomentowałeś - wszyscy użytkownicy
@@ -419,6 +419,7 @@ pl:
       cta_view_phase: 'Odkryj nowy etap'
       event_description: 'Ten projekt wszedł w nowy etap na platformie %{organizationName}. Kliknij na poniższy link, aby dowiedzieć się więcej!'
       main_header: 'Rozpoczął się nowy etap projektu "%{projectName}"'
+      subtitle: 'O ''%{projectName}'''
       new_phase: 'Projekt ten wszedł w etap "%{phaseTitle}"'
       subject: '%{projectName} wszedł w nowy etap'
       preheader: 'Rozpoczął się nowy etap projektu %{projectName}'
@@ -426,6 +427,7 @@ pl:
       cta_view_phase: 'Sprawdź następny etap'
       event_description: 'Projekt "%{projectName}" wkrótce wejdzie w nowy etap. Upewnij się, że wszystko jest przygotowane: Czy opis jest odpowiedni? Czy wybrane pomysły zostały przeniesione do nowego etapu? Czy chcesz poinformować swoich obywateli o specyfice tego etapu poprzez specjalną kampanię e-mailową?'
       main_header: '%{firstName}, projekt wkrótce przejdzie do nowego etapu'
+      subtitle: 'O ''%{projectName}'''
       new_phase: 'Projekt wejdzie w etap "%{phaseTitle}"'
       subject: 'Skonfiguruj nowy etap %{projectName}'
       preheader: 'Wkrótce rozpocznie się nowy etap projektu dla %{projectName}'

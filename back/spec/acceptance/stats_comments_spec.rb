@@ -81,7 +81,7 @@ resource 'Stats - Comments' do
       end
     end
 
-    context 'as a moderator', skip: !CitizenLab.ee? do
+    context 'as a moderator' do
       before do
         token = Knock::AuthToken.new(payload: create(:project_moderator).to_token_payload).token
         header 'Authorization', "Bearer #{token}"
@@ -191,7 +191,7 @@ resource 'Stats - Comments' do
         end
       end
 
-      context 'as a moderator', skip: !CitizenLab.ee? do
+      context 'as a moderator' do
         before do
           token = Knock::AuthToken.new(payload: create(:project_moderator).to_token_payload).token
           header 'Authorization', "Bearer #{token}"
@@ -293,7 +293,7 @@ resource 'Stats - Comments' do
         end
       end
 
-      context 'as a moderator', skip: !CitizenLab.ee? do
+      context 'as a moderator' do
         before do
           token = Knock::AuthToken.new(payload: create(:project_moderator).to_token_payload).token
           header 'Authorization', "Bearer #{token}"

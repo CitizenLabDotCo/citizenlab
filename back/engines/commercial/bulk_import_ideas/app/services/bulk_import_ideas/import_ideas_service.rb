@@ -44,7 +44,7 @@ module BulkImportIdeas
           'Email' => 'moderator@citizenlab.co',
           'Project' => 'Project 1',
           'Phase' => 1,
-          'Image URL' => 'https://res.cloudinary.com/citizenlabco/image/upload/v1548847594/image_v8imrf.png',
+          'Image URL' => 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png',
           'Date (dd-mm-yyyy)' => '18-07-2022',
           'Topics' => 'Mobility; Health and welfare',
           'Latitude' => 50.5035,
@@ -155,6 +155,11 @@ module BulkImportIdeas
 
     def add_published_at(idea_row, idea_attributes)
       return if idea_row[:published_at].blank?
+
+      if idea_row[:published_at].acts_like? :date
+        idea_attributes[:published_at] = idea_row[:published_at]
+        return
+      end
 
       published_at = nil
       invalid_date_error = Error.new(

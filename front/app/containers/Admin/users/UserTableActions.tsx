@@ -50,12 +50,12 @@ const TableOptions = styled.div`
   padding-left: 5px;
   padding-right: 5px;
   margin-bottom: 10px;
-  border-bottom: solid 1px ${colors.adminTextColor};
+  border-bottom: solid 1px ${colors.primary};
   user-select: none;
 `;
 
 const UserCount = styled.span`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   white-space: nowrap;
@@ -67,13 +67,13 @@ const SelectAllCheckbox = styled(Checkbox)`
   position: relative;
   padding-left: 4px;
   padding-right: 4px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   cursor: pointer;
 
   &:hover,
   &:focus {
-    background: ${rgba(colors.adminTextColor, 0.1)};
-    color: ${colors.adminTextColor};
+    background: ${rgba(colors.primary, 0.1)};
+    color: ${colors.primary};
     outline: none;
   }
 `;
@@ -93,8 +93,7 @@ const ActionButtons = styled.div`
 `;
 
 const StyledIcon = styled(Icon)`
-  flex: 0 0 22px;
-  height: 22px;
+  flex: 0 0 24px;
   margin-right: 10px;
 `;
 
@@ -108,7 +107,7 @@ const ActionButtonWrapper = styled.div`
 const DropdownListItemText = styled.div`
   width: 80%;
   flex: 1 1 auto;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;
@@ -130,7 +129,7 @@ const DropdownListItem = styled.button`
   margin-bottom: 4px;
   padding: 10px;
   background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   outline: none;
   cursor: pointer;
   transition: all 80ms ease-out;
@@ -142,7 +141,7 @@ const DropdownListItem = styled.button`
   &:hover,
   &:focus,
   &.selected {
-    background: ${colors.clDropdownHoverBackground};
+    background: ${colors.grey300};
 
     ${DropdownListItemText} {
       color: #000;
@@ -160,7 +159,7 @@ const DropdownFooterButton = styled(Button)`
 // Typings
 import { CLErrorsJSON } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 interface InputProps {
   groupType?: MembershipType;
@@ -184,8 +183,11 @@ interface State {
   processing: boolean;
 }
 
-class UserTableActions extends PureComponent<Props & InjectedIntlProps, State> {
-  constructor(props) {
+class UserTableActions extends PureComponent<
+  Props & WrappedComponentProps,
+  State
+> {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       dropdownOpened: false,
@@ -396,7 +398,7 @@ class UserTableActions extends PureComponent<Props & InjectedIntlProps, State> {
                 onClick={this.toggleDropdown}
                 buttonStyle="admin-dark-text"
               >
-                <StyledIcon name="moveFolder" />
+                <StyledIcon name="folder-move" />
                 <FormattedMessage {...messages.moveUsersTableAction} />
               </Button>
 
@@ -451,7 +453,7 @@ class UserTableActions extends PureComponent<Props & InjectedIntlProps, State> {
               className="hasLeftMargin"
               buttonStyle="admin-dark-text"
             >
-              <StyledIcon name="trash" />
+              <StyledIcon name="delete" />
               <FormattedMessage {...messages.membershipDelete} />
             </Button>
           )}
@@ -461,7 +463,7 @@ class UserTableActions extends PureComponent<Props & InjectedIntlProps, State> {
             className={`export e2e-${exportType} hasLeftMargin`}
             buttonStyle="admin-dark-text"
           >
-            <StyledIcon name="userExport" />
+            <StyledIcon name="user-data" />
             <FormattedMessage {...messages[exportType]} />
           </Button>
         </ActionButtons>

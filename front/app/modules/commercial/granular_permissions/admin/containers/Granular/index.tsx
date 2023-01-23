@@ -23,7 +23,7 @@ const Granular = ({ project }: Props) => {
   const projectId = project.id;
 
   return (
-    <StyledSection>
+    <StyledSection id="e2e-granular-permissions">
       <SubSectionTitle>
         <FormattedMessage {...messages.granularPermissionsTitle} />
       </SubSectionTitle>

@@ -35,7 +35,8 @@ class UserPolicy < ApplicationPolicy
   end
 
   def create?
-    true
+    app_config = AppConfiguration.instance
+    (app_config.feature_activated?('password_login') && app_config.settings('password_login', 'enable_signup')) || (user&.active? && user&.admin?)
   end
 
   def show?
@@ -92,7 +93,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def role_permitted_params
-    [roles: %i[type project_id]]
+    [roles: %i[type project_id project_folder_id]]
   end
 
   def permitted_attributes_for_complete_registration
@@ -116,5 +117,4 @@ class UserPolicy < ApplicationPolicy
   end
 end
 
-UserPolicy.prepend_if_ee('ProjectFolders::Patches::UserPolicy')
 UserPolicy.prepend_if_ee('Verification::Patches::UserPolicy')

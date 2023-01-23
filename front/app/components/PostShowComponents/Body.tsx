@@ -35,15 +35,15 @@ const Body = memo<Props>(
     color,
   }) => {
     const windowSize = useWindowSize();
-    const theme: any = useTheme();
+    const theme = useTheme();
     const smallerThanSmallTablet = windowSize
-      ? windowSize.windowWidth <= viewportWidths.smallTablet
+      ? windowSize.windowWidth <= viewportWidths.tablet
       : false;
 
     return (
       <Container id={`e2e-${postType}-description`} className={className}>
         <QuillEditedContent
-          textColor={color || theme.colorText}
+          textColor={color || theme.colors.tenantText}
           fontSize={smallerThanSmallTablet ? 'base' : 'l'}
           fontWeight={400}
         >

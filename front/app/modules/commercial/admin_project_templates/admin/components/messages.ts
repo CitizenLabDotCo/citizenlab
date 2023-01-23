@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.fromATemplate',
     defaultMessage: 'From a template',
   },
+  noFolder: {
+    id: 'app.containers.AdminPage.ProjectEdit.noFolder',
+    defaultMessage: 'No folder',
+  },
   departments: {
     id: 'app.containers.AdminPage.ProjectEdit.departments',
     defaultMessage: 'Departments',
@@ -48,6 +52,10 @@ export default defineMessages({
   projectStartDate: {
     id: 'app.components.ProjectTemplatePreview.projectStartDate',
     defaultMessage: 'The start date of your project',
+  },
+  projectFolder: {
+    id: 'app.components.ProjectTemplatePreview.projectFolder',
+    defaultMessage: 'Project folder',
   },
   projectTitleError: {
     id: 'app.components.ProjectTemplatePreview.projectTitleError',

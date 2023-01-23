@@ -39,7 +39,7 @@ import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import { API_PATH, appLocalePairs } from 'containers/App/constants';
@@ -61,7 +61,7 @@ import { Locale, IOption } from 'typings';
 const InvitationOptions = styled.div`
   width: 497px;
   padding: 20px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   border: solid 1px #ddd;
   background: #fff;
 `;
@@ -86,7 +86,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const Processing = styled.div`
-  color: ${(props) => props.theme.colors.label};
+  color: ${(props) => props.theme.colors.textSecondary};
   margin-left: 15px;
 `;
 
@@ -102,11 +102,11 @@ const SectionDescription = styled.div`
 
 const SectionParagraph = styled.p`
   a {
-    color: ${colors.clBlue};
+    color: ${colors.teal};
     text-decoration: underline;
 
     &:hover {
-      color: ${darken(0.2, colors.clBlue)};
+      color: ${darken(0.2, colors.teal)};
       text-decoration: underline;
     }
   }
@@ -155,12 +155,12 @@ type State = {
 };
 
 class Invitations extends React.PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   fileInputElement: HTMLInputElement | null;
 
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       selectedEmails: null,

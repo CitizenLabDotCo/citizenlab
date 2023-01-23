@@ -31,7 +31,7 @@ const IconCell = styled.div`
 `;
 
 const SelectorCell = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   flex: 1;
   padding: 10px 5px;
   display: flex;
@@ -93,6 +93,7 @@ class Rule extends PureComponent<Props, State> {
           <StyledRemoveButton
             onClick={onRemove}
             icon="minus-circle"
+            iconColor={colors.red500}
             buttonStyle="text"
             padding="0"
           />

@@ -14,10 +14,10 @@ import messages from '../messages';
 // components
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 const Container = styled.div`
-  background-color: ${colors.adminContentBackground};
+  background-color: ${colors.white};
   padding: 135px 100px;
   display: flex;
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
@@ -28,7 +28,7 @@ const Image = styled.img`
   width: 50%;
   margin-left: 35px;
   object-fit: contain;
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `};
 `;
@@ -40,7 +40,7 @@ interface Props {
 const EmptyState = ({
   openCreateModal,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   return (
     <Container data-testid="insightsListEmptyState">
       <div>
@@ -49,19 +49,20 @@ const EmptyState = ({
             {...messages.emptyStateTitle}
             values={{
               accentText: (
-                <span style={{ color: colors.clBlueLight }}>
+                <span style={{ color: colors.teal300 }}>
                   {formatMessage(messages.emptyStateAccentText)}
                 </span>
               ),
             }}
           />
         </Title>
-        <Text pt="10px" fontSize="base" color="label">
+        <Text pt="10px" fontSize="base" color="textSecondary">
           {formatMessage(messages.description)}
         </Text>
         <Box display="flex" flexWrap="wrap" alignItems="flex-start" mt="40px">
           <Button
-            bgColor={colors.adminTextColor}
+            className="intercom-admin-create-insights-button"
+            bgColor={colors.primary}
             onClick={openCreateModal}
             mr="12px"
             mb="12px"

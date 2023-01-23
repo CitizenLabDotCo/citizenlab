@@ -28,15 +28,13 @@ RSpec.shared_examples 'publication filtering model' do |model_name|
       expect(response_data.pluck(:id)).to match_array [models[1].id, models[2].id]
     end
 
-    if CitizenLab.ee?
-      example "List only selected #{model_name_plural} does not include #{model_name_plural} only used by projects in draft folders" do
-        create(:project_folder, projects: projects[0])
-        create(:project_folder, admin_publication_attributes: { publication_status: 'draft' }, projects: projects[1])
+    example "List only selected #{model_name_plural} does not include #{model_name_plural} only used by projects in draft folders" do
+      create(:project_folder, projects: projects[0])
+      create(:project_folder, admin_publication_attributes: { publication_status: 'draft' }, projects: projects[1])
 
-        do_request(for_homepage_filter: true)
-        expect(status).to eq(200)
-        expect(response_data.pluck(:id)).to match_array [models[0].id, models[2].id]
-      end
+      do_request(for_homepage_filter: true)
+      expect(status).to eq(200)
+      expect(response_data.pluck(:id)).to match_array [models[0].id, models[2].id]
     end
 
     example "List only selected #{model_name_plural} does not include #{model_name_plural} only used by projects not visible to user" do

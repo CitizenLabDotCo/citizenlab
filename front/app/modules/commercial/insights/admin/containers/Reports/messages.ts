@@ -45,6 +45,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Reports.information',
     defaultMessage: 'information',
   },
+  native_survey: {
+    id: 'app.containers.Admin.Insights.Reports.native_survey',
+    defaultMessage: 'native survey',
+  },
   survey: {
     id: 'app.containers.Admin.Insights.Reports.survey',
     defaultMessage: 'survey',

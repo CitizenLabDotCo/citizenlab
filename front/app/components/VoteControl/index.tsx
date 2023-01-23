@@ -9,7 +9,6 @@ import {
 } from 'rxjs';
 import { filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
 import ScreenReaderContent from './ScreenReaderContent';
@@ -33,8 +32,8 @@ import {
 } from 'services/phases';
 
 // utils
-import { openSignUpInModal } from 'components/SignUpIn/events';
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+import { openSignUpInModal } from 'events/openSignUpInModal';
+import { openVerificationModal } from 'events/verificationModal';
 
 // style
 import styled from 'styled-components';
@@ -86,7 +85,7 @@ interface State {
   loaded: boolean;
 }
 
-class VoteControl extends PureComponent<Props & WithRouterProps, State> {
+class VoteControl extends PureComponent<Props, State> {
   voting$: BehaviorSubject<'up' | 'down' | null>;
   id$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
@@ -97,7 +96,7 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
     ariaHidden: false,
   };
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       showVoteControl: false,
@@ -543,7 +542,7 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
               ariaHidden={ariaHidden}
               styleType={styleType}
               size={size}
-              iconName="upvote"
+              iconName="vote-up"
               votesCount={upvotesCount}
               ideaId={idea.data.id}
             />
@@ -558,7 +557,7 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
                 ariaHidden={ariaHidden}
                 styleType={styleType}
                 size={size}
-                iconName="downvote"
+                iconName="vote-down"
                 votesCount={downvotesCount}
                 ideaId={idea.data.id}
               />
@@ -572,4 +571,4 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
   }
 }
 
-export default withRouter(VoteControl);
+export default VoteControl;

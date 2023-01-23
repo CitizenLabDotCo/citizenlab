@@ -11,7 +11,7 @@ import ReadMoreWrapper from 'containers/ProjectsShowPage/shared/header/ReadMoreW
 // hooks
 import useProject from 'hooks/useProject';
 import useProjectFiles from 'hooks/useProjectFiles';
-import { useWindowSize, Title } from '@citizenlab/cl2-component-library';
+import { useWindowSize, Title, Box } from '@citizenlab/cl2-component-library';
 
 // i18n
 import T from 'components/T';
@@ -29,7 +29,7 @@ const Container = styled.div`
     flex-direction: row-reverse;
   `}
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
@@ -39,7 +39,7 @@ const Container = styled.div`
 const Left = styled.div`
   flex: 1;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     margin-bottom: 20px;
   `}
 `;
@@ -54,7 +54,7 @@ const Right = styled.div`
     margin-left: auto;
   `}
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     flex: 1 1 auto;
     width: 100%;
     margin-left: 0px;
@@ -75,14 +75,14 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
   const projectFiles = useProjectFiles(projectId);
   const { windowWidth } = useWindowSize();
 
-  const smallerThanLargeTablet = windowWidth <= viewportWidths.largeTablet;
+  const smallerThanLargeTablet = windowWidth <= viewportWidths.tablet;
 
   if (!isNilOrError(project)) {
     return (
       <Container className={`${className || ''} e2e-project-info`}>
         <Fragment name={`projects/${project.id}/info`}>
           <Left>
-            <Title variant="h1" color="colorText">
+            <Title variant="h1" color="tenantText">
               <T value={project.attributes.title_multiloc} />
             </Title>
 
@@ -99,7 +99,9 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
             {!isNilOrError(projectFiles) &&
               projectFiles &&
               projectFiles.data.length > 0 && (
-                <FileAttachments files={projectFiles.data} />
+                <Box mb="25px">
+                  <FileAttachments files={projectFiles.data} />
+                </Box>
               )}
           </Left>
           <Right>

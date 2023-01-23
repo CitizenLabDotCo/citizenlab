@@ -43,7 +43,7 @@ resource 'Ideas' do
     let(:extra_field_name) { 'custom_field_name1' }
 
     context 'when the extra field is required' do
-      let(:form) { create(:custom_form, project: project) }
+      let(:form) { create(:custom_form, participation_context: project) }
       let!(:text_field) { create(:custom_field_extra_custom_form, key: extra_field_name, required: true, resource: form) }
 
       context 'when the field value is given' do
@@ -96,7 +96,7 @@ resource 'Ideas' do
 
     context 'when the extra field is optional' do
       before do
-        create(:custom_field_extra_custom_form, key: extra_field_name, required: false, resource: create(:custom_form, project: project))
+        create(:custom_field_extra_custom_form, key: extra_field_name, required: false, resource: create(:custom_form, participation_context: project))
       end
 
       context 'when the field value is given' do
@@ -129,7 +129,7 @@ resource 'Ideas' do
 
   describe 'Update' do
     let(:project) { create(:continuous_project) }
-    let(:form) { create(:custom_form, project: project) }
+    let(:form) { create(:custom_form, participation_context: project) }
     let(:idea) { create(:idea, author: user, project: project, custom_field_values: { extra_field_name1 => 'test value' }) }
     let(:id) { idea.id }
     let(:extra_field_name1) { 'custom_field_name1' }
@@ -242,7 +242,7 @@ resource 'Ideas' do
       example 'Moving an idea to a project with required custom custom field', document: false do
         user.add_role 'admin'
         user.save!
-        form = create :custom_form, project: project
+        form = create :custom_form, participation_context: project
         create :custom_field, :for_custom_form, resource: form, required: true, input_type: 'number'
         do_request
 

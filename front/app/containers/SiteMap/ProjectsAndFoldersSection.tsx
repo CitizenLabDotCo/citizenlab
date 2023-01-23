@@ -11,7 +11,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 import useAdminPublications from 'hooks/useAdminPublications';
-import Outlet from 'components/Outlet';
+import ProjectFolderSiteMapItem from './ProjectFolderSiteMapItem';
 
 const AllProjectsLink = styled(Link)`
   display: block;
@@ -46,11 +46,14 @@ const ProjectsAndFoldersSection = ({ projectsSectionRef }: Props) => {
                 hightestTitle="h3"
               />
             )}
-            <Outlet
-              id="app.containers.SiteMap.ProjectsSection.listitem"
-              adminPublication={adminPublication}
-              hightestTitle="h3"
-            />
+            {adminPublication.publicationType === 'folder' && (
+              <ProjectFolderSiteMapItem
+                projectFolderId={
+                  adminPublication.relationships.publication.data.id
+                }
+                hightestTitle="h3"
+              />
+            )}
           </React.Fragment>
         ))}
       </>

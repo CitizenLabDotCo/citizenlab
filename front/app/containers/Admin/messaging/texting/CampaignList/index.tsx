@@ -64,7 +64,7 @@ const TextingCampaignsList = () => {
     return (
       <NoCampaignsWrapper>
         <IconWrapper>
-          <Icon name="messageBig" />
+          <Icon name="message" />
         </IconWrapper>
         <NoCampaignsHeader>
           <FormattedMessage {...messages.noTextingCampaignsHeader} />

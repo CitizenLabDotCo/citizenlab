@@ -82,3 +82,40 @@ describe('Project and folder cards on front page', () => {
     cy.apiRemoveProject(archivedProjectId);
   });
 });
+
+describe('Native survey project card', () => {
+  const projectTitle = randomString();
+  const projectDescription = randomString();
+  const projectDescriptionPreview = randomString(30);
+  let projectId: string;
+  let projectSlug: string;
+
+  before(() => {
+    cy.apiCreateProject({
+      type: 'continuous',
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: projectDescription,
+      publicationStatus: 'published',
+      participationMethod: 'native_survey',
+    }).then((project) => {
+      projectId = project.body.data.id;
+      projectSlug = project.body.data.attributes.slug;
+    });
+  });
+
+  beforeEach(() => {
+    cy.setAdminLoginCookie();
+    cy.visit(`/`);
+  });
+
+  it('Correct CTA button on card is shown', () => {
+    cy.contains('Take the survey').should('exist');
+    cy.contains('Take the survey').click({ force: true });
+    cy.url().should('include', `/projects/${projectSlug}`);
+  });
+
+  after(() => {
+    cy.apiRemoveProject(projectId);
+  });
+});

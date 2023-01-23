@@ -39,7 +39,7 @@ const MentionInCommentNotification = memo<Props>((props) => {
     <NotificationWrapper
       linkTo={mapPostTypeToLink(notification)}
       timing={notification.attributes.created_at}
-      icon="notification_mention"
+      icon="mention"
       isRead={!!notification.attributes.read_at}
     >
       <FormattedMessage

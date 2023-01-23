@@ -8,7 +8,7 @@ import DateRangePicker from 'components/admin/DateRangePicker';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // styling
@@ -17,7 +17,7 @@ import { colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   align-items: center;
 `;
 
@@ -31,10 +31,7 @@ const StyledButton = styled(Button)`
 `;
 
 const DropdownItemIcon = styled(Icon)`
-  width: 11px;
-  height: 6px;
-  fill: ${colors.label};
-  margin-top: 1px;
+  fill: ${colors.textSecondary};
   margin-left: 4px;
 `;
 
@@ -45,14 +42,14 @@ const DropdownListItem = styled.button`
   margin: 0px;
   margin-bottom: 4px;
   padding: 10px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   cursor: pointer;
   transition: all 80ms ease-out;
 
   &:hover,
   &:focus,
   &.selected {
-    background: ${colors.clDropdownHoverBackground};
+    background: ${colors.grey300};
   }
 `;
 
@@ -66,7 +63,7 @@ type State = {
   dropdownOpened: boolean;
 };
 
-class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
+class TimeControl extends PureComponent<Props & WrappedComponentProps, State> {
   private presets = [
     {
       id: 'allTime',
@@ -100,7 +97,7 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
     },
   ];
 
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       dropdownOpened: false,
@@ -153,7 +150,7 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
     const activePreset = this.findActivePreset();
 
     return (
-      <Container>
+      <Container className="intercom-admin-dashboard-time-control">
         <DropdownContainer>
           <StyledButton
             buttonStyle="text"
@@ -166,7 +163,7 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
             ) : (
               <FormattedMessage {...messages.customDateRange} />
             )}
-            <DropdownItemIcon name="dropdown" />
+            <DropdownItemIcon name="chevron-down" />
           </StyledButton>
           <Dropdown
             width="200px"
@@ -207,4 +204,4 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(TimeControl);
+export default injectIntl(TimeControl);

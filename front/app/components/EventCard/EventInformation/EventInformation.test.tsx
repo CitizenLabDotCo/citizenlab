@@ -85,6 +85,44 @@ describe('<EventInformation />', () => {
     ).not.toBeInTheDocument();
   });
 
+  it('renders project title as link if onClickTitleGoToProjectAndScrollToEvent={true}', () => {
+    render(
+      <EventInformation
+        {...defaultProps}
+        event={eventWithShortDescription}
+        onClickTitleGoToProjectAndScrollToEvent={true}
+        showProjectTitle={true}
+      />
+    );
+    expect(
+      screen.getByText(mockProjectData.attributes.title_multiloc.en)
+    ).toBeInTheDocument();
+    expect(
+      screen
+        .getByText(mockProjectData.attributes.title_multiloc.en)
+        .closest('a')
+    ).toHaveAttribute('href');
+  });
+
+  it('does not render project title as link if onClickTitleGoToProjectAndScrollToEvent={false}', () => {
+    render(
+      <EventInformation
+        {...defaultProps}
+        event={eventWithShortDescription}
+        onClickTitleGoToProjectAndScrollToEvent={false}
+        showProjectTitle={true}
+      />
+    );
+    expect(
+      screen.getByText(mockProjectData.attributes.title_multiloc.en)
+    ).toBeInTheDocument();
+    expect(
+      screen
+        .getByText(mockProjectData.attributes.title_multiloc.en)
+        .closest('a')
+    ).not.toBeInTheDocument();
+  });
+
   it('hides description if showDescription is not provided', () => {
     render(
       <EventInformation {...defaultProps} event={eventWithShortDescription} />

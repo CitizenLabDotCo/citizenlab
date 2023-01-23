@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.containers.IdeaButton.submitYourIdea',
     defaultMessage: 'Submit your idea',
   },
+  takeTheSurvey: {
+    id: 'app.containers.IdeaButton.takeTheSurvey',
+    defaultMessage: 'Take the survey',
+  },
   addAnOption: {
     id: 'app.containers.IdeaButton.addAnOption',
     defaultMessage: 'Add an option',
@@ -28,6 +32,11 @@ export default defineMessages({
   postingDisabled: {
     id: 'app.containers.IdeaButton.postingDisabled',
     defaultMessage: 'New submissions are not currently being accepted',
+  },
+  postingLimitedMaxReached: {
+    id: 'app.containers.IdeaButton.postingLimitedMaxReached',
+    defaultMessage:
+      'You have already completed this survey. Thanks for your response!',
   },
   postingNoPermission: {
     id: 'app.containers.IdeaButton.postingNoPermission',

@@ -1,4 +1,4 @@
-import { isCLErrorJSON } from 'utils/errorUtils';
+import { isCLErrorJSON, handleHookFormSubmissionError } from 'utils/errorUtils';
 
 const CLErrors = [
   {
@@ -54,4 +54,26 @@ describe('isCLErrorJSON', () => {
       expect(isCLErrorJSON(val)).toBe(false);
     }
   );
+});
+
+describe('handleHookFormSubmissionError', () => {
+  it('calls handle error correctly with JSONCLErrors', () => {
+    const handleError = jest.fn();
+
+    handleHookFormSubmissionError(
+      { json: { errors: { slug: [{ error: 'taken', value: 'faq' }] } } },
+      handleError
+    );
+    expect(handleError).toHaveBeenCalledWith('slug', {
+      error: 'taken',
+      value: 'faq',
+    });
+  });
+  it('calls handle error correctly with Error', () => {
+    const handleError = jest.fn();
+    handleHookFormSubmissionError(new Error(), handleError);
+    expect(handleError).toHaveBeenCalledWith('submissionError', {
+      type: 'server',
+    });
+  });
 });
