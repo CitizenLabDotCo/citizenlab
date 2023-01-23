@@ -1,5 +1,8 @@
 import React from 'react';
 
+// hooks
+// import useMostVotedIdeas from 'containers/Admin/reporting/hooks/useMostVotedIdeas';
+
 // components
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import Settings from './Settings';
@@ -16,7 +19,10 @@ import { Props } from './typings';
 
 const MostVotedIdeasWidget = ({
   title,
-}: // TODO
+}: // projectId,
+// phaseId,
+// numberOfIdeas,
+// collapseLongText
 Props) => {
   const { formatMessage } = useIntl();
 
