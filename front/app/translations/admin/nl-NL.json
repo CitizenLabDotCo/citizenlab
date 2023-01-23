@@ -1709,7 +1709,7 @@
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.totalActiveUsers": "Totale actieve gebruikers",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedCampaigns": "Geautomatiseerde campagnes",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.automatedEmails": "Geautomatiseerde e-mails",
-  "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.bottomStatLabel": "Vanaf {quantity} campagnes",
+  "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.bottomStatLabel": "uit {quantity} campagnes",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.campaigns": "Campagnes",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.customCampaigns": "Gepersonaliseerde campagnes",
   "app.modules.commercial.analytics.admin.components.EmailDeliveriesCard.customEmails": "Gepersonaliseerde e-mails",
