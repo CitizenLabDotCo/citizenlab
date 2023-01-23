@@ -67,7 +67,7 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
         <FormattedMessage {...messages.chooseLayout} />
       </SubSectionTitle>
       <Box display="flex">
-        <LayoutOption>
+        <LayoutOption data-cy="e2e-full-width-banner-layout-option">
           <LayoutOptionTop>
             <Radio
               onChange={onChange}

@@ -18,12 +18,12 @@ interface Props {
 }
 
 const HeaderBgInput = ({ imageUrl, onImageChange }: Props) => {
-  const [headerBg, setHeaderBg] = useState<UploadFile[] | null>(null);
+  const [headerBg, setHeaderBg] = useState<UploadFile | null>(null);
   useEffect(() => {
     (async () => {
       if (imageUrl) {
         const headerFile = await convertUrlToUploadFile(imageUrl, null, null);
-        setHeaderBg(headerFile ? [headerFile] : null);
+        setHeaderBg(headerFile || null);
       }
     })();
   }, [imageUrl]);
@@ -32,7 +32,7 @@ const HeaderBgInput = ({ imageUrl, onImageChange }: Props) => {
     const newHeaderFile = newHeader[0];
 
     onImageChange(newHeaderFile.base64);
-    setHeaderBg([newHeaderFile]);
+    setHeaderBg(newHeaderFile);
   };
 
   const handleImageRemove = async () => {
@@ -40,7 +40,7 @@ const HeaderBgInput = ({ imageUrl, onImageChange }: Props) => {
     setHeaderBg(null);
   };
 
-  const imageShouldBeSaved = headerBg && !headerBg[0].remote;
+  const imageShouldBeSaved = headerBg ? !headerBg.remote : false;
 
   return (
     <SectionField>
@@ -60,7 +60,7 @@ const HeaderBgInput = ({ imageUrl, onImageChange }: Props) => {
         </Box>
       ) : (
         <ImagesDropzone
-          images={headerBg}
+          images={headerBg ? [headerBg] : null}
           acceptedFileTypes={{
             'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
           }}
