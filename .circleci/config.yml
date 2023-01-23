@@ -940,6 +940,7 @@ workflows:
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CAN
           compose_file: docker-compose-production.yml
           env_file: ".env-web"
+          stack_name: "cl2"
       - back-ee-deploy-to-swarm:
           requires:
             - back-ee-push-deployment-docker-image
