@@ -4,7 +4,7 @@
 
 - [CL-2534] Image dimensions i3: improved project/folder card images
 
-## Next release
+## 2023-01-23 (2)
 
 ### Fixed
 
