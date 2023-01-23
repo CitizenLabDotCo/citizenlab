@@ -66,6 +66,7 @@
   "app.components.ConfirmationModal.verifyAndContinue": "Verifiera och fortsätt",
   "app.components.ConfirmationModal.wrongEmail": "Fel e-postadress?",
   "app.components.ConsentManager.Banner.accept": "Acceptera",
+  "app.components.ConsentManager.Banner.ariaButtonClose2": "Reject policy and close banner",
   "app.components.ConsentManager.Banner.close": "Stäng",
   "app.components.ConsentManager.Banner.mainText": "Genom att surfa godkänner du vår {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Hantera",

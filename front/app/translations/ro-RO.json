@@ -66,6 +66,7 @@
   "app.components.ConfirmationModal.verifyAndContinue": "Verificați și continuați",
   "app.components.ConfirmationModal.wrongEmail": "E-mail greșit?",
   "app.components.ConsentManager.Banner.accept": "Acceptă",
+  "app.components.ConsentManager.Banner.ariaButtonClose2": "Reject policy and close banner",
   "app.components.ConsentManager.Banner.close": "Închide",
   "app.components.ConsentManager.Banner.mainText": "Prin navigare, sunteți de acord cu {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Administrează",

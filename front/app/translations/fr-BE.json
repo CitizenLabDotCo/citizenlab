@@ -66,6 +66,7 @@
   "app.components.ConfirmationModal.verifyAndContinue": "Vérifier et continuer",
   "app.components.ConfirmationModal.wrongEmail": "Mauvaise adresse e-mail ?",
   "app.components.ConsentManager.Banner.accept": "Accepter",
+  "app.components.ConsentManager.Banner.ariaButtonClose2": "Refuser la politique et fermer bannière",
   "app.components.ConsentManager.Banner.close": "Fermer",
   "app.components.ConsentManager.Banner.mainText": "En naviguant, vous acceptez notre {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Gérer",
