@@ -6,6 +6,15 @@ describe LocalProjectCopyService do
   let(:service) { described_class.new }
 
   describe 'project copy', slow_test: true do
+    # Some factories use en & nl-NL multilocs, other use en & nl-BE, but the apply_template method, invoked by the
+    # LocalProjectCopyService, will only apply multiloc k-v pairs with keys that match the target tenant locale(s).
+    # Thus, we specify all 3 locales to enable easier testing with factory generated multilocs.
+    before_all do
+      config = AppConfiguration.instance
+      config.settings['core']['locales'] = %w[en nl-BE nl-NL]
+      config.save!
+    end
+
     let!(:continuous_project) do
       create(
         :continuous_project,
@@ -130,12 +139,6 @@ describe LocalProjectCopyService do
     end
 
     it 'copies associated volunteering_causes' do
-      # Avoid mismatch between the test tenant locales and factory multiloc keys
-      # that would result in template application removing mismatched multiloc keys (and their values).
-      config = AppConfiguration.instance
-      config.settings['core']['locales'] = %w[en nl-BE]
-      config.save!
-
       create_list(:cause, 2, participation_context_id: continuous_project.id, participation_context_type: 'Project')
       copied_project = service.copy(continuous_project.reload)
 
@@ -177,12 +180,6 @@ describe LocalProjectCopyService do
     end
 
     it 'copies associated poll questions & options' do
-      # Avoid mismatch between the test tenant locales and factory multiloc keys
-      # that would result in template application removing mismatched multiloc keys (and their values).
-      config = AppConfiguration.instance
-      config.settings['core']['locales'] = %w[en nl-BE]
-      config.save!
-
       source_project = create(:continuous_poll_project)
       create_list(
         :poll_question,
