@@ -27,6 +27,10 @@ module ParticipationMethod
       []
     end
 
+    def constraints
+      {}
+    end
+
     def validate_built_in_fields?
       # Most participation methods do not have built-in fields,
       # so return false.

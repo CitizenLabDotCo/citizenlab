@@ -28,6 +28,25 @@
 #  index_custom_fields_on_resource_type_and_resource_id  (resource_type,resource_id)
 #
 
+# Validate that locked attributes are not changed
+class ConstraintValidator < ActiveModel::Validator
+  def validate(field)
+    return unless field.resource_type == 'CustomForm'
+
+    @participation_method = Factory.instance.participation_method_for field.resource.participation_context
+    constraints = @participation_method.constraints[field.code]
+    return unless constraints
+
+    constraints['locks']&.each do |attribute, value|
+      if field.changed_attributes.key?(attribute) &&
+         value == true &&
+         !(field.code == 'ideation_section_1' && attribute == 'title_multiloc')
+        field.errors.add :base, "Cannot change #{attribute}. It is locked."
+      end
+    end
+  end
+end
+
 # support table :
 # Jsonforms (under dynamic_idea_form and jsonforms_custom_fields) supports all INPUT_TYPES
 # The older react json form version works only with text number multiline_text select multiselect checkbox date
@@ -54,6 +73,8 @@ class CustomField < ApplicationRecord
   validates :enabled, inclusion: { in: [true, false] }
   validates :hidden, inclusion: { in: [true, false] }
   validates :code, inclusion: { in: CODES }, uniqueness: { scope: %i[resource_type resource_id] }, allow_nil: true
+
+  validates_with ConstraintValidator
 
   before_validation :set_default_enabled
   before_validation :generate_key, on: :create

@@ -146,6 +146,14 @@ RSpec.describe ParticipationMethod::Ideation do
     end
   end
 
+  describe 'constraints' do
+    it 'has some constraints to lock values from being changed' do
+      expect(participation_method.constraints.size).to be > 0
+      _key, value = participation_method.constraints.first
+      expect(value.key?('locks')).to be true
+    end
+  end
+
   its(:supports_publication?) { is_expected.to be true }
   its(:supports_commenting?) { is_expected.to be true }
   its(:supports_voting?) { is_expected.to be true }
