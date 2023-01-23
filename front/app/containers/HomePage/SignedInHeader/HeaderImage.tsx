@@ -32,24 +32,15 @@ const StyledImage = styled(Image)`
   height: auto;
 
   ${media.tablet`
-    &.objectFitCoverSupported {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    &:not(.objectFitCoverSupported) {
-      width: auto;
-      height: 100%;
-    }
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   `}
 `;
 
 const HeaderImage = () => {
   const homepageSettings = useHomepageSettings();
   const theme = useTheme();
-  const objectFitCoverSupported =
-    window['CSS'] && CSS.supports('object-fit: cover');
 
   if (!isNilOrError(homepageSettings)) {
     const tenantHeaderImage = homepageSettings.attributes.header_bg
@@ -60,23 +51,22 @@ const HeaderImage = () => {
 
     return (
       <HeaderImageContainer>
-        <HeaderImageContainerInner data-cy="e2e-fixed-ratio-header-image-parent">
+        <HeaderImageContainerInner data-cy="e2e-signed-in-header-image-parent">
           {/*
-            With this fixed ratio layout, the image would be messed up.
+            With the fixed ratio layout, the image would be pixeled so we
+            don't show it for that layout.
             Ticket: https://citizenlab.atlassian.net/browse/CL-2215
           */}
           {tenantHeaderImage && !isFixedBannerLayout && (
             <StyledImage
-              data-cy="e2e-fixed-ratio-header-image"
+              data-cy="e2e-signed-in-header-image"
               alt="" // Image is decorative, so alt tag is empty
               src={tenantHeaderImage}
-              className={
-                objectFitCoverSupported ? 'objectFitCoverSupported' : ''
-              }
             />
           )}
           {/* Image overlay */}
           <Box
+            data-testid="signed-in-header-image-overlay"
             background={
               theme.signedInHeaderOverlayColor || theme.colors.tenantPrimary
             }

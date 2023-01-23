@@ -13,7 +13,7 @@ jest.mock('services/homepageSettings', () => ({
   updateHomepageSettings: jest.fn(),
 }));
 
-let homepageBannerLayout: THomepageBannerLayout = 'full_width_banner_layout';
+const homepageBannerLayout: THomepageBannerLayout = 'full_width_banner_layout';
 
 jest.mock('hooks/useHomepageSettings', () =>
   jest.fn(() => mockHomepageSettings(homepageBannerLayout))
