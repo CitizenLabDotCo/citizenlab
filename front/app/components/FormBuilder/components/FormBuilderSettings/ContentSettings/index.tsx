@@ -22,10 +22,7 @@ import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
-import {
-  builtInFieldKeys,
-  FormBuilderConfig,
-} from 'components/FormBuilder/utils';
+import { builtInFieldKeys } from 'components/FormBuilder/utils';
 
 type ContentSettingsProps = {
   field: IFlatCustomFieldWithIndex;
