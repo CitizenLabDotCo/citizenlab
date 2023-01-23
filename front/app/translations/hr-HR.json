@@ -66,7 +66,6 @@
   "app.components.ConfirmationModal.verifyAndContinue": "Potvrdite i nastavite",
   "app.components.ConfirmationModal.wrongEmail": "Pogrešna e-adresa?",
   "app.components.ConsentManager.Banner.accept": "Prihvati",
-  "app.components.ConsentManager.Banner.ariaButtonClose": "Prihvati pravila i zatvori natpis",
   "app.components.ConsentManager.Banner.close": "Zatvori",
   "app.components.ConsentManager.Banner.mainText": "Ova platforma koristi kolačiće u skladu s našim {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Upravljanje",
