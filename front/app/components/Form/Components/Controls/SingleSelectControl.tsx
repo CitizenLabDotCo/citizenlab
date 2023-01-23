@@ -12,7 +12,7 @@ import { FormLabel } from 'components/UI/FormComponents';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import styled from 'styled-components';
 import VerificationIcon from '../VerificationIcon';
-import { getOptions } from './controlUtils';
+import { getOptions, getSubtextElement } from './controlUtils';
 
 const StyledSelect = styled(Select)`
   flex-grow: 1;
@@ -42,7 +42,7 @@ const SingleSelectControl = ({
         htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
-        subtextValue={uischema.options?.description}
+        subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
       />
       <Box display="flex" flexDirection="row">

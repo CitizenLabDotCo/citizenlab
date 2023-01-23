@@ -16,6 +16,7 @@ import {
 import { FormLabel } from 'components/UI/FormComponents';
 import VerificationIcon from '../VerificationIcon';
 import ErrorDisplay from '../ErrorDisplay';
+import { getSubtextElement } from './controlUtils';
 
 const LinearScaleControl = ({
   data,
@@ -41,7 +42,7 @@ const LinearScaleControl = ({
         htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
-        subtextValue={uischema.options?.description}
+        subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
       />
       <Box
