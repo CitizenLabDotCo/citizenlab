@@ -18,8 +18,8 @@ const Header = ({ title, projectId, phaseId }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Box>
-      <Title variant="h3" color="primary" m="16px" mb="8px">
+    <Box m="16px">
+      <Title variant="h3" color="primary" mb="8px">
         {title || formatMessage(messages.mostVotedIdeas)}
       </Title>
       <ProjectInfo projectId={projectId} phaseId={phaseId} />
