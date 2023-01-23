@@ -3,7 +3,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isEmpty } from 'lodash-es';
 
-// module specific
 import useIdeaCustomFields from './hooks/useIdeaCustomFields';
 import {
   updateIdeaCustomField,
