@@ -33,7 +33,6 @@ type ContentSettingsProps = {
   onClose: () => void;
   isDeleteDisabled?: boolean;
   locales: Locale[];
-  builderConfig: FormBuilderConfig;
 };
 
 export const ContentSettings = ({
@@ -42,7 +41,6 @@ export const ContentSettings = ({
   onClose,
   isDeleteDisabled,
   onDelete,
-  builderConfig,
 }: ContentSettingsProps) => {
   const { watch, trigger, setValue } = useFormContext();
   const logic = watch(`customFields.${field.index}.logic`);
@@ -66,23 +64,6 @@ export const ContentSettings = ({
       <Box mt="16px">
         {!isFieldGrouping && (
           <>
-            {builderConfig.showEnableToggle && (
-              <SectionField>
-                <Toggle
-                  name={`customFields.${field.index}.enabled`}
-                  disabled={
-                    !isNilOrError(field.isEnabledEditable)
-                      ? !field.isEnabledEditable
-                      : false
-                  }
-                  label={
-                    <Text as="span" color="primary" variant="bodyM" my="0px">
-                      <FormattedMessage {...messages.enable} />
-                    </Text>
-                  }
-                />
-              </SectionField>
-            )}
             {!isNilOrError(field.isTitleEditable)
               ? field.isTitleEditable
               : true && (
@@ -131,6 +112,7 @@ export const ContentSettings = ({
         <Box
           display="flex"
           justifyContent="space-between"
+          gap="16px"
           borderTop={`1px solid ${colors.divider}`}
           pt="36px"
         >
@@ -139,24 +121,22 @@ export const ContentSettings = ({
             buttonStyle="secondary"
             onClick={onClose}
             minWidth="160px"
-            width={isDeleteEnabled ? 'auto' : '100%'}
+            width="100%"
           >
             <FormattedMessage {...messages.done} />
           </Button>
           {isDeleteEnabled && (
             <Button
+              px="28px"
               icon="delete"
               buttonStyle="primary-outlined"
               borderColor={colors.error}
               textColor={colors.error}
               iconColor={colors.error}
               onClick={handleDelete}
-              minWidth="160px"
               data-cy="e2e-delete-field"
               disabled={isDeleteDisabled}
-            >
-              <FormattedMessage {...messages.delete} />
-            </Button>
+            />
           )}
         </Box>
       </Box>

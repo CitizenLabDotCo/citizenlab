@@ -37,6 +37,7 @@ const IdeaFormBuilder = () => {
       isDeleteEnabled: false,
       maximum: 0,
       isTitleEditable: false,
+      isDeleteEnabled: false,
       relationships: {
         options: {
           data: [],
