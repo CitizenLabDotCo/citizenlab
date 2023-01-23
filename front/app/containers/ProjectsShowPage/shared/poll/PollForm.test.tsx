@@ -1,5 +1,5 @@
 // PollForm save method uses .flat() which is es6, importing corejs here lets jest use save.
-import 'core-js';
+
 import React from 'react';
 import { shallow } from 'enzyme';
 

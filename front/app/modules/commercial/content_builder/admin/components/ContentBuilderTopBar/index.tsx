@@ -4,23 +4,15 @@ import React, { useState } from 'react';
 import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
 import { useEditor, SerializedNodes } from '@craftjs/core';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // components
-import GoBackButton from 'components/UI/GoBackButton';
+import Container from 'components/admin/ContentBuilder/TopBar/Container';
+import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
+import LocaleSwitcher from 'components/admin/ContentBuilder/TopBar/LocaleSwitcher';
+import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
+import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import Button from 'components/UI/Button';
-
-// styling
-import { colors } from 'utils/styleUtils';
-import {
-  Box,
-  stylingConsts,
-  Spinner,
-  Text,
-  Title,
-  Toggle,
-  LocaleSwitcher,
-} from '@citizenlab/cl2-component-library';
+import { Box, Spinner, Text, Title } from '@citizenlab/cl2-component-library';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -31,7 +23,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // routing
 import clHistory from 'utils/cl-router/history';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { useParams } from 'react-router-dom';
 
 // services
 import {
@@ -53,10 +45,9 @@ type ContentBuilderTopBarProps = {
     locale: Locale;
     editorData: SerializedNodes;
   }) => void;
-} & WithRouterProps;
+};
 
 const ContentBuilderTopBar = ({
-  params: { projectId },
   previewEnabled,
   setPreviewEnabled,
   selectedLocale,
@@ -65,23 +56,13 @@ const ContentBuilderTopBar = ({
   localesWithError,
   hasPendingState,
 }: ContentBuilderTopBarProps) => {
+  const { projectId } = useParams() as { projectId: string };
   const [loading, setLoading] = useState(false);
   const { query } = useEditor();
   const localize = useLocalize();
   const project = useProject({ projectId });
-  const locales = useAppConfigurationLocales();
 
-  if (isNilOrError(locales)) {
-    return null;
-  }
   const disableSave = localesWithError.length > 0;
-
-  const localesValues = locales.reduce((acc, locale) => {
-    return {
-      ...acc,
-      [locale]: localesWithError.includes(locale) ? '' : 'NON-EMPTY-VALUE',
-    };
-  }, {});
 
   const goBack = () => {
     clHistory.push(`/admin/projects/${projectId}/description`);
@@ -112,34 +93,20 @@ const ContentBuilderTopBar = ({
     onSelectLocale({ locale, editorData });
   };
 
+  const handleTogglePreview = () => {
+    setPreviewEnabled((previewEnabled) => !previewEnabled);
+  };
+
   return (
-    <Box
-      position="fixed"
-      zIndex="3"
-      alignItems="center"
-      w="100%"
-      h={`${stylingConsts.menuHeight}px`}
-      display="flex"
-      background={`${colors.adminContentBackground}`}
-      borderBottom={`1px solid ${colors.mediumGrey}`}
-    >
-      <Box
-        p="15px"
-        w="210px"
-        h="100%"
-        borderRight={`1px solid ${colors.mediumGrey}`}
-        display="flex"
-        alignItems="center"
-      >
-        <GoBackButton onClick={goBack} />
-      </Box>
+    <Container>
+      <GoBackButton onClick={goBack} />
       <Box display="flex" p="15px" flexGrow={1} alignItems="center">
         <Box flexGrow={2}>
           {isNilOrError(project) ? (
             <Spinner />
           ) : (
             <>
-              <Text mb="0px" color="adminSecondaryTextColor">
+              <Text mb="0px" color="textSecondary">
                 {localize(project.attributes.title_multiloc)}
               </Text>
               <Title variant="h4" as="h1">
@@ -148,28 +115,15 @@ const ContentBuilderTopBar = ({
             </>
           )}
         </Box>
-        {selectedLocale && locales.length > 1 && (
-          <Box
-            borderLeft={`1px solid ${colors.separation}`}
-            borderRight={`1px solid ${colors.separation}`}
-            h="100%"
-            p="24px"
-          >
-            <LocaleSwitcher
-              data-testid="contentBuilderLocaleSwitcher"
-              locales={locales}
-              selectedLocale={selectedLocale}
-              onSelectedLocaleChange={handleSelectLocale}
-              values={{ localesValues }}
-            />
-          </Box>
-        )}
+        <LocaleSwitcher
+          selectedLocale={selectedLocale}
+          localesWithError={localesWithError}
+          onSelectLocale={handleSelectLocale}
+        />
         <Box ml="24px" />
-        <Toggle
-          id="e2e-preview-toggle"
-          label={<FormattedMessage {...messages.preview} />}
+        <PreviewToggle
           checked={previewEnabled}
-          onChange={() => setPreviewEnabled(!previewEnabled)}
+          onChange={handleTogglePreview}
         />
         <Button
           id="e2e-view-project-button"
@@ -182,19 +136,14 @@ const ContentBuilderTopBar = ({
         >
           <FormattedMessage {...messages.viewProject} />
         </Button>
-        <Button
-          disabled={disableSave || hasPendingState}
-          id="e2e-content-builder-topbar-save"
-          buttonStyle="primary"
+        <SaveButton
+          disabled={!!(disableSave || hasPendingState)}
           processing={loading}
           onClick={handleSave}
-          data-testid="contentBuilderTopBarSaveButton"
-        >
-          <FormattedMessage {...messages.contentBuilderSave} />
-        </Button>
+        />
       </Box>
-    </Box>
+    </Container>
   );
 };
 
-export default withRouter(ContentBuilderTopBar);
+export default ContentBuilderTopBar;

@@ -11,6 +11,7 @@ const apiEndpoint = `${API_PATH}/admin_publications`;
  */
 export interface IAdminPublicationTypeMap {
   project: 'project';
+  folder: 'folder';
 }
 
 export type AdminPublicationType =
@@ -62,6 +63,7 @@ interface IQueryParametersBase {
   areas?: string[];
   publication_statuses: PublicationStatus[];
   remove_not_allowed_parents: boolean;
+  folder?: string;
 }
 
 export interface IQueryParameters extends IQueryParametersBase {

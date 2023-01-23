@@ -8,7 +8,7 @@ git_source(:github) do |repo_name|
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.1.6.1'
+gem 'rails', '~> 6.1.7.1'
 # Use postgresql as the database for Active Record
 gem 'pg' # , '~> 0.18'
 # Use Puma as the app server
@@ -60,6 +60,7 @@ group :development, :test do
   gem 'simplecov'
   gem 'simplecov-rcov'
   gem 'test-prof', '~> 1.0'
+  gem 'vcr', '~> 6.1'
 end
 
 group :development do
@@ -91,6 +92,7 @@ gem 'active_model_serializers', '~> 0.10.12'
 # Installs v2.2 which is not available on rubygems.org
 gem 'knock', git: 'https://github.com/nsarno/knock', branch: 'master', ref: '9214cd027422df8dc31eb67c60032fbbf8fc100b'
 gem 'que', git: 'https://github.com/que-rb/que', branch: 'master', ref: '77c6b92952b821898c393239ce0e4047b17d7dae'
+gem 'sinatra', '~> 2.2.3' # Fixes CVE-2022-45442. Sinatra is a dependency of que-web, but que-web depends on sinatra >= 0.
 gem 'que-web'
 
 gem 'activerecord-import', '~> 1.0'
@@ -105,12 +107,12 @@ gem 'carrierwave', git: 'https://github.com/carrierwaveuploader/carrierwave.git'
 gem 'carrierwave-base64', '~> 2.10'
 gem 'fog-aws', '~> 3.12'
 
-gem 'api-pagination', '~> 4.8.2'
+gem 'api-pagination', '~> 5.0.0'
 gem 'kaminari', '~> 1.2'
 gem 'rails-i18n', '~> 6.0.0'
 gem 'awesome_nested_set', '~> 3.5.0'
 gem 'axlsx', '3.0.0.pre'
-gem 'counter_culture', '~> 2.8'
+gem 'counter_culture', '~> 3.2'
 gem 'groupdate', '~> 4.1'
 gem 'interactor'
 gem 'interactor-rails'
@@ -121,6 +123,7 @@ gem 'premailer-rails', '~> 1.10.3'
 gem 'rest-client'
 gem 'rgeo-geojson'
 gem 'rubyzip', '~> 1.3.0'
+gem 'nokogiri', '~> 1.13.10'
 
 gem 'okcomputer'
 gem 'omniauth', '~> 1.9.1'
@@ -154,7 +157,7 @@ gem 'ice_cube', github: 'CitizenLabDotCo/ice_cube'
 # exception.
 gem 'aws-sdk-s3', '~> 1'
 gem 'bootsnap', '~> 1', require: false
-gem 'dalli', '~> 2.7'
+gem 'dalli', '~> 3.2.3'
 gem 'mailgun-ruby', '~>1.2.0'
 gem 'rails_semantic_logger'
 gem 'rinku', '~> 2'
@@ -175,19 +178,72 @@ gem 'mjml-rails', '~> 4.4'
 # Specifying this gem explicitly can probably be removed when the Rails upgrade is available.
 gem 'rails-html-sanitizer', '>= 1.4.3'
 
-require 'json'
-if File.exist? '../citizenlab.config.ee.json'
+# Used to define CRON tasks. See back/config/schedule.rb.
+gem 'whenever', '~> 1.0'
+
+Dir.children('engines/free').each do |engine_name|
+  path = "engines/free/#{engine_name}"
+  gem engine_name, path: path if File.directory?(path)
+end
+
+require './lib/citizen_lab'
+CitizenLab.ee do
   gem 'ros-apartment', require: 'apartment'
 
   # Upstream actionpack-cloudfront depends on ActionController::Helpers, which
   # is not enabled for a rails api project, so we run on a fork.
   # PR to merge to upstream: https://github.com/customink/actionpack-cloudfront/pull/18
   gem 'actionpack-cloudfront', github: 'CitizenLabDotCo/actionpack-cloudfront'
-end
 
-require './lib/citizen_lab'
-CitizenLab.enabled_modules.each do |m|
-  gem m.split('/').last, path: "engines/#{m}" if File.exist? "engines/#{m}"
-end
+  commercial_engines = [
+    'multi_tenancy',
 
-gem 'bulk_import_ideas', path: 'engines/commercial/bulk_import_ideas'
+    'admin_api',
+    'analytics',
+    'bulk_import_ideas',
+    'content_builder',
+    'custom_idea_statuses',
+    'custom_maps',
+    'flag_inappropriate_content',
+    'geographic_dashboard',
+    'google_tag_manager',
+    'granular_permissions',
+    'idea_assignment',
+    'idea_custom_fields',
+    'impact_tracking',
+    'insights',
+    'machine_translations',
+    'matomo',
+    'moderation',
+    'nlp',
+    'public_api',
+    'remove_vendor_branding',
+    'report_builder',
+    'smart_groups',
+    'texting',
+    'user_custom_fields',
+
+    # ID verification engines.
+    # Engines that registers verification methods must be installed before the
+    # verification engine.
+    'id_auth0',
+    'id_bogus',
+    'id_bosa_fas',
+    'id_clave_unica',
+    'id_cow',
+    'id_franceconnect',
+    'id_gent_rrn',
+    'id_id_card_lookup',
+    'id_oostende_rrn',
+    # The `id_vienna_saml` engine actually registers an authentication method rather
+    # than a verification method, so the constraint does not apply. However, we still
+    # group it with the other "id_" engines.
+    'id_vienna_saml',
+    'verification'
+  ]
+
+  commercial_engines.each do |engine_name|
+    path = "engines/commercial/#{engine_name}"
+    gem engine_name, path: path if File.directory?(path)
+  end
+end

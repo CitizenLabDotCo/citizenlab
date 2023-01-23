@@ -28,7 +28,7 @@ const Right = styled.div`
   display: flex;
   align-items: center;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     display: none;
   `}
 `;
@@ -75,7 +75,7 @@ export default class CommentHeader extends PureComponent<Props, State> {
             createdAt={commentCreatedAt}
             avatarBadgeBgColor={commentType === 'child' ? '#fbfbfb' : '#fff'}
             horizontalLayout={true}
-            color={colors.label}
+            color={colors.textSecondary}
             fontSize={fontSizes.base}
             fontWeight={400}
             underline={true}

@@ -100,7 +100,17 @@ describe ParticipationContextService do
       expect(service.posting_idea_disabled_reason_for_project(project, create(:user))).to eq 'posting_disabled'
     end
 
-    it "returns `not_ideation` when we're not in an ideation context" do
+    it "returns `nil` when we're in an ideation context" do
+      project = create(:project_with_current_phase, current_phase_attrs: { participation_method: 'ideation' })
+      expect(service.posting_idea_disabled_reason_for_project(project, create(:user))).to be_nil
+    end
+
+    it "returns `nil` when we're in an native_survey context" do
+      project = create(:project_with_current_phase, current_phase_attrs: { participation_method: 'native_survey' })
+      expect(service.posting_idea_disabled_reason_for_project(project, create(:user))).to be_nil
+    end
+
+    it "returns `not_ideation` when we're not in an ideation or native_survey context" do
       project = create(:project_with_current_phase, current_phase_attrs: { participation_method: 'information' })
       expect(service.posting_idea_disabled_reason_for_project(project, create(:user))).to eq 'not_ideation'
     end
@@ -121,6 +131,22 @@ describe ParticipationContextService do
     it "returns 'project_inactive' when the project is archived" do
       project = create(:continuous_project, admin_publication_attributes: { publication_status: 'archived' })
       expect(service.posting_idea_disabled_reason_for_project(project, create(:user))).to eq 'project_inactive'
+    end
+
+    it 'returns `posting_limited_max_reached` if the posting limit was reached' do
+      user = create :user
+      project = create :continuous_project, posting_enabled: true, posting_method: 'limited', posting_limited_max: 1
+      create :idea, project: project, author: user
+
+      expect(service.posting_idea_disabled_reason_for_project(project, user)).to eq 'posting_limited_max_reached'
+    end
+
+    it 'returns nil if the posting limit was not reached' do
+      user = create :user
+      project = create :continuous_project, posting_enabled: true, posting_method: 'limited', posting_limited_max: 1
+      create :idea, project: project
+
+      expect(service.posting_idea_disabled_reason_for_project(project, user)).to be_nil
     end
   end
 
@@ -177,7 +203,7 @@ describe ParticipationContextService do
       end
 
       it "returns 'idea_not_in_current_phase' for an idea when it's not in the current phase" do
-        project = create(:project_with_current_phase, current_phase_attrs: { participation_method: 'information' })
+        project = create(:project_with_current_phase)
         idea = create(:idea, project: project, phases: [project.phases[1]])
         expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'idea_not_in_current_phase'
       end

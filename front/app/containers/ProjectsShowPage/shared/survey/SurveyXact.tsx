@@ -17,7 +17,7 @@ const Container = styled.div`
 
   iframe {
     border: solid 1px #ccc;
-    border-radius: ${(props: any) => props.theme.borderRadius};
+    border-radius: ${(props) => props.theme.borderRadius};
   }
 `;
 
@@ -40,7 +40,7 @@ export default memo<Props>(({ surveyXactUrl, className }) => {
   const [hackyWidthThingy, setHackyWidthThingy] = useState<string>('100%');
   const windowSize = useWindowSize();
   const smallerThanLargeTablet = windowSize
-    ? windowSize.windowWidth <= viewportWidths.largeTablet
+    ? windowSize.windowWidth <= viewportWidths.tablet
     : false;
 
   const handleIframeOnLoad = () => {

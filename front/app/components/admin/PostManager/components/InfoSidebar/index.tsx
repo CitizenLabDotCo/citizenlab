@@ -10,7 +10,7 @@ const RightColumn = styled.div`
   max-width: 200px;
   display: flex;
 
-  ${media.smallerThan1280px`
+  ${media.tablet`
     display: none;
   `}
 

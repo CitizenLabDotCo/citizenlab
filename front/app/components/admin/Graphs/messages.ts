@@ -5,4 +5,8 @@ export default defineMessages({
     id: 'app.components.admin.Graphs',
     defaultMessage: 'No data available with the current filters.',
   },
+  noDataShort: {
+    id: 'app.components.admin.Graphs.noDataShort',
+    defaultMessage: 'No data available.',
+  },
 });

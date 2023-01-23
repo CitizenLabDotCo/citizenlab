@@ -14,7 +14,7 @@ import { sendPasswordResetMail } from 'services/auth';
 import { isValidEmail } from 'utils/validate';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
 // style
@@ -88,13 +88,13 @@ type State = {
 };
 
 class PasswordRecovery extends React.PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   emailInputElement: HTMLInputElement | null;
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props: Props & WrappedComponentProps) {
+    super(props);
     this.state = {
       email: null,
       emailError: false,
@@ -213,7 +213,7 @@ class PasswordRecovery extends React.PureComponent<
               />
 
               <StyledButton
-                size="2"
+                size="m"
                 width="100%"
                 processing={processing}
                 text={resetPassword}
@@ -232,4 +232,4 @@ class PasswordRecovery extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(PasswordRecovery);
+export default injectIntl(PasswordRecovery);

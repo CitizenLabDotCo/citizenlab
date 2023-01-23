@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import Tab from './admin/components/Tab';
+const Tab = React.lazy(() => import('./admin/components/Tab'));
 
 // typings
 import { ModuleConfiguration } from 'utils/moduleUtils';

@@ -7,7 +7,7 @@ import Warning from 'components/UI/Warning';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 
 // other
 import { TIMEOUT } from '..';
@@ -42,8 +42,8 @@ export const ParticipationContextWrapper = styled.div`
   padding-bottom: 15px;
   margin-top: 8px;
   display: inline-block;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  border: solid 1px #ddd;
+  border-radius: ${(props) => props.theme.borderRadius};
+  border: solid 1px ${colors.grey300};
   background: #fff;
   transition: opacity ${TIMEOUT}ms cubic-bezier(0.165, 0.84, 0.44, 1);
 
@@ -67,7 +67,7 @@ export const ParticipationContextWrapper = styled.div`
   ::before {
     top: -22px;
     left: 24px;
-    border-color: transparent transparent #ddd transparent;
+    border-color: transparent transparent ${colors.grey300} transparent;
     border-width: 11px;
   }
 

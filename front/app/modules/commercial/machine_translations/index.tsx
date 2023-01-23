@@ -1,13 +1,27 @@
 import React from 'react';
 
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import ActionBarTranslateButton from './citizen/components/ActionBarTranslateButton';
-import CommentTranslateButton from './citizen/components/CommentTranslateButton';
-import IdeasShowTranslateButton from './citizen/components/IdeasShowTranslateButton';
-import InitiativesTranslateButton from './citizen/components/InitiativesTranslateButton';
-import PostShowTranslatedBody from './citizen/components/PostShowTranslatedBody';
-import PostShowTranslatedCommentBody from './citizen/components/PostShowTranslatedCommentBody';
-import PostShowTranslatedTitle from './citizen/components/PostShowTranslatedTitle';
+const ActionBarTranslateButton = React.lazy(
+  () => import('./citizen/components/ActionBarTranslateButton')
+);
+const CommentTranslateButton = React.lazy(
+  () => import('./citizen/components/CommentTranslateButton')
+);
+const IdeasShowTranslateButton = React.lazy(
+  () => import('./citizen/components/IdeasShowTranslateButton')
+);
+const InitiativesTranslateButton = React.lazy(
+  () => import('./citizen/components/InitiativesTranslateButton')
+);
+const PostShowTranslatedBody = React.lazy(
+  () => import('./citizen/components/PostShowTranslatedBody')
+);
+const PostShowTranslatedCommentBody = React.lazy(
+  () => import('./citizen/components/PostShowTranslatedCommentBody')
+);
+const PostShowTranslatedTitle = React.lazy(
+  () => import('./citizen/components/PostShowTranslatedTitle')
+);
 
 const configuration: ModuleConfiguration = {
   outlets: {

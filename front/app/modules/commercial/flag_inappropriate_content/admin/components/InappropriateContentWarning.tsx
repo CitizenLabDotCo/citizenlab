@@ -11,7 +11,7 @@ import useInappropriateContentFlag from '../../hooks/useInappropriateContentFlag
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 const Container = styled.div`
@@ -34,7 +34,7 @@ interface Props {
 const InappropriateContentWarning = ({
   inappropriateContentFlagId,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const inappropriateContentFlag = useInappropriateContentFlag(
     inappropriateContentFlagId
   );

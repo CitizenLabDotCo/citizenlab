@@ -22,6 +22,7 @@ const TopicsControl = ({
   schema,
   id,
   required,
+  visible,
 }: ControlProps) => {
   const availableTopics =
     (!Array.isArray(schema.items) &&
@@ -33,6 +34,10 @@ const TopicsControl = ({
     setDidBlur(true);
   };
   const [didBlur, setDidBlur] = useState(false);
+
+  if (!visible) {
+    return null;
+  }
 
   return (
     <Box id="e2e-idea-topics-input">

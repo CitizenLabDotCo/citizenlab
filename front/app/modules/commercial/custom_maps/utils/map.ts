@@ -1,6 +1,6 @@
 import { isNilOrError } from 'utils/helperUtils';
 import { IMapConfigState } from '../hooks/useMapConfig';
-import { IAppConfiguration } from 'services/appConfiguration';
+import { IAppConfigurationData } from 'services/appConfiguration';
 import { IMapLayerAttributes } from '../services/mapLayers';
 import { Locale } from 'typings';
 import { LatLngTuple } from 'leaflet';
@@ -18,7 +18,7 @@ import {
 
 export const getCenter = (
   centerLatLng: LatLngTuple | null | undefined,
-  appConfig: IAppConfiguration | undefined | null | Error,
+  appConfig: IAppConfigurationData | undefined | null | Error,
   mapConfig: IMapConfigState
 ) => {
   const mapConfigLat = !isNilOrError(mapConfig)
@@ -39,7 +39,7 @@ export const getCenter = (
 
 export const getZoomLevel = (
   zoom: number | undefined,
-  appConfig: IAppConfiguration | undefined | null | Error,
+  appConfig: IAppConfigurationData | undefined | null | Error,
   mapConfig: IMapConfigState
 ) => {
   const mapConfigZoom = !isNilOrError(mapConfig)
@@ -56,7 +56,7 @@ export const getZoomLevel = (
 };
 
 export const getTileProvider = (
-  appConfig: IAppConfiguration | undefined | null | Error,
+  appConfig: IAppConfigurationData | undefined | null | Error,
   mapConfig: IMapConfigState
 ) => {
   const mapConfigTileProvider = !isNilOrError(mapConfig)
@@ -103,10 +103,10 @@ export const getLayerColor = (mapLayer: IMapLayerAttributes | undefined) => {
 
 export const getLayerIcon = (mapLayer: IMapLayerAttributes | undefined) => {
   const layerType = getLayerType(mapLayer);
-  let iconName: 'point' | 'line' | 'rectangle' = 'rectangle';
+  let iconName: 'location-simple' | 'line' | 'rectangle' = 'rectangle';
 
   if (layerType === 'Point') {
-    iconName = 'point';
+    iconName = 'location-simple';
   } else if (layerType === 'LineString') {
     iconName = 'line';
   }

@@ -25,7 +25,7 @@ export const ContentContainer = styled.div`
     font-size: ${fontSizes.l}px;
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin: 0;
     padding: 20px;
   `}

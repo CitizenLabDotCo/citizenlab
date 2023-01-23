@@ -50,20 +50,26 @@ export type IAppConfigurationSettingsCore = {
   color_menu_bg?: string | null;
   currency: TCurrency;
   reply_to_email: string;
-  custom_onboarding_message?: Multiloc | null;
-  custom_onboarding_button?: Multiloc | null;
-  custom_onboarding_link?: string | null;
   currently_working_on_text?: Multiloc | null;
   segment_destinations_blacklist: string[] | null;
   areas_term?: Multiloc;
   area_term?: Multiloc;
   topics_term?: Multiloc;
   topic_term?: Multiloc;
+  authentication_token_lifetime_in_days: number;
 };
 
+export type ProposalsSettings = {
+  allowed: boolean;
+  enabled: boolean;
+  days_limit: number;
+  eligibility_criteria: Multiloc;
+  threshold_reached_message: Multiloc;
+  voting_threshold: number;
+};
 export interface IAppConfigurationSettings {
   core: IAppConfigurationSettingsCore;
-  customizable_homepage_banner: {
+  advanced_custom_pages: {
     allowed: boolean;
     enabled: boolean;
   };
@@ -78,6 +84,7 @@ export interface IAppConfigurationSettings {
   password_login?: {
     allowed: boolean;
     enabled: boolean;
+    enable_signup: boolean;
     phone?: boolean;
     minimum_length?: number;
     phone_email_pattern?: string;
@@ -120,14 +127,7 @@ export interface IAppConfigurationSettings {
   private_projects?: AppConfigurationFeature;
   maps?: AppConfigurationMapSettings;
   participatory_budgeting?: AppConfigurationFeature;
-  initiatives?: {
-    allowed: boolean;
-    enabled: boolean;
-    days_limit: number;
-    eligibility_criteria: Multiloc;
-    threshold_reached_message: Multiloc;
-    voting_threshold: number;
-  };
+  initiatives?: ProposalsSettings;
   fragments?: {
     allowed: boolean;
     enabled: boolean;
@@ -141,7 +141,6 @@ export interface IAppConfigurationSettings {
   dynamic_idea_form?: AppConfigurationFeature;
   jsonforms_custom_fields?: AppConfigurationFeature;
   idea_custom_fields?: AppConfigurationFeature;
-  user_custom_fields?: AppConfigurationFeature;
   volunteering?: AppConfigurationFeature;
   workshops?: AppConfigurationFeature;
   smart_groups?: AppConfigurationFeature;
@@ -165,13 +164,11 @@ export interface IAppConfigurationSettings {
   snap_survey_surveys?: AppConfigurationFeature;
   project_folders?: AppConfigurationFeature;
   bulk_import_ideas?: AppConfigurationFeature;
-  geographic_dashboard?: AppConfigurationFeature;
   widgets?: AppConfigurationFeature;
   granular_permissions?: AppConfigurationFeature;
   ideaflow_social_sharing?: AppConfigurationFeature;
   initiativeflow_social_sharing?: AppConfigurationFeature;
   machine_translations?: AppConfigurationFeature;
-  custom_topics?: AppConfigurationFeature;
   custom_maps?: AppConfigurationFeature;
   similar_ideas?: AppConfigurationFeature;
   polls?: AppConfigurationFeature;
@@ -211,11 +208,15 @@ export interface IAppConfigurationSettings {
     }[];
   };
   disable_user_bios?: AppConfigurationFeature;
-  customizable_navbar?: AppConfigurationFeature;
   texting?: AppConfigurationFeature;
   content_builder?: AppConfigurationFeature;
   representativeness?: AppConfigurationFeature;
   remove_vendor_branding?: AppConfigurationFeature;
+  native_surveys?: AppConfigurationFeature;
+  analytics?: AppConfigurationFeature;
+  visitors_dashboard?: AppConfigurationFeature;
+  user_confirmation?: AppConfigurationFeature;
+  report_builder?: AppConfigurationFeature;
 }
 
 interface AppConfigurationMapSettings extends AppConfigurationFeature {
@@ -237,6 +238,8 @@ export interface IAppConfigurationStyle {
   navbarBorderColor?: string;
   signedOutHeaderTitleFontSize?: number;
   signedOutHeaderTitleFontWeight?: number;
+  // These signed in variables are used via the theme in the
+  // component library and can be set via AdminHQ.
   signedInHeaderOverlayColor?: string;
   // Number between 0 and 100, inclusive
   signedInHeaderOverlayOpacity?: number;
@@ -297,8 +300,8 @@ export async function updateAppConfiguration(
   return tenant;
 }
 
-export const coreSettings = (appConfiguration: IAppConfiguration) =>
-  appConfiguration.data.attributes.settings.core;
+export const coreSettings = (appConfiguration: IAppConfigurationData) =>
+  appConfiguration.attributes.settings.core;
 
 type TCurrency = TCustomCurrency | TCountryCurrency;
 type TCustomCurrency =

@@ -18,6 +18,9 @@ import tracks from 'containers/Admin/users/tracks';
 // styling
 import { colors } from 'utils/styleUtils';
 
+import Error from 'components/UI/Error';
+import { Controller, useFormContext } from 'react-hook-form';
+
 const Container = styled.div`
   width: 560px;
 `;
@@ -35,7 +38,7 @@ const AddButton = styled(Button)`
 
   &:hover {
     .buttonIcon {
-      fill: ${colors.adminTextColor};
+      fill: ${colors.primary};
     }
   }
 
@@ -44,11 +47,11 @@ const AddButton = styled(Button)`
   }
 
   .buttonIcon {
-    fill: ${colors.clBlueDark};
+    fill: ${colors.teal};
   }
 
   .buttonText {
-    color: ${colors.adminTextColor};
+    color: ${colors.primary};
   }
 `;
 
@@ -117,24 +120,41 @@ const UserFilterConditionsWithHoc = injectTracks<Props>({
   trackConditionAdd: tracks.conditionAdd,
 })(UserFilterConditions);
 
-import { FieldProps } from 'formik';
+export const HookFormUserFilterConditions = ({ name }: { name: string }) => {
+  const {
+    formState: { errors },
+    control,
+    setValue,
+    getValues,
+  } = useFormContext();
 
-export class FormikUserFilterConditions extends React.Component<
-  Props & FieldProps
-> {
-  handleOnChange = (newValue) => {
-    this.props.form.setFieldTouched(this.props.field.name, true);
-    this.props.form.setFieldValue(this.props.field.name, newValue);
+  const handleOnChange = (newValue: TRule[]) => {
+    setValue(name, newValue);
   };
 
-  render() {
-    const { value } = this.props.field;
-    return (
-      <UserFilterConditionsWithHoc
-        {...this.props}
-        onChange={this.handleOnChange}
-        rules={value}
+  const validationError = errors[name]?.message as string | undefined;
+
+  return (
+    <>
+      <Controller
+        name={name}
+        control={control}
+        render={({ field: { ref: _ref, ...field } }) => (
+          <UserFilterConditionsWithHoc
+            {...field}
+            onChange={handleOnChange}
+            rules={getValues(name)}
+          />
+        )}
       />
-    );
-  }
-}
+      {validationError && (
+        <Error
+          marginTop="8px"
+          marginBottom="8px"
+          text={validationError}
+          scrollIntoView={false}
+        />
+      )}
+    </>
+  );
+};

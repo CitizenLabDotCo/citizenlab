@@ -13,12 +13,11 @@ import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { SubSectionTitle } from 'components/admin/Section';
 import { StyledSectionField } from './styling';
 import TopicsPicker from 'components/UI/TopicsPicker';
-import Outlet from 'components/Outlet';
+import TopicInputsTooltipExtraCopy from './TopicInputsTooltipExtraCopy';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
+import { useIntl } from 'utils/cl-intl';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -28,11 +27,8 @@ interface Props {
   onChange: (topicsIds: string[]) => void;
 }
 
-const TopicInputs = ({
-  selectedTopicIds,
-  onChange,
-  intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+const TopicInputs = ({ selectedTopicIds, onChange }: Props) => {
+  const { formatMessage } = useIntl();
   const availableTopics = useTopics();
   const appConfiguration = useAppConfiguration();
   const localize = useLocalize();
@@ -57,7 +53,7 @@ const TopicInputs = ({
               {formatMessage(messages.topicsLabelTooltip, {
                 topicsCopy: topicsCopy.toLowerCase(),
               })}
-              <Outlet id="app.containers.Admin.projects.edit.general.components.TopicInputs.tooltipExtraCopy" />
+              <TopicInputsTooltipExtraCopy />
             </>
           }
         />
@@ -77,4 +73,4 @@ const getTopicsCopy = (message: string, customTerminology: string) => {
     : `${message}`;
 };
 
-export default injectIntl(TopicInputs);
+export default TopicInputs;

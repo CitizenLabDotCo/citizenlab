@@ -45,6 +45,26 @@ RSpec.describe Phase, type: :model do
       p = create(:phase, participation_method: 'budgeting')
       expect(p.save).to be true
     end
+
+    it 'can be changed from a transitive method to another one' do
+      phase = create :phase, participation_method: 'ideation'
+      phase.participation_method = 'budgeting'
+      expect(phase.save).to be true
+    end
+
+    it 'cannot be changed from a transitive method to a non-transitive one' do
+      phase = create :phase, participation_method: 'ideation'
+      phase.participation_method = 'native_survey'
+      expect(phase.save).to be false
+      expect(phase.errors.details).to eq({ participation_method: [{ error: :change_not_permitted }] })
+    end
+
+    it 'cannot be changed from a non-transitive method to a transitive one' do
+      phase = create :phase, participation_method: 'native_survey'
+      phase.participation_method = 'budgeting'
+      expect(phase.save).to be false
+      expect(phase.errors.details).to eq({ participation_method: [{ error: :change_not_permitted }] })
+    end
   end
 
   describe 'presentation_mode' do
@@ -154,6 +174,50 @@ RSpec.describe Phase, type: :model do
       it 'returns no phases if the date is tomorrow' do
         expect(described_class.starting_on(start_date + 1.day).length).to eq 0
       end
+    end
+  end
+
+  describe '#native_survey?' do
+    it 'returns true when the participation method is native_survey' do
+      phase = create :native_survey_phase
+      expect(phase.native_survey?).to be true
+    end
+
+    it 'returns false otherwise' do
+      phase = create :poll_phase
+      expect(phase.native_survey?).to be false
+    end
+  end
+
+  describe '#can_contain_input?' do
+    expected_results = {
+      'information' => false,
+      'ideation' => true,
+      'survey' => false,
+      'budgeting' => true,
+      'poll' => false,
+      'volunteering' => false,
+      'native_survey' => true
+    }
+    # Written this way so that additional participation methods will make this spec fail.
+    ::ParticipationContext::PARTICIPATION_METHODS.each do |participation_method|
+      expected_result = expected_results[participation_method]
+      context "for #{participation_method}" do
+        let(:phase) { build(:phase, participation_method: participation_method) }
+
+        it "returns #{expected_result}" do
+          expect(phase.can_contain_input?).to be expected_result
+        end
+      end
+    end
+  end
+
+  describe 'posting_method and posting_limited_max' do
+    it 'are set to defaults from the participation method' do
+      # We cannot stub side effects, otherwise we could have set
+      # posting_method and posting_limited_max to custom values.
+      expect_any_instance_of(ParticipationMethod::Base).to receive(:assign_defaults_for_participation_context).once
+      create :phase
     end
   end
 end

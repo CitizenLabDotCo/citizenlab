@@ -24,7 +24,7 @@ describe JsonFormsService do
       end
 
       it 'creates localized schemas with titles and descriptions for all languages' do
-        ui_schema = service.ui_and_json_multiloc_schemas(fields, user)[:ui_schema_multiloc]
+        ui_schema = service.user_ui_and_json_multiloc_schemas(fields)[:ui_schema_multiloc]
         expect(ui_schema['en'][:elements][0][:label]).to eq title_multiloc['en']
         expect(ui_schema['nl-NL'][:elements][0][:label]).to eq title_multiloc['nl-NL']
         expect(ui_schema['en'][:elements][0][:options][:description]).to eq description_multiloc['en']
@@ -33,8 +33,8 @@ describe JsonFormsService do
     end
 
     describe 'fields_to_json_schema_multiloc' do
-      it 'returns nil empty fields' do
-        schema = service.ui_and_json_multiloc_schemas([], user)
+      it 'returns nil when no fields are given' do
+        schema = service.user_ui_and_json_multiloc_schemas([])
         expect(schema).to be_nil
       end
 
@@ -58,7 +58,7 @@ describe JsonFormsService do
         create(:custom_field_option, key: 'option_a', custom_field: fields[7], ordering: 1)
         create(:custom_field_option, key: 'option_b', custom_field: fields[7], ordering: 2)
 
-        schema = service.ui_and_json_multiloc_schemas(fields, user)[:json_schema_multiloc]['en']
+        schema = service.user_ui_and_json_multiloc_schemas(fields)[:json_schema_multiloc]['en']
         expect(JSON::Validator.validate!(metaschema, schema)).to be true
         expect(schema).to match(
           { type: 'object',
@@ -104,9 +104,7 @@ describe JsonFormsService do
               },
                           'field5' =>
               { type: 'boolean' },
-                          'field6' =>
-              { type: 'string',
-                format: 'date' },
+                          # field6 is excluded because it is disabled.
                           'field7' =>
               { type: 'number' },
                           'field8' =>
@@ -153,7 +151,7 @@ describe JsonFormsService do
         create(:custom_field_option, key: 'option3', custom_field: fields[3])
         create(:custom_field_option, key: 'option4', custom_field: fields[3])
 
-        ui_schema = service.ui_and_json_multiloc_schemas(fields.map(&:reload), user)[:ui_schema_multiloc]['en']
+        ui_schema = service.user_ui_and_json_multiloc_schemas(fields.map(&:reload))[:ui_schema_multiloc]['en']
         expect(ui_schema[:type]).to be_present
         expect(ui_schema[:options]).to be_present
         expect(ui_schema[:elements]).to match([
@@ -162,6 +160,7 @@ describe JsonFormsService do
             scope: '#/properties/field1',
             label: 'Did you attend',
             options: {
+              input_type: 'text',
               description: 'Which councils are you attending in our city?',
               transform: 'trim_on_blur'
             }
@@ -171,6 +170,7 @@ describe JsonFormsService do
             scope: '#/properties/field2',
             label: 'Did you attend',
             options: {
+              input_type: 'multiline_text',
               description: 'Which councils are you attending in our city?',
               textarea: true,
               transform: 'trim_on_blur'
@@ -180,6 +180,7 @@ describe JsonFormsService do
             type: 'Control',
             label: 'Did you attend',
             options: {
+              input_type: 'select',
               description: 'Which councils are you attending in our city?'
             },
             scope: '#/properties/field3'
@@ -188,6 +189,7 @@ describe JsonFormsService do
             type: 'Control',
             label: 'Did you attend',
             options: {
+              input_type: 'multiselect',
               description: 'Which councils are you attending in our city?'
             },
             scope: '#/properties/field4'
@@ -196,6 +198,7 @@ describe JsonFormsService do
             type: 'Control',
             label: 'Did you attend',
             options: {
+              input_type: 'checkbox',
               description: 'Which councils are you attending in our city?'
             },
             scope: '#/properties/field5'
@@ -204,6 +207,7 @@ describe JsonFormsService do
             type: 'Control',
             label: 'Did you attend',
             options: {
+              input_type: 'date',
               description: 'Which councils are you attending in our city?'
             },
             scope: '#/properties/field6'
@@ -214,14 +218,14 @@ describe JsonFormsService do
   end
 
   context 'idea form fields' do
-    describe 'ui_and_json_multiloc_schemas' do
+    describe 'input_ui_and_json_multiloc_schemas' do
       it 'generates expected output for different kinds of fields' do
         config = AppConfiguration.instance
         config.settings['core']['locales'] = ['en']
         config.save!
 
         project = create :project
-        form = create :custom_form, project: project
+        form = create :custom_form, participation_context: project
         required_field = create :custom_field, :for_custom_form, resource: form, required: true, input_type: 'number'
         optional_field = create :custom_field_select, :for_custom_form, resource: form, required: false
         create :custom_field_option, custom_field: optional_field, key: 'option1', title_multiloc: { 'en' => 'Rabbit' }
@@ -244,7 +248,7 @@ describe JsonFormsService do
         )
         fields = [required_field, optional_field, build_in_required_field, build_in_optional_field]
 
-        output = service.ui_and_json_multiloc_schemas fields, user
+        output = service.input_ui_and_json_multiloc_schemas fields, user, 'question'
         expect(output).to include(
           {
             json_schema_multiloc: {
@@ -279,7 +283,7 @@ describe JsonFormsService do
             ui_schema_multiloc: {
               'en' => {
                 type: 'Categorization',
-                options: { formId: 'idea-form', inputTerm: 'idea' },
+                options: { formId: 'idea-form', inputTerm: 'question' },
                 elements: [
                   {
                     type: 'Category',
@@ -291,14 +295,17 @@ describe JsonFormsService do
                         scope: '#/properties/topic_ids',
                         label: build_in_required_field.title_multiloc['en'],
                         options: {
-                          description: build_in_required_field.description_multiloc['en']
+                          input_type: build_in_required_field.input_type,
+                          description: build_in_required_field.description_multiloc['en'],
+                          isAdminField: false,
+                          hasRule: false
                         }
                       }
                     ]
                   },
                   {
                     type: 'Category',
-                    label: 'Images and Attachements',
+                    label: 'Images and attachments',
                     options: { id: 'attachments' },
                     elements: [
                       {
@@ -306,7 +313,10 @@ describe JsonFormsService do
                         scope: '#/properties/idea_files_attributes',
                         label: build_in_optional_field.title_multiloc['en'],
                         options: {
-                          description: build_in_optional_field.description_multiloc['en']
+                          input_type: build_in_optional_field.input_type,
+                          description: build_in_optional_field.description_multiloc['en'],
+                          isAdminField: false,
+                          hasRule: false
                         }
                       }
                     ]
@@ -321,7 +331,10 @@ describe JsonFormsService do
                         scope: "#/properties/#{required_field.key}",
                         label: required_field.title_multiloc['en'],
                         options: {
-                          description: required_field.description_multiloc['en']
+                          input_type: required_field.input_type,
+                          description: required_field.description_multiloc['en'],
+                          isAdminField: false,
+                          hasRule: false
                         }
                       },
                       {
@@ -329,7 +342,10 @@ describe JsonFormsService do
                         scope: "#/properties/#{optional_field.key}",
                         label: optional_field.title_multiloc['en'],
                         options: {
-                          description: optional_field.description_multiloc['en']
+                          input_type: optional_field.input_type,
+                          description: optional_field.description_multiloc['en'],
+                          isAdminField: false,
+                          hasRule: false
                         }
                       }
                     ]
@@ -339,6 +355,32 @@ describe JsonFormsService do
             }
           }
         )
+      end
+
+      it 'renders text images for fields' do
+        description_multiloc = {
+          'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
+        }
+        field = create :custom_field, :for_custom_form, input_type: 'text', description_multiloc: description_multiloc
+        allow_any_instance_of(TextImageService).to(
+          receive(:render_data_images).with(field, :description_multiloc).and_return({ 'en' => 'Description with text images' })
+        )
+
+        ui_schema = service.input_ui_and_json_multiloc_schemas([field], nil, 'option')[:ui_schema_multiloc]
+        expect(ui_schema.dig('en', :elements, 0, :elements, 0, :options, :description)).to eq 'Description with text images'
+      end
+
+      it 'renders text images for pages' do
+        description_multiloc = {
+          'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
+        }
+        field = create :custom_field, :for_custom_form, input_type: 'page', description_multiloc: description_multiloc
+        allow_any_instance_of(TextImageService).to(
+          receive(:render_data_images).with(field, :description_multiloc).and_return({ 'en' => 'Description with text images' })
+        )
+
+        ui_schema = service.input_ui_and_json_multiloc_schemas([field], nil, 'question')[:ui_schema_multiloc]
+        expect(ui_schema.dig('en', :elements, 0, :options, :description)).to eq 'Description with text images'
       end
     end
   end

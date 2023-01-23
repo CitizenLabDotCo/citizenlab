@@ -4,15 +4,24 @@ import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   forHomepageFilter?: boolean;
+  includeStaticPages?: boolean;
 }
 
-export default function useAreas({ forHomepageFilter }: Props = {}) {
+export default function useAreas({
+  forHomepageFilter,
+  includeStaticPages,
+}: Props = {}) {
   const [areas, setAreas] = useState<IAreaData[] | undefined | null | Error>(
     undefined
   );
 
   useEffect(() => {
-    const queryParameters = { for_homepage_filter: forHomepageFilter };
+    const queryParameters = {
+      for_homepage_filter: forHomepageFilter,
+      ...(includeStaticPages && {
+        include: 'static_pages',
+      }),
+    };
 
     const subscription = areasStream({ queryParameters }).observable.subscribe(
       (areas) => {
@@ -21,7 +30,7 @@ export default function useAreas({ forHomepageFilter }: Props = {}) {
     );
 
     return () => subscription.unsubscribe();
-  }, [forHomepageFilter]);
+  }, [forHomepageFilter, includeStaticPages]);
 
   return areas;
 }

@@ -12,7 +12,7 @@ import { fontSizes } from 'utils/styleUtils';
 // i18n
 import messages from '../messages';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // typings
 import { RepresentativenessData } from '../../../hooks/createRefDataSubscription';
@@ -35,7 +35,7 @@ const TableWrapper = ({
   projectFilter,
   xlsxEndpoint,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const openModal = () => setModalOpen(true);
@@ -67,7 +67,7 @@ const TableWrapper = ({
             {formatMessage(messages.openTableModalButtonText, {
               numberOfHiddenItems,
             })}
-            <Icon name="openModal" width="15px" height="15px" ml="12px" />
+            <Icon name="open-in-new" width="15px" height="15px" ml="12px" />
           </Box>
         </Button>
       )}

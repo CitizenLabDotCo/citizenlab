@@ -46,14 +46,22 @@ const DashboardTabs = memo<Props & WithRouterProps>(
                   if (tab.feature) {
                     return (
                       <FeatureFlag key={tab.url} name={tab.feature}>
-                        <Tab key={tab.url} active={active} className={classes}>
+                        <Tab
+                          key={tab.url}
+                          active={active}
+                          className={`${classes} intercom-admin-dashboard-tab-${tab.name}`}
+                        >
                           <Link to={tab.url}>{tab.label}</Link>
                         </Tab>
                       </FeatureFlag>
                     );
                   } else {
                     return (
-                      <Tab key={tab.url} active={active} className={classes}>
+                      <Tab
+                        key={tab.url}
+                        active={active}
+                        className={`${classes} intercom-admin-dashboard-tab-${tab.name}`}
+                      >
                         <Link to={tab.url}>{tab.label}</Link>
                       </Tab>
                     );

@@ -12,7 +12,7 @@ import { Label, IconTooltip } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // analytics
@@ -53,13 +53,13 @@ const DropdownListItem = styled.button`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: ${colors.text};
+  color: ${colors.textPrimary};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   white-space: nowrap;
   width: auto !important;
   padding: 10px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   cursor: pointer;
   white-space: nowrap;
   text-align: left;
@@ -68,7 +68,7 @@ const DropdownListItem = styled.button`
   &:focus {
     outline: none;
     color: white;
-    background: ${colors.adminMenuBackground};
+    background: ${colors.background};
   }
 `;
 
@@ -112,7 +112,7 @@ const Container = styled.div<{
   .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter,
   .ql-picker-label:focus .ql-stroke,
   .ql-picker-item:focus .ql-stroke {
-    stroke: ${colors.clBlue};
+    stroke: ${colors.teal};
   }
 
   .ql-snow.ql-toolbar button:hover .ql-fill,
@@ -145,7 +145,7 @@ const Container = styled.div<{
   .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill,
   .ql-snow.ql-toolbar .ql-picker-label:focus .ql-stroke.ql-fill,
   .ql-snow.ql-toolbar .ql-picker-item:focus .ql-stroke.ql-fill {
-    fill: ${colors.clBlue};
+    fill: ${colors.teal};
   }
 
   .ql-snow.ql-toolbar button:hover,
@@ -165,7 +165,7 @@ const Container = styled.div<{
   .ql-snow.ql-toolbar .ql-picker-item.ql-selected,
   .ql-snow.ql-toolbar .ql-picker-item:focus,
   .ql-snow .ql-toolbar .ql-picker-item.ql-selected {
-    color: ${colors.clBlue};
+    color: ${colors.teal};
   }
 
   .ql-tooltip[data-mode='link']::before {
@@ -206,13 +206,13 @@ const Container = styled.div<{
     border-radius: ${({ theme }) => theme.borderRadius}
       ${({ theme }) => theme.borderRadius} 0 0;
     box-shadow: none;
-    border: 1px solid ${colors.border};
+    border: 1px solid ${colors.borderDark};
     border-bottom: 0;
     transition: box-shadow 100ms ease-out;
   }
 
   &.focus:not(.error) .ql-toolbar.ql-snow + .ql-container.ql-snow {
-    border-color: ${colors.focussedBorder};
+    border-color: ${colors.black};
     box-shadow: inset ${defaultStyles.boxShadowFocused};
   }
 
@@ -231,10 +231,10 @@ const Container = styled.div<{
     cursor: text;
     border-radius: 0 0 ${({ theme }) => theme.borderRadius}
       ${({ theme }) => theme.borderRadius};
-    border: 1px solid ${colors.border};
+    border: 1px solid ${colors.borderDark};
     box-shadow: none;
     overflow-y: auto;
-    ${(props: any) => quillEditedContent(props.theme.colorMain)};
+    ${(props) => quillEditedContent(props.theme.colors.tenantPrimary)};
 
     .ql-editor {
       min-height: ${(props) => (props.minHeight ? props.minHeight : '300px')};
@@ -249,7 +249,7 @@ const Container = styled.div<{
     `}
     }
 
-    ${media.smallerThanMaxTablet`
+    ${media.tablet`
       max-height: ${({ theme: { mobileMenuHeight } }) =>
         `calc(80vh - ${mobileMenuHeight}px)`};
     `}
@@ -378,7 +378,7 @@ Quill.register(
 
 Quill.register(KeepHTML);
 
-const QuillEditor = memo<Props & InjectedIntlProps>(
+const QuillEditor = memo<Props & WrappedComponentProps>(
   ({
     id,
     value,

@@ -1,11 +1,12 @@
 import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
+
+// resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import { PublicationStatus } from 'services/projects';
-import { isNilOrError } from 'utils/helperUtils';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import { SectionTitle } from 'components/admin/Section';
+
+// components
+import { Title } from '@citizenlab/cl2-component-library';
 import { List, Row } from 'components/admin/ResourceList';
 import {
   RowButton,
@@ -13,6 +14,13 @@ import {
   RowTitle,
 } from 'containers/Admin/projects/components/StyledComponents';
 import PageWrapper from 'components/admin/PageWrapper';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
 
 interface DataProps {
   projects: GetProjectsChildProps;
@@ -36,9 +44,9 @@ const ReportTab = memo(({ projects }: DataProps) => {
 
   return (
     <>
-      <SectionTitle>
+      <Title variant="h1" color="primary" mt="0px" mb="32px">
         <FormattedMessage {...messages.selectAProject} />
-      </SectionTitle>
+      </Title>
       <PageWrapper>
         <List>
           {participableProjects.map((project, index) => {
@@ -52,9 +60,9 @@ const ReportTab = memo(({ projects }: DataProps) => {
                   <RowTitle value={project.attributes.title_multiloc} />
                   <RowButton
                     className={`
-                        e2e-admin-edit-publication
+                        e2e-admin-edit-publication intercom-admin-project-edit-button
                       `}
-                    linkTo={`/admin/insights/reports/${project.id}`}
+                    linkTo={`/admin/reporting/reports/${project.id}`}
                     buttonStyle="secondary"
                     icon="eye"
                     type="button"

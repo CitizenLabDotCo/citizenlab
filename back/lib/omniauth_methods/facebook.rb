@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module OmniauthMethods
-  class Facebook
+  class Facebook < OmniauthMethods::Base
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
       return unless configuration.feature_activated?('facebook_login')

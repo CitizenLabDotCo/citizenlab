@@ -1,99 +1,75 @@
 import React from 'react';
-
-// components
-import Error from 'components/UI/Error';
-import { IconTooltip } from '@citizenlab/cl2-component-library';
-import { SubSectionTitle } from 'components/admin/Section';
-import {
-  StyledSectionField,
-  StyledWarning,
-  StyledInput,
-  SlugPreview,
-} from './styling';
-
 import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'hooks/useAppConfiguration';
-
-// i18n
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { Text, Input } from '@citizenlab/cl2-component-library';
+import Warning from 'components/UI/Warning';
+import Error from 'components/UI/Error';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import slugInputMessages from 'components/HookForm/SlugInput/messages';
 import messages from './messages';
 
 // typings
 import { CLErrors } from 'typings';
-
 import { isNilOrError } from 'utils/helperUtils';
 
+type TApiErrors = CLErrors | null;
+
 export interface Props {
-  slug: string | null;
-  resource: 'project' | 'folder';
-  apiErrors: CLErrors;
+  slug: string;
+  pathnameWithoutSlug: 'projects' | 'folders';
+  apiErrors: TApiErrors;
   showSlugErrorMessage: boolean;
-  handleSlugOnChange: (slug: string) => void;
+  onSlugChange: (slug: string) => void;
+  showSlugChangedWarning: boolean;
 }
 
 const SlugInput = ({
   slug,
-  resource,
+  pathnameWithoutSlug,
   apiErrors,
   showSlugErrorMessage,
-  handleSlugOnChange,
-  intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+  onSlugChange,
+  showSlugChangedWarning,
+}: Props) => {
   const locale = useLocale();
-  const currentTenant = useAppConfiguration();
+  const appConfig = useAppConfiguration();
+  const { formatMessage } = useIntl();
 
-  if (isNilOrError(currentTenant)) return null;
+  if (!isNilOrError(locale) && !isNilOrError(appConfig)) {
+    const hostName = appConfig.attributes.host;
+    const previewUrl = `${hostName}/${locale}/${pathnameWithoutSlug}/${slug}`;
 
-  const previewUrl = `${currentTenant.data.attributes.host}/${locale}/${
-    resource === 'folder' ? 'folders' : 'projects'
-  }/${slug}`;
-
-  return (
-    <StyledSectionField>
-      <SubSectionTitle>
-        <FormattedMessage {...messages.url} />
-        <IconTooltip
-          content={
-            <FormattedMessage
-              {...messages.urlSlugTooltip}
-              values={{
-                currentURL: (
-                  <em>
-                    <b>{previewUrl}</b>
-                  </em>
-                ),
-                currentSlug: (
-                  <em>
-                    <b>{slug}</b>
-                  </em>
-                ),
-              }}
-            />
-          }
+    return (
+      <>
+        <Input
+          label={formatMessage(slugInputMessages.urlSlugLabel)}
+          labelTooltipText={formatMessage(slugInputMessages.slugTooltip)}
+          type="text"
+          onChange={onSlugChange}
+          value={slug}
         />
-      </SubSectionTitle>
-      <StyledWarning>
-        <FormattedMessage {...messages.urlSlugBrokenLinkWarning} />
-      </StyledWarning>
-      <StyledInput
-        id={resource === 'folder' ? 'folder-slug' : 'project-slug'}
-        type="text"
-        label={<FormattedMessage {...messages.urlSlugLabel} />}
-        onChange={handleSlugOnChange}
-        value={slug}
-      />
-      <SlugPreview>
-        <b>{formatMessage(messages.resultingURL)}</b>: {previewUrl}
-      </SlugPreview>
-      {/* Backend error */}
-      <Error fieldName="slug" apiErrors={apiErrors.slug} />
-      {/* Frontend error */}
-      {showSlugErrorMessage && (
-        <Error text={formatMessage(messages.regexError)} />
-      )}
-    </StyledSectionField>
-  );
+        <Text mb={showSlugChangedWarning ? '16px' : '0'}>
+          <i>
+            <FormattedMessage {...slugInputMessages.resultingURL} />
+          </i>
+          : {previewUrl}
+        </Text>
+        {showSlugChangedWarning && (
+          <Warning>
+            <FormattedMessage {...slugInputMessages.urlSlugBrokenLinkWarning} />
+          </Warning>
+        )}
+        {/* Backend error */}
+        {apiErrors && <Error fieldName="slug" apiErrors={apiErrors.slug} />}
+        {/* Frontend error */}
+        {showSlugErrorMessage && (
+          <Error text={formatMessage(messages.regexError)} />
+        )}
+      </>
+    );
+  }
+
+  return null;
 };
 
-export default injectIntl(SlugInput);
+export default SlugInput;

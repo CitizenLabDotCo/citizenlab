@@ -22,7 +22,8 @@ module AdminApi
 
     def template_import
       template = YAML.load(template_import_params[:template_yaml])
-      ProjectCopyService.new.import(template)
+      folder = ProjectFolders::Folder.find template_import_params[:folder_id] if template_import_params[:folder_id]
+      ProjectCopyService.new.import(template, folder: folder)
     rescue StandardError => e
       ErrorReporter.report(e)
       raise ClErrors::TransactionError.new(error_key: :bad_template)
@@ -31,7 +32,7 @@ module AdminApi
     end
 
     def template_import_params
-      params.require(:project).permit(:template_yaml)
+      params.require(:project).permit(:template_yaml, :folder_id)
     end
 
     def template_export_params

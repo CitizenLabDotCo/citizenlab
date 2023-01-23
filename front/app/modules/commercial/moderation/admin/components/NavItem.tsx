@@ -13,7 +13,7 @@ const NavItemComponent: FC<Props> = ({ onData }) => {
         configuration: {
           name: 'moderation',
           link: '/admin/moderation',
-          iconName: 'moderation',
+          iconName: 'sidebar-activity',
           message: 'moderation',
           featureNames: ['moderation'],
         },

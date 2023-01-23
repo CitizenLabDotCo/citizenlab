@@ -11,11 +11,11 @@ import {
 } from '../../services/referenceDistribution';
 
 // hooks
-import useUserCustomFieldOptions from 'modules/commercial/user_custom_fields/hooks/useUserCustomFieldOptions';
+import useUserCustomFieldOptions from 'hooks/useUserCustomFieldOptions';
 import useReferenceDistribution, {
   RemoteFormValues,
 } from '../../hooks/useReferenceDistribution';
-import useUserCustomField from 'modules/commercial/user_custom_fields/hooks/useUserCustomField';
+import useUserCustomField from 'hooks/useUserCustomField';
 
 // components
 import { Accordion, ListItem } from '@citizenlab/cl2-component-library';
@@ -34,7 +34,7 @@ import {
 import { isSupported } from '../../containers/Dashboard/utils';
 
 // typings
-import { IUserCustomFieldOptionData } from 'modules/commercial/user_custom_fields/services/userCustomFieldOptions';
+import { IUserCustomFieldOptionData } from 'services/userCustomFieldOptions';
 interface Props {
   userCustomFieldId: string;
 }

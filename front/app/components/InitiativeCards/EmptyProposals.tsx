@@ -27,12 +27,12 @@ const InitiativeIcon = styled(Icon)`
   flex: 0 0 48px;
   width: 48px;
   height: 48px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
 `;
 
 const EmptyMessage = styled.div`
   max-width: 400px;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;
@@ -41,7 +41,7 @@ const EmptyMessage = styled.div`
 `;
 
 const EmptyMessageMainLine = styled.div`
-  color: ${colors.text};
+  color: ${colors.textPrimary};
   font-size: ${fontSizes.xl}px;
   font-weight: 500;
   line-height: normal;
@@ -50,7 +50,7 @@ const EmptyMessageMainLine = styled.div`
 `;
 
 const EmptyMessageSubLine = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: normal;

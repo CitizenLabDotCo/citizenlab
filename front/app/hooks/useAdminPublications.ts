@@ -11,11 +11,30 @@ import { unionBy, isString } from 'lodash-es';
 import { IRelationship } from 'typings';
 
 export interface BaseProps {
-  topicFilter?: string[];
-  areaFilter?: string[];
+  topicIds?: string[] | null;
+  areaIds?: string[] | null;
   publicationStatusFilter: PublicationStatus[];
   rootLevelOnly?: boolean;
+  /*
+    The function of the removeNotAllowedParents filter is to filter out AdminPublications that represent
+    folders which contain *only* projects which should not be visible to the current user.
+    Here we are concerned with 'visibility' in terms of the visible_to attribute,
+    which can have one of 3 values: public, groups or admins.
+    We are not concerned with other attributes, for example publication_status.
+
+    An example:
+
+    - User is in group A
+    - Create folders:
+      - 1: Contains only publicly visible project
+      - 2: Contains only project visible to Group A
+      - 3: Contains only project visible to Group B
+      - 4: Contains publicly visible project & project only visible to Group B
+
+    In this case, folder 1, 2 and 4 will be returned.
+  */
   removeNotAllowedParents?: boolean;
+  onlyProjects?: boolean;
 }
 
 export interface InputProps extends BaseProps {
@@ -33,6 +52,7 @@ export interface InputProps extends BaseProps {
 export type IAdminPublicationContent = {
   id: string;
   publicationType: AdminPublicationType;
+  // The id of the corresponding project or folder
   publicationId: string;
   attributes: IAdminPublicationData['attributes'];
   relationships: {
@@ -55,17 +75,19 @@ export interface IUseAdminPublicationsOutput {
   loadingMore: boolean;
   onLoadMore: () => void;
   onChangeTopics: (topics: string[]) => void;
+  onChangeSearch: (string: string | null) => void;
   onChangeAreas: (areas: string[]) => void;
   onChangePublicationStatus: (publicationStatuses: PublicationStatus[]) => void;
 }
 
 export default function useAdminPublications({
   pageSize = 1000,
-  topicFilter,
-  areaFilter,
+  topicIds,
+  areaIds,
   publicationStatusFilter,
   rootLevelOnly = false,
   removeNotAllowedParents = false,
+  onlyProjects = false,
   childrenOfId,
 }: InputProps): IUseAdminPublicationsOutput {
   const [list, setList] = useState<
@@ -75,11 +97,31 @@ export default function useAdminPublications({
   const [loadingInitial, setLoadingInitial] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
-  const [topics, setTopics] = useState<string[] | undefined>(topicFilter);
-  const [areas, setAreas] = useState<string[] | undefined>(areaFilter);
+  const [search, setSearch] = useState<string | null>(null);
+  const [topics, setTopics] = useState<string[] | null>(null);
+  const [areas, setAreas] = useState<string[] | null>(null);
   const [publicationStatuses, setPublicationStatuses] = useState<
     PublicationStatus[]
   >(publicationStatusFilter);
+
+  // topicIds and areaIds are usually based off other
+  // requests, and will initially be null/undefined.
+  // Without the useEffect, they don't get updated
+  const stringifiedtopicIds = JSON.stringify(topicIds);
+  useEffect(() => {
+    if (topicIds !== undefined) {
+      setTopics(topicIds);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stringifiedtopicIds]);
+
+  const stringifiedareaIds = JSON.stringify(areaIds);
+  useEffect(() => {
+    if (areaIds !== undefined) {
+      setAreas(areaIds);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stringifiedareaIds]);
 
   const onLoadMore = useCallback(() => {
     if (hasMore) {
@@ -98,6 +140,11 @@ export default function useAdminPublications({
     setPageNumber(1);
   }, []);
 
+  const onChangeSearch = useCallback((search: string | null) => {
+    setSearch(search);
+    setPageNumber(1);
+  }, []);
+
   const onChangePublicationStatus = useCallback((publicationStatuses) => {
     setPublicationStatuses(publicationStatuses);
     setPageNumber(1);
@@ -112,11 +159,13 @@ export default function useAdminPublications({
     const queryParameters = {
       'page[number]': pageNumber,
       'page[size]': pageSize,
+      search,
       depth: rootLevelOnly ? 0 : undefined,
-      topics,
-      areas,
+      ...(topics && { topics }),
+      ...(areas && { areas }),
       publication_statuses: publicationStatuses,
       remove_not_allowed_parents: removeNotAllowedParents,
+      only_projects: onlyProjects,
       folder: childrenOfId,
     };
 
@@ -172,11 +221,13 @@ export default function useAdminPublications({
   }, [
     pageNumber,
     pageSize,
+    search,
     topics,
     areas,
     publicationStatuses,
     rootLevelOnly,
     removeNotAllowedParents,
+    onlyProjects,
     childrenOfId,
   ]);
 
@@ -188,6 +239,7 @@ export default function useAdminPublications({
     onLoadMore,
     onChangeTopics,
     onChangeAreas,
+    onChangeSearch,
     onChangePublicationStatus,
   };
 }

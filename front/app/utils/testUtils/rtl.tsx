@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
+// eslint-disable-next-line no-restricted-imports
 import { render, RenderOptions } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ThemeProvider } from 'styled-components';
@@ -10,16 +11,27 @@ import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import history from 'utils/browserHistory';
 
 window.confirm = jest.fn(() => true);
+window.scrollTo = jest.fn();
 global.URL.createObjectURL = jest.fn();
 Element.prototype.scrollTo = jest.fn();
 Element.prototype.scrollIntoView = jest.fn();
 
-const AllTheProviders = ({ children }) => {
+const AllTheProviders = ({ children }: { children: ReactNode }) => {
   return (
     <HistoryRouter history={history}>
       <ThemeProvider theme={getTheme(null)}>
         <GlobalStyle />
-        <IntlProvider locale="en" messages={messages}>
+        <IntlProvider
+          locale="en"
+          messages={messages}
+          onError={(err) => {
+            if (err.code === 'MISSING_TRANSLATION') {
+              console.warn('Missing translation', err.message);
+              return;
+            }
+            throw err;
+          }}
+        >
           <div id="modal-portal">{children}</div>
         </IntlProvider>
       </ThemeProvider>
@@ -45,6 +57,7 @@ const customRender: any = (ui: React.ReactElement, options?: RenderOptions) =>
   render(ui, { wrapper: AllTheProviders, ...options });
 
 // re-export everything
+// eslint-disable-next-line no-restricted-imports
 export * from '@testing-library/react';
 
 // override render method

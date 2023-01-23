@@ -79,7 +79,6 @@ const Preview = ({
           padding="0px"
           buttonStyle="white"
           icon="close"
-          iconSize="12px"
           boxShadow="none"
           boxShadowHover="none"
           onClick={handleOnClose}

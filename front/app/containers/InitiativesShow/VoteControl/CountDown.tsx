@@ -21,10 +21,10 @@ const Count = styled.div`
   width: 40px;
   height: 30px;
   border-radius: 5px;
-  background-color: ${colors.lightGreyishBlue};
+  background-color: ${colors.grey200};
   font-size: ${fontSizes.l}px;
   font-weight: 500;
-  color: ${(props) => props.theme.colorText};
+  color: ${(props) => props.theme.colors.tenantText};
 `;
 
 const Unit = styled.div`
@@ -32,7 +32,7 @@ const Unit = styled.div`
   align-items: center;
   justify-content: center;
   margin: 5px 0 0 0;
-  color: ${(props) => props.theme.colorText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.s}px;
 `;
 
@@ -48,7 +48,7 @@ interface State {
 class CountDown extends PureComponent<Props, State> {
   interval: NodeJS.Timeout;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       refresh: Date.now(),

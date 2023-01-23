@@ -18,7 +18,7 @@ import { fontSizes } from 'utils/styleUtils';
 import useIdea from 'hooks/useIdea';
 
 const Container = styled.div`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: normal;

@@ -127,16 +127,6 @@ export interface IMinimalIdeaData {
   };
 }
 
-export interface IGeotaggedIdeaData {
-  id: string;
-  type: string;
-  attributes: {
-    title_multiloc: Multiloc;
-    location_point_geojson: GeoJSON.Point;
-    location_description: string;
-  };
-}
-
 export interface IIdeaMarkerData {
   id: string;
   type: string;
@@ -236,16 +226,6 @@ export function ideasMarkersStream(streamParams: IStreamParams | null = null) {
   });
 }
 
-export function geotaggedIdeasStream(
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<{ data: IGeotaggedIdeaData[]; links: IIdeaLinks }>({
-    apiEndpoint: `${API_PATH}/ideas/geotagged`,
-    ...streamParams,
-    cacheStream: false,
-  });
-}
-
 export function similarIdeasStream(
   ideaId: string,
   streamParams: IStreamParams | null = null
@@ -274,15 +254,18 @@ export async function updateIdea(ideaId: string, object: Partial<IIdeaAdd>) {
     ideaId,
     { idea: object }
   );
+
   streams.fetchAllWith({
     dataId: [response.data.relationships.project.data.id],
     apiEndpoint: [
       `${API_PATH}/stats/ideas_count`,
       `${API_PATH}/ideas`,
       `${API_PATH}/ideas/${ideaId}/activities`,
+      `${API_PATH}/analytics`,
     ],
     partialApiEndpoint: [`${API_PATH}/ideas/${ideaId}/images`],
   });
+
   return response;
 }
 

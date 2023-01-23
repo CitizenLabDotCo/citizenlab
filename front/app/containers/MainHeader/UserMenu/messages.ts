@@ -22,4 +22,12 @@ export default defineMessages({
     id: 'app.containers.app.navbar.admin',
     defaultMessage: 'Admin',
   },
+  verified: {
+    id: 'app.containers.Navbar.verified',
+    defaultMessage: 'Verified',
+  },
+  unverified: {
+    id: 'app.containers.Navbar.unverified',
+    defaultMessage: 'Unverified',
+  },
 });

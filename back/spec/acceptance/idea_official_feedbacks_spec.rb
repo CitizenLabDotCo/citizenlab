@@ -146,7 +146,7 @@ resource 'OfficialFeedback' do
     include_examples 'actions for users with high-level privileges'
   end
 
-  context 'when the current user is a moderator', document: false, skip: !CitizenLab.ee? do
+  context 'when the current user is a moderator', document: false do
     before do
       @user = create(:project_moderator, projects: [@project])
       header_token_for(@user)

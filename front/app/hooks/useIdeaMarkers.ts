@@ -6,10 +6,16 @@ import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
 
 interface Props {
   phaseId?: string | null;
-  projectIds?: string[] | null;
+  // As long as we JSON.parse this value, it can't be
+  // undefined. This would result in an uncaught SyntaxError
+  // aka page crash.
+  projectIds: string[] | null;
   sort?: Sort;
   search?: string | null;
-  topics?: string[] | null;
+  // As long as we JSON.parse this value, it can't be
+  // undefined. This would result in an uncaught SyntaxError
+  // aka page crash.
+  topics: string[] | null;
 }
 
 export default function useIdeaMarkers({

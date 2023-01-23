@@ -17,7 +17,7 @@ const Container = styled.div`
 
   iframe {
     border: solid 1px #ccc;
-    border-radius: ${(props: any) => props.theme.borderRadius};
+    border-radius: ${(props) => props.theme.borderRadius};
   }
 `;
 
@@ -31,7 +31,7 @@ interface Props {
 
 const TypeformSurvey = memo<Props>(
   ({ typeformUrl, email, user_id, className, language }) => {
-    const isLargeTablet = useBreakpoint('largeTablet');
+    const isLargeTablet = useBreakpoint('tablet');
     const queryString = stringify(omitBy({ email, user_id, language }, isNil));
     const surveyUrl = `${typeformUrl}?${queryString}&disable-auto-focus=true`;
 

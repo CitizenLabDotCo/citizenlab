@@ -11,7 +11,7 @@ import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 import postManagerMessages from 'components/admin/PostManager/messages';
 
@@ -37,7 +37,7 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 export class AssigneeFilter extends PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   getAssigneeOptions = memoize((prospectAssignees, authUser) => {
@@ -101,7 +101,7 @@ export class AssigneeFilter extends PureComponent<
 
     return (
       <Dropdown
-        className={className}
+        className={`${className} intercom-admin-asignee-filter`}
         id="e2e-select-assignee-filter"
         options={this.getAssigneeOptions(prospectAssignees, authUser)}
         onChange={this.onAssigneeChange}
@@ -131,7 +131,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
 });
 
-const AssigneeFilterWithHocs = injectIntl<Props>(AssigneeFilter);
+const AssigneeFilterWithHocs = injectIntl(AssigneeFilter);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

@@ -18,10 +18,6 @@ module UserCustomFields
           'Adds a new dashboard to monitor the representativeness of the user base and project participants.'
         end
 
-        def dependencies
-          ['user_custom_fields']
-        end
-
         def allowed_by_default
           false
         end

@@ -10,6 +10,7 @@ resource 'Moderations' do
     header 'Content-Type', 'application/json'
 
     @time = Time.now
+    IdeaStatus.create_defaults
     @project = create(:project)
     @m3 = create(
       :idea,
@@ -38,6 +39,7 @@ resource 'Moderations' do
       body_multiloc: { 'en' => 'We must return that CO2 to our atmosphere at all cost' },
       published_at: @time - 1.minute
     )
+    create :idea, project: create(:continuous_native_survey_project)
   end
 
   get 'web_api/v1/moderations' do

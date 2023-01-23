@@ -28,6 +28,7 @@ public/uploads
 
 doc/*
 !doc/dependency_decisions.yml
+!doc/style.css
 .yardoc/
 attractor_output/
 

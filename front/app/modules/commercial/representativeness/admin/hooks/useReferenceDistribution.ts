@@ -11,7 +11,7 @@ import {
 import {
   userCustomFieldStream,
   IUserCustomField,
-} from 'modules/commercial/user_custom_fields//services/userCustomFields';
+} from 'services/userCustomFields';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';

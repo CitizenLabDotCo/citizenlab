@@ -4,7 +4,8 @@ class ParticipationContextService
   POSTING_DISABLED_REASONS = {
     project_inactive: 'project_inactive',
     not_ideation: 'not_ideation',
-    posting_disabled: 'posting_disabled'
+    posting_disabled: 'posting_disabled',
+    posting_limited_max_reached: 'posting_limited_max_reached'
   }.freeze
 
   COMMENTING_DISABLED_REASONS = {
@@ -68,11 +69,11 @@ class ParticipationContextService
   def participation_possible_for_context?(context, user)
     return true if context.information?
 
-    !(posting_idea_disabled_reason_for_context(context, user)\
-    && commenting_idea_disabled_reason_for_context(context, user)\
-    && idea_voting_disabled_reason_for(context, user)\
-    && taking_survey_disabled_reason_for_context(context, user)\
-    && taking_poll_disabled_reason_for_context(context, user)\
+    !(posting_idea_disabled_reason_for_context(context, user) \
+    && commenting_idea_disabled_reason_for_context(context, user) \
+    && idea_voting_disabled_reason_for(context, user) \
+    && taking_survey_disabled_reason_for_context(context, user) \
+    && taking_poll_disabled_reason_for_context(context, user) \
     && budgeting_disabled_reason_for_context(context, user))
   end
 
@@ -84,10 +85,12 @@ class ParticipationContextService
   def posting_idea_disabled_reason_for_context(context, user)
     if !context
       POSTING_DISABLED_REASONS[:project_inactive]
-    elsif !context.ideation?
-      POSTING_DISABLED_REASONS[:not_ideation]
+    elsif !context.ideation? && !context.native_survey?
+      POSTING_DISABLED_REASONS[:not_ideation] # TODO: (native surveys) change reason code?
     elsif !context.posting_enabled
       POSTING_DISABLED_REASONS[:posting_disabled]
+    elsif user && posting_limit_reached?(context, user)
+      POSTING_DISABLED_REASONS[:posting_limited_max_reached]
     else
       permission_denied_reason(user, 'posting_idea', context)
     end
@@ -300,6 +303,10 @@ class ParticipationContextService
       ErrorReporter.report_msg("Unsupported vote type #{mode}")
       'unsupported_vote_type'
     end
+  end
+
+  def posting_limit_reached?(context, user)
+    context.posting_limited? && context.ideas.where(author: user).size >= context.posting_limited_max
   end
 
   def upvoting_limit_reached?(context, user)

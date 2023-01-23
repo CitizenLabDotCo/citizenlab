@@ -20,7 +20,7 @@ const ListItemText = styled.span`
   flex-grow: 1;
   flex-shrink: 1;
   flex-basis: 0;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 21px;
@@ -42,7 +42,7 @@ const ListItem = styled.li`
   padding: 10px;
   list-style: none;
   background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   cursor: pointer;
   transition: all 80ms ease-out;
 
@@ -53,7 +53,7 @@ const ListItem = styled.li`
   &:hover,
   &:focus,
   &.selected {
-    background: ${colors.clDropdownHoverBackground};
+    background: ${colors.grey300};
 
     ${ListItemText} {
       color: #000;
@@ -70,7 +70,7 @@ const CheckboxListItem = styled.li`
   padding: 10px;
   list-style: none;
   background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   cursor: pointer;
   transition: all 80ms ease-out;
   padding: 0 10px;
@@ -82,7 +82,7 @@ const CheckboxListItem = styled.li`
   &:hover,
   &:focus,
   &.selected {
-    background: ${colors.clDropdownHoverBackground};
+    background: ${colors.grey300};
 
     ${ListItemText} {
       color: #000;
@@ -92,7 +92,7 @@ const CheckboxListItem = styled.li`
 
 const CheckboxLabel = styled.span`
   flex: 1;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 21px;

@@ -30,6 +30,11 @@ module SmartGroups::Rules
       end
     end
 
+    # All custom field filter queries access the `users` table only, so we can cache it.
+    def cachable_by_users_scope?
+      true
+    end
+
     def as_json
       json = {
         'ruleType' => rule_type,

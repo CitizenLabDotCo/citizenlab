@@ -4,8 +4,10 @@ import { keys } from 'utils/helperUtils';
 
 export function getCurrentTab(
   statusCounts: IStatusCounts,
-  currentTab?: PublicationTab
+  currentTab: PublicationTab | null
 ): PublicationTab {
+  const { published, archived, draft, all } = statusCounts;
+
   if (currentTab) {
     const count = statusCounts[currentTab];
 
@@ -13,9 +15,6 @@ export function getCurrentTab(
       return currentTab;
     }
   }
-
-  const { published, archived, draft, all } = statusCounts;
-
   if (published && published > 0) return 'published';
   if (archived && all > archived) return 'archived';
   if (draft && all > draft) return 'draft';

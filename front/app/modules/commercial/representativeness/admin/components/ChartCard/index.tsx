@@ -11,7 +11,7 @@ import {
   usersByGenderXlsxEndpoint,
   usersByDomicileXlsxEndpoint,
   usersByAgeXlsxEndpoint,
-} from 'modules/commercial/user_custom_fields/services/stats';
+} from 'services/userCustomFieldStats';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -23,25 +23,24 @@ import Footer from './Footer';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 import fieldMessages from '../Field/messages';
-
-// typings
-import {
-  IUserCustomFieldData,
-  TCustomFieldCode,
-} from 'modules/commercial/user_custom_fields/services/userCustomFields';
-import {
-  RepresentativenessRow,
-  RepresentativenessRowMultiloc,
-} from '../../hooks/createRefDataSubscription';
 
 // utils
 import { getLegendLabels } from './utils';
 import { isNilOrError } from 'utils/helperUtils';
 
-export type ViewState = 'chart' | 'table';
+// typings
+import {
+  IUserCustomFieldData,
+  TCustomFieldCode,
+} from 'services/userCustomFields';
+import {
+  RepresentativenessRow,
+  RepresentativenessRowMultiloc,
+} from '../../hooks/createRefDataSubscription';
+import { View } from 'components/admin/GraphCard/ViewToggle';
 
 interface Props {
   userCustomField: IUserCustomFieldData;
@@ -69,7 +68,7 @@ const ChartCard = injectIntl(
     userCustomField,
     projectFilter,
     intl: { formatMessage },
-  }: Props & InjectedIntlProps) => {
+  }: Props & WrappedComponentProps) => {
     const rScore = useRScore(userCustomField.id, projectFilter);
     const { referenceData, includedUsers } = useReferenceData(
       userCustomField,
@@ -77,7 +76,7 @@ const ChartCard = injectIntl(
     );
 
     const currentChartRef = useRef<SVGElement>();
-    const [viewState, setViewState] = useState<ViewState | undefined>(
+    const [view, setView] = useState<View | undefined>(
       isNilOrError(referenceData)
         ? undefined
         : referenceData.length > 12
@@ -86,11 +85,11 @@ const ChartCard = injectIntl(
     );
 
     useEffect(() => {
-      if (viewState !== undefined) return;
+      if (view !== undefined) return;
       if (isNilOrError(referenceData)) return;
 
-      setViewState(referenceData.length > 12 ? 'table' : 'chart');
-    }, [referenceData, viewState]);
+      setView(referenceData.length > 12 ? 'table' : 'chart');
+    }, [referenceData, view]);
 
     const localize = useLocalize();
 
@@ -98,17 +97,17 @@ const ChartCard = injectIntl(
       isNilOrError(referenceData) ||
       isNilOrError(rScore) ||
       isNilOrError(includedUsers) ||
-      viewState === undefined
+      view === undefined
     ) {
       return null;
     }
 
-    const handleClickSwitchToTableView = () => setViewState('table');
+    const handleClickSwitchToTableView = () => setView('table');
 
     const hideTicks = referenceData.length > 12;
     const dataIsTooLong = referenceData.length > 24;
     const numberOfHiddenItems = referenceData.length - 24;
-    const hideLegend = viewState === 'table';
+    const hideLegend = view === 'table';
 
     const barNames = [
       formatMessage(messages.users),
@@ -141,12 +140,12 @@ const ChartCard = injectIntl(
           title={title}
           svgNode={currentChartRef}
           rScore={rScore.attributes.score}
-          viewState={viewState}
+          view={view}
           projectFilter={projectFilter}
           xlsxEndpoint={xlsxEndpoint}
-          onChangeViewState={setViewState}
+          onChangeView={setView}
         />
-        {viewState === 'chart' && (
+        {view === 'chart' && (
           <Chart
             currentChartRef={currentChartRef}
             data={data}
@@ -154,7 +153,7 @@ const ChartCard = injectIntl(
             hideTicks={hideTicks}
           />
         )}
-        {viewState === 'table' && (
+        {view === 'table' && (
           <Table
             title={title}
             data={data}
@@ -171,7 +170,7 @@ const ChartCard = injectIntl(
           hideTicks={hideTicks}
           dataIsTooLong={dataIsTooLong}
           numberOfHiddenItems={numberOfHiddenItems}
-          viewState={viewState}
+          view={view}
           legendLabels={legendLabels}
           hideLegend={hideLegend}
           onClickSwitchToTableView={handleClickSwitchToTableView}

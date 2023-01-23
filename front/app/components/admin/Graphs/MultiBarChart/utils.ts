@@ -1,73 +1,67 @@
-import { DataRow } from '../typings';
+// styling
+import { legacyColors, sizes } from '../styling';
 
-// MAPPING
-type MappingFunction<T> = (row: DataRow) => T[];
-type Channel<T> = string[] | MappingFunction<T>;
+// typings
+import {
+  Props,
+  Mapping,
+  Bars,
+  BarConfig,
+  Layout,
+  LabelConfig,
+} from './typings';
 
-export interface Mapping {
-  length: string[];
-  fill?: Channel<string>;
-  opacity?: Channel<number>;
-}
+const FALLBACK_FILL = legacyColors.barFill;
 
-export const applyChannel = <T>(
-  row: DataRow,
-  index: number,
-  channel?: Channel<T>
-): T | undefined => {
-  if (channel instanceof Array) return row[channel[index]];
-  if (channel instanceof Function) return channel(row)[index];
-  return;
-};
+export const getBarConfigs = <Row>(
+  data: Row[],
+  mapping: Mapping<Row>,
+  bars?: Bars
+) => {
+  const { length, fill, opacity, cornerRadius } = mapping;
 
-// BARS
-export interface BarProps {
-  name?: string[];
-  size?: number[];
-  fill?: string[];
-  opacity?: (string | number)[];
-  isAnimationActive?: boolean;
-  categoryGap?: string | number;
-}
+  const barConfigs: BarConfig[] = length.map((lengthColumn, barIndex) => {
+    const cells = data.map((row, rowIndex) => {
+      const payload = { row, rowIndex, barIndex };
 
-interface CategoryProps {
-  name?: string;
-  barSize?: number;
-  fill?: string;
-  opacity?: string | number;
-  isAnimationActive?: boolean;
-}
+      return {
+        fill: (fill && fill(payload)) ?? FALLBACK_FILL,
+        opacity: opacity && opacity(payload),
+        radius: cornerRadius && cornerRadius(payload),
+      };
+    });
 
-type ParsedBarProps = CategoryProps[];
-
-export const parseBarProps = (
-  defaultFill: string,
-  numberOfParallelBars: number,
-  barProps: BarProps = {}
-): ParsedBarProps => {
-  const parsedBarProps: ParsedBarProps = [];
-  const { name, size, fill, opacity, isAnimationActive } = barProps;
-
-  for (let i = 0; i < numberOfParallelBars; i++) {
-    const categoryProps: CategoryProps = {
-      name: name?.[i],
-      barSize: size?.[i],
-      fill: fill?.[i] ?? defaultFill,
-      opacity: opacity?.[i],
-      isAnimationActive,
+    return {
+      props: {
+        name: bars?.names?.[barIndex],
+        dataKey: lengthColumn as string,
+        isAnimationActive: bars?.isAnimationActive,
+        barSize: bars?.size,
+      },
+      cells,
     };
+  });
 
-    parsedBarProps.push(categoryProps);
-  }
-
-  return parsedBarProps;
+  return barConfigs;
 };
-
-// LAYOUT
-export type Layout = 'horizontal' | 'vertical';
 
 // For some reason, in recharts a 'horizontal' bar chart
 // actually means a 'vertical' bar chart. For our own API
 // we use the correct terminology
 export const getRechartsLayout = (layout: Layout) =>
   layout === 'vertical' ? 'horizontal' : 'vertical';
+
+export const getLabelConfig = (
+  labels: Props<any>['labels'],
+  position: 'top' | 'right'
+): LabelConfig => {
+  const defaultLabelConfig = {
+    fill: legacyColors.chartLabel,
+    fontSize: sizes.chartLabel,
+    position,
+  };
+
+  return typeof labels === 'object'
+    ? { ...defaultLabelConfig, ...labels }
+    : defaultLabelConfig;
+};

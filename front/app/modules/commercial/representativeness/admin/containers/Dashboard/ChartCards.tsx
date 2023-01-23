@@ -1,7 +1,7 @@
 import React from 'react';
 
 // hooks
-import useUserCustomFields from 'modules/commercial/user_custom_fields/hooks/useUserCustomFields';
+import useUserCustomFields from 'hooks/useUserCustomFields';
 
 // components
 import ChartCard from '../../components/ChartCard';

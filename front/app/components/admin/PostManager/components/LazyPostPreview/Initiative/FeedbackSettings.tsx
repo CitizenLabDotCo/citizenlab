@@ -41,7 +41,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../../tracks';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
@@ -71,9 +71,9 @@ interface InputProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface PropsWithHoCs extends Props, InjectedLocalized, InjectedIntlProps {}
-
-class FeedbackSettings extends PureComponent<PropsWithHoCs> {
+class FeedbackSettings extends PureComponent<
+  Props & InjectedLocalized & WrappedComponentProps
+> {
   getStatusOptions = (statuses, allowedTransitions) => {
     const { localize } = this.props;
     if (!isNilOrError(statuses)) {

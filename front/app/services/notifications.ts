@@ -382,6 +382,17 @@ export interface IThresholdReachedForAdminNotificationData
   };
 }
 
+export interface IProjectFolderModerationRightsReceivedNotificationData
+  extends IBaseNotificationData {
+  attributes: {
+    type: 'project_folder_moderation_rights_received';
+    read_at: string | null;
+    created_at: string;
+    project_folder_id: string;
+    project_folder_title_multiloc: Multiloc;
+  };
+}
+
 export interface INotificationDataMap {
   IAdminRightsReceivedNotificationData: IAdminRightsReceivedNotificationData;
   ICommentDeletedByAdminNotificationData: ICommentDeletedByAdminNotificationData;
@@ -412,6 +423,7 @@ export interface INotificationDataMap {
   IStatusChangeOnVotedIdeaNotificationData: IStatusChangeOnVotedIdeaNotificationData;
   IStatusChangeOnVotedInitiativeNotificationData: IStatusChangeOnVotedInitiativeNotificationData;
   IThresholdReachedForAdminNotificationData: IThresholdReachedForAdminNotificationData;
+  IProjectFolderModerationRightsReceivedNotificationData: IProjectFolderModerationRightsReceivedNotificationData;
 }
 
 export type TNotificationData =

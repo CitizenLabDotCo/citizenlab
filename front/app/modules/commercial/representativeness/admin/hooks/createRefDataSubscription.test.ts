@@ -8,7 +8,7 @@ import {
 import {
   IUsersByRegistrationField,
   IUsersByAge,
-} from 'modules/commercial/user_custom_fields/services/stats';
+} from 'services/userCustomFieldStats';
 
 jest.mock('services/appConfiguration');
 jest.mock('services/auth');
@@ -303,6 +303,37 @@ describe('regFieldToIncludedUsers', () => {
       known: 0,
       total: 0,
       percentage: 0,
+    };
+
+    expect(regFieldToIncludedUsers(usersByField)).toEqual(expectedOutput);
+  });
+
+  it('works if less keys in users than in reference data', () => {
+    const usersByField: any = {
+      series: {
+        users: {
+          south_sunday: 1,
+          _blank: 23,
+        },
+        reference_population: {
+          south_sunday: 100,
+          mosciskimouth: 100,
+          east_teganmouth: 100,
+          west_hopeport: 100,
+          homenickville: 100,
+          derrickville: 100,
+          strackestad: 100,
+          ake_tammarastad: 100,
+          west_sheridan: 100,
+          west_orval: 100,
+        },
+      },
+    };
+
+    const expectedOutput = {
+      known: 1,
+      total: 24,
+      percentage: Math.round(100 / 24),
     };
 
     expect(regFieldToIncludedUsers(usersByField)).toEqual(expectedOutput);

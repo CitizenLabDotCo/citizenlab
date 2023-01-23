@@ -142,6 +142,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.GroupCreation.fieldGroupName',
     defaultMessage: 'Name of the group',
   },
+  fieldGroupNameEmptyError: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.fieldGroupNameEmptyError',
+    defaultMessage: 'Provide a group name',
+  },
+  saveGroup: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.saveGroup',
+    defaultMessage: 'Save group',
+  },
   select: {
     id: 'app.containers.AdminPage.Users.GroupsPanel.select',
     defaultMessage: 'Select',
@@ -187,5 +195,9 @@ export default defineMessages({
   exportSelectedUsers: {
     id: 'app.containers.AdminPage.Users.UsersGroup.exportSelectedUsers',
     defaultMessage: 'Export selected users',
+  },
+  userInvitationPending: {
+    id: 'app.containers.Admin.Users.UserTableRow.userInvitationPending',
+    defaultMessage: 'Invitation pending',
   },
 });

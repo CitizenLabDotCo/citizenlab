@@ -82,4 +82,21 @@ export default defineMessages({
     defaultMessage:
       'Define the different timeline phases for your project and describe what each phase is about. In every phase you can pick a different participation method: idea gathering, surveys, information, voting, commenting or participatory budgeting.',
   },
+  deletePhaseConfirmationQuestion: {
+    id: 'app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmationQuestion',
+    defaultMessage: 'Are you sure you want to delete this phase?',
+  },
+  deletePhaseInfo: {
+    id: 'app.containers.AdminPage.ProjectTimeline.deletePhaseInfo',
+    defaultMessage:
+      'All data relating to this phase will be deleted. This cannot be undone.',
+  },
+  cancelDeletePhaseText: {
+    id: 'app.containers.AdminPage.ProjectTimeline.cancelDeleteButtonText',
+    defaultMessage: 'Cancel',
+  },
+  deletePhaseButtonText: {
+    id: 'app.containers.AdminPage.ProjectTimeline.deletePhaseButtonText',
+    defaultMessage: 'Yes, delete this phase',
+  },
 });

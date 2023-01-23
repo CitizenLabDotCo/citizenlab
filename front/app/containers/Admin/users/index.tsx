@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { Formik, FormikActions } from 'formik';
 import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // Resources
@@ -35,7 +34,7 @@ const Wrapper = styled.div`
   top: ${(props) => props.theme.menuHeight}px;
   left: 210px;
   bottom: 0;
-  ${media.smallerThan1200px`
+  ${media.tablet`
     left: 80px;
   `}
 `;
@@ -44,7 +43,7 @@ const LeftPanel = styled(GroupsListPanel)`
   width: 300px;
   flex: 0 0 300px;
 
-  ${media.smallerThan1200px`
+  ${media.tablet`
     width: 260px;
     flex: 0 0 260px;
   `}
@@ -65,9 +64,6 @@ import messages from './messages';
 // Services
 import { IGroupData, addGroup, MembershipType } from 'services/groups';
 
-// Typings
-import { CLErrorsJSON } from 'typings';
-import { isCLErrorJSON } from 'utils/errorUtils';
 import Outlet from 'components/Outlet';
 
 export interface Props {
@@ -83,7 +79,7 @@ export interface State {
 class UsersPage extends PureComponent<Props & WithRouterProps, State> {
   globalState: IGlobalStateService<IAdminNoPadding>;
 
-  constructor(props) {
+  constructor(props: Props & WithRouterProps) {
     super(props);
     this.globalState = globalState.init('AdminNoPadding', { enabled: true });
     this.state = {
@@ -111,26 +107,10 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
     this.setState({ groupCreationModal: groupType });
   };
 
-  handleSubmitForm = (
-    values: NormalFormValues,
-    { setErrors, setSubmitting, setStatus }: FormikActions<NormalFormValues>
-  ) => {
-    addGroup({ ...values })
-      .then(() => {
-        this.closeGroupCreationModal();
-      })
-      .catch((errorResponse) => {
-        if (isCLErrorJSON(errorResponse)) {
-          const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-          setErrors(apiErrors);
-        } else {
-          setStatus('error');
-        }
-        setSubmitting(false);
-      });
+  handleSubmitForm = async (values: NormalFormValues) => {
+    await addGroup({ ...values });
+    this.closeGroupCreationModal();
   };
-
-  renderNormalGroupForm = (props) => <NormalGroupForm {...props} />;
 
   renderModalHeader = () => {
     const { groupCreationModal } = this.state;
@@ -181,13 +161,10 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
             )}
 
             {groupCreationModal === 'manual' && (
-              <Formik
-                initialValues={{
-                  title_multiloc: {},
+              <NormalGroupForm
+                defaultValues={{
                   membership_type: 'manual',
                 }}
-                validate={NormalGroupForm.validate}
-                render={this.renderNormalGroupForm}
                 onSubmit={this.handleSubmitForm}
               />
             )}

@@ -12,4 +12,8 @@ class AvatarUploader < BaseImageUploader
   version :large do
     process resize_to_fill: [640, 640]
   end
+
+  def content_type_allowlist
+    nil # This is necessary to keep registration through SSO working.
+  end
 end
