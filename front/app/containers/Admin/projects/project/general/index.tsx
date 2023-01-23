@@ -102,7 +102,7 @@ const AdminProjectsProjectGeneral = () => {
   >([]);
   const [projectCard, setProjectCard] =
     useState<IProjectFormState['projectCard']>(null);
-  // project_images should always store one record, but in practice it's different (maybe because of a bug)
+  // project_images should always store one record, but in practice it was (or is?) different (maybe because of a bug)
   // https://citizenlabco.slack.com/archives/C015M14HYSF/p1674228018666059
   const [projectCardToRemove, setProjectCardToRemove] =
     useState<IProjectFormState['projectCardToRemove']>(null);
@@ -227,7 +227,7 @@ const AdminProjectsProjectGeneral = () => {
     setSubmitState('enabled');
   };
 
-  const handleStoredProjectCardOnRemove = () => {
+  const handleCroppedProjectCardOnRemove = () => {
     projectCard && handleProjectCardOnRemove(projectCard);
   };
 
@@ -306,7 +306,7 @@ const AdminProjectsProjectGeneral = () => {
           projectCard &&
           !projectCard.remote &&
           latestProjectId
-            ? [addProjectImage(latestProjectId, croppedProjectCardBase64)]
+            ? addProjectImage(latestProjectId, croppedProjectCardBase64)
             : null;
         const cardToRemovePromise =
           projectCardToRemove &&
@@ -574,7 +574,7 @@ const AdminProjectsProjectGeneral = () => {
               image={projectCard}
               onComplete={handleProjectCardOnCompleteCropping}
               aspect={2 / 1}
-              onRemove={handleStoredProjectCardOnRemove}
+              onRemove={handleCroppedProjectCardOnRemove}
             />
           </Box>
         ) : (

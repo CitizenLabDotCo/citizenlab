@@ -93,8 +93,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             : new Promise<null>((resolve) => resolve(null))
         );
         const images = await Promise.all(imagePromises);
-        images.filter((img) => img);
-        setProjectFolderImages(images as UploadFile[]);
+        setFolderCard(images[0]);
       }
     })();
   }, [mode, projectFolderImagesRemote]);
@@ -132,14 +131,12 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     'published' | 'draft' | 'archived'
   >('published');
   const [changedHeaderBg, setChangedHeaderBg] = useState(false);
-  const [projectFolderImages, setProjectFolderImages] = useState<UploadFile[]>(
-    []
-  );
-  const [projectFolderImagesBase64, setProjectFolderImagesBase64] = useState<
+  const [folderCard, setFolderCard] = useState<UploadFile | null>(null);
+  const [croppedFolderCardBase64, setCroppedFolderCardBase64] = useState<
     string | null
   >(null);
-  const [projectFolderImagesToRemove, setProjectFolderImagesToRemove] =
-    useState<string[]>([]);
+  const [folderCardToRemove, setFolderCardToRemove] =
+    useState<UploadFile | null>(null);
   const [projectFolderFiles, setProjectFolderFiles] = useState<UploadFile[]>(
     []
   );
@@ -174,27 +171,17 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     setHeaderBgBase64(newImageBase64);
   }, []);
 
-  const handleProjectFolderImageOnRemove = useCallback(
-    (imageToRemove: UploadFile) => {
-      setSubmitState('enabled');
+  const handleFolderCardOnRemove = (imageToRemove: UploadFile) => {
+    setSubmitState('enabled');
 
-      if (imageToRemove.remote && imageToRemove.id) {
-        setProjectFolderImagesToRemove((previous) => {
-          return [...previous, imageToRemove.id as string];
-        });
-      }
+    setFolderCard(null);
+    if (imageToRemove.remote && imageToRemove.id) {
+      setFolderCardToRemove(imageToRemove);
+    }
+  };
 
-      setProjectFolderImages((previous) => {
-        return previous.filter(
-          (image) => image.base64 !== imageToRemove.base64
-        );
-      });
-    },
-    []
-  );
-
-  const handleProjectFolderImagesOnRemoveNoArgs = () => {
-    handleProjectFolderImageOnRemove(projectFolderImages[0]);
+  const handleCroppedFolderCardOnRemove = () => {
+    folderCard && handleFolderCardOnRemove(folderCard);
   };
 
   const handleProjectFolderFileOnAdd = useCallback((fileToAdd: UploadFile) => {
@@ -276,21 +263,20 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               },
             });
             if (!isNilOrError(projectFolder)) {
-              const imagesToAddPromises = projectFolderImagesBase64
-                ? projectFolderImages.map(() =>
-                    addProjectFolderImage(
+              const cardToAddPromise =
+                croppedFolderCardBase64 && folderCard && !folderCard.remote
+                  ? addProjectFolderImage(
                       projectFolder.id,
-                      projectFolderImagesBase64
+                      croppedFolderCardBase64
                     )
-                  )
-                : [];
+                  : null;
               const filesToAddPromises = projectFolderFiles.map((file) =>
                 addProjectFolderFile(projectFolder.id, file.base64, file.name)
               );
 
-              (imagesToAddPromises || filesToAddPromises) &&
+              (cardToAddPromise || filesToAddPromises) &&
                 (await Promise.all<any>([
-                  ...imagesToAddPromises,
+                  cardToAddPromise,
                   ...filesToAddPromises,
                 ]));
               clHistory.push(`/admin/projects/folders/${projectFolder.id}`);
@@ -308,19 +294,18 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             shortDescriptionMultiloc &&
             !isNilOrError(projectFolder)
           ) {
-            const imagesToAddPromises = projectFolderImagesBase64
-              ? projectFolderImages
-                  .filter((file) => !file.remote)
-                  .map(() =>
-                    addProjectFolderImage(
-                      projectFolderId as string,
-                      projectFolderImagesBase64
-                    )
+            const cardToAddPromise =
+              croppedFolderCardBase64 && folderCard && !folderCard.remote
+                ? addProjectFolderImage(
+                    projectFolder.id,
+                    croppedFolderCardBase64
                   )
-              : [];
-            const imagesToRemovePromises = projectFolderImagesToRemove.map(
-              (id) => deleteProjectFolderImage(projectFolderId as string, id)
-            );
+                : null;
+            const cardToRemovePromises =
+              folderCardToRemove &&
+              folderCardToRemove.id &&
+              deleteProjectFolderImage(projectFolderId, folderCardToRemove.id);
+
             const filesToAddPromises = projectFolderFiles
               .filter((file) => !file.remote)
               .map((file) =>
@@ -334,13 +319,12 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               deleteProjectFolderFile(projectFolderId as string, id)
             );
 
-            imagesToAddPromises &&
-              (await Promise.all<any>([
-                ...imagesToAddPromises,
-                ...imagesToRemovePromises,
-                ...filesToAddPromises,
-                ...filesToRemovePromises,
-              ]));
+            await Promise.all<any>([
+              cardToAddPromise,
+              cardToRemovePromises,
+              ...filesToAddPromises,
+              ...filesToRemovePromises,
+            ]);
 
             const changedTitleMultiloc = !isEqual(
               titleMultiloc,
@@ -414,10 +398,11 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     return null;
   }
 
-  const projectFolderImagesShouldBeSaved =
-    projectFolderImages && projectFolderImages.length > 0
-      ? !projectFolderImages[0].remote
-      : false;
+  const projectFolderImagesShouldBeSaved = folderCard
+    ? !folderCard.remote
+    : false;
+
+  console.log({ folderCard });
 
   return (
     <form onSubmit={saveForm}>
@@ -536,22 +521,24 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           {projectFolderImagesShouldBeSaved ? (
             <Box display="flex" flexDirection="column" gap="8px">
               <ImageCropperContainer
-                image={projectFolderImages[0]}
-                onComplete={getHandler(setProjectFolderImagesBase64)}
+                image={folderCard}
+                onComplete={getHandler(setCroppedFolderCardBase64)}
                 aspect={2 / 1}
-                onRemove={handleProjectFolderImagesOnRemoveNoArgs}
+                onRemove={handleCroppedFolderCardOnRemove}
               />
             </Box>
           ) : (
             <ImagesDropzone
-              images={projectFolderImages}
+              images={folderCard && [folderCard]}
               imagePreviewRatio={1 / 2}
               maxImagePreviewWidth="240px"
               acceptedFileTypes={{
                 'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
               }}
-              onAdd={getHandler(setProjectFolderImages)}
-              onRemove={handleProjectFolderImageOnRemove}
+              onAdd={getHandler((cards: UploadFile[]) =>
+                setFolderCard(cards[0])
+              )}
+              onRemove={handleFolderCardOnRemove}
             />
           )}
         </SectionField>
