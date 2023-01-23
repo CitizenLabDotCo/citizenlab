@@ -146,6 +146,27 @@ describe LocalProjectCopyService do
         .to eq source_project.custom_form.custom_fields.first.options.first.as_json(except: %i[id custom_field_id updated_at created_at])
     end
 
+    it 'copies associated poll questions & options' do
+      # config = AppConfiguration.instance
+      # config.settings['core']['locales'] = %w[en nl-BE]
+      # config.save!
+
+      source_project = create(:continuous_poll_project)
+      create_list(:poll_question, 2, :with_options, participation_context_id: source_project.id, participation_context_type: 'Project')
+
+      copied_project = service.copy(source_project)
+
+      expect(copied_project.poll_questions.count).to eq 2
+      expect(copied_project.poll_questions.map { |record| record.as_json(except: %i[id participation_context_id ordering updated_at created_at]) })
+        .to match_array(source_project.poll_questions.map { |record| record.as_json(except: %i[id participation_context_id ordering updated_at created_at]) })
+
+      source_question = source_project.poll_questions.last
+      copied_question = copied_project.poll_questions.find_by(title_multiloc: source_question.title_multiloc)
+
+      expect(copied_question.options.map { |record| record.as_json(except: %i[id question_id ordering updated_at created_at]) })
+        .to match_array(source_question.options.map { |record| record.as_json(except: %i[id question_id ordering updated_at created_at]) })
+    end
+
     it "associates correct groups with copied project's groups visibility permission" do
       source_project = create(:private_groups_project)
 
