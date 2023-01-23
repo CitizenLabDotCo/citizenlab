@@ -96,7 +96,9 @@ const FormBuilderToolbox = ({
       borderRight={`1px solid ${colors.borderLight}`}
     >
       <Box w="100%" display="inline">
-        <BuiltInFields isEditingDisabled={isEditingDisabled} move={move} />
+        {builderConfig.displayBuiltInFields && (
+          <BuiltInFields isEditingDisabled={isEditingDisabled} move={move} />
+        )}
         <Title
           fontWeight="normal"
           mb="4px"
