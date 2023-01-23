@@ -32,6 +32,7 @@ import {
 } from './components/styling';
 import ProjectFolderSelect from './components/ProjectFolderSelect';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
+import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -569,22 +570,28 @@ const AdminProjectsProjectGeneral = () => {
           imageUrl={project?.attributes.header_bg.large}
           onImageChange={handleHeaderBgChange}
         />
-        {projectCardShouldBeSaved ? (
-          <Box display="flex" flexDirection="column" gap="8px">
-            <ImageCropperContainer
-              image={projectCard}
-              onComplete={handleProjectCardOnCompleteCropping}
-              aspect={CARD_IMAGE_ASPECT_RATIO / 1}
-              onRemove={handleCroppedProjectCardOnRemove}
+        <StyledSectionField>
+          <SubSectionTitle>
+            <FormattedMessage {...messages.projectCardImageLabelText} />
+            <ImageInfoTooltip />
+          </SubSectionTitle>
+          {projectCardShouldBeSaved ? (
+            <Box display="flex" flexDirection="column" gap="8px">
+              <ImageCropperContainer
+                image={projectCard}
+                onComplete={handleProjectCardOnCompleteCropping}
+                aspect={CARD_IMAGE_ASPECT_RATIO / 1}
+                onRemove={handleCroppedProjectCardOnRemove}
+              />
+            </Box>
+          ) : (
+            <ProjectImageDropzone
+              projectImages={projectCard && [projectCard]}
+              handleProjectImagesOnAdd={handleProjectCardOnAdd}
+              handleProjectImageOnRemove={handleProjectCardOnRemove}
             />
-          </Box>
-        ) : (
-          <ProjectImageDropzone
-            projectImages={projectCard && [projectCard]}
-            handleProjectImagesOnAdd={handleProjectCardOnAdd}
-            handleProjectImageOnRemove={handleProjectCardOnRemove}
-          />
-        )}
+          )}
+        </StyledSectionField>
 
         <AttachmentsDropzone
           projectFiles={projectFiles}

@@ -2,17 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 
 // components
-import { SubSectionTitle } from 'components/admin/Section';
-import { StyledSectionField } from './styling';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
 
 // typings
 import { UploadFile } from 'typings';
-import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
 
 import { CARD_IMAGE_ASPECT_RATIO } from 'services/projects';
 
@@ -34,20 +27,14 @@ export default ({
   handleProjectImagesOnAdd,
   handleProjectImageOnRemove,
 }: Props) => (
-  <StyledSectionField>
-    <SubSectionTitle>
-      <FormattedMessage {...messages.projectCardImageLabelText} />
-      <ImageInfoTooltip />
-    </SubSectionTitle>
-    <StyledImagesDropzone
-      images={projectImages}
-      imagePreviewRatio={1 / CARD_IMAGE_ASPECT_RATIO}
-      maxImagePreviewWidth="240px"
-      acceptedFileTypes={{
-        'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
-      }}
-      onAdd={handleProjectImagesOnAdd}
-      onRemove={handleProjectImageOnRemove}
-    />
-  </StyledSectionField>
+  <StyledImagesDropzone
+    images={projectImages}
+    imagePreviewRatio={1 / CARD_IMAGE_ASPECT_RATIO}
+    maxImagePreviewWidth="240px"
+    acceptedFileTypes={{
+      'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+    }}
+    onAdd={handleProjectImagesOnAdd}
+    onRemove={handleProjectImageOnRemove}
+  />
 );
