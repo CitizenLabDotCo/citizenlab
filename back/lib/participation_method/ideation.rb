@@ -281,6 +281,19 @@ module ParticipationMethod
       ]
     end
 
+    # Locks mirror the name of the fields whose values cannot be changed (ie are locked)
+    def constraints
+      {
+        'ideation_section_1' => { 'locks' => { 'enabled' => true, 'title_multiloc' => true } },
+        'title_multiloc' => { 'locks' => { 'enabled' => true, 'required' => true, 'title_multiloc' => true } },
+        'body_multiloc' => { 'locks' => { 'enabled' => true, 'required' => true, 'title_multiloc' => true } },
+        'idea_images_attributes' => { 'locks' => { 'enabled' => true, 'title_multiloc' => true } },
+        'idea_files_attributes' => { 'locks' => { 'title_multiloc' => true } },
+        'topic_ids' => { 'locks' => { 'title_multiloc' => true } },
+        'location_description' => { 'locks' => { 'title_multiloc' => true } }
+      }
+    end
+
     def validate_built_in_fields?
       true
     end
