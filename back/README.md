@@ -102,13 +102,11 @@ for i in `seq 50`; do docker-compose run --rm web rspec ./spec/acceptance/pages_
 ### End-to-end tests
 
 The e2e tests themselves are defined in cl2-front. But they take some assumptions on the available data on the platform, so they can depend on some projects, ideas, users, ... to be there.
-
-This data is defined in `config/tenant_templates/e2etests_template.yml`. The tenant settings are defined in `lib/tasks/create_tenant.rake`.
+This data is defined in `db/seeds/citizenlab.rb`.
 
 To (re)load the data and run the e2e tests locally, execute the following command:
-
 ```
-docker-compose run --rm web bundle exec rake cl2_back:create_tenant[localhost,e2etests_template]
+docker-compose run --rm web bundle exec db:reset
 ```
 
 ### Rubocop

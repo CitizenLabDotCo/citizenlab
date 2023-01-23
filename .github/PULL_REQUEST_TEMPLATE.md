@@ -20,22 +20,6 @@ For front-end devs only. Is your work conforming with the WCAG 2.1 AA rules? If 
 
 Did you add relevant unit tests?
 
-### E2E tests
-
-Sometimes it can be more efficient to update E2E tests after CI has run them. If you know which ones to update, go ahead! E2E template cl2-back:
-
-```bash
-docker compose run --rm web bin/rails cl2_back:create_tenant[localhost,e2etests_template]
-```
-
-</details>
-
-- [ ] Prepared branch for code review
-<details>
-<summary>More info</summary>
-Reviewed code to reduce unnecessary back and forth (removal of console.log, comments, ...)? Added comments to clarify code, emphasize what to pay attention to, etc.?
-</details>
-
 ## Links
 
 - [citizenlab-ee PR](**put URL here** or remove)
