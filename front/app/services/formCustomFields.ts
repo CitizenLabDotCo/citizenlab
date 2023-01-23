@@ -43,6 +43,7 @@ export interface IAttributes {
   temp_id: string;
   logic: LogicType;
   key: string;
+  code?: string;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
   input_type: ICustomFieldInputType;
