@@ -277,7 +277,7 @@
   "app.components.PagesForm.saveSuccess": "Quppernerup toqqorneqarnera iluatsippoq.",
   "app.components.PagesForm.titleMissingOneLanguageError": "Provide title for at least one language",
   "app.components.ParticipationCTABars.allocateBudget": "Missingersuutit iluanaarutigiuk ",
-  "app.components.ParticipationCTABars.mobileProjectOpenForSubmission": "Open for participation",
+  "app.components.ParticipationCTABars.mobileProjectOpenForSubmission": "Akissuteqartoqarsinnaavoq",
   "app.components.ParticipationCTABars.participationTimeLeft": "{timeLeft}  weeks left",
   "app.components.ParticipationCTABars.projectOpenForSubmission": "This project is currently open for participation.",
   "app.components.ParticipationCTABars.seeIdeas": "See ideas",
