@@ -23,7 +23,8 @@ export type ICustomFieldInputType =
   | 'title_multiloc'
   | 'html_multiloc'
   | 'files'
-  | 'image_files';
+  | 'image_files'
+  | 'topic_ids';
 
 export type IOptionsType = {
   id?: string;
