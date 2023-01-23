@@ -48,6 +48,7 @@ import {
   updateProject,
   IProjectFormState,
   IProjectData,
+  CARD_IMAGE_ASPECT_RATIO,
 } from 'services/projects';
 import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
 import { addProjectImage, deleteProjectImage } from 'services/projectImages';
@@ -573,7 +574,7 @@ const AdminProjectsProjectGeneral = () => {
             <ImageCropperContainer
               image={projectCard}
               onComplete={handleProjectCardOnCompleteCropping}
-              aspect={2 / 1}
+              aspect={CARD_IMAGE_ASPECT_RATIO / 1}
               onRemove={handleCroppedProjectCardOnRemove}
             />
           </Box>

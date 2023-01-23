@@ -35,6 +35,8 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import useProjectFolderImages from 'hooks/useProjectFolderImages';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
+import { CARD_IMAGE_ASPECT_RATIO } from 'services/projects';
+
 const Container = styled(Link)`
   width: calc(33% - 12px);
   display: flex;
@@ -122,7 +124,7 @@ const FolderImageContainer = styled.div`
   }
 
   ${media.phone`
-    aspect-ratio: 2 / 1;
+    aspect-ratio: ${CARD_IMAGE_ASPECT_RATIO} / 1;
   `}
 `;
 

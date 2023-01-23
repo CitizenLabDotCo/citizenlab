@@ -38,6 +38,8 @@ import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
 import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 
+import { CARD_IMAGE_ASPECT_RATIO } from 'services/projects';
+
 type IProjectFolderSubmitState =
   | 'disabled'
   | 'enabled'
@@ -521,14 +523,14 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               <ImageCropperContainer
                 image={folderCard}
                 onComplete={getHandler(setCroppedFolderCardBase64)}
-                aspect={2 / 1}
+                aspect={CARD_IMAGE_ASPECT_RATIO / 1}
                 onRemove={handleCroppedFolderCardOnRemove}
               />
             </Box>
           ) : (
             <ImagesDropzone
               images={folderCard && [folderCard]}
-              imagePreviewRatio={1 / 2}
+              imagePreviewRatio={1 / CARD_IMAGE_ASPECT_RATIO}
               maxImagePreviewWidth="240px"
               acceptedFileTypes={{
                 'image/*': ['.jpg', '.jpeg', '.png', '.gif'],

@@ -14,6 +14,8 @@ import messages from '../messages';
 import { UploadFile } from 'typings';
 import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
 
+import { CARD_IMAGE_ASPECT_RATIO } from 'services/projects';
+
 // Would have loved to put this in styling.ts, but
 // that results in some arcane typescript error
 // (see https://stackoverflow.com/q/43900035)
@@ -39,7 +41,7 @@ export default ({
     </SubSectionTitle>
     <StyledImagesDropzone
       images={projectImages}
-      imagePreviewRatio={1 / 2}
+      imagePreviewRatio={1 / CARD_IMAGE_ASPECT_RATIO}
       maxImagePreviewWidth="240px"
       acceptedFileTypes={{
         'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
