@@ -3,6 +3,7 @@ import React from 'react';
 
 // components
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
+import InflexibleForm from './InflexibleForm';
 
 // router
 import clHistory from 'utils/cl-router/history';
@@ -13,12 +14,17 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // hooks
 import { useParams } from 'react-router-dom';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 export const IdeaForm = () => {
   const { projectId } = useParams() as {
     projectId: string;
   };
-  return (
+  const useInputFormBuilder = useFeatureFlag({
+    name: 'input_form_builder',
+  });
+
+  return useInputFormBuilder ? (
     <Box gap="0px" flexWrap="wrap" width="100%" display="flex">
       <Box width="100%">
         <SectionTitle>
@@ -40,6 +46,8 @@ export const IdeaForm = () => {
         </Button>
       </Box>
     </Box>
+  ) : (
+    <InflexibleForm />
   );
 };
 
