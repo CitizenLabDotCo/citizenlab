@@ -89,5 +89,3 @@ class SideFxCommentService
     end
   end
 end
-
-::SideFxCommentService.prepend_if_ee('FlagInappropriateContent::Patches::SideFxCommentService')

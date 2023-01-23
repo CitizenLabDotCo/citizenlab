@@ -381,27 +381,6 @@ resource 'Initiatives' do
       end
     end
 
-    example_group 'with granular permissions', skip: !CitizenLab.ee? do
-      let(:group) { create(:group) }
-
-      before do
-        PermissionsService.new.update_global_permissions
-        Permission.find_by(permission_scope: nil, action: 'posting_initiative')
-          .update!(permitted_by: 'groups', groups: [group])
-      end
-
-      example '[error] Not authorized to create an initiative', document: false do
-        do_request
-        assert_status 401
-      end
-
-      example 'Create an initiative (group permission)' do
-        group.add_member(@user).save!
-        do_request
-        assert_status 201
-      end
-    end
-
     describe do
       before { SettingsService.new.activate_feature! 'blocking_profanity' }
 

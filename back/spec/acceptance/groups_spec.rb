@@ -66,41 +66,6 @@ resource 'Groups' do
           expect(json_response.dig(:data, :attributes, :membership_type)).to eq 'manual'
         end
       end
-
-      if CitizenLab.ee?
-        describe do
-          let(:group) { build(:group) }
-          let(:title_multiloc) { group.title_multiloc }
-          let(:membership_type) { 'rules' }
-          let(:rules) { [{ ruleType: 'role', predicate: 'is_admin' }] }
-
-          example_request "Create a group with 'rules' membership_type" do
-            expect(response_status).to eq 201
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
-            expect(json_response.dig(:data, :attributes, :membership_type)).to eq 'rules'
-            expect(json_response.dig(:data, :attributes, :rules)).to match rules
-          end
-        end
-
-        describe do
-          before do
-            create(:user, email: 'k@k.com', registration_completed_at: Time.now)
-            create(:user, email: 'kk@kk.com', registration_completed_at: nil)
-          end
-
-          let(:title_multiloc) { build(:group).title_multiloc }
-          let(:membership_type) { 'rules' }
-          let(:rules) { [{ ruleType: 'email', predicate: 'contains', value: 'k' }] }
-
-          example_request 'Membership count should only count active users', document: false do
-            expect(response_status).to eq 201
-            json_response = json_parse(response_body)
-            group = Group.find json_response.dig(:data, :id)
-            expect(group.memberships_count).to eq 1
-          end
-        end
-      end
     end
 
     patch 'web_api/v1/groups/:id' do

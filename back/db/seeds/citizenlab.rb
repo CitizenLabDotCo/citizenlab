@@ -12,7 +12,7 @@ CommonPassword.initialize!
 # Configure your app here.
 AppConfiguration.create!(
   name: 'local',
-  host: ENV.fetch('CL_SETTINGS_HOST'),
+  host: ENV.fetch('CL_SETTINGS_HOST', 'localhost'),
   settings: SettingsService.new.minimal_required_settings(
     locales: [ENV.fetch('CL_SETTINGS_CORE_LOCALES_0', 'en')],
     lifecycle_stage: 'active'
@@ -21,7 +21,7 @@ AppConfiguration.create!(
       organization_name: { 'en' => Faker::Address.city },
       timezone: ENV.fetch('CL_SETTINGS_CORE_TIMEZONE', 'Brussels'),
       currency: ENV.fetch('CL_SETTINGS_CORE_CURRENCY', 'EUR'),
-      reply_to_email: ENV.fetch('DEFAULT_FROM_EMAIL')
+      reply_to_email: ENV.fetch('DEFAULT_FROM_EMAIL', 'hello@example.org')
     },
     password_login: {
       enabled: true,
@@ -178,10 +178,10 @@ AppConfiguration.create!(
 
 # Creates a default admin account.
 User.create!(
-  email: ENV.fetch('INITIAL_ADMIN_EMAIL'),
-  password: ENV.fetch('INITIAL_ADMIN_PASSWORD'),
-  first_name: ENV.fetch('INITIAL_ADMIN_FIRST_NAME'),
-  last_name: ENV.fetch('INITIAL_ADMIN_LAST_NAME'),
+  email: ENV.fetch('INITIAL_ADMIN_EMAIL', 'admin@citizenlab.co'),
+  password: ENV.fetch('INITIAL_ADMIN_PASSWORD', 'democracy2.0'),
+  first_name: ENV.fetch('INITIAL_ADMIN_FIRST_NAME', 'citizenlab'),
+  last_name: ENV.fetch('INITIAL_ADMIN_LAST_NAME', 'admin'),
   roles: [{ type: 'admin' }],
   locale: ENV.fetch('CL_SETTINGS_CORE_LOCALES_0', 'en'),
   registration_completed_at: Time.zone.now
