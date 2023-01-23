@@ -55,14 +55,17 @@ describe('Content builder Info & Accordions section', () => {
 
     // Edit an accordion component
     cy.get('#e2e-accordion').click({ force: true });
-    cy.get('#default-open-toggle').find('input').click({ force: true });
+    cy.get('#default-open-toggle').should('exist');
+    cy.get('#default-open-toggle').click({ force: true });
     cy.get('#quill-editor').click({ force: true });
     cy.get('#quill-editor').type('Accordion text.', { force: true });
+    cy.contains('Accordion text.').should('be.visible');
 
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveContentBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
+    cy.acceptCookies();
     cy.contains('Edited text.').should('be.visible');
     cy.contains('Accordion text.').should('be.visible');
     cy.contains('About').should('be.visible');
