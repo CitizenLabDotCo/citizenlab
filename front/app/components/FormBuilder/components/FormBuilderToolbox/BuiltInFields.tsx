@@ -38,11 +38,7 @@ const BuiltInFields = ({
     });
 
   const enableField = (key: BuiltInKeyType) => {
-    if (isEditingDisabled) {
-      return;
-    }
-
-    if (!enabledBuiltInFieldKeys.includes(key)) {
+    if (isEditingDisabled || !enabledBuiltInFieldKeys.includes(key)) {
       return;
     }
 
