@@ -1,11 +1,9 @@
 import React from 'react';
 
-// hooks
-// import useMostVotedIdeas from 'containers/Admin/reporting/hooks/useMostVotedIdeas';
-
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import Header from './Header';
+import Ideas from './Ideas';
 import Settings from './Settings';
 
 // i18n
@@ -21,12 +19,20 @@ const MostVotedIdeasWidget = ({
   title,
   projectId,
   phaseId,
-}: // numberOfIdeas,
-// collapseLongText
-Props) => {
+  numberOfIdeas,
+  collapseLongText,
+}: Props) => {
   return (
     <Box border={BORDER} mt="4px" mb="4px">
       <Header title={title} projectId={projectId} phaseId={phaseId} />
+      {projectId && (
+        <Ideas
+          projectId={projectId}
+          phaseId={phaseId}
+          numberOfIdeas={numberOfIdeas}
+          collapseLongText={collapseLongText}
+        />
+      )}
     </Box>
   );
 };

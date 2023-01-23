@@ -21,7 +21,7 @@ function useMostVotedIdeas({ projectId, phaseId, numberOfIdeas }: Props) {
       'page[size]': numberOfIdeas,
       projects: [projectId],
       phase: phaseId,
-      sort: 'upvotes_count',
+      sort: '-upvotes_count',
     };
 
     const { observable } = ideasStream({ queryParameters });
