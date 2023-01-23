@@ -62,7 +62,7 @@ describe('Form builder page element', () => {
     cy.get('[data-cy="e2e-survey-success-message"]').should('exist');
   });
 
-  it.only('does not let the user delete the page if there is only one page', () => {
+  it('does not let the user delete the page if there is only one page', () => {
     cy.visit(`admin/projects/${projectId}/native-survey/edit`);
     cy.get('[data-cy="e2e-page"]').click();
     cy.get('#e2e-page-title-multiloc').type('Page title', { force: true });

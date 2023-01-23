@@ -1,6 +1,12 @@
 # Changelog
 
-## Next release
+## 2023-01-23 (2)
+
+### Fixed
+
+- [CL-2549] Reject all cookies when closing cookie banner
+
+## 2023-01-23
 
 ### Fixed
 

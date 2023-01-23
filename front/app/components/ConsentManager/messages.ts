@@ -27,8 +27,8 @@ export default defineMessages({
     defaultMessage: 'Accept',
   },
   ariaButtonClose: {
-    id: 'app.components.ConsentManager.Banner.ariaButtonClose',
-    defaultMessage: 'Accept policy and close banner',
+    id: 'app.components.ConsentManager.Banner.ariaButtonClose2',
+    defaultMessage: 'Reject policy and close banner',
   },
   title: {
     id: 'app.components.ConsentManager.Modal.PreferencesDialog.title',
