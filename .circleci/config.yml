@@ -937,9 +937,9 @@ workflows:
             branches:
               only:
                 - production
-          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CANADA
-          compose_file: docker-compose-production-canada.yml
-          env_file: ".env-production-canada"
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CAN
+          compose_file: docker-compose-production.yml
+          env_file: ".env-web"
       - back-ee-deploy-to-swarm:
           requires:
             - back-ee-push-deployment-docker-image
@@ -1215,8 +1215,8 @@ workflows:
             - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
-          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CANADA
-          env_file: ".env-production-canada"
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CAN
+          env_file: ".env-web"
       - back-ee-generate-tenant-templates:
           name: "US West"
           context:
@@ -1306,8 +1306,8 @@ workflows:
             - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
-          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CANADA
-          env_file: ".env-production-canada"
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CAN
+          env_file: ".env-web"
       - back-ee-generate-tenant-templates:
           name: "US West"
           context:
@@ -1376,8 +1376,8 @@ workflows:
           name: "Canada"
           context:
             - slack-dev-notifications-inconsistent-data
-          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CANADA
-          env_file: ".env-production-canada"
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CAN
+          env_file: ".env-web"
       - check-for-inconsistent-data:
           <<: *slack-fail-post-step-inconsistent-data
           name: "US West"
