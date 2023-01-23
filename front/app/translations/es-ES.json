@@ -66,7 +66,7 @@
   "app.components.ConfirmationModal.verifyAndContinue": "Verificar y continuar",
   "app.components.ConfirmationModal.wrongEmail": "¿Correo electrónico incorrecto?",
   "app.components.ConsentManager.Banner.accept": "Aceptar",
-  "app.components.ConsentManager.Banner.ariaButtonClose": "Aceptar política y cerrar banner",
+  "app.components.ConsentManager.Banner.ariaButtonClose2": "Reject policy and close banner",
   "app.components.ConsentManager.Banner.close": "Cerrar",
   "app.components.ConsentManager.Banner.mainText": "Esta plataforma utiliza cookies de acuerdo con nuestra {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Administrar",
