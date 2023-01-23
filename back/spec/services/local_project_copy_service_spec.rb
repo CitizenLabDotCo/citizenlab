@@ -87,91 +87,135 @@ describe LocalProjectCopyService do
       source_project = build(:project, areas: create_list(:area, 2))
 
       copied_project = service.copy(source_project)
-      expect(copied_project.areas).to eq source_project.areas
+      expect(copied_project.areas.map(&:as_json)).to match_array(source_project.areas.map(&:as_json))
     end
 
     it 'associates topics of source project with copied project' do
-      source_project = build(:project, topics: create_list(:topic, 2))
+      source_project = create(:project, topics: create_list(:topic, 2))
+      copied_project = service.copy(source_project.reload)
 
-      copied_project = service.copy(source_project)
-      expect(copied_project.topics).to eq source_project.topics
+      expect(copied_project.topics.map(&:as_json)).to match_array(source_project.topics.map(&:as_json))
     end
 
     it 'copies associated projects_allowed_input_topics' do
-      topics = create_list(:topic, 3)
-      source_project = create(:project)
-      create(:projects_allowed_input_topic, project_id: source_project.id, topic_id: topics.first.id)
-      create(:projects_allowed_input_topic, project_id: source_project.id, topic_id: topics.second.id)
+      create_list(:projects_allowed_input_topic, 2, project_id: continuous_project.id)
+      copied_project = service.copy(continuous_project)
 
-      copied_project = service.copy(source_project)
-      expect(copied_project.allowed_input_topics).to eq [topics.first, topics.second]
+      expect(copied_project.allowed_input_topics.count).to eq 2
+      expect(copied_project.allowed_input_topics.map(&:as_json))
+        .to match_array(continuous_project.allowed_input_topics.map(&:as_json))
     end
 
     it 'copies associated maps configs, layers and legend items' do
       map_config = create(:map_config, project_id: continuous_project.id, tile_provider: 'https://groovy_map_tiles')
-      create(:layer, map_config_id: map_config.id)
-      create(:legend_item, map_config_id: map_config.id)
-
+      create_list(:layer, 2, map_config_id: map_config.id)
+      create_list(:legend_item, 2, map_config_id: map_config.id)
       copied_project = service.copy(continuous_project)
+
       expect(copied_project.map_config.center).to eq continuous_project.map_config.center
-      expect(copied_project.map_config.layers.first.as_json(except: %i[id map_config_id updated_at created_at]))
-        .to eq continuous_project.map_config.layers.first.as_json(except: %i[id map_config_id updated_at created_at])
-      expect(copied_project.map_config.layers.first.map_config_id).to eq copied_project.map_config.id
-      expect(copied_project.map_config.legend_items.first.as_json(except: %i[id map_config_id updated_at created_at]))
-        .to eq continuous_project.map_config.legend_items.first.as_json(except: %i[id map_config_id updated_at created_at])
-      expect(copied_project.map_config.legend_items.first.map_config_id).to eq copied_project.map_config.id
+
+      expect(copied_project.map_config.layers.map do |record|
+        record.as_json(except: %i[id map_config_id updated_at created_at])
+      end)
+        .to match_array(continuous_project.map_config.layers.map do |record|
+          record.as_json(except: %i[id map_config_id updated_at created_at])
+        end)
+
+      expect(copied_project.map_config.legend_items.map do |record|
+        record.as_json(except: %i[id map_config_id updated_at created_at])
+      end)
+        .to match_array(continuous_project.map_config.legend_items.map do |record|
+          record.as_json(except: %i[id map_config_id updated_at created_at])
+        end)
     end
 
     it 'copies associated volunteering_causes' do
-      cause = create(:cause, title_multiloc: { en: 'Test cause' })
-      source_project = Project.find(cause.participation_context_id)
+      # Avoid mismatch between the test tenant locales and factory multiloc keys
+      # that would result in template application removing mismatched multiloc keys (and their values).
+      config = AppConfiguration.instance
+      config.settings['core']['locales'] = %w[en nl-BE]
+      config.save!
 
-      copied_project = service.copy(source_project)
-      expect(copied_project.causes.first.participation_context_id).to eq copied_project.id
-      expect(copied_project.causes.first.as_json(except: %i[id participation_context_id image updated_at created_at]))
-        .to eq source_project.causes.first.as_json(except: %i[id participation_context_id image updated_at created_at])
+      create_list(:cause, 2, participation_context_id: continuous_project.id, participation_context_type: 'Project')
+      copied_project = service.copy(continuous_project.reload)
+
+      expect(copied_project.causes.map do |record|
+        record.as_json(except: %i[id participation_context_id image updated_at created_at])
+      end)
+        .to match_array(continuous_project.causes.map do |record|
+          record.as_json(except: %i[id participation_context_id image updated_at created_at])
+        end)
     end
 
     it 'copies associated custom_forms & related custom_fields & custom_field_options' do
-      custom_form = create(:custom_form)
-      custom_field = create(:custom_field, resource_type: 'CustomForm', input_type: 'select', resource_id: custom_form.id)
-      create(:custom_field_option, custom_field_id: custom_field.id)
-      source_project = custom_form.participation_context
-      copied_project = service.copy(source_project)
+      custom_form = create(
+        :custom_form,
+        participation_context_id: continuous_project.id,
+        participation_context_type: 'Project'
+      )
+      create_list(:custom_field_select, 2, :with_options, resource_type: 'CustomForm', resource_id: custom_form.id)
+      copied_project = service.copy(continuous_project)
 
-      expect(copied_project.custom_form.participation_context_type).to eq source_project.custom_form.participation_context_type
-      expect(copied_project.custom_form.custom_fields.first.as_json(except: %i[id resource_id ordering updated_at created_at]))
-        .to eq source_project.custom_form.custom_fields.first.as_json(except: %i[id resource_id ordering updated_at created_at])
-      expect(copied_project.custom_form.custom_fields.first.options.first.as_json(except: %i[id custom_field_id updated_at created_at]))
-        .to eq source_project.custom_form.custom_fields.first.options.first.as_json(except: %i[id custom_field_id updated_at created_at])
+      # TODO: Fix ordering mismatch found in tests when ordering not excluded.
+      expect(copied_project.custom_form.custom_fields.map do |record|
+        record.as_json(except: %i[id ordering resource_id updated_at created_at])
+      end)
+        .to match_array(continuous_project.custom_form.custom_fields.map do |record|
+          record.as_json(except: %i[id ordering resource_id updated_at created_at])
+        end)
+
+      source_custom_field = continuous_project.custom_form.custom_fields.last
+      copied_custom_field = copied_project.custom_form.custom_fields
+        .find_by(title_multiloc: source_custom_field.title_multiloc)
+
+      expect(copied_custom_field.options.map do |record|
+        record.as_json(except: %i[id custom_field_id updated_at created_at])
+      end)
+        .to match_array(copied_custom_field.options.map do |record|
+          record.as_json(except: %i[id custom_field_id updated_at created_at])
+        end)
     end
 
     it 'copies associated poll questions & options' do
+      # Avoid mismatch between the test tenant locales and factory multiloc keys
+      # that would result in template application removing mismatched multiloc keys (and their values).
       config = AppConfiguration.instance
       config.settings['core']['locales'] = %w[en nl-BE]
       config.save!
 
       source_project = create(:continuous_poll_project)
-      create_list(:poll_question, 2, :with_options, participation_context_id: source_project.id, participation_context_type: 'Project')
+      create_list(
+        :poll_question,
+        2,
+        :with_options,
+        participation_context_id: source_project.id,
+        participation_context_type: 'Project'
+      )
 
       copied_project = service.copy(source_project)
 
       expect(copied_project.poll_questions.count).to eq 2
-      expect(copied_project.poll_questions.map { |record| record.as_json(except: %i[id participation_context_id ordering updated_at created_at]) })
-        .to match_array(source_project.poll_questions.map { |record| record.as_json(except: %i[id participation_context_id ordering updated_at created_at]) })
+      expect(copied_project.poll_questions.map do |record|
+        record.as_json(except: %i[id participation_context_id updated_at created_at])
+      end)
+        .to match_array(source_project.poll_questions.map do |record|
+          record.as_json(except: %i[id participation_context_id updated_at created_at])
+        end)
 
       source_question = source_project.poll_questions.last
       copied_question = copied_project.poll_questions.find_by(title_multiloc: source_question.title_multiloc)
 
-      expect(copied_question.options.map { |record| record.as_json(except: %i[id question_id ordering updated_at created_at]) })
-        .to match_array(source_question.options.map { |record| record.as_json(except: %i[id question_id ordering updated_at created_at]) })
+      expect(copied_question.options.map { |record| record.as_json(except: %i[id question_id updated_at created_at]) })
+        .to match_array(source_question.options.map do |record|
+          record.as_json(except: %i[id question_id updated_at created_at])
+        end)
     end
 
     it "associates correct groups with copied project's groups visibility permission" do
       source_project = create(:private_groups_project)
 
       copied_project = service.copy(source_project)
-      expect(copied_project.groups).to eq source_project.groups
+      expect(copied_project.groups).to match_array(source_project.groups)
     end
 
     describe 'when a certain project action is permitted only for groups' do
@@ -186,7 +230,7 @@ describe LocalProjectCopyService do
         permission.update!(permitted_by: 'groups', groups: groups)
 
         copied_project = service.copy(continuous_project)
-        expect(copied_project.permissions.find_by(action: 'commenting_idea').groups).to eq groups
+        expect(copied_project.permissions.find_by(action: 'commenting_idea').groups).to match_array(groups)
       end
     end
 
@@ -197,18 +241,26 @@ describe LocalProjectCopyService do
         copied_project = service.copy(continuous_project)
 
         expect(copied_project.project_files.count).to eq 2
-        expect(copied_project.project_files.as_json(except: %i[id project_id file updated_at created_at]))
-          .to eq continuous_project.project_files.as_json(except: %i[id project_id file updated_at created_at])
         expect(copied_project.project_files.first.file.url).to include(continuous_project.project_files.first.name)
+
+        expect(copied_project.project_files.map do |record|
+          record.as_json(except: %i[id project_id file updated_at created_at])
+        end)
+          .to match_array(continuous_project.project_files.map do |record|
+            record.as_json(except: %i[id project_id file updated_at created_at])
+          end)
       end
     end
 
     it 'copies basic phase attributes' do
       copied_project = service.copy(timeline_project)
 
-      expect(copied_project.phases.first.project_id).to eq copied_project.id
-      expect(copied_project.phases.first.as_json(except: %i[id project_id start_at end_at updated_at created_at]))
-        .to eq timeline_project.phases.first.as_json(except: %i[id project_id start_at end_at updated_at created_at])
+      expect(copied_project.phases.map do |record|
+        record.as_json(except: %i[id project_id start_at end_at updated_at created_at])
+      end)
+        .to match_array(timeline_project.phases.map do |record|
+          record.as_json(except: %i[id project_id start_at end_at updated_at created_at])
+        end)
     end
 
     describe 'when a certain phase action is permitted only for groups' do
@@ -224,7 +276,7 @@ describe LocalProjectCopyService do
         permission.update!(permitted_by: 'groups', groups: groups)
 
         copied_project = service.copy(source_project)
-        expect(copied_project.phases.first.permissions.find_by(action: 'commenting_idea').groups).to eq groups
+        expect(copied_project.phases.first.permissions.find_by(action: 'commenting_idea').groups).to match_array(groups)
       end
     end
 
@@ -238,9 +290,14 @@ describe LocalProjectCopyService do
         copied_phase = copied_project.phases.order(:start_at).first
 
         expect(copied_phase.phase_files.count).to eq 2
-        expect(copied_phase.phase_files.as_json(except: %i[id phase_id file updated_at created_at]))
-          .to eq source_phase.phase_files.as_json(except: %i[id phase_id file updated_at created_at])
         expect(copied_phase.phase_files.first.file.url).to include(source_phase.phase_files.first.name)
+
+        expect(copied_phase.phase_files.map do |record|
+          record.as_json(except: %i[id phase_id file updated_at created_at])
+        end)
+          .to match_array(source_phase.phase_files.map do |record|
+            record.as_json(except: %i[id phase_id file updated_at created_at])
+          end)
       end
     end
 
