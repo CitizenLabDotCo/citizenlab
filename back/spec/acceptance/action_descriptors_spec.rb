@@ -19,52 +19,5 @@ resource 'ActionDescriptors' do
       expect(json_response.values.pluck(:enabled).all?).to be true
       expect(json_response.values.pluck(:disabled_reason).none?).to be true
     end
-
-    context 'with granular permissions enabled', document: false, skip: !CitizenLab.ee? do
-      before(:all) do
-        @cached_scope_types = PermissionsService.instance_variable_get(:@scope_spec_hash)
-        PermissionsService.clear_scope_types
-        PermissionsService.register_scope_type(CitizenLab::Permissions::ScopeTypes::Global)
-      end
-
-      after(:all) do
-        # Restore registered scope-types as they were before the tests.
-        PermissionsService.instance_variable_set(:@scope_spec_hash, @cached_scope_types)
-      end
-
-      before do
-        PermissionsService.new.update_all_permissions
-        Permission.find_by(permission_scope: nil, action: 'commenting_initiative')
-          .update!(permitted_by: 'groups', groups: create_list(:group, 2))
-      end
-
-      example_request 'Get the global action descriptors for initiatives' do
-        json_response = json_parse(response_body)
-        expect(json_response).to eq(
-          {
-            posting_initiative: {
-              enabled: true,
-              disabled_reason: nil
-            },
-            commenting_initiative: {
-              enabled: false,
-              disabled_reason: 'not_permitted'
-            },
-            voting_initiative: {
-              enabled: true,
-              disabled_reason: nil
-            },
-            cancelling_initiative_votes: {
-              enabled: true,
-              disabled_reason: nil
-            },
-            comment_voting_initiative: {
-              enabled: false,
-              disabled_reason: 'not_permitted'
-            }
-          }
-        )
-      end
-    end
   end
 end

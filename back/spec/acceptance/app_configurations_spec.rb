@@ -24,19 +24,10 @@ resource 'AppConfigurations' do
       end
     end
 
-    if CitizenLab.ee?
-      with_options scope: :style do
-        AppConfiguration.available_style_attributes.each do |attr|
-          response_field attr[:name], attr[:description]
-        end
-      end
-    end
-
     example_request 'Get the current configuration' do
       assert_status 200
       json_response = json_parse(response_body)
       expect(json_response.with_indifferent_access.dig(:data, :attributes, :host)).to eq 'example.org'
-      expect(json_response.with_indifferent_access.dig(:data, :attributes, :style)).to eq({}) if CitizenLab.ee?
     end
   end
 
@@ -60,19 +51,6 @@ resource 'AppConfigurations' do
           parameter setting, parameter_description, scope: [:app_configuration, :settings, feature]
         end
       end
-
-      if CitizenLab.ee?
-        # Style parameters
-        parameter :style, <<~DESC, extra: ''
-          The changes to the style object. This will be merged with the existing
-          style. Arrays will not be merged, but override their values.
-        DESC
-
-        AppConfiguration.style_json_schema['properties'].each do |style, style_descriptor|
-          parameter_description = "#{style_descriptor['description']}. Type: #{style_descriptor['type']}"
-          parameter style, parameter_description, scope: %i[app_configuration style]
-        end
-      end
     end
 
     ValidationErrorHelper.new.error_fields(self, AppConfiguration)
@@ -87,19 +65,12 @@ resource 'AppConfigurations' do
       }
     end
 
-    if CitizenLab.ee?
-      let(:style) { { signedInHeaderOverlayColor: '#db2577' } }
-    end
-
     example_request 'Update the app configuration' do
       assert_status 200
 
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :attributes, :settings, :core, :organization_name, :en)).to eq 'TestTown'
       expect(json_response.dig(:data, :attributes, :favicon)).to be_present
-      if CitizenLab.ee?
-        expect(json_response.dig(:data, :attributes, :style, :signedInHeaderOverlayColor)).to eq '#db2577'
-      end
     end
 
     describe do

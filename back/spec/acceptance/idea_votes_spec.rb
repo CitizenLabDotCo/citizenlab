@@ -49,7 +49,6 @@ resource 'Votes' do
     ValidationErrorHelper.new.error_fields(self, Vote)
 
     disabled_reasons = ParticipationContextService::VOTING_DISABLED_REASONS.values
-    disabled_reasons += Permission.denied_reasons.values if CitizenLab.ee?
     response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
 
     let(:idea_id) { @idea.id }
@@ -84,7 +83,6 @@ resource 'Votes' do
     ValidationErrorHelper.new.error_fields(self, Vote)
 
     disabled_reasons = ParticipationContextService::VOTING_DISABLED_REASONS.values
-    disabled_reasons += Permission.denied_reasons.values if CitizenLab.ee?
     response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
 
     let(:idea_id) { @idea.id }
@@ -128,22 +126,6 @@ resource 'Votes' do
       end
     end
 
-    describe 'when voting idea is allowed by moderators/admins', skip: !CitizenLab.ee? do
-      before do
-        project = @idea.project
-        project.permissions.find_by(action: 'voting_idea').update!(permitted_by: 'admins_moderators')
-        @user.update!(roles: [])
-      end
-
-      example_request '[error] Upvote an idea in a project where voting is not permitted' do
-        expect(status).to eq 401
-        json_response = json_parse(response_body)
-        expect(json_response[:errors][:base][0][:error]).to eq 'not_permitted'
-        expect(@idea.reload.upvotes_count).to eq 2
-        expect(@idea.reload.downvotes_count).to eq 0
-      end
-    end
-
     describe do
       before do
         project = @idea.project
@@ -165,7 +147,6 @@ resource 'Votes' do
     ValidationErrorHelper.new.error_fields(self, Vote)
 
     disabled_reasons = ParticipationContextService::VOTING_DISABLED_REASONS.values
-    disabled_reasons += Permission.denied_reasons.values if CitizenLab.ee?
     response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
 
     let(:idea_id) { @idea.id }

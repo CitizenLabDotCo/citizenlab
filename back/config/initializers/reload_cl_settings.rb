@@ -4,7 +4,7 @@
 # into the current app configuration.
 
 begin
-  if !CitizenLab.ee? && !Rails.env.test? && ActiveRecord::Base.connection.table_exists?(AppConfiguration.table_name)
+  unless Rails.env.test?
     config = AppConfiguration.instance
     settings = config.settings
 

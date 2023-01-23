@@ -145,12 +145,8 @@ RSpec.configure do |config|
     end
 
     # Create the default tenant for our tests
-    if CitizenLab.ee?
-      FactoryBot.create(:test_tenant)
-      not_truncated_tables << 'tenants'
-    else
-      FactoryBot.create(:test_app_configuration)
-    end
+    FactoryBot.create(:test_app_configuration)
+
     not_truncated_tables << 'app_configurations'
   end
 
@@ -167,16 +163,6 @@ RSpec.configure do |config|
     # Why not to use this code in those tests that need it?
     # => Because `Sentry.init` affects all tests, not only the current one.
     Sentry.init
-  end
-
-  # rubocop:disable RSpec/BeforeAfterAll
-  config.before(:all) do
-    Apartment::Tenant.switch!('example_org') if CitizenLab.ee? # Switch into the default tenant
-  end
-  # rubocop:enable RSpec/BeforeAfterAll
-
-  config.before do
-    Apartment::Tenant.switch!('example_org') if CitizenLab.ee? # Switch into the default tenant
   end
 
   config.around(:each, use_transactional_fixtures: false) do |example|

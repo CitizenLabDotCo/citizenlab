@@ -16,7 +16,6 @@ resource 'Mailgun Events' do
     let(:campaign_id) { delivery.campaign_id }
     let(:user_id) { delivery.user_id }
 
-    let(:cl_tenant_id) { AppConfiguration.instance.id } if CitizenLab.ee?
     let(:mailgun_event) do
       {
         signature: {
@@ -31,24 +30,13 @@ resource 'Mailgun Events' do
             cl_user_id: user_id
           }
         }
-      }.tap do |event|
-        event[:'event-data'][:'user-variables'][:cl_tenant_id] = cl_tenant_id if CitizenLab.ee?
-      end
+      }
     end
 
     example 'Receive a mailgun event webhook' do
       do_request(mailgun_event)
       expect(response_status).to eq 200
       expect(delivery.reload.delivery_status).to eq 'opened'
-    end
-
-    context '[error] for a non-existing tenant', skip: !CitizenLab.ee? do
-      let!(:cl_tenant_id) { '70abacb2-69e8-4c2d-93cc-c0aeab657f02' }
-
-      example 'returns not_acceptable' do
-        do_request(mailgun_event)
-        expect(response_status).to eq 406
-      end
     end
 
     context '[error] for a non-existing campaign' do

@@ -663,29 +663,6 @@ resource 'Ideas' do
           end
         end
 
-        describe 'when posting an idea in an active ideation phase, the correct form is used', skip: !CitizenLab.ee? do
-          let(:project) { create(:project_with_active_ideation_phase) }
-          let!(:custom_form) { create(:custom_form, participation_context: project) }
-          let!(:custom_field) do
-            create(
-              :custom_field,
-              resource: custom_form,
-              key: 'proposed_budget',
-              code: 'proposed_budget',
-              input_type: 'number',
-              enabled: true
-            )
-          end
-          let(:proposed_budget) { 1234 }
-
-          example_request 'Post an idea in an ideation phase' do
-            assert_status 201
-            json_response = json_parse response_body
-            idea = Idea.find(json_response.dig(:data, :id))
-            expect(idea.proposed_budget).to eq 1234
-          end
-        end
-
         describe 'when posting an idea in an active ideation phase, the creation_phase is not set' do
           let(:project) { create(:project_with_active_ideation_phase) }
           let!(:custom_form) { create(:custom_form, participation_context: project) }
@@ -778,25 +755,6 @@ resource 'Ideas' do
           expect(json_parse(response_body)).to include_response_error(:base, 'i_dont_like_you')
         end
 
-        example_group 'with granular permissions', skip: !CitizenLab.ee? do
-          let(:group) { create(:group) }
-
-          before do
-            project.permissions.find_by(action: 'posting_idea')
-              .update!(permitted_by: 'groups', groups: [group])
-          end
-
-          example_request '[error] Create an idea in a project with groups posting permission', document: false do
-            assert_status 401
-          end
-
-          example 'Create an idea in a project with groups posting permission' do
-            group.add_member(@user).save!
-            do_request
-            assert_status 201
-          end
-        end
-
         describe do
           before { SettingsService.new.activate_feature! 'blocking_profanity' }
 
@@ -827,42 +785,6 @@ resource 'Ideas' do
               assert_status 201
               json_response = json_parse(response_body)
               expect(json_response.dig(:data, :relationships, :phases, :data).pluck(:id)).to match_array phase_ids
-            end
-          end
-
-          describe 'when posting an idea in an ideation phase, the form of the project is used for accepting the input', skip: !CitizenLab.ee? do
-            let(:project) { create(:project_with_active_ideation_phase) }
-            let!(:custom_form) do
-              create(:custom_form, participation_context: project).tap do |form|
-                fields = IdeaCustomFieldsService.new(form).all_fields
-                # proposed_budget is disabled by default
-                enabled_field_keys = %w[title_multiloc body_multiloc proposed_budget]
-                fields.each do |field|
-                  field.enabled = enabled_field_keys.include? field.code
-                  field.save
-                end
-              end
-            end
-            let(:phase_ids) { [project.phases.first.id] }
-            let(:title_multiloc) { { 'nl-BE' => 'An idea with a proposed budget' } }
-            let(:body_multiloc) { { 'nl-BE' => 'An idea with a proposed budget for testing' } }
-            let(:proposed_budget) { 1234 }
-
-            example_request 'Post an idea in an ideation phase' do
-              assert_status 201
-              json_response = json_parse response_body
-              # Enabled fields have a value
-              expect(json_response.dig(:data, :attributes, :title_multiloc)).to eq({ 'nl-BE': 'An idea with a proposed budget' })
-              expect(json_response.dig(:data, :attributes, :body_multiloc)).to eq({ 'nl-BE': 'An idea with a proposed budget for testing' })
-              expect(json_response.dig(:data, :attributes, :proposed_budget)).to eq proposed_budget
-              # Disabled fields do not have a value
-              expect(json_response.dig(:data, :attributes, :budget)).to be_nil
-              expect(json_response.dig(:data, :attributes, :location_description)).to be_nil
-              expect(json_response.dig(:data, :attributes)).not_to have_key :topic_ids
-              expect(json_response.dig(:data, :attributes)).not_to have_key :idea_images_attributes
-              expect(json_response.dig(:data, :attributes)).not_to have_key :idea_files_attributes
-              # location_point_geojson is not a field and cannot be disabled, so it has a value
-              expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
             end
           end
 
