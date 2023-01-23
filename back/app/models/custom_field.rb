@@ -31,17 +31,17 @@
 # Validate that locked attributes are not changed
 class ConstraintValidator < ActiveModel::Validator
   def validate(field)
-    if field.resource_type == 'CustomForm'
-      @participation_method = Factory.instance.participation_method_for field.resource.participation_context
-      constraints = @participation_method.constraints[field.code]
-      if constraints
-        constraints['locks']&.each do |attribute, value|
-          if field.changed_attributes.key?(attribute) &&
-            value == true &&
-            !(field.code == 'ideation_section_1' && attribute == 'title_multiloc')
-            field.errors.add :base, "Cannot change #{attribute}. It is locked."
-          end
-        end
+    return unless field.resource_type == 'CustomForm'
+
+    @participation_method = Factory.instance.participation_method_for field.resource.participation_context
+    constraints = @participation_method.constraints[field.code]
+    return unless constraints
+
+    constraints['locks']&.each do |attribute, value|
+      if field.changed_attributes.key?(attribute) &&
+         value == true &&
+         !(field.code == 'ideation_section_1' && attribute == 'title_multiloc')
+        field.errors.add :base, "Cannot change #{attribute}. It is locked."
       end
     end
   end
@@ -224,8 +224,6 @@ class CustomField < ApplicationRecord
     self.description_multiloc = service.linkify_multiloc description_multiloc
   end
 end
-
-
 
 CustomField.include_if_ee('SmartGroups::Extensions::CustomField')
 CustomField.include_if_ee('UserCustomFields::Patches::CustomField')
