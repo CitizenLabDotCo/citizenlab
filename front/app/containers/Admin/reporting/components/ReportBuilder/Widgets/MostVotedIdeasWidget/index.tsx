@@ -4,12 +4,12 @@ import React from 'react';
 // import useMostVotedIdeas from 'containers/Admin/reporting/hooks/useMostVotedIdeas';
 
 // components
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
+import Header from './Header';
 import Settings from './Settings';
 
 // i18n
 import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
 
 // utils
 import { BORDER } from '../constants';
@@ -19,20 +19,14 @@ import { Props } from './typings';
 
 const MostVotedIdeasWidget = ({
   title,
-}: // projectId,
-// phaseId,
-// numberOfIdeas,
+  projectId,
+  phaseId,
+}: // numberOfIdeas,
 // collapseLongText
 Props) => {
-  const { formatMessage } = useIntl();
-
   return (
     <Box border={BORDER} mt="4px" mb="4px">
-      <Box>
-        <Title variant="h3" color="primary" m="16px" mb="8px">
-          {title || formatMessage(messages.mostVotedIdeas)}
-        </Title>
-      </Box>
+      <Header title={title} projectId={projectId} phaseId={phaseId} />
     </Box>
   );
 };
