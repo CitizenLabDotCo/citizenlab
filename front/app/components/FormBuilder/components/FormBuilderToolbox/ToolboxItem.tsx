@@ -17,6 +17,7 @@ interface Props {
   'data-cy'?: string;
   fieldsToExclude?: ICustomFieldInputType[];
   inputType?: ICustomFieldInputType;
+  disabled?: boolean;
 }
 
 const AddIcon = styled(Icon).attrs({ name: 'plus' })`
@@ -26,18 +27,19 @@ const AddIcon = styled(Icon).attrs({ name: 'plus' })`
   margin-right: 0;
 `;
 
-const StyledBox = styled(Box)`
+const StyledBox = styled(Box)<{ disabled: boolean }>`
   text-align: left;
   ${AddIcon} {
     visibility: hidden;
   }
   &:hover {
-    background-color: ${colors.grey200};
+    background-color: ${({ disabled }) =>
+      disabled ? 'white' : colors.grey200};
     transition: background-color 80ms ease-out 0s;
-    cursor: pointer;
+    cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   }
   &:hover ${AddIcon} {
-    visibility: visible;
+    visibility: ${({ disabled }) => (disabled ? 'hidden' : 'visible')};
   }
 `;
 
@@ -47,6 +49,7 @@ const ToolboxItem = ({
   onClick,
   fieldsToExclude,
   inputType,
+  disabled,
   ...rest
 }: Props) => {
   if (fieldsToExclude && inputType && fieldsToExclude.includes(inputType)) {
@@ -65,9 +68,20 @@ const ToolboxItem = ({
       // remove the role attribute when we add drag and drop functionality
       role="button"
       data-cy={rest['data-cy']}
+      disabled={!!disabled}
     >
-      <Icon fill={colors.primary} width="20px" height="20px" name={icon} />
-      <Text fontSize="s" ml="12px" mt="0" mb="0" color="textPrimary">
+      <Icon
+        fill={disabled ? colors.coolGrey500 : colors.primary}
+        width="20px"
+        height="20px"
+        name={icon}
+      />
+      <Text
+        fontSize="s"
+        ml="12px"
+        my="0"
+        color={disabled ? 'coolGrey500' : 'textPrimary'}
+      >
         {label}
       </Text>
       <AddIcon />
