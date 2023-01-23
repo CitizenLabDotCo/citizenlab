@@ -22,7 +22,7 @@ module ParticipationMethod
           resource: custom_form,
           input_type: 'section',
           code: 'ideation_section_1',
-          key: 'ideation_section_1',
+          key: nil,
           title_multiloc: {},
           description_multiloc: begin
             multiloc_service.i18n_to_multiloc(
@@ -84,6 +84,8 @@ module ParticipationMethod
           id: SecureRandom.uuid,
           resource: custom_form,
           input_type: 'section',
+          code: 'ideation_section_2',
+          key: nil,
           title_multiloc: multiloc_service.i18n_to_multiloc(
             'custom_fields.ideas.section2.title',
             locales: CL2_SUPPORTED_LOCALES
@@ -148,6 +150,8 @@ module ParticipationMethod
           id: SecureRandom.uuid,
           resource: custom_form,
           input_type: 'section',
+          code: 'ideation_section_3',
+          key: nil,
           title_multiloc: multiloc_service.i18n_to_multiloc(
             'custom_fields.ideas.section3.title',
             locales: CL2_SUPPORTED_LOCALES

@@ -41,8 +41,8 @@ class CustomField < ApplicationRecord
   belongs_to :resource, polymorphic: true, optional: true
 
   FIELDABLE_TYPES = %w[User CustomForm].freeze
-  INPUT_TYPES = %w[text number multiline_text html text_multiloc multiline_text_multiloc html_multiloc select multiselect checkbox date files image_files point linear_scale page file_upload section].freeze
-  CODES = %w[gender birthyear domicile education title_multiloc body_multiloc topic_ids location_description proposed_budget idea_images_attributes idea_files_attributes author_id budget ideation_section_1].freeze
+  INPUT_TYPES = %w[text number multiline_text html text_multiloc multiline_text_multiloc html_multiloc select multiselect checkbox date files image_files point linear_scale file_upload page section].freeze
+  CODES = %w[gender birthyear domicile education title_multiloc body_multiloc topic_ids location_description proposed_budget idea_images_attributes idea_files_attributes author_id budget ideation_section_1 ideation_section_2 ideation_section_3].freeze
 
   validates :resource_type, presence: true, inclusion: { in: FIELDABLE_TYPES }
   validates :key, presence: true, uniqueness: { scope: %i[resource_type resource_id] }, format: { with: /\A[a-zA-Z0-9_]+\z/,
