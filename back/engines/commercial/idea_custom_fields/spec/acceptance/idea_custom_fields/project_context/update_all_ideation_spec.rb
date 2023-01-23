@@ -65,7 +65,7 @@ resource 'Idea Custom Fields' do
       example 'Add, update and remove a field' do
         fields_param = default_fields_param # https://stackoverflow.com/a/58695857/3585671
         # Update persisted built-in field
-        fields_param[0] = {
+        fields_param[1] = {
           id: custom_form.custom_fields.find_by(code: 'title_multiloc').id,
           title_multiloc: { 'en' => 'New input title' }
         }
@@ -90,14 +90,15 @@ resource 'Idea Custom Fields' do
         json_response = json_parse response_body
         # expect(json_response[:data].size).to eq 10
         expect(json_response[:data].pluck(:id)).not_to include(deleted_field.id)
-        expect(json_response[:data][0]).to match(hash_including(
+        # section 1
+        expect(json_response[:data][1]).to match(hash_including(
           attributes: hash_including(
             code: 'title_multiloc',
             key: 'title_multiloc',
             input_type: 'text_multiloc',
             title_multiloc: { en: 'New input title' },
             description_multiloc: {},
-            ordering: 0,
+            ordering: 1,
             required: true,
             enabled: true,
             created_at: an_instance_of(String),
@@ -107,12 +108,12 @@ resource 'Idea Custom Fields' do
           type: 'custom_field',
           relationships: { options: { data: [] } }
         ))
-        expect(json_response[:data][1]).to match(hash_including(
+        expect(json_response[:data][2]).to match(hash_including(
           attributes: hash_including(
             code: 'body_multiloc',
             key: 'body_multiloc',
             input_type: 'html_multiloc',
-            ordering: 1,
+            ordering: 2,
             title_multiloc: hash_including(en: 'Description'),
             description_multiloc: {},
             required: true,
@@ -126,12 +127,12 @@ resource 'Idea Custom Fields' do
         ))
         # author
         # budget
-        expect(json_response[:data][4]).to match(hash_including(
+        expect(json_response[:data][10]).to match(hash_including(
           attributes: hash_including(
             code: 'proposed_budget',
             key: 'proposed_budget',
             input_type: 'number',
-            ordering: 4,
+            ordering: 10,
             title_multiloc: hash_including(en: 'Proposed Budget'),
             description_multiloc: {},
             required: false,
@@ -795,12 +796,12 @@ resource 'Idea Custom Fields' do
 
         do_request(
           custom_fields: default_fields_param.tap do |params|
-            params.first[:title_multiloc] = custom_title
+            params[1][:title_multiloc] = custom_title
           end
         )
 
         assert_status 200
-        expect(context.reload.custom_form.custom_fields.first.title_multiloc).to eq custom_title
+        expect(context.reload.custom_form.custom_fields[1].title_multiloc).to eq custom_title
       end
     end
   end
