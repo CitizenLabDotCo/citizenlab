@@ -16,7 +16,7 @@ import IdeaCustomField from './IdeaCustomField';
 // components
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import { Success } from '@citizenlab/cl2-component-library';
+import { Success, Box } from '@citizenlab/cl2-component-library';
 
 import {
   Section,
@@ -38,21 +38,6 @@ import { Multiloc } from 'typings';
 
 import { IIdeaCustomFieldData } from './services/ideaCustomFields';
 
-const Container = styled.div``;
-
-const Header = styled.div`
-  width: 100%;
-  max-width: 600px;
-  margin-bottom: 40px;
-`;
-
-const TitleContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
-`;
-
 const StyledSectionTitle = styled(SectionTitle)`
   padding: 0;
   margin: 0;
@@ -61,24 +46,6 @@ const StyledSectionTitle = styled(SectionTitle)`
 const StyledSubSectionTitle = styled(SubSectionTitle)`
   font-weight: 500;
   margin-bottom: 20px;
-`;
-
-const CollapseExpandAllButton = styled(Button)``;
-
-const Content = styled.div`
-  width: 100%;
-  max-width: 600px;
-  margin-bottom: 30px;
-`;
-
-const Footer = styled.div`
-  min-height: 50px;
-  display: flex;
-  align-items: center;
-`;
-
-const ErrorWrapper = styled.div`
-  flex-grow: 1;
 `;
 
 interface Props {
@@ -210,22 +177,27 @@ const IdeaForm = memo<Props & WithRouterProps & WrappedComponentProps>(
 
     if (!isNilOrError(ideaCustomFields)) {
       return (
-        <Container className={className || ''}>
-          <Header>
-            <TitleContainer>
+        <Box className={className || ''}>
+          <Box width="100%" maxWidth="600px" mb="40px">
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+              mb="10px"
+            >
               <StyledSectionTitle>
                 <FormattedMessage {...messages.inputForm} />
               </StyledSectionTitle>
-            </TitleContainer>
+            </Box>
             <SectionDescription>
               <FormattedMessage {...messages.postDescription} />
             </SectionDescription>
-          </Header>
+          </Box>
 
-          <Content>
+          <Box width="100%" maxWidth="600px" mb="30px">
             <Section>
               <StyledSubSectionTitle>
-                <CollapseExpandAllButton
+                <Button
                   buttonStyle="secondary"
                   padding="7px 10px"
                   onClick={handleCollapseExpandAll}
@@ -251,9 +223,9 @@ const IdeaForm = memo<Props & WithRouterProps & WrappedComponentProps>(
                 );
               })}
             </Section>
-          </Content>
+          </Box>
 
-          <Footer>
+          <Box display="flex" alignItems="center" minHeight="50px">
             <Button
               buttonStyle="admin-dark"
               onClick={handleOnSubmit}
@@ -277,16 +249,16 @@ const IdeaForm = memo<Props & WithRouterProps & WrappedComponentProps>(
             )}
 
             {error && (
-              <ErrorWrapper>
+              <Box display="flex" flexGrow={1}>
                 <Error
                   text={formatMessage(messages.errorMessage)}
                   showBackground={false}
                   showIcon={false}
                 />
-              </ErrorWrapper>
+              </Box>
             )}
-          </Footer>
-        </Container>
+          </Box>
+        </Box>
       );
     }
 

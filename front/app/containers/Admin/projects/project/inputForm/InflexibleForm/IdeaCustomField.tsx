@@ -30,20 +30,10 @@ import { colors, fontSizes } from 'utils/styleUtils';
 // typings
 import { Multiloc } from 'typings';
 
-const Toggles = styled.div`
-  margin-bottom: 30px;
-`;
-
 const LocaleSwitcherLabelText = styled.span`
   font-weight: 500;
   color: ${colors.primary};
   font-size: ${fontSizes.m}px;
-`;
-
-const ToggleContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
 `;
 
 const StyledToggle = styled(Toggle)`
@@ -151,9 +141,9 @@ export default memo<Props>(
           className={`${className || ''}`}
         >
           <Box pt="10px" mb="25px" w="100%">
-            <Toggles>
+            <Box mb="30px">
               {canSetEnabled && (
-                <ToggleContainer>
+                <Box display="flex" alignItems="center" mb="10px">
                   <StyledToggle
                     checked={fieldEnabled}
                     onChange={handleEnabledOnChange}
@@ -168,10 +158,10 @@ export default memo<Props>(
                       <FormattedMessage {...messages.enabledTooltipContent} />
                     }
                   />
-                </ToggleContainer>
+                </Box>
               )}
               {fieldEnabled && canSetRequired && (
-                <ToggleContainer>
+                <Box display="flex" alignItems="center" mb="10px">
                   <StyledToggle
                     checked={fieldRequired}
                     onChange={handleRequiredOnChange}
@@ -186,9 +176,9 @@ export default memo<Props>(
                       <FormattedMessage {...messages.requiredTooltipContent} />
                     }
                   />
-                </ToggleContainer>
+                </Box>
               )}
-            </Toggles>
+            </Box>
 
             {fieldEnabled && (
               <QuillMutilocWithLocaleSwitcher
