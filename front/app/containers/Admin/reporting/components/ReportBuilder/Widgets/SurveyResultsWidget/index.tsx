@@ -179,6 +179,7 @@ const SurveyResultsWidgetSettings = () => {
             label={formatMessage(messages.surveyPhases)}
             projectId={projectId}
             phaseId={phaseId}
+            participationMethod="native_survey"
             onPhaseFilter={handlePhaseFilter}
           />
           <QuestionFilter

@@ -15,48 +15,58 @@ import { isNilOrError } from 'utils/helperUtils';
 // typings
 import { IOption } from 'typings';
 import { IPhaseData } from 'services/phases';
+import { ParticipationMethod } from 'services/participationContexts';
 
 interface Props {
   label: string;
   projectId: string;
   phaseId?: string;
+  participationMethod: ParticipationMethod;
   onPhaseFilter: (filter: IOption) => void;
 }
 
-const isNativeSurveyPhase = (phase: IPhaseData) => {
-  return phase.attributes.participation_method === 'native_survey';
-};
+const isCorrectPhase =
+  (participationMethod: ParticipationMethod) => (phase: IPhaseData) => {
+    return phase.attributes.participation_method === participationMethod;
+  };
 
-const PhaseFilter = ({ label, projectId, phaseId, onPhaseFilter }: Props) => {
+const PhaseFilter = ({
+  label,
+  projectId,
+  phaseId,
+  participationMethod,
+  onPhaseFilter,
+}: Props) => {
   const phases = usePhases(projectId);
   const localize = useLocalize();
 
-  const surveyPhases = useMemo(() => {
-    return isNilOrError(phases) ? null : phases.filter(isNativeSurveyPhase);
+  const correctPhases = useMemo(() => {
+    return isNilOrError(phases)
+      ? null
+      : phases.filter(isCorrectPhase(participationMethod));
   }, [phases]);
 
   const phaseOptions = useMemo(() => {
-    return surveyPhases
-      ? surveyPhases.map(({ id, attributes }) => ({
+    return correctPhases
+      ? correctPhases.map(({ id, attributes }) => ({
           value: id,
           label: localize(attributes.title_multiloc),
         }))
       : null;
-  }, [surveyPhases, localize]);
+  }, [correctPhases, localize]);
 
   useEffect(() => {
     if (!phaseOptions || phaseOptions.length === 0) return;
     onPhaseFilter(phaseOptions[0]);
   }, [phaseOptions, onPhaseFilter]);
 
-  if (!surveyPhases || !phaseOptions) return null;
-  if (phaseOptions.length === 0) return null;
+  if (!phaseOptions || phaseOptions.length === 0) return null;
 
   if (phaseOptions.length === 1) {
     return (
       <Box>
         <Text variant="bodyM" color="textSecondary">
-          {localize(surveyPhases[0].attributes.title_multiloc)}
+          {phaseOptions[0].label}
         </Text>
       </Box>
     );

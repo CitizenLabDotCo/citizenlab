@@ -105,6 +105,7 @@ const Settings = () => {
           label={formatMessage(messages.ideationPhases)}
           projectId={projectId}
           phaseId={phaseId}
+          participationMethod="ideation"
           onPhaseFilter={handlePhaseFilter}
         />
       )}
