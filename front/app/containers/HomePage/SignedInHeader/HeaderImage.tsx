@@ -66,6 +66,7 @@ const HeaderImage = () => {
           )}
           {/* Image overlay */}
           <Box
+            data-testid="signed-in-header-image-overlay"
             background={
               theme.signedInHeaderOverlayColor || theme.colors.tenantPrimary
             }
