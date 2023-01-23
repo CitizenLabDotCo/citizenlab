@@ -27,7 +27,7 @@ module ParticipationMethod
       []
     end
 
-    def field_constraints
+    def constraints
       {}
     end
 

@@ -55,7 +55,7 @@ class CustomField < ApplicationRecord
   validates :hidden, inclusion: { in: [true, false] }
   validates :code, inclusion: { in: CODES }, uniqueness: { scope: %i[resource_type resource_id] }, allow_nil: true
 
-  validates_with FieldConstraintValidator
+  validates_with ConstraintValidator
 
   before_validation :set_default_enabled
   before_validation :generate_key, on: :create
@@ -206,15 +206,16 @@ class CustomField < ApplicationRecord
   end
 end
 
-# Where is this best put in the codebase?
-# field constraints is maybe confusing - maybe just constraints?
-class FieldConstraintValidator < ActiveModel::Validator
+# Validate that locked attributes are not changed
+class ConstraintValidator < ActiveModel::Validator
   def validate(field)
     @participation_method = Factory.instance.participation_method_for field.resource.participation_context
-    field_constraints = @participation_method.field_constraints[field.code]
-    field_constraints['locks']&.each do |key, value|
-      if field.changed_attributes.key?(key) && value == true
-        field.errors.add :base, "Cannot change #{key}. It is locked."
+    field_constraints = @participation_method.constraints[field.code]
+    field_constraints['locks']&.each do |attribute, value|
+      if field.changed_attributes.key?(attribute) &&
+         value == true &&
+         !(field.code == 'ideation_section_1' && attribute == 'title_multiloc')
+        field.errors.add :base, "Cannot change #{attribute}. It is locked."
       end
     end
   end
