@@ -402,8 +402,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     ? !folderCard.remote
     : false;
 
-  console.log({ folderCard });
-
   return (
     <form onSubmit={saveForm}>
       <Section>
