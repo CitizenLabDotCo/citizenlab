@@ -147,9 +147,9 @@ describe LocalProjectCopyService do
     end
 
     it 'copies associated poll questions & options' do
-      # config = AppConfiguration.instance
-      # config.settings['core']['locales'] = %w[en nl-BE]
-      # config.save!
+      config = AppConfiguration.instance
+      config.settings['core']['locales'] = %w[en nl-BE]
+      config.save!
 
       source_project = create(:continuous_poll_project)
       create_list(:poll_question, 2, :with_options, participation_context_id: source_project.id, participation_context_type: 'Project')
