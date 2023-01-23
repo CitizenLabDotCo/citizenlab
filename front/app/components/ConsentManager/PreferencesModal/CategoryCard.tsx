@@ -1,13 +1,25 @@
-import React, { Fragment, FormEvent } from 'react';
+import React, { Fragment } from 'react';
+
+// hooks
+import useAppConfiguration from 'hooks/useAppConfiguration';
+
+// styling
 import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 import { transparentize } from 'polished';
-import messages from './messages';
+
+// components
+import { Radio, Title } from '@citizenlab/cl2-component-library';
+
+// i18n
+import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import { Radio } from '@citizenlab/cl2-component-library';
-import { getDestinationConfig, IDestination, TCategory } from './destinations';
-import useAppConfiguration from 'hooks/useAppConfiguration';
+
+// utils
+import { getDestinationConfig, IDestination, TCategory } from '../destinations';
 import { isNilOrError } from 'utils/helperUtils';
+
+// typings
 import { IAppConfigurationData } from 'services/appConfiguration';
 
 const Container = styled.div`
@@ -82,10 +94,7 @@ interface Props {
   destinations: IDestination[];
   checked: boolean;
   disableUncheck?: boolean;
-  handleChange: (
-    category: TConsentCategory,
-    value: boolean
-  ) => (e: FormEvent<HTMLInputElement>) => void;
+  onChange: (category: TCategory, value: boolean) => void;
 }
 
 const DestinationName = ({
@@ -105,43 +114,66 @@ const DestinationName = ({
   }
 };
 
+const RADIO_IDS_TRUE: Record<TCategory, string> = {
+  advertising: 'advertising-radio-true',
+  analytics: 'analytics-radio-true',
+  functional: 'functional-radio-true',
+};
+
+const RADIO_IDS_FALSE: Record<TCategory, string> = {
+  advertising: 'advertising-radio-false',
+  analytics: 'analytics-radio-false',
+  functional: 'functional-radio-false',
+};
+
 const CategoryCard = ({
   category,
   destinations,
   checked,
-  handleChange,
+  onChange,
   disableUncheck,
 }: Props) => {
   const appConfig = useAppConfiguration();
 
+  const handleChange = (category: TCategory, value: boolean) => () => {
+    onChange(category, value);
+  };
+
   return (
     <Container className="e2e-category">
       <TextContainer>
-        <FormattedMessage
-          tagName="h2"
-          {...{
-            functional: messages.functional,
-            advertising: messages.advertising,
-            analytics: messages.analytics,
-            required: messages.required,
-          }[category]}
-        />
+        <Title variant="h4" as="h2">
+          <FormattedMessage
+            {...{
+              functional: messages.functional,
+              advertising: messages.advertising,
+              analytics: messages.analytics,
+              required: messages.required,
+            }[category]}
+          />
+        </Title>
         <StyledFieldset>
           <Radio
-            onChange={handleChange(category, true)}
+            onChange={
+              category === 'required' ? undefined : handleChange(category, true)
+            }
             currentValue={checked}
             value={true}
             name={category}
-            id={`${category}-radio-true`}
+            id={RADIO_IDS_TRUE[category]}
             label={<FormattedMessage {...messages.allow} />}
             isRequired
           />
           <Radio
-            onChange={handleChange(category, false)}
+            onChange={
+              category === 'required'
+                ? undefined
+                : handleChange(category, false)
+            }
             currentValue={checked}
             value={false}
             name={category}
-            id={`${category}-radio-false`}
+            id={RADIO_IDS_FALSE[category]}
             label={<FormattedMessage {...messages.disallow} />}
             isRequired
             disabled={disableUncheck}

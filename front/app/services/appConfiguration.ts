@@ -238,6 +238,8 @@ export interface IAppConfigurationStyle {
   navbarBorderColor?: string;
   signedOutHeaderTitleFontSize?: number;
   signedOutHeaderTitleFontWeight?: number;
+  // These signed in variables are used via the theme in the
+  // component library and can be set via AdminHQ.
   signedInHeaderOverlayColor?: string;
   // Number between 0 and 100, inclusive
   signedInHeaderOverlayOpacity?: number;
