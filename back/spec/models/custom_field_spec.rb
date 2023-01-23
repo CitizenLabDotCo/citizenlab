@@ -148,13 +148,30 @@ RSpec.describe CustomField, type: :model do
 
   describe '#section?' do
     it 'returns true when the input_type is "section"' do
-      page_field = described_class.new input_type: 'section'
-      expect(page_field.section?).to be true
+      section_field = described_class.new input_type: 'section'
+      expect(section_field.section?).to be true
     end
 
     it 'returns false otherwise' do
       other_field = described_class.new input_type: 'something_else'
       expect(other_field.section?).to be false
+    end
+  end
+
+  describe '#page_or_section?' do
+    it 'returns true when the input_type is "page"' do
+      page_field = described_class.new input_type: 'page'
+      expect(page_field.page_or_section?).to be true
+    end
+
+    it 'returns true when the input_type is "section"' do
+      section_field = described_class.new input_type: 'section'
+      expect(section_field.page_or_section?).to be true
+    end
+
+    it 'returns false otherwise' do
+      other_field = described_class.new input_type: 'something_else'
+      expect(other_field.page_or_section?).to be false
     end
   end
 
@@ -324,4 +341,31 @@ RSpec.describe CustomField, type: :model do
       end
     end
   end
+
+
+  describe 'constraint validation' do
+      let(:form) { create :custom_form }
+
+      it 'raises an error' do
+        form = create :custom_form
+        field = described_class.new resource: form, input_type: 'title_multiloc', code: 'title_multiloc_2', required: true
+
+        binding.pry
+        expect(field.save).to be false
+
+
+        # expect { field.accept(visitor) }.to raise_error 'Cannot change required. It is locked.'
+      end
+  end
+
+  describe 'title_multiloc for ideation section 1' do
+    it 'returns the correct ideation message for input term' do
+      section = described_class.new input_type: 'section', code: 'ideation_section_1'
+
+      binding.pry
+
+      expect { section.title_multiloc }.to raise_error 'Cannot change required. It is locked.'
+    end
+  end
+
 end
