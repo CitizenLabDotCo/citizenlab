@@ -1,6 +1,5 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
-import { get } from 'lodash-es';
 
 // components
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
@@ -41,10 +40,10 @@ export const ContentSettings = ({
 }: ContentSettingsProps) => {
   const { watch, trigger, setValue } = useFormContext();
   const logic = watch(`customFields.${field.index}.logic`);
+  const lockedAttributes = field?.constraints?.locks;
   const platformLocale = useLocale();
   const hasRules = logic && logic.rules && logic.rules.length > 0;
   const isFieldGrouping = ['page', 'section'].includes(field.input_type);
-  const isDeleteEnabled = get(field, 'isDeleteEnabled', true);
   const handleDelete = () => {
     if (builtInFieldKeys.includes(field.key)) {
       const newField = { ...field, enabled: false };
@@ -61,8 +60,8 @@ export const ContentSettings = ({
       <Box mt="16px">
         {!isFieldGrouping && (
           <>
-            {!isNilOrError(field.isTitleEditable)
-              ? field.isTitleEditable
+            {!isNilOrError(lockedAttributes?.title_multiloc)
+              ? !lockedAttributes?.title_multiloc
               : true && (
                   <SectionField>
                     <InputMultilocWithLocaleSwitcher
@@ -93,8 +92,8 @@ export const ContentSettings = ({
               <Toggle
                 name={`customFields.${field.index}.required`}
                 disabled={
-                  !isNilOrError(field.isRequiredEditable)
-                    ? !field.isRequiredEditable
+                  !isNilOrError(lockedAttributes?.required)
+                    ? lockedAttributes?.required
                     : hasRules
                 }
                 label={
@@ -122,19 +121,21 @@ export const ContentSettings = ({
           >
             <FormattedMessage {...messages.done} />
           </Button>
-          {isDeleteEnabled && (
-            <Button
-              px="28px"
-              icon="delete"
-              buttonStyle="primary-outlined"
-              borderColor={colors.error}
-              textColor={colors.error}
-              iconColor={colors.error}
-              onClick={handleDelete}
-              data-cy="e2e-delete-field"
-              disabled={isDeleteDisabled}
-            />
-          )}
+          {!isNilOrError(lockedAttributes?.enabled)
+            ? !lockedAttributes?.enabled
+            : true && (
+                <Button
+                  px="28px"
+                  icon="delete"
+                  buttonStyle="primary-outlined"
+                  borderColor={colors.error}
+                  textColor={colors.error}
+                  iconColor={colors.error}
+                  onClick={handleDelete}
+                  data-cy="e2e-delete-field"
+                  disabled={isDeleteDisabled}
+                />
+              )}
         </Box>
       </Box>
     );
