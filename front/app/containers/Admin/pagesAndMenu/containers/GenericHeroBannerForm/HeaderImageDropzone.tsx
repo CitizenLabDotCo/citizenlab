@@ -98,15 +98,12 @@ const HeaderImageDropzone = ({
     const layoutHeightOnDevice =
       homepageBannerLayoutHeights[layout][previewDevice];
     // Using the widths as we define them for our breakpoints.
-    const standardDeviceWidth =
-      viewportWidths[
-        {
-          phone: 'phone',
-          tablet: 'tablet',
-          desktop: 'smallDesktop',
-        }[previewDevice]
-      ];
-
+    const viewportWidthsKey = {
+      phone: 'phone' as const,
+      tablet: 'tablet' as const,
+      desktop: 'smallDesktop' as const,
+    }[previewDevice];
+    const standardDeviceWidth = viewportWidths[viewportWidthsKey];
     const ratio = layoutHeightOnDevice / standardDeviceWidth;
 
     const ratioPerLayoutPerDevice: {
