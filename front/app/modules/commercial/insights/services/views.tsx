@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { API_PATH } from 'containers/App/constants';
 import { IRelationship } from 'typings';
 import { getJwt } from 'utils/auth/jwt';
@@ -28,8 +28,16 @@ export interface IInsightsViews {
 const jwt = getJwt();
 
 const viewKeys = {
-  all: [{ type: 'view' }] as const,
-  list: () => [{ ...viewKeys.all[0], entity: 'list' }] as const,
+  all: () => [{ type: 'view' }] as const,
+  lists: () => [{ ...viewKeys.all()[0], entity: 'list' }] as const,
+  details: () => [{ ...viewKeys.all()[0], entity: 'detail' }] as const,
+  detail: (id: number) =>
+    [
+      {
+        ...viewKeys.details()[0],
+        id,
+      },
+    ] as const,
 };
 
 const fetchViews = async () => {
@@ -43,6 +51,61 @@ const fetchViews = async () => {
   return data;
 };
 
-export const useInsightsViews = () => {
-  return useQuery({ queryKey: viewKeys.list(), queryFn: fetchViews });
+export const useViews = () => {
+  return useQuery<IInsightsViews>({
+    queryKey: viewKeys.lists(),
+    queryFn: fetchViews,
+  });
+};
+
+const deleteView = async (id: string) => {
+  return await fetch(`${API_PATH}/insights/views/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+};
+
+export const useDeleteView = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: deleteView,
+    onMutate: async (id: string) => {
+      // Cancel any outgoing refetches
+      // (so they don't overwrite our optimistic update)
+      await queryClient.cancelQueries({ queryKey: [viewKeys.lists()] });
+
+      // Snapshot the previous value
+      const previous = queryClient.getQueryData<IInsightsViews>(
+        viewKeys.lists()
+      );
+
+      // Optimistically update to the new value
+      queryClient.setQueryData(viewKeys.lists(), (old: IInsightsViews) => {
+        const newData = {
+          ...old,
+          data: old.data.filter((item) => item.id !== id),
+        };
+
+        return newData;
+      });
+
+      // Return a context object with the snapshotted value
+      return { previous };
+    },
+    onError: (_err, _newTodo, context) => {
+      if (context?.previous) {
+        queryClient.setQueryData<IInsightsViews>(
+          viewKeys.lists(),
+          context.previous
+        );
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: viewKeys.lists() });
+    },
+  });
 };

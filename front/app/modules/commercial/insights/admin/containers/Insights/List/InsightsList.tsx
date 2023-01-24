@@ -16,10 +16,9 @@ import { fontSizes, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // services
-import {
-  IInsightsViewData,
-  deleteInsightsView,
-} from 'modules/commercial/insights/services/insightsViews';
+import { IInsightsViewData } from 'modules/commercial/insights/services/insightsViews';
+
+import { useDeleteView } from 'modules/commercial/insights/services/views';
 
 const StyledDescription = styled.p`
   font-size: ${fontSizes.base}px;
@@ -96,11 +95,12 @@ const InsightsList: React.FC<InsightsList & WrappedComponentProps> = ({
   data,
   openCreateModal,
 }) => {
+  const mutation = useDeleteView();
   const handleDeleteClick = (viewId: string) => () => {
     const deleteMessage = formatMessage(messages.listDeleteConfirmation);
 
     if (window.confirm(deleteMessage)) {
-      deleteInsightsView(viewId);
+      mutation.mutate(viewId);
     }
   };
 
@@ -155,6 +155,7 @@ const InsightsList: React.FC<InsightsList & WrappedComponentProps> = ({
                   textColor={colors.textSecondary}
                   boxShadow="none"
                   onClick={handleDeleteClick(view.id)}
+                  processing={mutation.isLoading}
                 >
                   {formatMessage(messages.listDelete)}
                 </Button>
