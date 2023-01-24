@@ -687,6 +687,7 @@
   "app.containers.Admin.reporting.printPrepare": "Preparing to print...",
   "app.containers.Admin.reporting.reportBuilder": "Εργαλείο κατασκευής αναφορών",
   "app.containers.Admin.reporting.reportHeader": "Κεφαλίδα αναφοράς",
+  "app.containers.Admin.reporting.resultsSection": "RESULTS",
   "app.containers.AdminPage.DashboardPage.Report.participants": "συμμετέχοντες",
   "app.containers.AdminPage.DashboardPage.Report.totalUsers": "συνολικοί χρήστες στην πλατφόρμα",
   "app.containers.AdminPage.DashboardPage._blank": "άγνωστο",
