@@ -40,6 +40,7 @@ const Ideas = ({ projectId, phaseId, numberOfIdeas }: Props) => {
             attributes: {
               title_multiloc,
               body_multiloc,
+              slug,
               upvotes_count,
               downvotes_count,
               comments_count,
@@ -53,6 +54,7 @@ const Ideas = ({ projectId, phaseId, numberOfIdeas }: Props) => {
             rank={i + 1}
             title={localize(title_multiloc)}
             body={localize(body_multiloc)}
+            url={`/ideas/${slug}`}
             upvotes={upvotes_count}
             downvotes={downvotes_count}
             comments={comments_count}

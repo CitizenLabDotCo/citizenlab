@@ -7,11 +7,13 @@ import { BORDER } from '../../constants';
 
 // components
 import { Box, Text, Title } from '@citizenlab/cl2-component-library';
+import Link from 'utils/cl-router/Link';
 
 interface Props {
   rank: number;
   title: string;
   body: string;
+  url: string;
   upvotes: number;
   downvotes: number;
   comments: number;
@@ -26,7 +28,7 @@ const PageBreakParagraphs = styled.div`
   }
 `;
 
-const IdeaCard = ({ rank, title, body }: Props) => {
+const IdeaCard = ({ rank, title, body, url }: Props) => {
   return (
     <Box borderTop={BORDER} my="16px" pt="16px">
       <Box display="flex" flexDirection="row" justifyContent="flex-start">
@@ -48,9 +50,17 @@ const IdeaCard = ({ rank, title, body }: Props) => {
             #{rank}
           </Text>
         </Box>
-        <Title variant="h4" display="inline" color="primary" mt="0px" mb="0px">
-          {title}
-        </Title>
+        <Link to={url} target="_blank">
+          <Title
+            variant="h4"
+            display="inline"
+            color="primary"
+            mt="0px"
+            mb="0px"
+          >
+            {title}
+          </Title>
+        </Link>
       </Box>
       <Text fontSize="m" color="tenantText" mt="8px" mb="0px">
         <PageBreakParagraphs dangerouslySetInnerHTML={{ __html: body }} />
