@@ -61,5 +61,3 @@ class IdeaCustomFieldsService
 
   attr_reader :custom_form, :participation_method
 end
-
-# IdeaCustomFieldsService.prepend_if_ee('IdeaCustomFields::Patches::IdeaCustomFieldsService')
