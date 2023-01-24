@@ -17,16 +17,16 @@ const Component = ({ onChange, selectedPreviewDevice }: Props) => {
       id="display-preview-device"
       options={[
         {
-          value: 'desktop',
-          label: formatMessage(messages.desktop),
+          value: 'phone',
+          label: formatMessage(messages.phone),
         },
         {
           value: 'tablet',
           label: formatMessage(messages.tablet),
         },
         {
-          value: 'phone',
-          label: formatMessage(messages.phone),
+          value: 'desktop',
+          label: formatMessage(messages.desktop),
         },
       ]}
       onChange={onChange}
