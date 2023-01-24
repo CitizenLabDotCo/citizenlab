@@ -92,10 +92,11 @@ const FormBuilderToolbox = ({
       flexDirection="column"
       alignItems="center"
       bgColor="white"
-      overflowY="auto"
+      overflowX="visible"
       borderRight={`1px solid ${colors.borderLight}`}
+      pb="80px"
     >
-      <Box w="100%" display="inline">
+      <Box overflowY="auto" w="100%" display="inline">
         <BuiltInFields isEditingDisabled={isEditingDisabled} move={move} />
         <Title
           fontWeight="normal"
