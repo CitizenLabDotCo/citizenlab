@@ -4,6 +4,7 @@ import React from 'react';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import styled from 'styled-components';
 import { TPreviewDevice } from 'components/admin/SelectPreviewDevice';
+import { viewportWidths } from '@citizenlab/cl2-component-library';
 
 // types
 import {
@@ -110,7 +111,37 @@ const HeaderImageDropzone = ({
     const ratio =
       layoutHeightOnDevice / (standardDeviceWidth * deviceWidthPerLayout);
 
-    return ratio;
+    const ratioPerLayoutPerDevice: {
+      [key in THomepageBannerLayout]: {
+        [key in TPreviewDevice]: number;
+      };
+    } = {
+      full_width_banner_layout: {
+        desktop: ratio,
+        tablet: ratio,
+        phone: ratio,
+      },
+      two_column_layout: {
+        desktop: ratio,
+        tablet: ratio,
+        phone: ratio,
+      },
+      two_row_layout: {
+        desktop: ratio,
+        tablet: ratio,
+        phone: ratio,
+      },
+      fixed_ratio_layout: {
+        // With our min-height of 225px, we assume a phone screenwidth of
+        // 450px for the sake of simplicity. Resulting in 1 / 2 aspect-ratio.
+        // Average phone screen width is slightly narrower though.
+        phone: 1 / 2,
+        tablet: 1 / 3,
+        desktop: 1 / 3,
+      },
+    };
+
+    return ratioPerLayoutPerDevice[layout][previewDevice];
   };
 
   const showPreviewOverlayForLayout = (
