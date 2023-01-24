@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import clHistory from 'utils/cl-router/history';
 import { isEmpty, isEqual } from 'lodash-es';
-import { CLErrors, Multiloc, UploadFile } from 'typings';
+import { CLErrors, Multiloc, UploadFile, IOption } from 'typings';
 import { isNilOrError, isError } from 'utils/helperUtils';
 import { addProjectFolder, updateProjectFolder } from 'services/projectFolders';
 import {
@@ -13,13 +13,12 @@ import useProjectFolderImages from 'hooks/useProjectFolderImages';
 import useProjectFolder from 'hooks/useProjectFolder';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from '../../messages';
 import {
   SectionField,
   Section,
   SubSectionTitle,
 } from 'components/admin/Section';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
@@ -37,7 +36,9 @@ import { validateSlug } from 'utils/textUtils';
 import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
 import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
-
+import SelectPreviewDevice from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields/SelectPreviewDevice';
+import { TPreviewDevice } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields/SelectPreviewDevice';
+import ProjectFolderCardImageDropzone from './ProjectFolderCardImageDropzone';
 import { CARD_IMAGE_ASPECT_RATIO } from 'services/projects';
 
 type IProjectFolderSubmitState =
@@ -145,6 +146,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const [projectFolderFilesToRemove, setProjectFolderFilesToRemove] = useState<
     string[]
   >([]);
+  const [previewDevice, setPreviewDevice] = useState<TPreviewDevice>('phone');
 
   const getHandler = useCallback(
     (setter: (value: any) => void) => (value: any) => {
@@ -528,18 +530,26 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               />
             </Box>
           ) : (
-            <ImagesDropzone
-              images={folderCard && [folderCard]}
-              imagePreviewRatio={1 / CARD_IMAGE_ASPECT_RATIO}
-              maxImagePreviewWidth="240px"
-              acceptedFileTypes={{
-                'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
-              }}
-              onAdd={getHandler((cards: UploadFile[]) =>
-                setFolderCard(cards[0])
+            <>
+              {folderCard && (
+                <Box mb="20px">
+                  <SelectPreviewDevice
+                    selectedPreviewDevice={previewDevice}
+                    onChange={(option: IOption) =>
+                      setPreviewDevice(option.value)
+                    }
+                  />
+                </Box>
               )}
-              onRemove={handleFolderCardOnRemove}
-            />
+              <ProjectFolderCardImageDropzone
+                images={folderCard && [folderCard]}
+                onAddImage={getHandler((cards: UploadFile[]) =>
+                  setFolderCard(cards[0])
+                )}
+                onRemoveImage={handleFolderCardOnRemove}
+                previewDevice={previewDevice}
+              />
+            </>
           )}
         </SectionField>
         <SectionField>
