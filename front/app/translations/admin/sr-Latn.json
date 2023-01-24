@@ -687,6 +687,7 @@
   "app.containers.Admin.reporting.printPrepare": "Priprema za štampu...",
   "app.containers.Admin.reporting.reportBuilder": "Prijavi alatku za izradu",
   "app.containers.Admin.reporting.reportHeader": "Zaglavlje izveštaja",
+  "app.containers.Admin.reporting.resultsSection": "RESULTS",
   "app.containers.AdminPage.DashboardPage.Report.participants": "učesnici",
   "app.containers.AdminPage.DashboardPage.Report.totalUsers": "ukupno na platformi",
   "app.containers.AdminPage.DashboardPage._blank": "nepoznato",
