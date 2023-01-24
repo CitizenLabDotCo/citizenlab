@@ -106,10 +106,8 @@ const HeaderImageDropzone = ({
           desktop: 'smallDesktop',
         }[previewDevice]
       ];
-    const deviceWidthPerLayout =
-      previewDevice === 'desktop' && layout === 'two_column_layout' ? 0.5 : 1;
-    const ratio =
-      layoutHeightOnDevice / (standardDeviceWidth * deviceWidthPerLayout);
+
+    const ratio = layoutHeightOnDevice / standardDeviceWidth;
 
     const ratioPerLayoutPerDevice: {
       [key in THomepageBannerLayout]: {
