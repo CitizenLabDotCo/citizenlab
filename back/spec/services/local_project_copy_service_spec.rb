@@ -6,7 +6,7 @@ describe LocalProjectCopyService do
   let(:service) { described_class.new }
 
   describe 'project copy', slow_test: true do
-    # Some factories use en & nl-NL multilocs, other use en & nl-BE, but the apply_template method, invoked by the
+    # Some factories use en & nl-NL multilocs, others use en & nl-BE, but the apply_template method, invoked by the
     # LocalProjectCopyService, will only apply multiloc k-v pairs with keys that match the target tenant locale(s).
     # Thus, we specify all 3 locales to enable easier testing with factory generated multilocs.
     before_all do
@@ -60,12 +60,14 @@ describe LocalProjectCopyService do
 
     it 'copies basic project attributes' do
       copied_project = service.copy(continuous_project)
+
       expect(copied_project.as_json(except: %i[id title_mutliloc slug updated_at created_at]))
         .to eq continuous_project.as_json(except: %i[id title_mutliloc slug updated_at created_at])
     end
 
     it 'creates a copied project with an associated publication status of draft' do
       copied_project = service.copy(continuous_project)
+
       expect(copied_project.admin_publication.publication_status).to eq 'draft'
     end
 
@@ -87,15 +89,15 @@ describe LocalProjectCopyService do
 
     it 'copies project to same folder as source project' do
       source_project = build(:project, folder_id: folder.id)
-
       copied_project = service.copy(source_project)
+
       expect(copied_project.folder_id).to eq source_project.folder_id
     end
 
     it 'associates areas of source project with copied project' do
       source_project = build(:project, areas: create_list(:area, 2))
-
       copied_project = service.copy(source_project)
+
       expect(copied_project.areas.map(&:as_json)).to match_array(source_project.areas.map(&:as_json))
     end
 
@@ -156,10 +158,9 @@ describe LocalProjectCopyService do
         participation_context_id: continuous_project.id,
         participation_context_type: 'Project'
       )
-      create_list(:custom_field_select, 2, :with_options, resource_type: 'CustomForm', resource_id: custom_form.id)
+      create_list(:custom_field_select, 5, :with_options, resource_type: 'CustomForm', resource_id: custom_form.id)
       copied_project = service.copy(continuous_project)
 
-      # TODO: Fix ordering mismatch found in tests when ordering not excluded.
       expect(copied_project.custom_form.custom_fields.map do |record|
         record.as_json(except: %i[id ordering resource_id updated_at created_at])
       end)
@@ -167,9 +168,14 @@ describe LocalProjectCopyService do
           record.as_json(except: %i[id ordering resource_id updated_at created_at])
         end)
 
+      # Test ordering values can be used to order copied records in same order as source records,
+      # even when the ordering values are not exact copies of the integer values in the source CustomFields
+      expect(continuous_project.custom_form.custom_fields.order(:ordering).pluck(:key))
+        .to eq(copied_project.custom_form.custom_fields.order(:ordering).pluck(:key))
+
       source_custom_field = continuous_project.custom_form.custom_fields.last
       copied_custom_field = copied_project.custom_form.custom_fields
-        .find_by(title_multiloc: source_custom_field.title_multiloc)
+        .find_by(key: source_custom_field.key)
 
       expect(copied_custom_field.options.map do |record|
         record.as_json(except: %i[id custom_field_id updated_at created_at])
