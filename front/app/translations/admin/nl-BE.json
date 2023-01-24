@@ -687,6 +687,7 @@
   "app.containers.Admin.reporting.printPrepare": "Klaarmaken om af te drukken...",
   "app.containers.Admin.reporting.reportBuilder": "Rapportbouwer",
   "app.containers.Admin.reporting.reportHeader": "Koptekst rapport",
+  "app.containers.Admin.reporting.resultsSection": "RESULTS",
   "app.containers.AdminPage.DashboardPage.Report.participants": "deelnemers",
   "app.containers.AdminPage.DashboardPage.Report.totalUsers": "totaal aantal op het platform",
   "app.containers.AdminPage.DashboardPage._blank": "onbekend",
