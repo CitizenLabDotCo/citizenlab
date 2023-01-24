@@ -124,6 +124,41 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
           isOpenByDefault={true}
           title={
             <SectionTitle>
+              <FormattedMessage {...reportBuilderMessages.resultsSection} />
+            </SectionTitle>
+          }
+        >
+          {
+            // TODO: CL-2307 Only show this if there are surveys in the platform
+            // TODO: Add in the default project / phase
+          }
+          <DraggableElement
+            id="e2e-draggable-survey-results-widget"
+            component={
+              <SurveyResultsWidget
+                title={formatMessage(SurveyResultsWidget.craft.custom.title)}
+              />
+            }
+            icon="survey"
+            label={formatMessage(SurveyResultsWidget.craft.custom.title)}
+          />
+          <DraggableElement
+            id="e2e-most-voted-ideas-widget"
+            component={
+              <MostVotedIdeasWidget
+                numberOfIdeas={5}
+                collapseLongText={false}
+              />
+            }
+            icon="idea"
+            label={formatMessage(MostVotedIdeasWidget.craft.custom.title)}
+          />
+        </Accordion>
+
+        <Accordion
+          isOpenByDefault={true}
+          title={
+            <SectionTitle>
               <FormattedMessage {...reportBuilderMessages.chartsSection} />
             </SectionTitle>
           }
@@ -196,31 +231,6 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             }
             icon="chart-bar"
             label={formatMessage(ActiveUsersWidget.craft.custom.title)}
-          />
-          {
-            // TODO: CL-2307 Only show this if there are surveys in the platform
-            // TODO: Add in the default project / phase
-          }
-          <DraggableElement
-            id="e2e-draggable-survey-results-widget"
-            component={
-              <SurveyResultsWidget
-                title={formatMessage(SurveyResultsWidget.craft.custom.title)}
-              />
-            }
-            icon="survey"
-            label={formatMessage(SurveyResultsWidget.craft.custom.title)}
-          />
-          <DraggableElement
-            id="e2e-most-voted-ideas-widget"
-            component={
-              <MostVotedIdeasWidget
-                numberOfIdeas={5}
-                collapseLongText={false}
-              />
-            }
-            icon="idea"
-            label={formatMessage(MostVotedIdeasWidget.craft.custom.title)}
           />
         </Accordion>
       </Box>

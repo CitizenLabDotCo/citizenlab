@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.chartsSection',
     defaultMessage: 'CHARTS',
   },
+  resultsSection: {
+    id: 'app.containers.Admin.reporting.resultsSection',
+    defaultMessage: 'RESULTS',
+  },
   reportHeader: {
     id: 'app.containers.Admin.reporting.reportHeader',
     defaultMessage: 'Report header',
