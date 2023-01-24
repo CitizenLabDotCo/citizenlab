@@ -150,6 +150,7 @@ RSpec.describe ParticipationMethod::Budgeting do
   its(:supports_commenting?) { is_expected.to be true }
   its(:supports_voting?) { is_expected.to be true }
   its(:supports_baskets?) { is_expected.to be true }
+  its(:supports_budget?) { is_expected.to be true }
   its(:supports_status?) { is_expected.to be true }
   its(:supports_assignment?) { is_expected.to be true }
 end
