@@ -687,6 +687,7 @@
   "app.containers.Admin.reporting.printPrepare": "Drécke gëtt preparéiert...",
   "app.containers.Admin.reporting.reportBuilder": "Report Builder",
   "app.containers.Admin.reporting.reportHeader": "Header vum Rapport",
+  "app.containers.Admin.reporting.resultsSection": "RESULTS",
   "app.containers.AdminPage.DashboardPage.Report.participants": "participants",
   "app.containers.AdminPage.DashboardPage.Report.totalUsers": "total users on the platform",
   "app.containers.AdminPage.DashboardPage._blank": "unknown",
