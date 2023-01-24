@@ -5,16 +5,16 @@ import { CARD_IMAGE_ASPECT_RATIO } from 'services/projects';
 import { TPreviewDevice } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields/SelectPreviewDevice';
 
 interface Props {
-  projectImages: UploadFile[] | null;
-  handleProjectImagesOnAdd: (projectImages: UploadFile[]) => void;
-  handleProjectImageOnRemove: (projectImageToRemove: UploadFile) => void;
+  images: UploadFile[] | null;
+  onAddImages: (projectImages: UploadFile[]) => void;
+  onRemoveImage: (projectImageToRemove: UploadFile) => void;
   previewDevice: TPreviewDevice;
 }
 
-const ProjectImageDropzone = ({
-  projectImages,
-  handleProjectImagesOnAdd,
-  handleProjectImageOnRemove,
+const ProjectCardImageDropzone = ({
+  images,
+  onAddImages,
+  onRemoveImage,
   previewDevice,
 }: Props) => {
   const imagePreviewRatioPerDevice: { [key in TPreviewDevice]: number } = {
@@ -26,15 +26,15 @@ const ProjectImageDropzone = ({
 
   return (
     <ImagesDropzone
-      images={projectImages}
+      images={images}
       imagePreviewRatio={imagePreviewRatio}
       acceptedFileTypes={{
         'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
       }}
-      onAdd={handleProjectImagesOnAdd}
-      onRemove={handleProjectImageOnRemove}
+      onAdd={onAddImages}
+      onRemove={onRemoveImage}
     />
   );
 };
 
-export default ProjectImageDropzone;
+export default ProjectCardImageDropzone;

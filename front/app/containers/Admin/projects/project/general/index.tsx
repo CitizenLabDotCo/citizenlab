@@ -13,7 +13,7 @@ import ProjectTypePicker from './components/ProjectTypePicker';
 import TopicInputs from './components/TopicInputs';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
 import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
-import ProjectImageDropzone from './components/ProjectImageDropzone';
+import ProjectCardImageDropzone from './components/ProjectImageDropzone';
 import AttachmentsDropzone from './components/AttachmentsDropzone';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 import {
@@ -600,10 +600,10 @@ const AdminProjectsProjectGeneral = () => {
                   />
                 </Box>
               )}
-              <ProjectImageDropzone
-                projectImages={projectCard && [projectCard]}
-                handleProjectImagesOnAdd={handleProjectCardOnAdd}
-                handleProjectImageOnRemove={handleProjectCardOnRemove}
+              <ProjectCardImageDropzone
+                images={projectCard && [projectCard]}
+                onAddImages={handleProjectCardOnAdd}
+                onRemoveImage={handleProjectCardOnRemove}
                 previewDevice={previewDevice}
               />
             </>
