@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Box, IOption, Select } from '@citizenlab/cl2-component-library';
+import { Box, IOption } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import OverlayControls from './OverlayControls';
 import ImageUploader from './ImageUploader';
-
+import SelectPreviewDevice from './SelectPreviewDevice';
 import { UploadFile } from 'typings';
 
 // i18n
@@ -160,25 +160,9 @@ const BannerImageField = ({
       <SectionField>
         {showConditions(bannerLayout).preview_device && (
           <Box mb="20px">
-            <Select
-              label={formatMessage(messages.bgHeaderPreviewSelectLabel)}
-              id="display-preview-device"
-              options={[
-                {
-                  value: 'desktop',
-                  label: formatMessage(messages.desktop),
-                },
-                {
-                  value: 'tablet',
-                  label: formatMessage(messages.tablet),
-                },
-                {
-                  value: 'phone',
-                  label: formatMessage(messages.phone),
-                },
-              ]}
+            <SelectPreviewDevice
+              selectedPreviewDevice={previewDevice}
               onChange={(option: IOption) => setPreviewDevice(option.value)}
-              value={previewDevice}
             />
           </Box>
         )}
