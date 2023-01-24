@@ -39,6 +39,7 @@ const Ideas = ({ projectId, phaseId, numberOfIdeas }: Props) => {
           {
             attributes: {
               title_multiloc,
+              body_multiloc,
               upvotes_count,
               downvotes_count,
               comments_count,
@@ -48,8 +49,10 @@ const Ideas = ({ projectId, phaseId, numberOfIdeas }: Props) => {
           i
         ) => (
           <IdeaCard
+            key={i}
             rank={i + 1}
             title={localize(title_multiloc)}
+            body={localize(body_multiloc)}
             upvotes={upvotes_count}
             downvotes={downvotes_count}
             comments={comments_count}
