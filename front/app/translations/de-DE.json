@@ -129,7 +129,7 @@
   "app.components.FilterBoxes.all": "Alle",
   "app.components.FilterBoxes.areas": "Nach Gebieten filtern",
   "app.components.FilterBoxes.statusTitle": "Status",
-  "app.components.FilterBoxes.topicsTitle": "Themen",
+  "app.components.FilterBoxes.topicsTitle": "Schlagwörter",
   "app.components.FiltersModal.a11y_closeFilterPanel": "Filterpanel schließen",
   "app.components.FiltersModal.filters": "Filter",
   "app.components.FiltersModal.resetFilters": "Filter zurücksetzen",
