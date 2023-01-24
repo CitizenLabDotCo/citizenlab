@@ -687,6 +687,7 @@
   "app.containers.Admin.reporting.printPrepare": "جارٍ التحضير للطباعة...",
   "app.containers.Admin.reporting.reportBuilder": "أداة إنشاء التقرير",
   "app.containers.Admin.reporting.reportHeader": "ترويسة التقرير",
+  "app.containers.Admin.reporting.resultsSection": "RESULTS",
   "app.containers.AdminPage.DashboardPage.Report.participants": "مشاركين",
   "app.containers.AdminPage.DashboardPage.Report.totalUsers": "الإجمالي على المنصة",
   "app.containers.AdminPage.DashboardPage._blank": "غير معروف",
