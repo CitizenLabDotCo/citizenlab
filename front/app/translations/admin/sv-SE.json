@@ -687,6 +687,7 @@
   "app.containers.Admin.reporting.printPrepare": "Förbereder utskrift...",
   "app.containers.Admin.reporting.reportBuilder": "Rapportbyggare",
   "app.containers.Admin.reporting.reportHeader": "Rapportrubrik",
+  "app.containers.Admin.reporting.resultsSection": "RESULTS",
   "app.containers.AdminPage.DashboardPage.Report.participants": "deltagare",
   "app.containers.AdminPage.DashboardPage.Report.totalUsers": "totalt antal användare på plattformen",
   "app.containers.AdminPage.DashboardPage._blank": "okänd",
