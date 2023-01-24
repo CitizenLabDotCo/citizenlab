@@ -19,6 +19,7 @@ import { isString } from 'utils/helperUtils';
 import VerificationIcon from '../VerificationIcon';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { getSubtextElement } from './controlUtils';
 
 export const InputControl = ({
   data,
@@ -72,7 +73,7 @@ export const InputControl = ({
           htmlFor={sanitizeForClassname(id)}
           labelValue={<FieldLabel />}
           optional={!required}
-          subtextValue={uischema.options?.description}
+          subtextValue={getSubtextElement(uischema.options?.description)}
           subtextSupportsHtml
         />
       </Box>

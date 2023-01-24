@@ -223,7 +223,6 @@ const FormBuilderSettings = ({
             onClose={onClose}
             isDeleteDisabled={isDeleteDisabled}
             onDelete={deleteField}
-            builderConfig={builderConfig}
           />
         )}
         {showTabbedSettings && currentTab === 'logic' && (

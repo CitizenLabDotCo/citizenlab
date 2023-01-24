@@ -10,6 +10,7 @@ import {
 } from 'utils/JSONFormUtils';
 import { isString } from 'utils/helperUtils';
 import VerificationIcon from '../VerificationIcon';
+import { getSubtextElement } from './controlUtils';
 
 export const TitleControl = ({
   data,
@@ -45,7 +46,7 @@ export const TitleControl = ({
         htmlFor={sanitizeForClassname(id)}
         labelValue={label}
         optional={!required}
-        subtextValue={uischema.options?.description}
+        subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
       />
       <Box display="flex" flexDirection="row">

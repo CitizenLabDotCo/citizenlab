@@ -12,6 +12,7 @@ import ErrorDisplay from '../ErrorDisplay';
 import { injectIntl } from 'utils/cl-intl';
 import { FormLabel } from 'components/UI/FormComponents';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+import { getSubtextElement } from './controlUtils';
 
 const WYSIWYGControl = ({
   data,
@@ -36,7 +37,7 @@ const WYSIWYGControl = ({
         htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
-        subtextValue={uischema.options?.description}
+        subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
       />
       <QuillEditor

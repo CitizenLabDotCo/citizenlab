@@ -42,6 +42,7 @@ import {
   IFlatCustomFieldWithIndex,
 } from 'services/formCustomFields';
 import useLocale from 'hooks/useLocale';
+import { get } from 'lodash-es';
 
 const FormFieldsContainer = styled(Box)`
   &:hover {
@@ -78,6 +79,7 @@ export const FieldElement = (props: Props) => {
 
   const formCustomFields: IFlatCustomField[] = watch('customFields');
   const index = formCustomFields.findIndex((f) => f.id === field.id);
+  const isDeleteEnabled = get(field, 'isDeleteEnabled', true);
 
   const hasErrors = !!errors.customFields?.[index];
   const showLogicOnRow =
@@ -153,6 +155,15 @@ export const FieldElement = (props: Props) => {
                   color="grey800"
                 >
                   <T value={field.title_multiloc} />
+                  {!isDeleteEnabled && (
+                    <Icon
+                      fill={colors.coolGrey500}
+                      mb="4px"
+                      width="16px"
+                      ml="4px"
+                      name="lock"
+                    />
+                  )}
                 </Text>
               </Box>
               {showLogicOnRow && (

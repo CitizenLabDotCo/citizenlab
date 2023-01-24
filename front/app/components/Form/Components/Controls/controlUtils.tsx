@@ -1,3 +1,18 @@
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+import React from 'react';
+
+export const getSubtextElement = (description: string) => {
+  return (
+    <QuillEditedContent fontWeight={400}>
+      <div
+        dangerouslySetInnerHTML={{
+          __html: description,
+        }}
+      />
+    </QuillEditedContent>
+  );
+};
+
 // Given a schema and field type, returns the options for a given array field
 export const getOptions = (schema, fieldType: 'single' | 'multi') => {
   if (fieldType === 'multi') {

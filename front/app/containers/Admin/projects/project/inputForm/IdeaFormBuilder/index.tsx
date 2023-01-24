@@ -34,6 +34,7 @@ const IdeaFormBuilder = () => {
       temp_id: '',
       minimum_label_multiloc: {},
       maximum_label_multiloc: {},
+      isDeleteEnabled: false,
       maximum: 0,
       isTitleEditable: false,
       relationships: {
