@@ -127,12 +127,12 @@ resource 'Idea Custom Fields' do
         ))
         # author
         # budget
-        expect(json_response[:data][10]).to match(hash_including(
+        expect(json_response[:data][8]).to match(hash_including(
           attributes: hash_including(
             code: 'proposed_budget',
             key: 'proposed_budget',
             input_type: 'number',
-            ordering: 10,
+            ordering: 8,
             title_multiloc: hash_including(en: 'Proposed Budget'),
             description_multiloc: {},
             required: false,

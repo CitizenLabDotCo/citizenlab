@@ -74,7 +74,7 @@ class CustomField < ApplicationRecord
   validates :hidden, inclusion: { in: [true, false] }
   validates :code, inclusion: { in: CODES }, uniqueness: { scope: %i[resource_type resource_id] }, allow_nil: true
 
-  validates_with ConstraintValidator
+  # validates_with ConstraintValidator # TODO
 
   before_validation :set_default_enabled
   before_validation :generate_key, on: :create

@@ -74,6 +74,7 @@ module IdeaCustomFields
       fields_by_id = fields.index_by(&:id)
       given_fields = update_all_params.fetch :custom_fields, []
       given_field_ids = given_fields.pluck(:id)
+      byebug
 
       ActiveRecord::Base.transaction do
         delete_fields = fields.reject { |field| given_field_ids.include? field.id }
