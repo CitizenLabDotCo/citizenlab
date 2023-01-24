@@ -155,7 +155,6 @@ const InsightsList: React.FC<InsightsList & WrappedComponentProps> = ({
                   textColor={colors.textSecondary}
                   boxShadow="none"
                   onClick={handleDeleteClick(view.id)}
-                  processing={mutation.isLoading}
                 >
                   {formatMessage(messages.listDelete)}
                 </Button>

@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { API_PATH } from 'containers/App/constants';
-import { IRelationship } from 'typings';
+import { CLErrors, IRelationship } from 'typings';
 import { getJwt } from 'utils/auth/jwt';
 
 export interface IInsightsViewData {
@@ -40,15 +40,20 @@ const viewKeys = {
     ] as const,
 };
 
+// GET
 const fetchViews = async () => {
-  const res = await fetch(`${API_PATH}/insights/views`, {
+  const response = await fetch(`${API_PATH}/insights/views`, {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${jwt}`,
     },
   });
-  const data = await res.json();
-  return data;
+  const data = await response.json();
+  if (!response.ok) {
+    throw data;
+  } else {
+    return data;
+  }
 };
 
 export const useViews = () => {
@@ -57,15 +62,56 @@ export const useViews = () => {
     queryFn: fetchViews,
   });
 };
+// CREATE
 
+interface IInsightsViewObject {
+  view: { data_sources: { origin_id: string }[]; name: string };
+}
+
+const createView = async (object: IInsightsViewObject) => {
+  const response = await fetch(`${API_PATH}/insights/views`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${jwt}`,
+    },
+    body: JSON.stringify(object),
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw data;
+  } else {
+    return data;
+  }
+};
+
+export const useCreateView = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<IInsightsView, CLErrors, IInsightsViewObject>({
+    mutationFn: createView,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: viewKeys.lists() });
+    },
+  });
+};
+// UPDATE
+
+// DELETE
 const deleteView = async (id: string) => {
-  return await fetch(`${API_PATH}/insights/views/${id}`, {
+  const response = await fetch(`${API_PATH}/insights/views/${id}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${jwt}`,
     },
   });
+  const data = await response.json();
+  if (!response.ok) {
+    throw data;
+  } else {
+    return data;
+  }
 };
 
 export const useDeleteView = () => {

@@ -32,14 +32,12 @@ import useLocalize from 'hooks/useLocalize';
 import useProjectFolders from 'hooks/useProjectFolders';
 
 // services
-import { addInsightsView } from 'modules/commercial/insights/services/insightsViews';
+import { useCreateView } from 'modules/commercial/insights/services/views';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
 
 // typings
-import { CLErrors } from 'typings';
 
 const Title = styled.h1`
   text-align: center;
@@ -134,10 +132,9 @@ export const CreateInsightsView = ({
   projects,
   closeCreateModal,
 }: DataProps & InputProps) => {
+  const { mutate, reset, isSuccess, error, isLoading } = useCreateView();
   const localize = useLocalize();
   const { projectFolders } = useProjectFolders({});
-  const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<CLErrors | undefined>();
 
   const [name, setName] = useState<string | null>();
 
@@ -154,27 +151,23 @@ export const CreateInsightsView = ({
 
   const onChangeName = (value: string) => {
     setName(value);
-    setErrors(undefined);
+    reset();
   };
 
   const handleSubmit = async () => {
     if (name && selectedProjectsIds.length) {
-      setLoading(true);
-      try {
-        const result = await addInsightsView({
+      mutate({
+        view: {
           name,
           data_sources: selectedProjectsIds.map((projectId) => ({
             origin_id: projectId,
           })),
-        });
-        if (!isNilOrError(result)) {
-          closeCreateModal();
-          clHistory.push(`/admin/reporting/insights/${result.data.id}`);
-        }
-      } catch (errors) {
-        setErrors(errors.json.errors);
-        setLoading(false);
-      }
+        },
+      });
+    }
+
+    if (isSuccess) {
+      closeCreateModal();
     }
   };
 
@@ -274,7 +267,9 @@ export const CreateInsightsView = ({
             onChange={onChangeName}
             label={<FormattedMessage {...messages.createModalNameLabel} />}
           />
-          {errors && <Error apiErrors={errors['name']} fieldName="view_name" />}
+          {error && (
+            <Error apiErrors={error.errors['name']} fieldName="view_name" />
+          )}
         </SectionField>
         <Box>
           <Label>
@@ -373,7 +368,7 @@ export const CreateInsightsView = ({
         </Box>
         <Box display="flex" justifyContent="center" mt="60px">
           <Button
-            processing={loading}
+            processing={isLoading}
             disabled={!name || selectedProjectsIds.length === 0}
             onClick={handleSubmit}
             bgColor={colors.primary}
