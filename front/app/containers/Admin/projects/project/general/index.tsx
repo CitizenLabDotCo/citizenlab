@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Multiloc, UploadFile } from 'typings';
+import { Multiloc, UploadFile, IOption } from 'typings';
 import { isEmpty, get, isString } from 'lodash-es';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { INewProjectCreatedEvent } from 'containers/Admin/projects/all/CreateProject';
@@ -34,6 +34,7 @@ import {
 import ProjectFolderSelect from './components/ProjectFolderSelect';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
+import SelectPreviewDevice from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields/SelectPreviewDevice';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -120,7 +121,7 @@ const AdminProjectsProjectGeneral = () => {
     useState<IProjectFormState['showSlugErrorMessage']>(false);
   const [publicationStatus, setPublicationStatus] =
     useState<IProjectFormState['publicationStatus']>('draft');
-  const [previewDevice, setPreviewDevice] = useState<TPreviewDevice>('desktop');
+  const [previewDevice, setPreviewDevice] = useState<TPreviewDevice>('phone');
 
   useEffect(() => {
     (async () => {
@@ -227,6 +228,7 @@ const AdminProjectsProjectGeneral = () => {
 
   const handleProjectCardOnRemove = (projectCardToRemove: UploadFile) => {
     setProjectCard(null);
+    setPreviewDevice('phone');
     projectCardToRemove.remote && setProjectCardToRemove(projectCardToRemove);
     setSubmitState('enabled');
   };
@@ -577,12 +579,6 @@ const AdminProjectsProjectGeneral = () => {
             <FormattedMessage {...messages.projectCardImageLabelText} />
             <ImageInfoTooltip />
           </SubSectionTitle>
-          <Box mb="20px">
-            <SelectPreviewDevice
-              selectedPreviewDevice={previewDevice}
-              onChange={(option: IOption) => setPreviewDevice(option.value)}
-            />
-          </Box>
           {projectCardShouldBeSaved ? (
             <Box display="flex" flexDirection="column" gap="8px">
               <ImageCropperContainer
@@ -593,11 +589,24 @@ const AdminProjectsProjectGeneral = () => {
               />
             </Box>
           ) : (
-            <ProjectImageDropzone
-              projectImages={projectCard && [projectCard]}
-              handleProjectImagesOnAdd={handleProjectCardOnAdd}
-              handleProjectImageOnRemove={handleProjectCardOnRemove}
-            />
+            <>
+              {projectCard && (
+                <Box mb="20px">
+                  <SelectPreviewDevice
+                    selectedPreviewDevice={previewDevice}
+                    onChange={(option: IOption) =>
+                      setPreviewDevice(option.value)
+                    }
+                  />
+                </Box>
+              )}
+              <ProjectImageDropzone
+                projectImages={projectCard && [projectCard]}
+                handleProjectImagesOnAdd={handleProjectCardOnAdd}
+                handleProjectImageOnRemove={handleProjectCardOnRemove}
+                previewDevice={previewDevice}
+              />
+            </>
           )}
         </StyledSectionField>
 
