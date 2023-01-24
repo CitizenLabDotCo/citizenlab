@@ -152,6 +152,8 @@ export const getTitleFromPageId = (
 
 const getBuiltinFieldIcon = (key: string): IconNames => {
   switch (key) {
+    case 'title_multiloc':
+      return 'survey-short-answer';
     case 'location_description':
       return 'location-simple';
     case 'body_multiloc':
@@ -206,6 +208,8 @@ export const getFieldIcon = (
 
 const getBuiltinFieldBadgeLabel = (key: string): MessageDescriptor => {
   switch (key) {
+    case 'title_multiloc':
+      return messages.shortAnswer;
     case 'idea_images_attributes':
       return messages.imageFileUpload;
     case 'location_description':
