@@ -687,6 +687,7 @@
   "app.containers.Admin.reporting.printPrepare": "Preparing to print...",
   "app.containers.Admin.reporting.reportBuilder": "Constructor de rapoarte",
   "app.containers.Admin.reporting.reportHeader": "Antetul raportului",
+  "app.containers.Admin.reporting.resultsSection": "RESULTS",
   "app.containers.AdminPage.DashboardPage.Report.participants": "participants",
   "app.containers.AdminPage.DashboardPage.Report.totalUsers": "total users on the platform",
   "app.containers.AdminPage.DashboardPage._blank": "unknown",
