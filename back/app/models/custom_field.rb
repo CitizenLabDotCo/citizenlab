@@ -28,20 +28,22 @@
 #  index_custom_fields_on_resource_type_and_resource_id  (resource_type,resource_id)
 #
 
-# Validate that locked attributes are not changed
+# Validate that locked attributes must be the same as defaults
 class ConstraintValidator < ActiveModel::Validator
   def validate(field)
     return unless field.resource_type == 'CustomForm'
 
-    @participation_method = Factory.instance.participation_method_for field.resource.participation_context
-    constraints = @participation_method.constraints[field.code]
+    participation_method = Factory.instance.participation_method_for field.resource.participation_context
+    constraints = participation_method.constraints[field.code]
     return unless constraints
 
+    default_fields = participation_method.default_fields field.resource.participation_context
+    default_field = default_fields.find { |f| f.code == field.code }
     constraints['locks']&.each do |attribute, value|
-      if field.changed_attributes.key?(attribute) &&
+      if field[attribute] != default_field[attribute] &&
          value == true &&
          !(field.code == 'ideation_section_1' && attribute == 'title_multiloc')
-        field.errors.add :base, "Cannot change #{attribute}. It is locked."
+        field.errors.add :base, "Cannot change #{attribute} from default. It is locked."
       end
     end
   end
