@@ -52,25 +52,23 @@ export const homepageBannerLayoutHeights: {
   };
 } = {
   full_width_banner_layout: {
-    desktop: 450,
-    tablet: 350,
     phone: 350,
+    tablet: 350,
+    desktop: 450,
   },
   two_column_layout: {
-    desktop: 532,
-    tablet: 532,
     phone: 240,
+    tablet: 532,
+    desktop: 532,
   },
   two_row_layout: {
-    desktop: 280,
-    tablet: 200,
     phone: 200,
+    tablet: 200,
+    desktop: 280,
   },
   fixed_ratio_layout: {
-    // Header image is saved as 1920x640px.
-    // Image is displayed with max width 1150px and 3:1 aspect ratio.
-    // This means width of 383.33px.
-    desktop: 383,
+    // On mobile min-height is 225.
+    phone: 225,
     // We define a screen as tablet when width is between 769 and 1200 px.
     // Height will start reducing from our max width of 1150px.
     // We maintain the 3:1 aspect ratio until our min-height of 225px is reached.
@@ -79,8 +77,10 @@ export const homepageBannerLayoutHeights: {
     // So for the fixed-ratio layout, it makes sense to show the same preview for tablet
     // as for desktop
     tablet: 383,
-    // On mobile min-height is 225.
-    phone: 225,
+    // Header image is saved as 1920x640px.
+    // Image is displayed with max width 1150px and 3:1 aspect ratio.
+    // This means width of 383.33px.
+    desktop: 383,
   },
 };
 
@@ -111,20 +111,24 @@ const HeaderImageDropzone = ({
         [key in TPreviewDevice]: number;
       };
     } = {
+      // For all layouts except fixed-ratio the fixed height in their styles
+      // Determine behavior.
       full_width_banner_layout: {
-        desktop: ratio,
-        tablet: ratio,
         phone: ratio,
+        tablet: ratio,
+        desktop: ratio,
       },
       two_column_layout: {
-        desktop: ratio,
-        tablet: ratio,
         phone: ratio,
+        // On bigger screens, the image is only half the screen's width
+        // So the width gets divided by two (or the equivalent of twice the ratio).
+        tablet: 2 * ratio,
+        desktop: 2 * ratio,
       },
       two_row_layout: {
-        desktop: ratio,
-        tablet: ratio,
         phone: ratio,
+        tablet: ratio,
+        desktop: ratio,
       },
       fixed_ratio_layout: {
         // With our min-height of 225px, we assume a phone screenwidth of
