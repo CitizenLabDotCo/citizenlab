@@ -41,8 +41,6 @@ const IdeaCard = ({ rank, title, body, url, id }: Props) => {
     ? undefined
     : images[0]?.attributes?.versions?.medium;
 
-  console.log(image);
-
   return (
     <Box borderTop={BORDER} my="16px" pt="16px">
       <PageBreakBox
