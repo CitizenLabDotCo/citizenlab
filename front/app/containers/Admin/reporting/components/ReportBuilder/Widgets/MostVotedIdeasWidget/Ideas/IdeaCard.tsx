@@ -64,7 +64,8 @@ const IdeaCard = ({
         justifyContent="flex-start"
       >
         <Box
-          bgColor={colors.grey200}
+          // hack to make backgrounds work in print view
+          boxShadow={`inset 0 0 0 1000px ${colors.grey200}`}
           px="8px"
           py="4px"
           borderRadius={stylingConsts.borderRadius}
