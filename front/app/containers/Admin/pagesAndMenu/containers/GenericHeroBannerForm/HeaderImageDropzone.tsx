@@ -54,7 +54,7 @@ export const homepageBannerLayoutHeights: {
   full_width_banner_layout: {
     desktop: 450,
     tablet: 350,
-    phone: 300,
+    phone: 350,
   },
   two_column_layout: {
     desktop: 532,
