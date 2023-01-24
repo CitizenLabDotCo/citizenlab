@@ -30,13 +30,12 @@ const Ideas = ({ projectId, phaseId, numberOfIdeas }: Props) => {
 
   if (isNilOrError(mostVotedIdeas)) return null;
 
-  console.log(mostVotedIdeas);
-
   return (
     <Box m="16px">
       {mostVotedIdeas.map(
         (
           {
+            id,
             attributes: {
               title_multiloc,
               body_multiloc,
@@ -45,7 +44,6 @@ const Ideas = ({ projectId, phaseId, numberOfIdeas }: Props) => {
               downvotes_count,
               comments_count,
             },
-            relationships,
           },
           i
         ) => (
@@ -55,10 +53,10 @@ const Ideas = ({ projectId, phaseId, numberOfIdeas }: Props) => {
             title={localize(title_multiloc)}
             body={localize(body_multiloc)}
             url={`/ideas/${slug}`}
+            id={id}
             upvotes={upvotes_count}
             downvotes={downvotes_count}
             comments={comments_count}
-            imageId={relationships.idea_images.data?.[0]?.id}
           />
         )
       )}

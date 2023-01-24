@@ -1,23 +1,30 @@
 import React from 'react';
 
+// hooks
+import useIdeaImages from 'hooks/useIdeaImages';
+
 // styling
 import styled from 'styled-components';
 import { colors, stylingConsts } from 'utils/styleUtils';
 import { BORDER } from '../../constants';
 
 // components
-import { Box, Text, Title } from '@citizenlab/cl2-component-library';
+import { Box, Text, Title, Image } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
+import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   rank: number;
   title: string;
   body: string;
   url: string;
+  id: string;
   upvotes: number;
   downvotes: number;
   comments: number;
-  imageId?: string;
 }
 
 const PageBreakParagraphs = styled.div`
@@ -28,10 +35,21 @@ const PageBreakParagraphs = styled.div`
   }
 `;
 
-const IdeaCard = ({ rank, title, body, url }: Props) => {
+const IdeaCard = ({ rank, title, body, url, id }: Props) => {
+  const images = useIdeaImages(id);
+  const image = isNilOrError(images)
+    ? undefined
+    : images[0]?.attributes?.versions?.medium;
+
+  console.log(image);
+
   return (
     <Box borderTop={BORDER} my="16px" pt="16px">
-      <Box display="flex" flexDirection="row" justifyContent="flex-start">
+      <PageBreakBox
+        display="flex"
+        flexDirection="row"
+        justifyContent="flex-start"
+      >
         <Box
           bgColor={colors.grey200}
           px="8px"
@@ -61,7 +79,12 @@ const IdeaCard = ({ rank, title, body, url }: Props) => {
             {title}
           </Title>
         </Link>
-      </Box>
+      </PageBreakBox>
+      {image && (
+        <PageBreakBox mt="8px">
+          <Image src={image} alt="" width="100%" />
+        </PageBreakBox>
+      )}
       <Text fontSize="m" color="tenantText" mt="8px" mb="0px">
         <PageBreakParagraphs dangerouslySetInnerHTML={{ __html: body }} />
       </Text>
