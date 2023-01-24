@@ -62,8 +62,8 @@ export const useViews = () => {
     queryFn: fetchViews,
   });
 };
-// CREATE
 
+// CREATE
 interface IInsightsViewObject {
   view: { data_sources: { origin_id: string }[]; name: string };
 }
@@ -95,7 +95,40 @@ export const useCreateView = () => {
     },
   });
 };
+
 // UPDATE
+
+interface IInsightViewUpdateObject {
+  id: string;
+  name: string;
+}
+const updateView = async ({ id, name }: IInsightViewUpdateObject) => {
+  const response = await fetch(`${API_PATH}/insights/views/${id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${jwt}`,
+    },
+    body: JSON.stringify({ view: { name } }),
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw data;
+  } else {
+    return data;
+  }
+};
+
+export const useUpdateView = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<IInsightsView, CLErrors, IInsightViewUpdateObject>({
+    mutationFn: updateView,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: viewKeys.lists() });
+    },
+  });
+};
 
 // DELETE
 const deleteView = async (id: string) => {
@@ -122,7 +155,7 @@ export const useDeleteView = () => {
     onMutate: async (id: string) => {
       // Cancel any outgoing refetches
       // (so they don't overwrite our optimistic update)
-      await queryClient.cancelQueries({ queryKey: [viewKeys.lists()] });
+      await queryClient.cancelQueries({ queryKey: viewKeys.lists() });
 
       // Snapshot the previous value
       const previous = queryClient.getQueryData<IInsightsViews>(
