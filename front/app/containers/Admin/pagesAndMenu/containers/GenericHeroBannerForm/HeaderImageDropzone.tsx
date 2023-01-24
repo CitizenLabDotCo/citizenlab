@@ -66,8 +66,19 @@ export const homepageBannerLayoutHeights: {
     phone: 200,
   },
   fixed_ratio_layout: {
-    desktop: 450,
-    tablet: 450,
+    // Header image is saved as 1920x640px.
+    // Image is displayed with max width 1150px and 3:1 aspect ratio.
+    // This means width of 383.33px.
+    desktop: 383,
+    // We define a screen as tablet when width is between 769 and 1200 px.
+    // Height will start reducing from our max width of 1150px.
+    // We maintain the 3:1 aspect ratio until our min-height of 225px is reached.
+    // At this point, the banner will start cutting of from the size to maintain
+    // the min-height.
+    // So for the fixed-ratio layout, it makes sense to show the same preview for tablet
+    // as for desktop
+    tablet: 383,
+    // On mobile min-height is 225.
     phone: 225,
   },
 };
