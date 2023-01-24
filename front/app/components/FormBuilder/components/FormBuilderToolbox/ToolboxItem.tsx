@@ -80,11 +80,12 @@ const ToolboxItem = ({
         aria-describedby="tooltip-content"
         minWidth={!disabled ? '100%' : 'auto'}
         p="0px"
+        type="button"
+        role="button"
       >
         <StyledBox
           display="flex"
-          px="18px"
-          py="18px"
+          p="18px"
           onClick={onClick}
           width="100%"
           m="0px"
