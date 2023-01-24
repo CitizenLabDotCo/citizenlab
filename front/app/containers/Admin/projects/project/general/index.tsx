@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Multiloc, UploadFile } from 'typings';
+import { Multiloc, UploadFile, IOption } from 'typings';
 import { isEmpty, get, isString } from 'lodash-es';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { INewProjectCreatedEvent } from 'containers/Admin/projects/all/CreateProject';
+import { TPreviewDevice } from 'components/admin/SelectPreviewDevice';
 
 // components
 import ProjectStatusPicker from './components/ProjectStatusPicker';
@@ -12,7 +13,7 @@ import ProjectTypePicker from './components/ProjectTypePicker';
 import TopicInputs from './components/TopicInputs';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
 import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
-import ProjectImageDropzone from './components/ProjectImageDropzone';
+import ProjectCardImageDropzone from './components/ProjectImageDropzone';
 import AttachmentsDropzone from './components/AttachmentsDropzone';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 import {
@@ -33,6 +34,7 @@ import {
 import ProjectFolderSelect from './components/ProjectFolderSelect';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
+import SelectPreviewDevice from 'components/admin/SelectPreviewDevice';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -119,6 +121,7 @@ const AdminProjectsProjectGeneral = () => {
     useState<IProjectFormState['showSlugErrorMessage']>(false);
   const [publicationStatus, setPublicationStatus] =
     useState<IProjectFormState['publicationStatus']>('draft');
+  const [previewDevice, setPreviewDevice] = useState<TPreviewDevice>('phone');
 
   useEffect(() => {
     (async () => {
@@ -225,6 +228,7 @@ const AdminProjectsProjectGeneral = () => {
 
   const handleProjectCardOnRemove = (projectCardToRemove: UploadFile) => {
     setProjectCard(null);
+    setPreviewDevice('phone');
     projectCardToRemove.remote && setProjectCardToRemove(projectCardToRemove);
     setSubmitState('enabled');
   };
@@ -585,11 +589,24 @@ const AdminProjectsProjectGeneral = () => {
               />
             </Box>
           ) : (
-            <ProjectImageDropzone
-              projectImages={projectCard && [projectCard]}
-              handleProjectImagesOnAdd={handleProjectCardOnAdd}
-              handleProjectImageOnRemove={handleProjectCardOnRemove}
-            />
+            <>
+              {projectCard && (
+                <Box mb="20px">
+                  <SelectPreviewDevice
+                    selectedPreviewDevice={previewDevice}
+                    onChange={(option: IOption) =>
+                      setPreviewDevice(option.value)
+                    }
+                  />
+                </Box>
+              )}
+              <ProjectCardImageDropzone
+                images={projectCard && [projectCard]}
+                onAddImages={handleProjectCardOnAdd}
+                onRemoveImage={handleProjectCardOnRemove}
+                previewDevice={previewDevice}
+              />
+            </>
           )}
         </StyledSectionField>
 
