@@ -14,14 +14,6 @@ class IdeaCustomFieldsService
     end
   end
 
-  def configurable_fields
-    all_fields
-    # disallowed_fields = %w[author_id budget]
-    # all_fields.reject do |field|
-    #   disallowed_fields.include? field.code
-    # end
-  end
-
   def reportable_fields
     enabled_fields.reject(&:built_in?)
   end

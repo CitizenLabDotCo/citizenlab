@@ -31,7 +31,7 @@ module IdeaCustomFields
 
     def index
       authorize CustomField.new(resource: @custom_form), :index?, policy_class: IdeaCustomFieldPolicy
-      fields = IdeaCustomFieldsService.new(@custom_form).configurable_fields
+      fields = IdeaCustomFieldsService.new(@custom_form).all_fields
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         fields,
         params: fastjson_params,
@@ -59,7 +59,7 @@ module IdeaCustomFields
       @custom_form.reload if @custom_form.persisted?
       update_logic! page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors
       render json: ::WebApi::V1::CustomFieldSerializer.new(
-        IdeaCustomFieldsService.new(@custom_form).configurable_fields,
+        IdeaCustomFieldsService.new(@custom_form).all_fields,
         params: fastjson_params,
         include: [:options]
       ).serialized_json
@@ -70,7 +70,7 @@ module IdeaCustomFields
     private
 
     def update_fields!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors)
-      fields = IdeaCustomFieldsService.new(@custom_form).configurable_fields
+      fields = IdeaCustomFieldsService.new(@custom_form).all_fields
       fields_by_id = fields.index_by(&:id)
       given_fields = update_all_params.fetch :custom_fields, []
       given_field_ids = given_fields.pluck(:id)
@@ -191,7 +191,7 @@ module IdeaCustomFields
     end
 
     def update_logic!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors)
-      fields = IdeaCustomFieldsService.new(@custom_form).configurable_fields
+      fields = IdeaCustomFieldsService.new(@custom_form).all_fields
       form_logic = FormLogicService.new fields
       form_logic.replace_temp_ids! page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping
       unless form_logic.valid?

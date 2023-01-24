@@ -31,21 +31,6 @@ describe IdeaCustomFieldsService do
       end
     end
 
-    describe 'configurable_fields' do
-      it 'returns all fields except author_id and budget' do
-        output = service.configurable_fields
-        expect(output.map(&:code)).to eq %w[
-          title_multiloc
-          body_multiloc
-          proposed_budget
-          topic_ids
-          location_description
-          idea_images_attributes
-          idea_files_attributes
-        ]
-      end
-    end
-
     describe 'reportable_fields' do
       it 'excludes disabled and built-in fields' do
         output = service.reportable_fields
@@ -124,29 +109,6 @@ describe IdeaCustomFieldsService do
           'body_multiloc',
           'author_id',
           'budget',
-          'proposed_budget',
-          'topic_ids',
-          'idea_images_attributes',
-          'idea_files_attributes',
-          nil,
-          nil
-        ]
-      end
-    end
-
-    describe 'configurable_fields' do
-      it 'returns all fields except author_id and budget' do
-        topic_field = custom_form.custom_fields.find_by(code: 'topic_ids')
-        topic_field.update!(enabled: false)
-        custom_form.custom_fields.find_by(code: 'location_description').destroy!
-
-        output = service.configurable_fields
-        expect(output).to include extra_field1
-        expect(output).to include extra_field2
-        expect(output).to include topic_field
-        expect(output.map(&:code)).to eq [
-          'title_multiloc',
-          'body_multiloc',
           'proposed_budget',
           'topic_ids',
           'idea_images_attributes',

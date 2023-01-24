@@ -44,7 +44,7 @@ resource 'Idea Custom Fields' do
     # end
     let(:default_fields_param) do
       attributes = %i[id code input_type title_multiloc description_multiloc required enabled]
-      IdeaCustomFieldsService.new(custom_form).configurable_fields.map do |field|
+      IdeaCustomFieldsService.new(custom_form).all_fields.map do |field|
         {}.tap do |field_param|
           attributes.each do |attribute|
             field_param[attribute] = field[attribute]
