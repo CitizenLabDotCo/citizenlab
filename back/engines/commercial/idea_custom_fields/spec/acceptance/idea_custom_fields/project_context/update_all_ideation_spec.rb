@@ -125,14 +125,12 @@ resource 'Idea Custom Fields' do
           type: 'custom_field',
           relationships: { options: { data: [] } }
         ))
-        # author
-        # budget
-        expect(json_response[:data][8]).to match(hash_including(
+        expect(json_response[:data][9]).to match(hash_including(
           attributes: hash_including(
             code: 'proposed_budget',
             key: 'proposed_budget',
             input_type: 'number',
-            ordering: 8,
+            ordering: 9,
             title_multiloc: hash_including(en: 'Proposed Budget'),
             description_multiloc: {},
             required: false,
