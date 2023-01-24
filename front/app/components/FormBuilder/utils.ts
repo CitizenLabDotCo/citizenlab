@@ -58,7 +58,7 @@ export const getIsPostingEnabled = (
 };
 
 export const builtInFieldKeys = [
-  'text_multiloc',
+  'title_multiloc',
   'body_multiloc',
   'proposed_budget',
   'topic_ids',
