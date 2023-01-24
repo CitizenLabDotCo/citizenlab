@@ -3,7 +3,9 @@ import { Box, IOption } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import OverlayControls from './OverlayControls';
 import ImageUploader from './ImageUploader';
-import SelectPreviewDevice, { TPreviewDevice } from './SelectPreviewDevice';
+import SelectPreviewDevice, {
+  TPreviewDevice,
+} from '../../../../../../components/admin/SelectPreviewDevice';
 import { UploadFile } from 'typings';
 
 // i18n

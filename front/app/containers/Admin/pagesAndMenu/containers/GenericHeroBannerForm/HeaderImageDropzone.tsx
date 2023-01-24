@@ -3,7 +3,7 @@ import React from 'react';
 // components and theming
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import styled from 'styled-components';
-import { TPreviewDevice } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields/SelectPreviewDevice';
+import { TPreviewDevice } from 'components/admin/SelectPreviewDevice';
 
 // types
 import {

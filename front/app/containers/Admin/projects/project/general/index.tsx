@@ -3,7 +3,7 @@ import { Multiloc, UploadFile, IOption } from 'typings';
 import { isEmpty, get, isString } from 'lodash-es';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { INewProjectCreatedEvent } from 'containers/Admin/projects/all/CreateProject';
-import { TPreviewDevice } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields/SelectPreviewDevice';
+import { TPreviewDevice } from 'components/admin/SelectPreviewDevice';
 
 // components
 import ProjectStatusPicker from './components/ProjectStatusPicker';
@@ -34,7 +34,7 @@ import {
 import ProjectFolderSelect from './components/ProjectFolderSelect';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
-import SelectPreviewDevice from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields/SelectPreviewDevice';
+import SelectPreviewDevice from 'components/admin/SelectPreviewDevice';
 
 // hooks
 import useProject from 'hooks/useProject';

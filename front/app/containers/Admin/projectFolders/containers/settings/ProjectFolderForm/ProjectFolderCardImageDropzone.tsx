@@ -2,7 +2,7 @@ import React from 'react';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { UploadFile } from 'typings';
 import { CARD_IMAGE_ASPECT_RATIO } from 'services/projects';
-import { TPreviewDevice } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields/SelectPreviewDevice';
+import { TPreviewDevice } from 'components/admin/SelectPreviewDevice';
 
 interface Props {
   images: UploadFile[] | null;

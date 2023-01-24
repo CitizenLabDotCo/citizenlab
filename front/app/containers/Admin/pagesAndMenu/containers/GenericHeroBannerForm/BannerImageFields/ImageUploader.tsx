@@ -7,7 +7,7 @@ import {
   Props as BannerImageFieldsProps,
   TBannerError,
 } from '.';
-import { TPreviewDevice } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields/SelectPreviewDevice';
+import { TPreviewDevice } from 'components/admin/SelectPreviewDevice';
 
 import { UploadFile } from 'typings';
 

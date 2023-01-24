@@ -36,8 +36,8 @@ import { validateSlug } from 'utils/textUtils';
 import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
 import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
-import SelectPreviewDevice from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields/SelectPreviewDevice';
-import { TPreviewDevice } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields/SelectPreviewDevice';
+import SelectPreviewDevice from 'components/admin/SelectPreviewDevice';
+import { TPreviewDevice } from 'components/admin/SelectPreviewDevice';
 import ProjectFolderCardImageDropzone from './ProjectFolderCardImageDropzone';
 import { CARD_IMAGE_ASPECT_RATIO } from 'services/projects';
 
