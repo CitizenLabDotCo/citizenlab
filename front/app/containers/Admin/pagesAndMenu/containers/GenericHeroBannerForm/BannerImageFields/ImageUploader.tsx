@@ -5,9 +5,10 @@ import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import {
   TLocalHeaderImage,
   Props as BannerImageFieldsProps,
-  TPreviewDevice,
   TBannerError,
 } from '.';
+import { TPreviewDevice } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields/SelectPreviewDevice';
+
 import { UploadFile } from 'typings';
 
 interface Props {

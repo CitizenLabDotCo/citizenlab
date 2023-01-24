@@ -3,7 +3,7 @@ import { Box, IOption } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import OverlayControls from './OverlayControls';
 import ImageUploader from './ImageUploader';
-import SelectPreviewDevice from './SelectPreviewDevice';
+import SelectPreviewDevice, { TPreviewDevice } from './SelectPreviewDevice';
 import { UploadFile } from 'typings';
 
 // i18n
@@ -49,7 +49,6 @@ export interface Props {
     | ICustomPageAttributes['header_bg'];
 }
 
-export type TPreviewDevice = 'phone' | 'tablet' | 'desktop';
 export type TLocalHeaderImage = UploadFile | null;
 export type TBannerError = string | null;
 type TBannerLayoutComponent =

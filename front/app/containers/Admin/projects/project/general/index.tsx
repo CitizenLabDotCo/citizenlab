@@ -3,6 +3,7 @@ import { Multiloc, UploadFile } from 'typings';
 import { isEmpty, get, isString } from 'lodash-es';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { INewProjectCreatedEvent } from 'containers/Admin/projects/all/CreateProject';
+import { TPreviewDevice } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields/SelectPreviewDevice';
 
 // components
 import ProjectStatusPicker from './components/ProjectStatusPicker';
@@ -119,6 +120,7 @@ const AdminProjectsProjectGeneral = () => {
     useState<IProjectFormState['showSlugErrorMessage']>(false);
   const [publicationStatus, setPublicationStatus] =
     useState<IProjectFormState['publicationStatus']>('draft');
+  const [previewDevice, setPreviewDevice] = useState<TPreviewDevice>('desktop');
 
   useEffect(() => {
     (async () => {
@@ -575,6 +577,12 @@ const AdminProjectsProjectGeneral = () => {
             <FormattedMessage {...messages.projectCardImageLabelText} />
             <ImageInfoTooltip />
           </SubSectionTitle>
+          <Box mb="20px">
+            <SelectPreviewDevice
+              selectedPreviewDevice={previewDevice}
+              onChange={(option: IOption) => setPreviewDevice(option.value)}
+            />
+          </Box>
           {projectCardShouldBeSaved ? (
             <Box display="flex" flexDirection="column" gap="8px">
               <ImageCropperContainer

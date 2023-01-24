@@ -2,12 +2,12 @@ import React from 'react';
 import { IOption, Select } from '@citizenlab/cl2-component-library';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { TPreviewDevice } from '.';
 
 interface Props {
   onChange: (selectedOption: IOption) => void;
   selectedPreviewDevice: TPreviewDevice;
 }
+export type TPreviewDevice = 'phone' | 'tablet' | 'desktop';
 
 const Component = ({ onChange, selectedPreviewDevice }: Props) => {
   const { formatMessage } = useIntl();
