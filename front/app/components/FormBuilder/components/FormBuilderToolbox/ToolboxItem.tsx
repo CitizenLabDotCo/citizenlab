@@ -70,7 +70,7 @@ const ToolboxItem = ({
       disabled={!disabled}
       theme={'dark'}
       content={
-        <Text my="4px" color="white">
+        <Text my="8px" color="white">
           {formatMessage(messages.disabledFieldTooltip)}
         </Text>
       }
@@ -78,10 +78,8 @@ const ToolboxItem = ({
       <Box
         as="button"
         aria-describedby="tooltip-content"
-        minWidth={!disabled ? '100%' : '140px'}
+        minWidth={!disabled ? '100%' : 'auto'}
         p="0px"
-        type="button"
-        role="button"
       >
         <StyledBox
           display="flex"
@@ -108,7 +106,7 @@ const ToolboxItem = ({
           >
             {label}
           </Text>
-          <AddIcon />
+          {!disabled && <AddIcon />}
         </StyledBox>
       </Box>
     </Tippy>
