@@ -63,7 +63,7 @@ export const homepageBannerLayoutHeights: {
   },
   two_row_layout: {
     phone: 200,
-    tablet: 200,
+    tablet: 280,
     desktop: 280,
   },
   fixed_ratio_layout: {
