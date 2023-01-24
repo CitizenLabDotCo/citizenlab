@@ -687,6 +687,7 @@
   "app.containers.Admin.reporting.printPrepare": "Preparing to print...",
   "app.containers.Admin.reporting.reportBuilder": "Report builder",
   "app.containers.Admin.reporting.reportHeader": "Report header",
+  "app.containers.Admin.reporting.resultsSection": "RESULTS",
   "app.containers.AdminPage.DashboardPage.Report.participants": "uczestnicy",
   "app.containers.AdminPage.DashboardPage.Report.totalUsers": "łączna liczba użytkowników na platformie",
   "app.containers.AdminPage.DashboardPage._blank": "nieznane",
