@@ -341,4 +341,50 @@ RSpec.describe CustomField, type: :model do
       end
     end
   end
+
+
+  #   A spec for each participation method (this is what we usually do), I'm wondering if we should test the format of the constraints more thoroughly (explicitly listing which fields of which attributes are locked).
+
+  # One or more model specs to see if the validation behaves as expected when trying to update locked fields. I don't think we need to repeat this for acceptance tests (to see if we get back the right error response), but it wouldn't hurt if we would add it as well.
+
+  # Perhaps we could also add a spec for the serialization.
+
+  describe 'constraint validation' do
+
+      it 'raises an error' do
+        form = create :custom_form
+        field = described_class.new(
+          resource: form,
+          input_type: 'text_multiloc',
+          code: 'title_multiloc',
+          title_multiloc: {},
+          key: 'title_multiloc',
+          required: true
+        )
+
+
+        @participation_method = Factory.instance.participation_method_for field.resource.participation_context
+        constraints = @participation_method.constraints[field.code]
+
+        binding.pry
+
+        # binding.pry
+        expect(field.save).to be false
+
+
+        # expect { field.accept(visitor) }.to raise_error 'Cannot change required. It is locked.'
+      end
+  end
+  #
+  # describe 'title_multiloc for ideation section 1' do
+  #   it 'returns the correct ideation message for input term' do
+  #     section = described_class.new input_type: 'section', code: 'ideation_section_1'
+  #
+  #     binding.pry
+  #
+  #     expect { section.title_multiloc }.to raise_error 'Cannot change required. It is locked.'
+  #   end
+  # end
+
+
 end
