@@ -5,7 +5,7 @@ import OverlayControls from './OverlayControls';
 import ImageUploader from './ImageUploader';
 import SelectPreviewDevice, {
   TPreviewDevice,
-} from '../../../../../../components/admin/SelectPreviewDevice';
+} from 'components/admin/SelectPreviewDevice';
 import { UploadFile } from 'typings';
 
 // i18n
