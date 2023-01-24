@@ -8,6 +8,7 @@ class CustomFieldService
   end
 
   def ui_and_json_multiloc_schemas(configuration, fields)
+    fields = fields.reject(&:section?) # TODO
     json_schema_multiloc = fields_to_json_schema_multiloc(configuration, fields)
     ui_schema_multiloc = fields_to_ui_schema_multiloc(configuration, fields)
 
