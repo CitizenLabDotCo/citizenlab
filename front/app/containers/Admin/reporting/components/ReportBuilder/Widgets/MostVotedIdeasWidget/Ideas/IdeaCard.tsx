@@ -9,7 +9,13 @@ import { colors, stylingConsts } from 'utils/styleUtils';
 import { BORDER } from '../../constants';
 
 // components
-import { Box, Text, Title, Image } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  Title,
+  Image,
+  Icon,
+} from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
@@ -35,7 +41,16 @@ const PageBreakParagraphs = styled.div`
   }
 `;
 
-const IdeaCard = ({ rank, title, body, url, id }: Props) => {
+const IdeaCard = ({
+  rank,
+  title,
+  body,
+  url,
+  id,
+  upvotes,
+  downvotes,
+  comments,
+}: Props) => {
   const images = useIdeaImages(id);
   const image = isNilOrError(images)
     ? undefined
@@ -86,6 +101,33 @@ const IdeaCard = ({ rank, title, body, url, id }: Props) => {
       <Text fontSize="m" color="tenantText" mt="8px" mb="0px">
         <PageBreakParagraphs dangerouslySetInnerHTML={{ __html: body }} />
       </Text>
+      <PageBreakBox>
+        <Text color="coolGrey500" fontSize="s">
+          <Icon
+            height="16px"
+            fill={colors.coolGrey500}
+            mr="3px"
+            name="vote-up"
+          />
+          {upvotes}
+          <Icon
+            height="16px"
+            fill={colors.coolGrey500}
+            ml="8px"
+            mr="3px"
+            name="vote-down"
+          />
+          {downvotes}
+          <Icon
+            height="16px"
+            fill={colors.coolGrey500}
+            ml="8px"
+            mr="3px"
+            name="comments"
+          />
+          {comments}
+        </Text>
+      </PageBreakBox>
     </Box>
   );
 };
