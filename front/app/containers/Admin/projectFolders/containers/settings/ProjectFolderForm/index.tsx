@@ -413,7 +413,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     return null;
   }
 
-  const projectFolderImagesShouldBeSaved = folderCardImage
+  const folderCardImageShouldBeSaved = folderCardImage
     ? !folderCardImage.remote
     : false;
 
@@ -531,7 +531,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             <FormattedMessage {...messages.projectFolderCardImageLabel} />
             <ImageInfoTooltip />
           </SubSectionTitle>
-          {projectFolderImagesShouldBeSaved ? (
+          {folderCardImageShouldBeSaved ? (
             <Box display="flex" flexDirection="column" gap="8px">
               <ImageCropperContainer
                 image={folderCardImage}
