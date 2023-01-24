@@ -73,7 +73,6 @@ describe LocalProjectCopyService do
 
     it 'adds a suffix to the title_multiloc' do
       continuous_project.title_multiloc['en'] = 'Test title'
-      continuous_project.save!
       copied_project = service.copy(continuous_project)
 
       expect(copied_project.title_multiloc['en']).to eq 'Test title - Copy'
@@ -168,8 +167,8 @@ describe LocalProjectCopyService do
           record.as_json(except: %i[id ordering resource_id updated_at created_at])
         end)
 
-      # Test ordering values can be used to order copied records in same order as source records,
-      # even when the ordering values are not exact copies of the integer values in the source CustomFields
+      # Test ordering values can be used to order copied custom_fields in same order as source records,
+      # even when the ordering values are not exact copies of the integer values in the source custom_fields.
       expect(continuous_project.custom_form.custom_fields.order(:ordering).pluck(:key))
         .to eq(copied_project.custom_form.custom_fields.order(:ordering).pluck(:key))
 
