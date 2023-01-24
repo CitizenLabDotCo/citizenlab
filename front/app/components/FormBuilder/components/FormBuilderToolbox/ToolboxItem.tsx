@@ -7,7 +7,6 @@ import Tippy from '@tippyjs/react';
 
 // styles
 import { colors } from 'utils/styleUtils';
-import { darken } from 'polished';
 
 // services
 import { ICustomFieldInputType } from 'services/formCustomFields';
@@ -49,30 +48,6 @@ const StyledBox = styled(Box)<{ disabled: boolean }>`
   }
 `;
 
-const ContentWrapper = styled.div<{ tippytheme: 'light' | undefined }>`
-  padding: 5px;
-
-  a {
-    color: ${(props) =>
-      props.tippytheme === 'light' ? colors.primary : colors.white};
-    text-decoration: underline;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-all;
-    word-break: break-word;
-    hyphens: auto;
-
-    &:hover {
-      color: ${(props) =>
-        darken(
-          0.15,
-          props.tippytheme === 'light' ? colors.primary : colors.white
-        )};
-      text-decoration: underline;
-    }
-  }
-`;
-
 const ToolboxItem = ({
   icon,
   label,
@@ -95,21 +70,18 @@ const ToolboxItem = ({
       disabled={!disabled}
       theme={'dark'}
       content={
-        <ContentWrapper id="tooltip-content" tippytheme={'light'}>
+        <Text my="4px" color="white">
           {formatMessage(messages.disabledFieldTooltip)}
-        </ContentWrapper>
+        </Text>
       }
     >
       <Box
         as="button"
-        className={`${''} tooltip-icon`}
         aria-describedby="tooltip-content"
         minWidth={!disabled ? '100%' : '140px'}
         p="0px"
         type="button"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
+        role="button"
       >
         <StyledBox
           display="flex"
@@ -119,8 +91,6 @@ const ToolboxItem = ({
           width="100%"
           m="0px"
           alignItems="center"
-          // remove the role attribute when we add drag and drop functionality
-          role="button"
           data-cy={rest['data-cy']}
           disabled={!!disabled}
         >
