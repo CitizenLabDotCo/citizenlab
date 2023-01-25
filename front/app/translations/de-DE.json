@@ -281,7 +281,6 @@
   "app.components.ParticipationCTABars.participationTimeLeft": "{timeLeft} Wochen übrig",
   "app.components.ParticipationCTABars.projectOpenForSubmission": "Dieses Projekt ist derzeit offen für Beteiligung.",
   "app.components.ParticipationCTABars.seeIdeas": "Ideen sehen",
-  "app.components.ParticipationCTABars.submitIdea": "Submit idea",
   "app.components.ParticipationCTABars.takeTheSurvey": "An Umfrage teilnehmen",
   "app.components.ParticipationCTABars.userHasParticipated": "Sie haben sich an diesem Projekt beteiligt.",
   "app.components.ParticipationCTABars.volunteer": "Mithelfen",
