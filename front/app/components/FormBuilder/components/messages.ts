@@ -213,4 +213,9 @@ export default defineMessages({
     id: 'app.components.formBuilder.defaultField',
     defaultMessage: 'Default field',
   },
+  disabledFieldTooltip: {
+    id: 'app.components.formBuilder.disabledFieldTooltip',
+    defaultMessage:
+      'This has already been added in the form. Default content may only be used once.',
+  },
 });

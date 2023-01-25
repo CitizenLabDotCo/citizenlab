@@ -66,6 +66,9 @@ const getBuiltInFieldStringKey = (
 ): MessageDescriptor | undefined => {
   let translatedStringKey: MessageDescriptor | undefined;
   switch (key) {
+    case 'title_multiloc':
+      translatedStringKey = messages.title;
+      break;
     case 'body_multiloc':
       translatedStringKey = messages.description;
       break;

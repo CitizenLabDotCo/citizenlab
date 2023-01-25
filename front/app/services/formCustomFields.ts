@@ -50,6 +50,13 @@ export interface IAttributes {
   isEnabledEditable?: boolean;
   isTitleEditable?: boolean;
   isDeleteEnabled?: boolean;
+  constraints?: {
+    locks: {
+      title_multiloc?: boolean;
+      enabled?: boolean;
+      required?: boolean;
+    };
+  };
   enabled: boolean;
   ordering: number;
   created_at: string;
