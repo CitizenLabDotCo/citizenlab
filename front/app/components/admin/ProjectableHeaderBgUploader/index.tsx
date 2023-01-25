@@ -17,7 +17,7 @@ interface Props {
   onImageChange: (newImageBase64: string | null) => void;
 }
 
-const HeaderBgInput = ({ imageUrl, onImageChange }: Props) => {
+const ProjectableHeaderBgUploader = ({ imageUrl, onImageChange }: Props) => {
   const [headerBg, setHeaderBg] = useState<UploadFile | null>(null);
   useEffect(() => {
     (async () => {
@@ -73,4 +73,4 @@ const HeaderBgInput = ({ imageUrl, onImageChange }: Props) => {
   );
 };
 
-export default HeaderBgInput;
+export default ProjectableHeaderBgUploader;

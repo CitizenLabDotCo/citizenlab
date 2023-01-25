@@ -14,7 +14,7 @@ import Image from 'components/UI/Image';
 import AvatarBubbles from 'components/AvatarBubbles';
 
 // services
-import { getProjectUrl } from 'services/projects';
+import { CARD_IMAGE_ASPECT_RATIO, getProjectUrl } from 'services/projects';
 import { getInputTerm } from 'services/participationContexts';
 import { getIdeaPostingRules } from 'services/actionTakingRules';
 
@@ -147,7 +147,7 @@ const ProjectImageContainer = styled.div`
   }
 
   ${media.phone`
-    aspect-ratio: 2 / 1;
+    aspect-ratio: ${CARD_IMAGE_ASPECT_RATIO} / 1;
   `}
 `;
 

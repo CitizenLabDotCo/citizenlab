@@ -23,6 +23,7 @@ import {
 
 export const apiEndpoint = `${API_PATH}/projects`;
 export const HEADER_BG_ASPECT_RATIO = 4 / 1;
+export const CARD_IMAGE_ASPECT_RATIO = 2 / 1;
 
 type Visibility = 'public' | 'groups' | 'admins';
 export type ProcessType = 'continuous' | 'timeline';
@@ -243,8 +244,8 @@ export interface IProjectFormState {
   projectAttributesDiff: IUpdatedProjectProperties;
   projectHeaderImage: UploadFile[] | null;
   presentationMode: 'map' | 'card';
-  projectImages: UploadFile[];
-  projectImagesToRemove: UploadFile[];
+  projectCardImage: UploadFile | null;
+  projectCardImageToRemove: UploadFile | null;
   projectFiles: UploadFile[];
   projectFilesToRemove: UploadFile[];
   titleError: Multiloc | null;

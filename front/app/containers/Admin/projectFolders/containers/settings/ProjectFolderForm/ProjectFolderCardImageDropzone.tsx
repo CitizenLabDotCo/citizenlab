@@ -6,14 +6,14 @@ import { TPreviewDevice } from 'components/admin/SelectPreviewDevice';
 
 interface Props {
   images: UploadFile[] | null;
-  onAddImages: (projectImages: UploadFile[]) => void;
+  onAddImage: (projectImages: UploadFile[]) => void;
   onRemoveImage: (projectImageToRemove: UploadFile) => void;
   previewDevice: TPreviewDevice;
 }
 
-const ProjectCardImageDropzone = ({
+const ProjectFolderImageDropzone = ({
   images,
-  onAddImages,
+  onAddImage,
   onRemoveImage,
   previewDevice,
 }: Props) => {
@@ -31,10 +31,10 @@ const ProjectCardImageDropzone = ({
       acceptedFileTypes={{
         'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
       }}
-      onAdd={onAddImages}
+      onAdd={onAddImage}
       onRemove={onRemoveImage}
     />
   );
 };
 
-export default ProjectCardImageDropzone;
+export default ProjectFolderImageDropzone;
