@@ -55,6 +55,11 @@ interface Props {
 }
 
 const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
+  /*
+    ==============
+    Resource hooks
+    ==============
+  */
   const projectFolder = useProjectFolder({ projectFolderId });
   const projectFolderFilesRemote = useProjectFolderFiles(projectFolderId);
   const projectFolderImagesRemote = useProjectFolderImages(projectFolderId);
@@ -63,64 +68,13 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
       ? projectFolder.relationships.admin_publication.data?.id || null
       : null
   );
+  const tenantLocales = useAppConfigurationLocales();
 
-  useEffect(() => {
-    (async () => {
-      if (mode === 'edit' && !isNilOrError(projectFolder)) {
-        setTitleMultiloc(projectFolder.attributes.title_multiloc);
-        setSlug(projectFolder.attributes.slug);
-        setDescriptionMultiloc(projectFolder.attributes.description_multiloc);
-        setShortDescriptionMultiloc(
-          projectFolder.attributes.description_preview_multiloc
-        );
-      }
-    })();
-  }, [mode, projectFolder]);
-
-  useEffect(() => {
-    if (mode === 'edit' && !isNilOrError(adminPublication)) {
-      setPublicationStatus(adminPublication.attributes.publication_status);
-    }
-  }, [mode, adminPublication]);
-
-  useEffect(() => {
-    (async () => {
-      if (mode === 'edit' && !isNilOrError(projectFolderImagesRemote)) {
-        const imagePromises = projectFolderImagesRemote.data.map((img) =>
-          img.attributes.versions.medium
-            ? convertUrlToUploadFile(
-                img.attributes.versions.medium,
-                img.id,
-                null
-              )
-            : new Promise<null>((resolve) => resolve(null))
-        );
-        const images = await Promise.all(imagePromises);
-        setFolderCardImage(images[0]);
-      }
-    })();
-  }, [mode, projectFolderImagesRemote]);
-
-  useEffect(() => {
-    (async () => {
-      if (mode === 'edit' && !isNilOrError(projectFolderFilesRemote)) {
-        const filePromises = projectFolderFilesRemote.data.map((file) =>
-          convertUrlToUploadFile(
-            file.attributes.file.url,
-            file.id,
-            file.attributes.name
-          )
-        );
-        const files = await Promise.all(filePromises);
-        files.filter((file) => file);
-        setProjectFolderFiles(files as UploadFile[]);
-      }
-    })();
-  }, [mode, projectFolderFilesRemote]);
-
-  // input handling
-
-  const [errors, setErrors] = useState<CLErrors>({});
+  /*
+    ==============
+    State
+    ==============
+  */ const [errors, setErrors] = useState<CLErrors>({});
   const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
   const [slug, setSlug] = useState<string | null>(null);
   const [showSlugErrorMessage, setShowSlugErrorMessage] =
@@ -149,8 +103,72 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     string[]
   >([]);
   const [previewDevice, setPreviewDevice] = useState<TPreviewDevice>('phone');
+  const [submitState, setSubmitState] =
+    useState<IProjectFolderSubmitState>('disabled');
 
-  const getHandler = useCallback(
+  /*
+    ==============
+    useEffect
+    ==============
+  */ useEffect(() => {
+    (async () => {
+      if (mode === 'edit' && !isNilOrError(projectFolder)) {
+        setTitleMultiloc(projectFolder.attributes.title_multiloc);
+        setSlug(projectFolder.attributes.slug);
+        setDescriptionMultiloc(projectFolder.attributes.description_multiloc);
+        setShortDescriptionMultiloc(
+          projectFolder.attributes.description_preview_multiloc
+        );
+      }
+    })();
+  }, [mode, projectFolder]);
+
+  useEffect(() => {
+    if (mode === 'edit' && !isNilOrError(adminPublication)) {
+      setPublicationStatus(adminPublication.attributes.publication_status);
+    }
+  }, [mode, adminPublication]);
+
+  useEffect(() => {
+    (async () => {
+      if (mode === 'edit' && !isNilOrError(projectFolderImagesRemote)) {
+        const imagePromises = projectFolderImagesRemote.data.map((img) => {
+          const url =
+            previewDevice === 'phone'
+              ? img.attributes.versions.medium
+              : img.attributes.versions.large;
+          return url
+            ? convertUrlToUploadFile(url, img.id, null)
+            : new Promise<null>((resolve) => resolve(null));
+        });
+        const images = await Promise.all(imagePromises);
+        setFolderCardImage(images[0]);
+      }
+    })();
+  }, [mode, projectFolderImagesRemote, previewDevice]);
+
+  useEffect(() => {
+    (async () => {
+      if (mode === 'edit' && !isNilOrError(projectFolderFilesRemote)) {
+        const filePromises = projectFolderFilesRemote.data.map((file) =>
+          convertUrlToUploadFile(
+            file.attributes.file.url,
+            file.id,
+            file.attributes.name
+          )
+        );
+        const files = await Promise.all(filePromises);
+        files.filter((file) => file);
+        setProjectFolderFiles(files as UploadFile[]);
+      }
+    })();
+  }, [mode, projectFolderFilesRemote]);
+
+  /*
+    ==============
+    Methods
+    ==============
+  */ const getHandler = useCallback(
     (setter: (value: any) => void) => (value: any) => {
       setSubmitState('enabled');
       setter(value);
@@ -217,13 +235,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     },
     []
   );
-
-  // form status
-  const [submitState, setSubmitState] =
-    useState<IProjectFolderSubmitState>('disabled');
-
-  // validation
-  const tenantLocales = useAppConfigurationLocales();
 
   const validate = useCallback(() => {
     let valid = false;
