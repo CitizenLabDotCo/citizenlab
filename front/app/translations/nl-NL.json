@@ -281,7 +281,6 @@
   "app.components.ParticipationCTABars.participationTimeLeft": "{timeLeft} weken over",
   "app.components.ParticipationCTABars.projectOpenForSubmission": "Dit project staat momenteel open voor deelname.",
   "app.components.ParticipationCTABars.seeIdeas": "Bekijk ideeën",
-  "app.components.ParticipationCTABars.submitIdea": "Submit idea",
   "app.components.ParticipationCTABars.takeTheSurvey": "Naar de enquête",
   "app.components.ParticipationCTABars.userHasParticipated": "U heeft deelgenomen aan dit project.",
   "app.components.ParticipationCTABars.volunteer": "Vrijwilliger",
