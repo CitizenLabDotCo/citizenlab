@@ -281,7 +281,6 @@
   "app.components.ParticipationCTABars.participationTimeLeft": "{timeLeft} uker igjen",
   "app.components.ParticipationCTABars.projectOpenForSubmission": "Dette prosjektet er åpent for deltakelse.",
   "app.components.ParticipationCTABars.seeIdeas": "Se ideer",
-  "app.components.ParticipationCTABars.submitIdea": "Submit idea",
   "app.components.ParticipationCTABars.takeTheSurvey": "Svar på undersøkelsen",
   "app.components.ParticipationCTABars.userHasParticipated": "Du har deltatt i dette prosjektet.",
   "app.components.ParticipationCTABars.volunteer": "Frivillig",
