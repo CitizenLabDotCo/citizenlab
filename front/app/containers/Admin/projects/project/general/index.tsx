@@ -3,7 +3,7 @@ import { Multiloc, UploadFile, IOption } from 'typings';
 import { isEmpty, get, isString } from 'lodash-es';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { INewProjectCreatedEvent } from 'containers/Admin/projects/all/CreateProject';
-import { TPreviewDevice } from 'components/admin/SelectPreviewDevice';
+import { TDevice } from 'components/admin/SelectPreviewDevice';
 
 // components
 import ProjectStatusPicker from './components/ProjectStatusPicker';
@@ -121,7 +121,7 @@ const AdminProjectsProjectGeneral = () => {
     useState<IProjectFormState['showSlugErrorMessage']>(false);
   const [publicationStatus, setPublicationStatus] =
     useState<IProjectFormState['publicationStatus']>('draft');
-  const [previewDevice, setPreviewDevice] = useState<TPreviewDevice>('phone');
+  const [previewDevice, setPreviewDevice] = useState<TDevice>('phone');
 
   useEffect(() => {
     (async () => {

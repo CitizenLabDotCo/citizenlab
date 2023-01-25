@@ -6,14 +6,14 @@ import {
   PublicationStatus,
   CARD_IMAGE_ASPECT_RATIO as PROJECT_CARD_IMAGE_ASPECT_RATIO,
 } from 'services/projects';
-import { TPreviewDevice } from 'components/admin/SelectPreviewDevice';
+import { TDevice } from 'components/admin/SelectPreviewDevice';
 import { TProjectFolderCardSize } from 'components/ProjectAndFolderCards/components/ProjectFolderCard';
 
 const apiEndpoint = `${API_PATH}/project_folders`;
 export const CARD_IMAGE_ASPECT_RATIO = PROJECT_CARD_IMAGE_ASPECT_RATIO;
 export const getCardImageUrl = (
   imageVersions: ImageSizes,
-  device: TPreviewDevice,
+  device: TDevice,
   size: TProjectFolderCardSize
 ) => {
   if (device === 'phone') {

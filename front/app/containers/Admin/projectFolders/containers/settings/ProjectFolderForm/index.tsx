@@ -37,7 +37,7 @@ import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
 import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import SelectPreviewDevice from 'components/admin/SelectPreviewDevice';
-import { TPreviewDevice } from 'components/admin/SelectPreviewDevice';
+import { TDevice } from 'components/admin/SelectPreviewDevice';
 import ProjectFolderCardImageDropzone from './ProjectFolderCardImageDropzone';
 import { CARD_IMAGE_ASPECT_RATIO } from 'services/projectFolders';
 
@@ -102,7 +102,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const [projectFolderFilesToRemove, setProjectFolderFilesToRemove] = useState<
     string[]
   >([]);
-  const [previewDevice, setPreviewDevice] = useState<TPreviewDevice>('phone');
+  const [previewDevice, setPreviewDevice] = useState<TDevice>('phone');
   const [submitState, setSubmitState] =
     useState<IProjectFolderSubmitState>('disabled');
 

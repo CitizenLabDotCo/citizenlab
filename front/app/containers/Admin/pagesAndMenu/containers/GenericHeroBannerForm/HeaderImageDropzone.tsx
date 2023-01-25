@@ -3,7 +3,7 @@ import React from 'react';
 // components and theming
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import styled from 'styled-components';
-import { TPreviewDevice } from 'components/admin/SelectPreviewDevice';
+import { TDevice } from 'components/admin/SelectPreviewDevice';
 
 // types
 import {
@@ -40,14 +40,14 @@ interface Props {
   onRemove: () => void;
   headerError: string | null;
   header_bg: UploadFile | null;
-  previewDevice: TPreviewDevice;
+  previewDevice: TDevice;
   layout: THomepageBannerLayout;
 }
 
 // move this to homepage settings resource?
 export const homepageBannerLayoutHeights: {
   [key in THomepageBannerLayout]: {
-    [key in TPreviewDevice]: number;
+    [key in TDevice]: number;
   };
 } = {
   full_width_banner_layout: {
@@ -85,7 +85,7 @@ const HeaderImageDropzone = ({
   const getImagePreviewRatio = () => {
     const layoutHeightOnDevice =
       homepageBannerLayoutHeights[layout][previewDevice];
-    const standardWidthPerDeviceType: { [key in TPreviewDevice]: number } = {
+    const standardWidthPerDeviceType: { [key in TDevice]: number } = {
       desktop: 1530,
       tablet: 768,
       phone: 375,

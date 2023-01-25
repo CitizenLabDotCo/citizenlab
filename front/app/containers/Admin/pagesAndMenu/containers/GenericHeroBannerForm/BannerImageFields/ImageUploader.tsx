@@ -7,7 +7,7 @@ import {
   Props as BannerImageFieldsProps,
   TBannerError,
 } from '.';
-import { TPreviewDevice } from 'components/admin/SelectPreviewDevice';
+import { TDevice } from 'components/admin/SelectPreviewDevice';
 
 import { UploadFile } from 'typings';
 
@@ -22,7 +22,7 @@ interface Props {
   bannerOverlayColor: BannerImageFieldsProps['bannerOverlayColor'];
   bannerLayout: BannerImageFieldsProps['bannerLayout'];
   bannerError: TBannerError;
-  previewDevice: TPreviewDevice;
+  previewDevice: TDevice;
 }
 
 const ImageUploader = ({
