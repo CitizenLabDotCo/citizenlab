@@ -1,5 +1,11 @@
 # Changelog
 
+## Next release
+
+### Fixed
+
+- Activity icon in admin navigation for Safari browsers
+
 ## 2023-01-23 (2)
 
 ### Fixed
