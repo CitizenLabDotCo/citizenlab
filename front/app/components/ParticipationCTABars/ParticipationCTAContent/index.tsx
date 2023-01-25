@@ -25,11 +25,10 @@ import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
 const BlickingIcon = styled(Icon)<{ showAnimation: boolean }>`
   animation-name: blink-animation;
-  animation-duration: 1.8s;
   animation-duration: ${({ showAnimation }) => (showAnimation ? '1.8s' : '0s')};
   animation-delay: 1s;
   animation-timing-function: ease-in-out;
-  animation-iteration-count: 2;
+  animation-iteration-count: infinite;
 
   @keyframes blink-animation {
     0% {
@@ -81,32 +80,44 @@ export const ParticipationCTAContent = ({
         px="20px"
         py="8px"
       >
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          flexDirection="column"
-        >
-          <Text color="white" m="0px" fontWeight="bold" fontSize="s">
-            <FormattedMessage {...message} />
-          </Text>
-          {timeLeft !== undefined && (
-            <Text
-              color="white"
-              style={{ textTransform: 'uppercase' }}
-              m="0px"
-              width="100%"
-              fontSize="xs"
-              my="0px"
-            >
-              <FormattedMessage
-                {...messages.participationTimeLeft}
-                values={{
-                  timeLeft: timeLeft,
-                }}
-              />
+        <Box display="flex" flexDirection="row" alignItems="center">
+          <Box>
+            <BlickingIcon
+              name={hasUserParticipated ? 'check-circle' : 'dot'}
+              width="16px"
+              height="16px"
+              fill={colors.white}
+              mr="8px"
+              showAnimation={!hasUserParticipated}
+            />
+          </Box>
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            flexDirection="column"
+          >
+            <Text color="white" m="0px" fontWeight="bold" fontSize="s">
+              <FormattedMessage {...message} />
             </Text>
-          )}
+            {timeLeft !== undefined && (
+              <Text
+                color="white"
+                style={{ textTransform: 'uppercase' }}
+                m="0px"
+                width="100%"
+                fontSize="xs"
+                my="0px"
+              >
+                <FormattedMessage
+                  {...messages.participationTimeLeft}
+                  values={{
+                    timeLeft: timeLeft,
+                  }}
+                />
+              </Text>
+            )}
+          </Box>
         </Box>
         <Box display="flex" alignItems="center">
           {CTAButton}
