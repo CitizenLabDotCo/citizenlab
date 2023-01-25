@@ -72,7 +72,7 @@ const IdeaCard = ({
   useEffect(() => {
     if (!textContainerRef.current) return;
     setTextOverflow(checkTextOverflow(textContainerRef.current));
-  }, [textContainerRef.current]);
+  }, []);
 
   const hideTextOverflow = collapseLongText && textOverflow;
 

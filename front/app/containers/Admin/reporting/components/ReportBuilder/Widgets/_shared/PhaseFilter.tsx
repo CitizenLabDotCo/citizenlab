@@ -44,7 +44,7 @@ const PhaseFilter = ({
     return isNilOrError(phases)
       ? null
       : phases.filter(isCorrectPhase(participationMethod));
-  }, [phases]);
+  }, [phases, participationMethod]);
 
   const phaseOptions = useMemo(() => {
     return correctPhases
