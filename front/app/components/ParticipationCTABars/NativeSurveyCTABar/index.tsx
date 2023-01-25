@@ -19,16 +19,27 @@ import {
   CTABarProps,
   hasProjectEndedOrIsArchived,
 } from 'components/ParticipationCTABars/utils';
+import usePhases from 'hooks/usePhases';
 
-export const NativeSurveyCTABar = ({ phases, project }: CTABarProps) => {
+export const NativeSurveyCTABar = ({ project }: CTABarProps) => {
   const theme = useTheme();
   const authUser = useAuthUser();
+  const phases = usePhases(project.id);
   const isSmallerThanXlPhone = useBreakpoint('phone');
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
 
   useEffect(() => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
-  }, [phases]);
+  }, [phases, project]);
+
+  //   <IdeaButton
+  //   id="project-survey-button"
+  //   data-testid="e2e-project-survey-button"
+  //   projectId={project.id}
+  //   participationContextType={isPhaseNativeSurvey ? 'phase' : 'project'}
+  //   phaseId={isPhaseNativeSurvey ? currentPhase.id : ''}
+  //   fontWeight="500"
+  // />
 
   const isPhaseNativeSurvey =
     currentPhase?.attributes.participation_method === 'native_survey';
@@ -58,6 +69,7 @@ export const NativeSurveyCTABar = ({ phases, project }: CTABarProps) => {
       iconColor={theme.colors.tenantText}
       textHoverColor={theme.colors.black}
       iconHoverColor={theme.colors.black}
+      phase={currentPhase}
     />
   );
 

@@ -16,7 +16,6 @@ import { getInputTerm } from 'services/participationContexts';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
@@ -49,6 +48,7 @@ import { darken } from 'polished';
 import { LatLng } from 'leaflet';
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 import { getButtonMessage } from './utils';
+import { IPhaseData } from 'services/phases';
 
 const Container = styled.div``;
 
@@ -102,7 +102,6 @@ const TooltipContentText = styled.div`
 
 interface DataProps {
   project: GetProjectChildProps;
-  phase: GetPhaseChildProps;
   phases: GetPhasesChildProps;
   authUser: GetAuthUserChildProps;
 }
@@ -116,6 +115,7 @@ interface InputProps extends Omit<ButtonProps, 'onClick'> {
   className?: string;
   participationContextType: IParticipationContextType;
   buttonText?: MessageDescriptor;
+  phase: IPhaseData | undefined | null;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -308,8 +308,8 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
         );
 
         const buttonMessage = getButtonMessage(
-          project,
-          phase,
+          phase?.attributes.participation_method ||
+            project.attributes.participation_method,
           buttonText,
           inputTerm
         );
@@ -359,7 +359,9 @@ const Data = adopt<DataProps, InputProps>({
   phases: ({ projectId, render }) => (
     <GetPhases projectId={projectId}>{render}</GetPhases>
   ),
-  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
+  // phase: ({ phaseId, render }) => {
+  //   return <GetPhase id={phaseId}>{render}</GetPhase>
+  // },
 });
 
 const IdeaButtonWithHoC = injectIntl(IdeaButton);

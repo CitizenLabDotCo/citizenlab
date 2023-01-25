@@ -77,6 +77,7 @@ export const IdeationCTABar = ({ phases, project }: CTABarProps) => {
           iconHoverColor={theme.colors.black}
           buttonText={messages.submitIdea}
           fontSize={isSmallerThanXlPhone ? '14px' : '16px'}
+          phase={currentPhase}
         />
       </Box>
     ) : (

@@ -1,23 +1,17 @@
 import { MessageDescriptor } from 'react-intl';
-import { InputTerm } from 'services/participationContexts';
-import { GetPhaseChildProps } from 'resources/GetPhase';
-import { IProjectData } from 'services/projects';
+import { InputTerm, ParticipationMethod } from 'services/participationContexts';
 
 import { getInputTermMessage } from 'utils/i18n';
 import messages from './messages';
 
 export const getButtonMessage = (
-  project: IProjectData,
-  phase: GetPhaseChildProps | undefined,
+  participationMethod: ParticipationMethod,
   buttonText: MessageDescriptor | undefined,
   inputTerm: InputTerm
 ) => {
   if (buttonText) {
     return buttonText;
-  } else if (
-    project.attributes.participation_method === 'native_survey' ||
-    phase?.attributes.participation_method === 'native_survey'
-  ) {
+  } else if (participationMethod === 'native_survey') {
     return messages.takeTheSurvey;
   }
   return getInputTermMessage(inputTerm, {
