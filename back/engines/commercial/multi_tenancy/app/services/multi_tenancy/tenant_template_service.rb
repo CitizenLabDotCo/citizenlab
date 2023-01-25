@@ -40,6 +40,7 @@ module MultiTenancy
     def apply_template(template, validate: true, max_time: nil)
       t1 = Time.zone.now
       obj_to_id_and_class = {}
+      created_objects_ids = {}
       template['models'].each do |model_name, fields|
         LogActivityJob.perform_later(Tenant.current, 'loading_template', nil, Time.now.to_i, payload: {
           model_name: model_name,
@@ -110,11 +111,14 @@ module MultiTenancy
             raise "Failed to create instance during template application: #{json_info}"
           end
           obj_to_id_and_class[attributes.object_id] = [model.id, model_class]
+
+          created_objects_ids = update_created_objects_ids(created_objects_ids, model_class.name, model.id)
         end
       end
 
       DumpTenantJob.perform_later(Tenant.current)
-      nil
+
+      created_objects_ids
     end
 
     def restore_template_attributes(attributes, obj_to_id_and_class, app_settings, model_class: nil)
@@ -371,6 +375,16 @@ module MultiTenancy
 
     def all_supported_locales
       @all_supported_locales ||= CL2_SUPPORTED_LOCALES.map(&:to_s)
+    end
+
+    def update_created_objects_ids(created_objects_ids, model_name, model_id)
+      if created_objects_ids.key?(model_name)
+        created_objects_ids[model_name] << model_id
+      else
+        created_objects_ids[model_name] = [model_id]
+      end
+
+      created_objects_ids
     end
   end
 end

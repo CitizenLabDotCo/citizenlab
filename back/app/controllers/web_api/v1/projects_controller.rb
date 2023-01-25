@@ -76,6 +76,22 @@ class WebApi::V1::ProjectsController < ApplicationController
     end
   end
 
+  def copy
+    source_project = Project.find(params[:id])
+    folder = source_project.folder
+
+    @project = folder ? Project.new(folder: folder) : Project.new
+
+    authorize @project
+    @project = LocalProjectCopyService.new.copy(source_project)
+
+    render json: WebApi::V1::ProjectSerializer.new(
+      @project,
+      params: fastjson_params,
+      include: [:admin_publication]
+    ).serialized_json, status: :created
+  end
+
   def update
     params[:project][:area_ids] ||= [] if params[:project].key?(:area_ids)
     params[:project][:topic_ids] ||= [] if params[:project].key?(:topic_ids)
