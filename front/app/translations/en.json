@@ -567,6 +567,7 @@
   "app.components.formBuilder.deleteFieldWithLogicConfirmationQuestion": "Deleting this page will also delete the logic associated with it. Are you sure you want to delete it?",
   "app.components.formBuilder.deleteResultsInfo": "This cannot be undone",
   "app.components.formBuilder.description": "Description",
+  "app.components.formBuilder.disabledFieldTooltip": "This has already been added in the form. Default content may only be used once.",
   "app.components.formBuilder.done": "Done",
   "app.components.formBuilder.editButtonLabel": "Edit",
   "app.components.formBuilder.emptyOptionError": "Provide at least 1 answer",
