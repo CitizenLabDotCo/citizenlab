@@ -281,7 +281,6 @@
   "app.components.ParticipationCTABars.participationTimeLeft": "Preostalo je {timeLeft} tjedana",
   "app.components.ParticipationCTABars.projectOpenForSubmission": "Ovaj je projekt trenutačno otvoren za sudjelovanje.",
   "app.components.ParticipationCTABars.seeIdeas": "Pogledajte ideje",
-  "app.components.ParticipationCTABars.submitIdea": "Submit idea",
   "app.components.ParticipationCTABars.takeTheSurvey": "Popunite upitnik",
   "app.components.ParticipationCTABars.userHasParticipated": "Sudjelovali ste u ovom projektu.",
   "app.components.ParticipationCTABars.volunteer": "Volonter",
