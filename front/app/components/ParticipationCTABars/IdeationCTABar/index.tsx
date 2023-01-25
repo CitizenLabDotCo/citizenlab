@@ -77,6 +77,7 @@ export const IdeationCTABar = ({ phases, project }: CTABarProps) => {
           iconHoverColor={theme.colors.black}
           fontSize={isSmallerThanXlPhone ? '14px' : '16px'}
           phase={currentPhase}
+          padding={isSmallerThanXlPhone ? '4px' : undefined}
         />
       </Box>
     ) : (
@@ -89,6 +90,7 @@ export const IdeationCTABar = ({ phases, project }: CTABarProps) => {
         textColor={theme.colors.tenantText}
         iconColor={theme.colors.tenantText}
         textHoverColor={theme.colors.black}
+        padding={isSmallerThanXlPhone ? '4px' : undefined}
       >
         <FormattedMessage {...messages.seeIdeas} />
       </Button>

@@ -32,15 +32,6 @@ export const NativeSurveyCTABar = ({ project }: CTABarProps) => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
   }, [phases, project]);
 
-  //   <IdeaButton
-  //   id="project-survey-button"
-  //   data-testid="e2e-project-survey-button"
-  //   projectId={project.id}
-  //   participationContextType={isPhaseNativeSurvey ? 'phase' : 'project'}
-  //   phaseId={isPhaseNativeSurvey ? currentPhase.id : ''}
-  //   fontWeight="500"
-  // />
-
   const isPhaseNativeSurvey =
     currentPhase?.attributes.participation_method === 'native_survey';
   const { disabledReason } = getIdeaPostingRules({
@@ -70,6 +61,7 @@ export const NativeSurveyCTABar = ({ project }: CTABarProps) => {
       textHoverColor={theme.colors.black}
       iconHoverColor={theme.colors.black}
       phase={currentPhase}
+      padding={isSmallerThanXlPhone ? '4px' : undefined}
     />
   );
 

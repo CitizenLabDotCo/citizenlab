@@ -1,7 +1,7 @@
 import React, { useEffect, useState, FormEvent } from 'react';
 
 // Components
-import { Button } from '@citizenlab/cl2-component-library';
+import { Button, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { ParticipationCTAContent } from 'components/ParticipationCTABars/ParticipationCTAContent';
 
 // hooks
@@ -26,6 +26,7 @@ import { isNilOrError } from 'utils/helperUtils';
 export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
+  const isSmallerThanXlPhone = useBreakpoint('phone');
   let basketId: string | null = null;
   if (currentPhase) {
     basketId = currentPhase.relationships.user_basket?.data?.id || null;
@@ -65,6 +66,7 @@ export const BudgetingCTABar = ({ phases, project }: CTABarProps) => {
       iconColor={theme.colors.tenantText}
       data-cy="budgeting-cta-button"
       textHoverColor={theme.colors.black}
+      padding={isSmallerThanXlPhone ? '4px' : undefined}
     >
       <FormattedMessage {...messages.allocateBudget} />
     </Button>

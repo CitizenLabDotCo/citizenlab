@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback, FormEvent } from 'react';
 
 // Components
-import { Button } from '@citizenlab/cl2-component-library';
+import { Button, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { ParticipationCTAContent } from 'components/ParticipationCTABars/ParticipationCTAContent';
 
 // hooks
@@ -36,6 +36,7 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
   const authUser = useAuthUser();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
   const { pathname, hash: divId } = useLocation();
+  const isSmallerThanXlPhone = useBreakpoint('phone');
 
   useEffect(() => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
@@ -110,6 +111,7 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
       textColor={theme.colors.tenantText}
       iconColor={theme.colors.tenantText}
       textHoverColor={theme.colors.black}
+      padding={isSmallerThanXlPhone ? '4px' : undefined}
     >
       <FormattedMessage {...messages.takeTheSurvey} />
     </Button>
