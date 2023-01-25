@@ -9,13 +9,15 @@ import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import {
   Box,
   Text,
-  Radio,
-  Label,
   useBreakpoint,
+  Button,
 } from '@citizenlab/cl2-component-library';
 import { FormLabel } from 'components/UI/FormComponents';
 import VerificationIcon from '../VerificationIcon';
 import ErrorDisplay from '../ErrorDisplay';
+
+// style
+import { colors } from 'utils/styleUtils';
 
 const LinearScaleControl = ({
   data,
@@ -44,66 +46,51 @@ const LinearScaleControl = ({
         subtextValue={uischema.options?.description}
         subtextSupportsHtml
       />
-      <Box
-        data-testid="linearScaleControl"
-        display={isSmallerThanXlPhone ? 'block' : 'flex'}
-        flexDirection="row"
-        gap="16px"
-        overflow="visible"
-        flexWrap="nowrap"
-        alignItems="flex-end"
-        mb="4px"
-      >
-        {uischema.options?.minimum_label && (
-          <Box mb={isSmallerThanXlPhone ? '12px' : '0'}>
-            <Text
-              mr="8px"
-              mt="0"
-              mb="0"
-              color="textSecondary"
-              textAlign={isSmallerThanXlPhone ? 'left' : 'right'}
-            >
-              {uischema.options?.minimum_label}
-            </Text>
-          </Box>
-        )}
-        <>
+      <Box data-testid="linearScaleControl">
+        <Box gap="12px" display="flex" flexWrap="wrap">
           {[...Array(maximum).keys()].map((i) => {
             const rowId = `${path}-radio-${i}`;
             const visualIndex = i + 1;
             return (
-              <Box
-                mb={isSmallerThanXlPhone ? '4px' : '0px'}
-                display={isSmallerThanXlPhone ? 'flex' : 'block'}
-                gap={isSmallerThanXlPhone ? '4px' : 'auto'}
-                key={i}
-                style={{ lineHeight: '0px' }}
-              >
-                <Box
-                  mt="0"
-                  mr="4px"
-                  ml={isSmallerThanXlPhone ? '0px' : '5px'}
-                  minHeight="24px"
+              <Box flexGrow={1} key={rowId}>
+                <Button
+                  bgColor={
+                    data === visualIndex ? colors.primary : colors.grey200
+                  }
+                  textHoverColor={
+                    data === visualIndex ? 'white' : colors.textPrimary
+                  }
+                  textColor={
+                    data === visualIndex ? 'white' : colors.textPrimary
+                  }
+                  width="100%"
+                  onClick={() => handleChange(path, visualIndex)}
                 >
-                  <Label htmlFor={rowId}>{visualIndex}</Label>
-                </Box>
-                {!isSmallerThanXlPhone && <br />}
-                <Radio
-                  name="linear_scale"
-                  currentValue={data}
-                  value={visualIndex}
-                  key={i}
-                  id={rowId}
-                  onChange={(value) => handleChange(path, value)}
-                />
+                  {visualIndex}
+                </Button>
               </Box>
             );
           })}
-        </>
-        <Box>
-          <Text mr="8px" mt="0" mb="0" color="textSecondary">
-            {uischema.options?.maximum_label}
-          </Text>
+        </Box>
+        <Box
+          width="100%"
+          display={isSmallerThanXlPhone ? 'block' : 'flex'}
+          justifyContent="space-between"
+        >
+          {uischema.options?.minimum_label && (
+            <Box mb={isSmallerThanXlPhone ? '12px' : '0'}>
+              <Text color="textSecondary">
+                {isSmallerThanXlPhone && <>1. </>}
+                {uischema.options?.minimum_label}
+              </Text>
+            </Box>
+          )}
+          <Box>
+            <Text color="textSecondary">
+              {isSmallerThanXlPhone && <>{maximum}. </>}
+              {uischema.options?.maximum_label}
+            </Text>
+          </Box>
         </Box>
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
@@ -120,3 +107,40 @@ export const linearScaleControlTester = (schema) => {
   }
   return -1;
 };
+
+// Old code:
+{
+  /* <>
+  {[...Array(maximum).keys()].map((i) => {
+    const rowId = `${path}-radio-${i}`;
+    const visualIndex = i + 1;
+    return (
+      <Box
+        mb={isSmallerThanXlPhone ? '4px' : '0px'}
+        display={isSmallerThanXlPhone ? 'flex' : 'block'}
+        gap={isSmallerThanXlPhone ? '4px' : 'auto'}
+        key={i}
+        style={{ lineHeight: '0px' }}
+      >
+        <Box
+          mt="0"
+          mr="4px"
+          ml={isSmallerThanXlPhone ? '0px' : '5px'}
+          minHeight="24px"
+        >
+          <Label htmlFor={rowId}>{visualIndex}</Label>
+        </Box>
+        {!isSmallerThanXlPhone && <br />}
+        <Radio
+          name="linear_scale"
+          currentValue={data}
+          value={visualIndex}
+          key={i}
+          id={rowId}
+          onChange={(value) => handleChange(path, value)}
+        />
+      </Box>
+    );
+  })}
+</>; */
+}
