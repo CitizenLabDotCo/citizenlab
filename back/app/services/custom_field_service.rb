@@ -8,8 +8,7 @@ class CustomFieldService
   end
 
   def ui_and_json_multiloc_schemas(configuration, fields)
-    fields = fields.reject(&:section?) # TODO
-    json_schema_multiloc = fields_to_json_schema_multiloc(configuration, fields)
+    json_schema_multiloc = fields_to_json_schema_multiloc(configuration, fields.reject(&:section?)) # TODO
     ui_schema_multiloc = fields_to_ui_schema_multiloc(configuration, fields)
 
     { json_schema_multiloc: json_schema_multiloc, ui_schema_multiloc: ui_schema_multiloc }
@@ -356,5 +355,10 @@ class CustomFieldService
       description: handle_description(field, locale),
       type: 'string'
     }
+  end
+
+
+  def section_to_ui_schema_field(field, locale) # TODO: remove this method. How does this work for native surveys with pages?
+    base_ui_schema_field(field, locale)
   end
 end

@@ -151,7 +151,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   end
 
   def generate_section(current_section, section_fields)
-    return if fields.empty?
+    return if section_fields.empty?
 
     {
       type: 'Category',
