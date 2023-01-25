@@ -164,7 +164,10 @@ const AdminProjectsProjectGeneral = () => {
       if (!isNilOrError(remoteProjectImages)) {
         const nextProjectImagesPromises = remoteProjectImages.map(
           (projectImage) => {
-            const url = projectImage.attributes.versions.medium;
+            const url =
+              previewDevice === 'phone'
+                ? projectImage.attributes.versions.medium
+                : projectImage.attributes.versions.large;
             // to be tested
             if (url) {
               return convertUrlToUploadFile(url, projectImage.id, null);
@@ -181,7 +184,7 @@ const AdminProjectsProjectGeneral = () => {
         setProjectCardImage(nextProjectImages[0]);
       }
     })();
-  }, [remoteProjectImages]);
+  }, [remoteProjectImages, previewDevice]);
 
   const handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
     setSubmitState('enabled');
