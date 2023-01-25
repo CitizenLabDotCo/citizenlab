@@ -117,7 +117,7 @@ sv:
         title: Författare
         description:
       topic_ids:
-        title: Ämnen
+        title: Topics
         description:
       location:
         title: Plats
@@ -146,7 +146,7 @@ sv:
         project:
           title: Vad är ditt projekt?
         issue:
-          title: Vad är din kommentar?
+          title: Vad är ditt problem?
         option:
           title: Vad är ditt alternativ?
       details:
