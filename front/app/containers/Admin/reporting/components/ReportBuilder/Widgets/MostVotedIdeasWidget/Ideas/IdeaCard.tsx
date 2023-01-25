@@ -18,7 +18,11 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
-import Gradient from './Gradient';
+import GradientSrc from './gradient.svg';
+
+// i18n
+import messages from '../messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -124,12 +128,11 @@ const IdeaCard = ({
           <Box
             display={hideTextOverflow ? 'block' : 'none'}
             position="absolute"
-            mt={`${MEDIUM_LINE_HEIGHT * 7}px`}
-            height={`${MEDIUM_LINE_HEIGHT}px`}
+            mt={`${MEDIUM_LINE_HEIGHT * 6}px`}
+            height={`${MEDIUM_LINE_HEIGHT * 2}px`}
             width={`${textContainerRef.current?.clientWidth ?? 0}px`}
           >
-            <Gradient />
-            {/* <Box w="100%" h="100%" bgColor="red" /> */}
+            <Image src={GradientSrc} alt="" width="100%" height="100%" />
           </Box>
           <IdeaText
             dangerouslySetInnerHTML={{ __html: body }}
@@ -137,7 +140,18 @@ const IdeaCard = ({
           />
         </Box>
       </Box>
-      {hideTextOverflow && <Text>Show more</Text>}
+      {hideTextOverflow && (
+        <Link to={url} target="_blank">
+          <Text
+            fontSize="s"
+            color="coolGrey500"
+            textDecoration="underline"
+            fontWeight="bold"
+          >
+            <FormattedMessage {...messages.showMore} />
+          </Text>
+        </Link>
+      )}
       <Box>
         <Text color="coolGrey500" fontSize="s">
           <Icon
