@@ -60,7 +60,7 @@ export const ParticipationCTAContent = ({
   const isSmallerThanXlPhone = useBreakpoint('phone');
   const timeLeft = currentPhase
     ? getPeriodRemainingUntil(currentPhase.attributes.end_at, 'weeks')
-    : '';
+    : undefined;
   let message = hasUserParticipated
     ? messages.userHasParticipated
     : messages.projectOpenForSubmission;
@@ -90,7 +90,7 @@ export const ParticipationCTAContent = ({
           <Text color="white" m="0px" fontWeight="bold" fontSize="s">
             <FormattedMessage {...message} />
           </Text>
-          {timeLeft && (
+          {timeLeft !== undefined && (
             <Text
               color="white"
               style={{ textTransform: 'uppercase' }}
@@ -148,7 +148,7 @@ export const ParticipationCTAContent = ({
           </Text>
         </Box>
         <Box display="flex" alignItems="center">
-          {timeLeft && (
+          {timeLeft !== undefined && (
             <Text
               color="white"
               style={{ textTransform: 'uppercase' }}
@@ -160,7 +160,7 @@ export const ParticipationCTAContent = ({
               <FormattedMessage
                 {...messages.participationTimeLeft}
                 values={{
-                  timeLeft: timeLeft,
+                  timeLeft,
                 }}
               />
             </Text>
