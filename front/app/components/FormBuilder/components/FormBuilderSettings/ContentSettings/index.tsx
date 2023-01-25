@@ -1,6 +1,5 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
-import { get } from 'lodash-es';
 
 // components
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
@@ -23,6 +22,7 @@ import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import { builtInFieldKeys } from 'components/FormBuilder/utils';
+import { get } from 'lodash-es';
 
 type ContentSettingsProps = {
   field: IFlatCustomFieldWithIndex;
@@ -41,10 +41,10 @@ export const ContentSettings = ({
 }: ContentSettingsProps) => {
   const { watch, trigger, setValue } = useFormContext();
   const logic = watch(`customFields.${field.index}.logic`);
+  const lockedAttributes = field?.constraints?.locks;
   const platformLocale = useLocale();
   const hasRules = logic && logic.rules && logic.rules.length > 0;
   const isFieldGrouping = ['page', 'section'].includes(field.input_type);
-  const isDeleteEnabled = get(field, 'isDeleteEnabled', true);
   const handleDelete = () => {
     if (builtInFieldKeys.includes(field.key)) {
       const newField = { ...field, enabled: false };
@@ -61,19 +61,17 @@ export const ContentSettings = ({
       <Box mt="16px">
         {!isFieldGrouping && (
           <>
-            {!isNilOrError(field.isTitleEditable)
-              ? field.isTitleEditable
-              : true && (
-                  <SectionField>
-                    <InputMultilocWithLocaleSwitcher
-                      initiallySelectedLocale={platformLocale}
-                      id="e2e-title-multiloc"
-                      name={`customFields.${field.index}.title_multiloc`}
-                      label={<FormattedMessage {...messages.questionTitle} />}
-                      type="text"
-                    />
-                  </SectionField>
-                )}
+            {!lockedAttributes?.title_multiloc && (
+              <SectionField>
+                <InputMultilocWithLocaleSwitcher
+                  initiallySelectedLocale={platformLocale}
+                  id="e2e-title-multiloc"
+                  name={`customFields.${field.index}.title_multiloc`}
+                  label={<FormattedMessage {...messages.questionTitle} />}
+                  type="text"
+                />
+              </SectionField>
+            )}
             <SectionField>
               <QuillMultilocWithLocaleSwitcher
                 name={`customFields.${field.index}.description_multiloc`}
@@ -92,11 +90,7 @@ export const ContentSettings = ({
             <SectionField id="e2e-required-toggle">
               <Toggle
                 name={`customFields.${field.index}.required`}
-                disabled={
-                  !isNilOrError(field.isRequiredEditable)
-                    ? !field.isRequiredEditable
-                    : hasRules
-                }
+                disabled={get(lockedAttributes, 'required', hasRules)}
                 label={
                   <Text as="span" color="primary" variant="bodyM" my="0px">
                     <FormattedMessage {...messages.requiredToggleLabel} />
@@ -122,7 +116,7 @@ export const ContentSettings = ({
           >
             <FormattedMessage {...messages.done} />
           </Button>
-          {isDeleteEnabled && (
+          {!get(lockedAttributes, 'enabled', false) && (
             <Button
               px="28px"
               icon="delete"
