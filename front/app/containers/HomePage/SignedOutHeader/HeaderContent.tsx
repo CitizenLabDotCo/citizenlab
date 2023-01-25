@@ -51,7 +51,7 @@ const HeaderContent = ({
 }: Props & WrappedComponentProps) => {
   const homepageSettings = useHomepageSettings();
   const localize = useLocalize();
-  const isTablet = useBreakpoint('phone');
+  const isTablet = useBreakpoint('tablet');
 
   const signUpIn = (event: React.FormEvent) => {
     event.preventDefault();
