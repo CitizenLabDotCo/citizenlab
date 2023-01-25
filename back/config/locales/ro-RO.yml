@@ -159,7 +159,7 @@ ro:
     gender:
       male: Masculin
       female: Femeie
-      unspecified: Alte
+      unspecified: Nespecificat
     domicile:
       outside: Altundeva
     education:

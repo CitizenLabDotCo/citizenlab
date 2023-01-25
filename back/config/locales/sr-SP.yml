@@ -108,7 +108,7 @@ sr-SP:
         title: Образовање
     ideas:
       title:
-        title: Назив
+        title: Наслов
         description:
       body:
         title: Опис
@@ -142,11 +142,11 @@ sr-SP:
         question:
           title: Шта је ваше питање ?
         contribution:
-          title: Шта је то чиме ћете допринети?
+          title: Шта је ваш прилог ?
         project:
           title: Шта је ваш пројекат ?
         issue:
-          title: Шта је ваш коментар?
+          title: Шта је ваша тема ?
         option:
           title: Шта је ваша опција ?
       details:
