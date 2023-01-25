@@ -22,6 +22,7 @@ import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import { builtInFieldKeys } from 'components/FormBuilder/utils';
+import { get } from 'lodash-es';
 
 type ContentSettingsProps = {
   field: IFlatCustomFieldWithIndex;
@@ -60,19 +61,17 @@ export const ContentSettings = ({
       <Box mt="16px">
         {!isFieldGrouping && (
           <>
-            {!isNilOrError(lockedAttributes?.title_multiloc)
-              ? !lockedAttributes?.title_multiloc
-              : true && (
-                  <SectionField>
-                    <InputMultilocWithLocaleSwitcher
-                      initiallySelectedLocale={platformLocale}
-                      id="e2e-title-multiloc"
-                      name={`customFields.${field.index}.title_multiloc`}
-                      label={<FormattedMessage {...messages.questionTitle} />}
-                      type="text"
-                    />
-                  </SectionField>
-                )}
+            {!lockedAttributes?.title_multiloc && (
+              <SectionField>
+                <InputMultilocWithLocaleSwitcher
+                  initiallySelectedLocale={platformLocale}
+                  id="e2e-title-multiloc"
+                  name={`customFields.${field.index}.title_multiloc`}
+                  label={<FormattedMessage {...messages.questionTitle} />}
+                  type="text"
+                />
+              </SectionField>
+            )}
             <SectionField>
               <QuillMultilocWithLocaleSwitcher
                 name={`customFields.${field.index}.description_multiloc`}
@@ -91,11 +90,7 @@ export const ContentSettings = ({
             <SectionField id="e2e-required-toggle">
               <Toggle
                 name={`customFields.${field.index}.required`}
-                disabled={
-                  !isNilOrError(lockedAttributes?.required)
-                    ? lockedAttributes?.required
-                    : hasRules
-                }
+                disabled={get(lockedAttributes, 'required', hasRules)}
                 label={
                   <Text as="span" color="primary" variant="bodyM" my="0px">
                     <FormattedMessage {...messages.requiredToggleLabel} />
@@ -121,21 +116,19 @@ export const ContentSettings = ({
           >
             <FormattedMessage {...messages.done} />
           </Button>
-          {!isNilOrError(lockedAttributes?.enabled)
-            ? !lockedAttributes?.enabled
-            : true && (
-                <Button
-                  px="28px"
-                  icon="delete"
-                  buttonStyle="primary-outlined"
-                  borderColor={colors.error}
-                  textColor={colors.error}
-                  iconColor={colors.error}
-                  onClick={handleDelete}
-                  data-cy="e2e-delete-field"
-                  disabled={isDeleteDisabled}
-                />
-              )}
+          {!get(lockedAttributes, 'enabled', false) && (
+            <Button
+              px="28px"
+              icon="delete"
+              buttonStyle="primary-outlined"
+              borderColor={colors.error}
+              textColor={colors.error}
+              iconColor={colors.error}
+              onClick={handleDelete}
+              data-cy="e2e-delete-field"
+              disabled={isDeleteDisabled}
+            />
+          )}
         </Box>
       </Box>
     );

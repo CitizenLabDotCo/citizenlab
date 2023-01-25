@@ -12,7 +12,7 @@ import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { Locale } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
+import get from 'lodash-es/get';
 
 type Props = {
   field: IFlatCustomFieldWithIndex;
@@ -24,19 +24,17 @@ const FieldGroupSettings = ({ field, locale }: Props) => {
 
   return (
     <>
-      {!isNilOrError(lockedAttributes)
-        ? !lockedAttributes.title_multiloc
-        : true && (
-            <SectionField>
-              <InputMultilocWithLocaleSwitcher
-                initiallySelectedLocale={locale}
-                id="e2e-field-group-title-multiloc"
-                name={`customFields.${field.index}.title_multiloc`}
-                label={<FormattedMessage {...messages.titleLabel} />}
-                type="text"
-              />
-            </SectionField>
-          )}
+      {!get(lockedAttributes, 'title_multiloc', false) && (
+        <SectionField>
+          <InputMultilocWithLocaleSwitcher
+            initiallySelectedLocale={locale}
+            id="e2e-field-group-title-multiloc"
+            name={`customFields.${field.index}.title_multiloc`}
+            label={<FormattedMessage {...messages.titleLabel} />}
+            type="text"
+          />
+        </SectionField>
+      )}
       <SectionField data-cy="e2e-field-group-description-multiloc">
         <QuillMultilocWithLocaleSwitcher
           name={`customFields.${field.index}.description_multiloc`}
