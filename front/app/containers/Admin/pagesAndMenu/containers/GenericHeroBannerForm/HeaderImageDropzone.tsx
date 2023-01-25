@@ -135,6 +135,8 @@ const HeaderImageDropzone = ({
         // With our min-height of 225px, we assume a phone screenwidth of
         // 450px for the sake of simplicity. Resulting in 1 / 2 aspect-ratio.
         // Average phone screen width is slightly narrower though.
+        // This phone ratio is currently only used to show a preview of the fixed-ratio
+        // layout in the admin with the 450px width assumption.
         phone: 1 / 2,
         tablet: 1 / FIXED_RATIO_LAYOUT_ASPECT_RATIO,
         desktop: 1 / FIXED_RATIO_LAYOUT_ASPECT_RATIO,
