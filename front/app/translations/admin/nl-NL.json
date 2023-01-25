@@ -1382,7 +1382,7 @@
   "app.containers.AdminPage.SettingsPage.fixedRatioImageCropperInfo": "De banner wordt altijd bijgesneden tot een bepaalde verhouding om ervoor te zorgen dat alle cruciale aspecten altijd worden weergegeven. De {link} voor dit bannertype is 3:1.",
   "app.containers.AdminPage.SettingsPage.fixedRatioImageCropperInfoLink": "aanbevolen verhouding",
   "app.containers.AdminPage.SettingsPage.fullWidthBannerLayout": "Volledige breedte",
-  "app.containers.AdminPage.SettingsPage.fullWidthBannerTooltip": "Deze banner strekt zich uit over de volle breedte voor een geweldig visueel effect. De afbeelding zal proberen zoveel mogelijk ruimte te bedekken, waardoor hij niet altijd zichtbaar is. Je kunt deze banner combineren met een filter in eender welke kleur. Meer info over het aanbevolen gebruik van afbeeldingen vind je op onze {link}.",
+  "app.containers.AdminPage.SettingsPage.fullWidthBannerTooltip": "Deze banner strekt zich uit over de volle breedte voor een geweldig visueel effect. De afbeelding zal proberen zoveel mogelijk ruimte te bedekken, waardoor hij niet altijd zichtbaar is. Je kunt deze banner combineren met een filter in iedere kleur. Meer info over het aanbevolen gebruik van afbeeldingen vind je op onze {link}.",
   "app.containers.AdminPage.SettingsPage.fullWidthBannerTooltipLink": "kennisbank",
   "app.containers.AdminPage.SettingsPage.header": "Banner startpagina",
   "app.containers.AdminPage.SettingsPage.headerBgTooltip": "{supportPageLink} voor meer informatie over aanbevolen afbeeldingsresoluties.",
