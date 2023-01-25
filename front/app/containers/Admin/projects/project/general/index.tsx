@@ -310,21 +310,13 @@ const AdminProjectsProjectGeneral = () => {
           }
         }
 
-        const cardImageWasChanged =
-          croppedProjectCardBase64 &&
-          projectCardImage &&
-          !projectCardImage.remote;
         const cardImageToAddPromise =
-          cardImageWasChanged && latestProjectId
+          croppedProjectCardBase64 && latestProjectId
             ? addProjectImage(latestProjectId, croppedProjectCardBase64)
             : null;
 
         const cardImageToRemovePromise =
-          projectCardImageToRemove &&
-          projectCardImageToRemove.remote &&
-          projectCardImageToRemove.id &&
-          isString(projectCardImageToRemove.id) &&
-          latestProjectId
+          projectCardImageToRemove?.id && latestProjectId
             ? deleteProjectImage(latestProjectId, projectCardImageToRemove.id)
             : null;
 
