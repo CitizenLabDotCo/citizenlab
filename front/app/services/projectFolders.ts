@@ -1,11 +1,30 @@
 import { Multiloc, ImageSizes, IRelationship } from 'typings';
-
 import streams, { IStreamParams } from 'utils/streams';
 import { isNilOrError } from 'utils/helperUtils';
-
 import { API_PATH } from 'containers/App/constants';
-import { PublicationStatus } from 'services/projects';
+import {
+  PublicationStatus,
+  CARD_IMAGE_ASPECT_RATIO as PROJECT_CARD_IMAGE_ASPECT_RATIO,
+} from 'services/projects';
+import { TPreviewDevice } from 'components/admin/SelectPreviewDevice';
+import { TProjectFolderCardSize } from 'components/ProjectAndFolderCards/components/ProjectFolderCard';
+
 const apiEndpoint = `${API_PATH}/project_folders`;
+export const CARD_IMAGE_ASPECT_RATIO = PROJECT_CARD_IMAGE_ASPECT_RATIO;
+export const getCardImageUrl = (
+  imageVersions: ImageSizes,
+  device: TPreviewDevice,
+  size: TProjectFolderCardSize
+) => {
+  if (device === 'phone') {
+    return imageVersions.medium;
+  } else if (size === 'small') {
+    return imageVersions.small;
+  } else {
+    // image size is approximately the same for both medium and large desktop card sizes
+    return imageVersions.large;
+  }
+};
 
 export interface IProjectFolderDiff {
   title_multiloc: Multiloc; // Text, > 10

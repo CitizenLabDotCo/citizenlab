@@ -9,12 +9,16 @@ import bowser from 'bowser';
 import Link from 'utils/cl-router/Link';
 
 // components
-import { Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import Image from 'components/UI/Image';
 import AvatarBubbles from 'components/AvatarBubbles';
 
 // services
-import { CARD_IMAGE_ASPECT_RATIO, getProjectUrl } from 'services/projects';
+import {
+  CARD_IMAGE_ASPECT_RATIO,
+  getProjectUrl,
+  getCardImageUrl,
+} from 'services/projects';
 import { getInputTerm } from 'services/participationContexts';
 import { getIdeaPostingRules } from 'services/actionTakingRules';
 
@@ -36,9 +40,6 @@ import messages from './messages';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-// types
-import { ImageSizes } from 'typings';
-
 // style
 import styled, { useTheme } from 'styled-components';
 import {
@@ -52,6 +53,7 @@ import {
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba, darken } from 'polished';
 import { getInputTermMessage } from 'utils/i18n';
+import useDevice from 'hooks/useDevice';
 
 const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   width: calc(33% - 12px);
@@ -444,9 +446,10 @@ const MetaItemText = styled.div`
   margin-left: 3px;
 `;
 
+export type TProjectCardSize = 'small' | 'medium' | 'large';
 export interface InputProps {
   projectId: string;
-  size: 'small' | 'medium' | 'large';
+  size: TProjectCardSize;
   layout?: 'dynamic' | 'threecolumns' | 'twocolumns';
   hideDescriptionPreview?: boolean;
   className?: string;
@@ -473,7 +476,7 @@ const ProjectCard = memo<Props>(
     const phase = usePhase(currentPhaseId);
     const phases = usePhases(projectId);
     const theme = useTheme();
-    const isPhone = useBreakpoint('phone');
+    const device = useDevice();
 
     const [visible, setVisible] = useState(false);
 
@@ -517,18 +520,9 @@ const ProjectCard = memo<Props>(
         ? null
         : projectImages[0]?.attributes.versions;
 
-      const getImageUrl = (imageVersions: ImageSizes) => {
-        if (isPhone) {
-          return imageVersions.medium;
-        } else if (size === 'small') {
-          return imageVersions.small;
-        } else {
-          // image size is approximately the same for both medium and large desktop card sizes
-          return imageVersions.large;
-        }
-      };
-
-      const imageUrl = imageVersions ? getImageUrl(imageVersions) : null;
+      const imageUrl = imageVersions
+        ? getCardImageUrl(imageVersions, device, size)
+        : null;
 
       const projectUrl = getProjectUrl(project);
       const isFinished = project.attributes.timeline_active === 'past';

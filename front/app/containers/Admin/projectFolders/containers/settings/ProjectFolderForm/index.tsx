@@ -39,7 +39,7 @@ import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import SelectPreviewDevice from 'components/admin/SelectPreviewDevice';
 import { TPreviewDevice } from 'components/admin/SelectPreviewDevice';
 import ProjectFolderCardImageDropzone from './ProjectFolderCardImageDropzone';
-import { CARD_IMAGE_ASPECT_RATIO } from 'services/projects';
+import { CARD_IMAGE_ASPECT_RATIO } from 'services/projectFolders';
 
 type IProjectFolderSubmitState =
   | 'disabled'
