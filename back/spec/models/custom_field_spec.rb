@@ -393,7 +393,7 @@ RSpec.describe CustomField, type: :model do
     end
   end
 
-  describe 'title_multiloc for ideation section 1' do
+  describe 'title_multiloc behaviour for ideation section 1' do
     it 'returns the correct input term message regardless of what the field is set to' do
       resource = create :custom_form
       ignored_title = { en: 'anything'}
@@ -407,7 +407,7 @@ RSpec.describe CustomField, type: :model do
       key = "custom_forms.categories.main_content.#{input_term}.title"
       expected_english_locale = I18n.t(key, default: '', locale: 'en')
 
-      expect { section.title_multiloc.en }.to be expected_english_locale
+      expect(section.title_multiloc[:en]).to eq expected_english_locale
     end
   end
 end
