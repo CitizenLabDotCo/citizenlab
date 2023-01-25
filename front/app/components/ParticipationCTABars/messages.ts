@@ -33,8 +33,4 @@ export default defineMessages({
     id: 'app.components.ParticipationCTABars.seeIdeas',
     defaultMessage: 'See ideas',
   },
-  submitIdea: {
-    id: 'app.components.ParticipationCTABars.submitIdea',
-    defaultMessage: 'Submit idea',
-  },
 });
