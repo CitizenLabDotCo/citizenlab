@@ -43,10 +43,11 @@ class IdeaCustomFieldsService
         fields_with_simple_keys << field.key.to_sym
       end
     end
-    [
-      *fields_with_simple_keys,
-      fields_with_array_keys
-    ]
+    if fields_with_array_keys.empty?
+      fields_with_simple_keys
+    else
+      fields_with_simple_keys + [fields_with_array_keys]
+    end
   end
 
   private
