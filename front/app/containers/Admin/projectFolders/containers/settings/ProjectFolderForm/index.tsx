@@ -136,9 +136,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           const url =
             // On the homepage, we use the large version when screen
             // width > 1200px, so this shows a more realistic preview
-            previewDevice === 'desktop'
-              ? img.attributes.versions.large
-              : img.attributes.versions.medium;
+            previewDevice === 'phone'
+              ? img.attributes.versions.medium
+              : img.attributes.versions.large;
           return url
             ? convertUrlToUploadFile(url, img.id, null)
             : new Promise<null>((resolve) => resolve(null));
