@@ -20,7 +20,12 @@ interface Props {
   collapseLongText: boolean;
 }
 
-const Ideas = ({ projectId, phaseId, numberOfIdeas }: Props) => {
+const Ideas = ({
+  projectId,
+  phaseId,
+  numberOfIdeas,
+  collapseLongText,
+}: Props) => {
   const localize = useLocalize();
   const mostVotedIdeas = useMostVotedIdeas({
     projectId,
@@ -57,6 +62,7 @@ const Ideas = ({ projectId, phaseId, numberOfIdeas }: Props) => {
             upvotes={upvotes_count}
             downvotes={downvotes_count}
             comments={comments_count}
+            collapseLongText={collapseLongText}
           />
         )
       )}
