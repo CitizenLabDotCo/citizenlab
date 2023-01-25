@@ -165,9 +165,11 @@ const AdminProjectsProjectGeneral = () => {
         const nextProjectImagesPromises = remoteProjectImages.map(
           (projectImage) => {
             const url =
-              previewDevice === 'phone'
-                ? projectImage.attributes.versions.medium
-                : projectImage.attributes.versions.large;
+              // On the homepage, we use the large version when screen
+              // width > 1200px, so this shows a more realistic preview
+              previewDevice === 'desktop'
+                ? projectImage.attributes.versions.large
+                : projectImage.attributes.versions.medium;
             // to be tested
             if (url) {
               return convertUrlToUploadFile(url, projectImage.id, null);

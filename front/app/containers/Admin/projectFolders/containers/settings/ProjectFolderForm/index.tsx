@@ -134,9 +134,11 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
       if (mode === 'edit' && !isNilOrError(projectFolderImagesRemote)) {
         const imagePromises = projectFolderImagesRemote.data.map((img) => {
           const url =
-            previewDevice === 'phone'
-              ? img.attributes.versions.medium
-              : img.attributes.versions.large;
+            // On the homepage, we use the large version when screen
+            // width > 1200px, so this shows a more realistic preview
+            previewDevice === 'desktop'
+              ? img.attributes.versions.large
+              : img.attributes.versions.medium;
           return url
             ? convertUrlToUploadFile(url, img.id, null)
             : new Promise<null>((resolve) => resolve(null));
