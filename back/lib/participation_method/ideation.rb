@@ -173,7 +173,7 @@ module ParticipationMethod
           resource: custom_form,
           key: 'topic_ids',
           code: 'topic_ids',
-          input_type: 'multiselect',
+          input_type: 'topic_ids',
           title_multiloc: multiloc_service.i18n_to_multiloc(
             'custom_fields.ideas.topic_ids.title',
             locales: CL2_SUPPORTED_LOCALES
