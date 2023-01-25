@@ -67,6 +67,7 @@ const CLPageLayout = memo(
       useContext(FormContext);
     const topAnchorRef = useRef<HTMLInputElement>(null);
     const [currentStep, setCurrentStep] = useState<number>(0);
+    const [isLoading, setIsLoading] = useState(false);
     // We can cast types because the tester made sure we only get correct values
     const pageTypeElements = (uischema as PageCategorization)
       .elements as PageType[];
@@ -110,9 +111,10 @@ const CLPageLayout = memo(
       }
     };
 
-    const handleNextAndSubmit = () => {
+    const handleNextAndSubmit = async () => {
       if (showSubmit) {
-        onSubmit(getFilteredDataForUserPath(userPagePath, data));
+        setIsLoading(true);
+        await onSubmit(getFilteredDataForUserPath(userPagePath, data));
         return;
       }
 
@@ -132,6 +134,7 @@ const CLPageLayout = memo(
         setShowAllErrors(false);
         scrollToTop();
         setCurrentStep(currentStep + 1);
+        setIsLoading(false);
       } else {
         setShowAllErrors(true);
       }
@@ -211,6 +214,7 @@ const CLPageLayout = memo(
               }
               width="100%"
               boxShadow={defaultStyles.boxShadow}
+              processing={isLoading}
             >
               <FormattedMessage
                 {...(showSubmit ? submitText : messages.next)}
