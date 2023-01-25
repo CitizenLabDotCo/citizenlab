@@ -65,9 +65,7 @@ describe('Content builder toggle', () => {
 
   it('shows original description when content builder is enabled but there is no content yet', () => {
     cy.visit(`/admin/projects/${projectId}/description`);
-    cy.get('#e2e-toggle-enable-content-builder')
-      .find('input')
-      .click({ force: true });
+    cy.get('#e2e-toggle-enable-content-builder').click({ force: true });
     cy.visit(`/projects/${projectSlug}`);
     cy.contains('Original project description.').should('be.visible');
   });
@@ -95,9 +93,7 @@ describe('Content builder toggle', () => {
     cy.contains('Your form has been saved!').should('be.visible');
 
     cy.visit(`/admin/projects/${projectId}/description`);
-    cy.get('#e2e-toggle-enable-content-builder')
-      .find('input')
-      .click({ force: true });
+    cy.get('#e2e-toggle-enable-content-builder').click({ force: true });
 
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
 

@@ -1,10 +1,17 @@
 # Changelog
 
-## Next release
+## 2023-01-23 (2)
+
+### Fixed
+
+- [CL-2549] Reject all cookies when closing cookie banner
+
+## 2023-01-23
 
 ### Fixed
 
 - [CL-2648] Two-column layout image width on tablet is fixed.
+- [CL-171] Status per recipient of sent email campaigns is shown again.
 
 ## 2023-01-19
 

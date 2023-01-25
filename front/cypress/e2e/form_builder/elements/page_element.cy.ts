@@ -7,7 +7,11 @@ describe('Form builder page element', () => {
   let projectId: string;
   let projectSlug: string;
 
-  before(() => {
+  beforeEach(() => {
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+    }
+
     cy.apiCreateProject({
       type: 'continuous',
       title: projectTitle,
@@ -19,14 +23,8 @@ describe('Form builder page element', () => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
     });
-  });
 
-  beforeEach(() => {
     cy.setAdminLoginCookie();
-  });
-
-  after(() => {
-    cy.apiRemoveProject(projectId);
   });
 
   it('adds page element and tests settings', () => {
@@ -56,13 +54,22 @@ describe('Form builder page element', () => {
 
     // Go to the survey page
     cy.visit(`/projects/${projectSlug}/ideas/new`);
+
+    // Go to the next page
     cy.get('[data-cy="e2e-next-page"]').click();
+
+    // Go to the next page
+    cy.get('[data-cy="e2e-next-page"]').click();
+
+    // Save survey response
+    cy.get('[data-cy="e2e-submit-form"]').should('exist');
     cy.get('[data-cy="e2e-submit-form"]').click();
+
     // Check that we show a success message on submit
     cy.get('[data-cy="e2e-survey-success-message"]').should('exist');
   });
 
-  it.only('does not let the user delete the page if there is only one page', () => {
+  it('does not let the user delete the page if there is only one page', () => {
     cy.visit(`admin/projects/${projectId}/native-survey/edit`);
     cy.get('[data-cy="e2e-page"]').click();
     cy.get('#e2e-page-title-multiloc').type('Page title', { force: true });
