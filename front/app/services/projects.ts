@@ -29,7 +29,7 @@ export const CARD_IMAGE_ASPECT_RATIO = 2 / 1;
 export const getCardImageUrl = (
   imageVersions: ImageSizes,
   device: TDevice,
-  size: TProjectCardSize
+  size?: TProjectCardSize
 ) => {
   if (device === 'phone') {
     return imageVersions.medium;

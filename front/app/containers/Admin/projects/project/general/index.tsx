@@ -52,6 +52,7 @@ import {
   IProjectFormState,
   IProjectData,
   CARD_IMAGE_ASPECT_RATIO,
+  getCardImageUrl,
 } from 'services/projects';
 import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
 import { addProjectImage, deleteProjectImage } from 'services/projectImages';
@@ -164,13 +165,16 @@ const AdminProjectsProjectGeneral = () => {
       if (!isNilOrError(remoteProjectImages)) {
         const nextProjectImagesPromises = remoteProjectImages.map(
           (projectImage) => {
-            const url =
-              // On the homepage, we use the large version when screen
-              // width > 1200px, so this shows a more realistic preview
-              previewDevice === 'phone'
-                ? projectImage.attributes.versions.medium
-                : projectImage.attributes.versions.large;
-            // to be tested
+            const url = getCardImageUrl(
+              projectImage.attributes.versions,
+              previewDevice
+              // This is incomplete. To have the correct image version,
+              // We'd need the exact size of the project card as well,
+              // But we currently don't have that functionality in our
+              // preview yet, so we're not showing the small version ever in
+              // preview at the moment.
+            );
+
             if (url) {
               return convertUrlToUploadFile(url, projectImage.id, null);
             }
