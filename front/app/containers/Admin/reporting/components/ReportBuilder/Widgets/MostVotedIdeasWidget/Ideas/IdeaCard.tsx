@@ -43,7 +43,6 @@ interface Props {
 const IdeaText = styled.div`
   & {
     p {
-      break-inside: avoid;
       font-size: ${fontSizes.m};
       color: ${colors.primary};
       line-height: ${MEDIUM_LINE_HEIGHT}px;
