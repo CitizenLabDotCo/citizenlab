@@ -47,7 +47,7 @@ interface Props {
 
 // move this to homepage settings resource?
 export const homepageBannerLayoutHeights: {
-  [key in THomepageBannerLayout]: {
+  [key in THomepageBannerLayout | TCustomPageBannerLayout]: {
     [key in TPreviewDevice]: number;
   };
 } = {
