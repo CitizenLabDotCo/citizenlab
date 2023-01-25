@@ -71,7 +71,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: { en: 'Inserted field' },
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -89,7 +90,8 @@ resource 'Idea Custom Fields' do
             required: true,
             title_multiloc: { en: 'Updated field' },
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -149,7 +151,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: { en: 'Inserted field' },
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -246,7 +249,8 @@ resource 'Idea Custom Fields' do
             required: true,
             title_multiloc: { en: 'Updated field' },
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: an_instance_of(String),
           type: 'custom_field',
