@@ -117,7 +117,7 @@ sv:
         title: Författare
         description:
       topic_ids:
-        title: Topics
+        title: Ämnen
         description:
       location:
         title: Plats
@@ -146,7 +146,7 @@ sv:
         project:
           title: Vad är ditt projekt?
         issue:
-          title: Vad är ditt problem?
+          title: Vad är din kommentar?
         option:
           title: Vad är ditt alternativ?
       details:
@@ -208,3 +208,5 @@ sv:
     survey_end_page:
       title: 'Undersökningens slut'
       description: "Skicka in dina svar genom att klicka på Skicka undersökning nedan."
+  project_copy:
+    title_suffix: 'Kopiera'
