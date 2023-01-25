@@ -20,20 +20,24 @@ jest.mock('hooks/useHomepageSettings', () => {
   return jest.fn(() => mockHomepageSettings);
 });
 
+function testForHeadingsPresence() {
+  it('shows the headings correctly', () => {
+    expect(
+      screen.getByRole('heading', { name: 'Signed out header', level: 1 })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'Signed out subhead', level: 2 })
+    ).toBeInTheDocument();
+  });
+}
+
 describe('<SignedOutHeader />', () => {
   describe('full_width_banner_layout', () => {
     beforeEach(() => {
       render(<SignedOutHeader />);
     });
 
-    it('renders the headings correctly', () => {
-      expect(
-        screen.getByRole('heading', { name: 'Signed out header', level: 1 })
-      ).toBeInTheDocument();
-      expect(
-        screen.getByRole('heading', { name: 'Signed out subhead', level: 2 })
-      ).toBeInTheDocument();
-    });
+    testForHeadingsPresence();
 
     it('maintains the right styles', () => {
       expect(screen.getByTestId('full-width-banner-layout')).toHaveStyle({
@@ -53,14 +57,7 @@ describe('<SignedOutHeader />', () => {
       render(<SignedOutHeader />);
     });
 
-    it('renders two_column_layout', () => {
-      expect(
-        screen.getByRole('heading', { name: 'Signed out header', level: 1 })
-      ).toBeInTheDocument();
-      expect(
-        screen.getByRole('heading', { name: 'Signed out subhead', level: 2 })
-      ).toBeInTheDocument();
-    });
+    testForHeadingsPresence();
 
     it('maintains the right styles', () => {
       expect(screen.getByTestId('two-column-layout')).toHaveStyle({
@@ -82,14 +79,7 @@ describe('two_row_layout', () => {
     render(<SignedOutHeader />);
   });
 
-  it('renders two_row_layout', () => {
-    expect(
-      screen.getByRole('heading', { name: 'Signed out header', level: 1 })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', { name: 'Signed out subhead', level: 2 })
-    ).toBeInTheDocument();
-  });
+  testForHeadingsPresence();
 
   it('maintains the right styles', () => {
     expect(screen.getByTestId('two-row-layout')).toHaveStyle({
@@ -105,14 +95,7 @@ describe('fixed_ratio_layout', () => {
     render(<SignedOutHeader />);
   });
 
-  it('renders fixed_ratio_layout', () => {
-    expect(
-      screen.getByRole('heading', { name: 'Signed out header', level: 1 })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', { name: 'Signed out subhead', level: 2 })
-    ).toBeInTheDocument();
-  });
+  testForHeadingsPresence();
 
   it('maintains the right styles', () => {
     expect(
