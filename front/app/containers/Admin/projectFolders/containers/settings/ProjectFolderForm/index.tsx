@@ -96,7 +96,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             : new Promise<null>((resolve) => resolve(null))
         );
         const images = await Promise.all(imagePromises);
-        setFolderCard(images[0]);
+        setFolderCardImage(images[0]);
       }
     })();
   }, [mode, projectFolderImagesRemote]);
@@ -134,11 +134,13 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     'published' | 'draft' | 'archived'
   >('published');
   const [changedHeaderBg, setChangedHeaderBg] = useState(false);
-  const [folderCard, setFolderCard] = useState<UploadFile | null>(null);
+  const [folderCardImage, setFolderCardImage] = useState<UploadFile | null>(
+    null
+  );
   const [croppedFolderCardBase64, setCroppedFolderCardBase64] = useState<
     string | null
   >(null);
-  const [folderCardToRemove, setFolderCardToRemove] =
+  const [folderCardImageToRemove, setFolderCardImageToRemove] =
     useState<UploadFile | null>(null);
   const [projectFolderFiles, setProjectFolderFiles] = useState<UploadFile[]>(
     []
@@ -175,17 +177,17 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     setHeaderBgBase64(newImageBase64);
   }, []);
 
-  const handleFolderCardOnRemove = (imageToRemove: UploadFile) => {
+  const handleFolderCardImageOnRemove = (imageToRemove: UploadFile) => {
     setSubmitState('enabled');
-    setFolderCard(null);
+    setFolderCardImage(null);
     setPreviewDevice('phone');
     if (imageToRemove.remote && imageToRemove.id) {
-      setFolderCardToRemove(imageToRemove);
+      setFolderCardImageToRemove(imageToRemove);
     }
   };
 
-  const handleCroppedFolderCardOnRemove = () => {
-    folderCard && handleFolderCardOnRemove(folderCard);
+  const handleCroppedFolderCardImageOnRemove = () => {
+    folderCardImage && handleFolderCardImageOnRemove(folderCardImage);
   };
 
   const handleProjectFolderFileOnAdd = useCallback((fileToAdd: UploadFile) => {
@@ -267,20 +269,20 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               },
             });
             if (!isNilOrError(projectFolder)) {
-              const cardToAddPromise =
-                croppedFolderCardBase64 && folderCard && !folderCard.remote
-                  ? addProjectFolderImage(
-                      projectFolder.id,
-                      croppedFolderCardBase64
-                    )
-                  : null;
+              const cardImageToAddPromise = croppedFolderCardBase64
+                ? addProjectFolderImage(
+                    projectFolder.id,
+                    croppedFolderCardBase64
+                  )
+                : null;
+
               const filesToAddPromises = projectFolderFiles.map((file) =>
                 addProjectFolderFile(projectFolder.id, file.base64, file.name)
               );
 
-              (cardToAddPromise || filesToAddPromises) &&
+              (cardImageToAddPromise || filesToAddPromises) &&
                 (await Promise.all<any>([
-                  cardToAddPromise,
+                  cardImageToAddPromise,
                   ...filesToAddPromises,
                 ]));
               clHistory.push(`/admin/projects/folders/${projectFolder.id}`);
@@ -298,17 +300,15 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             shortDescriptionMultiloc &&
             !isNilOrError(projectFolder)
           ) {
-            const cardToAddPromise =
-              croppedFolderCardBase64 && folderCard && !folderCard.remote
-                ? addProjectFolderImage(
-                    projectFolder.id,
-                    croppedFolderCardBase64
-                  )
-                : null;
+            const cardToAddPromise = croppedFolderCardBase64
+              ? addProjectFolderImage(projectFolder.id, croppedFolderCardBase64)
+              : null;
             const cardToRemovePromises =
-              folderCardToRemove &&
-              folderCardToRemove.id &&
-              deleteProjectFolderImage(projectFolderId, folderCardToRemove.id);
+              folderCardImageToRemove?.id &&
+              deleteProjectFolderImage(
+                projectFolderId,
+                folderCardImageToRemove.id
+              );
 
             const filesToAddPromises = projectFolderFiles
               .filter((file) => !file.remote)
@@ -402,8 +402,8 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     return null;
   }
 
-  const projectFolderImagesShouldBeSaved = folderCard
-    ? !folderCard.remote
+  const folderCardImageShouldBeSaved = folderCardImage
+    ? !folderCardImage.remote
     : false;
 
   return (
@@ -520,18 +520,18 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             <FormattedMessage {...messages.projectFolderCardImageLabel} />
             <ImageInfoTooltip />
           </SubSectionTitle>
-          {projectFolderImagesShouldBeSaved ? (
+          {folderCardImageShouldBeSaved ? (
             <Box display="flex" flexDirection="column" gap="8px">
               <ImageCropperContainer
-                image={folderCard}
+                image={folderCardImage}
                 onComplete={getHandler(setCroppedFolderCardBase64)}
                 aspect={CARD_IMAGE_ASPECT_RATIO / 1}
-                onRemove={handleCroppedFolderCardOnRemove}
+                onRemove={handleCroppedFolderCardImageOnRemove}
               />
             </Box>
           ) : (
             <>
-              {folderCard && (
+              {folderCardImage && (
                 <Box mb="20px">
                   <SelectPreviewDevice
                     selectedPreviewDevice={previewDevice}
@@ -542,11 +542,11 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                 </Box>
               )}
               <ProjectFolderCardImageDropzone
-                images={folderCard && [folderCard]}
+                images={folderCardImage && [folderCardImage]}
                 onAddImage={getHandler((cards: UploadFile[]) =>
-                  setFolderCard(cards[0])
+                  setFolderCardImage(cards[0])
                 )}
-                onRemoveImage={handleFolderCardOnRemove}
+                onRemoveImage={handleFolderCardImageOnRemove}
                 previewDevice={previewDevice}
               />
             </>

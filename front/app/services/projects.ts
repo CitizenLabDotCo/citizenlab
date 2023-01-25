@@ -244,8 +244,8 @@ export interface IProjectFormState {
   projectAttributesDiff: IUpdatedProjectProperties;
   projectHeaderImage: UploadFile[] | null;
   presentationMode: 'map' | 'card';
-  projectCard: UploadFile | null;
-  projectCardToRemove: UploadFile | null;
+  projectCardImage: UploadFile | null;
+  projectCardImageToRemove: UploadFile | null;
   projectFiles: UploadFile[];
   projectFilesToRemove: UploadFile[];
   titleError: Multiloc | null;
