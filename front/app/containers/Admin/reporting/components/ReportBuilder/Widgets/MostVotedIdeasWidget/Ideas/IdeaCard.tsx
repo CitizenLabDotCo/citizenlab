@@ -18,6 +18,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
+import Gradient from './Gradient';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -35,30 +36,7 @@ interface Props {
   collapseLongText: boolean;
 }
 
-const OverflowContainer = styled.div<{ hideTextOverflow: boolean }>`
-  ${({ hideTextOverflow }) => {
-    if (!hideTextOverflow) return '';
-
-    return `
-      overflow: hidden;
-      height: calc(${MEDIUM_LINE_HEIGHT * 8}px);
-
-      &:after {
-        content: "";
-        text-align: right;
-        position: absolute;
-        bottom: ${MEDIUM_LINE_HEIGHT * 3}px;
-        right: 0;
-        width: 100%;
-        height: ${MEDIUM_LINE_HEIGHT * 2}px;
-        background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 100%);
-      }
-    `;
-  }}
-`;
-
 const IdeaText = styled.div`
-  margin-top: 8px;
   & {
     p {
       break-inside: avoid;
@@ -80,7 +58,7 @@ const IdeaCard = ({
   comments,
   collapseLongText,
 }: Props) => {
-  const overflowContainerRef = useRef(null);
+  const textContainerRef = useRef<HTMLDivElement | null>(null);
   const [textOverflow, setTextOverflow] = useState(false);
   const images = useIdeaImages(id);
   const image = isNilOrError(images)
@@ -88,22 +66,15 @@ const IdeaCard = ({
     : images[0]?.attributes?.versions?.medium;
 
   useEffect(() => {
-    if (collapseLongText === false) return;
-    setTextOverflow(false);
+    if (!textContainerRef.current) return;
+    setTextOverflow(checkTextOverflow(textContainerRef.current));
+  }, [textContainerRef.current]);
 
-    setTimeout(() => {
-      setTextOverflow(!!checkTextOverflow(overflowContainerRef));
-    }, 0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [overflowContainerRef, collapseLongText]);
+  const hideTextOverflow = collapseLongText && textOverflow;
 
   return (
-    <Box borderTop={BORDER} my="16px" pt="16px">
-      <PageBreakBox
-        display="flex"
-        flexDirection="row"
-        justifyContent="flex-start"
-      >
+    <PageBreakBox borderTop={BORDER} my="16px" pt="16px">
+      <Box display="flex" flexDirection="row" justifyContent="flex-start">
         <Box
           // hack to make backgrounds work in print view
           boxShadow={`inset 0 0 0 1000px ${colors.grey200}`}
@@ -134,24 +105,40 @@ const IdeaCard = ({
             {title}
           </Title>
         </Link>
-      </PageBreakBox>
-      <OverflowContainer
-        hideTextOverflow={textOverflow && collapseLongText}
-        ref={overflowContainerRef}
-      >
-        {image && (
-          <PageBreakBox
-            mt="8px"
-            display="flex"
-            flexDirection="row"
-            justifyContent="center"
+      </Box>
+      {image && (
+        <Box
+          mt="8px"
+          display="flex"
+          flexDirection="row"
+          justifyContent="center"
+        >
+          <Image src={image} alt="" width="50%" />
+        </Box>
+      )}
+      <Box width="100%">
+        <Box
+          height={hideTextOverflow ? `${MEDIUM_LINE_HEIGHT * 8}px` : undefined}
+          overflow={hideTextOverflow ? 'hidden' : undefined}
+        >
+          <Box
+            display={hideTextOverflow ? 'block' : 'none'}
+            position="absolute"
+            mt={`${MEDIUM_LINE_HEIGHT * 7}px`}
+            height={`${MEDIUM_LINE_HEIGHT}px`}
+            width={`${textContainerRef.current?.clientWidth ?? 0}px`}
           >
-            <Image src={image} alt="" width="50%" />
-          </PageBreakBox>
-        )}
-        <IdeaText dangerouslySetInnerHTML={{ __html: body }} />
-      </OverflowContainer>
-      <PageBreakBox>
+            <Gradient />
+            {/* <Box w="100%" h="100%" bgColor="red" /> */}
+          </Box>
+          <IdeaText
+            dangerouslySetInnerHTML={{ __html: body }}
+            ref={textContainerRef}
+          />
+        </Box>
+      </Box>
+      {hideTextOverflow && <Text>Show more</Text>}
+      <Box>
         <Text color="coolGrey500" fontSize="s">
           <Icon
             height="16px"
@@ -177,8 +164,8 @@ const IdeaCard = ({
           />
           {comments}
         </Text>
-      </PageBreakBox>
-    </Box>
+      </Box>
+    </PageBreakBox>
   );
 };
 
