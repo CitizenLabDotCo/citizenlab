@@ -16,6 +16,7 @@ import {
   THomepageBannerLayout,
 } from 'services/homepageSettings';
 import { UploadFile } from 'typings';
+import { FIXED_RATIO_LAYOUT_ASPECT_RATIO } from 'components/LandingPages/citizen/FixedRatioLayout';
 
 const HeaderImageOverlay = styled.div<{
   overlayColor: string;
@@ -135,8 +136,8 @@ const HeaderImageDropzone = ({
         // 450px for the sake of simplicity. Resulting in 1 / 2 aspect-ratio.
         // Average phone screen width is slightly narrower though.
         phone: 1 / 2,
-        tablet: 1 / 3,
-        desktop: 1 / 3,
+        tablet: 1 / FIXED_RATIO_LAYOUT_ASPECT_RATIO,
+        desktop: 1 / FIXED_RATIO_LAYOUT_ASPECT_RATIO,
       },
     };
 

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { media, colors, stylingConsts } from 'utils/styleUtils';
 
-const FIXED_RATIO_LAYOUT_ASPECT_RATIO = 3 / 1;
+export const FIXED_RATIO_LAYOUT_ASPECT_RATIO = 3 / 1;
 
 export const Container = styled.div`
   width: 100%;
