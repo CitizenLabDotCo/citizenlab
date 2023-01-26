@@ -55,7 +55,6 @@ const ChartWidgetSettings = () => {
   };
 
   const handleProjectFilter = ({ value }: IOption) => {
-    console.log(value);
     setProp((props) => {
       props.projectId = value;
     });

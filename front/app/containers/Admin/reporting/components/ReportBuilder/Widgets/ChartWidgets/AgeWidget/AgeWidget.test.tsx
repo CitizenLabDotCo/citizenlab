@@ -3,7 +3,7 @@ import AgeWidget from '.';
 import { render } from 'utils/testUtils/rtl';
 import useAgeSerie from 'containers/Admin/dashboard/users/Charts/AgeChart/useAgeSerie';
 
-let mockAgeSerie: any = null;
+const mockAgeSerie: any = null;
 jest.mock('containers/Admin/dashboard/users/Charts/AgeChart/useAgeSerie', () =>
   jest.fn(() => mockAgeSerie)
 );
