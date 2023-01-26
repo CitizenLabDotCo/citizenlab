@@ -1424,7 +1424,7 @@
   "app.containers.AdminPage.SettingsPage.fixedRatio": "Banner de proporció fixa",
   "app.containers.AdminPage.SettingsPage.fixedRatioBannerTooltip": "Aquest tipus de bàner funciona millor amb imatges que no s'han de retallar, com ara imatges amb text, un logotip o elements específics que són crucials per als vostres ciutadans. Aquest bàner es substitueix per un quadre sòlid en el color principal quan els usuaris inicien la sessió. Podeu definir aquest color a la configuració general. Podeu trobar més informació sobre l'ús recomanat de la imatge al nostre {link}.",
   "app.containers.AdminPage.SettingsPage.fixedRatioBannerTooltipLink": "Base de coneixements",
-  "app.containers.AdminPage.SettingsPage.fullWidthBannerLayout": "Banner d'amplada completa",
+  "app.containers.AdminPage.SettingsPage.fullWidthBannerLayout": "Ample total",
   "app.containers.AdminPage.SettingsPage.fullWidthBannerTooltip": "Aquest banner s'estén a tota l'amplada per obtenir un gran efecte visual. La imatge intentarà cobrir el màxim d'espai possible, fent que no sempre sigui visible en tot moment. Podeu combinar aquest banner amb una superposició de qualsevol color. Podeu trobar més informació sobre l'ús recomanat de la imatge al nostre {link}.",
   "app.containers.AdminPage.SettingsPage.fullWidthBannerTooltipLink": "Base de coneixements",
   "app.containers.AdminPage.SettingsPage.header": "Banner de la pàgina d'inici",
