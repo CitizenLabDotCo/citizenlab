@@ -23,6 +23,10 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
     generate_with_pages(fields)
   end
 
+  def visit_topic_ids(field)
+    default field
+  end
+
   def visit_page(field)
     {
       type: 'Page',
