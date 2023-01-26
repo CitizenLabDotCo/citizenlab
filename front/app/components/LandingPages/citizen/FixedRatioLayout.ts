@@ -1,9 +1,10 @@
-import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
+import {
+  homepageBannerLayoutHeights,
+  FIXED_RATIO_LAYOUT_ASPECT_RATIO,
+} from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
 import styled from 'styled-components';
 
 import { media, colors, stylingConsts } from 'utils/styleUtils';
-
-export const FIXED_RATIO_LAYOUT_ASPECT_RATIO = 3 / 1;
 
 export const Container = styled.div`
   width: 100%;

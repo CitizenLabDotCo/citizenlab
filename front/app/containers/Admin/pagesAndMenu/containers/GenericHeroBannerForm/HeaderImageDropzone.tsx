@@ -16,7 +16,6 @@ import {
   THomepageBannerLayout,
 } from 'services/homepageSettings';
 import { UploadFile } from 'typings';
-import { FIXED_RATIO_LAYOUT_ASPECT_RATIO } from 'components/LandingPages/citizen/FixedRatioLayout';
 
 const HeaderImageOverlay = styled.div<{
   overlayColor: string;
@@ -47,6 +46,7 @@ interface Props {
 }
 
 // move this to homepage settings resource?
+export const FIXED_RATIO_LAYOUT_ASPECT_RATIO = 3 / 1;
 export const homepageBannerLayoutHeights: {
   [key in THomepageBannerLayout | TCustomPageBannerLayout]: {
     [key in TPreviewDevice]: number;
