@@ -7,12 +7,9 @@ import {
   activeUsersByTimeStream,
   usersByTimeStream,
   commentsByTimeStream,
-  ideasByTimeCumulativeStream,
   commentsByTimeCumulativeStream,
   activeUsersByTimeXlsxEndpoint,
-  ideasByTimeCumulativeXlsxEndpoint,
   commentsByTimeCumulativeXlsxEndpoint,
-  ideasByTimeStream,
   usersByTimeXlsxEndpoint,
 } from 'services/stats';
 
@@ -32,6 +29,7 @@ import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
 import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
 import LineBarChartVotesByTime from './charts/LineBarChartVotesByTime';
+import PostByTimeCard from 'components/admin/GraphCards/PostsByTimeCard';
 
 // i18n
 import messages from '../messages';
@@ -200,15 +198,11 @@ const OverviewDashboard = ({ projects }: DataProps) => {
             endAtMoment={endAtMoment}
             resolution={resolution}
           />
-          <LineBarChart
-            graphTitle={formatMessage(messages.inputs)}
-            graphUnit="ideas"
-            graphUnitMessageKey="ideas"
-            xlsxEndpoint={ideasByTimeCumulativeXlsxEndpoint}
-            className="e2e-ideas-chart fullWidth"
-            lineStream={ideasByTimeCumulativeStream}
-            barStream={ideasByTimeStream}
-            {...legacyProps}
+          <PostByTimeCard
+            projectId={currentProjectFilter}
+            startAtMoment={startAtMoment}
+            endAtMoment={endAtMoment}
+            resolution={resolution}
           />
           <LineBarChart
             graphTitle={formatMessage(messages.commentsByTimeTitle)}
