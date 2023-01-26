@@ -9,3 +9,40 @@ nl:
       title: Standaardvraag
       option1: Eerste optie
       option2: Tweede optie
+  custom_fields:
+    ideas:
+      title:
+        title:
+        description:
+      body:
+        title: Beschrijving
+        description:
+      author_id:
+        title: Author
+        description:
+      topic_ids:
+        title: Tags
+        description:
+      location:
+        title: Location
+        description:
+      proposed_budget:
+        title: Proposed Budget
+        description:
+      budget:
+        title: Budget
+        description:
+      images:
+        title: Images
+        description:
+      attachments:
+        title: Attachments
+        description:
+      section1:
+        description:
+      section2:
+        title: Images and attachments
+        description:
+      section3:
+        title: Details
+        description:

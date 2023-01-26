@@ -81,6 +81,10 @@ module ParticipationMethod
       false
     end
 
+    def supports_budget?
+      false
+    end
+
     def supports_status?
       false
     end

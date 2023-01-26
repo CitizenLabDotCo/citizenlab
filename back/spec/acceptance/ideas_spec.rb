@@ -544,19 +544,17 @@ resource 'Ideas' do
       let(:idea_id) { idea.id }
 
       example_request 'Get the react-jsonschema-form json schema and ui schema for an ideation input' do
-        expect(status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:json_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
         expect(json_response[:ui_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
         built_in_field_keys = %i[
           title_multiloc
           body_multiloc
-          author_id
-          budget
-          topic_ids
-          location_description
           idea_images_attributes
           idea_files_attributes
+          topic_ids
+          location_description
         ]
         if CitizenLab.ee?
           %i[en fr-FR nl-NL].each do |locale|
@@ -577,17 +575,17 @@ resource 'Ideas' do
         let(:idea_id) { idea.id }
 
         example_request 'Get the jsonforms.io json schema and ui schema for an ideation input' do
-          expect(status).to eq 200
+          assert_status 200
           json_response = json_parse(response_body)
           expect(json_response[:json_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
           expect(json_response[:ui_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
           visible_built_in_field_keys = %i[
             title_multiloc
             body_multiloc
-            topic_ids
-            location_description
             idea_images_attributes
             idea_files_attributes
+            topic_ids
+            location_description
           ]
           if CitizenLab.ee?
             %i[en fr-FR nl-NL].each do |locale|

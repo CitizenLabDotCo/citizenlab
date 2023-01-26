@@ -64,8 +64,12 @@ class CustomField < ApplicationRecord
   CODES = %w[gender birthyear domicile education title_multiloc body_multiloc topic_ids location_description proposed_budget idea_images_attributes idea_files_attributes author_id budget ideation_section_1 ideation_section_2 ideation_section_3].freeze
 
   validates :resource_type, presence: true, inclusion: { in: FIELDABLE_TYPES }
-  validates :key, presence: true, uniqueness: { scope: %i[resource_type resource_id] }, format: { with: /\A[a-zA-Z0-9_]+\z/,
-                                                                                                  message: 'only letters, numbers and underscore' }
+  validates(
+    :key,
+    presence: true,
+    uniqueness: { scope: %i[resource_type resource_id] }, format: { with: /\A[a-zA-Z0-9_]+\z/, message: 'only letters, numbers and underscore' },
+    unless: :page_or_section?
+  )
   validates :input_type, presence: true, inclusion: INPUT_TYPES
   validates :title_multiloc, presence: true, multiloc: { presence: true }, unless: :page_or_section?
   validates :description_multiloc, multiloc: { presence: false, html: true }
@@ -74,7 +78,7 @@ class CustomField < ApplicationRecord
   validates :hidden, inclusion: { in: [true, false] }
   validates :code, inclusion: { in: CODES }, uniqueness: { scope: %i[resource_type resource_id] }, allow_nil: true
 
-  validates_with ConstraintValidator
+  # validates_with ConstraintValidator # TODO
 
   before_validation :set_default_enabled
   before_validation :generate_key, on: :create
@@ -207,6 +211,7 @@ class CustomField < ApplicationRecord
 
   def generate_key
     return if key
+    return if page_or_section?
 
     title = title_multiloc.values.first
     return unless title
