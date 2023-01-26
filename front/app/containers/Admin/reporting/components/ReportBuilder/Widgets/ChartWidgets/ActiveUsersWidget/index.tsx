@@ -1,13 +1,9 @@
 import React from 'react';
 
 // components
+import Card from '../../_shared/Card';
 import ActiveUsers from './ActiveUsersCard';
-import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 import ChartWidgetSettings from './ChartWidgetSettings';
-
-// styling
-import { stylingConsts } from 'utils/styleUtils';
-import { BORDER } from '../../constants';
 
 // utils
 import moment from 'moment';
@@ -31,19 +27,12 @@ const ActiveUsersWidget = ({
     endAtMoment: endAt ? moment(endAt) : null,
     projectId,
     resolution,
-    title,
   };
 
   return (
-    <PageBreakBox
-      minHeight="26px"
-      border={BORDER}
-      borderRadius={stylingConsts.borderRadius}
-      mt="4px"
-      mb="4px"
-    >
+    <Card title={title} pagebreak>
       <ActiveUsers {...analyticsChartProps} />
-    </PageBreakBox>
+    </Card>
   );
 };
 

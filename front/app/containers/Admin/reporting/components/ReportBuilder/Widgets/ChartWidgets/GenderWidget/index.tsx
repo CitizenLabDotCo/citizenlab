@@ -1,12 +1,8 @@
 import React from 'react';
 
 // components
+import Card from '../../_shared/Card';
 import GenderCard from './GenderCard';
-import PageBreakBox from '../../../../../../../../components/admin/ContentBuilder/Widgets/PageBreakBox';
-
-// styling
-import { stylingConsts } from 'utils/styleUtils';
-import { BORDER } from '../../constants';
 
 // messages
 import messages from '../messages';
@@ -24,20 +20,13 @@ const GenderWidget = ({
   endAt,
 }: ChartWidgetProps) => {
   return (
-    <PageBreakBox
-      minHeight="26px"
-      border={BORDER}
-      borderRadius={stylingConsts.borderRadius}
-      mt="4px"
-      mb="4px"
-    >
+    <Card title={title} pagebreak>
       <GenderCard
-        title={title}
         projectId={projectId}
         startAt={startAt}
         endAt={endAt ?? null}
       />
-    </PageBreakBox>
+    </Card>
   );
 };
 
