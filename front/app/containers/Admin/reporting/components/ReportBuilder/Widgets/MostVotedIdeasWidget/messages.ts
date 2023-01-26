@@ -29,4 +29,14 @@ export default defineMessages({
     id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.ideationPhases',
     defaultMessage: 'Ideation phases',
   },
+  noProjectSelected: {
+    id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.noProjectSelected',
+    defaultMessage:
+      'No project was selected. Please select a project to see the most voted ideas.',
+  },
+  noIdeasAvailable: {
+    id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.noIdeasAvailable',
+    defaultMessage:
+      'There are no questions available for this project or phase.',
+  },
 });

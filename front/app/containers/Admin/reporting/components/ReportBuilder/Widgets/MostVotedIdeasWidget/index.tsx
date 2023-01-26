@@ -1,13 +1,10 @@
 import React from 'react';
 
-// styling
-import { BORDER } from '../constants';
-import { stylingConsts } from 'utils/styleUtils';
-
 // components
-import { Box } from '@citizenlab/cl2-component-library';
-import Header from './Header';
+import Card from '../_shared/Card';
+import ProjectInfo from './ProjectInfo';
 import Ideas from './Ideas';
+import NoData from '../_shared/NoData';
 import Settings from './Settings';
 
 // i18n
@@ -24,22 +21,19 @@ const MostVotedIdeasWidget = ({
   collapseLongText,
 }: Props) => {
   return (
-    <Box
-      border={BORDER}
-      mt="4px"
-      mb="4px"
-      borderRadius={stylingConsts.borderRadius}
-    >
-      <Header title={title} projectId={projectId} phaseId={phaseId} />
-      {projectId && (
+    <Card title={title}>
+      <ProjectInfo projectId={projectId} phaseId={phaseId} />
+      {projectId ? (
         <Ideas
           projectId={projectId}
           phaseId={phaseId}
           numberOfIdeas={numberOfIdeas}
           collapseLongText={collapseLongText}
         />
+      ) : (
+        <NoData message={messages.noProjectSelected} />
       )}
-    </Box>
+    </Card>
   );
 };
 

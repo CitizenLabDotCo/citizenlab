@@ -6,9 +6,11 @@ import useMostVotedIdeas from 'containers/Admin/reporting/hooks/useMostVotedIdea
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import IdeaCard from './IdeaCard';
+import NoData from '../../_shared/NoData';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
+import messages from '../messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -33,7 +35,9 @@ const Ideas = ({
     numberOfIdeas,
   });
 
-  if (isNilOrError(mostVotedIdeas)) return null;
+  if (isNilOrError(mostVotedIdeas) || mostVotedIdeas.length === 0) {
+    return <NoData message={messages.noIdeasAvailable} />;
+  }
 
   return (
     <Box m="16px">

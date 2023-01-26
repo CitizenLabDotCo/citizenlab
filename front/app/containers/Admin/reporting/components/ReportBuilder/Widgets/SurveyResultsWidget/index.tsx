@@ -5,22 +5,15 @@ import { useNode } from '@craftjs/core';
 
 // styling
 import { colors, stylingConsts } from 'utils/styleUtils';
-import { BORDER } from '../constants';
 
 // components
-import {
-  Box,
-  Title,
-  Icon,
-  Input,
-  Text,
-} from '@citizenlab/cl2-component-library';
-import NoResults from './NoResults';
+import { Box, Icon, Input, Text } from '@citizenlab/cl2-component-library';
+import Card from '../_shared/Card';
 import SurveyResults from './SurveyResults';
+import NoData from '../_shared/NoData';
 import ProjectFilter from '../_shared/ProjectFilter';
 import PhaseFilter from '../_shared/PhaseFilter';
 import QuestionFilter from './QuestionFilter';
-import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 // messages
 import messages from './messages';
@@ -48,17 +41,7 @@ const SurveyResultsWidget = ({
   shownQuestions,
 }: Props) => {
   return (
-    <PageBreakBox
-      border={BORDER}
-      mt="4px"
-      mb="4px"
-      data-testid="survey-results-widget"
-    >
-      <Box>
-        <Title variant="h3" color="primary" m="16px" mb="8px">
-          {title}
-        </Title>
-      </Box>
+    <Card title={title} data-testid="survey-results-widget">
       {projectId ? (
         <SurveyResults
           projectId={projectId}
@@ -66,9 +49,9 @@ const SurveyResultsWidget = ({
           shownQuestions={shownQuestions}
         />
       ) : (
-        <NoResults />
+        <NoData message={messages.surveyNoResults} />
       )}
-    </PageBreakBox>
+    </Card>
   );
 };
 

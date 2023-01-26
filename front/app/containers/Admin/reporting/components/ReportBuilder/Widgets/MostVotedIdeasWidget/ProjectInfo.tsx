@@ -5,10 +5,10 @@ import useProject from 'hooks/useProject';
 import usePhase from 'hooks/usePhase';
 
 // components
-import { Text } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 
 // i18n
-import messages from '../messages';
+import messages from './messages';
 import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 
@@ -48,7 +48,7 @@ const ProjectInfo = ({ projectId, phaseId }: Props) => {
     : project.attributes.ideas_count;
 
   return (
-    <>
+    <Box ml="16px">
       <Text mt="4px" mb="4px" color="primary">
         {'| '}
         {projectTitle}
@@ -56,7 +56,7 @@ const ProjectInfo = ({ projectId, phaseId }: Props) => {
       <Text mt="4px" mb="4px" color="textSecondary" fontSize="s">
         {formatMessage(messages.totalIdeas, { numberOfIdeas: ideasCount })}
       </Text>
-    </>
+    </Box>
   );
 };
 
