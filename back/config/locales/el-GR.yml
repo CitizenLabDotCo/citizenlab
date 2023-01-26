@@ -208,3 +208,5 @@ el:
     survey_end_page:
       title: 'Survey end'
       description: "Υποβάλετε τις απαντήσεις σας επιλέγοντας \"Υποβολή έρευνας\" παρακάτω."
+  project_copy:
+    title_suffix: 'Αντιγραφή'

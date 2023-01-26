@@ -1,9 +1,9 @@
 import React from 'react';
-import { isNumber } from 'lodash-es';
+import useAuthUser from 'hooks/useAuthUser';
+import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
 // components
@@ -44,42 +44,46 @@ const NewNotificationsIndicator = styled.div`
 `;
 
 type Props = {
-  count?: number;
-  onToggleDropdown: () => void;
+  onClick: () => void;
   dropdownOpened: boolean;
 };
 
-const NotificationCount = ({
-  count,
-  dropdownOpened,
-  onToggleDropdown,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+const NotificationCount = ({ dropdownOpened, onClick }: Props) => {
+  const authUser = useAuthUser();
   const theme = useTheme();
+  const { formatMessage } = useIntl();
 
-  return (
-    <Container>
-      <IconButton
-        onClick={onToggleDropdown}
-        iconName="notification"
-        a11y_buttonActionMessage={formatMessage(
-          messages.a11y_notificationsLabel,
-          { count }
-        )}
-        iconColor={theme.navbarTextColor || colors.textSecondary}
-        iconColorOnHover={
-          theme.navbarTextColor
-            ? darken(0.2, theme.navbarTextColor)
-            : colors.textPrimary
-        }
-        ariaExpanded={dropdownOpened}
-        ariaControls="notifications-dropdown"
-      />
-      {isNumber(count) && count > 0 ? (
-        <NewNotificationsIndicator>{count}</NewNotificationsIndicator>
-      ) : null}
-    </Container>
-  );
+  if (!isNilOrError(authUser)) {
+    const unreadNotificationsCount = authUser.attributes.unread_notifications;
+
+    return (
+      <Container>
+        <IconButton
+          onClick={onClick}
+          iconName="notification"
+          a11y_buttonActionMessage={formatMessage(
+            messages.a11y_notificationsLabel,
+            { count: unreadNotificationsCount }
+          )}
+          iconColor={theme.navbarTextColor || colors.textSecondary}
+          iconColorOnHover={
+            theme.navbarTextColor
+              ? darken(0.2, theme.navbarTextColor)
+              : colors.textPrimary
+          }
+          ariaExpanded={dropdownOpened}
+          ariaControls="notifications-dropdown"
+        />
+        {unreadNotificationsCount > 0 ? (
+          <NewNotificationsIndicator>
+            {unreadNotificationsCount}
+          </NewNotificationsIndicator>
+        ) : null}
+      </Container>
+    );
+  }
+
+  return null;
 };
 
-export default injectIntl(NotificationCount);
+export default NotificationCount;
