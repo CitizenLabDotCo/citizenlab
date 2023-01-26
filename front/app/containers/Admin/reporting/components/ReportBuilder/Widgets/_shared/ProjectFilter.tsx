@@ -7,12 +7,10 @@ import ProjectFilter from 'containers/Admin/dashboard/components/filters/Project
 // typings
 import { IOption } from 'typings';
 
-type Props = {
+interface Props {
   projectId?: string;
-  phaseId?: string;
-  onPhaseFilter: (filter: IOption) => void;
   onProjectFilter: (filter: IOption) => void;
-};
+}
 
 const _ProjectFilter = ({ projectId, onProjectFilter }: Props) => {
   return (

@@ -168,8 +168,6 @@ const SurveyResultsWidgetSettings = () => {
 
       <ProjectFilter
         projectId={projectId}
-        phaseId={phaseId}
-        onPhaseFilter={handlePhaseFilter}
         onProjectFilter={handleProjectFilter}
       />
 
