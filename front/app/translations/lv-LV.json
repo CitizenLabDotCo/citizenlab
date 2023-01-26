@@ -66,7 +66,7 @@
   "app.components.ConfirmationModal.verifyAndContinue": "Pārbaudīt un turpināt",
   "app.components.ConfirmationModal.wrongEmail": "Nepareizs e-pasts?",
   "app.components.ConsentManager.Banner.accept": "Pieņemt",
-  "app.components.ConsentManager.Banner.ariaButtonClose": "Pieņemt politiku un aizvērt reklāmkarogu",
+  "app.components.ConsentManager.Banner.ariaButtonClose2": "Reject policy and close banner",
   "app.components.ConsentManager.Banner.close": "Aizvērt",
   "app.components.ConsentManager.Banner.mainText": "Šī platforma izmanto sīkfailus saskaņā ar mūsu {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Pārvaldīt",
