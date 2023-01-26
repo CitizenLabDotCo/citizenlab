@@ -14,7 +14,12 @@ const NoData = ({ message }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Text ml="16px" variant="bodyM" color="textSecondary">
+    <Text
+      ml="16px"
+      variant="bodyM"
+      color="textSecondary"
+      className="no-chart-data"
+    >
       {formatMessage(message)}
     </Text>
   );
