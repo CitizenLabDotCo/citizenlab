@@ -69,7 +69,7 @@ const ToolboxItem = ({
     <Tippy
       interactive={true}
       placement={'right'}
-      disabled={!disabled || isNilOrError(disabledTooltipMessage)}
+      disabled={!disabled || !disabledTooltipMessage}
       theme={'dark'}
       hideOnClick={false}
       content={

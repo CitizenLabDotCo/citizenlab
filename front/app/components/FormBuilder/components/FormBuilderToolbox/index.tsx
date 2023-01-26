@@ -126,7 +126,7 @@ const FormBuilderToolbox = ({
           >
             <FormattedMessage {...customToolBoxTitle} />
           </Title>
-          {!isInputFormBuilderEnabled && (
+          {!isInputFormBuilderEnabled && !builderConfig.alwaysShowCustomFields && (
             <IconTooltip
               ml="4px"
               mt="8px"
