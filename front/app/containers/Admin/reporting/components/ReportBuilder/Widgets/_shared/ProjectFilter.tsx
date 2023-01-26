@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 
 // hooks
 import useProjects from 'hooks/useProjects';
@@ -50,7 +50,7 @@ const generateProjectOptions = (
 
   return [
     {
-      value: undefined,
+      value: '',
       label: formatMessage(dashboardFilterMessages.allProjects),
     },
     ...projectOptions,
@@ -85,6 +85,17 @@ const ProjectFilter = ({
     );
   }, [projects, localize, formatMessage]);
 
+  const handleProjectFilter = useCallback(
+    (option: Option) => {
+      if (option.value === '') {
+        onProjectFilter({ value: undefined, label: option.label });
+      } else {
+        onProjectFilter(option);
+      }
+    },
+    [onProjectFilter]
+  );
+
   if (projectFilterOptions === null) return null;
 
   return (
@@ -92,7 +103,7 @@ const ProjectFilter = ({
       <StyledSelect
         id="projectFilter"
         label={formatMessage(dashboardFilterMessages.labelProjectFilter)}
-        onChange={onProjectFilter}
+        onChange={handleProjectFilter}
         value={projectId}
         options={projectFilterOptions}
       />
