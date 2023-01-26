@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
 
-// resources
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+// hooks
+import useProjects from 'hooks/useProjects';
 
 // i18n
 import useLocalize, { Localize } from 'hooks/useLocalize';
@@ -30,11 +30,7 @@ const StyledSelect = styled(Select)<{ padding?: string }>`
       : ''}
 `;
 
-interface DataProps {
-  projects: GetProjectsChildProps;
-}
-
-interface InputProps {
+interface Props {
   currentProjectFilter?: string | null;
   hideLabel?: boolean;
   placeholder?: string;
@@ -43,14 +39,12 @@ interface InputProps {
   onProjectFilter: (filter: IOption) => void;
 }
 
-interface Props extends DataProps, InputProps {}
-
 const generateProjectOptions = (
-  projectsList: IProjectData[],
+  projects: IProjectData[],
   localize: Localize,
   formatMessage: FormatMessage
 ): IOption[] => {
-  const projectOptions = projectsList.map((project) => ({
+  const projectOptions = projects.map((project) => ({
     value: project.id,
     label: localize(project.attributes.title_multiloc),
   }));
@@ -61,8 +55,13 @@ const generateProjectOptions = (
   ];
 };
 
+const PUBLICATION_STATUSES: PublicationStatus[] = [
+  'draft',
+  'published',
+  'archived',
+];
+
 const ProjectFilter = ({
-  projects: { projectsList },
   currentProjectFilter,
   hideLabel,
   placeholder,
@@ -71,14 +70,18 @@ const ProjectFilter = ({
 }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
+  const projects = useProjects({
+    publicationStatuses: PUBLICATION_STATUSES,
+    canModerate: true,
+  });
 
-  if (isNilOrError(projectsList)) return null;
+  const projectFilterOptions = useMemo(() => {
+    if (isNilOrError(projects)) return null;
 
-  const projectFilterOptions = generateProjectOptions(
-    projectsList,
-    localize,
-    formatMessage
-  );
+    return generateProjectOptions(projects, localize, formatMessage);
+  }, [projects, localize, formatMessage]);
+
+  if (projectFilterOptions === null) return null;
 
   return (
     <Box className="intercom-admin-project-filter">
@@ -97,17 +100,4 @@ const ProjectFilter = ({
   );
 };
 
-const publicationStatuses: PublicationStatus[] = [
-  'draft',
-  'published',
-  'archived',
-];
-
-export default (props: InputProps) => (
-  <GetProjects
-    publicationStatuses={publicationStatuses}
-    filterCanModerate={true}
-  >
-    {(projects) => <ProjectFilter projects={projects} {...props} />}
-  </GetProjects>
-);
+export default ProjectFilter;
