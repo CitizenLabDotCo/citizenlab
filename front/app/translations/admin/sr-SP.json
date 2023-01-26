@@ -1424,7 +1424,7 @@
   "app.containers.AdminPage.SettingsPage.fixedRatio": "Банер фиксних размера",
   "app.containers.AdminPage.SettingsPage.fixedRatioBannerTooltip": "Овај тип банера најбоље је применити за слике које се не изрезују, као што су слике са текстом, логотип или специфични елементи који су кључни за ваше грађане. Овај банер замењује се непрозирним пољем у основној боји када су корисници пријављени. Можете да поставите ову боју у општим поставкама. Више информација о препорученој употреби слике можете пронаћи на {link}.",
   "app.containers.AdminPage.SettingsPage.fixedRatioBannerTooltipLink": "база знања",
-  "app.containers.AdminPage.SettingsPage.fullWidthBannerLayout": "Натпис пуне ширине",
+  "app.containers.AdminPage.SettingsPage.fullWidthBannerLayout": "Full width",
   "app.containers.AdminPage.SettingsPage.fullWidthBannerTooltip": "Овај банер шири се пуном ширином за сјајан визуелни ефекат. Слика ће покушати да прекрије што је више места могуће, тако што ће учинити да не буде видљиво у сваком тренутку. Овај банер можете да комбинујете са прекривајућим елементом било које боје. Више информација о препорученој употреби слике можете пронаћи на {link}.",
   "app.containers.AdminPage.SettingsPage.fullWidthBannerTooltipLink": "база знања",
   "app.containers.AdminPage.SettingsPage.header": "Homepage banner",
