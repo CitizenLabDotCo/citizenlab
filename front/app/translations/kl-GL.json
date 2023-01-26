@@ -607,7 +607,7 @@
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "Verification is disabled for your platform, remove the verification rule or contact support.",
   "app.containers.App.appMetaDescription": "{orgName} -ip nittartakkakkut innuttaasunut peqataatitsivianut tikilluarit\nNajukkami suliniutit misissuataakkit oqallinnermullu peqataallutit!",
   "app.containers.App.loading": "Atuaaneq …",
-  "app.containers.App.metaTitle": "Innuttaasunik peqataatsinermut isaaffik uannga {orgName} | CitizenLab",
+  "app.containers.App.metaTitle": "Innuttaasunik peqataatsinermut isaaffik uannga {orgName} | CitizenLab",
   "app.containers.CampaignsConsentForm.adminCategory": "Aqutsisoq",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "Suussusermut tassunga e-mailit",
   "app.containers.CampaignsConsentForm.buttonSuccessLabel": "iluatsilluarpoq",

@@ -18,14 +18,16 @@ const TwoRowLayout = ({ homepageSettings }: Props) => {
   return (
     <Box data-testid="two-row-layout" width="100%" background="white">
       {headerImage && (
-        <HeaderImage
-          src={headerImage}
-          cover={true}
-          fadeIn={false}
-          isLazy={false}
-          placeholderBg="transparent"
-          alt=""
-        />
+        <Box data-testid="two-row-layout-header-image">
+          <HeaderImage
+            src={headerImage}
+            cover={true}
+            fadeIn={false}
+            isLazy={false}
+            placeholderBg="transparent"
+            alt=""
+          />
+        </Box>
       )}
       <ContentContainer mode="page">
         <Container>
