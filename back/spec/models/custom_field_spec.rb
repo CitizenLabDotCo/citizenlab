@@ -342,57 +342,6 @@ RSpec.describe CustomField, type: :model do
     end
   end
 
-  describe 'constraint validation' do
-    let(:form) { create :custom_form }
-
-    it 'validates if default fields are correct' do
-      multiloc_service = MultilocService.new
-      title = multiloc_service.i18n_to_multiloc(
-        'custom_fields.ideas.title.title',
-        locales: CL2_SUPPORTED_LOCALES
-      )
-      field = described_class.new(
-        resource: form,
-        input_type: 'text_multiloc',
-        code: 'title_multiloc',
-        key: 'title_multiloc',
-        title_multiloc: title,
-        required: true
-      )
-
-      expect(field.save).to be true
-    end
-
-    it 'returns errors if locked values do not match defaults' do
-      bad_title = { en: 'Bad value' }
-      field = described_class.new(
-        resource: form,
-        input_type: 'text_multiloc',
-        code: 'title_multiloc',
-        key: 'title_multiloc',
-        title_multiloc: bad_title, # locked to default value
-        required: false # locked to true
-      )
-
-      expect(field.save).to be false
-      expect(field.errors.errors.length).to be 2
-    end
-
-    it 'does not return errors if locked title of section 1 is changed' do
-      bad_title = { en: 'Bad value' }
-      field = described_class.new(
-        resource: form,
-        input_type: 'section',
-        code: 'ideation_section_1',
-        key: 'ideation_section_1',
-        title_multiloc: bad_title, # locked to default value
-        enabled: true # locked to true
-      )
-
-      expect(field.save).to be true
-    end
-  end
-
   describe 'title_multiloc behaviour for ideation section 1' do
     it 'returns the correct input term message regardless of what the field is set to' do
       resource = create :custom_form

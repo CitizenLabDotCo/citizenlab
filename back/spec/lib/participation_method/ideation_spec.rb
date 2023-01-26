@@ -148,7 +148,7 @@ RSpec.describe ParticipationMethod::Ideation do
 
   describe 'constraints' do
     it 'has constraints on built in fields to lock certain values from being changed' do
-      expect(participation_method.constraints.size).to be 7
+      expect(participation_method.constraints.size).to be 8
       expect(participation_method.constraints.keys).to match %i[
         ideation_section1
         title_multiloc
@@ -157,6 +157,7 @@ RSpec.describe ParticipationMethod::Ideation do
         idea_files_attributes
         topic_ids
         location_description
+        proposed_budget
       ]
     end
 

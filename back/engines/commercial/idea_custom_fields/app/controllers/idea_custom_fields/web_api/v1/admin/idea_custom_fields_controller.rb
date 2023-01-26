@@ -106,11 +106,18 @@ module IdeaCustomFields
         create_params['key'] = default_field.key
       end
       field = CustomField.new create_params.merge(resource: @custom_form)
-      SideFxCustomFieldService.new.before_create field, current_user
-      if field.save
-        page_temp_ids_to_ids_mapping[field_params[:temp_id]] = field.id if field_params[:temp_id]
-        SideFxCustomFieldService.new.after_create field, current_user
-        field
+
+      validate_create_constraints(field)
+      if field.errors.errors.empty?
+        SideFxCustomFieldService.new.before_create field, current_user
+        if field.save
+          page_temp_ids_to_ids_mapping[field_params[:temp_id]] = field.id if field_params[:temp_id]
+          SideFxCustomFieldService.new.after_create field, current_user
+          field
+        else
+          errors[index.to_s] = field.errors.details
+          false
+        end
       else
         errors[index.to_s] = field.errors.details
         false
@@ -118,15 +125,53 @@ module IdeaCustomFields
     end
 
     def update_field!(field, field_params, errors, index)
-      field.assign_attributes field_params
-      SideFxCustomFieldService.new.before_update field, current_user
-      if field.save
-        SideFxCustomFieldService.new.after_update field, current_user
-        field
+      validate_update_constraints(field, field_params)
+      if field.errors.errors.empty?
+        field.assign_attributes field_params
+        SideFxCustomFieldService.new.before_update field, current_user
+        if field.save
+          SideFxCustomFieldService.new.after_update field, current_user
+          field
+        else
+          errors[index.to_s] = field.errors.details
+          false
+        end
       else
         errors[index.to_s] = field.errors.details
         false
       end
+    end
+
+    def validate_update_constraints(field, field_params)
+      field_code = field.code ? field.code.to_sym : nil
+      constraints = @participation_method.constraints[field_code]
+      return unless constraints
+
+      constraints[:locks]&.each do |attribute, value|
+        if value == true && field_params[attribute] != field[attribute] && !is_section1_title?(field, attribute)
+          field.errors.add :constraints, "Cannot change #{attribute}. It is locked."
+        end
+      end
+    end
+
+    def validate_create_constraints(field)
+      field_code = field.code ? field.code.to_sym : nil
+      constraints = @participation_method.constraints[field_code]
+
+      return unless constraints
+
+      default_fields = @participation_method.default_fields field.resource.participation_context
+      default_field = default_fields.find { |f| f.code == field.code }
+
+      constraints[:locks]&.each do |attribute, value|
+        if value == true && field[attribute] != default_field[attribute] && !is_section1_title?(field, attribute)
+          field.errors.add :constraints, "Cannot change #{attribute} from default value. It is locked."
+        end
+      end
+    end
+
+    def is_section1_title?(field, attribute)
+      field.code == 'ideation_section1' && attribute == :title_multiloc
     end
 
     def delete_field!(field)
