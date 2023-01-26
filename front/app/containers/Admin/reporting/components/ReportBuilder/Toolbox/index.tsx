@@ -146,6 +146,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             id="e2e-most-voted-ideas-widget"
             component={
               <MostVotedIdeasWidget
+                title={formatMessage(MostVotedIdeasWidget.craft.custom.title)}
                 numberOfIdeas={5}
                 collapseLongText={false}
               />
