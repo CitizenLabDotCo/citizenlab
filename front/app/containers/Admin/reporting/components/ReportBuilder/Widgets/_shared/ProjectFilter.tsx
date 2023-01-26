@@ -89,7 +89,7 @@ const ProjectFilter = ({
       formatMessage,
       emptyValueMessage
     );
-  }, [projects, localize, formatMessage, emptyValueMessage]);
+  }, [projects, filter, localize, formatMessage, emptyValueMessage]);
 
   const handleProjectFilter = useCallback(
     (option: Option) => {
