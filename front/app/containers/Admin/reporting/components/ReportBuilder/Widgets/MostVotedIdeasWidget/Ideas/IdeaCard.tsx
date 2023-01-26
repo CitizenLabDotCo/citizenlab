@@ -41,13 +41,9 @@ interface Props {
 }
 
 const IdeaText = styled.div`
-  & {
-    p {
-      font-size: ${fontSizes.m};
-      color: ${colors.primary};
-      line-height: ${MEDIUM_LINE_HEIGHT}px;
-    }
-  }
+  font-size: ${fontSizes.m};
+  color: ${colors.primary};
+  line-height: ${MEDIUM_LINE_HEIGHT}px;
 `;
 
 const IdeaCard = ({
