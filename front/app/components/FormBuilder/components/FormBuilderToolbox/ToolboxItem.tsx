@@ -10,10 +10,10 @@ import { colors } from 'utils/styleUtils';
 
 // services
 import { ICustomFieldInputType } from 'services/formCustomFields';
-import { useIntl } from 'utils/cl-intl';
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 // i18n
-import messages from '../messages';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   label: string;
@@ -23,6 +23,7 @@ interface Props {
   fieldsToExclude?: ICustomFieldInputType[];
   inputType?: ICustomFieldInputType;
   disabled?: boolean;
+  disabledTooltipMessage?: MessageDescriptor;
 }
 
 const AddIcon = styled(Icon).attrs({ name: 'plus' })`
@@ -55,6 +56,7 @@ const ToolboxItem = ({
   fieldsToExclude,
   inputType,
   disabled,
+  disabledTooltipMessage,
   ...rest
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -66,13 +68,18 @@ const ToolboxItem = ({
   return (
     <Tippy
       interactive={true}
-      placement={'left'}
-      disabled={!disabled}
+      placement={'right'}
+      disabled={!disabled || isNilOrError(disabledTooltipMessage)}
       theme={'dark'}
+      hideOnClick={false}
       content={
-        <Text my="8px" color="white">
-          {formatMessage(messages.disabledFieldTooltip)}
-        </Text>
+        !isNilOrError(disabledTooltipMessage) && (
+          <Box style={{ cursor: 'default' }}>
+            <Text my="8px" color="white" fontSize="s">
+              {formatMessage(disabledTooltipMessage)}
+            </Text>
+          </Box>
+        )
       }
     >
       <Box

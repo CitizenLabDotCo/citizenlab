@@ -213,9 +213,14 @@ export default defineMessages({
     id: 'app.components.formBuilder.defaultField',
     defaultMessage: 'Default field',
   },
-  disabledFieldTooltip: {
-    id: 'app.components.formBuilder.disabledFieldTooltip',
+  disabledBuiltInFieldTooltip: {
+    id: 'app.components.formBuilder.disabledBuiltInFieldTooltip',
     defaultMessage:
       'This has already been added in the form. Default content may only be used once.',
+  },
+  disabledCustomFieldsTooltip: {
+    id: 'app.components.formBuilder.disabledCustomFieldsTooltip',
+    defaultMessage:
+      'Adding custom content is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.',
   },
 });

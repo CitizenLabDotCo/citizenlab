@@ -8,7 +8,12 @@ import messages from '../messages';
 
 // components
 import ToolboxItem from './ToolboxItem';
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  IconTooltip,
+  Text,
+  Title,
+} from '@citizenlab/cl2-component-library';
 import BuiltInFields from './BuiltInFields';
 
 // styles
@@ -28,6 +33,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { generateTempId } from '../FormBuilderSettings/utils';
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
 import { DraggableElement } from './utils';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 interface FormBuilderToolboxProps {
   onAddField: (field: IFlatCreateCustomField) => void;
@@ -43,7 +49,12 @@ const FormBuilderToolbox = ({
   builderConfig,
   move,
 }: FormBuilderToolboxProps & WrappedComponentProps) => {
+  const isInputFormBuilderEnabled = useFeatureFlag({
+    name: 'input_form_builder',
+  });
+
   const locale = useLocale();
+
   const customToolBoxTitle = get(
     builderConfig,
     'toolboxTitle',
@@ -97,30 +108,44 @@ const FormBuilderToolbox = ({
       pb="80px"
     >
       <Box overflowY="auto" w="100%" display="inline">
-        <BuiltInFields isEditingDisabled={isEditingDisabled} move={move} />
-        <Title
-          fontWeight="normal"
-          mb="4px"
-          mt="24px"
-          ml="16px"
-          variant="h6"
-          as="h3"
-          color="textSecondary"
-          style={{ textTransform: 'uppercase' }}
-        >
-          <FormattedMessage {...customToolBoxTitle} />
-        </Title>
+        <BuiltInFields
+          addField={addField}
+          builderConfig={builderConfig}
+          isEditingDisabled={isEditingDisabled}
+          move={move}
+        />
+        <Box display="flex">
+          <Title
+            fontWeight="normal"
+            mb="4px"
+            ml="16px"
+            variant="h6"
+            as="h3"
+            color="textSecondary"
+            style={{ textTransform: 'uppercase' }}
+          >
+            <FormattedMessage {...customToolBoxTitle} />
+          </Title>
+          {!isInputFormBuilderEnabled && (
+            <IconTooltip
+              ml="4px"
+              mt="8px"
+              icon="info-outline"
+              iconColor={colors.coolGrey300}
+              py="0px"
+              content={
+                <Box>
+                  <Text my="4px" color="white" fontSize="s">
+                    {formatMessage(messages.disabledCustomFieldsTooltip)}
+                  </Text>
+                </Box>
+              }
+            />
+          )}
+        </Box>
 
         <DraggableElement>
-          {builderConfig.groupingType === 'section' ? (
-            <ToolboxItem
-              icon="section"
-              label={formatMessage(messages.section)}
-              onClick={() => addField('section')}
-              fieldsToExclude={builderConfig.toolboxFieldsToExclude}
-              inputType="section"
-            />
-          ) : (
+          {builderConfig.groupingType === 'page' && (
             <ToolboxItem
               icon="page"
               label={formatMessage(messages.page)}
@@ -137,6 +162,10 @@ const FormBuilderToolbox = ({
             data-cy="e2e-short-answer"
             fieldsToExclude={builderConfig.toolboxFieldsToExclude}
             inputType="text"
+            disabled={
+              !isInputFormBuilderEnabled &&
+              !builderConfig.alwaysShowCustomFields
+            }
           />
           <ToolboxItem
             icon="survey-long-answer-2"
@@ -145,6 +174,10 @@ const FormBuilderToolbox = ({
             data-cy="e2e-long-answer"
             fieldsToExclude={builderConfig.toolboxFieldsToExclude}
             inputType="multiline_text"
+            disabled={
+              !isInputFormBuilderEnabled &&
+              !builderConfig.alwaysShowCustomFields
+            }
           />
           <ToolboxItem
             icon="survey-single-choice"
@@ -153,6 +186,10 @@ const FormBuilderToolbox = ({
             data-cy="e2e-single-choice"
             fieldsToExclude={builderConfig.toolboxFieldsToExclude}
             inputType="select"
+            disabled={
+              !isInputFormBuilderEnabled &&
+              !builderConfig.alwaysShowCustomFields
+            }
           />
           <ToolboxItem
             icon="survey-multiple-choice-2"
@@ -161,6 +198,10 @@ const FormBuilderToolbox = ({
             data-cy="e2e-multiple-choice"
             fieldsToExclude={builderConfig.toolboxFieldsToExclude}
             inputType="multiselect"
+            disabled={
+              !isInputFormBuilderEnabled &&
+              !builderConfig.alwaysShowCustomFields
+            }
           />
           <ToolboxItem
             icon="survey-linear-scale"
@@ -169,6 +210,10 @@ const FormBuilderToolbox = ({
             data-cy="e2e-linear-scale"
             fieldsToExclude={builderConfig.toolboxFieldsToExclude}
             inputType="linear_scale"
+            disabled={
+              !isInputFormBuilderEnabled &&
+              !builderConfig.alwaysShowCustomFields
+            }
           />
           <ToolboxItem
             icon="survey-number-field"
@@ -177,6 +222,10 @@ const FormBuilderToolbox = ({
             data-cy="e2e-number-field"
             fieldsToExclude={builderConfig.toolboxFieldsToExclude}
             inputType="number"
+            disabled={
+              !isInputFormBuilderEnabled &&
+              !builderConfig.alwaysShowCustomFields
+            }
           />
           <ToolboxItem
             icon="upload-file"
@@ -185,6 +234,10 @@ const FormBuilderToolbox = ({
             data-cy="e2e-file-upload-field"
             fieldsToExclude={builderConfig.toolboxFieldsToExclude}
             inputType="file_upload"
+            disabled={
+              !isInputFormBuilderEnabled &&
+              !builderConfig.alwaysShowCustomFields
+            }
           />
         </DraggableElement>
       </Box>

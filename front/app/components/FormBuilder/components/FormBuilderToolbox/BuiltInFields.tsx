@@ -11,21 +11,32 @@ import ToolboxItem from './ToolboxItem';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 
 // types
-import { IFlatCustomField } from 'services/formCustomFields';
+import {
+  ICustomFieldInputType,
+  IFlatCustomField,
+} from 'services/formCustomFields';
 
 // utils
-import { builtInFieldKeys, BuiltInKeyType } from 'components/FormBuilder/utils';
+import {
+  builtInFieldKeys,
+  BuiltInKeyType,
+  FormBuilderConfig,
+} from 'components/FormBuilder/utils';
 import { DraggableElement } from './utils';
 
 interface BuiltInFieldsProps {
   isEditingDisabled: boolean;
   move: (indexA: number, indexB: number) => void;
+  addField: (inputType: ICustomFieldInputType) => void;
+  builderConfig: FormBuilderConfig;
 }
 
 const BuiltInFields = ({
   intl: { formatMessage },
   isEditingDisabled,
   move,
+  addField,
+  builderConfig,
 }: BuiltInFieldsProps & WrappedComponentProps) => {
   const { watch, trigger, setValue } = useFormContext();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
@@ -68,34 +79,39 @@ const BuiltInFields = ({
       </Title>
       <DraggableElement>
         <ToolboxItem
+          icon="section"
+          label={formatMessage(messages.section)}
+          onClick={() => addField('section')}
+          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          inputType="section"
+        />
+        <ToolboxItem
           icon="money-bag"
           label={formatMessage(messages.proposedBudget)}
           onClick={() => enableField('proposed_budget')}
           disabled={!enabledBuiltInFieldKeys.includes('proposed_budget')}
+          disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
         />
-      </DraggableElement>
-      <DraggableElement>
         <ToolboxItem
           icon="upload-file"
           label={formatMessage(messages.fileUpload)}
           onClick={() => enableField('idea_files_attributes')}
           disabled={!enabledBuiltInFieldKeys.includes('idea_files_attributes')}
+          disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
         />
-      </DraggableElement>
-      <DraggableElement>
         <ToolboxItem
           icon="location-simple"
           label={formatMessage(messages.locationDescription)}
           onClick={() => enableField('location_description')}
           disabled={!enabledBuiltInFieldKeys.includes('location_description')}
+          disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
         />
-      </DraggableElement>
-      <DraggableElement>
         <ToolboxItem
           icon="label"
           label={formatMessage(messages.tags)}
           onClick={() => enableField('topic_ids')}
           disabled={!enabledBuiltInFieldKeys.includes('topic_ids')}
+          disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
         />
       </DraggableElement>
     </Box>
