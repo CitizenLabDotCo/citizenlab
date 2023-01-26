@@ -1424,7 +1424,7 @@
   "app.containers.AdminPage.SettingsPage.fixedRatio": "بانر النسبة الثابتة",
   "app.containers.AdminPage.SettingsPage.fixedRatioBannerTooltip": "يعمل البانر من هذا النوع على أكمل وجه مع الصور التي ينبغي عدم اقتصاصها: كالصور المصحوبة بنص أو شعار أو عناصر محددة تحظى بأهمية بالغة لمواطنيك. وبدلاً من هذا البانر، يتم استخدام مربع بلون خالص من الألوان الأساسية عندما يكون المستخدمون مسجَّلي الدخول. يمكنك تعيين هذا اللون في الإعدادات العامة. يمكن العثور على مزيد من المعلومات حول الاستخدام الموصى به للصور عبر {link}.",
   "app.containers.AdminPage.SettingsPage.fixedRatioBannerTooltipLink": "قاعدة المعارف",
-  "app.containers.AdminPage.SettingsPage.fullWidthBannerLayout": "بانر بالعرض الكامل",
+  "app.containers.AdminPage.SettingsPage.fullWidthBannerLayout": "العرض الكامل",
   "app.containers.AdminPage.SettingsPage.fullWidthBannerTooltip": "يتمدد هذا البانر فوق العرض الكامل لمؤثر مرئي رائع. ستحاول الصورة تغطية أكبر مساحة ممكنة؛ لتصبح غير مرئية دائمًا في جميع الأوقات. يمكنك الجمع بين هذا البانر وتداخل أي لون. يمكن العثور على مزيد من المعلومات حول الاستخدام الموصى به للصور عبر {link}.",
   "app.containers.AdminPage.SettingsPage.fullWidthBannerTooltipLink": "قاعدة المعارف",
   "app.containers.AdminPage.SettingsPage.header": "لافتة الصفحة الرئيسية",
