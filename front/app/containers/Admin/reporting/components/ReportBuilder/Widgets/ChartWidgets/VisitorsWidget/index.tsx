@@ -13,7 +13,7 @@ import moment from 'moment';
 
 // settings
 import messages from '../messages';
-import ChartWidgetSettings from '../ChartWidgetSettings';
+import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
 
 // types
 import { IResolution } from 'components/admin/ResolutionControl';

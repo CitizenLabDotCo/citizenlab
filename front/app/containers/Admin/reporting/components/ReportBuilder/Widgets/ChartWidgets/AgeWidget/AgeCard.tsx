@@ -6,7 +6,7 @@ import useAgeSerie from 'containers/Admin/dashboard/users/Charts/AgeChart/useAge
 // components
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import BarChart from 'components/admin/Graphs/BarChart';
-import NoChartData from '../NoChartData';
+import NoChartData from '../_shared/NoChartData';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

@@ -5,7 +5,7 @@ import { colors, stylingConsts } from 'utils/styleUtils';
 
 // components
 import { Box, Text, Icon } from '@citizenlab/cl2-component-library';
-import ChartWidgetSettings from '../ChartWidgetSettings';
+import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';

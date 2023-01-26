@@ -7,7 +7,7 @@ import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import { useIntl } from 'utils/cl-intl';
 
 // messages
-import messages from './messages';
+import messages from '../messages';
 
 type NoChartProps = {
   title: string | undefined;

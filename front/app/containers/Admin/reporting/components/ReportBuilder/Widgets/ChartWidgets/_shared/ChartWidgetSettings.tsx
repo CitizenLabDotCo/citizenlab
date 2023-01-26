@@ -3,7 +3,7 @@ import React from 'react';
 // components
 import { Box, Input, Text } from '@citizenlab/cl2-component-library';
 import DateRangePicker from 'components/admin/DateRangePicker';
-import ProjectFilter from '../_shared/ProjectFilter';
+import ProjectFilter from '../../_shared/ProjectFilter';
 
 // hooks
 import { useIntl } from 'utils/cl-intl';
@@ -13,7 +13,7 @@ import { useNode } from '@craftjs/core';
 import moment, { Moment } from 'moment';
 
 // messages
-import messages from './messages';
+import messages from '../messages';
 
 // typings
 import { IOption } from 'typings';

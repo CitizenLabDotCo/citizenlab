@@ -7,7 +7,7 @@ import useActiveUsers from 'components/admin/GraphCards/ActiveUsersCard/useActiv
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import Chart from 'components/admin/GraphCards/ActiveUsersCard/Chart';
 import Statistic from 'components/admin/Graphs/Statistic';
-import NoChartData from '../NoChartData';
+import NoChartData from '../_shared/NoChartData';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';

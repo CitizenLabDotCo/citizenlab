@@ -7,7 +7,7 @@ import useNarrow from 'containers/Admin/reporting/hooks/useNarrow';
 // components
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import Chart from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/Chart';
-import NoChartData from '../NoChartData';
+import NoChartData from '../_shared/NoChartData';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
