@@ -142,17 +142,17 @@ tr:
         question:
           title: Sorunuz nedir ?
         contribution:
-          title: Katkınız nedir ?
+          title: Katkınız nedir?
         project:
           title: Projeniz nedir ?
         issue:
-          title: Sorununuz nedir?
+          title: Yorumunuz nedir?
         option:
           title: Seçeneğiniz nedir ?
       details:
         title: Ayrıntılar
       attachements:
-        title: Görseller ve Ekler
+        title: Görseller ve ekler
       extra:
         title: Diğer bilgiler
   custom_field_options:
