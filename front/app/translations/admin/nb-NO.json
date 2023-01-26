@@ -1424,7 +1424,7 @@
   "app.containers.AdminPage.SettingsPage.fixedRatio": "Banner med fast størrelsesforhold",
   "app.containers.AdminPage.SettingsPage.fixedRatioBannerTooltip": "Denne bannertypen fungerer best med bilder som ikke skal beskjæres, som bilder med tekst, en logo eller bestemte elementer som er viktige for innbyggerne. Dette banneret erstattes med en helfarget boks i primærfargen når brukere er logget på. Du kan angi denne fargen i de generelle innstillingene. Mer informasjon om anbefalt bildebruk finner du i {link}.",
   "app.containers.AdminPage.SettingsPage.fixedRatioBannerTooltipLink": "kunnskapsbasen",
-  "app.containers.AdminPage.SettingsPage.fullWidthBannerLayout": "Banner i full bredde",
+  "app.containers.AdminPage.SettingsPage.fullWidthBannerLayout": "Fullbredde",
   "app.containers.AdminPage.SettingsPage.fullWidthBannerTooltip": "Dette banneret strekker seg over hele bredden for en flott visuell effekt. Bildet vil dekke så mye plass som mulig, og vil derfor ikke alltid være synlig til enhver tid. Du kan kombinere dette banneret med et fargeoverlegg. Mer informasjon om anbefalt bildebruk finner du i {link}.",
   "app.containers.AdminPage.SettingsPage.fullWidthBannerTooltipLink": "kunnskapsbasen",
   "app.containers.AdminPage.SettingsPage.header": "Banner på startsiden",
