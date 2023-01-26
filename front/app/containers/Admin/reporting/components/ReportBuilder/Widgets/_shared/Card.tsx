@@ -32,8 +32,8 @@ const Container = ({ pagebreak, children, ...rest }: ContainerProps) => {
   );
 };
 
-const Card = ({ pagebreak, title, children }: Props) => (
-  <Container pagebreak={pagebreak}>
+const Card = ({ title, children, ...rest }: Props) => (
+  <Container {...rest}>
     <Box>
       <Title variant="h3" color="primary" m="16px" mb="8px">
         {title}
