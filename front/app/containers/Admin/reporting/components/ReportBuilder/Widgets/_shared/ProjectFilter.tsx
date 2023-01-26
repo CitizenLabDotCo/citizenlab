@@ -11,7 +11,7 @@ import { Select, Box } from '@citizenlab/cl2-component-library';
 
 // i18n
 import useLocalize, { Localize } from 'hooks/useLocalize';
-import { useIntl } from 'utils/cl-intl';
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import dashboardFilterMessages from 'containers/Admin/dashboard/components/filters/messages';
 
 // utils
@@ -29,6 +29,7 @@ interface Option {
 interface Props {
   projectId?: string;
   filter?: (project: IProjectData) => boolean;
+  emptyValueMessage?: MessageDescriptor;
   onProjectFilter: (filter: Option) => void;
 }
 
@@ -41,7 +42,8 @@ const StyledSelect = styled(Select)`
 const generateProjectOptions = (
   projects: IProjectData[],
   localize: Localize,
-  formatMessage: FormatMessage
+  formatMessage: FormatMessage,
+  emptyValueMessage?: MessageDescriptor
 ): IOption[] => {
   const projectOptions = projects.map((project) => ({
     value: project.id,
@@ -51,7 +53,9 @@ const generateProjectOptions = (
   return [
     {
       value: '',
-      label: formatMessage(dashboardFilterMessages.allProjects),
+      label: formatMessage(
+        emptyValueMessage ?? dashboardFilterMessages.allProjects
+      ),
     },
     ...projectOptions,
   ];
@@ -66,6 +70,7 @@ const PUBLICATION_STATUSES: PublicationStatus[] = [
 const ProjectFilter = ({
   projectId,
   filter = () => true,
+  emptyValueMessage,
   onProjectFilter,
 }: Props) => {
   const localize = useLocalize();
@@ -81,7 +86,8 @@ const ProjectFilter = ({
     return generateProjectOptions(
       projects.filter(filter),
       localize,
-      formatMessage
+      formatMessage,
+      emptyValueMessage
     );
   }, [projects, localize, formatMessage]);
 

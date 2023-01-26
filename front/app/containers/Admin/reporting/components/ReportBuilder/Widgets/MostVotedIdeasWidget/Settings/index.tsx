@@ -12,6 +12,7 @@ import CollapseLongTextToggle from './CollapseLongTextToggle';
 
 // i18n
 import messages from '../messages';
+import widgetMessages from '../../messages';
 import { useIntl } from 'utils/cl-intl';
 
 // typings
@@ -101,6 +102,7 @@ const Settings = () => {
       <ProjectFilter
         projectId={projectId}
         filter={isContinuousIdeationOrTimelineProject}
+        emptyValueMessage={widgetMessages.noProject}
         onProjectFilter={handleProjectFilter}
       />
 

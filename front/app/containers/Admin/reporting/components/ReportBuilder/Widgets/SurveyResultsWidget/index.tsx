@@ -24,6 +24,7 @@ import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 // messages
 import messages from './messages';
+import widgetMessages from '../messages';
 import formBuilderMessages from 'containers/Admin/formBuilder/components/messages';
 
 // types
@@ -174,6 +175,7 @@ const SurveyResultsWidgetSettings = () => {
       <ProjectFilter
         projectId={projectId}
         filter={isContinuousSurveyOrTimelineProject}
+        emptyValueMessage={widgetMessages.noProject}
         onProjectFilter={handleProjectFilter}
       />
 
