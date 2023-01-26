@@ -1421,7 +1421,7 @@
   "app.containers.AdminPage.SettingsPage.fieldTopicTitle": "Name der Kategorie",
   "app.containers.AdminPage.SettingsPage.fieldTopicTitleError": "Geben Sie einen Themen-Namen für alle Sprachen an",
   "app.containers.AdminPage.SettingsPage.fieldTopicTitleTooltip": "Der Name, den Sie für jedes Thema wählen, wird für die Benutzer der Plattform sichtbar sein",
-  "app.containers.AdminPage.SettingsPage.fixedRatio": "Festes Seitenverhältnis",
+  "app.containers.AdminPage.SettingsPage.fixedRatio": "Festes Verhältnis",
   "app.containers.AdminPage.SettingsPage.fixedRatioBannerTooltip": "Dieser Bannertyp eignet sich am besten für Bilder, die nicht beschnitten werden sollen, wie z. B. Bilder mit Text oder ein Log. Dieser Banner wird durch einen einfarbigen Kasten in der Grundfarbe ersetzt, wenn NutzerInnen angemeldet sind. Sie können die Farbe in den allgemeinen Einstellungen festlegen. Weitere Informationen über die empfohlene Verwendung von Bildern finden Sie in unserer {link}.",
   "app.containers.AdminPage.SettingsPage.fixedRatioBannerTooltipLink": "Wissensdatenbank",
   "app.containers.AdminPage.SettingsPage.fullWidthBannerLayout": "Volle Breite",
