@@ -13,7 +13,6 @@ files:
       - kl
       - it
       - lb
-      - ar-MA
       - ro
       - sr
   - source: /back/config/locales/en.yml
@@ -45,7 +44,6 @@ files:
       - kl
       - it
       - lb
-      - ar-MA
       - ro
       - sr
   - source: /back/engines/commercial/flag_inappropriate_content/config/locales/en.yml
@@ -57,6 +55,5 @@ files:
       - kl
       - it
       - lb
-      - ar-MA
       - ro
       - sr
