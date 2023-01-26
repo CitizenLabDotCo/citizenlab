@@ -52,6 +52,7 @@ const ProjectInfo = ({ projectId, phaseId }: Props) => {
       <Text mt="4px" mb="4px" color="primary">
         {'| '}
         {projectTitle}
+        {hasPhase ? ` (${localize(phase.attributes.title_multiloc)})` : ''}
       </Text>
       <Text mt="4px" mb="4px" color="textSecondary" fontSize="s">
         {formatMessage(messages.totalIdeas, { numberOfIdeas: ideasCount })}
