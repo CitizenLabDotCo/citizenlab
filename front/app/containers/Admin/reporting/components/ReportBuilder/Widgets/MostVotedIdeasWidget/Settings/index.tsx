@@ -17,6 +17,11 @@ import { useIntl } from 'utils/cl-intl';
 // typings
 import { Props } from '../typings';
 import { IOption } from 'typings';
+import { IProjectData } from 'services/projects';
+
+const isContinuousIdeationOrTimelineProject = ({ attributes }: IProjectData) =>
+  attributes.process_type === 'timeline' ||
+  attributes.participation_method === 'ideation';
 
 const Settings = () => {
   const { formatMessage } = useIntl();
@@ -95,6 +100,7 @@ const Settings = () => {
 
       <ProjectFilter
         projectId={projectId}
+        filter={isContinuousIdeationOrTimelineProject}
         onProjectFilter={handleProjectFilter}
       />
 

@@ -31,6 +31,7 @@ import { IOption } from 'typings';
 
 // utils
 import { useIntl } from 'utils/cl-intl';
+import { IProjectData } from 'services/projects';
 
 type Props = {
   title: string | undefined;
@@ -69,6 +70,10 @@ const SurveyResultsWidget = ({
     </PageBreakBox>
   );
 };
+
+const isContinuousSurveyOrTimelineProject = ({ attributes }: IProjectData) =>
+  attributes.process_type === 'timeline' ||
+  attributes.participation_method === 'survey';
 
 const SurveyResultsWidgetSettings = () => {
   const { formatMessage } = useIntl();
@@ -168,6 +173,7 @@ const SurveyResultsWidgetSettings = () => {
 
       <ProjectFilter
         projectId={projectId}
+        filter={isContinuousSurveyOrTimelineProject}
         onProjectFilter={handleProjectFilter}
       />
 

@@ -21,9 +21,15 @@ import { isNilOrError } from 'utils/helperUtils';
 import { IOption, FormatMessage } from 'typings';
 import { IProjectData, PublicationStatus } from 'services/projects';
 
+interface Option {
+  value: string | undefined;
+  label: string;
+}
+
 interface Props {
   projectId?: string;
-  onProjectFilter: (filter: IOption) => void;
+  filter?: (project: IProjectData) => boolean;
+  onProjectFilter: (filter: Option) => void;
 }
 
 const StyledSelect = styled(Select)`
@@ -43,7 +49,10 @@ const generateProjectOptions = (
   }));
 
   return [
-    { value: '', label: formatMessage(dashboardFilterMessages.allProjects) },
+    {
+      value: undefined,
+      label: formatMessage(dashboardFilterMessages.allProjects),
+    },
     ...projectOptions,
   ];
 };
@@ -54,7 +63,11 @@ const PUBLICATION_STATUSES: PublicationStatus[] = [
   'archived',
 ];
 
-const ProjectFilter = ({ projectId, onProjectFilter }: Props) => {
+const ProjectFilter = ({
+  projectId,
+  filter = () => true,
+  onProjectFilter,
+}: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const projects = useProjects({
@@ -65,7 +78,11 @@ const ProjectFilter = ({ projectId, onProjectFilter }: Props) => {
   const projectFilterOptions = useMemo(() => {
     if (isNilOrError(projects)) return null;
 
-    return generateProjectOptions(projects, localize, formatMessage);
+    return generateProjectOptions(
+      projects.filter(filter),
+      localize,
+      formatMessage
+    );
   }, [projects, localize, formatMessage]);
 
   if (projectFilterOptions === null) return null;
@@ -76,7 +93,7 @@ const ProjectFilter = ({ projectId, onProjectFilter }: Props) => {
         id="projectFilter"
         label={formatMessage(dashboardFilterMessages.labelProjectFilter)}
         onChange={onProjectFilter}
-        value={projectId || ''}
+        value={projectId}
         options={projectFilterOptions}
       />
     </Box>
