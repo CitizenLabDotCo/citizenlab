@@ -1,53 +1,26 @@
 import React from 'react';
 
-// Components
+// components
 import CategoryCard from './CategoryCard';
+import ContentContainer from './ContentContainer';
 
-// Typing
-import { CategorizedDestinations, IPreferences } from '.';
-
-// Styling
-import styled from 'styled-components';
-import { fontSizes, media } from 'utils/styleUtils';
-
-// services
-import { TCategory } from './destinations';
-
-export const ContentContainer = styled.div`
-  padding: 30px;
-  background: white;
-
-  h1 {
-    font-size: ${fontSizes.m}px;
-  }
-
-  h2 {
-    font-size: ${fontSizes.l}px;
-  }
-
-  ${media.phone`
-    margin: 0;
-    padding: 20px;
-  `}
-`;
+// typings
+import { CategorizedDestinations, IPreferences } from '../typings';
+import { TCategory } from '../destinations';
 
 interface Props {
-  onChange: (category: TCategory, value) => void;
+  onChange: (category: TCategory, value: boolean) => void;
   categoryDestinations: CategorizedDestinations;
   preferences: IPreferences;
 }
 
-const doNothing = () => () => {};
+const doNothing = () => {};
 
-const PreferencesDialog = ({
+const Preferences = ({
   categoryDestinations,
   preferences,
   onChange,
 }: Props) => {
-  const handleChange = (category: TCategory, value: boolean) => (_event) => {
-    onChange(category, value);
-  };
-
   return (
     <ContentContainer id="e2e-preference-dialog">
       {Object.keys(categoryDestinations)
@@ -61,7 +34,7 @@ const PreferencesDialog = ({
               category={category}
               destinations={categoryDestinations[category]}
               checked={!!preferences[category]}
-              handleChange={handleChange}
+              onChange={onChange}
             />
           );
         })}
@@ -70,11 +43,11 @@ const PreferencesDialog = ({
         category={'required'}
         destinations={[]}
         checked={true}
-        handleChange={doNothing}
+        onChange={doNothing}
         disableUncheck={true}
       />
     </ContentContainer>
   );
 };
 
-export default PreferencesDialog;
+export default Preferences;

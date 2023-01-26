@@ -937,9 +937,10 @@ workflows:
             branches:
               only:
                 - production
-          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CANADA
-          compose_file: docker-compose-production-canada.yml
-          env_file: ".env-production-canada"
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CAN
+          compose_file: docker-compose-production.yml
+          env_file: ".env-web"
+          stack_name: "cl2"
       - back-ee-deploy-to-swarm:
           requires:
             - back-ee-push-deployment-docker-image
@@ -1069,86 +1070,6 @@ workflows:
             branches:
               only: master
 
-  # RELEASE ESSENTIAL
-  release-essential:
-    when: << pipeline.parameters.trigger >>
-    jobs:
-      - front-test:
-          filters:
-            branches:
-              only:
-                - production
-      - front-detect-deadcode:
-          filters:
-            branches:
-              only:
-                - production
-      - front-lint:
-          filters:
-            branches:
-              only:
-                - production
-      - front-license-check:
-          filters:
-            branches:
-              only:
-                - production
-      - front-build:
-          filters:
-            branches:
-              only:
-                - production
-      - back-build-essential-docker-image:
-          context: docker-hub-access
-          filters:
-            branches:
-              only:
-                - production
-      - back-test:
-          context: docker-hub-access
-          requires:
-            - back-build-essential-docker-image
-          filters:
-            branches:
-              only:
-                - production
-      - back-license-check:
-          context: docker-hub-access
-          requires:
-            - back-build-essential-docker-image
-          filters:
-            branches:
-              only:
-                - production
-      - front-release-essential-image:
-          context: docker-hub-access
-          requires:
-            - front-test
-            - front-license-check
-            - front-build
-            - front-detect-deadcode
-            - front-lint
-            - back-test
-            - back-license-check
-          filters:
-            branches:
-              only:
-                - production
-      - back-release-essential-image:
-          context: docker-hub-access
-          requires:
-            - front-test
-            - front-license-check
-            - front-build
-            - front-detect-deadcode
-            - front-lint
-            - back-test
-            - back-license-check
-          filters:
-            branches:
-              only:
-                - production
-
   # OTHER
   manually-e2e-tests:
     when: << pipeline.parameters.e2e >>
@@ -1215,8 +1136,8 @@ workflows:
             - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
-          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CANADA
-          env_file: ".env-production-canada"
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CAN
+          env_file: ".env-web"
       - back-ee-generate-tenant-templates:
           name: "US West"
           context:
@@ -1306,8 +1227,8 @@ workflows:
             - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
-          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CANADA
-          env_file: ".env-production-canada"
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CAN
+          env_file: ".env-web"
       - back-ee-generate-tenant-templates:
           name: "US West"
           context:
@@ -1376,8 +1297,8 @@ workflows:
           name: "Canada"
           context:
             - slack-dev-notifications-inconsistent-data
-          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CANADA
-          env_file: ".env-production-canada"
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CAN
+          env_file: ".env-web"
       - check-for-inconsistent-data:
           <<: *slack-fail-post-step-inconsistent-data
           name: "US West"

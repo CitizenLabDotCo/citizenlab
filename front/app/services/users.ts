@@ -25,7 +25,7 @@ export interface IUserAttributes {
   birthyear?: number;
   domicile?: string;
   education?: string;
-  unread_notifications?: number;
+  unread_notifications: number;
   custom_field_values?: Record<string, any>;
   invite_status: 'pending' | 'accepted' | null;
   verified?: boolean;
@@ -34,7 +34,7 @@ export interface IUserAttributes {
 
 export interface IUserData {
   id: string;
-  type: string;
+  type: 'user';
   attributes: IUserAttributes;
 }
 
