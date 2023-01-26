@@ -1424,7 +1424,7 @@
   "app.containers.AdminPage.SettingsPage.fixedRatio": "Διαφημιστικό πλαίσιο διορθωμένης αναλογίας",
   "app.containers.AdminPage.SettingsPage.fixedRatioBannerTooltip": "Αυτό ο τύπος διαφημιστικού πλαισίου λειτουργεί καλύτερα με εικόνες που δεν πρέπει να έχουν περικοπεί, όπως εικόνες με κείμενο, ένα λογότυπο ή συγκεκριμένα στοιχεία που είναι βασικά για τους πολίτες σας. Αυτό το διαφημιστικό πλαίσιο αντικαθίσταται με ένα σταθερό πλαίσιο με το βασικό χρώμα όταν συνδέονται οι χρήστες. Μπορείτε να ρυθμίσετε αυτό το χρώμα στις γενικές ρυθμίσεις. Μπορείτε να βρείτε περισσότερες πληροφορίες για την προτεινόμενη χρήση εικόνων εδώ {link}.",
   "app.containers.AdminPage.SettingsPage.fixedRatioBannerTooltipLink": "γνωσιακή βάση",
-  "app.containers.AdminPage.SettingsPage.fullWidthBannerLayout": "Μπάνερ πλήρους πλάτους",
+  "app.containers.AdminPage.SettingsPage.fullWidthBannerLayout": "Πλήρες πλάτος",
   "app.containers.AdminPage.SettingsPage.fullWidthBannerTooltip": "Αυτό το διαφημιστικό πλαίσιο εκτείνεται σε όλο το πλάτος για ένα εξαιρετικό οπτικό αποτέλεσμα. Η εικόνα θα προσπαθήσει να καλύψει το μεγαλύτερο δυνατό χώρο, με αποτέλεσμα να μην εμφανίζεται πάντα. Μπορείτε να συνδυάσετε αυτό το διαφημιστικό πλαίσιο με μια χρωματική επικάλυψη. Μπορείτε να βρείτε περισσότερες πληροφορίες για την προτεινόμενη χρήση εικόνων εδώ {link}.",
   "app.containers.AdminPage.SettingsPage.fullWidthBannerTooltipLink": "γνωσιακή βάση",
   "app.containers.AdminPage.SettingsPage.header": "Μπάνερ αρχικής σελίδας",
