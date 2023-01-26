@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { Observable, of } from 'rxjs';
 import { phasesStream, IPhaseData, IPhases } from 'services/phases';
 
-export default function useProject(projectId: string | null | undefined) {
+export default function usePhases(projectId: string | null | undefined) {
   const [phases, setPhases] = useState<IPhaseData[] | undefined | null | Error>(
     undefined
   );

@@ -5,9 +5,12 @@ import useGenderSerie from 'containers/Admin/dashboard/users/Charts/GenderChart/
 import useNarrow from 'containers/Admin/reporting/hooks/useNarrow';
 
 // components
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import Chart from 'containers/Admin/dashboard/users/Charts/GenderChart/Chart';
-import NoChartData from '../NoChartData';
+import NoData from '../../_shared/NoData';
+
+// i18n
+import messages from '../messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -17,10 +20,9 @@ interface Props {
   startAt: string | null | undefined;
   endAt: string | null;
   projectId: string | undefined;
-  title: string;
 }
 
-const GenderCard = ({ startAt, endAt, projectId, title }: Props) => {
+const GenderCard = ({ startAt, endAt, projectId }: Props) => {
   const genderSerie = useGenderSerie({
     startAt,
     endAt,
@@ -30,14 +32,11 @@ const GenderCard = ({ startAt, endAt, projectId, title }: Props) => {
   const narrow = useNarrow();
 
   if (isNilOrError(genderSerie) || !serieHasValues(genderSerie)) {
-    return <NoChartData title={title} />;
+    return <NoData message={messages.noData} />;
   }
 
   return (
-    <Box width="100%" height="260px" pb="20px">
-      <Title variant="h3" color="primary" m="16px">
-        {title}
-      </Title>
+    <Box width="100%" height="220px" mt="20px" pb="10px">
       <Box height="200px">
         <Chart data={genderSerie} narrow={narrow} />
       </Box>

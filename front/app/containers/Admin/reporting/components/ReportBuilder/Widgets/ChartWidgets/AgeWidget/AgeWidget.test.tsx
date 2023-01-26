@@ -1,32 +1,30 @@
 import React from 'react';
-import GenderCard from './GenderCard';
+import AgeWidget from '.';
 import { render } from 'utils/testUtils/rtl';
-import useGenderSerie from 'containers/Admin/dashboard/users/Charts/GenderChart/useGenderSerie';
+import useAgeSerie from 'containers/Admin/dashboard/users/Charts/AgeChart/useAgeSerie';
 
-jest.mock('containers/Admin/reporting/hooks/useNarrow', () => () => true);
-
-jest.mock(
-  'containers/Admin/dashboard/users/Charts/GenderChart/useGenderSerie',
-  () => jest.fn()
+const mockAgeSerie: any = null;
+jest.mock('containers/Admin/dashboard/users/Charts/AgeChart/useAgeSerie', () =>
+  jest.fn(() => mockAgeSerie)
 );
 
-describe('<GenderCard />', () => {
-  const startAt = null;
-  const endAt = null;
+describe('<AgeWidget />', () => {
+  const startAt = undefined;
+  const endAt = undefined;
   const projectId = undefined;
   const title = 'GENDER TITLE';
 
-  it('renders a title and pie chart when there is data', () => {
+  it('renders a title and bar chart when there is data', () => {
     const validData = [
-      { value: 4, name: 'male', code: 'male', percentage: 40 },
-      { value: 6, name: 'female', code: 'female', percentage: 60 },
+      { name: '10 - 19', value: 1 },
+      { name: '20 - 29', value: 1 },
     ];
 
     // @ts-ignore
-    useGenderSerie.mockReturnValue(validData);
+    useAgeSerie.mockReturnValue(validData);
 
     const { container } = render(
-      <GenderCard
+      <AgeWidget
         startAt={startAt}
         endAt={endAt}
         title={title}
@@ -45,15 +43,15 @@ describe('<GenderCard />', () => {
 
   it('renders a title and no data message if all values are zero', () => {
     const emptyData = [
-      { value: 0, name: 'male', code: 'male', percentage: 0 },
-      { value: 0, name: 'female', code: 'female', percentage: 0 },
+      { name: '10 - 19', value: 0 },
+      { name: '20 - 29', value: 0 },
     ];
 
     // @ts-ignore
-    useGenderSerie.mockReturnValue(emptyData);
+    useAgeSerie.mockReturnValue(emptyData);
 
     const { container } = render(
-      <GenderCard
+      <AgeWidget
         startAt={startAt}
         endAt={endAt}
         title={title}

@@ -1,22 +1,18 @@
 import React from 'react';
 
 // components
+import Card from '../../_shared/Card';
 import VisitorsCard from './VisitorsCard';
-import PageBreakBox from '../../../../../../../../components/admin/ContentBuilder/Widgets/PageBreakBox';
-
-// styling
-import { stylingConsts } from 'utils/styleUtils';
-import { BORDER } from '../../constants';
 
 // utils
 import moment from 'moment';
 
 // settings
 import messages from '../messages';
+import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
 
 // types
 import { IResolution } from 'components/admin/ResolutionControl';
-import { ChartWidgetSettings } from '../ChartWidgetSettings';
 import { ChartWidgetProps } from '../typings';
 
 const VisitorsWidget = ({
@@ -35,15 +31,9 @@ const VisitorsWidget = ({
   };
 
   return (
-    <PageBreakBox
-      minHeight="26px"
-      border={BORDER}
-      borderRadius={stylingConsts.borderRadius}
-      mt="4px"
-      mb="4px"
-    >
+    <Card title={title} pagebreak>
       <VisitorsCard {...analyticsChartProps} />
-    </PageBreakBox>
+    </Card>
   );
 };
 
