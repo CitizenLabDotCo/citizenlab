@@ -12,7 +12,7 @@ import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { Locale } from 'typings';
-import { get } from 'lodash-es';
+import get from 'lodash-es/get';
 
 type Props = {
   field: IFlatCustomFieldWithIndex;
@@ -20,10 +20,11 @@ type Props = {
 };
 
 const FieldGroupSettings = ({ field, locale }: Props) => {
-  const isTitleEditable = get(field, 'isTitleEditable', true);
+  const lockedAttributes = field?.constraints?.locks;
+
   return (
     <>
-      {isTitleEditable && (
+      {!get(lockedAttributes, 'title_multiloc', false) && (
         <SectionField>
           <InputMultilocWithLocaleSwitcher
             initiallySelectedLocale={locale}

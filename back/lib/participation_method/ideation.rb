@@ -22,7 +22,7 @@ module ParticipationMethod
           resource: custom_form,
           input_type: 'section',
           code: 'ideation_section_1',
-          key: 'ideation_section_1',
+          key: nil,
           title_multiloc: {},
           description_multiloc: begin
             multiloc_service.i18n_to_multiloc(
@@ -84,6 +84,8 @@ module ParticipationMethod
           id: SecureRandom.uuid,
           resource: custom_form,
           input_type: 'section',
+          code: 'ideation_section_2',
+          key: nil,
           title_multiloc: multiloc_service.i18n_to_multiloc(
             'custom_fields.ideas.section2.title',
             locales: CL2_SUPPORTED_LOCALES
@@ -148,6 +150,8 @@ module ParticipationMethod
           id: SecureRandom.uuid,
           resource: custom_form,
           input_type: 'section',
+          code: 'ideation_section_3',
+          key: nil,
           title_multiloc: multiloc_service.i18n_to_multiloc(
             'custom_fields.ideas.section3.title',
             locales: CL2_SUPPORTED_LOCALES
@@ -169,7 +173,7 @@ module ParticipationMethod
           resource: custom_form,
           key: 'topic_ids',
           code: 'topic_ids',
-          input_type: 'multiselect',
+          input_type: 'topic_ids',
           title_multiloc: multiloc_service.i18n_to_multiloc(
             'custom_fields.ideas.topic_ids.title',
             locales: CL2_SUPPORTED_LOCALES
@@ -275,6 +279,19 @@ module ParticipationMethod
           ordering: 11
         )
       ]
+    end
+
+    # Locks mirror the name of the fields whose values cannot be changed (ie are locked)
+    def constraints
+      {
+        'ideation_section_1' => { 'locks' => { 'enabled' => true, 'title_multiloc' => true } },
+        'title_multiloc' => { 'locks' => { 'enabled' => true, 'required' => true, 'title_multiloc' => true } },
+        'body_multiloc' => { 'locks' => { 'enabled' => true, 'required' => true, 'title_multiloc' => true } },
+        'idea_images_attributes' => { 'locks' => { 'enabled' => true, 'title_multiloc' => true } },
+        'idea_files_attributes' => { 'locks' => { 'title_multiloc' => true } },
+        'topic_ids' => { 'locks' => { 'title_multiloc' => true } },
+        'location_description' => { 'locks' => { 'title_multiloc' => true } }
+      }
     end
 
     def validate_built_in_fields?

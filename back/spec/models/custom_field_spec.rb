@@ -71,6 +71,10 @@ class TestVisitor < FieldVisitorService
     'section from visitor'
   end
 
+  def visit_topic_ids(_field)
+    'topic_ids from visitor'
+  end
+
   def visit_file_upload(_field)
     'file_upload from visitor'
   end
@@ -148,13 +152,30 @@ RSpec.describe CustomField, type: :model do
 
   describe '#section?' do
     it 'returns true when the input_type is "section"' do
-      page_field = described_class.new input_type: 'section'
-      expect(page_field.section?).to be true
+      section_field = described_class.new input_type: 'section'
+      expect(section_field.section?).to be true
     end
 
     it 'returns false otherwise' do
       other_field = described_class.new input_type: 'something_else'
       expect(other_field.section?).to be false
+    end
+  end
+
+  describe '#page_or_section?' do
+    it 'returns true when the input_type is "page"' do
+      page_field = described_class.new input_type: 'page'
+      expect(page_field.page_or_section?).to be true
+    end
+
+    it 'returns true when the input_type is "section"' do
+      section_field = described_class.new input_type: 'section'
+      expect(section_field.page_or_section?).to be true
+    end
+
+    it 'returns false otherwise' do
+      other_field = described_class.new input_type: 'something_else'
+      expect(other_field.page_or_section?).to be false
     end
   end
 
