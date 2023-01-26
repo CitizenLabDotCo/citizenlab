@@ -74,6 +74,7 @@ const ProjectFilter = ({ projectId, onProjectFilter }: Props) => {
     <Box width="100%" mb="20px">
       <StyledSelect
         id="projectFilter"
+        label={formatMessage(dashboardFilterMessages.labelProjectFilter)}
         onChange={onProjectFilter}
         value={projectId || ''}
         options={projectFilterOptions}
