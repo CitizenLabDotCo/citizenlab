@@ -28,8 +28,3 @@ export interface Stat {
 
 // Component layouts
 export type Layout = 'wide' | 'narrow';
-
-// Specifics of displaying chart
-export interface ChartDisplay {
-  title?: string;
-}

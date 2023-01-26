@@ -3,7 +3,7 @@ import React from 'react';
 // components
 import { Box, Input, Text } from '@citizenlab/cl2-component-library';
 import DateRangePicker from 'components/admin/DateRangePicker';
-import ProjectFilter from 'containers/Admin/dashboard/components/filters/ProjectFilter';
+import ProjectFilter from '../../_shared/ProjectFilter';
 
 // hooks
 import { useIntl } from 'utils/cl-intl';
@@ -13,12 +13,12 @@ import { useNode } from '@craftjs/core';
 import moment, { Moment } from 'moment';
 
 // messages
-import messages from './messages';
+import messages from '../messages';
 
 // typings
 import { IOption } from 'typings';
 
-export const ChartWidgetSettings = () => {
+const ChartWidgetSettings = () => {
   const { formatMessage } = useIntl();
   const {
     actions: { setProp },
@@ -89,12 +89,12 @@ export const ChartWidgetSettings = () => {
       </Box>
       <Box mb="20px">
         <ProjectFilter
-          currentProjectFilter={projectId}
-          width="100%"
-          padding="11px"
+          projectId={projectId}
           onProjectFilter={handleProjectFilter}
         />
       </Box>
     </Box>
   );
 };
+
+export default ChartWidgetSettings;

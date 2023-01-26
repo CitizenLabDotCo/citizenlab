@@ -4,9 +4,12 @@ import React from 'react';
 import useAgeSerie from 'containers/Admin/dashboard/users/Charts/AgeChart/useAgeSerie';
 
 // components
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
+import NoData from '../../_shared/NoData';
 import BarChart from 'components/admin/Graphs/BarChart';
-import NoChartData from '../NoChartData';
+
+// i18n
+import messages from '../messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -16,10 +19,9 @@ interface Props {
   startAt: string | null | undefined;
   endAt: string | null;
   projectId: string | undefined;
-  title: string;
 }
 
-const AgeCard = ({ startAt, endAt, projectId, title }: Props) => {
+const AgeCard = ({ startAt, endAt, projectId }: Props) => {
   const ageSerie = useAgeSerie({
     startAt,
     endAt,
@@ -27,14 +29,11 @@ const AgeCard = ({ startAt, endAt, projectId, title }: Props) => {
   });
 
   if (isNilOrError(ageSerie) || !serieHasValues(ageSerie)) {
-    return <NoChartData title={title} />;
+    return <NoData message={messages.noData} />;
   }
 
   return (
-    <Box width="100%" height="260px" pb="20px">
-      <Title variant="h3" color="primary" m="16px">
-        {title}
-      </Title>
+    <Box width="100%" height="220px" mt="20px" pb="10px">
       <Box height="200px">
         <BarChart
           data={ageSerie}
