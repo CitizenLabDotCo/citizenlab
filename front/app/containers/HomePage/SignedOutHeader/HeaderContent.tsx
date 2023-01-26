@@ -51,7 +51,7 @@ const HeaderContent = ({
 }: Props & WrappedComponentProps) => {
   const homepageSettings = useHomepageSettings();
   const localize = useLocalize();
-  const isPhone = useBreakpoint('phone');
+  const isTablet = useBreakpoint('tablet');
 
   const signUpIn = (event: React.FormEvent) => {
     event.preventDefault();
@@ -75,7 +75,7 @@ const HeaderContent = ({
       ? homepageAttributes.header_bg.large
       : null;
     const hideAvatarsForThisLayout =
-      isPhone && homepageAttributes.banner_layout === 'fixed_ratio_layout';
+      isTablet && homepageAttributes.banner_layout === 'fixed_ratio_layout';
     const displayHeaderAvatars =
       homepageAttributes.banner_avatars_enabled && !hideAvatarsForThisLayout;
 

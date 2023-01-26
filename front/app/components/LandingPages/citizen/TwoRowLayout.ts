@@ -22,4 +22,8 @@ export const HeaderImage = styled(Image)`
   ${media.tablet`
     height: ${homepageBannerLayoutHeights['two_row_layout'].tablet}px;
   `}
+
+  ${media.phone`
+    height: ${homepageBannerLayoutHeights['two_row_layout'].phone}px;
+  `}
 `;

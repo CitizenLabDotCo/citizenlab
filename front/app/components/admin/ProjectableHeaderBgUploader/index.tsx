@@ -5,7 +5,7 @@ import { UploadFile } from 'typings';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 
 import { convertUrlToUploadFile } from 'utils/fileUtils';
-import { HEADER_BG_ASPECT_RATIO } from 'services/projects';
+import { PROJECTABLE_HEADER_BG_ASPECT_RATIO } from 'services/projects';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
@@ -54,7 +54,7 @@ const ProjectableHeaderBgUploader = ({ imageUrl, onImageChange }: Props) => {
           <ImageCropperContainer
             image={headerBg}
             onComplete={onImageChange}
-            aspect={HEADER_BG_ASPECT_RATIO}
+            aspect={PROJECTABLE_HEADER_BG_ASPECT_RATIO}
             onRemove={handleImageRemove}
           />
         </Box>
@@ -64,7 +64,7 @@ const ProjectableHeaderBgUploader = ({ imageUrl, onImageChange }: Props) => {
           acceptedFileTypes={{
             'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
           }}
-          imagePreviewRatio={1 / HEADER_BG_ASPECT_RATIO}
+          imagePreviewRatio={1 / PROJECTABLE_HEADER_BG_ASPECT_RATIO}
           onAdd={handleImageAdd}
           onRemove={handleImageRemove}
         />

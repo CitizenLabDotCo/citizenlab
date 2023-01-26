@@ -8,7 +8,7 @@ import {
 import {
   Container,
   Header,
-} from 'components/LandingPages/citizen/FixedRatioBannerLayout';
+} from 'components/LandingPages/citizen/FixedRatioLayout';
 import HeaderContent from './HeaderContent';
 
 import { ICustomPageData } from 'services/customPages';
