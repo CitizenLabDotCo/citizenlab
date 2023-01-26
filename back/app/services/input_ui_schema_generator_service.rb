@@ -134,6 +134,8 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   # end
 
   def generate_for_current_locale(fields)
+    return generate_for_current_locale_without_sections fields if fields.none?(&:section?) # TODO: Do we need to do this to keep native surveys working?
+
     current_section = nil
     section_fields = []
     elements = []
@@ -151,7 +153,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   end
 
   def generate_section(current_section, section_fields)
-    return if section_fields.empty?
+    return if section_fields.empty? # TODO: Do we still want to filter out empty sections?
 
     {
       type: 'Category',
@@ -159,6 +161,16 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
       options: { id: current_section.id },
       elements: section_fields.filter_map { |field| visit field }
     }
+  end
+
+  def generate_for_current_locale_without_sections(fields)
+    category = {
+      type: 'Category',
+      label: nil,
+      options: { id: 'main_fields' },
+      elements: fields.filter_map { |field| visit field }
+    }
+    categorization_schema_with(input_term, [category])
   end
 
   private
