@@ -1424,7 +1424,7 @@
   "app.containers.AdminPage.SettingsPage.fixedRatio": "Banner cu raport fix",
   "app.containers.AdminPage.SettingsPage.fixedRatioBannerTooltip": "Acest tip de banner funcționează cel mai bine cu imagini care nu ar trebui să fie tăiate, cum ar fi imagini cu text, un logo sau elemente specifice care sunt esențiale pentru cetățenii dumneavoastră. Acest banner este înlocuit cu o casetă solidă în culoarea primară atunci când utilizatorii sunt conectați. Puteți seta această culoare în setările generale. Mai multe informații despre utilizarea recomandată a imaginilor pot fi găsite pe site-ul nostru {link}.",
   "app.containers.AdminPage.SettingsPage.fixedRatioBannerTooltipLink": "baza de cunoștințe",
-  "app.containers.AdminPage.SettingsPage.fullWidthBannerLayout": "Banner pe toată lățimea",
+  "app.containers.AdminPage.SettingsPage.fullWidthBannerLayout": "Full width",
   "app.containers.AdminPage.SettingsPage.fullWidthBannerTooltip": "Acest banner se întinde pe toată lățimea pentru un efect vizual deosebit. Imaginea va încerca să acopere cât mai mult spațiu posibil, ceea ce face ca ea să nu fie întotdeauna vizibilă în orice moment. Puteți combina acest banner cu o suprapunere de orice culoare. Mai multe informații despre utilizarea recomandată a imaginii pot fi găsite pe {link}.",
   "app.containers.AdminPage.SettingsPage.fullWidthBannerTooltipLink": "baza de cunoștințe",
   "app.containers.AdminPage.SettingsPage.header": "Homepage banner",
