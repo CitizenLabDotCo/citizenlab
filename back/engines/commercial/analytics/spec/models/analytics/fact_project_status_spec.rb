@@ -15,7 +15,7 @@ RSpec.describe Analytics::FactProjectStatus, type: :model do
       expect(described_class.count).to be 1 # there will only ever be 1 status per project
 
       project_status = described_class.find_by(status: status)
-      expect(project_status.timestamp.floor).to eq(project.updated_at.floor)
+      expect(project_status.timestamp.floor).to eq(project.admin_publication.updated_at.floor)
       expect(project_status.dimension_project_id).to eq(project.id)
     end
   end
@@ -86,7 +86,7 @@ RSpec.describe Analytics::FactProjectStatus, type: :model do
 
         project_status = described_class.first
         expect(project_status.dimension_project_id).to eq(project.id)
-        expect(project_status.timestamp.floor).to eq(project.updated_at.floor)
+        expect(project_status.timestamp.floor).to eq(project.admin_publication.updated_at.floor)
         expect(project_status.status).to eq('published')
         expect(project_status.finished).to be(false)
       end
