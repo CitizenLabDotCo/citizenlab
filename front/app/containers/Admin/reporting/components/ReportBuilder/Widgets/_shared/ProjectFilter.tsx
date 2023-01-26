@@ -1,28 +1,85 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+
+// hooks
+import useProjects from 'hooks/useProjects';
+
+// styling
+import styled from 'styled-components';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
-import ProjectFilter from 'containers/Admin/dashboard/components/filters/ProjectFilter';
+import { Select, Box } from '@citizenlab/cl2-component-library';
+
+// i18n
+import useLocalize, { Localize } from 'hooks/useLocalize';
+import { useIntl } from 'utils/cl-intl';
+import dashboardFilterMessages from 'containers/Admin/dashboard/components/filters/messages';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { IOption } from 'typings';
+import { IOption, FormatMessage } from 'typings';
+import { IProjectData, PublicationStatus } from 'services/projects';
 
 interface Props {
   projectId?: string;
   onProjectFilter: (filter: IOption) => void;
 }
 
-const _ProjectFilter = ({ projectId, onProjectFilter }: Props) => {
+const StyledSelect = styled(Select)`
+  select {
+    padding: 11px;
+  }
+`;
+
+const generateProjectOptions = (
+  projects: IProjectData[],
+  localize: Localize,
+  formatMessage: FormatMessage
+): IOption[] => {
+  const projectOptions = projects.map((project) => ({
+    value: project.id,
+    label: localize(project.attributes.title_multiloc),
+  }));
+
+  return [
+    { value: '', label: formatMessage(dashboardFilterMessages.allProjects) },
+    ...projectOptions,
+  ];
+};
+
+const PUBLICATION_STATUSES: PublicationStatus[] = [
+  'draft',
+  'published',
+  'archived',
+];
+
+const ProjectFilter = ({ projectId, onProjectFilter }: Props) => {
+  const localize = useLocalize();
+  const { formatMessage } = useIntl();
+  const projects = useProjects({
+    publicationStatuses: PUBLICATION_STATUSES,
+    canModerate: true,
+  });
+
+  const projectFilterOptions = useMemo(() => {
+    if (isNilOrError(projects)) return null;
+
+    return generateProjectOptions(projects, localize, formatMessage);
+  }, [projects, localize, formatMessage]);
+
+  if (projectFilterOptions === null) return null;
+
   return (
     <Box width="100%" mb="20px">
-      <ProjectFilter
-        currentProjectFilter={projectId}
-        width="100%"
-        padding="11px"
-        onProjectFilter={onProjectFilter}
+      <StyledSelect
+        id="projectFilter"
+        onChange={onProjectFilter}
+        value={projectId || ''}
+        options={projectFilterOptions}
       />
     </Box>
   );
 };
 
-export default _ProjectFilter;
+export default ProjectFilter;
