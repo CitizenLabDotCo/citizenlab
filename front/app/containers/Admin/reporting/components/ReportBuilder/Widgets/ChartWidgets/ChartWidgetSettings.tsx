@@ -18,7 +18,7 @@ import messages from './messages';
 // typings
 import { IOption } from 'typings';
 
-export const ChartWidgetSettings = () => {
+const ChartWidgetSettings = () => {
   const { formatMessage } = useIntl();
   const {
     actions: { setProp },
@@ -98,3 +98,5 @@ export const ChartWidgetSettings = () => {
     </Box>
   );
 };
+
+export default ChartWidgetSettings;

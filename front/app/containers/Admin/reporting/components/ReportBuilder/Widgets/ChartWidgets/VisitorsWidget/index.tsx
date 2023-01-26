@@ -13,10 +13,10 @@ import moment from 'moment';
 
 // settings
 import messages from '../messages';
+import ChartWidgetSettings from '../ChartWidgetSettings';
 
 // types
 import { IResolution } from 'components/admin/ResolutionControl';
-import { ChartWidgetSettings } from '../ChartWidgetSettings';
 import { ChartWidgetProps } from '../typings';
 
 const VisitorsWidget = ({

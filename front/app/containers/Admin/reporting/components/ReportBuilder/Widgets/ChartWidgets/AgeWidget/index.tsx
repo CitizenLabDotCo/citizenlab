@@ -12,7 +12,7 @@ import { BORDER } from '../../constants';
 import messages from '../messages';
 
 // settings
-import { ChartWidgetSettings } from '../ChartWidgetSettings';
+import ChartWidgetSettings from '../ChartWidgetSettings';
 
 // types
 import { ChartWidgetProps } from '../typings';

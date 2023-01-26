@@ -2,6 +2,8 @@ import React from 'react';
 
 // components
 import ActiveUsers from './ActiveUsersCard';
+import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
+import ChartWidgetSettings from './ChartWidgetSettings';
 
 // styling
 import { stylingConsts } from 'utils/styleUtils';
@@ -15,9 +17,7 @@ import messages from '../messages';
 
 // types
 import { IResolution } from 'components/admin/ResolutionControl';
-import { ChartWidgetSettings } from './ChartWidgetSettings';
 import { ChartWidgetProps } from '../typings';
-import PageBreakBox from '../../../../../../../../components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 const ActiveUsersWidget = ({
   title,
