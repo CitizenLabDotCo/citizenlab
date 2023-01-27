@@ -52,14 +52,16 @@ module Analytics
         types = [
           { name: 'idea', parent: 'post' },
           { name: 'initiative', parent: 'post' },
-          { name: 'comment', parent: nil },
-          { name: 'vote', parent: nil },
-          { name: 'poll', parent: nil },
+          { name: 'comment', parent: 'initiative' },
+          { name: 'comment', parent: 'idea' },
+          { name: 'vote', parent: 'initiative' },
+          { name: 'vote', parent: 'idea' },
+          { name: 'vote', parent: 'comment' },
           { name: 'volunteer', parent: nil },
           { name: 'survey', parent: nil }
         ]
         types.each do |type|
-          next if Analytics::DimensionType.exists?(name: type[:name])
+          next if Analytics::DimensionType.exists?(name: type[:name], parent: type[:parent])
 
           Analytics::DimensionType.create!(name: type[:name], parent: type[:parent])
         end

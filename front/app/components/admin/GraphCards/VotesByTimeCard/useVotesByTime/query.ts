@@ -25,6 +25,7 @@ export const query = ({
       ...getDateFilter('dimension_date_created', startAt, endAt),
       ...getProjectFilter('dimension_project', projectId),
       'dimension_type.name': 'vote',
+      'dimension_type.parent': 'idea',
     },
     groups: `dimension_date_created.${getInterval(resolution)}`,
     aggregations: {
@@ -39,6 +40,7 @@ export const query = ({
     filters: {
       ...getProjectFilter('dimension_project', projectId),
       'dimension_type.name': 'vote',
+      'dimension_type.parent': 'idea',
     },
     aggregations: {
       votes_count: 'sum',
