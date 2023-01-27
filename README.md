@@ -1,9 +1,10 @@
 [![CircleCI](https://circleci.com/gh/CitizenLabDotCo/citizenlab/tree/master.svg?style=svg)](https://circleci.com/gh/CitizenLabDotCo/citizenlab/tree/master)
 
-> **Note**
+> **Warning**
+>
 > This repository contains the commercial edition of CitizenLab, backed by proprietary code . The license does _not_ permit hosting it yourself. The code is open for the sake of transparency and allowing contributions.
 
-Interested in the Open-Source version of CitizenLab, which you can host yourself? Check out [citizenlab-oss](https://github.com/CitizenLabDotCo/citizenlab-oss) or head to our [Development Portal]([Development Portal](https://developers.citizenlab.co))
+Interested in the Open-Source version of CitizenLab, which you can host yourself? Check out [citizenlab-oss](https://github.com/CitizenLabDotCo/citizenlab-oss) or head to our [Development Portal](https://developers.citizenlab.co)
 
 To use the Commercial Edition or get professional support, consider [becoming a CitizenLab client](https://www.citizenlab.co/plans)
 
@@ -33,4 +34,4 @@ You can also contribute [translations](https://developers.citizenlab.co/guide-co
 
 ## License
 
-Source code in this repository is covered by the "CitizenLab Commercial License v2". The license does not permit self-hosting or actual usage, outside of development and testing purposes.
+Source code in this repository is covered by the "CitizenLab Commercial License v2". The license does not permit self-hosting or production usage, outside of development and testing purposes.
