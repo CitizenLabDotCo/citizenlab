@@ -33,7 +33,7 @@ class IdeaCustomFieldsService
   def allowed_extra_field_keys
     fields_with_simple_keys = []
     fields_with_array_keys = {}
-    extra_visible_fields.each do |field|
+    extra_visible_fields.reject(&:section?).each do |field| # TODO: why do we need to do this for sections and not for pages?
       case field.input_type
       when 'multiselect'
         fields_with_array_keys[field.key.to_sym] = []
