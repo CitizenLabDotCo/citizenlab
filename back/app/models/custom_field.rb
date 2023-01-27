@@ -28,25 +28,6 @@
 #  index_custom_fields_on_resource_type_and_resource_id  (resource_type,resource_id)
 #
 
-# Validate that locked attributes are not changed
-class ConstraintValidator < ActiveModel::Validator
-  def validate(field)
-    return unless field.resource_type == 'CustomForm'
-
-    @participation_method = Factory.instance.participation_method_for field.resource.participation_context
-    constraints = @participation_method.constraints[field.code]
-    return unless constraints
-
-    constraints['locks']&.each do |attribute, value|
-      if field.changed_attributes.key?(attribute) &&
-         value == true &&
-         !(field.code == 'ideation_section_1' && attribute == 'title_multiloc')
-        field.errors.add :base, "Cannot change #{attribute}. It is locked."
-      end
-    end
-  end
-end
-
 # support table :
 # Jsonforms (under dynamic_idea_form and jsonforms_custom_fields) supports all INPUT_TYPES
 # The older react json form version works only with text number multiline_text select multiselect checkbox date
@@ -61,7 +42,7 @@ class CustomField < ApplicationRecord
 
   FIELDABLE_TYPES = %w[User CustomForm].freeze
   INPUT_TYPES = %w[text number multiline_text html text_multiloc multiline_text_multiloc html_multiloc select multiselect checkbox date files image_files point linear_scale file_upload page section topic_ids].freeze
-  CODES = %w[gender birthyear domicile education title_multiloc body_multiloc topic_ids location_description proposed_budget idea_images_attributes idea_files_attributes author_id budget ideation_section_1 ideation_section_2 ideation_section_3].freeze
+  CODES = %w[gender birthyear domicile education title_multiloc body_multiloc topic_ids location_description proposed_budget idea_images_attributes idea_files_attributes author_id budget ideation_section1 ideation_section2 ideation_section3].freeze
 
   validates :resource_type, presence: true, inclusion: { in: FIELDABLE_TYPES }
   validates(
@@ -77,8 +58,6 @@ class CustomField < ApplicationRecord
   validates :enabled, inclusion: { in: [true, false] }
   validates :hidden, inclusion: { in: [true, false] }
   validates :code, inclusion: { in: CODES }, uniqueness: { scope: %i[resource_type resource_id] }, allow_nil: true
-
-  # validates_with ConstraintValidator # TODO
 
   before_validation :set_default_enabled
   before_validation :generate_key, on: :create
@@ -192,7 +171,7 @@ class CustomField < ApplicationRecord
 
   # Special behaviour for ideation section 1
   def title_multiloc
-    if code == 'ideation_section_1'
+    if code == 'ideation_section1'
       input_term = resource.participation_context.input_term
       key = "custom_forms.categories.main_content.#{input_term}.title"
       I18n.available_locales.index_with do |locale|

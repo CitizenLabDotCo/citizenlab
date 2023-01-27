@@ -106,11 +106,18 @@ module IdeaCustomFields
         create_params['key'] = default_field.key
       end
       field = CustomField.new create_params.merge(resource: @custom_form)
-      SideFxCustomFieldService.new.before_create field, current_user
-      if field.save
-        page_temp_ids_to_ids_mapping[field_params[:temp_id]] = field.id if field_params[:temp_id]
-        SideFxCustomFieldService.new.after_create field, current_user
-        field
+
+      IdeaCustomFieldsService.new(@custom_form).validate_constraints_against_defaults(field)
+      if field.errors.errors.empty?
+        SideFxCustomFieldService.new.before_create field, current_user
+        if field.save
+          page_temp_ids_to_ids_mapping[field_params[:temp_id]] = field.id if field_params[:temp_id]
+          SideFxCustomFieldService.new.after_create field, current_user
+          field
+        else
+          errors[index.to_s] = field.errors.details
+          false
+        end
       else
         errors[index.to_s] = field.errors.details
         false
@@ -118,11 +125,17 @@ module IdeaCustomFields
     end
 
     def update_field!(field, field_params, errors, index)
-      field.assign_attributes field_params
-      SideFxCustomFieldService.new.before_update field, current_user
-      if field.save
-        SideFxCustomFieldService.new.after_update field, current_user
-        field
+      IdeaCustomFieldsService.new(@custom_form).validate_constraints_against_updates(field, field_params)
+      if field.errors.errors.empty?
+        field.assign_attributes field_params
+        SideFxCustomFieldService.new.before_update field, current_user
+        if field.save
+          SideFxCustomFieldService.new.after_update field, current_user
+          field
+        else
+          errors[index.to_s] = field.errors.details
+          false
+        end
       else
         errors[index.to_s] = field.errors.details
         false

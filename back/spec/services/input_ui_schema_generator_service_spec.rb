@@ -67,7 +67,7 @@ RSpec.describe InputUiSchemaGeneratorService do
         expect(ui_schema['en'][:elements][0]).to eq({
           type: 'Category',
           label: '',
-          options: { id: custom_form.custom_fields.find_by(code: 'ideation_section_1').id },
+          options: { id: custom_form.custom_fields.find_by(code: 'ideation_section1').id },
           elements: [
             {
               type: 'VerticalLayout',
@@ -169,7 +169,7 @@ RSpec.describe InputUiSchemaGeneratorService do
               {
                 type: 'Category',
                 label: '',
-                options: { id: custom_form.custom_fields.find_by(code: 'ideation_section_1').id },
+                options: { id: custom_form.custom_fields.find_by(code: 'ideation_section1').id },
                 elements: [
                   {
                     type: 'VerticalLayout',

@@ -50,7 +50,38 @@ class IdeaCustomFieldsService
     end
   end
 
+  def validate_constraints_against_updates(field, field_params)
+    constraints = @participation_method.constraints[field.code&.to_sym]
+    return unless constraints
+
+    constraints[:locks]&.each do |attribute, value|
+      if value == true && field_params[attribute] != field[attribute] && !section1_title?(field, attribute)
+        field.errors.add :constraints, "Cannot change #{attribute}. It is locked."
+      end
+    end
+  end
+
+  def validate_constraints_against_defaults(field)
+    constraints = @participation_method.constraints[field.code&.to_sym]
+    return unless constraints
+
+    default_fields = @participation_method.default_fields field.resource.participation_context
+    default_field = default_fields.find { |f| f.code == field.code }
+
+    constraints[:locks]&.each do |attribute, value|
+      if value == true && field[attribute] != default_field[attribute] && !section1_title?(field, attribute)
+        field.errors.add :constraints, "Cannot change #{attribute} from default value. It is locked."
+      end
+    end
+  end
+
   private
+
+  # Check required as it doesn't matter what is saved in title for section 1
+  # Constraints required for the front-end but response will always return input specific method
+  def section1_title?(field, attribute)
+    field.code == 'ideation_section1' && attribute == :title_multiloc
+  end
 
   attr_reader :custom_form, :participation_method
 end

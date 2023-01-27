@@ -21,7 +21,7 @@ module ParticipationMethod
           id: SecureRandom.uuid,
           resource: custom_form,
           input_type: 'section',
-          code: 'ideation_section_1',
+          code: 'ideation_section1',
           key: nil,
           title_multiloc: {},
           description_multiloc: begin
@@ -84,7 +84,7 @@ module ParticipationMethod
           id: SecureRandom.uuid,
           resource: custom_form,
           input_type: 'section',
-          code: 'ideation_section_2',
+          code: 'ideation_section2',
           key: nil,
           title_multiloc: multiloc_service.i18n_to_multiloc(
             'custom_fields.ideas.section2.title',
@@ -150,7 +150,7 @@ module ParticipationMethod
           id: SecureRandom.uuid,
           resource: custom_form,
           input_type: 'section',
-          code: 'ideation_section_3',
+          code: 'ideation_section3',
           key: nil,
           title_multiloc: multiloc_service.i18n_to_multiloc(
             'custom_fields.ideas.section3.title',
@@ -237,16 +237,17 @@ module ParticipationMethod
       ]
     end
 
-    # Locks mirror the name of the fields whose values cannot be changed (ie are locked)
+    # Locks mirror the name of the fields whose default values cannot be changed (ie are locked)
     def constraints
       {
-        'ideation_section_1' => { 'locks' => { 'enabled' => true, 'title_multiloc' => true } },
-        'title_multiloc' => { 'locks' => { 'enabled' => true, 'required' => true, 'title_multiloc' => true } },
-        'body_multiloc' => { 'locks' => { 'enabled' => true, 'required' => true, 'title_multiloc' => true } },
-        'idea_images_attributes' => { 'locks' => { 'enabled' => true, 'title_multiloc' => true } },
-        'idea_files_attributes' => { 'locks' => { 'title_multiloc' => true } },
-        'topic_ids' => { 'locks' => { 'title_multiloc' => true } },
-        'location_description' => { 'locks' => { 'title_multiloc' => true } }
+        ideation_section1: { locks: { enabled: true, title_multiloc: true } },
+        title_multiloc: { locks: { enabled: true, required: true, title_multiloc: true } },
+        body_multiloc: { locks: { enabled: true, required: true, title_multiloc: true } },
+        idea_images_attributes: { locks: { enabled: true, title_multiloc: true } },
+        idea_files_attributes: { locks: { title_multiloc: true } },
+        topic_ids: { locks: { title_multiloc: true } },
+        location_description: { locks: { title_multiloc: true } },
+        proposed_budget: { locks: { title_multiloc: true } }
       }
     end
 

@@ -39,13 +39,13 @@ RSpec.describe ParticipationMethod::Ideation do
       expect(
         participation_method.default_fields(create(:custom_form, participation_context: project)).map(&:code)
       ).to eq %w[
-        ideation_section_1
+        ideation_section1
         title_multiloc
         body_multiloc
-        ideation_section_2
+        ideation_section2
         idea_images_attributes
         idea_files_attributes
-        ideation_section_3
+        ideation_section3
         topic_ids
         location_description
         proposed_budget
@@ -148,10 +148,26 @@ RSpec.describe ParticipationMethod::Ideation do
   end
 
   describe 'constraints' do
-    it 'has some constraints to lock values from being changed' do
-      expect(participation_method.constraints.size).to be > 0
-      _key, value = participation_method.constraints.first
-      expect(value.key?('locks')).to be true
+    it 'has constraints on built in fields to lock certain values from being changed' do
+      expect(participation_method.constraints.size).to be 8
+      expect(participation_method.constraints.keys).to match_array %i[
+        ideation_section1
+        title_multiloc
+        body_multiloc
+        idea_images_attributes
+        idea_files_attributes
+        topic_ids
+        location_description
+        proposed_budget
+      ]
+    end
+
+    it 'each constraint has locks only on enabled, required & title_multiloc' do
+      participation_method.constraints.each do |_key, value|
+        expect(value.key?(:locks)).to be true
+        valid_locks = %i[enabled required title_multiloc]
+        expect(valid_locks).to include(*value[:locks].keys)
+      end
     end
   end
 
