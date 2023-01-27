@@ -66,7 +66,7 @@ const ToolboxItem = ({
   return (
     <Tippy
       interactive={true}
-      placement={'left'}
+      placement={'left-start'}
       disabled={!disabled}
       theme={'dark'}
       content={

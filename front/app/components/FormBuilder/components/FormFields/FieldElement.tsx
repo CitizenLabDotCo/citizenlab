@@ -25,12 +25,16 @@ import {
   Badge,
   Text,
   colors,
+  IconTooltip,
   Icon,
 } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 import { FlexibleRow } from '../FlexibleRow';
 import { FieldRuleDisplay } from './FieldRuleDisplay';
-import { FormBuilderConfig } from 'components/FormBuilder/utils';
+import {
+  builtInFieldKeys,
+  FormBuilderConfig,
+} from 'components/FormBuilder/utils';
 
 // styling
 import styled from 'styled-components';
@@ -42,7 +46,6 @@ import {
   IFlatCustomFieldWithIndex,
 } from 'services/formCustomFields';
 import useLocale from 'hooks/useLocale';
-import { get } from 'lodash-es';
 
 const FormFieldsContainer = styled(Box)`
   &:hover {
@@ -79,8 +82,12 @@ export const FieldElement = (props: Props) => {
 
   const formCustomFields: IFlatCustomField[] = watch('customFields');
   const index = formCustomFields.findIndex((f) => f.id === field.id);
-  const isDeleteEnabled = get(field, 'isDeleteEnabled', true);
+  const lockedAttributes = field?.constraints?.locks;
 
+  const showVisibilityIcon =
+    builderConfig.displayBuiltInFields &&
+    field.input_type !== 'section' &&
+    !builtInFieldKeys.includes(field.key);
   const hasErrors = !!errors.customFields?.[index];
   const showLogicOnRow =
     field.input_type !== 'page' ? field.logic.rules : field.logic;
@@ -117,7 +124,7 @@ export const FieldElement = (props: Props) => {
         >
           <Box display="flex" alignItems="center" height="100%">
             <Box display="block">
-              <Box>
+              <Box display="flex">
                 {hasErrors && (
                   <Icon
                     ml="28px"
@@ -154,16 +161,24 @@ export const FieldElement = (props: Props) => {
                   mb="auto"
                   color="grey800"
                 >
-                  <T value={field.title_multiloc} />
-                  {!isDeleteEnabled && (
-                    <Icon
-                      fill={colors.coolGrey500}
-                      mb="4px"
-                      width="16px"
-                      ml="4px"
-                      name="lock"
-                    />
-                  )}
+                  <Box display="flex">
+                    <T value={field.title_multiloc} />
+                    {lockedAttributes?.enabled && (
+                      <IconTooltip
+                        placement="top-start"
+                        iconColor={colors.coolGrey500}
+                        mb="4px"
+                        iconSize="16px"
+                        ml="4px"
+                        icon="lock"
+                        content={
+                          field.input_type === 'section'
+                            ? formatMessage(messages.sectionCannotBeDeleted)
+                            : formatMessage(messages.questionCannotBeDeleted)
+                        }
+                      />
+                    )}
+                  </Box>
                 </Text>
               </Box>
               {showLogicOnRow && (
@@ -252,6 +267,15 @@ export const FieldElement = (props: Props) => {
             </Box>
           </Box>
           <Box pr="32px" display="flex" height="100%" alignContent="center">
+            {showVisibilityIcon && (
+              <IconTooltip
+                placement="top"
+                icon="eye-off"
+                iconColor={colors.coolGrey300}
+                content={formatMessage(messages.fieldNotVisibleTooltip)}
+                maxTooltipWidth={200}
+              />
+            )}
             {field.required && (
               <Box mt="auto" mb="auto" ml="12px">
                 {' '}
