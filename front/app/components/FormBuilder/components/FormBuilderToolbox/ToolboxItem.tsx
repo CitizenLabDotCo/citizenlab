@@ -70,7 +70,7 @@ const ToolboxItem = ({
       disabled={!disabled}
       theme={'dark'}
       content={
-        <Text my="8px" color="white">
+        <Text my="8px" color="white" fontSize="s">
           {formatMessage(messages.disabledFieldTooltip)}
         </Text>
       }
