@@ -56,7 +56,7 @@ class IdeaCustomFieldsService
     return unless constraints
 
     constraints[:locks]&.each do |attribute, value|
-      if value == true && field_params[attribute] != field[attribute] && !is_section1_title?(field, attribute)
+      if value == true && field_params[attribute] != field[attribute] && !section1_title?(field, attribute)
         field.errors.add :constraints, "Cannot change #{attribute}. It is locked."
       end
     end
@@ -71,7 +71,7 @@ class IdeaCustomFieldsService
     default_field = default_fields.find { |f| f.code == field.code }
 
     constraints[:locks]&.each do |attribute, value|
-      if value == true && field[attribute] != default_field[attribute] && !is_section1_title?(field, attribute)
+      if value == true && field[attribute] != default_field[attribute] && !section1_title?(field, attribute)
         field.errors.add :constraints, "Cannot change #{attribute} from default value. It is locked."
       end
     end
@@ -79,7 +79,7 @@ class IdeaCustomFieldsService
 
   private
 
-  def is_section1_title?(field, attribute)
+  def section1_title?(field, attribute)
     field.code == 'ideation_section1' && attribute == :title_multiloc
   end
 

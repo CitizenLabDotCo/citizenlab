@@ -349,7 +349,7 @@ RSpec.describe CustomField, type: :model do
   describe 'title_multiloc behaviour for ideation section 1' do
     it 'returns the correct input term message regardless of what the field is set to' do
       resource = create :custom_form
-      ignored_title = { en: 'anything'}
+      ignored_title = { en: 'anything' }
       section = described_class.new(
         resource: resource,
         input_type: 'section',
