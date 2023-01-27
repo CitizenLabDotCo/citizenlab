@@ -533,7 +533,7 @@
   "app.containers.Admin.Users.GroupsPanel.allUsers": "Registrerte brukere",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Grupper",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Få en oversikt over alle personer og organisasjoner som er registrert på plattformen. Legg til et utvalg av brukere i manuelle grupper eller smarte grupper.",
-  "app.containers.Admin.Users.UserTableRow.userInvitationPending": "Ventende invitasjon",
+  "app.containers.Admin.Users.UserTableRow.userInvitationPending": "Invitasjon venter",
   "app.containers.Admin.Users.admin": "Administrator",
   "app.containers.Admin.Users.deleteUser": "Slett bruker",
   "app.containers.Admin.Users.email": "E-post",
