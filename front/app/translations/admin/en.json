@@ -136,6 +136,7 @@
   "app.components.admin.PostManager.statusChangeSave": "Change status",
   "app.components.admin.PostManager.statusesTab": "Status",
   "app.components.admin.PostManager.statusesTabTooltipContent": "Change the status of a post using drag and drop. The original author and other contributors will receive a notification of the changed status.",
+  "app.components.admin.PostManager.test": "testing Crowdin",
   "app.components.admin.PostManager.timelineTab": "Timeline",
   "app.components.admin.PostManager.timelineTabTooltipText": "Drag and drop posts to copy them to different project phases.",
   "app.components.admin.PostManager.title": "Title",
