@@ -67,12 +67,12 @@ export const ParticipationCTAContent = ({
     timeLeftMessage = messages.xDaysLeft;
   }
 
-  let message = hasUserParticipated
+  let userParticipationMessage = hasUserParticipated
     ? messages.userHasParticipated
     : messages.projectOpenForSubmission;
 
   if (isSmallerThanXlPhone && !hasUserParticipated) {
-    message = messages.mobileProjectOpenForSubmission;
+    userParticipationMessage = messages.mobileProjectOpenForSubmission;
   }
 
   if (isSmallerThanXlPhone) {
@@ -104,8 +104,14 @@ export const ParticipationCTAContent = ({
             alignItems="center"
             flexDirection="column"
           >
-            <Text color="white" m="0px" fontWeight="bold" fontSize="s">
-              <FormattedMessage {...message} />
+            <Text color="white" m="0px" fontSize="s">
+              <div
+                style={{
+                  ...(isSmallerThanXlPhone ? { fontWeight: '600' } : {}),
+                }}
+              >
+                <FormattedMessage {...userParticipationMessage} />
+              </div>
             </Text>
             {timeLeft !== undefined && (
               <Text
@@ -162,7 +168,7 @@ export const ParticipationCTAContent = ({
             showAnimation={!hasUserParticipated}
           />
           <Text color="white" fontSize="s" my="0px">
-            <FormattedMessage {...message} />
+            <FormattedMessage {...userParticipationMessage} />
           </Text>
         </Box>
         <Box display="flex" alignItems="center">
