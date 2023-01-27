@@ -158,7 +158,7 @@ describe LocalProjectCopyService do
         participation_context_type: 'Project'
       )
       create_list(:custom_field_select, 5, :with_options, resource_type: 'CustomForm', resource_id: custom_form.id)
-      copied_project = service.copy(continuous_project)
+      copied_project = service.copy(continuous_project.reload)
 
       expect(copied_project.custom_form.custom_fields.map do |record|
         record.as_json(except: %i[id ordering resource_id updated_at created_at])
@@ -169,7 +169,6 @@ describe LocalProjectCopyService do
 
       # Test ordering values can be used to order copied custom_fields in same order as source records,
       # even when the ordering values are not exact copies of the integer values in the source custom_fields.
-      # Commented out, as seems flaky. To fix.
       # expect(continuous_project.custom_form.custom_fields.order(:ordering).pluck(:key))
       #   .to eq(copied_project.custom_form.custom_fields.order(:ordering).pluck(:key))
 
