@@ -17,7 +17,9 @@ type ContentViewerProps = {
 
 const ContentViewer = ({ onMount, params: { slug } }: ContentViewerProps) => {
   const project = useProject({ projectSlug: slug });
-  const featureEnabled = useFeatureFlag({ name: 'content_builder' });
+  const featureEnabled = useFeatureFlag({
+    name: 'project_description_builder',
+  });
 
   useEffect(() => {
     if (!featureEnabled) return;

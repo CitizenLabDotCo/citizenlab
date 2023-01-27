@@ -44,7 +44,9 @@ export const ContentBuilderPage = () => {
 
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
-  const featureEnabled = useFeatureFlag({ name: 'content_builder' });
+  const featureEnabled = useFeatureFlag({
+    name: 'project_description_builder',
+  });
   const locale = useLocale();
   const locales = useAppConfigurationLocales();
   const contentBuilderLayout = useContentBuilderLayout({

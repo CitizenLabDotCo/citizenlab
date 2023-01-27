@@ -63,7 +63,9 @@ const ContentBuilderToggle = ({
   labelTooltipText,
   onMount,
 }: ContentBuilderToggleProps) => {
-  const featureEnabled = useFeatureFlag({ name: 'content_builder' });
+  const featureEnabled = useFeatureFlag({
+    name: 'project_description_builder',
+  });
   const contentBuilderLayout = useContentBuilderLayout({
     projectId: `${params.projectId}`,
     code: PROJECT_DESCRIPTION_CODE,

@@ -16,7 +16,9 @@ const ContentBuilderLayout: React.FC<ContentBuilderLayoutProps> = ({
   onMount,
   location: { pathname },
 }) => {
-  const featureEnabled = useFeatureFlag({ name: 'content_builder' });
+  const featureEnabled = useFeatureFlag({
+    name: 'project_description_builder',
+  });
   const contentBuilderLayoutVisible =
     featureEnabled && pathname.includes('admin/content-builder');
 
