@@ -476,7 +476,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byTagsFilter": "By tag(s)",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contentEditorTitle": "Content",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.editCustomPagePageTitle": "Edit custom page",
-  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedProjectsLabel": "Linked projects",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedProjectsLabel": "Linked Projects",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedProjectsTooltip": "Select which projects and related events can be displayed on the page.",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.messageCreatedSuccess": "Page successfully created",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.messageEditSuccess": "Page successfully saved",
