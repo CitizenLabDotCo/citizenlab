@@ -185,6 +185,8 @@ export const FormEdit = ({
         required: field.required,
         enabled: field.enabled,
         title_multiloc: field.title_multiloc || {},
+        key: field.key,
+        code: field.code,
         description_multiloc: field.description_multiloc || {},
         ...((field.input_type === 'multiselect' ||
           field.input_type === 'select') && {

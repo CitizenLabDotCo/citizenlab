@@ -28,7 +28,6 @@ const LayoutFields = ({ addField, builderConfig }: BuiltInFieldsProps) => {
       <Title
         fontWeight="normal"
         mb="4px"
-        mt="24px"
         ml="16px"
         variant="h6"
         as="h3"

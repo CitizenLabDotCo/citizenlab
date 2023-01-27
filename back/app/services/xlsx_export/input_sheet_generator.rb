@@ -52,7 +52,7 @@ module XlsxExport
     def supported?(field)
       # idea_images_attributes is not supported by XlsxService.
       # Page fields do not capture data, so they are excluded.
-      field.code != 'idea_images_attributes' && field.input_type != 'page'
+      field.code != 'idea_images_attributes' && field.input_type != 'page' && field.input_type != 'section' # TODO: use reportable fields instead? (line 10)
     end
 
     def input_id_report_field
@@ -69,6 +69,10 @@ module XlsxExport
 
     def author_id_report_field
       ComputedFieldForReport.new(column_header_for('author_id'), ->(input) { input.author_id })
+    end
+
+    def budget_report_field
+      ComputedFieldForReport.new(column_header_for('budget'), ->(input) { input.budget })
     end
 
     def latitude_report_field
@@ -169,6 +173,7 @@ module XlsxExport
           meta_fields << downvotes_count_report_field
         end
         meta_fields << baskets_count_report_field if participation_method.supports_baskets?
+        meta_fields << budget_report_field if participation_method.supports_budget?
         meta_fields << input_url_report_field unless participation_method.never_show?
         meta_fields << project_report_field
         meta_fields << status_report_field if participation_method.supports_status?

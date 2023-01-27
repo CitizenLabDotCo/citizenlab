@@ -15,42 +15,150 @@ RSpec.describe InputUiSchemaGeneratorService do
   let(:field_key) { 'field_key' }
 
   describe '#generate_for' do
-    context 'for project with a built-in field and an extra field' do
+    context 'for project with a changed built-in field and an extra section and field' do
       let(:input_term) { 'contribution' }
       let(:project) { create :continuous_project, input_term: 'issue' }
-      let(:custom_form) { create :custom_form, participation_context: project }
-      let(:field1) do
+      let(:custom_form) do
+        create(:custom_form, :with_default_fields, participation_context: project).tap do |form|
+          form.custom_fields.find_by(code: 'title_multiloc').update!(
+            description_multiloc: { 'en' => 'My title description', 'nl-NL' => 'Mijn titel beschrijving' }
+          )
+        end
+      end
+      let(:extra_section) do
         create(
-          :custom_field,
+          :custom_field_section,
           :for_custom_form,
           resource: custom_form,
-          input_type: 'text',
-          title_multiloc: { 'en' => 'Text title', 'fr-FR' => 'Text titre', 'nl-NL' => 'Text titel' },
-          description_multiloc: { 'en' => 'Text description' }
+          title_multiloc: {
+            'en' => 'Extra fields',
+            # No 'nl-NL' to describe that it will default to 'en'.
+            'fr-FR' => 'Extra choses'
+          },
+          description_multiloc: {
+            'en' => 'Custom stuff',
+            # No 'nl-NL' to describe that it will default to 'en'.
+            'fr-FR' => 'Des choses en plus'
+          }
         )
       end
-      let(:field2) do
+      let(:extra_field) do
         create(
           :custom_field,
           :for_custom_form,
           resource: custom_form,
           input_type: 'html_multiloc',
-          code: 'body_multiloc',
           title_multiloc: {
-            'en' => 'Body multiloc field title',
-            'nl-NL' => 'Body multiloc veldtitel'
+            'en' => 'Extra field title',
+            'nl-NL' => 'Extra veldtitel'
             # No 'fr-FR' to describe that it will default to 'en'.
           },
           description_multiloc: {
-            'en' => 'Body multiloc field description',
-            'nl-NL' => 'Body multiloc veldbeschrijving'
+            'en' => 'Extra field description',
+            'nl-NL' => 'Extra veldbeschrijving'
             # No 'fr-FR' to describe that it will default to 'en'.
           }
         )
       end
 
       it 'returns the schema for the given fields' do
-        expect(generator.generate_for([field1, field2])).to eq({
+        ui_schema = generator.generate_for IdeaCustomFieldsService.new(custom_form).enabled_fields
+
+        expect(ui_schema['en'][:elements][0]).to eq({
+          type: 'Category',
+          label: '',
+          options: { id: custom_form.custom_fields.find_by(code: 'ideation_section1').id },
+          elements: [
+            {
+              type: 'VerticalLayout',
+              options: { input_type: 'text_multiloc', render: 'multiloc' },
+              elements: [
+                {
+                  type: 'Control',
+                  scope: '#/properties/title_multiloc/properties/en',
+                  label: '',
+                  options: {
+                    description: 'My title description',
+                    isAdminField: false,
+                    hasRule: false,
+                    locale: 'en',
+                    trim_on_blur: true
+                  }
+                },
+                {
+                  type: 'Control',
+                  scope: '#/properties/title_multiloc/properties/fr-FR',
+                  label: '',
+                  options: {
+                    description: 'My title description',
+                    isAdminField: false,
+                    hasRule: false,
+                    locale: 'fr-FR',
+                    trim_on_blur: true
+                  }
+                },
+                {
+                  type: 'Control',
+                  scope: '#/properties/title_multiloc/properties/nl-NL',
+                  label: '',
+                  options: {
+                    description: 'Mijn titel beschrijving',
+                    isAdminField: false,
+                    hasRule: false,
+                    locale: 'nl-NL',
+                    trim_on_blur: true
+                  }
+                }
+              ]
+            },
+            {
+              type: 'VerticalLayout',
+              options: { input_type: 'text_multiloc', render: 'multiloc' },
+              elements: [
+                {
+                  type: 'Control',
+                  scope: '#/properties/description_multiloc/properties/en',
+                  label: 'Description',
+                  options: {
+                    description: '',
+                    isAdminField: false,
+                    hasRule: false,
+                    render: 'WYSIWYG',
+                    locale: 'en',
+                    trim_on_blur: true
+                  }
+                },
+                {
+                  type: 'Control',
+                  scope: '#/properties/description_multiloc/properties/fr-FR',
+                  label: 'Description',
+                  options: {
+                    description: '',
+                    isAdminField: false,
+                    hasRule: false,
+                    render: 'WYSIWYG',
+                    locale: 'fr-FR',
+                    trim_on_blur: true
+                  }
+                },
+                {
+                  type: 'Control',
+                  scope: '#/properties/description_multiloc/properties/nl-NL',
+                  label: 'Beschrijving',
+                  options: {
+                    description: '',
+                    isAdminField: false,
+                    hasRule: false,
+                    render: 'WYSIWYG',
+                    locale: 'nl-NL',
+                    trim_on_blur: true
+                  }
+                }
+              ]
+            }
+          ]
+        })
+        expect(generator.generate_for(IdeaCustomFieldsService.new(custom_form).enabled_fields)).to eq({
           'en' => {
             type: 'Categorization',
             options: {
@@ -60,16 +168,16 @@ RSpec.describe InputUiSchemaGeneratorService do
             elements: [
               {
                 type: 'Category',
-                label: I18n.t('custom_forms.categories.main_content.contribution.title', locale: 'en'),
-                options: { id: 'mainContent' },
+                label: '',
+                options: { id: custom_form.custom_fields.find_by(code: 'ideation_section1').id },
                 elements: [
                   {
                     type: 'VerticalLayout',
-                    options: { input_type: field2.input_type, render: 'multiloc' },
+                    options: { input_type: extra_field.input_type, render: 'multiloc' },
                     elements: [
                       {
                         type: 'Control',
-                        scope: "#/properties/#{field2.key}/properties/en",
+                        scope: "#/properties/#{extra_field.key}/properties/en",
                         label: 'Body multiloc field title',
                         options: {
                           description: 'Body multiloc field description',
@@ -81,7 +189,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                       },
                       {
                         type: 'Control',
-                        scope: "#/properties/#{field2.key}/properties/fr-FR",
+                        scope: "#/properties/#{extra_field.key}/properties/fr-FR",
                         label: 'Body multiloc field title',
                         options: {
                           description: 'Body multiloc field description',
@@ -93,7 +201,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                       },
                       {
                         type: 'Control',
-                        scope: "#/properties/#{field2.key}/properties/nl-NL",
+                        scope: "#/properties/#{extra_field.key}/properties/nl-NL",
                         label: 'Body multiloc field title',
                         options: {
                           description: 'Body multiloc field description',
@@ -104,25 +212,6 @@ RSpec.describe InputUiSchemaGeneratorService do
                         }
                       }
                     ]
-                  }
-                ]
-              },
-              {
-                type: 'Category',
-                options: { id: 'extra' },
-                label: I18n.t('custom_forms.categories.extra.title', locale: 'en'),
-                elements: [
-                  {
-                    type: 'Control',
-                    scope: "#/properties/#{field1.key}",
-                    label: 'Text title',
-                    options: {
-                      input_type: field1.input_type,
-                      description: 'Text description',
-                      isAdminField: false,
-                      hasRule: false,
-                      transform: 'trim_on_blur'
-                    }
                   }
                 ]
               }
@@ -142,11 +231,11 @@ RSpec.describe InputUiSchemaGeneratorService do
                 elements: [
                   {
                     type: 'VerticalLayout',
-                    options: { input_type: field2.input_type, render: 'multiloc' },
+                    options: { input_type: extra_field.input_type, render: 'multiloc' },
                     elements: [
                       {
                         type: 'Control',
-                        scope: "#/properties/#{field2.key}/properties/en",
+                        scope: "#/properties/#{extra_field.key}/properties/en",
                         label: 'Body multiloc field title',
                         options: {
                           description: 'Body multiloc field description',
@@ -158,7 +247,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                       },
                       {
                         type: 'Control',
-                        scope: "#/properties/#{field2.key}/properties/fr-FR",
+                        scope: "#/properties/#{extra_field.key}/properties/fr-FR",
                         label: 'Body multiloc field title',
                         options: {
                           description: 'Body multiloc field description',
@@ -170,7 +259,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                       },
                       {
                         type: 'Control',
-                        scope: "#/properties/#{field2.key}/properties/nl-NL",
+                        scope: "#/properties/#{extra_field.key}/properties/nl-NL",
                         label: 'Body multiloc field title',
                         options: {
                           description: 'Body multiloc field description',
@@ -181,25 +270,6 @@ RSpec.describe InputUiSchemaGeneratorService do
                         }
                       }
                     ]
-                  }
-                ]
-              },
-              {
-                type: 'Category',
-                options: { id: 'extra' },
-                label: I18n.t('custom_forms.categories.extra.title', locale: 'fr-FR'),
-                elements: [
-                  {
-                    type: 'Control',
-                    scope: "#/properties/#{field1.key}",
-                    label: 'Text titre',
-                    options: {
-                      input_type: field1.input_type,
-                      description: 'Text description',
-                      isAdminField: false,
-                      hasRule: false,
-                      transform: 'trim_on_blur'
-                    }
                   }
                 ]
               }
@@ -219,11 +289,11 @@ RSpec.describe InputUiSchemaGeneratorService do
                 elements: [
                   {
                     type: 'VerticalLayout',
-                    options: { input_type: field2.input_type, render: 'multiloc' },
+                    options: { input_type: extra_field.input_type, render: 'multiloc' },
                     elements: [
                       {
                         type: 'Control',
-                        scope: "#/properties/#{field2.key}/properties/en",
+                        scope: "#/properties/#{extra_field.key}/properties/en",
                         label: 'Body multiloc veldtitel',
                         options: {
                           description: 'Body multiloc veldbeschrijving',
@@ -235,7 +305,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                       },
                       {
                         type: 'Control',
-                        scope: "#/properties/#{field2.key}/properties/fr-FR",
+                        scope: "#/properties/#{extra_field.key}/properties/fr-FR",
                         label: 'Body multiloc veldtitel',
                         options: {
                           description: 'Body multiloc veldbeschrijving',
@@ -247,7 +317,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                       },
                       {
                         type: 'Control',
-                        scope: "#/properties/#{field2.key}/properties/nl-NL",
+                        scope: "#/properties/#{extra_field.key}/properties/nl-NL",
                         label: 'Body multiloc veldtitel',
                         options: {
                           description: 'Body multiloc veldbeschrijving',
@@ -258,25 +328,6 @@ RSpec.describe InputUiSchemaGeneratorService do
                         }
                       }
                     ]
-                  }
-                ]
-              },
-              {
-                type: 'Category',
-                options: { id: 'extra' },
-                label: I18n.t('custom_forms.categories.extra.title', locale: 'nl-NL'),
-                elements: [
-                  {
-                    type: 'Control',
-                    scope: "#/properties/#{field1.key}",
-                    label: 'Text titel',
-                    options: {
-                      input_type: field1.input_type,
-                      description: 'Text description',
-                      isAdminField: false,
-                      hasRule: false,
-                      transform: 'trim_on_blur'
-                    }
                   }
                 ]
               }

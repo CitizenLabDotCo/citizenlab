@@ -109,13 +109,9 @@ const FormBuilderToolbox = ({
     >
       <Box overflowY="auto" w="100%" display="inline">
         <LayoutFields addField={addField} builderConfig={builderConfig} />
-
-        <BuiltInFields
-          addField={addField}
-          builderConfig={builderConfig}
-          isEditingDisabled={isEditingDisabled}
-          move={move}
-        />
+        {builderConfig.displayBuiltInFields && (
+          <BuiltInFields isEditingDisabled={isEditingDisabled} move={move} />
+        )}
         <Box display="flex">
           <Title
             fontWeight="normal"

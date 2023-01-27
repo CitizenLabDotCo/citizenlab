@@ -23,7 +23,8 @@ export type ICustomFieldInputType =
   | 'title_multiloc'
   | 'html_multiloc'
   | 'files'
-  | 'image_files';
+  | 'image_files'
+  | 'topic_ids';
 
 export type IOptionsType = {
   id?: string;
@@ -42,6 +43,7 @@ export interface IAttributes {
   temp_id: string;
   logic: LogicType;
   key: string;
+  code?: string;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
   input_type: ICustomFieldInputType;

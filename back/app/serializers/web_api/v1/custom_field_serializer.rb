@@ -13,10 +13,12 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
   }
 
   attribute :constraints do |object|
-    return {} unless object.resource_type == 'CustomForm'
-
-    @participation_method = Factory.instance.participation_method_for object.resource.participation_context
-    @participation_method.constraints[object.code] || {}
+    if object.resource_type == 'CustomForm'
+      @participation_method = Factory.instance.participation_method_for object.resource.participation_context
+      @participation_method.constraints[object.code&.to_sym] || {}
+    else
+      {}
+    end
   end
 
   attributes :maximum, :minimum_label_multiloc, :maximum_label_multiloc, if: proc { |object, _params|

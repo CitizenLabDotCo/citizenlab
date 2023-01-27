@@ -22,6 +22,7 @@ const IdeaFormBuilder = () => {
     projectId,
     phaseId,
   });
+
   const goBackUrl = `/admin/projects/${projectId}/ideaform`;
 
   return (

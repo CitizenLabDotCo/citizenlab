@@ -25,6 +25,7 @@ export type FormBuilderConfig = {
   toolboxFieldsToExclude: ICustomFieldInputType[];
   formCustomFields: IFlatCustomField[] | undefined | Error;
 
+  displayBuiltInFields: boolean;
   showStatusBadge: boolean;
   isLogicEnabled: boolean;
   isEditPermittedAfterSubmissions: boolean;

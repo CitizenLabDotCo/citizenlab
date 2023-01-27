@@ -14,14 +14,6 @@ class IdeaCustomFieldsService
     end
   end
 
-  def configurable_fields
-    all_fields
-    # disallowed_fields = %w[author_id budget]
-    # all_fields.reject do |field|
-    #   disallowed_fields.include? field.code
-    # end
-  end
-
   def reportable_fields
     enabled_fields.reject(&:built_in?)
   end
@@ -41,7 +33,7 @@ class IdeaCustomFieldsService
   def allowed_extra_field_keys
     fields_with_simple_keys = []
     fields_with_array_keys = {}
-    extra_visible_fields.each do |field|
+    extra_visible_fields.reject(&:section?).each do |field| # TODO: why do we need to do this for sections and not for pages?
       case field.input_type
       when 'multiselect'
         fields_with_array_keys[field.key.to_sym] = []
@@ -51,15 +43,45 @@ class IdeaCustomFieldsService
         fields_with_simple_keys << field.key.to_sym
       end
     end
-    [
-      *fields_with_simple_keys,
-      fields_with_array_keys
-    ]
+    if fields_with_array_keys.empty?
+      fields_with_simple_keys
+    else
+      fields_with_simple_keys + [fields_with_array_keys]
+    end
+  end
+
+  def validate_constraints_against_updates(field, field_params)
+    constraints = @participation_method.constraints[field.code&.to_sym]
+    return unless constraints
+
+    constraints[:locks]&.each do |attribute, value|
+      if value == true && field_params[attribute] != field[attribute] && !section1_title?(field, attribute)
+        field.errors.add :constraints, "Cannot change #{attribute}. It is locked."
+      end
+    end
+  end
+
+  def validate_constraints_against_defaults(field)
+    constraints = @participation_method.constraints[field.code&.to_sym]
+    return unless constraints
+
+    default_fields = @participation_method.default_fields field.resource.participation_context
+    default_field = default_fields.find { |f| f.code == field.code }
+
+    constraints[:locks]&.each do |attribute, value|
+      if value == true && field[attribute] != default_field[attribute] && !section1_title?(field, attribute)
+        field.errors.add :constraints, "Cannot change #{attribute} from default value. It is locked."
+      end
+    end
   end
 
   private
 
+  # Check required as it doesn't matter what is saved in title for section 1
+  # Constraints required for the front-end but response will always return input specific method
+  def section1_title?(field, attribute)
+    field.code == 'ideation_section1' && attribute == :title_multiloc
+  end
+
   attr_reader :custom_form, :participation_method
 end
-
-# IdeaCustomFieldsService.prepend_if_ee('IdeaCustomFields::Patches::IdeaCustomFieldsService')

@@ -30,6 +30,7 @@ export const nativeSurveyConfig: FormBuilderConfig = {
   toolboxFieldsToExclude: [],
   formCustomFields: undefined,
 
+  displayBuiltInFields: false,
   showStatusBadge: true,
   isLogicEnabled: true,
   isEditPermittedAfterSubmissions: false,

@@ -23,6 +23,10 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
     generate_with_pages(fields)
   end
 
+  def visit_topic_ids(field)
+    default field
+  end
+
   def visit_page(field)
     {
       type: 'Page',
@@ -115,22 +119,62 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
     categorization_schema_with(input_term, schema_elements_for(fields))
   end
 
-  def generate_for_current_locale(fields)
-    participation_context = fields.first.resource.participation_context
-    participation_method = Factory.instance.participation_method_for participation_context
-    built_in_field_index = fields.select(&:built_in?).index_by(&:code)
-    main_fields = built_in_field_index.slice('title_multiloc', 'author_id', 'body_multiloc').values
-    details_fields = built_in_field_index.slice('proposed_budget', 'budget', 'topic_ids', 'location_description').values
-    attachments_fields = built_in_field_index.slice('idea_images_attributes', 'idea_files_attributes').values
-    custom_fields = fields.reject(&:built_in?)
+  # def generate_for_current_locale(fields)
+  #   participation_context = fields.first.resource.participation_context
+  #   participation_method = Factory.instance.participation_method_for participation_context
+  #   built_in_field_index = fields.select(&:built_in?).index_by(&:code)
+  #   main_fields = built_in_field_index.slice('title_multiloc', 'author_id', 'body_multiloc').values
+  #   details_fields = built_in_field_index.slice('proposed_budget', 'budget', 'topic_ids', 'location_description').values
+  #   attachments_fields = built_in_field_index.slice('idea_images_attributes', 'idea_files_attributes').values
+  #   custom_fields = fields.reject(&:built_in?)
 
-    elements = [
-      category_for(main_fields, 'mainContent', "custom_forms.categories.main_content.#{input_term}.title"),
-      category_for(details_fields, 'details', 'custom_forms.categories.details.title'),
-      category_for(attachments_fields, 'attachments', 'custom_forms.categories.attachements.title'),
-      category_for(custom_fields, 'extra', participation_method.extra_fields_category_translation_key)
-    ].compact
-    categorization_schema_with(input_term, elements)
+  #   elements = [
+  #     category_for(main_fields, 'mainContent', "custom_forms.categories.main_content.#{input_term}.title"),
+  #     category_for(details_fields, 'details', 'custom_forms.categories.details.title'),
+  #     category_for(attachments_fields, 'attachments', 'custom_forms.categories.attachements.title'),
+  #     category_for(custom_fields, 'extra', participation_method.extra_fields_category_translation_key)
+  #   ].compact
+  #   categorization_schema_with(input_term, elements)
+  # end
+
+  def generate_for_current_locale(fields)
+    return generate_for_current_locale_without_sections fields if fields.none?(&:section?) # TODO: Do we need to do this to keep native surveys working?
+
+    current_section = nil
+    section_fields = []
+    elements = []
+    fields.each do |field|
+      if field.section?
+        elements += [generate_section(current_section, section_fields)] if current_section
+        current_section = field
+        section_fields = []
+      else
+        section_fields += [field]
+      end
+    end
+    elements += [generate_section(current_section, section_fields)] if current_section
+    categorization_schema_with input_term, elements
+  end
+
+  def generate_section(current_section, section_fields)
+    return if section_fields.empty? # TODO: Do we still want to filter out empty sections?
+
+    {
+      type: 'Category',
+      label: (MultilocService.new.t(current_section.title_multiloc) if current_section.title_multiloc),
+      options: { id: current_section.id },
+      elements: section_fields.filter_map { |field| visit field }
+    }
+  end
+
+  def generate_for_current_locale_without_sections(fields)
+    category = {
+      type: 'Category',
+      label: nil,
+      options: { id: 'main_fields' },
+      elements: fields.filter_map { |field| visit field }
+    }
+    categorization_schema_with(input_term, [category])
   end
 
   private
@@ -139,16 +183,5 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
 
   def admin_field?(field)
     field.code == 'budget' || field.code == 'author_id'
-  end
-
-  def category_for(fields, category_id, translation_key)
-    return if fields.empty?
-
-    {
-      type: 'Category',
-      label: (I18n.t(translation_key) if translation_key),
-      options: { id: category_id },
-      elements: fields.filter_map { |field| visit field }
-    }
   end
 end
