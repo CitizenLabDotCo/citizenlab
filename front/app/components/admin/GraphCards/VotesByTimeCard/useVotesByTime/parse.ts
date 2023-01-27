@@ -3,6 +3,8 @@ import moment, { Moment } from 'moment';
 // utils
 import { timeSeriesParser } from 'components/admin/GraphCards/_utils/timeSeries';
 import { get } from 'utils/helperUtils';
+import { orderBy } from 'lodash-es';
+
 // typings
 import {
   Response,
@@ -52,8 +54,13 @@ export const parseTimeSeries = (
   );
   if (!timeSeries) return [];
   let totalCount = total && total.length > 0 ? total[0]?.sum_votes_count : 0;
-  timeSeries = timeSeries
-    .reverse()
+  timeSeries = orderBy(
+    timeSeries,
+    (o: TimeSeriesRow) => {
+      return moment(o.date).format('YYYYMMDD');
+    },
+    ['desc']
+  )
     .map((row) => {
       const _totalCount = totalCount;
       totalCount = (totalCount || 0) - row.upvotes - row.downvotes;

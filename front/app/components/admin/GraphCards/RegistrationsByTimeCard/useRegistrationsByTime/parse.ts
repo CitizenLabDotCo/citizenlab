@@ -3,7 +3,7 @@ import moment, { Moment } from 'moment';
 // utils
 import { timeSeriesParser } from 'components/admin/GraphCards/_utils/timeSeries';
 import { get } from 'utils/helperUtils';
-import { sumBy } from 'lodash-es';
+import { sumBy, orderBy } from 'lodash-es';
 
 // typings
 import {
@@ -53,8 +53,13 @@ export const parseTimeSeries = (
 
   if (!timeSeries) return [];
   let totalCount = sumBy(total, (t) => t.count);
-  timeSeries = timeSeries
-    .reverse()
+  timeSeries = orderBy(
+    timeSeries,
+    (o: TimeSeriesRow) => {
+      return moment(o.date).format('YYYYMMDD');
+    },
+    ['desc']
+  )
     .map((row) => {
       const _totalCount = totalCount;
       totalCount = (totalCount || 0) - row.registrations;
