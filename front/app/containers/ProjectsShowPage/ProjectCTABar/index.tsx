@@ -36,6 +36,7 @@ export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
   const isSmallerThanXlPhone = useBreakpoint('phone');
 
   useEffect(() => {
+    let isMounted = true;
     window.addEventListener(
       'scroll',
       () => {
@@ -45,17 +46,22 @@ export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
         const actionButtonYOffset = actionButtonElement
           ? actionButtonElement.getBoundingClientRect().top + window.pageYOffset
           : undefined;
-        setIsVisible(
-          !!(
-            actionButtonElement &&
-            actionButtonYOffset &&
-            window.pageYOffset >
-              actionButtonYOffset - (smallerThanLargeTablet ? 14 : 30)
-          )
-        );
+        if (isMounted) {
+          setIsVisible(
+            !!(
+              actionButtonElement &&
+              actionButtonYOffset &&
+              window.pageYOffset >
+                actionButtonYOffset - (smallerThanLargeTablet ? 14 : 30)
+            )
+          );
+        }
       },
       { passive: true }
     );
+    return () => {
+      isMounted = false;
+    };
   }, [projectId, smallerThanLargeTablet]);
 
   const project = useProject({ projectId });
