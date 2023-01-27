@@ -5,15 +5,15 @@ module ContentBuilder
     extend CitizenLab::Mixins::FeatureSpecification
 
     def self.feature_name
-      'content_builder'
+      'project_description_builder'
     end
 
     def self.feature_title
-      'Content builder'
+      'Project-description builder'
     end
 
     def self.feature_description
-      'Customize the layouts for different parts of the platform (project page, home page etc.). This feature is experimental and should not be enabled yet.'
+      'Activate the rich editor that allows customization of project descriptions.'
     end
   end
 end
