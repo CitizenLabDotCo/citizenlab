@@ -14,7 +14,7 @@ describe WebApi::V1::CustomFieldSerializer do
   end
 
   context 'for idea custom fields' do
-    let(:field) { create :custom_field, resource_type: 'CustomForm', key: 'extra' }
+    let(:field) { create :custom_field, :for_custom_form, key: 'extra' }
 
     it "does not include the attribute 'hidden'" do
       serialized_field = described_class.new(field).serializable_hash
@@ -42,7 +42,8 @@ describe WebApi::V1::CustomFieldSerializer do
         required: false,
         title_multiloc: { 'en' => 'Did you attend' },
         updated_at: an_instance_of(ActiveSupport::TimeWithZone),
-        logic: {}
+        logic: {},
+        constraints: {}
       })
     end
   end
@@ -61,7 +62,7 @@ describe WebApi::V1::CustomFieldSerializer do
   end
 
   context 'linear_scale field' do
-    let(:field) { create :custom_field_linear_scale, resource_type: 'CustomForm', key: 'scale' }
+    let(:field) { create :custom_field_linear_scale, :for_custom_form, key: 'scale' }
 
     it 'includes maximum, minimum_label_multiloc, and maximum_label_multiloc' do
       serialized_field = described_class.new(field).serializable_hash
@@ -80,7 +81,8 @@ describe WebApi::V1::CustomFieldSerializer do
         required: false,
         title_multiloc: { 'en' => 'We need a swimming pool.' },
         updated_at: an_instance_of(ActiveSupport::TimeWithZone),
-        logic: {}
+        logic: {},
+        constraints: {}
       })
     end
   end
@@ -89,7 +91,7 @@ describe WebApi::V1::CustomFieldSerializer do
     let(:field) do
       create(
         :custom_field_page,
-        resource_type: 'CustomForm',
+        :for_custom_form,
         key: 'page_1',
         logic: { next_page_id: 'TEMP-ID-1' }
       )
@@ -109,7 +111,8 @@ describe WebApi::V1::CustomFieldSerializer do
         required: false,
         title_multiloc: { 'en' => 'Cycling survey' },
         updated_at: an_instance_of(ActiveSupport::TimeWithZone),
-        logic: { 'next_page_id' => 'TEMP-ID-1' }
+        logic: { 'next_page_id' => 'TEMP-ID-1' },
+        constraints: {}
       })
     end
   end

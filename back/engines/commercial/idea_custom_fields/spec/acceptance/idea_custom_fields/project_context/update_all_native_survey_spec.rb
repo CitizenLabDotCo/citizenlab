@@ -258,7 +258,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: page1.id,
           type: 'custom_field',
@@ -281,7 +282,8 @@ resource 'Idea Custom Fields' do
             maximum_label_multiloc: field_to_update.maximum_label_multiloc.symbolize_keys,
             logic: {
               rules: [{ if: 2, goto_page_id: page3.id }]
-            }
+            },
+            constraints: {}
           },
           id: field_to_update.id,
           type: 'custom_field',
@@ -299,7 +301,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page2.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: page2.id,
           type: 'custom_field',
@@ -317,7 +320,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page3.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: page3.id,
           type: 'custom_field',
@@ -385,7 +389,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page_to_update.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: { next_page_id: page4.id }
+            logic: { next_page_id: page4.id },
+            constraints: {}
           },
           id: page_to_update.id,
           type: 'custom_field',
@@ -403,7 +408,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page2.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: page2.id,
           type: 'custom_field',
@@ -421,7 +427,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page3.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: page3.id,
           type: 'custom_field',
@@ -439,7 +446,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page4.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: page4.id,
           type: 'custom_field',
@@ -461,7 +469,8 @@ resource 'Idea Custom Fields' do
               description_multiloc: page_to_update.description_multiloc,
               required: false,
               enabled: true,
-              logic: { next_page_id: 'TEMP-ID-1' }
+              logic: { next_page_id: 'TEMP-ID-1' },
+              constraints: {}
             },
             {
               id: page2.id,
@@ -506,7 +515,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page_to_update.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: { next_page_id: json_response[:data][3][:id] }
+            logic: { next_page_id: json_response[:data][3][:id] },
+            constraints: {}
           },
           id: page_to_update.id,
           type: 'custom_field',
@@ -524,7 +534,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page2.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: page2.id,
           type: 'custom_field',
@@ -542,7 +553,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page3.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: page3.id,
           type: 'custom_field',
@@ -555,12 +567,13 @@ resource 'Idea Custom Fields' do
             description_multiloc: { en: 'Page 4 description' },
             enabled: true,
             input_type: 'page',
-            key: 'page_4',
+            key: nil,
             ordering: 3,
             required: false,
             title_multiloc: { en: 'Page 4' },
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -611,12 +624,13 @@ resource 'Idea Custom Fields' do
             description_multiloc: { en: 'New page with logic description' },
             enabled: true,
             input_type: 'page',
-            key: an_instance_of(String),
+            key: nil,
             ordering: 0,
             required: false,
             title_multiloc: { en: 'New page with logic' },
             updated_at: an_instance_of(String),
-            logic: { next_page_id: json_response[:data][2][:id] }
+            logic: { next_page_id: json_response[:data][2][:id] },
+            constraints: {}
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -634,7 +648,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: existing_page.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: existing_page.id,
           type: 'custom_field',
@@ -647,12 +662,13 @@ resource 'Idea Custom Fields' do
             description_multiloc: { en: 'Target page description' },
             enabled: true,
             input_type: 'page',
-            key: an_instance_of(String),
+            key: nil,
             ordering: 2,
             required: false,
             title_multiloc: { en: 'Target page' },
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -711,7 +727,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page_to_update.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: page_to_update.id,
           type: 'custom_field',
@@ -729,7 +746,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page2.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: page2.id,
           type: 'custom_field',
@@ -747,7 +765,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page3.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: page3.id,
           type: 'custom_field',
@@ -798,7 +817,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page_to_update.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: page_to_update.id,
           type: 'custom_field',
@@ -816,7 +836,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page2.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: page2.id,
           type: 'custom_field',
@@ -895,7 +916,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: page1.id,
           type: 'custom_field',
@@ -918,7 +940,8 @@ resource 'Idea Custom Fields' do
             maximum_label_multiloc: field_to_update.maximum_label_multiloc.symbolize_keys,
             logic: {
               rules: [{ if: 2, goto_page_id: json_response[:data][3][:id] }]
-            }
+            },
+            constraints: {}
           },
           id: field_to_update.id,
           type: 'custom_field',
@@ -936,7 +959,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page2.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: page2.id,
           type: 'custom_field',
@@ -949,12 +973,13 @@ resource 'Idea Custom Fields' do
             description_multiloc: { en: 'Page 3 description' },
             enabled: true,
             input_type: 'page',
-            key: 'page_3',
+            key: nil,
             ordering: 3,
             required: false,
             title_multiloc: { en: 'Page 3' },
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -1034,7 +1059,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: page1.id,
           type: 'custom_field',
@@ -1057,7 +1083,8 @@ resource 'Idea Custom Fields' do
             maximum_label_multiloc: field_to_update.maximum_label_multiloc.symbolize_keys,
             logic: {
               rules: [{ if: 1, goto_page_id: page2.id }]
-            }
+            },
+            constraints: {}
           },
           id: field_to_update.id,
           type: 'custom_field',
@@ -1075,7 +1102,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page3.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: page3.id,
           type: 'custom_field',
@@ -1093,7 +1121,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page2.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: page2.id,
           type: 'custom_field',
@@ -1162,7 +1191,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: page1.id,
           type: 'custom_field',
@@ -1183,7 +1213,8 @@ resource 'Idea Custom Fields' do
             maximum: 5,
             minimum_label_multiloc: field_to_update.minimum_label_multiloc.symbolize_keys,
             maximum_label_multiloc: field_to_update.maximum_label_multiloc.symbolize_keys,
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: field_to_update.id,
           type: 'custom_field',
@@ -1201,7 +1232,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page2.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: page2.id,
           type: 'custom_field',
@@ -1263,7 +1295,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: page1.id,
           type: 'custom_field',
@@ -1284,7 +1317,8 @@ resource 'Idea Custom Fields' do
             maximum: 5,
             minimum_label_multiloc: field_to_update.minimum_label_multiloc.symbolize_keys,
             maximum_label_multiloc: field_to_update.maximum_label_multiloc.symbolize_keys,
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: field_to_update.id,
           type: 'custom_field',
@@ -1335,7 +1369,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: page1.id,
           type: 'custom_field',
@@ -1420,7 +1455,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: page1.id,
           type: 'custom_field',
@@ -1443,7 +1479,8 @@ resource 'Idea Custom Fields' do
             maximum_label_multiloc: field_to_update.maximum_label_multiloc.symbolize_keys,
             logic: {
               rules: [{ if: 2, goto_page_id: page3.id }]
-            }
+            },
+            constraints: {}
           },
           id: field_to_update.id,
           type: 'custom_field',
@@ -1461,7 +1498,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page2.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: page2.id,
           type: 'custom_field',
@@ -1479,7 +1517,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page3.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: page3.id,
           type: 'custom_field',
@@ -1546,7 +1585,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: page1.id,
           type: 'custom_field',
@@ -1569,7 +1609,8 @@ resource 'Idea Custom Fields' do
             maximum_label_multiloc: field_to_update.maximum_label_multiloc.symbolize_keys,
             logic: {
               rules: [{ if: 2, goto_page_id: json_response[:data][2][:id] }]
-            }
+            },
+            constraints: {}
           },
           id: field_to_update.id,
           type: 'custom_field',
@@ -1582,12 +1623,13 @@ resource 'Idea Custom Fields' do
             description_multiloc: { en: 'Page 2 description' },
             enabled: true,
             input_type: 'page',
-            key: 'page_2',
+            key: nil,
             ordering: 2,
             required: false,
             title_multiloc: { en: 'Page 2' },
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -1689,7 +1731,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: page1.id,
           type: 'custom_field',
@@ -1709,7 +1752,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {
               rules: [{ if: added_option1.id, goto_page_id: json_response[:data][3][:id] }]
-            }
+            },
+            constraints: {}
           },
           id: field1_to_update.id,
           type: 'custom_field',
@@ -1736,7 +1780,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {
               rules: [{ if: added_option2.id, goto_page_id: json_response[:data][4][:id] }]
-            }
+            },
+            constraints: {}
           },
           id: field2_to_update.id,
           type: 'custom_field',
@@ -1756,12 +1801,13 @@ resource 'Idea Custom Fields' do
             description_multiloc: { en: 'Page 2 description' },
             enabled: true,
             input_type: 'page',
-            key: 'page_2',
+            key: nil,
             ordering: 3,
             required: false,
             title_multiloc: { en: 'Page 2' },
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -1774,12 +1820,13 @@ resource 'Idea Custom Fields' do
             description_multiloc: { en: 'Page 3 description' },
             enabled: true,
             input_type: 'page',
-            key: 'page_3',
+            key: nil,
             ordering: 4,
             required: false,
             title_multiloc: { en: 'Page 3' },
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -1841,7 +1888,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: page1.id,
           type: 'custom_field',
@@ -1864,7 +1912,8 @@ resource 'Idea Custom Fields' do
             maximum_label_multiloc: { en: 'Strongly agree' },
             logic: {
               rules: [{ if: 2, goto_page_id: json_response[:data][2][:id] }]
-            }
+            },
+            constraints: {}
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -1877,12 +1926,13 @@ resource 'Idea Custom Fields' do
             description_multiloc: { en: 'Page 2 description' },
             enabled: true,
             input_type: 'page',
-            key: 'page_2',
+            key: nil,
             ordering: 2,
             required: false,
             title_multiloc: { en: 'Page 2' },
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -1967,7 +2017,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: page1.id,
           type: 'custom_field',
@@ -1993,7 +2044,8 @@ resource 'Idea Custom Fields' do
                 { if: 1, goto_page_id: page2.id },
                 { if: 2, goto_page_id: page3.id }
               ]
-            }
+            },
+            constraints: {}
           },
           id: field_to_update.id,
           type: 'custom_field',
@@ -2011,7 +2063,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page2.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: page2.id,
           type: 'custom_field',
@@ -2029,7 +2082,8 @@ resource 'Idea Custom Fields' do
             required: false,
             title_multiloc: page3.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: page3.id,
           type: 'custom_field',
@@ -2081,7 +2135,8 @@ resource 'Idea Custom Fields' do
             required: true,
             title_multiloc: { en: 'Changed field' },
             updated_at: an_instance_of(String),
-            logic: {}
+            logic: {},
+            constraints: {}
           },
           id: an_instance_of(String),
           type: 'custom_field',

@@ -47,11 +47,11 @@ resource 'User Custom Fields' do
       {
         id: id,
         type: 'user_custom_field',
-        attributes: {
+        attributes: hash_including(
           key: custom_field.key,
           input_type: custom_field.input_type,
-          title_multiloc: custom_field.title_multiloc,
-          description_multiloc: custom_field.description_multiloc,
+          title_multiloc: custom_field.title_multiloc.symbolize_keys,
+          description_multiloc: custom_field.description_multiloc.symbolize_keys,
           required: custom_field.required?,
           hidden: custom_field.hidden?,
           enabled: custom_field.enabled?,
@@ -60,7 +60,7 @@ resource 'User Custom Fields' do
           created_at: custom_field.created_at.as_json,
           updated_at: custom_field.updated_at.as_json,
           logic: {}
-        },
+        ),
         relationships: {
           current_ref_distribution: expected_ref_distribution_linkage,
           options: {

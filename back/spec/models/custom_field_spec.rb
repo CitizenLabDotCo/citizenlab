@@ -71,6 +71,10 @@ class TestVisitor < FieldVisitorService
     'section from visitor'
   end
 
+  def visit_topic_ids(_field)
+    'topic_ids from visitor'
+  end
+
   def visit_file_upload(_field)
     'file_upload from visitor'
   end

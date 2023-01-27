@@ -18,30 +18,16 @@ describe IdeaCustomFieldsService do
       it 'returns the built-in fields' do
         output = service.all_fields
         expect(output.map(&:code)).to eq %w[
+          ideation_section_1
           title_multiloc
           body_multiloc
-          author_id
-          budget
-          proposed_budget
-          topic_ids
-          location_description
+          ideation_section_2
           idea_images_attributes
           idea_files_attributes
-        ]
-      end
-    end
-
-    describe 'configurable_fields' do
-      it 'returns all fields except author_id and budget' do
-        output = service.configurable_fields
-        expect(output.map(&:code)).to eq %w[
-          title_multiloc
-          body_multiloc
-          proposed_budget
+          ideation_section_3
           topic_ids
           location_description
-          idea_images_attributes
-          idea_files_attributes
+          proposed_budget
         ]
       end
     end
@@ -57,14 +43,15 @@ describe IdeaCustomFieldsService do
       it 'excludes disabled fields' do
         output = service.visible_fields
         expect(output.map(&:code)).to eq %w[
+          ideation_section_1
           title_multiloc
           body_multiloc
-          author_id
-          budget
-          topic_ids
-          location_description
+          ideation_section_2
           idea_images_attributes
           idea_files_attributes
+          ideation_section_3
+          topic_ids
+          location_description
         ]
       end
     end
@@ -73,14 +60,15 @@ describe IdeaCustomFieldsService do
       it 'excludes disabled fields' do
         output = service.enabled_fields
         expect(output.map(&:code)).to eq %w[
+          ideation_section_1
           title_multiloc
           body_multiloc
-          author_id
-          budget
-          topic_ids
-          location_description
+          ideation_section_2
           idea_images_attributes
           idea_files_attributes
+          ideation_section_3
+          topic_ids
+          location_description
         ]
       end
     end
@@ -120,37 +108,15 @@ describe IdeaCustomFieldsService do
         expect(output).to include extra_field2
         expect(output).to include topic_field
         expect(output.map(&:code)).to eq [
+          'ideation_section_1',
           'title_multiloc',
           'body_multiloc',
-          'author_id',
-          'budget',
-          'proposed_budget',
-          'topic_ids',
+          'ideation_section_2',
           'idea_images_attributes',
           'idea_files_attributes',
-          nil,
-          nil
-        ]
-      end
-    end
-
-    describe 'configurable_fields' do
-      it 'returns all fields except author_id and budget' do
-        topic_field = custom_form.custom_fields.find_by(code: 'topic_ids')
-        topic_field.update!(enabled: false)
-        custom_form.custom_fields.find_by(code: 'location_description').destroy!
-
-        output = service.configurable_fields
-        expect(output).to include extra_field1
-        expect(output).to include extra_field2
-        expect(output).to include topic_field
-        expect(output.map(&:code)).to eq [
-          'title_multiloc',
-          'body_multiloc',
-          'proposed_budget',
+          'ideation_section_3',
           'topic_ids',
-          'idea_images_attributes',
-          'idea_files_attributes',
+          'proposed_budget',
           nil,
           nil
         ]
@@ -177,12 +143,13 @@ describe IdeaCustomFieldsService do
         expect(output).not_to include extra_field2
         expect(output).not_to include topic_field
         expect(output.map(&:code)).to eq [
+          'ideation_section_1',
           'title_multiloc',
           'body_multiloc',
-          'author_id',
-          'budget',
+          'ideation_section_2',
           'idea_images_attributes',
           'idea_files_attributes',
+          'ideation_section_3',
           nil
         ]
       end
@@ -199,12 +166,13 @@ describe IdeaCustomFieldsService do
         expect(output).not_to include extra_field2
         expect(output).not_to include topic_field
         expect(output.map(&:code)).to eq [
+          'ideation_section_1',
           'title_multiloc',
           'body_multiloc',
-          'author_id',
-          'budget',
+          'ideation_section_2',
           'idea_images_attributes',
           'idea_files_attributes',
+          'ideation_section_3',
           nil
         ]
       end

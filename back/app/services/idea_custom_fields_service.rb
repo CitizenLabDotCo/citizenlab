@@ -14,14 +14,6 @@ class IdeaCustomFieldsService
     end
   end
 
-  def configurable_fields
-    all_fields
-    # disallowed_fields = %w[author_id budget]
-    # all_fields.reject do |field|
-    #   disallowed_fields.include? field.code
-    # end
-  end
-
   def reportable_fields
     enabled_fields.reject(&:built_in?)
   end
@@ -51,10 +43,11 @@ class IdeaCustomFieldsService
         fields_with_simple_keys << field.key.to_sym
       end
     end
-    [
-      *fields_with_simple_keys,
-      fields_with_array_keys
-    ]
+    if fields_with_array_keys.empty?
+      fields_with_simple_keys
+    else
+      fields_with_simple_keys + [fields_with_array_keys]
+    end
   end
 
   def validate_update_constraints(field, field_params)
@@ -92,5 +85,3 @@ class IdeaCustomFieldsService
 
   attr_reader :custom_form, :participation_method
 end
-
-# IdeaCustomFieldsService.prepend_if_ee('IdeaCustomFields::Patches::IdeaCustomFieldsService')

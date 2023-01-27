@@ -173,7 +173,7 @@ module ParticipationMethod
           resource: custom_form,
           key: 'topic_ids',
           code: 'topic_ids',
-          input_type: 'multiselect',
+          input_type: 'topic_ids',
           title_multiloc: multiloc_service.i18n_to_multiloc(
             'custom_fields.ideas.topic_ids.title',
             locales: CL2_SUPPORTED_LOCALES
@@ -215,28 +215,6 @@ module ParticipationMethod
         CustomField.new(
           id: SecureRandom.uuid,
           resource: custom_form,
-          key: 'budget',
-          code: 'budget',
-          input_type: 'number',
-          title_multiloc: multiloc_service.i18n_to_multiloc(
-            'custom_fields.ideas.budget.title',
-            locales: CL2_SUPPORTED_LOCALES
-          ),
-          description_multiloc: begin
-            multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.budget.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue StandardError
-            {}
-          end,
-          required: false,
-          enabled: true,
-          ordering: 9
-        ),
-        CustomField.new(
-          id: SecureRandom.uuid,
-          resource: custom_form,
           key: 'proposed_budget',
           code: 'proposed_budget',
           input_type: 'number',
@@ -254,29 +232,7 @@ module ParticipationMethod
           end,
           required: false,
           enabled: false,
-          ordering: 10
-        ),
-        CustomField.new(
-          id: SecureRandom.uuid,
-          resource: custom_form,
-          key: 'author_id',
-          code: 'author_id',
-          input_type: 'text',
-          title_multiloc: multiloc_service.i18n_to_multiloc(
-            'custom_fields.ideas.author_id.title',
-            locales: CL2_SUPPORTED_LOCALES
-          ),
-          description_multiloc: begin
-            multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.author_id.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
-          rescue StandardError
-            {}
-          end,
-          required: false,
-          enabled: true,
-          ordering: 11
+          ordering: 9
         )
       ]
     end
@@ -312,6 +268,10 @@ module ParticipationMethod
     end
 
     def supports_baskets?
+      true
+    end
+
+    def supports_budget?
       true
     end
 
