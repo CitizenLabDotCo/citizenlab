@@ -1,7 +1,7 @@
 import React, { useEffect, useState, FormEvent } from 'react';
 
 // Components
-import { Button, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Button } from '@citizenlab/cl2-component-library';
 import { ParticipationCTAContent } from 'components/ParticipationCTABars/ParticipationCTAContent';
 
 // hooks
@@ -23,7 +23,6 @@ import messages from '../messages';
 
 export const VolunteeringCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
-  const isSmallerThanXlPhone = useBreakpoint('phone');
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
 
   useEffect(() => {
@@ -47,9 +46,9 @@ export const VolunteeringCTABar = ({ phases, project }: CTABarProps) => {
       fontWeight="500"
       bgColor={theme.colors.white}
       textColor={theme.colors.tenantText}
-      iconColor={theme.colors.tenantText}
       textHoverColor={theme.colors.black}
-      padding={isSmallerThanXlPhone ? '4px' : undefined}
+      padding="6px 12px"
+      fontSize="14px"
     >
       <FormattedMessage {...messages.volunteer} />
     </Button>

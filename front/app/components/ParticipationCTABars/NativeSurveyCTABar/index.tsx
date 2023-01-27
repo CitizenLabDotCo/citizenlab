@@ -61,7 +61,9 @@ export const NativeSurveyCTABar = ({ project }: CTABarProps) => {
       textHoverColor={theme.colors.black}
       iconHoverColor={theme.colors.black}
       phase={currentPhase}
-      padding={isSmallerThanXlPhone ? '4px' : undefined}
+      iconSize="20px"
+      padding="6px 12px"
+      fontSize="14px"
     />
   );
 
