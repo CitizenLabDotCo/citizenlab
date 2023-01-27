@@ -39,6 +39,7 @@ const VotesByTimeCard = ({
   const graphRef = useRef();
   const { timeSeries, xlsxData, currentResolution, formattedNumbers } =
     useVotesByTime({
+      projectId,
       startAtMoment,
       endAtMoment,
       resolution,
@@ -77,7 +78,6 @@ const VotesByTimeCard = ({
           <Box pt="8px" height="200px" width="100%" maxWidth="800px" mt="-1px">
             <Chart
               timeSeries={timeSeries}
-              projectId={projectId}
               startAtMoment={startAtMoment}
               endAtMoment={endAtMoment}
               resolution={currentResolution}

@@ -92,9 +92,10 @@ const formatSerieChange = (serieChange: number) => {
 
 export const getFormattedNumbers = (serie) => {
   if (serie) {
-    const firstSerieValue = serie ? serie[0].total : 0;
-    const lastSerieValue = serie ? serie[serie.length - 1].total : 0;
-    const firstSerieBar = serie ? serie[0].upvotes + serie[0].downvotes : 0;
+    const firstSerieValue = serie.length > 0 ? serie[0].total : 0;
+    const lastSerieValue = serie.length > 0 ? serie[serie.length - 1].total : 0;
+    const firstSerieBar =
+      serie.length > 0 ? serie[0].upvotes + serie[0].downvotes : 0;
     const serieChange = lastSerieValue - firstSerieValue + firstSerieBar;
     let typeOfChange: 'increase' | 'decrease' | '' = '';
 

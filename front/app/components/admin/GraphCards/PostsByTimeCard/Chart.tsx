@@ -12,16 +12,10 @@ import { toThreeLetterMonth } from 'utils/dateUtils';
 import { generateEmptyData } from './generateEmptyData';
 
 // typings
-import {
-  ProjectId,
-  Dates,
-  Resolution,
-  Layout,
-} from 'components/admin/GraphCards/typings';
+import { Dates, Resolution, Layout } from 'components/admin/GraphCards/typings';
 import { TimeSeries } from './usePostsByTime/typings';
 
-type Props = ProjectId &
-  Dates &
+type Props = Dates &
   Resolution & {
     timeSeries: TimeSeries | NilOrError;
     innerRef: React.RefObject<any>;
@@ -30,7 +24,6 @@ type Props = ProjectId &
 
 const Chart = ({
   timeSeries,
-  projectId,
   startAtMoment,
   endAtMoment,
   resolution,
@@ -51,7 +44,7 @@ const Chart = ({
     return null;
   }
 
-  const noData = isNilOrError(timeSeries) || !!projectId;
+  const noData = isNilOrError(timeSeries);
 
   return (
     <LineBarChart

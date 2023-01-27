@@ -2,6 +2,7 @@
 import {
   getDateFilter,
   getInterval,
+  getProjectFilter,
 } from 'components/admin/GraphCards/_utils/query';
 
 // typings
@@ -10,6 +11,7 @@ import { QueryParameters } from './typings';
 import moment from 'moment';
 
 export const query = ({
+  projectId,
   startAtMoment,
   endAtMoment,
   resolution,
@@ -21,6 +23,7 @@ export const query = ({
     fact: 'participation',
     filters: {
       ...getDateFilter('dimension_date_created', startAt, endAt),
+      ...getProjectFilter('dimension_project', projectId),
       'dimension_type.name': 'vote',
     },
     groups: `dimension_date_created.${getInterval(resolution)}`,
@@ -34,6 +37,7 @@ export const query = ({
   const postsByTimeTotal: QuerySchema = {
     fact: 'participation',
     filters: {
+      ...getProjectFilter('dimension_project', projectId),
       'dimension_type.name': 'vote',
     },
     aggregations: {

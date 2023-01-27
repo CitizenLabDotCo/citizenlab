@@ -25,6 +25,7 @@ import { IResolution } from 'components/admin/ResolutionControl';
 import { XlsxData } from 'components/admin/ReportExportMenu';
 
 export default function usePostsByTime({
+  projectId,
   startAtMoment,
   endAtMoment,
   resolution,
@@ -45,6 +46,7 @@ export default function usePostsByTime({
   useEffect(() => {
     const observable = analyticsStream<Response>(
       query({
+        projectId,
         startAtMoment,
         endAtMoment,
         resolution,
@@ -84,7 +86,7 @@ export default function usePostsByTime({
     );
 
     return () => subscription.unsubscribe();
-  }, [startAtMoment, endAtMoment, resolution, formatMessage]);
+  }, [startAtMoment, endAtMoment, resolution, formatMessage, projectId]);
 
   return { currentResolution, timeSeries, xlsxData, formattedNumbers };
 }
