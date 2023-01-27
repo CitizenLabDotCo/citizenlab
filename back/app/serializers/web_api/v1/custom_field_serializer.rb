@@ -15,8 +15,7 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
   attribute :constraints do |object|
     if object.resource_type == 'CustomForm'
       @participation_method = Factory.instance.participation_method_for object.resource.participation_context
-      code = object.code ? object.code.to_sym : nil
-      @participation_method.constraints[code] || {}
+      @participation_method.constraints[object.code&.to_sym] || {}
     else
       {}
     end

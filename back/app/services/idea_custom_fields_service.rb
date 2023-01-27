@@ -51,8 +51,7 @@ class IdeaCustomFieldsService
   end
 
   def validate_constraints_against_updates(field, field_params)
-    field_code = field.code ? field.code.to_sym : nil
-    constraints = @participation_method.constraints[field_code]
+    constraints = @participation_method.constraints[field.code&.to_sym]
     return unless constraints
 
     constraints[:locks]&.each do |attribute, value|
@@ -63,8 +62,7 @@ class IdeaCustomFieldsService
   end
 
   def validate_constraints_against_defaults(field)
-    field_code = field.code ? field.code.to_sym : nil
-    constraints = @participation_method.constraints[field_code]
+    constraints = @participation_method.constraints[field.code&.to_sym]
     return unless constraints
 
     default_fields = @participation_method.default_fields field.resource.participation_context
@@ -79,6 +77,8 @@ class IdeaCustomFieldsService
 
   private
 
+  # Check required as it doesn't matter what is saved in title for section 1
+  # Constraints required for the front-end but response will always return input specific method
   def section1_title?(field, attribute)
     field.code == 'ideation_section1' && attribute == :title_multiloc
   end
