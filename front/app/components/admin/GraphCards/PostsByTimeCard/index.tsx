@@ -6,19 +6,15 @@ import usePostsByTime from './usePostsByTime';
 // components
 import GraphCard from 'components/admin/GraphCard';
 import { Box } from '@citizenlab/cl2-component-library';
+import Title from './Title';
 import Chart from './Chart';
-import {
-  GraphCardFigureContainer,
-  GraphCardFigure,
-  GraphCardFigureChange,
-} from 'components/admin/GraphWrappers';
 
 // i18n
 import messages from 'containers/Admin/dashboard/messages';
 import { useIntl } from 'utils/cl-intl';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings
 import {
@@ -26,6 +22,7 @@ import {
   Dates,
   Resolution,
 } from 'components/admin/GraphCards/typings';
+import { TimeSeries } from './usePostsByTime/typings';
 
 type Props = ProjectId & Dates & Resolution;
 
@@ -38,12 +35,18 @@ const formatSerieChange = (serieChange: number) => {
   return null;
 };
 
-const getFormattedNumbers = (serie) => {
-  if (serie) {
+const getFormattedNumbers = (
+  serie: TimeSeries | NilOrError
+): {
+  typeOfChange: 'increase' | 'decrease' | null;
+  totalNumber: number | null;
+  formattedSerieChange: string | null;
+} => {
+  if (!isNilOrError(serie)) {
     const firstSerieValue = serie && serie[0].total;
     const lastSerieValue = serie && serie[serie.length - 1].total;
     const serieChange = lastSerieValue - firstSerieValue;
-    let typeOfChange: 'increase' | 'decrease' | '' = '';
+    let typeOfChange: 'increase' | 'decrease' | null = null;
 
     if (serieChange > 0) {
       typeOfChange = 'increase';
@@ -61,7 +64,7 @@ const getFormattedNumbers = (serie) => {
   return {
     totalNumber: null,
     formattedSerieChange: null,
-    typeOfChange: '',
+    typeOfChange: null,
   };
 };
 
@@ -83,22 +86,9 @@ const PostByTimeCard = ({
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
 
-  const { totalNumber, formattedSerieChange, typeOfChange } =
-    getFormattedNumbers(timeSeries);
-
   return (
     <GraphCard
-      title={
-        <>
-          {cardTitle}
-          <GraphCardFigureContainer>
-            <GraphCardFigure>{totalNumber}</GraphCardFigure>
-            <GraphCardFigureChange className={typeOfChange}>
-              {formattedSerieChange}
-            </GraphCardFigureChange>
-          </GraphCardFigureContainer>
-        </>
-      }
+      title={<Title title={cardTitle} {...getFormattedNumbers(timeSeries)} />}
       exportMenu={{
         name: cardTitle,
         svgNode: graphRef,
