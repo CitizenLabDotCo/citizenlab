@@ -6,13 +6,13 @@ import { stylingConsts } from 'utils/styleUtils';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import ContentBuilderEditModePreview from '../components/ContentBuilderEditModePreview';
+import ContentBuilderEditModePreview from '../components/ProjectDescriptionBuilderEditModePreview';
 
 // craft
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import Editor from '../components/Editor';
-import ContentBuilderToolbox from '../components/ContentBuilderToolbox';
-import ContentBuilderTopBar from '../components/ContentBuilderTopBar';
+import ContentBuilderToolbox from '../components/ProjectDescriptionBuilderToolbox';
+import ContentBuilderTopBar from '../components/ProjectDescriptionBuilderTopBar';
 import {
   StyledRightColumn,
   ErrorMessage,
@@ -21,9 +21,9 @@ import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import ContentBuilderSettings from 'components/admin/ContentBuilder/Settings';
 
 // hooks
-import { PROJECT_DESCRIPTION_CODE } from '../../services/contentBuilder';
+import { PROJECT_DESCRIPTION_CODE } from '../../services/projectDescriptionBuilder';
 import useLocale from 'hooks/useLocale';
-import useContentBuilderLayout from '../../hooks/useContentBuilder';
+import useContentBuilderLayout from '../../hooks/useProjectDescriptionBuilderLayout';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
@@ -35,7 +35,7 @@ import { SerializedNodes } from '@craftjs/core';
 import { Locale } from 'typings';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 
-export const ContentBuilderPage = () => {
+const ProjectDescriptionBuilderPage = () => {
   const [previewEnabled, setPreviewEnabled] = useState(false);
   const [selectedLocale, setSelectedLocale] = useState<Locale | undefined>();
   const [draftData, setDraftData] = useState<Record<string, SerializedNodes>>();
@@ -172,4 +172,4 @@ export const ContentBuilderPage = () => {
   );
 };
 
-export default ContentBuilderPage;
+export default ProjectDescriptionBuilderPage;

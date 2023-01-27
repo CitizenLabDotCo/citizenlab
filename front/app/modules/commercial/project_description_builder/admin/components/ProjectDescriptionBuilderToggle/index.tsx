@@ -9,7 +9,7 @@ import styled from 'styled-components';
 
 // Hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useContentBuilderLayout from '../../../hooks/useContentBuilder';
+import useContentBuilderLayout from '../../../hooks/useProjectDescriptionBuilderLayout';
 
 // Utils
 import Link from 'utils/cl-router/Link';
@@ -22,7 +22,7 @@ import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMult
 import {
   addContentBuilderLayout,
   PROJECT_DESCRIPTION_CODE,
-} from 'modules/commercial/content_builder/services/contentBuilder';
+} from 'modules/commercial/project_description_builder/services/projectDescriptionBuilder';
 
 // Messages
 import messages from '../../messages';

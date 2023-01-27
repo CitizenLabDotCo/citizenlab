@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
-import ContentBuilderPreview from './';
+import ContentBuilderPreview from '.';
 
 let mockFeatureFlagData = true;
 

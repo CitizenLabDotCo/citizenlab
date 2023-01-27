@@ -1,13 +1,13 @@
 import React from 'react';
 import { screen, render, act } from 'utils/testUtils/rtl';
 
-import { ContentBuilderPage } from './';
+import ProjectDescriptionBuilderPage from '.';
 import {
   CONTENT_BUILDER_DELETE_ELEMENT_EVENT,
   CONTENT_BUILDER_ERROR_EVENT,
 } from 'components/admin/ContentBuilder/constants';
 
-import { IContentBuilderLayoutData } from '../../services/contentBuilder';
+import { IContentBuilderLayoutData } from '../../services/projectDescriptionBuilder';
 import eventEmitter from 'utils/eventEmitter';
 
 const mockEditorData: IContentBuilderLayoutData = {
@@ -74,17 +74,17 @@ jest.mock('@craftjs/core', () => {
   };
 });
 
-describe('ContentBuilderPage', () => {
+describe('ProjectDescriptionBuilderPage', () => {
   it('should render', () => {
-    render(<ContentBuilderPage />);
+    render(<ProjectDescriptionBuilderPage />);
     expect(screen.getByTestId('contentBuilderPage')).toBeInTheDocument();
   });
   it('should not display error message when there is no error', () => {
-    render(<ContentBuilderPage />);
+    render(<ProjectDescriptionBuilderPage />);
     expect(screen.queryByTestId('error-message')).not.toBeInTheDocument();
   });
   it('should display error message when there is an error', async () => {
-    render(<ContentBuilderPage />);
+    render(<ProjectDescriptionBuilderPage />);
     await act(async () => {
       eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
         someId: { hasError: true, selectedLocale: 'en' },
@@ -99,7 +99,7 @@ describe('ContentBuilderPage', () => {
     expect(screen.getByText('fr-FR').firstChild).toHaveClass('empty');
   });
   it('should display error message when there is an error and clear it when the error is gone', async () => {
-    render(<ContentBuilderPage />);
+    render(<ProjectDescriptionBuilderPage />);
     await act(async () => {
       eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
         someId: { hasError: true, selectedLocale: 'en' },
@@ -135,7 +135,7 @@ describe('ContentBuilderPage', () => {
   });
 
   it('should clear error message when element is deleted', async () => {
-    render(<ContentBuilderPage />);
+    render(<ProjectDescriptionBuilderPage />);
     await act(async () => {
       eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
         someId: { hasError: true, selectedLocale: 'en' },

@@ -29,7 +29,7 @@ import { useParams } from 'react-router-dom';
 import {
   addContentBuilderLayout,
   PROJECT_DESCRIPTION_CODE,
-} from '../../../services/contentBuilder';
+} from '../../../services/projectDescriptionBuilder';
 
 // types
 import { Locale } from 'typings';

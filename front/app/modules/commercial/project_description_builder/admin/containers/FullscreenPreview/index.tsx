@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // hooks
-import useContentBuilderLayout from '../../../hooks/useContentBuilder';
+import useContentBuilderLayout from '../../../hooks/useProjectDescriptionBuilderLayout';
 import useLocale from 'hooks/useLocale';
 import useProject from 'hooks/useProject';
 import { useParams } from 'react-router-dom';
@@ -14,7 +14,7 @@ import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import { PROJECT_DESCRIPTION_CODE } from '../../../services/contentBuilder';
+import { PROJECT_DESCRIPTION_CODE } from '../../../services/projectDescriptionBuilder';
 
 // types
 import { SerializedNodes } from '@craftjs/core';

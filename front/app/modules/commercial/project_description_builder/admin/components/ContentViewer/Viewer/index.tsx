@@ -1,7 +1,7 @@
 import React from 'react';
 
 // hooks
-import useContentBuilderLayout from '../../../../hooks/useContentBuilder';
+import useContentBuilderLayout from '../../../../hooks/useProjectDescriptionBuilderLayout';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
@@ -13,7 +13,7 @@ import ProjectInfo from 'containers/ProjectsShowPage/shared/header/ProjectInfo';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import { PROJECT_DESCRIPTION_CODE } from '../../../../services/contentBuilder';
+import { PROJECT_DESCRIPTION_CODE } from '../../../../services/projectDescriptionBuilder';
 
 // types
 import { Multiloc } from 'typings';

@@ -1,23 +1,27 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
-const ContentBuilderComponent = React.lazy(() => import('./admin/containers'));
+const ProjectDescriptionBuilderComponent = React.lazy(
+  () => import('./admin/containers')
+);
 const FullscreenPreview = React.lazy(
   () =>
     import(
-      'modules/commercial/content_builder/admin/containers/FullscreenPreview'
+      'modules/commercial/project_description_builder/admin/containers/FullscreenPreview'
     )
 );
 
 const ContentViewer = React.lazy(
   () =>
-    import('modules/commercial/content_builder/admin/components/ContentViewer')
+    import(
+      'modules/commercial/project_description_builder/admin/components/ContentViewer'
+    )
 );
 
-const ContentBuilderToggle = React.lazy(
+const ProjectDescriptionBuilderToggle = React.lazy(
   () =>
     import(
-      'modules/commercial/content_builder/admin/components/ContentBuilderToggle'
+      'modules/commercial/project_description_builder/admin/components/ProjectDescriptionBuilderToggle'
     )
 );
 
@@ -26,7 +30,7 @@ const configuration: ModuleConfiguration = {
     admin: [
       {
         path: 'project-description-builder/projects/:projectId/description',
-        element: <ContentBuilderComponent />,
+        element: <ProjectDescriptionBuilderComponent />,
       },
       {
         path: 'project-description-builder/projects/:projectId/preview',
@@ -38,7 +42,7 @@ const configuration: ModuleConfiguration = {
     'app.containers.Admin.projects.edit.description.contentBuilder': (
       props
     ) => {
-      return <ContentBuilderToggle {...props} />;
+      return <ProjectDescriptionBuilderToggle {...props} />;
     },
     'app.ProjectsShowPage.shared.header.ProjectInfo.contentBuilder': (
       props

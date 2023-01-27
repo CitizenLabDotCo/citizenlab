@@ -1,11 +1,11 @@
 import React from 'react';
 import { render, screen, fireEvent, act, within } from 'utils/testUtils/rtl';
-import ContentBuilderTopBar from './';
+import ContentBuilderTopBar from '.';
 import { Editor } from '@craftjs/core';
 import {
   IContentBuilderLayoutData,
   addContentBuilderLayout,
-} from '../../../services/contentBuilder';
+} from '../../../services/projectDescriptionBuilder';
 import clHistory from 'utils/cl-router/history';
 
 const mockEditorData: IContentBuilderLayoutData = {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
-import ContentBuilderLayout from './';
+import ContentBuilderLayout from '.';
 
 let mockLocationData = { pathname: 'admin/project-description-builder' };
 let mockFeatureFlagData = true;

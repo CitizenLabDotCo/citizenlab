@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
-import Preview from './';
+import Preview from '.';
 
 const projectId = 'id';
 const projectTitle = {

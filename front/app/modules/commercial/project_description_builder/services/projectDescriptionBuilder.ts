@@ -24,9 +24,9 @@ export interface IContentBuilderLayoutObject {
   enabled?: boolean;
 }
 
-export function contentBuilderLayoutStream({ projectId, code }) {
+export function projectDescriptionBuilderLayoutStream(projectId: string) {
   return streams.get<IContentBuilderLayout>({
-    apiEndpoint: `${API_PATH}/projects/${projectId}/content_builder_layouts/${code}`,
+    apiEndpoint: `${API_PATH}/projects/${projectId}/content_builder_layouts/${PROJECT_DESCRIPTION_CODE}`,
     handleErrorLogging: (error) => {
       // A 404 error is expected when the content builder layout is not found so we don't want to log it
       if (error.statusCode !== 404) {

@@ -1,12 +1,11 @@
 import { act, renderHook } from '@testing-library/react-hooks';
-import useContentBuilderLayout from './useContentBuilder';
+import useProjectDescriptionBuilderLayout from './useProjectDescriptionBuilderLayout';
 import { Observable, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { contentBuilderLayoutStream } from '../services/contentBuilder';
+import { projectDescriptionBuilderLayoutStream } from '../services/projectDescriptionBuilder';
 import { waitFor } from 'utils/testUtils/rtl';
 
 const projectId = 'TestID';
-const code = 'TestCode';
 
 const mockContentBuilderLayout = {
   data: {
@@ -38,15 +37,14 @@ jest.mock('modules/commercial/content_builder/services/contentBuilder', () => {
 
 describe('useContentBuilderLayout', () => {
   it('should call contentBuilderLayoutStream with correct arguments', () => {
-    renderHook(() => useContentBuilderLayout({ projectId, code }));
-    expect(contentBuilderLayoutStream).toHaveBeenCalledWith({
-      projectId,
-      code,
-    });
+    renderHook(() => useProjectDescriptionBuilderLayout(projectId));
+    expect(projectDescriptionBuilderLayoutStream).toHaveBeenCalledWith(
+      projectId
+    );
   });
   it('should return data when data', async () => {
     const { result } = renderHook(() =>
-      useContentBuilderLayout({ projectId, code })
+      useProjectDescriptionBuilderLayout(projectId)
     );
     expect(result.current).toBe(undefined);
     await act(
@@ -62,7 +60,7 @@ describe('useContentBuilderLayout', () => {
       subscriber.next(new Error());
     });
     const { result } = renderHook(() =>
-      useContentBuilderLayout({ projectId, code })
+      useProjectDescriptionBuilderLayout(projectId)
     );
     expect(result.current).toStrictEqual(error);
   });
@@ -71,14 +69,14 @@ describe('useContentBuilderLayout', () => {
       subscriber.next(null);
     });
     const { result } = renderHook(() =>
-      useContentBuilderLayout({ projectId, code })
+      useProjectDescriptionBuilderLayout(projectId)
     );
     expect(result.current).toBe(null);
   });
   it('should unsubscribe on unmount', () => {
     jest.spyOn(Subscription.prototype, 'unsubscribe');
     const { unmount } = renderHook(() =>
-      useContentBuilderLayout({ projectId, code })
+      useProjectDescriptionBuilderLayout(projectId)
     );
 
     unmount();

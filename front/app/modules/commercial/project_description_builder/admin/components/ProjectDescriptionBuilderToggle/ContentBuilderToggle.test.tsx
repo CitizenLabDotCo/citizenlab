@@ -1,8 +1,8 @@
-import { addContentBuilderLayout } from 'modules/commercial/content_builder/services/contentBuilder';
+import { addContentBuilderLayout } from 'modules/commercial/project_description_builder/services/projectDescriptionBuilder';
 import React from 'react';
 import { Multiloc } from 'typings';
 import { render, screen } from 'utils/testUtils/rtl';
-import ContentBuilderToggle from './';
+import ContentBuilderToggle from '.';
 
 const DEFAULT_CONTENT_BUILDER_LAYOUT_DATA = {
   data: {
