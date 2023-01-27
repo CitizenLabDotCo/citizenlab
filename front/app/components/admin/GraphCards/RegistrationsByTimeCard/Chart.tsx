@@ -53,8 +53,6 @@ const Chart = ({
 
   const noData = isNilOrError(timeSeries) || !!projectId;
 
-  console.log(timeSeries);
-
   return (
     <LineBarChart
       width="100%"

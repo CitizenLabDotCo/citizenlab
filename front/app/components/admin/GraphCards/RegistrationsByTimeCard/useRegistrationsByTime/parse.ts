@@ -3,7 +3,7 @@ import moment, { Moment } from 'moment';
 // utils
 import { timeSeriesParser } from 'components/admin/GraphCards/_utils/timeSeries';
 import { get } from 'utils/helperUtils';
-import { sumBy } from 'lodash';
+import { sumBy } from 'lodash-es';
 
 // typings
 import {
