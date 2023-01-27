@@ -23,15 +23,16 @@ const Title = ({
   <>
     {title}
     <Box ml="10px" display="inline-flex" alignItems="center">
-      <Text mt="0px" mb="0px" ml="5px" fontWeight="bold" display="inline">
+      <Box mr="5px" display="inline">
         {totalNumber ?? ''}
-      </Text>
+      </Box>
       <Text
         mt="0px"
         mb="0px"
         fontSize="base"
         display="inline"
         color={getColor(typeOfChange)}
+        fontWeight="bold"
       >
         {formattedSerieChange ?? ''}
       </Text>
