@@ -739,7 +739,7 @@
   "app.containers.AdminPage.DashboardPage.numberOfVotesUp": "Stemmen voor",
   "app.containers.AdminPage.DashboardPage.otherArea": "Ergens anders",
   "app.containers.AdminPage.DashboardPage.overview.management": "Management",
-  "app.containers.AdminPage.DashboardPage.overview.projectsAndParticipation": "Projecten en deelname",
+  "app.containers.AdminPage.DashboardPage.overview.projectsAndParticipation": "Projecten en participatie",
   "app.containers.AdminPage.DashboardPage.overview.showLess": "Toon minder",
   "app.containers.AdminPage.DashboardPage.overview.showMore": "Toon meer",
   "app.containers.AdminPage.DashboardPage.participationPerProject": "Participatie per project",
