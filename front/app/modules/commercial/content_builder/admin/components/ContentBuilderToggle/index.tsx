@@ -113,7 +113,7 @@ const ContentBuilderToggle = ({
       {!isNil(contentBuilderLayout) && (
         <Box display="flex" gap="12px">
           <StyledToggle
-            id="e2e-toggle-enable-content-builder"
+            id="e2e-toggle-enable-project-description-builder"
             checked={!!contentBuilderLinkVisible}
             label={formatMessage(messages.toggleLabel)}
             onChange={toggleContentBuilderLinkVisible}
@@ -123,7 +123,7 @@ const ContentBuilderToggle = ({
       )}
       {contentBuilderLinkVisible && (
         <>
-          <StyledLink id="e2e-content-builder-link" to={route}>
+          <StyledLink id="e2e-project-description-builder-link" to={route}>
             {formatMessage(messages.linkText)}
           </StyledLink>
           <Box mt="10px">

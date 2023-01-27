@@ -22,7 +22,9 @@ describe('Settings panel options', () => {
       }).then((project) => {
         projectId = project.body.data.id;
         cy.visit(`/admin/projects/${projectId}/description`);
-        cy.get('#e2e-toggle-enable-content-builder').click({ force: true });
+        cy.get('#e2e-toggle-enable-project-description-builder').click({
+          force: true,
+        });
       });
     });
   });

@@ -41,7 +41,7 @@ describe('Content builder navigation', () => {
   it('navigates to content builder when edit project description link clicked', () => {
     cy.visit(`/admin/projects/${projectId}/description`);
     cy.acceptCookies();
-    cy.get('#e2e-content-builder-link').click({ force: true });
+    cy.get('#e2e-project-description-builder-link').click({ force: true });
     cy.url().should(
       'eq',
       `${
