@@ -8,7 +8,7 @@ export type QueryParameters = ProjectId & Dates & Resolution;
 
 // Response
 export type Response = {
-  data: [TimeSeriesResponse | [], [InputsCountRow] | []];
+  data: [TimeSeriesResponse | [], [VotesCountRow] | []];
 };
 
 type TimeSeriesResponse = TimeSeriesResponseRow[];
@@ -19,7 +19,7 @@ export interface TimeSeriesResponseRow {
   sum_upvotes_count: number;
 }
 
-interface InputsCountRow {
+interface VotesCountRow {
   sum_votes_count: number;
 }
 
