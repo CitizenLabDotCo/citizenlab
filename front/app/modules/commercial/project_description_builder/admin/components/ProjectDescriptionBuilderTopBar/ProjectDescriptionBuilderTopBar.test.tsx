@@ -141,10 +141,9 @@ describe('ProjectDescriptionBuilderTopBar', () => {
       fireEvent.click(screen.getByTestId('contentBuilderTopBarSaveButton'));
     });
 
-    expect(addProjectDescriptionBuilderLayout).toHaveBeenCalledWith(
-      { code: 'project_description', projectId: 'id' },
-      { craftjs_jsonmultiloc: { en: {} } }
-    );
+    expect(addProjectDescriptionBuilderLayout).toHaveBeenCalledWith('id', {
+      craftjs_jsonmultiloc: { en: {} },
+    });
   });
   it('enables and disables save in accordance with the error status', async () => {
     const { rerender } = render(
