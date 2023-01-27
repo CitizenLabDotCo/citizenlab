@@ -11,7 +11,7 @@ To use the Commercial Edition or get professional support, consider [becoming a 
 
 ![CitizenLab](https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/citizenlab_logo_small.png)
 
-CitizenLab is a **digital democracy platform** that facilitates community participation and co-creation. Participants can post ideas, contribute to discussion, or choose to vote and prioritize community projects. Whether it’s through a poll, a participatory budget, idea collection or a surveys, the CitizenLab platform offers multiple ways to make your community participate, and manage their inputs effectively.
+CitizenLab is a **digital democracy platform** that facilitates community participation and co-creation. Participants can post ideas, contribute to discussion, or choose to vote and prioritize community projects. Whether it’s through a poll, a participatory budget, idea collection or a survey, the CitizenLab platform offers multiple ways to make your community participate, and manage their inputs effectively.
 
 ## Getting started
 
