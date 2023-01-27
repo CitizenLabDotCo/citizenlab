@@ -7,7 +7,7 @@ pt:
     inappropriate_content_flagged:
       subject: 'Uma postagem na sua plataforma foi assinalada para revisão'
       header_title: 'Uma postagem na sua plataforma foi assinalada para revisão'
-      comment_author: '%{authorName} comentou:'
+      comment_author: '%{authorName} comentado:'
       idea_author: '%{authorName} submeteu uma postagem:'
       initiative_author: '%{authorName} apresentou uma proposta:'
       this_post_was_flagged: >
