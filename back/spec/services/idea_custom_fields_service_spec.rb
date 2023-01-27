@@ -18,13 +18,13 @@ describe IdeaCustomFieldsService do
       it 'returns the built-in fields' do
         output = service.all_fields
         expect(output.map(&:code)).to eq %w[
-          ideation_section_1
+          ideation_section1
           title_multiloc
           body_multiloc
-          ideation_section_2
+          ideation_section2
           idea_images_attributes
           idea_files_attributes
-          ideation_section_3
+          ideation_section3
           topic_ids
           location_description
           proposed_budget
@@ -43,13 +43,13 @@ describe IdeaCustomFieldsService do
       it 'excludes disabled fields' do
         output = service.visible_fields
         expect(output.map(&:code)).to eq %w[
-          ideation_section_1
+          ideation_section1
           title_multiloc
           body_multiloc
-          ideation_section_2
+          ideation_section2
           idea_images_attributes
           idea_files_attributes
-          ideation_section_3
+          ideation_section3
           topic_ids
           location_description
         ]
@@ -60,13 +60,13 @@ describe IdeaCustomFieldsService do
       it 'excludes disabled fields' do
         output = service.enabled_fields
         expect(output.map(&:code)).to eq %w[
-          ideation_section_1
+          ideation_section1
           title_multiloc
           body_multiloc
-          ideation_section_2
+          ideation_section2
           idea_images_attributes
           idea_files_attributes
-          ideation_section_3
+          ideation_section3
           topic_ids
           location_description
         ]
@@ -108,13 +108,13 @@ describe IdeaCustomFieldsService do
         expect(output).to include extra_field2
         expect(output).to include topic_field
         expect(output.map(&:code)).to eq [
-          'ideation_section_1',
+          'ideation_section1',
           'title_multiloc',
           'body_multiloc',
-          'ideation_section_2',
+          'ideation_section2',
           'idea_images_attributes',
           'idea_files_attributes',
-          'ideation_section_3',
+          'ideation_section3',
           'topic_ids',
           'proposed_budget',
           nil,
@@ -143,13 +143,13 @@ describe IdeaCustomFieldsService do
         expect(output).not_to include extra_field2
         expect(output).not_to include topic_field
         expect(output.map(&:code)).to eq [
-          'ideation_section_1',
+          'ideation_section1',
           'title_multiloc',
           'body_multiloc',
-          'ideation_section_2',
+          'ideation_section2',
           'idea_images_attributes',
           'idea_files_attributes',
-          'ideation_section_3',
+          'ideation_section3',
           nil
         ]
       end
@@ -166,13 +166,13 @@ describe IdeaCustomFieldsService do
         expect(output).not_to include extra_field2
         expect(output).not_to include topic_field
         expect(output.map(&:code)).to eq [
-          'ideation_section_1',
+          'ideation_section1',
           'title_multiloc',
           'body_multiloc',
-          'ideation_section_2',
+          'ideation_section2',
           'idea_images_attributes',
           'idea_files_attributes',
-          'ideation_section_3',
+          'ideation_section3',
           nil
         ]
       end
@@ -232,8 +232,8 @@ describe IdeaCustomFieldsService do
       #   field = described_class.new(
       #     resource: form,
       #     input_type: 'section',
-      #     code: 'ideation_section_1',
-      #     key: 'ideation_section_1',
+      #     code: 'ideation_section1',
+      #     key: 'ideation_section1',
       #     title_multiloc: bad_title, # locked to default value
       #     enabled: true # locked to true
       #   )

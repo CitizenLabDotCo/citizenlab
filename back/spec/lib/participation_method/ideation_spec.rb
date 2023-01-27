@@ -39,13 +39,13 @@ RSpec.describe ParticipationMethod::Ideation do
       expect(
         participation_method.default_fields(create(:custom_form, participation_context: project)).map(&:code)
       ).to eq %w[
-        ideation_section_1
+        ideation_section1
         title_multiloc
         body_multiloc
-        ideation_section_2
+        ideation_section2
         idea_images_attributes
         idea_files_attributes
-        ideation_section_3
+        ideation_section3
         topic_ids
         location_description
         proposed_budget

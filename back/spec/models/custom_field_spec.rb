@@ -353,7 +353,7 @@ RSpec.describe CustomField, type: :model do
       section = described_class.new(
         resource: resource,
         input_type: 'section',
-        code: 'ideation_section_1',
+        code: 'ideation_section1',
         title_multiloc: ignored_title
       )
       input_term = resource.participation_context.input_term
