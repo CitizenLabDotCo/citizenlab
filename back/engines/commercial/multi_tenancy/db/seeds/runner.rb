@@ -69,13 +69,6 @@ module MultiTenancy
       def execute
         Rails.application.eager_load!
 
-        # Since image optimization can be quite slow, we disable any carrierwave image
-        # processing while seeding. This massively speeds up the seeding process, at
-        # the expense of not having the proper image dimensions while developing.
-        CarrierWave.configure do |config|
-          config.enable_processing = false
-        end
-
         if %w[public example_org].include? Apartment::Tenant.current
           # rake db:reset clears all instances before repopulating the db.
 
