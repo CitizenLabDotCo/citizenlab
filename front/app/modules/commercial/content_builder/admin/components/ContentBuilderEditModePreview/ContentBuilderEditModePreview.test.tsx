@@ -24,7 +24,7 @@ describe('ContentBulderEditModePreview', () => {
     );
     expect(container.querySelector('iframe')).toHaveAttribute(
       'src',
-      '/en/admin/content-builder/projects/id/preview'
+      '/en/admin/project-description-builder/projects/id/preview'
     );
   });
 });

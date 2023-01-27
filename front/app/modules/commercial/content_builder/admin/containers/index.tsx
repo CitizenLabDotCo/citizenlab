@@ -66,7 +66,7 @@ export const ContentBuilderPage = () => {
   const [imageUploading, setImageUploading] = useState(false);
 
   const contentBuilderVisible =
-    featureEnabled && pathname.includes('admin/content-builder');
+    featureEnabled && pathname.includes('admin/project-description-builder');
 
   if (isNilOrError(locales) && contentBuilderVisible) {
     return null;

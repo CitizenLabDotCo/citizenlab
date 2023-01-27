@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
 import ContentBuilderLayout from './';
 
-let mockLocationData = { pathname: 'admin/content-builder' };
+let mockLocationData = { pathname: 'admin/project-description-builder' };
 let mockFeatureFlagData = true;
 
 jest.mock('utils/cl-router/withRouter', () => {
@@ -19,7 +19,7 @@ jest.mock('utils/cl-router/Link');
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
 
 describe('ContentBuilderLayout', () => {
-  it('calls onMount correctly and renders children when pathname is admin/content-builder and feature flag is enabled', () => {
+  it('calls onMount correctly and renders children when pathname is admin/project-description-builder and feature flag is enabled', () => {
     const onMount = jest.fn();
     render(
       <ContentBuilderLayout onMount={onMount}>
@@ -30,7 +30,7 @@ describe('ContentBuilderLayout', () => {
     expect(onMount).toHaveBeenCalledWith(true);
     expect(screen.getByText('Child')).toBeInTheDocument();
   });
-  it('calls onMount correctly and does not render children when pathname is not admin/content-builder', () => {
+  it('calls onMount correctly and does not render children when pathname is not admin/project-description-builder', () => {
     mockLocationData = { pathname: 'admin' };
     const onMount = jest.fn();
     render(
@@ -44,7 +44,7 @@ describe('ContentBuilderLayout', () => {
   });
   it('calls onMount correctly and does not render children when feature flag is disabled', () => {
     mockFeatureFlagData = false;
-    mockLocationData = { pathname: 'admin/content-builder' };
+    mockLocationData = { pathname: 'admin/project-description-builder' };
     const onMount = jest.fn();
     render(
       <ContentBuilderLayout onMount={onMount}>

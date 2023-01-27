@@ -70,7 +70,7 @@ const ContentBuilderToggle = ({
     projectId: `${params.projectId}`,
     code: PROJECT_DESCRIPTION_CODE,
   });
-  const route = `/admin/content-builder/projects/${params.projectId}/description`;
+  const route = `/admin/project-description-builder/projects/${params.projectId}/description`;
   const [contentBuilderLinkVisible, setContentBuilderLinkVisible] = useState<
     boolean | null
   >(null);

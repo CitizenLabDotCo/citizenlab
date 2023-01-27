@@ -25,11 +25,11 @@ const configuration: ModuleConfiguration = {
   routes: {
     admin: [
       {
-        path: 'content-builder/projects/:projectId/description',
+        path: 'project-description-builder/projects/:projectId/description',
         element: <ContentBuilderComponent />,
       },
       {
-        path: 'content-builder/projects/:projectId/preview',
+        path: 'project-description-builder/projects/:projectId/preview',
         element: <FullscreenPreview />,
       },
     ],

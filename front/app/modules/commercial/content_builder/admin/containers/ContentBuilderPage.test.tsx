@@ -52,7 +52,7 @@ jest.mock('react-router-dom', () => {
   return {
     ...originalModule,
     useLocation: () => ({
-      pathname: 'admin/content-builder',
+      pathname: 'admin/project-description-builder',
     }),
     useParams: () => ({
       projectId: 'projectId',

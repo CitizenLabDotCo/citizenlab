@@ -18,7 +18,7 @@ const ContentBuilderEditModePreview = React.forwardRef<
 
   return (
     <EditModePreview
-      iframeSrc={`/${locale}/admin/content-builder/projects/${projectId}/preview`}
+      iframeSrc={`/${locale}/admin/project-description-builder/projects/${projectId}/preview`}
       ref={ref}
     />
   );

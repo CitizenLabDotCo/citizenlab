@@ -20,7 +20,7 @@ const ContentBuilderLayout: React.FC<ContentBuilderLayoutProps> = ({
     name: 'project_description_builder',
   });
   const contentBuilderLayoutVisible =
-    featureEnabled && pathname.includes('admin/content-builder');
+    featureEnabled && pathname.includes('admin/project-description-builder');
 
   useEffect(() => {
     onMount(contentBuilderLayoutVisible);
