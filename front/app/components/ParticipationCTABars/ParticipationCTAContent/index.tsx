@@ -163,7 +163,7 @@ export const ParticipationCTAContent = ({
             <Text
               color="white"
               style={{ textTransform: 'uppercase' }}
-              mr="12px"
+              mr="24px"
               my="0px"
               fontSize="xs"
               fontWeight="bold"
