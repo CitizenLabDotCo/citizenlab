@@ -25,7 +25,7 @@ import { TimeSeries } from './useVotesByTime/typings';
 type Props = Dates &
   Resolution & {
     timeSeries: TimeSeries | NilOrError;
-    innerRef: React.RefObject<any>;
+    innerRef?: React.RefObject<any>;
     layout?: Layout;
   };
 
