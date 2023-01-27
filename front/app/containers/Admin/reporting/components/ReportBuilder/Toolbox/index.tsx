@@ -18,6 +18,7 @@ import AgeWidget from '../Widgets/ChartWidgets/AgeWidget';
 import GenderWidget from '../Widgets/ChartWidgets/GenderWidget';
 import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
 import MostVotedIdeasWidget from '../Widgets/MostVotedIdeasWidget';
+import PostsByTimeWidget from '../Widgets/ChartWidgets/PostsByTimeWidget';
 
 // types
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
@@ -232,6 +233,19 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             }
             icon="chart-bar"
             label={formatMessage(ActiveUsersWidget.craft.custom.title)}
+          />
+          <DraggableElement
+            id="e2e-draggable-active-users-widget"
+            component={
+              <PostsByTimeWidget
+                title={formatMessage(PostsByTimeWidget.craft.custom.title)}
+                projectId={undefined}
+                startAt={undefined}
+                endAt={chartEndDate}
+              />
+            }
+            icon="chart-bar"
+            label={formatMessage(PostsByTimeWidget.craft.custom.title)}
           />
         </Accordion>
       </Box>

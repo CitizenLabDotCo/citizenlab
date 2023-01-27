@@ -24,6 +24,7 @@ import AgeWidget from '../Widgets/ChartWidgets/AgeWidget';
 import GenderWidget from '../Widgets/ChartWidgets/GenderWidget';
 import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
 import MostVotedIdeasWidget from '../Widgets/MostVotedIdeasWidget';
+import PostsByTimeWidget from '../Widgets/ChartWidgets/PostsByTimeWidget';
 
 // templates
 import ProjectTemplate from '../Templates/ProjectTemplate';
@@ -51,6 +52,7 @@ const resolver = {
   ActiveUsersWidget,
   MostVotedIdeasWidget,
   ProjectTemplate,
+  PostsByTimeWidget,
 };
 
 const Editor: React.FC<EditorProps> = ({

@@ -18,7 +18,7 @@ import { TimeSeries } from './usePostsByTime/typings';
 type Props = Dates &
   Resolution & {
     timeSeries: TimeSeries | NilOrError;
-    innerRef: React.RefObject<any>;
+    innerRef?: React.RefObject<any>;
     layout?: Layout;
   };
 
@@ -38,7 +38,7 @@ const Chart = ({
   const formatTick = (date: string) => {
     return toThreeLetterMonth(date, resolution);
   };
-
+  console.log('timeSeries', timeSeries);
   // Avoids unmounted component state update warning
   if (timeSeries === undefined) {
     return null;
