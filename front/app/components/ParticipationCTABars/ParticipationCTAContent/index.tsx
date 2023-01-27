@@ -57,9 +57,16 @@ export const ParticipationCTAContent = ({
 }: Props) => {
   const theme = useTheme();
   const isSmallerThanXlPhone = useBreakpoint('phone');
-  const timeLeft = currentPhase
+  let timeLeft = currentPhase
     ? getPeriodRemainingUntil(currentPhase.attributes.end_at, 'weeks')
     : undefined;
+  let timeLeftMessage = messages.xWeeksLeft;
+
+  if (timeLeft !== undefined && timeLeft < 2 && currentPhase) {
+    timeLeft = getPeriodRemainingUntil(currentPhase.attributes.end_at, 'days');
+    timeLeftMessage = messages.xDaysLeft;
+  }
+
   let message = hasUserParticipated
     ? messages.userHasParticipated
     : messages.projectOpenForSubmission;
@@ -110,7 +117,7 @@ export const ParticipationCTAContent = ({
                 my="0px"
               >
                 <FormattedMessage
-                  {...messages.participationTimeLeft}
+                  {...timeLeftMessage}
                   values={{
                     timeLeft: timeLeft,
                   }}
@@ -169,7 +176,7 @@ export const ParticipationCTAContent = ({
               fontWeight="bold"
             >
               <FormattedMessage
-                {...messages.participationTimeLeft}
+                {...timeLeftMessage}
                 values={{
                   timeLeft,
                 }}

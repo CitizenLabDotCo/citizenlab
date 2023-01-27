@@ -17,9 +17,14 @@ export default defineMessages({
     id: 'app.components.ParticipationCTABars.userHasParticipated',
     defaultMessage: 'You have participated in this project.',
   },
-  participationTimeLeft: {
-    id: 'app.components.ParticipationCTABars.participationTimeLeft',
+  xWeeksLeft: {
+    id: 'app.components.ParticipationCTABars.xWeeksLeft',
     defaultMessage: '{timeLeft}  weeks left',
+  },
+  xDaysLeft: {
+    id: 'app.components.ParticipationCTABars.xDaysLeft',
+    defaultMessage:
+      '{timeLeft, plural, =0 {Less than a day} one {# day left} other {# days}} left',
   },
   allocateBudget: {
     id: 'app.components.ParticipationCTABars.allocateBudget',
