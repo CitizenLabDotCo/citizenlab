@@ -28,8 +28,8 @@ import LineBarChart from './charts/LineBarChart';
 import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
 import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
-import LineBarChartVotesByTime from './charts/LineBarChartVotesByTime';
 import PostByTimeCard from 'components/admin/GraphCards/PostsByTimeCard';
+import VotesByTimeCard from 'components/admin/GraphCards/VotesByTimeCard';
 
 // i18n
 import messages from '../messages';
@@ -214,9 +214,11 @@ const OverviewDashboard = ({ projects }: DataProps) => {
             barStream={commentsByTimeStream}
             {...legacyProps}
           />
-          <LineBarChartVotesByTime
-            className="fullWidth e2e-votes-chart"
-            {...legacyProps}
+          <VotesByTimeCard
+            projectId={currentProjectFilter}
+            startAtMoment={startAtMoment}
+            endAtMoment={endAtMoment}
+            resolution={resolution}
           />
         </Column>
         <Column>

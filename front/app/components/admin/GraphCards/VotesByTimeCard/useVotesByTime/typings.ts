@@ -9,19 +9,22 @@ export type Response = {
 
 type TimeSeriesResponse = TimeSeriesResponseRow[];
 
-export interface TimeSeriesResponseRow extends InputsCountRow {
+export interface TimeSeriesResponseRow {
   first_dimension_date_created_date: string;
+  sum_downvotes_count: number;
+  sum_upvotes_count: number;
 }
 
 interface InputsCountRow {
-  count: number;
+  sum_votes_count: number;
 }
 
 // Hook return value
 export interface TimeSeriesRow {
   /* Date format: YYYY-MM-DD */
   date: string;
-  inputs: number;
+  upvotes: number;
+  downvotes: number;
   total: number;
 }
 

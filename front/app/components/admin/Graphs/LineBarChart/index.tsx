@@ -47,6 +47,7 @@ const LineBarChart = <Row,>({
   margin,
   xaxis,
   yaxis,
+  legend,
   emptyContainerContent,
   innerRef,
 }: Props<Row>) => {
@@ -62,8 +63,9 @@ const LineBarChart = <Row,>({
   }
 
   const x = mapping.x;
-  const y = mapping.y[0];
-  if (typeof x === 'symbol' || typeof y === 'symbol') return null;
+  const y = mapping.y;
+  if (typeof x === 'symbol' || y.some((y_) => typeof y_ === 'symbol'))
+    return null;
 
   const resolution_ = (resolution || 'month') as string;
 
@@ -71,7 +73,7 @@ const LineBarChart = <Row,>({
     return resolution ? toFullMonth(date, resolution) : date;
   };
 
-  const legend = {
+  const defaultLegend = {
     marginTop: 16,
     items: [
       {
@@ -86,6 +88,8 @@ const LineBarChart = <Row,>({
       },
     ],
   } as ILegend;
+
+  legend = legend || defaultLegend;
 
   return (
     <Container
@@ -152,16 +156,20 @@ const LineBarChart = <Row,>({
           labelFormatter={formatLabel}
           cursor={{ strokeWidth: 1 }}
         />
-        <Bar
-          dataKey={y}
-          yAxisId="barValue"
-          barSize={sizes.bar}
-          fill={legacyColors.barFill}
-          fillOpacity={1}
-          name={formatMessage(messages.totalForPeriod, {
-            period: formatMessage(messages[resolution_]),
-          })}
-        />
+        {legend?.items
+          .filter((l) => l.icon !== 'line')
+          .map((legend, legend_i) => (
+            <Bar
+              key={legend_i}
+              dataKey={y[legend_i] as string}
+              yAxisId="barValue"
+              stackId="1"
+              barSize={sizes.bar}
+              fill={legend.color}
+              fillOpacity={1}
+              name={legend.label}
+            />
+          ))}
         <Line
           type="monotone"
           yAxisId="total"

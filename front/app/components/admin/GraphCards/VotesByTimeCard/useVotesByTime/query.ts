@@ -18,25 +18,26 @@ export const query = ({
   const endAt = endAtMoment || moment();
 
   const timeSeriesQuery: QuerySchema = {
-    fact: 'post',
+    fact: 'participation',
     filters: {
       ...getDateFilter('dimension_date_created', startAt, endAt),
-      'dimension_type.name': 'idea',
+      'dimension_type.name': 'vote',
     },
     groups: `dimension_date_created.${getInterval(resolution)}`,
     aggregations: {
-      all: 'count',
       'dimension_date_created.date': 'first',
+      upvotes_count: 'sum',
+      downvotes_count: 'sum',
     },
   };
 
   const postsByTimeTotal: QuerySchema = {
-    fact: 'post',
+    fact: 'participation',
     filters: {
-      'dimension_type.name': 'idea',
+      'dimension_type.name': 'vote',
     },
     aggregations: {
-      all: 'count',
+      votes_count: 'sum',
     },
   };
 

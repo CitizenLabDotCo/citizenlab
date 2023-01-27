@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 
 // hooks
-import usePostsByTime from './usePostsByTime';
+import useVotesByTime from './useVotesByTime';
 
 // components
 import GraphCard from 'components/admin/GraphCard';
@@ -29,7 +29,7 @@ import {
 
 type Props = ProjectId & Dates & Resolution;
 
-const PostByTimeCard = ({
+const VotesByTimeCard = ({
   projectId,
   startAtMoment,
   endAtMoment,
@@ -38,13 +38,13 @@ const PostByTimeCard = ({
   const { formatMessage } = useIntl();
   const graphRef = useRef();
   const { timeSeries, xlsxData, currentResolution, formattedNumbers } =
-    usePostsByTime({
+    useVotesByTime({
       startAtMoment,
       endAtMoment,
       resolution,
     });
 
-  const cardTitle = formatMessage(messages.inputs);
+  const cardTitle = formatMessage(messages.votes);
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
 
@@ -90,4 +90,4 @@ const PostByTimeCard = ({
   );
 };
 
-export default PostByTimeCard;
+export default VotesByTimeCard;

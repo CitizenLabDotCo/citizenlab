@@ -15,7 +15,8 @@ import { IResolution } from 'components/admin/ResolutionControl';
 
 export const getEmptyRow = (date: Moment) => ({
   date: date.format('YYYY-MM-DD'),
-  inputs: 0,
+  upvotes: 0,
+  downvotes: 0,
   total: 0,
 });
 
@@ -24,7 +25,8 @@ const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
 
   return {
     total: 0,
-    inputs: row.count,
+    upvotes: row.sum_upvotes_count,
+    downvotes: row.sum_downvotes_count,
     date: date.format('YYYY-MM-DD'),
   };
 };
@@ -49,12 +51,12 @@ export const parseTimeSeries = (
     resolution
   );
   if (!timeSeries) return [];
-  let totalCount = total && total.length > 0 ? total[0]?.count : 0;
+  let totalCount = total && total.length > 0 ? total[0]?.sum_votes_count : 0;
   timeSeries = timeSeries
     .reverse()
     .map((row) => {
       const _totalCount = totalCount;
-      totalCount = (totalCount || 0) - row.inputs;
+      totalCount = (totalCount || 0) - row.upvotes - row.downvotes;
       return {
         ...row,
         total: _totalCount || 0,
@@ -70,7 +72,8 @@ export const parseExcelData = (
 ) => {
   const timeSeriesData = timeSeries?.map((row) => ({
     [translations.date]: row.date,
-    [translations.inputs]: row.inputs,
+    [translations.upvotes]: row.upvotes,
+    [translations.downvotes]: row.downvotes,
   }));
 
   return {
@@ -91,7 +94,7 @@ export const getFormattedNumbers = (serie) => {
   if (serie) {
     const firstSerieValue = serie ? serie[0].total : 0;
     const lastSerieValue = serie ? serie[serie.length - 1].total : 0;
-    const firstSerieBar = serie ? serie[0].inputs : 0;
+    const firstSerieBar = serie ? serie[0].upvotes + serie[0].downvotes : 0;
     const serieChange = lastSerieValue - firstSerieValue + firstSerieBar;
     let typeOfChange: 'increase' | 'decrease' | '' = '';
 
