@@ -19,6 +19,10 @@ import EmptyState from '../_components/EmptyState';
 import Legend from '../_components/Legend';
 import { Legend as ILegend } from 'components/admin/Graphs/typings';
 
+// i18n
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+import dashboardMessages from 'containers/Admin/dashboard/messages';
+
 // utils
 import { hasNoData, parseMargin } from '../utils';
 import { toFullMonth } from 'utils/dateUtils';
@@ -29,14 +33,15 @@ import {
   GraphDimensions,
   LegendDimensions,
 } from '../_components/Legend/typings';
-
-// hooks
-import { useIntl } from 'utils/cl-intl';
-
-// i18n
-import messages from 'containers/Admin/dashboard/messages';
+import { IResolution } from 'components/admin/ResolutionControl';
 
 export const DEFAULT_LEGEND_OFFSET = 10;
+
+const PERIOD_MESSAGES: Record<IResolution, MessageDescriptor> = {
+  month: dashboardMessages.month,
+  week: dashboardMessages.week,
+  day: dashboardMessages.day,
+};
 
 const LineBarChart = <Row,>({
   width,
@@ -61,31 +66,39 @@ const LineBarChart = <Row,>({
     return <EmptyState emptyContainerContent={emptyContainerContent} />;
   }
 
-  const x = mapping.x;
-  const y = mapping.y[0];
-  if (typeof x === 'symbol' || typeof y === 'symbol') return null;
+  const { x, yBar, yLine } = mapping;
 
-  const resolution_ = (resolution || 'month') as string;
+  if (
+    typeof x === 'symbol' ||
+    typeof yBar === 'symbol' ||
+    typeof yLine === 'symbol'
+  ) {
+    return null;
+  }
+
+  const resolution_: IResolution = resolution ?? 'month';
 
   const formatLabel = (date: string) => {
     return resolution ? toFullMonth(date, resolution) : date;
   };
 
-  const legend = {
+  const legend: ILegend = {
     marginTop: 16,
     items: [
       {
         icon: 'line',
         color: legacyColors.line,
-        label: formatMessage(messages.total),
+        label: formatMessage(dashboardMessages.total),
       },
       {
         icon: 'rect',
         color: colors.categorical01,
-        label: formatMessage(messages.totalForPeriod, { period: resolution_ }),
+        label: formatMessage(dashboardMessages.totalForPeriod, {
+          period: formatMessage(PERIOD_MESSAGES[resolution_]),
+        }),
       },
     ],
-  } as ILegend;
+  };
 
   return (
     <Container
@@ -119,28 +132,28 @@ const LineBarChart = <Row,>({
           {...xaxis}
         />
         <YAxis
-          yAxisId="total"
+          yAxisId="line"
           stroke={legacyColors.chartLabel}
           fontSize={sizes.chartLabel}
           tickLine={false}
         >
           <Label
-            value={formatMessage(messages.total)}
+            value={formatMessage(dashboardMessages.total)}
             angle={-90}
             position={'center'}
             dx={-15}
           />
         </YAxis>
         <YAxis
-          yAxisId="barValue"
+          yAxisId="bar"
           orientation="right"
           allowDecimals={false}
           tickLine={false}
           {...yaxis}
         >
           <Label
-            value={formatMessage(messages.perPeriod, {
-              period: formatMessage(messages[resolution_]),
+            value={formatMessage(dashboardMessages.perPeriod, {
+              period: formatMessage(PERIOD_MESSAGES[resolution_]),
             })}
             angle={90}
             position={'center'}
@@ -153,24 +166,24 @@ const LineBarChart = <Row,>({
           cursor={{ strokeWidth: 1 }}
         />
         <Bar
-          dataKey={y}
-          yAxisId="barValue"
+          dataKey={yBar}
+          yAxisId="bar"
           barSize={sizes.bar}
           fill={legacyColors.barFill}
           fillOpacity={1}
-          name={formatMessage(messages.totalForPeriod, {
-            period: formatMessage(messages[resolution_]),
+          name={formatMessage(dashboardMessages.totalForPeriod, {
+            period: formatMessage(PERIOD_MESSAGES[resolution_]),
           })}
         />
         <Line
           type="monotone"
-          yAxisId="total"
-          dataKey="total"
+          yAxisId="line"
+          dataKey={yLine}
           activeDot={Boolean(data && data?.length < 31)}
           stroke={legacyColors.line}
           fill={legacyColors.line}
           strokeWidth={1}
-          name={formatMessage(messages.total)}
+          name={formatMessage(dashboardMessages.total)}
         />
         {legend && graphDimensions && legendDimensions && (
           <g className="graph-legend">
