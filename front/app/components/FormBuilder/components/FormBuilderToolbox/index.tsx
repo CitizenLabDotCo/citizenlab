@@ -2,8 +2,7 @@ import React from 'react';
 import { get } from 'lodash-es';
 
 // intl
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // components
@@ -15,6 +14,7 @@ import {
   Title,
 } from '@citizenlab/cl2-component-library';
 import BuiltInFields from './BuiltInFields';
+import LayoutFields from './LayoutFields';
 
 // styles
 import { colors } from 'utils/styleUtils';
@@ -25,15 +25,15 @@ import {
   IFlatCreateCustomField,
 } from 'services/formCustomFields';
 
-// Hooks
+// hooks
 import useLocale from 'hooks/useLocale';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { generateTempId } from '../FormBuilderSettings/utils';
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
 import { DraggableElement } from './utils';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 interface FormBuilderToolboxProps {
   onAddField: (field: IFlatCreateCustomField) => void;
@@ -43,16 +43,16 @@ interface FormBuilderToolboxProps {
 }
 
 const FormBuilderToolbox = ({
-  intl: { formatMessage },
   onAddField,
   isEditingDisabled,
   builderConfig,
   move,
-}: FormBuilderToolboxProps & WrappedComponentProps) => {
+}: FormBuilderToolboxProps) => {
   const isInputFormBuilderEnabled = useFeatureFlag({
     name: 'input_form_builder',
   });
 
+  const { formatMessage } = useIntl();
   const locale = useLocale();
 
   const customToolBoxTitle = get(
@@ -108,6 +108,8 @@ const FormBuilderToolbox = ({
       pb="80px"
     >
       <Box overflowY="auto" w="100%" display="inline">
+        <LayoutFields addField={addField} builderConfig={builderConfig} />
+
         <BuiltInFields
           addField={addField}
           builderConfig={builderConfig}
@@ -143,18 +145,7 @@ const FormBuilderToolbox = ({
             />
           )}
         </Box>
-
         <DraggableElement>
-          {builderConfig.groupingType === 'page' && (
-            <ToolboxItem
-              icon="page"
-              label={formatMessage(messages.page)}
-              onClick={() => addField('page')}
-              data-cy="e2e-page"
-              fieldsToExclude={builderConfig.toolboxFieldsToExclude}
-              inputType="page"
-            />
-          )}
           <ToolboxItem
             icon="survey-short-answer-2"
             label={formatMessage(messages.shortAnswer)}
@@ -245,4 +236,4 @@ const FormBuilderToolbox = ({
   );
 };
 
-export default injectIntl(FormBuilderToolbox);
+export default FormBuilderToolbox;

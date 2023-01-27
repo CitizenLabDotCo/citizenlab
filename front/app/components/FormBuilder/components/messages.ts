@@ -213,6 +213,10 @@ export default defineMessages({
     id: 'app.components.formBuilder.defaultField',
     defaultMessage: 'Default field',
   },
+  layout: {
+    id: 'app.components.formBuilder.layout',
+    defaultMessage: 'Layout',
+  },
   disabledBuiltInFieldTooltip: {
     id: 'app.components.formBuilder.disabledBuiltInFieldTooltip',
     defaultMessage:

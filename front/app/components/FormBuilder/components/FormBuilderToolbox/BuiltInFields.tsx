@@ -79,13 +79,6 @@ const BuiltInFields = ({
       </Title>
       <DraggableElement>
         <ToolboxItem
-          icon="section"
-          label={formatMessage(messages.section)}
-          onClick={() => addField('section')}
-          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
-          inputType="section"
-        />
-        <ToolboxItem
           icon="money-bag"
           label={formatMessage(messages.proposedBudget)}
           onClick={() => enableField('proposed_budget')}
