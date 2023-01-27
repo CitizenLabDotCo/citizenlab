@@ -16,8 +16,8 @@ module ContentBuilder
     config.factory_bot.definition_file_paths += [factories_path] if defined?(FactoryBotRails)
 
     config.to_prepare do
-      require 'content_builder/feature_specification'
-      AppConfiguration::Settings.add_feature ::ContentBuilder::FeatureSpecification
+      require 'content_builder/feature_specifications/project_description_builder'
+      AppConfiguration::Settings.add_feature ::ContentBuilder::FeatureSpecifications::ProjectDescriptionBuilder
     end
   end
 end
