@@ -14,7 +14,6 @@ export const query = ({
   endAtMoment,
   resolution,
 }: QueryParameters): Query => {
-  console.log(startAtMoment, endAtMoment);
   const startAt = startAtMoment || moment('2017-01-01');
   const endAt = endAtMoment || moment();
 

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 
 // styling
-import { legacyColors, sizes } from 'components/admin/Graphs/styling';
-import { colors } from 'components/admin/Graphs/styling';
+import { legacyColors, sizes, colors } from 'components/admin/Graphs/styling';
 
 // components
 import {

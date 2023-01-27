@@ -42,7 +42,6 @@ const getFormattedNumbers = (serie) => {
   if (serie) {
     const firstSerieValue = serie && serie[0].total;
     const lastSerieValue = serie && serie[serie.length - 1].total;
-    console.log(firstSerieValue, lastSerieValue);
     const serieChange = lastSerieValue - firstSerieValue;
     let typeOfChange: 'increase' | 'decrease' | '' = '';
 

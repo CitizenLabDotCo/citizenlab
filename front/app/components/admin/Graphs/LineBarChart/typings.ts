@@ -23,28 +23,3 @@ export interface Mapping<Row> {
   x: KeyOfType<Row, string>;
   y: KeyOfType<Row, number>[];
 }
-
-export interface Lines {
-  names?: string[];
-  isAnimationActive?: boolean;
-  strokes?: string[];
-  strokeWidths?: number[];
-  activeDot?: ActiveDot;
-}
-
-interface ActiveDot {
-  r: number;
-}
-
-// PARSED CONFIGS
-export interface LineConfig {
-  props: {
-    name?: string;
-    dataKey: string;
-    dot: false;
-    activeDot: false | ActiveDot;
-    stroke: string;
-    strokeWidth?: number;
-    isAnimationActive?: boolean;
-  };
-}
