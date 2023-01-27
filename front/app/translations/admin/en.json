@@ -45,6 +45,7 @@
   "app.components.admin.Graphs": "No data available with the current filters.",
   "app.components.admin.Graphs.noDataShort": "No data available.",
   "app.components.admin.GraphsCards.PostsByTime.hooks.usePostsByTime.timeSeries": "Posts over time",
+  "app.components.admin.GraphsCards.VotesByTime.hooks.useVotesByTime.timeSeries": "Votes over time",
   "app.components.admin.InputManager.onePost": "1 input",
   "app.components.admin.PostManager.PostPreview.assignee": "Assignee",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "Cancel edit",
