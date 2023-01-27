@@ -1,6 +1,22 @@
 # Changelog
 
-## Next release
+## 2023-01-26 (2)
+
+### Fixed
+
+- [CL-2366] Hide 'Projects' card from overview dashboard
+
+### Added
+
+- [CL-2658] Most voted ideas widget for report builder
+
+## 2023-01-26
+
+### Fixed
+
+- Activity icon in admin navigation for Safari browsers
+
+## 2023-01-23 (2)
 
 ### Fixed
 
