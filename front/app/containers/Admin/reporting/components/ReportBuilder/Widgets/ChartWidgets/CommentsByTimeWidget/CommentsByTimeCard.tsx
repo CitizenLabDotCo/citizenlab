@@ -1,12 +1,12 @@
 import React from 'react';
 
 // hooks
-import usePostsByTime from 'components/admin/GraphCards/PostsByTimeCard/usePostsByTime';
+import useCommentsByTime from 'components/admin/GraphCards/CommentsByTimeCard/useCommentsByTime';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import NoData from '../../_shared/NoData';
-import Chart from 'components/admin/GraphCards/PostsByTimeCard/Chart';
+import Chart from 'components/admin/GraphCards/CommentsByTimeCard/Chart';
 
 // i18n
 import messages from '../messages';
@@ -23,13 +23,13 @@ import { isNilOrError } from 'utils/helperUtils';
 
 type Props = ProjectId & Dates & Resolution;
 
-const PostsByTime = ({
+const CommentsByTime = ({
   projectId,
   startAtMoment,
   endAtMoment,
   resolution,
 }: Props) => {
-  const { currentResolution, timeSeries } = usePostsByTime({
+  const { currentResolution, timeSeries } = useCommentsByTime({
     projectId,
     startAtMoment,
     endAtMoment,
@@ -54,4 +54,4 @@ const PostsByTime = ({
   );
 };
 
-export default PostsByTime;
+export default CommentsByTime;

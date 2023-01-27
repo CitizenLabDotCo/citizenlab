@@ -19,6 +19,7 @@ import GenderWidget from '../Widgets/ChartWidgets/GenderWidget';
 import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
 import MostVotedIdeasWidget from '../Widgets/MostVotedIdeasWidget';
 import PostsByTimeWidget from '../Widgets/ChartWidgets/PostsByTimeWidget';
+import CommentsByTimeWidget from '../Widgets/ChartWidgets/CommentsByTimeWidget';
 
 // types
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
@@ -235,7 +236,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             label={formatMessage(ActiveUsersWidget.craft.custom.title)}
           />
           <DraggableElement
-            id="e2e-draggable-active-users-widget"
+            id="e2e-draggable-posts-by-time-widget"
             component={
               <PostsByTimeWidget
                 title={formatMessage(PostsByTimeWidget.craft.custom.title)}
@@ -246,6 +247,19 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             }
             icon="chart-bar"
             label={formatMessage(PostsByTimeWidget.craft.custom.title)}
+          />
+          <DraggableElement
+            id="e2e-draggable-comments-by-time-widget"
+            component={
+              <CommentsByTimeWidget
+                title={formatMessage(CommentsByTimeWidget.craft.custom.title)}
+                projectId={undefined}
+                startAt={undefined}
+                endAt={chartEndDate}
+              />
+            }
+            icon="chart-bar"
+            label={formatMessage(CommentsByTimeWidget.craft.custom.title)}
           />
         </Accordion>
       </Box>

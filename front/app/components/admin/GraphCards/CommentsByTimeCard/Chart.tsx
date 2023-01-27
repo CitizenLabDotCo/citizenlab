@@ -18,7 +18,7 @@ import { TimeSeries } from './useCommentsByTime/typings';
 type Props = Dates &
   Resolution & {
     timeSeries: TimeSeries | NilOrError;
-    innerRef: React.RefObject<any>;
+    innerRef?: React.RefObject<any>;
     layout?: Layout;
   };
 
