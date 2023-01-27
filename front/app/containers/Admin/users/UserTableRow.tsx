@@ -213,6 +213,14 @@ class UserTableRow extends PureComponent<Props & WrappedComponentProps, State> {
         </Td>
         <Td>{user.attributes.email}</Td>
         <RegisteredAt>
+          {/*
+            For the 'all registered users' group, we do not show invited Users who have not yet accepted their invites,
+            but we do in groups they have been added to when invited.
+
+            The 'Invitation pending' messages should clarify this.
+
+            https://citizenlab.atlassian.net/browse/CL-2255
+          */}
           {user.attributes.invite_status === 'pending' ? (
             <i>
               <FormattedMessage {...messages.userInvitationPending} />
