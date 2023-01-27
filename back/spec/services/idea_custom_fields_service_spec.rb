@@ -233,5 +233,45 @@ describe IdeaCustomFieldsService do
         expect(output).to match_array [:extra_field1, { multiselect_field: [] }]
       end
     end
+
+    describe 'constraints whilst updating persisted fields' do
+      it 'validates if locked attributes are not changed' do
+        title_field = custom_form.custom_fields.find_by(code: 'title_multiloc')
+        valid_params = {
+          enabled: title_field.enabled,
+          required: title_field.enabled,
+          title_multiloc: title_field.title_multiloc
+        }
+        service.validate_update_constraints(title_field, valid_params)
+
+        expect(title_field.errors.errors).to eq []
+      end
+
+      it 'returns errors if locked values are changed from previous values' do
+        title_field = custom_form.custom_fields.find_by(code: 'title_multiloc')
+        bad_params = {
+          enabled: false,
+          required: false,
+          title_multiloc: { en: 'Bad value' }
+        }
+        service.validate_update_constraints(title_field, bad_params)
+
+        expect(title_field.errors.errors.length).to eq 3
+      end
+
+      # it 'does not return errors if locked title of section 1 is changed' do
+      #   bad_title = { en: 'Bad value' }
+      #   field = described_class.new(
+      #     resource: form,
+      #     input_type: 'section',
+      #     code: 'ideation_section_1',
+      #     key: 'ideation_section_1',
+      #     title_multiloc: bad_title, # locked to default value
+      #     enabled: true # locked to true
+      #   )
+      #
+      #   expect(field.save).to be true
+      # end
+    end
   end
 end

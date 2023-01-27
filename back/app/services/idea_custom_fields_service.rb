@@ -57,7 +57,38 @@ class IdeaCustomFieldsService
     ]
   end
 
+  def validate_update_constraints(field, field_params)
+    field_code = field.code ? field.code.to_sym : nil
+    constraints = @participation_method.constraints[field_code]
+    return unless constraints
+
+    constraints[:locks]&.each do |attribute, value|
+      if value == true && field_params[attribute] != field[attribute] && !is_section1_title?(field, attribute)
+        field.errors.add :constraints, "Cannot change #{attribute}. It is locked."
+      end
+    end
+  end
+
+  def validate_create_constraints(field)
+    field_code = field.code ? field.code.to_sym : nil
+    constraints = @participation_method.constraints[field_code]
+    return unless constraints
+
+    default_fields = @participation_method.default_fields field.resource.participation_context
+    default_field = default_fields.find { |f| f.code == field.code }
+
+    constraints[:locks]&.each do |attribute, value|
+      if value == true && field[attribute] != default_field[attribute] && !is_section1_title?(field, attribute)
+        field.errors.add :constraints, "Cannot change #{attribute} from default value. It is locked."
+      end
+    end
+  end
+
   private
+
+  def is_section1_title?(field, attribute)
+    field.code == 'ideation_section1' && attribute == :title_multiloc
+  end
 
   attr_reader :custom_form, :participation_method
 end
