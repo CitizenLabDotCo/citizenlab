@@ -201,8 +201,39 @@ describe IdeaCustomFieldsService do
         expect(output).to match_array [:extra_field1, { multiselect_field: [] }]
       end
     end
+  end
 
-    describe 'constraints whilst updating persisted fields' do
+  context 'constraints/locks on changing attributes' do
+    let(:custom_form) { create :custom_form, :with_default_fields, participation_context: project }
+
+    describe 'validate_constraints_against_defaults' do
+      it 'validates if locked attributes are not changed from defaults' do
+        title_field = custom_form.custom_fields.find_by(code: 'title_multiloc')
+        service.validate_constraints_against_defaults(title_field)
+
+        expect(title_field.errors.errors).to eq []
+      end
+
+      it 'returns errors if locked attributes are different from default' do
+        title_field = custom_form.custom_fields.find_by(code: 'title_multiloc')
+        title_field.enabled = false
+        title_field.required = false
+        title_field.title_multiloc = { en: 'Changed value' }
+        service.validate_constraints_against_defaults(title_field)
+
+        expect(title_field.errors.errors.length).to eq 3
+      end
+
+      it 'does not return errors if locked title of section 1 is different from default' do
+        section1_field = custom_form.custom_fields.find_by(code: 'ideation_section1')
+        section1_field.title_multiloc = { en: 'Changed value' }
+        service.validate_constraints_against_defaults(section1_field)
+
+        expect(section1_field.errors.errors).to eq []
+      end
+    end
+
+    describe 'validate_constraints_against_updates' do
       it 'validates if locked attributes are not changed' do
         title_field = custom_form.custom_fields.find_by(code: 'title_multiloc')
         valid_params = {
@@ -210,36 +241,33 @@ describe IdeaCustomFieldsService do
           required: title_field.enabled,
           title_multiloc: title_field.title_multiloc
         }
-        service.validate_update_constraints(title_field, valid_params)
+        service.validate_constraints_against_updates(title_field, valid_params)
 
         expect(title_field.errors.errors).to eq []
       end
 
-      it 'returns errors if locked values are changed from previous values' do
+      it 'returns errors if locked attributes are changed from previous values' do
         title_field = custom_form.custom_fields.find_by(code: 'title_multiloc')
         bad_params = {
           enabled: false,
           required: false,
-          title_multiloc: { en: 'Bad value' }
+          title_multiloc: { en: 'Changed value' }
         }
-        service.validate_update_constraints(title_field, bad_params)
+        service.validate_constraints_against_updates(title_field, bad_params)
 
         expect(title_field.errors.errors.length).to eq 3
       end
 
-      # it 'does not return errors if locked title of section 1 is changed' do
-      #   bad_title = { en: 'Bad value' }
-      #   field = described_class.new(
-      #     resource: form,
-      #     input_type: 'section',
-      #     code: 'ideation_section1',
-      #     key: 'ideation_section1',
-      #     title_multiloc: bad_title, # locked to default value
-      #     enabled: true # locked to true
-      #   )
-      #
-      #   expect(field.save).to be true
-      # end
+      it 'does not return errors if locked title of section 1 is changed' do
+        section1_field = custom_form.custom_fields.find_by(code: 'ideation_section1')
+        valid_params = {
+          enabled: true,
+          title_multiloc: { en: 'Changed value' }
+        }
+        service.validate_constraints_against_updates(section1_field, valid_params)
+
+        expect(section1_field.errors.errors).to eq []
+      end
     end
   end
 end

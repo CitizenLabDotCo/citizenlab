@@ -107,7 +107,7 @@ module IdeaCustomFields
       end
       field = CustomField.new create_params.merge(resource: @custom_form)
 
-      IdeaCustomFieldsService.new(@custom_form).validate_create_constraints(field)
+      IdeaCustomFieldsService.new(@custom_form).validate_constraints_against_defaults(field)
       if field.errors.errors.empty?
         SideFxCustomFieldService.new.before_create field, current_user
         if field.save
@@ -125,7 +125,7 @@ module IdeaCustomFields
     end
 
     def update_field!(field, field_params, errors, index)
-      IdeaCustomFieldsService.new(@custom_form).validate_update_constraints(field, field_params)
+      IdeaCustomFieldsService.new(@custom_form).validate_constraints_against_updates(field, field_params)
       if field.errors.errors.empty?
         field.assign_attributes field_params
         SideFxCustomFieldService.new.before_update field, current_user

@@ -50,7 +50,7 @@ class IdeaCustomFieldsService
     end
   end
 
-  def validate_update_constraints(field, field_params)
+  def validate_constraints_against_updates(field, field_params)
     field_code = field.code ? field.code.to_sym : nil
     constraints = @participation_method.constraints[field_code]
     return unless constraints
@@ -62,7 +62,7 @@ class IdeaCustomFieldsService
     end
   end
 
-  def validate_create_constraints(field)
+  def validate_constraints_against_defaults(field)
     field_code = field.code ? field.code.to_sym : nil
     constraints = @participation_method.constraints[field_code]
     return unless constraints
