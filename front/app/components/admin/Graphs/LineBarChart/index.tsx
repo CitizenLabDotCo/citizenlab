@@ -64,8 +64,9 @@ const LineBarChart = <Row,>({
 
   const x = mapping.x;
   const y = mapping.y;
-  if (typeof x === 'symbol' || y.some((y_) => typeof y_ === 'symbol'))
+  if (typeof x === 'symbol' || y.some((y_) => typeof y_ === 'symbol')) {
     return null;
+  }
 
   const resolution_ = (resolution || 'month') as string;
 
@@ -89,13 +90,13 @@ const LineBarChart = <Row,>({
     ],
   } as ILegend;
 
-  legend = legend || defaultLegend;
+  const legend_ = legend || defaultLegend;
 
   return (
     <Container
       width={width}
       height={height}
-      legend={legend}
+      legend={legend_}
       graphDimensions={graphDimensions}
       legendDimensions={legendDimensions}
       defaultLegendOffset={DEFAULT_LEGEND_OFFSET}
@@ -108,7 +109,7 @@ const LineBarChart = <Row,>({
         ref={innerRef}
         margin={parseMargin(
           margin,
-          legend,
+          legend_,
           legendDimensions,
           DEFAULT_LEGEND_OFFSET
         )}
@@ -156,18 +157,18 @@ const LineBarChart = <Row,>({
           labelFormatter={formatLabel}
           cursor={{ strokeWidth: 1 }}
         />
-        {legend?.items
+        {legend_?.items
           .filter((l) => l.icon !== 'line')
-          .map((legend, legend_i) => (
+          .map((l, l_i) => (
             <Bar
-              key={legend_i}
-              dataKey={y[legend_i] as string}
+              key={l_i}
+              dataKey={y[l_i] as string}
               yAxisId="barValue"
               stackId="1"
               barSize={sizes.bar}
-              fill={legend.color}
+              fill={l.color}
               fillOpacity={1}
-              name={legend.label}
+              name={l.label}
             />
           ))}
         <Line
@@ -180,14 +181,14 @@ const LineBarChart = <Row,>({
           strokeWidth={1}
           name={formatMessage(messages.total)}
         />
-        {legend && graphDimensions && legendDimensions && (
+        {legend_ && graphDimensions && legendDimensions && (
           <g className="graph-legend">
             <Legend
-              items={legend.items}
+              items={legend_.items}
               graphDimensions={graphDimensions}
               legendDimensions={legendDimensions}
-              position={legend.position}
-              textColor={legend.textColor}
+              position={legend_.position}
+              textColor={legend_.textColor}
               margin={margin}
             />
           </g>
