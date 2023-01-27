@@ -9,6 +9,7 @@ export const ideationConfig: FormBuilderConfig = {
   viewFormLinkCopy: messages.viewFormLinkCopy,
   formSavedSuccessMessage: messages.successMessage,
   toolboxFieldsToExclude: ['page', 'file_upload'],
+  displayBuiltInFields: true,
   formCustomFields: undefined,
   showStatusBadge: false,
   isLogicEnabled: false,
