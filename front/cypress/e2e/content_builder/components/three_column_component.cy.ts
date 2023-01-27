@@ -23,8 +23,10 @@ describe('Content builder Three Column component', () => {
       }).then((project) => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
-        cy.apiEnableContentBuilder({ projectId }).then(() => {
-          cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+        cy.apiEnableProjectDescriptionBuilder({ projectId }).then(() => {
+          cy.visit(
+            `/admin/project-description-builder/projects/${projectId}/description`
+          );
         });
       });
     });
@@ -40,7 +42,7 @@ describe('Content builder Three Column component', () => {
 
   it('handles Three Column component correctly', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
-      'saveContentBuilder'
+      'saveProjectDescriptionBuilder'
     );
     cy.get('#e2e-draggable-three-column').dragAndDrop(
       '#e2e-content-builder-frame',
@@ -61,7 +63,7 @@ describe('Content builder Three Column component', () => {
     cy.get('div#e2e-about-box').should('have.length', 3);
 
     cy.get('#e2e-content-builder-topbar-save').click();
-    cy.wait('@saveContentBuilder');
+    cy.wait('@saveProjectDescriptionBuilder');
 
     // Check column and elements exist on page
     cy.visit(`/projects/${projectSlug}`);
@@ -72,15 +74,17 @@ describe('Content builder Three Column component', () => {
 
   it('deletes Three Column component correctly', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
-      'saveContentBuilder'
+      'saveProjectDescriptionBuilder'
     );
-    cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+    cy.visit(
+      `/admin/project-description-builder/projects/${projectId}/description`
+    );
     cy.get('#e2e-three-column').should('be.visible');
 
     cy.get('#e2e-three-column').click('top');
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
-    cy.wait('@saveContentBuilder');
+    cy.wait('@saveProjectDescriptionBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
     cy.get('#e2e-three-column').should('not.exist');

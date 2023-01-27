@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // hooks
-import useContentBuilderLayout from '../../../hooks/useProjectDescriptionBuilderLayout';
+import useProjectDescriptionBuilderLayout from '../../../hooks/useProjectDescriptionBuilderLayout';
 import useLocale from 'hooks/useLocale';
 import useProject from 'hooks/useProject';
 import { useParams } from 'react-router-dom';
@@ -13,9 +13,6 @@ import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
 
-// services
-import { PROJECT_DESCRIPTION_CODE } from '../../../services/projectDescriptionBuilder';
-
 // types
 import { SerializedNodes } from '@craftjs/core';
 
@@ -26,20 +23,21 @@ export const FullScreenPreview = () => {
   const platformLocale = useLocale();
   const project = useProject({ projectId });
 
-  const contentBuilderLayout = useContentBuilderLayout({
-    projectId,
-    code: PROJECT_DESCRIPTION_CODE,
-  });
+  const projectDescriptionBuilderLayout =
+    useProjectDescriptionBuilderLayout(projectId);
 
   if (isNilOrError(platformLocale) || isNilOrError(project)) {
     return null;
   }
 
   const locale = selectedLocale || platformLocale;
-  const isLoadingContentBuilderLayout = contentBuilderLayout === undefined;
+  const isLoadingProjectDescriptionBuilderLayout =
+    projectDescriptionBuilderLayout === undefined;
 
-  const savedEditorData = !isNilOrError(contentBuilderLayout)
-    ? contentBuilderLayout.data.attributes.craftjs_jsonmultiloc[locale]
+  const savedEditorData = !isNilOrError(projectDescriptionBuilderLayout)
+    ? projectDescriptionBuilderLayout.data.attributes.craftjs_jsonmultiloc[
+        locale
+      ]
     : undefined;
 
   const editorData = draftData || savedEditorData;
@@ -52,8 +50,8 @@ export const FullScreenPreview = () => {
       <Title color="tenantText" variant="h1">
         {project.attributes.title_multiloc[locale]}
       </Title>
-      {isLoadingContentBuilderLayout && <Spinner />}
-      {!isLoadingContentBuilderLayout && editorData && (
+      {isLoadingProjectDescriptionBuilderLayout && <Spinner />}
+      {!isLoadingProjectDescriptionBuilderLayout && editorData && (
         <Box>
           <Editor isPreview={true}>
             <ContentBuilderFrame editorData={editorData} />

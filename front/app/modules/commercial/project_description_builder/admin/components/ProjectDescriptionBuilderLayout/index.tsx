@@ -6,31 +6,29 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 // intl
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
-type ContentBuilderLayoutProps = {
+type ProjectDescriptionBuilderLayoutProps = {
   children?: React.ReactNode;
   onMount: (isVisible: boolean) => void;
 } & WithRouterProps;
 
-const ContentBuilderLayout: React.FC<ContentBuilderLayoutProps> = ({
-  children,
-  onMount,
-  location: { pathname },
-}) => {
+const ProjectDescriptionBuilderLayout: React.FC<
+  ProjectDescriptionBuilderLayoutProps
+> = ({ children, onMount, location: { pathname } }) => {
   const featureEnabled = useFeatureFlag({
     name: 'project_description_builder',
   });
-  const contentBuilderLayoutVisible =
+  const projectDescriptionBuilderLayoutVisible =
     featureEnabled && pathname.includes('admin/project-description-builder');
 
   useEffect(() => {
-    onMount(contentBuilderLayoutVisible);
-  }, [onMount, contentBuilderLayoutVisible]);
+    onMount(projectDescriptionBuilderLayoutVisible);
+  }, [onMount, projectDescriptionBuilderLayoutVisible]);
 
-  if (!contentBuilderLayoutVisible) {
+  if (!projectDescriptionBuilderLayoutVisible) {
     return null;
   }
 
   return <>{children}</>;
 };
 
-export default withRouter(ContentBuilderLayout);
+export default withRouter(ProjectDescriptionBuilderLayout);

@@ -7,10 +7,10 @@ import {
   CONTENT_BUILDER_ERROR_EVENT,
 } from 'components/admin/ContentBuilder/constants';
 
-import { IContentBuilderLayoutData } from '../../services/projectDescriptionBuilder';
+import { IProjectDescriptionBuilderData } from '../../services/projectDescriptionBuilder';
 import eventEmitter from 'utils/eventEmitter';
 
-const mockEditorData: IContentBuilderLayoutData = {
+const mockEditorData: IProjectDescriptionBuilderData = {
   id: '2',
   type: 'content_builder_layout',
   attributes: {
@@ -39,7 +39,7 @@ jest.mock('utils/cl-router/history');
 jest.mock('hooks/useLocale');
 jest.mock('services/locale');
 jest.mock('hooks/useLocalize');
-jest.mock('../../hooks/useContentBuilder', () => {
+jest.mock('../../hooks/useProjectDescriptionBuilderLayout', () => {
   return jest.fn(() => ({ data: mockEditorData }));
 });
 

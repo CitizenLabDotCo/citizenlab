@@ -49,7 +49,9 @@ describe('Content builder preview', () => {
   });
 
   it('shows saved description if there is no draft content', () => {
-    cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+    cy.visit(
+      `/admin/project-description-builder/projects/${projectId}/description`
+    );
     cy.wait(10000);
     cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
       position: 'inside',
@@ -66,7 +68,9 @@ describe('Content builder preview', () => {
   });
 
   it('shows draft content when it exists', () => {
-    cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+    cy.visit(
+      `/admin/project-description-builder/projects/${projectId}/description`
+    );
     cy.wait(10000);
     cy.get('#e2e-text-box').should('exist');
     cy.get('#e2e-text-box').click();
@@ -81,7 +85,9 @@ describe('Content builder preview', () => {
   });
 
   it('allows user to navigate between mobile and desktop preview and see content in both', () => {
-    cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+    cy.visit(
+      `/admin/project-description-builder/projects/${projectId}/description`
+    );
     cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
       position: 'inside',
     });

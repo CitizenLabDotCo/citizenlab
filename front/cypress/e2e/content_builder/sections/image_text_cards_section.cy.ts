@@ -23,8 +23,10 @@ describe('Content builder Image Text Cards section', () => {
       }).then((project) => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
-        cy.apiEnableContentBuilder({ projectId }).then(() => {
-          cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+        cy.apiEnableProjectDescriptionBuilder({ projectId }).then(() => {
+          cy.visit(
+            `/admin/project-description-builder/projects/${projectId}/description`
+          );
         });
       });
     });
@@ -39,7 +41,7 @@ describe('Content builder Image Text Cards section', () => {
 
   it('handles Image Text Cards section correctly', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
-      'saveContentBuilder'
+      'saveProjectDescriptionBuilder'
     );
     cy.get('#e2e-draggable-image-text-cards').dragAndDrop(
       '#e2e-content-builder-frame',
@@ -71,7 +73,7 @@ describe('Content builder Image Text Cards section', () => {
 
     // Save
     cy.get('#e2e-content-builder-topbar-save').click();
-    cy.wait('@saveContentBuilder');
+    cy.wait('@saveProjectDescriptionBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
     cy.contains('Edited text.').should('be.visible');
@@ -80,9 +82,11 @@ describe('Content builder Image Text Cards section', () => {
 
   it('deletes Image Text Cards section correctly', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
-      'saveContentBuilder'
+      'saveProjectDescriptionBuilder'
     );
-    cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+    cy.visit(
+      `/admin/project-description-builder/projects/${projectId}/description`
+    );
 
     cy.get('#e2e-two-column').click('top');
     cy.get('#e2e-delete-button').click();
@@ -91,7 +95,7 @@ describe('Content builder Image Text Cards section', () => {
     cy.get('#e2e-two-column').click('top');
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
-    cy.wait('@saveContentBuilder');
+    cy.wait('@saveProjectDescriptionBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
     cy.contains('Edited text.').should('not.exist');

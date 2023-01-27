@@ -22,8 +22,10 @@ describe('Content builder language switch', () => {
       }).then((project) => {
         projectSlug = projectTitle;
         projectId = project.body.data.id;
-        cy.apiEnableContentBuilder({ projectId }).then(() => {
-          cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+        cy.apiEnableProjectDescriptionBuilder({ projectId }).then(() => {
+          cy.visit(
+            `/admin/project-description-builder/projects/${projectId}/description`
+          );
         });
       });
     });
@@ -42,7 +44,7 @@ describe('Content builder language switch', () => {
 
   it('handles language specific content correctly', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
-      'saveContentBuilder'
+      'saveProjectDescriptionBuilder'
     );
 
     // EN
@@ -53,7 +55,7 @@ describe('Content builder language switch', () => {
     cy.get('#quill-editor').click();
     cy.get('#quill-editor').type('Language 1 text.', { force: true });
     cy.get('#e2e-content-builder-topbar-save').click();
-    cy.wait('@saveContentBuilder');
+    cy.wait('@saveProjectDescriptionBuilder');
 
     // NL-BE
     cy.get('.e2e-language-dropdown-toggle').click({ force: true });
@@ -65,7 +67,7 @@ describe('Content builder language switch', () => {
     cy.get('#quill-editor').click();
     cy.get('#quill-editor').type('Language 2 text.', { force: true });
     cy.get('#e2e-content-builder-topbar-save').click();
-    cy.wait('@saveContentBuilder');
+    cy.wait('@saveProjectDescriptionBuilder');
 
     // Confirm correct content on live page
     cy.visit(`/projects/${projectSlug}`);
@@ -79,10 +81,12 @@ describe('Content builder language switch', () => {
 
   it('deletes language specific content correctly', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
-      'saveContentBuilder'
+      'saveProjectDescriptionBuilder'
     );
 
-    cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+    cy.visit(
+      `/admin/project-description-builder/projects/${projectId}/description`
+    );
 
     // Delete content from languages
     cy.get('#e2e-text-box').click({ force: true });
@@ -93,7 +97,7 @@ describe('Content builder language switch', () => {
     cy.get('#e2e-text-box').click({ force: true });
     cy.get('#e2e-delete-button').click({ force: true });
     cy.get('#e2e-content-builder-topbar-save').click({ force: true });
-    cy.wait('@saveContentBuilder');
+    cy.wait('@saveProjectDescriptionBuilder');
 
     // Confirm correct content on live page
     cy.visit(`/projects/${projectSlug}`);

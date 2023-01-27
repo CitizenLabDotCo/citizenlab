@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from 'utils/testUtils/rtl';
 
-import ContentBuilderEditModePreview from '.';
+import ProjectDescriptionBuilderEditModePreview from '.';
 
 jest.mock('services/locale');
 jest.mock('hooks/useLocale');
@@ -17,10 +17,10 @@ jest.mock('hooks/useProject', () => {
   }));
 });
 
-describe('ContentBulderEditModePreview', () => {
+describe('ProjectDescriptionBuilderEditModePreview', () => {
   it('renders iframe with the correct src', () => {
     const { container } = render(
-      <ContentBuilderEditModePreview projectId="id" />
+      <ProjectDescriptionBuilderEditModePreview projectId="id" />
     );
     expect(container.querySelector('iframe')).toHaveAttribute(
       'src',

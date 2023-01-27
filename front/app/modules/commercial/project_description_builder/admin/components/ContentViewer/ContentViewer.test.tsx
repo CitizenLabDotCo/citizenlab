@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
-import ContentBuilderPreview from '.';
+import ProjectDescriptionBuilderPreview from '.';
 
 let mockFeatureFlagData = true;
 
@@ -29,23 +29,25 @@ jest.mock('hooks/useProject', () => {
   }));
 });
 
-describe('ContentBuilderPreview', () => {
+describe('ProjectDescriptionBuilderPreview', () => {
   it('calls onMount correctly and renders component when feature flag is enabled', () => {
     const onMount = jest.fn();
-    render(<ContentBuilderPreview onMount={onMount} />);
+    render(<ProjectDescriptionBuilderPreview onMount={onMount} />);
 
     expect(onMount).toHaveBeenCalled();
-    expect(screen.getByTestId('contentBuilderPreview')).toBeInTheDocument();
+    expect(
+      screen.getByTestId('projectDescriptionBuilderPreview')
+    ).toBeInTheDocument();
   });
 
   it('does not call onMount and does not render component when feature flag is disabled', () => {
     mockFeatureFlagData = false;
     const onMount = jest.fn();
-    render(<ContentBuilderPreview onMount={onMount} />);
+    render(<ProjectDescriptionBuilderPreview onMount={onMount} />);
 
     expect(onMount).not.toHaveBeenCalled();
     expect(
-      screen.queryByTestId('contentBuilderPreview')
+      screen.queryByTestId('projectDescriptionBuilderPreview')
     ).not.toBeInTheDocument();
   });
 });

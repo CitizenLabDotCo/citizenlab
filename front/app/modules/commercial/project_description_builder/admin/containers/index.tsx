@@ -6,13 +6,13 @@ import { stylingConsts } from 'utils/styleUtils';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import ContentBuilderEditModePreview from '../components/ProjectDescriptionBuilderEditModePreview';
+import ProjectDescriptionBuilderEditModePreview from '../components/ProjectDescriptionBuilderEditModePreview';
 
 // craft
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import Editor from '../components/Editor';
-import ContentBuilderToolbox from '../components/ProjectDescriptionBuilderToolbox';
-import ContentBuilderTopBar from '../components/ProjectDescriptionBuilderTopBar';
+import ProjectDescriptionBuilderToolbox from '../components/ProjectDescriptionBuilderToolbox';
+import ProjectDescriptionBuilderTopBar from '../components/ProjectDescriptionBuilderTopBar';
 import {
   StyledRightColumn,
   ErrorMessage,
@@ -21,9 +21,8 @@ import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import ContentBuilderSettings from 'components/admin/ContentBuilder/Settings';
 
 // hooks
-import { PROJECT_DESCRIPTION_CODE } from '../../services/projectDescriptionBuilder';
 import useLocale from 'hooks/useLocale';
-import useContentBuilderLayout from '../../hooks/useProjectDescriptionBuilderLayout';
+import useProjectDescriptionBuilderLayout from '../../hooks/useProjectDescriptionBuilderLayout';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
@@ -49,10 +48,7 @@ const ProjectDescriptionBuilderPage = () => {
   });
   const locale = useLocale();
   const locales = useAppConfigurationLocales();
-  const contentBuilderLayout = useContentBuilderLayout({
-    projectId,
-    code: PROJECT_DESCRIPTION_CODE,
-  });
+  const contentBuilderLayout = useProjectDescriptionBuilderLayout(projectId);
 
   useEffect(() => {
     if (!isNilOrError(locale)) {
@@ -140,7 +136,7 @@ const ProjectDescriptionBuilderPage = () => {
         onNodesChange={handleEditorChange}
         key={selectedLocale}
       >
-        <ContentBuilderTopBar
+        <ProjectDescriptionBuilderTopBar
           localesWithError={localesWithError}
           hasPendingState={imageUploading}
           previewEnabled={previewEnabled}
@@ -154,7 +150,7 @@ const ProjectDescriptionBuilderPage = () => {
           display={previewEnabled ? 'none' : 'flex'}
         >
           {selectedLocale && (
-            <ContentBuilderToolbox selectedLocale={selectedLocale} />
+            <ProjectDescriptionBuilderToolbox selectedLocale={selectedLocale} />
           )}
           <StyledRightColumn>
             <Box width="1000px">
@@ -166,7 +162,10 @@ const ProjectDescriptionBuilderPage = () => {
         </Box>
       </Editor>
       <Box justifyContent="center" display={previewEnabled ? 'flex' : 'none'}>
-        <ContentBuilderEditModePreview projectId={projectId} ref={iframeRef} />
+        <ProjectDescriptionBuilderEditModePreview
+          projectId={projectId}
+          ref={iframeRef}
+        />
       </Box>
     </FullscreenContentBuilder>
   );

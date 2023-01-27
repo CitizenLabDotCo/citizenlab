@@ -1,24 +1,23 @@
 import React from 'react';
 
 // hooks
-import useContentBuilderLayout from '../../../../hooks/useProjectDescriptionBuilderLayout';
+import useProjectDescriptionBuilderLayout from '../../../../hooks/useProjectDescriptionBuilderLayout';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
+import useProjectFiles from 'hooks/useProjectFiles';
 
 // components
 import Editor from '../../Editor';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
 import ProjectInfo from 'containers/ProjectsShowPage/shared/header/ProjectInfo';
+import FileAttachments from 'components/UI/FileAttachments';
+
+// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// services
-import { PROJECT_DESCRIPTION_CODE } from '../../../../services/projectDescriptionBuilder';
-
-// types
+// typings
 import { Multiloc } from 'typings';
-import useProjectFiles from 'hooks/useProjectFiles';
-import FileAttachments from 'components/UI/FileAttachments';
 
 type PreviewProps = {
   projectId: string;
@@ -30,47 +29,52 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
   const localize = useLocalize();
   const projectFiles = useProjectFiles(projectId);
 
-  const contentBuilderLayout = useContentBuilderLayout({
-    projectId,
-    code: PROJECT_DESCRIPTION_CODE,
-  });
+  const projectDescriptionBuilderLayout =
+    useProjectDescriptionBuilderLayout(projectId);
 
-  const isLoadingContentBuilderLayout = contentBuilderLayout === undefined;
+  const isLoadingProjectDescriptionBuilderLayout =
+    projectDescriptionBuilderLayout === undefined;
 
-  const contentBuilderContent =
-    !isNilOrError(contentBuilderLayout) &&
+  const projectDescriptionBuilderContent =
+    !isNilOrError(projectDescriptionBuilderLayout) &&
     !isNilOrError(locale) &&
-    contentBuilderLayout.data.attributes.enabled &&
-    contentBuilderLayout.data.attributes.craftjs_jsonmultiloc[locale];
+    projectDescriptionBuilderLayout.data.attributes.enabled &&
+    projectDescriptionBuilderLayout.data.attributes.craftjs_jsonmultiloc[
+      locale
+    ];
 
   const editorData =
-    !isNilOrError(contentBuilderLayout) && !isNilOrError(locale)
-      ? contentBuilderLayout.data.attributes.craftjs_jsonmultiloc[locale]
+    !isNilOrError(projectDescriptionBuilderLayout) && !isNilOrError(locale)
+      ? projectDescriptionBuilderLayout.data.attributes.craftjs_jsonmultiloc[
+          locale
+        ]
       : undefined;
 
   return (
-    <Box data-testid="contentBuilderPreview">
-      {isLoadingContentBuilderLayout && <Spinner />}
-      {!isLoadingContentBuilderLayout && contentBuilderContent && (
-        <Box data-testid="contentBuilderPreviewContent">
-          <Title color="tenantText" variant="h1">
-            {localize(projectTitle)}
-          </Title>
-          <Editor isPreview={true}>
-            <ContentBuilderFrame editorData={editorData} />
-          </Editor>
-          {!isNilOrError(projectFiles) && (
-            <Box maxWidth="750px" mb="25px">
-              <FileAttachments files={projectFiles.data} />
-            </Box>
-          )}
-        </Box>
-      )}
-      {!isLoadingContentBuilderLayout && !contentBuilderContent && (
-        <Box data-testid="contentBuilderProjectDescription">
-          <ProjectInfo projectId={projectId} />
-        </Box>
-      )}
+    <Box data-testid="projectDescriptionBuilderPreview">
+      {isLoadingProjectDescriptionBuilderLayout && <Spinner />}
+      {!isLoadingProjectDescriptionBuilderLayout &&
+        projectDescriptionBuilderContent && (
+          <Box data-testid="projectDescriptionBuilderPreviewContent">
+            <Title color="tenantText" variant="h1">
+              {localize(projectTitle)}
+            </Title>
+            <Editor isPreview={true}>
+              <ContentBuilderFrame editorData={editorData} />
+            </Editor>
+            {!isNilOrError(projectFiles) && (
+              <Box maxWidth="750px" mb="25px">
+                <FileAttachments files={projectFiles.data} />
+              </Box>
+            )}
+          </Box>
+        )}
+      {!isLoadingProjectDescriptionBuilderLayout &&
+        !projectDescriptionBuilderContent && (
+          <Box data-testid="projectDescriptionBuilderProjectDescription">
+            <ProjectInfo projectId={projectId} />
+          </Box>
+        )}
     </Box>
   );
 };

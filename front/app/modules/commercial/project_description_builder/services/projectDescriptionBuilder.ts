@@ -3,9 +3,9 @@ import streams from 'utils/streams';
 import { reportError } from 'utils/loggingUtils';
 import { JsonMultiloc } from 'components/admin/ContentBuilder/typings';
 
-export const PROJECT_DESCRIPTION_CODE = 'project_description';
+const PROJECT_DESCRIPTION_CODE = 'project_description';
 
-export interface IContentBuilderLayoutData {
+export interface IProjectDescriptionBuilderData {
   type: 'content_builder_layout';
   id: string;
   attributes: {
@@ -15,17 +15,17 @@ export interface IContentBuilderLayoutData {
   };
 }
 
-export interface IContentBuilderLayout {
-  data: IContentBuilderLayoutData;
+export interface IProjectDescriptionBuilderLayout {
+  data: IProjectDescriptionBuilderData;
 }
 
-export interface IContentBuilderLayoutObject {
+export interface IProjectDescriptionBuilderLayoutObject {
   craftjs_jsonmultiloc?: JsonMultiloc;
   enabled?: boolean;
 }
 
 export function projectDescriptionBuilderLayoutStream(projectId: string) {
-  return streams.get<IContentBuilderLayout>({
+  return streams.get<IProjectDescriptionBuilderLayout>({
     apiEndpoint: `${API_PATH}/projects/${projectId}/content_builder_layouts/${PROJECT_DESCRIPTION_CODE}`,
     handleErrorLogging: (error) => {
       // A 404 error is expected when the content builder layout is not found so we don't want to log it
@@ -36,17 +36,17 @@ export function projectDescriptionBuilderLayoutStream(projectId: string) {
   });
 }
 
-export async function addContentBuilderLayout(
-  { projectId, code },
-  object: IContentBuilderLayoutObject
+export async function addProjectDescriptionBuilderLayout(
+  projectId,
+  object: IProjectDescriptionBuilderLayoutObject
 ) {
-  const response = await streams.add<IContentBuilderLayout>(
-    `${API_PATH}/projects/${projectId}/content_builder_layouts/${code}/upsert`,
+  const response = await streams.add<IProjectDescriptionBuilderLayout>(
+    `${API_PATH}/projects/${projectId}/content_builder_layouts/${PROJECT_DESCRIPTION_CODE}/upsert`,
     { content_builder_layout: object }
   );
   streams.fetchAllWith({
     apiEndpoint: [
-      `${API_PATH}/projects/${projectId}/content_builder_layouts/${code}`,
+      `${API_PATH}/projects/${projectId}/content_builder_layouts/${PROJECT_DESCRIPTION_CODE}`,
     ],
   });
   return response;

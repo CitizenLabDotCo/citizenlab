@@ -31,13 +31,13 @@ import ImageTextCards from '../CraftSections/ImageTextCards';
 // types
 import { Locale } from 'typings';
 
-type ContentBuilderToolboxProps = {
+type ProjectDescriptionBuilderToolboxProps = {
   selectedLocale: Locale;
 };
 
-const ContentBuilderToolbox = ({
+const ProjectDescriptionBuilderToolbox = ({
   selectedLocale,
-}: ContentBuilderToolboxProps) => {
+}: ProjectDescriptionBuilderToolboxProps) => {
   const { formatMessage } = useIntl();
   const { projectId } = useParams() as { projectId: string };
 
@@ -141,4 +141,4 @@ const ContentBuilderToolbox = ({
   );
 };
 
-export default ContentBuilderToolbox;
+export default ProjectDescriptionBuilderToolbox;

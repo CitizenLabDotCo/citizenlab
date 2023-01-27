@@ -7,7 +7,7 @@ import { waitFor } from 'utils/testUtils/rtl';
 
 const projectId = 'TestID';
 
-const mockContentBuilderLayout = {
+const mockProjectDescriptionBuilderLayout = {
   data: {
     id: 'testID',
     type: 'content_builder_layout',
@@ -22,21 +22,24 @@ const mockContentBuilderLayout = {
 };
 
 let mockObservable = new Observable((subscriber) => {
-  subscriber.next(mockContentBuilderLayout);
+  subscriber.next(mockProjectDescriptionBuilderLayout);
 }).pipe(delay(1));
 
-jest.mock('modules/commercial/content_builder/services/contentBuilder', () => {
-  return {
-    contentBuilderLayoutStream: jest.fn(() => {
-      return {
-        observable: mockObservable,
-      };
-    }),
-  };
-});
+jest.mock(
+  'modules/commercial/project_description_builder/services/projectDescriptionBuilder',
+  () => {
+    return {
+      projectDescriptionBuilderLayoutStream: jest.fn(() => {
+        return {
+          observable: mockObservable,
+        };
+      }),
+    };
+  }
+);
 
-describe('useContentBuilderLayout', () => {
-  it('should call contentBuilderLayoutStream with correct arguments', () => {
+describe('useProjectDescriptionBuilderLayout', () => {
+  it('should call projectDescriptionBuilderLayoutStream with correct arguments', () => {
     renderHook(() => useProjectDescriptionBuilderLayout(projectId));
     expect(projectDescriptionBuilderLayoutStream).toHaveBeenCalledWith(
       projectId
@@ -50,7 +53,7 @@ describe('useContentBuilderLayout', () => {
     await act(
       async () =>
         await waitFor(() =>
-          expect(result.current).toBe(mockContentBuilderLayout)
+          expect(result.current).toBe(mockProjectDescriptionBuilderLayout)
         )
     );
   });

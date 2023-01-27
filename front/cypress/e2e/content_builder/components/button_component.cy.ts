@@ -23,8 +23,10 @@ describe('Content builder Button component', () => {
       }).then((project) => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
-        cy.apiEnableContentBuilder({ projectId }).then(() => {
-          cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+        cy.apiEnableProjectDescriptionBuilder({ projectId }).then(() => {
+          cy.visit(
+            `/admin/project-description-builder/projects/${projectId}/description`
+          );
         });
       });
     });
@@ -39,7 +41,7 @@ describe('Content builder Button component', () => {
 
   it('handles Button component correctly', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
-      'saveContentBuilder'
+      'saveProjectDescriptionBuilder'
     );
 
     cy.get('#e2e-draggable-button').dragAndDrop('#e2e-content-builder-frame', {
@@ -77,22 +79,24 @@ describe('Content builder Button component', () => {
 
     // Confirms that button displays and functions correctly on live page
     cy.get('#e2e-content-builder-topbar-save').click();
-    cy.wait('@saveContentBuilder');
+    cy.wait('@saveProjectDescriptionBuilder');
     cy.visit(`/projects/${projectSlug}`);
     cy.contains('New Button Title').should('exist');
   });
 
   it('deletes Button component correctly', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
-      'saveContentBuilder'
+      'saveProjectDescriptionBuilder'
     );
-    cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+    cy.visit(
+      `/admin/project-description-builder/projects/${projectId}/description`
+    );
 
     cy.get('#e2e-button').should('exist');
     cy.get('#e2e-button').parent().click({ force: true });
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
-    cy.wait('@saveContentBuilder');
+    cy.wait('@saveProjectDescriptionBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
     cy.get('#e2e-button').should('not.exist');

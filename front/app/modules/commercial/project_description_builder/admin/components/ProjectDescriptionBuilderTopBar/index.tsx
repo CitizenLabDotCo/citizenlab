@@ -26,15 +26,12 @@ import clHistory from 'utils/cl-router/history';
 import { useParams } from 'react-router-dom';
 
 // services
-import {
-  addContentBuilderLayout,
-  PROJECT_DESCRIPTION_CODE,
-} from '../../../services/projectDescriptionBuilder';
+import { addProjectDescriptionBuilderLayout } from '../../../services/projectDescriptionBuilder';
 
 // types
 import { Locale } from 'typings';
 
-type ContentBuilderTopBarProps = {
+type ProjectDescriptionBuilderTopBarProps = {
   hasPendingState?: boolean;
   localesWithError: Locale[];
   previewEnabled: boolean;
@@ -47,7 +44,7 @@ type ContentBuilderTopBarProps = {
   }) => void;
 };
 
-const ContentBuilderTopBar = ({
+const ProjectDescriptionBuilderTopBar = ({
   previewEnabled,
   setPreviewEnabled,
   selectedLocale,
@@ -55,7 +52,7 @@ const ContentBuilderTopBar = ({
   draftEditorData,
   localesWithError,
   hasPendingState,
-}: ContentBuilderTopBarProps) => {
+}: ProjectDescriptionBuilderTopBarProps) => {
   const { projectId } = useParams() as { projectId: string };
   const [loading, setLoading] = useState(false);
   const { query } = useEditor();
@@ -72,15 +69,12 @@ const ContentBuilderTopBar = ({
     if (selectedLocale) {
       try {
         setLoading(true);
-        await addContentBuilderLayout(
-          { projectId, code: PROJECT_DESCRIPTION_CODE },
-          {
-            craftjs_jsonmultiloc: {
-              ...draftEditorData,
-              [selectedLocale]: query.getSerializedNodes(),
-            },
-          }
-        );
+        await addProjectDescriptionBuilderLayout(projectId, {
+          craftjs_jsonmultiloc: {
+            ...draftEditorData,
+            [selectedLocale]: query.getSerializedNodes(),
+          },
+        });
       } catch {
         // Do nothing
       }
@@ -146,4 +140,4 @@ const ContentBuilderTopBar = ({
   );
 };
 
-export default ContentBuilderTopBar;
+export default ProjectDescriptionBuilderTopBar;

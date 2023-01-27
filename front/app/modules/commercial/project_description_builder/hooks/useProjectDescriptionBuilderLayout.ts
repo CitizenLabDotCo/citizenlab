@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import {
   projectDescriptionBuilderLayoutStream,
-  IContentBuilderLayout,
+  IProjectDescriptionBuilderLayout,
 } from '../services/projectDescriptionBuilder';
 
 const useProjectDescriptionBuilderLayout = (projectId: string) => {
   const [projectDescriptionBuilderLayout, setProjectDescriptionBuilderLayout] =
-    useState<IContentBuilderLayout | undefined | null | Error>(undefined);
+    useState<IProjectDescriptionBuilderLayout | undefined | null | Error>(
+      undefined
+    );
 
   useEffect(() => {
     const subscription = projectDescriptionBuilderLayoutStream(

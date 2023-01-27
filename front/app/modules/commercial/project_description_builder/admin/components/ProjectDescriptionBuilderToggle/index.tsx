@@ -9,7 +9,7 @@ import styled from 'styled-components';
 
 // Hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useContentBuilderLayout from '../../../hooks/useProjectDescriptionBuilderLayout';
+import useProjectDescriptionBuilderLayout from '../../../hooks/useProjectDescriptionBuilderLayout';
 
 // Utils
 import Link from 'utils/cl-router/Link';
@@ -19,10 +19,7 @@ import { fontSizes } from 'utils/styleUtils';
 import { Toggle, IconTooltip, Box } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import {
-  addContentBuilderLayout,
-  PROJECT_DESCRIPTION_CODE,
-} from 'modules/commercial/project_description_builder/services/projectDescriptionBuilder';
+import { addProjectDescriptionBuilderLayout } from 'modules/commercial/project_description_builder/services/projectDescriptionBuilder';
 
 // Messages
 import messages from '../../messages';
@@ -32,7 +29,7 @@ import { WrappedComponentProps } from 'react-intl';
 // Helpers
 import { isNil, isNilOrError } from 'utils/helperUtils';
 
-type ContentBuilderToggleProps = {
+type ProjectDescriptionBuilderToggleProps = {
   valueMultiloc: Multiloc | undefined | null;
   onChange: (description_multiloc: Multiloc, _locale: Locale) => void;
   label: string;
@@ -54,7 +51,7 @@ const StyledLink = styled(Link)`
   font-size: ${fontSizes.base}px;
 `;
 
-const ContentBuilderToggle = ({
+const ProjectDescriptionBuilderToggle = ({
   params,
   intl: { formatMessage },
   valueMultiloc,
@@ -62,18 +59,18 @@ const ContentBuilderToggle = ({
   label,
   labelTooltipText,
   onMount,
-}: ContentBuilderToggleProps) => {
+}: ProjectDescriptionBuilderToggleProps) => {
   const featureEnabled = useFeatureFlag({
     name: 'project_description_builder',
   });
-  const contentBuilderLayout = useContentBuilderLayout({
-    projectId: `${params.projectId}`,
-    code: PROJECT_DESCRIPTION_CODE,
-  });
+  const projectDescriptionBuilderLayout = useProjectDescriptionBuilderLayout(
+    params.projectId
+  );
   const route = `/admin/project-description-builder/projects/${params.projectId}/description`;
-  const [contentBuilderLinkVisible, setContentBuilderLinkVisible] = useState<
-    boolean | null
-  >(null);
+  const [
+    projectDescriptionBuilderLinkVisible,
+    setProjectDescriptionBuilderLinkVisible,
+  ] = useState<boolean | null>(null);
 
   useEffect(() => {
     if (!featureEnabled) return;
@@ -81,47 +78,46 @@ const ContentBuilderToggle = ({
   }, [onMount, featureEnabled]);
 
   useEffect(() => {
-    if (!isNilOrError(contentBuilderLayout)) {
-      const contentBuilderEnabled =
-        contentBuilderLayout.data.attributes.enabled;
-      setContentBuilderLinkVisible(contentBuilderEnabled);
+    if (!isNilOrError(projectDescriptionBuilderLayout)) {
+      const projectDescriptionBuilderEnabled =
+        projectDescriptionBuilderLayout.data.attributes.enabled;
+      setProjectDescriptionBuilderLinkVisible(projectDescriptionBuilderEnabled);
     }
-  }, [contentBuilderLayout]);
+  }, [projectDescriptionBuilderLayout]);
 
   if (!featureEnabled) {
     return null;
   }
 
-  const toggleContentBuilderLinkVisible = () => {
-    toggleLayoutEnabledStatus(!contentBuilderLinkVisible);
-    setContentBuilderLinkVisible(!contentBuilderLinkVisible);
+  const toggleProjectDescriptionBuilderLinkVisible = () => {
+    toggleLayoutEnabledStatus(!projectDescriptionBuilderLinkVisible);
+    setProjectDescriptionBuilderLinkVisible(
+      !projectDescriptionBuilderLinkVisible
+    );
   };
 
   const toggleLayoutEnabledStatus = async (enabled: boolean) => {
     try {
-      await addContentBuilderLayout(
-        { projectId: params.projectId, code: PROJECT_DESCRIPTION_CODE },
-        { enabled }
-      );
+      await addProjectDescriptionBuilderLayout(params.projectId, { enabled });
     } catch {
       // Do nothing
     }
   };
 
   return (
-    <Box data-testid="contentBuilderToggle">
-      {!isNil(contentBuilderLayout) && (
+    <Box data-testid="projectDescriptionBuilderToggle">
+      {!isNil(projectDescriptionBuilderLayout) && (
         <Box display="flex" gap="12px">
           <StyledToggle
             id="e2e-toggle-enable-project-description-builder"
-            checked={!!contentBuilderLinkVisible}
+            checked={!!projectDescriptionBuilderLinkVisible}
             label={formatMessage(messages.toggleLabel)}
-            onChange={toggleContentBuilderLinkVisible}
+            onChange={toggleProjectDescriptionBuilderLinkVisible}
           />
           <StyledIconTooltip content={formatMessage(messages.toggleTooltip)} />
         </Box>
       )}
-      {contentBuilderLinkVisible && (
+      {projectDescriptionBuilderLinkVisible && (
         <>
           <StyledLink id="e2e-project-description-builder-link" to={route}>
             {formatMessage(messages.linkText)}
@@ -131,7 +127,7 @@ const ContentBuilderToggle = ({
           </Box>
         </>
       )}
-      {!contentBuilderLinkVisible && (
+      {!projectDescriptionBuilderLinkVisible && (
         <QuillMultilocWithLocaleSwitcher
           id="project-description"
           valueMultiloc={valueMultiloc}
@@ -145,4 +141,4 @@ const ContentBuilderToggle = ({
   );
 };
 
-export default injectIntl(withRouter(ContentBuilderToggle));
+export default injectIntl(withRouter(ProjectDescriptionBuilderToggle));

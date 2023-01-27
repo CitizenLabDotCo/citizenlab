@@ -76,7 +76,7 @@ describe('Content builder toggle', () => {
     cy.intercept(`**/projects/${projectId}`).as('saveProject');
     cy.intercept(`**/projects/${projectId}/files`).as('saveProjectFiles');
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
-      'saveContentBuilder'
+      'saveProjectDescriptionBuilder'
     );
 
     // Attach a project file
@@ -99,7 +99,9 @@ describe('Content builder toggle', () => {
       force: true,
     });
 
-    cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+    cy.visit(
+      `/admin/project-description-builder/projects/${projectId}/description`
+    );
 
     // Add content using content builder
     cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
@@ -111,7 +113,7 @@ describe('Content builder toggle', () => {
     cy.get('#quill-editor').type('Edited text.', { force: true });
 
     cy.get('#e2e-content-builder-topbar-save').click();
-    cy.wait('@saveContentBuilder');
+    cy.wait('@saveProjectDescriptionBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
     cy.contains('Edited text.').should('be.visible');

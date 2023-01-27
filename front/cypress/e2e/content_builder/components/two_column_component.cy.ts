@@ -23,8 +23,10 @@ describe('Content builder Two Column component', () => {
       }).then((project) => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
-        cy.apiEnableContentBuilder({ projectId }).then(() => {
-          cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+        cy.apiEnableProjectDescriptionBuilder({ projectId }).then(() => {
+          cy.visit(
+            `/admin/project-description-builder/projects/${projectId}/description`
+          );
         });
       });
     });
@@ -39,7 +41,7 @@ describe('Content builder Two Column component', () => {
 
   it('handles Two Column component correctly', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
-      'saveContentBuilder'
+      'saveProjectDescriptionBuilder'
     );
     cy.get('#e2e-draggable-two-column').dragAndDrop(
       '#e2e-content-builder-frame',
@@ -60,7 +62,7 @@ describe('Content builder Two Column component', () => {
     cy.get('div#e2e-about-box').should('have.length', 2);
 
     cy.get('#e2e-content-builder-topbar-save').click();
-    cy.wait('@saveContentBuilder');
+    cy.wait('@saveProjectDescriptionBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
     cy.get('#e2e-two-column').should('exist');
@@ -70,15 +72,17 @@ describe('Content builder Two Column component', () => {
 
   it('deletes Two Column component correctly', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
-      'saveContentBuilder'
+      'saveProjectDescriptionBuilder'
     );
-    cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+    cy.visit(
+      `/admin/project-description-builder/projects/${projectId}/description`
+    );
     cy.get('#e2e-two-column').should('be.visible');
 
     cy.get('#e2e-two-column').click('top');
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
-    cy.wait('@saveContentBuilder');
+    cy.wait('@saveProjectDescriptionBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
     cy.get('#e2e-two-column').should('not.exist');

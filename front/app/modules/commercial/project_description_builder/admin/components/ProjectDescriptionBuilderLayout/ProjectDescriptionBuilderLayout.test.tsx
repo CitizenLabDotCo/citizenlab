@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
-import ContentBuilderLayout from '.';
+import ProjectDescriptionBuilderLayout from '.';
 
 let mockLocationData = { pathname: 'admin/project-description-builder' };
 let mockFeatureFlagData = true;
@@ -18,13 +18,13 @@ jest.mock('utils/cl-router/withRouter', () => {
 jest.mock('utils/cl-router/Link');
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
 
-describe('ContentBuilderLayout', () => {
+describe('ProjectDescriptionBuilderLayout', () => {
   it('calls onMount correctly and renders children when pathname is admin/project-description-builder and feature flag is enabled', () => {
     const onMount = jest.fn();
     render(
-      <ContentBuilderLayout onMount={onMount}>
+      <ProjectDescriptionBuilderLayout onMount={onMount}>
         <p>Child</p>
-      </ContentBuilderLayout>
+      </ProjectDescriptionBuilderLayout>
     );
 
     expect(onMount).toHaveBeenCalledWith(true);
@@ -34,9 +34,9 @@ describe('ContentBuilderLayout', () => {
     mockLocationData = { pathname: 'admin' };
     const onMount = jest.fn();
     render(
-      <ContentBuilderLayout onMount={onMount}>
+      <ProjectDescriptionBuilderLayout onMount={onMount}>
         <p>Child</p>
-      </ContentBuilderLayout>
+      </ProjectDescriptionBuilderLayout>
     );
 
     expect(onMount).toHaveBeenCalledWith(false);
@@ -47,9 +47,9 @@ describe('ContentBuilderLayout', () => {
     mockLocationData = { pathname: 'admin/project-description-builder' };
     const onMount = jest.fn();
     render(
-      <ContentBuilderLayout onMount={onMount}>
+      <ProjectDescriptionBuilderLayout onMount={onMount}>
         <p>Child</p>
-      </ContentBuilderLayout>
+      </ProjectDescriptionBuilderLayout>
     );
 
     expect(onMount).toHaveBeenCalledWith(false);

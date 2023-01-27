@@ -7,7 +7,7 @@ jest.mock('services/locale');
 jest.mock('hooks/useLocale', () => jest.fn(() => mockLocale));
 jest.mock('hooks/useLocalize');
 
-const DEFAULT_CONTENT_BUILDER_LAYOUT_DATA = {
+const DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA = {
   data: {
     attributes: {
       enabled: true,
@@ -16,14 +16,17 @@ const DEFAULT_CONTENT_BUILDER_LAYOUT_DATA = {
   },
 };
 
-let mockContentBuilderLayoutData:
-  | typeof DEFAULT_CONTENT_BUILDER_LAYOUT_DATA
+let mockProjectDescriptionBuilderLayoutData:
+  | typeof DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA
   | undefined
-  | Error = DEFAULT_CONTENT_BUILDER_LAYOUT_DATA;
+  | Error = DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA;
 
-jest.mock('modules/commercial/content_builder/hooks/useContentBuilder', () => {
-  return jest.fn(() => mockContentBuilderLayoutData);
-});
+jest.mock(
+  'modules/commercial/project_description_builder/hooks/useContentBuilder',
+  () => {
+    return jest.fn(() => mockProjectDescriptionBuilderLayoutData);
+  }
+);
 
 jest.mock('react-router-dom', () => {
   const originalModule = jest.requireActual('react-router-dom');
@@ -74,7 +77,7 @@ describe('Preview Content', () => {
   });
 
   it('shows loading state correctly', () => {
-    mockContentBuilderLayoutData = undefined;
+    mockProjectDescriptionBuilderLayoutData = undefined;
     render(<FullScreenPreview />);
 
     expect(screen.getByTestId('spinner')).toBeInTheDocument();

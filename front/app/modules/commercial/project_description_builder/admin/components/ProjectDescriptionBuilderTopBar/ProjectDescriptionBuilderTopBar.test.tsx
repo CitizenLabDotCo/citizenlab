@@ -1,14 +1,14 @@
 import React from 'react';
 import { render, screen, fireEvent, act, within } from 'utils/testUtils/rtl';
-import ContentBuilderTopBar from '.';
+import ProjectDescriptionBuilderTopBar from '.';
 import { Editor } from '@craftjs/core';
 import {
-  IContentBuilderLayoutData,
-  addContentBuilderLayout,
+  IProjectDescriptionBuilderData,
+  addProjectDescriptionBuilderLayout,
 } from '../../../services/projectDescriptionBuilder';
 import clHistory from 'utils/cl-router/history';
 
-const mockEditorData: IContentBuilderLayoutData = {
+const mockEditorData: IProjectDescriptionBuilderData = {
   id: '2',
   type: 'content_builder_layout',
   attributes: {
@@ -36,13 +36,12 @@ jest.mock('utils/cl-intl');
 jest.mock('utils/cl-router/history');
 jest.mock('hooks/useLocale');
 jest.mock('hooks/useLocalize');
-jest.mock('../../../hooks/useContentBuilder', () => {
+jest.mock('../../../hooks/useProjectDescriptionBuilderLayout', () => {
   return jest.fn(() => ({ data: mockEditorData }));
 });
 
-jest.mock('../../../services/contentBuilder', () => ({
-  PROJECT_DESCRIPTION_CODE: 'project_description',
-  addContentBuilderLayout: jest.fn(),
+jest.mock('../../../services/projectDescriptionBuilder', () => ({
+  addProjectDescriptionBuilderLayout: jest.fn(),
 }));
 
 let mockLocalesData = ['en'];
@@ -94,11 +93,11 @@ jest.mock('@craftjs/core', () => {
   };
 });
 
-describe('ContentBuilderTopBar', () => {
+describe('ProjectDescriptionBuilderTopBar', () => {
   it('renders with correct project name', () => {
     render(
       <Editor>
-        <ContentBuilderTopBar
+        <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={() => {}}
@@ -112,7 +111,7 @@ describe('ContentBuilderTopBar', () => {
   it('calls goBack correctly', () => {
     render(
       <Editor>
-        <ContentBuilderTopBar
+        <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={() => {}}
@@ -127,7 +126,7 @@ describe('ContentBuilderTopBar', () => {
   it('calls onSave correctly', async () => {
     render(
       <Editor>
-        <ContentBuilderTopBar
+        <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={() => {}}
@@ -142,7 +141,7 @@ describe('ContentBuilderTopBar', () => {
       fireEvent.click(screen.getByTestId('contentBuilderTopBarSaveButton'));
     });
 
-    expect(addContentBuilderLayout).toHaveBeenCalledWith(
+    expect(addProjectDescriptionBuilderLayout).toHaveBeenCalledWith(
       { code: 'project_description', projectId: 'id' },
       { craftjs_jsonmultiloc: { en: {} } }
     );
@@ -150,7 +149,7 @@ describe('ContentBuilderTopBar', () => {
   it('enables and disables save in accordance with the error status', async () => {
     const { rerender } = render(
       <Editor>
-        <ContentBuilderTopBar
+        <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
           localesWithError={['en']}
           onSelectLocale={() => {}}
@@ -167,7 +166,7 @@ describe('ContentBuilderTopBar', () => {
     expect(saveButton).toBeDisabled();
     rerender(
       <Editor>
-        <ContentBuilderTopBar
+        <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={() => {}}
@@ -184,7 +183,7 @@ describe('ContentBuilderTopBar', () => {
     const setPreviewEnabled = jest.fn();
     render(
       <Editor>
-        <ContentBuilderTopBar
+        <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={() => {}}
@@ -204,7 +203,7 @@ describe('ContentBuilderTopBar', () => {
     const setPreviewEnabled = jest.fn();
     render(
       <Editor>
-        <ContentBuilderTopBar
+        <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={() => {}}
@@ -223,7 +222,7 @@ describe('ContentBuilderTopBar', () => {
   it('does not render locale switcher when there is only one locale', () => {
     render(
       <Editor>
-        <ContentBuilderTopBar
+        <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={() => {}}
@@ -239,7 +238,7 @@ describe('ContentBuilderTopBar', () => {
     mockLocalesData = ['en', 'fr-FR'];
     render(
       <Editor>
-        <ContentBuilderTopBar
+        <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={() => {}}
@@ -255,7 +254,7 @@ describe('ContentBuilderTopBar', () => {
     const onSelectLocale = jest.fn();
     render(
       <Editor>
-        <ContentBuilderTopBar
+        <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={onSelectLocale}
@@ -275,7 +274,7 @@ describe('ContentBuilderTopBar', () => {
     const onSelectLocale = jest.fn();
     render(
       <Editor>
-        <ContentBuilderTopBar
+        <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
           localesWithError={['en']}
           onSelectLocale={onSelectLocale}
@@ -291,7 +290,7 @@ describe('ContentBuilderTopBar', () => {
     const onSelectLocale = jest.fn();
     render(
       <Editor>
-        <ContentBuilderTopBar
+        <ProjectDescriptionBuilderTopBar
           hasPendingState={true}
           selectedLocale="en"
           localesWithError={['en']}
