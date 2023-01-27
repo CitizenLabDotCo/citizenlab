@@ -11,7 +11,7 @@ jest.mock('services/locale');
 jest.mock('hooks/useLocale');
 jest.mock('hooks/useLocalize');
 
-const DEFAULT_CONTENT_BUILDER_LAYOUT_DATA = {
+const DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA = {
   data: {
     attributes: {
       enabled: true,
@@ -20,17 +20,20 @@ const DEFAULT_CONTENT_BUILDER_LAYOUT_DATA = {
   },
 };
 
-let mockContentBuilderLayoutData:
-  | typeof DEFAULT_CONTENT_BUILDER_LAYOUT_DATA
+let mockProjectDescriptionBuilderLayoutData:
+  | typeof DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA
   | undefined
-  | Error = DEFAULT_CONTENT_BUILDER_LAYOUT_DATA;
+  | Error = DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA;
 
-jest.mock('modules/commercial/content_builder/hooks/useContentBuilder', () => {
-  return jest.fn(() => mockContentBuilderLayoutData);
-});
+jest.mock(
+  'modules/commercial/project_description_builder/hooks/useProjectDescriptionBuilderLayout',
+  () => {
+    return jest.fn(() => mockProjectDescriptionBuilderLayoutData);
+  }
+);
 
 describe('Preview', () => {
-  it('should shows content builder content when content builder is not enabled', () => {
+  it('should shows project description builder content when project description builder is not enabled', () => {
     render(<Preview projectId={projectId} projectTitle={projectTitle} />);
     expect(
       screen.getByTestId('contentBuilderPreviewContent')
@@ -39,8 +42,9 @@ describe('Preview', () => {
       screen.queryByTestId('contentBuilderProjectDescription')
     ).not.toBeInTheDocument();
   });
-  it('should shows description when content builder is not enabled', () => {
-    DEFAULT_CONTENT_BUILDER_LAYOUT_DATA.data.attributes.enabled = false;
+  it('should shows description when project description builder is not enabled', () => {
+    DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA.data.attributes.enabled =
+      false;
     render(<Preview projectId={projectId} projectTitle={projectTitle} />);
     expect(
       screen.getByTestId('contentBuilderProjectDescription')
@@ -50,8 +54,8 @@ describe('Preview', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('should shows description when content builder hook returns error', () => {
-    mockContentBuilderLayoutData = new Error();
+  it('should shows description when project description builder hook returns error', () => {
+    mockProjectDescriptionBuilderLayoutData = new Error();
     render(<Preview projectId={projectId} projectTitle={projectTitle} />);
     expect(
       screen.getByTestId('contentBuilderProjectDescription')
@@ -61,7 +65,7 @@ describe('Preview', () => {
     ).not.toBeInTheDocument();
   });
   it('shows loading state correctly', () => {
-    mockContentBuilderLayoutData = undefined;
+    mockProjectDescriptionBuilderLayoutData = undefined;
     render(<Preview projectId={projectId} projectTitle={projectTitle} />);
 
     expect(screen.getByTestId('spinner')).toBeInTheDocument();
