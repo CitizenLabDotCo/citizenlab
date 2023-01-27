@@ -39,9 +39,8 @@ module MultiTenancy
 
           project.save!
 
-          [0, 1, 2, 3, 4][rand(5)].times do |_i|
-            project.project_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
-          end
+          project.project_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
+
           if project.continuous? && rand(5) == 0
             rand(1..3).times do
               project.project_files.create!(runner.generate_file_attributes)
