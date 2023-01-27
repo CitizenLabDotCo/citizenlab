@@ -201,6 +201,17 @@ describe IdeaCustomFieldsService do
         expect(output).to match_array [:extra_field1, { multiselect_field: [] }]
       end
     end
+
+    describe 'remove_ignored_update_params' do
+      it 'removes code and input_type from params for updating' do
+        params = {
+          code: 'title_multiloc',
+          input_type: 'text_multiloc',
+          required: true
+        }
+        expect(service.remove_ignored_update_params(params)).to match({ required: true })
+      end
+    end
   end
 
   context 'constraints/locks on changing attributes' do

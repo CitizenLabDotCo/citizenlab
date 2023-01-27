@@ -75,6 +75,11 @@ class IdeaCustomFieldsService
     end
   end
 
+  # The following params should not be editable after they have been created
+  def remove_ignored_update_params(field_params)
+    field_params.except(:code, :input_type)
+  end
+
   private
 
   # Check required as it doesn't matter what is saved in title for section 1
