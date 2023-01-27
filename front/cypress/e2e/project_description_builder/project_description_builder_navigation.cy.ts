@@ -80,7 +80,7 @@ describe('Project description builder navigation', () => {
   // });
 
   /** Commenting this out as it is very flaky. https://citizenlabco.slack.com/archives/C02PFSWEK6X/p1667892380157819?thread_ts=1667876187.090919&cid=C02PFSWEK6X
-  it('navigates to live project in a new tab when view project button in content builder is clicked', () => {
+  it('navigates to live project in a new tab when view project button in project description builder is clicked', () => {
     const projectUrl = `/en/projects/${projectSlug}`;
 
     cy.intercept('**\/content_builder_layouts/project_description/upsert').as(

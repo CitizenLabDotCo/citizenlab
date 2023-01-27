@@ -39,16 +39,14 @@ const configuration: ModuleConfiguration = {
     ],
   },
   outlets: {
-    'app.containers.Admin.projects.edit.description.contentBuilder': (
-      props
-    ) => {
-      return <ProjectDescriptionBuilderToggle {...props} />;
-    },
-    'app.ProjectsShowPage.shared.header.ProjectInfo.contentBuilder': (
-      props
-    ) => {
-      return <ContentViewer {...props} />;
-    },
+    'app.containers.Admin.projects.edit.description.projectDescriptionBuilder':
+      (props) => {
+        return <ProjectDescriptionBuilderToggle {...props} />;
+      },
+    'app.ProjectsShowPage.shared.header.ProjectInfo.projectDescriptionBuilder':
+      (props) => {
+        return <ContentViewer {...props} />;
+      },
   },
 };
 

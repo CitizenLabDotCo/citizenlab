@@ -236,7 +236,7 @@ describe('Survey builder', () => {
     cy.get(`[data-cy="e2e-${snakeCase(linearScaleTitle)}"]`).should('exist');
   });
 
-  it('navigates to live project in a new tab when view project button in content builder is clicked', () => {
+  it('navigates to live project in a new tab when view project button in project description builder is clicked', () => {
     const projectUrl = `/en/projects/${projectSlug}/ideas/new`;
 
     cy.visit(`admin/projects/${projectId}/native-survey`);

@@ -1,6 +1,6 @@
 import { randomString } from '../../support/commands';
 
-describe('Content builder preview', () => {
+describe('Project description builder preview', () => {
   let projectId = '';
 
   const getIframeBody = () => {

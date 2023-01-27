@@ -1,6 +1,6 @@
 import { randomString } from '../../support/commands';
 
-describe('Content builder language switch', () => {
+describe('Project description builder language switch', () => {
   let projectId = '';
   let projectSlug = '';
   before(() => {

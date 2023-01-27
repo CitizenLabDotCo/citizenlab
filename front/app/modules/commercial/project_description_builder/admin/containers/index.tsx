@@ -48,7 +48,8 @@ const ProjectDescriptionBuilderPage = () => {
   });
   const locale = useLocale();
   const locales = useAppConfigurationLocales();
-  const contentBuilderLayout = useProjectDescriptionBuilderLayout(projectId);
+  const projectDescriptionBuilderLayout =
+    useProjectDescriptionBuilderLayout(projectId);
 
   useEffect(() => {
     if (!isNilOrError(locale)) {
@@ -61,10 +62,10 @@ const ProjectDescriptionBuilderPage = () => {
 
   const [imageUploading, setImageUploading] = useState(false);
 
-  const contentBuilderVisible =
+  const projectDescriptionBuilderVisible =
     featureEnabled && pathname.includes('admin/project-description-builder');
 
-  if (isNilOrError(locales) && contentBuilderVisible) {
+  if (isNilOrError(locales) && projectDescriptionBuilderVisible) {
     return null;
   }
 
@@ -87,13 +88,12 @@ const ProjectDescriptionBuilderPage = () => {
   };
 
   const getEditorData = () => {
-    if (!isNilOrError(contentBuilderLayout) && selectedLocale) {
+    if (!isNilOrError(projectDescriptionBuilderLayout) && selectedLocale) {
       if (draftData && draftData[selectedLocale]) {
         return draftData[selectedLocale];
       } else {
-        return contentBuilderLayout.data.attributes.craftjs_jsonmultiloc[
-          selectedLocale
-        ];
+        return projectDescriptionBuilderLayout.data.attributes
+          .craftjs_jsonmultiloc[selectedLocale];
       }
     } else return undefined;
   };

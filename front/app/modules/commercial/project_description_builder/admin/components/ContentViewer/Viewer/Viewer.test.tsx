@@ -36,10 +36,10 @@ describe('Preview', () => {
   it('should shows project description builder content when project description builder is not enabled', () => {
     render(<Preview projectId={projectId} projectTitle={projectTitle} />);
     expect(
-      screen.getByTestId('contentBuilderPreviewContent')
+      screen.getByTestId('projectDescriptionBuilderPreviewContent')
     ).toBeInTheDocument();
     expect(
-      screen.queryByTestId('contentBuilderProjectDescription')
+      screen.queryByTestId('projectDescriptionBuilderProjectDescription')
     ).not.toBeInTheDocument();
   });
   it('should shows description when project description builder is not enabled', () => {
@@ -47,10 +47,10 @@ describe('Preview', () => {
       false;
     render(<Preview projectId={projectId} projectTitle={projectTitle} />);
     expect(
-      screen.getByTestId('contentBuilderProjectDescription')
+      screen.getByTestId('projectDescriptionBuilderProjectDescription')
     ).toBeInTheDocument();
     expect(
-      screen.queryByTestId('contentBuilderPreviewContent')
+      screen.queryByTestId('projectDescriptionBuilderPreviewContent')
     ).not.toBeInTheDocument();
   });
 
@@ -58,10 +58,10 @@ describe('Preview', () => {
     mockProjectDescriptionBuilderLayoutData = new Error();
     render(<Preview projectId={projectId} projectTitle={projectTitle} />);
     expect(
-      screen.getByTestId('contentBuilderProjectDescription')
+      screen.getByTestId('projectDescriptionBuilderProjectDescription')
     ).toBeInTheDocument();
     expect(
-      screen.queryByTestId('contentBuilderPreviewContent')
+      screen.queryByTestId('projectDescriptionBuilderPreviewContent')
     ).not.toBeInTheDocument();
   });
   it('shows loading state correctly', () => {

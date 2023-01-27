@@ -1,6 +1,6 @@
 import { randomString } from '../../../support/commands';
 
-describe('Content builder Iframe component', () => {
+describe('Project description builder Iframe component', () => {
   let projectId = '';
   let projectSlug = '';
 

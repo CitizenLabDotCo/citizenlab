@@ -1,6 +1,6 @@
 import { randomString } from '../../../support/commands';
 
-describe('Content builder Info & Accordions section', () => {
+describe('Project description builder Button component', () => {
   let projectId = '';
   let projectSlug = '';
 
@@ -31,49 +31,60 @@ describe('Content builder Info & Accordions section', () => {
       });
     });
   });
+
   beforeEach(() => {
     cy.setAdminLoginCookie();
   });
-
   after(() => {
     cy.apiRemoveProject(projectId);
   });
 
-  it('handles Info & Accordions section correctly', () => {
+  it('handles Button component correctly', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
       'saveProjectDescriptionBuilder'
     );
-    cy.get('#e2e-draggable-info-accordions').dragAndDrop(
-      '#e2e-content-builder-frame',
-      {
-        position: 'inside',
-      }
-    );
 
-    // Edit text component
-    cy.get('#e2e-text-box').click();
-    cy.get('#quill-editor').click();
-    cy.get('#quill-editor').type('Edited text.', { force: true });
+    cy.get('#e2e-draggable-button').dragAndDrop('#e2e-content-builder-frame', {
+      position: 'inside',
+    });
 
-    // Edit an accordion component
-    cy.get('#e2e-accordion').click({ force: true });
-    cy.get('#default-open-toggle').should('exist');
-    cy.get('#default-open-toggle').click({ force: true });
-    cy.get('#quill-editor').click({ force: true });
-    cy.get('#quill-editor').type('Accordion text.', { force: true });
-    cy.contains('Accordion text.').should('be.visible');
+    // Change button text
+    cy.get('#e2e-button-text-input').clear().type('New Button Title');
 
+    // Input URL
+    cy.get('#e2e-button-url-input').clear().type('https://www.google.com');
+
+    // Change style
+    cy.get('#style-primary').click({ force: true });
+    cy.get('#e2e-button').get('button').should('have.class', 'primary');
+    cy.get('#style-secondary').click({ force: true });
+    cy.get('#e2e-button').get('a').should('have.class', 'secondary');
+
+    // Change alignment
+    cy.get('#e2e-button')
+      .parent()
+      .invoke('css', 'justify-content')
+      .should('equal', 'flex-start');
+    cy.get('#alignment-center').click({ force: true });
+    cy.get('#e2e-button')
+      .parent()
+      .invoke('css', 'justify-content')
+      .should('equal', 'center');
+    cy.get('#alignment-right').click({ force: true });
+    cy.get('.e2eBuilderSettingsClose').click({ force: true });
+    cy.get('#e2e-button')
+      .parent()
+      .invoke('css', 'justify-content')
+      .should('equal', 'flex-end');
+
+    // Confirms that button displays and functions correctly on live page
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
-
     cy.visit(`/projects/${projectSlug}`);
-    cy.acceptCookies();
-    cy.contains('Edited text.').should('be.visible');
-    cy.contains('Accordion text.').should('be.visible');
-    cy.contains('About').should('be.visible');
+    cy.contains('New Button Title').should('exist');
   });
 
-  it('deletes Info & Accordions section correctly', () => {
+  it('deletes Button component correctly', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
       'saveProjectDescriptionBuilder'
     );
@@ -81,14 +92,13 @@ describe('Content builder Info & Accordions section', () => {
       `/admin/project-description-builder/projects/${projectId}/description`
     );
 
-    cy.get('#e2e-two-column').click('top');
+    cy.get('#e2e-button').should('exist');
+    cy.get('#e2e-button').parent().click({ force: true });
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
-    cy.contains('Edited text.').should('not.exist');
-    cy.contains('Accordion text.').should('not.exist');
-    cy.contains('About').should('not.exist');
+    cy.get('#e2e-button').should('not.exist');
   });
 });

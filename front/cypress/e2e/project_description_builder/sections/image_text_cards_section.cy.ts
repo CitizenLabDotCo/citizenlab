@@ -1,6 +1,6 @@
 import { randomString } from '../../../support/commands';
 
-describe('Content builder Button component', () => {
+describe('Project description builder Image Text Cards section', () => {
   let projectId = '';
   let projectSlug = '';
 
@@ -31,60 +31,56 @@ describe('Content builder Button component', () => {
       });
     });
   });
-
   beforeEach(() => {
     cy.setAdminLoginCookie();
   });
+
   after(() => {
     cy.apiRemoveProject(projectId);
   });
 
-  it('handles Button component correctly', () => {
+  it('handles Image Text Cards section correctly', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
       'saveProjectDescriptionBuilder'
     );
+    cy.get('#e2e-draggable-image-text-cards').dragAndDrop(
+      '#e2e-content-builder-frame',
+      {
+        position: 'inside',
+      }
+    );
 
-    cy.get('#e2e-draggable-button').dragAndDrop('#e2e-content-builder-frame', {
-      position: 'inside',
-    });
+    // Edit a text component
+    cy.get('#e2e-text-box').first().click();
+    cy.get('#quill-editor').click();
+    cy.get('#quill-editor').type('Edited text.', { force: true });
 
-    // Change button text
-    cy.get('#e2e-button-text-input').clear().type('New Button Title');
+    // Edit image components
+    cy.get('div#e2e-image').eq(0).parent().click();
+    cy.get('input[type="file"]').attachFile('icon.png');
+    cy.get('#imageAltTextInput').click().clear().type('Image alt text.');
+    cy.get('[alt="Image alt text."]').should('exist');
 
-    // Input URL
-    cy.get('#e2e-button-url-input').clear().type('https://www.google.com');
+    cy.get('div#e2e-image').eq(1).parent().click();
+    cy.get('input[type="file"]').attachFile('icon.png');
+    cy.get('#imageAltTextInput').click().clear().type('Image alt text.');
+    cy.get('[alt="Image alt text."]').should('exist');
 
-    // Change style
-    cy.get('#style-primary').click({ force: true });
-    cy.get('#e2e-button').get('button').should('have.class', 'primary');
-    cy.get('#style-secondary').click({ force: true });
-    cy.get('#e2e-button').get('a').should('have.class', 'secondary');
+    cy.get('div#e2e-image').eq(2).parent().click();
+    cy.get('input[type="file"]').attachFile('icon.png');
+    cy.get('#imageAltTextInput').click().clear().type('Image alt text.');
+    cy.get('[alt="Image alt text."]').should('exist');
 
-    // Change alignment
-    cy.get('#e2e-button')
-      .parent()
-      .invoke('css', 'justify-content')
-      .should('equal', 'flex-start');
-    cy.get('#alignment-center').click({ force: true });
-    cy.get('#e2e-button')
-      .parent()
-      .invoke('css', 'justify-content')
-      .should('equal', 'center');
-    cy.get('#alignment-right').click({ force: true });
-    cy.get('.e2eBuilderSettingsClose').click({ force: true });
-    cy.get('#e2e-button')
-      .parent()
-      .invoke('css', 'justify-content')
-      .should('equal', 'flex-end');
-
-    // Confirms that button displays and functions correctly on live page
+    // Save
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
+
     cy.visit(`/projects/${projectSlug}`);
-    cy.contains('New Button Title').should('exist');
+    cy.contains('Edited text.').should('be.visible');
+    cy.get('[alt="Image alt text."]').should('exist');
   });
 
-  it('deletes Button component correctly', () => {
+  it('deletes Image Text Cards section correctly', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
       'saveProjectDescriptionBuilder'
     );
@@ -92,13 +88,17 @@ describe('Content builder Button component', () => {
       `/admin/project-description-builder/projects/${projectId}/description`
     );
 
-    cy.get('#e2e-button').should('exist');
-    cy.get('#e2e-button').parent().click({ force: true });
+    cy.get('#e2e-two-column').click('top');
+    cy.get('#e2e-delete-button').click();
+    cy.get('#e2e-two-column').click('top');
+    cy.get('#e2e-delete-button').click();
+    cy.get('#e2e-two-column').click('top');
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
-    cy.get('#e2e-button').should('not.exist');
+    cy.contains('Edited text.').should('not.exist');
+    cy.get('[alt="Image alt text."]').should('not.exist');
   });
 });

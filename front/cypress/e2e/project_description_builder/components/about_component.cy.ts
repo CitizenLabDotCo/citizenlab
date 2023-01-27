@@ -1,6 +1,6 @@
 import { randomString } from '../../../support/commands';
 
-describe('Content builder Accordion component', () => {
+describe('Project description builder About component', () => {
   let projectId = '';
   let projectSlug = '';
 
@@ -31,7 +31,6 @@ describe('Content builder Accordion component', () => {
       });
     });
   });
-
   beforeEach(() => {
     cy.setAdminLoginCookie();
   });
@@ -40,11 +39,12 @@ describe('Content builder Accordion component', () => {
     cy.apiRemoveProject(projectId);
   });
 
-  it('displays Accordion component correctly', () => {
+  it('handles About component correctly', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
       'saveProjectDescriptionBuilder'
     );
-    cy.get('#e2e-draggable-accordion').dragAndDrop(
+
+    cy.get('#e2e-draggable-about-box').dragAndDrop(
       '#e2e-content-builder-frame',
       {
         position: 'inside',
@@ -53,12 +53,11 @@ describe('Content builder Accordion component', () => {
 
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
-
     cy.visit(`/projects/${projectSlug}`);
-    cy.contains('Accordion title').should('be.visible');
+    cy.get('#e2e-about-box').should('exist');
   });
 
-  it('handles Accordion open by deafult correctly', () => {
+  it('deletes About component correctly', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
       'saveProjectDescriptionBuilder'
     );
@@ -66,32 +65,12 @@ describe('Content builder Accordion component', () => {
       `/admin/project-description-builder/projects/${projectId}/description`
     );
 
-    cy.get('#e2e-accordion').click({ force: true });
-    cy.get('#default-open-toggle').click({ force: true });
-    cy.get('#quill-editor').click();
-    cy.get('#quill-editor').type('Edited text.', { force: true });
-
-    cy.get('#e2e-content-builder-topbar-save').click();
-    cy.wait('@saveProjectDescriptionBuilder');
-
-    cy.visit(`/projects/${projectSlug}`);
-    cy.contains('Edited text.').should('be.visible');
-  });
-
-  it('deletes Accordion component correctly', () => {
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
-      'saveProjectDescriptionBuilder'
-    );
-    cy.visit(
-      `/admin/project-description-builder/projects/${projectId}/description`
-    );
-
-    cy.get('#e2e-accordion').click({ force: true });
+    cy.get('#e2e-about-box').click({ force: true });
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
-    cy.contains('Edited text.').should('not.exist');
+    cy.get('#e2e-about-box').should('not.exist');
   });
 });

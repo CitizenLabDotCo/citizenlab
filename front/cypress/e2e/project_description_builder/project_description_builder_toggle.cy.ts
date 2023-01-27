@@ -1,6 +1,6 @@
 import { randomString } from '../../support/commands';
 
-describe('Content builder toggle', () => {
+describe('Project description builder toggle', () => {
   let projectId = '';
   let projectSlug = '';
   let userId = '';
@@ -36,7 +36,7 @@ describe('Content builder toggle', () => {
     cy.apiRemoveProject(projectId);
   });
 
-  it('shows original description by default along with any attachments if content builder is not used', () => {
+  it('shows original description by default along with any attachments if project description builder is not used', () => {
     cy.intercept(`**/projects/${projectId}`).as('saveProject');
     cy.intercept(`**/projects/${projectId}/files`).as('saveProjectFiles');
 
@@ -63,7 +63,7 @@ describe('Content builder toggle', () => {
     cy.contains('example.pdf').should('exist');
   });
 
-  it('shows original description when content builder is enabled but there is no content yet', () => {
+  it('shows original description when project description builder is enabled but there is no content yet', () => {
     cy.visit(`/admin/projects/${projectId}/description`);
     cy.get('#e2e-toggle-enable-project-description-builder').click({
       force: true,
@@ -72,7 +72,7 @@ describe('Content builder toggle', () => {
     cy.contains('Original project description.').should('be.visible');
   });
 
-  it('shows attachments added to the project after description added using content builder', () => {
+  it('shows attachments added to the project after description added using project description builder', () => {
     cy.intercept(`**/projects/${projectId}`).as('saveProject');
     cy.intercept(`**/projects/${projectId}/files`).as('saveProjectFiles');
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
@@ -103,7 +103,7 @@ describe('Content builder toggle', () => {
       `/admin/project-description-builder/projects/${projectId}/description`
     );
 
-    // Add content using content builder
+    // Add content using project description builder
     cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
       position: 'inside',
     });

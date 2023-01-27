@@ -1,6 +1,6 @@
 import { randomString } from '../../../support/commands';
 
-describe('Content builder About component', () => {
+describe('Project description builder Info & Accordions section', () => {
   let projectId = '';
   let projectSlug = '';
 
@@ -39,25 +39,41 @@ describe('Content builder About component', () => {
     cy.apiRemoveProject(projectId);
   });
 
-  it('handles About component correctly', () => {
+  it('handles Info & Accordions section correctly', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
       'saveProjectDescriptionBuilder'
     );
-
-    cy.get('#e2e-draggable-about-box').dragAndDrop(
+    cy.get('#e2e-draggable-info-accordions').dragAndDrop(
       '#e2e-content-builder-frame',
       {
         position: 'inside',
       }
     );
 
+    // Edit text component
+    cy.get('#e2e-text-box').click();
+    cy.get('#quill-editor').click();
+    cy.get('#quill-editor').type('Edited text.', { force: true });
+
+    // Edit an accordion component
+    cy.get('#e2e-accordion').click({ force: true });
+    cy.get('#default-open-toggle').should('exist');
+    cy.get('#default-open-toggle').click({ force: true });
+    cy.get('#quill-editor').click({ force: true });
+    cy.get('#quill-editor').type('Accordion text.', { force: true });
+    cy.contains('Accordion text.').should('be.visible');
+
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
+
     cy.visit(`/projects/${projectSlug}`);
-    cy.get('#e2e-about-box').should('exist');
+    cy.acceptCookies();
+    cy.contains('Edited text.').should('be.visible');
+    cy.contains('Accordion text.').should('be.visible');
+    cy.contains('About').should('be.visible');
   });
 
-  it('deletes About component correctly', () => {
+  it('deletes Info & Accordions section correctly', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
       'saveProjectDescriptionBuilder'
     );
@@ -65,12 +81,14 @@ describe('Content builder About component', () => {
       `/admin/project-description-builder/projects/${projectId}/description`
     );
 
-    cy.get('#e2e-about-box').click({ force: true });
+    cy.get('#e2e-two-column').click('top');
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
-    cy.get('#e2e-about-box').should('not.exist');
+    cy.contains('Edited text.').should('not.exist');
+    cy.contains('Accordion text.').should('not.exist');
+    cy.contains('About').should('not.exist');
   });
 });

@@ -1,6 +1,6 @@
 import { randomString } from '../../../support/commands';
 
-describe('Content builder Text component', () => {
+describe('Project description builder Text component', () => {
   let projectId = '';
   let projectSlug = '';
 

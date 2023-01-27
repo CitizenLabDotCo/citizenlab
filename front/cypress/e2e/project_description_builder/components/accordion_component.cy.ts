@@ -1,6 +1,6 @@
 import { randomString } from '../../../support/commands';
 
-describe('Content builder White space component', () => {
+describe('Project description builder Accordion component', () => {
   let projectId = '';
   let projectSlug = '';
 
@@ -35,34 +35,30 @@ describe('Content builder White space component', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
   });
+
   after(() => {
     cy.apiRemoveProject(projectId);
   });
 
-  it('handles white space component correctly', () => {
+  it('displays Accordion component correctly', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
       'saveProjectDescriptionBuilder'
     );
-
-    cy.get('#e2e-draggable-white-space').dragAndDrop(
+    cy.get('#e2e-draggable-accordion').dragAndDrop(
       '#e2e-content-builder-frame',
       {
         position: 'inside',
       }
     );
-    cy.get('#e2e-white-space-divider-toggle').click({ force: true });
 
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
-    cy.get('#e2e-white-space').should('be.visible');
-    cy.get('#e2e-white-space').within(() => {
-      cy.get('hr').should('be.visible');
-    });
+    cy.contains('Accordion title').should('be.visible');
   });
 
-  it('deletes white space component correctly', () => {
+  it('handles Accordion open by deafult correctly', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
       'saveProjectDescriptionBuilder'
     );
@@ -70,12 +66,32 @@ describe('Content builder White space component', () => {
       `/admin/project-description-builder/projects/${projectId}/description`
     );
 
-    cy.get('#e2e-white-space').click();
+    cy.get('#e2e-accordion').click({ force: true });
+    cy.get('#default-open-toggle').click({ force: true });
+    cy.get('#quill-editor').click();
+    cy.get('#quill-editor').type('Edited text.', { force: true });
+
+    cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait('@saveProjectDescriptionBuilder');
+
+    cy.visit(`/projects/${projectSlug}`);
+    cy.contains('Edited text.').should('be.visible');
+  });
+
+  it('deletes Accordion component correctly', () => {
+    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+      'saveProjectDescriptionBuilder'
+    );
+    cy.visit(
+      `/admin/project-description-builder/projects/${projectId}/description`
+    );
+
+    cy.get('#e2e-accordion').click({ force: true });
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
-    cy.get('#e2e-white-space').should('not.exist');
+    cy.contains('Edited text.').should('not.exist');
   });
 });
