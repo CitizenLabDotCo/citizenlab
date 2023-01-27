@@ -300,4 +300,8 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.initiatives',
     defaultMessage: 'initiatives',
   },
+  test: {
+    id: 'app.components.admin.PostManager.test',
+    defaultMessage: 'testing Crowdin',
+  },
 });
