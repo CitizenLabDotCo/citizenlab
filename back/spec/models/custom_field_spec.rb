@@ -357,6 +357,8 @@ RSpec.describe CustomField, type: :model do
         title_multiloc: ignored_title
       )
       input_term = resource.participation_context.input_term
+
+      # TODO: JS Change this for fixture
       key = "custom_forms.categories.main_content.#{input_term}.title"
       expected_english_locale = I18n.t(key, default: '', locale: 'en')
 

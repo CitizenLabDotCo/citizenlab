@@ -214,7 +214,16 @@ describe IdeaCustomFieldsService do
         expect(title_field.errors.errors).to eq []
       end
 
-      it 'returns errors if locked attributes are different from default' do
+      it 'only returns 1 error for section 1 even if locked title is different from default' do
+        section1_field = custom_form.custom_fields.find_by(code: 'ideation_section1')
+        section1_field.enabled = false
+        section1_field.title_multiloc = { en: 'Changed value' }
+        service.validate_constraints_against_defaults(section1_field)
+
+        expect(section1_field.errors.errors.length).to eq 1
+      end
+
+      it 'returns errors if title locked attributes are different from default' do
         title_field = custom_form.custom_fields.find_by(code: 'title_multiloc')
         title_field.enabled = false
         title_field.required = false
@@ -224,13 +233,8 @@ describe IdeaCustomFieldsService do
         expect(title_field.errors.errors.length).to eq 3
       end
 
-      it 'does not return errors if locked title of section 1 is different from default' do
-        section1_field = custom_form.custom_fields.find_by(code: 'ideation_section1')
-        section1_field.title_multiloc = { en: 'Changed value' }
-        service.validate_constraints_against_defaults(section1_field)
+      # TODO: Add in tests for all field constraints
 
-        expect(section1_field.errors.errors).to eq []
-      end
     end
 
     describe 'validate_constraints_against_updates' do
@@ -246,7 +250,18 @@ describe IdeaCustomFieldsService do
         expect(title_field.errors.errors).to eq []
       end
 
-      it 'returns errors if locked attributes are changed from previous values' do
+      it 'only returns 1 error for section 1 even if locked title is changed' do
+        section1_field = custom_form.custom_fields.find_by(code: 'ideation_section1')
+        valid_params = {
+          enabled: false,
+          title_multiloc: { en: 'Changed value' }
+        }
+        service.validate_constraints_against_updates(section1_field, valid_params)
+
+        expect(section1_field.errors.errors.length).to eq 1
+      end
+
+      it 'returns errors if title locked attributes are changed from previous values' do
         title_field = custom_form.custom_fields.find_by(code: 'title_multiloc')
         bad_params = {
           enabled: false,
@@ -258,16 +273,8 @@ describe IdeaCustomFieldsService do
         expect(title_field.errors.errors.length).to eq 3
       end
 
-      it 'does not return errors if locked title of section 1 is changed' do
-        section1_field = custom_form.custom_fields.find_by(code: 'ideation_section1')
-        valid_params = {
-          enabled: true,
-          title_multiloc: { en: 'Changed value' }
-        }
-        service.validate_constraints_against_updates(section1_field, valid_params)
+      # TODO: Add in tests for all field constraints
 
-        expect(section1_field.errors.errors).to eq []
-      end
     end
   end
 end
