@@ -36,8 +36,9 @@ import { validateSlug } from 'utils/textUtils';
 import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
 import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
-import SelectPreviewDevice from 'components/admin/SelectPreviewDevice';
-import { TPreviewDevice } from 'components/admin/SelectPreviewDevice';
+import SelectPreviewDevice, {
+  TPreviewDevice,
+} from 'components/admin/SelectPreviewDevice';
 import ProjectFolderCardImageDropzone from './ProjectFolderCardImageDropzone';
 import { CARD_IMAGE_ASPECT_RATIO } from 'services/projects';
 
@@ -200,7 +201,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const handleFolderCardImageOnRemove = (imageToRemove: UploadFile) => {
     setSubmitState('enabled');
     setFolderCardImage(null);
-    setPreviewDevice('phone');
     if (imageToRemove.remote && imageToRemove.id) {
       setFolderCardImageToRemove(imageToRemove);
     }
