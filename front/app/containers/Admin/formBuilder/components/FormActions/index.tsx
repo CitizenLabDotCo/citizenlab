@@ -109,6 +109,7 @@ const FormActions = ({
         >
           <Button
             icon="chart-bar"
+            data-cy="e2e-form-view-results"
             buttonStyle="cl-blue"
             width="auto"
             minWidth="312px"
@@ -154,6 +155,7 @@ const FormActions = ({
             mt="32px"
           >
             <Button
+              data-cy="e2e-delete-survey-results"
               icon="delete"
               width="auto"
               minWidth="312px"
@@ -186,6 +188,7 @@ const FormActions = ({
             >
               <Button
                 icon="delete"
+                data-cy="e2e-confirm-delete-survey-results"
                 buttonStyle="delete"
                 width="auto"
                 mr="20px"

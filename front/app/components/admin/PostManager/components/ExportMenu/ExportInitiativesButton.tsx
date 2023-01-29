@@ -28,7 +28,7 @@ class ExportInitiativesButton extends React.PureComponent<
   Props & WrappedComponentProps,
   State
 > {
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       exporting: false,

@@ -27,9 +27,6 @@ import GetIdeasCount, {
 import GetInitiativesCount, {
   GetInitiativesCountChildProps,
 } from 'resources/GetInitiativesCount';
-import GetFeatureFlag, {
-  GetFeatureFlagChildProps,
-} from 'resources/GetFeatureFlag';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import Outlet from 'components/Outlet';
 import { InsertConfigurationOptions } from 'typings';
@@ -104,7 +101,7 @@ const MenuLink = styled.a`
   padding-left: 5px;
   padding-right: 15px;
   cursor: pointer;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   transition: all 100ms ease-out;
 
   &:hover,
@@ -141,7 +138,6 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
   ideasCount: GetIdeasCountChildProps;
   initiativesCount: GetInitiativesCountChildProps;
-  customizableNavbarFeatureFlag: GetFeatureFlagChildProps;
 }
 interface Props extends InputProps, DataProps {}
 
@@ -153,7 +149,7 @@ export type NavItem = {
   name: string;
   link: string;
   iconName: IconNames;
-  message: string;
+  message: keyof typeof messages;
   featureNames?: TAppConfigurationSetting[];
   count?: number;
   onlyCheckAllowed?: boolean;
@@ -179,6 +175,12 @@ class Sidebar extends PureComponent<
           link: '/admin/projects',
           iconName: 'sidebar-folder',
           message: 'projects',
+        },
+        {
+          name: 'reporting',
+          link: `/admin/reporting`,
+          iconName: 'sidebar-reporting',
+          message: 'reporting',
         },
         {
           name: 'workshops',
@@ -228,9 +230,7 @@ class Sidebar extends PureComponent<
           name: 'menu',
           link: '/admin/pages-menu',
           iconName: 'sidebar-pages-menu',
-          // It's better to avoid using this feature flag in the core
-          // https://github.com/CitizenLabDotCo/citizenlab/pull/2162#discussion_r916512426
-          message: props.customizableNavbarFeatureFlag ? 'menu' : 'pages',
+          message: 'menu',
         },
         {
           name: 'settings',
@@ -326,7 +326,6 @@ class Sidebar extends PureComponent<
 }
 
 const Data = adopt<DataProps, InputProps>({
-  customizableNavbarFeatureFlag: <GetFeatureFlag name="customizable_navbar" />,
   authUser: <GetAuthUser />,
   ideasCount: ({ authUser, render }) => (
     <GetIdeasCount feedbackNeeded={true} assignee={get(authUser, 'id')}>

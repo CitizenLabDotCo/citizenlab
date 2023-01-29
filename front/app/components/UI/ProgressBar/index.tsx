@@ -9,14 +9,14 @@ const Container = styled.div``;
 const ProgressBarOuter = styled.div<{ background: string }>`
   width: 100%;
   height: 100%;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   background: ${(props) => props.background};
 `;
 
 const ProgressBarInner: any = styled.div<{ progress: number; color: string }>`
   width: 0px;
   height: 100%;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   background: ${(props) => props.color};
   transition: width 1000ms cubic-bezier(0.19, 1, 0.22, 1);
   will-change: width;
@@ -41,7 +41,7 @@ interface State {
 }
 
 class ProgressBar extends PureComponent<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       visible: false,

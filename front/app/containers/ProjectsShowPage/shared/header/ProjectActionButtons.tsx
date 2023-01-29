@@ -39,7 +39,7 @@ import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
 import clHistory from 'utils/cl-router/history';
 import { useLocation } from 'react-router-dom';
 
-import { openSignUpInModal } from 'components/SignUpIn/events';
+import { openSignUpInModal } from 'events/openSignUpInModal';
 
 const Container = styled.div``;
 

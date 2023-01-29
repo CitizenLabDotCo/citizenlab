@@ -31,7 +31,7 @@ const Container = styled.div``;
 const StatusBadge = styled.div<{ color: string }>`
   font-size: ${fontSizes.s}px;
   line-height: 18px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   padding: 8px 12px;
   font-weight: 400;
   background-color: ${(props) => props.color};

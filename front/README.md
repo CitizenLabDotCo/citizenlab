@@ -4,7 +4,7 @@
 
 - NodeJS (use nvm or a similar tool in order to be able to install different versions side by side)
 - A text editor/IDE that is compatible with [Editorconfig][editorconfig] and [Typescript][typescript]
-- [cl2-back][cl2back] must be running on an accessible machine. The usual setup is to make it run in the same machine.
+- [citizenlab/back][cl2back] must be running on an accessible machine. The usual setup is to make it run in the same machine.
 
 ## Setup
 
@@ -13,13 +13,13 @@
 
 ## Running
 
-If you have [cl2-back][cl2back] running on the same machine, with the default port (4000):
+If you have [citizenlab/back][cl2back] running on the same machine, with the default port (4000):
 
 ```
 npm start
 ```
 
-If [cl2-back][cl2back] runs on a different machine / port:
+If [citizenlab/back][cl2back] runs on a different machine / port:
 
 ```
 API_HOST=XXX API_PORT=YYY npm start

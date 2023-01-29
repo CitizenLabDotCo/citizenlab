@@ -65,7 +65,7 @@ resource 'StaticPages' do
         parameter :title_multiloc, 'The title of the static page, as a multiloc string'
         parameter :slug, 'The unique slug of the static page. If not given, it will be auto generated'
         parameter :banner_enabled, 'if banner is enabled'
-        parameter :banner_layout, 'the specific layout for the banner, one of: full_width_banner_layout two_column_layout two_row_layout'
+        parameter :banner_layout, 'the specific layout for the banner, one of: full_width_banner_layout two_column_layout two_row_layout fixed_ratio_layout'
         parameter :banner_overlay_color, 'color of the banner overlay'
         parameter :banner_overlay_opacity, 'opacity of the banner overlay'
         parameter :banner_cta_button_multiloc, 'multiloc content for the CTA button'
@@ -83,6 +83,8 @@ resource 'StaticPages' do
         parameter :bottom_info_section_multiloc, 'The bottom content of the static page, as a multiloc HTML string'
         parameter :header_bg, 'image for the header background'
         parameter :pinned_admin_publication_ids, 'the IDs of admin publications that are pinned to the page', type: :array
+        parameter :topic_ids, 'the IDs of topics that are used to filter the page projects list', type: :array
+        parameter :area_ids, 'the ID of an area that is used to filter the page projects list', type: :array
       end
       ValidationErrorHelper.new.error_fields self, StaticPage
 
@@ -99,6 +101,72 @@ resource 'StaticPages' do
         expect(json_response.dig(:data, :attributes, :top_info_section_multiloc, :en)).to match 'New top info section text'
         expect(json_response.dig(:data, :attributes, :bottom_info_section_multiloc, :en)).to match 'New bottom info section text'
         expect(json_response.dig(:data, :attributes, :code)).to eq 'custom'
+      end
+
+      describe 'updating topics' do
+        let(:projects_filter_type) { 'topics' }
+        let(:topic1) { create(:topic) }
+        let(:topic2) { create(:topic) }
+        let(:topic_ids) { [topic1.id, topic2.id] }
+
+        example_request 'set topics for projects list' do
+          json_response = json_parse(response_body)
+          expect(response_status).to eq 200
+          expect(json_response.dig(:data, :relationships, :topics, :data).length).to eq(2)
+        end
+
+        context 'when wrong project filter type is set' do
+          let(:projects_filter_type) { 'areas' }
+
+          example_request 'attempt to update page' do
+            expect(response_status).to eq 422
+          end
+        end
+
+        context 'when no topic ids in request' do
+          let(:topic_ids) { [] }
+
+          example_request 'attempt to update page' do
+            expect(response_status).to eq 422
+          end
+        end
+      end
+
+      describe 'updating areas' do
+        let(:projects_filter_type) { 'areas' }
+        let(:area1) { create(:area) }
+        let(:area2) { create(:area) }
+        let(:area_ids) { [area1.id] }
+
+        example_request 'set an area for projects list' do
+          json_response = json_parse(response_body)
+          expect(response_status).to eq 200
+          expect(json_response.dig(:data, :relationships, :areas, :data).length).to eq(1)
+        end
+
+        context 'when wrong project filter type is set' do
+          let(:projects_filter_type) { 'topics' }
+
+          example_request 'attempt to update page' do
+            expect(response_status).to eq 422
+          end
+        end
+
+        context 'when no area ids in request' do
+          let(:area_ids) { [] }
+
+          example_request 'attempt to update page' do
+            expect(response_status).to eq 422
+          end
+        end
+
+        context 'when when more than one area ids in request' do
+          let(:area_ids) { [area1.id, area2.id] }
+
+          example_request 'attempt to update page' do
+            expect(response_status).to eq 422
+          end
+        end
       end
 
       describe 'updating pins' do
@@ -158,7 +226,7 @@ resource 'StaticPages' do
         parameter :title_multiloc, 'The title of the static page, as a multiloc string'
         parameter :slug, 'The unique slug of the static page. If not given, it will be auto generated'
         parameter :banner_enabled, 'if banner is enabled'
-        parameter :banner_layout, 'the specific layout for the banner, one of: full_width_banner_layout two_column_layout two_row_layout'
+        parameter :banner_layout, 'the specific layout for the banner, one of: full_width_banner_layout two_column_layout two_row_layout fixed_ratio_layout'
         parameter :banner_overlay_color, 'color of the banner overlay'
         parameter :banner_overlay_opacity, 'opacity of the banner overlay'
         parameter :banner_cta_button_multiloc, 'multiloc content for the CTA button'
@@ -176,8 +244,11 @@ resource 'StaticPages' do
         parameter :bottom_info_section_multiloc, 'The bottom content of the static page, as a multiloc HTML string'
         parameter :header_bg, 'image for the header background'
         parameter :pinned_admin_publication_ids, 'the IDs of admin publications that are pinned to the page', type: :array
+        parameter :nav_bar_item_title_multiloc, 'The title of the corresponding NavBarItem'
       end
+
       ValidationErrorHelper.new.error_fields self, StaticPage
+      ValidationErrorHelper.new.error_fields self, NavBarItem
 
       let(:page) { build :static_page }
       let(:title_multiloc) { page.title_multiloc }
@@ -189,6 +260,21 @@ resource 'StaticPages' do
         expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match page.title_multiloc
         expect(json_response.dig(:data, :attributes, :top_info_section_multiloc).stringify_keys).to match page.top_info_section_multiloc
         expect(json_response.dig(:data, :attributes, :code)).to eq 'custom'
+      end
+
+      example 'Does not create a NavBarItem' do
+        item_title_multiloc = { 'en' => 'Awesome item' }
+
+        do_request(
+          static_page: {
+            title_multiloc: page.title_multiloc,
+            top_info_section_multiloc: page.top_info_section_multiloc,
+            nav_bar_item_title_multiloc: item_title_multiloc
+          }
+        )
+        expect(response_status).to eq 201
+        json_response = json_parse response_body
+        expect(StaticPage.find(json_response.dig(:data, :id)).nav_bar_item).to be_nil
       end
 
       describe nil do
@@ -206,10 +292,14 @@ resource 'StaticPages' do
         parameter :title_multiloc, 'The title of the static page, as a multiloc string'
         parameter :top_info_section_multiloc, 'The content of the static page, as a multiloc HTML string'
         parameter :slug, 'The unique slug of the static page'
+        parameter :nav_bar_item_title_multiloc, 'The title of the corresponding NavBarItem'
       end
-      ValidationErrorHelper.new.error_fields self, StaticPage
 
-      let(:id) { @pages.first.id }
+      ValidationErrorHelper.new.error_fields self, StaticPage
+      ValidationErrorHelper.new.error_fields self, NavBarItem
+
+      let(:page) { @pages.first }
+      let(:id) { page.id }
       let(:title_multiloc) { { 'en' => 'Changed title' } }
       let(:top_info_section_multiloc) { { 'en' => 'Changed body' } }
       let(:slug) { 'changed-title' }
@@ -218,6 +308,30 @@ resource 'StaticPages' do
         expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
         expect(json_response.dig(:data, :attributes, :top_info_section_multiloc, :en)).to eq 'Changed body'
         expect(json_response.dig(:data, :attributes, :slug)).to eq 'changed-title'
+      end
+
+      example 'Update the NavBarItem title of a static page' do
+        title_multiloc = { 'en' => 'Awesome item' }
+        item = create :nav_bar_item, static_page: page
+
+        do_request(static_page: { nav_bar_item_title_multiloc: title_multiloc })
+        assert_status 200
+        expect(item.reload.title_multiloc).to match title_multiloc
+      end
+
+      example 'Update the NavBarItem title of a static page with no NavBarItem' do
+        title_multiloc = { 'en' => 'Awesome item' }
+        page.nav_bar_item&.destroy!
+        do_request(static_page: { nav_bar_item_title_multiloc: title_multiloc })
+        assert_status 200
+      end
+
+      example '[error] Update an invalid NavBarItem title of a static page' do
+        title_multiloc = { 'en' => 42 }
+        create :nav_bar_item, static_page: page
+
+        do_request(static_page: { nav_bar_item_title_multiloc: title_multiloc })
+        assert_status 422
       end
     end
 

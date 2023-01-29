@@ -29,7 +29,7 @@ interface State {
 
 const StylingWrapper = styled.div`
   .DateRangePickerInput {
-    border-radius: ${(props: any) => props.theme.borderRadius};
+    border-radius: ${(props) => props.theme.borderRadius};
     border: solid 1px ${colors.borderDark};
 
     &:hover {
@@ -52,14 +52,14 @@ class OurDateRangePicker extends PureComponent<
   Props & WrappedComponentProps,
   State
 > {
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       focusedInput: null,
     };
   }
 
-  handleFocusChange = (focusedInput: 'startDate' | 'endDate') => {
+  handleFocusChange = (focusedInput: 'startDate' | 'endDate' | null) => {
     this.setState({ focusedInput });
   };
 

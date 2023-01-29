@@ -77,14 +77,14 @@ const FormBuilderTopBar = ({
       h={`${stylingConsts.menuHeight}px`}
       display="flex"
       background={`${colors.white}`}
-      borderBottom={`1px solid ${colors.grey500}`}
+      borderBottom={`1px solid ${colors.borderLight}`}
       top="0px"
     >
       <Box
         p="16px"
         w="210px"
         h="100%"
-        borderRight={`1px solid ${colors.grey500}`}
+        borderRight={`1px solid ${colors.borderLight}`}
         display="flex"
         alignItems="center"
       >
@@ -130,7 +130,7 @@ const FormBuilderTopBar = ({
           <FormattedMessage {...messages.viewSurvey} />
         </Button>
         <Button
-          buttonStyle="primary"
+          buttonStyle="admin-dark"
           disabled={isEditingDisabled}
           processing={isSubmitting}
           type="submit"

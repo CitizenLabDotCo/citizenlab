@@ -17,7 +17,7 @@ import { colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   align-items: center;
 `;
 
@@ -42,7 +42,7 @@ const DropdownListItem = styled.button`
   margin: 0px;
   margin-bottom: 4px;
   padding: 10px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   cursor: pointer;
   transition: all 80ms ease-out;
 
@@ -97,7 +97,7 @@ class TimeControl extends PureComponent<Props & WrappedComponentProps, State> {
     },
   ];
 
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       dropdownOpened: false,
@@ -150,7 +150,7 @@ class TimeControl extends PureComponent<Props & WrappedComponentProps, State> {
     const activePreset = this.findActivePreset();
 
     return (
-      <Container>
+      <Container className="intercom-admin-dashboard-time-control">
         <DropdownContainer>
           <StyledButton
             buttonStyle="text"

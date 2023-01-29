@@ -23,9 +23,7 @@ class WebApi::V1::StaticPageSerializer < WebApi::V1::BaseSerializer
     :events_widget_enabled,
     :bottom_info_section_enabled,
     :bottom_info_section_multiloc,
-    :header_bg,
-    :pinned_admin_publication_ids,
-    :static_page_file_ids
+    :header_bg
 
   attribute :header_bg do |object|
     object.header_bg && object.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
@@ -48,7 +46,7 @@ class WebApi::V1::StaticPageSerializer < WebApi::V1::BaseSerializer
   # title. That way, the frontend can know what the title
   # will be when the page would be added to the navbar (and
   # show this in the list of items to add).
-  # See also back/engines/commercial/customizable_navbar/app/controllers/customizable_navbar/web_api/v1/patches/static_pages_controller.rb
+  # See also back/app/controllers/web_api/v1/static_pages_controller.rb
   # #assign_attributes
   attribute :nav_bar_item_title_multiloc do |object|
     current_navbaritem_title = object.nav_bar_item&.title_multiloc_with_fallback
@@ -60,4 +58,6 @@ class WebApi::V1::StaticPageSerializer < WebApi::V1::BaseSerializer
   has_one :nav_bar_item
   has_many :static_page_files
   has_many :text_images
+  has_many :topics
+  has_many :areas
 end

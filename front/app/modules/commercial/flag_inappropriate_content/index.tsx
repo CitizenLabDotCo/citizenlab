@@ -1,19 +1,41 @@
 import React, { ReactNode } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import RenderOnNotificationType from 'modules/utilComponents/RenderOnNotificationType';
-import Setting from './admin/containers/Setting';
-import RemoveFlagButton from './admin/components/RemoveFlagButton';
-import ActivityWarningsTab from './admin/components/ActivityWarningsTab';
-import InappropriateContentWarning from './admin/components/InappropriateContentWarning';
-import EmptyMessageModerationsWithFlag from './admin/components/EmptyMessageModerationsWithFlag';
-import NLPFlagNotification from './citizen/components/NLPFlagNotification';
-import { INLPFlagNotificationData } from 'services/notifications';
+import {
+  TNotificationData,
+  TNotificationType,
+  INLPFlagNotificationData,
+} from 'services/notifications';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-type RenderOnSelectedTabValueProps = {
+const Setting = React.lazy(() => import('./admin/containers/Setting'));
+const RemoveFlagButton = React.lazy(
+  () => import('./admin/components/RemoveFlagButton')
+);
+const ActivityWarningsTab = React.lazy(
+  () => import('./admin/components/ActivityWarningsTab')
+);
+const InappropriateContentWarning = React.lazy(
+  () => import('./admin/components/InappropriateContentWarning')
+);
+const EmptyMessageModerationsWithFlag = React.lazy(
+  () => import('./admin/components/EmptyMessageModerationsWithFlag')
+);
+const NLPFlagNotification = React.lazy(
+  () => import('./citizen/components/NLPFlagNotification')
+);
+
+interface RenderOnSelectedTabValueProps {
   isTabSelected: boolean;
   children: ReactNode;
-};
+}
+
+interface RenderOnFeatureFlagProps {
+  children: ReactNode;
+}
+
+interface RenderOnAllowedProps {
+  children: ReactNode;
+}
 
 const RenderOnSelectedTabValue = ({
   isTabSelected,
@@ -23,7 +45,7 @@ const RenderOnSelectedTabValue = ({
   return <>{children}</>;
 };
 
-const RenderOnFeatureFlag = ({ children }) => {
+const RenderOnFeatureFlag = ({ children }: RenderOnFeatureFlagProps) => {
   const featureFlag = useFeatureFlag({
     name: 'flag_inappropriate_content',
   });
@@ -31,13 +53,31 @@ const RenderOnFeatureFlag = ({ children }) => {
   return featureFlag ? <>{children}</> : null;
 };
 
-const RenderOnAllowed = ({ children }) => {
+const RenderOnAllowed = ({ children }: RenderOnAllowedProps) => {
   const allowed = useFeatureFlag({
     name: 'flag_inappropriate_content',
     onlyCheckAllowed: true,
   });
 
   return allowed ? <>{children}</> : null;
+};
+
+export type RenderOnNotificationTypeProps = {
+  children: ReactNode;
+  notification: TNotificationData;
+  notificationType: TNotificationType;
+};
+
+const RenderOnNotificationType = ({
+  children,
+  notification,
+  notificationType,
+}: RenderOnNotificationTypeProps) => {
+  if (notification.attributes.type === notificationType) {
+    return <>{children}</>;
+  }
+
+  return null;
 };
 
 const configuration: ModuleConfiguration = {

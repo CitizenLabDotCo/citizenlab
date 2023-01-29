@@ -59,6 +59,27 @@ describe('Project timeline page', () => {
       });
   });
 
+  it('in-platform survey method is disabled when trying to switch method of existing phase', () => {
+    // Navigate to the timeline page
+    cy.visit(`/admin/projects/${projectId}/timeline`);
+    cy.acceptCookies();
+
+    // Check to see that the first phase is listed
+    cy.get(`[data-testid="${`e2e-phase-${firstPhaseId}`}"]`).should('exist');
+
+    // Go to phase edit page
+    cy.get(`[data-cy="${`e2e-edit-phase-${firstPhaseId}`}"]`).click();
+
+    // Check that warning is present
+    cy.get('#e2e-participation-method-warning').should('exist');
+
+    // Check that radio is disabled
+    cy.get('#participationmethod-native_survey')
+      .siblings()
+      .first()
+      .should('have.class', 'disabled');
+  });
+
   it('shows a modal for user to confirm deleting a phase and then deletes the phase on confirmation', () => {
     // Navigate to the timeline page
     cy.visit(`/admin/projects/${projectId}/timeline`);

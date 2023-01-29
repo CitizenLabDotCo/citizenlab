@@ -11,7 +11,7 @@ const ProjectsListItem = styled(Link)`
   padding: 10px;
   margin-bottom: 4px;
   background: transparent;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
 
   &:hover,
   &:focus {

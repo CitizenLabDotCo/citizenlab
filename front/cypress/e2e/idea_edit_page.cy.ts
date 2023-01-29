@@ -25,20 +25,27 @@ describe('Idea edit page', () => {
       })
       .then((project) => {
         projectId = project.body.data.id;
-        return cy.apiCreateIdea(
-          projectId,
-          ideaTitle,
-          ideaContent,
-          undefined,
-          undefined,
-          jwt
-        );
-      })
-      .then((idea) => {
-        ideaId = idea.body.data.id;
-        ideaSlug = idea.body.data.attributes.slug;
-        cy.wait(2000);
       });
+  });
+
+  beforeEach(() => {
+    cy.apiCreateIdea(
+      projectId,
+      ideaTitle,
+      ideaContent,
+      undefined,
+      undefined,
+      jwt
+    ).then((idea) => {
+      ideaId = idea.body.data.id;
+      ideaSlug = idea.body.data.attributes.slug;
+    });
+  });
+
+  afterEach(() => {
+    if (ideaId) {
+      cy.apiRemoveIdea(ideaId);
+    }
   });
 
   it('has a working idea edit form', () => {
@@ -71,6 +78,10 @@ describe('Idea edit page', () => {
     cy.get('@titleInput').should('contain.value', newIdeaTitle);
     cy.get('@descriptionInput').contains(newIdeaContent);
 
+    cy.get('.e2e-topics-picker')
+      .find('button.selected')
+      .should('have.length', 0);
+
     // add a topic
     cy.get('.e2e-topics-picker').find('button').eq(3).click();
 
@@ -100,18 +111,22 @@ describe('Idea edit page', () => {
 
     // save the form
     cy.get('.e2e-submit-idea-form').click();
-    cy.intercept(`**/ideas/${ideaId}`).as('ideaRequest');
-    cy.wait('@ideaRequest');
+    cy.intercept(`**/ideas/${ideaId}`).as('ideaPostRequest');
+    cy.wait('@ideaPostRequest');
 
     // verify updated idea page
     cy.location('pathname').should('eq', `/en/ideas/${ideaSlug}`);
+
+    cy.intercept(`**/ideas/by_slug/${ideaSlug}`).as('ideaRequest');
+    cy.wait('@ideaRequest');
+
     cy.get('#e2e-idea-show');
     cy.get('#e2e-idea-show #e2e-idea-title').contains(newIdeaTitle);
     cy.get('#e2e-idea-show #e2e-idea-description').contains(newIdeaContent);
-    cy.get('#e2e-idea-show')
-      .find('#e2e-idea-topics')
-      .find('.e2e-idea-topic')
-      .should('have.length', 1);
+    cy.get('#e2e-idea-show').should('exist');
+    cy.get('#e2e-idea-topics').should('exist');
+    cy.get('.e2e-idea-topic').should('exist');
+    cy.get('.e2e-idea-topic').should('have.length', 1);
     cy.get('#e2e-idea-show #e2e-map-popup').contains('Boulevard Anspach');
     cy.get('#e2e-idea-show .e2e-author-link .e2e-username').contains(
       `${firstName} ${lastName}`
@@ -132,7 +147,15 @@ describe('Idea edit page', () => {
     cy.contains(`${lastName}, ${firstName}`).should('exist');
   });
 
-  after(() => {
-    cy.apiRemoveIdea(ideaId);
+  it('has a go back link that redirects the user to the edit page when clicked', () => {
+    cy.setAdminLoginCookie();
+    // Go to idea edit page
+    cy.visit(`/ideas/edit/${ideaId}`);
+
+    // Click the back button
+    cy.get('[data-cy="e2e-back-to-idea-page-button"]').click();
+
+    // Check to see that the user is redirected to the idea page
+    cy.location('pathname').should('eq', `/en/ideas/${ideaSlug}`);
   });
 });

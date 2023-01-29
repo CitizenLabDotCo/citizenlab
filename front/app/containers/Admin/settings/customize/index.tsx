@@ -8,7 +8,6 @@ import { Section, SectionTitle } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Branding from './Branding';
 import ProjectHeader from './ProjectHeader';
-import AllInput from './AllInput';
 
 // style
 import styled, { withTheme } from 'styled-components';
@@ -36,7 +35,6 @@ import {
   IUpdatedAppConfigurationProperties,
   TAppConfigurationSetting,
 } from 'services/appConfiguration';
-import { toggleAllInput } from 'services/navbar';
 
 // typings
 import { UploadFile, Locale, Multiloc, CLErrors } from 'typings';
@@ -63,7 +61,6 @@ export interface State {
   titleError: Multiloc;
   settings: Partial<IAppConfigurationSettings>;
   subtitleError: Multiloc;
-  newAllInputNavbarItemEnabled: boolean | null;
 }
 
 // Styles and custom components
@@ -81,7 +78,7 @@ class SettingsCustomizeTab extends PureComponent<
 > {
   subscriptions: Subscription[];
 
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       locale: null,
@@ -95,7 +92,6 @@ class SettingsCustomizeTab extends PureComponent<
       titleError: {},
       subtitleError: {},
       settings: {},
-      newAllInputNavbarItemEnabled: null,
     };
     this.subscriptions = [];
   }
@@ -172,18 +168,11 @@ class SettingsCustomizeTab extends PureComponent<
           );
         }
 
-        const { newAllInputNavbarItemEnabled } = this.state;
-
-        if (newAllInputNavbarItemEnabled !== null) {
-          await toggleAllInput({ enabled: newAllInputNavbarItemEnabled });
-        }
-
         this.setState({
           loading: false,
           saved: true,
           errors: {},
           attributesDiff: {},
-          newAllInputNavbarItemEnabled: null,
         });
       } catch (error) {
         if (isCLErrorJSON(error)) {
@@ -227,14 +216,7 @@ class SettingsCustomizeTab extends PureComponent<
     const { locale, tenant } = this.state;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant)) {
-      const {
-        logo,
-        attributesDiff,
-        logoError,
-        errors,
-        saved,
-        newAllInputNavbarItemEnabled,
-      } = this.state;
+      const { logo, attributesDiff, logoError, errors, saved } = this.state;
 
       const latestAppConfigSettings = {
         ...tenant.data.attributes,
@@ -258,11 +240,6 @@ class SettingsCustomizeTab extends PureComponent<
             currentlyWorkingOnText={
               latestAppConfigCoreSettings?.['currently_working_on_text']
             }
-            setParentState={setState}
-          />
-
-          <AllInput
-            newNavbarItemEnabled={newAllInputNavbarItemEnabled}
             setParentState={setState}
           />
 

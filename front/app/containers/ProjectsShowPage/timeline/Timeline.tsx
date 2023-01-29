@@ -172,14 +172,18 @@ const currentSelectedPhaseBar = css`
   }
 `;
 
-const PhaseContainer = styled.div<{ width: number; breakpoint: number }>`
+const PhaseContainer = styled.div<{
+  width: number;
+  breakpoint: number;
+  last: boolean;
+}>`
   width: ${(props) => props.width}%;
   min-width: ${MIN_PHASE_WIDTH_PX}px;
   display: flex;
   flex-direction: column;
   position: relative;
   cursor: pointer;
-  margin-right: ${(props: any) => (!props.last ? '1px' : '0px')};
+  margin-right: ${(props) => (!props.last ? '1px' : '0px')};
 
   @media (max-width: ${({ breakpoint }) =>
       breakpoint + CONTAINER_PADDING_PX * 2}px) {
@@ -188,13 +192,13 @@ const PhaseContainer = styled.div<{ width: number; breakpoint: number }>`
   }
 
   &.first ${PhaseBar} {
-    border-radius: ${(props: any) => props.theme.borderRadius} 0px 0px
-      ${(props: any) => props.theme.borderRadius};
+    border-radius: ${(props) => props.theme.borderRadius} 0px 0px
+      ${(props) => props.theme.borderRadius};
   }
 
   &.last ${PhaseBar} {
-    border-radius: 0px ${(props: any) => props.theme.borderRadius}
-      ${(props: any) => props.theme.borderRadius} 0px;
+    border-radius: 0px ${(props) => props.theme.borderRadius}
+      ${(props) => props.theme.borderRadius} 0px;
   }
 
   &:focus,
@@ -326,6 +330,7 @@ const Timeline = ({
                     key={phaseIndex}
                     width={width}
                     breakpoint={phasesBreakpoint}
+                    last={isLast}
                   >
                     <PhaseBar
                       onMouseDown={removeFocusAfterMouseClick}

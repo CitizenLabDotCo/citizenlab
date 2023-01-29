@@ -1,28 +1,30 @@
 import React from 'react';
 
 // components
-import SectionFormWrapper from '../../components/SectionFormWrapper';
 import {
+  Box,
+  Button,
   IconTooltip,
   Label,
-  Button,
-  Box,
 } from '@citizenlab/cl2-component-library';
 import { SectionField } from 'components/admin/Section';
+import ShownOnPageBadge from '../../components/ShownOnPageBadge';
+import SectionFormWrapper from '../../components/SectionFormWrapper';
+import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
 
 // i18n
-import messages from './messages';
+import HelmetIntl from 'components/HelmetIntl';
 import useLocalize from 'hooks/useLocalize';
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import HelmetIntl from 'components/HelmetIntl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 // form
-import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { object, mixed } from 'yup';
-import FileUploader from 'components/HookForm/FileUploader';
 import Feedback from 'components/HookForm/Feedback';
+import FileUploader from 'components/HookForm/FileUploader';
+import { FormProvider, useForm } from 'react-hook-form';
+import { mixed, object } from 'yup';
 
 // typings
 import { UploadFile } from 'typings';
@@ -31,17 +33,18 @@ import { UploadFile } from 'typings';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
 // hooks
-import { useParams } from 'react-router-dom';
-import useRemoteFiles from 'hooks/useRemoteFiles';
 import useCustomPage from 'hooks/useCustomPage';
+import { updateCustomPage } from 'services/customPages';
+import useRemoteFiles from 'hooks/useRemoteFiles';
+import { useParams } from 'react-router-dom';
 
 // constants
-import { PAGES_MENU_CUSTOM_PATH } from '../../routes';
+import { adminCustomPageContentPath } from 'containers/Admin/pagesAndMenu/routes';
 import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 type FormValues = {
   local_page_files: UploadFile[] | null;
@@ -52,14 +55,17 @@ const AttachmentsForm = ({
 }: WrappedComponentProps) => {
   const localize = useLocalize();
   const { customPageId } = useParams() as { customPageId: string };
-  const customPage = useCustomPage(customPageId);
+  const customPage = useCustomPage({ customPageId });
 
   const remotePageFiles = useRemoteFiles({
     resourceType: 'page',
     resourceId: !isNilOrError(customPage) ? customPage.id : null,
   });
 
-  const handleSubmit = async ({ local_page_files }: FormValues) => {
+  const handleSubmit = async (
+    { local_page_files }: FormValues,
+    enableSection = false
+  ) => {
     const promises: Promise<any>[] = [];
 
     if (!isNilOrError(local_page_files)) {
@@ -77,12 +83,27 @@ const AttachmentsForm = ({
       promises.push(addPromise, removePromise);
     }
 
+    if (enableSection) {
+      const enableSectionPromise = updateCustomPage(customPageId, {
+        files_section_enabled: true,
+      });
+      promises.push(enableSectionPromise);
+    }
+
     await Promise.all(promises);
   };
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {
       await handleSubmit(formValues);
+    } catch (error) {
+      handleHookFormSubmissionError(error, methods.setError);
+    }
+  };
+
+  const onFormSubmitAndEnable = async (formValues: FormValues) => {
+    try {
+      await handleSubmit(formValues, true);
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }
@@ -102,6 +123,8 @@ const AttachmentsForm = ({
     return null;
   }
 
+  const isSectionEnabled = customPage.attributes.files_section_enabled;
+
   return (
     <>
       <HelmetIntl title={messages.pageMetaTitle} />
@@ -109,6 +132,7 @@ const AttachmentsForm = ({
         <form onSubmit={methods.handleSubmit(onFormSubmit)}>
           <SectionFormWrapper
             title={formatMessage(messages.pageTitle)}
+            badge={<ShownOnPageBadge shownOnPage={isSectionEnabled} />}
             breadcrumbs={[
               {
                 label: formatMessage(pagesAndMenuBreadcrumb.label),
@@ -116,12 +140,17 @@ const AttachmentsForm = ({
               },
               {
                 label: localize(customPage.attributes.title_multiloc),
-                linkTo: `${PAGES_MENU_CUSTOM_PATH}/${customPageId}/content`,
+                linkTo: adminCustomPageContentPath(customPageId),
               },
               {
                 label: formatMessage(messages.pageTitle),
               },
             ]}
+            rightSideCTA={
+              <ViewCustomPageButton
+                linkTo={`/pages/${customPage.attributes.slug}`}
+              />
+            }
           >
             <Feedback successMessage={formatMessage(messages.messageSuccess)} />
             <SectionField>
@@ -140,9 +169,24 @@ const AttachmentsForm = ({
               />
             </SectionField>
             <Box display="flex">
-              <Button type="submit" processing={methods.formState.isSubmitting}>
+              <Button
+                data-cy={`e2e-attachments-section-submit`}
+                type="submit"
+                processing={methods.formState.isSubmitting}
+              >
                 <FormattedMessage {...messages.saveButton} />
               </Button>
+              {!isSectionEnabled && (
+                <Button
+                  ml="30px"
+                  type="button"
+                  buttonStyle="primary-outlined"
+                  onClick={methods.handleSubmit(onFormSubmitAndEnable)}
+                  processing={methods.formState.isSubmitting}
+                >
+                  {formatMessage(messages.saveAndEnableButton)}
+                </Button>
+              )}
             </Box>
           </SectionFormWrapper>
         </form>

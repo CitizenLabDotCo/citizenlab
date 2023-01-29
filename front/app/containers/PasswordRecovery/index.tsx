@@ -93,8 +93,8 @@ class PasswordRecovery extends React.PureComponent<
 > {
   emailInputElement: HTMLInputElement | null;
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props: Props & WrappedComponentProps) {
+    super(props);
     this.state = {
       email: null,
       emailError: false,
@@ -213,7 +213,7 @@ class PasswordRecovery extends React.PureComponent<
               />
 
               <StyledButton
-                size="2"
+                size="m"
                 width="100%"
                 processing={processing}
                 text={resetPassword}

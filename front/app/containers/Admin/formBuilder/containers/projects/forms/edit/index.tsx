@@ -23,9 +23,11 @@ import DeleteFormResultsNotice from 'containers/Admin/formBuilder/components/Del
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
+import validateElementTitle from 'utils/yup/validateElementTitle';
+import validateLogic from 'utils/yup/validateLogic';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { PageStructure, getReorderedFields, DragAndDropResult } from './utils';
 
 // services
 import {
@@ -33,6 +35,7 @@ import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
   updateFormCustomFields,
+  isNewCustomFieldObject,
 } from 'services/formCustomFields';
 
 // hooks
@@ -77,12 +80,13 @@ export const FormEdit = ({
   const [selectedField, setSelectedField] = useState<
     IFlatCustomFieldWithIndex | undefined
   >(undefined);
+
   const isEditingDisabled = totalSubmissions > 0;
 
   const schema = object().shape({
     customFields: array().of(
       object().shape({
-        title_multiloc: validateAtLeastOneLocale(
+        title_multiloc: validateElementTitle(
           formatMessage(messages.emptyTitleError)
         ),
         description_multiloc: object(),
@@ -94,6 +98,8 @@ export const FormEdit = ({
         minimum_label_multiloc: object(),
         maximum_label_multiloc: object(),
         required: boolean(),
+        temp_id: string(),
+        logic: validateLogic(formatMessage(messages.logicValidationError)),
       })
     ),
   });
@@ -109,9 +115,10 @@ export const FormEdit = ({
     handleSubmit,
     control,
     formState: { isSubmitting, errors },
+    trigger,
   } = methods;
 
-  const { fields, append, remove, move } = useFieldArray({
+  const { fields, append, remove, move, replace } = useFieldArray({
     name: 'customFields',
     control,
   });
@@ -121,24 +128,32 @@ export const FormEdit = ({
   };
 
   const handleDelete = (fieldIndex: number) => {
-    remove(fieldIndex);
+    const field = fields[fieldIndex];
+
+    // When the first page is deleted, it's questions go to the next page
+    if (fieldIndex === 0 && field.input_type === 'page') {
+      const nextPageIndex = fields.findIndex(
+        (feild, fieldIndex) => feild.input_type === 'page' && fieldIndex !== 0
+      );
+      move(nextPageIndex, 0);
+      remove(1);
+    } else {
+      remove(fieldIndex);
+    }
+
     closeSettings();
+    trigger();
   };
 
-  // TODO: Improve this to remove usage of type casting
   const onAddField = (field: IFlatCreateCustomField) => {
     const newField = {
       ...field,
       index: !isNilOrError(fields) ? fields.length : 0,
     };
-    append(newField);
-    setSelectedField(newField as IFlatCustomFieldWithIndex);
-  };
 
-  const handleDragRow = (fromIndex: number, toIndex: number) => {
-    move(fromIndex, toIndex);
-    if (!isNilOrError(selectedField)) {
-      setSelectedField({ ...selectedField, index: toIndex });
+    if (isNewCustomFieldObject(newField)) {
+      append(newField);
+      setSelectedField(newField);
     }
   };
 
@@ -149,6 +164,12 @@ export const FormEdit = ({
       const finalResponseArray = customFields.map((field) => ({
         ...(!field.isLocalOnly && { id: field.id }),
         input_type: field.input_type,
+        ...(field.input_type === 'page' && {
+          temp_id: field.temp_id,
+        }),
+        ...(['linear_scale', 'select', 'page'].includes(field.input_type) && {
+          logic: field.logic,
+        }),
         required: field.required,
         enabled: field.enabled,
         title_multiloc: field.title_multiloc || {},
@@ -168,6 +189,30 @@ export const FormEdit = ({
       await updateFormCustomFields(projectId, finalResponseArray, phaseId);
     } catch (error) {
       handleHookFormSubmissionError(error, setError, 'customFields');
+    }
+  };
+
+  // Page is only deletable when we have more than one page
+  const isPageDeletable =
+    fields.filter((field) => field.input_type === 'page').length > 1;
+  const isDeleteDisabled = !(
+    selectedField?.input_type !== 'page' || isPageDeletable
+  );
+
+  const reorderFields = (
+    result: DragAndDropResult,
+    nestedPageData: PageStructure[]
+  ) => {
+    const reorderedFields = getReorderedFields(result, nestedPageData);
+    if (reorderedFields) {
+      replace(reorderedFields);
+    }
+
+    if (!isNilOrError(selectedField) && reorderedFields) {
+      const newSelectedFieldIndex = reorderedFields.findIndex(
+        (field) => field.id === selectedField.id
+      );
+      setSelectedField({ ...selectedField, index: newSelectedFieldIndex });
     }
   };
 
@@ -214,12 +259,17 @@ export const FormEdit = ({
                       redirectToSurveyPage
                     />
                   )}
-                  <Box bgColor="white" minHeight="300px">
+                  <Box
+                    borderRadius="3px"
+                    boxShadow="0px 2px 4px rgba(0, 0, 0, 0.2)"
+                    bgColor="white"
+                    minHeight="300px"
+                  >
                     <FormFields
                       onEditField={setSelectedField}
-                      handleDragRow={handleDragRow}
                       selectedFieldId={selectedField?.id}
                       isEditingDisabled={isEditingDisabled}
+                      handleDragEnd={reorderFields}
                     />
                   </Box>
                 </Box>
@@ -230,6 +280,7 @@ export const FormEdit = ({
                   field={selectedField}
                   onDelete={handleDelete}
                   onClose={closeSettings}
+                  isDeleteDisabled={isDeleteDisabled}
                 />
               )}
             </Box>

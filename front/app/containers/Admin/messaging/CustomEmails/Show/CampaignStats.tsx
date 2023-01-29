@@ -20,7 +20,7 @@ const GraphCard = styled.div`
   display: flex;
   flex-direction: column;
   border: solid 1px ${colors.borderLight};
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   background: ${colors.white};
   margin: 5px;
   justify-content: space-around;
@@ -29,7 +29,7 @@ const GraphCard = styled.div`
 `;
 
 const GraphCardPercentage = styled.div`
-  font-size: ${fontSizes.s};
+  font-size: ${fontSizes.s}px;
   color: ${colors.textSecondary};
 `;
 

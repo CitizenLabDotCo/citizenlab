@@ -88,6 +88,7 @@ resource 'Users' do
           settings['password_login'] = {
             'allowed' => true,
             'enabled' => true,
+            'enable_signup' => true,
             'phone' => true,
             'phone_email_pattern' => 'phone+__PHONE__@test.com',
             'minimum_length' => 6
@@ -122,6 +123,19 @@ resource 'Users' do
     end
 
     post 'web_api/v1/users' do
+      before do
+        settings = AppConfiguration.instance.settings
+        settings['password_login'] = {
+          'allowed' => true,
+          'enabled' => true,
+          'enable_signup' => true,
+          'phone' => true,
+          'phone_email_pattern' => 'phone+__PHONE__@test.com',
+          'minimum_length' => 6
+        }
+        AppConfiguration.instance.update!(settings: settings)
+      end
+
       with_options scope: 'user' do
         parameter :first_name, 'User full name', required: true
         parameter :last_name, 'User full name', required: true
@@ -170,6 +184,18 @@ resource 'Users' do
       end
 
       describe 'Creating an admin user' do
+        before do
+          settings = AppConfiguration.instance.settings
+          settings['password_login'] = {
+            'enabled' => true,
+            'allowed' => true,
+            'enable_signup' => true,
+            'minimum_length' => 5,
+            'phone' => false
+          }
+          AppConfiguration.instance.update! settings: settings
+        end
+
         let(:roles) { [{ type: 'admin' }] }
 
         example 'creates a user, but not an admin', document: false do
@@ -187,6 +213,7 @@ resource 'Users' do
           settings['password_login'] = {
             'enabled' => true,
             'allowed' => true,
+            'enable_signup' => true,
             'minimum_length' => 5,
             'phone' => false
           }
@@ -236,6 +263,7 @@ resource 'Users' do
           settings['password_login'] = {
             'allowed' => true,
             'enabled' => true,
+            'enable_signup' => true,
             'phone' => true,
             'phone_email_pattern' => 'phone+__PHONE__@test.com',
             'minimum_length' => 6
@@ -346,7 +374,7 @@ resource 'Users' do
           expect(json_response[:data].pluck(:id)).to match_array group_users.map(&:id)
         end
 
-        example 'List all users in group, ordered by role', skip: !CitizenLab.ee? do
+        example 'List all users in group, ordered by role' do
           group = create(:group)
 
           admin = create(:admin, manual_groups: [group])
@@ -387,7 +415,7 @@ resource 'Users' do
           end
         end
 
-        example 'List all users who can moderate a project', skip: !CitizenLab.ee? do
+        example 'List all users who can moderate a project' do
           p = create(:project)
           a = create(:admin)
           m1 = create(:project_moderator, projects: [p])
@@ -401,7 +429,7 @@ resource 'Users' do
           expect(json_response[:data].pluck(:id)).to match_array [a.id, m1.id, @user.id]
         end
 
-        example 'List all users who can moderate', skip: !CitizenLab.ee? do
+        example 'List all users who can moderate' do
           p = create(:project)
           a = create(:admin)
           m1 = create(:project_moderator, projects: [p])
@@ -417,11 +445,8 @@ resource 'Users' do
           p = create(:project)
           a = create(:admin)
           create(:user)
-
-          if CitizenLab.ee?
-            create(:project_moderator, projects: [p])
-            create(:project_moderator)
-          end
+          create(:project_moderator, projects: [p])
+          create(:project_moderator)
 
           do_request(can_admin: true)
           json_response = json_parse(response_body)
@@ -643,22 +668,34 @@ resource 'Users' do
       #   end
       # end
 
-      describe do
-        before do
-          @user = create(:admin)
-          token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-          header 'Authorization', "Bearer #{token}"
+      context 'when admin' do
+        before { @user.update! roles: [{ type: 'admin' }] }
+
+        context 'on a resident' do
+          let(:resident) { create :user }
+          let(:id) { resident.id }
+          let(:roles) { [type: 'admin'] }
+
+          example_request 'Make the user admin' do
+            assert_status 200
+            json_response = json_parse response_body
+            expect(json_response.dig(:data, :id)).to eq id
+            expect(json_response.dig(:data, :attributes, :roles)).to eq [{ type: 'admin' }]
+          end
         end
 
-        let(:mortal_user) { create(:user) }
-        let(:id) { mortal_user.id }
-        let(:roles) { [type: 'admin'] }
+        context 'on a folder moderator' do
+          let(:folder) { create :project_folder }
+          let(:moderator) { create :project_folder_moderator, project_folders: [folder] }
+          let(:id) { moderator.id }
+          let(:roles) { moderator.roles + [{ 'type' => 'admin' }] }
 
-        example_request 'Make a user admin, as an admin' do
-          expect(response_status).to eq 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :id)).to eq id
-          expect(json_response.dig(:data, :attributes, :roles)).to eq [{ type: 'admin' }]
+          example_request 'Make the user admin' do
+            assert_status 200
+            json_response = json_parse response_body
+            expect(json_response.dig(:data, :id)).to eq id
+            expect(json_response.dig(:data, :attributes, :roles)).to include({ type: 'admin' })
+          end
         end
       end
 

@@ -2,6 +2,11 @@
 
 module ParticipationMethod
   class NativeSurvey < Base
+    def assign_defaults_for_participation_context
+      participation_context.posting_method = 'limited'
+      participation_context.posting_limited_max = 1
+    end
+
     # Survey responses do not have a fixed field that can be used
     # to generate a slug, so use the id as the basis for the slug.
     # This method is invoked after creation of the input,
@@ -14,6 +19,31 @@ module ParticipationMethod
     def assign_defaults(input)
       input.publication_status = 'published'
       input.idea_status = IdeaStatus.find_by!(code: 'proposed')
+    end
+
+    def create_default_form!
+      form = CustomForm.create(participation_context: participation_context)
+      CustomField.create(
+        resource: form,
+        input_type: 'page',
+        key: 'page_1'
+      )
+      field = CustomField.create(
+        resource: form,
+        input_type: 'select',
+        title_multiloc: MultilocService.new.i18n_to_multiloc('form_builder.default_select_field.title')
+      )
+      CustomFieldOption.create(
+        custom_field: field,
+        key: 'option1',
+        title_multiloc: MultilocService.new.i18n_to_multiloc('form_builder.default_select_field.option1')
+      )
+      CustomFieldOption.create(
+        custom_field: field,
+        key: 'option2',
+        title_multiloc: MultilocService.new.i18n_to_multiloc('form_builder.default_select_field.option2')
+      )
+      participation_context.reload
     end
 
     def never_show?
@@ -34,6 +64,14 @@ module ParticipationMethod
 
     def delete_inputs_on_pc_deletion?
       true
+    end
+
+    def supports_toxicity_detection?
+      false
+    end
+
+    def include_data_in_email?
+      false
     end
 
     # The "Additional information" category in the UI should be suppressed.

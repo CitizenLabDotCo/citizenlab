@@ -30,14 +30,14 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
         defaultMessage="Posted in {projectLink}"
         id="app.containers.IdeasShow.postedIn"
         values={
-          Object {
+          {
             "projectLink": <IdeaContent__ProjectLink
               className="e2e-project-link"
               to="/projects/undefined_slug"
             >
               <T
                 value={
-                  Object {
+                  {
                     "en": "undefined project Title",
                   }
                 }
@@ -82,8 +82,8 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
         <IdeaContent__StyledMap
           address="50° 52′ 8.38577″ N 4° 25′ 7.43365″ E"
           position={
-            Object {
-              "coordinates": Array [
+            {
+              "coordinates": [
                 4.418731568531502,
                 50.86899604801978,
               ],
@@ -114,7 +114,7 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
               defaultMessage="Picks: {picksNumber}"
               id="app.components.admin.PostManager.PostPreview.picks"
               values={
-                Object {
+                {
                   "picksNumber": 0,
                 }
               }

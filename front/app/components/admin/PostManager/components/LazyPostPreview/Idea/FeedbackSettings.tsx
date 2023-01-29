@@ -59,12 +59,9 @@ interface InputProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface PropsWithHoCs
-  extends Props,
-    InjectedLocalized,
-    WrappedComponentProps {}
-
-class FeedbackSettings extends PureComponent<PropsWithHoCs> {
+class FeedbackSettings extends PureComponent<
+  Props & InjectedLocalized & WrappedComponentProps
+> {
   getStatusOptions = memoize((statuses) => {
     const { localize } = this.props;
     if (!isNilOrError(statuses)) {

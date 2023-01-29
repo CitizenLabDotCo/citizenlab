@@ -21,9 +21,7 @@ describe('HeaderImageDropzone', () => {
         headerError={null}
       />
     );
-    const dropZone = component.container.querySelector(
-      '#landingpage-header-dropzone'
-    );
+    const dropZone = component.container.querySelector('#header-dropzone');
     expect(dropZone).toBeInTheDocument();
   });
 
@@ -43,9 +41,7 @@ describe('HeaderImageDropzone', () => {
       />
     );
 
-    const dropZone = component.container.querySelector(
-      '#landingpage-header-dropzone'
-    );
+    const dropZone = component.container.querySelector('#header-dropzone');
 
     await waitFor(() => {
       fireEvent.change(dropZone, {
@@ -83,7 +79,7 @@ describe('HeaderImageDropzone', () => {
       <HeaderImageDropzone
         overlayColor={'#fff'}
         overlayOpacity={90}
-        header_bg={[mockUploadFile]}
+        header_bg={mockUploadFile}
         previewDevice="desktop"
         layout="full_width_banner_layout"
         onAdd={jest.fn()}

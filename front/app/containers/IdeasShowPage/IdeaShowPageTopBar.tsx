@@ -10,7 +10,7 @@ import VoteControl from 'components/VoteControl';
 import GoBackButton from 'containers/IdeasShow/GoBackButton';
 
 // utils
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+import { openVerificationModal } from 'events/verificationModal';
 
 // styling
 import styled from 'styled-components';
@@ -102,6 +102,7 @@ const IdeaShowPageTopBar = ({
         </Left>
         <Right>
           <VoteControl
+            size="1"
             styleType="border"
             ideaId={ideaId}
             disabledVoteClick={onDisabledVoteClick}

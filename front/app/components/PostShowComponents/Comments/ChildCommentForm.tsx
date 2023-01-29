@@ -68,7 +68,7 @@ const Form = styled.form`
   flex: 1;
   background: #fff;
   border: 1px solid ${colors.borderDark};
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
 
   &:not(.focused):hover {
     border-color: ${colors.black};
@@ -130,7 +130,7 @@ class ChildCommentForm extends PureComponent<
   textareaElement: HTMLTextAreaElement;
   subscriptions: Subscription[] = [];
 
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       inputValue: '',

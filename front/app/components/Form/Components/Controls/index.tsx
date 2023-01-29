@@ -2,6 +2,9 @@
 import CLCategoryLayout, {
   clCategoryTester,
 } from 'components/Form/Components/Layouts/CLCategoryLayout';
+import CLPageLayout, {
+  clPageTester,
+} from 'components/Form/Components/Layouts/CLPageLayout';
 import OrderedLayout, {
   orderedLayoutTester,
 } from 'components/Form/Components/Layouts/OrderedLayout';
@@ -59,10 +62,15 @@ import SingleSelectRadioControl, {
 import LinearScaleControl, {
   linearScaleControlTester,
 } from './LinearScaleControl';
+import SingleAttachmentControl, {
+  singleAttachmentControlTester,
+} from './SingleAttachmentControl';
 
 export {
   CLCategoryLayout,
   clCategoryTester,
+  CLPageLayout,
+  clPageTester,
   OrderedLayout,
   orderedLayoutTester,
   InputControl,
@@ -101,4 +109,6 @@ export {
   multilocInputTester,
   LinearScaleControl,
   linearScaleControlTester,
+  SingleAttachmentControl,
+  singleAttachmentControlTester,
 };

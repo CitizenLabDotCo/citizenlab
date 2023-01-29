@@ -8,11 +8,13 @@ RSpec.describe JsonSchemaGeneratorService do
   let(:field_key) { 'field_key' }
 
   describe '#generate_for' do
+    # Create a page to describe that it is not included in the schema.
+    let!(:page_field) { create(:custom_field_page) }
     let(:field1) { create :custom_field }
     let(:field2) { create :custom_field_select, :with_options }
 
     it 'returns the schema for the given fields' do
-      expect(generator.generate_for([field1, field2])).to eq({
+      expect(generator.generate_for([page_field, field1, field2])).to eq({
         'en' => {
           type: 'object',
           additionalProperties: false,
@@ -364,6 +366,32 @@ RSpec.describe JsonSchemaGeneratorService do
         type: 'number',
         minimum: 1,
         maximum: field.maximum
+      })
+    end
+  end
+
+  describe '#visit_page' do
+    let(:field) { create :custom_field_page }
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_page(field)).to be_nil
+    end
+  end
+
+  describe '#visit_file_upload' do
+    let(:field) { create :custom_field, input_type: 'file_upload', key: field_key }
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_file_upload(field)).to eq({
+        type: 'object',
+        properties: {
+          content: {
+            type: 'string'
+          },
+          name: {
+            type: 'string'
+          }
+        }
       })
     end
   end

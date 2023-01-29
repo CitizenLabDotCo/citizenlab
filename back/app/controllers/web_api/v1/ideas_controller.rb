@@ -19,7 +19,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def json_forms_schema
     input = Idea.find params[:id]
     enabled_fields = IdeaCustomFieldsService.new(input.custom_form).enabled_fields
-    render json: JsonFormsService.new.input_ui_and_json_multiloc_schemas(enabled_fields, current_user)
+    render json: JsonFormsService.new.input_ui_and_json_multiloc_schemas(enabled_fields, current_user, input.input_term)
   end
 
   def index
@@ -121,7 +121,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def create
     project = Project.find(params.dig(:idea, :project_id))
     phase_ids = params.dig(:idea, :phase_ids) || []
-    is_moderator = UserRoleService.new.can_moderate_project?(project, current_user)
+    is_moderator = current_user && UserRoleService.new.can_moderate_project?(project, current_user)
 
     if phase_ids.any?
       send_error and return unless is_moderator
@@ -140,8 +140,9 @@ class WebApi::V1::IdeasController < ApplicationController
     custom_form = participation_context_for_form.custom_form || CustomForm.new(participation_context: participation_context_for_form)
 
     extract_custom_field_values_from_params! custom_form
-    user_can_moderate_project = UserRoleService.new.can_moderate_project?(project, current_user)
-    input = Idea.new idea_params(custom_form, user_can_moderate_project)
+    params_for_create = idea_params(custom_form, is_moderator)
+    params_for_file_upload_fields = extract_params_for_file_upload_fields(custom_form, params_for_create)
+    input = Idea.new params_for_create
     if project.timeline?
       input.creation_phase = (participation_context if participation_method.form_in_phase?)
       input.phase_ids = [participation_context.id] if phase_ids.empty?
@@ -156,6 +157,17 @@ class WebApi::V1::IdeasController < ApplicationController
     save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
     ActiveRecord::Base.transaction do
       if input.save save_options
+        params_for_file_upload_fields.each do |key, params_for_files_field|
+          idea_file = FileUpload.create!(
+            idea: input,
+            file_by_content: {
+              name: params_for_files_field['name'],
+              content: params_for_files_field['content']
+            }
+          )
+          input.custom_field_values[key] = idea_file.id
+        end
+        input.save!
         service.after_create(input, current_user)
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
@@ -168,10 +180,22 @@ class WebApi::V1::IdeasController < ApplicationController
     end
   end
 
+  def extract_params_for_file_upload_fields(custom_form, params_for_create)
+    return {} if params_for_create['custom_field_values'].blank?
+
+    file_upload_field_keys = IdeaCustomFieldsService.new(custom_form).all_fields.select(&:file_upload?).map(&:key)
+    params_for_create['custom_field_values'].extract!(*file_upload_field_keys)
+  end
+
   def update
     input = Idea.find params[:id]
     project = input.project
     authorize input
+
+    if invalid_blank_author_for_update? input, params
+      render json: { errors: { author: [{ error: :blank }] } }, status: :unprocessable_entity
+      return
+    end
 
     extract_custom_field_values_from_params! input.custom_form
     params[:idea][:topic_ids] ||= [] if params[:idea].key?(:topic_ids)
@@ -252,7 +276,6 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def idea_attributes(custom_form, user_can_moderate_project)
     enabled_field_keys = IdeaCustomFieldsService.new(custom_form).enabled_fields.map { |field| field.key.to_sym }
-
     attributes = idea_simple_attributes(enabled_field_keys)
     complex_attributes = idea_complex_attributes(custom_form, enabled_field_keys)
     attributes << complex_attributes if complex_attributes.any?
@@ -334,6 +357,15 @@ class WebApi::V1::IdeasController < ApplicationController
     (input.custom_field_values.keys - (params[:idea][:custom_field_values].keys || [])).each do |clear_key|
       params[:idea][:custom_field_values][clear_key] = nil
     end
+  end
+
+  def invalid_blank_author_for_update?(input, params)
+    author_removal = params[:idea].key?(:author_id) && params[:idea][:author_id].nil?
+    publishing = params[:idea][:publication_status] == 'published'
+
+    return false unless author_removal || (publishing && !input.author_id)
+
+    input.participation_method_on_creation.sign_in_required_for_posting?
   end
 end
 

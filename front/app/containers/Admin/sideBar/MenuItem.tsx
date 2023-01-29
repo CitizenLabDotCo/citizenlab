@@ -46,7 +46,7 @@ const MenuItemLink = styled(Link)`
   padding-left: 5px;
   padding-right: 15px;
   cursor: pointer;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   transition: background-color 80ms ease-out;
 
   &:hover,
@@ -121,7 +121,10 @@ const MenuItem = ({ navItem }: Props) => {
     onlyCheckAllowed: navItem.onlyCheckAllowed,
   }) ? (
     <HasPermission action="access" item={{ type: 'route', path: navItem.link }}>
-      <MenuItemLink to={navItem.link}>
+      <MenuItemLink
+        to={navItem.link}
+        className={`intercom-admin-menu-item-${navItem.name}`}
+      >
         <IconWrapper className={navItem.iconName}>
           <Icon name={navItem.iconName} />
         </IconWrapper>

@@ -61,7 +61,7 @@ const MoreOptionsButton = styled.button`
   }
 `;
 
-const CreatedAt = styled(Td)`
+const RegisteredAt = styled(Td)`
   white-space: nowrap;
 `;
 
@@ -83,7 +83,7 @@ const DropdownListButton = styled.button`
   font-weight: 400;
   white-space: nowrap;
   padding: 10px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   cursor: pointer;
   white-space: nowrap;
 
@@ -124,7 +124,7 @@ interface Props {
 
 interface State {
   isAdmin: boolean;
-  createdAt: string;
+  registeredAt: string;
 }
 
 class UserTableRow extends PureComponent<Props & WrappedComponentProps, State> {
@@ -132,14 +132,18 @@ class UserTableRow extends PureComponent<Props & WrappedComponentProps, State> {
     super(props);
     this.state = {
       isAdmin: isAdmin({ data: this.props.user }),
-      createdAt: moment(this.props.user.attributes.created_at).format('LL'),
+      registeredAt: moment(
+        this.props.user.attributes.registration_completed_at
+      ).format('LL'),
     };
   }
 
   static getDerivedStateFromProps(nextProps: Props, _prevState: State) {
     return {
       isAdmin: isAdmin({ data: nextProps.user }),
-      createdAt: moment(nextProps.user.attributes.created_at).format('LL'),
+      registeredAt: moment(
+        nextProps.user.attributes.registration_completed_at
+      ).format('LL'),
     };
   }
 
@@ -208,7 +212,23 @@ class UserTableRow extends PureComponent<Props & WrappedComponentProps, State> {
           {user.attributes.first_name} {user.attributes.last_name}
         </Td>
         <Td>{user.attributes.email}</Td>
-        <CreatedAt>{this.state.createdAt}</CreatedAt>
+        <RegisteredAt>
+          {/*
+            For the 'all registered users' group, we do not show invited Users who have not yet accepted their invites,
+            but we do in groups they have been added to when invited.
+
+            The 'Invitation pending' messages should clarify this.
+
+            https://citizenlab.atlassian.net/browse/CL-2255
+          */}
+          {user.attributes.invite_status === 'pending' ? (
+            <i>
+              <FormattedMessage {...messages.userInvitationPending} />
+            </i>
+          ) : (
+            this.state.registeredAt
+          )}
+        </RegisteredAt>
         <Td>
           <Toggle checked={isAdmin} onChange={this.handleAdminRoleOnChange} />
         </Td>

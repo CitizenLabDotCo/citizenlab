@@ -94,20 +94,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.phone',
     defaultMessage: 'Phone',
   },
-  headerBgTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.headerBgTooltip',
-    defaultMessage:
-      'For more information on recommended image resolutions, {supportPageLink}.',
-  },
-  headerImageSupportPageURL: {
-    id: 'app.containers.AdminPage.SettingsPage.headerImageSupportPageURL',
-    defaultMessage:
-      'https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
-  },
-  headerImageSupportPageText: {
-    id: 'app.containers.AdminPage.SettingsPage.headerImageSupportPageText',
-    defaultMessage: 'visit our support center',
-  },
   noHeader: {
     id: 'app.containers.AdminPage.SettingsPage.noHeader',
     defaultMessage: 'Please upload a header image',
@@ -120,6 +106,15 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.fullWidthBannerLayout',
     defaultMessage: 'Full-width banner',
   },
+  fullWidthBannerTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.fullWidthBannerTooltip',
+    defaultMessage:
+      'This banner stretches over the full width for a great visual effect. The image will try to cover as much space as possible, causing it to not always be visible at all times. You can combine this banner with an overlay of any colour. More info on the recommended image usage can be found on our { link }.',
+  },
+  fullWidthBannerTooltipLink: {
+    id: 'app.containers.AdminPage.SettingsPage.fullWidthBannerTooltipLink',
+    defaultMessage: 'knowledge base',
+  },
   TwoColumnLayout: {
     id: 'app.containers.AdminPage.SettingsPage.TwoColumnLayout',
     defaultMessage: 'Two columns',
@@ -127,6 +122,28 @@ export default defineMessages({
   twoRowLayout: {
     id: 'app.containers.AdminPage.SettingsPage.twoRowLayout',
     defaultMessage: 'Two rows',
+  },
+  twoRowBannerTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.twoRowBannerTooltip',
+    defaultMessage:
+      'This banner is in particular useful which images that don’t work well with text from the title, subtitle or button. These items will be pushed below the banner. More info on the recommended image usage can be found on our { link }.',
+  },
+  twoRowBannerTooltipLink: {
+    id: 'app.containers.AdminPage.SettingsPage.twoRowBannerTooltipLink',
+    defaultMessage: 'knowledge base',
+  },
+  fixedRatioLayout: {
+    id: 'app.containers.AdminPage.SettingsPage.fixedRatio',
+    defaultMessage: 'Fixed-ratio banner',
+  },
+  fixedRatioBannerTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.fixedRatioBannerTooltip',
+    defaultMessage:
+      'This banner type works best with images that shouldn’t be cropped, such as images with text, a logo or specific elements that are crucial to your citizens. This banner is replaced with a solid box in the primary colour when users are signed in. You can set this colour in the general settings. More info on the recommended image usage can be found on our { link }.',
+  },
+  fixedRatioBannerTooltipLink: {
+    id: 'app.containers.AdminPage.SettingsPage.fixedRatioBannerTooltipLink',
+    defaultMessage: 'knowledge base',
   },
   heroBannerTitle: {
     id: 'app.containers.AdminPage.HeroBannerForm.heroBannerTitle',
@@ -155,5 +172,25 @@ export default defineMessages({
   heroBannerError: {
     id: 'app.containers.Admin.PagesAndMenu.heroBannerError',
     defaultMessage: "Couldn't save hero banner",
+  },
+  saveAndEnable: {
+    id: 'app.containers.Admin.PagesAndMenu.saveAndEnableHeroBanner',
+    defaultMessage: 'Save and enable hero banner',
+  },
+  ctaHeader: {
+    id: 'app.containers.AdminPage.SettingsPage.ctaHeader',
+    defaultMessage: 'Buttons',
+  },
+  signed_out: {
+    id: 'app.containers.AdminPage.SettingsPage.signed_out',
+    defaultMessage: 'Button for non-registered visitors',
+  },
+  signed_in: {
+    id: 'app.containers.AdminPage.SettingsPage.signed_in',
+    defaultMessage: 'Button for registered visitors',
+  },
+  overlayToggleLabel: {
+    id: 'app.containers.AdminPage.SettingsPage.overlayToggleLabel',
+    defaultMessage: 'Enable overlay',
   },
 });

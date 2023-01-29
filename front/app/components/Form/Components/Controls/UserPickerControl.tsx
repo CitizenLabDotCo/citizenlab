@@ -6,20 +6,14 @@ import {
   scopeEndsWith,
 } from '@jsonforms/core';
 import React from 'react';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import ErrorDisplay from '../ErrorDisplay';
 import UserSelect from 'components/UI/UserSelect';
 import messages from '../../messages';
 import controlMessages from './messages';
 import { FormLabel } from 'components/UI/FormComponents';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
-import {
-  Box,
-  Text,
-  colors,
-  IconTooltip,
-} from '@citizenlab/cl2-component-library';
+import { Box, colors, IconTooltip } from '@citizenlab/cl2-component-library';
 
 const UserPickerControl = ({
   data,
@@ -27,15 +21,16 @@ const UserPickerControl = ({
   path,
   errors,
   uischema,
-  intl: { formatMessage },
   id,
   schema,
   required,
-}: ControlProps & WrappedComponentProps) => {
+  visible,
+}: ControlProps) => {
+  const { formatMessage } = useIntl();
   const FieldLabel = () => {
     return (
       <Box display="flex">
-        <Text>{getLabel(uischema, schema, path)}</Text>
+        {getLabel(uischema, schema, path)}
         {uischema?.options?.isAdminField && (
           <IconTooltip
             iconColor={colors.grey800}
@@ -50,6 +45,10 @@ const UserPickerControl = ({
     );
   };
 
+  if (!visible) {
+    return null;
+  }
+
   return (
     <>
       <FormLabel
@@ -60,6 +59,7 @@ const UserPickerControl = ({
         subtextSupportsHtml
       />
       <UserSelect
+        id={id}
         inputId={sanitizeForClassname(id)}
         value={data}
         onChange={(val) => handleChange(path, val)}
@@ -70,7 +70,7 @@ const UserPickerControl = ({
   );
 };
 
-export default withJsonFormsControlProps(injectIntl(UserPickerControl));
+export default withJsonFormsControlProps(UserPickerControl);
 
 export const userPickerControlTester: RankedTester = rankWith(
   1000,

@@ -158,6 +158,7 @@ const ScanCategory = ({
       </Box>
       {scanCategoryMessagesMap[status].button && (
         <Button
+          className="intercom-insights-edit-scan-button"
           buttonStyle={
             status === 'isScanning' ? 'admin-dark-outlined' : 'admin-dark'
           }

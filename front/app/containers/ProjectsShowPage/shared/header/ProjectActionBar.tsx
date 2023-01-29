@@ -133,7 +133,7 @@ const StyledIdeaButton = styled(IdeaButton)`
 `;
 
 const ProjectTitle = styled.h1`
-  color: ${(props: any) => props.theme.colors.tenantText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.xxl - 2}px;
   line-height: normal;
   font-weight: 500;

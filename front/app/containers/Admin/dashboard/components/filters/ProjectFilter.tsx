@@ -1,26 +1,23 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
 
-// resources
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
-
 // hooks
+import useProjects from 'hooks/useProjects';
+
+// i18n
 import useLocalize, { Localize } from 'hooks/useLocalize';
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 // components
 import { Box, Select } from '@citizenlab/cl2-component-library';
 
-// typings
-import { IOption } from 'typings';
-import { IProjectData, PublicationStatus } from 'services/projects';
-
-// i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+
+// typings
+import { IOption, FormatMessage } from 'typings';
+import { IProjectData, PublicationStatus } from 'services/projects';
 
 const StyledSelect = styled(Select)<{ padding?: string }>`
   ${({ padding }) =>
@@ -33,11 +30,7 @@ const StyledSelect = styled(Select)<{ padding?: string }>`
       : ''}
 `;
 
-interface DataProps {
-  projects: GetProjectsChildProps;
-}
-
-interface InputProps {
+interface Props {
   currentProjectFilter?: string | null;
   hideLabel?: boolean;
   placeholder?: string;
@@ -46,14 +39,12 @@ interface InputProps {
   onProjectFilter: (filter: IOption) => void;
 }
 
-interface Props extends DataProps, InputProps {}
-
 const generateProjectOptions = (
-  projectsList: IProjectData[],
+  projects: IProjectData[],
   localize: Localize,
-  { formatMessage }: WrappedComponentProps['intl']
+  formatMessage: FormatMessage
 ): IOption[] => {
-  const projectOptions = projectsList.map((project) => ({
+  const projectOptions = projects.map((project) => ({
     value: project.id,
     label: localize(project.attributes.title_multiloc),
   }));
@@ -64,34 +55,40 @@ const generateProjectOptions = (
   ];
 };
 
+const PUBLICATION_STATUSES: PublicationStatus[] = [
+  'draft',
+  'published',
+  'archived',
+];
+
 const ProjectFilter = ({
-  projects: { projectsList },
   currentProjectFilter,
   hideLabel,
   placeholder,
-  width,
   padding,
   onProjectFilter,
-  intl,
-}: Props & WrappedComponentProps) => {
+}: Props) => {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
+  const projects = useProjects({
+    publicationStatuses: PUBLICATION_STATUSES,
+    canModerate: true,
+  });
 
-  if (isNilOrError(projectsList)) return null;
+  const projectFilterOptions = useMemo(() => {
+    if (isNilOrError(projects)) return null;
 
-  const projectFilterOptions = generateProjectOptions(
-    projectsList,
-    localize,
-    intl
-  );
+    return generateProjectOptions(projects, localize, formatMessage);
+  }, [projects, localize, formatMessage]);
+
+  if (projectFilterOptions === null) return null;
 
   return (
-    <Box width={width ?? '32%'}>
+    <Box className="intercom-admin-project-filter">
       <StyledSelect
         id="projectFilter"
         label={
-          !hideLabel ? (
-            <FormattedMessage {...messages.labelProjectFilter} />
-          ) : undefined
+          !hideLabel ? formatMessage(messages.labelProjectFilter) : undefined
         }
         onChange={onProjectFilter}
         value={currentProjectFilter || ''}
@@ -103,19 +100,4 @@ const ProjectFilter = ({
   );
 };
 
-const ProjectFilterWithIntl = injectIntl(ProjectFilter);
-
-const publicationStatuses: PublicationStatus[] = [
-  'draft',
-  'published',
-  'archived',
-];
-
-export default (props: InputProps) => (
-  <GetProjects
-    publicationStatuses={publicationStatuses}
-    filterCanModerate={true}
-  >
-    {(projects) => <ProjectFilterWithIntl projects={projects} {...props} />}
-  </GetProjects>
-);
+export default ProjectFilter;

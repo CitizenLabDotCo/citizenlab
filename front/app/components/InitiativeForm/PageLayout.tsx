@@ -54,7 +54,7 @@ const Header = styled.div`
   `}
 `;
 
-const HeaderTitle: any = styled.h1`
+const HeaderTitle = styled.h1`
   width: 100%;
   max-width: 600px;
   color: ${({ theme }) => theme.colors.tenantPrimary};

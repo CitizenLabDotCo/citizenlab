@@ -196,4 +196,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.UsersGroup.exportSelectedUsers',
     defaultMessage: 'Export selected users',
   },
+  userInvitationPending: {
+    id: 'app.containers.Admin.Users.UserTableRow.userInvitationPending',
+    defaultMessage: 'Invitation pending',
+  },
 });

@@ -119,7 +119,7 @@ class PasswordReset extends React.PureComponent<
 > {
   passwordInputElement: HTMLInputElement | null;
 
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     const query = parse(clHistory.location.search, { ignoreQueryPrefix: true });
     const token = isString(query.token) ? query.token : null;
@@ -284,7 +284,7 @@ class PasswordReset extends React.PureComponent<
                 ))}
 
               <StyledButton
-                size="2"
+                size="m"
                 processing={processing}
                 text={updatePassword}
                 onClick={this.handleOnSubmit}

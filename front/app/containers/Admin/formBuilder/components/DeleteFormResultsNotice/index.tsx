@@ -21,7 +21,6 @@ const StyledLink = styled(Link)`
     color: inherit;
     text-decoration: underline;
   }
-  white-space: nowrap;
 `;
 
 type Props = {
@@ -44,27 +43,24 @@ const DeleteFormResultsNotice = ({
     px="16px"
     data-cy="e2e-form-delete-results-notice"
   >
-    <Icon name="alert-circle" fill={colors.teal700} />
-    <Text ml="16px" color="teal700" whiteSpace="nowrap">
-      {formatMessage(messages.disabledSurveyEditingMessage)}
-    </Text>
-    &nbsp;
-    {redirectToSurveyPage ? (
-      <StyledLink
-        to={`/admin/projects/${projectId}/native-survey`}
-        data-cy="e2e-delete-form-results-notice-link"
-        onlyActiveOnIndex
-      >
-        {formatMessage(messages.deleteResults)}
-      </StyledLink>
-    ) : (
-      <Text color="teal700" whiteSpace="nowrap">
-        {formatMessage(messages.deleteResults)}
-      </Text>
-    )}
-    &nbsp;
-    <Text color="teal700" whiteSpace="nowrap">
-      {formatMessage(messages.deleteResultsCondition)}
+    <Box width="20px">
+      <Icon name="alert-circle" fill={colors.teal700} />
+    </Box>
+
+    <Text ml="16px" color="teal700">
+      {formatMessage(messages.disabledSurveyMessage)}
+      &nbsp;
+      {redirectToSurveyPage ? (
+        <StyledLink
+          to={`/admin/projects/${projectId}/native-survey`}
+          data-cy="e2e-delete-form-results-notice-link"
+          onlyActiveOnIndex
+        >
+          {formatMessage(messages.deleteResultsLink)}
+        </StyledLink>
+      ) : (
+        formatMessage(messages.deleteResultsLink)
+      )}
     </Text>
   </Box>
 );

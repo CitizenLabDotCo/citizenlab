@@ -1,9 +1,22 @@
 import React from 'react';
 import FormattedMessage from './';
 import { screen, render } from 'utils/testUtils/rtl';
-import regularMessages from 'components/Author/messages';
-import orgNameMessages from 'components/CityLogoSection/messages';
-import tenantNameMessages from 'containers/SignUpInPage/messages';
+import { defineMessages } from 'react-intl';
+
+const messages = defineMessages({
+  regular: {
+    id: 'regular',
+    defaultMessage: 'Message',
+  },
+  orgName: {
+    id: 'orgName',
+    defaultMessage: 'Message { orgName }',
+  },
+  tenantName: {
+    id: 'tenant',
+    defaultMessage: 'Message { tenantName }',
+  },
+});
 
 jest.mock('utils/cl-intl');
 jest.mock('hooks/useLocale');
@@ -18,21 +31,15 @@ jest.mock('hooks/useAppConfiguration', () => () => ({
 
 describe('FormattedMessage', () => {
   it('renders', () => {
-    render(<FormattedMessage {...regularMessages.a11y_postedBy} />);
-    expect(screen.getByText('Posted by:')).toBeInTheDocument();
+    render(<FormattedMessage {...messages.regular} />);
+    expect(screen.getByText('Message')).toBeInTheDocument();
   });
   it('renders orgName', () => {
-    render(<FormattedMessage {...orgNameMessages.iframeTitle} />);
-    expect(
-      screen.getByText('More information about organization name')
-    ).toBeInTheDocument();
+    render(<FormattedMessage {...messages.orgName} />);
+    expect(screen.getByText('Message organization name')).toBeInTheDocument();
   });
   it('renders tenantName', () => {
-    render(<FormattedMessage {...tenantNameMessages.signUpMetaTitle} />);
-    expect(
-      screen.getByText(
-        'Sign up for the CitizenLab platform of tenant name | CitizenLab'
-      )
-    ).toBeInTheDocument();
+    render(<FormattedMessage {...messages.tenantName} />);
+    expect(screen.getByText('Message tenant name')).toBeInTheDocument();
   });
 });

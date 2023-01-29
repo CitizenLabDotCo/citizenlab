@@ -20,4 +20,8 @@ module GeneralHelper
   def time_regex
     /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/
   end
+
+  def uuid_regex
+    /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/ # After https://stackoverflow.com/a/6640851/3585671
+  end
 end

@@ -10,9 +10,9 @@
       <!-- Finished action: idea published -->
       <tr>
         <td style="width:22px; padding-bottom:15px">
-          <img style="vertical-align: middle;"
+          <img style="vertical-align: middle; height: 22px;"
           alt="Checked checkmark"
-          src="http://res.cloudinary.com/citizenlabco/image/upload/v1510237377/checked_dmyvnl.png">
+          src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_checked_checkbox.png">
         </td>
         <td style="padding-left: 10px; padding-bottom:15px">
           <span style="text-decoration: line-through;">
@@ -25,9 +25,9 @@
       <% if event.post_images.empty? %>
         <tr>
           <td style="width:22px; padding-bottom:15px">
-            <img style="vertical-align: middle;"
+            <img style="vertical-align: middle; height: 22px;"
             alt="Empty checkmark"
-            src="http://res.cloudinary.com/citizenlabco/image/upload/v1510237377/check_zlse5g.png">
+            src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_unchecked_checkbox.png">
           </td>
           <td style="padding-left: 10px; padding-bottom:15px">
             <%=
@@ -37,8 +37,8 @@
             %>
           </td>
           <td style="padding-bottom:15px">
-            <img alt="Image icon" width="22px" height="22px" style="vertical-align: middle;"
-              src="http://res.cloudinary.com/citizenlabco/image/upload/v1518602015/noun_332296_cc_qsjdtj.png">
+            <img alt="Image icon" style="vertical-align: middle; height: 22px;"
+              src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_image.png">
           </td>
         </tr>
       <% end %>
@@ -46,9 +46,9 @@
       <!-- Action item 2: Share on Facebook -->
       <tr>
         <td style="width:22px; padding-bottom:15px">
-          <img style="vertical-align: middle;"
+          <img style="vertical-align: middle; height: 22px;"
           alt="Empty checkmark"
-          src="http://res.cloudinary.com/citizenlabco/image/upload/v1510237377/check_zlse5g.png">
+          src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_unchecked_checkbox.png">
         </td>
         <td style="padding-left: 10px; padding-bottom:15px">
           <%=
@@ -58,18 +58,18 @@
           %>
         </td>
         <td style="padding-bottom:15px">
-            <img style="vertical-align: middle;"
+            <img style="vertical-align: middle; height: 22px;"
             alt="Facebook icon"
-            src="http://res.cloudinary.com/citizenlabco/image/upload/v1510237377/facebook_gle65v.png">
+            src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_facebook_logo.png">
         </td>
       </tr>
 
       <!-- Action item 3: Share on Twitter -->
       <tr>
         <td style="width:22px; padding-bottom:15px;">
-          <img style="vertical-align: middle;"
+          <img style="vertical-align: middle; height: 22px;"
           alt="Empty checkmark"
-          src="http://res.cloudinary.com/citizenlabco/image/upload/v1510237377/check_zlse5g.png">
+          src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_unchecked_checkbox.png">
         </td>
         <td style="padding-left: 10px; padding-bottom:15px;">
           <%=
@@ -78,20 +78,20 @@
             }, escape_html: false)
           %>
         </td>
-        <td style="padding-bottom:15px;">
+        <td style="padding-left: 3px; padding-bottom:15px;">
           <img
             alt="Twitter icon"
-            style="vertical-align: middle;"
-            src="http://res.cloudinary.com/citizenlabco/image/upload/c_scale,w_26/v1510594149/Twitter-icon_rvyquq.png">
+            style="vertical-align: middle; width: 16px; height: 14px;"
+            src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_twitter_logo_small.png">
         </td>
       </tr>
 
       <!-- Action item 4: Send an email -->
       <tr>
         <td style="width:22px; padding-bottom:15px;">
-          <img style="vertical-align: middle;"
+          <img style="vertical-align: middle; height: 22px;"
           alt="Empty checkmark"
-          src="http://res.cloudinary.com/citizenlabco/image/upload/v1510237377/check_zlse5g.png">
+          src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_unchecked_checkbox.png">
         </td>
         <td style="padding-left: 10px; padding-bottom:15px;">
           <%=
@@ -103,17 +103,17 @@
         <td style="padding-bottom: 15px">
           <img
             alt="Paper plane"
-            style="vertical-align: middle;"
-            src="https://res.cloudinary.com/citizenlabco/image/upload/v1510237377/sent_ugwyr4.png">
+            style="vertical-align: middle; height: 22px;"
+            src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_sent.png">
         </td>
       </tr>
 
       <!-- Action item 5: Share link -->
       <tr>
         <td style="width:22px; padding-bottom:15px;">
-          <img style="vertical-align: middle;"
+          <img style="vertical-align: middle; height: 22px;"
           alt="Empty checkmark"
-          src="http://res.cloudinary.com/citizenlabco/image/upload/v1510237377/check_zlse5g.png">
+          src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_unchecked_checkbox.png">
         </td>
         <td style="padding-left: 10px; padding-bottom:15px;">
           <%=
@@ -125,8 +125,8 @@
         <td style="padding-bottom: 15px">
           <img
             alt="Copy"
-            style="vertical-align: middle;"
-            src="http://res.cloudinary.com/citizenlabco/image/upload/v1510237377/copy_pxzq4g.png">
+            style="vertical-align: middle; height: 22px;"
+            src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_copy.png">
         </td>
       </tr>
     </mj-table>

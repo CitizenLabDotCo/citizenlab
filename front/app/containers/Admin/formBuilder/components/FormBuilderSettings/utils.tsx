@@ -1,33 +1,46 @@
 import React from 'react';
-import { ICustomFieldInputType } from 'services/formCustomFields';
+import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
 import { Locale } from 'typings';
 
 // Components
-import ConfigMultiselectWithLocaleSwitcher from './ConfigMultiselectWithLocaleSwitcher';
+import ConfigSelectWithLocaleSwitcher from './ConfigSelectWithLocaleSwitcher';
 import LinearScaleSettings from './LinearScaleSettings';
+import PageSettings from './PageSettings';
+
+// utils
+import { uuid4 } from '@sentry/utils';
+
+export function generateTempId() {
+  return `TEMP-ID-${uuid4()}`;
+}
+
+export const surveyEndOption = 'survey_end';
 
 // Function to return additional settings based on input type
 export function getAdditionalSettings(
-  type: ICustomFieldInputType,
+  field: IFlatCustomFieldWithIndex,
   locales: Locale[],
-  index: number
+  platformLocale: Locale
 ) {
-  switch (type) {
+  switch (field.input_type) {
     case 'multiselect':
     case 'select':
       return (
-        <ConfigMultiselectWithLocaleSwitcher
-          nameInputType={`customFields.${index}.input_type`}
-          name={`customFields.${index}.options`}
+        <ConfigSelectWithLocaleSwitcher
+          name={`customFields.${field.index}.options`}
           locales={locales}
+          platformLocale={platformLocale}
         />
       );
+    case 'page':
+      return <PageSettings locale={platformLocale} field={field} />;
     case 'linear_scale':
       return (
         <LinearScaleSettings
-          maximumName={`customFields.${index}.maximum`}
-          minimumLabelName={`customFields.${index}.minimum_label_multiloc`}
-          maximumLabelName={`customFields.${index}.maximum_label_multiloc`}
+          platformLocale={platformLocale}
+          maximumName={`customFields.${field.index}.maximum`}
+          minimumLabelName={`customFields.${field.index}.minimum_label_multiloc`}
+          maximumLabelName={`customFields.${field.index}.maximum_label_multiloc`}
           locales={locales}
         />
       );

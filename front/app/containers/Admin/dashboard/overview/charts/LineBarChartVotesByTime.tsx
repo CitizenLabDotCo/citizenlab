@@ -84,8 +84,8 @@ class LineBarChartVotesByTime extends React.PureComponent<
   combined$: Subscription;
   currentChart: React.RefObject<any>;
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props: Props & WrappedComponentProps) {
+    super(props);
     this.state = {
       serie: null,
     };
@@ -273,7 +273,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
             {serie && (
               <ReportExportMenu
                 svgNode={this.currentChart}
-                xlsxEndpoint={votesByTimeXlsxEndpoint}
+                xlsx={{ endpoint: votesByTimeXlsxEndpoint }}
                 name={formatMessage(messages.votes)}
                 {...this.props}
               />

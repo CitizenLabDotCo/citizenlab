@@ -277,3 +277,57 @@ describe('Archived timeline project with ideation phase', () => {
     cy.apiRemoveProject(projectId);
   });
 });
+
+describe('timeline project with no active ideation phase', () => {
+  const projectTitle = randomString();
+  const projectDescriptionPreview = randomString(30);
+  let projectId: string;
+
+  before(() => {
+    return cy
+      .apiCreateProject({
+        type: 'timeline',
+        title: projectTitle,
+        descriptionPreview: projectDescriptionPreview,
+        description: randomString(),
+        publicationStatus: 'draft',
+      })
+      .then((project) => {
+        projectId = project.body.data.id;
+        return cy.apiCreatePhase(
+          projectId,
+          'phaseTitle',
+          '2018-03-01',
+          '2019-01-01',
+          'ideation',
+          true,
+          true,
+          true
+        );
+      })
+      .then(() => {
+        cy.setAdminLoginCookie();
+        cy.visit(`/projects/${projectTitle}`);
+      });
+  });
+
+  it('allows admin users to add an idea via the map for a non-active phase', () => {
+    // Select map view
+    cy.get('#view-tab-2').click();
+    // Click map to open popup
+    cy.get('.leaflet-map-pane').click('bottom', { force: true });
+    // Add idea button should appear, click it
+    cy.get('.leaflet-popup-content').within(() => {
+      cy.get('#e2e-cta-button').get('button').click({ force: true });
+    });
+    // Shold redirect to new idea page with phase id in URL
+    cy.url().should('include', `/projects/${projectTitle}/ideas/new`);
+    cy.url().should('include', 'phase_id');
+    // Confirm that idea form is shown
+    cy.get('#idea-form').should('exist');
+  });
+
+  after(() => {
+    cy.apiRemoveProject(projectId);
+  });
+});

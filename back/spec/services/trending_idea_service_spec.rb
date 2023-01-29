@@ -28,7 +28,7 @@ describe TrendingIdeaService do
     end
   end
 
-  describe 'order_trending' do
+  describe 'sort_trending' do
     it 'sorts trending to untrending in accordance with the trending score' do
       trending_score_sorted =  nil
       expected_order = nil

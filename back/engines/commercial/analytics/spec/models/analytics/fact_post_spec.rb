@@ -7,7 +7,7 @@ RSpec.describe Analytics::FactPost, type: :model do
     let!(:type_idea) { create(:dimension_type) }
     let!(:idea) { create(:idea) }
 
-    it 'is also available as a post dimension' do
+    it 'is also available as a post fact' do
       described_class.find(idea.id)
     end
   end
@@ -16,7 +16,7 @@ RSpec.describe Analytics::FactPost, type: :model do
     let!(:type_initiative) { create(:dimension_type, name: 'initiative') }
     let!(:initiative) { create(:initiative) }
 
-    it 'is also available as a post dimension' do
+    it 'is also available as a post fact' do
       described_class.find(initiative.id)
     end
   end

@@ -66,10 +66,6 @@ Layout/EndAlignment:
 Layout/TrailingWhitespace:
   AllowInHeredoc: true
 
-Metrics/ClassLength:
-  Max: 300
-  CountAsOne: ['array', 'hash', 'heredoc']
-
 Lint/UnusedMethodArgument:
   AllowUnusedKeywordArguments: true
 
@@ -79,6 +75,9 @@ RSpec/MultipleExpectations:
   Enabled: false
 
 Style/DoubleNegation:
+  Enabled: false
+
+Style/NegatedIf:
   Enabled: false
 
 Rails/DynamicFindBy:
@@ -104,6 +103,9 @@ Rails/CreateTableWithTimestamps:
     - 'db/migrate/20200807132541_create_common_passwords.rb'
     - 'db/migrate/20210619133856_create_zeroshot_classification_tables.insights.rb'
 
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+
 RSpec/SharedContext:
   Exclude:
   - '**/spec/acceptance/**/*'
@@ -119,6 +121,9 @@ Layout/MultilineMethodCallIndentation:
 RSpec/DescribeClass:
   IgnoredMetadata:
     type: ['request']
+  Exclude:
+    - 'engines/commercial/multi_tenancy/spec/db/seedfile_spec.rb'
+    - 'engines/commercial/multi_tenancy/spec/tasks/email_campaigns_task_spec.rb'
 
 RSpec/EmptyExampleGroup:
   # `context` and `describe` are found as empty example groups when
@@ -130,4 +135,13 @@ Metrics/MethodLength:
   CountAsOne: ['array', 'hash', 'heredoc']
   AllowedMethods: ['included', 'prepended', 'extended']
   Exclude:
-  - 'db/migrate/**/*'
+  - '**/db/migrate/**/*'
+
+Lint/Void:
+  Exclude:
+    - 'engines/commercial/multi_tenancy/config/initializers/sentry.rb'
+
+
+Rails/UnknownEnv:
+  # config/initializers/apartment.rb refers to staging, which is not part of the default settings.
+  Environments: [development, test, production, staging]

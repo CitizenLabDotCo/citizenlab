@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useMemo } from 'react';
 import { useResizeDetector } from 'react-resize-detector';
 
 // components
@@ -29,6 +29,20 @@ interface Props {
   children: React.ReactElement;
 }
 
+const warn = console.warn.bind(console);
+function wrapWarn(...args) {
+  if (
+    typeof args[0] === 'string' &&
+    (args[0].includes('ResponsiveContainer') ||
+      args[0].includes('minWidth(undefined) or minHeight(undefined) '))
+  ) {
+    return;
+  }
+  warn(...args);
+}
+
+console.warn = wrapWarn;
+
 const Container = ({
   width,
   height,
@@ -40,20 +54,19 @@ const Container = ({
   onUpdateLegendDimensions,
   children,
 }: Props) => {
-  /* eslint-disable */
-  const handleResize = useCallback(
-    debounce((width: number, height: number) => {
-      const newGraphDimensions = { width, height };
+  const handleResize = useMemo(
+    () =>
+      debounce((width: number, height: number) => {
+        const newGraphDimensions = { width, height };
 
-      if (!isEqual(graphDimensions, newGraphDimensions)) {
-        if (onUpdateGraphDimensions) {
-          onUpdateGraphDimensions(newGraphDimensions);
+        if (!isEqual(graphDimensions, newGraphDimensions)) {
+          if (onUpdateGraphDimensions) {
+            onUpdateGraphDimensions(newGraphDimensions);
+          }
         }
-      }
-    }, 50),
-    []
+      }, 50),
+    [graphDimensions, onUpdateGraphDimensions]
   );
-  /* eslint-enable */
 
   const { ref: resizeRef } = useResizeDetector({ onResize: handleResize });
 

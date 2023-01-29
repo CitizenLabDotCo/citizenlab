@@ -14,6 +14,8 @@ require 'rails_helper'
 RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
   subject(:generator) { described_class.new participation_context }
 
+  # Create a page to describe that it is not included in the survey results.
+  let!(:page_field) { create(:custom_field_page, resource: form) }
   let(:text_field) do
     create(
       :custom_field,
@@ -165,19 +167,8 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
               'nl-NL' => 'Ben je het eens met de visie?'
             },
             required: true,
-            totalResponses: 18,
+            totalResponses: 15,
             answers: [
-              { answer: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' }, responses: 7 },
-              { answer: { 'en' => '2', 'fr-FR' => '2', 'nl-NL' => '2' }, responses: 5 },
-              { answer: { 'en' => '4', 'fr-FR' => '4', 'nl-NL' => '4' }, responses: 3 },
-              {
-                answer: {
-                  'en' => '1 - Strongly disagree',
-                  'fr-FR' => "1 - Pas du tout d'accord",
-                  'nl-NL' => '1 - Helemaal niet mee eens'
-                },
-                responses: 2
-              },
               {
                 answer: {
                   'en' => '5 - Strongly agree',
@@ -185,6 +176,17 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
                   'nl-NL' => '5 - Strerk mee eens'
                 },
                 responses: 1
+              },
+              { answer: { 'en' => '4', 'fr-FR' => '4', 'nl-NL' => '4' }, responses: 0 },
+              { answer: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' }, responses: 7 },
+              { answer: { 'en' => '2', 'fr-FR' => '2', 'nl-NL' => '2' }, responses: 5 },
+              {
+                answer: {
+                  'en' => '1 - Strongly disagree',
+                  'fr-FR' => "1 - Pas du tout d'accord",
+                  'nl-NL' => '1 - Helemaal niet mee eens'
+                },
+                responses: 2
               }
             ]
           },
@@ -203,22 +205,22 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
             ]
           }
         ],
-        totalSubmissions: 23
+        totalSubmissions: 20
       }
     }
   end
 
   let(:expected_result_without_minimum_and_maximum_labels) do
     expected_result.tap do |result|
-      result[:data][:results][1][:answers][3][:answer] = {
-        'en' => '1',
-        'fr-FR' => "1 - Pas du tout d'accord",
-        'nl-NL' => '1'
-      }
-      result[:data][:results][1][:answers][4][:answer] = {
+      result[:data][:results][1][:answers][0][:answer] = {
         'en' => '5 - Strongly agree',
         'fr-FR' => '5',
         'nl-NL' => '5'
+      }
+      result[:data][:results][1][:answers][4][:answer] = {
+        'en' => '1',
+        'fr-FR' => "1 - Pas du tout d'accord",
+        'nl-NL' => '1'
       }
     end
   end
@@ -267,7 +269,7 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
     )
     create(:idea, project: project, phases: phases_of_inputs, custom_field_values: {})
 
-    { 1 => 2, 2 => 5, 3 => 7, 4 => 3, 5 => 1 }.each do |value, count|
+    { 1 => 2, 2 => 5, 3 => 7, 4 => 0, 5 => 1 }.each do |value, count|
       count.times do
         create(
           :idea,
@@ -287,7 +289,7 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
 
     describe '#generate_submission_count' do
       it 'returns the count' do
-        expect(generator.generate_submission_count).to eq({ data: { totalSubmissions: 23 } })
+        expect(generator.generate_submission_count).to eq({ data: { totalSubmissions: 20 } })
       end
     end
 
@@ -322,7 +324,7 @@ RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
 
     describe '#generate_submission_count' do
       it 'returns the count' do
-        expect(generator.generate_submission_count).to eq({ data: { totalSubmissions: 23 } })
+        expect(generator.generate_submission_count).to eq({ data: { totalSubmissions: 20 } })
       end
     end
 

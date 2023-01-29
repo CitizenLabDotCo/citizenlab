@@ -15,7 +15,7 @@ const Container = styled.div`
   width: 245px;
   display: flex;
   position: relative;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   border: solid 1px #ccc;
 
   input {
@@ -99,7 +99,7 @@ interface State {
 }
 
 class DateTimePicker extends React.PureComponent<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       focused: false,

@@ -103,7 +103,7 @@ const CategoryButtonWithIcon = styled(CategoryButton)`
 
 const CategoryInfoBox = styled.div`
   background-color: ${colors.teal100};
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   color: ${colors.primary};
   border-radius: 3px;
   padding: 8px 20px;
@@ -279,6 +279,7 @@ const Categories = ({
     >
       <Box my="20px">
         <CategoryButton
+          className="intercom-insights-edit-all-tags"
           bgColor={
             inputsCategoryFilter === 'allInput'
               ? darken(0.05, colors.grey200)
@@ -297,6 +298,7 @@ const Categories = ({
           )}
         </CategoryButton>
         <CategoryButton
+          className="intercom-insights-edit-recently-posted-tags"
           bgColor={
             inputsCategoryFilter === 'recentlyPosted'
               ? darken(0.05, colors.grey200)
@@ -315,6 +317,7 @@ const Categories = ({
           )}
         </CategoryButton>
         <CategoryButton
+          className="intercom-insights-edit-not-categorized"
           bgColor={
             inputsCategoryFilter === 'notCategorized'
               ? darken(0.05, colors.grey200)
@@ -376,7 +379,13 @@ const Categories = ({
           }
         />
       </Box>
-      <Box display="flex" alignItems="center" mb="28px" as="form">
+      <Box
+        display="flex"
+        alignItems="center"
+        mb="28px"
+        as="form"
+        className="intercom-insights-edit-add-tag-form"
+      >
         <Input
           type="text"
           value={name}
@@ -407,7 +416,7 @@ const Categories = ({
             buttonStyle="white"
             mb="8px"
             textColor={colors.primary}
-            linkTo={`/admin/insights/${viewId}/detect`}
+            linkTo={`/admin/reporting/insights/${viewId}/detect`}
             data-testid="insightsDetectCategories"
           >
             {formatMessage(messages.detectCategories)}

@@ -142,7 +142,7 @@ interface Props {
 
 const IdeaMapCard = memo<Props>(
   ({ ideaMarker, onClose, className, projectId, phaseId }) => {
-    const tenant = useAppConfiguration();
+    const appConfig = useAppConfiguration();
     const phase = usePhase(phaseId || null);
     const project = useProject({ projectId });
     const { windowWidth } = useWindowSize();
@@ -210,11 +210,11 @@ const IdeaMapCard = memo<Props>(
     };
 
     if (
-      !isNilOrError(tenant) &&
+      !isNilOrError(appConfig) &&
       !isNilOrError(ideaMarker) &&
       !isNilOrError(project)
     ) {
-      const tenantCurrency = tenant.attributes.settings.core.currency;
+      const tenantCurrency = appConfig.attributes.settings.core.currency;
       const ideaBudget = ideaMarker.attributes?.budget;
       const votingActionDescriptor =
         project.attributes.action_descriptor.voting_idea;

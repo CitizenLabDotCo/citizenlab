@@ -43,7 +43,7 @@ type State = {
 };
 
 class ErrorBoundary extends Component<Props & WrappedComponentProps, State> {
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = { hasError: false };
   }

@@ -3,16 +3,24 @@
 module Analytics
   class Query
     MODELS = {
-      post: FactPost,
+      email_delivery: FactEmailDelivery,
+      event: FactEvent,
       participation: FactParticipation,
+      post: FactPost,
+      project_status: FactProjectStatus,
+      registration: FactRegistration,
       visit: FactVisit
     }.freeze
+
+    def self.fact_names
+      MODELS.keys.map(&:to_s)
+    end
 
     def initialize(query)
       @json_query = query
     end
 
-    attr_reader :valid, :error_messages, :results, :json_query, :failed
+    attr_reader :valid, :error_messages, :results, :pagination, :json_query, :failed
 
     def validate
       validation = QueryValidatorService.new(self)
@@ -25,12 +33,13 @@ module Analytics
 
       runner = QueryRunnerService.new
       begin
-        results = runner.run(self)
+        results, pagination = runner.run(self)
       rescue ActiveRecord::StatementInvalid => e
         @error_messages.push(e.message)
         @failed = true
       else
         @results = results
+        @pagination = pagination
       end
     end
 
@@ -38,54 +47,48 @@ module Analytics
       MODELS[@json_query['fact'].to_sym]
     end
 
-    def all_dimensions
-      @all_dimensions ||= model
-        .reflect_on_all_associations
-        .to_h do |assoc|
-          [
-            assoc.name.to_s,
-            {
-              columns: assoc.options[:class_name].constantize.attribute_names,
-              primary_key: assoc.options.key?(:primary_key) ? assoc.options[:primary_key] : nil
-            }
-          ]
-        end
+    def fact_dimensions
+      @fact_dimensions ||= fact_attributes
+        .keys
+        .select { |k| k.include?('.') }
+        .map { |k| k.split('.')[0] }
+        .uniq
     end
 
-    def all_attributes
-      all_dimensions.keys + model.column_names + aggregations_names
+    def fact_attributes
+      @fact_attributes ||= calculate_fact_attributes
     end
 
-    def used_dimensions
-      used_dimensions = []
+    def dimensions
+      query_dimensions = []
 
       if @json_query.key?(:fields)
-        used_dimensions += fields
+        query_dimensions += fields
       end
 
       if @json_query.key?(:groups)
-        used_dimensions += groups_keys
+        query_dimensions += groups
       end
 
       if @json_query.key?(:aggregations)
-        used_dimensions += @json_query[:aggregations].keys
+        query_dimensions += @json_query[:aggregations].keys
       end
 
       if @json_query.key?(:sort)
-        used_dimensions += @json_query[:sort].keys
+        query_dimensions += @json_query[:sort].keys
       end
 
       if @json_query.key?(:filters)
-        used_dimensions += @json_query[:filters].keys
+        query_dimensions += @json_query[:filters].keys
       end
 
-      used_dimensions = used_dimensions.map { |key| key.include?('.') ? key.split('.')[0] : key }
-      used_dimensions = used_dimensions.select { |key| all_dimensions.include? key }
-
-      used_dimensions.uniq
+      query_dimensions
+        .map { |key| key.include?('.') ? key.split('.')[0] : key }
+        .select { |key| fact_dimensions.include? key }
+        .uniq
     end
 
-    def groups_keys
+    def groups
       Array.wrap(@json_query[:groups])
     end
 
@@ -94,20 +97,20 @@ module Analytics
     end
 
     def aggregations
-      attributes = []
+      fields = []
       if @json_query.key?(:aggregations)
-        @json_query[:aggregations].each do |column, aggregation|
+        @json_query[:aggregations].each do |field, aggregation|
           if aggregation.instance_of?(Array)
             aggregation.each do |aggregation_|
-              attributes.push([column, aggregation_])
+              fields.push([field, aggregation_])
             end
           else
-            attributes.push([column, aggregation])
+            fields.push([field, aggregation])
           end
         end
       end
 
-      attributes
+      fields
     end
 
     def aggregation_alias(column, aggregation)
@@ -137,9 +140,23 @@ module Analytics
     end
 
     def aggregations_names
-      aggregations.map do |column, aggregation|
-        aggregation_alias(column, aggregation)
+      @aggregations_names ||= aggregations.map do |field, aggregation|
+        aggregation_alias(field, aggregation)
       end
+    end
+
+    private
+
+    def calculate_fact_attributes
+      model_attributes = model.columns_hash.transform_values(&:type)
+
+      associations_attributes = model.reflect_on_all_associations.map do |assoc|
+        assoc.klass.columns_hash.to_h do |column_name, column|
+          ["#{assoc.name}.#{column_name}", column.type]
+        end
+      end.reduce(:merge)
+
+      associations_attributes.merge(model_attributes)
     end
   end
 end

@@ -14,7 +14,7 @@ const CodeSnippet = styled.textarea`
   font-family: 'Courier New', Courier, monospace;
   background-color: ${colors.grey200};
   border: solid 1px ${colors.borderLight};
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   padding: 15px;
   margin: 20px 0;
   width: 100%;

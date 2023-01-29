@@ -28,6 +28,7 @@ const Container = styled.div`
 
 const StyledFileAttachments = styled(FileAttachments)`
   margin-top: 20px;
+  margin-bottom: 25px;
   max-width: 520px;
 `;
 

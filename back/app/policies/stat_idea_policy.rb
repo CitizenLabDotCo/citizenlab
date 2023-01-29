@@ -18,7 +18,14 @@ class StatIdeaPolicy < ApplicationPolicy
     private
 
     def resolve_for_active
-      user.admin? ? scope.all : scope.none
+      user.admin? ? scope.all : resolve_for_project_moderator
+    end
+
+    def resolve_for_project_moderator
+      return scope.none unless user.project_moderator?
+
+      projects = ::UserRoleService.new.moderatable_projects user
+      scope.where(project: projects)
     end
   end
 
@@ -75,8 +82,6 @@ class StatIdeaPolicy < ApplicationPolicy
   end
 
   def show_stats_to_active?
-    admin?
+    admin? || user.project_moderator?
   end
 end
-
-StatIdeaPolicy.prepend_if_ee('ProjectManagement::Patches::StatIdeaPolicy')

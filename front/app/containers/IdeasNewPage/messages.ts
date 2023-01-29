@@ -34,6 +34,10 @@ export default defineMessages({
     defaultMessage:
       'There was an issue submitting the form. Please check for any errors and try again.',
   },
+  submitSurvey: {
+    id: 'app.components.form.ErrorDisplay.submitSurvey',
+    defaultMessage: 'Submit survey',
+  },
   or: {
     id: 'app.containers.IdeasNewPage.or',
     defaultMessage: 'Or',
@@ -357,5 +361,21 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage.ajv_error_option_body_multiloc_minLength',
     defaultMessage:
       'The issue description must be more than {limit} characters long',
+  },
+  leaveSurveyConfirmationQuestion: {
+    id: 'app.containers.IdeasNewPage.leaveSurveyConfirmationQuestion',
+    defaultMessage: 'Are you sure you want to leave this survey?',
+  },
+  leaveSurveyText: {
+    id: 'app.containers.IdeasNewPage.leaveSurveyText',
+    defaultMessage: "Your answers won't be saved.",
+  },
+  confirmLeaveSurveyButtonText: {
+    id: 'app.containers.IdeasNewPage.confirmLeaveSurveyButtonText',
+    defaultMessage: 'Yes, I want to leave the survey',
+  },
+  cancelLeaveSurveyButtonText: {
+    id: 'app.containers.IdeasNewPage.cancelLeaveSurveyButtonText',
+    defaultMessage: 'Cancel',
   },
 });

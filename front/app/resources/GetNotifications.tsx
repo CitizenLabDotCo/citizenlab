@@ -22,7 +22,7 @@ export type GetNotificationsChildProps = State & {
 export default class GetNotifications extends React.Component<Props, State> {
   subscriptions: Subscription[];
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       list: undefined,

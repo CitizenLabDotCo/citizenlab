@@ -24,6 +24,7 @@ import useLocale from 'hooks/useLocale';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { generateTempId } from '../FormBuilderSettings/utils';
 
 const DraggableElement = styled.div`
   cursor: move;
@@ -50,6 +51,10 @@ const FormBuilderToolbox = ({
 
     onAddField({
       id: `${Math.floor(Date.now() * Math.random())}`,
+      temp_id: generateTempId(),
+      logic: {
+        ...(inputType !== 'page' ? { rules: [] } : undefined),
+      },
       isLocalOnly: true,
       description_multiloc: {},
       input_type: inputType,
@@ -81,7 +86,7 @@ const FormBuilderToolbox = ({
       alignItems="center"
       bgColor="white"
       overflowY="auto"
-      borderRight={`1px solid ${colors.grey500}`}
+      borderRight={`1px solid ${colors.borderLight}`}
     >
       <Box w="100%" display="inline">
         <Title
@@ -99,15 +104,33 @@ const FormBuilderToolbox = ({
 
         <DraggableElement>
           <ToolboxItem
-            icon="survey-short-answer"
+            icon="page"
+            label={formatMessage(messages.page)}
+            onClick={() => addField('page')}
+            data-cy="e2e-page"
+          />
+          <ToolboxItem
+            icon="survey-short-answer-2"
             label={formatMessage(messages.shortAnswer)}
             onClick={() => addField('text')}
             data-cy="e2e-short-answer"
           />
           <ToolboxItem
-            icon="survey-multiple-choice"
-            label={formatMessage(messages.multipleChoice)}
+            icon="survey-long-answer-2"
+            label={formatMessage(messages.longAnswer)}
+            onClick={() => addField('multiline_text')}
+            data-cy="e2e-long-answer"
+          />
+          <ToolboxItem
+            icon="survey-single-choice"
+            label={formatMessage(messages.singleChoice)}
             onClick={() => addField('select')}
+            data-cy="e2e-single-choice"
+          />
+          <ToolboxItem
+            icon="survey-multiple-choice-2"
+            label={formatMessage(messages.multipleChoice)}
+            onClick={() => addField('multiselect')}
             data-cy="e2e-multiple-choice"
           />
           <ToolboxItem
@@ -121,6 +144,12 @@ const FormBuilderToolbox = ({
             label={formatMessage(messages.number)}
             onClick={() => addField('number')}
             data-cy="e2e-number-field"
+          />
+          <ToolboxItem
+            icon="upload-file"
+            label={formatMessage(messages.fileUpload)}
+            onClick={() => addField('file_upload')}
+            data-cy="e2e-file-upload-field"
           />
         </DraggableElement>
       </Box>

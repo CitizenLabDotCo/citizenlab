@@ -67,7 +67,7 @@ const SelectAllCheckbox = styled(Checkbox)`
   position: relative;
   padding-left: 4px;
   padding-right: 4px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   cursor: pointer;
 
   &:hover,
@@ -129,7 +129,7 @@ const DropdownListItem = styled.button`
   margin-bottom: 4px;
   padding: 10px;
   background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   outline: none;
   cursor: pointer;
   transition: all 80ms ease-out;
@@ -187,7 +187,7 @@ class UserTableActions extends PureComponent<
   Props & WrappedComponentProps,
   State
 > {
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       dropdownOpened: false,

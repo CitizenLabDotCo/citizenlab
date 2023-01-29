@@ -62,12 +62,89 @@ resource 'Ideas' do
       parameter :project_id, 'The identifier of the project that hosts the input', required: true
       parameter :phase_ids, 'The identifiers of the phases that host the input. None is allowed for normal users.', required: false
       parameter :custom_field_name1, 'A value for one custom field'
+      parameter :custom_field_name2, 'A value for another custom field'
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
 
     context 'when phase_ids are not given', skip: !CitizenLab.ee? do
       let(:phase_ids) { [] }
       let(:project_id) { project.id }
+
+      context 'with two file upload fields' do
+        # Note the "notwhitelisted" file extension. It is here to validate
+        # that no file extension validation is done.
+        let(:filename1) { 'afvalkalender2022.notwhitelisted' }
+        let(:filename2) { 'afvalkalender2023.pdf' }
+        let(:fixture_filename) { 'afvalkalender.pdf' }
+        let(:fixture_mime_type) { 'application/pdf' }
+        let(:file_contents1) { file_as_base64(fixture_filename, fixture_mime_type) }
+        let(:file_contents2) { file_as_base64(fixture_filename, fixture_mime_type) }
+        let!(:files_field1) do
+          create(
+            :custom_field,
+            resource: custom_form,
+            input_type: 'file_upload',
+            key: 'custom_field_name1',
+            enabled: true,
+            title_multiloc: { 'en' => 'Please upload a plan' }
+          )
+        end
+        let!(:files_field2) do
+          create(
+            :custom_field,
+            resource: custom_form,
+            input_type: 'file_upload',
+            key: 'custom_field_name2',
+            enabled: true,
+            title_multiloc: { 'en' => 'Please upload another plan' }
+          )
+        end
+        let(:custom_field_name1) do
+          {
+            content: file_contents1,
+            name: filename1
+          }
+        end
+        let(:custom_field_name2) do
+          {
+            content: file_contents2,
+            name: filename2
+          }
+        end
+        let(:project) { create :continuous_native_survey_project }
+        let(:custom_form) { create(:custom_form, participation_context: project) }
+
+        example_request 'Create an input with a file upload field' do
+          assert_status 201
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
+
+          # Verify that the input is saved correctly
+          inputs = project.reload.ideas
+          expect(inputs.size).to eq 1
+          input = inputs.first
+          expect(input.phase_ids).to eq []
+          expect(input.creation_phase).to be_nil
+
+          # Verify that the files are saved correctly
+          file1_id = input.custom_field_values['custom_field_name1']
+          file2_id = input.custom_field_values['custom_field_name2']
+          file1 = IdeaFile.find(file1_id)
+          file2 = IdeaFile.find(file2_id)
+          expect(input.idea_files.size).to eq 2
+          expect(input.idea_files.ids).to match_array([file1.id, file2.id])
+          expect(file1.name).to eq filename1
+          expect(file1.file.url).to match "/uploads/.+/idea_file/file/#{file1.id}/#{filename1}"
+          expect(file2.name).to eq filename2
+          expect(file2.file.url).to match "/uploads/.+/idea_file/file/#{file2.id}/#{filename2}"
+
+          # Verify that the cutom field value is saved correctly.
+          expect(input.custom_field_values).to eq({
+            'custom_field_name1' => file1.id,
+            'custom_field_name2' => file2.id
+          })
+        end
+      end
 
       context 'with an active participation context' do
         let!(:custom_field) do
@@ -233,7 +310,7 @@ resource 'Ideas' do
           example_request '[error] Trying to update an input' do
             assert_status 401
             json_response = json_parse(response_body)
-            expect(json_response).to eq({ errors: { base: [{ error: 'Unauthorized!' }] } })
+            expect(json_response).to eq({ errors: { base: [{ error: 'project_inactive' }] } })
           end
         end
 
@@ -243,7 +320,7 @@ resource 'Ideas' do
           example_request '[error] Trying to update an input' do
             assert_status 401
             json_response = json_parse(response_body)
-            expect(json_response).to eq({ errors: { base: [{ error: 'Unauthorized!' }] } })
+            expect(json_response).to eq({ errors: { base: [{ error: 'project_inactive' }] } })
           end
         end
       end

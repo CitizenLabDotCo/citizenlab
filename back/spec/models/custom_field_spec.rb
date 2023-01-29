@@ -62,9 +62,128 @@ class TestVisitor < FieldVisitorService
   def visit_linear_scale(_field)
     'linear_scale from visitor'
   end
+
+  def visit_page(_field)
+    'page from visitor'
+  end
+
+  def visit_file_upload(_field)
+    'file_upload from visitor'
+  end
 end
 
 RSpec.describe CustomField, type: :model do
+  let(:field) { described_class.new input_type: 'not_important_for_this_test' }
+
+  describe '#logic?' do
+    it 'returns true when there is logic' do
+      field.logic = { 'rules' => [{ if: 2, goto_page_id: 'some_page_id' }] }
+      expect(field.logic?).to be true
+
+      field.logic = { 'next_page_id' => 'some_page_id' }
+      expect(field.logic?).to be true
+    end
+
+    it 'returns false when there is no logic' do
+      field.logic = nil
+      expect(field.logic?).to be false
+
+      field.logic = {}
+      expect(field.logic?).to be false
+
+      field.logic = { 'rules' => [] }
+      expect(field.logic?).to be false
+    end
+  end
+
+  describe '#file_upload?' do
+    it 'returns true when the input_type is "file_upload"' do
+      files_field = described_class.new input_type: 'file_upload'
+      expect(files_field.file_upload?).to be true
+    end
+
+    it 'returns false otherwise' do
+      other_field = described_class.new input_type: 'something_else'
+      expect(other_field.file_upload?).to be false
+    end
+  end
+
+  describe '#multiloc?' do
+    it 'returns true when the input_type is "text_multiloc"' do
+      files_field = described_class.new input_type: 'text_multiloc'
+      expect(files_field.multiloc?).to be true
+    end
+
+    it 'returns true when the input_type is "multiline_text_multiloc"' do
+      files_field = described_class.new input_type: 'multiline_text_multiloc'
+      expect(files_field.multiloc?).to be true
+    end
+
+    it 'returns true when the input_type is "html_multiloc"' do
+      files_field = described_class.new input_type: 'html_multiloc'
+      expect(files_field.multiloc?).to be true
+    end
+
+    it 'returns false otherwise' do
+      other_field = described_class.new input_type: 'something_else'
+      expect(other_field.multiloc?).to be false
+    end
+  end
+
+  describe '#page?' do
+    it 'returns true when the input_type is "page"' do
+      page_field = described_class.new input_type: 'page'
+      expect(page_field.page?).to be true
+    end
+
+    it 'returns false otherwise' do
+      other_field = described_class.new input_type: 'something_else'
+      expect(other_field.page?).to be false
+    end
+  end
+
+  describe 'title_multiloc validation' do
+    let(:form) { create :custom_form }
+
+    it 'happens when the field is not a page' do
+      non_page_field = described_class.new(
+        resource: form,
+        input_type: 'text',
+        key: 'field_key',
+        title_multiloc: { 'en' => '' }
+      )
+      expect(non_page_field.valid?).to be false
+      expect(non_page_field.errors.details).to eq({ title_multiloc: [{ error: :blank }] })
+
+      non_page_field.title_multiloc = {}
+      expect(non_page_field.valid?).to be false
+      expect(non_page_field.errors.details).to eq({ title_multiloc: [{ error: :blank }, { error: :blank }] })
+
+      non_page_field.title_multiloc = nil
+      expect(non_page_field.valid?).to be false
+      expect(non_page_field.errors.details).to eq({ title_multiloc: [{ error: :blank }, { error: 'is not a translation hash' }] })
+
+      non_page_field.title_multiloc = { 'en' => 'Here is the title' }
+      expect(non_page_field.valid?).to be true
+    end
+
+    it 'does not happen when the field is a page' do
+      page_field = described_class.new(
+        resource: form,
+        input_type: 'page',
+        key: 'field_key',
+        title_multiloc: { 'en' => '' }
+      )
+      expect(page_field.valid?).to be true
+
+      page_field.title_multiloc = {}
+      expect(page_field.valid?).to be true
+
+      page_field.title_multiloc = nil
+      expect(page_field.valid?).to be true
+    end
+  end
+
   context 'hooks' do
     it 'generates a key on creation, if not specified' do
       cf = create(:custom_field, key: nil)

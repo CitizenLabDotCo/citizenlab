@@ -3,22 +3,24 @@ import { useTheme } from 'styled-components';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import SectionFormWrapper from '../../components/SectionFormWrapper';
 import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
 import Button from 'components/UI/Button';
+import ShownOnPageBadge from '../../components/ShownOnPageBadge';
+import SectionFormWrapper from '../../components/SectionFormWrapper';
+import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
 
 // form
-import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { object } from 'yup';
 import Feedback from 'components/HookForm/Feedback';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+import { FormProvider, useForm } from 'react-hook-form';
+import { object } from 'yup';
 
 // i18n
+import HelmetIntl from 'components/HelmetIntl';
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-import HelmetIntl from 'components/HelmetIntl';
 
 // typings
 import { Multiloc } from 'typings';
@@ -37,7 +39,11 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 interface Props {
   pageData: IHomepageSettingsData | ICustomPageData;
   updatePage: (data: { top_info_section_multiloc: Multiloc }) => Promise<any>;
+  updatePageAndEnableSection: (data: {
+    top_info_section_multiloc: Multiloc;
+  }) => Promise<any>;
   breadcrumbs: TBreadcrumbs;
+  linkToViewPage?: string;
 }
 
 interface FormValues {
@@ -47,14 +53,26 @@ interface FormValues {
 const GenericTopInfoSection = ({
   pageData,
   updatePage,
+  updatePageAndEnableSection,
   breadcrumbs,
   intl: { formatMessage },
+  linkToViewPage,
 }: WrappedComponentProps & Props) => {
-  const theme: any = useTheme();
+  const theme = useTheme();
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {
       await updatePage(formValues);
+    } catch (error) {
+      handleHookFormSubmissionError(error, methods.setError);
+    }
+  };
+
+  const onFormSubmitAndEnable = async (formValues: FormValues) => {
+    if (!updatePageAndEnableSection) return;
+
+    try {
+      await updatePageAndEnableSection(formValues);
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }
@@ -75,11 +93,16 @@ const GenericTopInfoSection = ({
   });
 
   return (
-    <>
+    <div data-cy="e2e-top-info-form">
       <HelmetIntl title={messages.topInfoMetaTitle} />
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onFormSubmit)}>
           <SectionFormWrapper
+            badge={
+              <ShownOnPageBadge
+                shownOnPage={pageData.attributes.top_info_section_enabled}
+              />
+            }
             breadcrumbs={[
               {
                 label: formatMessage(pagesAndMenuBreadcrumb.label),
@@ -89,6 +112,11 @@ const GenericTopInfoSection = ({
               { label: formatMessage(messages.topInfoPageTitle) },
             ]}
             title={formatMessage(messages.topInfoPageTitle)}
+            rightSideCTA={
+              linkToViewPage ? (
+                <ViewCustomPageButton linkTo={linkToViewPage} />
+              ) : null
+            }
           >
             <Feedback
               successMessage={formatMessage(messages.topInfoMessageSuccess)}
@@ -108,11 +136,23 @@ const GenericTopInfoSection = ({
               >
                 {formatMessage(messages.topInfoSaveButton)}
               </Button>
+              {!pageData.attributes.top_info_section_enabled && (
+                <Button
+                  ml="30px"
+                  type="button"
+                  buttonStyle="primary-outlined"
+                  onClick={methods.handleSubmit(onFormSubmitAndEnable)}
+                  processing={methods.formState.isSubmitting}
+                  data-cy={`e2e-top-info-section-secondary-submit`}
+                >
+                  {formatMessage(messages.topInfoSaveAndEnableButton)}
+                </Button>
+              )}
             </Box>
           </SectionFormWrapper>
         </form>
       </FormProvider>
-    </>
+    </div>
   );
 };
 

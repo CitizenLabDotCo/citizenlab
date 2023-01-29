@@ -279,20 +279,20 @@ const ProgressBar = styled.div`
   width: 100%;
   max-width: 130px;
   height: 5px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   background: #d6dade;
 `;
 
-const ProgressBarOverlay: any = styled.div`
+const ProgressBarOverlay = styled.div<{ progress: number }>`
   width: 0px;
   height: 100%;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   background: ${colors.error};
   transition: width 1000ms cubic-bezier(0.19, 1, 0.22, 1);
   will-change: width;
 
   &.visible {
-    width: ${(props: any) => props.progress}%;
+    width: ${(props) => props.progress}%;
   }
 `;
 
@@ -307,7 +307,7 @@ const ProjectLabel = styled.div`
   padding-right: 14px;
   padding-top: 8px;
   padding-bottom: 8px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   background: ${({ theme }) => rgba(theme.colors.tenantSecondary, 0.1)};
 `;
 
@@ -475,7 +475,7 @@ const ProjectCard = memo<Props>(
         : null;
     const phase = usePhase(currentPhaseId);
     const phases = usePhases(projectId);
-    const theme: any = useTheme();
+    const theme = useTheme();
 
     const [visible, setVisible] = useState(false);
 
@@ -572,24 +572,25 @@ const ProjectCard = memo<Props>(
             ? round((pastDays / totalDays) * 100, 1)
             : null;
 
-        countdown = (
-          <Countdown className="e2e-project-card-time-remaining">
-            <TimeRemaining className={size}>
-              <FormattedMessage
-                {...messages.remaining}
-                values={{ timeRemaining }}
-              />
-            </TimeRemaining>
-            <Observer onChange={handleIntersection}>
-              <ProgressBar aria-hidden>
-                <ProgressBarOverlay
-                  progress={progress}
-                  className={visible ? 'visible' : ''}
+        countdown =
+          typeof progress === 'number' ? (
+            <Countdown className="e2e-project-card-time-remaining">
+              <TimeRemaining className={size}>
+                <FormattedMessage
+                  {...messages.remaining}
+                  values={{ timeRemaining }}
                 />
-              </ProgressBar>
-            </Observer>
-          </Countdown>
-        );
+              </TimeRemaining>
+              <Observer onChange={handleIntersection}>
+                <ProgressBar aria-hidden>
+                  <ProgressBarOverlay
+                    progress={progress}
+                    className={visible ? 'visible' : ''}
+                  />
+                </ProgressBar>
+              </Observer>
+            </Countdown>
+          ) : null;
       }
 
       if (participationMethod === 'budgeting') {

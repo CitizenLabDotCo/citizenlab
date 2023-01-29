@@ -1,1 +1,0 @@
-# CitizenLab: Project Permissions

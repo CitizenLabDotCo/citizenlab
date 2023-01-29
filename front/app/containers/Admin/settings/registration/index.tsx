@@ -7,18 +7,9 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
-
-import {
-  IAppConfigurationSettings,
-  IUpdatedAppConfigurationProperties,
-  updateAppConfiguration,
-  TAppConfigurationSettingCore,
-  TAppConfigurationSetting,
-} from 'services/appConfiguration';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
-import messages from 'containers/Admin/settings/messages';
-
 import {
   SectionTitle,
   SubSectionTitle,
@@ -28,10 +19,21 @@ import {
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import { IconTooltip } from '@citizenlab/cl2-component-library';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
+import CustomFieldSettings from './CustomFieldSettings';
+import ToggleUserConfirmation from './ToggleUserConfirmation';
+import CustomFieldsSignupText from './CustomFieldsSignupText';
 
 // i18n
+import messages from 'containers/Admin/settings/messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import Outlet from 'components/Outlet';
+
+// typings
+import {
+  IAppConfigurationSettings,
+  IUpdatedAppConfigurationProperties,
+  updateAppConfiguration,
+  TAppConfigurationSettingCore,
+} from 'services/appConfiguration';
 
 export const LabelTooltip = styled.div`
   display: flex;
@@ -41,10 +43,12 @@ const SignUpFieldsSection = styled.div`
   margin-bottom: 60px;
 `;
 
-interface Props {}
-
-const SettingsRegistrationTab = (_props: Props) => {
+const SettingsRegistrationTab = () => {
   const appConfig = useAppConfiguration();
+  const userConfirmationIsAllowed = useFeatureFlag({
+    name: 'user_confirmation',
+    onlyCheckAllowed: true,
+  });
   const [isFormSubmitting, setIsFormSubmitting] = useState(false);
   const [isFormSaved, setIsFormSaved] = useState(false);
   const [errors, setErrors] = useState<{ [fieldName: string]: CLError[] }>({});
@@ -94,19 +98,6 @@ const SettingsRegistrationTab = (_props: Props) => {
       setAttributesDiff(newAttributesDiff);
     };
 
-  const handleSettingOnChange =
-    (setting: TAppConfigurationSetting) => (value: any) => {
-      const newAttributesDiff = {
-        ...attributesDiff,
-        settings: {
-          ...(attributesDiff.settings || {}),
-          [setting]: value,
-        },
-      };
-
-      setAttributesDiff(newAttributesDiff);
-    };
-
   const handleSubmit = async (event?: React.FormEvent<HTMLFormElement>) => {
     if (event) {
       event.preventDefault();
@@ -127,6 +118,21 @@ const SettingsRegistrationTab = (_props: Props) => {
       setIsFormSubmitting(false);
       setErrors(isCLErrorJSON(error) ? error.json.errors : error);
     }
+  };
+
+  const userConfirmationToggleIsEnabled =
+    !!latestAppConfigSettings?.user_confirmation?.enabled;
+
+  const handleUserConfirmationToggleChange = (value: boolean) => {
+    const newAttributesDiff = {
+      ...attributesDiff,
+      settings: {
+        ...(attributesDiff.settings || {}),
+        user_confirmation: { enabled: value },
+      },
+    };
+
+    setAttributesDiff(newAttributesDiff);
   };
 
   if (!isNilOrError(latestAppConfigSettings)) {
@@ -160,17 +166,18 @@ const SettingsRegistrationTab = (_props: Props) => {
                 }
               />
             </SectionField>
-            <Outlet
-              id="app.containers.Admin.settings.registrationSectionEnd"
-              onSettingChange={handleSettingOnChange}
+            {userConfirmationIsAllowed && (
+              <ToggleUserConfirmation
+                onChange={handleUserConfirmationToggleChange}
+                isEnabled={userConfirmationToggleIsEnabled}
+              />
+            )}
+            <CustomFieldsSignupText
               onCoreSettingWithMultilocChange={
                 handleCoreSettingWithMultilocOnChange
               }
               customFieldsSignupHelperTextMultiloc={
                 latestAppConfigSettings.core.custom_fields_signup_helper_text
-              }
-              userConfirmationSetting={
-                latestAppConfigSettings.user_confirmation
               }
             />
             <SubmitWrapper
@@ -189,7 +196,7 @@ const SettingsRegistrationTab = (_props: Props) => {
             />
           </form>
         </SignUpFieldsSection>
-        <Outlet id="app.containers.Admin.settings.registrationTabEnd" />
+        <CustomFieldSettings />
       </>
     );
   }

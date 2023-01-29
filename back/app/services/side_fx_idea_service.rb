@@ -93,7 +93,7 @@ class SideFxIdeaService
   def log_activity_jobs_after_published(idea, user)
     LogActivityJob.set(wait: 20.seconds).perform_later(idea, 'published', user, idea.published_at.to_i)
     scrape_facebook(idea)
-    return unless first_user_idea?(idea, user)
+    return unless user && first_user_idea?(idea, user)
 
     LogActivityJob.set(wait: 20.seconds).perform_later(idea, 'first_published_by_user', user, idea.published_at.to_i)
   end

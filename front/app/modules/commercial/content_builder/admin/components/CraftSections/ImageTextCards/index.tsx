@@ -5,16 +5,18 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 // craft
 import { UserComponent, Element } from '@craftjs/core';
-import TwoColumn from '../../CraftComponents/TwoColumn';
-import Container from '../../CraftComponents/Container';
-import Image from '../../CraftComponents/Image';
-import Text from '../../CraftComponents/Text';
+
+// widgets
+import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
+import Container from 'components/admin/ContentBuilder/Widgets/Container';
+import Image from 'components/admin/ContentBuilder/Widgets/Image';
+import Text from 'components/admin/ContentBuilder/Widgets/Text';
+import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 // intl
-import messages from '../../../messages';
+import textMessages from 'components/admin/ContentBuilder/Widgets/Text/messages';
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-import WhiteSpace from '../../CraftComponents/WhiteSpace';
 
 const ImageTextCards: UserComponent = ({
   intl: { formatMessage },
@@ -26,7 +28,7 @@ const ImageTextCards: UserComponent = ({
           <Image alt="" />
         </Element>
         <Element id="right" is={Container} canvas>
-          <Text text={formatMessage(messages.textValue)} />
+          <Text text={formatMessage(textMessages.textValue)} />
         </Element>
       </TwoColumn>
       <WhiteSpace size="small" />
@@ -35,7 +37,7 @@ const ImageTextCards: UserComponent = ({
           <Image alt="" />
         </Element>
         <Element id="right" is={Container} canvas>
-          <Text text={formatMessage(messages.textValue)} />
+          <Text text={formatMessage(textMessages.textValue)} />
         </Element>
       </TwoColumn>
       <WhiteSpace size="small" />
@@ -44,7 +46,7 @@ const ImageTextCards: UserComponent = ({
           <Image alt="" />
         </Element>
         <Element id="right" is={Container} canvas>
-          <Text text={formatMessage(messages.textValue)} />
+          <Text text={formatMessage(textMessages.textValue)} />
         </Element>
       </TwoColumn>
     </Element>

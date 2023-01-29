@@ -2,7 +2,7 @@
 
 module IdViennaSaml
   # Provides a SAML Omniauth configuration for Vienna city employees.
-  class EmployeeSamlOmniauth
+  class EmployeeSamlOmniauth < OmniauthMethods::Base
     # The Issuer is hardcoded on Vienna's side and needs to match exactly.
     ENVIRONMENTS = {
       test: {

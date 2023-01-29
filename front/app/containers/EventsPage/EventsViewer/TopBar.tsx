@@ -48,24 +48,29 @@ const FilterIcon = styled(Icon)`
 
 interface Props {
   title: string;
+  showProjectFilter: boolean;
   setProjectIds: (projectIds: string[]) => void;
 }
 
 const TopBar = memo<Props & WrappedComponentProps>(
-  ({ title, setProjectIds, intl }) => {
-    const theme: any = useTheme();
+  ({ title, showProjectFilter, setProjectIds, intl }) => {
+    const theme = useTheme();
 
     return (
       <Container>
         <Title>{title}</Title>
 
         <ProjectFilterDropdownPositioner>
-          <FilterIcon name="filter-2" />
-          <ProjectFilterDropdown
-            title={intl.formatMessage(messages.filterDropdownTitle)}
-            onChange={setProjectIds}
-            textColor={theme.colors.tenantText}
-          />
+          {showProjectFilter && (
+            <>
+              <FilterIcon name="filter-2" />
+              <ProjectFilterDropdown
+                title={intl.formatMessage(messages.filterDropdownTitle)}
+                onChange={setProjectIds}
+                textColor={theme.colors.tenantText}
+              />
+            </>
+          )}
         </ProjectFilterDropdownPositioner>
       </Container>
     );

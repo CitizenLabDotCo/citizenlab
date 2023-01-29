@@ -6,9 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 import { getInputTermMessage } from 'utils/i18n';
 
 // resources
@@ -26,6 +24,7 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // services
 import { getInputTerm } from 'services/participationContexts';
+import useLocalize from 'hooks/useLocalize';
 
 interface InputProps {}
 
@@ -36,21 +35,12 @@ interface DataProps {
   phases: GetPhasesChildProps;
 }
 
-interface Props
-  extends InputProps,
-    DataProps,
-    WrappedComponentProps,
-    InjectedLocalized {}
+interface Props extends InputProps, DataProps {}
 
 const IdeasNewMeta = React.memo<Props>(
-  ({
-    authUser,
-    locales,
-    project,
-    localize,
-    intl: { formatMessage },
-    phases,
-  }) => {
+  ({ authUser, locales, project, phases }) => {
+    const { formatMessage } = useIntl();
+    const localize = useLocalize();
     const { location } = window;
 
     if (!isNilOrError(project)) {
@@ -105,8 +95,6 @@ const IdeasNewMeta = React.memo<Props>(
   }
 );
 
-const IdeasNewMetaWithHoc = injectIntl(injectLocalize(IdeasNewMeta));
-
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locales: <GetAppConfigurationLocales />,
   authUser: <GetAuthUser />,
@@ -124,6 +112,6 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
-    {(dataprops) => <IdeasNewMetaWithHoc {...inputProps} {...dataprops} />}
+    {(dataprops) => <IdeasNewMeta {...inputProps} {...dataprops} />}
   </Data>
 ));

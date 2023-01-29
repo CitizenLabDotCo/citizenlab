@@ -27,16 +27,18 @@ resource 'Project', admin_api: true do
     let(:new_publication_status) { 'draft' }
     let(:id) { project.id }
 
-    example_request 'Export a project template' do
-      expect(status).to eq 200
-      json_response = json_parse(response_body)
-      template = YAML.load(json_response[:template_yaml])
+    describe 'Export a project template' do
+      example_request 'it exports a project' do
+        expect(status).to eq 200
+        json_response = json_parse(response_body)
+        template = YAML.load(json_response[:template_yaml])
 
-      expect(template['models']['project'].first.dig('title_multiloc', 'en')).to eq project.title_multiloc['en']
-      expect(template['models']['phase'].size).to eq project.phases.count
-      expect(template['models']['phase'].map { |h| h['start_at'] }).to match project.phases.map(&:start_at).map(&:iso8601)
-      expect(template['models']['project_image'].map { |h| h['remote_image_url'] }).to match project.project_images.map(&:image_url)
-      expect(template['models']['project'].first.dig('admin_publication_attributes', 'publication_status')).to eq 'draft'
+        expect(template['models']['project'].first.dig('title_multiloc', 'en')).to eq project.title_multiloc['en']
+        expect(template['models']['phase'].size).to eq project.phases.count
+        expect(template['models']['phase'].map { |h| h['start_at'] }).to match project.phases.map(&:start_at).map(&:iso8601)
+        expect(template['models']['project_image'].map { |h| h['remote_image_url'] }).to match project.project_images.map(&:image_url)
+        expect(template['models']['project'].first.dig('admin_publication_attributes', 'publication_status')).to eq 'draft'
+      end
     end
   end
 
@@ -45,9 +47,11 @@ resource 'Project', admin_api: true do
 
     with_options scope: :project do
       parameter :template_yaml, 'The yml template for the project to import', required: true
+      parameter :folder_id, 'The folder id in which to import the project', required: false
     end
 
     let(:tenant) { create(:tenant) }
+    let(:folder) { tenant.switch { create :project_folder } }
     let(:template) do
       create(:tenant).switch do
         project = create(:project_xl, phases_count: 3, images_count: 0, files_count: 0) # no images nor files because URL's will not be available
@@ -55,18 +59,28 @@ resource 'Project', admin_api: true do
       end
     end
 
-    example 'Import a project template' do
-      do_request(tenant_id: tenant.id, project: { template_yaml: template.to_yaml })
+    describe 'Import a project template' do
+      example 'it imports a project' do
+        do_request(tenant_id: tenant.id, project: { template_yaml: template.to_yaml, folder_id: folder.id })
+        expect(status).to eq(200)
 
-      expect(status).to eq(200)
-      expect(DumpTenantJob).to have_been_enqueued if defined?(NLP)
+        tenant.switch do
+          project = Project.first
 
-      tenant.switch do
-        project = Project.first
+          expect(template['models']['project'].first.dig('title_multiloc', 'en')).to eq project.title_multiloc['en']
+          expect(template['models']['phase'].size).to eq project.phases.count
+          expect(template['models']['phase'].pluck('start_at')).to match_array project.phases.map(&:start_at).map(&:iso8601)
+          expect(project.folder_id).to eq folder.id
+        end
+      end
 
-        expect(template['models']['project'].first.dig('title_multiloc', 'en')).to eq project.title_multiloc['en']
-        expect(template['models']['phase'].size).to eq project.phases.count
-        expect(template['models']['phase'].pluck('start_at')).to match_array project.phases.map(&:start_at).map(&:iso8601)
+      if defined?(NLP)
+        example 'it enqueues DumpTenantJob once if NLP defined' do
+          expect do
+            do_request(tenant_id: tenant.id, project: { template_yaml: template.to_yaml, folder_id: folder.id })
+          end
+            .to have_enqueued_job(DumpTenantJob)
+        end
       end
     end
   end

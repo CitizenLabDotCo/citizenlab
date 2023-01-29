@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ProjectsController < ApplicationController
-  before_action :set_project, only: %i[show update reorder destroy survey_results submission_count delete_inputs]
+  before_action :set_project, only: %i[show update reorder destroy survey_results submission_count index_xlsx delete_inputs]
+
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
-
-  define_callbacks :save_project
 
   def index
     params['moderator'] = current_user if params[:filter_can_moderate]
@@ -77,6 +76,22 @@ class WebApi::V1::ProjectsController < ApplicationController
     end
   end
 
+  def copy
+    source_project = Project.find(params[:id])
+    folder = source_project.folder
+
+    @project = folder ? Project.new(folder: folder) : Project.new
+
+    authorize @project
+    @project = LocalProjectCopyService.new.copy(source_project)
+
+    render json: WebApi::V1::ProjectSerializer.new(
+      @project,
+      params: fastjson_params,
+      include: [:admin_publication]
+    ).serialized_json, status: :created
+  end
+
   def update
     params[:project][:area_ids] ||= [] if params[:project].key?(:area_ids)
     params[:project][:topic_ids] ||= [] if params[:project].key?(:topic_ids)
@@ -120,6 +135,14 @@ class WebApi::V1::ProjectsController < ApplicationController
     render json: count
   end
 
+  def index_xlsx
+    I18n.with_locale(current_user.locale) do
+      include_private_attributes = Pundit.policy!(current_user, User).view_private_attributes?
+      xlsx = XlsxExport::GeneratorService.new.generate_for_project(@project.id, include_private_attributes)
+      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'inputs.xlsx'
+    end
+  end
+
   def delete_inputs
     sidefx.before_delete_inputs @project, current_user
     ActiveRecord::Base.transaction do
@@ -137,13 +160,16 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def save_project
     ActiveRecord::Base.transaction do
-      run_callbacks(:save_project) do
-        # authorize is placed within the block so we can prepare
-        # the @project to be authorized from a callback.
-        authorize @project
-        @project.save
-      end
+      set_folder
+      authorize @project
+      @project.save
     end
+  end
+
+  def set_folder
+    return unless params.require(:project).key?(:folder_id)
+
+    @project.folder_id = params.dig(:project, :folder_id)
   end
 
   def set_project
@@ -151,5 +177,3 @@ class WebApi::V1::ProjectsController < ApplicationController
     authorize @project
   end
 end
-
-WebApi::V1::ProjectsController.include_if_ee('ProjectFolders::WebApi::V1::Patches::ProjectsController')

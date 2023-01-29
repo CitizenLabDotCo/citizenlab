@@ -59,7 +59,7 @@ const Header = styled.div`
 
 const Title = styled.h2`
   min-height: 20px;
-  color: ${(props: any) => props.theme.colors.tenantText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.l}px;
   line-height: normal;
   font-weight: 500;
@@ -96,7 +96,7 @@ const Spacer = styled.div`
 `;
 
 const Budget = styled.div`
-  color: ${(props: any) => props.theme.colors.tenantText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   line-height: ${fontSizes.base}px;
   display: flex;
@@ -127,7 +127,7 @@ const BudgetAmount = styled.span`
 const ProgressBar = styled.div<{ viewMode: 'row' | 'column' }>`
   width: 100%;
   height: 30px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   margin-top: 30px;
   margin-bottom: 30px;
   border: solid 1px #e0e0e0;
@@ -147,11 +147,11 @@ const ProgressBar = styled.div<{ viewMode: 'row' | 'column' }>`
   `}
 `;
 
-const ProgressBarOverlay: any = styled.div`
-  width: ${(props: any) => props.progress}%;
+const ProgressBarOverlay = styled.div<{ progress: number }>`
+  width: ${(props) => props.progress}%;
   height: 100%;
   background: ${colors.textSecondary};
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -220,7 +220,6 @@ const ManageBudgetButton = styled(Button)``;
 
 const ManageBudgetButtonWithDropdown = styled(ButtonWithDropdown)`
   min-width: 200px;
-  z-index: 900;
 `;
 
 const SubmitExpensesButton = styled(Button)<{ viewMode: 'row' | 'column' }>`
@@ -259,7 +258,7 @@ const TooltipContentText = styled.div`
 `;
 
 interface Props {
-  participationContextId: string | null;
+  participationContextId: string;
   participationContextType: IParticipationContextType;
   viewMode: 'row' | 'column';
   className?: string;

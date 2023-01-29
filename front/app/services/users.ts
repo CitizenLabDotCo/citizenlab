@@ -25,15 +25,16 @@ export interface IUserAttributes {
   birthyear?: number;
   domicile?: string;
   education?: string;
-  unread_notifications?: number;
+  unread_notifications: number;
   custom_field_values?: Record<string, any>;
   invite_status: 'pending' | 'accepted' | null;
   verified?: boolean;
+  confirmation_required: boolean;
 }
 
 export interface IUserData {
   id: string;
-  type: string;
+  type: 'user';
   attributes: IUserAttributes;
 }
 
@@ -84,16 +85,6 @@ export function userBySlugStream(userSlug: string) {
   });
 }
 
-export function userByInviteStream(
-  token: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IUser>({
-    apiEndpoint: `${apiEndpoint}/by_invite/${token}`,
-    ...streamParams,
-  });
-}
-
 export async function updateUser(userId: string, object: IUserUpdate) {
   const response = await streams.update<IUser>(
     `${apiEndpoint}/${userId}`,
@@ -133,20 +124,4 @@ export async function completeRegistration(
   });
 
   return authUser;
-}
-
-export function mapUserToDiff(user: IUserData): IUserUpdate {
-  return {
-    first_name: user.attributes.first_name || undefined,
-    last_name: user.attributes.last_name || undefined,
-    email: user.attributes.email || undefined,
-    locale: user.attributes.locale || undefined,
-    bio_multiloc: user.attributes.bio_multiloc || undefined,
-    custom_field_values: undefined,
-  };
-}
-
-export function getUserName(user: IUserData): string {
-  // This might be locale-dependant in the future
-  return `${user.attributes.first_name} ${user.attributes.last_name}`;
 }

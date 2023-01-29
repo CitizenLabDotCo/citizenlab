@@ -2,14 +2,22 @@
 
 require 'rails_helper'
 
-RSpec.describe InputUiSchemaGeneratorService do
-  subject(:generator) { described_class.new }
+# Note that projects and phases in the tests are created with an input_term,
+# while their value is irrelevant. After all, the input_term is an argument
+# when creating an instance of the described class. To express the irrelevance,
+# the input_term for created projects and phases is different from the input_term
+# passed when creating an instance of the described class.
 
+RSpec.describe InputUiSchemaGeneratorService do
+  subject(:generator) { described_class.new input_term }
+
+  let(:input_term) { 'question' }
   let(:field_key) { 'field_key' }
 
   describe '#generate_for' do
     context 'for project with a built-in field and an extra field' do
-      let(:project) { create :continuous_project, input_term: 'contribution' }
+      let(:input_term) { 'contribution' }
+      let(:project) { create :continuous_project, input_term: 'issue' }
       let(:custom_form) { create :custom_form, participation_context: project }
       let(:field1) do
         create(
@@ -28,8 +36,16 @@ RSpec.describe InputUiSchemaGeneratorService do
           resource: custom_form,
           input_type: 'html_multiloc',
           code: 'body_multiloc',
-          title_multiloc: { 'en' => 'Body multiloc field title' },
-          description_multiloc: { 'en' => 'Body multiloc field description' }
+          title_multiloc: {
+            'en' => 'Body multiloc field title',
+            'nl-NL' => 'Body multiloc veldtitel'
+            # No 'fr-FR' to describe that it will default to 'en'.
+          },
+          description_multiloc: {
+            'en' => 'Body multiloc field description',
+            'nl-NL' => 'Body multiloc veldbeschrijving'
+            # No 'fr-FR' to describe that it will default to 'en'.
+          }
         )
       end
 
@@ -49,7 +65,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 elements: [
                   {
                     type: 'VerticalLayout',
-                    options: { render: 'multiloc' },
+                    options: { input_type: field2.input_type, render: 'multiloc' },
                     elements: [
                       {
                         type: 'Control',
@@ -58,6 +74,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                         options: {
                           description: 'Body multiloc field description',
                           isAdminField: false,
+                          hasRule: false,
                           render: 'WYSIWYG',
                           locale: 'en'
                         }
@@ -69,6 +86,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                         options: {
                           description: 'Body multiloc field description',
                           isAdminField: false,
+                          hasRule: false,
                           render: 'WYSIWYG',
                           locale: 'fr-FR'
                         }
@@ -80,6 +98,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                         options: {
                           description: 'Body multiloc field description',
                           isAdminField: false,
+                          hasRule: false,
                           render: 'WYSIWYG',
                           locale: 'nl-NL'
                         }
@@ -98,8 +117,10 @@ RSpec.describe InputUiSchemaGeneratorService do
                     scope: "#/properties/#{field1.key}",
                     label: 'Text title',
                     options: {
+                      input_type: field1.input_type,
                       description: 'Text description',
                       isAdminField: false,
+                      hasRule: false,
                       transform: 'trim_on_blur'
                     }
                   }
@@ -121,7 +142,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 elements: [
                   {
                     type: 'VerticalLayout',
-                    options: { render: 'multiloc' },
+                    options: { input_type: field2.input_type, render: 'multiloc' },
                     elements: [
                       {
                         type: 'Control',
@@ -130,6 +151,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                         options: {
                           description: 'Body multiloc field description',
                           isAdminField: false,
+                          hasRule: false,
                           render: 'WYSIWYG',
                           locale: 'en'
                         }
@@ -141,6 +163,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                         options: {
                           description: 'Body multiloc field description',
                           isAdminField: false,
+                          hasRule: false,
                           render: 'WYSIWYG',
                           locale: 'fr-FR'
                         }
@@ -152,6 +175,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                         options: {
                           description: 'Body multiloc field description',
                           isAdminField: false,
+                          hasRule: false,
                           render: 'WYSIWYG',
                           locale: 'nl-NL'
                         }
@@ -170,8 +194,10 @@ RSpec.describe InputUiSchemaGeneratorService do
                     scope: "#/properties/#{field1.key}",
                     label: 'Text titre',
                     options: {
+                      input_type: field1.input_type,
                       description: 'Text description',
                       isAdminField: false,
+                      hasRule: false,
                       transform: 'trim_on_blur'
                     }
                   }
@@ -193,15 +219,16 @@ RSpec.describe InputUiSchemaGeneratorService do
                 elements: [
                   {
                     type: 'VerticalLayout',
-                    options: { render: 'multiloc' },
+                    options: { input_type: field2.input_type, render: 'multiloc' },
                     elements: [
                       {
                         type: 'Control',
                         scope: "#/properties/#{field2.key}/properties/en",
-                        label: 'Body multiloc field title',
+                        label: 'Body multiloc veldtitel',
                         options: {
-                          description: 'Body multiloc field description',
+                          description: 'Body multiloc veldbeschrijving',
                           isAdminField: false,
+                          hasRule: false,
                           render: 'WYSIWYG',
                           locale: 'en'
                         }
@@ -209,10 +236,11 @@ RSpec.describe InputUiSchemaGeneratorService do
                       {
                         type: 'Control',
                         scope: "#/properties/#{field2.key}/properties/fr-FR",
-                        label: 'Body multiloc field title',
+                        label: 'Body multiloc veldtitel',
                         options: {
-                          description: 'Body multiloc field description',
+                          description: 'Body multiloc veldbeschrijving',
                           isAdminField: false,
+                          hasRule: false,
                           render: 'WYSIWYG',
                           locale: 'fr-FR'
                         }
@@ -220,10 +248,11 @@ RSpec.describe InputUiSchemaGeneratorService do
                       {
                         type: 'Control',
                         scope: "#/properties/#{field2.key}/properties/nl-NL",
-                        label: 'Body multiloc field title',
+                        label: 'Body multiloc veldtitel',
                         options: {
-                          description: 'Body multiloc field description',
+                          description: 'Body multiloc veldbeschrijving',
                           isAdminField: false,
+                          hasRule: false,
                           render: 'WYSIWYG',
                           locale: 'nl-NL'
                         }
@@ -242,8 +271,10 @@ RSpec.describe InputUiSchemaGeneratorService do
                     scope: "#/properties/#{field1.key}",
                     label: 'Text titel',
                     options: {
+                      input_type: field1.input_type,
                       description: 'Text description',
                       isAdminField: false,
+                      hasRule: false,
                       transform: 'trim_on_blur'
                     }
                   }
@@ -256,7 +287,8 @@ RSpec.describe InputUiSchemaGeneratorService do
     end
 
     context 'for a continuous ideation project' do
-      let(:project) { create(:continuous_project, input_term: 'option') }
+      let(:input_term) { 'option' }
+      let(:project) { create(:continuous_project, input_term: 'issue') }
       let(:continuous_fields) do
         IdeaCustomFieldsService.new(
           create(:custom_form, participation_context: project)
@@ -266,6 +298,15 @@ RSpec.describe InputUiSchemaGeneratorService do
       it 'uses the right input_term' do
         ui_schema = generator.generate_for(continuous_fields)['en']
         expect(ui_schema.dig(:options, :inputTerm)).to eq 'option'
+      end
+
+      context 'when a nil input_term is given' do
+        let(:input_term) { nil }
+
+        it 'uses the default "idea" as input_term' do
+          ui_schema = generator.generate_for(continuous_fields)['en']
+          expect(ui_schema.dig(:options, :inputTerm)).to eq 'idea'
+        end
       end
 
       it 'does not include the details category when there are no fields inside' do
@@ -310,7 +351,7 @@ RSpec.describe InputUiSchemaGeneratorService do
       end
     end
 
-    context 'for a continuous native survey project' do
+    context 'for a continuous native survey project without pages' do
       let(:project) { create(:continuous_native_survey_project) }
       let(:form) { create :custom_form, participation_context: project }
       let!(:field) { create :custom_field, resource: form }
@@ -321,7 +362,7 @@ RSpec.describe InputUiSchemaGeneratorService do
           type: 'Categorization',
           options: {
             formId: 'idea-form',
-            inputTerm: 'idea'
+            inputTerm: input_term
           },
           elements: [{
             type: 'Category',
@@ -332,8 +373,10 @@ RSpec.describe InputUiSchemaGeneratorService do
               scope: "#/properties/#{field.key}",
               label: 'Did you attend',
               options: {
+                input_type: field.input_type,
                 description: 'Which councils are you attending in our city?',
                 isAdminField: false,
+                hasRule: false,
                 transform: 'trim_on_blur'
               }
             }]
@@ -342,9 +385,317 @@ RSpec.describe InputUiSchemaGeneratorService do
       end
     end
 
+    context 'for a continuous native survey project with pages' do
+      let(:project) { create(:continuous_native_survey_project) }
+      let(:form) { create :custom_form, participation_context: project }
+      let!(:page1) do
+        create(
+          :custom_field_page,
+          resource: form,
+          key: 'about_you',
+          title_multiloc: { 'en' => 'About you' },
+          description_multiloc: { 'en' => 'Please fill in some <strong>personal details</strong>.' }
+        )
+      end
+      let!(:field_in_page1) do
+        create(
+          :custom_field,
+          resource: form,
+          key: 'what_is_your_age',
+          title_multiloc: { 'en' => 'What is your age?' },
+          description_multiloc: { 'en' => 'Enter a number.' }
+        )
+      end
+      let!(:page2) do
+        create(
+          :custom_field_page,
+          resource: form,
+          key: 'about_your_cycling_habits',
+          title_multiloc: { 'en' => 'About your cycling habits' },
+          description_multiloc: { 'en' => 'Please indicate how you use <strong>a bike</strong>.' }
+        )
+      end
+      let!(:field_in_page2) do
+        create(
+          :custom_field,
+          resource: form,
+          key: 'do_you_own_a_bike',
+          title_multiloc: { 'en' => 'Do you own a bike?' },
+          description_multiloc: { 'en' => 'Enter Yes or No.' }
+        )
+      end
+      let!(:page3) do
+        create(
+          :custom_field_page,
+          resource: form,
+          key: 'this_is_the_end_of_the_survey',
+          title_multiloc: { 'en' => 'This is the end of the survey' },
+          description_multiloc: { 'en' => 'Thank you for participating 🚀' }
+        )
+      end
+
+      it 'has a category for each page, including the fixed survey end page' do
+        en_ui_schema = generator.generate_for([page1, field_in_page1, page2, field_in_page2, page3])['en']
+        expect(en_ui_schema).to eq({
+          type: 'Categorization',
+          options: {
+            formId: 'idea-form',
+            inputTerm: 'idea'
+          },
+          elements: [
+            {
+              type: 'Page',
+              options: {
+                input_type: page1.input_type,
+                id: page1.id,
+                title: 'About you',
+                description: 'Please fill in some <strong>personal details</strong>.'
+              },
+              elements: [{
+                type: 'Control',
+                scope: "#/properties/#{field_in_page1.key}",
+                label: 'What is your age?',
+                options: {
+                  input_type: field_in_page1.input_type,
+                  description: 'Enter a number.',
+                  isAdminField: false,
+                  hasRule: false,
+                  transform: 'trim_on_blur'
+                }
+              }]
+            },
+            {
+              type: 'Page',
+              options: {
+                input_type: page2.input_type,
+                id: page2.id,
+                title: 'About your cycling habits',
+                description: 'Please indicate how you use <strong>a bike</strong>.'
+              },
+              elements: [{
+                type: 'Control',
+                scope: "#/properties/#{field_in_page2.key}",
+                label: 'Do you own a bike?',
+                options: {
+                  input_type: field_in_page2.input_type,
+                  description: 'Enter Yes or No.',
+                  isAdminField: false,
+                  hasRule: false,
+                  transform: 'trim_on_blur'
+                }
+              }]
+            },
+            {
+              type: 'Page',
+              options: {
+                input_type: page3.input_type,
+                id: page3.id,
+                title: 'This is the end of the survey',
+                description: 'Thank you for participating 🚀'
+              },
+              elements: []
+            },
+            {
+              type: 'Page',
+              options: {
+                id: 'survey_end',
+                title: 'Survey end',
+                description: "Please submit your answers by selecting 'Submit survey' below."
+              },
+              elements: []
+            }
+          ]
+        })
+      end
+    end
+
+    context 'for a continuous native survey project with pages and logic' do
+      let(:project) { create(:continuous_native_survey_project) }
+      let(:form) { create :custom_form, participation_context: project }
+      let!(:page1) do
+        create(
+          :custom_field_page,
+          resource: form,
+          key: 'page1',
+          title_multiloc: { 'en' => '' },
+          description_multiloc: { 'en' => '' }
+        )
+      end
+      let!(:field_in_page1) do
+        create(
+          :custom_field,
+          resource: form,
+          input_type: 'linear_scale',
+          key: 'how_old_are_you',
+          title_multiloc: { 'en' => 'Hold old are you?' },
+          description_multiloc: { 'en' => '' },
+          maximum: 7,
+          logic: {
+            rules: [
+              {
+                if: 1,
+                goto_page_id: page3.id
+              }
+            ]
+          }
+        )
+      end
+      let!(:page2) do
+        create(
+          :custom_field_page,
+          resource: form,
+          key: 'page2',
+          title_multiloc: { 'en' => '' },
+          description_multiloc: { 'en' => '' }
+        )
+      end
+      let!(:field_in_page2) do
+        create(
+          :custom_field,
+          resource: form,
+          input_type: 'select',
+          key: 'how_often_do_you_choose_to_cycle',
+          title_multiloc: { 'en' => 'When considering travel near your home, how often do you choose to CYCLE?' },
+          description_multiloc: { 'en' => '' }
+        )
+      end
+      let!(:every_day_option) do
+        create(:custom_field_option, custom_field: field_in_page2, key: 'every_day', title_multiloc: { 'en' => 'Every day' })
+      end
+      let!(:never_option) do
+        create(:custom_field_option, custom_field: field_in_page2, key: 'never', title_multiloc: { 'en' => 'Never' })
+      end
+      let!(:page3) do
+        create(
+          :custom_field_page,
+          resource: form,
+          key: 'page3',
+          title_multiloc: { 'en' => '' },
+          description_multiloc: { 'en' => '' }
+        )
+      end
+      let!(:page4) do
+        create(
+          :custom_field_page,
+          resource: form,
+          key: 'page4',
+          title_multiloc: { 'en' => '' },
+          description_multiloc: { 'en' => '' }
+        )
+      end
+
+      before do
+        field_in_page2.update!(logic: {
+          rules: [
+            {
+              if: never_option.id,
+              goto_page_id: page4.id
+            }
+          ]
+        })
+      end
+
+      it 'includes rules for logic' do
+        en_ui_schema = generator.generate_for([page1, field_in_page1, page2, field_in_page2, page3])['en']
+        expect(en_ui_schema).to eq({
+          type: 'Categorization',
+          options: {
+            formId: 'idea-form',
+            inputTerm: 'idea'
+          },
+          elements: [
+            {
+              type: 'Page',
+              options: {
+                input_type: page1.input_type,
+                id: page1.id,
+                title: '',
+                description: ''
+              },
+              elements: [{
+                type: 'Control',
+                scope: "#/properties/#{field_in_page1.key}",
+                label: 'Hold old are you?',
+                options: {
+                  input_type: field_in_page1.input_type,
+                  description: '',
+                  isAdminField: false,
+                  hasRule: true,
+                  maximum_label: '',
+                  minimum_label: ''
+                }
+              }]
+            },
+            {
+              type: 'Page',
+              options: {
+                input_type: page2.input_type,
+                id: page2.id,
+                title: '',
+                description: ''
+              },
+              elements: [{
+                type: 'Control',
+                scope: "#/properties/#{field_in_page2.key}",
+                label: 'When considering travel near your home, how often do you choose to CYCLE?',
+                options: {
+                  input_type: field_in_page2.input_type,
+                  description: '',
+                  isAdminField: false,
+                  hasRule: true
+                }
+              }],
+              ruleArray: [
+                {
+                  effect: 'HIDE',
+                  condition: {
+                    scope: "#/properties/#{field_in_page1.key}",
+                    schema: {
+                      enum: [1]
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              type: 'Page',
+              options: {
+                input_type: page3.input_type,
+                id: page3.id,
+                title: '',
+                description: ''
+              },
+              elements: [],
+              ruleArray: [
+                {
+                  effect: 'HIDE',
+                  condition: {
+                    scope: "#/properties/#{field_in_page2.key}",
+                    schema: {
+                      enum: [never_option.key]
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              type: 'Page',
+              options: {
+                id: 'survey_end',
+                title: 'Survey end',
+                description: "Please submit your answers by selecting 'Submit survey' below."
+              },
+              elements: []
+            }
+          ]
+        })
+      end
+    end
+
     context 'for a timeline project' do
+      let(:input_term) { 'contribution' }
       let(:timeline_fields) do
-        project_with_current_phase = create(:project_with_current_phase, input_term: 'contribution')
+        project_with_current_phase = create(:project_with_current_phase, input_term: 'issue')
         TimelineService.new.current_phase(project_with_current_phase).update!(input_term: 'option')
         IdeaCustomFieldsService.new(create(:custom_form, participation_context: project_with_current_phase)).all_fields
       end
@@ -378,9 +729,11 @@ RSpec.describe InputUiSchemaGeneratorService do
           scope: "#/properties/#{field_key}",
           label: 'Text field title',
           options: {
+            input_type: field.input_type,
             description: 'Text field description',
             transform: 'trim_on_blur',
-            isAdminField: true
+            isAdminField: true,
+            hasRule: false
           }
         })
       end
@@ -393,9 +746,11 @@ RSpec.describe InputUiSchemaGeneratorService do
           scope: "#/properties/#{field_key}",
           label: 'Text field title',
           options: {
+            input_type: field.input_type,
             description: 'Text field description',
             transform: 'trim_on_blur',
-            isAdminField: false
+            isAdminField: false,
+            hasRule: false
           }
         })
       end
@@ -424,8 +779,10 @@ RSpec.describe InputUiSchemaGeneratorService do
           scope: "#/properties/#{field_key}",
           label: 'Number field title',
           options: {
+            input_type: field.input_type,
             description: 'Number field description',
-            isAdminField: true
+            isAdminField: true,
+            hasRule: false
           }
         })
       end
@@ -438,8 +795,10 @@ RSpec.describe InputUiSchemaGeneratorService do
           scope: "#/properties/#{field_key}",
           label: 'Number field title',
           options: {
+            input_type: field.input_type,
             description: 'Number field description',
-            isAdminField: false
+            isAdminField: false,
+            hasRule: false
           }
         })
       end
@@ -454,51 +813,152 @@ RSpec.describe InputUiSchemaGeneratorService do
           input_type: 'html_multiloc',
           code: 'body_multiloc',
           key: field_key,
-          title_multiloc: { 'en' => 'Body multiloc field title' },
-          description_multiloc: { 'en' => 'Body multiloc field description' }
+          title_multiloc: {
+            'en' => 'Body multiloc field title',
+            'nl-NL' => 'Body multiloc veldtitel'
+            # No 'fr-FR' to describe that it will default to 'en'.
+          },
+          description_multiloc: {
+            'en' => 'Body multiloc field description',
+            'nl-NL' => 'Body multiloc veldbeschrijving'
+            # No 'fr-FR' to describe that it will default to 'en'.
+          }
         )
       end
 
-      it 'returns the schema for the given built-in field' do
-        expect(generator.visit_html_multiloc(field)).to eq({
-          type: 'VerticalLayout',
-          options: { render: 'multiloc' },
-          elements: [
-            {
-              type: 'Control',
-              scope: "#/properties/#{field_key}/properties/en",
-              label: 'Body multiloc field title',
-              options: {
-                description: 'Body multiloc field description',
-                isAdminField: false,
-                render: 'WYSIWYG',
-                locale: 'en'
+      it 'returns the schema for the given built-in field with translations in the current locale' do
+        I18n.with_locale('en') do
+          expect(generator.visit_html_multiloc(field)).to eq({
+            type: 'VerticalLayout',
+            options: { input_type: field.input_type, render: 'multiloc' },
+            elements: [
+              {
+                type: 'Control',
+                scope: "#/properties/#{field_key}/properties/en",
+                label: 'Body multiloc field title',
+                options: {
+                  description: 'Body multiloc field description',
+                  isAdminField: false,
+                  hasRule: false,
+                  render: 'WYSIWYG',
+                  locale: 'en'
+                }
+              },
+              {
+                type: 'Control',
+                scope: "#/properties/#{field_key}/properties/fr-FR",
+                label: 'Body multiloc field title',
+                options: {
+                  description: 'Body multiloc field description',
+                  isAdminField: false,
+                  hasRule: false,
+                  render: 'WYSIWYG',
+                  locale: 'fr-FR'
+                }
+              },
+              {
+                type: 'Control',
+                scope: "#/properties/#{field_key}/properties/nl-NL",
+                label: 'Body multiloc field title',
+                options: {
+                  description: 'Body multiloc field description',
+                  isAdminField: false,
+                  hasRule: false,
+                  render: 'WYSIWYG',
+                  locale: 'nl-NL'
+                }
               }
-            },
-            {
-              type: 'Control',
-              scope: "#/properties/#{field_key}/properties/fr-FR",
-              label: 'Body multiloc field title',
-              options: {
-                description: 'Body multiloc field description',
-                isAdminField: false,
-                render: 'WYSIWYG',
-                locale: 'fr-FR'
+            ]
+          })
+        end
+        I18n.with_locale('fr-FR') do
+          expect(generator.visit_html_multiloc(field)).to eq({
+            type: 'VerticalLayout',
+            options: { input_type: field.input_type, render: 'multiloc' },
+            elements: [
+              {
+                type: 'Control',
+                scope: "#/properties/#{field_key}/properties/en",
+                label: 'Body multiloc field title',
+                options: {
+                  description: 'Body multiloc field description',
+                  isAdminField: false,
+                  hasRule: false,
+                  render: 'WYSIWYG',
+                  locale: 'en'
+                }
+              },
+              {
+                type: 'Control',
+                scope: "#/properties/#{field_key}/properties/fr-FR",
+                label: 'Body multiloc field title',
+                options: {
+                  description: 'Body multiloc field description',
+                  isAdminField: false,
+                  hasRule: false,
+                  render: 'WYSIWYG',
+                  locale: 'fr-FR'
+                }
+              },
+              {
+                type: 'Control',
+                scope: "#/properties/#{field_key}/properties/nl-NL",
+                label: 'Body multiloc field title',
+                options: {
+                  description: 'Body multiloc field description',
+                  isAdminField: false,
+                  hasRule: false,
+                  render: 'WYSIWYG',
+                  locale: 'nl-NL'
+                }
               }
-            },
-            {
-              type: 'Control',
-              scope: "#/properties/#{field_key}/properties/nl-NL",
-              label: 'Body multiloc field title',
-              options: {
-                description: 'Body multiloc field description',
-                isAdminField: false,
-                render: 'WYSIWYG',
-                locale: 'nl-NL'
+            ]
+          })
+        end
+        I18n.with_locale('nl-NL') do
+          expect(generator.visit_html_multiloc(field)).to eq({
+            type: 'VerticalLayout',
+            options: { input_type: field.input_type, render: 'multiloc' },
+            elements: [
+              {
+                type: 'Control',
+                scope: "#/properties/#{field_key}/properties/en",
+                label: 'Body multiloc veldtitel',
+                options: {
+                  description: 'Body multiloc veldbeschrijving',
+                  isAdminField: false,
+                  hasRule: false,
+                  render: 'WYSIWYG',
+                  locale: 'en'
+                }
+              },
+              {
+                type: 'Control',
+                scope: "#/properties/#{field_key}/properties/fr-FR",
+                label: 'Body multiloc veldtitel',
+                options: {
+                  description: 'Body multiloc veldbeschrijving',
+                  isAdminField: false,
+                  hasRule: false,
+                  render: 'WYSIWYG',
+                  locale: 'fr-FR'
+                }
+              },
+              {
+                type: 'Control',
+                scope: "#/properties/#{field_key}/properties/nl-NL",
+                label: 'Body multiloc veldtitel',
+                options: {
+                  description: 'Body multiloc veldbeschrijving',
+                  isAdminField: false,
+                  hasRule: false,
+                  render: 'WYSIWYG',
+                  locale: 'nl-NL'
+                }
               }
-            }
-          ]
-        })
+            ]
+          })
+        end
       end
     end
 
@@ -516,7 +976,7 @@ RSpec.describe InputUiSchemaGeneratorService do
       it 'returns the schema for the given field' do
         expect(generator.visit_html_multiloc(field)).to eq({
           type: 'VerticalLayout',
-          options: { render: 'multiloc' },
+          options: { input_type: field.input_type, render: 'multiloc' },
           elements: [
             {
               type: 'Control',
@@ -525,6 +985,7 @@ RSpec.describe InputUiSchemaGeneratorService do
               options: {
                 description: 'HTML multiloc field description',
                 isAdminField: false,
+                hasRule: false,
                 render: 'WYSIWYG',
                 trim_on_blur: true,
                 locale: 'en'
@@ -537,6 +998,7 @@ RSpec.describe InputUiSchemaGeneratorService do
               options: {
                 description: 'HTML multiloc field description',
                 isAdminField: false,
+                hasRule: false,
                 render: 'WYSIWYG',
                 trim_on_blur: true,
                 locale: 'fr-FR'
@@ -549,6 +1011,7 @@ RSpec.describe InputUiSchemaGeneratorService do
               options: {
                 description: 'HTML multiloc field description',
                 isAdminField: false,
+                hasRule: false,
                 render: 'WYSIWYG',
                 trim_on_blur: true,
                 locale: 'nl-NL'
@@ -557,6 +1020,31 @@ RSpec.describe InputUiSchemaGeneratorService do
           ]
         })
       end
+    end
+  end
+
+  describe '#visit_page' do
+    let(:field) do
+      create(
+        :custom_field,
+        input_type: 'page',
+        key: field_key,
+        title_multiloc: { 'en' => 'Page field title' },
+        description_multiloc: { 'en' => 'Page field description' }
+      )
+    end
+
+    it 'returns the schema for the given field, with id, and without elements' do
+      expect(generator.visit_page(field)).to eq({
+        type: 'Page',
+        options: {
+          input_type: field.input_type,
+          id: field.id,
+          title: 'Page field title',
+          description: 'Page field description'
+        },
+        elements: []
+      })
     end
   end
 end

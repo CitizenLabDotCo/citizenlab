@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
 
   s.add_dependency 'rails', '~> 6.1'
-  s.add_dependency 'httparty', '~> 0.16.2'
+  s.add_dependency 'httparty'
   s.add_dependency 'verification'
 
   s.add_development_dependency 'rspec_api_documentation'

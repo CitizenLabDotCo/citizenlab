@@ -9,7 +9,6 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 // components
 import { Icon, IconButton } from '@citizenlab/cl2-component-library';
-import { UploadFile } from 'typings';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -22,7 +21,7 @@ const Container = styled.div<{ error: boolean }>`
   padding: 10px 20px;
   margin-bottom: 10px;
   margin-top: 10px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   border: 1px solid
     ${({ error }) =>
       error ? lighten(0.4, colors.error) : lighten(0.4, colors.textSecondary)};
@@ -72,8 +71,18 @@ const FileSize = styled.span<{ error: boolean }>`
 
 const DeleteIconButton = styled(IconButton)``;
 
+export interface FileType {
+  id?: string;
+  url?: string;
+  remote?: boolean;
+  base64?: string;
+  name: string;
+  size: number;
+  error?: string[];
+}
+
 interface Props {
-  file: UploadFile;
+  file: FileType;
   onDeleteClick: (event: React.MouseEvent) => void;
 }
 
@@ -82,9 +91,9 @@ const FileDisplay = ({
   intl: { formatMessage },
   onDeleteClick,
 }: Props & WrappedComponentProps) => {
-  const { error, url, filename, size } = file;
+  const { url, size, name: filename, error } = file;
   return (
-    <Container error={!!file.error}>
+    <Container error={!!error}>
       <Paperclip name="paperclip" ariaHidden />
       <FileInfo>
         <FileDownloadLink
@@ -115,8 +124,6 @@ const FileDisplay = ({
         iconName="delete"
         a11y_buttonActionMessage={formatMessage(messages.a11y_removeFile)}
         onClick={onDeleteClick}
-        iconWidth={'12px'}
-        iconHeight={'14px'}
         iconColor={colors.textSecondary}
         iconColorOnHover={colors.error}
       />

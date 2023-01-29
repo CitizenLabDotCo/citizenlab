@@ -160,6 +160,7 @@ describe JsonFormsService do
             scope: '#/properties/field1',
             label: 'Did you attend',
             options: {
+              input_type: 'text',
               description: 'Which councils are you attending in our city?',
               transform: 'trim_on_blur'
             }
@@ -169,6 +170,7 @@ describe JsonFormsService do
             scope: '#/properties/field2',
             label: 'Did you attend',
             options: {
+              input_type: 'multiline_text',
               description: 'Which councils are you attending in our city?',
               textarea: true,
               transform: 'trim_on_blur'
@@ -178,6 +180,7 @@ describe JsonFormsService do
             type: 'Control',
             label: 'Did you attend',
             options: {
+              input_type: 'select',
               description: 'Which councils are you attending in our city?'
             },
             scope: '#/properties/field3'
@@ -186,6 +189,7 @@ describe JsonFormsService do
             type: 'Control',
             label: 'Did you attend',
             options: {
+              input_type: 'multiselect',
               description: 'Which councils are you attending in our city?'
             },
             scope: '#/properties/field4'
@@ -194,6 +198,7 @@ describe JsonFormsService do
             type: 'Control',
             label: 'Did you attend',
             options: {
+              input_type: 'checkbox',
               description: 'Which councils are you attending in our city?'
             },
             scope: '#/properties/field5'
@@ -202,6 +207,7 @@ describe JsonFormsService do
             type: 'Control',
             label: 'Did you attend',
             options: {
+              input_type: 'date',
               description: 'Which councils are you attending in our city?'
             },
             scope: '#/properties/field6'
@@ -242,7 +248,7 @@ describe JsonFormsService do
         )
         fields = [required_field, optional_field, build_in_required_field, build_in_optional_field]
 
-        output = service.input_ui_and_json_multiloc_schemas fields, user
+        output = service.input_ui_and_json_multiloc_schemas fields, user, 'question'
         expect(output).to include(
           {
             json_schema_multiloc: {
@@ -277,7 +283,7 @@ describe JsonFormsService do
             ui_schema_multiloc: {
               'en' => {
                 type: 'Categorization',
-                options: { formId: 'idea-form', inputTerm: 'idea' },
+                options: { formId: 'idea-form', inputTerm: 'question' },
                 elements: [
                   {
                     type: 'Category',
@@ -289,15 +295,17 @@ describe JsonFormsService do
                         scope: '#/properties/topic_ids',
                         label: build_in_required_field.title_multiloc['en'],
                         options: {
+                          input_type: build_in_required_field.input_type,
                           description: build_in_required_field.description_multiloc['en'],
-                          isAdminField: false
+                          isAdminField: false,
+                          hasRule: false
                         }
                       }
                     ]
                   },
                   {
                     type: 'Category',
-                    label: 'Images and Attachements',
+                    label: 'Images and attachments',
                     options: { id: 'attachments' },
                     elements: [
                       {
@@ -305,8 +313,10 @@ describe JsonFormsService do
                         scope: '#/properties/idea_files_attributes',
                         label: build_in_optional_field.title_multiloc['en'],
                         options: {
+                          input_type: build_in_optional_field.input_type,
                           description: build_in_optional_field.description_multiloc['en'],
-                          isAdminField: false
+                          isAdminField: false,
+                          hasRule: false
                         }
                       }
                     ]
@@ -321,8 +331,10 @@ describe JsonFormsService do
                         scope: "#/properties/#{required_field.key}",
                         label: required_field.title_multiloc['en'],
                         options: {
+                          input_type: required_field.input_type,
                           description: required_field.description_multiloc['en'],
-                          isAdminField: false
+                          isAdminField: false,
+                          hasRule: false
                         }
                       },
                       {
@@ -330,8 +342,10 @@ describe JsonFormsService do
                         scope: "#/properties/#{optional_field.key}",
                         label: optional_field.title_multiloc['en'],
                         options: {
+                          input_type: optional_field.input_type,
                           description: optional_field.description_multiloc['en'],
-                          isAdminField: false
+                          isAdminField: false,
+                          hasRule: false
                         }
                       }
                     ]
@@ -341,6 +355,32 @@ describe JsonFormsService do
             }
           }
         )
+      end
+
+      it 'renders text images for fields' do
+        description_multiloc = {
+          'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
+        }
+        field = create :custom_field, :for_custom_form, input_type: 'text', description_multiloc: description_multiloc
+        allow_any_instance_of(TextImageService).to(
+          receive(:render_data_images).with(field, :description_multiloc).and_return({ 'en' => 'Description with text images' })
+        )
+
+        ui_schema = service.input_ui_and_json_multiloc_schemas([field], nil, 'option')[:ui_schema_multiloc]
+        expect(ui_schema.dig('en', :elements, 0, :elements, 0, :options, :description)).to eq 'Description with text images'
+      end
+
+      it 'renders text images for pages' do
+        description_multiloc = {
+          'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
+        }
+        field = create :custom_field, :for_custom_form, input_type: 'page', description_multiloc: description_multiloc
+        allow_any_instance_of(TextImageService).to(
+          receive(:render_data_images).with(field, :description_multiloc).and_return({ 'en' => 'Description with text images' })
+        )
+
+        ui_schema = service.input_ui_and_json_multiloc_schemas([field], nil, 'question')[:ui_schema_multiloc]
+        expect(ui_schema.dig('en', :elements, 0, :options, :description)).to eq 'Description with text images'
       end
     end
   end

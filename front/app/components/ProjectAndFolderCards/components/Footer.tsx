@@ -32,7 +32,7 @@ interface Props {
 }
 
 const Footer = ({ loadingMore, onShowMore }: Props) => {
-  const theme: any = useTheme();
+  const theme = useTheme();
 
   return (
     <Container>

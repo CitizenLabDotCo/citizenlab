@@ -15,9 +15,7 @@ import ColorPicker from 'components/HookForm/ColorPicker';
 import Feedback from 'components/HookForm/Feedback';
 
 // I18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import localize, { InjectedLocalized } from 'utils/localize';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
 // Resources
@@ -30,6 +28,7 @@ import { IProjectData } from 'services/projects';
 
 // Styling
 import styled from 'styled-components';
+import useLocalize from 'hooks/useLocalize';
 
 const StyledCollapse = styled(Collapse)`
   flex: 1;
@@ -42,7 +41,7 @@ const StyledSection = styled(Section)`
   width: 100%;
   max-width: 500px;
   padding: 20px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   border: solid 1px #ddd;
   background: #fff;
 `;
@@ -69,10 +68,9 @@ export interface FormValues {
   limit: number;
 }
 
-const WidgetForm = ({
-  intl: { formatMessage },
-  localize,
-}: WrappedComponentProps & InjectedLocalized) => {
+const WidgetForm = () => {
+  const { formatMessage } = useIntl();
+  const localize = useLocalize();
   const methods = useFormContext();
   const [openedCollapse, setOpenedCollapse] = useState<
     'dimensions' | 'ideas' | 'style' | 'headerAndFooter' | null
@@ -352,4 +350,4 @@ const WidgetForm = ({
   );
 };
 
-export default injectIntl(localize(WidgetForm));
+export default WidgetForm;

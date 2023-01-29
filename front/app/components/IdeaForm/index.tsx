@@ -42,6 +42,10 @@ import {
   IIdeaFormSchemas,
   CustomFieldCodes,
 } from 'services/ideaCustomFieldsSchemas';
+import {
+  ideaJsonFormsSchemaStream,
+  IIdeaJsonFormSchemas,
+} from 'services/ideaJsonFormsSchema';
 import { getTopicIds } from 'services/projectAllowedInputTopics';
 
 // resources
@@ -145,6 +149,8 @@ interface InputProps {
 interface DataProps {
   pbEnabled: GetFeatureFlagChildProps;
   ideaAuthorChangeEnabled: GetFeatureFlagChildProps;
+  isIdeaCustomFieldsEnabled: GetFeatureFlagChildProps;
+  isDynamicIdeaFormEnabled: GetFeatureFlagChildProps;
   allowedTopics: GetTopicsChildProps;
   project: GetProjectChildProps;
   phases: GetPhasesChildProps;
@@ -176,7 +182,7 @@ interface State {
   ideaFiles: UploadFile[];
   ideaFilesToRemove: UploadFile[];
   ideaFilesChanged: boolean;
-  ideaCustomFieldsSchemas: IIdeaFormSchemas | null;
+  ideaCustomFieldsSchemas: IIdeaFormSchemas | IIdeaJsonFormSchemas | null;
   authorId: string | null;
 }
 
@@ -188,7 +194,7 @@ class IdeaForm extends PureComponent<
   titleInputElement: HTMLInputElement | null;
   descriptionElement: HTMLDivElement | null;
 
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps & WithRouterProps) {
     super(props);
     this.state = {
       locale: null,
@@ -222,16 +228,36 @@ class IdeaForm extends PureComponent<
   }
 
   componentDidMount() {
-    const { projectId, ideaId, phaseId } = this.props;
+    const {
+      projectId,
+      ideaId,
+      phaseId,
+      isIdeaCustomFieldsEnabled,
+      isDynamicIdeaFormEnabled,
+    } = this.props;
     const locale$ = localeStream().observable;
     const tenant$ = currentAppConfigurationStream().observable;
     const project$: Observable<IProject | null> =
       projectByIdStream(projectId).observable;
-    const ideaCustomFieldsSchemas$ = ideaFormSchemaStream(
-      projectId as string,
-      phaseId,
-      ideaId
-    ).observable;
+
+    let ideaCustomFieldsSchemas$: Observable<
+      IIdeaFormSchemas | IIdeaJsonFormSchemas | Error | null
+    > = of(null);
+
+    if (isIdeaCustomFieldsEnabled && isDynamicIdeaFormEnabled) {
+      ideaCustomFieldsSchemas$ = ideaJsonFormsSchemaStream(
+        projectId as string,
+        phaseId,
+        ideaId
+      ).observable;
+    } else {
+      ideaCustomFieldsSchemas$ = ideaFormSchemaStream(
+        projectId,
+        phaseId,
+        ideaId
+      ).observable;
+    }
+
     const pbContext$: Observable<IProjectData | IPhaseData | null> =
       project$.pipe(
         switchMap((project) => {
@@ -269,9 +295,11 @@ class IdeaForm extends PureComponent<
 
       pbContext$.subscribe((pbContext) => this.setState({ pbContext })),
 
-      ideaCustomFieldsSchemas$.subscribe((ideaCustomFieldsSchemas) =>
-        this.setState({ ideaCustomFieldsSchemas })
-      ),
+      ideaCustomFieldsSchemas$.subscribe((ideaCustomFieldsSchemas) => {
+        if (!isNilOrError(ideaCustomFieldsSchemas)) {
+          this.setState({ ideaCustomFieldsSchemas });
+        }
+      }),
 
       eventEmitter
         .observeEvent('IdeaFormSubmitEvent')
@@ -652,12 +680,14 @@ class IdeaForm extends PureComponent<
 
   isFieldRequired = (
     fieldCode: CustomFieldCodes,
-    ideaCustomFieldsSchemas: IIdeaFormSchemas,
+    ideaCustomFieldsSchemas: IIdeaFormSchemas | IIdeaJsonFormSchemas,
     locale: Locale
   ) => {
-    return ideaCustomFieldsSchemas.json_schema_multiloc[
-      locale
-    ].required?.includes(fieldCode);
+    return (
+      ideaCustomFieldsSchemas.json_schema_multiloc[locale]?.required?.includes(
+        fieldCode
+      ) || false
+    );
   };
 
   handleAuthorChange = (authorId?: string) => {
@@ -738,11 +768,19 @@ class IdeaForm extends PureComponent<
         topicsEnabled && allowedTopics && allowedTopics.length > 0;
       const showLocation = locationEnabled;
       const showProposedBudget = proposedBudgetEnabled;
-      const inputTerm = getInputTerm(
+
+      const uiSchemaOptions =
+        ideaCustomFieldsSchemas?.ui_schema_multiloc[locale]?.options;
+
+      let inputTerm = getInputTerm(
         project.attributes.process_type,
         project,
         phases
       );
+
+      if (!isNilOrError(uiSchemaOptions) && uiSchemaOptions['inputTerm']) {
+        inputTerm = uiSchemaOptions['inputTerm'];
+      }
 
       const AdminBudgetFieldLabel = () => {
         return (
@@ -1087,6 +1125,8 @@ class IdeaForm extends PureComponent<
 const Data = adopt<DataProps, InputProps>({
   pbEnabled: <GetFeatureFlag name="participatory_budgeting" />,
   ideaAuthorChangeEnabled: <GetFeatureFlag name="idea_author_change" />,
+  isIdeaCustomFieldsEnabled: <GetFeatureFlag name="idea_custom_fields" />,
+  isDynamicIdeaFormEnabled: <GetFeatureFlag name="dynamic_idea_form" />,
   project: ({ projectId, render }) => (
     <GetProject projectId={projectId}>{render}</GetProject>
   ),

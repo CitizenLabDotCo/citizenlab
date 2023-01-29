@@ -24,7 +24,7 @@ describe ProjectImagePolicy do
       end
     end
 
-    context 'for a mortal user' do
+    context 'for a resident' do
       let(:user) { create(:user) }
 
       it { is_expected.to     permit(:show)    }
@@ -49,13 +49,26 @@ describe ProjectImagePolicy do
         expect(scope.resolve.size).to eq 1
       end
     end
+
+    context 'for a moderator' do
+      let(:user) { create(:project_moderator, projects: [project]) }
+
+      it { is_expected.to permit(:show)    }
+      it { is_expected.to permit(:create)  }
+      it { is_expected.to permit(:update)  }
+      it { is_expected.to permit(:destroy) }
+
+      it 'indexes the image' do
+        expect(scope.resolve.size).to eq 1
+      end
+    end
   end
 
   context 'on an image in a private admins project' do
     let(:project) { create(:private_admins_project) }
     let!(:image) { create(:project_image, project: project) }
 
-    context 'for a user' do
+    context 'for a resident' do
       let(:user) { create(:user) }
 
       it { is_expected.not_to permit(:show)    }

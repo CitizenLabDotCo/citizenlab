@@ -9,6 +9,7 @@ const StickyContainer = styled.div`
   width: calc(100% + 8rem);
 
   position: sticky;
+  z-index: 1;
   bottom: 0;
   margin-left: -4rem;
   margin-bottom: -4rem;
@@ -22,8 +23,6 @@ const StickyContainer = styled.div`
     margin-left: -2rem;
     padding-left: 2rem;
   `}
-
-  z-index: 1000;
 `;
 
 export default StickyContainer;

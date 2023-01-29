@@ -84,6 +84,22 @@ FactoryBot.define do
       end
     end
 
+    factory :custom_field_page do
+      title_multiloc do
+        {
+          'en' => 'Cycling survey'
+        }
+      end
+      description_multiloc do
+        {
+          'en' => 'This is a survey on your cycling habits.'
+        }
+      end
+      required { false }
+      input_type { 'page' }
+      enabled { true }
+    end
+
     factory :custom_field_multiselect do
       title_multiloc do
         {

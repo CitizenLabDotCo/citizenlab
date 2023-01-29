@@ -70,7 +70,7 @@ interface State {}
 export default class TextArea extends React.PureComponent<Props, State> {
   textareaElement: HTMLTextAreaElement | null = null;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.textareaElement = null;
   }

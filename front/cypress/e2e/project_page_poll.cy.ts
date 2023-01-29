@@ -1,4 +1,4 @@
-import { randomString } from '../support/commands';
+import { randomEmail, randomString } from '../support/commands';
 
 describe('Existing continuous project with poll', () => {
   before(() => {
@@ -90,6 +90,11 @@ describe('New continuous project with poll', () => {
 });
 
 describe('Timeline project with poll phase', () => {
+  const firstName = randomString();
+  const lastName = randomString();
+  const email = randomEmail();
+  const password = randomString();
+
   const projectTitle = randomString();
   const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
@@ -99,6 +104,8 @@ describe('Timeline project with poll phase', () => {
   let phaseId: string;
 
   before(() => {
+    cy.apiSignup(firstName, lastName, email, password);
+
     cy.apiCreateProject({
       type: 'timeline',
       title: projectTitle,
@@ -132,15 +139,8 @@ describe('Timeline project with poll phase', () => {
               title: 'What is your favourite ice cream flavour?',
               type: 'multiple_options',
             },
-            {
-              title: 'Are you in favour of car-free sundays ?',
-              type: 'single_option',
-            },
           ],
-          [
-            ['Vanilla', 'Chocolate', 'Pistachio'],
-            ['Yes', 'No', 'I decline to answer'],
-          ]
+          [['Vanilla', 'Chocolate', 'Pistachio']]
         );
       });
   });
@@ -158,6 +158,21 @@ describe('Timeline project with poll phase', () => {
   });
 
   it('lets user answer it', () => {
+    cy.wait(100);
+    cy.get('.e2e-timeline-project-poll-container')
+      .get('.e2e-poll-question')
+      .each((question) => question.find('.e2e-poll-option').first().click());
+    cy.wait(500);
+    cy.get('.e2e-send-poll').click();
+    cy.get('.e2e-form-completed');
+  });
+
+  it('lets non-admin, registered users answer it', () => {
+    // set normal user cookie
+    cy.clearCookies();
+    cy.setLoginCookie(email, password);
+    cy.visit(`/projects/${projectSlug}`);
+
     cy.wait(100);
     cy.get('.e2e-timeline-project-poll-container')
       .get('.e2e-poll-question')

@@ -34,7 +34,7 @@ export default function injectLocalize<P>(
     subscriptions: Subscription[];
     static displayName = `WithLocalize(${getDisplayName(Component)})`;
 
-    constructor(props) {
+    constructor(props: P) {
       super(props);
       this.state = {
         locale: null,

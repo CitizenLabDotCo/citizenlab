@@ -19,7 +19,7 @@ import {
   Footer,
   SubmitButton,
   CancelButton,
-} from 'modules/commercial/verification/citizen/components/styles';
+} from 'components/AuthProviders/styles';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';

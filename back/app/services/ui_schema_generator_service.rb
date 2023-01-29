@@ -54,7 +54,8 @@ class UiSchemaGeneratorService < FieldVisitorService
 
   def visit_html_multiloc(field)
     multiloc_field(field) do
-      visit_html(field).tap do |ui_field|
+      default(field).tap do |ui_field|
+        ui_field[:options][:render] = 'WYSIWYG'
         ui_field[:options][:trim_on_blur] = true
       end
     end
@@ -80,6 +81,10 @@ class UiSchemaGeneratorService < FieldVisitorService
     }
   end
 
+  def visit_page(_field)
+    nil
+  end
+
   protected
 
   def generate_for_current_locale(fields)
@@ -87,14 +92,20 @@ class UiSchemaGeneratorService < FieldVisitorService
   end
 
   def default_options(field)
-    { description: multiloc_service.t(field.description_multiloc) }
+    {
+      description: multiloc_service.t(field.description_multiloc)
+    }.tap do |options|
+      unless field.multiloc?
+        options[:input_type] = field.input_type
+      end
+    end
   end
 
   private
 
   attr_reader :locales, :multiloc_service
 
-  def multiloc_field(_field)
+  def multiloc_field(field)
     elements = locales.map do |locale|
       yield.tap do |ui_field|
         ui_field[:scope] = "#{ui_field[:scope]}/properties/#{locale}"
@@ -103,7 +114,7 @@ class UiSchemaGeneratorService < FieldVisitorService
     end
     {
       type: 'VerticalLayout',
-      options: { render: 'multiloc' },
+      options: { input_type: field.input_type, render: 'multiloc' },
       elements: elements
     }
   end

@@ -15,6 +15,7 @@ import { fontSizes } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
 import FormattedAnchor from 'components/FormattedAnchor';
 import Link from 'utils/cl-router/Link';
+import clHistory from 'utils/cl-router/history';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -69,6 +70,7 @@ const DeletionDialog = ({
 
   const deleteProfile = () => {
     eventEmitter.emit('deleteProfileAndShowSuccessModal');
+    clHistory.push('/');
     closeDialog();
   };
 

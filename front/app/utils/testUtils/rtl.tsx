@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
+// eslint-disable-next-line no-restricted-imports
 import { render, RenderOptions } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ThemeProvider } from 'styled-components';
@@ -15,7 +16,7 @@ global.URL.createObjectURL = jest.fn();
 Element.prototype.scrollTo = jest.fn();
 Element.prototype.scrollIntoView = jest.fn();
 
-const AllTheProviders = ({ children }) => {
+const AllTheProviders = ({ children }: { children: ReactNode }) => {
   return (
     <HistoryRouter history={history}>
       <ThemeProvider theme={getTheme(null)}>
@@ -56,6 +57,7 @@ const customRender: any = (ui: React.ReactElement, options?: RenderOptions) =>
   render(ui, { wrapper: AllTheProviders, ...options });
 
 // re-export everything
+// eslint-disable-next-line no-restricted-imports
 export * from '@testing-library/react';
 
 // override render method

@@ -4,7 +4,6 @@ import {
   colors,
   IconTooltip,
   Input,
-  Text,
 } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
@@ -31,14 +30,16 @@ export const InputControl = ({
   required,
   uischema,
   label,
+  visible,
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
 
   const onChange = useCallback(
     (value: string) => {
+      const stringValue = value === '' ? undefined : value;
       handleChange(
         path,
-        schema.type === 'number' && value ? parseInt(value, 10) : value
+        schema.type === 'number' && value ? parseInt(value, 10) : stringValue
       );
     },
     [schema.type, handleChange, path]
@@ -47,7 +48,7 @@ export const InputControl = ({
   const FieldLabel = () => {
     return (
       <Box display="flex">
-        <Text>{label}</Text>
+        {label}
         {uischema?.options?.isAdminField && (
           <IconTooltip
             iconColor={colors.grey800}
@@ -59,6 +60,10 @@ export const InputControl = ({
       </Box>
     );
   };
+
+  if (!visible) {
+    return null;
+  }
 
   return (
     <>

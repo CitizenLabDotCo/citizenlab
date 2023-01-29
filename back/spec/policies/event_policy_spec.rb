@@ -24,7 +24,7 @@ describe EventPolicy do
       end
     end
 
-    context 'for a mortal user' do
+    context 'for a resident' do
       let(:user) { create(:user) }
 
       it { is_expected.to     permit(:show)    }
@@ -46,6 +46,19 @@ describe EventPolicy do
       it { is_expected.to    permit(:destroy) }
 
       it 'should index the event' do
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+
+    context 'for a moderator' do
+      let(:user) { create(:project_moderator, projects: [project]) }
+
+      it { is_expected.to     permit(:show)    }
+      it { is_expected.to     permit(:create)  }
+      it { is_expected.to     permit(:update)  }
+      it { is_expected.to     permit(:destroy) }
+
+      it 'indexes the event' do
         expect(scope.resolve.size).to eq 1
       end
     end

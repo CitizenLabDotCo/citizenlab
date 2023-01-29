@@ -211,4 +211,13 @@ RSpec.describe Phase, type: :model do
       end
     end
   end
+
+  describe 'posting_method and posting_limited_max' do
+    it 'are set to defaults from the participation method' do
+      # We cannot stub side effects, otherwise we could have set
+      # posting_method and posting_limited_max to custom values.
+      expect_any_instance_of(ParticipationMethod::Base).to receive(:assign_defaults_for_participation_context).once
+      create :phase
+    end
+  end
 end

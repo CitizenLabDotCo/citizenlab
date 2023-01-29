@@ -29,7 +29,7 @@ describe ProjectPolicy do
       end
     end
 
-    context 'for a user' do
+    context 'for a resident' do
       let(:user) { create(:user) }
 
       it { is_expected.to     permit(:show)    }
@@ -72,6 +72,48 @@ describe ProjectPolicy do
         expect(inverse_scope.resolve).to include(user)
       end
     end
+
+    context 'for a moderator of another project' do
+      let(:user) { create(:project_moderator, projects: [create(:project)]) }
+
+      it { is_expected.to permit(:show) }
+      it { is_expected.not_to permit(:create) }
+      it { is_expected.not_to permit(:update) }
+      it { is_expected.not_to permit(:reorder) }
+      it { is_expected.not_to permit(:destroy) }
+      it { is_expected.not_to permit(:delete_inputs) }
+
+      it 'indexes the project' do
+        expect(scope.resolve.size).to eq 2
+      end
+
+      it 'includes the user in the users that have access' do
+        expect(inverse_scope.resolve).to include(user)
+      end
+    end
+  end
+
+  context 'on a continuous private admins project' do
+    let!(:project) { create :continuous_project, visible_to: 'admins' }
+
+    context 'for a moderator' do
+      let(:user) { create(:project_moderator, projects: [project]) }
+
+      it { is_expected.to permit(:show) }
+      it { is_expected.not_to permit(:create) }
+      it { is_expected.to permit(:update) }
+      it { is_expected.to permit(:reorder) }
+      it { is_expected.not_to permit(:destroy) }
+      it { is_expected.to permit(:delete_inputs) }
+
+      it 'indexes the project' do
+        expect(scope.resolve.size).to eq 1
+      end
+
+      it 'includes the user in the users that have access' do
+        expect(inverse_scope.resolve).to include(user)
+      end
+    end
   end
 
   context 'on a private admins timeline project' do
@@ -95,7 +137,7 @@ describe ProjectPolicy do
       end
     end
 
-    context 'for a user' do
+    context 'for a resident' do
       let(:user) { create(:user) }
 
       it { is_expected.not_to permit(:show)    }
@@ -244,7 +286,7 @@ describe ProjectPolicy do
       end
     end
 
-    context 'for a user' do
+    context 'for a resident' do
       let(:user) { create(:user) }
 
       it { is_expected.not_to permit(:show)    }
@@ -285,5 +327,54 @@ describe ProjectPolicy do
         expect(inverse_scope.resolve).to include(user)
       end
     end
+
+    context 'for a moderator' do
+      let(:user) { create(:project_moderator, projects: [project]) }
+
+      it { is_expected.to permit(:show) }
+      it { is_expected.not_to permit(:create) }
+      it { is_expected.to permit(:update) }
+      it { is_expected.to permit(:reorder) }
+      it { is_expected.not_to permit(:destroy) }
+
+      it 'indexes the project' do
+        expect(scope.resolve.size).to eq 1
+      end
+
+      it 'includes the user in the users that have access' do
+        expect(inverse_scope.resolve).to include(user)
+      end
+    end
+
+    context 'for a moderator of another project' do
+      let(:user) { create(:project_moderator) }
+
+      it { is_expected.not_to permit(:show) }
+      it { is_expected.not_to permit(:create) }
+      it { is_expected.not_to permit(:update) }
+      it { is_expected.not_to permit(:reorder) }
+      it { is_expected.not_to permit(:destroy) }
+
+      it { expect(scope.resolve).not_to include(project) }
+      it { expect(inverse_scope.resolve).not_to include(user) }
+    end
+  end
+
+  context 'for a continuous project contained within a folder the user moderates' do
+    let!(:project) { create(:continuous_project, admin_publication_attributes: { parent_id: project_folder.admin_publication.id }) }
+    let!(:project_folder) { create(:project_folder) }
+    let(:user) { build(:project_folder_moderator, project_folders: [project_folder]) }
+
+    it { is_expected.to permit(:create) }
+    it { is_expected.to permit(:delete_inputs) }
+  end
+
+  context 'for a continuous project not contained within a folder the user moderates' do
+    let!(:project) { create(:continuous_project) }
+    let!(:project_folder) { create(:project_folder) }
+    let(:user) { build(:project_folder_moderator, project_folders: [project_folder]) }
+
+    it { is_expected.not_to permit(:create) }
+    it { is_expected.not_to permit(:delete_inputs) }
   end
 end

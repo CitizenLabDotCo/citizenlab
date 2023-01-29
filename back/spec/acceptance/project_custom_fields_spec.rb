@@ -41,6 +41,10 @@ resource 'Project level Custom Fields' do
     let(:project) { create(:continuous_project) }
     let(:project_id) { project.id }
 
+    before do
+      project.update!(input_term: 'question')
+    end
+
     get 'web_api/v1/projects/:project_id/custom_fields/schema' do
       example_request 'Get the react-jsonschema-form json schema and ui schema for the custom fields' do
         expect(status).to eq 200
@@ -65,6 +69,15 @@ resource 'Project level Custom Fields' do
             %i[title_multiloc body_multiloc topic_ids location_description idea_images_attributes idea_files_attributes]
           )
         end
+        ui_schema = json_response[:ui_schema_multiloc][:en]
+        expect(ui_schema.keys).to eq %i[type options elements]
+        expect(ui_schema[:type]).to eq 'Categorization'
+        expect(ui_schema[:options]).to eq({ formId: 'idea-form', inputTerm: 'question' })
+        expect(ui_schema[:elements][0]).to include(
+          type: 'Category',
+          label: 'What is your question ?',
+          options: { id: 'mainContent' }
+        )
         expect(json_response[:ui_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
       end
     end

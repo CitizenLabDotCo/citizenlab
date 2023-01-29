@@ -71,7 +71,7 @@ const DropdownListItem = styled.label`
   margin-bottom: 4px;
   padding: 10px;
   background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   outline: none;
   cursor: pointer;
   transition: all 80ms ease-out;
@@ -218,7 +218,11 @@ const Actions = ({
         <>
           {otherCategories.length > 0 && (
             <ActionButtonWrapper data-testid="insightsTableActionsBulkAssign">
-              <Button onClick={toggleDropdown} buttonStyle="admin-dark-text">
+              <Button
+                className="intercom-insights-edit-bulk-assign-button"
+                onClick={toggleDropdown}
+                buttonStyle="admin-dark-text"
+              >
                 <StyledIcon name="folder-move" />
                 <FormattedMessage {...messages.bulkAssignCategory} />
               </Button>

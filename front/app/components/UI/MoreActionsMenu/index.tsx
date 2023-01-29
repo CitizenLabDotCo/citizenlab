@@ -114,7 +114,7 @@ interface State {
 }
 
 export default class MoreActionsMenu extends PureComponent<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       visible: false,

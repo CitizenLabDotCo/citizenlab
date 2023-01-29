@@ -12,6 +12,8 @@ declare global {
       signUp: typeof signUp;
       apiLogin: typeof apiLogin;
       setAdminLoginCookie: typeof setAdminLoginCookie;
+      setConsentCookie: typeof setConsentCookie;
+      setConsentAndAdminLoginCookies: typeof setConsentAndAdminLoginCookies;
       setLoginCookie: typeof setLoginCookie;
       apiSignup: typeof apiSignup;
       apiCreateAdmin: typeof apiCreateAdmin;
@@ -40,6 +42,7 @@ declare global {
       apiCreateFolder: typeof apiCreateFolder;
       apiRemoveFolder: typeof apiRemoveFolder;
       apiRemoveProject: typeof apiRemoveProject;
+      apiRemoveCustomPage: typeof apiRemoveCustomPage;
       apiAddProjectsToFolder: typeof apiAddProjectsToFolder;
       apiCreatePhase: typeof apiCreatePhase;
       apiCreateCustomField: typeof apiCreateCustomField;
@@ -158,6 +161,18 @@ export function setLoginCookie(email: string, password: string) {
 
 export function setAdminLoginCookie() {
   cy.setLoginCookie('admin@citizenlab.co', 'democracy2.0');
+}
+
+export function setConsentCookie() {
+  cy.setCookie(
+    'cl2_consent',
+    '{%22analytics%22:true%2C%22advertising%22:true%2C%22functional%22:true%2C%22savedChoices%22:{%22google_tag_manager%22:true%2C%22matomo%22:true%2C%22google_analytics%22:true%2C%22intercom%22:true%2C%22segment%22:true}}'
+  );
+}
+
+export function setConsentAndAdminLoginCookies() {
+  cy.setConsentCookie();
+  cy.setAdminLoginCookie();
 }
 
 function emailSignup(
@@ -759,6 +774,8 @@ export function apiCreateProject({
           title_multiloc: {
             en: title,
             'nl-BE': title,
+            'nl-NL': title,
+            'fr-BE': title,
           },
           description_preview_multiloc: {
             en: descriptionPreview,
@@ -942,6 +959,21 @@ export function apiRemoveFolder(folderId: string) {
       },
       method: 'DELETE',
       url: `web_api/v1/project_folders/${folderId}`,
+    });
+  });
+}
+
+export function apiRemoveCustomPage(customPageId: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'DELETE',
+      url: `web_api/v1/static_pages/${customPageId}`,
     });
   });
 }
@@ -1178,6 +1210,7 @@ export function apiUpdateHomepageSettings({
   banner_signed_out_header_overlay_opacity,
   banner_cta_signed_out_type,
   banner_cta_signed_in_type,
+  header_bg,
 }: {
   top_info_section_enabled?: boolean;
   bottom_info_section_enabled?: boolean;
@@ -1192,6 +1225,7 @@ export function apiUpdateHomepageSettings({
   banner_signed_out_header_overlay_opacity?: number;
   banner_cta_signed_out_type?: string;
   banner_cta_signed_in_type?: string;
+  header_bg?: string;
 }) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1218,6 +1252,7 @@ export function apiUpdateHomepageSettings({
           banner_signed_out_header_overlay_opacity,
           banner_cta_signed_in_type,
           banner_cta_signed_out_type,
+          header_bg,
         },
       },
     });
@@ -1315,6 +1350,11 @@ Cypress.Commands.add('apiCreateCustomField', apiCreateCustomField);
 Cypress.Commands.add('apiRemoveCustomField', apiRemoveCustomField);
 Cypress.Commands.add('apiAddPoll', apiAddPoll);
 Cypress.Commands.add('setAdminLoginCookie', setAdminLoginCookie);
+Cypress.Commands.add(
+  'setConsentAndAdminLoginCookies',
+  setConsentAndAdminLoginCookies
+);
+Cypress.Commands.add('setConsentCookie', setConsentCookie);
 Cypress.Commands.add('setLoginCookie', setLoginCookie);
 Cypress.Commands.add('apiVerifyBogus', apiVerifyBogus);
 Cypress.Commands.add('apiCreateEvent', apiCreateEvent);
@@ -1330,3 +1370,4 @@ Cypress.Commands.add(
   notIntersectsViewport
 );
 Cypress.Commands.add('apiUpdateHomepageSettings', apiUpdateHomepageSettings);
+Cypress.Commands.add('apiRemoveCustomPage', apiRemoveCustomPage);

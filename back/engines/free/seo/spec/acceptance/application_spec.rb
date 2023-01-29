@@ -58,6 +58,7 @@ resource 'SEO' do
       before do
         %w[all_input proposals].each { |code| create(:nav_bar_item, code: code) }
         create_list(:project, project_count, process_type: 'continuous')
+        create(:project_folder)
         create_list(:idea, idea_count, project: Project.first)
         create(:initiative)
         create(:static_page)
@@ -72,6 +73,7 @@ resource 'SEO' do
         expected_count = base_count +
                          (idea_count    * url_count_per_idea    * locales_count) +
                          (project_count * url_count_per_project * locales_count) +
+                         (1 * locales_count) + # project folders
                          (1 * locales_count) + # initiatives
                          (1 * locales_count) # static pages
         expect(sitemap.search('url').count).to eq expected_count

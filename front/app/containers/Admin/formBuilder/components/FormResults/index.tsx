@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { get, snakeCase } from 'lodash-es';
 import { useParams } from 'react-router-dom';
 
 // Hooks
@@ -16,8 +15,6 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import CompletionBar from 'containers/Admin/formBuilder/components/FormResults/CompletionBar';
-import T from 'components/T';
 
 // i18n
 import messages from '../messages';
@@ -27,29 +24,49 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useFormResults from 'hooks/useFormResults';
+import useProject from 'hooks/useProject';
+import usePhase from 'hooks/usePhase';
+import useURLQuery from 'utils/cl-router/useUrlQuery';
+
+// Services
+import { downloadSurveyResults } from 'services/formCustomFields';
+import FormResultsQuestion from './FormResultsQuestion';
 
 const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const { projectId } = useParams() as {
     projectId: string;
   };
+  const [isDownloading, setIsDownloading] = useState(false);
   const locale = useLocale();
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
-  let phaseId = urlParams.get('phase_id');
-  if (phaseId === null) {
-    phaseId = '';
-  }
-
+  const urlParams = useURLQuery();
+  const phaseId = urlParams.get('phase_id');
+  const project = useProject({ projectId });
+  const phase = usePhase(phaseId);
   const formResults = useFormResults({
     projectId,
     phaseId,
   });
 
-  if (isNilOrError(formResults) || isNilOrError(locale)) {
+  if (
+    isNilOrError(formResults) ||
+    isNilOrError(locale) ||
+    isNilOrError(project)
+  ) {
     return null;
   }
 
   const { totalSubmissions, results } = formResults;
+
+  const handleDownloadResults = async () => {
+    try {
+      setIsDownloading(true);
+      await downloadSurveyResults(project, locale, phase);
+    } catch (error) {
+      // Not handling errors for now
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   const surveyResponseMessage =
     totalSubmissions > 0
@@ -70,9 +87,12 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
         <Box>
           <Button
             icon="download"
+            data-cy="e2e-download-survey-results"
             buttonStyle="secondary"
             width="auto"
             minWidth="312px"
+            onClick={handleDownloadResults}
+            processing={isDownloading}
           >
             {formatMessage(messages.downloadResults)}
           </Button>
@@ -109,43 +129,16 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
             { question, inputType, answers, totalResponses, required },
             index
           ) => {
-            const inputTypeText = get(messages, inputType, '');
-            const requiredOrOptionalText = required
-              ? formatMessage(messages.required)
-              : formatMessage(messages.optional);
-            const inputTypeLabel = `${formatMessage(
-              inputTypeText
-            )} - ${requiredOrOptionalText.toLowerCase()}`;
-
             return (
-              <Box
+              <FormResultsQuestion
                 key={index}
-                data-cy={`e2e-${snakeCase(question[locale])}`}
-                mb="56px"
-              >
-                <Title variant="h3" mb="0">
-                  <T value={question} />
-                </Title>
-                {inputTypeText && (
-                  <Text variant="bodyS" color="textSecondary" mb="0">
-                    {inputTypeLabel}
-                  </Text>
-                )}
-                {answers.map(({ answer, responses }, index) => {
-                  const percentage =
-                    Math.round((responses / totalResponses) * 1000) / 10;
-
-                  return (
-                    <CompletionBar
-                      key={index}
-                      bgColor={colors.primary}
-                      completed={percentage}
-                      leftLabel={answer}
-                      rightLabel={`${percentage}% (${responses} choices)`}
-                    />
-                  );
-                })}
-              </Box>
+                locale={locale}
+                question={question}
+                inputType={inputType}
+                answers={answers}
+                totalResponses={totalResponses}
+                required={required}
+              />
             );
           }
         )}

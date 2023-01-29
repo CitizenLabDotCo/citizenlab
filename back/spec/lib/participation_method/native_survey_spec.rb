@@ -12,11 +12,64 @@ RSpec.describe ParticipationMethod::NativeSurvey do
 
     before { create :idea_status_proposed }
 
+    describe '#assign_defaults_for_participation_context' do
+      let(:participation_context) { build :continuous_native_survey_project }
+
+      it 'sets the limits posting to max one' do
+        participation_method.assign_defaults_for_participation_context
+        expect(participation_context.posting_method).to eq 'limited'
+        expect(participation_context.posting_limited_max).to eq 1
+      end
+    end
+
     it 'sets and persists the id as the slug of the input' do
       input.update_column :slug, nil
       participation_method.assign_slug(input)
       input.reload
       expect(input.slug).to eq input.id
+    end
+  end
+
+  describe '#create_default_form!' do
+    it 'persists a default form with a page for the participation context' do
+      expect(participation_context.custom_form).to be_nil
+
+      participation_method.create_default_form!
+      # create_default_form! does not reload associations for form/fields/options,
+      # so fetch the project from the database. The associations will be fetched
+      # when they are needed.
+      # Not doing this makes this test flaky, as create_default_form! creates fields
+      # and CustomField uses acts_as_list for ordering fields. The ordering is ok
+      # in the database, but not necessarily in memory.
+      participation_context_in_db = Project.find(participation_context.id)
+
+      expect(participation_context_in_db.custom_form.custom_fields.size).to eq 2
+
+      question_page = participation_context_in_db.custom_form.custom_fields[0]
+      expect(question_page.title_multiloc).to eq({})
+      expect(question_page.description_multiloc).to eq({})
+
+      field = participation_context_in_db.custom_form.custom_fields[1]
+      expect(field.title_multiloc).to match({
+        'en' => 'Default question',
+        'fr-FR' => 'Question par défaut',
+        'nl-NL' => 'Standaardvraag'
+      })
+      expect(field.description_multiloc).to eq({})
+      options = field.options
+      expect(options.size).to eq 2
+      expect(options[0].key).to eq 'option1'
+      expect(options[1].key).to eq 'option2'
+      expect(options[0].title_multiloc).to match({
+        'en' => 'First option',
+        'fr-FR' => 'Première option',
+        'nl-NL' => 'Eerste optie'
+      })
+      expect(options[1].title_multiloc).to match({
+        'en' => 'Second option',
+        'fr-FR' => 'Deuxième option',
+        'nl-NL' => 'Tweede optie'
+      })
     end
   end
 
@@ -102,9 +155,34 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
+  describe '#sign_in_required_for_posting?' do
+    it 'returns false' do
+      expect(participation_method.sign_in_required_for_posting?).to be false
+    end
+  end
+
   describe '#extra_fields_category_translation_key' do
     it 'returns nil' do
       expect(participation_method.extra_fields_category_translation_key).to be_nil
     end
   end
+
+  describe '#supports_toxicity_detection?' do
+    it 'returns false' do
+      expect(participation_method.supports_toxicity_detection?).to be false
+    end
+  end
+
+  describe '#include_data_in_email?' do
+    it 'returns false' do
+      expect(participation_method.include_data_in_email?).to be false
+    end
+  end
+
+  its(:supports_publication?) { is_expected.to be false }
+  its(:supports_commenting?) { is_expected.to be false }
+  its(:supports_voting?) { is_expected.to be false }
+  its(:supports_baskets?) { is_expected.to be false }
+  its(:supports_status?) { is_expected.to be false }
+  its(:supports_assignment?) { is_expected.to be false }
 end
