@@ -179,30 +179,38 @@ const SignUp = ({
   ]);
 
   // called when a step is completed
-  const onCompleteActiveStep = async (
-    registrationData?: Record<string, any>
-  ) => {
-    if (modalContentRef?.current) {
-      modalContentRef.current.scrollTop = 0;
-    }
-
-    if (
-      activeStep &&
-      registrationCanBeCompleted(
-        activeStep,
-        configuration,
-        authUser,
-        metaData,
-        { emailSignUpSelected, accountCreated }
-      )
-    ) {
-      try {
-        await completeRegistration(registrationData);
-      } catch (e) {
-        console.error(e);
+  const onCompleteActiveStep = useCallback(
+    async (registrationData?: Record<string, any>) => {
+      if (modalContentRef?.current) {
+        modalContentRef.current.scrollTop = 0;
       }
-    }
-  };
+
+      if (
+        activeStep &&
+        registrationCanBeCompleted(
+          activeStep,
+          configuration,
+          authUser,
+          metaData,
+          { emailSignUpSelected, accountCreated }
+        )
+      ) {
+        try {
+          await completeRegistration(registrationData);
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    },
+    [
+      accountCreated,
+      activeStep,
+      authUser,
+      configuration,
+      emailSignUpSelected,
+      metaData,
+    ]
+  );
 
   // this automatically completes the 'account-created' step (see stepUtils)
   useEffect(() => {
