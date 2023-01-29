@@ -132,7 +132,9 @@ export const CreateInsightsView = ({
   projects,
   closeCreateModal,
 }: DataProps & InputProps) => {
-  const { mutate, reset, isSuccess, error, isLoading } = useCreateView();
+  const { mutate, reset, error, isLoading } = useCreateView({
+    onSuccess: () => closeCreateModal(),
+  });
   const localize = useLocalize();
   const { projectFolders } = useProjectFolders({});
 
@@ -164,10 +166,6 @@ export const CreateInsightsView = ({
           })),
         },
       });
-    }
-
-    if (isSuccess) {
-      closeCreateModal();
     }
   };
 

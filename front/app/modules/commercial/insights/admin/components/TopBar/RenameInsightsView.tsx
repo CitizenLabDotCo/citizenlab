@@ -63,7 +63,7 @@ const RenameInsightsView = ({
 
   const handleSubmit = async () => {
     if (name) {
-      mutate({ id: insightsViewId, name });
+      mutate({ id: insightsViewId, requestBody: { view: { name } } });
     }
     if (isSuccess) {
       closeRenameModal();
