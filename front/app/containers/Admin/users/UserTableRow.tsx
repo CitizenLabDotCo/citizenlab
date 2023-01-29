@@ -6,14 +6,14 @@ import clHistory from 'utils/cl-router/history';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // Components
+import { Tr, Td, Toggle, Icon } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
-import { Toggle, Icon } from '@citizenlab/cl2-component-library';
 import Checkbox from 'components/UI/Checkbox';
 import Tippy from '@tippyjs/react';
 
 // Translation
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // Events --- For error handling
@@ -41,9 +41,7 @@ const MoreOptionsWrapper = styled.div`
 `;
 
 const MoreOptionsIcon = styled(Icon)`
-  width: 20px;
-  height: 20px;
-  fill: ${colors.adminSecondaryTextColor};
+  fill: ${colors.textSecondary};
 `;
 
 const MoreOptionsButton = styled.button`
@@ -63,7 +61,7 @@ const MoreOptionsButton = styled.button`
   }
 `;
 
-const CreatedAt = styled.td`
+const RegisteredAt = styled(Td)`
   white-space: nowrap;
 `;
 
@@ -80,12 +78,12 @@ const DropdownListButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: ${colors.adminLightText};
+  color: ${colors.white};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   white-space: nowrap;
   padding: 10px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   cursor: pointer;
   white-space: nowrap;
 
@@ -93,7 +91,7 @@ const DropdownListButton = styled.button`
   &:focus {
     outline: none;
     color: white;
-    background: ${lighten(0.1, colors.adminMenuBackground)};
+    background: ${lighten(0.1, colors.grey800)};
   }
 `;
 
@@ -126,22 +124,26 @@ interface Props {
 
 interface State {
   isAdmin: boolean;
-  createdAt: string;
+  registeredAt: string;
 }
 
-class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
-  constructor(props: Props & InjectedIntlProps) {
+class UserTableRow extends PureComponent<Props & WrappedComponentProps, State> {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       isAdmin: isAdmin({ data: this.props.user }),
-      createdAt: moment(this.props.user.attributes.created_at).format('LL'),
+      registeredAt: moment(
+        this.props.user.attributes.registration_completed_at
+      ).format('LL'),
     };
   }
 
   static getDerivedStateFromProps(nextProps: Props, _prevState: State) {
     return {
       isAdmin: isAdmin({ data: nextProps.user }),
-      createdAt: moment(nextProps.user.attributes.created_at).format('LL'),
+      registeredAt: moment(
+        nextProps.user.attributes.registration_completed_at
+      ).format('LL'),
     };
   }
 
@@ -192,28 +194,45 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
     const { isAdmin } = this.state;
 
     return (
-      <tr
+      <Tr
         key={user.id}
+        background={selected ? colors.background : undefined}
         className={`e2e-user-table-row ${selected ? 'selected' : ''}`}
       >
-        <td>
+        <Td>
           <StyledCheckbox
             checked={selected}
             onChange={this.handleUserSelectedOnChange}
           />
-        </td>
-        <td>
+        </Td>
+        <Td>
           <Avatar userId={user.id} size={30} />
-        </td>
-        <td>
+        </Td>
+        <Td>
           {user.attributes.first_name} {user.attributes.last_name}
-        </td>
-        <td>{user.attributes.email}</td>
-        <CreatedAt>{this.state.createdAt}</CreatedAt>
-        <td>
+        </Td>
+        <Td>{user.attributes.email}</Td>
+        <RegisteredAt>
+          {/*
+            For the 'all registered users' group, we do not show invited Users who have not yet accepted their invites,
+            but we do in groups they have been added to when invited.
+
+            The 'Invitation pending' messages should clarify this.
+
+            https://citizenlab.atlassian.net/browse/CL-2255
+          */}
+          {user.attributes.invite_status === 'pending' ? (
+            <i>
+              <FormattedMessage {...messages.userInvitationPending} />
+            </i>
+          ) : (
+            this.state.registeredAt
+          )}
+        </RegisteredAt>
+        <Td>
           <Toggle checked={isAdmin} onChange={this.handleAdminRoleOnChange} />
-        </td>
-        <td>
+        </Td>
+        <Td>
           <MoreOptionsWrapper>
             <Tippy
               placement="bottom-end"
@@ -229,25 +248,25 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
                   >
                     <FormattedMessage {...messages.seeProfile} />
                     <IconWrapper>
-                      <Icon name="eye" />
+                      <Icon name="eye" fill="white" />
                     </IconWrapper>
                   </DropdownListButton>
                   <DropdownListButton onClick={this.handleDeleteClick}>
                     <FormattedMessage {...messages.deleteUser} />
                     <IconWrapper>
-                      <Icon name="trash" />
+                      <Icon name="delete" fill="white" />
                     </IconWrapper>
                   </DropdownListButton>
                 </DropdownList>
               }
             >
               <MoreOptionsButton onMouseDown={removeFocusAfterMouseClick}>
-                <MoreOptionsIcon name="more-options" />
+                <MoreOptionsIcon name="dots-horizontal" />
               </MoreOptionsButton>
             </Tippy>
           </MoreOptionsWrapper>
-        </td>
-      </tr>
+        </Td>
+      </Tr>
     );
   }
 }

@@ -82,7 +82,7 @@ ar:
       "password_reset": تمت إعادة تعيين كلمة المرور - جميع المستخدمين
       "project_moderation_rights_received": تم استلام حقوق الإشراف على المشروع - مديري المشاريع
       "project_folder_moderation_rights_received": تم استلام حقوق الإشراف على مجلد المشروع
-      "project_phase_started": مرحلة مشروع جديدة - جميع المستخدمين
+      "project_phase_started": مرحلة مشروع جديدة - المشاركون في المشروع
       "project_phase_upcoming": مرحلة مشروع جديدة قائمة - المسؤولين ومديري المشاريع
       "status_change_of_commented_idea": تغيرت حالة فكرة كنت قد علقتَ عليها - جميع المستخدمين
       "status_change_of_commented_initiative": تغيرت حالة مُقترح كنت قد علقتَ عليه - جميع المستخدمين
@@ -419,6 +419,7 @@ ar:
       cta_view_phase: 'اكتشف هذه المرحلة الجديدة'
       event_description: 'دخل هذا المشروع مرحلة جديدة على المنصة الخاصة بـ %{organizationName}. انقر على الرابط أدناه لمعرفة المزيد!'
       main_header: 'بدأت مرحلة جديدة للمشروع ''%{projectName}'''
+      subtitle: '''%{projectName}'' حول'
       new_phase: 'دخل هذا المشروع المرحلة ''%{phaseTitle}'''
       subject: 'دخل %{projectName} مرحلة جديدة'
       preheader: 'بدأت مرحلة جديدة لـ %{projectName}'
@@ -426,6 +427,7 @@ ar:
       cta_view_phase: 'قم بإعداد هذه المرحلة الجديدة'
       event_description: 'سيدخل المشروع ''%{projectName}'' مرحلة جديدة عمّا قريب. تأكد من إعداد كل شيء في هذه المرحلة: هل الوصف كافٍ؟ هل تم نقل الأفكار المحدّدة إلى هذه المرحلة؟ هل ترغب في إعلام المواطنين بتفاصيل هذه المرحلة عبر حملة بريد إلكتروني مخصصة؟'
       main_header: '%{firstName}، سيدخل أحد المشاريع مرحلة جديدة عمّا قريب'
+      subtitle: '''%{projectName}'' حول'
       new_phase: 'سيدخل المشروع المرحلة ''%{phaseTitle}'''
       subject: 'قم بإعداد كل شيء للمرحلة الجديدة الخاصة بـ %{projectName}'
       preheader: 'قريبًا ستبدأ مرحلة جديدة لـ %{projectName}'

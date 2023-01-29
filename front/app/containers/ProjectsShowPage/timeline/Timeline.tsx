@@ -7,7 +7,7 @@ import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
 
 // components
-import { Icon, Box } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import PhaseDescriptions from './PhaseDescriptions';
 
 // hooks
@@ -36,16 +36,24 @@ import { darken, rgba } from 'polished';
 const MIN_PHASE_WIDTH_PX = 110;
 const CONTAINER_PADDING_PX = 20;
 
-const grey = colors.label;
-const greenTransparent = rgba(colors.clGreen, 0.15);
-const green = colors.clGreen;
-const darkGreen = colors.clGreenDark;
+const grey = colors.textSecondary;
+const greenTransparent = rgba(colors.success, 0.15);
+const green = colors.success;
+const darkGreen = colors.green700;
 
 const RtlBox = styled(Box)`
   ${isRtl`
     flex-direction: row-reverse;
   `};
 `;
+
+const Arrow = (props: React.SVGProps<SVGSVGElement>) => {
+  return (
+    <svg viewBox="134.282 57.93 18.666 24" aria-hidden={true} {...props}>
+      <path d="M144.617 80.289l8.1-9.719c.309-.371.309-.91 0-1.281l-8.1-9.719a1 1 0 0 1 .769-1.641h-11.104c.297 0 .578.132.769.359l9.166 11c.309.371.309.91 0 1.281l-9.166 11a1 1 0 0 1-.769.359h11.104a.999.999 0 0 1-.769-1.639z" />
+    </svg>
+  );
+};
 
 const Container = styled.div<{ isHidden: boolean }>`
   width: 100%;
@@ -75,13 +83,13 @@ const phaseBarHeight = '24px';
 const PhaseBar = styled.button`
   width: 100%;
   height: calc(${phaseBarHeight} - 1px);
-  color: ${darken(0.1, colors.label)};
+  color: ${darken(0.1, colors.textSecondary)};
   font-size: ${fontSizes.s}px;
   font-weight: 500;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${darken(0.08, colors.lightGreyishBlue)};
+  background: ${darken(0.08, colors.grey200)};
   transition: background 60ms ease-out;
   position: relative;
   cursor: pointer;
@@ -91,7 +99,7 @@ const PhaseBar = styled.button`
   -moz-appearance: none;
 `;
 
-const PhaseArrow = styled(Icon)`
+const PhaseArrow = styled(Arrow)`
   width: 20px;
   height: ${phaseBarHeight};
   fill: ${colors.background};
@@ -108,7 +116,7 @@ const PhaseArrow = styled(Icon)`
 `;
 
 const PhaseText = styled.div<{ current: boolean; selected: boolean }>`
-  color: ${darken(0.1, colors.label)};
+  color: ${darken(0.1, colors.textSecondary)};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   text-align: center;
@@ -129,7 +137,7 @@ const PhaseText = styled.div<{ current: boolean; selected: boolean }>`
   margin-right: 5px;
   transition: color 80ms ease-out;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     display: none;
   `}
 `;
@@ -164,14 +172,18 @@ const currentSelectedPhaseBar = css`
   }
 `;
 
-const PhaseContainer = styled.div<{ width: number; breakpoint: number }>`
+const PhaseContainer = styled.div<{
+  width: number;
+  breakpoint: number;
+  last: boolean;
+}>`
   width: ${(props) => props.width}%;
   min-width: ${MIN_PHASE_WIDTH_PX}px;
   display: flex;
   flex-direction: column;
   position: relative;
   cursor: pointer;
-  margin-right: ${(props: any) => (!props.last ? '1px' : '0px')};
+  margin-right: ${(props) => (!props.last ? '1px' : '0px')};
 
   @media (max-width: ${({ breakpoint }) =>
       breakpoint + CONTAINER_PADDING_PX * 2}px) {
@@ -180,13 +192,13 @@ const PhaseContainer = styled.div<{ width: number; breakpoint: number }>`
   }
 
   &.first ${PhaseBar} {
-    border-radius: ${(props: any) => props.theme.borderRadius} 0px 0px
-      ${(props: any) => props.theme.borderRadius};
+    border-radius: ${(props) => props.theme.borderRadius} 0px 0px
+      ${(props) => props.theme.borderRadius};
   }
 
   &.last ${PhaseBar} {
-    border-radius: 0px ${(props: any) => props.theme.borderRadius}
-      ${(props: any) => props.theme.borderRadius} 0px;
+    border-radius: 0px ${(props) => props.theme.borderRadius}
+      ${(props) => props.theme.borderRadius} 0px;
   }
 
   &:focus,
@@ -318,6 +330,7 @@ const Timeline = ({
                     key={phaseIndex}
                     width={width}
                     breakpoint={phasesBreakpoint}
+                    last={isLast}
                   >
                     <PhaseBar
                       onMouseDown={removeFocusAfterMouseClick}
@@ -342,7 +355,7 @@ const Timeline = ({
                           }}
                         />
                       </ScreenReaderOnly>
-                      {!isLast && <PhaseArrow name="phase_arrow" ariaHidden />}
+                      {!isLast && <PhaseArrow />}
                     </PhaseBar>
                     <PhaseText
                       current={isCurrentPhase}

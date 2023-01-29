@@ -2,17 +2,17 @@ import { useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import { IEventData, eventsStream, IEventsStreamParams } from 'services/events';
-
+import { PublicationStatus } from 'services/projects';
 type sort = 'newest' | 'oldest';
 
 interface InputParameters {
   projectIds?: string[];
+  staticPageId?: string;
   currentAndFutureOnly?: boolean;
   pastOnly?: boolean;
-  currentPage?: number;
   pageSize?: number;
   sort?: sort;
-  projectPublicationStatuses?: string[];
+  projectPublicationStatuses?: PublicationStatus[];
 }
 
 const DEFAULT_PAGE_SIZE = 10;
@@ -27,18 +27,24 @@ const sortEvents = (_events: IEventData[], sort: sort) => {
     : events.sort((a, b) => (getStart(b) < getStart(a) ? 1 : -1));
 };
 
+export type TEvents = IEventData[] | null | Error;
 export default function useEvents(parameters: InputParameters) {
-  const [events, setEvents] = useState<IEventData[] | undefined | null | Error>(
-    undefined
-  );
-  const [projectIds, setProjectIds] = useState<string[]>(
-    parameters.projectIds ?? []
-  );
-  const [currentPage, setCurrentPage] = useState<number>(
-    parameters.currentPage ?? 1
-  );
+  const [events, setEvents] = useState<TEvents>(null);
+  const [projectIds, setProjectIds] = useState<string[] | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [pageSize] = useState(parameters.pageSize ?? DEFAULT_PAGE_SIZE);
+
+  // projectIds can be based off other
+  // requests, and initially be null/undefined.
+  // Without the useEffect, it doesn't get updated
+  const stringifiedProjectIds = JSON.stringify(parameters.projectIds);
+  useEffect(() => {
+    if (parameters.projectIds) {
+      setProjectIds(parameters.projectIds);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stringifiedProjectIds]);
 
   const onProjectIdsChange = (projectIds: string[]) => {
     setProjectIds([...projectIds]);
@@ -49,10 +55,15 @@ export default function useEvents(parameters: InputParameters) {
   };
 
   useEffect(() => {
-    setEvents(undefined);
+    setEvents(null);
 
     const streamParams: IEventsStreamParams = {
-      queryParameters: { project_ids: projectIds },
+      queryParameters: {
+        ...(projectIds && { project_ids: projectIds }),
+        ...(parameters.staticPageId && {
+          static_page_id: parameters.staticPageId,
+        }),
+      },
     };
 
     if (parameters.projectPublicationStatuses) {

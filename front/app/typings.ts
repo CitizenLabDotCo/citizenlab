@@ -1,7 +1,17 @@
+import { MouseEvent, FC } from 'react';
+import { TFieldName } from 'components/UI/Error';
 import {
-  appLocalePairs,
   appGraphqlLocalePairs,
+  appLocalePairs,
 } from 'containers/App/constants';
+import { TableCellProps } from 'semantic-ui-react';
+import {
+  TAppConfigurationSetting,
+  TAppConfigurationSettingWithEnabled,
+} from 'services/appConfiguration';
+import { IIdeaAction } from 'services/ideas';
+import { IProjectAction } from 'services/projects';
+import { WrappedComponentProps } from 'react-intl';
 
 declare global {
   interface Function {
@@ -54,14 +64,14 @@ export interface ITab {
   label: string;
   url: string;
   active?: boolean | ((pathname: string) => boolean);
-  feature?: TAppConfigurationSetting;
+  feature?: TAppConfigurationSettingWithEnabled;
   statusLabel?: string;
 }
 
 export type CellConfiguration<ComponentProps> = {
   name: string;
   onChange?: (event: unknown) => void;
-  onClick?: (event: unknown) => void;
+  onClick?: (event: MouseEvent) => void;
   featureFlag?: TAppConfigurationSetting;
   cellProps?: TableCellProps;
   Component: FC<ComponentProps>;
@@ -110,16 +120,6 @@ export interface Message {
   id: string;
   defaultMessage: string;
 }
-
-import { Messages } from 'react-intl';
-import { IProjectAction } from 'services/projects';
-import { IIdeaAction } from 'services/ideas';
-import { FormikActions } from 'formik';
-import { FC } from 'react';
-import { TableCellProps } from 'semantic-ui-react';
-import { TAppConfigurationSetting } from 'services/appConfiguration';
-import { TFieldName } from 'components/UI/Error';
-export type MessageDescriptor = Messages['key'];
 
 export type Locale = keyof typeof appLocalePairs;
 
@@ -191,9 +191,23 @@ export type IParticipationByTopic = ITopicSingleValue[];
 
 export type IGraphFormat = IGraphPoint[];
 
-export type FormikSubmitHandler<V> = (
-  values: V,
-  actions: FormikActions<V>
-) => void;
-
 export type Override<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U;
+
+export type Percentage = `${number}%`;
+
+/* eslint-disable */
+type Values<T extends {}> = T[keyof T];
+type Tuplize<T extends {}[]> = Pick<
+  T,
+  Exclude<keyof T, Extract<keyof {}[], string> | number>
+>;
+type _OneOf<T extends {}> = Values<{
+  [K in keyof T]: T[K] & {
+    [M in Values<{ [L in keyof Omit<T, K>]: keyof T[L] }>]?: undefined;
+  };
+}>;
+
+export type OneOf<T extends {}[]> = _OneOf<Tuplize<T>>;
+/* eslint-enable */
+
+export type FormatMessage = WrappedComponentProps['intl']['formatMessage'];

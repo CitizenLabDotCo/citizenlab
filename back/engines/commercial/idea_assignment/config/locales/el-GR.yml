@@ -1,0 +1,13 @@
+el:
+  email_campaigns:
+    campaign_type_description:
+      "idea_assigned_to_you": Assignment of an idea to me
+    admin_campaign_type_description:
+      "idea_assigned_to_you": Assignment of an idea - admins and project managers
+    idea_assigned_to_you:
+      by_author: 'από %{authorName}'
+      cta_reply_to: 'Ανατροφοδότηση στο %{authorName}'
+      event_description_idea: 'An idea has been assigned to you. Give feedback by writing an official update or by changing its status.'
+      main_header: '%{firstName}, έχετε μια νέα αποστολή'
+      subject: 'Έχετε μια αποστολή στην πλατφόρμα %{organizationName}'
+      preheader_idea: 'The idea of %{authorName} has been assigned to you'

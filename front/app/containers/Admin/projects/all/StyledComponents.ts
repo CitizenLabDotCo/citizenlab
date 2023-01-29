@@ -4,7 +4,7 @@ import styled from 'styled-components';
 export const HeaderTitle = styled.h3`
   display: flex;
   align-items: center;
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.xl}px;
   font-weight: 400;
   padding: 0;

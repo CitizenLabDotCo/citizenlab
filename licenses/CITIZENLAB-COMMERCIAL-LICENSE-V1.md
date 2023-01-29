@@ -1,4 +1,4 @@
-CITIZENLAB COMMERCIAL LICENSE V1
+CITIZENLAB COMMERCIAL LICENSE V1.1
 
 PLEASE READ CAREFULLY THIS LICENSE AGREEMENT (THIS "AGREEMENT"), WHICH CONSTITUTES A LEGALLY BINDING AGREEMENT AND GOVERNS ALL OF YOUR USE OF THE CITIZENLAB SOFTWARE WITH WHICH THIS AGREEMENT IS INCLUDED ("CITIZENLAB SOFTWARE"). BY USING ANY OF THE CITIZENLAB SOFTWARE GOVERNED BY THIS AGREEMENT, YOU ARE ASSENTING TO THE TERMS AND CONDITIONS OF THIS AGREEMENT.
 
@@ -46,7 +46,7 @@ The following terms have the meanings ascribed:
 
 5.5 "License" means a limited, non-exclusive, non-transferable, fully paid up, royalty-free, right and license, without the right to grant or authorize sublicenses, solely for Your internal business operations to (i) install and use the applicable Features and Functions of the CitizenLab Software in Object Code, and (ii) permit Contractors and Your Affiliates to use the CitizenLab software as set forth in (i) above, provided that such use by Contractors must be solely for Your benefit and/or the benefit of Your Affiliates, and You shall be responsible for all acts and omissions of such Contractors and Affiliates in connection with their use of the CitizenLab software that is contrary to the terms and conditions of this Agreement.
 
-5.6 "Functional Restriction" means the mechanism used to enable certain features and functions of the CitizenLab Software and, more specifically, the functional enablement of modules through the root-folder file ‘citizenlab.config.json’.
+5.6 "Functional Restriction" means the mechanism used to enable certain features and functions of the CitizenLab Software and, more specifically, the functional enablement of modules through the environment variable `CITIZENLAB_EE`.
 
 5.7 "Marks and Notices" means all CitizenLab trademarks, trade names, logos and notices present on the Documentation as originally provided by CitizenLab.
 

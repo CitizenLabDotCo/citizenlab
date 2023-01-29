@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 
-const Container: any = styled.span`
+const Container = styled.span<{ bgColor: Props['bgColor'] }>`
   padding: 0 3px;
   min-width: 16px;
   height: 16px;
@@ -15,8 +15,7 @@ const Container: any = styled.span`
   justify-content: center;
 
   color: #ffffff;
-  background: ${(props: any) =>
-    props.bgColor ? props.bgColor : colors.red500};
+  background: ${(props) => (props.bgColor ? props.bgColor : colors.error)};
 `;
 
 interface Props {

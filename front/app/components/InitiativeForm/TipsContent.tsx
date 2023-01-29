@@ -9,7 +9,7 @@ import styled, { withTheme } from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   line-height: 20px;
   padding: 20px;

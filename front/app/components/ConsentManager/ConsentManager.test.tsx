@@ -1,479 +1,242 @@
-// @ts-nocheck
-// libraries
 import React from 'react';
-import { shallow } from 'enzyme';
+import { fireEvent, render, act } from 'utils/testUtils/rtl';
+import ConsentManager from '.';
 
-// component to test
-import { ConsentManager } from './';
+// events
+import eventEmitter from 'utils/eventEmitter';
 
-// mock depencies
+// utils
+import { registerDestination } from './destinations';
+import { isAdmin, isModerator } from 'services/permissions/roles';
+
+// typings
+import { IUserData } from 'services/users';
+
+// mocked functions
+import { setConsent, IConsentCookie } from './consent';
+
+// mocks
+jest.mock('utils/cl-intl');
 jest.mock('services/appConfiguration');
-jest.mock('resources/GetAppConfiguration', () => 'GetAppConfiguration');
-jest.mock('./Container', () => 'Container');
 jest.mock('modules', () => ({ streamsToReset: [] }));
+jest.mock('utils/cl-router/Link', () => ({ children }) => (
+  <button>{children}</button>
+));
+jest.mock('hooks/useLocale');
 
-// by default, no cookie
+let mockAuthUser: IUserData | null = null;
+jest.mock('hooks/useAuthUser', () => () => mockAuthUser);
 
+const mockAppConfiguration = {
+  id: '1',
+  attributes: {
+    settings: {
+      matomo: {
+        allowed: true,
+        enabled: true,
+      },
+      google_analytics: {
+        allowed: true,
+        enabled: true,
+      },
+      intercom: {
+        allowed: true,
+        enabled: true,
+      },
+    },
+  },
+};
+jest.mock('hooks/useAppConfiguration', () => () => mockAppConfiguration);
+
+let mockCookie: IConsentCookie | null = null;
 jest.mock('./consent', () => ({
-  getConsent: jest.fn(() => null),
+  getConsent: jest.fn(() => mockCookie),
   setConsent: jest.fn(),
 }));
 
-import * as consent from './consent';
-
-import { makeUser } from 'services/__mocks__/users';
-import {
-  __setMockAppConfiguration,
-  getAppConfigurationData,
-} from 'services/__mocks__/appConfiguration';
-import { getDestinationConfigs, registerDestination } from './destinations';
+// add destinations for testing
+registerDestination({
+  key: 'matomo',
+  category: 'analytics',
+  feature_flag: 'matomo',
+  name: () => 'Matomo',
+});
 
 registerDestination({
   key: 'google_analytics',
-  feature_flag: 'google_analytics',
   category: 'analytics',
+  feature_flag: 'google_analytics',
+  name: () => 'Google Analytics',
 });
 
 registerDestination({
   key: 'intercom',
-  feature_flag: 'intercom',
   category: 'functional',
-  hasPermission: (user) => user === admin,
+  feature_flag: 'intercom',
+  hasPermission: (user) =>
+    !!user && (isAdmin({ data: user }) || isModerator({ data: user })),
+  name: () => 'Intercom',
 });
-
-registerDestination({
-  key: 'satismeter',
-  feature_flag: 'satismeter',
-  category: 'analytics',
-  hasPermission: (user) => user === admin,
-});
-
-// object will all destinations as keys, true as values, mimicks the savedvales for a user that accepted all
-const savedChoicesAllDisabled = getDestinationConfigs().reduce(
-  (acc, destination) => {
-    return { ...acc, [destination.key]: false };
-  },
-  {}
-);
-const savedChoicesAllEnabled = getDestinationConfigs().reduce(
-  (acc, destination) => {
-    return { ...acc, [destination.key]: true };
-  },
-  {}
-);
-
-const tenantDataAllEnabled = getAppConfigurationData({
-  settings: {
-    satismeter: { allowed: true, enabled: true },
-    google_analytics: { allowed: true, enabled: true },
-    segment: { allowed: true, enabled: true },
-    intercom: { allowed: true, enabled: true },
-    google_tag_manager: { allowed: true, enabled: true },
-  },
-});
-
-const tenantDataAllDisabled = getAppConfigurationData({
-  settings: {
-    satismeter: { allowed: false, enabled: false },
-    google_analytics: { allowed: false, enabled: false },
-    segment: { allowed: false, enabled: false },
-    intercom: { allowed: false, enabled: false },
-    google_tag_manager: { allowed: false, enabled: false },
-  },
-});
-
-const admin = makeUser({
-  roles: [{ type: 'admin' }],
-}).data;
 
 describe('<ConsentManager />', () => {
-  describe('boundaries: ', () => {
-    it('renders null when tenant is null', () => {
-      const wrapper = shallow(<ConsentManager authUser={null} tenant={null} />);
-      expect(wrapper.isEmptyRender()).toBe(true);
+  describe('logged out, no cookie exists yet', () => {
+    beforeEach(() => {
+      mockAuthUser = null;
+      mockCookie = null;
     });
-    it('renders null when tenant is Error', () => {
-      const wrapper = shallow(
-        <ConsentManager authUser={null} tenant={new Error()} />
-      );
-      expect(wrapper.isEmptyRender()).toBe(true);
-    });
-    it('renders with a valid tenant', () => {
-      const wrapper = shallow(
-        <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
-      );
-      expect(wrapper.isEmptyRender()).toBe(false);
-    });
-  });
 
-  describe('parses tenant setting and user to show active destinations in categories', () => {
-    describe('unsingned user', () => {
-      it('acts properly when all enabled', () => {
-        const wrapper = shallow(
-          <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
-        );
-        const categorizedDestinations = wrapper
-          .find('Container')
-          .props().categorizedDestinations;
-        expect(categorizedDestinations).toMatchSnapshot();
-      });
-      it('acts properly when all disabled', () => {
-        __setMockAppConfiguration(tenantDataAllEnabled);
-        const wrapper = shallow(
-          <ConsentManager authUser={null} tenant={tenantDataAllDisabled} />
-        );
-        const categorizedDestinations = wrapper
-          .find('Container')
-          .props().categorizedDestinations;
-        expect(categorizedDestinations).toMatchSnapshot();
+    it('renders banner', () => {
+      const { container } = render(<ConsentManager />);
+      expect(container.querySelector('#e2e-cookie-banner')).toBeInTheDocument();
+    });
+
+    it('saves correct cookie if all cookies are accepted', () => {
+      const { container } = render(<ConsentManager />);
+      fireEvent.click(container.querySelector('.e2e-accept-cookies-btn'));
+
+      expect(setConsent).toHaveBeenCalledWith({
+        functional: true,
+        analytics: true,
+        advertising: true,
+        savedChoices: {
+          matomo: true,
+          google_analytics: true,
+        },
       });
     });
 
-    describe('admin user', () => {
-      it('acts properly when all enabled', () => {
-        __setMockAppConfiguration(tenantDataAllEnabled);
-        const wrapper = shallow(
-          <ConsentManager authUser={admin} tenant={tenantDataAllEnabled} />
-        );
-        const categorizedDestinations = wrapper
-          .find('Container')
-          .props().categorizedDestinations;
-        expect(categorizedDestinations).toMatchSnapshot();
-      });
-      it('acts properly when all disabled', () => {
-        const wrapper = shallow(
-          <ConsentManager authUser={admin} tenant={tenantDataAllDisabled} />
-        );
-        const categorizedDestinations = wrapper
-          .find('Container')
-          .props().categorizedDestinations;
-        expect(categorizedDestinations).toMatchSnapshot();
-      });
-      it('acts properly when only satismeter disabled', () => {
-        tenantDataAllEnabled.attributes.settings.satismeter = {
-          allowed: false,
-          enabled: false,
-        };
-        __setMockAppConfiguration(tenantDataAllEnabled);
-        const wrapper = shallow(
-          <ConsentManager authUser={admin} tenant={tenantDataAllEnabled} />
-        );
-        const categorizedDestinations = wrapper
-          .find('Container')
-          .props().categorizedDestinations;
-        expect(categorizedDestinations).toMatchSnapshot();
+    it('rejects all cookies except functional if banner is closed', () => {
+      const { container } = render(<ConsentManager />);
+      fireEvent.click(container.querySelector('.e2e-close-cookie-banner'));
+
+      expect(setConsent).toHaveBeenCalledWith({
+        functional: true,
+        analytics: false,
+        advertising: false,
+        savedChoices: {
+          matomo: false,
+          google_analytics: false,
+        },
       });
     });
-    describe('super admin user', () => {
-      const superAdmin = makeUser({
-        roles: [{ type: 'admin' }],
-        highest_role: 'super_admin',
-      }).data;
-      it('acts properly when all enabled', () => {
-        __setMockAppConfiguration(tenantDataAllEnabled);
-        const wrapper = shallow(
-          <ConsentManager authUser={superAdmin} tenant={tenantDataAllEnabled} />
-        );
-        const categorizedDestinations = wrapper
-          .find('Container')
-          .props().categorizedDestinations;
-        expect(categorizedDestinations).toMatchSnapshot();
+
+    it('rejects all cookies except functional if preference modal is openend and confirmed without changes', () => {
+      const { container } = render(<ConsentManager />);
+      fireEvent.click(container.querySelector('.integration-open-modal'));
+      fireEvent.click(container.querySelector('#e2e-preferences-save'));
+
+      expect(setConsent).toHaveBeenCalledWith({
+        functional: true,
+        analytics: false,
+        advertising: false,
+        savedChoices: {
+          matomo: false,
+          google_analytics: false,
+        },
       });
-      it('acts properly when all disabled', () => {
-        __setMockAppConfiguration(tenantDataAllDisabled);
-        const wrapper = shallow(
-          <ConsentManager
-            authUser={superAdmin}
-            tenant={tenantDataAllDisabled}
-          />
-        );
-        const categorizedDestinations = wrapper
-          .find('Container')
-          .props().categorizedDestinations;
-        expect(categorizedDestinations).toMatchSnapshot();
+    });
+
+    it('accepts only functional and analytics cookies if analytics is enabled in preference modal', () => {
+      const { container } = render(<ConsentManager />);
+      fireEvent.click(container.querySelector('.integration-open-modal'));
+      fireEvent.click(container.querySelector('#analytics-radio-true'));
+      fireEvent.click(container.querySelector('#e2e-preferences-save'));
+
+      expect(setConsent).toHaveBeenCalledWith({
+        functional: true,
+        analytics: true,
+        advertising: false,
+        savedChoices: {
+          matomo: true,
+          google_analytics: true,
+        },
       });
     });
   });
 
-  describe('passes down preferences and preferences handling', () => {
-    describe('no cookie previously', () => {
-      describe('all destinations', () => {
-        it('initializes preferences object correctly', () => {
-          __setMockAppConfiguration(tenantDataAllEnabled);
-          const wrapper = shallow(
-            <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
-          );
-          const preferences = wrapper.find('Container').props().preferences;
-          expect(preferences).toEqual({
-            analytics: undefined,
-            advertising: undefined,
-            functional: undefined,
-          });
-        });
-        it('changes it as required', () => {
-          __setMockAppConfiguration(tenantDataAllEnabled);
-          const wrapper = shallow(
-            <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
-          );
-
-          const setPreferences = wrapper
-            .find('Container')
-            .props().setPreferences;
-
-          setPreferences({ analytics: false });
-
-          const preferences = wrapper.find('Container').props().preferences;
-          expect(preferences).toEqual({
-            analytics: false,
-            advertising: undefined,
-            functional: undefined,
-          });
-        });
-        it('consent is required', () => {
-          __setMockAppConfiguration(tenantDataAllEnabled);
-          const wrapper = shallow(
-            <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
-          );
-
-          const isConsentRequired = wrapper
-            .find('Container')
-            .props().isConsentRequired;
-
-          expect(isConsentRequired).toBe(true);
-        });
-      });
-      describe('no destinations', () => {
-        it('initializes preferences object correctly', () => {
-          __setMockAppConfiguration(tenantDataAllDisabled);
-          const wrapper = shallow(
-            <ConsentManager authUser={null} tenant={tenantDataAllDisabled} />
-          );
-          const preferences = wrapper.find('Container').props().preferences;
-          expect(preferences).toEqual({
-            analytics: undefined,
-            advertising: undefined,
-            functional: undefined,
-          });
-        });
-      });
+  describe('logged out, cookie exists', () => {
+    beforeEach(() => {
+      mockAuthUser = null;
+      mockCookie = {
+        functional: true,
+        analytics: true,
+        advertising: false,
+        savedChoices: {
+          matomo: true,
+          google_analytics: true,
+        },
+      };
     });
-    describe('previously accepted, no new destinations', () => {
-      it('initializes preferences object correctly', () => {
-        // COOkIE mock
-        // object will all destinations as keys, true as values, mimicks the savedvales for a user that accepted all
-        const spy = jest
-          .spyOn(consent, 'getConsent')
-          .mockImplementation(() => ({
-            analytics: true,
-            advertising: true,
-            functional: true,
-            savedChoices: savedChoicesAllEnabled,
-          }));
-        __setMockAppConfiguration(tenantDataAllEnabled);
-        const wrapper = shallow(
-          <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
-        );
-        const preferences = wrapper.find('Container').props().preferences;
-        expect(preferences).toEqual({
-          analytics: true,
-          advertising: true,
-          functional: true,
-        });
-        spy.mockRestore();
-      });
 
-      it('consent is not required', () => {
-        // COOkIE mock
-        // object will all destinations as keys, true as values, mimicks the savedvales for a user that accepted all
-        const spy = jest
-          .spyOn(consent, 'getConsent')
-          .mockImplementation(() => ({
-            analytics: true,
-            advertising: true,
-            functional: true,
-            savedChoices: savedChoicesAllEnabled,
-          }));
-        __setMockAppConfiguration(tenantDataAllEnabled);
-        const wrapper = shallow(
-          <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
-        );
-
-        const isConsentRequired = wrapper
-          .find('Container')
-          .props().isConsentRequired;
-
-        expect(isConsentRequired).toBe(false);
-
-        spy.mockRestore();
-      });
+    it('does not render banner', () => {
+      const { container } = render(<ConsentManager />);
+      expect(
+        container.querySelector('#e2e-cookie-banner')
+      ).not.toBeInTheDocument();
     });
-    describe('previously accepted, new destinations', () => {
-      it('initializes preferences object correctly', () => {
-        // COOkIE mock
-        const spy = jest
-          .spyOn(consent, 'getConsent')
-          .mockImplementation(() => ({
-            analytics: true,
-            advertising: true,
-            functional: true,
-            savedChoices: { ...savedChoicesAllEnabled, intercom: true },
-          }));
-        __setMockAppConfiguration(tenantDataAllEnabled);
 
-        const wrapper = shallow(
-          <ConsentManager authUser={admin} tenant={tenantDataAllEnabled} />
-        );
-        const preferences = wrapper.find('Container').props().preferences;
-        expect(preferences).toEqual({
-          analytics: true,
-          advertising: true,
-          functional: true,
-        });
-        spy.mockRestore();
-      });
+    it('still allows cookies to be changes through modal', () => {
+      const { container } = render(<ConsentManager />);
+      expect(
+        container.querySelector('#e2e-preference-dialog')
+      ).not.toBeInTheDocument();
 
-      it('consent is required', () => {
-        const spy = jest
-          .spyOn(consent, 'getConsent')
-          .mockImplementation(() => ({
-            analytics: true,
-            advertising: true,
-            functional: true,
-            savedChoices: { google_analytics: true },
-          }));
-        __setMockAppConfiguration(tenantDataAllEnabled);
-        const wrapper = shallow(
-          <ConsentManager authUser={admin} tenant={tenantDataAllEnabled} />
-        );
+      act(() => eventEmitter.emit('openConsentManager'));
+      expect(
+        container.querySelector('#e2e-preference-dialog')
+      ).toBeInTheDocument();
 
-        const isConsentRequired = wrapper
-          .find('Container')
-          .props().isConsentRequired;
+      fireEvent.click(container.querySelector('#analytics-radio-false'));
+      fireEvent.click(container.querySelector('#e2e-preferences-save'));
 
-        expect(isConsentRequired).toBe(true);
-
-        spy.mockRestore();
-      });
-    });
-    describe('previously refused', () => {
-      it('initializes preferences object correctly', () => {
-        const mock_savedChoices = savedChoicesAllEnabled;
-        const spy = jest
-          .spyOn(consent, 'getConsent')
-          .mockImplementation(() => ({
-            analytics: false,
-            advertising: false,
-            functional: false,
-            savedChoices: mock_savedChoices,
-          }));
-        __setMockAppConfiguration(tenantDataAllEnabled);
-        const wrapper = shallow(
-          <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
-        );
-        const preferences = wrapper.find('Container').props().preferences;
-        expect(preferences).toEqual({
-          analytics: false,
-          advertising: false,
-          functional: false,
-        });
-        spy.mockRestore();
-      });
-    });
-    describe('preference reset', () => {
-      it('resets preferences when no previous cookie was set', () => {
-        __setMockAppConfiguration(tenantDataAllEnabled);
-        const wrapper = shallow(
-          <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
-        );
-        const setPreferences = wrapper.find('Container').props().setPreferences;
-
-        setPreferences({ analytics: false });
-        wrapper.find('Container').props().resetPreferences();
-
-        const preferences = wrapper.find('Container').props().preferences;
-        expect(preferences).toEqual({
-          analytics: undefined,
-          advertising: undefined,
-          functional: undefined,
-        });
-      });
-      it('resets preferences when previous cookie was set', () => {
-        const spy = jest
-          .spyOn(consent, 'getConsent')
-          .mockImplementation(() => ({
-            analytics: true,
-            advertising: true,
-            functional: true,
-            savedChoices: savedChoicesAllDisabled,
-          }));
-        __setMockAppConfiguration(tenantDataAllEnabled);
-        const wrapper = shallow(
-          <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
-        );
-        const setPreferences = wrapper.find('Container').props().setPreferences;
-
-        setPreferences({ analytics: false });
-
-        wrapper.find('Container').props().resetPreferences();
-
-        const preferences = wrapper.find('Container').props().preferences;
-        expect(preferences).toEqual({
-          analytics: true,
-          advertising: true,
-          functional: true,
-        });
-        spy.mockRestore();
+      expect(setConsent).toHaveBeenCalledWith({
+        functional: true,
+        analytics: false,
+        advertising: false,
+        savedChoices: {
+          matomo: false,
+          google_analytics: false,
+        },
       });
     });
   });
-  describe('sets the cookie', () => {
-    describe('accept', () => {
-      it('accepts all when no cookie was set', () => {
-        const tenantAllDestinationsEnabled = getAppConfigurationData({
-          settings: {
-            ...getAppConfigurationData()['attributes']['settings'],
-            google_analytics: { enabled: true, allowed: true },
-          },
-        });
 
-        const setConsentSpy = jest.spyOn(consent, 'setConsent');
-        __setMockAppConfiguration(tenantDataAllEnabled);
-        const wrapper = shallow(
-          <ConsentManager
-            authUser={null}
-            tenant={tenantAllDestinationsEnabled}
-          />
-        );
-        wrapper.find('Container').props().accept();
-
-        expect(setConsentSpy).toHaveBeenCalledTimes(1);
-        expect(setConsentSpy.mock.calls[0][0]).toMatchSnapshot();
-      });
-      it('sets preferences to true when previous cookie was set without overwriting false values', () => {
-        const setConsentSpy = jest.spyOn(consent, 'setConsent');
-
-        const _getConsentSpy = jest
-          .spyOn(consent, 'getConsent')
-          .mockImplementation(() => ({
-            analytics: undefined,
-            advertising: false,
-            functional: true,
-            savedChoices: savedChoicesAllEnabled,
-          }));
-        __setMockAppConfiguration(tenantDataAllEnabled);
-        const wrapper = shallow(
-          <ConsentManager authUser={null} tenant={tenantDataAllEnabled} />
-        );
-        wrapper.find('Container').props().accept();
-
-        expect(setConsentSpy).toHaveBeenCalledTimes(1);
-        expect(setConsentSpy.mock.calls[0][0]).toMatchSnapshot();
-      });
+  describe('logged in, cookie exists', () => {
+    beforeEach(() => {
+      mockCookie = {
+        functional: true,
+        analytics: true,
+        advertising: false,
+        savedChoices: {
+          matomo: true,
+          google_analytics: true,
+        },
+      };
     });
-    // describe('saveConsent', () => {
-    //   it('saves the preferences object and individual preferences for all destination available to this user on this tenant', () => {
-    //     // TODO
-    //   })
-    // });
+
+    it('does not show banner if no new permissions required', () => {
+      mockAuthUser = {
+        attributes: {
+          roles: [],
+          highest_role: 'user',
+        },
+      } as any;
+
+      const { container } = render(<ConsentManager />);
+      expect(
+        container.querySelector('#e2e-cookie-banner')
+      ).not.toBeInTheDocument();
+    });
+
+    it('shows banner if new permissions required', () => {
+      mockAuthUser = {
+        attributes: {
+          roles: [{ type: 'admin' }],
+        },
+      } as any;
+
+      const { container } = render(<ConsentManager />);
+      expect(container.querySelector('#e2e-cookie-banner')).toBeInTheDocument();
+    });
   });
 });

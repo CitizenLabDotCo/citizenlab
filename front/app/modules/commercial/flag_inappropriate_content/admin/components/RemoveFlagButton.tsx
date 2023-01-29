@@ -19,7 +19,7 @@ const RemoveFlagButton = ({
   if (selectedActiveFlagsCount > 0) {
     return (
       <Button
-        icon="exclamation-trapezium-strikethrough"
+        icon="alert-octagon-off"
         buttonStyle="cl-blue"
         processing={processing}
         onClick={onRemoveFlags}

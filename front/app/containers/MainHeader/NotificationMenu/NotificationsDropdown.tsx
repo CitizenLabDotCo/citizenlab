@@ -1,7 +1,7 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import Notification from './components/Notification';
-import { Spinner, Dropdown } from '@citizenlab/cl2-component-library';
+import { Spinner, Dropdown, Box } from '@citizenlab/cl2-component-library';
 import InfiniteScroll from 'react-infinite-scroller';
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
@@ -37,7 +37,7 @@ const EmptyStateImage = styled.img`
 `;
 
 const EmptyStateText = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   text-align: center;
@@ -51,7 +51,7 @@ const EmptyStateText = styled.div`
 
 interface InputProps {
   dropdownOpened: boolean;
-  toggleDropdown: () => void;
+  onClickOutside: () => void;
 }
 
 interface DataProps {
@@ -61,15 +61,10 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 const NotificationsDropdown = ({
-  toggleDropdown,
+  onClickOutside,
   dropdownOpened,
   notifications,
 }: Props) => {
-  const handleToggleDropdown = (event: React.FormEvent<any>) => {
-    event.preventDefault();
-    toggleDropdown();
-  };
-
   return (
     <Dropdown
       id="notifications-dropdown"
@@ -79,46 +74,49 @@ const NotificationsDropdown = ({
       right="-5px"
       mobileRight="-15px"
       opened={dropdownOpened}
-      onClickOutside={handleToggleDropdown}
+      onClickOutside={onClickOutside}
       content={
-        <InfiniteScroll
-          pageStart={0}
-          loadMore={notifications.onLoadMore}
-          useWindow={false}
-          hasMore={notifications.hasMore}
-          threshold={50}
-          loader={
-            <LoadingContainer key="0">
-              <Spinner />
-            </LoadingContainer>
-          }
-        >
-          {!isNilOrError(notifications?.list) && notifications.list.length > 0 && (
-            <>
-              {notifications.list.map((notification) => (
-                <Notification
-                  key={notification.id}
-                  notification={notification}
-                />
-              ))}
-            </>
-          )}
-          {(notifications?.list === null ||
-            notifications?.list?.length === 0) && (
-            <EmptyStateContainer>
-              <EmptyStateImageWrapper>
-                <EmptyStateImage
-                  src={EmptyStateImg}
-                  role="presentation"
-                  alt=""
-                />
-              </EmptyStateImageWrapper>
-              <EmptyStateText>
-                <FormattedMessage {...messages.noNotifications} />
-              </EmptyStateText>
-            </EmptyStateContainer>
-          )}
-        </InfiniteScroll>
+        <Box data-testid="notifications-dropdown">
+          <InfiniteScroll
+            pageStart={0}
+            loadMore={notifications.onLoadMore}
+            useWindow={false}
+            hasMore={notifications.hasMore}
+            threshold={50}
+            loader={
+              <LoadingContainer key="0">
+                <Spinner />
+              </LoadingContainer>
+            }
+          >
+            {!isNilOrError(notifications?.list) &&
+              notifications.list.length > 0 && (
+                <>
+                  {notifications.list.map((notification) => (
+                    <Notification
+                      key={notification.id}
+                      notification={notification}
+                    />
+                  ))}
+                </>
+              )}
+            {(notifications?.list === null ||
+              notifications?.list?.length === 0) && (
+              <EmptyStateContainer>
+                <EmptyStateImageWrapper>
+                  <EmptyStateImage
+                    src={EmptyStateImg}
+                    role="presentation"
+                    alt=""
+                  />
+                </EmptyStateImageWrapper>
+                <EmptyStateText>
+                  <FormattedMessage {...messages.noNotifications} />
+                </EmptyStateText>
+              </EmptyStateContainer>
+            )}
+          </InfiniteScroll>
+        </Box>
       }
     />
   );

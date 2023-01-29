@@ -40,10 +40,9 @@ const Navigation = ({
       data-testid="insightsInputDetailNavigation"
     >
       <Button
-        maxWidth="8px"
         m="2px"
-        p="8px 12px"
-        iconSize="8px"
+        p="4px"
+        maxWidth="32px"
         icon="chevron-up"
         buttonStyle="secondary-outlined"
         onClick={moveUp}
@@ -51,10 +50,9 @@ const Navigation = ({
         data-testid="insightsInputDetailNavigationUp"
       />
       <Button
-        maxWidth="8px"
         m="2px"
-        p="8px 12px"
-        iconSize="8px"
+        p="4px"
+        maxWidth="32px"
         icon="chevron-down"
         buttonStyle="secondary-outlined"
         onClick={moveDown}

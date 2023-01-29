@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_19_103052) do
+ActiveRecord::Schema.define(version: 2022_12_05_112729) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 2022_07_19_103052) do
     t.datetime "acted_at", null: false
     t.datetime "created_at", null: false
     t.index ["acted_at"], name: "index_activities_on_acted_at"
+    t.index ["action"], name: "index_activities_on_action"
     t.index ["item_type", "item_id"], name: "index_activities_on_item"
     t.index ["user_id"], name: "index_activities_on_user_id"
   end
@@ -48,20 +49,78 @@ ActiveRecord::Schema.define(version: 2022_07_19_103052) do
     t.index ["lft"], name: "index_admin_publications_on_lft"
     t.index ["ordering"], name: "index_admin_publications_on_ordering"
     t.index ["parent_id"], name: "index_admin_publications_on_parent_id"
+    t.index ["publication_type", "publication_id"], name: "index_admin_publications_on_publication_type_and_publication_id"
     t.index ["rgt"], name: "index_admin_publications_on_rgt"
+  end
+
+  create_table "analytics_dimension_dates", primary_key: "date", id: :date, force: :cascade do |t|
+    t.string "year"
+    t.string "month"
+    t.date "week"
+  end
+
+  create_table "analytics_dimension_locales", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.index ["name"], name: "index_analytics_dimension_locales_on_name", unique: true
+  end
+
+  create_table "analytics_dimension_locales_fact_visits", id: false, force: :cascade do |t|
+    t.uuid "dimension_locale_id"
+    t.uuid "fact_visit_id"
+    t.index ["dimension_locale_id", "fact_visit_id"], name: "i_analytics_dim_locales_fact_visits_on_locale_and_visit_ids", unique: true
+    t.index ["dimension_locale_id"], name: "i_l_v_locale"
+    t.index ["fact_visit_id"], name: "i_l_v_visit"
+  end
+
+  create_table "analytics_dimension_projects_fact_visits", id: false, force: :cascade do |t|
+    t.uuid "dimension_project_id"
+    t.uuid "fact_visit_id"
+    t.index ["dimension_project_id", "fact_visit_id"], name: "i_analytics_dim_projects_fact_visits_on_project_and_visit_ids", unique: true
+    t.index ["dimension_project_id"], name: "i_p_v_project"
+    t.index ["fact_visit_id"], name: "i_p_v_visit"
+  end
+
+  create_table "analytics_dimension_referrer_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "key", null: false
+    t.string "name", null: false
+    t.index ["key"], name: "i_d_referrer_key", unique: true
+  end
+
+  create_table "analytics_dimension_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "parent"
+  end
+
+  create_table "analytics_fact_visits", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "visitor_id", null: false
+    t.uuid "dimension_user_id"
+    t.uuid "dimension_referrer_type_id", null: false
+    t.date "dimension_date_first_action_id", null: false
+    t.date "dimension_date_last_action_id", null: false
+    t.integer "duration", null: false
+    t.integer "pages_visited", null: false
+    t.boolean "returning_visitor", default: false, null: false
+    t.string "referrer_name"
+    t.string "referrer_url"
+    t.integer "matomo_visit_id", null: false
+    t.datetime "matomo_last_action_time", null: false
+    t.index ["dimension_date_first_action_id"], name: "i_v_first_action"
+    t.index ["dimension_date_last_action_id"], name: "i_v_last_action"
+    t.index ["dimension_referrer_type_id"], name: "i_v_referrer_type"
+    t.index ["dimension_user_id"], name: "i_v_user"
+    t.index ["matomo_last_action_time"], name: "i_v_timestamp"
+    t.index ["matomo_visit_id"], name: "i_v_matomo_visit", unique: true
   end
 
   create_table "app_configurations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "host"
     t.string "logo"
-    t.string "header_bg"
     t.string "favicon"
     t.jsonb "settings", default: {}
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.jsonb "style", default: {}
-    t.jsonb "homepage_info_multiloc"
   end
 
   create_table "areas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -70,6 +129,8 @@ ActiveRecord::Schema.define(version: 2022_07_19_103052) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "ordering"
+    t.uuid "custom_field_option_id"
+    t.index ["custom_field_option_id"], name: "index_areas_on_custom_field_option_id"
   end
 
   create_table "areas_ideas", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -93,6 +154,15 @@ ActiveRecord::Schema.define(version: 2022_07_19_103052) do
     t.uuid "project_id"
     t.index ["area_id"], name: "index_areas_projects_on_area_id"
     t.index ["project_id"], name: "index_areas_projects_on_project_id"
+  end
+
+  create_table "areas_static_pages", force: :cascade do |t|
+    t.uuid "area_id", null: false
+    t.uuid "static_page_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["area_id"], name: "index_areas_static_pages_on_area_id"
+    t.index ["static_page_id"], name: "index_areas_static_pages_on_static_page_id"
   end
 
   create_table "baskets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -186,12 +256,19 @@ ActiveRecord::Schema.define(version: 2022_07_19_103052) do
     t.string "code"
     t.uuid "resource_id"
     t.boolean "hidden", default: false, null: false
+    t.integer "maximum"
+    t.jsonb "minimum_label_multiloc", default: {}, null: false
+    t.jsonb "maximum_label_multiloc", default: {}, null: false
+    t.jsonb "logic", default: {}, null: false
     t.index ["resource_type", "resource_id"], name: "index_custom_fields_on_resource_type_and_resource_id"
   end
 
   create_table "custom_forms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "participation_context_id", null: false
+    t.string "participation_context_type", null: false
+    t.index ["participation_context_id", "participation_context_type"], name: "index_custom_forms_on_participation_context", unique: true
   end
 
   create_table "email_campaigns_campaign_email_commands", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -417,6 +494,7 @@ ActiveRecord::Schema.define(version: 2022_07_19_103052) do
     t.datetime "assigned_at"
     t.integer "proposed_budget"
     t.jsonb "custom_field_values", default: {}, null: false
+    t.uuid "creation_phase_id"
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_ideas_search", using: :gin
     t.index ["author_id"], name: "index_ideas_on_author_id"
     t.index ["idea_status_id"], name: "index_ideas_on_idea_status_id"
@@ -451,6 +529,20 @@ ActiveRecord::Schema.define(version: 2022_07_19_103052) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_identities_on_user_id"
+  end
+
+  create_table "impact_tracking_salts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "salt"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "impact_tracking_sessions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "monthly_user_hash", null: false
+    t.string "highest_role"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["monthly_user_hash"], name: "index_impact_tracking_sessions_on_monthly_user_hash"
   end
 
   create_table "initiative_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -516,7 +608,7 @@ ActiveRecord::Schema.define(version: 2022_07_19_103052) do
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_initiatives_search", using: :gin
     t.index ["author_id"], name: "index_initiatives_on_author_id"
     t.index ["location_point"], name: "index_initiatives_on_location_point", using: :gist
-    t.index ["slug"], name: "index_initiatives_on_slug"
+    t.index ["slug"], name: "index_initiatives_on_slug", unique: true
   end
 
   create_table "initiatives_topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -830,6 +922,8 @@ ActiveRecord::Schema.define(version: 2022_07_19_103052) do
     t.integer "min_budget", default: 0
     t.string "downvoting_method", default: "unlimited", null: false
     t.integer "downvoting_limited_max", default: 10
+    t.string "posting_method", default: "unlimited", null: false
+    t.integer "posting_limited_max", default: 1
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
@@ -958,7 +1052,6 @@ ActiveRecord::Schema.define(version: 2022_07_19_103052) do
     t.integer "comments_count", default: 0, null: false
     t.uuid "default_assignee_id"
     t.boolean "poll_anonymous", default: false, null: false
-    t.uuid "custom_form_id"
     t.boolean "downvoting_enabled", default: true, null: false
     t.string "ideas_order"
     t.string "input_term", default: "idea"
@@ -966,7 +1059,8 @@ ActiveRecord::Schema.define(version: 2022_07_19_103052) do
     t.string "downvoting_method", default: "unlimited", null: false
     t.integer "downvoting_limited_max", default: 10
     t.boolean "include_all_areas", default: false, null: false
-    t.index ["custom_form_id"], name: "index_projects_on_custom_form_id"
+    t.string "posting_method", default: "unlimited", null: false
+    t.integer "posting_limited_max", default: 1
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
@@ -1028,6 +1122,15 @@ ActiveRecord::Schema.define(version: 2022_07_19_103052) do
     t.jsonb "value", default: {}, null: false
   end
 
+  create_table "report_builder_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.uuid "owner_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_report_builder_reports_on_name", unique: true
+    t.index ["owner_id"], name: "index_report_builder_reports_on_owner_id"
+  end
+
   create_table "spam_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "spam_reportable_id", null: false
     t.string "spam_reportable_type", null: false
@@ -1054,13 +1157,39 @@ ActiveRecord::Schema.define(version: 2022_07_19_103052) do
 
   create_table "static_pages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.jsonb "title_multiloc", default: {}
-    t.jsonb "body_multiloc", default: {}
     t.string "slug"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "code", null: false
+    t.jsonb "top_info_section_multiloc", default: {}, null: false
+    t.boolean "banner_enabled", default: false, null: false
+    t.string "banner_layout", default: "full_width_banner_layout", null: false
+    t.string "banner_overlay_color"
+    t.integer "banner_overlay_opacity"
+    t.jsonb "banner_cta_button_multiloc", default: {}, null: false
+    t.string "banner_cta_button_type", default: "no_button", null: false
+    t.string "banner_cta_button_url"
+    t.jsonb "banner_header_multiloc", default: {}, null: false
+    t.jsonb "banner_subheader_multiloc", default: {}, null: false
+    t.boolean "top_info_section_enabled", default: false, null: false
+    t.boolean "files_section_enabled", default: false, null: false
+    t.boolean "projects_enabled", default: false, null: false
+    t.string "projects_filter_type", default: "no_filter", null: false
+    t.boolean "events_widget_enabled", default: false, null: false
+    t.boolean "bottom_info_section_enabled", default: false, null: false
+    t.jsonb "bottom_info_section_multiloc", default: {}, null: false
+    t.string "header_bg"
     t.index ["code"], name: "index_static_pages_on_code"
     t.index ["slug"], name: "index_static_pages_on_slug", unique: true
+  end
+
+  create_table "static_pages_topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "topic_id", null: false
+    t.uuid "static_page_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["static_page_id"], name: "index_static_pages_topics_on_static_page_id"
+    t.index ["topic_id"], name: "index_static_pages_topics_on_topic_id"
   end
 
   create_table "surveys_responses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1086,7 +1215,6 @@ ActiveRecord::Schema.define(version: 2022_07_19_103052) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "logo"
-    t.string "header_bg"
     t.string "favicon"
     t.jsonb "style", default: {}
     t.datetime "deleted_at"
@@ -1160,6 +1288,7 @@ ActiveRecord::Schema.define(version: 2022_07_19_103052) do
     t.boolean "confirmation_required", default: true, null: false
     t.index "lower((email)::text)", name: "users_unique_lower_email_idx", unique: true
     t.index ["email"], name: "index_users_on_email"
+    t.index ["registration_completed_at"], name: "index_users_on_registration_completed_at"
     t.index ["slug"], name: "index_users_on_slug", unique: true
   end
 
@@ -1210,12 +1339,21 @@ ActiveRecord::Schema.define(version: 2022_07_19_103052) do
   end
 
   add_foreign_key "activities", "users"
+  add_foreign_key "analytics_dimension_locales_fact_visits", "analytics_dimension_locales", column: "dimension_locale_id"
+  add_foreign_key "analytics_dimension_locales_fact_visits", "analytics_fact_visits", column: "fact_visit_id"
+  add_foreign_key "analytics_dimension_projects_fact_visits", "analytics_fact_visits", column: "fact_visit_id"
+  add_foreign_key "analytics_fact_visits", "analytics_dimension_dates", column: "dimension_date_first_action_id", primary_key: "date"
+  add_foreign_key "analytics_fact_visits", "analytics_dimension_dates", column: "dimension_date_last_action_id", primary_key: "date"
+  add_foreign_key "analytics_fact_visits", "analytics_dimension_referrer_types", column: "dimension_referrer_type_id"
+  add_foreign_key "areas", "custom_field_options"
   add_foreign_key "areas_ideas", "areas"
   add_foreign_key "areas_ideas", "ideas"
   add_foreign_key "areas_initiatives", "areas"
   add_foreign_key "areas_initiatives", "initiatives"
   add_foreign_key "areas_projects", "areas"
   add_foreign_key "areas_projects", "projects"
+  add_foreign_key "areas_static_pages", "areas"
+  add_foreign_key "areas_static_pages", "static_pages"
   add_foreign_key "baskets", "users"
   add_foreign_key "baskets_ideas", "baskets"
   add_foreign_key "baskets_ideas", "ideas"
@@ -1234,6 +1372,7 @@ ActiveRecord::Schema.define(version: 2022_07_19_103052) do
   add_foreign_key "idea_files", "ideas"
   add_foreign_key "idea_images", "ideas"
   add_foreign_key "ideas", "idea_statuses"
+  add_foreign_key "ideas", "phases", column: "creation_phase_id"
   add_foreign_key "ideas", "projects"
   add_foreign_key "ideas", "users", column: "assignee_id"
   add_foreign_key "ideas", "users", column: "author_id"
@@ -1290,8 +1429,11 @@ ActiveRecord::Schema.define(version: 2022_07_19_103052) do
   add_foreign_key "projects_topics", "projects"
   add_foreign_key "projects_topics", "topics"
   add_foreign_key "public_api_api_clients", "tenants"
+  add_foreign_key "report_builder_reports", "users", column: "owner_id"
   add_foreign_key "spam_reports", "users"
   add_foreign_key "static_page_files", "static_pages"
+  add_foreign_key "static_pages_topics", "static_pages"
+  add_foreign_key "static_pages_topics", "topics"
   add_foreign_key "user_custom_fields_representativeness_ref_distributions", "custom_fields"
   add_foreign_key "volunteering_volunteers", "volunteering_causes", column: "cause_id"
   add_foreign_key "votes", "users"
@@ -1433,5 +1575,225 @@ ActiveRecord::Schema.define(version: 2022_07_19_103052) do
        LEFT JOIN moderation_moderation_statuses ON ((moderation_moderation_statuses.moderatable_id = comments.id)))
        LEFT JOIN initiatives ON ((initiatives.id = comments.post_id)))
     WHERE ((comments.post_type)::text = 'Initiative'::text);
+  SQL
+  create_view "analytics_dimension_projects", sql_definition: <<-SQL
+      SELECT projects.id,
+      projects.title_multiloc
+     FROM projects;
+  SQL
+  create_view "analytics_build_feedbacks", sql_definition: <<-SQL
+      SELECT a.post_id,
+      min(a.feedback_first_date) AS feedback_first_date,
+      max(a.feedback_official) AS feedback_official,
+      max(a.feedback_status_change) AS feedback_status_change
+     FROM ( SELECT activities.item_id AS post_id,
+              min(activities.created_at) AS feedback_first_date,
+              0 AS feedback_official,
+              1 AS feedback_status_change
+             FROM activities
+            WHERE (((activities.action)::text = 'changed_status'::text) AND ((activities.item_type)::text = ANY (ARRAY[('Idea'::character varying)::text, ('Initiative'::character varying)::text])))
+            GROUP BY activities.item_id
+          UNION ALL
+           SELECT official_feedbacks.post_id,
+              min(official_feedbacks.created_at) AS feedback_first_date,
+              1 AS feedback_official,
+              0 AS feedback_status_change
+             FROM official_feedbacks
+            GROUP BY official_feedbacks.post_id) a
+    GROUP BY a.post_id;
+  SQL
+  create_view "analytics_fact_participations", sql_definition: <<-SQL
+      SELECT i.id,
+      i.author_id AS dimension_user_id,
+      i.project_id AS dimension_project_id,
+          CASE
+              WHEN (((pr.participation_method)::text = 'native_survey'::text) OR ((ph.participation_method)::text = 'native_survey'::text)) THEN survey.id
+              ELSE idea.id
+          END AS dimension_type_id,
+      (i.created_at)::date AS dimension_date_created_id,
+      (i.upvotes_count + i.downvotes_count) AS votes_count,
+      i.upvotes_count,
+      i.downvotes_count
+     FROM ((((ideas i
+       LEFT JOIN projects pr ON ((pr.id = i.project_id)))
+       LEFT JOIN phases ph ON ((ph.id = i.creation_phase_id)))
+       JOIN analytics_dimension_types idea ON (((idea.name)::text = 'idea'::text)))
+       LEFT JOIN analytics_dimension_types survey ON (((survey.name)::text = 'survey'::text)))
+  UNION ALL
+   SELECT i.id,
+      i.author_id AS dimension_user_id,
+      NULL::uuid AS dimension_project_id,
+      adt.id AS dimension_type_id,
+      (i.created_at)::date AS dimension_date_created_id,
+      (i.upvotes_count + i.downvotes_count) AS votes_count,
+      i.upvotes_count,
+      i.downvotes_count
+     FROM (initiatives i
+       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'initiative'::text)))
+  UNION ALL
+   SELECT c.id,
+      c.author_id AS dimension_user_id,
+      i.project_id AS dimension_project_id,
+      adt.id AS dimension_type_id,
+      (c.created_at)::date AS dimension_date_created_id,
+      (c.upvotes_count + c.downvotes_count) AS votes_count,
+      c.upvotes_count,
+      c.downvotes_count
+     FROM ((comments c
+       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'comment'::text)))
+       LEFT JOIN ideas i ON ((c.post_id = i.id)))
+  UNION ALL
+   SELECT v.id,
+      v.user_id AS dimension_user_id,
+      COALESCE(i.project_id, ic.project_id) AS dimension_project_id,
+      adt.id AS dimension_type_id,
+      (v.created_at)::date AS dimension_date_created_id,
+      1 AS votes_count,
+          CASE
+              WHEN ((v.mode)::text = 'up'::text) THEN 1
+              ELSE 0
+          END AS upvotes_count,
+          CASE
+              WHEN ((v.mode)::text = 'down'::text) THEN 1
+              ELSE 0
+          END AS downvotes_count
+     FROM ((((votes v
+       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'vote'::text)))
+       LEFT JOIN ideas i ON ((i.id = v.votable_id)))
+       LEFT JOIN comments c ON ((c.id = v.votable_id)))
+       LEFT JOIN ideas ic ON ((ic.id = c.post_id)))
+  UNION ALL
+   SELECT pr.id,
+      pr.user_id AS dimension_user_id,
+      COALESCE(p.project_id, pr.participation_context_id) AS dimension_project_id,
+      adt.id AS dimension_type_id,
+      (pr.created_at)::date AS dimension_date_created_id,
+      0 AS votes_count,
+      0 AS upvotes_count,
+      0 AS downvotes_count
+     FROM ((polls_responses pr
+       LEFT JOIN phases p ON ((p.id = pr.participation_context_id)))
+       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'poll'::text)))
+  UNION ALL
+   SELECT vv.id,
+      vv.user_id AS dimension_user_id,
+      COALESCE(p.project_id, vc.participation_context_id) AS dimension_project_id,
+      adt.id AS dimension_type_id,
+      (vv.created_at)::date AS dimension_date_created_id,
+      0 AS votes_count,
+      0 AS upvotes_count,
+      0 AS downvotes_count
+     FROM (((volunteering_volunteers vv
+       LEFT JOIN volunteering_causes vc ON ((vc.id = vv.cause_id)))
+       LEFT JOIN phases p ON ((p.id = vc.participation_context_id)))
+       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'volunteer'::text)));
+  SQL
+  create_view "analytics_fact_posts", sql_definition: <<-SQL
+      SELECT i.id,
+      i.author_id AS user_id,
+      i.project_id AS dimension_project_id,
+      adt.id AS dimension_type_id,
+      (i.created_at)::date AS dimension_date_created_id,
+      (abf.feedback_first_date)::date AS dimension_date_first_feedback_id,
+      i.idea_status_id AS dimension_status_id,
+      (abf.feedback_first_date - i.created_at) AS feedback_time_taken,
+      COALESCE(abf.feedback_official, 0) AS feedback_official,
+      COALESCE(abf.feedback_status_change, 0) AS feedback_status_change,
+          CASE
+              WHEN (abf.feedback_first_date IS NULL) THEN 1
+              ELSE 0
+          END AS feedback_none,
+      (i.upvotes_count + i.downvotes_count) AS votes_count,
+      i.upvotes_count,
+      i.downvotes_count
+     FROM ((ideas i
+       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'idea'::text)))
+       LEFT JOIN analytics_build_feedbacks abf ON ((abf.post_id = i.id)))
+  UNION ALL
+   SELECT i.id,
+      i.author_id AS user_id,
+      NULL::uuid AS dimension_project_id,
+      adt.id AS dimension_type_id,
+      (i.created_at)::date AS dimension_date_created_id,
+      (abf.feedback_first_date)::date AS dimension_date_first_feedback_id,
+      isc.initiative_status_id AS dimension_status_id,
+      (abf.feedback_first_date - i.created_at) AS feedback_time_taken,
+      COALESCE(abf.feedback_official, 0) AS feedback_official,
+      COALESCE(abf.feedback_status_change, 0) AS feedback_status_change,
+          CASE
+              WHEN (abf.feedback_first_date IS NULL) THEN 1
+              ELSE 0
+          END AS feedback_none,
+      (i.upvotes_count + i.downvotes_count) AS votes_count,
+      i.upvotes_count,
+      i.downvotes_count
+     FROM (((initiatives i
+       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'initiative'::text)))
+       LEFT JOIN analytics_build_feedbacks abf ON ((abf.post_id = i.id)))
+       LEFT JOIN initiative_status_changes isc ON (((isc.initiative_id = i.id) AND (isc.updated_at = ( SELECT max(isc_.updated_at) AS max
+             FROM initiative_status_changes isc_
+            WHERE (isc_.initiative_id = i.id))))));
+  SQL
+  create_view "analytics_fact_email_deliveries", sql_definition: <<-SQL
+      SELECT ecd.id,
+      (ecd.sent_at)::date AS dimension_date_sent_id,
+      ecd.campaign_id,
+      ((ecc.type)::text <> 'EmailCampaigns::Campaigns::Manual'::text) AS automated
+     FROM (email_campaigns_deliveries ecd
+       JOIN email_campaigns_campaigns ecc ON ((ecc.id = ecd.campaign_id)));
+  SQL
+  create_view "analytics_dimension_statuses", sql_definition: <<-SQL
+      SELECT idea_statuses.id,
+      idea_statuses.title_multiloc,
+      idea_statuses.code,
+      idea_statuses.color
+     FROM idea_statuses
+  UNION ALL
+   SELECT initiative_statuses.id,
+      initiative_statuses.title_multiloc,
+      initiative_statuses.code,
+      initiative_statuses.color
+     FROM initiative_statuses;
+  SQL
+  create_view "analytics_fact_registrations", sql_definition: <<-SQL
+      SELECT u.id,
+      u.id AS dimension_user_id,
+      (u.registration_completed_at)::date AS dimension_date_registration_id,
+      (i.created_at)::date AS dimension_date_invited_id,
+      (i.accepted_at)::date AS dimension_date_accepted_id
+     FROM (users u
+       LEFT JOIN invites i ON ((i.invitee_id = u.id)));
+  SQL
+  create_view "analytics_dimension_users", sql_definition: <<-SQL
+      SELECT users.id,
+      COALESCE(((users.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role,
+      users.invite_status
+     FROM users;
+  SQL
+  create_view "analytics_fact_events", sql_definition: <<-SQL
+      SELECT events.id,
+      events.project_id AS dimension_project_id,
+      (events.created_at)::date AS dimension_date_created_id,
+      (events.start_at)::date AS dimension_date_start_id,
+      (events.end_at)::date AS dimension_date_end_id
+     FROM events;
+  SQL
+  create_view "analytics_fact_project_statuses", sql_definition: <<-SQL
+      WITH finished_statuses_for_timeline_projects AS (
+           SELECT phases.project_id,
+              ((max(phases.end_at) + 1))::timestamp without time zone AS "timestamp"
+             FROM phases
+            GROUP BY phases.project_id
+           HAVING (max(phases.end_at) < now())
+          )
+   SELECT ap.publication_id AS dimension_project_id,
+      ap.publication_status AS status,
+      ((((p.process_type)::text = 'continuous'::text) AND ((ap.publication_status)::text = 'archived'::text)) OR ((fsftp.project_id IS NOT NULL) AND ((ap.publication_status)::text <> 'draft'::text))) AS finished,
+      COALESCE(fsftp."timestamp", ap.updated_at) AS "timestamp",
+      COALESCE((fsftp."timestamp")::date, (ap.updated_at)::date) AS dimension_date_id
+     FROM ((admin_publications ap
+       LEFT JOIN projects p ON ((ap.publication_id = p.id)))
+       LEFT JOIN finished_statuses_for_timeline_projects fsftp ON ((fsftp.project_id = ap.publication_id)))
+    WHERE ((ap.publication_type)::text = 'Project'::text);
   SQL
 end

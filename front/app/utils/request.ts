@@ -2,19 +2,24 @@ import 'whatwg-fetch';
 import { stringify } from 'qs';
 import { getJwt } from 'utils/auth/jwt';
 import { isString } from 'lodash-es';
+import { IHttpMethod } from 'typings';
+import { IObject } from 'utils/streams';
+import { RequestError } from 'utils/requestError';
 
 export default function request<T>(
-  url,
-  data,
-  options,
-  queryParameters
+  url: string,
+  bodyData: Record<string, any> | null,
+  options: IHttpMethod | null,
+  queryParameters: IObject | null
 ): Promise<T> {
   const urlParams = stringify(queryParameters, {
     arrayFormat: 'brackets',
     addQueryPrefix: true,
   });
+
   const urlWithParams = `${url}${urlParams}`;
   const jwt = getJwt();
+
   const defaultOptions: { [key: string]: any } = {
     headers: {
       'Content-Type': 'application/json',
@@ -25,8 +30,8 @@ export default function request<T>(
     defaultOptions.headers['Authorization'] = `Bearer ${jwt}`;
   }
 
-  if (data) {
-    defaultOptions.body = JSON.stringify(data);
+  if (bodyData) {
+    defaultOptions.body = JSON.stringify(bodyData);
   }
 
   return fetch(urlWithParams, { ...defaultOptions, ...options })
@@ -49,7 +54,10 @@ export default function request<T>(
       const errorMessage = isString(json?.error)
         ? json.error
         : response.statusText || 'unknown error';
-      const error = new Error(`error for ${urlWithParams}: ${errorMessage}`);
+      const error = new RequestError(
+        `error for ${urlWithParams}: ${errorMessage}`
+      );
+      error.statusCode = response.status;
       if (json) {
         // The error reasons may be encoded in the
         // json content (this happens e.g. for

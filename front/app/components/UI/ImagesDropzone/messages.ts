@@ -31,8 +31,4 @@ export default defineMessages({
     id: 'app.components.Upload.uploadMultipleImagesLabel',
     defaultMessage: 'Select one or more images',
   },
-  a11y_removeImage: {
-    id: 'app.components.Upload.a11y_removeImage',
-    defaultMessage: 'Remove image',
-  },
 });

@@ -122,10 +122,8 @@ class WebApi::V1::UsersController < ::ApplicationController
     CustomFieldService.new.cleanup_custom_field_values! user_params[:custom_field_values]
     @user.assign_attributes user_params
 
-    if user_params.key?('avatar') && user_params['avatar'].nil?
-      # setting the avatar attribute to nil will not remove the avatar
-      @user.remove_avatar!
-    end
+    remove_image_if_requested!(@user, user_params, :avatar)
+
     authorize @user
     if @user.save
       SideFxUserService.new.after_update(@user, current_user)
@@ -167,7 +165,8 @@ class WebApi::V1::UsersController < ::ApplicationController
   end
 
   def ideas_count
-    render json: { count: policy_scope(@user.ideas.published).count }, status: :ok
+    ideas = policy_scope(IdeasFinder.new({}, scope: @user.ideas.published, current_user: current_user).find_records)
+    render json: { count: ideas.count }, status: :ok
   end
 
   def initiatives_count

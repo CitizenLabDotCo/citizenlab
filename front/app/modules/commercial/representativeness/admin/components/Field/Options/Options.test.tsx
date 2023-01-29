@@ -15,19 +15,13 @@ const generateOptions = (n: number) =>
 
 let mockOptions;
 
-jest.mock(
-  'modules/commercial/user_custom_fields/hooks/useUserCustomFieldOptions',
-  () => () => mockOptions
-);
+jest.mock('hooks/useUserCustomFieldOptions', () => () => mockOptions);
 
 let mockField;
 
 const selectField = { attributes: { key: null } };
 
-jest.mock(
-  'modules/commercial/user_custom_fields/hooks/useUserCustomField',
-  () => () => mockField
-);
+jest.mock('hooks/useUserCustomField', () => () => mockField);
 
 describe('<Options />', () => {
   describe('select field', () => {

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module IdClaveUnica
-  class ClaveUnicaOmniauth
+  class ClaveUnicaOmniauth < OmniauthMethods::Base
     include ClaveUnicaVerification
 
     def profile_to_user_attrs(auth)

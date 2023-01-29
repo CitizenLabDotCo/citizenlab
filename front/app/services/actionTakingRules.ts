@@ -51,6 +51,7 @@ export type ActionPermission<DisabledReasons> =
 export type IIdeaPostingDisabledReason =
   | 'notPermitted'
   | 'postingDisabled'
+  | 'postingLimitedMaxReached'
   | 'projectInactive'
   | 'notActivePhase'
   | 'maybeNotPermitted'
@@ -96,6 +97,11 @@ const ideaPostingDisabledReason = (
         disabledReason: 'postingDisabled',
         action: null,
       };
+    case 'posting_limited_max_reached':
+      return {
+        disabledReason: 'postingLimitedMaxReached',
+        action: null,
+      };
     case 'not_permitted':
       return {
         disabledReason: signedIn ? 'notPermitted' : 'maybeNotPermitted',
@@ -125,11 +131,9 @@ export const getIdeaPostingRules = ({
   authUser: GetAuthUserChildProps | TAuthUser;
 }): ActionPermission<IIdeaPostingDisabledReason> => {
   const signedIn = !isNilOrError(authUser);
-
   if (!isNilOrError(project)) {
     const { disabled_reason, future_enabled, enabled } =
       project.attributes.action_descriptor.posting_idea;
-
     if (
       !isNilOrError(authUser) &&
       (isAdmin({ data: authUser }) || isProjectModerator({ data: authUser }))
@@ -147,7 +151,8 @@ export const getIdeaPostingRules = ({
       // not an enabled ideation phase
       if (
         !(
-          phase.attributes.participation_method === 'ideation' &&
+          (phase.attributes.participation_method === 'ideation' ||
+            phase.attributes.participation_method === 'native_survey') &&
           phase.attributes.posting_enabled &&
           disabled_reason !== 'not_ideation'
         )
@@ -177,6 +182,51 @@ export const getIdeaPostingRules = ({
     }
 
     // continuous, not an enabled ideation project
+    // TODO: Will need to update this section after we add new permissions in back office in i5
+    if (
+      isNilOrError(phase) &&
+      project.attributes.participation_method === 'native_survey'
+    ) {
+      if (!project.attributes.posting_enabled) {
+        return {
+          show: true,
+          enabled: false,
+          disabledReason: 'notPermitted' as IIdeaPostingDisabledReason,
+          action: null,
+        };
+      }
+      if (disabled_reason) {
+        const { disabledReason, action } = ideaPostingDisabledReason(
+          disabled_reason,
+          signedIn,
+          future_enabled
+        );
+        if (action) {
+          return {
+            action,
+            disabledReason: null,
+            show: true,
+            enabled: 'maybe',
+          };
+        }
+        if (disabledReason) {
+          return {
+            disabledReason,
+            action: null,
+            show: true,
+            enabled: false,
+          } as ActionPermissionDisabled<IIdeaPostingDisabledReason>;
+        }
+      } else {
+        return {
+          show: true,
+          enabled: true,
+          disabledReason: null,
+          action: null,
+        };
+      }
+    }
+
     if (
       isNilOrError(phase) &&
       !(

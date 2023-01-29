@@ -1,81 +1,135 @@
 import React from 'react';
-import { FormikProps, FormikErrors } from 'formik';
+
+// types
+import { Multiloc, UploadFile } from 'typings';
+
+// form
+import { useForm, FormProvider } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { object, mixed } from 'yup';
+import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+import FileUploader from 'components/HookForm/FileUploader';
+import Feedback from 'components/HookForm/Feedback';
+import { SectionField } from 'components/admin/Section';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
+
+// intl
+import messages from './messages';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // components
-import BasePageForm from './BasePageForm';
-import PageTitleField from './fields/PageTitleField';
-import BodyField from './fields/BodyField';
-import SlugField from './fields/SlugField';
-import FileUploadField from './fields/FileUploadField';
-
-// typings
-import { Multiloc, Locale, UploadFile } from 'typings';
+import { IconTooltip, Label, Box } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
+import NavbarTitleField from './NavbarTitleField';
 
 // utils
-import {
-  validateMultiloc,
-  validateSlug,
-  removeUndefined,
-} from './fields/validate';
+import { isNilOrError } from 'utils/helperUtils';
+
+// hooks
+import useCustomPage from 'hooks/useCustomPage';
 
 export interface FormValues {
+  nav_bar_item_title_multiloc?: Multiloc;
   title_multiloc: Multiloc;
-  body_multiloc: Multiloc;
-  slug?: string;
+  top_info_section_multiloc: Multiloc;
   local_page_files: UploadFile[] | null;
 }
 
-export interface Props {
-  hideTitle?: boolean;
-  hideSlugInput?: boolean;
+interface Props {
+  onSubmit: (formValues: FormValues) => void | Promise<void>;
+  defaultValues?: FormValues;
   pageId: string | null;
 }
 
-export function validatePageForm(
-  appConfigurationLocales: Locale[],
-  existingSlugs?: Set<string>,
-  currentSlug?: string
-) {
-  return function ({
-    title_multiloc,
-    body_multiloc,
-    slug,
-  }: FormValues): FormikErrors<FormValues> {
-    const errors: FormikErrors<FormValues> = {};
+const PageForm = ({ onSubmit, defaultValues, pageId }: Props) => {
+  const { formatMessage } = useIntl();
+  const page = useCustomPage({ customPageId: pageId });
 
-    errors.title_multiloc = validateMultiloc(
-      title_multiloc,
-      appConfigurationLocales
-    );
-    errors.body_multiloc = validateMultiloc(
-      body_multiloc,
-      appConfigurationLocales
-    );
-    errors.slug = validateSlug(slug, existingSlugs, currentSlug);
+  const schema = object({
+    title_multiloc: validateAtLeastOneLocale(
+      formatMessage(messages.titleMissingOneLanguageError)
+    ),
+    top_info_section_multiloc: validateAtLeastOneLocale(
+      formatMessage(messages.descriptionMissingOneLanguageError)
+    ),
+    ...(pageId &&
+      !isNilOrError(page) &&
+      page.relationships.nav_bar_item.data && {
+        nav_bar_item_title_multiloc: validateAtLeastOneLocale(
+          formatMessage(messages.titleMissingOneLanguageError)
+        ),
+      }),
+    local_page_files: mixed(),
+  });
 
-    return removeUndefined(errors);
+  const methods = useForm({
+    mode: 'onBlur',
+    defaultValues,
+    resolver: yupResolver(schema),
+  });
+
+  const onFormSubmit = async (formValues: FormValues) => {
+    try {
+      await onSubmit(formValues);
+    } catch (error) {
+      handleHookFormSubmissionError(error, methods.setError);
+    }
   };
-}
 
-const PageForm = ({
-  values,
-  errors,
-  hideTitle,
-  hideSlugInput,
-  pageId,
-  ...props
-}: FormikProps<FormValues> & Props) => (
-  <BasePageForm values={values} errors={errors} {...props}>
-    {!hideTitle && <PageTitleField error={errors.title_multiloc} />}
-
-    <BodyField error={errors.body_multiloc} pageId={pageId} />
-
-    {!hideSlugInput && (
-      <SlugField pageId={pageId} values={values} error={errors.slug} />
-    )}
-
-    <FileUploadField pageId={pageId} />
-  </BasePageForm>
-);
+  return (
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onFormSubmit)}>
+        <SectionField>
+          <Feedback
+            successMessage={formatMessage(messages.savePageSuccessMessage)}
+          />
+        </SectionField>
+        <NavbarTitleField
+          pageId={pageId}
+          navbarItemId={
+            !isNilOrError(page) && page.relationships.nav_bar_item.data
+              ? page.relationships.nav_bar_item.data.id
+              : null
+          }
+        />
+        <SectionField>
+          <InputMultilocWithLocaleSwitcher
+            label={formatMessage(messages.pageTitle)}
+            type="text"
+            name="title_multiloc"
+          />
+        </SectionField>
+        <SectionField>
+          <QuillMultilocWithLocaleSwitcher
+            name="top_info_section_multiloc"
+            label={formatMessage(messages.editContent)}
+          />
+        </SectionField>
+        <SectionField>
+          <Label htmlFor="local_page_files">
+            <FormattedMessage {...messages.fileUploadLabel} />
+            <IconTooltip
+              content={
+                <FormattedMessage {...messages.fileUploadLabelTooltip} />
+              }
+            />
+          </Label>
+          <FileUploader
+            name="local_page_files"
+            resourceId={pageId}
+            resourceType="page"
+          />
+        </SectionField>
+        <Box display="flex">
+          <Button type="submit" processing={methods.formState.isSubmitting}>
+            {formatMessage(messages.savePage)}
+          </Button>
+        </Box>
+      </form>
+    </FormProvider>
+  );
+};
 
 export default PageForm;

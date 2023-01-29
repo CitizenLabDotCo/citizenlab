@@ -31,6 +31,13 @@ module MachineTranslations
           else
             begin
               @translation = MachineTranslationService.new.build_translation_for @translation_attributes
+
+              if @translation.nil?
+                render json: { errors: { base: [{ error: 'unable_to_translate' }] } }, status: :unprocessable_entity
+                skip_authorization
+                return
+              end
+
               authorize @translation
             rescue ClErrors::TransactionError => e
               raise e unless e.error_key == :translatable_blank

@@ -7,10 +7,12 @@
     <mj-text font-size="14px">
       <%= format_message('new_phase', values: { phaseTitle: localize_for_recipient(event.phase_title_multiloc) }) %>
       <p style="margin: 15px 0 0;">
-        <%= localize_for_recipient(event.phase_description_multiloc).first(140) %>
+        <%= localize_for_recipient(event.phase_description_multiloc) %>
       </p>
     </mj-text>
   </mj-column>
 </mj-section>
 
 <%= render partial: 'application/cta_button', locals: { href: event.phase_url , message: format_message('cta_view_phase') } %>
+
+<%= render partial: 'email_campaigns/projects/about_project', locals: { homepage_description: localize_for_recipient(event.project_description_preview_multiloc), message: format_message('subtitle', values: { projectName: localize_for_recipient(event.project_title_multiloc) }) } %>

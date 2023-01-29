@@ -38,7 +38,7 @@ const StyledButton = styled(Button)`
 `;
 
 const DisabledDragHandle = styled.div`
-  color: ${colors.clGreyOnGreyBackground};
+  color: ${colors.coolGrey600};
   padding: 1rem;
 `;
 
@@ -58,7 +58,7 @@ interface State {
 }
 
 export class OptionForm extends PureComponent<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       editingId: null,
@@ -153,7 +153,8 @@ export class OptionForm extends PureComponent<Props, State> {
               <StyledButton
                 className="e2e-add-option"
                 buttonStyle="secondary"
-                icon="create"
+                icon="plus-circle"
+                iconColor={colors.primary}
                 onClick={this.addOption}
                 autoFocus
               >

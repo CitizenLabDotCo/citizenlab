@@ -16,7 +16,7 @@ const Container = styled.div`
   padding: 100px 50px;
   ${defaultCardStyle};
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding: 70px 30px;
   `}
 `;
@@ -26,7 +26,7 @@ const StyledIllustration = styled(Illustration)`
   min-width: 300px;
   margin-bottom: 40px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-bottom: 20px;
   `}
 `;

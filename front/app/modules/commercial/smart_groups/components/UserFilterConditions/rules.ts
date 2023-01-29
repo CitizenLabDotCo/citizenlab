@@ -6,8 +6,8 @@ import ProjectValueSelector from './ValueSelector/ProjectValueSelector';
 import ProjectValuesSelector from './ValueSelector/ProjectValuesSelector';
 import NumberValueSelector from './ValueSelector/NumberValueSelector';
 
-import CustomFieldOptionValueSelector from 'modules/commercial/user_custom_fields/admin/components/CustomFieldOptionValueSelector';
-import CustomFieldOptionValuesSelector from 'modules/commercial/user_custom_fields/admin/components/CustomFieldOptionValuesSelector';
+import CustomFieldOptionValueSelector from './ValueSelector/CustomFieldOptionValueSelector';
+import CustomFieldOptionValuesSelector from './ValueSelector/CustomFieldOptionValuesSelector';
 
 import TopicValueSelector from './ValueSelector/TopicValueSelector';
 import TopicValuesSelector from './ValueSelector/TopicValuesSelector';

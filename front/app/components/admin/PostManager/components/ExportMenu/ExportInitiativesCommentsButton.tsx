@@ -12,7 +12,7 @@ import { API_PATH } from 'containers/App/constants';
 import tracks from '../../tracks';
 import { exportType } from '../ExportMenu';
 import { saveAs } from 'file-saver';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 interface Props {
   exportQueryParameter: 'all' | string | string[];
@@ -24,10 +24,10 @@ interface State {
 }
 
 class ExportCommentsButton extends React.PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       exporting: false,

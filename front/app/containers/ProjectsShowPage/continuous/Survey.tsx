@@ -12,7 +12,7 @@ import SectionContainer from 'components/SectionContainer';
 import useProject from 'hooks/useProject';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from 'containers/ProjectsShowPage/messages';
 
@@ -31,7 +31,7 @@ interface Props {
   className?: string;
 }
 
-const SurveyContainer = memo<Props & InjectedIntlProps>(
+const SurveyContainer = memo<Props & WrappedComponentProps>(
   ({ projectId, className, intl: { formatMessage } }) => {
     const project = useProject({ projectId });
 

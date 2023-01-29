@@ -14,15 +14,15 @@ import Pagination from 'components/admin/Pagination';
 import Avatar from 'components/Avatar';
 
 const statusColorMapping: {
-  [k in IDeliveryData['attributes']['delivery_status']]: keyof typeof colors;
+  [k in IDeliveryData['attributes']['delivery_status']]: string;
 } = {
-  sent: 'lightGreyishBlue',
-  bounced: 'red600',
-  failed: 'red600',
-  accepted: 'lightGreyishBlue',
-  delivered: 'clBlueLight',
-  opened: 'clGreenSuccess',
-  clicked: 'clGreenSuccess',
+  sent: colors.blue500,
+  bounced: colors.red600,
+  failed: colors.red600,
+  accepted: colors.grey200,
+  delivered: colors.teal300,
+  opened: colors.success,
+  clicked: colors.success,
 };
 
 interface InputProps {

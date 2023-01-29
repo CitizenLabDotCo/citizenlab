@@ -156,7 +156,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
         selectedPhase.attributes.participation_method === 'budgeting';
       const participationMethod = selectedPhase.attributes.participation_method;
       const smallerThanSmallTablet = windowSize
-        ? windowSize.windowWidth <= viewportWidths.smallTablet
+        ? windowSize.windowWidth <= viewportWidths.tablet
         : false;
 
       return (

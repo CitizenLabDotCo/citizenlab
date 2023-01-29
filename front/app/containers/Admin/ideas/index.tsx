@@ -12,10 +12,10 @@ import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // i18n
 import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
-const IdeasPage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const IdeasPage = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const [tabs, setTabs] = useState<ITab[]>([
     {
       label: formatMessage(messages.tabManage),
@@ -29,8 +29,9 @@ const IdeasPage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     subtitle: formatMessage(messages.inputManagerPageSubtitle),
   };
 
-  const handleData = (data: InsertConfigurationOptions<ITab>) =>
-    setTabs(insertConfiguration(data));
+  const handleData = (data: InsertConfigurationOptions<ITab>) => {
+    setTabs((tabs) => insertConfiguration(data)(tabs));
+  };
 
   return (
     <>
@@ -45,7 +46,6 @@ const IdeasPage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           description={messages.inputManagerMetaDescription}
         />
         <div id="e2e-input-manager-container">
-          {' '}
           <RouterOutlet />
         </div>
       </TabbedResource>

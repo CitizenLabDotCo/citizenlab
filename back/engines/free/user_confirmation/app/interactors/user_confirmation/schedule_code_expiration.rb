@@ -7,7 +7,7 @@ module UserConfirmation
 
     def call
       ExpireConfirmationCodeJob.set(wait_until: email_confirmation_code_expiration_at)
-        .perform_later(user, user.email_confirmation_code)
+        .perform_later(user.id, user.email_confirmation_code)
     end
   end
 end

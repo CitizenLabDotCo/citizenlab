@@ -1,33 +1,15 @@
 import React from 'react';
-import styled from 'styled-components';
 
 // components
-import { Table } from 'semantic-ui-react';
+import { Table, Tbody } from '@citizenlab/cl2-component-library';
 import HeaderRow from './HeaderRow';
 import Row from './Row';
 
 // styling
-import { colors } from 'utils/styleUtils';
+import { colors, stylingConsts } from 'utils/styleUtils';
 
 // typings
 import { RepresentativenessData } from '../../../hooks/createRefDataSubscription';
-
-const TABLE_HEADER_BG_COLOR = '#f9fafb';
-
-const StyledTable = styled(Table)<{ $hideBorderTop?: boolean }>`
-  td,
-  th > div {
-    color: ${colors.adminTextColor};
-  }
-  ${({ $hideBorderTop }) =>
-    $hideBorderTop ? 'border-top: 0px !important;' : ''}
-`;
-
-const StyledBody = styled(Table.Body)`
-  td:first-child {
-    background-color: ${TABLE_HEADER_BG_COLOR};
-  }
-`;
 
 interface Props {
   columns: string[];
@@ -36,14 +18,21 @@ interface Props {
 }
 
 const TableComponent = ({ columns, data, hideBorderTop }: Props) => (
-  <StyledTable $hideBorderTop={hideBorderTop}>
+  <Table
+    border={`1px solid ${colors.grey300}`}
+    borderRadius={stylingConsts.borderRadius}
+    borderTop={hideBorderTop ? 'none' : undefined}
+    innerBorders={{
+      bodyRows: true,
+    }}
+  >
     <HeaderRow columns={columns} />
-    <StyledBody>
+    <Tbody>
       {data.map((row, i) => (
         <Row row={row} key={i} />
       ))}
-    </StyledBody>
-  </StyledTable>
+    </Tbody>
+  </Table>
 );
 
 export default TableComponent;

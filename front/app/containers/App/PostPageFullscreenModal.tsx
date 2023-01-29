@@ -28,14 +28,14 @@ const StyledIdeasShow = styled(IdeasShow)`
   padding-left: 60px;
   padding-right: 60px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-height: calc(100vh - ${({
       theme: { mobileMenuHeight, mobileTopBarHeight },
     }) => mobileMenuHeight + mobileTopBarHeight}px);
     padding-top: 35px;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-top: 25px;
     padding-left: 15px;
     padding-right: 15px;
@@ -48,13 +48,22 @@ interface Props {
   slug: string | null;
   navbarRef?: HTMLElement | null;
   mobileNavbarRef?: HTMLElement | null;
+  signUpInModalOpened: boolean;
   close: () => void;
 }
 
 const PostPageFullscreenModal = memo<Props>(
-  ({ postId, slug, type, navbarRef, mobileNavbarRef, close }) => {
+  ({
+    postId,
+    slug,
+    type,
+    navbarRef,
+    mobileNavbarRef,
+    signUpInModalOpened,
+    close,
+  }) => {
     const { windowWidth } = useWindowSize();
-    const smallerThanMaxTablet = windowWidth <= viewportWidths.largeTablet;
+    const tablet = windowWidth <= viewportWidths.tablet;
 
     // Far from ideal to always try to load the idea, but
     // has to happen for hooks to work.
@@ -62,12 +71,7 @@ const PostPageFullscreenModal = memo<Props>(
     const idea = useIdea({ ideaId: postId });
 
     const topBar = useMemo(() => {
-      if (
-        postId &&
-        type === 'idea' &&
-        smallerThanMaxTablet &&
-        !isNilOrError(idea)
-      ) {
+      if (postId && type === 'idea' && tablet && !isNilOrError(idea)) {
         const projectId = idea.relationships.project.data.id;
 
         return (
@@ -84,7 +88,7 @@ const PostPageFullscreenModal = memo<Props>(
       }
 
       return null;
-    }, [postId, type, smallerThanMaxTablet, idea]);
+    }, [postId, type, tablet, idea]);
 
     const content = useMemo(() => {
       if (postId) {
@@ -123,12 +127,14 @@ const PostPageFullscreenModal = memo<Props>(
 
     return (
       <FullscreenModal
+        disableFocusOn={signUpInModalOpened}
         opened={!!(postId && slug && type)}
         close={onClose}
         url={slug ? `/${type}s/${slug}` : null}
         topBar={topBar}
         navbarRef={navbarRef}
         mobileNavbarRef={mobileNavbarRef}
+        zIndex={399}
       >
         {content}
       </FullscreenModal>

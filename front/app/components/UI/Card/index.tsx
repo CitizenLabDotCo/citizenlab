@@ -34,8 +34,8 @@ const CardImageWrapper = styled.div`
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border-top-left-radius: ${(props: any) => props.theme.borderRadius};
-  border-top-right-radius: ${(props: any) => props.theme.borderRadius};
+  border-top-left-radius: ${(props) => props.theme.borderRadius};
+  border-top-right-radius: ${(props) => props.theme.borderRadius};
 `;
 
 const CardImage = styled(Image)`
@@ -51,7 +51,7 @@ const HeaderContentWrapper = styled.div`
 `;
 
 const Title = styled.h3<{ hasHeader: boolean }>`
-  color: ${(props) => props.theme.colorText};
+  color: ${(props) => props.theme.colors.tenantText};
   max-width: 400px;
   font-size: ${fontSizes.xl}px;
   font-weight: 500;

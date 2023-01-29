@@ -22,6 +22,13 @@ class WebApi::V1::ImagesController < ApplicationController
       policy_scope_class: ProjectImagePolicy::Scope,
       image_relationship: :project_images,
       container_id: :project_id
+    },
+    'ProjectFolder' => {
+      container_class: ProjectFolders::Folder,
+      image_class: ProjectFolders::Image,
+      policy_scope_class: ProjectFolders::ImagePolicy::Scope,
+      image_relationship: :images,
+      container_id: :project_folder_id
     }
   }
 
@@ -74,25 +81,6 @@ class WebApi::V1::ImagesController < ApplicationController
     else
       head :internal_server_error
     end
-  end
-
-  # TODO: move this to a service?
-  #
-  # @param [String] container_type
-  # @param [Class] container_class
-  # @param [Class] image_class
-  # @param [Class] policy_scope_class
-  # @param [Symbol] image_relationship
-  # @param [Symbol] container_id
-  # @return [void]
-  def self.register_container(container_type, container_class, image_class, policy_scope_class, image_relationship, container_id)
-    CONSTANTIZER[container_type] = {
-      container_class: container_class,
-      image_class: image_class,
-      policy_scope_class: policy_scope_class,
-      image_relationship: image_relationship,
-      container_id: container_id
-    }
   end
 
   private

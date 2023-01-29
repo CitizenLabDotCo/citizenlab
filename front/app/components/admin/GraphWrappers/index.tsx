@@ -1,13 +1,6 @@
 import styled from 'styled-components';
 import { media, colors, fontSizes, defaultCardStyle } from 'utils/styleUtils';
 
-export const ControlBar = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 30px;
-  width: 100%;
-`;
-
 export const GraphsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -74,6 +67,24 @@ export const GraphCardInner = styled.div`
     padding: 0 10px;
     border: none;
   }
+`;
+
+// The same as GraphCardInner, but without the
+// annoying p selector inside of it messing with
+// other CSS. Once we move all our graphs to the new
+// GraphCard component we can think about removing the
+// old GraphCardInner. For now let's keep it to make
+// sure we don't break anything
+export const GraphCardInnerClean = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 35px;
+  ${defaultCardStyle}
 `;
 
 export const GraphCard = styled.div`
@@ -143,7 +154,7 @@ export const PieChartStyleFixesDiv = styled.div`
 export const GraphCardHeaderWithFilter = styled(GraphCardHeader)`
   align-items: center;
 
-  ${media.smallerThan1280px`
+  ${media.tablet`
     flex-direction: column;
     align-items: flex-start;
     margin-top: 0px;
@@ -154,6 +165,9 @@ export const GraphCardTitle = styled.h3`
   display: flex;
   align-items: center;
   margin: 0;
+  font-size: 25px;
+  font-weight: bold;
+  line-height: 1.3;
 `;
 
 export const GraphCardFigureContainer = styled.div`
@@ -171,7 +185,7 @@ export const GraphCardFigureChange = styled.span`
   font-size: ${fontSizes.base}px;
 
   &.increase {
-    color: ${colors.clGreenSuccess};
+    color: ${colors.success};
   }
 
   &.decrease {

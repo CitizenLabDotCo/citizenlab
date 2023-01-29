@@ -20,7 +20,7 @@ import tracks from './tracks';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // style
@@ -37,7 +37,7 @@ const easing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 const Container = styled.div`
   background: #fff;
   border-radius: ${({ theme }) => theme.borderRadius};
-  border: 1px solid ${({ theme }) => theme.colors.separation};
+  border: 1px solid ${({ theme }) => theme.colors.divider};
 `;
 
 const CreateProjectContent = styled.div`
@@ -104,7 +104,7 @@ const ExpandIconWrapper = styled.div`
   width: 30px;
   height: 30px;
   border-radius: ${({ theme }) => theme.borderRadius};
-  border: solid 1px ${transparentize(0.7, colors.label)};
+  border: solid 1px ${transparentize(0.7, colors.textSecondary)};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -112,8 +112,7 @@ const ExpandIconWrapper = styled.div`
 `;
 
 const ExpandIcon = styled(Icon)`
-  height: 11px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   transition: all ${duartion - 100}ms ease-out;
 
   &.expanded {
@@ -136,7 +135,7 @@ const CreateProjectButton = styled.button`
 
   &:hover {
     ${ExpandIconWrapper} {
-      border-color: ${transparentize(0.2, colors.label)};
+      border-color: ${transparentize(0.2, colors.textSecondary)};
     }
   }
 `;
@@ -159,13 +158,13 @@ export interface ITabNamesMap {
 
 export type TTabName = ITabNamesMap[keyof ITabNamesMap];
 
-const CreateProject = memo<Props & InjectedIntlProps>(
+const CreateProject = memo<Props & WrappedComponentProps>(
   ({ className, intl: { formatMessage } }) => {
     const [tabs, setTabs] = useState<ITabItem[]>([
       {
         name: 'scratch',
         label: formatMessage(messages.fromScratch),
-        icon: 'scratch',
+        icon: 'blank-paper',
       },
     ]);
     const tabValues = tabs.map((tab) => tab.name) as TTabName[];
@@ -220,7 +219,9 @@ const CreateProject = memo<Props & InjectedIntlProps>(
     );
 
     const handleData = (data: InsertConfigurationOptions<ITabItem>) =>
-      setTabs(insertConfiguration(data));
+      setTabs((tabs) => {
+        return insertConfiguration(data)(tabs);
+      });
 
     return (
       <Container className={className}>

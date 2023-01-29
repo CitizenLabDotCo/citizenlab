@@ -15,7 +15,7 @@ const StyledIdeaCard = styled(IdeaCard)`
   width: calc(50% - 20px);
   margin: 10px;
 
-  ${media.smallerThan1100px`
+  ${media.tablet`
     width: 100%;
   `};
 `;
@@ -26,7 +26,7 @@ const Footer = styled.div`
   justify-content: center;
   margin-top: 30px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     flex-direction: column;
     align-items: stretch;
     margin-top: 0px;
@@ -39,13 +39,13 @@ const Loading = styled.div`
   align-items: center;
   justify-content: center;
 
-  ${media.biggerThanMinTablet`
+  ${media.desktop`
     height: calc(100vh - 280px);
     position: sticky;
     top: 200px;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     height: 150px;
   `}
 `;
@@ -85,7 +85,7 @@ const IdeasList = ({
   hideImagePlaceholder = false,
   hideIdeaStatus = false,
 }: Props) => {
-  const theme: any = useTheme();
+  const theme = useTheme();
 
   const loadMoreIdeas = () => {
     onLoadMore();
@@ -134,11 +134,11 @@ const IdeasList = ({
                 text={<FormattedMessage {...messages.showMore} />}
                 processing={loadingMore}
                 height="50px"
-                icon="showMore"
+                icon="refresh"
                 iconPos="left"
-                textColor={theme.colorText}
-                bgColor={rgba(theme.colorText, 0.08)}
-                bgHoverColor={rgba(theme.colorText, 0.12)}
+                textColor={theme.colors.tenantText}
+                bgColor={rgba(theme.colors.tenantText, 0.08)}
+                bgHoverColor={rgba(theme.colors.tenantText, 0.12)}
                 fontWeight="500"
               />
             </Footer>

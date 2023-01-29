@@ -38,7 +38,7 @@ const Container = styled.div`
     flex-direction: row-reverse;
   `}
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
@@ -71,13 +71,13 @@ interface Props {
 
 const ReadMoreWrapper = memo<Props>(
   ({ className, value, fontSize, contentId }) => {
-    const theme: any = useTheme();
+    const theme = useTheme();
     const { windowWidth } = useWindowSize();
 
     const [expanded, setExpanded] = useState(false);
     const [contentHeight, setContentHeight] = useState<number | null>(null);
 
-    const smallerThanLargeTablet = windowWidth <= viewportWidths.largeTablet;
+    const smallerThanLargeTablet = windowWidth <= viewportWidths.tablet;
 
     const collapsedContentMaxHeight = smallerThanLargeTablet
       ? mobileCollapsedContentMaxHeight
@@ -113,7 +113,7 @@ const ReadMoreWrapper = memo<Props>(
                 <div id={`e2e-project-${contentId}`}>
                   <QuillEditedContent
                     fontSize={fontSize}
-                    textColor={theme.colorText}
+                    textColor={theme.colors.tenantText}
                     disableTabbing={!expanded}
                   >
                     <T value={value} supportHtml={true} />
@@ -139,8 +139,8 @@ const ReadMoreWrapper = memo<Props>(
                         onClick={toggleExpandCollapse}
                         textDecoration="underline"
                         textDecorationHover="underline"
-                        textColor={colors.label}
-                        textHoverColor={theme.colorText}
+                        textColor={colors.textSecondary}
+                        textHoverColor={theme.colors.tenantText}
                         fontWeight="500"
                         fontSize={`${fontSizes.m}px`}
                         padding="0"
@@ -160,8 +160,8 @@ const ReadMoreWrapper = memo<Props>(
                       onClick={toggleExpandCollapse}
                       textDecoration="underline"
                       textDecorationHover="underline"
-                      textColor={colors.label}
-                      textHoverColor={theme.colorText}
+                      textColor={colors.textSecondary}
+                      textHoverColor={theme.colors.tenantText}
                       fontWeight="500"
                       fontSize={`${fontSizes.m}px`}
                       padding="0"

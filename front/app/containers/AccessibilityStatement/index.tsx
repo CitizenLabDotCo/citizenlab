@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 // i18n
 import messages from './messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // components
 import Fragment from 'components/Fragment';
@@ -15,11 +15,11 @@ import {
   StyledContentContainer,
   PageContent,
   PageTitle,
-  PageDescription,
 } from 'containers/PagesShowPage';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
+import { Box } from '@citizenlab/cl2-component-library';
 
-const CookiePolicy = memo((props: InjectedIntlProps) => {
+const CookiePolicy = memo((props: WrappedComponentProps) => {
   const { formatMessage } = props.intl;
 
   return (
@@ -38,7 +38,7 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
             <PageTitle>
               <FormattedMessage {...messages.title} />
             </PageTitle>
-            <PageDescription>
+            <Box>
               <QuillEditedContent>
                 <p>
                   <FormattedMessage
@@ -136,7 +136,7 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                 </ul>
                 <p>{formatMessage(messages.responsiveness)}</p>
               </QuillEditedContent>
-            </PageDescription>
+            </Box>
           </Fragment>
         </StyledContentContainer>
       </PageContent>

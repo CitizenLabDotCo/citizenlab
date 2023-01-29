@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // components
@@ -25,7 +25,7 @@ const Container = styled.div`
 `;
 
 const Title = styled.h1`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.xxl}px;
   line-height: normal;
   font-weight: 600;
@@ -42,32 +42,35 @@ const ProjectFilterDropdownPositioner = styled.div`
 `;
 
 const FilterIcon = styled(Icon)`
-  width: 12px;
-  height: 12px;
-  fill: ${({ theme }) => theme.colorText};
+  fill: ${({ theme }) => theme.colors.tenantText};
   margin-right: 3px;
 `;
 
 interface Props {
   title: string;
+  showProjectFilter: boolean;
   setProjectIds: (projectIds: string[]) => void;
 }
 
-const TopBar = memo<Props & InjectedIntlProps>(
-  ({ title, setProjectIds, intl }) => {
-    const theme: any = useTheme();
+const TopBar = memo<Props & WrappedComponentProps>(
+  ({ title, showProjectFilter, setProjectIds, intl }) => {
+    const theme = useTheme();
 
     return (
       <Container>
         <Title>{title}</Title>
 
         <ProjectFilterDropdownPositioner>
-          <FilterIcon name="filter-funnel" />
-          <ProjectFilterDropdown
-            title={intl.formatMessage(messages.filterDropdownTitle)}
-            onChange={setProjectIds}
-            textColor={theme.colorText}
-          />
+          {showProjectFilter && (
+            <>
+              <FilterIcon name="filter-2" />
+              <ProjectFilterDropdown
+                title={intl.formatMessage(messages.filterDropdownTitle)}
+                onChange={setProjectIds}
+                textColor={theme.colors.tenantText}
+              />
+            </>
+          )}
         </ProjectFilterDropdownPositioner>
       </Container>
     );

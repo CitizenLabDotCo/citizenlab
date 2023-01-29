@@ -91,7 +91,7 @@ class RangeInput extends PureComponent<Props, State> {
             borderRadius: '4px',
             background: getTrackBackground({
               values: [this.props.value],
-              colors: [colors.label, '#e0e0e0'],
+              colors: [colors.textSecondary, '#e0e0e0'],
               min: this.props.min,
               max: this.props.max,
             }),

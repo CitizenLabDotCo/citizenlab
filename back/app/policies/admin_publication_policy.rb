@@ -22,7 +22,12 @@ class AdminPublicationPolicy < ApplicationPolicy
   end
 
   def reorder?
-    user&.active? && user&.admin?
+    return false unless user&.active?
+    return true if user.admin?
+
+    record.publication_type == 'Project' &&
+      record.publication.folder? &&
+      UserRoleService.new.can_moderate?(record.publication.folder, user)
   end
 
   def permitted_attributes_for_reorder
@@ -33,5 +38,3 @@ class AdminPublicationPolicy < ApplicationPolicy
     true
   end
 end
-
-AdminPublicationPolicy.prepend_if_ee('ProjectFolders::Patches::AdminPublicationPolicy')

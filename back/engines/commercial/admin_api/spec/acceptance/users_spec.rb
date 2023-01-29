@@ -55,7 +55,7 @@ resource 'User', admin_api: true do
 
     before do
       expect(DeleteUserJob).to receive(:perform_later).with(user).once
-      expect(Sentry).to receive(:capture_exception).once
+      expect(Sentry).to receive(:capture_message).once
     end
 
     example_request 'Delete users by emails' do

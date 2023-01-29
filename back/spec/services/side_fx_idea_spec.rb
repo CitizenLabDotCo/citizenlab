@@ -6,31 +6,6 @@ describe SideFxIdeaService do
   let(:service) { described_class.new }
   let(:user) { create(:user) }
 
-  describe 'before create' do
-    it 'assigns the idea to the current phase' do
-      project = create(:project_with_active_ideation_phase)
-      idea = build(:idea, project: project)
-      expect(idea.phases).to be_empty
-      service.before_create(idea, user)
-      expect(idea.phases).to eq [project.phases.first]
-    end
-
-    it "doesn't touch the idea phases when they're already assigned" do
-      project = create(:project_with_phases)
-      idea = build(:idea, project: project, phases: [project.phases.last])
-      service.before_create(idea, user)
-      expect(idea.phases).to eq [project.phases.last]
-    end
-
-    it 'assigns the idea to the first ideation phase for a project with future phases' do
-      project = create(:project_with_future_phases)
-      idea = build(:idea, project: project)
-      expect(idea.phases).to be_empty
-      service.before_create(idea, user)
-      expect(idea.phases).to eq [project.phases.first]
-    end
-  end
-
   describe 'after_create' do
     it "logs a 'published' action job when publication_state is published" do
       idea = create(:idea, publication_status: 'published', author: user)

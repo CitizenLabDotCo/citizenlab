@@ -19,36 +19,63 @@ export interface IStatusCounts extends IStatusCountsBase {
 }
 
 export default function useAdminPublicationsStatusCounts({
-  topicFilter,
-  areaFilter,
+  topicIds,
+  areaIds,
   publicationStatusFilter,
   rootLevelOnly = false,
   removeNotAllowedParents = false,
+  onlyProjects = false,
 }: BaseProps) {
   const [counts, setCounts] = useState<
     IStatusCounts | undefined | null | Error
   >(undefined);
-  const [topics, setTopics] = useState<string[] | undefined>(topicFilter);
-  const [areas, setAreas] = useState<string[] | undefined>(areaFilter);
+  const [topics, setTopics] = useState<string[] | null>(null);
+  const [areas, setAreas] = useState<string[] | null>(null);
+  const [search, setSearch] = useState<string | null>(null);
   const [publicationStatuses, setPublicationStatuses] = useState<
     PublicationStatus[]
   >(publicationStatusFilter);
 
+  // topicIds and areaIds are usually based off other
+  // requests, and will initially be null/undefined.
+  // Without the useEffect, they don't get updated
+  const stringifiedTopicIds = JSON.stringify(topicIds);
+  useEffect(() => {
+    if (topicIds !== undefined) {
+      setTopics(topicIds);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stringifiedTopicIds]);
+
+  const stringifiedAreaIds = JSON.stringify(areaIds);
+  useEffect(() => {
+    if (areaIds !== undefined) {
+      setAreas(areaIds);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stringifiedAreaIds]);
+
   const onChangeTopics = useCallback((topics: string[]) => {
-    topics.length === 0 ? setTopics(undefined) : setTopics(topics);
+    topics.length === 0 ? setTopics(null) : setTopics(topics);
   }, []);
 
   const onChangeAreas = useCallback((areas: string[]) => {
-    areas.length === 0 ? setAreas(undefined) : setAreas(areas);
+    areas.length === 0 ? setAreas(null) : setAreas(areas);
+  }, []);
+
+  const onChangeSearch = useCallback((search: string | null) => {
+    search && search.length === 0 ? setSearch(null) : setSearch(search);
   }, []);
 
   useEffect(() => {
     const queryParameters = {
       depth: rootLevelOnly ? 0 : undefined,
-      topics,
-      areas,
+      ...(topics && { topics }),
+      ...(areas && { areas }),
       publication_statuses: publicationStatuses,
       remove_not_allowed_parents: removeNotAllowedParents,
+      only_projects: onlyProjects,
+      search,
     };
 
     const subscription = adminPublicationsStatusCounts({
@@ -68,6 +95,8 @@ export default function useAdminPublicationsStatusCounts({
     publicationStatuses,
     rootLevelOnly,
     removeNotAllowedParents,
+    onlyProjects,
+    search,
   ]);
 
   return {
@@ -75,6 +104,7 @@ export default function useAdminPublicationsStatusCounts({
     onChangeTopics,
     onChangeAreas,
     onChangePublicationStatus: setPublicationStatuses,
+    onChangeSearch,
   };
 }
 

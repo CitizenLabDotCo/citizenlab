@@ -1,22 +1,29 @@
 import React, { useState, memo } from 'react';
+
 import { isNilOrError } from 'utils/helperUtils';
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
+
 // components
 import ContentContainer from 'components/ContentContainer';
 import ProjectInfo from './ProjectInfo';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import Button from 'components/UI/Button';
-import Image from 'components/UI/Image';
 import Outlet from 'components/Outlet';
+import ProjectFolderGoBackButton from './ProjectFolderGoBackButton';
+import {
+  HeaderImage,
+  HeaderImageContainer,
+} from 'components/ProjectableHeader';
 
 // hooks
 import useProject from 'hooks/useProject';
 import useAuthUser from 'hooks/useAuthUser';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 
 // style
@@ -31,7 +38,7 @@ const Container = styled.div`
   position: relative;
   z-index: 2;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-top: 30px;
     padding-bottom: 35px;
   `}
@@ -57,26 +64,13 @@ const EditButton = styled(Button)`
   `}
 `;
 
-const HeaderImage = styled(Image)`
-  width: 100%;
-  height: 240px;
-  margin-bottom: 30px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  overflow: hidden;
-
-  ${media.smallerThanMinTablet`
-    height: 160px;
-    margin-bottom: 20px;
-  `}
-`;
-
 const StyledProjectArchivedIndicator = styled(ProjectArchivedIndicator)<{
   hasHeaderImage: boolean;
 }>`
   margin-top: ${(props) => (props.hasHeaderImage ? '-20px' : '0px')};
   margin-bottom: 25px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -86,10 +80,10 @@ interface Props {
   className?: string;
 }
 
-const ProjectHeader = memo<Props & InjectedIntlProps>(
+const ProjectHeader = memo<Props & WrappedComponentProps>(
   ({ projectId, className, intl: { formatMessage } }) => {
     const [moduleActive, setModuleActive] = useState(false);
-
+    const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
     const project = useProject({ projectId });
     const authUser = useAuthUser();
     const projectFolderId = project?.attributes.folder_id;
@@ -107,17 +101,11 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
           <ContentContainer maxWidth={maxPageWidth}>
             {(projectFolderId || userCanEditProject) && (
               <TopBar>
-                {/*
-                  Needs to change: Outlet should always render.
-                  Condition needs to be inside the Outlet.
-                */}
-                {projectFolderId && (
-                  <Outlet
-                    id="app.containers.ProjectsShowPage.shared.header.ProjectHeader.GoBackButton"
+                {projectFolderId && isProjectFoldersEnabled && (
+                  <ProjectFolderGoBackButton
                     projectFolderId={projectFolderId}
                   />
                 )}
-
                 {userCanEditProject && (
                   <EditButton
                     icon="edit"
@@ -131,15 +119,17 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
               </TopBar>
             )}
             {projectHeaderImageLargeUrl && (
-              <HeaderImage
-                id="e2e-project-header-image"
-                src={projectHeaderImageLargeUrl}
-                cover={true}
-                fadeIn={false}
-                isLazy={false}
-                placeholderBg="transparent"
-                alt=""
-              />
+              <HeaderImageContainer id="e2e-project-header-image">
+                <HeaderImage
+                  id="e2e-project-header-image"
+                  src={projectHeaderImageLargeUrl}
+                  cover={true}
+                  fadeIn={false}
+                  isLazy={false}
+                  placeholderBg="transparent"
+                  alt=""
+                />
+              </HeaderImageContainer>
             )}
             <StyledProjectArchivedIndicator
               projectId={projectId}

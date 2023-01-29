@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 
 // components
 import {
@@ -10,23 +9,11 @@ import {
 } from '@citizenlab/cl2-component-library';
 // import RepresentativenessArticleLink from '../RepresentativenessArticleLink';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
-import Tabs, { ITabItem } from 'components/UI/Tabs';
+import ViewToggle, { View } from 'components/admin/GraphCard/ViewToggle';
 
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
-// typings
-import { ViewState } from '.';
-
-const StyledTabs = styled(Tabs)`
-  button {
-    padding: 10px;
-  }
-  svg {
-    margin-left: 0px;
-  }
-`;
 
 interface Props {
   title: string;
@@ -34,14 +21,9 @@ interface Props {
   rScore: number;
   projectFilter?: string;
   xlsxEndpoint: string;
-  viewState: ViewState;
-  onChangeViewState: (newViewState: ViewState) => void;
+  view: View;
+  onChangeView: (newView: View) => void;
 }
-
-const TAB_ITEMS: ITabItem[] = [
-  { icon: 'charts', name: 'chart', label: '' },
-  { icon: 'list', name: 'table', label: '' },
-];
 
 const Header = ({
   title,
@@ -49,8 +31,8 @@ const Header = ({
   rScore,
   projectFilter,
   xlsxEndpoint,
-  viewState,
-  onChangeViewState,
+  view,
+  onChangeView,
 }: Props) => (
   <Box
     p="20px 40px 0px 40px"
@@ -58,13 +40,13 @@ const Header = ({
     display="flex"
     justifyContent="space-between"
   >
-    <Title variant="h3" as="h2">
+    <Title color="primary" variant="h3" as="h2">
       {title}
     </Title>
     <Box display="flex" alignItems="center" mt="4px">
       <Text
         fontSize="s"
-        color="adminSecondaryTextColor"
+        color="textSecondary"
         fontWeight="bold"
         display="inline"
         m="0px"
@@ -77,7 +59,7 @@ const Header = ({
       <Text
         fontSize="xxl"
         display="inline"
-        color="adminTextColor"
+        color="primary"
         fontWeight="bold"
         m="0px"
         mb="0px"
@@ -88,7 +70,7 @@ const Header = ({
       <Text
         fontSize="xxl"
         display="inline"
-        color="mediumGrey"
+        color="grey500"
         m="0px"
         mr="8px"
         mb="0px"
@@ -110,15 +92,11 @@ const Header = ({
         <ReportExportMenu
           name={title}
           currentProjectFilter={projectFilter}
-          xlsxEndpoint={viewState === 'table' ? xlsxEndpoint : undefined}
-          svgNode={viewState === 'chart' ? svgNode : undefined}
+          xlsx={view === 'table' ? { endpoint: xlsxEndpoint } : undefined}
+          svgNode={view === 'chart' ? svgNode : undefined}
         />
       </Box>
-      <StyledTabs
-        items={TAB_ITEMS}
-        selectedValue={viewState}
-        onClick={onChangeViewState}
-      />
+      <ViewToggle view={view} onChangeView={onChangeView} />
     </Box>
   </Box>
 );

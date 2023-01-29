@@ -21,7 +21,8 @@ class WebApi::V1::StaticPagesController < ::ApplicationController
   end
 
   def create
-    @page = StaticPage.new permitted_attributes(StaticPage)
+    @page = StaticPage.new
+    assign_attributes
     authorize @page
 
     SideFxStaticPageService.new.before_create @page, current_user
@@ -37,7 +38,7 @@ class WebApi::V1::StaticPagesController < ::ApplicationController
   end
 
   def update
-    assign_attributes_for_update
+    assign_attributes
     authorize @page
 
     SideFxStaticPageService.new.before_update @page, current_user
@@ -50,11 +51,13 @@ class WebApi::V1::StaticPagesController < ::ApplicationController
   end
 
   def destroy
-    page = @page.destroy
+    destroyed = @page.destroy
 
-    if page.destroyed?
-      SideFxStaticPageService.new.after_destroy page, current_user
+    if destroyed
+      SideFxStaticPageService.new.after_destroy destroyed, current_user
       head :ok
+    elsif @page.errors
+      render json: { errors: @page.errors.details }, status: :unprocessable_entity
     else
       head :internal_server_error
     end
@@ -62,8 +65,15 @@ class WebApi::V1::StaticPagesController < ::ApplicationController
 
   private
 
-  def assign_attributes_for_update
-    @page.assign_attributes permitted_attributes(StaticPage)
+  def assign_attributes
+    attributes = permitted_attributes(StaticPage).to_h
+    nav_bar_item_title = attributes.delete(:nav_bar_item_title_multiloc)
+    if nav_bar_item_title.present? && @page.nav_bar_item_id.present?
+      attributes[:nav_bar_item_attributes] ||= {}
+      attributes[:nav_bar_item_attributes][:id] = @page.nav_bar_item_id
+      attributes[:nav_bar_item_attributes][:title_multiloc] = nav_bar_item_title
+    end
+    @page.assign_attributes attributes
   end
 
   def set_page
@@ -71,5 +81,3 @@ class WebApi::V1::StaticPagesController < ::ApplicationController
     authorize @page
   end
 end
-
-::WebApi::V1::StaticPagesController.prepend_if_ee 'CustomizableNavbar::WebApi::V1::Patches::StaticPagesController'

@@ -50,7 +50,7 @@ const Left = styled.ul`
     margin-right: 12px;
 
     &:after {
-      color: ${colors.label};
+      color: ${colors.textSecondary};
       font-size: ${fontSizes.s}px;
       font-weight: 400;
       content: '•';
