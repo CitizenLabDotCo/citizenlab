@@ -1,7 +1,10 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import useHomepageSettingsFeatureFlag from 'hooks/useHomepageSettingsFeatureFlag';
-import EventsWidget from './citizen';
+import { Box } from '@citizenlab/cl2-component-library';
+const EventsWidget = React.lazy(
+  () => import('components/LandingPages/citizen/EventsWidget')
+);
 import SectionToggle, {
   Props as SectionToggleProps,
 } from './admin/SectionToggle';
@@ -39,10 +42,12 @@ const configuration: ModuleConfiguration = {
         </RenderOnFeatureAllowed>
       );
     },
-    'app.containers.LandingPage.EventsWidget': () => {
+    'app.containers.HomePage.EventsWidget': () => {
       return (
         <RenderOnAllowedAndEnabled>
-          <EventsWidget />
+          <Box mb="72px" data-testid="e2e-homepage-events-widget-container">
+            <EventsWidget />
+          </Box>
         </RenderOnAllowedAndEnabled>
       );
     },

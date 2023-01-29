@@ -14,7 +14,7 @@ import { fontSizes, colors } from 'utils/styleUtils';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
 // typings
@@ -32,7 +32,7 @@ type CreateCategoryProps = {
   categories: IInsightsCategoryData[];
   search?: string;
 } & WithRouterProps &
-  InjectedIntlProps;
+  WrappedComponentProps;
 
 const Title = styled.h1`
   text-align: center;
@@ -86,7 +86,7 @@ const CreateCategory = ({
       w="100%"
       maxWidth="350px"
       m="40px auto"
-      color={colors.adminTextColor}
+      color={colors.primary}
       data-testid="insightsDetailsCreateCategory"
     >
       <Title>{formatMessage(messages.createCategoryTitle)}</Title>
@@ -150,7 +150,7 @@ const CreateCategory = ({
             processing={loading}
             disabled={!name}
             onClick={handleCategorySubmit}
-            bgColor={colors.adminTextColor}
+            bgColor={colors.primary}
             data-testid="insightsDetailsCreateCategoryConfirm"
           >
             {formatMessage(messages.createCategoryConfirm)}

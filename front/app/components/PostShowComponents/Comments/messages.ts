@@ -210,6 +210,14 @@ export default defineMessages({
     id: 'app.containers.Comments.deleteReason_irrelevant',
     defaultMessage: 'This does not belong here',
   },
+  deleteReasonError: {
+    id: 'app.containers.Comments.deleteReasonError',
+    defaultMessage: 'Provide a reason',
+  },
+  deleteReasonDescriptionError: {
+    id: 'app.containers.Comments.deleteReasonDescriptionError',
+    defaultMessage: 'Provide more information on your reason',
+  },
   a11y_commentPosted: {
     id: 'app.containers.Comments.a11y_commentPosted',
     defaultMessage: 'Comment posted',

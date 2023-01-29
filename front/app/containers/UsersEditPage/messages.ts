@@ -45,17 +45,39 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.firstNames',
     defaultMessage: 'First names',
   },
+  firstNamesEmptyError: {
+    id: 'app.containers.UsersEditPage.firstNamesEmptyError',
+    defaultMessage: 'Provide a first name',
+  },
   lastName: {
     id: 'app.containers.UsersEditPage.lastName',
     defaultMessage: 'Last name',
+  },
+  lastNameEmptyError: {
+    id: 'app.containers.UsersEditPage.lastNameEmptyError',
+    defaultMessage: 'Provide a last name',
   },
   email: {
     id: 'app.containers.UsersEditPage.email',
     defaultMessage: 'E-mail address',
   },
+  emailEmptyError: {
+    id: 'app.containers.UsersEditPage.emailEmptyError',
+    defaultMessage: 'Provide an e-mail address',
+  },
+  emailInvalidError: {
+    id: 'app.containers.UsersEditPage.emailInvalidError',
+    defaultMessage:
+      'Provide an email address in the correct format, for example name@provider.com',
+  },
   password: {
     id: 'app.containers.UsersEditPage.password',
     defaultMessage: 'Password',
+  },
+  minimumPasswordLengthError: {
+    id: 'app.containers.UsersEditPage.password.minimumPasswordLengthError',
+    defaultMessage:
+      'Provide a password that is at least {minimumPasswordLength} characters long',
   },
   language: {
     id: 'app.containers.UsersEditPage.language',

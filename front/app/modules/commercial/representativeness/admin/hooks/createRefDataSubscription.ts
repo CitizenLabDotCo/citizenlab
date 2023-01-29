@@ -5,7 +5,7 @@ import {
   usersByRegFieldStream,
   IUsersByAge,
   IUsersByRegistrationField,
-} from 'modules/commercial/user_custom_fields/services/stats';
+} from 'services/userCustomFieldStats';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
@@ -186,7 +186,7 @@ export const regFieldToIncludedUsers = (
 
   const known = Object.keys(includedUsers)
     .filter((optionId) => optionId !== '_blank')
-    .reduce((acc, v) => users[v] + acc, 0);
+    .reduce((acc, v) => includedUsers[v] + acc, 0);
 
   const total = sum(Object.values(includedUsers));
   const percentage = total === 0 ? 0 : roundPercentage(known, total);

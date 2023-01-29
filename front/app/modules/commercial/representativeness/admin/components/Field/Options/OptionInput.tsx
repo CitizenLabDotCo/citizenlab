@@ -33,7 +33,7 @@ const OptionInput = ({ value, percentage, disabled, onChange }: Props) => {
     <>
       <Box width="70%">
         {disabled ? (
-          <Text color="secondaryText" variant="bodyS">
+          <Text color="textSecondary" variant="bodyS">
             <FormattedMessage {...messages.itemNotCalculated} />
           </Text>
         ) : (
@@ -45,7 +45,7 @@ const OptionInput = ({ value, percentage, disabled, onChange }: Props) => {
           />
         )}
       </Box>
-      <Text width="30%" color="adminTextColor">
+      <Text width="30%" color="primary">
         <Box as="span" pl="20px">
           {percentage ?? ''}
         </Box>

@@ -66,7 +66,7 @@ export const SectionTitle = styled.h2`
 `;
 
 export const SubSectionTitle = styled.h3`
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.l}px;
   font-weight: 500;
   line-height: ${remCalc(30)};
@@ -88,7 +88,7 @@ export const SubSectionTitleWithDescription = styled(SubSectionTitle)`
 `;
 
 export const SectionDescription = styled.p`
-  color: ${colors.adminSecondaryTextColor};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   margin-bottom: ${remCalc(45)};
   font-weight: 400;

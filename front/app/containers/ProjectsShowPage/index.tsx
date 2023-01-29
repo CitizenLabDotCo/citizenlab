@@ -1,4 +1,4 @@
-import React, { memo, useMemo } from 'react';
+import React, { memo, useEffect, useMemo, useState } from 'react';
 import { isError } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
@@ -8,14 +8,20 @@ import ProjectHelmet from './shared/header/ProjectHelmet';
 import ProjectNotFound from './shared/header/ProjectNotFound';
 import ProjectNotVisible from './shared/header/ProjectNotVisible';
 import ProjectHeader from './shared/header/ProjectHeader';
-import ProjectEvents from './shared/events';
 import ContinuousIdeas from './continuous/Ideas';
 import ContinuousSurvey from './continuous/Survey';
 import ContinuousPoll from './continuous/Poll';
 import ContinuousVolunteering from './continuous/Volunteering';
 import TimelineContainer from './timeline';
-import { Spinner } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Spinner,
+  Title,
+  Image,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
+import Modal from 'components/UI/Modal';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -24,17 +30,30 @@ import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import useEvents from 'hooks/useEvents';
 import useAuthUser from 'hooks/useAuthUser';
+import { useIntl } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
+import rocket from 'assets/img/rocket.png';
 
 // typings
 import { IProjectData } from 'services/projects';
 
 // other
 import { isValidPhase } from './phaseParam';
-import { anyIsUndefined, isNilOrError, isApiError } from 'utils/helperUtils';
+import {
+  anyIsUndefined,
+  isNilOrError,
+  isApiError,
+  isNil,
+} from 'utils/helperUtils';
+import { getCurrentPhase } from 'services/phases';
+import { getMethodConfig, getPhase } from 'utils/participationMethodUtils';
+import EventsViewer from 'containers/EventsPage/EventsViewer';
+import messages from 'utils/messages';
+import { scrollToElement } from 'utils/scroll';
+import useURLQuery from 'utils/cl-router/useUrlQuery';
 
 const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;
@@ -47,13 +66,13 @@ const Container = styled.main<{ background: string }>`
   align-items: center;
   background: ${(props) => props.background};
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-height: calc(100vh - ${({ theme: { mobileMenuHeight } }) =>
       mobileMenuHeight}px - ${({ theme: { mobileTopBarHeight } }) =>
     mobileTopBarHeight}px);
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     min-height: calc(100vh - ${({ theme: { mobileMenuHeight } }) =>
       mobileMenuHeight}px - ${({ theme: { mobileTopBarHeight } }) =>
     mobileTopBarHeight}px);
@@ -70,7 +89,6 @@ const Loading = styled.div`
 const ContentWrapper = styled.div`
   width: 100%;
 `;
-
 interface Props {
   project: IProjectData | Error | null | undefined;
   scrollToEventId?: string;
@@ -83,18 +101,73 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
     ? project.attributes.process_type
     : undefined;
 
+  const smallerThanMinTablet = useBreakpoint('tablet');
+  const { formatMessage } = useIntl();
+  const queryParams = useURLQuery();
+  const showModalParam = queryParams.get('show_modal');
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [phaseIdUrl, setPhaseIdUrl] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
   const locale = useLocale();
-  const tenant = useAppConfiguration();
+  const appConfig = useAppConfiguration();
   const phases = usePhases(projectId);
+
   const { events } = useEvents({
     projectIds: projectId ? [projectId] : undefined,
     sort: 'newest',
   });
-  const user = useAuthUser();
 
   const loading = useMemo(() => {
-    return anyIsUndefined(locale, tenant, project, phases, events);
-  }, [locale, tenant, project, phases, events]);
+    return anyIsUndefined(locale, appConfig, project, phases, events);
+  }, [locale, appConfig, project, phases, events]);
+
+  // Check that all child components are mounted
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (!isNil(showModalParam)) {
+      // TODO: Handle animation when modal is open by default in Modal component
+      timer = setTimeout(() => {
+        setShowModal(!!showModalParam);
+      }, 1500);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [showModalParam]);
+
+  // UseEffect to scroll to event when provided
+  useEffect(() => {
+    if (scrollToEventId && mounted && !loading) {
+      setTimeout(() => {
+        scrollToElement({ id: scrollToEventId });
+      }, 2000);
+    }
+  }, [mounted, loading, scrollToEventId]);
+
+  // UseEffect to handle modal state and phase parameters
+  useEffect(() => {
+    const phaseIdParam = queryParams.get('phase_id');
+    // Set phase id
+    if (!isNilOrError(phaseIdParam) && phaseIdUrl === null) {
+      setPhaseIdUrl(phaseIdParam);
+    }
+
+    // Clear URL parameters for continuous projects
+    // (handled elsewhere for timeline projects)
+    if (
+      !isNilOrError(project) &&
+      project.attributes.process_type === 'continuous'
+    ) {
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+  }, [project, phaseIdUrl, queryParams]);
+
+  const user = useAuthUser();
 
   const isUnauthorized = useMemo(() => {
     if (!isApiError(project)) return false;
@@ -120,6 +193,24 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
   } else if (projectNotFound) {
     content = <ProjectNotFound />;
   } else if (projectId && processType) {
+    let phaseParticipationMethod;
+
+    if (!isNilOrError(phases)) {
+      const phase = phaseIdUrl ? getPhase(phaseIdUrl, phases) : null;
+      if (!isNilOrError(phase)) {
+        phaseParticipationMethod = phase.attributes.participation_method;
+      } else {
+        phaseParticipationMethod =
+          getCurrentPhase(phases)?.attributes.participation_method;
+      }
+    }
+
+    const config = getMethodConfig(
+      phaseParticipationMethod
+        ? phaseParticipationMethod
+        : project?.attributes.participation_method
+    );
+
     content = (
       <ContentWrapper id="e2e-project-page">
         <ProjectHeader projectId={projectId} />
@@ -133,10 +224,54 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
         ) : (
           <TimelineContainer projectId={projectId} />
         )}
-        <ProjectEvents
-          projectId={projectId}
-          scrollToEventId={scrollToEventId}
-        />
+        <Box
+          display="flex"
+          flexDirection="column"
+          gap="48px"
+          mx="auto"
+          my="48px"
+          maxWidth="1166px"
+          padding={smallerThanMinTablet ? '20px' : '0px'}
+        >
+          <EventsViewer
+            showProjectFilter={false}
+            projectIds={[projectId]}
+            eventsTime="currentAndFuture"
+            title={formatMessage(messages.upcomingAndOngoingEvents)}
+            fallbackMessage={messages.noUpcomingOrOngoingEvents}
+            onClickTitleGoToProjectAndScrollToEvent={false}
+            hideSectionIfNoEvents={true}
+          />
+          <EventsViewer
+            showProjectFilter={false}
+            projectIds={[projectId]}
+            eventsTime="past"
+            title={formatMessage(messages.pastEvents)}
+            fallbackMessage={messages.noPastEvents}
+            onClickTitleGoToProjectAndScrollToEvent={false}
+            hideSectionIfNoEvents={true}
+          />
+        </Box>
+        <Modal
+          opened={showModal}
+          close={() => {
+            setShowModal(false);
+          }}
+          hasSkipButton={false}
+        >
+          <Box
+            width="100%"
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Image width="80px" height="80px" src={rocket} alt="" />
+            <Title variant="h2" textAlign="center">
+              {config && config.getModalContent({})}
+            </Title>
+          </Box>
+        </Modal>
       </ContentWrapper>
     );
   }

@@ -33,12 +33,21 @@ class IdeaCustomFieldsService
   end
 
   def allowed_extra_field_keys
-    fields_with_array_keys, fields_with_simple_keys = extra_visible_fields.partition do |field|
-      field.input_type == 'multiselect'
+    fields_with_simple_keys = []
+    fields_with_array_keys = {}
+    extra_visible_fields.each do |field|
+      case field.input_type
+      when 'multiselect'
+        fields_with_array_keys[field.key.to_sym] = []
+      when 'file_upload'
+        fields_with_array_keys[field.key.to_sym] = %i[content name]
+      else
+        fields_with_simple_keys << field.key.to_sym
+      end
     end
     [
-      *fields_with_simple_keys.map(&:key).map(&:to_sym),
-      fields_with_array_keys.map(&:key).map(&:to_sym).index_with { |_k| [] }
+      *fields_with_simple_keys,
+      fields_with_array_keys
     ]
   end
 
@@ -46,7 +55,13 @@ class IdeaCustomFieldsService
 
   attr_reader :custom_form
 
+  def native_survey?
+    !!custom_form&.participation_context&.native_survey?
+  end
+
   def default_fields
+    return [] if native_survey?
+
     ml_s = MultilocService.new
     [
       CustomField.new(

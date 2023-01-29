@@ -15,14 +15,14 @@ import { FormattedMessage } from 'utils/cl-intl';
 // typings
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
 import { PublicationTab } from '../..';
-import { MessageDescriptor } from 'typings';
+import { MessageDescriptor } from 'react-intl';
 
 const TabsContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
 
-  ${media.largePhone`
+  ${media.phone`
     width: 100%;
     justify-content: space-between;
   `}
@@ -41,21 +41,24 @@ const Tab = styled.button<{ active: boolean }>`
   padding: 21px 15px;
 
   border-bottom: ${({ active, theme }) =>
-    active ? `3px solid ${theme.colorMain}` : '3px solid transparent'};
+    active
+      ? `3px solid ${theme.colors.tenantPrimary}`
+      : '3px solid transparent'};
 
-  color: ${({ active, theme }) => (active ? theme.colorMain : colors.label)};
+  color: ${({ active, theme }) =>
+    active ? theme.colors.tenantPrimary : colors.textSecondary};
 
   ${({ active, theme }) =>
     active
       ? ''
       : `
       &:hover {
-        border-bottom: 3px solid ${rgba(theme.colorMain, 0.3)};
+        border-bottom: 3px solid ${rgba(theme.colors.tenantPrimary, 0.3)};
       }
       cursor: pointer;
     `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     font-size: ${fontSizes.base}px;
     padding: 14px 9px 14px;
   `}
@@ -64,7 +67,7 @@ const Tab = styled.button<{ active: boolean }>`
 const StatusCount = styled.span`
   margin-left: 5px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-left: 3px;
   `}
 `;
@@ -110,7 +113,7 @@ const Tabs = ({
 
   return (
     <TabsContainer role="tablist">
-      {/* 
+      {/*
         These tabs need the role, aria-selected etc to work well with
         screen readers.
         See https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/tab_role

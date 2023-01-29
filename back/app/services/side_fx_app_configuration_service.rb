@@ -5,19 +5,9 @@ class SideFxAppConfigurationService
 
   def before_create(app_config, current_user = nil) end
 
-  def after_create(app_config, _ = nil)
-    return unless app_config.homepage_info_multiloc
+  def after_create(app_config, _ = nil) end
 
-    app_config.update!(
-      homepage_info_multiloc: TextImageService.new.swap_data_images(app_config, :homepage_info_multiloc)
-    )
-  end
-
-  def before_update(app_config, _ = nil)
-    return unless app_config.homepage_info_multiloc
-
-    app_config.homepage_info_multiloc = TextImageService.new.swap_data_images app_config, :homepage_info_multiloc
-  end
+  def before_update(app_config, _ = nil) end
 
   def after_update(app_config, current_user = nil)
     log_activity(app_config, 'changed', current_user)
@@ -25,7 +15,6 @@ class SideFxAppConfigurationService
       log_activity(app_config, 'changed_host', current_user, { changes: app_config.host_previous_change })
     end
 
-    # TODO_MT to be removed after the lifecycle stage has been move to Tenant
     lifecycle_change = get_lifecycle_change(app_config)
     return unless lifecycle_change
 
@@ -40,10 +29,7 @@ class SideFxAppConfigurationService
   def get_lifecycle_change(app_config)
     return unless app_config.settings_previously_changed?
 
-    old_settings = app_config.settings_previous_change[0]
-    new_settings = app_config.settings
-
-    diff = [old_settings, new_settings].map { |s| s&.dig('core', 'lifecycle_stage') }
+    diff = app_config.settings_previous_change.map { |s| s&.dig('core', 'lifecycle_stage') }
     diff[0] == diff[1] ? nil : diff
   end
 

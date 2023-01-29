@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {
-  IGroupsProjectsData,
-  groupsProjectsByProjectIdStream,
-} from 'services/groupsProjects';
+  IProjectGroupData,
+  projectGroupsByProjectIdStream,
+} from 'services/projectGroups';
 
 interface Props {
   projectId: string;
@@ -12,13 +12,13 @@ interface Props {
 
 export default function useProjectGroups({ projectId }: Props) {
   const [projectGroups, setProjectGroups] = useState<
-    IGroupsProjectsData[] | undefined | null | Error
+    IProjectGroupData[] | undefined | null | Error
   >(undefined);
 
   useEffect(() => {
-    let observable: Observable<IGroupsProjectsData[] | null> = of(null);
+    let observable: Observable<IProjectGroupData[] | null> = of(null);
 
-    observable = groupsProjectsByProjectIdStream(projectId).observable.pipe(
+    observable = projectGroupsByProjectIdStream(projectId).observable.pipe(
       map((groups) => groups.data.filter((group) => group))
     );
 

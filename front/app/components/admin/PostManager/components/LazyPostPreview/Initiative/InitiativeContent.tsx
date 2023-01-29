@@ -16,6 +16,7 @@ import FeedbackSettings from './FeedbackSettings';
 import Button from 'components/UI/Button';
 import { Top, Content, Container } from '../PostPreview';
 import VoteIndicator from 'components/InitiativeCard/VoteIndicator';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // services
 import { deleteInitiative } from 'services/initiatives';
@@ -35,7 +36,7 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // style
@@ -62,7 +63,7 @@ const Image = styled.img`
   margin: 0 0 2rem;
   padding: 0;
   border-radius: 8px;
-  border: 1px solid ${colors.separation};
+  border: 1px solid ${colors.divider};
 `;
 
 const StyledBody = styled(Body)`
@@ -86,7 +87,7 @@ const Right = styled.div`
   position: sticky;
   top: 80px;
   align-self: flex-start;
-  color: ${colors.adminTextColor};
+  color: ${colors.primary};
   font-size: ${fontSizes.base}px;
   line-height: 19px;
 `;
@@ -99,7 +100,7 @@ const VotePreview = styled.div`
 `;
 
 const DaysLeft = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   margin-bottom: 20px;
 `;
 
@@ -121,7 +122,7 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 export class InitiativeContent extends PureComponent<
-  Props & InjectedLocalized & InjectedIntlProps,
+  Props & InjectedLocalized & WrappedComponentProps,
   State
 > {
   handleClickDelete = () => {
@@ -167,7 +168,7 @@ export class InitiativeContent extends PureComponent<
             <Button
               icon="edit"
               buttonStyle="text"
-              textColor={colors.adminTextColor}
+              textColor={colors.primary}
               onClick={handleClickEdit}
             >
               <FormattedMessage {...messages.edit} />
@@ -175,7 +176,7 @@ export class InitiativeContent extends PureComponent<
             <Button
               icon="delete"
               buttonStyle="text"
-              textColor={colors.adminTextColor}
+              textColor={colors.primary}
               onClick={this.handleClickDelete}
             >
               <FormattedMessage {...messages.delete} />
@@ -221,7 +222,9 @@ export class InitiativeContent extends PureComponent<
                 )}
 
                 {initiativeFiles && !isNilOrError(initiativeFiles) && (
-                  <FileAttachments files={initiativeFiles} />
+                  <Box mb="25px">
+                    <FileAttachments files={initiativeFiles} />
+                  </Box>
                 )}
 
                 <StyledOfficialFeedback

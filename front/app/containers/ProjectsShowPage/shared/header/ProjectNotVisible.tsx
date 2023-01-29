@@ -19,7 +19,7 @@ const Container = styled.div`
   align-items: center;
   padding: 4rem;
   font-size: ${fontSizes.l}px;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
 `;
 
 interface Props {
@@ -37,7 +37,7 @@ const ProjectNotVisible = memo<Props>(({ className }) => {
       <Button
         linkTo="/projects"
         text={<FormattedMessage {...messages.goBackToList} />}
-        icon="arrow-back"
+        icon="arrow-left"
       />
     </Container>
   );

@@ -7,7 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 const Container = styled.div``;
@@ -26,7 +26,7 @@ const Attachments = ({
   compact,
   className,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const files = useResourceFiles({ resourceType: 'idea', resourceId: ideaId });
 
   if (!isNilOrError(files) && files.length > 0) {

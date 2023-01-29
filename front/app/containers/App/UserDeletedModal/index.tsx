@@ -3,6 +3,7 @@ import React from 'react';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import injectIntl from 'utils/cl-intl/injectIntl';
 
 // style
 import styled from 'styled-components';
@@ -12,6 +13,7 @@ import FormattedAnchor from 'components/FormattedAnchor';
 // images
 import illustration from './illustration.png';
 import Modal from 'components/UI/Modal';
+import { WrappedComponentProps } from 'react-intl';
 
 const Container = styled.div`
   width: 100%;
@@ -23,7 +25,7 @@ const Container = styled.div`
 const Title = styled.h1`
   flex-shrink: 0;
   width: 100%;
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.xxl}px;
   line-height: 40px;
   font-weight: 500;
@@ -33,7 +35,7 @@ const Title = styled.h1`
   margin-bottom: 10px;
   padding: 0;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     max-width: auto;
     line-height: 36px;
   `}
@@ -43,7 +45,7 @@ const Subtitle = styled.h3`
   flex-shrink: 0;
   width: 100%;
   max-width: 500px;
-  color: ${colors.text};
+  color: ${colors.textPrimary};
   font-size: ${fontSizes.base}px;
   line-height: 25px;
   font-weight: 300;
@@ -53,14 +55,14 @@ const Subtitle = styled.h3`
   margin-bottom: 35px;
   padding: 0;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     font-size: ${fontSizes.base}px;
     line-height: 21px;
     margin-bottom: 20px;
   `}
   a {
     text-decoration: underline;
-    color: ${colors.text};
+    color: ${colors.textPrimary};
   }
 `;
 
@@ -74,7 +76,8 @@ const UserDeletedModal = ({
   userSuccessfullyDeleted,
   modalOpened,
   closeUserDeletedModal,
-}: Props) => {
+  intl: { formatMessage },
+}: Props & WrappedComponentProps) => {
   return (
     <Modal opened={modalOpened} close={closeUserDeletedModal}>
       {userSuccessfullyDeleted ? (
@@ -88,9 +91,9 @@ const UserDeletedModal = ({
               mainMessage={messages.userDeletedSubtitle}
               mainMessageLinkKey="contactLink"
               linkTextMessage={messages.userDeletedSubtitleLinkText}
-              urlMessage={messages.userDeletedSubtitleLinkUrl}
-              urlMessageValues={{ url: window.location.href }}
-              target="_blank"
+              href={formatMessage(messages.userDeletedSubtitleLinkUrl, {
+                url: window.location.href,
+              })}
             />
           </Subtitle>
         </Container>
@@ -101,4 +104,4 @@ const UserDeletedModal = ({
   );
 };
 
-export default UserDeletedModal;
+export default injectIntl(UserDeletedModal);

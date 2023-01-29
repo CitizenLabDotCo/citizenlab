@@ -19,10 +19,6 @@ class ApplicationController < ActionController::API
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  def send_success(data = nil, status = 200)
-    render json: data, status: status
-  end
-
   def send_error(error = nil, status = 400)
     render json: error, status: status
   end
@@ -35,8 +31,8 @@ class ApplicationController < ActionController::API
     end
   end
 
-  def send_no_content(status = 204)
-    head status
+  def send_unprocessable_entity(record)
+    render json: { errors: record.errors.details }, status: :unprocessable_entity
   end
 
   def transaction_error(exception)
@@ -102,5 +98,12 @@ class ApplicationController < ActionController::API
   def paginate(collection)
     collection.page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
+  end
+
+  def remove_image_if_requested!(resource, resource_params, image_field_name)
+    return unless resource_params.key?(image_field_name) && resource_params[image_field_name].nil?
+
+    # setting the image attribute to nil will not remove the image
+    resource.public_send("remove_#{image_field_name}!")
   end
 end

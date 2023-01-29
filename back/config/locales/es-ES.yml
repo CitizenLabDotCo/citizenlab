@@ -146,7 +146,7 @@ es:
         project:
           title: '¿Cuál es su proyecto?'
         issue:
-          title: '¿Cuál es su asunto?'
+          title: '¿Cuál es su respuesta?'
         option:
           title: '¿Cuál es su opción?'
       details:
@@ -181,3 +181,32 @@ es:
       message_you_reset_your_password: 'Solicitó un restablecimiento de contraseña para la plataforma de participación de %{organizationName}. Haga clic en el botón de abajo para elegir una nueva contraseña segura. El enlace caduca en 1 hora.'
       subject: '%{organizationName}: Restablecer tu contraseña'
       title_reset_your_password: 'Elige una nueva contraseña'
+  xlsx_export:
+    column_headers:
+      input_id: 'ID'
+      latitude: 'Latitud'
+      longitude: 'Longitud'
+      author_fullname: 'Nombre del autor'
+      author_email: 'Correo electrónico del autor'
+      author_id: 'ID del autor'
+      created_at: 'Enviado en'
+      published_at: 'Publicado en'
+      comments_count: 'Comentarios'
+      upvotes_count: 'Votos a favor'
+      downvotes_count: 'Votos en contra'
+      baskets_count: 'Cestas'
+      input_url: 'URL'
+      project: 'Proyecto'
+      status: 'Estado'
+      assignee_fullname: 'Asignado'
+      assignee_email: 'Correo electrónico del destinatario'
+  form_builder:
+    default_select_field:
+      title: 'Su pregunta'
+      option1: 'Opción 1'
+      option2: 'Opción 2'
+    survey_end_page:
+      title: 'Fin de la encuesta'
+      description: "Envíe sus respuestas seleccionando \"Enviar encuesta\" a continuación."
+  project_copy:
+    title_suffix: 'Copia'

@@ -23,9 +23,9 @@ import 'assets/semantic/semantic.min.css';
 const Container = styled.div`
   display: flex;
   background: ${colors.background};
-  color: ${colors.adminTextColor};
-  fill: ${colors.adminTextColor};
-  border-color: ${colors.adminTextColor};
+  color: ${colors.primary};
+  fill: ${colors.primary};
+  border-color: ${colors.primary};
 
   &.whiteBg {
     background: #fff;
@@ -37,14 +37,14 @@ const Container = styled.div`
   .ui a,
   .ui input,
   .ui .active td {
-    color: ${colors.adminTextColor} !important;
+    color: ${colors.primary} !important;
   }
 
   .Select-control,
   .Select-value-label,
   .Select-value-icon,
   .Select-option {
-    color: ${colors.adminTextColor} !important;
+    color: ${colors.primary} !important;
   }
 
   .ui.red {
@@ -63,7 +63,7 @@ export const RightColumn = styled.div`
   min-height: calc(100vh - ${(props) => props.theme.menuHeight}px);
   padding-top: 45px;
   padding-right: 51px;
-  padding-bottom: 0px;
+  padding-bottom: 45px;
   padding-left: 51px;
 
   &.fullWidth {
@@ -80,7 +80,7 @@ export const RightColumn = styled.div`
     max-width: none;
   }
 
-  ${media.smallerThan1280px`
+  ${media.tablet`
     padding: 2.5rem 2.5rem;
   `}
 `;
@@ -96,8 +96,12 @@ const AdminPage = memo<Props & WithRouterProps>(
     const [adminFullWidth, setAdminFullWidth] = useState(false);
     const [adminNoPadding, setAdminNoPadding] = useState(false);
 
-    const userCanViewAdmin = usePermission({
-      item: { type: 'route', path: '/admin' },
+    // The check in front/app/containers/Admin/routes.tsx already should do the same.
+    // TODO: double check it and remove `userCanViewAdmin`
+    const userCanViewPath = usePermission({
+      // If we're in this component, we're sure
+      // that the path is an admin path
+      item: { type: 'route', path: pathname },
       action: 'access',
     });
 
@@ -116,25 +120,25 @@ const AdminPage = memo<Props & WithRouterProps>(
     }, []);
 
     useEffect(() => {
-      if (authUser === null || (authUser !== undefined && !userCanViewAdmin)) {
+      if (authUser === null || (authUser !== undefined && !userCanViewPath)) {
         clHistory.push('/');
       }
-    }, [authUser, userCanViewAdmin]);
+    }, [authUser, userCanViewPath]);
 
-    if (!userCanViewAdmin) {
+    if (!userCanViewPath) {
       return null;
     }
 
     const noPadding =
       adminNoPadding ||
       pathname.includes('admin/dashboard') ||
-      pathname.includes('admin/insights');
+      pathname.includes('admin/reporting');
 
     const fullWidth =
       adminFullWidth === true ||
       endsWith(pathname, 'admin/moderation') ||
       pathname.includes('admin/dashboard') ||
-      pathname.includes('admin/insights');
+      pathname.includes('admin/reporting');
 
     const whiteBg = endsWith(pathname, 'admin/moderation');
 

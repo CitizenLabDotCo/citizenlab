@@ -59,7 +59,7 @@ const EmptyCard = ({ titleMultiloc, isComingSoon }: Props) => {
             {isComingSoon && (
               <StyledStatusLabel
                 text={<FormattedMessage {...messages.comingSoon} />}
-                backgroundColor={colors.adminSecondaryTextColor}
+                backgroundColor={colors.textSecondary}
               />
             )}
           </Title>
@@ -72,7 +72,7 @@ const EmptyCard = ({ titleMultiloc, isComingSoon }: Props) => {
           justifyContent="center"
           alignItems="center"
         >
-          <Title variant="h3" mb="8px" color="text">
+          <Title variant="h3" mb="8px" color="textPrimary">
             {isComingSoon ? (
               <FormattedMessage {...messages.comingSoon} />
             ) : (
@@ -92,7 +92,7 @@ const EmptyCard = ({ titleMultiloc, isComingSoon }: Props) => {
           {!isComingSoon && (
             <Button
               width="164px"
-              bgColor={colors.adminTextColor}
+              bgColor={colors.primary}
               linkTo="/admin/dashboard/representation/edit-base-data"
             >
               <FormattedMessage {...messages.submitBaseDataButton} />

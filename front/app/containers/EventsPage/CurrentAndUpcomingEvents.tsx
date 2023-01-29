@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 const StyledEventsViewer = styled(EventsViewer)`
@@ -13,11 +13,13 @@ const StyledEventsViewer = styled(EventsViewer)`
 
 const CurrentAndUpcomingEvents = ({
   intl: { formatMessage },
-}: InjectedIntlProps) => (
+}: WrappedComponentProps) => (
   <StyledEventsViewer
+    showProjectFilter={true}
     title={formatMessage(messages.upcomingAndOngoingEvents)}
     fallbackMessage={messages.noUpcomingOrOngoingEvents}
     eventsTime="currentAndFuture"
+    onClickTitleGoToProjectAndScrollToEvent={true}
   />
 );
 

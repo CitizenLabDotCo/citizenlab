@@ -11,6 +11,8 @@ import clHistory from 'utils/cl-router/history';
 import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
 import IdeasEditButtonBar from './IdeasEditButtonBar';
 import IdeasEditMeta from './IdeasEditMeta';
+import GoBackToIdeaPage from 'containers/IdeasEditPage/GoBackToIdeaPage';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // feature flag variant
 import IdeasEditPageWithJSONForm from './WithJSONForm';
@@ -80,19 +82,18 @@ const FormContainer = styled.main`
   margin-left: auto;
   margin-right: auto;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding-bottom: 80px;
   `}
 `;
 
 const Title = styled.h1`
   width: 100%;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.xxxxl}px;
   line-height: 42px;
   font-weight: 500;
   text-align: center;
-  padding-top: 40px;
   margin-bottom: 40px;
 `;
 
@@ -150,8 +151,8 @@ interface State {
 class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
   subscriptions: Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props: Props & InjectedLocalized) {
+    super(props);
     this.state = {
       locale: 'en',
       ideaSlug: null,
@@ -476,21 +477,33 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
           <Container id="e2e-idea-edit-page">
             <IdeasEditMeta ideaId={ideaId} projectId={projectId} />
             <FormContainer>
-              <Title>
-                <FormattedMessage
-                  {...getInputTermMessage(inputTerm, {
-                    idea: messages.formTitle,
-                    option: messages.optionFormTitle,
-                    project: messages.projectFormTitle,
-                    question: messages.questionFormTitle,
-                    issue: messages.issueFormTitle,
-                    contribution: messages.contributionFormTitle,
-                  })}
-                />
-              </Title>
+              <Box
+                width="100%"
+                display="flex"
+                flexDirection="column"
+                justifyContent="center"
+                alignItems="center"
+                mt="52px"
+              >
+                <GoBackToIdeaPage idea={idea} />
+
+                <Title>
+                  <FormattedMessage
+                    {...getInputTermMessage(inputTerm, {
+                      idea: messages.formTitle,
+                      option: messages.optionFormTitle,
+                      project: messages.projectFormTitle,
+                      question: messages.questionFormTitle,
+                      issue: messages.issueFormTitle,
+                      contribution: messages.contributionFormTitle,
+                    })}
+                  />
+                </Title>
+              </Box>
 
               <IdeaForm
                 authorId={authorId}
+                ideaId={ideaId}
                 projectId={projectId}
                 title={title}
                 description={description}

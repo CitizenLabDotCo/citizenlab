@@ -23,7 +23,7 @@ describe GroupPolicy do
       end
     end
 
-    context 'for a mortal user' do
+    context 'for a resident' do
       let(:user) { create(:user) }
 
       it { is_expected.not_to permit(:show)    }
@@ -46,6 +46,66 @@ describe GroupPolicy do
 
       it 'should index the group' do
         expect(scope.resolve.size).to eq 1
+      end
+    end
+
+    context 'for a project moderator' do
+      let(:user) { create(:project_moderator, projects: [project]) }
+
+      context 'of a public project' do
+        let(:project) { create(:project) }
+
+        it { is_expected.to     permit(:show)    }
+        it { is_expected.not_to permit(:create)  }
+        it { is_expected.not_to permit(:update)  }
+        it { is_expected.not_to permit(:destroy) }
+
+        it 'indexes the group' do
+          expect(scope.resolve.size).to eq 1
+        end
+      end
+
+      context 'of a private admins project' do
+        let(:project) { create(:private_admins_project) }
+
+        it { is_expected.not_to permit(:show)    }
+        it { is_expected.not_to permit(:create)  }
+        it { is_expected.not_to permit(:update)  }
+        it { is_expected.not_to permit(:destroy) }
+
+        it 'does not index the group' do
+          expect(scope.resolve.size).to eq 0
+        end
+      end
+
+      context 'of a private groups project with the group' do
+        let(:project) { create(:private_groups_project) }
+
+        before do
+          project.update(groups: [group])
+        end
+
+        it { is_expected.to permit(:show) }
+        it { is_expected.not_to permit(:create)  }
+        it { is_expected.not_to permit(:update)  }
+        it { is_expected.not_to permit(:destroy) }
+
+        it 'indexes the group' do
+          expect(scope.resolve.size).to eq 1
+        end
+      end
+
+      context 'of a private groups project with another group' do
+        let(:project) { create(:private_groups_project) }
+
+        it { is_expected.not_to permit(:show)    }
+        it { is_expected.not_to permit(:create)  }
+        it { is_expected.not_to permit(:update)  }
+        it { is_expected.not_to permit(:destroy) }
+
+        it 'indexes the other group only' do
+          expect(scope.resolve.ids).to eq [project.groups.first.id]
+        end
       end
     end
   end

@@ -3,12 +3,112 @@ import {
   getIsoDateUtc,
   getIsoDate,
   getIsoDateForToday,
+  timeAgo,
 } from './dateUtils';
 import moment from 'moment';
 import 'moment-timezone';
 
 // test date is 1AM June 15 2020 UTC time (Z)
 const testDateStr = '2020-06-15T01:00:00Z';
+
+// timeAgo should report the elapsed time since a given date correctly
+describe('timeAgo is reported correctly', () => {
+  it('should accurately return seconds passed since a date', () => {
+    let date = new Date();
+    date.setSeconds(date.getSeconds() - 1);
+    let timeAgoResponse = timeAgo(date.valueOf(), 'en') || '';
+    expect(timeAgoResponse).toEqual('1 second ago');
+
+    date = new Date();
+    date.setSeconds(date.getSeconds() - 2);
+    timeAgoResponse = timeAgo(date.valueOf(), 'en') || '';
+    expect(timeAgoResponse).toEqual('2 seconds ago');
+  });
+
+  it('should accurately return minutes passed since a date', () => {
+    let date = new Date();
+    date.setMinutes(date.getMinutes() - 1);
+    let timeAgoResponse = timeAgo(date.valueOf(), 'en') || '';
+    expect(timeAgoResponse).toEqual('1 minute ago');
+
+    date = new Date();
+    date.setMinutes(date.getMinutes() - 2);
+    timeAgoResponse = timeAgo(date.valueOf(), 'en') || '';
+    expect(timeAgoResponse).toEqual('2 minutes ago');
+  });
+
+  it('should accurately return hours passed since a date', () => {
+    let date = new Date();
+    date.setHours(date.getHours() - 1);
+    let timeAgoResponse = timeAgo(date.valueOf(), 'en') || '';
+    expect(timeAgoResponse).toEqual('1 hour ago');
+
+    date = new Date();
+    date.setHours(date.getHours() - 2);
+    timeAgoResponse = timeAgo(date.valueOf(), 'en') || '';
+    expect(timeAgoResponse).toEqual('2 hours ago');
+  });
+
+  it('should accurately return days passed since a date', () => {
+    let date = new Date();
+    date.setHours(date.getHours() - 24);
+    let timeAgoResponse = timeAgo(date.valueOf(), 'en') || '';
+    expect(timeAgoResponse).toEqual('1 day ago');
+
+    date = new Date();
+    date.setHours(date.getHours() - 48);
+    timeAgoResponse = timeAgo(date.valueOf(), 'en') || '';
+    expect(timeAgoResponse).toEqual('2 days ago');
+  });
+
+  it('should accurately return weeks passed since a date', () => {
+    let date = new Date();
+    date.setHours(date.getHours() - 168);
+    let timeAgoResponse = timeAgo(date.valueOf(), 'en') || '';
+    expect(timeAgoResponse).toEqual('1 week ago');
+
+    date = new Date();
+    date.setHours(date.getHours() - 336);
+    timeAgoResponse = timeAgo(date.valueOf(), 'en') || '';
+    expect(timeAgoResponse).toEqual('2 weeks ago');
+  });
+
+  it('should accurately return months passed since a date', () => {
+    let date = new Date();
+    date.setMonth(date.getMonth() - 1);
+    let timeAgoResponse = timeAgo(date.valueOf(), 'en') || '';
+    expect(timeAgoResponse).toEqual('1 month ago');
+
+    date = new Date();
+    date.setMonth(date.getMonth() - 2);
+    timeAgoResponse = timeAgo(date.valueOf(), 'en') || '';
+    expect(timeAgoResponse).toEqual('2 months ago');
+  });
+
+  it('should accurately return years passed since a date', () => {
+    let date = new Date();
+    date.setMonth(date.getMonth() - 12);
+    let timeAgoResponse = timeAgo(date.valueOf(), 'en') || '';
+    expect(timeAgoResponse).toEqual('1 year ago');
+
+    date = new Date();
+    date.setMonth(date.getMonth() - 24);
+    timeAgoResponse = timeAgo(date.valueOf(), 'en') || '';
+    expect(timeAgoResponse).toEqual('2 years ago');
+  });
+
+  it('should accurately return time passed since a date in specified language', () => {
+    let date = new Date();
+    date.setMonth(date.getMonth() - 12);
+    let timeAgoResponse = timeAgo(date.valueOf(), 'fr-BE') || '';
+    expect(timeAgoResponse).toEqual('il y a 1 an');
+
+    date = new Date();
+    date.setMonth(date.getMonth() - 24);
+    timeAgoResponse = timeAgo(date.valueOf(), 'fr-BE') || '';
+    expect(timeAgoResponse).toEqual('il y a 2 ans');
+  });
+});
 
 // the local time in Santiago should be June 14th 2022, 9pm,
 // since Santiago is -0400 hour offset from UTC time

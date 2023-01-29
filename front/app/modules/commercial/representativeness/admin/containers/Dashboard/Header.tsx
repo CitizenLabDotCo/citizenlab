@@ -26,15 +26,15 @@ const StyledStatusLabel = styled(StatusLabel)`
 
 const Header = () => (
   <Box mb="36px">
-    <Title variant="h1">
+    <Title color="primary" variant="h1">
       <FormattedMessage {...messages.pageTitle} />
       <StyledStatusLabel
         text={<FormattedMessage {...messages.betaLabel} />}
-        backgroundColor={colors.adminSecondaryTextColor}
+        backgroundColor={colors.textSecondary}
       />
     </Title>
     <Box>
-      <Text color="label">
+      <Text color="textSecondary">
         {/* <FormattedMessage
           {...messages.pageDescription}
           values={{

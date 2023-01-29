@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { phasesStream, IPhaseData, IPhases } from 'services/phases';
 
 export type TPhases = IPhaseData[] | undefined | null | Error;
-export default function useProject(projectId: string | null | undefined) {
+export default function usePhases(projectId: string | null | undefined) {
   const [phases, setPhases] = useState<TPhases>(undefined);
 
   useEffect(() => {

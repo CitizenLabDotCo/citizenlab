@@ -78,20 +78,6 @@ describe('Content builder Iframe component', () => {
       .last()
       .should('have.css', 'border-color', 'rgb(214, 22, 7)');
 
-    // Try URL for non-permitted source
-    cy.get('#e2e-content-builder-iframe-url-input')
-      .clear()
-      .type('https://www.citizenlab.co');
-    cy.contains(
-      'Sorry, this content could not be embedded. Visit our support page to learn more.'
-    ).should('be.visible');
-    // Check that save is disabled
-    cy.contains('Save').should('be.disabled');
-    // Check that red border is present
-    cy.get('.e2e-render-node')
-      .last()
-      .should('have.css', 'border-color', 'rgb(214, 22, 7)');
-
     // Type valid URL
     cy.get('#e2e-content-builder-iframe-url-input')
       .clear()

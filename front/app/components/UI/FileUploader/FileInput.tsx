@@ -19,9 +19,7 @@ const Container = styled.div`
 `;
 
 const StyledIcon = styled(Icon)`
-  width: 24px;
-  height: 18px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
   margin-right: 10px;
 
   ${isRtl`
@@ -50,11 +48,11 @@ const Label = styled.label`
   display: flex;
   align-items: center;
   cursor: pointer;
-  border: 1px dashed ${colors.border};
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border: 1px dashed ${colors.borderDark};
+  border-radius: ${(props) => props.theme.borderRadius};
   font-size: ${fontSizes.base}px;
   padding: 10px 20px;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   background: transparent;
   font-weight: 400;
 

@@ -17,7 +17,7 @@ const Container = styled.div`
   top: ${stylingConsts.menuHeight + topBarHeight}px;
   left: 210px;
   bottom: 0;
-  ${media.smallerThan1200px`
+  ${media.tablet`
     left: 80px;
   `}
 `;

@@ -12,7 +12,7 @@ import { fontSizes, colors } from 'utils/styleUtils';
 // i18n
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { omit } from 'lodash-es';
 
 interface Props
@@ -29,16 +29,16 @@ interface State {
 
 const StylingWrapper = styled.div`
   .DateRangePickerInput {
-    border-radius: ${(props: any) => props.theme.borderRadius};
-    border: solid 1px ${colors.border};
+    border-radius: ${(props) => props.theme.borderRadius};
+    border: solid 1px ${colors.borderDark};
 
     &:hover {
-      border-color: ${colors.hoveredBorder};
+      border-color: ${colors.black};
     }
 
     .DateInput,
     .DateInput_input {
-      color: ${colors.text};
+      color: ${colors.textPrimary};
       font-size: ${fontSizes.base}px;
       line-height: normal;
       font-weight: 400;
@@ -49,17 +49,17 @@ const StylingWrapper = styled.div`
 
 /** Light wrapper around react-dates DateRangePicker that autonomously deals with focusing and styling */
 class OurDateRangePicker extends PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       focusedInput: null,
     };
   }
 
-  handleFocusChange = (focusedInput: 'startDate' | 'endDate') => {
+  handleFocusChange = (focusedInput: 'startDate' | 'endDate' | null) => {
     this.setState({ focusedInput });
   };
 

@@ -48,7 +48,7 @@ RSpec.describe EmailCampaigns::AdminDigestMailer, type: :mailer do
     end
 
     let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
-    let_it_be(:mail_document) { Nokogiri::HTML.fragment(mail.body.encoded) }
+    let_it_be(:mail_document) { Nokogiri::HTML.fragment(mail.html_part.body.raw_source) }
 
     before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 

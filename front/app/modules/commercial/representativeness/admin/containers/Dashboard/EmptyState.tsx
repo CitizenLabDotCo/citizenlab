@@ -32,7 +32,7 @@ const EmptyState = () => (
     <StyledBackgroundImage alt="" src={EmptyProjectsImage} />
     <Box pt="46px" pb="64px">
       <Box ml="10%" width="80%" mt="0px" px="24px" pt="0px">
-        <Title variant="h3" textAlign="center" color="text">
+        <Title variant="h3" textAlign="center" color="textPrimary">
           <FormattedMessage {...messages.emptyStateTitle} />
         </Title>
         <Text textAlign="center" fontSize="base">
@@ -43,7 +43,7 @@ const EmptyState = () => (
           <Button
             width="auto"
             mb="16px"
-            bgColor={colors.adminTextColor}
+            bgColor={colors.primary}
             linkTo="/admin/dashboard/representation/edit-base-data"
           >
             <FormattedMessage {...messages.submitBaseDataButton} />

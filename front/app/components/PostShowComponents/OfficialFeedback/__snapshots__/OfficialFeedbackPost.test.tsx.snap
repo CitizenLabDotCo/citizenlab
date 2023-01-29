@@ -7,8 +7,8 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
 >
   <OfficialFeedbackPost__StyledMoreActionsMenu
     actions={
-      Array [
-        Object {
+      [
+        {
           "handler": [Function],
           "label": <FormattedMessage
             defaultMessage="Edit"
@@ -16,7 +16,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
           />,
           "name": "edit",
         },
-        Object {
+        {
           "handler": [Function],
           "label": <FormattedMessage
             defaultMessage="Delete"
@@ -26,7 +26,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
         },
       ]
     }
-    ariaLabel="Show more actions"
+    label="Show more actions"
   />
   <a11y__ScreenReaderOnly
     aria-live="polite"
@@ -39,7 +39,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
     >
       <div
         dangerouslySetInnerHTML={
-          Object {
+          {
             "__html": "Update: Do Not Keep Calm, please panic now. End of transmission.",
           }
         }
@@ -51,7 +51,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
       >
         <T
           value={
-            Object {
+            {
               "en": "Testing Official Department",
             }
           }
@@ -63,7 +63,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
             defaultMessage="Posted on {date}"
             id="app.components.PostComponents.OfficialFeedback.postedOn"
             values={
-              Object {
+              {
                 "date": <FormattedDate
                   day="numeric"
                   month="long"
@@ -82,7 +82,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
             defaultMessage="Last edited on {date}"
             id="app.components.PostComponents.OfficialFeedback.lastEdition"
             values={
-              Object {
+              {
                 "date": <FormattedDate
                   day="numeric"
                   month="long"
@@ -115,7 +115,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for non-admin 1`] = `
     >
       <div
         dangerouslySetInnerHTML={
-          Object {
+          {
             "__html": "Update: Do Not Keep Calm, please panic now. End of transmission.",
           }
         }
@@ -127,7 +127,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for non-admin 1`] = `
       >
         <T
           value={
-            Object {
+            {
               "en": "Testing Official Department",
             }
           }
@@ -139,7 +139,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for non-admin 1`] = `
             defaultMessage="Posted on {date}"
             id="app.components.PostComponents.OfficialFeedback.postedOn"
             values={
-              Object {
+              {
                 "date": <FormattedDate
                   day="numeric"
                   month="long"
@@ -158,7 +158,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for non-admin 1`] = `
             defaultMessage="Last edited on {date}"
             id="app.components.PostComponents.OfficialFeedback.lastEdition"
             values={
-              Object {
+              {
                 "date": <FormattedDate
                   day="numeric"
                   month="long"

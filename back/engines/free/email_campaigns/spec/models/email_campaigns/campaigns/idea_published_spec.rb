@@ -20,5 +20,17 @@ RSpec.describe EmailCampaigns::Campaigns::IdeaPublished, type: :model do
 
       expect(command.dig(:event_payload, :post_id)).to eq(idea.id)
     end
+
+    describe do
+      before { IdeaStatus.create_defaults }
+
+      let(:idea) { create :idea, author: user, project: create(:continuous_native_survey_project) }
+
+      it "doesn't get triggered for a native survey response" do
+        commands = campaign.generate_commands recipient: user, activity: activity
+
+        expect(commands).to be_empty
+      end
+    end
   end
 end

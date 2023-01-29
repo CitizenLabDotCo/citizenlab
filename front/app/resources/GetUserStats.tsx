@@ -26,7 +26,7 @@ export default class GetUserStats extends React.PureComponent<Props, State> {
   private userId$: BehaviorSubject<string>;
   private resourceType$: BehaviorSubject<'comments' | 'ideas'>;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       count: null,

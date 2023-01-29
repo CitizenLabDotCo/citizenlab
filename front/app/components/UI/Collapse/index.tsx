@@ -11,10 +11,8 @@ const timeout = 400;
 const Container = styled.div``;
 
 const ArrowIcon = styled(Icon)`
-  fill: ${colors.label};
-  flex: 0 0 11px;
-  height: 11px;
-  width: 11px;
+  fill: ${colors.textSecondary};
+  flex: 0 0 24px;
   margin-right: 8px;
   transition: transform 350ms cubic-bezier(0.165, 0.84, 0.44, 1),
     fill 80ms ease-out;
@@ -36,16 +34,16 @@ const CollapseExpandButton = styled.button`
   transition: all 80ms ease-out;
 
   &:hover {
-    color: ${darken(0.25, colors.label)};
+    color: ${darken(0.25, colors.textSecondary)};
 
     ${ArrowIcon} {
-      fill: ${darken(0.25, colors.label)};
+      fill: ${darken(0.25, colors.textSecondary)};
     }
   }
 `;
 
 const Label = styled.label`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   display: flex;
   align-items: center;
   font-size: ${fontSizes.base}px;
@@ -106,6 +104,7 @@ interface Props {
   opened: boolean;
   onToggle: (event: React.MouseEvent) => void;
   className?: string;
+  children?: React.ReactNode;
 }
 
 class Collapse extends PureComponent<Props> {

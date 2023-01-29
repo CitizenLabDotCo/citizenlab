@@ -82,7 +82,7 @@ kl:
       "password_reset": Isissutitut kode aallaqqaataaniit aallartittussanngorlugu aaqqiguk - atuisut tamaasa
       "project_moderation_rights_received": Suliniummi nakkutilliisussatut pisinnaatitaaffilerneqarputit - suliniummi aqutsisut
       "project_folder_moderation_rights_received": Mappinut aqutsisutut pisinnaatitaaffeqalerpoq
-      "project_phase_started": Suliniummut immikkoortoq nutaaq - atuisut tamaasa
+      "project_phase_started": Suliniummut immikkoortoq nutaaq - suliniummut peqataasut
       "project_phase_upcoming": Suliniummut immikkoortussaq - administrator-it aamma suliniutinik aqutsisut
       "status_change_of_commented_idea": Isumassarsiap oqaaseqaateqarfigisavit killiffia allanngortoq - atuisut tamaasa
       "status_change_of_commented_initiative": Siunnersuutip oqaaseqaateqarfigisavit killiffia allanngortoq - atuisut tamaasa
@@ -101,7 +101,7 @@ kl:
       "link_privacy_policy": "Kinaasutsimik isertuusinermi politikki"
       "link_terms_conditions": "Piumasaqaatit atugassarititaasullu"
       "link_unsubscribe": "Atuisuujunnaarneq"
-      "powered_by": "Ingerlanneqartoq"
+      "powered_by": "Uuminnga ingerlanneqarpoq"
       "statement": "Emaili una %{organizationName} sinnerlugu CitizenLabimit nassiunneqarpoq, %{organizationLink}-imut atuisutut nalunaarsimagavit. Siunissami emailinik ima ittunik nassinneqartarusunngikkuit una %{unsubscribeLink} tooruk."
       "unsubscribe_text": "atuisuujunnaarit"
     comment_deleted_by_admin:
@@ -176,8 +176,8 @@ kl:
       yesterday_by_author: 'Ippassaq %{author}-mit'
       today_by_author: 'Ullumi %{author}-mit'
       x_days_ago_by_author: 'Ullut %{x} matuma siorna %{author}-mit'
-      idea_section: Isumassarsiat
-      initiative_section: Innuttaasunit siunnersuut
+      idea_section: Idéer
+      initiative_section: Innuttaasut siunnersuutaat
       title_initiatives_past_week: 'Innuttaasunit siunnersuutit ilinnut tunniunneqartut'
       title_successful_initiatives_past_week: 'Innuttaasunit siunnersuutit ilinnut tunniunneqartut killigititamiittut'
     idea_marked_as_spam:
@@ -419,6 +419,7 @@ kl:
       cta_view_phase: 'Fase nutaaq paasiuk'
       event_description: 'Una suliniut %{organizationName}p platformiani fasemut nutaamut pivoq. Ataani linki tooruk paasisaqarnerorusukkuit'
       main_header: '"%{projectName}"mi fase nutaaq aallartippoq'
+      subtitle: 'About ''%{projectName}'''
       new_phase: 'Suliniut fasemut "%{phaseTitle}" killippoq'
       subject: '%{projectName} fasemut nutaamut pivoq'
       preheader: '%{projectName}mut fase nutaaq aallartippoq'
@@ -426,6 +427,7 @@ kl:
       cta_view_phase: 'Fase una nutaaq inissititeruk'
       event_description: 'Suliaq"%{projectName}" nutaamik fasemik aallartissaaq. Uani fasemi suna tamarmi inissititerneqarsimassasoq qulakkeeruk: Nassuiarnera naammappa? Isumassarsiat imarineqareersut uunga fasemut nuunneqassappat? Uuma fasep e-mailikkut tulluarsakkakkut innuttaasunut nassuiarnissaa kissaatigiviuk?'
       main_header: '%{firstName}, suliniut ullut XXX qaangiuppata fasemut nutaamut pissaaq'
+      subtitle: 'About ''%{projectName}'''
       new_phase: 'Suliniut fasemut ''%{phaseTitle}'' pivoq'
       subject: '%{projectName}mi fasemut nutaamut piareersarit'
       preheader: '%{projectName}mut suliniummik nutaamik aallartitsisoqarpoq '

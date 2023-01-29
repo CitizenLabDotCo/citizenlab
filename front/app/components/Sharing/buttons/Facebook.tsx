@@ -4,7 +4,7 @@ import { FacebookShareButton } from 'react-share';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 import { Box, Icon } from '@citizenlab/cl2-component-library';
 
@@ -41,7 +41,7 @@ const Facebook = ({
   facebookMessage,
   url,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const handleClick = () => {
     trackClick('facebook');
   };

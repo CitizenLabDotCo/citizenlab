@@ -12,7 +12,7 @@ const Container = styled.div`
 `;
 
 const LoadingMessage = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.m}px;
   font-weight: 400;
 `;

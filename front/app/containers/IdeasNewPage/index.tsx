@@ -1,4 +1,5 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { adopt } from 'react-adopt';
 import { isEmpty, isNumber, get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
@@ -12,6 +13,7 @@ import clHistory from 'utils/cl-router/history';
 import IdeasNewButtonBar from './IdeasNewButtonBar';
 import NewIdeaForm from './NewIdeaForm';
 import IdeasNewMeta from './IdeasNewMeta';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // feature flag variant
 import IdeasNewPageWithJSONForm from './WithJSONForm';
@@ -48,6 +50,9 @@ import GetAppConfiguration, {
 } from 'resources/GetAppConfiguration';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { UploadFile } from 'typings';
+import useProject from 'hooks/useProject';
+import usePhases from 'hooks/usePhases';
+import { getParticipationMethod } from 'utils/participationMethodUtils';
 
 const Container = styled.div`
   background: ${colors.background};
@@ -55,7 +60,7 @@ const Container = styled.div`
     100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
   );
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
     props
   ) => props.theme.mobileTopBarHeight}px);
@@ -69,7 +74,7 @@ const PageContainer = styled.main`
   );
   position: relative;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
     props
   ) => props.theme.mobileTopBarHeight}px);
@@ -105,7 +110,7 @@ interface State {}
 class IdeasNewPage extends React.Component<Props & WithRouterProps, State> {
   globalState: IGlobalStateService<IIdeasPageGlobalState>;
 
-  constructor(props) {
+  constructor(props: Props & WithRouterProps) {
     super(props);
     const initialGlobalState: IIdeasPageGlobalState = {
       title: null,
@@ -186,7 +191,11 @@ class IdeasNewPage extends React.Component<Props & WithRouterProps, State> {
   };
 
   handleOnIdeaSubmit = async () => {
-    const { locale, authUser, project, appConfiguration } = this.props;
+    const { locale, authUser, project, appConfiguration, location } =
+      this.props;
+    const { phase_id } = parse(location.search, {
+      ignoreQueryPrefix: true,
+    }) as { [key: string]: string };
     const {
       title,
       description,
@@ -228,6 +237,7 @@ class IdeasNewPage extends React.Component<Props & WithRouterProps, State> {
           project_id: project.id,
           location_point_geojson: locationGeoJSON,
           location_description: locationDescription,
+          ...(phase_id && { phase_ids: [phase_id] }),
         };
 
         const idea = await addIdea(ideaObject);
@@ -416,9 +426,36 @@ export default withRouter((inputProps: InputProps & WithRouterProps) => {
   const isDynamicIdeaFormEnabled = useFeatureFlag({
     name: 'dynamic_idea_form',
   });
+  const isSmallerThanXlPhone = useBreakpoint('phone');
+  const project = useProject({ projectSlug: inputProps.params.slug });
+  const phases = usePhases(project?.id);
+  const { phase_id } = parse(location.search, {
+    ignoreQueryPrefix: true,
+  }) as { [key: string]: string };
+  const participationMethod = getParticipationMethod(project, phases, phase_id);
+  const portalElement = document?.getElementById('modal-portal');
+  const isSurvey = participationMethod === 'native_survey';
 
-  if (isDynamicIdeaFormEnabled) {
-    return <IdeasNewPageWithJSONForm {...inputProps} />;
+  if (isDynamicIdeaFormEnabled || isSurvey) {
+    return portalElement && isSmallerThanXlPhone && isSurvey ? (
+      createPortal(
+        <Box
+          display="flex"
+          flexDirection="column"
+          w="100%"
+          zIndex="10000"
+          position="fixed"
+          bgColor={colors.background}
+          h="100vh"
+          overflowY="scroll"
+        >
+          <IdeasNewPageWithJSONForm {...inputProps} />
+        </Box>,
+        portalElement
+      )
+    ) : (
+      <IdeasNewPageWithJSONForm {...inputProps} />
+    );
   }
 
   return (

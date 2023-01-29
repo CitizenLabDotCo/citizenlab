@@ -5,7 +5,6 @@ import Input from '../Input';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import translationMessages from 'i18n/en';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 const schema = object({
@@ -93,9 +92,7 @@ describe('Feedback', () => {
     await waitFor(() => {
       expect(
         screen.queryByText(
-          (translationMessages as Record<string, string>)[
-            'app.errors.slug_taken'
-          ]
+          'This URL already exists. Please change the slug to something else.'
         )
       ).toBeInTheDocument();
     });

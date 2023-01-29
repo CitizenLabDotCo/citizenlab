@@ -4,10 +4,10 @@ import QuillMultilocWithLocaleSwitcher from './';
 import { useForm, FormProvider } from 'react-hook-form';
 import { object } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import validateMultiloc from 'utils/yup/validateMultiloc';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
 const schema = object({
-  description: validateMultiloc('Error message'),
+  description: validateMultilocForEveryLocale('Error message'),
 });
 
 jest.mock('utils/cl-intl');
@@ -57,6 +57,32 @@ describe('QuillMultilocWithLocaleSwitcher', () => {
     await waitFor(() => {
       expect(onSubmit).not.toHaveBeenCalled();
       expect(screen.getByText('Error message')).toBeInTheDocument();
+    });
+  });
+  it('shows API validation error when there is one', async () => {
+    const FormWithAPIError = () => {
+      const methods = useForm();
+      return (
+        <FormProvider {...methods}>
+          <form
+            onSubmit={methods.handleSubmit(() =>
+              methods.setError('title', { error: 'blank' } as any)
+            )}
+          >
+            <QuillMultilocWithLocaleSwitcher name="title" />
+            <button type="submit">Submit</button>
+          </form>
+        </FormProvider>
+      );
+    };
+
+    render(<FormWithAPIError />);
+
+    fireEvent.click(screen.getByText(/submit/i));
+    await waitFor(() => {
+      expect(
+        screen.getByText('This field cannot be empty.')
+      ).toBeInTheDocument();
     });
   });
 });

@@ -9,8 +9,8 @@ import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 
 // i18n
-import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
+import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import messages from './messages';
 
 // styling
@@ -23,7 +23,7 @@ const Container = styled.form`
   width: 100%;
   max-width: 500px;
   padding: 25px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   border: solid 1px #ddd;
   background: #fff;
 `;
@@ -65,7 +65,7 @@ const TerminologyConfig = ({
   pluralPlaceholderMessage,
   onSave,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const [submitState, setSubmitState] = useState<TSubmitState>('enabled');
   const [opened, setOpened] = useState<boolean>(false);
   const [singular, setSingular] = useState<Multiloc | undefined>();

@@ -1,10 +1,10 @@
 # cl2-back
- 
-# Getting started
+
+## Getting started
 
 First, you need the latest docker and docker-compose installed.
 
-Build the docker compose images 
+Build the docker compose images:
 ```
 docker-compose up --build -d
 ```
@@ -48,19 +48,22 @@ This is a fail-safe step process you can apply to handle any update:
 
 ```bash
 docker-compose down
-docker-compose build web que
+docker-compose build web
 docker-compose run --rm web bundle exec rake db:reset
 docker-compose up
 ```
 
 On Linux, you need to add `--user "$(id -u):$(id -g)"` to all `docker-compose run` commands. This is not required on Mac or Windows.
 
-To save some time, often it is not necessary to run the 2nd time consuming command `docker-compose build web`. This is only required when libraries have been updated, indicated by a change in the `Gemfile.lock` file.
-
-The 3rd step is also not always required. It is needed when
+The 3rd step is not always required. It is needed when
 
 - The database structure has changed, indicated by an update to `db/schema.rb`
 - The test data, aka seed data, has changed, indicated by an update to `db/seeds.rb`
+
+Alternatively, there is a convenience script to reset the whole environment for you.
+```
+./script/reset_dev_env.sh
+```
 
 ## Testing
 
@@ -68,13 +71,13 @@ The 3rd step is also not always required. It is needed when
 Resetting the database, with the previous command, upsets the testing database as well. Before running the tests, it's sometimes necessary to put it back in it's default shape. We can do this with the following command:
 
 ```
-docker-compose run --rm --user "$(id -u):$(id -g)" -e RAILS_ENV=test web rake db:environment:set db:drop db:create db:schema:load
+docker-compose run --rm --user "$(id -u):$(id -g)" -e RAILS_ENV=test web bundle exec rake db:environment:set db:drop db:create db:schema:load
 ```
 
 Mac or Windows:
 
 ```
-docker-compose run --rm -e RAILS_ENV=test web rake db:environment:set db:drop db:create db:schema:load
+docker-compose run --rm -e RAILS_ENV=test web bundle exec rake db:environment:set db:drop db:create db:schema:load
 ```
 
 To actually run the tests:
@@ -241,17 +244,17 @@ NOTE: Watch out that you don't accidently commit these changes!
 
 ## Creating Engines
 
-In this section, we explain what you need to do (and what you shouldn't forget) when adding a new engine to `cl2-back`. Throughout these instructions, replace "`blorgh`" by the name of your engine. These instructions are for adding free engines (Citizenlab employees can find the instructions for commercial engines in Notion).
+In this section, we explain what you need to do (and what you shouldn't forget) when adding a new engine to `citizenlab/back`. Throughout these instructions, replace "`blorgh`" by the name of your engine. These instructions are for adding free engines (Citizenlab employees can find the instructions for commercial engines in Notion).
 
 1. Run `docker-compose run web bin/rails plugin new engines/free/blorgh --mountable`. Initialize your engine with a nice `README` file.
 
-2. Remove files/folders you don’t need. Change the current files to correspond with the other engines. 
+2. Remove files/folders you don’t need. Change the current files to correspond with the other engines.
 
-3. In the `blorgh.gemspec` file, make sure `AGPLv3` is specified as license. 
+3. In the `blorgh.gemspec` file, make sure `AGPLv3` is specified as license.
 
 4. For feature engines (represented by an app configuration setting that can be enabled and disabled), copy over `lib/blorgh/feature_specification.rb` and `spec/lib/settings_spec.rb` and edit according to your engine's specifications.
 
-5. Add the new engine to `citizenlab.config.json` and 
+5. Add the new engine to the `Gemfile`
 
 6. Update the licenses by executing `license_finder approvals add blorgh`.
 
@@ -332,11 +335,11 @@ Add it to the `Bullet.stacktrace_excludes = []` blacklist in `config/application
 
 We use [license_finder](https://github.com/pivotal/LicenseFinder) to check whether the licenses of our gems are compatible with our own. CI runs it for you.
 
-When you add a gem, you don't have to do anything if it comes with a license we previously approved. If it's a new license, you can use the license_finder CLI to approve the license, also for future dependencies.
+When you add a gem, you don't have to do anything if it comes with a license we previously approved. If it is a new license, you can use the license_finder CLI to approve the license, also for future dependencies.
 ```bash
 docker-compose run web license_finder permitted_licenses add "the license name"
 ```
-If the license is unkown to rubygems, you can directly approve a gem.
+If the license is unknown to rubygems, you can directly approve a gem.
 ```bash
 docker-compose run web license_finder approvals add some_awesome_new_gem
 ```

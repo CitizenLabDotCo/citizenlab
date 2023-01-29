@@ -2,10 +2,16 @@ import React, { useRef, useEffect } from 'react';
 import styled, { withTheme } from 'styled-components';
 import { quillEditedContent } from 'utils/styleUtils';
 
-const Container: any = styled.div`
-  ${(props: any) =>
+const Container = styled.div<{
+  linkColor: Props['linkColor'];
+  textColor: Props['textColor'];
+  mentionColor: Props['mentionColor'];
+  fontSize: Props['fontSize'];
+  fontWeight: Props['fontWeight'];
+}>`
+  ${(props) =>
     quillEditedContent(
-      props.theme.colorMain,
+      props.theme.colors.tenantPrimary,
       props.linkColor,
       props.textColor,
       props.mentionColor,
@@ -37,7 +43,7 @@ const QuillEditedContent = ({
   theme,
   disableTabbing,
 }: Props) => {
-  const containerRef = useRef<HTMLElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   const tabbableElements = containerRef.current?.querySelectorAll(
     'a, iframe, button, input, select, textarea'
@@ -55,7 +61,7 @@ const QuillEditedContent = ({
     <Container
       linkColor={linkColor}
       textColor={textColor}
-      mentionColor={mentionColor || theme.colorText}
+      mentionColor={mentionColor || theme.colors.tenantText}
       fontSize={fontSize}
       fontWeight={fontWeight}
       className={className || ''}

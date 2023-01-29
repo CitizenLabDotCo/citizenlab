@@ -34,21 +34,22 @@ const IconContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 28px;
   // Increases the clickable surface area
-  padding: 4px 8px 4px 0px;
-  margin: -4px -8px -4px 0px;
+  padding: 4px 4px 4px 0px;
+  margin: -4px -4px -4px 0px;
 `;
 
 const PlusIcon = styled(Icon)`
   margin-left: 8px;
-  height: 14px;
-  fill: ${colors.clGreen};
+  height: 16px;
+  width: 16px;
+  fill: ${colors.success};
 `;
 
 const CloseIcon = styled(Icon)`
   margin-left: 8px;
-  height: 10px;
+  height: 16px;
+  width: 16px;
   fill: #fff;
 `;
 
@@ -74,21 +75,21 @@ const StyledTag = styled(Box)<{ variant: Variant; size: Size }>`
     `}
     ${variant === 'primary' &&
     css`
-      background-color: ${colors.clGreen};
-      border: 1px solid ${colors.clGreen};
+      background-color: ${colors.success};
+      border: 1px solid ${colors.success};
       color: #fff;
     `}
     ${variant === 'secondary' &&
     css`
-      background-color: ${colors.label};
-      border: 1px solid ${colors.border};
+      background-color: ${colors.textSecondary};
+      border: 1px solid ${colors.borderDark};
       color: #fff;
     `}
     ${variant === 'default' &&
     css`
       background-color: #fff;
-      color: ${colors.label};
-      border: 1px solid ${colors.border};
+      color: ${colors.textSecondary};
+      border: 1px solid ${colors.borderDark};
     `}
     ${onClick &&
     css`
@@ -97,7 +98,7 @@ const StyledTag = styled(Box)<{ variant: Variant; size: Size }>`
       &:focus {
         background-color: ${darken(
           0.1,
-          variant === 'primary' ? colors.clGreen : '#fff'
+          variant === 'primary' ? colors.success : '#fff'
         )};
       }
     `}
@@ -148,7 +149,7 @@ const Tag = ({
       variant={variant}
       size={size}
       data-testid="insightsTag"
-      className={className}
+      className={`${className} intercom-insights-tag-component`}
       onClick={onClick}
       as="button"
       tabIndex={onClick ? 0 : -1}
@@ -164,7 +165,7 @@ const Tag = ({
                 <StyledSpinner
                   size="10px"
                   thickness="1px"
-                  color={variant === 'primary' ? '#fff' : colors.clGreen}
+                  color={variant === 'primary' ? '#fff' : colors.success}
                 />
               </div>
             ) : (

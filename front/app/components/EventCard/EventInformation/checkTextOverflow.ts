@@ -3,7 +3,7 @@ import React from 'react';
 export default function checkTextOverflow(
   TElement: React.MutableRefObject<any>
 ) {
-  const tElementCurrent: any = TElement?.current;
+  const tElementCurrent = TElement?.current;
   if (!tElementCurrent) return;
 
   const spanElement = tElementCurrent.state.innerRef.current;

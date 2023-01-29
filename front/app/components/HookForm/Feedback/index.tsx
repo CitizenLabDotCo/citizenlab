@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import Error, { findErrorMessage, TFieldName } from 'components/UI/Error';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import {
   Text,
   Title,
@@ -13,10 +13,11 @@ import {
 import { scrollToElement } from 'utils/scroll';
 import CloseIconButton from 'components/UI/CloseIconButton';
 import messages from './messages';
+import { get } from 'lodash-es';
 
 type FeedbackProps = {
   successMessage?: string;
-} & InjectedIntlProps;
+} & WrappedComponentProps;
 
 const Feedback = ({
   successMessage,
@@ -24,7 +25,12 @@ const Feedback = ({
 }: FeedbackProps) => {
   const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(true);
   const {
-    formState: { errors, isSubmitSuccessful, isSubmitted, submitCount },
+    formState: {
+      errors: formContextErrors,
+      isSubmitSuccessful,
+      isSubmitted,
+      submitCount,
+    },
   } = useFormContext();
 
   useEffect(() => {
@@ -37,11 +43,12 @@ const Feedback = ({
   const getAllErrorMessages = () => {
     const errorMessages: Array<{ field: string; message?: string }> = [];
 
-    for (const field in errors) {
-      const standardFieldError = errors[field]?.message;
-      const apiError = errors[field]?.error;
+    for (const field in formContextErrors) {
+      const errors = get(formContextErrors, field);
+      const standardFieldError = errors?.message;
+      const apiError = errors?.error;
       const multilocFieldFirstError = Object.values(
-        errors[field] as Record<string, any>
+        errors as Record<string, any>
       )[0]?.message;
 
       if (standardFieldError) {
@@ -57,7 +64,7 @@ const Feedback = ({
 
         errorMessages.push({
           field,
-          message: formatMessage(apiErrorMessage),
+          message: apiErrorMessage ? formatMessage(apiErrorMessage) : '',
         });
       } else if (multilocFieldFirstError) {
         errorMessages.push({
@@ -73,7 +80,7 @@ const Feedback = ({
   const closeSuccessMessage = () => setSuccessMessageIsVisible(false);
   const successMessageIsShown = isSubmitSuccessful && successMessageIsVisible;
   const errorMessageIsShown =
-    (getAllErrorMessages().length > 0 || errors.submissionError) &&
+    (getAllErrorMessages().length > 0 || formContextErrors.submissionError) &&
     !isSubmitSuccessful;
 
   return (
@@ -82,7 +89,7 @@ const Feedback = ({
         <Box id="feedback" data-testid="feedback" key={submitCount}>
           {successMessageIsShown && (
             <Box
-              bgColor={colors.clGreenSuccessBackground}
+              bgColor={colors.successLight}
               borderRadius="3px"
               px="12px"
               py="4px"
@@ -95,12 +102,12 @@ const Feedback = ({
             >
               <Box display="flex" gap="16px" alignItems="center">
                 <Icon
-                  name="checkmark-full"
-                  fill={colors.clGreenSuccess}
+                  name="check-circle"
+                  fill={colors.success}
                   width="24px"
                   height="24px"
                 />
-                <Title color="clGreenSuccess" variant="h4" as="h3">
+                <Title color="success" variant="h4" as="h3">
                   {successMessage || formatMessage(messages.successMessage)}
                 </Title>
               </Box>
@@ -112,7 +119,7 @@ const Feedback = ({
               marginBottom="12px"
               text={
                 <>
-                  {errors.submissionError ? (
+                  {formContextErrors.submissionError ? (
                     <>
                       <Title color="red600" variant="h4">
                         {formatMessage(messages.submissionErrorTitle)}
@@ -125,12 +132,12 @@ const Feedback = ({
                       </Text>
                     </>
                   ) : (
-                    <>
-                      <Title color="red600" variant="h4">
+                    <Box data-testid="feedbackErrorMessage">
+                      <Title color="red600" variant="h4" mt="0px" mb="0px">
                         {formatMessage(messages.errorTitle)}
                       </Title>
                       {getAllErrorMessages().map((error) => {
-                        return (
+                        return error.message ? (
                           <Text
                             key={error.field}
                             onClick={() => scrollToElement({ id: error.field })}
@@ -147,9 +154,9 @@ const Feedback = ({
                           >
                             {error.message}
                           </Text>
-                        );
+                        ) : null;
                       })}
-                    </>
+                    </Box>
                   )}
                 </>
               }

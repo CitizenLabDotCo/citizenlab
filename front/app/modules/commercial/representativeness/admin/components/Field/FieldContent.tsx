@@ -78,7 +78,7 @@ const FieldContent = ({
         <Box
           width="100%"
           background="#FCFCFC"
-          border={`1px ${colors.separation} solid`}
+          border={`1px ${colors.divider} solid`}
           pt="20px"
           pb="12px"
           px="16px"
@@ -126,7 +126,7 @@ const FieldContent = ({
             <Button
               disabled={!allowSubmit}
               processing={submitting}
-              text="Save"
+              text={<FormattedMessage {...messages.save} />}
               mt="20px"
               width="auto"
               data-testid="representativeness-field-save-button"

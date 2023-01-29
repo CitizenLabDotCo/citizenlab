@@ -83,7 +83,7 @@ class ParentComment extends PureComponent<Props, State> {
   private loadMore$: BehaviorSubject<boolean>;
   private subscriptions: Subscription[];
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       canLoadMore: false,
@@ -217,9 +217,9 @@ class ParentComment extends PureComponent<Props, State> {
               className={!isLoadingMore ? 'clickable' : ''}
               disabled={isLoadingMore}
               bgColor="white"
-              textColor={theme.colorText}
+              textColor={theme.colors.tenantText}
               bgHoverColor="white"
-              textHoverColor={darken(0.1, theme.colorText)}
+              textHoverColor={darken(0.1, theme.colors.tenantText)}
               fontWeight="bold"
               borderColor="#E0E0E0"
               borderThickness="2px"

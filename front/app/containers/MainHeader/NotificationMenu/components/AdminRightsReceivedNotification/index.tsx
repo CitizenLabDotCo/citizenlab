@@ -15,7 +15,7 @@ const AdminRightsReceivedNotification = memo<Props>((props) => {
     <NotificationWrapper
       linkTo={'/admin'}
       timing={notification.attributes.created_at}
-      icon="admin"
+      icon="shield-checkered"
       isRead={!!notification.attributes.read_at}
     >
       <FormattedMessage {...messages.adminRightsReceived} />

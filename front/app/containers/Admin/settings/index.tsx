@@ -10,7 +10,7 @@ import TabbedResource from 'components/admin/TabbedResource';
 
 // i18n
 import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
 import { InsertConfigurationOptions, ITab } from 'typings';
@@ -26,10 +26,10 @@ interface State {
 }
 
 class SettingsPage extends React.PureComponent<
-  Props & InjectedIntlProps & WithRouterProps,
+  Props & WrappedComponentProps & WithRouterProps,
   State
 > {
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps & WithRouterProps) {
     super(props);
     const { formatMessage } = this.props.intl;
 
@@ -49,6 +49,11 @@ class SettingsPage extends React.PureComponent<
           name: 'registration',
           label: formatMessage(messages.tabRegistration),
           url: '/admin/settings/registration',
+        },
+        {
+          label: formatMessage(messages.tabTopics),
+          name: 'topics',
+          url: '/admin/settings/topics',
         },
         {
           name: 'areas',

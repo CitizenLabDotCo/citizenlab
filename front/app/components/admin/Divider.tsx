@@ -12,7 +12,7 @@ const Divider = ({
     display="block"
     height="1px"
     border="0"
-    borderTop={`1px solid ${colors.separation}`}
+    borderTop={`1px solid ${colors.divider}`}
     margin="1em 0"
     padding="0"
     {...rest}

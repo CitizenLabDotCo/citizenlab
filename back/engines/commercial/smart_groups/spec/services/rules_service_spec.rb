@@ -94,8 +94,10 @@ describe SmartGroups::RulesService do
       expect(groups.map(&:id)).to match_array [group1.id, group2.id]
     end
 
-    it 'uses a maximun of 2 queries' do
-      expect { service.groups_for_user(user) }.not_to exceed_query_limit(2)
+    it 'uses a maximum of 3 queries' do
+      # 1 for calculating the cache key
+      # 2 for the smart group filtering
+      expect { service.groups_for_user(user) }.not_to exceed_query_limit(3)
     end
 
     it 'accepts an optional scope to limit the groups to search in' do

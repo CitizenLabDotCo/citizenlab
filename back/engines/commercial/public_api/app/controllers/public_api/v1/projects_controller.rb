@@ -8,6 +8,7 @@ module PublicApi
       @projects = PublicApi::ProjectPolicy::Scope.new(current_publicapi_apiclient, Project).resolve
       @projects = @projects
         .includes(:project_images)
+        .includes(:map_config)
         .order(created_at: :desc)
         .page(params[:page_number])
         .per([params[:page_size]&.to_i || 12, 24].min)

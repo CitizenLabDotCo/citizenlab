@@ -31,7 +31,7 @@ const UserNavbarWrapper = styled.div`
   justify-content: center;
   height: 54px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     top: 0px;
   `}
 `;
@@ -46,7 +46,7 @@ const Border = styled.div`
 `;
 
 const UserNavbarButton = styled.button`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   padding: 0 32px;
@@ -62,16 +62,16 @@ const UserNavbarButton = styled.button`
 
   &:focus,
   &:hover {
-    color: ${({ theme }) => theme.colorText};
+    color: ${({ theme }) => theme.colors.tenantText};
 
     ${Border} {
-      background: ${({ theme }) => rgba(theme.colorMain, 0.3)};
+      background: ${({ theme }) => rgba(theme.colors.tenantPrimary, 0.3)};
     }
   }
 
   &.active {
     ${Border} {
-      background: ${({ theme }) => theme.colorMain};
+      background: ${({ theme }) => theme.colors.tenantPrimary};
     }
 
     &:before {
@@ -83,19 +83,19 @@ const UserNavbarButton = styled.button`
       height: 100%;
       width: 100%;
       z-index: -1;
-      background-color: ${({ theme }) => rgba(theme.colorMain, 0.05)};
+      background-color: ${({ theme }) =>
+        rgba(theme.colors.tenantPrimary, 0.05)};
       pointer-events: none;
     }
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     flex: 1;
   `}
 `;
 
 const TabIcon = styled(Icon)`
-  color: ${({ theme }) => theme.colorText};
-  height: 22px;
+  color: ${({ theme }) => theme.colors.tenantText};
   margin-right: 10px;
 `;
 

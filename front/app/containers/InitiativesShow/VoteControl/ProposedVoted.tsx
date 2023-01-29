@@ -35,14 +35,14 @@ const scaleIn = keyframes`
 `;
 
 const StyledIcon = styled(Icon)`
-  fill: ${colors.clGreenSuccess};
+  fill: ${colors.success};
   width: 63px;
   height: 63px;
   animation: ${scaleIn} 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 `;
 
 const VotedTitle = styled.h4`
-  color: ${(props) => props.theme.colorText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   font-weight: 600;
   text-align: center;
@@ -53,7 +53,7 @@ const VotedTitle = styled.h4`
 `;
 
 const VotedText = styled.p`
-  color: ${(props) => props.theme.colorText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: 21px;
@@ -63,12 +63,12 @@ const VotedText = styled.p`
 `;
 
 const UnvoteButton = styled.button`
-  color: ${(props) => props.theme.colorText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   text-decoration: underline;
 
   &:hover {
-    color: ${(props) => darken(0.12, props.theme.colorText)};
+    color: ${(props) => darken(0.12, props.theme.colors.tenantText)};
     text-decoration: underline;
     cursor: pointer;
   }
@@ -77,7 +77,7 @@ const UnvoteButton = styled.button`
 const VoteCounter = styled.div`
   margin-top: 15px;
   width: 100%;
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -91,12 +91,12 @@ const VoteText = styled.div`
 
 const VoteTextLeft = styled.div`
   font-size: ${fontSizes.base}px;
-  color: ${colors.clGreyOnGreyBackground};
+  color: ${colors.coolGrey600};
 `;
 
 const VoteTextRight = styled.div`
   font-size: ${fontSizes.base}px;
-  color: ${(props) => props.theme.colorText};
+  color: ${(props) => props.theme.colors.tenantText};
 `;
 
 interface InputProps {
@@ -126,7 +126,7 @@ class ProposedVoted extends PureComponent<Props & { theme: any }> {
 
     return (
       <Container>
-        <StyledIcon ariaHidden name="round-checkmark" />
+        <StyledIcon ariaHidden name="check-circle" />
         <VotedTitle>
           <FormattedMessage {...messages.votedTitle} />
         </VotedTitle>

@@ -61,6 +61,12 @@ jest.mock('utils/cl-router/withRouter', () => {
     },
   };
 });
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useParams: () => mockParams,
+}));
+
 jest.mock('utils/cl-router/Link');
 
 jest.mock('hooks/useProject', () => {
@@ -189,7 +195,9 @@ describe('ContentBuilderTopBar', () => {
     );
     const toggle = screen.getByRole('checkbox');
     fireEvent.click(toggle);
-    expect(setPreviewEnabled).toHaveBeenCalledWith(true);
+
+    const previewEnabled = setPreviewEnabled.mock.calls[0][0](false);
+    expect(previewEnabled).toBe(true);
   });
 
   it('calls setPreviewEnabled correctly on toggle change when previewEnabled is true', async () => {
@@ -207,7 +215,9 @@ describe('ContentBuilderTopBar', () => {
     );
     const toggle = screen.getByRole('checkbox');
     fireEvent.click(toggle);
-    expect(setPreviewEnabled).toHaveBeenCalledWith(false);
+
+    const previewEnabled = setPreviewEnabled.mock.calls[0][0](true);
+    expect(previewEnabled).toBe(false);
   });
 
   it('does not render locale switcher when there is only one locale', () => {

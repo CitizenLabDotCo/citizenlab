@@ -46,7 +46,7 @@ const PhaseNumber = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: ${colors.label};
+  background: ${colors.textSecondary};
   margin-right: 11px;
   color: #fff;
   font-size: ${fontSizes.base}px;
@@ -59,10 +59,10 @@ const PhaseNumber = styled.div`
   `}
 
   &.present {
-    background: ${colors.clGreen};
+    background: ${colors.success};
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     display: none;
   `}
 `;
@@ -79,7 +79,7 @@ const HeaderTitleWrapper = styled.div`
 `;
 
 const HeaderTitle = styled.h2`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.l + 1}px;
   line-height: normal;
   font-weight: 600;
@@ -90,12 +90,12 @@ const HeaderTitle = styled.h2`
   word-break: break-word;
 
   &.present {
-    color: ${colors.clGreen};
+    color: ${colors.success};
   }
 `;
 
 const PhaseDate = styled.div`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;
@@ -126,7 +126,7 @@ const PhaseTitle = ({
   const phase = usePhase(phaseId);
   const { windowWidth } = useWindowSize();
   const localize = useLocalize();
-  const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
+  const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
 
   if (!isNilOrError(phase)) {
     let phaseTitle = localize(phase.attributes.title_multiloc);

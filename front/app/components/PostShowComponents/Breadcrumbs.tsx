@@ -1,8 +1,8 @@
 import React from 'react';
 
 // i18n
-import { injectIntl, FormattedMessage, IMessageInfo } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { injectIntl, FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // components
@@ -31,13 +31,12 @@ const HomeLink = styled(Link)`
 `;
 
 const HomeIcon = styled(Icon)`
-  flex: 0 0 14px;
-  height: 14px;
-  fill: ${colors.label};
+  flex: 0 0 24px;
+  fill: ${colors.textSecondary};
   margin-top: -3px;
 
   &:hover {
-    fill: ${darken(0.25, colors.label)};
+    fill: ${darken(0.25, colors.textSecondary)};
   }
 `;
 
@@ -47,34 +46,36 @@ const Separator = styled.div`
   font-weight: 300;
   line-height: normal;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     margin: 0 10px;
   `}
 `;
 
 const StyledLink = styled(Link)`
   font-size: ${fontSizes.s}px;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   text-decoration: none;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 
   &:hover {
-    color: ${darken(0.2, colors.label)};
+    color: ${darken(0.2, colors.textSecondary)};
     text-decoration: underline;
   }
 `;
 
 const LinkText = styled.span``;
 
+type Message = { message: MessageDescriptor };
+
 interface ILink {
   to: string;
-  text: Multiloc | IMessageInfo;
+  text: Multiloc | Message;
 }
 
-function isIMessageInfo(text: IMessageInfo | Multiloc): text is IMessageInfo {
-  return (text as IMessageInfo).message !== undefined;
+function isIMessageInfo(text: Message | Multiloc): text is Message {
+  return (text as Message).message !== undefined;
 }
 
 interface Props {
@@ -88,7 +89,7 @@ const Breadcrumbs = ({
   className,
   links,
   postType,
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const localize = useLocalize();
 
   return (
@@ -96,7 +97,7 @@ const Breadcrumbs = ({
       <HomeLink id="e2e-home-page-link" to="/">
         <HomeIcon
           title={formatMessage(messages.linkToHomePage)}
-          name="homeFilled"
+          name="home"
           ariaHidden={false}
         />
       </HomeLink>
@@ -109,10 +110,7 @@ const Breadcrumbs = ({
         >
           <LinkText>
             {isIMessageInfo(link.text) ? (
-              <FormattedMessage
-                {...link.text.message}
-                values={link.text.values}
-              />
+              <FormattedMessage {...link.text.message} />
             ) : (
               localize(link.text)
             )}

@@ -17,17 +17,17 @@ const MenuItem = styled.li`
 `;
 
 const StyledLink = styled(Link)`
-  color: ${colors.text};
+  color: ${colors.textPrimary};
   padding: 20px 10px;
   border-radius: 5px;
   &:hover {
-    color: ${darken(0.2, colors.text)};
+    color: ${darken(0.2, colors.textPrimary)};
   }
   &:active {
     background: ${darken(0.05, '#fff')};
   }
   &.active {
-    color: ${(props) => props.theme.colorMain};
+    color: ${(props) => props.theme.colors.tenantPrimary};
   }
 `;
 

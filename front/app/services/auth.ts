@@ -32,9 +32,14 @@ export function lockedFieldsStream() {
   });
 }
 
-export async function signIn(email: string, password: string) {
+export async function signIn(
+  email: string,
+  password: string,
+  rememberMe = false,
+  tokenLifetime?: number
+) {
   try {
-    const bodyData = { auth: { email, password } };
+    const bodyData = { auth: { email, password, remember_me: rememberMe } };
     const httpMethod: IHttpMethod = { method: 'POST' };
     const { jwt } = await request<IUserToken>(
       `${API_PATH}/user_token`,
@@ -42,7 +47,7 @@ export async function signIn(email: string, password: string) {
       httpMethod,
       null
     );
-    setJwt(jwt);
+    setJwt(jwt, rememberMe, tokenLifetime);
     const authUser = await getAuthUserAsync();
     await streams.reset();
     return authUser;

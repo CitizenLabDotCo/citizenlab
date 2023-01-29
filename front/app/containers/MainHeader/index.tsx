@@ -24,13 +24,13 @@ import useLocale from 'hooks/useLocale';
 
 // utils
 import { isNilOrError, isPage, isDesktop } from 'utils/helperUtils';
-import { openSignUpInModal } from 'components/SignUpIn/events';
+import { openSignUpInModal } from 'events/openSignUpInModal';
 import eventEmitter from 'utils/eventEmitter';
 import clHistory from 'utils/cl-router/history';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // style
@@ -51,13 +51,13 @@ const Container = styled.header<{ position: 'fixed' | 'absolute' }>`
   z-index: 1004;
 
   &.hideNavbar {
-    ${media.smallerThanMaxTablet`
+    ${media.tablet`
       display: none;
     `}
   }
 
   &.citizenPage {
-    ${media.smallerThanMaxTablet`
+    ${media.tablet`
       position: absolute;
     `}
   }
@@ -82,7 +82,7 @@ const ContainerInner = styled.div`
     flex-direction: row-reverse;
     `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-left: 15px;
   `}
 `;
@@ -123,7 +123,7 @@ const Right = styled.div`
     margin-right: 40px;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-right: 20px;
   `}
   ${isRtl`
@@ -137,7 +137,7 @@ const Right = styled.div`
         margin-left: 40px;
     `}
 
-    ${media.smallerThanMinTablet`
+    ${media.phone`
         margin-left: 20px;
     `}
     `}
@@ -146,13 +146,13 @@ const Right = styled.div`
 const StyledLanguageSelector = styled(LanguageSelector)`
   padding-left: 20px;
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-left: 15px;
   `}
   ${isRtl`
     padding-left: 0px;
     padding-right: 20px;
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-right: 15px;
   `}
   `}
@@ -170,14 +170,14 @@ const RightItem = styled.div`
     margin-left: 0px;
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     margin-left: 30px;
   `}
 
   ${isRtl`
     margin-right: 40px;
     margin-left: 0;
-    ${media.smallerThanMinTablet`
+    ${media.phone`
         margin-right: 30px;
     `}
     &.noLeftMargin {
@@ -194,7 +194,7 @@ const StyledRightFragment = styled(Fragment)`
 
 const LogInMenuItem = styled.button`
   height: 100%;
-  color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
+  color: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 500;
@@ -208,7 +208,7 @@ const LogInMenuItem = styled.button`
     text-decoration: underline;
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding: 0 15px;
   `}
 `;
@@ -224,20 +224,17 @@ const SignUpMenuItem = styled.button`
   border: none;
   border-radius: 0px;
   background-color: ${({ theme }) =>
-    theme.navbarHighlightedItemBackgroundColor || theme.colorSecondary};
+    theme.colors.tenantPrimary || theme.colors.tenantSecondary};
   transition: all 100ms ease-out;
 
   &:hover {
     color: #fff;
     text-decoration: underline;
     background-color: ${({ theme }) =>
-      darken(
-        0.12,
-        theme.navbarHighlightedItemBackgroundColor || theme.colorSecondary
-      )};
+      darken(0.12, theme.colors.tenantPrimary || theme.colors.tenantSecondary)};
   }
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding: 0 15px;
   `}
 
@@ -253,12 +250,12 @@ interface Props {
 const MainHeader = ({
   setRef,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const appConfiguration = useAppConfiguration();
   const authUser = useAuthUser();
   const locale = useLocale();
-  const theme: any = useTheme();
+  const theme = useTheme();
   const windowSize = useWindowSize();
   const [fullscreenModalOpened, setFullscreenModalOpened] = useState(false);
 
@@ -284,7 +281,7 @@ const MainHeader = ({
   }, []);
 
   const tenantLocales = !isNilOrError(appConfiguration)
-    ? appConfiguration.data.attributes.settings.core.locales
+    ? appConfiguration.attributes.settings.core.locales
     : [];
   const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
   const firstUrlSegment = urlSegments[0];
@@ -351,14 +348,14 @@ const MainHeader = ({
                       }
                       iconName="search"
                       a11y_buttonActionMessage={formatMessage(messages.search)}
-                      iconColor={theme.navbarTextColor || colors.label}
+                      iconColor={theme.navbarTextColor || colors.textSecondary}
                       iconColorOnHover={
                         theme.navbarTextColor
                           ? darken(0.2, theme.navbarTextColor)
-                          : colors.text
+                          : colors.textPrimary
                       }
-                      iconWidth={'20px'}
-                      iconHeight={'24px'}
+                      iconWidth={'30px'}
+                      iconHeight={'30px'}
                     />
                   </RightItem>
                 )}

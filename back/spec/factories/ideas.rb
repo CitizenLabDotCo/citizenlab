@@ -21,7 +21,7 @@ FactoryBot.define do
     association :project, factory: :continuous_project
     author
     idea_status
-    location_point_geojson { { type: 'Point', coordinates: [51.11520776293035, 3.921154106874878] } }
+    location_point_geojson { { 'type' => 'Point', 'coordinates' => [51.11520776293035, 3.921154106874878] } }
     location_description { 'Some road' }
     factory :idea_with_topics do
       transient do
@@ -35,5 +35,11 @@ FactoryBot.define do
         end
       end
     end
+  end
+
+  factory :native_survey_response, class: 'Idea' do
+    publication_status { 'published' }
+    association :idea_status, factory: :idea_status_proposed
+    association :project, factory: :continuous_native_survey_project
   end
 end

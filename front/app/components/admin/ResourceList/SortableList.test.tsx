@@ -1,7 +1,7 @@
 import React from 'react';
 import { cloneDeep } from 'lodash-es';
 import { render, screen } from 'utils/testUtils/rtl';
-import SortableList from './SortableList';
+import SortableList, { RenderProps } from './SortableList';
 
 const items = [
   { id: '_1', attributes: { ordering: 0 } },
@@ -17,7 +17,7 @@ describe('<SortableList />', () => {
     let _handleDropRow;
 
     const renderProp = jest.fn(
-      ({ itemsList, handleDragRow, handleDropRow }) => {
+      ({ itemsList, handleDragRow, handleDropRow }: RenderProps) => {
         _handleDragRow = handleDragRow;
         _handleDropRow = handleDropRow;
 
@@ -55,7 +55,11 @@ describe('<SortableList />', () => {
     let _handleDragRow;
     let _handleDropRow;
 
-    const renderProp = ({ itemsList, handleDragRow, handleDropRow }) => {
+    const renderProp = ({
+      itemsList,
+      handleDragRow,
+      handleDropRow,
+    }: RenderProps) => {
       _itemsList = itemsList;
       _handleDragRow = handleDragRow;
       _handleDropRow = handleDropRow;
@@ -93,7 +97,11 @@ describe('<SortableList />', () => {
     let _handleDragRow;
     let _handleDropRow;
 
-    const renderProp = ({ itemsList, handleDragRow, handleDropRow }) => {
+    const renderProp = ({
+      itemsList,
+      handleDragRow,
+      handleDropRow,
+    }: RenderProps) => {
       _itemsList = itemsList;
       _handleDragRow = handleDragRow;
       _handleDropRow = handleDropRow;
@@ -145,7 +153,11 @@ describe('<SortableList />', () => {
     let _handleDragRow;
     let _handleDropRow;
 
-    const renderProp = ({ itemsList, handleDragRow, handleDropRow }) => {
+    const renderProp = ({
+      itemsList,
+      handleDragRow,
+      handleDropRow,
+    }: RenderProps) => {
       _itemsList = itemsList;
       _handleDragRow = handleDragRow;
       _handleDropRow = handleDropRow;
@@ -200,7 +212,11 @@ describe('<SortableList />', () => {
     let _handleDragRow;
     let _handleDropRow;
 
-    const renderProp = ({ itemsList, handleDragRow, handleDropRow }) => {
+    const renderProp = ({
+      itemsList,
+      handleDragRow,
+      handleDropRow,
+    }: RenderProps) => {
       _itemsList = itemsList;
       _handleDragRow = handleDragRow;
       _handleDropRow = handleDropRow;
@@ -275,7 +291,7 @@ describe('<SortableList />', () => {
       itemsList,
       handleDragRow,
       handleDropRow,
-    }) => {
+    }: RenderProps) => {
       _lockedItemsList = lockedItemsList;
       _itemsList = itemsList;
       _handleDragRow = handleDragRow;
@@ -356,7 +372,7 @@ describe('<SortableList />', () => {
       itemsList,
       handleDragRow,
       handleDropRow,
-    }) => {
+    }: RenderProps) => {
       _lockedItemsList = lockedItemsList;
       _itemsList = itemsList;
       _handleDragRow = handleDragRow;

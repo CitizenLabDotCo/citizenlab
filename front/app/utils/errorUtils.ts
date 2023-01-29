@@ -130,11 +130,26 @@ export function getDefaultAjvErrorMessage({
 
 export const handleHookFormSubmissionError = (
   error: Error | CLErrorsJSON,
-  handleError: (error: string, options: Record<string, any>) => void
+  handleError: (error: string, options: Record<string, any>) => void,
+  fieldArrayKey?: string
 ) => {
   if ('json' in error && error.json.errors) {
     Object.keys(error.json.errors).forEach((key) => {
-      handleError(key, error.json.errors[key][0]);
+      if (fieldArrayKey) {
+        Object.keys(error.json.errors[key]).forEach((errorKey) => {
+          const errorValue = error.json.errors[key][errorKey][0];
+          handleError(
+            `${fieldArrayKey}.${key}.${errorKey}`,
+            errorValue === 'string' ? { error: errorValue } : errorValue
+          );
+        });
+      } else {
+        const errorValue = error.json.errors[key][0];
+        handleError(
+          key,
+          typeof errorValue === 'string' ? { error: errorValue } : errorValue
+        );
+      }
     });
   } else {
     handleError('submissionError', {

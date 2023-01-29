@@ -25,12 +25,12 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // events
-import { openSignUpInModal } from 'components/SignUpIn/events';
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+import { openSignUpInModal } from 'events/openSignUpInModal';
+import { openVerificationModal } from 'events/verificationModal';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // style
@@ -51,15 +51,14 @@ const Container = styled.li`
 `;
 
 const UpvoteIcon = styled(Icon)`
-  fill: ${colors.label};
-  flex: 0 0 17px;
-  width: 17px;
-  height: 17px;
-  margin-top: -2px;
+  fill: ${colors.textSecondary};
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
 `;
 
 const UpvoteButton = styled.button`
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   display: flex;
@@ -84,26 +83,26 @@ const UpvoteButton = styled.button`
   }
 
   &.enabled.voted {
-    color: ${colors.clGreen};
+    color: ${colors.success};
 
     ${UpvoteIcon} {
-      fill: ${colors.clGreen};
+      fill: ${colors.success};
     }
   }
 
   &.disabled:not(.voted) {
-    color: ${lighten(0.25, colors.label)};
+    color: ${lighten(0.25, colors.textSecondary)};
 
     ${UpvoteIcon} {
-      fill: ${lighten(0.25, colors.label)};
+      fill: ${lighten(0.25, colors.textSecondary)};
     }
   }
 
   &.disabled.voted {
-    color: ${lighten(0.25, colors.clGreen)};
+    color: ${lighten(0.25, colors.success)};
 
     ${UpvoteIcon} {
-      fill: ${lighten(0.25, colors.clGreen)};
+      fill: ${lighten(0.25, colors.success)};
     }
   }
 `;
@@ -139,8 +138,8 @@ interface State {
   upvoteCount: number;
 }
 
-class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
-  constructor(props) {
+class CommentVote extends PureComponent<Props & WrappedComponentProps, State> {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       voted: false,
@@ -350,7 +349,7 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
             >
               <>
                 <UpvoteIcon
-                  name="upvote"
+                  name="vote-up"
                   className={`
                   ${voted ? 'voted' : 'notVoted'}
                   ${disabled ? 'disabled' : 'enabled'}

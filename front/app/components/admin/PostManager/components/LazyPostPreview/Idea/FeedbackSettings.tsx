@@ -8,7 +8,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // typings
@@ -59,9 +59,9 @@ interface InputProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface PropsWithHoCs extends Props, InjectedLocalized, InjectedIntlProps {}
-
-class FeedbackSettings extends PureComponent<PropsWithHoCs> {
+class FeedbackSettings extends PureComponent<
+  Props & InjectedLocalized & WrappedComponentProps
+> {
   getStatusOptions = memoize((statuses) => {
     const { localize } = this.props;
     if (!isNilOrError(statuses)) {

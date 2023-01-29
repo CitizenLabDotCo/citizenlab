@@ -25,14 +25,14 @@ import {
 import { ISavedDestinations } from 'components/ConsentManager/consent';
 import { authUserStream } from 'services/auth';
 
-interface IEvent {
+export interface IEvent {
   name: string;
   properties?: {
     [key: string]: any;
   };
 }
 
-interface IPageChange {
+interface ICustomPageChange {
   path: string;
   properties?: {
     [key: string]: any;
@@ -40,7 +40,7 @@ interface IPageChange {
 }
 
 export const events$ = new Subject<IEvent>();
-export const pageChanges$ = new Subject<IPageChange>();
+export const pageChanges$ = new Subject<ICustomPageChange>();
 
 const destinationConsentChanged$ = eventEmitter
   .observeEvent<ISavedDestinations[]>('destinationConsentChanged')
@@ -58,6 +58,7 @@ export const initializeFor = (destination: IDestination) => {
   ]).pipe(
     filter(([consent, tenant, user]) => {
       const config = getDestinationConfig(destination);
+
       return (
         consent.eventValue[destination] &&
         (!config || isDestinationActive(config, tenant.data, user?.data))
@@ -73,7 +74,7 @@ export const bufferUntilInitialized = <T>(
   o$: Observable<T>
 ): Observable<T> => {
   return concat(
-    o$.pipe(buffer(initializeFor(destination).pipe(take(1))), mergeAll()),
+    o$.pipe(buffer(initializeFor(destination)), take(1), mergeAll()),
     o$
   );
 };
@@ -137,7 +138,7 @@ export function trackEvent(event: IEvent) {
 
 /** @deprecated Directly call trackEventByName instead */
 export const injectTracks =
-  <P>(events: { [key: string]: IEvent }) =>
+  <P extends Record<string, any>>(events: { [key: string]: IEvent }) =>
   (component: React.ComponentClass<P>) => {
     return (props: P) => {
       const eventFunctions = mapValues(events, (event) => (extra) => {

@@ -1,5 +1,5 @@
-import React, { memo } from 'react';
-import { adopt } from 'react-adopt';
+import React from 'react';
+
 import { isEmpty, forOwn } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
@@ -9,13 +9,6 @@ import Avatar from 'components/Avatar';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Button from 'components/UI/Button';
 
-// resources
-import GetWindowSize, {
-  GetWindowSizeChildProps,
-} from 'resources/GetWindowSize';
-import GetUser, { GetUserChildProps } from 'resources/GetUser';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
@@ -23,54 +16,16 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes, media, viewportWidths } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-
-const Container = styled.div`
-  background-color: white;
-  width: 100%;
-  padding-top: 30px;
-  padding-bottom: 70px;
-
-  ${media.smallerThanMaxTablet`
-    padding: 20px 20px 35px;
-  `}
-`;
-
-const UserAvatar = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 40px;
-`;
-
-const UserInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  margin-top: 0px;
-  font-size: ${fontSizes.base}px;
-`;
-
-const FullName = styled.h1`
-  width: 100%;
-  font-size: ${fontSizes.xl}px;
-  font-weight: 600;
-  text-align: center;
-  color: ${({ theme }) => theme.colorText};
-  padding: 0px;
-  margin: 0px;
-  margin-bottom: 5px;
-`;
-
-const JoinedAt = styled.div`
-  width: 100%;
-  font-weight: 300;
-  text-align: center;
-  color: ${({ theme }) => theme.colorText};
-  margin-bottom: 20px;
-`;
+import useAuthUser from 'hooks/useAuthUser';
+import useUser from 'hooks/useUser';
+import {
+  useBreakpoint,
+  Box,
+  Title,
+  Text,
+} from '@citizenlab/cl2-component-library';
 
 const Bio = styled.div`
   line-height: 1.25;
@@ -82,98 +37,78 @@ const Bio = styled.div`
   margin-bottom: 20px;
 `;
 
-const EditProfileButton = styled(Button)``;
-
-interface InputProps {
+interface Props {
   userSlug: string | null;
 }
 
-interface DataProps {
-  windowSize: GetWindowSizeChildProps;
-  user: GetUserChildProps;
-  authUser: GetAuthUserChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-export const UserHeader = memo<Props>((props) => {
-  const { user, authUser, windowSize } = props;
-
+const UserHeader = ({ userSlug }: Props) => {
+  const authUser = useAuthUser();
+  const user = useUser({ slug: userSlug });
+  const isTablet = useBreakpoint('tablet');
   const hideBio = useFeatureFlag({ name: 'disable_user_bios' });
 
-  const smallerThanSmallTablet = windowSize
-    ? windowSize <= viewportWidths.smallTablet
-    : false;
-
-  if (!isNilOrError(user)) {
-    const memberSinceMoment = moment(user.attributes.created_at).format('LL');
-    let hasDescription = false;
-
-    forOwn(user.attributes.bio_multiloc, (value, _key) => {
-      if (!isEmpty(value) && value !== '<p></p>' && value !== '<p><br></p>') {
-        hasDescription = true;
-      }
-    });
-
-    return (
-      <Container>
-        <UserAvatar>
-          <Avatar userId={user.id} size={smallerThanSmallTablet ? 120 : 150} />
-        </UserAvatar>
-
-        <UserInfo>
-          <FullName id="e2e-usersshowpage-fullname">
-            {user.attributes.first_name} {user.attributes.last_name}
-          </FullName>
-          <JoinedAt>
-            <FormattedMessage
-              {...messages.memberSince}
-              values={{ date: memberSinceMoment }}
-            />
-          </JoinedAt>
-          {!hideBio &&
-            !isEmpty(user.attributes.bio_multiloc) &&
-            hasDescription && (
-              <Bio>
-                <QuillEditedContent>
-                  {user.attributes.bio_multiloc && (
-                    <T
-                      value={user.attributes.bio_multiloc}
-                      supportHtml={true}
-                    />
-                  )}
-                </QuillEditedContent>
-              </Bio>
-            )}
-          {!isNilOrError(authUser) && authUser.id === user.id && (
-            <EditProfileButton
-              linkTo="/profile/edit"
-              buttonStyle="text"
-              icon="pencil"
-              className="e2e-edit-profile"
-              bgHoverColor={colors.background}
-            >
-              <FormattedMessage {...messages.editProfile} />
-            </EditProfileButton>
-          )}
-        </UserInfo>
-      </Container>
-    );
+  if (isNilOrError(user)) {
+    return null;
   }
+  const memberSinceMoment = moment(user.attributes.created_at).format('LL');
+  let hasDescription = false;
 
-  return null;
-});
+  forOwn(user.attributes.bio_multiloc, (value, _key) => {
+    if (!isEmpty(value) && value !== '<p></p>' && value !== '<p><br></p>') {
+      hasDescription = true;
+    }
+  });
 
-const Data = adopt<DataProps, InputProps>({
-  windowSize: <GetWindowSize />,
-  authUser: <GetAuthUser />,
-  user: ({ userSlug, render }) => <GetUser slug={userSlug}>{render}</GetUser>,
-});
+  return (
+    <Box
+      bgColor="white"
+      width="100%"
+      p={isTablet ? '20px 20px 35px' : '30px 0px 70px'}
+      data-testid="userHeader"
+    >
+      <Box w="100%" display="flex" justifyContent="center" mb="40px">
+        <Avatar userId={user.id} size={isTablet ? 120 : 150} />
+      </Box>
 
-const WrappedUserHeader = (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <UserHeader {...inputProps} {...dataProps} />}
-  </Data>
-);
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        w="100%"
+        mt="0px"
+      >
+        <Title id="e2e-usersshowpage-fullname" color="tenantText">
+          {user.attributes.first_name} {user.attributes.last_name}
+        </Title>
+        <Text color="tenantText">
+          <FormattedMessage
+            {...messages.memberSince}
+            values={{ date: memberSinceMoment }}
+          />
+        </Text>
+        {!hideBio && !isEmpty(user.attributes.bio_multiloc) && hasDescription && (
+          <Bio data-testid="userHeaderBio">
+            <QuillEditedContent>
+              {user.attributes.bio_multiloc && (
+                <T value={user.attributes.bio_multiloc} supportHtml={true} />
+              )}
+            </QuillEditedContent>
+          </Bio>
+        )}
+        {!isNilOrError(authUser) && authUser.id === user.id && (
+          <Button
+            linkTo="/profile/edit"
+            buttonStyle="text"
+            icon="edit"
+            className="e2e-edit-profile"
+            bgHoverColor={colors.background}
+          >
+            <FormattedMessage {...messages.editProfile} />
+          </Button>
+        )}
+      </Box>
+    </Box>
+  );
+};
 
-export default WrappedUserHeader;
+export default UserHeader;

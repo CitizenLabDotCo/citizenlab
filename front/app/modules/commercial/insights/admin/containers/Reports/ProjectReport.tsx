@@ -26,8 +26,8 @@ import {
   commentsByTimeCumulativeStream,
   commentsByTimeStream,
 } from 'services/stats';
-import { InjectedIntlProps } from 'react-intl';
 import { colors } from 'utils/styleUtils';
+import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
 
 // services
 import { ParticipationMethod } from 'services/participationContexts';
@@ -36,15 +36,15 @@ import { ParticipationMethod } from 'services/participationContexts';
 import { SectionTitle, PageTitle } from 'components/admin/Section';
 import T from 'components/T';
 
-import HorizontalBarChartWithoutStream from './charts/HorizontalBarChartWithoutStream';
-import IdeasByStatusChart from './charts/IdeasByStatusChart';
-import ParticipationPerTopic from './charts/ParticipationPerTopic';
-import LineBarChart from './charts/LineBarChart';
-import LineBarChartVotesByTime from './charts/LineBarChartVotesByTime';
-import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
+import HorizontalBarChartWithoutStream from './Charts/HorizontalBarChartWithoutStream';
+import IdeasByStatusChart from './Charts/IdeasByStatusChart';
+import ParticipationPerTopic from './Charts/ParticipationPerTopic';
+import LineBarChart from './Charts/LineBarChart';
+import LineBarChartVotesByTime from './Charts/LineBarChartVotesByTime';
+import BarChartActiveUsersByTime from './Charts/BarChartActiveUsersByTime';
 import PollReport from './PollReport';
+import UserCharts from './Charts/UserCharts';
 
-import Outlet from 'components/Outlet';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
@@ -59,9 +59,9 @@ const Phase = styled.div<{ isCurrentPhase: boolean }>`
   padding: 10px;
   border: ${(props) =>
     props.isCurrentPhase
-      ? `solid 3px ${colors.border}`
-      : `solid 1px ${colors.adminBorder}`};
-  border-radius: ${(props: any) => props.theme.borderRadius};
+      ? `solid 3px ${colors.borderDark}`
+      : `solid 1px ${colors.borderLight}`};
+  border-radius: ${(props) => props.theme.borderRadius};
 `;
 
 const RowSection = styled.div`
@@ -89,10 +89,11 @@ interface Props {
 
 const PARTICIPATION_METHOD_MESSAGES: Record<
   ParticipationMethod,
-  ReactIntl.FormattedMessage.MessageDescriptor
+  MessageDescriptor
 > = {
   ideation: messages.ideationAndFeedback,
   information: messages.information,
+  native_survey: messages.native_survey,
   survey: messages.survey,
   budgeting: messages.budgeting,
   poll: messages.poll,
@@ -116,7 +117,7 @@ const ProjectReport = memo(
     phases,
     mostVotedIdeas,
     intl: { formatMessage, formatDate },
-  }: Props & InjectedIntlProps & WithRouterProps) => {
+  }: Props & WrappedComponentProps & WithRouterProps) => {
     const localize = useLocalize();
 
     // set time boundaries
@@ -248,8 +249,7 @@ const ProjectReport = memo(
                 currentProjectFilter={project.id}
                 currentProjectFilterLabel={projectTitle}
               />
-              <Outlet
-                id="app.containers.Admin.dashboard.reports.ProjectReport.graphs"
+              <UserCharts
                 startAt={startAt}
                 endAt={endAt}
                 participationMethods={participationMethods}

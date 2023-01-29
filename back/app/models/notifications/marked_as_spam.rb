@@ -60,10 +60,12 @@ module Notifications
 
     ACTIVITY_TRIGGERS = { 'SpamReport' => { 'created' => true } }.freeze
 
-    def self.recipient_ids(initiating_user_id = nil, _project_id = nil)
+    def self.recipient_ids(initiating_user_id = nil, project_id = nil)
       admin_ids = User.admin.ids
-      admin_ids.delete(initiating_user_id) if initiating_user_id
-      admin_ids
+      moderator_ids = project_id ? User.project_moderator(project_id).ids : []
+      (admin_ids + moderator_ids).uniq.tap do |recipient_ids|
+        recipient_ids.delete initiating_user_id if initiating_user_id
+      end
     end
 
     def self.make_notifications_on(_activity)
@@ -71,5 +73,3 @@ module Notifications
     end
   end
 end
-
-Notifications::MarkedAsSpam.prepend_if_ee('ProjectManagement::Patches::Notifications::MarkedAsSpam')

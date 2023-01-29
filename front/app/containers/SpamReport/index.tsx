@@ -34,7 +34,7 @@ class SpamReportForm extends PureComponent<Props, State & CRUDParams> {
     'other',
   ];
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       diff: null,

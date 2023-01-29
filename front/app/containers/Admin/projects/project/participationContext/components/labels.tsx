@@ -12,13 +12,15 @@ import messages from '../../messages';
 export const LabelHeaderDescription = ({
   header,
   description,
+  disabled,
 }: {
   header: JSX.Element;
   description: JSX.Element;
+  disabled?: boolean;
 }) => (
-  <LabelText>
-    <span className="header">{header}</span>
-    <span className="description">{description}</span>
+  <LabelText className={disabled ? 'disabled' : ''}>
+    <span className={'header'}>{header}</span>
+    <span className={'description'}>{description}</span>
   </LabelText>
 );
 

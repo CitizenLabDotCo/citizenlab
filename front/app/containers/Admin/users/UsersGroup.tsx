@@ -2,7 +2,6 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { Formik } from 'formik';
 import { isEmpty, isString } from 'lodash-es';
 
 // utils
@@ -24,7 +23,7 @@ import events from './events';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // Resources
 import GetGroup, { GetGroupChildProps } from 'resources/GetGroup';
@@ -40,9 +39,6 @@ import { deleteMembershipByUserId } from 'services/groupMemberships';
 import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
 
-// Typings
-import { CLErrorsJSON } from 'typings';
-import { isCLErrorJSON } from 'utils/errorUtils';
 import Outlet from 'components/Outlet';
 
 export interface InputProps {}
@@ -60,14 +56,18 @@ export interface State {
 }
 
 interface Tracks {
-  trackEditGroup: ({ extra: { groupType: MembershipType } }) => void;
+  trackEditGroup: ({
+    extra: { groupType },
+  }: {
+    extra: { groupType: MembershipType };
+  }) => void;
 }
 
 export class UsersGroup extends React.PureComponent<
-  Props & InjectedIntlProps & Tracks,
+  Props & WrappedComponentProps & Tracks,
   State
 > {
-  constructor(props: Props & InjectedIntlProps & Tracks) {
+  constructor(props: Props & WrappedComponentProps & Tracks) {
     super(props);
     this.state = {
       groupEditionModal: false,
@@ -93,28 +93,16 @@ export class UsersGroup extends React.PureComponent<
     }
   };
 
-  handleSubmitForm =
-    (groupId: string) =>
-    (values: NormalFormValues, { setErrors, setSubmitting, setStatus }) => {
-      updateGroup(groupId, { ...values })
-        .then(() => {
-          streams.fetchAllWith({
-            dataId: [groupId],
-            apiEndpoint: [`${API_PATH}/users`, `${API_PATH}/groups`],
-            onlyFetchActiveStreams: true,
-          });
-          this.closeGroupEditionModal();
-        })
-        .catch((errorResponse) => {
-          if (isCLErrorJSON(errorResponse)) {
-            const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-            setErrors(apiErrors);
-          } else {
-            setStatus('error');
-          }
-          setSubmitting(false);
-        });
-    };
+  handleSubmitForm = (groupId: string) => async (values: NormalFormValues) => {
+    await updateGroup(groupId, { ...values });
+
+    await streams.fetchAllWith({
+      dataId: [groupId],
+      apiEndpoint: [`${API_PATH}/users`, `${API_PATH}/groups`],
+      onlyFetchActiveStreams: true,
+    });
+    this.closeGroupEditionModal();
+  };
 
   deleteGroup = (groupId: string) => () => {
     const deleteMessage = this.props.intl.formatMessage(
@@ -165,8 +153,6 @@ export class UsersGroup extends React.PureComponent<
     }
   };
 
-  renderNormalGroupForm = (props) => <NormalGroupForm {...props} />;
-
   renderModalHeader = () => {
     const { groupEditionModal } = this.state;
     if (groupEditionModal === 'manual') {
@@ -210,10 +196,8 @@ export class UsersGroup extends React.PureComponent<
           >
             <>
               {groupEditionModal === 'manual' && (
-                <Formik
-                  initialValues={group.attributes}
-                  validate={NormalGroupForm.validate}
-                  render={this.renderNormalGroupForm}
+                <NormalGroupForm
+                  defaultValues={group.attributes}
                   onSubmit={this.handleSubmitForm(group.id)}
                 />
               )}
@@ -237,7 +221,7 @@ export class UsersGroup extends React.PureComponent<
 
 const UsersGroupWithHoCs = injectTracks<Props>({
   trackEditGroup: tracks.editGroup,
-})(injectIntl(UsersGroup));
+})(injectIntl(UsersGroup) as any);
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   group: ({ params, render }) => (

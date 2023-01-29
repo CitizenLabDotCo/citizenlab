@@ -1,17 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // components
 import Topbar from './components/Topbar';
 import EmptyContainer from './components/EmptyContainer';
-import ProjectsList from './components/ProjectsList';
+import PublicationStatusTabs from './components/PublicationStatusTabs';
 import LoadingBox from './components/LoadingBox';
 import Footer from './components/Footer';
-
-// hooks
-import useAdminPublications from 'hooks/useAdminPublications';
-import useAdminPublicationsStatusCounts, {
-  IStatusCounts,
-} from 'hooks/useAdminPublicationsStatusCounts';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -25,10 +19,12 @@ import messages from './messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { getAvailableTabs } from './utils';
+import { getAvailableTabs, getCurrentTab } from './utils';
 
 // typings
 import { PublicationTab, Props as BaseProps } from '.';
+import { IUseAdminPublicationsOutput } from 'hooks/useAdminPublications';
+import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
 
 const Container = styled.div`
   display: flex;
@@ -40,50 +36,44 @@ const StyledTopbar = styled(Topbar)`
 `;
 
 interface Props extends BaseProps {
-  currentTab: PublicationTab;
-  statusCounts: IStatusCounts;
-  onChangeTopics: (topics: string[]) => void;
-  onChangeAreas: (areas: string[]) => void;
-  onChangeTab: (tab: PublicationTab) => void;
-  onChangeSearch: (search: string) => void;
+  statusCounts: IStatusCounts | Error | null | undefined;
+  onChangeTopics?: (topics: string[]) => void;
+  onChangeAreas?: (areas: string[]) => void;
+  onChangeSearch?: (search: string | null) => void;
+  showFilters: boolean;
+  adminPublications: IUseAdminPublicationsOutput;
+  statusCountsWithoutFilters: IStatusCounts | undefined | null | Error;
 }
 
 const ProjectAndFolderCardsInner = ({
-  currentTab,
   statusCounts,
   showTitle,
   showSearch,
-  search,
+  showFilters,
   layout,
   publicationStatusFilter,
   onChangeTopics,
   onChangeAreas,
-  onChangeTab,
   onChangeSearch,
+  adminPublications,
+  statusCountsWithoutFilters,
 }: Props) => {
-  // if a search string is provided, we want to show all depths of admin publication
-  const rootLevelOnly = search && search.length > 0 ? false : true;
+  const [currentTab, setCurrentTab] = useState<PublicationTab | null>(null);
 
-  const adminPublications = useAdminPublications({
-    pageSize: 6,
-    publicationStatusFilter,
-    rootLevelOnly,
-    removeNotAllowedParents: true,
-    search,
-  });
+  useEffect(() => {
+    if (isNilOrError(statusCounts) || currentTab) return;
+    setCurrentTab((currentTab) => getCurrentTab(statusCounts, currentTab));
+  }, [statusCounts, currentTab]);
 
-  const { counts: statusCountsWithoutFilters } =
-    useAdminPublicationsStatusCounts({
-      publicationStatusFilter,
-      rootLevelOnly: true,
-      removeNotAllowedParents: true,
-    });
+  const onChangeTab = (tab: PublicationTab) => {
+    setCurrentTab(tab);
+  };
 
   const publicationStatusesForCurrentTab = currentTab
     ? currentTab === 'all'
       ? publicationStatusFilter
       : [currentTab]
-    : undefined;
+    : null;
 
   const publicationStatusesForCurrentTabStringified = JSON.stringify(
     publicationStatusesForCurrentTab
@@ -98,15 +88,21 @@ const ProjectAndFolderCardsInner = ({
   }, [publicationStatusesForCurrentTabStringified]);
 
   const handleChangeSearch = React.useCallback(
-    (search: string) => {
-      onChangeSearch(search);
+    (search: string | null) => {
+      onChangeSearch?.(search);
       adminPublications.onChangeSearch(search);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [onChangeSearch]
   );
 
-  if (isNilOrError(statusCountsWithoutFilters)) return null;
+  if (
+    isNilOrError(statusCounts) ||
+    !currentTab ||
+    isNilOrError(statusCountsWithoutFilters)
+  ) {
+    return null;
+  }
 
   const availableTabs = getAvailableTabs(statusCountsWithoutFilters);
   const noAdminPublicationsAtAll = statusCountsWithoutFilters.all === 0;
@@ -117,12 +113,12 @@ const ProjectAndFolderCardsInner = ({
   };
 
   const handleChangeTopics = (topics: string[]) => {
-    onChangeTopics(topics);
+    onChangeTopics?.(topics);
     adminPublications.onChangeTopics(topics);
   };
 
   const handleChangeAreas = (areas: string[]) => {
-    onChangeAreas(areas);
+    onChangeAreas?.(areas);
     adminPublications.onChangeAreas(areas);
   };
 
@@ -134,6 +130,7 @@ const ProjectAndFolderCardsInner = ({
       <StyledTopbar
         showTitle={showTitle}
         showSearch={showSearch}
+        showFilters={showFilters}
         currentTab={currentTab}
         statusCounts={statusCounts}
         noAdminPublicationsAtAll={noAdminPublicationsAtAll}
@@ -162,7 +159,7 @@ const ProjectAndFolderCardsInner = ({
       )}
 
       {!loadingInitial && hasPublications && (
-        <ProjectsList
+        <PublicationStatusTabs
           currentTab={currentTab}
           availableTabs={availableTabs}
           list={list}

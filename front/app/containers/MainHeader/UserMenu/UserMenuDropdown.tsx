@@ -61,8 +61,8 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
               linkTo={'/admin/dashboard'}
               onClick={handleCloseDropdown}
               buttonStyle="text"
-              bgHoverColor={colors.clDropdownHoverBackground}
-              icon="admin"
+              bgHoverColor={colors.grey300}
+              icon="shield-checkered"
               iconPos="right"
               iconSize="20px"
               padding="11px 11px"
@@ -78,8 +78,8 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
               linkTo={`/profile/${authUser.attributes.slug}`}
               onClick={handleCloseDropdown}
               buttonStyle="text"
-              bgHoverColor={colors.clDropdownHoverBackground}
-              icon="profile1"
+              bgHoverColor={colors.grey300}
+              icon="user-circle"
               iconPos="right"
               iconSize="20px"
               padding="11px 11px"
@@ -94,8 +94,8 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
             linkTo={'/profile/edit'}
             onClick={handleCloseDropdown}
             buttonStyle="text"
-            bgHoverColor={colors.clDropdownHoverBackground}
-            icon="settings"
+            bgHoverColor={colors.grey300}
+            icon="sidebar-settings"
             iconPos="right"
             iconSize="20px"
             padding="11px 11px"
@@ -108,7 +108,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
             id="e2e-sign-out-link"
             onClick={signOut}
             buttonStyle="text"
-            bgHoverColor={colors.clDropdownHoverBackground}
+            bgHoverColor={colors.grey300}
             icon="power"
             iconPos="right"
             iconSize="20px"

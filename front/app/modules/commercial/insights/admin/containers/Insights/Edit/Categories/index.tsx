@@ -34,7 +34,7 @@ import useInsightsInputsCount from 'modules/commercial/insights/hooks/useInsight
 import useDetectedCategories from 'modules/commercial/insights/hooks/useInsightsDetectedCategories';
 
 // intl
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
 // types
@@ -53,12 +53,12 @@ import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks
 
 const CategoriesLabel = styled.div`
   display: flex;
+  align-items: center;
   p {
     text-transform: uppercase;
     font-size: ${fontSizes.xs}px;
-    color: ${colors.adminTextColor};
+    color: ${colors.primary};
     font-weight: bold;
-    margin-bottom: 0px;
     margin-right: 8px;
   }
 `;
@@ -102,9 +102,9 @@ const CategoryButtonWithIcon = styled(CategoryButton)`
 `;
 
 const CategoryInfoBox = styled.div`
-  background-color: ${colors.clBlueLightest};
-  font-size: ${fontSizes.base};
-  color: ${colors.adminTextColor};
+  background-color: ${colors.teal100};
+  font-size: ${fontSizes.base}px;
+  color: ${colors.primary};
   border-radius: 3px;
   padding: 8px 20px;
 `;
@@ -115,9 +115,9 @@ const StyledPlus = styled.div`
 `;
 
 const DeletedIcon = styled(Icon)`
-  width: 18px;
-  height: 18px;
-  fill: ${colors.label};
+  fill: ${colors.textSecondary};
+  width: 20px;
+  height: 20px;
   &:hover {
     fill: ${colors.red600};
   }
@@ -127,7 +127,7 @@ const Categories = ({
   intl: { formatMessage },
   params: { viewId },
   location: { query, pathname },
-}: InjectedIntlProps & WithRouterProps) => {
+}: WrappedComponentProps & WithRouterProps) => {
   const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
 
   const [loadingAdd, setLoadingAdd] = useState(false);
@@ -279,14 +279,15 @@ const Categories = ({
     >
       <Box my="20px">
         <CategoryButton
+          className="intercom-insights-edit-all-tags"
           bgColor={
             inputsCategoryFilter === 'allInput'
-              ? darken(0.05, colors.lightGreyishBlue)
+              ? darken(0.05, colors.grey200)
               : 'transparent'
           }
-          textColor={colors.label}
-          textHoverColor={colors.adminTextColor}
-          bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
+          textColor={colors.textSecondary}
+          textHoverColor={colors.primary}
+          bgHoverColor={darken(0.05, colors.grey200)}
           onClick={selectAllInput}
         >
           <span> {formatMessage(messages.allInput)}</span>
@@ -297,14 +298,15 @@ const Categories = ({
           )}
         </CategoryButton>
         <CategoryButton
+          className="intercom-insights-edit-recently-posted-tags"
           bgColor={
             inputsCategoryFilter === 'recentlyPosted'
-              ? darken(0.05, colors.lightGreyishBlue)
+              ? darken(0.05, colors.grey200)
               : 'transparent'
           }
-          textColor={colors.label}
-          textHoverColor={colors.adminTextColor}
-          bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
+          textColor={colors.textSecondary}
+          textHoverColor={colors.primary}
+          bgHoverColor={darken(0.05, colors.grey200)}
           onClick={selectRecentlyPosted}
         >
           <span>{formatMessage(messages.recentlyPosted)}</span>
@@ -315,14 +317,15 @@ const Categories = ({
           )}
         </CategoryButton>
         <CategoryButton
+          className="intercom-insights-edit-not-categorized"
           bgColor={
             inputsCategoryFilter === 'notCategorized'
-              ? darken(0.05, colors.lightGreyishBlue)
+              ? darken(0.05, colors.grey200)
               : 'transparent'
           }
-          textColor={colors.label}
-          textHoverColor={colors.adminTextColor}
-          bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
+          textColor={colors.textSecondary}
+          textHoverColor={colors.primary}
+          bgHoverColor={darken(0.05, colors.grey200)}
           onClick={selectUncategorizedInput}
         >
           <span>{formatMessage(messages.notCategorized)}</span>
@@ -348,9 +351,9 @@ const Categories = ({
           />
         </CategoriesLabel>
         <Button
-          icon="more-options"
-          iconColor={colors.label}
-          iconHoverColor={colors.label}
+          icon="dots-horizontal"
+          iconColor={colors.textSecondary}
+          iconHoverColor={colors.textSecondary}
           boxShadow="none"
           boxShadowHover="none"
           bgColor="transparent"
@@ -376,7 +379,13 @@ const Categories = ({
           }
         />
       </Box>
-      <Box display="flex" alignItems="center" mb="28px" as="form">
+      <Box
+        display="flex"
+        alignItems="center"
+        mb="28px"
+        as="form"
+        className="intercom-insights-edit-add-tag-form"
+      >
         <Input
           type="text"
           value={name}
@@ -386,7 +395,7 @@ const Categories = ({
         />
         <Button
           fontSize={`${fontSizes.xxxl}px`}
-          bgColor={colors.adminTextColor}
+          bgColor={colors.primary}
           ml="4px"
           p="8px"
           onClick={handleCategorySubmit}
@@ -406,8 +415,8 @@ const Categories = ({
           <Button
             buttonStyle="white"
             mb="8px"
-            textColor={colors.adminTextColor}
-            linkTo={`/admin/insights/${viewId}/detect`}
+            textColor={colors.primary}
+            linkTo={`/admin/reporting/insights/${viewId}/detect`}
             data-testid="insightsDetectCategories"
           >
             {formatMessage(messages.detectCategories)}
@@ -430,12 +439,12 @@ const Categories = ({
             <CategoryButtonWithIcon
               bgColor={
                 category.id === query.category
-                  ? darken(0.05, colors.lightGreyishBlue)
+                  ? darken(0.05, colors.grey200)
                   : 'transparent'
               }
-              textColor={colors.label}
-              textHoverColor={colors.adminTextColor}
-              bgHoverColor={darken(0.05, colors.lightGreyishBlue)}
+              textColor={colors.textSecondary}
+              textHoverColor={colors.primary}
+              bgHoverColor={darken(0.05, colors.grey200)}
               onClick={selectCategory(category.id)}
             >
               <span>{category.attributes.name}</span>

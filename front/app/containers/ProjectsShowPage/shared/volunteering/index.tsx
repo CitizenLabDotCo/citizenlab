@@ -20,7 +20,7 @@ import styled from 'styled-components';
 import { IParticipationContextType } from 'typings';
 
 const Container = styled.div`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colors.tenantText};
 `;
 
 interface InputProps {

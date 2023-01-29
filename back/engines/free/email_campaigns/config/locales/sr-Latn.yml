@@ -82,7 +82,7 @@ sr-Latn:
       "password_reset": Resetovanje lozinke - svi korisnici
       "project_moderation_rights_received": Dodeljena prava za moderaciju projekta - menadžeri projekata
       "project_folder_moderation_rights_received": Stečena su prava menadžera projekta
-      "project_phase_started": Nova faza projekta - svi korisnici
+      "project_phase_started": Nova faza projekta - učesnici projekta
       "project_phase_upcoming": Buduće faze projekta - administratori i menadžeri projekata
       "status_change_of_commented_idea": Promena statusa ideje koju ste komentarisali - svi korisnici
       "status_change_of_commented_initiative": Promena statusa predloga koji ste komentarisali - svi korisnici
@@ -102,7 +102,7 @@ sr-Latn:
       "link_terms_conditions": "Uslovi korišćenja"
       "link_unsubscribe": "Odjavi se"
       "powered_by": "Powered by"
-      "statement": "Ovaj email vam je poslao CitizenLab u ime %{organizationName}, jer ste registrovani korisnik %{organizationLink}. Možete da %{unsubscribeLink} ako ubuduće ne želite da primate ove e-poruke."
+      "statement": "Ovaj email vam je poslat od strane internet stranice %{organizationName}, jer ste registrovani korisnik platforme %{organizationLink}. Možete da kliknete na %{unsubscribeLink} ako ubuduće ne želite da primate ove e-poruke."
       "unsubscribe_text": "odjavitе se"
     comment_deleted_by_admin:
       reason: 'Razlog zašto je vaš komentar izbrisan:'
@@ -419,6 +419,7 @@ sr-Latn:
       cta_view_phase: 'Otkrijte novu fazu'
       event_description: 'Ovaj projekat je ušao u novu fazu na %{organizationName} platformi. Kliknite na link u nastavku kako biste saznali više!'
       main_header: 'Započela je nova faza projekta ''%{projectName}'''
+      subtitle: 'О ''%{projectName}'''
       new_phase: 'Ovaj projekat je ušao u fazu ''%{phaseTitle}'''
       subject: '%{projectName} je ušao u novu fazu'
       preheader: 'Započeta je nova faza za %{projectName}'
@@ -426,6 +427,7 @@ sr-Latn:
       cta_view_phase: 'Podesite novu fazu'
       event_description: 'Projekat ''%{projectName}'' će uskoro ući u novu fazu. Proverite da li ste obezbedili sve za ovu fazu: Da li ste uneli dobar opis? Da li su odabrane ideje premeštene u ovu fazu? Da li želite da učesnicima pružite dodatne informacije o ovoj fazi putem e-mail obaveštenja?'
       main_header: '%{firstName}, projekat će uskoro ući u novu fazu'
+      subtitle: 'О ''%{projectName}'''
       new_phase: 'Projekat će ući u fazu ''%{phaseTitle}'''
       subject: 'Pripremite sve za novu fazu projekta %{projectName}'
       preheader: 'Uskoro počinje nova faza projekta %{projectName}'

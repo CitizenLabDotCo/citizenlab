@@ -1,22 +1,26 @@
 import React from 'react';
 
-import Error from 'components/UI/Error';
+import Error, { TFieldName } from 'components/UI/Error';
 import { Controller, useFormContext, FieldError } from 'react-hook-form';
-import { Locale } from 'typings';
+import { Locale, CLError } from 'typings';
 
 // components
-import QuillMultilocWithLocaleSwitcherComponent from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcherComponent, {
+  Props as QuillMultilocWithLocaleSwitcherComponentProps,
+} from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import { isNilOrError } from 'utils/helperUtils';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import { get } from 'lodash-es';
 
-// typings
-
-interface Props {
+type Props = {
   name: string;
   labelTooltipText?: string | JSX.Element | null;
   label?: string | JSX.Element | null;
   withCTAButton?: boolean;
-}
+} & Omit<
+  QuillMultilocWithLocaleSwitcherComponentProps,
+  'onChange' | 'valueMultiloc' | 'id'
+>;
 
 const QuillMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
   const {
@@ -35,9 +39,14 @@ const QuillMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
   );
 
   // Select the first error messages from the field's multiloc validation error
-  const errorMessage = Object.values(
-    (errors[name] as Record<Locale, FieldError> | undefined) || {}
+  const validationError = Object.values(
+    (get(errors, name) as Record<Locale, FieldError> | undefined) || {}
   )[0]?.message;
+
+  // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
+  const apiError =
+    (errors[name]?.error as string | undefined) &&
+    ([errors[name]] as unknown as CLError[]);
 
   return (
     <>
@@ -47,18 +56,27 @@ const QuillMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
         defaultValue={defaultValue}
         render={({ field: { ref: _ref, ...field } }) => (
           <QuillMultilocWithLocaleSwitcherComponent
-            id={name}
             {...field}
             {...rest}
+            id={name.replace(/\./g, '_')}
             valueMultiloc={{ ...defaultValue, ...field.value }}
           />
         )}
       />
-      {errorMessage && (
+      {validationError && (
         <Error
           marginTop="8px"
           marginBottom="8px"
-          text={errorMessage}
+          text={validationError}
+          scrollIntoView={false}
+        />
+      )}
+      {apiError && (
+        <Error
+          fieldName={name as TFieldName}
+          apiErrors={apiError}
+          marginTop="8px"
+          marginBottom="8px"
           scrollIntoView={false}
         />
       )}

@@ -2,11 +2,11 @@ import React, { useCallback } from 'react';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 import { trackEventByName } from 'utils/analytics';
 import clHistory from 'utils/cl-router/history';
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+import { openVerificationModal } from 'events/verificationModal';
 import { FormattedMessage } from 'utils/cl-intl';
 import Button from 'components/UI/Button';
 import messages from './messages';
-import { openSignUpInModal } from 'components/SignUpIn/events';
+import { openSignUpInModal } from 'events/openSignUpInModal';
 import { ButtonStyles } from '@citizenlab/cl2-component-library';
 import { stringify } from 'qs';
 
@@ -97,7 +97,7 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
       padding="13px 22px"
       buttonStyle={buttonStyle || 'primary'}
       onClick={onNewInitiativeButtonClick}
-      icon="arrowLeft"
+      icon="arrow-right"
       iconPos="right"
       disabled={!!disabledReason}
       text={<FormattedMessage {...messages.startInitiative} />}

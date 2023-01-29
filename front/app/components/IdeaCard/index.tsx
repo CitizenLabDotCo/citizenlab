@@ -19,9 +19,6 @@ import useIdeaImage from 'hooks/useIdeaImage';
 import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
 
-// i18n
-import { FormattedRelative } from 'react-intl';
-
 // utils
 import { get } from 'lodash-es';
 import eventEmitter from 'utils/eventEmitter';
@@ -31,6 +28,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 import { transparentize } from 'polished';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
+import { timeAgo } from 'utils/dateUtils';
+import useLocale from 'hooks/useLocale';
 
 const BodyWrapper = styled.div`
   display: flex;
@@ -53,7 +52,7 @@ const StyledAvatar = styled(Avatar)`
 const Body = styled.div`
   font-size: ${fontSizes.s}px;
   font-weight: 300;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -68,7 +67,7 @@ const Body = styled.div`
 const StyledUserName = styled(UserName)`
   font-size: ${fontSizes.s}px;
   font-weight: 500;
-  color: ${colors.label};
+  color: ${colors.textSecondary};
   font-weight: 500;
 `;
 
@@ -89,12 +88,13 @@ const ImagePlaceholderContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${transparentize(0.94, colors.label)};
+  background: ${transparentize(0.94, colors.textSecondary)};
 `;
 
 const ImagePlaceholderIcon = styled(Icon)`
-  width: 34px;
-  fill: ${transparentize(0.62, colors.label)};
+  width: 80px;
+  height: 80px;
+  fill: ${transparentize(0.62, colors.textSecondary)};
 `;
 
 interface Props {
@@ -119,6 +119,7 @@ const CompactIdeaCard = memo<Props>(
     hideImagePlaceholder = false,
     hideIdeaStatus = false,
   }) => {
+    const locale = useLocale();
     const localize = useLocalize();
     const idea = useIdea({ ideaId });
     const project = useProject({
@@ -203,7 +204,7 @@ const CompactIdeaCard = memo<Props>(
         imagePlaceholder={
           <ImagePlaceholderContainer>
             <ImagePlaceholderIcon
-              name={participationMethod === 'budgeting' ? 'moneybag' : 'idea'}
+              name={participationMethod === 'budgeting' ? 'money-bag' : 'idea'}
             />
           </ImagePlaceholderContainer>
         }
@@ -216,18 +217,17 @@ const CompactIdeaCard = memo<Props>(
                 size={36}
                 userId={authorId}
                 hideIfNoAvatar={true}
-                fillColor={transparentize(0.6, colors.label)}
+                fillColor={transparentize(0.6, colors.textSecondary)}
               />
             )}
             <Body>
               <StyledUserName userId={authorId || null} />
               <Separator aria-hidden>&bull;</Separator>
-              <TimeAgo>
-                <FormattedRelative
-                  value={idea.attributes.created_at}
-                  style="numeric"
-                />
-              </TimeAgo>
+              {!isNilOrError(locale) && (
+                <TimeAgo>
+                  {timeAgo(Date.parse(idea.attributes.created_at), locale)}
+                </TimeAgo>
+              )}
               <span aria-hidden> {bodyText}</span>
             </Body>
           </BodyWrapper>

@@ -13,7 +13,7 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 // components
 import Modal from 'components/UI/Modal';
 import FileAttachments from 'components/UI/FileAttachments';
-import { Spinner } from '@citizenlab/cl2-component-library';
+import { Spinner, Box } from '@citizenlab/cl2-component-library';
 import SharingButtons from 'components/Sharing/SharingButtons';
 import FeatureFlag from 'components/FeatureFlag';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
@@ -62,7 +62,7 @@ import { getAddressOrFallbackDMS } from 'utils/map';
 import clHistory from 'utils/cl-router/history';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
@@ -107,7 +107,7 @@ const Container = styled.main`
     100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
   );
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
     props
   ) => props.theme.mobileTopBarHeight}px);
@@ -142,11 +142,11 @@ const InitiativeContainer = styled.div`
   padding-right: 60px;
   position: relative;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding-top: 35px;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     padding-top: 25px;
     padding-left: 15px;
     padding-right: 15px;
@@ -157,7 +157,7 @@ const Content = styled.div`
   width: 100%;
   display: flex;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: block;
   `}
 `;
@@ -172,7 +172,7 @@ const LeftColumn = styled.div`
     padding-right: ${columnsGapTablet}px;
   `}
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     padding: 0;
   `}
 `;
@@ -180,7 +180,7 @@ const LeftColumn = styled.div`
 const StyledTopics = styled(Topics)`
   margin-bottom: 30px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     margin-bottom: 5px;
   `}
 `;
@@ -189,7 +189,7 @@ const InitiativeHeader = styled.div`
   margin-top: -5px;
   margin-bottom: 28px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     margin-top: 0px;
     margin-bottom: 45px;
   `}
@@ -201,9 +201,9 @@ const InitiativeBannerContainer = styled.div`
   display: flex;
   align-items: stretch;
   position: relative;
-  background: ${({ theme }) => theme.colorMain};
+  background: ${({ theme }) => theme.colors.tenantPrimary};
 
-  ${media.smallerThanMinTablet`
+  ${media.phone`
     min-height: 200px;
   `}
 `;
@@ -254,7 +254,7 @@ const MobileMoreActionContainer = styled.div`
 const StyledDropdownMap = styled(DropdownMap)`
   margin-bottom: 40px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     margin-bottom: 20px;
   `}
 `;
@@ -274,7 +274,7 @@ const RightColumnDesktop = styled(RightColumn)`
     width: ${rightColumnWidthTablet}px;
   `}
 
-  ${media.smallerThanMaxTablet`
+  ${media.tablet`
     display: none;
   `}
 `;
@@ -295,7 +295,7 @@ const SharingButtonsMobile = styled(SharingButtons)`
   margin: 0;
   margin-top: 40px;
 
-  ${media.biggerThanMaxTablet`
+  ${media.desktop`
     display: none;
   `}
 `;
@@ -338,13 +338,15 @@ interface State {
 }
 
 export class InitiativesShow extends PureComponent<
-  Props & InjectedIntlProps & InjectedLocalized & WithRouterProps,
+  Props & WrappedComponentProps & InjectedLocalized & WithRouterProps,
   State
 > {
   officialFeedbackElement = createRef<HTMLDivElement>();
   timeoutRef: NodeJS.Timeout;
 
-  constructor(props) {
+  constructor(
+    props: Props & WrappedComponentProps & InjectedLocalized & WithRouterProps
+  ) {
     super(props);
     this.state = {
       loaded: false,
@@ -478,11 +480,9 @@ export class InitiativesShow extends PureComponent<
       const initiativeUrl = location.href;
       const initiativeId = initiative?.id;
       const initiativeBody = localize(initiative?.attributes?.body_multiloc);
-      const isDesktop = windowSize
-        ? windowSize > viewportWidths.largeTablet
-        : true;
+      const isDesktop = windowSize ? windowSize > viewportWidths.tablet : true;
       const isNotDesktop = windowSize
-        ? windowSize <= viewportWidths.largeTablet
+        ? windowSize <= viewportWidths.tablet
         : false;
       const utmParams = !isNilOrError(authUser)
         ? {
@@ -612,10 +612,11 @@ export class InitiativesShow extends PureComponent<
                   translateButtonClicked={translateButtonClicked}
                 />
 
-                {!isNilOrError(initiativeFiles) &&
-                  initiativeFiles.length > 0 && (
+                {!isNilOrError(initiativeFiles) && initiativeFiles.length > 0 && (
+                  <Box mb="25px">
                     <FileAttachments files={initiativeFiles} />
-                  )}
+                  </Box>
+                )}
 
                 <div ref={this.officialFeedbackElement}>
                   <StyledOfficialFeedback

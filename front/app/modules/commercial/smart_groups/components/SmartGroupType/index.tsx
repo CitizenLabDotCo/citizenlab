@@ -26,13 +26,13 @@ const GroupType = styled(BaseGroupType)`
 `;
 
 const IconWrapper = styled(BaseIconWrapper)`
-  background: ${transparentize(0.9, colors.adminOrangeIcons)};
+  background: ${transparentize(0.9, colors.orange)};
 `;
 
-const LightningBoltIcon = styled(Icon).attrs({ name: 'lightningBolt' })`
+const LightningBoltIcon = styled(Icon).attrs({ name: 'flash' })`
   width: 28px;
   height: 28px;
-  fill: ${colors.adminOrangeIcons};
+  fill: ${colors.orange};
 `;
 
 const BlackedOut = styled.div`

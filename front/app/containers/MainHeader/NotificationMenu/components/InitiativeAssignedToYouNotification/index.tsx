@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEvent, KeyboardEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { IInitiativeAssignedToYouNotificationData } from 'services/notifications';
 
@@ -15,18 +15,12 @@ type Props = {
   notification: IInitiativeAssignedToYouNotificationData;
 };
 
-interface State {}
-
-export default class InitiativeAssignedToYouNotification extends React.PureComponent<
-  Props,
-  State
-> {
-  onClickUserName = (event) => {
+const InitiativeAssignedToYouNotification = ({ notification }: Props) => {
+  const onClickUserName = (event: MouseEvent | KeyboardEvent) => {
     event.stopPropagation();
   };
 
-  getNotificationMessage = (): JSX.Element => {
-    const { notification } = this.props;
+  const getNotificationMessage = (): JSX.Element => {
     const sharedValues = {
       postTitle: <T value={notification.attributes.post_title_multiloc} />,
     };
@@ -49,7 +43,7 @@ export default class InitiativeAssignedToYouNotification extends React.PureCompo
             name: (
               <Link
                 to={`/profile/${notification.attributes.initiating_user_slug}`}
-                onClick={this.onClickUserName}
+                onClick={onClickUserName}
               >
                 {notification.attributes.initiating_user_first_name}
               </Link>
@@ -60,18 +54,16 @@ export default class InitiativeAssignedToYouNotification extends React.PureCompo
     }
   };
 
-  render() {
-    const { notification } = this.props;
+  return (
+    <NotificationWrapper
+      linkTo={'/admin/initiatives/manage'}
+      timing={notification.attributes.created_at}
+      icon="initiatives"
+      isRead={!!notification.attributes.read_at}
+    >
+      {getNotificationMessage()}
+    </NotificationWrapper>
+  );
+};
 
-    return (
-      <NotificationWrapper
-        linkTo={'/admin/initiatives/manage'}
-        timing={notification.attributes.created_at}
-        icon="initiative"
-        isRead={!!notification.attributes.read_at}
-      >
-        {this.getNotificationMessage()}
-      </NotificationWrapper>
-    );
-  }
-}
+export default InitiativeAssignedToYouNotification;

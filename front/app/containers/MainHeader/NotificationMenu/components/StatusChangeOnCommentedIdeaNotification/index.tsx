@@ -36,7 +36,7 @@ const StatusChangeOnCommentedIdeaNotification = memo<Props>((props) => {
       <NotificationWrapper
         linkTo={`/ideas/${notification.attributes.post_slug}`}
         timing={notification.attributes.created_at}
-        icon="notification_status"
+        icon="label"
         isRead={!!notification.attributes.read_at}
       >
         <FormattedMessage
