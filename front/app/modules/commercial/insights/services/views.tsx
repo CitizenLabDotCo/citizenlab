@@ -13,6 +13,7 @@ import { API_PATH } from 'containers/App/constants';
 import { CLErrors, IRelationship } from 'typings';
 import { getJwt } from 'utils/auth/jwt';
 import { stringify } from 'qs';
+import { queryClient } from 'root';
 
 const viewKeys = {
   all: () => [{ type: 'view' }] as const,
@@ -87,6 +88,15 @@ const fetcher = async ({ path, action, body, queryParams }: Fetcher) => {
   if (!response.ok) {
     throw data;
   } else {
+    if (data.included) {
+      data.included.forEach((entry) =>
+        queryClient.setQueryData(
+          [{ type: entry.type, id: entry.id, entity: 'detail' }],
+          () => ({ data: entry })
+        )
+      );
+    }
+
     return data;
   }
 };
