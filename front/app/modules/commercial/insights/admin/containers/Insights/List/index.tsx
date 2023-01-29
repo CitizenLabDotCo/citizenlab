@@ -5,10 +5,10 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import EmptyState from './EmptyState';
-import { useViews } from 'modules/commercial/insights/services/views';
 import InsightsList from './InsightsList';
 import Modal from 'components/UI/Modal';
 import CreateInsightsView from './CreateInsightsView';
+import { useViews } from 'modules/commercial/insights/services/views';
 
 const Insights = () => {
   const [createModalOpened, setCreateModalOpened] = useState(false);
@@ -16,17 +16,17 @@ const Insights = () => {
   const closeCreateModal = () => setCreateModalOpened(false);
   const openCreateModal = () => setCreateModalOpened(true);
 
-  const { data } = useViews();
-  if (isNilOrError(data)) {
+  const { data: views } = useViews();
+  if (isNilOrError(views)) {
     return null;
   }
 
   return (
     <div>
-      {data.data.length === 0 ? (
+      {views.data.length === 0 ? (
         <EmptyState openCreateModal={openCreateModal} />
       ) : (
-        <InsightsList openCreateModal={openCreateModal} data={data.data} />
+        <InsightsList openCreateModal={openCreateModal} data={views.data} />
       )}
       <Modal opened={createModalOpened} close={closeCreateModal}>
         <CreateInsightsView closeCreateModal={closeCreateModal} />

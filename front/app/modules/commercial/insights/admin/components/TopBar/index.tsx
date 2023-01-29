@@ -29,7 +29,7 @@ import { isNilOrError, isError } from 'utils/helperUtils';
 import { deleteInsightsView } from '../../../services/insightsViews';
 
 // hooks
-import useInsightsView from '../../../hooks/useInsightsView';
+import { useView } from 'modules/commercial/insights/services/views';
 
 export const topBarHeight = 60;
 
@@ -75,7 +75,7 @@ const TopBar = ({
   const [renameModalOpened, setRenameModalOpened] = useState(false);
   const [isDropdownOpened, setDropdownOpened] = useState(false);
   const viewId = params.viewId;
-  const view = useInsightsView(viewId);
+  const { data: view } = useView(viewId);
 
   useEffect(() => {
     if (isError(view)) {

@@ -14,35 +14,11 @@ import { CLErrors, IRelationship } from 'typings';
 import { getJwt } from 'utils/auth/jwt';
 import { stringify } from 'qs';
 
-export interface IInsightsViewData {
-  id: string;
-  type: 'view';
-  attributes: {
-    name: string;
-    updated_at: string;
-  };
-  relationships?: {
-    data_sources: {
-      data: IRelationship[];
-    };
-  };
-}
-
-export interface IInsightsView {
-  data: IInsightsViewData;
-}
-
-export interface IInsightsViews {
-  data: IInsightsViewData[];
-}
-
-const jwt = getJwt();
-
 const viewKeys = {
   all: () => [{ type: 'view' }] as const,
   lists: () => [{ ...viewKeys.all()[0], entity: 'list' }] as const,
   details: () => [{ ...viewKeys.all()[0], entity: 'detail' }] as const,
-  detail: (id: number) =>
+  detail: (id: string) =>
     [
       {
         ...viewKeys.details()[0],
@@ -53,6 +29,7 @@ const viewKeys = {
 
 // Fetcher
 
+const jwt = getJwt();
 interface Get {
   path: string;
   action: 'get';
@@ -65,7 +42,6 @@ interface Update {
   body: Record<string, any>;
   queryParams?: never;
 }
-
 interface Create {
   path: string;
   action: 'create';
@@ -115,14 +91,30 @@ const fetcher = async ({ path, action, body, queryParams }: Fetcher) => {
   }
 };
 
+export interface IInsightsViewData {
+  id: string;
+  type: 'view';
+  attributes: {
+    name: string;
+    updated_at: string;
+  };
+  relationships?: {
+    data_sources: {
+      data: IRelationship[];
+    };
+  };
+}
+
+type IInsightsView = { data: IInsightsViewData };
+export type IInsightsViews = { data: IInsightsViewData[] };
+
 // GET
-const fetchViews = () => fetcher({ path: 'insights/views', action: 'get' });
 
 const useGet = <TData,>({
   queryKey,
   queryFn,
   ...rest
-}: UseQueryOptions<TData, unknown, TData, QueryKey> & {
+}: Omit<UseQueryOptions<TData, unknown, TData, QueryKey>, 'queryKey'> & {
   queryKey: ReturnType<typeof viewKeys[keyof typeof viewKeys]>;
   queryFn: QueryFunction<TData, QueryKey> | undefined;
 }): UseQueryResult<TData, CLErrors> => {
@@ -133,6 +125,10 @@ const useGet = <TData,>({
   });
 };
 
+// GET VIEWS
+
+const fetchViews = () => fetcher({ path: 'insights/views', action: 'get' });
+
 export const useViews = () => {
   return useGet<IInsightsViews>({
     queryKey: viewKeys.lists(),
@@ -140,46 +136,66 @@ export const useViews = () => {
   });
 };
 
+const fetchView = (id: string) =>
+  fetcher({ path: `insights/views/${id}`, action: 'get' });
+
+export const useView = (id: string) => {
+  return useGet<IInsightsView>({
+    queryKey: viewKeys.detail(id),
+    queryFn: () => fetchView(id),
+  });
+};
+
 // CREATE
-interface IInsightsViewObject {
-  view: { data_sources: { origin_id: string }[]; name: string };
-}
 
-const createView = async (requestBody: IInsightsViewObject) =>
-  fetcher({ path: 'insights/views', action: 'create', body: requestBody });
-
+type BaseData = { data: { id: string } };
 const useCreate = <TData, TRequestBody>({
+  queryKey,
   queryKeysToInvalidate,
   mutationFn,
   onSuccess,
   ...rest
-}: UseMutationOptions<TData, CLErrors, TRequestBody> & {
+}: UseMutationOptions<TData & BaseData, CLErrors, TRequestBody> & {
+  queryKey: typeof viewKeys[keyof typeof viewKeys];
   queryKeysToInvalidate: ReturnType<typeof viewKeys[keyof typeof viewKeys]>[];
 }): UseMutationResult<TData, CLErrors, TRequestBody> => {
   const queryClient = useQueryClient();
 
-  return useMutation<TData, CLErrors, TRequestBody>({
+  return useMutation<TData & BaseData, CLErrors, TRequestBody>({
     mutationFn,
     onSuccess: (data, variables, context) => {
       onSuccess && onSuccess(data, variables, context);
       queryKeysToInvalidate.map((key) =>
         queryClient.invalidateQueries({ queryKey: key })
       );
+      if (data && data.data && data.data.id) {
+        queryClient.setQueryData(queryKey(data.data.id), () => data);
+      }
     },
     ...rest,
   });
 };
 
+// CREATE VIEWS
+
+const createView = async (requestBody: IInsightsViewObject) =>
+  fetcher({ path: 'insights/views', action: 'create', body: requestBody });
+
+interface IInsightsViewObject {
+  view: { data_sources: { origin_id: string }[]; name: string };
+}
+
 export const useCreateView = ({
   onSuccess,
 }: {
-  onSuccess: UseMutationOptions<
-    IInsightsView,
+  onSuccess?: UseMutationOptions<
+    IInsightsViewData,
     CLErrors,
     IInsightsViewObject
   >['onSuccess'];
 }) => {
-  return useCreate<IInsightsView, IInsightsViewObject>({
+  return useCreate<IInsightsViewData, IInsightsViewObject>({
+    queryKey: viewKeys.detail,
     mutationFn: createView,
     queryKeysToInvalidate: [viewKeys.lists()],
     onSuccess,
@@ -187,6 +203,34 @@ export const useCreateView = ({
 };
 
 // UPDATE
+
+const useUpdate = <TData, TRequestBody>({
+  queryKey,
+  queryKeysToInvalidate,
+  mutationFn,
+  onSuccess,
+  ...rest
+}: UseMutationOptions<TData & BaseData, CLErrors, TRequestBody> & {
+  queryKey: typeof viewKeys[keyof typeof viewKeys];
+  queryKeysToInvalidate: ReturnType<typeof viewKeys[keyof typeof viewKeys]>[];
+}): UseMutationResult<TData, CLErrors, TRequestBody> => {
+  const queryClient = useQueryClient();
+
+  return useMutation<TData & BaseData, CLErrors, TRequestBody>({
+    mutationFn,
+    onSuccess: (data, variables, context) => {
+      onSuccess && onSuccess(data, variables, context);
+      queryKeysToInvalidate.map((key) =>
+        queryClient.invalidateQueries({ queryKey: key })
+      );
+      if (data && data.data && data.data.id) {
+        queryClient.setQueryData(queryKey(data.data.id), () => data);
+      }
+    },
+    ...rest,
+  });
+};
+
 interface IInsightViewUpdateObject {
   id: string;
   requestBody: { view: { name: string } };
@@ -198,14 +242,20 @@ const updateView = async ({ id, requestBody }: IInsightViewUpdateObject) =>
     body: requestBody,
   });
 
-export const useUpdateView = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation<IInsightsView, CLErrors, IInsightViewUpdateObject>({
+export const useUpdateView = ({
+  onSuccess,
+}: {
+  onSuccess?: UseMutationOptions<
+    IInsightsViewData,
+    CLErrors,
+    IInsightViewUpdateObject
+  >['onSuccess'];
+}) => {
+  return useUpdate<IInsightsViewData, IInsightViewUpdateObject>({
+    queryKey: viewKeys.detail,
     mutationFn: updateView,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: viewKeys.lists() });
-    },
+    queryKeysToInvalidate: [viewKeys.lists()],
+    onSuccess,
   });
 };
 
