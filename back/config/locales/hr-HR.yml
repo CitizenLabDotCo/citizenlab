@@ -142,17 +142,17 @@ hr:
         question:
           title: Što je vaše pitanje?
         contribution:
-          title: Čime ćete doprinijeti?
+          title: Šta je vaš prilog ?
         project:
           title: Što je vaš projekt?
         issue:
-          title: Koji komentar imate?
+          title: Šta je vaša tema ?
         option:
           title: Što je vaša opcija?
       details:
         title: Pojedinosti
       attachements:
-        title: Slike i privici
+        title: Slike i prilozi
       extra:
         title: Dodatne informacije
   custom_field_options:

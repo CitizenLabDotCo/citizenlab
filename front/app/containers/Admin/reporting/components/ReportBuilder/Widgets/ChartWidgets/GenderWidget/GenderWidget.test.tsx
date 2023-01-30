@@ -1,29 +1,31 @@
 import React from 'react';
-import AgeCard from './AgeCard';
+import GenderWidget from '.';
 import { render } from 'utils/testUtils/rtl';
-import useAgeSerie from 'containers/Admin/dashboard/users/Charts/AgeChart/useAgeSerie';
 
-jest.mock('containers/Admin/dashboard/users/Charts/AgeChart/useAgeSerie', () =>
-  jest.fn()
+jest.mock('containers/Admin/reporting/hooks/useNarrow', () => () => true);
+
+let mockGenderSerie: any = null;
+jest.mock(
+  'containers/Admin/dashboard/users/Charts/GenderChart/useGenderSerie',
+  () => jest.fn(() => mockGenderSerie)
 );
 
-describe('<AgeCard />', () => {
-  const startAt = null;
-  const endAt = null;
+describe('<GenderWidget />', () => {
+  const startAt = undefined;
+  const endAt = undefined;
   const projectId = undefined;
   const title = 'GENDER TITLE';
 
-  it('renders a title and bar chart when there is data', () => {
+  it('renders a title and pie chart when there is data', () => {
     const validData = [
-      { name: '10 - 19', value: 1 },
-      { name: '20 - 29', value: 1 },
+      { value: 4, name: 'male', code: 'male', percentage: 40 },
+      { value: 6, name: 'female', code: 'female', percentage: 60 },
     ];
 
-    // @ts-ignore
-    useAgeSerie.mockReturnValue(validData);
+    mockGenderSerie = validData;
 
     const { container } = render(
-      <AgeCard
+      <GenderWidget
         startAt={startAt}
         endAt={endAt}
         title={title}
@@ -42,15 +44,14 @@ describe('<AgeCard />', () => {
 
   it('renders a title and no data message if all values are zero', () => {
     const emptyData = [
-      { name: '10 - 19', value: 0 },
-      { name: '20 - 29', value: 0 },
+      { value: 0, name: 'male', code: 'male', percentage: 0 },
+      { value: 0, name: 'female', code: 'female', percentage: 0 },
     ];
 
-    // @ts-ignore
-    useAgeSerie.mockReturnValue(emptyData);
+    mockGenderSerie = emptyData;
 
     const { container } = render(
-      <AgeCard
+      <GenderWidget
         startAt={startAt}
         endAt={endAt}
         title={title}

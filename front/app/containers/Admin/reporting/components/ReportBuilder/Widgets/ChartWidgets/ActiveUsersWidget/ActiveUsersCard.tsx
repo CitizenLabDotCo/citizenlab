@@ -1,13 +1,13 @@
-import React, { useRef } from 'react';
+import React from 'react';
 
 // hooks
 import useActiveUsers from 'components/admin/GraphCards/ActiveUsersCard/useActiveUsers';
 
 // components
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
+import NoData from '../../_shared/NoData';
 import Chart from 'components/admin/GraphCards/ActiveUsersCard/Chart';
 import Statistic from 'components/admin/Graphs/Statistic';
-import NoChartData from '../NoChartData';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -18,23 +18,20 @@ import {
   ProjectId,
   Dates,
   Resolution,
-  ChartDisplay,
 } from 'components/admin/GraphCards/typings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
-type Props = ProjectId & Dates & Resolution & ChartDisplay;
+type Props = ProjectId & Dates & Resolution;
 
 const ActiveUsers = ({
   projectId,
   startAtMoment,
   endAtMoment,
   resolution,
-  title,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const graphRef = useRef();
 
   const { currentResolution, stats, timeSeries } = useActiveUsers({
     projectId,
@@ -44,15 +41,12 @@ const ActiveUsers = ({
   });
 
   if (isNilOrError(stats) || stats.activeUsers.value === '0') {
-    return <NoChartData title={title} />;
+    return <NoData message={messages.noData} />;
   }
 
   return (
-    <Box width="100%" height="260px" pb="20px" px="16px">
-      <Title variant="h3" color="primary">
-        {title}
-      </Title>
-      <Box height="100%" display="flex" flexDirection="row" ml="4px">
+    <Box width="100%" height="260px" mt="20px" pb="8px" px="16px">
+      <Box height="100%" display="flex" flexDirection="row">
         <Box display="flex" flexDirection="row">
           <Box>
             <Statistic
@@ -62,14 +56,13 @@ const ActiveUsers = ({
           </Box>
         </Box>
 
-        <Box flexGrow={1} display="flex" justifyContent="flex-end" pb="32px">
+        <Box flexGrow={1} display="flex" justifyContent="flex-end">
           <Box pt="8px" width="95%" maxWidth="800px">
             <Chart
               timeSeries={timeSeries}
               startAtMoment={startAtMoment}
               endAtMoment={endAtMoment}
               resolution={currentResolution}
-              innerRef={graphRef}
             />
           </Box>
         </Box>

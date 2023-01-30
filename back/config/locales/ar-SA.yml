@@ -142,24 +142,24 @@ ar:
         question:
           title: ما سؤالك؟
         contribution:
-          title: ما هي مساهمتك؟
+          title: ما مساهمتك؟
         project:
           title: ما مشروعك؟
         issue:
-          title: ما هي مشكلتك؟
+          title: ما مشكلتك؟
         option:
           title: ما خيارك؟
       details:
         title: التفاصيل
       attachements:
-        title: الصور والمُرفقات
+        title: الصور والمرفقات
       extra:
         title: معلومات إضافية
   custom_field_options:
     gender:
       male: ذكر
       female: أنثى
-      unspecified: آخر
+      unspecified: غير محدد
     domicile:
       outside: في مكان آخر
     education:

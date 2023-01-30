@@ -1,21 +1,21 @@
 import React, { useMemo } from 'react';
 
-// components
-import { Box, Text } from '@citizenlab/cl2-component-library';
-import FormResultsQuestion from 'containers/Admin/formBuilder/components/FormResults/FormResultsQuestion';
-import NoResults from './NoResults';
-import Dot from './Dot';
-import PageBreakBox from '../../../../../../../components/admin/ContentBuilder/Widgets/PageBreakBox';
-
-// messages
-import messages from './messages';
-
 // hooks
 import useLocale from 'hooks/useLocale';
-import useLocalize from 'hooks/useLocalize';
 import useProject from 'hooks/useProject';
 import usePhase from 'hooks/usePhase';
 import useFormResults from 'hooks/useFormResults';
+
+// components
+import { Box, Text } from '@citizenlab/cl2-component-library';
+import NoData from '../_shared/NoData';
+import FormResultsQuestion from 'containers/Admin/formBuilder/components/FormResults/FormResultsQuestion';
+import Dot from './Dot';
+import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
+
+// i18n
+import messages from './messages';
+import useLocalize from 'hooks/useLocalize';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -53,7 +53,7 @@ const SurveyResults = ({ projectId, phaseId, shownQuestions }: Props) => {
     isNilOrError(project) ||
     formResults.results.length === 0
   ) {
-    return <NoResults />;
+    return <NoData message={messages.surveyNoQuestions} />;
   }
 
   if (resultRows === null) return null;
