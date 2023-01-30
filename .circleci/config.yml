@@ -884,13 +884,6 @@ workflows:
                 - crowdin_master
                 - /l10n_.*/
                 - master
-      - front-detect-deadcode:
-          filters:
-            branches:
-              ignore:
-                - crowdin_master
-                - /l10n_.*/
-                - master
       - front-license-check:
           filters:
             branches:
@@ -922,6 +915,14 @@ workflows:
     jobs:
       - front-ee-test
       - front-lint:
+          context: citizenlab-ee-environment
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
+                - master
+      - front-detect-deadcode:
           context: citizenlab-ee-environment
           filters:
             branches:
