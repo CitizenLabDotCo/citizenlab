@@ -1,10 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { API_PATH } from 'containers/App/constants';
 import { CLErrors, IRelationship } from 'typings';
-import { getJwt } from 'utils/auth/jwt';
-import { stringify } from 'qs';
-import { queryClient } from 'root';
-import { isArray } from 'lodash-es';
+import fetcher from 'utils/cl-react-query/fetcher';
 
 const viewKeys = {
   all: () => [{ type: 'view' }] as const,
@@ -19,99 +15,7 @@ const viewKeys = {
     ] as const,
 };
 
-const ab: typeof viewKeys[keyof typeof viewKeys] = viewKeys.detail;
-
-ab('id');
-
-// FETCHER
-
-const jwt = getJwt();
-interface Get {
-  path: string;
-  action: 'get';
-  queryParams?: Record<string, any>;
-  body?: never;
-}
-interface Update {
-  path: string;
-  action: 'update';
-  body: Record<string, any>;
-  queryParams?: never;
-}
-interface Create {
-  path: string;
-  action: 'create';
-  body: Record<string, any>;
-  queryParams?: never;
-}
-interface Delete {
-  path: string;
-  action: 'delete';
-  body?: never;
-  queryParams?: never;
-}
-
-type Fetcher = Get | Update | Create | Delete;
-
-type BaseData = { data: { id: string } };
-
-const fetcher = async ({ path, action, body, queryParams }: Fetcher) => {
-  const methodMap = {
-    get: 'GET',
-    update: 'PATCH',
-    create: 'POST',
-    delete: 'DELETE',
-  };
-  const requestQueryParams = queryParams
-    ? stringify(queryParams, { addQueryPrefix: true, indices: false })
-    : '';
-
-  const response = await fetch(`${API_PATH}/${path}${requestQueryParams}`, {
-    method: methodMap[action],
-    body: body ? JSON.stringify(body) : undefined,
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${jwt}`,
-    },
-  });
-
-  let data;
-
-  try {
-    data = await response.json();
-  } catch {
-    // Do nothng
-  }
-  if (!response.ok) {
-    throw data;
-  } else {
-    if (isArray(data.data)) {
-      data.data.forEach((entry) =>
-        queryClient.setQueryData(
-          [{ type: entry.type, id: entry.id, entity: 'detail' }],
-          () => ({ data: entry })
-        )
-      );
-    }
-    if (data.included) {
-      data.included.forEach((entry) =>
-        queryClient.setQueryData(
-          [{ type: entry.type, id: entry.id, entity: 'detail' }],
-          () => ({ data: entry })
-        )
-      );
-    }
-
-    if (action === 'create' || action === 'update') {
-      queryClient.setQueryData(
-        [{ type: data.data.type, id: data.data.id, entity: 'detail' }],
-        () => ({ data })
-      );
-    }
-
-    return data;
-  }
-};
+type ViewKeys = ReturnType<typeof viewKeys[keyof typeof viewKeys]>;
 
 export interface IInsightsViewData {
   id: string;
@@ -132,20 +36,21 @@ export type IInsightsViews = { data: IInsightsViewData[] };
 
 // GET VIEWS
 
-const fetchViews = () => fetcher({ path: 'insights/views', action: 'get' });
+const fetchViews = async () =>
+  fetcher<IInsightsViews>({ path: 'insights/views', action: 'get' });
 
 export const useViews = () => {
-  return useQuery<IInsightsViews, CLErrors>({
+  return useQuery<IInsightsViews, CLErrors, IInsightsViews, ViewKeys>({
     queryKey: viewKeys.lists(),
     queryFn: fetchViews,
   });
 };
 
 const fetchView = (id: string) =>
-  fetcher({ path: `insights/views/${id}`, action: 'get' });
+  fetcher<IInsightsView>({ path: `insights/views/${id}`, action: 'get' });
 
 export const useView = (id: string) => {
-  return useQuery<IInsightsView, CLErrors>({
+  return useQuery<IInsightsView, CLErrors, IInsightsView, ViewKeys>({
     queryKey: viewKeys.detail(id),
     queryFn: () => fetchView(id),
   });
@@ -154,7 +59,11 @@ export const useView = (id: string) => {
 // CREATE VIEWS
 
 const createView = async (requestBody: IInsightsViewObject) =>
-  fetcher({ path: 'insights/views', action: 'create', body: requestBody });
+  fetcher<IInsightsView>({
+    path: 'insights/views',
+    action: 'create',
+    body: requestBody,
+  });
 
 interface IInsightsViewObject {
   view: { data_sources: { origin_id: string }[]; name: string };
@@ -162,11 +71,11 @@ interface IInsightsViewObject {
 
 export const useCreateView = ({ onSuccess }: { onSuccess?: () => void }) => {
   const queryClient = useQueryClient();
-  return useMutation<IInsightsViewData, CLErrors, IInsightsViewObject>({
+  return useMutation<IInsightsView, CLErrors, IInsightsViewObject>({
     mutationFn: createView,
     onSuccess: () => {
       onSuccess && onSuccess();
-      queryClient.invalidateQueries({ queryKey: viewKeys.lists() });
+      queryClient.invalidateQueries<ViewKeys>({ queryKey: viewKeys.lists() });
     },
   });
 };
@@ -177,7 +86,7 @@ interface IInsightViewUpdateObject {
 }
 
 const updateView = async ({ id, requestBody }: IInsightViewUpdateObject) =>
-  fetcher({
+  fetcher<IInsightsView>({
     path: `insights/views/${id}`,
     action: 'update',
     body: requestBody,
@@ -185,7 +94,7 @@ const updateView = async ({ id, requestBody }: IInsightViewUpdateObject) =>
 
 export const useUpdateView = ({ onSuccess }: { onSuccess?: () => void }) => {
   const queryClient = useQueryClient();
-  return useMutation<IInsightsViewData, CLErrors, IInsightViewUpdateObject>({
+  return useMutation<IInsightsView, CLErrors, IInsightViewUpdateObject>({
     mutationFn: updateView,
     onSuccess: () => {
       onSuccess && onSuccess();
