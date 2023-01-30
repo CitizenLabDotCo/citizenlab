@@ -143,7 +143,7 @@
   "app.components.admin.PostManager.topicsTabTooltipText": "Voeg tags toe aan een bijdrage door ze naar daar te verslepen.",
   "app.components.admin.PostManager.up": "Voor",
   "app.components.admin.PostManager.votes": "Stemmen",
-  "app.components.admin.ProjectableHeaderBgUploader.headerImageInputLabel": "Header image",
+  "app.components.admin.ProjectableHeaderBgUploader.headerImageInputLabel": "Koptekst afbeelding",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "van",
   "app.components.admin.ReportExportMenu.FileName.groupFilter": "groep",
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "project",
