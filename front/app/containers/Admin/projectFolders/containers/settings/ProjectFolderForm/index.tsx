@@ -140,7 +140,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           const url = !isNilOrError(folderCardImage)
             ? getCardImageUrl(
                 img.attributes.versions,
-                previewDevice
+                previewDevice === 'phone'
                 // This is incomplete. To have the correct image version,
                 // We'd need the exact size of the project card as well,
                 // but we currently don't have that functionality in our

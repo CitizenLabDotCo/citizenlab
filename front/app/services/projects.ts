@@ -20,7 +20,6 @@ import {
   IdeaDefaultSortMethod,
   InputTerm,
 } from './participationContexts';
-import { TDevice } from 'components/admin/SelectPreviewDevice';
 import { TProjectCardSize } from 'components/ProjectCard';
 
 export const apiEndpoint = `${API_PATH}/projects`;
@@ -28,10 +27,10 @@ export const HEADER_BG_ASPECT_RATIO = 4 / 1;
 export const CARD_IMAGE_ASPECT_RATIO = 2 / 1;
 export const getCardImageUrl = (
   imageVersions: ImageSizes,
-  device: TDevice,
+  isPhone: boolean,
   size?: TProjectCardSize
 ) => {
-  if (device === 'phone') {
+  if (isPhone) {
     return imageVersions.medium;
   } else if (size === 'small') {
     return imageVersions.small;

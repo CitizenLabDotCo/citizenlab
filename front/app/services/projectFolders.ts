@@ -6,17 +6,16 @@ import {
   PublicationStatus,
   CARD_IMAGE_ASPECT_RATIO as PROJECT_CARD_IMAGE_ASPECT_RATIO,
 } from 'services/projects';
-import { TDevice } from 'components/admin/SelectPreviewDevice';
 import { TProjectFolderCardSize } from 'components/ProjectAndFolderCards/components/ProjectFolderCard';
 
 const apiEndpoint = `${API_PATH}/project_folders`;
 export const CARD_IMAGE_ASPECT_RATIO = PROJECT_CARD_IMAGE_ASPECT_RATIO;
 export const getCardImageUrl = (
   imageVersions: ImageSizes,
-  device: TDevice,
+  isPhone: boolean,
   size?: TProjectFolderCardSize
 ) => {
-  if (device === 'phone') {
+  if (isPhone) {
     return imageVersions.medium;
   } else if (size === 'small') {
     return imageVersions.small;
@@ -25,7 +24,6 @@ export const getCardImageUrl = (
     return imageVersions.large;
   }
 };
-
 export interface IProjectFolderDiff {
   title_multiloc: Multiloc; // Text, > 10
   slug: string | null;

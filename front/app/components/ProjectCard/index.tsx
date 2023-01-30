@@ -9,7 +9,7 @@ import bowser from 'bowser';
 import Link from 'utils/cl-router/Link';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Image from 'components/UI/Image';
 import AvatarBubbles from 'components/AvatarBubbles';
 
@@ -53,7 +53,6 @@ import {
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba, darken } from 'polished';
 import { getInputTermMessage } from 'utils/i18n';
-import useDevice from 'hooks/useDevice';
 
 const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   width: calc(33% - 12px);
@@ -476,7 +475,7 @@ const ProjectCard = memo<Props>(
     const phase = usePhase(currentPhaseId);
     const phases = usePhases(projectId);
     const theme = useTheme();
-    const device = useDevice();
+    const isPhone = useBreakpoint('phone');
 
     const [visible, setVisible] = useState(false);
 
@@ -521,7 +520,7 @@ const ProjectCard = memo<Props>(
         : projectImages[0]?.attributes.versions;
 
       const imageUrl = imageVersions
-        ? getCardImageUrl(imageVersions, device, size)
+        ? getCardImageUrl(imageVersions, isPhone, size)
         : null;
 
       const projectUrl = getProjectUrl(project);

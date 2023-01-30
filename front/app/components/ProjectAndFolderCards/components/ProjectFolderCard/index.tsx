@@ -7,7 +7,7 @@ import bowser from 'bowser';
 import Link from 'utils/cl-router/Link';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Image from 'components/UI/Image';
 
 // i18n
@@ -36,7 +36,6 @@ import {
   getCardImageUrl,
   CARD_IMAGE_ASPECT_RATIO,
 } from 'services/projectFolders';
-import useDevice from 'hooks/useDevice';
 
 const Container = styled(Link)`
   width: calc(33% - 12px);
@@ -295,7 +294,7 @@ export interface Props {
 
 const ProjectFolderCard = memo<Props>(
   ({ publication, size, layout, className }) => {
-    const device = useDevice();
+    const isPhone = useBreakpoint('phone');
     const projectFolderImages = useProjectFolderImages(
       publication.publicationId
     );
@@ -323,7 +322,7 @@ const ProjectFolderCard = memo<Props>(
       : projectFolderImages.data[0]?.attributes.versions;
 
     const imageUrl = imageVersions
-      ? getCardImageUrl(imageVersions, device, size)
+      ? getCardImageUrl(imageVersions, isPhone, size)
       : null;
 
     const folderUrl = `/folders/${publication.attributes.publication_slug}`;
