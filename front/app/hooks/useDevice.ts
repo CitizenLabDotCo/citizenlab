@@ -1,12 +1,9 @@
-import {
-  useBreakpoint,
-  viewportWidths,
-} from '@citizenlab/cl2-component-library';
+import { viewportWidths } from '@citizenlab/cl2-component-library';
 import { TDevice } from 'components/admin/SelectPreviewDevice';
 
 export default function useDevice() {
-  const isPhone = useBreakpoint('phone');
-  const isTablet = useBreakpoint('tablet');
+  const isPhone = getBreakpoint('phone');
+  const isTablet = getBreakpoint('tablet');
 
   const device: TDevice = (() => {
     if (isPhone) return 'phone';
