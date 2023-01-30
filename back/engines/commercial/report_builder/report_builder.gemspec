@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.version     = ReportBuilder::VERSION
   spec.authors     = ['CitizenLab']
   spec.email       = ['developers@citizenlab.co']
-  spec.license     = 'CitizenLab Commercial License V1'
+  spec.license     = 'CitizenLab Commercial License V2'
   spec.summary     = 'Create customized reports.'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
