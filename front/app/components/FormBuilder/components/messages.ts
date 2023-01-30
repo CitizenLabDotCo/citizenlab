@@ -227,4 +227,17 @@ export default defineMessages({
     defaultMessage:
       'Adding custom content is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.',
   },
+  sectionCannotBeDeleted: {
+    id: 'app.components.formBuilder.sectionCannotBeDeleted',
+    defaultMessage: "This section can't be deleted.",
+  },
+  questionCannotBeDeleted: {
+    id: 'app.components.formBuilder.questionCannotBeDeleted',
+    defaultMessage: "This question can't be deleted.",
+  },
+  fieldNotVisibleTooltip: {
+    id: 'app.components.formBuilder.fieldNotVisibleTooltip',
+    defaultMessage:
+      'Answers to this field will only be accessible on the exported Excel file on Input Manager.',
+  },
 });

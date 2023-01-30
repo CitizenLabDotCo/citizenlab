@@ -68,7 +68,7 @@ const ToolboxItem = ({
   return (
     <Tippy
       interactive={true}
-      placement={'right'}
+      placement={'left-start'}
       disabled={!disabled || !disabledTooltipMessage}
       theme={'dark'}
       hideOnClick={false}
@@ -82,41 +82,43 @@ const ToolboxItem = ({
         )
       }
     >
-      <Box
-        as="button"
-        aria-describedby="tooltip-content"
-        minWidth={!disabled ? '100%' : 'auto'}
-        p="0px"
-        type="button"
-        role="button"
-      >
-        <StyledBox
-          display="flex"
-          p="18px"
-          onClick={onClick}
-          width="100%"
-          m="0px"
-          alignItems="center"
-          data-cy={rest['data-cy']}
-          disabled={!!disabled}
+      <>
+        <Box
+          as="button"
+          aria-describedby="tooltip-content"
+          minWidth={!disabled ? '100%' : 'auto'}
+          p="0px"
+          type="button"
+          role="button"
         >
-          <Icon
-            fill={disabled ? colors.coolGrey500 : colors.primary}
-            width="20px"
-            height="20px"
-            name={icon}
-          />
-          <Text
-            fontSize="s"
-            ml="12px"
-            my="0"
-            color={disabled ? 'coolGrey500' : 'textPrimary'}
+          <StyledBox
+            display="flex"
+            p="18px"
+            onClick={onClick}
+            width="100%"
+            m="0px"
+            alignItems="center"
+            data-cy={rest['data-cy']}
+            disabled={!!disabled}
           >
-            {label}
-          </Text>
-          {!disabled && <AddIcon />}
-        </StyledBox>
-      </Box>
+            <Icon
+              fill={disabled ? colors.coolGrey500 : colors.primary}
+              width="20px"
+              height="20px"
+              name={icon}
+            />
+            <Text
+              fontSize="s"
+              ml="12px"
+              my="0"
+              color={disabled ? 'coolGrey500' : 'textPrimary'}
+            >
+              {label}
+            </Text>
+            {!disabled && <AddIcon />}
+          </StyledBox>
+        </Box>
+      </>
     </Tippy>
   );
 };
