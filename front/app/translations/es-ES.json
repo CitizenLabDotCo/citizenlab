@@ -284,7 +284,7 @@
   "app.components.ParticipationCTABars.userHasParticipated": "Ha participado en este proyecto.",
   "app.components.ParticipationCTABars.volunteer": "Voluntario",
   "app.components.ParticipationCTABars.xDaysLeft": "{timeLeft, plural, =0 {Less than a day} one {# day left} other {# days}} left",
-  "app.components.ParticipationCTABars.xWeeksLeft": "{timeLeft}  weeks left",
+  "app.components.ParticipationCTABars.xWeeksLeft": "quedan {timeLeft} semanas",
   "app.components.PasswordInput.a11y_passwordHidden": "Contraseña oculta",
   "app.components.PasswordInput.a11y_passwordVisible": "Contraseña visible",
   "app.components.PasswordInput.a11y_strength1Password": "Poca solidez de las contraseña",
