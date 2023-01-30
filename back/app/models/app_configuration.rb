@@ -149,7 +149,7 @@ class AppConfiguration < ApplicationRecord
   end
 
   def base_frontend_uri
-    return 'http://localhost:3000' if Rails.env.development?
+    return ENV.fetch('FRONTEND_URI', 'http://localhost:3000') if Rails.env.development?
 
     transport = Rails.env.test? ? 'http' : 'https'
     "#{transport}://#{host}"

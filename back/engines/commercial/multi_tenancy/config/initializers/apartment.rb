@@ -103,7 +103,7 @@ class RescuedApartmentMiddleware < Apartment::Elevators::Generic
       nil
     else
       host = if Rails.env.development? || Rails.env.staging?
-        ENV.fetch('OVERRIDE_HOST', request.host)
+        ENV.fetch('OVERRIDE_TENANT_HOST', request.host)
       else
         request.host
       end
