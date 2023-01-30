@@ -18,6 +18,7 @@ import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
 import Title from 'components/admin/ContentBuilder/Widgets/Title';
 import Text from 'components/admin/ContentBuilder/Widgets/Text';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import MostVotedIdeasWidget from '../Widgets/MostVotedIdeasWidget';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -35,25 +36,54 @@ interface Props {
   projectId: string;
 }
 
-const getTemplateType = (project: IProjectData, phases: IPhaseData[]) => {
+interface TemplateData {
+  participationMethod: 'ideation' | 'native_survey' | 'other';
+  phaseId?: string;
+}
+
+const getTemplateData = (
+  project: IProjectData,
+  phases: IPhaseData[]
+): TemplateData => {
   const hasPhases = project.attributes.process_type === 'continuous';
 
   if (hasPhases) {
     for (const phase of phases) {
       const participationMethod = phase.attributes.participation_method;
 
-      if (participationMethod === 'ideation') return 'ideation';
-      if (participationMethod === 'native_survey') return 'native_survey';
+      if (
+        participationMethod === 'ideation' ||
+        participationMethod === 'native_survey'
+      ) {
+        return {
+          participationMethod,
+          phaseId: phase.id,
+        };
+      }
     }
 
-    return 'other';
+    return {
+      participationMethod: 'other',
+      phaseId: undefined,
+    };
   }
 
   const participationMethod = project.attributes.participation_method;
 
-  if (participationMethod === 'ideation') return 'ideation';
-  if (participationMethod === 'native_survey') return 'native_survey';
-  return 'other';
+  if (
+    participationMethod === 'ideation' ||
+    participationMethod === 'native_survey'
+  ) {
+    return {
+      participationMethod,
+      phaseId: undefined,
+    };
+  }
+
+  return {
+    participationMethod: 'other',
+    phaseId: undefined,
+  };
 };
 
 const ProjectTemplate = ({ reportId, projectId }: Props) => {
@@ -63,7 +93,7 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
 
   if (isNilOrError(project) || isNilOrError(phases)) return null;
 
-  const templateType = getTemplateType(project, phases);
+  const { participationMethod, phaseId } = getTemplateData(project, phases);
 
   const hasPhases =
     project.attributes.process_type === 'continuous' && phases.length > 0;
