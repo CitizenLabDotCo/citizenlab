@@ -14,10 +14,17 @@ RSpec.describe InputUiSchemaGeneratorService do
   let(:input_term) { 'question' }
   let(:field_key) { 'field_key' }
 
+  # TODO
+  # - Form with final empty section
+  # - Hide author and budget when not admin (in JsonFormsService)
+  # - Add author and budget when admin (in JsonFormsService)
+  # - No persisted fields
+  # - Persisted fields
+
   describe '#generate_for' do
     context 'for project with a changed built-in field and an extra section and field' do
       let(:project) { create :continuous_project, input_term: input_term }
-      let(:custom_form) do
+      let!(:custom_form) do
         create(:custom_form, :with_default_fields, participation_context: project).tap do |form|
           form.custom_fields.find_by(code: 'title_multiloc').update!(
             description_multiloc: { 'en' => 'My title description', 'nl-NL' => 'Mijn titel beschrijving' }
@@ -63,6 +70,17 @@ RSpec.describe InputUiSchemaGeneratorService do
       it 'returns the schema for the given fields' do
         ui_schema = generator.generate_for IdeaCustomFieldsService.new(custom_form).enabled_fields
 
+        expect(ui_schema.keys).to match_array %w[en fr-FR nl-NL]
+        expect(ui_schema['en']).to match(
+          type: 'Categorization',
+          options: {
+            formId: 'idea-form',
+            inputTerm: input_term
+          },
+          elements: an_instance_of(Array)
+        )
+        # en
+        expect(ui_schema['en'][:elements].size).to eq 4
         expect(ui_schema['en'][:elements][0]).to eq({
           type: 'Category',
           label: 'What is your question?',
@@ -154,182 +172,40 @@ RSpec.describe InputUiSchemaGeneratorService do
             }
           ]
         })
-        # expect(generator.generate_for(IdeaCustomFieldsService.new(custom_form).enabled_fields)).to eq({
-        #   'en' => {
-        #     type: 'Categorization',
-        #     options: {
-        #       formId: 'idea-form',
-        #       inputTerm: 'contribution'
-        #     },
-        #     elements: [
-        #       {
-        #         type: 'Category',
-        #         label: '',
-        #         options: { id: custom_form.custom_fields.find_by(code: 'ideation_section1').id },
-        #         elements: [
-        #           {
-        #             type: 'VerticalLayout',
-        #             options: { input_type: extra_field.input_type, render: 'multiloc' },
-        #             elements: [
-        #               {
-        #                 type: 'Control',
-        #                 scope: "#/properties/#{extra_field.key}/properties/en",
-        #                 label: 'Body multiloc field title',
-        #                 options: {
-        #                   description: 'Body multiloc field description',
-        #                   isAdminField: false,
-        #                   hasRule: false,
-        #                   render: 'WYSIWYG',
-        #                   locale: 'en'
-        #                 }
-        #               },
-        #               {
-        #                 type: 'Control',
-        #                 scope: "#/properties/#{extra_field.key}/properties/fr-FR",
-        #                 label: 'Body multiloc field title',
-        #                 options: {
-        #                   description: 'Body multiloc field description',
-        #                   isAdminField: false,
-        #                   hasRule: false,
-        #                   render: 'WYSIWYG',
-        #                   locale: 'fr-FR'
-        #                 }
-        #               },
-        #               {
-        #                 type: 'Control',
-        #                 scope: "#/properties/#{extra_field.key}/properties/nl-NL",
-        #                 label: 'Body multiloc field title',
-        #                 options: {
-        #                   description: 'Body multiloc field description',
-        #                   isAdminField: false,
-        #                   hasRule: false,
-        #                   render: 'WYSIWYG',
-        #                   locale: 'nl-NL'
-        #                 }
-        #               }
-        #             ]
-        #           }
-        #         ]
-        #       }
-        #     ]
-        #   },
-        #   'fr-FR' => {
-        #     type: 'Categorization',
-        #     options: {
-        #       formId: 'idea-form',
-        #       inputTerm: 'contribution'
-        #     },
-        #     elements: [
-        #       {
-        #         type: 'Category',
-        #         label: I18n.t('custom_forms.categories.main_content.contribution.title', locale: 'fr-FR'),
-        #         options: { id: 'mainContent' },
-        #         elements: [
-        #           {
-        #             type: 'VerticalLayout',
-        #             options: { input_type: extra_field.input_type, render: 'multiloc' },
-        #             elements: [
-        #               {
-        #                 type: 'Control',
-        #                 scope: "#/properties/#{extra_field.key}/properties/en",
-        #                 label: 'Body multiloc field title',
-        #                 options: {
-        #                   description: 'Body multiloc field description',
-        #                   isAdminField: false,
-        #                   hasRule: false,
-        #                   render: 'WYSIWYG',
-        #                   locale: 'en'
-        #                 }
-        #               },
-        #               {
-        #                 type: 'Control',
-        #                 scope: "#/properties/#{extra_field.key}/properties/fr-FR",
-        #                 label: 'Body multiloc field title',
-        #                 options: {
-        #                   description: 'Body multiloc field description',
-        #                   isAdminField: false,
-        #                   hasRule: false,
-        #                   render: 'WYSIWYG',
-        #                   locale: 'fr-FR'
-        #                 }
-        #               },
-        #               {
-        #                 type: 'Control',
-        #                 scope: "#/properties/#{extra_field.key}/properties/nl-NL",
-        #                 label: 'Body multiloc field title',
-        #                 options: {
-        #                   description: 'Body multiloc field description',
-        #                   isAdminField: false,
-        #                   hasRule: false,
-        #                   render: 'WYSIWYG',
-        #                   locale: 'nl-NL'
-        #                 }
-        #               }
-        #             ]
-        #           }
-        #         ]
-        #       }
-        #     ]
-        #   },
-        #   'nl-NL' => {
-        #     type: 'Categorization',
-        #     options: {
-        #       formId: 'idea-form',
-        #       inputTerm: 'contribution'
-        #     },
-        #     elements: [
-        #       {
-        #         type: 'Category',
-        #         label: I18n.t('custom_forms.categories.main_content.contribution.title', locale: 'nl-NL'),
-        #         options: { id: 'mainContent' },
-        #         elements: [
-        #           {
-        #             type: 'VerticalLayout',
-        #             options: { input_type: extra_field.input_type, render: 'multiloc' },
-        #             elements: [
-        #               {
-        #                 type: 'Control',
-        #                 scope: "#/properties/#{extra_field.key}/properties/en",
-        #                 label: 'Body multiloc veldtitel',
-        #                 options: {
-        #                   description: 'Body multiloc veldbeschrijving',
-        #                   isAdminField: false,
-        #                   hasRule: false,
-        #                   render: 'WYSIWYG',
-        #                   locale: 'en'
-        #                 }
-        #               },
-        #               {
-        #                 type: 'Control',
-        #                 scope: "#/properties/#{extra_field.key}/properties/fr-FR",
-        #                 label: 'Body multiloc veldtitel',
-        #                 options: {
-        #                   description: 'Body multiloc veldbeschrijving',
-        #                   isAdminField: false,
-        #                   hasRule: false,
-        #                   render: 'WYSIWYG',
-        #                   locale: 'fr-FR'
-        #                 }
-        #               },
-        #               {
-        #                 type: 'Control',
-        #                 scope: "#/properties/#{extra_field.key}/properties/nl-NL",
-        #                 label: 'Body multiloc veldtitel',
-        #                 options: {
-        #                   description: 'Body multiloc veldbeschrijving',
-        #                   isAdminField: false,
-        #                   hasRule: false,
-        #                   render: 'WYSIWYG',
-        #                   locale: 'nl-NL'
-        #                 }
-        #               }
-        #             ]
-        #           }
-        #         ]
-        #       }
-        #     ]
-        #   }
-        # })
+        expect(ui_schema['en'][:elements][1]).to eq({
+          type: 'Category',
+          label: 'Images and attachments',
+          options: {
+            id: custom_form.custom_fields.find_by(code: 'ideation_section2').id,
+            description: 'Upload your favourite files here'
+          },
+          elements: [
+            {
+              type: 'Control',
+              scope: '#/properties/idea_images_attributes',
+              label: 'Images',
+              options: {
+                description: '',
+                input_type: 'image_files',
+                isAdminField: false,
+                hasRule: false
+              }
+            },
+            {
+              type: 'Control',
+              scope: '#/properties/idea_files_attributes',
+              label: 'Attachments',
+              options: {
+                description: '',
+                input_type: 'files',
+                isAdminField: false,
+                hasRule: false
+              }
+            }
+          ]
+        })
+        # fr-FR
+        # nl-NL
       end
     end
 

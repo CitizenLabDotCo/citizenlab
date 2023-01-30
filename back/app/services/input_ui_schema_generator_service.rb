@@ -164,7 +164,12 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
       label: (MultilocService.new.t(current_section.title_multiloc) if current_section.title_multiloc),
       options: { id: current_section.id },
       elements: section_fields.filter_map { |field| visit field }
-    }
+    }.tap do |category|
+      description = MultilocService.new.t current_section.description_multiloc
+      if description.present?
+        category[:options][:description] = description
+      end
+    end
   end
 
   def generate_for_current_locale_without_sections(fields)
