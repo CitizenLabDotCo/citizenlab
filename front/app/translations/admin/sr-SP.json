@@ -143,7 +143,7 @@
   "app.components.admin.PostManager.topicsTabTooltipText": "Add tags to an input using drag and drop.",
   "app.components.admin.PostManager.up": "Up",
   "app.components.admin.PostManager.votes": "Votes",
-  "app.components.admin.ProjectableHeaderBgUploader.headerImageInputLabel": "Header image",
+  "app.components.admin.ProjectableHeaderBgUploader.headerImageInputLabel": "Слика у заглављу",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "from",
   "app.components.admin.ReportExportMenu.FileName.groupFilter": "group",
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "project",
