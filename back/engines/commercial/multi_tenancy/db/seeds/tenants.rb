@@ -383,7 +383,6 @@ module MultiTenancy
           })
         )
 
-        binding.pry
         TenantService.new.initialize_tenant(tenant_attrs, config_attrs)
       end
 
