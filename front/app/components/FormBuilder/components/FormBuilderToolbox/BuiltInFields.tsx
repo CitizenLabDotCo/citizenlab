@@ -60,7 +60,7 @@ const BuiltInFields = ({ isEditingDisabled, move }: BuiltInFieldsProps) => {
         color="textSecondary"
         style={{ textTransform: 'uppercase' }}
       >
-        <FormattedMessage {...messages.defaultField} />
+        <FormattedMessage {...messages.defaultContent} />
       </Title>
       <DraggableElement>
         <ToolboxItem

@@ -209,9 +209,9 @@ export default defineMessages({
     id: 'app.components.formBuilder.supportArticleLinkText',
     defaultMessage: 'this page',
   },
-  defaultField: {
-    id: 'app.components.formBuilder.defaultField',
-    defaultMessage: 'Default field',
+  defaultContent: {
+    id: 'app.components.formBuilder.defaultContent',
+    defaultMessage: 'Default content',
   },
   layout: {
     id: 'app.components.formBuilder.layout',
