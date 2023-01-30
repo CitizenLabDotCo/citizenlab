@@ -141,8 +141,8 @@ const CLPageLayout = memo(
       <>
         <Box
           ref={topAnchorRef}
-          marginTop={'-92px'} // TODO: Find cleaner solution for mobile scrollTo behaviour.
-          marginBottom={'92px'}
+          marginTop={'-140px'} // TODO: Find cleaner solution for mobile scrollTo behaviour.
+          marginBottom={'140px'}
           id="top-anchor"
         />
 

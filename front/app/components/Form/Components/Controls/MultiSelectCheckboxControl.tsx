@@ -9,15 +9,32 @@ import React, { useState } from 'react';
 
 // utils
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+import { getOptions } from './controlUtils';
 
 // components
 import VerificationIcon from '../VerificationIcon';
-import { Box, Checkbox, Text } from '@citizenlab/cl2-component-library';
+import { Box, Checkbox, colors, Text } from '@citizenlab/cl2-component-library';
 import { FormLabel } from 'components/UI/FormComponents';
 import ErrorDisplay from '../ErrorDisplay';
+
+// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { getOptions } from './controlUtils';
+
+// style
+import { darken, transparentize } from 'polished';
+import styled, { useTheme } from 'styled-components';
+
+const StyledBox = styled(Box)<{ checkboxBackgroundColor: string }>`
+  background-color: ${({ checkboxBackgroundColor }) =>
+    checkboxBackgroundColor ? checkboxBackgroundColor : colors.grey200};
+  &:hover {
+    background-color: ${({ checkboxBackgroundColor }) =>
+      checkboxBackgroundColor
+        ? darken(0.05, checkboxBackgroundColor)
+        : darken(0.05, colors.grey200)};
+  }
+`;
 
 const MultiSelectCheckboxControl = ({
   data,
@@ -31,10 +48,14 @@ const MultiSelectCheckboxControl = ({
   visible,
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
-
+  const theme = useTheme();
   const options = getOptions(schema, 'multi');
-
   const dataArray = Array.isArray(data) ? data : [];
+
+  const checkboxBackgroundColor = transparentize(
+    0.9,
+    theme.colors.tenantPrimary
+  );
 
   if (!visible) {
     return null;
@@ -50,12 +71,19 @@ const MultiSelectCheckboxControl = ({
         subtextSupportsHtml
       />
       <Box display="block" id="e2e-multiselect-control">
-        <Text fontSize="s">
+        <Text mt="4px" mb="8px" fontSize="s">
           <FormattedMessage {...messages.selectMany} />
         </Text>
         {options?.map((option, index: number) => (
-          <Box mt="12px" key={option.value}>
+          <StyledBox
+            style={{ cursor: 'pointer' }}
+            mb="12px"
+            key={option.value}
+            padding="16px 20px 16px 20px"
+            checkboxBackgroundColor={checkboxBackgroundColor}
+          >
             <Checkbox
+              checkedColor={theme.colors.tenantSecondary}
               id={`${path}-checkbox-${index}`}
               label={option.label}
               checked={dataArray.includes(option.value)}
@@ -71,7 +99,7 @@ const MultiSelectCheckboxControl = ({
                 setDidBlur(true);
               }}
             />
-          </Box>
+          </StyledBox>
         ))}
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>

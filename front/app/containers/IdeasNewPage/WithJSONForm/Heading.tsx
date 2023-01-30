@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import clHistory from 'utils/cl-router/history';
 
 // Components
-import GoBackButton from 'containers/IdeasShow/GoBackButton';
 import {
   Box,
   Title,
@@ -12,6 +11,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Modal from 'components/UI/Modal';
+import GoBackButtonUI from 'components/UI/GoBackButton';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -21,8 +21,8 @@ import messages from '../messages';
 import { IProjectData } from 'services/projects';
 
 // Styles
-import { colors } from 'utils/styleUtils';
 import useURLQuery from 'utils/cl-router/useUrlQuery';
+import GoBackButton from 'containers/IdeasShow/GoBackButton';
 
 type Props = {
   project: IProjectData;
@@ -56,29 +56,28 @@ export const Heading = ({
     setShowLeaveModal(false);
   };
   const isSurveyOnMobile = isSmallerThanXlPhone && isSurvey;
-  let headingTextColor:
-    | keyof typeof colors
-    | 'tenantPrimary'
-    | 'tenantSecondary'
-    | 'tenantText' = 'tenantText';
-  if (isSurveyOnMobile) {
-    headingTextColor = 'white';
-  } else if (isSurvey) {
-    headingTextColor = 'primary';
-  }
 
   return (
     <>
+      {isSurveyOnMobile && (
+        <>
+          <Box
+            padding="20px"
+            display="flex"
+            justifyContent="flex-start"
+            width="100%"
+          >
+            <GoBackButtonUI onClick={openModal} />
+          </Box>
+        </>
+      )}
       <Box
         width="100%"
         display="flex"
         flexDirection={isSurveyOnMobile ? 'row-reverse' : 'column'}
         justifyContent="center"
         alignItems="center"
-        background={isSurveyOnMobile ? colors.primary : undefined}
         pt={isSurveyOnMobile ? '0px' : '40px'}
-        height={isSurveyOnMobile ? '64px' : undefined}
-        position={isSurveyOnMobile ? 'fixed' : undefined}
         top={isSurveyOnMobile ? '0px' : undefined}
         zIndex="3"
       >
@@ -128,12 +127,11 @@ export const Heading = ({
         <Box width="100%">
           <Text
             width="100%"
-            color={headingTextColor}
+            color={'primary'}
             variant="bodyL"
-            fontWeight={isSurveyOnMobile ? 'bold' : 'normal'}
-            fontSize={isSurveyOnMobile ? 'l' : 'xxxxl'}
+            fontSize={isSurveyOnMobile ? 'xxxl' : 'xxxxl'}
             ml={isSurveyOnMobile ? '16px' : '0px'}
-            my={isSurveyOnMobile ? undefined : '0px'}
+            my={isSurveyOnMobile ? '12px' : '8px'}
           >
             {titleText}
           </Text>
@@ -176,28 +174,6 @@ export const Heading = ({
           </Box>
         </Modal>
       </Box>
-      {isSurveyOnMobile && (
-        <>
-          <Box
-            top="0px"
-            zIndex="5"
-            display="flex"
-            flexDirection="row"
-            position="fixed"
-            height="64px"
-            justifyContent="flex-end"
-            width="100%"
-          >
-            <Button
-              icon="close"
-              buttonStyle="text"
-              iconColor="white"
-              onClick={openModal}
-            />
-          </Box>
-          <Box mt={`${stylingConsts.menuHeight}px`} display="flex" />
-        </>
-      )}
     </>
   );
 };
