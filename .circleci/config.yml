@@ -884,14 +884,7 @@ workflows:
                 - crowdin_master
                 - /l10n_.*/
                 - master
-      - front-extract-intl:
-          filters:
-            branches:
-              ignore:
-                - crowdin_master
-                - /l10n_.*/
-                - master
-                - production
+
 
   # FRONT-END EE
   front-ee:
@@ -932,6 +925,15 @@ workflows:
                 - crowdin_master
                 - /l10n_.*/
                 - master
+      - front-extract-intl:
+          context: citizenlab-ee-environment
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
+                - master
+                - production
       - front-ee-trigger-deploy:
           context: circleci-api-token
           requires:
