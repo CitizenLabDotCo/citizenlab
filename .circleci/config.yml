@@ -206,7 +206,7 @@ jobs:
   back-license-check:
     resource_class: small
     executor:
-      name: cl2-back-essential-executor
+      name: cl2-back
       image-tag: $CIRCLE_SHA1
     working_directory: /cl2_back
     steps:
@@ -800,15 +800,7 @@ workflows:
               ignore:
                 - crowdin_master
                 - /l10n_.*/
-      - back-license-check:
-          context: docker-hub-access
-          requires:
-            - back-build-essential-docker-image
-          filters:
-            branches:
-              ignore:
-                - crowdin_master
-                - /l10n_.*/
+
 
   # BACK-END EE
   back-ee:
@@ -828,6 +820,17 @@ workflows:
           requires:
             - back-build-ee-docker-image
       - back-bundle-audit:
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+          requires:
+            - back-build-ee-docker-image
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
+      - back-license-check:
           context:
             - docker-hub-access
             - citizenlab-ee-environment
