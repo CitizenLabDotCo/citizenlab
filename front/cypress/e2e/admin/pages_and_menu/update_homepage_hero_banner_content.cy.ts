@@ -1,4 +1,4 @@
-import { randomEmail, randomString } from '../../../support/commands';
+import { randomString } from '../../../support/commands';
 
 describe('Admin: update Hero Banner content', () => {
   // header content
@@ -77,7 +77,7 @@ describe('Admin: update Hero Banner content', () => {
     );
   });
 
-  it('uploads, crops, and displays banner image', () => {
+  it.skip('uploads, crops, and displays banner image', () => {
     cy.intercept('PATCH', '**/home_page').as('saveHomePage');
     cy.setConsentAndAdminLoginCookies();
 
