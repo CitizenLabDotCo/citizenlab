@@ -121,11 +121,7 @@ const configuration: ModuleConfiguration = {
         return null;
       },
     'app.modules.commercial.moderation.admin.containers.tabs': (props) => {
-      return (
-        <RenderOnFeatureFlag>
-          <ActivityWarningsTab {...props} />
-        </RenderOnFeatureFlag>
-      );
+      return <ActivityWarningsTab {...props} />;
     },
     'app.components.NotificationMenu.Notification': ({ notification }) => (
       <RenderOnFeatureFlag>
