@@ -884,13 +884,6 @@ workflows:
                 - crowdin_master
                 - /l10n_.*/
                 - master
-      - front-lint:
-          filters:
-            branches:
-              ignore:
-                - crowdin_master
-                - /l10n_.*/
-                - master
       - front-detect-deadcode:
           filters:
             branches:
@@ -928,6 +921,14 @@ workflows:
         - << pipeline.parameters.front >>
     jobs:
       - front-ee-test
+      - front-lint:
+          context: citizenlab-ee-environment
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
+                - master
       - front-ee-trigger-deploy:
           context: circleci-api-token
           requires:
