@@ -208,3 +208,5 @@ nl:
     survey_end_page:
       title: 'Einde enquête'
       description: "Dien uw antwoorden in door hieronder 'Enquête indienen' te selecteren."
+  project_copy:
+    title_suffix: 'Kopieer'

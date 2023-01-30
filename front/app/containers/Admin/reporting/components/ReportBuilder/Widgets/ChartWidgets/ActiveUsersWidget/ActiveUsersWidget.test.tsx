@@ -1,17 +1,16 @@
 import React from 'react';
-import ActiveUsersCard from './ActiveUsersCard';
+import ActiveUsersWidget from '.';
 import { render, screen } from 'utils/testUtils/rtl';
-import useActiveUsers from 'components/admin/GraphCards/ActiveUsersCard/useActiveUsers';
 
+let mockActiveUsers: any = null;
 jest.mock('components/admin/GraphCards/ActiveUsersCard/useActiveUsers', () =>
-  jest.fn()
+  jest.fn(() => mockActiveUsers)
 );
 
-describe('<ActiveUsersCard />', () => {
-  const startAtMoment = null;
-  const endAtMoment = null;
+describe('<ActiveUsersWidget />', () => {
+  const startAt = undefined;
+  const endAt = undefined;
   const projectId = undefined;
-  const resolution = 'month';
   const title = 'PARTICIPANTS TITLE';
 
   it('renders a title, line graph and stats box when there is data', () => {
@@ -28,19 +27,17 @@ describe('<ActiveUsersCard />', () => {
       { date: '2022-12-01', activeUsers: 3 },
     ];
 
-    // @ts-ignore
-    useActiveUsers.mockReturnValue({
+    mockActiveUsers = {
       currentResolution: 'month',
       stats: validStats,
       timeSeries: validTimeSeries,
-    });
+    };
 
     const { container } = render(
-      <ActiveUsersCard
-        startAtMoment={startAtMoment}
-        endAtMoment={endAtMoment}
+      <ActiveUsersWidget
+        startAt={startAt}
+        endAt={endAt}
         projectId={projectId}
-        resolution={resolution}
         title={title}
       />
     );
@@ -71,19 +68,17 @@ describe('<ActiveUsersCard />', () => {
       { date: '2022-12-01', activeUsers: 0 },
     ];
 
-    // @ts-ignore
-    useActiveUsers.mockReturnValue({
+    mockActiveUsers = {
       currentResolution: 'month',
       stats: emptyStats,
       timeSeries: emptyTimeSeries,
-    });
+    };
 
     const { container } = render(
-      <ActiveUsersCard
-        startAtMoment={startAtMoment}
-        endAtMoment={endAtMoment}
+      <ActiveUsersWidget
+        startAt={startAt}
+        endAt={endAt}
         projectId={projectId}
-        resolution={resolution}
         title={title}
       />
     );
