@@ -155,7 +155,7 @@ jobs:
     steps:
       - run: bundle exec license_finder
 
-  back-build-ee-docker-image:
+  back-build-docker-image:
     working_directory: ~/
     docker:
       - image: cimg/base:2021.03
@@ -182,7 +182,7 @@ jobs:
     steps:
       - run: bundle exec rubocop -P --format simple
 
-  back-ee-test:
+  back-test:
     resource_class: small
     executor:
       name: cl2-back
@@ -204,7 +204,7 @@ jobs:
       - store_test_results:
           path: spec/reports
 
-  back-ee-slow-tests:
+  back-slow-tests:
     resource_class: small
     executor:
       name: cl2-back
@@ -222,7 +222,7 @@ jobs:
       - store_test_results:
           path: spec/reports
 
-  back-ee-test-tenant-templates:
+  back-test-tenant-templates:
     resource_class: small
     executor:
       name: cl2-back
@@ -246,7 +246,7 @@ jobs:
           paths:
             - failed-templates.txt
 
-  back-ee-release-tenant-templates:
+  back-release-tenant-templates:
     resource_class: small
     executor:
       name: cl2-back
@@ -257,7 +257,7 @@ jobs:
           at: /tmp/workspace
       - run: rake templates:release['/tmp/workspace/failed-templates.txt']
 
-  back-ee-web-api-docs:
+  back-web-api-docs:
     resource_class: small
     executor:
       name: cl2-back
@@ -278,7 +278,7 @@ jobs:
       - run: aws s3 sync doc/public_api s3://developers.citizenlab.co/api-docs/ee/public_api/$CIRCLE_BRANCH --delete --acl public-read
       - run: aws s3 sync doc/admin_api s3://developers.citizenlab.co/api-docs/ee/admin_api/$CIRCLE_BRANCH --delete --acl public-read
 
-  back-ee-trigger-deploy:
+  back-trigger-deploy:
     resource_class: small
     docker:
       - image: cimg/base:2021.03
@@ -298,7 +298,7 @@ jobs:
                   --header 'x-attribution-login: '"$CIRCLE_USERNAME" \
                   --data '{"branch": "'"$CIRCLE_BRANCH"'","parameters": {"image_tag": "'"$CIRCLE_SHA1"'", "run_deploy": true, "back": true, "trigger": false}}'
 
-  back-ee-push-deployment-docker-image:
+  back-push-deployment-docker-image:
     resource_class: small
     docker:
       - image: cimg/base:2021.03
@@ -311,7 +311,7 @@ jobs:
       - deploy:
           command: docker push citizenlabdotco/back-ee:$CIRCLE_BRANCH
 
-  back-ee-deploy-to-swarm:
+  back-deploy-to-swarm:
     resource_class: small
     docker:
       - image: buildo/alpine-ssh
@@ -336,7 +336,7 @@ jobs:
       - deploy:
           command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "cd cl2-deployment && docker stack deploy --compose-file << parameters.compose_file >> << parameters.stack_name >> --with-registry-auth"
 
-  back-ee-generate-tenant-templates:
+  back-generate-tenant-templates:
     resource_class: small
     docker:
       - image: cimg/base:2021.03
@@ -480,7 +480,7 @@ jobs:
       - run: git push origin $CIRCLE_BRANCH
 
   # FRONT-END
-  front-ee-test:
+  front-test:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     working_directory: ~/
@@ -509,7 +509,7 @@ jobs:
       - store_artifacts:
           path: ./citizenlab/front/reports/
 
-  front-ee-trigger-deploy:
+  front-trigger-deploy:
     resource_class: small
     docker:
       - image: cimg/base:2021.03
@@ -529,7 +529,7 @@ jobs:
                   --header 'x-attribution-login: '"$CIRCLE_USERNAME" \
                   --data '{"branch": "'"$CIRCLE_BRANCH"'","parameters": {"run_deploy": true, "front": true, "trigger": false}}'
 
-  front-ee-deploy-staging:
+  front-deploy-staging:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     resource_class: large
@@ -558,7 +558,7 @@ jobs:
             aws s3 sync build/ s3://cl2-front-staging/ --acl public-read --exclude "index.html"
             aws s3 cp build/index.html s3://cl2-front-staging/index.html --acl public-read --cache-control no-cache
 
-  front-ee-deploy-production:
+  front-deploy-production:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     resource_class: large
@@ -590,7 +590,7 @@ jobs:
           name: Invalidate the static assets on the CDN
           command: aws cloudfront create-invalidation --distribution-id E2MY732QC516J3 --paths '/*'
 
-  front-ee-test-lighthouse:
+  front-test-lighthouse:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
         user: pptruser
@@ -665,13 +665,13 @@ workflows:
                 - production
 
   # BACK-END
-  back-ee:
+  back:
     when:
       and:
         - not: <<pipeline.parameters.run_deploy>>
         - << pipeline.parameters.back >>
     jobs:
-      - back-build-ee-docker-image:
+      - back-build-docker-image:
           context:
             - docker-hub-access
             - citizenlab-ee-environment
@@ -680,13 +680,13 @@ workflows:
             - docker-hub-access
             - citizenlab-ee-environment
           requires:
-            - back-build-ee-docker-image
+            - back-build-docker-image
       - back-bundle-audit:
           context:
             - docker-hub-access
             - citizenlab-ee-environment
           requires:
-            - back-build-ee-docker-image
+            - back-build-docker-image
           filters:
             branches:
               ignore:
@@ -697,35 +697,35 @@ workflows:
             - docker-hub-access
             - citizenlab-ee-environment
           requires:
-            - back-build-ee-docker-image
+            - back-build-docker-image
           filters:
             branches:
               ignore:
                 - crowdin_master
                 - /l10n_.*/
-      - back-ee-test:
+      - back-test:
           context:
             - docker-hub-access
             - citizenlab-ee-environment
           requires:
-            - back-build-ee-docker-image
-      - back-ee-web-api-docs:
+            - back-build-docker-image
+      - back-web-api-docs:
           context:
             - docker-hub-access
             - citizenlab-ee-environment
           requires:
-            - back-ee-test
-      - back-ee-slow-tests:
+            - back-test
+      - back-slow-tests:
           context:
             - docker-hub-access
             - citizenlab-ee-environment
           requires:
-            - back-build-ee-docker-image
-      - back-ee-trigger-deploy:
+            - back-build-docker-image
+      - back-trigger-deploy:
           context: circleci-api-token
           requires:
-            - back-ee-test
-            - back-ee-slow-tests
+            - back-test
+            - back-slow-tests
             - back-lint
             - back-bundle-audit
           filters:
@@ -734,22 +734,22 @@ workflows:
                 - master
                 - production
 
-  back-ee-deploy:
+  back-deploy:
     when:
       and:
         - <<pipeline.parameters.run_deploy>>
         - << pipeline.parameters.back >>
     jobs:
-      - back-ee-push-deployment-docker-image:
+      - back-push-deployment-docker-image:
           context: docker-hub-access
           filters:
             branches:
               only:
                 - master
                 - production
-      - back-ee-deploy-to-swarm:
+      - back-deploy-to-swarm:
           requires:
-            - back-ee-push-deployment-docker-image
+            - back-push-deployment-docker-image
           filters:
             branches:
               only:
@@ -758,9 +758,9 @@ workflows:
           compose_file: docker-compose-staging.yml
           stack_name: cl2-back-stg
           env_file: ".env-staging"
-      - back-ee-deploy-to-swarm:
+      - back-deploy-to-swarm:
           requires:
-            - back-ee-push-deployment-docker-image
+            - back-push-deployment-docker-image
           filters:
             branches:
               only:
@@ -769,9 +769,9 @@ workflows:
           compose_file: docker-compose-production-benelux.yml
           stack_name: cl2-prd-bnlx-stack
           env_file: ".env-production-benelux"
-      - back-ee-deploy-to-swarm:
+      - back-deploy-to-swarm:
           requires:
-            - back-ee-push-deployment-docker-image
+            - back-push-deployment-docker-image
           filters:
             branches:
               only:
@@ -780,9 +780,9 @@ workflows:
           compose_file: docker-compose-production.yml
           env_file: ".env-web"
           stack_name: "cl2"
-      - back-ee-deploy-to-swarm:
+      - back-deploy-to-swarm:
           requires:
-            - back-ee-push-deployment-docker-image
+            - back-push-deployment-docker-image
           filters:
             branches:
               only:
@@ -791,9 +791,9 @@ workflows:
           compose_file: docker-compose-production.yml
           env_file: ".env-web"
           stack_name: "cl2"
-      - back-ee-deploy-to-swarm:
+      - back-deploy-to-swarm:
           requires:
-            - back-ee-push-deployment-docker-image
+            - back-push-deployment-docker-image
           filters:
             branches:
               only:
@@ -802,9 +802,9 @@ workflows:
           compose_file: docker-compose-production.yml
           env_file: ".env-web"
           stack_name: "cl2"
-      - back-ee-deploy-to-swarm:
+      - back-deploy-to-swarm:
           requires:
-            - back-ee-push-deployment-docker-image
+            - back-push-deployment-docker-image
           filters:
             branches:
               only:
@@ -815,13 +815,13 @@ workflows:
           stack_name: "cl2"
 
   # FRONT-END
-  front-ee:
+  front:
     when:
       and:
         - not: <<pipeline.parameters.run_deploy>>
         - << pipeline.parameters.front >>
     jobs:
-      - front-ee-test
+      - front-test
       - front-lint:
           context: citizenlab-ee-environment
           filters:
@@ -862,39 +862,39 @@ workflows:
                 - /l10n_.*/
                 - master
                 - production
-      - front-ee-trigger-deploy:
+      - front-trigger-deploy:
           context: circleci-api-token
           requires:
-            - front-ee-test
+            - front-test
           filters:
             branches:
               only:
                 - master
                 - production
 
-  front-ee-deploy:
+  front-deploy:
     when:
       and:
         - <<pipeline.parameters.run_deploy>>
         - <<pipeline.parameters.front>>
     jobs:
-      - front-ee-deploy-staging:
+      - front-deploy-staging:
           filters:
             branches:
               only:
                 - master
           context:
             - citizenlab-ee-environment
-      - front-ee-deploy-production:
+      - front-deploy-production:
           filters:
             branches:
               only:
                 - production
           context:
             - citizenlab-ee-environment
-      - front-ee-test-lighthouse:
+      - front-test-lighthouse:
           requires:
-            - front-ee-deploy-staging
+            - front-deploy-staging
           filters:
             branches:
               only: master
@@ -934,13 +934,13 @@ workflows:
   manual-templates:
     when: << pipeline.parameters.templates >>
     jobs:
-      - back-build-ee-docker-image:
+      - back-build-docker-image:
           context:
             - docker-hub-access
             - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
-      - back-ee-generate-tenant-templates:
+      - back-generate-tenant-templates:
           name: "Europe (mainland)"
           context:
             - docker-hub-access
@@ -949,7 +949,7 @@ workflows:
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
           env_file: ".env-production-benelux"
-      - back-ee-generate-tenant-templates:
+      - back-generate-tenant-templates:
           name: "South America"
           context:
             - docker-hub-access
@@ -958,7 +958,7 @@ workflows:
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_SAM
           env_file: ".env-web"
-      - back-ee-generate-tenant-templates:
+      - back-generate-tenant-templates:
           name: "Canada"
           context:
             - docker-hub-access
@@ -967,7 +967,7 @@ workflows:
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CAN
           env_file: ".env-web"
-      - back-ee-generate-tenant-templates:
+      - back-generate-tenant-templates:
           name: "US West"
           context:
             - docker-hub-access
@@ -976,7 +976,7 @@ workflows:
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_USW
           env_file: ".env-web"
-      - back-ee-generate-tenant-templates:
+      - back-generate-tenant-templates:
           name: "UK"
           context:
             - docker-hub-access
@@ -985,26 +985,26 @@ workflows:
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_UK
           env_file: ".env-web"
-      - back-ee-test-tenant-templates:
+      - back-test-tenant-templates:
           context:
             - docker-hub-access
             - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           requires:
-            - back-build-ee-docker-image
+            - back-build-docker-image
             - "Europe (mainland)"
             - "South America"
             - "Canada"
             - "US West"
             - "UK"
-      - back-ee-release-tenant-templates:
+      - back-release-tenant-templates:
           context:
             - docker-hub-access
             - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           requires:
-            - back-ee-test-tenant-templates
+            - back-test-tenant-templates
           post-steps:
             - slack/notify:
                 event: pass
@@ -1025,13 +1025,13 @@ workflows:
               only:
                 - production
     jobs:
-      - back-build-ee-docker-image:
+      - back-build-docker-image:
           context:
             - docker-hub-access
             - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
-      - back-ee-generate-tenant-templates:
+      - back-generate-tenant-templates:
           name: "Europe (mainland)"
           context:
             - docker-hub-access
@@ -1040,7 +1040,7 @@ workflows:
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
           env_file: ".env-production-benelux"
-      - back-ee-generate-tenant-templates:
+      - back-generate-tenant-templates:
           name: "South America"
           context:
             - docker-hub-access
@@ -1049,7 +1049,7 @@ workflows:
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_SAM
           env_file: ".env-web"
-      - back-ee-generate-tenant-templates:
+      - back-generate-tenant-templates:
           name: "Canada"
           context:
             - docker-hub-access
@@ -1058,7 +1058,7 @@ workflows:
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CAN
           env_file: ".env-web"
-      - back-ee-generate-tenant-templates:
+      - back-generate-tenant-templates:
           name: "US West"
           context:
             - docker-hub-access
@@ -1067,7 +1067,7 @@ workflows:
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_USW
           env_file: ".env-web"
-      - back-ee-generate-tenant-templates:
+      - back-generate-tenant-templates:
           name: "UK"
           context:
             - docker-hub-access
@@ -1076,26 +1076,26 @@ workflows:
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_UK
           env_file: ".env-web"
-      - back-ee-test-tenant-templates:
+      - back-test-tenant-templates:
           context:
             - docker-hub-access
             - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           requires:
-            - back-build-ee-docker-image
+            - back-build-docker-image
             - "Europe (mainland)"
             - "South America"
             - "Canada"
             - "US West"
             - "UK"
-      - back-ee-release-tenant-templates:
+      - back-release-tenant-templates:
           context:
             - docker-hub-access
             - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           requires:
-            - back-ee-test-tenant-templates
+            - back-test-tenant-templates
           post-steps:
             - slack/notify:
                 event: pass
