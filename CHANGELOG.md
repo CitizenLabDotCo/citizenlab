@@ -1,5 +1,9 @@
 # Changelog
 
+## Next release
+
+- [CL-2682] Show Content Warnings tab in activity manager for all platforms
+
 ## 2023-01-26 (2)
 
 ### Fixed
