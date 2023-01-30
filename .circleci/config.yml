@@ -130,7 +130,7 @@ jobs:
           event: pass
           template: basic_success_1
 
-  # BACK-END ESSENTIAL
+  # BACK-END
   back-bundle-audit:
     resource_class: small
     executor:
@@ -155,7 +155,6 @@ jobs:
     steps:
       - run: bundle exec license_finder
 
-  # BACK-END EE
   back-build-ee-docker-image:
     working_directory: ~/
     docker:
@@ -480,7 +479,7 @@ jobs:
       - run: git diff --quiet app/translations && git diff --staged --quiet app/translations || git commit -m "Translations updated by CI (extract-intl)"
       - run: git push origin $CIRCLE_BRANCH
 
-  # FRONT-END EE
+  # FRONT-END
   front-ee-test:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
@@ -665,7 +664,7 @@ workflows:
                 - master
                 - production
 
-  # BACK-END EE
+  # BACK-END
   back-ee:
     when:
       and:
@@ -815,7 +814,7 @@ workflows:
           env_file: ".env-web"
           stack_name: "cl2"
 
-  # FRONT-END EE
+  # FRONT-END
   front-ee:
     when:
       and:
