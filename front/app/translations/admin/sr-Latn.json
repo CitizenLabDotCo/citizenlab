@@ -1007,6 +1007,8 @@
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.editButtonLabel": "Izmenite",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.editCauseSubtitle": "Povod predstavlja akciju ili aktivnost u kojoj građani mogu uzeti volontersko učešće.",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.editCauseTitle": "Izmeni povod",
+  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.emptyDescriptionErrorMessage": "Dodaj opis",
+  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.emptyTitleErrorMessage": "Dodaj naslov",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.exportVolunteers": "Izvezi spisak volontera",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.newCauseSubtitle": "Povod predstavlja akciju ili aktivnost u kojoj građani mogu uzeti volontersko učešće.",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.newCauseTitle": "Novi povod",
