@@ -288,4 +288,73 @@ describe IdeaCustomFieldsService do
 
     end
   end
+
+  context 'validate form structure' do
+    describe 'ideation form' do
+      let(:custom_form) { create :custom_form, :with_default_fields, participation_context: project }
+
+      it 'returns no errors if the form has a section field as the first element' do
+        fields = service.all_fields
+        errors = {}
+        service.check_form_structure(fields, errors)
+
+        expect(errors.length).to eq 0
+      end
+
+      it 'returns errors if the first field is not a section' do
+        fields = service.all_fields
+        fields.delete(fields.find_by(code: 'ideation_section1'))
+        errors = {}
+        service.check_form_structure(fields, errors)
+
+        expect(errors.length).to eq 1
+      end
+
+      it 'returns errors if form includes any page fields' do
+        create(:custom_field_page, resource: custom_form, key: 'a_page')
+        fields = service.all_fields
+        errors = {}
+        service.check_form_structure(fields, errors)
+
+        expect(errors.length).to eq 1
+      end
+    end
+
+    describe 'survey form' do
+      let(:survey_project) { create :continuous_project, participation_method: 'native_survey' }
+      let(:custom_form) { create :custom_form, participation_context: survey_project }
+
+      it 'returns no errors if the form has a page field as the first element' do
+        create(:custom_field_page, resource: custom_form, key: 'a_page')
+        fields = service.all_fields
+        errors = {}
+        service.check_form_structure(fields, errors)
+
+        expect(errors.length).to eq 0
+      end
+
+      it 'returns errors if the first field is not a page' do
+        create(:custom_field, resource: custom_form, key: 'not_a_page')
+        create(:custom_field_page, resource: custom_form, key: 'a_page')
+        fields = service.all_fields
+        errors = {}
+        service.check_form_structure(fields, errors)
+
+        expect(errors.length).to eq 1
+        expect(errors['0']).not_to be_nil
+      end
+
+      it 'returns errors if form includes any section fields' do
+        create(:custom_field_page, resource: custom_form, key: 'a_page')
+        create(:custom_field_section, resource: custom_form, key: 'a_section')
+        fields = service.all_fields
+        errors = {}
+        service.check_form_structure(fields, errors)
+
+        expect(errors.length).to eq 1
+        expect(errors['1']).not_to be_nil
+      end
+
+    end
+  end
 end
