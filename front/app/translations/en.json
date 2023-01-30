@@ -561,7 +561,7 @@
   "app.components.formBuilder.confirmDeleteFieldWithLogicButtonText": "Yes, delete page",
   "app.components.formBuilder.content": "Content",
   "app.components.formBuilder.default": "Default",
-  "app.components.formBuilder.defaultField": "Default field",
+  "app.components.formBuilder.defaultContent": "Default content",
   "app.components.formBuilder.delete": "Delete",
   "app.components.formBuilder.deleteButtonLabel": "Delete",
   "app.components.formBuilder.deleteFieldWithLogicConfirmationQuestion": "Deleting this page will also delete the logic associated with it. Are you sure you want to delete it?",
