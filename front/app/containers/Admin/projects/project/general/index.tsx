@@ -3,7 +3,9 @@ import { Multiloc, UploadFile, IOption } from 'typings';
 import { isEmpty, get, isString } from 'lodash-es';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { INewProjectCreatedEvent } from 'containers/Admin/projects/all/CreateProject';
-import { TPreviewDevice } from 'components/admin/SelectPreviewDevice';
+import SelectPreviewDevice, {
+  TPreviewDevice,
+} from 'components/admin/SelectPreviewDevice';
 
 // components
 import ProjectStatusPicker from './components/ProjectStatusPicker';
@@ -34,7 +36,6 @@ import {
 import ProjectFolderSelect from './components/ProjectFolderSelect';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
-import SelectPreviewDevice from 'components/admin/SelectPreviewDevice';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -51,7 +52,8 @@ import {
   updateProject,
   IProjectFormState,
   IProjectData,
-  CARD_IMAGE_ASPECT_RATIO,
+  CARD_IMAGE_ASPECT_RATIO_WIDTH,
+  CARD_IMAGE_ASPECT_RATIO_HEIGHT,
 } from 'services/projects';
 import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
 import { addProjectImage, deleteProjectImage } from 'services/projectImages';
@@ -588,7 +590,8 @@ const AdminProjectsProjectGeneral = () => {
               <ImageCropperContainer
                 image={projectCardImage}
                 onComplete={handleProjectCardImageOnCompleteCropping}
-                aspect={CARD_IMAGE_ASPECT_RATIO / 1}
+                aspectRatioWidth={CARD_IMAGE_ASPECT_RATIO_WIDTH}
+                aspectRatioHeight={CARD_IMAGE_ASPECT_RATIO_HEIGHT}
                 onRemove={handleCroppedProjectCardImageOnRemove}
               />
             </Box>

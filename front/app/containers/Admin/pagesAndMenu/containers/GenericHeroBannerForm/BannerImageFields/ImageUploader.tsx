@@ -50,7 +50,8 @@ const ImageUploader = ({
           <ImageCropperContainer
             image={headerLocalDisplayImage}
             onComplete={onAddImage}
-            aspect={3 / 1}
+            aspectRatioWidth={3}
+            aspectRatioHeight={1}
             onRemove={onRemoveImageFromUploader}
           />
         </Box>

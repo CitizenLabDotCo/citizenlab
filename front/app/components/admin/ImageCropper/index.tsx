@@ -8,14 +8,16 @@ import RemoveImageButton from 'components/UI/RemoveImageButton';
 type ImageCropperProps = {
   image: UploadFile | null;
   onComplete: (image: string) => void;
-  aspect: number;
+  aspectRatioWidth: number;
+  aspectRatioHeight: number;
   onRemove: () => void;
 };
 
 const ImageCropper = ({
   image,
   onComplete,
-  aspect,
+  aspectRatioWidth,
+  aspectRatioHeight,
   onRemove,
 }: ImageCropperProps) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -51,7 +53,7 @@ const ImageCropper = ({
             image={image.base64}
             crop={crop}
             zoom={1}
-            aspect={aspect}
+            aspect={aspectRatioWidth / aspectRatioHeight}
             onCropChange={setCrop}
             onCropComplete={onCropComplete}
             objectFit="contain"

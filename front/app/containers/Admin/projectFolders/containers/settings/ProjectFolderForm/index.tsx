@@ -36,10 +36,14 @@ import { validateSlug } from 'utils/textUtils';
 import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
 import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
-import SelectPreviewDevice from 'components/admin/SelectPreviewDevice';
-import { TPreviewDevice } from 'components/admin/SelectPreviewDevice';
+import SelectPreviewDevice, {
+  TPreviewDevice,
+} from 'components/admin/SelectPreviewDevice';
 import ProjectFolderCardImageDropzone from './ProjectFolderCardImageDropzone';
-import { CARD_IMAGE_ASPECT_RATIO } from 'services/projects';
+import {
+  CARD_IMAGE_ASPECT_RATIO_HEIGHT,
+  CARD_IMAGE_ASPECT_RATIO_WIDTH,
+} from 'services/projects';
 
 type IProjectFolderSubmitState =
   | 'disabled'
@@ -538,7 +542,8 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               <ImageCropperContainer
                 image={folderCardImage}
                 onComplete={getHandler(setCroppedFolderCardBase64)}
-                aspect={CARD_IMAGE_ASPECT_RATIO / 1}
+                aspectRatioWidth={CARD_IMAGE_ASPECT_RATIO_WIDTH}
+                aspectRatioHeight={CARD_IMAGE_ASPECT_RATIO_HEIGHT}
                 onRemove={handleCroppedFolderCardImageOnRemove}
               />
             </Box>

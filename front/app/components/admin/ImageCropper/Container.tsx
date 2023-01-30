@@ -5,11 +5,18 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import ImageCropper, { ImageCropperProps } from '.';
 import messages from './messages';
 
-const Container = ({ aspect, ...otherProps }: ImageCropperProps) => {
+const Container = ({
+  aspectRatioWidth,
+  aspectRatioHeight,
+  ...otherProps
+}: ImageCropperProps) => {
   const { formatMessage } = useIntl();
   return (
     <Box>
-      <ImageCropper aspect={aspect} {...otherProps} />
+      <ImageCropper
+        {...{ aspectRatioWidth, aspectRatioHeight }}
+        {...otherProps}
+      />
       <Warning>
         <Text>
           <FormattedMessage
@@ -24,7 +31,7 @@ const Container = ({ aspect, ...otherProps }: ImageCropperProps) => {
                   <FormattedMessage {...messages.infoLinkText} />
                 </a>
               ),
-              aspect,
+              aspect: `${aspectRatioWidth}:${aspectRatioHeight}`,
             }}
           />
         </Text>
