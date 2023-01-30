@@ -149,23 +149,6 @@ jobs:
           template: basic_success_1
 
   # BACK-END ESSENTIAL
-  back-build-essential-docker-image:
-    working_directory: /citizenlab
-    docker:
-      - image: docker:stable-git
-    steps:
-      - checkout:
-          path: /citizenlab
-
-      - setup_remote_docker:
-          docker_layer_caching: true
-
-      - run: |
-          docker build -t citizenlabdotco/back-essential:$CIRCLE_SHA1 -f back/Dockerfile .
-      - run: |
-          docker login -u $DOCKER_USER -p $DOCKER_PASS
-          docker push citizenlabdotco/back-essential:$CIRCLE_SHA1
-
   back-bundle-audit:
     resource_class: small
     executor:
@@ -180,28 +163,6 @@ jobs:
       # But we can't, due to unmaintained gems that don't work with Omniauth 2.0.
       # See https://github.com/rubysec/bundler-audit
       - run: bundle exec bundle-audit check --update --ignore CVE-2015-9284
-
-  back-test:
-    resource_class: small
-    executor:
-      name: cl2-back-essential-executor
-      image-tag: $CIRCLE_SHA1
-    working_directory: /cl2_back
-    parallelism: 4
-    environment:
-      RAILS_ENV: test
-      COVERAGE: ON
-    steps:
-      - wait-for-postgres
-      - run: |
-          rake db:create
-          rake db:schema:load
-      - run: |
-          TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" "engines/free/*/spec/**/*_spec.rb" | circleci tests split  --split-by=timings)
-          echo $TESTFILES
-          bundle exec rspec --format documentation --profile --format RspecJunitFormatter -o spec/reports/rspec.xml -- ${TESTFILES}
-      - store_test_results:
-          path: spec/reports
 
   back-license-check:
     resource_class: small
@@ -776,31 +737,6 @@ workflows:
                 - /l10n_.*/
                 - master
                 - production
-
-  # BACK-END ESSENTIAL
-  back-essential:
-    when:
-      and:
-        - not: <<pipeline.parameters.run_deploy>>
-        - << pipeline.parameters.back >>
-    jobs:
-      - back-build-essential-docker-image:
-          context: docker-hub-access
-          filters:
-            branches:
-              ignore:
-                - crowdin_master
-                - /l10n_.*/
-      - back-test:
-          context: docker-hub-access
-          requires:
-            - back-build-essential-docker-image
-          filters:
-            branches:
-              ignore:
-                - crowdin_master
-                - /l10n_.*/
-
 
   # BACK-END EE
   back-ee:
