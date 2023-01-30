@@ -1,6 +1,7 @@
 import React from 'react';
 
 // hooks
+import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 
 // craft
@@ -26,19 +27,46 @@ import messages from './messages';
 import { isNilOrError } from 'utils/helperUtils';
 import getProjectPeriod from 'containers/Admin/reporting/utils/getProjectPeriod';
 import moment from 'moment';
+import { IProjectData } from 'services/projects';
+import { IPhaseData } from 'services/phases';
 
 interface Props {
   reportId: string;
   projectId: string;
 }
 
+const getTemplateType = (project: IProjectData, phases: IPhaseData[]) => {
+  const hasPhases = project.attributes.process_type === 'continuous';
+
+  if (hasPhases) {
+    for (const phase of phases) {
+      const participationMethod = phase.attributes.participation_method;
+
+      if (participationMethod === 'ideation') return 'ideation';
+      if (participationMethod === 'native_survey') return 'native_survey';
+    }
+
+    return 'other';
+  }
+
+  const participationMethod = project.attributes.participation_method;
+
+  if (participationMethod === 'ideation') return 'ideation';
+  if (participationMethod === 'native_survey') return 'native_survey';
+  return 'other';
+};
+
 const ProjectTemplate = ({ reportId, projectId }: Props) => {
   const { formatMessage } = useIntl();
+  const project = useProject({ projectId });
   const phases = usePhases(projectId);
 
-  if (isNilOrError(phases)) return null;
+  if (isNilOrError(project) || isNilOrError(phases)) return null;
 
-  const hasPhases = phases.length > 0;
+  const templateType = getTemplateType(project, phases);
+
+  const hasPhases =
+    project.attributes.process_type === 'continuous' && phases.length > 0;
 
   const projectPeriod = hasPhases
     ? getProjectPeriod(phases)
