@@ -1007,6 +1007,8 @@
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.editButtonLabel": "Düzenle",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.editCauseSubtitle": "Amaç, katılımcıların gönüllü olabileceği bir eylem veya faaliyettir.",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.editCauseTitle": "Amacı düzenleyin",
+  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.emptyDescriptionErrorMessage": "Add a description",
+  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.emptyTitleErrorMessage": "Add a title",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.exportVolunteers": "Gönüllüleri dışa aktar",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.newCauseSubtitle": "Amaç, katılımcıların gönüllü olabileceği bir eylem veya faaliyettir.",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.newCauseTitle": "Yeni amaç",

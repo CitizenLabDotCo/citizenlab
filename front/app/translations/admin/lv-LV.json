@@ -1007,6 +1007,8 @@
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.editButtonLabel": "Rediģēt",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.editCauseSubtitle": "Pasākums ir rīcība vai darbība, kurā dalībnieki var iesaistīties kā brīvprātīgie.",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.editCauseTitle": "Rediģēt pasākumu",
+  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.emptyDescriptionErrorMessage": "Add a description",
+  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.emptyTitleErrorMessage": "Add a title",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.exportVolunteers": "Eksportēt brīvprātīgos",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.newCauseSubtitle": "Pasākums ir rīcība vai darbība, kurā dalībnieki var iesaistīties kā brīvprātīgie.",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.newCauseTitle": "Jauns pasākums",
