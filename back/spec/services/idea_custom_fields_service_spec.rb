@@ -352,7 +352,6 @@ describe IdeaCustomFieldsService do
         expect(errors.length).to eq 1
         expect(errors['1']).not_to be_nil
       end
-
     end
   end
 end
