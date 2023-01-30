@@ -284,7 +284,7 @@
   "app.components.ParticipationCTABars.userHasParticipated": "Vous avez participé à ce projet.",
   "app.components.ParticipationCTABars.volunteer": "Bénévole",
   "app.components.ParticipationCTABars.xDaysLeft": "{timeLeft, plural, =0 {Less than a day} one {# day left} other {# days}} left",
-  "app.components.ParticipationCTABars.xWeeksLeft": "{timeLeft}  weeks left",
+  "app.components.ParticipationCTABars.xWeeksLeft": "{timeLeft} semaines restantes",
   "app.components.PasswordInput.a11y_passwordHidden": "Mot de passe masqué",
   "app.components.PasswordInput.a11y_passwordVisible": "Mot de passe visible",
   "app.components.PasswordInput.a11y_strength1Password": "Niveau de sécurité du mot de passe insuffisant",
