@@ -1007,6 +1007,8 @@
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.editButtonLabel": "Bewerk",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.editCauseSubtitle": "Een actie is een activiteit waarvoor mensen zich als vrijwilliger kunnen opgeven.",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.editCauseTitle": "Bewerk de actie",
+  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.emptyDescriptionErrorMessage": "Een beschrijving toevoegen",
+  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.emptyTitleErrorMessage": "Een titel toevoegen",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.exportVolunteers": "Exporteer de vrijwilligers",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.newCauseSubtitle": "Een actie is een activiteit waarvoor mensen zich als vrijwilliger kunnen opgeven.",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.newCauseTitle": "Nieuwe actie",
