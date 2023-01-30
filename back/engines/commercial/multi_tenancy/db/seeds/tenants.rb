@@ -112,7 +112,7 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            content_builder: {
+            project_description_builder: {
               enabled: true,
               allowed: true
             },
@@ -383,6 +383,7 @@ module MultiTenancy
           })
         )
 
+        binding.pry
         TenantService.new.initialize_tenant(tenant_attrs, config_attrs)
       end
 
