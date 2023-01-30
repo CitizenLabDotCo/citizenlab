@@ -146,7 +146,7 @@ en:
         project:
           title: What is your project ?
         issue:
-          title: What is your issue ?
+          title: What is your comment?
         option:
           title: What is your option ?
       details:
@@ -205,3 +205,8 @@ en:
       title: 'Your question'
       option1: 'Option 1'
       option2: 'Option 2'
+    survey_end_page:
+      title: 'Survey end'
+      description: "Please submit your answers by selecting 'Submit survey' below."
+  project_copy:
+    title_suffix: 'Copy'

@@ -14,8 +14,6 @@ import Outlet from 'components/Outlet';
 import { Box } from '@citizenlab/cl2-component-library';
 import NewIdeaButton from './ideas/NewIdeaButton';
 import NewIdeaButtonDropdown from './ideas/NewIdeaButtonDropdown';
-import FeatureFlag from 'components/FeatureFlag';
-import Tab from './permissions/components/Tab';
 
 // resources
 import GetFeatureFlag, {
@@ -95,7 +93,9 @@ export class AdminProjectsProjectIndex extends PureComponent<
   Props & WrappedComponentProps & InjectedLocalized & WithRouterProps,
   State
 > {
-  constructor(props) {
+  constructor(
+    props: Props & WrappedComponentProps & InjectedLocalized & WithRouterProps
+  ) {
     super(props);
     const {
       intl: { formatMessage },
@@ -139,6 +139,11 @@ export class AdminProjectsProjectIndex extends PureComponent<
           name: 'survey-results',
         },
         {
+          label: formatMessage(messages.allowedInputTopicsTab),
+          name: 'topics',
+          url: 'allowed-input-topics',
+        },
+        {
           label: formatMessage(messages.phasesTab),
           url: 'timeline',
           name: 'phases',
@@ -153,6 +158,12 @@ export class AdminProjectsProjectIndex extends PureComponent<
           label: formatMessage(messages.eventsTab),
           url: 'events',
           name: 'events',
+        },
+        {
+          label: formatMessage(messages.permissionsTab),
+          url: `permissions`,
+          feature: 'private_projects',
+          name: 'permissions',
         },
       ],
       tabHideConditions: {
@@ -233,6 +244,27 @@ export class AdminProjectsProjectIndex extends PureComponent<
             return true;
           }
 
+          return false;
+        },
+        topics: function topicsTabHidden(project, phases) {
+          const processType = project.attributes.process_type;
+          const participationMethod = project.attributes.participation_method;
+          const hideTab =
+            (processType === 'continuous' &&
+              participationMethod !== 'ideation' &&
+              participationMethod !== 'budgeting') ||
+            (processType === 'timeline' &&
+              !isNilOrError(phases) &&
+              phases.filter((phase) => {
+                return (
+                  phase.attributes.participation_method === 'ideation' ||
+                  phase.attributes.participation_method === 'budgeting'
+                );
+              }).length === 0);
+
+          if (hideTab) {
+            return true;
+          }
           return false;
         },
         phases: function isPhasesTabHidden(project) {
@@ -374,9 +406,7 @@ export class AdminProjectsProjectIndex extends PureComponent<
             project={project}
             phases={phases}
           />
-          <FeatureFlag name="project_management">
-            <Tab onData={this.handleData} />
-          </FeatureFlag>
+
           <TopContainer>
             <GoBackButton onClick={this.goBack} />
             <ActionsContainer>

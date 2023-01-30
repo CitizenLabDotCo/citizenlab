@@ -78,6 +78,10 @@ describe('Idea edit page', () => {
     cy.get('@titleInput').should('contain.value', newIdeaTitle);
     cy.get('@descriptionInput').contains(newIdeaContent);
 
+    cy.get('.e2e-topics-picker')
+      .find('button.selected')
+      .should('have.length', 0);
+
     // add a topic
     cy.get('.e2e-topics-picker').find('button').eq(3).click();
 
@@ -107,11 +111,15 @@ describe('Idea edit page', () => {
 
     // save the form
     cy.get('.e2e-submit-idea-form').click();
-    cy.intercept(`**/ideas/${ideaId}`).as('ideaRequest');
-    cy.wait('@ideaRequest');
+    cy.intercept(`**/ideas/${ideaId}`).as('ideaPostRequest');
+    cy.wait('@ideaPostRequest');
 
     // verify updated idea page
     cy.location('pathname').should('eq', `/en/ideas/${ideaSlug}`);
+
+    cy.intercept(`**/ideas/by_slug/${ideaSlug}`).as('ideaRequest');
+    cy.wait('@ideaRequest');
+
     cy.get('#e2e-idea-show');
     cy.get('#e2e-idea-show #e2e-idea-title').contains(newIdeaTitle);
     cy.get('#e2e-idea-show #e2e-idea-description').contains(newIdeaContent);

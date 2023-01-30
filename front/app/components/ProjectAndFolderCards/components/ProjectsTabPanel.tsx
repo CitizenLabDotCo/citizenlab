@@ -7,7 +7,7 @@ import ProjectFolderCard from './ProjectFolderCard';
 
 // types
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import { BaseProps, TCardSize } from './ProjectsList';
+import { BaseProps, TCardSize } from './PublicationStatusTabs';
 import { PublicationTab } from '../';
 
 // utils

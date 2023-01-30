@@ -1,11 +1,6 @@
 import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 import { Moment } from 'moment';
-import React, {
-  FunctionComponent,
-  KeyboardEvent,
-  MouseEvent,
-  ReactElement,
-} from 'react';
+import React, { FunctionComponent, ReactElement } from 'react';
 
 import PageLoading from 'components/UI/PageLoading';
 import { OutletRenderProps } from 'components/Outlet';
@@ -24,17 +19,14 @@ import { Point } from 'components/UI/LeafletMap/typings';
 import { TVerificationStep } from 'events/verificationModal';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import { NavItem } from 'containers/Admin/sideBar';
-import { BannerButtonStyle } from 'components/LandingPages/citizen/BannerButton';
 import { LatLngTuple } from 'leaflet';
 import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
 import { GetIdeaChildProps } from 'resources/GetIdea';
 import { GetInitiativeChildProps } from 'resources/GetInitiative';
 import { GetLocaleChildProps } from 'resources/GetLocale';
 import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
-import { CustomizedButtonConfig } from 'services/appConfiguration';
 import { ICommentData } from 'services/comments';
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
-import { THomepageBannerLayout } from 'services/homepageSettings';
 import { TNotificationData } from 'services/notifications';
 import { IPhaseData } from 'services/phases';
 import { TVerificationMethod } from 'services/verificationMethods';
@@ -47,7 +39,7 @@ import {
   Multiloc,
 } from 'typings';
 import { IntlFormatters } from 'react-intl';
-import { StatCardProps } from '../modules/commercial/analytics/admin/hooks/useStatCard/typings';
+import { StatCardProps } from '../modules/commercial/analytics/admin/components/StatCard/useStatCard/typings';
 
 export type ITabsOutlet = {
   formatMessage: IntlFormatters['formatMessage'];
@@ -256,17 +248,6 @@ export interface OutletsPropertyMap {
     notification: TNotificationData;
   };
   'app.containers.HomePage.EventsWidget': Record<string, any>;
-  'app.containers.HomePage.SignedOutHeader.index': {
-    homepageBannerLayout: THomepageBannerLayout;
-  };
-  'app.containers.HomePage.SignedOutHeader.CTA': {
-    buttonStyle: BannerButtonStyle;
-    signUpIn: (event: MouseEvent | KeyboardEvent) => void;
-  };
-  'app.containers.HomePage.SignedInHeader.CTA': {
-    customizedButtonConfig?: CustomizedButtonConfig;
-    buttonStyle: BannerButtonStyle;
-  };
   'app.components.SignUpIn.AuthProviders.ContainerStart': {
     flow: TSignUpInFlow;
     onContinue: (authProvider: AuthProvider) => void;
@@ -275,6 +256,9 @@ export interface OutletsPropertyMap {
     string,
     any
   >;
+  'app.containers.Admin.reporting.components.Tabs': {
+    onData: (tabs: ITab[]) => void;
+  };
 }
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
@@ -315,6 +299,7 @@ interface Routes {
   'admin.dashboards': RouteConfiguration[];
   'admin.project_templates': RouteConfiguration[];
   'admin.settings': RouteConfiguration[];
+  'admin.reporting': RouteConfiguration[];
 }
 
 export interface ParsedModuleConfiguration {
@@ -440,6 +425,10 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
       ),
       'admin.settings': parseModuleRoutes(
         mergedRoutes?.['admin.settings'],
+        RouteTypes.ADMIN
+      ),
+      'admin.reporting': parseModuleRoutes(
+        mergedRoutes?.['admin.reporting'],
         RouteTypes.ADMIN
       ),
     },

@@ -111,12 +111,11 @@ const PageEditor = ({ className, pageSlug }: Props) => {
   const handleSubmit =
     (pageId: string, remotePageFiles: RemoteFiles) =>
     async ({
-      slug,
       title_multiloc,
       top_info_section_multiloc,
       local_page_files,
     }: FormValues) => {
-      const fieldValues = { slug, title_multiloc, top_info_section_multiloc };
+      const fieldValues = { title_multiloc, top_info_section_multiloc };
       await updateCustomPage(pageId, fieldValues);
 
       if (!isNilOrError(local_page_files)) {
@@ -158,10 +157,8 @@ const PageEditor = ({ className, pageSlug }: Props) => {
                 title_multiloc: page.attributes.title_multiloc,
                 top_info_section_multiloc:
                   page.attributes.top_info_section_multiloc,
-                slug: page.attributes.slug,
                 local_page_files: remotePageFiles,
               }}
-              hideSlugInput
               onSubmit={handleSubmit(pageId, remotePageFiles)}
             />
           </EditionForm>

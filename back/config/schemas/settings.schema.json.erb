@@ -196,6 +196,7 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+
       "jsonforms_custom_fields": {
         "type": "object",
         "title": "Rework of user custom fields (experimental)",
@@ -208,15 +209,27 @@
         }
       },
 
-      "customizable_homepage_banner": {
+      "advanced_custom_pages": {
         "type": "object",
-        "title": "Customizable homepage banner",
-        "description": "Customizable homepage banner.",
+        "title": "Advanced Custom Pages",
+        "description":	"Advanced Custom Pages features.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "project_folders": {
+        "type": "object",
+        "title": "Project Folders",
+        "description": "Allow project folders.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
         }
       },
 
@@ -231,10 +244,11 @@
           "enabled": { "type": "boolean", "default": true }
         }
       },
-      "project_folders": {
+
+      "project_visibility": {
         "type": "object",
-        "title": "Project Folders",
-        "description": "Allow project folders.",
+        "title": "Project Visibility",
+        "description": "Admin can make projects visible only to certain groups of users (e.g., admin only, smart groups).",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

@@ -60,7 +60,7 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
             <ContentBuilderFrame editorData={editorData} />
           </Editor>
           {!isNilOrError(projectFiles) && (
-            <Box maxWidth="750px">
+            <Box maxWidth="750px" mb="25px">
               <FileAttachments files={projectFiles.data} />
             </Box>
           )}

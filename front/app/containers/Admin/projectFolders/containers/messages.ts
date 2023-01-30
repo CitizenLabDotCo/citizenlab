@@ -43,15 +43,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.descriptionInputLabel',
     defaultMessage: 'Description',
   },
-  headerImageInputLabel: {
-    id: 'app.containers.AdminPage.FoldersEdit.headerImageInputLabel',
-    defaultMessage: 'Header image',
-  },
-  projectFolderHeaderImageLabelTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.projectFolderHeaderImageLabelTooltip',
-    defaultMessage:
-      'This is the image displayed in the header on the folder page. The ideal dimensions for this image are a width between 1480 and 1280 pixels, and a height of 250 pixels.',
-  },
   projectFolderCardImageLabel: {
     id: 'app.containers.AdminPage.FoldersEdit.projectFolderCardImageLabel',
     defaultMessage: 'Folder card image',
@@ -148,5 +139,17 @@ export default defineMessages({
   archivedStatus: {
     id: 'app.containers.AdminPage.FoldersEdit.archivedStatus',
     defaultMessage: 'Archived',
+  },
+  folderName: {
+    id: 'app.containers.AdminPage.FoldersEdit.folderName',
+    defaultMessage: 'Folder name',
+  },
+  folderDescriptions: {
+    id: 'app.containers.AdminPage.FoldersEdit.folderDescriptions',
+    defaultMessage: 'Descriptions',
+  },
+  url: {
+    id: 'app.containers.AdminPage.FoldersEdit.url',
+    defaultMessage: 'URL',
   },
 });

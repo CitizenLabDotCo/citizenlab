@@ -12,10 +12,6 @@ module XlsxExport
       value_for(field)
     end
 
-    def visit_multiline_text(field)
-      # Not supported yet. Field type not used in native surveys, nor in idea forms.
-    end
-
     def visit_html(field)
       # Not supported yet. Field type not used in native surveys, nor in idea forms.
     end
@@ -81,6 +77,14 @@ module XlsxExport
 
     def visit_page(field)
       # The field does not capture data, so there is no value.
+    end
+
+    def visit_file_upload(field)
+      file_id = value_for(field)
+      return unless file_id
+
+      idea_file = model.idea_files.detect { |file| file.id == file_id }
+      idea_file.file.url
     end
 
     private

@@ -1,5 +1,132 @@
 # Changelog
 
+## 2023-01-30
+
+### Fixed
+
+- [CL-2651] Fix survey top bar issue on mobile
+- [CL-2682] Show Content Warnings tab in activity manager for all platforms
+
+## 2023-01-26 (2)
+
+### Fixed
+
+- [CL-2366] Hide 'Projects' card from overview dashboard
+
+### Added
+
+- [CL-2658] Most voted ideas widget for report builder
+
+## 2023-01-26
+
+### Fixed
+
+- Activity icon in admin navigation for Safari browsers
+
+## 2023-01-23 (2)
+
+### Fixed
+
+- [CL-2549] Reject all cookies when closing cookie banner
+
+## 2023-01-23
+
+### Fixed
+
+- [CL-2648] Two-column layout image width on tablet is fixed.
+- [CL-171] Status per recipient of sent email campaigns is shown again.
+
+## 2023-01-19
+
+### Fixed
+
+- [CL-2617] Showing native survey confimation modal multiple times after submission even after closing the modal
+
+## 2023-01-18
+
+### Fixed
+
+- [CL-2611] Show projects nested in folders on custom pages
+- [CL-2604] The signed in banner opacity is fixed when its opacity is set to 0 in AdminHQ
+
+## 2023-01-16
+
+### Added
+
+- [CL-2320] Image dimensions i2: folder & project banner images
+
+## 2023-01-13 (2)
+
+### Added
+
+- [CL-2214] Report builder MVP (behind feature flag)
+
+### Fixed
+
+- [CL-2597] Custom tags tab is once again visible in both projects and platform settings
+
+## 2023-01-13
+
+### Fixed
+
+- [CL-2339] Fixed slow displaying of attachments in timeline projects on a phase
+
+### Changed
+
+- [CL-2465] Allow project moderators to all dashboard data
+
+## 2023-01-12
+
+### Added
+
+- [CL-2340] Added file upload fields to survey forms.
+- [CL-2255] Show 'Invitation pending' in user group list, for users added to user group when invited, and who have not yet accepted the invitation.
+
+### Changed
+
+- [CL-2344] Removes content builder iframe URL whitelist.
+
+### Fixed
+
+- [CL-2555] Fixed broken two-column layout
+
+## 2023-01-10
+
+### Added
+
+- [CL-1849] Add new banner type to home and custom pages: fixed ratio
+
+### Fixed
+
+- [CL-1956] Fixed issue with ideation location pin moving to closest geocoded building.
+
+## 2022-12-30
+
+- [CL-1893] Added survey logic and new long text field.
+
+## 2022-12-27
+
+### Added
+
+- [CL-2255] New columns in User Excel export: registration_completed_at and invite_status.
+
+### Changed
+
+- [CL-2159] Do not allow registered users to take a native survey twice
+
+## 2022-12-20
+
+### Fixed
+
+- [CL-2319] The error that is shown when a custom page's title was not filled out now adjusts to the number of languages configured on the platform.
+- [CL-2318] The hero banner layout preview for phones didn't get the right dimensions.
+
+## 2022-12-14
+
+### Added
+
+- [CL-1552] Displaying projects based on area or topic on custom pages. Also events related to the projects can be shown.
+
 ## 2022-12-13
 
 ### Fixed

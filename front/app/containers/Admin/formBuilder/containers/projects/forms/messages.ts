@@ -22,6 +22,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.emptyOptionError',
     defaultMessage: 'Provide at least 1 answer',
   },
+  logicValidationError: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.logicValidationError',
+    defaultMessage: 'Logic may not link to prior pages',
+  },
   successMessage: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.successMessage',
     defaultMessage: 'Survey successfully saved',
@@ -29,5 +33,9 @@ export default defineMessages({
   downloadAllResults: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.downloadAllResults',
     defaultMessage: 'Download all survey results',
+  },
+  page: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.Page',
+    defaultMessage: 'Page',
   },
 });

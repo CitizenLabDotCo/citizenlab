@@ -52,14 +52,12 @@ export const HeaderTitle = styled.h1<{
   ${HeadingFontStyle};
   text-align: ${({ align }) => align};
   padding: 0;
+  margin: 0;
   margin-bottom: 10px;
 
-  ${media.tablet`
-    font-size: ${fontSizes.xxxl}px;
-  `}
-
   ${media.phone`
-    margin-bottom: 15px;
+    font-size: ${fontSizes.xl}px;
+    margin-bottom: 12px;
   `}
 `;
 
@@ -87,6 +85,12 @@ export const HeaderSubtitle = styled.h2<{
   padding: 0;
   margin: 0;
   margin-bottom: 15px;
+
+  ${media.phone`
+    font-size: ${fontSizes.m}px;
+    margin-bottom: 12px;
+    line-height: normal;
+  `}
 
   ${({ displayHeaderAvatars }) =>
     // needed because we don't always

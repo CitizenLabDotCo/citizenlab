@@ -1,6 +1,10 @@
 import React, { memo, useState, useEffect, useContext, useRef } from 'react';
 import { LayoutProps, RankedTester, rankWith } from '@jsonforms/core';
-import { JsonFormsDispatch, withJsonFormsLayoutProps } from '@jsonforms/react';
+import {
+  JsonFormsDispatch,
+  withJsonFormsLayoutProps,
+  useJsonForms,
+} from '@jsonforms/react';
 import { defaultStyles } from 'utils/styleUtils';
 import styled, { useTheme } from 'styled-components';
 import Ajv from 'ajv';
@@ -29,7 +33,10 @@ import {
   getPageSchema,
   PageCategorization,
   isPageCategorization,
+  PageType,
+  getFilteredDataForUserPath,
 } from 'components/Form/Components/Layouts/utils';
+import { isVisible } from '../Controls/visibilityUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 const StyledFormSection = styled(FormSection)`
@@ -60,8 +67,14 @@ const CLPageLayout = memo(
       useContext(FormContext);
     const topAnchorRef = useRef<HTMLInputElement>(null);
     const [currentStep, setCurrentStep] = useState<number>(0);
-    const uiPages = (uischema as PageCategorization).elements;
+    const [isLoading, setIsLoading] = useState(false);
+    // We can cast types because the tester made sure we only get correct values
+    const pageTypeElements = (uischema as PageCategorization)
+      .elements as PageType[];
+    const [uiPages, setUiPages] = useState<PageType[]>(pageTypeElements);
+    const [userPagePath] = useState<PageType[]>([]);
     const theme = useTheme();
+    const formState = useJsonForms();
     const isSmallerThanXlPhone = useBreakpoint('phone');
     const submitText = formSubmitText || messages.submit;
     const showSubmit = currentStep === uiPages.length - 1;
@@ -73,8 +86,22 @@ const CLPageLayout = memo(
       topAnchorRef.current;
 
     useEffect(() => {
+      // We can cast types because the tester made sure we only get correct values
+      const allPageTypeElements = (uischema as PageCategorization)
+        .elements as PageType[];
+      const visiblePages = allPageTypeElements.filter((element) => {
+        const isPageVisible = isVisible(
+          element,
+          formState.core?.data,
+          '',
+          customAjv,
+          allPageTypeElements
+        );
+        return isPageVisible;
+      });
+      setUiPages(visiblePages);
       setShowSubmitButton(false);
-    }, [setShowSubmitButton]);
+    }, [setShowSubmitButton, formState.core?.data, uischema]);
 
     const scrollToTop = () => {
       if (useTopAnchor) {
@@ -84,21 +111,30 @@ const CLPageLayout = memo(
       }
     };
 
-    const handleNextAndSubmit = () => {
+    const handleNextAndSubmit = async () => {
       if (showSubmit) {
-        onSubmit();
+        setIsLoading(true);
+        await onSubmit(getFilteredDataForUserPath(userPagePath, data));
         return;
       }
+
       const currentPageCategorization = uiPages[currentStep];
+      userPagePath.push(uiPages[currentStep]);
       if (
         customAjv.validate(
-          getPageSchema(schema, currentPageCategorization),
+          getPageSchema(
+            schema,
+            currentPageCategorization,
+            formState.core?.data,
+            customAjv
+          ),
           getSanitizedFormData(data)
         )
       ) {
         setShowAllErrors(false);
         scrollToTop();
         setCurrentStep(currentStep + 1);
+        setIsLoading(false);
       } else {
         setShowAllErrors(true);
       }
@@ -126,12 +162,12 @@ const CLPageLayout = memo(
               currentStep === index && (
                 <StyledFormSection key={index}>
                   {page.options.title && (
-                    <Title variant="h2" mt="0" mb="24px" color="tenantText">
+                    <Title variant="h2" mt="0" mb="24px" color="tenantPrimary">
                       {page.options.title}
                     </Title>
                   )}
                   {page.options.description && (
-                    <Box mb="48px">
+                    <Box mb={page.elements.length >= 1 ? '48px' : '28px'}>
                       <QuillEditedContent
                         fontWeight={400}
                         textColor={theme.colors.tenantText}
@@ -145,7 +181,7 @@ const CLPageLayout = memo(
                     </Box>
                   )}
                   {page.elements.map((elementUiSchema, index) => (
-                    <Box width="100%" mb="40px" key={index}>
+                    <Box width="100%" mb="28px" key={index}>
                       <JsonFormsDispatch
                         renderers={renderers}
                         cells={cells}
@@ -170,7 +206,7 @@ const CLPageLayout = memo(
               onClick={handleNextAndSubmit}
               data-cy={dataCyValue}
               mb="20px"
-              icon="chevron-right"
+              icon={showSubmit ? undefined : 'chevron-right'}
               iconPos="right"
               key={currentStep.toString()}
               bgColor={
@@ -178,6 +214,7 @@ const CLPageLayout = memo(
               }
               width="100%"
               boxShadow={defaultStyles.boxShadow}
+              processing={isLoading}
             >
               <FormattedMessage
                 {...(showSubmit ? submitText : messages.next)}
@@ -187,8 +224,10 @@ const CLPageLayout = memo(
               <Button
                 onClick={() => {
                   setCurrentStep(currentStep - 1);
+                  userPagePath.pop();
                   scrollToTop();
                 }}
+                data-cy="e2e-previous-page"
                 mb="20px"
                 icon="chevron-left"
                 buttonStyle="white"

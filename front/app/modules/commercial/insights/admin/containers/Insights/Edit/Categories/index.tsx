@@ -103,7 +103,7 @@ const CategoryButtonWithIcon = styled(CategoryButton)`
 
 const CategoryInfoBox = styled.div`
   background-color: ${colors.teal100};
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   color: ${colors.primary};
   border-radius: 3px;
   padding: 8px 20px;
@@ -416,7 +416,7 @@ const Categories = ({
             buttonStyle="white"
             mb="8px"
             textColor={colors.primary}
-            linkTo={`/admin/insights/${viewId}/detect`}
+            linkTo={`/admin/reporting/insights/${viewId}/detect`}
             data-testid="insightsDetectCategories"
           >
             {formatMessage(messages.detectCategories)}

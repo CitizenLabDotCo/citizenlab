@@ -21,6 +21,7 @@ export const TitleControl = ({
   required,
   uischema,
   label,
+  visible,
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
 
@@ -33,6 +34,11 @@ export const TitleControl = ({
     },
     [schema.type, handleChange, path]
   );
+
+  if (!visible) {
+    return null;
+  }
+
   return (
     <Box id="e2e-idea-title-input">
       <FormLabel

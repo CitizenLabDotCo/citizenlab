@@ -13,6 +13,7 @@ import {
   UISchemaElement,
   isCategorization,
   Translator,
+  Layout,
 } from '@jsonforms/core';
 import styled from 'styled-components';
 
@@ -38,6 +39,7 @@ import { APIErrorsContext, FormContext } from './contexts';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
 import { selectRenderers } from './formConfig';
+import { getFormSchemaAndData } from './utils';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`
@@ -75,7 +77,7 @@ export type ApiErrorGetter = (
 
 interface Props {
   schema: JsonSchema7;
-  uiSchema: UISchemaElement;
+  uiSchema: Layout;
   onSubmit: (formData: FormData) => Promise<any>;
   initialFormData?: any;
   title?: ReactElement;
@@ -167,19 +169,27 @@ const Form = memo(
       }
     }, [locale, processingInitialMultiloc, schema]);
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (formData?: any) => {
+      // Any specified formData has priority over data attribute
+      const submissionData = formData && formData.data ? formData.data : data;
       const sanitizedFormData = {};
-      forOwn(data, (value, key) => {
+      forOwn(submissionData, (value, key) => {
         sanitizedFormData[key] =
           value === null || value === '' || value === false ? undefined : value;
       });
       setData(sanitizedFormData);
       onChange?.(sanitizedFormData);
       setShowAllErrors(true);
-      if (customAjv.validate(schema, sanitizedFormData)) {
+      const [schemaToUse, dataWithoutHiddenFields] = getFormSchemaAndData(
+        schema,
+        uiSchema,
+        submissionData,
+        customAjv
+      );
+      if (customAjv.validate(schemaToUse, dataWithoutHiddenFields)) {
         setLoading(true);
         try {
-          await onSubmit(data as FormData);
+          await onSubmit(submissionData as FormData);
         } catch (e) {
           setApiErrors(e.json.errors);
         }

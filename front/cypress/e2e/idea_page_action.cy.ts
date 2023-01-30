@@ -46,27 +46,42 @@ describe('Idea show page actions', () => {
 
   describe('logged in as normal user', () => {
     describe('Vote', () => {
+      const ideaTitle = randomString();
+      let ideaId: string;
+      let projectId: string;
+      const ideaContent = randomString();
+
       before(() => {
         const firstName = randomString();
         const lastName = randomString();
         const email = randomEmail();
         const password = randomString();
-        const ideaTitle = randomString();
-        const ideaContent = randomString();
 
         cy.getProjectBySlug('an-idea-bring-it-to-your-council').then(
           (project) => {
-            const projectId = project.body.data.id;
-            cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
+            projectId = project.body.data.id;
+            cy.apiCreateIdea(projectId, ideaTitle, ideaContent).then((idea) => {
+              ideaId = idea.body.data.id;
+            });
             cy.apiSignup(firstName, lastName, email, password);
             cy.setLoginCookie(email, password);
-            cy.visit(`/ideas/${ideaTitle}`);
-            cy.get('#e2e-idea-show');
           }
         );
       });
 
+      after(() => {
+        if (ideaId) {
+          cy.apiRemoveIdea(ideaId);
+        }
+      });
+
       it('has working up and downvote buttons', () => {
+        cy.visit(`/ideas/${ideaTitle}`);
+        cy.intercept(`**/ideas/by_slug/${ideaTitle}`).as('ideaRequest');
+
+        cy.wait('@ideaRequest');
+        cy.get('#e2e-idea-show').should('exist');
+
         cy.get('.e2e-vote-controls')
           .find('.e2e-ideacard-upvote-button')
           .as('upvoteBtn');

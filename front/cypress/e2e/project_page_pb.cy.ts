@@ -1,5 +1,3 @@
-import { randomString } from '../support/commands';
-
 describe('Continuous PB project', () => {
   before(() => {
     cy.visit('/projects/participatory-budgeting');

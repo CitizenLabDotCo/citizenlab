@@ -29,18 +29,19 @@ import messages from './messages';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { getShowFilters, getShowFiltersLabel } from './show';
-import { useSearchParams } from 'react-router-dom';
 import clHistory from 'utils/cl-router/history';
 
 // typings
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
 import { PublicationTab } from '../..';
+import useURLQuery from 'utils/cl-router/useUrlQuery';
 
 const Title = styled.h2<{ hasPublications: boolean }>`
   color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.xl}px;
   font-weight: 500;
   line-height: normal;
+  margin: 0;
   padding: 0;
   width: 100%;
   text-align: center;
@@ -127,6 +128,7 @@ interface Props {
   availableTabs: PublicationTab[];
   showTitle: boolean;
   showSearch?: boolean;
+  showFilters: boolean;
   hasPublications: boolean;
   onChangeTopics: (topics: string[]) => void;
   onChangeAreas: (areas: string[]) => void;
@@ -142,6 +144,7 @@ const Header = ({
   availableTabs,
   showTitle,
   showSearch,
+  showFilters,
   hasPublications,
   onChangeTopics,
   onChangeAreas,
@@ -157,7 +160,7 @@ const Header = ({
   const localize = useLocalize();
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
-  const [searchParams] = useSearchParams();
+  const searchParams = useURLQuery();
   const [searchInputRef, setSearchInputRef] = useState<HTMLInputElement | null>(
     null
   );
@@ -188,13 +191,15 @@ const Header = ({
   });
 
   const showTabs = !noAdminPublicationsAtAll;
-  const showFilters = getShowFilters({
-    smallerThanXlPhone,
-    hasPublications,
-    statusCounts,
-    selectedTopics,
-    selectedAreas,
-  });
+  const displayFilters =
+    showFilters &&
+    getShowFilters({
+      smallerThanXlPhone,
+      hasPublications,
+      statusCounts,
+      selectedTopics,
+      selectedAreas,
+    });
   const showFiltersLabel = getShowFiltersLabel(
     topics,
     areas,
@@ -215,7 +220,7 @@ const Header = ({
     setSearchInputRef(ref);
   };
 
-  const shouldShowAreaAndTagFilters = !smallerThanXlPhone && showFilters;
+  const shouldShowAreaAndTagFilters = !smallerThanXlPhone && displayFilters;
 
   return (
     <div className={className}>
@@ -265,7 +270,7 @@ const Header = ({
         )}
       </Container>
 
-      {smallerThanXlPhone && showFilters && (
+      {smallerThanXlPhone && displayFilters && (
         <MobileFilters>
           <StyledSelectTopics
             selectedTopics={selectedTopics}

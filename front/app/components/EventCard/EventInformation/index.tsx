@@ -5,7 +5,7 @@ import moment from 'moment';
 // components
 import Link from 'utils/cl-router/Link';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import { Icon, Text } from '@citizenlab/cl2-component-library';
+import { Icon, Text, Box } from '@citizenlab/cl2-component-library';
 import FileAttachments from 'components/UI/FileAttachments';
 
 // hooks
@@ -310,9 +310,11 @@ const EventInformation = memo<Props & WrappedComponentProps>((props) => {
         </EventDescription>
       )}
 
-      {!isNilOrError(eventFiles) &&
-        eventFiles.length > 0 &&
-        showAttachments && <FileAttachments files={eventFiles} />}
+      {!isNilOrError(eventFiles) && eventFiles.length > 0 && showAttachments && (
+        <Box mb="25px">
+          <FileAttachments files={eventFiles} />
+        </Box>
+      )}
     </EventInformationContainer>
   );
 });

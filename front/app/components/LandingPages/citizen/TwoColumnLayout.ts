@@ -7,6 +7,7 @@ export const Container = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
+  background: white;
 
   ${media.phone`
     flex-direction: column;
@@ -16,11 +17,10 @@ export const Container = styled.div`
 
 export const HeaderImage = styled(Image)`
   height: ${homepageBannerLayoutHeights.two_column_layout.desktop}px;
-  max-width: 50%;
   overflow: hidden;
 
   ${media.phone`
-    max-width: 100%;
+    width: 100%;
     height: ${homepageBannerLayoutHeights.two_column_layout.phone}px;
   `}
 `;

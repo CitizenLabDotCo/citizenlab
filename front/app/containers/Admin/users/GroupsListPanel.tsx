@@ -174,7 +174,7 @@ export class GroupsListPanel extends React.PureComponent<
 > {
   subs: Subscription[] = [];
 
-  constructor(props) {
+  constructor(props: Props & Tracks) {
     super(props);
     this.state = {
       highlightedGroups: new Set([]),

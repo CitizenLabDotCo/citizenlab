@@ -24,6 +24,7 @@ const UserPickerControl = ({
   id,
   schema,
   required,
+  visible,
 }: ControlProps) => {
   const { formatMessage } = useIntl();
   const FieldLabel = () => {
@@ -43,6 +44,10 @@ const UserPickerControl = ({
       </Box>
     );
   };
+
+  if (!visible) {
+    return null;
+  }
 
   return (
     <>

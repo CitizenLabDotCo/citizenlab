@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, MouseEvent } from 'react';
 import { ManagerType, TFilterMenu } from '../../..';
 
 // services
@@ -78,7 +78,7 @@ const Row = ({
     onToggleSelect();
   };
 
-  const onClickTitle = (event) => {
+  const onClickTitle = (event: MouseEvent) => {
     event.preventDefault();
     event.stopPropagation();
 
@@ -95,14 +95,13 @@ const Row = ({
         <IdeaRow
           type={type}
           idea={post as IIdeaData}
+          statuses={statuses as IIdeaStatusData[]}
           phases={phases}
-          statuses={statuses}
           selection={selection}
           activeFilterMenu={activeFilterMenu}
           className={className}
           onClickCheckbox={onClickCheckbox}
           onClickTitle={onClickTitle}
-          nothingHappens={nothingHappens}
           locale={locale}
         />
       </Suspense>

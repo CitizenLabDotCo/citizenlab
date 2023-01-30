@@ -11,7 +11,7 @@ import ReadMoreWrapper from 'containers/ProjectsShowPage/shared/header/ReadMoreW
 // hooks
 import useProject from 'hooks/useProject';
 import useProjectFiles from 'hooks/useProjectFiles';
-import { useWindowSize, Title } from '@citizenlab/cl2-component-library';
+import { useWindowSize, Title, Box } from '@citizenlab/cl2-component-library';
 
 // i18n
 import T from 'components/T';
@@ -99,7 +99,9 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
             {!isNilOrError(projectFiles) &&
               projectFiles &&
               projectFiles.data.length > 0 && (
-                <FileAttachments files={projectFiles.data} />
+                <Box mb="25px">
+                  <FileAttachments files={projectFiles.data} />
+                </Box>
               )}
           </Left>
           <Right>

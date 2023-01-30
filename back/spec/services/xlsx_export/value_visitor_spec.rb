@@ -108,8 +108,8 @@ describe XlsxExport::ValueVisitor do
       context 'when there is a value' do
         let(:value) { "line 1\nline 2" }
 
-        it 'returns nil, because the field is not supported yet' do
-          expect(visitor.visit_multiline_text(field)).to be_nil
+        it 'returns the value for the report' do
+          expect(visitor.visit_multiline_text(field)).to eq value
         end
       end
     end
@@ -422,16 +422,9 @@ describe XlsxExport::ValueVisitor do
 
         context 'when there is one value' do
           let!(:file) { create(:idea_file, idea: model) }
-          let(:expected_report_value) do
-            if CitizenLab.ee?
-              %r{\A/uploads/.+/idea_file/file/#{file.id}/#{file.name}\Z}
-            else
-              %r{\A/uploads/idea_file/file/#{file.id}/#{file.name}\Z}
-            end
-          end
 
           it 'returns the value for the report' do
-            expect(visitor.visit_files(field)).to match expected_report_value
+            expect(visitor.visit_files(field)).to eq file.file.url
           end
         end
 
@@ -442,19 +435,12 @@ describe XlsxExport::ValueVisitor do
               :idea_file,
               idea: model,
               file: Rails.root.join('spec/fixtures/david.csv').open,
-              name: 'david.csv'
+              name: 'not_used_in_this_test.csv'
             )
-          end
-          let(:expected_report_value) do
-            if CitizenLab.ee?
-              %r{\A/uploads/.+/idea_file/file/#{file1.id}/#{file1.name}\n/uploads/.+/idea_file/file/#{file2.id}/#{file2.name}\Z}
-            else
-              %r{\A/uploads/idea_file/file/#{file1.id}/#{file1.name}\n/uploads/idea_file/file/#{file2.id}/#{file2.name}\Z}
-            end
           end
 
           it 'returns the value for the report' do
-            expect(visitor.visit_files(field)).to match expected_report_value
+            expect(visitor.visit_files(field)).to eq "#{file1.file.url}\n#{file2.file.url}"
           end
         end
       end
@@ -492,6 +478,35 @@ describe XlsxExport::ValueVisitor do
 
       it 'returns nil, because the field does not capture data' do
         expect(visitor.visit_page(field)).to be_nil
+      end
+    end
+
+    describe '#visit_file_upload' do
+      let(:input_type) { 'file_upload' }
+
+      context 'when there is no value' do
+        let(:value) { nil }
+
+        it 'returns nil' do
+          I18n.with_locale('nl-NL') do
+            expect(visitor.visit_file_upload(field)).to be_nil
+          end
+        end
+      end
+
+      context 'when there is a value' do
+        let(:model) { create :native_survey_response }
+        let!(:file1) { create(:idea_file, name: 'File1.pdf', idea: model) }
+        let!(:file2) { create(:idea_file, name: 'File2.pdf', idea: model) }
+        let(:value) { file1.id }
+
+        before do
+          model.update!(custom_field_values: { field_key => value })
+        end
+
+        it 'returns the value for the report' do
+          expect(visitor.visit_file_upload(field)).to eq file1.file.url
+        end
       end
     end
   end

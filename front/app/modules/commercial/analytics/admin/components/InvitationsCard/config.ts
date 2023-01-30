@@ -1,18 +1,18 @@
 import messages from './messages';
 
 // Utils
-import { getTimePeriodMoment } from '../../utils/resolution';
-import { formatCountValue } from '../../utils/parse';
-import { getDateFilter } from '../../utils/query';
-import { underscoreCase } from '../../hooks/useStatCard/parse';
+import { getTimePeriodMoment } from 'components/admin/GraphCards/_utils/resolution';
+import { formatCountValue } from 'components/admin/GraphCards/_utils/parse';
+import { getDateFilter } from 'components/admin/GraphCards/_utils/query';
+import { underscoreCase } from '../StatCard/useStatCard/parse';
 
 // Typings
 import {
   StatCardData,
   StatCardProps,
   StatCardConfig,
-} from '../../hooks/useStatCard/typings';
-import { Query, QuerySchema } from '../../services/analyticsFacts';
+} from '../StatCard/useStatCard/typings';
+import { Query, QuerySchema } from 'services/analyticsFacts';
 import moment, { Moment } from 'moment';
 
 // Type helps to keep this file and tests type safe although useStatCard returns a more generic object
@@ -89,7 +89,6 @@ export const invitationsConfig: StatCardConfig = {
     endAtMoment,
     resolution,
   }: StatCardProps): Query => {
-    // console.log(projectId);
     const todayMoment = moment();
     const lastPeriodMoment = getTimePeriodMoment(resolution);
 

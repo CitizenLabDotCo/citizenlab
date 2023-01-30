@@ -146,7 +146,7 @@ es:
         project:
           title: '¿Cuál es su proyecto?'
         issue:
-          title: '¿Cuál es su asunto?'
+          title: '¿Cuál es su respuesta?'
         option:
           title: '¿Cuál es su opción?'
       details:
@@ -205,3 +205,8 @@ es:
       title: 'Su pregunta'
       option1: 'Opción 1'
       option2: 'Opción 2'
+    survey_end_page:
+      title: 'Fin de la encuesta'
+      description: "Envíe sus respuestas seleccionando \"Enviar encuesta\" a continuación."
+  project_copy:
+    title_suffix: 'Copia'

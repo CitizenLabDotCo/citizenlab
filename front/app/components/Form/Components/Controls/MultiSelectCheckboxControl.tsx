@@ -28,12 +28,17 @@ const MultiSelectCheckboxControl = ({
   uischema,
   required,
   id,
+  visible,
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
 
   const options = getOptions(schema, 'multi');
 
-  const dataArray = Array.isArray(data) && data !== [] ? data : [];
+  const dataArray = Array.isArray(data) ? data : [];
+
+  if (!visible) {
+    return null;
+  }
 
   return (
     <>

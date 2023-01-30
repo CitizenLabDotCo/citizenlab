@@ -11,7 +11,7 @@ import SlugInput from 'components/admin/SlugInput';
 import ProjectTypePicker from './components/ProjectTypePicker';
 import TopicInputs from './components/TopicInputs';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
-import HeaderImageDropzone from './components/HeaderImageDropzone';
+import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
 import ProjectImageDropzone from './components/ProjectImageDropzone';
 import AttachmentsDropzone from './components/AttachmentsDropzone';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
@@ -52,16 +52,15 @@ import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
 import { addProjectImage, deleteProjectImage } from 'services/projectImages';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
 
 // utils
 import { validateSlug } from 'utils/textUtils';
 import validateTitle from './utils/validateTitle';
 import { isNilOrError } from 'utils/helperUtils';
 import eventEmitter from 'utils/eventEmitter';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
 
 export const TIMEOUT = 350;
 
@@ -70,9 +69,8 @@ export type TOnProjectAttributesDiffChangeFunction = (
   submitState?: ISubmitState
 ) => void;
 
-const AdminProjectsProjectGeneral = ({
-  intl: { formatMessage },
-}: WrappedComponentProps) => {
+const AdminProjectsProjectGeneral = () => {
+  const { formatMessage } = useIntl();
   const { projectId } = useParams();
   const project = useProject({ projectId });
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
@@ -94,8 +92,6 @@ const AdminProjectsProjectGeneral = ({
   // both in projectAttributesDiff and as separate state.
   const [projectType, setProjectType] =
     useState<IProjectFormState['projectType']>('timeline');
-  const [projectHeaderImage, setProjectHeaderImage] =
-    useState<IProjectFormState['projectHeaderImage']>(null);
   const [projectFiles, setProjectFiles] = useState<
     IProjectFormState['projectFiles']
   >([]);
@@ -120,11 +116,6 @@ const AdminProjectsProjectGeneral = ({
         setPublicationStatus(project.attributes.publication_status);
         setProjectType(project.attributes.process_type);
         setSlug(project.attributes.slug);
-        const headerUrl = project.attributes.header_bg.large;
-        const projectHeaderImage = headerUrl
-          ? await convertUrlToUploadFile(headerUrl, null, null)
-          : null;
-        setProjectHeaderImage(projectHeaderImage ? [projectHeaderImage] : null);
       }
     })();
   }, [project]);
@@ -179,10 +170,6 @@ const AdminProjectsProjectGeneral = ({
     })();
   }, [remoteProjectImages]);
 
-  function isUploadFile(file: UploadFile | null): file is UploadFile {
-    return file !== null;
-  }
-
   const handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
     setSubmitState('enabled');
     setProjectAttributesDiff((projectAttributesDiff) => ({
@@ -213,24 +200,12 @@ const AdminProjectsProjectGeneral = ({
     setProjectType(projectType);
   };
 
-  const handleHeaderOnAdd = (newHeader: UploadFile[]) => {
-    const newHeaderFile = newHeader[0];
-
-    setSubmitState('enabled');
+  const handleHeaderBgChange = (newImageBase64: string | null) => {
     setProjectAttributesDiff((projectAttributesDiff) => ({
       ...projectAttributesDiff,
-      header_bg: newHeaderFile.base64,
-    }));
-    setProjectHeaderImage([newHeaderFile]);
-  };
-
-  const handleHeaderOnRemove = async () => {
-    setProjectAttributesDiff((projectAttributesDiff) => ({
-      ...projectAttributesDiff,
-      header_bg: null,
+      header_bg: newImageBase64,
     }));
     setSubmitState('enabled');
-    setProjectHeaderImage(null);
   };
 
   const handleProjectImagesOnAdd = (projectImages: UploadFile[]) => {
@@ -504,15 +479,20 @@ const AdminProjectsProjectGeneral = ({
         />
 
         {/* Only show this field when slug is already saved to project (i.e. not when creating a new project, which uses this form as well) */}
-        {slug && (
-          <SlugInput
-            inputFieldId="project-slug"
-            slug={slug}
-            pathnameWithoutSlug={'projects'}
-            apiErrors={apiErrors}
-            showSlugErrorMessage={showSlugErrorMessage}
-            onSlugChange={handleSlugOnChange}
-          />
+        {!isNilOrError(project) && slug && (
+          <StyledSectionField>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.url} />
+            </SubSectionTitle>
+            <SlugInput
+              slug={slug}
+              pathnameWithoutSlug={'projects'}
+              apiErrors={apiErrors}
+              showSlugErrorMessage={showSlugErrorMessage}
+              onSlugChange={handleSlugOnChange}
+              showSlugChangedWarning={slug !== project.attributes.slug}
+            />
+          </StyledSectionField>
         )}
 
         <StyledSectionField>
@@ -581,10 +561,9 @@ const AdminProjectsProjectGeneral = ({
           />
         )}
 
-        <HeaderImageDropzone
-          projectHeaderImage={projectHeaderImage}
-          handleHeaderOnAdd={handleHeaderOnAdd}
-          handleHeaderOnRemove={handleHeaderOnRemove}
+        <HeaderBgUploader
+          imageUrl={project?.attributes.header_bg.large}
+          onImageChange={handleHeaderBgChange}
         />
 
         <ProjectImageDropzone
@@ -615,7 +594,7 @@ const AdminProjectsProjectGeneral = ({
   );
 };
 
-export default injectIntl(AdminProjectsProjectGeneral);
+export default AdminProjectsProjectGeneral;
 
 function getSelectedTopicIds(
   projectAttributesDiff: IUpdatedProjectProperties,

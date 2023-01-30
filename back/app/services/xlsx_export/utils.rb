@@ -40,6 +40,16 @@ module XlsxExport
       convert_to_text(html).tr("\n", ' ')
     end
 
+    def add_hyperlinks(sheet, hyperlink_indexes)
+      sheet.rows.drop(1).each do |row|
+        row.cells.each_with_index do |cell, idx|
+          next unless hyperlink_indexes.include? idx
+
+          sheet.add_hyperlink location: cell.value, ref: cell
+        end
+      end
+    end
+
     private
 
     # Return a copy of the string with the leading and trailing +char+ removed.

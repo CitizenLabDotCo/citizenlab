@@ -41,7 +41,8 @@ describe WebApi::V1::CustomFieldSerializer do
         ordering: 0,
         required: false,
         title_multiloc: { 'en' => 'Did you attend' },
-        updated_at: an_instance_of(ActiveSupport::TimeWithZone)
+        updated_at: an_instance_of(ActiveSupport::TimeWithZone),
+        logic: {}
       })
     end
   end
@@ -78,7 +79,37 @@ describe WebApi::V1::CustomFieldSerializer do
         ordering: 0,
         required: false,
         title_multiloc: { 'en' => 'We need a swimming pool.' },
-        updated_at: an_instance_of(ActiveSupport::TimeWithZone)
+        updated_at: an_instance_of(ActiveSupport::TimeWithZone),
+        logic: {}
+      })
+    end
+  end
+
+  context 'page field' do
+    let(:field) do
+      create(
+        :custom_field_page,
+        resource_type: 'CustomForm',
+        key: 'page_1',
+        logic: { next_page_id: 'TEMP-ID-1' }
+      )
+    end
+
+    it 'does not include the logic' do
+      serialized_field = described_class.new(field).serializable_hash
+      attributes = serialized_field[:data][:attributes]
+      expect(attributes).to match({
+        code: nil,
+        created_at: an_instance_of(ActiveSupport::TimeWithZone),
+        description_multiloc: { 'en' => 'This is a survey on your cycling habits.' },
+        enabled: true,
+        input_type: 'page',
+        key: 'page_1',
+        ordering: 0,
+        required: false,
+        title_multiloc: { 'en' => 'Cycling survey' },
+        updated_at: an_instance_of(ActiveSupport::TimeWithZone),
+        logic: { 'next_page_id' => 'TEMP-ID-1' }
       })
     end
   end

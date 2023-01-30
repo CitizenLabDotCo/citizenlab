@@ -44,8 +44,9 @@ export const PageTitle = styled.h1`
   padding-bottom: 40px;
 
   ${media.tablet`
-    font-size: ${fontSizes.xxxl};
+    font-size: ${fontSizes.xxxl}px;
   `}
+
   ${isRtl`
     text-align: right;
     direction: rtl;

@@ -12,17 +12,29 @@ import { snakeCase } from 'lodash-es';
 // We can add more input types here when we support them
 export type ICustomFieldInputType =
   | 'text'
+  | 'multiline_text'
   | 'multiselect'
   | 'number'
   | 'select'
   | 'linear_scale'
-  | 'page';
+  | 'page'
+  | 'file_upload';
 export type IOptionsType = {
   id?: string;
   title_multiloc: Multiloc;
+  temp_id?: string;
+};
+
+export type QuestionRuleType = { if: string | number; goto_page_id: string };
+
+export type LogicType = {
+  rules?: QuestionRuleType[];
+  next_page_id?: string;
 };
 
 export interface IAttributes {
+  temp_id: string;
+  logic: LogicType;
   key: string;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;

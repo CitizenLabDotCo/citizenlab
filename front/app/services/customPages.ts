@@ -19,6 +19,12 @@ export interface ICustomPageData {
     nav_bar_item: {
       data: IRelationship | null;
     };
+    topics: {
+      data: IRelationship[];
+    };
+    areas: {
+      data: IRelationship[];
+    };
   };
 }
 
@@ -27,7 +33,8 @@ export type TCustomPageEnabledSetting = keyof ICustomPageEnabledSettings;
 export type TCustomPageBannerLayout =
   | 'full_width_banner_layout'
   | 'two_column_layout'
-  | 'two_row_layout';
+  | 'two_row_layout'
+  | 'fixed_ratio_layout';
 
 export type TCustomPageCTAType = 'customized_button' | 'no_button';
 
@@ -37,16 +44,16 @@ export interface ICustomPageEnabledSettings {
   top_info_section_enabled: boolean;
   events_widget_enabled: boolean;
   files_section_enabled: boolean;
-
-  // for a subsequent iteration
-  // projects_enabled: boolean;
+  projects_enabled: boolean;
 }
+
+export type ProjectsFilterTypes = 'no_filter' | 'areas' | 'topics';
 
 export interface ICustomPageAttributes extends ICustomPageEnabledSettings {
   title_multiloc: Multiloc;
   top_info_section_multiloc: Multiloc;
   slug: string;
-  banner_layout: THomepageBannerLayout | null;
+  banner_layout: THomepageBannerLayout;
   banner_overlay_color: string | null;
   banner_overlay_opacity: number | null;
   banner_cta_button_multiloc: Multiloc;
@@ -61,8 +68,7 @@ export interface ICustomPageAttributes extends ICustomPageEnabledSettings {
   code: TPageCode;
   // not sure about these
 
-  // for a subsequent iteration
-  projects_filter_type: 'area' | 'projects';
+  projects_filter_type: ProjectsFilterTypes;
   nav_bar_item_title_multiloc: Multiloc;
 
   created_at: string;
@@ -74,7 +80,9 @@ export interface ICustomPageAttributes extends ICustomPageEnabledSettings {
 export const customPagesEndpoint = `${API_PATH}/static_pages`;
 
 export function createCustomPage(pageData: { title_multiloc: Multiloc }) {
-  return streams.add<ICustomPage>(customPagesEndpoint, pageData);
+  return streams.add<ICustomPage>(customPagesEndpoint, {
+    static_page: pageData,
+  });
 }
 
 export function customPageByIdStream(customPageId: string) {

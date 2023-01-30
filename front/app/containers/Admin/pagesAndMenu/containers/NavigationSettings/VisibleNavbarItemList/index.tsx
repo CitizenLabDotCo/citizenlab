@@ -3,7 +3,6 @@ import React from 'react';
 // services
 import {
   getNavbarItemSlug,
-  INavbarItem,
   removeNavbarItem,
   reorderNavbarItem,
 } from 'services/navbar';
@@ -31,6 +30,7 @@ import messages from './messages';
 import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
+import { Item } from 'components/admin/ResourceList/SortableList';
 
 const VisibleNavbarItemList = ({
   intl: { formatMessage },
@@ -42,7 +42,7 @@ const VisibleNavbarItemList = ({
     return null;
   }
 
-  const handleClickEdit = (navbarItem: INavbarItem) => () => {
+  const handleClickEdit = (navbarItem: Item) => () => {
     // redirect to homepage toggle page
     if (navbarItem?.attributes?.code && navbarItem.attributes.code === 'home') {
       clHistory.push(`${ADMIN_PAGES_MENU_PATH}/homepage/`);
@@ -58,7 +58,7 @@ const VisibleNavbarItemList = ({
         );
   };
 
-  const getViewButtonLink = (navbarItem: INavbarItem) => {
+  const getViewButtonLink = (navbarItem: Item) => {
     return (
       getNavbarItemSlug(
         navbarItem.attributes.code,
@@ -93,7 +93,7 @@ const VisibleNavbarItemList = ({
       >
         {({ lockedItemsList, itemsList, handleDragRow, handleDropRow }) => (
           <>
-            {lockedItemsList?.map((navbarItem: INavbarItem, i: number) => (
+            {lockedItemsList?.map((navbarItem, i) => (
               <LockedRow
                 key={navbarItem.id}
                 isLastItem={i === itemsList.length - 1}
@@ -109,7 +109,7 @@ const VisibleNavbarItemList = ({
               </LockedRow>
             ))}
 
-            {itemsList.map((navbarItem: INavbarItem, i: number) => (
+            {itemsList.map((navbarItem, i) => (
               <SortableRow
                 key={navbarItem.id}
                 id={navbarItem.id}

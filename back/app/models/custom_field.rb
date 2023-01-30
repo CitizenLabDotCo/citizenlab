@@ -21,6 +21,7 @@
 #  maximum                :integer
 #  minimum_label_multiloc :jsonb            not null
 #  maximum_label_multiloc :jsonb            not null
+#  logic                  :jsonb            not null
 #
 # Indexes
 #
@@ -40,7 +41,7 @@ class CustomField < ApplicationRecord
   belongs_to :resource, polymorphic: true, optional: true
 
   FIELDABLE_TYPES = %w[User CustomForm].freeze
-  INPUT_TYPES = %w[text number multiline_text html text_multiloc multiline_text_multiloc html_multiloc select multiselect checkbox date files image_files point linear_scale page].freeze
+  INPUT_TYPES = %w[text number multiline_text html text_multiloc multiline_text_multiloc html_multiloc select multiselect checkbox date files image_files point linear_scale page file_upload].freeze
   CODES = %w[gender birthyear domicile education title_multiloc body_multiloc topic_ids location_description proposed_budget idea_images_attributes idea_files_attributes author_id budget].freeze
 
   validates :resource_type, presence: true, inclusion: { in: FIELDABLE_TYPES }
@@ -67,6 +68,10 @@ class CustomField < ApplicationRecord
   scope :support_multiple_values, -> { where(input_type: 'multiselect') }
   scope :support_single_value, -> { where.not(input_type: 'multiselect') }
 
+  def logic?
+    logic.present? && logic != { 'rules' => [] }
+  end
+
   def support_options?
     %w[select multiselect].include?(input_type)
   end
@@ -91,8 +96,20 @@ class CustomField < ApplicationRecord
     key == 'domicile' && code == 'domicile'
   end
 
+  def file_upload?
+    input_type == 'file_upload'
+  end
+
   def page?
     input_type == 'page'
+  end
+
+  def multiloc?
+    %w[
+      text_multiloc
+      multiline_text_multiloc
+      html_multiloc
+    ].include?(input_type)
   end
 
   def accept(visitor)
@@ -129,6 +146,8 @@ class CustomField < ApplicationRecord
       visitor.visit_linear_scale self
     when 'page'
       visitor.visit_page self
+    when 'file_upload'
+      visitor.visit_file_upload self
     else
       raise "Unsupported input type: #{input_type}"
     end

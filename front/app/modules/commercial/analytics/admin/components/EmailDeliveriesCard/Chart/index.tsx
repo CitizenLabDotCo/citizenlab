@@ -17,9 +17,9 @@ import { toThreeLetterMonth } from 'utils/dateUtils';
 import { generateEmptyData } from './generateEmptyData';
 
 // typings
-import { Dates, Resolution } from '../../../typings';
+import { Dates, Resolution } from 'components/admin/GraphCards/typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
-import { TimeSeries } from '../../../hooks/useEmailDeliveries/typings';
+import { TimeSeries } from '../useEmailDeliveries/typings';
 
 type Props = Dates &
   Resolution & {
@@ -50,12 +50,12 @@ const Chart = ({
   const legendItems: LegendItem[] = [
     {
       icon: 'circle',
-      color: colors.categorical01,
+      color: colors.categorical03,
       label: formatMessage(messages.customEmails),
     },
     {
       icon: 'circle',
-      color: colors.categorical03,
+      color: colors.categorical01,
       label: formatMessage(messages.automatedEmails),
     },
   ];

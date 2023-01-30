@@ -2,13 +2,15 @@ import React from 'react';
 
 // components
 import PageWrapper from 'components/admin/PageWrapper';
-import SectionToggle from 'containers/Admin/pagesAndMenu/components/SectionToggle';
+import SectionToggle, {
+  ISectionToggleData,
+} from 'containers/Admin/pagesAndMenu/components/SectionToggle';
 import { Box } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import sectionToggleMessages from 'containers/Admin/pagesAndMenu/components/SectionToggle/messages';
 
 // services
@@ -19,6 +21,7 @@ import {
 
 // hooks
 import useCustomPage from 'hooks/useCustomPage';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // routing
 import { useParams } from 'react-router-dom';
@@ -27,61 +30,73 @@ import { useParams } from 'react-router-dom';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
-export type TCustomPageSectionToggleData = {
+export interface ICustomPageSectionToggleData extends ISectionToggleData {
   name: TCustomPageEnabledSetting;
-  titleMessageDescriptor: MessageDescriptor;
-  tooltipMessageDescriptor: MessageDescriptor;
-  linkToPath?: string;
-  hideToggle?: boolean;
-};
+  hideSection?: boolean;
+}
 
 // types
 const CustomPagesEditContent = () => {
+  const { formatMessage } = useIntl();
   const { customPageId } = useParams() as { customPageId: string };
   const customPage = useCustomPage({ customPageId });
+  const advancedCustomPagesEnabled = useFeatureFlag({
+    name: 'advanced_custom_pages',
+  });
 
   if (isNilOrError(customPage)) {
     return null;
   }
 
-  const sectionTogglesData: TCustomPageSectionToggleData[] = [
+  const hideProjects =
+    !advancedCustomPagesEnabled ||
+    customPage.attributes.projects_filter_type === 'no_filter';
+
+  const sectionTogglesData: ICustomPageSectionToggleData[] = [
     {
       name: 'banner_enabled',
-      titleMessageDescriptor: sectionToggleMessages.heroBanner,
-      tooltipMessageDescriptor: sectionToggleMessages.heroBannerTooltip,
+      titleMessage: formatMessage(sectionToggleMessages.heroBanner),
+      tooltipMessage: formatMessage(sectionToggleMessages.heroBannerTooltip),
       linkToPath: 'banner',
     },
     {
       name: 'top_info_section_enabled',
-      titleMessageDescriptor: sectionToggleMessages.topInfoSection,
-      tooltipMessageDescriptor: sectionToggleMessages.topInfoSectionTooltip,
+      titleMessage: formatMessage(sectionToggleMessages.topInfoSection),
+      tooltipMessage: formatMessage(
+        sectionToggleMessages.topInfoSectionTooltip
+      ),
       linkToPath: 'top-info-section',
     },
-    // next iteration!
-    // {
-    //   name: 'projects_enabled',
-    //   titleMessageDescriptor: sectionToggleMessages.projectsList,
-    //   tooltipMessageDescriptor: sectionToggleMessages.projectsListTooltip,
-    //   linkToPath: 'projects',
-    // },
-    // next iteration!
-    // {
-    //   name: 'events_widget_enabled',
-    //   titleMessageDescriptor: sectionToggleMessages.eventsList,
-    //   tooltipMessageDescriptor: sectionToggleMessages.eventsListTooltip,
-    // },
-    // next iteration!
-    // {
-    //   name: 'bottom_info_section_enabled',
-    //   titleMessageDescriptor: sectionToggleMessages.bottomInfoSection,
-    //   tooltipMessageDescriptor: sectionToggleMessages.bottomInfoSectionTooltip,
-    //   linkToPath: 'bottom-info-section',
-    // },
     {
       name: 'files_section_enabled',
-      titleMessageDescriptor: sectionToggleMessages.attachmentsSection,
-      tooltipMessageDescriptor: sectionToggleMessages.attachmentsSectionTooltip,
+      titleMessage: formatMessage(sectionToggleMessages.attachmentsSection),
+      tooltipMessage: formatMessage(
+        sectionToggleMessages.attachmentsSectionTooltip
+      ),
       linkToPath: 'attachments',
+    },
+    {
+      name: 'projects_enabled',
+      titleMessage: formatMessage(sectionToggleMessages.projectsList),
+      tooltipMessage: (
+        <FormattedMessage {...sectionToggleMessages.projectsListTooltip} />
+      ),
+      hideSection: hideProjects,
+      linkToPath: 'projects',
+    },
+    {
+      name: 'events_widget_enabled',
+      titleMessage: formatMessage(sectionToggleMessages.eventsList),
+      tooltipMessage: formatMessage(sectionToggleMessages.eventsListTooltip2),
+      hideSection: hideProjects,
+    },
+    {
+      name: 'bottom_info_section_enabled',
+      titleMessage: formatMessage(sectionToggleMessages.bottomInfoSection),
+      tooltipMessage: formatMessage(
+        sectionToggleMessages.bottomInfoSectionTooltip
+      ),
+      linkToPath: 'bottom-info-section',
     },
   ];
 
@@ -113,33 +128,23 @@ const CustomPagesEditContent = () => {
             <FormattedMessage {...messages.sectionDescription} />
           </Warning>
         </Box>
-        {sectionTogglesData.map(
-          (
-            {
-              name,
-              titleMessageDescriptor,
-              tooltipMessageDescriptor,
-              linkToPath,
-              hideToggle,
-            },
-            index
-          ) => {
-            return (
-              <SectionToggle
-                key={name}
-                name={name}
-                checked={customPage.attributes[name]}
-                onChangeSectionToggle={handleOnChangeToggle(name)}
-                onClickEditButton={handleOnClick}
-                editLinkPath={linkToPath}
-                titleMessageDescriptor={titleMessageDescriptor}
-                tooltipMessageDescriptor={tooltipMessageDescriptor}
-                isLastItem={index === sectionTogglesData.length - 1}
-                hideToggle={hideToggle}
-              />
-            );
+        {sectionTogglesData.map((sectionToggleData, index) => {
+          if (sectionToggleData.hideSection) {
+            return;
           }
-        )}
+          return (
+            <SectionToggle
+              key={sectionToggleData.name}
+              checked={customPage.attributes[sectionToggleData.name]}
+              onChangeSectionToggle={handleOnChangeToggle(
+                sectionToggleData.name
+              )}
+              onClickEditButton={handleOnClick}
+              isLastItem={index === sectionTogglesData.length - 1}
+              sectionToggleData={sectionToggleData}
+            />
+          );
+        })}
       </Box>
     </PageWrapper>
   );

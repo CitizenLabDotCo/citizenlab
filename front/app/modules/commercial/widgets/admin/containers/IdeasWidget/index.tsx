@@ -13,8 +13,7 @@ import Modal from 'components/UI/Modal';
 import WidgetCode from '../WidgetCode';
 import Button from 'components/UI/Button';
 
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
 import { trackEventByName } from 'utils/analytics';
@@ -59,37 +58,36 @@ const schema = object({
   limit: number(),
 });
 
-const IdeasWidget = ({ intl: { formatMessage } }: WrappedComponentProps) => {
+const IdeasWidget = () => {
+  const { formatMessage } = useIntl();
   const [codeModalOpened, setCodeModalOpened] = useState(false);
   const [widgetParams, setWidgetParams] = useState('');
 
-  const initialValues = (): FormValues => {
-    return {
-      width: 320,
-      height: 400,
-      siteBgColor: '#ffffff',
-      bgColor: '#ffffff',
-      textColor: '#666666',
-      accentColor: '#2233aa',
-      font: null,
-      fontSize: 15,
-      relativeLink: '/',
-      showHeader: true,
-      showLogo: true,
-      headerText: formatMessage(messages.fieldHeaderTextDefault),
-      headerSubText: formatMessage(messages.fieldHeaderSubTextDefault),
-      showFooter: true,
-      buttonText: formatMessage(messages.fieldButtonTextDefault),
-      sort: 'trending',
-      projects: [],
-      topics: [],
-      limit: 5,
-    };
+  const initialValues = {
+    width: 320,
+    height: 400,
+    siteBgColor: '#ffffff',
+    bgColor: '#ffffff',
+    textColor: '#666666',
+    accentColor: '#2233aa',
+    font: null,
+    fontSize: 15,
+    relativeLink: '/',
+    showHeader: true,
+    showLogo: true,
+    headerText: formatMessage(messages.fieldHeaderTextDefault),
+    headerSubText: formatMessage(messages.fieldHeaderSubTextDefault),
+    showFooter: true,
+    buttonText: formatMessage(messages.fieldButtonTextDefault),
+    sort: 'trending' as const,
+    projects: [],
+    topics: [],
+    limit: 5,
   };
 
   const methods = useForm({
     mode: 'onBlur',
-    defaultValues: initialValues(),
+    defaultValues: initialValues,
     resolver: yupResolver(schema),
   });
 
@@ -126,7 +124,7 @@ const IdeasWidget = ({ intl: { formatMessage } }: WrappedComponentProps) => {
         </WidgetTitle>
         <FormProvider {...methods}>
           <form>
-            <Form defaultValues={initialValues()} />
+            <Form />
           </form>
         </FormProvider>
       </WidgetConfigWrapper>
@@ -159,4 +157,4 @@ const IdeasWidget = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   );
 };
 
-export default injectIntl(IdeasWidget);
+export default IdeasWidget;

@@ -52,8 +52,8 @@ describe('Form builder linear scale', () => {
     cy.acceptCookies();
     cy.contains(questionTitle).should('exist');
 
-    // Try saving without entering data for required field
-    cy.get('[data-cy="e2e-submit-form"]').click();
+    // Try going to the next page without entering data for required field
+    cy.get('[data-cy="e2e-next-page"]').click();
     // verify that an error is shown and that we stay on the page
     cy.get('.e2e-error-message');
     cy.location('pathname').should(
@@ -63,7 +63,9 @@ describe('Form builder linear scale', () => {
 
     cy.get(`#${questionTitle}-radio-1`).click({ force: true });
 
+    cy.get('[data-cy="e2e-next-page"]').click();
     // Save survey response
+    cy.get('[data-cy="e2e-submit-form"]').should('exist');
     cy.get('[data-cy="e2e-submit-form"]').click();
 
     // Check that we show a success message

@@ -3,8 +3,19 @@
 class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   include WebApi::V1::ParticipationContextSerializer
 
-  attributes :title_multiloc, :description_preview_multiloc, :slug, :process_type, :ideas_count, :comments_count,
-    :internal_role, :created_at, :updated_at, :include_all_areas
+  attributes(
+    :description_preview_multiloc,
+    :title_multiloc,
+    :comments_count,
+    :ideas_count,
+    :include_all_areas,
+    :internal_role,
+    :process_type,
+    :slug,
+    :visible_to,
+    :created_at,
+    :updated_at
+  )
 
   attribute :folder_id do |project|
     project.folder&.id
@@ -138,5 +149,4 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   end
 end
 
-WebApi::V1::ProjectSerializer.include(ProjectPermissions::Patches::WebApi::V1::ProjectSerializer)
 WebApi::V1::ProjectSerializer.include_if_ee('IdeaAssignment::Extensions::WebApi::V1::ProjectSerializer')

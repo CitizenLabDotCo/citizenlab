@@ -14,25 +14,28 @@ interface Props {
   connectDropTarget: any;
 }
 
-class FilterSidebarTopicsItem extends React.PureComponent<Props> {
-  render() {
-    const { topic, active, onClick, connectDropTarget, isOver, canDrop } =
-      this.props;
-    return connectDropTarget(
-      <div>
-        <Menu.Item active={active || (isOver && canDrop)} onClick={onClick}>
-          <T value={topic.attributes.title_multiloc} />
-        </Menu.Item>
-      </div>
-    );
-  }
-}
+const FilterSidebarTopicsItem = ({
+  topic,
+  active,
+  onClick,
+  connectDropTarget,
+  isOver,
+  canDrop,
+}: Props) => {
+  return connectDropTarget(
+    <div>
+      <Menu.Item active={active || (isOver && canDrop)} onClick={onClick}>
+        <T value={topic.attributes.title_multiloc} />
+      </Menu.Item>
+    </div>
+  );
+};
 
 const topicTarget = {
-  drop(props) {
+  drop({ topic }: Props) {
     return {
       type: 'topic',
-      id: props.topic.id,
+      id: topic.id,
     };
   },
 };

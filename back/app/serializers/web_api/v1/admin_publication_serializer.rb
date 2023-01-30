@@ -19,6 +19,12 @@ class WebApi::V1::AdminPublicationSerializer < WebApi::V1::BaseSerializer
     object.publication.slug
   end
 
+  attribute :publication_visible_to, if: proc { |object|
+    object.publication.respond_to?(:visible_to)
+  } do |object|
+    object.publication.visible_to
+  end
+
   attribute :visible_children_count do |object, params|
     if params.key? :visible_children_count_by_parent_id
       params.dig(:visible_children_count_by_parent_id, object.id) || 0
@@ -32,5 +38,3 @@ class WebApi::V1::AdminPublicationSerializer < WebApi::V1::BaseSerializer
 
   has_many :children, record_type: :admin_publication
 end
-
-WebApi::V1::AdminPublicationSerializer.include(ProjectPermissions::Patches::WebApi::V1::AdminPublicationSerializer)

@@ -24,7 +24,10 @@ import DeleteFormResultsNotice from 'containers/Admin/formBuilder/components/Del
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
+import validateElementTitle from 'utils/yup/validateElementTitle';
+import validateLogic from 'utils/yup/validateLogic';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { PageStructure, getReorderedFields, DragAndDropResult } from './utils';
 
 // services
 import {
@@ -43,7 +46,6 @@ import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
-import validateElementTitle from 'utils/yup/validateElementTitle';
 
 const StyledRightColumn = styled(RightColumn)`
   height: calc(100vh - ${stylingConsts.menuHeight}px);
@@ -78,6 +80,7 @@ export const FormEdit = ({
   const [selectedField, setSelectedField] = useState<
     IFlatCustomFieldWithIndex | undefined
   >(undefined);
+
   const isEditingDisabled = totalSubmissions > 0;
 
   const schema = object().shape({
@@ -95,6 +98,8 @@ export const FormEdit = ({
         minimum_label_multiloc: object(),
         maximum_label_multiloc: object(),
         required: boolean(),
+        temp_id: string(),
+        logic: validateLogic(formatMessage(messages.logicValidationError)),
       })
     ),
   });
@@ -110,9 +115,10 @@ export const FormEdit = ({
     handleSubmit,
     control,
     formState: { isSubmitting, errors },
+    trigger,
   } = methods;
 
-  const { fields, append, remove, move } = useFieldArray({
+  const { fields, append, remove, move, replace } = useFieldArray({
     name: 'customFields',
     control,
   });
@@ -136,6 +142,7 @@ export const FormEdit = ({
     }
 
     closeSettings();
+    trigger();
   };
 
   const onAddField = (field: IFlatCreateCustomField) => {
@@ -150,41 +157,6 @@ export const FormEdit = ({
     }
   };
 
-  const dropRow = (fromIndex: number, toIndex: number) => {
-    const elementBeingDragged = fields[fromIndex];
-    const nextPageIndex = fields.findIndex(
-      (field, fieldIndex) => field.input_type === 'page' && fieldIndex !== 0
-    );
-
-    if (
-      fromIndex === 0 &&
-      elementBeingDragged.input_type === 'page' &&
-      nextPageIndex > toIndex
-    ) {
-      return;
-    } else if (
-      fromIndex === 0 &&
-      elementBeingDragged.input_type === 'page' &&
-      nextPageIndex <= toIndex
-    ) {
-      move(fromIndex, toIndex);
-      move(nextPageIndex - 1, 0);
-      return;
-    }
-
-    // Only pages should be draggable to index 0
-    const shouldMove =
-      elementBeingDragged.input_type === 'page' || toIndex !== 0;
-
-    if (shouldMove) {
-      move(fromIndex, toIndex);
-    }
-
-    if (!isNilOrError(selectedField)) {
-      setSelectedField({ ...selectedField, index: toIndex });
-    }
-  };
-
   const hasErrors = !!Object.keys(errors).length;
 
   const onFormSubmit = async ({ customFields }: FormValues) => {
@@ -192,6 +164,12 @@ export const FormEdit = ({
       const finalResponseArray = customFields.map((field) => ({
         ...(!field.isLocalOnly && { id: field.id }),
         input_type: field.input_type,
+        ...(field.input_type === 'page' && {
+          temp_id: field.temp_id,
+        }),
+        ...(['linear_scale', 'select', 'page'].includes(field.input_type) && {
+          logic: field.logic,
+        }),
         required: field.required,
         enabled: field.enabled,
         title_multiloc: field.title_multiloc || {},
@@ -220,6 +198,23 @@ export const FormEdit = ({
   const isDeleteDisabled = !(
     selectedField?.input_type !== 'page' || isPageDeletable
   );
+
+  const reorderFields = (
+    result: DragAndDropResult,
+    nestedPageData: PageStructure[]
+  ) => {
+    const reorderedFields = getReorderedFields(result, nestedPageData);
+    if (reorderedFields) {
+      replace(reorderedFields);
+    }
+
+    if (!isNilOrError(selectedField) && reorderedFields) {
+      const newSelectedFieldIndex = reorderedFields.findIndex(
+        (field) => field.id === selectedField.id
+      );
+      setSelectedField({ ...selectedField, index: newSelectedFieldIndex });
+    }
+  };
 
   return (
     <Box
@@ -272,9 +267,9 @@ export const FormEdit = ({
                   >
                     <FormFields
                       onEditField={setSelectedField}
-                      dropRow={dropRow}
                       selectedFieldId={selectedField?.id}
                       isEditingDisabled={isEditingDisabled}
+                      handleDragEnd={reorderFields}
                     />
                   </Box>
                 </Box>

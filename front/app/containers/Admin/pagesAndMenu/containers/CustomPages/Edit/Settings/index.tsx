@@ -7,6 +7,7 @@ import { updateCustomPage } from 'services/customPages';
 import { FormValues } from 'containers/Admin/pagesAndMenu/containers/CustomPages/CustomPageSettingsForm';
 import streams from 'utils/streams';
 import { apiEndpoint as navbarItemsEndpoint } from 'services/navbar';
+import { omit } from 'lodash-es';
 
 const EditCustomPageSettings = () => {
   const { customPageId } = useParams() as { customPageId: string };
@@ -16,7 +17,15 @@ const EditCustomPageSettings = () => {
     const hasNavbarItem = !!customPage.relationships.nav_bar_item.data?.id;
 
     const handleOnSubmit = async (formValues: FormValues) => {
-      await updateCustomPage(customPageId, formValues);
+      // the form returns one area_id as a string,
+      // the backend expects an array of area_ids
+      const newFormValues = {
+        ...formValues,
+        ...(formValues.projects_filter_type === 'areas' && {
+          area_ids: [formValues.area_id],
+        }),
+      };
+      await updateCustomPage(customPageId, omit(newFormValues, 'area_id'));
       // navbar items are a separate stream, so manually refresh on title update
       // to reflect changes in the user's navbar
       if (hasNavbarItem) {
@@ -25,6 +34,13 @@ const EditCustomPageSettings = () => {
         });
       }
     };
+
+    const topicIds = customPage.relationships.topics.data.map(
+      (topicRelationship) => topicRelationship.id
+    );
+    const areaIds = customPage.relationships.areas.data.map(
+      (areaRelationship) => areaRelationship.id
+    );
 
     return (
       <CustomPageSettingsForm
@@ -36,6 +52,9 @@ const EditCustomPageSettings = () => {
               customPage.attributes.nav_bar_item_title_multiloc,
           }),
           slug: customPage.attributes.slug,
+          projects_filter_type: customPage.attributes.projects_filter_type,
+          topic_ids: topicIds,
+          area_id: areaIds[0],
         }}
         showNavBarItemTitle={hasNavbarItem}
         onSubmit={handleOnSubmit}

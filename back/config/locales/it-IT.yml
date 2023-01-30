@@ -138,17 +138,17 @@ it:
     categories:
       main_content:
         idea:
-          title: What is your idea ?
+          title: Qual è la sua idea?
         question:
-          title: What is your question ?
+          title: Qual è il suo domanda?
         contribution:
           title: Qual è il suo contributo?
         project:
-          title: What is your project ?
+          title: Qual è il suo progetto?
         issue:
-          title: What is your issue ?
+          title: Qual è il suo commento?
         option:
-          title: What is your option ?
+          title: Qual è la sua opzione?
       details:
         title: Dettagli
       attachements:
@@ -205,3 +205,8 @@ it:
       title: 'Your question'
       option1: 'Option 1'
       option2: 'Option 2'
+    survey_end_page:
+      title: 'Survey end'
+      description: "Please submit your answers by selecting 'Submit survey' below."
+  project_copy:
+    title_suffix: 'Copy'

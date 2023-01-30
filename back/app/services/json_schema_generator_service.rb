@@ -183,6 +183,20 @@ class JsonSchemaGeneratorService < FieldVisitorService
     }
   end
 
+  def visit_file_upload(_field)
+    {
+      type: 'object',
+      properties: {
+        content: {
+          type: 'string'
+        },
+        name: {
+          type: 'string'
+        }
+      }
+    }
+  end
+
   private
 
   attr_reader :locales, :multiloc_service

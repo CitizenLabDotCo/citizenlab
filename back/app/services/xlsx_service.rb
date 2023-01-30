@@ -86,6 +86,10 @@ class XlsxService
           end
           sheet.add_row row
         end
+        hyperlink_indexes = columns.each_index.select do |idx|
+          columns[idx][:hyperlink]
+        end
+        utils.add_hyperlinks sheet, hyperlink_indexes
       end
     end
   end
@@ -125,8 +129,10 @@ class XlsxService
       { header: 'email', f: ->(u) { u.email } },
       { header: 'first_name', f: ->(u) { u.first_name } },
       { header: 'last_name', f: ->(u) { u.last_name } },
-      { header: 'profile_page', f: ->(u) { url_service.model_to_url(u) }, skip_sanitization: true },
+      { header: 'profile_page', f: ->(u) { url_service.model_to_url(u) }, skip_sanitization: true, hyperlink: true },
       { header: 'created_at', f: ->(u) { u.created_at }, skip_sanitization: true },
+      { header: 'registration_completed_at', f: ->(u) { u.registration_completed_at }, skip_sanitization: true },
+      { header: 'invite_status', f: ->(u) { u.invite_status }, skip_sanitization: true },
       *user_custom_field_columns(:itself, true)
     ]
 
@@ -152,7 +158,7 @@ class XlsxService
       { header: 'upvotes',              f: ->(i) { i.upvotes_count },                                                      skip_sanitization: true },
       { header: 'downvotes',            f: ->(i) { i.downvotes_count },                                                    skip_sanitization: true },
       { header: 'baskets',              f: ->(i) { i.baskets_count },                                                      skip_sanitization: true },
-      { header: 'url',                  f: ->(i) { Frontend::UrlService.new.model_to_url(i) },                             skip_sanitization: true },
+      { header: 'url',                  f: ->(i) { Frontend::UrlService.new.model_to_url(i) },                             skip_sanitization: true, hyperlink: true },
       { header: 'project',              f: ->(i) { multiloc_service.t(i&.project&.title_multiloc) } },
       { header: 'topics',               f: ->(i) { i.topics.map { |t| multiloc_service.t(t.title_multiloc) }.join(',') } },
       { header: 'status',               f: ->(i) { multiloc_service.t(i&.idea_status&.title_multiloc) } },
@@ -185,7 +191,7 @@ class XlsxService
       { header: 'published_at',         f: ->(i) { i.published_at },                                    skip_sanitization: true },
       { header: 'comments',             f: ->(i) { i.comments_count },                                  skip_sanitization: true },
       { header: 'upvotes',              f: ->(i) { i.upvotes_count },                                   skip_sanitization: true },
-      { header: 'url',                  f: ->(i) { Frontend::UrlService.new.model_to_url(i) },          skip_sanitization: true },
+      { header: 'url',                  f: ->(i) { Frontend::UrlService.new.model_to_url(i) },          skip_sanitization: true, hyperlink: true },
       { header: 'topics',               f: ->(i) { i.topics.map { |t| multiloc_service.t(t.title_multiloc) }.join(',') } },
       { header: 'initiative_status',    f: ->(i) { multiloc_service.t(i&.initiative_status&.title_multiloc) } },
       { header: 'assignee',             f: ->(i) { i.assignee&.full_name } },

@@ -151,8 +151,8 @@ interface State {
 class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
   subscriptions: Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props: Props & InjectedLocalized) {
+    super(props);
     this.state = {
       locale: 'en',
       ideaSlug: null,

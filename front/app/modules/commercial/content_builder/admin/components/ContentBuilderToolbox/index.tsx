@@ -4,6 +4,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 
 // i18n
+import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
 import messages from '../../messages';
 import accordionMessages from 'components/admin/ContentBuilder/Widgets/Accordion/messages';
 import textMessages from 'components/admin/ContentBuilder/Widgets/Text/messages';
@@ -58,7 +59,7 @@ const ContentBuilderToolbox = ({
         label={formatMessage(messages.infoWithAccordions)}
       />
       <SectionTitle>
-        <FormattedMessage {...messages.layout} />
+        <FormattedMessage {...contentBuilderMessages.layout} />
       </SectionTitle>
       <DraggableElement
         id="e2e-draggable-two-column"
@@ -79,7 +80,7 @@ const ContentBuilderToolbox = ({
         label={formatMessage(WhiteSpace.craft.custom.title)}
       />
       <SectionTitle>
-        <FormattedMessage {...messages.content} />
+        <FormattedMessage {...contentBuilderMessages.content} />
       </SectionTitle>
       <DraggableElement
         id="e2e-draggable-text"
@@ -131,7 +132,6 @@ const ContentBuilderToolbox = ({
           <Accordion
             title={formatMessage(accordionMessages.accordionTitleValue)}
             text={formatMessage(accordionMessages.accordionTextValue)}
-            openByDefault={false}
           />
         }
         icon="accordion"

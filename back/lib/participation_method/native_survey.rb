@@ -2,6 +2,11 @@
 
 module ParticipationMethod
   class NativeSurvey < Base
+    def assign_defaults_for_participation_context
+      participation_context.posting_method = 'limited'
+      participation_context.posting_limited_max = 1
+    end
+
     # Survey responses do not have a fixed field that can be used
     # to generate a slug, so use the id as the basis for the slug.
     # This method is invoked after creation of the input,

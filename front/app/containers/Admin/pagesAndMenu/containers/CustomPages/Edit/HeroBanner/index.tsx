@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 // types
 import { ISubmitState } from 'components/admin/SubmitWrapper';
-import { CLErrors, Multiloc } from 'typings';
+import { CLErrors } from 'typings';
 
 // components
 import CTAButtonFields from 'containers/Admin/pagesAndMenu/containers/CustomPages/Edit/HeroBanner/CTAButtonFields';
@@ -21,12 +21,7 @@ import { adminCustomPageContentPath } from 'containers/Admin/pagesAndMenu/routes
 import { WrappedComponentProps } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import useCustomPage from 'hooks/useCustomPage';
-import {
-  ICustomPageAttributes,
-  TCustomPageBannerLayout,
-  TCustomPageCTAType,
-  updateCustomPage,
-} from 'services/customPages';
+import { ICustomPageAttributes, updateCustomPage } from 'services/customPages';
 
 // i18n
 import messages from '../../../GenericHeroBannerForm/messages';
@@ -129,13 +124,13 @@ const EditCustomPageHeroBannerForm = ({
   };
 
   const handleSignedOutMultilocHeaderOnChange = (
-    signedOutHeaderMultiloc: Multiloc
+    signedOutHeaderMultiloc: ICustomPageAttributes['banner_header_multiloc']
   ) => {
     handleOnChange('banner_header_multiloc', signedOutHeaderMultiloc);
   };
 
   const handleSignedOutMultilocSubheaderOnChange = (
-    signedOutSubheaderMultiloc: Multiloc
+    signedOutSubheaderMultiloc: ICustomPageAttributes['banner_subheader_multiloc']
   ) => {
     handleOnChange('banner_subheader_multiloc', signedOutSubheaderMultiloc);
   };
@@ -145,30 +140,45 @@ const EditCustomPageHeroBannerForm = ({
   };
   const handleOnBannerImageRemove = () => {
     handleOnChange('header_bg', null);
+    handleOnOverlayChange(null, null);
   };
 
-  const handleOverlayColorOnChange = (color: string) => {
-    handleOnChange('banner_overlay_color', color);
-  };
-  const handleOverlayOpacityOnChange = (opacity: number) => {
-    handleOnChange('banner_overlay_opacity', opacity);
+  const handleOnOverlayChange = (
+    opacity: number | null,
+    color: string | null
+  ) => {
+    if (!isNilOrError(localSettings)) {
+      setFormStatus('enabled');
+
+      setLocalSettings({
+        ...localSettings,
+        banner_overlay_color: color,
+        banner_overlay_opacity: opacity,
+      });
+    }
   };
 
-  const handleLayoutOnChange = (bannerLayout: TCustomPageBannerLayout) => {
+  const handleLayoutOnChange = (
+    bannerLayout: ICustomPageAttributes['banner_layout']
+  ) => {
     handleOnChange('banner_layout', bannerLayout);
   };
 
-  const handleCTAButtonTypeOnChange = (ctaType: TCustomPageCTAType) => {
+  const handleCTAButtonTypeOnChange = (
+    ctaType: ICustomPageAttributes['banner_cta_button_type']
+  ) => {
     handleOnChange('banner_cta_button_type', ctaType);
   };
 
   const handleCTAButtonTextMultilocOnChange = (
-    buttonTextMultiloc: Multiloc
+    buttonTextMultiloc: ICustomPageAttributes['banner_cta_button_multiloc']
   ) => {
     handleOnChange('banner_cta_button_multiloc', buttonTextMultiloc);
   };
 
-  const handleCTAButtonUrlOnChange = (url: string) => {
+  const handleCTAButtonUrlOnChange = (
+    url: ICustomPageAttributes['banner_cta_button_url']
+  ) => {
     handleOnChange('banner_cta_button_url', url);
   };
 
@@ -225,11 +235,9 @@ const EditCustomPageHeroBannerForm = ({
               bannerOverlayColor={localSettings.banner_overlay_color}
               bannerOverlayOpacity={localSettings.banner_overlay_opacity}
               headerBg={localSettings.header_bg}
-              setFormStatus={setFormStatus}
               onAddImage={handleOnBannerImageAdd}
               onRemoveImage={handleOnBannerImageRemove}
-              onOverlayColorChange={handleOverlayColorOnChange}
-              onOverlayOpacityChange={handleOverlayOpacityOnChange}
+              onOverlayChange={handleOnOverlayChange}
             />
           }
           bannerHeaderFieldsComponent={

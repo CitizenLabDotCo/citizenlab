@@ -112,8 +112,8 @@ class LineBarChart extends React.PureComponent<
   combined$: Subscription;
   currentChart: React.RefObject<any>;
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props: Props & WrappedComponentProps) {
+    super(props);
     this.state = {
       serie: null,
     };

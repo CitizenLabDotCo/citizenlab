@@ -17,8 +17,7 @@ import { IParticipationByTopic } from 'typings';
 import { fontSizes, colors } from 'utils/styleUtils';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import useLocalize from 'hooks/useLocalize';
 import {
@@ -64,7 +63,7 @@ const Row = styled.div`
 
 const TopicName = styled.div`
   padding: 1px;
-  font-size: ${fontSizes.s};
+  font-size: ${fontSizes.s}px;
   word-break: break-all;
   width: auto;
   height: 20px;
@@ -74,7 +73,7 @@ const TopicName = styled.div`
 
 const ParticipationType = styled.div`
   padding: 1px;
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   width: ${cellWidth};
   height: 20px;
   text-align: center;
@@ -98,7 +97,7 @@ const Cell = styled.div<{ cellColor: string }>`
 
 const Value = styled.p`
   margin: auto;
-  font-size: ${fontSizes.xs};
+  font-size: ${fontSizes.xs}px;
   text-align: center;
   opacity: 0;
   :hover {
@@ -114,7 +113,7 @@ const getCellColor = (value, participationType) => {
   return `hsl(185, ${saturation}%, ${luminosity}%)`;
 };
 
-interface Props extends InputProps, DataProps, InjectedLocalized {}
+interface Props extends InputProps, DataProps {}
 
 const ParticipationPerTopic = (props: Props) => {
   const { votesByTopic, commentsByTopic, ideasByTopic, className } = props;
@@ -251,14 +250,10 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const ParticipationPerTopicWithHOCs = injectIntl(
-  injectLocalize(ParticipationPerTopic)
-);
-
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
     {(serie) => {
-      return <ParticipationPerTopicWithHOCs {...serie} {...inputProps} />;
+      return <ParticipationPerTopic {...serie} {...inputProps} />;
     }}
   </Data>
 );

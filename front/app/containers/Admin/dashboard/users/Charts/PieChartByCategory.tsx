@@ -74,7 +74,7 @@ class PieChartByCategory extends React.PureComponent<
   currentChart: React.RefObject<any>;
 
   constructor(props: Props & WrappedComponentProps) {
-    super(props as any);
+    super(props);
     this.currentChart = React.createRef();
   }
 

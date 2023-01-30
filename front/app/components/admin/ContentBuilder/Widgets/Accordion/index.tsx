@@ -21,7 +21,13 @@ import { useTheme } from 'styled-components';
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 
-const Accordion = ({ text, title, openByDefault }) => {
+interface AccordionProps {
+  text: string;
+  title: string;
+  openByDefault?: boolean;
+}
+
+const Accordion = ({ text, title, openByDefault = false }: AccordionProps) => {
   const theme = useTheme();
 
   return (
@@ -61,7 +67,7 @@ const AccordionSettings = injectIntl(({ intl: { formatMessage } }) => {
           type="text"
           id="accordionTitleId"
           onChange={(value) => {
-            setProp((props) => (props.title = value));
+            setProp((props: AccordionProps) => (props.title = value));
           }}
           value={title}
           label={formatMessage(messages.accordionTitleLabel)}
@@ -76,7 +82,7 @@ const AccordionSettings = injectIntl(({ intl: { formatMessage } }) => {
           id="quill-editor"
           value={text}
           onChange={(value) => {
-            setProp((props) => (props.text = value));
+            setProp((props: AccordionProps) => (props.text = value));
           }}
         />
       </Box>
@@ -85,7 +91,9 @@ const AccordionSettings = injectIntl(({ intl: { formatMessage } }) => {
           id="default-open-toggle"
           checked={openByDefault}
           onChange={() => {
-            setProp((props) => (props.openByDefault = !openByDefault));
+            setProp(
+              (props: AccordionProps) => (props.openByDefault = !openByDefault)
+            );
           }}
           label={formatMessage(messages.accordionDefaultOpenLabel)}
         />

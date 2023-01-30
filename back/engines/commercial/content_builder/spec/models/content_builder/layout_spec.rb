@@ -28,13 +28,13 @@ RSpec.describe ContentBuilder::Layout, type: :model do
       expect(layout.errors.details).to eq({ code: [{ error: :blank }] })
     end
 
-    it 'returns false for an iframe with a non-whitelisted url' do
-      url = 'http://malicious.com/my-video'
+    it 'returns false for an iframe with an invalid url' do
+      url = 'malicious.com/my-video'
       craftjs_jsonmultiloc = { 'en' => craftjson_with_iframe_url(url) }
       layout = build(:layout, craftjs_jsonmultiloc: craftjs_jsonmultiloc)
       expect(layout).to be_invalid
       expect(layout.errors.details).to eq({ craftjs_jsonmultiloc: [{
-        error: :iframe_url_not_whitelisted,
+        error: :iframe_url_invalid,
         locale: 'en',
         url: url
       }] })

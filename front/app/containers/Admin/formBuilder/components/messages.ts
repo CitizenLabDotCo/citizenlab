@@ -21,9 +21,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.shortAnswer',
     defaultMessage: 'Short answer',
   },
+  longAnswer: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.longAnswer',
+    defaultMessage: 'Long answer',
+  },
   page: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.page',
     defaultMessage: 'Page',
+  },
+  surveyEnd: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.surveyEnd',
+    defaultMessage: 'Survey end',
   },
   question: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.question',
@@ -33,6 +41,18 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.multipleChoice',
     defaultMessage: 'Multiple choice',
   },
+  singleChoice: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.singleChoice',
+    defaultMessage: 'Single choice',
+  },
+  chooseOne: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.chooseOne',
+    defaultMessage: 'Choose one',
+  },
+  chooseMany: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.chooseMany',
+    defaultMessage: 'Choose many',
+  },
   number: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.number',
     defaultMessage: 'Number',
@@ -40,6 +60,10 @@ export default defineMessages({
   linearScale: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.linearScale',
     defaultMessage: 'Linear scale',
+  },
+  fileUpload: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.fileUpload',
+    defaultMessage: 'File upload',
   },
   default: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.default',
@@ -64,6 +88,14 @@ export default defineMessages({
   delete: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.delete',
     defaultMessage: 'Delete',
+  },
+  logic: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.logic',
+    defaultMessage: 'Logic',
+  },
+  content: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.content',
+    defaultMessage: 'Content',
   },
   done: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.done',
@@ -137,6 +169,15 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.confirmDeleteButtonText',
     defaultMessage: 'Yes, delete survey results',
   },
+  deleteFieldWithLogicConfirmationQuestion: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.deleteFieldWithLogicConfirmationQuestion',
+    defaultMessage:
+      'Deleting this page will also delete the logic associated with it. Are you sure you want to delete it?',
+  },
+  confirmDeleteFieldWithLogicButtonText: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.confirmDeleteFieldWithLogicButtonText',
+    defaultMessage: 'Yes, delete page',
+  },
   totalSurveyResponses: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses',
     defaultMessage: 'Total {count} responses',
@@ -179,5 +220,45 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.choiceCount',
     defaultMessage:
       '{percentage}% ({choiceCount, plural, no {# choices} one {# choice} other {# choices}})',
+  },
+  invalidLogicBadgeMessage: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.invalidLogicBadgeMessage',
+    defaultMessage: 'Invalid logic',
+  },
+  // Logic Settings
+  questionLogicHelperText: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.questionLogicHelperText',
+    defaultMessage:
+      'If no logic is added to an answer, the survey will follow its normal flow. Adding logic to a question will make it required by default. For more information, visit {supportPageLink}',
+  },
+  pagesLogicHelperText: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText',
+    defaultMessage:
+      'If no logic is added, the survey will follow its normal flow. For more information, visit {supportPageLink}',
+  },
+  goToPageInputLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.goToPageInputLabel',
+    defaultMessage: 'Then next page is:',
+  },
+  ruleForAnswerLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.ruleForAnswerLabel',
+    defaultMessage: 'If answer is:',
+  },
+  pageRuleLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.pageRuleLabel',
+    defaultMessage: 'Next page is:',
+  },
+  nextPageLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.nextPageLabel',
+    defaultMessage: 'Next:',
+  },
+  surveySupportArticle: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.surveySupportArticle',
+    defaultMessage:
+      'https://support.citizenlab.co/en/articles/6673873-creating-an-in-platform-survey',
+  },
+  surveySupportArticleLinkText: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.surveySupportArticleLinkText',
+    defaultMessage: 'this page',
   },
 });

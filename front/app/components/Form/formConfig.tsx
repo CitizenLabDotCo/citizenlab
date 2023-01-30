@@ -42,6 +42,8 @@ import {
   MultiSelectControl,
   multiSelectControlTester,
   SingleSelectControl,
+  singleAttachmentControlTester,
+  SingleAttachmentControl,
 } from 'components/Form/Components/Controls';
 
 const commonRenderers = [
@@ -82,6 +84,10 @@ export const selectRenderers = (formType: 'default' | 'input' | 'survey') => {
         {
           tester: singleSelectRadioControlTester,
           renderer: SingleSelectRadioControl,
+        },
+        {
+          tester: singleAttachmentControlTester,
+          renderer: SingleAttachmentControl,
         },
         ...commonRenderers,
       ];

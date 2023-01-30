@@ -36,4 +36,10 @@ FactoryBot.define do
       end
     end
   end
+
+  factory :native_survey_response, class: 'Idea' do
+    publication_status { 'published' }
+    association :idea_status, factory: :idea_status_proposed
+    association :project, factory: :continuous_native_survey_project
+  end
 end

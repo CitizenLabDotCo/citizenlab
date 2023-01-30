@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import clHistory from 'utils/cl-router/history';
 import { isEmpty, isEqual } from 'lodash-es';
 import { CLErrors, Multiloc, UploadFile } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isError } from 'utils/helperUtils';
 import { addProjectFolder, updateProjectFolder } from 'services/projectFolders';
 import {
   addProjectFolderImage,
@@ -12,8 +12,7 @@ import { convertUrlToUploadFile } from 'utils/fileUtils';
 import useProjectFolderImages from 'hooks/useProjectFolderImages';
 import useProjectFolder from 'hooks/useProjectFolder';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import {
   SectionField,
@@ -25,7 +24,7 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
+import { IconTooltip, Radio, Box } from '@citizenlab/cl2-component-library';
 import FileUploader from 'components/UI/FileUploader';
 import {
   addProjectFolderFile,
@@ -35,11 +34,12 @@ import useProjectFolderFiles from 'hooks/useProjectFolderFiles';
 import useAdminPublication from 'hooks/useAdminPublication';
 import SlugInput from 'components/admin/SlugInput';
 import { validateSlug } from 'utils/textUtils';
+import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
 
-type Props = {
+interface Props {
   mode: 'edit' | 'new';
   projectFolderId: string;
-} & WrappedComponentProps;
+}
 
 const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const projectFolder = useProjectFolder({ projectFolderId });
@@ -60,15 +60,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         setShortDescriptionMultiloc(
           projectFolder.attributes.description_preview_multiloc
         );
-
-        if (projectFolder.attributes?.header_bg?.large) {
-          const headerFile = await convertUrlToUploadFile(
-            projectFolder.attributes?.header_bg?.large,
-            null,
-            null
-          );
-          setHeaderBg(headerFile);
-        }
       }
     })();
   }, [mode, projectFolder]);
@@ -126,7 +117,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     useState<Multiloc | null>(null);
   const [descriptionMultiloc, setDescriptionMultiloc] =
     useState<Multiloc | null>(null);
-  const [headerBg, setHeaderBg] = useState<UploadFile | null>(null);
+  const [headerBgBase64, setHeaderBgBase64] = useState<string | null>(null);
   const [publicationStatus, setPublicationStatus] = useState<
     'published' | 'draft' | 'archived'
   >('published');
@@ -163,18 +154,11 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     }
   }, []);
 
-  const handleHeaderBgOnAdd = useCallback((newImage: UploadFile[]) => {
+  const handleHeaderBgChange = useCallback((newImageBase64: string | null) => {
     setStatus('enabled');
 
     setChangedHeaderBg(true);
-    setHeaderBg(newImage[0]);
-  }, []);
-
-  const handleHeaderBgOnRemove = useCallback(() => {
-    setStatus('enabled');
-
-    setChangedHeaderBg(true);
-    setHeaderBg(null);
+    setHeaderBgBase64(newImageBase64);
   }, []);
 
   const handleProjectFolderImageOnRemove = useCallback(
@@ -271,7 +255,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               slug,
               description_multiloc: descriptionMultiloc,
               description_preview_multiloc: shortDescriptionMultiloc,
-              header_bg: headerBg?.base64,
+              header_bg: headerBgBase64,
               admin_publication_attributes: {
                 publication_status: publicationStatus,
               },
@@ -374,9 +358,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                   description_preview_multiloc: changedShortDescriptionMultiloc
                     ? shortDescriptionMultiloc
                     : undefined,
-                  header_bg: changedHeaderBg
-                    ? headerBg?.base64 || null
-                    : undefined,
+                  header_bg: changedHeaderBg ? headerBgBase64 : undefined,
                   admin_publication_attributes: {
                     publication_status: publicationStatus,
                   },
@@ -403,8 +385,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     }
   };
 
-  // ---- Rendering
-  if (mode === 'edit' && isNilOrError(projectFolder)) {
+  if (isError(projectFolder)) {
     return null;
   }
 
@@ -449,6 +430,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           />
         </SectionField>
         <SectionField data-cy="e2e-project-folder-title">
+          <SubSectionTitle>
+            <FormattedMessage {...messages.folderName} />
+          </SubSectionTitle>
           <InputMultilocWithLocaleSwitcher
             id="project-folder-title"
             valueMultiloc={titleMultiloc}
@@ -457,60 +441,60 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             label={<FormattedMessage {...messages.titleInputLabel} />}
           />
         </SectionField>
-        <SectionField>
-          <SlugInput
-            inputFieldId="folder-slug"
-            slug={slug}
-            pathnameWithoutSlug={'folders'}
-            apiErrors={errors}
-            showSlugErrorMessage={showSlugErrorMessage}
-            onSlugChange={handleSlugOnChange}
-          />
-        </SectionField>
-        <SectionField data-cy="e2e-project-folder-short-description">
-          <TextAreaMultilocWithLocaleSwitcher
-            valueMultiloc={shortDescriptionMultiloc}
-            name="textAreaMultiloc"
-            onChange={getHandler(setShortDescriptionMultiloc)}
-            label={
-              <FormattedMessage {...messages.shortDescriptionInputLabel} />
-            }
-            labelTooltipText={
-              <FormattedMessage
-                {...messages.shortDescriptionInputLabelTooltip}
-              />
-            }
-          />
-        </SectionField>
-        <SectionField data-cy="e2e-project-folder-description">
-          <QuillMutilocWithLocaleSwitcher
-            id="description"
-            valueMultiloc={descriptionMultiloc}
-            onChange={getHandler(setDescriptionMultiloc)}
-            label={<FormattedMessage {...messages.descriptionInputLabel} />}
-            withCTAButton
-          />
-        </SectionField>
 
-        <SectionField key={'header_bg'}>
+        {/* Only show this field when slug is already saved to folder (i.e. not when creating a new folder, which uses this form as well) */}
+        {!isNilOrError(projectFolder) && slug && (
+          <SectionField>
+            <>
+              <SubSectionTitle>
+                <FormattedMessage {...messages.url} />
+              </SubSectionTitle>
+              <SlugInput
+                slug={slug}
+                pathnameWithoutSlug={'folders'}
+                apiErrors={errors}
+                showSlugErrorMessage={showSlugErrorMessage}
+                onSlugChange={handleSlugOnChange}
+                showSlugChangedWarning={slug !== projectFolder.attributes.slug}
+              />
+            </>
+          </SectionField>
+        )}
+        <SectionField>
           <SubSectionTitle>
-            <FormattedMessage {...messages.headerImageInputLabel} />
-            <IconTooltip
-              content={
+            <FormattedMessage {...messages.folderDescriptions} />
+          </SubSectionTitle>
+          <Box mb="35px" data-cy="e2e-project-folder-description">
+            <TextAreaMultilocWithLocaleSwitcher
+              data-cy="e2e-project-folder-short-description"
+              valueMultiloc={shortDescriptionMultiloc}
+              name="textAreaMultiloc"
+              onChange={getHandler(setShortDescriptionMultiloc)}
+              label={
+                <FormattedMessage {...messages.shortDescriptionInputLabel} />
+              }
+              labelTooltipText={
                 <FormattedMessage
-                  {...messages.projectFolderHeaderImageLabelTooltip}
+                  {...messages.shortDescriptionInputLabelTooltip}
                 />
               }
             />
-          </SubSectionTitle>
-          <ImagesDropzone
-            acceptedFileTypes={{
-              'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
-            }}
-            images={headerBg ? [headerBg] : null}
-            imagePreviewRatio={250 / 1380}
-            onAdd={handleHeaderBgOnAdd}
-            onRemove={handleHeaderBgOnRemove}
+          </Box>
+          <Box data-cy="e2e-project-folder-description">
+            <QuillMutilocWithLocaleSwitcher
+              id="description"
+              valueMultiloc={descriptionMultiloc}
+              onChange={getHandler(setDescriptionMultiloc)}
+              label={<FormattedMessage {...messages.descriptionInputLabel} />}
+              withCTAButton
+            />
+          </Box>
+        </SectionField>
+
+        <SectionField>
+          <HeaderBgUploader
+            imageUrl={projectFolder?.attributes.header_bg?.large}
+            onImageChange={handleHeaderBgChange}
           />
         </SectionField>
 
@@ -575,4 +559,4 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   );
 };
 
-export default injectIntl(ProjectFolderForm);
+export default ProjectFolderForm;

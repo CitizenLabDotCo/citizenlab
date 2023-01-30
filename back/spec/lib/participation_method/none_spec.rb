@@ -7,6 +7,16 @@ RSpec.describe ParticipationMethod::None do
 
   let(:input) { create :idea }
 
+  describe '#assign_defaults_for_participation_context' do
+    let(:project) { build :continuous_project }
+
+    it 'does not change the participation context' do
+      expect do
+        participation_method.assign_defaults_for_participation_context
+      end.not_to change(project, :posting_method)
+    end
+  end
+
   describe '#assign_slug' do
     it 'does not change the input' do
       participation_method.assign_slug input

@@ -77,7 +77,7 @@ function doNothing() {
 
 class InitiativesEditFormWrapper extends React.PureComponent<Props, State> {
   initialValues: SimpleFormValues;
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
 
     const { initiative, initiativeFiles } = props;

@@ -13,7 +13,7 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 // components
 import Modal from 'components/UI/Modal';
 import FileAttachments from 'components/UI/FileAttachments';
-import { Spinner } from '@citizenlab/cl2-component-library';
+import { Spinner, Box } from '@citizenlab/cl2-component-library';
 import SharingButtons from 'components/Sharing/SharingButtons';
 import FeatureFlag from 'components/FeatureFlag';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
@@ -344,7 +344,9 @@ export class InitiativesShow extends PureComponent<
   officialFeedbackElement = createRef<HTMLDivElement>();
   timeoutRef: NodeJS.Timeout;
 
-  constructor(props) {
+  constructor(
+    props: Props & WrappedComponentProps & InjectedLocalized & WithRouterProps
+  ) {
     super(props);
     this.state = {
       loaded: false,
@@ -610,10 +612,11 @@ export class InitiativesShow extends PureComponent<
                   translateButtonClicked={translateButtonClicked}
                 />
 
-                {!isNilOrError(initiativeFiles) &&
-                  initiativeFiles.length > 0 && (
+                {!isNilOrError(initiativeFiles) && initiativeFiles.length > 0 && (
+                  <Box mb="25px">
                     <FileAttachments files={initiativeFiles} />
-                  )}
+                  </Box>
+                )}
 
                 <div ref={this.officialFeedbackElement}>
                   <StyledOfficialFeedback

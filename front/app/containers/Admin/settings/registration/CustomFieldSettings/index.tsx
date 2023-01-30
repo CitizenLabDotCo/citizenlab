@@ -1,5 +1,5 @@
 // libraries
-import React, { Component } from 'react';
+import React, { Component, MouseEvent } from 'react';
 import Link from 'utils/cl-router/Link';
 import styled from 'styled-components';
 import { DndProvider } from 'react-dnd-cjs';
@@ -84,7 +84,7 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 class CustomFields extends Component<Props & WrappedComponentProps, State> {
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       itemsWhileDragging: null,
@@ -109,7 +109,7 @@ class CustomFields extends Component<Props & WrappedComponentProps, State> {
     }
   }
 
-  handleOnDeleteClick = (customFieldId) => (event) => {
+  handleOnDeleteClick = (customFieldId: string) => (event: MouseEvent) => {
     if (!this.state.isProcessing) {
       const deleteMessage = this.props.intl.formatMessage(
         messages.customFieldDeletionConfirmation
@@ -150,7 +150,7 @@ class CustomFields extends Component<Props & WrappedComponentProps, State> {
     }
   };
 
-  handleDragRow = (fromIndex, toIndex) => {
+  handleDragRow = (fromIndex: number, toIndex: number) => {
     if (!this.state.isProcessing) {
       const listItems = this.listItems();
 

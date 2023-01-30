@@ -27,6 +27,7 @@ const AttachmentsControl = ({
   required,
   id,
   schema,
+  visible,
 }: ControlProps) => {
   const { inputId } = useContext(FormContext);
   const remoteFiles = useResourceFiles({
@@ -99,6 +100,10 @@ const AttachmentsControl = ({
       })();
     }
   }, [remoteFiles, inputId]);
+
+  if (!visible) {
+    return null;
+  }
 
   return (
     <Box id="e2e-idea-file-upload">

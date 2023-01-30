@@ -25,14 +25,13 @@ interface Props {
   onSave: () => void;
   onSaveAndEnable?: () => void | undefined;
   isLoading: boolean;
-  outletSectionStart?: ReactElement;
   layoutSettingFieldComponent?: ReactElement;
   bannerImageFieldsComponent: ReactElement;
   bannerHeaderFieldsComponent: ReactElement;
   bannerMultilocFieldComponent?: ReactElement;
   avatarsFieldComponent?: ReactElement;
   ctaButtonFieldsComponent?: ReactElement;
-  outletSectionEnd?: ReactElement;
+  ctaSettingsComponent?: ReactElement;
   badge?: JSX.Element;
   linkToViewPage?: string;
 }
@@ -44,9 +43,8 @@ const GenericHeroBannerForm = ({
   isLoading,
   title,
   breadcrumbs,
-  outletSectionStart,
   avatarsFieldComponent,
-  outletSectionEnd,
+  ctaSettingsComponent,
   bannerMultilocFieldComponent,
   bannerHeaderFieldsComponent,
   bannerImageFieldsComponent,
@@ -89,10 +87,11 @@ const GenericHeroBannerForm = ({
             Padding equal to the height of the sticky bar with the submit button.
           */}
           <Box pb="78px">
-            <Warning>
-              <FormattedMessage {...messages.heroBannerInfoBar} />
-            </Warning>
-            {outletSectionStart}
+            <Box mb="28px">
+              <Warning>
+                <FormattedMessage {...messages.heroBannerInfoBar} />
+              </Warning>
+            </Box>
             {layoutSettingFieldComponent}
             {bannerImageFieldsComponent}
             {bannerHeaderFieldsComponent}
@@ -100,11 +99,7 @@ const GenericHeroBannerForm = ({
             {avatarsFieldComponent}
             {/* The custom page hero banner form has the CTA button fields inserted via the core */}
             {ctaButtonFieldsComponent}
-            {/*
-          The home page hero banner form has CTA button fields inserted
-          via the outlet below (customizable_homepage_banner module)
-        */}
-            {outletSectionEnd}
+            {ctaSettingsComponent}
           </Box>
         </Section>
       </SectionFormWrapper>

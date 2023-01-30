@@ -9,7 +9,7 @@ import Button from 'components/UI/Button';
 
 // services
 import useProjectFolderFiles from 'hooks/useProjectFolderFiles';
-import { useWindowSize } from '@citizenlab/cl2-component-library';
+import { useWindowSize, Box } from '@citizenlab/cl2-component-library';
 
 // i18n
 import T from 'components/T';
@@ -60,6 +60,7 @@ const Description = styled.div<{ maxHeight: number }>`
   position: relative;
   max-height: ${(props) => props.maxHeight}px;
   overflow: hidden;
+  margin-bottom: 28px;
 
   &.expanded {
     max-height: none;
@@ -217,7 +218,9 @@ const ProjectFolderDescription = memo<Props & WrappedComponentProps>(
           {!isNilOrError(projectFolderFiles) &&
             projectFolderFiles &&
             projectFolderFiles.data.length > 0 && (
-              <FileAttachments files={projectFolderFiles.data} />
+              <Box mb="25px">
+                <FileAttachments files={projectFolderFiles.data} />
+              </Box>
             )}
         </Container>
       );

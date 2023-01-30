@@ -36,6 +36,8 @@
 #  downvoting_method            :string           default("unlimited"), not null
 #  downvoting_limited_max       :integer          default(10)
 #  include_all_areas            :boolean          default(FALSE), not null
+#  posting_method               :string           default("unlimited"), not null
+#  posting_limited_max          :integer          default(1)
 #
 # Indexes
 #
@@ -48,6 +50,8 @@
 class Project < ApplicationRecord
   include ParticipationContext
   include PgSearch::Model
+
+  VISIBLE_TOS = %w[public groups admins].freeze
 
   mount_base64_uploader :header_bg, ProjectHeaderBgUploader
 
@@ -70,11 +74,12 @@ class Project < ApplicationRecord
   accepts_nested_attributes_for :text_images
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
 
-  before_validation :set_process_type, on: :create
   before_validation :generate_slug, on: :create
   before_validation :sanitize_description_multiloc, if: :description_multiloc
-  before_validation :strip_title
   before_validation :set_admin_publication
+  before_validation :set_process_type, on: :create
+  before_validation :set_visible_to, on: :create
+  before_validation :strip_title
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
@@ -96,6 +101,7 @@ class Project < ApplicationRecord
   validates :description_preview_multiloc, multiloc: { presence: false }
   validates :slug, presence: true, uniqueness: true
   validates :process_type, presence: true, inclusion: { in: PROCESS_TYPES }
+  validates :visible_to, presence: true, inclusion: { in: VISIBLE_TOS }
   validates :internal_role, inclusion: { in: INTERNAL_ROLES, allow_nil: true }
   validate :admin_publication_must_exist
 
@@ -246,6 +252,10 @@ class Project < ApplicationRecord
     self.process_type ||= 'timeline'
   end
 
+  def set_visible_to
+    self.visible_to ||= 'public'
+  end
+
   def strip_title
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
@@ -304,8 +314,6 @@ class Project < ApplicationRecord
     ::User.project_folder_moderator(folder_was.id)
   end
 end
-
-Project.include(ProjectPermissions::Patches::Project)
 
 Project.include_if_ee('CustomMaps::Extensions::Project')
 Project.include_if_ee('IdeaAssignment::Extensions::Project')

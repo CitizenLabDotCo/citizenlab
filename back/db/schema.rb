@@ -156,6 +156,15 @@ ActiveRecord::Schema.define(version: 2022_12_05_112729) do
     t.index ["project_id"], name: "index_areas_projects_on_project_id"
   end
 
+  create_table "areas_static_pages", force: :cascade do |t|
+    t.uuid "area_id", null: false
+    t.uuid "static_page_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["area_id"], name: "index_areas_static_pages_on_area_id"
+    t.index ["static_page_id"], name: "index_areas_static_pages_on_static_page_id"
+  end
+
   create_table "baskets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "submitted_at"
     t.uuid "user_id"
@@ -250,6 +259,7 @@ ActiveRecord::Schema.define(version: 2022_12_05_112729) do
     t.integer "maximum"
     t.jsonb "minimum_label_multiloc", default: {}, null: false
     t.jsonb "maximum_label_multiloc", default: {}, null: false
+    t.jsonb "logic", default: {}, null: false
     t.index ["resource_type", "resource_id"], name: "index_custom_fields_on_resource_type_and_resource_id"
   end
 
@@ -912,6 +922,8 @@ ActiveRecord::Schema.define(version: 2022_12_05_112729) do
     t.integer "min_budget", default: 0
     t.string "downvoting_method", default: "unlimited", null: false
     t.integer "downvoting_limited_max", default: 10
+    t.string "posting_method", default: "unlimited", null: false
+    t.integer "posting_limited_max", default: 1
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
@@ -1047,6 +1059,8 @@ ActiveRecord::Schema.define(version: 2022_12_05_112729) do
     t.string "downvoting_method", default: "unlimited", null: false
     t.integer "downvoting_limited_max", default: 10
     t.boolean "include_all_areas", default: false, null: false
+    t.string "posting_method", default: "unlimited", null: false
+    t.integer "posting_limited_max", default: 1
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
@@ -1160,13 +1174,22 @@ ActiveRecord::Schema.define(version: 2022_12_05_112729) do
     t.boolean "top_info_section_enabled", default: false, null: false
     t.boolean "files_section_enabled", default: false, null: false
     t.boolean "projects_enabled", default: false, null: false
-    t.string "projects_filter_type"
+    t.string "projects_filter_type", default: "no_filter", null: false
     t.boolean "events_widget_enabled", default: false, null: false
     t.boolean "bottom_info_section_enabled", default: false, null: false
     t.jsonb "bottom_info_section_multiloc", default: {}, null: false
     t.string "header_bg"
     t.index ["code"], name: "index_static_pages_on_code"
     t.index ["slug"], name: "index_static_pages_on_slug", unique: true
+  end
+
+  create_table "static_pages_topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "topic_id", null: false
+    t.uuid "static_page_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["static_page_id"], name: "index_static_pages_topics_on_static_page_id"
+    t.index ["topic_id"], name: "index_static_pages_topics_on_topic_id"
   end
 
   create_table "surveys_responses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1329,6 +1352,8 @@ ActiveRecord::Schema.define(version: 2022_12_05_112729) do
   add_foreign_key "areas_initiatives", "initiatives"
   add_foreign_key "areas_projects", "areas"
   add_foreign_key "areas_projects", "projects"
+  add_foreign_key "areas_static_pages", "areas"
+  add_foreign_key "areas_static_pages", "static_pages"
   add_foreign_key "baskets", "users"
   add_foreign_key "baskets_ideas", "baskets"
   add_foreign_key "baskets_ideas", "ideas"
@@ -1407,6 +1432,8 @@ ActiveRecord::Schema.define(version: 2022_12_05_112729) do
   add_foreign_key "report_builder_reports", "users", column: "owner_id"
   add_foreign_key "spam_reports", "users"
   add_foreign_key "static_page_files", "static_pages"
+  add_foreign_key "static_pages_topics", "static_pages"
+  add_foreign_key "static_pages_topics", "topics"
   add_foreign_key "user_custom_fields_representativeness_ref_distributions", "custom_fields"
   add_foreign_key "volunteering_volunteers", "volunteering_causes", column: "cause_id"
   add_foreign_key "votes", "users"

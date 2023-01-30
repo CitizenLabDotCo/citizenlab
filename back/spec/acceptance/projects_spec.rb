@@ -219,6 +219,8 @@ resource 'Projects' do
         parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(',')}. Defaults to public.", required: false
         parameter :participation_method, "Only for continuous projects. Either #{ParticipationContext::PARTICIPATION_METHODS.join(',')}. Defaults to ideation.", required: false
         parameter :posting_enabled, 'Only for continuous projects. Can citizens post ideas in this project? Defaults to true', required: false
+        parameter :posting_method, "Only for continuous projects with posting enabled. How does posting work? Either #{ParticipationContext::POSTING_METHODS.join(',')}. Defaults to unlimited for ideation, and limited to one for native surveys.", required: false
+        parameter :posting_limited_max, 'Only for continuous projects with limited posting. Number of posts a citizen can perform in this project. Defaults to 1', required: false
         parameter :commenting_enabled, 'Only for continuous projects. Can citizens post comment in this project? Defaults to true', required: false
         parameter :voting_enabled, 'Only for continuous projects. Can citizens vote in this project? Defaults to true', required: false
         parameter :upvoting_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
@@ -324,6 +326,8 @@ resource 'Projects' do
         let(:participation_method) { project.participation_method }
         let(:presentation_mode) { 'map' }
         let(:posting_enabled) { project.posting_enabled }
+        let(:posting_method) { 'limited' }
+        let(:posting_limited_max) { 5 }
         let(:commenting_enabled) { project.commenting_enabled }
         let(:voting_enabled) { project.voting_enabled }
         let(:upvoting_method) { project.upvoting_method }
@@ -347,6 +351,8 @@ resource 'Projects' do
           expect(json_response.dig(:data, :attributes, :participation_method)).to eq participation_method
           expect(json_response.dig(:data, :attributes, :presentation_mode)).to eq presentation_mode
           expect(json_response.dig(:data, :attributes, :posting_enabled)).to eq posting_enabled
+          expect(json_response.dig(:data, :attributes, :posting_method)).to eq posting_method
+          expect(json_response.dig(:data, :attributes, :posting_limited_max)).to eq posting_limited_max
           expect(json_response.dig(:data, :attributes, :commenting_enabled)).to eq commenting_enabled
           expect(json_response.dig(:data, :attributes, :voting_enabled)).to eq voting_enabled
           expect(json_response.dig(:data, :attributes, :downvoting_enabled)).to be true
@@ -483,6 +489,8 @@ resource 'Projects' do
         parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(',')}.", required: false
         parameter :participation_method, "Only for continuous projects. Either #{ParticipationContext::PARTICIPATION_METHODS.join(',')}.", required: false
         parameter :posting_enabled, 'Only for continuous projects. Can citizens post ideas in this project?', required: false
+        parameter :posting_method, "Only for continuous projects with posting enabled. How does posting work? Either #{ParticipationContext::POSTING_METHODS.join(',')}. Defaults to unlimited for ideation, and limited to one for native surveys.", required: false
+        parameter :posting_limited_max, 'Only for continuous projects with limited posting. Number of posts a citizen can perform in this project. Defaults to 1', required: false
         parameter :commenting_enabled, 'Only for continuous projects. Can citizens post comment in this project?', required: false
         parameter :voting_enabled, 'Only for continuous projects. Can citizens vote in this project?', required: false
         parameter :upvoting_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}.", required: false
@@ -725,6 +733,20 @@ resource 'Projects' do
             }
           }
         )
+      end
+    end
+
+    if CitizenLab.ee?
+      post 'web_api/v1/projects/:id/copy' do
+        let(:source_project) { create(:continuous_project) }
+        let(:id) { source_project.id }
+
+        example_request 'Copy a continuous project' do
+          assert_status 201
+
+          copied_project = Project.find(json_response.dig(:data, :id))
+          expect(copied_project.title_multiloc['en']).to include(source_project.title_multiloc['en'])
+        end
       end
     end
 
@@ -1147,6 +1169,17 @@ resource 'Projects' do
         assert_status 200
         expect(json_response[:data].size).to eq 0
       end
+
+      if CitizenLab.ee?
+        post 'web_api/v1/projects/:id/copy' do
+          let(:source_project) { create(:continuous_project) }
+          let(:id) { source_project.id }
+
+          example_request 'Copy a continuous project' do
+            assert_status 401
+          end
+        end
+      end
     end
   end
 
@@ -1274,6 +1307,8 @@ resource 'Projects' do
         parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(',')}. Defaults to public.", required: false
         parameter :participation_method, "Only for continuous projects. Either #{ParticipationContext::PARTICIPATION_METHODS.join(',')}. Defaults to ideation.", required: false
         parameter :posting_enabled, 'Only for continuous projects. Can citizens post ideas in this project? Defaults to true', required: false
+        parameter :posting_method, "Only for continuous projects with posting enabled. How does posting work? Either #{ParticipationContext::POSTING_METHODS.join(',')}. Defaults to unlimited for ideation, and limited to one for native surveys.", required: false
+        parameter :posting_limited_max, 'Only for continuous projects with limited posting. Number of posts a citizen can perform in this project. Defaults to 1', required: false
         parameter :commenting_enabled, 'Only for continuous projects. Can citizens post comment in this project? Defaults to true', required: false
         parameter :voting_enabled, 'Only for continuous projects. Can citizens vote in this project? Defaults to true', required: false
         parameter :upvoting_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
@@ -1366,6 +1401,43 @@ resource 'Projects' do
 
         example_request 'It does not authorize the folder moderator' do
           expect(response_status).to eq 401
+        end
+      end
+    end
+
+    if CitizenLab.ee?
+      post 'web_api/v1/projects/:id/copy' do
+        let!(:project_in_folder_user_moderates) { create(:continuous_project, folder: project_folder) }
+        let!(:project_in_other_folder) { create(:continuous_project, folder: create(:project_folder)) }
+        let!(:other_folder_moderators) { create_list(:project_folder_moderator, 3, project_folders: [project_folder]) }
+
+        context 'when passing the id of project in a folder the user moderates' do
+          let(:id) { project_in_folder_user_moderates.id }
+
+          example_request 'Allows the copying of a project within a folder the user moderates' do
+            expect(response_status).to eq 201
+
+            copied_project = Project.find(json_response.dig(:data, :id))
+            expect(copied_project.title_multiloc['en']).to include(project_in_folder_user_moderates.title_multiloc['en'])
+          end
+
+          example_request 'Adds all folder moderators as moderators of the project' do
+            expect(response_status).to eq 201
+
+            response_resource_id       = json_response.dig(:data, :id)
+            project_moderators         = User.project_moderator(response_resource_id)
+            folder_moderators          = User.project_folder_moderator(project_folder.id)
+
+            expect(project_moderators.pluck(:id)).to match_array folder_moderators.pluck(:id)
+          end
+        end
+
+        context 'when passing the id of project in a folder the user does not moderate' do
+          let(:id) { project_in_other_folder.id }
+
+          example_request 'It does not authorize the folder moderator' do
+            expect(response_status).to eq 401
+          end
         end
       end
     end
