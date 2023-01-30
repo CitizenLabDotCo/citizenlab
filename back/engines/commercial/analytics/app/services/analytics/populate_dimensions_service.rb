@@ -57,6 +57,7 @@ module Analytics
           { name: 'vote', parent: 'initiative' },
           { name: 'vote', parent: 'idea' },
           { name: 'vote', parent: 'comment' },
+          { name: 'poll', parent: nil },
           { name: 'volunteer', parent: nil },
           { name: 'survey', parent: nil }
         ]
