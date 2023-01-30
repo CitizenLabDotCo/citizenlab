@@ -1,5 +1,11 @@
 # Changelog
 
+## 2023-01-30
+
+### Fixed
+
+- [CL-2651] Fix survey top bar issue on mobile
+
 ## 2023-01-26 (2)
 
 ### Fixed
