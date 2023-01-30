@@ -212,23 +212,6 @@ jobs:
     steps:
       - run: bundle exec license_finder
 
-  back-web-api-docs:
-    resource_class: small
-    executor:
-      name: cl2-back-essential-executor
-      image-tag: $CIRCLE_SHA1
-    working_directory: /cl2_back
-    environment:
-      RAILS_ENV: test
-    steps:
-      - wait-for-postgres
-      - run: |
-          rake db:create
-          rake db:schema:load
-      - run: bundle exec rake web_api:docs:generate
-      - run: apt-get -y install awscli
-      - run: aws s3 sync doc/api s3://developers.citizenlab.co/api-docs/essential/frontweb_api/$CIRCLE_BRANCH --delete --acl public-read
-
   back-release-essential-image:
     resource_class: small
     docker:
@@ -374,8 +357,8 @@ jobs:
       - when:
           condition:
             or:
-              - equal: [<< pipeline.git.branch >>, master]
-              - equal: [<< pipeline.git.branch >>, production]
+              - equal: [ << pipeline.git.branch >>, master ]
+              - equal: [ << pipeline.git.branch >>, production ]
           steps:
             - run: |
                 curl --request POST \
@@ -648,8 +631,8 @@ jobs:
       - when:
           condition:
             or:
-              - equal: [<< pipeline.git.branch >>, master]
-              - equal: [<< pipeline.git.branch >>, production]
+              - equal: [ << pipeline.git.branch >>, master ]
+              - equal: [ << pipeline.git.branch >>, production ]
           steps:
             - run: |
                 curl --request POST \
@@ -821,15 +804,6 @@ workflows:
           context: docker-hub-access
           requires:
             - back-build-essential-docker-image
-          filters:
-            branches:
-              ignore:
-                - crowdin_master
-                - /l10n_.*/
-      - back-web-api-docs:
-          context: docker-hub-access
-          requires:
-            - back-test
           filters:
             branches:
               ignore:
