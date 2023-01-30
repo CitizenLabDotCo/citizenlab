@@ -218,4 +218,17 @@ export default defineMessages({
     defaultMessage:
       'This has already been added in the form. Default content may only be used once.',
   },
+  sectionCannotBeDeleted: {
+    id: 'app.components.formBuilder.sectionCannotBeDeleted',
+    defaultMessage: "This section can't be deleted.",
+  },
+  questionCannotBeDeleted: {
+    id: 'app.components.formBuilder.questionCannotBeDeleted',
+    defaultMessage: "This question can't be deleted.",
+  },
+  fieldNotVisibleTooltip: {
+    id: 'app.components.formBuilder.fieldNotVisibleTooltip',
+    defaultMessage:
+      'Answers to this field will only be accessible on the exported Excel file on Input Manager.',
+  },
 });
