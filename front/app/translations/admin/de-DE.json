@@ -1007,6 +1007,8 @@
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.editButtonLabel": "Bearbeiten",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.editCauseSubtitle": "Ein Anlass ist eine Aktion oder Aktivität, an der sich Bürger:innen freiwillig beteiligen können.",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.editCauseTitle": "Anlass bearbeiten",
+  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.emptyDescriptionErrorMessage": "Eine Beschreibung hinzufügen",
+  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.emptyTitleErrorMessage": "Einen Titel hinzufügen",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.exportVolunteers": "Teilnehmende exportieren",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.newCauseSubtitle": "Ein Anlass ist eine Aktion oder Aktivität, an der sich Bürger freiwillig beteiligen können.",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.newCauseTitle": "Neuer Anlass",
