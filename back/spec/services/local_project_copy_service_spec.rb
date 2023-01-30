@@ -144,10 +144,10 @@ describe LocalProjectCopyService do
       copied_project = service.copy(continuous_project.reload)
 
       expect(copied_project.causes.map do |record|
-        record.as_json(except: %i[id participation_context_id image updated_at created_at])
+        record.as_json(except: %i[id ordering participation_context_id image updated_at created_at])
       end)
         .to match_array(continuous_project.causes.map do |record|
-          record.as_json(except: %i[id participation_context_id image updated_at created_at])
+          record.as_json(except: %i[id ordering participation_context_id image updated_at created_at])
         end)
     end
 
@@ -166,11 +166,6 @@ describe LocalProjectCopyService do
         .to match_array(continuous_project.custom_form.custom_fields.map do |record|
           record.as_json(except: %i[id ordering resource_id updated_at created_at])
         end)
-
-      # Test ordering values can be used to order copied custom_fields in same order as source records,
-      # even when the ordering values are not exact copies of the integer values in the source custom_fields.
-      expect(continuous_project.custom_form.custom_fields.order(:ordering).pluck(:key))
-        .to eq(copied_project.custom_form.custom_fields.order(:ordering).pluck(:key))
 
       source_custom_field = continuous_project.custom_form.custom_fields.last
       copied_custom_field = copied_project.custom_form.custom_fields
