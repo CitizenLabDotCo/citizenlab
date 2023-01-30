@@ -63,6 +63,7 @@ const FormSectionDescriptionStyled = styled.p`
 
 const StyledSpan = styled.span`
   margin-right: 8px;
+  font-weight: 600;
 `;
 
 interface FormSectionTitleProps {
