@@ -18,6 +18,8 @@ import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
 import Title from 'components/admin/ContentBuilder/Widgets/Title';
 import Text from 'components/admin/ContentBuilder/Widgets/Text';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
+import SurveyResultsWidget from '../Widgets/SurveyResultsWidget';
 import MostVotedIdeasWidget from '../Widgets/MostVotedIdeasWidget';
 
 // i18n
@@ -111,6 +113,30 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
       />
       <Title text={formatMessage(messages.reportSummary)} />
       <Text text={formatMessage(messages.reportSummaryDescription)} />
+      <WhiteSpace />
+      <Title text={formatMessage(messages.projectResults)} />
+      <Text text={formatMessage(messages.descriptionPlaceHolder)} />
+      <ActiveUsersWidget
+        projectId={projectId}
+        title={formatMessage(ActiveUsersWidget.craft.custom.title)}
+        {...projectPeriod}
+      />
+      {participationMethod === 'native_survey' && (
+        <SurveyResultsWidget
+          projectId={projectId}
+          phaseId={phaseId}
+          title={formatMessage(SurveyResultsWidget.craft.custom.title)}
+        />
+      )}
+      {participationMethod === 'ideation' && (
+        <MostVotedIdeasWidget
+          projectId={projectId}
+          phaseId={phaseId}
+          title={formatMessage(MostVotedIdeasWidget.craft.custom.title)}
+          numberOfIdeas={5}
+          collapseLongText={false}
+        />
+      )}
       <WhiteSpace />
       <Title text={formatMessage(messages.participants)} />
       <Text text={formatMessage(messages.descriptionPlaceHolder)} />
