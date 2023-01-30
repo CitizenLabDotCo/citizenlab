@@ -320,13 +320,11 @@ const ProjectFolderCard = memo<Props>(
       : projectFolderImages.data[0]?.attributes.versions;
 
     const getImageUrl = (imageVersions: ImageSizes) => {
-      if (isPhone) {
-        return imageVersions.medium;
-      } else if (size === 'small') {
-        return imageVersions.small;
-      } else {
+      if (isPhone || size !== 'small') {
         // image size is approximately the same for both medium and large desktop card sizes
         return imageVersions.large;
+      } else {
+        return imageVersions.small;
       }
     };
 

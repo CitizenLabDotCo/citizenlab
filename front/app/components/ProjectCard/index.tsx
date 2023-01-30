@@ -64,7 +64,6 @@ const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
 
   &.large {
     width: 100%;
-    min-height: 450px;
     flex-direction: row;
     align-items: stretch;
     justify-content: space-between;
@@ -518,13 +517,11 @@ const ProjectCard = memo<Props>(
         : projectImages[0]?.attributes.versions;
 
       const getImageUrl = (imageVersions: ImageSizes) => {
-        if (isPhone) {
-          return imageVersions.medium;
-        } else if (size === 'small') {
-          return imageVersions.small;
-        } else {
+        if (isPhone || size !== 'small') {
           // image size is approximately the same for both medium and large desktop card sizes
           return imageVersions.large;
+        } else {
+          return imageVersions.small;
         }
       };
 

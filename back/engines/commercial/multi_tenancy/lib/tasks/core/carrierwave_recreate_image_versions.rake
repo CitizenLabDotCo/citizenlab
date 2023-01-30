@@ -7,18 +7,18 @@ namespace :carrierwave do
   #
   # 1. Recreates:
   #    - all versions of ProjectImage#image
-  # docker exec -it -e MODEL_CONFIGS='[{"class": "ProjectImage", "attributes": { "image": [] } }]' "$(docker ps | awk '/web/ {print $1}')" bin/rails carrierwave:recreate_image_versions
+  # docker exec -it -e MODEL_CONFIGS='[{"class": "ProjectImage", "attributes": { "image": [] } }]' "$(docker ps | awk '/web/ {print $1}' | head -1)" bin/rails carrierwave:recreate_image_versions
   #
   # 2. Recreates
   #    - all versions of ProjectImage#image
   #    - all versions of ProjectFolders::Image#image
-  # docker exec -it -e MODEL_CONFIGS='[{"class": "ProjectImage", "attributes": { "image": [] } }, {"class": "ProjectFolders::Image", "attributes": { "image": [] } }]' "$(docker ps | awk '/web/ {print $1}')" bin/rails carrierwave:recreate_image_versions
+  # docker exec -it -e MODEL_CONFIGS='[{"class": "ProjectImage", "attributes": { "image": [] } }, {"class": "ProjectFolders::Image", "attributes": { "image": [] } }]' "$(docker ps | awk '/web/ {print $1}' | head -1)" bin/rails carrierwave:recreate_image_versions
   #
   # 3. Recreates:
   #    - small and medium versions of AppConfiguration#logo
   #    - all versions of AppConfiguration#favicon
   #    - all versions of ProjectImage#image
-  # docker exec -it -e MODEL_CONFIGS='[{"class": "AppConfiguration", "attributes": { "logo": ["small", "medium"], "favicon": [] } }, {"class": "ProjectImage", "attributes": { "image": [] } }]' "$(docker ps | awk '/web/ {print $1}')" bin/rails carrierwave:recreate_image_versions
+  # docker exec -it -e MODEL_CONFIGS='[{"class": "AppConfiguration", "attributes": { "logo": ["small", "medium"], "favicon": [] } }, {"class": "ProjectImage", "attributes": { "image": [] } }]' "$(docker ps | awk '/web/ {print $1}' | head -1)" bin/rails carrierwave:recreate_image_versions
   #
   task recreate_image_versions: :environment do
     Tenant.switch_each do |tenant|
