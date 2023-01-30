@@ -245,7 +245,6 @@ describe IdeaCustomFieldsService do
       end
 
       # TODO: Add in tests for all field constraints
-
     end
 
     describe 'validate_constraints_against_updates' do
@@ -285,7 +284,6 @@ describe IdeaCustomFieldsService do
       end
 
       # TODO: Add in tests for all field constraints
-
     end
   end
 
