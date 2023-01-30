@@ -15,7 +15,7 @@ import ForceGraph2D, {
 import { forceCollide } from 'd3-force';
 
 // hooks
-import useInsightsView from 'modules/commercial/insights/hooks/useInsightsView';
+import { useView } from 'modules/commercial/insights/services/views';
 import useNetwork from 'modules/commercial/insights/hooks/useInsightsNetwork';
 
 // types
@@ -88,7 +88,7 @@ const Network = ({
 
   const networkRef = useRef<ForceGraphMethods>();
   const { loading, network } = useNetwork(viewId);
-  const view = useInsightsView(viewId);
+  const { data: view } = useView(viewId);
 
   useEffect(() => {
     if (networkRef.current) {

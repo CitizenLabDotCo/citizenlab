@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
-import { deleteInsightsView } from 'modules/commercial/insights/services/insightsViews';
 import clHistory from 'utils/cl-router/history';
 
 import TopBar from './';
@@ -62,10 +61,6 @@ const viewId = '1';
 jest.mock('utils/cl-router/Link');
 jest.mock('modules');
 
-jest.mock('modules/commercial/insights/services/insightsViews', () => ({
-  deleteInsightsView: jest.fn(),
-}));
-
 jest.mock('utils/cl-intl');
 jest.mock('utils/analytics');
 
@@ -73,8 +68,16 @@ jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
   addInsightsCategory: jest.fn(),
 }));
 
-jest.mock('modules/commercial/insights/hooks/useInsightsView', () => {
-  return jest.fn(() => mockViewData);
+const mockDeleteView = jest.fn();
+jest.mock('modules/commercial/insights/services/views', () => {
+  return {
+    useView: jest.fn(() => {
+      return { data: mockViewData };
+    }),
+    useDeleteView: jest.fn(() => {
+      return { mutate: mockDeleteView };
+    }),
+  };
 });
 
 jest.mock('hooks/useProject', () => {
@@ -155,7 +158,7 @@ describe('Insights Top Bar', () => {
     render(<TopBar />);
     fireEvent.click(screen.getByRole('button'));
     fireEvent.click(screen.getByText('Delete'));
-    expect(deleteInsightsView).toHaveBeenCalledWith(mockViewData.data.id);
+    expect(mockDeleteView).toHaveBeenCalledWith(mockViewData.data.id);
   });
 
   it('redirects to main screen there is view error', () => {

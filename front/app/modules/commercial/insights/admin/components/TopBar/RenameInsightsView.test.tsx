@@ -1,14 +1,9 @@
 import React from 'react';
 import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
-import * as service from 'modules/commercial/insights/services/insightsViews';
 
 import RenameInsightsView from './RenameInsightsView';
 
 const viewId = '1';
-
-jest.mock('modules/commercial/insights/services/insightsViews', () => ({
-  updateInsightsView: jest.fn(),
-}));
 
 jest.mock('utils/cl-intl');
 
@@ -29,11 +24,19 @@ jest.mock('utils/cl-router/withRouter', () => {
 });
 jest.mock('utils/cl-router/Link');
 
+const mockMutate = jest.fn();
+jest.mock('modules/commercial/insights/services/views', () => {
+  return {
+    useUpdateView: jest.fn(() => {
+      return { mutate: mockMutate, reset: jest.fn() };
+    }),
+  };
+});
+
 describe('Rename Insights View', () => {
   it('renames view with correct viewId and name', () => {
     const viewName = 'New name';
 
-    const spy = jest.spyOn(service, 'updateInsightsView');
     const closeModal = () => jest.fn();
     render(
       <RenameInsightsView
@@ -53,6 +56,9 @@ describe('Rename Insights View', () => {
       fireEvent.click(screen.getByText('Save'));
     });
 
-    expect(spy).toHaveBeenCalledWith(viewId, viewName);
+    expect(mockMutate).toHaveBeenCalledWith({
+      id: viewId,
+      requestBody: { view: { name: viewName } },
+    });
   });
 });

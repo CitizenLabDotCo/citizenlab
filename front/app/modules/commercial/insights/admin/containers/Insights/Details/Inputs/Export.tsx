@@ -18,7 +18,7 @@ import { requestBlob } from 'utils/request';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
-import useInsightsView from 'modules/commercial/insights/hooks/useInsightsView';
+import { useView } from 'modules/commercial/insights/services/views';
 
 // services
 import { getInsightsInputsEndpoint } from 'modules/commercial/insights/services/insightsInputs';
@@ -30,7 +30,7 @@ const Export = ({
   location: { query },
   intl: { formatMessage, formatDate },
 }: ExportProps) => {
-  const view = useInsightsView(viewId);
+  const { data: view } = useView(viewId);
 
   if (isNilOrError(view)) {
     return null;

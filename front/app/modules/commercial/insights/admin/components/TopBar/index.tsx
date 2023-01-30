@@ -25,11 +25,11 @@ import clHistory from 'utils/cl-router/history';
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError, isError } from 'utils/helperUtils';
 
-// services
-import { deleteInsightsView } from '../../../services/insightsViews';
-
 // hooks
-import { useView } from 'modules/commercial/insights/services/views';
+import {
+  useView,
+  useDeleteView,
+} from 'modules/commercial/insights/services/views';
 
 export const topBarHeight = 60;
 
@@ -76,6 +76,7 @@ const TopBar = ({
   const [isDropdownOpened, setDropdownOpened] = useState(false);
   const viewId = params.viewId;
   const { data: view } = useView(viewId);
+  const { mutate } = useDeleteView();
 
   useEffect(() => {
     if (isError(view)) {
@@ -101,11 +102,11 @@ const TopBar = ({
   const closeRenameModal = () => setRenameModalOpened(false);
   const openRenameModal = () => setRenameModalOpened(true);
 
-  const handleDeleteClick = async () => {
+  const handleDeleteClick = () => {
     const deleteMessage = formatMessage(messages.deleteConfirmation);
 
     if (window.confirm(deleteMessage)) {
-      await deleteInsightsView(viewId);
+      mutate(viewId);
       clHistory.push('/admin/reporting/insights');
     }
   };

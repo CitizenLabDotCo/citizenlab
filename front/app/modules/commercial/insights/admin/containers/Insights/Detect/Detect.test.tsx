@@ -10,6 +10,7 @@ import { addInsightsCategory } from 'modules/commercial/insights/services/insigh
 import categories from 'modules/commercial/insights/fixtures/categories';
 
 import Detect from './';
+import views from 'modules/commercial/insights/fixtures/views';
 
 let mockData = categories;
 const viewId = '1';
@@ -26,6 +27,22 @@ jest.mock(
     return jest.fn(() => mockData);
   }
 );
+
+const mockViewData = { data: views[0] };
+
+jest.mock('modules/commercial/insights/services/views', () => {
+  return {
+    useUpdateView: jest.fn(() => {
+      return () => ({ mutate: jest.fn() });
+    }),
+    useView: jest.fn(() => {
+      return { data: mockViewData };
+    }),
+    useDeleteView: jest.fn(() => {
+      return { mutate: jest.fn() };
+    }),
+  };
+});
 
 jest.mock('hooks/useLocale');
 jest.mock('modules');

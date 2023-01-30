@@ -54,6 +54,12 @@ jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
   return jest.fn(() => mockCategories);
 });
 
+jest.mock('modules/commercial/insights/services/views', () => {
+  return {
+    useView: () => ({ mutate: jest.fn() }),
+  };
+});
+
 const defaultProps = {
   inputs,
   onPreviewInput: jest.fn(),

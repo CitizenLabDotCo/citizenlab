@@ -9,11 +9,15 @@ const viewId = '1';
 const apiPath = '/web_api/v1/insights/views/1/inputs/as_xlsx';
 const application =
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-const mockViewData = views[0];
+const mockViewData = { data: views[0] };
 let mockLocationData: { query: Record<string, unknown> } = { query: {} };
 
-jest.mock('modules/commercial/insights/hooks/useInsightsView', () => {
-  return jest.fn(() => mockViewData);
+jest.mock('modules/commercial/insights/services/views', () => {
+  return {
+    useView: jest.fn(() => {
+      return { data: mockViewData };
+    }),
+  };
 });
 
 jest.mock('utils/cl-intl');

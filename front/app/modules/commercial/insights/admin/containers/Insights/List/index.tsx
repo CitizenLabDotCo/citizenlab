@@ -17,6 +17,7 @@ const Insights = () => {
   const openCreateModal = () => setCreateModalOpened(true);
 
   const { data: views } = useViews();
+
   if (isNilOrError(views)) {
     return null;
   }

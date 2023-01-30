@@ -48,7 +48,7 @@ const mockCategoryData = categories[0];
 
 const mockCategoriesData = categories;
 
-const mockViewData = views[0];
+const mockViewData = { data: views[0] };
 
 let mockLocationData = { pathname: '', query: {} };
 
@@ -68,8 +68,12 @@ jest.mock('modules/commercial/insights/hooks/useInsightsInputs', () => {
   return jest.fn(() => mockInputData);
 });
 
-jest.mock('modules/commercial/insights/hooks/useInsightsView', () => {
-  return jest.fn(() => mockViewData);
+jest.mock('modules/commercial/insights/services/views', () => {
+  return {
+    useView: jest.fn(() => {
+      return { data: mockViewData };
+    }),
+  };
 });
 
 jest.mock('hooks/useLocale');
