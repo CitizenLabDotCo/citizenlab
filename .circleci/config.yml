@@ -49,24 +49,6 @@ parameters:
     default: false
 
 executors:
-  cl2-back-essential-executor:
-    parameters:
-      image-tag:
-        type: string
-    docker:
-      - image: citizenlabdotco/back-essential:<< parameters.image-tag >>
-        auth:
-          username: $DOCKER_USER
-          password: $DOCKER_PASS
-        environment:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_HOST: localhost
-      - image: "postgis/postgis:12-3.1"
-        environment:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-
   cl2-back:
     parameters:
       image-tag:
