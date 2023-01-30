@@ -75,7 +75,7 @@ export const useCreateView = ({ onSuccess }: { onSuccess?: () => void }) => {
     mutationFn: createView,
     onSuccess: () => {
       onSuccess && onSuccess();
-      queryClient.invalidateQueries<ViewKeys>({ queryKey: viewKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: viewKeys.lists() });
     },
   });
 };

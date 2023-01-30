@@ -3,6 +3,7 @@ import { getJwt } from 'utils/auth/jwt';
 import { stringify } from 'qs';
 import { queryClient } from 'root';
 import { isArray } from 'lodash-es';
+import { CLErrors } from 'typings';
 
 // FETCHER
 
@@ -35,16 +36,18 @@ interface Delete {
 type Fetcher = Get | Update | Create | Delete;
 
 type BaseData = { id: string; type: string };
-type BaseResponse =
+
+type BaseDataResponse =
   | { data: BaseData; included?: BaseData[] }
   | { data: BaseData[]; included?: BaseData[] };
 
-const fetcher = async <TResponseData extends BaseResponse>({
-  path,
-  action,
-  body,
-  queryParams,
-}: Fetcher) => {
+function fetcher<TResponseData extends BaseDataResponse>(
+  args: Fetcher
+): Fetcher['action'] extends 'delete'
+  ? null
+  : Promise<Omit<TResponseData, 'included'>>;
+
+async function fetcher({ path, action, body, queryParams }) {
   const methodMap = {
     get: 'GET',
     update: 'PATCH',
@@ -64,42 +67,41 @@ const fetcher = async <TResponseData extends BaseResponse>({
     },
   });
 
-  let data: TResponseData | undefined;
-
-  try {
-    data = await response.json();
-    if (data) {
-      if (!response.ok) {
-        throw data;
-      } else {
-        if (isArray(data.data)) {
-          data.data.forEach((entry: BaseData) =>
-            queryClient.setQueryData(
-              [{ type: entry.type, id: entry.id, entity: 'detail' }],
-              () => ({ data: entry })
-            )
-          );
-        } else if (action === 'create' || action === 'update') {
-          queryClient.setQueryData(
-            [{ type: data.data.type, id: data.data.id, entity: 'detail' }],
-            () => ({ data })
-          );
-        }
-        if (data.included) {
-          data.included.forEach((entry: BaseData) =>
-            queryClient.setQueryData(
-              [{ type: entry.type, id: entry.id, entity: 'detail' }],
-              () => ({ data: entry })
-            )
-          );
-        }
-      }
-      return data;
-    }
-  } catch {
-    // Do nothing
+  if (action === 'delete') {
+    return null;
   }
-  return data as TResponseData;
-};
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw data as unknown as CLErrors;
+  } else {
+    if (data) {
+      if (isArray(data.data)) {
+        data.data.forEach((entry: BaseData) =>
+          queryClient.setQueryData(
+            [{ type: entry.type, id: entry.id, entity: 'detail' }],
+            () => ({ data: entry })
+          )
+        );
+      } else if (action === 'create' || action === 'update') {
+        queryClient.setQueryData(
+          [{ type: data.data.type, id: data.data.id, entity: 'detail' }],
+          () => ({ data: data.data })
+        );
+      }
+      if (data.included) {
+        data.included.forEach((entry: BaseData) =>
+          queryClient.setQueryData(
+            [{ type: entry.type, id: entry.id, entity: 'detail' }],
+            () => ({ data: entry })
+          )
+        );
+      }
+    }
+  }
+  const { included: _included, ...rest } = data;
+  return rest;
+}
 
 export default fetcher;
