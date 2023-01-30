@@ -155,18 +155,6 @@ jobs:
     steps:
       - run: bundle exec license_finder
 
-  back-release-essential-image:
-    resource_class: small
-    docker:
-      - image: cimg/base:2021.03
-    steps:
-      - setup_remote_docker
-      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-      - run: docker pull citizenlabdotco/back-essential:$CIRCLE_SHA1
-      - run: docker tag citizenlabdotco/back-essential:$CIRCLE_SHA1 citizenlabdotco/back-essential
-      - deploy:
-          command: docker push citizenlabdotco/back-essential
-
   # BACK-END EE
   back-build-ee-docker-image:
     working_directory: ~/
@@ -491,20 +479,6 @@ jobs:
             - "b8:7b:38:ee:7d:8c:8c:e0:84:74:88:b6:98:2d:0f:f6"
       - run: git diff --quiet app/translations && git diff --staged --quiet app/translations || git commit -m "Translations updated by CI (extract-intl)"
       - run: git push origin $CIRCLE_BRANCH
-
-  front-release-essential-image:
-    docker:
-      - image: cimg/base:2021.03
-    steps:
-      - checkout
-      - setup_remote_docker:
-          # https://support.circleci.com/hc/en-us/articles/360050934711
-          version: 19.03.13
-      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-      - run: |
-          docker build -t citizenlabdotco/front-essential -f front/Dockerfile .
-      - deploy:
-          command: docker push citizenlabdotco/front-essential
 
   # FRONT-END EE
   front-ee-test:
