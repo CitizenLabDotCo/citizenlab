@@ -5,6 +5,7 @@
 ### Fixed
 
 - [CL-2651] Fix survey top bar issue on mobile
+- [CL-2682] Show Content Warnings tab in activity manager for all platforms
 
 ## 2023-01-26 (2)
 

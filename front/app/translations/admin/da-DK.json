@@ -1007,6 +1007,8 @@
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.editButtonLabel": "Rediger",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.editCauseSubtitle": "En sag er en handling eller aktivitet, som deltagerne kan melde sig frivilligt til.",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.editCauseTitle": "Rediger årsag",
+  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.emptyDescriptionErrorMessage": "Tilføj en beskrivelse",
+  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.emptyTitleErrorMessage": "Tilføj en titel",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.exportVolunteers": "Eksporter frivillige",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.newCauseSubtitle": "En sag er en handling eller aktivitet, som deltagerne kan melde sig frivilligt til.",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.newCauseTitle": "Ny årsag",
