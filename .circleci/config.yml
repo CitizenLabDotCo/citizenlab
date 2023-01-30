@@ -384,35 +384,6 @@ jobs:
           command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH rake checks:invalid_data"
           no_output_timeout: 60m
 
-  # FRONT-END ESSENTIAL
-  front-test:
-    docker:
-      - image: citizenlabdotco/cl2-devops-front-buildenv
-    working_directory: /citizenlab/front
-    steps:
-      - checkout:
-          path: /citizenlab
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-npm-cache-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-npm-cache-
-      - run: npm ci
-      - save_cache:
-          paths:
-            - /root/.npm
-          key: v1-npm-cache-{{ checksum "package.json" }}
-      - run:
-          name: Run tests with JUnit as reporter
-          command: npm run test:ci
-          environment:
-            JEST_JUNIT_OUTPUT_DIR: ./reports/
-      - store_test_results:
-          path: ./reports/
-      - store_artifacts:
-          path: ./reports/
-
   front-detect-deadcode:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
@@ -869,22 +840,6 @@ workflows:
           compose_file: docker-compose-production.yml
           env_file: ".env-web"
           stack_name: "cl2"
-
-  # FRONT-END ESSENTIAL
-  front-essential:
-    when:
-      and:
-        - not: <<pipeline.parameters.run_deploy>>
-        - << pipeline.parameters.front >>
-    jobs:
-      - front-test:
-          filters:
-            branches:
-              ignore:
-                - crowdin_master
-                - /l10n_.*/
-                - master
-
 
   # FRONT-END EE
   front-ee:
