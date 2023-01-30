@@ -1007,6 +1007,8 @@
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.editButtonLabel": "تعديل",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.editCauseSubtitle": "القضية هي إجراء أو نشاط يستطيع المواطنون التطوع من أجله.",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.editCauseTitle": "عدّل القضية",
+  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.emptyDescriptionErrorMessage": "إضافة وصف",
+  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.emptyTitleErrorMessage": "إضافة عنوان",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.exportVolunteers": "تصدير المتطوعين",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.newCauseSubtitle": "القضية هي إجراء أو نشاط يستطيع المواطنون التطوع من أجله.",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.newCauseTitle": "قضية جديدة",
