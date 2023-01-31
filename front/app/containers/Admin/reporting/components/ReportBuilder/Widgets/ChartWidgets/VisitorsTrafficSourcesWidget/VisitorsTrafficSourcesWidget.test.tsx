@@ -1,17 +1,17 @@
 import React from 'react';
-import VisitorsTrafficSourcesCard from './VisitorTrafficSourcesCard';
+import VisitorsTrafficSourcesWidget from '.';
 import { render } from 'utils/testUtils/rtl';
-import useVisitorReferrerTypes from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes';
 
+let mockVisitorReferrerTypes: any = { pieData: null };
 jest.mock(
   'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes',
-  () => jest.fn()
+  () => jest.fn(() => mockVisitorReferrerTypes)
 );
 jest.mock('containers/Admin/reporting/hooks/useNarrow', () => () => true);
 
-describe('<VisitorsTrafficSourcesCard />', () => {
-  const startAtMoment = null;
-  const endAtMoment = null;
+describe('<VisitorsTrafficSourcesWidget />', () => {
+  const startAt = undefined;
+  const endAt = undefined;
   const projectId = undefined;
   const title = 'TRAFFIC SOURCES TITLE';
 
@@ -21,13 +21,12 @@ describe('<VisitorsTrafficSourcesCard />', () => {
       { name: 'Direct', value: 1, percentage: 50, color: '#8A472F' },
     ];
 
-    // @ts-ignore
-    useVisitorReferrerTypes.mockReturnValue({ pieData: validData });
+    mockVisitorReferrerTypes = { pieData: validData };
 
     const { container } = render(
-      <VisitorsTrafficSourcesCard
-        startAtMoment={startAtMoment}
-        endAtMoment={endAtMoment}
+      <VisitorsTrafficSourcesWidget
+        startAt={startAt}
+        endAt={endAt}
         projectId={projectId}
         title={title}
       />
@@ -43,13 +42,12 @@ describe('<VisitorsTrafficSourcesCard />', () => {
   });
 
   it('renders a title and no data message if there is no data', () => {
-    // @ts-ignore
-    useVisitorReferrerTypes.mockReturnValue({ pieData: null });
+    mockVisitorReferrerTypes = { pieData: null };
 
     const { container } = render(
-      <VisitorsTrafficSourcesCard
-        startAtMoment={startAtMoment}
-        endAtMoment={endAtMoment}
+      <VisitorsTrafficSourcesWidget
+        startAt={startAt}
+        endAt={endAt}
         projectId={projectId}
         title={title}
       />
