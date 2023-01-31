@@ -61,7 +61,7 @@ export default function usePostsByTime({
           setFormattedNumbers({
             totalNumber: null,
             formattedSerieChange: null,
-            typeOfChange: '',
+            typeOfChange: null,
           });
           return;
         }
