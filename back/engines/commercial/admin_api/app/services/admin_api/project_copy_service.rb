@@ -50,6 +50,7 @@ module AdminApi
       @template['models']['custom_maps/map_config']  = yml_maps_map_configs shift_timestamps: shift_timestamps
       @template['models']['custom_maps/layer']       = yml_maps_layers shift_timestamps: shift_timestamps
       @template['models']['custom_maps/legend_item'] = yml_maps_legend_items shift_timestamps: shift_timestamps
+      @template['models']['content_builder/layout']  = yml_content_builder_layouts shift_timestamps: shift_timestamps
 
       unless local_copy
         @template['models']['event']      = yml_events shift_timestamps: shift_timestamps
@@ -73,6 +74,22 @@ module AdminApi
     end
 
     private
+
+    def yml_content_builder_layouts(shift_timestamps: 0)
+      ContentBuilder::Layout.where(content_buildable_id: @project.id).map do |layout|
+        yml_layout = {
+          'content_buildable_ref' => lookup_ref(layout.content_buildable_id, :project),
+          'content_buildable_type' => layout.content_buildable_type,
+          'code' => layout.code,
+          'enabled' => layout.enabled,
+          'craftjs_jsonmultiloc' => layout.craftjs_jsonmultiloc,
+          'created_at' => shift_timestamp(layout.created_at, shift_timestamps)&.iso8601,
+          'updated_at' => shift_timestamp(layout.updated_at, shift_timestamps)&.iso8601
+        }
+        store_ref yml_layout, layout.id, :content_builder_layout
+        yml_layout
+      end
+    end
 
     def yml_custom_forms(shift_timestamps: 0)
       ([@project.custom_form] + @project.phases.map(&:custom_form)).compact.map do |cf|
