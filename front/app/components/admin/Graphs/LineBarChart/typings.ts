@@ -21,6 +21,6 @@ interface Payload {
 
 export interface Mapping<Row> {
   x: KeyOfType<Row, string>;
-  yBar: KeyOfType<Row, number>;
+  yBars: KeyOfType<Row, number>[];
   yLine: KeyOfType<Row, number>;
 }

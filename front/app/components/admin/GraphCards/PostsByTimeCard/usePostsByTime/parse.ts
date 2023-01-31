@@ -14,6 +14,7 @@ import {
 } from './typings';
 import { Translations } from './translations';
 import { IResolution } from 'components/admin/ResolutionControl';
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 export const getEmptyRow = (date: Moment) => ({
   date: date.format('YYYY-MM-DD'),
@@ -95,7 +96,7 @@ const formatSerieChange = (serieChange: number) => {
   return null;
 };
 
-export const getFormattedNumbers = (serie) => {
+export const getFormattedNumbers_ = (serie) => {
   if (serie) {
     const firstSerieValue = serie.length > 0 ? serie[0].total : 0;
     const lastSerieValue = serie.length > 0 ? serie[serie.length - 1].total : 0;
@@ -120,5 +121,38 @@ export const getFormattedNumbers = (serie) => {
     totalNumber: null,
     formattedSerieChange: null,
     typeOfChange: '',
+  };
+};
+
+export const getFormattedNumbers = (
+  serie: TimeSeries | NilOrError
+): {
+  typeOfChange: 'increase' | 'decrease' | null;
+  totalNumber: number | null;
+  formattedSerieChange: string | null;
+} => {
+  if (!isNilOrError(serie)) {
+    const firstSerieValue = serie && serie[0].total;
+    const lastSerieValue = serie && serie[serie.length - 1].total;
+    const serieChange = lastSerieValue - firstSerieValue;
+    let typeOfChange: 'increase' | 'decrease' | null = null;
+
+    if (serieChange > 0) {
+      typeOfChange = 'increase';
+    } else if (serieChange < 0) {
+      typeOfChange = 'decrease';
+    }
+
+    return {
+      typeOfChange,
+      totalNumber: lastSerieValue,
+      formattedSerieChange: formatSerieChange(serieChange),
+    };
+  }
+
+  return {
+    totalNumber: null,
+    formattedSerieChange: null,
+    typeOfChange: null,
   };
 };
