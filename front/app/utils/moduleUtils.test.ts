@@ -122,4 +122,27 @@ describe('insertConfiguration', () => {
       ]);
     });
   });
+
+  describe('insertAfterName', () => {
+    it('inserts the configuration after item when specified', () => {
+      const module = {
+        configuration: templateItemToInsert,
+        insertAfterName: 'scratch',
+      };
+      const result = insertConfiguration(module)(initialTabsWithScratch);
+
+      expect(result).toEqual([
+        {
+          name: 'scratch',
+          label: 'scratch label',
+          icon: 'blank-paper',
+        },
+        {
+          name: 'template',
+          label: 'template label',
+          icon: 'template',
+        },
+      ]);
+    });
+  });
 });
