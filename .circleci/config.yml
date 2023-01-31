@@ -760,7 +760,7 @@ jobs:
       - run: sleep 280
       - run: |
           cd e2e
-          docker-compose run --name cypress_run front npm run cypress:run -- --config baseUrl=http://e2e-front:3000
+          docker-compose run --name cypress_run front npm run cypress:run -- --config baseUrl=http://e2e.front:3000
       - run:
           command: docker cp cypress_run:/front/cypress/screenshots .
           # If `when: always`, it fails on success with
