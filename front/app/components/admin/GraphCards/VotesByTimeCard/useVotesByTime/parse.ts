@@ -53,7 +53,7 @@ export const parseTimeSeries = (
     resolution
   );
   if (!timeSeries) return [];
-  let totalCount = total && total.length > 0 ? total[0]?.sum_votes_count : 0;
+  let totalCount = total[0]?.sum_votes_count;
   timeSeries = orderBy(
     timeSeries,
     (o: TimeSeriesRow) => {
