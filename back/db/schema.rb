@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_31_091656) do
+ActiveRecord::Schema.define(version: 2023_01_31_122140) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -89,6 +89,7 @@ ActiveRecord::Schema.define(version: 2023_01_31_091656) do
   create_table "analytics_dimension_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "parent"
+    t.index ["name", "parent"], name: "index_analytics_dimension_types_on_name_and_parent", unique: true
   end
 
   create_table "analytics_fact_visits", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
