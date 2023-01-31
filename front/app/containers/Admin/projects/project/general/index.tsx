@@ -235,7 +235,6 @@ const AdminProjectsProjectGeneral = () => {
     projectCardImageToRemove: UploadFile
   ) => {
     setProjectCardImage(null);
-    setPreviewDevice('phone');
     projectCardImageToRemove.remote &&
       setProjectCardImageToRemove(projectCardImageToRemove);
     setSubmitState('enabled');
