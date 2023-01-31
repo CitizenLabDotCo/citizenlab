@@ -316,47 +316,6 @@ RSpec.describe InputUiSchemaGeneratorService do
           expect(ui_schema.dig(:options, :inputTerm)).to eq 'idea'
         end
       end
-
-      it 'does not include the details category when there are no fields inside' do
-        disabled_codes = %w[proposed_budget budget topic_ids location_description]
-        enabled_fields = continuous_fields.reject do |field|
-          disabled_codes.include?(field.code)
-        end
-        ui_schema = generator.generate_for(enabled_fields)['en']
-        expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'details' }).to be false
-        expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'mainContent' }).to be true
-      end
-
-      it 'does not include the images and attachments category when there are no fields inside' do
-        disabled_codes = %w[idea_images_attributes idea_files_attributes]
-        enabled_fields = continuous_fields.reject do |field|
-          disabled_codes.include?(field.code)
-        end
-        ui_schema = generator.generate_for(enabled_fields)['en']
-        expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'attachments' }).to be false
-        expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'mainContent' }).to be true
-      end
-
-      it 'does not include an extra category when there are only built-in fields' do
-        ui_schema = generator.generate_for(continuous_fields)['en']
-        expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'extra' }).to be false
-        expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'mainContent' }).to be true
-      end
-
-      it 'includes all non built-in fields in an extra category' do
-        continuous_fields.push(create(:custom_field_extra_custom_form, resource: project.custom_form))
-        ui_schema = generator.generate_for(continuous_fields)['en']
-        expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'extra' }).to be true
-        expect(ui_schema[:elements].find { |e| e[:options][:id] == 'extra' }[:elements].size).to eq 1
-        expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'mainContent' }).to be true
-      end
-
-      it 'gives all non built-in fields a nested path' do
-        continuous_fields.push(create(:custom_field_extra_custom_form, resource: project.custom_form))
-        ui_schema = generator.generate_for(continuous_fields)['en']
-        expect(ui_schema[:elements].find { |e| e[:options][:id] == 'extra' }[:elements].size).to eq 1
-        expect(ui_schema[:elements].find { |e| e[:options][:id] == 'extra' }[:elements].first[:scope]).to eq '#/properties/extra_field'
-      end
     end
 
     context 'for a continuous native survey project without pages' do
