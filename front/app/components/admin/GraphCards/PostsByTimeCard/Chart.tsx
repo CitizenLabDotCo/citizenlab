@@ -38,7 +38,7 @@ const Chart = ({
   const formatTick = (date: string) => {
     return toThreeLetterMonth(date, resolution);
   };
-  console.log('timeSeries', timeSeries);
+
   // Avoids unmounted component state update warning
   if (timeSeries === undefined) {
     return null;
