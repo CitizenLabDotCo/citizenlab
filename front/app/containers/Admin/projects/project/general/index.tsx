@@ -167,7 +167,7 @@ const AdminProjectsProjectGeneral = () => {
           (projectImage) => {
             const url = getCardImageUrl(
               projectImage.attributes.versions,
-              previewDevice
+              previewDevice === 'phone'
               // This is incomplete. To have the correct image version,
               // We'd need the exact size of the project card as well,
               // But we currently don't have that functionality in our
