@@ -1,5 +1,28 @@
 # Changelog
 
+## 2023-01-31
+
+### Added
+
+- [CL-1703] Add default CTA banner on project page
+
+## 2023-01-30
+
+### Fixed
+
+- [CL-2651] Fix survey top bar issue on mobile
+- [CL-2682] Show Content Warnings tab in activity manager for all platforms
+
+## 2023-01-26 (2)
+
+### Fixed
+
+- [CL-2366] Hide 'Projects' card from overview dashboard
+
+### Added
+
+- [CL-2658] Most voted ideas widget for report builder
+
 ## 2023-01-26
 
 ### Fixed

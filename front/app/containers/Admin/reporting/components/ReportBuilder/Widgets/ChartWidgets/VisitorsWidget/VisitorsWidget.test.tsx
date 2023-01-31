@@ -1,17 +1,16 @@
 import React from 'react';
-import VisitorsCard from './VisitorsCard';
+import VisitorsWidget from '.';
 import { render, screen } from 'utils/testUtils/rtl';
-import useVisitors from 'components/admin/GraphCards/VisitorsCard/useVisitors';
 
+let mockVisitors: any = null;
 jest.mock('components/admin/GraphCards/VisitorsCard/useVisitors', () =>
-  jest.fn()
+  jest.fn(() => mockVisitors)
 );
 
-describe('<VisitorsCard />', () => {
-  const startAtMoment = null;
-  const endAtMoment = null;
+describe('<VisitorsWidget />', () => {
+  const startAt = undefined;
+  const endAt = undefined;
   const projectId = undefined;
-  const resolution = 'month';
   const title = 'VISITORS TITLE';
 
   it('renders a title, line graph and stats box when there is data', () => {
@@ -32,19 +31,17 @@ describe('<VisitorsCard />', () => {
       { date: '2022-10-01', visitors: 100, visits: 100 },
     ];
 
-    // @ts-ignore
-    useVisitors.mockReturnValue({
+    mockVisitors = {
       currentResolution: 'month',
       stats: validStats,
       timeSeries: validTimeSeries,
-    });
+    };
 
     const { container } = render(
-      <VisitorsCard
-        startAtMoment={startAtMoment}
-        endAtMoment={endAtMoment}
+      <VisitorsWidget
+        startAt={startAt}
+        endAt={endAt}
         projectId={projectId}
-        resolution={resolution}
         title={title}
       />
     );
@@ -80,19 +77,17 @@ describe('<VisitorsCard />', () => {
       { date: '2022-10-01', visitors: 0, visits: 0 },
     ];
 
-    // @ts-ignore
-    useVisitors.mockReturnValue({
+    mockVisitors = {
       currentResolution: 'month',
       stats: emptyStats,
       timeSeries: emptyTimeSeries,
-    });
+    };
 
     const { container } = render(
-      <VisitorsCard
-        startAtMoment={startAtMoment}
-        endAtMoment={endAtMoment}
+      <VisitorsWidget
+        startAt={startAt}
+        endAt={endAt}
         projectId={projectId}
-        resolution={resolution}
         title={title}
       />
     );
