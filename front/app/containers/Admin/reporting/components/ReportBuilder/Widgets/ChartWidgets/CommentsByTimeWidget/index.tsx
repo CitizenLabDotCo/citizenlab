@@ -40,7 +40,7 @@ CommentsByTimeWidget.craft = {
   props: {
     title: '',
     projectFilter: undefined,
-    startAtMoment: undefined,
+    startAt: undefined,
     endAtMoment: null,
   },
   related: {
