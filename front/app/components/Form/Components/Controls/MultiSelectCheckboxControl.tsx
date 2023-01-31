@@ -52,11 +52,6 @@ const MultiSelectCheckboxControl = ({
   const options = getOptions(schema, 'multi');
   const dataArray = Array.isArray(data) ? data : [];
 
-  const checkboxBackgroundColor = transparentize(
-    0.9,
-    theme.colors.tenantPrimary
-  );
-
   if (!visible) {
     return null;
   }
@@ -79,7 +74,7 @@ const MultiSelectCheckboxControl = ({
             style={{ cursor: 'pointer' }}
             mb="12px"
             key={option.value}
-            checkboxBackgroundColor={checkboxBackgroundColor}
+            checkboxBackgroundColor={colors.grey100}
           >
             <Checkbox
               containerPadding="16px 20px 16px 20px"

@@ -10,7 +10,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Modal from 'components/UI/Modal';
-import GoBackButtonUI from 'components/UI/GoBackButton';
+import GoBackButtonSurvey from 'components/UI/GoBackButton';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -66,7 +66,7 @@ export const Heading = ({
             justifyContent="flex-start"
             width="100%"
           >
-            <GoBackButtonUI onClick={openModal} />
+            <GoBackButtonSurvey onClick={openModal} />
           </Box>
         </>
       )}
@@ -97,9 +97,11 @@ export const Heading = ({
             <Box
               display="flex"
               flexDirection="row"
+              width="100%"
               alignItems="center"
-              justifyContent="center"
+              justifyContent="space-between"
             >
+              <GoBackButtonSurvey onClick={openModal} />
               {showEditSurveyButton && (
                 <Button
                   data-cy="e2e-edit-survey-link"
@@ -113,12 +115,6 @@ export const Heading = ({
                   <FormattedMessage {...messages.editSurvey} />
                 </Button>
               )}
-              <Button
-                icon="close"
-                buttonStyle="text"
-                padding="0px"
-                onClick={openModal}
-              />
             </Box>
           )}
         </Box>

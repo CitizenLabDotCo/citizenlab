@@ -48,8 +48,6 @@ const SingleSelectRadioControl = ({
   const theme = useTheme();
   const options = getOptions(schema, 'single');
 
-  const selectBackgroundColor = transparentize(0.9, theme.colors.tenantPrimary);
-
   if (!visible) {
     return null;
   }
@@ -66,7 +64,7 @@ const SingleSelectRadioControl = ({
       <Box display="block" id="e2e-single-select-control">
         {options?.map((option, index: number) => (
           <StyledBox
-            selectBackgroundColor={selectBackgroundColor}
+            selectBackgroundColor={colors.grey100}
             role="button"
             onClick={() => {
               handleChange(path, option.value);

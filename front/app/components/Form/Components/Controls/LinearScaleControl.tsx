@@ -47,8 +47,6 @@ const LinearScaleControl = ({
     return 'auto';
   };
 
-  const buttonBackgroundColor = transparentize(0.9, theme.colors.tenantPrimary);
-
   return (
     <>
       <FormLabel
@@ -82,7 +80,7 @@ const LinearScaleControl = ({
                   bgColor={
                     data === visualIndex
                       ? theme.colors.tenantSecondary
-                      : buttonBackgroundColor
+                      : colors.grey100
                   }
                   textHoverColor={
                     data === visualIndex ? 'white' : colors.textPrimary
