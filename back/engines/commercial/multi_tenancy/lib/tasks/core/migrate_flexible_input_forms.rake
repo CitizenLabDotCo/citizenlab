@@ -22,7 +22,7 @@ end
 
 class FlexibleInputFormMigrator
   def initialize
-    @stats = { forms: 0, errors: 0, updated: 0, created: 0 }
+    @stats = { forms: 0, empty: 0, errors: 0, updated: 0, created: 0 }
   end
 
   def output_stats(host)
@@ -32,8 +32,17 @@ class FlexibleInputFormMigrator
   def migrate_form(custom_form, persist_changes)
     @stats[:forms] += 1
 
-    # Format the fields
+    # Get persisted fields
     fields = CustomField.where(resource: custom_form).order(:ordering)
+
+    # Do nothing if there are no fields (can this happen?)
+    if fields.empty?
+      Rails.logger.info 'NO FIELDS: No currently persisted fields'
+      @stats[:empty] += 1
+      return
+    end
+
+    # Format the fields
     if custom_form.participation_context.participation_method == 'ideation'
       fields = merge_ideation_fields fields, custom_form
     else
@@ -64,7 +73,6 @@ class FlexibleInputFormMigrator
       if field.persisted?
         if field.changed?
           Rails.logger.info "FIELD EXISTS - UPDATING: #{field_id} #{field.changes.keys}"
-          Rails.logger.info field.changes
           field.save! if persist_changes
           @stats[:updated] += 1
         else
