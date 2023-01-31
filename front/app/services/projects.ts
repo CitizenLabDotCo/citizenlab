@@ -34,13 +34,8 @@ export const CARD_IMAGE_ASPECT_RATIO_HEIGHT = 3;
 export const CARD_IMAGE_ASPECT_RATIO =
   CARD_IMAGE_ASPECT_RATIO_WIDTH / CARD_IMAGE_ASPECT_RATIO_HEIGHT;
 
-type ProjectCardImageSizes = {
-  small: string | null;
-  large: string | null;
-};
-
 export const getCardImageUrl = (
-  imageVersions: ProjectCardImageSizes,
+  imageVersions: ImageSizes,
   isPhone: boolean,
   size?: TProjectCardSize
 ) => {
