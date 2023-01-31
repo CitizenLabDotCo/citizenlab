@@ -207,7 +207,7 @@ const CLPageLayout = memo(
               iconPos="right"
               key={currentStep.toString()}
               bgColor={
-                showSubmit ? theme.colors.green500 : theme.colors.primary
+                showSubmit ? theme.colors.green500 : theme.colors.tenantPrimary
               }
               width="100%"
               boxShadow={defaultStyles.boxShadow}

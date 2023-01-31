@@ -126,7 +126,7 @@ export const Heading = ({
         <Box width="100%">
           <Text
             width="100%"
-            color={'primary'}
+            color={'tenantPrimary'}
             variant="bodyL"
             fontSize={isSurveyOnMobile ? 'xxxl' : 'xxxxl'}
             ml={isSurveyOnMobile ? '16px' : '0px'}
