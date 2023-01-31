@@ -209,4 +209,4 @@ pl:
       title: 'Koniec ankiety'
       description: "Odpowiedzi prosimy przesyłać wybierając poniżej opcję \"Prześlij ankietę\"."
   project_copy:
-    title_suffix: 'Kopiuj'
+    title_suffix: 'Kopia'
