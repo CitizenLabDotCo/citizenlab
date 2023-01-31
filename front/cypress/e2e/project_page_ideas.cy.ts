@@ -331,3 +331,95 @@ describe('timeline project with no active ideation phase', () => {
     cy.apiRemoveProject(projectId);
   });
 });
+
+describe('Ideation CTA bar', () => {
+  let projectId: string;
+  let projectSlug: string;
+  let postingRestrictedProjectId: string;
+  let postingRestrictedProjectSlug: string;
+  const projectTitle = randomString();
+  const description = randomString();
+  let ideaIdOne: string;
+  let ideaIdTwo: string;
+  const ideaTitle = randomString();
+  const ideaContent = Math.random().toString(36);
+
+  const firstName = randomString();
+  const lastName = randomString();
+  const email = randomEmail();
+  const password = randomString();
+
+  before(() => {
+    cy.apiSignup(firstName, lastName, email, password)
+      .then(() => {
+        cy.apiLogin(email, password);
+      })
+      .then(() => {
+        cy.apiCreateProject({
+          type: 'continuous',
+          title: projectTitle,
+          descriptionPreview: description,
+          description,
+          publicationStatus: 'published',
+          participationMethod: 'ideation',
+          maxBudget: 100,
+        })
+          .then((project) => {
+            projectId = project.body.data.id;
+            projectSlug = project.body.data.attributes.slug;
+          })
+          .then(() => {
+            return cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
+          })
+          .then((idea) => {
+            ideaIdOne = idea.body.data.id;
+          })
+          .then(() => {
+            return cy.apiCreateProject({
+              type: 'continuous',
+              title: projectTitle,
+              descriptionPreview: description,
+              description,
+              publicationStatus: 'published',
+              participationMethod: 'ideation',
+              maxBudget: 100,
+              postingEnabled: false,
+            });
+          })
+          .then((restrictedProject) => {
+            postingRestrictedProjectId = restrictedProject.body.data.id;
+            postingRestrictedProjectSlug =
+              restrictedProject.body.data.attributes.slug;
+          })
+          .then(() => {
+            return cy.apiCreateIdea(
+              postingRestrictedProjectId,
+              ideaTitle,
+              ideaContent
+            );
+          })
+          .then((idea) => {
+            ideaIdTwo = idea.body.data.id;
+          });
+      });
+  });
+
+  after(() => {
+    cy.apiRemoveIdea(ideaIdOne);
+    cy.apiRemoveProject(projectId);
+    cy.apiRemoveIdea(ideaIdTwo);
+    cy.apiRemoveProject(postingRestrictedProjectId);
+  });
+
+  it('shows the CTA to the user to submit their idea when the user has not yet participated', () => {
+    cy.visit(`/en/projects/${projectSlug}`);
+    cy.acceptCookies();
+    cy.get('#e2e-ideation-cta-button').should('exist');
+  });
+
+  it('shows the see ideas button to the user if posting is not enabled', () => {
+    cy.visit(`/en/projects/${postingRestrictedProjectSlug}`);
+    cy.acceptCookies();
+    cy.get('#e2e-ideation-see-ideas-button').should('exist');
+  });
+});

@@ -213,6 +213,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           participationContextType={isPhaseIdeation ? 'phase' : 'project'}
           phaseId={isPhaseIdeation ? currentPhase.id : ''}
           fontWeight="500"
+          phase={currentPhase}
         />
       )}
       {showNativeSurvey && !hasProjectEnded && (
@@ -223,6 +224,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           participationContextType={isPhaseNativeSurvey ? 'phase' : 'project'}
           phaseId={isPhaseNativeSurvey ? currentPhase.id : ''}
           fontWeight="500"
+          phase={currentPhase}
         />
       )}
       {showSurvey && (
