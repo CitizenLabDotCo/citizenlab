@@ -94,7 +94,7 @@ const ToolboxItem = ({
           disabled={!!disabled}
         >
           <Icon
-            fill={disabled ? colors.coolGrey500 : colors.primary}
+            fill={disabled ? colors.disabled : colors.primary}
             width="20px"
             height="20px"
             name={icon}
@@ -103,7 +103,7 @@ const ToolboxItem = ({
             fontSize="s"
             ml="12px"
             my="0"
-            color={disabled ? 'coolGrey500' : 'textPrimary'}
+            color={disabled ? 'disabled' : 'textPrimary'}
           >
             {label}
           </Text>
