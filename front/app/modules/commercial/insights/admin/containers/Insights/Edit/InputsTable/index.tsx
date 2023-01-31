@@ -133,7 +133,7 @@ const InputsTable = ({
     sort,
     processed,
     category: selectedCategory,
-    pageSize: 20,
+    pageSize: 3,
   });
 
   const lastPage = inputs ? getPageNumberFromUrl(inputs.links?.last) : 1;
@@ -296,7 +296,11 @@ const InputsTable = ({
   );
 
   if (isLoading) {
-    return <Spinner />;
+    return (
+      <Box pt="40px" margin="auto">
+        <Spinner />
+      </Box>
+    );
   }
 
   if (!inputs) {
