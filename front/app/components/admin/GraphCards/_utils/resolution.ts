@@ -6,7 +6,7 @@ import { IResolution } from 'components/admin/ResolutionControl';
 import { FormatMessage } from 'typings';
 import moment from 'moment';
 
-interface TimePeriodTranslations {
+export interface TimePeriodTranslations {
   last30Days: string;
   last7Days: string;
   yesterday: string;
