@@ -82,6 +82,7 @@ const ScaleLabelsInput = ({
                       justifyContent="space-between"
                       display="flex"
                       flexWrap="wrap"
+                      gap="12px"
                       mr="0px"
                       my="16px"
                     >
