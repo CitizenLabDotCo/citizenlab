@@ -5,9 +5,9 @@ import messages from './messages';
 
 interface Props {
   onChange: (selectedOption: IOption) => void;
-  selectedPreviewDevice: TPreviewDevice;
+  selectedPreviewDevice: TDevice;
 }
-export type TPreviewDevice = 'phone' | 'tablet' | 'desktop';
+export type TDevice = 'phone' | 'tablet' | 'desktop';
 
 const Component = ({ onChange, selectedPreviewDevice }: Props) => {
   const { formatMessage } = useIntl();

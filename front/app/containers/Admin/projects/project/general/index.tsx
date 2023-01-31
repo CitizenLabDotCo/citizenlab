@@ -3,7 +3,9 @@ import { Multiloc, UploadFile, IOption } from 'typings';
 import { isEmpty, get, isString } from 'lodash-es';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { INewProjectCreatedEvent } from 'containers/Admin/projects/all/CreateProject';
-import { TPreviewDevice } from 'components/admin/SelectPreviewDevice';
+import SelectPreviewDevice, {
+  TDevice,
+} from 'components/admin/SelectPreviewDevice';
 
 // components
 import ProjectStatusPicker from './components/ProjectStatusPicker';
@@ -34,7 +36,6 @@ import {
 import ProjectFolderSelect from './components/ProjectFolderSelect';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
-import SelectPreviewDevice from 'components/admin/SelectPreviewDevice';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -51,10 +52,15 @@ import {
   updateProject,
   IProjectFormState,
   IProjectData,
-  CARD_IMAGE_ASPECT_RATIO,
 } from 'services/projects';
 import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
-import { addProjectImage, deleteProjectImage } from 'services/projectImages';
+import {
+  addProjectImage,
+  deleteProjectImage,
+  getCardImageUrl,
+  CARD_IMAGE_ASPECT_RATIO_WIDTH,
+  CARD_IMAGE_ASPECT_RATIO_HEIGHT,
+} from 'services/projectImages';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -121,7 +127,7 @@ const AdminProjectsProjectGeneral = () => {
     useState<IProjectFormState['showSlugErrorMessage']>(false);
   const [publicationStatus, setPublicationStatus] =
     useState<IProjectFormState['publicationStatus']>('draft');
-  const [previewDevice, setPreviewDevice] = useState<TPreviewDevice>('phone');
+  const [previewDevice, setPreviewDevice] = useState<TDevice>('phone');
 
   useEffect(() => {
     (async () => {
@@ -164,13 +170,16 @@ const AdminProjectsProjectGeneral = () => {
       if (!isNilOrError(remoteProjectImages)) {
         const nextProjectImagesPromises = remoteProjectImages.map(
           (projectImage) => {
-            const url =
-              // On the homepage, we use the large version when screen
-              // width > 1200px, so this shows a more realistic preview
+            const url = getCardImageUrl(
+              projectImage.attributes.versions,
               previewDevice === 'phone'
-                ? projectImage.attributes.versions.medium
-                : projectImage.attributes.versions.large;
-            // to be tested
+              // This is incomplete. To have the correct image version,
+              // we'd need the exact size of the project card as well,
+              // but we currently don't have that functionality in our
+              // preview yet, so we're not showing the small version ever in
+              // preview at the moment.
+            );
+
             if (url) {
               return convertUrlToUploadFile(url, projectImage.id, null);
             }
@@ -587,7 +596,8 @@ const AdminProjectsProjectGeneral = () => {
               <ImageCropperContainer
                 image={projectCardImage}
                 onComplete={handleProjectCardImageOnCompleteCropping}
-                aspect={CARD_IMAGE_ASPECT_RATIO / 1}
+                aspectRatioWidth={CARD_IMAGE_ASPECT_RATIO_WIDTH}
+                aspectRatioHeight={CARD_IMAGE_ASPECT_RATIO_HEIGHT}
                 onRemove={handleCroppedProjectCardImageOnRemove}
               />
             </Box>

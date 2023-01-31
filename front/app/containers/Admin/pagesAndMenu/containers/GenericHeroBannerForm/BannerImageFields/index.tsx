@@ -4,7 +4,7 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import OverlayControls from './OverlayControls';
 import ImageUploader from './ImageUploader';
 import SelectPreviewDevice, {
-  TPreviewDevice,
+  TDevice,
 } from 'components/admin/SelectPreviewDevice';
 import { UploadFile } from 'typings';
 
@@ -68,7 +68,7 @@ const BannerImageField = ({
   onOverlayChange,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const [previewDevice, setPreviewDevice] = useState<TPreviewDevice>('desktop');
+  const [previewDevice, setPreviewDevice] = useState<TDevice>('desktop');
   const [headerLocalDisplayImage, setHeaderLocalDisplayImage] =
     useState<TLocalHeaderImage>(null);
   const [bannerError, setBannerError] = useState<TBannerError>(null);

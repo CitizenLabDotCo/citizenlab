@@ -16,7 +16,7 @@ import useAdminPublications from 'hooks/useAdminPublications';
 
 export type PublicationTab = PublicationStatus | 'all';
 
-export type TLayout = 'dynamic' | 'threecolumns' | 'twocolumns';
+export type TLayout = 'dynamic' | 'threecolumns';
 
 export interface Props {
   showTitle: boolean;

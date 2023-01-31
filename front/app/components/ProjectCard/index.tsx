@@ -4,6 +4,7 @@ import { isEmpty, get, isNumber, round } from 'lodash-es';
 import moment from 'moment';
 import Observer from '@researchgate/react-intersection-observer';
 import bowser from 'bowser';
+import { TLayout } from 'components/ProjectAndFolderCards';
 
 // router
 import Link from 'utils/cl-router/Link';
@@ -14,7 +15,11 @@ import Image from 'components/UI/Image';
 import AvatarBubbles from 'components/AvatarBubbles';
 
 // services
-import { CARD_IMAGE_ASPECT_RATIO, getProjectUrl } from 'services/projects';
+import { getProjectUrl } from 'services/projects';
+import {
+  CARD_IMAGE_ASPECT_RATIO,
+  getCardImageUrl,
+} from 'services/projectImages';
 import { getInputTerm } from 'services/participationContexts';
 import { getIdeaPostingRules } from 'services/actionTakingRules';
 
@@ -35,9 +40,6 @@ import messages from './messages';
 // tracking
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
-
-// types
-import { ImageSizes } from 'typings';
 
 // style
 import styled, { useTheme } from 'styled-components';
@@ -64,7 +66,6 @@ const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
 
   &.large {
     width: 100%;
-    min-height: 450px;
     flex-direction: row;
     align-items: stretch;
     justify-content: space-between;
@@ -135,7 +136,7 @@ const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
 const ProjectImageContainer = styled.div`
   width: 100%;
   display: flex;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: ${CARD_IMAGE_ASPECT_RATIO} / 1;
   margin-right: 10px;
   overflow: hidden;
   position: relative;
@@ -444,10 +445,11 @@ const MetaItemText = styled.div`
   margin-left: 3px;
 `;
 
+export type TProjectCardSize = 'small' | 'medium' | 'large';
 export interface InputProps {
   projectId: string;
-  size: 'small' | 'medium' | 'large';
-  layout?: 'dynamic' | 'threecolumns' | 'twocolumns';
+  size: TProjectCardSize;
+  layout?: TLayout;
   hideDescriptionPreview?: boolean;
   className?: string;
 }
@@ -517,18 +519,9 @@ const ProjectCard = memo<Props>(
         ? null
         : projectImages[0]?.attributes.versions;
 
-      const getImageUrl = (imageVersions: ImageSizes) => {
-        if (isPhone) {
-          return imageVersions.medium;
-        } else if (size === 'small') {
-          return imageVersions.small;
-        } else {
-          // image size is approximately the same for both medium and large desktop card sizes
-          return imageVersions.large;
-        }
-      };
-
-      const imageUrl = imageVersions ? getImageUrl(imageVersions) : null;
+      const imageUrl = imageVersions
+        ? getCardImageUrl(imageVersions, isPhone, size)
+        : null;
 
       const projectUrl = getProjectUrl(project);
       const isFinished = project.attributes.timeline_active === 'past';

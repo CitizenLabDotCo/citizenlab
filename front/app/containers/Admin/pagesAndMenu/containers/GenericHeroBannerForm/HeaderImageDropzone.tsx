@@ -3,7 +3,7 @@ import React from 'react';
 // components and theming
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import styled from 'styled-components';
-import { TPreviewDevice } from 'components/admin/SelectPreviewDevice';
+import { TDevice } from 'components/admin/SelectPreviewDevice';
 import { viewportWidths } from '@citizenlab/cl2-component-library';
 
 // types
@@ -41,7 +41,7 @@ interface Props {
   onRemove: () => void;
   headerError: string | null;
   header_bg: UploadFile | null;
-  previewDevice: TPreviewDevice;
+  previewDevice: TDevice;
   layout: THomepageBannerLayout;
 }
 
@@ -49,7 +49,7 @@ interface Props {
 export const FIXED_RATIO_LAYOUT_ASPECT_RATIO = 3 / 1;
 export const homepageBannerLayoutHeights: {
   [key in THomepageBannerLayout | TCustomPageBannerLayout]: {
-    [key in TPreviewDevice]: number;
+    [key in TDevice]: number;
   };
 } = {
   full_width_banner_layout: {
@@ -109,7 +109,7 @@ const HeaderImageDropzone = ({
 
     const ratioPerLayoutPerDevice: {
       [key in THomepageBannerLayout]: {
-        [key in TPreviewDevice]: number;
+        [key in TDevice]: number;
       };
     } = {
       // For all layouts except fixed-ratio the fixed height in their styles
