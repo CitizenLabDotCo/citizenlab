@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { media, colors, fontSizes, defaultCardStyle } from 'utils/styleUtils';
+import { media, fontSizes, defaultCardStyle } from 'utils/styleUtils';
 
 export const GraphsContainer = styled.div`
   display: flex;

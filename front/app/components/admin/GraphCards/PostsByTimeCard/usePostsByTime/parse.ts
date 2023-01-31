@@ -2,7 +2,7 @@ import moment, { Moment } from 'moment';
 
 // utils
 import { timeSeriesParser } from 'components/admin/GraphCards/_utils/timeSeries';
-import { get } from 'utils/helperUtils';
+import { get, isNilOrError, NilOrError } from 'utils/helperUtils';
 import { orderBy } from 'lodash-es';
 
 // typings
@@ -14,7 +14,6 @@ import {
 } from './typings';
 import { Translations } from './translations';
 import { IResolution } from 'components/admin/ResolutionControl';
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 export const getEmptyRow = (date: Moment) => ({
   date: date.format('YYYY-MM-DD'),
