@@ -17,9 +17,9 @@ export const CARD_IMAGE_ASPECT_RATIO =
 export const getCardImageUrl = (
   imageVersions: ProjectImageSizes,
   isPhone: boolean,
-  size?: TProjectCardSize
+  cardSize?: TProjectCardSize
 ) => {
-  if (isPhone || size !== 'small') {
+  if (isPhone || cardSize !== 'small') {
     // image size is approximately the same for both medium and large desktop card sizes
     return imageVersions.large;
   } else {

@@ -15,9 +15,9 @@ export type ProjectFolderImageSizes = {
 export const getCardImageUrl = (
   imageVersions: ProjectFolderImageSizes,
   isPhone: boolean,
-  size?: TProjectFolderCardSize
+  cardSize?: TProjectFolderCardSize
 ) => {
-  if (isPhone || size !== 'small') {
+  if (isPhone || cardSize !== 'small') {
     // image size is approximately the same for both medium and large desktop card sizes
     return imageVersions.large;
   } else {
