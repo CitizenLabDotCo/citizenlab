@@ -27,7 +27,7 @@ import useProject from 'hooks/useProject';
 import usePhase from 'hooks/usePhase';
 import usePhases from 'hooks/usePhases';
 import useAuthUser from 'hooks/useAuthUser';
-import useProjectCardImages from 'hooks/useProjectCardImages';
+import useProjectImages from 'hooks/useProjectImages';
 
 // i18n
 import T from 'components/T';
@@ -466,7 +466,7 @@ const ProjectCard = memo<Props>(
   }) => {
     const project = useProject({ projectId });
     const authUser = useAuthUser();
-    const projectImages = useProjectCardImages({ projectId });
+    const projectImages = useProjectImages({ projectId });
     const currentPhaseId =
       !isNilOrError(project) && project.relationships.current_phase?.data?.id
         ? project.relationships.current_phase.data.id

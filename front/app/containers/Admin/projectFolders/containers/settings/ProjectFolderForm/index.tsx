@@ -10,7 +10,7 @@ import {
   getCardImageUrl,
 } from 'services/projectFolderImages';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
-import useProjectFolderImages from 'hooks/useProjectFolderCardImages';
+import useProjectFolderImages from 'hooks/useProjectFolderImages';
 import useProjectFolder from 'hooks/useProjectFolder';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { FormattedMessage } from 'utils/cl-intl';

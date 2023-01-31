@@ -41,7 +41,7 @@ import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
 import useProject from 'hooks/useProject';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useProjectFiles from 'hooks/useProjectFiles';
-import useProjectCardImages from 'hooks/useProjectCardImages';
+import useProjectImages from 'hooks/useProjectImages';
 import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -88,7 +88,7 @@ const AdminProjectsProjectGeneral = () => {
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const appConfigLocales = useAppConfigurationLocales();
   const remoteProjectFiles = useProjectFiles(projectId);
-  const remoteProjectImages = useProjectCardImages({
+  const remoteProjectImages = useProjectImages({
     projectId: projectId || null,
   });
   const [submitState, setSubmitState] = useState<ISubmitState>('disabled');

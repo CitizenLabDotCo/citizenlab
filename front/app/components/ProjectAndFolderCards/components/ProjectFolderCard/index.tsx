@@ -31,7 +31,7 @@ import {
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // hooks
-import useProjectFolderImages from 'hooks/useProjectFolderCardImages';
+import useProjectFolderImages from 'hooks/useProjectFolderImages';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 // services
