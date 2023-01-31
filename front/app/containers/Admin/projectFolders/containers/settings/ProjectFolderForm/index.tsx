@@ -214,7 +214,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const handleFolderCardImageOnRemove = (imageToRemove: UploadFile) => {
     setSubmitState('enabled');
     setFolderCardImage(null);
-    setPreviewDevice('phone');
     if (imageToRemove.remote && imageToRemove.id) {
       setFolderCardImageToRemove(imageToRemove);
     }
