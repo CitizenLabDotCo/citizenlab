@@ -1,12 +1,8 @@
 import React from 'react';
 
 // components
+import Card from '../../_shared/Card';
 import VisitorsTrafficSourcesCard from './VisitorTrafficSourcesCard';
-import PageBreakBox from '../../../../../../../../components/admin/ContentBuilder/Widgets/PageBreakBox';
-
-// styling
-import { stylingConsts } from 'utils/styleUtils';
-import { BORDER } from '../../constants';
 
 // utils
 import moment from 'moment';
@@ -15,7 +11,7 @@ import moment from 'moment';
 import messages from '../messages';
 
 // settings
-import { ChartWidgetSettings } from '../ChartWidgetSettings';
+import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
 
 // types
 import { IResolution } from 'components/admin/ResolutionControl';
@@ -37,15 +33,9 @@ const VisitorsTrafficSourcesWidget = ({
   };
 
   return (
-    <PageBreakBox
-      minHeight="26px"
-      border={BORDER}
-      borderRadius={stylingConsts.borderRadius}
-      mt="4px"
-      mb="4px"
-    >
+    <Card title={title} pagebreak>
       <VisitorsTrafficSourcesCard {...analyticsChartProps} />
-    </PageBreakBox>
+    </Card>
   );
 };
 

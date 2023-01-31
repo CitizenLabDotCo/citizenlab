@@ -208,3 +208,5 @@ es-CL:
     survey_end_page:
       title: 'Fin de la encuesta'
       description: "Envíe sus respuestas seleccionando \"Enviar encuesta\" a continuación."
+  project_copy:
+    title_suffix: 'Copia'

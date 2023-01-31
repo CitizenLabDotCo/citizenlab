@@ -5,27 +5,25 @@ import useVisitorReferrerTypes from 'components/admin/GraphCards/VisitorsTraffic
 import useNarrow from 'containers/Admin/reporting/hooks/useNarrow';
 
 // components
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import Chart from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/Chart';
-import NoChartData from '../NoChartData';
+import NoData from '../../_shared/NoData';
+
+// i18n
+import messages from '../messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import {
-  ProjectId,
-  Dates,
-  ChartDisplay,
-} from 'components/admin/GraphCards/typings';
+import { ProjectId, Dates } from 'components/admin/GraphCards/typings';
 
-type Props = ProjectId & Dates & ChartDisplay;
+type Props = ProjectId & Dates;
 
 const VisitorsTrafficSourcesCard = ({
   projectId,
   startAtMoment,
   endAtMoment,
-  title,
 }: Props) => {
   const { pieData } = useVisitorReferrerTypes({
     projectId,
@@ -34,13 +32,12 @@ const VisitorsTrafficSourcesCard = ({
   });
   const narrow = useNarrow();
 
-  if (isNilOrError(pieData)) return <NoChartData title={title} />;
+  if (isNilOrError(pieData)) {
+    return <NoData message={messages.noData} />;
+  }
 
   return (
-    <Box width="100%" height="260px" pb="20px">
-      <Title variant="h3" color="primary" m="16px">
-        {title}
-      </Title>
+    <Box width="100%" height="220px" mt="20px" pb="10px">
       <Box height="200px">
         <Chart
           pieData={pieData}

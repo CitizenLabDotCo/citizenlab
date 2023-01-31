@@ -1,38 +1,23 @@
 import React from 'react';
 
 // components
+import Card from '../../_shared/Card';
 import AgeCard from './AgeCard';
-import PageBreakBox from '../../../../../../../../components/admin/ContentBuilder/Widgets/PageBreakBox';
-
-// styling
-import { stylingConsts } from 'utils/styleUtils';
-import { BORDER } from '../../constants';
 
 // messages
 import messages from '../messages';
 
 // settings
-import { ChartWidgetSettings } from '../ChartWidgetSettings';
+import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
 
 // types
 import { ChartWidgetProps } from '../typings';
 
 const AgeWidget = ({ title, projectId, startAt, endAt }: ChartWidgetProps) => {
   return (
-    <PageBreakBox
-      minHeight="26px"
-      border={BORDER}
-      borderRadius={stylingConsts.borderRadius}
-      mt="4px"
-      mb="4px"
-    >
-      <AgeCard
-        title={title}
-        projectId={projectId}
-        startAt={startAt}
-        endAt={endAt ?? null}
-      />
-    </PageBreakBox>
+    <Card title={title} pagebreak>
+      <AgeCard projectId={projectId} startAt={startAt} endAt={endAt ?? null} />
+    </Card>
   );
 };
 
