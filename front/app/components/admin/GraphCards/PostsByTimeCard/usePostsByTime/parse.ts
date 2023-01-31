@@ -3,6 +3,8 @@ import moment, { Moment } from 'moment';
 // utils
 import { timeSeriesParser } from 'components/admin/GraphCards/_utils/timeSeries';
 import { get } from 'utils/helperUtils';
+import { orderBy } from 'lodash-es';
+
 // typings
 import {
   Response,
@@ -40,7 +42,7 @@ export const parseTimeSeries = (
   startAtMoment: Moment | null | undefined,
   endAtMoment: Moment | null,
   resolution: IResolution,
-  total: Response['data'][2]
+  total: Response['data'][1]
 ): TimeSeries | null => {
   let timeSeries = _parseTimeSeries(
     responseTimeSeries,
@@ -50,8 +52,14 @@ export const parseTimeSeries = (
   );
   if (!timeSeries) return [];
   let totalCount = total && total.length > 0 ? total[0]?.count : 0;
-  timeSeries = timeSeries
-    .reverse()
+
+  timeSeries = orderBy(
+    timeSeries,
+    (o: TimeSeriesRow) => {
+      return moment(o.date).format('YYYYMMDD');
+    },
+    ['desc']
+  )
     .map((row) => {
       const _totalCount = totalCount;
       totalCount = (totalCount || 0) - row.inputs;
@@ -75,5 +83,42 @@ export const parseExcelData = (
 
   return {
     [translations.timeSeries]: timeSeriesData ?? [],
+  };
+};
+
+const formatSerieChange = (serieChange: number) => {
+  if (serieChange > 0) {
+    return `(+${serieChange.toString()})`;
+  } else if (serieChange < 0) {
+    return `(${serieChange.toString()})`;
+  }
+  return null;
+};
+
+export const getFormattedNumbers = (serie) => {
+  if (serie) {
+    const firstSerieValue = serie.length > 0 ? serie[0].total : 0;
+    const lastSerieValue = serie.length > 0 ? serie[serie.length - 1].total : 0;
+    const firstSerieBar = serie.length > 0 ? serie[0].inputs : 0;
+    const serieChange = lastSerieValue - firstSerieValue + firstSerieBar;
+    let typeOfChange: 'increase' | 'decrease' | '' = '';
+
+    if (serieChange > 0) {
+      typeOfChange = 'increase';
+    } else if (serieChange < 0) {
+      typeOfChange = 'decrease';
+    }
+
+    return {
+      typeOfChange,
+      totalNumber: lastSerieValue,
+      formattedSerieChange: formatSerieChange(serieChange),
+    };
+  }
+
+  return {
+    totalNumber: null,
+    formattedSerieChange: null,
+    typeOfChange: '',
   };
 };

@@ -208,3 +208,5 @@ sr-SP:
     survey_end_page:
       title: 'Крај анкете'
       description: "Проследите своје одговоре тако што ћете испод изабрати „Проследи анкету”."
+  project_copy:
+    title_suffix: 'Копирај'

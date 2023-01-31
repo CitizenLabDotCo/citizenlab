@@ -52,6 +52,7 @@ const LineBarChart = <Row,>({
   margin,
   xaxis,
   yaxis,
+  legend,
   emptyContainerContent,
   innerRef,
 }: Props<Row>) => {
@@ -66,11 +67,11 @@ const LineBarChart = <Row,>({
     return <EmptyState emptyContainerContent={emptyContainerContent} />;
   }
 
-  const { x, yBar, yLine } = mapping;
+  const { x, yBars, yLine } = mapping;
 
   if (
     typeof x === 'symbol' ||
-    typeof yBar === 'symbol' ||
+    yBars.some((yBar) => typeof yBar === 'symbol') ||
     typeof yLine === 'symbol'
   ) {
     return null;
@@ -82,7 +83,7 @@ const LineBarChart = <Row,>({
     return resolution ? toFullMonth(date, resolution) : date;
   };
 
-  const legend: ILegend = {
+  const defaultLegend: ILegend = {
     marginTop: 16,
     items: [
       {
@@ -100,11 +101,13 @@ const LineBarChart = <Row,>({
     ],
   };
 
+  const legend_ = legend || defaultLegend;
+
   return (
     <Container
       width={width}
       height={height}
-      legend={legend}
+      legend={legend_}
       graphDimensions={graphDimensions}
       legendDimensions={legendDimensions}
       defaultLegendOffset={DEFAULT_LEGEND_OFFSET}
@@ -117,7 +120,7 @@ const LineBarChart = <Row,>({
         ref={innerRef}
         margin={parseMargin(
           margin,
-          legend,
+          legend_,
           legendDimensions,
           DEFAULT_LEGEND_OFFSET
         )}
@@ -165,16 +168,20 @@ const LineBarChart = <Row,>({
           labelFormatter={formatLabel}
           cursor={{ strokeWidth: 1 }}
         />
-        <Bar
-          dataKey={yBar}
-          yAxisId="bar"
-          barSize={sizes.bar}
-          fill={legacyColors.barFill}
-          fillOpacity={1}
-          name={formatMessage(dashboardMessages.totalForPeriod, {
-            period: formatMessage(PERIOD_MESSAGES[resolution_]),
-          })}
-        />
+        {legend_?.items
+          .filter((l) => l.icon !== 'line')
+          .map((l, l_i) => (
+            <Bar
+              key={l_i}
+              dataKey={yBars[l_i] as string}
+              yAxisId="bar"
+              stackId="1"
+              barSize={sizes.bar}
+              fill={l.color}
+              fillOpacity={1}
+              name={l.label}
+            />
+          ))}
         <Line
           type="monotone"
           yAxisId="line"
@@ -185,14 +192,14 @@ const LineBarChart = <Row,>({
           strokeWidth={1}
           name={formatMessage(dashboardMessages.total)}
         />
-        {legend && graphDimensions && legendDimensions && (
+        {legend_ && graphDimensions && legendDimensions && (
           <g className="graph-legend">
             <Legend
-              items={legend.items}
+              items={legend_.items}
               graphDimensions={graphDimensions}
               legendDimensions={legendDimensions}
-              position={legend.position}
-              textColor={legend.textColor}
+              position={legend_.position}
+              textColor={legend_.textColor}
               margin={margin}
             />
           </g>

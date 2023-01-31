@@ -23,6 +23,10 @@ import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTraffi
 import AgeWidget from '../Widgets/ChartWidgets/AgeWidget';
 import GenderWidget from '../Widgets/ChartWidgets/GenderWidget';
 import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
+import MostVotedIdeasWidget from '../Widgets/MostVotedIdeasWidget';
+import PostsByTimeWidget from '../Widgets/ChartWidgets/PostsByTimeWidget';
+import CommentsByTimeWidget from '../Widgets/ChartWidgets/CommentsByTimeWidget';
+import VotesByTimeWidget from '../Widgets/ChartWidgets/VotesByTimeWidget';
 
 // templates
 import ProjectTemplate from '../Templates/ProjectTemplate';
@@ -48,7 +52,11 @@ const resolver = {
   AgeWidget,
   GenderWidget,
   ActiveUsersWidget,
+  MostVotedIdeasWidget,
   ProjectTemplate,
+  PostsByTimeWidget,
+  CommentsByTimeWidget,
+  VotesByTimeWidget,
 };
 
 const Editor: React.FC<EditorProps> = ({

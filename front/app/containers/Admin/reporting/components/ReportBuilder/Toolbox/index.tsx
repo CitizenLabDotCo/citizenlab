@@ -3,6 +3,8 @@ import React from 'react';
 // components
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import { Box, Title, Accordion } from '@citizenlab/cl2-component-library';
+
+// widgets
 import TwoColumn from '../../../components/ReportBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import TitleWidget from 'components/admin/ContentBuilder/Widgets/Title';
@@ -15,6 +17,10 @@ import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTraffi
 import AgeWidget from '../Widgets/ChartWidgets/AgeWidget';
 import GenderWidget from '../Widgets/ChartWidgets/GenderWidget';
 import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
+import MostVotedIdeasWidget from '../Widgets/MostVotedIdeasWidget';
+import PostsByTimeWidget from '../Widgets/ChartWidgets/PostsByTimeWidget';
+import CommentsByTimeWidget from '../Widgets/ChartWidgets/CommentsByTimeWidget';
+import VotesByTimeWidget from '../Widgets/ChartWidgets/VotesByTimeWidget';
 
 // types
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
@@ -121,6 +127,42 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
           isOpenByDefault={true}
           title={
             <SectionTitle>
+              <FormattedMessage {...reportBuilderMessages.resultsSection} />
+            </SectionTitle>
+          }
+        >
+          {
+            // TODO: CL-2307 Only show this if there are surveys in the platform
+            // TODO: Add in the default project / phase
+          }
+          <DraggableElement
+            id="e2e-draggable-survey-results-widget"
+            component={
+              <SurveyResultsWidget
+                title={formatMessage(SurveyResultsWidget.craft.custom.title)}
+              />
+            }
+            icon="survey"
+            label={formatMessage(SurveyResultsWidget.craft.custom.title)}
+          />
+          <DraggableElement
+            id="e2e-most-voted-ideas-widget"
+            component={
+              <MostVotedIdeasWidget
+                title={formatMessage(MostVotedIdeasWidget.craft.custom.title)}
+                numberOfIdeas={5}
+                collapseLongText={false}
+              />
+            }
+            icon="idea"
+            label={formatMessage(MostVotedIdeasWidget.craft.custom.title)}
+          />
+        </Accordion>
+
+        <Accordion
+          isOpenByDefault={true}
+          title={
+            <SectionTitle>
               <FormattedMessage {...reportBuilderMessages.chartsSection} />
             </SectionTitle>
           }
@@ -194,19 +236,44 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             icon="chart-bar"
             label={formatMessage(ActiveUsersWidget.craft.custom.title)}
           />
-          {
-            // TODO: CL-2307 Only show this if there are surveys in the platform
-            // TODO: Add in the default project / phase
-          }
           <DraggableElement
-            id="e2e-draggable-survey-results-widget"
+            id="e2e-draggable-posts-by-time-widget"
             component={
-              <SurveyResultsWidget
-                title={formatMessage(SurveyResultsWidget.craft.custom.title)}
+              <PostsByTimeWidget
+                title={formatMessage(PostsByTimeWidget.craft.custom.title)}
+                projectId={undefined}
+                startAt={undefined}
+                endAt={chartEndDate}
               />
             }
-            icon="survey"
-            label={formatMessage(SurveyResultsWidget.craft.custom.title)}
+            icon="chart-bar"
+            label={formatMessage(PostsByTimeWidget.craft.custom.title)}
+          />
+          <DraggableElement
+            id="e2e-draggable-comments-by-time-widget"
+            component={
+              <CommentsByTimeWidget
+                title={formatMessage(CommentsByTimeWidget.craft.custom.title)}
+                projectId={undefined}
+                startAt={undefined}
+                endAt={chartEndDate}
+              />
+            }
+            icon="chart-bar"
+            label={formatMessage(CommentsByTimeWidget.craft.custom.title)}
+          />
+          <DraggableElement
+            id="e2e-draggable-votes-by-time-widget"
+            component={
+              <VotesByTimeWidget
+                title={formatMessage(VotesByTimeWidget.craft.custom.title)}
+                projectId={undefined}
+                startAt={undefined}
+                endAt={chartEndDate}
+              />
+            }
+            icon="chart-bar"
+            label={formatMessage(VotesByTimeWidget.craft.custom.title)}
           />
         </Accordion>
       </Box>

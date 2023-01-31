@@ -14,7 +14,7 @@ import messages from 'containers/Admin/dashboard/messages';
 import { useIntl } from 'utils/cl-intl';
 
 // utils
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import {
@@ -22,51 +22,8 @@ import {
   Dates,
   Resolution,
 } from 'components/admin/GraphCards/typings';
-import { TimeSeries } from './usePostsByTime/typings';
 
 type Props = ProjectId & Dates & Resolution;
-
-const formatSerieChange = (serieChange: number) => {
-  if (serieChange > 0) {
-    return `(+${serieChange.toString()})`;
-  } else if (serieChange < 0) {
-    return `(${serieChange.toString()})`;
-  }
-  return null;
-};
-
-const getFormattedNumbers = (
-  serie: TimeSeries | NilOrError
-): {
-  typeOfChange: 'increase' | 'decrease' | null;
-  totalNumber: number | null;
-  formattedSerieChange: string | null;
-} => {
-  if (!isNilOrError(serie)) {
-    const firstSerieValue = serie && serie[0].total;
-    const lastSerieValue = serie && serie[serie.length - 1].total;
-    const serieChange = lastSerieValue - firstSerieValue;
-    let typeOfChange: 'increase' | 'decrease' | null = null;
-
-    if (serieChange > 0) {
-      typeOfChange = 'increase';
-    } else if (serieChange < 0) {
-      typeOfChange = 'decrease';
-    }
-
-    return {
-      typeOfChange,
-      totalNumber: lastSerieValue,
-      formattedSerieChange: formatSerieChange(serieChange),
-    };
-  }
-
-  return {
-    totalNumber: null,
-    formattedSerieChange: null,
-    typeOfChange: null,
-  };
-};
 
 const PostByTimeCard = ({
   projectId,
@@ -76,11 +33,13 @@ const PostByTimeCard = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef();
-  const { timeSeries, xlsxData, currentResolution } = usePostsByTime({
-    startAtMoment,
-    endAtMoment,
-    resolution,
-  });
+  const { timeSeries, xlsxData, currentResolution, formattedNumbers } =
+    usePostsByTime({
+      projectId,
+      startAtMoment,
+      endAtMoment,
+      resolution,
+    });
 
   const cardTitle = formatMessage(messages.inputs);
   const startAt = startAtMoment?.toISOString();
@@ -88,7 +47,7 @@ const PostByTimeCard = ({
 
   return (
     <GraphCard
-      title={<Title title={cardTitle} {...getFormattedNumbers(timeSeries)} />}
+      title={<Title title={cardTitle} {...formattedNumbers} />}
       exportMenu={{
         name: cardTitle,
         svgNode: graphRef,
@@ -103,7 +62,6 @@ const PostByTimeCard = ({
           <Box pt="8px" height="200px" width="100%" maxWidth="800px" mt="-1px">
             <Chart
               timeSeries={timeSeries}
-              projectId={projectId}
               startAtMoment={startAtMoment}
               endAtMoment={endAtMoment}
               resolution={currentResolution}

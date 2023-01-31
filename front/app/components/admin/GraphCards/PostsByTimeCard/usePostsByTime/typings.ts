@@ -1,10 +1,14 @@
-import { Dates, Resolution } from 'components/admin/GraphCards/typings';
+import {
+  ProjectId,
+  Dates,
+  Resolution,
+} from 'components/admin/GraphCards/typings';
 
-export type QueryParameters = Dates & Resolution;
+export type QueryParameters = ProjectId & Dates & Resolution;
 
 // Response
 export type Response = {
-  data: [TimeSeriesResponse | [], [InputsCountRow] | [], [InputsCountRow] | []];
+  data: [TimeSeriesResponse | [], [InputsCountRow] | []];
 };
 
 type TimeSeriesResponse = TimeSeriesResponseRow[];
@@ -26,3 +30,9 @@ export interface TimeSeriesRow {
 }
 
 export type TimeSeries = TimeSeriesRow[];
+
+export interface FormattedNumbers {
+  totalNumber: number | null;
+  formattedSerieChange: string | null;
+  typeOfChange: string;
+}

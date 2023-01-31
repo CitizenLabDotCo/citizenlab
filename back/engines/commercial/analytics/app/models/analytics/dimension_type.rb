@@ -8,8 +8,12 @@
 #  name   :string
 #  parent :string
 #
+# Indexes
+#
+#  index_analytics_dimension_types_on_name_and_parent  (name,parent) UNIQUE
+#
 module Analytics
   class DimensionType < Analytics::ApplicationRecord
-    validates :name, presence: true, uniqueness: true
+    validates :name, presence: true
   end
 end
