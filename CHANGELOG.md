@@ -1,5 +1,9 @@
 # Changelog
 
+### Changed
+
+- [CL-2673] In-platform survey UI improvements
+
 ## 2023-01-23 (2)
 
 ### Fixed
