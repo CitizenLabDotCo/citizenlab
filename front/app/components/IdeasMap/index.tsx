@@ -442,6 +442,7 @@ const IdeasMap = memo<Props>((props) => {
             participationContextType={phaseId ? 'phase' : 'project'}
             latLng={selectedLatLng}
             inMap={true}
+            phase={!isNilOrError(phase) ? phase : undefined}
           />
         </IdeaButtonWrapper>
       </InnerContainer>
