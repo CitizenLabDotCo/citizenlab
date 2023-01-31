@@ -124,6 +124,7 @@ export const Heading = ({
             width="100%"
             color={'tenantPrimary'}
             variant="bodyL"
+            style={{ fontWeight: isSurvey ? 600 : 500 }}
             fontSize={isSurveyOnMobile ? 'xxxl' : 'xxxxl'}
             ml={isSurveyOnMobile ? '16px' : '0px'}
             my={isSurveyOnMobile ? '12px' : '8px'}

@@ -65,16 +65,11 @@ const SingleSelectRadioControl = ({
         {options?.map((option, index: number) => (
           <StyledBox
             selectBackgroundColor={colors.grey100}
-            role="button"
-            onClick={() => {
-              handleChange(path, option.value);
-              setDidBlur(true);
-            }}
             mb="12px"
             key={option.value}
-            padding="10px 20px 6px 20px"
           >
             <Radio
+              containerPadding="20px 20px 4px 20px"
               marginTop="8px"
               buttonColor={theme.colors.tenantSecondary}
               id={`${path}-radio-${index}`}
