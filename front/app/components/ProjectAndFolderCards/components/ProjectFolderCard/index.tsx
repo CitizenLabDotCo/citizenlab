@@ -2,6 +2,7 @@ import React, { memo, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { isEmpty } from 'lodash-es';
 import bowser from 'bowser';
+import { TLayout } from 'components/ProjectAndFolderCards';
 
 // router
 import Link from 'utils/cl-router/Link';
@@ -291,7 +292,7 @@ export type TProjectFolderCardSize = 'small' | 'medium' | 'large';
 export interface Props {
   publication: IAdminPublicationContent;
   size: TProjectFolderCardSize;
-  layout: 'dynamic' | 'threecolumns' | 'twocolumns';
+  layout: TLayout;
   className?: string;
 }
 
