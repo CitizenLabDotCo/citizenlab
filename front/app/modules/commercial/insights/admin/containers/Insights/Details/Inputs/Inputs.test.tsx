@@ -4,7 +4,6 @@ import Inputs from './';
 import { render, screen } from 'utils/testUtils/rtl';
 import inputs from 'modules/commercial/insights/fixtures/inputs';
 import categories from 'modules/commercial/insights/fixtures/categories';
-import views from 'modules/commercial/insights/fixtures/views';
 
 const viewId = '1';
 
@@ -55,15 +54,7 @@ jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
   return jest.fn(() => mockCategories);
 });
 
-const mockViewData = { data: views[0] };
-
-jest.mock('modules/commercial/insights/api/views', () => {
-  return {
-    useView: jest.fn(() => {
-      return { data: mockViewData };
-    }),
-  };
-});
+jest.mock('modules/commercial/insights/api/views');
 
 const defaultProps = {
   inputs,

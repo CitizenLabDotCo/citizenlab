@@ -12,7 +12,6 @@ import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInpu
 import * as batchService from 'modules/commercial/insights/services/batchAssignment';
 import inputs from 'modules/commercial/insights/fixtures/inputs';
 import categories from 'modules/commercial/insights/fixtures/categories';
-import views from 'modules/commercial/insights/fixtures/views';
 
 import clHistory from 'utils/cl-router/history';
 
@@ -48,8 +47,6 @@ const mockCategoryData = categories[0];
 
 const mockCategoriesData = categories;
 
-const mockViewData = { data: views[0] };
-
 let mockLocationData = { pathname: '', query: {} };
 
 jest.mock('hooks/useIdea', () => {
@@ -68,13 +65,7 @@ jest.mock('modules/commercial/insights/hooks/useInsightsInputs', () => {
   return jest.fn(() => mockInputData);
 });
 
-jest.mock('modules/commercial/insights/api/views', () => {
-  return {
-    useView: jest.fn(() => {
-      return { data: mockViewData };
-    }),
-  };
-});
+jest.mock('modules/commercial/insights/api/views');
 
 jest.mock('hooks/useLocale');
 

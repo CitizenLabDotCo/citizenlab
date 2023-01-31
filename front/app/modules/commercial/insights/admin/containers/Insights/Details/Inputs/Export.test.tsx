@@ -2,23 +2,15 @@ import React from 'react';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import { requestBlob } from 'utils/request';
 
-import views from 'modules/commercial/insights/fixtures/views';
 import Export from './Export';
 
 const viewId = '1';
 const apiPath = '/web_api/v1/insights/views/1/inputs/as_xlsx';
 const application =
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-const mockViewData = { data: views[0] };
 let mockLocationData: { query: Record<string, unknown> } = { query: {} };
 
-jest.mock('modules/commercial/insights/api/views', () => {
-  return {
-    useView: jest.fn(() => {
-      return { data: mockViewData };
-    }),
-  };
-});
+jest.mock('modules/commercial/insights/api/views');
 
 jest.mock('utils/cl-intl');
 jest.mock('hooks/useLocale');

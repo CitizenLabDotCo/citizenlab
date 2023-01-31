@@ -6,7 +6,6 @@ import useInsightsInputsLoadMore from 'modules/commercial/insights/hooks/useInsi
 import inputs from 'modules/commercial/insights/fixtures/inputs';
 import clHistory from 'utils/cl-router/history';
 import mockCategories from 'modules/commercial/insights/fixtures/categories';
-import views from 'modules/commercial/insights/fixtures/views';
 
 const viewId = '1';
 
@@ -71,21 +70,7 @@ jest.mock('./Network', () => {
   return () => <div />;
 });
 
-const mockViewData = { data: views[0] };
-
-jest.mock('modules/commercial/insights/api/views', () => {
-  return {
-    useView: jest.fn(() => {
-      return { data: mockViewData };
-    }),
-    useUpdateView: jest.fn(() => {
-      return { mutate: jest.fn() };
-    }),
-    useDeleteView: jest.fn(() => {
-      return { mutate: jest.fn() };
-    }),
-  };
-});
+jest.mock('modules/commercial/insights/api/views');
 
 describe('Insights Details Inputs', () => {
   it('renders', () => {
