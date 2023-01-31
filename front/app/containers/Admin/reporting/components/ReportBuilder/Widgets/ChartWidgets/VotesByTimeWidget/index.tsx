@@ -40,8 +40,8 @@ VotesByTimeWidget.craft = {
   props: {
     title: '',
     projectFilter: undefined,
-    startAtMoment: undefined,
-    endAtMoment: null,
+    startAt: undefined,
+    endAt: null,
   },
   related: {
     settings: ChartWidgetSettings,
