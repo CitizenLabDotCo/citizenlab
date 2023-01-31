@@ -94,7 +94,7 @@ resource 'Impact tracking session' do
       expect(session.highest_role).to eq('user')
       expect(session.monthly_user_hash).not_to eq(@visitor_hash)
       expect(session.updated_at).not_to eq(@created_at)
-      expect(session.user_id).to eq (user.id)
+      expect(session.user_id).to eq(user.id)
     end
 
     example 'Returns unauthorized when the user is not signed in', document: false do
