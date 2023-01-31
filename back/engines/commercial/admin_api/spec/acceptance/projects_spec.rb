@@ -55,7 +55,7 @@ resource 'Project', admin_api: true do
     let(:template) do
       create(:tenant).switch do
         project = create(:project_xl, phases_count: 3, images_count: 0, files_count: 0) # no images nor files because URL's will not be available
-        AdminApi::ProjectCopyService.new.export(project)
+        ProjectCopyService.new.export(project)
       end
     end
 
