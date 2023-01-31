@@ -20,7 +20,6 @@ import {
   IdeaDefaultSortMethod,
   InputTerm,
 } from './participationContexts';
-import { TProjectCardSize } from 'components/ProjectCard';
 
 export const apiEndpoint = `${API_PATH}/projects`;
 export const PROJECTABLE_HEADER_BG_ASPECT_RATIO_WIDTH = 4;
@@ -28,24 +27,6 @@ export const PROJECTABLE_HEADER_BG_ASPECT_RATIO_HEIGHT = 1;
 export const PROJECTABLE_HEADER_BG_ASPECT_RATIO =
   PROJECTABLE_HEADER_BG_ASPECT_RATIO_WIDTH /
   PROJECTABLE_HEADER_BG_ASPECT_RATIO_HEIGHT;
-
-export const CARD_IMAGE_ASPECT_RATIO_WIDTH = 4;
-export const CARD_IMAGE_ASPECT_RATIO_HEIGHT = 3;
-export const CARD_IMAGE_ASPECT_RATIO =
-  CARD_IMAGE_ASPECT_RATIO_WIDTH / CARD_IMAGE_ASPECT_RATIO_HEIGHT;
-
-export const getCardImageUrl = (
-  imageVersions: ImageSizes,
-  isPhone: boolean,
-  size?: TProjectCardSize
-) => {
-  if (isPhone || size !== 'small') {
-    // image size is approximately the same for both medium and large desktop card sizes
-    return imageVersions.large;
-  } else {
-    return imageVersions.small;
-  }
-};
 
 type Visibility = 'public' | 'groups' | 'admins';
 export type ProcessType = 'continuous' | 'timeline';

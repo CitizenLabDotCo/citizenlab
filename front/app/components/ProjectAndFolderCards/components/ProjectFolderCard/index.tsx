@@ -2,6 +2,7 @@ import React, { memo, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { isEmpty } from 'lodash-es';
 import bowser from 'bowser';
+import { TLayout } from 'components/ProjectAndFolderCards';
 
 // router
 import Link from 'utils/cl-router/Link';
@@ -29,13 +30,16 @@ import {
   defaultCardHoverStyle,
 } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
+
+// hooks
 import useProjectFolderImages from 'hooks/useProjectFolderImages';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
+// services
 import {
   getCardImageUrl,
   CARD_IMAGE_ASPECT_RATIO,
-} from 'services/projectFolders';
+} from 'services/projectFolderImages';
 
 const Container = styled(Link)`
   width: calc(33% - 12px);
@@ -288,7 +292,7 @@ export type TProjectFolderCardSize = 'small' | 'medium' | 'large';
 export interface Props {
   publication: IAdminPublicationContent;
   size: TProjectFolderCardSize;
-  layout: 'dynamic' | 'threecolumns' | 'twocolumns';
+  layout: TLayout;
   className?: string;
 }
 

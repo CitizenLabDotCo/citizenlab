@@ -3,14 +3,11 @@ import clHistory from 'utils/cl-router/history';
 import { isEmpty, isEqual } from 'lodash-es';
 import { CLErrors, Multiloc, UploadFile, IOption } from 'typings';
 import { isNilOrError, isError } from 'utils/helperUtils';
-import {
-  addProjectFolder,
-  updateProjectFolder,
-  getCardImageUrl,
-} from 'services/projectFolders';
+import { addProjectFolder, updateProjectFolder } from 'services/projectFolders';
 import {
   addProjectFolderImage,
   deleteProjectFolderImage,
+  getCardImageUrl,
 } from 'services/projectFolderImages';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import useProjectFolderImages from 'hooks/useProjectFolderImages';
@@ -47,7 +44,7 @@ import ProjectFolderCardImageDropzone from './ProjectFolderCardImageDropzone';
 import {
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
   CARD_IMAGE_ASPECT_RATIO_WIDTH,
-} from 'services/projects';
+} from 'services/projectFolderImages';
 
 type IProjectFolderSubmitState =
   | 'disabled'

@@ -4,6 +4,7 @@ import { isEmpty, get, isNumber, round } from 'lodash-es';
 import moment from 'moment';
 import Observer from '@researchgate/react-intersection-observer';
 import bowser from 'bowser';
+import { TLayout } from 'components/ProjectAndFolderCards';
 
 // router
 import Link from 'utils/cl-router/Link';
@@ -14,11 +15,11 @@ import Image from 'components/UI/Image';
 import AvatarBubbles from 'components/AvatarBubbles';
 
 // services
+import { getProjectUrl } from 'services/projects';
 import {
   CARD_IMAGE_ASPECT_RATIO,
-  getProjectUrl,
   getCardImageUrl,
-} from 'services/projects';
+} from 'services/projectImages';
 import { getInputTerm } from 'services/participationContexts';
 import { getIdeaPostingRules } from 'services/actionTakingRules';
 
@@ -448,7 +449,7 @@ export type TProjectCardSize = 'small' | 'medium' | 'large';
 export interface InputProps {
   projectId: string;
   size: TProjectCardSize;
-  layout?: 'dynamic' | 'threecolumns' | 'twocolumns';
+  layout?: TLayout;
   hideDescriptionPreview?: boolean;
   className?: string;
 }

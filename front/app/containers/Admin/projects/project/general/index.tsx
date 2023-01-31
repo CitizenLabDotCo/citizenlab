@@ -52,12 +52,15 @@ import {
   updateProject,
   IProjectFormState,
   IProjectData,
+} from 'services/projects';
+import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
+import {
+  addProjectImage,
+  deleteProjectImage,
   getCardImageUrl,
   CARD_IMAGE_ASPECT_RATIO_WIDTH,
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
-} from 'services/projects';
-import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
-import { addProjectImage, deleteProjectImage } from 'services/projectImages';
+} from 'services/projectImages';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
