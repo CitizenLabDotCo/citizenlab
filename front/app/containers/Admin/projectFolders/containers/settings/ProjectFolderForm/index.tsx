@@ -44,7 +44,7 @@ import ProjectFolderCardImageDropzone from './ProjectFolderCardImageDropzone';
 import {
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
   CARD_IMAGE_ASPECT_RATIO_WIDTH,
-} from 'services/projectImages';
+} from 'services/projectFolderImages';
 
 type IProjectFolderSubmitState =
   | 'disabled'

@@ -1,11 +1,13 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { TProjectFolderCardSize } from 'components/ProjectAndFolderCards/components/ProjectFolderCard';
-import { CARD_IMAGE_ASPECT_RATIO as PROJECT_CARD_IMAGE_ASPECT_RATIO } from 'services/projectImages';
 
 const apiEndpoint = `${API_PATH}/project_folders`;
 
-export const CARD_IMAGE_ASPECT_RATIO = PROJECT_CARD_IMAGE_ASPECT_RATIO;
+export const CARD_IMAGE_ASPECT_RATIO_WIDTH = 4;
+export const CARD_IMAGE_ASPECT_RATIO_HEIGHT = 3;
+export const CARD_IMAGE_ASPECT_RATIO =
+  CARD_IMAGE_ASPECT_RATIO_WIDTH / CARD_IMAGE_ASPECT_RATIO_HEIGHT;
 
 export type ProjectFolderImageSizes = {
   small: string | null;
