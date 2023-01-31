@@ -19,9 +19,6 @@ import messages from './messages';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-// types
-import { ImageSizes } from 'typings';
-
 // style
 import styled from 'styled-components';
 import {
@@ -35,7 +32,10 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import useProjectFolderImages from 'hooks/useProjectFolderImages';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
-import { CARD_IMAGE_ASPECT_RATIO } from 'services/projects';
+import {
+  getCardImageUrl,
+  CARD_IMAGE_ASPECT_RATIO,
+} from 'services/projectFolders';
 
 const Container = styled(Link)`
   width: calc(33% - 12px);
@@ -283,15 +283,18 @@ const MapIconDescription = styled.span`
   color: ${({ theme }) => theme.colors.tenantSecondary};
 `;
 
+export type TProjectFolderCardSize = 'small' | 'medium' | 'large';
+
 export interface Props {
   publication: IAdminPublicationContent;
-  size: 'small' | 'medium' | 'large';
+  size: TProjectFolderCardSize;
   layout: 'dynamic' | 'threecolumns' | 'twocolumns';
   className?: string;
 }
 
 const ProjectFolderCard = memo<Props>(
   ({ publication, size, layout, className }) => {
+    const isPhone = useBreakpoint('phone');
     const projectFolderImages = useProjectFolderImages(
       publication.publicationId
     );
@@ -313,22 +316,14 @@ const ProjectFolderCard = memo<Props>(
       },
       []
     );
-    const isPhone = useBreakpoint('phone');
 
     const imageVersions = isNilOrError(projectFolderImages)
       ? null
       : projectFolderImages.data[0]?.attributes.versions;
 
-    const getImageUrl = (imageVersions: ImageSizes) => {
-      if (isPhone || size !== 'small') {
-        // image size is approximately the same for both medium and large desktop card sizes
-        return imageVersions.large;
-      } else {
-        return imageVersions.small;
-      }
-    };
-
-    const imageUrl = imageVersions ? getImageUrl(imageVersions) : null;
+    const imageUrl = imageVersions
+      ? getCardImageUrl(imageVersions, isPhone, size)
+      : null;
 
     const folderUrl = `/folders/${publication.attributes.publication_slug}`;
     const numberOfProjectsInFolder =

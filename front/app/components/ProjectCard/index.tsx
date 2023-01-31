@@ -14,7 +14,11 @@ import Image from 'components/UI/Image';
 import AvatarBubbles from 'components/AvatarBubbles';
 
 // services
-import { CARD_IMAGE_ASPECT_RATIO, getProjectUrl } from 'services/projects';
+import {
+  CARD_IMAGE_ASPECT_RATIO,
+  getProjectUrl,
+  getCardImageUrl,
+} from 'services/projects';
 import { getInputTerm } from 'services/participationContexts';
 import { getIdeaPostingRules } from 'services/actionTakingRules';
 
@@ -35,9 +39,6 @@ import messages from './messages';
 // tracking
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
-
-// types
-import { ImageSizes } from 'typings';
 
 // style
 import styled, { useTheme } from 'styled-components';
@@ -443,9 +444,10 @@ const MetaItemText = styled.div`
   margin-left: 3px;
 `;
 
+export type TProjectCardSize = 'small' | 'medium' | 'large';
 export interface InputProps {
   projectId: string;
-  size: 'small' | 'medium' | 'large';
+  size: TProjectCardSize;
   layout?: 'dynamic' | 'threecolumns' | 'twocolumns';
   hideDescriptionPreview?: boolean;
   className?: string;
@@ -516,16 +518,9 @@ const ProjectCard = memo<Props>(
         ? null
         : projectImages[0]?.attributes.versions;
 
-      const getImageUrl = (imageVersions: ImageSizes) => {
-        if (isPhone || size !== 'small') {
-          // image size is approximately the same for both medium and large desktop card sizes
-          return imageVersions.large;
-        } else {
-          return imageVersions.small;
-        }
-      };
-
-      const imageUrl = imageVersions ? getImageUrl(imageVersions) : null;
+      const imageUrl = imageVersions
+        ? getCardImageUrl(imageVersions, isPhone, size)
+        : null;
 
       const projectUrl = getProjectUrl(project);
       const isFinished = project.attributes.timeline_active === 'past';

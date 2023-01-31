@@ -4,7 +4,7 @@ import { isEmpty, get, isString } from 'lodash-es';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { INewProjectCreatedEvent } from 'containers/Admin/projects/all/CreateProject';
 import SelectPreviewDevice, {
-  TPreviewDevice,
+  TDevice,
 } from 'components/admin/SelectPreviewDevice';
 
 // components
@@ -52,6 +52,7 @@ import {
   updateProject,
   IProjectFormState,
   IProjectData,
+  getCardImageUrl,
   CARD_IMAGE_ASPECT_RATIO_WIDTH,
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
 } from 'services/projects';
@@ -123,7 +124,7 @@ const AdminProjectsProjectGeneral = () => {
     useState<IProjectFormState['showSlugErrorMessage']>(false);
   const [publicationStatus, setPublicationStatus] =
     useState<IProjectFormState['publicationStatus']>('draft');
-  const [previewDevice, setPreviewDevice] = useState<TPreviewDevice>('phone');
+  const [previewDevice, setPreviewDevice] = useState<TDevice>('phone');
 
   useEffect(() => {
     (async () => {
@@ -166,13 +167,16 @@ const AdminProjectsProjectGeneral = () => {
       if (!isNilOrError(remoteProjectImages)) {
         const nextProjectImagesPromises = remoteProjectImages.map(
           (projectImage) => {
-            const url =
-              // On the homepage, we use the large version when screen
-              // width > 1200px, so this shows a more realistic preview
+            const url = getCardImageUrl(
+              projectImage.attributes.versions,
               previewDevice === 'phone'
-                ? projectImage.attributes.versions.medium
-                : projectImage.attributes.versions.large;
-            // to be tested
+              // This is incomplete. To have the correct image version,
+              // we'd need the exact size of the project card as well,
+              // but we currently don't have that functionality in our
+              // preview yet, so we're not showing the small version ever in
+              // preview at the moment.
+            );
+
             if (url) {
               return convertUrlToUploadFile(url, projectImage.id, null);
             }
