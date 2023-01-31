@@ -120,7 +120,8 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   end
 
   def generate_for_current_locale(fields)
-    return generate_for_current_locale_without_sections fields if fields.none?(&:section?) # TODO: Do we need to do this to keep native surveys working?
+    # Case for native surveys
+    return generate_for_current_locale_without_sections fields if fields.none?(&:section?)
 
     current_section = nil
     section_fields = []
@@ -139,8 +140,6 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   end
 
   def generate_section(current_section, section_fields)
-    return if section_fields.empty? # TODO: Do we still want to filter out empty sections?
-
     {
       type: 'Category',
       label: (MultilocService.new.t(current_section.title_multiloc) if current_section.title_multiloc),
