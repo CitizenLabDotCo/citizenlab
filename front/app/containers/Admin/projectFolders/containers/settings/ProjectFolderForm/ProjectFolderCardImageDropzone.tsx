@@ -1,14 +1,14 @@
 import React from 'react';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { UploadFile } from 'typings';
-import { CARD_IMAGE_ASPECT_RATIO } from 'services/projects';
-import { TPreviewDevice } from 'components/admin/SelectPreviewDevice';
+import { CARD_IMAGE_ASPECT_RATIO } from 'services/projectFolderImages';
+import { TDevice } from 'components/admin/SelectPreviewDevice';
 
 interface Props {
   images: UploadFile[] | null;
   onAddImage: (projectImages: UploadFile[]) => void;
   onRemoveImage: (projectImageToRemove: UploadFile) => void;
-  previewDevice: TPreviewDevice;
+  previewDevice: TDevice;
 }
 
 const ProjectFolderImageDropzone = ({
@@ -17,7 +17,7 @@ const ProjectFolderImageDropzone = ({
   onRemoveImage,
   previewDevice,
 }: Props) => {
-  const imagePreviewRatioPerDevice: { [key in TPreviewDevice]: number } = {
+  const imagePreviewRatioPerDevice: { [key in TDevice]: number } = {
     phone: 1 / CARD_IMAGE_ASPECT_RATIO,
     tablet: 1,
     desktop: 1,

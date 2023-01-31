@@ -7,6 +7,7 @@ import { addProjectFolder, updateProjectFolder } from 'services/projectFolders';
 import {
   addProjectFolderImage,
   deleteProjectFolderImage,
+  getCardImageUrl,
 } from 'services/projectFolderImages';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import useProjectFolderImages from 'hooks/useProjectFolderImages';
@@ -37,10 +38,13 @@ import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
 import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import SelectPreviewDevice, {
-  TPreviewDevice,
+  TDevice,
 } from 'components/admin/SelectPreviewDevice';
 import ProjectFolderCardImageDropzone from './ProjectFolderCardImageDropzone';
-import { CARD_IMAGE_ASPECT_RATIO } from 'services/projects';
+import {
+  CARD_IMAGE_ASPECT_RATIO_HEIGHT,
+  CARD_IMAGE_ASPECT_RATIO_WIDTH,
+} from 'services/projectFolderImages';
 
 type IProjectFolderSubmitState =
   | 'disabled'
@@ -103,7 +107,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const [projectFolderFilesToRemove, setProjectFolderFilesToRemove] = useState<
     string[]
   >([]);
-  const [previewDevice, setPreviewDevice] = useState<TPreviewDevice>('phone');
+  const [previewDevice, setPreviewDevice] = useState<TDevice>('phone');
   const [submitState, setSubmitState] =
     useState<IProjectFolderSubmitState>('disabled');
 
@@ -134,12 +138,18 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     (async () => {
       if (mode === 'edit' && !isNilOrError(projectFolderImagesRemote)) {
         const imagePromises = projectFolderImagesRemote.data.map((img) => {
-          const url =
-            // On the homepage, we use the large version when screen
-            // width > 1200px, so this shows a more realistic preview
-            previewDevice === 'phone'
-              ? img.attributes.versions.medium
-              : img.attributes.versions.large;
+          const url = !isNilOrError(folderCardImage)
+            ? getCardImageUrl(
+                img.attributes.versions,
+                previewDevice === 'phone'
+                // This is incomplete. To have the correct image version,
+                // We'd need the exact size of the project card as well,
+                // but we currently don't have that functionality in our
+                // preview yet, so we're not showing the small version ever in
+                // preview at the moment.
+              )
+            : null;
+
           return url
             ? convertUrlToUploadFile(url, img.id, null)
             : new Promise<null>((resolve) => resolve(null));
@@ -148,7 +158,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         setFolderCardImage(images[0]);
       }
     })();
-  }, [mode, projectFolderImagesRemote, previewDevice]);
+  }, [mode, projectFolderImagesRemote, folderCardImage, previewDevice]);
 
   useEffect(() => {
     (async () => {
@@ -538,7 +548,8 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               <ImageCropperContainer
                 image={folderCardImage}
                 onComplete={getHandler(setCroppedFolderCardBase64)}
-                aspect={CARD_IMAGE_ASPECT_RATIO / 1}
+                aspectRatioWidth={CARD_IMAGE_ASPECT_RATIO_WIDTH}
+                aspectRatioHeight={CARD_IMAGE_ASPECT_RATIO_HEIGHT}
                 onRemove={handleCroppedFolderCardImageOnRemove}
               />
             </Box>
