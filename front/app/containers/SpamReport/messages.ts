@@ -33,4 +33,8 @@ export default defineMessages({
     id: 'app.containers.SpamReport.messageError',
     defaultMessage: 'There was an error sending your report, please try again.',
   },
+  test: {
+    id: 'app.containers.SpamReport.test',
+    defaultMessage: 'Testing Crowdin diffs',
+  },
 });
