@@ -208,3 +208,5 @@ sr-Latn:
     survey_end_page:
       title: 'Kraj ankete'
       description: "Prosledite svoje odgovore tako što ćete ispod izabrati „Prosledi anketu”."
+  project_copy:
+    title_suffix: 'Kopiraj'

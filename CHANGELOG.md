@@ -4,6 +4,36 @@
 
 - [CL-2534] Image dimensions i3: improved project/folder card images
 
+## 2023-01-31
+
+### Added
+
+- [CL-1703] Add default CTA banner on project page
+- [CL-2727] Add user id to impact tracking for authenticated users
+
+## 2023-01-30
+
+### Fixed
+
+- [CL-2651] Fix survey top bar issue on mobile
+- [CL-2682] Show Content Warnings tab in activity manager for all platforms
+
+## 2023-01-26 (2)
+
+### Fixed
+
+- [CL-2366] Hide 'Projects' card from overview dashboard
+
+### Added
+
+- [CL-2658] Most voted ideas widget for report builder
+
+## 2023-01-26
+
+### Fixed
+
+- Activity icon in admin navigation for Safari browsers
+
 ## 2023-01-23 (2)
 
 ### Fixed
