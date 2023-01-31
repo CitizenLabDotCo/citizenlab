@@ -41,7 +41,7 @@ CommentsByTimeWidget.craft = {
     title: '',
     projectFilter: undefined,
     startAt: undefined,
-    endAtMoment: null,
+    endAt: null,
   },
   related: {
     settings: ChartWidgetSettings,
