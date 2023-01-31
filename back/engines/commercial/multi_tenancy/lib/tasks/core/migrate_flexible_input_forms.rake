@@ -20,6 +20,8 @@ namespace :fix_existing_tenants do
   end
 end
 
+# TODO: Some fields want to update a second time
+
 class FlexibleInputFormMigrator
   def initialize
     @stats = { forms: 0, errors: 0, updated: 0, created: 0 }
@@ -33,7 +35,7 @@ class FlexibleInputFormMigrator
     @stats[:forms] += 1
 
     # Format the fields
-    fields = CustomField.where(resource: custom_form)
+    fields = CustomField.where(resource: custom_form).order(:ordering)
     if custom_form.participation_context.participation_method == 'ideation'
       fields = merge_ideation_fields fields, custom_form
     else
@@ -64,6 +66,7 @@ class FlexibleInputFormMigrator
       if field.persisted?
         if field.changed?
           Rails.logger.info "FIELD EXISTS - UPDATING: #{field_id} #{field.changes.keys}"
+          Rails.logger.info field.changes
           field.save! if persist_changes
           @stats[:updated] += 1
         else
