@@ -144,5 +144,29 @@ describe('insertConfiguration', () => {
         },
       ]);
     });
+
+    it('returns correct order when item is already in correct order after', () => {
+      const module = {
+        configuration: templateItemToInsert,
+        insertAfterName: 'scratch',
+      };
+      const result = insertConfiguration(module)([
+        ...initialTabsWithScratch,
+        templateItemToInsert,
+      ]);
+
+      expect(result).toEqual([
+        {
+          name: 'scratch',
+          label: 'scratch label',
+          icon: 'blank-paper',
+        },
+        {
+          name: 'template',
+          label: 'template label',
+          icon: 'template',
+        },
+      ]);
+    });
   });
 });
