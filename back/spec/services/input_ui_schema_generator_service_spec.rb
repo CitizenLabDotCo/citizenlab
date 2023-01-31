@@ -204,6 +204,38 @@ RSpec.describe InputUiSchemaGeneratorService do
             }
           ]
         })
+        expect(ui_schema['en'][:elements][2]).to eq({
+          type: 'Category',
+          label: 'Details',
+          options: {
+            id: custom_form.custom_fields.find_by(code: 'ideation_section3').id
+          },
+          elements: [
+            {
+              type: 'Control',
+              scope: '#/properties/topic_ids',
+              label: 'Tags',
+              options: {
+                description: '',
+                input_type: 'topic_ids',
+                isAdminField: false,
+                hasRule: false
+              }
+            },
+            {
+              type: 'Control',
+              scope: '#/properties/location_description',
+              label: 'Location',
+              options: {
+                description: '',
+                input_type: 'text',
+                isAdminField: false,
+                hasRule: false,
+                transform: 'trim_on_blur'
+              }
+            }
+          ]
+        })
         # fr-FR
         # nl-NL
       end
