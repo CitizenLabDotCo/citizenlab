@@ -170,27 +170,4 @@ export const GraphCardTitle = styled.h3`
   line-height: 1.3;
 `;
 
-export const GraphCardFigureContainer = styled.div`
-  margin-left: 10px;
-  display: flex;
-  align-items: center;
-`;
-
-export const GraphCardFigure = styled.span`
-  margin-right: 5px;
-  font-weight: 600;
-`;
-
-export const GraphCardFigureChange = styled.span`
-  font-size: ${fontSizes.base}px;
-
-  &.increase {
-    color: ${colors.success};
-  }
-
-  &.decrease {
-    color: ${colors.red600};
-  }
-`;
-
 export type IGraphUnit = 'users' | 'ideas' | 'comments' | 'votes' | 'responses';

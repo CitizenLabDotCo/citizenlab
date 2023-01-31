@@ -96,34 +96,6 @@ const formatSerieChange = (serieChange: number) => {
   return null;
 };
 
-export const getFormattedNumbers_ = (serie) => {
-  if (serie) {
-    const firstSerieValue = serie.length > 0 ? serie[0].total : 0;
-    const lastSerieValue = serie.length > 0 ? serie[serie.length - 1].total : 0;
-    const firstSerieBar = serie.length > 0 ? serie[0].inputs : 0;
-    const serieChange = lastSerieValue - firstSerieValue + firstSerieBar;
-    let typeOfChange: 'increase' | 'decrease' | '' = '';
-
-    if (serieChange > 0) {
-      typeOfChange = 'increase';
-    } else if (serieChange < 0) {
-      typeOfChange = 'decrease';
-    }
-
-    return {
-      typeOfChange,
-      totalNumber: lastSerieValue,
-      formattedSerieChange: formatSerieChange(serieChange),
-    };
-  }
-
-  return {
-    totalNumber: null,
-    formattedSerieChange: null,
-    typeOfChange: '',
-  };
-};
-
 export const getFormattedNumbers = (
   serie: TimeSeries | NilOrError
 ): {
