@@ -2,7 +2,7 @@ import { API_PATH } from 'containers/App/constants';
 import { getJwt } from 'utils/auth/jwt';
 import { stringify } from 'qs';
 import { queryClient } from 'utils/cl-react-query/queryClient';
-import { isArray } from 'lodash-es';
+import { isArray, pickBy, identity } from 'lodash-es';
 import { CLErrors } from 'typings';
 
 // FETCHER
@@ -57,11 +57,14 @@ async function fetcher({ path, action, body, queryParams }) {
     delete: 'DELETE',
   };
 
-  const requestQueryParams = queryParams
-    ? stringify(queryParams, {
+  // Remove falsy values from query parameters
+  const truthyQueryParams = pickBy(queryParams, identity);
+
+  const requestQueryParams = truthyQueryParams
+    ? stringify(truthyQueryParams, {
         arrayFormat: 'brackets',
         addQueryPrefix: true,
-        encode: true,
+        encodeValuesOnly: true,
       })
     : '';
 

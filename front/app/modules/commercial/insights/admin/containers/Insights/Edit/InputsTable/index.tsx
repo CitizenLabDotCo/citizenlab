@@ -126,19 +126,6 @@ const InputsTable = ({
       : // Include only processed input everywhere else
         true;
 
-  // const {
-  //   list: inputs,
-  //   lastPage,
-  //   loading,
-  //   setLoading,
-  // } = useInsightsInputs(viewId, {
-  //   pageNumber,
-  //   search,
-  //   sort,
-  //   processed,
-  //   category: selectedCategory,
-  // });
-
   const { data: inputs, isLoading } = useInputs(viewId, {
     pageNumber,
     search,
