@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -29,64 +30,12 @@ import messages from './messages';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import getProjectPeriod from 'containers/Admin/reporting/utils/getProjectPeriod';
-import moment from 'moment';
-import { IProjectData } from 'services/projects';
-import { IPhaseData } from 'services/phases';
+import { getTemplateData } from './getTemplateData';
 
 interface Props {
   reportId: string;
   projectId: string;
 }
-
-interface TemplateData {
-  participationMethod: 'ideation' | 'native_survey' | 'other';
-  phaseId?: string;
-}
-
-const getTemplateData = (
-  project: IProjectData,
-  phases: IPhaseData[]
-): TemplateData => {
-  const hasPhases = project.attributes.process_type === 'continuous';
-
-  if (hasPhases) {
-    for (const phase of phases) {
-      const participationMethod = phase.attributes.participation_method;
-
-      if (
-        participationMethod === 'ideation' ||
-        participationMethod === 'native_survey'
-      ) {
-        return {
-          participationMethod,
-          phaseId: phase.id,
-        };
-      }
-    }
-
-    return {
-      participationMethod: 'other',
-      phaseId: undefined,
-    };
-  }
-
-  const participationMethod = project.attributes.participation_method;
-
-  if (
-    participationMethod === 'ideation' ||
-    participationMethod === 'native_survey'
-  ) {
-    return {
-      participationMethod,
-      phaseId: undefined,
-    };
-  }
-
-  return {
-    participationMethod: 'other',
-    phaseId: undefined,
-  };
-};
 
 const ProjectTemplate = ({ reportId, projectId }: Props) => {
   const { formatMessage } = useIntl();
