@@ -37,7 +37,7 @@ export type IInsightsViews = { data: IInsightsViewData[] };
 // GET VIEWS
 
 const fetchViews = async () =>
-  fetcher<IInsightsViews>({ path: 'insights/views', action: 'get' });
+  fetcher<IInsightsViews>({ path: '/insights/views', action: 'get' });
 
 export const useViews = () => {
   return useQuery<IInsightsViews, CLErrors, IInsightsViews, ViewKeys>({
@@ -47,7 +47,7 @@ export const useViews = () => {
 };
 
 const fetchView = (id: string) =>
-  fetcher<IInsightsView>({ path: `insights/views/${id}`, action: 'get' });
+  fetcher<IInsightsView>({ path: `/insights/views/${id}`, action: 'get' });
 
 export const useView = (id: string) => {
   return useQuery<IInsightsView, CLErrors, IInsightsView, ViewKeys>({
@@ -60,7 +60,7 @@ export const useView = (id: string) => {
 
 const createView = async (requestBody: IInsightsViewObject) =>
   fetcher<IInsightsView>({
-    path: 'insights/views',
+    path: '/insights/views',
     action: 'create',
     body: requestBody,
   });
@@ -87,7 +87,7 @@ interface IInsightViewUpdateObject {
 
 const updateView = async ({ id, requestBody }: IInsightViewUpdateObject) =>
   fetcher<IInsightsView>({
-    path: `insights/views/${id}`,
+    path: `/insights/views/${id}`,
     action: 'update',
     body: requestBody,
   });
@@ -106,7 +106,7 @@ export const useUpdateView = ({ onSuccess }: { onSuccess?: () => void }) => {
 // DELETE
 const deleteView = async (id: string) =>
   fetcher({
-    path: `insights/views/${id}`,
+    path: `/insights/views/${id}`,
     action: 'delete',
   });
 

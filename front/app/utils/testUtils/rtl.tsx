@@ -11,7 +11,7 @@ import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import history from 'utils/browserHistory';
 
 import { QueryClientProvider } from '@tanstack/react-query';
-import queryClient from 'utils/cl-react-query/queryClient';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 window.confirm = jest.fn(() => true);
 window.scrollTo = jest.fn();

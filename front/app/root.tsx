@@ -26,7 +26,7 @@ import { wrapUseRoutes } from '@sentry/react';
 
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import queryClient from 'utils/cl-react-query/queryClient';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
