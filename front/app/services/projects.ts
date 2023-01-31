@@ -23,7 +23,7 @@ import {
 import { TProjectCardSize } from 'components/ProjectCard';
 
 export const apiEndpoint = `${API_PATH}/projects`;
-export const HEADER_BG_ASPECT_RATIO = 4 / 1;
+export const PROJECTABLE_HEADER_BG_ASPECT_RATIO = 4 / 1;
 export const CARD_IMAGE_ASPECT_RATIO = 2 / 1;
 export const getCardImageUrl = (
   imageVersions: ImageSizes,

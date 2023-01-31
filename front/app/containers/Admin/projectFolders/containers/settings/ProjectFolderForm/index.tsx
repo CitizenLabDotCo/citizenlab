@@ -292,11 +292,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               },
             });
             if (!isNilOrError(projectFolder)) {
-              const cardImageWasChanged =
-                croppedFolderCardBase64 &&
-                folderCardImage &&
-                !folderCardImage.remote;
-              const cardImageToAddPromise = cardImageWasChanged
+              const cardImageToAddPromise = croppedFolderCardBase64
                 ? addProjectFolderImage(
                     projectFolder.id,
                     croppedFolderCardBase64
@@ -327,18 +323,11 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             shortDescriptionMultiloc &&
             !isNilOrError(projectFolder)
           ) {
-            const cardToAddPromise =
-              croppedFolderCardBase64 &&
-              folderCardImage &&
-              !folderCardImage.remote
-                ? addProjectFolderImage(
-                    projectFolder.id,
-                    croppedFolderCardBase64
-                  )
-                : null;
+            const cardToAddPromise = croppedFolderCardBase64
+              ? addProjectFolderImage(projectFolder.id, croppedFolderCardBase64)
+              : null;
             const cardToRemovePromises =
-              folderCardImageToRemove &&
-              folderCardImageToRemove.id &&
+              folderCardImageToRemove?.id &&
               deleteProjectFolderImage(
                 projectFolderId,
                 folderCardImageToRemove.id

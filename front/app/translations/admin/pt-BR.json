@@ -1419,7 +1419,7 @@
   "app.containers.AdminPage.SettingsPage.fieldTopicTitle": "Nome dos tópicos",
   "app.containers.AdminPage.SettingsPage.fieldTopicTitleError": "Por favor, forneça o nome da etiqueta para todas as línguas",
   "app.containers.AdminPage.SettingsPage.fieldTopicTitleTooltip": "O nome que você escolher para cada tópico ficará visível para os usuários da plataforma.",
-  "app.containers.AdminPage.SettingsPage.fixedRatio": "Fixed-ratio banner",
+  "app.containers.AdminPage.SettingsPage.fixedRatio": "Fixed ratio",
   "app.containers.AdminPage.SettingsPage.fixedRatioBannerTooltip": "This banner type works best with images that shouldn’t be cropped, such as images with text, a logo or specific elements that are crucial to your citizens. This banner is replaced with a solid box in the primary colour when users are signed in. You can set this colour in the general settings. More info on the recommended image usage can be found on our {link}.",
   "app.containers.AdminPage.SettingsPage.fixedRatioBannerTooltipLink": "knowledge base",
   "app.containers.AdminPage.SettingsPage.fullWidthBannerLayout": "Banner de largura total",

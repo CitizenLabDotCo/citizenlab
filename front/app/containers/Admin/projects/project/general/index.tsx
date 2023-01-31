@@ -13,7 +13,7 @@ import ProjectTypePicker from './components/ProjectTypePicker';
 import TopicInputs from './components/TopicInputs';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
 import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
-import ProjectCardImageDropzone from './components/ProjectImageDropzone';
+import ProjectCardImageDropzone from './components/ProjectCardImageDropzone';
 import AttachmentsDropzone from './components/AttachmentsDropzone';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 import {
@@ -319,21 +319,13 @@ const AdminProjectsProjectGeneral = () => {
           }
         }
 
-        const cardImageWasChanged =
-          croppedProjectCardBase64 &&
-          projectCardImage &&
-          !projectCardImage.remote;
         const cardImageToAddPromise =
-          cardImageWasChanged && latestProjectId
+          croppedProjectCardBase64 && latestProjectId
             ? addProjectImage(latestProjectId, croppedProjectCardBase64)
             : null;
 
         const cardImageToRemovePromise =
-          projectCardImageToRemove &&
-          projectCardImageToRemove.remote &&
-          projectCardImageToRemove.id &&
-          isString(projectCardImageToRemove.id) &&
-          latestProjectId
+          projectCardImageToRemove?.id && latestProjectId
             ? deleteProjectImage(latestProjectId, projectCardImageToRemove.id)
             : null;
 
