@@ -9,9 +9,14 @@ import {
 import { TProjectFolderCardSize } from 'components/ProjectAndFolderCards/components/ProjectFolderCard';
 
 const apiEndpoint = `${API_PATH}/project_folders`;
+
+type ProjectFolderCardImageSizes = {
+  small: string | null;
+  large: string | null;
+};
 export const CARD_IMAGE_ASPECT_RATIO = PROJECT_CARD_IMAGE_ASPECT_RATIO;
 export const getCardImageUrl = (
-  imageVersions: ImageSizes,
+  imageVersions: ProjectFolderCardImageSizes,
   isPhone: boolean,
   size?: TProjectFolderCardSize
 ) => {
