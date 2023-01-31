@@ -24,8 +24,9 @@ import {
 } from 'react-router-dom';
 import { wrapUseRoutes } from '@sentry/react';
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import queryClient from 'utils/cl-react-query/queryClient';
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
@@ -55,14 +56,6 @@ function Routes() {
 
   return useSentryRoutes(routes);
 }
-
-export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: Infinity,
-    },
-  },
-});
 
 const Root = () => {
   return (
