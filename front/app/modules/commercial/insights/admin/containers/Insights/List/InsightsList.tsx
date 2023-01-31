@@ -18,7 +18,7 @@ import { darken } from 'polished';
 import {
   useDeleteView,
   IInsightsViewData,
-} from 'modules/commercial/insights/services/views';
+} from 'modules/commercial/insights/api/views';
 
 const StyledDescription = styled.p`
   font-size: ${fontSizes.base}px;

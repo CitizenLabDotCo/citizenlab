@@ -26,10 +26,7 @@ import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError, isError } from 'utils/helperUtils';
 
 // hooks
-import {
-  useView,
-  useDeleteView,
-} from 'modules/commercial/insights/services/views';
+import { useView, useDeleteView } from 'modules/commercial/insights/api/views';
 
 export const topBarHeight = 60;
 

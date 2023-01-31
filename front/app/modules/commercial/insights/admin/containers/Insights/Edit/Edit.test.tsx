@@ -5,7 +5,7 @@ import InsightsEdit from './';
 
 jest.mock('modules', () => jest.fn());
 
-jest.mock('modules/commercial/insights/services/views', () => {
+jest.mock('modules/commercial/insights/api/views', () => {
   return {
     useUpdateView: jest.fn(() => {
       return { mutate: jest.fn() };

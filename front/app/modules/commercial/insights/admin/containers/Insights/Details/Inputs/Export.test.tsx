@@ -12,7 +12,7 @@ const application =
 const mockViewData = { data: views[0] };
 let mockLocationData: { query: Record<string, unknown> } = { query: {} };
 
-jest.mock('modules/commercial/insights/services/views', () => {
+jest.mock('modules/commercial/insights/api/views', () => {
   return {
     useView: jest.fn(() => {
       return { data: mockViewData };

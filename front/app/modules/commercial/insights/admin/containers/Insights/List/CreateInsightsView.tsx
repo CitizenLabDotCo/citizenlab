@@ -32,7 +32,7 @@ import useLocalize from 'hooks/useLocalize';
 import useProjectFolders from 'hooks/useProjectFolders';
 
 // services
-import { useCreateView } from 'modules/commercial/insights/services/views';
+import { useCreateView } from 'modules/commercial/insights/api/views';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

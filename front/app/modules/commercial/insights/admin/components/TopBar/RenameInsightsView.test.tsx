@@ -25,7 +25,7 @@ jest.mock('utils/cl-router/withRouter', () => {
 jest.mock('utils/cl-router/Link');
 
 const mockMutate = jest.fn();
-jest.mock('modules/commercial/insights/services/views', () => {
+jest.mock('modules/commercial/insights/api/views', () => {
   return {
     useUpdateView: jest.fn(() => {
       return { mutate: mockMutate, reset: jest.fn() };

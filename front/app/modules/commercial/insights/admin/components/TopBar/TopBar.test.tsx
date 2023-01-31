@@ -69,7 +69,7 @@ jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
 }));
 
 const mockDeleteView = jest.fn();
-jest.mock('modules/commercial/insights/services/views', () => {
+jest.mock('modules/commercial/insights/api/views', () => {
   return {
     useView: jest.fn(() => {
       return { data: mockViewData };

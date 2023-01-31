@@ -30,7 +30,7 @@ jest.mock(
 
 const mockViewData = { data: views[0] };
 
-jest.mock('modules/commercial/insights/services/views', () => {
+jest.mock('modules/commercial/insights/api/views', () => {
   return {
     useUpdateView: jest.fn(() => {
       return () => ({ mutate: jest.fn() });

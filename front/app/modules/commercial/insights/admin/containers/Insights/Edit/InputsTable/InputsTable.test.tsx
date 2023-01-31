@@ -68,7 +68,7 @@ jest.mock('modules/commercial/insights/hooks/useInsightsInputs', () => {
   return jest.fn(() => mockInputData);
 });
 
-jest.mock('modules/commercial/insights/services/views', () => {
+jest.mock('modules/commercial/insights/api/views', () => {
   return {
     useView: jest.fn(() => {
       return { data: mockViewData };

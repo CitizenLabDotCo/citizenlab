@@ -9,7 +9,7 @@ jest.mock('utils/cl-intl');
 let mockData = { data: views };
 
 const mockDeleteView = jest.fn();
-jest.mock('modules/commercial/insights/services/views', () => {
+jest.mock('modules/commercial/insights/api/views', () => {
   return {
     useViews: jest.fn(() => {
       return { data: mockData };

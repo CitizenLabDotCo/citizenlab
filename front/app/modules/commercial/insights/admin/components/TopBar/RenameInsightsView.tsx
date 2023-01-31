@@ -13,7 +13,7 @@ import { injectIntl } from 'utils/cl-intl';
 import { Button, Input } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 
-import { useUpdateView } from 'modules/commercial/insights/services/views';
+import { useUpdateView } from 'modules/commercial/insights/api/views';
 
 const Container = styled.div`
   width: 100%;

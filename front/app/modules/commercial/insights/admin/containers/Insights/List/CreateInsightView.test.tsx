@@ -7,7 +7,7 @@ jest.mock('resources/GetProjects', () => {});
 jest.mock('hooks/useLocalize');
 jest.mock('services/locale');
 const mockMutate = jest.fn();
-jest.mock('modules/commercial/insights/services/views', () => {
+jest.mock('modules/commercial/insights/api/views', () => {
   return {
     useCreateView: () => ({ mutate: mockMutate, reset: jest.fn() }),
   };
