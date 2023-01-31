@@ -20,8 +20,6 @@ namespace :fix_existing_tenants do
   end
 end
 
-# TODO: Some fields want to update a second time
-
 class FlexibleInputFormMigrator
   def initialize
     @stats = { forms: 0, errors: 0, updated: 0, created: 0 }
