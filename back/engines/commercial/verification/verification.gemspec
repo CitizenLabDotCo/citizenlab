@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.name        = 'verification'
   s.version     = Verification::VERSION
   s.authors     = ['CitizenLab']
-  s.licenses    = ['CitizenLab Commercial License V1']
+  s.licenses    = ['CitizenLab Commercial License V2']
   s.summary     = 'Bundles the code for all verification methods: Is a citizen who she says she is?'
 
   s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']

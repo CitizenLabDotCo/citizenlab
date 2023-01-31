@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.version     = ContentBuilder::VERSION
   spec.authors     = ['CitizenLab']
   spec.email       = ['developers@citizenlab.co']
-  spec.licenses    = ['CitizenLab Commercial License V1']
+  spec.licenses    = ['CitizenLab Commercial License V2']
   spec.summary     = 'Customize the layouts for different parts of the platform (project page, home page etc.)'
 
   spec.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
