@@ -89,7 +89,6 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
       <WhiteSpace />
       <Title text={formatMessage(messages.participants)} />
       <Text text={formatMessage(messages.descriptionPlaceHolder)} />
-      <WhiteSpace />
       <TwoColumn columnLayout="1-1">
         <Element id="left" is={Container} canvas>
           <GenderWidget
@@ -108,7 +107,6 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
       </TwoColumn>
       <Title text={formatMessage(messages.visitors)} />
       <Text text={formatMessage(messages.descriptionPlaceHolder)} />
-      <WhiteSpace />
       <VisitorsWidget
         projectId={projectId}
         title={formatMessage(VisitorsWidget.craft.custom.title)}
