@@ -1007,6 +1007,8 @@
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.editButtonLabel": "Edycja",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.editCauseSubtitle": "Sprawa jest działaniem lub czynnością, do której obywatele mogą się zgłosić.",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.editCauseTitle": "Edytuj sprawę",
+  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.emptyDescriptionErrorMessage": "Add a description",
+  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.emptyTitleErrorMessage": "Add a title",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.exportVolunteers": "Eksport wolontariuszy",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.newCauseSubtitle": "Sprawa jest działaniem lub czynnością, do której obywatele mogą się zgłosić.",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.newCauseTitle": "Nowa sprawa",

@@ -1007,6 +1007,8 @@
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.editButtonLabel": "Editar",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.editCauseSubtitle": "Uma causa é uma ação ou atividade para a qual os cidadãos podem se voluntariar.",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.editCauseTitle": "Editar causa",
+  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.emptyDescriptionErrorMessage": "Add a description",
+  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.emptyTitleErrorMessage": "Add a title",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.exportVolunteers": "Exportar voluntários",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.newCauseSubtitle": "Uma causa é uma ação ou atividade para a qual os cidadãos podem se voluntariar.",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.newCauseTitle": "Nova causa",
