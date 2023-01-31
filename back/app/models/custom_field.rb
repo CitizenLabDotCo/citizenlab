@@ -174,9 +174,7 @@ class CustomField < ApplicationRecord
     if code == 'ideation_section1'
       input_term = resource.participation_context.input_term
       key = "custom_forms.categories.main_content.#{input_term}.title"
-      I18n.available_locales.index_with do |locale|
-        I18n.t(key, default: '', locale: locale)
-      end
+      MultilocService.new.i18n_to_multiloc key
     else
       super
     end

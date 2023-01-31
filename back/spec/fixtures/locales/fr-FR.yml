@@ -18,16 +18,16 @@ fr:
         title: Description
         description:
       author_id:
-        title: Author
+        title: Auteur
         description:
       topic_ids:
-        title: Tags
+        title: Étiquettes
         description:
       location:
-        title: Location
+        title: Adresse
         description:
       proposed_budget:
-        title: Proposed Budget
+        title: Proposition de budget
         description:
       budget:
         title: Budget
@@ -36,12 +36,12 @@ fr:
         title: Images
         description:
       attachments:
-        title: Attachments
+        title: Pièces jointes
         description:
       section1:
         description:
       section2:
-        title: Images and attachments
+        title: Images et pièces jointes
         description:
       section3:
         title: Details
