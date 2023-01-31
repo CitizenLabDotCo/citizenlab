@@ -112,83 +112,80 @@ const FormBuilderToolbox = ({
         >
           <FormattedMessage {...customToolBoxTitle} />
         </Title>
-
-        <DraggableElement>
-          {builderConfig.groupingType === 'section' ? (
-            <ToolboxItem
-              icon="section"
-              label={formatMessage(messages.section)}
-              onClick={() => addField('section')}
-              fieldsToExclude={builderConfig.toolboxFieldsToExclude}
-              inputType="section"
-            />
-          ) : (
-            <ToolboxItem
-              icon="page"
-              label={formatMessage(messages.page)}
-              onClick={() => addField('page')}
-              data-cy="e2e-page"
-              fieldsToExclude={builderConfig.toolboxFieldsToExclude}
-              inputType="page"
-            />
-          )}
+        {builderConfig.groupingType === 'section' ? (
           <ToolboxItem
-            icon="survey-short-answer-2"
-            label={formatMessage(messages.shortAnswer)}
-            onClick={() => addField('text')}
-            data-cy="e2e-short-answer"
+            icon="section"
+            label={formatMessage(messages.section)}
+            onClick={() => addField('section')}
             fieldsToExclude={builderConfig.toolboxFieldsToExclude}
-            inputType="text"
+            inputType="section"
           />
+        ) : (
           <ToolboxItem
-            icon="survey-long-answer-2"
-            label={formatMessage(messages.longAnswer)}
-            onClick={() => addField('multiline_text')}
-            data-cy="e2e-long-answer"
+            icon="page"
+            label={formatMessage(messages.page)}
+            onClick={() => addField('page')}
+            data-cy="e2e-page"
             fieldsToExclude={builderConfig.toolboxFieldsToExclude}
-            inputType="multiline_text"
+            inputType="page"
           />
-          <ToolboxItem
-            icon="survey-single-choice"
-            label={formatMessage(messages.singleChoice)}
-            onClick={() => addField('select')}
-            data-cy="e2e-single-choice"
-            fieldsToExclude={builderConfig.toolboxFieldsToExclude}
-            inputType="select"
-          />
-          <ToolboxItem
-            icon="survey-multiple-choice-2"
-            label={formatMessage(messages.multipleChoice)}
-            onClick={() => addField('multiselect')}
-            data-cy="e2e-multiple-choice"
-            fieldsToExclude={builderConfig.toolboxFieldsToExclude}
-            inputType="multiselect"
-          />
-          <ToolboxItem
-            icon="survey-linear-scale"
-            label={formatMessage(messages.linearScale)}
-            onClick={() => addField('linear_scale')}
-            data-cy="e2e-linear-scale"
-            fieldsToExclude={builderConfig.toolboxFieldsToExclude}
-            inputType="linear_scale"
-          />
-          <ToolboxItem
-            icon="survey-number-field"
-            label={formatMessage(messages.number)}
-            onClick={() => addField('number')}
-            data-cy="e2e-number-field"
-            fieldsToExclude={builderConfig.toolboxFieldsToExclude}
-            inputType="number"
-          />
-          <ToolboxItem
-            icon="upload-file"
-            label={formatMessage(messages.fileUpload)}
-            onClick={() => addField('file_upload')}
-            data-cy="e2e-file-upload-field"
-            fieldsToExclude={builderConfig.toolboxFieldsToExclude}
-            inputType="file_upload"
-          />
-        </DraggableElement>
+        )}
+        <ToolboxItem
+          icon="survey-short-answer-2"
+          label={formatMessage(messages.shortAnswer)}
+          onClick={() => addField('text')}
+          data-cy="e2e-short-answer"
+          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          inputType="text"
+        />
+        <ToolboxItem
+          icon="survey-long-answer-2"
+          label={formatMessage(messages.longAnswer)}
+          onClick={() => addField('multiline_text')}
+          data-cy="e2e-long-answer"
+          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          inputType="multiline_text"
+        />
+        <ToolboxItem
+          icon="survey-single-choice"
+          label={formatMessage(messages.singleChoice)}
+          onClick={() => addField('select')}
+          data-cy="e2e-single-choice"
+          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          inputType="select"
+        />
+        <ToolboxItem
+          icon="survey-multiple-choice-2"
+          label={formatMessage(messages.multipleChoice)}
+          onClick={() => addField('multiselect')}
+          data-cy="e2e-multiple-choice"
+          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          inputType="multiselect"
+        />
+        <ToolboxItem
+          icon="survey-linear-scale"
+          label={formatMessage(messages.linearScale)}
+          onClick={() => addField('linear_scale')}
+          data-cy="e2e-linear-scale"
+          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          inputType="linear_scale"
+        />
+        <ToolboxItem
+          icon="survey-number-field"
+          label={formatMessage(messages.number)}
+          onClick={() => addField('number')}
+          data-cy="e2e-number-field"
+          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          inputType="number"
+        />
+        <ToolboxItem
+          icon="upload-file"
+          label={formatMessage(messages.fileUpload)}
+          onClick={() => addField('file_upload')}
+          data-cy="e2e-file-upload-field"
+          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          inputType="file_upload"
+        />
       </Box>
     </Box>
   );
