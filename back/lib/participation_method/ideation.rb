@@ -251,6 +251,10 @@ module ParticipationMethod
       }
     end
 
+    def form_structure_element
+      'section'
+    end
+
     def validate_built_in_fields?
       true
     end

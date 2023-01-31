@@ -31,6 +31,10 @@ module ParticipationMethod
       {}
     end
 
+    def form_structure_element
+      nil
+    end
+
     def validate_built_in_fields?
       # Most participation methods do not have built-in fields,
       # so return false.
