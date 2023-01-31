@@ -14,7 +14,8 @@ describe('ImageCropper', () => {
     render(
       <ImageCropper
         image={image}
-        aspect={3 / 1}
+        aspectRatioWidth={3}
+        aspectRatioHeight={1}
         onComplete={jest.fn()}
         onRemove={jest.fn()}
       />
@@ -26,7 +27,8 @@ describe('ImageCropper', () => {
       <ImageCropper
         image={null}
         onComplete={jest.fn()}
-        aspect={3 / 1}
+        aspectRatioWidth={3}
+        aspectRatioHeight={1}
         onRemove={jest.fn()}
       />
     );

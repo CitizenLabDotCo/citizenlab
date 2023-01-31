@@ -3,7 +3,9 @@ import { Multiloc, UploadFile, IOption } from 'typings';
 import { isEmpty, get, isString } from 'lodash-es';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { INewProjectCreatedEvent } from 'containers/Admin/projects/all/CreateProject';
-import { TDevice } from 'components/admin/SelectPreviewDevice';
+import SelectPreviewDevice, {
+  TDevice,
+} from 'components/admin/SelectPreviewDevice';
 
 // components
 import ProjectStatusPicker from './components/ProjectStatusPicker';
@@ -13,7 +15,7 @@ import ProjectTypePicker from './components/ProjectTypePicker';
 import TopicInputs from './components/TopicInputs';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
 import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
-import ProjectCardImageDropzone from './components/ProjectImageDropzone';
+import ProjectCardImageDropzone from './components/ProjectCardImageDropzone';
 import AttachmentsDropzone from './components/AttachmentsDropzone';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 import {
@@ -34,7 +36,6 @@ import {
 import ProjectFolderSelect from './components/ProjectFolderSelect';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
-import SelectPreviewDevice from 'components/admin/SelectPreviewDevice';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -51,8 +52,9 @@ import {
   updateProject,
   IProjectFormState,
   IProjectData,
-  CARD_IMAGE_ASPECT_RATIO,
   getCardImageUrl,
+  CARD_IMAGE_ASPECT_RATIO_WIDTH,
+  CARD_IMAGE_ASPECT_RATIO_HEIGHT,
 } from 'services/projects';
 import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
 import { addProjectImage, deleteProjectImage } from 'services/projectImages';
@@ -167,10 +169,10 @@ const AdminProjectsProjectGeneral = () => {
           (projectImage) => {
             const url = getCardImageUrl(
               projectImage.attributes.versions,
-              previewDevice
+              previewDevice === 'phone'
               // This is incomplete. To have the correct image version,
-              // We'd need the exact size of the project card as well,
-              // But we currently don't have that functionality in our
+              // we'd need the exact size of the project card as well,
+              // but we currently don't have that functionality in our
               // preview yet, so we're not showing the small version ever in
               // preview at the moment.
             );
@@ -319,21 +321,13 @@ const AdminProjectsProjectGeneral = () => {
           }
         }
 
-        const cardImageWasChanged =
-          croppedProjectCardBase64 &&
-          projectCardImage &&
-          !projectCardImage.remote;
         const cardImageToAddPromise =
-          cardImageWasChanged && latestProjectId
+          croppedProjectCardBase64 && latestProjectId
             ? addProjectImage(latestProjectId, croppedProjectCardBase64)
             : null;
 
         const cardImageToRemovePromise =
-          projectCardImageToRemove &&
-          projectCardImageToRemove.remote &&
-          projectCardImageToRemove.id &&
-          isString(projectCardImageToRemove.id) &&
-          latestProjectId
+          projectCardImageToRemove?.id && latestProjectId
             ? deleteProjectImage(latestProjectId, projectCardImageToRemove.id)
             : null;
 
@@ -600,7 +594,8 @@ const AdminProjectsProjectGeneral = () => {
               <ImageCropperContainer
                 image={projectCardImage}
                 onComplete={handleProjectCardImageOnCompleteCropping}
-                aspect={CARD_IMAGE_ASPECT_RATIO / 1}
+                aspectRatioWidth={CARD_IMAGE_ASPECT_RATIO_WIDTH}
+                aspectRatioHeight={CARD_IMAGE_ASPECT_RATIO_HEIGHT}
                 onRemove={handleCroppedProjectCardImageOnRemove}
               />
             </Box>

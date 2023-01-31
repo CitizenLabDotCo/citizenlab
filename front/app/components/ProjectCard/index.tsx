@@ -65,7 +65,6 @@ const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
 
   &.large {
     width: 100%;
-    min-height: 450px;
     flex-direction: row;
     align-items: stretch;
     justify-content: space-between;
@@ -136,7 +135,7 @@ const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
 const ProjectImageContainer = styled.div`
   width: 100%;
   display: flex;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: ${CARD_IMAGE_ASPECT_RATIO} / 1;
   margin-right: 10px;
   overflow: hidden;
   position: relative;

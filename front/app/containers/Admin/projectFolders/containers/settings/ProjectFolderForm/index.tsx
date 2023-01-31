@@ -40,10 +40,14 @@ import { validateSlug } from 'utils/textUtils';
 import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
 import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
-import SelectPreviewDevice from 'components/admin/SelectPreviewDevice';
-import { TDevice } from 'components/admin/SelectPreviewDevice';
+import SelectPreviewDevice, {
+  TDevice,
+} from 'components/admin/SelectPreviewDevice';
 import ProjectFolderCardImageDropzone from './ProjectFolderCardImageDropzone';
-import { CARD_IMAGE_ASPECT_RATIO } from 'services/projectFolders';
+import {
+  CARD_IMAGE_ASPECT_RATIO_HEIGHT,
+  CARD_IMAGE_ASPECT_RATIO_WIDTH,
+} from 'services/projects';
 
 type IProjectFolderSubmitState =
   | 'disabled'
@@ -292,11 +296,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               },
             });
             if (!isNilOrError(projectFolder)) {
-              const cardImageWasChanged =
-                croppedFolderCardBase64 &&
-                folderCardImage &&
-                !folderCardImage.remote;
-              const cardImageToAddPromise = cardImageWasChanged
+              const cardImageToAddPromise = croppedFolderCardBase64
                 ? addProjectFolderImage(
                     projectFolder.id,
                     croppedFolderCardBase64
@@ -327,18 +327,11 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             shortDescriptionMultiloc &&
             !isNilOrError(projectFolder)
           ) {
-            const cardToAddPromise =
-              croppedFolderCardBase64 &&
-              folderCardImage &&
-              !folderCardImage.remote
-                ? addProjectFolderImage(
-                    projectFolder.id,
-                    croppedFolderCardBase64
-                  )
-                : null;
+            const cardToAddPromise = croppedFolderCardBase64
+              ? addProjectFolderImage(projectFolder.id, croppedFolderCardBase64)
+              : null;
             const cardToRemovePromises =
-              folderCardImageToRemove &&
-              folderCardImageToRemove.id &&
+              folderCardImageToRemove?.id &&
               deleteProjectFolderImage(
                 projectFolderId,
                 folderCardImageToRemove.id
@@ -559,7 +552,8 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               <ImageCropperContainer
                 image={folderCardImage}
                 onComplete={getHandler(setCroppedFolderCardBase64)}
-                aspect={CARD_IMAGE_ASPECT_RATIO / 1}
+                aspectRatioWidth={CARD_IMAGE_ASPECT_RATIO_WIDTH}
+                aspectRatioHeight={CARD_IMAGE_ASPECT_RATIO_HEIGHT}
                 onRemove={handleCroppedFolderCardImageOnRemove}
               />
             </Box>

@@ -111,7 +111,7 @@ const Container = styled(Link)`
 const FolderImageContainer = styled.div`
   width: 100%;
   display: flex;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: ${CARD_IMAGE_ASPECT_RATIO} / 1;
   margin-right: 10px;
   overflow: hidden;
   position: relative;
