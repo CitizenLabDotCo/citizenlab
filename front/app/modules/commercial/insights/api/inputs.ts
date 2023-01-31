@@ -74,7 +74,7 @@ const fetchInputs = async (
 
 export const useInputs = (viewId: string, queryParams: QueryParameters) => {
   return useQuery<IInsightsInputs, CLErrors, IInsightsInputs, InputKeys>({
-    queryKey: inputKeys.lists(),
+    queryKey: inputKeys.list(queryParams),
     queryFn: () => fetchInputs(viewId, queryParams),
   });
 };

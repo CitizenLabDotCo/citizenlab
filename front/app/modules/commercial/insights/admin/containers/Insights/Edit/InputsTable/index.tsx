@@ -24,6 +24,7 @@ import {
   Tr,
   Icon,
   Box,
+  Spinner,
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import InputsTableRow from './InputsTableRow';
@@ -294,8 +295,11 @@ const InputsTable = ({
     [pathname, selectedCategory, sort, search, query.processed]
   );
 
-  // From this point we need data ----------------------------------------------
-  if (isNilOrError(inputs)) {
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  if (!inputs) {
     return null;
   }
 
@@ -313,7 +317,7 @@ const InputsTable = ({
   // Selection and Actions -----------------------------------------------------
   const handleCheckboxChange = () => {
     if (selectedRows.size === 0) {
-      const newSelection = new Set(inputs.data.map((input) => input.id));
+      const newSelection = new Set(inputs?.data.map((input) => input.id));
       setSelectedRows(newSelection);
     } else {
       const newSelection = new Set<string>();
