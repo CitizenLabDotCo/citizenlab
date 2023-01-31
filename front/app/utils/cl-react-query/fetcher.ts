@@ -56,8 +56,13 @@ async function fetcher({ path, action, body, queryParams }) {
     create: 'POST',
     delete: 'DELETE',
   };
+
   const requestQueryParams = queryParams
-    ? stringify(queryParams, { addQueryPrefix: true, indices: false })
+    ? stringify(queryParams, {
+        arrayFormat: 'brackets',
+        addQueryPrefix: true,
+        encode: true,
+      })
     : '';
 
   const response = await fetch(`${API_PATH}${path}${requestQueryParams}`, {
