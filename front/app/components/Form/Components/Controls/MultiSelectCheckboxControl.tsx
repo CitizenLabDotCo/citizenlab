@@ -79,10 +79,10 @@ const MultiSelectCheckboxControl = ({
             style={{ cursor: 'pointer' }}
             mb="12px"
             key={option.value}
-            padding="16px 20px 16px 20px"
             checkboxBackgroundColor={checkboxBackgroundColor}
           >
             <Checkbox
+              containerPadding="16px 20px 16px 20px"
               checkedColor={theme.colors.tenantSecondary}
               id={`${path}-checkbox-${index}`}
               label={option.label}

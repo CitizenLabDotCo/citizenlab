@@ -6,7 +6,6 @@ import {
   Box,
   Title,
   Text,
-  stylingConsts,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
