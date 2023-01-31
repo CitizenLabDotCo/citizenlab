@@ -151,7 +151,7 @@ resource 'Texting campaigns' do
   #    c = AppConfiguration.instance
   #    c.settings['texting']['from_number'] = '+1 844 513 0718' # or other number from https://console.twilio.com/us1/develop/phone-numbers?frameUrl=%2Fconsole%2Fphone-numbers%2Fincoming%3Fx-target-region%3Dus1
   #    c.update!(host: 'd635-31-179-57-73.ngrok.io')
-  # 3. Add to back-safe.env: OVERRIDE_TENANT_HOST=d635-31-179-57-73.ngrok.io
+  # 3. Add to back-safe.env: OVERRIDE_HOST=d635-31-179-57-73.ngrok.io
   # 4. Texting::SendCampaignJob.perform_now(Texting::Campaign.create!(phone_numbers: ['+YOUR_NUMBER'], message: 'Hello', status: :sending))
   # 5. See the console logs and a message on your phone
   post 'web_api/v1/texting_campaigns/:id/mark_as_sent', document: false do
