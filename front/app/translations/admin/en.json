@@ -1011,6 +1011,8 @@
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.editButtonLabel": "Edit",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.editCauseSubtitle": "A cause is an action or activity that participants can volunteer for.",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.editCauseTitle": "Edit cause",
+  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.emptyDescriptionErrorMessage": "Add a description",
+  "app.containers.AdminPage.ProjectEdit.VolunteeringTab.emptyTitleErrorMessage": "Add a title",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.exportVolunteers": "Export volunteers",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.newCauseSubtitle": "A cause is an action or activity that participants can volunteer for.",
   "app.containers.AdminPage.ProjectEdit.VolunteeringTab.newCauseTitle": "New cause",
