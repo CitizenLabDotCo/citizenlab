@@ -11,13 +11,13 @@ interface Props {
   projectId: string | null;
 }
 
-export default function useProjectImages({ projectId }: Props) {
-  const [projectImages, setProjectImages] = useState<
+export default function useProjectCardImages({ projectId }: Props) {
+  const [projectCardImages, setProjectCardImages] = useState<
     IProjectImageData[] | undefined | null | Error
   >(undefined);
 
   useEffect(() => {
-    setProjectImages(undefined);
+    setProjectCardImages(undefined);
 
     let observable: Observable<IProjectImages | null> = of(null);
 
@@ -27,11 +27,11 @@ export default function useProjectImages({ projectId }: Props) {
 
     const subscription = observable.subscribe((response) => {
       const project = !isNilOrError(response) ? response.data : response;
-      setProjectImages(project);
+      setProjectCardImages(project);
     });
 
     return () => subscription.unsubscribe();
   }, [projectId]);
 
-  return projectImages;
+  return projectCardImages;
 }

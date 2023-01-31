@@ -14,11 +14,11 @@ import Image from 'components/UI/Image';
 import AvatarBubbles from 'components/AvatarBubbles';
 
 // services
+import { getProjectUrl } from 'services/projects';
 import {
   CARD_IMAGE_ASPECT_RATIO,
-  getProjectUrl,
   getCardImageUrl,
-} from 'services/projects';
+} from 'services/projectImages';
 import { getInputTerm } from 'services/participationContexts';
 import { getIdeaPostingRules } from 'services/actionTakingRules';
 
@@ -27,7 +27,7 @@ import useProject from 'hooks/useProject';
 import usePhase from 'hooks/usePhase';
 import usePhases from 'hooks/usePhases';
 import useAuthUser from 'hooks/useAuthUser';
-import useProjectImages from 'hooks/useProjectImages';
+import useProjectCardImages from 'hooks/useProjectCardImages';
 
 // i18n
 import T from 'components/T';
@@ -466,7 +466,7 @@ const ProjectCard = memo<Props>(
   }) => {
     const project = useProject({ projectId });
     const authUser = useAuthUser();
-    const projectImages = useProjectImages({ projectId });
+    const projectImages = useProjectCardImages({ projectId });
     const currentPhaseId =
       !isNilOrError(project) && project.relationships.current_phase?.data?.id
         ? project.relationships.current_phase.data.id

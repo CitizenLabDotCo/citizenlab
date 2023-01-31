@@ -29,13 +29,16 @@ import {
   defaultCardHoverStyle,
 } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import useProjectFolderImages from 'hooks/useProjectFolderImages';
+
+// hooks
+import useProjectFolderImages from 'hooks/useProjectFolderCardImages';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
+// services
 import {
   getCardImageUrl,
   CARD_IMAGE_ASPECT_RATIO,
-} from 'services/projectFolders';
+} from 'services/projectFolderImages';
 
 const Container = styled(Link)`
   width: calc(33% - 12px);
