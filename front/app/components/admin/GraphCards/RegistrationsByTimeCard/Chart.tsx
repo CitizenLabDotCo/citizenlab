@@ -60,7 +60,8 @@ const Chart = ({
       data={noData ? emptyData : timeSeries}
       mapping={{
         x: 'date',
-        y: ['registrations'],
+        yBars: ['registrations'],
+        yLine: 'total',
       }}
       margin={MARGINS[layout]}
       xaxis={{ tickFormatter: formatTick }}

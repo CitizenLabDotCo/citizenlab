@@ -7,11 +7,7 @@ import useRegistrationsByTime from './useRegistrationsByTime';
 import GraphCard from 'components/admin/GraphCard';
 import { Box } from '@citizenlab/cl2-component-library';
 import Chart from './Chart';
-import {
-  GraphCardFigureContainer,
-  GraphCardFigure,
-  GraphCardFigureChange,
-} from 'components/admin/GraphWrappers';
+import Title from '../_components/Title';
 
 // i18n
 import messages from 'containers/Admin/dashboard/messages';
@@ -48,21 +44,9 @@ const RegistrationsByTimeCard = ({
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
 
-  const { totalNumber, formattedSerieChange, typeOfChange } = formattedNumbers;
-
   return (
     <GraphCard
-      title={
-        <>
-          {cardTitle}
-          <GraphCardFigureContainer>
-            <GraphCardFigure>{totalNumber}</GraphCardFigure>
-            <GraphCardFigureChange className={typeOfChange}>
-              {formattedSerieChange}
-            </GraphCardFigureChange>
-          </GraphCardFigureContainer>
-        </>
-      }
+      title={<Title title={cardTitle} {...formattedNumbers} />}
       exportMenu={{
         name: cardTitle,
         svgNode: graphRef,

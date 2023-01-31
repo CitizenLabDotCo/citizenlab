@@ -53,7 +53,7 @@ const Chart = ({
       data={noData ? emptyData : timeSeries}
       mapping={{
         x: 'date',
-        yBar: 'inputs',
+        yBars: ['inputs'],
         yLine: 'total',
       }}
       margin={MARGINS[layout]}

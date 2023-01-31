@@ -6,7 +6,7 @@ import usePostsByTime from './usePostsByTime';
 // components
 import GraphCard from 'components/admin/GraphCard';
 import { Box } from '@citizenlab/cl2-component-library';
-import Title from './Title';
+import Title from '../_components/Title';
 import Chart from './Chart';
 
 // i18n

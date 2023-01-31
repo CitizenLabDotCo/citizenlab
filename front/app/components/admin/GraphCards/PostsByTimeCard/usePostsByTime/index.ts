@@ -14,12 +14,8 @@ import { query } from './query';
 import { parseTimeSeries, parseExcelData, getFormattedNumbers } from './parse';
 
 // typings
-import {
-  QueryParameters,
-  Response,
-  TimeSeries,
-  FormattedNumbers,
-} from './typings';
+import { QueryParameters, Response, TimeSeries } from './typings';
+import { FormattedNumbers } from 'components/admin/GraphCards/typings';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { XlsxData } from 'components/admin/ReportExportMenu';

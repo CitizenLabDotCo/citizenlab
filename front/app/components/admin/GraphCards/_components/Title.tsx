@@ -1,11 +1,11 @@
 import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
-import { FormattedNumbers } from './usePostsByTime/typings';
+import { FormattedNumbers } from 'components/admin/GraphCards/typings';
 interface Props extends FormattedNumbers {
   title: string;
 }
 
-const getColor = (typeOfChange: FormattedNumbers["typeOfChange"]) => {
+const getColor = (typeOfChange: FormattedNumbers['typeOfChange']) => {
   if (typeOfChange === 'increase') return 'success';
   if (typeOfChange === 'decrease') return 'red600';
   return undefined;

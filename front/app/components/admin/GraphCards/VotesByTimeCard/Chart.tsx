@@ -81,7 +81,8 @@ const Chart = ({
       data={noData ? emptyData : timeSeries}
       mapping={{
         x: 'date',
-        y: ['downvotes', 'upvotes'],
+        yBars: ['downvotes', 'upvotes'],
+        yLine: 'total',
       }}
       margin={MARGINS[layout]}
       xaxis={{ tickFormatter: formatTick }}
