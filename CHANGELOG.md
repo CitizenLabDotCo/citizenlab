@@ -1,5 +1,11 @@
 # Changelog
 
+## 2023-01-31
+
+### Added
+
+- [CL-1703] Add default CTA banner on project page
+
 ## 2023-01-30
 
 ### Fixed
