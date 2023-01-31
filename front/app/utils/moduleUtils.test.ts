@@ -5,14 +5,17 @@ jest.mock('components/UI/PageLoading', () => ({
 }));
 
 describe('insertConfiguration', () => {
-  const initialTabsWithScratch = [
-    {
-      name: 'scratch',
-      label: 'scratch label',
-      icon: 'blank-paper',
-    },
-  ];
-  const templateItemToInsert = {
+  const scratchItem = {
+    name: 'scratch',
+    label: 'scratch label',
+    icon: 'blank-paper',
+  };
+  const projectItem = {
+    name: 'project',
+    label: 'project label',
+    icon: 'project',
+  };
+  const templateItem = {
     name: 'template',
     label: 'template label',
     icon: 'template',
@@ -21,210 +24,92 @@ describe('insertConfiguration', () => {
   describe('insertBeforeName', () => {
     it('inserts the configuration before item when specified', () => {
       const module = {
-        configuration: templateItemToInsert,
+        configuration: templateItem,
         insertBeforeName: 'scratch',
       };
-      const result = insertConfiguration(module)(initialTabsWithScratch);
+      const result = insertConfiguration(module)([scratchItem]);
 
-      expect(result).toEqual([
-        {
-          name: 'template',
-          label: 'template label',
-          icon: 'template',
-        },
-        {
-          name: 'scratch',
-          label: 'scratch label',
-          icon: 'blank-paper',
-        },
-      ]);
+      expect(result).toEqual([templateItem, scratchItem]);
     });
 
     it('returns correct order when item is already in correct order', () => {
       const module = {
-        configuration: templateItemToInsert,
+        configuration: templateItem,
         insertBeforeName: 'scratch',
       };
-      const result = insertConfiguration(module)([
-        templateItemToInsert,
-        ...initialTabsWithScratch,
-      ]);
+      const result = insertConfiguration(module)([templateItem, scratchItem]);
 
-      expect(result).toEqual([
-        {
-          name: 'template',
-          label: 'template label',
-          icon: 'template',
-        },
-        {
-          name: 'scratch',
-          label: 'scratch label',
-          icon: 'blank-paper',
-        },
-      ]);
+      expect(result).toEqual([templateItem, scratchItem]);
     });
 
     it('returns correct order when item is present but in the wrong order', () => {
       const module = {
-        configuration: templateItemToInsert,
+        configuration: templateItem,
         insertBeforeName: 'scratch',
       };
-      const result = insertConfiguration(module)([
-        ...initialTabsWithScratch,
-        templateItemToInsert,
-      ]);
+      const result = insertConfiguration(module)([scratchItem, templateItem]);
 
-      expect(result).toEqual([
-        {
-          name: 'template',
-          label: 'template label',
-          icon: 'template',
-        },
-        {
-          name: 'scratch',
-          label: 'scratch label',
-          icon: 'blank-paper',
-        },
-      ]);
+      expect(result).toEqual([templateItem, scratchItem]);
     });
 
     it('returns correct order when item is present but in the wrong order even with many elements', () => {
       const module = {
-        configuration: templateItemToInsert,
+        configuration: templateItem,
         insertBeforeName: 'scratch',
       };
       const result = insertConfiguration(module)([
-        ...initialTabsWithScratch,
-        {
-          name: 'project',
-          label: 'project label',
-          icon: 'project',
-        },
-        templateItemToInsert,
+        scratchItem,
+        projectItem,
+        templateItem,
       ]);
 
-      expect(result).toEqual([
-        {
-          name: 'template',
-          label: 'template label',
-          icon: 'template',
-        },
-        {
-          name: 'scratch',
-          label: 'scratch label',
-          icon: 'blank-paper',
-        },
-        {
-          name: 'project',
-          label: 'project label',
-          icon: 'project',
-        },
-      ]);
+      expect(result).toEqual([templateItem, scratchItem, projectItem]);
     });
   });
 
   describe('insertAfterName', () => {
     it('inserts the configuration after item when specified', () => {
       const module = {
-        configuration: templateItemToInsert,
+        configuration: templateItem,
         insertAfterName: 'scratch',
       };
-      const result = insertConfiguration(module)(initialTabsWithScratch);
+      const result = insertConfiguration(module)([scratchItem]);
 
-      expect(result).toEqual([
-        {
-          name: 'scratch',
-          label: 'scratch label',
-          icon: 'blank-paper',
-        },
-        {
-          name: 'template',
-          label: 'template label',
-          icon: 'template',
-        },
-      ]);
+      expect(result).toEqual([scratchItem, templateItem]);
     });
 
     it('returns correct order when item is already in correct order after', () => {
       const module = {
-        configuration: templateItemToInsert,
+        configuration: templateItem,
         insertAfterName: 'scratch',
       };
-      const result = insertConfiguration(module)([
-        ...initialTabsWithScratch,
-        templateItemToInsert,
-      ]);
+      const result = insertConfiguration(module)([scratchItem, templateItem]);
 
-      expect(result).toEqual([
-        {
-          name: 'scratch',
-          label: 'scratch label',
-          icon: 'blank-paper',
-        },
-        {
-          name: 'template',
-          label: 'template label',
-          icon: 'template',
-        },
-      ]);
+      expect(result).toEqual([scratchItem, templateItem]);
     });
 
     it('returns correct order when item is present but in the wrong order after', () => {
       const module = {
-        configuration: templateItemToInsert,
+        configuration: templateItem,
         insertAfterName: 'scratch',
       };
-      const result = insertConfiguration(module)([
-        templateItemToInsert,
-        ...initialTabsWithScratch,
-      ]);
+      const result = insertConfiguration(module)([templateItem, scratchItem]);
 
-      expect(result).toEqual([
-        {
-          name: 'scratch',
-          label: 'scratch label',
-          icon: 'blank-paper',
-        },
-        {
-          name: 'template',
-          label: 'template label',
-          icon: 'template',
-        },
-      ]);
+      expect(result).toEqual([scratchItem, templateItem]);
     });
 
     it('returns correct order when item is present but in the wrong order even with many elements', () => {
       const module = {
-        configuration: templateItemToInsert,
+        configuration: templateItem,
         insertAfterName: 'scratch',
       };
       const result = insertConfiguration(module)([
-        templateItemToInsert,
-        {
-          name: 'project',
-          label: 'project label',
-          icon: 'project',
-        },
-        ...initialTabsWithScratch,
+        templateItem,
+        projectItem,
+        scratchItem,
       ]);
 
-      expect(result).toEqual([
-        {
-          name: 'project',
-          label: 'project label',
-          icon: 'project',
-        },
-        {
-          name: 'scratch',
-          label: 'scratch label',
-          icon: 'blank-paper',
-        },
-        {
-          name: 'template',
-          label: 'template label',
-          icon: 'template',
-        },
-      ]);
+      expect(result).toEqual([projectItem, scratchItem, templateItem]);
     });
   });
 });
