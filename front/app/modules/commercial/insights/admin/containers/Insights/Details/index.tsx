@@ -72,7 +72,7 @@ const DetailsInsightsView = ({
       search,
       keywords,
     });
-
+  console.log(data);
   const inputs = data?.pages.map((page) => page.data).flat();
 
   // Navigate to correct index when moving up and down

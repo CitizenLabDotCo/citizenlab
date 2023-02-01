@@ -3,10 +3,10 @@ import { render, screen, fireEvent, within } from 'utils/testUtils/rtl';
 import * as insightsService from 'modules/commercial/insights/services/insightsInputs';
 import inputs from 'modules/commercial/insights/fixtures/inputs';
 import categories from 'modules/commercial/insights/fixtures/categories';
-import useInsightsInput from 'modules/commercial/insights/hooks/useInsightsInput';
 import clHistory from 'utils/cl-router/history';
 
 import Preview from './';
+import { useInput } from 'modules/commercial/insights/api/inputs';
 
 const viewId = '1';
 
@@ -61,9 +61,7 @@ jest.mock('hooks/useIdea', () => {
   return jest.fn(() => mockIdeaData);
 });
 
-jest.mock('modules/commercial/insights/hooks/useInsightsInput', () => {
-  return jest.fn(() => mockInputData);
-});
+jest.mock('modules/commercial/insights/api/inputs');
 
 jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
   return jest.fn(() => mockCategoriesData);
@@ -102,7 +100,7 @@ describe('Insights Input Details', () => {
   });
   it('calls useInsightsInput correctly', () => {
     render(<Preview {...defaultProps} />);
-    expect(useInsightsInput).toHaveBeenCalledWith(viewId, previewedInputId);
+    expect(useInput).toHaveBeenCalledWith(viewId, previewedInputId);
   });
   it('renders idea title and body correctly', () => {
     render(<Preview {...defaultProps} />);

@@ -24,8 +24,6 @@ const mockIdeaData = {
 
 let mockLocationData = { pathname: '', query: {} };
 
-const mockInputData = inputs[0];
-
 jest.mock('utils/cl-router/history');
 
 jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
@@ -55,10 +53,6 @@ jest.mock('utils/cl-intl');
 
 jest.mock('hooks/useIdea', () => {
   return jest.fn(() => mockIdeaData);
-});
-
-jest.mock('modules/commercial/insights/hooks/useInsightsInput', () => {
-  return jest.fn(() => mockInputData);
 });
 
 jest.mock('./Network', () => {
