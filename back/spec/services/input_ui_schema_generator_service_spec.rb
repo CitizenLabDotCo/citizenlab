@@ -13,6 +13,7 @@ RSpec.describe InputUiSchemaGeneratorService do
 
   let(:input_term) { 'question' }
   let(:field_key) { 'field_key' }
+  let(:ui_schema) { generator.generate_for IdeaCustomFieldsService.new(custom_form).enabled_fields }
 
   # TODO
   # - Form with final empty section
@@ -22,7 +23,7 @@ RSpec.describe InputUiSchemaGeneratorService do
   # - Persisted fields
 
   describe '#generate_for' do
-    context 'for project with a changed built-in field and an extra section and field' do
+    context 'for a continuous ideation project with a changed built-in field and an extra section and field' do
       let(:project) { create :continuous_project, input_term: input_term }
       let!(:custom_form) do
         create(:custom_form, :with_default_fields, participation_context: project).tap do |form|
@@ -69,8 +70,6 @@ RSpec.describe InputUiSchemaGeneratorService do
       end
 
       it 'returns the schema for the given fields' do
-        ui_schema = generator.generate_for IdeaCustomFieldsService.new(custom_form).enabled_fields
-
         expect(ui_schema.keys).to match_array %w[en fr-FR nl-NL]
         # en
         expect(ui_schema['en']).to eq(
@@ -542,34 +541,28 @@ RSpec.describe InputUiSchemaGeneratorService do
       end
     end
 
-    context 'for a continuous ideation project' do
+    context 'for a continuous ideation project with the default form' do
       let(:input_term) { 'option' }
-      let(:project) { create(:continuous_project, input_term: 'issue') }
-      let(:continuous_fields) do
-        IdeaCustomFieldsService.new(
-          create(:custom_form, participation_context: project)
-        ).all_fields
-      end
+      let(:project) { create :continuous_project, input_term: input_term }
+      let(:custom_form) { create :custom_form, participation_context: project }
 
       it 'uses the right input_term' do
-        ui_schema = generator.generate_for(continuous_fields)['en']
-        expect(ui_schema.dig(:options, :inputTerm)).to eq 'option'
+        expect(ui_schema.dig('en', :options, :inputTerm)).to eq 'option'
       end
 
       context 'when a nil input_term is given' do
         let(:input_term) { nil }
 
         it 'uses the default "idea" as input_term' do
-          ui_schema = generator.generate_for(continuous_fields)['en']
-          expect(ui_schema.dig(:options, :inputTerm)).to eq 'idea'
+          expect(ui_schema.dig('en', :options, :inputTerm)).to eq 'idea'
         end
       end
     end
 
     context 'for a continuous native survey project without pages' do
       let(:project) { create(:continuous_native_survey_project) }
-      let(:form) { create :custom_form, participation_context: project }
-      let!(:field) { create :custom_field, resource: form }
+      let(:custom_form) { create :custom_form, participation_context: project }
+      let!(:field) { create :custom_field, resource: custom_form }
 
       it 'has an empty extra category label, so that the category label is suppressed in the UI' do
         en_ui_schema = generator.generate_for([field])['en']
@@ -602,11 +595,11 @@ RSpec.describe InputUiSchemaGeneratorService do
 
     context 'for a continuous native survey project with pages' do
       let(:project) { create(:continuous_native_survey_project) }
-      let(:form) { create :custom_form, participation_context: project }
+      let(:custom_form) { create :custom_form, participation_context: project }
       let!(:page1) do
         create(
           :custom_field_page,
-          resource: form,
+          resource: custom_form,
           key: 'about_you',
           title_multiloc: { 'en' => 'About you' },
           description_multiloc: { 'en' => 'Please fill in some <strong>personal details</strong>.' }
@@ -615,7 +608,7 @@ RSpec.describe InputUiSchemaGeneratorService do
       let!(:field_in_page1) do
         create(
           :custom_field,
-          resource: form,
+          resource: custom_form,
           key: 'what_is_your_age',
           title_multiloc: { 'en' => 'What is your age?' },
           description_multiloc: { 'en' => 'Enter a number.' }
@@ -624,7 +617,7 @@ RSpec.describe InputUiSchemaGeneratorService do
       let!(:page2) do
         create(
           :custom_field_page,
-          resource: form,
+          resource: custom_form,
           key: 'about_your_cycling_habits',
           title_multiloc: { 'en' => 'About your cycling habits' },
           description_multiloc: { 'en' => 'Please indicate how you use <strong>a bike</strong>.' }
@@ -633,7 +626,7 @@ RSpec.describe InputUiSchemaGeneratorService do
       let!(:field_in_page2) do
         create(
           :custom_field,
-          resource: form,
+          resource: custom_form,
           key: 'do_you_own_a_bike',
           title_multiloc: { 'en' => 'Do you own a bike?' },
           description_multiloc: { 'en' => 'Enter Yes or No.' }
@@ -642,7 +635,7 @@ RSpec.describe InputUiSchemaGeneratorService do
       let!(:page3) do
         create(
           :custom_field_page,
-          resource: form,
+          resource: custom_form,
           key: 'this_is_the_end_of_the_survey',
           title_multiloc: { 'en' => 'This is the end of the survey' },
           description_multiloc: { 'en' => 'Thank you for participating 🚀' }
@@ -650,8 +643,7 @@ RSpec.describe InputUiSchemaGeneratorService do
       end
 
       it 'has a category for each page, including the fixed survey end page' do
-        en_ui_schema = generator.generate_for([page1, field_in_page1, page2, field_in_page2, page3])['en']
-        expect(en_ui_schema).to eq({
+        expect(ui_schema['en']).to eq({
           type: 'Categorization',
           options: {
             formId: 'idea-form',
@@ -726,11 +718,11 @@ RSpec.describe InputUiSchemaGeneratorService do
 
     context 'for a continuous native survey project with pages and logic' do
       let(:project) { create(:continuous_native_survey_project) }
-      let(:form) { create :custom_form, participation_context: project }
+      let(:custom_form) { create :custom_form, participation_context: project }
       let!(:page1) do
         create(
           :custom_field_page,
-          resource: form,
+          resource: custom_form,
           key: 'page1',
           title_multiloc: { 'en' => '' },
           description_multiloc: { 'en' => '' }
@@ -739,7 +731,7 @@ RSpec.describe InputUiSchemaGeneratorService do
       let!(:field_in_page1) do
         create(
           :custom_field,
-          resource: form,
+          resource: custom_form,
           input_type: 'linear_scale',
           key: 'how_old_are_you',
           title_multiloc: { 'en' => 'Hold old are you?' },
@@ -758,7 +750,7 @@ RSpec.describe InputUiSchemaGeneratorService do
       let!(:page2) do
         create(
           :custom_field_page,
-          resource: form,
+          resource: custom_form,
           key: 'page2',
           title_multiloc: { 'en' => '' },
           description_multiloc: { 'en' => '' }
@@ -767,7 +759,7 @@ RSpec.describe InputUiSchemaGeneratorService do
       let!(:field_in_page2) do
         create(
           :custom_field,
-          resource: form,
+          resource: custom_form,
           input_type: 'select',
           key: 'how_often_do_you_choose_to_cycle',
           title_multiloc: { 'en' => 'When considering travel near your home, how often do you choose to CYCLE?' },
@@ -783,7 +775,7 @@ RSpec.describe InputUiSchemaGeneratorService do
       let!(:page3) do
         create(
           :custom_field_page,
-          resource: form,
+          resource: custom_form,
           key: 'page3',
           title_multiloc: { 'en' => '' },
           description_multiloc: { 'en' => '' }
@@ -792,7 +784,7 @@ RSpec.describe InputUiSchemaGeneratorService do
       let!(:page4) do
         create(
           :custom_field_page,
-          resource: form,
+          resource: custom_form,
           key: 'page4',
           title_multiloc: { 'en' => '' },
           description_multiloc: { 'en' => '' }
@@ -811,8 +803,8 @@ RSpec.describe InputUiSchemaGeneratorService do
       end
 
       it 'includes rules for logic' do
-        en_ui_schema = generator.generate_for([page1, field_in_page1, page2, field_in_page2, page3])['en']
-        expect(en_ui_schema).to eq({
+        ui_schema = generator.generate_for [page1, field_in_page1, page2, field_in_page2, page3] # TODO: Remove this line (include page 4)
+        expect(ui_schema['en']).to eq({
           type: 'Categorization',
           options: {
             formId: 'idea-form',
