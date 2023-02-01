@@ -546,6 +546,293 @@ RSpec.describe InputUiSchemaGeneratorService do
       let(:project) { create :continuous_project, input_term: input_term }
       let(:custom_form) { create :custom_form, participation_context: project }
 
+      it 'returns the schema for the default fields' do
+        expect(ui_schema.keys).to match_array %w[en fr-FR nl-NL]
+        # en
+        expect(ui_schema['en']).to match(
+          type: 'Categorization',
+          options: {
+            formId: 'idea-form',
+            inputTerm: input_term
+          },
+          elements: [
+            hash_including(
+              type: 'Category',
+              label: 'What is your option?',
+              elements: [
+                hash_including(
+                  type: 'VerticalLayout',
+                  options: { input_type: 'text_multiloc', render: 'multiloc' },
+                  elements: [
+                    hash_including(
+                      scope: '#/properties/title_multiloc/properties/en',
+                      label: 'Title',
+                      options: hash_including(locale: 'en')
+                    ),
+                    hash_including(
+                      scope: '#/properties/title_multiloc/properties/fr-FR',
+                      label: 'Title',
+                      options: hash_including(locale: 'fr-FR')
+                    ),
+                    hash_including(
+                      scope: '#/properties/title_multiloc/properties/nl-NL',
+                      label: 'Title',
+                      options: hash_including(locale: 'nl-NL')
+                    )
+                  ]
+                ),
+                hash_including(
+                  type: 'VerticalLayout',
+                  options: { input_type: 'html_multiloc', render: 'multiloc' },
+                  elements: [
+                    hash_including(
+                      scope: '#/properties/body_multiloc/properties/en',
+                      label: 'Description',
+                      options: hash_including(locale: 'en', render: 'WYSIWYG')
+                    ),
+                    hash_including(
+                      scope: '#/properties/body_multiloc/properties/fr-FR',
+                      label: 'Description',
+                      options: hash_including(locale: 'fr-FR', render: 'WYSIWYG')
+                    ),
+                    hash_including(
+                      scope: '#/properties/body_multiloc/properties/nl-NL',
+                      label: 'Description',
+                      options: hash_including(locale: 'nl-NL', render: 'WYSIWYG')
+                    )
+                  ]
+                )
+              ]
+            ),
+            hash_including(
+              type: 'Category',
+              label: 'Images and attachments',
+              options: hash_including(description: 'Upload your favourite files here'),
+              elements: [
+                hash_including(
+                  type: 'Control',
+                  scope: '#/properties/idea_images_attributes',
+                  label: 'Images',
+                  options: hash_including(input_type: 'image_files')
+                ),
+                hash_including(
+                  type: 'Control',
+                  scope: '#/properties/idea_files_attributes',
+                  label: 'Attachments',
+                  options: hash_including(input_type: 'files')
+                )
+              ]
+            ),
+            hash_including(
+              type: 'Category',
+              label: 'Details',
+              elements: [
+                hash_including(
+                  type: 'Control',
+                  scope: '#/properties/topic_ids',
+                  label: 'Tags',
+                  options: hash_including(input_type: 'topic_ids')
+                ),
+                hash_including(
+                  type: 'Control',
+                  scope: '#/properties/location_description',
+                  label: 'Location',
+                  options: hash_including(input_type: 'text')
+                )
+              ]
+            )
+          ]
+        )
+        # fr-FR
+        expect(ui_schema['fr-FR']).to match(
+          type: 'Categorization',
+          options: {
+            formId: 'idea-form',
+            inputTerm: input_term
+          },
+          elements: [
+            hash_including(
+              type: 'Category',
+              label: 'Quelle est votre option ?',
+              elements: [
+                hash_including(
+                  type: 'VerticalLayout',
+                  options: { input_type: 'text_multiloc', render: 'multiloc' },
+                  elements: [
+                    hash_including(
+                      scope: '#/properties/title_multiloc/properties/en',
+                      label: 'Titre',
+                      options: hash_including(locale: 'en')
+                    ),
+                    hash_including(
+                      scope: '#/properties/title_multiloc/properties/fr-FR',
+                      label: 'Titre',
+                      options: hash_including(locale: 'fr-FR')
+                    ),
+                    hash_including(
+                      scope: '#/properties/title_multiloc/properties/nl-NL',
+                      label: 'Titre',
+                      options: hash_including(locale: 'nl-NL')
+                    )
+                  ]
+                ),
+                hash_including(
+                  type: 'VerticalLayout',
+                  options: { input_type: 'html_multiloc', render: 'multiloc' },
+                  elements: [
+                    hash_including(
+                      scope: '#/properties/body_multiloc/properties/en',
+                      label: 'Description',
+                      options: hash_including(locale: 'en', render: 'WYSIWYG')
+                    ),
+                    hash_including(
+                      scope: '#/properties/body_multiloc/properties/fr-FR',
+                      label: 'Description',
+                      options: hash_including(locale: 'fr-FR', render: 'WYSIWYG')
+                    ),
+                    hash_including(
+                      scope: '#/properties/body_multiloc/properties/nl-NL',
+                      label: 'Description',
+                      options: hash_including(locale: 'nl-NL', render: 'WYSIWYG')
+                    )
+                  ]
+                )
+              ]
+            ),
+            hash_including(
+              type: 'Category',
+              label: 'Images et pièces jointes',
+              elements: [
+                hash_including(
+                  type: 'Control',
+                  scope: '#/properties/idea_images_attributes',
+                  label: 'Images',
+                  options: hash_including(input_type: 'image_files')
+                ),
+                hash_including(
+                  type: 'Control',
+                  scope: '#/properties/idea_files_attributes',
+                  label: 'Pièces jointes',
+                  options: hash_including(input_type: 'files')
+                )
+              ]
+            ),
+            hash_including(
+              type: 'Category',
+              label: 'Details',
+              elements: [
+                hash_including(
+                  type: 'Control',
+                  scope: '#/properties/topic_ids',
+                  label: 'Étiquettes',
+                  options: hash_including(input_type: 'topic_ids')
+                ),
+                hash_including(
+                  type: 'Control',
+                  scope: '#/properties/location_description',
+                  label: 'Adresse',
+                  options: hash_including(input_type: 'text')
+                )
+              ]
+            )
+          ]
+        )
+        # nl-NL
+        expect(ui_schema['nl-NL']).to match(
+          type: 'Categorization',
+          options: {
+            formId: 'idea-form',
+            inputTerm: input_term
+          },
+          elements: [
+            hash_including(
+              type: 'Category',
+              label: 'Wat is je optie?',
+              elements: [
+                hash_including(
+                  type: 'VerticalLayout',
+                  options: { input_type: 'text_multiloc', render: 'multiloc' },
+                  elements: [
+                    hash_including(
+                      scope: '#/properties/title_multiloc/properties/en',
+                      label: 'Titel',
+                      options: hash_including(locale: 'en')
+                    ),
+                    hash_including(
+                      scope: '#/properties/title_multiloc/properties/fr-FR',
+                      label: 'Titel',
+                      options: hash_including(locale: 'fr-FR')
+                    ),
+                    hash_including(
+                      scope: '#/properties/title_multiloc/properties/nl-NL',
+                      label: 'Titel',
+                      options: hash_including(locale: 'nl-NL')
+                    )
+                  ]
+                ),
+                hash_including(
+                  type: 'VerticalLayout',
+                  options: { input_type: 'html_multiloc', render: 'multiloc' },
+                  elements: [
+                    hash_including(
+                      scope: '#/properties/body_multiloc/properties/en',
+                      label: 'Beschrijving',
+                      options: hash_including(locale: 'en', render: 'WYSIWYG')
+                    ),
+                    hash_including(
+                      scope: '#/properties/body_multiloc/properties/fr-FR',
+                      label: 'Beschrijving',
+                      options: hash_including(locale: 'fr-FR', render: 'WYSIWYG')
+                    ),
+                    hash_including(
+                      scope: '#/properties/body_multiloc/properties/nl-NL',
+                      label: 'Beschrijving',
+                      options: hash_including(locale: 'nl-NL', render: 'WYSIWYG')
+                    )
+                  ]
+                )
+              ]
+            ),
+            hash_including(
+              type: 'Category',
+              label: 'Afbeeldingen en bijlagen',
+              elements: [
+                hash_including(
+                  type: 'Control',
+                  scope: '#/properties/idea_images_attributes',
+                  label: 'Afbeeldingen',
+                  options: hash_including(input_type: 'image_files')
+                ),
+                hash_including(
+                  type: 'Control',
+                  scope: '#/properties/idea_files_attributes',
+                  label: 'Bijlagen',
+                  options: hash_including(input_type: 'files')
+                )
+              ]
+            ),
+            hash_including(
+              type: 'Category',
+              label: 'Details',
+              elements: [
+                hash_including(
+                  type: 'Control',
+                  scope: '#/properties/topic_ids',
+                  label: 'Tags',
+                  options: hash_including(input_type: 'topic_ids')
+                ),
+                hash_including(
+                  type: 'Control',
+                  scope: '#/properties/location_description',
+                  label: 'Locatie',
+                  options: hash_including(input_type: 'text')
+                )
+              ]
+            )
+          ]
+        )
+      end
+
       it 'uses the right input_term' do
         expect(ui_schema.dig('en', :options, :inputTerm)).to eq 'option'
       end
