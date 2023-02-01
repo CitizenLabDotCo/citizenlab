@@ -80,6 +80,7 @@ const BuiltInFields = ({
           label={formatMessage(messages.fileUpload)}
           onClick={() => enableField('idea_files_attributes')}
           disabled={!enabledBuiltInFieldKeys.includes('idea_files_attributes')}
+          data-cy="e2e-attachments-item"
         />
       </DraggableElement>
       <DraggableElement>
