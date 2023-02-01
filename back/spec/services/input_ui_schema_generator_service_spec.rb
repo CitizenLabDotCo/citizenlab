@@ -19,8 +19,6 @@ RSpec.describe InputUiSchemaGeneratorService do
   # - Form with final empty section
   # - Hide author and budget when not admin (in JsonFormsService)
   # - Add author and budget when admin (in JsonFormsService)
-  # - No persisted fields
-  # - Persisted fields
 
   describe '#generate_for' do
     context 'for a continuous ideation project with a changed built-in field and an extra section and field' do
@@ -536,6 +534,36 @@ RSpec.describe InputUiSchemaGeneratorService do
                 )
               ]
             )
+          ]
+        )
+      end
+    end
+
+    context 'for a continuous ideation project with an empty custom section' do
+      let(:project) { create :continuous_project, input_term: input_term }
+      let!(:custom_form) { create :custom_form, :with_default_fields, participation_context: project }
+      let!(:extra_section) do
+        create(
+          :custom_field_section,
+          :for_custom_form,
+          resource: custom_form,
+          title_multiloc: { 'en' => 'Empty custom section' }
+        )
+      end
+
+      it 'returns the schema for the given fields' do
+        expect(ui_schema.keys).to match_array %w[en fr-FR nl-NL]
+        expect(ui_schema['en']).to match(
+          type: 'Categorization',
+          options: {
+            formId: 'idea-form',
+            inputTerm: input_term
+          },
+          elements: [
+            hash_including(type: 'Category', label: 'What is your question?'),
+            hash_including(type: 'Category', label: 'Images and attachments'),
+            hash_including(type: 'Category', label: 'Details'),
+            hash_including(type: 'Category', label: 'Empty custom section', elements: [])
           ]
         )
       end
