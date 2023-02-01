@@ -146,7 +146,7 @@
     "@babel/preset-typescript": "7.x",
     "@cypress/skip-test": "^2.6.1",
     "@cypress/webpack-preprocessor": "^5.16.1",
-    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@sentry/webpack-plugin": "^1.18.8",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^12.1.2",
