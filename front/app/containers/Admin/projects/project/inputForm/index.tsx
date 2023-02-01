@@ -35,6 +35,7 @@ export const IdeaForm = () => {
           }}
           width="auto"
           icon="edit"
+          data-cy="e2e-edit-input-form"
         >
           <FormattedMessage {...messages.editInputForm} />
         </Button>
