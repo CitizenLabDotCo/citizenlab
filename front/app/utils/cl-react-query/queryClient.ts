@@ -4,6 +4,7 @@ export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: Infinity,
+      keepPreviousData: true,
     },
   },
 });

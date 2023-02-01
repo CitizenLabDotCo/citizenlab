@@ -2,7 +2,7 @@ import { API_PATH } from 'containers/App/constants';
 import { getJwt } from 'utils/auth/jwt';
 import { stringify } from 'qs';
 import { queryClient } from 'utils/cl-react-query/queryClient';
-import { isArray, omitBy } from 'lodash-es';
+import { isArray, isNil, omitBy } from 'lodash-es';
 import { CLErrors } from 'typings';
 
 // FETCHER
@@ -58,13 +58,13 @@ async function fetcher({ path, action, body, queryParams }) {
   };
 
   // Remove unnecessary query parameters from object
-  const truthyQueryParams = omitBy(
+  const relevantQueryParams = omitBy(
     queryParams,
-    (value) => value === undefined || value === null || value === ''
+    (value) => isNil(value) || value === ''
   );
 
-  const requestQueryParams = truthyQueryParams
-    ? stringify(truthyQueryParams, {
+  const requestQueryParams = relevantQueryParams
+    ? stringify(relevantQueryParams, {
         arrayFormat: 'brackets',
         addQueryPrefix: true,
         encodeValuesOnly: true,

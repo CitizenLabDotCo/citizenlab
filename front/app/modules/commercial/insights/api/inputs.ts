@@ -109,7 +109,7 @@ export const useInputs = (viewId: string, queryParams: QueryParameters) => {
 export type InfiniteQueryParameters = {
   pageSize?: number;
   pageNumber?: number;
-  search: string;
+  search?: string;
   categories: string[];
   keywords: string[];
 };
@@ -146,6 +146,7 @@ export const useInfiniteInputs = (
       const pageNumber = getPageNumberFromUrl(lastPage.links.self);
       return hasNextPage && pageNumber ? pageNumber + 1 : null;
     },
+    keepPreviousData: true,
   });
 };
 
