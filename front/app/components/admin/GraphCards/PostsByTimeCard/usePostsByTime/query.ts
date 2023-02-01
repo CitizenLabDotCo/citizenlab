@@ -36,6 +36,7 @@ export const query = ({
   const postsByTimeTotal: QuerySchema = {
     fact: 'post',
     filters: {
+      ...getDateFilter('dimension_date_created', null, endAt),
       ...getProjectFilter('dimension_project', projectId),
       'dimension_type.name': 'idea',
     },

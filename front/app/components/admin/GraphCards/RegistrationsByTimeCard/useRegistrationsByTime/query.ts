@@ -31,6 +31,9 @@ export const query = ({
 
   const registrationsByTimeTotal: QuerySchema = {
     fact: 'registration',
+    filters: {
+      ...getDateFilter('dimension_date_registration', null, endAt),
+    },
     groups: 'dimension_date_registration.year',
     aggregations: {
       all: 'count',

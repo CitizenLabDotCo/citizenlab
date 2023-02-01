@@ -37,6 +37,7 @@ export const query = ({
   const commentsByTimeTotal: QuerySchema = {
     fact: 'participation',
     filters: {
+      ...getDateFilter('dimension_date_created', null, endAt),
       ...getProjectFilter('dimension_project', projectId),
       'dimension_type.name': 'comment',
       'dimension_type.parent': ['idea', 'initiative'],

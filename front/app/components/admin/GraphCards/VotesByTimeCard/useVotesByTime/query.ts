@@ -38,6 +38,7 @@ export const query = ({
   const postsByTimeTotal: QuerySchema = {
     fact: 'participation',
     filters: {
+      ...getDateFilter('dimension_date_created', null, endAt),
       ...getProjectFilter('dimension_project', projectId),
       'dimension_type.name': 'vote',
       'dimension_type.parent': 'idea',

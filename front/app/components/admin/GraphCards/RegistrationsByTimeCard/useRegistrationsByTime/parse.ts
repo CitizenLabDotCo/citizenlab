@@ -51,8 +51,12 @@ export const parseTimeSeries = (
     resolution
   );
 
-  if (!timeSeries) return [];
   let totalCount = sumBy(total, (t) => t.count);
+  if (!timeSeries || timeSeries.length === 0 || typeof totalCount !== 'number')
+    return null;
+
+  // Calculate cumulative series by taking the total as the last item
+  // in the serie and substract it with each time period value
   timeSeries = orderBy(
     timeSeries,
     (o: TimeSeriesRow) => {
