@@ -11,7 +11,10 @@ import { getTranslations } from './translations';
 import { query } from './query';
 
 // parse
-import { parseTimeSeries, parseExcelData, getFormattedNumbers } from './parse';
+import { parseTimeSeries, parseExcelData } from './parse';
+
+// utils
+import { getFormattedNumbers } from 'components/admin/GraphCards/_utils/parse';
 
 // typings
 import { QueryParameters, Response, TimeSeries } from './typings';

@@ -2,6 +2,7 @@ import {
   ProjectId,
   Dates,
   Resolution,
+  TimeSeriesTotalRow,
 } from 'components/admin/GraphCards/typings';
 
 export type QueryParameters = ProjectId & Dates & Resolution;
@@ -22,11 +23,8 @@ interface InputsCountRow {
 }
 
 // Hook return value
-export interface TimeSeriesRow {
-  /* Date format: YYYY-MM-DD */
-  date: string;
+export interface TimeSeriesRow extends TimeSeriesTotalRow {
   inputs: number;
-  total: number;
 }
 
 export type TimeSeries = TimeSeriesRow[];

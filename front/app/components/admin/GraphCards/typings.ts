@@ -34,3 +34,9 @@ export interface FormattedNumbers {
   formattedSerieChange: string | null;
   typeOfChange: string | null;
 }
+
+export interface TimeSeriesTotalRow {
+  /* Date format: YYYY-MM-DD */
+  date: string;
+  total: number;
+}

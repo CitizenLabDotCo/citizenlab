@@ -2,7 +2,7 @@ import moment, { Moment } from 'moment';
 
 // utils
 import { timeSeriesParser } from 'components/admin/GraphCards/_utils/timeSeries';
-import { get, isNilOrError, NilOrError } from 'utils/helperUtils';
+import { get } from 'utils/helperUtils';
 import { orderBy } from 'lodash-es';
 
 // typings
@@ -83,47 +83,5 @@ export const parseExcelData = (
 
   return {
     [translations.timeSeries]: timeSeriesData ?? [],
-  };
-};
-
-const formatSerieChange = (serieChange: number) => {
-  if (serieChange > 0) {
-    return `(+${serieChange.toString()})`;
-  } else if (serieChange < 0) {
-    return `(${serieChange.toString()})`;
-  }
-  return null;
-};
-
-export const getFormattedNumbers = (
-  serie: TimeSeries | NilOrError
-): {
-  typeOfChange: 'increase' | 'decrease' | null;
-  totalNumber: number | null;
-  formattedSerieChange: string | null;
-} => {
-  if (!isNilOrError(serie)) {
-    const firstSerieValue = serie && serie[0].total;
-    const lastSerieValue = serie && serie[serie.length - 1].total;
-    const serieChange = lastSerieValue - firstSerieValue;
-    let typeOfChange: 'increase' | 'decrease' | null = null;
-
-    if (serieChange > 0) {
-      typeOfChange = 'increase';
-    } else if (serieChange < 0) {
-      typeOfChange = 'decrease';
-    }
-
-    return {
-      typeOfChange,
-      totalNumber: lastSerieValue,
-      formattedSerieChange: formatSerieChange(serieChange),
-    };
-  }
-
-  return {
-    totalNumber: null,
-    formattedSerieChange: null,
-    typeOfChange: null,
   };
 };
