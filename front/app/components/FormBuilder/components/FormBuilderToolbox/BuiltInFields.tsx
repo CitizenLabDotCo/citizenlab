@@ -98,6 +98,7 @@ const BuiltInFields = ({
           label={formatMessage(messages.tags)}
           onClick={() => enableField('topic_ids')}
           disabled={!enabledBuiltInFieldKeys.includes('topic_ids')}
+          data-cy="e2e-tags-item"
         />
       </DraggableElement>
     </Box>
