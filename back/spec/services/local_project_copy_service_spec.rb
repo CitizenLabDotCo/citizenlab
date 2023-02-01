@@ -313,240 +313,242 @@ describe LocalProjectCopyService do
     end
   end
 
-  describe 'when source project has associated content builder layout' do
-    let!(:layout) { create(:layout, code: 'project_description') }
+  if CitizenLab.ee?
+    describe 'when source project has associated content builder layout' do
+      let!(:layout) { create(:layout, code: 'project_description') }
 
-    it 'copies content builder layout' do
-      copied_project = service.copy(layout.content_buildable)
+      it 'copies content builder layout' do
+        copied_project = service.copy(layout.content_buildable)
 
-      expect(copied_project.content_builder_layouts.first
-        .as_json(except: %i[id content_buildable_id updated_at created_at]))
-        .to eq(layout.as_json(except: %i[id content_buildable_id updated_at created_at]))
-    end
-
-    it 'copies associated layout images as new images, associated with copied layout' do
-      image1 = create(:layout_image)
-      image2 = create(:layout_image)
-
-      craftjs = {
-        en: {
-          ROOT: {
-            type: 'div',
-            nodes: [
-              'mjilnZY6iY'
-            ],
-            props: {
-              id: 'e2e-content-builder-frame'
-            },
-            custom: {},
-            hidden: false,
-            isCanvas: true,
-            displayName: 'div',
-            linkedNodes: {}
-          },
-          MhfqQU7pyq: {
-            type: {
-              resolvedName: 'Text'
-            },
-            nodes: [],
-            props: {
-              text: 'This is some text. You can edit and format it by using the editor in the panel on the right.'
-            },
-            custom: {
-              title: {
-                id: 'app.containers.admin.ContentBuilder.text',
-                defaultMessage: 'Text'
-              }
-            },
-            hidden: false,
-            parent: 'RFMLYZxHv8',
-            isCanvas: false,
-            displayName: 'Text',
-            linkedNodes: {}
-          },
-          AhfqQU7pyq: {
-            type: {
-              resolvedName: 'Container'
-            },
-            nodes: [
-              'a0g_vKCvY6'
-            ],
-            props: {},
-            custom: {},
-            hidden: false,
-            parent: 'mjilnZY6iY',
-            isCanvas: true,
-            displayName: 'Container',
-            linkedNodes: {}
-          },
-          RFMLYZxHv8: {
-            type: {
-              resolvedName: 'Container'
-            },
-            nodes: [
-              'MhfqQU7pyq'
-            ],
-            props: {},
-            custom: {},
-            hidden: false,
-            parent: 'a0g_vKCvY6',
-            isCanvas: true,
-            displayName: 'Container',
-            linkedNodes: {}
-          },
-          TMv2pUz2Uw: {
-            type: {
-              resolvedName: 'Container'
-            },
-            nodes: [
-              'xQBSurFNOw'
-            ],
-            props: {},
-            custom: {},
-            hidden: false,
-            parent: 'mjilnZY6iY',
-            isCanvas: true,
-            displayName: 'Container',
-            linkedNodes: {}
-          },
-          a0g_vKCvY6: {
-            type: {
-              resolvedName: 'TwoColumn'
-            },
-            nodes: [],
-            props: {
-              columnLayout: '1-1'
-            },
-            custom: {
-              title: {
-                id: 'app.containers.admin.ContentBuilder.twoColumnLayout',
-                defaultMessage: '2 column'
-              },
-              hasChildren: true
-            },
-            hidden: false,
-            parent: 'AhfqQU7pyq',
-            isCanvas: false,
-            displayName: 'TwoColumn',
-            linkedNodes: {
-              left: 'RFMLYZxHv8',
-              right: 'vtHcoDw7fg'
-            }
-          },
-          lBKtfcN6z2: {
-            type: {
-              resolvedName: 'Image'
-            },
-            nodes: [],
-            props: {
-              alt: '',
-              dataCode: image1.code.to_s
-            },
-            custom: {
-              title: {
-                id: 'app.containers.admin.ContentBuilder.image',
-                defaultMessage: 'Image'
-              }
-            },
-            hidden: false,
-            parent: 'vtHcoDw7fg',
-            isCanvas: false,
-            displayName: 'Image',
-            linkedNodes: {}
-          },
-          mjilnZY6iY: {
-            type: {
-              resolvedName: 'TwoColumn'
-            },
-            nodes: [],
-            props: {
-              columnLayout: '1-1'
-            },
-            custom: {
-              title: {
-                id: 'app.containers.admin.ContentBuilder.twoColumnLayout',
-                defaultMessage: '2 column'
-              },
-              hasChildren: true
-            },
-            hidden: false,
-            parent: 'ROOT',
-            isCanvas: false,
-            displayName: 'TwoColumn',
-            linkedNodes: {
-              left: 'TMv2pUz2Uw',
-              right: 'AhfqQU7pyq'
-            }
-          },
-          vtHcoDw7fg: {
-            type: {
-              resolvedName: 'Container'
-            },
-            nodes: [
-              'lBKtfcN6z2'
-            ],
-            props: {},
-            custom: {},
-            hidden: false,
-            parent: 'a0g_vKCvY6',
-            isCanvas: true,
-            displayName: 'Container',
-            linkedNodes: {}
-          },
-          xQBSurFNOw: {
-            type: {
-              resolvedName: 'Image'
-            },
-            nodes: [],
-            props: {
-              alt: '',
-              dataCode: image2.code.to_s
-            },
-            custom: {
-              title: {
-                id: 'app.containers.admin.ContentBuilder.image',
-                defaultMessage: 'Image'
-              }
-            },
-            hidden: false,
-            parent: 'TMv2pUz2Uw',
-            isCanvas: false,
-            displayName: 'Image',
-            linkedNodes: {}
-          }
-        }
-      }
-
-      layout.update(craftjs_jsonmultiloc: craftjs)
-      copied_project = service.copy(layout.content_buildable)
-
-      new_craftjs = copied_project.content_builder_layouts.first.craftjs_jsonmultiloc
-      new_image_codes = []
-
-      new_craftjs.each_key do |locale|
-        new_craftjs[locale].each_key do |node|
-          next unless new_craftjs[locale][node]['type']['resolvedName'] == 'Image'
-
-          new_image_codes << new_craftjs[locale][node]['props']['dataCode']
-        end
+        expect(copied_project.content_builder_layouts.first
+          .as_json(except: %i[id content_buildable_id updated_at created_at]))
+          .to eq(layout.as_json(except: %i[id content_buildable_id updated_at created_at]))
       end
 
-      expect(copied_project.content_builder_layouts.first
-        .as_json(except: %i[id content_buildable_id craftjs_jsonmultiloc updated_at created_at]))
-        .to eq(layout.as_json(except: %i[id content_buildable_id craftjs_jsonmultiloc updated_at created_at]))
+      it 'copies associated layout images as new images, associated with copied layout' do
+        image1 = create(:layout_image)
+        image2 = create(:layout_image)
 
-      # Expect the copied layout's craftjs_jsonmultiloc to equal the source value, excluding the image codes (UUIDs)
-      expect(
-        copied_project.content_builder_layouts.first.craftjs_jsonmultiloc.to_json
-        .gsub!(new_image_codes[0], '').gsub!(new_image_codes[1], '')
-      ).to eq(
-        layout.content_buildable.content_builder_layouts.first.craftjs_jsonmultiloc.to_json
-        .gsub!(image1.code, '').gsub!(image2.code, '')
-      )
+        craftjs = {
+          en: {
+            ROOT: {
+              type: 'div',
+              nodes: [
+                'mjilnZY6iY'
+              ],
+              props: {
+                id: 'e2e-content-builder-frame'
+              },
+              custom: {},
+              hidden: false,
+              isCanvas: true,
+              displayName: 'div',
+              linkedNodes: {}
+            },
+            MhfqQU7pyq: {
+              type: {
+                resolvedName: 'Text'
+              },
+              nodes: [],
+              props: {
+                text: 'This is some text. You can edit and format it by using the editor in the panel on the right.'
+              },
+              custom: {
+                title: {
+                  id: 'app.containers.admin.ContentBuilder.text',
+                  defaultMessage: 'Text'
+                }
+              },
+              hidden: false,
+              parent: 'RFMLYZxHv8',
+              isCanvas: false,
+              displayName: 'Text',
+              linkedNodes: {}
+            },
+            AhfqQU7pyq: {
+              type: {
+                resolvedName: 'Container'
+              },
+              nodes: [
+                'a0g_vKCvY6'
+              ],
+              props: {},
+              custom: {},
+              hidden: false,
+              parent: 'mjilnZY6iY',
+              isCanvas: true,
+              displayName: 'Container',
+              linkedNodes: {}
+            },
+            RFMLYZxHv8: {
+              type: {
+                resolvedName: 'Container'
+              },
+              nodes: [
+                'MhfqQU7pyq'
+              ],
+              props: {},
+              custom: {},
+              hidden: false,
+              parent: 'a0g_vKCvY6',
+              isCanvas: true,
+              displayName: 'Container',
+              linkedNodes: {}
+            },
+            TMv2pUz2Uw: {
+              type: {
+                resolvedName: 'Container'
+              },
+              nodes: [
+                'xQBSurFNOw'
+              ],
+              props: {},
+              custom: {},
+              hidden: false,
+              parent: 'mjilnZY6iY',
+              isCanvas: true,
+              displayName: 'Container',
+              linkedNodes: {}
+            },
+            a0g_vKCvY6: {
+              type: {
+                resolvedName: 'TwoColumn'
+              },
+              nodes: [],
+              props: {
+                columnLayout: '1-1'
+              },
+              custom: {
+                title: {
+                  id: 'app.containers.admin.ContentBuilder.twoColumnLayout',
+                  defaultMessage: '2 column'
+                },
+                hasChildren: true
+              },
+              hidden: false,
+              parent: 'AhfqQU7pyq',
+              isCanvas: false,
+              displayName: 'TwoColumn',
+              linkedNodes: {
+                left: 'RFMLYZxHv8',
+                right: 'vtHcoDw7fg'
+              }
+            },
+            lBKtfcN6z2: {
+              type: {
+                resolvedName: 'Image'
+              },
+              nodes: [],
+              props: {
+                alt: '',
+                dataCode: image1.code.to_s
+              },
+              custom: {
+                title: {
+                  id: 'app.containers.admin.ContentBuilder.image',
+                  defaultMessage: 'Image'
+                }
+              },
+              hidden: false,
+              parent: 'vtHcoDw7fg',
+              isCanvas: false,
+              displayName: 'Image',
+              linkedNodes: {}
+            },
+            mjilnZY6iY: {
+              type: {
+                resolvedName: 'TwoColumn'
+              },
+              nodes: [],
+              props: {
+                columnLayout: '1-1'
+              },
+              custom: {
+                title: {
+                  id: 'app.containers.admin.ContentBuilder.twoColumnLayout',
+                  defaultMessage: '2 column'
+                },
+                hasChildren: true
+              },
+              hidden: false,
+              parent: 'ROOT',
+              isCanvas: false,
+              displayName: 'TwoColumn',
+              linkedNodes: {
+                left: 'TMv2pUz2Uw',
+                right: 'AhfqQU7pyq'
+              }
+            },
+            vtHcoDw7fg: {
+              type: {
+                resolvedName: 'Container'
+              },
+              nodes: [
+                'lBKtfcN6z2'
+              ],
+              props: {},
+              custom: {},
+              hidden: false,
+              parent: 'a0g_vKCvY6',
+              isCanvas: true,
+              displayName: 'Container',
+              linkedNodes: {}
+            },
+            xQBSurFNOw: {
+              type: {
+                resolvedName: 'Image'
+              },
+              nodes: [],
+              props: {
+                alt: '',
+                dataCode: image2.code.to_s
+              },
+              custom: {
+                title: {
+                  id: 'app.containers.admin.ContentBuilder.image',
+                  defaultMessage: 'Image'
+                }
+              },
+              hidden: false,
+              parent: 'TMv2pUz2Uw',
+              isCanvas: false,
+              displayName: 'Image',
+              linkedNodes: {}
+            }
+          }
+        }
 
-      expect(new_image_codes.count).to eq 2
-      expect(ContentBuilder::LayoutImage.find_by(code: new_image_codes[0])).to be_truthy
-      expect(ContentBuilder::LayoutImage.find_by(code: new_image_codes[1])).to be_truthy
+        layout.update(craftjs_jsonmultiloc: craftjs)
+        copied_project = service.copy(layout.content_buildable)
+
+        new_craftjs = copied_project.content_builder_layouts.first.craftjs_jsonmultiloc
+        new_image_codes = []
+
+        new_craftjs.each_key do |locale|
+          new_craftjs[locale].each_key do |node|
+            next unless new_craftjs[locale][node]['type']['resolvedName'] == 'Image'
+
+            new_image_codes << new_craftjs[locale][node]['props']['dataCode']
+          end
+        end
+
+        expect(copied_project.content_builder_layouts.first
+          .as_json(except: %i[id content_buildable_id craftjs_jsonmultiloc updated_at created_at]))
+          .to eq(layout.as_json(except: %i[id content_buildable_id craftjs_jsonmultiloc updated_at created_at]))
+
+        # Expect the copied layout's craftjs_jsonmultiloc to equal the source value, excluding the image codes (UUIDs)
+        expect(
+          copied_project.content_builder_layouts.first.craftjs_jsonmultiloc.to_json
+          .gsub!(new_image_codes[0], '').gsub!(new_image_codes[1], '')
+        ).to eq(
+          layout.content_buildable.content_builder_layouts.first.craftjs_jsonmultiloc.to_json
+          .gsub!(image1.code, '').gsub!(image2.code, '')
+        )
+
+        expect(new_image_codes.count).to eq 2
+        expect(ContentBuilder::LayoutImage.find_by(code: new_image_codes[0])).to be_truthy
+        expect(ContentBuilder::LayoutImage.find_by(code: new_image_codes[1])).to be_truthy
+      end
     end
   end
 end
