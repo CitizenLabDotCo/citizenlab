@@ -17,6 +17,9 @@ import Error from 'components/UI/Error';
 import GroupsTag from './GroupsTag';
 import AdminTag from './AdminTag';
 import ManageButton from './ManageButton';
+import ProjectMoreOptions, {
+  ProjectMoreOptionsOption,
+} from './ProjectMoreOptions';
 
 // resources
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
@@ -24,6 +27,9 @@ import useAuthUser from 'hooks/useAuthUser';
 
 // types
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
+
+import messages from '../messages';
+import { copyProject } from 'services/projects';
 
 export const StyledStatusLabel = styled(StatusLabel)`
   margin-right: 5px;
@@ -134,6 +140,22 @@ const ProjectRow = ({
                 );
               }
             })}
+            <ProjectMoreOptions>
+              <DeleteProjectButton
+                publication={publication}
+                setDeleteIsProcessing={setIsBeingDeleted}
+                setDeletionError={setDeletionError}
+                processing={isBeingDeleted}
+                key="delete"
+              />
+              <ProjectMoreOptionsOption
+                onClick={() => {
+                  copyProject(projectId);
+                }}
+                message={messages.copyProjectButton}
+                iconName={'copy'}
+              />
+            </ProjectMoreOptions>
           </ActionsRowContainer>
         ) : (
           <ManageButton
