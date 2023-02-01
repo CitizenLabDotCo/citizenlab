@@ -14,7 +14,7 @@ export interface TimeSeriesResponseRow {
   count: number;
 }
 
-interface RegistrationsTotalRow {
+export interface RegistrationsTotalRow {
   'dimension_date_registration.date': string;
   count: number;
 }

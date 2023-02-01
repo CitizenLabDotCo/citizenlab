@@ -51,12 +51,17 @@ export const parseTimeSeries = (
     resolution
   );
 
-  let totalCount = total[0]?.count;
-  if (!timeSeries || timeSeries.length === 0 || typeof totalCount !== 'number')
+  if (
+    !timeSeries ||
+    timeSeries.length === 0 ||
+    typeof total[0]?.count !== 'number'
+  ) {
     return null;
+  }
 
   // Calculate cumulative series by taking the total as the last item
   // in the serie and substract it with each time period value
+  let totalCount = total[0]?.count;
   timeSeries = orderBy(
     timeSeries,
     (o: TimeSeriesRow) => {
@@ -66,10 +71,10 @@ export const parseTimeSeries = (
   )
     .map((row) => {
       const _totalCount = totalCount;
-      totalCount = (totalCount || 0) - row.comments;
+      totalCount = totalCount - row.comments;
       return {
         ...row,
-        total: _totalCount || 0,
+        total: _totalCount,
       };
     })
     .reverse();
