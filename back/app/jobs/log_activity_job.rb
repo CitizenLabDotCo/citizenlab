@@ -6,6 +6,16 @@ class LogActivityJob < ApplicationJob
 
   attr_reader :item, :action, :user, :acted_at, :options, :activity
 
+  def initialize(*args, **kwargs, &block)
+    # The `project_id` is automatically derived from the `item` and added to the
+    # `options` hash (see `LogActivityJob#run`). This is done in the constructor because
+    # it needs to happen before the job serialization. Otherwise, it would not be
+    # feasible to determine the `project_id` for deleted items.
+    item = args.first
+    kwargs[:project_id] = item.try(:project_id) unless kwargs.key?(:project_id)
+    super(*args, **kwargs, &block)
+  end
+
   def run(item, action, user, acted_at = Time.zone.now, options = {})
     @item     = item
     @action   = action
@@ -45,6 +55,7 @@ class LogActivityJob < ApplicationJob
     activity.user     = user
     activity.acted_at = acted_at
     activity.payload  = options[:payload] || {}
+    activity.project_id = options[:project_id]
     activity.save!
   end
 
