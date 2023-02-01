@@ -78,7 +78,9 @@ export default function useRegistrationsByTime({
 
         setXlsxData(parseExcelData(timeSeries, translations));
 
-        setFormattedNumbers(getFormattedNumbers(timeSeries));
+        const firstSerieBar =
+          timeSeries && timeSeries.length > 0 ? timeSeries[0].registrations : 0;
+        setFormattedNumbers(getFormattedNumbers(timeSeries, firstSerieBar));
       }
     );
 

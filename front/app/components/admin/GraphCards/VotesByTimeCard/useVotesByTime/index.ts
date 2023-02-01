@@ -80,7 +80,11 @@ export default function usePostsByTime({
 
         setXlsxData(parseExcelData(timeSeries, translations));
 
-        setFormattedNumbers(getFormattedNumbers(timeSeries));
+        const firstSerieBar =
+          timeSeries && timeSeries.length > 0
+            ? timeSeries[0].upvotes + timeSeries[0].downvotes
+            : 0;
+        setFormattedNumbers(getFormattedNumbers(timeSeries, firstSerieBar));
       }
     );
 

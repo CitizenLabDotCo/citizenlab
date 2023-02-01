@@ -80,7 +80,9 @@ export default function useCommentsByTime({
 
         setXlsxData(parseExcelData(timeSeries, translations));
 
-        setFormattedNumbers(getFormattedNumbers(timeSeries));
+        const firstSerieBar =
+          timeSeries && timeSeries.length > 0 ? timeSeries[0].comments : 0;
+        setFormattedNumbers(getFormattedNumbers(timeSeries, firstSerieBar));
       }
     );
 

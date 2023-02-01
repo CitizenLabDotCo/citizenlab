@@ -80,7 +80,9 @@ export default function usePostsByTime({
 
         setXlsxData(parseExcelData(timeSeries, translations));
 
-        setFormattedNumbers(getFormattedNumbers(timeSeries));
+        const firstSerieBar =
+          timeSeries && timeSeries.length > 0 ? timeSeries[0].inputs : 0;
+        setFormattedNumbers(getFormattedNumbers(timeSeries, firstSerieBar));
       }
     );
 

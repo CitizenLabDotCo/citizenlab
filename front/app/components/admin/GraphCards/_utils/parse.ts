@@ -23,7 +23,8 @@ const formatSerieChange = (serieChange: number) => {
 };
 
 export const getFormattedNumbers = (
-  serie: TimeSeriesTotalRow[] | NilOrError
+  serie: TimeSeriesTotalRow[] | NilOrError,
+  firstSerieBar: number
 ): {
   typeOfChange: 'increase' | 'decrease' | null;
   totalNumber: number | null;
@@ -32,7 +33,7 @@ export const getFormattedNumbers = (
   if (!isNilOrError(serie)) {
     const firstSerieValue = serie && serie[0].total;
     const lastSerieValue = serie && serie[serie.length - 1].total;
-    const serieChange = lastSerieValue - firstSerieValue;
+    const serieChange = lastSerieValue - firstSerieValue + firstSerieBar;
     let typeOfChange: 'increase' | 'decrease' | null = null;
 
     if (serieChange > 0) {

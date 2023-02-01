@@ -71,10 +71,10 @@ export const parseTimeSeries = (
   )
     .map((row) => {
       const _totalCount = totalCount;
-      totalCount = (totalCount || 0) - row.inputs;
+      totalCount = totalCount - row.inputs;
       return {
         ...row,
-        total: _totalCount || 0,
+        total: _totalCount,
       };
     })
     .reverse();
