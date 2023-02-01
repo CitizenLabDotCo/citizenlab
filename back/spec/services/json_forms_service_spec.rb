@@ -222,168 +222,157 @@ describe JsonFormsService do
     # - Hide author and budget when not admin (in JsonFormsService)
     # - Add author and budget when admin (in JsonFormsService)
     describe 'input_ui_and_json_multiloc_schemas' do
-      it 'generates expected output for different kinds of fields' do
-        config = AppConfiguration.instance
-        config.settings['core']['locales'] = ['en']
-        config.save!
+      context 'when resident' do
+        it 'generates expected output for different kinds of fields' do
+          project = create :project
+          form = create :custom_form, :with_default_fields, participation_context: project
+          required_field = create :custom_field, :for_custom_form, resource: form, required: true, input_type: 'number'
+          optional_field = create :custom_field_select, :for_custom_form, resource: form, required: false
+          create :custom_field_option, custom_field: optional_field, key: 'option1', title_multiloc: { 'en' => 'Rabbit' }
+          create :custom_field_option, custom_field: optional_field, key: 'option2', title_multiloc: { 'en' => 'Bear' }
+          topic_field = form.custom_fields.find_by(code: 'topic_ids')
+          topic_field.update!(required: true)
+          idea_files_attributes_field = form.custom_fields.find_by(code: 'idea_files_attributes')
 
-        project = create :project
-        form = create :custom_form, participation_context: project
-        required_field = create :custom_field, :for_custom_form, resource: form, required: true, input_type: 'number'
-        optional_field = create :custom_field_select, :for_custom_form, resource: form, required: false
-        create :custom_field_option, custom_field: optional_field, key: 'option1', title_multiloc: { 'en' => 'Rabbit' }
-        create :custom_field_option, custom_field: optional_field, key: 'option2', title_multiloc: { 'en' => 'Bear' }
-        build_in_required_field = create(
-          :custom_field_multiselect,
-          :for_custom_form,
-          resource: form,
-          required: true,
-          key: 'topic_ids',
-          code: 'topic_ids'
-        )
-        build_in_optional_field = create(
-          :custom_field_multiselect,
-          :for_custom_form,
-          resource: form,
-          required: false,
-          key: 'idea_files_attributes',
-          code: 'idea_files_attributes'
-        )
-        fields = [required_field, optional_field, build_in_required_field, build_in_optional_field]
-
-        output = service.input_ui_and_json_multiloc_schemas fields, user, 'question'
-        expect(output).to include(
-          {
-            json_schema_multiloc: {
-              'en' => {
-                type: 'object',
-                additionalProperties: false,
-                properties: {
-                  'topic_ids' => {
-                    type: 'array',
-                    uniqueItems: true,
-                    minItems: 1,
-                    items: { type: 'string' }
+          fields = IdeaCustomFieldsService.new(form).enabled_fields
+          output = service.input_ui_and_json_multiloc_schemas fields, user, 'question'
+          expect(output).to match(
+            {
+              json_schema_multiloc: hash_including(
+                'en' => {
+                  type: 'object',
+                  additionalProperties: false,
+                  properties: {
+                    'topic_ids' => {
+                      type: 'array',
+                      uniqueItems: true,
+                      minItems: 1,
+                      items: { type: 'string' }
+                    },
+                    required_field.key => { type: 'number' },
+                    optional_field.key => {
+                      type: 'string',
+                      oneOf: [
+                        { const: 'option1', title: 'Rabbit' },
+                        { const: 'option2', title: 'Bear' }
+                      ]
+                    },
+                    'idea_files_attributes' => {
+                      type: 'array',
+                      uniqueItems: true,
+                      minItems: 0,
+                      items: { type: 'string' }
+                    }
                   },
-                  required_field.key => { type: 'number' },
-                  optional_field.key => {
-                    type: 'string',
-                    oneOf: [
-                      { const: 'option1', title: 'Rabbit' },
-                      { const: 'option2', title: 'Bear' }
-                    ]
-                  },
-                  'idea_files_attributes' => {
-                    type: 'array',
-                    uniqueItems: true,
-                    minItems: 0,
-                    items: { type: 'string' }
-                  }
-                },
-                required: match_array(['topic_ids', required_field.key])
-              }
-            },
-            ui_schema_multiloc: {
-              'en' => {
-                type: 'Categorization',
-                options: { formId: 'idea-form', inputTerm: 'question' },
-                elements: [
-                  {
-                    type: 'Category',
-                    options: { id: 'details' },
-                    label: 'Details',
-                    elements: [
-                      {
-                        type: 'Control',
-                        scope: '#/properties/topic_ids',
-                        label: build_in_required_field.title_multiloc['en'],
-                        options: {
-                          input_type: build_in_required_field.input_type,
-                          description: build_in_required_field.description_multiloc['en'],
-                          isAdminField: false,
-                          hasRule: false
+                  required: match_array(['topic_ids', required_field.key])
+                }
+              ),
+              ui_schema_multiloc: hash_including(
+                'en' => {
+                  type: 'Categorization',
+                  options: { formId: 'idea-form', inputTerm: 'question' },
+                  elements: [
+                    {
+                      type: 'Category',
+                      options: { id: 'details' },
+                      label: 'Details',
+                      elements: [
+                        {
+                          type: 'Control',
+                          scope: '#/properties/topic_ids',
+                          label: topic_field.title_multiloc['en'],
+                          options: {
+                            input_type: topic_field.input_type,
+                            description: topic_field.description_multiloc['en'],
+                            isAdminField: false,
+                            hasRule: false
+                          }
                         }
-                      }
-                    ]
-                  },
-                  {
-                    type: 'Category',
-                    label: 'Images and attachments',
-                    options: { id: 'attachments' },
-                    elements: [
-                      {
-                        type: 'Control',
-                        scope: '#/properties/idea_files_attributes',
-                        label: build_in_optional_field.title_multiloc['en'],
-                        options: {
-                          input_type: build_in_optional_field.input_type,
-                          description: build_in_optional_field.description_multiloc['en'],
-                          isAdminField: false,
-                          hasRule: false
+                      ]
+                    },
+                    {
+                      type: 'Category',
+                      label: 'Images and attachments',
+                      options: { id: 'attachments' },
+                      elements: [
+                        {
+                          type: 'Control',
+                          scope: '#/properties/idea_files_attributes',
+                          label: idea_files_attributes_field.title_multiloc['en'],
+                          options: {
+                            input_type: idea_files_attributes_field.input_type,
+                            description: idea_files_attributes_field.description_multiloc['en'],
+                            isAdminField: false,
+                            hasRule: false
+                          }
                         }
-                      }
-                    ]
-                  },
-                  {
-                    type: 'Category',
-                    options: { id: 'extra' },
-                    label: 'Additional information',
-                    elements: [
-                      {
-                        type: 'Control',
-                        scope: "#/properties/#{required_field.key}",
-                        label: required_field.title_multiloc['en'],
-                        options: {
-                          input_type: required_field.input_type,
-                          description: required_field.description_multiloc['en'],
-                          isAdminField: false,
-                          hasRule: false
+                      ]
+                    },
+                    {
+                      type: 'Category',
+                      options: { id: 'extra' },
+                      label: 'Additional information',
+                      elements: [
+                        {
+                          type: 'Control',
+                          scope: "#/properties/#{topic_field.key}",
+                          label: topic_field.title_multiloc['en'],
+                          options: {
+                            input_type: topic_field.input_type,
+                            description: topic_field.description_multiloc['en'],
+                            isAdminField: false,
+                            hasRule: false
+                          }
+                        },
+                        {
+                          type: 'Control',
+                          scope: "#/properties/#{idea_files_attributes_field.key}",
+                          label: idea_files_attributes_field.title_multiloc['en'],
+                          options: {
+                            input_type: idea_files_attributes_field.input_type,
+                            description: idea_files_attributes_field.description_multiloc['en'],
+                            isAdminField: false,
+                            hasRule: false
+                          }
                         }
-                      },
-                      {
-                        type: 'Control',
-                        scope: "#/properties/#{optional_field.key}",
-                        label: optional_field.title_multiloc['en'],
-                        options: {
-                          input_type: optional_field.input_type,
-                          description: optional_field.description_multiloc['en'],
-                          isAdminField: false,
-                          hasRule: false
-                        }
-                      }
-                    ]
-                  }
-                ]
-              }
+                      ]
+                    }
+                  ]
+                }
+              )
             }
+          )
+        end
+
+        it 'renders text images for fields' do
+          description_multiloc = {
+            'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
           }
-        )
+          field = create :custom_field, :for_custom_form, input_type: 'text', description_multiloc: description_multiloc
+          allow_any_instance_of(TextImageService).to(
+            receive(:render_data_images).with(field, :description_multiloc).and_return({ 'en' => 'Description with text images' })
+          )
+
+          ui_schema = service.input_ui_and_json_multiloc_schemas([field], nil, 'option')[:ui_schema_multiloc]
+          expect(ui_schema.dig('en', :elements, 0, :elements, 0, :options, :description)).to eq 'Description with text images'
+        end
+
+        it 'renders text images for pages' do
+          description_multiloc = {
+            'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
+          }
+          field = create :custom_field, :for_custom_form, input_type: 'page', description_multiloc: description_multiloc
+          allow_any_instance_of(TextImageService).to(
+            receive(:render_data_images).with(field, :description_multiloc).and_return({ 'en' => 'Description with text images' })
+          )
+
+          ui_schema = service.input_ui_and_json_multiloc_schemas([field], nil, 'question')[:ui_schema_multiloc]
+          expect(ui_schema.dig('en', :elements, 0, :options, :description)).to eq 'Description with text images'
+        end
       end
 
-      it 'renders text images for fields' do
-        description_multiloc = {
-          'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
-        }
-        field = create :custom_field, :for_custom_form, input_type: 'text', description_multiloc: description_multiloc
-        allow_any_instance_of(TextImageService).to(
-          receive(:render_data_images).with(field, :description_multiloc).and_return({ 'en' => 'Description with text images' })
-        )
-
-        ui_schema = service.input_ui_and_json_multiloc_schemas([field], nil, 'option')[:ui_schema_multiloc]
-        expect(ui_schema.dig('en', :elements, 0, :elements, 0, :options, :description)).to eq 'Description with text images'
-      end
-
-      it 'renders text images for pages' do
-        description_multiloc = {
-          'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
-        }
-        field = create :custom_field, :for_custom_form, input_type: 'page', description_multiloc: description_multiloc
-        allow_any_instance_of(TextImageService).to(
-          receive(:render_data_images).with(field, :description_multiloc).and_return({ 'en' => 'Description with text images' })
-        )
-
-        ui_schema = service.input_ui_and_json_multiloc_schemas([field], nil, 'question')[:ui_schema_multiloc]
-        expect(ui_schema.dig('en', :elements, 0, :options, :description)).to eq 'Description with text images'
+      context 'when admin' do
+        let(:user) { create :admin }
       end
     end
   end
