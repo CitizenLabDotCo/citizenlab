@@ -29,7 +29,7 @@ describe('Input form builder', () => {
     });
   });
 
-  it('allows user to turn off the location default field', () => {
+  it('allows user to turn on / off the location default field but not edit its question title', () => {
     // Check that the location field is present on the idea form before turning it off
     cy.visit(`/projects/${projectSlug}/ideas/new`);
     cy.acceptCookies();
@@ -48,6 +48,9 @@ describe('Input form builder', () => {
       cy.contains('Location').should('exist');
       cy.contains('Location').click();
     });
+
+    // Title should not be present or editable
+    cy.get('#e2e-title-multiloc').should('not.exist');
 
     cy.get('[data-cy="e2e-delete-field"]').click();
 

@@ -29,7 +29,7 @@ describe('Input form builder', () => {
     });
   });
 
-  it('allows user to turn on the proposed budget default field', () => {
+  it('allows user to turn on / off the proposed budget default field but not edit its question title', () => {
     // Check that the tags field is not present on the idea form before turning it off
     cy.visit(`/projects/${projectSlug}/ideas/new`);
     cy.acceptCookies();
@@ -58,7 +58,11 @@ describe('Input form builder', () => {
     // Check to see that the proposed budget is added to the canvas
     cy.get('[data-cy="e2e-field-row"]').within(() => {
       cy.contains('Proposed Budget').should('exist');
+      cy.contains('Proposed Budget').click();
     });
+
+    // Title should not be present or editable
+    cy.get('#e2e-title-multiloc').should('not.exist');
 
     // Save the form
     cy.get('form').submit();

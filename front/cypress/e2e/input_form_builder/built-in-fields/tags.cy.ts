@@ -29,7 +29,7 @@ describe('Input form builder', () => {
     });
   });
 
-  it('allows user to turn off the tags default field', () => {
+  it('allows user to turn off the tags default field but not edit its question title', () => {
     // Check that the tags field is present on the idea form before turning it off
     cy.visit(`/projects/${projectSlug}/ideas/new`);
     cy.acceptCookies();
@@ -48,6 +48,9 @@ describe('Input form builder', () => {
       cy.contains('Tags').should('exist');
       cy.contains('Tags').click();
     });
+
+    // Title should not be present or editable
+    cy.get('#e2e-title-multiloc').should('not.exist');
 
     cy.get('[data-cy="e2e-delete-field"]').click();
 
