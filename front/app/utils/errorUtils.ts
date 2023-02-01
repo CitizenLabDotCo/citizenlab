@@ -3,13 +3,16 @@ import messages from './messages';
 
 export function isCLErrorJSON(value: unknown): value is CLErrorsJSON {
   for (const prop of ['json', 'errors']) {
+    let objectToCheck = value;
     if (
-      typeof value === 'object' &&
-      !Array.isArray(value) &&
-      value !== null &&
-      value.hasOwnProperty(prop)
+      // value is an object
+      typeof objectToCheck === 'object' &&
+      !Array.isArray(objectToCheck) &&
+      objectToCheck !== null &&
+      // value object has prop as key
+      Object.prototype.hasOwnProperty.call(objectToCheck, prop)
     ) {
-      value = value[prop];
+      objectToCheck = objectToCheck[prop];
     } else {
       return false;
     }
