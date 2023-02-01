@@ -62,7 +62,7 @@ const DetailsInsightsView = ({
       ? [query.categories]
       : query.categories;
   const search = query.search;
-  console.log(search);
+
   const keywords: string[] =
     typeof query.keywords === 'string' ? [query.keywords] : query.keywords;
 
@@ -74,6 +74,7 @@ const DetailsInsightsView = ({
     });
 
   const inputs = data?.pages.map((page) => page.data).flat();
+
   // Navigate to correct index when moving up and down
   useEffect(() => {
     if (

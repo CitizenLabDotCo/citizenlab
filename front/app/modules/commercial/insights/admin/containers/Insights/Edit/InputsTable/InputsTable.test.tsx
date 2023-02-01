@@ -8,11 +8,10 @@ import {
   waitFor,
 } from 'utils/testUtils/rtl';
 import * as service from 'modules/commercial/insights/services/insightsInputs';
-import useInsightsInputs from 'modules/commercial/insights/hooks/useInsightsInputs';
 import * as batchService from 'modules/commercial/insights/services/batchAssignment';
 import inputs from 'modules/commercial/insights/fixtures/inputs';
 import categories from 'modules/commercial/insights/fixtures/categories';
-
+import { useInputs } from 'modules/commercial/insights/api/inputs';
 import clHistory from 'utils/cl-router/history';
 
 jest.mock('modules/commercial/insights/services/insightsInputs', () => ({
@@ -61,11 +60,8 @@ jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
   return jest.fn(() => mockCategoriesData);
 });
 
-jest.mock('modules/commercial/insights/hooks/useInsightsInputs', () => {
-  return jest.fn(() => mockInputData);
-});
-
 jest.mock('modules/commercial/insights/api/views');
+jest.mock('modules/commercial/insights/api/inputs');
 
 jest.mock('hooks/useLocale');
 
@@ -88,10 +84,6 @@ jest.mock('utils/cl-router/withRouter', () => {
 });
 jest.mock('utils/cl-router/Link');
 jest.mock('utils/cl-router/history');
-
-jest.mock('modules/commercial/insights/hooks/useInsightsInput', () => {
-  return jest.fn(() => undefined);
-});
 
 const mockTriggerScan = jest.fn();
 
@@ -491,7 +483,7 @@ describe('Insights Input Table', () => {
       };
 
       render(<InputsTable />);
-      expect(useInsightsInputs).toHaveBeenCalledWith(viewId, {
+      expect(useInputs).toHaveBeenCalledWith(viewId, {
         category: undefined,
         pageNumber: 2,
         processed: true,
@@ -554,7 +546,7 @@ describe('Insights Input Table', () => {
       };
 
       render(<InputsTable />);
-      expect(useInsightsInputs).toHaveBeenCalledWith(viewId, {
+      expect(useInputs).toHaveBeenCalledWith(viewId, {
         category: 'category',
         processed: undefined,
         search: undefined,
@@ -569,7 +561,7 @@ describe('Insights Input Table', () => {
       };
       mockInputData;
       render(<InputsTable />);
-      expect(useInsightsInputs).toHaveBeenCalledWith(viewId, {
+      expect(useInputs).toHaveBeenCalledWith(viewId, {
         category: undefined,
         processed: false,
         search: undefined,
@@ -589,7 +581,7 @@ describe('Insights Input Table', () => {
       };
 
       render(<InputsTable />);
-      expect(useInsightsInputs).toHaveBeenCalledWith(viewId, {
+      expect(useInputs).toHaveBeenCalledWith(viewId, {
         search: 'search',
         category: undefined,
         pageNumber: 1,

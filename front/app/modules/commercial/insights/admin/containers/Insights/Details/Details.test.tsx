@@ -2,11 +2,10 @@ import React from 'react';
 import Details from './';
 
 import { render, fireEvent, screen } from 'utils/testUtils/rtl';
-import useInsightsInputsLoadMore from 'modules/commercial/insights/hooks/useInsightsInputsLoadMore';
 import inputs from 'modules/commercial/insights/fixtures/inputs';
 import clHistory from 'utils/cl-router/history';
 import mockCategories from 'modules/commercial/insights/fixtures/categories';
-
+import { useInfiniteInputs } from 'modules/commercial/insights/api/inputs';
 const viewId = '1';
 
 const mockInputsData = {
@@ -28,10 +27,6 @@ let mockLocationData = { pathname: '', query: {} };
 const mockInputData = inputs[0];
 
 jest.mock('utils/cl-router/history');
-
-jest.mock('modules/commercial/insights/hooks/useInsightsInputsLoadMore', () => {
-  return jest.fn(() => mockInputsData);
-});
 
 jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
   return jest.fn(() => mockCategories);
@@ -71,6 +66,7 @@ jest.mock('./Network', () => {
 });
 
 jest.mock('modules/commercial/insights/api/views');
+jest.mock('modules/commercial/insights/api/inputs');
 
 describe('Insights Details Inputs', () => {
   it('renders', () => {
@@ -113,7 +109,7 @@ describe('Insights Details Inputs', () => {
       search: `?previewedInputId=${mockInputsData.list[0].id}`,
     });
   });
-  it('calls useInsightsInputsLoadMore with correct arguments', () => {
+  it('calls useInfiniteInputs with correct arguments', () => {
     mockLocationData = {
       pathname: '',
       query: {
@@ -123,7 +119,7 @@ describe('Insights Details Inputs', () => {
       },
     };
     render(<Details />);
-    expect(useInsightsInputsLoadMore).toHaveBeenCalledWith(
+    expect(useInfiniteInputs).toHaveBeenCalledWith(
       viewId,
       mockLocationData.query
     );
