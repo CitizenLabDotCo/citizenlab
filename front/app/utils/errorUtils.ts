@@ -2,8 +2,8 @@ import { CLErrorsJSON } from 'typings';
 import messages from './messages';
 
 export function isCLErrorJSON(value: unknown): value is CLErrorsJSON {
+  let objectToCheck = value;
   for (const prop of ['json', 'errors']) {
-    let objectToCheck = value;
     if (
       // value is an object
       typeof objectToCheck === 'object' &&
