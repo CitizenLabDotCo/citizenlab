@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.version     = EmailCampaigns::VERSION
   s.authors     = ['CitizenLab']
   s.summary     = 'Sends out the campaign emails as scheduled'
-  s.licenses    = ['AGPLv3']
+  s.licenses    = ['CitizenLab Commercial License V2']
 
   s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
 
