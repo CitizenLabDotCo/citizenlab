@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.version     = IdViennaSaml::VERSION
   s.summary     = "Authentication method using Vienna's Standardportal (SAML)"
   s.authors     = ['CitizenLab']
-  s.licenses    = ['CitizenLab Commercial License V1']
+  s.licenses    = ['CitizenLab Commercial License V2']
   s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
 
   s.add_dependency 'omniauth-saml', '~> 1.10.3'

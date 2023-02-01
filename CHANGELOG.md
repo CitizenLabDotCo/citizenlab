@@ -1,10 +1,17 @@
 # Changelog
 
+## 2023-02-01
+
+### Fixed
+
+- [CL-1560] Fix From scratch label bug when creating a project
+
 ## 2023-01-31
 
 ### Added
 
 - [CL-1703] Add default CTA banner on project page
+- [CL-2727] Add user id to impact tracking for authenticated users
 
 ## 2023-01-30
 

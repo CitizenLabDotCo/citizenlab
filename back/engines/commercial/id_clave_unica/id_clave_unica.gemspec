@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.version     = IdClaveUnica::VERSION
   s.summary     = 'Authentication and verification using the Chilean Clave Unica'
   s.authors     = ['CitizenLab']
-  s.licenses    = ['CitizenLab Commercial License V1']
+  s.licenses    = ['CitizenLab Commercial License V2']
   s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
 
   s.add_dependency 'rails', '~> 6.1'

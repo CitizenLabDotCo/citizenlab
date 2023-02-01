@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.name        = 'custom_maps'
   s.version     = CustomMaps::VERSION
   s.authors     = ['CitizenLab']
-  s.licenses    = ['CitizenLab Commercial License V1']
+  s.licenses    = ['CitizenLab Commercial License V2']
   s.summary     = 'Contains everything to configure maps on the platform'
 
   s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
