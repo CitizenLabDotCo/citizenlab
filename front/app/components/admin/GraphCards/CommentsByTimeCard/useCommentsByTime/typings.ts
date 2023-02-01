@@ -30,9 +30,3 @@ export interface TimeSeriesRow {
 }
 
 export type TimeSeries = TimeSeriesRow[];
-
-export interface FormattedNumbers {
-  totalNumber: number | null;
-  formattedSerieChange: string | null;
-  typeOfChange: string;
-}
