@@ -72,6 +72,7 @@ const BuiltInFields = ({
           label={formatMessage(messages.proposedBudget)}
           onClick={() => enableField('proposed_budget')}
           disabled={!enabledBuiltInFieldKeys.includes('proposed_budget')}
+          data-cy="e2e-proposed-budget-item"
         />
       </DraggableElement>
       <DraggableElement>
