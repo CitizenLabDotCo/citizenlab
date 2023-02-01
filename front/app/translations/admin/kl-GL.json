@@ -635,7 +635,6 @@
   "app.containers.Admin.projects.all.deleteFolderButton": "Piiaruk",
   "app.containers.Admin.projects.all.deleteFolderConfirm": "Ilumoortumik mappi una peerniarpiuk? Suliniutit mappimiittut tamarmik aamma peerneqassapput. Una iliuuseq uterteqqinneqarsinnaanngilaq.",
   "app.containers.Admin.projects.all.deleteFolderError": "Mappip uumma peerniarnerani ajortoqarpoq. Misileqqiguk.",
-  "app.containers.Admin.projects.all.deleteProjectButton": "Piiaruk",
   "app.containers.Admin.projects.all.deleteProjectConfirmation": "Ilumoortumik suliniut una peerniarpiuk? Uterteqqinneqarsinnaanngilaq.",
   "app.containers.Admin.projects.all.deleteProjectError": "Suliniutip uuma peerniarnerani ajortoqarpoq. Kingusinnerusukkut misileqqilaariuk.",
   "app.containers.AdminPage.DashboardPage.Report.participants": "peqataasut",
