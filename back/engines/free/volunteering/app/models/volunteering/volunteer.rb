@@ -28,8 +28,6 @@ module Volunteering
 
     validates :cause, uniqueness: { scope: [:user] }
 
-    def project_id
-      cause.project_id
-    end
+    delegate :project_id, to: :cause
   end
 end

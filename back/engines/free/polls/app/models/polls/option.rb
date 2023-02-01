@@ -28,8 +28,6 @@ module Polls
 
     validates :title_multiloc, presence: true, multiloc: { presence: true }
 
-    def project_id
-      question.project_id
-    end
+    delegate :project_id, to: :question
   end
 end
