@@ -1,9 +1,12 @@
 import moment, { Moment } from 'moment';
 
 // utils
-import { timeSeriesParser } from 'components/admin/GraphCards/_utils/timeSeries';
+import {
+  timeSeriesParser,
+  calculateCumulativeSerie,
+} from 'components/admin/GraphCards/_utils/timeSeries';
 import { get } from 'utils/helperUtils';
-import { sumBy, orderBy } from 'lodash-es';
+import { sumBy } from 'lodash-es';
 
 // typings
 import {
@@ -60,26 +63,11 @@ export const parseTimeSeries = (
     return null;
   }
 
-  // Calculate cumulative series by taking the total as the last item
-  // in the serie and substract it with each time period value
-  let totalCount = sumBy(total, (t: RegistrationsTotalRow) => t.count);
-  timeSeries = orderBy(
+  return calculateCumulativeSerie(
     timeSeries,
-    (o: TimeSeriesRow) => {
-      return moment(o.date).format('YYYYMMDD');
-    },
-    ['desc']
-  )
-    .map((row) => {
-      const _totalCount = totalCount;
-      totalCount = totalCount - row.registrations;
-      return {
-        ...row,
-        total: _totalCount,
-      };
-    })
-    .reverse();
-  return timeSeries;
+    sumBy(total, (t: RegistrationsTotalRow) => t.count),
+    (row: TimeSeriesRow) => row.registrations
+  );
 };
 
 export const parseExcelData = (
