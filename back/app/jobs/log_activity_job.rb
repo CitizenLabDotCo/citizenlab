@@ -11,21 +11,21 @@ class LogActivityJob < ApplicationJob
     # `options` hash (see `LogActivityJob#run`). This is done in the constructor because
     # it needs to happen before the job serialization. Otherwise, it would not be
     # feasible to determine the `project_id` for deleted items.
-    return super if kwargs.key?(:project_id)
-
-    item = args.first
-    project_id = item.try(:project_id)
-    kwargs[:project_id] = project_id if project_id
+    unless kwargs.key?(:project_id)
+      item = args.first
+      project_id = item.try(:project_id)
+      kwargs[:project_id] = project_id if project_id
+    end
 
     super(*args, **kwargs, &block)
   end
 
   def run(item, action, user, acted_at = Time.zone.now, options = {})
-    @item     = item
-    @action   = action
-    @user     = user
+    @item = item
+    @action = action
+    @user = user
     @acted_at = Time.zone.at(acted_at)
-    @options  = options
+    @options = options
 
     do_run
   end
@@ -55,10 +55,10 @@ class LogActivityJob < ApplicationJob
   end
 
   def save_activity
-    activity.action   = action
-    activity.user     = user
+    activity.action = action
+    activity.user = user
     activity.acted_at = acted_at
-    activity.payload  = options[:payload] || {}
+    activity.payload = options[:payload] || {}
     activity.project_id = options[:project_id]
     activity.save!
   end
