@@ -39,6 +39,10 @@ class OfficialFeedback < ApplicationRecord
   validates :author_multiloc, presence: true, multiloc: { presence: true }
   validates :post, presence: true
 
+  def project_id
+    post.try(:project_id)
+  end
+
   private
 
   def sanitize_body_multiloc
