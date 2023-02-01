@@ -10,7 +10,8 @@ describe SideFxEventService do
   describe 'after_create' do
     it "logs a 'created' action when a event is created" do
       expect { service.after_create(event, user) }
-        .to have_enqueued_job(LogActivityJob).with(event, 'created', user, event.created_at.to_i)
+        .to enqueue_job(LogActivityJob)
+          .with(event, 'created', user, event.created_at.to_i, project_id: event.project_id)
     end
 
     it 'runs the description through the text image service' do
@@ -30,7 +31,8 @@ describe SideFxEventService do
     it "logs a 'changed' action job when the event has changed" do
       event.update(title_multiloc: { en: 'changed' })
       expect { service.after_update(event, user) }
-        .to have_enqueued_job(LogActivityJob).with(event, 'changed', user, event.updated_at.to_i)
+        .to enqueue_job(LogActivityJob)
+          .with(event, 'changed', user, event.updated_at.to_i, project_id: event.project_id)
     end
   end
 
@@ -39,7 +41,7 @@ describe SideFxEventService do
       travel_to Time.now do
         frozen_event = event.destroy
         expect { service.after_destroy(frozen_event, user) }
-          .to have_enqueued_job(LogActivityJob)
+          .to enqueue_job(LogActivityJob)
       end
     end
   end

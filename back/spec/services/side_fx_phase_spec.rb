@@ -12,7 +12,8 @@ describe SideFxPhaseService do
     it "logs a 'created' action when a phase is created" do
       expect(sfx_pc).to receive(:after_create).with(phase, user)
       expect { service.after_create(phase, user) }
-        .to have_enqueued_job(LogActivityJob).with(phase, 'created', user, phase.created_at.to_i)
+        .to have_enqueued_job(LogActivityJob)
+          .with(phase, 'created', user, phase.created_at.to_i, project_id: phase.project_id)
     end
 
     it 'runs the description through the necessary steps' do
@@ -35,7 +36,8 @@ describe SideFxPhaseService do
       phase.update(title_multiloc: { en: 'changed' })
       expect(sfx_pc).to receive(:after_update).with(phase, user)
       expect { service.after_update(phase, user) }
-        .to have_enqueued_job(LogActivityJob).with(phase, 'changed', user, phase.updated_at.to_i)
+        .to have_enqueued_job(LogActivityJob)
+          .with(phase, 'changed', user, phase.updated_at.to_i, project_id: phase.project_id)
     end
   end
 
