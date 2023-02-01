@@ -60,7 +60,7 @@
     "@sentry/react": "^7.14.1",
     "@sentry/tracing": "^7.14.1",
     "@tippyjs/react": "4.2.6",
-    "ajv": "^8.9.0",
+    "ajv": "^8.12.0",
     "bowser": "1.x",
     "canvas-to-blob": "^1.0.0",
     "canvg": "^4.0.0",
