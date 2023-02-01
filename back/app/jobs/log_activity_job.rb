@@ -11,8 +11,12 @@ class LogActivityJob < ApplicationJob
     # `options` hash (see `LogActivityJob#run`). This is done in the constructor because
     # it needs to happen before the job serialization. Otherwise, it would not be
     # feasible to determine the `project_id` for deleted items.
+    return super if kwargs.key?(:project_id)
+
     item = args.first
-    kwargs[:project_id] = item.try(:project_id) unless kwargs.key?(:project_id)
+    project_id = item.try(:project_id)
+    kwargs[:project_id] = project_id if project_id
+
     super(*args, **kwargs, &block)
   end
 
