@@ -88,6 +88,7 @@ const BuiltInFields = ({
           label={formatMessage(messages.locationDescription)}
           onClick={() => enableField('location_description')}
           disabled={!enabledBuiltInFieldKeys.includes('location_description')}
+          data-cy="e2e-location-item"
         />
       </DraggableElement>
       <DraggableElement>
