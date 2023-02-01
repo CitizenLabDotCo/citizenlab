@@ -17,7 +17,11 @@ class LogActivityJob < ApplicationJob
       kwargs[:project_id] = project_id if project_id
     end
 
-    super(*args, **kwargs, &block)
+    # Here, we make sure that an empty hash isn't artificially injected as kwargs if
+    # kwargs weren't originally provided. It would not be a big problem, but it could be
+    # confusing when writing tests with expectations about the arguments of enqueued
+    # jobs.
+    kwargs.present? ? super(*args, **kwargs, &block) : super(*args, &block)
   end
 
   def run(item, action, user, acted_at = Time.zone.now, options = {})
