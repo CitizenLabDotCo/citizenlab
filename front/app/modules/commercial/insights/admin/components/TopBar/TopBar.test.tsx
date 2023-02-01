@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
+import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import { deleteInsightsView } from 'modules/commercial/insights/services/insightsViews';
 import clHistory from 'utils/cl-router/history';
 
@@ -98,6 +98,14 @@ jest.mock('utils/cl-router/Link');
 
 jest.mock('utils/cl-router/history');
 
+jest.mock('react-transition-group', () => ({
+  ...jest.requireActual('react-transition-group'),
+  CSSTransition: ({ children }) => {
+    console.log('TEST');
+    return <>{children}</>;
+  },
+}));
+
 describe('Insights Top Bar', () => {
   it('renders Top Bar', () => {
     render(<TopBar />);
@@ -123,7 +131,7 @@ describe('Insights Top Bar', () => {
     );
   });
 
-  it('if multiple projects: renders Project dropdown with correct content', async () => {
+  it('if multiple projects: renders Project dropdown with correct content', () => {
     mockViewData = MOCK_VIEW_DATA_TWO_PROJECTS;
     render(<TopBar />);
     expect(screen.getByTestId('insightsProjectDropdown')).toBeInTheDocument();
@@ -134,20 +142,16 @@ describe('Insights Top Bar', () => {
     const dropdown = screen.getByTestId('insightsProjectDropdown');
     fireEvent.click(dropdown);
 
-    await waitFor(() => {
-      expect(screen.getByText('Test Project')).toBeInTheDocument();
-      expect(screen.getByText('Another Project')).toBeInTheDocument();
-
-      expect(screen.getByText('Test Project')).toHaveAttribute(
-        'href',
-        '/en/projects/test'
-      );
-
-      expect(screen.getByText('Another Project')).toHaveAttribute(
-        'href',
-        '/en/projects/test2'
-      );
-    });
+    expect(screen.getByText('Test Project')).toBeInTheDocument();
+    expect(screen.getByText('Another Project')).toBeInTheDocument();
+    expect(screen.getByText('Test Project')).toHaveAttribute(
+      'href',
+      '/en/projects/test'
+    );
+    expect(screen.getByText('Another Project')).toHaveAttribute(
+      'href',
+      '/en/projects/test2'
+    );
   });
 
   it('deletes view on menu item click', () => {
