@@ -17,6 +17,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   end
 
   def generate_for(fields)
+    # TODO: use the custom form instead (always use enabled fields)
     uses_pages = fields.any?(&:page?)
     return super(fields) unless uses_pages
 

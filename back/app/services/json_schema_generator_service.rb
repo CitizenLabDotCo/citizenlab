@@ -9,7 +9,7 @@ class JsonSchemaGeneratorService < FieldVisitorService
   end
 
   def generate_for(fields)
-    locales.index_with do |locale|
+    locales.index_with do |locale| # TODO: Why do we need a different form per locale?
       I18n.with_locale(locale) do
         generate_for_current_locale fields
       end

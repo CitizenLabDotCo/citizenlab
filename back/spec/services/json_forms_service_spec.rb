@@ -218,6 +218,9 @@ describe JsonFormsService do
   end
 
   context 'idea form fields' do
+    # TODO
+    # - Hide author and budget when not admin (in JsonFormsService)
+    # - Add author and budget when admin (in JsonFormsService)
     describe 'input_ui_and_json_multiloc_schemas' do
       it 'generates expected output for different kinds of fields' do
         config = AppConfiguration.instance

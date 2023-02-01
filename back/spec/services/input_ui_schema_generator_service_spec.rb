@@ -15,11 +15,6 @@ RSpec.describe InputUiSchemaGeneratorService do
   let(:field_key) { 'field_key' }
   let(:ui_schema) { generator.generate_for IdeaCustomFieldsService.new(custom_form).enabled_fields }
 
-  # TODO
-  # - Form with final empty section
-  # - Hide author and budget when not admin (in JsonFormsService)
-  # - Add author and budget when admin (in JsonFormsService)
-
   describe '#generate_for' do
     context 'for a continuous ideation project with a changed built-in field and an extra section and field' do
       let(:project) { create :continuous_project, input_term: input_term }
