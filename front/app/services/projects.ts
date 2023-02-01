@@ -359,6 +359,15 @@ export async function deleteProject(projectId: string) {
   return response;
 }
 
+export async function copyProject(projectId: string) {
+  const response = await streams.add(`${apiEndpoint}/${projectId}/copy`, {});
+
+  await streams.fetchAllWith({
+    apiEndpoint: [`${API_PATH}/projects`, `${API_PATH}/admin_publications`],
+  });
+  return response;
+}
+
 export function getProjectUrl(project: IProjectData) {
   return `/projects/${project.attributes.slug}`;
 }
