@@ -1,8 +1,21 @@
 import { CLErrorsJSON } from 'typings';
 import messages from './messages';
 
-export function isCLErrorJSON(error: any): error is CLErrorsJSON {
-  return !!(error && error.json && error.json.errors);
+export function isCLErrorJSON(value: unknown): value is CLErrorsJSON {
+  for (const prop of ['json', 'errors']) {
+    if (
+      typeof value === 'object' &&
+      !Array.isArray(value) &&
+      value !== null &&
+      value.hasOwnProperty(prop)
+    ) {
+      value = value[prop];
+    } else {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 // NB: initially I wated to pass in a translated field name to the generic error message but in most languages that won't work, not without hacky phrase building.
