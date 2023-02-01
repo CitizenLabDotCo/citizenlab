@@ -11,7 +11,10 @@ import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputs
 import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 import useScanInsightsCategory from 'modules/commercial/insights/hooks/useScanInsightsCategory';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import { useInputs } from 'modules/commercial/insights/api/inputs';
+import {
+  defaultPageSize,
+  useInputs,
+} from 'modules/commercial/insights/api/inputs';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 // components
@@ -132,7 +135,7 @@ const InputsTable = ({
     sort,
     processed,
     category: selectedCategory,
-    pageSize: 3,
+    pageSize: defaultPageSize,
   });
 
   const lastPage = inputs ? getPageNumberFromUrl(inputs.links?.last) : 1;
@@ -203,7 +206,7 @@ const InputsTable = ({
       hasToLoadPrevPage = pageNumber !== 1 && prevSelectedIndex === 0;
 
       return hasToLoadPrevPage
-        ? 3 - 1
+        ? defaultPageSize - 1
         : !isNilOrError(prevSelectedIndex)
         ? prevSelectedIndex - 1
         : prevSelectedIndex;

@@ -65,7 +65,7 @@ type InputsProps = {
   onPreviewInput: (input: IInsightsInputData) => void;
   inputs: IInsightsInputData[];
   loading: boolean;
-  hasMore: boolean | null;
+  hasMore?: boolean;
   onLoadMore: () => void;
 } & WithRouterProps &
   WrappedComponentProps;

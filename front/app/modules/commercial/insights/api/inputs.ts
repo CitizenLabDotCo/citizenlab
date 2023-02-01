@@ -1,12 +1,26 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useQuery,
+  useQueryClient,
+  useInfiniteQuery,
+} from '@tanstack/react-query';
 import { CLErrors, IRelationship } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
+import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 const inputKeys = {
   all: () => [{ type: 'input' }] as const,
   lists: () => [{ ...inputKeys.all()[0], entity: 'list' }] as const,
   list: (filters: QueryParameters) =>
     [{ ...inputKeys.all()[0], entity: 'list', ...filters }] as const,
+  infiniteList: (filters: InfiniteQueryParameters) =>
+    [
+      {
+        ...inputKeys.all()[0],
+        entity: 'list',
+        queryType: 'infinite',
+        ...filters,
+      },
+    ] as const,
   details: () => [{ ...inputKeys.all()[0], entity: 'detail' }] as const,
   detail: (id: string) =>
     [
@@ -89,6 +103,49 @@ export const useInputs = (viewId: string, queryParams: QueryParameters) => {
   return useQuery<IInsightsInputs, CLErrors, IInsightsInputs, InputKeys>({
     queryKey: inputKeys.list(queryParams),
     queryFn: () => fetchInputs(viewId, queryParams),
+  });
+};
+
+export type InfiniteQueryParameters = {
+  pageSize?: number;
+  pageNumber?: number;
+  search: string;
+  categories: string[];
+  keywords: string[];
+};
+
+const fetchInfiniteInputs = async (
+  viewId: string,
+  { pageNumber, pageSize, ...queryParams }: InfiniteQueryParameters
+) =>
+  fetcher<IInsightsInputs>({
+    path: `/insights/views/${viewId}/inputs`,
+    action: 'get',
+    queryParams: {
+      'page[number]': pageNumber || 1,
+      'page[size]': pageSize || defaultPageSize,
+      ...queryParams,
+    },
+  });
+
+export const useInfiniteInputs = (
+  viewId: string,
+  queryParams: InfiniteQueryParameters
+) => {
+  return useInfiniteQuery<
+    IInsightsInputs,
+    CLErrors,
+    IInsightsInputs,
+    InputKeys
+  >({
+    queryKey: inputKeys.infiniteList(queryParams),
+    queryFn: ({ pageParam }) =>
+      fetchInfiniteInputs(viewId, { ...queryParams, pageNumber: pageParam }),
+    getNextPageParam: (lastPage) => {
+      const hasNextPage = lastPage.links?.next;
+      const pageNumber = getPageNumberFromUrl(lastPage.links.self);
+      return hasNextPage && pageNumber ? pageNumber + 1 : null;
+    },
   });
 };
 

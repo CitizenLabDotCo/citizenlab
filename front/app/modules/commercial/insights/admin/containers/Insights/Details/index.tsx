@@ -21,7 +21,7 @@ import Preview from './Preview';
 import Navigation from 'modules/commercial/insights/admin/components/Navigation';
 
 // hooks
-import useInsightsInputsLoadMore from 'modules/commercial/insights/hooks/useInsightsInputsLoadMore';
+import { useInfiniteInputs } from 'modules/commercial/insights/api/inputs';
 
 // types
 import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
@@ -62,20 +62,18 @@ const DetailsInsightsView = ({
       ? [query.categories]
       : query.categories;
   const search = query.search;
+  console.log(search);
   const keywords: string[] =
     typeof query.keywords === 'string' ? [query.keywords] : query.keywords;
 
-  const {
-    list: inputs,
-    loading,
-    hasMore,
-    onLoadMore,
-  } = useInsightsInputsLoadMore(viewId, {
-    categories,
-    search,
-    keywords,
-  });
+  const { data, isFetchingNextPage, fetchNextPage, hasNextPage } =
+    useInfiniteInputs(viewId, {
+      categories,
+      search,
+      keywords,
+    });
 
+  const inputs = data?.pages.map((page) => page.data).flat();
   // Navigate to correct index when moving up and down
   useEffect(() => {
     if (
@@ -147,33 +145,33 @@ const DetailsInsightsView = ({
   return (
     <>
       <TopBar />
-      {!isNilOrError(inputs) && (
-        <Container data-testid="insightsDetails">
-          <Left>
-            {query.previewedInputId && (
-              <>
-                <Preview />
-                <Navigation
-                  moveUp={moveUp}
-                  moveDown={moveDown}
-                  isMoveUpDisabled={previewedInputIndex === 0}
-                  isMoveDownDisabled={isMoveDownDisabled}
-                />
-              </>
-            )}
-            <Categories>
-              <Network />
-            </Categories>
-          </Left>
+      <Container data-testid="insightsDetails">
+        <Left>
+          {query.previewedInputId && (
+            <>
+              <Preview />
+              <Navigation
+                moveUp={moveUp}
+                moveDown={moveDown}
+                isMoveUpDisabled={previewedInputIndex === 0}
+                isMoveDownDisabled={isMoveDownDisabled}
+              />
+            </>
+          )}
+          <Categories>
+            <Network />
+          </Categories>
+        </Left>
+        {!isNilOrError(inputs) && (
           <Inputs
-            hasMore={hasMore}
+            hasMore={hasNextPage}
             inputs={inputs}
-            loading={loading}
-            onLoadMore={onLoadMore}
+            loading={isFetchingNextPage}
+            onLoadMore={fetchNextPage}
             onPreviewInput={onPreviewInput}
           />
-        </Container>
-      )}
+        )}
+      </Container>
     </>
   );
 };
