@@ -20,9 +20,8 @@ import Navigation, {
 
 // hooks
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
-import useInsightsInput from 'modules/commercial/insights/hooks/useInsightsInput';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-
+import { useInput } from 'modules/commercial/insights/api/inputs';
 // styles
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
@@ -126,7 +125,7 @@ const InputDetails = ({
 
   const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
   const categories = useInsightsCategories(viewId);
-  const previewedInput = useInsightsInput(viewId, previewedInputId);
+  const { data: previewedInput } = useInput(viewId, previewedInputId);
 
   // Loading state
   if (previewedInput === undefined) {
@@ -141,13 +140,14 @@ const InputDetails = ({
     return null;
   }
 
-  const ideaId = previewedInput.relationships?.source.data.id;
+  const ideaId = previewedInput.data.relationships?.source.data.id;
 
   const options = categories
     // Filter out already selected categories
     .filter((category) => {
-      const selectedCategoriesIds = previewedInput.relationships?.categories
-        ? previewedInput.relationships?.categories.data.map(
+      const selectedCategoriesIds = previewedInput.data.relationships
+        ?.categories
+        ? previewedInput.data.relationships?.categories.data.map(
             (category) => category.id
           )
         : [];
@@ -164,7 +164,11 @@ const InputDetails = ({
     setLoading(true);
 
     try {
-      await addInsightsInputCategory(viewId, previewedInput.id, option.value);
+      await addInsightsInputCategory(
+        viewId,
+        previewedInput.data.id,
+        option.value
+      );
       setSelectedOption(null);
       selectRef.current?.blur();
     } catch {
@@ -181,7 +185,11 @@ const InputDetails = ({
         insightsViewId: viewId,
         name: value,
       });
-      await addInsightsInputCategory(viewId, previewedInput.id, result.data.id);
+      await addInsightsInputCategory(
+        viewId,
+        previewedInput.data.id,
+        result.data.id
+      );
       setSelectedOption(null);
     } catch {
       // Do nothing
@@ -223,12 +231,12 @@ const InputDetails = ({
       <Container data-testid="insightsInputDetails">
         {nlpFeatureFlag && (
           <CategoryList>
-            {previewedInput.relationships?.suggested_categories.data.map(
+            {previewedInput.data.relationships?.suggested_categories.data.map(
               (category) => (
                 <Category
                   id={category.id}
                   key={category.id}
-                  inputId={previewedInput.id}
+                  inputId={previewedInput.data.id}
                   variant="suggested"
                   size="large"
                 />
@@ -258,14 +266,16 @@ const InputDetails = ({
           </div>
         </FormContainer>
         <CategoryList>
-          {previewedInput.relationships?.categories.data.map((category) => (
-            <Category
-              id={category.id}
-              key={category.id}
-              inputId={previewedInput.id}
-              variant="approved"
-            />
-          ))}
+          {previewedInput.data.relationships?.categories.data.map(
+            (category) => (
+              <Category
+                id={category.id}
+                key={category.id}
+                inputId={previewedInput.data.id}
+                variant="approved"
+              />
+            )
+          )}
           {loading && <StyledSpinner color={colors.success} size="24px" />}
         </CategoryList>
         {ideaId && <Idea ideaId={ideaId} />}

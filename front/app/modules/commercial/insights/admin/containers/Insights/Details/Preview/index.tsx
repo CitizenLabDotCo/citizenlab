@@ -2,10 +2,9 @@ import React, { useRef, useEffect } from 'react';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
-import useInsightsInput from 'modules/commercial/insights/hooks/useInsightsInput';
 import { Spinner } from '@citizenlab/cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
-
+import { useInput } from 'modules/commercial/insights/api/inputs';
 // styles
 import styled from 'styled-components';
 
@@ -40,7 +39,7 @@ const Preview = ({
   params: { viewId },
   location: { query, pathname },
 }: WithRouterProps) => {
-  const previewedInput = useInsightsInput(viewId, query.previewedInputId);
+  const { data: previewedInput } = useInput(viewId, query.previewedInputId);
   const previewRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -85,11 +84,11 @@ const Preview = ({
         />
       </div>
       <CategoryList>
-        {previewedInput.relationships?.categories.data.map((category) => (
+        {previewedInput.data.relationships?.categories.data.map((category) => (
           <Category
             id={category.id}
             key={category.id}
-            inputId={previewedInput.id}
+            inputId={previewedInput.data.id}
             variant="approved"
             withAction={false}
           />

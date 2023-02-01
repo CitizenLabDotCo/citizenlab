@@ -8,7 +8,6 @@ import clHistory from 'utils/cl-router/history';
 import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';
 
 // hooks
-import { defaultPageSize } from 'modules/commercial/insights/hooks/useInsightsInputs';
 import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 import useScanInsightsCategory from 'modules/commercial/insights/hooks/useScanInsightsCategory';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -177,21 +176,21 @@ const InputsTable = ({
     if (
       !isNilOrError(inputs) &&
       !isNilOrError(previewedInputIndex) &&
-      !isNilOrError(inputs[previewedInputIndex]) &&
+      !isNilOrError(inputs.data[previewedInputIndex]) &&
       movedUpDown &&
       !isLoading
     ) {
+      setMovedUpDown(false);
       clHistory.replace({
         pathname,
         search: stringify(
           {
             ...query,
-            previewedInputId: inputs[previewedInputIndex].id,
+            previewedInputId: inputs.data[previewedInputIndex].id,
           },
           { addQueryPrefix: true }
         ),
       });
-      setMovedUpDown(false);
     }
   }, [inputs, pathname, previewedInputIndex, query, movedUpDown, isLoading]);
 
@@ -204,7 +203,7 @@ const InputsTable = ({
       hasToLoadPrevPage = pageNumber !== 1 && prevSelectedIndex === 0;
 
       return hasToLoadPrevPage
-        ? defaultPageSize - 1
+        ? 3 - 1
         : !isNilOrError(prevSelectedIndex)
         ? prevSelectedIndex - 1
         : prevSelectedIndex;
@@ -230,7 +229,6 @@ const InputsTable = ({
 
   const moveDown = useCallback(() => {
     let hasToLoadNextPage = false;
-
     setPreviewedInputIndex((prevSelectedIndex) => {
       hasToLoadNextPage = !isNilOrError(inputs)
         ? lastPage !== pageNumber && isPreviewedInputInTable.current

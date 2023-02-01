@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { CLErrors, IRelationship } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 
@@ -57,37 +57,53 @@ export type QueryParameters = {
   sort?: 'approval' | '-approval';
 };
 
+export const defaultPageSize = 20;
+
 const fetchInputs = async (
-  id: string,
+  viewId: string,
   { pageNumber, pageSize, category, ...queryParams }: QueryParameters
 ) =>
   fetcher<IInsightsInputs>({
-    path: `/insights/views/${id}/inputs`,
+    path: `/insights/views/${viewId}/inputs`,
     action: 'get',
     queryParams: {
       'page[number]': pageNumber || 1,
-      'page[size]': pageSize || 20,
+      'page[size]': pageSize || defaultPageSize,
       categories: typeof category === 'string' ? [category] : undefined,
       ...queryParams,
     },
   });
 
 export const useInputs = (viewId: string, queryParams: QueryParameters) => {
+  const queryClient = useQueryClient();
+
+  const prefetchParams = {
+    ...queryParams,
+    pageNumber: queryParams.pageNumber + 1,
+  };
+  queryClient.prefetchQuery({
+    queryKey: inputKeys.list(prefetchParams),
+    queryFn: () => fetchInputs(viewId, prefetchParams),
+  });
+
   return useQuery<IInsightsInputs, CLErrors, IInsightsInputs, InputKeys>({
     queryKey: inputKeys.list(queryParams),
     queryFn: () => fetchInputs(viewId, queryParams),
   });
 };
 
-// const fetchView = (id: string) =>
-//   fetcher<IInsightsView>({ path: `/insights/views/${id}`, action: 'get' });
+const fetchInput = (viewId: string, id: string) =>
+  fetcher<IInsightsInput>({
+    path: `/insights/views/${viewId}/inputs/${id}`,
+    action: 'get',
+  });
 
-// export const useView = (id: string) => {
-//   return useQuery<IInsightsView, CLErrors, IInsightsView, ViewKeys>({
-//     queryKey: viewKeys.detail(id),
-//     queryFn: () => fetchView(id),
-//   });
-// };
+export const useInput = (viewId: string, id: string) => {
+  return useQuery<IInsightsInput, CLErrors, IInsightsInput, InputKeys>({
+    queryKey: inputKeys.detail(id),
+    queryFn: () => fetchInput(viewId, id),
+  });
+};
 
 // const createView = async (requestBody: IInsightsViewObject) =>
 //   fetcher<IInsightsView>({
