@@ -79,8 +79,8 @@ describe('Input form builder', () => {
     );
 
     // verify that image and file upload components are present
-    cy.get('#e2e-idea-image-upload');
-    cy.get('#e2e-idea-file-upload');
+    cy.get('#e2e-idea-image-upload').should('exist');
+    cy.get('#e2e-idea-file-upload').should('exist');
 
     // save the form
     cy.get('.e2e-submit-idea-form').click();
@@ -157,8 +157,8 @@ describe('Input form builder', () => {
     cy.get(`#properties${questionTitle}`).type(answer, { force: true });
 
     // verify that image and file upload components are present
-    cy.get('#e2e-idea-image-upload');
-    cy.get('#e2e-idea-file-upload');
+    cy.get('#e2e-idea-image-upload').should('exist');
+    cy.get('#e2e-idea-file-upload').should('exist');
 
     // save the form
     cy.get('.e2e-submit-idea-form').click();
