@@ -42,7 +42,7 @@ import useInsightsCategories from 'modules/commercial/insights/hooks/useInsights
 import useInsightsInputsCount from 'modules/commercial/insights/hooks/useInsightsInputsCount';
 
 const InputsContainer = styled.div`
-  flex: 0 0 420px;
+  flex: 0 0 500px;
   padding: 12px 20px 0px 20px;
   height: 100%;
   background-color: ${colors.grey200};
@@ -154,7 +154,12 @@ const Inputs = ({
 
   return (
     <InputsContainer data-testid="insightsDetailsInputs">
-      <Box display="flex" justifyContent="space-between" alignItems="center">
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        minHeight="48px"
+      >
         <SectionTitle>
           {formatMessage(messages.inputsSectionTitle)}
           {!isNilOrError(inputsCount) && (
