@@ -17,7 +17,7 @@ describe ActivitiesService do
 
       expect { service.create_periodic_activities(now: now) }
         .to have_enqueued_job(LogActivityJob)
-          .with(phase, 'started', nil, start_at.to_time.to_i, project_id: phase.project_id)
+        .with(phase, 'started', nil, start_at.to_time.to_i, project_id: phase.project_id)
     end
 
     it "doesn't log phase started activity when no new phase starts (in the application timezone)" do
@@ -44,7 +44,7 @@ describe ActivitiesService do
 
       expect { service.create_periodic_activities(now: now) }
         .to have_enqueued_job(LogActivityJob)
-          .with(phase, 'upcoming', nil, now.to_i, project_id: phase.project_id)
+        .with(phase, 'upcoming', nil, now.to_i, project_id: phase.project_id)
     end
 
     it "doesn't log phase upcoming activity when no new phase starts in a week (in the application timezone)" do

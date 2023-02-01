@@ -12,11 +12,11 @@ describe SideFxIdeaService do
 
       expect { service.after_create(idea, user) }
         .to enqueue_job(LogActivityJob)
-          .with(idea, 'published', user, idea.created_at.to_i, project_id: idea.project_id)
-          .exactly(1).times
+        .with(idea, 'published', user, idea.created_at.to_i, project_id: idea.project_id)
+        .exactly(1).times
         .and enqueue_job(LogActivityJob)
-          .with(idea, 'first_published_by_user', user, idea.created_at.to_i, project_id: idea.project_id)
-          .exactly(1).times
+        .with(idea, 'first_published_by_user', user, idea.created_at.to_i, project_id: idea.project_id)
+        .exactly(1).times
         .and enqueue_job(Seo::ScrapeFacebookJob).exactly(1).times
     end
 
@@ -41,11 +41,11 @@ describe SideFxIdeaService do
 
       expect { service.after_update(idea, user) }
         .to enqueue_job(LogActivityJob)
-          .with(idea, 'published', user, idea.published_at.to_i, project_id: idea.project_id)
-          .exactly(1).times
+        .with(idea, 'published', user, idea.published_at.to_i, project_id: idea.project_id)
+        .exactly(1).times
         .and enqueue_job(LogActivityJob)
-          .with(idea, 'first_published_by_user', user, idea.published_at.to_i, project_id: idea.project_id)
-          .exactly(1).times
+        .with(idea, 'first_published_by_user', user, idea.published_at.to_i, project_id: idea.project_id)
+        .exactly(1).times
     end
 
     it "logs a 'changed' action job when the idea has changed" do

@@ -6,13 +6,13 @@ describe SideFxCommentService do
   let(:service) { described_class.new }
   let(:user) { create(:user) }
   let(:comment) { create(:comment) }
-  let(:project_id) { comment.post.project_id}
+  let(:project_id) { comment.post.project_id }
 
   describe 'after_create' do
     it "logs a 'created' action when a comment is created" do
       expect { service.after_create(comment, user) }
         .to enqueue_job(LogActivityJob)
-          .with(comment, 'created', user, comment.updated_at.to_i, project_id: project_id)
+        .with(comment, 'created', user, comment.updated_at.to_i, project_id: project_id)
     end
 
     it "logs a 'mentioned' action for every expanded mention" do
@@ -40,7 +40,7 @@ describe SideFxCommentService do
       comment.update(body_multiloc: { en: 'changed' })
       expect { service.after_update(comment, user) }
         .to enqueue_job(LogActivityJob)
-          .with(comment, 'changed', user, comment.updated_at.to_i, project_id: project_id)
+        .with(comment, 'changed', user, comment.updated_at.to_i, project_id: project_id)
     end
 
     it "logs a 'mentioned' action for every added mention" do
