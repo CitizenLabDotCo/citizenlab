@@ -46,7 +46,7 @@ export const parseTimeSeries = (
   resolution: IResolution,
   total: Response['data'][1]
 ): TimeSeries | null => {
-  let timeSeries = _parseTimeSeries(
+  const timeSeries = _parseTimeSeries(
     responseTimeSeries,
     startAtMoment,
     endAtMoment,

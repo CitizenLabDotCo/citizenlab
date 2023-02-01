@@ -248,7 +248,7 @@ export function calculateCumulativeSerie<SerieRow extends RowWithDate>(
   globalTotal: number,
   getTotal: (s: SerieRow) => number
 ) {
-  serie = orderBy(
+  let timeSerie = orderBy(
     serie,
     (row: SerieRow) => {
       return moment(row.date).format('YYYYMMDD');
@@ -257,7 +257,7 @@ export function calculateCumulativeSerie<SerieRow extends RowWithDate>(
   );
 
   let totalCount = globalTotal;
-  serie = serie
+  timeSerie = timeSerie
     .map((row) => {
       const _totalCount = totalCount;
       totalCount = totalCount - getTotal(row);
@@ -268,5 +268,5 @@ export function calculateCumulativeSerie<SerieRow extends RowWithDate>(
     })
     .reverse();
 
-  return serie;
+  return timeSerie;
 }
