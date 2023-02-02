@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.authors     = ['CitizenLab']
   spec.summary     = 'Smart Groups'
   spec.description = 'Users can automatically be assigned to a group based on certain criteria.'
-  spec.licenses    = ['CitizenLab Commercial License V1']
+  spec.licenses    = ['CitizenLab Commercial License V2']
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
