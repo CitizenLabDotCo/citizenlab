@@ -72,7 +72,7 @@ describe('Input form builder', () => {
     )
       .first()
       .click();
-    cy.wait(500);
+
     cy.get('.e2e-idea-form-location-input-field input').should(
       'contain.value',
       'Belgium'
@@ -84,7 +84,6 @@ describe('Input form builder', () => {
 
     // save the form
     cy.get('.e2e-submit-idea-form').click();
-    cy.wait(3000);
 
     // verify the content of the newly created idea page
     cy.location('pathname').should('eq', `/en/ideas/${ideaTitle}`);
