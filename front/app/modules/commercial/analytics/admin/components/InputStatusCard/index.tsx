@@ -13,16 +13,20 @@ import styled from 'styled-components';
 import { fontSizes, media } from 'utils/styleUtils';
 
 // i18n
-import hookMessages from '../../hooks/usePostsFeedback/messages';
+import hookMessages from './usePostsFeedback/messages';
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
 // hooks
-import usePostsFeedback from '../../hooks/usePostsFeedback';
+import usePostsFeedback from './usePostsFeedback';
 
 // typings
 import { isNilOrError } from 'utils/helperUtils';
-import { ProjectId, Dates, Resolution } from '../../typings';
+import {
+  ProjectId,
+  Dates,
+  Resolution,
+} from 'components/admin/GraphCards/typings';
 
 type Props = ProjectId & Dates & Resolution;
 

@@ -42,7 +42,7 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
     topicIds,
     areaIds,
     publicationStatusFilter,
-    rootLevelOnly: true,
+    rootLevelOnly: false,
     removeNotAllowedParents: true,
     onlyProjects: true,
   });
@@ -52,7 +52,7 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
       topicIds,
       areaIds,
       publicationStatusFilter,
-      rootLevelOnly: true,
+      rootLevelOnly: false,
       removeNotAllowedParents: true,
       onlyProjects: true,
     });

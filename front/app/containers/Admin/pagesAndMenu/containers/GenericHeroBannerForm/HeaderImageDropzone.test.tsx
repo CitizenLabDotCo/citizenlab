@@ -79,7 +79,7 @@ describe('HeaderImageDropzone', () => {
       <HeaderImageDropzone
         overlayColor={'#fff'}
         overlayOpacity={90}
-        header_bg={[mockUploadFile]}
+        header_bg={mockUploadFile}
         previewDevice="desktop"
         layout="full_width_banner_layout"
         onAdd={jest.fn()}

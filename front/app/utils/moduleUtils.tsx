@@ -7,7 +7,14 @@ import { OutletRenderProps } from 'components/Outlet';
 import { ITabItem } from 'components/UI/Tabs';
 import { GroupCreationModal } from 'containers/Admin/users';
 import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
-import { castArray, clamp, isNil, mergeWith, omitBy } from 'lodash-es';
+import {
+  castArray,
+  clamp,
+  isNil,
+  mergeWith,
+  omitBy,
+  cloneDeep,
+} from 'lodash-es';
 import { IProjectData } from 'services/projects';
 
 import { ManagerType } from 'components/admin/PostManager';
@@ -39,7 +46,7 @@ import {
   Multiloc,
 } from 'typings';
 import { IntlFormatters } from 'react-intl';
-import { StatCardProps } from '../modules/commercial/analytics/admin/hooks/useStatCard/typings';
+import { StatCardProps } from '../modules/commercial/analytics/admin/components/StatCard/useStatCard/typings';
 
 export type ITabsOutlet = {
   formatMessage: IntlFormatters['formatMessage'];
@@ -252,6 +259,13 @@ export interface OutletsPropertyMap {
     flow: TSignUpInFlow;
     onContinue: (authProvider: AuthProvider) => void;
   };
+  'app.containers.Admin.projects.edit.general.components.TopicInputs.tooltipExtraCopy': Record<
+    string,
+    any
+  >;
+  'app.containers.Admin.reporting.components.Tabs': {
+    onData: (tabs: ITab[]) => void;
+  };
 }
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
@@ -292,6 +306,7 @@ interface Routes {
   'admin.dashboards': RouteConfiguration[];
   'admin.project_templates': RouteConfiguration[];
   'admin.settings': RouteConfiguration[];
+  'admin.reporting': RouteConfiguration[];
 }
 
 export interface ParsedModuleConfiguration {
@@ -419,6 +434,10 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
         mergedRoutes?.['admin.settings'],
         RouteTypes.ADMIN
       ),
+      'admin.reporting': parseModuleRoutes(
+        mergedRoutes?.['admin.reporting'],
+        RouteTypes.ADMIN
+      ),
     },
     beforeMountApplication: callLifecycleMethods('beforeMountApplication'),
     afterMountApplication: callLifecycleMethods('afterMountApplication'),
@@ -438,11 +457,12 @@ export const insertConfiguration =
     insertBeforeName,
   }: InsertConfigurationOptions<T>) =>
   (items: T[]): T[] => {
-    const itemAlreadyInserted = items.some(
+    const itemsClone = cloneDeep(items);
+    const itemAlreadyInserted = itemsClone.some(
       (item) => item.name === configuration.name
     );
     // index of item where we need to insert before/after
-    const referenceIndex = items.findIndex(
+    const referenceIndex = itemsClone.findIndex(
       (item) => item.name === (insertAfterName || insertBeforeName)
     );
     const insertIndex = clamp(
@@ -451,17 +471,37 @@ export const insertConfiguration =
       // number is kept
       insertAfterName ? referenceIndex + 1 : referenceIndex,
       0,
-      items.length
+      itemsClone.length
     );
+    const itemAtInsertIndex = itemsClone[insertIndex];
+    const isItemInsertedBefore =
+      itemAlreadyInserted &&
+      insertBeforeName &&
+      insertIndex &&
+      itemAtInsertIndex.name === insertBeforeName &&
+      itemsClone[insertIndex - 1].name === configuration.name;
+    const isItemInsertedAfter =
+      itemAlreadyInserted &&
+      insertAfterName &&
+      itemAtInsertIndex &&
+      itemAtInsertIndex.name === insertAfterName;
+
+    // If item is already inserted then let's not do anything
+    if (isItemInsertedBefore || isItemInsertedAfter) {
+      return itemsClone;
+    }
 
     if (itemAlreadyInserted) {
-      items.splice(insertIndex, 1);
+      itemsClone.splice(
+        itemsClone.findIndex((item) => item.name === configuration.name),
+        1
+      );
     }
 
     const newItems = [
-      ...items.slice(0, insertIndex),
+      ...itemsClone.slice(0, insertIndex),
       configuration,
-      ...items.slice(insertIndex),
+      ...itemsClone.slice(insertIndex),
     ];
 
     return newItems;

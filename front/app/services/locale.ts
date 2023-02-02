@@ -41,7 +41,9 @@ import { locales } from 'containers/App/constants';
 import { setCookieLocale, getCookieLocale } from 'utils/localeCookie';
 import clHistory from 'utils/cl-router/history';
 
-const LocaleSubject: BehaviorSubject<Locale> = new BehaviorSubject(null as any);
+export const LocaleSubject: BehaviorSubject<Locale> = new BehaviorSubject(
+  null as any
+);
 const $tenantLocales = currentAppConfigurationStream().observable.pipe(
   map((tenant) => get(tenant, 'data.attributes.settings.core.locales')),
   distinctUntilChanged((prev, next) => !isEqual(prev, next))

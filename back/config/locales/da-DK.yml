@@ -208,3 +208,5 @@ da:
     survey_end_page:
       title: 'Undersøgelse slut'
       description: "Indsend dine svar ved at vælge \"Indsend undersøgelse\" nedenfor."
+  project_copy:
+    title_suffix: 'Kopi'

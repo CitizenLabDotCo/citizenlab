@@ -36,9 +36,9 @@ import eventsWidgetConfiguration from './commercial/events_widget';
 
 import insightsConfiguration from './commercial/insights';
 import analyticsConfiguration from './commercial/analytics';
+import representativenessConfiguration from './commercial/representativeness';
 
 import idViennaSamlConfiguration from './commercial/id_vienna_saml';
-import representativenessConfiguration from './commercial/representativeness';
 
 // eslint-disable-next-line no-var
 declare var CITIZENLAB_EE: string;

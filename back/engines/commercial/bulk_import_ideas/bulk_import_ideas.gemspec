@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.version     = BulkImportIdeas::VERSION
   spec.authors     = ['CitizenLab']
   spec.email       = ['developers@citizenlab.co']
-  spec.licenses    = ['CitizenLab Commercial License V1']
+  spec.licenses    = ['CitizenLab Commercial License V2']
   spec.summary     = 'Create many ideas at once by importing an XLSX sheet.'
 
   spec.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']

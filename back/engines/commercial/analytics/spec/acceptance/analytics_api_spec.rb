@@ -85,5 +85,23 @@ resource 'Analytics', use_transactional_fixtures: false do
         assert_status 401
       end
     end
+
+    context 'when moderator' do
+      before do
+        @project = create(:project)
+        @moderator = create(:project_moderator, projects: [@project])
+        token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
+        header 'Authorization', "Bearer #{token}"
+      end
+
+      example 'handles single query' do
+        do_request(query: {
+          fact: 'post',
+          aggregations: { all: 'count' }
+        })
+        assert_status 200
+        expect(response_data).to eq([{ count: 1 }])
+      end
+    end
   end
 end
