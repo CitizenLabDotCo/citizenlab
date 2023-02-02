@@ -84,6 +84,7 @@ jest.mock('hooks/useProject', () => {
 });
 
 jest.mock('hooks/useLocale');
+jest.mock('hooks/useLocalize');
 
 jest.mock('utils/cl-router/withRouter', () => {
   return {
@@ -97,14 +98,6 @@ jest.mock('utils/cl-router/withRouter', () => {
 jest.mock('utils/cl-router/Link');
 
 jest.mock('utils/cl-router/history');
-
-jest.mock('react-transition-group', () => ({
-  ...jest.requireActual('react-transition-group'),
-  CSSTransition: ({ children }) => {
-    console.log('TEST');
-    return <>{children}</>;
-  },
-}));
 
 describe('Insights Top Bar', () => {
   it('renders Top Bar', () => {
