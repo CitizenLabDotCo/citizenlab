@@ -3,21 +3,21 @@
 module Analytics
   class AnalyticsPolicy < ::ApplicationPolicy
     def index?
-      admin?
+      admin_or_moderator?
     end
 
     def create?
-      admin?
+      admin_or_moderator?
     end
 
     def schema?
-      admin?
+      admin_or_moderator?
     end
 
     private
 
-    def admin
-      user&.active? && user&.admin?
+    def admin_or_moderator?
+      user&.active? && (user&.admin? || user&.project_moderator?)
     end
   end
 end

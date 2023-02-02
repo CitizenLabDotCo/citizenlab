@@ -60,6 +60,7 @@ const Description = styled.div<{ maxHeight: number }>`
   position: relative;
   max-height: ${(props) => props.maxHeight}px;
   overflow: hidden;
+  margin-bottom: 28px;
 
   &.expanded {
     max-height: none;

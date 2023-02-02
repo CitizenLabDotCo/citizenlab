@@ -4,7 +4,7 @@ import React from 'react';
 import { useNode, useEditor } from '@craftjs/core';
 
 // components
-import { Radio, Box, Title, Input } from '@citizenlab/cl2-component-library';
+import { Radio, Box, Input, Label } from '@citizenlab/cl2-component-library';
 import ButtonComponent from 'components/UI/Button';
 
 // styles
@@ -92,11 +92,7 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
       <Box flex="0 0 100%">
         <Input
           id="e2e-button-text-input"
-          label={
-            <Title variant="h4" as="h3">
-              {formatMessage(messages.buttonText)}
-            </Title>
-          }
+          label={formatMessage(messages.buttonText)}
           placeholder={formatMessage(messages.button)}
           type="text"
           value={text}
@@ -105,14 +101,10 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
           }}
         />
       </Box>
-      <Box flex="0 0 100%">
+      <Box flex="0 0 100%" mt="16px">
         <Input
           id="e2e-button-url-input"
-          label={
-            <Title variant="h4" as="h3">
-              {formatMessage(messages.buttonUrl)}
-            </Title>
-          }
+          label={formatMessage(messages.buttonUrl)}
           placeholder={formatMessage(sharedMessages.urlPlaceholder)}
           type="text"
           value={url}
@@ -121,9 +113,9 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
           }}
         />
       </Box>
-      <Title variant="h4" as="h3">
-        {formatMessage(messages.buttonTypeRadioLabel)}
-      </Title>
+      <Box mt="16px">
+        <Label>{formatMessage(messages.buttonTypeRadioLabel)}</Label>
+      </Box>
       <Radio
         onChange={(value) => {
           setProp((props) => (props.type = value));
@@ -166,9 +158,9 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
         }
         isRequired
       />
-      <Title variant="h4" as="h3">
-        {formatMessage(messages.buttonAlignmentRadioLabel)}
-      </Title>
+      <Box mt="16px">
+        <Label>{formatMessage(messages.buttonAlignmentRadioLabel)}</Label>
+      </Box>
       <Radio
         onChange={(value) => {
           setProp((props) => (props.alignment = value));

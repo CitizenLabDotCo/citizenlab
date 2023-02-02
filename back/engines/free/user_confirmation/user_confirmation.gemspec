@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.name        = 'user_confirmation'
   spec.version     = UserConfirmation::VERSION
   spec.authors     = ['CitizenLab']
-  spec.licenses    = ['AGPLv3']
+  spec.licenses    = ['CitizenLab Commercial License V2']
   spec.summary     = 'Add email and phone confirmation functionality to users.'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'

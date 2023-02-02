@@ -53,7 +53,7 @@ export interface ICustomPageAttributes extends ICustomPageEnabledSettings {
   title_multiloc: Multiloc;
   top_info_section_multiloc: Multiloc;
   slug: string;
-  banner_layout: THomepageBannerLayout | null;
+  banner_layout: THomepageBannerLayout;
   banner_overlay_color: string | null;
   banner_overlay_opacity: number | null;
   banner_cta_button_multiloc: Multiloc;

@@ -1,4 +1,4 @@
-import { randomString } from '../support/commands';
+import { randomString, randomEmail } from '../support/commands';
 import { skipOn } from '@cypress/skip-test';
 
 describe('Existing continuous project with survey', () => {
@@ -227,6 +227,41 @@ describe('Archived continuous project with survey', () => {
   it('does not show the survey or survey buttons', () => {
     cy.contains('Take the survey').should('not.exist');
     cy.contains('1 survey').should('not.exist');
+  });
+
+  after(() => {
+    cy.apiRemoveProject(projectId);
+  });
+});
+
+describe('Embedded survey CTA', () => {
+  const projectTitle = randomString();
+  const projectDescription = randomString();
+  const projectDescriptionPreview = randomString(30);
+  let projectId: string;
+  let projectSlug: string;
+
+  before(() => {
+    cy.setAdminLoginCookie();
+    cy.apiCreateProject({
+      type: 'continuous',
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: projectDescription,
+      publicationStatus: 'published',
+      participationMethod: 'survey',
+      surveyUrl: 'https://citizenlabco.typeform.com/to/Yv6B7V',
+      surveyService: 'typeform',
+    }).then((project) => {
+      projectId = project.body.data.id;
+      projectSlug = project.body.data.attributes.slug;
+    });
+  });
+
+  it('shows the CTA button on visting the project page of an active survey project', () => {
+    cy.visit(`/en/projects/${projectSlug}`);
+    cy.acceptCookies();
+    cy.get('#e2e-take-survey-button').should('exist');
   });
 
   after(() => {

@@ -208,3 +208,5 @@ lv:
     survey_end_page:
       title: 'Survey end'
       description: "Please submit your answers by selecting 'Submit survey' below."
+  project_copy:
+    title_suffix: 'Kopija'

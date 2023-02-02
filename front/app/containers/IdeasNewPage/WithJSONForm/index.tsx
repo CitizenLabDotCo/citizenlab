@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState, useCallback } from 'react';
 import { PreviousPathnameContext } from 'context';
-import { useSearchParams } from 'react-router-dom';
 
 import { WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
@@ -14,6 +13,7 @@ import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import usePhase from 'hooks/usePhase';
 import useInputSchema from 'hooks/useInputSchema';
+import useURLQuery from 'utils/cl-router/useUrlQuery';
 
 import messages from '../messages';
 
@@ -37,8 +37,8 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
   const authUser = useAuthUser();
   const project = useProject({ projectSlug: params.slug });
-  const [searchParams] = useSearchParams();
-  const phaseId = searchParams.get('phase_id');
+  const queryParams = useURLQuery();
+  const phaseId = queryParams.get('phase_id');
 
   const phases = usePhases(project?.id);
   const { schema, uiSchema, inputSchemaError } = useInputSchema({
@@ -123,7 +123,6 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
       !isNilOrError(phases)
     ) {
       // Check if URL contains specific phase_id
-      const queryParams = new URLSearchParams(window.location.search);
       const phaseIdFromUrl = queryParams.get('phase_id');
       const phaseUsed =
         phases.find((phase) => phase.id === phaseIdFromUrl) ||
