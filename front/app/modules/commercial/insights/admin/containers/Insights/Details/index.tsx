@@ -145,24 +145,25 @@ const DetailsInsightsView = ({
   return (
     <>
       <TopBar />
-      <Container data-testid="insightsDetails">
-        <Left>
-          {query.previewedInputId && (
-            <>
-              <Preview />
-              <Navigation
-                moveUp={moveUp}
-                moveDown={moveDown}
-                isMoveUpDisabled={previewedInputIndex === 0}
-                isMoveDownDisabled={isMoveDownDisabled}
-              />
-            </>
-          )}
-          <Categories>
-            <Network />
-          </Categories>
-        </Left>
-        {!isNilOrError(inputs) && (
+      {!isNilOrError(inputs) && (
+        <Container data-testid="insightsDetails">
+          <Left>
+            {query.previewedInputId && (
+              <>
+                <Preview />
+                <Navigation
+                  moveUp={moveUp}
+                  moveDown={moveDown}
+                  isMoveUpDisabled={previewedInputIndex === 0}
+                  isMoveDownDisabled={isMoveDownDisabled}
+                />
+              </>
+            )}
+            <Categories>
+              <Network />
+            </Categories>
+          </Left>
+
           <Inputs
             hasMore={hasNextPage}
             inputs={inputs}
@@ -170,8 +171,8 @@ const DetailsInsightsView = ({
             onLoadMore={fetchNextPage}
             onPreviewInput={onPreviewInput}
           />
-        )}
-      </Container>
+        </Container>
+      )}
     </>
   );
 };
