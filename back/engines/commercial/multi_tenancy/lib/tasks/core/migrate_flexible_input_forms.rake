@@ -17,6 +17,10 @@
 # 11 with 5 - missing budget and (files or location)
 
 # 133 with 6 - missing budget - this code will create budget fields but not enabled
+#
+# For all of these - the current site behaviour is whatever is missing just displays the default
+#
+# Rest all have 7 fields
 
 # to persist changes run: fix_existing_tenants:migrate_flexible_input_forms[true]
 # to persist changes for one host run: fix_existing_tenants:migrate_flexible_input_forms[true,localhost]
@@ -127,8 +131,6 @@ class FlexibleInputFormMigrator
     default_fields = participation_method.default_fields(custom_form)
     constraints = participation_method.constraints
     updated_fields = []
-    
-    # TODO: It updated 1 on second run. title_multiloc ordering Why?? Ordering gem?
 
     # Merge existing fields with same code as defaults
     default_fields.each do |default_field|
@@ -152,7 +154,8 @@ class FlexibleInputFormMigrator
   end
 
   # Fix ordering in the context of a form, not of the platform
-  # TODO: There is a helper method somewhere to do this, but can't find it 
+  # TODO: There is a helper method somewhere to do this, but can't find it
+  #     # TODO: It updated 1 on second run for stadt_gent. title_multiloc ordering Why?? Ordering gem?
     # Others have raised concern about the ordering gem and this seems to work
   def fix_ordering(fields)
     fields.each_with_index do |field, index|
