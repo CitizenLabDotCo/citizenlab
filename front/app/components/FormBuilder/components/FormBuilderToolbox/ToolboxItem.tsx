@@ -71,9 +71,8 @@ const ToolboxItem = ({
       placement={'left-start'}
       disabled={!disabled || !disabledTooltipMessage}
       theme={'dark'}
-      hideOnClick={false}
       content={
-        !isNilOrError(disabledTooltipMessage) && (
+        disabledTooltipMessage && (
           <Box style={{ cursor: 'default' }}>
             <Text my="8px" color="white" fontSize="s">
               {formatMessage(disabledTooltipMessage)}
@@ -82,43 +81,41 @@ const ToolboxItem = ({
         )
       }
     >
-      <>
-        <Box
-          as="button"
-          aria-describedby="tooltip-content"
-          minWidth={!disabled ? '100%' : 'auto'}
-          p="0px"
-          type="button"
-          role="button"
+      <Box
+        as="button"
+        aria-describedby="tooltip-content"
+        minWidth={!disabled ? '100%' : 'auto'}
+        p="0px"
+        type="button"
+        role="button"
+      >
+        <StyledBox
+          display="flex"
+          p="18px"
+          onClick={onClick}
+          width="100%"
+          m="0px"
+          alignItems="center"
+          data-cy={rest['data-cy']}
+          disabled={!!disabled}
         >
-          <StyledBox
-            display="flex"
-            p="18px"
-            onClick={onClick}
-            width="100%"
-            m="0px"
-            alignItems="center"
-            data-cy={rest['data-cy']}
-            disabled={!!disabled}
+          <Icon
+            fill={disabled ? colors.coolGrey500 : colors.primary}
+            width="20px"
+            height="20px"
+            name={icon}
+          />
+          <Text
+            fontSize="s"
+            ml="12px"
+            my="0"
+            color={disabled ? 'coolGrey500' : 'textPrimary'}
           >
-            <Icon
-              fill={disabled ? colors.coolGrey500 : colors.primary}
-              width="20px"
-              height="20px"
-              name={icon}
-            />
-            <Text
-              fontSize="s"
-              ml="12px"
-              my="0"
-              color={disabled ? 'coolGrey500' : 'textPrimary'}
-            >
-              {label}
-            </Text>
-            {!disabled && <AddIcon />}
-          </StyledBox>
-        </Box>
-      </>
+            {label}
+          </Text>
+          {!disabled && <AddIcon />}
+        </StyledBox>
+      </Box>
     </Tippy>
   );
 };
