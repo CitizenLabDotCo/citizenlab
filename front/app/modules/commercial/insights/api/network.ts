@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 
@@ -64,15 +65,23 @@ const fetchNetwork = (viewId: string) =>
   });
 
 export const useNetwork = (viewId: string) => {
-  const { data: tasks } = useQuery<
+  const [tasks, setTasks] = useState<
+    IInsightsTextNetworkAnalysisTasks | undefined
+  >();
+
+  useQuery<
     IInsightsTextNetworkAnalysisTasks,
     CLErrors,
     IInsightsTextNetworkAnalysisTasks,
     NetworkKeys
   >({
     queryKey: networkKeys.tasks(viewId),
-    queryFn: () => fetchTasks(viewId),
-    // add condition to stop the polling
+    queryFn: async () => {
+      const response = await fetchTasks(viewId);
+      setTasks(response);
+      return response;
+    },
+    enabled: tasks && tasks.data.length > 0,
   });
 
   return useQuery<IInsightsNetwork, CLErrors, IInsightsNetwork, NetworkKeys>({
