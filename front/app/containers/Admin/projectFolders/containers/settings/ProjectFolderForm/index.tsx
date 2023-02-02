@@ -7,6 +7,8 @@ import { addProjectFolder, updateProjectFolder } from 'services/projectFolders';
 import {
   addProjectFolderImage,
   deleteProjectFolderImage,
+  CARD_IMAGE_ASPECT_RATIO_HEIGHT,
+  CARD_IMAGE_ASPECT_RATIO_WIDTH,
 } from 'services/projectFolderImages';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import useProjectFolderImages from 'hooks/useProjectFolderImages';
@@ -37,10 +39,6 @@ import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
 import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import ProjectFolderCardImageDropzone from './ProjectFolderCardImageDropzone';
-import {
-  CARD_IMAGE_ASPECT_RATIO_HEIGHT,
-  CARD_IMAGE_ASPECT_RATIO_WIDTH,
-} from 'services/projectFolderImages';
 
 type IProjectFolderSubmitState =
   | 'disabled'
@@ -196,6 +194,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const handleFolderCardImageOnRemove = (imageToRemove: UploadFile) => {
     setSubmitState('enabled');
     setFolderCardImage(null);
+    setCroppedFolderCardBase64(null);
     if (imageToRemove.remote && imageToRemove.id) {
       setFolderCardImageToRemove(imageToRemove);
     }
