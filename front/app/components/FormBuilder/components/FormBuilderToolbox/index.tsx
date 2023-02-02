@@ -48,10 +48,11 @@ const FormBuilderToolbox = ({
   builderConfig,
   move,
 }: FormBuilderToolboxProps) => {
-  const isInputFormBuilderEnabled = useFeatureFlag({
+  const isInputFormBuilderFlagEnabled = useFeatureFlag({
     name: 'input_form_builder',
   });
-
+  const isCustomFieldsDisabled =
+    !isInputFormBuilderFlagEnabled && !builderConfig.alwaysShowCustomFields;
   const { formatMessage } = useIntl();
   const locale = useLocale();
 
@@ -124,17 +125,22 @@ const FormBuilderToolbox = ({
           >
             <FormattedMessage {...customToolBoxTitle} />
           </Title>
-          {!isInputFormBuilderEnabled && !builderConfig.alwaysShowCustomFields && (
+          {!builderConfig.alwaysShowCustomFields && (
             <IconTooltip
               ml="4px"
               mt="8px"
-              icon="info-outline"
-              iconColor={colors.coolGrey300}
+              icon={isCustomFieldsDisabled ? 'info-outline' : 'info-solid'}
+              iconColor={
+                isCustomFieldsDisabled ? colors.coolGrey300 : colors.coolGrey500
+              }
+              placement="right-start"
               py="0px"
               content={
                 <Box>
                   <Text my="4px" color="white" fontSize="s">
-                    {formatMessage(messages.disabledCustomFieldsTooltip)}
+                    {isCustomFieldsDisabled
+                      ? formatMessage(messages.disabledCustomFieldsTooltip)
+                      : formatMessage(messages.fieldIsNotVisibleTooltip)}
                   </Text>
                 </Box>
               }
@@ -149,10 +155,7 @@ const FormBuilderToolbox = ({
             data-cy="e2e-short-answer"
             fieldsToExclude={builderConfig.toolboxFieldsToExclude}
             inputType="text"
-            disabled={
-              !isInputFormBuilderEnabled &&
-              !builderConfig.alwaysShowCustomFields
-            }
+            disabled={isCustomFieldsDisabled}
           />
           <ToolboxItem
             icon="survey-long-answer-2"
@@ -161,10 +164,7 @@ const FormBuilderToolbox = ({
             data-cy="e2e-long-answer"
             fieldsToExclude={builderConfig.toolboxFieldsToExclude}
             inputType="multiline_text"
-            disabled={
-              !isInputFormBuilderEnabled &&
-              !builderConfig.alwaysShowCustomFields
-            }
+            disabled={isCustomFieldsDisabled}
           />
           <ToolboxItem
             icon="survey-single-choice"
@@ -173,10 +173,7 @@ const FormBuilderToolbox = ({
             data-cy="e2e-single-choice"
             fieldsToExclude={builderConfig.toolboxFieldsToExclude}
             inputType="select"
-            disabled={
-              !isInputFormBuilderEnabled &&
-              !builderConfig.alwaysShowCustomFields
-            }
+            disabled={isCustomFieldsDisabled}
           />
           <ToolboxItem
             icon="survey-multiple-choice-2"
@@ -185,10 +182,7 @@ const FormBuilderToolbox = ({
             data-cy="e2e-multiple-choice"
             fieldsToExclude={builderConfig.toolboxFieldsToExclude}
             inputType="multiselect"
-            disabled={
-              !isInputFormBuilderEnabled &&
-              !builderConfig.alwaysShowCustomFields
-            }
+            disabled={isCustomFieldsDisabled}
           />
           <ToolboxItem
             icon="survey-linear-scale"
@@ -197,10 +191,7 @@ const FormBuilderToolbox = ({
             data-cy="e2e-linear-scale"
             fieldsToExclude={builderConfig.toolboxFieldsToExclude}
             inputType="linear_scale"
-            disabled={
-              !isInputFormBuilderEnabled &&
-              !builderConfig.alwaysShowCustomFields
-            }
+            disabled={isCustomFieldsDisabled}
           />
           <ToolboxItem
             icon="survey-number-field"
@@ -209,10 +200,7 @@ const FormBuilderToolbox = ({
             data-cy="e2e-number-field"
             fieldsToExclude={builderConfig.toolboxFieldsToExclude}
             inputType="number"
-            disabled={
-              !isInputFormBuilderEnabled &&
-              !builderConfig.alwaysShowCustomFields
-            }
+            disabled={isCustomFieldsDisabled}
           />
           <ToolboxItem
             icon="upload-file"
@@ -221,10 +209,7 @@ const FormBuilderToolbox = ({
             data-cy="e2e-file-upload-field"
             fieldsToExclude={builderConfig.toolboxFieldsToExclude}
             inputType="file_upload"
-            disabled={
-              !isInputFormBuilderEnabled &&
-              !builderConfig.alwaysShowCustomFields
-            }
+            disabled={isCustomFieldsDisabled}
           />
         </DraggableElement>
       </Box>

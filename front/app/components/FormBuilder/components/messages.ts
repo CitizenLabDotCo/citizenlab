@@ -235,9 +235,9 @@ export default defineMessages({
     id: 'app.components.formBuilder.questionCannotBeDeleted',
     defaultMessage: "This question can't be deleted.",
   },
-  fieldNotVisibleTooltip: {
-    id: 'app.components.formBuilder.fieldNotVisibleTooltip',
+  fieldIsNotVisibleTooltip: {
+    id: 'app.components.formBuilder.fieldIsNotVisibleTooltip',
     defaultMessage:
-      'Answers to this field will only be accessible on the exported Excel file on Input Manager.',
+      'Currently, answers to these questions are only available in the exported excel file on Input Manager, and not visible to the users.',
   },
 });
