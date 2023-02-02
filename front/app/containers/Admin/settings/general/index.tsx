@@ -194,7 +194,9 @@ class SettingsGeneralTab extends PureComponent<
             // Needs to be reimplemented to use frontend validation when converted to a React Hook Form.
             if (errors.settings && errors.settings.length > 0) {
               const foundUrlError = !!errors.settings.find(
-                (error) => error.error.fragment === '#/core/organization_site'
+                (error) =>
+                  error.fragment &&
+                  error.fragment === '#/core/organization_site'
               );
               if (foundUrlError) {
                 this.setState({ hasUrlError: true });

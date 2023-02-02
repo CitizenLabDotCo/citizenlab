@@ -146,6 +146,7 @@ export interface CLError {
   ideas_count?: number;
   blocked_words?: any;
   payload?: Record<string, any>;
+  fragment?: string;
 }
 
 export interface CLErrors {
