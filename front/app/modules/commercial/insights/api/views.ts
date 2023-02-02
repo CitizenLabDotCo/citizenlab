@@ -70,8 +70,8 @@ export const useCreateView = ({ onSuccess }: { onSuccess?: () => void }) => {
   return useMutation<IInsightsView, CLErrors, IInsightsViewObject>({
     mutationFn: createView,
     onSuccess: () => {
-      onSuccess && onSuccess();
       queryClient.invalidateQueries({ queryKey: viewKeys.lists() });
+      onSuccess && onSuccess();
     },
   });
 };
@@ -93,8 +93,8 @@ export const useUpdateView = ({ onSuccess }: { onSuccess?: () => void }) => {
   return useMutation<IInsightsView, CLErrors, IInsightViewUpdateObject>({
     mutationFn: updateView,
     onSuccess: () => {
-      onSuccess && onSuccess();
       queryClient.invalidateQueries({ queryKey: viewKeys.lists() });
+      onSuccess && onSuccess();
     },
   });
 };
