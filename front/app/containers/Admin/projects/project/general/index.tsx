@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Multiloc, UploadFile, IOption } from 'typings';
+import { Multiloc, UploadFile } from 'typings';
 import { isEmpty, get, isString } from 'lodash-es';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { INewProjectCreatedEvent } from 'containers/Admin/projects/all/CreateProject';
-import SelectPreviewDevice, {
-  TDevice,
-} from 'components/admin/SelectPreviewDevice';
 
 // components
 import ProjectStatusPicker from './components/ProjectStatusPicker';
@@ -57,7 +54,6 @@ import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
 import {
   addProjectImage,
   deleteProjectImage,
-  getCardImageUrl,
   CARD_IMAGE_ASPECT_RATIO_WIDTH,
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
 } from 'services/projectImages';
@@ -127,7 +123,6 @@ const AdminProjectsProjectGeneral = () => {
     useState<IProjectFormState['showSlugErrorMessage']>(false);
   const [publicationStatus, setPublicationStatus] =
     useState<IProjectFormState['publicationStatus']>('draft');
-  const [previewDevice, setPreviewDevice] = useState<TDevice>('phone');
 
   useEffect(() => {
     (async () => {
@@ -170,15 +165,7 @@ const AdminProjectsProjectGeneral = () => {
       if (!isNilOrError(remoteProjectImages)) {
         const nextProjectImagesPromises = remoteProjectImages.map(
           (projectImage) => {
-            const url = getCardImageUrl(
-              projectImage.attributes.versions,
-              previewDevice === 'phone'
-              // This is incomplete. To have the correct image version,
-              // we'd need the exact size of the project card as well,
-              // but we currently don't have that functionality in our
-              // preview yet, so we're not showing the small version ever in
-              // preview at the moment.
-            );
+            const url = projectImage.attributes.versions.large;
 
             if (url) {
               return convertUrlToUploadFile(url, projectImage.id, null);
@@ -195,7 +182,7 @@ const AdminProjectsProjectGeneral = () => {
         setProjectCardImage(nextProjectImages[0]);
       }
     })();
-  }, [remoteProjectImages, previewDevice]);
+  }, [remoteProjectImages]);
 
   const handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
     setSubmitState('enabled');
@@ -603,24 +590,11 @@ const AdminProjectsProjectGeneral = () => {
               />
             </Box>
           ) : (
-            <>
-              {projectCardImage && (
-                <Box mb="20px">
-                  <SelectPreviewDevice
-                    selectedPreviewDevice={previewDevice}
-                    onChange={(option: IOption) =>
-                      setPreviewDevice(option.value)
-                    }
-                  />
-                </Box>
-              )}
-              <ProjectCardImageDropzone
-                images={projectCardImage && [projectCardImage]}
-                onAddImages={handleProjectCardImageOnAdd}
-                onRemoveImage={handleProjectCardImageOnRemove}
-                previewDevice={previewDevice}
-              />
-            </>
+            <ProjectCardImageDropzone
+              images={projectCardImage && [projectCardImage]}
+              onAddImages={handleProjectCardImageOnAdd}
+              onRemoveImage={handleProjectCardImageOnRemove}
+            />
           )}
         </StyledSectionField>
 

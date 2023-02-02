@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import clHistory from 'utils/cl-router/history';
 import { isEmpty, isEqual } from 'lodash-es';
-import { CLErrors, Multiloc, UploadFile, IOption } from 'typings';
+import { CLErrors, Multiloc, UploadFile } from 'typings';
 import { isNilOrError, isError } from 'utils/helperUtils';
 import { addProjectFolder, updateProjectFolder } from 'services/projectFolders';
 import {
   addProjectFolderImage,
   deleteProjectFolderImage,
-  getCardImageUrl,
 } from 'services/projectFolderImages';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import useProjectFolderImages from 'hooks/useProjectFolderImages';
@@ -37,9 +36,6 @@ import { validateSlug } from 'utils/textUtils';
 import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
 import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
-import SelectPreviewDevice, {
-  TDevice,
-} from 'components/admin/SelectPreviewDevice';
 import ProjectFolderCardImageDropzone from './ProjectFolderCardImageDropzone';
 import {
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
@@ -107,7 +103,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const [projectFolderFilesToRemove, setProjectFolderFilesToRemove] = useState<
     string[]
   >([]);
-  const [previewDevice, setPreviewDevice] = useState<TDevice>('phone');
   const [submitState, setSubmitState] =
     useState<IProjectFolderSubmitState>('disabled');
 
@@ -138,15 +133,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     (async () => {
       if (mode === 'edit' && !isNilOrError(projectFolderImagesRemote)) {
         const imagePromises = projectFolderImagesRemote.data.map((img) => {
-          const url = getCardImageUrl(
-            img.attributes.versions,
-            previewDevice === 'phone'
-            // This is incomplete. To have the correct image version,
-            // We'd need the exact size of the project card as well,
-            // but we currently don't have that functionality in our
-            // preview yet, so we're not showing the small version ever in
-            // preview at the moment.
-          );
+          const url = img.attributes.versions.large;
 
           return url
             ? convertUrlToUploadFile(url, img.id, null)
@@ -156,7 +143,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         setFolderCardImage(images[0]);
       }
     })();
-  }, [mode, projectFolderImagesRemote, previewDevice]);
+  }, [mode, projectFolderImagesRemote]);
 
   useEffect(() => {
     (async () => {
@@ -552,26 +539,13 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               />
             </Box>
           ) : (
-            <>
-              {folderCardImage && (
-                <Box mb="20px">
-                  <SelectPreviewDevice
-                    selectedPreviewDevice={previewDevice}
-                    onChange={(option: IOption) =>
-                      setPreviewDevice(option.value)
-                    }
-                  />
-                </Box>
+            <ProjectFolderCardImageDropzone
+              images={folderCardImage && [folderCardImage]}
+              onAddImage={getHandler((cards: UploadFile[]) =>
+                setFolderCardImage(cards[0])
               )}
-              <ProjectFolderCardImageDropzone
-                images={folderCardImage && [folderCardImage]}
-                onAddImage={getHandler((cards: UploadFile[]) =>
-                  setFolderCardImage(cards[0])
-                )}
-                onRemoveImage={handleFolderCardImageOnRemove}
-                previewDevice={previewDevice}
-              />
-            </>
+              onRemoveImage={handleFolderCardImageOnRemove}
+            />
           )}
         </SectionField>
         <SectionField>
