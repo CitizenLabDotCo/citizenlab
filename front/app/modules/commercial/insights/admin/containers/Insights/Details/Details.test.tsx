@@ -6,13 +6,8 @@ import inputs from 'modules/commercial/insights/fixtures/inputs';
 import clHistory from 'utils/cl-router/history';
 import mockCategories from 'modules/commercial/insights/fixtures/categories';
 import { useInfiniteInputs } from 'modules/commercial/insights/api/inputs';
-const viewId = '1';
 
-const mockInputsData = {
-  loading: false,
-  hasMore: true,
-  list: inputs,
-};
+const viewId = '1';
 
 const mockIdeaData = {
   id: '2',
@@ -74,13 +69,13 @@ describe('Insights Details Inputs', () => {
     fireEvent.click(screen.getAllByTestId('insightsInputCard')[0]);
     expect(clHistory.replace).toHaveBeenCalledWith({
       pathname: '',
-      search: `?previewedInputId=${mockInputsData.list[0].id}`,
+      search: `?previewedInputId=${inputs[0].id}`,
     });
   });
   it('renders input when previewedInputId is in url', () => {
     mockLocationData = {
       pathname: '',
-      query: { previewedInputId: mockInputsData.list[0].id },
+      query: { previewedInputId: inputs[0].id },
     };
     render(<Details />);
     expect(screen.getByTestId('insightsDetailsPreview')).toBeInTheDocument();
@@ -100,7 +95,7 @@ describe('Insights Details Inputs', () => {
 
     expect(clHistory.replace).toHaveBeenCalledWith({
       pathname: '',
-      search: `?previewedInputId=${mockInputsData.list[0].id}`,
+      search: `?previewedInputId=${inputs[0].id}`,
     });
   });
   it('calls useInfiniteInputs with correct arguments', () => {

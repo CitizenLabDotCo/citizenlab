@@ -10,12 +10,14 @@ export const useInputs = jest.fn(() => {
 
 export const useInfiniteInputs = jest.fn(() => {
   return {
-    pages: [
-      {
-        data: inputs,
-        links,
-      },
-    ],
+    data: {
+      pages: [
+        {
+          data: inputs,
+          links,
+        },
+      ],
+    },
     pageParams: [],
   };
 });
