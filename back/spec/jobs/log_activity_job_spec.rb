@@ -38,7 +38,7 @@ RSpec.describe LogActivityJob, type: :job do
       t = Time.now
       expect { job.perform(user, 'admin_rights_given', admin, t) }
         .to have_enqueued_job(MakeNotificationsForClassJob)
-          .with do |notification_class, activity|
+        .with do |notification_class, activity|
         expect(notification_class).to eq 'Notifications::AdminRightsReceived'
         expect(activity.item).to match({
           item: user,
@@ -75,38 +75,38 @@ RSpec.describe LogActivityJob, type: :job do
   end
 
   describe '.perform_later' do
-    context "when the item has `#project_id` method" do
+    context 'when the item has `#project_id` method' do
       let(:item) { create(:project) }
 
       it 'adds the project id to the options of the enqueued job' do
         expect(item).to receive(:project_id).and_call_original
         expect { described_class.perform_later(item, 'created', nil) }
-          .to enqueue_job(LogActivityJob).with(item, 'created', nil, project_id: item.id)
+          .to enqueue_job(described_class).with(item, 'created', nil, project_id: item.id)
       end
 
-      context "and the project_id is passed explicitly" do
+      context 'and the project_id is passed explicitly' do
         it 'leaves the options of the enqueued job unchanged' do
           expect(item).not_to receive(:project_id)
 
-          options = {payload: 'payload', project_id: "some-arbitrary-id" }
+          options = { payload: 'payload', project_id: 'some-arbitrary-id' }
           expect { described_class.perform_later(item, 'created', nil, options) }
-            .to enqueue_job(LogActivityJob).with(item, 'created', nil, options)
+            .to enqueue_job(described_class).with(item, 'created', nil, options)
         end
       end
     end
 
-    context "when the item does not have `project_id` method" do
+    context 'when the item does not have `project_id` method' do
       let(:item) { create(:invite) }
 
       it 'leaves the options of the enqueued job unchanged' do
         expect { described_class.perform_later(item, 'created', nil, payload: 'payload') }
-          .to enqueue_job(LogActivityJob).with(item, 'created', nil, payload: 'payload')
+          .to enqueue_job(described_class).with(item, 'created', nil, payload: 'payload')
       end
     end
   end
 
   describe '.perform_now' do
-    context "when the item has `#project_id` method" do
+    context 'when the item has `#project_id` method' do
       let(:item) { create(:project) }
 
       it 'adds the project id to the options' do
@@ -118,18 +118,18 @@ RSpec.describe LogActivityJob, type: :job do
         described_class.perform_now(item, 'created', nil)
       end
 
-      context "and the project_id is passed explicitly" do
+      context 'and the project_id is passed explicitly' do
         it 'leaves the options unchanged' do
           expect_any_instance_of(described_class)
             .to receive(:run)
-            .with(item, 'created', nil, payload: 'payload', project_id: "some-arbitrary-id")
+            .with(item, 'created', nil, payload: 'payload', project_id: 'some-arbitrary-id')
 
-          described_class.perform_now(item, 'created', nil, payload: 'payload', project_id: "some-arbitrary-id")
+          described_class.perform_now(item, 'created', nil, payload: 'payload', project_id: 'some-arbitrary-id')
         end
       end
     end
 
-    context "when the item does not have `project_id` method" do
+    context 'when the item does not have `project_id` method' do
       let(:item) { create(:invite) }
 
       it 'leaves the options unchanged' do
