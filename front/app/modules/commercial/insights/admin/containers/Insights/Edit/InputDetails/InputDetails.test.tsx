@@ -7,6 +7,7 @@ import categories from 'modules/commercial/insights/fixtures/categories';
 
 import selectEvent from 'react-select-event';
 import InputDetails from './';
+import { IInsightsInput } from 'modules/commercial/insights/api/inputs';
 
 const viewId = '1';
 
@@ -18,7 +19,9 @@ const defaultProps = {
   moveDown: jest.fn(),
 };
 
-let mockInputData: insightsService.IInsightsInputData | undefined = inputs[0];
+let mockInputData: IInsightsInput | undefined = {
+  data: inputs[0],
+};
 
 const mockIdeaData = {
   id: '2',
@@ -63,7 +66,14 @@ jest.mock('hooks/useIdea', () => {
   return jest.fn(() => mockIdeaData);
 });
 
-jest.mock('modules/commercial/insights/api/inputs');
+let mockIsLoading = false;
+jest.mock('modules/commercial/insights/api/inputs', () => {
+  return {
+    useInput: jest.fn(() => {
+      return { data: mockInputData, isLoading: mockIsLoading };
+    }),
+  };
+});
 
 jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
   return jest.fn(() => mockCategoriesData);
@@ -167,6 +177,7 @@ describe('Insights Input Details', () => {
   });
   it('shows loading state when loading', () => {
     mockInputData = undefined;
+    mockIsLoading = true;
     render(<InputDetails {...defaultProps} />);
     expect(
       screen.getByTestId('insightsEditDetailsLoading')
