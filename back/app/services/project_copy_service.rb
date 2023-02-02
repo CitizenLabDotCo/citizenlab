@@ -115,7 +115,7 @@ class ProjectCopyService < ::TemplateService
     ContentBuilder::LayoutImage.where(code: source_image_codes).map do |image|
       yml_layout_image = {
         'code' => layout_images_mapping[image.code],
-        'image' => image.image,
+        'remote_image_url' => image.image_url,
         'created_at' => shift_timestamp(image.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(image.updated_at, shift_timestamps)&.iso8601
       }
