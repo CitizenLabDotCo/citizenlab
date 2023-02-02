@@ -16,10 +16,10 @@ import { forceCollide } from 'd3-force';
 
 // hooks
 import { useView } from 'modules/commercial/insights/api/views';
-import { useNetwork } from 'modules/commercial/insights/api/network';
-
-// types
-import { IInsightsNetworkNode } from 'modules/commercial/insights/services/insightsNetwork';
+import {
+  useNetwork,
+  IInsightsNetworkNode,
+} from 'modules/commercial/insights/api/network';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
