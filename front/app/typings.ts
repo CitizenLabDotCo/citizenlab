@@ -139,7 +139,14 @@ export type MultilocFormValues = {
 };
 
 export interface CLError {
-  error: string;
+  error:
+    | string
+    // This error is used in front/app/containers/Admin/settings/general/index.tsx
+    // but should be factored out.
+    | {
+        error: 'Pattern';
+        fragment: '#/core/organization_site';
+      };
   value?: string;
   row?: number;
   rows?: number[];
