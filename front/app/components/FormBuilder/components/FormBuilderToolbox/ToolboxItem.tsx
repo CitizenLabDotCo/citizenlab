@@ -12,9 +12,6 @@ import { colors } from 'utils/styleUtils';
 import { ICustomFieldInputType } from 'services/formCustomFields';
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
-// i18n
-import { isNilOrError } from 'utils/helperUtils';
-
 interface Props {
   label: string;
   icon: IconNames;
