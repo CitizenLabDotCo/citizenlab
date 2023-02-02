@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.name        = 'surveys'
   s.version     = Surveys::VERSION
   s.authors     = ['CitizenLab']
-  s.licenses    = ['AGPLv3']
+  s.licenses    = ['CitizenLab Commercial License V2']
   s.summary     = 'Contains everything to support surveys as a participation method'
 
   s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']

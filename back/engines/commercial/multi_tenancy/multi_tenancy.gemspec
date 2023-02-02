@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.version     = MultiTenancy::VERSION
   spec.required_ruby_version = '>= 2.7.6'
   spec.authors     = ['Adrien Dessy']
-  spec.licenses    = ['CitizenLab Commercial License V1']
+  spec.licenses    = ['CitizenLab Commercial License V2']
   spec.email       = ['adrien@citizenlab.co']
   spec.summary     = 'Multi-tenancy support for CitizenLab participation platform'
 
