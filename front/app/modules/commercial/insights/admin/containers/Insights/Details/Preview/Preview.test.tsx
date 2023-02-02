@@ -1,12 +1,14 @@
 import React from 'react';
 import { render, screen, fireEvent, within } from 'utils/testUtils/rtl';
-import * as insightsService from 'modules/commercial/insights/services/insightsInputs';
-import inputs from 'modules/commercial/insights/fixtures/inputs';
 import categories from 'modules/commercial/insights/fixtures/categories';
 import clHistory from 'utils/cl-router/history';
 
 import Preview from './';
-import { useInput } from 'modules/commercial/insights/api/inputs';
+import {
+  IInsightsInput,
+  useInput,
+} from 'modules/commercial/insights/api/inputs';
+import inputs from 'modules/commercial/insights/fixtures/inputs';
 
 const viewId = '1';
 
@@ -16,7 +18,9 @@ const defaultProps = {
   previewedInputId: '4e9ac1f1-6928-45e9-9ac9-313e86ad636f',
 };
 
-let mockInputData: insightsService.IInsightsInputData | undefined = inputs[0];
+let mockInputData: IInsightsInput | undefined = {
+  data: inputs[0],
+};
 
 const mockIdeaData = {
   id: '2',
@@ -61,7 +65,14 @@ jest.mock('hooks/useIdea', () => {
   return jest.fn(() => mockIdeaData);
 });
 
-jest.mock('modules/commercial/insights/api/inputs');
+let mockIsLoading = false;
+jest.mock('modules/commercial/insights/api/inputs', () => {
+  return {
+    useInput: jest.fn(() => {
+      return { data: mockInputData, isLoading: mockIsLoading };
+    }),
+  };
+});
 
 jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
   return jest.fn(() => mockCategoriesData);
@@ -127,6 +138,7 @@ describe('Insights Input Details', () => {
 
   it('shows loading state when loading', () => {
     mockInputData = undefined;
+    mockIsLoading = true;
     render(<Preview {...defaultProps} />);
     expect(
       screen.getByTestId('insightsDetailsPreviewLoading')

@@ -39,7 +39,10 @@ const Preview = ({
   params: { viewId },
   location: { query, pathname },
 }: WithRouterProps) => {
-  const { data: previewedInput } = useInput(viewId, query.previewedInputId);
+  const { data: previewedInput, isLoading } = useInput(
+    viewId,
+    query.previewedInputId
+  );
   const previewRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -47,7 +50,7 @@ const Preview = ({
   }, [query.previewedInputId]);
 
   // Loading state
-  if (previewedInput === undefined) {
+  if (isLoading) {
     return (
       <Container data-testid="insightsDetailsPreviewLoading">
         <Spinner />
