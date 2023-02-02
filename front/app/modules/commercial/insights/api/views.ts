@@ -34,7 +34,7 @@ export interface IInsightsViewData {
 type IInsightsView = { data: IInsightsViewData };
 export type IInsightsViews = { data: IInsightsViewData[] };
 
-const fetchViews = async () =>
+const fetchViews = () =>
   fetcher<IInsightsViews>({ path: '/insights/views', action: 'get' });
 
 export const useViews = () => {

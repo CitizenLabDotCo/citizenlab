@@ -16,13 +16,13 @@ import { forceCollide } from 'd3-force';
 
 // hooks
 import { useView } from 'modules/commercial/insights/api/views';
-import useNetwork from 'modules/commercial/insights/hooks/useInsightsNetwork';
+import { useNetwork } from 'modules/commercial/insights/api/network';
 
 // types
 import { IInsightsNetworkNode } from 'modules/commercial/insights/services/insightsNetwork';
 
 // utils
-import { isNilOrError, isError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { cloneDeep } from 'lodash-es';
 import { colors } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
@@ -87,7 +87,7 @@ const Network = ({
   const [zoomLevel, setZoomLevel] = useState(0);
 
   const networkRef = useRef<ForceGraphMethods>();
-  const { loading, network } = useNetwork(viewId);
+  const { data: network, isLoading, isError } = useNetwork(viewId);
   const { data: view } = useView(viewId);
 
   useEffect(() => {
@@ -227,7 +227,7 @@ const Network = ({
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <Box h="100%" display="flex" justifyContent="center" alignItems="center">
         <Spinner />
@@ -235,7 +235,7 @@ const Network = ({
     );
   }
 
-  if (isError(network)) {
+  if (isError) {
     return (
       <Box
         w="50%"
