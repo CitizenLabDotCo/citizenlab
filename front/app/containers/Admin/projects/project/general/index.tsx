@@ -244,6 +244,7 @@ const AdminProjectsProjectGeneral = () => {
     projectCardImageToRemove: UploadFile
   ) => {
     setProjectCardImage(null);
+    setCroppedProjectCardBase64(null);
     projectCardImageToRemove.remote &&
       setProjectCardImageToRemove(projectCardImageToRemove);
     setSubmitState('enabled');
