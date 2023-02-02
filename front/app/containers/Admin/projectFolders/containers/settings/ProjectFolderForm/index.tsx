@@ -138,17 +138,15 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     (async () => {
       if (mode === 'edit' && !isNilOrError(projectFolderImagesRemote)) {
         const imagePromises = projectFolderImagesRemote.data.map((img) => {
-          const url = !isNilOrError(folderCardImage)
-            ? getCardImageUrl(
-                img.attributes.versions,
-                previewDevice === 'phone'
-                // This is incomplete. To have the correct image version,
-                // We'd need the exact size of the project card as well,
-                // but we currently don't have that functionality in our
-                // preview yet, so we're not showing the small version ever in
-                // preview at the moment.
-              )
-            : null;
+          const url = getCardImageUrl(
+            img.attributes.versions,
+            previewDevice === 'phone'
+            // This is incomplete. To have the correct image version,
+            // We'd need the exact size of the project card as well,
+            // but we currently don't have that functionality in our
+            // preview yet, so we're not showing the small version ever in
+            // preview at the moment.
+          );
 
           return url
             ? convertUrlToUploadFile(url, img.id, null)
@@ -158,7 +156,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         setFolderCardImage(images[0]);
       }
     })();
-  }, [mode, projectFolderImagesRemote, folderCardImage, previewDevice]);
+  }, [mode, projectFolderImagesRemote, previewDevice]);
 
   useEffect(() => {
     (async () => {
