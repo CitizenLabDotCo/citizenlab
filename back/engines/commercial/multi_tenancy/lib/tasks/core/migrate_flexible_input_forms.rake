@@ -1,27 +1,5 @@
 # frozen_string_literal: true
 
-# For non test or demo platforms:
-# 1931 total forms
-
-# 1 field
-# 118 custom forms with 1 field - title, body, or location
-# 73 are published
-# What shall we do? Assume defaults are OK
-
-# Between 2 & 5 fields
-# Only 7 of the following are published - Assume defaults are OK?
-
-# 1 with 2 fields - title & body
-# 3 with 3 - title, body & (files or images or topics)
-# 2 with 4 - title, body, files & images
-# 11 with 5 - missing budget and (files or location)
-
-# 133 with 6 - missing budget - this code will create budget fields but not enabled
-#
-# For all of these - the current site behaviour is whatever is missing just displays the default
-#
-# Rest all have 7 fields
-
 # to persist changes run: fix_existing_tenants:migrate_flexible_input_forms[true]
 # to persist changes for one host run: fix_existing_tenants:migrate_flexible_input_forms[true,localhost]
 namespace :fix_existing_tenants do
@@ -75,7 +53,6 @@ class FlexibleInputFormMigrator
     end
 
     # Format the fields
-    # TODO: Test timeline projects
     Rails.logger.info "ORDERING: #{custom_form.id}"
     if custom_form.participation_context.participation_method == 'native_survey'
       fix_ordering(fields) # Only fix ordering in survey forms
@@ -101,11 +78,16 @@ class FlexibleInputFormMigrator
     # Save the changes
     fields.each do |field|
       field_id = field.code || field.key
+      field_order = field.ordering
       if field.persisted?
         if field.changed?
           Rails.logger.info "FIELD EXISTS - UPDATING: #{field_id} #{field.changes.keys}"
-          if persist_changes && !field.save
-            error_handler "Cannot update field - #{field_id} - #{field.id} - #{field.errors.errors}"
+          if persist_changes
+            if field.save
+              field.insert_at(field_order)
+            else
+              error_handler "Cannot update field - #{field_id} - #{field.id} - #{field.errors.errors}"
+            end
           end
           @stats[:updated] += 1
         else
@@ -113,8 +95,12 @@ class FlexibleInputFormMigrator
         end
       else
         Rails.logger.info "NEW FIELD - CREATING: #{field_id}"
-        if persist_changes && !field.save
-          error_handler "Cannot create field - #{field_id} - #{field.id} - #{field.errors.errors}"
+        if persist_changes
+          if field.save
+            field.insert_at(field_order)
+          else
+            error_handler "Cannot create field - #{field_id} - #{field.id} - #{field.errors.errors}"
+          end
         end
         @stats[:created] += 1
       end
@@ -154,12 +140,17 @@ class FlexibleInputFormMigrator
   end
 
   # Fix ordering in the context of a form, not of the platform
-  # TODO: There is a helper method somewhere to do this, but can't find it
-  #     # TODO: It updated 1 on second run for stadt_gent. title_multiloc ordering Why?? Ordering gem?
-    # Others have raised concern about the ordering gem and this seems to work
+  # Done here to trigger changed attribute, but acts_as_list.insert_at used to set later
   def fix_ordering(fields)
+    order_before = fields.pluck('ordering')
     fields.each_with_index do |field, index|
       field.ordering = index
+    end
+    order_after = fields.pluck('ordering')
+    if order_before == order_after
+      Rails.logger.info 'ORDER: No change'
+    else
+      Rails.logger.info "ORDER CHANGED: #{order_before} > #{order_before}"
     end
   end
 
