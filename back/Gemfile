@@ -195,6 +195,10 @@ CitizenLab.ee do
   # PR to merge to upstream: https://github.com/customink/actionpack-cloudfront/pull/18
   gem 'actionpack-cloudfront', github: 'CitizenLabDotCo/actionpack-cloudfront'
 
+  # Waiting for a new release that includes this PR:
+  # https://github.com/PostHog/posthog-ruby/pull/26
+  gem 'posthog-ruby', github: 'PostHog/posthog-ruby', branch: 'master'
+
   commercial_engines = [
     'multi_tenancy',
 
@@ -216,6 +220,7 @@ CitizenLab.ee do
     'matomo',
     'moderation',
     'nlp',
+    'posthog_integration',
     'public_api',
     'remove_vendor_branding',
     'report_builder',

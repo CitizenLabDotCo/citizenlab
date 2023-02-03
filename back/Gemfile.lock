@@ -36,6 +36,14 @@ GIT
       webfinger (>= 1.0.1)
 
 GIT
+  remote: https://github.com/PostHog/posthog-ruby.git
+  revision: 52f4ce0f7680eb6bda92aaa1aa3d8d4d0945bf8e
+  branch: master
+  specs:
+    posthog-ruby (2.1.0)
+      concurrent-ruby (~> 1)
+
+GIT
   remote: https://github.com/carrierwaveuploader/carrierwave.git
   revision: a3ffc5381e70a4014b61b27b35540aa3b945910d
   ref: a3ffc5381e70a4014b61b27b35540aa3b945910d
@@ -308,6 +316,13 @@ PATH
     nlp (0.1.0)
       bunny
       httparty
+      rails (~> 6.1)
+
+PATH
+  remote: engines/commercial/posthog_integration
+  specs:
+    posthog_integration (0.1.0)
+      posthog-ruby (~> 2.1)
       rails (~> 6.1)
 
 PATH
@@ -1244,6 +1259,8 @@ DEPENDENCIES
   pg
   pg_search (~> 2.3.5)
   polls!
+  posthog-ruby!
+  posthog_integration!
   premailer-rails (~> 1.10.3)
   pry
   pry-byebug
