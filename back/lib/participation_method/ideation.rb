@@ -286,5 +286,9 @@ module ParticipationMethod
     def sign_in_required_for_posting?
       true
     end
+
+    def include_author_budget_in_schema?
+      true
+    end
   end
 end

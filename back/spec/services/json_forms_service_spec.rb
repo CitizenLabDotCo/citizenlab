@@ -224,36 +224,45 @@ describe JsonFormsService do
     describe 'input_ui_and_json_multiloc_schemas' do
       let(:input_term) { 'question' }
       let(:project) { create :continuous_project, input_term: input_term }
+      let(:custom_form) { create :custom_form, :with_default_fields, participation_context: project }
+      let!(:section) do
+        create(
+          :custom_field_section,
+          :for_custom_form, resource: custom_form,
+          title_multiloc: { 'en' => 'My section title' },
+          description_multiloc: { 'en' => 'My section description' }
+        )
+      end
+      let!(:required_field) do
+        create(
+          :custom_field,
+          :for_custom_form, resource: custom_form,
+          required: true,
+          input_type: 'number',
+          title_multiloc: { 'en' => 'My required field' }
+        )
+      end
+      let!(:optional_field) do
+        create(
+          :custom_field_select,
+          :for_custom_form, resource: custom_form,
+          required: false,
+          title_multiloc: { 'en' => 'My optional field' }
+        ).tap do |field|
+          create :custom_field_option, custom_field: field, key: 'option1', title_multiloc: { 'en' => 'Rabbit' }
+          create :custom_field_option, custom_field: field, key: 'option2', title_multiloc: { 'en' => 'Bear' }
+        end
+      end
+      let(:fields) { IdeaCustomFieldsService.new(custom_form).enabled_fields }
+      let(:output) { service.input_ui_and_json_multiloc_schemas fields, user, input_term }
 
       context 'when resident' do
+        let(:user) { create :user }
+
         it 'generates expected output for different kinds of fields' do
-          form = create :custom_form, :with_default_fields, participation_context: project
-          section = create(
-            :custom_field_section,
-            :for_custom_form, resource: form,
-            title_multiloc: { 'en' => 'My section title' },
-            description_multiloc: { 'en' => 'My section description' }
-          )
-          required_field = create(
-            :custom_field,
-            :for_custom_form, resource: form,
-            required: true,
-            input_type: 'number',
-            title_multiloc: { 'en' => 'My required field' }
-          )
-          optional_field = create(
-            :custom_field_select,
-            :for_custom_form, resource: form,
-            required: false,
-            title_multiloc: { 'en' => 'My optional field' }
-          )
-          create :custom_field_option, custom_field: optional_field, key: 'option1', title_multiloc: { 'en' => 'Rabbit' }
-          create :custom_field_option, custom_field: optional_field, key: 'option2', title_multiloc: { 'en' => 'Bear' }
-          topic_field = form.custom_fields.find_by(code: 'topic_ids')
+          topic_field = custom_form.custom_fields.find_by(code: 'topic_ids')
           topic_field.update!(required: true)
 
-          fields = IdeaCustomFieldsService.new(form).enabled_fields
-          output = service.input_ui_and_json_multiloc_schemas fields, user, input_term
           expect(output).to match(
             {
               json_schema_multiloc: hash_including(
@@ -364,6 +373,14 @@ describe JsonFormsService do
           )
         end
 
+        it 'does not include budget and author fields' do
+          expect(output[:json_schema_multiloc]['en'][:properties]).not_to have_key 'author_id'
+          expect(output[:json_schema_multiloc]['en'][:properties]).not_to have_key 'budget'
+
+          expect(output[:ui_schema_multiloc]['en'][:elements][0][:elements][1][:scope]).not_to eq '#/properties/author_id'
+          expect(output[:ui_schema_multiloc]['en'][:elements][2][:elements][0][:scope]).not_to eq '#/properties/budget'
+        end
+
         it 'renders text images for fields' do
           description_multiloc = {
             'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
@@ -393,6 +410,26 @@ describe JsonFormsService do
 
       context 'when admin' do
         let(:user) { create :admin }
+
+        it 'includes budget and author fields' do
+          expect(output[:json_schema_multiloc]['en'][:properties]).to have_key 'author_id'
+          expect(output[:json_schema_multiloc]['en'][:properties]).to have_key 'budget'
+          expect(output[:json_schema_multiloc]['en'][:properties]['author_id']).to eq({ type: 'string' })
+          expect(output[:json_schema_multiloc]['en'][:properties]['budget']).to eq({ type: 'number' })
+
+          expect(output[:ui_schema_multiloc]['en'][:elements][0][:elements][1]).to eq({
+            type: 'Control',
+            scope: '#/properties/author_id',
+            label: 'Author',
+            options: { input_type: 'text' }
+          })
+          expect(output[:ui_schema_multiloc]['en'][:elements][2][:elements][0]).to eq({
+            type: 'Control',
+            scope: '#/properties/budget',
+            label: 'Budget',
+            options: { input_type: 'number' }
+          })
+        end
       end
     end
   end
