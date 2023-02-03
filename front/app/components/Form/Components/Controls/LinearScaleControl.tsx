@@ -19,7 +19,6 @@ import ErrorDisplay from '../ErrorDisplay';
 // style
 import { colors } from 'utils/styleUtils';
 import { useTheme } from 'styled-components';
-import { transparentize } from 'polished';
 
 const LinearScaleControl = ({
   data,
@@ -103,7 +102,7 @@ const LinearScaleControl = ({
           justifyContent="space-between"
         >
           {uischema.options?.minimum_label && (
-            <Box>
+            <Box maxWidth="50%">
               <Text
                 mt="8px"
                 mb="0px"
@@ -115,7 +114,7 @@ const LinearScaleControl = ({
               </Text>
             </Box>
           )}
-          <Box>
+          <Box maxWidth="50%">
             <Text
               mt={isSmallerThanXlPhone ? '0px' : '8px'}
               m="0px"

@@ -77,7 +77,7 @@ const MultiSelectCheckboxControl = ({
             checkboxBackgroundColor={colors.grey100}
           >
             <Checkbox
-              containerPadding="16px 20px 16px 20px"
+              padding="16px 20px 16px 20px"
               checkedColor={theme.colors.tenantSecondary}
               id={`${path}-checkbox-${index}`}
               label={option.label}

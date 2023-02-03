@@ -69,7 +69,7 @@ const SingleSelectRadioControl = ({
             key={option.value}
           >
             <Radio
-              containerPadding="20px 20px 4px 20px"
+              padding="20px 20px 4px 20px"
               marginTop="8px"
               buttonColor={theme.colors.tenantSecondary}
               id={`${path}-radio-${index}`}
