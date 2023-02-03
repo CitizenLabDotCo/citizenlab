@@ -132,10 +132,10 @@ describe LocalProjectCopyService do
         end)
 
       expect(copied_project.map_config.legend_items.map do |record|
-        record.as_json(except: %i[id map_config_id updated_at created_at])
+        record.as_json(only: %i[title_multiloc color ordering])
       end)
         .to match_array(continuous_project.map_config.legend_items.map do |record|
-          record.as_json(except: %i[id map_config_id updated_at created_at])
+          record.as_json(only: %i[title_multiloc color ordering])
         end)
     end
 
@@ -144,10 +144,10 @@ describe LocalProjectCopyService do
       copied_project = service.copy(continuous_project.reload)
 
       expect(copied_project.causes.map do |record|
-        record.as_json(except: %i[id ordering participation_context_id image updated_at created_at])
+        record.as_json(only: %i[participation_context_type title_multiloc description_multiloc volunteers_count])
       end)
         .to match_array(continuous_project.causes.map do |record|
-          record.as_json(except: %i[id ordering participation_context_id image updated_at created_at])
+          record.as_json(only: %i[participation_context_type title_multiloc description_multiloc volunteers_count])
         end)
     end
 
@@ -241,10 +241,10 @@ describe LocalProjectCopyService do
         expect(copied_project.project_files.first.file.url).to include(continuous_project.project_files.first.name)
 
         expect(copied_project.project_files.map do |record|
-          record.as_json(except: %i[id project_id file updated_at created_at])
+          record.as_json(only: %i[ordering name])
         end)
           .to match_array(continuous_project.project_files.map do |record|
-            record.as_json(except: %i[id project_id file updated_at created_at])
+            record.as_json(only: %i[ordering name])
           end)
       end
     end
@@ -290,10 +290,10 @@ describe LocalProjectCopyService do
         expect(copied_phase.phase_files.first.file.url).to include(source_phase.phase_files.first.name)
 
         expect(copied_phase.phase_files.map do |record|
-          record.as_json(except: %i[id phase_id file updated_at created_at])
+          record.as_json(only: %i[ordering name])
         end)
           .to match_array(source_phase.phase_files.map do |record|
-            record.as_json(except: %i[id phase_id file updated_at created_at])
+            record.as_json(only: %i[ordering name])
           end)
       end
     end
@@ -321,8 +321,8 @@ describe LocalProjectCopyService do
         copied_project = service.copy(layout.content_buildable)
 
         expect(copied_project.content_builder_layouts.first
-          .as_json(except: %i[id content_buildable_id updated_at created_at]))
-          .to eq(layout.as_json(except: %i[id content_buildable_id updated_at created_at]))
+          .as_json(only: %i[content_buildable_type code enabled]))
+          .to eq(layout.as_json(only: %i[content_buildable_type code enabled]))
       end
 
       it 'copies associated layout images as new images, associated with copied layout' do
@@ -533,8 +533,8 @@ describe LocalProjectCopyService do
         end
 
         expect(copied_project.content_builder_layouts.first
-          .as_json(except: %i[id content_buildable_id craftjs_jsonmultiloc updated_at created_at]))
-          .to eq(layout.as_json(except: %i[id content_buildable_id craftjs_jsonmultiloc updated_at created_at]))
+          .as_json(only: %i[content_buildable_type code enabled]))
+          .to eq(layout.as_json(only: %i[content_buildable_type code enabled]))
 
         # Expect the copied layout's craftjs_jsonmultiloc to equal the source value, excluding the image codes (UUIDs)
         expect(
