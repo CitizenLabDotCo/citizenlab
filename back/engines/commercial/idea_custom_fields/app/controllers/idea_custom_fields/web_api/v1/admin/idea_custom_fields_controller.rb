@@ -125,7 +125,9 @@ module IdeaCustomFields
     end
 
     def update_field!(field, field_params, errors, index)
-      IdeaCustomFieldsService.new(@custom_form).validate_constraints_against_updates(field, field_params)
+      idea_custom_field_service = IdeaCustomFieldsService.new(@custom_form)
+      idea_custom_field_service.validate_constraints_against_updates field, field_params
+      field_params = idea_custom_field_service.remove_ignored_update_params field_params
       if field.errors.errors.empty?
         field.assign_attributes field_params
         SideFxCustomFieldService.new.before_update field, current_user

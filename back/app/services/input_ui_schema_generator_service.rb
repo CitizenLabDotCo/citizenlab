@@ -17,6 +17,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   end
 
   def generate_for(fields)
+    # TODO: use the custom form instead (always use enabled fields)
     uses_pages = fields.any?(&:page?)
     return super(fields) unless uses_pages
 
@@ -119,26 +120,9 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
     categorization_schema_with(input_term, schema_elements_for(fields))
   end
 
-  # def generate_for_current_locale(fields)
-  #   participation_context = fields.first.resource.participation_context
-  #   participation_method = Factory.instance.participation_method_for participation_context
-  #   built_in_field_index = fields.select(&:built_in?).index_by(&:code)
-  #   main_fields = built_in_field_index.slice('title_multiloc', 'author_id', 'body_multiloc').values
-  #   details_fields = built_in_field_index.slice('proposed_budget', 'budget', 'topic_ids', 'location_description').values
-  #   attachments_fields = built_in_field_index.slice('idea_images_attributes', 'idea_files_attributes').values
-  #   custom_fields = fields.reject(&:built_in?)
-
-  #   elements = [
-  #     category_for(main_fields, 'mainContent', "custom_forms.categories.main_content.#{input_term}.title"),
-  #     category_for(details_fields, 'details', 'custom_forms.categories.details.title'),
-  #     category_for(attachments_fields, 'attachments', 'custom_forms.categories.attachements.title'),
-  #     category_for(custom_fields, 'extra', participation_method.extra_fields_category_translation_key)
-  #   ].compact
-  #   categorization_schema_with(input_term, elements)
-  # end
-
   def generate_for_current_locale(fields)
-    return generate_for_current_locale_without_sections fields if fields.none?(&:section?) # TODO: Do we need to do this to keep native surveys working?
+    # Case for native surveys
+    return generate_for_current_locale_without_sections fields if fields.none?(&:section?)
 
     current_section = nil
     section_fields = []
@@ -157,21 +141,24 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   end
 
   def generate_section(current_section, section_fields)
-    return if section_fields.empty? # TODO: Do we still want to filter out empty sections?
-
     {
       type: 'Category',
       label: (MultilocService.new.t(current_section.title_multiloc) if current_section.title_multiloc),
       options: { id: current_section.id },
       elements: section_fields.filter_map { |field| visit field }
-    }
+    }.tap do |category|
+      description = MultilocService.new.t current_section.description_multiloc
+      if description.present?
+        category[:options][:description] = description
+      end
+    end
   end
 
   def generate_for_current_locale_without_sections(fields)
     category = {
       type: 'Category',
       label: nil,
-      options: { id: 'main_fields' },
+      options: { id: 'extra' },
       elements: fields.filter_map { |field| visit field }
     }
     categorization_schema_with(input_term, [category])

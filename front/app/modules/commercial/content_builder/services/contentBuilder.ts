@@ -1,14 +1,9 @@
-import { SerializedNode } from '@craftjs/core';
 import { API_PATH } from 'containers/App/constants';
-import { Locale } from 'typings';
 import streams from 'utils/streams';
 import { reportError } from 'utils/loggingUtils';
+import { JsonMultiloc } from 'components/admin/ContentBuilder/typings';
 
 export const PROJECT_DESCRIPTION_CODE = 'project_description';
-
-type JsonMultiloc = {
-  [key in Locale]?: Record<string, SerializedNode>;
-};
 
 export interface IContentBuilderLayoutData {
   type: 'content_builder_layout';

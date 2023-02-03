@@ -172,11 +172,9 @@ class CustomField < ApplicationRecord
   # Special behaviour for ideation section 1
   def title_multiloc
     if code == 'ideation_section1'
-      input_term = resource.participation_context.input_term
+      input_term = resource.participation_context.input_term || ParticipationContext::DEFAULT_INPUT_TERM
       key = "custom_forms.categories.main_content.#{input_term}.title"
-      I18n.available_locales.index_with do |locale|
-        I18n.t(key, default: '', locale: locale)
-      end
+      MultilocService.new.i18n_to_multiloc key
     else
       super
     end

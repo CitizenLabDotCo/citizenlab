@@ -14,6 +14,13 @@ import { IProjectData } from 'services/projects';
 
 // components
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
+import { IdeationCTABar } from 'components/ParticipationCTABars/IdeationCTABar';
+import { NativeSurveyCTABar } from 'components/ParticipationCTABars/NativeSurveyCTABar';
+import { EmbeddedSurveyCTABar } from 'components/ParticipationCTABars/EmbeddedSurveyCTABar';
+import { BudgetingCTABar } from 'components/ParticipationCTABars/BudgetingCTABar';
+import { VolunteeringCTABar } from 'components/ParticipationCTABars/VolunteeringCTABar';
+
+import { CTABarProps } from 'components/ParticipationCTABars/utils';
 
 // utils
 import { isNilOrError } from './helperUtils';
@@ -52,6 +59,7 @@ export type ParticipationMethodConfig = {
   showInputManager: boolean;
   isMethodLocked: boolean;
   postType: 'defaultInput' | 'nativeSurvey';
+  renderCTABar: (props: CTABarProps) => ReactNode | JSX.Element | null;
 };
 
 const ideationConfig: ParticipationMethodConfig = {
@@ -109,6 +117,9 @@ const ideationConfig: ParticipationMethodConfig = {
   },
   showInputManager: true,
   isMethodLocked: false,
+  renderCTABar: (props: CTABarProps) => {
+    return <IdeationCTABar project={props.project} phases={props.phases} />;
+  },
 };
 
 const nativeSurveyConfig: ParticipationMethodConfig = {
@@ -141,6 +152,9 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
   },
   showInputManager: false,
   isMethodLocked: true,
+  renderCTABar: (props: CTABarProps) => {
+    return <NativeSurveyCTABar project={props.project} phases={props.phases} />;
+  },
 };
 
 const informationConfig: ParticipationMethodConfig = {
@@ -157,6 +171,9 @@ const informationConfig: ParticipationMethodConfig = {
   postType: 'defaultInput',
   showInputManager: false,
   isMethodLocked: false,
+  renderCTABar: () => {
+    return null;
+  },
 };
 
 const surveyConfig: ParticipationMethodConfig = {
@@ -173,6 +190,11 @@ const surveyConfig: ParticipationMethodConfig = {
   postType: 'defaultInput',
   showInputManager: false,
   isMethodLocked: false,
+  renderCTABar: (props: CTABarProps) => {
+    return (
+      <EmbeddedSurveyCTABar project={props.project} phases={props.phases} />
+    );
+  },
 };
 
 const budgetingConfig: ParticipationMethodConfig = {
@@ -220,6 +242,9 @@ const budgetingConfig: ParticipationMethodConfig = {
   },
   showInputManager: true,
   isMethodLocked: false,
+  renderCTABar: (props: CTABarProps) => {
+    return <BudgetingCTABar project={props.project} phases={props.phases} />;
+  },
 };
 
 const pollConfig: ParticipationMethodConfig = {
@@ -236,6 +261,9 @@ const pollConfig: ParticipationMethodConfig = {
   postType: 'defaultInput',
   showInputManager: false,
   isMethodLocked: false,
+  renderCTABar: () => {
+    return null;
+  },
 };
 
 const volunteeringConfig: ParticipationMethodConfig = {
@@ -252,6 +280,9 @@ const volunteeringConfig: ParticipationMethodConfig = {
   postType: 'defaultInput',
   showInputManager: false,
   isMethodLocked: false,
+  renderCTABar: (props: CTABarProps) => {
+    return <VolunteeringCTABar project={props.project} phases={props.phases} />;
+  },
 };
 
 const methodToConfig: {

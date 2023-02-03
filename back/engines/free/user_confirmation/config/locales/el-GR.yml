@@ -2,8 +2,8 @@ el:
   user_confirmation:
     confirmations_mailer:
       send_confirmation_code:
-        subject: "Confirm your email address for %{organizationName}'s participation platform"
-        header: "Your Confirmation Code"
+        subject: "Επιβεβαιώστε τη διεύθυνση ηλεκτρονικού ταχυδρομείου σας για την πλατφόρμα συμμετοχής %{organizationName}"
+        header: "Ο κωδικός επιβεβαίωσης"
         header_message: "Hi %{firstName}!"
         thanks_for_signing_up: "Thanks for signing up for %{organizationName}'s participation platform."
         please_confirm_your_email_address: "To complete your registration, please verify your email address."

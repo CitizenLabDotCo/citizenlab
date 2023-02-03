@@ -182,23 +182,32 @@ resource 'Reports' do
 
       describe 'updating the layout of a report' do
         let(:craftjs_jsonmultiloc) do
-          { 'fr-BE' => { 'ROOT' => { 'type' => { 'resolvedName' => 'Container' } } } }
+          { 'nl-BE' => { 'ROOT' => {
+            'type' => { 'resolvedName' => 'Container' }
+          } } }
         end
 
-        let(:craftjs_jsonmultiloc_nl_be) do
-          { 'nl-BE' => { 'ROOT' => { 'type' => { 'resolvedName' => 'Container' } } } }
-        end
-
-        before do
-          report.layout.update(craftjs_jsonmultiloc: craftjs_jsonmultiloc_nl_be)
-        end
-
-        example 'Update the layout of a report by id' do
+        example 'Layout successfully updates by report id' do
           do_request
           assert_status 200
           expect(report.reload.layout.craftjs_jsonmultiloc).to match(
-            craftjs_jsonmultiloc.merge(craftjs_jsonmultiloc_nl_be)
+            craftjs_jsonmultiloc
           )
+        end
+      end
+
+      describe 'reject layouts with more than one locale when updating a report' do
+        let(:craftjs_jsonmultiloc) do
+          {
+            'fr-BE' => { 'ROOT' => { 'type' => { 'resolvedName' => 'Container' } } },
+            'nl-BE' => { 'ROOT' => { 'type' => { 'resolvedName' => 'Container' } } }
+          }
+        end
+
+        example 'Error if more than one locale' do
+          do_request
+          assert_status 422
+          expect(report.reload.layout.craftjs_jsonmultiloc).to match({})
         end
       end
 

@@ -162,6 +162,6 @@ describe('Insights Top Bar', () => {
     mockViewData = new Error();
     render(<TopBar />);
 
-    expect(clHistory.push).toHaveBeenCalledWith('/admin/insights');
+    expect(clHistory.push).toHaveBeenCalledWith('/admin/reporting/insights');
   });
 });

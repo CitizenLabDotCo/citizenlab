@@ -1,10 +1,7 @@
 import React from 'react';
-import { Box, Text } from '@citizenlab/cl2-component-library';
-import ImageCropper from 'components/admin/ImageCropper';
+import { Box } from '@citizenlab/cl2-component-library';
 import HeaderImageDropzone from '../HeaderImageDropzone';
-import Warning from 'components/UI/Warning';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../messages';
+import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import {
   TLocalHeaderImage,
   Props as BannerImageFieldsProps,
@@ -40,8 +37,6 @@ const ImageUploader = ({
   bannerError,
   previewDevice,
 }: Props) => {
-  const { formatMessage } = useIntl();
-
   return (
     <>
       {displayImageCropper ? (
@@ -51,31 +46,12 @@ const ImageUploader = ({
           gap="20px"
           mb={displayOverlayControls ? '32px' : '0'}
         >
-          <ImageCropper
+          <ImageCropperContainer
             image={headerLocalDisplayImage}
             onComplete={onAddImage}
+            aspect={3 / 1}
             onRemove={onRemoveImageFromUploader}
           />
-          <Warning>
-            <Text>
-              <FormattedMessage
-                {...messages.fixedRatioImageCropperInfo}
-                values={{
-                  link: (
-                    <a
-                      href={formatMessage(messages.imageSupportPageURL)}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <FormattedMessage
-                        {...messages.fixedRatioImageCropperInfoLink}
-                      />
-                    </a>
-                  ),
-                }}
-              />
-            </Text>
-          </Warning>
         </Box>
       ) : (
         <Box mb="20px" data-cy="e2e-homepage-banner-image-dropzone">
@@ -87,7 +63,7 @@ const ImageUploader = ({
             headerError={bannerError}
             header_bg={headerLocalDisplayImage}
             previewDevice={previewDevice}
-            layout={bannerLayout || 'full_width_banner_layout'}
+            layout={bannerLayout}
           />
         </Box>
       )}

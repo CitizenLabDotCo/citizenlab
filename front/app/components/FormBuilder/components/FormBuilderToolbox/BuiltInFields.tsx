@@ -69,6 +69,7 @@ const BuiltInFields = ({ isEditingDisabled, move }: BuiltInFieldsProps) => {
           onClick={() => enableField('proposed_budget')}
           disabled={!enabledBuiltInFieldKeys.includes('proposed_budget')}
           disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
+          data-cy="e2e-proposed-budget-item"
         />
         <ToolboxItem
           icon="upload-file"
@@ -76,12 +77,14 @@ const BuiltInFields = ({ isEditingDisabled, move }: BuiltInFieldsProps) => {
           onClick={() => enableField('idea_files_attributes')}
           disabled={!enabledBuiltInFieldKeys.includes('idea_files_attributes')}
           disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
+          data-cy="e2e-attachments-item"
         />
         <ToolboxItem
           icon="location-simple"
           label={formatMessage(messages.locationDescription)}
           onClick={() => enableField('location_description')}
           disabled={!enabledBuiltInFieldKeys.includes('location_description')}
+          data-cy="e2e-location-item"
           disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
         />
         <ToolboxItem
@@ -90,6 +93,7 @@ const BuiltInFields = ({ isEditingDisabled, move }: BuiltInFieldsProps) => {
           onClick={() => enableField('topic_ids')}
           disabled={!enabledBuiltInFieldKeys.includes('topic_ids')}
           disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
+          data-cy="e2e-tags-item"
         />
       </DraggableElement>
     </Box>

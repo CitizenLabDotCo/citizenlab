@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_05_112729) do
+ActiveRecord::Schema.define(version: 2023_01_31_091656) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -542,6 +542,7 @@ ActiveRecord::Schema.define(version: 2022_12_05_112729) do
     t.string "highest_role"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "user_id"
     t.index ["monthly_user_hash"], name: "index_impact_tracking_sessions_on_monthly_user_hash"
   end
 
