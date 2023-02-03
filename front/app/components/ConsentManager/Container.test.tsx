@@ -8,8 +8,6 @@ import { CategorizedDestinations } from './typings';
 
 // mock utilities
 
-jest.mock('services/appConfiguration');
-jest.mock('modules', () => ({ streamsToReset: [] }));
 jest.mock('utils/cl-router/Link', () => ({ children }) => (
   <button>{children}</button>
 ));

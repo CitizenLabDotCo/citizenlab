@@ -6,9 +6,6 @@ import { IDestination, registerDestination } from '../destinations';
 import CategoryCard from './CategoryCard';
 
 // mock utilities
-jest.mock('services/appConfiguration');
-
-jest.mock('modules', () => ({ streamsToReset: [] }));
 
 const getRadioInputs = () => {
   const allowButton = screen.getByRole('radio', { name: 'Allow' });

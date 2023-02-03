@@ -4,8 +4,6 @@ import MultiBarChart from './';
 import { NilOrError } from 'utils/helperUtils';
 import { legacyColors } from '../styling';
 
-jest.mock('services/appConfiguration');
-
 type Row = { name: string; value1: number; value2: number };
 
 const getEmptyData = (): Row[] | NilOrError => null;

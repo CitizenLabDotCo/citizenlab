@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen, waitFor, fireEvent } from 'utils/testUtils/rtl';
 import ChartCard from './';
 
-jest.mock('services/appConfiguration');
 jest.mock('services/auth');
 
 const generateData = (n: number) => {

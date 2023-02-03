@@ -7,9 +7,6 @@ import Preferences from './Preferences';
 
 // mock utilities
 
-jest.mock('services/appConfiguration');
-jest.mock('modules', () => ({ streamsToReset: [] }));
-
 describe('<Preferences />', () => {
   let onChange;
 

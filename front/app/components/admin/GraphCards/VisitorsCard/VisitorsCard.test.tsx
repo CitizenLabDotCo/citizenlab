@@ -34,8 +34,6 @@ jest.mock('./useVisitors', () => () => ({
   xlsxData: {},
 }));
 
-jest.mock('services/appConfiguration');
-
 class FakeResizeObserver {
   observe() {}
   disconnect() {}

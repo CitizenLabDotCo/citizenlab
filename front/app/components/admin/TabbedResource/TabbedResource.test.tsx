@@ -3,8 +3,6 @@ import { render, screen } from 'utils/testUtils/rtl';
 import TabbedResource from '.';
 import { WithRouterProps } from 'utils/cl-router/withRouter';
 
-jest.mock('services/appConfiguration');
-
 const getRouterProps = (tabId, tabName?: string) =>
   ({
     location: {

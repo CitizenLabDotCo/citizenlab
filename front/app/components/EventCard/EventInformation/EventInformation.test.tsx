@@ -25,8 +25,6 @@ const mockProjectData = {
 jest.mock('hooks/useResourceFiles', () => jest.fn(() => []));
 jest.mock('hooks/useProject', () => jest.fn(() => mockProjectData));
 
-jest.mock('services/appConfiguration');
-
 jest.mock('utils/cl-router/withRouter');
 
 const createEvent = (description) => ({

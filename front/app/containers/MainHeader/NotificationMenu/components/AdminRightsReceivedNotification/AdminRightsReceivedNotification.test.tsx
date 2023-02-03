@@ -9,7 +9,6 @@ import AdminRightsReceivedNotification from './';
 // mock utilities
 
 jest.mock('utils/analytics', () => ({ trackEventByName: () => {} }));
-jest.mock('modules', () => ({ streamsToReset: [] }));
 
 import { getNotification } from 'services/__mocks__/notifications';
 

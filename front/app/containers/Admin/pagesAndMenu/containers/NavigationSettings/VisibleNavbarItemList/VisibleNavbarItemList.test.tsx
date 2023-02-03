@@ -7,7 +7,6 @@ import VisibleNavbarItemList from '.';
 import { removeNavbarItem, reorderNavbarItem } from 'services/navbar';
 import { deleteCustomPage } from 'services/customPages';
 
-jest.mock('services/appConfiguration');
 jest.mock('hooks/useNavbarItems');
 jest.mock('hooks/useCustomPageSlugById');
 

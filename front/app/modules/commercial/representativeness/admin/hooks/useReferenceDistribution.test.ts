@@ -4,8 +4,6 @@ import {
   ICategoricalDistributionData,
 } from '../services/referenceDistribution';
 
-jest.mock('services/appConfiguration');
-
 describe('getRemoteFormValues', () => {
   it('works for categorical distributions', () => {
     const categoricalDistribution: ICategoricalDistributionData = {

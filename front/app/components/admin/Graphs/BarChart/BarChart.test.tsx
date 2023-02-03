@@ -4,8 +4,6 @@ import BarChart from './';
 import { NilOrError } from 'utils/helperUtils';
 import { legacyColors } from '../styling';
 
-jest.mock('services/appConfiguration');
-
 type Row = { name: string; value: number };
 
 const getEmptyData = (): Row[] | NilOrError => null;

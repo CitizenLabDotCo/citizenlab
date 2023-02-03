@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import NavbarItemRow from '.';
 
-jest.mock('services/appConfiguration');
 jest.mock('utils/cl-router/withRouter');
 
 const title = { en: 'English title' };

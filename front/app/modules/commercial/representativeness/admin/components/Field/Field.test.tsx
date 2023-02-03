@@ -8,8 +8,6 @@ import {
   deleteReferenceDistribution,
 } from '../../services/referenceDistribution';
 
-jest.mock('services/appConfiguration');
-
 jest.mock('../../services/referenceDistribution', () => ({
   createReferenceDistribution: jest.fn(),
   replaceReferenceDistribution: jest.fn(),

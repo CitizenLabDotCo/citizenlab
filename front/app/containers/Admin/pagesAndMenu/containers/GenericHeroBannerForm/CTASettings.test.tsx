@@ -8,8 +8,6 @@ import CTASettings from './CTASettings';
 
 jest.mock('utils/cl-router/Link', () => 'Link');
 
-jest.mock('services/appConfiguration');
-
 const props = {
   homepageSettings: {
     banner_layout: 'full_width_banner_layout',

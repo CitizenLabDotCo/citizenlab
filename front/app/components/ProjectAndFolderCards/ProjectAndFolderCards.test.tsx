@@ -16,8 +16,6 @@ jest.mock('@citizenlab/cl2-component-library', () => ({
 
 jest.spyOn(styledComponents, 'useTheme').mockReturnValue(getTheme());
 
-// Mock services
-
 // Mock hooks
 const DEFAULT_ADMIN_PUBLICATIONS = [
   { publicationId: '1', publicationType: 'project' },

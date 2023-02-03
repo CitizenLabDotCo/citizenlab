@@ -2,8 +2,6 @@ import React from 'react';
 import BinInputs from './BinInputs';
 import { fireEvent, render, screen } from 'utils/testUtils/rtl';
 
-jest.mock('services/appConfiguration');
-
 const bins = [18, 25, 35, 55, null];
 
 describe('<BinInputs />', () => {

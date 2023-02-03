@@ -7,7 +7,7 @@ jest.mock('utils/eventEmitter');
 jest.mock('hooks/useAppConfiguration', () => () => ({
   attributes: { name: 'orgName' },
 }));
-jest.mock('modules', () => ({ streamsToReset: [] }));
+
 jest.mock('components/Fragment', () => ({ children }) => {
   return <div>{children}</div>;
 });

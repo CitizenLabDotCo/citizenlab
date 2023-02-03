@@ -11,8 +11,6 @@ jest.mock('resources/GetIdeasCount', () => 'GetIdeasCount');
 jest.mock('resources/GetInitiativesCount', () => 'GetInitiativesCount');
 jest.mock('components/UI/CountBadge', () => 'CountBadge');
 
-jest.mock('modules', () => ({ streamsToReset: [] }));
-
 import 'jest-styled-components';
 
 describe('<FeedbackToggle />', () => {

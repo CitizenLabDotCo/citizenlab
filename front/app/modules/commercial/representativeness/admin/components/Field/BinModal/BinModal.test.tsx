@@ -2,8 +2,6 @@ import React from 'react';
 import BinModal from '.';
 import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
 
-jest.mock('services/appConfiguration');
-
 describe('<BinModal />', () => {
   describe('No initial bins', () => {
     it('renders', () => {

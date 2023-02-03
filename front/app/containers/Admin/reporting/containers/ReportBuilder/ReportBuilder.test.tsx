@@ -3,7 +3,6 @@ import { render, screen } from 'utils/testUtils/rtl';
 import ReportBuilder from '.';
 
 // service mocks
-jest.mock('services/appConfiguration');
 
 // hook mocks
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => true));

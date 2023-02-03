@@ -3,8 +3,6 @@ import { render, screen } from 'utils/testUtils/rtl';
 
 import ProjectFolderSelect from './';
 
-jest.mock('services/appConfiguration');
-
 let mockPermission = false;
 jest.mock('services/permissions', () => {
   return { usePermission: () => mockPermission };

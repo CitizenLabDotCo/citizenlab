@@ -20,7 +20,6 @@ import { WithRouterProps } from 'utils/cl-router/withRouter';
 // what needs to be mocked by jest to render the component
 
 jest.mock('components/Outlet', () => 'outlet');
-jest.mock('modules', () => ({ streamsToReset: [] }));
 
 const getRouterProps = (projectId, tabName?: string) =>
   ({

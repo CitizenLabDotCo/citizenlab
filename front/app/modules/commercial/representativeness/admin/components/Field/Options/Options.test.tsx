@@ -3,8 +3,6 @@ import Options from '.';
 import { fireEvent, render, screen, waitFor } from 'utils/testUtils/rtl';
 import { indices } from 'utils/helperUtils';
 
-jest.mock('services/appConfiguration');
-
 const generateOptions = (n: number) =>
   indices(n).map((i) => ({
     id: `_${i}`,

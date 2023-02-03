@@ -5,7 +5,6 @@ import { createReport, deleteReport } from 'services/reports';
 import clHistory from 'utils/cl-router/history';
 
 // service mocks
-jest.mock('services/appConfiguration');
 
 // hook mocks
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => true));

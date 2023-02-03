@@ -13,7 +13,7 @@ import { UsersShowPage } from './';
 jest.mock('services/comments');
 jest.mock('services/ideas');
 jest.mock('services/users');
-jest.mock('modules', () => ({ streamsToReset: [] }));
+
 jest.mock('components/Outlet', () => 'Outlet');
 
 const mockScroll = jest.fn();

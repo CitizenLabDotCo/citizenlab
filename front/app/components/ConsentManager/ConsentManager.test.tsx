@@ -17,8 +17,6 @@ import { setConsent, IConsentCookie } from './consent';
 
 // mocks
 
-jest.mock('services/appConfiguration');
-jest.mock('modules', () => ({ streamsToReset: [] }));
 jest.mock('utils/cl-router/Link', () => ({ children }) => (
   <button>{children}</button>
 ));

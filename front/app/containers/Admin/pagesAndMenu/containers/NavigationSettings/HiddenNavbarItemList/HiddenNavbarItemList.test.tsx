@@ -7,8 +7,6 @@ import { fireEvent, render, screen } from 'utils/testUtils/rtl';
 import HiddenNavbarItemList from '.';
 import { addNavbarItem } from 'services/navbar';
 
-jest.mock('services/appConfiguration');
-
 let mockNavbarItems = allNavbarItems;
 const mockRemovedDefaultNavbarItems = [];
 

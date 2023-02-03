@@ -6,8 +6,6 @@ import { getDummyIntlObject } from 'utils/testUtils/mockedIntl';
 
 jest.mock('services/avatars');
 
-jest.mock('services/appConfiguration');
-
 const dummyIntl = getDummyIntlObject();
 
 // Avatar data mock

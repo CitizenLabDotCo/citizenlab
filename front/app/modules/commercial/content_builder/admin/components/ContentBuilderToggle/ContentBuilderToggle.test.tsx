@@ -17,8 +17,6 @@ let mockContentBuilderLayoutData:
   | Error;
 mockContentBuilderLayoutData = DEFAULT_CONTENT_BUILDER_LAYOUT_DATA;
 
-jest.mock('services/appConfiguration');
-
 jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
 jest.mock('hooks/useAppConfigurationLocales', () => jest.fn(() => ['en']));
 jest.mock('modules/commercial/content_builder/hooks/useContentBuilder', () => {

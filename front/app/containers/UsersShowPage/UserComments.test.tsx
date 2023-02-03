@@ -11,7 +11,7 @@ import { UserComments } from './UserComments';
 // mock utilities
 
 jest.mock('services/comments');
-jest.mock('modules', () => ({ streamsToReset: [] }));
+
 jest.mock('components/Outlet', () => 'Outlet');
 
 import { makeComments } from 'services/comments';

@@ -14,8 +14,6 @@ jest.mock('components/UI/MoreActionsMenu', () => 'MoreActionsMenu');
 jest.mock('components/UI/QuillEditedContent', () => 'QuillEditedContent');
 jest.mock('components/T');
 
-jest.mock('modules', () => ({ streamsToReset: [] }));
-
 const Intl = require('utils/cl-intl/__mocks__/');
 const { intl } = Intl;
 const mockOfficialFeedbackPost = mockOfficialFeedback.data[0];

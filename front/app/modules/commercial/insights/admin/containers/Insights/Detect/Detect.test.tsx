@@ -25,8 +25,6 @@ jest.mock(
   }
 );
 
-jest.mock('modules');
-
 const mockLocationData = { pathname: '', query: {} };
 
 jest.mock('utils/cl-router/withRouter', () => {

@@ -3,8 +3,6 @@ import { render, screen, waitFor } from 'utils/testUtils/rtl';
 import PieChart from './';
 import { NilOrError } from 'utils/helperUtils';
 
-jest.mock('services/appConfiguration');
-
 type Row = { a: number; name: string };
 
 const data: Row[] = [
