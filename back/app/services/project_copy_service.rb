@@ -84,7 +84,7 @@ class ProjectCopyService < ::TemplateService
 
       craftjs.each_key do |locale|
         craftjs[locale].each_key do |node|
-          next unless craftjs[locale][node]['type']['resolvedName'] == 'Image'
+          next unless ContentBuilder::LayoutService.new.craftjs_element_of_type?(craftjs[locale][node], 'Image')
 
           source_image_code = craftjs[locale][node]['props']['dataCode']
           new_image_code = ContentBuilder::LayoutImage.new.generate_code

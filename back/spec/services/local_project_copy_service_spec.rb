@@ -526,7 +526,7 @@ describe LocalProjectCopyService do
 
         new_craftjs.each_key do |locale|
           new_craftjs[locale].each_key do |node|
-            next unless new_craftjs[locale][node]['type']['resolvedName'] == 'Image'
+            next unless ContentBuilder::LayoutService.new.craftjs_element_of_type?(new_craftjs[locale][node], 'Image')
 
             new_image_codes << new_craftjs[locale][node]['props']['dataCode']
           end
