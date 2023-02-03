@@ -18,8 +18,6 @@ module ContentBuilder
 
     before_validation :generate_code, on: :create
 
-    private
-
     def generate_code
       self.code = SecureRandom.uuid unless code
     end

@@ -87,7 +87,7 @@ class ProjectCopyService < ::TemplateService
           next unless craftjs[locale][node]['type']['resolvedName'] == 'Image'
 
           source_image_code = craftjs[locale][node]['props']['dataCode']
-          new_image_code = SecureRandom.uuid
+          new_image_code = ContentBuilder::LayoutImage.new.generate_code
           craftjs[locale][node]['props']['dataCode'] = new_image_code
           layout_images_mapping[source_image_code] = new_image_code
         end
