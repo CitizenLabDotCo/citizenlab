@@ -691,7 +691,7 @@
   "app.containers.CustomPageShow.goBack": "Zurück",
   "app.containers.CustomPageShow.notFound": "Seite nicht gefunden",
   "app.containers.IdeaButton.addAContribution": "Einen Beitrag hinzufügen\n",
-  "app.containers.IdeaButton.addAProject": "Hinzufügen eines Projekts",
+  "app.containers.IdeaButton.addAProject": "Projekt hinzufügen",
   "app.containers.IdeaButton.addAQuestion": "Eine Frage hinzufügen",
   "app.containers.IdeaButton.addAnOption": "Eine Option hinzufügen",
   "app.containers.IdeaButton.postingDisabled": "Hier eine Idee zu veröffentlichen ist derzeit nicht möglich.",
