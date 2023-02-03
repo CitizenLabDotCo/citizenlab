@@ -72,6 +72,7 @@ const BuiltInFields = ({
           label={formatMessage(messages.proposedBudget)}
           onClick={() => enableField('proposed_budget')}
           disabled={!enabledBuiltInFieldKeys.includes('proposed_budget')}
+          data-cy="e2e-proposed-budget-item"
         />
       </DraggableElement>
       <DraggableElement>
@@ -80,6 +81,7 @@ const BuiltInFields = ({
           label={formatMessage(messages.fileUpload)}
           onClick={() => enableField('idea_files_attributes')}
           disabled={!enabledBuiltInFieldKeys.includes('idea_files_attributes')}
+          data-cy="e2e-attachments-item"
         />
       </DraggableElement>
       <DraggableElement>
@@ -88,6 +90,7 @@ const BuiltInFields = ({
           label={formatMessage(messages.locationDescription)}
           onClick={() => enableField('location_description')}
           disabled={!enabledBuiltInFieldKeys.includes('location_description')}
+          data-cy="e2e-location-item"
         />
       </DraggableElement>
       <DraggableElement>
@@ -96,6 +99,7 @@ const BuiltInFields = ({
           label={formatMessage(messages.tags)}
           onClick={() => enableField('topic_ids')}
           disabled={!enabledBuiltInFieldKeys.includes('topic_ids')}
+          data-cy="e2e-tags-item"
         />
       </DraggableElement>
     </Box>
