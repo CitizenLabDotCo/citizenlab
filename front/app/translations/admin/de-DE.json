@@ -1129,8 +1129,6 @@
   "app.containers.AdminPage.ProjectEdit.pollTab": "Abstimmung",
   "app.containers.AdminPage.ProjectEdit.popularSortingMethod": "{orgName, select, München {Meiste Bewertungen} other {Meiste Stimmen}}",
   "app.containers.AdminPage.ProjectEdit.projectCardImageLabelText": "Projektbild",
-  "app.containers.AdminPage.ProjectEdit.projectCardImageLabelTooltip": "Dieses Bild wird auf der Homepage angezeigt. Die idealen Abmessungen sind eine Breite von 1440 Pixel und eine Höhe zwischen 1440 und 720 Pixel.",
-  "app.containers.AdminPage.ProjectEdit.projectFolderCardImageTooltip": "Dies ist das Bild, das in der Ordnerkarte angezeigt wird. Die idealen Abmessungen für dieses Bild sind eine Breite von 1440 Pixel und eine Höhe zwischen 1440 und 720 Pixel.",
   "app.containers.AdminPage.ProjectEdit.projectFolderSelectTitle": "Projekt zu einem Ordner hinzufügen?",
   "app.containers.AdminPage.ProjectEdit.projectManagerTooltipContent": "Projektmanager:innen können Projekte bearbeiten, Eingaben verwalten und Teilnehmende per E-Mail kontaktieren. Sie können {moderationInfoCenterLink}, um mehr Informationen über die den Projektmanager:innen zugewiesenen Rechte zu finden.",
   "app.containers.AdminPage.ProjectEdit.projectMethodChangeWarning": "Einige Beteiligungsmethoden sind für bestehende Phasen nicht verfügbar. In diesen Fällen muss eine neue Phase erstellt werden.",

@@ -1129,8 +1129,6 @@
   "app.containers.AdminPage.ProjectEdit.pollTab": "Avstemning",
   "app.containers.AdminPage.ProjectEdit.popularSortingMethod": "Populært",
   "app.containers.AdminPage.ProjectEdit.projectCardImageLabelText": "Prosjektkortbilde",
-  "app.containers.AdminPage.ProjectEdit.projectCardImageLabelTooltip": "Dette bildet vises på prosjektkortet på startsiden. De ideelle dimensjonene er en bredde på 1440 piksler og en høyde på mellom 1440 og 720 piksler.",
-  "app.containers.AdminPage.ProjectEdit.projectFolderCardImageTooltip": "Dette er bildet som vises på mappekortet. De ideelle dimensjonene for dette bildet er en bredde på 1440 piksler og en høyde på mellom 1440 og 720 piksler.",
   "app.containers.AdminPage.ProjectEdit.projectFolderSelectTitle": "Vil du legge til et prosjekt i en mappe?",
   "app.containers.AdminPage.ProjectEdit.projectManagerTooltipContent": "Prosjektledere kan redigere prosjekter, administrere innlegg og sende e-postmeldinger til deltakere. Du kan {moderationInfoCenterLink} for å finne mer informasjon om rettighetene som tildeles prosjektledere.",
   "app.containers.AdminPage.ProjectEdit.projectMethodChangeWarning": "Enkelte deltakelsesmetoder er ikke tilgjengelige for eksisterende prosjekter. I slike tilfeller må det opprettes et nytt prosjekt.",

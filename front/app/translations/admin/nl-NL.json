@@ -1129,8 +1129,6 @@
   "app.containers.AdminPage.ProjectEdit.pollTab": "Peiling",
   "app.containers.AdminPage.ProjectEdit.popularSortingMethod": "Meeste stemmen",
   "app.containers.AdminPage.ProjectEdit.projectCardImageLabelText": "Projectafbeelding",
-  "app.containers.AdminPage.ProjectEdit.projectCardImageLabelTooltip": "Deze afbeelding wordt getoond bij het project op de homepagina. De ideale afmetingen zijn een breedte van 1440 pixels en een hoogte tussen 1440 en 720 pixels.",
-  "app.containers.AdminPage.ProjectEdit.projectFolderCardImageTooltip": "Dit is het beeld dat wordt weergegeven als mapafbeelding. De ideale afmetingen voor dit beeld zijn een breedte van 1440 pixels en een hoogte tussen 1440 en 720 pixels.",
   "app.containers.AdminPage.ProjectEdit.projectFolderSelectTitle": "Project toevoegen aan map?",
   "app.containers.AdminPage.ProjectEdit.projectManagerTooltipContent": "Projectmanagers kunnen projecten bewerken, bijdragen beheren en deelnemers e-mailen. Je kan {moderationInfoCenterLink} meer informatie vinden over de rechten die aan projectmanagers zijn toegekend.",
   "app.containers.AdminPage.ProjectEdit.projectMethodChangeWarning": "Sommige deelnamemethoden zijn niet beschikbaar voor bestaande projecten. In deze gevallen zal een nieuw project moeten worden aangemaakt.",

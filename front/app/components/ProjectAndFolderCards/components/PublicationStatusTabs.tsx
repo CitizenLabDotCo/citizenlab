@@ -1,18 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 // components
 import ProjectsTabPanel from './ProjectsTabPanel';
 
 // hooks
-import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // types
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { TLayout, PublicationTab } from '..';
-
-// utils
-import getCardSizes from './getCardSizes';
-import { isEqual } from 'lodash-es';
 
 export type TCardSize = 'small' | 'medium' | 'large';
 
@@ -34,21 +29,6 @@ const PublicationStatusTabs = ({
   layout,
   hasMore,
 }: Props) => {
-  const { windowWidth } = useWindowSize();
-
-  const [cardSizes, setCardSizes] = useState<TCardSize[]>([]);
-
-  useEffect(() => {
-    if (list.length > 0 && layout === 'dynamic') {
-      const newCardSizes = getCardSizes(list.length, windowWidth);
-
-      if (!isEqual(cardSizes, newCardSizes)) {
-        setCardSizes(newCardSizes);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [list.length, layout]);
-
   return (
     <>
       {/*
@@ -64,7 +44,6 @@ const PublicationStatusTabs = ({
           tab={tab}
           list={list}
           layout={layout}
-          cardSizes={cardSizes}
           hasMore={hasMore}
         />
       ))}

@@ -1129,8 +1129,6 @@
   "app.containers.AdminPage.ProjectEdit.pollTab": "Sondage",
   "app.containers.AdminPage.ProjectEdit.popularSortingMethod": "Plus votés",
   "app.containers.AdminPage.ProjectEdit.projectCardImageLabelText": "Image de la vignette du projet",
-  "app.containers.AdminPage.ProjectEdit.projectCardImageLabelTooltip": "Cette image sera affichée sur la page page d'accueil de la plateforme. Les dimensions idéales sont une largeur de 1440 pixels et une hauteur comprise entre 1440 et 720 pixels.",
-  "app.containers.AdminPage.ProjectEdit.projectFolderCardImageTooltip": "Il s'agit de l'image affichée dans le lien du dossier sur la page d'accueil de la plateforme. Les dimensions idéales pour cette image sont une largeur de 1440 pixels et une hauteur comprise entre 1440 et 720 pixels.",
   "app.containers.AdminPage.ProjectEdit.projectFolderSelectTitle": "Ajouter un projet à un dossier ?",
   "app.containers.AdminPage.ProjectEdit.projectManagerTooltipContent": "Les chefs de projet peuvent éditer des projets, gérer les contributions et envoyer des e-mails aux participants. Vous pouvez {moderationInfoCenterLink} pour trouver plus d'informations sur les droits attribués aux chefs de projet.",
   "app.containers.AdminPage.ProjectEdit.projectMethodChangeWarning": "Certaines méthodes de participation ne sont pas disponibles pour les projets existants. Dans ces cas, un nouveau projet devra être créé.",

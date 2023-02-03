@@ -1,4 +1,7 @@
-import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
+import {
+  homepageBannerLayoutHeights,
+  FIXED_RATIO_LAYOUT_ASPECT_RATIO,
+} from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
 import styled from 'styled-components';
 
 import { media, colors, stylingConsts } from 'utils/styleUtils';
@@ -21,7 +24,7 @@ export const Header = styled.div`
   margin: 0 auto;
   padding: 0;
   position: relative;
-  aspect-ratio: 3 / 1;
+  aspect-ratio: ${FIXED_RATIO_LAYOUT_ASPECT_RATIO};
   display: flex;
   flex-direction: column;
   align-items: center;
