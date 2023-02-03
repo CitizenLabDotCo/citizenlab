@@ -1020,7 +1020,7 @@
   "app.containers.AdminPage.ProjectEdit.addNewInput": "Beitrag hinzufügen",
   "app.containers.AdminPage.ProjectEdit.addNewIssue": "Kommentieren",
   "app.containers.AdminPage.ProjectEdit.addNewOption": "Eine Option hinzufügen",
-  "app.containers.AdminPage.ProjectEdit.addNewProject": "Hinzufügen eines Projekts",
+  "app.containers.AdminPage.ProjectEdit.addNewProject": "Projekt hinzufügen",
   "app.containers.AdminPage.ProjectEdit.addNewQuestion": "Eine Frage hinzufügen",
   "app.containers.AdminPage.ProjectEdit.adminProjectFolderSelectTooltip": "Sie können Ihr Projekt zu einem bestehenden Ordner hinzufügen. Sie können dies auch später über der Registerkarte \"Projekte\" tun.",
   "app.containers.AdminPage.ProjectEdit.allowedInputTopicsTab": "Themen",
