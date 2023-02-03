@@ -38,7 +38,7 @@ RSpec.describe LogActivityJob, type: :job do
       t = Time.now
       expect { job.perform(user, 'admin_rights_given', admin, t) }
         .to have_enqueued_job(MakeNotificationsForClassJob)
-          .with do |notification_class, activity|
+        .with do |notification_class, activity|
         expect(notification_class).to eq 'Notifications::AdminRightsReceived'
         expect(activity.item).to match({
           item: user,
@@ -113,7 +113,7 @@ RSpec.describe LogActivityJob, type: :job do
         expect(item).to receive(:project_id).and_call_original
         expect_any_instance_of(described_class)
           .to receive(:run)
-            .with(item, 'created', nil, project_id: item.id)
+          .with(item, 'created', nil, project_id: item.id)
 
         described_class.perform_now(item, 'created', nil)
       end
@@ -122,7 +122,7 @@ RSpec.describe LogActivityJob, type: :job do
         it 'leaves the options unchanged' do
           expect_any_instance_of(described_class)
             .to receive(:run)
-              .with(item, 'created', nil, payload: 'payload', project_id: 'some-arbitrary-id')
+            .with(item, 'created', nil, payload: 'payload', project_id: 'some-arbitrary-id')
 
           described_class.perform_now(item, 'created', nil, payload: 'payload', project_id: 'some-arbitrary-id')
         end
@@ -135,7 +135,7 @@ RSpec.describe LogActivityJob, type: :job do
       it 'leaves the options unchanged' do
         expect_any_instance_of(described_class)
           .to receive(:run)
-            .with(item, 'created', nil, payload: 'payload')
+          .with(item, 'created', nil, payload: 'payload')
 
         described_class.perform_now(item, 'created', nil, payload: 'payload')
       end
