@@ -7,19 +7,20 @@ import { addProjectFolder, updateProjectFolder } from 'services/projectFolders';
 import {
   addProjectFolderImage,
   deleteProjectFolderImage,
+  CARD_IMAGE_ASPECT_RATIO_HEIGHT,
+  CARD_IMAGE_ASPECT_RATIO_WIDTH,
 } from 'services/projectFolderImages';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import useProjectFolderImages from 'hooks/useProjectFolderImages';
 import useProjectFolder from 'hooks/useProjectFolder';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from '../../messages';
 import {
   SectionField,
   Section,
   SubSectionTitle,
 } from 'components/admin/Section';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
@@ -35,6 +36,17 @@ import useAdminPublication from 'hooks/useAdminPublication';
 import SlugInput from 'components/admin/SlugInput';
 import { validateSlug } from 'utils/textUtils';
 import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
+import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
+import ImageCropperContainer from 'components/admin/ImageCropper/Container';
+import ProjectFolderCardImageDropzone from './ProjectFolderCardImageDropzone';
+
+type IProjectFolderSubmitState =
+  | 'disabled'
+  | 'enabled'
+  | 'error'
+  | 'apiError'
+  | 'success'
+  | 'loading';
 
 interface Props {
   mode: 'edit' | 'new';
@@ -42,6 +54,11 @@ interface Props {
 }
 
 const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
+  /*
+    ==============
+    Resource hooks
+    ==============
+  */
   const projectFolder = useProjectFolder({ projectFolderId });
   const projectFolderFilesRemote = useProjectFolderFiles(projectFolderId);
   const projectFolderImagesRemote = useProjectFolderImages(projectFolderId);
@@ -50,8 +67,48 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
       ? projectFolder.relationships.admin_publication.data?.id || null
       : null
   );
+  const tenantLocales = useAppConfigurationLocales();
 
-  useEffect(() => {
+  /*
+    ==============
+    State
+    ==============
+  */ const [errors, setErrors] = useState<CLErrors>({});
+  const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
+  const [slug, setSlug] = useState<string | null>(null);
+  const [showSlugErrorMessage, setShowSlugErrorMessage] =
+    useState<boolean>(false);
+  const [shortDescriptionMultiloc, setShortDescriptionMultiloc] =
+    useState<Multiloc | null>(null);
+  const [descriptionMultiloc, setDescriptionMultiloc] =
+    useState<Multiloc | null>(null);
+  const [headerBgBase64, setHeaderBgBase64] = useState<string | null>(null);
+  const [publicationStatus, setPublicationStatus] = useState<
+    'published' | 'draft' | 'archived'
+  >('published');
+  const [changedHeaderBg, setChangedHeaderBg] = useState(false);
+  const [folderCardImage, setFolderCardImage] = useState<UploadFile | null>(
+    null
+  );
+  const [croppedFolderCardBase64, setCroppedFolderCardBase64] = useState<
+    string | null
+  >(null);
+  const [folderCardImageToRemove, setFolderCardImageToRemove] =
+    useState<UploadFile | null>(null);
+  const [projectFolderFiles, setProjectFolderFiles] = useState<UploadFile[]>(
+    []
+  );
+  const [projectFolderFilesToRemove, setProjectFolderFilesToRemove] = useState<
+    string[]
+  >([]);
+  const [submitState, setSubmitState] =
+    useState<IProjectFolderSubmitState>('disabled');
+
+  /*
+    ==============
+    useEffect
+    ==============
+  */ useEffect(() => {
     (async () => {
       if (mode === 'edit' && !isNilOrError(projectFolder)) {
         setTitleMultiloc(projectFolder.attributes.title_multiloc);
@@ -73,18 +130,15 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   useEffect(() => {
     (async () => {
       if (mode === 'edit' && !isNilOrError(projectFolderImagesRemote)) {
-        const imagePromises = projectFolderImagesRemote.data.map((img) =>
-          img.attributes.versions.large
-            ? convertUrlToUploadFile(
-                img.attributes.versions.large,
-                img.id,
-                null
-              )
-            : new Promise<null>((resolve) => resolve(null))
-        );
+        const imagePromises = projectFolderImagesRemote.data.map((img) => {
+          const url = img.attributes.versions.large;
+
+          return url
+            ? convertUrlToUploadFile(url, img.id, null)
+            : new Promise<null>((resolve) => resolve(null));
+        });
         const images = await Promise.all(imagePromises);
-        images.filter((img) => img);
-        setProjectFolderImages(images as UploadFile[]);
+        setFolderCardImage(images[0]);
       }
     })();
   }, [mode, projectFolderImagesRemote]);
@@ -106,82 +160,52 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     })();
   }, [mode, projectFolderFilesRemote]);
 
-  // input handling
-
-  const [errors, setErrors] = useState<CLErrors>({});
-  const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
-  const [slug, setSlug] = useState<string | null>(null);
-  const [showSlugErrorMessage, setShowSlugErrorMessage] =
-    useState<boolean>(false);
-  const [shortDescriptionMultiloc, setShortDescriptionMultiloc] =
-    useState<Multiloc | null>(null);
-  const [descriptionMultiloc, setDescriptionMultiloc] =
-    useState<Multiloc | null>(null);
-  const [headerBgBase64, setHeaderBgBase64] = useState<string | null>(null);
-  const [publicationStatus, setPublicationStatus] = useState<
-    'published' | 'draft' | 'archived'
-  >('published');
-  const [changedHeaderBg, setChangedHeaderBg] = useState(false);
-  const [projectFolderImages, setProjectFolderImages] = useState<UploadFile[]>(
-    []
-  );
-  const [projectFolderImagesToRemove, setProjectFolderImagesToRemove] =
-    useState<string[]>([]);
-  const [projectFolderFiles, setProjectFolderFiles] = useState<UploadFile[]>(
-    []
-  );
-  const [projectFolderFilesToRemove, setProjectFolderFilesToRemove] = useState<
-    string[]
-  >([]);
-
-  const getHandler = useCallback(
+  /*
+    ==============
+    Methods
+    ==============
+  */ const getHandler = useCallback(
     (setter: (value: any) => void) => (value: any) => {
-      setStatus('enabled');
+      setSubmitState('enabled');
       setter(value);
     },
     []
   );
 
   const handleSlugOnChange = useCallback((slug: string) => {
-    setStatus('enabled');
+    setSubmitState('enabled');
     setSlug(slug);
 
     if (validateSlug(slug)) {
       setShowSlugErrorMessage(false);
     } else {
       setShowSlugErrorMessage(true);
-      setStatus('error');
+      setSubmitState('error');
     }
   }, []);
 
   const handleHeaderBgChange = useCallback((newImageBase64: string | null) => {
-    setStatus('enabled');
+    setSubmitState('enabled');
 
     setChangedHeaderBg(true);
     setHeaderBgBase64(newImageBase64);
   }, []);
 
-  const handleProjectFolderImageOnRemove = useCallback(
-    (imageToRemove: UploadFile) => {
-      setStatus('enabled');
+  const handleFolderCardImageOnRemove = (imageToRemove: UploadFile) => {
+    setSubmitState('enabled');
+    setFolderCardImage(null);
+    setCroppedFolderCardBase64(null);
+    if (imageToRemove.remote && imageToRemove.id) {
+      setFolderCardImageToRemove(imageToRemove);
+    }
+  };
 
-      if (imageToRemove.remote && imageToRemove.id) {
-        setProjectFolderImagesToRemove((previous) => {
-          return [...previous, imageToRemove.id as string];
-        });
-      }
-
-      setProjectFolderImages((previous) => {
-        return previous.filter(
-          (image) => image.base64 !== imageToRemove.base64
-        );
-      });
-    },
-    []
-  );
+  const handleCroppedFolderCardImageOnRemove = () => {
+    folderCardImage && handleFolderCardImageOnRemove(folderCardImage);
+  };
 
   const handleProjectFolderFileOnAdd = useCallback((fileToAdd: UploadFile) => {
-    setStatus('enabled');
+    setSubmitState('enabled');
 
     setProjectFolderFiles((previous) => {
       const isDuplicate = previous.some(
@@ -194,7 +218,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
 
   const handleProjectFolderFileOnRemove = useCallback(
     (fileToRemove: UploadFile) => {
-      setStatus('enabled');
+      setSubmitState('enabled');
       if (fileToRemove.remote && fileToRemove.id) {
         setProjectFolderFilesToRemove((previous) => [
           ...previous,
@@ -208,14 +232,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     []
   );
 
-  // form status
-  const [status, setStatus] = useState<
-    'enabled' | 'error' | 'apiError' | 'success' | 'disabled' | 'loading'
-  >('disabled');
-
-  // validation
-  const tenantLocales = useAppConfigurationLocales();
-
   const validate = useCallback(() => {
     let valid = false;
     if (!isNilOrError(tenantLocales)) {
@@ -228,7 +244,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
       );
     }
     if (!valid) {
-      setStatus('error');
+      setSubmitState('error');
     }
 
     return valid;
@@ -239,10 +255,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     shortDescriptionMultiloc,
   ]);
 
-  // form submission
-  const onSubmit = async () => {
+  const saveForm = async () => {
     if (validate()) {
-      setStatus('loading');
+      setSubmitState('loading');
       if (mode === 'new') {
         try {
           if (
@@ -261,16 +276,20 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               },
             });
             if (!isNilOrError(projectFolder)) {
-              const imagesToAddPromises = projectFolderImages.map((file) =>
-                addProjectFolderImage(projectFolder.id, file.base64)
-              );
+              const cardImageToAddPromise = croppedFolderCardBase64
+                ? addProjectFolderImage(
+                    projectFolder.id,
+                    croppedFolderCardBase64
+                  )
+                : null;
+
               const filesToAddPromises = projectFolderFiles.map((file) =>
                 addProjectFolderFile(projectFolder.id, file.base64, file.name)
               );
 
-              (imagesToAddPromises || filesToAddPromises) &&
+              (cardImageToAddPromise || filesToAddPromises) &&
                 (await Promise.all<any>([
-                  ...imagesToAddPromises,
+                  cardImageToAddPromise,
                   ...filesToAddPromises,
                 ]));
               clHistory.push(`/admin/projects/folders/${projectFolder.id}`);
@@ -278,7 +297,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           }
         } catch (errors) {
           setErrors(errors.json.errors);
-          setStatus('apiError');
+          setSubmitState('apiError');
         }
       } else {
         try {
@@ -288,14 +307,16 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             shortDescriptionMultiloc &&
             !isNilOrError(projectFolder)
           ) {
-            const imagesToAddPromises = projectFolderImages
-              .filter((file) => !file.remote)
-              .map((file) =>
-                addProjectFolderImage(projectFolderId as string, file.base64)
+            const cardToAddPromise = croppedFolderCardBase64
+              ? addProjectFolderImage(projectFolder.id, croppedFolderCardBase64)
+              : null;
+            const cardToRemovePromises =
+              folderCardImageToRemove?.id &&
+              deleteProjectFolderImage(
+                projectFolderId,
+                folderCardImageToRemove.id
               );
-            const imagesToRemovePromises = projectFolderImagesToRemove.map(
-              (id) => deleteProjectFolderImage(projectFolderId as string, id)
-            );
+
             const filesToAddPromises = projectFolderFiles
               .filter((file) => !file.remote)
               .map((file) =>
@@ -309,13 +330,12 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               deleteProjectFolderFile(projectFolderId as string, id)
             );
 
-            imagesToAddPromises &&
-              (await Promise.all<any>([
-                ...imagesToAddPromises,
-                ...imagesToRemovePromises,
-                ...filesToAddPromises,
-                ...filesToRemovePromises,
-              ]));
+            await Promise.all<any>([
+              cardToAddPromise,
+              cardToRemovePromises,
+              ...filesToAddPromises,
+              ...filesToRemovePromises,
+            ]);
 
             const changedTitleMultiloc = !isEqual(
               titleMultiloc,
@@ -369,17 +389,17 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               );
 
               if (isNilOrError(res)) {
-                setStatus('apiError');
+                setSubmitState('apiError');
               }
             }
             setProjectFolderFilesToRemove([]);
-            setStatus('success');
+            setSubmitState('success');
           } else {
-            setStatus('apiError');
+            setSubmitState('apiError');
           }
         } catch (errors) {
           setErrors(errors.json.errors);
-          setStatus('apiError');
+          setSubmitState('apiError');
         }
       }
     }
@@ -389,8 +409,12 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     return null;
   }
 
+  const folderCardImageShouldBeSaved = folderCardImage
+    ? !folderCardImage.remote
+    : false;
+
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={saveForm}>
       <Section>
         <SectionField>
           <SubSectionTitle>
@@ -501,22 +525,27 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         <SectionField>
           <SubSectionTitle>
             <FormattedMessage {...messages.projectFolderCardImageLabel} />
-            <IconTooltip
-              content={
-                <FormattedMessage {...messages.projectFolderCardImageTooltip} />
-              }
-            />
+            <ImageInfoTooltip />
           </SubSectionTitle>
-          <ImagesDropzone
-            images={projectFolderImages}
-            imagePreviewRatio={960 / 1440}
-            maxImagePreviewWidth="240px"
-            acceptedFileTypes={{
-              'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
-            }}
-            onAdd={getHandler(setProjectFolderImages)}
-            onRemove={handleProjectFolderImageOnRemove}
-          />
+          {folderCardImageShouldBeSaved ? (
+            <Box display="flex" flexDirection="column" gap="8px">
+              <ImageCropperContainer
+                image={folderCardImage}
+                onComplete={getHandler(setCroppedFolderCardBase64)}
+                aspectRatioWidth={CARD_IMAGE_ASPECT_RATIO_WIDTH}
+                aspectRatioHeight={CARD_IMAGE_ASPECT_RATIO_HEIGHT}
+                onRemove={handleCroppedFolderCardImageOnRemove}
+              />
+            </Box>
+          ) : (
+            <ProjectFolderCardImageDropzone
+              images={folderCardImage && [folderCardImage]}
+              onAddImage={getHandler((cards: UploadFile[]) =>
+                setFolderCardImage(cards[0])
+              )}
+              onRemoveImage={handleFolderCardImageOnRemove}
+            />
+          )}
         </SectionField>
         <SectionField>
           <SubSectionTitle>
@@ -535,20 +564,20 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           />
         </SectionField>
         <SubmitWrapper
-          loading={status === 'loading'}
+          loading={submitState === 'loading'}
           status={
-            status === 'loading'
+            submitState === 'loading'
               ? 'disabled'
-              : status === 'apiError'
+              : submitState === 'apiError'
               ? 'error'
-              : status
+              : submitState
           }
-          onClick={onSubmit}
+          onClick={saveForm}
           messages={{
             buttonSave: messages.save,
             buttonSuccess: messages.saveSuccess,
             messageError:
-              status === 'apiError'
+              submitState === 'apiError'
                 ? messages.saveErrorMessage
                 : messages.multilocError,
             messageSuccess: messages.saveSuccessMessage,

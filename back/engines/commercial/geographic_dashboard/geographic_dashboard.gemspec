@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.version     = GeographicDashboard::VERSION
   spec.authors     = ['CitizenLab']
   spec.summary     = 'The Engine responsible for geotagging ideas.'
-  spec.licenses    = ['CitizenLab Commercial License V1']
+  spec.licenses    = ['CitizenLab Commercial License V2']
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.

@@ -1,5 +1,17 @@
 # Changelog
 
+## 2023-02-03
+
+### Added
+
+- [CL-2534] Image dimensions i3: improved project/folder card images
+
+## 2023-02-01
+
+### Fixed
+
+- [CL-1560] Fix From scratch label bug when creating a project
+
 ## 2023-01-31
 
 ### Added

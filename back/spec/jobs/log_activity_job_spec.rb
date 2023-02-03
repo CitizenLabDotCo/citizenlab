@@ -39,14 +39,14 @@ RSpec.describe LogActivityJob, type: :job do
       expect { job.perform(user, 'admin_rights_given', admin, t) }
         .to have_enqueued_job(MakeNotificationsForClassJob)
         .with do |notification_class, activity|
-          expect(notification_class).to eq 'Notifications::AdminRightsReceived'
-          expect(activity.item).to match({
-            item: user,
-            user: admin,
-            action: 'admin_rights_given',
-            acted_at: t
-          })
-        end
+        expect(notification_class).to eq 'Notifications::AdminRightsReceived'
+        expect(activity.item).to match({
+          item: user,
+          user: admin,
+          action: 'admin_rights_given',
+          acted_at: t
+        })
+      end
     end
 
     it 'enqueues a EmailCampaigns::TriggerOnActivityJob' do
@@ -71,6 +71,149 @@ RSpec.describe LogActivityJob, type: :job do
       item = create(:notification)
       user = create(:user)
       expect { job.perform(item, 'created', user, Time.now) }.not_to have_enqueued_job(TrackEventJob)
+    end
+  end
+
+  describe '.perform_later' do
+    context 'when the item has `#project_id` method' do
+      let(:item) { create(:project) }
+
+      it 'adds the project id to the options of the enqueued job' do
+        expect(item).to receive(:project_id).and_call_original
+        expect { described_class.perform_later(item, 'created', nil) }
+          .to enqueue_job(described_class).with(item, 'created', nil, project_id: item.id)
+      end
+
+      context 'and the project_id is passed explicitly' do
+        it 'leaves the options of the enqueued job unchanged' do
+          expect(item).not_to receive(:project_id)
+
+          options = { payload: 'payload', project_id: 'some-arbitrary-id' }
+          expect { described_class.perform_later(item, 'created', nil, options) }
+            .to enqueue_job(described_class).with(item, 'created', nil, options)
+        end
+      end
+    end
+
+    context 'when the item does not have `project_id` method' do
+      let(:item) { create(:invite) }
+
+      it 'leaves the options of the enqueued job unchanged' do
+        expect { described_class.perform_later(item, 'created', nil, payload: 'payload') }
+          .to enqueue_job(described_class).with(item, 'created', nil, payload: 'payload')
+      end
+    end
+  end
+
+  describe '.perform_now' do
+    context 'when the item has `#project_id` method' do
+      let(:item) { create(:project) }
+
+      it 'adds the project id to the options' do
+        expect(item).to receive(:project_id).and_call_original
+        expect_any_instance_of(described_class)
+          .to receive(:run)
+          .with(item, 'created', nil, project_id: item.id)
+
+        described_class.perform_now(item, 'created', nil)
+      end
+
+      context 'and the project_id is passed explicitly' do
+        it 'leaves the options unchanged' do
+          expect_any_instance_of(described_class)
+            .to receive(:run)
+            .with(item, 'created', nil, payload: 'payload', project_id: 'some-arbitrary-id')
+
+          described_class.perform_now(item, 'created', nil, payload: 'payload', project_id: 'some-arbitrary-id')
+        end
+      end
+    end
+
+    context 'when the item does not have `project_id` method' do
+      let(:item) { create(:invite) }
+
+      it 'leaves the options unchanged' do
+        expect_any_instance_of(described_class)
+          .to receive(:run)
+          .with(item, 'created', nil, payload: 'payload')
+
+        described_class.perform_now(item, 'created', nil, payload: 'payload')
+      end
+    end
+  end
+
+  describe 'logging of project_id' do
+    where(:model_class) do
+      [
+        AreasProject,
+        Basket,
+        Comment,
+        ContentBuilder::Layout,
+        CustomField,
+        CustomFieldOption,
+        CustomForm,
+        CustomMaps::MapConfig,
+        Event,
+        FlagInappropriateContent::InappropriateContentFlag,
+        FlagInappropriateContent::Notifications::InappropriateContentFlagged,
+        GroupsProject,
+        Idea,
+        IdeaAssignment::Notifications::IdeaAssignedToYou,
+        Moderation::Moderation,
+        Moderation::ModerationStatus,
+        Notification,
+        Notifications::AdminRightsReceived,
+        Notifications::CommentDeletedByAdmin,
+        Notifications::CommentMarkedAsSpam,
+        Notifications::CommentOnYourComment,
+        Notifications::CommentOnYourIdea,
+        Notifications::CommentOnYourInitiative,
+        Notifications::IdeaMarkedAsSpam,
+        Notifications::InitiativeAssignedToYou,
+        Notifications::InitiativeMarkedAsSpam,
+        Notifications::InviteAccepted,
+        Notifications::MarkedAsSpam,
+        Notifications::MentionInComment,
+        Notifications::MentionInOfficialFeedback,
+        Notifications::OfficialFeedbackOnCommentedIdea,
+        Notifications::OfficialFeedbackOnCommentedInitiative,
+        Notifications::OfficialFeedbackOnVotedIdea,
+        Notifications::OfficialFeedbackOnVotedInitiative,
+        Notifications::OfficialFeedbackOnYourIdea,
+        Notifications::OfficialFeedbackOnYourInitiative,
+        Notifications::ProjectFolderModerationRightsReceived,
+        Notifications::ProjectModerationRightsReceived,
+        Notifications::ProjectPhaseStarted,
+        Notifications::ProjectPhaseUpcoming,
+        Notifications::StatusChangeOfYourIdea,
+        Notifications::StatusChangeOfYourInitiative,
+        Notifications::StatusChangeOnCommentedIdea,
+        Notifications::StatusChangeOnCommentedInitiative,
+        Notifications::StatusChangeOnVotedIdea,
+        Notifications::StatusChangeOnVotedInitiative,
+        Notifications::ThresholdReachedForAdmin,
+        OfficialFeedback,
+        Phase,
+        Polls::Option,
+        Polls::Question,
+        Polls::Response,
+        Project,
+        ProjectFile,
+        ProjectImage,
+        ProjectsAllowedInputTopic,
+        ProjectsTopic,
+        SpamReport,
+        Surveys::Response,
+        Volunteering::Cause,
+        Volunteering::Volunteer,
+        Vote
+      ]
+    end
+
+    with_them do
+      it "expects #{params[:model_class]} instances to respond to #project_id" do
+        expect(model_class.new).to respond_to(:project_id)
+      end
     end
   end
 end

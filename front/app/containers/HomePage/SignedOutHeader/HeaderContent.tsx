@@ -19,7 +19,7 @@ import { media } from 'utils/styleUtils';
 import messages from '../messages';
 import tracks from '../tracks';
 import CTA from './CTA';
-import bowser from 'bowser';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 const StyledAvatarBubbles = styled(AvatarBubbles)`
   min-height: 40px;
@@ -51,6 +51,7 @@ const HeaderContent = ({
 }: Props & WrappedComponentProps) => {
   const homepageSettings = useHomepageSettings();
   const localize = useLocalize();
+  const isTablet = useBreakpoint('tablet');
 
   const signUpIn = (event: React.FormEvent) => {
     event.preventDefault();
@@ -74,8 +75,7 @@ const HeaderContent = ({
       ? homepageAttributes.header_bg.large
       : null;
     const hideAvatarsForThisLayout =
-      bowser.mobile &&
-      homepageAttributes.banner_layout === 'fixed_ratio_layout';
+      isTablet && homepageAttributes.banner_layout === 'fixed_ratio_layout';
     const displayHeaderAvatars =
       homepageAttributes.banner_avatars_enabled && !hideAvatarsForThisLayout;
 
