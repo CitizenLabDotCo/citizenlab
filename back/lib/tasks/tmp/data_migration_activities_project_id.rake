@@ -10,6 +10,7 @@ namespace :data_migration do
     models_with_project_id_col = ActiveRecord::Base.descendants.select do |klass|
       klass.column_names.include?("project_id")
     rescue Exception
+      puts({message: 'skipping model', model: klass.name})
       false
     end
 
@@ -56,6 +57,7 @@ namespace :data_migration do
     model_classes = ActiveRecord::Base.descendants.select do |klass|
       klass.new.respond_to?(:project_id) && klass.column_names.exclude?("project_id")
     rescue Exception
+      puts({message: 'skipping model', model: klass.name})
       false
     end
 
