@@ -102,7 +102,7 @@ const LinearScaleControl = ({
           justifyContent="space-between"
         >
           {uischema.options?.minimum_label && (
-            <Box maxWidth="50%">
+            <Box maxWidth={isSmallerThanXlPhone ? '100%' : '50%'}>
               <Text
                 mt="8px"
                 mb="0px"
@@ -114,7 +114,7 @@ const LinearScaleControl = ({
               </Text>
             </Box>
           )}
-          <Box maxWidth="50%">
+          <Box maxWidth={isSmallerThanXlPhone ? '100%' : '50%'}>
             <Text
               mt={isSmallerThanXlPhone ? '0px' : '8px'}
               m="0px"
