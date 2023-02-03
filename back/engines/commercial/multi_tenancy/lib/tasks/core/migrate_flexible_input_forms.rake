@@ -4,13 +4,13 @@
 # to persist changes for one host run: fix_existing_tenants:migrate_flexible_input_forms[true,localhost]
 namespace :fix_existing_tenants do
   desc 'Migrate ideation form custom fields to the new codes and types'
-  task :migrate_flexible_input_forms, %i[persist_changes host] => [:environment] do |_t, args|
+  task :migrate_flexible_input_forms, %i[persist_changes specify_host] => [:environment] do |_t, args|
     persist_changes = args[:persist_changes] == 'true'
-    host = args[:host]
+    specify_host = args[:specify_host]
     Rails.logger.info 'DRY RUN: Changes will not be persisted' unless persist_changes
     stats = {}
     Tenant.creation_finalized.each do |tenant|
-      next unless tenant.host == host || host.blank?
+      next unless tenant.host == specify_host || specify_host.blank?
 
       Rails.logger.info "PROCESSING TENANT: #{tenant.host}..."
       Apartment::Tenant.switch(tenant.schema_name) do
@@ -42,7 +42,7 @@ class FlexibleInputFormMigrator
   def migrate_form(custom_form, persist_changes)
     @stats[:forms] += 1
 
-    # Get persisted fields
+    # Get persisted fields by order
     fields = CustomField.where(resource: custom_form).order(:ordering)
 
     # Do nothing if there are no fields (can this happen?)
@@ -122,7 +122,7 @@ class FlexibleInputFormMigrator
     default_fields.each do |default_field|
       existing_field = fields.find { |field| field.code == default_field.code }
       updated_fields << if existing_field
-        merge_attributes(existing_field, default_field, constraints) 
+        merge_attributes(existing_field, default_field, constraints)
       else
         default_field
       end
@@ -150,7 +150,7 @@ class FlexibleInputFormMigrator
     if order_before == order_after
       Rails.logger.info 'ORDER: No change'
     else
-      Rails.logger.info "ORDER CHANGED: #{order_before} > #{order_before}"
+      Rails.logger.info "ORDER CHANGED: #{order_before} > #{order_after}"
     end
   end
 
