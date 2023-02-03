@@ -48,11 +48,12 @@ const FormBuilderToolbox = ({
   builderConfig,
   move,
 }: FormBuilderToolboxProps) => {
-  const isInputFormBuilderFlagEnabled = useFeatureFlag({
-    name: 'input_form_builder',
+  const isInputFormCustomFieldsFlagEnabled = useFeatureFlag({
+    name: 'input_form_custom_fields',
   });
   const isCustomFieldsDisabled =
-    !isInputFormBuilderFlagEnabled && !builderConfig.alwaysShowCustomFields;
+    !isInputFormCustomFieldsFlagEnabled &&
+    !builderConfig.alwaysShowCustomFields;
   const { formatMessage } = useIntl();
   const locale = useLocale();
 
