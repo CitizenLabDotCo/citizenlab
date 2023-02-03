@@ -525,10 +525,10 @@ describe LocalProjectCopyService do
         new_image_codes = []
 
         new_craftjs.each_key do |locale|
-          new_craftjs[locale].each_key do |node|
-            next unless ContentBuilder::LayoutService.new.craftjs_element_of_type?(new_craftjs[locale][node], 'Image')
+          new_craftjs[locale].each_value do |node|
+            next unless ContentBuilder::LayoutService.new.craftjs_element_of_type?(node, 'Image')
 
-            new_image_codes << new_craftjs[locale][node]['props']['dataCode']
+            new_image_codes << node['props']['dataCode']
           end
         end
 
