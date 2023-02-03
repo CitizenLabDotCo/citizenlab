@@ -38,7 +38,7 @@ RSpec.describe LogActivityJob, type: :job do
       t = Time.now
       expect { job.perform(user, 'admin_rights_given', admin, t) }
         .to have_enqueued_job(MakeNotificationsForClassJob)
-        .with do |notification_class, activity|
+          .with do |notification_class, activity|
         expect(notification_class).to eq 'Notifications::AdminRightsReceived'
         expect(activity.item).to match({
           item: user,
@@ -113,7 +113,7 @@ RSpec.describe LogActivityJob, type: :job do
         expect(item).to receive(:project_id).and_call_original
         expect_any_instance_of(described_class)
           .to receive(:run)
-          .with(item, 'created', nil, project_id: item.id)
+            .with(item, 'created', nil, project_id: item.id)
 
         described_class.perform_now(item, 'created', nil)
       end
@@ -122,7 +122,7 @@ RSpec.describe LogActivityJob, type: :job do
         it 'leaves the options unchanged' do
           expect_any_instance_of(described_class)
             .to receive(:run)
-            .with(item, 'created', nil, payload: 'payload', project_id: 'some-arbitrary-id')
+              .with(item, 'created', nil, payload: 'payload', project_id: 'some-arbitrary-id')
 
           described_class.perform_now(item, 'created', nil, payload: 'payload', project_id: 'some-arbitrary-id')
         end
@@ -135,9 +135,84 @@ RSpec.describe LogActivityJob, type: :job do
       it 'leaves the options unchanged' do
         expect_any_instance_of(described_class)
           .to receive(:run)
-          .with(item, 'created', nil, payload: 'payload')
+            .with(item, 'created', nil, payload: 'payload')
 
         described_class.perform_now(item, 'created', nil, payload: 'payload')
+      end
+    end
+  end
+
+  describe 'logging of project_id' do
+    where(:model_class) do
+      [
+        AreasProject,
+        Basket,
+        Comment,
+        ContentBuilder::Layout,
+        CustomField,
+        CustomFieldOption,
+        CustomForm,
+        CustomMaps::MapConfig,
+        Event,
+        FlagInappropriateContent::InappropriateContentFlag,
+        FlagInappropriateContent::Notifications::InappropriateContentFlagged,
+        GroupsProject,
+        Idea,
+        IdeaAssignment::Notifications::IdeaAssignedToYou,
+        Moderation::Moderation,
+        Moderation::ModerationStatus,
+        Notification,
+        Notifications::AdminRightsReceived,
+        Notifications::CommentDeletedByAdmin,
+        Notifications::CommentMarkedAsSpam,
+        Notifications::CommentOnYourComment,
+        Notifications::CommentOnYourIdea,
+        Notifications::CommentOnYourInitiative,
+        Notifications::IdeaMarkedAsSpam,
+        Notifications::InitiativeAssignedToYou,
+        Notifications::InitiativeMarkedAsSpam,
+        Notifications::InviteAccepted,
+        Notifications::MarkedAsSpam,
+        Notifications::MentionInComment,
+        Notifications::MentionInOfficialFeedback,
+        Notifications::OfficialFeedbackOnCommentedIdea,
+        Notifications::OfficialFeedbackOnCommentedInitiative,
+        Notifications::OfficialFeedbackOnVotedIdea,
+        Notifications::OfficialFeedbackOnVotedInitiative,
+        Notifications::OfficialFeedbackOnYourIdea,
+        Notifications::OfficialFeedbackOnYourInitiative,
+        Notifications::ProjectFolderModerationRightsReceived,
+        Notifications::ProjectModerationRightsReceived,
+        Notifications::ProjectPhaseStarted,
+        Notifications::ProjectPhaseUpcoming,
+        Notifications::StatusChangeOfYourIdea,
+        Notifications::StatusChangeOfYourInitiative,
+        Notifications::StatusChangeOnCommentedIdea,
+        Notifications::StatusChangeOnCommentedInitiative,
+        Notifications::StatusChangeOnVotedIdea,
+        Notifications::StatusChangeOnVotedInitiative,
+        Notifications::ThresholdReachedForAdmin,
+        OfficialFeedback,
+        Phase,
+        Polls::Option,
+        Polls::Question,
+        Polls::Response,
+        Project,
+        ProjectFile,
+        ProjectImage,
+        ProjectsAllowedInputTopic,
+        ProjectsTopic,
+        SpamReport,
+        Surveys::Response,
+        Volunteering::Cause,
+        Volunteering::Volunteer,
+        Vote
+      ]
+    end
+
+    with_them do
+      it "expects #{params[:model_class]} instances to respond to #project_id" do
+        expect(model_class.new).to respond_to(:project_id)
       end
     end
   end
