@@ -1,5 +1,4 @@
 // services
-import { projectBySlugStream, IProject } from 'services/projects';
 import { ideaBySlugStream, IIdea } from 'services/ideas';
 
 // utils
@@ -11,16 +10,7 @@ import { Subscription } from 'rxjs';
 
 export const getProjectId = async (path: string) => {
   if (isProjectPage(path)) {
-    const slug = extractProjectSlug(path);
-    if (!slug) return null;
-
-    const projectId = await getProjectIdFromProjectSlug(slug);
-    if (projectSubscriptions[slug]) {
-      projectSubscriptions[slug].unsubscribe();
-    }
-    delete projectSubscriptions[slug];
-
-    return projectId;
+    return extractProjectId(path);
   }
 
   if (isIdeaPage(path)) {
@@ -45,27 +35,9 @@ const isProjectPage = (path: string) => {
   return projectPageDetectRegex.test(path);
 };
 
-const extractProjectSlug = (path: string) => {
+const extractProjectId = (path: string) => {
   const matches = path.match(projectPageExtractRegex);
   return matches && matches[1];
-};
-
-const projectSubscriptions: Record<string, Subscription> = {};
-
-const getProjectIdFromProjectSlug = (slug: string): Promise<string | null> => {
-  return new Promise((resolve) => {
-    const observable = projectBySlugStream(slug).observable;
-
-    projectSubscriptions[slug] = observable.subscribe(
-      (project: IProject | NilOrError) => {
-        if (isNilOrError(project)) {
-          resolve(null);
-        } else {
-          resolve(project.data.id);
-        }
-      }
-    );
-  });
 };
 
 const ideaPageDetectRegex = RegExp(`/ideas/(${slugRegExSource})$`);
