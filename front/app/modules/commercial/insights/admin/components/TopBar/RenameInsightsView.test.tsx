@@ -10,8 +10,6 @@ jest.mock('modules/commercial/insights/services/insightsViews', () => ({
   updateInsightsView: jest.fn(),
 }));
 
-jest.mock('utils/cl-intl');
-
 jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
   addInsightsCategory: jest.fn(),
 }));
@@ -27,7 +25,6 @@ jest.mock('utils/cl-router/withRouter', () => {
     },
   };
 });
-jest.mock('utils/cl-router/Link');
 
 describe('Rename Insights View', () => {
   it('renames view with correct viewId and name', () => {

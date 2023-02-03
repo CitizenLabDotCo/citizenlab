@@ -4,11 +4,9 @@ import { render, screen } from 'utils/testUtils/rtl';
 import { AvatarBubbles } from './';
 import { getDummyIntlObject } from 'utils/testUtils/mockedIntl';
 
-jest.mock('services/locale');
 jest.mock('services/avatars');
-jest.mock('utils/cl-intl');
+
 jest.mock('services/appConfiguration');
-jest.mock('utils/cl-router/history');
 
 const dummyIntl = getDummyIntlObject();
 

@@ -7,7 +7,7 @@ import { shallow } from 'enzyme';
 import AdminRightsReceivedNotification from './';
 
 // mock utilities
-jest.mock('utils/cl-intl');
+
 jest.mock('utils/analytics', () => ({ trackEventByName: () => {} }));
 jest.mock('modules', () => ({ streamsToReset: [] }));
 

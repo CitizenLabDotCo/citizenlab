@@ -31,3 +31,10 @@ jest.mock('history', () => ({
     parsePath: jest.fn(),
   }),
 }));
+
+jest.mock('utils/cl-router/Link');
+jest.mock('utils/cl-router/history');
+jest.mock('hooks/useLocale');
+jest.mock('hooks/useLocalize');
+jest.mock('utils/cl-intl');
+jest.mock('services/locale');

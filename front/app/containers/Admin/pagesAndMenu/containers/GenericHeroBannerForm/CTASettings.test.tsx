@@ -7,8 +7,7 @@ import { IHomepageSettingsAttributes } from 'services/homepageSettings';
 import CTASettings from './CTASettings';
 
 jest.mock('utils/cl-router/Link', () => 'Link');
-jest.mock('utils/cl-intl');
-jest.mock('services/locale');
+
 jest.mock('services/appConfiguration');
 
 const props = {

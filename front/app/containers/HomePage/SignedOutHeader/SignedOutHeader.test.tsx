@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
 import SignedOutHeader from '.';
 
-jest.mock('services/locale');
 jest.mock('services/appConfiguration');
 
 const mockHomepageSettings = {

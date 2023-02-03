@@ -7,7 +7,7 @@ import CategoryCard from './CategoryCard';
 
 // mock utilities
 jest.mock('services/appConfiguration');
-jest.mock('utils/cl-intl');
+
 jest.mock('modules', () => ({ streamsToReset: [] }));
 
 const getRadioInputs = () => {

@@ -44,7 +44,7 @@ jest.mock('resources/GetAppConfiguration', () => 'GetAppConfiguration');
 jest.mock('resources/GetProject', () => 'GetProject');
 jest.mock('resources/GetPermission', () => 'GetPermission');
 jest.mock('resources/GetLocale', () => 'GetLocale');
-jest.mock('utils/cl-intl');
+
 jest.mock('utils/styleUtils', () => ({
   colors: {
     label: '#000',

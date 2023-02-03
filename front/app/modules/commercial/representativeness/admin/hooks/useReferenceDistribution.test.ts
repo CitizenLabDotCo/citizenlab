@@ -5,7 +5,6 @@ import {
 } from '../services/referenceDistribution';
 
 jest.mock('services/appConfiguration');
-jest.mock('services/locale');
 
 describe('getRemoteFormValues', () => {
   it('works for categorical distributions', () => {

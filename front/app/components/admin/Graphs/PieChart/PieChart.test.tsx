@@ -4,7 +4,6 @@ import PieChart from './';
 import { NilOrError } from 'utils/helperUtils';
 
 jest.mock('services/appConfiguration');
-jest.mock('utils/cl-intl');
 
 type Row = { a: number; name: string };
 

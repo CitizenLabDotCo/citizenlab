@@ -10,7 +10,6 @@ jest.mock('services/initiatives'); // TODO
 jest.mock('services/initiativeImages', () => {}); // TODO
 jest.mock('services/initiativeFiles', () => {}); // TODO
 
-jest.mock('utils/cl-router/history');
 jest.mock('utils/locationTools');
 jest.mock('utils/loggingUtils');
 

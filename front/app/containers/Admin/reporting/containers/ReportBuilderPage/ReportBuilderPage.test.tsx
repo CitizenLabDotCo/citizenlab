@@ -6,7 +6,6 @@ import clHistory from 'utils/cl-router/history';
 
 // service mocks
 jest.mock('services/appConfiguration');
-jest.mock('services/locale');
 
 // hook mocks
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => true));
@@ -59,7 +58,6 @@ const reports = [
 
 // other mocks
 global.window.confirm = jest.fn(() => true);
-jest.mock('utils/cl-router/history');
 
 const mockOpen = jest.fn();
 global.window.open = mockOpen;

@@ -7,13 +7,12 @@ import Container from './Container';
 import { CategorizedDestinations } from './typings';
 
 // mock utilities
-jest.mock('utils/cl-intl');
+
 jest.mock('services/appConfiguration');
 jest.mock('modules', () => ({ streamsToReset: [] }));
 jest.mock('utils/cl-router/Link', () => ({ children }) => (
   <button>{children}</button>
 ));
-jest.mock('hooks/useLocale');
 
 let updatePreference: jest.Mock;
 let resetPreferences: jest.Mock;

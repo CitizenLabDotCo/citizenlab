@@ -3,7 +3,6 @@ import { ICustomPageData, TCustomPageBannerLayout } from 'services/customPages';
 import { render, screen } from 'utils/testUtils/rtl';
 import CustomPageHeader from '.';
 
-jest.mock('services/locale');
 jest.mock('services/appConfiguration');
 
 const headerBgUrl = 'https://example.com/image.png';

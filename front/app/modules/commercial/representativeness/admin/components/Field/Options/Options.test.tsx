@@ -4,8 +4,6 @@ import { fireEvent, render, screen, waitFor } from 'utils/testUtils/rtl';
 import { indices } from 'utils/helperUtils';
 
 jest.mock('services/appConfiguration');
-jest.mock('hooks/useLocalize');
-jest.mock('utils/cl-intl');
 
 const generateOptions = (n: number) =>
   indices(n).map((i) => ({

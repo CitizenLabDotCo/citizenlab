@@ -18,9 +18,6 @@ const messages = defineMessages({
   },
 });
 
-jest.mock('utils/cl-intl');
-jest.mock('hooks/useLocale');
-jest.mock('hooks/useLocalize');
 jest.mock('hooks/useAppConfiguration', () => () => ({
   attributes: {
     name: 'tenant name',

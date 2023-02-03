@@ -3,7 +3,6 @@ import BinModal from '.';
 import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
 
 jest.mock('services/appConfiguration');
-jest.mock('utils/cl-intl');
 
 describe('<BinModal />', () => {
   describe('No initial bins', () => {

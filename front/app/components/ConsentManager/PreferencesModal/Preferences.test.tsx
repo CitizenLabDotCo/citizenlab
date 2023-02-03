@@ -6,7 +6,7 @@ import { CategorizedDestinations } from '../typings';
 import Preferences from './Preferences';
 
 // mock utilities
-jest.mock('utils/cl-intl');
+
 jest.mock('services/appConfiguration');
 jest.mock('modules', () => ({ streamsToReset: [] }));
 
