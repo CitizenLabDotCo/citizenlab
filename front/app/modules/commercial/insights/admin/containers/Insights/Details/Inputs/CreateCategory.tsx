@@ -14,7 +14,7 @@ import { fontSizes, colors } from 'utils/styleUtils';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
 // typings
@@ -32,7 +32,7 @@ type CreateCategoryProps = {
   categories: IInsightsCategoryData[];
   search?: string;
 } & WithRouterProps &
-  InjectedIntlProps;
+  WrappedComponentProps;
 
 const Title = styled.h1`
   text-align: center;

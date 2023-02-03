@@ -18,7 +18,7 @@ import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
 // i18n
 import messages from './messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps, FormattedDate } from 'react-intl';
+import { WrappedComponentProps, FormattedDate } from 'react-intl';
 
 const Container = styled.div`
   &.hasTopMargin {
@@ -99,7 +99,7 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class OfficialFeedbackFeed extends PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   render() {
@@ -195,7 +195,7 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const OfficialFeedbackFeedWithIntl = injectIntl<Props>(OfficialFeedbackFeed);
+const OfficialFeedbackFeedWithIntl = injectIntl(OfficialFeedbackFeed);
 
 const WrappedOfficialFeedback = (inputProps: InputProps) => (
   <Data {...inputProps}>

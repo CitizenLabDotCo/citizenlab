@@ -1,5 +1,4 @@
 import React, { memo, useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import { Icon, Spinner } from '@citizenlab/cl2-component-library';
@@ -37,7 +36,9 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { Sort } from 'resources/GetIdeas';
-import { CustomFieldCodes } from 'services/ideaCustomFieldsSchemas';
+
+// utils
+import { isFieldEnabled } from 'utils/projectUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -150,19 +151,11 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
 
   const isFiltered = (search && search.length > 0) || topics.length > 0;
 
-  const isFieldEnabled = (fieldCode: CustomFieldCodes) => {
-    if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {
-      return (
-        ideaCustomFieldsSchemas.ui_schema_multiloc?.[locale]?.[fieldCode]?.[
-          'ui:widget'
-        ] !== 'hidden'
-      );
-    }
-
-    return true;
-  };
-
-  const topicsEnabled = isFieldEnabled('topic_ids');
+  const topicsEnabled = isFieldEnabled(
+    'topic_ids',
+    ideaCustomFieldsSchemas,
+    locale
+  );
 
   useEffect(() => {
     const subscriptions = [

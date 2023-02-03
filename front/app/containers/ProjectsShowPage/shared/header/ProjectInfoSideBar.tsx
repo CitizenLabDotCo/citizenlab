@@ -20,11 +20,11 @@ import clHistory from 'utils/cl-router/history';
 
 // services
 import { IPhaseData, getCurrentPhase, getLastPhase } from 'services/phases';
+import { getIdeaPostingRules } from 'services/actionTakingRules';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
 import ProjectSharingModal from './ProjectSharingModal';
-import ProjectActionBar from './ProjectActionBar';
 import ProjectActionButtons from './ProjectActionButtons';
 
 // utils
@@ -49,11 +49,11 @@ const About = styled.div`
   padding-top: 0px;
   padding-bottom: 5px;
   border: solid 1px #ccc;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
 `;
 
 const Title = styled.h2`
-  color: ${(props: any) => props.theme.colors.tenantText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.xl}px;
   line-height: normal;
   font-weight: 500;
@@ -192,10 +192,15 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
       project?.attributes?.participation_method;
     const currentPhaseParticipationMethod =
       currentPhase?.attributes?.participation_method;
+    const { disabledReason } = getIdeaPostingRules({
+      project,
+      phase: !isNilOrError(currentPhase) ? currentPhase : null,
+      authUser,
+    });
+    const hasUserParticipated = disabledReason === 'postingLimitedMaxReached';
 
     return (
       <Container id="e2e-project-sidebar" className={className || ''}>
-        <ProjectActionBar projectId={projectId} />
         <About>
           <Title>
             <FormattedMessage {...messages.about} />
@@ -375,7 +380,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               !hasProjectEnded && (
                 <ListItem>
                   <ListItemIcon ariaHidden name="survey" />
-                  {!isNilOrError(authUser) ? (
+                  {!isNilOrError(authUser) && !hasUserParticipated ? (
                     <ListItemButton
                       id="e2e-project-sidebar-surveys-count"
                       onClick={() => {

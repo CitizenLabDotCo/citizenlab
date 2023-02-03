@@ -13,6 +13,7 @@ import {
   UISchemaElement,
   isCategorization,
   Translator,
+  Layout,
 } from '@jsonforms/core';
 import styled from 'styled-components';
 
@@ -21,6 +22,7 @@ import {
   fontSizes,
   media,
   stylingConsts,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import ButtonBar from './Components/ButtonBar';
@@ -29,14 +31,15 @@ import useObserveEvent from 'hooks/useObserveEvent';
 
 import { CLErrors, Message } from 'typings';
 import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { ErrorObject } from 'ajv';
 import { forOwn } from 'lodash-es';
 import { APIErrorsContext, FormContext } from './contexts';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
 import { selectRenderers } from './formConfig';
+import { getFormSchemaAndData } from './utils';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`
@@ -47,8 +50,6 @@ const Title = styled.h1`
   text-align: center;
   margin: 0;
   padding: 0;
-  padding-top: 60px;
-  padding-bottom: 40px;
 
   ${media.tablet`
     font-size: ${fontSizes.xxxl}px;
@@ -76,7 +77,7 @@ export type ApiErrorGetter = (
 
 interface Props {
   schema: JsonSchema7;
-  uiSchema: UISchemaElement;
+  uiSchema: Layout;
   onSubmit: (formData: FormData) => Promise<any>;
   initialFormData?: any;
   title?: ReactElement;
@@ -94,7 +95,8 @@ interface Props {
    * Idea id for update form, used to load and udpate image and files.
    */
   inputId?: string;
-  config?: 'default' | 'input';
+  formSubmitText?: MessageDescriptor;
+  config?: 'default' | 'input' | 'survey';
 }
 
 const Form = memo(
@@ -105,21 +107,24 @@ const Form = memo(
     onSubmit,
     title,
     inputId,
+    formSubmitText,
     submitOnEvent,
     onChange,
     getAjvErrorMessage,
     getApiErrorMessage,
     config,
     intl: { formatMessage },
-  }: Props & InjectedIntlProps) => {
+  }: Props & WrappedComponentProps) => {
     const [data, setData] = useState<FormData>(initialFormData);
     const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
     const [loading, setLoading] = useState(false);
     const [showAllErrors, setShowAllErrors] = useState(false);
+    const [showSubmitButton, setShowSubmitButton] = useState(true);
     const safeApiErrorMessages = useCallback(
       () => (getApiErrorMessage ? getApiErrorMessage : () => undefined),
       [getApiErrorMessage]
     );
+    const isSmallerThanXlPhone = useBreakpoint('phone');
 
     // To handle multilocs we had the two options of adding one control for each multiloc thing : InputMultiloc, WYSIWYGMultiloc, or have the top-level multiloc object be a custom layout that shows the appropriate field and render the controls inside normally. I went for the second option.
     // Both options limited somehow the validation power, and with this solution, it means that the errors on the layout level are not available (IE this field is required, or this field should have at least one property). So this is a hacky thing to make the current locale required, but we will have to find something better would we want to make all locales required like in the admin side or simply is we would want to have a cleaner form component.
@@ -164,19 +169,27 @@ const Form = memo(
       }
     }, [locale, processingInitialMultiloc, schema]);
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (formData?: any) => {
+      // Any specified formData has priority over data attribute
+      const submissionData = formData && formData.data ? formData.data : data;
       const sanitizedFormData = {};
-      forOwn(data, (value, key) => {
+      forOwn(submissionData, (value, key) => {
         sanitizedFormData[key] =
           value === null || value === '' || value === false ? undefined : value;
       });
       setData(sanitizedFormData);
       onChange?.(sanitizedFormData);
       setShowAllErrors(true);
-      if (customAjv.validate(schema, sanitizedFormData)) {
+      const [schemaToUse, dataWithoutHiddenFields] = getFormSchemaAndData(
+        schema,
+        uiSchema,
+        submissionData,
+        customAjv
+      );
+      if (customAjv.validate(schemaToUse, dataWithoutHiddenFields)) {
         setLoading(true);
         try {
-          await onSubmit(data as FormData);
+          await onSubmit(submissionData as FormData);
         } catch (e) {
           setApiErrors(e.json.errors);
         }
@@ -203,17 +216,33 @@ const Form = memo(
       },
       [formatMessage, getAjvErrorMessage]
     );
+
     const layoutType = isCategorization(uiSchema) ? 'fullpage' : 'inline';
     const renderers = selectRenderers(config || 'default');
 
     return (
       <Box
         as="form"
-        height={layoutType === 'fullpage' ? '100vh' : '100%'}
+        minHeight={
+          isSmallerThanXlPhone &&
+          layoutType === 'fullpage' &&
+          config !== 'survey'
+            ? `calc(100vh - ${stylingConsts.menuHeight}px)`
+            : '100%'
+        }
+        height={
+          isSmallerThanXlPhone
+            ? '100%'
+            : layoutType === 'fullpage' && config !== 'survey'
+            ? '100vh'
+            : '100%'
+        }
         display="flex"
         flexDirection="column"
         maxHeight={
           layoutType === 'inline'
+            ? 'auto'
+            : isSmallerThanXlPhone || config === 'survey'
             ? 'auto'
             : `calc(100vh - ${stylingConsts.menuHeight}px)`
         }
@@ -222,7 +251,9 @@ const Form = memo(
         <Box
           overflow={layoutType === 'inline' ? 'visible' : 'auto'}
           flex="1"
-          marginBottom={layoutType === 'fullpage' ? '32px' : 'auto'}
+          marginBottom={
+            layoutType === 'fullpage' && showSubmitButton ? '32px' : 'auto'
+          }
         >
           {title && <Title>{title}</Title>}
           <APIErrorsContext.Provider value={apiErrors}>
@@ -231,6 +262,10 @@ const Form = memo(
                 showAllErrors,
                 inputId,
                 getApiErrorMessage: safeApiErrorMessages(),
+                onSubmit: handleSubmit,
+                setShowAllErrors,
+                setShowSubmitButton,
+                formSubmitText,
               }}
             >
               <JsonForms
@@ -251,18 +286,22 @@ const Form = memo(
             </FormContext.Provider>
           </APIErrorsContext.Provider>
         </Box>
-        {layoutType === 'fullpage' ? (
-          <ButtonBar
-            onSubmit={handleSubmit}
-            apiErrors={Boolean(
-              apiErrors?.values?.length && apiErrors?.values?.length > 0
+        {showSubmitButton && (
+          <>
+            {layoutType === 'fullpage' ? (
+              <ButtonBar
+                onSubmit={handleSubmit}
+                apiErrors={Boolean(
+                  apiErrors?.values?.length && apiErrors?.values?.length > 0
+                )}
+                processing={loading}
+              />
+            ) : submitOnEvent ? (
+              <InvisibleSubmitButton onClick={handleSubmit} />
+            ) : (
+              <Button onClick={handleSubmit}>Button</Button>
             )}
-            processing={loading}
-          />
-        ) : submitOnEvent ? (
-          <InvisibleSubmitButton onClick={handleSubmit} />
-        ) : (
-          <Button onClick={handleSubmit}>Button</Button>
+          </>
         )}
       </Box>
     );

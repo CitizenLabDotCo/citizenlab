@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.newCustomPagePageTitle',
     defaultMessage: 'Create custom page',
   },
+  titleSinglelocError: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleSinglelocError',
+    defaultMessage: 'Enter a title',
+  },
   titleMultilocError: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleMultilocError',
     defaultMessage: 'Enter a title in every language',
@@ -41,14 +45,9 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.titleLabel',
     defaultMessage: 'Title',
   },
-  slugLabel: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugLabel',
-    defaultMessage: 'Page slug',
-  },
-  slugTooltip: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugTooltip',
-    defaultMessage:
-      'The slug is the unique set of words at the end of the page’s web address, or URL.',
+  navbarItemTitle: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.navbarItemTitle',
+    defaultMessage: 'Title in navigation bar',
   },
   slugRegexError: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.slugRegexError',
@@ -63,6 +62,43 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.pageSettingsTab',
     defaultMessage: 'Page settings',
   },
+  linkedProjectsLabel: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedProjectsLabel',
+    defaultMessage: 'Linked Projects',
+  },
+  linkedProjectsTooltip: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedProjectsTooltip',
+    defaultMessage:
+      'Select which projects and related events can be displayed on the page.',
+  },
+  noFilter: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.noFilter',
+    defaultMessage: 'None',
+  },
+  byAreaFilter: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byAreaFilter',
+    defaultMessage: 'By area',
+  },
+  byTagsFilter: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byTagsFilter',
+    defaultMessage: 'By tag(s)',
+  },
+  selectedTagsLabel: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectedTagsLabel',
+    defaultMessage: 'Selected tags',
+  },
+  selectedAreasLabel: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectedAreasLabel',
+    defaultMessage: 'Selected area',
+  },
+  atLeastOneTag: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.atLeastOneTag',
+    defaultMessage: 'Please select at least one tag',
+  },
+  selectAnArea: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectAnArea',
+    defaultMessage: 'Please select an area',
+  },
   editCustomPageMetaTitle: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CustomPages.editCustomPageMetaTitle',
     defaultMessage: 'Edit custom page | {orgName}',
@@ -74,5 +110,9 @@ export default defineMessages({
   editCustomPagePageTitle: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.editCustomPagePageTitle',
     defaultMessage: 'Edit custom page',
+  },
+  viewCustomPage: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.viewCustomPage',
+    defaultMessage: 'View custom page',
   },
 });

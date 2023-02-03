@@ -26,6 +26,9 @@ module Frontend
         slug = model_instance.slug
       when Comment, OfficialFeedback ### comments and official feedbacks do not have a path yet, we return the post path for now
         return model_to_path(model_instance.post)
+      when ProjectFolders::Folder
+        subroute = 'folders'
+        slug = model_instance.slug
       else
         subroute = nil
         slug = nil
@@ -36,6 +39,11 @@ module Frontend
 
     def model_to_url(model_instance, options = {})
       "#{home_url(options)}#{model_to_path(model_instance)}"
+    end
+
+    def admin_project_folder_url(project_folder_id, locale: nil)
+      locale ||= AppConfiguration.instance.settings('core', 'locales').first
+      "#{AppConfiguration.instance.base_frontend_uri}/#{locale}/admin/projects/folders/#{project_folder_id}"
     end
 
     def slug_to_url(slug, classname, options = {})
@@ -159,4 +167,3 @@ module Frontend
 end
 
 Frontend::UrlService.include(UserConfirmation::Patches::Frontend::UrlService)
-Frontend::UrlService.prepend_if_ee('ProjectFolders::Patches::Frontend::UrlService')

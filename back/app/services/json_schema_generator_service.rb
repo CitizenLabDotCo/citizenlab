@@ -183,13 +183,30 @@ class JsonSchemaGeneratorService < FieldVisitorService
     }
   end
 
+  def visit_file_upload(_field)
+    {
+      type: 'object',
+      properties: {
+        content: {
+          type: 'string'
+        },
+        name: {
+          type: 'string'
+        }
+      }
+    }
+  end
+
   private
 
   attr_reader :locales, :multiloc_service
 
   def generate_for_current_locale(fields)
     field_properties = fields.each_with_object({}) do |field, accu|
-      accu[field.key] = visit field
+      field_schema = visit field
+      next unless field_schema
+
+      accu[field.key] = field_schema
     end
     {
       type: 'object',

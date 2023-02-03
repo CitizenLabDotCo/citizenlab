@@ -24,7 +24,7 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import { PreviousPathnameContext } from 'context';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
@@ -60,7 +60,6 @@ const TopContainer = styled.div`
 
 const ActionsContainer = styled.div`
   display: flex;
-
   & > *:not(:last-child) {
     margin-right: 15px;
   }
@@ -91,10 +90,12 @@ interface State {
 interface Props extends InputProps, DataProps {}
 
 export class AdminProjectsProjectIndex extends PureComponent<
-  Props & InjectedIntlProps & InjectedLocalized & WithRouterProps,
+  Props & WrappedComponentProps & InjectedLocalized & WithRouterProps,
   State
 > {
-  constructor(props) {
+  constructor(
+    props: Props & WrappedComponentProps & InjectedLocalized & WithRouterProps
+  ) {
     super(props);
     const {
       intl: { formatMessage },
@@ -138,6 +139,11 @@ export class AdminProjectsProjectIndex extends PureComponent<
           name: 'survey-results',
         },
         {
+          label: formatMessage(messages.allowedInputTopicsTab),
+          name: 'topics',
+          url: 'allowed-input-topics',
+        },
+        {
           label: formatMessage(messages.phasesTab),
           url: 'timeline',
           name: 'phases',
@@ -152,6 +158,12 @@ export class AdminProjectsProjectIndex extends PureComponent<
           label: formatMessage(messages.eventsTab),
           url: 'events',
           name: 'events',
+        },
+        {
+          label: formatMessage(messages.permissionsTab),
+          url: `permissions`,
+          feature: 'private_projects',
+          name: 'permissions',
         },
       ],
       tabHideConditions: {
@@ -232,6 +244,27 @@ export class AdminProjectsProjectIndex extends PureComponent<
             return true;
           }
 
+          return false;
+        },
+        topics: function topicsTabHidden(project, phases) {
+          const processType = project.attributes.process_type;
+          const participationMethod = project.attributes.participation_method;
+          const hideTab =
+            (processType === 'continuous' &&
+              participationMethod !== 'ideation' &&
+              participationMethod !== 'budgeting') ||
+            (processType === 'timeline' &&
+              !isNilOrError(phases) &&
+              phases.filter((phase) => {
+                return (
+                  phase.attributes.participation_method === 'ideation' ||
+                  phase.attributes.participation_method === 'budgeting'
+                );
+              }).length === 0);
+
+          if (hideTab) {
+            return true;
+          }
           return false;
         },
         phases: function isPhasesTabHidden(project) {
@@ -361,6 +394,10 @@ export class AdminProjectsProjectIndex extends PureComponent<
         });
       }
 
+      const showDropdownButton =
+        project.attributes.process_type === 'timeline' &&
+        numberIdeationPhases > 1;
+
       return (
         <>
           <Outlet
@@ -369,6 +406,7 @@ export class AdminProjectsProjectIndex extends PureComponent<
             project={project}
             phases={phases}
           />
+
           <TopContainer>
             <GoBackButton onClick={this.goBack} />
             <ActionsContainer>
@@ -377,10 +415,14 @@ export class AdminProjectsProjectIndex extends PureComponent<
                   <Box
                     onClick={this.onNewIdea(pathname)}
                     onMouseOver={() => {
-                      this.setState({ showIdeaDropdown: true });
+                      if (showDropdownButton) {
+                        this.setState({ showIdeaDropdown: true });
+                      }
                     }}
                     onMouseLeave={() => {
-                      this.setState({ showIdeaDropdown: false });
+                      if (showDropdownButton) {
+                        this.setState({ showIdeaDropdown: false });
+                      }
                     }}
                   >
                     {project.attributes.process_type === 'continuous' && (
@@ -396,14 +438,13 @@ export class AdminProjectsProjectIndex extends PureComponent<
                           linkTo={`/projects/${project.attributes.slug}/ideas/new?phase_id=${ideationPhase.id}`}
                         />
                       )}
-                    {project.attributes.process_type === 'timeline' &&
-                      numberIdeationPhases > 1 && (
-                        <NewIdeaButtonDropdown
-                          phases={phases}
-                          project={project}
-                          showDropdown={this.state.showIdeaDropdown}
-                        />
-                      )}
+                    {showDropdownButton && (
+                      <NewIdeaButtonDropdown
+                        phases={phases}
+                        project={project}
+                        showDropdown={this.state.showIdeaDropdown}
+                      />
+                    )}
                   </Box>
                 </>
               )}

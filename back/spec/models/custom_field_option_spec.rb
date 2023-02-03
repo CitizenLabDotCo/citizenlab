@@ -8,6 +8,13 @@ RSpec.describe CustomFieldOption, type: :model do
   it { is_expected.to be_valid }
   it { is_expected.to have_one(:area).dependent(:nullify) }
 
+  it { is_expected.to validate_presence_of(:key) }
+  it { is_expected.to validate_uniqueness_of(:key).scoped_to(:custom_field_id) }
+  it { is_expected.to allow_value('the_option_key-1').for(:key) }
+  it { is_expected.not_to allow_value('key#1').for(:key) }
+
+  it { is_expected.to validate_presence_of(:title_multiloc) }
+
   context 'when updated' do
     before do
       create(:custom_field_domicile)

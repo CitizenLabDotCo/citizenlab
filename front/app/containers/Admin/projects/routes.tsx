@@ -30,6 +30,9 @@ const AdminProjectVolunteeringNew = lazy(
 const AdminProjectVolunteeringEdit = lazy(
   () => import('./project/volunteering/EditCause')
 );
+const AdminAllowedTopicsComponent = React.lazy(
+  () => import('./project/topics')
+);
 
 export function adminProjectsProjectPath(projectId: string) {
   return `/admin/projects/${projectId}`;
@@ -206,6 +209,10 @@ const createAdminProjectsRoutes = () => {
                 <AdminProjectVolunteeringEdit />
               </PageLoading>
             ),
+          },
+          {
+            path: 'allowed-input-topics',
+            element: <AdminAllowedTopicsComponent />,
           },
           ...moduleConfiguration.routes['admin.projects.project'],
         ],

@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState, useCallback } from 'react';
 import { PreviousPathnameContext } from 'context';
-import { useSearchParams } from 'react-router-dom';
 
 import { WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 
 import { isAdmin, isModerator, isSuperAdmin } from 'services/permissions/roles';
+import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 import { isError, isNilOrError } from 'utils/helperUtils';
 import useAuthUser from 'hooks/useAuthUser';
@@ -13,6 +13,7 @@ import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import usePhase from 'hooks/usePhase';
 import useInputSchema from 'hooks/useInputSchema';
+import useURLQuery from 'utils/cl-router/useUrlQuery';
 
 import messages from '../messages';
 
@@ -21,6 +22,7 @@ import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
 
 import PageContainer from 'components/UI/PageContainer';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
+import { Heading } from 'containers/IdeasNewPage/WithJSONForm/Heading';
 import { addIdea } from 'services/ideas';
 import { geocode, reverseGeocode } from 'utils/locationTools';
 
@@ -29,13 +31,14 @@ import { parse } from 'qs';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { getCurrentPhase } from 'services/phases';
 import { getMethodConfig } from 'utils/participationMethodUtils';
+import { getLocationGeojson } from '../utils';
 
 const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
   const authUser = useAuthUser();
   const project = useProject({ projectSlug: params.slug });
-  const [searchParams] = useSearchParams();
-  const phaseId = searchParams.get('phase_id');
+  const queryParams = useURLQuery();
+  const phaseId = queryParams.get('phase_id');
 
   const phases = usePhases(project?.id);
   const { schema, uiSchema, inputSchemaError } = useInputSchema({
@@ -52,9 +55,8 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
 
     if (
       !isPrivilegedUser &&
-      (authUser === null ||
-        (!isNilOrError(project) &&
-          !project.attributes.action_descriptor.posting_idea.enabled))
+      !isNilOrError(project) &&
+      !project.attributes.action_descriptor.posting_idea.enabled
     ) {
       clHistory.replace(previousPathName || (!authUser ? '/sign-up' : '/'));
     }
@@ -99,9 +101,13 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
 
   const onSubmit = async (data) => {
     let location_point_geojson;
+
     if (data.location_description && !data.location_point_geojson) {
       location_point_geojson = await geocode(data.location_description);
     }
+
+    location_point_geojson = await getLocationGeojson(initialFormData, data);
+
     const idea = await addIdea({
       ...data,
       location_point_geojson,
@@ -117,7 +123,6 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
       !isNilOrError(phases)
     ) {
       // Check if URL contains specific phase_id
-      const queryParams = new URLSearchParams(window.location.search);
       const phaseIdFromUrl = queryParams.get('phase_id');
       const phaseUsed =
         phases.find((phase) => phase.id === phaseIdFromUrl) ||
@@ -168,6 +173,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
 
   // get participation method config
   const phaseFromUrl = usePhase(phaseId);
+  // TODO: Improve typings and remove any
   let config;
 
   if (!isNilOrError(phaseFromUrl)) {
@@ -183,6 +189,16 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
       config = getMethodConfig(project.attributes.participation_method);
     }
   }
+
+  if (isNilOrError(project) || isNilOrError(config)) {
+    return null;
+  }
+
+  const canUserEditProject =
+    !isNilOrError(authUser) &&
+    canModerateProject(project.id, { data: authUser });
+  const isSurvey = config.postType === 'nativeSurvey';
+
   return (
     <PageContainer id="e2e-idea-new-page" overflow="hidden">
       {!isNilOrError(project) &&
@@ -200,8 +216,20 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
             getAjvErrorMessage={getAjvErrorMessage}
             getApiErrorMessage={getApiErrorMessage}
             inputId={undefined}
-            title={config.getFormTitle({ project, phases, phaseFromUrl })}
-            config={'input'}
+            title={
+              <Heading
+                project={project}
+                titleText={config.getFormTitle({
+                  project,
+                  phases,
+                  phaseFromUrl,
+                })}
+                isSurvey={isSurvey}
+                canUserEditProject={canUserEditProject}
+              />
+            }
+            config={isSurvey ? 'survey' : 'input'}
+            formSubmitText={isSurvey ? messages.submitSurvey : undefined}
           />
         </>
       ) : isError(project) || inputSchemaError ? null : (

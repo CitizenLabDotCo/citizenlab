@@ -25,10 +25,11 @@ import Warning from 'components/UI/Warning';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { MessageDescriptor } from 'react-intl';
 
 // events
-import { openSignUpInModal } from 'components/SignUpIn/events';
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+import { openSignUpInModal } from 'events/openSignUpInModal';
+import { openVerificationModal } from 'events/verificationModal';
 
 import styled from 'styled-components';
 
@@ -68,7 +69,7 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 const disabledMessages: {
-  [key in IPollTakingDisabledReason]: ReactIntl.FormattedMessage.MessageDescriptor;
+  [key in IPollTakingDisabledReason]: MessageDescriptor;
 } = {
   projectInactive: messages.pollDisabledProjectInactive,
   maybeNotPermitted: messages.pollDisabledMaybeNotPermitted,

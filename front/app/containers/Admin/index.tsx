@@ -63,7 +63,7 @@ export const RightColumn = styled.div`
   min-height: calc(100vh - ${(props) => props.theme.menuHeight}px);
   padding-top: 45px;
   padding-right: 51px;
-  padding-bottom: 0px;
+  padding-bottom: 45px;
   padding-left: 51px;
 
   &.fullWidth {
@@ -132,13 +132,13 @@ const AdminPage = memo<Props & WithRouterProps>(
     const noPadding =
       adminNoPadding ||
       pathname.includes('admin/dashboard') ||
-      pathname.includes('admin/insights');
+      pathname.includes('admin/reporting');
 
     const fullWidth =
       adminFullWidth === true ||
       endsWith(pathname, 'admin/moderation') ||
       pathname.includes('admin/dashboard') ||
-      pathname.includes('admin/insights');
+      pathname.includes('admin/reporting');
 
     const whiteBg = endsWith(pathname, 'admin/moderation');
 

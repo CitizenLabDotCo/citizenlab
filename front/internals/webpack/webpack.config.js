@@ -18,9 +18,9 @@ const SentryCliPlugin = require('@sentry/webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-var dotenv = require('dotenv').config({
-  path: path.join(process.cwd(), '../.env-front'),
-});
+const dotenv = require('dotenv')
+dotenv.config({ path: path.join(process.cwd(), '../env_files/front-safe.env') });
+dotenv.config({ path: path.join(process.cwd(), '../env_files/front-secret.env') });
 
 const argv = require('yargs').argv;
 const appLocalesMomentPairs = require(path.join(
@@ -35,15 +35,6 @@ const DEV_WORKSHOPS_HOST = process.env.DEV_WORKSHOPS_HOST || 'localhost';
 const DEV_WORKSHOPS_PORT = process.env.DEV_WORKSHOPS_PORT || 4005;
 
 const currentYear = new Date().getFullYear();
-
-const clConfig = require(path.join(process.cwd(), '../citizenlab.config.json'));
-try {
-  const clConfigEe = require(path.join(
-    process.cwd(),
-    '../citizenlab.config.ee.json'
-  ));
-  clConfig['modules'] = { ...clConfig['modules'], ...clConfigEe['modules'] };
-} catch (e) {}
 
 const config = {
   entry: path.join(process.cwd(), 'app/root'),
@@ -63,8 +54,8 @@ const config = {
   devtool: isDev
     ? 'eval-cheap-module-source-map'
     : !isTestBuild
-    ? 'hidden-source-map'
-    : false,
+      ? 'hidden-source-map'
+      : false,
 
   devServer: {
     port: 3000,
@@ -159,7 +150,7 @@ const config = {
         GOOGLE_MAPS_API_KEY: JSON.stringify(process.env.GOOGLE_MAPS_API_KEY),
         MATOMO_HOST: JSON.stringify(process.env.MATOMO_HOST),
       },
-      CL_CONFIG: JSON.stringify(clConfig),
+      CITIZENLAB_EE: JSON.stringify(process.env.CITIZENLAB_EE),
     }),
 
     isDev && new ReactRefreshWebpackPlugin({ overlay: false }),
@@ -189,27 +180,27 @@ const config = {
 
     // remove all moment locales except 'en' and the ones defined in appLocalesMomentPairs
     !isDev &&
-      new MomentLocalesPlugin({
-        localesToKeep: [...new Set(Object.values(appLocalesMomentPairs))],
-      }),
+    new MomentLocalesPlugin({
+      localesToKeep: [...new Set(Object.values(appLocalesMomentPairs))],
+    }),
 
     !isDev &&
-      new MomentTimezoneDataPlugin({
-        startYear: 2014,
-        endYear: currentYear + 8,
-      }),
+    new MomentTimezoneDataPlugin({
+      startYear: 2014,
+      endYear: currentYear + 8,
+    }),
 
     !isDev &&
-      new MiniCssExtractPlugin({
-        filename: '[name].[contenthash].min.css',
-        chunkFilename: '[name].[contenthash].chunk.min.css',
-      }),
+    new MiniCssExtractPlugin({
+      filename: '[name].[contenthash].min.css',
+      chunkFilename: '[name].[contenthash].chunk.min.css',
+    }),
 
     sourceMapToSentry &&
-      new SentryCliPlugin({
-        include: path.join(process.cwd(), 'build'),
-        release: process.env.CIRCLE_BUILD_NUM,
-      }),
+    new SentryCliPlugin({
+      include: path.join(process.cwd(), 'build'),
+      release: process.env.CIRCLE_BUILD_NUM,
+    }),
   ].filter(Boolean),
 
   resolve: {

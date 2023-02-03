@@ -8,15 +8,21 @@ import ProjectHelmet from './shared/header/ProjectHelmet';
 import ProjectNotFound from './shared/header/ProjectNotFound';
 import ProjectNotVisible from './shared/header/ProjectNotVisible';
 import ProjectHeader from './shared/header/ProjectHeader';
-import ProjectEvents from './shared/events';
 import ContinuousIdeas from './continuous/Ideas';
 import ContinuousSurvey from './continuous/Survey';
 import ContinuousPoll from './continuous/Poll';
 import ContinuousVolunteering from './continuous/Volunteering';
 import TimelineContainer from './timeline';
-import { Box, Spinner, Title, Image } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Spinner,
+  Title,
+  Image,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import Modal from 'components/UI/Modal';
+import { ProjectCTABar } from './ProjectCTABar';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -25,6 +31,7 @@ import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import useEvents from 'hooks/useEvents';
 import useAuthUser from 'hooks/useAuthUser';
+import { useIntl } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
@@ -36,9 +43,18 @@ import { IProjectData } from 'services/projects';
 
 // other
 import { isValidPhase } from './phaseParam';
-import { anyIsUndefined, isNilOrError, isApiError } from 'utils/helperUtils';
+import {
+  anyIsUndefined,
+  isNilOrError,
+  isApiError,
+  isNil,
+} from 'utils/helperUtils';
 import { getCurrentPhase } from 'services/phases';
 import { getMethodConfig, getPhase } from 'utils/participationMethodUtils';
+import EventsViewer from 'containers/EventsPage/EventsViewer';
+import messages from 'utils/messages';
+import { scrollToElement } from 'utils/scroll';
+import useURLQuery from 'utils/cl-router/useUrlQuery';
 
 const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;
@@ -74,7 +90,6 @@ const Loading = styled.div`
 const ContentWrapper = styled.div`
   width: 100%;
 `;
-
 interface Props {
   project: IProjectData | Error | null | undefined;
   scrollToEventId?: string;
@@ -87,29 +102,62 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
     ? project.attributes.process_type
     : undefined;
 
+  const smallerThanMinTablet = useBreakpoint('tablet');
+  const { formatMessage } = useIntl();
+  const queryParams = useURLQuery();
+  const showModalParam = queryParams.get('show_modal');
   const [showModal, setShowModal] = useState<boolean>(false);
   const [phaseIdUrl, setPhaseIdUrl] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
   const locale = useLocale();
-  const tenant = useAppConfiguration();
+  const appConfig = useAppConfiguration();
   const phases = usePhases(projectId);
+
+  const { events } = useEvents({
+    projectIds: projectId ? [projectId] : undefined,
+    sort: 'newest',
+  });
+
+  const loading = useMemo(() => {
+    return anyIsUndefined(locale, appConfig, project, phases, events);
+  }, [locale, appConfig, project, phases, events]);
+
+  // Check that all child components are mounted
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (!isNil(showModalParam)) {
+      // TODO: Handle animation when modal is open by default in Modal component
+      timer = setTimeout(() => {
+        setShowModal(!!showModalParam);
+      }, 1500);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [showModalParam]);
+
+  // UseEffect to scroll to event when provided
+  useEffect(() => {
+    if (scrollToEventId && mounted && !loading) {
+      setTimeout(() => {
+        scrollToElement({ id: scrollToEventId });
+      }, 2000);
+    }
+  }, [mounted, loading, scrollToEventId]);
 
   // UseEffect to handle modal state and phase parameters
   useEffect(() => {
-    const queryParams = new URLSearchParams(window.location.search);
-    const showModalParam = queryParams.get('show_modal');
     const phaseIdParam = queryParams.get('phase_id');
     // Set phase id
     if (!isNilOrError(phaseIdParam) && phaseIdUrl === null) {
       setPhaseIdUrl(phaseIdParam);
     }
-    // Set modal state
-    if (!isNilOrError(showModalParam)) {
-      setTimeout(() => {
-        if (!showModal) {
-          setShowModal(JSON.parse(showModalParam));
-        }
-      }, 1500);
-    }
+
     // Clear URL parameters for continuous projects
     // (handled elsewhere for timeline projects)
     if (
@@ -118,17 +166,9 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
     ) {
       window.history.replaceState(null, '', window.location.pathname);
     }
-  }, [project, showModal, phaseIdUrl]);
+  }, [project, phaseIdUrl, queryParams]);
 
-  const { events } = useEvents({
-    projectIds: projectId ? [projectId] : undefined,
-    sort: 'newest',
-  });
   const user = useAuthUser();
-
-  const loading = useMemo(() => {
-    return anyIsUndefined(locale, tenant, project, phases, events);
-  }, [locale, tenant, project, phases, events]);
 
   const isUnauthorized = useMemo(() => {
     if (!isApiError(project)) return false;
@@ -175,20 +215,47 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
     content = (
       <ContentWrapper id="e2e-project-page">
         <ProjectHeader projectId={projectId} />
-        {processType === 'continuous' ? (
-          <>
-            <ContinuousIdeas projectId={projectId} />
-            <ContinuousSurvey projectId={projectId} />
-            <ContinuousPoll projectId={projectId} />
-            <ContinuousVolunteering projectId={projectId} />
-          </>
-        ) : (
-          <TimelineContainer projectId={projectId} />
-        )}
-        <ProjectEvents
-          projectId={projectId}
-          scrollToEventId={scrollToEventId}
-        />
+        <ProjectCTABar projectId={projectId} />
+        <div id="participation-detail">
+          {processType === 'continuous' ? (
+            <>
+              <ContinuousIdeas projectId={projectId} />
+              <ContinuousSurvey projectId={projectId} />
+              <ContinuousPoll projectId={projectId} />
+              <ContinuousVolunteering projectId={projectId} />
+            </>
+          ) : (
+            <TimelineContainer projectId={projectId} />
+          )}
+        </div>
+        <Box
+          display="flex"
+          flexDirection="column"
+          gap="48px"
+          mx="auto"
+          my="48px"
+          maxWidth="1166px"
+          padding={smallerThanMinTablet ? '20px' : '0px'}
+        >
+          <EventsViewer
+            showProjectFilter={false}
+            projectIds={[projectId]}
+            eventsTime="currentAndFuture"
+            title={formatMessage(messages.upcomingAndOngoingEvents)}
+            fallbackMessage={messages.noUpcomingOrOngoingEvents}
+            onClickTitleGoToProjectAndScrollToEvent={false}
+            hideSectionIfNoEvents={true}
+          />
+          <EventsViewer
+            showProjectFilter={false}
+            projectIds={[projectId]}
+            eventsTime="past"
+            title={formatMessage(messages.pastEvents)}
+            fallbackMessage={messages.noPastEvents}
+            onClickTitleGoToProjectAndScrollToEvent={false}
+            hideSectionIfNoEvents={true}
+          />
+        </Box>
         <Modal
           opened={showModal}
           close={() => {

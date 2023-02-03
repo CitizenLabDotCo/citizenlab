@@ -64,16 +64,14 @@ describe Analytics::QueryValidatorService do
         fact: 'post',
         fields: 'id',
         filters: {
-          created_date: {
-            date: { from: 'xxxx', to: '2022-01-01' }
-          }
+          'created_date.date': { from: 'xxxx', to: '2022-01-01' }
         }
       )
       query = Analytics::Query.new(query_param)
 
       validator = described_class.new(query)
       expect(validator.valid).to be false
-      expect(validator.messages).to include 'Invalid \'from\' date in created_date dimension on column date.'
+      expect(validator.messages).to include 'Invalid \'from\' date for created_date.date.'
     end
 
     it 'pass on valid query' do
@@ -81,9 +79,7 @@ describe Analytics::QueryValidatorService do
         fact: 'post',
         fields: 'id',
         filters: {
-          created_date: {
-            date: { from: '2021-01-01', to: '2022-01-01' }
-          }
+          'dimension_date_created.date': { from: '2021-01-01', to: '2022-01-01' }
         }
       )
       query = Analytics::Query.new(query_param)

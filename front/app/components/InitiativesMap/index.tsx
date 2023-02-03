@@ -81,7 +81,7 @@ export class InitiativesMap extends PureComponent<
   private addInitiativeButtonElement: HTMLElement;
   private subscriptions: Subscription[];
 
-  constructor(props) {
+  constructor(props: Props & WithRouterProps) {
     super(props);
     this.state = {
       selectedInitiativeId: null,

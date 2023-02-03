@@ -16,7 +16,6 @@ import { getInputTerm } from 'services/participationContexts';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
@@ -27,15 +26,14 @@ import { Icon } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import messages from './messages';
-import { getInputTermMessage } from 'utils/i18n';
 
 // utils
-import { openSignUpInModal } from 'components/SignUpIn/events';
+import { openSignUpInModal } from 'events/openSignUpInModal';
 
 // events
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+import { openVerificationModal } from 'events/verificationModal';
 
 // tracks
 import { trackEventByName } from 'utils/analytics';
@@ -48,6 +46,9 @@ import { darken } from 'polished';
 
 // typings
 import { LatLng } from 'leaflet';
+import { canModerateProject } from 'services/permissions/rules/projectPermissions';
+import { getButtonMessage } from './utils';
+import { IPhaseData } from 'services/phases';
 
 const Container = styled.div``;
 
@@ -73,7 +74,6 @@ const TooltipContentText = styled.div`
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
-
   a,
   button {
     color: ${colors.teal};
@@ -93,7 +93,6 @@ const TooltipContentText = styled.div`
     margin: 0px;
     cursor: pointer;
     transition: all 100ms ease-out;
-
     &:hover {
       color: ${darken(0.15, colors.teal)};
       text-decoration: underline;
@@ -103,7 +102,6 @@ const TooltipContentText = styled.div`
 
 interface DataProps {
   project: GetProjectChildProps;
-  phase: GetPhaseChildProps;
   phases: GetPhasesChildProps;
   authUser: GetAuthUserChildProps;
 }
@@ -116,11 +114,13 @@ interface InputProps extends Omit<ButtonProps, 'onClick'> {
   inMap?: boolean;
   className?: string;
   participationContextType: IParticipationContextType;
+  buttonText?: MessageDescriptor;
+  phase: IPhaseData | undefined | null;
 }
 
 interface Props extends InputProps, DataProps {}
 
-const IdeaButton = memo<Props & InjectedIntlProps>(
+const IdeaButton = memo<Props & WrappedComponentProps>(
   ({
     id,
     project,
@@ -133,14 +133,16 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
     inMap,
     className,
     latLng,
+    buttonText,
     intl: { formatMessage },
     ...buttonContainerProps
   }) => {
     const disabledMessages: {
-      [key in IIdeaPostingDisabledReason]: ReactIntl.FormattedMessage.MessageDescriptor;
+      [key in IIdeaPostingDisabledReason]: MessageDescriptor;
     } = {
       notPermitted: messages.postingNoPermission,
       postingDisabled: messages.postingDisabled,
+      postingLimitedMaxReached: messages.postingLimitedMaxReached,
       projectInactive: messages.postingInactive,
       futureEnabled: messages.postingNotYetPossible,
       notActivePhase: messages.postingInNonActivePhases,
@@ -177,13 +179,20 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
       if (!isNilOrError(project)) {
         trackEventByName(tracks.redirectedToIdeaFrom);
 
+        const isUserModerator =
+          !isNilOrError(authUser) &&
+          canModerateProject(projectId, { data: authUser });
+
+        const parameters =
+          phaseId && isUserModerator ? `&phase_id=${phaseId}` : '';
+
         clHistory.push({
           pathname: `/projects/${project.attributes.slug}/ideas/new`,
           search: latLng
             ? stringify(
                 { lat: latLng.lat, lng: latLng.lng },
                 { addQueryPrefix: true }
-              )
+              ).concat(parameters)
             : undefined,
         });
       }
@@ -298,18 +307,12 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
           phases
         );
 
-        const buttonMessage =
-          project.attributes.participation_method === 'native_survey' ||
-          phase?.attributes.participation_method === 'native_survey'
-            ? messages.takeTheSurvey
-            : getInputTermMessage(inputTerm, {
-                idea: messages.submitYourIdea,
-                option: messages.addAnOption,
-                project: messages.addAProject,
-                question: messages.addAQuestion,
-                issue: messages.submitAnIssue,
-                contribution: messages.addAContribution,
-              });
+        const buttonMessage = getButtonMessage(
+          phase?.attributes.participation_method ||
+            project.attributes.participation_method,
+          buttonText,
+          inputTerm
+        );
 
         return (
           <Container id={id} className={className || ''}>
@@ -322,6 +325,7 @@ const IdeaButton = memo<Props & InjectedIntlProps>(
               hideOnClick={false}
             >
               <ButtonWrapper
+                id="e2e-cta-button"
                 tabIndex={!enabled ? 0 : -1}
                 className={`e2e-idea-button ${!enabled ? 'disabled' : ''} ${
                   disabledReason ? disabledReason : ''
@@ -355,7 +359,9 @@ const Data = adopt<DataProps, InputProps>({
   phases: ({ projectId, render }) => (
     <GetPhases projectId={projectId}>{render}</GetPhases>
   ),
-  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
+  // phase: ({ phaseId, render }) => {
+  //   return <GetPhase id={phaseId}>{render}</GetPhase>
+  // },
 });
 
 const IdeaButtonWithHoC = injectIntl(IdeaButton);

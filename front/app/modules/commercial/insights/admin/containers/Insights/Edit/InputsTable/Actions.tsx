@@ -71,7 +71,7 @@ const DropdownListItem = styled.label`
   margin-bottom: 4px;
   padding: 10px;
   background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   outline: none;
   cursor: pointer;
   transition: all 80ms ease-out;
@@ -99,7 +99,7 @@ const DropdownFooterButton = styled(Button)`
 `;
 
 // Typings
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 interface Props {
@@ -113,7 +113,7 @@ const Actions = ({
   params: { viewId },
   location: { query },
   intl: { formatMessage },
-}: Props & InjectedIntlProps & WithRouterProps) => {
+}: Props & WrappedComponentProps & WithRouterProps) => {
   const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
   const categories = useInsightsCategories(viewId);
   const selectedInputsIds = selectedInputs.map((input) => input.id);
@@ -218,7 +218,11 @@ const Actions = ({
         <>
           {otherCategories.length > 0 && (
             <ActionButtonWrapper data-testid="insightsTableActionsBulkAssign">
-              <Button onClick={toggleDropdown} buttonStyle="admin-dark-text">
+              <Button
+                className="intercom-insights-edit-bulk-assign-button"
+                onClick={toggleDropdown}
+                buttonStyle="admin-dark-text"
+              >
                 <StyledIcon name="folder-move" />
                 <FormattedMessage {...messages.bulkAssignCategory} />
               </Button>

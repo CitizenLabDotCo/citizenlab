@@ -2,14 +2,13 @@ import React, { PureComponent } from 'react';
 import Dropzone, { Accept } from 'react-dropzone';
 import { size, isEmpty, uniqBy, forEach } from 'lodash-es';
 import { reportError } from 'utils/loggingUtils';
-import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -22,7 +21,7 @@ import { colors, fontSizes, defaultOutline } from 'utils/styleUtils';
 
 // typings
 import { UploadFile } from 'typings';
-import { ScreenReaderOnly } from 'utils/a11y';
+import RemoveImageButton from '../RemoveImageButton';
 
 const Container = styled.div`
   width: 100%;
@@ -40,7 +39,12 @@ const ErrorWrapper = styled.div`
   display: flex;
 `;
 
-const DropzoneLabelText = styled.span`
+/*
+  Changing this to a label causes unexpected behavior when selecting files,
+  which isn't easy to solve. Sometimes my system's file picker would reopen
+  after trying to select a picture.
+*/
+const DropzoneLabel = styled.span`
   color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   line-height: normal;
@@ -91,7 +95,7 @@ const DropzoneContent = styled.div<{ borderRadius?: string }>`
     &:focus-within {
       border-color: #000;
 
-      ${DropzoneLabelText},
+      ${DropzoneLabel},
       ${DropzoneImagesRemaining} {
         color: #000;
       }
@@ -106,7 +110,7 @@ const DropzoneContent = styled.div<{ borderRadius?: string }>`
     cursor: no-drop;
     border-color: #ccc;
 
-    ${DropzoneLabelText},
+    ${DropzoneLabel},
     ${DropzoneImagesRemaining} {
       color: #ccc;
     }
@@ -160,41 +164,7 @@ const Box = styled.div<{ maxWidth: string | undefined; ratio: number }>`
   ${DropzoneContent} {
     width: 100%;
     height: ${({ maxWidth, ratio }) => (ratio !== 1 ? 'auto' : maxWidth)};
-    padding-bottom: ${({ ratio }) =>
-      ratio !== 1 ? `${Math.round(ratio * 100)}%` : '0'};
-  }
-`;
-
-const RemoveIcon = styled(Icon)`
-  fill: #fff;
-  transition: all 100ms ease-out;
-`;
-
-const RemoveButton = styled.button`
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  margin: 0;
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  z-index: 1;
-  cursor: pointer;
-  border-radius: 50%;
-  border: solid 1px transparent;
-  background: rgba(0, 0, 0, 0.6);
-  transition: all 100ms ease-out;
-
-  &:hover {
-    background: #000;
-    border-color: #fff;
-
-    ${RemoveIcon} {
-      fill: #fff;
-    }
+    padding-bottom: ${({ ratio }) => `${Math.round(ratio * 100)}%`};
   }
 `;
 
@@ -210,6 +180,8 @@ export interface Props {
   errorMessage?: string | null | undefined;
   objectFit?: 'cover' | 'contain' | undefined;
   onAdd: (arg: UploadFile[]) => void;
+  // The type of arg is wrong, the returned File object's attributes don't match
+  // UploadFile. Leaving the note for someone working on this in the future.
   onRemove: (arg: UploadFile) => void;
   borderRadius?: string;
   removeIconAriaTitle?: string;
@@ -224,14 +196,17 @@ interface State {
   errorMessage: string | null;
 }
 
-class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
+class ImagesDropzone extends PureComponent<
+  Props & WrappedComponentProps,
+  State
+> {
   static defaultProps = {
     maxNumberOfImages: 1,
     maxImageFileSize: 10000000,
     addImageOverlay: false,
   };
 
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       urlObjects: {},
@@ -242,6 +217,10 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
   componentDidMount() {
     this.setUrlObjects();
     this.removeExcessImages();
+
+    if (this.props.errorMessage) {
+      this.setState({ errorMessage: this.props.errorMessage });
+    }
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -342,10 +321,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
       }
 
       this.props.onAdd(
-        uniqBy(
-          [...(this.props.images || []), ...images],
-          'base64'
-        ) as UploadFile[]
+        uniqBy([...(this.props.images || []), ...images], 'base64')
       );
     }
   };
@@ -409,7 +385,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
     const objectFit = this.props.objectFit || 'cover';
 
     return (
-      <Container className={className || ''}>
+      <Container className={className || ''} data-testid="images-dropzone">
         <ContentWrapper>
           {(maxNumberOfImages > 1 ||
             (maxNumberOfImages === 1 && isEmpty(images))) && (
@@ -440,10 +416,14 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
                           : ''
                       }
                     >
-                      <DropzoneInput {...getInputProps()} id={id} />
+                      <DropzoneInput
+                        {...getInputProps()}
+                        id={id}
+                        data-testid="dropzone-input"
+                      />
                       <DropzoneContentInner>
                         <DropzoneLabelIcon name="upload-image" ariaHidden />
-                        <DropzoneLabelText>{label}</DropzoneLabelText>
+                        <DropzoneLabel>{label}</DropzoneLabel>
                         {remainingImages && (
                           <DropzoneImagesRemaining>
                             {remainingImages}
@@ -475,18 +455,10 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
                   src={this.state.urlObjects[image.base64]}
                   objectFit={objectFit}
                 >
-                  <RemoveButton
-                    type="button"
-                    onMouseDown={removeFocusAfterMouseClick}
+                  <RemoveImageButton
                     onClick={this.removeImage(image)}
-                    className="remove-button"
-                  >
-                    <RemoveIcon name="close" />
-                    <ScreenReaderOnly>
-                      {this.props.removeIconAriaTitle ||
-                        formatMessage(messages.a11y_removeImage)}
-                    </ScreenReaderOnly>
-                  </RemoveButton>
+                    removeIconAriaTitle={this.props.removeIconAriaTitle}
+                  />
                 </Image>
                 {previewOverlayElement}
               </Box>

@@ -3,7 +3,7 @@ import React from 'react';
 import styled, { useTheme } from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 import { StatusExplanation } from './SharedStyles';
-import { getDaysRemainingUntil } from 'utils/dateUtils';
+import { getPeriodRemainingUntil } from 'utils/dateUtils';
 
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
@@ -15,7 +15,7 @@ import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import ProposalProgressBar from './ProposalProgressBar';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 import T from 'components/T';
 import { IInitiativeDisabledReason } from 'hooks/useInitiativesPermissions';
@@ -149,7 +149,7 @@ interface InputProps {
 interface Props extends InputProps {}
 
 const disabledMessages: {
-  [key in IInitiativeDisabledReason]: ReactIntl.FormattedMessage.MessageDescriptor;
+  [key in IInitiativeDisabledReason]: MessageDescriptor;
 } = {
   notPermitted: messages.votingNotPermitted,
 };
@@ -160,10 +160,10 @@ const ProposedNotVoted = ({
   initiativeSettings: { voting_threshold, threshold_reached_message },
   disabledReason,
 }: Props) => {
-  const theme: any = useTheme();
+  const theme = useTheme();
   const voteCount = initiative.attributes.upvotes_count;
   const voteLimit = voting_threshold;
-  const daysLeft = getDaysRemainingUntil(initiative.attributes.expires_at);
+  const daysLeft = getPeriodRemainingUntil(initiative.attributes.expires_at);
 
   const thresholdReachedTooltip = threshold_reached_message ? (
     <IconTooltip

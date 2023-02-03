@@ -83,7 +83,7 @@ class ParentComment extends PureComponent<Props, State> {
   private loadMore$: BehaviorSubject<boolean>;
   private subscriptions: Subscription[];
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       canLoadMore: false,

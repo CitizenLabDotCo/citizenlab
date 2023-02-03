@@ -1,32 +1,56 @@
 import React from 'react';
 
+// hooks
+import { useBreakpoint, Box } from '@citizenlab/cl2-component-library';
+
 // components
-import VisitorsCard from '../../components/VisitorsCard';
+import VisitorsCard from 'components/admin/GraphCards/VisitorsCard';
+import VisitorsTrafficSourcesCard from 'components/admin/GraphCards/VisitorsTrafficSourcesCard';
+import RegistrationsCard from '../../components/RegistrationsCard';
+import ActiveUsersCard from 'components/admin/GraphCards/ActiveUsersCard';
 import VisitorsLanguageCard from '../../components/VisitorsLanguageCard';
-import VisitorsTrafficSourcesCard from '../../components/VisitorsTrafficSourcesCard';
 import VisitorsTypeCard from '../../components/VisitorsTypeCard';
-import { Box } from '@citizenlab/cl2-component-library';
 
 // typings
-import { Moment } from 'moment';
-import { IResolution } from 'components/admin/ResolutionControl';
+import {
+  ProjectId,
+  Dates,
+  Resolution,
+} from 'components/admin/GraphCards/typings';
 
-interface Props {
-  startAtMoment: Moment | null | undefined;
-  endAtMoment: Moment | null;
-  projectFilter: string | undefined;
-  resolution: IResolution;
-}
+type Props = ProjectId & Dates & Resolution;
 
-const Charts = (props: Props) => (
-  <>
-    <VisitorsCard {...props} />
-    <VisitorsTrafficSourcesCard {...props} />
-    <Box display="flex" flexDirection="row">
-      <VisitorsLanguageCard {...props} />
-      <VisitorsTypeCard {...props} />
-    </Box>
-  </>
-);
+const Charts = (props: Props) => {
+  const smallerThanSmallDesktop = useBreakpoint('smallDesktop');
+
+  return (
+    <>
+      <VisitorsCard {...props} />
+      <VisitorsTrafficSourcesCard {...props} />
+      <Box display="flex" flexDirection="row">
+        <Box width="50%">
+          <RegistrationsCard
+            {...props}
+            layout={smallerThanSmallDesktop ? 'narrow' : 'wide'}
+          />
+        </Box>
+        <Box width="50%">
+          <ActiveUsersCard
+            {...props}
+            layout={smallerThanSmallDesktop ? 'narrow' : 'wide'}
+          />
+        </Box>
+      </Box>
+      <Box display="flex" flexDirection="row">
+        <Box width="50%">
+          <VisitorsLanguageCard {...props} />
+        </Box>
+        <Box width="50%">
+          <VisitorsTypeCard {...props} />
+        </Box>
+      </Box>
+    </>
+  );
+};
 
 export default Charts;

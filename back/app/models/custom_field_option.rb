@@ -27,8 +27,8 @@ class CustomFieldOption < ApplicationRecord
   belongs_to :custom_field
 
   validates :custom_field, presence: true
-  validates :key, presence: true, uniqueness: { scope: [:custom_field_id] }, format: { with: /\A[a-zA-Z0-9_]+\z/,
-                                                                                       message: 'only letters, numbers and underscore' }
+  validates :key, presence: true, uniqueness: { scope: [:custom_field_id] },
+    format: { with: /\A[\w-]+\z/, message: 'can only consist of word characters or dashes' }
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validate :belongs_to_select_field
 
@@ -56,7 +56,7 @@ class CustomFieldOption < ApplicationRecord
     return unless area
     return unless ordering_previously_changed? || title_multiloc_previously_changed?
 
-    area.update(
+    area.update!(
       ordering: ordering,
       title_multiloc: title_multiloc
     )

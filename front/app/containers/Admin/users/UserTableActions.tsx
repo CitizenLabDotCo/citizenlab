@@ -67,7 +67,7 @@ const SelectAllCheckbox = styled(Checkbox)`
   position: relative;
   padding-left: 4px;
   padding-right: 4px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   cursor: pointer;
 
   &:hover,
@@ -129,7 +129,7 @@ const DropdownListItem = styled.button`
   margin-bottom: 4px;
   padding: 10px;
   background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   outline: none;
   cursor: pointer;
   transition: all 80ms ease-out;
@@ -159,7 +159,7 @@ const DropdownFooterButton = styled(Button)`
 // Typings
 import { CLErrorsJSON } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 interface InputProps {
   groupType?: MembershipType;
@@ -183,8 +183,11 @@ interface State {
   processing: boolean;
 }
 
-class UserTableActions extends PureComponent<Props & InjectedIntlProps, State> {
-  constructor(props) {
+class UserTableActions extends PureComponent<
+  Props & WrappedComponentProps,
+  State
+> {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       dropdownOpened: false,

@@ -23,6 +23,8 @@ module.exports = {
     'jsx-a11y',
     '@typescript-eslint',
     '@typescript-eslint/tslint',
+    'unused-imports',
+    'import',
   ],
   rules: {
     '@typescript-eslint/member-delimiter-style': ['warn'],
@@ -72,7 +74,7 @@ module.exports = {
     'newline-per-chained-call': 'off',
     'no-array-constructor': 'error',
     'no-console': ['warn', { allow: ['warn', 'error'] }],
-    'no-duplicate-imports': 'error',
+    'no-duplicate-imports': 'off',
     'no-eval': 'error',
     'no-extra-semi': 'off',
     'no-irregular-whitespace': 'error',
@@ -91,9 +93,9 @@ module.exports = {
           },
           {
             name: 'react-intl',
-            importNames: ['FormattedMessage', 'injectIntl'],
+            importNames: ['FormattedMessage', 'injectIntl', 'useIntl'],
             message:
-              "Import FormattedMessage and injectIntl from 'utils/cl-intl' instead of directly from 'react-intl'",
+              "Import FormattedMessage, injectIntl and useIntl from 'utils/cl-intl' instead of directly from 'react-intl'",
           },
           {
             name: 'history',
@@ -104,6 +106,11 @@ module.exports = {
             name: 'lodash',
             message:
               "Import lodash functions from 'lodash-es' instead of 'lodash'",
+          },
+          {
+            name: '@testing-library/react',
+            message:
+              "Import React testing library exports from 'utils/testUtils/rtl' instead",
           },
         ],
       },
@@ -129,6 +136,8 @@ module.exports = {
       'warn',
       { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
     ],
+    'unused-imports/no-unused-imports': 'warn',
+    'import/no-duplicates': 'error',
     'quote-props': ['error', 'as-needed'],
     quotes: 'off',
     radix: 'error',

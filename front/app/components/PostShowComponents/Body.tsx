@@ -35,7 +35,7 @@ const Body = memo<Props>(
     color,
   }) => {
     const windowSize = useWindowSize();
-    const theme: any = useTheme();
+    const theme = useTheme();
     const smallerThanSmallTablet = windowSize
       ? windowSize.windowWidth <= viewportWidths.tablet
       : false;

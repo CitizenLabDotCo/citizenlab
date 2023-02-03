@@ -37,13 +37,37 @@ RSpec.describe Analytics::ImportLatestMatomoDataJob do
 
   it 'delegates the import to MatomoDataImporter' do
     site_id = AppConfiguration.instance.settings.dig('matomo', 'tenant_site_id')
-    from_timestamp = Tenant.current.created_at.to_i - described_class::RETROACTIVE_IMPORT
+    min_timestamp = 123_456_789
     options = { min_duration: 2.days, max_nb_batches: 3, batch_size: 100 }
 
     expect_any_instance_of(Analytics::MatomoDataImporter)
-      .to receive(:import).with(site_id, from_timestamp, options)
+      .to receive(:import).with(site_id, min_timestamp, options)
 
-    described_class.perform_now(Tenant.current.id, options)
+    described_class.perform_now(Tenant.current.id, **options, min_timestamp: min_timestamp)
+  end
+
+  context 'when no visits has been imported yet' do
+    it 'imports data since the tenant creation' do
+      min_timestamp = Tenant.current.created_at.to_i
+
+      expect_any_instance_of(Analytics::MatomoDataImporter)
+        .to receive(:import).with(anything, min_timestamp, anything)
+
+      described_class.perform_now(Tenant.current.id)
+    end
+  end
+
+  context 'when visits have already been imported' do
+    let!(:visit) { create(:fact_visit) }
+
+    it 'resumes the import at the time of the latest imported visit' do
+      min_timestamp = visit.matomo_last_action_time.to_i - described_class::RETROACTIVE_IMPORT
+
+      expect_any_instance_of(Analytics::MatomoDataImporter)
+        .to receive(:import).with(anything, min_timestamp, anything)
+
+      described_class.perform_now(Tenant.current.id)
+    end
   end
 
   it 'raises an error if the configured matomo site is the default one' do

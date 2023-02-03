@@ -22,10 +22,6 @@ RSpec.describe EmailCampaigns::Campaigns::NewCommentForAdmin, type: :model do
       comment_created = create(:activity, item: comment, action: 'created')
       expect(campaign.apply_recipient_filters(activity: comment_created)).to match_array([admin])
     end
-  end
-
-  describe 'apply_recipient_filters' do
-    let(:campaign) { build(:new_comment_for_admin_campaign) }
 
     it 'filters out normal users (on initiative)' do
       initiative = create(:initiative)
@@ -35,10 +31,6 @@ RSpec.describe EmailCampaigns::Campaigns::NewCommentForAdmin, type: :model do
 
       expect(campaign.apply_recipient_filters(activity: create(:activity, item: comment, action: 'created')).ids).to match_array([admin.id])
     end
-  end
-
-  describe 'apply_recipient_filters' do
-    let(:campaign) { build(:new_comment_for_admin_campaign) }
 
     it 'filters out everyone if the author is admin (on initiative)' do
       initiative = create(:initiative)
@@ -46,6 +38,27 @@ RSpec.describe EmailCampaigns::Campaigns::NewCommentForAdmin, type: :model do
       create(:admin)
 
       expect(campaign.apply_recipient_filters(activity: create(:activity, item: comment, action: 'created')).count).to eq 0
+    end
+
+    it 'filters out everyone if the author is moderator (on idea)' do
+      idea = create(:idea)
+      moderator = create(:project_moderator, projects: [idea.project])
+      comment = create(:comment, post: idea, author: moderator)
+      _admin = create(:admin)
+
+      comment_created = create(:activity, item: comment, action: 'created')
+      expect(campaign.apply_recipient_filters(activity: comment_created).count).to eq 0
+    end
+
+    it 'keeps moderators' do
+      idea = create(:idea)
+      comment = create(:comment, post: idea)
+
+      moderator = create(:project_moderator, projects: [idea.project])
+      _other_moderator = create(:project_moderator)
+
+      comment_created = create(:activity, item: comment, action: 'created')
+      expect(campaign.apply_recipient_filters(activity: comment_created)).to match([moderator])
     end
   end
 end

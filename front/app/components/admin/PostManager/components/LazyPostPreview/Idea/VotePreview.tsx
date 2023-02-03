@@ -60,7 +60,7 @@ const DownvoteIcon = styled(VoteIcon)`
 `;
 
 const VotesCount = styled.div`
-  font-size: ${fontSizes.l};
+  font-size: ${fontSizes.l}px;
   font-weight: 600;
 `;
 

@@ -4,7 +4,7 @@ import tracks from './tracks';
 
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
-import usePageSlugById from 'hooks/usePageSlugById';
+import useCustomPageSlugById from 'hooks/useCustomPageSlugById';
 import useLocalize from 'hooks/useLocalize';
 
 // components
@@ -18,7 +18,7 @@ import { media, colors, hexToRgb } from 'utils/styleUtils';
 import { darken } from 'polished';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 import mainHeaderMessages from '../MainHeader/messages';
 
@@ -126,9 +126,9 @@ const FullMobileNavMenu = ({
   onClose,
   isFullMenuOpened,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const navbarItems = useNavbarItems();
-  const pageSlugById = usePageSlugById();
+  const pageSlugById = useCustomPageSlugById();
   const localize = useLocalize();
 
   if (isNilOrError(navbarItems) || isNilOrError(pageSlugById)) return null;

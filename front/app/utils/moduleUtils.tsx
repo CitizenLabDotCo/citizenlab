@@ -1,125 +1,59 @@
-import React, {
-  MouseEvent,
-  KeyboardEvent,
-  FunctionComponent,
-  ReactElement,
-} from 'react';
-import { Moment } from 'moment';
 import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
-import {
-  TSignUpStepConfigurationObject,
-  TSignUpStep,
-} from 'components/SignUpIn/SignUp';
+import { Moment } from 'moment';
+import React, { FunctionComponent, ReactElement } from 'react';
 
 import PageLoading from 'components/UI/PageLoading';
-import { ISignUpInMetaData, TSignUpInFlow } from 'components/SignUpIn';
-
+import { OutletRenderProps } from 'components/Outlet';
+import { ITabItem } from 'components/UI/Tabs';
 import { GroupCreationModal } from 'containers/Admin/users';
 import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
-import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import { IProjectData, IUpdatedProjectProperties } from 'services/projects';
-import { ITabItem } from 'components/UI/Tabs';
-import { OutletRenderProps } from 'components/Outlet';
-import { mergeWith, castArray, clamp, omitBy, isNil } from 'lodash-es';
+import {
+  castArray,
+  clamp,
+  isNil,
+  mergeWith,
+  omitBy,
+  cloneDeep,
+} from 'lodash-es';
+import { IProjectData } from 'services/projects';
 
+import { ManagerType } from 'components/admin/PostManager';
+import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/header/IdeaHeaderRow';
+import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/Row/IdeaRow';
+import { IResolution } from 'components/admin/ResolutionControl';
+import { AuthProvider } from 'components/AuthProviders';
+import { Point } from 'components/UI/LeafletMap/typings';
+import { TVerificationStep } from 'events/verificationModal';
+import { TTabName } from 'containers/Admin/projects/all/CreateProject';
+import { NavItem } from 'containers/Admin/sideBar';
+import { LatLngTuple } from 'leaflet';
+import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
+import { GetIdeaChildProps } from 'resources/GetIdea';
+import { GetInitiativeChildProps } from 'resources/GetInitiative';
+import { GetLocaleChildProps } from 'resources/GetLocale';
+import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
+import { ICommentData } from 'services/comments';
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
-import { ParticipationMethod } from 'services/participationContexts';
+import { TNotificationData } from 'services/notifications';
+import { IPhaseData } from 'services/phases';
+import { TVerificationMethod } from 'services/verificationMethods';
+import { TSignUpInFlow } from 'events/openSignUpInModal';
 import {
   CellConfiguration,
   InsertConfigurationOptions,
   ITab,
-  MessageDescriptor,
-  Multiloc,
   Locale,
+  Multiloc,
 } from 'typings';
-import { LatLngTuple } from 'leaflet';
-import { Point } from 'components/UI/LeafletMap/typings';
-import { IUserData } from 'services/users';
-import { MessageValue } from 'react-intl';
-import { NavItem } from 'containers/Admin/sideBar';
-import {
-  AppConfigurationFeature,
-  CustomizedButtonConfig,
-  TAppConfigurationSetting,
-  TAppConfigurationSettingCore,
-} from 'services/appConfiguration';
-import { THomepageBannerLayout } from 'services/homepageSettings';
-import { ManagerType } from 'components/admin/PostManager';
-import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
-import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
-import { TTabName } from 'containers/Admin/projects/all/CreateProject';
-import { TVerificationMethod } from 'services/verificationMethods';
-import { TVerificationStep } from 'components/Verification/verificationModalEvents';
-import { IPhaseData } from 'services/phases';
-import { GetInitiativeChildProps } from 'resources/GetInitiative';
-import { GetLocaleChildProps } from 'resources/GetLocale';
-import { ICommentData } from 'services/comments';
-import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
-import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
-import { GetIdeaChildProps } from 'resources/GetIdea';
-import {
-  IOnboardingCampaignNames,
-  IOnboardingCampaigns,
-} from 'services/onboardingCampaigns';
-import { TNotificationData } from 'services/notifications';
-import { BannerButtonStyle } from 'containers/LandingPage/BannerButton';
-import { AuthProvider } from 'components/SignUpIn/AuthProviders';
-import { Localize } from 'hooks/useLocalize';
-import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
-import { IResolution } from 'components/admin/ResolutionControl';
+import { IntlFormatters } from 'react-intl';
+import { StatCardProps } from '../modules/commercial/analytics/admin/components/StatCard/useStatCard/typings';
 
 export type ITabsOutlet = {
-  formatMessage: (
-    messageDescriptor: MessageDescriptor,
-    values?: { [key: string]: MessageValue } | undefined
-  ) => string;
+  formatMessage: IntlFormatters['formatMessage'];
   onData: (data: InsertConfigurationOptions<ITab>) => void;
 };
 
-export type SignUpStepOutletProps = {
-  onData: (data: TSignUpStepConfigurationObject) => void;
-  onDataLoaded: (step: TSignUpStep, loaded: boolean) => void;
-  step: TSignUpStep | null;
-  metaData: ISignUpInMetaData;
-  onCompleted: () => void;
-  onSkipped: () => void;
-  onError: () => void;
-};
-
-export type IAdminSettingsRegistrationSectionEndOutletProps = {
-  onSettingChange: (setting: TAppConfigurationSetting) => (value: any) => void;
-  onCoreSettingWithMultilocChange: (
-    coreSetting: TAppConfigurationSettingCore
-  ) => (multiloc: Multiloc) => void;
-  customFieldsSignupHelperTextMultiloc?: Multiloc | null;
-  userConfirmationSetting?: AppConfigurationFeature;
-};
-
 export interface OutletsPropertyMap {
-  'app.containers.Navbar.projectlist.item': {
-    publication: IAdminPublicationContent;
-    localize: Localize;
-  };
-  'app.containers.Navbar.projectsAndFolders.title': Record<string, any>;
-  'app.containers.AdminPage.projects.all.projectsAndFolders.row': {
-    publication: IAdminPublicationContent;
-  };
-  'app.containers.AdminPage.projects.all.projectsAndFolders.title': Record<
-    string,
-    any
-  >;
-  'app.components.AdminPage.projects.form.additionalInputs.inputs': {
-    projectAttrs: IUpdatedProjectProperties;
-    onProjectAttributesDiffChange: TOnProjectAttributesDiffChangeFunction;
-  };
-  'app.containers.AdminPage.projects.all.createProjectNotAdmin': Record<
-    string,
-    any
-  >;
-  'app.containers.AdminPage.projects.all.projectsAndFolders.actions': Record<
-    string,
-    any
-  >;
   'app.containers.Admin.projects.all.createProject': {
     selectedTabValue: TTabName;
   };
@@ -138,15 +72,6 @@ export interface OutletsPropertyMap {
   };
   'app.ProjectsShowPage.shared.header.ProjectInfo.contentBuilder': {
     onMount: () => void;
-  };
-  'app.components.ProjectAndFolderCards.card': {
-    publication: IAdminPublicationContent;
-    size: 'small' | 'medium' | 'large';
-    layout: 'dynamic' | 'threecolumns' | 'twocolumns';
-  };
-  'app.containers.SiteMap.ProjectsSection.listitem': {
-    adminPublication: IAdminPublicationContent;
-    hightestTitle: 'h3' | 'h4';
   };
   'app.containers.Admin.users.GroupsListPanel.listitem.icon': {
     type: MembershipType;
@@ -175,33 +100,25 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.users.UsersHeader.icon': {
     type: GroupCreationModal;
   };
-  'app.containers.Admin.dashboard.users.graphs': {
-    startAt?: string | null;
-    endAt: string | null;
-    currentGroupFilter?: string;
-    currentGroupFilterLabel?: string;
-  };
-  'app.containers.Admin.dashboard.summary.postStatus': {
+  'app.containers.Admin.dashboard.summary.inputStatus': {
     projectId: string | undefined;
     startAtMoment: Moment | null | undefined;
-    endAtMoment: Moment | null | undefined;
+    endAtMoment: Moment | null;
     resolution: IResolution;
-    onMount: () => void;
   };
-  'app.components.SignUpIn.SignUp.step': SignUpStepOutletProps;
-  'app.containers.Admin.dashboard.reports.ProjectReport.graphs': {
-    startAt: string;
-    endAt: string;
-    participationMethods: ParticipationMethod[];
-    project: IProjectData;
+  'app.containers.Admin.dashboard.summary.emailDeliveries': {
+    projectId: string | undefined;
+    startAtMoment: Moment | null | undefined;
+    endAtMoment: Moment | null;
+    resolution: IResolution;
   };
+  'app.containers.Admin.dashboard.summary.projectStatus': StatCardProps;
+  'app.containers.Admin.dashboard.summary.proposals': StatCardProps;
+  'app.containers.Admin.dashboard.summary.invitations': StatCardProps;
+  'app.containers.Admin.dashboard.summary.events': StatCardProps;
   'app.containers.IdeasShow.MetaInformation': {
     ideaId: string;
     compact?: boolean;
-  };
-  'app.containers.UserEditPage.ProfileForm.forms': {
-    authUser: IUserData;
-    onChange: (data: { key: string; formData: Record<string, any> }) => void;
   };
   'app.containers.Admin.project.edit.permissions.participationRights': {
     project: IProjectData;
@@ -257,8 +174,6 @@ export interface OutletsPropertyMap {
     projectId?: string | null;
     className?: string;
   };
-  'app.containers.Admin.settings.registrationTabEnd': Record<string, any>;
-  'app.containers.Admin.settings.registrationSectionEnd': IAdminSettingsRegistrationSectionEndOutletProps;
   'app.components.VerificationModal.buttons': {
     onClick: (method: TVerificationMethod) => void;
     verificationMethods: TVerificationMethod[];
@@ -317,20 +232,6 @@ export interface OutletsPropertyMap {
     color?: string;
     align: 'left' | 'center';
   };
-  'app.containers.UserEditPage.content': Record<string, any>;
-  'app.containers.Navbar.UserMenu.UserNameContainer': {
-    isVerified: boolean;
-  };
-  'app.containers.App.modals': { onMounted: (id: string) => void };
-  'app.containers.LandingPage.onboardingCampaigns': {
-    onboardingCampaigns: IOnboardingCampaigns;
-    contentTimeout: number;
-    contentDelay: number;
-    authUser: IUserData;
-    theme: unknown;
-    onSkip: (name: IOnboardingCampaignNames) => void;
-    onAccept: (name: IOnboardingCampaignNames) => void;
-  };
   'app.containers.Admin.settings.general.form': {
     onSettingChange: (settingName: string, settingValue: any) => void;
   };
@@ -353,38 +254,8 @@ export interface OutletsPropertyMap {
   'app.components.NotificationMenu.Notification': {
     notification: TNotificationData;
   };
-  'app.containers.ProjectsShowPage.shared.header.ProjectHeader.GoBackButton': {
-    projectFolderId: string;
-    className?: string;
-  };
-  'app.containers.LandingPage.EventsWidget': Record<string, any>;
-  'app.containers.Admin.settings.customize.Events': {
-    onMount: () => void;
-  };
-  'app.containers.Admin.settings.customize.AllInput': {
-    onMount: () => void;
-  };
-  'app.containers.Admin.initiatives.settings.EnableSwitch': {
-    onMount: () => void;
-  };
-  'app.containers.LandingPage.SignedOutHeader.index': {
-    homepageBannerLayout: THomepageBannerLayout;
-  };
-  'app.containers.Admin.settings.policies.start': {
-    onMount: () => void;
-  };
-  'app.containers.Admin.settings.policies.subTitle': Record<string, any>;
-  'app.containers.Admin.pages-menu.index': Record<string, any>;
-  'app.containers.Admin.pages-menu.NavigationSettings': Record<string, any>;
-  'app.containers.LandingPage.SignedOutHeader.CTA': {
-    buttonStyle: BannerButtonStyle;
-    signUpIn: (event: MouseEvent | KeyboardEvent) => void;
-  };
-  'app.containers.LandingPage.SignedInHeader.CTA': {
-    customizedButtonConfig?: CustomizedButtonConfig;
-    buttonStyle: BannerButtonStyle;
-  };
-  'app.components.SignUpIn.AuthProviders.ContainerEnd': {
+  'app.containers.HomePage.EventsWidget': Record<string, any>;
+  'app.components.SignUpIn.AuthProviders.ContainerStart': {
     flow: TSignUpInFlow;
     onContinue: (authProvider: AuthProvider) => void;
   };
@@ -392,12 +263,8 @@ export interface OutletsPropertyMap {
     string,
     any
   >;
-  'app.components.PageForm.index.top': {
-    pageId: string | null;
-    navbarItemId: string | null;
-  };
-  'app.containers.Admin.pages-menu.containers.EditPageForm.index.onMount': {
-    onMount: () => void;
+  'app.containers.Admin.reporting.components.Tabs': {
+    onData: (tabs: ITab[]) => void;
   };
 }
 
@@ -439,6 +306,7 @@ interface Routes {
   'admin.dashboards': RouteConfiguration[];
   'admin.project_templates': RouteConfiguration[];
   'admin.settings': RouteConfiguration[];
+  'admin.reporting': RouteConfiguration[];
 }
 
 export interface ParsedModuleConfiguration {
@@ -566,6 +434,10 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
         mergedRoutes?.['admin.settings'],
         RouteTypes.ADMIN
       ),
+      'admin.reporting': parseModuleRoutes(
+        mergedRoutes?.['admin.reporting'],
+        RouteTypes.ADMIN
+      ),
     },
     beforeMountApplication: callLifecycleMethods('beforeMountApplication'),
     afterMountApplication: callLifecycleMethods('afterMountApplication'),
@@ -585,11 +457,12 @@ export const insertConfiguration =
     insertBeforeName,
   }: InsertConfigurationOptions<T>) =>
   (items: T[]): T[] => {
-    const itemAlreadyInserted = items.some(
+    const itemsClone = cloneDeep(items);
+    const itemAlreadyInserted = itemsClone.some(
       (item) => item.name === configuration.name
     );
     // index of item where we need to insert before/after
-    const referenceIndex = items.findIndex(
+    const referenceIndex = itemsClone.findIndex(
       (item) => item.name === (insertAfterName || insertBeforeName)
     );
     const insertIndex = clamp(
@@ -598,17 +471,37 @@ export const insertConfiguration =
       // number is kept
       insertAfterName ? referenceIndex + 1 : referenceIndex,
       0,
-      items.length
+      itemsClone.length
     );
+    const itemAtInsertIndex = itemsClone[insertIndex];
+    const isItemInsertedBefore =
+      itemAlreadyInserted &&
+      insertBeforeName &&
+      insertIndex &&
+      itemAtInsertIndex.name === insertBeforeName &&
+      itemsClone[insertIndex - 1].name === configuration.name;
+    const isItemInsertedAfter =
+      itemAlreadyInserted &&
+      insertAfterName &&
+      itemAtInsertIndex &&
+      itemAtInsertIndex.name === insertAfterName;
+
+    // If item is already inserted then let's not do anything
+    if (isItemInsertedBefore || isItemInsertedAfter) {
+      return itemsClone;
+    }
 
     if (itemAlreadyInserted) {
-      items.splice(insertIndex, 1);
+      itemsClone.splice(
+        itemsClone.findIndex((item) => item.name === configuration.name),
+        1
+      );
     }
 
     const newItems = [
-      ...items.slice(0, insertIndex),
+      ...itemsClone.slice(0, insertIndex),
       configuration,
-      ...items.slice(insertIndex),
+      ...itemsClone.slice(insertIndex),
     ];
 
     return newItems;

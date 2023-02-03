@@ -1,48 +1,45 @@
 import React, { useRef, useState } from 'react';
 
 // hooks
-import useVisitorsTypeData from '../../hooks/useVisitorsTypeData';
+import useVisitorTypes from './useVisitorTypes';
 
 // components
 import GraphCard from 'components/admin/GraphCard';
 import PieChart from 'components/admin/Graphs/PieChart';
 import { Box } from '@citizenlab/cl2-component-library';
-import EmptyPieChart from '../EmptyPieChart';
+import EmptyPieChart from 'components/admin/GraphCards/EmptyPieChart';
 import renderTooltip from './renderTooltip';
 
 // i18n
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { IResolution } from 'components/admin/ResolutionControl';
-import { Moment } from 'moment';
+import {
+  ProjectId,
+  Dates,
+  Resolution,
+} from 'components/admin/GraphCards/typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 
-interface Props {
-  startAtMoment: Moment | null | undefined;
-  endAtMoment: Moment | null;
-  projectFilter: string | undefined;
-  resolution: IResolution;
-}
+type Props = ProjectId & Dates & Resolution;
 
 const VisitorsCard = ({
+  projectId,
   startAtMoment,
   endAtMoment,
-  projectFilter,
   resolution,
-  intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props) => {
+  const { formatMessage } = useIntl();
   const graphRef = useRef();
 
-  const { pieData, xlsxData } = useVisitorsTypeData(formatMessage, {
+  const { pieData, xlsxData } = useVisitorTypes({
+    projectId,
     startAtMoment,
     endAtMoment,
-    projectId: projectFilter,
   });
 
   const [hoverIndex, setHoverIndex] = useState<number | undefined>();
@@ -59,7 +56,7 @@ const VisitorsCard = ({
 
   if (isNilOrError(pieData)) {
     return (
-      <GraphCard title={cardTitle} fullWidth={false}>
+      <GraphCard title={cardTitle}>
         <EmptyPieChart />
       </GraphCard>
     );
@@ -69,7 +66,7 @@ const VisitorsCard = ({
     (row): LegendItem => ({
       icon: 'circle',
       color: row.color,
-      label: row.name,
+      label: `${row.name} (${row.percentage}%)`,
     })
   );
 
@@ -82,13 +79,12 @@ const VisitorsCard = ({
       exportMenu={{
         name: cardTitle,
         svgNode: graphRef,
-        xlsxData: isNilOrError(xlsxData) ? undefined : xlsxData,
+        xlsx: isNilOrError(xlsxData) ? undefined : { data: xlsxData },
         startAt,
         endAt,
-        currentProjectFilter: projectFilter,
+        currentProjectFilter: projectId,
         resolution,
       }}
-      fullWidth={false}
     >
       <Box height="initial" p="20px">
         <PieChart
@@ -119,4 +115,4 @@ const VisitorsCard = ({
   );
 };
 
-export default injectIntl(VisitorsCard);
+export default VisitorsCard;

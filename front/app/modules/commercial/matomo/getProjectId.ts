@@ -15,7 +15,9 @@ export const getProjectId = async (path: string) => {
     if (!slug) return null;
 
     const projectId = await getProjectIdFromProjectSlug(slug);
-    projectSubscriptions[slug].unsubscribe();
+    if (projectSubscriptions[slug]) {
+      projectSubscriptions[slug].unsubscribe();
+    }
     delete projectSubscriptions[slug];
 
     return projectId;

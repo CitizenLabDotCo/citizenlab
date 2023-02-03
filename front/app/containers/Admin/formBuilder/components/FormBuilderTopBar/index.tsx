@@ -39,9 +39,13 @@ const StyledStatusLabel = styled(StatusLabel)`
 
 type FormBuilderTopBarProps = {
   isSubmitting: boolean;
+  isEditingDisabled: boolean;
 };
 
-const FormBuilderTopBar = ({ isSubmitting }: FormBuilderTopBarProps) => {
+const FormBuilderTopBar = ({
+  isSubmitting,
+  isEditingDisabled,
+}: FormBuilderTopBarProps) => {
   const localize = useLocalize();
   const { projectId, phaseId } = useParams() as {
     projectId: string;
@@ -73,14 +77,14 @@ const FormBuilderTopBar = ({ isSubmitting }: FormBuilderTopBarProps) => {
       h={`${stylingConsts.menuHeight}px`}
       display="flex"
       background={`${colors.white}`}
-      borderBottom={`1px solid ${colors.grey500}`}
+      borderBottom={`1px solid ${colors.borderLight}`}
       top="0px"
     >
       <Box
         p="16px"
         w="210px"
         h="100%"
-        borderRight={`1px solid ${colors.grey500}`}
+        borderRight={`1px solid ${colors.borderLight}`}
         display="flex"
         alignItems="center"
       >
@@ -126,8 +130,8 @@ const FormBuilderTopBar = ({ isSubmitting }: FormBuilderTopBarProps) => {
           <FormattedMessage {...messages.viewSurvey} />
         </Button>
         <Button
-          buttonStyle="primary"
-          disabled={!project}
+          buttonStyle="admin-dark"
+          disabled={isEditingDisabled}
           processing={isSubmitting}
           type="submit"
         >

@@ -9,7 +9,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   padding: 14px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   background: ${colors.teal100};
 
   ${isRtl`

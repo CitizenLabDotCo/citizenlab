@@ -4,7 +4,7 @@ import { map, isEmpty } from 'lodash-es';
 
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
 // typings
@@ -106,14 +106,14 @@ interface Props {
   xlsxEndpoint: string;
 }
 class LineBarChart extends React.PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   combined$: Subscription;
   currentChart: React.RefObject<any>;
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props: Props & WrappedComponentProps) {
+    super(props);
     this.state = {
       serie: undefined,
     };
@@ -401,4 +401,4 @@ class LineBarChart extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(LineBarChart);
+export default injectIntl<Props & WrappedComponentProps>(LineBarChart);

@@ -19,10 +19,6 @@ class FaviconUploader < BaseImageUploader
     process resize_to_fit: [16, 16]
     process convert: :png
   end
-
-  def extension_allowlist
-    %w[jpg jpeg gif png ico svg]
-  end
 end
 
 FaviconUploader.prepend_if_ee('MultiTenancy::Patches::FaviconUploader')

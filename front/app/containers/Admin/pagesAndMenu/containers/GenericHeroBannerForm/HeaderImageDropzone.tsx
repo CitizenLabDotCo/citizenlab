@@ -2,11 +2,15 @@ import React from 'react';
 
 // components and theming
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import styled, { useTheme } from 'styled-components';
-import { PreviewDevice } from './BannerImageFields';
+import styled from 'styled-components';
+import { TDevice } from 'components/admin/SelectPreviewDevice';
+import { viewportWidths } from '@citizenlab/cl2-component-library';
 
 // types
-import { ICustomPageAttributes } from 'services/customPages';
+import {
+  ICustomPageAttributes,
+  TCustomPageBannerLayout,
+} from 'services/customPages';
 import {
   IHomepageSettingsAttributes,
   THomepageBannerLayout,
@@ -36,27 +40,48 @@ interface Props {
   onAdd: (newImage: UploadFile[]) => void;
   onRemove: () => void;
   headerError: string | null;
-  header_bg: UploadFile[] | null;
-  previewDevice: PreviewDevice;
+  header_bg: UploadFile | null;
+  previewDevice: TDevice;
   layout: THomepageBannerLayout;
 }
 
 // move this to homepage settings resource?
-export const homepageBannerLayoutHeights = {
+export const FIXED_RATIO_LAYOUT_ASPECT_RATIO = 3 / 1;
+export const homepageBannerLayoutHeights: {
+  [key in THomepageBannerLayout | TCustomPageBannerLayout]: {
+    [key in TDevice]: number;
+  };
+} = {
   full_width_banner_layout: {
-    desktop: 450,
+    phone: 350,
     tablet: 350,
-    phone: 300,
+    desktop: 450,
   },
   two_column_layout: {
-    desktop: 532,
-    tablet: 532,
     phone: 240,
+    tablet: 532,
+    desktop: 532,
   },
   two_row_layout: {
-    desktop: 280,
-    tablet: 200,
     phone: 200,
+    tablet: 280,
+    desktop: 280,
+  },
+  fixed_ratio_layout: {
+    // On mobile min-height is 225.
+    phone: 225,
+    // We define a screen as tablet when width is between 769 and 1200 px.
+    // Height will start reducing from our max width of 1150px.
+    // We maintain the 3:1 aspect ratio until our min-height of 225px is reached.
+    // At this point, the banner will start cutting of from the size to maintain
+    // the min-height.
+    // So for the fixed-ratio layout, it makes sense to show the same preview for tablet
+    // as for desktop
+    tablet: 383,
+    // Header image is saved as 1920x640px.
+    // Image is displayed with max width 1150px and 3:1 aspect ratio.
+    // This means width of 383.33px.
+    desktop: 383,
   },
 };
 
@@ -73,39 +98,87 @@ const HeaderImageDropzone = ({
   const getImagePreviewRatio = () => {
     const layoutHeightOnDevice =
       homepageBannerLayoutHeights[layout][previewDevice];
-    const standardDeviceWidth = { desktop: 1530, tablet: 768, phone: 375 }[
-      previewDevice
-    ];
-    const deviceWidthPerLayout =
-      previewDevice === 'desktop' && layout === 'two_column_layout' ? 0.5 : 1;
-    const ratio =
-      layoutHeightOnDevice / (standardDeviceWidth * deviceWidthPerLayout);
+    // Using the widths as we define them for our breakpoints.
+    const viewportWidthsKey = {
+      phone: 'phone' as const,
+      tablet: 'tablet' as const,
+      desktop: 'smallDesktop' as const,
+    }[previewDevice];
+    const standardDeviceWidth = viewportWidths[viewportWidthsKey];
+    const ratio = layoutHeightOnDevice / standardDeviceWidth;
 
-    return ratio;
+    const ratioPerLayoutPerDevice: {
+      [key in THomepageBannerLayout]: {
+        [key in TDevice]: number;
+      };
+    } = {
+      // For all layouts except fixed-ratio the fixed height in their styles
+      // Determine behavior.
+      full_width_banner_layout: {
+        phone: ratio,
+        tablet: ratio,
+        desktop: ratio,
+      },
+      two_column_layout: {
+        phone: ratio,
+        // On bigger screens, the image is only half the screen's width
+        // So the width gets divided by two (or the equivalent of twice the ratio).
+        tablet: 2 * ratio,
+        desktop: 2 * ratio,
+      },
+      two_row_layout: {
+        phone: ratio,
+        tablet: ratio,
+        desktop: ratio,
+      },
+      fixed_ratio_layout: {
+        // With our min-height of 225px, we assume a phone screenwidth of
+        // 450px for the sake of simplicity. Resulting in 1 / 2 aspect-ratio.
+        // Average phone screen width is slightly narrower though.
+        // This phone ratio is currently only used to show a preview of the fixed-ratio
+        // layout in the admin with the 450px width assumption.
+        phone: 1 / 2,
+        tablet: 1 / FIXED_RATIO_LAYOUT_ASPECT_RATIO,
+        desktop: 1 / FIXED_RATIO_LAYOUT_ASPECT_RATIO,
+      },
+    };
+
+    return ratioPerLayoutPerDevice[layout][previewDevice];
   };
 
-  const theme: any = useTheme();
-  const displayOverlayColor = overlayColor ?? theme.colors.tenantPrimary;
-  const displayOverlayOpacity =
-    overlayOpacity ?? theme.signedOutHeaderOverlayOpacity;
+  const showPreviewOverlayForLayout = (
+    layout: THomepageBannerLayout | TCustomPageBannerLayout
+  ) => {
+    const conditions: {
+      [key in THomepageBannerLayout | TCustomPageBannerLayout]: boolean;
+    } = {
+      full_width_banner_layout: true,
+      two_row_layout: false,
+      two_column_layout: false,
+      fixed_ratio_layout: true,
+    };
+
+    return conditions[layout];
+  };
 
   const previewOverlayElement =
-    layout === 'full_width_banner_layout' &&
-    displayOverlayColor &&
-    displayOverlayOpacity ? (
+    showPreviewOverlayForLayout(layout) &&
+    // We check for typeof of opacity because 0 would coerce to false.
+    typeof overlayOpacity === 'number' &&
+    overlayColor ? (
       <HeaderImageOverlay
-        overlayColor={displayOverlayColor}
-        overlayOpacity={displayOverlayOpacity}
+        overlayColor={overlayColor}
+        overlayOpacity={overlayOpacity}
       />
     ) : null;
 
   return (
     <ImagesDropzone
-      id="landingpage-header-dropzone"
+      id="header-dropzone"
       acceptedFileTypes={{
         'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
       }}
-      images={header_bg}
+      images={header_bg ? [header_bg] : null}
       imagePreviewRatio={getImagePreviewRatio()}
       onAdd={onAdd}
       onRemove={onRemove}

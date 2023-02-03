@@ -19,14 +19,19 @@ import GetAppConfiguration, {
 } from 'resources/GetAppConfiguration';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
-import localize, { InjectedLocalized } from 'utils/localize';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 // components
 import Button from 'components/UI/Button';
-import { StatusLabel, IconTooltip } from '@citizenlab/cl2-component-library';
+import {
+  StatusLabel,
+  IconTooltip,
+  colors,
+  Title,
+} from '@citizenlab/cl2-component-library';
 import DraftCampaignDetails from './DraftCampaignDetails';
 import SentCampaignDetails from './SentCampaignDetails';
 import T from 'components/T';
@@ -87,12 +92,6 @@ const PageTitleWrapper = styled.div`
   margin-right: auto;
 `;
 
-const PageTitle = styled.h1`
-  margin-bottom: 0;
-  margin-right: 1rem;
-  font-weight: 600;
-`;
-
 const Buttons = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -139,20 +138,20 @@ interface DataProps {
   tenant: GetAppConfigurationChildProps;
 }
 
-interface Props
-  extends InputProps,
-    DataProps,
-    WithRouterProps,
-    InjectedIntlProps,
-    InjectedLocalized {}
+interface Props extends InputProps, DataProps {}
 
 interface State {
   showSendConfirmationModal: boolean;
   isCampaignSending: boolean;
 }
 
-class Show extends React.Component<Props, State> {
-  constructor(props) {
+class Show extends React.Component<
+  Props & WithRouterProps & WrappedComponentProps & InjectedLocalized,
+  State
+> {
+  constructor(
+    props: Props & WithRouterProps & WrappedComponentProps & InjectedLocalized
+  ) {
     super(props);
     this.state = {
       showSendConfirmationModal: false,
@@ -234,17 +233,17 @@ class Show extends React.Component<Props, State> {
         <Container id="e2e-custom-email-container">
           <PageHeader>
             <PageTitleWrapper>
-              <PageTitle>
+              <Title mr="12px">
                 <T value={campaign.attributes.subject_multiloc} />
-              </PageTitle>
+              </Title>
               {isDraft(campaign) ? (
                 <StatusLabel
-                  backgroundColor="draftYellow"
+                  backgroundColor={colors.brown}
                   text={<FormattedMessage {...messages.draft} />}
                 />
               ) : (
                 <StatusLabel
-                  backgroundColor="success"
+                  backgroundColor={colors.success}
                   text={<FormattedMessage {...messages.sent} />}
                 />
               )}
@@ -385,7 +384,7 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   tenant: ({ render }) => <GetAppConfiguration>{render}</GetAppConfiguration>,
 });
 
-const ShowWithHOCs = injectIntl(localize(Show));
+const ShowWithHOCs = injectIntl(injectLocalize(Show));
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>

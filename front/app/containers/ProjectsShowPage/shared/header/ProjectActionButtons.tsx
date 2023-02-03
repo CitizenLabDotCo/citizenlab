@@ -39,7 +39,7 @@ import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
 import clHistory from 'utils/cl-router/history';
 import { useLocation } from 'react-router-dom';
 
-import { openSignUpInModal } from 'components/SignUpIn/events';
+import { openSignUpInModal } from 'events/openSignUpInModal';
 
 const Container = styled.div``;
 
@@ -213,15 +213,18 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           participationContextType={isPhaseIdeation ? 'phase' : 'project'}
           phaseId={isPhaseIdeation ? currentPhase.id : ''}
           fontWeight="500"
+          phase={currentPhase}
         />
       )}
       {showNativeSurvey && !hasProjectEnded && (
         <IdeaButton
           id="project-survey-button"
+          data-testid="e2e-project-survey-button"
           projectId={project.id}
           participationContextType={isPhaseNativeSurvey ? 'phase' : 'project'}
           phaseId={isPhaseNativeSurvey ? currentPhase.id : ''}
           fontWeight="500"
+          phase={currentPhase}
         />
       )}
       {showSurvey && (

@@ -5,7 +5,7 @@ import moment from 'moment';
 // components
 import Link from 'utils/cl-router/Link';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, Text, Box } from '@citizenlab/cl2-component-library';
 import FileAttachments from 'components/UI/FileAttachments';
 
 // hooks
@@ -18,7 +18,7 @@ import { IEventData } from 'services/events';
 // i18n
 import T from 'components/T';
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // styling
@@ -55,7 +55,7 @@ const StyledLink = styled(Link)`
 `;
 
 const EventTitle = styled.h3<{ fontSize?: number }>`
-  color: ${(props: any) => props.theme.colors.tenantText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${({ fontSize }) => fontSize ?? fontSizes.xl}px;
   font-weight: 700;
   line-height: normal;
@@ -74,7 +74,7 @@ const EventTimeAndLocationContainer = styled.div`
     flex-direction: column;
   `}
 
-  color: ${(props: any) => props.theme.colors.tenantText};
+  color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.xs}px;
 `;
 
@@ -133,7 +133,7 @@ const StyledT = styled(T)<IStyledT>`
     line-height: ${SMALL_LINE_HEIGHT}px;
   }
 
-  color: ${(props: any) => props.theme.colors.tenantText};
+  color: ${(props) => props.theme.colors.tenantText};
   position: relative;
   display: block;
 `;
@@ -165,7 +165,7 @@ interface Props {
   onClickTitleGoToProjectAndScrollToEvent?: boolean;
 }
 
-const EventInformation = memo<Props & InjectedIntlProps>((props) => {
+const EventInformation = memo<Props & WrappedComponentProps>((props) => {
   const {
     event,
     isMultiDayEvent,
@@ -180,7 +180,7 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
     intl,
   } = props;
 
-  const theme: any = useTheme();
+  const theme = useTheme();
 
   const eventFiles = useResourceFiles({
     resourceType: 'event',
@@ -233,12 +233,20 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
   return (
     <EventInformationContainer data-testid="EventInformation">
       <EventTitleAndAttributes>
-        {showProjectTitle && projectTitle && (
-          <StyledLink to={`/projects/${projectSlug}`}>
-            <T value={projectTitle} />
-          </StyledLink>
-        )}
-
+        {showProjectTitle &&
+          projectTitle &&
+          onClickTitleGoToProjectAndScrollToEvent && (
+            <StyledLink to={`/projects/${projectSlug}`}>
+              <T value={projectTitle} />
+            </StyledLink>
+          )}
+        {showProjectTitle &&
+          projectTitle &&
+          !onClickTitleGoToProjectAndScrollToEvent && (
+            <Text color="textSecondary" fontSize="xs" margin="0 0  5px 0">
+              <T value={projectTitle} />
+            </Text>
+          )}
         {onClickTitleGoToProjectAndScrollToEvent && (
           <Link to={`/projects/${projectSlug}?scrollToEventId=${event.id}`}>
             <EventTitle fontSize={titleFontSize}>
@@ -302,9 +310,11 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
         </EventDescription>
       )}
 
-      {!isNilOrError(eventFiles) &&
-        eventFiles.length > 0 &&
-        showAttachments && <FileAttachments files={eventFiles} />}
+      {!isNilOrError(eventFiles) && eventFiles.length > 0 && showAttachments && (
+        <Box mb="25px">
+          <FileAttachments files={eventFiles} />
+        </Box>
+      )}
     </EventInformationContainer>
   );
 });

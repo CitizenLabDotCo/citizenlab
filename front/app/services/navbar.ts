@@ -1,7 +1,8 @@
 import { IRelationship, Multiloc } from 'typings';
 import { API_PATH } from 'containers/App/constants';
-import { TPageSlugById } from 'hooks/usePageSlugById';
+import { TPageSlugById } from 'hooks/useCustomPageSlugById';
 import streams from 'utils/streams';
+import { IItemNotInNavbar } from 'utils/navbar';
 
 export const apiEndpoint = `${API_PATH}/nav_bar_items`;
 
@@ -48,26 +49,6 @@ export function navbarItemsStream({ onlyDefault } = { onlyDefault: false }) {
   });
 }
 
-// These services are used for the toggles in admin/settings/customize and
-// admin/initiatives. These toggles are only visible if the navbar module
-// is disabled, so that even open source users have some minimal control
-// over the navbar.
-export async function toggleAllInput({ enabled }: { enabled: boolean }) {
-  const response = await streams.add(`${apiEndpoint}/toggle_all_input`, {
-    enabled,
-  });
-  await streams.fetchAllWith({ partialApiEndpoint: [apiEndpoint] });
-  return response;
-}
-
-export async function toggleProposals({ enabled }: { enabled: boolean }) {
-  const response = await streams.add(`${apiEndpoint}/toggle_proposals`, {
-    enabled,
-  });
-  await streams.fetchAllWith({ partialApiEndpoint: [apiEndpoint] });
-  return response;
-}
-
 // utility function to get slug associated with navbar item
 export function getNavbarItemSlug(
   navbarItemCode: TNavbarItemCode,
@@ -87,4 +68,91 @@ export function getNavbarItemSlug(
   // This is impossible, but I can't seem to make typescript understand
   // that. So just returning null here
   return null;
+}
+
+interface INavbarItemAdd {
+  code: TNavbarItemCode;
+  static_page_id?: string;
+  title_multiloc?: Multiloc;
+}
+
+export interface INavbarItemUpdate {
+  title_multiloc?: Multiloc;
+}
+
+export function removedDefaultNavbarItems() {
+  return streams.get<{ data: INavbarItem[] }>({
+    apiEndpoint: `${apiEndpoint}/removed_default_items`,
+  });
+}
+
+export async function addNavbarItem(item: IItemNotInNavbar) {
+  const navbarItem: INavbarItemAdd =
+    item.type === 'default_item'
+      ? {
+          code: item.navbarCode,
+          title_multiloc: item.navbarTitleMultiloc,
+        }
+      : {
+          code: 'custom',
+          static_page_id: item.pageId,
+          title_multiloc: item.pageTitleMultiloc,
+        };
+
+  const response = await streams.add<INavbarItem>(
+    apiEndpoint,
+    {
+      nav_bar_item: navbarItem,
+    },
+    false,
+    false
+  );
+
+  streams.fetchAllWith({
+    partialApiEndpoint: ['nav_bar_items', 'static_pages'],
+  });
+
+  return response;
+}
+
+export async function updateNavbarItem(
+  navbarItemId: string,
+  navbarItemUpdate: INavbarItemUpdate
+) {
+  const response = await streams.update<INavbarItem>(
+    `${apiEndpoint}/${navbarItemId}`,
+    navbarItemId,
+    { nav_bar_item: navbarItemUpdate }
+  );
+
+  await streams.fetchAllWith({ partialApiEndpoint: [apiEndpoint] });
+
+  return response;
+}
+
+export async function reorderNavbarItem(
+  navbarItemId: string,
+  navbarItemOrdering: number
+) {
+  const response = await streams.update<INavbarItem>(
+    `${apiEndpoint}/${navbarItemId}/reorder`,
+    navbarItemId,
+    { nav_bar_item: { ordering: navbarItemOrdering } }
+  );
+
+  streams.fetchAllWith({ partialApiEndpoint: [apiEndpoint] });
+
+  return response;
+}
+
+export async function removeNavbarItem(navbarItemId: string) {
+  const response = await streams.delete(
+    `${apiEndpoint}/${navbarItemId}`,
+    navbarItemId
+  );
+
+  streams.fetchAllWith({
+    partialApiEndpoint: ['nav_bar_items', 'static_pages'],
+  });
+  return response;
 }

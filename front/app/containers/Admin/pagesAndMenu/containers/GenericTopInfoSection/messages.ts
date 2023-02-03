@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.topInfoSaveButton',
     defaultMessage: 'Save top info section',
   },
+  topInfoSaveAndEnableButton: {
+    id: 'app.containers.Admin.PagesAndMenu.topInfoSaveAndEnableButton',
+    defaultMessage: 'Save and enable top info section',
+  },
   topInfoButtonSuccess: {
     id: 'app.containers.Admin.PagesAndMenu.topInfoButtonSuccess',
     defaultMessage: 'Success',
@@ -29,8 +33,8 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.topInfoError',
     defaultMessage: "Couldn't save top info section",
   },
-  blankDescriptionError: {
-    id: 'app.containers.Admin.PagesAndMenu.blankDescriptionError',
-    defaultMessage: 'Provide content for all languages',
+  missingOneLocaleError: {
+    id: 'app.containers.Admin.PagesAndMenu.missingOneLocaleError',
+    defaultMessage: 'Provide content at least one language',
   },
 });

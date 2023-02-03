@@ -87,9 +87,6 @@ class Idea < ApplicationRecord
   accepts_nested_attributes_for :text_images, :idea_images, :idea_files
 
   with_options unless: :draft? do |post|
-    post.validates :author, presence: true, on: :publication
-    post.validates :author, presence: true, if: :author_id_changed?
-
     post.before_validation :strip_title
     post.after_validation :set_published_at, if: ->(record) { record.published? && record.publication_status_changed? }
     post.after_validation :set_assigned_at, if: ->(record) { record.assignee_id && record.assignee_id_changed? }
@@ -171,6 +168,31 @@ class Idea < ApplicationRecord
       creation_phase.custom_form || CustomForm.new(participation_context: creation_phase)
     else
       project.custom_form || CustomForm.new(participation_context: project)
+    end
+  end
+
+  def input_term
+    return project.input_term if project.continuous?
+
+    return creation_phase.input_term if participation_method_on_creation.form_in_phase?
+
+    participation_context = ParticipationContextService.new.get_participation_context(project)
+    return participation_context.input_term if participation_context&.can_contain_ideas?
+
+    case phases.size
+    when 0
+      ParticipationContext::DEFAULT_INPUT_TERM
+    when 1
+      phases[0].input_term
+    else
+      now = Time.zone.now
+      phases_with_ideas = phases.select(&:can_contain_ideas?).sort_by(&:start_at)
+      first_past_phase_with_ideas = phases_with_ideas.reverse_each.detect { |phase| phase.end_at <= now }
+      if first_past_phase_with_ideas
+        first_past_phase_with_ideas.input_term
+      else # now is before the first phase with ideas
+        phases_with_ideas.first.input_term
+      end
     end
   end
 

@@ -15,7 +15,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -72,7 +72,7 @@ const Anchor = styled.div`
 const Form = styled.form`
   flex: 1;
   border: 1px solid ${colors.borderDark};
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   overflow: hidden;
 
   &:not(.focused):hover {
@@ -133,12 +133,12 @@ interface State {
 }
 
 class ParentCommentForm extends PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   textareaElement: HTMLTextAreaElement | null = null;
 
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       inputValue: '',
@@ -443,7 +443,7 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const ParentCommentFormWithHoCs = injectIntl<Props>(ParentCommentForm);
+const ParentCommentFormWithHoCs = injectIntl(ParentCommentForm);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

@@ -29,7 +29,7 @@ import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import { PublicationStatus } from 'services/projects';
 // hooks
 import useLocalize from 'hooks/useLocalize';
-import useProjectFolders from 'modules/commercial/project_folders/hooks/useProjectFolders';
+import useProjectFolders from 'hooks/useProjectFolders';
 
 // services
 import { addInsightsView } from 'modules/commercial/insights/services/insightsViews';
@@ -169,7 +169,7 @@ export const CreateInsightsView = ({
         });
         if (!isNilOrError(result)) {
           closeCreateModal();
-          clHistory.push(`/admin/insights/${result.data.id}`);
+          clHistory.push(`/admin/reporting/insights/${result.data.id}`);
         }
       } catch (errors) {
         setErrors(errors.json.errors);

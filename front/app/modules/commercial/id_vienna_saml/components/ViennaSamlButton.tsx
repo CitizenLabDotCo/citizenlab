@@ -1,35 +1,80 @@
-import React from 'react';
 import { AUTH_PATH } from 'containers/App/constants';
+import React from 'react';
 
 // i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
-import { StyledAuthProviderButton } from 'components/SignUpIn/AuthProviders';
-import { TOnContinueFunction } from 'components/SignUpIn/AuthProviderButton';
+// components
+import { TOnContinueFunction } from 'components/AuthProviders/AuthProviderButton';
+import { StyledAuthProviderButton } from 'components/AuthProviders';
+import ViennaIcon from './ViennaIcon';
 
 // typings
-import { TSignUpInFlow } from 'components/SignUpIn';
+import { TSignUpInFlow } from 'events/openSignUpInModal';
+
+// styling
+import styled from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
+import { Box, Text } from '@citizenlab/cl2-component-library';
+
+const Container = styled(Box)`
+  display: flex;
+  gap: 12px;
+`;
+
+const TextContainer = styled(Box)`
+  display: flex;
+  gap: 4px;
+  flex-direction: column;
+`;
+
+const SignUpSubHeader = styled(Text)`
+  font-size: ${fontSizes.s}px;
+`;
 
 interface Props {
   flow: TSignUpInFlow;
   onContinue: TOnContinueFunction;
 }
 
-const ViennaSamlButton = ({ onContinue, ...otherProps }: Props) => {
+const ViennaSamlButton = ({ onContinue, flow }: Props) => {
   const setHref = () => {
     window.location.href = `${AUTH_PATH}/vienna_citizen`;
   };
   const handleOnContinue = () => {
-    onContinue('id_vienna_saml', setHref);
+    if (flow === 'signup') {
+      window.location.href =
+        'https://mein.wien.gv.at/Registrieren?branding=citizenlab';
+    } else {
+      onContinue('id_vienna_saml', setHref);
+    }
   };
   return (
     <StyledAuthProviderButton
       authProvider="id_vienna_saml"
       onContinue={handleOnContinue}
-      {...otherProps}
+      flow={flow}
+      showConsentOnFlow={'signin'}
     >
-      <FormattedMessage {...messages.continueWithStandardPortal} />
+      <Container>
+        <ViennaIcon />
+        <TextContainer>
+          <FormattedMessage
+            {...(flow === 'signin'
+              ? messages.signInWithStandardPortal
+              : messages.signUpWithStandardPortal)}
+          />
+
+          {flow === 'signup' && (
+            <SignUpSubHeader as="span">
+              <FormattedMessage
+                {...messages.signUpWithStandardPortalSubHeader}
+              />
+            </SignUpSubHeader>
+          )}
+        </TextContainer>
+      </Container>
     </StyledAuthProviderButton>
   );
 };

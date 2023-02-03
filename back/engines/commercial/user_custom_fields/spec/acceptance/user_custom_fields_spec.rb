@@ -58,7 +58,8 @@ resource 'User Custom Fields' do
           ordering: custom_field.ordering,
           code: custom_field.code,
           created_at: custom_field.created_at.as_json,
-          updated_at: custom_field.updated_at.as_json
+          updated_at: custom_field.updated_at.as_json,
+          logic: {}
         },
         relationships: {
           current_ref_distribution: expected_ref_distribution_linkage,
@@ -175,6 +176,21 @@ resource 'User Custom Fields' do
           expect(json_response).to include_response_error(:title_multiloc, 'blank')
         end
       end
+
+      context 'when images are included in the description' do
+        let(:input_type) { custom_field.input_type }
+        let(:title_multiloc) { custom_field.title_multiloc }
+        let(:description_multiloc) do
+          {
+            'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
+          }
+        end
+
+        example 'Create a field', document: false do
+          expect { do_request }.to change(TextImage, :count).by 1
+          assert_status 201
+        end
+      end
     end
 
     patch 'web_api/v1/users/custom_fields/:id' do
@@ -199,6 +215,19 @@ resource 'User Custom Fields' do
         expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
         expect(json_response.dig(:data, :attributes, :required)).to match required
         expect(json_response.dig(:data, :attributes, :enabled)).to match enabled
+      end
+
+      context 'when images are included in the description' do
+        let(:description_multiloc) do
+          {
+            'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
+          }
+        end
+
+        example 'Update a field', document: false do
+          expect { do_request }.to change(TextImage, :count).by 1
+          assert_status 200
+        end
       end
     end
 

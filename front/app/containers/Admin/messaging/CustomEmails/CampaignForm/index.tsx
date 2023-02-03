@@ -3,7 +3,7 @@ import { Multiloc } from 'typings';
 import styled from 'styled-components';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
@@ -20,7 +20,7 @@ import { Section, SectionField, SectionTitle } from 'components/admin/Section';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { string, object, array } from 'yup';
-import validateMultiloc from 'utils/yup/validateMultiloc';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Input from 'components/HookForm/Input';
@@ -67,7 +67,7 @@ export interface FormValues {
 type CampaignFormProps = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: Partial<FormValues>;
-} & InjectedIntlProps;
+} & WrappedComponentProps;
 
 const CampaignForm = ({
   onSubmit,
@@ -85,10 +85,12 @@ const CampaignForm = ({
     reply_to: string()
       .email(formatMessage(messages.fieldReplyToEmailError))
       .required(formatMessage(messages.fieldReplyToError)),
-    subject_multiloc: validateMultiloc(
+    subject_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.fieldSubjectError)
     ),
-    body_multiloc: validateMultiloc(formatMessage(messages.fieldBodyError)),
+    body_multiloc: validateMultilocForEveryLocale(
+      formatMessage(messages.fieldBodyError)
+    ),
     group_ids: array(),
   });
 

@@ -6,6 +6,8 @@ import { parse } from 'qs';
 
 // components
 import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
+import GoBackButton from 'containers/IdeasShow/GoBackButton';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -108,7 +110,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
   globalState: IGlobalStateService<IIdeasPageGlobalState>;
   subscriptions: Subscription[];
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       title: null,
@@ -245,6 +247,9 @@ class NewIdeaForm extends PureComponent<Props, State> {
 
       return (
         <Container id="e2e-new-idea-form">
+          <Box mt="52px" display="flex" width="100%">
+            <GoBackButton insideModal={false} projectId={projectId} />
+          </Box>
           <Title className="e2e-idea-form-title">
             <FormattedMessage
               {...getInputTermMessage(inputTerm, {

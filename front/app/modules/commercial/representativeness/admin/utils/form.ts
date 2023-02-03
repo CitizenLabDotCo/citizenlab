@@ -3,7 +3,7 @@ import { forEachBin } from './bins';
 import { isEqual } from 'lodash-es';
 
 // typings
-import { IUserCustomFieldOptionData } from 'modules/commercial/user_custom_fields/services/userCustomFieldOptions';
+import { IUserCustomFieldOptionData } from 'services/userCustomFieldOptions';
 import {
   IBinnedDistribution,
   TUploadDistribution,

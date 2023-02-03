@@ -2,7 +2,7 @@ import React from 'react';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // components
@@ -91,7 +91,7 @@ type InsightsList = {
   openCreateModal: () => void;
 };
 
-const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
+const InsightsList: React.FC<InsightsList & WrappedComponentProps> = ({
   intl: { formatMessage, formatDate },
   data,
   openCreateModal,
@@ -125,7 +125,11 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
             </InsightsContainerTitle>
             <p>{formatMessage(messages.listDescription)}</p>
           </div>
-          <Button bgColor={colors.primary} onClick={openCreateModal}>
+          <Button
+            className="intercom-admin-create-insights-button"
+            bgColor={colors.primary}
+            onClick={openCreateModal}
+          >
             {formatMessage(messages.listCreate)}
           </Button>
         </InsightsContainerHeader>
@@ -148,7 +152,7 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
                 <Button
                   buttonStyle="white"
                   icon="delete"
-                  textColor={colors.primary}
+                  textColor={colors.textSecondary}
                   boxShadow="none"
                   onClick={handleDeleteClick(view.id)}
                 >
@@ -157,7 +161,7 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
                 <Button
                   buttonStyle="secondary"
                   icon="edit"
-                  linkTo={`/admin/insights/${view.id}`}
+                  linkTo={`/admin/reporting/insights/${view.id}`}
                 >
                   {formatMessage(messages.listManage)}
                 </Button>

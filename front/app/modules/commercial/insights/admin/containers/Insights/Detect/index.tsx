@@ -18,7 +18,7 @@ import clHistory from 'utils/cl-router/history';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // styles
@@ -41,12 +41,12 @@ const ButtonsContainer = styled(Box)`
 const Detect = ({
   params: { viewId },
   intl: { formatMessage },
-}: WithRouterProps & InjectedIntlProps) => {
+}: WithRouterProps & WrappedComponentProps) => {
   const [processing, setProcessing] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const detectedCategories = useDetectedCategories(viewId);
 
-  const backRoute = `/admin/insights/${viewId}/edit`;
+  const backRoute = `/admin/reporting/insights/${viewId}/edit`;
   if (isNilOrError(detectedCategories)) {
     return null;
   }

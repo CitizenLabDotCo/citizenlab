@@ -19,7 +19,8 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // typings
-import { Multiloc, MessageDescriptor } from 'typings';
+import { Multiloc } from 'typings';
+import { MessageDescriptor } from 'react-intl';
 import { Status } from '../../utils/form';
 
 const DefaultStatusLabel = styled(StatusLabel)`
@@ -76,7 +77,7 @@ const FieldTitle = ({
       className={className}
     >
       <Box display="flex" alignItems="center">
-        <Title variant="h4" as="h3" mt="0px" mb="0px" ml="12px">
+        <Title color="primary" variant="h4" as="h3" mt="0px" mb="0px" ml="12px">
           {isBirthyear ? (
             <FormattedMessage {...messages.birthyearCustomTitle} />
           ) : (

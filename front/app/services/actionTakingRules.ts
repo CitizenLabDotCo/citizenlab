@@ -51,6 +51,7 @@ export type ActionPermission<DisabledReasons> =
 export type IIdeaPostingDisabledReason =
   | 'notPermitted'
   | 'postingDisabled'
+  | 'postingLimitedMaxReached'
   | 'projectInactive'
   | 'notActivePhase'
   | 'maybeNotPermitted'
@@ -96,6 +97,11 @@ const ideaPostingDisabledReason = (
         disabledReason: 'postingDisabled',
         action: null,
       };
+    case 'posting_limited_max_reached':
+      return {
+        disabledReason: 'postingLimitedMaxReached',
+        action: null,
+      };
     case 'not_permitted':
       return {
         disabledReason: signedIn ? 'notPermitted' : 'maybeNotPermitted',
@@ -125,11 +131,9 @@ export const getIdeaPostingRules = ({
   authUser: GetAuthUserChildProps | TAuthUser;
 }): ActionPermission<IIdeaPostingDisabledReason> => {
   const signedIn = !isNilOrError(authUser);
-
   if (!isNilOrError(project)) {
     const { disabled_reason, future_enabled, enabled } =
       project.attributes.action_descriptor.posting_idea;
-
     if (
       !isNilOrError(authUser) &&
       (isAdmin({ data: authUser }) || isProjectModerator({ data: authUser }))
@@ -191,7 +195,29 @@ export const getIdeaPostingRules = ({
           action: null,
         };
       }
-      if (authUser) {
+      if (disabled_reason) {
+        const { disabledReason, action } = ideaPostingDisabledReason(
+          disabled_reason,
+          signedIn,
+          future_enabled
+        );
+        if (action) {
+          return {
+            action,
+            disabledReason: null,
+            show: true,
+            enabled: 'maybe',
+          };
+        }
+        if (disabledReason) {
+          return {
+            disabledReason,
+            action: null,
+            show: true,
+            enabled: false,
+          } as ActionPermissionDisabled<IIdeaPostingDisabledReason>;
+        }
+      } else {
         return {
           show: true,
           enabled: true,
@@ -199,12 +225,6 @@ export const getIdeaPostingRules = ({
           action: null,
         };
       }
-      return {
-        show: true,
-        enabled: false,
-        disabledReason: signedIn ? 'notPermitted' : 'maybeNotPermitted',
-        action: null,
-      };
     }
 
     if (

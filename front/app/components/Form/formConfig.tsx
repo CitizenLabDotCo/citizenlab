@@ -23,7 +23,9 @@ import {
   attachmentsControlTester,
   AttachmentsControl,
   clCategoryTester,
+  clPageTester,
   CLCategoryLayout,
+  CLPageLayout,
   locationControlTester,
   LocationControl,
   dateControlTester,
@@ -40,6 +42,8 @@ import {
   MultiSelectControl,
   multiSelectControlTester,
   SingleSelectControl,
+  singleAttachmentControlTester,
+  SingleAttachmentControl,
 } from 'components/Form/Components/Controls';
 
 const commonRenderers = [
@@ -56,6 +60,7 @@ const commonRenderers = [
   { tester: imageControlTester, renderer: ImageControl },
   { tester: attachmentsControlTester, renderer: AttachmentsControl },
   { tester: clCategoryTester, renderer: CLCategoryLayout },
+  { tester: clPageTester, renderer: CLPageLayout },
   { tester: orderedLayoutTester, renderer: OrderedLayout },
   { tester: locationControlTester, renderer: LocationControl },
   { tester: dateControlTester, renderer: DateControl },
@@ -64,10 +69,11 @@ const commonRenderers = [
   { tester: orderedLayoutTester, renderer: OrderedLayout },
 ];
 
-export const selectRenderers = (formType: 'default' | 'input') => {
+export const selectRenderers = (formType: 'default' | 'input' | 'survey') => {
   switch (formType) {
     case 'default':
       return commonRenderers;
+    case 'survey':
     case 'input':
       return [
         { tester: linearScaleControlTester, renderer: LinearScaleControl },
@@ -78,6 +84,10 @@ export const selectRenderers = (formType: 'default' | 'input') => {
         {
           tester: singleSelectRadioControlTester,
           renderer: SingleSelectRadioControl,
+        },
+        {
+          tester: singleAttachmentControlTester,
+          renderer: SingleAttachmentControl,
         },
         ...commonRenderers,
       ];

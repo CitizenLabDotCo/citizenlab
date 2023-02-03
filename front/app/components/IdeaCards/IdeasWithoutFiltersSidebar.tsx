@@ -44,7 +44,7 @@ import {
   ideaDefaultSortMethodFallback,
 } from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
-import { CustomFieldCodes } from 'services/ideaCustomFieldsSchemas';
+import { isFieldEnabled } from 'utils/projectUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -209,24 +209,6 @@ const IdeasWithoutFiltersSidebar = ({
     setSelectedView(selectedView);
   };
 
-  const isFieldEnabled = (fieldCode: CustomFieldCodes) => {
-    /*
-      If IdeaCards are used in a location that's not inside a project,
-      and has no ideaCustomFields settings as such,
-      we fall back to true
-    */
-
-    if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {
-      return (
-        ideaCustomFieldsSchemas.ui_schema_multiloc?.[locale]?.[fieldCode]?.[
-          'ui:widget'
-        ] !== 'hidden'
-      );
-    }
-
-    return true;
-  };
-
   const {
     list,
     hasMore,
@@ -234,8 +216,16 @@ const IdeasWithoutFiltersSidebar = ({
     queryParameters: { phase: phaseId },
   } = ideas;
 
-  const locationEnabled = isFieldEnabled('location_description');
-  const topicsEnabled = isFieldEnabled('topic_ids');
+  const locationEnabled = isFieldEnabled(
+    'location_description',
+    ideaCustomFieldsSchemas,
+    locale
+  );
+  const topicsEnabled = isFieldEnabled(
+    'topic_ids',
+    ideaCustomFieldsSchemas,
+    locale
+  );
   const showViewButtons = !!(locationEnabled && showViewToggle);
   const showListView =
     !locationEnabled || (locationEnabled && selectedView === 'card');

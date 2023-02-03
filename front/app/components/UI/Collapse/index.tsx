@@ -104,6 +104,7 @@ interface Props {
   opened: boolean;
   onToggle: (event: React.MouseEvent) => void;
   className?: string;
+  children?: React.ReactNode;
 }
 
 class Collapse extends PureComponent<Props> {

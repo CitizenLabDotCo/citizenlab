@@ -51,7 +51,7 @@ const Separator = styled.hr`
 
 const MenuTitle = styled.div`
   align-items: center;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -90,7 +90,7 @@ const MenuLink = styled(Link)`
   padding: 12px;
   padding-right: 0px;
   margin-bottom: 6px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   transition: all 80ms ease-out;
 
   &.highlight {
@@ -174,7 +174,7 @@ export class GroupsListPanel extends React.PureComponent<
 > {
   subs: Subscription[] = [];
 
-  constructor(props) {
+  constructor(props: Props & Tracks) {
     super(props);
     this.state = {
       highlightedGroups: new Set([]),

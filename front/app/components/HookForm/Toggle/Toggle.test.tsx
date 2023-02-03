@@ -4,7 +4,6 @@ import Toggle from './';
 import { useForm, FormProvider } from 'react-hook-form';
 import { boolean, object } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import translationMessages from 'i18n/en';
 
 const schema = object({
   toggle: boolean().oneOf([true], 'Error message'),
@@ -75,11 +74,7 @@ describe('Toggle', () => {
     fireEvent.click(screen.getByText(/submit/i));
     await waitFor(() => {
       expect(
-        screen.getByText(
-          (translationMessages as Record<string, string>)[
-            'app.errors.generics.invalid'
-          ]
-        )
+        screen.getByText('This field contains an invalid value.')
       ).toBeInTheDocument();
     });
   });

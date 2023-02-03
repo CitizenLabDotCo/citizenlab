@@ -4,7 +4,7 @@ import { getInputTerm } from 'services/participationContexts';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 import { getInputTermMessage } from 'utils/i18n';
 
@@ -25,7 +25,7 @@ interface Props {
 const Component = ({
   ideaId,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const idea = useIdea({ ideaId });
   const projectId = !isNilOrError(idea)
     ? idea.relationships.project.data.id

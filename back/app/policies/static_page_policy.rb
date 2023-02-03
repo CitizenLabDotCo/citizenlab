@@ -56,9 +56,10 @@ class StaticPagePolicy < ApplicationPolicy
       :bottom_info_section_enabled,
       { bottom_info_section_multiloc: CL2_SUPPORTED_LOCALES },
       :header_bg,
-      { pinned_admin_publication_ids: [] }
+      { pinned_admin_publication_ids: [] },
+      { area_ids: [] },
+      { topic_ids: [] },
+      { nav_bar_item_title_multiloc: CL2_SUPPORTED_LOCALES }
     ]
   end
 end
-
-StaticPagePolicy.prepend_if_ee 'CustomizableNavbar::Patches::StaticPagePolicy'

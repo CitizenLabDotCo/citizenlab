@@ -4,7 +4,6 @@ import MultiSelect from './';
 import { useForm, FormProvider } from 'react-hook-form';
 import { array, object } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import translationMessages from 'i18n/en';
 import selectEvent from 'react-select-event';
 
 const schema = object({
@@ -85,11 +84,7 @@ describe('MultiSelect', () => {
     fireEvent.click(screen.getByText(/submit/i));
     await waitFor(() => {
       expect(
-        screen.getByText(
-          (translationMessages as Record<string, string>)[
-            'app.errors.generics.blank'
-          ]
-        )
+        screen.getByText('This field cannot be empty.')
       ).toBeInTheDocument();
     });
   });

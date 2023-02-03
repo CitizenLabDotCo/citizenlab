@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.name        = 'frontend'
   s.version     = Frontend::VERSION
   s.authors     = ['CitizenLab']
-  s.licenses    = ['AGPLv3']
+  s.licenses    = ['CitizenLab Commercial License V2']
   s.summary     = 'Contains all functionoality needed for cl2-front, unrelated to any core business domain'
 
   s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']

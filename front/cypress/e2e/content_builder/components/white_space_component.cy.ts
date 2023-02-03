@@ -48,9 +48,7 @@ describe('Content builder White space component', () => {
         position: 'inside',
       }
     );
-    cy.get('#e2e-white-space-divider-toggle')
-      .find('input')
-      .click({ force: true });
+    cy.get('#e2e-white-space-divider-toggle').click({ force: true });
 
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveContentBuilder');

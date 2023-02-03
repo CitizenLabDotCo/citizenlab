@@ -46,7 +46,7 @@ import { IResolution } from 'components/admin/ResolutionControl';
 // i18n
 import messages from '../../messages';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // utils
 import { toThreeLetterMonth, toFullMonth } from 'utils/dateUtils';
@@ -78,14 +78,14 @@ type Props = {
 };
 
 class LineBarChartVotesByTime extends React.PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
   combined$: Subscription;
   currentChart: React.RefObject<any>;
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props: Props & WrappedComponentProps) {
+    super(props);
     this.state = {
       serie: null,
     };
@@ -273,7 +273,7 @@ class LineBarChartVotesByTime extends React.PureComponent<
             {serie && (
               <ReportExportMenu
                 svgNode={this.currentChart}
-                xlsxEndpoint={votesByTimeXlsxEndpoint}
+                xlsx={{ endpoint: votesByTimeXlsxEndpoint }}
                 name={formatMessage(messages.votes)}
                 {...this.props}
               />
@@ -377,4 +377,6 @@ class LineBarChartVotesByTime extends React.PureComponent<
   }
 }
 
-export default injectIntl<Props>(LineBarChartVotesByTime);
+export default injectIntl<Props & WrappedComponentProps>(
+  LineBarChartVotesByTime
+);

@@ -24,13 +24,13 @@ import useLocale from 'hooks/useLocale';
 
 // utils
 import { isNilOrError, isPage, isDesktop } from 'utils/helperUtils';
-import { openSignUpInModal } from 'components/SignUpIn/events';
+import { openSignUpInModal } from 'events/openSignUpInModal';
 import eventEmitter from 'utils/eventEmitter';
 import clHistory from 'utils/cl-router/history';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // style
@@ -224,14 +224,14 @@ const SignUpMenuItem = styled.button`
   border: none;
   border-radius: 0px;
   background-color: ${({ theme }) =>
-    theme.tenantPrimary || theme.colors.tenantSecondary};
+    theme.colors.tenantPrimary || theme.colors.tenantSecondary};
   transition: all 100ms ease-out;
 
   &:hover {
     color: #fff;
     text-decoration: underline;
     background-color: ${({ theme }) =>
-      darken(0.12, theme.tenantPrimary || theme.colors.tenantSecondary)};
+      darken(0.12, theme.colors.tenantPrimary || theme.colors.tenantSecondary)};
   }
 
   ${media.phone`
@@ -250,12 +250,12 @@ interface Props {
 const MainHeader = ({
   setRef,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const appConfiguration = useAppConfiguration();
   const authUser = useAuthUser();
   const locale = useLocale();
-  const theme: any = useTheme();
+  const theme = useTheme();
   const windowSize = useWindowSize();
   const [fullscreenModalOpened, setFullscreenModalOpened] = useState(false);
 

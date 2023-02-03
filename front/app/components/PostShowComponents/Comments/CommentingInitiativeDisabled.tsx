@@ -13,8 +13,8 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // events
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
-import { openSignUpInModal } from 'components/SignUpIn/events';
+import { openVerificationModal } from 'events/verificationModal';
+import { openSignUpInModal } from 'events/openSignUpInModal';
 
 // styling
 import styled from 'styled-components';

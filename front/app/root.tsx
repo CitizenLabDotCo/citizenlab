@@ -1,5 +1,3 @@
-import 'core-js/stable';
-import 'regenerator-runtime/runtime';
 import React, { useEffect } from 'react';
 import { render } from 'react-dom';
 
@@ -41,6 +39,7 @@ Sentry.init({
     }),
   ],
   tracesSampleRate: 0.05,
+  sendClientReports: false,
 });
 
 const useSentryRoutes = wrapUseRoutes(useRoutes);

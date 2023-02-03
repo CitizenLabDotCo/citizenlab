@@ -25,22 +25,25 @@ module ContentBuilder
 
     validates :content_buildable, :code, presence: true
     validates :craftjs_jsonmultiloc, multiloc: { presence: false, value_type: Hash }
+    validates :craftjs_jsonmultiloc, length: { maximum: 1 }, if: lambda { |layout|
+      layout.content_buildable_type == 'ReportBuilder::Report' # mvp of report builder only allows 1 locale
+    }
     validate :validate_craftjs_jsonmultiloc
 
     private
 
     def validate_craftjs_jsonmultiloc
-      validate_whitelisted_iframe_urls
+      validate_iframe_urls
     end
 
-    def validate_whitelisted_iframe_urls
-      url_validation_service = ::UrlValidationService.new
+    def validate_iframe_urls
+      url_starts = %w[http:// https://]
 
       craftjs_jsonmultiloc.each do |locale, json|
         LayoutService.new.select_craftjs_elements_for_type(json, 'Iframe').each do |elt|
           url = elt.dig 'props', 'url'
-          if url && !url_validation_service.whitelisted?(url)
-            errors.add :craftjs_jsonmultiloc, :iframe_url_not_whitelisted, locale: locale, url: url
+          if url && url_starts.none? { |url_start| url.starts_with?(url_start) }
+            errors.add :craftjs_jsonmultiloc, :iframe_url_invalid, locale: locale, url: url
           end
         end
       end

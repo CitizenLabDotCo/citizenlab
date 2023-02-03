@@ -61,6 +61,7 @@ const GoBackButton = memo(
           iconSize="26px"
           padding="0"
           textDecorationHover="underline"
+          whiteSpace="normal"
         >
           <Box as="span" display={isPhone ? 'none' : 'block'} aria-hidden>
             {localize(project.attributes.title_multiloc)}

@@ -43,7 +43,7 @@ import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks
 
 // intl
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 // styles
 import styled from 'styled-components';
@@ -80,7 +80,7 @@ const Network = ({
   params: { viewId },
   intl: { formatMessage, formatDate },
   location: { query, pathname },
-}: WithRouterProps & InjectedIntlProps) => {
+}: WithRouterProps & WrappedComponentProps) => {
   const [initialRender, setInitialRender] = useState(true);
   const [height, setHeight] = useState(0);
   const [width, setWidth] = useState(0);
@@ -268,7 +268,13 @@ const Network = ({
 
   return (
     <Box ref={containerRef} h="100%" position="relative" overflow="hidden">
-      <Box mt="24px" ml="24px" position="absolute" zIndex="1000">
+      <Box
+        mt="24px"
+        ml="24px"
+        position="absolute"
+        zIndex="1000"
+        className="intercom-insights-network-keywords-map"
+      >
         <SectionTitle>
           {formatMessage(messages.networkTitle)}
           <IconTooltip

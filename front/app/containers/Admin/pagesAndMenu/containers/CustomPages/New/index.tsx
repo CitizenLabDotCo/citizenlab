@@ -4,14 +4,14 @@ import Breadcrumbs from 'components/UI/Breadcrumbs';
 import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 import HelmetIntl from 'components/HelmetIntl';
 import messages from '../messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import NewCustomPage from './NewCustomPage';
 import TabbedResource from 'components/admin/TabbedResource';
 
 const CustomPagesNewSettings = ({
   intl: { formatMessage },
-}: InjectedIntlProps) => {
+}: WrappedComponentProps) => {
   return (
     <>
       <HelmetIntl title={messages.newCustomPageMetaTitle} />
@@ -34,7 +34,7 @@ const CustomPagesNewSettings = ({
           {
             label: formatMessage(messages.pageSettingsTab),
             name: 'settings',
-            url: '/admin/pages-menu/custom/new',
+            url: '/admin/pages-menu/pages/new',
           },
         ]}
         contentWrapper={false}

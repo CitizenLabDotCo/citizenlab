@@ -16,7 +16,7 @@ const timeout = 300;
 const Container = styled.div`
   background: #fff;
   border: 1px solid ${colors.divider};
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
 `;
 
 const Title = styled.div`
@@ -61,7 +61,7 @@ const ContentToggleButton = styled.button`
   font-size: ${fontSizes.base}px;
   line-height: 24px;
   font-weight: 600;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
 
   &:hover {
     ${ContentLabel} {

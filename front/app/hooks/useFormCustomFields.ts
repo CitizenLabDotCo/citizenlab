@@ -81,7 +81,6 @@ export default function useFormCustomFields({
               });
             }
           );
-
           return fieldsWithOptions$.length
             ? combineLatest(fieldsWithOptions$)
             : of([]);

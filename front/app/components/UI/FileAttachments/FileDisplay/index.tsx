@@ -14,7 +14,7 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import { IProjectFileData } from 'services/projectFiles';
 import { IPhaseFileData } from 'services/phaseFiles';
 import { IEventFileData } from 'services/eventFiles';
-import { IPageFileData } from 'services/pageFiles';
+import { ICustomPageFileData } from 'services/pageFiles';
 import { IIdeaFileData } from 'services/ideaFiles';
 
 const Container = styled.div`
@@ -23,7 +23,7 @@ const Container = styled.div`
   justify-content: space-between;
   color: ${colors.textSecondary};
   border: 1px solid ${lighten(0.4, colors.textSecondary)};
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   font-size: ${fontSizes.base}px;
   line-height: 24px;
   padding: 10px 20px;
@@ -33,6 +33,9 @@ const Container = styled.div`
 const Paperclip = styled(Icon)`
   fill: ${colors.textSecondary};
   margin-right: 15px;
+  ${media.phone`
+    width: 40px;
+  `}
 `;
 
 const FileDownloadLink = styled.a`
@@ -41,6 +44,7 @@ const FileDownloadLink = styled.a`
   display: inline-block;
   margin-right: 10px;
   hyphens: auto;
+  word-break: break-word;
 
   &:hover {
     color: #000;
@@ -69,7 +73,7 @@ interface Props {
   file:
     | IProjectFileData
     | IPhaseFileData
-    | IPageFileData
+    | ICustomPageFileData
     | IEventFileData
     | IIdeaFileData;
   className?: string;

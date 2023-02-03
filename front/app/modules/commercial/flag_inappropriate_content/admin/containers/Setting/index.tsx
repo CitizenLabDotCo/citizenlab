@@ -6,7 +6,7 @@ import Link from 'utils/cl-router/Link';
 import styled from 'styled-components';
 import { IconTooltip, Toggle } from '@citizenlab/cl2-component-library';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../../tracks';
 
@@ -49,7 +49,7 @@ const FlagInnapropriateContentSetting = ({
   className,
   onSettingChange,
   intl: { formatMessage },
-}: Props & InjectedIntlProps): ReactElement | null => {
+}: Props & WrappedComponentProps): ReactElement | null => {
   const appConfiguration = useAppConfiguration();
   const flagInnaproperiateContentSetting =
     !isNilOrError(appConfiguration) &&

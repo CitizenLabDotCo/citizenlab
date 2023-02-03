@@ -3,23 +3,20 @@ import React from 'react';
 // resources
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 
-// hooks
-import useLocalize, { Localize } from 'hooks/useLocalize';
-
 // components
-import { Box, Select } from '@citizenlab/cl2-component-library';
-
-// typings
-import { IOption } from 'typings';
-import { IGroupData } from 'services/groups';
+import { Select } from '@citizenlab/cl2-component-library';
 
 // i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+import useLocalize, { Localize } from 'hooks/useLocalize';
+import { useIntl } from 'utils/cl-intl';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+
+// typings
+import { FormatMessage, IOption } from 'typings';
+import { IGroupData } from 'services/groups';
 
 interface DataProps {
   groups: GetGroupsChildProps;
@@ -35,7 +32,7 @@ interface Props extends DataProps, InputProps {}
 const generateGroupOptions = (
   groupsList: IGroupData[],
   localize: Localize,
-  { formatMessage }: InjectedIntlProps['intl']
+  formatMessage: FormatMessage
 ) => {
   const groupOptions = groupsList.map((group) => ({
     value: group.id,
@@ -52,31 +49,31 @@ const GroupFilter = ({
   groups: { groupsList },
   currentGroupFilter,
   onGroupFilter,
-  intl,
-}: Props & InjectedIntlProps) => {
+}: Props) => {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
 
   if (isNilOrError(groupsList)) return null;
 
-  const groupFilterOptions = generateGroupOptions(groupsList, localize, intl);
+  const groupFilterOptions = generateGroupOptions(
+    groupsList,
+    localize,
+    formatMessage
+  );
 
   return (
-    <Box width="32%">
-      <Select
-        id="groupFilter"
-        label={<FormattedMessage {...messages.labelGroupFilter} />}
-        onChange={onGroupFilter}
-        value={currentGroupFilter || ''}
-        options={groupFilterOptions}
-      />
-    </Box>
+    <Select
+      id="groupFilter"
+      onChange={onGroupFilter}
+      placeholder={formatMessage(messages.labelGroupFilter)}
+      value={currentGroupFilter || ''}
+      options={groupFilterOptions}
+    />
   );
 };
 
-const GroupFilterWithIntl = injectIntl(GroupFilter);
-
 export default (props: InputProps) => (
   <GetGroups>
-    {(groups) => <GroupFilterWithIntl groups={groups} {...props} />}
+    {(groups) => <GroupFilter groups={groups} {...props} />}
   </GetGroups>
 );

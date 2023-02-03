@@ -48,7 +48,7 @@ export default function useIdeaCustomFieldsSchemas({
     if (dynamicIdeaFormIsEnabled && ideaCustomFieldsIsEnabled) {
       observable = ideaJsonFormsSchemaStream(
         projectId,
-        null,
+        phaseId,
         inputId || undefined
       ).observable;
     } else {

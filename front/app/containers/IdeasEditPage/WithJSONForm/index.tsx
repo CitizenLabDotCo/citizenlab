@@ -7,9 +7,9 @@ import clHistory from 'utils/cl-router/history';
 import { isError, isNilOrError } from 'utils/helperUtils';
 import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
-import usePhases from 'hooks/usePhases';
 import useInputSchema from 'hooks/useInputSchema';
-import { getInputTerm } from 'services/participationContexts';
+import useIdeaImages from 'hooks/useIdeaImages';
+import useResourceFiles from 'hooks/useResourceFiles';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
@@ -19,12 +19,15 @@ import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
 
 import PageContainer from 'components/UI/PageContainer';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
+import { Box } from '@citizenlab/cl2-component-library';
 import { updateIdea } from 'services/ideas';
-import { geocode } from 'utils/locationTools';
 import useIdea from 'hooks/useIdea';
 import IdeasEditMeta from '../IdeasEditMeta';
 import { usePermission } from 'services/permissions';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
+import { deleteIdeaImage } from 'services/ideaImages';
+import GoBackToIdeaPage from 'containers/IdeasEditPage/GoBackToIdeaPage';
+import { getLocationGeojson } from '../utils';
 
 const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
@@ -33,8 +36,12 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   const project = useProject({
     projectId: isNilOrError(idea) ? null : idea.relationships.project.data.id,
   });
+  const remoteImages = useIdeaImages(ideaId);
+  const remoteFiles = useResourceFiles({
+    resourceId: ideaId,
+    resourceType: 'idea',
+  });
 
-  const phases = usePhases(project?.id);
   const { schema, uiSchema, inputSchemaError } = useInputSchema({
     projectId: project?.id,
     inputId: ideaId,
@@ -56,7 +63,9 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
       ? null
       : Object.fromEntries(
           Object.keys(schema.properties).map((prop) => {
-            if (idea.attributes?.[prop]) {
+            if (prop === 'author_id') {
+              return [prop, idea.relationships?.author?.data?.id];
+            } else if (idea.attributes?.[prop]) {
               return [prop, idea.attributes?.[prop]];
             } else if (
               prop === 'topic_ids' &&
@@ -66,19 +75,55 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
                 prop,
                 idea.relationships?.topics?.data.map((rel) => rel.id),
               ];
+            } else if (
+              prop === 'idea_images_attributes' &&
+              Array.isArray(idea.relationships?.idea_images?.data)
+            ) {
+              return [prop, remoteImages];
+            } else if (prop === 'idea_files_attributes') {
+              const attachmentsValue =
+                !isNilOrError(remoteFiles) && remoteFiles.length > 0
+                  ? remoteFiles
+                  : undefined;
+              return [prop, attachmentsValue];
             } else return [prop, undefined];
           })
         );
 
-  const onSubmit = async (data) => {
-    let location_point_geojson;
+  // Set initial location point if exists
+  if (
+    initialFormData &&
+    !isNilOrError(idea) &&
+    idea.attributes &&
+    idea.attributes.location_point_geojson
+  ) {
+    initialFormData['location_point_geojson'] =
+      idea.attributes.location_point_geojson;
+  }
 
-    if (data.location_description && !data.location_point_geojson) {
-      location_point_geojson = await geocode(data.location_description);
+  const onSubmit = async (data) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { idea_files_attributes, ...ideaWithOUtFiles } = data;
+
+    const location_point_geojson = await getLocationGeojson(
+      initialFormData,
+      data
+    );
+
+    // Delete a remote image only on submission
+    if (
+      data.idea_images_attributes !== initialFormData?.idea_images_attributes &&
+      initialFormData?.idea_images_attributes !== undefined
+    ) {
+      try {
+        deleteIdeaImage(ideaId, initialFormData?.idea_images_attributes[0].id);
+      } catch (e) {
+        // TODO: Add graceful error handling
+      }
     }
 
     const idea = await updateIdea(ideaId, {
-      ...data,
+      ...ideaWithOUtFiles,
       location_point_geojson,
       project_id: project?.id,
       publication_status: 'published',
@@ -123,6 +168,39 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
     [uiSchema]
   );
 
+  if (isNilOrError(project)) {
+    return null;
+  }
+
+  const TitleComponent = !isNilOrError(idea) ? (
+    <Box
+      width="100%"
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      pt="60px"
+      pb="40px"
+    >
+      <GoBackToIdeaPage idea={idea} />
+
+      <FormattedMessage
+        {...{
+          idea: messages.formTitle,
+          option: messages.optionFormTitle,
+          project: messages.projectFormTitle,
+          question: messages.questionFormTitle,
+          issue: messages.issueFormTitle,
+          contribution: messages.contributionFormTitle,
+        }[
+          uiSchema && uiSchema?.options?.inputTerm
+            ? uiSchema.options.inputTerm
+            : 'idea'
+        ]}
+      />
+    </Box>
+  ) : undefined;
+
   return (
     <PageContainer overflow="hidden" id="e2e-idea-edit-page">
       {!isNilOrError(project) && !isNilOrError(idea) && schema && uiSchema ? (
@@ -137,24 +215,7 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
             getAjvErrorMessage={getAjvErrorMessage}
             getApiErrorMessage={getApiErrorMessage}
             config={'input'}
-            title={
-              <FormattedMessage
-                {...{
-                  idea: messages.formTitle,
-                  option: messages.optionFormTitle,
-                  project: messages.projectFormTitle,
-                  question: messages.questionFormTitle,
-                  issue: messages.issueFormTitle,
-                  contribution: messages.contributionFormTitle,
-                }[
-                  getInputTerm(
-                    project?.attributes.process_type,
-                    project,
-                    phases
-                  )
-                ]}
-              />
-            }
+            title={TitleComponent}
           />
         </>
       ) : isError(project) || inputSchemaError ? null : (

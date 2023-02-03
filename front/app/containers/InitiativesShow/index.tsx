@@ -13,7 +13,7 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 // components
 import Modal from 'components/UI/Modal';
 import FileAttachments from 'components/UI/FileAttachments';
-import { Spinner } from '@citizenlab/cl2-component-library';
+import { Spinner, Box } from '@citizenlab/cl2-component-library';
 import SharingButtons from 'components/Sharing/SharingButtons';
 import FeatureFlag from 'components/FeatureFlag';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
@@ -62,7 +62,7 @@ import { getAddressOrFallbackDMS } from 'utils/map';
 import clHistory from 'utils/cl-router/history';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
@@ -338,13 +338,15 @@ interface State {
 }
 
 export class InitiativesShow extends PureComponent<
-  Props & InjectedIntlProps & InjectedLocalized & WithRouterProps,
+  Props & WrappedComponentProps & InjectedLocalized & WithRouterProps,
   State
 > {
   officialFeedbackElement = createRef<HTMLDivElement>();
   timeoutRef: NodeJS.Timeout;
 
-  constructor(props) {
+  constructor(
+    props: Props & WrappedComponentProps & InjectedLocalized & WithRouterProps
+  ) {
     super(props);
     this.state = {
       loaded: false,
@@ -610,10 +612,11 @@ export class InitiativesShow extends PureComponent<
                   translateButtonClicked={translateButtonClicked}
                 />
 
-                {!isNilOrError(initiativeFiles) &&
-                  initiativeFiles.length > 0 && (
+                {!isNilOrError(initiativeFiles) && initiativeFiles.length > 0 && (
+                  <Box mb="25px">
                     <FileAttachments files={initiativeFiles} />
-                  )}
+                  </Box>
+                )}
 
                 <div ref={this.officialFeedbackElement}>
                   <StyledOfficialFeedback

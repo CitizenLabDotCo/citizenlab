@@ -4,17 +4,22 @@ import { isEmpty, get, isNumber, round } from 'lodash-es';
 import moment from 'moment';
 import Observer from '@researchgate/react-intersection-observer';
 import bowser from 'bowser';
+import { TLayout } from 'components/ProjectAndFolderCards';
 
 // router
 import Link from 'utils/cl-router/Link';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Image from 'components/UI/Image';
 import AvatarBubbles from 'components/AvatarBubbles';
 
 // services
 import { getProjectUrl } from 'services/projects';
+import {
+  CARD_IMAGE_ASPECT_RATIO,
+  getCardImageUrl,
+} from 'services/projectImages';
 import { getInputTerm } from 'services/participationContexts';
 import { getIdeaPostingRules } from 'services/actionTakingRules';
 
@@ -27,7 +32,7 @@ import useProjectImages from 'hooks/useProjectImages';
 
 // i18n
 import T from 'components/T';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
@@ -61,7 +66,6 @@ const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
 
   &.large {
     width: 100%;
-    min-height: 450px;
     flex-direction: row;
     align-items: stretch;
     justify-content: space-between;
@@ -131,27 +135,21 @@ const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
 
 const ProjectImageContainer = styled.div`
   width: 100%;
-  height: 254px;
-  flex-grow: 0;
-  flex-shrink: 0;
-  flex-basis: 254px;
   display: flex;
+  aspect-ratio: ${CARD_IMAGE_ASPECT_RATIO} / 1;
   margin-right: 10px;
   overflow: hidden;
   position: relative;
 
   &.large {
     width: 50%;
-    height: 100%;
-    flex-basis: 50%;
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
   }
 
-  &.small {
-    height: 224px;
-    flex-basis: 224px;
-  }
+  ${media.phone`
+    aspect-ratio: ${CARD_IMAGE_ASPECT_RATIO} / 1;
+  `}
 `;
 
 const ProjectImagePlaceholder = styled.div`
@@ -279,20 +277,20 @@ const ProgressBar = styled.div`
   width: 100%;
   max-width: 130px;
   height: 5px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   background: #d6dade;
 `;
 
-const ProgressBarOverlay: any = styled.div`
+const ProgressBarOverlay = styled.div<{ progress: number }>`
   width: 0px;
   height: 100%;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   background: ${colors.error};
   transition: width 1000ms cubic-bezier(0.19, 1, 0.22, 1);
   will-change: width;
 
   &.visible {
-    width: ${(props: any) => props.progress}%;
+    width: ${(props) => props.progress}%;
   }
 `;
 
@@ -307,7 +305,7 @@ const ProjectLabel = styled.div`
   padding-right: 14px;
   padding-top: 8px;
   padding-bottom: 8px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   background: ${({ theme }) => rgba(theme.colors.tenantSecondary, 0.1)};
 `;
 
@@ -447,15 +445,16 @@ const MetaItemText = styled.div`
   margin-left: 3px;
 `;
 
+export type TProjectCardSize = 'small' | 'medium' | 'large';
 export interface InputProps {
   projectId: string;
-  size: 'small' | 'medium' | 'large';
-  layout?: 'dynamic' | 'threecolumns' | 'twocolumns';
+  size: TProjectCardSize;
+  layout?: TLayout;
   hideDescriptionPreview?: boolean;
   className?: string;
 }
 
-interface Props extends InputProps, InjectedIntlProps {}
+interface Props extends InputProps, WrappedComponentProps {}
 
 const ProjectCard = memo<Props>(
   ({
@@ -475,7 +474,8 @@ const ProjectCard = memo<Props>(
         : null;
     const phase = usePhase(currentPhaseId);
     const phases = usePhases(projectId);
-    const theme: any = useTheme();
+    const theme = useTheme();
+    const isPhone = useBreakpoint('phone');
 
     const [visible, setVisible] = useState(false);
 
@@ -514,10 +514,15 @@ const ProjectCard = memo<Props>(
       const canVote = project.attributes.action_descriptor.voting_idea.enabled;
       const canComment =
         project.attributes.action_descriptor.commenting_idea.enabled;
-      const imageUrl =
-        !isNilOrError(projectImages) && projectImages.length > 0
-          ? projectImages[0].attributes.versions.medium
-          : null;
+
+      const imageVersions = isNilOrError(projectImages)
+        ? null
+        : projectImages[0]?.attributes.versions;
+
+      const imageUrl = imageVersions
+        ? getCardImageUrl(imageVersions, isPhone, size)
+        : null;
+
       const projectUrl = getProjectUrl(project);
       const isFinished = project.attributes.timeline_active === 'past';
       const isArchived = project.attributes.publication_status === 'archived';
@@ -572,24 +577,25 @@ const ProjectCard = memo<Props>(
             ? round((pastDays / totalDays) * 100, 1)
             : null;
 
-        countdown = (
-          <Countdown className="e2e-project-card-time-remaining">
-            <TimeRemaining className={size}>
-              <FormattedMessage
-                {...messages.remaining}
-                values={{ timeRemaining }}
-              />
-            </TimeRemaining>
-            <Observer onChange={handleIntersection}>
-              <ProgressBar aria-hidden>
-                <ProgressBarOverlay
-                  progress={progress}
-                  className={visible ? 'visible' : ''}
+        countdown =
+          typeof progress === 'number' ? (
+            <Countdown className="e2e-project-card-time-remaining">
+              <TimeRemaining className={size}>
+                <FormattedMessage
+                  {...messages.remaining}
+                  values={{ timeRemaining }}
                 />
-              </ProgressBar>
-            </Observer>
-          </Countdown>
-        );
+              </TimeRemaining>
+              <Observer onChange={handleIntersection}>
+                <ProgressBar aria-hidden>
+                  <ProgressBarOverlay
+                    progress={progress}
+                    className={visible ? 'visible' : ''}
+                  />
+                </ProgressBar>
+              </Observer>
+            </Countdown>
+          ) : null;
       }
 
       if (participationMethod === 'budgeting') {

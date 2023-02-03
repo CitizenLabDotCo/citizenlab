@@ -20,7 +20,7 @@ import { transparentize } from 'polished';
 // i18n
 import messages from './messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { FormattedDate, InjectedIntlProps } from 'react-intl';
+import { FormattedDate, WrappedComponentProps } from 'react-intl';
 import { getLocalized } from 'utils/i18n';
 
 // services
@@ -39,7 +39,7 @@ import GetAppConfigurationLocales, {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
@@ -167,10 +167,10 @@ interface State {
 }
 
 export class OfficialFeedbackPost extends PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       showEditForm: false,
@@ -283,9 +283,7 @@ export class OfficialFeedbackPost extends PureComponent<
         >
           {editingAllowed && (
             <StyledMoreActionsMenu
-              ariaLabel={this.props.intl.formatMessage(
-                messages.showMoreActions
-              )}
+              label={this.props.intl.formatMessage(messages.showMoreActions)}
               actions={this.getActions(officialFeedbackPost.id)}
             />
           )}
@@ -346,11 +344,11 @@ const Data = adopt<DataProps>({
   tenantLocales: <GetAppConfigurationLocales />,
 });
 
-const OfficialFeedbackPostWithIntl = injectIntl<Props>(OfficialFeedbackPost);
+const OfficialFeedbackPostWithIntl = injectIntl(OfficialFeedbackPost);
 
 export default (inputProps: InputProps) => (
   <Data>
-    {(dataProps) => (
+    {(dataProps: DataProps) => (
       <OfficialFeedbackPostWithIntl {...inputProps} {...dataProps} />
     )}
   </Data>

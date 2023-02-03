@@ -1,13 +1,6 @@
 import styled from 'styled-components';
 import { media, colors, fontSizes, defaultCardStyle } from 'utils/styleUtils';
 
-export const ControlBar = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 30px;
-  width: 100%;
-`;
-
 export const GraphsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -92,14 +85,6 @@ export const GraphCardInnerClean = styled.div`
   padding-right: 20px;
   padding-bottom: 35px;
   ${defaultCardStyle}
-  @media print {
-    position: relative;
-    display: block;
-    page-break-inside: avoid;
-    width: 100%;
-    padding: 0 10px;
-    border: none;
-  }
 `;
 
 export const GraphCard = styled.div`
@@ -180,6 +165,9 @@ export const GraphCardTitle = styled.h3`
   display: flex;
   align-items: center;
   margin: 0;
+  font-size: 25px;
+  font-weight: bold;
+  line-height: 1.3;
 `;
 
 export const GraphCardFigureContainer = styled.div`

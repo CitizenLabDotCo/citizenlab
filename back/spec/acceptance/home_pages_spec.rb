@@ -29,7 +29,7 @@ resource 'Home Page' do
 
     patch 'web_api/v1/home_page' do
       with_options scope: :home_page do
-        parameter :banner_layout, 'the specific layout for the banner, one of: full_width_banner_layout two_column_layout two_row_layout'
+        parameter :banner_layout, 'the specific layout for the banner, one of: full_width_banner_layout two_column_layout two_row_layout fixed_ratio_layout'
         parameter :banner_avatars_enabled, 'if avatar display in the banner is enabled'
         parameter :banner_signed_in_header_multiloc, 'multiloc content for the banner header for signed in users'
         parameter :banner_signed_out_header_multiloc, 'multiloc content for the banner header for signed out users'

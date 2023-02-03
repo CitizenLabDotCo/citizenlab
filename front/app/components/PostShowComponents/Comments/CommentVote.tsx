@@ -25,12 +25,12 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // events
-import { openSignUpInModal } from 'components/SignUpIn/events';
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+import { openSignUpInModal } from 'events/openSignUpInModal';
+import { openVerificationModal } from 'events/verificationModal';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // style
@@ -138,8 +138,8 @@ interface State {
   upvoteCount: number;
 }
 
-class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
-  constructor(props) {
+class CommentVote extends PureComponent<Props & WrappedComponentProps, State> {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       voted: false,

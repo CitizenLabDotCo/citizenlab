@@ -24,6 +24,7 @@ import {
   FormSectionTitle,
 } from 'components/UI/FormComponents';
 import PasswordInputIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
+import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
 
 // form
 import { useForm, FormProvider } from 'react-hook-form';
@@ -40,7 +41,7 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 // i18n
 import { appLocalePairs, API_PATH } from 'containers/App/constants';
 import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
 
@@ -50,7 +51,6 @@ import styled from 'styled-components';
 // typings
 import { IOption, UploadFile, Multiloc } from 'typings';
 
-import Outlet from 'components/Outlet';
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
@@ -81,7 +81,7 @@ interface DataProps {
 
 export type ExtraFormDataKey = 'custom_field_values';
 
-type Props = InputProps & DataProps & InjectedIntlProps & InjectedLocalized;
+type Props = InputProps & DataProps & WrappedComponentProps & InjectedLocalized;
 
 type FormValues = {
   first_name?: string;
@@ -330,10 +330,9 @@ const ProfileForm = ({
             />
           </SectionField>
         </form>
-        <Outlet
-          id="app.containers.UserEditPage.ProfileForm.forms"
-          onChange={handleCustomFieldsChange}
+        <UserCustomFieldsForm
           authUser={authUser}
+          onChange={handleCustomFieldsChange}
         />
         <Box display="flex">
           <Button

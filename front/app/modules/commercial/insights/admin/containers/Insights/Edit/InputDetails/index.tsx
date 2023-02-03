@@ -29,7 +29,7 @@ import { colors } from 'utils/styleUtils';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
 // tracking
@@ -40,7 +40,7 @@ type InputDetailsProps = {
   previewedInputId: string;
 } & NavigationProps &
   WithRouterProps &
-  InjectedIntlProps;
+  WrappedComponentProps;
 
 const Container = styled.div`
   padding: 48px;

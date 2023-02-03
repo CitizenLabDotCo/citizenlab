@@ -3,7 +3,7 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import { forOwn, size, trim } from 'lodash-es';
 import React, { useState } from 'react';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { ICustomPageAttributes } from 'services/customPages';
 import { IHomepageSettingsAttributes } from 'services/homepageSettings';
 import { Multiloc } from 'typings';
@@ -33,7 +33,7 @@ const BannerHeaderFields = ({
   inputLabelText,
   subheaderInputLabelText,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const [headerAndSubheaderErrors, setHeaderAndSubheaderErrors] = useState<{
     signedOutHeaderErrors: Multiloc;
     signedOutSubheaderErrors: Multiloc;

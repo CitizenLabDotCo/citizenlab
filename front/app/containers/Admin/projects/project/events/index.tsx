@@ -2,7 +2,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
@@ -36,7 +36,7 @@ const StyledList = styled(List)`
 const AdminProjectEventsIndex = ({
   intl,
   params,
-}: WithRouterProps & InjectedIntlProps) => {
+}: WithRouterProps & WrappedComponentProps) => {
   const { projectId } = params;
   const { events } = useEvents({
     projectIds: [projectId],

@@ -6,7 +6,7 @@ import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 // hooks
 import useLocalize from 'hooks/useLocalize';
 import useNavbarItems from 'hooks/useNavbarItems';
-import usePages from 'hooks/usePages';
+import useCustomPages from 'hooks/useCustomPages';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
@@ -30,7 +30,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 // services
 import { DEFAULT_PAGE_SLUGS } from 'services/navbar';
-import { TPageCode } from 'services/pages';
+import { TPageCode } from 'services/customPages';
 
 const Container = styled.div`
   min-height: calc(
@@ -129,7 +129,7 @@ const SiteMap = ({ projects, authUser }: Props) => {
   const loaded = projects !== undefined;
   const navBarItems = useNavbarItems();
   const localize = useLocalize();
-  const pages = usePages();
+  const pages = useCustomPages();
 
   const scrollTo = (component) => (event: any) => {
     // if the event is synthetic, it's a key event and we move focus

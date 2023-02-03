@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import { darken } from 'polished';
 
@@ -8,6 +8,7 @@ import { Toggle, Box, Title, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import T from 'components/T';
 import Modal from 'components/UI/Modal';
+import DeleteFormResultsNotice from 'containers/Admin/formBuilder/components/DeleteFormResultsNotice';
 
 // routing
 import clHistory from 'utils/cl-router/history';
@@ -37,7 +38,7 @@ type FormActionsProps = {
   postingEnabled: boolean;
   heading?: Multiloc;
   togglePostingEnabled: () => void;
-} & InjectedIntlProps;
+} & WrappedComponentProps;
 
 const FormActions = ({
   phaseId,
@@ -69,39 +70,47 @@ const FormActions = ({
   };
 
   if (!isNilOrError(submissionCount)) {
+    const haveSubmissionsComeIn = submissionCount.totalSubmissions > 0;
+
     return (
       <Box width="100%" my="60px">
-        <Box display="flex" flexDirection="row" width="100%" mb="48px">
-          <Box width="100%">
-            <Title variant="h4">
+        <Box
+          display="flex"
+          flexDirection="row"
+          width="100%"
+          mb="36px"
+          gap="16px"
+        >
+          {heading && (
+            <Title variant="h4" mt="0" mb="0">
               <T value={heading} />
             </Title>
-          </Box>
-          <Box
-            width="100%"
-            display="flex"
-            alignItems="center"
-            justifyContent="flex-end"
-          >
-            <Toggle
-              checked={postingEnabled}
-              label={formatMessage(messages.openForSubmissions)}
-              onChange={() => {
-                togglePostingEnabled();
-              }}
-            />
-          </Box>
+          )}
+          <Toggle
+            checked={postingEnabled}
+            label={formatMessage(messages.openForResponses)}
+            onChange={() => {
+              togglePostingEnabled();
+            }}
+          />
         </Box>
+        {haveSubmissionsComeIn && (
+          <Box width="100%" mb="36px">
+            <DeleteFormResultsNotice projectId={projectId} />
+          </Box>
+        )}
         <Box
           display="flex"
           alignItems="center"
           flexDirection="row"
           width="100%"
           justifyContent="space-between"
+          gap="12px"
         >
           <Button
             icon="chart-bar"
-            buttonStyle="primary"
+            data-cy="e2e-form-view-results"
+            buttonStyle="cl-blue"
             width="auto"
             minWidth="312px"
             onClick={() => {
@@ -114,9 +123,10 @@ const FormActions = ({
           </Button>
           <Button
             icon="edit"
-            buttonStyle="primary"
+            buttonStyle="cl-blue"
             width="auto"
             minWidth="312px"
+            disabled={haveSubmissionsComeIn}
             onClick={() => {
               clHistory.push(editFormLink);
             }}
@@ -128,35 +138,38 @@ const FormActions = ({
             linkTo={viewFormLink}
             icon="eye"
             openLinkInNewTab
-            buttonStyle="primary"
+            buttonStyle="cl-blue"
             width="auto"
             minWidth="312px"
           >
             {formatMessage(messages.viewSurveyText)}
           </Button>
         </Box>
-        <Box
-          display="flex"
-          alignItems="flex-start"
-          flexDirection="row"
-          width="100%"
-          justifyContent="space-between"
-          mt="32px"
-        >
-          <Button
-            icon="delete"
-            width="auto"
-            minWidth="312px"
-            bgColor="transparent"
-            borderColor={colors.red600}
-            iconColor={colors.red600}
-            textColor={colors.red600}
-            bgHoverColor={darken(0.12, colors.red600)}
-            onClick={openModal}
+        {haveSubmissionsComeIn && (
+          <Box
+            display="flex"
+            alignItems="flex-start"
+            flexDirection="row"
+            width="100%"
+            justifyContent="space-between"
+            mt="32px"
           >
-            {formatMessage(messages.deleteSurveyResults)}
-          </Button>
-        </Box>
+            <Button
+              data-cy="e2e-delete-survey-results"
+              icon="delete"
+              width="auto"
+              minWidth="312px"
+              bgColor="transparent"
+              borderColor={colors.red600}
+              iconColor={colors.red600}
+              textColor={colors.red600}
+              bgHoverColor={darken(0.12, colors.red600)}
+              onClick={openModal}
+            >
+              {formatMessage(messages.deleteSurveyResults)}
+            </Button>
+          </Box>
+        )}
         <Modal opened={showDeleteModal} close={closeModal}>
           <Box display="flex" flexDirection="column" width="100%" p="20px">
             <Box mb="40px">
@@ -175,6 +188,7 @@ const FormActions = ({
             >
               <Button
                 icon="delete"
+                data-cy="e2e-confirm-delete-survey-results"
                 buttonStyle="delete"
                 width="auto"
                 mr="20px"

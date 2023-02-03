@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.name        = 'surveys'
   s.version     = Surveys::VERSION
   s.authors     = ['CitizenLab']
-  s.licenses    = ['AGPLv3']
+  s.licenses    = ['CitizenLab Commercial License V2']
   s.summary     = 'Contains everything to support surveys as a participation method'
 
   s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'pundit', '~> 2.0'
   s.add_dependency 'kaminari', '~> 1.2'
   s.add_dependency 'active_model_serializers', '~> 0.10.7'
-  s.add_dependency 'httparty', '~> 0.16.2'
+  s.add_dependency 'httparty'
 
   s.add_development_dependency 'rspec_api_documentation'
   s.add_development_dependency 'rspec-rails'

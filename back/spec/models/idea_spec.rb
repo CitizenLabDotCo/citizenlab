@@ -16,12 +16,6 @@ RSpec.describe Idea, type: :model do
       expect(build(:idea, author: nil).valid?(:create)).to be true
     end
 
-    it 'cannot create an idea without author on publication' do
-      idea = build(:idea, author: nil)
-      expect(idea.valid?(:publication)).to be false
-      expect(idea.errors.details).to eq({ author: [{ error: :blank }] })
-    end
-
     context 'without custom form' do
       it 'can publish an idea without custom fields' do
         project = create :project
@@ -142,6 +136,129 @@ RSpec.describe Idea, type: :model do
 
       it 'returns the form of the project' do
         expect(idea.custom_form).to eq project_form
+      end
+    end
+  end
+
+  describe '#input_term' do
+    context 'when the idea belongs to a continuous project' do
+      let(:project) { create :continuous_project, input_term: 'issue' }
+      let!(:project_form) { create :custom_form, participation_context: project }
+      let(:idea) { build(:idea, project: project) }
+
+      it 'returns the input_term of the project' do
+        expect(idea.input_term).to eq 'issue'
+      end
+    end
+
+    context 'when the idea belongs to a timeline project' do
+      context 'when the idea is created in a phase' do
+        let(:project) { create :project_with_future_native_survey_phase }
+        let(:phase) { project.phases.first }
+        let(:idea) { build(:idea, project: project, creation_phase: phase) }
+
+        it 'returns the input_term of the phase' do
+          phase.update!(input_term: 'option')
+          expect(idea.input_term).to eq 'option'
+        end
+      end
+
+      context 'when there is an active ideation phase' do
+        let(:project) { create :project_with_active_ideation_phase }
+        let(:phase) { project.phases.first }
+        let(:idea) { build(:idea, project: project) }
+
+        it 'returns the input_term of the active ideation phase' do
+          phase.update!(input_term: 'issue')
+          expect(idea.input_term).to eq 'issue'
+        end
+
+        context 'when there is an active budgeting phase' do
+          let(:project) { create :project_with_active_budgeting_phase }
+          let(:phase) { project.phases.first }
+          let(:idea) { build(:idea, project: project) }
+
+          it 'returns the input_term of the active budgeting phase' do
+            phase.update!(input_term: 'option')
+            expect(idea.input_term).to eq 'option'
+          end
+        end
+      end
+
+      context 'when there is no active ideation or budgeting phase' do
+        context 'when the idea does not belong to any phase' do
+          # The project and the phase are given an input_term to describe that they
+          # do not provide the input_term for the idea without phases.
+          let(:project) { create :project_with_past_ideation_and_current_information_phase, input_term: 'issue' }
+          let(:phase) { project.phases.first }
+          let(:idea) { build(:idea, project: project, phases: []) }
+
+          it 'returns the default input_term' do
+            phase.update!(input_term: 'option')
+            expect(idea.input_term).to eq 'idea'
+          end
+        end
+
+        context 'when the idea belongs to one phase' do
+          let(:project) { create :project_with_past_ideation_and_current_information_phase }
+          let(:past_phase) { project.phases.detect(&:ideation?) }
+          let(:idea) { build(:idea, project: project, phases: [past_phase]) }
+
+          it 'returns the default input_term' do
+            past_phase.update!(input_term: 'question')
+            expect(idea.input_term).to eq 'question'
+          end
+        end
+
+        context 'when the idea belongs to two phases and the current time is in-between phases' do
+          let(:project) { create :project_with_past_ideation_and_future_ideation_phase }
+          let(:past_phase) { project.phases.min_by(&:start_at) }
+          let(:future_phase) { project.phases.max_by(&:start_at) }
+          let(:idea) { build(:idea, project: project, phases: [past_phase, future_phase]) }
+
+          it 'returns the input_term of the past phase' do
+            past_phase.update!(input_term: 'option')
+            future_phase.update!(input_term: 'question')
+            expect(idea.input_term).to eq 'option'
+          end
+        end
+
+        context 'when the idea belongs to two phases and the current time is before the first phase' do
+          let(:project) { create :project_with_two_future_ideation_phases }
+          let(:past_phase1) { project.phases.min_by(&:start_at) }
+          let(:past_phase2) { project.phases.max_by(&:start_at) }
+          let(:idea) { build(:idea, project: project, phases: [past_phase1, past_phase2]) }
+
+          it 'returns the input_term of the first phase' do
+            past_phase1.update!(input_term: 'option')
+            past_phase2.update!(input_term: 'question')
+            expect(idea.input_term).to eq 'option'
+          end
+        end
+
+        context 'when the idea belongs to two phases and the current time is after the last phase' do
+          let(:project) { create :project_with_two_past_ideation_phases }
+          let(:future_phase1) { project.phases.min_by(&:start_at) }
+          let(:future_phase2) { project.phases.max_by(&:start_at) }
+          let(:idea) { build(:idea, project: project, phases: [future_phase1, future_phase2]) }
+
+          it 'returns the input_term of the last phase' do
+            future_phase1.update!(input_term: 'option')
+            future_phase2.update!(input_term: 'question')
+            expect(idea.input_term).to eq 'question'
+          end
+        end
+
+        context 'when the idea belongs to an ideation phase, and the current phase is information' do
+          let(:project) { create :project_with_past_ideation_and_current_information_phase, input_term: 'issue' }
+          let(:ideation_phase) { project.phases.first }
+          let(:idea) { build(:idea, project: project, phases: [ideation_phase]) }
+
+          it 'returns the input_term of the ideation phase' do
+            ideation_phase.update!(input_term: 'question')
+            expect(idea.input_term).to eq 'question'
+          end
+        end
       end
     end
   end

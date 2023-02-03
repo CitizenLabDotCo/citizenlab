@@ -53,7 +53,7 @@ const IdeaCardImageWrapper = styled.div<{ hasImage: boolean }>`
   justify-content: center;
   margin-right: 18px;
   overflow: hidden;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
 
   @media (max-width: 1220px) and (min-width: 1023px) {
     height: ${cardInnerHeightExtended};

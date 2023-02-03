@@ -2,7 +2,7 @@ describe('/admin route', () => {
   it('redirects unauthenticated users to signin', () => {
     cy.visit('/admin');
     cy.wait(1000);
-    cy.location('pathname').should('eq', '/en/sign-in');
+    cy.location('pathname').should('eq', '/en/');
   });
 
   it('redirects admins to dashboard', () => {
@@ -17,7 +17,7 @@ describe('/admin route', () => {
 const ADMIN_PAGES = [
   { url: 'moderation', container: '#e2e-moderation-container' },
   { url: 'projects', container: '#e2e-projects-admin-container' },
-  { url: 'insights/reports', container: '#e2e-insights-container' },
+  { url: 'reporting', container: '#e2e-reporting-container' },
   { url: 'ideas', container: '#e2e-input-manager-container' },
   { url: 'initiatives', container: '#e2e-initiatives-admin-container' },
   { url: 'users', container: '#e2e-users-container' },

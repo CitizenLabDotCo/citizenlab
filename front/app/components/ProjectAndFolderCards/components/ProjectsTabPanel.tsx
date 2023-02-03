@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import getCardSizes from './getCardSizes';
+import { isEqual } from 'lodash-es';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // components
 import ProjectCard from 'components/ProjectCard';
-import Outlet from 'components/Outlet';
+import ProjectFolderCard from './ProjectFolderCard';
 
 // types
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import { BaseProps, TCardSize } from './ProjectsList';
+import { BaseProps, TCardSize } from './PublicationStatusTabs';
 import { PublicationTab } from '../';
 
 // utils
@@ -27,7 +30,6 @@ const MockProjectCard = styled.div`
 
 interface Props extends BaseProps {
   tab: PublicationTab;
-  cardSizes: TCardSize[];
 }
 
 const ProjectsTabPanel = ({
@@ -35,9 +37,23 @@ const ProjectsTabPanel = ({
   currentTab,
   list,
   layout,
-  cardSizes,
   hasMore,
 }: Props) => {
+  const isTablet = useBreakpoint('tablet');
+  const isLargerThanTablet = !isTablet;
+  const [cardSizes, setCardSizes] = useState<TCardSize[]>([]);
+
+  useEffect(() => {
+    if (list.length > 0 && layout === 'dynamic') {
+      const newCardSizes = getCardSizes(list.length, isLargerThanTablet);
+
+      if (!isEqual(cardSizes, newCardSizes)) {
+        setCardSizes(newCardSizes);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [list.length, layout]);
+
   return (
     // The id, aria-labelledby, hidden and hide are necessary
     // for the tab system to work well with screen readers.
@@ -54,12 +70,16 @@ const ProjectsTabPanel = ({
       {list.map((item: IAdminPublicationContent, index: number) => {
         const projectOrFolderId = item.publicationId;
         const projectOrFolderType = item.publicationType;
-        const size =
-          layout === 'dynamic'
-            ? cardSizes[index]
-            : layout === 'threecolumns'
-            ? 'small'
-            : 'medium';
+        const getCardSize = (index: number) => {
+          if (layout === 'dynamic') {
+            return cardSizes[index];
+          } else if (layout === 'threecolumns') {
+            return 'small';
+          } else {
+            return 'medium';
+          }
+        };
+        const size = getCardSize(index);
 
         return (
           <React.Fragment key={index}>
@@ -70,12 +90,13 @@ const ProjectsTabPanel = ({
                 layout={layout}
               />
             )}
-            <Outlet
-              id="app.components.ProjectAndFolderCards.card"
-              publication={item}
-              size={size}
-              layout={layout}
-            />
+            {projectOrFolderType === 'folder' && (
+              <ProjectFolderCard
+                publication={item}
+                size={size}
+                layout={layout}
+              />
+            )}
           </React.Fragment>
         );
       })}

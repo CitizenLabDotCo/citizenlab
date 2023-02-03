@@ -9,32 +9,37 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { Row } from 'components/admin/ResourceList';
 import AdminEditButton from './AdminEditButton';
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
-export interface Props {
+import { IHomepageSectionToggleData } from '../../containers/EditHomepage';
+import { ICustomPageSectionToggleData } from '../../containers/CustomPages/Edit/Content';
+
+export interface ISectionToggleData {
+  titleMessage: string;
+  tooltipMessage: string | JSX.Element;
+  linkToPath?: string;
+  hideToggle?: boolean;
+}
+
+interface Props {
+  sectionToggleData: IHomepageSectionToggleData | ICustomPageSectionToggleData;
   onChangeSectionToggle: () => void;
   onClickEditButton?: (editLinkPath: string) => void;
-  titleMessageDescriptor: MessageDescriptor;
-  tooltipMessageDescriptor: MessageDescriptor;
   checked: boolean;
-  disabled: boolean;
-  editLinkPath?: string;
   isLastItem: boolean;
-  hideToggle?: boolean;
-  name?: string;
 }
 
 const SectionToggle = ({
   onChangeSectionToggle,
   onClickEditButton,
-  titleMessageDescriptor,
-  tooltipMessageDescriptor,
-  editLinkPath,
   checked,
-  disabled,
   isLastItem,
-  hideToggle = false,
-  name,
+  sectionToggleData: {
+    titleMessage,
+    tooltipMessage,
+    name,
+    linkToPath,
+    hideToggle = false,
+  },
 }: Props) => {
   return (
     <Row isLastItem={isLastItem}>
@@ -51,25 +56,20 @@ const SectionToggle = ({
           mt="7px"
           data-cy={`e2e-admin-section-toggle-${name}`}
         >
-          <Toggle
-            checked={checked}
-            onChange={onChangeSectionToggle}
-            disabled={disabled}
-          />
+          <Toggle checked={checked} onChange={onChangeSectionToggle} />
         </Box>
         <Box>
-          <Title mr="10px">
-            <FormattedMessage {...titleMessageDescriptor} />
-          </Title>
+          <Title mr="10px">{titleMessage}</Title>
         </Box>
         <Box>
-          <IconTooltip
-            content={<FormattedMessage {...tooltipMessageDescriptor} />}
-          />
+          <IconTooltip theme="light" content={<>{tooltipMessage}</>} />
         </Box>
       </Box>
-      {editLinkPath && onClickEditButton && (
-        <AdminEditButton onClick={() => onClickEditButton(editLinkPath)} />
+      {linkToPath && onClickEditButton && (
+        <AdminEditButton
+          onClick={() => onClickEditButton(linkToPath)}
+          testId={name}
+        />
       )}
     </Row>
   );

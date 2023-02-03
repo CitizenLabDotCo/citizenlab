@@ -100,13 +100,14 @@ interface State {
   processing: boolean;
   authorId: string | null;
   attachments: UploadFile[];
+  originalLocationDescription: string | null;
 }
 
 class AdminIdeaEdit extends PureComponent<Props, State> {
   subscriptions: Subscription[];
 
   constructor(props: Props) {
-    super(props as any);
+    super(props);
     this.state = {
       projectId: null,
       authorId: null,
@@ -127,6 +128,7 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
       loaded: false,
       processing: false,
       attachments: [],
+      originalLocationDescription: null,
     };
     this.subscriptions = [];
   }
@@ -141,6 +143,7 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
         )
       );
     const idea$ = ideaByIdStream(ideaId).observable;
+
     const ideaWithRelationships$ = combineLatest([
       locale$,
       currentTenantLocales$,
@@ -193,6 +196,8 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
             titleMultiloc: idea.data.attributes.title_multiloc,
             descriptionMultiloc: idea.data.attributes.body_multiloc,
             address: idea.data.attributes.location_description,
+            originalLocationDescription:
+              idea.data.attributes.location_description,
             budget: idea.data.attributes.budget,
             authorId: idea.data.relationships.author.data?.id || null,
             proposedBudget: idea.data.attributes.proposed_budget,
@@ -221,6 +226,7 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
       titleMultiloc,
       descriptionMultiloc,
       imageFileIsChanged,
+      originalLocationDescription,
       imageId,
       authorId,
       projectId,
@@ -259,9 +265,10 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
     const locationPoint = await geocode(ideaFormAddress);
     addressDiff.location_description = ideaFormAddress;
 
-    if (locationPoint) {
+    if (locationPoint && originalLocationDescription !== ideaFormAddress) {
       addressDiff.location_point_geojson = locationPoint;
     }
+
     const updateIdeaPromise = updateIdea(ideaId, {
       budget,
       proposed_budget: proposedBudget,

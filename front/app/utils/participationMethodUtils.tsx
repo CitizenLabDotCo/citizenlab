@@ -2,18 +2,25 @@ import React, { ReactNode } from 'react';
 
 // intl
 import { FormattedMessage } from './cl-intl';
-import messages from './participationMethodUtilsMessages';
+import messages from './messages';
 
 // services
 import {
   ParticipationMethod,
   getInputTerm,
 } from 'services/participationContexts';
-import { IPhaseData } from 'services/phases';
+import { getCurrentPhase, IPhaseData } from 'services/phases';
 import { IProjectData } from 'services/projects';
 
 // components
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
+import { IdeationCTABar } from 'components/ParticipationCTABars/IdeationCTABar';
+import { NativeSurveyCTABar } from 'components/ParticipationCTABars/NativeSurveyCTABar';
+import { EmbeddedSurveyCTABar } from 'components/ParticipationCTABars/EmbeddedSurveyCTABar';
+import { BudgetingCTABar } from 'components/ParticipationCTABars/BudgetingCTABar';
+import { VolunteeringCTABar } from 'components/ParticipationCTABars/VolunteeringCTABar';
+
+import { CTABarProps } from 'components/ParticipationCTABars/utils';
 
 // utils
 import { isNilOrError } from './helperUtils';
@@ -39,7 +46,7 @@ type FormTitleMethodProps = {
   phaseFromUrl?: IPhaseData;
 };
 
-type ParticipationMethodConfig = {
+export type ParticipationMethodConfig = {
   /** We currently have 2 UIs for admins to edit the form definition. This
    * defines which UI, if any, the method uses */
   formEditor: 'simpleFormEditor' | 'surveyEditor' | null;
@@ -48,11 +55,18 @@ type ParticipationMethodConfig = {
     props: ModalContentMethodProps
   ) => ReactNode | JSX.Element | null;
   getFormTitle?: (props: FormTitleMethodProps) => void;
+  getMethodPickerMessage: () => ReactNode | JSX.Element | null;
   showInputManager: boolean;
+  isMethodLocked: boolean;
+  postType: 'defaultInput' | 'nativeSurvey';
+  renderCTABar: (props: CTABarProps) => ReactNode | JSX.Element | null;
 };
 
 const ideationConfig: ParticipationMethodConfig = {
   formEditor: 'simpleFormEditor',
+  getMethodPickerMessage: () => {
+    return <FormattedMessage {...messages.inputAndFeedback} />;
+  },
   onFormSubmission: (props: FormSubmissionMethodProps) => {
     if (props.ideaId && props.idea) {
       const urlParameters = `?new_idea_id=${props.ideaId}`;
@@ -66,6 +80,7 @@ const ideationConfig: ParticipationMethodConfig = {
       }
     }
   },
+  postType: 'defaultInput',
   getModalContent: (props: ModalContentMethodProps) => {
     if (props.ideaIdForSocialSharing && props.title && props.subtitle) {
       return (
@@ -101,10 +116,17 @@ const ideationConfig: ParticipationMethodConfig = {
     );
   },
   showInputManager: true,
+  isMethodLocked: false,
+  renderCTABar: (props: CTABarProps) => {
+    return <IdeationCTABar project={props.project} phases={props.phases} />;
+  },
 };
 
 const nativeSurveyConfig: ParticipationMethodConfig = {
   formEditor: 'surveyEditor',
+  getMethodPickerMessage: () => {
+    return <FormattedMessage {...messages.createNativeSurvey} />;
+  },
   onFormSubmission: (props: FormSubmissionMethodProps) => {
     if (props.project) {
       clHistory.push({
@@ -115,6 +137,7 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
       });
     }
   },
+  postType: 'nativeSurvey',
   getModalContent: (props: ModalContentMethodProps) => {
     return (
       <FormattedMessage
@@ -128,35 +151,61 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
     return <FormattedMessage {...messages.surveyTitle} {...props} />;
   },
   showInputManager: false,
+  isMethodLocked: true,
+  renderCTABar: (props: CTABarProps) => {
+    return <NativeSurveyCTABar project={props.project} phases={props.phases} />;
+  },
 };
 
 const informationConfig: ParticipationMethodConfig = {
   formEditor: null,
+  getMethodPickerMessage: () => {
+    return <FormattedMessage {...messages.shareInformation} />;
+  },
   getModalContent: () => {
     return null;
   },
   onFormSubmission: () => {
     return;
   },
+  postType: 'defaultInput',
   showInputManager: false,
+  isMethodLocked: false,
+  renderCTABar: () => {
+    return null;
+  },
 };
 
 const surveyConfig: ParticipationMethodConfig = {
   formEditor: null,
+  getMethodPickerMessage: () => {
+    return <FormattedMessage {...messages.createSurveyText} />;
+  },
   getModalContent: () => {
     return null;
   },
   onFormSubmission: () => {
     return;
   },
+  postType: 'defaultInput',
   showInputManager: false,
+  isMethodLocked: false,
+  renderCTABar: (props: CTABarProps) => {
+    return (
+      <EmbeddedSurveyCTABar project={props.project} phases={props.phases} />
+    );
+  },
 };
 
 const budgetingConfig: ParticipationMethodConfig = {
   formEditor: 'simpleFormEditor',
+  getMethodPickerMessage: () => {
+    return <FormattedMessage {...messages.conductParticipatoryBudgetingText} />;
+  },
   getModalContent: () => {
     return null;
   },
+  postType: 'defaultInput',
   onFormSubmission: (props: FormSubmissionMethodProps) => {
     if (props.ideaId && props.idea) {
       const urlParameters = `?new_idea_id=${props.ideaId}`;
@@ -192,28 +241,48 @@ const budgetingConfig: ParticipationMethodConfig = {
     );
   },
   showInputManager: true,
+  isMethodLocked: false,
+  renderCTABar: (props: CTABarProps) => {
+    return <BudgetingCTABar project={props.project} phases={props.phases} />;
+  },
 };
 
 const pollConfig: ParticipationMethodConfig = {
   formEditor: null,
+  getMethodPickerMessage: () => {
+    return <FormattedMessage {...messages.createPoll} />;
+  },
   getModalContent: () => {
     return null;
   },
   onFormSubmission: () => {
     return;
   },
+  postType: 'defaultInput',
   showInputManager: false,
+  isMethodLocked: false,
+  renderCTABar: () => {
+    return null;
+  },
 };
 
 const volunteeringConfig: ParticipationMethodConfig = {
   formEditor: null,
+  getMethodPickerMessage: () => {
+    return <FormattedMessage {...messages.findVolunteers} />;
+  },
   getModalContent: () => {
     return null;
   },
   onFormSubmission: () => {
     return;
   },
+  postType: 'defaultInput',
   showInputManager: false,
+  isMethodLocked: false,
+  renderCTABar: (props: CTABarProps) => {
+    return <VolunteeringCTABar project={props.project} phases={props.phases} />;
+  },
 };
 
 const methodToConfig: {
@@ -254,6 +323,34 @@ export function getAllParticipationMethods(
     throw `Unknown process_type ${project.attributes.process_type}`;
   }
 }
+
+/** Given the project and its phases, it returns the participation method
+ * used in the project, or current phase if phases are provided and phaseId is not provided.
+ * If the phaseId is provided, then it returns the participation method of the phase whose
+ * phaseId is the same as the provided phaseId
+ */
+export const getParticipationMethod = (
+  project: IProjectData | null,
+  phases: Error | IPhaseData[] | null | undefined | null,
+  phaseId?: string
+): ParticipationMethod | undefined => {
+  if (isNilOrError(project)) {
+    return undefined;
+  }
+  const { process_type, participation_method: projectParticipationMethod } =
+    project.attributes;
+
+  if (process_type === 'continuous') {
+    return projectParticipationMethod;
+  } else if (process_type === 'timeline') {
+    const phase =
+      (!isNilOrError(phases) ? phases : []).find(
+        (phase) => phase.id === phaseId
+      ) || getCurrentPhase(phases);
+    return phase?.attributes.participation_method;
+  }
+  throw `Unknown process_type ${project.attributes.process_type}`;
+};
 
 /** Returns the phase for a given phaseID */
 export function getPhase(

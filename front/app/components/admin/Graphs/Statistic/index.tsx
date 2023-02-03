@@ -9,6 +9,7 @@ interface Props {
   bottomLabel?: string;
   bottomLabelValue?: string;
   tooltipContent?: React.ReactChild;
+  textAlign?: 'left' | 'center';
 }
 
 const Statistic = ({
@@ -17,15 +18,27 @@ const Statistic = ({
   bottomLabel,
   bottomLabelValue,
   tooltipContent,
+  textAlign = 'left',
 }: Props) => (
-  <Box>
-    <Box>
-      <Text color="primary" fontSize="s" mt="0px" mb="0px" display="inline">
+  <Box
+    {...(textAlign === 'left'
+      ? {}
+      : { display: 'flex', flexDirection: 'column', alignItems: 'center' })}
+  >
+    <Box display="flex" alignItems="center">
+      <Text
+        color="primary"
+        fontSize="s"
+        mt="0px"
+        mb="0px"
+        display="inline"
+        textAlign="center"
+      >
         {name}
       </Text>
 
       {tooltipContent && (
-        <Box ml="8px" display="inline">
+        <Box ml="5px" display="inline">
           <IconTooltip
             content={tooltipContent}
             theme="light"

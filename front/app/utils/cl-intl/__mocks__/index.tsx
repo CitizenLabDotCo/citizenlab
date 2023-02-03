@@ -1,19 +1,16 @@
 import React from 'react';
+import { MessageDescriptor, createIntl } from 'react-intl';
 const Intl = jest.requireActual('react-intl');
 
-// Initialise the real provider so that we don't
-// need to reimplement any internals
 const defaultProps = {
   locale: 'en',
   defaultLocale: 'en',
 };
-const intlProvider = new Intl.IntlProvider(defaultProps, {});
 
-// The exact same `intl` object the real code receives ;-)
-const { intl } = intlProvider.getChildContext();
+const intl = createIntl({ locale: 'en', messages: {} });
 
 const formatMessageReplacement = (
-  messageDescriptor: ReactIntl.FormattedMessage.MessageDescriptor,
+  messageDescriptor: MessageDescriptor,
   values?: { [key: string]: string | number | boolean | Date } | undefined
 ) => {
   return intl.formatMessage(messageDescriptor, {
@@ -43,11 +40,9 @@ const {
   IntlProvider,
   FormattedDate,
   FormattedTime,
-  FormattedRelative,
   FormattedNumber,
   FormattedPlural,
   FormattedMessage,
-  FormattedHTMLMessage,
 } = Intl;
 
 Intl.FormattedDate = (props) => (
@@ -58,11 +53,6 @@ Intl.FormattedDate = (props) => (
 Intl.FormattedTime = (props) => (
   <IntlProvider {...defaultProps}>
     <FormattedTime {...props} />
-  </IntlProvider>
-);
-Intl.FormattedRelative = (props) => (
-  <IntlProvider {...defaultProps}>
-    <FormattedRelative {...props} />
   </IntlProvider>
 );
 Intl.FormattedNumber = (props) => (
@@ -80,20 +70,14 @@ Intl.FormattedMessage = (props) => (
     <FormattedMessage {...props} />
   </IntlProvider>
 );
-Intl.FormattedHTMLMessage = (props) => (
-  <IntlProvider {...defaultProps}>
-    <FormattedHTMLMessage {...props} />
-  </IntlProvider>
-);
 
 // Set displayName so that snapshots don't use "Uknown" as component name
 Intl.FormattedDate.displayName = 'FormattedDate';
 Intl.FormattedTime.displayName = 'FormattedTime';
-Intl.FormattedRelative.displayName = 'FormattedRelative';
+Intl.FormattedRelativeTime.displayName = 'FormattedRelative';
 Intl.FormattedNumber.displayName = 'FormattedNumber';
 Intl.FormattedPlural.displayName = 'FormattedPlural';
 Intl.FormattedMessage.displayName = 'FormattedMessage';
-Intl.FormattedHTMLMessage.displayName = 'FormattedHTMLMessage';
 
 // Special hook for tests, real package does not export this
 Intl.intl = intlReplacement;

@@ -1,5 +1,8 @@
 FROM ruby:2.7.6-slim
 
+ARG CITIZENLAB_EE=false
+ENV CITIZENLAB_EE=$CITIZENLAB_EE
+
 RUN apt-get update && apt-get install -qq -y --no-install-recommends \
       build-essential libpq-dev file imagemagick curl git optipng jpegoptim pngquant libgeos-dev libgmp3-dev netcat shared-mime-info \
       less
@@ -14,8 +17,6 @@ ENV INSTALL_PATH /cl2_back
 RUN mkdir -p $INSTALL_PATH
 WORKDIR $INSTALL_PATH
 
-
-COPY citizenlab.config.json citizenlab.config.*.json /
 COPY back/Gemfile back/Gemfile.* ./
 COPY back/engines ./engines
 COPY back/lib/citizen_lab.rb ./lib/

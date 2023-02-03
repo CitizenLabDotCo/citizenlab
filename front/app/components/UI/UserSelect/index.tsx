@@ -3,7 +3,7 @@ import { adopt } from 'react-adopt';
 import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 import ReactSelect, { OptionTypeBase } from 'react-select';
 import selectStyles from 'components/UI/MultipleSelect/styles';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Box, Icon } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 import styled from 'styled-components';
 import { IUserData } from 'services/users';
@@ -14,15 +14,16 @@ interface DataProps {
   users: GetUsersChildProps;
 }
 
-interface Props {
+interface InputProps {
   onChange: (id?: string) => void;
-  value: string;
-  placeholder?: string;
-  disabled?: boolean;
+  value: string | null;
+  placeholder: string;
   className?: string;
   id: string;
   inputId: string;
 }
+
+interface Props extends DataProps, InputProps {}
 
 export const AvatarImage = styled.img`
   flex: 0 0 30px;
@@ -55,7 +56,6 @@ const UserSelect = ({
   onChange,
   value,
   placeholder,
-  disabled = false,
   className,
   id,
   inputId,
@@ -88,7 +88,7 @@ const UserSelect = ({
     users.onLoadMore();
   };
 
-  const Avatar = ({ userId }) => {
+  const Avatar = ({ userId }: { userId: string }) => {
     const user = usersList.find((user) => user.id === userId);
     const avatarSrc =
       user?.attributes?.avatar?.medium || user?.attributes?.avatar?.small;
@@ -103,7 +103,7 @@ const UserSelect = ({
     );
   };
 
-  const getOptionLabel = (option: OptionTypeBase): any => {
+  const getOptionLabel = (option: OptionTypeBase) => {
     if (option.value === 'loadMore' && canLoadMore) {
       return (
         <Button
@@ -123,6 +123,8 @@ const UserSelect = ({
         </UserOption>
       );
     }
+
+    return null;
   };
 
   const handleClear = () => {
@@ -138,29 +140,30 @@ const UserSelect = ({
     : usersList;
 
   return (
-    <ReactSelect
-      id={id}
-      inputId={inputId}
-      className={className}
-      isSearchable
-      blurInputOnSelect
-      backspaceRemovesValue={false}
-      menuShouldScrollIntoView={false}
-      isClearable
-      filterOption={filterOption}
-      value={selectedUser}
-      placeholder={placeholder as string}
-      options={options}
-      getOptionValue={getOptionId}
-      getOptionLabel={getOptionLabel}
-      onChange={handleChange}
-      onInputChange={handleInputChange}
-      isDisabled={disabled}
-      menuPlacement="auto"
-      styles={selectStyles}
-      onMenuScrollToBottom={handleMenuScrollToBottom}
-      onMenuOpen={handleClear}
-    />
+    <Box id="e2e-user-select">
+      <ReactSelect
+        id={id}
+        inputId={inputId}
+        className={className}
+        isSearchable
+        blurInputOnSelect
+        backspaceRemovesValue={false}
+        menuShouldScrollIntoView={false}
+        isClearable
+        filterOption={filterOption}
+        value={selectedUser}
+        placeholder={placeholder}
+        options={options}
+        getOptionValue={getOptionId}
+        getOptionLabel={getOptionLabel}
+        onChange={handleChange}
+        onInputChange={handleInputChange}
+        menuPlacement="auto"
+        styles={selectStyles}
+        onMenuScrollToBottom={handleMenuScrollToBottom}
+        onMenuOpen={handleClear}
+      />
+    </Box>
   );
 };
 
@@ -168,6 +171,8 @@ const Data = adopt<DataProps>({
   users: <GetUsers pageSize={5} sort="last_name" />,
 });
 
-export default (props) => (
-  <Data>{(dataProps) => <UserSelect {...dataProps} {...props} />}</Data>
+export default (props: InputProps) => (
+  <Data>
+    {(dataProps: DataProps) => <UserSelect {...dataProps} {...props} />}
+  </Data>
 );

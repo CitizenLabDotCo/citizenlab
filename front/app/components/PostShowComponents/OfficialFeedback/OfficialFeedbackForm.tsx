@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { forOwn, isEmpty } from 'lodash-es';
 
 // components
-import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
+import { Box, Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import { Section } from 'components/admin/Section';
 import Error from 'components/UI/Error';
@@ -23,7 +23,7 @@ import { isPage, isNilOrError } from 'utils/helperUtils';
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -114,10 +114,10 @@ interface State {
 }
 
 class OfficialFeedbackForm extends PureComponent<
-  Props & InjectedIntlProps,
+  Props & WrappedComponentProps,
   State
 > {
-  constructor(props) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       selectedLocale: null,
@@ -332,18 +332,29 @@ class OfficialFeedbackForm extends PureComponent<
         <Container className={className || ''}>
           <Section id="official-feedback-form">
             <FormLabel>
-              {formType === 'new' && (
-                <AddOfficialUpdateTitle>
-                  <FormattedMessage {...messages.addOfficalUpdate} />
-                </AddOfficialUpdateTitle>
-              )}
-
-              <StyledLocaleSwitcher
-                locales={tenantLocales}
-                selectedLocale={selectedLocale}
-                onSelectedLocaleChange={this.handleOnLocaleChange}
-                values={formValues as any}
-              />
+              <Box
+                width="100%"
+                display="flex"
+                gap="8px"
+                flexWrap="wrap"
+                justifyContent="space-between"
+              >
+                <Box my="auto">
+                  {formType === 'new' && (
+                    <AddOfficialUpdateTitle>
+                      <FormattedMessage {...messages.addOfficalUpdate} />
+                    </AddOfficialUpdateTitle>
+                  )}
+                </Box>
+                <Box my="auto">
+                  <StyledLocaleSwitcher
+                    locales={tenantLocales}
+                    selectedLocale={selectedLocale}
+                    onSelectedLocaleChange={this.handleOnLocaleChange}
+                    values={formValues as any}
+                  />
+                </Box>
+              </Box>
             </FormLabel>
 
             <StyledMentionsTextArea
@@ -411,4 +422,4 @@ class OfficialFeedbackForm extends PureComponent<
   }
 }
 
-export default injectIntl<Props>(OfficialFeedbackForm);
+export default injectIntl(OfficialFeedbackForm);

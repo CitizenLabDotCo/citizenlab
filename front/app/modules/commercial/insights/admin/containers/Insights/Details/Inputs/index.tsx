@@ -27,7 +27,7 @@ import {
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
 // types
@@ -68,7 +68,7 @@ type InputsProps = {
   hasMore: boolean | null;
   onLoadMore: () => void;
 } & WithRouterProps &
-  InjectedIntlProps;
+  WrappedComponentProps;
 
 const Inputs = ({
   params: { viewId },
@@ -219,6 +219,7 @@ const Inputs = ({
       ) : (
         <>
           <Button
+            className="intercom-insights-network-save-as-tag-button"
             buttonStyle="white"
             mb="12px"
             textColor={colors.textSecondary}

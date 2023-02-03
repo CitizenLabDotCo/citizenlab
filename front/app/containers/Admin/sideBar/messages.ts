@@ -53,17 +53,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.processing',
     defaultMessage: 'Processing',
   },
-  insights: {
+  reporting: {
     id: 'app.containers.AdminPage.SideBar.insights',
     defaultMessage: 'Reporting',
   },
   menu: {
     id: 'app.containers.AdminPage.SideBar.menu',
     defaultMessage: 'Pages & menu',
-  },
-  pages: {
-    id: 'app.containers.AdminPage.SideBar.pages',
-    defaultMessage: 'Pages',
   },
   academy: {
     id: 'app.containers.AdminPage.SideBar.academy',

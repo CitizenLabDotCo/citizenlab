@@ -3,9 +3,8 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 
 // i18n
+import { FormattedMessage, injectIntl, useIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
@@ -18,9 +17,8 @@ import {
   StyledContentContainer,
   PageContent,
   PageTitle,
-  PageDescription,
 } from 'containers/PagesShowPage';
-
+import { Box } from '@citizenlab/cl2-component-library';
 // styles
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
@@ -41,7 +39,8 @@ const StyledButton = styled.button`
   }
 `;
 
-const CookiePolicy = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const CookiePolicy = () => {
+  const { formatMessage } = useIntl();
   const openConsentManager = () => {
     eventEmitter.emit('openConsentManager');
   };
@@ -60,24 +59,25 @@ const CookiePolicy = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         <StyledContentContainer>
           <Fragment name="pages/cookie-policy/content">
             <PageTitle>{formatMessage(messages.cookiePolicyTitle)}</PageTitle>
-            <PageDescription>
+            <Box>
               <QuillEditedContent>
                 <p>{formatMessage(messages.intro)}</p>
                 <h2>{formatMessage(messages.whatDoWeUseCookiesFor)}</h2>
-                <FormattedMessage
-                  tagName="p"
-                  {...messages.viewPreferencesText}
-                  values={{
-                    viewPreferencesButton: (
-                      <StyledButton
-                        data-testid="viewPreferencesButton"
-                        onClick={openConsentManager}
-                      >
-                        {formatMessage(messages.viewPreferencesButtonText)}
-                      </StyledButton>
-                    ),
-                  }}
-                />
+                <p>
+                  <FormattedMessage
+                    {...messages.viewPreferencesText}
+                    values={{
+                      viewPreferencesButton: (
+                        <StyledButton
+                          data-testid="viewPreferencesButton"
+                          onClick={openConsentManager}
+                        >
+                          {formatMessage(messages.viewPreferencesButtonText)}
+                        </StyledButton>
+                      ),
+                    }}
+                  />
+                </p>
 
                 <h3>{formatMessage(messages.analyticsTitle)}</h3>
                 <p>{formatMessage(messages.analyticsContent)}</p>
@@ -113,7 +113,7 @@ const CookiePolicy = ({ intl: { formatMessage } }: InjectedIntlProps) => {
                   }}
                 />
               </QuillEditedContent>
-            </PageDescription>
+            </Box>
           </Fragment>
         </StyledContentContainer>
       </PageContent>

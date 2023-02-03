@@ -32,7 +32,7 @@ export interface IEvent {
   };
 }
 
-interface IPageChange {
+interface ICustomPageChange {
   path: string;
   properties?: {
     [key: string]: any;
@@ -40,7 +40,7 @@ interface IPageChange {
 }
 
 export const events$ = new Subject<IEvent>();
-export const pageChanges$ = new Subject<IPageChange>();
+export const pageChanges$ = new Subject<ICustomPageChange>();
 
 const destinationConsentChanged$ = eventEmitter
   .observeEvent<ISavedDestinations[]>('destinationConsentChanged')
@@ -138,7 +138,7 @@ export function trackEvent(event: IEvent) {
 
 /** @deprecated Directly call trackEventByName instead */
 export const injectTracks =
-  <P>(events: { [key: string]: IEvent }) =>
+  <P extends Record<string, any>>(events: { [key: string]: IEvent }) =>
   (component: React.ComponentClass<P>) => {
     return (props: P) => {
       const eventFunctions = mapValues(events, (event) => (extra) => {

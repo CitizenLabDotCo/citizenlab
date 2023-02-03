@@ -42,39 +42,41 @@ interface Props {
   connectDropTarget: any;
 }
 
-class FilterSidebarStatusesItem extends React.PureComponent<Props> {
-  render() {
-    const { status, active, onClick, connectDropTarget, isOver, canDrop } =
-      this.props;
-
-    return connectDropTarget(
-      <div>
-        <Menu.Item active={active || (isOver && canDrop)} onClick={onClick}>
-          <ItemWrapper>
-            <ColorIndicator color={status.attributes.color} />
-            <div>
-              <StatusText>
-                <T value={status.attributes.title_multiloc} />
-              </StatusText>
-              {get(status, 'attributes.transition_type') === 'automatic' && (
-                <StyledText>
-                  &nbsp;
-                  <FormattedMessage {...messages.automatic} />
-                </StyledText>
-              )}
-            </div>
-          </ItemWrapper>
-        </Menu.Item>
-      </div>
-    );
-  }
-}
+const FilterSidebarStatusesItem = ({
+  status,
+  active,
+  onClick,
+  connectDropTarget,
+  isOver,
+  canDrop,
+}: Props) => {
+  return connectDropTarget(
+    <div>
+      <Menu.Item active={active || (isOver && canDrop)} onClick={onClick}>
+        <ItemWrapper>
+          <ColorIndicator color={status.attributes.color} />
+          <div>
+            <StatusText>
+              <T value={status.attributes.title_multiloc} />
+            </StatusText>
+            {get(status, 'attributes.transition_type') === 'automatic' && (
+              <StyledText>
+                &nbsp;
+                <FormattedMessage {...messages.automatic} />
+              </StyledText>
+            )}
+          </div>
+        </ItemWrapper>
+      </Menu.Item>
+    </div>
+  );
+};
 
 const statusTarget = {
-  drop(props) {
+  drop({ status }: Props) {
     return {
       type: 'status',
-      id: props.status.id,
+      id: status.id,
     };
   },
 };

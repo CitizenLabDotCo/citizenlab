@@ -1,14 +1,15 @@
 import React from 'react';
 
 // components
-import TabbedResource from 'components/admin/TabbedResource';
 import { Box } from '@citizenlab/cl2-component-library';
+import TabbedResource from 'components/admin/TabbedResource';
 import Breadcrumbs from 'components/UI/Breadcrumbs';
 import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
+import ViewCustomPageButton from './ViewCustomPageButton';
 
 // i18n
 import messages from '../messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import HelmetIntl from 'components/HelmetIntl';
 import useLocalize from 'hooks/useLocalize';
@@ -24,10 +25,10 @@ import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
 
 const CustomPagesEditSettings = ({
   intl: { formatMessage },
-}: InjectedIntlProps) => {
+}: WrappedComponentProps) => {
   const localize = useLocalize();
   const { customPageId } = useParams() as { customPageId: string };
-  const customPage = useCustomPage(customPageId);
+  const customPage = useCustomPage({ customPageId });
 
   if (isNilOrError(customPage)) {
     return null;
@@ -51,17 +52,22 @@ const CustomPagesEditSettings = ({
       <TabbedResource
         resource={{
           title: localize(pageTitleMultiloc),
+          rightSideCTA: (
+            <ViewCustomPageButton
+              linkTo={`/pages/${customPage.attributes.slug}`}
+            />
+          ),
         }}
         tabs={[
           {
             label: formatMessage(messages.pageSettingsTab),
             name: 'settings',
-            url: `/admin/pages-menu/custom/${customPageId}/settings`,
+            url: `/admin/pages-menu/pages/${customPageId}/settings`,
           },
           {
             label: formatMessage(messages.pageContentTab),
             name: 'content',
-            url: `/admin/pages-menu/custom/${customPageId}/content`,
+            url: `/admin/pages-menu/pages/${customPageId}/content`,
           },
         ]}
         contentWrapper={false}

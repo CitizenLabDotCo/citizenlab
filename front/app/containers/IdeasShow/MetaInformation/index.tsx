@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
-import { checkFieldEnabled } from '../isFieldEnabled';
 
 // components
 import Status from './Status';
@@ -14,7 +13,9 @@ import PostedBy from './PostedBy';
 import useLocale from 'hooks/useLocale';
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
 import Outlet from 'components/Outlet';
-import useFeatureFlag from 'hooks/useFeatureFlag';
+
+// utils
+import { isFieldEnabled } from 'utils/projectUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -42,41 +43,28 @@ const MetaInformation = ({
   className,
 }: Props) => {
   const locale = useLocale();
-
   const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({
     projectId,
     inputId: ideaId,
   });
-  const isIdeaCustomFieldsEnabled = useFeatureFlag({
-    name: 'idea_custom_fields',
-  });
-  const isDynamicIdeaFormEnabled = useFeatureFlag({
-    name: 'dynamic_idea_form',
-  });
 
   if (!isNilOrError(locale) && !isNilOrError(ideaCustomFieldsSchemas)) {
-    const topicsEnabled = checkFieldEnabled(
+    const topicsEnabled = isFieldEnabled(
       'topic_ids',
       ideaCustomFieldsSchemas,
-      locale,
-      isIdeaCustomFieldsEnabled,
-      isDynamicIdeaFormEnabled
+      locale
     );
 
-    const locationEnabled = checkFieldEnabled(
+    const locationEnabled = isFieldEnabled(
       'location_description',
       ideaCustomFieldsSchemas,
-      locale,
-      isIdeaCustomFieldsEnabled,
-      isDynamicIdeaFormEnabled
+      locale
     );
 
-    const attachmentsEnabled = checkFieldEnabled(
+    const attachmentsEnabled = isFieldEnabled(
       'idea_files_attributes',
       ideaCustomFieldsSchemas,
-      locale,
-      isIdeaCustomFieldsEnabled,
-      isDynamicIdeaFormEnabled
+      locale
     );
 
     return (

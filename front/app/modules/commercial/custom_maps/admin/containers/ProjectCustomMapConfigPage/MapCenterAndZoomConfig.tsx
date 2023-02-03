@@ -26,7 +26,7 @@ import {
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // styling
@@ -91,7 +91,7 @@ interface IFormValues {
   defaultZoom: number | null;
 }
 
-const MapCenterAndZoomConfig = memo<Props & InjectedIntlProps>(
+const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
   ({ projectId, className, intl: { formatMessage } }) => {
     const appConfig = useAppConfiguration();
     const mapConfig = useMapConfig({ projectId });

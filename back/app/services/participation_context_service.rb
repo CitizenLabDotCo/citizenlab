@@ -4,7 +4,8 @@ class ParticipationContextService
   POSTING_DISABLED_REASONS = {
     project_inactive: 'project_inactive',
     not_ideation: 'not_ideation',
-    posting_disabled: 'posting_disabled'
+    posting_disabled: 'posting_disabled',
+    posting_limited_max_reached: 'posting_limited_max_reached'
   }.freeze
 
   COMMENTING_DISABLED_REASONS = {
@@ -88,6 +89,8 @@ class ParticipationContextService
       POSTING_DISABLED_REASONS[:not_ideation] # TODO: (native surveys) change reason code?
     elsif !context.posting_enabled
       POSTING_DISABLED_REASONS[:posting_disabled]
+    elsif user && posting_limit_reached?(context, user)
+      POSTING_DISABLED_REASONS[:posting_limited_max_reached]
     else
       permission_denied_reason(user, 'posting_idea', context)
     end
@@ -300,6 +303,10 @@ class ParticipationContextService
       ErrorReporter.report_msg("Unsupported vote type #{mode}")
       'unsupported_vote_type'
     end
+  end
+
+  def posting_limit_reached?(context, user)
+    context.posting_limited? && context.ideas.where(author: user).size >= context.posting_limited_max
   end
 
   def upvoting_limit_reached?(context, user)

@@ -12,7 +12,7 @@ import { HookFormUserFilterConditions } from '../../components/UserFilterConditi
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import adminUsersMessages from 'containers/Admin/users/messages';
 
 // Styling
@@ -21,10 +21,11 @@ import styled from 'styled-components';
 // form
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { string, object, array, number, lazy } from 'yup';
+import { string, object, array, number } from 'yup';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import Feedback from 'components/HookForm/Feedback';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
 const SSectionField = styled(SectionField)`
   max-width: 570px;
@@ -45,7 +46,7 @@ type Props = {
   onSubmit: (formValues: RulesFormValues) => void | Promise<void>;
   defaultValues?: Partial<RulesFormValues>;
   isVerificationEnabled: boolean;
-} & InjectedIntlProps;
+} & WrappedComponentProps;
 
 const RulesGroupForm = ({
   intl: { formatMessage },
@@ -55,23 +56,9 @@ const RulesGroupForm = ({
 }: Props) => {
   const schema = object({
     // Ensure a value is entered for at least one language
-    title_multiloc: lazy((obj) => {
-      const keys = Object.keys(obj);
-      const values = Object.values(obj);
-      if (values.every((value) => value === '')) {
-        return object(
-          keys.reduce(
-            (acc, curr) => (
-              (acc[curr] = string().required(
-                formatMessage(messages.titleFieldEmptyError)
-              )),
-              acc
-            ),
-            {}
-          )
-        );
-      } else return object();
-    }),
+    title_multiloc: validateAtLeastOneLocale(
+      formatMessage(messages.titleFieldEmptyError)
+    ),
     rules: array()
       .test(
         'verificationEnabled',

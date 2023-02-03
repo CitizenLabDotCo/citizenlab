@@ -4,11 +4,10 @@ import InputMultilocWithLocaleSwitcher from './';
 import { useForm, FormProvider } from 'react-hook-form';
 import { object } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import validateMultiloc from 'utils/yup/validateMultiloc';
-import translationMessages from 'i18n/en';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
 const schema = object({
-  title: validateMultiloc('Error message'),
+  title: validateMultilocForEveryLocale('Error message'),
 });
 
 jest.mock('utils/cl-intl');
@@ -102,11 +101,7 @@ describe('InputMultilocWithLocaleSwitcher', () => {
     fireEvent.click(screen.getByText(/submit/i));
     await waitFor(() => {
       expect(
-        screen.getByText(
-          (translationMessages as Record<string, string>)[
-            'app.errors.generics.blank'
-          ]
-        )
+        screen.getByText('This field cannot be empty.')
       ).toBeInTheDocument();
     });
   });

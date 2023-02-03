@@ -27,9 +27,14 @@ const SingleSelectControl = ({
   uischema,
   required,
   id,
+  visible,
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
   const options = getOptions(schema, 'single');
+
+  if (!visible) {
+    return null;
+  }
 
   return (
     <>

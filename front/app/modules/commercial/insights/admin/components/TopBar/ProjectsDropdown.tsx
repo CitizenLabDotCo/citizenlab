@@ -16,7 +16,7 @@ import Link from 'utils/cl-router/Link';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // hooks
@@ -69,7 +69,7 @@ interface Props {
 const ProjectsDropdown = ({
   projectIds,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const [isDropdownOpened, setDropdownOpened] = useState(false);
 
   const toggleDropdown = () => {

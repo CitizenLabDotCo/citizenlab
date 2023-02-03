@@ -11,7 +11,7 @@ import {
   LabelDescription,
 } from 'containers/Admin/settings/general';
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { WrappedComponentProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -24,7 +24,7 @@ const AvatarsField = ({
   checked,
   onChange,
   intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props & WrappedComponentProps) => {
   const handleOnChange = () => {
     onChange(!checked);
   };

@@ -23,6 +23,14 @@ describe('Idea new page', () => {
     cy.get('#e2e-idea-title-input .e2e-error-message');
   });
 
+  it('shows a back button to navigate to the projects page', () => {
+    cy.get('#e2e-idea-other-link').click();
+    cy.location('pathname').should(
+      'eq',
+      '/en/projects/an-idea-bring-it-to-your-council'
+    );
+  });
+
   it('shows an error when no description is provided', () => {
     cy.get('#idea-form');
     cy.get('.e2e-submit-idea-form').click();
@@ -43,6 +51,48 @@ describe('Idea new page', () => {
     cy.wait(200);
     cy.get('.e2e-submit-idea-form').click();
     cy.get('#e2e-idea-description-input .e2e-error-message');
+  });
+
+  it('saves correct location point when provided in URL', () => {
+    cy.intercept('POST', '**/ideas').as('submitIdea');
+
+    const ideaTitle = randomString(40);
+    const ideaContent = randomString(60);
+    const geocodedLocation = 'Maria-Louizasquare 47, 1000 Brussel, Belgium';
+    const lat = 50.84682103382404;
+    const long = 4.378963708877564;
+
+    // Go to URL with lat/long where point is in body of water
+    cy.visit(
+      `/projects/an-idea-bring-it-to-your-council/ideas/new?lat=${lat}&lng=${long}`
+    );
+    cy.get('#idea-form');
+    cy.contains('Add new idea').should('exist');
+
+    // add a title and description
+    cy.get('#e2e-idea-title-input input').type(ideaTitle);
+    cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
+
+    // verify the title and description
+    cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
+    cy.get('#e2e-idea-description-input .ql-editor').contains(ideaContent);
+
+    // Check that the geocoder has autofilled the location
+    cy.get('.e2e-idea-form-location-input-field input').should(
+      'contain.value',
+      geocodedLocation
+    );
+
+    // save the idea
+    cy.get('.e2e-submit-idea-form').click();
+
+    // Intercept the payload, and make sure the original lat/long values are saved as the point
+    cy.wait('@submitIdea').then((interception) => {
+      const keys = Object.keys(interception.request.body.idea);
+      const value = interception.request.body.idea[keys[3]];
+      expect(value.coordinates[0]).to.equal(long);
+      expect(value.coordinates[1]).to.equal(lat);
+    });
   });
 
   it('has a working idea form', () => {

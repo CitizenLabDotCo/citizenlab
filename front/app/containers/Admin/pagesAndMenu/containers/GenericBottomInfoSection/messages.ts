@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.saveButton',
     defaultMessage: 'Save bottom info section',
   },
+  saveAndEnableButton: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.saveAndEnableButton',
+    defaultMessage: 'Save and enable bottom info section',
+  },
   buttonSuccess: {
     id: 'app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.buttonSuccess',
     defaultMessage: 'Success',

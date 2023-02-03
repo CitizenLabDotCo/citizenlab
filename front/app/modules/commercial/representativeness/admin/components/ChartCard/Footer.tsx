@@ -15,13 +15,13 @@ import messages from './messages';
 import { colors } from 'utils/styleUtils';
 
 // typings
-import { ViewState } from '.';
+import { View } from 'components/admin/GraphCard/ViewToggle';
 
 interface Props extends FieldInfoProps {
   hideTicks: boolean;
   dataIsTooLong: boolean;
   numberOfHiddenItems: number;
-  viewState: ViewState;
+  view: View;
   hideLegend: boolean;
   legendLabels: string[];
   onClickSwitchToTableView: () => void;
@@ -40,7 +40,7 @@ const Footer = ({
   hideTicks,
   dataIsTooLong,
   numberOfHiddenItems,
-  viewState,
+  view,
   hideLegend,
   legendLabels,
   onClickSwitchToTableView,
@@ -67,7 +67,7 @@ const Footer = ({
       )}
     </Box>
 
-    {dataIsTooLong && viewState !== 'table' && (
+    {dataIsTooLong && view !== 'table' && (
       <Box
         p="0px 40px 32px 40px"
         data-testid="representativeness-items-hidden-warning"

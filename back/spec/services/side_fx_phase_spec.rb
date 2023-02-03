@@ -56,4 +56,16 @@ describe SideFxPhaseService do
       end
     end
   end
+
+  describe 'after_delete_inputs' do
+    it 'logs "inputs_deleted" activity' do
+      expect(LogActivityJob).to receive(:perform_later).with(
+        phase,
+        'inputs_deleted',
+        user,
+        anything
+      )
+      service.after_delete_inputs phase, user
+    end
+  end
 end
