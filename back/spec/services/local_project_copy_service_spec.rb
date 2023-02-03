@@ -315,7 +315,7 @@ describe LocalProjectCopyService do
 
   if CitizenLab.ee?
     describe 'when source project has associated content builder layout' do
-      let!(:layout) { create(:layout, code: 'project_description') }
+      let(:layout) { create(:layout, code: 'project_description') }
 
       it 'copies content builder layout' do
         copied_project = service.copy(layout.content_buildable)
