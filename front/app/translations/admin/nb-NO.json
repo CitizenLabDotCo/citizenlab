@@ -3,7 +3,7 @@
   "app.components.Admin.ImageCropper.imageSupportPageText": "besøk støttesenteret",
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.components.Admin.ImageCropper.imageTooltip": "For mer informasjon om anbefalte bildeoppløsninger kan du {supportPageLink}.",
-  "app.components.Admin.ImageCropper.info": "This image is always cropped to a certain ratio to make sure all crucial aspects are on display at all times. The {link} for this image type is {aspect}.",
+  "app.components.Admin.ImageCropper.info": "Dette bildet beskjæres alltid til et bestemt størrelsesforhold for å sikre at alle viktige deler vises til enhver tid. {link} for denne bildetypen er {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "anbefalt størrelsesforhold",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Overskriftstekst for registrerte brukere",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Advarsel: fargen du har valgt har ikke høy nok kontrast. Dette kan gjøre at teksten er vanskelig å lese. Velg en mørkere farge for å optimalisere lesbarheten.",
