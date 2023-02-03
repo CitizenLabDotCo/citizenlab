@@ -6,7 +6,7 @@ type TimeSeriesResponse = TimeSeriesResponseRow[];
 interface TimeSeriesResponseRow {
   count: number;
   count_visitor_id: number;
-  first_dimension_date_last_action_date: string;
+  first_dimension_date_first_action_date: string;
 }
 
 interface TimeSeriesRow {
@@ -35,7 +35,7 @@ const getEmptyRow = (date: Moment) => ({
 });
 
 const getDate = (row: TimeSeriesResponseRow) => {
-  return moment(row['first_dimension_date_last_action_date']);
+  return moment(row['first_dimension_date_first_action_date']);
 };
 
 describe('parseMonths', () => {
@@ -43,22 +43,22 @@ describe('parseMonths', () => {
     {
       count: 3,
       count_visitor_id: 3,
-      first_dimension_date_last_action_date: '2022-01-30',
+      first_dimension_date_first_action_date: '2022-01-30',
     },
     {
       count: 1,
       count_visitor_id: 1,
-      first_dimension_date_last_action_date: '2021-11-11',
+      first_dimension_date_first_action_date: '2021-11-11',
     },
     {
       count: 4,
       count_visitor_id: 4,
-      first_dimension_date_last_action_date: '2022-02-01',
+      first_dimension_date_first_action_date: '2022-02-01',
     },
     {
       count: 2,
       count_visitor_id: 2,
-      first_dimension_date_last_action_date: '2021-12-02',
+      first_dimension_date_first_action_date: '2021-12-02',
     },
   ];
 
@@ -224,12 +224,12 @@ describe('parseMonths', () => {
   it('works with large gap', () => {
     const data = [
       {
-        first_dimension_date_last_action_date: '2021-10-11',
+        first_dimension_date_first_action_date: '2021-10-11',
         count_visitor_id: 1,
         count: 1,
       },
       {
-        first_dimension_date_last_action_date: '2022-02-02',
+        first_dimension_date_first_action_date: '2022-02-02',
         count_visitor_id: 1,
         count: 1,
       },
@@ -254,22 +254,22 @@ describe('parseWeeks', () => {
     {
       count: 3,
       count_visitor_id: 3,
-      first_dimension_date_last_action_date: '2022-01-07',
+      first_dimension_date_first_action_date: '2022-01-07',
     },
     {
       count: 1,
       count_visitor_id: 1,
-      first_dimension_date_last_action_date: '2021-12-20',
+      first_dimension_date_first_action_date: '2021-12-20',
     },
     {
       count: 4,
       count_visitor_id: 4,
-      first_dimension_date_last_action_date: '2022-01-12',
+      first_dimension_date_first_action_date: '2022-01-12',
     },
     {
       count: 2,
       count_visitor_id: 2,
-      first_dimension_date_last_action_date: '2021-12-27',
+      first_dimension_date_first_action_date: '2021-12-27',
     },
   ];
 
@@ -435,12 +435,12 @@ describe('parseWeeks', () => {
   it('works with large gap', () => {
     const data = [
       {
-        first_dimension_date_last_action_date: '2022-01-03',
+        first_dimension_date_first_action_date: '2022-01-03',
         count_visitor_id: 1,
         count: 1,
       },
       {
-        first_dimension_date_last_action_date: '2022-02-07',
+        first_dimension_date_first_action_date: '2022-02-07',
         count_visitor_id: 1,
         count: 1,
       },
@@ -465,12 +465,12 @@ describe('parseDays', () => {
   it('works', () => {
     const data: TimeSeriesResponse = [
       {
-        first_dimension_date_last_action_date: '2021-12-30',
+        first_dimension_date_first_action_date: '2021-12-30',
         count: 1,
         count_visitor_id: 1,
       },
       {
-        first_dimension_date_last_action_date: '2022-01-02',
+        first_dimension_date_first_action_date: '2022-01-02',
         count: 1,
         count_visitor_id: 1,
       },
