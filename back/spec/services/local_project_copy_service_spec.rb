@@ -326,15 +326,12 @@ describe LocalProjectCopyService do
       end
 
       it 'copies associated layout images as new images, associated with copied layout' do
-        image1 = create(:layout_image)
-        image2 = create(:layout_image)
+        images = create_list(:layout_image, 2)
 
-        image_codes = { code1: image1.code, code2: image2.code }
         craftjs_str = ERB.new(File.read('spec/fixtures/craftjs_layout_with_2_images.json.erb'))
-          .result(image_codes.instance_eval { binding })
-        craftjs = JSON.parse(craftjs_str)
+          .result_with_hash(code1: images[0].code, code2: images[1].code)
 
-        layout.update(craftjs_jsonmultiloc: craftjs)
+        layout.update(craftjs_jsonmultiloc: JSON.parse(craftjs_str))
         copied_project = service.copy(layout.content_buildable)
 
         new_image_codes = ContentBuilder::LayoutService.new.images(copied_project.content_builder_layouts.first).pluck(:code)
@@ -349,7 +346,7 @@ describe LocalProjectCopyService do
           .gsub!(new_image_codes[0], '').gsub!(new_image_codes[1], '')
         ).to eq(
           layout.content_buildable.content_builder_layouts.first.craftjs_jsonmultiloc.to_json
-          .gsub!(image1.code, '').gsub!(image2.code, '')
+          .gsub!(images[0].code, '').gsub!(images[1].code, '')
         )
 
         expect(new_image_codes.count).to eq 2
