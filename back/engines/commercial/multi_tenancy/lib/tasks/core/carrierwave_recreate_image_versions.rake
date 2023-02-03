@@ -2,6 +2,9 @@
 
 namespace :carrierwave do
   desc 'Recreate images when versions have changed'
+  # See https://www.notion.so/citizenlab/Images-and-uploads-235125ffc7824a2493b7fd7d42b3b926#7d5db1f725dd4f68b0b2459fcf80ffc6
+  # to understand how and why it works.
+  #
   # How to use:
   # It need MODEL_CONFIGS env variable which is a JSON array of objects with class and attributes (includes versions) keys.
   #
