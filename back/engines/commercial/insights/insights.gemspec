@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.name        = 'insights'
   s.version     = Insights::VERSION
   s.authors     = ['CitizenLab']
-  s.licenses    = ['CitizenLab Commercial License V1']
+  s.licenses    = ['CitizenLab Commercial License V2']
   s.summary     = 'Reporting flow: from inputs to insights'
 
   s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']

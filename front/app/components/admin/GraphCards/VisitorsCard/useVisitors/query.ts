@@ -33,7 +33,7 @@ export const query = ({
       'dimension_user.role': ['citizen', null],
       ...getProjectFilter('dimension_projects', projectId),
       ...getDateFilter(
-        'dimension_date_last_action',
+        'dimension_date_first_action',
         startAtMoment,
         endAtMoment
       ),
@@ -46,7 +46,7 @@ export const query = ({
     filters: {
       'dimension_user.role': ['citizen', null],
       ...getProjectFilter('dimension_projects', projectId),
-      ...getDateFilterLastPeriod('dimension_date_last_action', resolution),
+      ...getDateFilterLastPeriod('dimension_date_first_action', resolution),
     },
     aggregations: getAggregations(),
   };
@@ -57,16 +57,16 @@ export const query = ({
       'dimension_user.role': ['citizen', null],
       ...getProjectFilter('dimension_projects', projectId),
       ...getDateFilter(
-        'dimension_date_last_action',
+        'dimension_date_first_action',
         startAtMoment,
         endAtMoment
       ),
     },
-    groups: `dimension_date_last_action.${getInterval(resolution)}`,
+    groups: `dimension_date_first_action.${getInterval(resolution)}`,
     aggregations: {
       all: 'count',
       visitor_id: 'count',
-      'dimension_date_last_action.date': 'first',
+      'dimension_date_first_action.date': 'first',
     },
   };
 

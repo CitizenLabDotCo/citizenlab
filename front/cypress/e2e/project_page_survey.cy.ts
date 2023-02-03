@@ -241,31 +241,21 @@ describe('Embedded survey CTA', () => {
   let projectId: string;
   let projectSlug: string;
 
-  const firstName = randomString();
-  const lastName = randomString();
-  const email = randomEmail();
-  const password = randomString();
-
   before(() => {
-    cy.apiSignup(firstName, lastName, email, password)
-      .then(() => {
-        cy.apiLogin(email, password);
-      })
-      .then(() => {
-        cy.apiCreateProject({
-          type: 'continuous',
-          title: projectTitle,
-          descriptionPreview: projectDescriptionPreview,
-          description: projectDescription,
-          publicationStatus: 'published',
-          participationMethod: 'survey',
-          surveyUrl: 'https://citizenlabco.typeform.com/to/Yv6B7V',
-          surveyService: 'typeform',
-        }).then((project) => {
-          projectId = project.body.data.id;
-          projectSlug = project.body.data.attributes.slug;
-        });
-      });
+    cy.setAdminLoginCookie();
+    cy.apiCreateProject({
+      type: 'continuous',
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: projectDescription,
+      publicationStatus: 'published',
+      participationMethod: 'survey',
+      surveyUrl: 'https://citizenlabco.typeform.com/to/Yv6B7V',
+      surveyService: 'typeform',
+    }).then((project) => {
+      projectId = project.body.data.id;
+      projectSlug = project.body.data.attributes.slug;
+    });
   });
 
   it('shows the CTA button on visting the project page of an active survey project', () => {

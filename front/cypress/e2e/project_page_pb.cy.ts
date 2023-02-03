@@ -70,8 +70,8 @@ describe('Budgeting CTA bar', () => {
 
   it('shows the CTA to the user to allocate their budget when the user has not yet participated and no CTA when they have particpated', () => {
     cy.visit(`/en/projects/${projectSlug}`);
+    cy.acceptCookies();
     cy.get('[data-cy="budgeting-cta-button"]').should('exist');
-    cy.wait(2000);
 
     cy.get('.e2e-assign-budget')
       .first()
@@ -86,6 +86,9 @@ describe('Budgeting CTA bar', () => {
       .first()
       .find('.e2e-assign-budget-button')
       .should('have.class', 'in-basket');
+
+    cy.get('[data-cy="e2e-submit-my-basket-button"]').should('exist');
+    cy.get('[data-cy="e2e-submit-my-basket-button"]').click({ force: true });
 
     cy.get('[data-cy="budgeting-cta-button"]').should('not.exist');
 
