@@ -14,8 +14,6 @@ module ContentBuilder
   class LayoutImage < ApplicationRecord
     mount_base64_uploader :image, LayoutImageUploader
 
-    validates :image, presence: true
-
     before_validation :generate_code, on: :create
 
     private

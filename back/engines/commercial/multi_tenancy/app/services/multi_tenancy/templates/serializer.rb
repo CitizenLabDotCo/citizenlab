@@ -94,14 +94,12 @@ module MultiTenancy
 
       def yml_content_builder_layout_images
         ContentBuilder::LayoutImage.all.map do |image|
-          yml_layout_image = {
+          {
             'code' => image.code,
             'remote_image_url' => image.image_url,
             'created_at' => image.created_at.to_s,
             'updated_at' => image.updated_at.to_s
           }
-          store_ref yml_layout_image, image.id, :content_builder_layout_image
-          yml_layout_image
         end
       end
 
