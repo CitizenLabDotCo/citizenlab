@@ -28,7 +28,6 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 import { Icon } from '@citizenlab/cl2-component-library';
 import { CSSTransition } from 'react-transition-group';
-import { TCategory } from 'components/ConsentManager/destinations';
 
 const timeout = 400;
 
@@ -206,7 +205,9 @@ export default class ConsentForm extends PureComponent<Props, State> {
     }));
   };
 
-  handleOnChangeCategory = (category: TCategory) => () => {
+  // category's more precise type is TCategory
+  // but needs more refactoring
+  handleOnChangeCategory = (category: string) => () => {
     const { categorizedConsents } = this.state;
 
     if (
@@ -225,7 +226,9 @@ export default class ConsentForm extends PureComponent<Props, State> {
     }
   };
 
-  handleToggleOpenCategory = (category: TCategory) => (event) => {
+  // category's more precise type is TCategory
+  // but needs more refactoring
+  handleToggleOpenCategory = (category: string) => (event) => {
     event.stopPropagation();
     this.setState(({ isCategoryOpen }) => ({
       isCategoryOpen: {
@@ -245,7 +248,9 @@ export default class ConsentForm extends PureComponent<Props, State> {
     }
   };
 
-  isConsentedCategory = (category: TCategory) => {
+  // category's more precise type is TCategory
+  // but needs more refactoring
+  isConsentedCategory = (category: string) => {
     const { categorizedConsents } = this.state;
     if (
       categorizedConsents[category].find((consent) =>
