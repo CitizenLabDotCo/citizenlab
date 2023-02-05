@@ -28,6 +28,7 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 import { Icon } from '@citizenlab/cl2-component-library';
 import { CSSTransition } from 'react-transition-group';
+import { TCategory } from 'components/ConsentManager/destinations';
 
 const timeout = 400;
 
@@ -205,7 +206,7 @@ export default class ConsentForm extends PureComponent<Props, State> {
     }));
   };
 
-  handleOnChangeCategory = (category) => () => {
+  handleOnChangeCategory = (category: TCategory) => () => {
     const { categorizedConsents } = this.state;
 
     if (
@@ -224,7 +225,7 @@ export default class ConsentForm extends PureComponent<Props, State> {
     }
   };
 
-  handleToggleOpenCategory = (category) => (event) => {
+  handleToggleOpenCategory = (category: TCategory) => (event) => {
     event.stopPropagation();
     this.setState(({ isCategoryOpen }) => ({
       isCategoryOpen: {
@@ -234,7 +235,7 @@ export default class ConsentForm extends PureComponent<Props, State> {
     }));
   };
 
-  isConsented = (consentId) => {
+  isConsented = (consentId: string) => {
     const { consents } = this.props;
     const consent = consents.find((consent) => consent.id === consentId);
     if (typeof this.state.consentChanges[consentId] === 'undefined') {
@@ -244,7 +245,7 @@ export default class ConsentForm extends PureComponent<Props, State> {
     }
   };
 
-  isConsentedCategory = (category) => {
+  isConsentedCategory = (category: TCategory) => {
     const { categorizedConsents } = this.state;
     if (
       categorizedConsents[category].find((consent) =>
