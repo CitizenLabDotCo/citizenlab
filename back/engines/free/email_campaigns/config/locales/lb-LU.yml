@@ -427,7 +427,7 @@ lb:
       cta_view_phase: 'Preparéiert dës nei Phas'
       event_description: 'De Projet ''%{projectName}'' geet geschwënn an eng nei Phas. Vergewëssert Iech, datt alles fir dës nei Phas preparéiert ass: Gëtt et eng ugemiess Beschreiwung? Ginn zeréckbehalen Iddien an dës Phas iwwerholl? Wëllt Dir d''Participanten iwwer d’Detailer vun dëser Phas mat enger moossgeschneiderter E-Mail-Campagne informéieren?'
       main_header: '%{firstName}, e Projet geet geschwënn an eng nei Phas'
-      subtitle: 'About ''%{projectName}'''
+      subtitle: 'Iwwer ''%{projectName}'''
       new_phase: 'De Projet geet an d’Phas ''%{phaseTitle}'''
       subject: 'Preparéiert alles fir déi nei Phas vu(n) %{projectName}'
       preheader: 'Geschwë fänkt eng nei Phas fir %{projectName} un'
