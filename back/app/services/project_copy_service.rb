@@ -87,7 +87,7 @@ class ProjectCopyService < ::TemplateService
           next unless ContentBuilder::LayoutService.new.craftjs_element_of_type?(node, 'Image')
 
           source_image_code = node['props']['dataCode']
-          new_image_code = ContentBuilder::LayoutImage.new.generate_code
+          new_image_code = ContentBuilder::LayoutImage.generate_code
           node['props']['dataCode'] = new_image_code
           layout_images_mapping[source_image_code] = new_image_code
         end
