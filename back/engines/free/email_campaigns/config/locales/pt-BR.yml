@@ -427,7 +427,7 @@ pt:
       cta_view_phase: 'Configurar esta nova fase'
       event_description: 'O projeto ''%{projectName}'' estará entrando em uma nova fase em breve. Certifique-se de que todo está preparado para esta fase: Existe uma descrição adequada? As idéias seleccionadas são transferidas para esta fase? Você quer informar para seus usuários sobre as carateristicas desta fase através de uma campanha de e-mail personalizada?'
       main_header: '%{firstName}, um projecto entrará numa nova fase em breve'
-      subtitle: 'About ''%{projectName}'''
+      subtitle: 'Sobre ''%{projectName}'''
       new_phase: 'O projeto entrará na fase ''%{phaseTitle}'''
       subject: 'Prepare tudo para a nova fase de %{projectName}'
       preheader: 'Uma nova fase começará em breve para %{projectName}'
