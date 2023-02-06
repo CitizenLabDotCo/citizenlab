@@ -32,6 +32,8 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import {
   useCategories,
   useAddCategory,
+  useDeleteAllCategories,
+  useDeleteCategory,
 } from 'modules/commercial/insights/api/categories';
 import useDetectedCategories from 'modules/commercial/insights/hooks/useInsightsDetectedCategories';
 import { useStat } from 'modules/commercial/insights/api/stats';
@@ -40,13 +42,6 @@ import { useStat } from 'modules/commercial/insights/api/stats';
 import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
-// types
-
-// services
-import {
-  deleteInsightsCategories,
-  deleteInsightsCategory,
-} from 'modules/commercial/insights/services/insightsCategories';
 // tracking
 import { trackEventByName } from 'utils/analytics';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
@@ -139,7 +134,36 @@ const Categories = ({
     onSuccess: () => setName(''),
   });
 
-  const [loadingReset, setLoadingReset] = useState(false);
+  const { mutate: deleteCategory } = useDeleteCategory({
+    onSuccess: (categoryId) => {
+      if (query.category === categoryId) {
+        clHistory.replace({
+          pathname,
+          search: stringify(
+            { ...query, category: undefined },
+            { addQueryPrefix: true }
+          ),
+        });
+      }
+    },
+  });
+
+  const selectRecentlyPosted = () => {
+    clHistory.push({
+      pathname,
+      search: stringify(
+        { ...query, pageNumber: 1, category: undefined, processed: false },
+        { addQueryPrefix: true }
+      ),
+    });
+  };
+
+  const {
+    mutate: deleteAllCategories,
+    isLoading: isDeleteAllCategoriesLoading,
+  } = useDeleteAllCategories({
+    onSuccess: selectRecentlyPosted,
+  });
   const [isDropdownOpened, setDropdownOpened] = useState(false);
 
   const { data: allInputsCount } = useStat(viewId, { processed: true });
@@ -199,16 +223,6 @@ const Categories = ({
     });
   };
 
-  const selectRecentlyPosted = () => {
-    clHistory.push({
-      pathname,
-      search: stringify(
-        { ...query, pageNumber: 1, category: undefined, processed: false },
-        { addQueryPrefix: true }
-      ),
-    });
-  };
-
   const inputsCategoryFilter = getInputsCategoryFilter(
     query.category,
     query.processed
@@ -225,17 +239,11 @@ const Categories = ({
   const handleResetCategories = async () => {
     const deleteMessage = formatMessage(messages.resetCategoriesConfimation);
     closeDropdown();
-    setLoadingReset(true);
+
     if (window.confirm(deleteMessage)) {
-      try {
-        await deleteInsightsCategories(viewId);
-        selectRecentlyPosted();
-      } catch {
-        // Do nothing
-      }
+      deleteAllCategories(viewId);
     }
     trackEventByName(tracks.resetCategories);
-    setLoadingReset(false);
   };
 
   const handleDeleteCategory =
@@ -246,20 +254,7 @@ const Categories = ({
           messages.deleteCategoryConfirmation
         );
         if (window.confirm(deleteMessage)) {
-          try {
-            await deleteInsightsCategory(viewId, categoryId);
-            if (query.category === categoryId) {
-              clHistory.replace({
-                pathname,
-                search: stringify(
-                  { ...query, category: undefined },
-                  { addQueryPrefix: true }
-                ),
-              });
-            }
-          } catch {
-            // Do nothing
-          }
+          deleteCategory({ viewId, categoryId });
         }
       }
     };
@@ -359,7 +354,7 @@ const Categories = ({
           bgHoverColor="transparent"
           pr="0"
           onClick={toggleDropdown}
-          processing={loadingReset}
+          processing={isDeleteAllCategoriesLoading}
           data-testid="insightsResetMenu"
         />
         <Dropdown

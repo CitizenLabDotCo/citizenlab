@@ -163,3 +163,101 @@ export const useInput = (viewId: string, id: string) => {
     queryFn: () => fetchInput(viewId, id),
   });
 };
+
+// const deleteInputCategory = ({
+//   viewId,
+//   inputId,
+//   categoryId,
+// }: {
+//   viewId: string;
+//   inputId: string;
+//   categoryId: string;
+// }) =>
+//   fetcher({
+//     path: `/insights/views/${viewId}/${inputId}/${categoryId}`,
+//     action: 'delete',
+//   });
+
+// export const useDeleteInputCategory = () => {
+//   const queryClient = useQueryClient();
+
+//   return useMutation({
+//     mutationFn: deleteInputCategory,
+//     onSuccess: (_data, variables) => {
+//       queryClient.invalidateQueries({ queryKey: inputKeys.lists() });
+//       queryClient.invalidateQueries({ queryKey: statsKeys.details() });
+//       queryClient.invalidateQueries({
+//         queryKey: inputKeys.detail(variables.viewId, variables.inputId),
+//       });
+//     },
+//   });
+// };
+
+// export async function deleteInsightsInputCategory(
+//   insightsViewId: string,
+//   insightsInputId: string,
+//   insightsCategoryId: string
+// ) {
+//   const response = await streams.delete(
+//     `${API_PATH}/${getInsightsInputsEndpoint(
+//       insightsViewId
+//     )}/${insightsInputId}/categories/${insightsCategoryId}`,
+//     insightsCategoryId
+//   );
+
+//   streams.fetchAllWith({
+//     partialApiEndpoint: [
+//       `${API_PATH}/${getInsightsInputsEndpoint(insightsViewId)}`,
+//       `insights/views/${insightsViewId}/categories`,
+//       `insights/views/${insightsViewId}/stats/inputs_count`,
+//     ],
+//   });
+
+//   return response;
+// }
+
+// export async function addInsightsInputCategory(
+//   insightsViewId: string,
+//   insightsInputId: string,
+//   insightsCategoryId: string
+// ) {
+//   const response = await streams.add(
+//     `${API_PATH}/${getInsightsInputsEndpoint(
+//       insightsViewId
+//     )}/${insightsInputId}/categories`,
+//     { data: [{ id: insightsCategoryId, type: 'category' }] }
+//   );
+
+//   streams.fetchAllWith({
+//     partialApiEndpoint: [
+//       `${API_PATH}/${getInsightsInputsEndpoint(insightsViewId)}`,
+//       `insights/views/${insightsViewId}/categories`,
+//       `insights/views/${insightsViewId}/stats/inputs_count`,
+//     ],
+//   });
+
+//   return response;
+// }
+
+// export async function addInsightsInputCategories(
+//   insightsViewId: string,
+//   insightsInputId: string,
+//   insightsCategories: { id: string; type: string }[]
+// ) {
+//   const response = await streams.add(
+//     `${API_PATH}/${getInsightsInputsEndpoint(
+//       insightsViewId
+//     )}/${insightsInputId}/categories`,
+//     { data: insightsCategories }
+//   );
+
+//   await streams.fetchAllWith({
+//     partialApiEndpoint: [
+//       `${API_PATH}/${getInsightsInputsEndpoint(insightsViewId)}`,
+//       `insights/views/${insightsViewId}/categories`,
+//       `insights/views/${insightsViewId}/stats/inputs_count`,
+//     ],
+//   });
+
+//   return response;
+// }

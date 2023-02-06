@@ -139,143 +139,56 @@ export const useUpdateCategory = ({
     },
   });
 };
-// export function updateInsightsCategory(
-//   insightsViewId: string,
-//   insightsCategoryId: string,
-//   name: string
-// ) {
-//   return streams.update<IInsightsCategories>(
-//     `${API_PATH}/${getInsightsCategoriesEndpoint(
-//       insightsViewId
-//     )}/${insightsCategoryId}`,
-//     insightsCategoryId,
-//     { category: { name } }
-//   );
-// }
 
-// export async function deleteInsightsCategories(insightsViewId: string) {
-//   const response = await streams.delete(
-//     `${API_PATH}/${getInsightsCategoriesEndpoint(insightsViewId)}`,
-//     ''
-//   );
-
-//   streams.fetchAllWith({
-//     partialApiEndpoint: [
-//       `insights/views/${insightsViewId}/inputs`,
-//       `insights/views/${insightsViewId}/categories`,
-//       `insights/views/${insightsViewId}/stats/inputs_count`,
-//     ],
-//   });
-
-//   return response;
-// }
-
-// export function deleteInsightsCategory(
-//   insightsViewId: string,
-//   insightsCategoryId: string
-// ) {
-//   return streams.delete(
-//     `${API_PATH}/${getInsightsCategoriesEndpoint(
-//       insightsViewId
-//     )}/${insightsCategoryId}`,
-//     insightsCategoryId
-//   );
-// }
-
-const deleteInputCategory = ({
-  viewId,
-  inputId,
-  categoryId,
-}: {
-  viewId: string;
-  inputId: string;
-  categoryId: string;
-}) =>
+const deleteAllCategories = (viewId: string) =>
   fetcher({
-    path: `/insights/views/${viewId}/${inputId}/${categoryId}`,
+    path: `/insights/views/${viewId}/categories`,
     action: 'delete',
   });
 
-export const useDeleteInputCategory = () => {
+export const useDeleteAllCategories = ({
+  onSuccess,
+}: {
+  onSuccess?: () => void;
+}) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: deleteInputCategory,
-    onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({ queryKey: inputKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: statsKeys.details() });
-      queryClient.invalidateQueries({
-        queryKey: inputKeys.detail(variables.viewId, variables.inputId),
-      });
+    mutationFn: deleteAllCategories,
+
+    onSuccess: (_data, viewId) => {
+      queryClient.invalidateQueries({ queryKey: categoryKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: statsKeys.detail(viewId) });
+      queryClient.invalidateQueries({ queryKey: inputKeys.list(viewId) });
+      onSuccess && onSuccess();
     },
   });
 };
 
-// export async function deleteInsightsInputCategory(
-//   insightsViewId: string,
-//   insightsInputId: string,
-//   insightsCategoryId: string
-// ) {
-//   const response = await streams.delete(
-//     `${API_PATH}/${getInsightsInputsEndpoint(
-//       insightsViewId
-//     )}/${insightsInputId}/categories/${insightsCategoryId}`,
-//     insightsCategoryId
-//   );
+const deleteCategory = ({
+  viewId,
+  categoryId,
+}: {
+  viewId: string;
+  categoryId: string;
+}) =>
+  fetcher({
+    path: `/insights/views/${viewId}/categories/${categoryId}`,
+    action: 'delete',
+  });
 
-//   streams.fetchAllWith({
-//     partialApiEndpoint: [
-//       `${API_PATH}/${getInsightsInputsEndpoint(insightsViewId)}`,
-//       `insights/views/${insightsViewId}/categories`,
-//       `insights/views/${insightsViewId}/stats/inputs_count`,
-//     ],
-//   });
+export const useDeleteCategory = ({
+  onSuccess,
+}: {
+  onSuccess?: (categoryId: string) => void;
+}) => {
+  const queryClient = useQueryClient();
 
-//   return response;
-// }
-
-// export async function addInsightsInputCategory(
-//   insightsViewId: string,
-//   insightsInputId: string,
-//   insightsCategoryId: string
-// ) {
-//   const response = await streams.add(
-//     `${API_PATH}/${getInsightsInputsEndpoint(
-//       insightsViewId
-//     )}/${insightsInputId}/categories`,
-//     { data: [{ id: insightsCategoryId, type: 'category' }] }
-//   );
-
-//   streams.fetchAllWith({
-//     partialApiEndpoint: [
-//       `${API_PATH}/${getInsightsInputsEndpoint(insightsViewId)}`,
-//       `insights/views/${insightsViewId}/categories`,
-//       `insights/views/${insightsViewId}/stats/inputs_count`,
-//     ],
-//   });
-
-//   return response;
-// }
-
-// export async function addInsightsInputCategories(
-//   insightsViewId: string,
-//   insightsInputId: string,
-//   insightsCategories: { id: string; type: string }[]
-// ) {
-//   const response = await streams.add(
-//     `${API_PATH}/${getInsightsInputsEndpoint(
-//       insightsViewId
-//     )}/${insightsInputId}/categories`,
-//     { data: insightsCategories }
-//   );
-
-//   await streams.fetchAllWith({
-//     partialApiEndpoint: [
-//       `${API_PATH}/${getInsightsInputsEndpoint(insightsViewId)}`,
-//       `insights/views/${insightsViewId}/categories`,
-//       `insights/views/${insightsViewId}/stats/inputs_count`,
-//     ],
-//   });
-
-//   return response;
-// }
+  return useMutation({
+    mutationFn: deleteCategory,
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: categoryKeys.lists() });
+      onSuccess && onSuccess(variables.categoryId);
+    },
+  });
+};
