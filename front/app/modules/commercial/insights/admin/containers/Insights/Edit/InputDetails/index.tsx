@@ -6,7 +6,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import { addInsightsInputCategory } from 'modules/commercial/insights/services/insightsInputs';
-import { addInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
 
 // components
 import Category from 'modules/commercial/insights/admin/components/Category';
@@ -19,7 +18,10 @@ import Navigation, {
 } from 'modules/commercial/insights/admin/components/Navigation';
 
 // hooks
-import { useCategories } from 'modules/commercial/insights/api/categories';
+import {
+  useCategories,
+  useAddCategory,
+} from 'modules/commercial/insights/api/categories';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { useInput } from 'modules/commercial/insights/api/inputs';
 // styles
@@ -127,6 +129,14 @@ const InputDetails = ({
   const { data: categories } = useCategories(viewId);
   const { data: previewedInput } = useInput(viewId, previewedInputId);
 
+  const {
+    mutate: addCategory,
+    isLoading,
+    data: newCategoryData,
+  } = useAddCategory({
+    onSuccess: () => {},
+  });
+
   // Loading state
   if (previewedInput === undefined) {
     return (
@@ -179,23 +189,20 @@ const InputDetails = ({
   };
 
   const handleCreate = async (value: string) => {
-    setLoading(true);
-    try {
-      const result = await addInsightsCategory({
-        insightsViewId: viewId,
-        name: value,
-      });
+    addCategory({
+      viewId,
+      name: value,
+    });
+    if (newCategoryData) {
       await addInsightsInputCategory(
         viewId,
         previewedInput.data.id,
-        result.data.id
+        newCategoryData.data.id
       );
       setSelectedOption(null);
-    } catch {
-      // Do nothing
     }
+
     trackEventByName(tracks.createCategoryFromInput);
-    setLoading(false);
   };
 
   const formatCreateLabel = (value: string) => {
@@ -276,7 +283,9 @@ const InputDetails = ({
               />
             )
           )}
-          {loading && <StyledSpinner color={colors.success} size="24px" />}
+          {(loading || isLoading) && (
+            <StyledSpinner color={colors.success} size="24px" />
+          )}
         </CategoryList>
         {ideaId && <Idea ideaId={ideaId} />}
       </Container>

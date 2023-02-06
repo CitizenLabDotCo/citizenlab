@@ -29,7 +29,10 @@ import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputs
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import { useCategories } from 'modules/commercial/insights/api/categories';
+import {
+  useCategories,
+  useAddCategory,
+} from 'modules/commercial/insights/api/categories';
 import useDetectedCategories from 'modules/commercial/insights/hooks/useInsightsDetectedCategories';
 import { useStat } from 'modules/commercial/insights/api/stats';
 
@@ -38,15 +41,12 @@ import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
 // types
-import { CLErrors } from 'typings';
 
 // services
 import {
-  addInsightsCategory,
   deleteInsightsCategories,
   deleteInsightsCategory,
 } from 'modules/commercial/insights/services/insightsCategories';
-
 // tracking
 import { trackEventByName } from 'utils/analytics';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
@@ -129,10 +129,17 @@ const Categories = ({
   location: { query, pathname },
 }: WrappedComponentProps & WithRouterProps) => {
   const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
+  const [name, setName] = useState<string | null>();
+  const {
+    mutate: addCategory,
+    isLoading,
+    error,
+    reset,
+  } = useAddCategory({
+    onSuccess: () => setName(''),
+  });
 
-  const [loadingAdd, setLoadingAdd] = useState(false);
   const [loadingReset, setLoadingReset] = useState(false);
-  const [errors, setErrors] = useState<CLErrors | undefined>();
   const [isDropdownOpened, setDropdownOpened] = useState(false);
 
   const { data: allInputsCount } = useStat(viewId, { processed: true });
@@ -147,27 +154,18 @@ const Categories = ({
   const detectedCategories = useDetectedCategories(viewId);
   const { data: categories } = useCategories(viewId);
 
-  const [name, setName] = useState<string | null>();
-
   if (isNilOrError(categories)) {
     return null;
   }
 
   const onChangeName = (value: string) => {
     setName(value);
-    setErrors(undefined);
+    reset();
   };
 
-  const handleCategorySubmit = async () => {
+  const handleCategorySubmit = () => {
     if (name) {
-      setLoadingAdd(true);
-      try {
-        await addInsightsCategory({ insightsViewId: viewId, name });
-      } catch (errors) {
-        setErrors(errors.json.errors);
-      }
-      setLoadingAdd(false);
-      setName('');
+      addCategory({ viewId, name });
     }
   };
 
@@ -400,14 +398,14 @@ const Categories = ({
           ml="4px"
           p="8px"
           onClick={handleCategorySubmit}
-          disabled={!name || loadingAdd}
+          disabled={!name || isLoading}
         >
-          {loadingAdd ? <Spinner size="22px" /> : <StyledPlus>+</StyledPlus>}
+          {isLoading ? <Spinner size="22px" /> : <StyledPlus>+</StyledPlus>}
         </Button>
       </Box>
       <div>
-        {errors && (
-          <Error apiErrors={errors['name']} fieldName="category_name" />
+        {error && (
+          <Error apiErrors={error.errors['name']} fieldName="category_name" />
         )}
       </div>
       {nlpFeatureFlag &&

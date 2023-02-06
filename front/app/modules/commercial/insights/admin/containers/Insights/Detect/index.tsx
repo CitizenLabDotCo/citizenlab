@@ -26,7 +26,7 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // services
-import { addInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
+import { useAddCategory } from 'modules/commercial/insights/api/categories';
 
 const StyledH2 = styled.h2`
   font-size: ${fontSizes.xl}px;
@@ -42,29 +42,28 @@ const Detect = ({
   params: { viewId },
   intl: { formatMessage },
 }: WithRouterProps & WrappedComponentProps) => {
-  const [processing, setProcessing] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const detectedCategories = useDetectedCategories(viewId);
 
   const backRoute = `/admin/reporting/insights/${viewId}/edit`;
-  if (isNilOrError(detectedCategories)) {
-    return null;
-  }
 
   const goBack = () => {
     clHistory.push(backRoute);
   };
 
+  const { mutate: addCategory, isLoading } = useAddCategory({
+    onSuccess: goBack,
+  });
+
+  if (isNilOrError(detectedCategories)) {
+    return null;
+  }
+
   const handleAddCategories = async () => {
-    setProcessing(true);
     for (const name of selectedCategories) {
-      try {
-        await addInsightsCategory({ insightsViewId: viewId, name });
-      } catch {
-        // Do nothing
-      }
+      addCategory({ viewId, name });
     }
-    setProcessing(false);
+
     goBack();
   };
 
@@ -134,7 +133,7 @@ const Detect = ({
                 <Button
                   buttonStyle="admin-dark"
                   disabled={selectedCategories.length === 0}
-                  processing={processing}
+                  processing={isLoading}
                   onClick={handleAddCategories}
                 >
                   {selectedCategories.length === 1
