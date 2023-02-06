@@ -1,7 +1,7 @@
 import React from 'react';
 
 // hooks
-import useProjectDescriptionBuilderLayout from '../../../../hooks/useProjectDescriptionBuilderLayout';
+import useProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/hooks/useProjectDescriptionBuilderLayout';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 import useProjectFiles from 'hooks/useProjectFiles';

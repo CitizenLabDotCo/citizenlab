@@ -98,7 +98,7 @@ describe('ProjectDescriptionBuilderToggle', () => {
       { enabled: true }
     );
   });
-  it('handles ContentBuilderLayout error', () => {
+  it('handles ProjectDescriptionBuilderLayout error', () => {
     render(
       <ProjectDescriptionBuilderToggle
         valueMultiloc={multiloc}
