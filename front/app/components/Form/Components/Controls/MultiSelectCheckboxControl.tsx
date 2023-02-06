@@ -22,8 +22,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
-import { darken, transparentize } from 'polished';
-import styled, { useTheme } from 'styled-components';
+import { darken } from 'polished';
+import styled from 'styled-components';
 
 const StyledBox = styled(Box)<{ checkboxBackgroundColor: string }>`
   background-color: ${({ checkboxBackgroundColor }) =>
@@ -48,7 +48,6 @@ const MultiSelectCheckboxControl = ({
   visible,
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
-  const theme = useTheme();
   const options = getOptions(schema, 'multi');
   const dataArray = Array.isArray(data) ? data : [];
 
@@ -78,7 +77,7 @@ const MultiSelectCheckboxControl = ({
           >
             <Checkbox
               padding="16px 20px 16px 20px"
-              checkedColor={theme.colors.tenantSecondary}
+              checkedColor={'tenantSecondary'}
               id={`${path}-checkbox-${index}`}
               label={option.label}
               checked={dataArray.includes(option.value)}
