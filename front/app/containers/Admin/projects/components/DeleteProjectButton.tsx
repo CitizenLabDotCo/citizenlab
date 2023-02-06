@@ -30,25 +30,21 @@ const DeleteProjectButton = memo<Props & WrappedComponentProps>(
     intl: { formatMessage },
     ...rest
   }) => {
-    const deletionProps = {
-      copy: formatMessage(messages[`deleteProjectButton`]),
-      errorCopy: formatMessage(messages[`deleteProjectError`]),
-      confirmationCopy: formatMessage(messages[`deleteProjectConfirmation`]),
-      handleDelete: deleteProject,
-    };
-
     const handleDeletePublication = async (event: FormEvent<any>) => {
       event.preventDefault();
 
-      if (publication && window.confirm(deletionProps.confirmationCopy)) {
+      if (
+        publication &&
+        window.confirm(formatMessage(messages.deleteProjectConfirmation))
+      ) {
         try {
           setDeleteIsProcessing(true);
-          await deletionProps.handleDelete(publication.publicationId);
+          await deleteProject(publication.publicationId);
           setDeleteIsProcessing(false);
           setDeletionError('');
         } catch {
           setDeleteIsProcessing(false);
-          setDeletionError(deletionProps.errorCopy);
+          setDeletionError(formatMessage(messages.deleteProjectError));
         }
       }
     };
@@ -64,7 +60,7 @@ const DeleteProjectButton = memo<Props & WrappedComponentProps>(
         textHoverColor={colors.red600}
         {...rest}
       >
-        {deletionProps.copy}
+        {formatMessage(messages.deleteProjectButton)}
       </RowButton>
     );
   }
