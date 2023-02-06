@@ -22,7 +22,7 @@
 #  minimum_label_multiloc :jsonb            not null
 #  maximum_label_multiloc :jsonb            not null
 #  logic                  :jsonb            not null
-#  answer_visible_to      :string           default("admins"), not null
+#  answer_visible_to      :string
 #
 # Indexes
 #
