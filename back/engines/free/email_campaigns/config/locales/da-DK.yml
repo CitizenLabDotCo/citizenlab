@@ -427,7 +427,7 @@ da:
       cta_view_phase: 'Opsæt denne nye fase'
       event_description: 'Projektet "%{projectName}" vil snart gå ind i en ny fase. Sørg for at alt er opsat for denne fase: Er beskrivelsen tilstrækkelig? Overføres de indeholdte idéer til denne fase? Ønsker du at informere dine borgere omkring specifikationerne af denne fase, gennem en tilpasset e-mailkampagne?'
       main_header: '%{firstName}, et projekt træder snart ind i en ny fase'
-      subtitle: 'Om ''%{projectName}'''
+      subtitle: 'About ''%{projectName}'''
       new_phase: 'Projektet træder ind i fasen ''%{phaseTitle}'''
       subject: 'Få alt gjort klar til den nye fase i %{projectName}'
       preheader: 'Der starter snart en ny fase for %{projectName}'
