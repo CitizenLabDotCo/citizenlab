@@ -18,7 +18,7 @@ import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import { getOptions } from './controlUtils';
 
 // style
-import { darken, transparentize } from 'polished';
+import { darken } from 'polished';
 import styled, { useTheme } from 'styled-components';
 
 const StyledBox = styled(Box)<{ selectBackgroundColor: string }>`
