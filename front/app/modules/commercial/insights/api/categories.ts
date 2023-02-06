@@ -104,27 +104,41 @@ export const useAddCategory = ({ onSuccess }: { onSuccess?: () => void }) => {
     },
   });
 };
+type IInsightsCategoryUpdateObject = {
+  viewId: string;
+  categoryId: string;
+  requestBody: { name: string };
+};
 
-// export async function addInsightsCategory({
-//   insightsViewId,
-//   name,
-//   inputs,
-// }: AddInsightsCategoryParams) {
-//   const response = await streams.add<IInsightsCategory>(
-//     `${API_PATH}/${getInsightsCategoriesEndpoint(insightsViewId)}`,
-//     {
-//       category: { name, inputs },
-//     }
-//   );
-//   streams.fetchAllWith({
-//     partialApiEndpoint: [
-//       `insights/views/${insightsViewId}/inputs`,
-//       `insights/views/${insightsViewId}/categories`,
-//     ],
-//   });
-//   return response;
-// }
+const updateCategory = ({
+  viewId,
+  categoryId,
+  requestBody,
+}: IInsightsCategoryUpdateObject) =>
+  fetcher<IInsightsCategory>({
+    path: `/insights/views/${viewId}/categories/${categoryId}`,
+    action: 'update',
+    body: requestBody,
+  });
 
+export const useUpdateCategory = ({
+  onSuccess,
+}: {
+  onSuccess?: () => void;
+}) => {
+  const queryClient = useQueryClient();
+  return useMutation<
+    IInsightsCategory,
+    CLErrors,
+    IInsightsCategoryUpdateObject
+  >({
+    mutationFn: updateCategory,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: categoryKeys.lists() });
+      onSuccess && onSuccess();
+    },
+  });
+};
 // export function updateInsightsCategory(
 //   insightsViewId: string,
 //   insightsCategoryId: string,
