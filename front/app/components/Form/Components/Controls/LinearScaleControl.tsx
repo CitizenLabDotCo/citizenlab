@@ -76,6 +76,7 @@ const LinearScaleControl = ({
               >
                 <Button
                   py="12px"
+                  id={`linear-scale-option-${visualIndex}`}
                   bgColor={
                     data === visualIndex
                       ? theme.colors.tenantSecondary
