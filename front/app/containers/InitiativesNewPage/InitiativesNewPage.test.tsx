@@ -12,10 +12,10 @@ jest.mock('resources/GetTopics', () => 'GetTopics');
 jest.mock('./InitiativesNewMeta', () => 'InitiativesNewMeta');
 jest.mock('./InitiativesNewFormWrapper', () => 'InitiativesNewFormWrapper');
 jest.mock('components/InitiativeForm/PageLayout', () => 'PageLayout');
-jest.mock('utils/cl-router/history');
+
 jest.mock('utils/locationTools');
 jest.mock('services/users');
-jest.mock('modules', () => ({ streamsToReset: [] }));
+
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => true));
 
 describe('InitiativesNewPage', () => {

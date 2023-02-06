@@ -5,8 +5,6 @@ import GetArea from './GetArea';
 import request, { __setResponseFor } from 'utils/request';
 jest.mock('utils/request');
 jest.mock('services/auth');
-jest.mock('services/appConfiguration');
-jest.mock('modules', () => ({ streamsToReset: [] }));
 
 /** This is an example of a potential integration test for data fetching
  * It tests the code from the resource component until the http request done by utils/request.ts

@@ -59,14 +59,10 @@ const mockProjectData3 = {
 
 const viewId = '1';
 
-jest.mock('utils/cl-router/Link');
-jest.mock('modules');
-
 jest.mock('modules/commercial/insights/services/insightsViews', () => ({
   deleteInsightsView: jest.fn(),
 }));
 
-jest.mock('utils/cl-intl');
 jest.mock('utils/analytics');
 
 jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
@@ -83,8 +79,6 @@ jest.mock('hooks/useProject', () => {
   );
 });
 
-jest.mock('hooks/useLocale');
-
 jest.mock('utils/cl-router/withRouter', () => {
   return {
     withRouter: (Component) => {
@@ -94,9 +88,6 @@ jest.mock('utils/cl-router/withRouter', () => {
     },
   };
 });
-jest.mock('utils/cl-router/Link');
-
-jest.mock('utils/cl-router/history');
 
 describe('Insights Top Bar', () => {
   it('renders Top Bar', () => {

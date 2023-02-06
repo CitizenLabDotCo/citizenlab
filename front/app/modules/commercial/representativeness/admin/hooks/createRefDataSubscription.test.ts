@@ -10,7 +10,6 @@ import {
   IUsersByAge,
 } from 'services/userCustomFieldStats';
 
-jest.mock('services/appConfiguration');
 jest.mock('services/auth');
 
 describe('regFieldToReferenceData', () => {
