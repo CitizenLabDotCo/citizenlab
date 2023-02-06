@@ -6,10 +6,10 @@ class MyAmazingJob < ApplicationJob
   # self.priority = 90 # pretty low priority (lowest is 100)
 
   def run
-    Rails.logger.info('Hello, from MyAmazingJob!')
-
-    puts '------------------------'
-    puts 'Hello, from MyAmazingJob!'
-    puts '------------------------'
+    Rails.logger.info(
+      "\n-------------------------\n" \
+      "Hello, from MyAmazingJob!\n" \
+      '-------------------------'
+    )
   end
 end
