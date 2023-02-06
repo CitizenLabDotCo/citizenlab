@@ -357,8 +357,22 @@ class CustomFieldService
     }
   end
 
+  # *** input types ***
+  # TODO: Remove this part when the old schema is no longer used for input fields
+
   def section_to_ui_schema_field(field, locale)
-    # TODO: Remove this method when the old schema is no longer used for input fields
-    base_ui_schema_field(field, locale)
+    base_ui_schema_field field, locale
+  end
+
+  def section_to_json_schema_field(_field, _locale)
+    {}
+  end
+
+  def topic_ids_to_ui_schema_field(field, locale)
+    multiselect_to_ui_schema_field field, locale
+  end
+
+  def topic_ids_to_json_schema_field(field, locale)
+    multiselect_to_json_schema_field field, locale
   end
 end
