@@ -3,10 +3,7 @@ import { render, screen, fireEvent, within } from 'utils/testUtils/rtl';
 import clHistory from 'utils/cl-router/history';
 
 import Preview from './';
-import {
-  IInsightsInput,
-  useInput,
-} from 'modules/commercial/insights/api/inputs';
+import useInput from 'modules/commercial/insights/api/inputs/useInput';
 import inputs from 'modules/commercial/insights/fixtures/inputs';
 
 const viewId = '1';
@@ -17,7 +14,7 @@ const defaultProps = {
   previewedInputId: '4e9ac1f1-6928-45e9-9ac9-313e86ad636f',
 };
 
-let mockInputData: IInsightsInput | undefined = {
+let mockInputData: { data: typeof inputs[0] } | undefined = {
   data: inputs[0],
 };
 
@@ -39,13 +36,11 @@ jest.mock('hooks/useIdea', () => {
 });
 
 let mockIsLoading = false;
-jest.mock('modules/commercial/insights/api/inputs', () => {
-  return {
-    useInput: jest.fn(() => {
-      return { data: mockInputData, isLoading: mockIsLoading };
-    }),
-  };
-});
+jest.mock('modules/commercial/insights/api/inputs/useInput', () =>
+  jest.fn(() => {
+    return { data: mockInputData, isLoading: mockIsLoading };
+  })
+);
 
 jest.mock('modules/commercial/insights/api/categories');
 

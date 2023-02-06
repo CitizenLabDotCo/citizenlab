@@ -4,7 +4,7 @@ import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
 import { Spinner } from '@citizenlab/cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
-import { useInput } from 'modules/commercial/insights/api/inputs';
+import useInput from 'modules/commercial/insights/api/inputs/useInput';
 // styles
 import styled from 'styled-components';
 

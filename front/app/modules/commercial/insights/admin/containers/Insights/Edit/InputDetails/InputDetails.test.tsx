@@ -6,7 +6,7 @@ import categories from 'modules/commercial/insights/fixtures/categories';
 
 import selectEvent from 'react-select-event';
 import InputDetails from './';
-import { IInsightsInput } from 'modules/commercial/insights/api/inputs';
+import { IInsightsInput } from 'modules/commercial/insights/api/inputs/types';
 
 const viewId = '1';
 
@@ -67,12 +67,8 @@ jest.mock('hooks/useIdea', () => {
 });
 
 let mockIsLoading = false;
-jest.mock('modules/commercial/insights/api/inputs', () => {
-  return {
-    useInput: jest.fn(() => {
-      return { data: mockInputData, isLoading: mockIsLoading };
-    }),
-  };
+jest.mock('modules/commercial/insights/api/inputs/useInput', () => () => {
+  return { data: mockInputData, isLoading: mockIsLoading };
 });
 
 jest.mock('utils/cl-router/withRouter', () => {

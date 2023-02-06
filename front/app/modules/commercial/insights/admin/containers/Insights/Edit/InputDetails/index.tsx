@@ -23,7 +23,7 @@ import {
   useAddCategory,
 } from 'modules/commercial/insights/api/categories';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import { useInput } from 'modules/commercial/insights/api/inputs';
+import useInput from 'modules/commercial/insights/api/inputs/useInput';
 // styles
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';

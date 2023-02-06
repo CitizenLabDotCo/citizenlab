@@ -4,7 +4,7 @@ import Details from './';
 import { render, fireEvent, screen } from 'utils/testUtils/rtl';
 import inputs from 'modules/commercial/insights/fixtures/inputs';
 import clHistory from 'utils/cl-router/history';
-import { useInfiniteInputs } from 'modules/commercial/insights/api/inputs';
+import useInfiniteInputs from 'modules/commercial/insights/api/inputs/useInfiniteInputs';
 
 const viewId = '1';
 
@@ -45,7 +45,8 @@ jest.mock('./Network', () => {
 });
 
 jest.mock('modules/commercial/insights/api/views');
-jest.mock('modules/commercial/insights/api/inputs');
+jest.mock('modules/commercial/insights/api/inputs/useInfiniteInputs');
+jest.mock('modules/commercial/insights/api/inputs/useInput');
 
 describe('Insights Details Inputs', () => {
   it('renders', () => {

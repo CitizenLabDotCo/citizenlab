@@ -11,10 +11,9 @@ import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputs
 import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 import useScanInsightsCategory from 'modules/commercial/insights/hooks/useScanInsightsCategory';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import {
+import useInputs, {
   defaultPageSize,
-  useInputs,
-} from 'modules/commercial/insights/api/inputs';
+} from 'modules/commercial/insights/api/inputs/useInputs';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 // components

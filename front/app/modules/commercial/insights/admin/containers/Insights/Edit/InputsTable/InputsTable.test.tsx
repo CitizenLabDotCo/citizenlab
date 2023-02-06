@@ -10,7 +10,7 @@ import {
 import * as service from 'modules/commercial/insights/services/insightsInputs';
 import * as batchService from 'modules/commercial/insights/services/batchAssignment';
 import inputs from 'modules/commercial/insights/fixtures/inputs';
-import { useInputs } from 'modules/commercial/insights/api/inputs';
+import useInputs from 'modules/commercial/insights/api/inputs/useInputs';
 import clHistory from 'utils/cl-router/history';
 import categories from 'modules/commercial/insights/fixtures/categories';
 import links from 'modules/commercial/insights/fixtures/links';
@@ -48,19 +48,17 @@ jest.mock('hooks/useIdea', () => {
 });
 
 jest.mock('modules/commercial/insights/api/views');
-const mockIsLoading = false;
-const mockLinks = links;
 
-jest.mock('modules/commercial/insights/api/inputs', () => {
-  return {
-    useInputs: jest.fn(() => {
-      return {
-        data: { data: mockInputData, links: mockLinks },
-        isLoading: mockIsLoading,
-      };
-    }),
-  };
-});
+const mockLinks = links;
+const mockIsLoading = false;
+jest.mock('modules/commercial/insights/api/inputs/useInputs', () =>
+  jest.fn(() => {
+    return {
+      data: { data: mockInputData, links: mockLinks },
+      isLoading: mockIsLoading,
+    };
+  })
+);
 
 jest.mock('utils/cl-router/withRouter', () => {
   return {

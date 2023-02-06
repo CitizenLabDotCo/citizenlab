@@ -21,7 +21,7 @@ import Preview from './Preview';
 import Navigation from 'modules/commercial/insights/admin/components/Navigation';
 
 // hooks
-import { useInfiniteInputs } from 'modules/commercial/insights/api/inputs';
+import useInfiniteInputs from 'modules/commercial/insights/api/inputs/useInfiniteInputs';
 
 // types
 import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';

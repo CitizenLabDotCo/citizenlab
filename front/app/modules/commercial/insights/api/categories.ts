@@ -1,17 +1,20 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { CLErrors, IRelationship } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import { inputKeys } from './inputs';
+import inputKeys from './inputs/keys';
 import { statsKeys } from './stats';
 
 const categoryKeys = {
   all: () => [{ type: 'category' }] as const,
   lists: () => [{ ...categoryKeys.all()[0], entity: 'list' }] as const,
+  list: (viewId: string) =>
+    [{ ...categoryKeys.all()[0], entity: 'list', viewId }] as const,
   details: () => [{ ...categoryKeys.all()[0], entity: 'detail' }] as const,
-  detail: (id: string) =>
+  detail: (viewId: string, id: string) =>
     [
       {
         ...categoryKeys.details()[0],
+        viewId,
         id,
       },
     ] as const,
@@ -54,12 +57,12 @@ export const useCategories = (viewId: string) => {
     IInsightsCategories,
     CategoryKeys
   >({
-    queryKey: categoryKeys.lists(),
+    queryKey: categoryKeys.list(viewId),
     queryFn: () => fetchCategories(viewId),
   });
 };
 
-const fetchCategory = (viewId: string, id: string) =>
+const fetchCategory = (viewId: string, id?: string) =>
   fetcher<IInsightsCategory>({
     path: `/insights/views/${viewId}/categories/${id}`,
     action: 'get',
@@ -68,7 +71,7 @@ const fetchCategory = (viewId: string, id: string) =>
 export const useCategory = (viewId: string, id: string) => {
   return useQuery<IInsightsCategory, CLErrors, IInsightsCategory, CategoryKeys>(
     {
-      queryKey: categoryKeys.detail(id),
+      queryKey: categoryKeys.detail(viewId, id),
       queryFn: () => fetchCategory(viewId, id),
     }
   );
@@ -98,8 +101,10 @@ export const useAddCategory = ({ onSuccess }: { onSuccess?: () => void }) => {
   const queryClient = useQueryClient();
   return useMutation<IInsightsCategory, CLErrors, AddInsightsCategoryParams>({
     mutationFn: addCategory,
-    onSuccess: (_data) => {
-      queryClient.invalidateQueries({ queryKey: categoryKeys.lists() });
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: categoryKeys.list(variables.viewId),
+      });
       onSuccess && onSuccess();
     },
   });
@@ -133,8 +138,10 @@ export const useUpdateCategory = ({
     IInsightsCategoryUpdateObject
   >({
     mutationFn: updateCategory,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: categoryKeys.lists() });
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: categoryKeys.list(variables.viewId),
+      });
       onSuccess && onSuccess();
     },
   });
@@ -157,7 +164,7 @@ export const useDeleteAllCategories = ({
     mutationFn: deleteAllCategories,
 
     onSuccess: (_data, viewId) => {
-      queryClient.invalidateQueries({ queryKey: categoryKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: categoryKeys.list(viewId) });
       queryClient.invalidateQueries({ queryKey: statsKeys.detail(viewId) });
       queryClient.invalidateQueries({ queryKey: inputKeys.list(viewId) });
       onSuccess && onSuccess();
@@ -187,7 +194,9 @@ export const useDeleteCategory = ({
   return useMutation({
     mutationFn: deleteCategory,
     onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({ queryKey: categoryKeys.lists() });
+      queryClient.invalidateQueries({
+        queryKey: categoryKeys.list(variables.viewId),
+      });
       onSuccess && onSuccess(variables.categoryId);
     },
   });
