@@ -19,7 +19,7 @@ namespace :data_migration do
     tenant_id = args[:tenant_id]
     tenants = tenant_id ? Tenant.where(id: tenant_id) : Tenant
 
-    tenants.each do |tenant|
+    tenants.find_each do |tenant|
       tenant.switch do
         total_nb_records = 0
         models_with_project_id_col.each do |model_class|
@@ -66,7 +66,7 @@ namespace :data_migration do
     tenant_id = args[:tenant_id]
     tenants = tenant_id ? Tenant.where(id: tenant_id) : Tenant
 
-    tenants.each do |tenant|
+    tenants.find_each do |tenant|
       tenant.switch do
         total_nb_records = 0
 
