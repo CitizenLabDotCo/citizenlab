@@ -7,9 +7,6 @@ import { addInsightsCategory } from 'modules/commercial/insights/services/insigh
 
 const viewId = '1';
 
-jest.mock('services/locale');
-jest.mock('utils/cl-intl');
-
 jest.mock('utils/cl-router/withRouter', () => {
   return {
     withRouter: (Component) => {
@@ -19,7 +16,6 @@ jest.mock('utils/cl-router/withRouter', () => {
     },
   };
 });
-jest.mock('utils/cl-router/Link');
 
 jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
   addInsightsCategory: jest.fn(),

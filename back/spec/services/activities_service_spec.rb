@@ -16,7 +16,8 @@ describe ActivitiesService do
       now = Time.find_zone(timezone).local(2019, 3, 20).localtime + 1.minute
 
       expect { service.create_periodic_activities(now: now) }
-        .to have_enqueued_job(LogActivityJob).with(phase, 'started', nil, start_at.to_time.to_i)
+        .to have_enqueued_job(LogActivityJob)
+        .with(phase, 'started', nil, start_at.to_time.to_i, project_id: phase.project_id)
     end
 
     it "doesn't log phase started activity when no new phase starts (in the application timezone)" do
@@ -42,7 +43,8 @@ describe ActivitiesService do
       now = Time.find_zone(timezone).local(2019, 3, 13).localtime + 1.minute
 
       expect { service.create_periodic_activities(now: now) }
-        .to have_enqueued_job(LogActivityJob).with(phase, 'upcoming', nil, now.to_i)
+        .to have_enqueued_job(LogActivityJob)
+        .with(phase, 'upcoming', nil, now.to_i, project_id: phase.project_id)
     end
 
     it "doesn't log phase upcoming activity when no new phase starts in a week (in the application timezone)" do

@@ -4,6 +4,12 @@
 
 - [CL-2673] In-platform survey UI improvements
 
+## 2023-02-03
+
+### Added
+
+- [CL-2534] Image dimensions i3: improved project/folder card images
+
 ## 2023-02-01
 
 ### Fixed

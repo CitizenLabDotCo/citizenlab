@@ -32,6 +32,8 @@ class Basket < ApplicationRecord
 
   scope :submitted, -> { where.not(submitted_at: nil) }
 
+  delegate :project_id, to: :participation_context
+
   def total_budget
     ideas.pluck(:budget).compact.sum
   end

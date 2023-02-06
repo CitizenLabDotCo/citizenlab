@@ -2,7 +2,6 @@ import React from 'react';
 import HeaderImageDropzone from './HeaderImageDropzone';
 import { render, screen, waitFor, fireEvent } from 'utils/testUtils/rtl';
 
-jest.mock('utils/cl-intl');
 const file = new File(['file'], 'file.jpeg', {
   type: 'image/jpeg',
 });

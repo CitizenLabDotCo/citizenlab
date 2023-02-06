@@ -4,7 +4,7 @@ import { Input } from '@citizenlab/cl2-component-library';
 
 type Props = {
   value: string;
-  onChange: (string) => void;
+  onChange: (numberValue: number) => void;
 };
 
 interface State {}

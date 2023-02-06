@@ -16,9 +16,6 @@ jest.mock('@citizenlab/cl2-component-library', () => ({
 
 jest.spyOn(styledComponents, 'useTheme').mockReturnValue(getTheme());
 
-// Mock services
-jest.mock('services/locale');
-
 // Mock hooks
 const DEFAULT_ADMIN_PUBLICATIONS = [
   { publicationId: '1', publicationType: 'project' },
@@ -72,9 +69,6 @@ jest.mock('hooks/useAdminPublicationsStatusCounts', () =>
   }))
 );
 
-jest.mock('hooks/useLocalize');
-jest.mock('hooks/useLocale');
-
 jest.mock('hooks/useAppConfiguration', () =>
   jest.fn(() => ({
     attributes: {
@@ -126,7 +120,7 @@ jest.mock('components/Outlet', () => ({
   __esModule: true,
   default: () => <></>,
 }));
-jest.mock('utils/cl-intl');
+
 jest.mock('components/T', () => ({
   __esModule: true,
   default: () => <></>,
