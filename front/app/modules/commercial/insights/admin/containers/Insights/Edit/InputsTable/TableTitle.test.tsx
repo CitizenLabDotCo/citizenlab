@@ -4,8 +4,6 @@ import categories from 'modules/commercial/insights/fixtures/categories';
 
 import TableTitle from './TableTitle';
 
-jest.mock('utils/cl-intl');
-
 const mockDelete = jest.fn();
 const mockData = categories;
 
@@ -13,8 +11,6 @@ jest.mock('modules/commercial/insights/api/categories', () => ({
   useCategories: () => ({ data: { data: mockData } }),
   useDeleteCategory: () => ({ mutate: mockDelete, reset: jest.fn() }),
 }));
-
-jest.mock('hooks/useLocale');
 
 const viewId = '1';
 

@@ -6,12 +6,17 @@ import useLocalize from 'hooks/useLocalize';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import { isNilOrError } from 'utils/helperUtils';
 
-export interface Props {
+interface InputProps {
   rule: TRule;
   value: string;
   onChange: (value: string[]) => void;
+}
+
+interface DataProps {
   projects: GetProjectsChildProps;
 }
+
+interface Props extends InputProps, DataProps {}
 
 const ProjectValuesSelector = memo(({ value, onChange, projects }: Props) => {
   const localize = useLocalize();
@@ -40,7 +45,7 @@ const ProjectValuesSelector = memo(({ value, onChange, projects }: Props) => {
   );
 });
 
-export default (inputProps) => (
+export default (inputProps: InputProps) => (
   <GetProjects publicationStatuses={['draft', 'published', 'archived']}>
     {(projects) => (
       <ProjectValuesSelector {...inputProps} projects={projects} />

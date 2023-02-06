@@ -40,6 +40,8 @@ class CustomFieldOption < ApplicationRecord
   has_one :area, dependent: :nullify
   after_update :update_area
 
+  delegate :project_id, to: :custom_field
+
   private
 
   def belongs_to_select_field

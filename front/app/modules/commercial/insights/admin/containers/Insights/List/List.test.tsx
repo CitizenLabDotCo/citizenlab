@@ -4,8 +4,6 @@ import views from 'modules/commercial/insights/fixtures/views';
 
 import InsightsList from './';
 
-jest.mock('utils/cl-intl');
-
 let mockData = { data: views };
 
 const mockDeleteView = jest.fn();

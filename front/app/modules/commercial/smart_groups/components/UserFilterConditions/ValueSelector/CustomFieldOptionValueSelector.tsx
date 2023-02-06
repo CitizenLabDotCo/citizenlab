@@ -20,7 +20,7 @@ import { IUserCustomFieldOptionData } from 'services/userCustomFieldOptions';
 type Props = {
   rule: TRule;
   value: string;
-  onChange: (string) => void;
+  onChange: (customFieldOptionValue: string) => void;
   options: IUserCustomFieldOptionData[] | NilOrError;
 };
 

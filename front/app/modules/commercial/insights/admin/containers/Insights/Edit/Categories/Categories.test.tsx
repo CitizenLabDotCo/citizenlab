@@ -10,8 +10,6 @@ let mockDetectedCategoriesData = categories;
 
 const viewId = '1';
 
-jest.mock('utils/cl-intl');
-
 const mockAdd = jest.fn();
 const mockDelete = jest.fn();
 const mockDeleteAll = jest.fn();
@@ -48,8 +46,6 @@ jest.mock('modules/commercial/insights/api/stats', () => ({
   })),
 }));
 
-jest.mock('hooks/useLocale');
-jest.mock('services/locale');
 jest.mock('utils/analytics');
 
 let mockFeatureFlagData = true;
@@ -73,9 +69,6 @@ jest.mock('utils/cl-router/withRouter', () => {
     },
   };
 });
-
-jest.mock('utils/cl-router/Link');
-jest.mock('utils/cl-router/history');
 
 describe('Insights Edit Categories', () => {
   it('renders correct number of categories', () => {

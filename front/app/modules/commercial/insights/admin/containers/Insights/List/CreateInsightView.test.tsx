@@ -1,11 +1,9 @@
 import React from 'react';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 
-jest.mock('utils/cl-intl');
 jest.mock('utils/cl-router/Link', () => 'Link');
 jest.mock('resources/GetProjects', () => {});
-jest.mock('hooks/useLocalize');
-jest.mock('services/locale');
+
 const mockMutate = jest.fn();
 jest.mock('modules/commercial/insights/api/views', () => {
   return {

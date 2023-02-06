@@ -27,11 +27,6 @@ jest.mock('hooks/useIdea', () => {
   return jest.fn(() => mockIdeaData);
 });
 
-jest.mock('utils/cl-router/history');
-jest.mock('hooks/useLocale');
-jest.mock('utils/cl-intl');
-jest.mock('utils/cl-router/Link');
-
 jest.mock('utils/cl-router/withRouter', () => {
   return {
     withRouter: (Component) => {

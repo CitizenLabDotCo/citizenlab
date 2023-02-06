@@ -7,13 +7,9 @@ import Categories, { visibleCategoriesNumber } from './';
 
 let mockData = categories;
 
-jest.mock('utils/cl-intl');
-
 jest.mock('modules/commercial/insights/api/categories', () => ({
   useCategories: () => ({ data: { data: mockData } }),
 }));
-
-jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
 
 const viewId = '1';
 
@@ -35,7 +31,6 @@ jest.mock('utils/cl-router/withRouter', () => {
     Link: () => <>Link</>,
   };
 });
-jest.mock('utils/cl-router/Link');
 
 describe('Insights Details Categories', () => {
   it('renders Categories', () => {

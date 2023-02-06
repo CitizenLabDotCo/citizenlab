@@ -97,6 +97,10 @@ class Comment < ApplicationRecord
     @author_name ||= author.nil? ? nil : author.full_name
   end
 
+  def project_id
+    post.try(:project_id)
+  end
+
   private
 
   def set_publication_status

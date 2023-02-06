@@ -6,9 +6,6 @@ import categories from 'modules/commercial/insights/fixtures/categories';
 
 const viewId = '1';
 
-jest.mock('services/locale');
-jest.mock('utils/cl-intl');
-
 jest.mock('utils/cl-router/withRouter', () => {
   return {
     withRouter: (Component) => {
@@ -18,7 +15,6 @@ jest.mock('utils/cl-router/withRouter', () => {
     },
   };
 });
-jest.mock('utils/cl-router/Link');
 
 const mockAdd = jest.fn();
 

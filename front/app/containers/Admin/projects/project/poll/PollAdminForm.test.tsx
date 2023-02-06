@@ -11,7 +11,6 @@ jest.mock('components/UI/Button', () => 'Button');
 jest.mock('./QuestionRow', () => 'QuestionRow');
 jest.mock('./FormQuestionRow', () => 'FormQuestionRow');
 jest.mock('./OptionForm', () => 'OptionForm');
-jest.mock('modules', () => ({ streamsToReset: [] }));
 
 jest.mock('services/pollQuestions', () => ({
   addPollQuestion: jest.fn((_id, _type, title) => {

@@ -125,7 +125,7 @@ export const ParticipationCTAContent = ({
                 <FormattedMessage
                   {...timeLeftMessage}
                   values={{
-                    timeLeft: timeLeft,
+                    timeLeft,
                   }}
                 />
               </Text>

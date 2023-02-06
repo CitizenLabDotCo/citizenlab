@@ -12,9 +12,6 @@ let mockLocationData: { query: Record<string, unknown> } = { query: {} };
 
 jest.mock('modules/commercial/insights/api/views');
 
-jest.mock('utils/cl-intl');
-jest.mock('hooks/useLocale');
-jest.mock('services/locale');
 jest.mock('utils/request');
 
 jest.mock('utils/cl-router/withRouter', () => {

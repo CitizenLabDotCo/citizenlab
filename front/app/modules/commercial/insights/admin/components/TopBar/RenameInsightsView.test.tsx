@@ -5,10 +5,6 @@ import RenameInsightsView from './RenameInsightsView';
 
 const viewId = '1';
 
-jest.mock('utils/cl-intl');
-
-jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
-
 jest.mock('utils/cl-router/withRouter', () => {
   return {
     withRouter: (Component) => {
@@ -18,7 +14,6 @@ jest.mock('utils/cl-router/withRouter', () => {
     },
   };
 });
-jest.mock('utils/cl-router/Link');
 
 const mockMutate = jest.fn();
 jest.mock('modules/commercial/insights/api/views', () => {

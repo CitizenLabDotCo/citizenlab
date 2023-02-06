@@ -164,8 +164,7 @@ const Box = styled.div<{ maxWidth: string | undefined; ratio: number }>`
   ${DropzoneContent} {
     width: 100%;
     height: ${({ maxWidth, ratio }) => (ratio !== 1 ? 'auto' : maxWidth)};
-    padding-bottom: ${({ ratio }) =>
-      ratio !== 1 ? `${Math.round(ratio * 100)}%` : '0'};
+    padding-bottom: ${({ ratio }) => `${Math.round(ratio * 100)}%`};
   }
 `;
 

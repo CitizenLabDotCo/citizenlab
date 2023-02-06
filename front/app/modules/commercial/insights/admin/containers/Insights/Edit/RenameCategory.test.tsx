@@ -6,9 +6,6 @@ import RenameCategory from './RenameCategory';
 const viewId = '1';
 const categoryId = '1';
 
-jest.mock('utils/cl-intl');
-jest.mock('utils/analytics');
-
 const mockUpdateCategory = jest.fn();
 
 jest.mock('modules/commercial/insights/api/categories', () => ({
@@ -16,7 +13,6 @@ jest.mock('modules/commercial/insights/api/categories', () => ({
 }));
 
 jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
-jest.mock('utils/cl-router/Link');
 
 jest.mock('utils/cl-router/withRouter', () => {
   return {
