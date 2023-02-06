@@ -6,8 +6,8 @@ ar-MA:
       "inappropriate_content_flagged": تم وضع علامة على محتوى غير لائق - المسؤولون
     inappropriate_content_flagged:
       subject: 'تم وضع علامة على منشور في منصتك تمهيدًا لمراجعته'
-      header_title: 'A post on your platform has been flagged for review'
-      comment_author: '%{authorName} commented:'
+      header_title: 'تم وضع علامة على منشور في منصتك تمهيدًا لمراجعته'
+      comment_author: 'علّق %{authorName}:'
       idea_author: 'أرسل/أرسلت %{authorName} منشورًا:'
       initiative_author: 'أرسل/أرسلت %{authorName} مقترحًا:'
       this_post_was_flagged: >
