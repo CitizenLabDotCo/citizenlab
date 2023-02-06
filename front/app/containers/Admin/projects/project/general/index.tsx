@@ -33,8 +33,8 @@ import {
 } from './components/styling';
 import ProjectFolderSelect from './components/ProjectFolderSelect';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
-import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
 import ProjectCardImageTooltip from './components/ProjectCardImageTooltip';
+import ProjectHeaderImageTooltip from './components/ProjectHeaderImageTooltip';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -575,7 +575,7 @@ const AdminProjectsProjectGeneral = () => {
         <SectionField>
           <SubSectionTitle>
             <FormattedMessage {...messages.headerImageInputLabel} />
-            <ImageInfoTooltip />
+            <ProjectHeaderImageTooltip />
           </SubSectionTitle>
           <HeaderBgUploader
             imageUrl={project?.attributes.header_bg.large}

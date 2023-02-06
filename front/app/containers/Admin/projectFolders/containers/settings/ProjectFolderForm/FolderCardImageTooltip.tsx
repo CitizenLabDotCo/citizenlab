@@ -15,11 +15,11 @@ const FolderCardImageTooltip = () => {
           values={{
             supportPageLink: (
               <a
-                href={formatMessage(messages.headerImageSupportPageURL)}
+                href={formatMessage(messages.imageSupportPageURL)}
                 target="_blank"
                 rel="noreferrer"
               >
-                <FormattedMessage {...messages.headerImageSupportPageText} />
+                <FormattedMessage {...messages.supportPageLinkText} />
               </a>
             ),
           }}

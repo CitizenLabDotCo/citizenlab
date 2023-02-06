@@ -160,20 +160,27 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.headerImageInputLabel',
     defaultMessage: 'Header image',
   },
-  headerImageSupportPageURL: {
-    id: 'app.components.Admin.ImageCropper.headerImageSupportPageURL',
-    defaultMessage:
-      'https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
+  projectHeaderImageTooltip: {
+    id: 'app.components.Admin.ImageCropper.projectHeaderImageTooltip',
+    defaultMessage: `
+    This image is shown at the top of the projecet page.
+
+    For more information on recommended image resolutions, {supportPageLink}.`,
   },
-  headerImageTooltip: {
-    id: 'app.components.Admin.ImageCropper.headerImageTooltip',
+  projectCardImageTooltip: {
+    id: 'app.components.Admin.ImageCropper.projectCardImageTooltip',
     defaultMessage: `
     This image is part of the project card; the card that summarizes the project and is shown on the homepage for example.
 
     For more information on recommended image resolutions, {supportPageLink}.`,
   },
-  headerImageSupportPageText: {
-    id: 'app.components.Admin.ImageCropper.headerImageSupportPageText',
+  imageSupportPageURL: {
+    id: 'app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL',
+    defaultMessage:
+      'https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
+  },
+  supportPageLinkText: {
+    id: 'app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText',
     defaultMessage: 'visit our support center',
   },
 });
