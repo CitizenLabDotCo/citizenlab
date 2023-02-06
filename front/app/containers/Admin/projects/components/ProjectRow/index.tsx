@@ -29,7 +29,7 @@ import useAuthUser from 'hooks/useAuthUser';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 import messages from '../messages';
-import { copyProject } from 'services/projects';
+import { copyProject, deleteProject } from 'services/projects';
 import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 import { useIntl } from 'utils/cl-intl';
 
@@ -67,7 +67,7 @@ const ProjectRow = ({
   className,
 }: Props) => {
   const [isBeingDeleted, setIsBeingDeleted] = useState<boolean>(false);
-  const [deletionError, setDeletionError] = useState<string>('');
+  const [error, setError] = useState<string>('');
   const authUser = useAuthUser();
   const projectId = publication.publicationId;
   const publicationStatus = publication.attributes.publication_status;
@@ -76,6 +76,18 @@ const ProjectRow = ({
     canModerateProject(publication.publicationId, { data: authUser });
 
   const { formatMessage } = useIntl();
+
+  const handleCallbackError = async (
+    callback: () => Promise<any>,
+    error: string
+  ) => {
+    try {
+      await callback();
+      setError('');
+    } catch {
+      setError(error);
+    }
+  };
 
   return (
     <Container className={className}>
@@ -106,7 +118,7 @@ const ProjectRow = ({
                   <DeleteProjectButton
                     publication={publication}
                     setDeleteIsProcessing={setIsBeingDeleted}
-                    setDeletionError={setDeletionError}
+                    setDeletionError={setError}
                     processing={isBeingDeleted}
                     key="delete"
                   />
@@ -150,11 +162,31 @@ const ProjectRow = ({
                 showLabel={false}
                 actions={[
                   {
-                    handler: () => {
-                      copyProject(projectId);
+                    handler: async () => {
+                      await handleCallbackError(
+                        () => copyProject(projectId),
+                        formatMessage(messages.copyProjectError)
+                      );
                     },
                     label: formatMessage(messages.copyProjectButton),
                     icon: 'copy',
+                  },
+                  {
+                    handler: async () => {
+                      if (
+                        publication &&
+                        window.confirm(
+                          formatMessage(messages.deleteProjectConfirmation)
+                        )
+                      ) {
+                        await handleCallbackError(
+                          () => deleteProject(projectId),
+                          formatMessage(messages.deleteProjectError)
+                        );
+                      }
+                    },
+                    label: formatMessage(messages.deleteProjectButton),
+                    icon: 'delete',
                   },
                 ]}
               ></MoreActionsMenu>
@@ -163,7 +195,7 @@ const ProjectRow = ({
               <DeleteProjectButton
                 publication={publication}
                 setDeleteIsProcessing={setIsBeingDeleted}
-                setDeletionError={setDeletionError}
+                setDeletionError={setError}
                 processing={isBeingDeleted}
                 key="delete"
               />
@@ -183,7 +215,7 @@ const ProjectRow = ({
           />
         )}
       </RowContent>
-      {deletionError && <Error text={deletionError} />}
+      {error && <Error text={error} />}
     </Container>
   );
 };

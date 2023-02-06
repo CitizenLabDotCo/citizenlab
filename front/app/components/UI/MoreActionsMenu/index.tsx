@@ -131,8 +131,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
     };
   }
 
-  hideMenu = (event) => {
-    event.preventDefault();
+  hide = () => {
     this.setState({ visible: false });
   };
 
@@ -142,10 +141,10 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
   };
 
   handleListItemOnClick =
-    (handler: () => void) => (event: React.MouseEvent) => {
+    (handler: () => void) => async (event: React.MouseEvent) => {
       event.preventDefault();
-      this.setState({ visible: false });
-      handler();
+      await handler();
+      this.hide();
     };
 
   render() {
@@ -168,8 +167,9 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
         <Tippy
           placement="bottom"
           interactive={true}
-          trigger="click"
           duration={[200, 0]}
+          visible={visible}
+          onClickOutside={this.hide}
           content={
             <List className="e2e-more-actions-list">
               {actions.map((action, index) => {

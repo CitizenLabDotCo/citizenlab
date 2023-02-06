@@ -19,6 +19,11 @@ export default defineMessages({
     defaultMessage:
       'There was an error deleting this project, please try again later.',
   },
+  copyProjectError: {
+    id: 'app.containers.Admin.projects.all.copyProjectError',
+    defaultMessage:
+      'There was an error copying this project, please try again later.',
+  },
   deleteProjectButton: {
     id: 'app.containers.Admin.projects.all.deleteProjectButton1',
     defaultMessage: 'Delete project',
