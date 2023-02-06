@@ -1073,6 +1073,7 @@
   "app.containers.AdminPage.ProjectEdit.findVolunteersDescriptionText": "Ask participants to volunteer for activities and causes.",
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip": "You will need to add the project to a folder that you have admin rights over.",
   "app.containers.AdminPage.ProjectEdit.folderSelectError": "Select a folder to add this project to.",
+  "app.containers.AdminPage.ProjectEdit.formBuilder.customToolboxTitle": "Custom content",
   "app.containers.AdminPage.ProjectEdit.formBuilder.successMessage": "Form successfully saved",
   "app.containers.AdminPage.ProjectEdit.fromATemplate": "From a template",
   "app.containers.AdminPage.ProjectEdit.fromScratch": "From scratch",

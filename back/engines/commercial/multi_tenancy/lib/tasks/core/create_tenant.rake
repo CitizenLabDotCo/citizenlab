@@ -307,6 +307,10 @@ namespace :cl2_back do
         report_builder: {
           enabled: true,
           allowed: true
+        },
+        input_form_custom_fields: {
+          enabled: true,
+          allowed: true
         }
       }
     )
