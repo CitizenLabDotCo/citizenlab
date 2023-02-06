@@ -143,7 +143,6 @@
   "app.components.admin.PostManager.topicsTabTooltipText": "Adicione tópicos a uma entrada usando arrastar e soltar.",
   "app.components.admin.PostManager.up": "Acima",
   "app.components.admin.PostManager.votes": "Votos",
-  "app.components.admin.ProjectableHeaderBgUploader.headerImageInputLabel": "Header image",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "De",
   "app.components.admin.ReportExportMenu.FileName.groupFilter": "grupo",
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "Projeto",

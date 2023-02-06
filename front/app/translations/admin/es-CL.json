@@ -143,7 +143,6 @@
   "app.components.admin.PostManager.topicsTabTooltipText": "Agrega temas/etiquetas a un aporte usando arrastrar y soltar.",
   "app.components.admin.PostManager.up": "Arriba",
   "app.components.admin.PostManager.votes": "Votos",
-  "app.components.admin.ProjectableHeaderBgUploader.headerImageInputLabel": "Imagen del encabezado",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "de",
   "app.components.admin.ReportExportMenu.FileName.groupFilter": "grupo",
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "proyecto",

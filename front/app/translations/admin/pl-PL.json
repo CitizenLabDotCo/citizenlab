@@ -143,7 +143,6 @@
   "app.components.admin.PostManager.topicsTabTooltipText": "Dodaj tematy do wkładu za pomocą metody \"przeciągnij i upuść\".",
   "app.components.admin.PostManager.up": "Za",
   "app.components.admin.PostManager.votes": "Głosy",
-  "app.components.admin.ProjectableHeaderBgUploader.headerImageInputLabel": "Obrazek z nagłówka",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "od",
   "app.components.admin.ReportExportMenu.FileName.groupFilter": "grupa",
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "projekt",

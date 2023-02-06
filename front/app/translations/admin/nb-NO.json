@@ -143,7 +143,6 @@
   "app.components.admin.PostManager.topicsTabTooltipText": "Legg til tagger i en oppføring ved å dra og slippe.",
   "app.components.admin.PostManager.up": "Opp",
   "app.components.admin.PostManager.votes": "Stemmer",
-  "app.components.admin.ProjectableHeaderBgUploader.headerImageInputLabel": "Toppbilde",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "fra",
   "app.components.admin.ReportExportMenu.FileName.groupFilter": "gruppe",
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "prosjekt",
