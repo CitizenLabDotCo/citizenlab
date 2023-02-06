@@ -379,6 +379,10 @@ module MultiTenancy
             report_builder: {
               enabled: true,
               allowed: true
+            },
+            input_form_custom_fields: {
+              enabled: true,
+              allowed: true
             }
           })
         )

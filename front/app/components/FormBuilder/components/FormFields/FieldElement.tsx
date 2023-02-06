@@ -272,8 +272,8 @@ export const FieldElement = (props: Props) => {
                 placement="top"
                 icon="eye-off"
                 iconColor={colors.coolGrey300}
-                content={formatMessage(messages.fieldNotVisibleTooltip)}
-                maxTooltipWidth={200}
+                content={formatMessage(messages.fieldIsNotVisibleTooltip)}
+                maxTooltipWidth={250}
               />
             )}
             {field.required && (

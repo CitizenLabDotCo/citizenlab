@@ -71,4 +71,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.formBuilder.successMessage',
     defaultMessage: 'Form successfully saved',
   },
+  customToolboxTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.customToolboxTitle',
+    defaultMessage: 'Custom content',
+  },
 });

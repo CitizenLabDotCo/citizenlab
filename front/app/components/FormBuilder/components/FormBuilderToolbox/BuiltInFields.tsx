@@ -2,8 +2,7 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
 // intl
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // components
@@ -22,12 +21,10 @@ interface BuiltInFieldsProps {
   move: (indexA: number, indexB: number) => void;
 }
 
-const BuiltInFields = ({
-  intl: { formatMessage },
-  isEditingDisabled,
-  move,
-}: BuiltInFieldsProps & WrappedComponentProps) => {
+const BuiltInFields = ({ isEditingDisabled, move }: BuiltInFieldsProps) => {
   const { watch, trigger, setValue } = useFormContext();
+  const { formatMessage } = useIntl();
+
   const formCustomFields: IFlatCustomField[] = watch('customFields');
   const enabledBuiltInFieldKeys = formCustomFields
     .filter((field) => {
@@ -57,14 +54,13 @@ const BuiltInFields = ({
       <Title
         fontWeight="normal"
         mb="4px"
-        mt="24px"
         ml="16px"
         variant="h6"
         as="h3"
         color="textSecondary"
         style={{ textTransform: 'uppercase' }}
       >
-        <FormattedMessage {...messages.defaultField} />
+        <FormattedMessage {...messages.defaultContent} />
       </Title>
       <DraggableElement>
         <ToolboxItem
@@ -72,33 +68,31 @@ const BuiltInFields = ({
           label={formatMessage(messages.proposedBudget)}
           onClick={() => enableField('proposed_budget')}
           disabled={!enabledBuiltInFieldKeys.includes('proposed_budget')}
+          disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
           data-cy="e2e-proposed-budget-item"
         />
-      </DraggableElement>
-      <DraggableElement>
         <ToolboxItem
           icon="upload-file"
           label={formatMessage(messages.fileUpload)}
           onClick={() => enableField('idea_files_attributes')}
           disabled={!enabledBuiltInFieldKeys.includes('idea_files_attributes')}
+          disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
           data-cy="e2e-attachments-item"
         />
-      </DraggableElement>
-      <DraggableElement>
         <ToolboxItem
           icon="location-simple"
           label={formatMessage(messages.locationDescription)}
           onClick={() => enableField('location_description')}
           disabled={!enabledBuiltInFieldKeys.includes('location_description')}
           data-cy="e2e-location-item"
+          disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
         />
-      </DraggableElement>
-      <DraggableElement>
         <ToolboxItem
           icon="label"
           label={formatMessage(messages.tags)}
           onClick={() => enableField('topic_ids')}
           disabled={!enabledBuiltInFieldKeys.includes('topic_ids')}
+          disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
           data-cy="e2e-tags-item"
         />
       </DraggableElement>
@@ -106,4 +100,4 @@ const BuiltInFields = ({
   );
 };
 
-export default injectIntl(BuiltInFields);
+export default BuiltInFields;
