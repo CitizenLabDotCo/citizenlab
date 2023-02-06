@@ -1,8 +1,6 @@
 {
   "UI.FormComponents.required": "potrebno",
-  "app.components.Admin.ImageCropper.imageSupportPageText": "posjetite naš centar za podršku",
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "app.components.Admin.ImageCropper.imageTooltip": "Za više informacija o preporučenim razlučivostima slika, {supportPageLink}.",
   "app.components.Admin.ImageCropper.info": "Ova se slika uvijek obrezuje na određeni omjer kako bi svi ključni aspekti bili uvijek prikazani. {link} za ovaj tip slike jest {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "preporučeni omjer",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Tekst zaglavlja za registrirane korisnike",

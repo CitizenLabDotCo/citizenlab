@@ -1,8 +1,6 @@
 {
   "UI.FormComponents.required": "مطلوب",
-  "app.components.Admin.ImageCropper.imageSupportPageText": "زيارة مركز الدعم التابع لنا",
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "app.components.Admin.ImageCropper.imageTooltip": "لمزيد من المعلومات حول مستويات الدقة الموصى بها للصور، {supportPageLink}.",
   "app.components.Admin.ImageCropper.info": "يتم اقتصاص هذه الصورة دائمًا بنسبة معينة للتأكد من ظهور جميع النواحي البالغة الأهمية في جميع الأوقات. {link} لنوع هذه الصورة {aspect}‏:1.",
   "app.components.Admin.ImageCropper.infoLinkText": "النسبة الموصى بها",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "نص ترويسة المستخدمين المسجلين",

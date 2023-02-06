@@ -1,8 +1,6 @@
 {
   "UI.FormComponents.required": "wymagane",
-  "app.components.Admin.ImageCropper.imageSupportPageText": "odwiedź nasze centrum wsparcia",
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "app.components.Admin.ImageCropper.imageTooltip": "Więcej informacji na temat zalecanych rozdzielczości obrazu można znaleźć na stronie {supportPageLink}.",
   "app.components.Admin.ImageCropper.info": "Obraz jest zawsze przycięty do określonej proporcji, aby mieć pewność, że wszystkie kluczowe aspekty są zawsze widoczne. {link} dla tego typu obrazu to {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "zalecana rozdzielczość",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Tekst nagłówka dla zarejestrowanych użytkowników",

@@ -1,8 +1,6 @@
 {
   "UI.FormComponents.required": "påkrævet",
-  "app.components.Admin.ImageCropper.imageSupportPageText": "besøge vores supportcenter",
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "app.components.Admin.ImageCropper.imageTooltip": "Du kan få flere oplysninger om anbefalede billedopløsninger på {supportPageLink}.",
   "app.components.Admin.ImageCropper.info": "Dette billede er altid beskåret i et bestemt forhold for at sikre, at alle vigtige aspekter altid er synlige. {link} for denne billedtype er {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "anbefalet forhold",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Overskriftstekst for registrerede brugere",
