@@ -209,7 +209,7 @@ class CommentsMoreActions extends PureComponent<
         <Container className={className || ''}>
           <MoreActionsMenu
             showLabel={false}
-            label={<FormattedMessage {...messages.showMoreActions} />}
+            labelAndTitle={<FormattedMessage {...messages.showMoreActions} />}
             actions={actions}
           />
         </Container>

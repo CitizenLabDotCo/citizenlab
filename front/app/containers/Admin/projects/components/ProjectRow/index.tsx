@@ -12,7 +12,7 @@ import {
 } from '../StyledComponents';
 import DeleteProjectButton from '../DeleteProjectButton';
 import PublicationStatusLabel from '../PublicationStatusLabel';
-import { IconNames, StatusLabel } from '@citizenlab/cl2-component-library';
+import { Box, IconNames, StatusLabel } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import GroupsTag from './GroupsTag';
 import AdminTag from './AdminTag';
@@ -30,6 +30,8 @@ import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 import messages from '../messages';
 import { copyProject } from 'services/projects';
+import MoreActionsMenu from 'components/UI/MoreActionsMenu';
+import { useIntl } from 'utils/cl-intl';
 
 export const StyledStatusLabel = styled(StatusLabel)`
   margin-right: 5px;
@@ -72,6 +74,8 @@ const ProjectRow = ({
   const userCanModerateProject =
     !isNilOrError(authUser) &&
     canModerateProject(publication.publicationId, { data: authUser });
+
+  const { formatMessage } = useIntl();
 
   return (
     <Container className={className}>
@@ -140,6 +144,21 @@ const ProjectRow = ({
                 );
               }
             })}
+
+            <Box display="flex" alignItems="center">
+              <MoreActionsMenu
+                showLabel={false}
+                actions={[
+                  {
+                    handler: () => {
+                      copyProject(projectId);
+                    },
+                    label: formatMessage(messages.copyProjectButton),
+                    icon: 'copy',
+                  },
+                ]}
+              ></MoreActionsMenu>
+            </Box>
             <ProjectMoreOptions>
               <DeleteProjectButton
                 publication={publication}

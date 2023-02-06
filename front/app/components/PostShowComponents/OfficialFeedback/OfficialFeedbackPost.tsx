@@ -283,7 +283,9 @@ export class OfficialFeedbackPost extends PureComponent<
         >
           {editingAllowed && (
             <StyledMoreActionsMenu
-              label={this.props.intl.formatMessage(messages.showMoreActions)}
+              labelAndTitle={this.props.intl.formatMessage(
+                messages.showMoreActions
+              )}
               actions={this.getActions(officialFeedbackPost.id)}
             />
           )}

@@ -9,6 +9,8 @@ import Tippy from '@tippyjs/react';
 // Styling
 import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
+import { FormattedMessage } from 'react-intl';
+import messages from './messages';
 
 const Container = styled.div`
   position: relative;
@@ -88,8 +90,16 @@ const ListItem = styled.button`
   &:hover,
   &:focus {
     color: white;
-    background: ${colors.grey600};
+    background: ${colors.grey700};
   }
+`;
+
+const IconWrapper = styled.div`
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
 `;
 
 export interface IAction {
@@ -102,7 +112,7 @@ export interface IAction {
 export interface Props {
   actions: IAction[];
   // required for a11y
-  label: string | JSX.Element;
+  labelAndTitle?: string | JSX.Element;
   showLabel?: boolean;
   className?: string;
   color?: string;
@@ -143,7 +153,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
       actions,
       showLabel = true,
       color,
-      label,
+      labelAndTitle = <FormattedMessage {...messages.showMoreActions} />,
       className,
       id,
     } = this.props;
@@ -173,7 +183,11 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
                     className={name ? `e2e-action-${name}` : undefined}
                   >
                     {label}
-                    {icon && <Icon name={icon} />}
+                    {icon && (
+                      <IconWrapper>
+                        <Icon name={icon} fill="white" />
+                      </IconWrapper>
+                    )}
                   </ListItem>
                 );
               })}
@@ -188,12 +202,12 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
             className="e2e-more-actions"
           >
             <MoreOptionsIcon
-              title={label}
+              title={labelAndTitle}
               name="dots-horizontal"
               color={color}
               ariaHidden={!showLabel}
             />
-            {showLabel && <MoreOptionsLabel>{label}</MoreOptionsLabel>}
+            {showLabel && <MoreOptionsLabel>{labelAndTitle}</MoreOptionsLabel>}
           </MoreOptionsButton>
         </Tippy>
       </Container>
