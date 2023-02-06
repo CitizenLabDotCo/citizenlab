@@ -21,9 +21,9 @@ const mockCategoryData = {
   },
 };
 
-jest.mock('modules/commercial/insights/hooks/useInsightsCategory', () => {
-  return jest.fn(() => mockCategoryData);
-});
+jest.mock('modules/commercial/insights/api/categories', () => ({
+  useCategory: () => ({ data: { data: mockCategoryData } }),
+}));
 
 jest.mock('hooks/useLocale');
 

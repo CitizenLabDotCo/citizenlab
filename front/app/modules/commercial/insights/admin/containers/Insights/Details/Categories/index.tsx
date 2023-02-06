@@ -11,7 +11,10 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
 
 // hooks
-import { useCategories } from 'modules/commercial/insights/api/categories';
+import {
+  useCategories,
+  IInsightsCategoryData,
+} from 'modules/commercial/insights/api/categories';
 
 // components
 import Tag from 'modules/commercial/insights/admin/components/Tag';
@@ -27,7 +30,6 @@ import messages from '../../messages';
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
-import { IInsightsCategoryData } from 'modules/commercial/insights/services/insightsCategories';
 import {
   TooltipContent,
   SectionTitle,

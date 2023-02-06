@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen, fireEvent, within } from 'utils/testUtils/rtl';
-import categories from 'modules/commercial/insights/fixtures/categories';
 import clHistory from 'utils/cl-router/history';
 
 import Preview from './';
@@ -31,34 +30,8 @@ const mockIdeaData = {
   },
 };
 
-const mockCategoriesData = categories;
-
-const mockCategoryData = {
-  id: '3612e489-a631-4e7d-8bdb-63be407ea123',
-  type: 'category',
-  attributes: {
-    name: 'Category',
-  },
-};
-
-const mockCategoryDataResponse = {
-  data: {
-    id: 'b9f3f47a-7eb4-4db5-87ea-885fe42145c8',
-    type: 'category',
-    attributes: {
-      name: 'Some new category',
-    },
-  },
-};
-
 jest.mock('modules/commercial/insights/services/insightsInputs', () => ({
   addInsightsInputCategory: jest.fn(),
-}));
-
-jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
-  addInsightsCategory: jest.fn(() => {
-    return mockCategoryDataResponse;
-  }),
 }));
 
 jest.mock('hooks/useIdea', () => {
@@ -74,13 +47,7 @@ jest.mock('modules/commercial/insights/api/inputs', () => {
   };
 });
 
-jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
-  return jest.fn(() => mockCategoriesData);
-});
-
-jest.mock('modules/commercial/insights/hooks/useInsightsCategory', () => {
-  return jest.fn(() => mockCategoryData);
-});
+jest.mock('modules/commercial/insights/api/categories');
 
 jest.mock('hooks/useLocale');
 

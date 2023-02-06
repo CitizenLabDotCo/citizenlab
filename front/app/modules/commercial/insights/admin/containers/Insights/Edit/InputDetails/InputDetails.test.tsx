@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
 import * as insightsService from 'modules/commercial/insights/services/insightsInputs';
-import * as categoryService from 'modules/commercial/insights/services/insightsCategories';
 import inputs from 'modules/commercial/insights/fixtures/inputs';
 import categories from 'modules/commercial/insights/fixtures/categories';
 
@@ -56,10 +55,11 @@ jest.mock('modules/commercial/insights/services/insightsInputs', () => ({
   addInsightsInputCategory: jest.fn(),
 }));
 
-jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
-  addInsightsCategory: jest.fn(() => {
-    return mockCategoryDataResponse;
-  }),
+const mockAdd = jest.fn();
+jest.mock('modules/commercial/insights/api/categories', () => ({
+  useCategories: () => ({ data: { data: mockCategoriesData } }),
+  useCategory: () => ({ data: { data: mockCategoryData } }),
+  useAddCategory: () => ({ mutate: mockAdd, reset: jest.fn() }),
 }));
 
 jest.mock('hooks/useIdea', () => {
@@ -73,14 +73,6 @@ jest.mock('modules/commercial/insights/api/inputs', () => {
       return { data: mockInputData, isLoading: mockIsLoading };
     }),
   };
-});
-
-jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
-  return jest.fn(() => mockCategoriesData);
-});
-
-jest.mock('modules/commercial/insights/hooks/useInsightsCategory', () => {
-  return jest.fn(() => mockCategoryData);
 });
 
 jest.mock('hooks/useLocale');
@@ -150,7 +142,6 @@ describe('Insights Input Details', () => {
       insightsService,
       'addInsightsInputCategory'
     );
-    const spyAddCategory = jest.spyOn(categoryService, 'addInsightsCategory');
 
     render(<InputDetails {...defaultProps} />);
     const newCategoryLabel = 'New category';
@@ -165,8 +156,8 @@ describe('Insights Input Details', () => {
       fireEvent.click(screen.getByTestId('insightsCreateCategoryOption'));
     });
 
-    expect(spyAddCategory).toHaveBeenCalledWith({
-      insightsViewId: viewId,
+    expect(mockAdd).toHaveBeenCalledWith({
+      viewId,
       name: newCategoryLabel,
     });
     expect(spyAddInputCategory).toHaveBeenCalledWith(

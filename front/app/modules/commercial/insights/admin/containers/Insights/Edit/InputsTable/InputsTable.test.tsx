@@ -10,14 +10,17 @@ import {
 import * as service from 'modules/commercial/insights/services/insightsInputs';
 import * as batchService from 'modules/commercial/insights/services/batchAssignment';
 import inputs from 'modules/commercial/insights/fixtures/inputs';
-import categories from 'modules/commercial/insights/fixtures/categories';
 import { useInputs } from 'modules/commercial/insights/api/inputs';
 import clHistory from 'utils/cl-router/history';
+import categories from 'modules/commercial/insights/fixtures/categories';
+import links from 'modules/commercial/insights/fixtures/links';
 
 jest.mock('modules/commercial/insights/services/insightsInputs', () => ({
   deleteInsightsInputCategory: jest.fn(),
   addInsightsInputCategories: jest.fn(),
 }));
+
+jest.mock('modules/commercial/insights/api/categories');
 
 jest.mock('modules/commercial/insights/services/batchAssignment', () => ({
   batchAssignCategories: jest.fn(),
@@ -25,7 +28,6 @@ jest.mock('modules/commercial/insights/services/batchAssignment', () => ({
 }));
 
 import InputsTable from './';
-import links from 'modules/commercial/insights/fixtures/links';
 
 const viewId = '1';
 
@@ -39,27 +41,16 @@ const mockIdeaData = {
   },
 };
 
-const mockCategoryData = categories[0];
-
-const mockCategoriesData = categories;
-
 let mockLocationData = { pathname: '', query: {} };
 
 jest.mock('hooks/useIdea', () => {
   return jest.fn(() => mockIdeaData);
 });
 
-jest.mock('modules/commercial/insights/hooks/useInsightsCategory', () => {
-  return jest.fn(() => mockCategoryData);
-});
-
-jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
-  return jest.fn(() => mockCategoriesData);
-});
-
 jest.mock('modules/commercial/insights/api/views');
 const mockIsLoading = false;
 const mockLinks = links;
+
 jest.mock('modules/commercial/insights/api/inputs', () => {
   return {
     useInputs: jest.fn(() => {
@@ -234,7 +225,7 @@ describe('Insights Input Table', () => {
         it('has a top-level checkbox to select all inputs in the page', async () => {
           mockLocationData = {
             pathname: '',
-            query: { category: mockCategoriesData[0].id },
+            query: { category: categories[0].id },
           };
           mockInputData = inputs;
 
@@ -312,7 +303,7 @@ describe('Insights Input Table', () => {
       beforeEach(async () => {
         mockLocationData = {
           pathname: '',
-          query: { category: mockCategoriesData[0].id },
+          query: { category: categories[0].id },
         };
         mockInputData = inputs;
         render(<InputsTable />);
@@ -370,13 +361,13 @@ describe('Insights Input Table', () => {
           await act(async () => {
             fireEvent.click(
               within(screen.getByTestId('insightsTableActions')).getByText(
-                mockCategoriesData[1].attributes.name
+                categories[1].attributes.name
               )
             );
           });
           expect(
             within(screen.getByTestId('insightsTableActions')).queryAllByText(
-              mockCategoriesData[0].attributes.name
+              categories[0].attributes.name
             )
           ).toHaveLength(0);
           await act(async () => {
@@ -386,7 +377,7 @@ describe('Insights Input Table', () => {
           expect(batchService.batchAssignCategories).toHaveBeenCalledWith(
             '1',
             [mockInputData[0].id],
-            [mockCategoriesData[1].id]
+            [categories[1].id]
           );
         });
         it('has an unassign button that works as expected', async () => {
@@ -405,7 +396,7 @@ describe('Insights Input Table', () => {
           expect(batchService.batchUnassignCategories).toHaveBeenCalledWith(
             '1',
             [mockInputData[0].id],
-            [mockCategoriesData[0].id]
+            [categories[0].id]
           );
         });
         it('has an approve button that works as expected', async () => {
@@ -630,7 +621,7 @@ describe('Insights Input Table', () => {
     it('renders correct table empty state when are no input for category', () => {
       mockLocationData = {
         pathname: '',
-        query: { category: mockCategoriesData[0].id },
+        query: { category: categories[0].id },
       };
       mockInputData = [];
       mockFeatureFlagData = true;

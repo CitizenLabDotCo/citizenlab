@@ -7,10 +7,6 @@ const viewId = '1';
 
 jest.mock('utils/cl-intl');
 
-jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
-  addInsightsCategory: jest.fn(),
-}));
-
 jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
 
 jest.mock('utils/cl-router/withRouter', () => {

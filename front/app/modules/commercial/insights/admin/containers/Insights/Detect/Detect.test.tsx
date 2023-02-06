@@ -6,7 +6,7 @@ import {
   within,
   waitFor,
 } from 'utils/testUtils/rtl';
-import { addInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
+
 import categories from 'modules/commercial/insights/fixtures/categories';
 
 import Detect from './';
@@ -16,8 +16,10 @@ const viewId = '1';
 
 jest.mock('utils/cl-intl');
 
-jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
-  addInsightsCategory: jest.fn(),
+const mockAdd = jest.fn();
+
+jest.mock('modules/commercial/insights/api/categories', () => ({
+  useAddCategory: () => ({ mutate: mockAdd, reset: jest.fn() }),
 }));
 
 jest.mock(
@@ -98,13 +100,13 @@ describe('Insights Detect Categories', () => {
     );
 
     await waitFor(() => {
-      expect(addInsightsCategory).toHaveBeenCalledTimes(2);
-      expect(addInsightsCategory).toHaveBeenCalledWith({
-        insightsViewId: viewId,
+      expect(mockAdd).toHaveBeenCalledTimes(2);
+      expect(mockAdd).toHaveBeenCalledWith({
+        viewId,
         name: mockData[0].attributes.name,
       });
-      expect(addInsightsCategory).toHaveBeenLastCalledWith({
-        insightsViewId: viewId,
+      expect(mockAdd).toHaveBeenLastCalledWith({
+        viewId,
         name: mockData[1].attributes.name,
       });
     });

@@ -9,9 +9,9 @@ let mockData = categories;
 
 jest.mock('utils/cl-intl');
 
-jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
-  return jest.fn(() => mockData);
-});
+jest.mock('modules/commercial/insights/api/categories', () => ({
+  useCategories: () => ({ data: { data: mockData } }),
+}));
 
 jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
 

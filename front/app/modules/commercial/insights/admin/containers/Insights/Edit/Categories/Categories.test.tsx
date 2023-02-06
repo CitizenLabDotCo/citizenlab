@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen, fireEvent, act, waitFor } from 'utils/testUtils/rtl';
-import * as service from 'modules/commercial/insights/services/insightsCategories';
 import clHistory from 'utils/cl-router/history';
 import categories from 'modules/commercial/insights/fixtures/categories';
 
@@ -13,15 +12,16 @@ const viewId = '1';
 
 jest.mock('utils/cl-intl');
 
-jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
-  addInsightsCategory: jest.fn(),
-  deleteInsightsCategories: jest.fn(),
-  deleteInsightsCategory: jest.fn(),
-}));
+const mockAdd = jest.fn();
+const mockDelete = jest.fn();
+const mockDeleteAll = jest.fn();
 
-jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
-  return jest.fn(() => mockData);
-});
+jest.mock('modules/commercial/insights/api/categories', () => ({
+  useCategories: () => ({ data: { data: mockData } }),
+  useAddCategory: () => ({ mutate: mockAdd, reset: jest.fn() }),
+  useDeleteCategory: () => ({ mutate: mockDelete, reset: jest.fn() }),
+  useDeleteAllCategories: () => ({ mutate: mockDeleteAll, reset: jest.fn() }),
+}));
 
 jest.mock(
   'modules/commercial/insights/hooks/useInsightsDetectedCategories',
@@ -34,16 +34,19 @@ const allInputsCount = 10;
 const uncategorizedInputCount = 5;
 const recentlyPostedInputCount = 2;
 
-jest.mock('modules/commercial/insights/hooks/useInsightsInputsCount', () => {
-  return jest.fn((_viewId, queryParameters) => {
-    return queryParameters.processed === false
-      ? { count: recentlyPostedInputCount }
-      : queryParameters.processed === true &&
-        queryParameters.categories === undefined
-      ? { count: allInputsCount }
-      : { count: uncategorizedInputCount };
-  });
-});
+jest.mock('modules/commercial/insights/api/stats', () => ({
+  useStat: jest.fn((_viewId, queryParameters) => ({
+    data: {
+      data:
+        queryParameters.processed === false
+          ? { count: recentlyPostedInputCount }
+          : queryParameters.processed === true &&
+            queryParameters.categories === undefined
+          ? { count: allInputsCount }
+          : { count: uncategorizedInputCount },
+    },
+  })),
+}));
 
 jest.mock('hooks/useLocale');
 jest.mock('services/locale');
@@ -128,10 +131,10 @@ describe('Insights Edit Categories', () => {
     await waitFor(() =>
       fireEvent.click(screen.getAllByTestId('insightsDeleteCategoryIcon')[0])
     );
-    expect(service.deleteInsightsCategory).toHaveBeenCalledWith(
+    expect(mockDelete).toHaveBeenCalledWith({
       viewId,
-      mockData[0].id
-    );
+      categoryId: mockData[0].id,
+    });
   });
   it('renders Infobox when no categories are available', () => {
     mockData = [];
@@ -153,14 +156,12 @@ describe('Insights Edit Categories', () => {
       fireEvent.click(screen.getByText('+'));
     });
 
-    expect(service.addInsightsCategory).toHaveBeenCalledWith({
-      insightsViewId: viewId,
+    expect(mockAdd).toHaveBeenCalledWith({
+      viewId,
       name: categoryName,
     });
   });
   it('resets categories', async () => {
-    const historySpy = jest.spyOn(clHistory, 'push');
-    const spy = jest.spyOn(service, 'deleteInsightsCategories');
     render(<Categories />);
     fireEvent.click(screen.getByTestId('insightsResetMenu'));
 
@@ -168,11 +169,7 @@ describe('Insights Edit Categories', () => {
       fireEvent.click(screen.getByTestId('insightsResetButton'));
     });
 
-    expect(spy).toHaveBeenCalledWith(viewId);
-    expect(historySpy).toHaveBeenCalledWith({
-      pathname: '',
-      search: `?pageNumber=1&processed=false`,
-    });
+    expect(mockDeleteAll).toHaveBeenCalledWith(viewId);
   });
   it('shows all input category count correctly', () => {
     render(<Categories />);

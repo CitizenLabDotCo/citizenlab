@@ -64,10 +64,6 @@ jest.mock('modules');
 jest.mock('utils/cl-intl');
 jest.mock('utils/analytics');
 
-jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
-  addInsightsCategory: jest.fn(),
-}));
-
 const mockDeleteView = jest.fn();
 jest.mock('modules/commercial/insights/api/views', () => {
   return {

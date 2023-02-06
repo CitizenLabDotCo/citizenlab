@@ -1,22 +1,18 @@
 import React from 'react';
 import { render, screen, fireEvent, act, within } from 'utils/testUtils/rtl';
-import * as service from 'modules/commercial/insights/services/insightsCategories';
 import categories from 'modules/commercial/insights/fixtures/categories';
 
 import TableTitle from './TableTitle';
 
-const mockData = categories;
-
 jest.mock('utils/cl-intl');
 
-jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
-  addInsightsCategory: jest.fn(),
-  deleteInsightsCategory: jest.fn(),
-}));
+const mockDelete = jest.fn();
+const mockData = categories;
 
-jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
-  return jest.fn(() => mockData);
-});
+jest.mock('modules/commercial/insights/api/categories', () => ({
+  useCategories: () => ({ data: { data: mockData } }),
+  useDeleteCategory: () => ({ mutate: mockDelete, reset: jest.fn() }),
+}));
 
 jest.mock('hooks/useLocale');
 
@@ -80,9 +76,9 @@ describe('Table Title', () => {
     await act(async () => {
       fireEvent.click(screen.getByText('Delete category'));
     });
-    expect(service.deleteInsightsCategory).toHaveBeenCalledWith(
+    expect(mockDelete).toHaveBeenCalledWith({
       viewId,
-      mockData[0].id
-    );
+      categoryId: mockData[0].id,
+    });
   });
 });

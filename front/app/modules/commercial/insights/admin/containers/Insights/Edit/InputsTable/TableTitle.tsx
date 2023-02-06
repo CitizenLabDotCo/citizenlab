@@ -6,10 +6,12 @@ import messages from '../../messages';
 import { WrappedComponentProps } from 'react-intl';
 
 // hooks
-import { useCategories } from 'modules/commercial/insights/api/categories';
+import {
+  useCategories,
+  useDeleteCategory,
+} from 'modules/commercial/insights/api/categories';
 
 // services
-import { deleteInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
 
 // styles
 import styled from 'styled-components';
@@ -52,7 +54,18 @@ const TableTitle = ({
   location: { query, pathname },
 }: WrappedComponentProps & WithRouterProps) => {
   const { data: categories } = useCategories(viewId);
-
+  const { mutate: deleteCategory } = useDeleteCategory({
+    onSuccess: () => {
+      clHistory.push({
+        pathname,
+        search: stringify(
+          { ...query, category: undefined },
+          { addQueryPrefix: true }
+        ),
+      });
+      setCategoryMenuOpened(false);
+    },
+  });
   const [renameCategoryModalOpened, setRenameCategoryModalOpened] =
     useState(false);
   const [isCategoryMenuOpened, setCategoryMenuOpened] = useState(false);
@@ -76,20 +89,8 @@ const TableTitle = ({
     {
       const deleteMessage = formatMessage(messages.deleteCategoryConfirmation);
       if (window.confirm(deleteMessage)) {
-        try {
-          await deleteInsightsCategory(viewId, query.category);
-        } catch {
-          // Do nothing
-        }
+        deleteCategory({ viewId, categoryId: query.category });
       }
-      clHistory.push({
-        pathname,
-        search: stringify(
-          { ...query, category: undefined },
-          { addQueryPrefix: true }
-        ),
-      });
-      setCategoryMenuOpened(false);
     }
   };
 

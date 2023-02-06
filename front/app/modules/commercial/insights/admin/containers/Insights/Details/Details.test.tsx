@@ -4,7 +4,6 @@ import Details from './';
 import { render, fireEvent, screen } from 'utils/testUtils/rtl';
 import inputs from 'modules/commercial/insights/fixtures/inputs';
 import clHistory from 'utils/cl-router/history';
-import mockCategories from 'modules/commercial/insights/fixtures/categories';
 import { useInfiniteInputs } from 'modules/commercial/insights/api/inputs';
 
 const viewId = '1';
@@ -21,9 +20,7 @@ let mockLocationData = { pathname: '', query: {} };
 
 jest.mock('utils/cl-router/history');
 
-jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
-  return jest.fn(() => mockCategories);
-});
+jest.mock('modules/commercial/insights/api/categories');
 
 jest.mock('hooks/useLocale');
 
