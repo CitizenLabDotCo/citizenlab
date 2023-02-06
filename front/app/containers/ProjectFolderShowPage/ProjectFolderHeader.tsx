@@ -1,8 +1,11 @@
 import React, { memo } from 'react';
 
 // components
-import Image from 'components/UI/Image';
 import ProjectFolderShareButton from '../../components/ProjectFolders/ProjectFolderShareButton';
+import {
+  HeaderImage,
+  HeaderImageContainer,
+} from 'components/ProjectableHeader';
 
 // hooks
 import { useWindowSize } from '@citizenlab/cl2-component-library';
@@ -13,20 +16,6 @@ import { media } from 'utils/styleUtils';
 
 // typings
 import { IProjectFolderData } from 'services/projectFolders';
-
-const Container = styled.div`
-  width: 100%;
-  border-radius: ${(props) => props.theme.borderRadius};
-  overflow: hidden;
-  display: flex;
-  align-items: stretch;
-  position: relative;
-`;
-
-const HeaderImage = styled(Image)`
-  flex: 1;
-  width: 100%;
-`;
 
 const StyledProjectFolderShareButton = styled(ProjectFolderShareButton)`
   position: absolute;
@@ -51,7 +40,7 @@ const ProjectFolderHeader = memo<Props>(({ projectFolder, className }) => {
 
   if (projectFolder.attributes?.header_bg?.large) {
     return (
-      <Container className={`${className || ''} e2e-header-folder`}>
+      <HeaderImageContainer className={`${className || ''} e2e-header-folder`}>
         <HeaderImage
           src={projectFolder.attributes?.header_bg.large}
           cover={true}
@@ -65,7 +54,7 @@ const ProjectFolderHeader = memo<Props>(({ projectFolder, className }) => {
           buttonStyle="white"
           padding={smallerThan1100px ? '4px 10px' : '6px 13px'}
         />
-      </Container>
+      </HeaderImageContainer>
     );
   }
 

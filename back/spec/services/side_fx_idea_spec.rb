@@ -36,10 +36,10 @@ describe SideFxIdeaService do
       idea = create(:idea, publication_status: 'draft', author: user)
       idea.update(publication_status: 'published')
       expect { service.after_update(idea, user) }.to(
-        have_enqueued_job(LogActivityJob).with(idea, 'published', user, idea.created_at.to_i).exactly(1).times
+        have_enqueued_job(LogActivityJob).with(idea, 'published', user, idea.published_at.to_i).exactly(1).times
       .and(
         have_enqueued_job(LogActivityJob).with(idea, 'first_published_by_user', user,
-          idea.created_at.to_i).exactly(1).times
+          idea.published_at.to_i).exactly(1).times
       )
       )
     end

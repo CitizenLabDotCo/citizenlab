@@ -169,7 +169,6 @@ export interface IAppConfigurationSettings {
   ideaflow_social_sharing?: AppConfigurationFeature;
   initiativeflow_social_sharing?: AppConfigurationFeature;
   machine_translations?: AppConfigurationFeature;
-  custom_topics?: AppConfigurationFeature;
   custom_maps?: AppConfigurationFeature;
   similar_ideas?: AppConfigurationFeature;
   polls?: AppConfigurationFeature;
@@ -217,6 +216,8 @@ export interface IAppConfigurationSettings {
   analytics?: AppConfigurationFeature;
   visitors_dashboard?: AppConfigurationFeature;
   user_confirmation?: AppConfigurationFeature;
+  input_form_custom_fields?: AppConfigurationFeature;
+  report_builder?: AppConfigurationFeature;
 }
 
 interface AppConfigurationMapSettings extends AppConfigurationFeature {
@@ -238,6 +239,8 @@ export interface IAppConfigurationStyle {
   navbarBorderColor?: string;
   signedOutHeaderTitleFontSize?: number;
   signedOutHeaderTitleFontWeight?: number;
+  // These signed in variables are used via the theme in the
+  // component library and can be set via AdminHQ.
   signedInHeaderOverlayColor?: string;
   // Number between 0 and 100, inclusive
   signedInHeaderOverlayOpacity?: number;

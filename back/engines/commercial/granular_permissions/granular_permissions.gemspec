@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.version     = GranularPermissions::VERSION
   spec.authors     = ['CitizenLab']
   spec.summary     = 'CitizenLab extension: granular permissions for actions in the scope of a participation context.'
-  spec.license     = 'CitizenLab Commercial License V1'
+  spec.license     = 'CitizenLab Commercial License V2'
 
   spec.files = Dir['{app,config,db,lib}/**/*', 'README.md']
 

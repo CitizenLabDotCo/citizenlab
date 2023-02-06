@@ -15,7 +15,6 @@ import {
   ideasByTimeStream,
   usersByTimeXlsxEndpoint,
 } from 'services/stats';
-import { isAdmin } from 'services/permissions/roles';
 
 // resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
@@ -147,8 +146,6 @@ const OverviewDashboard = ({ projects }: DataProps) => {
     currentResourceByProject,
   };
 
-  const userIsAdmin = isAdmin({ data: user });
-
   return (
     <>
       <ChartFilters
@@ -196,15 +193,13 @@ const OverviewDashboard = ({ projects }: DataProps) => {
           {formatMessage(overviewMessages.projectsAndParticipation)}
         </Title>
         <Column>
-          {userIsAdmin && (
-            <Outlet
-              id="app.containers.Admin.dashboard.summary.projectStatus"
-              projectId={currentProjectFilter}
-              startAtMoment={startAtMoment}
-              endAtMoment={endAtMoment}
-              resolution={resolution}
-            />
-          )}
+          <Outlet
+            id="app.containers.Admin.dashboard.summary.projectStatus"
+            projectId={currentProjectFilter}
+            startAtMoment={startAtMoment}
+            endAtMoment={endAtMoment}
+            resolution={resolution}
+          />
           <LineBarChart
             graphTitle={formatMessage(messages.inputs)}
             graphUnit="ideas"
@@ -231,15 +226,13 @@ const OverviewDashboard = ({ projects }: DataProps) => {
           />
         </Column>
         <Column>
-          {userIsAdmin && (
-            <Outlet
-              id="app.containers.Admin.dashboard.summary.proposals"
-              projectId={currentProjectFilter}
-              startAtMoment={startAtMoment}
-              endAtMoment={endAtMoment}
-              resolution={resolution}
-            />
-          )}
+          <Outlet
+            id="app.containers.Admin.dashboard.summary.proposals"
+            projectId={currentProjectFilter}
+            startAtMoment={startAtMoment}
+            endAtMoment={endAtMoment}
+            resolution={resolution}
+          />
           <SelectableResourceByProjectChart
             className="dynamicHeight fullWidth e2e-resource-by-project-chart"
             onResourceByProjectChange={onResourceByProjectChange}
@@ -253,53 +246,50 @@ const OverviewDashboard = ({ projects }: DataProps) => {
             {...legacyProps}
           />
         </Column>
-
-        {userIsAdmin && (
-          <>
-            <Title
-              ml="12px"
-              mt="40px"
-              width="100%"
-              variant="h2"
-              color="primary"
-              fontWeight="normal"
-            >
-              {formatMessage(overviewMessages.management)}
-            </Title>
-            <Column>
-              <Outlet
-                id="app.containers.Admin.dashboard.summary.inputStatus"
-                projectId={currentProjectFilter}
-                startAtMoment={startAtMoment}
-                endAtMoment={endAtMoment}
-                resolution={resolution}
-              />
-              <Outlet
-                id="app.containers.Admin.dashboard.summary.events"
-                projectId={currentProjectFilter}
-                startAtMoment={startAtMoment}
-                endAtMoment={endAtMoment}
-                resolution={resolution}
-              />
-            </Column>
-            <Column>
-              <Outlet
-                id="app.containers.Admin.dashboard.summary.emailDeliveries"
-                projectId={currentProjectFilter}
-                startAtMoment={startAtMoment}
-                endAtMoment={endAtMoment}
-                resolution={resolution}
-              />
-              <Outlet
-                id="app.containers.Admin.dashboard.summary.invitations"
-                projectId={currentProjectFilter}
-                startAtMoment={startAtMoment}
-                endAtMoment={endAtMoment}
-                resolution={resolution}
-              />
-            </Column>
-          </>
-        )}
+        <>
+          <Title
+            ml="12px"
+            mt="40px"
+            width="100%"
+            variant="h2"
+            color="primary"
+            fontWeight="normal"
+          >
+            {formatMessage(overviewMessages.management)}
+          </Title>
+          <Column>
+            <Outlet
+              id="app.containers.Admin.dashboard.summary.inputStatus"
+              projectId={currentProjectFilter}
+              startAtMoment={startAtMoment}
+              endAtMoment={endAtMoment}
+              resolution={resolution}
+            />
+            <Outlet
+              id="app.containers.Admin.dashboard.summary.events"
+              projectId={currentProjectFilter}
+              startAtMoment={startAtMoment}
+              endAtMoment={endAtMoment}
+              resolution={resolution}
+            />
+          </Column>
+          <Column>
+            <Outlet
+              id="app.containers.Admin.dashboard.summary.emailDeliveries"
+              projectId={currentProjectFilter}
+              startAtMoment={startAtMoment}
+              endAtMoment={endAtMoment}
+              resolution={resolution}
+            />
+            <Outlet
+              id="app.containers.Admin.dashboard.summary.invitations"
+              projectId={currentProjectFilter}
+              startAtMoment={startAtMoment}
+              endAtMoment={endAtMoment}
+              resolution={resolution}
+            />
+          </Column>
+        </>
       </GraphsContainer>
     </>
   );

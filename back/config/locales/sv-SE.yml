@@ -208,3 +208,5 @@ sv:
     survey_end_page:
       title: 'Undersökningens slut'
       description: "Skicka in dina svar genom att klicka på Skicka undersökning nedan."
+  project_copy:
+    title_suffix: 'Kopia'

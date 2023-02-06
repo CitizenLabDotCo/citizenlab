@@ -23,12 +23,14 @@ resource 'Impact tracking session' do
     end
 
     example 'Track the start of a session of a resident' do
-      resident_header_token
+      resident = create(:user)
+      header_token_for(resident)
       do_request
       expect(response_status).to eq 201
       expect(ImpactTracking::Session.count).to eq 1
       expect(ImpactTracking::Session.first).to have_attributes({
-        highest_role: 'user'
+        highest_role: 'user',
+        user_id: resident.id
       })
     end
 
@@ -45,22 +47,26 @@ resource 'Impact tracking session' do
     end
 
     example 'Track the session start of an admin', document: false do
-      admin_header_token
+      user = create(:admin)
+      header_token_for(user)
       do_request
       expect(response_status).to eq 201
       expect(ImpactTracking::Session.count).to eq 1
       expect(ImpactTracking::Session.first).to have_attributes({
-        highest_role: 'admin'
+        highest_role: 'admin',
+        user_id: user.id
       })
     end
 
     example 'Track the session start of a super_admin', document: false do
-      header_token_for(create(:super_admin))
+      user = create(:super_admin)
+      header_token_for(user)
       do_request
       expect(response_status).to eq 201
       expect(ImpactTracking::Session.count).to eq 1
       expect(ImpactTracking::Session.first).to have_attributes({
-        highest_role: 'super_admin'
+        highest_role: 'super_admin',
+        user_id: user.id
       })
     end
   end
@@ -77,7 +83,8 @@ resource 'Impact tracking session' do
     example 'Upgrade the current session from a visitor to a resident' do
       header 'User-Agent', @user_agent
       header 'X-Forwarded-For', @ip
-      resident_header_token
+      user = create(:user)
+      header_token_for(user)
 
       do_request
 
@@ -87,6 +94,7 @@ resource 'Impact tracking session' do
       expect(session.highest_role).to eq('user')
       expect(session.monthly_user_hash).not_to eq(@visitor_hash)
       expect(session.updated_at).not_to eq(@created_at)
+      expect(session.user_id).to eq(user.id)
     end
 
     example 'Returns unauthorized when the user is not signed in', document: false do
