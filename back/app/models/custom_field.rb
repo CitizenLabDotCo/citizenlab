@@ -121,6 +121,10 @@ class CustomField < ApplicationRecord
     page? || section?
   end
 
+  def custom_form_type?
+    resource_type == 'CustomForm'
+  end
+
   def multiloc?
     %w[
       text_multiloc
@@ -192,12 +196,12 @@ class CustomField < ApplicationRecord
   end
 
   def set_default_answer_visible_to
-    if answer_visible_to.nil?
-      self.answer_visible_to = if built_in? || page_or_section?
-        VISIBLE_TO_PUBLIC
-      else
-        VISIBLE_TO_ADMINS
-      end
+    return unless answer_visible_to.nil?
+
+    self.answer_visible_to = if custom_form_type? && (built_in? || page_or_section?)
+      VISIBLE_TO_PUBLIC
+    else
+      VISIBLE_TO_ADMINS
     end
   end
 
