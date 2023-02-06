@@ -81,7 +81,7 @@ interface IInsightViewUpdateObject {
   requestBody: { view: { name: string } };
 }
 
-const updateView = async ({ id, requestBody }: IInsightViewUpdateObject) =>
+const updateView = ({ id, requestBody }: IInsightViewUpdateObject) =>
   fetcher<IInsightsView>({
     path: `/insights/views/${id}`,
     action: 'update',
@@ -99,7 +99,7 @@ export const useUpdateView = ({ onSuccess }: { onSuccess?: () => void }) => {
   });
 };
 
-const deleteView = async (id: string) =>
+const deleteView = (id: string) =>
   fetcher({
     path: `/insights/views/${id}`,
     action: 'delete',

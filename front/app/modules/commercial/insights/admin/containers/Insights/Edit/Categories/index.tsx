@@ -30,8 +30,8 @@ import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputs
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
-import useInsightsInputsCount from 'modules/commercial/insights/hooks/useInsightsInputsCount';
 import useDetectedCategories from 'modules/commercial/insights/hooks/useInsightsDetectedCategories';
+import { useStat } from 'modules/commercial/insights/api/stats';
 
 // intl
 import { WrappedComponentProps } from 'react-intl';
@@ -135,14 +135,15 @@ const Categories = ({
   const [errors, setErrors] = useState<CLErrors | undefined>();
   const [isDropdownOpened, setDropdownOpened] = useState(false);
 
-  const allInputsCount = useInsightsInputsCount(viewId, { processed: true });
-  const uncategorizedInputsCount = useInsightsInputsCount(viewId, {
+  const { data: allInputsCount } = useStat(viewId, { processed: true });
+  const { data: uncategorizedInputsCount } = useStat(viewId, {
     categories: [''],
     processed: true,
   });
-  const recentlyPostedInputsCount = useInsightsInputsCount(viewId, {
+  const { data: recentlyPostedInputsCount } = useStat(viewId, {
     processed: false,
   });
+
   const detectedCategories = useDetectedCategories(viewId);
   const categories = useInsightsCategories(viewId);
 
@@ -293,7 +294,7 @@ const Categories = ({
           <span> {formatMessage(messages.allInput)}</span>
           {!isNilOrError(allInputsCount) && (
             <span data-testid="insightsAllInputsCount">
-              {allInputsCount.count}
+              {allInputsCount.data.count}
             </span>
           )}
         </CategoryButton>
@@ -312,7 +313,7 @@ const Categories = ({
           <span>{formatMessage(messages.recentlyPosted)}</span>
           {!isNilOrError(recentlyPostedInputsCount) && (
             <span data-testid="insightsRecentlyPostedInputsCount">
-              {recentlyPostedInputsCount.count}
+              {recentlyPostedInputsCount.data.count}
             </span>
           )}
         </CategoryButton>
@@ -331,7 +332,7 @@ const Categories = ({
           <span>{formatMessage(messages.notCategorized)}</span>
           {!isNilOrError(uncategorizedInputsCount) && (
             <span data-testid="insightsUncategorizedInputsCount">
-              {uncategorizedInputsCount.count}
+              {uncategorizedInputsCount.data.count}
             </span>
           )}
         </CategoryButton>

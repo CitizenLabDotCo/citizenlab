@@ -37,7 +37,7 @@ interface Delete {
 
 type FetcherArgs = Get | Update | Create | Delete;
 
-type BaseData = { id: string; type: string };
+type BaseData = { id?: string; type: string };
 
 type BaseResponseData =
   | { data: BaseData; included?: BaseData[] }
@@ -98,24 +98,30 @@ async function fetcher({ path, action, body, queryParams }) {
     if (data) {
       if (isArray(data.data)) {
         data.data.forEach((entry: BaseData) => {
-          queryClient.setQueryData(
-            [{ type: entry.type, id: entry.id, entity: 'detail' }],
-            () => ({ data: entry })
-          );
+          if (entry.id) {
+            queryClient.setQueryData(
+              [{ type: entry.type, id: entry.id, entity: 'detail' }],
+              () => ({ data: entry })
+            );
+          }
         });
       } else if (action === 'create' || action === 'update') {
-        queryClient.setQueryData(
-          [{ type: data.data.type, id: data.data.id, entity: 'detail' }],
-          () => ({ data: data.data })
-        );
+        if (data.data.id) {
+          queryClient.setQueryData(
+            [{ type: data.data.type, id: data.data.id, entity: 'detail' }],
+            () => ({ data: data.data })
+          );
+        }
       }
       if (data.included) {
-        data.included.forEach((entry: BaseData) =>
-          queryClient.setQueryData(
-            [{ type: entry.type, id: entry.id, entity: 'detail' }],
-            () => ({ data: entry })
-          )
-        );
+        data.included.forEach((entry: BaseData) => {
+          if (entry.id) {
+            queryClient.setQueryData(
+              [{ type: entry.type, id: entry.id, entity: 'detail' }],
+              () => ({ data: entry })
+            );
+          }
+        });
       }
     }
   }

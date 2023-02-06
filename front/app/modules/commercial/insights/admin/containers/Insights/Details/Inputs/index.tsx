@@ -39,7 +39,7 @@ import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks
 
 // hooks
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
-import useInsightsInputsCount from 'modules/commercial/insights/hooks/useInsightsInputsCount';
+import { useStat } from 'modules/commercial/insights/api/stats';
 
 const InputsContainer = styled.div`
   flex: 0 0 500px;
@@ -99,7 +99,7 @@ const Inputs = ({
     ? categories.filter((category) => queryCategories.includes(category.id))
     : [];
 
-  const inputsCount = useInsightsInputsCount(viewId, {
+  const { data: inputsCount } = useStat(viewId, {
     keywords,
     categories: selectedCategories.map(({ id }) => id),
     search: query.search,
@@ -163,7 +163,7 @@ const Inputs = ({
         <SectionTitle>
           {formatMessage(messages.inputsSectionTitle)}
           {!isNilOrError(inputsCount) && (
-            <StyledInputCount>{inputsCount?.count}</StyledInputCount>
+            <StyledInputCount>{inputsCount?.data.count}</StyledInputCount>
           )}
           <IconTooltip
             ml="8px"
@@ -181,7 +181,7 @@ const Inputs = ({
         onChange={onSearch}
         size="small"
         a11y_numberOfSearchResults={
-          !isNilOrError(inputsCount) ? inputsCount.count : 0
+          !isNilOrError(inputsCount) ? inputsCount.data.count : 0
         }
       />
       {selectedCategories.length > 0 && (

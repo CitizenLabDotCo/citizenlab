@@ -7,7 +7,7 @@ import { CLErrors, IRelationship } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
-const inputKeys = {
+export const inputKeys = {
   all: () => [{ type: 'input' }] as const,
   lists: () => [{ ...inputKeys.all()[0], entity: 'list' }] as const,
   list: (filters: QueryParameters) =>
@@ -73,7 +73,7 @@ export type QueryParameters = {
 
 export const defaultPageSize = 20;
 
-const fetchInputs = async (
+const fetchInputs = (
   viewId: string,
   { pageNumber, pageSize, category, ...queryParams }: QueryParameters
 ) =>
@@ -114,7 +114,7 @@ export type InfiniteQueryParameters = {
   keywords: string[];
 };
 
-const fetchInfiniteInputs = async (
+const fetchInfiniteInputs = (
   viewId: string,
   { pageNumber, pageSize, ...queryParams }: InfiniteQueryParameters
 ) =>
