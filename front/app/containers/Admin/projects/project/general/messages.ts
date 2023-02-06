@@ -160,4 +160,20 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.headerImageInputLabel',
     defaultMessage: 'Header image',
   },
+  headerImageSupportPageURL: {
+    id: 'app.components.Admin.ImageCropper.headerImageSupportPageURL',
+    defaultMessage:
+      'https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
+  },
+  headerImageTooltip: {
+    id: 'app.components.Admin.ImageCropper.headerImageTooltip',
+    defaultMessage: `
+    This image is part of the project card; the card that summarizes the project and is shown on the homepage for example.
+
+    For more information on recommended image resolutions, {supportPageLink}.`,
+  },
+  headerImageSupportPageText: {
+    id: 'app.components.Admin.ImageCropper.headerImageSupportPageText',
+    defaultMessage: 'visit our support center',
+  },
 });

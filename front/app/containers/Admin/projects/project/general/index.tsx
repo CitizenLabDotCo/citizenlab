@@ -34,6 +34,7 @@ import {
 import ProjectFolderSelect from './components/ProjectFolderSelect';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
+import ProjectCardImageTooltip from './components/ProjectCardImageTooltip';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -585,7 +586,7 @@ const AdminProjectsProjectGeneral = () => {
         <StyledSectionField>
           <SubSectionTitle>
             <FormattedMessage {...messages.projectCardImageLabelText} />
-            <ImageInfoTooltip />
+            <ProjectCardImageTooltip />
           </SubSectionTitle>
           {projectCardImageShouldBeSaved ? (
             <Box display="flex" flexDirection="column" gap="8px">
