@@ -1,7 +1,7 @@
 hr:
   email_campaigns:
     campaign_type_description:
-      "manual": Službene poruke
+      "manual": Official messages
       "admin_rights_received": Dodjela administratorskih prava
       "comment_deleted_by_admin": Brisanje mog komentara
       "comment_marked_as_spam": Izvješće o neželjenim komentarima
@@ -30,7 +30,7 @@ hr:
       "official_feedback_on_voted_initiative": Nove informacije o prijedlogu za koji glasujem
       "official_feedback_on_your_idea": Nove informacije o mojoj ideji
       "official_feedback_on_your_initiative": Nove informacije o mom prijedlogu
-      "password_reset": Ponovno postavljanje lozinke
+      "password_reset": Password reset
       "project_moderation_rights_received": Dodjela prava za moderiranje projekta
       "project_folder_moderation_rights_received": Primljena prava upravitelja mape
       "project_phase_started": Nova faza projekta
@@ -81,7 +81,7 @@ hr:
       "official_feedback_on_your_initiative": Ažuriranje vašeg prijedloga – svi korisnici
       "password_reset": Poništavanje zaporke – svi korisnici
       "project_moderation_rights_received": Dodijeljena prava za moderiranje projekta – voditelji projekata
-      "project_folder_moderation_rights_received": Primljena prava upravitelja mape
+      "project_folder_moderation_rights_received": Folder manager rights received
       "project_phase_started": Nova faza projekta - sudionici projekta
       "project_phase_upcoming": Buduće faze projekta – administratori i voditelji projekata
       "status_change_of_commented_idea": Promjena statusa ideje koju ste komentirali – svi korisnici
@@ -101,7 +101,7 @@ hr:
       "link_privacy_policy": "Pravila o privatnosti"
       "link_terms_conditions": "Uvjeti korištenja"
       "link_unsubscribe": "Odjavi se"
-      "powered_by": "Omogućava"
+      "powered_by": "Powered by"
       "statement": "Ovaj e-mail Vam je poslao CitizenLab u ime %{organizationName}, jer ste registrirani korisnik na platformi %{organizationLink}. Možete da %{unsubscribeLink} ako ubuduće ne želite primati ove e-poruke."
       "unsubscribe_text": "odjavi se"
     comment_deleted_by_admin:
@@ -173,33 +173,33 @@ hr:
       assigned_ideas: 'Ideje za koje su potrebne povratne informacije'
       title_assignment_past_week: 'Najnovije ideje dodijeljene vama'
       title_no_assignment_past_week: 'Prethodnog tjedna nije vam dodijeljena nijedna nova ideja'
-      yesterday_by_author: 'Jučer od autora %{author}'
-      today_by_author: 'Danas od autora %{author}'
-      x_days_ago_by_author: 'prije %{x} dana od %{author}'
-      idea_section: Ideje
-      initiative_section: Prijedlozi
+      yesterday_by_author: 'Yesterday by %{author}'
+      today_by_author: 'Today by %{author}'
+      x_days_ago_by_author: '%{x} days ago by %{author}'
+      idea_section: Ideas
+      initiative_section: Proposals
       title_initiatives_past_week: 'Dodijeljeni su vam novi prijedlozi'
       title_successful_initiatives_past_week: 'Dodijeljeni prijedlozi koji su dosegli prag'
     idea_marked_as_spam:
-      by_author: 'od %{authorName}'
+      by_author: 'by %{authorName}'
       cta_review_idea: 'Pregledajte ideju'
       report_inappropriate_offensive_content: 'Smatram da je ovaj sadržaj neprikladan ili uvredljiv.'
       report_not_an_idea: 'Ovaj sadržaj nije ideja i ne pripada ovdje.'
       subject: 'Imate izvještaj o neželjenom sadržaju na %{organizationName} platformi'
       preheader: 'Reagirajte na ovaj izvještaj o neželjenom sadržaju'
-      reported_this_because: '%{reporterFirstName} je prijavio/la ovo jer:'
+      reported_this_because: '%{reporterFirstName} reported this because:'
       title_spam_report: '%{firstName} %{lastName} je prijavio/la neželjeni sadržaj'
     initiative_marked_as_spam:
-      by_author: 'od %{authorName}'
+      by_author: 'by %{authorName}'
       cta_review_initiative: 'Pogledajte prijedlog'
-      report_inappropriate_offensive_content: 'Smatram da je ovaj sadržaj neprikladan ili uvredljiv.'
+      report_inappropriate_offensive_content: 'I find this content inappropriate or offensive.'
       report_not_an_initiative: 'Ovaj sadržaj nije prijedlog i ne pripada ovdje.'
-      subject: 'Imate izvještaj o neželjenom sadržaju na %{organizationName} platformi'
-      preheader: 'Reagirajte na ovaj izvještaj o neželjenom sadržaju'
-      reported_this_because: '%{reporterFirstName} je prijavio/la ovo jer:'
-      title_spam_report: '%{firstName} %{lastName} je prijavio/la neželjeni sadržaj'
+      subject: 'You have a spam report on the platform of %{organizationName}'
+      preheader: 'Act upon this spam report'
+      reported_this_because: '%{reporterFirstName} reported this because:'
+      title_spam_report: '%{firstName} %{lastName} reported spam'
     initiative_assigned_to_you:
-      by_author: 'od %{authorName}'
+      by_author: 'by %{authorName}'
       cta_reply_to: 'Pošaljite povratne informacije za %{authorName}'
       event_description_initiative: 'Dodijeljen vam je prijedlog. Ažurirajte informacije pisanjem službenog ažuriranja ili promjenom njegovog statusa.'
       main_header: '%{firstName}, imate novi zadatak'
@@ -212,7 +212,7 @@ hr:
       subject: 'Pozivnica za %{organizationName} platformu za sudjelovanje je na čekanju'
     invite_received:
       added_a_message: '%{organizationName} je napisao sljedeću poruku:'
-      cta_accept_invitation: 'Prihvatite pozivnicu'
+      cta_accept_invitation: 'Accept your invitation'
       invitation_header: 'Pozvani ste!'
       invitation_header_message: '%{organizationName} vas je pozvao na njihovu platformu za sudjelovanje.'
       preheader: '%{organizationName} vam je poslao poziv da se pridružite njihovoj platformi za sudjelovanje.'
@@ -233,7 +233,7 @@ hr:
       send_email: e-pošta
       subject: 'Vaš prijedlog je objavljen na platformi %{organizationName}'
     mention_in_official_feedback:
-      by_author: 'od %{authorName}'
+      by_author: 'by %{authorName}'
       commented: '%{organizationName} piše:'
       cta_reply_to: 'Odgovorite %{organizationName}'
       event_description: 'Spomenuti ste od strane %{organizationName} i upućene su vam povratne informacije o ideji „%{post}“. Kliknite na poveznicu dolje kako biste započeli razgovor s %{organizationName}'
@@ -242,15 +242,15 @@ hr:
       preheader: '%{commentAuthor} vas je spomenuo/la u povratnim informacijama'
     new_comment_on_commented_idea:
       commented: '%{commentAuthor} je napisao/la:'
-      cta_reply_to: 'Odgovorite %{commentAuthor}'
+      cta_reply_to: 'Reply to %{commentAuthor}'
       event_description: '%{commentAuthorFull} također komentira ideju ''%{ideaTitle}'' na %{organizationName} platformi za sudjelovanje. Kliknite na gumb dolje kako biste započeli razgovor s %{commentAuthor}.'
       main_header: '%{commentAuthor} je napisao/la komentar na istu ideju'
       subject: 'Dodan je još jedan komentar na ideju koji ste komentirali'
       preheader: '%{commentAuthor} je također ostavio komentar na ideju za %{organizationName}'
     mention_in_comment:
-      by_author: 'od %{authorName}'
-      commented: '%{commentAuthor} je napisao/la:'
-      cta_reply_to: 'Odgovorite %{commentAuthor}'
+      by_author: 'by %{authorName}'
+      commented: '%{commentAuthor} wrote:'
+      cta_reply_to: 'Reply to %{commentAuthor}'
       event_description: 'Spomenuti ste od strane %{commentAuthorFull} u komentaru ideje „%{post}“. Kliknite na poveznicu dolje kako biste započeli razgovor s %{commentAuthor}'
       main_header: 'Ljudi pričaju o vama'
       subject: 'Neko vas je spomenuo na platformi %{organizationName}'
@@ -258,45 +258,45 @@ hr:
     moderator_digest:
       subject: 'Vaš tjedni izvještaj za voditelje projekta od %{time}'
       preheader: 'Sažetak za voditelje projekta %{organizationName}'
-      title_your_weekly_report: '%{firstName}, vaš tjedni izvještaj'
+      title_your_weekly_report: '%{firstName}, your weekly report'
       text_introduction: 'Odabrali smo unose koji su bili najpopularniji tijekom prethodnog tjedna. Budite u tijeku s događajima u vezi vašeg projekta!'
       cta_moderate: 'Moderirajte svoj projekt'
-      new_users: 'Novi korisnici'
-      new_ideas: 'Nove ideje'
-      new_comments: 'Novi komentari'
-      title_activity_past_week: 'Aktivnosti iz prethodnog tjedna'
+      new_users: 'New users'
+      new_ideas: 'New ideas'
+      new_comments: 'New comments'
+      title_activity_past_week: 'Activity of the past week'
       title_no_activity_past_week: 'Nije bilo aktivnosti tijekom proteklog tjedna'
-      yesterday_by_author: 'Jučer od autora %{author}'
-      today_by_author: 'Danas od autora %{author}'
-      x_days_ago_by_author: 'prije %{x} dana od %{author}'
+      yesterday_by_author: 'Yesterday by %{author}'
+      today_by_author: 'Today by %{author}'
+      x_days_ago_by_author: '%{x} days ago by %{author}'
     new_comment_on_commented_initiative:
-      commented: '%{commentAuthor} je napisao/la:'
-      cta_reply_to: 'Odgovorite %{commentAuthor}'
+      commented: '%{commentAuthor} wrote:'
+      cta_reply_to: 'Reply to %{commentAuthor}'
       event_description: '%{commentAuthorFull} također komentira prijedlog ''%{initiativeTitle}'' na %{organizationName} platformi za sudjelovanje. Kliknite na gumb dolje kako biste započeli razgovor s %{commentAuthor}.'
       main_header: '%{commentAuthor} je napisao komentar na isti prijedlog'
       subject: 'Dodan je još jedan komentar na prijedlog koji ste komentirali'
       preheader: '%{commentAuthor} je također ostavio komentar na prijedlog za %{organizationName}'
     new_comment_for_admin:
-      by_author: 'od %{authorName}'
+      by_author: 'by %{authorName}'
       commented: '%{authorFirstName} je komentirao/la:'
       cta_reply_to: 'Provjerite komentar od %{commentAuthor}'
-      days_ago: 'Prije %{numberOfDays} dana'
+      days_ago: '%{numberOfDays} days ago'
       event_description: '%{authorName} dodao je novi komentar na vašoj platformi.'
       main_header: '%{firstName}, novi je komentar objavljen na vašoj platformi'
       subject: 'Postoji novi komentar na %{organizationName} platformi '
       preheader: '%{authorName} je ostavio/la komentar'
-      today: Danas
-      yesterday: Jučer
+      today: Today
+      yesterday: Yesterday
     comment_on_your_idea:
-      by_author: 'od %{authorName}'
-      commented: '%{authorFirstName} je napisao/la:'
-      cta_reply_to: 'Odgovorite %{commentAuthor}'
+      by_author: 'by %{authorName}'
+      commented: '%{authorFirstName} wrote:'
+      cta_reply_to: 'Reply to %{commentAuthor}'
       event_description: '%{authorNameFull} je reagirao/la na vašu ideju ''%{ideaTitle}''. Kliknite na gumb dolje kako biste nastavili razgovor s %{authorName}.'
       main_header: '%{authorName} je komentirao/la vašu ideju'
-      subject: 'Dobili ste komentar na platformi %{organizationName}'
+      subject: 'You''ve received a comment on %{organizationName}''s platform'
       preheader: '%{authorName} je ostavio komentar na vašu ideju za %{organizationName}'
     new_comment_on_voted_initiative:
-      commented: '%{commentAuthor} je napisao/la:'
+      commented: '%{commentAuthor} wrote:'
       cta_reply_to: 'Pogledajte ovaj prijedlog'
       event_description: '%{commentAuthor} je komentirao/la prijedlog ''%{initiativeTitle}'' za koji ste glasovali. Pridružite se raspravi na %{organizationName} platformi!'
       main_header: '%{firstName}, evo novog komentara na prijedlog za koji ste glasovali'
@@ -304,33 +304,33 @@ hr:
       preheader: '%{commentAuthor} je ostavio/la komentar na prijedlog za koji ste glasovali na %{organizationName} platformi'
     new_comment_on_voted_idea:
       commented: '%{commentAuthor} je komentirao/la:'
-      cta_reply_to: 'Odgovorite %{commentAuthor}'
-      days_ago: 'Prije %{numberOfDays} dana'
+      cta_reply_to: 'Reply to %{commentAuthor}'
+      days_ago: '%{numberOfDays} days ago'
       event_description: '%{commentAuthor} je komentirao/la ideju ''%{ideaTitle}'' za koju ste glasovali. Pridružite se raspravi na %{organizationName} platformi!'
       main_header: '%{firstName}, objavljen je novi komentar na ideju za koju ste glasovali'
       subject: 'Objavljen je novi komentar na ideju za koju ste glasovali'
       preheader: '%{commentAuthor} je ostavio/la komentar na ideju za koju ste glasovali na %{organizationName} platformi'
-      today: Danas
-      yesterday: Jučer
+      today: Today
+      yesterday: Yesterday
     new_initiative_for_admin:
-      by_author: 'od %{authorName}'
-      commented: '%{authorFirstName} je napisao/la:'
-      cta_reply_to: 'Pošaljite povratne informacije za %{authorName}'
+      by_author: 'by %{authorName}'
+      commented: '%{authorFirstName} wrote:'
+      cta_reply_to: 'Give feedback to %{authorName}'
       event_description: '%{authorName} je objavio/la novi prijedlog na vašoj platformi. Pogledajte ga, pružite povratne informacije ili promijenite njegov status!'
       main_header: '%{firstName}, novi je prijedlog objavljen na vašoj platformi'
       subject: 'Netko je objavio novi prijedlog na %{organizationName} platformi'
       preheader: '%{authorName} je objavio/la novi prijedlog na vašoj platformi'
     new_idea_for_admin:
-      by_author: 'od %{authorName}'
-      commented: '%{authorFirstName} je komentirao/la:'
-      cta_reply_to: 'Pošaljite povratne informacije za %{authorName}'
-      days_ago: 'Prije %{numberOfDays} dana'
+      by_author: 'by %{authorName}'
+      commented: '%{authorFirstName} commented:'
+      cta_reply_to: 'Give feedback to %{authorName}'
+      days_ago: '%{numberOfDays} days ago'
       event_description: '%{authorName} je objavio/la novu ideju na vašoj platformi. Pogledajte je, pružite povratne informacije ili promijenite njen status!'
       main_header: '%{firstName}, nova je ideja objavljena na vašoj platformi'
       subject: 'Nova je objava objavljena na %{organizationName} platformi'
       preheader: '%{authorName} je objavio/la novu ideju na vašoj platformi'
-      today: Danas
-      yesterday: Jučer
+      today: Today
+      yesterday: Yesterday
     comment_on_your_comment:
       cta_reply_to: 'Odgovorite %{firstName}'
       event_description: '%{authorNameFull} je napisao/la odgovor na vaš komentar u okviru objave ''%{post}'' na platformi za sudjelovanje. Kliknite na gumb u nastavku kako biste nastavili razgovor s %{authorName}.'
@@ -339,7 +339,7 @@ hr:
       preheader: '%{authorName} je odgovorio/la na vaš komentar na platformi %{organizationName}'
       replied: '%{authorFirstName} je odgovorio/la:'
     official_feedback_on_commented_initiative:
-      by_author: 'od %{authorName}'
+      by_author: 'by %{authorName}'
       updated: '%{officialName} je napisao/la:'
       cta_view: 'Idi na ovaj prijedlog'
       event_description: '%{officialName} je objavio novost o prijedlogu ''%{initiativeTitle}''. Kliknite na gumb u nastavku kako biste započeli razgovor s %{organizationName}.'
@@ -347,40 +347,40 @@ hr:
       subject: 'Prijedlog koji ste komentirali službeno je ažuriran na %{organizationName} platformi'
       preheader: '%{officialName} je službeno ažurirao prijedlog koji ste komentirali'
     official_feedback_on_voted_idea:
-      by_author: 'od %{authorName}'
-      updated: '%{officialName} je napisao/la:'
+      by_author: 'by %{authorName}'
+      updated: '%{officialName} wrote:'
       cta_view: 'Idite na ovu ideju'
       event_description: '%{officialName} je objavio novost o ideji ''%{ideaTitle}''. Kliknite na gumb u nastavku kako biste započeli razgovor s %{officialName}.'
       subject: 'Ideja za koju ste glasovali službeno je ažurirana na platformi %{organizationName}'
       preheader: '%{officialName} je objavio službeno ažuriranje o ideji za koju ste glasovali'
       main_header: ""
     official_feedback_on_commented_idea:
-      by_author: 'od %{authorName}'
-      updated: '%{officialName} je napisao/la:'
-      cta_view: 'Idite na ovu ideju'
-      event_description: '%{officialName} je objavio novost o ideji ''%{ideaTitle}''. Kliknite na gumb u nastavku kako biste započeli razgovor s %{officialName}.'
+      by_author: 'by %{authorName}'
+      updated: '%{officialName} wrote:'
+      cta_view: 'Go to this idea'
+      event_description: '%{officialName} gave an update on the idea ''%{ideaTitle}''. Click the button below to enter the conversation with %{officialName}.'
       main_header: 'Postoji novost o ideji koju ste komentirali'
       subject: 'Ideja koju ste komentirali službeno je ažurirana na %{organizationName} platformi'
       preheader: '%{officialName} je objavio službeno ažuriranje o ideji koju ste komentirali'
     official_feedback_on_your_idea:
-      by_author: 'od %{authorName}'
-      updated: '%{officialName} je napisao/la:'
+      by_author: 'by %{authorName}'
+      updated: '%{officialName} wrote:'
       cta_view: 'Idite na svoju ideju'
       event_description: '%{officialName} je objavio ažuriranje o ideji ''%{ideaTitle}''. Kliknite na gumb u nastavku kako biste započeli razgovor s %{officialName}.'
       main_header: 'Imate ažuriranje od %{organizationName}'
-      subject: 'Imate ažuriranje od %{organizationName}'
+      subject: 'You received an update from %{organizationName}'
       preheader: '%{officialName} je objavio službeno ažuriranje o vašoj ideji'
     official_feedback_on_voted_initiative:
-      by_author: 'od %{authorName}'
-      updated: '%{officialName} je napisao/la:'
-      cta_view: 'Idi na ovaj prijedlog'
-      event_description: '%{officialName} je objavio novost o prijedlogu ''%{initiativeTitle}''. Kliknite na gumb u nastavku kako biste započeli razgovor s %{organizationName}.'
+      by_author: 'by %{authorName}'
+      updated: '%{officialName} wrote:'
+      cta_view: 'Go to this proposal'
+      event_description: '%{officialName} gave an update on the proposal ''%{initiativeTitle}''. Click the button below to enter the conversation with %{organizationName}.'
       main_header: 'Postoji ažuriranje o prijedlogu za koji ste glasovali'
       subject: 'Prijedlog za koji ste glasovali službeno je ažuriran na platformi %{organizationName}'
       preheader: '%{officialName} je ažurirao prijedlog za koji ste glasovali'
     official_feedback_on_your_initiative:
-      updated: '%{officialName} je napisao/la:'
-      cta_view: 'Idite na svoj prijedlog'
+      updated: '%{officialName} wrote:'
+      cta_view: 'Go to your proposal'
       event_description: '%{officialName} je objavio ažuriranje o vašem prijedlogu ''%{initiativeTitle}''. Kliknite na gumb u nastavku kako biste započeli razgovor s %{organizationName}.'
       main_header: 'Dobili ste ažuriranje od %{officialName}'
       subject: 'Dobili ste službeno ažuriranje na platformi %{organizationName}'
@@ -394,8 +394,8 @@ hr:
       text_design_participatory_process: 'Kao voditelj projekta, možete konfigurirati način interakcije korisnika unutar vašeg projekta. Možete dodati nove faze pomoću vremenske trake. Svaka od ovih faza može imati vlastita pravila u vezi s objavljivanjem ideja, komentiranjem i glasovanjem.'
       text_moderate_analyse_input: 'Nakon pokretanja projekta, stići će prve ideje. Primat ćete tjedna izvješća sa svim ključnim aktivnostima kako biste bili u tijeku. Pregled ideja u prikazu vašeg voditelja projekta pomoći će vam da shvatite koje su ideje dobile najviše pozitivnih i negativnih glasova.'
       text_share_project_information: 'Kako biste povećali kvalitetu ideja koje dobivate, ključno je podijeliti dovoljno informacija: dodajte opis projekta, priložite slike (uključujući skice i planove) i komunicirajte o svim povezanim događajima koji se odvijaju. Zapamtite: dobra informiranost prethodi dobrom sudjelovanju!'
-      title_design_participatory_process: 'Oblikujte postupak sudjelovanja'
-      title_moderate_analyse_input: 'Moderirajte i analizirajte unos'
+      title_design_participatory_process: 'Design the participatory process'
+      title_moderate_analyse_input: 'Moderate and analyse the input'
       title_share_project_information: 'Navedite informacije o projektu'
       title_what_can_you_do_moderator: 'Što možete učiniti kao voditelj projekta?'
       title_you_became_moderator: 'Postali ste voditelj projekta'
@@ -409,8 +409,8 @@ hr:
       text_manage_folder: 'Mapa je način za organiziranje nekoliko projekata sudjelovanja zajedno. Kao voditelj mape, možete uređivati mapu i opis mape te izrađivati nove projekte (za brisanje projekata obratite se administratoru svoje platforme). Također ćete imati prava za upravljanje projektima nad svim projektima unutar mape, što vam omogućuje uređivanje projektima, unosima i slanje e-pošte sudionicima.'
       text_moderate_analyse_input: 'Nakon što se projekti pokrenu, počet će pristizati prvi unosi. Primat ćete tjedna izvješća s ključnim aktivnostima kako biste bili u tijeku s onim što se događa. Voditelj unosa na vašoj ploči „Upravljanje platformom“ omogućuje vam da vidite i upravljate unosom, uključujući dodjeljivanje statusa i odgovaranje na objave i komentare.'
       text_design_participatory_process: 'Možete upravljati različitim projektima sudjelovanja unutar svoje mape – konfigurirajte način sudjelovanja, dodajte opis projekta, priložite slike i komunicirajte povezane događaje. Također možete upravljati načinom na koji sudionici komuniciraju s vašim projektima, uključujući postavljanje prava pristupa i konfiguriranje postavki objavljivanja, glasovanja i komentiranja.'
-      title_design_participatory_process: 'Oblikujte postupak sudjelovanja'
-      title_moderate_analyse_input: 'Moderirajte i analizirajte unos'
+      title_design_participatory_process: 'Design the participatory process'
+      title_moderate_analyse_input: 'Moderate and analyse the input'
       title_manage_folder: 'Upravljajte postavkama mape i izrađujte nove projekte.'
       title_what_can_you_do_folderadmin: 'Što možete učiniti kao voditelj mape?'
       title_added_as_folderadmin: 'Dodani ste kao voditelj mape'
@@ -427,67 +427,67 @@ hr:
       cta_view_phase: 'Postavite ovu novu fazu'
       event_description: 'Projekt ''%{projectName}'' uskoro ulazi u novu fazu. Provjerite je li sve postavljeno za ovu fazu: Postoji li odgovarajući opis? Prebacuju li se odabrane ideje u ovu fazu? Želite li svoje građane informirati o specifičnostima ove faze putem prilagođene kampanje e-poštom?'
       main_header: '%{firstName}, projekt će uskoro ući u novu fazu'
-      subtitle: 'O ''%{projectName}'''
+      subtitle: 'About ''%{projectName}'''
       new_phase: 'Projekt će ući u fazu ''%{phaseTitle}'''
       subject: 'Pripremite sve za novu fazu projekta %{projectName}'
       preheader: 'Uskoro počinje nova faza projekta %{projectName}'
     status_change_of_commented_idea:
       status_change: 'Novi status ove ideje je ''%{ideaStatus}'''
-      cta_view_idea: 'Idite na ovu ideju'
+      cta_view_idea: 'Go to this idea'
       event_description: 'Status ideje „%{ideaTitle}“ je ažuriran je od strane administracije %{organizationName} platforme za sudjelovanje.'
       main_header: 'Ideja koju ste komentirali ima novi status'
       subject: 'Status ideje koju ste komentirali promijenjen je'
       preheader: '%{organizationName} je promijenio status ideje koju ste komentirali'
     status_change_of_your_idea:
       status_change: 'Novi status vaše ideje je ''%{ideaStatus}'''
-      cta_view_idea: 'Idite na svoju ideju'
+      cta_view_idea: 'Go to your idea'
       event_description: 'Status vaše ideje „%{ideaTitle}“ je ažuriran od strane %{organizationName} platforme za sudjelovanje.'
       main_header: 'Vaša ideja ima novi status'
       subject: 'Status vaše ideje je promijenjen'
       preheader: 'Status vaše ideje je promijenjen od strane %{organizationName}'
     status_change_of_voted_idea:
-      status_change: 'Novi status ove ideje je ''%{ideaStatus}'''
-      cta_view_idea: 'Idite na ovu ideju'
-      event_description: 'Status ideje „%{ideaTitle}“ je ažuriran je od strane administracije %{organizationName} platforme za sudjelovanje.'
+      status_change: 'The new status of this idea is ''%{ideaStatus}'''
+      cta_view_idea: 'Go to this idea'
+      event_description: '%{organizationName} updated the status of the idea ''%{ideaTitle}'' on their digital participation platform.'
       main_header: 'Ideja za koju ste glasovali ima novi status'
       subject: 'Status ideje za koju ste glasovali je promijenjen'
       preheader: '%{organizationName} je promijenio status ideje za koju ste glasovali'
     status_change_of_voted_initiative:
       status_change: 'Novi status ovog prijedloga je ''%{initiativeStatus}'''
-      cta_view_initiative: 'Idi na ovaj prijedlog'
+      cta_view_initiative: 'Go to this proposal'
       event_description: 'Status prijedloga ''%{initiativeTitle}'' na %{organizationName} platformi za sudjelovanje je ažuriran.'
       main_header: 'Prijedlog za koji ste glasovali ima novi status'
       subject: 'Status prijedloga za koji ste glasovali se promijenio'
       preheader: 'Status prijedloga za koji ste glasovali se promijenio'
     status_change_of_commented_initiative:
-      status_change: 'Novi status ovog prijedloga je ''%{initiativeStatus}'''
-      cta_view_initiative: 'Idi na ovaj prijedlog'
-      event_description: 'Status prijedloga ''%{initiativeTitle}'' na %{organizationName} platformi za sudjelovanje je ažuriran.'
+      status_change: 'The new status of this proposal is ''%{initiativeStatus}'''
+      cta_view_initiative: 'Go to this proposal'
+      event_description: 'The status of the proposal ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
       main_header: 'Prijedlog koji ste komentirali ima novi status'
       subject: 'Status prijedloga koji ste komentirali se promijenio'
-      preheader: 'Status prijedloga koji ste komentirali se promijenio'
+      preheader: 'The status of a proposal you commented on has changed'
     status_change_of_your_initiative:
       status_change: 'Novi status vašeg prijedloga je ''%{initiativeStatus}'''
-      cta_view_initiative: 'Idite na svoj prijedlog'
-      event_description: 'Status prijedloga ''%{initiativeTitle}'' na %{organizationName} platformi za sudjelovanje je ažuriran.'
+      cta_view_initiative: 'Go to your proposal'
+      event_description: 'The status of the proposal ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
       main_header: 'Vaš prijedlog ima novi status'
       subject: 'Status vašeg prijedloga se promijenio'
-      preheader: 'Status vašeg prijedloga se promijenio'
+      preheader: 'The status of your proposal has changed'
     user_digest:
       subject: "Vaša aktivnost na %{organizationName} platformi za sudjelovanje"
-      commented: "%{authorFirstName} je komentirao/la:"
+      commented: "%{authorFirstName} commented:"
       preheader: "Tjedni pregled %{organizationName}"
       title_your_weekly_report: "Saznajte što se događalo prethodnog tjedna"
       intro_text: "Evo sažetka događanja na %{organizationName} platformi za sudjelovanje."
       cta_go_to_the_platform: "Idi na platformu"
-      title_no_activity_past_week: "Nije bilo aktivnosti tijekom proteklog tjedna"
+      title_no_activity_past_week: "No activity in the past week"
       title_proposals: "Započeti prijedlozi"
       proposals_started_text: "Prijedlozi su ideje koje trebaju biti privlačne i privući podršku drugih (ljudi poput vas!) kako bi krenule dalje. Dolje slijedi je popis prijedloga koji su izneseni u prošlom tjednu. Kliknite na bilo koji od njih kako biste pogledali i ponudili svoju podršku i povratne informacije!"
       title_successful_proposals: "Prijedlozi koji su dosegli prag"
       successful_proposals_text: "Ovi su prijedlozi dobili dovoljnu podršku za prelazak u sljedeću fazu! Kliknite na prijedlog kako biste saznali što se dalje događa s njim."
-      today_by_author: "Danas od autora %{author}"
-      yesterday_by_author: "Jučer od autora %{author}"
-      x_days_ago_by_author: "prije %{x} dana od %{author}"
+      today_by_author: "Today by %{author}"
+      yesterday_by_author: "Yesterday by %{author}"
+      x_days_ago_by_author: "%{x} days ago by %{author}"
       trending_ideas: "Ideje u trendu"
       trending_ideas_text: "Zanima vas što se događa na platformi? Ovo su tri najpopularnije ideje i pregled onoga što drugi govore o njima."
       no_notifications: "Nema obavijesti"
@@ -496,29 +496,29 @@ hr:
       no_unread_notifications: "Nema nepročitanih obavijesti. Posjetite platformu kako biste dali svoj doprinos i generirali nove obavijesti!"
       unread_notifications: "Imate nepročitane obavijesti. Posjetite platformu kako biste saznali novosti!"
     threshold_reached_for_admin:
-      by_author: 'od %{authorName}'
+      by_author: 'by %{authorName}'
       cta_process_initiative: 'Pomognite ovoj inicijativi da prijeđe u narednu fazu'
       event_description: 'Inicijativa je dosegla prag glasovanja na vašoj platformi. Kliknite na gumb u nastavku kako biste prešli na sljedeće korake!'
       main_header: 'Inicijativa je dosegla prag glasovanja!'
       subject: 'Inicijativa je dosegla prag glasovanja na vašoj platformi'
       preheader: 'Obvezno poduzmite sljedeće korake'
     first_idea_published:
-      action_add_image: '%{addImageLink} kako biste povećali vidljivost'
+      action_add_image: '%{addImageLink} to increase visibility'
       action_comment: '%{textComment} na postojeće ideje'
       action_published_idea: 'Objavljena ideja'
-      action_send_email: 'Pošaljite svojim kontaktima %{sendEmailLink}'
-      action_share_fb: 'Obavijestite svoje prijatelje na %{fbLink}'
-      action_share_link: 'Dijelite putem bilo kog kanala kopiranjem %{link}'
-      action_share_twitter: 'Obavijeste svoje pratitelje na %{twitterLink}'
+      action_send_email: 'Send your contacts an %{sendEmailLink}'
+      action_share_fb: 'Let your friends know on %{fbLink}'
+      action_share_link: 'Share it via any channel by copying the %{link}'
+      action_share_twitter: 'Inform your followers on %{twitterLink}'
       add_image: 'Dodajte sliku'
-      cta_view_idea: 'Idite na svoju ideju'
+      cta_view_idea: 'Go to your idea'
       event_description: '%{firstName}, čestitamo vam na prvoj objavi u okviru %{organizationName} platforme za sudjelovanje. Bit ćete obaviješteni kada ljudi stupe u interakciju s njom. U nastavku saznajte koje sljedeće korake možete poduzeti.'
-      link: poveznica
+      link: link
       main_header: '%{firstName}, objavili ste svoju prvu ideju!'
       message_get_votes: 'Dosegnite više ljudi putem svoje ideje:'
       preheader: '%{firstName}, zahvaljujemo se na objavi vaše ideje na %{organizationName} platformi. Sada je vrijeme prikupite podršku za nju'
       see_you: 'Vidimo se uskoro na platformi!'
-      send_email: e-pošta
+      send_email: email
       subject: 'Vaša prva ideja na %{organizationName} platformi za sudjelovanje'
     welcome:
       cta_join_platform: 'Otkrijte platformu'
@@ -527,21 +527,21 @@ hr:
       message_welcome: 'Čestitamo, uspješno ste se prijavili na %{organizationName} platformu za sudjelovanje. Možete otkriti platformu i poduzeti korake kako bi se vaš glas čuo. Također možete dodati profilnu sliku i kratak opis kako biste drugima rekli više o sebi.'
       preheader: 'Evo što možete napraviti na %{organizationName} platformi'
     idea_published:
-      action_add_image: '%{addImageLink} kako biste povećali vidljivost'
-      action_published_idea: 'Objavljena ideja'
-      action_send_email: 'Pošaljite svojim kontaktima %{sendEmailLink}'
-      action_share_fb: 'Obavijestite svoje prijatelje na %{fbLink}'
-      action_share_link: 'Dijelite putem bilo kog kanala kopiranjem %{link}'
-      action_share_twitter: 'Obavijeste svoje pratitelje na %{twitterLink}'
-      add_image: 'Dodajte sliku'
-      cta_view_idea: 'Idite na svoju ideju'
+      action_add_image: '%{addImageLink} to increase visibility'
+      action_published_idea: 'Published idea'
+      action_send_email: 'Send your contacts an %{sendEmailLink}'
+      action_share_fb: 'Let your friends know on %{fbLink}'
+      action_share_link: 'Share it via any channel by copying the %{link}'
+      action_share_twitter: 'Inform your followers on %{twitterLink}'
+      add_image: 'Add an image'
+      cta_view_idea: 'Go to your idea'
       event_description: '%{firstName}, vaša objava je postavljena na %{organizationName} platformu za sudjelovanje. Bit ćete obaviješteni kada ljudi stupe u interakciju s njom. U nastavku saznajte koje sljedeće korake možete poduzeti.'
-      link: poveznica
+      link: link
       main_header: 'Objavili ste ideju! Pobrinimo da bude pročitana.'
-      message_get_votes: 'Dosegnite više ljudi putem svoje ideje:'
+      message_get_votes: 'Reach more people with your idea:'
       preheader: '%{firstName}, čestitamo na objavljivanju vaše ideje na %{organizationName} platformi. Sada je vrijeme da prikupite podršku.'
-      see_you: 'Vidimo se uskoro na platformi!'
-      send_email: e-pošta
+      see_you: 'See you soon at the platform!'
+      send_email: email
       subject: 'Vaša ideja na %{organizationName} platformi'
       message_next_steps: ""
     your_proposed_initiatives_digest:
