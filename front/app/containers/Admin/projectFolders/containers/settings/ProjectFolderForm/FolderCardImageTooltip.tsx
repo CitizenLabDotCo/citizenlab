@@ -11,7 +11,7 @@ const FolderCardImageTooltip = () => {
     <IconTooltip
       content={
         <FormattedMessage
-          {...messages.headerImageTooltip}
+          {...messages.folderCardImageTooltip}
           values={{
             supportPageLink: (
               <a

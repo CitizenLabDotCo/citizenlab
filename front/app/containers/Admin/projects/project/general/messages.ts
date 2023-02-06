@@ -163,14 +163,12 @@ export default defineMessages({
   projectHeaderImageTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.projectHeaderImageTooltip',
     defaultMessage: `
-    This image is shown at the top of the project page.
-
-    For more information on recommended image resolutions, {supportPageLink}.`,
+    This image is shown at the top of the project page. For more information on recommended image resolutions, {supportPageLink}.`,
   },
   projectCardImageTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.projectCardImageTooltip1',
+    id: 'app.containers.AdminPage.ProjectEdit.projectCardImageTooltip',
     defaultMessage: `
-    This image is part of the project card; the card that summarizes the project and is shown on the homepage for example.\n\nFor more information on recommended image resolutions, {supportPageLink}.`,
+    This image is part of the project card; the card that summarizes the project and is shown on the homepage for example. For more information on recommended image resolutions, {supportPageLink}.`,
   },
   imageSupportPageURL: {
     id: 'app.containers.AdminPage.ProjectEdit.imageSupportPageURL',

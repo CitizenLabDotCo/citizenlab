@@ -13,13 +13,11 @@ export default defineMessages({
   folderCardImageTooltip: {
     id: 'app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.folderCardImageTooltip1',
     defaultMessage: `
-    This image is part of the folder card; the card that summarizes the folder and is shown on the homepage for example.\n\nFor more information on recommended image resolutions, {supportPageLink}.`,
+    This image is part of the folder card; the card that summarizes the folder and is shown on the homepage for example. For more information on recommended image resolutions, {supportPageLink}.`,
   },
   headerImageTooltip: {
-    id: 'app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.headerImageTooltip',
+    id: 'app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.headerImageTooltip1',
     defaultMessage: `
-    This image is shown at the top of the folder page.
-
-    For more information on recommended image resolutions, {supportPageLink}.`,
+    This image is shown at the top of the folder page. For more information on recommended image resolutions, {supportPageLink}.`,
   },
 });
