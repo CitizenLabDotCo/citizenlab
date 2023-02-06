@@ -143,7 +143,6 @@
   "app.components.admin.PostManager.topicsTabTooltipText": "Pievienojiet ievadei tagus, izmantojot funkciju vilkt un nomest.",
   "app.components.admin.PostManager.up": "Uz augšu",
   "app.components.admin.PostManager.votes": "Balsis",
-  "app.components.admin.ProjectableHeaderBgUploader.headerImageInputLabel": "Header image",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "no",
   "app.components.admin.ReportExportMenu.FileName.groupFilter": "grupa",
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "projekts",

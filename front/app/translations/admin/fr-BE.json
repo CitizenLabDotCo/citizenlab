@@ -143,7 +143,6 @@
   "app.components.admin.PostManager.topicsTabTooltipText": "Ajoutez des étiquettes à une contribution en les glissant vers l'étiquette de votre choix.",
   "app.components.admin.PostManager.up": "Pour",
   "app.components.admin.PostManager.votes": "Votes",
-  "app.components.admin.ProjectableHeaderBgUploader.headerImageInputLabel": "Image de couverture",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "de ",
   "app.components.admin.ReportExportMenu.FileName.groupFilter": "groupe",
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "projet",
