@@ -5,9 +5,9 @@ hr:
     admin_campaign_type_description:
       "idea_assigned_to_you": Dodjela ideje – administratori i voditelji projekata
     idea_assigned_to_you:
-      by_author: 'od %{authorName}'
-      cta_reply_to: 'Pošaljite povratne informacije za %{authorName}'
+      by_author: 'by %{authorName}'
+      cta_reply_to: 'Give feedback to %{authorName}'
       event_description_idea: 'Dodijeljenа vam je ideja. Pružite povratne informacije pisanjem službenog ažuriranja ili promjenom njenog statusa.'
-      main_header: '%{firstName}, imate novi zadatak'
-      subject: 'Imate zadatak na %{organizationName} platformi '
+      main_header: '%{firstName}, you have a new assignment'
+      subject: 'You have an assignment on the platform of %{organizationName}'
       preheader_idea: 'Dodijeljena vam je ideja od %{authorName}'
