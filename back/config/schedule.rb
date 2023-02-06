@@ -9,5 +9,5 @@ end
 
 # every :sunday, at: '12pm' do
 every 1.minute do
-  runner 'MyAmazingJob.run'
+  runner 'MyAmazingJob'
 end
