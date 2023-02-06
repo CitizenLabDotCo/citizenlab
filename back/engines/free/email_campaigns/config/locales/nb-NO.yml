@@ -82,7 +82,7 @@
       "password_reset": Tilbakestilling av passord – alle brukere
       "project_moderation_rights_received": Prosjektmodereringsrettigheter mottatt – prosjektledere
       "project_folder_moderation_rights_received": Mappeadministrator-rettigheter mottatt
-      "project_phase_started": Ny prosjektfase – prosjektdeltakere
+      "project_phase_started": New project phase - all users
       "project_phase_upcoming": Kommende ny prosjektfase – administratorer og prosjektledere
       "status_change_of_commented_idea": Statusendring av en idé du har kommentert på – alle brukere
       "status_change_of_commented_initiative": Statusendring av et forslag du har kommentert på – alle brukere
@@ -427,7 +427,7 @@
       cta_view_phase: 'Sett opp den nye fasen'
       event_description: ' ''%{projectName}'' går snart over i en ny fase. Sørg for at alt er klart: Har du en god nok beskrivelse? Er de valgte ideene flyttet til fasen? Vil du informere innbyggerne om utviklingen via e-post? ?'
       main_header: '%{firstName}, et prosjekt vil snart gå over i en ny fase'
-      subtitle: 'About ''%{projectName}'''
+      subtitle: 'Om «%{projectName}»'
       new_phase: 'Prosjektet vil gå over i en ny fase ''%{phaseTitle}'''
       subject: 'Sett opp alt for den nye fasen %{projectName}'
       preheader: '%{projectName} går snart over i en ny fase'
