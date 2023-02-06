@@ -48,13 +48,13 @@ class FilterSidebarPhasesItem extends React.PureComponent<Props> {
 }
 
 const phaseTarget = {
-  drop(props) {
+  drop(props: Props) {
     return {
       type: 'phase',
       id: props.phase.id,
     };
   },
-  canDrop(props) {
+  canDrop(props: Props) {
     return canContainIdeas(props.phase);
   },
 };

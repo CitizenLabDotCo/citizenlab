@@ -6,12 +6,17 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 import localize, { InjectedLocalized } from 'utils/localize';
 import { isNilOrError } from 'utils/helperUtils';
 
-type Props = {
+interface InputProps {
   rule: TRule;
   value: string;
-  onChange: (string) => void;
+  onChange: (areaIds: string[]) => void;
+}
+
+interface DataProps {
   areas: GetAreasChildProps;
-};
+}
+
+interface Props extends InputProps, DataProps {}
 
 interface State {}
 
@@ -52,7 +57,7 @@ class AreaValuesSelector extends React.PureComponent<
 
 const AreaValuesSelectorWithHOC = localize(AreaValuesSelector);
 
-export default (inputProps) => (
+export default (inputProps: InputProps) => (
   <GetAreas>
     {(areas) => <AreaValuesSelectorWithHOC {...inputProps} areas={areas} />}
   </GetAreas>

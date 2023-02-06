@@ -8,9 +8,6 @@ let mockFeatureFlagData = true;
 
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
 
-jest.mock('utils/cl-intl');
-jest.mock('services/locale');
-
 const defaultProps = {
   status: 'isIdle' as ScanStatus,
   progress: 0,

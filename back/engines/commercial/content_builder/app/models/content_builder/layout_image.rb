@@ -16,10 +16,14 @@ module ContentBuilder
 
     before_validation :generate_code, on: :create
 
+    def self.generate_code
+      SecureRandom.uuid
+    end
+
     private
 
     def generate_code
-      self.code = SecureRandom.uuid unless code
+      self.code = self.class.generate_code unless code
     end
   end
 end

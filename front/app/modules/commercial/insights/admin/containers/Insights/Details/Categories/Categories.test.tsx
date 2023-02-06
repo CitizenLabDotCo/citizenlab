@@ -7,8 +7,6 @@ import Categories, { visibleCategoriesNumber } from './';
 
 let mockData = categories;
 
-jest.mock('utils/cl-intl');
-
 jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
   return jest.fn(() => mockData);
 });
@@ -35,7 +33,6 @@ jest.mock('utils/cl-router/withRouter', () => {
     Link: () => <>Link</>,
   };
 });
-jest.mock('utils/cl-router/Link');
 
 describe('Insights Details Categories', () => {
   it('renders Categories', () => {
