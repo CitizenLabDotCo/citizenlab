@@ -32,10 +32,6 @@ const mockEditorData: IProjectDescriptionBuilderData = {
   },
 };
 
-jest.mock('utils/cl-intl');
-jest.mock('utils/cl-router/history');
-jest.mock('hooks/useLocale');
-jest.mock('hooks/useLocalize');
 jest.mock('../../../hooks/useProjectDescriptionBuilderLayout', () => {
   return jest.fn(() => ({ data: mockEditorData }));
 });
@@ -65,8 +61,6 @@ jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useParams: () => mockParams,
 }));
-
-jest.mock('utils/cl-router/Link');
 
 jest.mock('hooks/useProject', () => {
   return jest.fn(() => ({

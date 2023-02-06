@@ -7,10 +7,6 @@ const projectTitle = {
   en: 'Project title',
 };
 
-jest.mock('services/locale');
-jest.mock('hooks/useLocale');
-jest.mock('hooks/useLocalize');
-
 const DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA = {
   data: {
     attributes: {

@@ -18,11 +18,6 @@ let mockProjectDescriptionBuilderLayoutData:
 mockProjectDescriptionBuilderLayoutData =
   DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA;
 
-jest.mock('utils/cl-intl');
-jest.mock('services/appConfiguration');
-jest.mock('utils/cl-router/history');
-jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
-jest.mock('hooks/useAppConfigurationLocales', () => jest.fn(() => ['en']));
 jest.mock(
   'modules/commercial/project_description_builder/hooks/useProjectDescriptionBuilderLayout',
   () => {
@@ -35,9 +30,6 @@ jest.mock(
     addProjectDescriptionBuilderLayout: jest.fn(),
   })
 );
-jest.mock('utils/cl-router/Link', () => () => (
-  <a href="www.google.com">LinkText</a>
-));
 
 jest.mock('utils/cl-router/withRouter', () => {
   return {

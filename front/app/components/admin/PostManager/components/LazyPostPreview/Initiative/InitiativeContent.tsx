@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
-import { getDaysRemainingUntil } from 'utils/dateUtils';
+import { getPeriodRemainingUntil } from 'utils/dateUtils';
 
 // components
 import Title from 'components/PostShowComponents/Title';
@@ -160,7 +160,9 @@ export class InitiativeContent extends PureComponent<
         initiative.attributes.location_point_geojson || null;
       const initiativeAddress =
         initiative.attributes.location_description || null;
-      const daysLeft = getDaysRemainingUntil(initiative.attributes.expires_at);
+      const daysLeft = getPeriodRemainingUntil(
+        initiative.attributes.expires_at
+      );
 
       return (
         <Container>

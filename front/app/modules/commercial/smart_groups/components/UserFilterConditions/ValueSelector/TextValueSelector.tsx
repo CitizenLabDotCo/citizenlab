@@ -4,13 +4,13 @@ import { Input } from '@citizenlab/cl2-component-library';
 
 type Props = {
   value: string;
-  onChange: (string) => void;
+  onChange: (textValue: string) => void;
 };
 
 interface State {}
 
 class TextValueSelector extends React.PureComponent<Props, State> {
-  handleOnChange = (value) => {
+  handleOnChange = (value: string) => {
     this.props.onChange(value);
   };
 

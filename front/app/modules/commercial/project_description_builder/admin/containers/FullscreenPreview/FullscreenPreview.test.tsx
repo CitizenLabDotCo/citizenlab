@@ -3,9 +3,8 @@ import { render, screen } from 'utils/testUtils/rtl';
 import FullScreenPreview from '.';
 
 let mockLocale = 'en';
-jest.mock('services/locale');
+
 jest.mock('hooks/useLocale', () => jest.fn(() => mockLocale));
-jest.mock('hooks/useLocalize');
 
 const DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA = {
   data: {

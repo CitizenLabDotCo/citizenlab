@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.name        = 'matomo'
   s.version     = Matomo::VERSION
   s.authors     = ['CitizenLab']
-  s.licenses    = ['CitizenLab Commercial License V1']
+  s.licenses    = ['CitizenLab Commercial License V2']
   s.summary     = 'Enables sending front-end events to matomo for analytics'
 
   s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']

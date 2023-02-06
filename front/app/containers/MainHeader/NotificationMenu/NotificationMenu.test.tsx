@@ -3,7 +3,6 @@ import { IUserAttributes } from 'services/users';
 import { render, screen, userEvent } from 'utils/testUtils/rtl';
 import NotificationMenu from '.';
 
-jest.mock('services/appConfiguration');
 jest.mock('services/auth');
 
 let mockUserData: {

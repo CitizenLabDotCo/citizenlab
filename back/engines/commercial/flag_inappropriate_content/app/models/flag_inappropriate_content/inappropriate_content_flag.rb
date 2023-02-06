@@ -42,6 +42,10 @@ module FlagInappropriateContent
       end
     end
 
+    def project_id
+      flaggable.try(:project_id)
+    end
+
     private
 
     def remove_notifications

@@ -4,7 +4,6 @@ import ProjectDescriptionBuilderPreview from '.';
 
 let mockFeatureFlagData = true;
 
-jest.mock('services/locale');
 jest.mock('utils/cl-router/withRouter', () => {
   return {
     withRouter: (Component) => {
@@ -14,7 +13,6 @@ jest.mock('utils/cl-router/withRouter', () => {
     },
   };
 });
-jest.mock('utils/cl-router/Link');
 
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
 

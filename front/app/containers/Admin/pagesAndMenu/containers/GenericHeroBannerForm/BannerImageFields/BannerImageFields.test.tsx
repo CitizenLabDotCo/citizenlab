@@ -2,8 +2,6 @@ import React from 'react';
 import BannerImageFields from '.';
 import { render, screen, userEvent } from 'utils/testUtils/rtl';
 
-jest.mock('utils/cl-intl');
-
 const props = {
   bannerOverlayColor: '#fff',
   bannerOverlayOpacity: 90,
@@ -35,7 +33,7 @@ describe('BannerImageFields', () => {
       render(<BannerImageFields {...props} />);
 
       await uploadLocalImageForHeroBanner();
-      const select = screen.getByLabelText('Show preview for');
+      const select = await screen.findByLabelText('Show preview for');
       expect(select).toBeInTheDocument();
     });
 
@@ -67,7 +65,9 @@ describe('BannerImageFields', () => {
         render(<BannerImageFields {...props} />);
 
         await uploadLocalImageForHeroBanner();
-        expect(screen.getByLabelText('Enable overlay')).toBeInTheDocument();
+        expect(
+          await screen.findByLabelText('Enable overlay')
+        ).toBeInTheDocument();
       });
     });
 
@@ -115,12 +115,11 @@ describe('BannerImageFields', () => {
     describe('when layout is fixed-ratio', () => {
       const bannerLayout = 'fixed_ratio_layout';
 
-      it('shows when there is an unsaved image', () => {
+      it('shows when there is an unsaved image', async () => {
         render(<BannerImageFields {...props} bannerLayout={bannerLayout} />);
 
-        uploadLocalImageForHeroBanner().then(() => {
-          expect(screen.getByTestId('image-cropper')).toBeInTheDocument();
-        });
+        await uploadLocalImageForHeroBanner();
+        expect(await screen.findByTestId('image-cropper')).toBeInTheDocument();
       });
     });
 

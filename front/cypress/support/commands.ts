@@ -450,7 +450,8 @@ export function apiCreateIdea(
   ideaContent: string,
   locationGeoJSON?: { type: string; coordinates: number[] },
   locationDescription?: string,
-  jwt?: string
+  jwt?: string,
+  budget?: number
 ) {
   let headers: { 'Content-Type': string; Authorization: string } | null = null;
 
@@ -485,6 +486,7 @@ export function apiCreateIdea(
           },
           location_point_geojson: locationGeoJSON,
           location_description: locationDescription,
+          budget,
         },
       },
     });
@@ -743,6 +745,7 @@ export function apiCreateProject({
   surveyUrl,
   surveyService,
   maxBudget,
+  postingEnabled,
 }: {
   type: 'timeline' | 'continuous';
   title: string;
@@ -754,6 +757,7 @@ export function apiCreateProject({
   surveyUrl?: string;
   maxBudget?: number;
   surveyService?: 'typeform' | 'survey_monkey' | 'google_forms';
+  postingEnabled?: boolean;
 }) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -793,6 +797,7 @@ export function apiCreateProject({
           survey_embed_url: surveyUrl,
           survey_service: surveyService,
           max_budget: maxBudget,
+          posting_enabled: postingEnabled,
         },
       },
     });

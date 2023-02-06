@@ -7,11 +7,8 @@ import VisibleNavbarItemList from '.';
 import { removeNavbarItem, reorderNavbarItem } from 'services/navbar';
 import { deleteCustomPage } from 'services/customPages';
 
-jest.mock('services/locale');
-jest.mock('services/appConfiguration');
 jest.mock('hooks/useNavbarItems');
 jest.mock('hooks/useCustomPageSlugById');
-jest.mock('hooks/useLocale');
 
 jest.mock('services/navbar', () => ({
   reorderNavbarItem: jest.fn(),
@@ -22,8 +19,6 @@ jest.mock('services/navbar', () => ({
 jest.mock('services/customPages', () => ({
   deleteCustomPage: jest.fn(),
 }));
-
-jest.mock('utils/cl-router/history');
 
 describe('<VisibleNavbarItemList />', () => {
   it('renders', () => {

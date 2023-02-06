@@ -2,8 +2,6 @@ import React from 'react';
 import AvatarsField from './AvatarsField';
 import { render, screen } from 'utils/testUtils/rtl';
 
-jest.mock('utils/cl-intl');
-
 describe('AvatarsField', () => {
   it('renders properly when checked', () => {
     render(<AvatarsField checked={true} onChange={jest.fn()} />);

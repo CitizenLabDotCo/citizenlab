@@ -15,7 +15,6 @@ jest.mock('utils/cl-router/withRouter', () => {
   };
 });
 
-jest.mock('utils/cl-router/Link');
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
 
 describe('ProjectDescriptionBuilderLayout', () => {

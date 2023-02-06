@@ -3,9 +3,8 @@ import { mockRoutes } from './mockRoutes.mock';
 import { Observable } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
-jest.mock('services/appConfiguration');
 jest.mock('services/auth');
-jest.mock('modules', () => ({ streamsToReset: [] }));
+
 jest.mock('routes', () => ({
   __esModule: true,
   default: jest.fn(() => [mockRoutes]),

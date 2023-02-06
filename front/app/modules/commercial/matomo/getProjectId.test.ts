@@ -1,6 +1,5 @@
 import { extractIdeaSlug } from './getProjectId';
 
-jest.mock('services/appConfiguration');
 jest.mock('services/auth');
 
 describe('extractIdeaSlug', () => {

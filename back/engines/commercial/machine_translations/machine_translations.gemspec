@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.name        = 'machine_translations'
   s.version     = MachineTranslations::VERSION
   s.authors     = ['CitizenLab']
-  s.licenses    = ['CitizenLab Commercial License V1']
+  s.licenses    = ['CitizenLab Commercial License V2']
   s.summary     = 'Automatically translates content (ideas/comments) through machine translation'
 
   s.files = Dir['{app,config,db,lib}/**/*', 'README.md']

@@ -7,14 +7,11 @@ import RenameCategory from './RenameCategory';
 const viewId = '1';
 const categoryId = '1';
 
-jest.mock('utils/cl-intl');
-
 jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
   updateInsightsCategory: jest.fn(),
 }));
 
 jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
-jest.mock('utils/cl-router/Link');
 
 jest.mock('utils/cl-router/withRouter', () => {
   return {

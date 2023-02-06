@@ -1,0 +1,103 @@
+import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
+
+// Components
+import {
+  Box,
+  useBreakpoint,
+  useWindowSize,
+} from '@citizenlab/cl2-component-library';
+import MainHeader from 'containers/MainHeader';
+
+// hooks
+import usePhases from 'hooks/usePhases';
+import useProject from 'hooks/useProject';
+
+// styles
+import { viewportWidths } from 'utils/styleUtils';
+
+// utils
+import {
+  getMethodConfig,
+  getParticipationMethod,
+} from 'utils/participationMethodUtils';
+import { isNilOrError } from 'utils/helperUtils';
+
+type ProjectCTABarProps = {
+  projectId: string;
+};
+
+export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
+  const { windowWidth } = useWindowSize();
+  const smallerThanLargeTablet = windowWidth <= viewportWidths.tablet;
+  const [isVisible, setIsVisible] = useState(false);
+  const portalElement = document?.getElementById('topbar-portal');
+  const phases = usePhases(projectId);
+  const isSmallerThanXlPhone = useBreakpoint('phone');
+
+  useEffect(() => {
+    let isMounted = true;
+    window.addEventListener(
+      'scroll',
+      () => {
+        const actionButtonElement = document.getElementById(
+          'participation-detail'
+        );
+        const actionButtonYOffset = actionButtonElement
+          ? actionButtonElement.getBoundingClientRect().top + window.pageYOffset
+          : undefined;
+        if (isMounted) {
+          setIsVisible(
+            !!(
+              actionButtonElement &&
+              actionButtonYOffset &&
+              window.pageYOffset >
+                actionButtonYOffset - (smallerThanLargeTablet ? 14 : 30)
+            )
+          );
+        }
+      },
+      { passive: true }
+    );
+    return () => {
+      isMounted = false;
+    };
+  }, [projectId, smallerThanLargeTablet]);
+
+  const project = useProject({ projectId });
+  const participationMethod = project
+    ? getParticipationMethod(project, phases)
+    : undefined;
+
+  if (isNilOrError(project) || !participationMethod) {
+    return null;
+  }
+
+  const BarContents = getMethodConfig(participationMethod).renderCTABar({
+    project,
+    phases,
+  });
+
+  if (portalElement && isVisible) {
+    return createPortal(
+      <Box
+        width="100vw"
+        position="fixed"
+        top="0px"
+        zIndex="1004"
+        background="#fff"
+        borderBottom="solid 1px #ddd"
+      >
+        {!isSmallerThanXlPhone && (
+          <Box height="78px">
+            <MainHeader />
+          </Box>
+        )}
+        {BarContents}
+      </Box>,
+      portalElement
+    );
+  }
+
+  return <>{BarContents}</>;
+};
