@@ -45,7 +45,10 @@ export const StyledLink = styled.a`
   }
 `;
 
-export function handlePreviewCLick(id, openPreview) {
+export function handlePreviewCLick(
+  id: string,
+  openPreview: (id: string) => void
+) {
   return function () {
     openPreview(id);
   };

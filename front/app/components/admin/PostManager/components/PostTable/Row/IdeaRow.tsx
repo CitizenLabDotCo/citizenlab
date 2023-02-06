@@ -222,7 +222,7 @@ const IdeaRow = ({
     });
   };
 
-  const onUpdateIdeaTopics = (selectedTopics) => {
+  const onUpdateIdeaTopics = (selectedTopics: string[]) => {
     updateIdea(idea.id, {
       topic_ids: selectedTopics,
     });

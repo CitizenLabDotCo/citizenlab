@@ -153,6 +153,10 @@ class CustomField < ApplicationRecord
     end
   end
 
+  def project_id
+    resource.project_id if resource_type == 'CustomForm'
+  end
+
   private
 
   def set_default_enabled

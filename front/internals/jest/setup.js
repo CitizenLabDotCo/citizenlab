@@ -8,7 +8,6 @@ configure({ adapter: new Adapter() });
 global.ResizeObserver = require('resize-observer-polyfill');
 
 jest.mock('polished');
-jest.mock('modules');
 jest.mock('quill-blot-formatter');
 jest.mock('history', () => ({
   createBrowserHistory: () => ({
@@ -31,3 +30,12 @@ jest.mock('history', () => ({
     parsePath: jest.fn(),
   }),
 }));
+
+jest.mock('utils/cl-router/Link');
+jest.mock('utils/cl-router/history');
+jest.mock('hooks/useLocale');
+jest.mock('hooks/useLocalize');
+jest.mock('utils/cl-intl');
+jest.mock('services/locale');
+jest.mock('services/appConfiguration');
+jest.mock('modules', () => ({ streamsToReset: [] }))

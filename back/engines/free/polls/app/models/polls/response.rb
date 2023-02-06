@@ -68,5 +68,9 @@ module Polls
         end
       end
     end
+
+    def project_id
+      participation_context.try(:project_id)
+    end
   end
 end

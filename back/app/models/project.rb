@@ -144,6 +144,8 @@ class Project < ApplicationRecord
     where(id: project_ids)
   }
 
+  alias project_id id
+
   class << self
     def search_ids_by_all_including_patches(term)
       result = defined?(super) ? super : []
