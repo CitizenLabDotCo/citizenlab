@@ -6,11 +6,13 @@ describe SideFxCommentService do
   let(:service) { described_class.new }
   let(:user) { create(:user) }
   let(:comment) { create(:comment) }
+  let(:project_id) { comment.post.project_id }
 
   describe 'after_create' do
     it "logs a 'created' action when a comment is created" do
       expect { service.after_create(comment, user) }
-        .to have_enqueued_job(LogActivityJob).with(comment, 'created', user, comment.updated_at.to_i)
+        .to enqueue_job(LogActivityJob)
+        .with(comment, 'created', user, comment.updated_at.to_i, project_id: project_id)
     end
 
     it "logs a 'mentioned' action for every expanded mention" do
@@ -24,9 +26,12 @@ describe SideFxCommentService do
       u2_mention_expanded = mention_service.add_span_around u2_mention, u2
 
       comment.body_multiloc['en'] = "Let's mention #{u1_mention_expanded} and #{u2_mention_expanded}"
+
       expectation = expect { service.after_create(comment, user) }
-      expectation.to have_enqueued_job(LogActivityJob).with(comment, 'mentioned', user, comment.created_at.to_i, payload: { mentioned_user: u1.id })
-      expectation.to have_enqueued_job(LogActivityJob).with(comment, 'mentioned', user, comment.created_at.to_i, payload: { mentioned_user: u2.id })
+
+      created_at = comment.created_at.to_i
+      expectation.to enqueue_job(LogActivityJob).with(comment, 'mentioned', user, created_at, payload: { mentioned_user: u1.id }, project_id: project_id)
+      expectation.to enqueue_job(LogActivityJob).with(comment, 'mentioned', user, created_at, payload: { mentioned_user: u2.id }, project_id: project_id)
     end
   end
 
@@ -34,7 +39,8 @@ describe SideFxCommentService do
     it "logs a 'changed' action job when the comment has changed" do
       comment.update(body_multiloc: { en: 'changed' })
       expect { service.after_update(comment, user) }
-        .to have_enqueued_job(LogActivityJob).with(comment, 'changed', user, comment.updated_at.to_i)
+        .to enqueue_job(LogActivityJob)
+        .with(comment, 'changed', user, comment.updated_at.to_i, project_id: project_id)
     end
 
     it "logs a 'mentioned' action for every added mention" do
@@ -48,11 +54,13 @@ describe SideFxCommentService do
       u2_mention_expanded = mention_service.add_span_around u2_mention, u2
 
       comment = create(:comment, body_multiloc: { en: u1_mention_expanded.to_s })
-
       comment.update(body_multiloc: { en: "Let's mention #{u1_mention_expanded} and #{u2_mention_expanded}" })
+
       expectation = expect { service.after_update(comment, user) }
-      expectation.not_to have_enqueued_job(LogActivityJob).with(comment, 'mentioned', user, comment.created_at.to_i, payload: { mentioned_user: u1.id })
-      expectation.to have_enqueued_job(LogActivityJob).with(comment, 'mentioned', user, comment.created_at.to_i, payload: { mentioned_user: u2.id })
+      created_at = comment.created_at.to_i
+      project_id = comment.post.project_id
+      expectation.not_to enqueue_job(LogActivityJob).with(comment, 'mentioned', user, created_at, payload: { mentioned_user: u1.id }, project_id: project_id)
+      expectation.to enqueue_job(LogActivityJob).with(comment, 'mentioned', user, created_at, payload: { mentioned_user: u2.id }, project_id: project_id)
     end
   end
 
@@ -61,7 +69,7 @@ describe SideFxCommentService do
       travel_to Time.now do
         frozen_comment = comment.destroy
         expect { service.after_destroy(frozen_comment, user) }
-          .to have_enqueued_job(LogActivityJob)
+          .to enqueue_job(LogActivityJob)
       end
     end
   end

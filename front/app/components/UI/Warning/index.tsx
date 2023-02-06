@@ -72,12 +72,12 @@ interface Props {
   text?: string | JSX.Element;
   children?: string | JSX.Element;
   icon?: IconNames;
+  className?: string;
 }
 
 export default class Warning extends PureComponent<Props> {
   render() {
-    const className = this.props['className'];
-    const { text, children, icon } = this.props;
+    const { text, children, icon, className } = this.props;
     const adminPage = isPage('admin', location.pathname);
 
     return (

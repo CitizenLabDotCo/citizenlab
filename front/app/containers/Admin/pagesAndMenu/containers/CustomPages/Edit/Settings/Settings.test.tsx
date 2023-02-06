@@ -2,8 +2,6 @@ import React from 'react';
 import { screen, render, fireEvent, waitFor } from 'utils/testUtils/rtl';
 import EditCustomPageSettings from './';
 
-jest.mock('utils/cl-intl');
-jest.mock('hooks/useLocale');
 jest.mock('hooks/useAppConfiguration', () => () => ({
   attributes: { name: 'orgName', host: 'localhost' },
 }));

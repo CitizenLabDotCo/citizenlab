@@ -11,7 +11,8 @@ describe SideFxProjectService do
   describe 'after_create' do
     it "logs a 'created' action when a project is created" do
       expect { service.after_create(project, user) }
-        .to have_enqueued_job(LogActivityJob).with(project, 'created', user, project.created_at.to_i)
+        .to have_enqueued_job(LogActivityJob)
+        .with(project, 'created', user, project.created_at.to_i, project_id: project.id)
     end
 
     it 'calls after_create on SideFxParticipationContextService for a continuous project' do
@@ -41,7 +42,8 @@ describe SideFxProjectService do
     it "logs a 'changed' action job when the project has changed" do
       project.update(title_multiloc: { en: 'changed' })
       expect { service.after_update(project, user) }
-        .to have_enqueued_job(LogActivityJob).with(project, 'changed', user, project.updated_at.to_i)
+        .to have_enqueued_job(LogActivityJob)
+        .with(project, 'changed', user, project.updated_at.to_i, project_id: project.id)
     end
 
     it 'calls before_update on SideFxParticipationContextService for a continuous project' do

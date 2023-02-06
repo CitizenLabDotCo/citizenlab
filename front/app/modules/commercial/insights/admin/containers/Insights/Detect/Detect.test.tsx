@@ -14,8 +14,6 @@ import Detect from './';
 let mockData = categories;
 const viewId = '1';
 
-jest.mock('utils/cl-intl');
-
 jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
   addInsightsCategory: jest.fn(),
 }));
@@ -26,9 +24,6 @@ jest.mock(
     return jest.fn(() => mockData);
   }
 );
-
-jest.mock('hooks/useLocale');
-jest.mock('modules');
 
 const mockLocationData = { pathname: '', query: {} };
 
@@ -47,7 +42,6 @@ jest.mock('utils/cl-router/withRouter', () => {
     },
   };
 });
-jest.mock('utils/cl-router/Link');
 
 describe('Insights Detect Categories', () => {
   it('renders', () => {

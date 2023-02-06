@@ -12,13 +12,15 @@
 #  user_id    :uuid
 #  acted_at   :datetime         not null
 #  created_at :datetime         not null
+#  project_id :uuid
 #
 # Indexes
 #
-#  index_activities_on_acted_at  (acted_at)
-#  index_activities_on_action    (action)
-#  index_activities_on_item      (item_type,item_id)
-#  index_activities_on_user_id   (user_id)
+#  index_activities_on_acted_at    (acted_at)
+#  index_activities_on_action      (action)
+#  index_activities_on_item        (item_type,item_id)
+#  index_activities_on_project_id  (project_id)
+#  index_activities_on_user_id     (user_id)
 #
 # Foreign Keys
 #
