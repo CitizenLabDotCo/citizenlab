@@ -10,7 +10,7 @@ module MultiTenancy
 
       unless Rails.env.test?
         def asset_host
-          AppConfiguration.instance.base_backend_uri
+          AppConfiguration.instance.base_frontend_uri
         rescue ActiveRecord::RecordNotFound
           # If there is no AppConfiguration, fall back on the default carrierwave
           # behavior (S3 in production).

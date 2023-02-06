@@ -1,4 +1,4 @@
-import { randomString } from '../support/commands';
+import { randomString, randomEmail } from '../support/commands';
 
 describe('New continuous project with native survey', () => {
   const projectTitle = randomString();
@@ -204,6 +204,78 @@ describe('Modal shown after survey submission', () => {
 
   it('shows the modal', () => {
     cy.contains('Thank you. Your response has been received.').should('exist');
+  });
+
+  after(() => {
+    cy.apiRemoveProject(projectId);
+  });
+});
+
+describe('Native survey CTA bar', () => {
+  const projectTitle = randomString();
+  const projectDescription = randomString();
+  const projectDescriptionPreview = randomString(30);
+  let projectId: string;
+  let projectSlug: string;
+
+  const firstName = randomString();
+  const lastName = randomString();
+  const email = randomEmail();
+  const password = randomString();
+
+  before(() => {
+    cy.apiSignup(firstName, lastName, email, password)
+      .then(() => {
+        cy.apiLogin(email, password);
+      })
+      .then(() => {
+        cy.apiCreateProject({
+          type: 'continuous',
+          title: projectTitle,
+          descriptionPreview: projectDescriptionPreview,
+          description: projectDescription,
+          publicationStatus: 'published',
+          participationMethod: 'native_survey',
+        }).then((project) => {
+          projectId = project.body.data.id;
+          projectSlug = project.body.data.attributes.slug;
+        });
+      });
+  });
+
+  it('shows the CTA to the user to take the survey when taking survey is open', () => {
+    cy.visit(`/en/projects/${projectSlug}`);
+    cy.acceptCookies();
+    cy.get('#project-survey-button').should('exist');
+  });
+
+  it('does not show the CTA to take the survey when the user already taken the survey', () => {
+    cy.visit(`/en/projects/${projectSlug}`);
+    cy.acceptCookies();
+    cy.setAdminLoginCookie();
+
+    cy.visit(`admin/projects/${projectId}/permissions`);
+    cy.get('#e2e-granular-permissions').within(() => {
+      cy.get('[type="radio"]').eq(1).check({ force: true });
+    });
+
+    cy.logout();
+    cy.setLoginCookie(email, password);
+
+    // Take the survey
+    cy.visit(`/projects/${projectSlug}`);
+    cy.get('#e2e-cta-button')
+      .find('button')
+      .should('not.have.attr', 'disabled');
+    cy.get('#e2e-cta-button').find('button').click({ force: true });
+    cy.get('[data-cy="e2e-next-page"]').click();
+
+    // Save survey response
+
+    cy.get('[data-cy="e2e-submit-form"]').click();
+
+    cy.visit(`/en/projects/${projectSlug}`);
+    cy.get('#project-survey-button').should('not.exist');
   });
 
   after(() => {

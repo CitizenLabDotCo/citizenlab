@@ -38,5 +38,9 @@ module Polls
     def multiple_options?
       question_type == 'multiple_options'
     end
+
+    def project_id
+      participation_context.try(:project_id)
+    end
   end
 end

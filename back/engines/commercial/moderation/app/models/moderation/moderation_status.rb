@@ -23,5 +23,9 @@ module Moderation
 
     validates :moderatable, presence: true
     validates :status, inclusion: { in: MODERATION_STATUSES }
+
+    def project_id
+      moderatable.try(:project_id)
+    end
   end
 end

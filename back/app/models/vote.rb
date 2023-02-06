@@ -50,4 +50,8 @@ class Vote < ApplicationRecord
   def down?
     mode == 'down'
   end
+
+  def project_id
+    votable.try(:project_id)
+  end
 end

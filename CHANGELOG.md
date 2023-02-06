@@ -1,5 +1,31 @@
 # Changelog
 
+## 2023-02-03
+
+### Added
+
+- [CL-2534] Image dimensions i3: improved project/folder card images
+
+## 2023-02-01
+
+### Fixed
+
+- [CL-1560] Fix From scratch label bug when creating a project
+
+## 2023-01-31
+
+### Added
+
+- [CL-1703] Add default CTA banner on project page
+- [CL-2727] Add user id to impact tracking for authenticated users
+
+## 2023-01-30
+
+### Fixed
+
+- [CL-2651] Fix survey top bar issue on mobile
+- [CL-2682] Show Content Warnings tab in activity manager for all platforms
+
 ## 2023-01-26 (2)
 
 ### Fixed

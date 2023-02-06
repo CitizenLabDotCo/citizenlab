@@ -1,4 +1,4 @@
-import { randomEmail, randomString } from '../../../support/commands';
+import { randomString } from '../../../support/commands';
 
 describe('Admin: update Hero Banner content', () => {
   // header content

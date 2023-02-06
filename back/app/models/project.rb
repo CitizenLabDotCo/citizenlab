@@ -69,6 +69,8 @@ class Project < ApplicationRecord
 
   has_many :phases, -> { order(:start_at) }, dependent: :destroy
   has_many :events, -> { order(:start_at) }, dependent: :destroy
+  # project_images should always store one record, but in practice it's different (maybe because of a bug)
+  # https://citizenlabco.slack.com/archives/C015M14HYSF/p1674228018666059
   has_many :project_images, -> { order(:ordering) }, dependent: :destroy
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
@@ -141,6 +143,8 @@ class Project < ApplicationRecord
     project_ids = GroupsProject.where(projects: self).where(groups: user_groups).select(:project_id).distinct
     where(id: project_ids)
   }
+
+  alias project_id id
 
   class << self
     def search_ids_by_all_including_patches(term)

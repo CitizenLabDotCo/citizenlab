@@ -209,4 +209,4 @@ ar:
       title: 'انتهى الاستبيان'
       description: "يرجى إرسال إجاباتك من خلال تحديد \"إرسال الاستبيان\" أدناه."
   project_copy:
-    title_suffix: 'نسخ'
+    title_suffix: 'نسخة'

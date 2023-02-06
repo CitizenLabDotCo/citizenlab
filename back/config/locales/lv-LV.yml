@@ -206,7 +206,7 @@ lv:
       option1: '1. variants'
       option2: '2. variants'
     survey_end_page:
-      title: 'Survey end'
-      description: "Please submit your answers by selecting 'Submit survey' below."
+      title: 'Aptaujas beigas'
+      description: "Lūdzu, iesniedziet savas atbildes, izvēloties \"Iesniegt aptauju\"."
   project_copy:
-    title_suffix: 'Copy'
+    title_suffix: 'Kopija'
