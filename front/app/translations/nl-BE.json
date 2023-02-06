@@ -554,7 +554,7 @@
   "app.components.form.ErrorDisplay.submitSurvey": "Enquête indienen",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Begin met typen om te zoeken op email of naam...",
   "app.components.form.blockedVerified": "Je kunt dit veld niet bewerken omdat het bevestigde informatie bevat",
-  "app.components.form.controls.adminFieldTooltip": "Veld alleen zichtbaar voor admins",
+  "app.components.form.controls.adminFieldTooltip": "Veld enkel zichtbaar voor admins",
   "app.components.form.controls.selectMany": "*Kies er zo veel als je wilt",
   "app.components.form.error": "Fout",
   "app.components.form.locationGoogleUnavailable": "Kan locatieveld geleverd door google maps niet laden.",
