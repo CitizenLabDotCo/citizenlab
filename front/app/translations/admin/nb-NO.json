@@ -1229,7 +1229,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.shortAnswer": "Kort svar",
   "app.containers.AdminPage.ProjectEdit.survey.singleChoice": "Enkeltvalg",
   "app.containers.AdminPage.ProjectEdit.survey.successMessage": "Spørreundersøkelsen er lagret",
-  "app.containers.AdminPage.ProjectEdit.survey.surveyDescription": "Create and edit the questions in this projects's survey.",
+  "app.containers.AdminPage.ProjectEdit.survey.surveyDescription": "Opprett og rediger spørsmålene i spørreundersøkelsen for dette prosjektet, og se resultatene.",
   "app.containers.AdminPage.ProjectEdit.survey.surveyEnd": "Slutt på spørreundersøkelse",
   "app.containers.AdminPage.ProjectEdit.survey.surveyResults": "Resultater for spørreundersøkelse",
   "app.containers.AdminPage.ProjectEdit.survey.surveySupportArticle": "https://support.citizenlab.co/en/articles/6673873-creating-an-in-platform-survey",
