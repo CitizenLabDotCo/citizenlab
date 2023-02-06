@@ -161,26 +161,26 @@ export default defineMessages({
     defaultMessage: 'Header image',
   },
   projectHeaderImageTooltip: {
-    id: 'app.components.Admin.ImageCropper.projectHeaderImageTooltip',
+    id: 'app.containers.AdminPage.ProjectEdit.projectHeaderImageTooltip',
     defaultMessage: `
-    This image is shown at the top of the projecet page.
+    This image is shown at the top of the project page.
 
     For more information on recommended image resolutions, {supportPageLink}.`,
   },
   projectCardImageTooltip: {
-    id: 'app.components.Admin.ImageCropper.projectCardImageTooltip',
+    id: 'app.containers.AdminPage.ProjectEdit.projectCardImageTooltip',
     defaultMessage: `
     This image is part of the project card; the card that summarizes the project and is shown on the homepage for example.
 
     For more information on recommended image resolutions, {supportPageLink}.`,
   },
   imageSupportPageURL: {
-    id: 'app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL',
+    id: 'app.containers.AdminPage.ProjectEdit.imageSupportPageURL',
     defaultMessage:
       'https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
   },
   supportPageLinkText: {
-    id: 'app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText',
+    id: 'app.containers.AdminPage.ProjectEdit.supportPageLinkText',
     defaultMessage: 'visit our support center',
   },
 });
