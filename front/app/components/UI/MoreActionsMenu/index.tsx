@@ -141,7 +141,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
   };
 
   handleListItemOnClick =
-    (handler: () => void) => async (event: React.MouseEvent) => {
+    (handler: () => Promise<any> | void) => async (event: React.MouseEvent) => {
       event.preventDefault();
       await handler();
       this.hide();

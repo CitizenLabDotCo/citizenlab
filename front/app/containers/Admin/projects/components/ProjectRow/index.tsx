@@ -171,7 +171,6 @@ const ProjectRow = ({
                   {
                     handler: async () => {
                       if (
-                        publication &&
                         window.confirm(
                           formatMessage(messages.deleteProjectConfirmation)
                         )
