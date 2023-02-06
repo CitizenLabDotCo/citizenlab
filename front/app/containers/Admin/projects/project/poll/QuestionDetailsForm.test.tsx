@@ -4,7 +4,6 @@ import { shallow } from 'enzyme';
 
 import { mockQuestion } from 'services/__mocks__/pollQuestions';
 
-jest.mock('utils/cl-intl');
 const Intl = require('utils/cl-intl/__mocks__/');
 const { intl } = Intl;
 

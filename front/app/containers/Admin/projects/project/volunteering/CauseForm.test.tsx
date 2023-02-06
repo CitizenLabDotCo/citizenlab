@@ -16,8 +16,6 @@ const defaultProps = {
   },
 };
 
-jest.mock('utils/cl-intl');
-jest.mock('hooks/useLocale');
 jest.mock('hooks/useAppConfigurationLocales', () =>
   jest.fn(() => ['en', 'nl-NL'])
 );

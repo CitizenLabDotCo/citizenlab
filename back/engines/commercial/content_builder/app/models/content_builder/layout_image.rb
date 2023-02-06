@@ -20,10 +20,14 @@ module ContentBuilder
 
     before_destroy :remove_image!
 
+    def self.generate_code
+      SecureRandom.uuid
+    end
+
     private
 
     def generate_code
-      self.code = SecureRandom.uuid
+      self.code = self.class.generate_code unless code
     end
   end
 end
