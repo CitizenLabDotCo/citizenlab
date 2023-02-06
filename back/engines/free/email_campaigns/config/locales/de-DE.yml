@@ -427,7 +427,7 @@ de:
       cta_view_phase: 'Neue Phase einrichten'
       event_description: 'Das Projekt ''%{projectName}'' befindet sich bald in einer neuen Phase. Stellen Sie sicher, dass für diese Phase alles vorbereitet ist: Ist die Beschreibung zutreffend? Werden zurückgehaltene Ideen in diese Phase übernommen? Möchten Sie die Bürger:innen über die Details dieser Phase mit einer gezielten E-Mail-Kampagne informieren?'
       main_header: '%{firstName}, ein Projekt befindet sich bald in einer neuen Phase'
-      subtitle: 'Über ''%{projectName}'''
+      subtitle: 'About ''%{projectName}'''
       new_phase: 'Das Projekt geht in die Phase "%{phaseTitle}"'
       subject: 'Richten Sie alles für die neue Phase von %{projectName} ein'
       preheader: 'Bald beginnt eine neue Phase für %{projectName}'
