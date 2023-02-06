@@ -168,7 +168,7 @@
     "@types/node": "^17.0.23",
     "@types/node-uuid": "0.0.29",
     "@types/qs": "6.9.7",
-    "@types/quill": "2.0.9",
+    "@types/quill": "2.0.10",
     "@types/react": "17.x",
     "@types/react-dates": "21.8.3",
     "@types/react-dom": "^17.0.11",
