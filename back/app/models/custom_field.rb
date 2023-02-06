@@ -192,8 +192,13 @@ class CustomField < ApplicationRecord
   end
 
   def set_default_answer_visible_to
-    # Do we need to set sections to public by default?
-    self.answer_visible_to = VISIBLE_TO_ADMINS if answer_visible_to.nil?
+    if answer_visible_to.nil?
+      self.answer_visible_to = if built_in? || page_or_section?
+        VISIBLE_TO_PUBLIC
+      else
+        VISIBLE_TO_ADMINS
+      end
+    end
   end
 
   def generate_key
