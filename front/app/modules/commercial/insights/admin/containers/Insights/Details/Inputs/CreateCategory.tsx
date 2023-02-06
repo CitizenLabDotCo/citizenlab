@@ -18,13 +18,12 @@ import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
 // typings
-import { CLErrors } from 'typings';
 
 // services
 import {
-  addInsightsCategory,
+  useAddCategory,
   IInsightsCategoryData,
-} from 'modules/commercial/insights/services/insightsCategories';
+} from 'modules/commercial/insights/api/categories';
 
 type CreateCategoryProps = {
   closeCreateModal: () => void;
@@ -53,31 +52,30 @@ const CreateCategory = ({
   intl: { formatMessage },
   params: { viewId },
 }: CreateCategoryProps) => {
-  const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<CLErrors | null>(null);
+  const {
+    mutate: addCategory,
+    isLoading,
+    error,
+    reset,
+  } = useAddCategory({
+    onSuccess: closeCreateModal,
+  });
 
   const [name, setName] = useState<string | null>(null);
   const onChangeName = (value: string) => {
     setName(value);
-    setErrors(null);
+    reset();
   };
 
   const categoryIds = categories.map((category) => category.id);
 
-  const handleCategorySubmit = async () => {
+  const handleCategorySubmit = () => {
     if (name) {
-      setLoading(true);
-      try {
-        await addInsightsCategory({
-          insightsViewId: viewId,
-          name,
-          inputs: { categories: categoryIds, search, keywords },
-        });
-        closeCreateModal();
-      } catch (errors) {
-        setErrors(errors.json.errors);
-      }
-      setLoading(false);
+      addCategory({
+        viewId,
+        name,
+        inputs: { categories: categoryIds, search, keywords },
+      });
     }
   };
 
@@ -140,14 +138,14 @@ const CreateCategory = ({
             onChange={onChangeName}
             label={formatMessage(messages.createCategoryInputLabel)}
           />
-          {errors && (
-            <Error apiErrors={errors['name']} fieldName="category_name" />
+          {error && (
+            <Error apiErrors={error.errors['name']} fieldName="category_name" />
           )}
         </SectionField>
 
         <Box display="flex" justifyContent="center">
           <Button
-            processing={loading}
+            processing={isLoading}
             disabled={!name}
             onClick={handleCategorySubmit}
             bgColor={colors.primary}

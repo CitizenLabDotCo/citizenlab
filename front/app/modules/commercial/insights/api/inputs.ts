@@ -10,8 +10,8 @@ import { getPageNumberFromUrl } from 'utils/paginationUtils';
 export const inputKeys = {
   all: () => [{ type: 'input' }] as const,
   lists: () => [{ ...inputKeys.all()[0], entity: 'list' }] as const,
-  list: (filters: QueryParameters) =>
-    [{ ...inputKeys.all()[0], entity: 'list', ...filters }] as const,
+  list: (viewId: string, filters?: QueryParameters) =>
+    [{ ...inputKeys.all()[0], entity: 'list', viewId, ...filters }] as const,
   infiniteList: (filters: InfiniteQueryParameters) =>
     [
       {
@@ -21,11 +21,12 @@ export const inputKeys = {
         ...filters,
       },
     ] as const,
-  details: () => [{ ...inputKeys.all()[0], entity: 'detail' }] as const,
-  detail: (id: string) =>
+  details: (viewId: string) =>
+    [{ ...inputKeys.all()[0], viewId, entity: 'detail' }] as const,
+  detail: (viewId: string, id: string) =>
     [
       {
-        ...inputKeys.details()[0],
+        ...inputKeys.details(viewId)[0],
         id,
       },
     ] as const,
@@ -96,12 +97,12 @@ export const useInputs = (viewId: string, queryParams: QueryParameters) => {
     pageNumber: queryParams.pageNumber + 1,
   };
   queryClient.prefetchQuery({
-    queryKey: inputKeys.list(prefetchParams),
+    queryKey: inputKeys.list(viewId, prefetchParams),
     queryFn: () => fetchInputs(viewId, prefetchParams),
   });
 
   return useQuery<IInsightsInputs, CLErrors, IInsightsInputs, InputKeys>({
-    queryKey: inputKeys.list(queryParams),
+    queryKey: inputKeys.list(viewId, queryParams),
     queryFn: () => fetchInputs(viewId, queryParams),
   });
 };
@@ -158,7 +159,7 @@ const fetchInput = (viewId: string, id: string) =>
 
 export const useInput = (viewId: string, id: string) => {
   return useQuery<IInsightsInput, CLErrors, IInsightsInput, InputKeys>({
-    queryKey: inputKeys.detail(id),
+    queryKey: inputKeys.detail(viewId, id),
     queryFn: () => fetchInput(viewId, id),
   });
 };

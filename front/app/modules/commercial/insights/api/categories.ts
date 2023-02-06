@@ -59,34 +59,113 @@ export const useCategories = (viewId: string) => {
   });
 };
 
-// import { API_PATH } from 'containers/App/constants';
-// import streams, { IStreamParams } from 'utils/streams';
-// import { IRelationship } from 'typings';
+const fetchCategory = (viewId: string, id: string) =>
+  fetcher<IInsightsCategory>({
+    path: `/insights/views/${viewId}/categories/${id}`,
+    action: 'get',
+  });
 
-// const getInsightsCategoriesEndpoint = (viewId: string) =>
-//   `insights/views/${viewId}/categories`;
+export const useCategory = (viewId: string, id: string) => {
+  return useQuery<IInsightsCategory, CLErrors, IInsightsCategory, CategoryKeys>(
+    {
+      queryKey: categoryKeys.detail(id),
+      queryFn: () => fetchCategory(viewId, id),
+    }
+  );
+};
 
-// export function insightsCategoriesStream(
-//   insightsViewId: string,
-//   streamParams: IStreamParams | null = null
-// ) {
-//   return streams.get<IInsightsCategories>({
-//     apiEndpoint: `${API_PATH}/${getInsightsCategoriesEndpoint(insightsViewId)}`,
-//     ...streamParams,
+interface AddInsightsCategoryParams {
+  viewId: string;
+  name: string;
+  inputs?: {
+    keywords?: string[];
+    categories?: string[];
+    search?: string;
+  };
+}
+
+const addCategory = async ({
+  viewId,
+  ...requestBody
+}: AddInsightsCategoryParams) =>
+  fetcher<IInsightsCategory>({
+    path: `/insights/views/${viewId}/categories`,
+    action: 'create',
+    body: requestBody,
+  });
+
+export const useAddCategory = ({ onSuccess }: { onSuccess?: () => void }) => {
+  const queryClient = useQueryClient();
+  return useMutation<IInsightsCategory, CLErrors, AddInsightsCategoryParams>({
+    mutationFn: addCategory,
+    onSuccess: (_data) => {
+      queryClient.invalidateQueries({ queryKey: categoryKeys.lists() });
+      onSuccess && onSuccess();
+    },
+  });
+};
+
+// export async function addInsightsCategory({
+//   insightsViewId,
+//   name,
+//   inputs,
+// }: AddInsightsCategoryParams) {
+//   const response = await streams.add<IInsightsCategory>(
+//     `${API_PATH}/${getInsightsCategoriesEndpoint(insightsViewId)}`,
+//     {
+//       category: { name, inputs },
+//     }
+//   );
+//   streams.fetchAllWith({
+//     partialApiEndpoint: [
+//       `insights/views/${insightsViewId}/inputs`,
+//       `insights/views/${insightsViewId}/categories`,
+//     ],
 //   });
+//   return response;
 // }
 
-// export function insightsCategoryStream(
+// export function updateInsightsCategory(
 //   insightsViewId: string,
 //   insightsCategoryId: string,
-//   streamParams: IStreamParams | null = null
+//   name: string
 // ) {
-//   return streams.get<IInsightsCategory>({
-//     apiEndpoint: `${API_PATH}/${getInsightsCategoriesEndpoint(
+//   return streams.update<IInsightsCategories>(
+//     `${API_PATH}/${getInsightsCategoriesEndpoint(
 //       insightsViewId
 //     )}/${insightsCategoryId}`,
-//     ...streamParams,
+//     insightsCategoryId,
+//     { category: { name } }
+//   );
+// }
+
+// export async function deleteInsightsCategories(insightsViewId: string) {
+//   const response = await streams.delete(
+//     `${API_PATH}/${getInsightsCategoriesEndpoint(insightsViewId)}`,
+//     ''
+//   );
+
+//   streams.fetchAllWith({
+//     partialApiEndpoint: [
+//       `insights/views/${insightsViewId}/inputs`,
+//       `insights/views/${insightsViewId}/categories`,
+//       `insights/views/${insightsViewId}/stats/inputs_count`,
+//     ],
 //   });
+
+//   return response;
+// }
+
+// export function deleteInsightsCategory(
+//   insightsViewId: string,
+//   insightsCategoryId: string
+// ) {
+//   return streams.delete(
+//     `${API_PATH}/${getInsightsCategoriesEndpoint(
+//       insightsViewId
+//     )}/${insightsCategoryId}`,
+//     insightsCategoryId
+//   );
 // }
 
 const deleteInputCategory = ({
@@ -112,7 +191,7 @@ export const useDeleteInputCategory = () => {
       queryClient.invalidateQueries({ queryKey: inputKeys.lists() });
       queryClient.invalidateQueries({ queryKey: statsKeys.details() });
       queryClient.invalidateQueries({
-        queryKey: inputKeys.detail(variables.viewId),
+        queryKey: inputKeys.detail(variables.viewId, variables.inputId),
       });
     },
   });

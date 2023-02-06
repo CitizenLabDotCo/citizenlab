@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-import useCategory from 'modules/commercial/insights/hooks/useInsightsCategory';
+import { useCategory } from 'modules/commercial/insights/api/categories';
 import Tag, {
   TagProps,
 } from 'modules/commercial/insights/admin/components/Tag';
@@ -29,7 +29,7 @@ const Category = ({
   withAction = true,
 }: CategoryProps) => {
   const [loading, setLoading] = useState(false);
-  const category = useCategory(viewId, id);
+  const { data: category } = useCategory(viewId, id);
 
   if (isNilOrError(category)) {
     return null;
@@ -50,7 +50,7 @@ const Category = ({
   return (
     <Tag
       variant={variant === 'suggested' ? 'default' : 'primary'}
-      label={category.attributes.name}
+      label={category.data.attributes.name}
       onIconClick={withAction ? handleCategoryAction : undefined}
       loading={loading}
       size={size}

@@ -88,5 +88,6 @@ export const useNetwork = (viewId: string) => {
     queryKey: networkKeys.network(viewId),
     queryFn: () => fetchNetwork(viewId),
     enabled: tasks && tasks.data.length === 0,
+    retry: false,
   });
 };
