@@ -1,5 +1,5 @@
 // Libraries
-import React, { PureComponent } from 'react';
+import React, { useState } from 'react';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // Components
@@ -119,98 +119,88 @@ export interface Props {
   id?: string;
 }
 
-interface State {
-  visible: boolean;
-}
+const MoreActionsMenu = (props: Props) => {
+  const [visible, setVisible] = useState(false);
 
-export default class MoreActionsMenu extends PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      visible: false,
-    };
-  }
-
-  hide = () => {
-    this.setState({ visible: false });
+  const hide = () => {
+    setVisible(false);
   };
 
-  toggleMenu = (event: React.MouseEvent) => {
+  const toggleMenu = (event: React.MouseEvent) => {
     event.preventDefault();
-    this.setState(({ visible }) => ({ visible: !visible }));
+    setVisible((current) => !current);
   };
 
-  handleListItemOnClick =
+  const handleListItemOnClick =
     (handler: () => Promise<any> | void) => async (event: React.MouseEvent) => {
       event.preventDefault();
       await handler();
-      this.hide();
+      hide();
     };
 
-  render() {
-    const {
-      actions,
-      showLabel = true,
-      color,
-      labelAndTitle = <FormattedMessage {...messages.showMoreActions} />,
-      className,
-      id,
-    } = this.props;
-    const { visible } = this.state;
+  const {
+    actions,
+    showLabel = true,
+    color,
+    labelAndTitle = <FormattedMessage {...messages.showMoreActions} />,
+    className,
+    id,
+  } = props;
 
-    if (!actions || actions.length === 0) {
-      return null;
-    }
-
-    return (
-      <Container className={className || ''}>
-        <Tippy
-          placement="bottom"
-          interactive={true}
-          duration={[200, 0]}
-          visible={visible}
-          onClickOutside={this.hide}
-          content={
-            <List className="e2e-more-actions-list">
-              {actions.map((action, index) => {
-                const { handler, label, icon, name } = action;
-
-                return (
-                  <ListItem
-                    key={index}
-                    onMouseDown={removeFocusAfterMouseClick}
-                    onClick={this.handleListItemOnClick(handler)}
-                    className={name ? `e2e-action-${name}` : undefined}
-                  >
-                    {label}
-                    {icon && (
-                      <IconWrapper>
-                        <Icon name={icon} fill="white" />
-                      </IconWrapper>
-                    )}
-                  </ListItem>
-                );
-              })}
-            </List>
-          }
-        >
-          <MoreOptionsButton
-            onMouseDown={removeFocusAfterMouseClick}
-            onClick={this.toggleMenu}
-            aria-expanded={visible}
-            id={id}
-            className="e2e-more-actions"
-          >
-            <MoreOptionsIcon
-              title={labelAndTitle}
-              name="dots-horizontal"
-              color={color}
-              ariaHidden={!showLabel}
-            />
-            {showLabel && <MoreOptionsLabel>{labelAndTitle}</MoreOptionsLabel>}
-          </MoreOptionsButton>
-        </Tippy>
-      </Container>
-    );
+  if (!actions || actions.length === 0) {
+    return null;
   }
-}
+
+  return (
+    <Container className={className || ''}>
+      <Tippy
+        placement="bottom"
+        interactive={true}
+        duration={[200, 0]}
+        visible={visible}
+        onClickOutside={hide}
+        content={
+          <List className="e2e-more-actions-list">
+            {actions.map((action, index) => {
+              const { handler, label, icon, name } = action;
+
+              return (
+                <ListItem
+                  key={index}
+                  onMouseDown={removeFocusAfterMouseClick}
+                  onClick={handleListItemOnClick(handler)}
+                  className={name ? `e2e-action-${name}` : undefined}
+                >
+                  {label}
+                  {icon && (
+                    <IconWrapper>
+                      <Icon name={icon} fill="white" />
+                    </IconWrapper>
+                  )}
+                </ListItem>
+              );
+            })}
+          </List>
+        }
+      >
+        <MoreOptionsButton
+          onMouseDown={removeFocusAfterMouseClick}
+          onClick={toggleMenu}
+          aria-expanded={visible}
+          id={id}
+          className="e2e-more-actions"
+        >
+          <MoreOptionsIcon
+            title={labelAndTitle}
+            name="dots-horizontal"
+            color={color}
+            ariaHidden={!showLabel}
+          />
+          {showLabel && <MoreOptionsLabel>{labelAndTitle}</MoreOptionsLabel>}
+        </MoreOptionsButton>
+      </Tippy>
+    </Container>
+  );
+};
+
+export default MoreActionsMenu;
