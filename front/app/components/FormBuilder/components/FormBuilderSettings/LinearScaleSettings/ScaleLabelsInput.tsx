@@ -89,6 +89,7 @@ const ScaleLabelsInput = ({
                       <StyledLabel>
                         {formatMessage(messages.labels)}
                         <IconTooltip
+                          maxTooltipWidth={250}
                           content={formatMessage(messages.labelsTooltipContent)}
                         />
                       </StyledLabel>
