@@ -8,7 +8,7 @@ import Button from 'components/UI/Button';
 
 // Hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
+import { useCategories } from 'modules/commercial/insights/api/categories';
 
 // Services
 import {
@@ -115,7 +115,7 @@ const Actions = ({
   intl: { formatMessage },
 }: Props & WrappedComponentProps & WithRouterProps) => {
   const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
-  const categories = useInsightsCategories(viewId);
+  const { data: categories } = useCategories(viewId);
   const selectedInputsIds = selectedInputs.map((input) => input.id);
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const toggleDropdown = () => {
@@ -180,7 +180,7 @@ const Actions = ({
     return null;
   }
 
-  const selectedCategory = categories?.find(
+  const selectedCategory = categories?.data.find(
     (category) => category.id === query.category
   );
 
@@ -208,7 +208,7 @@ const Actions = ({
     }
   };
 
-  const otherCategories = categories.filter(
+  const otherCategories = categories.data.filter(
     (category) => category.id !== selectedCategory?.id
   );
 

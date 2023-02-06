@@ -19,7 +19,7 @@ import Navigation, {
 } from 'modules/commercial/insights/admin/components/Navigation';
 
 // hooks
-import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
+import { useCategories } from 'modules/commercial/insights/api/categories';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { useInput } from 'modules/commercial/insights/api/inputs';
 // styles
@@ -124,7 +124,7 @@ const InputDetails = ({
   const [loading, setLoading] = useState(false);
 
   const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
-  const categories = useInsightsCategories(viewId);
+  const { data: categories } = useCategories(viewId);
   const { data: previewedInput } = useInput(viewId, previewedInputId);
 
   // Loading state
@@ -142,7 +142,7 @@ const InputDetails = ({
 
   const ideaId = previewedInput.data.relationships?.source.data.id;
 
-  const options = categories
+  const options = categories.data
     // Filter out already selected categories
     .filter((category) => {
       const selectedCategoriesIds = previewedInput.data.relationships

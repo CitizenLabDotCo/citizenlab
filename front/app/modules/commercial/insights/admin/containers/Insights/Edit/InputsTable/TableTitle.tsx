@@ -6,7 +6,7 @@ import messages from '../../messages';
 import { WrappedComponentProps } from 'react-intl';
 
 // hooks
-import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
+import { useCategories } from 'modules/commercial/insights/api/categories';
 
 // services
 import { deleteInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
@@ -51,7 +51,7 @@ const TableTitle = ({
   params: { viewId },
   location: { query, pathname },
 }: WrappedComponentProps & WithRouterProps) => {
-  const categories = useInsightsCategories(viewId);
+  const { data: categories } = useCategories(viewId);
 
   const [renameCategoryModalOpened, setRenameCategoryModalOpened] =
     useState(false);
@@ -93,7 +93,7 @@ const TableTitle = ({
     }
   };
 
-  const selectedCategory = categories?.find(
+  const selectedCategory = categories?.data.find(
     (category) => category.id === query.category
   );
 

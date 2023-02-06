@@ -38,7 +38,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
 
 // hooks
-import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
+import { useCategories } from 'modules/commercial/insights/api/categories';
 import { useStat } from 'modules/commercial/insights/api/stats';
 
 const InputsContainer = styled.div`
@@ -81,7 +81,7 @@ const Inputs = ({
   loading,
 }: InputsProps) => {
   const [createModalOpened, setCreateModalOpened] = useState(false);
-  const categories = useInsightsCategories(viewId);
+  const { data: categories } = useCategories(viewId);
 
   const queryCategories: string[] = query.categories
     ? typeof query.categories === 'string'
@@ -96,7 +96,9 @@ const Inputs = ({
     : [];
 
   const selectedCategories = !isNilOrError(categories)
-    ? categories.filter((category) => queryCategories.includes(category.id))
+    ? categories.data.filter((category) =>
+        queryCategories.includes(category.id)
+      )
     : [];
 
   const { data: inputsCount } = useStat(viewId, {

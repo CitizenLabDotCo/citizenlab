@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 
-const statsKeys = {
+export const statsKeys = {
   all: () => [{ type: 'inputs_stat' }] as const,
   details: () => [{ ...statsKeys.all()[0], entity: 'detail' }] as const,
   detail: (viewId: string, filters: QueryParameters) =>

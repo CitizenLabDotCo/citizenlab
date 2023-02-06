@@ -1,6 +1,8 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { CLErrors, IRelationship } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { inputKeys } from './inputs';
+import { statsKeys } from './stats';
 
 const categoryKeys = {
   all: () => [{ type: 'category' }] as const,
@@ -16,6 +18,76 @@ const categoryKeys = {
 };
 
 type CategoryKeys = ReturnType<typeof categoryKeys[keyof typeof categoryKeys]>;
+
+export interface IInsightsCategoryData {
+  id: string;
+  type: string;
+  attributes: {
+    name: string;
+    inputs_count: number;
+  };
+  relationships?: {
+    view: {
+      data: IRelationship;
+    };
+  };
+}
+
+export interface IInsightsCategory {
+  data: IInsightsCategoryData;
+}
+
+export interface IInsightsCategories {
+  data: IInsightsCategoryData[];
+}
+
+const fetchCategories = (viewId: string) =>
+  fetcher<IInsightsCategories>({
+    path: `/insights/views/${viewId}/categories`,
+    action: 'get',
+  });
+
+export const useCategories = (viewId: string) => {
+  return useQuery<
+    IInsightsCategories,
+    CLErrors,
+    IInsightsCategories,
+    CategoryKeys
+  >({
+    queryKey: categoryKeys.lists(),
+    queryFn: () => fetchCategories(viewId),
+  });
+};
+
+// import { API_PATH } from 'containers/App/constants';
+// import streams, { IStreamParams } from 'utils/streams';
+// import { IRelationship } from 'typings';
+
+// const getInsightsCategoriesEndpoint = (viewId: string) =>
+//   `insights/views/${viewId}/categories`;
+
+// export function insightsCategoriesStream(
+//   insightsViewId: string,
+//   streamParams: IStreamParams | null = null
+// ) {
+//   return streams.get<IInsightsCategories>({
+//     apiEndpoint: `${API_PATH}/${getInsightsCategoriesEndpoint(insightsViewId)}`,
+//     ...streamParams,
+//   });
+// }
+
+// export function insightsCategoryStream(
+//   insightsViewId: string,
+//   insightsCategoryId: string,
+//   streamParams: IStreamParams | null = null
+// ) {
+//   return streams.get<IInsightsCategory>({
+//     apiEndpoint: `${API_PATH}/${getInsightsCategoriesEndpoint(
+//       insightsViewId
+//     )}/${insightsCategoryId}`,
+//     ...streamParams,
+//   });
+// }
 
 const deleteInputCategory = ({
   viewId,
@@ -38,6 +110,7 @@ export const useDeleteInputCategory = () => {
     mutationFn: deleteInputCategory,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: inputKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: statsKeys.details() });
       queryClient.invalidateQueries({
         queryKey: inputKeys.detail(variables.viewId),
       });

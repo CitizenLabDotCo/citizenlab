@@ -29,7 +29,7 @@ import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputs
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
+import { useCategories } from 'modules/commercial/insights/api/categories';
 import useDetectedCategories from 'modules/commercial/insights/hooks/useInsightsDetectedCategories';
 import { useStat } from 'modules/commercial/insights/api/stats';
 
@@ -145,7 +145,7 @@ const Categories = ({
   });
 
   const detectedCategories = useDetectedCategories(viewId);
-  const categories = useInsightsCategories(viewId);
+  const { data: categories } = useCategories(viewId);
 
   const [name, setName] = useState<string | null>();
 
@@ -423,7 +423,7 @@ const Categories = ({
             {formatMessage(messages.detectCategories)}
           </Button>
         )}
-      {categories.length === 0 ? (
+      {categories.data.length === 0 ? (
         <CategoryInfoBox data-testid="insightsNoCategories">
           <p>
             <FormattedMessage
@@ -435,7 +435,7 @@ const Categories = ({
           </p>
         </CategoryInfoBox>
       ) : (
-        categories.map((category) => (
+        categories.data.map((category) => (
           <div data-testid="insightsCategory" key={category.id}>
             <CategoryButtonWithIcon
               bgColor={
