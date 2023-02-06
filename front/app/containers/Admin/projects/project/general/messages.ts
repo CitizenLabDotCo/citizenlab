@@ -156,4 +156,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipLink',
     defaultMessage: 'here',
   },
+  headerImageInputLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.headerImageInputLabel',
+    defaultMessage: 'Header image',
+  },
 });

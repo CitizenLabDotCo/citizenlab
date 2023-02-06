@@ -20,6 +20,7 @@ import {
   SectionTitle,
   SectionDescription,
   SubSectionTitle,
+  SectionField,
 } from 'components/admin/Section';
 import ParticipationContext, {
   IParticipationContextConfig,
@@ -570,10 +571,17 @@ const AdminProjectsProjectGeneral = () => {
           />
         )}
 
-        <HeaderBgUploader
-          imageUrl={project?.attributes.header_bg.large}
-          onImageChange={handleHeaderBgChange}
-        />
+        <SectionField>
+          <SubSectionTitle>
+            <FormattedMessage {...messages.headerImageInputLabel} />
+            <ImageInfoTooltip />
+          </SubSectionTitle>
+          <HeaderBgUploader
+            imageUrl={project?.attributes.header_bg.large}
+            onImageChange={handleHeaderBgChange}
+          />
+        </SectionField>
+
         <StyledSectionField>
           <SubSectionTitle>
             <FormattedMessage {...messages.projectCardImageLabelText} />

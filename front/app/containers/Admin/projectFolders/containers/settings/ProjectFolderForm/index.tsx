@@ -516,6 +516,10 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         </SectionField>
 
         <SectionField>
+          <SubSectionTitle>
+            <FormattedMessage {...messages.headerImageInputLabel} />
+            <ImageInfoTooltip />
+          </SubSectionTitle>
           <HeaderBgUploader
             imageUrl={projectFolder?.attributes.header_bg?.large}
             onImageChange={handleHeaderBgChange}
