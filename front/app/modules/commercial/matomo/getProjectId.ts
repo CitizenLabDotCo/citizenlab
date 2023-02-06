@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 
 export const getProjectId = async (path: string) => {
   if (isProjectPage(path)) {
+    // We are using an id in the admin and a slug for citizens
     if (isOnAdminProjectPage(path)) {
       return extractProjectIdOrSlug(path);
     } else {
@@ -52,7 +53,7 @@ const isProjectPage = (path: string) => {
   return projectPageDetectRegex.test(path);
 };
 
-const isOnAdminProjectPage = (path: string) => {
+export const isOnAdminProjectPage = (path: string) => {
   return adminProjectPageDetectRegex.test(path);
 };
 
