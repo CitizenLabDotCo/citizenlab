@@ -9,8 +9,9 @@ import Tippy from '@tippyjs/react';
 // Styling
 import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
-import { FormattedMessage } from 'react-intl';
 import messages from './messages';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 const Container = styled.div`
   position: relative;
