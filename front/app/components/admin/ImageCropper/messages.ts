@@ -15,8 +15,4 @@ export default defineMessages({
     defaultMessage:
       'https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
   },
-  imageSupportPageText: {
-    id: 'app.components.Admin.ImageCropper.imageSupportPageText',
-    defaultMessage: 'visit our support center',
-  },
 });
