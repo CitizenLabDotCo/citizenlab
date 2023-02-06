@@ -20,7 +20,8 @@ jest.mock('modules/commercial/insights/services/insightsInputs', () => ({
   addInsightsInputCategories: jest.fn(),
 }));
 
-jest.mock('modules/commercial/insights/api/categories');
+jest.mock('modules/commercial/insights/api/categories/useCategories');
+jest.mock('modules/commercial/insights/api/categories/useCategory');
 
 jest.mock('modules/commercial/insights/services/batchAssignment', () => ({
   batchAssignCategories: jest.fn(),

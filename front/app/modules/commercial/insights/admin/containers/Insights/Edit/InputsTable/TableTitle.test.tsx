@@ -1,16 +1,16 @@
+import categories from 'modules/commercial/insights/fixtures/categories';
 import React from 'react';
 import { render, screen, fireEvent, act, within } from 'utils/testUtils/rtl';
-import categories from 'modules/commercial/insights/fixtures/categories';
 
 import TableTitle from './TableTitle';
 
 const mockDelete = jest.fn();
-const mockData = categories;
 
-jest.mock('modules/commercial/insights/api/categories', () => ({
-  useCategories: () => ({ data: { data: mockData } }),
-  useDeleteCategory: () => ({ mutate: mockDelete, reset: jest.fn() }),
-}));
+jest.mock('modules/commercial/insights/api/categories/useCategories');
+
+jest.mock('modules/commercial/insights/api/categories/useDeleteCategory', () =>
+  jest.fn(() => ({ mutate: mockDelete, reset: jest.fn() }))
+);
 
 const viewId = '1';
 
@@ -54,17 +54,17 @@ describe('Table Title', () => {
     ).toBeInTheDocument();
   });
   it('shows selected category correctly', () => {
-    mockLocationData = { pathname: '', query: { category: mockData[0].id } };
+    mockLocationData = { pathname: '', query: { category: categories[0].id } };
     render(<TableTitle />);
     expect(
       within(screen.getByTestId('insightsInputsHeader')).getByText(
-        mockData[0].attributes.name
+        categories[0].attributes.name
       )
     ).toBeInTheDocument();
   });
 
   it('deletes category correctly', async () => {
-    mockLocationData = { pathname: '', query: { category: mockData[0].id } };
+    mockLocationData = { pathname: '', query: { category: categories[0].id } };
     render(<TableTitle />);
     fireEvent.click(
       within(screen.getByTestId('insightsInputsHeader')).getByRole('button')
@@ -74,7 +74,7 @@ describe('Table Title', () => {
     });
     expect(mockDelete).toHaveBeenCalledWith({
       viewId,
-      categoryId: mockData[0].id,
+      categoryId: categories[0].id,
     });
   });
 });

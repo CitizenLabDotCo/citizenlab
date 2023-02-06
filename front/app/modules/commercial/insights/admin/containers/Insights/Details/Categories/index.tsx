@@ -10,11 +10,9 @@ import { stringify } from 'qs';
 import { trackEventByName } from 'utils/analytics';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
 
-// hooks
-import {
-  useCategories,
-  IInsightsCategoryData,
-} from 'modules/commercial/insights/api/categories';
+// api
+import useCategories from 'modules/commercial/insights/api/categories/useCategories';
+import { IInsightsCategoryData } from 'modules/commercial/insights/api/categories/types';
 
 // components
 import Tag from 'modules/commercial/insights/admin/components/Tag';

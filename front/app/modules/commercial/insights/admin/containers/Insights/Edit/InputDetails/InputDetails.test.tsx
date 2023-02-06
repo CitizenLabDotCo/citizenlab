@@ -56,11 +56,16 @@ jest.mock('modules/commercial/insights/services/insightsInputs', () => ({
 }));
 
 const mockAdd = jest.fn();
-jest.mock('modules/commercial/insights/api/categories', () => ({
-  useCategories: () => ({ data: { data: mockCategoriesData } }),
-  useCategory: () => ({ data: { data: mockCategoryData } }),
-  useAddCategory: () => ({ mutate: mockAdd, reset: jest.fn() }),
-}));
+
+jest.mock('modules/commercial/insights/api/categories/useAddCategory', () =>
+  jest.fn(() => ({ mutate: mockAdd, reset: jest.fn() }))
+);
+
+jest.mock('modules/commercial/insights/api/categories/useCategories');
+
+jest.mock('modules/commercial/insights/api/categories/useCategory', () =>
+  jest.fn(() => ({ data: { data: mockCategoryData } }))
+);
 
 jest.mock('hooks/useIdea', () => {
   return jest.fn(() => mockIdeaData);

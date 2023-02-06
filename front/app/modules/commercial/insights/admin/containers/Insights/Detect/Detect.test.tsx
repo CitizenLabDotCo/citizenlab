@@ -16,9 +16,12 @@ const viewId = '1';
 
 const mockAdd = jest.fn();
 
-jest.mock('modules/commercial/insights/api/categories', () => ({
-  useAddCategory: () => ({ mutate: mockAdd, reset: jest.fn() }),
-}));
+jest.mock('modules/commercial/insights/api/categories/useAddCategory', () =>
+  jest.fn(() => ({
+    mutate: mockAdd,
+    reset: jest.fn(),
+  }))
+);
 
 jest.mock(
   'modules/commercial/insights/hooks/useInsightsDetectedCategories',

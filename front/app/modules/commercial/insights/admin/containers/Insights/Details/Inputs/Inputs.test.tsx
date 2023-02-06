@@ -43,7 +43,7 @@ jest.mock('utils/cl-router/withRouter', () => {
   };
 });
 
-jest.mock('modules/commercial/insights/api/categories');
+jest.mock('modules/commercial/insights/api/categories/useCategories');
 
 jest.mock('modules/commercial/insights/api/views');
 

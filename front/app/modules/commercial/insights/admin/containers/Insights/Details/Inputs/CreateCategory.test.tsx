@@ -18,9 +18,9 @@ jest.mock('utils/cl-router/withRouter', () => {
 
 const mockAdd = jest.fn();
 
-jest.mock('modules/commercial/insights/api/categories', () => ({
-  useAddCategory: () => ({ mutate: mockAdd, reset: jest.fn() }),
-}));
+jest.mock('modules/commercial/insights/api/categories/useAddCategory', () =>
+  jest.fn(() => ({ mutate: mockAdd, reset: jest.fn() }))
+);
 
 const defaultProps = {
   closeCreateModal: jest.fn(),

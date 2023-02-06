@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import * as service from 'modules/commercial/insights/services/insightsInputs';
+import categories from '../../../fixtures/categories';
 
 jest.mock('modules/commercial/insights/services/insightsInputs', () => ({
   deleteInsightsInputCategory: jest.fn(),
@@ -13,17 +14,7 @@ const viewId = '1';
 const inputId = '2';
 const categoryId = '3';
 
-const mockCategoryData = {
-  id: '3612e489-a631-4e7d-8bdb-63be407ea123',
-  type: 'category',
-  attributes: {
-    name: 'Category 1',
-  },
-};
-
-jest.mock('modules/commercial/insights/api/categories', () => ({
-  useCategory: () => ({ data: { data: mockCategoryData } }),
-}));
+jest.mock('modules/commercial/insights/api/categories/useCategory');
 
 jest.mock('utils/cl-router/withRouter', () => {
   return {
@@ -39,9 +30,7 @@ describe('Insights Category', () => {
   it('renders Tag with correct name', () => {
     render(<Category variant="approved" id={categoryId} inputId={inputId} />);
     expect(screen.getByTestId('insightsTag')).toBeInTheDocument();
-    expect(
-      screen.getByText(mockCategoryData.attributes.name)
-    ).toBeInTheDocument();
+    expect(screen.getByText(categories[0].attributes.name)).toBeInTheDocument();
   });
 
   it('renders Tag with correct variant when suggested', () => {

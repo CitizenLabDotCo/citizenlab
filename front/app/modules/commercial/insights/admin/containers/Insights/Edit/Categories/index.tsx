@@ -29,12 +29,12 @@ import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputs
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import {
-  useCategories,
-  useAddCategory,
-  useDeleteAllCategories,
-  useDeleteCategory,
-} from 'modules/commercial/insights/api/categories';
+
+// api
+import useCategories from 'modules/commercial/insights/api/categories/useCategories';
+import useAddCategory from 'modules/commercial/insights/api/categories/useAddCategory';
+import useDeleteCategory from 'modules/commercial/insights/api/categories/useDeleteCategory';
+import useDeleteAllCategories from 'modules/commercial/insights/api/categories/useDeleteAllCategories';
 import useDetectedCategories from 'modules/commercial/insights/hooks/useInsightsDetectedCategories';
 import { useStat } from 'modules/commercial/insights/api/stats';
 

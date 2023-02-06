@@ -8,7 +8,7 @@ import Button from 'components/UI/Button';
 
 // Hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import { useCategories } from 'modules/commercial/insights/api/categories';
+import useCategories from 'modules/commercial/insights/api/categories/useCategories';
 
 // Services
 import {

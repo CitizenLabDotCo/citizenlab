@@ -18,10 +18,8 @@ import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
 // api
-import {
-  useAddCategory,
-  IInsightsCategoryData,
-} from 'modules/commercial/insights/api/categories';
+import useAddCategory from 'modules/commercial/insights/api/categories/useAddCategory';
+import { IInsightsCategoryData } from 'modules/commercial/insights/api/categories/types';
 
 type CreateCategoryProps = {
   closeCreateModal: () => void;

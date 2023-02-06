@@ -17,13 +17,14 @@ import Navigation, {
   NavigationProps,
 } from 'modules/commercial/insights/admin/components/Navigation';
 
-// hooks
-import {
-  useCategories,
-  useAddCategory,
-} from 'modules/commercial/insights/api/categories';
-import useFeatureFlag from 'hooks/useFeatureFlag';
+// api
+import useCategories from 'modules/commercial/insights/api/categories/useCategories';
+import useAddCategory from 'modules/commercial/insights/api/categories/useAddCategory';
 import useInput from 'modules/commercial/insights/api/inputs/useInput';
+
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 // styles
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';

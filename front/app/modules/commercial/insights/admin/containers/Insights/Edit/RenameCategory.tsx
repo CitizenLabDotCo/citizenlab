@@ -14,7 +14,7 @@ import { Button, Input } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 
 // services
-import { useUpdateCategory } from 'modules/commercial/insights/api/categories';
+import useUpdateCategory from 'modules/commercial/insights/api/categories/useUpdateCategory';
 
 // utils
 

@@ -14,12 +14,22 @@ const mockAdd = jest.fn();
 const mockDelete = jest.fn();
 const mockDeleteAll = jest.fn();
 
-jest.mock('modules/commercial/insights/api/categories', () => ({
-  useCategories: () => ({ data: { data: mockData } }),
-  useAddCategory: () => ({ mutate: mockAdd, reset: jest.fn() }),
-  useDeleteCategory: () => ({ mutate: mockDelete, reset: jest.fn() }),
-  useDeleteAllCategories: () => ({ mutate: mockDeleteAll, reset: jest.fn() }),
-}));
+jest.mock('modules/commercial/insights/api/categories/useCategories', () =>
+  jest.fn(() => ({ data: { data: mockData } }))
+);
+
+jest.mock('modules/commercial/insights/api/categories/useAddCategory', () =>
+  jest.fn(() => ({ mutate: mockAdd, reset: jest.fn() }))
+);
+
+jest.mock('modules/commercial/insights/api/categories/useDeleteCategory', () =>
+  jest.fn(() => ({ mutate: mockDelete, reset: jest.fn() }))
+);
+
+jest.mock(
+  'modules/commercial/insights/api/categories/useDeleteAllCategories',
+  () => jest.fn(() => ({ mutate: mockDeleteAll, reset: jest.fn() }))
+);
 
 jest.mock(
   'modules/commercial/insights/hooks/useInsightsDetectedCategories',

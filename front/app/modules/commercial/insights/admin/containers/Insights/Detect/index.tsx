@@ -26,7 +26,7 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // services
-import { useAddCategory } from 'modules/commercial/insights/api/categories';
+import useAddCategory from 'modules/commercial/insights/api/categories/useAddCategory';
 
 const StyledH2 = styled.h2`
   font-size: ${fontSizes.xl}px;

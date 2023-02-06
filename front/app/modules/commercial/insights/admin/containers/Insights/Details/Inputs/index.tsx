@@ -38,7 +38,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
 
 // hooks
-import { useCategories } from 'modules/commercial/insights/api/categories';
+import useCategories from 'modules/commercial/insights/api/categories/useCategories';
 import { useStat } from 'modules/commercial/insights/api/stats';
 
 const InputsContainer = styled.div`

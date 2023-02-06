@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-import { useCategory } from 'modules/commercial/insights/api/categories';
+import useCategory from 'modules/commercial/insights/api/categories/useCategory';
 import Tag, {
   TagProps,
 } from 'modules/commercial/insights/admin/components/Tag';

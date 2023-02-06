@@ -18,7 +18,7 @@ const mockIdeaData = {
 
 let mockLocationData = { pathname: '', query: {} };
 
-jest.mock('modules/commercial/insights/api/categories');
+jest.mock('modules/commercial/insights/api/categories/useCategories');
 
 jest.mock('utils/cl-router/withRouter', () => {
   return {

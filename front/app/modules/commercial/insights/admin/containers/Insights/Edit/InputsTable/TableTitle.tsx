@@ -5,13 +5,9 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import messages from '../../messages';
 import { WrappedComponentProps } from 'react-intl';
 
-// hooks
-import {
-  useCategories,
-  useDeleteCategory,
-} from 'modules/commercial/insights/api/categories';
-
-// services
+// api
+import useCategories from 'modules/commercial/insights/api/categories/useCategories';
+import useDeleteCategory from 'modules/commercial/insights/api/categories/useDeleteCategory';
 
 // styles
 import styled from 'styled-components';

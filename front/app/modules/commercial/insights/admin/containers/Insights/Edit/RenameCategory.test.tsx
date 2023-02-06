@@ -8,9 +8,9 @@ const categoryId = '1';
 
 const mockUpdateCategory = jest.fn();
 
-jest.mock('modules/commercial/insights/api/categories', () => ({
-  useUpdateCategory: () => ({ mutate: mockUpdateCategory, reset: jest.fn() }),
-}));
+jest.mock('modules/commercial/insights/api/categories/useUpdateCategory', () =>
+  jest.fn(() => ({ mutate: mockUpdateCategory, reset: jest.fn() }))
+);
 
 jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
 
