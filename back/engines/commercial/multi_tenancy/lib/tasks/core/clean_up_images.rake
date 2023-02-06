@@ -23,7 +23,10 @@ namespace :cl2back do
         )
 
         ContentBuilder::LayoutImage.all.each do |image|
-          image.destroy! if image_codes.exclude?(image.code)
+          if image_codes.exclude?(image.code)
+            # image.remove_image!
+            image.destroy!
+          end
         end
       end
     end

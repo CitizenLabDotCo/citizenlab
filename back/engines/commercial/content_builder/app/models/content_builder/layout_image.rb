@@ -18,6 +18,8 @@ module ContentBuilder
 
     before_validation :generate_code, on: :create
 
+    before_destroy :remove_image!
+
     private
 
     def generate_code
