@@ -191,7 +191,7 @@ es-CL:
       author_id: 'Identificación del autor'
       created_at: 'Presentado en'
       published_at: 'Publicado en'
-      comments_count: 'Comentarios'
+      comments_count: 'Respuestas'
       upvotes_count: 'Votos a favor'
       downvotes_count: 'Votos en contra'
       baskets_count: 'Cestas'
