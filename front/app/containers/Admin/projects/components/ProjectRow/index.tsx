@@ -17,9 +17,6 @@ import Error from 'components/UI/Error';
 import GroupsTag from './GroupsTag';
 import AdminTag from './AdminTag';
 import ManageButton from './ManageButton';
-import ProjectMoreOptions, {
-  ProjectMoreOptionsOption,
-} from './ProjectMoreOptions';
 
 // resources
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
@@ -191,22 +188,6 @@ const ProjectRow = ({
                 ]}
               ></MoreActionsMenu>
             </Box>
-            <ProjectMoreOptions>
-              <DeleteProjectButton
-                publication={publication}
-                setDeleteIsProcessing={setIsBeingDeleted}
-                setDeletionError={setError}
-                processing={isBeingDeleted}
-                key="delete"
-              />
-              <ProjectMoreOptionsOption
-                onClick={() => {
-                  copyProject(projectId);
-                }}
-                message={messages.copyProjectButton}
-                iconName={'copy'}
-              />
-            </ProjectMoreOptions>
           </ActionsRowContainer>
         ) : (
           <ManageButton
