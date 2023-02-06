@@ -49,17 +49,18 @@ const initializePosthog = async (token, user, appConfig) => {
       ph.identify(user.data.id, {
         email: user.data.attributes.email,
         name: `${user.data.attributes.first_name} ${user.data.attributes.last_name}`,
-        firstName: user.data.attributes.first_name,
-        lastName: user.data.attributes.last_name,
+        first_name: user.data.attributes.first_name,
+        last_name: user.data.attributes.last_name,
         locale: user.data.attributes.locale,
-        highestRole: user.data.attributes.highest_role,
+        highest_role: user.data.attributes.highest_role,
       });
 
       // These are the groups we're associating the user with
       ph.group('tenant', appConfig.data.id, {
         name: appConfig.data.attributes.name,
         host: appConfig.data.attributes.host,
-        lifecycleStage: appConfig.data.attributes.settings.core.lifecycle_stage,
+        lifecycle_stage:
+          appConfig.data.attributes.settings.core.lifecycle_stage,
       });
 
       // These properties will be sent along with all events
