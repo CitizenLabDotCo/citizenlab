@@ -6,3 +6,8 @@
 every 6.hours do
   runner 'Analytics::ImportLatestMatomoDataJob.perform_for_all_tenants'
 end
+
+# every :sunday, at: '12pm' do
+every 1.minute do
+  runner 'MyAmazingJob.run'
+end
