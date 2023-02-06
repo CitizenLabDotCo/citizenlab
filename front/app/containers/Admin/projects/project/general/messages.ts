@@ -168,11 +168,9 @@ export default defineMessages({
     For more information on recommended image resolutions, {supportPageLink}.`,
   },
   projectCardImageTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.projectCardImageTooltip',
+    id: 'app.containers.AdminPage.ProjectEdit.projectCardImageTooltip1',
     defaultMessage: `
-    This image is part of the project card; the card that summarizes the project and is shown on the homepage for example.
-
-    For more information on recommended image resolutions, {supportPageLink}.`,
+    This image is part of the project card; the card that summarizes the project and is shown on the homepage for example.\n\nFor more information on recommended image resolutions, {supportPageLink}.`,
   },
   imageSupportPageURL: {
     id: 'app.containers.AdminPage.ProjectEdit.imageSupportPageURL',
