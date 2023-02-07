@@ -1,8 +1,6 @@
 {
   "UI.FormComponents.required": "απαιτείται",
-  "app.components.Admin.ImageCropper.imageSupportPageText": "visit our support center",
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "app.components.Admin.ImageCropper.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}.",
   "app.components.Admin.ImageCropper.info": "This image is always cropped to a certain ratio to make sure all crucial aspects are on display at all times. The {link} for this image type is {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "recommended ratio",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Κείμενο κεφαλίδας για εγγεγραμμένους χρήστες",
@@ -1447,6 +1445,7 @@
   "app.containers.AdminPage.SettingsPage.homepageMetaTitle": "Κεφαλίδα αρχικής σελίδας | {orgName}",
   "app.containers.AdminPage.SettingsPage.imageOverlayColor": "Χρώμα επικάλυψης εικόνας",
   "app.containers.AdminPage.SettingsPage.imageOverlayOpacity": "Αδιαφάνεια επικάλυψης εικόνας",
+  "app.containers.AdminPage.SettingsPage.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSetting": "Ανίχνευση ακατάλληλου περιεχομένου",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSettingDescription": "Αυτόματος εντοπισμός ακατάλληλου περιεχομένου που δημοσιεύεται στην πλατφόρμα.",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionTooltip": "Σε Beta: επί του παρόντος διαθέσιμο στα αγγλικά, γαλλικά, γερμανικά, πορτογαλικά και ισπανικά. Όσο αυτή η λειτουργία είναι ενεργοποιημένη, οι εισηγήσεις, οι προτάσεις και τα σχόλια που δημοσιεύονται από τους συμμετέχοντες θα εξετάζονται αυτόματα με τη χρήση επεξεργασίας φυσικής γλώσσας. Οι δημοσιεύσεις που επισημαίνονται ως ενδεχομένως περιέχουσες ακατάλληλο περιεχόμενο δεν θα αποκλείονται, αλλά θα επισημαίνονται για επανεξέταση στη σελίδα {linkToActivityPage}.",
@@ -1896,5 +1895,8 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτή τη σελίδα; Αυτό δεν μπορεί να αναιρεθεί. Μπορείτε επίσης να καταργήσετε τη σελίδα από τη γραμμή πλοήγησης αν δεν είστε ακόμα έτοιμοι να τη διαγράψετε.",
   "app.modules.navbar.admin.containers.pageHeader": "Pages & menu",
   "app.modules.navbar.admin.containers.pageSubtitle": "Η γραμμή πλοήγησης μπορεί να εμφανίζει έως και πέντε σελίδες εκτός από τις σελίδες Αρχική σελίδα και Έργα. Μπορείτε να μετονομάσετε τα στοιχεία μενού, να αναδιατάξετε και να προσθέσετε νέες σελίδες με το δικό σας περιεχόμενο.",
-  "app.modules.project_management.admin.components.permissionsTab": "Access rights"
+  "app.modules.project_management.admin.components.permissionsTab": "Access rights",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."
 }
