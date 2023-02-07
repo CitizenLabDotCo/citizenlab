@@ -9,6 +9,7 @@ import Link from 'utils/cl-router/Link';
 import { parse } from 'qs';
 
 // components
+import { Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import PasswordInput, {
   hasPasswordMinimumLength,
@@ -31,20 +32,12 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 // style
 import styled from 'styled-components';
 import messages from './messages';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, stylingConsts } from 'utils/styleUtils';
 
 // resources
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
-
-const Container = styled.div`
-  width: 100%;
-  min-height: calc(
-    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
-  );
-  background: ${colors.background};
-`;
 
 const StyledContentContainer = styled(ContentContainer)`
   padding-bottom: 100px;
@@ -244,7 +237,12 @@ class PasswordReset extends React.PureComponent<
     return success ? (
       <PasswordResetSuccess />
     ) : (
-      <Container>
+      <Box
+        width="100%"
+        minHeight={`calc(100vh - ${
+          stylingConsts.menuHeight + stylingConsts.footerHeight
+        }px)`}
+      >
         <Helmet
           title={helmetTitle}
           meta={[{ name: 'description', content: helmetDescription }]}
@@ -291,7 +289,7 @@ class PasswordReset extends React.PureComponent<
             </Form>
           </StyledContentContainer>
         </main>
-      </Container>
+      </Box>
     );
   }
 }

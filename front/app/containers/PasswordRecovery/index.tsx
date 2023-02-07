@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Input, Success } from '@citizenlab/cl2-component-library';
+import { Input, Success, Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import { Helmet } from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
@@ -20,15 +20,7 @@ import { injectIntl } from 'utils/cl-intl';
 // style
 import styled from 'styled-components';
 import messages from './messages';
-import { fontSizes, colors } from 'utils/styleUtils';
-
-const Container = styled.div`
-  width: 100%;
-  min-height: calc(
-    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
-  );
-  background: ${colors.background};
-`;
+import { fontSizes, stylingConsts } from 'utils/styleUtils';
 
 const StyledContentContainer = styled(ContentContainer)`
   padding-bottom: 100px;
@@ -177,7 +169,12 @@ class PasswordRecovery extends React.PureComponent<
     }
 
     return (
-      <Container>
+      <Box
+        width="100%"
+        minHeight={`calc(100vh - ${
+          stylingConsts.menuHeight + stylingConsts.footerHeight
+        }px)`}
+      >
         <Helmet
           title={helmetTitle}
           meta={[{ name: 'description', content: helmetDescription }]}
@@ -216,7 +213,7 @@ class PasswordRecovery extends React.PureComponent<
             </Form>
           </StyledContentContainer>
         </main>
-      </Container>
+      </Box>
     );
   }
 }
