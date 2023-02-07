@@ -1,8 +1,6 @@
 {
   "UI.FormComponents.required": "requerit",
-  "app.components.Admin.ImageCropper.imageSupportPageText": "visit our support center",
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "app.components.Admin.ImageCropper.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}.",
   "app.components.Admin.ImageCropper.info": "This image is always cropped to a certain ratio to make sure all crucial aspects are on display at all times. The {link} for this image type is {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "recommended ratio",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Text de la capçalera per als usuaris registrats",
@@ -1447,6 +1445,7 @@
   "app.containers.AdminPage.SettingsPage.homepageMetaTitle": "Capçalera de la pàgina d'inici | {orgName}",
   "app.containers.AdminPage.SettingsPage.imageOverlayColor": "Color de superposició de la imatge",
   "app.containers.AdminPage.SettingsPage.imageOverlayOpacity": "Opacitat de superposició de la imatge",
+  "app.containers.AdminPage.SettingsPage.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSetting": "Detectar contingut inadequat",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSettingDescription": "Detecció automàtica de contingut inadequat publicat a la plataforma.",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionTooltip": "En versió beta: actualment disponible en anglès, francès, alemany, portuguès i espanyol. Mentre aquesta funció estigui activada, les entrades, les propostes i els comentaris publicats pels participants es revisaran automàticament mitjançant el processament del llenguatge natural. Les publicacions marcades com a contingut potencialment inadequat no es bloquejaran, però es destacaran per revisar-les a la pàgina {linkToActivityPage}.",
@@ -1896,5 +1895,8 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Esteu segur que voleu eliminar aquesta pàgina? Això no es pot desfer. També podeu eliminar la pàgina de la barra de navegació si encara no esteu preparat per eliminar-la.",
   "app.modules.navbar.admin.containers.pageHeader": "Pages & menu",
   "app.modules.navbar.admin.containers.pageSubtitle": "La barra de navegació pot mostrar fins a cinc pàgines a més de les pàgines d'inici i de projectes. Podeu canviar el nom dels elements del menú, tornar a ordenar i afegir pàgines noves amb el vostre propi contingut.",
-  "app.modules.project_management.admin.components.permissionsTab": "Access rights"
+  "app.modules.project_management.admin.components.permissionsTab": "Access rights",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."
 }
