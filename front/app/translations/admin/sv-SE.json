@@ -651,6 +651,7 @@
   "app.containers.Admin.reporting.chartsSection": "DIAGRAM",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "Det här är lite text. Du kan redigera och formatera den genom att använda redigeraren i panelen till höger.",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.participants": "Deltagare",
+  "app.containers.Admin.reporting.components.ReportBuilder.Templates.projectResults": "Project results",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummary": "Sammanfattning av rapport",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Lägg till projektets mål, metoder som använts för deltagande och resultatet",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Besökare",
