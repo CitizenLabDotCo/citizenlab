@@ -16,10 +16,7 @@ import { forceCollide } from 'd3-force';
 
 // hooks
 import { useView } from 'modules/commercial/insights/api/views';
-import {
-  useNetwork,
-  IInsightsNetworkNode,
-} from 'modules/commercial/insights/api/network';
+import useNetwork from 'modules/commercial/insights/api/network/useNetwork';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -47,6 +44,7 @@ import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 // styles
 import styled from 'styled-components';
+import { IInsightsNetworkNode } from 'modules/commercial/insights/api/network/types';
 
 type CanvasCustomRenderMode = 'replace' | 'before' | 'after';
 type Node = NodeObject & IInsightsNetworkNode;
