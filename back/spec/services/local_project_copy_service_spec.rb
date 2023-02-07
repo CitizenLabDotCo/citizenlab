@@ -311,9 +311,7 @@ describe LocalProjectCopyService do
         expect(copied_project.phases.order(:start_at).second.end_at).to eq phase2_end + expected_shift
       end
     end
-  end
 
-  if CitizenLab.ee?
     describe 'when source project has associated content builder layout' do
       let(:layout) { create(:layout, code: 'project_description') }
 
