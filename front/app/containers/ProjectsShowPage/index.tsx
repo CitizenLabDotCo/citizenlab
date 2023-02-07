@@ -38,7 +38,12 @@ import { IProjectData } from 'services/projects';
 
 // utils
 import { isValidPhase } from './phaseParam';
-import { anyIsUndefined, isNilOrError, isApiError } from 'utils/helperUtils';
+import {
+  anyIsUndefined,
+  isNilOrError,
+  isApiError,
+  NilOrError,
+} from 'utils/helperUtils';
 import { scrollToElement } from 'utils/scroll';
 import { isError } from 'lodash-es';
 
@@ -78,9 +83,14 @@ const ContentWrapper = styled.div`
 `;
 
 interface Props {
-  project: IProjectData | Error | null | undefined;
+  project: IProjectData | Error | null;
   scrollToEventId?: string;
 }
+
+const isUnauthorized = (project: IProjectData | NilOrError) => {
+  if (!isApiError(project)) return false;
+  return project.json.errors?.base[0].error === 'Unauthorized!';
+};
 
 const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
   const projectId = !isNilOrError(project) ? project.id : undefined;
@@ -119,26 +129,9 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
     }
   }, [mounted, loading, scrollToEventId]);
 
-  const user = useAuthUser();
-
-  const isUnauthorized = useMemo(() => {
-    if (!isApiError(project)) return false;
-
-    return project.json.errors?.base[0].error === 'Unauthorized!';
-  }, [project]);
-
-  const userSignedInButUnauthorized = !isNilOrError(user) && isUnauthorized;
-  const userNotSignedInAndUnauthorized = isNilOrError(user) && isUnauthorized;
-
   let content: JSX.Element | null = null;
 
-  if (userNotSignedInAndUnauthorized) {
-    return <Redirect method="push" path="/" />;
-  }
-
-  if (userSignedInButUnauthorized) {
-    content = <ProjectNotVisible />;
-  } else if (loading) {
+  if (loading) {
     content = (
       <Loading>
         <Spinner />
@@ -208,6 +201,9 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
 });
 
 const ProjectsShowPageWrapper = () => {
+  const [userWasLoggedIn, setUserWasLoggedIn] = useState(false);
+  const [redirectHomepage, setRedirectHomepage] = useState(false);
+
   const { pathname } = useLocation();
   const { slug, phaseNumber } = useParams();
   const [search] = useSearchParams();
@@ -215,12 +211,40 @@ const ProjectsShowPageWrapper = () => {
 
   const project = useProject({ projectSlug: slug });
   const phases = usePhases(project?.id);
-  const processType = project?.attributes?.process_type;
+  const user = useAuthUser();
 
+  const processType = project?.attributes?.process_type;
   const urlSegments = pathname
     .replace(/^\/|\/$/g, '')
     .split('/')
     .filter((segment) => segment !== '');
+
+  const projectPending = project === undefined;
+  const userPending = user === undefined;
+  const pending = projectPending || userPending;
+
+  useEffect(() => {
+    if (pending) return;
+    if (isError(user)) return;
+
+    if (user !== null) setUserWasLoggedIn(true);
+  }, [pending, user]);
+
+  useEffect(() => {
+    const userJustLoggedOut = userWasLoggedIn && user === null;
+    if (userJustLoggedOut) {
+      setRedirectHomepage(true);
+    }
+  }, [userWasLoggedIn, user]);
+
+  if (pending) return null;
+  if (redirectHomepage) {
+    return <Redirect method="replace" path="/" />;
+  }
+
+  if (!isNilOrError(user) && isUnauthorized(project)) {
+    return <ProjectNotVisible />;
+  }
 
   if (
     processType === 'timeline' &&
