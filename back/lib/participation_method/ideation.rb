@@ -300,5 +300,9 @@ module ParticipationMethod
     def include_author_budget_in_schema?
       true
     end
+
+    def supports_answer_visible_to?
+      true
+    end
   end
 end

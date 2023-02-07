@@ -2,11 +2,16 @@
 
 class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
   attributes :key, :input_type, :title_multiloc, :required, :ordering,
-    :enabled, :code, :created_at, :updated_at, :logic, :answer_visible_to
+    :enabled, :code, :created_at, :updated_at, :logic
 
   attribute :description_multiloc do |field|
     TextImageService.new.render_data_images field, :description_multiloc
   end
+
+  attribute :answer_visible_to, if: proc { |object, _params|
+    @participation_method = Factory.instance.participation_method_for object.resource.participation_context
+    @participation_method.supports_answer_visible_to?
+  }
 
   attribute :hidden, if: proc { |object, _params|
     object.resource_type == 'User'

@@ -48,9 +48,14 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   def default_options(field)
     defaults = {
       isAdminField: admin_field?(field),
-      hasRule: field.logic?,
-      answer_visible_to: field.answer_visible_to
+      hasRule: field.logic?
     }
+    if field.resource # Required as the budget and author fields added don't have a resource
+      @participation_method = Factory.instance.participation_method_for field.resource.participation_context
+      if @participation_method.supports_answer_visible_to?
+        defaults[:answer_visible_to] = field.answer_visible_to
+      end
+    end
     super.merge(defaults).tap do |options|
       options[:description] = description_option field
     end

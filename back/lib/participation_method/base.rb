@@ -105,6 +105,10 @@ module ParticipationMethod
       false
     end
 
+    def supports_answer_visible_to?
+      false
+    end
+
     private
 
     attr_reader :participation_context
