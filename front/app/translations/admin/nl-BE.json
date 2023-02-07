@@ -1,8 +1,6 @@
 {
   "UI.FormComponents.required": "vereist",
-  "app.components.Admin.ImageCropper.imageSupportPageText": "Bezoek onze helpdesk",
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "app.components.Admin.ImageCropper.imageTooltip": "{supportPageLink} voor meer informatie over aanbevolen afbeeldingsresoluties.",
   "app.components.Admin.ImageCropper.info": "Deze afbeelding wordt altijd bijgesneden tot een bepaalde verhouding om ervoor te zorgen dat alle cruciale aspecten altijd worden weergegeven. De {link} voor dit afbeeldingstype is {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "aanbevolen verhouding",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Bannertitel voor geregistreerde gebruikers",
@@ -1447,6 +1445,7 @@
   "app.containers.AdminPage.SettingsPage.homepageMetaTitle": "Startpaginaheader | {orgName}",
   "app.containers.AdminPage.SettingsPage.imageOverlayColor": "Kleur banner",
   "app.containers.AdminPage.SettingsPage.imageOverlayOpacity": "Opaciteit van de banner voor mensen die niet ingelogd zijn",
+  "app.containers.AdminPage.SettingsPage.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSetting": "Detecteer ongepaste inhoud",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSettingDescription": "Automatisch detecteren van ongepaste inhoud die op het platform wordt geplaatst.",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionTooltip": "In Bèta: momenteel beschikbaar in het Engels, Frans, Duits, Portugees en Spaans. Zolang deze functie actief is, worden bijdragen, voorstellen en opmerkingen van deelnemers automatisch gecontroleerd met behulp van Natural Language Processing (NLP). Berichten die worden gemarkeerd als mogelijk ongepaste inhoud zullen niet worden geblokkeerd, maar zullen worden gemarkeerd om na te kijken op de {linkToActivityPage} pagina.",
@@ -1896,5 +1895,8 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Weet je zeker dat je deze pagina wilt verwijderen? Dit kan niet ongedaan gemaakt worden. Je kunt de pagina ook uit de navigatiebalk verwijderen als je nog niet klaar bent om deze te verwijderen.",
   "app.modules.navbar.admin.containers.pageHeader": "Pagina's en menu",
   "app.modules.navbar.admin.containers.pageSubtitle": "Je navigatiebalk kan maximaal vijf pagina's weergeven naast de startpagina en de projectenpagina's. Je kunt menu-items hernoemen, opnieuw ordenen en nieuwe pagina's toevoegen met uw eigen inhoud.",
-  "app.modules.project_management.admin.components.permissionsTab": "Toegangsrechten"
+  "app.modules.project_management.admin.components.permissionsTab": "Toegangsrechten",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."
 }
