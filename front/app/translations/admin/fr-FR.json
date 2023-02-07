@@ -684,7 +684,7 @@
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createReportDescription": "Personnalisez votre rapport et partagez-le avec les parties prenantes internes ou la communauté avec un lien web.",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.viewReports": "Voir les rapports",
   "app.containers.Admin.reporting.helmetDescription": "Page de rapport de l'administrateur",
-  "app.containers.Admin.reporting.helmetTitle": "Reporting",
+  "app.containers.Admin.reporting.helmetTitle": "Rapports",
   "app.containers.Admin.reporting.printPrepare": "Préparation de l'impression...",
   "app.containers.Admin.reporting.reportBuilder": "Constructeur de rapports",
   "app.containers.Admin.reporting.reportHeader": "En-tête du rapport",
