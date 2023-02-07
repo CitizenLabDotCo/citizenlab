@@ -1,8 +1,6 @@
 {
   "UI.FormComponents.required": "wymagane",
-  "app.components.Admin.ImageCropper.imageSupportPageText": "odwiedź nasze centrum wsparcia",
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "app.components.Admin.ImageCropper.imageTooltip": "Więcej informacji na temat zalecanych rozdzielczości obrazu można znaleźć na stronie {supportPageLink}.",
   "app.components.Admin.ImageCropper.info": "Obraz jest zawsze przycięty do określonej proporcji, aby mieć pewność, że wszystkie kluczowe aspekty są zawsze widoczne. {link} dla tego typu obrazu to {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "zalecana rozdzielczość",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Tekst nagłówka dla zarejestrowanych użytkowników",
@@ -1447,6 +1445,7 @@
   "app.containers.AdminPage.SettingsPage.homepageMetaTitle": "Nagłówek strony głównej | {orgName}",
   "app.containers.AdminPage.SettingsPage.imageOverlayColor": "Kolor nakładki obrazu",
   "app.containers.AdminPage.SettingsPage.imageOverlayOpacity": "Przezroczystość nakładki obrazu",
+  "app.containers.AdminPage.SettingsPage.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSetting": "Wykrywanie nieodpowiednich treści",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSettingDescription": "Automatyczne wykrywanie nieodpowiednich treści umieszczanych na platformie.",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionTooltip": "W wersji beta: obecnie dostępna w języku angielskim, francuskim, niemieckim, portugalskim i hiszpańskim. Gdy ta funkcja jest włączona, dane wejściowe, propozycje i komentarze zamieszczane przez uczestników będą automatycznie sprawdzane przy użyciu przetwarzania języka naturalnego. Posty oznaczone jako potencjalnie zawierające nieodpowiednie treści nie zostaną zablokowane, ale będą wyróżnione do przejrzenia na stronie {linkToActivityPage}.",
@@ -1896,5 +1895,8 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Czy na pewno chcesz usunąć tę stronę? Nie można tego cofnąć. Możesz również usunąć stronę z paska nawigacyjnego, jeśli nie jesteś jeszcze gotowy, aby ją usunąć.",
   "app.modules.navbar.admin.containers.pageHeader": "Strony i menu",
   "app.modules.navbar.admin.containers.pageSubtitle": "Twój pasek nawigacyjny może wyświetlać do pięciu stron oprócz strony głównej i stron projektów. Możesz zmieniać nazwy pozycji menu, zmieniać kolejność i dodawać nowe strony z własną zawartością.",
-  "app.modules.project_management.admin.components.permissionsTab": "Uprawnienia"
+  "app.modules.project_management.admin.components.permissionsTab": "Uprawnienia",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."
 }
