@@ -6,7 +6,6 @@ import categories from 'modules/commercial/insights/fixtures/categories';
 import Categories from './';
 
 let mockData = categories;
-let mockDetectedCategoriesData = categories;
 
 const viewId = '1';
 
@@ -31,11 +30,6 @@ jest.mock(
   () => jest.fn(() => ({ mutate: mockDeleteAll, reset: jest.fn() }))
 );
 
-jest.mock(
-  'modules/commercial/insights/api/detected_categories/useDetectedCategories',
-  () => jest.fn(() => ({ data: { data: mockDetectedCategoriesData } }))
-);
-
 const allInputsCount = 10;
 const uncategorizedInputCount = 5;
 const recentlyPostedInputCount = 2;
@@ -56,7 +50,7 @@ jest.mock('modules/commercial/insights/api/stats/useStat', () =>
 
 jest.mock('utils/analytics');
 
-let mockFeatureFlagData = true;
+const mockFeatureFlagData = true;
 
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
 
@@ -190,24 +184,5 @@ describe('Insights Edit Categories', () => {
     expect(
       screen.getByTestId('insightsUncategorizedInputsCount')
     ).toHaveTextContent(uncategorizedInputCount.toString());
-  });
-  it('shows detect categories button when nlp feature Flag is active and categories are detected', async () => {
-    render(<Categories />);
-    expect(screen.getByTestId('insightsDetectCategories')).toBeInTheDocument();
-  });
-  it('does not show detect categories button when nlp feature Flag is not acitve', async () => {
-    mockFeatureFlagData = false;
-    render(<Categories />);
-    expect(
-      screen.queryByTestId('insightsDetectCategories')
-    ).not.toBeInTheDocument();
-  });
-  it('does not show detect categories button when categories are not detected', async () => {
-    mockFeatureFlagData = true;
-    mockDetectedCategoriesData = [];
-    render(<Categories />);
-    expect(
-      screen.queryByTestId('insightsDetectCategories')
-    ).not.toBeInTheDocument();
   });
 });

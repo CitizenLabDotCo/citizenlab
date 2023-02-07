@@ -28,14 +28,12 @@ import clHistory from 'utils/cl-router/history';
 import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';
 
 // hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // api
 import useCategories from 'modules/commercial/insights/api/categories/useCategories';
 import useAddCategory from 'modules/commercial/insights/api/categories/useAddCategory';
 import useDeleteCategory from 'modules/commercial/insights/api/categories/useDeleteCategory';
 import useDeleteAllCategories from 'modules/commercial/insights/api/categories/useDeleteAllCategories';
-import useDetectedCategories from 'modules/commercial/insights/api/detected_categories/useDetectedCategories';
 import useStat from 'modules/commercial/insights/api/stats/useStat';
 
 // intl
@@ -123,7 +121,6 @@ const Categories = ({
   params: { viewId },
   location: { query, pathname },
 }: WrappedComponentProps & WithRouterProps) => {
-  const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
   const [name, setName] = useState<string | null>();
   const {
     mutate: addCategory,
@@ -175,7 +172,6 @@ const Categories = ({
     processed: false,
   });
 
-  const { data: detectedCategories } = useDetectedCategories(viewId);
   const { data: categories } = useCategories(viewId);
 
   if (isNilOrError(categories)) {
@@ -403,19 +399,6 @@ const Categories = ({
           <Error apiErrors={error.errors['name']} fieldName="category_name" />
         )}
       </div>
-      {nlpFeatureFlag &&
-        !isNilOrError(detectedCategories) &&
-        detectedCategories.data.length > 0 && (
-          <Button
-            buttonStyle="white"
-            mb="8px"
-            textColor={colors.primary}
-            linkTo={`/admin/reporting/insights/${viewId}/detect`}
-            data-testid="insightsDetectCategories"
-          >
-            {formatMessage(messages.detectCategories)}
-          </Button>
-        )}
       {categories.data.length === 0 ? (
         <CategoryInfoBox data-testid="insightsNoCategories">
           <p>
