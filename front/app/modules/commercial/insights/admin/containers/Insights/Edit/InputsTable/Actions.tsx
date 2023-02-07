@@ -9,16 +9,14 @@ import Button from 'components/UI/Button';
 // Hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useCategories from 'modules/commercial/insights/api/categories/useCategories';
+import useAddInputCategories from 'modules/commercial/insights/api/inputs/useAddInputCategories';
 
 // Services
 import {
   batchAssignCategories,
   batchUnassignCategories,
 } from 'modules/commercial/insights/services/batchAssignment';
-import {
-  addInsightsInputCategories,
-  IInsightsInputData,
-} from 'modules/commercial/insights/services/insightsInputs';
+import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 
 // I18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -116,6 +114,7 @@ const Actions = ({
 }: Props & WrappedComponentProps & WithRouterProps) => {
   const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
   const { data: categories } = useCategories(viewId);
+  const { mutate: addInputCategories } = useAddInputCategories();
   const selectedInputsIds = selectedInputs.map((input) => input.id);
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const toggleDropdown = () => {
@@ -163,15 +162,11 @@ const Actions = ({
     setProcessingBulkApprove(true);
 
     for (const input of selectedInputs) {
-      try {
-        await addInsightsInputCategories(
-          viewId,
-          input.id,
-          input.relationships.suggested_categories.data
-        );
-      } catch {
-        // do nothing
-      }
+      addInputCategories({
+        viewId,
+        inputId: input.id,
+        categories: input.relationships.suggested_categories.data,
+      });
     }
     setProcessingBulkApprove(false);
   };

@@ -4,9 +4,6 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// services
-import { addInsightsInputCategory } from 'modules/commercial/insights/services/insightsInputs';
-
 // components
 import Category from 'modules/commercial/insights/admin/components/Category';
 import Idea from 'modules/commercial/insights/admin/components/Idea';
@@ -21,6 +18,7 @@ import Navigation, {
 import useCategories from 'modules/commercial/insights/api/categories/useCategories';
 import useAddCategory from 'modules/commercial/insights/api/categories/useAddCategory';
 import useInput from 'modules/commercial/insights/api/inputs/useInput';
+import useAddInputCategories from 'modules/commercial/insights/api/inputs/useAddInputCategories';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -124,19 +122,27 @@ const InputDetails = ({
     useRef<Creatable<{ label: string; value: string }, false>>(null);
   const [selectedOption, setSelectedOption] = useState<null | OptionProps>();
   const [isSelectFocused, setIsSelectFocused] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
   const { data: categories } = useCategories(viewId);
   const { data: previewedInput } = useInput(viewId, previewedInputId);
-
-  const {
-    mutate: addCategory,
-    isLoading,
-    data: newCategoryData,
-  } = useAddCategory({
-    onSuccess: () => {},
-  });
+  const { mutate: addInputCategories, isLoading: addInputCategoryIsLoading } =
+    useAddInputCategories({
+      onSuccess: () => {
+        setSelectedOption(null);
+        selectRef.current?.blur();
+      },
+    });
+  const { mutate: addCategory, isLoading: addCategoryIsLoading } =
+    useAddCategory({
+      onSuccess: (categoryId) => {
+        addInputCategories({
+          viewId,
+          inputId: previewedInputId,
+          categories: [{ id: categoryId, type: 'category' }],
+        });
+      },
+    });
 
   // Loading state
   if (previewedInput === undefined) {
@@ -170,39 +176,21 @@ const InputDetails = ({
       value: category.id,
     }));
 
-  const handleChange = async (option: OptionProps) => {
+  const handleChange = (option: OptionProps) => {
     setSelectedOption(option);
-    setLoading(true);
-
-    try {
-      await addInsightsInputCategory(
-        viewId,
-        previewedInput.data.id,
-        option.value
-      );
-      setSelectedOption(null);
-      selectRef.current?.blur();
-    } catch {
-      // Do nothing
-    }
-    setLoading(false);
+    addInputCategories({
+      viewId,
+      inputId: previewedInput.data.id,
+      categories: [{ id: option.value, type: 'category' }],
+    });
     trackEventByName(tracks.addCategoryFromInput);
   };
 
-  const handleCreate = async (value: string) => {
+  const handleCreate = (value: string) => {
     addCategory({
       viewId,
       name: value,
     });
-    if (newCategoryData) {
-      await addInsightsInputCategory(
-        viewId,
-        previewedInput.data.id,
-        newCategoryData.data.id
-      );
-      setSelectedOption(null);
-    }
-
     trackEventByName(tracks.createCategoryFromInput);
   };
 
@@ -284,7 +272,7 @@ const InputDetails = ({
               />
             )
           )}
-          {(loading || isLoading) && (
+          {(addInputCategoryIsLoading || addCategoryIsLoading) && (
             <StyledSpinner color={colors.success} size="24px" />
           )}
         </CategoryList>

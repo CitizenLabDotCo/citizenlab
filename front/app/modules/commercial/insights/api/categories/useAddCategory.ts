@@ -24,15 +24,19 @@ const addCategory = async ({
     body: requestBody,
   });
 
-const useAddCategory = ({ onSuccess }: { onSuccess?: () => void }) => {
+const useAddCategory = ({
+  onSuccess,
+}: {
+  onSuccess?: (categoryId: string) => void;
+}) => {
   const queryClient = useQueryClient();
   return useMutation<IInsightsCategory, CLErrors, AddInsightsCategoryObject>({
     mutationFn: addCategory,
-    onSuccess: (_data, variables) => {
+    onSuccess: (data, variables) => {
       queryClient.invalidateQueries({
         queryKey: categoryKeys.list(variables.viewId),
       });
-      onSuccess && onSuccess();
+      onSuccess && onSuccess(data.data.id);
     },
   });
 };
