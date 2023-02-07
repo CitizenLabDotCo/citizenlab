@@ -40,16 +40,6 @@ const mockCategoryData = {
   },
 };
 
-const mockCategoryDataResponse = {
-  data: {
-    id: 'b9f3f47a-7eb4-4db5-87ea-885fe42145c8',
-    type: 'category',
-    attributes: {
-      name: 'Some new category',
-    },
-  },
-};
-
 const mockAddInputCategories = jest.fn();
 jest.mock('modules/commercial/insights/api/inputs/useAddInputCategories', () =>
   jest.fn(() => ({ mutate: mockAddInputCategories }))

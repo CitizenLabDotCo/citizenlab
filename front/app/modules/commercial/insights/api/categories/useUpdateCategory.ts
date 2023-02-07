@@ -17,7 +17,7 @@ const updateCategory = ({
 }: IInsightsCategoryUpdateObject) =>
   fetcher<IInsightsCategory>({
     path: `/insights/views/${viewId}/categories/${categoryId}`,
-    action: 'update',
+    action: 'patch',
     body: requestBody,
   });
 

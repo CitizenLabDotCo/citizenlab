@@ -12,7 +12,7 @@ interface IInsightViewUpdateObject {
 const updateView = ({ id, requestBody }: IInsightViewUpdateObject) =>
   fetcher<IInsightsView>({
     path: `/insights/views/${id}`,
-    action: 'update',
+    action: 'patch',
     body: requestBody,
   });
 

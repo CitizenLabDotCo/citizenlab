@@ -20,7 +20,7 @@ const addCategory = async ({
 }: AddInsightsCategoryObject) =>
   fetcher<IInsightsCategory>({
     path: `/insights/views/${viewId}/categories`,
-    action: 'create',
+    action: 'post',
     body: requestBody,
   });
 

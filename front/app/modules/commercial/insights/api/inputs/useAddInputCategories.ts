@@ -15,7 +15,7 @@ const addInputCategories = ({
 }) =>
   fetcher({
     path: `/insights/views/${viewId}/inputs/${inputId}/categories`,
-    action: 'create',
+    action: 'post',
     body: { data: categories },
   });
 

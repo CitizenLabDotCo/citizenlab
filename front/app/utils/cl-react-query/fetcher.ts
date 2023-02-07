@@ -16,15 +16,15 @@ interface Get {
   queryParams?: Record<string, any>;
   body?: never;
 }
-interface Update {
+interface Patch {
   path: Path;
-  action: 'update';
+  action: 'patch';
   body: Record<string, any>;
   queryParams?: never;
 }
-interface Create {
+interface Post {
   path: Path;
-  action: 'create';
+  action: 'post';
   body: Record<string, any>;
   queryParams?: never;
 }
@@ -35,7 +35,7 @@ interface Delete {
   queryParams?: never;
 }
 
-type FetcherArgs = Get | Update | Create | Delete;
+type FetcherArgs = Get | Patch | Post | Delete;
 
 type BaseData = { id?: string; type: string };
 
@@ -52,8 +52,8 @@ function fetcher<TResponseData extends BaseResponseData>(
 async function fetcher({ path, action, body, queryParams }) {
   const methodMap = {
     get: 'GET',
-    update: 'PATCH',
-    create: 'POST',
+    patch: 'PATCH',
+    post: 'POST',
     delete: 'DELETE',
   };
 

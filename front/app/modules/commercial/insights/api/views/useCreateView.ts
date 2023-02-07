@@ -7,7 +7,7 @@ import { IInsightsView } from './types';
 const createView = async (requestBody: IInsightsViewObject) =>
   fetcher<IInsightsView>({
     path: '/insights/views',
-    action: 'create',
+    action: 'post',
     body: requestBody,
   });
 
