@@ -1,8 +1,6 @@
 {
   "UI.FormComponents.required": "krävs",
-  "app.components.Admin.ImageCropper.imageSupportPageText": "besök vårt supportcenter",
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "app.components.Admin.ImageCropper.imageTooltip": "Mer information om rekommenderade bildupplösningar finns i {supportPageLink}.",
   "app.components.Admin.ImageCropper.info": "Den här bilden beskärs alltid till ett visst förhållande för att se till att alla viktiga aspekter alltid visas. Den här bildtypens {link} är {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "rekommenderat förhållande",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Rubriktext för registrerade användare",
@@ -1447,6 +1445,7 @@
   "app.containers.AdminPage.SettingsPage.homepageMetaTitle": "Startsidans rubrik | {orgName}",
   "app.containers.AdminPage.SettingsPage.imageOverlayColor": "Färg rör bildöverlagring",
   "app.containers.AdminPage.SettingsPage.imageOverlayOpacity": "Opacitet för bildöverlagring",
+  "app.containers.AdminPage.SettingsPage.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSetting": "Identifiera olämpligt innehåll",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSettingDescription": "Upptäck automatiskt olämpligt innehåll som publiceras på plattformen.",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionTooltip": "I beta: för närvarande tillgänglig på engelska, franska, tyska, portugisiska och spanska. När den här funktionen är aktiverad kommer indata, förslag och kommentarer som publicerats av deltagare granskas automatiskt genom behandling av naturligt språk. Inlägg vars innehåll har flaggats som potentiellt olämpligt kommer inte att blockeras, utan markeras för granskning på sidan {linkToActivityPage}.",
@@ -1896,5 +1895,8 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Är du säker på att du vill ta bort den här sidan? Du kan inte ångra den här åtgärden. Du kan också ta bort sidan från navigeringsfältet om du inte är redo att ta bort den ännu.",
   "app.modules.navbar.admin.containers.pageHeader": "Sidor och meny",
   "app.modules.navbar.admin.containers.pageSubtitle": "Ditt navigeringsfält kan visa upp till fem sidor utöver start- och projektsidorna. Du kan byta namn på menyobjekt, ändra ordning på och lägga till nya sidor med ditt eget innehåll.",
-  "app.modules.project_management.admin.components.permissionsTab": "Åtkomsträttigheter"
+  "app.modules.project_management.admin.components.permissionsTab": "Åtkomsträttigheter",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."
 }
