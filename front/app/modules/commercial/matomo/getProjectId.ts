@@ -11,16 +11,21 @@ import { Subscription } from 'rxjs';
 
 export const getProjectId = async (path: string) => {
   if (isProjectPage(path)) {
-    const slug = extractProjectSlug(path);
-    if (!slug) return null;
+    // We are using an id in the admin and a slug for citizens
+    if (isOnAdminProjectPage(path)) {
+      return extractProjectIdOrSlug(path);
+    } else {
+      const slug = extractProjectIdOrSlug(path);
+      if (!slug) return null;
 
-    const projectId = await getProjectIdFromProjectSlug(slug);
-    if (projectSubscriptions[slug]) {
-      projectSubscriptions[slug].unsubscribe();
+      const projectId = await getProjectIdFromProjectSlug(slug);
+      if (projectSubscriptions[slug]) {
+        projectSubscriptions[slug].unsubscribe();
+      }
+      delete projectSubscriptions[slug];
+
+      return projectId;
     }
-    delete projectSubscriptions[slug];
-
-    return projectId;
   }
 
   if (isIdeaPage(path)) {
@@ -38,6 +43,9 @@ export const getProjectId = async (path: string) => {
 };
 const slugRegExSource = slugRegEx.source.slice(1, slugRegEx.source.length - 2);
 
+const adminProjectPageDetectRegex = RegExp(
+  `admin/projects/(${slugRegExSource})`
+);
 const projectPageDetectRegex = RegExp(`/projects/(${slugRegExSource})`);
 const projectPageExtractRegex = /\/projects\/([^\s!?/.*#|]+)/;
 
@@ -45,7 +53,11 @@ const isProjectPage = (path: string) => {
   return projectPageDetectRegex.test(path);
 };
 
-const extractProjectSlug = (path: string) => {
+export const isOnAdminProjectPage = (path: string) => {
+  return adminProjectPageDetectRegex.test(path);
+};
+
+const extractProjectIdOrSlug = (path: string) => {
   const matches = path.match(projectPageExtractRegex);
   return matches && matches[1];
 };
