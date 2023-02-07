@@ -9,7 +9,6 @@ import Link from 'utils/cl-router/Link';
 import { parse } from 'qs';
 
 // components
-import { Success } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import PasswordInput, {
   hasPasswordMinimumLength,
@@ -19,6 +18,7 @@ import { Helmet } from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
 import { FormLabel } from 'components/UI/FormComponents';
 import Error from 'components/UI/Error';
+import { PasswordResetSuccess } from 'containers/PasswordReset/PasswordResetSuccess';
 
 // services
 import { resetPassword } from 'services/auth';
@@ -240,11 +240,10 @@ class PasswordReset extends React.PureComponent<
     const title = formatMessage(messages.title);
     const passwordPlaceholder = formatMessage(messages.passwordPlaceholder);
     const updatePassword = formatMessage(messages.updatePassword);
-    const successMessage = success
-      ? formatMessage(messages.successMessage)
-      : null;
 
-    return (
+    return success ? (
+      <PasswordResetSuccess />
+    ) : (
       <Container>
         <Helmet
           title={helmetTitle}
@@ -289,8 +288,6 @@ class PasswordReset extends React.PureComponent<
                 text={updatePassword}
                 onClick={this.handleOnSubmit}
               />
-
-              <Success text={successMessage} />
             </Form>
           </StyledContentContainer>
         </main>
