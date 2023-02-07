@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // Components
-import { Icon, IconNames } from '@citizenlab/cl2-component-library';
+import { Box, Icon, IconNames } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
 // Styling
@@ -148,8 +148,8 @@ const MoreActionsMenu = (props: Props) => {
     id,
   } = props;
 
-  if (!actions || actions.length === 0) {
-    return null;
+  if (actions.length === 0) {
+    return <Box width="25px" />; // to keep other elements in the row in the same place as when there is actions menu
   }
 
   return (
