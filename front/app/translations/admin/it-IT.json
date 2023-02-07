@@ -1,8 +1,6 @@
 {
   "UI.FormComponents.required": "richiesto",
-  "app.components.Admin.ImageCropper.imageSupportPageText": "visit our support center",
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "app.components.Admin.ImageCropper.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}.",
   "app.components.Admin.ImageCropper.info": "This image is always cropped to a certain ratio to make sure all crucial aspects are on display at all times. The {link} for this image type is {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "recommended ratio",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Testo dell'intestazione per gli utenti registrati",
@@ -1447,6 +1445,7 @@
   "app.containers.AdminPage.SettingsPage.homepageMetaTitle": "Homepage header | {orgName}",
   "app.containers.AdminPage.SettingsPage.imageOverlayColor": "Image overlay color",
   "app.containers.AdminPage.SettingsPage.imageOverlayOpacity": "Image overlay opacity",
+  "app.containers.AdminPage.SettingsPage.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSetting": "Rileva i contenuti inappropriati",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSettingDescription": "Rileva automaticamente i contenuti inappropriati pubblicati sulla piattaforma.",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionTooltip": "In Beta: attualmente disponibile in inglese, francese, tedesco, portoghese e spagnolo. Mentre questa funzione è abilitata, gli input, le proposte e i commenti postati dai partecipanti saranno automaticamente rivisti utilizzando il Natural Language Processing. I post segnalati come potenzialmente contenenti contenuti inappropriati non saranno bloccati, ma saranno evidenziati per la revisione nella pagina {linkToActivityPage}.",
@@ -1896,5 +1895,8 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Sei sicuro di voler cancellare questa pagina? Questo non può essere annullato. Puoi anche rimuovere la pagina dalla barra di navigazione se non sei ancora pronto a cancellarla.",
   "app.modules.navbar.admin.containers.pageHeader": "Pages & menu",
   "app.modules.navbar.admin.containers.pageSubtitle": "La tua barra di navigazione può visualizzare fino a quattro pagine oltre alle pagine Home e progetti. Puoi rinominare le voci di menu, riordinare e aggiungere nuove pagine con i tuoi contenuti.",
-  "app.modules.project_management.admin.components.permissionsTab": "Access rights"
+  "app.modules.project_management.admin.components.permissionsTab": "Access rights",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."
 }
