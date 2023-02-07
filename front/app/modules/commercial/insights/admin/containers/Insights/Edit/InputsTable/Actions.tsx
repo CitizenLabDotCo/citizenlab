@@ -6,17 +6,17 @@ import { isNilOrError } from 'utils/helperUtils';
 import { Icon, Dropdown, Checkbox } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
-// Hooks
+// api
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useCategories from 'modules/commercial/insights/api/categories/useCategories';
 import useAddInputCategories from 'modules/commercial/insights/api/inputs/useAddInputCategories';
+import { IInsightsInputData } from 'modules/commercial/insights/api/inputs/types';
 
 // Services
 import {
   batchAssignCategories,
   batchUnassignCategories,
 } from 'modules/commercial/insights/services/batchAssignment';
-import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 
 // I18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';

@@ -8,7 +8,6 @@ import clHistory from 'utils/cl-router/history';
 import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';
 
 // hooks
-import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
 import useScanInsightsCategory from 'modules/commercial/insights/hooks/useScanInsightsCategory';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInputs, {
@@ -49,6 +48,7 @@ import { colors } from 'utils/styleUtils';
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
+import { IInsightsInputData } from 'modules/commercial/insights/api/inputs/types';
 
 const Inputs = styled.div`
   flex: 1;

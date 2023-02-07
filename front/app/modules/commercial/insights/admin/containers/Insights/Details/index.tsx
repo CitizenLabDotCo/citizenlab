@@ -22,9 +22,7 @@ import Navigation from 'modules/commercial/insights/admin/components/Navigation'
 
 // hooks
 import useInfiniteInputs from 'modules/commercial/insights/api/inputs/useInfiniteInputs';
-
-// types
-import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
+import { IInsightsInputData } from 'modules/commercial/insights/api/inputs/types';
 
 const Container = styled.div`
   height: calc(100vh - ${stylingConsts.menuHeight + topBarHeight}px);

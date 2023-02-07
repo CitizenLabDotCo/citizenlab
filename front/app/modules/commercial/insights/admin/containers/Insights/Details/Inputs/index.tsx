@@ -30,9 +30,6 @@ import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
-// types
-import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
-
 // tracking
 import { trackEventByName } from 'utils/analytics';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
@@ -40,6 +37,7 @@ import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks
 // hooks
 import useCategories from 'modules/commercial/insights/api/categories/useCategories';
 import useStat from 'modules/commercial/insights/api/stats/useStat';
+import { IInsightsInputData } from 'modules/commercial/insights/api/inputs/types';
 
 const InputsContainer = styled.div`
   flex: 0 0 500px;
