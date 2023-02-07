@@ -362,22 +362,54 @@ RSpec.describe CustomField, type: :model do
       key = "custom_forms.categories.main_content.#{input_term}.title"
       expected_english_locale = I18n.t(key, default: '', locale: 'en')
 
-      expect(section.title_multiloc[:en]).to eq expected_english_locale
+      expect(section.title_multiloc['en']).to eq expected_english_locale
     end
   end
 
   describe 'field_visible_to' do
     context 'for an unsupported value' do
-      it 'raises an error' do
-        field = create(:custom_field, answer_visible_to: 'aliens')
-        expect { field }.to raise_error 'Unsupported input type: unsupported'
+      it 'is not valid' do
+        field = build(:custom_field, answer_visible_to: 'aliens')
+        expect(field).not_to be_valid
       end
     end
 
-    context 'when not set' do
-      it 'returns admins by default' do
-        field = create(:custom_field)
-        expect { field.answer_visible_to }.to eq 'admins'
+    context 'when not set and is of type CustomForm' do
+      let(:field) { build(:custom_field, resource_type: 'CustomForm') }
+
+      it 'sets admins by default before validation' do
+        field.validate!
+        expect(field.answer_visible_to).to eq 'admins'
+      end
+
+      it 'sets public by default if field is a section' do
+        field.input_type = 'section'
+        field.validate!
+        expect(field.answer_visible_to).to eq 'public'
+      end
+
+      it 'sets public by default if field is a page' do
+        field.input_type = 'page'
+        field.validate!
+        expect(field.answer_visible_to).to eq 'public'
+      end
+
+      it 'sets public by default if the field is built-in' do
+        field.code = 'title_multiloc'
+        field.validate!
+        expect(field.answer_visible_to).to eq 'public'
+      end
+    end
+
+    context 'when not set and is of type User' do
+      let(:field) { build(:custom_field, resource_type: 'User') }
+
+      it 'always sets the value to "admins"' do
+        field.input_type = 'page'
+        field.input_type = 'section'
+        field.code = 'gender'
+        field.validate!
+        expect(field.answer_visible_to).to eq 'admins'
       end
     end
   end
