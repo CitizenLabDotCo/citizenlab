@@ -10,7 +10,6 @@ import {
   RowButton,
   ActionsRowContainer,
 } from '../StyledComponents';
-import DeleteProjectButton from '../DeleteProjectButton';
 import PublicationStatusLabel from '../PublicationStatusLabel';
 import { IconNames, StatusLabel } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
@@ -44,7 +43,7 @@ type CustomButtonAction = {
   icon: IconNames;
   processing?: boolean;
 };
-type ButtonAction = CustomButtonAction | 'manage' | 'delete';
+type ButtonAction = CustomButtonAction | 'manage';
 
 interface Props {
   publication: IAdminPublicationContent;
@@ -93,17 +92,7 @@ const ProjectRow = ({
         </RowContentInner>
         <ActionsRowContainer>
           {actions.map((action) => {
-            if (action === 'delete') {
-              return (
-                <DeleteProjectButton
-                  publication={publication}
-                  setDeleteIsProcessing={setIsBeingDeleted}
-                  setDeletionError={setError}
-                  processing={isBeingDeleted}
-                  key="delete"
-                />
-              );
-            } else if (action === 'manage') {
+            if (action === 'manage') {
               return (
                 <ManageButton
                   isDisabled={isBeingDeleted || !userCanModerateProject}

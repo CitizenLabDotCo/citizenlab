@@ -27,7 +27,6 @@ import useAdminPublications, {
 } from 'hooks/useAdminPublications';
 
 // services
-import { isAdmin } from 'services/permissions/roles';
 import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
 
 // typings
@@ -41,7 +40,6 @@ const FolderIcon = styled(Icon)`
 import ProjectRow from 'containers/Admin/projects/components/ProjectRow';
 import { colors } from 'utils/styleUtils';
 import PublicationStatusLabel from 'containers/Admin/projects/components/PublicationStatusLabel';
-import DeleteProjectFolderButton from '../DeleteProjectFolderButton';
 
 const ArrowIcon = styled(Icon)<{ expanded: boolean }>`
   flex: 0 0 24px;
@@ -120,8 +118,6 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
     folderChildAdminPublications.length > 0;
 
   if (!isNilOrError(authUser)) {
-    const userIsAdmin = isAdmin({ data: authUser });
-
     return (
       <Container>
         <FolderRowContent
@@ -147,14 +143,6 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
             />
           </RowContentInner>
           <ActionsRowContainer>
-            {userIsAdmin && (
-              <DeleteProjectFolderButton
-                publication={publication}
-                processing={isBeingDeleted}
-                setDeletionError={setFolderDeletionError}
-                setDeleteIsProcessing={setIsBeingDeleted}
-              />
-            )}
             <RowButton
               className={`e2e-admin-edit-project ${
                 publication.attributes.publication_title_multiloc['en-GB'] || ''
