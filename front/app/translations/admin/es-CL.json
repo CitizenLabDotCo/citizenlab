@@ -1445,7 +1445,7 @@
   "app.containers.AdminPage.SettingsPage.homepageMetaTitle": "Encabezado de página de inicio | {orgName}",
   "app.containers.AdminPage.SettingsPage.imageOverlayColor": "Color de la imagen superpuesta",
   "app.containers.AdminPage.SettingsPage.imageOverlayOpacity": "Opacidad de la imagen superpuesta",
-  "app.containers.AdminPage.SettingsPage.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "app.containers.AdminPage.SettingsPage.imageSupportPageURL": "https://support.citizenlab.co/es/articles/1346397-cuales-son-las-dimensiones-y-tamanos-recomendados-para-las-imagenes-de-la-plataforma",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSetting": "Detectar contenidos inapropiados",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSettingDescription": "Detectar automáticamente los contenidos inapropiados publicados en la plataforma.",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionTooltip": "En Beta: actualmente disponible en inglés, francés, alemán, portugués y español. Mientras esta función esté activada, los aportes, propuestas y comentarios publicados por los participantes se revisarán automáticamente mediante el Procesamiento del Lenguaje Natural. Los aportes marcados como contenido potencialmente inapropiado no se bloquearán, pero se destacarán para su revisión en la siguiente página {linkToActivityPage}.",
@@ -1896,7 +1896,7 @@
   "app.modules.navbar.admin.containers.pageHeader": "Páginas y menú",
   "app.modules.navbar.admin.containers.pageSubtitle": "Su barra de navegación puede mostrar hasta cinco páginas además de las páginas de Inicio y de proyectos. Puede cambiar el nombre de los elementos del menú, reordenarlos y añadir páginas nuevas con su propio contenido.",
   "app.modules.project_management.admin.components.permissionsTab": "Derechos de acceso",
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visite nuestro centro de soporte",
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visite nuestra página de soporte",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/es/articles/1346397-cuales-son-las-dimensiones-y-tamanos-recomendados-para-las-imagenes-de-la-plataforma",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Para más información sobre las resoluciones de imagen recomendadas, {supportPageLink}."
 }
