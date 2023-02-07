@@ -1272,7 +1272,6 @@
   "app.containers.SpamReport.messageSuccess": "Your report has been sent",
   "app.containers.SpamReport.other": "Other reason",
   "app.containers.SpamReport.otherReasonPlaceholder": "Description",
-  "app.containers.SpamReport.test": "Testing Crowdin diffs",
   "app.containers.SpamReport.wrong_content": "This is not relevant",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Remove profile picture",
   "app.containers.UsersEditPage.becomeVerifiedSubtitle": "To participate in projects requiring verification.",
