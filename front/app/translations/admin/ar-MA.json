@@ -1,8 +1,6 @@
 {
   "UI.FormComponents.required": "مطلوب",
-  "app.components.Admin.ImageCropper.imageSupportPageText": "زيارة مركز الدعم التابع لنا",
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "app.components.Admin.ImageCropper.imageTooltip": "لمزيد من المعلومات حول مستويات الدقة الموصى بها للصور، {supportPageLink}.",
   "app.components.Admin.ImageCropper.info": "يتم اقتصاص هذه الصورة دائمًا بنسبة معينة للتأكد من ظهور جميع النواحي البالغة الأهمية في جميع الأوقات. {link} لنوع هذه الصورة {aspect}‏.",
   "app.components.Admin.ImageCropper.infoLinkText": "النسبة الموصى بها",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "نص ترويسة المستخدمين المسجلين",
@@ -1447,6 +1445,7 @@
   "app.containers.AdminPage.SettingsPage.homepageMetaTitle": "ترويسة الصفحة الرئيسية | {orgName}",
   "app.containers.AdminPage.SettingsPage.imageOverlayColor": "لون تراكب الصور",
   "app.containers.AdminPage.SettingsPage.imageOverlayOpacity": "شفافية تراكب الصور",
+  "app.containers.AdminPage.SettingsPage.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSetting": "اكتشاف محتوى غير لائق",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSettingDescription": "اكتشاف تلقائي لمحتوى غير لائق منشور في المنصة.",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionTooltip": "في بيتا: متوفر حاليًا باللغات الإنجليزية والفرنسية والألمانية والبرتغالية والإسبانية. عندما تكون هذه الميزة ممكَّنة، ستتم بشكل تلقائي مراجعة المدخلات والمقترحات والتعليقات المنشورة من قِبل المشاركين باستخدام نظام معالجة اللغات الطبيعية. لن يتم حظر المنشورات الموضوعة عليها علامات باعتبارها قد تتضمن محتوى غير لائق، لكن سيتم تحديدها تمهيدًا لمراجعتها في صفحة {linkToActivityPage}.",
@@ -1896,5 +1895,8 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "هل تريد بالتأكيد حذف هذه الصفحة؟ لا يمكن التراجع عن هذا الإجراء. يمكنك أيضًا إزالة الصفحة من شريط التنقل إذا لم تكن قد حذفتها حتى الآن.",
   "app.modules.navbar.admin.containers.pageHeader": "صفحات وقائمة",
   "app.modules.navbar.admin.containers.pageSubtitle": "باستطاعة شريط التنقل عرض ما يصل إلى خمس صفحات إضافة إلى الصفحة الرئيسية وصفحات المشاريع. يمكنك إعادة تسمية عناصر قائمة وإعادة ترتيب صفحات جديدة تتضمن المحتوى التابع لك وإضافتها.",
-  "app.modules.project_management.admin.components.permissionsTab": "حقوق الوصول"
+  "app.modules.project_management.admin.components.permissionsTab": "حقوق الوصول",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."
 }
