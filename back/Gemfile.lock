@@ -1099,7 +1099,7 @@ GEM
       activesupport (>= 3)
       attr_required (>= 0.0.5)
       httpclient (>= 2.4)
-    test-prof (1.0.8)
+    test-prof (1.1.0)
     thor (1.2.1)
     thread (0.2.2)
     thread_safe (0.3.6)
@@ -1296,7 +1296,7 @@ DEPENDENCIES
   spring-commands-rspec
   spring-watcher-listen (~> 2.0.0)
   surveys!
-  test-prof (~> 1.0)
+  test-prof (~> 1.1)
   texting!
   user_confirmation!
   user_custom_fields!
