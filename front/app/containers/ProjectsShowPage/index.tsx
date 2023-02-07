@@ -210,19 +210,16 @@ const ProjectsShowPageWrapper = () => {
   const { pathname } = useLocation();
   const { slug, phaseNumber } = useParams();
   const [search] = useSearchParams();
+  const scrollToEventId = search.get('scrollToEventId');
 
   const project = useProject({ projectSlug: slug });
   const phases = usePhases(project?.id);
   const processType = project?.attributes?.process_type;
-  const scrollToEventId = search.get('scrollToEventId');
 
   const urlSegments = pathname
     .replace(/^\/|\/$/g, '')
     .split('/')
     .filter((segment) => segment !== '');
-
-  // If processType is 'timeline' but the phases aren't loaded yet: don't render yet
-  if (processType === 'timeline' && isNilOrError(phases)) return null;
 
   if (
     processType === 'timeline' &&
