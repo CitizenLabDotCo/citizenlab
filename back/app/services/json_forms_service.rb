@@ -81,25 +81,25 @@ class JsonFormsService
 
     if author_field_allowed? project, current_user
       output[:json_schema_multiloc].each_value do |json_schema|
-        json_schema['author_id'] = InputJsonSchemaGeneratorService.new.visit_text AUTHOR_FIELD
+        json_schema[:properties]['author_id'] = InputJsonSchemaGeneratorService.new.visit_text AUTHOR_FIELD
       end
       output[:ui_schema_multiloc].each_value do |ui_schema|
         schema_main_section = ui_schema[:elements].find do |elt|
-          elt.dig(:options, :id) == fields.find_by(code: 'ideation_section1').id
+          elt.dig(:options, :id) == fields.find { |field| field.code == 'ideation_section1' }.id
         end
-        schema_main_section[:elements].insert 1, InputUiSchemaGeneratorService.new.visit_text(AUTHOR_FIELD)
+        schema_main_section[:elements].insert 1, InputUiSchemaGeneratorService.new(nil).visit_text(AUTHOR_FIELD)
       end
     end
 
     if budget_field_allowed? project, current_user
       output[:json_schema_multiloc].each_value do |json_schema|
-        json_schema['budget'] = InputJsonSchemaGeneratorService.new.visit_number BUDGET_FIELD
+        json_schema[:properties]['budget'] = InputJsonSchemaGeneratorService.new.visit_number BUDGET_FIELD
       end
       output[:ui_schema_multiloc].each_value do |ui_schema|
         details_section = ui_schema[:elements].find do |elt|
-          elt.dig(:options, :id) == fields.find_by(code: 'ideation_section3').id
+          elt.dig(:options, :id) == fields.find { |field| field.code == 'ideation_section3' }.id
         end
-        details_section[:elements].insert 0, InputUiSchemaGeneratorService.new.visit_number(BUDGET_FIELD)
+        details_section[:elements].insert 0, InputUiSchemaGeneratorService.new(nil).visit_number(BUDGET_FIELD)
       end
     end
   end

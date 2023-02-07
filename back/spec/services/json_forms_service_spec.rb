@@ -223,7 +223,7 @@ describe JsonFormsService do
     # - Add author and budget when admin (in JsonFormsService)
     describe 'input_ui_and_json_multiloc_schemas' do
       let(:input_term) { 'question' }
-      let(:project) { create :continuous_project, input_term: input_term }
+      let(:project) { create :continuous_budgeting_project, input_term: input_term }
       let(:custom_form) { create :custom_form, :with_default_fields, participation_context: project }
       let!(:section) do
         create(
@@ -409,11 +409,14 @@ describe JsonFormsService do
       end
 
       context 'when admin' do
+        before do
+          SettingsService.new.activate_feature! 'idea_author_change'
+          SettingsService.new.activate_feature! 'participatory_budgeting'
+        end
+
         let(:user) { create :admin }
 
         it 'includes budget and author fields' do
-          expect(output[:json_schema_multiloc]['en'][:properties]).to have_key 'author_id'
-          expect(output[:json_schema_multiloc]['en'][:properties]).to have_key 'budget'
           expect(output[:json_schema_multiloc]['en'][:properties]['author_id']).to eq({ type: 'string' })
           expect(output[:json_schema_multiloc]['en'][:properties]['budget']).to eq({ type: 'number' })
 
@@ -421,13 +424,24 @@ describe JsonFormsService do
             type: 'Control',
             scope: '#/properties/author_id',
             label: 'Author',
-            options: { input_type: 'text' }
+            options: {
+              input_type: 'text',
+              transform: 'trim_on_blur',
+              isAdminField: true,
+              hasRule: false,
+              description: 'Author description'
+            }
           })
           expect(output[:ui_schema_multiloc]['en'][:elements][2][:elements][0]).to eq({
             type: 'Control',
             scope: '#/properties/budget',
             label: 'Budget',
-            options: { input_type: 'number' }
+            options: {
+              input_type: 'number',
+              isAdminField: true,
+              hasRule: false,
+              description: 'Budget description'
+            }
           })
         end
       end
