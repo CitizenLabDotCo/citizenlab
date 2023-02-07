@@ -1039,7 +1039,6 @@
   "app.containers.PasswordRecovery.resetPassword": "Pošaljite vezu za ponovno postavljanje lozinke",
   "app.containers.PasswordRecovery.submitError": "Nismo mogli pronaći račun povezan s ovom adresom e-pošte. Umjesto toga, možete se pokušati registrirati.",
   "app.containers.PasswordRecovery.subtitle": "Kamo možemo poslati vezu za odabir nove lozinke?",
-  "app.containers.PasswordRecovery.successMessage": "E-poruka za ponovno postavljanje lozinke uspješno je poslana na {email}. Veza ističe za 1 sat.",
   "app.containers.PasswordRecovery.title": "Ponovno postavljanje lozinke",
   "app.containers.PasswordReset.helmetDescription": "Stranica za poništavanje lozinke",
   "app.containers.PasswordReset.helmetTitle": "Poništite svoju lozinku",

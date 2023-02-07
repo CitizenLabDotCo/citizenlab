@@ -1039,7 +1039,6 @@
   "app.containers.PasswordRecovery.resetPassword": "Envieu un enllaç de restabliment de la contrasenya",
   "app.containers.PasswordRecovery.submitError": "No hem trobat cap compte enllaçat a aquest correu electrònic. En el seu lloc, podeu provar de registrar-vos.",
   "app.containers.PasswordRecovery.subtitle": "On podem enviar un enllaç per triar una nova contrasenya?",
-  "app.containers.PasswordRecovery.successMessage": "El correu electrònic de restabliment de la contrasenya s'ha enviat correctament a {email}. L'enllaç caduca en 1 hora.",
   "app.containers.PasswordRecovery.title": "Restabliu la contrasenya",
   "app.containers.PasswordReset.helmetDescription": "Restabliu la vostra pàgina de contrasenya",
   "app.containers.PasswordReset.helmetTitle": "Restablir la contrasenya",

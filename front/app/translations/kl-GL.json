@@ -1027,7 +1027,6 @@
   "app.containers.PasswordRecovery.resetPassword": "Kodep isissutigisartakkap linkia nassiuguk.",
   "app.containers.PasswordRecovery.submitError": "E-mailimut uunga konto atasoq nassarinngilarput. Taarsiullugu allatsillutit misilissinnaavat.",
   "app.containers.PasswordRecovery.subtitle": "Nutaamik passworditaarnissamut linki sumut nassiutissavarput?",
-  "app.containers.PasswordRecovery.successMessage": "Kodep isissutissap allanngortinnissaa pillugu e-mail uunga {email} ajornartorsiuteqanngitsumik nassiunneqarpoq ",
   "app.containers.PasswordRecovery.title": "Kodemik isissutissamik allannguineq",
   "app.containers.PasswordReset.helmetDescription": "Kodep isissutissap allanngortinnissaanut qupperneq",
   "app.containers.PasswordReset.helmetTitle": "Kode isissutit allanngortiguk",

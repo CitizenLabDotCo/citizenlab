@@ -1039,7 +1039,6 @@
   "app.containers.PasswordRecovery.resetPassword": "Skicka en länk för återställning av lösenord",
   "app.containers.PasswordRecovery.submitError": "Vi kunde inte hitta ett konto som har länkats till den här e-postadressen. Du kan försöka registrera dig istället.",
   "app.containers.PasswordRecovery.subtitle": "Vart kan vi skicka en länk för att välja ett nytt lösenord?",
-  "app.containers.PasswordRecovery.successMessage": "E-postmeddelande om lösenordsåterställning har skickats till {email}. Länken upphör att gälla om 1 timme.",
   "app.containers.PasswordRecovery.title": "Återställning av lösenord",
   "app.containers.PasswordReset.helmetDescription": "Återställ ditt lösenord-sida",
   "app.containers.PasswordReset.helmetTitle": "Återställ ditt lösenord",

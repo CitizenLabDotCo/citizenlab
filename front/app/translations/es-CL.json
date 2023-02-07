@@ -1039,7 +1039,6 @@
   "app.containers.PasswordRecovery.resetPassword": "Recibir un enlace",
   "app.containers.PasswordRecovery.submitError": "No pudimos encontrar una cuenta vinculada a este correo electrónico. Puede intentar registrarte.",
   "app.containers.PasswordRecovery.subtitle": "¿Dónde se puede enviar un enlace para elegir una nueva contraseña?",
-  "app.containers.PasswordRecovery.successMessage": "El correo para restablecer tu contraseña se envió exitosamente a {email}. El enlace caduca en 1 hora.",
   "app.containers.PasswordRecovery.title": "Restablecimiento de contraseña",
   "app.containers.PasswordReset.helmetDescription": "Restablece tu contraseña",
   "app.containers.PasswordReset.helmetTitle": "Restablece tu contraseña",

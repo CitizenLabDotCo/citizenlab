@@ -1039,7 +1039,6 @@
   "app.containers.PasswordRecovery.resetPassword": "Versturen",
   "app.containers.PasswordRecovery.submitError": "We vonden geen profiel dat gelinkt is met deze e-mail. Je kan proberen om je te registeren.",
   "app.containers.PasswordRecovery.subtitle": "Naar welke email kunnen we een link sturen om een nieuw wachtwoord te kiezen?",
-  "app.containers.PasswordRecovery.successMessage": "Wachtwoord reset e-mail is succesvol verzonden naar {email}. De link is 1 uur geldig.",
   "app.containers.PasswordRecovery.title": "Herstel wachtwoord",
   "app.containers.PasswordReset.helmetDescription": "Je wachtwoord wijzigen",
   "app.containers.PasswordReset.helmetTitle": "Je wachtwoord opnieuw instellen",

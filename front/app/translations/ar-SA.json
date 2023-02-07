@@ -1039,7 +1039,6 @@
   "app.containers.PasswordRecovery.resetPassword": "أرسل رابط إعادة تعيين كلمة المرور",
   "app.containers.PasswordRecovery.submitError": "لم نتمكن من العثور على حساب مرتبط بالبريد الإلكتروني هذا. يمكنك محاولة التسجيل بدلًا من ذلك.",
   "app.containers.PasswordRecovery.subtitle": "أين يمكننا إرسال رابط لاختيار كلمة مرور جديدة؟",
-  "app.containers.PasswordRecovery.successMessage": "تم إرسال رسالة إعادة تعيين كلمة المرور إلى {email}. تتنهي صلاحية الرابط في غضون ساعة واحدة.",
   "app.containers.PasswordRecovery.title": "تمت إعادة تعيين كلمة المرور",
   "app.containers.PasswordReset.helmetDescription": "صفحة إعادة تعيين كلمة المرور",
   "app.containers.PasswordReset.helmetTitle": "إعادة تعيين كلمة المرور",

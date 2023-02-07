@@ -1039,7 +1039,6 @@
   "app.containers.PasswordRecovery.resetPassword": "Invia un link per la reimpostazione della password",
   "app.containers.PasswordRecovery.submitError": "Non abbiamo trovato un account collegato a questa email. Puoi provare ad iscriverti invece.",
   "app.containers.PasswordRecovery.subtitle": "Dove possiamo inviare un link per scegliere una nuova password?",
-  "app.containers.PasswordRecovery.successMessage": "Email di reimpostazione della password inviata con successo a {email}. Il link scade tra 1 ora.",
   "app.containers.PasswordRecovery.title": "Ripristino della password",
   "app.containers.PasswordReset.helmetDescription": "Pagina di reimpostazione della password",
   "app.containers.PasswordReset.helmetTitle": "Ripristina la tua password",

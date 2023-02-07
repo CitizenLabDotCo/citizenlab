@@ -1039,7 +1039,6 @@
   "app.containers.PasswordRecovery.resetPassword": "Send lenke for å nullstille passord",
   "app.containers.PasswordRecovery.submitError": "Vi finner ingen konto tilknyttet e-postadressen. Registrer deg i stedet: ",
   "app.containers.PasswordRecovery.subtitle": "Hvor skal vi sende lenken for å nullstille passordet?",
-  "app.containers.PasswordRecovery.successMessage": "E-post for å nullstille passordet er sendt til {email}. Lenken utløper om en time.",
   "app.containers.PasswordRecovery.title": "Tilbakestilling av passord",
   "app.containers.PasswordReset.helmetDescription": "Tilbakestill passordet",
   "app.containers.PasswordReset.helmetTitle": "Tilbakestill passordet ditt",

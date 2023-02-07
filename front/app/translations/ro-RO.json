@@ -1039,7 +1039,6 @@
   "app.containers.PasswordRecovery.resetPassword": "Trimite un link de resetare a parolei",
   "app.containers.PasswordRecovery.submitError": "Nu am putut găsi un cont legat de acestă adresă de e-mail. În schimb vă puteți înscrie.",
   "app.containers.PasswordRecovery.subtitle": "Unde putem trimite un link pentru a alege o nouă parolă?",
-  "app.containers.PasswordRecovery.successMessage": "E-mailul de resetare a parolei a fost trimis cu succes la {email}. Link-ul expiră într-o oră.",
   "app.containers.PasswordRecovery.title": "Resetare parolă",
   "app.containers.PasswordReset.helmetDescription": "Resetează pagina aferentă parolei",
   "app.containers.PasswordReset.helmetTitle": "Resetează parola",
