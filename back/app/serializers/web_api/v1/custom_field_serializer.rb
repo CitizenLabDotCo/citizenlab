@@ -9,8 +9,12 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :answer_visible_to, if: proc { |object, _params|
-    @participation_method = Factory.instance.participation_method_for object.resource.participation_context
-    @participation_method.supports_answer_visible_to?
+    if object.resource
+      @participation_method = Factory.instance.participation_method_for object.resource.participation_context
+      @participation_method.supports_answer_visible_to?
+    else
+      false
+    end
   }
 
   attribute :hidden, if: proc { |object, _params|

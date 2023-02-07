@@ -43,7 +43,8 @@ describe WebApi::V1::CustomFieldSerializer do
         title_multiloc: { 'en' => 'Did you attend' },
         updated_at: an_instance_of(ActiveSupport::TimeWithZone),
         logic: {},
-        constraints: {}
+        constraints: {},
+        answer_visible_to: 'admins'
       })
     end
   end
@@ -82,7 +83,8 @@ describe WebApi::V1::CustomFieldSerializer do
         title_multiloc: { 'en' => 'We need a swimming pool.' },
         updated_at: an_instance_of(ActiveSupport::TimeWithZone),
         logic: {},
-        constraints: {}
+        constraints: {},
+        answer_visible_to: 'admins'
       })
     end
   end
@@ -112,7 +114,8 @@ describe WebApi::V1::CustomFieldSerializer do
         title_multiloc: { 'en' => 'Cycling survey' },
         updated_at: an_instance_of(ActiveSupport::TimeWithZone),
         logic: { 'next_page_id' => 'TEMP-ID-1' },
-        constraints: {}
+        constraints: {},
+        answer_visible_to: 'public'
       })
     end
   end
