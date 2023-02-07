@@ -39,7 +39,7 @@ import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks
 
 // hooks
 import useCategories from 'modules/commercial/insights/api/categories/useCategories';
-import { useStat } from 'modules/commercial/insights/api/stats';
+import useStat from 'modules/commercial/insights/api/stats/useStat';
 
 const InputsContainer = styled.div`
   flex: 0 0 500px;

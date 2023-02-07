@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import fetcher from 'utils/cl-react-query/fetcher';
 import inputKeys from '../inputs/keys';
-import { statsKeys } from '../stats';
+import statsKeys from '../stats/keys';
 import categoryKeys from './keys';
 
 const deleteAllCategories = (viewId: string) =>

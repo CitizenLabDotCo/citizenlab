@@ -36,7 +36,7 @@ import useAddCategory from 'modules/commercial/insights/api/categories/useAddCat
 import useDeleteCategory from 'modules/commercial/insights/api/categories/useDeleteCategory';
 import useDeleteAllCategories from 'modules/commercial/insights/api/categories/useDeleteAllCategories';
 import useDetectedCategories from 'modules/commercial/insights/hooks/useInsightsDetectedCategories';
-import { useStat } from 'modules/commercial/insights/api/stats';
+import useStat from 'modules/commercial/insights/api/stats/useStat';
 
 // intl
 import { WrappedComponentProps } from 'react-intl';

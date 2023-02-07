@@ -42,8 +42,8 @@ const allInputsCount = 10;
 const uncategorizedInputCount = 5;
 const recentlyPostedInputCount = 2;
 
-jest.mock('modules/commercial/insights/api/stats', () => ({
-  useStat: jest.fn((_viewId, queryParameters) => ({
+jest.mock('modules/commercial/insights/api/stats/useStat', () =>
+  jest.fn((_viewId, queryParameters) => ({
     data: {
       data:
         queryParameters.processed === false
@@ -53,8 +53,8 @@ jest.mock('modules/commercial/insights/api/stats', () => ({
           ? { count: allInputsCount }
           : { count: uncategorizedInputCount },
     },
-  })),
-}));
+  }))
+);
 
 jest.mock('utils/analytics');
 
