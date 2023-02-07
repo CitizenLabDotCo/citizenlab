@@ -72,9 +72,6 @@ export const LabelContent = styled.div`
 
 const SettingsGeneralTab = () => {
   const appConfiguration = useAppConfiguration();
-  // attributesDiff: {},
-  // appConfiguration: null,
-  // errors: {},
   const [loading, setLoading] = useState(false);
   const [hasUrlError, setHasUrlError] = useState(false);
   const [saved, setSaved] = useState(false);
