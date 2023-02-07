@@ -201,6 +201,7 @@ const CLPageLayout = memo(
             flexDirection={isSmallerThanXlPhone ? 'column' : 'row-reverse'}
             justifyContent="space-between"
             width="100%"
+            mb="60px"
           >
             <Button
               onClick={handleNextAndSubmit}

@@ -115,17 +115,19 @@ const LinearScaleControl = ({
               </Text>
             </Box>
           )}
-          <Box maxWidth={isSmallerThanXlPhone ? '100%' : '50%'}>
-            <Text
-              mt={isSmallerThanXlPhone ? '0px' : '8px'}
-              m="0px"
-              color="textSecondary"
-              fontSize={isSmallerThanXlPhone ? 's' : 'm'}
-            >
-              {isSmallerThanXlPhone && <>{maximum}. </>}
-              {uischema.options?.maximum_label}
-            </Text>
-          </Box>
+          {uischema.options?.maximum_label && (
+            <Box maxWidth={isSmallerThanXlPhone ? '100%' : '50%'}>
+              <Text
+                mt={isSmallerThanXlPhone ? '0px' : '8px'}
+                m="0px"
+                color="textSecondary"
+                fontSize={isSmallerThanXlPhone ? 's' : 'm'}
+              >
+                {isSmallerThanXlPhone && <>{maximum}. </>}
+                {uischema.options?.maximum_label}
+              </Text>
+            </Box>
+          )}
         </Box>
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>

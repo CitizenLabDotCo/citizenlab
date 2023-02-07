@@ -67,6 +67,7 @@ const SingleSelectRadioControl = ({
             selectBackgroundColor={colors.grey100}
             mb="12px"
             key={option.value}
+            borderRadius="3px"
           >
             <Radio
               padding="20px 20px 4px 20px"
