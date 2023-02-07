@@ -1,8 +1,6 @@
 {
   "UI.FormComponents.required": "noutwenneg",
-  "app.components.Admin.ImageCropper.imageSupportPageText": "visit our support center",
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "app.components.Admin.ImageCropper.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}.",
   "app.components.Admin.ImageCropper.info": "This image is always cropped to a certain ratio to make sure all crucial aspects are on display at all times. The {link} for this image type is {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "recommended ratio",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Header text for registered users",
@@ -1447,6 +1445,7 @@
   "app.containers.AdminPage.SettingsPage.homepageMetaTitle": "Homepage header | {orgName}",
   "app.containers.AdminPage.SettingsPage.imageOverlayColor": "Image overlay color",
   "app.containers.AdminPage.SettingsPage.imageOverlayOpacity": "Image overlay opacity",
+  "app.containers.AdminPage.SettingsPage.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSetting": "Detect inappropriate content",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSettingDescription": "Auto-detect inappropriate content posted on the platform.",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionTooltip": "In Beta: currently available in English, French, German, Portuguese and Spanish. While this feature is enabled, input, proposals and comments posted by participants will be automatically reviewed using Natural Language Processing. Posts flagged as potentially containing inappropriate content will not be blocked, but will be highlighted for review on the {linkToActivityPage} page.",
@@ -1896,5 +1895,8 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Sidd Dir sécher, datt Dir dës Säit läsche wëllt? Dëst kann net réckgängeg gemaach ginn. Dir kënnt d’Säit och vun der Navigatiounsleescht ewechhuelen, wann Dir net prett sidd, se ze läschen.",
   "app.modules.navbar.admin.containers.pageHeader": "Pages & menu",
   "app.modules.navbar.admin.containers.pageSubtitle": "Är Navigatiounsleescht kann zousätzlech zu den Homepagen a Projetssäiten bis zu fënnef Säiten uweisen. Dir kënnt Menüpunkten ëmbenennen, nei uerdnen an nei Säite mat Ärem eegenen Inhalt dobäifügen.",
-  "app.modules.project_management.admin.components.permissionsTab": "Access rights"
+  "app.modules.project_management.admin.components.permissionsTab": "Access rights",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."
 }
