@@ -444,6 +444,26 @@ describe JsonFormsService do
             }
           })
         end
+
+        it 'includes the budget field on top of the proposed budget field when there is no details section but there is a proposed budget field' do
+          custom_form.custom_fields.find { |field| field.code == 'ideation_section3' }.destroy!
+          custom_form.custom_fields.find { |field| field.code == 'proposed_budget' }.update!(enabled: true)
+          custom_form.reload
+
+          expect(output[:json_schema_multiloc]['en'][:properties]['budget']).to eq({ type: 'number' })
+          expect(output[:ui_schema_multiloc]['en'][:elements][1][:elements][4][:scope]).to eq '#/properties/budget'
+          expect(output[:ui_schema_multiloc]['en'][:elements][1][:elements][5][:scope]).to eq '#/properties/proposed_budget'
+        end
+
+        it 'includes the budget field under the body multiloc field when there is no details section and no proposed budget field' do
+          custom_form.custom_fields.find { |field| field.code == 'ideation_section3' }.destroy!
+          custom_form.custom_fields.find { |field| field.code == 'proposed_budget' }.update!(enabled: false)
+          custom_form.reload
+
+          expect(output[:json_schema_multiloc]['en'][:properties]['budget']).to eq({ type: 'number' })
+          expect(output[:ui_schema_multiloc]['en'][:elements][0][:elements][2][:options]).to eq({ input_type: 'html_multiloc', render: 'multiloc' }) # body_multiloc
+          expect(output[:ui_schema_multiloc]['en'][:elements][0][:elements][3][:scope]).to eq '#/properties/budget'
+        end
       end
     end
   end

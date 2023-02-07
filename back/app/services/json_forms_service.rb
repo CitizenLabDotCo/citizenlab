@@ -96,10 +96,31 @@ class JsonFormsService
         json_schema[:properties]['budget'] = InputJsonSchemaGeneratorService.new.visit_number BUDGET_FIELD
       end
       output[:ui_schema_multiloc].each_value do |ui_schema|
-        details_section = ui_schema[:elements].find do |elt|
-          elt.dig(:options, :id) == fields.find { |field| field.code == 'ideation_section3' }.id
+        details_section_id = fields.find { |field| field.code == 'ideation_section3' }&.id
+        if details_section_id
+          details_section = ui_schema[:elements].find do |elt|
+            elt.dig(:options, :id) == details_section_id
+          end
+          details_section[:elements].insert 0, InputUiSchemaGeneratorService.new(nil).visit_number(BUDGET_FIELD)
+        elsif fields.find { |field| field.code == 'proposed_budget' }
+          budget_section = ui_schema[:elements].find do |elt|
+            elt[:elements].any? do |subelt|
+              subelt[:scope] == '#/properties/proposed_budget'
+            end
+          end
+          budget_position = budget_section[:elements].index do |elt|
+            elt[:scope] == '#/properties/proposed_budget'
+          end
+          budget_section[:elements].insert budget_position, InputUiSchemaGeneratorService.new(nil).visit_number(BUDGET_FIELD)
+        else
+          schema_main_section = ui_schema[:elements].find do |elt|
+            elt.dig(:options, :id) == fields.find { |field| field.code == 'ideation_section1' }.id
+          end
+          body_multiloc_position = schema_main_section[:elements].index do |elt|
+            elt.dig(:options, :input_type) == 'html_multiloc' && elt[:elements].first[:scope].starts_with?('#/properties/body_multiloc/properties')
+          end
+          schema_main_section[:elements].insert (body_multiloc_position + 1), InputUiSchemaGeneratorService.new(nil).visit_number(BUDGET_FIELD)
         end
-        details_section[:elements].insert 0, InputUiSchemaGeneratorService.new(nil).visit_number(BUDGET_FIELD)
       end
     end
   end
