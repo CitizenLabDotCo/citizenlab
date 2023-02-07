@@ -5,11 +5,9 @@ jest.mock('utils/cl-router/Link', () => 'Link');
 jest.mock('resources/GetProjects', () => {});
 
 const mockMutate = jest.fn();
-jest.mock('modules/commercial/insights/api/views', () => {
-  return {
-    useCreateView: () => ({ mutate: mockMutate, reset: jest.fn() }),
-  };
-});
+jest.mock('modules/commercial/insights/api/views/useCreateView', () =>
+  jest.fn(() => ({ mutate: mockMutate, reset: jest.fn() }))
+);
 
 import { CreateInsightsView } from './CreateInsightsView';
 import { GetProjectsChildProps } from 'resources/GetProjects';

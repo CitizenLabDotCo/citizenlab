@@ -16,13 +16,11 @@ jest.mock('utils/cl-router/withRouter', () => {
 });
 
 const mockMutate = jest.fn();
-jest.mock('modules/commercial/insights/api/views', () => {
-  return {
-    useUpdateView: jest.fn(() => {
-      return { mutate: mockMutate, reset: jest.fn() };
-    }),
-  };
-});
+jest.mock('modules/commercial/insights/api/views/useUpdateView', () =>
+  jest.fn(() => {
+    return { mutate: mockMutate, reset: jest.fn() };
+  })
+);
 
 describe('Rename Insights View', () => {
   it('renames view with correct viewId and name', () => {

@@ -18,7 +18,7 @@ import { requestBlob } from 'utils/request';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
-import { useView } from 'modules/commercial/insights/api/views';
+import useView from 'modules/commercial/insights/api/views/useView';
 
 // services
 import { getInsightsInputsEndpoint } from 'modules/commercial/insights/services/insightsInputs';

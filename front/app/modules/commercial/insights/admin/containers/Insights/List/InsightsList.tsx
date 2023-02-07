@@ -15,10 +15,9 @@ import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 
-import {
-  useDeleteView,
-  IInsightsViewData,
-} from 'modules/commercial/insights/api/views';
+// api
+import useDeleteView from 'modules/commercial/insights/api/views/useDeleteView';
+import { IInsightsViewData } from 'modules/commercial/insights/api/views/types';
 
 const StyledDescription = styled.p`
   font-size: ${fontSizes.base}px;

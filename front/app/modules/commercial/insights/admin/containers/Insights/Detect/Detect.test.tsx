@@ -30,7 +30,7 @@ jest.mock(
   }
 );
 
-jest.mock('modules/commercial/insights/api/views');
+jest.mock('modules/commercial/insights/api/views/useView');
 
 const mockLocationData = { pathname: '', query: {} };
 

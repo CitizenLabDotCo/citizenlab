@@ -48,7 +48,7 @@ jest.mock('hooks/useIdea', () => {
   return jest.fn(() => mockIdeaData);
 });
 
-jest.mock('modules/commercial/insights/api/views');
+jest.mock('modules/commercial/insights/api/views/useView');
 
 const mockLinks = links;
 const mockIsLoading = false;

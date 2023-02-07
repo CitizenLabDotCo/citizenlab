@@ -60,17 +60,18 @@ const viewId = '1';
 
 jest.mock('utils/analytics');
 
+jest.mock('modules/commercial/insights/api/views/useView', () =>
+  jest.fn(() => {
+    return { data: mockViewData };
+  })
+);
+
 const mockDeleteView = jest.fn();
-jest.mock('modules/commercial/insights/api/views', () => {
-  return {
-    useView: jest.fn(() => {
-      return { data: mockViewData };
-    }),
-    useDeleteView: jest.fn(() => {
-      return { mutate: mockDeleteView };
-    }),
-  };
-});
+jest.mock('modules/commercial/insights/api/views/useDeleteView', () =>
+  jest.fn(() => {
+    return { mutate: mockDeleteView };
+  })
+);
 
 jest.mock('hooks/useProject', () => {
   return jest.fn(({ projectId }) =>

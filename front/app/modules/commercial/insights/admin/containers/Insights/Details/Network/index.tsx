@@ -15,7 +15,7 @@ import ForceGraph2D, {
 import { forceCollide } from 'd3-force';
 
 // hooks
-import { useView } from 'modules/commercial/insights/api/views';
+import useView from 'modules/commercial/insights/api/views/useView';
 import useNetwork from 'modules/commercial/insights/api/network/useNetwork';
 
 // utils

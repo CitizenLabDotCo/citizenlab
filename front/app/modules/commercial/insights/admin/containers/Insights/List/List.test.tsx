@@ -6,16 +6,18 @@ import InsightsList from './';
 
 let mockData = { data: views };
 
+jest.mock('modules/commercial/insights/api/views/useViews', () =>
+  jest.fn(() => ({
+    data: mockData,
+  }))
+);
+
 const mockDeleteView = jest.fn();
-jest.mock('modules/commercial/insights/api/views', () => {
-  return {
-    useViews: jest.fn(() => {
-      return { data: mockData };
-    }),
-    useDeleteView: () => ({ mutate: mockDeleteView }),
-    useCreateView: () => ({ mutate: jest.fn() }),
-  };
-});
+jest.mock('modules/commercial/insights/api/views/useDeleteView', () =>
+  jest.fn(() => ({
+    mutate: mockDeleteView,
+  }))
+);
 
 jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
 

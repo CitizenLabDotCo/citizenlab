@@ -44,7 +44,7 @@ jest.mock('./Network', () => {
   return () => <div />;
 });
 
-jest.mock('modules/commercial/insights/api/views');
+jest.mock('modules/commercial/insights/api/views/useView');
 jest.mock('modules/commercial/insights/api/inputs/useInfiniteInputs');
 jest.mock('modules/commercial/insights/api/inputs/useInput');
 

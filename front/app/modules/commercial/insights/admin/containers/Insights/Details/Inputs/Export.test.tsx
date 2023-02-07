@@ -10,7 +10,7 @@ const application =
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 let mockLocationData: { query: Record<string, unknown> } = { query: {} };
 
-jest.mock('modules/commercial/insights/api/views');
+jest.mock('modules/commercial/insights/api/views/useView');
 
 jest.mock('utils/request');
 

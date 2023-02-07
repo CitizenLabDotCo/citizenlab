@@ -8,7 +8,7 @@ import EmptyState from './EmptyState';
 import InsightsList from './InsightsList';
 import Modal from 'components/UI/Modal';
 import CreateInsightsView from './CreateInsightsView';
-import { useViews } from 'modules/commercial/insights/api/views';
+import useViews from 'modules/commercial/insights/api/views/useViews';
 
 const Insights = () => {
   const [createModalOpened, setCreateModalOpened] = useState(false);
