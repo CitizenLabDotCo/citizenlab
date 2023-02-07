@@ -1,8 +1,6 @@
 {
   "UI.FormComponents.required": "obligatoire",
-  "app.components.Admin.ImageCropper.imageSupportPageText": "visitez notre centre d'assistance",
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "app.components.Admin.ImageCropper.imageTooltip": "Pour plus d'informations sur les résolutions d'image recommandées, {supportPageLink}.",
   "app.components.Admin.ImageCropper.info": "Cette image est toujours recadrée à un certain ratio afin de s'assurer que tous les aspects cruciaux sont affichés à tout moment. Le {link} de ce type d'image est {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "ratio recommandé",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Texte de la bannière pour les utilisateurs connectés",
@@ -1447,6 +1445,7 @@
   "app.containers.AdminPage.SettingsPage.homepageMetaTitle": "En-tête de page d'accueil | {orgName}",
   "app.containers.AdminPage.SettingsPage.imageOverlayColor": "Couleur du filtre de la bannière",
   "app.containers.AdminPage.SettingsPage.imageOverlayOpacity": "Opacité du filtre de la bannière",
+  "app.containers.AdminPage.SettingsPage.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSetting": "Détecter les contenus inappropriés",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSettingDescription": "Détecter automatiquement les contenus inappropriés publiés sur la plateforme.",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionTooltip": "Version Bêta : actuellement disponible en français, anglais, allemand, portugais et espagnol. Lorsque cette fonctionnalité est activée, les contributions, propositions et commentaires postés par les utilisateurs sont automatiquement examinées à l'aide de notre Intelligence Artificielle d'analyse sémantique du langage. Les contenus signalés ne sont pas bloqués mais mis en lumière pour vérification sur la page {linkToActivityPage} .",
@@ -1896,5 +1895,8 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Êtes-vous sûr de vouloir supprimer cette page ? Cette suppression ne peut être annulée. Vous pouvez également supprimer la page de la barre de navigation si vous n'êtes pas encore prêt à la supprimer.",
   "app.modules.navbar.admin.containers.pageHeader": "Pages et menu",
   "app.modules.navbar.admin.containers.pageSubtitle": "Votre barre de navigation peut afficher jusqu'à cinq pages en plus des pages d'accueil et des projets. Vous pouvez renommer les éléments du menu, les réorganiser et ajouter de nouvelles pages avec votre propre contenu.",
-  "app.modules.project_management.admin.components.permissionsTab": "Droits d'accès"
+  "app.modules.project_management.admin.components.permissionsTab": "Droits d'accès",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."
 }
