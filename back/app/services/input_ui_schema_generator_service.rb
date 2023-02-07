@@ -48,7 +48,8 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   def default_options(field)
     defaults = {
       isAdminField: admin_field?(field),
-      hasRule: field.logic?
+      hasRule: field.logic?,
+      answer_visible_to: field.answer_visible_to
     }
     super.merge(defaults).tap do |options|
       options[:description] = description_option field
