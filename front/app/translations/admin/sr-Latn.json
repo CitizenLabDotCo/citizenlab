@@ -1,8 +1,6 @@
 {
   "UI.FormComponents.required": "obavezno",
-  "app.components.Admin.ImageCropper.imageSupportPageText": "poseti naš centar za podršku",
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "app.components.Admin.ImageCropper.imageTooltip": "Za više informacija o preporučenim rezolucijama slike, {supportPageLink}.",
   "app.components.Admin.ImageCropper.info": "Ova slika uvek je isečena na određene proporcije kako bi se osiguralo da će svi ključni aspekti biti prikazani u svakom trenutku. {link} za ovaj tip slike je {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "preporučena proporcija",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Tekst zaglavlja za registrovane posetioce",
@@ -1447,6 +1445,7 @@
   "app.containers.AdminPage.SettingsPage.homepageMetaTitle": "Zaglavlje matične stranice | {orgName}",
   "app.containers.AdminPage.SettingsPage.imageOverlayColor": "Boja sloja preko slike",
   "app.containers.AdminPage.SettingsPage.imageOverlayOpacity": "Prozirnost sloja preko slike",
+  "app.containers.AdminPage.SettingsPage.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSetting": "Otkrijte neprikladan sadržaj",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSettingDescription": "Automatsko otkrivanje neprikladnog sadržaja objavljenog na platformi.",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionTooltip": "U beta verziji: trenutno dostupno na engleskom, francuskom, nemačkom, portugalskom i španskom. Dok je ova funkcija omogućena, unos, predlozi i komentari koje će postaviti učesnici automatski će se pregledati pomoću Obrade prirodnog jezika. Postovi označeni kao potencijalno neodgovarajući sadržaj neće biti blokirani, ali će biti istaknuti radi pregleda na stranici {linkToActivityPage}.",
@@ -1896,5 +1895,8 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Da li ste sigurni da želite da izbrišete ovu stranicu? Ova radnja ne može se poništiti. Takođe možete da uklonite stranicu iz trake za navigaciju, ako još uvek niste spremni da je izbrišete.",
   "app.modules.navbar.admin.containers.pageHeader": "Stranice i meni",
   "app.modules.navbar.admin.containers.pageSubtitle": "U vašoj traci za navigaciju može biti prikazano do pet stranica, pored Početne i projektnih stranica. Možete da preimenujete stavke menija, preuređujete i dodajete nove stranice sa sopstvenim sadržajem.",
-  "app.modules.project_management.admin.components.permissionsTab": "Prava pristupa"
+  "app.modules.project_management.admin.components.permissionsTab": "Prava pristupa",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."
 }
