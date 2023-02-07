@@ -105,7 +105,7 @@ async function fetcher({ path, action, body, queryParams }) {
             );
           }
         });
-      } else if (action === 'create' || action === 'update') {
+      } else if (action === 'post' || action === 'patch') {
         if (data.data.id) {
           queryClient.setQueryData(
             [{ type: data.data.type, id: data.data.id, entity: 'detail' }],
