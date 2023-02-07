@@ -632,7 +632,6 @@
   "app.containers.Admin.projects.all.components.archived": "Αρχειοθετημένος",
   "app.containers.Admin.projects.all.components.draft": "Προσχέδιο",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Επεξεργασία",
-  "app.containers.Admin.projects.all.deleteFolderButton": "Διαγραφή",
   "app.containers.Admin.projects.all.deleteFolderConfirm": "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτόν τον φάκελο; Θα διαγραφούν επίσης όλα τα έργα εντός του φακέλου. Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.",
   "app.containers.Admin.projects.all.deleteFolderError": "Υπήρξε πρόβλημα με την αφαίρεση αυτού του φακέλου. Προσπαθήστε ξανά.",
   "app.containers.Admin.projects.all.deleteProjectConfirmation": "Σίγουρα θέλετε να διαγράψετε αυτό το έργο Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.",
