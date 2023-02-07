@@ -132,8 +132,9 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
 
   let content: JSX.Element | null = null;
 
-  if (userNotSignedInAndUnauthorized)
+  if (userNotSignedInAndUnauthorized) {
     return <Redirect method="push" path="/" />;
+  }
 
   if (userSignedInButUnauthorized) {
     content = <ProjectNotVisible />;
