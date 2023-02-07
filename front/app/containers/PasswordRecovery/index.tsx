@@ -84,7 +84,6 @@ type State = {
   submitError: boolean;
   processing: boolean;
   success: boolean;
-  successEmail: string | null;
 };
 
 class PasswordRecovery extends React.PureComponent<
@@ -101,7 +100,6 @@ class PasswordRecovery extends React.PureComponent<
       submitError: false,
       processing: false,
       success: false,
-      successEmail: null,
     };
     this.emailInputElement = null;
   }
@@ -149,7 +147,6 @@ class PasswordRecovery extends React.PureComponent<
           email: null,
           processing: false,
           success: true,
-          successEmail: email,
         });
         /* setTimeout(() => this.setState({ success: false }), 8000); */
       } catch {
@@ -162,29 +159,21 @@ class PasswordRecovery extends React.PureComponent<
 
   render() {
     const { formatMessage } = this.props.intl;
-    const {
-      email,
-      emailError,
-      submitError,
-      processing,
-      success,
-      successEmail,
-    } = this.state;
+    const { email, emailError, submitError, processing, success } = this.state;
     const helmetTitle = formatMessage(messages.helmetTitle);
     const helmetDescription = formatMessage(messages.helmetDescription);
     const title = formatMessage(messages.title);
     const subtitle = formatMessage(messages.subtitle);
     const emailPlaceholder = formatMessage(messages.emailPlaceholder);
     const resetPassword = formatMessage(messages.resetPassword);
-    const successMessage = success
-      ? formatMessage(messages.successMessage, { email: `${successEmail}` })
-      : null;
+    const successMessage =
+      success || submitError
+        ? formatMessage(messages.passwordResetSuccessMessage)
+        : null;
     let errorMessage: string | null = null;
 
     if (emailError) {
       errorMessage = formatMessage(messages.emailError);
-    } else if (submitError) {
-      errorMessage = formatMessage(messages.submitError);
     }
 
     return (
