@@ -12,7 +12,7 @@ import {
 } from '../StyledComponents';
 import DeleteProjectButton from '../DeleteProjectButton';
 import PublicationStatusLabel from '../PublicationStatusLabel';
-import { Box, IconNames, StatusLabel } from '@citizenlab/cl2-component-library';
+import { IconNames, StatusLabel } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import GroupsTag from './GroupsTag';
 import AdminTag from './AdminTag';
@@ -24,11 +24,7 @@ import useAuthUser from 'hooks/useAuthUser';
 
 // types
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-
-import messages from '../messages';
-import { copyProject, deleteProject } from 'services/projects';
-import MoreActionsMenu from 'components/UI/MoreActionsMenu';
-import { useIntl } from 'utils/cl-intl';
+import MoreProjectActionsMenu from './MoreProjectActionsMenu';
 
 export const StyledStatusLabel = styled(StatusLabel)`
   margin-right: 5px;
@@ -55,6 +51,7 @@ interface Props {
   actions: ButtonAction[];
   hidePublicationStatusLabel?: boolean;
   className?: string;
+  showMoreActions?: boolean;
 }
 
 const ProjectRow = ({
@@ -62,6 +59,7 @@ const ProjectRow = ({
   actions,
   hidePublicationStatusLabel,
   className,
+  showMoreActions = false,
 }: Props) => {
   const [isBeingDeleted, setIsBeingDeleted] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
@@ -71,20 +69,6 @@ const ProjectRow = ({
   const userCanModerateProject =
     !isNilOrError(authUser) &&
     canModerateProject(publication.publicationId, { data: authUser });
-
-  const { formatMessage } = useIntl();
-
-  const handleCallbackError = async (
-    callback: () => Promise<any>,
-    error: string
-  ) => {
-    try {
-      await callback();
-      setError('');
-    } catch {
-      setError(error);
-    }
-  };
 
   return (
     <Container className={className}>
@@ -152,40 +136,9 @@ const ProjectRow = ({
               );
             }
           })}
-
-          <Box display="flex" alignItems="center">
-            <MoreActionsMenu
-              showLabel={false}
-              actions={[
-                {
-                  handler: async () => {
-                    await handleCallbackError(
-                      () => copyProject(projectId),
-                      formatMessage(messages.copyProjectError)
-                    );
-                  },
-                  label: formatMessage(messages.copyProjectButton),
-                  icon: 'copy',
-                },
-                {
-                  handler: async () => {
-                    if (
-                      window.confirm(
-                        formatMessage(messages.deleteProjectConfirmation)
-                      )
-                    ) {
-                      await handleCallbackError(
-                        () => deleteProject(projectId),
-                        formatMessage(messages.deleteProjectError)
-                      );
-                    }
-                  },
-                  label: formatMessage(messages.deleteProjectButton),
-                  icon: 'delete',
-                },
-              ]}
-            />
-          </Box>
+          {showMoreActions && (
+            <MoreProjectActionsMenu projectId={projectId} setError={setError} />
+          )}
         </ActionsRowContainer>
       </RowContent>
       {error && <Error text={error} />}

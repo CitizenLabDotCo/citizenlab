@@ -168,6 +168,7 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
             >
               <FormattedMessage {...messages.manageButtonLabel} />
             </RowButton>
+            <MoreProjectActionsMenu projectId={projectId} setError={setError} />
           </ActionsRowContainer>
         </FolderRowContent>
 
@@ -179,7 +180,8 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
               <InFolderProjectRow
                 publication={publication}
                 key={publication.id}
-                actions={userIsAdmin ? ['delete', 'manage'] : ['manage']}
+                actions={['manage']}
+                showMoreActions={true}
               />
             ))}
           </ProjectRows>
