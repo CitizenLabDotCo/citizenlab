@@ -1,8 +1,6 @@
 {
   "UI.FormComponents.required": "piumasaqaataavoq",
-  "app.components.Admin.ImageCropper.imageSupportPageText": "visit our support center",
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "app.components.Admin.ImageCropper.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}.",
   "app.components.Admin.ImageCropper.info": "This image is always cropped to a certain ratio to make sure all crucial aspects are on display at all times. The {link} for this image type is {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "recommended ratio",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Atuisut nalunaarsukkat oqaasertaat",
@@ -1447,6 +1445,7 @@
   "app.containers.AdminPage.SettingsPage.homepageMetaTitle": "Iseqqaarfimmi headeri | {orgName}",
   "app.containers.AdminPage.SettingsPage.imageOverlayColor": "Billedfilter farve",
   "app.containers.AdminPage.SettingsPage.imageOverlayOpacity": "Billedgennemsigtighed",
+  "app.containers.AdminPage.SettingsPage.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSetting": "Imarisanik naapertuutinngitsunik ujaasigit",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSettingDescription": "Imarisat naapertuutinngitsut quppernermut ilanngunneqartut automatiskimik paasisakkit.",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionTooltip": "Betami: massakkut tuluttut, franskisut, tyskisut, portugaalimiusut, spanskisullu tamanna atuuppoq. Tamanna atuutsillugu ilanngussat, siunnersuutit oqaaseqaatillu peqataasunit nassiunneqartut Natural Language Processing ikiortigalugu misissorneqartassapput. Ilanngussat naapertuutinngitsunik imaqarsinnaasutut nalunaaqutserneqartut blokererneqassanngillat, quppernermili {linkToActivityPage}-imi misissugassatut ersarissitinneqassallutik.",
@@ -1896,5 +1895,8 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Ilumut qupperneq una peerniarpiuk? Uterteqqissinnaanavianngilaq. Peernissaanut piareersimanngikkuit qupperneq navigationslinjemiit peersinnaavat.",
   "app.modules.navbar.admin.containers.pageHeader": "Pages & menu",
   "app.modules.navbar.admin.containers.pageSubtitle": "Iserfigisinnaasannik toqqaavissartalik Angerlarit aamma Suliniutit saniatigut tallimat tikillugit saqqummertinneqarsinnaapput. Toqqagassani taaguutit allanngortissinnaavatit nuussinnaallugillu aamma nammineq imaritikkusutannik quppernernik ikkussisinnaavutit.",
-  "app.modules.project_management.admin.components.permissionsTab": "Access rights"
+  "app.modules.project_management.admin.components.permissionsTab": "Access rights",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."
 }
