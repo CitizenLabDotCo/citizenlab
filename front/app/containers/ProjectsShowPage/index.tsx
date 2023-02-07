@@ -232,7 +232,7 @@ const ProjectsShowPageWrapper = () => {
   if (pending) return null;
 
   const userJustLoggedOut = userWasLoggedIn && user === null;
-  if (userJustLoggedOut) {
+  if (userJustLoggedOut && isUnauthorized(project)) {
     return <Redirect method="replace" path="/" />;
   }
 
