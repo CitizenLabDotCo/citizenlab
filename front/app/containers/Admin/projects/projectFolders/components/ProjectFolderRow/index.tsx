@@ -11,6 +11,7 @@ import {
   RowButton,
   ActionsRowContainer,
 } from 'containers/Admin/projects/components/StyledComponents';
+import MoreFolderActionsMenu from './MoreFolderActionsMenu';
 
 // styles
 import styled from 'styled-components';
@@ -168,7 +169,10 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
             >
               <FormattedMessage {...messages.manageButtonLabel} />
             </RowButton>
-            <MoreProjectActionsMenu projectId={projectId} setError={setError} />
+            <MoreFolderActionsMenu
+              folderId={publication.publicationId}
+              setError={setFolderDeletionError}
+            />
           </ActionsRowContainer>
         </FolderRowContent>
 
