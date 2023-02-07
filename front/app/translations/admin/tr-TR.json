@@ -1,8 +1,6 @@
 {
   "UI.FormComponents.required": "gerekli",
-  "app.components.Admin.ImageCropper.imageSupportPageText": "visit our support center",
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "app.components.Admin.ImageCropper.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}.",
   "app.components.Admin.ImageCropper.info": "This image is always cropped to a certain ratio to make sure all crucial aspects are on display at all times. The {link} for this image type is {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "recommended ratio",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Kayıtlı kullanıcılar için başlık metni",
@@ -1447,6 +1445,7 @@
   "app.containers.AdminPage.SettingsPage.homepageMetaTitle": "Homepage header | {orgName}",
   "app.containers.AdminPage.SettingsPage.imageOverlayColor": "Bindirme görseli rengi",
   "app.containers.AdminPage.SettingsPage.imageOverlayOpacity": "Bindirme görseli opaklığı",
+  "app.containers.AdminPage.SettingsPage.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSetting": "Uygunsuz içeriği tespit edin",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSettingDescription": "Platformda yayınlanan uygunsuz içerikleri otomatik olarak tespit edin.",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionTooltip": "Beta sürümünde; şu an için İngilizce, Fransızca, Almanca, Portekizce ve İspanyolca dillerinde kullanılabilir. Bu özellik etkinleştirildiğinde, katılımcılar tarafından gönderilen girdiler, öneriler ve yorumlar Doğal Dil İşleme kullanılarak otomatik olarak incelenir. Uygunsuz olabilecek içerikler bulunduğu için işaretlenen yayınlar engellenmez ancak {linkToActivityPage} sayfasında incelenmek üzere vurgulanır.",
@@ -1896,5 +1895,8 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Bu sayfayı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz. Henüz sayfayı silmeye hazır değilseniz gezinme çubuğundan da silebilirsiniz.",
   "app.modules.navbar.admin.containers.pageHeader": "Sayfalar ve menü",
   "app.modules.navbar.admin.containers.pageSubtitle": "Gezinti çubuğunuz, Ana Sayfa ve projeler sayfalarına ek olarak beş adede kadar sayfa görüntüleyebilir. Menü öğelerini yeniden adlandırabilir, sıralarını değiştirebilir ve kendi içeriğinizin bulunduğu yeni sayfalar ekleyebilirsiniz.",
-  "app.modules.project_management.admin.components.permissionsTab": "Erişim hakları"
+  "app.modules.project_management.admin.components.permissionsTab": "Erişim hakları",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."
 }
