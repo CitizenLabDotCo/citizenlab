@@ -87,7 +87,7 @@ describe('fetcher', () => {
       mockOk = true;
       const result = await fetcher({
         path: '/path',
-        action: 'create',
+        action: 'post',
         body: baseDataObject,
       });
 
@@ -109,7 +109,7 @@ describe('fetcher', () => {
       try {
         await fetcher({
           path: '/path',
-          action: 'create',
+          action: 'post',
           body: baseDataObject,
         });
       } catch (error) {
@@ -126,7 +126,7 @@ describe('fetcher', () => {
       mockOk = true;
       const result = await fetcher({
         path: '/path',
-        action: 'update',
+        action: 'patch',
         body: baseDataObject,
       });
 
@@ -148,7 +148,7 @@ describe('fetcher', () => {
       try {
         await fetcher({
           path: '/path',
-          action: 'update',
+          action: 'patch',
           body: baseDataObject,
         });
       } catch (error) {
