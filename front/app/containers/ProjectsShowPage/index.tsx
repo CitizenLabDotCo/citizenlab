@@ -202,7 +202,6 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
 
 const ProjectsShowPageWrapper = () => {
   const [userWasLoggedIn, setUserWasLoggedIn] = useState(false);
-  const [redirectHomepage, setRedirectHomepage] = useState(false);
 
   const { pathname } = useLocation();
   const { slug, phaseNumber } = useParams();
@@ -230,15 +229,10 @@ const ProjectsShowPageWrapper = () => {
     if (user !== null) setUserWasLoggedIn(true);
   }, [pending, user]);
 
-  useEffect(() => {
-    const userJustLoggedOut = userWasLoggedIn && user === null;
-    if (userJustLoggedOut) {
-      setRedirectHomepage(true);
-    }
-  }, [userWasLoggedIn, user]);
-
   if (pending) return null;
-  if (redirectHomepage) {
+
+  const userJustLoggedOut = userWasLoggedIn && user === null;
+  if (userJustLoggedOut) {
     return <Redirect method="replace" path="/" />;
   }
 
