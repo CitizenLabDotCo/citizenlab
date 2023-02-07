@@ -1,8 +1,6 @@
 {
   "UI.FormComponents.required": "Campo requerido",
-  "app.components.Admin.ImageCropper.imageSupportPageText": "visit our support center",
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "app.components.Admin.ImageCropper.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}.",
   "app.components.Admin.ImageCropper.info": "This image is always cropped to a certain ratio to make sure all crucial aspects are on display at all times. The {link} for this image type is {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "recommended ratio",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Texto de cabeçalho para usuários registrados",
@@ -1447,6 +1445,7 @@
   "app.containers.AdminPage.SettingsPage.homepageMetaTitle": "Cabeçalho de página | {orgName}",
   "app.containers.AdminPage.SettingsPage.imageOverlayColor": "Cor de sobreposição do cabeçalho",
   "app.containers.AdminPage.SettingsPage.imageOverlayOpacity": "Opacidade de sobreposição de imagem",
+  "app.containers.AdminPage.SettingsPage.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSetting": "Detectar conteúdo inadequado",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSettingDescription": "Detecção automática de conteúdo inadequado postado na plataforma.",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionTooltip": "Em Beta: atualmente disponível em inglês, francês, alemão, português e espanhol. Enquanto este recurso estiver habilitado, as entradas, propostas e comentários postados pelos participantes serão automaticamente revisados usando o Processamento de Linguagem Natural. As mensagens assinaladas como potencialmente contendo conteúdo inadequado não serão bloqueadas, mas serão destacadas para revisão na página {linkToActivityPage}.",
@@ -1896,5 +1895,8 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Tem a certeza de que quer apagar esta página? Isto não pode ser desfeito. Também pode remover a página da barra de navegação se ainda não estiver pronta para apagar.",
   "app.modules.navbar.admin.containers.pageHeader": "Páginas & menu",
   "app.modules.navbar.admin.containers.pageSubtitle": "A sua barra de navegação pode exibir até cinco páginas para além das páginas Home e de projetos. Você pode renomear itens do menu, reordenar e adicionar novas páginas com o seu próprio conteúdo.",
-  "app.modules.project_management.admin.components.permissionsTab": "Direitos de acesso"
+  "app.modules.project_management.admin.components.permissionsTab": "Direitos de acesso",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."
 }
