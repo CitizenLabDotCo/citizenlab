@@ -1,8 +1,6 @@
 {
   "UI.FormComponents.required": "nepieciešams",
-  "app.components.Admin.ImageCropper.imageSupportPageText": "apmeklējiet mūsu atbalsta centru",
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "app.components.Admin.ImageCropper.imageTooltip": "Plašāku informāciju par ieteicamo attēlu izšķirtspēju skatiet vietnē {supportPageLink}.",
   "app.components.Admin.ImageCropper.info": "Šis attēls vienmēr tiek apgriezts noteiktā proporcijā, lai vienmēr būtu redzami visi svarīgākie aspekti. Šim attēla tipam ir {link} {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "ieteicamā attiecība",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Galvenes teksts reģistrētajiem lietotājiem",
@@ -1447,6 +1445,7 @@
   "app.containers.AdminPage.SettingsPage.homepageMetaTitle": "Mājaslapas galvene | {orgName}",
   "app.containers.AdminPage.SettingsPage.imageOverlayColor": "Attēla pārklājuma krāsa",
   "app.containers.AdminPage.SettingsPage.imageOverlayOpacity": "Attēla pārklāšanas necaurspīdīgums",
+  "app.containers.AdminPage.SettingsPage.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSetting": "Konstatēt nepiemērotu saturu",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSettingDescription": "Automātiski atpazīt platformā publicēto nepiemēroto saturu.",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionTooltip": "Beta versijā: pašlaik pieejama angļu, franču, vācu, portugāļu un spāņu valodā. Kamēr šī funkcija ir iespējota, ievades dati, dalībnieku publicētie priekšlikumi un komentāri tiks automātiski pārskatīti, izmantojot dabiskās valodas apstrādi. Ieraksti, kas atzīmēti kā, iespējams, ar nepiemērotu saturu, netiks bloķēti, bet tiks izcelti pārskatīšanai {linkToActivityPage} lapā.",
@@ -1896,5 +1895,8 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Vai esat pārliecināts, ka vēlaties dzēst šo lapu? Šo darbību nevar atsaukt. Jūs varat arī izņemt lapu no navigācijas joslas, ja vēl neesat gatavs to izdzēst.",
   "app.modules.navbar.admin.containers.pageHeader": "Lapas un izvēlne",
   "app.modules.navbar.admin.containers.pageSubtitle": "Navigācijas joslā papildus sākuma un projektu lapām var tikt parādītas līdz pat piecām lapām. Jūs varat pārdēvēt izvēlnes elementus, mainīt to secību un pievienot jaunas lapas ar savu saturu.",
-  "app.modules.project_management.admin.components.permissionsTab": "Piekļuves tiesības"
+  "app.modules.project_management.admin.components.permissionsTab": "Piekļuves tiesības",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."
 }
