@@ -4,11 +4,10 @@ namespace :cl2back do
   desc 'Remove image records not associated with resource or with nil value for image field'
   task clean_up_image_records: :environment do
     Tenant.all.each do |tenant|
-      image_codes = []
-
       puts "Processing images for tenant #{tenant.name}"
 
       Apartment::Tenant.switch(tenant.schema_name) do
+        image_codes = []
         service = ContentBuilder::LayoutService.new
 
         Project.all.each do |project|
