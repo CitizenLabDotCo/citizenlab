@@ -1,8 +1,6 @@
 {
   "UI.FormComponents.required": "påkrævet",
-  "app.components.Admin.ImageCropper.imageSupportPageText": "besøge vores supportcenter",
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "app.components.Admin.ImageCropper.imageTooltip": "Du kan få flere oplysninger om anbefalede billedopløsninger på {supportPageLink}.",
   "app.components.Admin.ImageCropper.info": "Dette billede er altid beskåret i et bestemt forhold for at sikre, at alle vigtige aspekter altid er synlige. {link} for denne billedtype er {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "anbefalet forhold",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Overskriftstekst for registrerede brugere",
@@ -1447,6 +1445,7 @@
   "app.containers.AdminPage.SettingsPage.homepageMetaTitle": "Hjemmesideoverskrift | {orgName}",
   "app.containers.AdminPage.SettingsPage.imageOverlayColor": "Billedoverlejringsfarve",
   "app.containers.AdminPage.SettingsPage.imageOverlayOpacity": "Opacitet af billedoverlejring",
+  "app.containers.AdminPage.SettingsPage.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSetting": "Opdag upassende indhold",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSettingDescription": "Automatisk detektering af upassende indhold, der er lagt ud på platformen.",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionTooltip": "I betaversion: For øjeblikket tilgængelig på engelsk, fransk, tysk, portugisisk og spansk. Mens denne funktion er aktiveret, vil input, forslag og kommentarer, der er indsendt af deltagere, automatisk blive gennemgået ved hjælp af Natural Language Processing. Indlæg, der er markeret som potentielt indeholdende upassende indhold, vil ikke blive blokeret, men vil blive fremhævet med henblik på gennemgang på siden {linkToActivityPage}.",
@@ -1896,5 +1895,8 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Er du sikker på, at du ønsker at slette denne side? Dette kan ikke fortrydes. Du kan også fjerne siden fra navigationslinjen, hvis du ikke er klar til at slette den endnu.",
   "app.modules.navbar.admin.containers.pageHeader": "Sider og menu",
   "app.modules.navbar.admin.containers.pageSubtitle": "Din navigationslinje kan vise op til fem sider ud over siderne Startside og Projekter. Du kan omdøbe menupunkter, omarrangere og tilføje nye sider med dit eget indhold.",
-  "app.modules.project_management.admin.components.permissionsTab": "Adgangsrettigheder"
+  "app.modules.project_management.admin.components.permissionsTab": "Adgangsrettigheder",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."
 }
