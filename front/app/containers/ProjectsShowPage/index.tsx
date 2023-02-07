@@ -1,6 +1,4 @@
 import React, { memo, useEffect, useMemo, useState } from 'react';
-import { isError } from 'lodash-es';
-import clHistory from 'utils/cl-router/history';
 
 // components
 import ProjectHelmet from './shared/header/ProjectHelmet';
@@ -13,7 +11,7 @@ import ContinuousPoll from './continuous/Poll';
 import ContinuousVolunteering from './continuous/Volunteering';
 import TimelineContainer from './timeline';
 import { Box, Spinner, useBreakpoint } from '@citizenlab/cl2-component-library';
-import ForbiddenRoute from 'components/routing/forbiddenRoute';
+import Redirect from 'components/routing/Redirect';
 import Modal from './Modal';
 import { ProjectCTABar } from './ProjectCTABar';
 import EventsViewer from 'containers/EventsPage/EventsViewer';
@@ -42,6 +40,7 @@ import { IProjectData } from 'services/projects';
 import { isValidPhase } from './phaseParam';
 import { anyIsUndefined, isNilOrError, isApiError } from 'utils/helperUtils';
 import { scrollToElement } from 'utils/scroll';
+import { isError } from 'lodash-es';
 
 const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;
@@ -133,7 +132,8 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
 
   let content: JSX.Element | null = null;
 
-  if (userNotSignedInAndUnauthorized) return <ForbiddenRoute />;
+  if (userNotSignedInAndUnauthorized)
+    return <Redirect method="push" path="/" />;
 
   if (userSignedInButUnauthorized) {
     content = <ProjectNotVisible />;
@@ -236,7 +236,8 @@ const ProjectsShowPageWrapper = () => {
     );
   } else if (urlSegments.length > 3 && urlSegments[1] === 'projects') {
     // Redirect old childRoutes (e.g. /info, /process, ...) to the project index location
-    clHistory.replace(`/${urlSegments.slice(1, 3).join('/')}`);
+    const projectRoot = `/${urlSegments.slice(1, 3).join('/')}`;
+    return <Redirect method="replace" path={projectRoot} />;
   } else if (slug) {
     return <ProjectsShowPage project={project} />;
   }
