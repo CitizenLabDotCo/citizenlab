@@ -1,7 +1,10 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 export interface IInsightsCategorySuggestionsTasks {
-  count: number;
+  data: {
+    type: 'categories_suggestions_task_count';
+    count: number;
+  };
 }
 
 export function insightsCategoriesSuggestionsTasksStream(

@@ -8,13 +8,12 @@ import clHistory from 'utils/cl-router/history';
 import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';
 
 // hooks
-import useScanInsightsCategory from 'modules/commercial/insights/hooks/useScanInsightsCategory';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInputs, {
   defaultPageSize,
 } from 'modules/commercial/insights/api/inputs/useInputs';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
-
+import useScanForCategorySuggestions from 'modules/commercial/insights/api/category_suggestions/useScanForCategorySuggestions';
 // components
 import {
   Table,
@@ -140,7 +139,7 @@ const InputsTable = ({
   const lastPage = inputs ? getPageNumberFromUrl(inputs.links?.last) : 1;
 
   const { status, progress, triggerScan, cancelScan, onDone } =
-    useScanInsightsCategory(viewId, query.category, processed);
+    useScanForCategorySuggestions(viewId, query.category, processed);
 
   const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
   // Callbacks and Effects -----------------------------------------------------

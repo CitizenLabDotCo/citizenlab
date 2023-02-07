@@ -31,7 +31,7 @@ interface Post {
 interface Delete {
   path: Path;
   action: 'delete';
-  body?: never;
+  body?: Record<string, any>;
   queryParams?: never;
 }
 
@@ -67,7 +67,6 @@ async function fetcher({ path, action, body, queryParams }) {
     ? stringify(relevantQueryParams, {
         arrayFormat: 'brackets',
         addQueryPrefix: true,
-        encodeValuesOnly: true,
       })
     : '';
 
@@ -80,7 +79,7 @@ async function fetcher({ path, action, body, queryParams }) {
     },
   });
 
-  if (action === 'delete' && response.ok) {
+  if ((action === 'delete' && response.ok) || response.status === 202) {
     return null;
   }
 
