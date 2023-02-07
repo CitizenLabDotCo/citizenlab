@@ -1048,7 +1048,6 @@
   "app.containers.PasswordReset.passwordPlaceholder": "Nova contrasenya",
   "app.containers.PasswordReset.requestNewPasswordReset": "Sol·liciteu un restabliment de la contrasenya nova",
   "app.containers.PasswordReset.submitError": "Alguna cosa ha anat malament. Si us plau, intenteu-ho més tard.",
-  "app.containers.PasswordReset.successMessage": "La vostra contrasenya s'ha actualitzat correctament",
   "app.containers.PasswordReset.title": "Restablir la contrasenya",
   "app.containers.PasswordReset.updatePassword": "Confirmar nova contrasenya",
   "app.containers.ProjectFolderCards.allProjects": "Tots els projectes",

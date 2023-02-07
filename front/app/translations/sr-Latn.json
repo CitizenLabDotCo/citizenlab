@@ -1048,7 +1048,6 @@
   "app.containers.PasswordReset.passwordPlaceholder": "Nova lozinka",
   "app.containers.PasswordReset.requestNewPasswordReset": "Zatražite novo resetovanje lozinke",
   "app.containers.PasswordReset.submitError": "Došlo je do greške. Pokušajte ponovo kasnije.",
-  "app.containers.PasswordReset.successMessage": "Vaša lozinka je uspešno ažurirana",
   "app.containers.PasswordReset.title": "Resetujte vašu lozinku",
   "app.containers.PasswordReset.updatePassword": "Potvrdite novu lozinku",
   "app.containers.ProjectFolderCards.allProjects": "Svi projekti",

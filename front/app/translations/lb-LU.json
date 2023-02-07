@@ -1048,7 +1048,6 @@
   "app.containers.PasswordReset.passwordPlaceholder": "Neit Passwuert",
   "app.containers.PasswordReset.requestNewPasswordReset": "Ufroen fir d'Passwuert zeréchzesetzen",
   "app.containers.PasswordReset.submitError": "Et ass e Feeler opgetrueden. Probéiert wgl. méi spéit nach eng Kéier. ",
-  "app.containers.PasswordReset.successMessage": "Äert Passwuert gouf erfollegräich aktualiséiert",
   "app.containers.PasswordReset.title": "Äert Passwuert zerécksetzen",
   "app.containers.PasswordReset.updatePassword": "Neit Passwuert bestätegen",
   "app.containers.ProjectFolderCards.allProjects": "All Projeten",

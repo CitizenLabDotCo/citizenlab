@@ -1048,7 +1048,6 @@
   "app.containers.PasswordReset.passwordPlaceholder": "Jaunā parole",
   "app.containers.PasswordReset.requestNewPasswordReset": "Pieprasīt jaunas paroles atiestatīšanu",
   "app.containers.PasswordReset.submitError": "Radās kļūda. Lūdzu, vēlāk mēģiniet vēlreiz.",
-  "app.containers.PasswordReset.successMessage": "Jūsu parole ir veiksmīgi atjaunināta",
   "app.containers.PasswordReset.title": "Atiestatīt jūsu paroli",
   "app.containers.PasswordReset.updatePassword": "Apstiprināt jauno paroli",
   "app.containers.ProjectFolderCards.allProjects": "Visi projekti",

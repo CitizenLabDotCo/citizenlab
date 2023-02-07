@@ -1048,7 +1048,6 @@
   "app.containers.PasswordReset.passwordPlaceholder": "Neues Passwort",
   "app.containers.PasswordReset.requestNewPasswordReset": "Neuen Passwortreset anfordern",
   "app.containers.PasswordReset.submitError": "Etwas ging schief. Bitte versuchen Sie es später nochmal.",
-  "app.containers.PasswordReset.successMessage": "Ihr Passwort wurde erfolgreich aktualisiert",
   "app.containers.PasswordReset.title": "Setzen Sie ihr Passwort zurück",
   "app.containers.PasswordReset.updatePassword": "Neues Kennwort bestätigen",
   "app.containers.ProjectFolderCards.allProjects": "{orgName, select, München {Alle Bezirke oder Projekte} other {Alle Projekte}}",

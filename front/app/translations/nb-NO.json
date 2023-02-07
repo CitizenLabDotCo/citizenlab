@@ -1048,7 +1048,6 @@
   "app.containers.PasswordReset.passwordPlaceholder": "Nytt passord",
   "app.containers.PasswordReset.requestNewPasswordReset": "Be om nulstilling av passord",
   "app.containers.PasswordReset.submitError": "Noe gikk galt. Vennligst prøv igjen senere.",
-  "app.containers.PasswordReset.successMessage": "Passordet ditt har blitt oppdatert",
   "app.containers.PasswordReset.title": "Tilbakestill passordet ditt",
   "app.containers.PasswordReset.updatePassword": "Bekreft nytt passord",
   "app.containers.ProjectFolderCards.allProjects": "Alle prosjekter",

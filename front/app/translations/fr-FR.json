@@ -1048,7 +1048,6 @@
   "app.containers.PasswordReset.passwordPlaceholder": "Nouveau mot de passe",
   "app.containers.PasswordReset.requestNewPasswordReset": "Demander la réinitialisation du mot de passe",
   "app.containers.PasswordReset.submitError": "Une erreur est survenue. Veuillez réessayer.",
-  "app.containers.PasswordReset.successMessage": "Votre mot de passe a été mis à jour",
   "app.containers.PasswordReset.title": "Réinitialisez votre mot de passe",
   "app.containers.PasswordReset.updatePassword": "Confirmer le nouveau mot de passe",
   "app.containers.ProjectFolderCards.allProjects": "Tous les projets",

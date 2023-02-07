@@ -1048,7 +1048,6 @@
   "app.containers.PasswordReset.passwordPlaceholder": "Yeni parola",
   "app.containers.PasswordReset.requestNewPasswordReset": "Yeni parola sıfırlama isteği",
   "app.containers.PasswordReset.submitError": "Bir sorun oluştu. Lütfen daha sonra tekrar deneyin.",
-  "app.containers.PasswordReset.successMessage": "Parolanız başarıyla güncellendi",
   "app.containers.PasswordReset.title": "Parolanızı sıfırlayın",
   "app.containers.PasswordReset.updatePassword": "Yeni parolayı doğrulayın",
   "app.containers.ProjectFolderCards.allProjects": "Tüm projeler",

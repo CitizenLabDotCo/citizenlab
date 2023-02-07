@@ -1048,7 +1048,6 @@
   "app.containers.PasswordReset.passwordPlaceholder": "Νέος κωδικός πρόσβασης",
   "app.containers.PasswordReset.requestNewPasswordReset": "Αίτηση επαναφοράς νέου κωδικού πρόσβασης",
   "app.containers.PasswordReset.submitError": "Κάτι πήγε στραβά. Προσπαθήστε ξανά αργότερα.",
-  "app.containers.PasswordReset.successMessage": "Ο κωδικός πρόσβασής σας ενημερώθηκε επιτυχώς",
   "app.containers.PasswordReset.title": "Επαναφορά του κωδικού πρόσβασής σας",
   "app.containers.PasswordReset.updatePassword": "Επιβεβαίωση νέου κωδικού πρόσβασης",
   "app.containers.ProjectFolderCards.allProjects": "Όλα τα έργα",

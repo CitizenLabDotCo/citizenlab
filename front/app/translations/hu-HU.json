@@ -952,7 +952,6 @@
   "app.containers.PasswordReset.passwordPlaceholder": "New password",
   "app.containers.PasswordReset.requestNewPasswordReset": "Request a new password reset",
   "app.containers.PasswordReset.submitError": "Something went wrong. Please try again later.",
-  "app.containers.PasswordReset.successMessage": "Your password has been successfully updated",
   "app.containers.PasswordReset.title": "Reset your password",
   "app.containers.PasswordReset.updatePassword": "Confirm new password",
   "app.containers.ProjectFolderCards.allProjects": "All projects",

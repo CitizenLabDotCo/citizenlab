@@ -1048,7 +1048,6 @@
   "app.containers.PasswordReset.passwordPlaceholder": "Nueva contraseña",
   "app.containers.PasswordReset.requestNewPasswordReset": "Solicitar un nuevo restablecimiento de la contraseña",
   "app.containers.PasswordReset.submitError": "Algo salió mal. Por favor Inténtalo más tarde.",
-  "app.containers.PasswordReset.successMessage": "Tu contraseña ha sido actualizada con éxito",
   "app.containers.PasswordReset.title": "Restablece tu contraseña",
   "app.containers.PasswordReset.updatePassword": "Confirma tu nueva contraseña",
   "app.containers.ProjectFolderCards.allProjects": "Todos los proyectos",

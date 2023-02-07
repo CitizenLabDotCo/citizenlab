@@ -1048,7 +1048,6 @@
   "app.containers.PasswordReset.passwordPlaceholder": "كلمة المرور الجديدة",
   "app.containers.PasswordReset.requestNewPasswordReset": "اطلب إعادة تعيين كلمة مرور جديدة",
   "app.containers.PasswordReset.submitError": "حدث خطأ ما. يُرجى المحاولة مجددًا في وقت لاحق.",
-  "app.containers.PasswordReset.successMessage": "تم تحديث كلمة المرور الخاصة بك بنجاح",
   "app.containers.PasswordReset.title": "إعادة تعيين كلمة المرور",
   "app.containers.PasswordReset.updatePassword": "تأكيد كلمة المرور الجديدة",
   "app.containers.ProjectFolderCards.allProjects": "جميع المشاريع",

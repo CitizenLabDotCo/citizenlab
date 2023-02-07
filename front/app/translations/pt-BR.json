@@ -1048,7 +1048,6 @@
   "app.containers.PasswordReset.passwordPlaceholder": "Nova senha",
   "app.containers.PasswordReset.requestNewPasswordReset": "Solicite a definição de uma nova senha",
   "app.containers.PasswordReset.submitError": "\nAlgo deu errado. Por favor, tente novamente mais tarde.",
-  "app.containers.PasswordReset.successMessage": "Sua senha foi alterada com sucesso",
   "app.containers.PasswordReset.title": "Resetar sua senha",
   "app.containers.PasswordReset.updatePassword": "Confirmar nova senha",
   "app.containers.ProjectFolderCards.allProjects": "Todos os projetos",

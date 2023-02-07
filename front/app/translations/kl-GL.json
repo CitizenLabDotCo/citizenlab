@@ -1036,7 +1036,6 @@
   "app.containers.PasswordReset.passwordPlaceholder": "Kode isissutissaq nutaaq",
   "app.containers.PasswordReset.requestNewPasswordReset": "Nutaamik isertaatiliornissaq qinnutigiuk",
   "app.containers.PasswordReset.submitError": "Arlaat iluatsinngitsoorpoq. Ungasinngitsumi misileeqqikkina",
-  "app.containers.PasswordReset.successMessage": "Kode isissutigisartakkat ajunngitsumik nutarterneqarpoq",
   "app.containers.PasswordReset.title": "Kode isissutigisartakkat allanngortiguk",
   "app.containers.PasswordReset.updatePassword": "Kode isissutigisartakkat allaqqiguk",
   "app.containers.ProjectFolderCards.allProjects": "Suliniutit tamarmik",

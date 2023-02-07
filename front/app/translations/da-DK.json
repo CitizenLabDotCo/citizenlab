@@ -1048,7 +1048,6 @@
   "app.containers.PasswordReset.passwordPlaceholder": "Ny adgangskode",
   "app.containers.PasswordReset.requestNewPasswordReset": "Anmod om at få nulstillet din adgangskode",
   "app.containers.PasswordReset.submitError": "Noget gik galt. Prøv venligst igen senere.",
-  "app.containers.PasswordReset.successMessage": "Din adgangskode er blevet opdateret uden problemer",
   "app.containers.PasswordReset.title": "Nulstil din adgangskode",
   "app.containers.PasswordReset.updatePassword": "Bekræft ny adgangskode",
   "app.containers.ProjectFolderCards.allProjects": "Alle projekter",
