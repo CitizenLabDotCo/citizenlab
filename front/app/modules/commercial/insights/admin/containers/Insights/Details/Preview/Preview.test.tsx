@@ -27,10 +27,6 @@ const mockIdeaData = {
   },
 };
 
-jest.mock('modules/commercial/insights/services/insightsInputs', () => ({
-  addInsightsInputCategory: jest.fn(),
-}));
-
 jest.mock('hooks/useIdea', () => {
   return jest.fn(() => mockIdeaData);
 });

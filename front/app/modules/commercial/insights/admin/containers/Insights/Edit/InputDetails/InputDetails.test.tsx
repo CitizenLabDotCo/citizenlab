@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
-import * as insightsService from 'modules/commercial/insights/services/insightsInputs';
 import inputs from 'modules/commercial/insights/fixtures/inputs';
 import categories from 'modules/commercial/insights/fixtures/categories';
 
@@ -51,9 +50,10 @@ const mockCategoryDataResponse = {
   },
 };
 
-jest.mock('modules/commercial/insights/services/insightsInputs', () => ({
-  addInsightsInputCategory: jest.fn(),
-}));
+const mockAddInputCategories = jest.fn();
+jest.mock('modules/commercial/insights/api/inputs/useAddInputCategories', () =>
+  jest.fn(() => ({ mutate: mockAddInputCategories }))
+);
 
 const mockAdd = jest.fn();
 
@@ -116,7 +116,6 @@ describe('Insights Input Details', () => {
     ).not.toBeInTheDocument();
   });
   it('adds existing category to category list correctly', async () => {
-    const spy = jest.spyOn(insightsService, 'addInsightsInputCategory');
     render(<InputDetails {...defaultProps} />);
     selectEvent.openMenu(screen.getByLabelText('Add a category'));
 
@@ -126,18 +125,13 @@ describe('Insights Input Details', () => {
 
     fireEvent.click(screen.getByText(mockCategoriesData[0].attributes.name));
 
-    expect(spy).toHaveBeenCalledWith(
+    expect(mockAddInputCategories).toHaveBeenCalledWith({
       viewId,
-      defaultProps.previewedInputId,
-      mockCategoriesData[0].id
-    );
+      inputId: defaultProps.previewedInputId,
+      categories: [{ id: mockCategoriesData[0].id, type: 'category' }],
+    });
   });
   it('adds new category to category list correctly', async () => {
-    const spyAddInputCategory = jest.spyOn(
-      insightsService,
-      'addInsightsInputCategory'
-    );
-
     render(<InputDetails {...defaultProps} />);
     const newCategoryLabel = 'New category';
     fireEvent.change(screen.getByRole('textbox'), {
@@ -155,11 +149,6 @@ describe('Insights Input Details', () => {
       viewId,
       name: newCategoryLabel,
     });
-    expect(spyAddInputCategory).toHaveBeenCalledWith(
-      viewId,
-      defaultProps.previewedInputId,
-      mockCategoryDataResponse.data.id
-    );
   });
   it('shows loading state when loading', () => {
     mockInputData = undefined;

@@ -1,12 +1,16 @@
 import React from 'react';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
-import * as service from 'modules/commercial/insights/services/insightsInputs';
 import categories from '../../../fixtures/categories';
 
-jest.mock('modules/commercial/insights/services/insightsInputs', () => ({
-  deleteInsightsInputCategory: jest.fn(),
-  addInsightsInputCategory: jest.fn(),
-}));
+const mockAddInputCategories = jest.fn();
+jest.mock('modules/commercial/insights/api/inputs/useAddInputCategories', () =>
+  jest.fn(() => ({ mutate: mockAddInputCategories }))
+);
+
+const mockDeletenputCategory = jest.fn();
+jest.mock('modules/commercial/insights/api/inputs/useDeleteInputCategory', () =>
+  jest.fn(() => ({ mutate: mockDeletenputCategory }))
+);
 
 import Category from './';
 
@@ -50,7 +54,6 @@ describe('Insights Category', () => {
   });
 
   it('calls delete category with correct arguments when variant is approved', () => {
-    const spy = jest.spyOn(service, 'deleteInsightsInputCategory');
     render(<Category variant="approved" id={categoryId} inputId={inputId} />);
     expect(screen.getByTestId('insightsTag')).toBeInTheDocument();
     const deleteIcon = screen
@@ -61,10 +64,13 @@ describe('Insights Category', () => {
       fireEvent.click(deleteIcon);
     }
 
-    expect(spy).toHaveBeenCalledWith(viewId, inputId, categoryId);
+    expect(mockDeletenputCategory).toHaveBeenCalledWith({
+      viewId,
+      inputId,
+      categoryId,
+    });
   });
   it('calls add category with correct arguments when variant is suggested', () => {
-    const spy = jest.spyOn(service, 'addInsightsInputCategory');
     render(<Category variant="suggested" id={categoryId} inputId={inputId} />);
     expect(screen.getByTestId('insightsTag')).toBeInTheDocument();
     const plusIcon = screen
@@ -75,7 +81,11 @@ describe('Insights Category', () => {
       fireEvent.click(plusIcon);
     }
 
-    expect(spy).toHaveBeenCalledWith(viewId, inputId, categoryId);
+    expect(mockAddInputCategories).toHaveBeenCalledWith({
+      viewId,
+      inputId,
+      categories: [{ id: categoryId, type: 'category' }],
+    });
   });
   it('does not render delete icon when variant is approved when withAction is false', () => {
     render(

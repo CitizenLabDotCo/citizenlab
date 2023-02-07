@@ -7,7 +7,6 @@ import {
   act,
   waitFor,
 } from 'utils/testUtils/rtl';
-import * as service from 'modules/commercial/insights/services/insightsInputs';
 import * as batchService from 'modules/commercial/insights/services/batchAssignment';
 import inputs from 'modules/commercial/insights/fixtures/inputs';
 import useInputs from 'modules/commercial/insights/api/inputs/useInputs';
@@ -15,10 +14,15 @@ import clHistory from 'utils/cl-router/history';
 import categories from 'modules/commercial/insights/fixtures/categories';
 import links from 'modules/commercial/insights/fixtures/links';
 
-jest.mock('modules/commercial/insights/services/insightsInputs', () => ({
-  deleteInsightsInputCategory: jest.fn(),
-  addInsightsInputCategories: jest.fn(),
-}));
+const mockAddInputCategories = jest.fn();
+jest.mock('modules/commercial/insights/api/inputs/useAddInputCategories', () =>
+  jest.fn(() => ({ mutate: mockAddInputCategories }))
+);
+
+const mockDeletenputCategory = jest.fn();
+jest.mock('modules/commercial/insights/api/inputs/useDeleteInputCategory', () =>
+  jest.fn(() => ({ mutate: mockDeletenputCategory }))
+);
 
 jest.mock('modules/commercial/insights/api/categories/useCategories');
 jest.mock('modules/commercial/insights/api/categories/useCategory');
@@ -143,7 +147,6 @@ describe('Insights Input Table', () => {
       ).not.toBeInTheDocument();
     });
     it('calls onDelete category with correct arguments', () => {
-      const spy = jest.spyOn(service, 'deleteInsightsInputCategory');
       render(<InputsTable />);
       const firstTagDeleteIcon = screen
         .getAllByTestId('insightsTagContent-primary')[0]
@@ -152,11 +155,11 @@ describe('Insights Input Table', () => {
         fireEvent.click(firstTagDeleteIcon);
       }
 
-      expect(spy).toHaveBeenCalledWith(
+      expect(mockDeletenputCategory).toHaveBeenCalledWith({
         viewId,
-        mockInputData[0].id,
-        mockInputData[0].relationships.categories.data[0].id
-      );
+        inputId: mockInputData[0].id,
+        categoryId: mockInputData[0].relationships.categories.data[0].id,
+      });
     });
     describe('Scan category button', () => {
       it('renders scan category button when category is selected', () => {
@@ -410,17 +413,19 @@ describe('Insights Input Table', () => {
             fireEvent.click(screen.getByText('Approve'));
           });
 
-          expect(service.addInsightsInputCategories).toHaveBeenCalledTimes(2);
-          expect(service.addInsightsInputCategories).toHaveBeenCalledWith(
-            '1',
-            mockInputData[0].id,
-            mockInputData[0].relationships.suggested_categories.data
-          );
-          expect(service.addInsightsInputCategories).toHaveBeenLastCalledWith(
-            '1',
-            mockInputData[1].id,
-            mockInputData[1].relationships.suggested_categories.data
-          );
+          expect(mockAddInputCategories).toHaveBeenCalledTimes(2);
+          expect(mockAddInputCategories).toHaveBeenCalledWith({
+            viewId: '1',
+            inputId: mockInputData[0].id,
+            categories:
+              mockInputData[0].relationships.suggested_categories.data,
+          });
+          expect(mockAddInputCategories).toHaveBeenLastCalledWith({
+            viewId: '1',
+            inputId: mockInputData[1].id,
+            categories:
+              mockInputData[1].relationships.suggested_categories.data,
+          });
         });
         it('does not render approve button when nlp feature flag is disabled', () => {
           mockFeatureFlagData = false;

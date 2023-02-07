@@ -38,7 +38,7 @@ const Export = ({
   const handleExportClick = async () => {
     try {
       const blob = await requestBlob(
-        `${API_PATH}/insights/${viewId}/inputs/as_xlsx`,
+        `${API_PATH}/insights/views/${viewId}/inputs/as_xlsx`,
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         {
           categories:
