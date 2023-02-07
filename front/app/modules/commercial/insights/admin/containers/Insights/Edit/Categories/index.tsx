@@ -35,7 +35,7 @@ import useCategories from 'modules/commercial/insights/api/categories/useCategor
 import useAddCategory from 'modules/commercial/insights/api/categories/useAddCategory';
 import useDeleteCategory from 'modules/commercial/insights/api/categories/useDeleteCategory';
 import useDeleteAllCategories from 'modules/commercial/insights/api/categories/useDeleteAllCategories';
-import useDetectedCategories from 'modules/commercial/insights/hooks/useInsightsDetectedCategories';
+import useDetectedCategories from 'modules/commercial/insights/api/detected_categories/useDetectedCategories';
 import useStat from 'modules/commercial/insights/api/stats/useStat';
 
 // intl
@@ -175,7 +175,7 @@ const Categories = ({
     processed: false,
   });
 
-  const detectedCategories = useDetectedCategories(viewId);
+  const { data: detectedCategories } = useDetectedCategories(viewId);
   const { data: categories } = useCategories(viewId);
 
   if (isNilOrError(categories)) {
@@ -405,7 +405,7 @@ const Categories = ({
       </div>
       {nlpFeatureFlag &&
         !isNilOrError(detectedCategories) &&
-        detectedCategories.length > 0 && (
+        detectedCategories.data.length > 0 && (
           <Button
             buttonStyle="white"
             mb="8px"

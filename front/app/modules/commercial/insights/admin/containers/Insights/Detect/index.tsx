@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // hooks
-import useDetectedCategories from 'modules/commercial/insights/hooks/useInsightsDetectedCategories';
+import useDetectedCategories from 'modules/commercial/insights/api/detected_categories/useDetectedCategories';
 
 // components
 import PageWrapper from 'components/admin/PageWrapper';
@@ -43,7 +43,7 @@ const Detect = ({
   intl: { formatMessage },
 }: WithRouterProps & WrappedComponentProps) => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const detectedCategories = useDetectedCategories(viewId);
+  const { data: detectedCategories } = useDetectedCategories(viewId);
 
   const backRoute = `/admin/reporting/insights/${viewId}/edit`;
 
@@ -97,7 +97,7 @@ const Detect = ({
             <StyledH2>
               {formatMessage(messages.detectCategoriesSectionTitle)}
             </StyledH2>
-            {detectedCategories.length > 0 ? (
+            {detectedCategories.data.length > 0 ? (
               <p>{formatMessage(messages.detectCategoriesDescription)}</p>
             ) : (
               <p data-testid="insightsDetectEmptyDescription">
@@ -105,10 +105,10 @@ const Detect = ({
               </p>
             )}
           </Box>
-          {detectedCategories.length > 0 && (
+          {detectedCategories.data.length > 0 && (
             <>
               <Box display="flex" flexWrap="wrap" mb="60px">
-                {detectedCategories.map((category) => (
+                {detectedCategories.data.map((category) => (
                   <Tag
                     mr="8px"
                     mb="8px"

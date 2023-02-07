@@ -24,10 +24,8 @@ jest.mock('modules/commercial/insights/api/categories/useAddCategory', () =>
 );
 
 jest.mock(
-  'modules/commercial/insights/hooks/useInsightsDetectedCategories',
-  () => {
-    return jest.fn(() => mockData);
-  }
+  'modules/commercial/insights/api/detected_categories/useDetectedCategories',
+  () => jest.fn(() => ({ data: { data: mockData } }))
 );
 
 jest.mock('modules/commercial/insights/api/views/useView');

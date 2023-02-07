@@ -32,10 +32,8 @@ jest.mock(
 );
 
 jest.mock(
-  'modules/commercial/insights/hooks/useInsightsDetectedCategories',
-  () => {
-    return jest.fn(() => mockDetectedCategoriesData);
-  }
+  'modules/commercial/insights/api/detected_categories/useDetectedCategories',
+  () => jest.fn(() => ({ data: { data: mockDetectedCategoriesData } }))
 );
 
 const allInputsCount = 10;
