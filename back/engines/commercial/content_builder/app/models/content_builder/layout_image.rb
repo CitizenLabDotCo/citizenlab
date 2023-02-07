@@ -12,9 +12,13 @@
 #
 module ContentBuilder
   class LayoutImage < ApplicationRecord
+    attr_accessor :skip_image_presence
+
     mount_base64_uploader :image, LayoutImageUploader
 
     before_validation :generate_code, on: :create
+
+    validate :image_presence, unless: :skip_image_presence
 
     def self.generate_code
       SecureRandom.uuid
@@ -24,6 +28,12 @@ module ContentBuilder
 
     def generate_code
       self.code = self.class.generate_code unless code
+    end
+
+    def image_presence
+      return if image.present?
+
+      errors.add(:image, "can't be blank")
     end
   end
 end

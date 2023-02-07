@@ -33,6 +33,6 @@ class IdeaImage < ApplicationRecord
   def image_presence
     return if image.present?
 
-    errors.add(:image, 'cannot be blank!')
+    errors.add(:image, "can't be blank")
   end
 end

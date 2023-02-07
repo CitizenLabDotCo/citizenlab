@@ -15,7 +15,7 @@ module MultiTenancy
       Comment
     ].to_set.freeze
 
-    SKIP_IMAGE_PRESENCE_VALIDATION = %w[IdeaImage].freeze
+    SKIP_IMAGE_PRESENCE_VALIDATION = %w[IdeaImage ContentBuilder::LayoutImage].freeze
 
     def available_templates(external_subfolder: 'release')
       template_names = {}

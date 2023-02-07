@@ -43,6 +43,14 @@ resource 'ContentBuilderLayoutImages' do
         )
       end
 
+      example '[error] Create a layout image without an image', document: false do
+        do_request(layout_image: { image: '' })
+
+        assert_status 422
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:image, "can't be blank")
+      end
+
       example '[error] Create a layout image with invalid image type', document: false do
         image = file_as_base64 'afvalkalender.pdf', 'application/pdf'
         do_request(layout_image: { image: image })
