@@ -283,73 +283,77 @@ const SettingsGeneralTab = () => {
       appConfiguration.attributes.settings.blocking_profanity;
 
     return (
-      <form onSubmit={save}>
-        <SectionTitle>
-          <FormattedMessage {...messages.titleBasic} />
-        </SectionTitle>
-        <StyledSection>
-          <SubSectionTitle>
-            <FormattedMessage {...messages.platformConfiguration} />
-          </SubSectionTitle>
-          <SectionDescription>
-            <FormattedMessage {...messages.subtitleBasic} />
-          </SectionDescription>
+      <>
+        <form onSubmit={save}>
+          <SectionTitle>
+            <FormattedMessage {...messages.titleBasic} />
+          </SectionTitle>
+          <StyledSection>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.platformConfiguration} />
+            </SubSectionTitle>
+            <SectionDescription>
+              <FormattedMessage {...messages.subtitleBasic} />
+            </SectionDescription>
 
-          <SectionField>
-            <InputMultilocWithLocaleSwitcher
-              type="text"
-              id="organization_name"
-              label={
-                <FormattedMessage
-                  {...messages.organizationName}
-                  values={{ type: organizationType }}
-                />
-              }
-              valueMultiloc={organizationNameMultiloc}
-              onChange={handleOrganizatioNameOnChange}
-            />
-          </SectionField>
-
-          <SectionField>
-            <Label>
-              <FormattedMessage {...messages.languages} />
-              <IconTooltip
-                content={<FormattedMessage {...messages.languagesTooltip} />}
+            <SectionField>
+              <InputMultilocWithLocaleSwitcher
+                type="text"
+                id="organization_name"
+                label={
+                  <FormattedMessage
+                    {...messages.organizationName}
+                    values={{ type: organizationType }}
+                  />
+                }
+                valueMultiloc={organizationNameMultiloc}
+                onChange={handleOrganizatioNameOnChange}
               />
-            </Label>
-            <MultipleSelect
-              placeholder=""
-              value={selectedLocaleOptions}
-              onChange={handleLocalesOnChange}
-              options={localeOptions}
-            />
-          </SectionField>
+            </SectionField>
 
-          <SectionField>
-            <Label>
-              <FormattedMessage {...messages.urlTitle} />
-              <IconTooltip content={formatMessage(messages.urlTitleTooltip)} />
-            </Label>
-            <Input
-              type="text"
-              placeholder="https://..."
-              onChange={handleUrlOnChange}
-              value={appConfigSite}
-              error={hasUrlError ? formatMessage(messages.urlError) : null}
-            />
-          </SectionField>
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.languages} />
+                <IconTooltip
+                  content={<FormattedMessage {...messages.languagesTooltip} />}
+                />
+              </Label>
+              <MultipleSelect
+                placeholder=""
+                value={selectedLocaleOptions}
+                onChange={handleLocalesOnChange}
+                options={localeOptions}
+              />
+            </SectionField>
 
-          <SubmitWrapper
-            loading={loading}
-            status={getSubmitState({ errors, saved, diff: attributesDiff })}
-            messages={{
-              buttonSave: messages.save,
-              buttonSuccess: messages.saveSuccess,
-              messageError: messages.saveErrorMessage,
-              messageSuccess: messages.saveSuccessMessage,
-            }}
-          />
-        </StyledSection>
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.urlTitle} />
+                <IconTooltip
+                  content={formatMessage(messages.urlTitleTooltip)}
+                />
+              </Label>
+              <Input
+                type="text"
+                placeholder="https://..."
+                onChange={handleUrlOnChange}
+                value={appConfigSite}
+                error={hasUrlError ? formatMessage(messages.urlError) : null}
+              />
+            </SectionField>
+
+            <SubmitWrapper
+              loading={loading}
+              status={getSubmitState({ errors, saved, diff: attributesDiff })}
+              messages={{
+                buttonSave: messages.save,
+                buttonSuccess: messages.saveSuccess,
+                messageError: messages.saveErrorMessage,
+                messageSuccess: messages.saveSuccessMessage,
+              }}
+            />
+          </StyledSection>
+        </form>
         <StyledSection>
           <SubSectionTitle>
             <FormattedMessage {...messages.contentModeration} />
@@ -386,7 +390,7 @@ const SettingsGeneralTab = () => {
             <Error text={formatMessage(messages.settingsSavingError)} />
           )}
         </StyledSection>
-      </form>
+      </>
     );
   }
 
