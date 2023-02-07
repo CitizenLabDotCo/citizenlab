@@ -41,7 +41,7 @@ const LinearScaleControl = ({
 
   const getButtonWidth = () => {
     if (maximum && maximum > 5) {
-      return maximum > 6 ? '66px' : '80px';
+      return maximum > 6 ? '64px' : '80px';
     }
     return 'auto';
   };
