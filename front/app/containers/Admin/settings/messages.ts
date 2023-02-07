@@ -145,4 +145,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.settingsSavingError',
     defaultMessage: "Couldn't save. Try changing the setting again.",
   },
+  organizationNameMultilocError: {
+    id: 'app.containers.AdminPage.SettingsPage.organizationNameMultilocError',
+    defaultMessage: 'Provide an organization name or city for all languages.',
+  },
 });

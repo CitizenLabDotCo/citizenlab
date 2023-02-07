@@ -1,7 +1,10 @@
-import React, { useState, FormEvent } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { get, map, merge, set } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
+import { object } from 'yup';
+import { FormProvider, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 // typings
 import { CLError, Multiloc, IOption } from 'typings';
@@ -20,9 +23,10 @@ import {
   Success,
   Error,
   Toggle,
+  Button,
+  Box,
 } from '@citizenlab/cl2-component-library';
 import MultipleSelect from 'components/UI/MultipleSelect';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
 import {
   Section,
   SectionTitle,
@@ -37,12 +41,14 @@ import {
   updateAppConfiguration,
   IUpdatedAppConfigurationProperties,
   TAppConfigurationSettingWithEnabled,
+  IAppConfigurationSettingsCore,
+  updateAppConfigurationCore,
 } from 'services/appConfiguration';
 
 // Utils
-import getSubmitState from 'utils/getSubmitState';
-import { isCLErrorJSON } from 'utils/errorUtils';
 import useAppConfiguration from 'hooks/useAppConfiguration';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
 const StyledSection = styled(Section)`
   margin-bottom: 50px;
@@ -70,19 +76,45 @@ export const LabelContent = styled.div`
   flex-direction: column;
 `;
 
-const SettingsGeneralTab = () => {
+interface FormValues {
+  organization_name: IAppConfigurationSettingsCore['organization_name'];
+  locales: IAppConfigurationSettingsCore['locales'];
+  organization_site: IAppConfigurationSettingsCore['organization_site'];
+}
+
+interface Props {
+  defaultValues: FormValues;
+}
+
+const SettingsGeneralTab = ({ defaultValues }: Props) => {
   const appConfiguration = useAppConfiguration();
-  const [loading, setLoading] = useState(false);
   const [hasUrlError, setHasUrlError] = useState(false);
-  const [saved, setSaved] = useState(false);
   const [settingsUpdatedSuccessFully, setSettingsUpdatedSuccessFully] =
     useState(false);
   const [settingsSavingError, setSettingsSavingError] = useState(false);
-  const [errors, setErrors] = useState<{ [fieldName: string]: CLError[] }>({});
   const [attributesDiff, setAttributesDiff] =
     useState<IUpdatedAppConfigurationProperties>({});
 
   const { formatMessage } = useIntl();
+
+  const schema = object({
+    organization_name: validateMultilocForEveryLocale(
+      formatMessage(messages.organizationNameMultilocError)
+    ),
+  });
+  const methods = useForm({
+    mode: 'onBlur',
+    defaultValues,
+    resolver: yupResolver(schema),
+  });
+
+  const onFormSubmit = async (formValues: FormValues) => {
+    try {
+      await save(formValues);
+    } catch (error) {
+      handleHookFormSubmissionError(error, methods.setError);
+    }
+  };
 
   const handleCoreMultilocSettingOnChange =
     (propertyName: string) => (multiloc: Multiloc) => {
@@ -124,46 +156,27 @@ const SettingsGeneralTab = () => {
     }));
   };
 
-  const save = (event: FormEvent<any>) => {
-    event.preventDefault();
+  const save = async (formValues: FormValues) => {
+    await updateAppConfigurationCore(formValues);
+    // if (isCLErrorJSON(e)) {
+    //   const errors = e.json.errors;
+    //   setErrors(errors);
+    //   setLoading(false);
+    //   // This error check uses an undocumented API from the backend.
+    //   // Needs to be reimplemented to use frontend validation when converted to a React Hook Form.
+    //   if (errors.settings && errors.settings.length > 0) {
+    //     const foundUrlError = !!errors.settings.find((error) => {
+    //       return (
+    //         typeof error.error !== 'string' &&
+    //         error.error.fragment === '#/core/organization_site'
+    //       );
+    //     });
 
-    if (appConfiguration) {
-      setLoading(true);
-      setSaved(false);
-      setHasUrlError(false);
-      setErrors({});
-
-      updateAppConfiguration(attributesDiff)
-        .then(() => {
-          setSaved(true);
-          setAttributesDiff({});
-          setLoading(false);
-        })
-        .catch((e) => {
-          if (isCLErrorJSON(e)) {
-            const errors = e.json.errors;
-            setErrors(errors);
-            setLoading(false);
-            // This error check uses an undocumented API from the backend.
-            // Needs to be reimplemented to use frontend validation when converted to a React Hook Form.
-            if (errors.settings && errors.settings.length > 0) {
-              const foundUrlError = !!errors.settings.find((error) => {
-                return (
-                  typeof error.error !== 'string' &&
-                  error.error.fragment === '#/core/organization_site'
-                );
-              });
-
-              if (foundUrlError) {
-                setHasUrlError(true);
-              }
-            }
-          } else {
-            setErrors(e);
-            setLoading(false);
-          }
-        });
-    }
+    //     if (foundUrlError) {
+    //       setHasUrlError(true);
+    //     }
+    //   }
+    // }
   };
 
   const getLocaleOptions = () => {
@@ -284,76 +297,77 @@ const SettingsGeneralTab = () => {
 
     return (
       <>
-        <form onSubmit={save}>
-          <SectionTitle>
-            <FormattedMessage {...messages.titleBasic} />
-          </SectionTitle>
-          <StyledSection>
-            <SubSectionTitle>
-              <FormattedMessage {...messages.platformConfiguration} />
-            </SubSectionTitle>
-            <SectionDescription>
-              <FormattedMessage {...messages.subtitleBasic} />
-            </SectionDescription>
+        <FormProvider {...methods}>
+          <form onSubmit={methods.handleSubmit(onFormSubmit)}>
+            <SectionTitle>
+              <FormattedMessage {...messages.titleBasic} />
+            </SectionTitle>
+            <StyledSection>
+              <SubSectionTitle>
+                <FormattedMessage {...messages.platformConfiguration} />
+              </SubSectionTitle>
+              <SectionDescription>
+                <FormattedMessage {...messages.subtitleBasic} />
+              </SectionDescription>
 
-            <SectionField>
-              <InputMultilocWithLocaleSwitcher
-                type="text"
-                id="organization_name"
-                label={
-                  <FormattedMessage
-                    {...messages.organizationName}
-                    values={{ type: organizationType }}
+              <SectionField>
+                <InputMultilocWithLocaleSwitcher
+                  type="text"
+                  id="organization_name"
+                  label={
+                    <FormattedMessage
+                      {...messages.organizationName}
+                      values={{ type: organizationType }}
+                    />
+                  }
+                  valueMultiloc={organizationNameMultiloc}
+                  onChange={handleOrganizatioNameOnChange}
+                />
+              </SectionField>
+
+              <SectionField>
+                <Label>
+                  <FormattedMessage {...messages.languages} />
+                  <IconTooltip
+                    content={
+                      <FormattedMessage {...messages.languagesTooltip} />
+                    }
                   />
-                }
-                valueMultiloc={organizationNameMultiloc}
-                onChange={handleOrganizatioNameOnChange}
-              />
-            </SectionField>
-
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.languages} />
-                <IconTooltip
-                  content={<FormattedMessage {...messages.languagesTooltip} />}
+                </Label>
+                <MultipleSelect
+                  placeholder=""
+                  value={selectedLocaleOptions}
+                  onChange={handleLocalesOnChange}
+                  options={localeOptions}
                 />
-              </Label>
-              <MultipleSelect
-                placeholder=""
-                value={selectedLocaleOptions}
-                onChange={handleLocalesOnChange}
-                options={localeOptions}
-              />
-            </SectionField>
+              </SectionField>
 
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.urlTitle} />
-                <IconTooltip
-                  content={formatMessage(messages.urlTitleTooltip)}
+              <SectionField>
+                <Label>
+                  <FormattedMessage {...messages.urlTitle} />
+                  <IconTooltip
+                    content={formatMessage(messages.urlTitleTooltip)}
+                  />
+                </Label>
+                <Input
+                  type="text"
+                  placeholder="https://..."
+                  onChange={handleUrlOnChange}
+                  value={appConfigSite}
+                  error={hasUrlError ? formatMessage(messages.urlError) : null}
                 />
-              </Label>
-              <Input
-                type="text"
-                placeholder="https://..."
-                onChange={handleUrlOnChange}
-                value={appConfigSite}
-                error={hasUrlError ? formatMessage(messages.urlError) : null}
-              />
-            </SectionField>
-
-            <SubmitWrapper
-              loading={loading}
-              status={getSubmitState({ errors, saved, diff: attributesDiff })}
-              messages={{
-                buttonSave: messages.save,
-                buttonSuccess: messages.saveSuccess,
-                messageError: messages.saveErrorMessage,
-                messageSuccess: messages.saveSuccessMessage,
-              }}
-            />
-          </StyledSection>
-        </form>
+              </SectionField>
+              <Box display="flex">
+                <Button
+                  type="submit"
+                  processing={methods.formState.isSubmitting}
+                >
+                  {formatMessage(messages.save)}
+                </Button>
+              </Box>
+            </StyledSection>
+          </form>
+        </FormProvider>
         <StyledSection>
           <SubSectionTitle>
             <FormattedMessage {...messages.contentModeration} />
