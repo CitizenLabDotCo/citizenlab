@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 // hooks
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
-import useURLQuery from 'utils/cl-router/useUrlQuery';
+import { useSearchParams } from 'react-router-dom';
 
 // styling
 import rocket from 'assets/img/rocket.png';
@@ -28,7 +28,7 @@ const _Modal = ({ projectId }: Props) => {
   const project = useProject({ projectId });
   const phases = usePhases(projectId);
 
-  const queryParams = useURLQuery();
+  const [queryParams] = useSearchParams();
   const showModalParam = queryParams.get('show_modal');
   const phaseIdParam = queryParams.get('phase_id');
 
