@@ -9,7 +9,7 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :answer_visible_to, if: proc { |object, _params|
-    if object.resource
+    if object.resource && object.resource_type == 'CustomForm'
       @participation_method = Factory.instance.participation_method_for object.resource.participation_context
       @participation_method.supports_answer_visible_to?
     else
