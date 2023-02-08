@@ -33,7 +33,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { isNilOrError } from 'utils/helperUtils';
 import { generateTempId } from '../FormBuilderSettings/utils';
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
-import { DraggableElement } from './utils';
 
 interface FormBuilderToolboxProps {
   onAddField: (field: IFlatCreateCustomField) => void;
@@ -148,71 +147,83 @@ const FormBuilderToolbox = ({
             />
           )}
         </Box>
-        <DraggableElement>
-          <ToolboxItem
-            icon="survey-short-answer-2"
-            label={formatMessage(messages.shortAnswer)}
-            onClick={() => addField('text')}
-            data-cy="e2e-short-answer"
-            fieldsToExclude={builderConfig.toolboxFieldsToExclude}
-            inputType="text"
-            disabled={isCustomFieldsDisabled}
-          />
-          <ToolboxItem
-            icon="survey-long-answer-2"
-            label={formatMessage(messages.longAnswer)}
-            onClick={() => addField('multiline_text')}
-            data-cy="e2e-long-answer"
-            fieldsToExclude={builderConfig.toolboxFieldsToExclude}
-            inputType="multiline_text"
-            disabled={isCustomFieldsDisabled}
-          />
-          <ToolboxItem
-            icon="survey-single-choice"
-            label={formatMessage(messages.singleChoice)}
-            onClick={() => addField('select')}
-            data-cy="e2e-single-choice"
-            fieldsToExclude={builderConfig.toolboxFieldsToExclude}
-            inputType="select"
-            disabled={isCustomFieldsDisabled}
-          />
-          <ToolboxItem
-            icon="survey-multiple-choice-2"
-            label={formatMessage(messages.multipleChoice)}
-            onClick={() => addField('multiselect')}
-            data-cy="e2e-multiple-choice"
-            fieldsToExclude={builderConfig.toolboxFieldsToExclude}
-            inputType="multiselect"
-            disabled={isCustomFieldsDisabled}
-          />
-          <ToolboxItem
-            icon="survey-linear-scale"
-            label={formatMessage(messages.linearScale)}
-            onClick={() => addField('linear_scale')}
-            data-cy="e2e-linear-scale"
-            fieldsToExclude={builderConfig.toolboxFieldsToExclude}
-            inputType="linear_scale"
-            disabled={isCustomFieldsDisabled}
-          />
-          <ToolboxItem
-            icon="survey-number-field"
-            label={formatMessage(messages.number)}
-            onClick={() => addField('number')}
-            data-cy="e2e-number-field"
-            fieldsToExclude={builderConfig.toolboxFieldsToExclude}
-            inputType="number"
-            disabled={isCustomFieldsDisabled}
-          />
-          <ToolboxItem
-            icon="upload-file"
-            label={formatMessage(messages.fileUpload)}
-            onClick={() => addField('file_upload')}
-            data-cy="e2e-file-upload-field"
-            fieldsToExclude={builderConfig.toolboxFieldsToExclude}
-            inputType="file_upload"
-            disabled={isCustomFieldsDisabled}
-          />
-        </DraggableElement>
+        <ToolboxItem
+          icon="section"
+          label={formatMessage(messages.section)}
+          onClick={() => addField('section')}
+          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          inputType="section"
+        />
+        <ToolboxItem
+          icon="page"
+          label={formatMessage(messages.page)}
+          onClick={() => addField('page')}
+          data-cy="e2e-page"
+          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          inputType="page"
+        />
+        <ToolboxItem
+          icon="survey-short-answer-2"
+          label={formatMessage(messages.shortAnswer)}
+          onClick={() => addField('text')}
+          data-cy="e2e-short-answer"
+          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          inputType="text"
+          disabled={isCustomFieldsDisabled}
+        />
+        <ToolboxItem
+          icon="survey-long-answer-2"
+          label={formatMessage(messages.longAnswer)}
+          onClick={() => addField('multiline_text')}
+          data-cy="e2e-long-answer"
+          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          inputType="multiline_text"
+          disabled={isCustomFieldsDisabled}
+        />
+        <ToolboxItem
+          icon="survey-single-choice"
+          label={formatMessage(messages.singleChoice)}
+          onClick={() => addField('select')}
+          data-cy="e2e-single-choice"
+          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          inputType="select"
+          disabled={isCustomFieldsDisabled}
+        />
+        <ToolboxItem
+          icon="survey-multiple-choice-2"
+          label={formatMessage(messages.multipleChoice)}
+          onClick={() => addField('multiselect')}
+          data-cy="e2e-multiple-choice"
+          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          inputType="multiselect"
+          disabled={isCustomFieldsDisabled}
+        />
+        <ToolboxItem
+          icon="survey-linear-scale"
+          label={formatMessage(messages.linearScale)}
+          onClick={() => addField('linear_scale')}
+          data-cy="e2e-linear-scale"
+          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          inputType="linear_scale"
+          disabled={isCustomFieldsDisabled}
+        />
+        <ToolboxItem
+          icon="survey-number-field"
+          label={formatMessage(messages.number)}
+          onClick={() => addField('number')}
+          data-cy="e2e-number-field"
+          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          inputType="number"
+        />
+        <ToolboxItem
+          icon="upload-file"
+          label={formatMessage(messages.fileUpload)}
+          onClick={() => addField('file_upload')}
+          data-cy="e2e-file-upload-field"
+          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          inputType="file_upload"
+          disabled={isCustomFieldsDisabled}
+        />
       </Box>
     </Box>
   );

@@ -31,7 +31,7 @@ const MultiSelectCheckboxControl = ({
   visible,
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
-
+  const answerNotPublic = uischema.options?.answer_visible_to === 'admins';
   const options = getOptions(schema, 'multi');
 
   const dataArray = Array.isArray(data) ? data : [];
@@ -50,9 +50,14 @@ const MultiSelectCheckboxControl = ({
         subtextSupportsHtml
       />
       <Box display="block" id="e2e-multiselect-control">
-        <Text fontSize="s">
+        <Text mt="4px" mb={answerNotPublic ? '4px' : 'auto'} fontSize="s">
           <FormattedMessage {...messages.selectMany} />
         </Text>
+        {answerNotPublic && (
+          <Text mt="0px" fontSize="s">
+            <FormattedMessage {...messages.notPublic} />
+          </Text>
+        )}
         {options?.map((option, index: number) => (
           <Box mt="12px" key={option.value}>
             <Checkbox

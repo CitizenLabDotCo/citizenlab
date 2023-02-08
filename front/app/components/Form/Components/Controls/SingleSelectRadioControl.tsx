@@ -7,11 +7,13 @@ import {
 } from '@jsonforms/core';
 import React, { useState } from 'react';
 import ErrorDisplay from '../ErrorDisplay';
-import { Box, Radio } from '@citizenlab/cl2-component-library';
+import { Box, Text, Radio } from '@citizenlab/cl2-component-library';
 import { FormLabel } from 'components/UI/FormComponents';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import VerificationIcon from '../VerificationIcon';
 import { getOptions, getSubtextElement } from './controlUtils';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 const SingleSelectRadioControl = ({
   data,
@@ -26,6 +28,7 @@ const SingleSelectRadioControl = ({
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
   const options = getOptions(schema, 'single');
+  const answerNotPublic = uischema.options?.answer_visible_to === 'admins';
 
   if (!visible) {
     return null;
@@ -40,6 +43,11 @@ const SingleSelectRadioControl = ({
         subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
       />
+      {answerNotPublic && (
+        <Text mt="0px" fontSize="s">
+          <FormattedMessage {...messages.notPublic} />
+        </Text>
+      )}
       <Box display="block" id="e2e-single-select-control">
         {options?.map((option, index: number) => (
           <Box mt="12px" key={option.value}>

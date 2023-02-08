@@ -14,7 +14,6 @@ import { IFlatCustomField } from 'services/formCustomFields';
 
 // utils
 import { builtInFieldKeys, BuiltInKeyType } from 'components/FormBuilder/utils';
-import { DraggableElement } from './utils';
 
 interface BuiltInFieldsProps {
   isEditingDisabled: boolean;
@@ -62,40 +61,38 @@ const BuiltInFields = ({ isEditingDisabled, move }: BuiltInFieldsProps) => {
       >
         <FormattedMessage {...messages.defaultContent} />
       </Title>
-      <DraggableElement>
-        <ToolboxItem
-          icon="money-bag"
-          label={formatMessage(messages.proposedBudget)}
-          onClick={() => enableField('proposed_budget')}
-          disabled={!enabledBuiltInFieldKeys.includes('proposed_budget')}
-          disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
-          data-cy="e2e-proposed-budget-item"
-        />
-        <ToolboxItem
-          icon="upload-file"
-          label={formatMessage(messages.fileUpload)}
-          onClick={() => enableField('idea_files_attributes')}
-          disabled={!enabledBuiltInFieldKeys.includes('idea_files_attributes')}
-          disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
-          data-cy="e2e-attachments-item"
-        />
-        <ToolboxItem
-          icon="location-simple"
-          label={formatMessage(messages.locationDescription)}
-          onClick={() => enableField('location_description')}
-          disabled={!enabledBuiltInFieldKeys.includes('location_description')}
-          data-cy="e2e-location-item"
-          disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
-        />
-        <ToolboxItem
-          icon="label"
-          label={formatMessage(messages.tags)}
-          onClick={() => enableField('topic_ids')}
-          disabled={!enabledBuiltInFieldKeys.includes('topic_ids')}
-          disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
-          data-cy="e2e-tags-item"
-        />
-      </DraggableElement>
+      <ToolboxItem
+        icon="money-bag"
+        label={formatMessage(messages.proposedBudget)}
+        onClick={() => enableField('proposed_budget')}
+        disabled={!enabledBuiltInFieldKeys.includes('proposed_budget')}
+        disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
+        data-cy="e2e-proposed-budget-item"
+      />
+      <ToolboxItem
+        icon="upload-file"
+        label={formatMessage(messages.fileUpload)}
+        onClick={() => enableField('idea_files_attributes')}
+        disabled={!enabledBuiltInFieldKeys.includes('idea_files_attributes')}
+        disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
+        data-cy="e2e-attachments-item"
+      />
+      <ToolboxItem
+        icon="location-simple"
+        label={formatMessage(messages.locationDescription)}
+        onClick={() => enableField('location_description')}
+        disabled={!enabledBuiltInFieldKeys.includes('location_description')}
+        data-cy="e2e-location-item"
+        disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
+      />
+      <ToolboxItem
+        icon="label"
+        label={formatMessage(messages.tags)}
+        onClick={() => enableField('topic_ids')}
+        disabled={!enabledBuiltInFieldKeys.includes('topic_ids')}
+        disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
+        data-cy="e2e-tags-item"
+      />
     </Box>
   );
 };
