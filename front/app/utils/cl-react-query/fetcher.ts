@@ -81,8 +81,9 @@ async function fetcher({ path, action, body, queryParams }) {
 
   // Return null for scenarios where the back-end response is not valid JSON but the request is successful
   if (
-    (action === 'delete' && response.ok) ||
-    (response.status !== 200 && response.status !== 201)
+    response.ok &&
+    (action === 'delete' ||
+      (response.status !== 200 && response.status !== 201))
   ) {
     return null;
   }
