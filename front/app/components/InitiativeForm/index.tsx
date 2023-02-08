@@ -283,7 +283,7 @@ class InitiativeForm extends React.Component<
     }
   };
 
-  changeAndSaveTopics = (topic_ids) => {
+  changeAndSaveTopics = (topic_ids: string[]) => {
     this.props.onChangeTopics(topic_ids);
     this.onBlur('topic_ids')();
   };

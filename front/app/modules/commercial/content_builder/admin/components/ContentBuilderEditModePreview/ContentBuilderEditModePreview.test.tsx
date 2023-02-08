@@ -3,9 +3,6 @@ import { render } from 'utils/testUtils/rtl';
 
 import ContentBuilderEditModePreview from '.';
 
-jest.mock('services/locale');
-jest.mock('hooks/useLocale');
-jest.mock('utils/cl-intl');
 jest.mock('hooks/useProject', () => {
   return jest.fn(() => ({
     id: 'id',

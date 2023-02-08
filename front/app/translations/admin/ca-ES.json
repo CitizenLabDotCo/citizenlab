@@ -1074,8 +1074,6 @@
   "app.containers.AdminPage.ProjectEdit.pollTab": "Enquesta",
   "app.containers.AdminPage.ProjectEdit.popularSortingMethod": "La majoria va votar",
   "app.containers.AdminPage.ProjectEdit.projectCardImageLabelText": "Imatge de la targeta del projecte",
-  "app.containers.AdminPage.ProjectEdit.projectCardImageLabelTooltip": "Aquesta imatge es mostrarà a la targeta del projecte a la pàgina d'inici. Les dimensions ideals són una amplada de 1440 píxels i una alçada entre 1440 i 720 píxels.",
-  "app.containers.AdminPage.ProjectEdit.projectFolderCardImageTooltip": "Aquesta és la imatge que es mostra a la targeta de la carpeta. Les dimensions ideals per a aquesta imatge són una amplada de 1440 píxels i una alçada entre 1440 i 720 píxels.",
   "app.containers.AdminPage.ProjectEdit.projectFolderSelectTitle": "Voleu afegir un projecte a una carpeta?",
   "app.containers.AdminPage.ProjectEdit.projectManagerTooltipContent": "Els gestors de projectes poden editar projectes, gestionar publicacions i enviar correus electrònics als participants. Podeu {moderationInfoCenterLink} per trobar més informació sobre els drets assignats als gestors de projectes.",
   "app.containers.AdminPage.ProjectEdit.projectMethodChangeWarning": "Alguns mètodes de participació no estan disponibles per als projectes existents. En aquests casos s'haurà de crear un nou projecte.",

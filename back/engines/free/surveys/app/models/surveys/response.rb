@@ -35,5 +35,9 @@ module Surveys
     ANSWERS_JSON_SCHEMA = JSON.parse(ANSWERS_JSON_SCHEMA_STR)
 
     validates :answers, presence: true, json: { schema: ANSWERS_JSON_SCHEMA_STR }
+
+    def project_id
+      participation_context.try(:project_id)
+    end
   end
 end

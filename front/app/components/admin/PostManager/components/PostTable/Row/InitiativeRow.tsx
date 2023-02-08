@@ -88,19 +88,19 @@ interface Props extends InputProps, DataProps {
 }
 
 class InitiativeRow extends React.PureComponent<Props & WrappedComponentProps> {
-  onUpdateInitiativePhases = (selectedPhases) => {
+  onUpdateInitiativePhases = (selectedPhases: string[]) => {
     updateInitiative(this.props.initiative.id, {
       phase_ids: selectedPhases,
     });
   };
 
-  onUpdateInitiativeTopics = (selectedTopics) => {
+  onUpdateInitiativeTopics = (selectedTopics: string[]) => {
     updateInitiative(this.props.initiative.id, {
       topic_ids: selectedTopics,
     });
   };
 
-  onUpdateInitiativeStatus = (statusId) => {
+  onUpdateInitiativeStatus = (statusId: string) => {
     const { initiative } = this.props;
     const initiativeId = initiative.id;
 
@@ -116,7 +116,7 @@ class InitiativeRow extends React.PureComponent<Props & WrappedComponentProps> {
     });
   };
 
-  onUpdateInitiativeAssignee = (assigneeId) => {
+  onUpdateInitiativeAssignee = (assigneeId: string) => {
     const { initiative } = this.props;
     const initiativeId = initiative.id;
 

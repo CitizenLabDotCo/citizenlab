@@ -28,6 +28,7 @@ services:
     environment:
       POSTGRES_HOST: e2e-postgres
       OVERRIDE_HOST: "e2e.front"
+      FRONTEND_URI: "http://e2e.front:3000"
 
   rabbitmq:
     container_name: e2e-rabbit

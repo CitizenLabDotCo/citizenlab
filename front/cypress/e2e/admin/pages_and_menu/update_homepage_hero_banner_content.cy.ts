@@ -77,7 +77,7 @@ describe('Admin: update Hero Banner content', () => {
     );
   });
 
-  it.skip('uploads, crops, and displays banner image', () => {
+  it('uploads, crops, and displays banner image', () => {
     cy.intercept('PATCH', '**/home_page').as('saveHomePage');
     cy.setConsentAndAdminLoginCookies();
 

@@ -1127,8 +1127,6 @@
   "app.containers.AdminPage.ProjectEdit.pollTab": "الاستطلاع",
   "app.containers.AdminPage.ProjectEdit.popularSortingMethod": "الأكثر تصويتًا محليا",
   "app.containers.AdminPage.ProjectEdit.projectCardImageLabelText": "صورة بطاقة المشروع",
-  "app.containers.AdminPage.ProjectEdit.projectCardImageLabelTooltip": "ستظهر هذه الصورة في بطاقة المشروع بالصفحة الرئيسية. الأبعاد المثالية هي: العرض 1440 بكسل والارتفاع بين 1440 و720 بكسل.",
-  "app.containers.AdminPage.ProjectEdit.projectFolderCardImageTooltip": "هذه هي الصورة المعروضة في بطاقة المجلد. الأبعاد المثالية لهذه الصورة هي: العرض 1440 بكسل والارتفاع بين 1440 و720 بكسل.",
   "app.containers.AdminPage.ProjectEdit.projectFolderSelectTitle": "هل تريد إضافة مشروع إلى مجلد؟",
   "app.containers.AdminPage.ProjectEdit.projectManagerTooltipContent": "باستطاعة مديري المشاريع تعديل مشاريع وإدارة منشورات وإرسال رسائل إلكترونية إلى مشاركين. يمكنك {moderationInfoCenterLink} للعثور على مزيد من المعلومات حول الحقوق المعيَّنة لمديري المشاريع.",
   "app.containers.AdminPage.ProjectEdit.projectMethodChangeWarning": "لا تتوفر بعض طرق المشاركة للمشاريع الحالية. سيلزم إنشاء مشروع جديد في هذه الحالات.",

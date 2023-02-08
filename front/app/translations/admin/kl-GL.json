@@ -1074,8 +1074,6 @@
   "app.containers.AdminPage.ProjectEdit.pollTab": "Taasineq",
   "app.containers.AdminPage.ProjectEdit.popularSortingMethod": "Amerlanernik taaneqartut",
   "app.containers.AdminPage.ProjectEdit.projectCardImageLabelText": "Suliniummut kortip assiliartaa",
-  "app.containers.AdminPage.ProjectEdit.projectCardImageLabelTooltip": "Asseq una iseqqaarfimmi suliniutinut kortimi ersissaaq. Angissutsit pitsaanerpaat tassaassapput 1440-inik pixelilimmik silissusilik kiisalu 1440-ip 720-llu akornanni pixelilimmik portussusilik.",
-  "app.containers.AdminPage.ProjectEdit.projectFolderCardImageTooltip": "Asseq taanna mappinut kortimi nuisassaaq. Assimut tassunga angissutsit pitsaanerpaat tassaassapput 1440-inik pixelilimmik silissusilik kiisalu 1440-ip 720-llu akornanni pixelilimmik portussusilik.",
   "app.containers.AdminPage.ProjectEdit.projectFolderSelectTitle": "Suliniut mappimut ilanngutissaviuk?",
   "app.containers.AdminPage.ProjectEdit.projectManagerTooltipContent": "Suliniummi aqutsisup suliniutit allanngortitersinnaavai, ilanngussat aaqqissuullugit kiisalu peqataasunut mailinik nassiussilluni. {moderationInfoCenterLink} atorlugu suliniutinik aqutsisutut pisinnaatitaaffiit pillugit paasissutissat amerlanerusut nanisinnaavatit.",
   "app.containers.AdminPage.ProjectEdit.projectMethodChangeWarning": ".",

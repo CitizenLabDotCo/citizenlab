@@ -1074,8 +1074,6 @@
   "app.containers.AdminPage.ProjectEdit.pollTab": "Δημοσκόπηση",
   "app.containers.AdminPage.ProjectEdit.popularSortingMethod": "Με τις περισσότερες ψήφους",
   "app.containers.AdminPage.ProjectEdit.projectCardImageLabelText": "Εικόνα κάρτας έργου",
-  "app.containers.AdminPage.ProjectEdit.projectCardImageLabelTooltip": "Αυτή η εικόνα θα εμφανίζεται στην κάρτα έργου στην αρχική σελίδα. Οι ιδανικές διαστάσεις είναι πλάτος 1440 εικονοστοιχείων και ύψος μεταξύ 1440 και 720 εικονοστοιχείων.",
-  "app.containers.AdminPage.ProjectEdit.projectFolderCardImageTooltip": "Αυτή είναι η εικόνα που εμφανίζεται στην κάρτα φακέλου. Οι ιδανικές διαστάσεις αυτής της εικόνας είναι πλάτος 1440 pixels και ύψος μεταξύ 1440 και 720 pixels.",
   "app.containers.AdminPage.ProjectEdit.projectFolderSelectTitle": "Προσθήκη έργου σε φάκελο;",
   "app.containers.AdminPage.ProjectEdit.projectManagerTooltipContent": "Οι διαχειριστές έργων μπορούν να επεξεργάζονται έργα, να διαχειρίζονται δημοσιεύσεις και να στέλνουν email στους συμμετέχοντες. Μπορείτε να {moderationInfoCenterLink} για να βρείτε περισσότερες πληροφορίες σχετικά με τα δικαιώματα που έχουν εκχωρηθεί στους διαχειριστές έργων.",
   "app.containers.AdminPage.ProjectEdit.projectMethodChangeWarning": "Ορισμένες μέθοδοι συμμετοχής δεν είναι διαθέσιμες για υφιστάμενα έργα. Σε αυτές τις περιπτώσεις θα πρέπει να δημιουργηθεί ένα νέο έργο.",

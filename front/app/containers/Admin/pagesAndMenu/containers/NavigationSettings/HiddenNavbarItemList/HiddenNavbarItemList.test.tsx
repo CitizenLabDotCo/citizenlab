@@ -7,9 +7,6 @@ import { fireEvent, render, screen } from 'utils/testUtils/rtl';
 import HiddenNavbarItemList from '.';
 import { addNavbarItem } from 'services/navbar';
 
-jest.mock('services/locale');
-jest.mock('services/appConfiguration');
-
 let mockNavbarItems = allNavbarItems;
 const mockRemovedDefaultNavbarItems = [];
 
@@ -20,7 +17,6 @@ jest.mock('hooks/useRemovedDefaultNavbarItems', () =>
 
 jest.mock('hooks/useCustomPages');
 jest.mock('hooks/useCustomPageSlugById');
-jest.mock('hooks/useLocale');
 
 jest.mock('services/navbar', () => ({
   addNavbarItem: jest.fn(),
@@ -35,8 +31,6 @@ jest.mock('services/customPages', () => {
     deleteCustomPage: jest.fn(),
   };
 });
-
-jest.mock('utils/cl-router/history');
 
 describe('<HiddenNavbarItemList />', () => {
   it('renders', () => {
