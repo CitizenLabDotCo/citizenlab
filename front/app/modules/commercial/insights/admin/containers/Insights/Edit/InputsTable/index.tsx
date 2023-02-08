@@ -138,8 +138,14 @@ const InputsTable = ({
 
   const lastPage = inputs ? getPageNumberFromUrl(inputs.links?.last) : 1;
 
-  const { status, progress, triggerScan, cancelScan, onDone } =
-    useScanForCategorySuggestions(viewId, query.category, processed);
+  const {
+    status,
+    progress,
+    triggerScan,
+    cancelScan,
+    onDone,
+    isLoading: isScanLoading,
+  } = useScanForCategorySuggestions(viewId, query.category, processed);
 
   const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
   // Callbacks and Effects -----------------------------------------------------
@@ -385,6 +391,7 @@ const InputsTable = ({
                 textColor={colors.primary}
                 onClick={triggerScan}
                 data-testid="insightsScanCategory-button"
+                processing={isLoading}
               >
                 {formatMessage(messages.categoriesScanButton)}
               </Button>
@@ -429,6 +436,7 @@ const InputsTable = ({
           cancelScan={cancelScan}
           onClose={onDone}
           key={query.category}
+          isLoading={isScanLoading}
         />
       )}
       {inputs.data.length === 0 ? (
