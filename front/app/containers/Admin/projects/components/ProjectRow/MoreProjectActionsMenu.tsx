@@ -60,7 +60,12 @@ const MoreProjectActionsMenu = ({ projectId, setError }: Props) => {
   }
 
   return (
-    <Box display="flex" alignItems="center" ml="1rem">
+    <Box
+      display="flex"
+      alignItems="center"
+      ml="1rem"
+      data-testid="moreProjectActionsMenu"
+    >
       <MoreActionsMenu showLabel={false} actions={actions} />
     </Box>
   );

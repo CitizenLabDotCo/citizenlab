@@ -43,12 +43,12 @@ describe('InputControl', () => {
     expect(screen.getByTestId('inputControl')).toBeInTheDocument();
   });
 
-  it('shows opional for optional fields', () => {
+  it('shows optional for optional fields', () => {
     render(<InputControl {...mostProps} data={undefined} />);
     expect(screen.getByText('(optional)')).toBeInTheDocument();
   });
 
-  it("doesn't show opional for reuqired fields", () => {
+  it("doesn't show optional for required fields", () => {
     render(<InputControl {...mostProps} data={undefined} required={true} />);
     expect(screen.queryByText('(optional)')).toBeNull();
   });

@@ -45,7 +45,7 @@ type CustomButtonAction = {
 };
 type ButtonAction = CustomButtonAction | 'manage';
 
-interface Props {
+export interface Props {
   publication: IAdminPublicationContent;
   actions: ButtonAction[];
   hidePublicationStatusLabel?: boolean;
