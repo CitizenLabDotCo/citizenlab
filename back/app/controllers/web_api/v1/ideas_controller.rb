@@ -10,12 +10,6 @@ class WebApi::V1::IdeasController < ApplicationController
   after_action :verify_policy_scoped, only: %i[index index_mini]
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  def schema
-    input = Idea.find params[:id]
-    enabled_fields = IdeaCustomFieldsService.new(input.custom_form).enabled_fields
-    render json: CustomFieldService.new.ui_and_json_multiloc_schemas(AppConfiguration.instance, enabled_fields)
-  end
-
   def json_forms_schema
     input = Idea.find params[:id]
     enabled_fields = IdeaCustomFieldsService.new(input.custom_form).enabled_fields
