@@ -55,4 +55,11 @@ describe('ProjectRow', () => {
     const moreActionsMenu = screen.getByTestId('moreProjectActionsMenu');
     expect(moreActionsMenu).toBeInTheDocument();
   });
+
+  it('does not show the MoreActionsMenu when it is not enabled', () => {
+    render(<ProjectRow {...props} />);
+
+    const moreActionsMenu = screen.queryByTestId('moreProjectActionsMenu');
+    expect(moreActionsMenu).toBeNull();
+  });
 });
