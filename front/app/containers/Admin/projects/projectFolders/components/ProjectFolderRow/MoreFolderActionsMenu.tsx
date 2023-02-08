@@ -40,8 +40,8 @@ const MoreFolderActionsMenu = ({ folderId, setError }: Props) => {
       }
     },
     label: formatMessage(messages.deleteFolderButton),
-    icon: 'delete',
-  } as IAction;
+    icon: 'delete' as const,
+  };
 
   const actions: IAction[] = [];
   if (isAdmin({ data: authUser })) {
