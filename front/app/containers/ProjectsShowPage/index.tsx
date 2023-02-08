@@ -41,8 +41,7 @@ import { isValidPhase } from './phaseParam';
 import {
   anyIsUndefined,
   isNilOrError,
-  isApiError,
-  NilOrError,
+  isUnauthorizedError,
 } from 'utils/helperUtils';
 import { scrollToElement } from 'utils/scroll';
 import { isError } from 'lodash-es';
@@ -85,11 +84,6 @@ const ContentWrapper = styled.div`
 interface Props {
   project: IProjectData | Error | null;
 }
-
-const isUnauthorized = (project: IProjectData | NilOrError) => {
-  if (!isApiError(project)) return false;
-  return project.json.errors?.base[0].error === 'Unauthorized!';
-};
 
 const ProjectsShowPage = memo<Props>(({ project }) => {
   const projectId = !isNilOrError(project) ? project.id : undefined;
@@ -232,11 +226,13 @@ const ProjectsShowPageWrapper = () => {
   if (pending) return null;
 
   const userJustLoggedOut = userWasLoggedIn && user === null;
-  if (userJustLoggedOut && isUnauthorized(project)) {
+  const unauthorized = isUnauthorizedError(project);
+
+  if (userJustLoggedOut && unauthorized) {
     return <Redirect method="replace" path="/" />;
   }
 
-  if (isNilOrError(user) && isUnauthorized(project)) {
+  if (isNilOrError(user) && unauthorized) {
     return <ProjectNotVisible />;
   }
 
