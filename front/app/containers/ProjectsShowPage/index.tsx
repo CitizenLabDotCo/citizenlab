@@ -217,11 +217,11 @@ const ProjectsShowPageWrapper = () => {
   const pending = projectPending || userPending;
 
   useEffect(() => {
-    if (pending) return;
+    if (userPending) return;
     if (isError(user)) return;
 
     if (user !== null) setUserWasLoggedIn(true);
-  }, [pending, user]);
+  }, [userPending, user]);
 
   if (pending) return null;
 
