@@ -236,7 +236,7 @@ const ProjectsShowPageWrapper = () => {
     return <Redirect method="replace" path="/" />;
   }
 
-  if (!isNilOrError(user) && isUnauthorized(project)) {
+  if (isNilOrError(user) && isUnauthorized(project)) {
     return <ProjectNotVisible />;
   }
 
