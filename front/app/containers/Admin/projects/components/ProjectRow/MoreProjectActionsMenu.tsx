@@ -38,8 +38,8 @@ const MoreProjectActionsMenu = ({ projectId, setError }: Props) => {
       );
     },
     label: formatMessage(messages.copyProjectButton),
-    icon: 'copy',
-  } as IAction;
+    icon: 'copy' as const,
+  };
 
   const deleteAction = {
     handler: async () => {
@@ -51,10 +51,10 @@ const MoreProjectActionsMenu = ({ projectId, setError }: Props) => {
       }
     },
     label: formatMessage(messages.deleteProjectButtonFull),
-    icon: 'delete',
-  } as IAction;
+    icon: 'delete' as const,
+  };
 
-  const actions = [copyAction];
+  const actions: IAction[] = [copyAction];
   if (isAdmin({ data: authUser })) {
     actions.push(deleteAction);
   }

@@ -43,7 +43,7 @@ const MoreFolderActionsMenu = ({ folderId, setError }: Props) => {
     icon: 'delete',
   } as IAction;
 
-  const actions = [] as IAction[];
+  const actions: IAction[] = [];
   if (isAdmin({ data: authUser })) {
     actions.push(deleteAction);
   }
