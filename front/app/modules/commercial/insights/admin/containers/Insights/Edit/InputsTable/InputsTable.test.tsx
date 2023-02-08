@@ -83,14 +83,18 @@ jest.mock('utils/cl-router/withRouter', () => {
 
 const mockTriggerScan = jest.fn();
 
-jest.mock('modules/commercial/insights/hooks/useScanInsightsCategory', () => {
-  return jest.fn(() => ({
-    triggerScan: mockTriggerScan,
-    onDone: jest.fn(),
-    status: 'isIdle',
-    progress: 0,
-  }));
-});
+jest.mock(
+  'modules/commercial/insights/api/category_suggestions/useScanForCategorySuggestions',
+  () => {
+    return jest.fn(() => ({
+      triggerScan: mockTriggerScan,
+      onDone: jest.fn(),
+      status: 'isIdle',
+      progress: 0,
+      isLoading: false,
+    }));
+  }
+);
 
 let mockFeatureFlagData = true;
 

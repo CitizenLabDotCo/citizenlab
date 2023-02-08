@@ -77,11 +77,7 @@ const useScanForCategorySuggestions = (
     queryKey
   ) as IInsightsCategorySuggestionsTasks;
 
-  const {
-    data,
-    isFetching: queryLoading,
-    refetch,
-  } = useQuery({
+  const { data, refetch } = useQuery({
     queryFn: () =>
       fetchTasks(viewId, { categories: category ? [category] : [], processed }),
     queryKey,
@@ -91,7 +87,6 @@ const useScanForCategorySuggestions = (
     refetchInterval: 5000,
     keepPreviousData: false,
     structuralSharing: (oldData, newData) => {
-      console.log({ oldData, newData });
       if (!oldData) {
         return {
           data: {
