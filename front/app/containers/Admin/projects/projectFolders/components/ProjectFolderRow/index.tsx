@@ -11,6 +11,7 @@ import {
   RowButton,
   ActionsRowContainer,
 } from 'containers/Admin/projects/components/StyledComponents';
+import MoreFolderActionsMenu from './MoreFolderActionsMenu';
 
 // styles
 import styled from 'styled-components';
@@ -26,7 +27,6 @@ import useAdminPublications, {
 } from 'hooks/useAdminPublications';
 
 // services
-import { isAdmin } from 'services/permissions/roles';
 import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
 
 // typings
@@ -40,7 +40,6 @@ const FolderIcon = styled(Icon)`
 import ProjectRow from 'containers/Admin/projects/components/ProjectRow';
 import { colors } from 'utils/styleUtils';
 import PublicationStatusLabel from 'containers/Admin/projects/components/PublicationStatusLabel';
-import DeleteProjectFolderButton from '../DeleteProjectFolderButton';
 
 const ArrowIcon = styled(Icon)<{ expanded: boolean }>`
   flex: 0 0 24px;
@@ -110,8 +109,10 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
   });
 
   const [folderOpen, setFolderOpen] = useState(true);
-  const [isBeingDeleted, setIsBeingDeleted] = useState(false);
-  const [folderDeletionError, setFolderDeletionError] = useState('');
+  const [isBeingDeleted, _setIsBeingDeleted] = useState(false);
+  const [folderDeletionError, setFolderDeletionError] = useState<string | null>(
+    null
+  );
 
   const toggleExpand = () => setFolderOpen((folderOpen) => !folderOpen);
   const hasProjects =
@@ -119,8 +120,6 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
     folderChildAdminPublications.length > 0;
 
   if (!isNilOrError(authUser)) {
-    const userIsAdmin = isAdmin({ data: authUser });
-
     return (
       <Container>
         <FolderRowContent
@@ -146,14 +145,6 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
             />
           </RowContentInner>
           <ActionsRowContainer>
-            {userIsAdmin && (
-              <DeleteProjectFolderButton
-                publication={publication}
-                processing={isBeingDeleted}
-                setDeletionError={setFolderDeletionError}
-                setDeleteIsProcessing={setIsBeingDeleted}
-              />
-            )}
             <RowButton
               className={`e2e-admin-edit-project ${
                 publication.attributes.publication_title_multiloc['en-GB'] || ''
@@ -168,6 +159,10 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
             >
               <FormattedMessage {...messages.manageButtonLabel} />
             </RowButton>
+            <MoreFolderActionsMenu
+              folderId={publication.publicationId}
+              setError={setFolderDeletionError}
+            />
           </ActionsRowContainer>
         </FolderRowContent>
 
@@ -179,7 +174,8 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
               <InFolderProjectRow
                 publication={publication}
                 key={publication.id}
-                actions={userIsAdmin ? ['delete', 'manage'] : ['manage']}
+                actions={['manage']}
+                showMoreActions
               />
             ))}
           </ProjectRows>

@@ -94,7 +94,7 @@ class InitiativeMoreActions extends PureComponent<
           <MoreActionsMenuWrapper>
             <HasPermission item={initiative} action="edit" context={initiative}>
               <MoreActionsMenu
-                label={<FormattedMessage {...messages.moreOptions} />}
+                labelAndTitle={<FormattedMessage {...messages.moreOptions} />}
                 color={color}
                 id={id}
                 actions={[
@@ -114,7 +114,7 @@ class InitiativeMoreActions extends PureComponent<
               />
               <HasPermission.No>
                 <MoreActionsMenu
-                  label={<FormattedMessage {...messages.moreOptions} />}
+                  labelAndTitle={<FormattedMessage {...messages.moreOptions} />}
                   color={color}
                   id={id}
                   actions={[

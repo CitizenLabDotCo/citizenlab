@@ -10,7 +10,6 @@ import {
   RowButton,
   ActionsRowContainer,
 } from '../StyledComponents';
-import DeleteProjectButton from '../DeleteProjectButton';
 import PublicationStatusLabel from '../PublicationStatusLabel';
 import { IconNames, StatusLabel } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
@@ -24,6 +23,7 @@ import useAuthUser from 'hooks/useAuthUser';
 
 // types
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
+import MoreProjectActionsMenu from './MoreProjectActionsMenu';
 
 export const StyledStatusLabel = styled(StatusLabel)`
   margin-right: 5px;
@@ -43,13 +43,14 @@ type CustomButtonAction = {
   icon: IconNames;
   processing?: boolean;
 };
-type ButtenAction = CustomButtonAction | 'manage' | 'delete';
+type ButtonAction = CustomButtonAction | 'manage';
 
 interface Props {
   publication: IAdminPublicationContent;
-  actions?: ButtenAction[];
+  actions: ButtonAction[];
   hidePublicationStatusLabel?: boolean;
   className?: string;
+  showMoreActions?: boolean;
 }
 
 const ProjectRow = ({
@@ -57,9 +58,10 @@ const ProjectRow = ({
   actions,
   hidePublicationStatusLabel,
   className,
+  showMoreActions = false,
 }: Props) => {
-  const [isBeingDeleted, setIsBeingDeleted] = useState<boolean>(false);
-  const [deletionError, setDeletionError] = useState<string>('');
+  const [isBeingDeleted, _setIsBeingDeleted] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const authUser = useAuthUser();
   const projectId = publication.publicationId;
   const publicationStatus = publication.attributes.publication_status;
@@ -88,61 +90,47 @@ const ProjectRow = ({
             <PublicationStatusLabel publicationStatus={publicationStatus} />
           )}
         </RowContentInner>
-        {actions ? (
-          <ActionsRowContainer>
-            {actions.map((action) => {
-              if (action === 'delete') {
-                return (
-                  <DeleteProjectButton
-                    publication={publication}
-                    setDeleteIsProcessing={setIsBeingDeleted}
-                    setDeletionError={setDeletionError}
-                    processing={isBeingDeleted}
-                    key="delete"
-                  />
-                );
-              } else if (action === 'manage') {
-                return (
-                  <ManageButton
-                    isDisabled={isBeingDeleted || !userCanModerateProject}
-                    publicationId={publication.publicationId}
-                    key="manage"
-                  />
-                );
-              } else {
-                return (
-                  <RowButton
-                    data-cy={`e2e-manage-button-${publication.publicationId}`}
-                    key={action.icon}
-                    type="button"
-                    className={[
-                      'e2e-admin-edit-publication',
-                      publication.attributes.publication_title_multiloc?.[
-                        'en-GB'
-                      ],
-                    ]
-                      .filter((item) => item)
-                      .join(' ')}
-                    onClick={action.handler(publication.publicationId)}
-                    buttonStyle="secondary"
-                    icon={action.icon}
-                    processing={action.processing}
-                    disabled={isBeingDeleted}
-                  >
-                    {action.buttonContent}
-                  </RowButton>
-                );
-              }
-            })}
-          </ActionsRowContainer>
-        ) : (
-          <ManageButton
-            isDisabled={isBeingDeleted || !userCanModerateProject}
-            publicationId={publication.publicationId}
-          />
-        )}
+        <ActionsRowContainer>
+          {actions.map((action) => {
+            if (action === 'manage') {
+              return (
+                <ManageButton
+                  isDisabled={isBeingDeleted || !userCanModerateProject}
+                  publicationId={publication.publicationId}
+                  key="manage"
+                />
+              );
+            } else {
+              return (
+                <RowButton
+                  data-cy={`e2e-manage-button-${publication.publicationId}`}
+                  key={action.icon}
+                  type="button"
+                  className={[
+                    'e2e-admin-edit-publication',
+                    publication.attributes.publication_title_multiloc?.[
+                      'en-GB'
+                    ],
+                  ]
+                    .filter((item) => item)
+                    .join(' ')}
+                  onClick={action.handler(publication.publicationId)}
+                  buttonStyle="secondary"
+                  icon={action.icon}
+                  processing={action.processing}
+                  disabled={isBeingDeleted}
+                >
+                  {action.buttonContent}
+                </RowButton>
+              );
+            }
+          })}
+          {showMoreActions && (
+            <MoreProjectActionsMenu projectId={projectId} setError={setError} />
+          )}
+        </ActionsRowContainer>
       </RowContent>
-      {deletionError && <Error text={deletionError} />}
+      {error && <Error text={error} />}
     </Container>
   );
 };

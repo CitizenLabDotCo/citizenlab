@@ -28,7 +28,13 @@ const ModeratorProjectList = memo<Props>(() => {
 
   const adminPublicationRow = (adminPublication) => {
     if (adminPublication.publicationType === 'project') {
-      return <ProjectRow publication={adminPublication} />;
+      return (
+        <ProjectRow
+          publication={adminPublication}
+          actions={['manage']}
+          showMoreActions
+        />
+      );
     }
     if (adminPublication.publicationType === 'folder') {
       return <ProjectFolderRow publication={adminPublication} />;

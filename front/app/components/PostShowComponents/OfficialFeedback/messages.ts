@@ -61,10 +61,6 @@ export default defineMessages({
     id: 'app.components.PostComponents.OfficialFeedback.official',
     defaultMessage: 'Official',
   },
-  showMoreActions: {
-    id: 'app.components.PostComponents.OfficialFeedback.showMoreActions',
-    defaultMessage: 'Show more actions',
-  },
   postedOn: {
     id: 'app.components.PostComponents.OfficialFeedback.postedOn',
     defaultMessage: 'Posted on {date}',
