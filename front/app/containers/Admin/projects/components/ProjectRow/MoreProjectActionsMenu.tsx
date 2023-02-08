@@ -10,7 +10,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   projectId: string;
-  setError: (error: string) => void;
+  setError: (error: string | null) => void;
 }
 
 const MoreProjectActionsMenu = ({ projectId, setError }: Props) => {
@@ -24,7 +24,7 @@ const MoreProjectActionsMenu = ({ projectId, setError }: Props) => {
   ) => {
     try {
       await callback();
-      setError('');
+      setError(null);
     } catch {
       setError(error);
     }

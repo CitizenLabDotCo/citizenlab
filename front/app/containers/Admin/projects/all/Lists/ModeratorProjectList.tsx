@@ -32,7 +32,7 @@ const ModeratorProjectList = memo<Props>(() => {
         <ProjectRow
           publication={adminPublication}
           actions={['manage']}
-          showMoreActions={true}
+          showMoreActions
         />
       );
     }

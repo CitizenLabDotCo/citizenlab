@@ -103,7 +103,7 @@ const AdminProjectList = memo<Props>((_props) => {
                           <ProjectRow
                             actions={['manage']}
                             publication={item}
-                            showMoreActions={true}
+                            showMoreActions
                           />
                         )}
                         {item.publicationType === 'folder' && (

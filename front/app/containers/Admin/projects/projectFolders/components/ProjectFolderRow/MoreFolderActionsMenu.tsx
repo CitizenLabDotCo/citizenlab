@@ -10,7 +10,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   folderId: string;
-  setError: (error: string) => void;
+  setError: (error: string | null) => void;
 }
 
 const MoreFolderActionsMenu = ({ folderId, setError }: Props) => {
@@ -24,7 +24,7 @@ const MoreFolderActionsMenu = ({ folderId, setError }: Props) => {
   ) => {
     try {
       await callback();
-      setError('');
+      setError(null);
     } catch {
       setError(error);
     }

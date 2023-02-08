@@ -110,7 +110,9 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
 
   const [folderOpen, setFolderOpen] = useState(true);
   const [isBeingDeleted, _setIsBeingDeleted] = useState(false);
-  const [folderDeletionError, setFolderDeletionError] = useState('');
+  const [folderDeletionError, setFolderDeletionError] = useState<string | null>(
+    null
+  );
 
   const toggleExpand = () => setFolderOpen((folderOpen) => !folderOpen);
   const hasProjects =
@@ -173,7 +175,7 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
                 publication={publication}
                 key={publication.id}
                 actions={['manage']}
-                showMoreActions={true}
+                showMoreActions
               />
             ))}
           </ProjectRows>
