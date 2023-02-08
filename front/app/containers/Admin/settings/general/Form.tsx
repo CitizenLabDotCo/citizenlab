@@ -51,7 +51,7 @@ interface Props {
   onSubmit: (formValues: FormValues) => Promise<void>;
 }
 
-const Component = ({ defaultValues, onSubmit }: Props) => {
+const Form = ({ defaultValues, onSubmit }: Props) => {
   const { formatMessage } = useIntl();
   const appConfig = useAppConfiguration();
   const schema = object({
@@ -154,4 +154,4 @@ const Component = ({ defaultValues, onSubmit }: Props) => {
   return null;
 };
 
-export default Component;
+export default Form;
