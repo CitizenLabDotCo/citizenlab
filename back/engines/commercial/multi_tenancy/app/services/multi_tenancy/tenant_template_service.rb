@@ -43,6 +43,13 @@ module MultiTenancy
       t1 = Time.zone.now
       obj_to_id_and_class = {}
       created_objects_ids = {}
+      # pool = Concurrent::ThreadPoolExecutor.new(
+      #   min_threads: 5,
+      #   max_threads: 5,
+      #   max_queue: 1000 # unbounded work queue
+      # )
+      pool = Concurrent::FixedThreadPool.new(5)
+      puts "apply_template 1 #{Time.now}"
       template['models'].each do |model_name, fields|
         LogActivityJob.perform_later(Tenant.current, 'loading_template', nil, Time.now.to_i, payload: {
           model_name: model_name,
@@ -91,14 +98,21 @@ module MultiTenancy
                 obj_to_id_and_class[field_value.object_id] = [submodel.id, submodel.class]
               end
             end
-            assign_images(model, image_assignments) if image_assignments.present?
+            if image_assignments.present?
+              tenant = Tenant.current
+              pool.post do
+                tenant.switch do
+                  assign_images(model, image_assignments)
+                end
+              end
+            end
           rescue Exception => e
             table_names = ActiveRecord::Base.connection.execute(
               <<-SQL.squish
                 SELECT table_name
                 FROM information_schema.tables
                 WHERE table_type = 'BASE TABLE'
-                AND table_schema = \'#{Tenant.current.schema_name}\'
+                AND table_schema = '#{Tenant.current.schema_name}'
             SQL
             ).map do |r|
               r['table_name']
@@ -120,9 +134,13 @@ module MultiTenancy
           created_objects_ids = update_created_objects_ids(created_objects_ids, model_class.name, model.id)
         end
       end
-
+      puts "apply_template 2 #{Time.now}"
+      pool.shutdown
+      pool.wait_for_termination
+      puts "apply_template 3 #{Time.now}"
       DumpTenantJob.perform_later(Tenant.current)
 
+      puts "apply_template 4 #{Time.now}"
       created_objects_ids
     end
 
