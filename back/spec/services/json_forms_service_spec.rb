@@ -222,32 +222,75 @@ describe JsonFormsService do
     # - Hide author and budget when not admin (in JsonFormsService)
     # - Add author and budget when admin (in JsonFormsService)
     describe 'input_ui_and_json_multiloc_schemas' do
-      context 'when resident' do
-        it 'generates expected output for different kinds of fields' do
-          project = create :project
-          form = create :custom_form, :with_default_fields, participation_context: project
-          required_field = create :custom_field, :for_custom_form, resource: form, required: true, input_type: 'number'
-          optional_field = create :custom_field_select, :for_custom_form, resource: form, required: false
-          create :custom_field_option, custom_field: optional_field, key: 'option1', title_multiloc: { 'en' => 'Rabbit' }
-          create :custom_field_option, custom_field: optional_field, key: 'option2', title_multiloc: { 'en' => 'Bear' }
-          topic_field = form.custom_fields.find_by(code: 'topic_ids')
-          topic_field.update!(required: true)
-          idea_files_attributes_field = form.custom_fields.find_by(code: 'idea_files_attributes')
+      let(:input_term) { 'question' }
+      let(:project) { create :continuous_budgeting_project, input_term: input_term }
+      let(:custom_form) { create :custom_form, :with_default_fields, participation_context: project }
+      let!(:section) do
+        create(
+          :custom_field_section,
+          :for_custom_form, resource: custom_form,
+          title_multiloc: { 'en' => 'My section title' },
+          description_multiloc: { 'en' => 'My section description' }
+        )
+      end
+      let!(:required_field) do
+        create(
+          :custom_field,
+          :for_custom_form, resource: custom_form,
+          required: true,
+          input_type: 'number',
+          title_multiloc: { 'en' => 'My required field' }
+        )
+      end
+      let!(:optional_field) do
+        create(
+          :custom_field_select,
+          :for_custom_form, resource: custom_form,
+          required: false,
+          title_multiloc: { 'en' => 'My optional field' }
+        ).tap do |field|
+          create :custom_field_option, custom_field: field, key: 'option1', title_multiloc: { 'en' => 'Rabbit' }
+          create :custom_field_option, custom_field: field, key: 'option2', title_multiloc: { 'en' => 'Bear' }
+        end
+      end
+      let(:fields) { IdeaCustomFieldsService.new(custom_form).enabled_fields }
+      let(:output) { service.input_ui_and_json_multiloc_schemas fields, user, input_term }
 
-          fields = IdeaCustomFieldsService.new(form).enabled_fields
-          output = service.input_ui_and_json_multiloc_schemas fields, user, 'question'
+      context 'when resident' do
+        let(:user) { create :user }
+
+        it 'generates expected output for different kinds of fields' do
+          topic_field = custom_form.custom_fields.find_by(code: 'topic_ids')
+          topic_field.update!(required: true)
+
           expect(output).to match(
             {
               json_schema_multiloc: hash_including(
                 'en' => {
                   type: 'object',
                   additionalProperties: false,
-                  properties: {
+                  properties: hash_including(
                     'topic_ids' => {
                       type: 'array',
                       uniqueItems: true,
                       minItems: 1,
                       items: { type: 'string' }
+                    },
+                    'idea_files_attributes' => {
+                      type: 'array',
+                      items: {
+                        type: 'object',
+                        properties: {
+                          name: { type: 'string' },
+                          file_by_content: {
+                            type: 'object',
+                            properties: {
+                              file: { type: 'string' },
+                              name: { type: 'string' }
+                            }
+                          }
+                        }
+                      }
                     },
                     required_field.key => { type: 'number' },
                     optional_field.key => {
@@ -256,15 +299,9 @@ describe JsonFormsService do
                         { const: 'option1', title: 'Rabbit' },
                         { const: 'option2', title: 'Bear' }
                       ]
-                    },
-                    'idea_files_attributes' => {
-                      type: 'array',
-                      uniqueItems: true,
-                      minItems: 0,
-                      items: { type: 'string' }
                     }
-                  },
-                  required: match_array(['topic_ids', required_field.key])
+                  ),
+                  required: match_array(['title_multiloc', 'body_multiloc', 'topic_ids', required_field.key])
                 }
               ),
               ui_schema_multiloc: hash_including(
@@ -272,76 +309,76 @@ describe JsonFormsService do
                   type: 'Categorization',
                   options: { formId: 'idea-form', inputTerm: 'question' },
                   elements: [
-                    {
-                      type: 'Category',
-                      options: { id: 'details' },
-                      label: 'Details',
-                      elements: [
-                        {
-                          type: 'Control',
-                          scope: '#/properties/topic_ids',
-                          label: topic_field.title_multiloc['en'],
-                          options: {
-                            input_type: topic_field.input_type,
-                            description: topic_field.description_multiloc['en'],
-                            isAdminField: false,
-                            hasRule: false
-                          }
-                        }
-                      ]
-                    },
-                    {
+                    hash_including(type: 'Category', label: 'What is your question?'),
+                    hash_including(
                       type: 'Category',
                       label: 'Images and attachments',
-                      options: { id: 'attachments' },
+                      options: hash_including(description: 'Upload your favourite files here'),
                       elements: [
-                        {
+                        hash_including(
+                          type: 'Control',
+                          scope: '#/properties/idea_images_attributes',
+                          label: 'Images',
+                          options: hash_including(input_type: 'image_files')
+                        ),
+                        hash_including(
                           type: 'Control',
                           scope: '#/properties/idea_files_attributes',
-                          label: idea_files_attributes_field.title_multiloc['en'],
-                          options: {
-                            input_type: idea_files_attributes_field.input_type,
-                            description: idea_files_attributes_field.description_multiloc['en'],
-                            isAdminField: false,
-                            hasRule: false
-                          }
-                        }
+                          label: 'Attachments',
+                          options: hash_including(input_type: 'files')
+                        )
                       ]
-                    },
-                    {
+                    ),
+                    hash_including(
                       type: 'Category',
-                      options: { id: 'extra' },
-                      label: 'Additional information',
+                      label: 'Details',
                       elements: [
-                        {
+                        hash_including(
                           type: 'Control',
-                          scope: "#/properties/#{topic_field.key}",
-                          label: topic_field.title_multiloc['en'],
-                          options: {
-                            input_type: topic_field.input_type,
-                            description: topic_field.description_multiloc['en'],
-                            isAdminField: false,
-                            hasRule: false
-                          }
-                        },
-                        {
+                          scope: '#/properties/topic_ids',
+                          label: 'Tags',
+                          options: hash_including(input_type: 'topic_ids')
+                        ),
+                        hash_including(
                           type: 'Control',
-                          scope: "#/properties/#{idea_files_attributes_field.key}",
-                          label: idea_files_attributes_field.title_multiloc['en'],
-                          options: {
-                            input_type: idea_files_attributes_field.input_type,
-                            description: idea_files_attributes_field.description_multiloc['en'],
-                            isAdminField: false,
-                            hasRule: false
-                          }
-                        }
+                          scope: '#/properties/location_description',
+                          label: 'Location',
+                          options: hash_including(input_type: 'text')
+                        )
                       ]
-                    }
+                    ),
+                    hash_including(
+                      type: 'Category',
+                      label: 'My section title',
+                      options: { id: section.id, description: 'My section description' },
+                      elements: [
+                        hash_including(
+                          type: 'Control',
+                          scope: "#/properties/#{required_field.key}",
+                          label: 'My required field',
+                          options: hash_including(input_type: 'number')
+                        ),
+                        hash_including(
+                          type: 'Control',
+                          scope: "#/properties/#{optional_field.key}",
+                          label: 'My optional field',
+                          options: hash_including(input_type: 'select')
+                        )
+                      ]
+                    )
                   ]
                 }
               )
             }
           )
+        end
+
+        it 'does not include budget and author fields' do
+          expect(output[:json_schema_multiloc]['en'][:properties]).not_to have_key 'author_id'
+          expect(output[:json_schema_multiloc]['en'][:properties]).not_to have_key 'budget'
+
+          expect(output[:ui_schema_multiloc]['en'][:elements][0][:elements][1][:scope]).not_to eq '#/properties/author_id'
+          expect(output[:ui_schema_multiloc]['en'][:elements][2][:elements][0][:scope]).not_to eq '#/properties/budget'
         end
 
         it 'renders text images for fields' do
@@ -372,7 +409,61 @@ describe JsonFormsService do
       end
 
       context 'when admin' do
+        before do
+          SettingsService.new.activate_feature! 'idea_author_change'
+          SettingsService.new.activate_feature! 'participatory_budgeting'
+        end
+
         let(:user) { create :admin }
+
+        it 'includes budget and author fields' do
+          expect(output[:json_schema_multiloc]['en'][:properties]['author_id']).to eq({ type: 'string' })
+          expect(output[:json_schema_multiloc]['en'][:properties]['budget']).to eq({ type: 'number' })
+
+          expect(output[:ui_schema_multiloc]['en'][:elements][0][:elements][1]).to eq({
+            type: 'Control',
+            scope: '#/properties/author_id',
+            label: 'Author',
+            options: {
+              input_type: 'text',
+              transform: 'trim_on_blur',
+              isAdminField: true,
+              hasRule: false,
+              description: 'Author description'
+            }
+          })
+          expect(output[:ui_schema_multiloc]['en'][:elements][2][:elements][0]).to eq({
+            type: 'Control',
+            scope: '#/properties/budget',
+            label: 'Budget',
+            options: {
+              input_type: 'number',
+              isAdminField: true,
+              hasRule: false,
+              description: 'Budget description'
+            }
+          })
+        end
+
+        it 'includes the budget field on top of the proposed budget field when there is no details section but there is a proposed budget field' do
+          custom_form.custom_fields.find { |field| field.code == 'ideation_section3' }.destroy!
+          custom_form.custom_fields.find { |field| field.code == 'proposed_budget' }.update!(enabled: true)
+          custom_form.reload
+
+          expect(output[:json_schema_multiloc]['en'][:properties]['budget']).to eq({ type: 'number' })
+          expect(output[:ui_schema_multiloc]['en'][:elements][1][:elements][4][:scope]).to eq '#/properties/budget'
+          expect(output[:ui_schema_multiloc]['en'][:elements][1][:elements][5][:scope]).to eq '#/properties/proposed_budget'
+        end
+
+        it 'includes the budget field under the body multiloc field when there is no details section and no proposed budget field' do
+          custom_form.custom_fields.find { |field| field.code == 'ideation_section3' }.destroy!
+          custom_form.custom_fields.find { |field| field.code == 'proposed_budget' }.update!(enabled: false)
+          custom_form.reload
+
+          expect(output[:json_schema_multiloc]['en'][:properties]['budget']).to eq({ type: 'number' })
+          expect(output[:ui_schema_multiloc]['en'][:elements][0][:elements][2][:options]).to eq({ input_type: 'html_multiloc', render: 'multiloc' }) # body_multiloc
+          expect(output[:ui_schema_multiloc]['en'][:elements][0][:elements][3][:scope]).to eq '#/properties/budget'
+        end
       end
     end
   end

@@ -282,105 +282,55 @@ describe XlsxExport::ValueVisitor do
 
     describe '#visit_multiselect' do
       let(:input_type) { 'multiselect' }
+      let!(:field_option1) do
+        create(
+          :custom_field_option,
+          custom_field: field,
+          key: 'cat',
+          title_multiloc: { 'en' => 'Cat', 'nl-NL' => 'Kat' }
+        )
+      end
+      let!(:field_option2) do
+        create(
+          :custom_field_option,
+          custom_field: field,
+          key: 'dog',
+          title_multiloc: { 'en' => 'Dog', 'nl-NL' => 'Hond' }
+        )
+      end
+      let(:option_index) do
+        {
+          field_option1.key => field_option1,
+          field_option2.key => field_option2
+        }
+      end
 
-      context 'when the code is topic_ids' do
-        let(:model) { create(:idea, topics: topics, custom_field_values: { field_key => value }) }
-        let(:code) { 'topic_ids' }
+      context 'when there are no options selected' do
+        let(:value) { [] }
 
-        context 'when there are no topics selected' do
-          let(:topics) { [] }
-          let(:value) { nil }
-
-          it 'returns nil' do
-            I18n.with_locale('nl-NL') do
-              expect(visitor.visit_multiselect(field)).to be_nil
-            end
-          end
-        end
-
-        context 'when there is one topic selected' do
-          let(:topics) do
-            [
-              create(:topic, code: 'nature', title_multiloc: { 'en' => 'Topic 1', 'nl-NL' => 'Onderwerp 1' })
-            ]
-          end
-          let(:value) { ['nature'] }
-
-          it 'returns the value for the report' do
-            I18n.with_locale('nl-NL') do
-              expect(visitor.visit_multiselect(field)).to eq 'Onderwerp 1'
-            end
-          end
-        end
-
-        context 'when there are multiple topics selected' do
-          let(:topics) do
-            [
-              create(:topic, code: 'nature', title_multiloc: { 'en' => 'Topic 1', 'nl-NL' => 'Onderwerp 1' }),
-              create(:topic, code: 'waste', title_multiloc: { 'en' => 'Topic 2', 'nl-NL' => 'Onderwerp 2' })
-            ]
-          end
-          let(:value) { %w[nature waste] }
-
-          it 'returns the value for the report' do
-            I18n.with_locale('nl-NL') do
-              expect(visitor.visit_multiselect(field)).to eq 'Onderwerp 1, Onderwerp 2'
-            end
+        it 'returns nil' do
+          I18n.with_locale('nl-NL') do
+            expect(visitor.visit_multiselect(field)).to be_nil
           end
         end
       end
 
-      context 'when the code is not topic_ids' do
-        let!(:field_option1) do
-          create(
-            :custom_field_option,
-            custom_field: field,
-            key: 'cat',
-            title_multiloc: { 'en' => 'Cat', 'nl-NL' => 'Kat' }
-          )
-        end
-        let!(:field_option2) do
-          create(
-            :custom_field_option,
-            custom_field: field,
-            key: 'dog',
-            title_multiloc: { 'en' => 'Dog', 'nl-NL' => 'Hond' }
-          )
-        end
-        let(:option_index) do
-          {
-            field_option1.key => field_option1,
-            field_option2.key => field_option2
-          }
-        end
+      context 'when there is one option selected' do
+        let(:value) { ['dog'] }
 
-        context 'when there are no options selected' do
-          let(:value) { [] }
-
-          it 'returns nil' do
-            I18n.with_locale('nl-NL') do
-              expect(visitor.visit_multiselect(field)).to be_nil
-            end
+        it 'returns the value for the report' do
+          I18n.with_locale('nl-NL') do
+            expect(visitor.visit_multiselect(field)).to eq 'Hond'
           end
         end
+      end
 
-        context 'when there is one option selected' do
-          let(:value) { ['dog'] }
+      context 'when there are multiple options selected' do
+        let(:value) { %w[cat dog] }
 
-          it 'returns the value for the report' do
-            I18n.with_locale('nl-NL') do
-              expect(visitor.visit_multiselect(field)).to eq 'Hond'
-            end
-          end
-        end
-
-        context 'when there are multiple options selected' do
-          let(:value) { %w[cat dog] }
-
-          it 'returns the value for the report' do
-            I18n.with_locale('nl-NL') do
-              expect(visitor.visit_multiselect(field)).to eq 'Kat, Hond'
-            end
+        it 'returns the value for the report' do
+          I18n.with_locale('nl-NL') do
+            expect(visitor.visit_multiselect(field)).to eq 'Kat, Hond'
           end
         end
       end
@@ -481,6 +431,15 @@ describe XlsxExport::ValueVisitor do
       end
     end
 
+    describe '#visit_section' do
+      let(:input_type) { 'section' }
+      let(:model) { instance_double Idea } # The model is irrelevant for this test.
+
+      it 'returns nil, because the field does not capture data' do
+        expect(visitor.visit_section(field)).to be_nil
+      end
+    end
+
     describe '#visit_file_upload' do
       let(:input_type) { 'file_upload' }
 
@@ -506,6 +465,53 @@ describe XlsxExport::ValueVisitor do
 
         it 'returns the value for the report' do
           expect(visitor.visit_file_upload(field)).to eq file1.file.url
+        end
+      end
+    end
+
+    describe '#visit_topic_ids' do
+      let(:input_type) { 'topic_ids' }
+      let(:model) { create(:idea, topics: topics, custom_field_values: { field_key => value }) }
+
+      context 'when there are no topics selected' do
+        let(:topics) { [] }
+        let(:value) { nil }
+
+        it 'returns nil' do
+          I18n.with_locale('nl-NL') do
+            expect(visitor.visit_topic_ids(field)).to be_nil
+          end
+        end
+      end
+
+      context 'when there is one topic selected' do
+        let(:topics) do
+          [
+            create(:topic, code: 'nature', title_multiloc: { 'en' => 'Topic 1', 'nl-NL' => 'Onderwerp 1' })
+          ]
+        end
+        let(:value) { ['nature'] }
+
+        it 'returns the value for the report' do
+          I18n.with_locale('nl-NL') do
+            expect(visitor.visit_topic_ids(field)).to eq 'Onderwerp 1'
+          end
+        end
+      end
+
+      context 'when there are multiple topics selected' do
+        let(:topics) do
+          [
+            create(:topic, code: 'nature', title_multiloc: { 'en' => 'Topic 1', 'nl-NL' => 'Onderwerp 1' }),
+            create(:topic, code: 'waste', title_multiloc: { 'en' => 'Topic 2', 'nl-NL' => 'Onderwerp 2' })
+          ]
+        end
+        let(:value) { %w[nature waste] }
+
+        it 'returns the value for the report' do
+          I18n.with_locale('nl-NL') do
+            expect(visitor.visit_topic_ids(field)).to eq 'Onderwerp 1, Onderwerp 2'
+          end
         end
       end
     end

@@ -115,7 +115,7 @@ en:
         description:
       author_id:
         title: Author
-        description:
+        description: Author description
       topic_ids:
         title: Tags
         description:
@@ -127,7 +127,7 @@ en:
         description:
       budget:
         title: Budget
-        description:
+        description: Budget description
       images:
         title: Images
         description:
