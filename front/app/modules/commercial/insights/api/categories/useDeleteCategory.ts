@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import fetcher from 'utils/cl-react-query/fetcher';
-import categoryKeys from './keys';
+import categoriesKeys from './keys';
 
 const deleteCategory = ({
   viewId,
@@ -25,7 +25,7 @@ const useDeleteCategory = ({
     mutationFn: deleteCategory,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: categoryKeys.list(variables.viewId),
+        queryKey: categoriesKeys.list(variables.viewId),
       });
       onSuccess && onSuccess(variables.categoryId);
     },

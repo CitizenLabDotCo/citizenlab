@@ -12,11 +12,8 @@ import useCategories from 'modules/commercial/insights/api/categories/useCategor
 import useAddInputCategories from 'modules/commercial/insights/api/inputs/useAddInputCategories';
 import { IInsightsInputData } from 'modules/commercial/insights/api/inputs/types';
 
-// Services
-import {
-  batchAssignCategories,
-  batchUnassignCategories,
-} from 'modules/commercial/insights/services/batchAssignment';
+import useBatchAssignCategories from 'modules/commercial/insights/api/batch/useBatchAssignCategories';
+import useBatchUnassignCategories from 'modules/commercial/insights/api/batch/useBatchUnassignCategories';
 
 // I18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -114,7 +111,22 @@ const Actions = ({
 }: Props & WrappedComponentProps & WithRouterProps) => {
   const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
   const { data: categories } = useCategories(viewId);
-  const { mutate: addInputCategories } = useAddInputCategories();
+  const { mutate: batchAssignCategories, isLoading: isLoadingBatchAssign } =
+    useBatchAssignCategories({
+      onSuccess: () => {
+        setCategorySelection(new Set());
+        setDropdownOpened(false);
+      },
+    });
+  const { mutate: batchUnassignCategories, isLoading: isLoadingBatchUnassign } =
+    useBatchUnassignCategories({
+      onSuccess: () => {
+        setCategorySelection(new Set());
+        setDropdownOpened(false);
+      },
+    });
+  const { mutate: addInputCategories, isLoading: processingBulkApprove } =
+    useAddInputCategories();
   const selectedInputsIds = selectedInputs.map((input) => input.id);
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const toggleDropdown = () => {
@@ -134,33 +146,21 @@ const Actions = ({
     }
   };
 
-  const [processing, setProcessing] = useState(false);
-  const [processingBulkApprove, setProcessingBulkApprove] = useState(false);
   // assigns selectedCategories to selectedInputs
   const assign = async () => {
     if (selectedInputs.length > 0 && categorySelection.size > 0) {
-      try {
-        setProcessing(true);
-        await batchAssignCategories(
-          viewId,
-          [...selectedInputsIds],
-          [...categorySelection]
-        );
-        setCategorySelection(new Set());
-      } catch {
-        // do nothing
-      }
-      setProcessing(false);
-      setDropdownOpened(false);
+      batchAssignCategories({
+        viewId,
+        inputs: [...selectedInputsIds],
+        categories: [...categorySelection],
+      });
     }
   };
   const suggestedCategoriesInSelectedInputs = selectedInputs.some(
     (input) => input.relationships.suggested_categories.data.length > 0
   );
 
-  const approveSuggestedCategories = async () => {
-    setProcessingBulkApprove(true);
-
+  const approveSuggestedCategories = () => {
     for (const input of selectedInputs) {
       addInputCategories({
         viewId,
@@ -168,7 +168,6 @@ const Actions = ({
         categories: input.relationships.suggested_categories.data,
       });
     }
-    setProcessingBulkApprove(false);
   };
 
   if (isNilOrError(categories)) {
@@ -180,25 +179,18 @@ const Actions = ({
   );
 
   // unassigns categoryFilter from selectedInputs, with confirmation
-  const unassign = async () => {
+  const unassign = () => {
     if (selectedInputs.length > 0 && selectedCategory) {
       const deleteMessage = formatMessage(messages.deleteFromCategories, {
         categoryName: selectedCategory.attributes.name,
         selectedCount: selectedInputs.length,
       });
       if (window.confirm(deleteMessage)) {
-        try {
-          setProcessing(true);
-          await batchUnassignCategories(
-            viewId,
-            [...selectedInputsIds],
-            [selectedCategory.id]
-          );
-        } catch {
-          // do nothing
-        }
-        setProcessing(false);
-        setDropdownOpened(false);
+        batchUnassignCategories({
+          viewId,
+          inputs: [...selectedInputsIds],
+          categories: [selectedCategory.id],
+        });
       }
     }
   };
@@ -249,7 +241,7 @@ const Actions = ({
                     className="e2e-dropdown-submit"
                     buttonStyle="cl-blue"
                     onClick={assign}
-                    processing={processing}
+                    processing={isLoadingBatchAssign}
                     fullWidth={true}
                     padding="12px"
                     whiteSpace="normal"
@@ -277,7 +269,7 @@ const Actions = ({
               onClick={unassign}
               className="hasLeftMargin"
               buttonStyle="admin-dark-text"
-              processing={processing}
+              processing={isLoadingBatchUnassign}
             >
               <StyledIcon name="delete" />
               <FormattedMessage {...messages.bulkUnassign} />

@@ -79,7 +79,7 @@ async function fetcher({ path, action, body, queryParams }) {
     },
   });
 
-  if ((action === 'delete' && response.ok) || response.status === 202) {
+  if ((action === 'delete' && response.ok) || response.status !== 200) {
     return null;
   }
 

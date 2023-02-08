@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import categoryKeys from './keys';
+import categoriesKeys from './keys';
 import { IInsightsCategory } from './types';
 
 type IInsightsCategoryUpdateObject = {
@@ -31,7 +31,7 @@ const useUpdateCategory = ({ onSuccess }: { onSuccess?: () => void }) => {
     mutationFn: updateCategory,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: categoryKeys.list(variables.viewId),
+        queryKey: categoriesKeys.list(variables.viewId),
       });
       onSuccess && onSuccess();
     },

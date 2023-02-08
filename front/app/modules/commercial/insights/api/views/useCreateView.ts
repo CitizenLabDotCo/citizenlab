@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import viewKeys from './keys';
+import viewsKeys from './keys';
 import { IInsightsView } from './types';
 
 const createView = async (requestBody: IInsightsViewObject) =>
@@ -20,7 +20,7 @@ const useCreateView = ({ onSuccess }: { onSuccess?: () => void }) => {
   return useMutation<IInsightsView, CLErrors, IInsightsViewObject>({
     mutationFn: createView,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: viewKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: viewsKeys.lists() });
       onSuccess && onSuccess();
     },
   });

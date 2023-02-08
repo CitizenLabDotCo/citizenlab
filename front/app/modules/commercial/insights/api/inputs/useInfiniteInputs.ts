@@ -2,8 +2,8 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
-import inputKeys from './keys';
-import { IInsightsInputs, InfiniteQueryParameters, InputKeys } from './types';
+import inputsKeys from './keys';
+import { IInsightsInputs, InfiniteQueryParameters, InputsKeys } from './types';
 
 const defaultPageSize = 20;
 const fetchInfiniteInputs = (
@@ -28,9 +28,9 @@ const useInfiniteInputs = (
     IInsightsInputs,
     CLErrors,
     IInsightsInputs,
-    InputKeys
+    InputsKeys
   >({
-    queryKey: inputKeys.infiniteList(viewId, queryParams),
+    queryKey: inputsKeys.infiniteList(viewId, queryParams),
     queryFn: ({ pageParam }) =>
       fetchInfiniteInputs(viewId, { ...queryParams, pageNumber: pageParam }),
     getNextPageParam: (lastPage) => {

@@ -1,7 +1,7 @@
 import { IRelationship } from 'typings';
-import viewKeys from './keys';
+import viewsKeys from './keys';
 
-export type ViewKeys = ReturnType<typeof viewKeys[keyof typeof viewKeys]>;
+export type ViewsKeys = ReturnType<typeof viewsKeys[keyof typeof viewsKeys]>;
 
 export interface IInsightsViewData {
   id: string;

@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import categoryKeys from './keys';
-import { CategoryKeys, IInsightsCategories } from './types';
+import categoriesKeys from './keys';
+import { CategoriesKeys, IInsightsCategories } from './types';
 
 const fetchCategories = (viewId: string) =>
   fetcher<IInsightsCategories>({
@@ -15,9 +15,9 @@ const useCategories = (viewId: string) => {
     IInsightsCategories,
     CLErrors,
     IInsightsCategories,
-    CategoryKeys
+    CategoriesKeys
   >({
-    queryKey: categoryKeys.list(viewId),
+    queryKey: categoriesKeys.list(viewId),
     queryFn: () => fetchCategories(viewId),
   });
 };

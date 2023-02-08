@@ -1,8 +1,8 @@
 import { useQueryClient, useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import inputKeys from './keys';
-import { IInsightsInputs, QueryParameters, InputKeys } from './types';
+import inputsKeys from './keys';
+import { IInsightsInputs, QueryParameters, InputsKeys } from './types';
 
 export const defaultPageSize = 20;
 
@@ -29,12 +29,12 @@ const useInputs = (viewId: string, queryParams: QueryParameters) => {
     pageNumber: queryParams.pageNumber + 1,
   };
   queryClient.prefetchQuery({
-    queryKey: inputKeys.list(viewId, prefetchParams),
+    queryKey: inputsKeys.list(viewId, prefetchParams),
     queryFn: () => fetchInputs(viewId, prefetchParams),
   });
 
-  return useQuery<IInsightsInputs, CLErrors, IInsightsInputs, InputKeys>({
-    queryKey: inputKeys.list(viewId, queryParams),
+  return useQuery<IInsightsInputs, CLErrors, IInsightsInputs, InputsKeys>({
+    queryKey: inputsKeys.list(viewId, queryParams),
     queryFn: () => fetchInputs(viewId, queryParams),
   });
 };

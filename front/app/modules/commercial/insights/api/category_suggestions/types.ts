@@ -1,7 +1,7 @@
-import categorySuggestionKeys from './queryKeys';
+import categorySuggestionsKeys from './keys';
 
-export type categorySuggestionKeys = ReturnType<
-  typeof categorySuggestionKeys[keyof typeof categorySuggestionKeys]
+export type CategorySuggestionsKeys = ReturnType<
+  typeof categorySuggestionsKeys[keyof typeof categorySuggestionsKeys]
 >;
 
 export type QueryParameters = {

@@ -1,7 +1,7 @@
 import { IRelationship } from 'typings';
 import inputKeys from './keys';
 
-export type InputKeys = ReturnType<typeof inputKeys[keyof typeof inputKeys]>;
+export type InputsKeys = ReturnType<typeof inputKeys[keyof typeof inputKeys]>;
 
 export type QueryParameters = {
   category: string;

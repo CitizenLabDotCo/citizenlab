@@ -1,7 +1,7 @@
 import { IRelationship } from 'typings';
 import categoryKeys from './keys';
 
-export type CategoryKeys = ReturnType<
+export type CategoriesKeys = ReturnType<
   typeof categoryKeys[keyof typeof categoryKeys]
 >;
 

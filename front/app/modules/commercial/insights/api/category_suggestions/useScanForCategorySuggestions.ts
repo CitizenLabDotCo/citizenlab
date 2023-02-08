@@ -1,11 +1,13 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { CLError } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { queryClient } from 'utils/cl-react-query/queryClient';
-import categorySuggestionsKeys from './queryKeys';
+import categorySuggestionsKeys from './keys';
 import {
   IInsightsCategorySuggestionsTasks,
   QueryParameters,
   ScanStatus,
+  CategorySuggestionsKeys,
 } from './types';
 
 const fetchTasks = (viewId: string, queryParams: QueryParameters) =>
@@ -73,16 +75,20 @@ const useScanForCategorySuggestions = (
     processed,
   });
 
-  const cachedQueryData = queryClient.getQueryData(
-    queryKey
-  ) as IInsightsCategorySuggestionsTasks;
+  const cachedQueryData = queryClient.getQueryData(queryKey);
 
-  const { data, isError, refetch } = useQuery({
+  const { data, isError, refetch } = useQuery<
+    IInsightsCategorySuggestionsTasks,
+    CLError,
+    IInsightsCategorySuggestionsTasks,
+    CategorySuggestionsKeys
+  >({
     queryFn: () =>
       fetchTasks(viewId, { categories: category ? [category] : [], processed }),
     queryKey,
     enabled: cachedQueryData
-      ? cachedQueryData.data.status === 'isScanning'
+      ? (cachedQueryData as IInsightsCategorySuggestionsTasks).data.status ===
+        'isScanning'
       : false,
     refetchInterval: 5000,
     keepPreviousData: false,

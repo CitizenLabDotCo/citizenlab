@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import { IInsightsInput, InputKeys } from './types';
-import inputKeys from './keys';
+import { IInsightsInput, InputsKeys } from './types';
+import inputsKeys from './keys';
 
 const fetchInput = (viewId: string, id: string) =>
   fetcher<IInsightsInput>({
@@ -11,8 +11,8 @@ const fetchInput = (viewId: string, id: string) =>
   });
 
 const useInput = (viewId: string, id: string) => {
-  return useQuery<IInsightsInput, CLErrors, IInsightsInput, InputKeys>({
-    queryKey: inputKeys.detail(viewId, id),
+  return useQuery<IInsightsInput, CLErrors, IInsightsInput, InputsKeys>({
+    queryKey: inputsKeys.detail(viewId, id),
     queryFn: () => fetchInput(viewId, id),
   });
 };

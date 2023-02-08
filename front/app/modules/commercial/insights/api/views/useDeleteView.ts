@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import fetcher from 'utils/cl-react-query/fetcher';
-import viewKeys from './keys';
+import viewsKeys from './keys';
 import { IInsightsViews } from './types';
 
 const deleteView = (id: string) =>
@@ -17,15 +17,15 @@ const useDeleteView = () => {
     onMutate: async (id: string) => {
       // Cancel any outgoing refetches
       // (so they don't overwrite our optimistic update)
-      await queryClient.cancelQueries({ queryKey: viewKeys.lists() });
+      await queryClient.cancelQueries({ queryKey: viewsKeys.lists() });
 
       // Snapshot the previous value
       const previous = queryClient.getQueryData<IInsightsViews>(
-        viewKeys.lists()
+        viewsKeys.lists()
       );
 
       // Optimistically update to the new value
-      queryClient.setQueryData(viewKeys.lists(), (old: IInsightsViews) => {
+      queryClient.setQueryData(viewsKeys.lists(), (old: IInsightsViews) => {
         const newData = {
           ...old,
           data: old.data.filter((item) => item.id !== id),
@@ -40,13 +40,13 @@ const useDeleteView = () => {
     onError: (_err, _newTodo, context) => {
       if (context?.previous) {
         queryClient.setQueryData<IInsightsViews>(
-          viewKeys.lists(),
+          viewsKeys.lists(),
           context.previous
         );
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: viewKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: viewsKeys.lists() });
     },
   });
 };
