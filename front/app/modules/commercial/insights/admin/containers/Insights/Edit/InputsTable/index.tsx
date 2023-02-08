@@ -435,7 +435,7 @@ const InputsTable = ({
           triggerScan={triggerScan}
           cancelScan={cancelScan}
           onClose={onDone}
-          key={query.category}
+          key={`${query.category} ${processed}`}
           isLoading={isScanLoading}
         />
       )}

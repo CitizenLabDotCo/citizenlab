@@ -77,7 +77,7 @@ const useScanForCategorySuggestions = (
     queryKey
   ) as IInsightsCategorySuggestionsTasks;
 
-  const { data, refetch } = useQuery({
+  const { data, isError, refetch } = useQuery({
     queryFn: () =>
       fetchTasks(viewId, { categories: category ? [category] : [], processed }),
     queryKey,
@@ -86,6 +86,15 @@ const useScanForCategorySuggestions = (
       : false,
     refetchInterval: 5000,
     keepPreviousData: false,
+    onSuccess: (data) => {
+      if (data.data.count === 0 && data.data.status === 'isScanning') {
+        queryClient.setQueryData(queryKey, () => {
+          return {
+            data: { ...data.data, status: 'isFinished' },
+          };
+        });
+      }
+    },
     structuralSharing: (oldData, newData) => {
       if (!oldData) {
         return {
@@ -134,16 +143,13 @@ const useScanForCategorySuggestions = (
             queryKey,
             (data: IInsightsCategorySuggestionsTasks) => {
               return {
-                data: { ...data.data, status: 'isFinished' },
+                data: { ...data.data, status: 'isIdle' },
               };
             }
           );
         }
       },
     });
-
-  const triggerScan = () => triggerScanMutate({ viewId, category, processed });
-  const cancelScan = () => cancelScanMutate({ viewId, category, processed });
 
   const onDone = async () => {
     queryClient.setQueryData(
@@ -156,12 +162,19 @@ const useScanForCategorySuggestions = (
     );
   };
 
+  const triggerScan = () => triggerScanMutate({ viewId, category, processed });
+  const cancelScan = () => cancelScanMutate({ viewId, category, processed });
+
   const initialCount = data ? data.data.initialCount : 0;
+  const isLoading = cancelScanLoading || triggerScanLoading;
+  const status = (
+    isError ? 'isError' : data ? data.data.status : 'isIdle'
+  ) as ScanStatus;
 
   return {
-    isLoading: cancelScanLoading || triggerScanLoading,
+    isLoading,
     triggerScan,
-    status: (data ? data.data.status : 'isIdle') as ScanStatus,
+    status,
     cancelScan,
     progress: (initialCount - (data?.data.count || 0)) / initialCount || 0,
     onDone,
