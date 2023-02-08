@@ -1,43 +1,23 @@
 import React from 'react';
-import { isError } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 import { useParams } from 'react-router-dom';
 
 // components
+import { Box, useWindowSize } from '@citizenlab/cl2-component-library';
 import IdeasShow from 'containers/IdeasShow';
-import Button from 'components/UI/Button';
 import IdeaShowPageTopBar from './IdeaShowPageTopBar';
-
-// events
-import { openSignUpInModal } from 'events/openSignUpInModal';
+import PageNotFound from 'components/PageNotFound';
+import Unauthorized from 'components/Unauthorized';
 
 // hooks
-import { useWindowSize } from '@citizenlab/cl2-component-library';
 import useIdea from 'hooks/useIdea';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, fontSizes, colors, viewportWidths } from 'utils/styleUtils';
+import { media, viewportWidths } from 'utils/styleUtils';
 
-const IdeaNotFoundWrapper = styled.div`
-  height: calc(
-    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
-  );
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 4rem;
-  font-size: ${fontSizes.l}px;
-  color: ${colors.textSecondary};
-`;
-
-const Container = styled.div`
-  background: #fff;
-`;
+// utils
+import { isError } from 'lodash-es';
+import { isUnauthorizedError } from 'utils/helperUtils';
 
 const StyledIdeaShowPageTopBar = styled(IdeaShowPageTopBar)`
   position: fixed;
@@ -70,53 +50,23 @@ const StyledIdeasShow = styled(IdeasShow)`
   `}
 `;
 
-const StyledSignInButton = styled(Button)`
-  margin-bottom: 20px;
-`;
-
 const IdeasShowPage = () => {
   const { slug } = useParams() as { slug: string };
   const idea = useIdea({ ideaSlug: slug });
   const { windowWidth } = useWindowSize();
   const tablet = windowWidth <= viewportWidths.tablet;
 
-  const signUp = () => {
-    openSignUpInModal({
-      flow: 'signup',
-    });
-  };
-
-  const signIn = () => {
-    openSignUpInModal({
-      flow: 'signin',
-    });
-  };
-
-  if (isError(idea)) {
-    return (
-      <IdeaNotFoundWrapper>
-        <p>
-          <FormattedMessage {...messages.sorryNoAccess} />
-        </p>
-        <StyledSignInButton
-          onClick={signUp}
-          text={<FormattedMessage {...messages.signUp} />}
-        />
-        <Button
-          onClick={signIn}
-          buttonStyle="text"
-          textColor={colors.teal400}
-          fontSize={`${fontSizes.l}px`}
-        >
-          <FormattedMessage {...messages.signIn} />
-        </Button>
-      </IdeaNotFoundWrapper>
-    );
+  if (isUnauthorizedError(idea)) {
+    return <Unauthorized />;
   }
 
-  if (!isNilOrError(idea)) {
+  if (isError(idea)) {
+    return <PageNotFound />;
+  }
+
+  if (idea) {
     return (
-      <Container>
+      <Box background="white">
         {tablet && (
           <StyledIdeaShowPageTopBar
             projectId={idea.relationships.project.data.id}
@@ -129,7 +79,7 @@ const IdeasShowPage = () => {
           projectId={idea.relationships.project.data.id}
           insideModal={false}
         />
-      </Container>
+      </Box>
     );
   }
 
