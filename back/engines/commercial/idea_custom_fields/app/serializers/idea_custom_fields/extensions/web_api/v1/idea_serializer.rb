@@ -10,8 +10,7 @@ module IdeaCustomFields
               attribute :custom_field_values, if: proc {
                 AppConfiguration.instance.feature_activated? 'idea_custom_fields'
               } do |idea, params|
-                idea.custom_field_values = CustomFieldService.remove_disabled_custom_fields idea.custom_field_values
-                CustomFieldService.remove_not_visible_answers idea, current_user(params)
+                CustomFieldService.remove_not_visible_fields idea, current_user(params)
               end
 
               def self.attributes_hash(record, fieldset = nil, params = {})

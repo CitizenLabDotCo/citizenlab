@@ -34,7 +34,7 @@ describe WebApi::V1::IdeaSerializer do
         output = described_class.new(idea, params: { current_user: idea_author }).serializable_hash
         expect(output.dig(:data, :attributes, visible_public_field.key.to_sym)).to eq visible_public_value
         expect(output.dig(:data, :attributes, visible_admin_field.key.to_sym)).to eq visible_admin_value
-        expect(output.dig(:data, :attributes)).not_to have_key disabled_field.key.to_sym # ???????
+        expect(output.dig(:data, :attributes)).not_to have_key disabled_field.key.to_sym
         expect(output.dig(:data, :attributes)).not_to have_key :custom_field_values
       end
 
@@ -49,7 +49,7 @@ describe WebApi::V1::IdeaSerializer do
 
       it 'only serializes public fields for a public user' do
         output = described_class.new(idea, params: { current_user: nil }).serializable_hash
-        expect(output.dig(:data, :attributes)).to have_key visible_public_field.key.to_sym
+        expect(output.dig(:data, :attributes, visible_public_field.key.to_sym)).to eq visible_public_value
         expect(output.dig(:data, :attributes)).not_to have_key visible_admin_field.key.to_sym
         expect(output.dig(:data, :attributes)).not_to have_key disabled_field.key.to_sym
         expect(output.dig(:data, :attributes)).not_to have_key :custom_field_values

@@ -106,21 +106,21 @@ class CustomFieldService
 
   # @param [Hash<String, _>] custom_field_values
   # @return [Hash<String, _>]
-  # Think this may not be correct as you can have the same key in multiple forms - could be enabled in one and not another
+  # Note: this only works for users - custom forms can have the same key in multiple forms
   def self.remove_disabled_custom_fields(custom_field_values)
     all_disabled_keys = CustomField.disabled.pluck(:key)
     disabled_keys = all_disabled_keys & custom_field_values.keys
     custom_field_values.except(*disabled_keys)
   end
 
-  def self.remove_not_visible_answers(idea, current_user)
-    return idea.custom_field_values if can_see_admin_answers?(idea, current_user)
-
-    # Do we need to check if this is ideation? Maybe not
+  def self.remove_not_visible_fields(idea, current_user)
     @custom_form = CustomForm.find_or_initialize_by participation_context: idea.project
-    @fields = IdeaCustomFieldsService.new(@custom_form).public_answer_fields
-    public_keys = @fields.pluck(:key)
-    idea.custom_field_values.slice(*public_keys)
+    @fields = IdeaCustomFieldsService.new(@custom_form).enabled_public_fields
+    if can_see_admin_answers?(idea, current_user)
+      @fields = IdeaCustomFieldsService.new(@custom_form).enabled_fields
+    end
+    visible_keys = @fields.pluck(:key)
+    idea.custom_field_values.slice(*visible_keys)
   end
 
   def self.can_see_admin_answers?(idea, current_user)
