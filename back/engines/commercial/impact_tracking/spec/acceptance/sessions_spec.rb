@@ -23,14 +23,14 @@ resource 'Impact tracking session' do
     end
 
     example 'Track the start of a session of a resident' do
-      user = create(:user)
-      header_token_for(user)
+      resident = create(:user)
+      header_token_for(resident)
       do_request
       expect(response_status).to eq 201
       expect(ImpactTracking::Session.count).to eq 1
       expect(ImpactTracking::Session.first).to have_attributes({
         highest_role: 'user',
-        user_id: user.id
+        user_id: resident.id
       })
     end
 

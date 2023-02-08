@@ -34,7 +34,8 @@ module ParticipationMethod
           end,
           required: false,
           enabled: true,
-          ordering: 0
+          ordering: 0,
+          answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         ),
         CustomField.new(
           id: SecureRandom.uuid,
@@ -56,7 +57,8 @@ module ParticipationMethod
           end,
           required: true,
           enabled: true,
-          ordering: 1
+          ordering: 1,
+          answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         ),
         CustomField.new(
           id: SecureRandom.uuid,
@@ -78,7 +80,8 @@ module ParticipationMethod
           end,
           required: true,
           enabled: true,
-          ordering: 2
+          ordering: 2,
+          answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         ),
         CustomField.new(
           id: SecureRandom.uuid,
@@ -100,7 +103,8 @@ module ParticipationMethod
           end,
           required: false,
           enabled: true,
-          ordering: 3
+          ordering: 3,
+          answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         ),
         CustomField.new(
           id: SecureRandom.uuid,
@@ -122,7 +126,8 @@ module ParticipationMethod
           end,
           required: false,
           enabled: true,
-          ordering: 4
+          ordering: 4,
+          answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         ),
         CustomField.new(
           id: SecureRandom.uuid,
@@ -144,7 +149,8 @@ module ParticipationMethod
           end,
           required: false,
           enabled: true,
-          ordering: 5
+          ordering: 5,
+          answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         ),
         CustomField.new(
           id: SecureRandom.uuid,
@@ -166,7 +172,8 @@ module ParticipationMethod
           end,
           required: false,
           enabled: true,
-          ordering: 6
+          ordering: 6,
+          answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         ),
         CustomField.new(
           id: SecureRandom.uuid,
@@ -188,7 +195,8 @@ module ParticipationMethod
           end,
           required: false,
           enabled: true,
-          ordering: 7
+          ordering: 7,
+          answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         ),
         CustomField.new(
           id: SecureRandom.uuid,
@@ -210,7 +218,8 @@ module ParticipationMethod
           end,
           required: false,
           enabled: true,
-          ordering: 8
+          ordering: 8,
+          answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         ),
         CustomField.new(
           id: SecureRandom.uuid,
@@ -232,7 +241,8 @@ module ParticipationMethod
           end,
           required: false,
           enabled: false,
-          ordering: 9
+          ordering: 9,
+          answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         )
       ]
     end
@@ -284,6 +294,10 @@ module ParticipationMethod
     end
 
     def sign_in_required_for_posting?
+      true
+    end
+
+    def include_author_budget_in_schema?
       true
     end
   end

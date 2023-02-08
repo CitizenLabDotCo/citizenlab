@@ -22,6 +22,7 @@
 #  minimum_label_multiloc :jsonb            not null
 #  maximum_label_multiloc :jsonb            not null
 #  logic                  :jsonb            not null
+#  answer_visible_to      :string
 #
 # Indexes
 #
@@ -43,6 +44,8 @@ class CustomField < ApplicationRecord
   FIELDABLE_TYPES = %w[User CustomForm].freeze
   INPUT_TYPES = %w[text number multiline_text html text_multiloc multiline_text_multiloc html_multiloc select multiselect checkbox date files image_files point linear_scale file_upload page section topic_ids].freeze
   CODES = %w[gender birthyear domicile education title_multiloc body_multiloc topic_ids location_description proposed_budget idea_images_attributes idea_files_attributes author_id budget ideation_section1 ideation_section2 ideation_section3].freeze
+  VISIBLE_TO_PUBLIC = 'public'
+  VISIBLE_TO_ADMINS = 'admins'
 
   validates :resource_type, presence: true, inclusion: { in: FIELDABLE_TYPES }
   validates(
@@ -58,8 +61,10 @@ class CustomField < ApplicationRecord
   validates :enabled, inclusion: { in: [true, false] }
   validates :hidden, inclusion: { in: [true, false] }
   validates :code, inclusion: { in: CODES }, uniqueness: { scope: %i[resource_type resource_id] }, allow_nil: true
+  validates :answer_visible_to, presence: true, inclusion: { in: [VISIBLE_TO_PUBLIC, VISIBLE_TO_ADMINS] }
 
   before_validation :set_default_enabled
+  before_validation :set_default_answer_visible_to
   before_validation :generate_key, on: :create
   before_validation :sanitize_description_multiloc
   after_create(if: :domicile?) { Area.recreate_custom_field_options }
@@ -114,6 +119,10 @@ class CustomField < ApplicationRecord
 
   def page_or_section?
     page? || section?
+  end
+
+  def custom_form_type?
+    resource_type == 'CustomForm'
   end
 
   def multiloc?
@@ -172,11 +181,9 @@ class CustomField < ApplicationRecord
   # Special behaviour for ideation section 1
   def title_multiloc
     if code == 'ideation_section1'
-      input_term = resource.participation_context.input_term
+      input_term = resource.participation_context.input_term || ParticipationContext::DEFAULT_INPUT_TERM
       key = "custom_forms.categories.main_content.#{input_term}.title"
-      I18n.available_locales.index_with do |locale|
-        I18n.t(key, default: '', locale: locale)
-      end
+      MultilocService.new.i18n_to_multiloc key
     else
       super
     end
@@ -190,6 +197,16 @@ class CustomField < ApplicationRecord
 
   def set_default_enabled
     self.enabled = true if enabled.nil?
+  end
+
+  def set_default_answer_visible_to
+    return unless answer_visible_to.nil?
+
+    self.answer_visible_to = if custom_form_type? && (built_in? || page_or_section?)
+      VISIBLE_TO_PUBLIC
+    else
+      VISIBLE_TO_ADMINS
+    end
   end
 
   def generate_key

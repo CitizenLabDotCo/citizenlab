@@ -101,6 +101,10 @@ module ParticipationMethod
       true
     end
 
+    def include_author_budget_in_schema?
+      false
+    end
+
     private
 
     attr_reader :participation_context

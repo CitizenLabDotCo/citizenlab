@@ -8,7 +8,7 @@ class CustomFieldService
   end
 
   def ui_and_json_multiloc_schemas(configuration, fields)
-    json_schema_multiloc = fields_to_json_schema_multiloc(configuration, fields.reject(&:section?)) # TODO: remove ".reject(&:section?)" when the old schema is no longer used for input fields
+    json_schema_multiloc = fields_to_json_schema_multiloc(configuration, fields)
     ui_schema_multiloc = fields_to_ui_schema_multiloc(configuration, fields)
 
     { json_schema_multiloc: json_schema_multiloc, ui_schema_multiloc: ui_schema_multiloc }
@@ -355,10 +355,5 @@ class CustomFieldService
       description: handle_description(field, locale),
       type: 'string'
     }
-  end
-
-  def section_to_ui_schema_field(field, locale)
-    # TODO: Remove this method when the old schema is no longer used for input fields
-    base_ui_schema_field(field, locale)
   end
 end
