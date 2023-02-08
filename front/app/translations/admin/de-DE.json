@@ -1328,7 +1328,7 @@
   "app.containers.AdminPage.ProjectTimeline.subtitleTimeline": "Erstellen oder bearbeiten Sie die Phasen dieses Projekts.",
   "app.containers.AdminPage.ProjectTimeline.titleLabel": "Name der Phase",
   "app.containers.AdminPage.ProjectTimeline.titleTimeline": "Projektphasen",
-  "app.containers.AdminPage.ReportsTab.customFieldTitleExport": "{fieldName}_repartition",
+  "app.containers.AdminPage.ReportsTab.customFieldTitleExport": "{fieldName}_Aufteilung",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.subtitleTerminology": "Terminologie (Titelseitenfilter)",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.terminologyTooltip": "Wie sollten Tags im Titelseitenfilter genannte werden? Z. B. Tags, Kategorien, Themen, ...",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipExtraCopy": "Themen/Schlagwörter können {topicManagerLink} konfiguriert werden.",
@@ -1445,7 +1445,7 @@
   "app.containers.AdminPage.SettingsPage.homepageMetaTitle": "Kopfzeile der Homepage | {orgName}",
   "app.containers.AdminPage.SettingsPage.imageOverlayColor": "Bildüberlagerungsfarbe",
   "app.containers.AdminPage.SettingsPage.imageOverlayOpacity": "Deckkraft der Bildüberlagerung",
-  "app.containers.AdminPage.SettingsPage.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "app.containers.AdminPage.SettingsPage.imageSupportPageURL": "https://support.citizenlab.co/de/articles/1346397-welche-dimensionen-und-grossen-sind-fur-bilder-auf-der-plattform-empfohlen",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSetting": "Unangemessene Inhalte erkennen",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSettingDescription": "Automatische Erkennung von unangemessenen Inhalten, die auf der Plattform gepostet werden.",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionTooltip": "In Beta: derzeit verfügbar in Englisch, Französisch, Deutsch, Portugiesisch und Spanisch. Während diese Funktion aktiviert ist, werden Eingaben, Vorschläge und Kommentare, die von Teilnehmenden gepostet werden, automatisch mithilfe von Natural Language Processing überprüft. Beiträge, die als potenziell unangemessene Inhalte gekennzeichnet sind, werden nicht blockiert, sondern zur Überprüfung auf der {linkToActivityPage} -Seite hervorgehoben.",
@@ -1896,7 +1896,7 @@
   "app.modules.navbar.admin.containers.pageHeader": "Navigation",
   "app.modules.navbar.admin.containers.pageSubtitle": "In Ihrer Navigationsleiste können bis zu fünf Seiten zusätzlich zur Startseite und den Projektseiten angezeigt werden. Sie können Menü-Elemente umbenennen, neu anordnen und neue Seiten mit eigenem Inhalt hinzufügen.",
   "app.modules.project_management.admin.components.permissionsTab": "Zugriffsrechte",
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "unserer Wissensdatenbank",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/de/articles/1346397-welche-dimensionen-und-grossen-sind-fur-bilder-auf-der-plattform-empfohlen",
+  "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Weitere Informationen zu empfohlenen Bildauflösungen finden Sie in {supportPageLink}."
 }
