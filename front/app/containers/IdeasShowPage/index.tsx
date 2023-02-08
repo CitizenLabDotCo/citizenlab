@@ -7,7 +7,9 @@ import { useParams } from 'react-router-dom';
 import IdeasShow from 'containers/IdeasShow';
 import Button from 'components/UI/Button';
 import IdeaShowPageTopBar from './IdeaShowPageTopBar';
-import Link from 'utils/cl-router/Link';
+
+// events
+import { openSignUpInModal } from 'events/openSignUpInModal';
 
 // hooks
 import { useWindowSize } from '@citizenlab/cl2-component-library';
@@ -78,6 +80,18 @@ const IdeasShowPage = () => {
   const { windowWidth } = useWindowSize();
   const tablet = windowWidth <= viewportWidths.tablet;
 
+  const signUp = () => {
+    openSignUpInModal({
+      flow: 'signup',
+    });
+  };
+
+  const signIn = () => {
+    openSignUpInModal({
+      flow: 'signin',
+    });
+  };
+
   if (isError(idea)) {
     return (
       <IdeaNotFoundWrapper>
@@ -85,12 +99,17 @@ const IdeasShowPage = () => {
           <FormattedMessage {...messages.sorryNoAccess} />
         </p>
         <StyledSignInButton
-          linkTo="/sign-up"
+          onClick={signUp}
           text={<FormattedMessage {...messages.signUp} />}
         />
-        <Link to="/sign-in">
+        <Button
+          onClick={signIn}
+          buttonStyle="text"
+          textColor={colors.teal400}
+          fontSize={`${fontSizes.l}px`}
+        >
           <FormattedMessage {...messages.signIn} />
-        </Link>
+        </Button>
       </IdeaNotFoundWrapper>
     );
   }

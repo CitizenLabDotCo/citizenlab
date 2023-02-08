@@ -434,12 +434,12 @@ class Streams {
             // push the error reponse into the stream
             this.streams[streamId].observer.next(error);
 
-            const isUnauthorizedErrorForProject =
-              apiEndpoint.startsWith('/web_api/v1/projects') &&
+            const isUnauthorizedError =
               error.json.errors?.base[0].error === 'Unauthorized!';
 
-            // destroy the stream
-            if (!isUnauthorizedErrorForProject) {
+            // destroy the stream, except if it's an unauthorized error
+            // in that case we want to refetch when you log in
+            if (!isUnauthorizedError) {
               this.deleteStream(streamId, apiEndpoint);
             }
 
