@@ -3,7 +3,7 @@ import React, { memo, useEffect, useMemo, useState } from 'react';
 // components
 import ProjectHelmet from './shared/header/ProjectHelmet';
 import ProjectNotFound from './shared/header/ProjectNotFound';
-import ProjectNotVisible from './shared/header/ProjectNotVisible';
+import Unauthorized from 'components/Unauthorized';
 import ProjectHeader from './shared/header/ProjectHeader';
 import ContinuousIdeas from './continuous/Ideas';
 import ContinuousSurvey from './continuous/Survey';
@@ -232,8 +232,8 @@ const ProjectsShowPageWrapper = () => {
     return <Redirect method="replace" path="/" />;
   }
 
-  if (isNilOrError(user) && unauthorized) {
-    return <ProjectNotVisible />;
+  if (unauthorized) {
+    return <Unauthorized />;
   }
 
   const isTimelineProjectAndHasValidPhaseParam =
