@@ -113,14 +113,20 @@ class CustomFieldService
     custom_field_values.except(*disabled_keys)
   end
 
-  def self.remove_not_visible_answers(custom_field_values, project, can_moderate)
-    return custom_field_values if can_moderate
+  def self.remove_not_visible_answers(idea, current_user)
+    return idea.custom_field_values if can_see_admin_answers?(idea, current_user)
 
     # Do we need to check if this is ideation? Maybe not
-    @custom_form = CustomForm.find_or_initialize_by participation_context: project
+    @custom_form = CustomForm.find_or_initialize_by participation_context: idea.project
     @fields = IdeaCustomFieldsService.new(@custom_form).public_answer_fields
     public_keys = @fields.pluck(:key)
-    custom_field_values.slice(*public_keys)
+    idea.custom_field_values.slice(*public_keys)
+  end
+
+  def self.can_see_admin_answers?(idea, current_user)
+    return false unless current_user
+
+    idea.author_id == current_user.id || UserRoleService.new.can_moderate_project?(idea.project, current_user)
   end
 
   private
