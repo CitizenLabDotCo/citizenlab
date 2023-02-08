@@ -13,12 +13,12 @@ class RenameContentBuilderFeatureFlag < ActiveRecord::Migration[6.1]
 
     reversible do |dir|
       dir.up do
-        settings["project_description_builder"] = settings.delete("content_builder")
+        settings['project_description_builder'] = settings.delete('content_builder')
         app_config.update!(settings: settings)
       end
 
       dir.down do
-        settings["content_builder"] = settings.delete("project_description_builder")
+        settings['content_builder'] = settings.delete('project_description_builder')
         app_config.update!(settings: settings)
       end
     end
