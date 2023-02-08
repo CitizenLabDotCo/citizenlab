@@ -4,6 +4,7 @@ import {
   colors,
   IconTooltip,
   Input,
+  Text,
 } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
@@ -34,6 +35,7 @@ export const InputControl = ({
   visible,
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
+  const answerNotPublic = uischema.options?.answer_visible_to === 'admins';
 
   const onChange = useCallback(
     (value: string) => {
@@ -77,6 +79,11 @@ export const InputControl = ({
           subtextSupportsHtml
         />
       </Box>
+      {answerNotPublic && (
+        <Text mb="8px" mt="0px" fontSize="s">
+          <FormattedMessage {...messages.notPublic} />
+        </Text>
+      )}
       <Box display="flex" flexDirection="row">
         <Input
           data-testid="inputControl"

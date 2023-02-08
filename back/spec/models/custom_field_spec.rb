@@ -365,4 +365,21 @@ RSpec.describe CustomField, type: :model do
       expect(section.title_multiloc[:en]).to eq expected_english_locale
     end
   end
+
+  describe 'field_visible_to' do
+    context 'for an unsupported value' do
+      it 'raises an error' do
+        field = create(:custom_field, answer_visible_to: 'aliens')
+        expect { field }.to raise_error 'Unsupported input type: unsupported'
+      end
+    end
+
+    context 'when not set' do
+      it 'returns admins by default' do
+        field = create(:custom_field)
+        expect { field.answer_visible_to }.to eq 'admins'
+      end
+    end
+  end
+
 end
