@@ -2,8 +2,8 @@ import React, { memo, useEffect, useMemo, useState } from 'react';
 
 // components
 import ProjectHelmet from './shared/header/ProjectHelmet';
-import ProjectNotFound from './shared/header/ProjectNotFound';
 import Unauthorized from 'components/Unauthorized';
+import PageNotFound from 'components/PageNotFound';
 import ProjectHeader from './shared/header/ProjectHeader';
 import ContinuousIdeas from './continuous/Ideas';
 import ContinuousSurvey from './continuous/Survey';
@@ -87,7 +87,6 @@ interface Props {
 
 const ProjectsShowPage = memo<Props>(({ project }) => {
   const projectId = !isNilOrError(project) ? project.id : undefined;
-  const projectNotFound = isError(project);
   const processType = !isNilOrError(project)
     ? project.attributes.process_type
     : undefined;
@@ -133,8 +132,6 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
         <Spinner />
       </Loading>
     );
-  } else if (projectNotFound) {
-    content = <ProjectNotFound />;
   } else if (projectId && processType) {
     content = (
       <ContentWrapper id="e2e-project-page">
@@ -234,6 +231,10 @@ const ProjectsShowPageWrapper = () => {
 
   if (unauthorized) {
     return <Unauthorized />;
+  }
+
+  if (isError(project)) {
+    return <PageNotFound />;
   }
 
   const isTimelineProjectAndHasValidPhaseParam =
