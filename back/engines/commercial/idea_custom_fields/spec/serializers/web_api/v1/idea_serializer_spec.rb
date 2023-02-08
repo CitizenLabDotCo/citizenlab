@@ -54,7 +54,6 @@ describe WebApi::V1::IdeaSerializer do
         expect(output.dig(:data, :attributes)).not_to have_key disabled_field.key.to_sym
         expect(output.dig(:data, :attributes)).not_to have_key :custom_field_values
       end
-
     end
   end
 end

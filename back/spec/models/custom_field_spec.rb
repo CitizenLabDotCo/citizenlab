@@ -413,5 +413,4 @@ RSpec.describe CustomField, type: :model do
       end
     end
   end
-
 end
