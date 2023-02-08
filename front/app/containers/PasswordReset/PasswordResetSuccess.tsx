@@ -9,9 +9,6 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
-// events
-import { openSignUpInModal } from 'events/openSignUpInModal';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -21,7 +18,7 @@ import clHistory from 'utils/cl-router/history';
 
 export const PasswordResetSuccess = () => {
   const signIn = () => {
-    openSignUpInModal({ flow: 'signin', action: () => clHistory.push('/') });
+    clHistory.push('/sign-in');
   };
 
   return (

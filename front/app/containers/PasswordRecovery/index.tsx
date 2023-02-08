@@ -158,7 +158,9 @@ class PasswordRecovery extends React.PureComponent<
     const subtitle = formatMessage(messages.subtitle);
     const emailPlaceholder = formatMessage(messages.emailPlaceholder);
     const resetPassword = formatMessage(messages.resetPassword);
-    const successMessage =
+
+    // Showing the same message for success and submission error because we don't want to give away information about whether an email address is registered or not
+    const feedbackMessage =
       success || submitError
         ? formatMessage(messages.passwordResetSuccessMessage)
         : null;
@@ -207,8 +209,8 @@ class PasswordRecovery extends React.PureComponent<
                 className="e2e-submit-reset"
               />
 
-              {successMessage && (
-                <Success text={successMessage} className="e2e-success-reset" />
+              {feedbackMessage && (
+                <Success text={feedbackMessage} className="e2e-success-reset" />
               )}
             </Form>
           </StyledContentContainer>

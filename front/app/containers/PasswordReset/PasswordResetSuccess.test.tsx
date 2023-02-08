@@ -1,13 +1,8 @@
 import React from 'react';
-import { screen, render, fireEvent } from 'utils/testUtils/rtl';
+import { screen, render, userEvent } from 'utils/testUtils/rtl';
+import clHistory from 'utils/cl-router/history';
 
 import { PasswordResetSuccess } from './PasswordResetSuccess';
-
-const mockSignInModal = jest.fn();
-
-jest.mock('events/openSignUpInModal', () => ({
-  openSignUpInModal: () => mockSignInModal(),
-}));
 
 describe('PasswordResetSuccess', () => {
   it('renders a success message with a login button', () => {
@@ -19,12 +14,13 @@ describe('PasswordResetSuccess', () => {
     expect(screen.getByRole('button')).toHaveTextContent('Log in');
   });
 
-  it('opens sign in modal after clicking on the login button', async () => {
+  it('redirects to the sign in route', async () => {
+    const user = userEvent.setup();
     render(<PasswordResetSuccess />);
 
     const loginButton = screen.getByRole('button');
-    fireEvent.click(loginButton);
+    await user.click(loginButton);
 
-    expect(mockSignInModal).toHaveBeenCalledTimes(1);
+    expect(clHistory.push).toHaveBeenCalledWith(`/sign-in`);
   });
 });
