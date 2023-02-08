@@ -21,7 +21,7 @@ import { IProjectData } from 'services/projects';
 
 // Styles
 import { colors } from 'utils/styleUtils';
-import useURLQuery from 'utils/cl-router/useUrlQuery';
+import { useSearchParams } from 'react-router-dom';
 
 type Props = {
   project: IProjectData;
@@ -36,7 +36,7 @@ export const Heading = ({
   canUserEditProject,
   isSurvey,
 }: Props) => {
-  const searchParams = useURLQuery();
+  const [searchParams] = useSearchParams();
   const phaseId =
     searchParams.get('phase_id') ||
     project.relationships.current_phase?.data?.id;
