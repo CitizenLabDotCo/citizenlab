@@ -109,7 +109,7 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
   });
 
   const [folderOpen, setFolderOpen] = useState(true);
-  const [isBeingDeleted, setIsBeingDeleted] = useState(false);
+  const [isBeingDeleted, _setIsBeingDeleted] = useState(false);
   const [folderDeletionError, setFolderDeletionError] = useState('');
 
   const toggleExpand = () => setFolderOpen((folderOpen) => !folderOpen);

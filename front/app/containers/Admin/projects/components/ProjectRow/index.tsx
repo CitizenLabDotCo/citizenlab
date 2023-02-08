@@ -60,7 +60,7 @@ const ProjectRow = ({
   className,
   showMoreActions = false,
 }: Props) => {
-  const [isBeingDeleted, setIsBeingDeleted] = useState<boolean>(false);
+  const [isBeingDeleted, _setIsBeingDeleted] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const authUser = useAuthUser();
   const projectId = publication.publicationId;
