@@ -33,7 +33,7 @@ const ImageControl = ({
     setImageFiles(imageFiles);
     setDidBlur(true);
   };
-  const handleUploadOnRemove = (_file) => {
+  const handleUploadOnRemove = () => {
     handleChange(path, undefined);
     setImageFiles([]);
     setDidBlur(true);

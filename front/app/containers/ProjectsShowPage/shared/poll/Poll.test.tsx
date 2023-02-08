@@ -7,7 +7,6 @@ jest.mock('./FormCompleted', () => 'FormCompleted');
 jest.mock('./PollForm', () => 'PollForm');
 jest.mock('components/UI/Warning', () => 'Warning');
 jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
-jest.mock('modules', () => ({ streamsToReset: [] }));
 
 import { makeUser } from 'services/__mocks__/users';
 import { mockQuestion } from 'services/__mocks__/pollQuestions';

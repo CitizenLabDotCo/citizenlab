@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import styled, { useTheme } from 'styled-components';
 import {
   Box,
+  Text,
   ColorPickerInput,
   Label,
   Toggle,
@@ -99,14 +100,15 @@ const OverlayControls = ({
 
   return (
     <>
-      <Box mb={overlayEnabled ? '20px' : '0'}>
+      <Box mb={overlayEnabled ? '20px' : '0'} data-cy="e2e-overlay-toggle">
         <Toggle
+          id="overlay-toggle"
           onChange={handleOverlayEnabling}
           checked={overlayEnabled}
           label={
-            <Box color={colors.blue500}>
+            <Text as="span" color="blue500">
               {formatMessage(messages.overlayToggleLabel)}
-            </Box>
+            </Text>
           }
         />
       </Box>

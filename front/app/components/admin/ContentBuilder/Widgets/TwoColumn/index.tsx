@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Box, Radio, Title, Icon } from '@citizenlab/cl2-component-library';
+import { Box, Radio, Icon, Label } from '@citizenlab/cl2-component-library';
 
 // styles
 import styled from 'styled-components';
@@ -13,12 +13,15 @@ import { colors, media } from 'utils/styleUtils';
 import { useNode, Element } from '@craftjs/core';
 import Container from '../Container';
 
-// Intl
+// intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+// typings
+import { ColumnLayout } from '../../typings';
+
 type TwoColumnProps = {
-  columnLayout: string;
+  columnLayout: ColumnLayout;
   children?: React.ReactNode;
 };
 
@@ -53,7 +56,7 @@ export const TwoColumn = ({ columnLayout, children }: TwoColumnProps) => {
   );
 };
 
-const TwoColumnSettings = () => {
+export const TwoColumnSettings = () => {
   const {
     actions: { setProp },
     columnLayout,
@@ -63,9 +66,9 @@ const TwoColumnSettings = () => {
 
   return (
     <Box mb="30px">
-      <Title variant="h4" as="h3">
+      <Label>
         <FormattedMessage {...messages.columnLayoutRadioLabel} />
-      </Title>
+      </Label>
       <Radio
         onChange={(value) => {
           setProp((props) => (props.columnLayout = value));

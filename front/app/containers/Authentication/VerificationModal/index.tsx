@@ -27,7 +27,7 @@ import {
 import styled from 'styled-components';
 import { viewportWidths } from 'utils/styleUtils';
 import ErrorBoundary from 'components/ErrorBoundary';
-import useQuery from 'utils/cl-router/useQuery';
+import { useSearchParams } from 'react-router-dom';
 
 // typings
 const Container = styled.div`
@@ -43,7 +43,7 @@ const Container = styled.div`
 const VerificationModal = () => {
   const { windowWidth } = useWindowSize();
   const authUser = useAuthUser();
-  const query = useQuery();
+  const [query] = useSearchParams();
   const isMounted = useIsMounted();
   const mounted = isMounted();
   const [activeStep, setActiveStep] = useState<TVerificationStep>(null);

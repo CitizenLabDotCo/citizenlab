@@ -29,12 +29,12 @@ import messages from './messages';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { getShowFilters, getShowFiltersLabel } from './show';
-import { useSearchParams } from 'react-router-dom';
 import clHistory from 'utils/cl-router/history';
 
 // typings
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
 import { PublicationTab } from '../..';
+import { useSearchParams } from 'react-router-dom';
 
 const Title = styled.h2<{ hasPublications: boolean }>`
   color: ${({ theme }) => theme.colors.tenantText};

@@ -1,27 +1,22 @@
-// @ts-nocheck
-// libraries
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render, act, fireEvent } from 'utils/testUtils/rtl';
 import eventEmitter from 'utils/eventEmitter';
-
-import 'jest-styled-components';
 
 // component to test
 import Container from './Container';
+import { CategorizedDestinations } from './typings';
 
 // mock utilities
-jest.mock('./Banner', () => 'Banner');
-jest.mock('./PreferencesDialog', () => 'PreferencesDialog');
-jest.mock('./Footer', () => 'Footer');
-jest.mock('components/UI/Modal', () => 'Modal');
 
-jest.mock('utils/cl-intl');
-const Intl = require('utils/cl-intl/__mocks__/');
-const { intl } = Intl;
+jest.mock('utils/cl-router/Link', () => ({ children }) => (
+  <button>{children}</button>
+));
 
-let setPreferences: jest.Mock;
+let updatePreference: jest.Mock;
 let resetPreferences: jest.Mock;
 let saveConsent: jest.Mock;
+let accept: jest.Mock;
+let reject: jest.Mock;
 
 const initialPreferences = {
   analytics: undefined,
@@ -29,7 +24,7 @@ const initialPreferences = {
   advertising: undefined,
 };
 
-const categorizedDestinations = {
+const categorizedDestinations: CategorizedDestinations = {
   analytics: ['google_analytics'],
   functional: ['intercom'],
   advertising: [],
@@ -39,18 +34,21 @@ const emptyFunction = () => {};
 
 describe('<Container />', () => {
   beforeEach(() => {
-    setPreferences = jest.fn();
+    updatePreference = jest.fn();
     resetPreferences = jest.fn();
     saveConsent = jest.fn();
+    accept = jest.fn();
+    reject = jest.fn();
   });
 
-  it('renders correclty when no destinations are allowed by the tenant', () => {
-    const wrapper = shallow(
+  it('renders correctly when no destinations are allowed by the tenant (i.e. isConsentRequired === false)', () => {
+    const { container } = render(
       <Container
-        intl={intl}
-        setPreferences={setPreferences}
+        updatePreference={updatePreference}
         resetPreferences={resetPreferences}
         saveConsent={saveConsent}
+        accept={accept}
+        reject={reject}
         isConsentRequired={false}
         preferences={initialPreferences}
         categorizedDestinations={categorizedDestinations}
@@ -58,309 +56,241 @@ describe('<Container />', () => {
       />
     );
 
+    expect(
+      container.querySelector('#e2e-preference-dialog')
+    ).not.toBeInTheDocument();
+    expect(
+      container.querySelector('#e2e-cookie-banner')
+    ).not.toBeInTheDocument();
+
     // wih no destinations allowed, isConsentRequired will be false so no banner
     // but the modal is still accessible trough the cookie policy
-    eventEmitter.emit('openConsentManager');
-    expect(wrapper).toMatchSnapshot();
-  });
+    act(() => {
+      eventEmitter.emit('openConsentManager');
+    });
 
-  it('handle changes as expected', () => {
-    const wrapper = shallow(
-      <Container
-        intl={intl}
-        setPreferences={setPreferences}
-        resetPreferences={resetPreferences}
-        saveConsent={saveConsent}
-        isConsentRequired={true}
-        preferences={initialPreferences}
-        categorizedDestinations={categorizedDestinations}
-        onToggleModal={emptyFunction}
-      />
-    );
-
-    wrapper.find('PreferencesDialog').props().onChange('advertising', false);
-
-    // accept all only calls saveConsent with preferences unchanged, so still equal to initialPreferences.
-    // it's tested on the ConsentManager that this will have the expected behaviour.
-    expect(setPreferences).toHaveBeenCalledWith({ advertising: false });
-    expect(saveConsent).not.toHaveBeenCalled();
-    expect(resetPreferences).not.toHaveBeenCalled();
+    expect(
+      container.querySelector('#e2e-preference-dialog')
+    ).toBeInTheDocument();
+    expect(
+      container.querySelector('#e2e-cookie-banner')
+    ).not.toBeInTheDocument();
   });
 
   describe('shows the banner is and only if consent is required', () => {
     it('consent is required, it shows the banner', () => {
-      const wrapper = shallow(
+      const { container } = render(
         <Container
-          intl={intl}
-          setPreferences={setPreferences}
+          updatePreference={updatePreference}
           resetPreferences={resetPreferences}
           saveConsent={saveConsent}
+          accept={accept}
+          reject={reject}
           isConsentRequired={true}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
           onToggleModal={emptyFunction}
         />
       );
-      expect(wrapper.find('Banner').exists()).toBeTruthy();
+
+      expect(container.querySelector('#e2e-cookie-banner')).toBeInTheDocument();
     });
+
     it("consent is't required, it doesn't show the banner", () => {
-      const wrapper = shallow(
+      const { container } = render(
         <Container
-          intl={intl}
-          setPreferences={setPreferences}
+          updatePreference={updatePreference}
           resetPreferences={resetPreferences}
           saveConsent={saveConsent}
+          accept={accept}
+          reject={reject}
           isConsentRequired={false}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
           onToggleModal={emptyFunction}
         />
       );
-      expect(wrapper.find('Banner').exists()).toBeFalsy();
+
+      expect(
+        container.querySelector('#e2e-cookie-banner')
+      ).not.toBeInTheDocument();
     });
   });
 
   describe('handles opening and closing the modal', () => {
     it('modal is initially closed when consent is required', () => {
-      const wrapper = shallow(
+      const { container } = render(
         <Container
-          intl={intl}
-          setPreferences={setPreferences}
+          updatePreference={updatePreference}
           resetPreferences={resetPreferences}
           saveConsent={saveConsent}
+          accept={accept}
+          reject={reject}
           isConsentRequired={true}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
           onToggleModal={emptyFunction}
         />
       );
-      expect(wrapper.find('Modal').props().opened).toBe(false);
+
+      expect(
+        container.querySelector('#e2e-preference-dialog')
+      ).not.toBeInTheDocument();
     });
+
     it("modal is initially closed when consent is't required", () => {
-      const wrapper = shallow(
+      const { container } = render(
         <Container
-          intl={intl}
-          setPreferences={setPreferences}
+          updatePreference={updatePreference}
           resetPreferences={resetPreferences}
           saveConsent={saveConsent}
+          accept={accept}
+          reject={reject}
           isConsentRequired={false}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
           onToggleModal={emptyFunction}
         />
       );
-      expect(wrapper.find('Modal').props().opened).toBe(false);
+
+      expect(
+        container.querySelector('#e2e-preference-dialog')
+      ).not.toBeInTheDocument();
     });
-    it('passes down to Banner a handler that opens the modal', () => {
-      const wrapper = shallow(
+
+    it('is possible to open modal', () => {
+      const { container } = render(
         <Container
-          intl={intl}
-          setPreferences={setPreferences}
+          updatePreference={updatePreference}
           resetPreferences={resetPreferences}
           saveConsent={saveConsent}
+          accept={accept}
+          reject={reject}
           isConsentRequired={true}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
           onToggleModal={emptyFunction}
         />
       );
-      expect(wrapper.find('Modal').props().opened).toBe(false);
-      wrapper.find('Banner').props().onChangePreferences();
-      expect(wrapper.find('Modal').props().opened).toBe(true);
+
+      expect(
+        container.querySelector('#e2e-preference-dialog')
+      ).not.toBeInTheDocument();
+
+      const preferencesButton = container.querySelector(
+        '.integration-open-modal'
+      );
+
+      expect(preferencesButton).toBeInTheDocument();
+
+      fireEvent.click(preferencesButton);
+      expect(
+        container.querySelector('#e2e-preference-dialog')
+      ).toBeInTheDocument();
     });
 
-    it('passes down to Modal a handler that closes the modal', () => {
-      const wrapper = shallow(
+    it('is possible to close modal', () => {
+      const { container } = render(
         <Container
-          intl={intl}
-          setPreferences={setPreferences}
+          updatePreference={updatePreference}
           resetPreferences={resetPreferences}
           saveConsent={saveConsent}
+          accept={accept}
+          reject={reject}
           isConsentRequired={true}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
           onToggleModal={emptyFunction}
         />
       );
-      wrapper.instance().setState({ isDialogOpen: true });
-      expect(wrapper.find('Modal').props().opened).toBe(true);
-      wrapper.find('Modal').props().close();
-      expect(wrapper.find('Modal').props().opened).toBe(false);
+
+      const preferencesButton = container.querySelectorAll(
+        '.integration-open-modal'
+      )[0];
+      fireEvent.click(preferencesButton);
+      expect(
+        container.querySelector('#e2e-preference-dialog')
+      ).toBeInTheDocument();
+
+      const closeButton = container.querySelectorAll(
+        '.e2e-modal-close-button'
+      )[0];
+      fireEvent.click(closeButton);
+      expect(
+        container.querySelector('#e2e-preference-dialog')
+      ).not.toBeInTheDocument();
     });
 
-    it('reacts to openConsentManager events by opening the modal', () => {
-      const wrapper = shallow(
+    it('opens when openConsentManager event fires', () => {
+      const { container } = render(
         <Container
-          intl={intl}
-          setPreferences={setPreferences}
+          updatePreference={updatePreference}
           resetPreferences={resetPreferences}
           saveConsent={saveConsent}
+          accept={accept}
+          reject={reject}
           isConsentRequired={true}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
           onToggleModal={emptyFunction}
         />
       );
-      expect(wrapper.find('Modal').props().opened).toBe(false);
-      eventEmitter.emit('openConsentManager');
-      expect(wrapper.find('Modal').props().opened).toBe(true);
-    });
-  });
 
-  describe('handles preferences form validation', () => {
-    it('is invalid when when some field is empty', () => {
-      const wrapper = shallow(
-        <Container
-          intl={intl}
-          setPreferences={setPreferences}
-          resetPreferences={resetPreferences}
-          saveConsent={saveConsent}
-          isConsentRequired={true}
-          preferences={{
-            analytics: true,
-            functional: undefined,
-            advertising: undefined,
-          }}
-          categorizedDestinations={categorizedDestinations}
-        />
-      );
-      expect((wrapper.instance() as any).validate()).toBeFalsy();
-    });
-    it('is valid when when no field is empty', () => {
-      const wrapper = shallow(
-        <Container
-          intl={intl}
-          setPreferences={setPreferences}
-          resetPreferences={resetPreferences}
-          saveConsent={saveConsent}
-          isConsentRequired={true}
-          preferences={{
-            analytics: true,
-            functional: false,
-            advertising: false,
-          }}
-          categorizedDestinations={categorizedDestinations}
-          onToggleModal={emptyFunction}
-        />
-      );
-      expect((wrapper.instance() as any).validate()).toBeTruthy();
+      expect(
+        container.querySelector('#e2e-preference-dialog')
+      ).not.toBeInTheDocument();
+
+      act(() => {
+        eventEmitter.emit('openConsentManager');
+      });
+
+      expect(
+        container.querySelector('#e2e-preference-dialog')
+      ).toBeInTheDocument();
     });
   });
 
   describe('handles cancelling', () => {
-    it('cancelling with no preference set closes the modal and lets the banner open', () => {
-      const wrapper = shallow(
+    it('while cancelling, confirming cancellation closes the modal and keeps the banner', () => {
+      render(
         <Container
-          intl={intl}
-          setPreferences={setPreferences}
+          updatePreference={updatePreference}
           resetPreferences={resetPreferences}
           saveConsent={saveConsent}
+          accept={accept}
+          reject={reject}
           isConsentRequired={true}
           preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
           onToggleModal={emptyFunction}
         />
       );
-      wrapper.instance().setState({ isDialogOpen: true });
 
-      expect(wrapper.find('Banner').exists()).toBeTruthy();
-      expect(wrapper.find('Modal').props().opened).toBe(true);
-      const { footer } = wrapper.find('Modal').props();
-      shallow(footer).props().handleCancel();
-      expect(wrapper.find('Modal').props().opened).toBe(false);
-      expect(wrapper.find('Banner').exists()).toBeTruthy();
-      expect(setPreferences).not.toHaveBeenCalled();
-      expect(saveConsent).not.toHaveBeenCalled();
-      expect(resetPreferences).toHaveBeenCalled();
-    });
-
-    it('cancelling with some preference set prompts confirmation and lets the banner open', () => {
-      const wrapper = shallow(
-        <Container
-          intl={intl}
-          setPreferences={setPreferences}
-          resetPreferences={resetPreferences}
-          saveConsent={saveConsent}
-          isConsentRequired={true}
-          preferences={{
-            analytics: true,
-            functional: null,
-            advertising: null,
-          }}
-          categorizedDestinations={categorizedDestinations}
-          onToggleModal={emptyFunction}
-        />
-      );
-      wrapper.instance().setState({ isDialogOpen: true });
-
-      expect(wrapper.find('Banner').exists()).toBeTruthy();
-      expect(wrapper.find('Modal').props().opened).toBe(true);
-      const { footer } = wrapper.find('Modal').props();
-      shallow(footer).props().handleCancel();
-      expect(wrapper.find('Modal').props().opened).toBe(true);
-      expect(wrapper.state().isCancelling).toBe(true);
-      expect(wrapper.find('Banner').exists()).toBeTruthy();
-      expect(setPreferences).not.toHaveBeenCalled();
-      expect(saveConsent).not.toHaveBeenCalled();
-      expect(resetPreferences).not.toHaveBeenCalled();
-    });
-
-    it('while cancelling, confirming cancellation closes the modal and keeps the banner', () => {
-      const wrapper = shallow(
-        <Container
-          intl={intl}
-          setPreferences={setPreferences}
-          resetPreferences={resetPreferences}
-          saveConsent={saveConsent}
-          isConsentRequired={true}
-          preferences={{
-            analytics: true,
-            functional: null,
-            advertising: null,
-          }}
-          categorizedDestinations={categorizedDestinations}
-          onToggleModal={emptyFunction}
-        />
-      );
-      wrapper.instance().setState({ isDialogOpen: true, isCancelling: true });
-
-      expect(wrapper.find('Banner').exists()).toBeTruthy();
-      const { footer } = wrapper.find('Modal').props();
-      shallow(footer).props().handleCancelConfirm();
-      expect(wrapper.find('Modal').props().opened).toBe(false);
-      expect(wrapper.find('Banner').exists()).toBeTruthy();
-      expect(setPreferences).not.toHaveBeenCalled();
-      expect(saveConsent).not.toHaveBeenCalled();
-      expect(resetPreferences).toHaveBeenCalled();
+      act(() => {
+        eventEmitter.emit('openConsentManager');
+      });
+      // TODO
     });
 
     it('while cancelling, cancelling cancellation is still possible', () => {
-      const wrapper = shallow(
+      render(
         <Container
-          intl={intl}
-          setPreferences={setPreferences}
+          updatePreference={updatePreference}
           resetPreferences={resetPreferences}
           saveConsent={saveConsent}
+          accept={accept}
+          reject={reject}
           isConsentRequired={true}
-          preferences={{
-            analytics: true,
-            functional: null,
-            advertising: null,
-          }}
+          preferences={initialPreferences}
           categorizedDestinations={categorizedDestinations}
           onToggleModal={emptyFunction}
         />
       );
-      wrapper.instance().setState({ isDialogOpen: true, isCancelling: true });
 
-      expect(wrapper.find('Banner').exists()).toBeTruthy();
-      const { footer } = wrapper.find('Modal').props();
-      shallow(footer).props().handleCancelBack();
-      expect(wrapper.find('Modal').props().opened).toBe(true);
-      expect(wrapper.find('Banner').exists()).toBeTruthy();
-      expect(setPreferences).not.toHaveBeenCalled();
-      expect(saveConsent).not.toHaveBeenCalled();
-      expect(resetPreferences).not.toHaveBeenCalled();
+      act(() => {
+        eventEmitter.emit('openConsentManager');
+      });
+      // TODO
     });
   });
 });

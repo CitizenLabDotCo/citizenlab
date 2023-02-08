@@ -16,7 +16,7 @@ import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import { toFullMonth } from 'utils/dateUtils';
 
 // typings
-import { TimeSeriesRow } from '../../../hooks/useEmailDeliveries/typings';
+import { TimeSeriesRow } from '../useEmailDeliveries/typings';
 import { IResolution } from 'components/admin/ResolutionControl';
 
 type DataKey = 'automated' | 'custom';

@@ -27,5 +27,7 @@ module Volunteering
     counter_culture :cause, column_name: 'volunteers_count'
 
     validates :cause, uniqueness: { scope: [:user] }
+
+    delegate :project_id, to: :cause
   end
 end

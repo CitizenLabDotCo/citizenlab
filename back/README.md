@@ -250,7 +250,7 @@ In this section, we explain what you need to do (and what you shouldn't forget) 
 
 2. Remove files/folders you don’t need. Change the current files to correspond with the other engines.
 
-3. In the `blorgh.gemspec` file, make sure `AGPLv3` is specified as license.
+3. In the `blorgh.gemspec` file, make sure `CitizenLab Commercial License V2` is specified as license.
 
 4. For feature engines (represented by an app configuration setting that can be enabled and disabled), copy over `lib/blorgh/feature_specification.rb` and `spec/lib/settings_spec.rb` and edit according to your engine's specifications.
 

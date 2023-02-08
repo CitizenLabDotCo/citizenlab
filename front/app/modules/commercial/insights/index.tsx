@@ -1,10 +1,7 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-const NavItem = React.lazy(() => import('./admin/components/NavItem'));
 
-const AdminInsightsContainerComponent = React.lazy(
-  () => import('./admin/containers')
-);
+const Tabs = React.lazy(() => import('./admin/components/Tabs'));
 const AdminInsightsListComponent = React.lazy(
   () => import('./admin/containers/Insights/List')
 );
@@ -35,39 +32,37 @@ const configuration: ModuleConfiguration = {
   routes: {
     admin: [
       {
+        path: 'reporting/insights/:viewId',
+        element: <AdminInsightsViewComponent />,
+      },
+      {
+        path: 'reporting/insights/:viewId/edit',
+        element: <AdminInsightsViewEditComponent />,
+      },
+      {
+        path: 'reporting/insights/:viewId/detect',
+        element: <AdminInsightsViewDetectComponent />,
+      },
+    ],
+    'admin.reporting': [
+      {
         path: 'insights',
-        element: <AdminInsightsContainerComponent />,
-        children: [
-          {
-            index: true,
-            element: <AdminInsightsListComponent />,
-          },
-          {
-            path: 'reports',
-            element: <AdminInsightsReportsComponent />,
-          },
-          {
-            path: 'reports/:projectId',
-            element: <AdminInsightsProjectReportComponent />,
-          },
-          {
-            path: ':viewId',
-            element: <AdminInsightsViewComponent />,
-          },
-          {
-            path: ':viewId/edit',
-            element: <AdminInsightsViewEditComponent />,
-          },
-          {
-            path: ':viewId/detect',
-            element: <AdminInsightsViewDetectComponent />,
-          },
-        ],
+        element: <AdminInsightsListComponent />,
+      },
+      {
+        path: 'reports',
+        element: <AdminInsightsReportsComponent />,
+      },
+      {
+        path: 'reports/:projectId',
+        element: <AdminInsightsProjectReportComponent />,
       },
     ],
   },
   outlets: {
-    'app.containers.Admin.sideBar.navItems': (props) => <NavItem {...props} />,
+    'app.containers.Admin.reporting.components.Tabs': ({ onData }) => (
+      <Tabs onData={onData} />
+    ),
   },
 };
 

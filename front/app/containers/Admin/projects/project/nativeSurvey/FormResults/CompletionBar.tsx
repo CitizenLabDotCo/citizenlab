@@ -40,7 +40,15 @@ const CompletionBar = ({
       border={`1px solid ${colors.divider};`}
       overflow="hidden"
     >
-      <Box height="100%" width={`${completed}%`} bgColor={bgColor} />
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width={`${completed}%`}
+        height="25px"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+      >
+        <rect width="100" height="100" fill={bgColor} />
+      </svg>
     </Box>
   </Box>
 );

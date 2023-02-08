@@ -729,7 +729,8 @@ resource 'Ideas' do
         end
 
         describe do
-          let(:idea_images_attributes) { [{ image: Base64.encode64(Rails.root.join("spec/fixtures/image#{rand(20)}.png").open.read) }] }
+          let(:idea_image) { file_as_base64 'header.jpg', 'image/jpeg' }
+          let(:idea_images_attributes) { [{ image: idea_image }] }
 
           example_request 'Create an idea with an image' do
             assert_status 201

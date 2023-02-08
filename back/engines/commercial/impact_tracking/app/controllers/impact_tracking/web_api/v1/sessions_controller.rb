@@ -12,7 +12,8 @@ module ImpactTracking
       def create
         session = Session.create(
           monthly_user_hash: generate_hash,
-          highest_role: current_user&.highest_role
+          highest_role: current_user&.highest_role,
+          user_id: current_user&.id
         )
 
         if session
@@ -27,7 +28,8 @@ module ImpactTracking
       def upgrade
         if @session.update(
           monthly_user_hash: generate_hash,
-          highest_role: current_user&.highest_role
+          highest_role: current_user&.highest_role,
+          user_id: current_user.id
         )
           head :ok
         else

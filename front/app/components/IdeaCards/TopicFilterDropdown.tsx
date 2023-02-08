@@ -32,7 +32,7 @@ const TopicFilterDropdown = memo(
     const topicIds = getTopicIds(allowedInputTopics);
     const topics = useTopics({ topicIds });
 
-    const handleOnChange = (newSelectedValues) => {
+    const handleOnChange = (newSelectedValues: string[]) => {
       setSelectedValues(newSelectedValues);
       onChange(newSelectedValues);
     };

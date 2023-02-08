@@ -1,10 +1,9 @@
-import { MouseEvent } from 'react';
+import { MouseEvent, FC } from 'react';
 import { TFieldName } from 'components/UI/Error';
 import {
   appGraphqlLocalePairs,
   appLocalePairs,
 } from 'containers/App/constants';
-import { FC } from 'react';
 import { TableCellProps } from 'semantic-ui-react';
 import {
   TAppConfigurationSetting,

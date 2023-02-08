@@ -42,11 +42,15 @@ module FlagInappropriateContent
       end
     end
 
+    def project_id
+      flaggable.try(:project_id)
+    end
+
     private
 
     def remove_notifications
       notifications.each do |notification|
-        unless notification.update inappropriate_content_flag: nil
+        if !notification.update inappropriate_content_flag: nil
           notification.destroy!
         end
       end

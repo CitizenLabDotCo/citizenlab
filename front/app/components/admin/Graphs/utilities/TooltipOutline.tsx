@@ -5,14 +5,21 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 
 // styling
 import { colors } from 'utils/styleUtils';
+import styled from 'styled-components';
 
 interface Props {
   label: string;
   children: React.ReactNode;
 }
 
+const ToolTipBox = styled(Box)`
+  @media print {
+    display: none;
+  }
+`;
+
 const TooltipOutline = ({ label, children }: Props) => (
-  <Box
+  <ToolTipBox
     background="white"
     px="8px"
     py="8px"
@@ -30,7 +37,7 @@ const TooltipOutline = ({ label, children }: Props) => (
     </Text>
 
     {children}
-  </Box>
+  </ToolTipBox>
 );
 
 export default TooltipOutline;

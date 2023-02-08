@@ -15,6 +15,8 @@ module MultiTenancy
       Comment
     ].to_set.freeze
 
+    SKIP_IMAGE_PRESENCE_VALIDATION = %w[IdeaImage].freeze
+
     def available_templates(external_subfolder: 'release')
       template_names = {}
       template_names[:internal] = Dir[Rails.root.join('config/tenant_templates/*.yml')].map do |file|
@@ -40,6 +42,7 @@ module MultiTenancy
     def apply_template(template, validate: true, max_time: nil)
       t1 = Time.zone.now
       obj_to_id_and_class = {}
+      created_objects_ids = {}
       template['models'].each do |model_name, fields|
         LogActivityJob.perform_later(Tenant.current, 'loading_template', nil, Time.now.to_i, payload: {
           model_name: model_name,
@@ -71,6 +74,9 @@ module MultiTenancy
               model.send("#{field_name}=", field_value)
             end
           end
+
+          model.skip_image_presence = true if SKIP_IMAGE_PRESENCE_VALIDATION.include?(model_class.name)
+
           begin
             if validate
               model.save!
@@ -110,11 +116,14 @@ module MultiTenancy
             raise "Failed to create instance during template application: #{json_info}"
           end
           obj_to_id_and_class[attributes.object_id] = [model.id, model_class]
+
+          created_objects_ids = update_created_objects_ids(created_objects_ids, model_class.name, model.id)
         end
       end
 
       DumpTenantJob.perform_later(Tenant.current)
-      nil
+
+      created_objects_ids
     end
 
     def restore_template_attributes(attributes, obj_to_id_and_class, app_settings, model_class: nil)
@@ -371,6 +380,16 @@ module MultiTenancy
 
     def all_supported_locales
       @all_supported_locales ||= CL2_SUPPORTED_LOCALES.map(&:to_s)
+    end
+
+    def update_created_objects_ids(created_objects_ids, model_name, model_id)
+      if created_objects_ids.key?(model_name)
+        created_objects_ids[model_name] << model_id
+      else
+        created_objects_ids[model_name] = [model_id]
+      end
+
+      created_objects_ids
     end
   end
 end

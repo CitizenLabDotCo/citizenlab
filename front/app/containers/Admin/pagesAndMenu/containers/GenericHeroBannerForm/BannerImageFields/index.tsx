@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  IconTooltip,
-  IOption,
-  Select,
-} from '@citizenlab/cl2-component-library';
+import { Box, IOption } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import OverlayControls from './OverlayControls';
 import ImageUploader from './ImageUploader';
-
-import { ISubmitState } from 'components/admin/SubmitWrapper';
+import SelectPreviewDevice, {
+  TDevice,
+} from 'components/admin/SelectPreviewDevice';
 import { UploadFile } from 'typings';
 
 // i18n
@@ -17,10 +13,18 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 import { convertUrlToUploadFile } from 'utils/fileUtils';
-import { isNil, isNilOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
-import { ICustomPageAttributes } from 'services/customPages';
-import { IHomepageSettingsAttributes } from 'services/homepageSettings';
+import {
+  ICustomPageAttributes,
+  TCustomPageBannerLayout,
+} from 'services/customPages';
+import {
+  IHomepageSettingsAttributes,
+  THomepageBannerLayout,
+} from 'services/homepageSettings';
+
+import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
 
 export interface Props {
   onAddImage: (newImageBase64: string) => void;
@@ -45,12 +49,14 @@ export interface Props {
   headerBg:
     | IHomepageSettingsAttributes['header_bg']
     | ICustomPageAttributes['header_bg'];
-  setFormStatus: (submitState: ISubmitState) => void;
 }
 
-export type TPreviewDevice = 'phone' | 'tablet' | 'desktop';
-export type TLocalHeaderImage = UploadFile[] | null;
+export type TLocalHeaderImage = UploadFile | null;
 export type TBannerError = string | null;
+type TBannerLayoutComponent =
+  | 'image_cropper'
+  | 'preview_device'
+  | 'overlay_controls';
 
 const BannerImageField = ({
   bannerOverlayColor,
@@ -59,120 +65,105 @@ const BannerImageField = ({
   headerBg,
   onAddImage,
   onRemoveImage,
-  setFormStatus,
   onOverlayChange,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const [previewDevice, setPreviewDevice] = useState<TPreviewDevice>('desktop');
+  const [previewDevice, setPreviewDevice] = useState<TDevice>('desktop');
   const [headerLocalDisplayImage, setHeaderLocalDisplayImage] =
     useState<TLocalHeaderImage>(null);
   const [bannerError, setBannerError] = useState<TBannerError>(null);
+
   useEffect(() => {
+    // Not needed when the headerBg is a new, unsaved image.
+    // In that case it's a base64 string.
+    if (typeof headerBg === 'string') return;
+
+    const headerFileInfo = headerBg?.large;
+
+    convertHeaderToUploadFile(headerFileInfo);
+  }, [headerBg]);
+
+  const convertHeaderToUploadFile = async (
+    fileInfo: string | null | undefined
+  ) => {
     // the image file sent from the API needs to be converted
     // to a format that can be displayed. this is done locally
     // when the image is changed but needs to be done manually
     // to process the initial API response
-    const convertHeaderToUploadFile = async (fileInfo) => {
-      if (fileInfo) {
-        const tenantHeaderBg = await convertUrlToUploadFile(fileInfo);
-        const headerBgUploadFile = !isNilOrError(tenantHeaderBg)
-          ? [tenantHeaderBg]
-          : [];
-        setHeaderLocalDisplayImage(headerBgUploadFile);
-        setBannerError(null);
-      }
-    };
+    if (fileInfo) {
+      const tenantHeaderBg = await convertUrlToUploadFile(fileInfo);
 
-    const headerFileInfo = headerBg?.large;
-    convertHeaderToUploadFile(headerFileInfo);
-  }, [headerBg]);
-
-  // set error and disable save button if header is removed,
-  // the form cannot be saved without an image
-  useEffect(() => {
-    if (isNil(headerBg)) {
-      setBannerError(formatMessage(messages.noHeader));
-      return;
+      setHeaderLocalDisplayImage(
+        !isNilOrError(tenantHeaderBg) ? tenantHeaderBg : null
+      );
     }
+  };
 
-    setBannerError(null);
-  }, [headerBg, formatMessage, setFormStatus]);
-
-  const handleOnAddImageToUploader = (newImage: UploadFile[]) => {
+  const handleOnAddImageToUploader = (newImages: UploadFile[]) => {
     // this base64 value is sent to the API
-    onAddImage(newImage[0].base64);
+    onAddImage(newImages[0].base64);
     // this value is used for local display
-    setHeaderLocalDisplayImage([newImage[0]]);
+    setHeaderLocalDisplayImage(newImages[0]);
+    setBannerError(null);
   };
 
   const handleOnRemoveImageFromUploader = () => {
     onRemoveImage();
     setHeaderLocalDisplayImage(null);
+    setBannerError(formatMessage(messages.noHeader));
   };
 
-  const imageIsSaved = headerLocalDisplayImage?.[0].remote || false;
   const hasLocalHeaderImage = !isNilOrError(headerLocalDisplayImage);
+  const imageShouldBeSaved = headerLocalDisplayImage
+    ? !headerLocalDisplayImage.remote
+    : false;
 
-  const displayImageCropper =
-    hasLocalHeaderImage &&
-    !imageIsSaved &&
-    bannerLayout === 'fixed_ratio_layout';
+  const showConditions = (bannerLayout: THomepageBannerLayout) => {
+    const conditions: {
+      [key in THomepageBannerLayout | TCustomPageBannerLayout]: {
+        [key in TBannerLayoutComponent]: boolean;
+      };
+    } = {
+      full_width_banner_layout: {
+        image_cropper: false,
+        preview_device: hasLocalHeaderImage,
+        overlay_controls: hasLocalHeaderImage,
+      },
+      two_row_layout: {
+        image_cropper: false,
+        preview_device: hasLocalHeaderImage,
+        overlay_controls: false,
+      },
+      two_column_layout: {
+        image_cropper: false,
+        preview_device: hasLocalHeaderImage,
+        overlay_controls: false,
+      },
+      fixed_ratio_layout: {
+        // Only show for an unsaved image
+        image_cropper: hasLocalHeaderImage && imageShouldBeSaved,
+        preview_device: hasLocalHeaderImage && !imageShouldBeSaved,
+        // Only show when we have the image uploader. For this layout
+        // that means: image is saved (for an unsaved image we show the cropper)
+        overlay_controls: hasLocalHeaderImage && !imageShouldBeSaved,
+      },
+    };
 
-  const displayPreviewDevice =
-    hasLocalHeaderImage && bannerLayout !== 'fixed_ratio_layout';
-
-  const displayOverlayControls =
-    hasLocalHeaderImage &&
-    (bannerLayout === 'full_width_banner_layout' ||
-      (bannerLayout === 'fixed_ratio_layout' && imageIsSaved));
+    return conditions[bannerLayout];
+  };
 
   return (
     <>
       <SubSectionTitle>
         <FormattedMessage {...messages.header_bg} />
-        <IconTooltip
-          content={
-            <FormattedMessage
-              {...messages.headerBgTooltip}
-              values={{
-                supportPageLink: (
-                  <a
-                    href={formatMessage(messages.imageSupportPageURL)}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <FormattedMessage
-                      {...messages.headerImageSupportPageText}
-                    />
-                  </a>
-                ),
-              }}
-            />
-          }
-        />
+        <ImageInfoTooltip />
       </SubSectionTitle>
       <SectionField>
-        {displayPreviewDevice && (
+        {showConditions(bannerLayout).preview_device && (
           <Box mb="20px">
-            <Select
-              label={formatMessage(messages.bgHeaderPreviewSelectLabel)}
-              id="display-preview-device"
-              options={[
-                {
-                  value: 'desktop',
-                  label: formatMessage(messages.desktop),
-                },
-                {
-                  value: 'tablet',
-                  label: formatMessage(messages.tablet),
-                },
-                {
-                  value: 'phone',
-                  label: formatMessage(messages.phone),
-                },
-              ]}
+            <SelectPreviewDevice
+              selectedPreviewDevice={previewDevice}
               onChange={(option: IOption) => setPreviewDevice(option.value)}
-              value={previewDevice}
             />
           </Box>
         )}
@@ -180,8 +171,8 @@ const BannerImageField = ({
           bannerLayout={bannerLayout}
           bannerOverlayColor={bannerOverlayColor}
           bannerOverlayOpacity={bannerOverlayOpacity}
-          displayImageCropper={displayImageCropper}
-          displayOverlayControls={displayOverlayControls}
+          displayImageCropper={showConditions(bannerLayout).image_cropper}
+          displayOverlayControls={showConditions(bannerLayout).overlay_controls}
           onAddImage={onAddImage}
           onAddImageToUploader={handleOnAddImageToUploader}
           onRemoveImageFromUploader={handleOnRemoveImageFromUploader}
@@ -190,7 +181,7 @@ const BannerImageField = ({
           headerLocalDisplayImage={headerLocalDisplayImage}
         />
         {/* We only allow the overlay for the full-width and fixed-ratio banner layout for the moment. */}
-        {displayOverlayControls && (
+        {showConditions(bannerLayout).overlay_controls && (
           <OverlayControls
             bannerOverlayColor={bannerOverlayColor}
             bannerOverlayOpacity={bannerOverlayOpacity}

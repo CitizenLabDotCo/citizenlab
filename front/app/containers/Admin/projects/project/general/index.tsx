@@ -11,8 +11,8 @@ import SlugInput from 'components/admin/SlugInput';
 import ProjectTypePicker from './components/ProjectTypePicker';
 import TopicInputs from './components/TopicInputs';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
-import HeaderImageDropzone from './components/HeaderImageDropzone';
-import ProjectImageDropzone from './components/ProjectImageDropzone';
+import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
+import ProjectCardImageDropzone from './components/ProjectCardImageDropzone';
 import AttachmentsDropzone from './components/AttachmentsDropzone';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 import {
@@ -31,6 +31,8 @@ import {
   ParticipationContextWrapper,
 } from './components/styling';
 import ProjectFolderSelect from './components/ProjectFolderSelect';
+import ImageCropperContainer from 'components/admin/ImageCropper/Container';
+import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -49,7 +51,12 @@ import {
   IProjectData,
 } from 'services/projects';
 import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
-import { addProjectImage, deleteProjectImage } from 'services/projectImages';
+import {
+  addProjectImage,
+  deleteProjectImage,
+  CARD_IMAGE_ASPECT_RATIO_WIDTH,
+  CARD_IMAGE_ASPECT_RATIO_HEIGHT,
+} from 'services/projectImages';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -60,7 +67,8 @@ import { validateSlug } from 'utils/textUtils';
 import validateTitle from './utils/validateTitle';
 import { isNilOrError } from 'utils/helperUtils';
 import eventEmitter from 'utils/eventEmitter';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
+import { Box } from '@citizenlab/cl2-component-library';
 
 export const TIMEOUT = 350;
 
@@ -92,20 +100,24 @@ const AdminProjectsProjectGeneral = () => {
   // both in projectAttributesDiff and as separate state.
   const [projectType, setProjectType] =
     useState<IProjectFormState['projectType']>('timeline');
-  const [projectHeaderImage, setProjectHeaderImage] =
-    useState<IProjectFormState['projectHeaderImage']>(null);
   const [projectFiles, setProjectFiles] = useState<
     IProjectFormState['projectFiles']
   >([]);
   const [projectFilesToRemove, setProjectFilesToRemove] = useState<
     IProjectFormState['projectFilesToRemove']
   >([]);
-  const [projectImages, setProjectImages] = useState<
-    IProjectFormState['projectImages']
-  >([]);
-  const [projectImagesToRemove, setProjectImagesToRemove] = useState<
-    IProjectFormState['projectImagesToRemove']
-  >([]);
+  const [projectCardImage, setProjectCardImage] =
+    useState<IProjectFormState['projectCardImage']>(null);
+  // project_images should always store one record, but in practice it was (or is?) different (maybe because of a bug)
+  // https://citizenlabco.slack.com/archives/C015M14HYSF/p1674228018666059
+  const [projectCardImageToRemove, setProjectCardImageToRemove] =
+    useState<IProjectFormState['projectCardImageToRemove']>(null);
+  // If we use cropper, we need to store two different images:
+  // original and cropped.
+  const [croppedProjectCardBase64, setCroppedProjectCardBase64] = useState<
+    string | null
+  >(null);
+
   const [slug, setSlug] = useState<IProjectFormState['slug']>(null);
   const [showSlugErrorMessage, setShowSlugErrorMessage] =
     useState<IProjectFormState['showSlugErrorMessage']>(false);
@@ -118,11 +130,6 @@ const AdminProjectsProjectGeneral = () => {
         setPublicationStatus(project.attributes.publication_status);
         setProjectType(project.attributes.process_type);
         setSlug(project.attributes.slug);
-        const headerUrl = project.attributes.header_bg.large;
-        const projectHeaderImage = headerUrl
-          ? await convertUrlToUploadFile(headerUrl, null, null)
-          : null;
-        setProjectHeaderImage(projectHeaderImage ? [projectHeaderImage] : null);
       }
     })();
   }, [project]);
@@ -159,7 +166,7 @@ const AdminProjectsProjectGeneral = () => {
         const nextProjectImagesPromises = remoteProjectImages.map(
           (projectImage) => {
             const url = projectImage.attributes.versions.large;
-            // to be tested
+
             if (url) {
               return convertUrlToUploadFile(url, projectImage.id, null);
             }
@@ -172,14 +179,10 @@ const AdminProjectsProjectGeneral = () => {
           await Promise.all(nextProjectImagesPromises)
         ).filter(isUploadFile);
 
-        setProjectImages(nextProjectImages);
+        setProjectCardImage(nextProjectImages[0]);
       }
     })();
   }, [remoteProjectImages]);
-
-  function isUploadFile(file: UploadFile | null): file is UploadFile {
-    return file !== null;
-  }
 
   const handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
     setSubmitState('enabled');
@@ -211,41 +214,36 @@ const AdminProjectsProjectGeneral = () => {
     setProjectType(projectType);
   };
 
-  const handleHeaderOnAdd = (newHeader: UploadFile[]) => {
-    const newHeaderFile = newHeader[0];
-
-    setSubmitState('enabled');
+  const handleHeaderBgChange = (newImageBase64: string | null) => {
     setProjectAttributesDiff((projectAttributesDiff) => ({
       ...projectAttributesDiff,
-      header_bg: newHeaderFile.base64,
-    }));
-    setProjectHeaderImage([newHeaderFile]);
-  };
-
-  const handleHeaderOnRemove = async () => {
-    setProjectAttributesDiff((projectAttributesDiff) => ({
-      ...projectAttributesDiff,
-      header_bg: null,
+      header_bg: newImageBase64,
     }));
     setSubmitState('enabled');
-    setProjectHeaderImage(null);
   };
 
-  const handleProjectImagesOnAdd = (projectImages: UploadFile[]) => {
+  const handleProjectCardImageOnAdd = (projectImages: UploadFile[]) => {
     setSubmitState('enabled');
-    setProjectImages(projectImages);
+    setProjectCardImage(projectImages[0]);
   };
 
-  const handleProjectImageOnRemove = (projectImageToRemove: UploadFile) => {
-    setProjectImages((projectImages) => {
-      return projectImages.filter(
-        (image) => image.base64 !== projectImageToRemove.base64
-      );
-    });
-    setProjectImagesToRemove((projectImagesToRemove) => {
-      return [...projectImagesToRemove, projectImageToRemove];
-    });
+  const handleProjectCardImageOnRemove = (
+    projectCardImageToRemove: UploadFile
+  ) => {
+    setProjectCardImage(null);
+    setCroppedProjectCardBase64(null);
+    projectCardImageToRemove.remote &&
+      setProjectCardImageToRemove(projectCardImageToRemove);
     setSubmitState('enabled');
+  };
+
+  const handleCroppedProjectCardImageOnRemove = () => {
+    projectCardImage && handleProjectCardImageOnRemove(projectCardImage);
+  };
+
+  const handleProjectCardImageOnCompleteCropping = (base64: string) => {
+    setSubmitState('enabled');
+    setCroppedProjectCardBase64(base64);
   };
 
   const handleProjectFileOnAdd = (newProjectFile: UploadFile) => {
@@ -280,7 +278,7 @@ const AdminProjectsProjectGeneral = () => {
   };
 
   async function saveForm(
-    participationContextConfig: IParticipationContextConfig | null
+    participationContextConfig: IParticipationContextConfig | null = null
   ) {
     // Should be split. Same func for existing/new project
     // Makes things unnecessarily complicated (e.g. projectId below).
@@ -313,24 +311,16 @@ const AdminProjectsProjectGeneral = () => {
           }
         }
 
-        const imagesToAddPromises = projectImages
-          .filter((file) => !file.remote)
-          .map((file) => {
-            if (latestProjectId) {
-              return addProjectImage(latestProjectId, file.base64);
-            }
+        const cardImageToAddPromise =
+          croppedProjectCardBase64 && latestProjectId
+            ? addProjectImage(latestProjectId, croppedProjectCardBase64)
+            : null;
 
-            return;
-          });
-        const imagesToRemovePromises = projectImagesToRemove
-          .filter((file) => file.remote === true && isString(file.id))
-          .map((file) => {
-            if (latestProjectId && file.id) {
-              return deleteProjectImage(latestProjectId, file.id);
-            }
+        const cardImageToRemovePromise =
+          projectCardImageToRemove?.id && latestProjectId
+            ? deleteProjectImage(latestProjectId, projectCardImageToRemove.id)
+            : null;
 
-            return;
-          });
         const filesToAddPromises = projectFiles
           .filter((file) => !file.remote)
           .map((file) => {
@@ -351,14 +341,14 @@ const AdminProjectsProjectGeneral = () => {
           });
 
         await Promise.all([
-          ...imagesToAddPromises,
-          ...imagesToRemovePromises,
+          cardImageToAddPromise,
+          cardImageToRemovePromise,
           ...filesToAddPromises,
           ...filesToRemovePromises,
         ] as Promise<any>[]);
 
         setSubmitState('success');
-        setProjectImagesToRemove([]);
+        setProjectCardImageToRemove(null);
         setProjectFilesToRemove([]);
         setProcessing(false);
 
@@ -388,14 +378,14 @@ const AdminProjectsProjectGeneral = () => {
     if (projectType === 'continuous') {
       eventEmitter.emit('getParticipationContext');
     } else {
-      save();
+      saveForm();
     }
   };
 
   const handleParticipationContextOnSubmit = (
     participationContextConfig: IParticipationContextConfig
   ) => {
-    save(participationContextConfig);
+    saveForm(participationContextConfig);
   };
 
   const handleStatusChange = (
@@ -442,14 +432,6 @@ const AdminProjectsProjectGeneral = () => {
     return formIsValid;
   };
 
-  // We should look into only having 1 save function (saveForm)
-  // And refactor this out
-  const save = async (
-    participationContextConfig: IParticipationContextConfig | null = null
-  ) => {
-    await saveForm(participationContextConfig);
-  };
-
   const handleProjectAttributeDiffOnChange: TOnProjectAttributesDiffChangeFunction =
     (
       projectAttributesDiff: IProjectFormState['projectAttributesDiff'],
@@ -474,6 +456,10 @@ const AdminProjectsProjectGeneral = () => {
     projectAttributesDiff,
     !isNilOrError(project) ? project : null
   );
+
+  const projectCardImageShouldBeSaved = projectCardImage
+    ? !projectCardImage.remote
+    : false;
 
   return (
     <StyledForm className="e2e-project-general-form" onSubmit={onSubmit}>
@@ -584,17 +570,33 @@ const AdminProjectsProjectGeneral = () => {
           />
         )}
 
-        <HeaderImageDropzone
-          projectHeaderImage={projectHeaderImage}
-          handleHeaderOnAdd={handleHeaderOnAdd}
-          handleHeaderOnRemove={handleHeaderOnRemove}
+        <HeaderBgUploader
+          imageUrl={project?.attributes.header_bg.large}
+          onImageChange={handleHeaderBgChange}
         />
-
-        <ProjectImageDropzone
-          projectImages={projectImages}
-          handleProjectImagesOnAdd={handleProjectImagesOnAdd}
-          handleProjectImageOnRemove={handleProjectImageOnRemove}
-        />
+        <StyledSectionField>
+          <SubSectionTitle>
+            <FormattedMessage {...messages.projectCardImageLabelText} />
+            <ImageInfoTooltip />
+          </SubSectionTitle>
+          {projectCardImageShouldBeSaved ? (
+            <Box display="flex" flexDirection="column" gap="8px">
+              <ImageCropperContainer
+                image={projectCardImage}
+                onComplete={handleProjectCardImageOnCompleteCropping}
+                aspectRatioWidth={CARD_IMAGE_ASPECT_RATIO_WIDTH}
+                aspectRatioHeight={CARD_IMAGE_ASPECT_RATIO_HEIGHT}
+                onRemove={handleCroppedProjectCardImageOnRemove}
+              />
+            </Box>
+          ) : (
+            <ProjectCardImageDropzone
+              images={projectCardImage && [projectCardImage]}
+              onAddImages={handleProjectCardImageOnAdd}
+              onRemoveImage={handleProjectCardImageOnRemove}
+            />
+          )}
+        </StyledSectionField>
 
         <AttachmentsDropzone
           projectFiles={projectFiles}

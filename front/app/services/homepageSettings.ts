@@ -44,7 +44,7 @@ export interface IHomepageSettingsAttributes extends IHomepageEnabledSettings {
   top_info_section_multiloc: Multiloc;
   bottom_info_section_multiloc: Multiloc;
   projects_header_multiloc: Multiloc;
-  banner_layout: THomepageBannerLayout | null;
+  banner_layout: THomepageBannerLayout;
   banner_signed_in_header_multiloc: Multiloc;
   banner_signed_out_header_multiloc: Multiloc;
   banner_signed_out_subheader_multiloc: Multiloc;

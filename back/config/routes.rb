@@ -91,7 +91,9 @@ Rails.application.routes.draw do
       end
       get 'users/:id', to: 'users#show', constraints: { id: /\b(?!custom_fields|me)\b\S+/ }
 
-      resources :topics, only: %i[index show]
+      resources :topics do
+        patch 'reorder', on: :member
+      end
 
       resources :areas do
         patch 'reorder', on: :member
@@ -147,6 +149,7 @@ Rails.application.routes.draw do
           get :users_search, on: :collection
         end
 
+        post 'copy', on: :member
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
         get 'survey_results', on: :member
         get 'submission_count', on: :member

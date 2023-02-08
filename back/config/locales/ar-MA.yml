@@ -114,7 +114,7 @@ ar-MA:
         title: الوصف
         description:
       author_id:
-        title: المؤلف 
+        title: المؤلف
         description:
       topic_ids:
         title: الموضوعات
@@ -150,7 +150,7 @@ ar-MA:
         option:
           title: ما خيارك؟
       details:
-        title: التفاصيل 
+        title: التفاصيل
       attachements:
         title: الصور والمرفقات
       extra:
@@ -208,3 +208,5 @@ ar-MA:
     survey_end_page:
       title: 'انتهى الاستبيان'
       description: "يرجى إرسال إجاباتك من خلال تحديد \"إرسال الاستبيان\" أدناه."
+  project_copy:
+    title_suffix: 'نسخة'

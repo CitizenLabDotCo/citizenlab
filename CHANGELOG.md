@@ -1,16 +1,109 @@
 # Changelog
 
+## 2023-02-03
+
+### Added
+
+- [CL-2534] Image dimensions i3: improved project/folder card images
+
+## 2023-02-01
+
+### Fixed
+
+- [CL-1560] Fix From scratch label bug when creating a project
+
+## 2023-01-31
+
+### Added
+
+- [CL-1703] Add default CTA banner on project page
+- [CL-2727] Add user id to impact tracking for authenticated users
+
+## 2023-01-30
+
+### Fixed
+
+- [CL-2651] Fix survey top bar issue on mobile
+- [CL-2682] Show Content Warnings tab in activity manager for all platforms
+
+## 2023-01-26 (2)
+
+### Fixed
+
+- [CL-2366] Hide 'Projects' card from overview dashboard
+
+### Added
+
+- [CL-2658] Most voted ideas widget for report builder
+
+## 2023-01-26
+
+### Fixed
+
+- Activity icon in admin navigation for Safari browsers
+
+## 2023-01-23 (2)
+
+### Fixed
+
+- [CL-2549] Reject all cookies when closing cookie banner
+
+## 2023-01-23
+
+### Fixed
+
+- [CL-2648] Two-column layout image width on tablet is fixed.
+- [CL-171] Status per recipient of sent email campaigns is shown again.
+
+## 2023-01-19
+
+### Fixed
+
+- [CL-2617] Showing native survey confimation modal multiple times after submission even after closing the modal
+
+## 2023-01-18
+
+### Fixed
+
+- [CL-2611] Show projects nested in folders on custom pages
+- [CL-2604] The signed in banner opacity is fixed when its opacity is set to 0 in AdminHQ
+
+## 2023-01-16
+
+### Added
+
+- [CL-2320] Image dimensions i2: folder & project banner images
+
+## 2023-01-13 (2)
+
+### Added
+
+- [CL-2214] Report builder MVP (behind feature flag)
+
+### Fixed
+
+- [CL-2597] Custom tags tab is once again visible in both projects and platform settings
+
+## 2023-01-13
+
+### Fixed
+
+- [CL-2339] Fixed slow displaying of attachments in timeline projects on a phase
+
+### Changed
+
+- [CL-2465] Allow project moderators to all dashboard data
+
 ## 2023-01-12
 
 ### Added
 
 - [CL-2340] Added file upload fields to survey forms.
+- [CL-2255] Show 'Invitation pending' in user group list, for users added to user group when invited, and who have not yet accepted the invitation.
 
 ### Changed
 
 - [CL-2344] Removes content builder iframe URL whitelist.
-
-## 2023-01-11
 
 ### Fixed
 

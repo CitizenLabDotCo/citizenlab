@@ -8,7 +8,7 @@ import {
 import {
   Container,
   Header,
-} from 'components/LandingPages/citizen/FixedRatioBannerLayout';
+} from 'components/LandingPages/citizen/FixedRatioLayout';
 import HeaderContent from './HeaderContent';
 
 import { IHomepageSettingsData } from 'services/homepageSettings';
@@ -29,7 +29,7 @@ const FixedRatioLayout = ({ homepageSettings }: Props) => {
       <Header>
         <HeaderImage data-cy="e2e-fixed-ratio-header-image">
           <HeaderImageBackground
-            data-testid="header-image-background"
+            data-testid="fixed-ratio-layout-header-image-background"
             src={headerImage || null}
           />
           {homepageSettingColor &&

@@ -26,7 +26,12 @@ import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 // components
 import Button from 'components/UI/Button';
-import { StatusLabel, IconTooltip } from '@citizenlab/cl2-component-library';
+import {
+  StatusLabel,
+  IconTooltip,
+  colors,
+  Title,
+} from '@citizenlab/cl2-component-library';
 import DraftCampaignDetails from './DraftCampaignDetails';
 import SentCampaignDetails from './SentCampaignDetails';
 import T from 'components/T';
@@ -85,12 +90,6 @@ const PageTitleWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-right: auto;
-`;
-
-const PageTitle = styled.h1`
-  margin-bottom: 0;
-  margin-right: 1rem;
-  font-weight: 600;
 `;
 
 const Buttons = styled.div`
@@ -234,17 +233,17 @@ class Show extends React.Component<
         <Container id="e2e-custom-email-container">
           <PageHeader>
             <PageTitleWrapper>
-              <PageTitle>
+              <Title mr="12px">
                 <T value={campaign.attributes.subject_multiloc} />
-              </PageTitle>
+              </Title>
               {isDraft(campaign) ? (
                 <StatusLabel
-                  backgroundColor="draftYellow"
+                  backgroundColor={colors.brown}
                   text={<FormattedMessage {...messages.draft} />}
                 />
               ) : (
                 <StatusLabel
-                  backgroundColor="success"
+                  backgroundColor={colors.success}
                   text={<FormattedMessage {...messages.sent} />}
                 />
               )}
