@@ -8,7 +8,7 @@ import { isAdmin } from 'services/permissions/roles';
 import useAuthUser from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 
-interface Props {
+export interface Props {
   projectId: string;
   setError: (error: string | null) => void;
 }
