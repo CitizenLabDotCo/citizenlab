@@ -79,11 +79,15 @@ async function fetcher({ path, action, body, queryParams }) {
     },
   });
 
-  if ((action === 'delete' && response.ok) || response.status !== 200) {
+  // Return null for scenarios where the back-end response is not valid JSON but the request is successful
+  if (
+    (action === 'delete' && response.ok) ||
+    (response.status !== 200 && response.status !== 201)
+  ) {
     return null;
   }
 
-  let data: any;
+  let data: BaseResponseData;
 
   try {
     data = await response.json();
@@ -92,11 +96,11 @@ async function fetcher({ path, action, body, queryParams }) {
   }
 
   if (!response.ok) {
-    throw data as CLErrors;
+    throw data as unknown as CLErrors;
   } else {
     if (data) {
       if (isArray(data.data)) {
-        data.data.forEach((entry: BaseData) => {
+        data.data.forEach((entry) => {
           if (entry.id) {
             queryClient.setQueryData(
               [{ type: entry.type, id: entry.id, entity: 'detail' }],
@@ -113,7 +117,7 @@ async function fetcher({ path, action, body, queryParams }) {
         }
       }
       if (data.included) {
-        data.included.forEach((entry: BaseData) => {
+        data.included.forEach((entry) => {
           if (entry.id) {
             queryClient.setQueryData(
               [{ type: entry.type, id: entry.id, entity: 'detail' }],
@@ -125,7 +129,7 @@ async function fetcher({ path, action, body, queryParams }) {
     }
   }
   const { included: _included, ...rest } = data;
-  return rest;
+  return rest as Omit<BaseResponseData, 'included'>;
 }
 
 export default fetcher;

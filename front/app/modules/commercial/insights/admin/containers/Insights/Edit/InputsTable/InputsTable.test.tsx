@@ -7,7 +7,6 @@ import {
   act,
   waitFor,
 } from 'utils/testUtils/rtl';
-import * as batchService from 'modules/commercial/insights/services/batchAssignment';
 import inputs from 'modules/commercial/insights/fixtures/inputs';
 import useInputs from 'modules/commercial/insights/api/inputs/useInputs';
 import clHistory from 'utils/cl-router/history';
@@ -27,10 +26,16 @@ jest.mock('modules/commercial/insights/api/inputs/useDeleteInputCategory', () =>
 jest.mock('modules/commercial/insights/api/categories/useCategories');
 jest.mock('modules/commercial/insights/api/categories/useCategory');
 
-jest.mock('modules/commercial/insights/services/batchAssignment', () => ({
-  batchAssignCategories: jest.fn(),
-  batchUnassignCategories: jest.fn(),
-}));
+const mockAssign = jest.fn();
+jest.mock(
+  'modules/commercial/insights/api/batch/useBatchAssignCategories',
+  () => jest.fn(() => ({ mutate: mockAssign }))
+);
+const mockUnassign = jest.fn();
+jest.mock(
+  'modules/commercial/insights/api/batch/useBatchUnassignCategories',
+  () => jest.fn(() => ({ mutate: mockUnassign }))
+);
 
 import InputsTable from './';
 
@@ -374,11 +379,11 @@ describe('Insights Input Table', () => {
             fireEvent.click(screen.getByText('Add'));
           });
 
-          expect(batchService.batchAssignCategories).toHaveBeenCalledWith(
-            '1',
-            [mockInputData[0].id],
-            [categories[1].id]
-          );
+          expect(mockAssign).toHaveBeenCalledWith({
+            viewId: '1',
+            inputs: [mockInputData[0].id],
+            categories: [categories[1].id],
+          });
         });
         it('has an unassign button that works as expected', async () => {
           expect(
@@ -393,11 +398,11 @@ describe('Insights Input Table', () => {
           });
 
           expect(window.confirm).toHaveBeenCalledTimes(1);
-          expect(batchService.batchUnassignCategories).toHaveBeenCalledWith(
-            '1',
-            [mockInputData[0].id],
-            [categories[0].id]
-          );
+          expect(mockUnassign).toHaveBeenCalledWith({
+            viewId: '1',
+            inputs: [mockInputData[0].id],
+            categories: [categories[0].id],
+          });
         });
         it('has an approve button that works as expected', async () => {
           mockFeatureFlagData = true;
