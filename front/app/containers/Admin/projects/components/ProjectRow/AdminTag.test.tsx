@@ -2,8 +2,6 @@ import * as React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
 import AdminTag from './AdminTag';
 
-jest.mock('utils/cl-router/Link');
-jest.mock('utils/cl-intl');
 const projectId = '1';
 
 describe('AdminTag', () => {

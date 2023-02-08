@@ -1,10 +1,9 @@
 import { Multiloc, ImageSizes, IRelationship } from 'typings';
-
 import streams, { IStreamParams } from 'utils/streams';
 import { isNilOrError } from 'utils/helperUtils';
-
 import { API_PATH } from 'containers/App/constants';
 import { PublicationStatus } from 'services/projects';
+
 const apiEndpoint = `${API_PATH}/project_folders`;
 
 export interface IProjectFolderDiff {

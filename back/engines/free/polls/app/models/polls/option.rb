@@ -27,5 +27,7 @@ module Polls
     has_many :response_options, class_name: 'Polls::ResponseOption', dependent: :destroy
 
     validates :title_multiloc, presence: true, multiloc: { presence: true }
+
+    delegate :project_id, to: :question
   end
 end

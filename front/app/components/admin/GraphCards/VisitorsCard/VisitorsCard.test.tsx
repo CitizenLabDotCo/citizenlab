@@ -34,10 +34,6 @@ jest.mock('./useVisitors', () => () => ({
   xlsxData: {},
 }));
 
-jest.mock('services/appConfiguration');
-jest.mock('services/locale');
-jest.mock('utils/cl-intl');
-
 class FakeResizeObserver {
   observe() {}
   disconnect() {}

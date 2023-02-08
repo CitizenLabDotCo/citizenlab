@@ -20,4 +20,6 @@ class CustomForm < ApplicationRecord
 
   validates :participation_context, presence: true
   validates :participation_context_id, uniqueness: { scope: %i[participation_context_type] } # https://github.com/rails/rails/issues/34312#issuecomment-586870322
+
+  delegate :project_id, to: :participation_context
 end

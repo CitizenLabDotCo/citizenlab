@@ -42,6 +42,10 @@ class SpamReport < ApplicationRecord
     end
   end
 
+  def project_id
+    spam_reportable.try(:project_id)
+  end
+
   private
 
   def set_reported_at

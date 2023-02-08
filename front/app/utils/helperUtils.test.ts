@@ -5,8 +5,6 @@ import {
   isPage,
 } from './helperUtils';
 
-jest.mock('modules', () => ({ streamsToReset: [] }));
-
 describe('isNilOrError', () => {
   test.each([
     [null, true],
