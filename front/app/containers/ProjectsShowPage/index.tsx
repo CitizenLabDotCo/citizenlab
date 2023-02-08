@@ -84,7 +84,6 @@ const ContentWrapper = styled.div`
 
 interface Props {
   project: IProjectData | Error | null;
-  scrollToEventId?: string;
 }
 
 const isUnauthorized = (project: IProjectData | NilOrError) => {
@@ -92,7 +91,7 @@ const isUnauthorized = (project: IProjectData | NilOrError) => {
   return project.json.errors?.base[0].error === 'Unauthorized!';
 };
 
-const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
+const ProjectsShowPage = memo<Props>(({ project }) => {
   const projectId = !isNilOrError(project) ? project.id : undefined;
   const projectNotFound = isError(project);
   const processType = !isNilOrError(project)
@@ -105,6 +104,9 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
   const locale = useLocale();
   const appConfig = useAppConfiguration();
   const phases = usePhases(projectId);
+
+  const [search] = useSearchParams();
+  const scrollToEventId = search.get('scrollToEventId');
 
   const { events } = useEvents({
     projectIds: projectId ? [projectId] : undefined,
@@ -205,8 +207,6 @@ const ProjectsShowPageWrapper = () => {
 
   const { pathname } = useLocation();
   const { slug, phaseNumber } = useParams();
-  const [search] = useSearchParams();
-  const scrollToEventId = search.get('scrollToEventId');
 
   const project = useProject({ projectSlug: slug });
   const phases = usePhases(project?.id);
@@ -240,27 +240,23 @@ const ProjectsShowPageWrapper = () => {
     return <ProjectNotVisible />;
   }
 
-  if (
+  const isTimelineProjectAndHasValidPhaseParam =
     processType === 'timeline' &&
-    urlSegments.length === 4 &&
     !isNilOrError(phases) &&
-    isValidPhase(phaseNumber, phases)
+    urlSegments.length === 4 &&
+    isValidPhase(phaseNumber, phases);
+
+  if (
+    urlSegments[1] === 'projects' &&
+    urlSegments.length > 3 &&
+    !isTimelineProjectAndHasValidPhaseParam
   ) {
-    // If this is a timeline project and a valid phase param was passed: continue
-    return <ProjectsShowPage project={project} />;
-  } else if (scrollToEventId) {
-    // If an event id was passed as a query param, pass it on
-    return (
-      <ProjectsShowPage project={project} scrollToEventId={scrollToEventId} />
-    );
-  } else if (urlSegments.length > 3 && urlSegments[1] === 'projects') {
     // Redirect old childRoutes (e.g. /info, /process, ...) to the project index location
     const projectRoot = `/${urlSegments.slice(1, 3).join('/')}`;
     return <Redirect method="replace" path={projectRoot} />;
-  } else if (slug) {
-    return <ProjectsShowPage project={project} />;
   }
 
-  return null;
+  return <ProjectsShowPage project={project} />;
 };
+
 export default ProjectsShowPageWrapper;
