@@ -1,20 +1,26 @@
 import React from 'react';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+
+// styling
+import styled from 'styled-components';
+import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
+import { rgba } from 'polished';
+
+// components
 import ContentContainer from 'components/ContentContainer';
 import Link from 'utils/cl-router/Link';
 import Button from 'components/UI/Button';
 import CloseIconButton from 'components/UI/CloseIconButton';
-import styled from 'styled-components';
-import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
-import { rgba } from 'polished';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 const Container = styled.div`
   position: fixed;
   bottom: 0;
   color: white;
   background: ${colors.primary};
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   z-index: 1001;
   width: 100%;
   display: flex;
@@ -25,6 +31,7 @@ const Container = styled.div`
 
   ${media.tablet`
     bottom: ${(props) => props.theme.mobileMenuHeight}px;
+    padding-right: 40px;
   `}
 `;
 
@@ -135,18 +142,15 @@ const StyledCloseIconButton = styled(CloseIconButton)`
   transform: translateY(-50%);
   border: none;
   background: none;
-
-  ${media.tablet`
-    display: none;
-  `}
 `;
 
 interface Props {
   onAccept: () => void;
   onChangePreferences: () => void;
+  onClose: () => void;
 }
 
-const Banner = ({ onAccept, onChangePreferences }: Props) => {
+const Banner = ({ onAccept, onChangePreferences, onClose }: Props) => {
   return (
     <Container tabIndex={0} role="dialog" id="e2e-cookie-banner">
       <ContentContainer mode="page">
@@ -191,8 +195,9 @@ const Banner = ({ onAccept, onChangePreferences }: Props) => {
         </ContentContainerInner>
       </ContentContainer>
       <StyledCloseIconButton
+        className="e2e-close-cookie-banner"
         a11y_buttonActionMessage={messages.ariaButtonClose}
-        onClick={onAccept}
+        onClick={onClose}
         iconColor={rgba(255, 255, 255, 0.7)}
         iconColorOnHover={'#fff'}
       />

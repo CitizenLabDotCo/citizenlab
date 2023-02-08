@@ -48,6 +48,7 @@ const RangeInput = ({
               <Label>
                 {formatMessage(messages.range)}
                 <IconTooltip
+                  maxTooltipWidth={250}
                   content={formatMessage(messages.selectRangeTooltip)}
                 />
               </Label>

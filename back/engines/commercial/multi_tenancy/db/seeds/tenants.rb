@@ -88,10 +88,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            custom_topics: {
-              enabled: true,
-              allowed: true
-            },
             custom_accessibility_statement_link: {
               enabled: false,
               allowed: false
@@ -354,6 +350,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            project_visibility: {
+              enabled: true,
+              allowed: true
+            },
             disable_downvoting: {
               enabled: true,
               allowed: true
@@ -377,6 +377,10 @@ module MultiTenancy
               allowed: true
             },
             report_builder: {
+              enabled: true,
+              allowed: true
+            },
+            input_form_custom_fields: {
               enabled: true,
               allowed: true
             }

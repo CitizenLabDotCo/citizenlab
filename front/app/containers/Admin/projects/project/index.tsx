@@ -148,7 +148,6 @@ export class AdminProjectsProjectIndex extends PureComponent<
           label: formatMessage(messages.allowedInputTopicsTab),
           name: 'topics',
           url: 'allowed-input-topics',
-          feature: 'custom_topics',
         },
         {
           label: formatMessage(messages.phasesTab),

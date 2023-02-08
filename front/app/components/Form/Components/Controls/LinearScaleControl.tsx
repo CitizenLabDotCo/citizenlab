@@ -17,6 +17,8 @@ import { FormLabel } from 'components/UI/FormComponents';
 import VerificationIcon from '../VerificationIcon';
 import ErrorDisplay from '../ErrorDisplay';
 import { getSubtextElement } from './controlUtils';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 const LinearScaleControl = ({
   data,
@@ -31,6 +33,7 @@ const LinearScaleControl = ({
 }: ControlProps) => {
   const isSmallerThanXlPhone = useBreakpoint('phone');
   const maximum = schema?.maximum;
+  const answerNotPublic = uischema.options?.answer_visible_to === 'admins';
 
   if (!visible) {
     return null;
@@ -45,6 +48,11 @@ const LinearScaleControl = ({
         subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
       />
+      {answerNotPublic && (
+        <Text mb="8px" mt="0px" fontSize="s">
+          <FormattedMessage {...messages.notPublic} />
+        </Text>
+      )}
       <Box
         data-testid="linearScaleControl"
         display={isSmallerThanXlPhone ? 'block' : 'flex'}

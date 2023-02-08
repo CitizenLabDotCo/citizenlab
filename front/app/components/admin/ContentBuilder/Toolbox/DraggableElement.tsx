@@ -43,6 +43,7 @@ const ToolboxItem = ({ icon, label }: ToolboxItemProps) => {
 };
 
 const DraggableContainer = styled.div`
+  width: 100%;
   cursor: move;
 `;
 

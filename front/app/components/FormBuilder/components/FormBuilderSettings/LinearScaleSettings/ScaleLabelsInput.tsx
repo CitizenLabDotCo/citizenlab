@@ -82,12 +82,14 @@ const ScaleLabelsInput = ({
                       justifyContent="space-between"
                       display="flex"
                       flexWrap="wrap"
+                      gap="12px"
                       mr="0px"
                       my="16px"
                     >
                       <StyledLabel>
                         {formatMessage(messages.labels)}
                         <IconTooltip
+                          maxTooltipWidth={250}
                           content={formatMessage(messages.labelsTooltipContent)}
                         />
                       </StyledLabel>

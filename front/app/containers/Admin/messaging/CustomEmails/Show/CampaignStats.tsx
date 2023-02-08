@@ -29,7 +29,7 @@ const GraphCard = styled.div`
 `;
 
 const GraphCardPercentage = styled.div`
-  font-size: ${fontSizes.s};
+  font-size: ${fontSizes.s}px;
   color: ${colors.textSecondary};
 `;
 

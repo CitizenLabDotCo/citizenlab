@@ -46,7 +46,7 @@ module FlagInappropriateContent
 
     def remove_notifications
       notifications.each do |notification|
-        unless notification.update inappropriate_content_flag: nil
+        if !notification.update inappropriate_content_flag: nil
           notification.destroy!
         end
       end

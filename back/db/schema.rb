@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_05_112729) do
+ActiveRecord::Schema.define(version: 2023_02_06_090743) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -26,9 +26,11 @@ ActiveRecord::Schema.define(version: 2022_12_05_112729) do
     t.uuid "user_id"
     t.datetime "acted_at", null: false
     t.datetime "created_at", null: false
+    t.uuid "project_id"
     t.index ["acted_at"], name: "index_activities_on_acted_at"
     t.index ["action"], name: "index_activities_on_action"
     t.index ["item_type", "item_id"], name: "index_activities_on_item"
+    t.index ["project_id"], name: "index_activities_on_project_id"
     t.index ["user_id"], name: "index_activities_on_user_id"
   end
 
@@ -260,6 +262,7 @@ ActiveRecord::Schema.define(version: 2022_12_05_112729) do
     t.jsonb "minimum_label_multiloc", default: {}, null: false
     t.jsonb "maximum_label_multiloc", default: {}, null: false
     t.jsonb "logic", default: {}, null: false
+    t.string "answer_visible_to"
     t.index ["resource_type", "resource_id"], name: "index_custom_fields_on_resource_type_and_resource_id"
   end
 
@@ -542,6 +545,7 @@ ActiveRecord::Schema.define(version: 2022_12_05_112729) do
     t.string "highest_role"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "user_id"
     t.index ["monthly_user_hash"], name: "index_impact_tracking_sessions_on_monthly_user_hash"
   end
 

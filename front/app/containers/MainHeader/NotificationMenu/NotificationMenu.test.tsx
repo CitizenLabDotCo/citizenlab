@@ -1,31 +1,46 @@
-// libraries
 import React from 'react';
-import { shallow } from 'enzyme';
+import { IUserAttributes } from 'services/users';
+import { render, screen, userEvent } from 'utils/testUtils/rtl';
+import NotificationMenu from '.';
 
-// component to test
-import { NotificationMenu } from './';
-import { GetAuthUserChildProps } from 'resources/GetAuthUser';
+jest.mock('services/appConfiguration');
+jest.mock('services/auth');
 
-// mock utilities
-jest.mock('utils/cl-intl');
-jest.mock('utils/analytics', () => ({ trackEventByName: () => {} }));
+let mockUserData: {
+  id: string;
+  type: string;
+  attributes: Partial<IUserAttributes>;
+} | null = {
+  id: 'userId',
+  type: 'user',
+  attributes: {
+    unread_notifications: 5,
+  },
+};
 
-import { makeUser } from 'services/__mocks__/users';
-jest.mock('modules', () => ({ streamsToReset: [] }));
+jest.mock('hooks/useAuthUser', () => jest.fn(() => mockUserData));
 
-const mockUserFromResource: GetAuthUserChildProps = makeUser({
-  unread_notifications: 0,
-}).data;
+describe('NotificationMenu', () => {
+  it('Opens and closes the dropdown when clicking the notifications icon', async () => {
+    const user = userEvent.setup();
+    render(<NotificationMenu />);
+    const notificationsIcon = screen.getByRole('button');
 
-describe('<NotificationMenu />', () => {
-  it('renders correctly when a user is logged in', () => {
-    const wrapper = shallow(
-      <NotificationMenu authUser={mockUserFromResource} />
-    );
-    expect(wrapper).toMatchSnapshot();
+    // Open the dropdown
+    await user.click(notificationsIcon);
+    const dropdown = await screen.findByTestId('notifications-dropdown');
+    expect(dropdown).toBeInTheDocument();
+
+    // Close the dropdown
+    await user.click(notificationsIcon);
+    expect(dropdown).not.toBeInTheDocument();
   });
-  it('renders correctly when there no user is logged in', () => {
-    const wrapper = shallow(<NotificationMenu authUser={undefined} />);
-    expect(wrapper).toMatchSnapshot();
+
+  it('Does not render if the user is not logged in', () => {
+    mockUserData = null;
+    render(<NotificationMenu />);
+
+    const notificationsIcon = screen.queryByRole('button');
+    expect(notificationsIcon).toBeNull();
   });
 });

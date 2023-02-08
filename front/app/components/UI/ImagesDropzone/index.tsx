@@ -39,7 +39,12 @@ const ErrorWrapper = styled.div`
   display: flex;
 `;
 
-const DropzoneLabelText = styled.span`
+/*
+  Changing this to a label causes unexpected behavior when selecting files,
+  which isn't easy to solve. Sometimes my system's file picker would reopen
+  after trying to select a picture.
+*/
+const DropzoneLabel = styled.span`
   color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
   line-height: normal;
@@ -90,7 +95,7 @@ const DropzoneContent = styled.div<{ borderRadius?: string }>`
     &:focus-within {
       border-color: #000;
 
-      ${DropzoneLabelText},
+      ${DropzoneLabel},
       ${DropzoneImagesRemaining} {
         color: #000;
       }
@@ -105,7 +110,7 @@ const DropzoneContent = styled.div<{ borderRadius?: string }>`
     cursor: no-drop;
     border-color: #ccc;
 
-    ${DropzoneLabelText},
+    ${DropzoneLabel},
     ${DropzoneImagesRemaining} {
       color: #ccc;
     }
@@ -176,6 +181,8 @@ export interface Props {
   errorMessage?: string | null | undefined;
   objectFit?: 'cover' | 'contain' | undefined;
   onAdd: (arg: UploadFile[]) => void;
+  // The type of arg is wrong, the returned File object's attributes don't match
+  // UploadFile. Leaving the note for someone working on this in the future.
   onRemove: (arg: UploadFile) => void;
   borderRadius?: string;
   removeIconAriaTitle?: string;
@@ -315,10 +322,7 @@ class ImagesDropzone extends PureComponent<
       }
 
       this.props.onAdd(
-        uniqBy(
-          [...(this.props.images || []), ...images],
-          'base64'
-        ) as UploadFile[]
+        uniqBy([...(this.props.images || []), ...images], 'base64')
       );
     }
   };
@@ -382,7 +386,7 @@ class ImagesDropzone extends PureComponent<
     const objectFit = this.props.objectFit || 'cover';
 
     return (
-      <Container className={className || ''}>
+      <Container className={className || ''} data-testid="images-dropzone">
         <ContentWrapper>
           {(maxNumberOfImages > 1 ||
             (maxNumberOfImages === 1 && isEmpty(images))) && (
@@ -413,10 +417,14 @@ class ImagesDropzone extends PureComponent<
                           : ''
                       }
                     >
-                      <DropzoneInput {...getInputProps()} id={id} />
+                      <DropzoneInput
+                        {...getInputProps()}
+                        id={id}
+                        data-testid="dropzone-input"
+                      />
                       <DropzoneContentInner>
                         <DropzoneLabelIcon name="upload-image" ariaHidden />
-                        <DropzoneLabelText>{label}</DropzoneLabelText>
+                        <DropzoneLabel>{label}</DropzoneLabel>
                         {remainingImages && (
                           <DropzoneImagesRemaining>
                             {remainingImages}

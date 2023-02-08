@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.version     = IdGentRrn::VERSION
   s.summary     = 'Verification by RRN (BE social security number) using an API from the city of Ghent'
   s.authors     = ['CitizenLab']
-  s.licenses    = ['CitizenLab Commercial License V1']
+  s.licenses    = ['CitizenLab Commercial License V2']
   s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
 
   s.add_dependency 'rails', '~> 6.1'

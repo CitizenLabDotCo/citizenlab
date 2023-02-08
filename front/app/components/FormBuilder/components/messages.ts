@@ -209,13 +209,35 @@ export default defineMessages({
     id: 'app.components.formBuilder.supportArticleLinkText',
     defaultMessage: 'this page',
   },
-  defaultField: {
-    id: 'app.components.formBuilder.defaultField',
-    defaultMessage: 'Default field',
+  defaultContent: {
+    id: 'app.components.formBuilder.defaultContent',
+    defaultMessage: 'Default content',
   },
-  disabledFieldTooltip: {
-    id: 'app.components.formBuilder.disabledFieldTooltip',
+  layout: {
+    id: 'app.components.formBuilder.layout',
+    defaultMessage: 'Layout',
+  },
+  disabledBuiltInFieldTooltip: {
+    id: 'app.components.formBuilder.disabledBuiltInFieldTooltip',
     defaultMessage:
       'This has already been added in the form. Default content may only be used once.',
+  },
+  disabledCustomFieldsTooltip: {
+    id: 'app.components.formBuilder.disabledCustomFieldsTooltip',
+    defaultMessage:
+      'Adding custom content is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.',
+  },
+  sectionCannotBeDeleted: {
+    id: 'app.components.formBuilder.sectionCannotBeDeleted',
+    defaultMessage: "This section can't be deleted.",
+  },
+  questionCannotBeDeleted: {
+    id: 'app.components.formBuilder.questionCannotBeDeleted',
+    defaultMessage: "This question can't be deleted.",
+  },
+  fieldIsNotVisibleTooltip: {
+    id: 'app.components.formBuilder.fieldIsNotVisibleTooltip',
+    defaultMessage:
+      'Currently, answers to these questions are only available in the exported excel file on Input Manager, and not visible to the users.',
   },
 });

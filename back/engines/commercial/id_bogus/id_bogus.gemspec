@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.version     = IdBogus::VERSION
   s.summary     = 'Fake verification method to ease development'
   s.authors     = ['CitizenLab']
-  s.licenses    = ['CitizenLab Commercial License V1']
+  s.licenses    = ['CitizenLab Commercial License V2']
   s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
 
   s.add_dependency 'rails', '~> 6.1'

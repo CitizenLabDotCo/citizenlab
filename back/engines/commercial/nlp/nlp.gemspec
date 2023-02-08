@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.name        = 'nlp'
   s.version     = NLP::VERSION
   s.authors     = ['CitizenLab']
-  s.licenses    = ['CitizenLab Commercial License V1']
+  s.licenses    = ['CitizenLab Commercial License V2']
   s.summary     = 'Bundle all NLP related functionality neede for backend purposes'
 
   s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
