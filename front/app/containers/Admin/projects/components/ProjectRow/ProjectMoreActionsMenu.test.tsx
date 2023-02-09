@@ -86,21 +86,21 @@ describe('ProjectMoreActionsMenu', () => {
       ];
     });
 
-    it('Has the copy button but not the delete button', async () => {
+    it('Has no copy nor delete button', async () => {
       render(<ProjectMoreActionsMenu {...props} />);
       const user = userEvent.setup();
 
       const threeDotsButton = screen.getByTestId('moreOptionsButton');
       await user.click(threeDotsButton);
 
-      const copyProjectButton = await screen.findByRole('button', {
+      const copyProjectButton = screen.queryByRole('button', {
         name: 'Copy project',
       });
       const deleteProjectButton = screen.queryByRole('button', {
         name: 'Delete project',
       });
 
-      expect(copyProjectButton).toBeInTheDocument();
+      expect(copyProjectButton).toBeNull();
       expect(deleteProjectButton).toBeNull();
     });
   });
