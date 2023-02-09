@@ -115,7 +115,7 @@ da:
         description:
       author_id:
         title: Forfatter
-        description:
+        description: Author description
       topic_ids:
         title: Emner
         description:
@@ -127,12 +127,20 @@ da:
         description:
       budget:
         title: Budget
-        description:
+        description: Budget description
       images:
         title: Billeder
         description:
       attachments:
         title: Vedhæftede filer
+        description:
+      section1:
+        description:
+      section2:
+        title: Images and attachments
+        description:
+      section3:
+        title: Details
         description:
   custom_forms:
     categories:
@@ -189,6 +197,7 @@ da:
       author_fullname: 'Forfatterens navn'
       author_email: 'Forfatter e-mail'
       author_id: 'Forfatter ID'
+      budget: 'Budget'
       created_at: 'Indsendt på'
       published_at: 'Udgivet på'
       comments_count: 'Kommentarer'
