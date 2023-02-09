@@ -137,7 +137,7 @@ describe('Insights Input Details', () => {
 
     expect(mockAdd).toHaveBeenCalledWith({
       viewId,
-      name: newCategoryLabel,
+      category: { name: newCategoryLabel },
     });
   });
   it('shows loading state when loading', () => {

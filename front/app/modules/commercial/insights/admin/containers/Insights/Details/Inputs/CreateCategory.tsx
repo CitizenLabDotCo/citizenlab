@@ -69,8 +69,10 @@ const CreateCategory = ({
     if (name) {
       addCategory({
         viewId,
-        name,
-        inputs: { categories: categoryIds, search, keywords },
+        category: {
+          name,
+          inputs: { categories: categoryIds, search, keywords },
+        },
       });
     }
   };

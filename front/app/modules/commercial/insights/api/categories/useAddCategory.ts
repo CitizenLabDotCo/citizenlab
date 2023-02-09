@@ -6,11 +6,13 @@ import { IInsightsCategory } from './types';
 
 interface AddInsightsCategoryObject {
   viewId: string;
-  name: string;
-  inputs?: {
-    keywords?: string[];
-    categories?: string[];
-    search?: string;
+  category: {
+    name: string;
+    inputs?: {
+      keywords?: string[];
+      categories?: string[];
+      search?: string;
+    };
   };
 }
 

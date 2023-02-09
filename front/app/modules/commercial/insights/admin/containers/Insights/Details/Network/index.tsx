@@ -300,7 +300,7 @@ const Network = ({
           />
         </SectionTitle>
       </Box>
-      {height && width && (
+      {!!height && !!width && (
         <ForceGraph2D
           height={height}
           width={width}

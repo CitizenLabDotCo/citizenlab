@@ -185,7 +185,7 @@ const Categories = ({
 
   const handleCategorySubmit = () => {
     if (name) {
-      addCategory({ viewId, name });
+      addCategory({ viewId, category: { name } });
     }
   };
 

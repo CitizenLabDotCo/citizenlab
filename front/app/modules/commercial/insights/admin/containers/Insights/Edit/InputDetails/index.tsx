@@ -189,7 +189,7 @@ const InputDetails = ({
   const handleCreate = (value: string) => {
     addCategory({
       viewId,
-      name: value,
+      category: { name: value },
     });
     trackEventByName(tracks.createCategoryFromInput);
   };

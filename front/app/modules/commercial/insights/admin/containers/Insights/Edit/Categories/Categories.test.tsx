@@ -153,7 +153,7 @@ describe('Insights Edit Categories', () => {
 
     expect(mockAdd).toHaveBeenCalledWith({
       viewId,
-      name: categoryName,
+      category: { name: categoryName },
     });
   });
   it('resets categories', async () => {
