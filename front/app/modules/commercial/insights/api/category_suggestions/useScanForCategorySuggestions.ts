@@ -27,7 +27,7 @@ const triggerScanFetcher = ({
   processed?: boolean;
 }) =>
   fetcher({
-    path: `/insights/views/${viewId}/tasks/category_suggestions/bla`,
+    path: `/insights/views/${viewId}/tasks/category_suggestions`,
     action: 'post',
     body: category
       ? { categories: [category] }
