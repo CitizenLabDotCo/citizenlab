@@ -1,18 +1,15 @@
 # Changelog
 
+## 2023-02-09
+
 ## Added
 
+- Report builder templates now automatically detect ideation and native survey projects and add different widgets based on that
 - [CL-2739] Added basic posthog integration
 
 ### Changed
 
 - [CL-2673] In-platform survey UI improvements
-
-## Next release
-
-### Added
-
-- Report builder templates now automatically detect ideation and native survey projects and add different widgets based on that
 
 ## 2023-02-03
 
