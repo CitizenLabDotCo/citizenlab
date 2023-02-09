@@ -651,6 +651,7 @@
   "app.containers.Admin.reporting.chartsSection": "GRAFIKEN",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "This is some text. You can edit and format it by using the editor in the panel on the right.",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.participants": "Participants",
+  "app.containers.Admin.reporting.components.ReportBuilder.Templates.projectResults": "Project results",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummary": "Rapportszesummefaassung",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Füügt d’Projetszil, genotzte Bedeelegungsmethoden an d’Resultat bäi",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Visitors",
