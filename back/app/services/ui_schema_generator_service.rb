@@ -92,8 +92,9 @@ class UiSchemaGeneratorService < FieldVisitorService
   end
 
   def default_options(field)
+    description = multiloc_service.t TextImageService.new.render_data_images(field, :description_multiloc)
     {
-      description: multiloc_service.t(field.description_multiloc)
+      description: description
     }.tap do |options|
       unless field.multiloc?
         options[:input_type] = field.input_type

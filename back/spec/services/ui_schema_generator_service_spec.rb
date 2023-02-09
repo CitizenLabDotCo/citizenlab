@@ -88,6 +88,27 @@ RSpec.describe UiSchemaGeneratorService do
         }
       })
     end
+
+    it 'swaps data images' do
+      allow_any_instance_of(TextImageService).to(
+        receive(:render_data_images)
+          .with(field1, :description_multiloc)
+          .and_return({ 'en' => 'Description with swapped images' })
+      )
+
+      expect(UiSchemaGeneratorServiceSubclass.new.generate_for([field1])).to match(hash_including(
+        'en' => {
+          elements: [
+            {
+              type: 'Control',
+              scope: "#/properties/#{field1.key}",
+              label: 'Field1 title',
+              options: { input_type: field1.input_type, description: 'Description with swapped images', transform: 'trim_on_blur' }
+            }
+          ]
+        }
+      ))
+    end
   end
 
   describe '#visit_text' do
