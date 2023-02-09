@@ -4,8 +4,6 @@ import {
 } from './projectFolderPermissions';
 import { makeUser } from 'services/__mocks__/users';
 
-jest.mock('modules', () => ({ streamsToReset: [] }));
-
 describe('isProjectFolderModerator', () => {
   it('returns true when a user is project folder moderator', () => {
     const user = makeUser({

@@ -117,7 +117,12 @@ export default class FilterSelector extends PureComponent<Props, State> {
     this.baseID = `filter-${Math.floor(Math.random() * 10000000)}`;
   }
 
-  getTitle = (selection, values, multipleSelectionAllowed, title) => {
+  getTitle = (
+    selection: string[],
+    values: IFilterSelectorValue[],
+    multipleSelectionAllowed: boolean,
+    title: string | JSX.Element
+  ) => {
     let newTitle: any = '';
 
     if (

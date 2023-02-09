@@ -13,6 +13,10 @@ updates:
       - "IvaKop"
   - package-ecosystem: "bundler"
     directory: "/back"
-    open-pull-requests-limit: 3
+    open-pull-requests-limit: 5
     schedule:
       interval: "weekly"
+    assignees:
+      - "adessy"
+    reviewers:
+      - "adessy"

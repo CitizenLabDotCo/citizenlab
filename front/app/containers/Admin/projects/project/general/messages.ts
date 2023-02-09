@@ -114,11 +114,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.projectCardImageLabelText',
     defaultMessage: 'Project card image',
   },
-  projectCardImageLabelTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.projectCardImageLabelTooltip',
-    defaultMessage:
-      'This image will be shown on the project card on the home page. The ideal dimensions are a width of 1440 pixels and a height between 1440 and 720 pixels.',
-  },
   fileUploadLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.fileUploadLabel',
     defaultMessage: 'Attach files to this project',
