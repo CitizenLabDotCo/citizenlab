@@ -2,6 +2,8 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { CLError } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { queryClient } from 'utils/cl-react-query/queryClient';
+import inputsKeys from '../inputs/keys';
+import statsKeys from '../stats/keys';
 import categorySuggestionsKeys from './keys';
 import {
   IInsightsCategorySuggestionsTasks,
@@ -100,6 +102,9 @@ const useScanForCategorySuggestions = (
           };
         });
       }
+      queryClient.invalidateQueries(inputsKeys.list(viewId));
+      queryClient.invalidateQueries(inputsKeys.details(viewId));
+      queryClient.invalidateQueries(statsKeys.detail(viewId));
     },
     structuralSharing: (oldData, newData) => {
       if (!oldData) {
