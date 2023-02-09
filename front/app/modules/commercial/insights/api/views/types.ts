@@ -1,7 +1,8 @@
 import { IRelationship } from 'typings';
 import viewsKeys from './keys';
+import { Keys } from 'utils/cl-react-query/types';
 
-export type ViewsKeys = ReturnType<typeof viewsKeys[keyof typeof viewsKeys]>;
+export type ViewsKeys = Keys<typeof viewsKeys>;
 
 export interface IInsightsViewData {
   id: string;

@@ -1,7 +1,8 @@
 import { IRelationship } from 'typings';
+import { Keys } from 'utils/cl-react-query/types';
 import inputKeys from './keys';
 
-export type InputsKeys = ReturnType<typeof inputKeys[keyof typeof inputKeys]>;
+export type InputsKeys = Keys<typeof inputKeys>;
 
 export type QueryParameters = {
   category: string;

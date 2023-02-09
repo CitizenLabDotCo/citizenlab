@@ -1,8 +1,7 @@
 import categorySuggestionsKeys from './keys';
+import { Keys } from 'utils/cl-react-query/types';
 
-export type CategorySuggestionsKeys = ReturnType<
-  typeof categorySuggestionsKeys[keyof typeof categorySuggestionsKeys]
->;
+export type CategorySuggestionsKeys = Keys<typeof categorySuggestionsKeys>;
 
 export type QueryParameters = {
   categories: string[];

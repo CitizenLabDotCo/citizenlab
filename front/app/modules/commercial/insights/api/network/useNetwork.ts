@@ -39,6 +39,8 @@ const useNetwork = (viewId: string) => {
       return response;
     },
     enabled: tasks && tasks.data.length > 0,
+    keepPreviousData: false,
+    refetchInterval: 1000,
   });
 
   return useQuery<IInsightsNetwork, CLErrors, IInsightsNetwork, NetworkKeys>({

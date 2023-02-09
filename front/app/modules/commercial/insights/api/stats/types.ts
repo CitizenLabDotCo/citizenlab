@@ -1,4 +1,5 @@
 import statsKeys from './keys';
+import { Keys } from 'utils/cl-react-query/types';
 
 export type QueryParameters = {
   categories?: string[];
@@ -7,7 +8,7 @@ export type QueryParameters = {
   processed?: boolean;
 };
 
-export type StatsKeys = ReturnType<typeof statsKeys[keyof typeof statsKeys]>;
+export type StatsKeys = Keys<typeof statsKeys>;
 
 export type IInsightsStats = {
   data: {

@@ -1,9 +1,8 @@
 import { IRelationship } from 'typings';
-import categoryKeys from './keys';
+import categoriesKeys from './keys';
+import { Keys } from 'utils/cl-react-query/types';
 
-export type CategoriesKeys = ReturnType<
-  typeof categoryKeys[keyof typeof categoryKeys]
->;
+export type CategoriesKeys = Keys<typeof categoriesKeys>;
 
 export interface IInsightsCategoryData {
   id: string;
