@@ -14,7 +14,7 @@ resource 'Idea Custom Fields' do
     parameter :custom_fields, type: :array
     with_options scope: 'custom_fields[]' do
       parameter :id, 'The ID of an existing custom field to update. When the ID is not provided, a new field is created.', required: false
-      # TODO: add code
+      parameter :code, 'The code of a default field.', required: false
       parameter :input_type, 'The type of the input. Required when creating a new field.', required: false
       parameter :required, 'Whether filling out the field is mandatory', required: false
       parameter :enabled, 'Whether the field is active or not', required: false
@@ -32,22 +32,12 @@ resource 'Idea Custom Fields' do
     let!(:custom_form) { create :custom_form, :with_default_fields, participation_context: context }
     let(:project_id) { context.id }
     let(:participation_method) { Factory.instance.participation_method_for context }
-    # let(:default_fields_param) do
-    #   attributes = %i[id code input_type title_multiloc description_multiloc required enabled]
-    #   participation_method.default_fields(custom_form).map do |field|
-    #     {}.tap do |field_param|
-    #       attributes.each do |attribute|
-    #         field_param[attribute] = field[attribute]
-    #       end
-    #     end
-    #   end
-    # end
     let(:default_fields_param) do
       attributes = %i[id code input_type title_multiloc description_multiloc required enabled]
       IdeaCustomFieldsService.new(custom_form).all_fields.map do |field|
         {}.tap do |field_param|
           attributes.each do |attribute|
-            field_param[attribute] = field[attribute]
+            field_param[attribute] = field.send attribute
           end
         end
       end
@@ -65,10 +55,7 @@ resource 'Idea Custom Fields' do
       example 'Add, update and remove a field' do
         fields_param = default_fields_param # https://stackoverflow.com/a/58695857/3585671
         # Update persisted built-in field
-        fields_param[1] = {
-          id: custom_form.custom_fields.find_by(code: 'title_multiloc').id,
-          title_multiloc: { 'en' => 'New input title' }
-        }
+        fields_param[1][:description_multiloc] = { 'en' => 'New title description' }
         # Remove extra field
         deleted_field = create :custom_field_linear_scale, :for_custom_form
         # Add extra field
@@ -96,8 +83,7 @@ resource 'Idea Custom Fields' do
             code: 'title_multiloc',
             key: 'title_multiloc',
             input_type: 'text_multiloc',
-            title_multiloc: { en: 'New input title' },
-            description_multiloc: {},
+            description_multiloc: { en: 'New title description' },
             ordering: 1,
             required: true,
             enabled: true,
@@ -790,16 +776,16 @@ resource 'Idea Custom Fields' do
 
       example 'Updating custom fields when there are responses' do
         create :idea, project: context
-        custom_title = { 'en' => 'Custom title' }
+        custom_description = { 'en' => 'Custom description' }
 
         do_request(
           custom_fields: default_fields_param.tap do |params|
-            params[1][:title_multiloc] = custom_title
+            params[1][:description_multiloc] = custom_description
           end
         )
 
         assert_status 200
-        expect(context.reload.custom_form.custom_fields[1].title_multiloc).to eq custom_title
+        expect(context.reload.custom_form.custom_fields[1].description_multiloc).to eq custom_description
       end
     end
   end
