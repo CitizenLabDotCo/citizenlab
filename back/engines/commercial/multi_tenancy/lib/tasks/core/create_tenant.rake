@@ -258,7 +258,7 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        content_builder: {
+        project_description_builder: {
           enabled: true,
           allowed: true
         },
