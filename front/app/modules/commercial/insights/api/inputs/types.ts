@@ -1,6 +1,6 @@
 import { IRelationship } from 'typings';
-import { Keys } from 'utils/cl-react-query/types';
 import inputKeys from './keys';
+import { Keys } from 'utils/cl-react-query/types';
 
 export type InputsKeys = Keys<typeof inputKeys>;
 
