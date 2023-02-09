@@ -16,7 +16,7 @@ class BaseUploader < CarrierWave::Uploader::Base
 
   unless Rails.env.test?
     def asset_host
-      AppConfiguration.instance.base_frontend_uri
+      AppConfiguration.instance.base_asset_host_uri
     end
   end
 end
