@@ -651,6 +651,7 @@
   "app.containers.Admin.reporting.chartsSection": "CHARTS",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "Dit is tekst. Je kunt het aanpassen en formatteren met behulp van de editor in het paneel aan de rechterzijde.",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.participants": "Deelnemers",
+  "app.containers.Admin.reporting.components.ReportBuilder.Templates.projectResults": "Resultaten van het project",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummary": "Samenvatting van het verslag",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Voeg het doel van het project, de gebruikte participatiemethoden en het resultaat toe",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Bezoekers",
