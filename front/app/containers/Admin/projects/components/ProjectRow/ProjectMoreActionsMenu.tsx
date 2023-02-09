@@ -13,7 +13,7 @@ export interface Props {
   setError: (error: string | null) => void;
 }
 
-const MoreProjectActionsMenu = ({ projectId, setError }: Props) => {
+const ProjectMoreActionsMenu = ({ projectId, setError }: Props) => {
   const { formatMessage } = useIntl();
   const authUser = useAuthUser();
   if (isNilOrError(authUser)) return null;
@@ -71,4 +71,4 @@ const MoreProjectActionsMenu = ({ projectId, setError }: Props) => {
   );
 };
 
-export default MoreProjectActionsMenu;
+export default ProjectMoreActionsMenu;

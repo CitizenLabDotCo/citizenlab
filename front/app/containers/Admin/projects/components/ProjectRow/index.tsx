@@ -23,7 +23,7 @@ import useAuthUser from 'hooks/useAuthUser';
 
 // types
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import MoreProjectActionsMenu from './MoreProjectActionsMenu';
+import ProjectMoreActionsMenu from './ProjectMoreActionsMenu';
 
 export const StyledStatusLabel = styled(StatusLabel)`
   margin-right: 5px;
@@ -126,7 +126,7 @@ const ProjectRow = ({
             }
           })}
           {showMoreActions && (
-            <MoreProjectActionsMenu projectId={projectId} setError={setError} />
+            <ProjectMoreActionsMenu projectId={projectId} setError={setError} />
           )}
         </ActionsRowContainer>
       </RowContent>

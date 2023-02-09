@@ -1,5 +1,5 @@
 import React from 'react';
-import MoreProjectActionsMenu, { Props } from './MoreProjectActionsMenu';
+import ProjectMoreActionsMenu, { Props } from './ProjectMoreActionsMenu';
 import { render, screen, userEvent } from 'utils/testUtils/rtl';
 
 const props: Props = {
@@ -14,10 +14,10 @@ jest.mock('hooks/useAuthUser', () => {
   });
 });
 
-describe('MoreProjectActionsMenu', () => {
+describe('ProjectMoreActionsMenu', () => {
   it('Has the buttons to copy and delete projects', async () => {
     const user = userEvent.setup();
-    render(<MoreProjectActionsMenu {...props} />);
+    render(<ProjectMoreActionsMenu {...props} />);
     const threeDotsButton = screen.getByTestId('moreOptionsButton');
     await user.click(threeDotsButton);
 

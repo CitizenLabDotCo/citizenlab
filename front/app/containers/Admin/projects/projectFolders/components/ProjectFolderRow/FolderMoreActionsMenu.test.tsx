@@ -14,7 +14,7 @@ jest.mock('hooks/useAuthUser', () => {
   });
 });
 
-describe('MoreProjectActionsMenu', () => {
+describe('FolderMoreActionsMenu', () => {
   it('Has the buttons to copy and delete projects', async () => {
     const user = userEvent.setup();
     render(<FolderMoreActionsMenu {...props} />);
