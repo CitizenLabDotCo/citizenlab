@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe PosthogIntegration::TrackPosthogService do
-  let(:posthog) { double(POSTHOG_CLIENT).as_null_object }
+  let(:posthog) { instance_double(PostHog::Client) }
   let(:service) { described_class.new(posthog) }
 
   describe 'identify_user' do
