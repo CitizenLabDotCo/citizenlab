@@ -27,7 +27,7 @@ const triggerScanFetcher = ({
   processed?: boolean;
 }) =>
   fetcher({
-    path: `/insights/views/${viewId}/tasks/category_suggestions`,
+    path: `/insights/views/${viewId}/tasks/category_suggestions/bla`,
     action: 'post',
     body: category
       ? { categories: [category] }
@@ -121,41 +121,47 @@ const useScanForCategorySuggestions = (
     },
   });
 
-  const { mutate: triggerScanMutate, isLoading: triggerScanLoading } =
-    useMutation({
-      mutationFn: triggerScanFetcher,
+  const {
+    mutate: triggerScanMutate,
+    isLoading: triggerScanLoading,
+    isError: isTriggerError,
+  } = useMutation({
+    mutationFn: triggerScanFetcher,
 
-      onSuccess: async () => {
-        if (data) {
-          queryClient.setQueryData(
-            queryKey,
-            (data: IInsightsCategorySuggestionsTasks) => {
-              return {
-                data: { ...data.data, status: 'isScanning' },
-              };
-            }
-          );
-        }
-        await refetch();
-      },
-    });
+    onSuccess: async () => {
+      if (data) {
+        queryClient.setQueryData(
+          queryKey,
+          (data: IInsightsCategorySuggestionsTasks) => {
+            return {
+              data: { ...data.data, status: 'isScanning' },
+            };
+          }
+        );
+      }
+      await refetch();
+    },
+  });
 
-  const { mutate: cancelScanMutate, isLoading: cancelScanLoading } =
-    useMutation({
-      mutationFn: cancelScanFetcher,
-      onSuccess: () => {
-        if (data) {
-          queryClient.setQueryData(
-            queryKey,
-            (data: IInsightsCategorySuggestionsTasks) => {
-              return {
-                data: { ...data.data, status: 'isIdle' },
-              };
-            }
-          );
-        }
-      },
-    });
+  const {
+    mutate: cancelScanMutate,
+    isLoading: cancelScanLoading,
+    isError: isCancelError,
+  } = useMutation({
+    mutationFn: cancelScanFetcher,
+    onSuccess: () => {
+      if (data) {
+        queryClient.setQueryData(
+          queryKey,
+          (data: IInsightsCategorySuggestionsTasks) => {
+            return {
+              data: { ...data.data, status: 'isIdle' },
+            };
+          }
+        );
+      }
+    },
+  });
 
   const onDone = async () => {
     queryClient.setQueryData(
@@ -174,7 +180,11 @@ const useScanForCategorySuggestions = (
   const initialCount = data ? data.data.initialCount : 0;
   const isLoading = cancelScanLoading || triggerScanLoading;
   const status = (
-    isError ? 'isError' : data ? data.data.status : 'isIdle'
+    isError || isTriggerError || isCancelError
+      ? 'isError'
+      : data
+      ? data.data.status
+      : 'isIdle'
   ) as ScanStatus;
 
   return {
