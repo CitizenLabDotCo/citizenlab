@@ -32,6 +32,7 @@ import { isAdmin, isSuperAdmin, isModerator } from 'services/permissions/roles';
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import { GetProjectChildProps } from 'resources/GetProject';
 import { PreviousPathnameContext } from 'context';
 
 // utils
@@ -56,9 +57,6 @@ import { getParticipationMethod } from 'utils/participationMethodUtils';
 // utils
 import { isEmpty, isNumber, get, isError } from 'lodash-es';
 import { isNilOrError, isUnauthorizedError } from 'utils/helperUtils';
-
-// typings
-import { IProjectData } from 'services/projects';
 
 const Container = styled.div`
   background: ${colors.background};
@@ -99,14 +97,13 @@ const ButtonBarContainer = styled.div`
   border-top: solid 1px #ddd;
 `;
 
-interface InputProps {
-  project: IProjectData | null | undefined;
-}
+interface InputProps {}
 
 interface DataProps {
   locale: GetLocaleChildProps;
   appConfiguration: GetAppConfigurationChildProps;
   authUser: GetAuthUserChildProps;
+  project: GetProjectChildProps;
   previousPathName: string | null;
 }
 
@@ -384,7 +381,7 @@ class IdeasNewPage extends React.Component<Props & WithRouterProps, State> {
   render() {
     const { project } = this.props;
 
-    if (project) {
+    if (!isNilOrError(project)) {
       return (
         <Container id="e2e-idea-new-page">
           <IdeasNewMeta />
@@ -473,9 +470,7 @@ export default withRouter((inputProps: InputProps & WithRouterProps) => {
 
   return (
     <Data {...inputProps}>
-      {(dataProps) => (
-        <IdeasNewPage {...inputProps} project={project} {...dataProps} />
-      )}
+      {(dataProps) => <IdeasNewPage {...inputProps} {...dataProps} />}
     </Data>
   );
 });
