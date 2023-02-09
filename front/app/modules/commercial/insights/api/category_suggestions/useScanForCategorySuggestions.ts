@@ -125,6 +125,7 @@ const useScanForCategorySuggestions = (
     mutate: triggerScanMutate,
     isLoading: triggerScanLoading,
     isError: isTriggerError,
+    reset: resetTriggerScan,
   } = useMutation({
     mutationFn: triggerScanFetcher,
 
@@ -147,6 +148,7 @@ const useScanForCategorySuggestions = (
     mutate: cancelScanMutate,
     isLoading: cancelScanLoading,
     isError: isCancelError,
+    reset: resetCancelScan,
   } = useMutation({
     mutationFn: cancelScanFetcher,
     onSuccess: () => {
@@ -164,11 +166,13 @@ const useScanForCategorySuggestions = (
   });
 
   const onDone = async () => {
+    resetTriggerScan();
+    resetCancelScan();
     queryClient.setQueryData(
       queryKey,
       (data: IInsightsCategorySuggestionsTasks) => {
         return {
-          data: { ...data.data, status: 'isIdle' },
+          data: { ...(data ? data.data : {}), status: 'isIdle' },
         };
       }
     );
