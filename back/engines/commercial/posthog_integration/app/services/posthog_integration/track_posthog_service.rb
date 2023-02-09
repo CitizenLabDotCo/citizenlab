@@ -19,7 +19,7 @@ class PosthogIntegration::TrackPosthogService
         first_name: user.first_name,
         last_name: user.last_name,
         locale: user.locale,
-        highest_role: user.highest_role,
+        highest_role: user.highest_role.to_s,
         created_at: user.created_at,
         registration_completed_at: user.registration_completed_at
       }
