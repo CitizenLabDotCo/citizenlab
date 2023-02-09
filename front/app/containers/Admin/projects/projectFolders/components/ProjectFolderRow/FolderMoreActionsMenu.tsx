@@ -49,7 +49,12 @@ const FolderMoreActionsMenu = ({ folderId, setError }: Props) => {
   }
 
   return (
-    <Box display="flex" alignItems="center" ml="1rem">
+    <Box
+      display="flex"
+      alignItems="center"
+      ml="1rem"
+      data-testid="folderMoreActionsMenu"
+    >
       <MoreActionsMenu showLabel={false} actions={actions} />
     </Box>
   );

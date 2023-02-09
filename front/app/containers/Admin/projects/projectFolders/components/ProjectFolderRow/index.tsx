@@ -90,7 +90,7 @@ const InFolderProjectRow = styled(ProjectRow)`
   }
 `;
 
-interface Props {
+export interface Props {
   publication: IAdminPublicationContent;
 }
 
@@ -157,7 +157,7 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
                 !userModeratesFolder(authUser, publication.publicationId)
               }
             >
-              <FormattedMessage {...messages.manageButtonLabel} />
+              <FormattedMessage {...messages.edit} />
             </RowButton>
             <FolderMoreActionsMenu
               folderId={publication.publicationId}
