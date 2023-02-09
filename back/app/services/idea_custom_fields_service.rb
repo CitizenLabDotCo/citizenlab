@@ -69,7 +69,7 @@ class IdeaCustomFieldsService
     constraints = @participation_method.constraints[field.code&.to_sym]
     return unless constraints
 
-    default_fields = @participation_method.default_fields field.resource.participation_context
+    default_fields = @participation_method.default_fields @custom_form
     default_field = default_fields.find { |f| f.code == field.code }
 
     constraints[:locks]&.each do |attribute, value|
@@ -82,6 +82,27 @@ class IdeaCustomFieldsService
   # The following params should not be editable after they have been created
   def remove_ignored_update_params(field_params)
     field_params.except(:code, :input_type)
+  end
+
+  def check_form_structure(fields, errors)
+    return if fields.empty?
+
+    can_have_type = @participation_method.form_structure_element
+    cannot_have_type = can_have_type == 'section' ? 'page' : 'section'
+    if fields[0][:input_type] != can_have_type
+      error = { error: "First field must be of type '#{can_have_type}'" }
+      errors['0'] = { structure: [error] }
+    end
+    fields.each_with_index do |field, index|
+      next unless field[:input_type] == cannot_have_type
+
+      error = { error: "Method '#{participation_method}' cannot contain fields with an input_type of '#{cannot_have_type}'" }
+      if errors[index.to_s] && errors[index.to_s][:structure]
+        errors[index.to_s][:structure] << error
+      else
+        errors[index.to_s] = { structure: [error] }
+      end
+    end
   end
 
   private

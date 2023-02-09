@@ -70,10 +70,14 @@ module IdeaCustomFields
     private
 
     def update_fields!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors)
-      fields = IdeaCustomFieldsService.new(@custom_form).all_fields
+      idea_custom_fields_service = IdeaCustomFieldsService.new(@custom_form)
+      fields = idea_custom_fields_service.all_fields
       fields_by_id = fields.index_by(&:id)
       given_fields = update_all_params.fetch :custom_fields, []
       given_field_ids = given_fields.pluck(:id)
+
+      idea_custom_fields_service.check_form_structure given_fields, errors
+      raise UpdateAllFailedError, errors if errors.present?
 
       ActiveRecord::Base.transaction do
         delete_fields = fields.reject { |field| given_field_ids.include? field.id }
