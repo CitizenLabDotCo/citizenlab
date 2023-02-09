@@ -1,8 +1,6 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
 import { adopt } from 'react-adopt';
-import { isEmpty, isNumber, get } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 import { parse } from 'qs';
 
 // libraries
@@ -14,6 +12,8 @@ import IdeasNewButtonBar from './IdeasNewButtonBar';
 import NewIdeaForm from './NewIdeaForm';
 import IdeasNewMeta from './IdeasNewMeta';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import Unauthorized from 'components/Unauthorized';
+import PageNotFound from 'components/PageNotFound';
 
 // feature flag variant
 import IdeasNewPageWithJSONForm from './WithJSONForm';
@@ -32,7 +32,6 @@ import { isAdmin, isSuperAdmin, isModerator } from 'services/permissions/roles';
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import { PreviousPathnameContext } from 'context';
 
 // utils
@@ -53,6 +52,13 @@ import { UploadFile } from 'typings';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import { getParticipationMethod } from 'utils/participationMethodUtils';
+
+// utils
+import { isEmpty, isNumber, get, isError } from 'lodash-es';
+import { isNilOrError, isUnauthorizedError } from 'utils/helperUtils';
+
+// typings
+import { IProjectData } from 'services/projects';
 
 const Container = styled.div`
   background: ${colors.background};
@@ -93,13 +99,14 @@ const ButtonBarContainer = styled.div`
   border-top: solid 1px #ddd;
 `;
 
-interface InputProps {}
+interface InputProps {
+  project: IProjectData | null | undefined;
+}
 
 interface DataProps {
   locale: GetLocaleChildProps;
   appConfiguration: GetAppConfigurationChildProps;
   authUser: GetAuthUserChildProps;
-  project: GetProjectChildProps;
   previousPathName: string | null;
 }
 
@@ -377,7 +384,7 @@ class IdeasNewPage extends React.Component<Props & WithRouterProps, State> {
   render() {
     const { project } = this.props;
 
-    if (!isNilOrError(project)) {
+    if (project) {
       return (
         <Container id="e2e-idea-new-page">
           <IdeasNewMeta />
@@ -412,9 +419,6 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
   appConfiguration: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
-  project: ({ params, render }) => (
-    <GetProject projectSlug={params.slug}>{render}</GetProject>
-  ),
   previousPathName: ({ render }) => (
     <PreviousPathnameContext.Consumer>
       {render as any}
@@ -432,6 +436,15 @@ export default withRouter((inputProps: InputProps & WithRouterProps) => {
   const { phase_id } = parse(location.search, {
     ignoreQueryPrefix: true,
   }) as { [key: string]: string };
+
+  if (isUnauthorizedError(project)) {
+    return <Unauthorized />;
+  }
+
+  if (isError(project)) {
+    return <PageNotFound />;
+  }
+
   const participationMethod = getParticipationMethod(project, phases, phase_id);
   const portalElement = document?.getElementById('modal-portal');
   const isSurvey = participationMethod === 'native_survey';
@@ -460,7 +473,9 @@ export default withRouter((inputProps: InputProps & WithRouterProps) => {
 
   return (
     <Data {...inputProps}>
-      {(dataProps) => <IdeasNewPage {...inputProps} {...dataProps} />}
+      {(dataProps) => (
+        <IdeasNewPage {...inputProps} project={project} {...dataProps} />
+      )}
     </Data>
   );
 });
