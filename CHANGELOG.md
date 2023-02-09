@@ -1,5 +1,15 @@
 # Changelog
 
+### Changed
+
+- [CL-2673] In-platform survey UI improvements
+
+## Next release
+
+### Added
+
+- Report builder templates now automatically detect ideation and native survey projects and add different widgets based on that
+
 ## 2023-02-03
 
 ### Added
