@@ -273,8 +273,12 @@ module IdeaCustomFields
     end
 
     def serializer_params(object)
-      participation_method = Factory.instance.participation_method_for object.participation_context
-      fastjson_params({ constraints: participation_method.constraints, supports_answer_visible_to: participation_method.supports_answer_visible_to? })
+      if object.participation_context
+        participation_method = Factory.instance.participation_method_for object.participation_context
+        fastjson_params({ constraints: participation_method.constraints, supports_answer_visible_to: participation_method.supports_answer_visible_to? })
+      else
+        fastjson_params
+      end
     end
   end
 end
