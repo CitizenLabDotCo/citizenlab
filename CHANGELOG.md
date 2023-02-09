@@ -1,5 +1,9 @@
 # Changelog
 
+## Added
+
+- [CL-2739] Added basic posthog integration
+
 ### Changed
 
 - [CL-2673] In-platform survey UI improvements
