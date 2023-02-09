@@ -651,6 +651,7 @@
   "app.containers.Admin.reporting.chartsSection": "GRÁFICAS",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "Aquí tiene texto. Puede editarlo y darle formato utilizando el editor del panel de la derecha.",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.participants": "Participantes",
+  "app.containers.Admin.reporting.components.ReportBuilder.Templates.projectResults": "Resultados del proyecto",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummary": "Resumen del informe",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Añada el objetivo del proyecto, los métodos de participación utilizados y el resultado",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Visitantes",
