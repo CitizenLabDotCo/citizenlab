@@ -40,6 +40,7 @@ module MultiTenancy
     end
 
     def apply_template(template, validate: true, max_time: nil)
+      apply_time = Time.now
       t1 = Time.zone.now
       obj_to_id_and_class = {}
       created_objects_ids = {}
@@ -48,8 +49,7 @@ module MultiTenancy
       #   max_threads: 5,
       #   max_queue: 1000 # unbounded work queue
       # )
-      pool = Concurrent::FixedThreadPool.new(5)
-      puts "apply_template 1 #{Time.now}"
+      # pool = Concurrent::FixedThreadPool.new(5)
       template['models'].each do |model_name, fields|
         LogActivityJob.perform_later(Tenant.current, 'loading_template', nil, Time.now.to_i, payload: {
           model_name: model_name,
@@ -98,14 +98,19 @@ module MultiTenancy
                 obj_to_id_and_class[field_value.object_id] = [submodel.id, submodel.class]
               end
             end
-            if image_assignments.present?
-              tenant = Tenant.current
-              pool.post do
-                tenant.switch do
-                  assign_images(model, image_assignments)
-                end
-              end
-            end
+            # if image_assignments.present?
+            #   tenant = Tenant.current
+            #   pool.post do
+            #     tenant.switch do
+            #       assign_images(model, image_assignments)
+            #     end
+            #   end
+            # end
+
+            time = Time.now
+            assign_images(model, image_assignments) if image_assignments.present?
+            puts "MEASURE_COPY assign_images: #{Time.now - time} #{__FILE__}:#{__LINE__}"
+
           rescue Exception => e
             table_names = ActiveRecord::Base.connection.execute(
               <<-SQL.squish
@@ -134,13 +139,11 @@ module MultiTenancy
           created_objects_ids = update_created_objects_ids(created_objects_ids, model_class.name, model.id)
         end
       end
-      puts "apply_template 2 #{Time.now}"
-      pool.shutdown
-      pool.wait_for_termination
-      puts "apply_template 3 #{Time.now}"
+      # pool.shutdown
+      # pool.wait_for_termination
       DumpTenantJob.perform_later(Tenant.current)
+      puts "MEASURE_COPY apply_template: #{Time.now - apply_time} #{__FILE__}:#{__LINE__}"
 
-      puts "apply_template 4 #{Time.now}"
       created_objects_ids
     end
 

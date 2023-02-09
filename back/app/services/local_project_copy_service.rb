@@ -3,6 +3,8 @@
 # Copies a project within a tenant.
 class LocalProjectCopyService < ::ProjectCopyService
   def copy(source_project)
+    copy_time = Time.now
+
     new_title_multiloc = add_suffix_to_title(source_project.title_multiloc)
 
     options = {
@@ -14,9 +16,13 @@ class LocalProjectCopyService < ::ProjectCopyService
       new_publication_status: 'draft'
     }
 
+    time = Time.now
     template = export(source_project, **options)
+    puts "MEASURE_COPY export: #{Time.now - time} #{__FILE__}:#{__LINE__}"
     folder_id = ProjectFolders::Folder.find(source_project.folder_id) if source_project.folder_id
+    time = Time.now
     copied_project = import(template, folder: folder_id, local_copy: true)
+    puts "MEASURE_COPY import: #{Time.now - time} #{__FILE__}:#{__LINE__}"
 
     copy_project_visibility_permission_groups(source_project, copied_project)
     copy_project_and_phases_actions_groups_permissions(source_project, copied_project)
@@ -24,6 +30,7 @@ class LocalProjectCopyService < ::ProjectCopyService
     source_project.projects_allowed_input_topics.each { |p_a_i_t| p_a_i_t.dup.update!(project_id: copied_project.id) }
     source_project.projects_topics.each { |projects_topic| projects_topic.dup.update!(project_id: copied_project.id) }
     source_project.areas_projects.each { |areas_project| areas_project.dup.update!(project_id: copied_project.id) }
+    puts "MEASURE_COPY copy: #{Time.now - copy_time} #{__FILE__}:#{__LINE__}"
 
     copied_project
   end

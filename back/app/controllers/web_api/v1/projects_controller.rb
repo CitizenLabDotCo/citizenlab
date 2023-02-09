@@ -84,6 +84,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
     authorize @project
     @project = LocalProjectCopyService.new.copy(source_project)
+    puts "#{__FILE__}:#{__LINE__} LocalProjectCopyService time: #{Time.now - time}"
 
     render json: WebApi::V1::ProjectSerializer.new(
       @project,

@@ -5,9 +5,11 @@ class ProjectCopyService < ::TemplateService
     service = MultiTenancy::TenantTemplateService.new
     same_template = service.translate_and_fix_locales template
 
+    time = Time.now
     created_objects_ids = ActiveRecord::Base.transaction do
       service.resolve_and_apply_template same_template, validate: false
     end
+    puts "MEASURE_COPY project resolve_and_apply_template: #{Time.now - time} #{__FILE__}:#{__LINE__}"
 
     project = Project.find(created_objects_ids['Project'].first)
     unless local_copy
