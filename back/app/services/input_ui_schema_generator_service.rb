@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 class InputUiSchemaGeneratorService < UiSchemaGeneratorService
-  def initialize(input_term)
+  def initialize(input_term, supports_answer_visible_to)
     super()
     @input_term = input_term || ParticipationContext::DEFAULT_INPUT_TERM
+    @supports_answer_visible_to = supports_answer_visible_to
   end
 
   def visit_html_multiloc(field)
@@ -50,11 +51,8 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
       isAdminField: admin_field?(field),
       hasRule: field.logic?
     }
-    if field.resource # Required as the budget and author fields added don't have a resource
-      @participation_method = Factory.instance.participation_method_for field.resource.participation_context
-      if @participation_method.supports_answer_visible_to?
-        defaults[:answer_visible_to] = field.answer_visible_to
-      end
+    if @supports_answer_visible_to
+      defaults[:answer_visible_to] = field.answer_visible_to
     end
     super.merge(defaults).tap do |options|
       options[:description] = description_option field

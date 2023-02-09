@@ -34,7 +34,7 @@ module IdeaCustomFields
       fields = IdeaCustomFieldsService.new(@custom_form).all_fields
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         fields,
-        params: fastjson_params,
+        params: serializer_params(@custom_form),
         include: [:options]
       ).serialized_json
     end
@@ -42,7 +42,7 @@ module IdeaCustomFields
     def show
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         @custom_field,
-        params: fastjson_params,
+        params: serializer_params(@custom_field),
         include: [:options]
       ).serialized_json
     end
@@ -60,7 +60,7 @@ module IdeaCustomFields
       update_logic! page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         IdeaCustomFieldsService.new(@custom_form).all_fields,
-        params: fastjson_params,
+        params: serializer_params(@custom_form),
         include: [:options]
       ).serialized_json
     rescue UpdateAllFailedError => e
@@ -270,6 +270,11 @@ module IdeaCustomFields
 
     def render_updating_form_with_input_error
       render json: { error: :updating_form_with_input }, status: :unauthorized
+    end
+
+    def serializer_params(object)
+      participation_method = Factory.instance.participation_method_for object.participation_context
+      fastjson_params({ constraints: participation_method.constraints, supports_answer_visible_to: participation_method.supports_answer_visible_to? })
     end
   end
 end

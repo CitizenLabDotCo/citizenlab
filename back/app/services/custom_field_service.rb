@@ -113,13 +113,14 @@ class CustomFieldService
     custom_field_values.except(*disabled_keys)
   end
 
+  # Note: Needs refactor. This is called by idea serializer so will have an n+1 issue
   def self.remove_not_visible_fields(idea, current_user)
-    @custom_form = CustomForm.find_or_initialize_by participation_context: idea.project
-    @fields = IdeaCustomFieldsService.new(@custom_form).enabled_public_fields
+    custom_form = CustomForm.find_or_initialize_by participation_context: idea.project
+    fields = IdeaCustomFieldsService.new(custom_form).enabled_public_fields
     if can_see_admin_answers?(idea, current_user)
-      @fields = IdeaCustomFieldsService.new(@custom_form).enabled_fields
+      fields = IdeaCustomFieldsService.new(custom_form).enabled_fields
     end
-    visible_keys = @fields.pluck(:key)
+    visible_keys = fields.pluck(:key)
     idea.custom_field_values.slice(*visible_keys)
   end
 
