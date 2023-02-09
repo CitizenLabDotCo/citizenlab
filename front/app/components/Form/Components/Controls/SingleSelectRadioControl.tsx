@@ -6,12 +6,28 @@ import {
   rankWith,
 } from '@jsonforms/core';
 import React, { useState } from 'react';
+
+// components
 import ErrorDisplay from '../ErrorDisplay';
-import { Box, Radio } from '@citizenlab/cl2-component-library';
+import { Box, colors, Text, Radio } from '@citizenlab/cl2-component-library';
 import { FormLabel } from 'components/UI/FormComponents';
-import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import VerificationIcon from '../VerificationIcon';
+
+// utils
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import { getOptions } from './controlUtils';
+
+// style
+import { darken } from 'polished';
+import styled, { useTheme } from 'styled-components';
+
+const StyledBox = styled(Box)`
+  cursor: pointer;
+  background-color: ${colors.grey100};
+  &:hover {
+    background-color: ${darken(0.05, colors.grey100)};
+  }
+`;
 
 const SingleSelectRadioControl = ({
   data,
@@ -25,6 +41,7 @@ const SingleSelectRadioControl = ({
   visible,
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
+  const theme = useTheme();
   const options = getOptions(schema, 'single');
 
   if (!visible) {
@@ -42,11 +59,18 @@ const SingleSelectRadioControl = ({
       />
       <Box display="block" id="e2e-single-select-control">
         {options?.map((option, index: number) => (
-          <Box mt="12px" key={option.value}>
+          <StyledBox mb="12px" key={option.value} borderRadius="3px">
             <Radio
+              padding="20px 20px 4px 20px"
+              marginTop="8px"
+              buttonColor={theme.colors.tenantSecondary}
               id={`${path}-radio-${index}`}
               name="name-temp"
-              label={option.label}
+              label={
+                <Text p="0px" m="0px" fontSize="s">
+                  {option.label}
+                </Text>
+              }
               currentValue={data}
               value={option.value}
               onChange={() => {
@@ -54,7 +78,7 @@ const SingleSelectRadioControl = ({
                 setDidBlur(true);
               }}
             />
-          </Box>
+          </StyledBox>
         ))}
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>

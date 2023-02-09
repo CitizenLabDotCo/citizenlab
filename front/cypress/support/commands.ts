@@ -50,7 +50,7 @@ declare global {
       apiAddPoll: typeof apiAddPoll;
       apiVerifyBogus: typeof apiVerifyBogus;
       apiCreateEvent: typeof apiCreateEvent;
-      apiEnableContentBuilder: typeof apiEnableContentBuilder;
+      apiEnableProjectDescriptionBuilder: typeof apiEnableProjectDescriptionBuilder;
       intersectsViewport: typeof intersectsViewport;
       notIntersectsViewport: typeof notIntersectsViewport;
       apiUpdateHomepageSettings: typeof apiUpdateHomepageSettings;
@@ -1181,7 +1181,11 @@ export function apiCreateEvent({
   });
 }
 
-export function apiEnableContentBuilder({ projectId }: { projectId: string }) {
+export function apiEnableProjectDescriptionBuilder({
+  projectId,
+}: {
+  projectId: string;
+}) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -1363,7 +1367,10 @@ Cypress.Commands.add('setConsentCookie', setConsentCookie);
 Cypress.Commands.add('setLoginCookie', setLoginCookie);
 Cypress.Commands.add('apiVerifyBogus', apiVerifyBogus);
 Cypress.Commands.add('apiCreateEvent', apiCreateEvent);
-Cypress.Commands.add('apiEnableContentBuilder', apiEnableContentBuilder);
+Cypress.Commands.add(
+  'apiEnableProjectDescriptionBuilder',
+  apiEnableProjectDescriptionBuilder
+);
 Cypress.Commands.add(
   'intersectsViewport',
   { prevSubject: true },
