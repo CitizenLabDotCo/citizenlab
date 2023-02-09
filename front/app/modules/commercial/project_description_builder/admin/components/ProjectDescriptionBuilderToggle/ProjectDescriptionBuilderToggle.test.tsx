@@ -70,9 +70,13 @@ describe('ProjectDescriptionBuilderToggle', () => {
       />
     );
     const toggle = screen.getByRole('checkbox');
-    expect(screen.queryByText('LinkText')).not.toBeInTheDocument();
+    expect(
+      screen.queryByText('Edit description in Content Builder')
+    ).not.toBeInTheDocument();
     toggle.click();
-    expect(screen.queryByText('LinkText')).toBeInTheDocument();
+    expect(
+      screen.getByText('Edit description in Content Builder')
+    ).toBeInTheDocument();
     expect(addProjectDescriptionBuilderLayout).toHaveBeenCalledWith(
       'projectId',
       { enabled: true }
