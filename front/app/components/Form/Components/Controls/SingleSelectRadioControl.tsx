@@ -21,15 +21,11 @@ import { getOptions } from './controlUtils';
 import { darken } from 'polished';
 import styled, { useTheme } from 'styled-components';
 
-const StyledBox = styled(Box)<{ selectBackgroundColor: string }>`
+const StyledBox = styled(Box)`
   cursor: pointer;
-  background-color: ${({ selectBackgroundColor }) =>
-    selectBackgroundColor ? selectBackgroundColor : colors.grey200};
+  background-color: ${colors.grey100};
   &:hover {
-    background-color: ${({ selectBackgroundColor }) =>
-      selectBackgroundColor
-        ? darken(0.05, selectBackgroundColor)
-        : darken(0.05, colors.grey200)};
+    background-color: ${darken(0.05, colors.grey100)};
   }
 `;
 
@@ -63,12 +59,7 @@ const SingleSelectRadioControl = ({
       />
       <Box display="block" id="e2e-single-select-control">
         {options?.map((option, index: number) => (
-          <StyledBox
-            selectBackgroundColor={colors.grey100}
-            mb="12px"
-            key={option.value}
-            borderRadius="3px"
-          >
+          <StyledBox mb="12px" key={option.value} borderRadius="3px">
             <Radio
               padding="20px 20px 4px 20px"
               marginTop="8px"

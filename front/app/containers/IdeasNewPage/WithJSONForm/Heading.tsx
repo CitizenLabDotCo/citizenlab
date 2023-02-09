@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import clHistory from 'utils/cl-router/history';
 
 // Components
 import {
@@ -157,9 +156,7 @@ export const Heading = ({
                 width="100%"
                 mb={isSmallerThanXlPhone ? '16px' : undefined}
                 mr={!isSmallerThanXlPhone ? '20px' : undefined}
-                onClick={() => {
-                  clHistory.push(`/projects/${project.attributes.slug}`);
-                }}
+                linkTo={`/projects/${project.attributes.slug}`}
               >
                 <FormattedMessage {...messages.confirmLeaveSurveyButtonText} />
               </Button>

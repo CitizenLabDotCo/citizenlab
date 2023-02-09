@@ -25,14 +25,10 @@ import messages from './messages';
 import { darken } from 'polished';
 import styled from 'styled-components';
 
-const StyledBox = styled(Box)<{ checkboxBackgroundColor: string }>`
-  background-color: ${({ checkboxBackgroundColor }) =>
-    checkboxBackgroundColor ? checkboxBackgroundColor : colors.grey200};
+const StyledBox = styled(Box)`
+  background-color: ${colors.grey100};
   &:hover {
-    background-color: ${({ checkboxBackgroundColor }) =>
-      checkboxBackgroundColor
-        ? darken(0.05, checkboxBackgroundColor)
-        : darken(0.05, colors.grey200)};
+    background-color: ${darken(0.05, colors.grey100)};
   }
 `;
 
@@ -73,7 +69,6 @@ const MultiSelectCheckboxControl = ({
             style={{ cursor: 'pointer' }}
             mb="12px"
             key={option.value}
-            checkboxBackgroundColor={colors.grey100}
             borderRadius="3px"
           >
             <Checkbox
