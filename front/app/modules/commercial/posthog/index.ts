@@ -15,7 +15,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin, isModerator } from 'services/permissions/roles';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
-const POSTHOG_API_TOKEN = process.env.POSTHOG_API_TOKEN;
+const POSTHOG_API_KEY = process.env.POSTHOG_API_KEY;
 
 let eventsSubscription: Subscription | null = null;
 let pagesSubscription: Subscription | null = null;
@@ -85,7 +85,7 @@ const initializePosthog = async (token, user, appConfig) => {
 
 const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
-    if (!POSTHOG_API_TOKEN) return;
+    if (!POSTHOG_API_KEY) return;
 
     combineLatest([
       currentAppConfigurationStream().observable,
@@ -93,7 +93,7 @@ const configuration: ModuleConfiguration = {
     ]).subscribe(async ([appConfig, [prevUser, user]]) => {
       // In case the user signs in or visits signed in as an admin/moderator
       if (!isNilOrError(user) && (isAdmin(user) || isModerator(user))) {
-        initializePosthog(POSTHOG_API_TOKEN, user, appConfig);
+        initializePosthog(POSTHOG_API_KEY, user, appConfig);
       }
 
       // In case the user signs out
