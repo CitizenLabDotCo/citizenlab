@@ -83,102 +83,88 @@ resource 'Idea Custom Fields' do
         json_response = json_parse response_body
         expect(json_response[:data].size).to eq 12
         expect(json_response[:data].pluck(:id)).not_to include(deleted_field.id)
-        expect(json_response[:data][0]).to match(hash_including(
-          attributes: hash_including(
-            code: 'ideation_section1',
-            key: nil,
-            input_type: 'section',
-            title_multiloc: { en: 'What is your idea?', 'fr-FR': 'Quelle est votre idée ?', 'nl-NL': 'Wat is je idee?' },
-            description_multiloc: {},
-            ordering: 0,
-            required: false,
-            enabled: true,
-            created_at: an_instance_of(String),
-            updated_at: an_instance_of(String),
-            logic: {}
+        expect(json_response[:data]).to match([
+          hash_including(
+            attributes: hash_including(
+              code: 'ideation_section1',
+              key: nil,
+              input_type: 'section',
+              title_multiloc: { en: 'What is your idea?', 'fr-FR': 'Quelle est votre idée ?', 'nl-NL': 'Wat is je idee?' },
+              description_multiloc: {},
+              ordering: 0,
+              required: false,
+              enabled: true,
+              created_at: an_instance_of(String),
+              updated_at: an_instance_of(String),
+              logic: {}
+            ),
+            type: 'custom_field',
+            relationships: { options: { data: [] } }
           ),
-          type: 'custom_field',
-          relationships: { options: { data: [] } }
-        ))
-        expect(json_response[:data][1]).to match(hash_including(
-          attributes: hash_including(
-            code: 'title_multiloc',
-            key: 'title_multiloc',
-            input_type: 'text_multiloc',
-            description_multiloc: { en: 'New title description' },
-            ordering: 1,
-            required: true,
-            enabled: true,
-            created_at: an_instance_of(String),
-            updated_at: an_instance_of(String),
-            logic: {}
+          hash_including(
+            attributes: hash_including(
+              code: 'title_multiloc',
+              key: 'title_multiloc',
+              input_type: 'text_multiloc',
+              description_multiloc: { en: 'New title description' },
+              ordering: 1,
+              required: true,
+              enabled: true,
+              created_at: an_instance_of(String),
+              updated_at: an_instance_of(String),
+              logic: {}
+            ),
+            type: 'custom_field',
+            relationships: { options: { data: [] } }
           ),
-          type: 'custom_field',
-          relationships: { options: { data: [] } }
-        ))
-        expect(json_response[:data][2]).to match(hash_including(
-          attributes: hash_including(
-            code: 'body_multiloc',
-            key: 'body_multiloc',
-            input_type: 'html_multiloc',
-            ordering: 2,
-            title_multiloc: hash_including(en: 'Description'),
-            description_multiloc: {},
-            required: true,
-            enabled: true,
-            created_at: an_instance_of(String),
-            updated_at: an_instance_of(String),
-            logic: {}
+          hash_including(
+            attributes: hash_including(
+              code: 'body_multiloc',
+              key: 'body_multiloc',
+              input_type: 'html_multiloc',
+              ordering: 2,
+              title_multiloc: hash_including(en: 'Description'),
+              description_multiloc: {},
+              required: true,
+              enabled: true,
+              created_at: an_instance_of(String),
+              updated_at: an_instance_of(String),
+              logic: {}
+            ),
+            type: 'custom_field',
+            relationships: { options: { data: [] } }
           ),
-          type: 'custom_field',
-          relationships: { options: { data: [] } }
-        ))
-        expect(json_response[:data][3]).to match(hash_including(
-          attributes: hash_including(code: 'ideation_section2', key: nil, input_type: 'section', ordering: 3)
-        ))
-        expect(json_response[:data][4]).to match(hash_including(
-          attributes: hash_including(code: 'idea_images_attributes', key: 'idea_images_attributes', input_type: 'image_files', ordering: 4)
-        ))
-        expect(json_response[:data][5]).to match(hash_including(
-          attributes: hash_including(code: 'idea_files_attributes', key: 'idea_files_attributes', input_type: 'files', ordering: 5)
-        ))
-        expect(json_response[:data][6]).to match(hash_including(
-          attributes: hash_including(code: 'ideation_section3', key: nil, input_type: 'section', ordering: 6)
-        ))
-        expect(json_response[:data][7]).to match(hash_including(
-          attributes: hash_including(code: 'topic_ids', key: 'topic_ids', input_type: 'topic_ids', ordering: 7)
-        ))
-        expect(json_response[:data][8]).to match(hash_including(
-          attributes: hash_including(code: 'location_description', key: 'location_description', input_type: 'text', ordering: 8)
-        ))
-        expect(json_response[:data][9]).to match(hash_including(
-          attributes: hash_including(code: 'proposed_budget', key: 'proposed_budget', input_type: 'number', ordering: 9)
-        ))
-        expect(json_response[:data][10]).to match(hash_including(
-          attributes: hash_including(code: nil, key: nil, input_type: 'section', ordering: 10, title_multiloc: { en: 'Extra fields' })
-        ))
-        expect(json_response[:data][11]).to match(hash_including(
-          attributes: hash_including(
-            code: nil,
-            key: 'select_field_title',
-            input_type: 'select',
-            ordering: 11,
-            title_multiloc: { en: 'Select field title' },
-            description_multiloc: { en: 'Select field description' },
-            required: false,
-            enabled: true,
-            created_at: an_instance_of(String),
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            answer_visible_to: 'admins'
-          ),
-          type: 'custom_field',
-          relationships: { options: { data: [
-            hash_including(id: an_instance_of(String), type: 'custom_field_option'),
-            hash_including(id: an_instance_of(String), type: 'custom_field_option')
-          ] } }
-        ))
+          hash_including(attributes: hash_including(code: 'ideation_section2', key: nil, input_type: 'section', ordering: 3)),
+          hash_including(attributes: hash_including(code: 'idea_images_attributes', key: 'idea_images_attributes', input_type: 'image_files', ordering: 4)),
+          hash_including(attributes: hash_including(code: 'idea_files_attributes', key: 'idea_files_attributes', input_type: 'files', ordering: 5)),
+          hash_including(attributes: hash_including(code: 'ideation_section3', key: nil, input_type: 'section', ordering: 6)),
+          hash_including(attributes: hash_including(code: 'topic_ids', key: 'topic_ids', input_type: 'topic_ids', ordering: 7)),
+          hash_including(attributes: hash_including(code: 'location_description', key: 'location_description', input_type: 'text', ordering: 8)),
+          hash_including(attributes: hash_including(code: 'proposed_budget', key: 'proposed_budget', input_type: 'number', ordering: 9)),
+          hash_including(attributes: hash_including(code: nil, key: nil, input_type: 'section', ordering: 10, title_multiloc: { en: 'Extra fields' })),
+          hash_including(
+            attributes: hash_including(
+              code: nil,
+              key: 'select_field_title',
+              input_type: 'select',
+              ordering: 11,
+              title_multiloc: { en: 'Select field title' },
+              description_multiloc: { en: 'Select field description' },
+              required: false,
+              enabled: true,
+              created_at: an_instance_of(String),
+              updated_at: an_instance_of(String),
+              logic: {},
+              constraints: {},
+              answer_visible_to: 'admins'
+            ),
+            type: 'custom_field',
+            relationships: { options: { data: [
+              hash_including(id: an_instance_of(String), type: 'custom_field_option'),
+              hash_including(id: an_instance_of(String), type: 'custom_field_option')
+            ] } }
+          )
+        ])
       end
 
       example 'Updating custom fields when there are responses' do
