@@ -379,6 +379,10 @@ module MultiTenancy
             report_builder: {
               enabled: true,
               allowed: true
+            },
+            posthog_integration: {
+              enabled: true,
+              allowed: true
             }
           })
         )
