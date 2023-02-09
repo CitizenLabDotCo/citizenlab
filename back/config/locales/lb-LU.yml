@@ -115,7 +115,7 @@ lb:
         description:
       author_id:
         title: Auteur
-        description:
+        description: Author description
       topic_ids:
         title: Sujeten
         description:
@@ -127,12 +127,20 @@ lb:
         description:
       budget:
         title: Budget
-        description:
+        description: Budget description
       images:
         title: Biller
         description:
       attachments:
         title: Annexen
+        description:
+      section1:
+        description:
+      section2:
+        title: Images and attachments
+        description:
+      section3:
+        title: Details
         description:
   custom_forms:
     categories:
@@ -189,6 +197,7 @@ lb:
       author_fullname: 'Numm vum Auteur'
       author_email: 'E-Mail vum Auteur'
       author_id: 'ID vum Auteur'
+      budget: 'Budget'
       created_at: 'Agereecht bei'
       published_at: 'Verëffentlecht bei'
       comments_count: 'Kommentaren'
