@@ -651,6 +651,7 @@
   "app.containers.Admin.reporting.chartsSection": "ΓΡΑΦΗΜΑΤΑ",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "This is some text. You can edit and format it by using the editor in the panel on the right.",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.participants": "Participants",
+  "app.containers.Admin.reporting.components.ReportBuilder.Templates.projectResults": "Project results",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummary": "Report summary",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Add the goal of the project, participation methods used, and the outcome",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Visitors",
