@@ -198,7 +198,7 @@ describe('Survey builder', () => {
     cy.contains(chooseManyOption1).click({
       force: true,
     });
-    cy.get(`#${linearScaleTitle}-radio-1`).click({ force: true });
+    cy.get(`#linear-scale-option-1`).click({ force: true });
     cy.get('[data-cy="e2e-next-page"]').click();
     cy.get('[data-cy="e2e-submit-form"]').should('exist');
     cy.get('[data-cy="e2e-submit-form"]').click();
@@ -209,7 +209,7 @@ describe('Survey builder', () => {
     cy.contains(chooseManyOption2).click({
       force: true,
     });
-    cy.get(`#${linearScaleTitle}-radio-0`).click({ force: true });
+    cy.get(`#linear-scale-option-1`).click({ force: true });
     cy.get('[data-cy="e2e-next-page"]').click();
     cy.get('[data-cy="e2e-submit-form"]').should('exist');
     cy.get('[data-cy="e2e-submit-form"]').click();
@@ -220,7 +220,7 @@ describe('Survey builder', () => {
     cy.contains(chooseManyOption2).click({
       force: true,
     });
-    cy.get(`#${linearScaleTitle}-radio-0`).click({ force: true });
+    cy.get(`#linear-scale-option-1`).click({ force: true });
     cy.get('[data-cy="e2e-next-page"]').click();
     cy.get('[data-cy="e2e-submit-form"]').should('exist');
     cy.get('[data-cy="e2e-submit-form"]').click();
