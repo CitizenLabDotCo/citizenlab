@@ -231,6 +231,3 @@ module MultiTenancy
     end
   end
 end
-
-seeds_runner = MultiTenancy::Seeds::Runner.new
-seeds_runner.execute
