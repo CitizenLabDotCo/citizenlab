@@ -198,5 +198,24 @@ resource 'Idea Custom Fields' do
         end
       end
     end
+
+    context 'when resident' do
+      before { resident_header_token }
+
+      let(:custom_form) { create :custom_form, participation_context: context }
+
+      example '[error] Updating custom fields', document: false do
+        create :idea, project: context
+        custom_description = { 'en' => 'Custom description' }
+
+        do_request(
+          custom_fields: default_fields_param.tap do |params|
+            params[1][:description_multiloc] = custom_description
+          end
+        )
+
+        assert_status 401
+      end
+    end
   end
 end
