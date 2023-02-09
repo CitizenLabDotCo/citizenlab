@@ -651,6 +651,7 @@
   "app.containers.Admin.reporting.chartsSection": "DIAGRAMMATAS",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "Šeit ir teksts. To var rediģēt un formatēt, izmantojot redaktoru panelī labajā pusē.",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.participants": "Dalībnieki",
+  "app.containers.Admin.reporting.components.ReportBuilder.Templates.projectResults": "Project results",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummary": "Ziņojuma kopsavilkums",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Pievienojiet projekta mērķi, izmantotās līdzdalības metodes un rezultātu",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Apmeklētāji",
