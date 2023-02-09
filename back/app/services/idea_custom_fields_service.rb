@@ -81,6 +81,8 @@ class IdeaCustomFieldsService
   end
 
   def check_form_structure(fields, errors)
+    return if fields.empty?
+
     can_have_type = @participation_method.form_structure_element
     cannot_have_type = can_have_type == 'section' ? 'page' : 'section'
     if fields[0][:input_type] != can_have_type

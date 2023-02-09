@@ -299,6 +299,14 @@ describe IdeaCustomFieldsService do
         expect(errors.length).to eq 0
       end
 
+      it 'returns no errors if the form has no fields' do
+        fields = []
+        errors = {}
+        service.check_form_structure(fields, errors)
+
+        expect(errors.length).to eq 0
+      end
+
       it 'returns errors if the first field is not a section' do
         fields = service.all_fields
         fields.delete(fields.find_by(code: 'ideation_section1'))
