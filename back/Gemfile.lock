@@ -36,14 +36,6 @@ GIT
       webfinger (>= 1.0.1)
 
 GIT
-  remote: https://github.com/PostHog/posthog-ruby.git
-  revision: 52f4ce0f7680eb6bda92aaa1aa3d8d4d0945bf8e
-  branch: master
-  specs:
-    posthog-ruby (2.1.0)
-      concurrent-ruby (~> 1)
-
-GIT
   remote: https://github.com/carrierwaveuploader/carrierwave.git
   revision: a3ffc5381e70a4014b61b27b35540aa3b945910d
   ref: a3ffc5381e70a4014b61b27b35540aa3b945910d
@@ -862,6 +854,8 @@ GEM
     pg_search (2.3.6)
       activerecord (>= 5.2)
       activesupport (>= 5.2)
+    posthog-ruby (2.2.0)
+      concurrent-ruby (~> 1)
     premailer (1.19.0)
       addressable
       css_parser (>= 1.12.0)
@@ -1259,6 +1253,7 @@ DEPENDENCIES
   pg
   pg_search (~> 2.3.5)
   polls!
+  posthog_integration!
   premailer-rails (~> 1.12.0)
   pry
   pry-byebug
