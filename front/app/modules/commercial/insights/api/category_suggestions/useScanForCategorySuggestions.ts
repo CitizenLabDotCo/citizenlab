@@ -168,14 +168,7 @@ const useScanForCategorySuggestions = (
   const onDone = async () => {
     resetTriggerScan();
     resetCancelScan();
-    queryClient.setQueryData(
-      queryKey,
-      (data: IInsightsCategorySuggestionsTasks) => {
-        return {
-          data: { ...(data ? data.data : {}), status: 'isIdle' },
-        };
-      }
-    );
+    queryClient.removeQueries(queryKey);
   };
 
   const triggerScan = () => triggerScanMutate({ viewId, category, processed });
