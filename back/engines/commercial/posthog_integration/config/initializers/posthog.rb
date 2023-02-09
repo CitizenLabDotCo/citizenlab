@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 key = ENV.fetch('POSTHOG_API_KEY', nil)
 
 POSTHOG_CLIENT = key &&
