@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 // Hooks
 import useLocale from 'hooks/useLocale';
@@ -26,7 +26,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import useFormResults from 'hooks/useFormResults';
 import useProject from 'hooks/useProject';
 import usePhase from 'hooks/usePhase';
-import useURLQuery from 'utils/cl-router/useUrlQuery';
 
 // Services
 import { downloadSurveyResults } from 'services/formCustomFields';
@@ -38,7 +37,7 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   };
   const [isDownloading, setIsDownloading] = useState(false);
   const locale = useLocale();
-  const urlParams = useURLQuery();
+  const [urlParams] = useSearchParams();
   const phaseId = urlParams.get('phase_id');
   const project = useProject({ projectId });
   const phase = usePhase(phaseId);

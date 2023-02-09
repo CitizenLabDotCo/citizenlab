@@ -2,9 +2,6 @@ import * as React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
 import GroupsTag from './GroupsTag';
 
-jest.mock('utils/cl-router/Link');
-jest.mock('utils/cl-intl');
-
 const projectGroups = {
   projectGroups: [{ id: 'projectGroup1' }, { id: 'projectGroup2' }],
 };

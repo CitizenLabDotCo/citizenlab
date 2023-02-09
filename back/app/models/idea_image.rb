@@ -20,8 +20,19 @@
 #  fk_rails_...  (idea_id => ideas.id)
 #
 class IdeaImage < ApplicationRecord
+  attr_accessor :skip_image_presence
+
   mount_base64_uploader :image, IdeaImageUploader
   belongs_to :idea, inverse_of: :idea_images
 
+  validate :image_presence, unless: :skip_image_presence
   validates :idea, presence: true
+
+  private
+
+  def image_presence
+    return if image.present?
+
+    errors.add(:image, 'cannot be blank!')
+  end
 end

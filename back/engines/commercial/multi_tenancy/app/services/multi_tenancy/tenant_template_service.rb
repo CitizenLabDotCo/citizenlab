@@ -15,6 +15,8 @@ module MultiTenancy
       Comment
     ].to_set.freeze
 
+    SKIP_IMAGE_PRESENCE_VALIDATION = %w[IdeaImage].freeze
+
     def available_templates(external_subfolder: 'release')
       template_names = {}
       template_names[:internal] = Dir[Rails.root.join('config/tenant_templates/*.yml')].map do |file|
@@ -72,6 +74,9 @@ module MultiTenancy
               model.send("#{field_name}=", field_value)
             end
           end
+
+          model.skip_image_presence = true if SKIP_IMAGE_PRESENCE_VALIDATION.include?(model_class.name)
+
           begin
             if validate
               model.save!

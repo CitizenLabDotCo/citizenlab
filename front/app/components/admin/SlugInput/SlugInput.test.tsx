@@ -2,12 +2,9 @@ import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
 import SlugInput, { Props } from '.';
 
-jest.mock('utils/cl-intl');
 jest.mock('hooks/useAppConfiguration', () => () => ({
   attributes: { name: 'orgName', host: 'localhost' },
 }));
-jest.mock('hooks/useLocale');
-jest.mock('services/locale');
 
 const slug = 'my-folder';
 

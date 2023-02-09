@@ -4,7 +4,6 @@ import PagesMenu from '.';
 
 const metaTitle = 'Pages & Menu';
 
-jest.mock('utils/cl-intl');
 jest.mock('./messages', () => ({
   pagesMenuMetaTitle: { id: 'id', defaultMessage: metaTitle },
 }));

@@ -13,7 +13,7 @@ import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import usePhase from 'hooks/usePhase';
 import useInputSchema from 'hooks/useInputSchema';
-import useURLQuery from 'utils/cl-router/useUrlQuery';
+import { useSearchParams } from 'react-router-dom';
 
 import messages from '../messages';
 
@@ -37,7 +37,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
   const authUser = useAuthUser();
   const project = useProject({ projectSlug: params.slug });
-  const queryParams = useURLQuery();
+  const [queryParams] = useSearchParams();
   const phaseId = queryParams.get('phase_id');
 
   const phases = usePhases(project?.id);
