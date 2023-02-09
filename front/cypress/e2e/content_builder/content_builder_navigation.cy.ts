@@ -52,12 +52,15 @@ describe('Content builder navigation', () => {
 
   it('navigates to projects list when project settings goBack clicked', () => {
     cy.visit(`/admin/projects/${projectId}/description`);
+    cy.get('#e2e-go-back-button').should('exist');
     cy.get('#e2e-go-back-button').click();
+    cy.get('#e2e-projects-admin-container').should('exist');
     cy.url().should('eq', `${Cypress.config().baseUrl}/en/admin/projects/`);
   });
 
   it('navigates to project settings when content builder goBack clicked', () => {
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+    cy.get('#e2e-go-back-button').should('exist');
     cy.get('#e2e-go-back-button').click();
     cy.url().should(
       'eq',
