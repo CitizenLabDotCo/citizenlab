@@ -425,6 +425,7 @@ describe JsonFormsService do
             scope: '#/properties/author_id',
             label: 'Author',
             options: {
+              answer_visible_to: 'public',
               input_type: 'text',
               transform: 'trim_on_blur',
               isAdminField: true,
@@ -437,6 +438,7 @@ describe JsonFormsService do
             scope: '#/properties/budget',
             label: 'Budget',
             options: {
+              answer_visible_to: 'public',
               input_type: 'number',
               isAdminField: true,
               hasRule: false,

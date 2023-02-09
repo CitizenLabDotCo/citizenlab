@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 class InputUiSchemaGeneratorService < UiSchemaGeneratorService
-  def initialize(input_term)
+  def initialize(input_term, supports_answer_visible_to)
     super()
     @input_term = input_term || ParticipationContext::DEFAULT_INPUT_TERM
+    @supports_answer_visible_to = supports_answer_visible_to
   end
 
   def visit_html_multiloc(field)
@@ -48,9 +49,11 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   def default_options(field)
     defaults = {
       isAdminField: admin_field?(field),
-      hasRule: field.logic?,
-      answer_visible_to: field.answer_visible_to
+      hasRule: field.logic?
     }
+    if @supports_answer_visible_to
+      defaults[:answer_visible_to] = field.answer_visible_to
+    end
     super.merge(defaults).tap do |options|
       options[:description] = description_option field
     end

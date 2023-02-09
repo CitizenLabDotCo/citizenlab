@@ -20,7 +20,8 @@ class JsonFormsService
       {}
     end,
     required: false,
-    enabled: true
+    enabled: true,
+    answer_visible_to: 'public'
   )
   BUDGET_FIELD = CustomField.new(
     key: 'budget',
@@ -33,7 +34,8 @@ class JsonFormsService
       {}
     end,
     required: false,
-    enabled: true
+    enabled: true,
+    answer_visible_to: 'public'
   )
 
   def initialize
@@ -58,11 +60,14 @@ class JsonFormsService
   def input_ui_and_json_multiloc_schemas(fields, current_user, input_term)
     return if fields.empty?
 
+    participation_context = fields.first.resource.participation_context
+    supports_answer_visible_to = Factory.instance.participation_method_for(participation_context).supports_answer_visible_to?
+
     visible_fields = fields.reject do |field|
       !field.enabled? || field.hidden?
     end
     json_schema_multiloc = InputJsonSchemaGeneratorService.new.generate_for visible_fields
-    ui_schema_multiloc = InputUiSchemaGeneratorService.new(input_term).generate_for visible_fields
+    ui_schema_multiloc = InputUiSchemaGeneratorService.new(input_term, supports_answer_visible_to).generate_for visible_fields
     {
       json_schema_multiloc: json_schema_multiloc,
       ui_schema_multiloc: ui_schema_multiloc
@@ -87,7 +92,7 @@ class JsonFormsService
         schema_main_section = ui_schema[:elements].find do |elt|
           elt.dig(:options, :id) == fields.find { |field| field.code == 'ideation_section1' }.id
         end
-        schema_main_section[:elements].insert 1, InputUiSchemaGeneratorService.new(nil).visit_text(AUTHOR_FIELD)
+        schema_main_section[:elements].insert 1, InputUiSchemaGeneratorService.new(nil, true).visit_text(AUTHOR_FIELD)
       end
     end
 
@@ -95,7 +100,7 @@ class JsonFormsService
       output[:json_schema_multiloc].each_value do |json_schema|
         json_schema[:properties]['budget'] = InputJsonSchemaGeneratorService.new.visit_number BUDGET_FIELD
       end
-      budget_schema = InputUiSchemaGeneratorService.new(nil).visit_number BUDGET_FIELD
+      budget_schema = InputUiSchemaGeneratorService.new(nil, true).visit_number BUDGET_FIELD
       output[:ui_schema_multiloc].each_value do |ui_schema|
         details_section_id = fields.find { |field| field.code == 'ideation_section3' }&.id
         if details_section_id

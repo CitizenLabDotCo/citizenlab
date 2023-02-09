@@ -29,7 +29,8 @@ describe WebApi::V1::CustomFieldSerializer do
     end
 
     it 'includes the attributes of a field' do
-      serialized_field = described_class.new(field).serializable_hash
+      params = { params: { constraints: {}, supports_answer_visible_to: true } }
+      serialized_field = described_class.new(field, params).serializable_hash
       attributes = serialized_field[:data][:attributes]
       expect(attributes).to match({
         code: nil,
@@ -43,7 +44,8 @@ describe WebApi::V1::CustomFieldSerializer do
         title_multiloc: { 'en' => 'Did you attend' },
         updated_at: an_instance_of(ActiveSupport::TimeWithZone),
         logic: {},
-        constraints: {}
+        constraints: {},
+        answer_visible_to: 'admins'
       })
     end
   end

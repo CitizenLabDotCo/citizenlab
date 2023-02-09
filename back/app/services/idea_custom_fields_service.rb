@@ -26,6 +26,10 @@ class IdeaCustomFieldsService
     all_fields.select(&:enabled?)
   end
 
+  def enabled_public_fields
+    enabled_fields.select { |field| field.answer_visible_to == CustomField::VISIBLE_TO_PUBLIC }
+  end
+
   def extra_visible_fields
     visible_fields.reject(&:built_in?)
   end
