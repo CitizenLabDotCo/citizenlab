@@ -43,7 +43,7 @@ class FlexibleInputFormMigrator
     @stats[:forms] += 1
 
     # Get persisted fields by order
-    fields = CustomField.where(resource: custom_form).order(:ordering)
+    fields = custom_form.custom_fields.order(:ordering)
 
     # Do nothing if there are no fields (can this happen?)
     if fields.empty?
