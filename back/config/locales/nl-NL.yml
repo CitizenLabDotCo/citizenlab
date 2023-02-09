@@ -115,7 +115,7 @@ nl:
         description:
       author_id:
         title: Auteur
-        description: Author description
+        description: Beschrijving van de auteur
       topic_ids:
         title: Tags
         description:
@@ -127,7 +127,7 @@ nl:
         description:
       budget:
         title: Bedrag
-        description: Budget description
+        description: Beschrijving van het budget
       images:
         title: Afbeeldingen
         description:
@@ -137,7 +137,7 @@ nl:
       section1:
         description:
       section2:
-        title: Images and attachments
+        title: Afbeeldingen en bijlagen
         description:
       section3:
         title: Details
