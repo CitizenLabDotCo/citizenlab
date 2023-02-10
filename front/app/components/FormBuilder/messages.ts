@@ -22,4 +22,8 @@ export default defineMessages({
     id: 'app.components.formBuilder.Page',
     defaultMessage: 'Page',
   },
+  helmetTitle: {
+    id: 'app.components.formBuilder.helmetTitle',
+    defaultMessage: 'Form builder',
+  },
 });
