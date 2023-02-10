@@ -83,7 +83,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     @project = folder ? Project.new(folder: folder) : Project.new
 
     authorize @project
-    @project = LocalProjectCopyService.new.copy(source_project)
+    @project = LocalProjectCopyService.new.copy(source_project, current_user)
 
     render json: WebApi::V1::ProjectSerializer.new(
       @project,

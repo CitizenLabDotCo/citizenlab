@@ -2,7 +2,7 @@
 
 # Copies a project within a tenant.
 class LocalProjectCopyService < ::ProjectCopyService
-  def copy(source_project)
+  def copy(source_project, user)
     new_title_multiloc = add_suffix_to_title(source_project.title_multiloc)
 
     options = {
@@ -14,6 +14,7 @@ class LocalProjectCopyService < ::ProjectCopyService
       new_publication_status: 'draft'
     }
 
+    start_time = Time.now
     template = export(source_project, **options)
     folder_id = ProjectFolders::Folder.find(source_project.folder_id) if source_project.folder_id
     copied_project = import(template, folder: folder_id, local_copy: true)
@@ -24,6 +25,18 @@ class LocalProjectCopyService < ::ProjectCopyService
     source_project.projects_allowed_input_topics.each { |p_a_i_t| p_a_i_t.dup.update!(project_id: copied_project.id) }
     source_project.projects_topics.each { |projects_topic| projects_topic.dup.update!(project_id: copied_project.id) }
     source_project.areas_projects.each { |areas_project| areas_project.dup.update!(project_id: copied_project.id) }
+
+    LogActivityJob.perform_now(
+      copied_project,
+      'local_copy_created',
+      user,
+      copied_project.created_at.to_i,
+      payload: {
+        time_taken: Time.now - start_time,
+        source_project_id: source_project.id,
+        copied_project_attributes: copied_project.attributes
+      }
+    )
 
     copied_project
   end
