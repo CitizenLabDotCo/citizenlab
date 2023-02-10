@@ -48,7 +48,7 @@ resource 'ContentBuilderLayoutImages' do
 
         assert_status 422
         json_response = json_parse response_body
-        expect(json_response).to include_response_error(:image, "can't be blank")
+        expect(json_response).to include_response_error(:image, 'blank')
       end
 
       example '[error] Create a layout image with invalid image type', document: false do
