@@ -170,12 +170,15 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
 
         {hasProjects && folderOpen && (
           <ProjectRows>
-            {folderChildAdminPublications.map((publication) => (
+            {folderChildAdminPublications.map((childPublication) => (
               <InFolderProjectRow
-                publication={publication}
-                key={publication.id}
+                publication={childPublication}
+                key={childPublication.id}
                 actions={['manage']}
-                showMoreActions
+                showMoreActions={userModeratesFolder(
+                  authUser,
+                  publication.publicationId
+                )}
               />
             ))}
           </ProjectRows>

@@ -31,7 +31,7 @@ const ModeratorProjectList = memo(() => {
         <ProjectRow
           publication={adminPublication}
           actions={['manage']}
-          showMoreActions
+          showMoreActions={false}
         />
       );
     }
