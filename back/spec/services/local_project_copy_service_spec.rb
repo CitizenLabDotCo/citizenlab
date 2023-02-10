@@ -15,6 +15,7 @@ describe LocalProjectCopyService do
       config.save!
     end
 
+    let(:user) { create(:admin) }
     let!(:continuous_project) do
       create(
         :continuous_project,
@@ -53,63 +54,63 @@ describe LocalProjectCopyService do
 
     it 'works' do
       project_count = Project.count
-      service.copy(continuous_project)
+      service.copy(continuous_project, user)
 
       expect(Project.count).to eq project_count + 1
     end
 
     it 'copies basic project attributes' do
-      copied_project = service.copy(continuous_project)
+      copied_project = service.copy(continuous_project, user)
 
       expect(copied_project.as_json(except: %i[id title_mutliloc slug updated_at created_at]))
         .to eq continuous_project.as_json(except: %i[id title_mutliloc slug updated_at created_at])
     end
 
     it 'creates a copied project with an associated publication status of draft' do
-      copied_project = service.copy(continuous_project)
+      copied_project = service.copy(continuous_project, user)
 
       expect(copied_project.admin_publication.publication_status).to eq 'draft'
     end
 
     it 'adds a suffix to the title_multiloc' do
       continuous_project.title_multiloc['en'] = 'Test title'
-      copied_project = service.copy(continuous_project)
+      copied_project = service.copy(continuous_project, user)
 
       expect(copied_project.title_multiloc['en']).to eq 'Test title - Copy'
     end
 
     it 'ensures uniqueness of slug(s)' do
-      copied_project1 = service.copy(continuous_project)
+      copied_project1 = service.copy(continuous_project, user)
       expect(copied_project1.slug).to eq "#{continuous_project.slug}-copy"
 
-      copied_project2 = service.copy(continuous_project.reload)
+      copied_project2 = service.copy(continuous_project.reload, user)
       expect(copied_project2.slug).to eq "#{continuous_project.slug}-copy-1"
     end
 
     it 'copies project to same folder as source project' do
       source_project = build(:project, folder_id: folder.id)
-      copied_project = service.copy(source_project)
+      copied_project = service.copy(source_project, user)
 
       expect(copied_project.folder_id).to eq source_project.folder_id
     end
 
     it 'associates areas of source project with copied project' do
       source_project = build(:project, areas: create_list(:area, 2))
-      copied_project = service.copy(source_project)
+      copied_project = service.copy(source_project, user)
 
       expect(copied_project.areas.map(&:as_json)).to match_array(source_project.areas.map(&:as_json))
     end
 
     it 'associates topics of source project with copied project' do
       source_project = create(:project, topics: create_list(:topic, 2))
-      copied_project = service.copy(source_project.reload)
+      copied_project = service.copy(source_project.reload, user)
 
       expect(copied_project.topics.map(&:as_json)).to match_array(source_project.topics.map(&:as_json))
     end
 
     it 'copies associated projects_allowed_input_topics' do
       create_list(:projects_allowed_input_topic, 2, project_id: continuous_project.id)
-      copied_project = service.copy(continuous_project)
+      copied_project = service.copy(continuous_project, user)
 
       expect(copied_project.allowed_input_topics.count).to eq 2
       expect(copied_project.allowed_input_topics.map(&:as_json))
@@ -120,7 +121,7 @@ describe LocalProjectCopyService do
       map_config = create(:map_config, project_id: continuous_project.id, tile_provider: 'https://groovy_map_tiles')
       create_list(:layer, 2, map_config_id: map_config.id)
       create_list(:legend_item, 2, map_config_id: map_config.id)
-      copied_project = service.copy(continuous_project)
+      copied_project = service.copy(continuous_project, user)
 
       expect(copied_project.map_config.center).to eq continuous_project.map_config.center
 
@@ -141,7 +142,7 @@ describe LocalProjectCopyService do
 
     it 'copies associated volunteering_causes' do
       create_list(:cause, 2, participation_context_id: continuous_project.id, participation_context_type: 'Project')
-      copied_project = service.copy(continuous_project.reload)
+      copied_project = service.copy(continuous_project.reload, user)
 
       expect(copied_project.causes.map do |record|
         record.as_json(only: %i[participation_context_type title_multiloc description_multiloc volunteers_count])
@@ -158,7 +159,7 @@ describe LocalProjectCopyService do
         participation_context_type: 'Project'
       )
       create_list(:custom_field_select, 5, :with_options, resource_type: 'CustomForm', resource_id: custom_form.id)
-      copied_project = service.copy(continuous_project.reload)
+      copied_project = service.copy(continuous_project.reload, user)
 
       expect(copied_project.custom_form.custom_fields.map do |record|
         record.as_json(except: %i[id ordering resource_id updated_at created_at])
@@ -189,7 +190,7 @@ describe LocalProjectCopyService do
         participation_context_type: 'Project'
       )
 
-      copied_project = service.copy(source_project)
+      copied_project = service.copy(source_project, user)
 
       expect(copied_project.poll_questions.count).to eq 2
       expect(copied_project.poll_questions.map do |record|
@@ -211,7 +212,7 @@ describe LocalProjectCopyService do
     it "associates correct groups with copied project's groups visibility permission" do
       source_project = create(:private_groups_project)
 
-      copied_project = service.copy(source_project)
+      copied_project = service.copy(source_project, user)
       expect(copied_project.groups).to match_array(source_project.groups)
     end
 
@@ -226,7 +227,7 @@ describe LocalProjectCopyService do
       it 'copies the action groups permission' do
         permission.update!(permitted_by: 'groups', groups: groups)
 
-        copied_project = service.copy(continuous_project)
+        copied_project = service.copy(continuous_project, user)
         expect(copied_project.permissions.find_by(action: 'commenting_idea').groups).to match_array(groups)
       end
     end
@@ -235,7 +236,7 @@ describe LocalProjectCopyService do
       before { create_list(:project_file, 2, project: continuous_project) }
 
       it 'creates associated copies of the file attachments' do
-        copied_project = service.copy(continuous_project)
+        copied_project = service.copy(continuous_project, user)
 
         expect(copied_project.project_files.count).to eq 2
         expect(copied_project.project_files.first.file.url).to include(continuous_project.project_files.first.name)
@@ -250,7 +251,7 @@ describe LocalProjectCopyService do
     end
 
     it 'copies basic phase attributes' do
-      copied_project = service.copy(timeline_project)
+      copied_project = service.copy(timeline_project, user)
 
       expect(copied_project.phases.map do |record|
         record.as_json(except: %i[id project_id start_at end_at updated_at created_at])
@@ -272,7 +273,7 @@ describe LocalProjectCopyService do
       it 'copies the action groups permission' do
         permission.update!(permitted_by: 'groups', groups: groups)
 
-        copied_project = service.copy(source_project)
+        copied_project = service.copy(source_project, user)
         expect(copied_project.phases.first.permissions.find_by(action: 'commenting_idea').groups).to match_array(groups)
       end
     end
@@ -283,7 +284,7 @@ describe LocalProjectCopyService do
       before { create_list(:phase_file, 2, phase: source_phase) }
 
       it 'creates associated copies of the file attachments' do
-        copied_project = service.copy(timeline_project)
+        copied_project = service.copy(timeline_project, user)
         copied_phase = copied_project.phases.order(:start_at).first
 
         expect(copied_phase.phase_files.count).to eq 2
@@ -305,7 +306,7 @@ describe LocalProjectCopyService do
 
         today = Time.zone.today
         expected_shift = (today - phase1_start).days
-        copied_project = service.copy(timeline_project)
+        copied_project = service.copy(timeline_project, user)
 
         expect(copied_project.phases.order(:start_at).first.start_at).to eq today
         expect(copied_project.phases.order(:start_at).second.end_at).to eq phase2_end + expected_shift
@@ -316,7 +317,7 @@ describe LocalProjectCopyService do
       let(:layout) { create(:layout, code: 'project_description') }
 
       it 'copies content builder layout' do
-        copied_project = service.copy(layout.content_buildable)
+        copied_project = service.copy(layout.content_buildable, user)
 
         expect(copied_project.content_builder_layouts.first
           .as_json(only: %i[content_buildable_type code enabled]))
@@ -330,7 +331,7 @@ describe LocalProjectCopyService do
           .result_with_hash(code1: images[0].code, code2: images[1].code)
 
         layout.update(craftjs_jsonmultiloc: JSON.parse(craftjs_str))
-        copied_project = service.copy(layout.content_buildable)
+        copied_project = service.copy(layout.content_buildable, user)
 
         new_craftjs = copied_project.content_builder_layouts.first.craftjs_jsonmultiloc
         new_image_codes = []
