@@ -2,14 +2,13 @@ import React, { memo, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, Box } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import {
   RowContent,
   RowContentInner,
   RowTitle,
   RowButton,
-  ActionsRowContainer,
 } from 'containers/Admin/projects/components/StyledComponents';
 import MoreFolderActionsMenu from './MoreFolderActionsMenu';
 
@@ -122,29 +121,29 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
   if (!isNilOrError(authUser)) {
     return (
       <Container>
-        <FolderRowContent
-          className="e2e-admin-adminPublications-list-item"
-          expanded={hasProjects && folderOpen}
-          hasProjects={hasProjects}
-          role="button"
-          onClick={toggleExpand}
-        >
-          <RowContentInner className="expand primary">
-            {hasProjects && (
-              <ArrowIcon
-                expanded={hasProjects && folderOpen}
-                name="chevron-right"
+        <Box width="100%" display="flex">
+          <FolderRowContent
+            className="e2e-admin-adminPublications-list-item"
+            expanded={hasProjects && folderOpen}
+            hasProjects={hasProjects}
+            role="button"
+            onClick={toggleExpand}
+          >
+            <RowContentInner className="expand primary">
+              {hasProjects && (
+                <ArrowIcon
+                  expanded={hasProjects && folderOpen}
+                  name="chevron-right"
+                />
+              )}
+              <FolderIcon name="folder-outline" />
+              <RowTitle
+                value={publication.attributes.publication_title_multiloc}
               />
-            )}
-            <FolderIcon name="folder-outline" />
-            <RowTitle
-              value={publication.attributes.publication_title_multiloc}
-            />
-            <PublicationStatusLabel
-              publicationStatus={publication.attributes.publication_status}
-            />
-          </RowContentInner>
-          <ActionsRowContainer>
+              <PublicationStatusLabel
+                publicationStatus={publication.attributes.publication_status}
+              />
+            </RowContentInner>
             <RowButton
               className={`e2e-admin-edit-project ${
                 publication.attributes.publication_title_multiloc['en-GB'] || ''
@@ -159,12 +158,12 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
             >
               <FormattedMessage {...messages.manageButtonLabel} />
             </RowButton>
-            <MoreFolderActionsMenu
-              folderId={publication.publicationId}
-              setError={setFolderDeletionError}
-            />
-          </ActionsRowContainer>
-        </FolderRowContent>
+          </FolderRowContent>
+          <MoreFolderActionsMenu
+            folderId={publication.publicationId}
+            setError={setFolderDeletionError}
+          />
+        </Box>
 
         {folderDeletionError && <Error text={folderDeletionError} />}
 
