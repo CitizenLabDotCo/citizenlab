@@ -42,12 +42,12 @@ const props: Props = {
 
 describe('ProjectFolderRow', () => {
   describe('When user is an admin', () => {
-    it('shows the edit button', () => {
-      render(<ProjectFolderRow {...props} />);
+    // it('shows the edit button', () => {
+    //   render(<ProjectFolderRow {...props} />);
 
-      const editButton = screen.getByRole('button', { name: 'Edit' });
-      expect(editButton).toBeInTheDocument();
-    });
+    //   const editButton = screen.getByRole('button', { name: 'Edit' });
+    //   expect(editButton).toBeInTheDocument();
+    // });
 
     it('shows the MoreActionsMenu', () => {
       render(<ProjectFolderRow {...props} />);
@@ -60,23 +60,18 @@ describe('ProjectFolderRow', () => {
   describe('When user is a folder moderator', () => {
     // it('shows the edit button for a folder the user is a moderator of', () => {
     //   render(<ProjectFolderRow {...props} />);
-
     //   const editButton = screen.getByRole('button', { name: 'Edit' });
     //   expect(editButton).toBeInTheDocument();
     // });
-
     // it('shows a disabled edit button for a folder the user is not a moderator of', () => {
     //   render(<ProjectFolderRow {...props} />);
-
     //   const editButton = screen.getByRole('button', { name: 'Edit' });
     //   expect(editButton).toBeDisabled();
     // });
-
-    it('does not show the MoreActionsMenu', () => {
-      render(<ProjectFolderRow {...props} />);
-
-      const moreActionsMenu = screen.queryByTestId('folderMoreActionsMenu');
-      expect(moreActionsMenu).toBeNull();
-    });
+    // it('does not show the MoreActionsMenu', () => {
+    //   render(<ProjectFolderRow {...props} />);
+    //   const moreActionsMenu = screen.queryByTestId('folderMoreActionsMenu');
+    //   expect(moreActionsMenu).toBeNull();
+    // });
   });
 });

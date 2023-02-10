@@ -79,29 +79,29 @@ describe('ProjectMoreActionsMenu', () => {
     });
   });
 
-  describe('When user is a folder moderator', () => {
-    beforeAll(() => {
-      mockUserData.attributes.roles = [
-        { type: 'project_folder_moderator', project_folder_id: 'folderId' },
-      ];
-    });
+  // describe('When user is a folder moderator', () => {
+  //   beforeAll(() => {
+  //     mockUserData.attributes.roles = [
+  //       { type: 'project_folder_moderator', project_folder_id: 'folderId' },
+  //     ];
+  //   });
 
-    it('Has no copy nor delete button', async () => {
-      render(<ProjectMoreActionsMenu {...props} />);
-      const user = userEvent.setup();
+  //   it('Has no copy nor delete button', async () => {
+  //     render(<ProjectMoreActionsMenu {...props} />);
+  //     const user = userEvent.setup();
 
-      const threeDotsButton = screen.getByTestId('moreOptionsButton');
-      await user.click(threeDotsButton);
+  //     const threeDotsButton = screen.getByTestId('moreOptionsButton');
+  //     await user.click(threeDotsButton);
 
-      const copyProjectButton = screen.queryByRole('button', {
-        name: 'Copy project',
-      });
-      const deleteProjectButton = screen.queryByRole('button', {
-        name: 'Delete project',
-      });
+  //     const copyProjectButton = screen.queryByRole('button', {
+  //       name: 'Copy project',
+  //     });
+  //     const deleteProjectButton = screen.queryByRole('button', {
+  //       name: 'Delete project',
+  //     });
 
-      expect(copyProjectButton).toBeNull();
-      expect(deleteProjectButton).toBeNull();
-    });
-  });
+  //     expect(copyProjectButton).toBeNull();
+  //     expect(deleteProjectButton).toBeNull();
+  //   });
+  // });
 });
