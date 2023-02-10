@@ -93,6 +93,7 @@ export const FormEdit = ({
 
   const isEditingDisabled =
     totalSubmissions > 0 && !isEditPermittedAfterSubmissions;
+  const showTopNotice = totalSubmissions > 0;
 
   const schema = object().shape({
     customFields: array().of(
@@ -271,9 +272,9 @@ export const FormEdit = ({
                     <Feedback
                       successMessage={formatMessage(formSavedSuccessMessage)}
                     />
-                    {isEditingDisabled &&
-                      builderConfig.getDeleteFormResultsNotice &&
-                      builderConfig.getDeleteFormResultsNotice(projectId)}
+                    {showTopNotice &&
+                      builderConfig.getTopNotice &&
+                      builderConfig.getTopNotice(projectId)}
                     <Box
                       borderRadius="3px"
                       boxShadow="0px 2px 4px rgba(0, 0, 0, 0.2)"

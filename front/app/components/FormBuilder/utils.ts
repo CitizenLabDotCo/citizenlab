@@ -33,7 +33,7 @@ export type FormBuilderConfig = {
 
   viewFormLink?: string;
 
-  getDeleteFormResultsNotice?: (projectId: string) => void;
+  getTopNotice?: () => void;
   goBackUrl?: string;
   groupingType: 'page' | 'section';
 };

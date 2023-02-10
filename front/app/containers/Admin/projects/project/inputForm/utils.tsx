@@ -1,8 +1,14 @@
 // types
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
+import Warning from 'components/UI/Warning';
+import React from 'react';
+
+// components
+import { Box } from '@citizenlab/cl2-component-library';
 
 // intl
 import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 export const ideationConfig: FormBuilderConfig = {
   formBuilderTitle: messages.inputForm,
@@ -20,4 +26,13 @@ export const ideationConfig: FormBuilderConfig = {
   alwaysShowCustomFields: false,
 
   groupingType: 'section',
+  getTopNotice: () => {
+    return (
+      <Box mb="20px">
+        <Warning>
+          <FormattedMessage {...messages.existingSubmissionsWarning} />
+        </Warning>
+      </Box>
+    );
+  },
 };

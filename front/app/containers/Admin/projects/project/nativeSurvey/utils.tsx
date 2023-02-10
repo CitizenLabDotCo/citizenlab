@@ -37,13 +37,16 @@ export const nativeSurveyConfig: FormBuilderConfig = {
   alwaysShowCustomFields: true,
 
   groupingType: 'page',
-  getDeleteFormResultsNotice: (projectId: string) => {
-    return (
-      <DeleteFormResultsNotice
-        projectId={projectId}
-        redirectToSurveyPage={true}
-      />
-    );
+  getTopNotice: (projectId?: string) => {
+    if (projectId !== undefined) {
+      return (
+        <DeleteFormResultsNotice
+          projectId={projectId}
+          redirectToSurveyPage={true}
+        />
+      );
+    }
+    return null;
   },
 };
 
