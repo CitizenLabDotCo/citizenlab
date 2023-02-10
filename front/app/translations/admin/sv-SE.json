@@ -1,8 +1,6 @@
 {
   "UI.FormComponents.required": "krävs",
-  "app.components.Admin.ImageCropper.imageSupportPageText": "besök vårt supportcenter",
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "app.components.Admin.ImageCropper.imageTooltip": "Mer information om rekommenderade bildupplösningar finns i {supportPageLink}.",
   "app.components.Admin.ImageCropper.info": "Den här bilden beskärs alltid till ett visst förhållande för att se till att alla viktiga aspekter alltid visas. Den här bildtypens {link} är {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "rekommenderat förhållande",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Rubriktext för registrerade användare",
@@ -143,7 +141,6 @@
   "app.components.admin.PostManager.topicsTabTooltipText": "Lägg till ämnen till indata genom att dra och släppa.",
   "app.components.admin.PostManager.up": "Upp",
   "app.components.admin.PostManager.votes": "Röster",
-  "app.components.admin.ProjectableHeaderBgUploader.headerImageInputLabel": "Rubrikbild",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "från",
   "app.components.admin.ReportExportMenu.FileName.groupFilter": "grupp",
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "projekt",

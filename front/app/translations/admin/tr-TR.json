@@ -1,8 +1,6 @@
 {
   "UI.FormComponents.required": "gerekli",
-  "app.components.Admin.ImageCropper.imageSupportPageText": "visit our support center",
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "app.components.Admin.ImageCropper.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}.",
   "app.components.Admin.ImageCropper.info": "This image is always cropped to a certain ratio to make sure all crucial aspects are on display at all times. The {link} for this image type is {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "recommended ratio",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Kayıtlı kullanıcılar için başlık metni",
@@ -143,7 +141,6 @@
   "app.components.admin.PostManager.topicsTabTooltipText": "Sürükle ve bırak yöntemini kullanarak bir girdiye etiket ekleyin.",
   "app.components.admin.PostManager.up": "Olumlu",
   "app.components.admin.PostManager.votes": "Oylar",
-  "app.components.admin.ProjectableHeaderBgUploader.headerImageInputLabel": "Header image",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "kimden",
   "app.components.admin.ReportExportMenu.FileName.groupFilter": "grup",
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "proje",

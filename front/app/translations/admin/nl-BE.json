@@ -1,8 +1,6 @@
 {
   "UI.FormComponents.required": "vereist",
-  "app.components.Admin.ImageCropper.imageSupportPageText": "Bezoek onze helpdesk",
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "app.components.Admin.ImageCropper.imageTooltip": "{supportPageLink} voor meer informatie over aanbevolen afbeeldingsresoluties.",
   "app.components.Admin.ImageCropper.info": "Deze afbeelding wordt altijd bijgesneden tot een bepaalde verhouding om ervoor te zorgen dat alle cruciale aspecten altijd worden weergegeven. De {link} voor dit afbeeldingstype is {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "aanbevolen verhouding",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Bannertitel voor geregistreerde gebruikers",
@@ -143,7 +141,6 @@
   "app.components.admin.PostManager.topicsTabTooltipText": "Voeg tags toe aan een bijdrage door ze naar daar te verslepen.",
   "app.components.admin.PostManager.up": "Voor",
   "app.components.admin.PostManager.votes": "Stemmen",
-  "app.components.admin.ProjectableHeaderBgUploader.headerImageInputLabel": "Bannerafbeelding",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "van",
   "app.components.admin.ReportExportMenu.FileName.groupFilter": "groep",
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "project",

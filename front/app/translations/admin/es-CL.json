@@ -1,8 +1,6 @@
 {
   "UI.FormComponents.required": "requerido",
-  "app.components.Admin.ImageCropper.imageSupportPageText": "visita nuestro centro de soporte",
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "app.components.Admin.ImageCropper.imageTooltip": "Para más información y recomendación sobre resolución de imágenes, {supportPageLink}.",
   "app.components.Admin.ImageCropper.info": "Esta imagen siempre se recorta a una determinada proporción para garantizar que todos los aspectos cruciales se muestren en todo momento. El {link} para este tipo de imagen es {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "proporción recomendada",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Texto de cabecera para los usuarios registrados",
@@ -143,7 +141,6 @@
   "app.components.admin.PostManager.topicsTabTooltipText": "Agrega temas/etiquetas a un aporte usando arrastrar y soltar.",
   "app.components.admin.PostManager.up": "Arriba",
   "app.components.admin.PostManager.votes": "Votos",
-  "app.components.admin.ProjectableHeaderBgUploader.headerImageInputLabel": "Imagen de encabezado",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "de",
   "app.components.admin.ReportExportMenu.FileName.groupFilter": "grupo",
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "proyecto",
