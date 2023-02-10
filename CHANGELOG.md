@@ -1,6 +1,6 @@
 # Changelog
 
-## Next release
+## 2023-02-10
 
 ### Changed
 
