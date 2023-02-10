@@ -1,7 +1,6 @@
 {
   "UI.FormComponents.required": "nepieciešams",
   "app.components.Admin.ImageCropper.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
-  "app.components.Admin.ImageCropper.imageTooltip": "Plašāku informāciju par ieteicamo attēlu izšķirtspēju skatiet vietnē {supportPageLink}.",
   "app.components.Admin.ImageCropper.info": "Šis attēls vienmēr tiek apgriezts noteiktā proporcijā, lai vienmēr būtu redzami visi svarīgākie aspekti. Šim attēla tipam ir {link} {aspect}.",
   "app.components.Admin.ImageCropper.infoLinkText": "ieteicamā attiecība",
   "app.components.AdminPage.SettingsPage.bannerHeaderSignedIn": "Galvenes teksts reģistrētajiem lietotājiem",
