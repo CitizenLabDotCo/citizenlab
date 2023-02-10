@@ -651,7 +651,7 @@
   "app.containers.Admin.reporting.chartsSection": "GRAFER",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "Dette er noget tekst. Du kan redigere og formatere den ved at bruge editoren i panelet til højre.",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.participants": "Deltagere",
-  "app.containers.Admin.reporting.components.ReportBuilder.Templates.projectResults": "Project results",
+  "app.containers.Admin.reporting.components.ReportBuilder.Templates.projectResults": "Projektets resultater",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummary": "Resumé af rapporten",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Tilføj projektets mål, de anvendte deltagelsesmetoder og resultatet",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Besøgende",
