@@ -59,7 +59,7 @@ group :development, :test do
   gem 'saharspec'
   gem 'simplecov'
   gem 'simplecov-rcov'
-  gem 'test-prof', '~> 1.0'
+  gem 'test-prof', '~> 1.1'
   gem 'vcr', '~> 6.1'
 end
 
@@ -95,7 +95,7 @@ gem 'que', git: 'https://github.com/que-rb/que', branch: 'master', ref: '77c6b92
 gem 'sinatra', '~> 2.2.3' # Fixes CVE-2022-45442. Sinatra is a dependency of que-web, but que-web depends on sinatra >= 0.
 gem 'que-web'
 
-gem 'activerecord-import', '~> 1.0'
+gem 'activerecord-import', '~> 1.4'
 gem 'activerecord_json_validator', '~> 1.3.0'
 gem 'activerecord-postgis-adapter', '~> 7.0.0'
 
@@ -119,7 +119,7 @@ gem 'interactor-rails'
 gem 'liquid', '~> 4.0'
 gem 'mini_magick', '~> 4.9'
 gem 'pg_search', '~> 2.3.5'
-gem 'premailer-rails', '~> 1.10.3'
+gem 'premailer-rails', '~> 1.12.0'
 gem 'rest-client'
 gem 'rgeo-geojson'
 gem 'rubyzip', '~> 1.3.0'
@@ -214,6 +214,7 @@ commercial_engines = [
   'matomo',
   'moderation',
   'nlp',
+  'posthog_integration',
   'public_api',
   'remove_vendor_branding',
   'report_builder',

@@ -733,7 +733,7 @@
   "app.containers.IdeaCards.showResults": "Prikaži rezultate",
   "app.containers.IdeaCards.showXResults": "Prikaži {ideasCount, plural, one {# rezultat} other {# rezultata}}",
   "app.containers.IdeaCards.sortTitle": "Razvrstavanje",
-  "app.containers.IdeaCards.statusTitle": "Status",
+  "app.containers.IdeaCards.statusTitle": "Stanje",
   "app.containers.IdeaCards.topics": "Oznake",
   "app.containers.IdeaCards.topicsTitle": "Oznake",
   "app.containers.IdeaCards.trending": "U trendu",

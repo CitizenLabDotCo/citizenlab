@@ -61,7 +61,7 @@ describe('Form builder linear scale', () => {
       `/en/projects/${projectSlug}/ideas/new`
     );
 
-    cy.get(`#${questionTitle}-radio-1`).click({ force: true });
+    cy.get(`#linear-scale-option-1`).click({ force: true });
 
     cy.get('[data-cy="e2e-next-page"]').click();
     // Save survey response
