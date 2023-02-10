@@ -115,7 +115,7 @@ da:
         description:
       author_id:
         title: Forfatter
-        description: Author description
+        description: Forfatterbeskrivelse
       topic_ids:
         title: Emner
         description:
@@ -127,7 +127,7 @@ da:
         description:
       budget:
         title: Budget
-        description: Budget description
+        description: Budgetbeskrivelse
       images:
         title: Billeder
         description:
@@ -137,10 +137,10 @@ da:
       section1:
         description:
       section2:
-        title: Images and attachments
+        title: Billeder og vedhæftede filer
         description:
       section3:
-        title: Details
+        title: Detaljer
         description:
   custom_forms:
     categories:
