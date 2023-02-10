@@ -63,14 +63,14 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.projects.all.container': {
     onRender: (hasRendered: boolean) => void;
   };
-  'app.containers.Admin.projects.edit.description.contentBuilder': {
+  'app.containers.Admin.projects.edit.description.projectDescriptionBuilder': {
     onMount: () => void;
     valueMultiloc: Multiloc | null | undefined;
     onChange: (description_multiloc: Multiloc, _locale: Locale) => void;
     label: string;
     labelTooltipText: string;
   };
-  'app.ProjectsShowPage.shared.header.ProjectInfo.contentBuilder': {
+  'app.ProjectsShowPage.shared.header.ProjectInfo.projectDescriptionBuilder': {
     onMount: () => void;
   };
   'app.containers.Admin.users.GroupsListPanel.listitem.icon': {

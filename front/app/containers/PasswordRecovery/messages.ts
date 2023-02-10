@@ -29,9 +29,10 @@ export default defineMessages({
     id: 'app.containers.PasswordRecovery.resetPassword',
     defaultMessage: 'Send password reset link',
   },
-  successMessage: {
-    id: 'app.containers.PasswordRecovery.successMessage',
-    defaultMessage: 'Password reset email successfully send to {email}',
+  passwordResetSuccessMessage: {
+    id: 'app.containers.PasswordRecovery.passwordResetSuccessMessage',
+    defaultMessage:
+      'If this email address is registered on the platform, a password reset link has been sent.',
   },
   emailError: {
     id: 'app.containers.PasswordRecovery.emailError',

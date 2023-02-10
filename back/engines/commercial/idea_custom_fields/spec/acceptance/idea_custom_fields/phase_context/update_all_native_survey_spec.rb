@@ -39,6 +39,7 @@ resource 'Idea Custom Fields' do
         create(:custom_field, resource: custom_form) # field to destroy
         request = {
           custom_fields: [
+            { input_type: 'page' },
             # Inserted field first to test reordering of fields.
             {
               input_type: 'text',
@@ -58,8 +59,8 @@ resource 'Idea Custom Fields' do
 
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 2
-        expect(json_response[:data][0]).to match({
+        expect(json_response[:data].size).to eq 3
+        expect(json_response[:data][1]).to match({
           attributes: {
             code: nil,
             created_at: an_instance_of(String),
@@ -67,7 +68,7 @@ resource 'Idea Custom Fields' do
             enabled: false,
             input_type: 'text',
             key: 'inserted_field',
-            ordering: 0,
+            ordering: 1,
             required: false,
             title_multiloc: { en: 'Inserted field' },
             updated_at: an_instance_of(String),
@@ -78,7 +79,7 @@ resource 'Idea Custom Fields' do
           type: 'custom_field',
           relationships: { options: { data: [] } }
         })
-        expect(json_response[:data][1]).to match({
+        expect(json_response[:data][2]).to match({
           attributes: {
             code: nil,
             created_at: an_instance_of(String),
@@ -86,7 +87,7 @@ resource 'Idea Custom Fields' do
             enabled: true,
             input_type: 'text',
             key: field_to_update.key,
-            ordering: 1,
+            ordering: 2,
             required: true,
             title_multiloc: { en: 'Updated field' },
             updated_at: an_instance_of(String),
@@ -115,6 +116,7 @@ resource 'Idea Custom Fields' do
 
         request = {
           custom_fields: [
+            { input_type: 'page' },
             {
               input_type: 'multiselect',
               title_multiloc: { en: 'Inserted field' },
@@ -138,8 +140,8 @@ resource 'Idea Custom Fields' do
 
         expect(CustomField.where(id: delete_field).count).to eq 0
         expect(CustomFieldOption.where(id: delete_options).count).to eq 0
-        expect(json_response[:data].size).to eq 1
-        expect(json_response[:data].first).to match({
+        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data][1]).to match({
           attributes: {
             code: nil,
             created_at: an_instance_of(String),
@@ -147,7 +149,7 @@ resource 'Idea Custom Fields' do
             enabled: true,
             input_type: 'multiselect',
             key: 'inserted_field',
-            ordering: 0,
+            ordering: 1,
             required: false,
             title_multiloc: { en: 'Inserted field' },
             updated_at: an_instance_of(String),
@@ -171,7 +173,7 @@ resource 'Idea Custom Fields' do
             }
           }
         })
-        options = CustomField.find(json_response.dig(:data, 0, :id)).options
+        options = CustomField.find(json_response.dig(:data, 1, :id)).options
         json_option1 = json_response[:included].find do |json_option|
           json_option[:id] == options.first.id
         end
@@ -220,6 +222,7 @@ resource 'Idea Custom Fields' do
 
         request = {
           custom_fields: [
+            { input_type: 'page' },
             {
               id: field.id,
               title_multiloc: { 'en' => 'Updated field' },
@@ -236,8 +239,8 @@ resource 'Idea Custom Fields' do
 
         expect(CustomField.where(id: field).count).to eq 1
         expect(field.reload.options.count).to eq 0
-        expect(json_response[:data].size).to eq 1
-        expect(json_response[:data].first).to match({
+        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data][1]).to match({
           attributes: {
             code: nil,
             created_at: an_instance_of(String),
@@ -245,7 +248,7 @@ resource 'Idea Custom Fields' do
             enabled: true,
             input_type: 'select',
             key: field.key,
-            ordering: 0,
+            ordering: 1,
             required: true,
             title_multiloc: { en: 'Updated field' },
             updated_at: an_instance_of(String),
