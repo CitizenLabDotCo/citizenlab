@@ -115,7 +115,7 @@ es:
         description:
       author_id:
         title: Autor
-        description: Author description
+        description: Descripción del autor
       topic_ids:
         title: Temas
         description:
@@ -127,7 +127,7 @@ es:
         description:
       budget:
         title: Presupuesto
-        description: Budget description
+        description: Descripción del presupuesto
       images:
         title: Imágenes
         description:
@@ -137,10 +137,10 @@ es:
       section1:
         description:
       section2:
-        title: Images and attachments
+        title: Imágenes y adjuntos
         description:
       section3:
-        title: Details
+        title: Detalles
         description:
   custom_forms:
     categories:
@@ -197,7 +197,7 @@ es:
       author_fullname: 'Nombre del autor'
       author_email: 'Correo electrónico del autor'
       author_id: 'ID del autor'
-      budget: 'Budget'
+      budget: 'Presupuesto'
       created_at: 'Enviado en'
       published_at: 'Publicado en'
       comments_count: 'Comentarios'
