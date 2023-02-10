@@ -14,7 +14,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import { isAdmin, isModerator } from 'services/permissions/roles';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const POSTHOG_API_KEY = process.env.POSTHOG_API_KEY;
 
