@@ -26,7 +26,7 @@ class LocalProjectCopyService < ::ProjectCopyService
     source_project.projects_topics.each { |projects_topic| projects_topic.dup.update!(project_id: copied_project.id) }
     source_project.areas_projects.each { |areas_project| areas_project.dup.update!(project_id: copied_project.id) }
 
-    LogActivityJob.perform_now(
+    LogActivityJob.perform_later(
       copied_project,
       'local_copy_created',
       user,
