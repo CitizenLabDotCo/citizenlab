@@ -209,7 +209,7 @@ export interface IAppConfigurationSettings {
   };
   disable_user_bios?: AppConfigurationFeature;
   texting?: AppConfigurationFeature;
-  content_builder?: AppConfigurationFeature;
+  project_description_builder?: AppConfigurationFeature;
   representativeness?: AppConfigurationFeature;
   remove_vendor_branding?: AppConfigurationFeature;
   native_surveys?: AppConfigurationFeature;
@@ -218,6 +218,7 @@ export interface IAppConfigurationSettings {
   user_confirmation?: AppConfigurationFeature;
   input_form_custom_fields?: AppConfigurationFeature;
   report_builder?: AppConfigurationFeature;
+  posthog_integration?: AppConfigurationFeature;
 }
 
 interface AppConfigurationMapSettings extends AppConfigurationFeature {

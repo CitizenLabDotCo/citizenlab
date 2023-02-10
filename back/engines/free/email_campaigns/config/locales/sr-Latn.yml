@@ -427,7 +427,7 @@ sr-Latn:
       cta_view_phase: 'Podesite novu fazu'
       event_description: 'Projekat ''%{projectName}'' će uskoro ući u novu fazu. Proverite da li ste obezbedili sve za ovu fazu: Da li ste uneli dobar opis? Da li su odabrane ideje premeštene u ovu fazu? Da li želite da učesnicima pružite dodatne informacije o ovoj fazi putem e-mail obaveštenja?'
       main_header: '%{firstName}, projekat će uskoro ući u novu fazu'
-      subtitle: 'About ''%{projectName}'''
+      subtitle: 'O ''%{projectName}'''
       new_phase: 'Projekat će ući u fazu ''%{phaseTitle}'''
       subject: 'Pripremite sve za novu fazu projekta %{projectName}'
       preheader: 'Uskoro počinje nova faza projekta %{projectName}'

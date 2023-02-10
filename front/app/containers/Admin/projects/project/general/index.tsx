@@ -20,6 +20,7 @@ import {
   SectionTitle,
   SectionDescription,
   SubSectionTitle,
+  SectionField,
 } from 'components/admin/Section';
 import ParticipationContext, {
   IParticipationContextConfig,
@@ -32,7 +33,8 @@ import {
 } from './components/styling';
 import ProjectFolderSelect from './components/ProjectFolderSelect';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
-import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
+import ProjectCardImageTooltip from './components/ProjectCardImageTooltip';
+import ProjectHeaderImageTooltip from './components/ProjectHeaderImageTooltip';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -570,14 +572,21 @@ const AdminProjectsProjectGeneral = () => {
           />
         )}
 
-        <HeaderBgUploader
-          imageUrl={project?.attributes.header_bg.large}
-          onImageChange={handleHeaderBgChange}
-        />
+        <SectionField>
+          <SubSectionTitle>
+            <FormattedMessage {...messages.headerImageInputLabel} />
+            <ProjectHeaderImageTooltip />
+          </SubSectionTitle>
+          <HeaderBgUploader
+            imageUrl={project?.attributes.header_bg.large}
+            onImageChange={handleHeaderBgChange}
+          />
+        </SectionField>
+
         <StyledSectionField>
           <SubSectionTitle>
             <FormattedMessage {...messages.projectCardImageLabelText} />
-            <ImageInfoTooltip />
+            <ProjectCardImageTooltip />
           </SubSectionTitle>
           {projectCardImageShouldBeSaved ? (
             <Box display="flex" flexDirection="column" gap="8px">
