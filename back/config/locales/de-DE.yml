@@ -115,7 +115,7 @@ de:
         description:
       author_id:
         title: Autor
-        description: Author description
+        description: Beschreibung des Autors / der Autorin
       topic_ids:
         title: Themen
         description:
@@ -127,7 +127,7 @@ de:
         description:
       budget:
         title: Haushalt
-        description: Budget description
+        description: Beschreibung des Budgets
       images:
         title: Bilder
         description:
@@ -137,7 +137,7 @@ de:
       section1:
         description:
       section2:
-        title: Images and attachments
+        title: Bilder und Anhänge
         description:
       section3:
         title: Details
