@@ -1,11 +1,12 @@
 import React, { memo } from 'react';
-import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
-import useAdminPublications from 'hooks/useAdminPublications';
+import useAdminPublications, {
+  IAdminPublicationContent,
+} from 'hooks/useAdminPublications';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
