@@ -197,20 +197,21 @@ export const IdeasShow = ({
   const [translateButtonIsClicked, setTranslateButtonIsClicked] =
     useState<boolean>(false);
   const [queryParams] = useSearchParams();
+  const ideaIdParameter = queryParams.get('new_idea_id');
 
   useEffect(() => {
-    const newIdeaId = queryParams.get('new_idea_id');
     let timeout: NodeJS.Timeout;
-    if (isString(newIdeaId)) {
+    if (isString(ideaIdParameter)) {
       timeout = setTimeout(() => {
-        setNewIdeaId(newIdeaId);
+        setNewIdeaId(ideaIdParameter);
       }, 1500);
       clHistory.replace(window.location.pathname);
     }
-    return () => {
+
+    () => {
       clearTimeout(timeout);
     };
-  }, [queryParams]);
+  }, [ideaIdParameter]);
 
   const phases = usePhases(projectId);
   const idea = useIdea({ ideaId });
