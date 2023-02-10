@@ -91,6 +91,11 @@ const configuration: ModuleConfiguration = {
       currentAppConfigurationStream().observable,
       authUserStream().observable.pipe(startWith(null), pairwise()),
     ]).subscribe(async ([appConfig, [prevUser, user]]) => {
+      // Check the feature flag
+      const posthogSettings =
+        appConfig.data.attributes.settings.posthog_integration;
+      if (!posthogSettings?.allowed || !posthogSettings.enabled) return;
+
       // In case the user signs in or visits signed in as an admin/moderator
       if (!isNilOrError(user) && (isAdmin(user) || isModerator(user))) {
         initializePosthog(POSTHOG_API_KEY, user, appConfig);

@@ -17,7 +17,7 @@ import intercomConfiguration from './commercial/intercom';
 import satismeterConfiguration from './commercial/satismeter';
 import segmentConfiguration from './commercial/segment';
 import matomoConfiguration from './commercial/matomo';
-import posthogConfiguration from './commercial/posthog';
+import posthogConfiguration from './commercial/posthog_integration';
 import projectDescriptionBuilderConfiguration from './commercial/project_description_builder';
 import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
 import bulkIdeaImportConfiguration from './commercial/bulk_idea_import';
