@@ -307,6 +307,10 @@ namespace :cl2_back do
         report_builder: {
           enabled: true,
           allowed: true
+        },
+        posthog_integration: {
+          enabled: false,
+          allowed: false
         }
       }
     )

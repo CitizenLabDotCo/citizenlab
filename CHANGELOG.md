@@ -1,8 +1,14 @@
 # Changelog
 
+## 2023-02-10
+
+### Changed
+
+- Tooltips for image uploaders in project and folder forms.
+
 ## 2023-02-09
 
-## Added
+### Added
 
 - Report builder templates now automatically detect ideation and native survey projects and add different widgets based on that
 - [CL-2739] Added basic posthog integration

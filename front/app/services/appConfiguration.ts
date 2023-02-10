@@ -217,6 +217,7 @@ export interface IAppConfigurationSettings {
   visitors_dashboard?: AppConfigurationFeature;
   user_confirmation?: AppConfigurationFeature;
   report_builder?: AppConfigurationFeature;
+  posthog_integration?: AppConfigurationFeature;
 }
 
 interface AppConfigurationMapSettings extends AppConfigurationFeature {
