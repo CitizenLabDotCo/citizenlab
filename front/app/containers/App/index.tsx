@@ -32,7 +32,7 @@ const ConsentManager = lazy(() => import('components/ConsentManager'));
 
 // components
 import ErrorBoundary from 'components/ErrorBoundary';
-import Redirect from 'components/routing/Redirect';
+import Navigate from 'utils/cl-router/Navigate';
 import Authentication from 'containers/Authentication';
 import MainHeader from 'containers/MainHeader';
 import MobileNavbar from 'containers/MobileNavbar';
@@ -505,7 +505,7 @@ class App extends PureComponent<Props, State> {
                   >
                     <ErrorBoundary>{children}</ErrorBoundary>
                     <HasPermission.No>
-                      <Redirect method="push" path="/" />
+                      <Navigate to="/" />
                     </HasPermission.No>
                   </HasPermission>
                 </InnerContainer>

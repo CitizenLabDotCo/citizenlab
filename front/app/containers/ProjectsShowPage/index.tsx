@@ -11,7 +11,7 @@ import ContinuousPoll from './continuous/Poll';
 import ContinuousVolunteering from './continuous/Volunteering';
 import TimelineContainer from './timeline';
 import { Box, Spinner, useBreakpoint } from '@citizenlab/cl2-component-library';
-import Redirect from 'components/routing/Redirect';
+import Navigate from 'utils/cl-router/Navigate';
 import Modal from './Modal';
 import { ProjectCTABar } from './ProjectCTABar';
 import EventsViewer from 'containers/EventsPage/EventsViewer';
@@ -226,7 +226,7 @@ const ProjectsShowPageWrapper = () => {
   const unauthorized = isUnauthorizedError(project);
 
   if (userJustLoggedOut && unauthorized) {
-    return <Redirect method="replace" path="/" />;
+    return <Navigate to="/" replace />;
   }
 
   if (unauthorized) {
@@ -250,7 +250,8 @@ const ProjectsShowPageWrapper = () => {
   ) {
     // Redirect old childRoutes (e.g. /info, /process, ...) to the project index location
     const projectRoot = `/${urlSegments.slice(1, 3).join('/')}`;
-    return <Redirect method="replace" path={projectRoot} />;
+    // return <Redirect method="replace" path={projectRoot} />;
+    return <Navigate to={projectRoot} replace />;
   }
 
   return <ProjectsShowPage project={project} />;
