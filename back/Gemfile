@@ -214,6 +214,7 @@ commercial_engines = [
   'matomo',
   'moderation',
   'nlp',
+  'posthog_integration',
   'public_api',
   'remove_vendor_branding',
   'report_builder',

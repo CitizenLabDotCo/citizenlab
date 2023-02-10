@@ -59,13 +59,6 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
     end
   end
 
-  def description_option(field)
-    @descriptions ||= {}
-    locale = I18n.locale.to_s
-    @descriptions[locale] ||= {}
-    @descriptions[locale][field] ||= multiloc_service.t TextImageService.new.render_data_images(field, :description_multiloc)
-  end
-
   def generate_with_pages(fields)
     locales.index_with do |locale|
       I18n.with_locale(locale) do
@@ -148,14 +141,9 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
     {
       type: 'Category',
       label: (MultilocService.new.t(current_section.title_multiloc) if current_section.title_multiloc),
-      options: { id: current_section.id },
+      options: { id: current_section.id, description: description_option(current_section) },
       elements: section_fields.filter_map { |field| visit field }
-    }.tap do |category|
-      description = MultilocService.new.t current_section.description_multiloc
-      if description.present?
-        category[:options][:description] = description
-      end
-    end
+    }
   end
 
   def generate_for_current_locale_without_sections(fields)

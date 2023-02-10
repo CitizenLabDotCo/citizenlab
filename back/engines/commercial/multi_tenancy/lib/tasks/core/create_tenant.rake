@@ -258,7 +258,7 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        content_builder: {
+        project_description_builder: {
           enabled: true,
           allowed: true
         },
@@ -311,6 +311,10 @@ namespace :cl2_back do
         input_form_custom_fields: {
           enabled: true,
           allowed: true
+        },
+        posthog_integration: {
+          enabled: false,
+          allowed: false
         }
       }
     )

@@ -38,6 +38,7 @@ resource 'Idea Custom Fields' do
         field_to_update = create(:custom_field, resource: custom_form, title_multiloc: { 'en' => 'Some field' })
         request = {
           custom_fields: [
+            { input_type: 'page' },
             {
               # input_type is not given
               title_multiloc: { 'en' => 'Inserted field' },
@@ -82,16 +83,16 @@ resource 'Idea Custom Fields' do
         assert_status 422
         json_response = json_parse(response_body)
         expect(json_response[:errors]).to eq({
-          '0': {
+          '1': {
             input_type: [
               { error: 'blank' },
               { error: 'inclusion', value: nil }
             ]
           },
-          '1': {
+          '2': {
             title_multiloc: [{ error: 'blank' }]
           },
-          '2': {
+          '3': {
             options: {
               '0': {
                 title_multiloc: [{ error: 'blank' }]
@@ -106,6 +107,7 @@ resource 'Idea Custom Fields' do
         field_to_update = create(:custom_field_select, :with_options, resource: custom_form)
         request = {
           custom_fields: [
+            { input_type: 'page' },
             {
               id: field_to_update.id,
               title_multiloc: { 'en' => 'New title' },
@@ -132,7 +134,8 @@ resource 'Idea Custom Fields' do
         assert_status 422
         json_response = json_parse(response_body)
         expect(json_response[:errors]).to eq({
-          '0': {
+          '0': {},
+          '1': {
             logic: [
               { error: 'invalid_structure' }
             ]
@@ -2098,6 +2101,7 @@ resource 'Idea Custom Fields' do
 
         request = {
           custom_fields: [
+            { input_type: 'page' },
             {
               id: change_field.id,
               input_type: 'select',
@@ -2122,8 +2126,8 @@ resource 'Idea Custom Fields' do
         assert_status 200
         json_response = json_parse response_body
 
-        expect(json_response[:data].size).to eq 1
-        expect(json_response[:data].first).to match({
+        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data][1]).to match({
           attributes: {
             code: nil,
             created_at: an_instance_of(String),
@@ -2131,7 +2135,7 @@ resource 'Idea Custom Fields' do
             enabled: true,
             input_type: 'select',
             key: an_instance_of(String),
-            ordering: 0,
+            ordering: 1,
             required: true,
             title_multiloc: { en: 'Changed field' },
             updated_at: an_instance_of(String),
@@ -2204,6 +2208,7 @@ resource 'Idea Custom Fields' do
         field_to_update = create :custom_field, resource: custom_form, title_multiloc: { 'en' => 'Some field' }
         request = {
           custom_fields: [
+            { input_type: 'page' },
             {
               title_multiloc: { 'en' => 'Inserted field' },
               description_multiloc: { 'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />' },
