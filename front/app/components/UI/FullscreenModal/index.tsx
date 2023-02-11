@@ -55,15 +55,14 @@ const Container = styled.div<{ windowHeight: string; zIndex?: number }>`
     }
   }
 
-  ${media.tablet`
-    height: ${(props) =>
-      `calc(${props.windowHeight} - ${props.theme.mobileMenuHeight}px)`};
+  ${(props) => media.tablet`
+    height: calc(${props.windowHeight} - ${props.theme.mobileMenuHeight}px);
     top: 0;
-    bottom: ${(props) => props.theme.mobileMenuHeight}px;
+    bottom: ${props.theme.mobileMenuHeight}px;
     z-index: 1005; /* there is no top navbar at this screen size, so okay that it is higher than the z-index of NavBar here */
 
     &.hasBottomBar {
-      height: ${(props) => props.windowHeight};
+      height: ${props.windowHeight};
       bottom: 0;
     }
   `}

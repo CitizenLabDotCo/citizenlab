@@ -96,10 +96,10 @@ const InnerContainer = styled.div<{
     background: ${colors.background};
   }
 
-  ${media.desktop`
+  ${(props) =>
+    media.desktop`
     & .leaflet-control-zoom {
-      margin-top: ${(props) =>
-        props.isPostingEnabled ? '78px' : '25px'} !important;
+      margin-top: ${props.isPostingEnabled ? '78px' : '25px'} !important;
       margin-right: 14px !important;
     }
 
