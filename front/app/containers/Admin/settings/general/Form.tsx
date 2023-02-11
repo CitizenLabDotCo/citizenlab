@@ -27,6 +27,7 @@ import {
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import Input from 'components/HookForm/Input';
 import MultipleSelect from 'components/HookForm/MultipleSelect';
+import Feedback from 'components/HookForm/Feedback';
 
 // services
 import { IAppConfigurationSettingsCore } from 'services/appConfiguration';
@@ -88,6 +89,7 @@ const Form = ({ defaultValues, onSubmit }: Props) => {
     return (
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onFormSubmit)}>
+          <Feedback />
           <SectionTitle>
             <FormattedMessage {...messages.titleBasic} />
           </SectionTitle>
@@ -136,7 +138,7 @@ const Form = ({ defaultValues, onSubmit }: Props) => {
               </Label>
               <Input
                 type="text"
-                name="organization_name"
+                name="organization_url"
                 placeholder="https://..."
               />
             </SectionField>
