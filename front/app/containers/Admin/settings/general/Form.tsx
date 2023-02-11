@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
-import { object } from 'yup';
+import { object, array, string } from 'yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { appLocalePairs } from 'containers/App/constants';
@@ -59,6 +59,8 @@ const Form = ({ defaultValues, onSubmit }: Props) => {
     organization_name: validateMultilocForEveryLocale(
       formatMessage(messages.organizationNameMultilocError)
     ),
+    locales: array(),
+    organization_site: string(),
   });
   const methods = useForm({
     mode: 'onBlur',
@@ -138,7 +140,7 @@ const Form = ({ defaultValues, onSubmit }: Props) => {
               </Label>
               <Input
                 type="text"
-                name="organization_url"
+                name="organization_site"
                 placeholder="https://..."
               />
             </SectionField>
