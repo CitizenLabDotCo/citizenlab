@@ -77,13 +77,14 @@ const Form = ({ defaultValues, onSubmit }: Props) => {
   };
 
   // May need memoization
-  const getLocaleOptions = () => {
-    return Object.entries(appLocalePairs).map(([label, locale]) => ({
-      label,
-      value: locale,
-    }));
-  };
-
+  const localeOptions = Object.entries(appLocalePairs).map(
+    ([locale, label]) => {
+      return {
+        label,
+        value: locale,
+      };
+    }
+  );
   if (!isNilOrError(appConfig)) {
     const organizationType =
       appConfig.attributes.settings.core.organization_type;
@@ -127,7 +128,7 @@ const Form = ({ defaultValues, onSubmit }: Props) => {
               <MultipleSelect
                 name="locales"
                 placeholder=""
-                options={getLocaleOptions()}
+                options={localeOptions}
               />
             </SectionField>
 
