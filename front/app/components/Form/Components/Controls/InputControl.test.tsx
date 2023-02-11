@@ -4,9 +4,6 @@ import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 
 import { InputControl } from './InputControl';
 
-jest.mock('utils/cl-intl');
-jest.mock('services/locale');
-
 const intl = getDummyIntlObject();
 const handleChange = jest.fn();
 

@@ -121,6 +121,7 @@ export interface IIdeaFormOutput {
 }
 
 interface InputProps {
+  className?: string;
   projectId: string;
   title: string | null;
   description: string | null;
@@ -695,8 +696,8 @@ class IdeaForm extends PureComponent<
   };
 
   render() {
-    const className = this.props['className'];
     const {
+      className,
       projectId,
       pbEnabled,
       allowedTopics,

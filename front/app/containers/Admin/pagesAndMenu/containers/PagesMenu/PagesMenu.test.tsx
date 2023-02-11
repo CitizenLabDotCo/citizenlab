@@ -4,7 +4,6 @@ import PagesMenu from '.';
 
 const header = 'Pages & Menu';
 
-jest.mock('utils/cl-intl');
 jest.mock('./messages', () => ({
   pageHeader: { id: 'header', defaultMessage: header },
   pageSubtitle: { id: 'tile', defaultMessage: 'menu subtitle' },

@@ -1,10 +1,41 @@
 # Changelog
 
+## 2023-02-10
+
+### Changed
+
+- Tooltips for image uploaders in project and folder forms.
+- [CL-737] Show login screen after successful password reset
+
+## 2023-02-09
+
+### Added
+
+- Report builder templates now automatically detect ideation and native survey projects and add different widgets based on that
+- [CL-2739] Added basic posthog integration
+
+### Changed
+
+- [CL-2673] In-platform survey UI improvements
+
+## 2023-02-03
+
+### Added
+
+- [CL-2534] Image dimensions i3: improved project/folder card images
+
+## 2023-02-01
+
+### Fixed
+
+- [CL-1560] Fix From scratch label bug when creating a project
+
 ## 2023-01-31
 
 ### Added
 
 - [CL-1703] Add default CTA banner on project page
+- [CL-2727] Add user id to impact tracking for authenticated users
 
 ## 2023-01-30
 

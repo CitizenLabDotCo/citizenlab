@@ -197,7 +197,7 @@ hr:
       baskets_count: 'Košarice'
       input_url: 'URL'
       project: 'Projekt'
-      status: 'Status'
+      status: 'Stanje'
       assignee_fullname: 'Opunomoćenik'
       assignee_email: 'E-pošta opunomoćenika'
   form_builder:
@@ -209,4 +209,4 @@ hr:
       title: 'Završetak upitnika'
       description: "Pošaljite svoje odgovore tako da odaberete „Pošalji anketu“ u nastavku."
   project_copy:
-    title_suffix: 'Kopiraj'
+    title_suffix: 'Kopija'

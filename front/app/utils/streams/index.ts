@@ -721,7 +721,9 @@ class Streams {
         this.streamIdsByApiEndPointWithQuery[apiEndpoint],
         this.streamIdsByDataIdWithQuery[dataId]
       ).forEach((streamId) => {
-        promises.push(this.streams[streamId].fetch());
+        if (this.streams[streamId]) {
+          promises.push(this.streams[streamId].fetch());
+        }
       });
 
       if (waitForRefetchesToResolve) {

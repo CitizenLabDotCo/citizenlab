@@ -1,6 +1,5 @@
 import createConvertAndMergeSeries from './convertAndMergeSeries';
 
-jest.mock('services/appConfiguration');
 jest.mock('moment', () => () => ({ year: () => 2022 }));
 
 const convertAndMergeSeries = createConvertAndMergeSeries({

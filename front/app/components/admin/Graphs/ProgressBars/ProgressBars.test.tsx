@@ -2,9 +2,6 @@ import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
 import ProgressBars from './';
 
-jest.mock('services/appConfiguration');
-jest.mock('utils/cl-intl');
-
 describe('<ProgressBars />', () => {
   describe('Missing data', () => {
     it('renders empty state message if data is nil', () => {

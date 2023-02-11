@@ -8,8 +8,6 @@ import { intl } from 'utils/cl-intl';
 // mocking dependencies
 jest.mock('resources/GetUsers', () => 'GetUsers');
 jest.mock('resources/GetAuthUser', () => 'GetAuthUser');
-jest.mock('utils/cl-intl');
-jest.mock('modules', () => ({ streamsToReset: [] }));
 
 import { AssigneeFilter } from './AssigneeFilter';
 

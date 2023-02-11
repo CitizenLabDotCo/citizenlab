@@ -114,11 +114,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.projectCardImageLabelText',
     defaultMessage: 'Project card image',
   },
-  projectCardImageLabelTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.projectCardImageLabelTooltip',
-    defaultMessage:
-      'This image will be shown on the project card on the home page. The ideal dimensions are a width of 1440 pixels and a height between 1440 and 720 pixels.',
-  },
   fileUploadLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.fileUploadLabel',
     defaultMessage: 'Attach files to this project',
@@ -160,5 +155,28 @@ export default defineMessages({
   topicInputsTooltipLink: {
     id: 'app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipLink',
     defaultMessage: 'here',
+  },
+  headerImageInputLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.headerImageInputLabel',
+    defaultMessage: 'Header image',
+  },
+  projectHeaderImageTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectHeaderImageTooltip',
+    defaultMessage: `
+    This image is shown at the top of the project page. For more information on recommended image resolutions, {supportPageLink}.`,
+  },
+  projectCardImageTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectCardImageTooltip',
+    defaultMessage: `
+    This image is part of the project card; the card that summarizes the project and is shown on the homepage for example. For more information on recommended image resolutions, {supportPageLink}.`,
+  },
+  imageSupportPageURL: {
+    id: 'app.containers.AdminPage.ProjectEdit.imageSupportPageURL',
+    defaultMessage:
+      'https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
+  },
+  supportPageLinkText: {
+    id: 'app.containers.AdminPage.ProjectEdit.supportPageLinkText',
+    defaultMessage: 'visit our support center',
   },
 });

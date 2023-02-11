@@ -149,17 +149,26 @@ class AppConfiguration < ApplicationRecord
   end
 
   def base_frontend_uri
-    return 'http://localhost:3000' if Rails.env.development?
-
-    transport = Rails.env.test? ? 'http' : 'https'
-    "#{transport}://#{host}"
+    base_uri('http://localhost:3000')
   end
 
   def base_backend_uri
-    return 'http://localhost:4000' if Rails.env.development?
+    base_uri('http://localhost:4000')
+  end
 
-    transport = Rails.env.test? ? 'http' : 'https'
-    "#{transport}://#{host}"
+  def base_asset_host_uri
+    # ASSET_HOST_URI env var can be used for:
+    # - e2e tests (see e2e/docker-compose.yml)
+    # - demos on ngrok/localtunnel
+    #   run `lt --port 3000 --subdomain local-env` and set `ASSET_HOST_URI=https://local-env.loca.lt/`
+    # - in rake tasks that need to download images. Set `ASSET_HOST_URI=http://cl-back-web:4000/`
+
+    # localhost:3000 works (webpack proxies requests to localhost:4000)
+    # using the app from the browser, but localhost:4000 is a better default
+    # because it's more universal:
+    # it works both in the browser and in the BE code that runs in cl-back-web container
+    # (e.g., to copy images applying a tenant template or copying a project).
+    base_uri(ENV.fetch('ASSET_HOST_URI', 'http://localhost:4000'))
   end
 
   def lifecycle_stage
@@ -175,6 +184,13 @@ class AppConfiguration < ApplicationRecord
   end
 
   private
+
+  def base_uri(development_uri)
+    return development_uri if Rails.env.development?
+
+    transport = Rails.env.test? ? 'http' : 'https'
+    "#{transport}://#{host}"
+  end
 
   def validate_missing_feature_dependencies
     missing_dependencies = SettingsService.new.missing_dependencies(settings, Settings.json_schema)

@@ -5,19 +5,19 @@ import { UploadFile } from 'typings';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 
 import { convertUrlToUploadFile } from 'utils/fileUtils';
-import { HEADER_BG_ASPECT_RATIO } from 'services/projects';
+import {
+  PROJECTABLE_HEADER_BG_ASPECT_RATIO,
+  PROJECTABLE_HEADER_BG_ASPECT_RATIO_HEIGHT,
+  PROJECTABLE_HEADER_BG_ASPECT_RATIO_WIDTH,
+} from 'services/projects';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
-import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
 interface Props {
   imageUrl: string | null | undefined;
   onImageChange: (newImageBase64: string | null) => void;
 }
 
-const HeaderBgInput = ({ imageUrl, onImageChange }: Props) => {
+const ProjectableHeaderBgUploader = ({ imageUrl, onImageChange }: Props) => {
   const [headerBg, setHeaderBg] = useState<UploadFile | null>(null);
   useEffect(() => {
     (async () => {
@@ -43,18 +43,14 @@ const HeaderBgInput = ({ imageUrl, onImageChange }: Props) => {
   const imageShouldBeSaved = headerBg ? !headerBg.remote : false;
 
   return (
-    <SectionField>
-      <SubSectionTitle>
-        <FormattedMessage {...messages.headerImageInputLabel} />
-        <ImageInfoTooltip />
-      </SubSectionTitle>
-
+    <>
       {imageShouldBeSaved ? (
         <Box display="flex" flexDirection="column" gap="8px">
           <ImageCropperContainer
             image={headerBg}
             onComplete={onImageChange}
-            aspect={HEADER_BG_ASPECT_RATIO}
+            aspectRatioWidth={PROJECTABLE_HEADER_BG_ASPECT_RATIO_WIDTH}
+            aspectRatioHeight={PROJECTABLE_HEADER_BG_ASPECT_RATIO_HEIGHT}
             onRemove={handleImageRemove}
           />
         </Box>
@@ -64,13 +60,13 @@ const HeaderBgInput = ({ imageUrl, onImageChange }: Props) => {
           acceptedFileTypes={{
             'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
           }}
-          imagePreviewRatio={1 / HEADER_BG_ASPECT_RATIO}
+          imagePreviewRatio={1 / PROJECTABLE_HEADER_BG_ASPECT_RATIO}
           onAdd={handleImageAdd}
           onRemove={handleImageRemove}
         />
       )}
-    </SectionField>
+    </>
   );
 };
 
-export default HeaderBgInput;
+export default ProjectableHeaderBgUploader;

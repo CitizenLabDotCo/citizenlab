@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.name        = 'seo'
   spec.version     = Seo::VERSION
   spec.authors     = ['CitizenLab']
-  spec.licenses    = ['AGPLv3']
+  spec.licenses    = ['CitizenLab Commercial License V2']
   spec.summary     = 'The engine responsible for delivering the sitemap, scraping facebook and propagating changes to google.'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'

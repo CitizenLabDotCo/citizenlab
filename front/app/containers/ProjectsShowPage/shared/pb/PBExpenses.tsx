@@ -567,6 +567,7 @@ const PBExpenses = ({
                     }
                     processing={processing}
                     viewMode={viewMode}
+                    data-cy="e2e-submit-my-basket-button"
                   >
                     <FormattedMessage {...messages.submitMyBasket} />
                   </SubmitExpensesButton>

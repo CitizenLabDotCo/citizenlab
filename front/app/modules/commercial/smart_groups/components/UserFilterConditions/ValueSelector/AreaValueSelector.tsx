@@ -9,7 +9,7 @@ import { isNilOrError } from 'utils/helperUtils';
 type Props = {
   rule: TRule;
   value: string;
-  onChange: (string) => void;
+  onChange: (areaValue: string) => void;
   areas: GetAreasChildProps;
 };
 

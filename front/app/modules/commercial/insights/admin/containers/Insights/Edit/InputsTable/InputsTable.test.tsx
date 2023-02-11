@@ -72,10 +72,6 @@ jest.mock('modules/commercial/insights/hooks/useInsightsView', () => {
   return jest.fn(() => mockViewData);
 });
 
-jest.mock('hooks/useLocale');
-
-jest.mock('utils/cl-intl');
-
 jest.mock('utils/cl-router/withRouter', () => {
   return {
     withRouter: (Component) => {
@@ -91,8 +87,6 @@ jest.mock('utils/cl-router/withRouter', () => {
     },
   };
 });
-jest.mock('utils/cl-router/Link');
-jest.mock('utils/cl-router/history');
 
 jest.mock('modules/commercial/insights/hooks/useInsightsInput', () => {
   return jest.fn(() => undefined);

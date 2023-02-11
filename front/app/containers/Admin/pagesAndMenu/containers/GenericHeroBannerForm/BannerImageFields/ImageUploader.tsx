@@ -5,9 +5,10 @@ import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import {
   TLocalHeaderImage,
   Props as BannerImageFieldsProps,
-  TPreviewDevice,
   TBannerError,
 } from '.';
+import { TDevice } from 'components/admin/SelectPreviewDevice';
+
 import { UploadFile } from 'typings';
 
 interface Props {
@@ -21,7 +22,7 @@ interface Props {
   bannerOverlayColor: BannerImageFieldsProps['bannerOverlayColor'];
   bannerLayout: BannerImageFieldsProps['bannerLayout'];
   bannerError: TBannerError;
-  previewDevice: TPreviewDevice;
+  previewDevice: TDevice;
 }
 
 const ImageUploader = ({
@@ -49,7 +50,8 @@ const ImageUploader = ({
           <ImageCropperContainer
             image={headerLocalDisplayImage}
             onComplete={onAddImage}
-            aspect={3 / 1}
+            aspectRatioWidth={3}
+            aspectRatioHeight={1}
             onRemove={onRemoveImageFromUploader}
           />
         </Box>

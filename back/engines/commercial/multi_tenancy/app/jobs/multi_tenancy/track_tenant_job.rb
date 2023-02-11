@@ -10,6 +10,7 @@ module MultiTenancy
       app_config = AppConfiguration.instance
       TrackIntercomService.new.identify_tenant(tenant) if app_config.feature_activated?('intercom')
       TrackSegmentService.new.identify_tenant(tenant)  if app_config.feature_activated?('segment')
+      PosthogIntegration::TrackPosthogService.new.identify_tenant(tenant) if app_config.feature_activated?('posthog_integration')
     end
   end
 end

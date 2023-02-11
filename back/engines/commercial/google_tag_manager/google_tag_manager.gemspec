@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.name        = 'google_tag_manager'
   s.version     = GoogleTagManager::VERSION
   s.authors     = ['CitizenLab']
-  s.licenses    = ['CitizenLab Commercial License V1']
+  s.licenses    = ['CitizenLab Commercial License V2']
   s.summary     = 'Google Tag Manager Integration'
 
   s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']

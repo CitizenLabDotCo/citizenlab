@@ -19,7 +19,7 @@ interface TotalsRow extends BaseRow {
 
 export type TimeSeriesResponse = TimeSeriesResponseRow[];
 export interface TimeSeriesResponseRow extends BaseRow {
-  first_dimension_date_last_action_date: string;
+  first_dimension_date_first_action_date: string;
 }
 
 // Hook return value

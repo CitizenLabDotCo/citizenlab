@@ -30,6 +30,10 @@ module ContentBuilder
     }
     validate :validate_craftjs_jsonmultiloc
 
+    def project_id
+      content_buildable.try(:project_id)
+    end
+
     private
 
     def validate_craftjs_jsonmultiloc

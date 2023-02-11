@@ -54,7 +54,7 @@ import { getMethodConfig, getPhase } from 'utils/participationMethodUtils';
 import EventsViewer from 'containers/EventsPage/EventsViewer';
 import messages from 'utils/messages';
 import { scrollToElement } from 'utils/scroll';
-import useURLQuery from 'utils/cl-router/useUrlQuery';
+import { useSearchParams } from 'react-router-dom';
 
 const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;
@@ -104,7 +104,7 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
 
   const smallerThanMinTablet = useBreakpoint('tablet');
   const { formatMessage } = useIntl();
-  const queryParams = useURLQuery();
+  const [queryParams] = useSearchParams();
   const showModalParam = queryParams.get('show_modal');
   const [showModal, setShowModal] = useState<boolean>(false);
   const [phaseIdUrl, setPhaseIdUrl] = useState<string | null>(null);

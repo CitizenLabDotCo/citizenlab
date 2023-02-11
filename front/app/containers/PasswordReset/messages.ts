@@ -29,9 +29,9 @@ export default defineMessages({
     id: 'app.containers.PasswordReset.submitError',
     defaultMessage: 'Something went wrong. Please try again later.',
   },
-  successMessage: {
-    id: 'app.containers.PasswordReset.successMessage',
-    defaultMessage: 'Your password has been successfully updated',
+  passwordUpdatedSuccessMessage: {
+    id: 'app.containers.PasswordReset.passwordUpdatedSuccessMessage',
+    defaultMessage: 'Your password has been successfully updated.',
   },
   updatePassword: {
     id: 'app.containers.PasswordReset.updatePassword',
@@ -40,5 +40,13 @@ export default defineMessages({
   requestNewPasswordReset: {
     id: 'app.containers.PasswordReset.requestNewPasswordReset',
     defaultMessage: 'Request a new password reset',
+  },
+  pleaseLogInMessage: {
+    id: 'app.containers.PasswordReset.pleaseLogInMessage',
+    defaultMessage: 'Please log in with your new password.',
+  },
+  login: {
+    id: 'app.containers.PasswordReset.login',
+    defaultMessage: 'Log in',
   },
 });

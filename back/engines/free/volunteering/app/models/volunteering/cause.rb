@@ -34,6 +34,10 @@ module Volunteering
     before_validation :sanitize_description_multiloc
     before_validation :strip_title
 
+    def project_id
+      participation_context.try(:project_id)
+    end
+
     private
 
     def sanitize_description_multiloc
