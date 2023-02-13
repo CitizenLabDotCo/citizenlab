@@ -9,6 +9,7 @@ import Button from 'components/UI/Button';
 import PageNotFound from 'components/PageNotFound';
 import { Spinner, useWindowSize } from '@citizenlab/cl2-component-library';
 import ContentContainer from 'components/ContentContainer';
+import Centerer from 'components/UI/Centerer';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -51,13 +52,6 @@ const Container = styled.main`
     props
   ) => props.theme.mobileTopBarHeight}px);
   `}
-`;
-
-const Loading = styled.div`
-  flex: 1 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
@@ -152,9 +146,9 @@ const ProjectFolderShowPage = memo<{
       )}
       <Container id="e2e-folder-page">
         {loading ? (
-          <Loading>
+          <Centerer flex="1 0 auto">
             <Spinner />
-          </Loading>
+          </Centerer>
         ) : projectFolder ? (
           <>
             <StyledContentContainer maxWidth={maxPageWidth}>

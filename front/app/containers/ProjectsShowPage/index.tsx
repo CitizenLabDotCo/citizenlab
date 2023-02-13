@@ -15,6 +15,7 @@ import Navigate from 'utils/cl-router/Navigate';
 import Modal from './Modal';
 import { ProjectCTABar } from './ProjectCTABar';
 import EventsViewer from 'containers/EventsPage/EventsViewer';
+import Centerer from 'components/UI/Centerer';
 
 // hooks
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
@@ -70,13 +71,6 @@ const Container = styled.main<{ background: string }>`
   `}
 `;
 
-const Loading = styled.div`
-  flex: 1 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
 const ContentWrapper = styled.div`
   width: 100%;
 `;
@@ -128,9 +122,9 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
 
   if (loading) {
     content = (
-      <Loading>
+      <Centerer flex="1 0 auto">
         <Spinner />
-      </Loading>
+      </Centerer>
     );
   } else if (projectId && processType) {
     content = (
