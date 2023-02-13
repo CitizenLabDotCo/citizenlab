@@ -19,7 +19,6 @@ nl:
         description:
       author_id:
         title: Auteur
-        description:
       topic_ids:
         title: Tags
         description:
@@ -31,7 +30,6 @@ nl:
         description:
       budget:
         title: Bedrag
-        description:
       images:
         title: Afbeeldingen
         description:

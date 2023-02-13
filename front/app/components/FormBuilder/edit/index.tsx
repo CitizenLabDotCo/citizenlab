@@ -49,6 +49,7 @@ import { WrappedComponentProps } from 'react-intl';
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import { FormBuilderConfig } from '../utils';
+import HelmetIntl from 'components/HelmetIntl';
 
 const StyledRightColumn = styled(RightColumn)`
   height: calc(100vh - ${stylingConsts.menuHeight}px);
@@ -242,6 +243,7 @@ export const FormEdit = ({
         bgColor={colors.background}
         h="100vh"
       >
+        <HelmetIntl title={messages.helmetTitle} />
         <FocusOn>
           <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onFormSubmit)}>

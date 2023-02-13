@@ -430,7 +430,7 @@ describe JsonFormsService do
               transform: 'trim_on_blur',
               isAdminField: true,
               hasRule: false,
-              description: 'Author description'
+              description: ''
             }
           })
           expect(output[:ui_schema_multiloc]['en'][:elements][2][:elements][0]).to eq({
@@ -442,7 +442,7 @@ describe JsonFormsService do
               input_type: 'number',
               isAdminField: true,
               hasRule: false,
-              description: 'Budget description'
+              description: ''
             }
           })
         end
