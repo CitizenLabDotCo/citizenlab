@@ -36,6 +36,7 @@ import {
   TooltipContent,
   SectionTitle,
 } from 'modules/commercial/insights/admin/components/StyledTextComponents';
+import Centerer from 'components/UI/Centerer';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -229,9 +230,9 @@ const Network = ({
 
   if (loading) {
     return (
-      <Box h="100%" display="flex" justifyContent="center" alignItems="center">
+      <Centerer>
         <Spinner />
-      </Box>
+      </Centerer>
     );
   }
 

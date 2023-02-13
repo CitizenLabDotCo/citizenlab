@@ -14,4 +14,12 @@ export default defineMessages({
     id: 'app.components.IdeasShowPage.signIn',
     defaultMessage: 'Log in if you already have an account',
   },
+  noPermission: {
+    id: 'app.components.Unauthorized.noPermission',
+    defaultMessage: "You don't have permission to view this page",
+  },
+  notAuthorized: {
+    id: 'app.components.Unauthorized.notAuthorized',
+    defaultMessage: "Sorry, you're not authorized to access this page.",
+  },
 });

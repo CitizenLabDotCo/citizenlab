@@ -14,6 +14,7 @@ import Button from 'components/UI/Button';
 import { Icon, Spinner } from '@citizenlab/cl2-component-library';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import T from 'components/T';
+import Centerer from 'components/UI/Centerer';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -47,14 +48,6 @@ const Container = styled.div`
   ${media.phone`
     padding: 30px;
   `}
-`;
-
-const SpinnerWrapper = styled.div`
-  width: 100%;
-  height: 500px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 const Header = styled.div`
@@ -395,9 +388,9 @@ const ProjectTemplatePreview = memo<Props>(
     return (
       <Container className={className}>
         {loading && (
-          <SpinnerWrapper>
+          <Centerer height="500px">
             <Spinner />
-          </SpinnerWrapper>
+          </Centerer>
         )}
 
         {!loading && data && (

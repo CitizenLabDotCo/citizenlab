@@ -8,6 +8,7 @@ import T from 'components/T';
 import Button from 'components/UI/Button';
 import { Title, Subtitle } from 'components/AuthProviders/styles';
 import Or from 'components/UI/Or';
+import Centerer from 'components/UI/Centerer';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -31,14 +32,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-`;
-
-const Loading = styled.div`
-  width: 100%;
-  height: 250px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 const Header = styled.div`
@@ -207,9 +200,9 @@ const VerificationMethods = memo<Props>(
       participationConditions === undefined
     ) {
       return (
-        <Loading>
+        <Centerer height="250px">
           <Spinner />
-        </Loading>
+        </Centerer>
       );
     }
 

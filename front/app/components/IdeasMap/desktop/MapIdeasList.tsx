@@ -6,6 +6,7 @@ import TopicFilterDropdown from 'components/IdeaCards/TopicFilterDropdown';
 import SelectSort from 'components/IdeaCards/SortFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
 import IdeaMapCard from '../IdeaMapCard';
+import Centerer from 'components/UI/Centerer';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -45,14 +46,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-`;
-
-const Loading = styled.div`
-  width: 100%;
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 const Header = styled.div`
@@ -217,9 +210,9 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
 
       <IdeaMapCards>
         {ideaMarkers === undefined && (
-          <Loading>
+          <Centerer>
             <Spinner />
-          </Loading>
+          </Centerer>
         )}
 
         {ideaMarkers &&
