@@ -38,6 +38,11 @@ export function isApiError(obj: any): obj is CLErrorsJSON {
   return (obj as CLErrorsJSON)?.json !== undefined;
 }
 
+export function isUnauthorizedError(obj: any): obj is CLErrorsJSON {
+  if (!isApiError(obj)) return false;
+  return obj.json.errors?.base[0].error === 'Unauthorized!';
+}
+
 export function isEmptyMultiloc(multiloc: Multiloc) {
   let validTranslation = false;
 
