@@ -269,7 +269,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def idea_attributes(custom_form, user_can_moderate_project)
-    submittable_field_keys = IdeaCustomFieldsService.new(custom_form).map { |field| field.key.to_sym }
+    submittable_field_keys = IdeaCustomFieldsService.new(custom_form).submittable_fields.map { |field| field.key.to_sym }
     attributes = idea_simple_attributes(submittable_field_keys)
     complex_attributes = idea_complex_attributes(custom_form, submittable_field_keys)
     attributes << complex_attributes if complex_attributes.any?
