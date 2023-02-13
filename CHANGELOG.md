@@ -1,5 +1,11 @@
 # Changelog
 
+## 2023-02-13 (2)
+
+### Changed
+
+- [CL-2762] Fix redirecting in various places (e.g. after trying to post an idea after logging in), and added better messages if you don't have the right permissions to view a page (citizen-side).
+
 ## 2023-02-13
 
 ### Added
