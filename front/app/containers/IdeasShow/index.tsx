@@ -200,17 +200,12 @@ export const IdeasShow = ({
   const ideaIdParameter = queryParams.get('new_idea_id');
 
   useEffect(() => {
-    let timeout: NodeJS.Timeout;
     if (isString(ideaIdParameter)) {
-      timeout = setTimeout(() => {
+      setTimeout(() => {
         setNewIdeaId(ideaIdParameter);
       }, 1500);
       clHistory.replace(window.location.pathname);
     }
-
-    return () => {
-      clearTimeout(timeout);
-    };
   }, [ideaIdParameter]);
 
   const phases = usePhases(projectId);
