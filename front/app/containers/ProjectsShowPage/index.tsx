@@ -122,7 +122,7 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
 
   if (loading) {
     content = (
-      <Centerer flex="1 0 auto">
+      <Centerer flex="1 0 auto" height="500px">
         <Spinner />
       </Centerer>
     );
@@ -214,7 +214,13 @@ const ProjectsShowPageWrapper = () => {
     if (user !== null) setUserWasLoggedIn(true);
   }, [userPending, user]);
 
-  if (pending || 1 + 1 === 2) return <Spinner />;
+  if (pending) {
+    return (
+      <Centerer height="500px">
+        <Spinner />
+      </Centerer>
+    );
+  }
 
   const userJustLoggedOut = userWasLoggedIn && user === null;
   const unauthorized = isUnauthorizedError(project);

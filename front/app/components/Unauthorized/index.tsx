@@ -2,7 +2,6 @@ import React from 'react';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import Button from 'components/UI/Button';
 
 // events
 import { openSignUpInModal } from 'events/openSignUpInModal';
@@ -12,7 +11,9 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { useTheme } from 'styled-components';
 
 // components
-import { Box, Title, Text } from '@citizenlab/cl2-component-library';
+import { Box, Title, Text, Spinner } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
+import Centerer from 'components/UI/Centerer';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -25,7 +26,13 @@ const Unauthorized = () => {
   const authUser = useAuthUser();
   const authUserPending = authUser === undefined;
 
-  if (authUserPending) return null;
+  if (authUserPending) {
+    return (
+      <Centerer h="500px">
+        <Spinner />
+      </Centerer>
+    );
+  }
 
   const signUp = () => {
     openSignUpInModal({
