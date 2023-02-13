@@ -59,9 +59,12 @@ const Form = ({ defaultValues, onSubmit }: Props) => {
     organization_name: validateMultilocForEveryLocale(
       formatMessage(messages.organizationNameMultilocError)
     ),
-    locales: array(),
+    locales: array().min(1, formatMessage(messages.atLeastOneLocale)),
     // Taken from settings.schema.json.erb
-    organization_site: string().matches(/^$|^((http:\/\/.+)|(https:\/\/.+))/),
+    organization_site: string().matches(
+      /^$|^((http:\/\/.+)|(https:\/\/.+))/,
+      formatMessage(messages.urlPatternError)
+    ),
   });
   const methods = useForm({
     mode: 'onBlur',

@@ -149,4 +149,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.organizationNameMultilocError',
     defaultMessage: 'Provide an organization name or city for all languages.',
   },
+  atLeastOneLocale: {
+    id: 'app.containers.AdminPage.SettingsPage.atLeastOneLocale',
+    defaultMessage: 'Select at least one language.',
+  },
+  urlPatternError: {
+    id: 'app.containers.AdminPage.SettingsPage.urlPatternError',
+    defaultMessage: 'Enter a valid URL.',
+  },
 });
