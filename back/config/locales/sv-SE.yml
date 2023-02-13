@@ -115,7 +115,6 @@ sv:
         description:
       author_id:
         title: Författare
-        description: Författarbeskrivning
       topic_ids:
         title: Topics
         description:
@@ -127,7 +126,6 @@ sv:
         description:
       budget:
         title: Budget
-        description: Budgetbeskrivning
       images:
         title: Bilder
         description:
