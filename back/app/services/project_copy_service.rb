@@ -6,7 +6,7 @@ class ProjectCopyService < ::TemplateService
     same_template = service.translate_and_fix_locales template
 
     created_objects_ids = ActiveRecord::Base.transaction do
-      service.resolve_and_apply_template same_template, validate: false
+      service.resolve_and_apply_template same_template, validate: false, local_copy: local_copy
     end
 
     project = Project.find(created_objects_ids['Project'].first)
