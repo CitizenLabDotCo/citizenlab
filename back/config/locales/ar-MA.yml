@@ -115,7 +115,6 @@ ar-MA:
         description:
       author_id:
         title: المؤلف
-        description: وصف المؤلف
       topic_ids:
         title: الموضوعات
         description:
@@ -127,7 +126,6 @@ ar-MA:
         description:
       budget:
         title: الميزانية
-        description: وصف الميزانية
       images:
         title: الصور
         description:
