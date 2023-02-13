@@ -592,6 +592,7 @@
   "app.components.formBuilder.fileUpload": "Dateien hochladen",
   "app.components.formBuilder.formEnd": "Formular Ende",
   "app.components.formBuilder.goToPageInputLabel": "Die nächste Seite ist dann:",
+  "app.components.formBuilder.helmetTitle": "Form builder",
   "app.components.formBuilder.imageFileUpload": "Bild-Upload",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Ungültige Logik",
   "app.components.formBuilder.labels": "Beschriftungen",
