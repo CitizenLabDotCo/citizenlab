@@ -115,7 +115,6 @@ it:
         description:
       author_id:
         title: Autore
-        description: Author description
       topic_ids:
         title: Argomenti
         description:
@@ -127,7 +126,6 @@ it:
         description:
       budget:
         title: Bilancio
-        description: Budget description
       images:
         title: Immagini
         description:
