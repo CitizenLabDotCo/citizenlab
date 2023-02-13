@@ -176,7 +176,7 @@ describe TrackSegmentService do
         [:project_moderator, true],
         [:project_folder_moderator, true],
         [:admin, true],
-        [:super_admin, true],
+        [:super_admin, true]
       ]
     end
 
