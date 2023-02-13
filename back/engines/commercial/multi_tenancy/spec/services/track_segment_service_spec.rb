@@ -22,9 +22,9 @@ describe TrackSegmentService do
       service.identify_user(user)
     end
 
-    it 'does not track super admins' do
+    it 'track super admins' do
       user = create(:super_admin)
-      expect(SEGMENT_CLIENT).not_to receive(:identify)
+      expect(SEGMENT_CLIENT).to receive(:identify)
       service.identify_user(user)
     end
 
@@ -76,17 +76,8 @@ describe TrackSegmentService do
   end
 
   describe 'track_activity' do
-    it 'does not track activities initiated by a normal user' do
+    it 'does not track activities initiated by normal users' do
       user = create(:user)
-      activity = create(:activity, user: user)
-
-      expect(SEGMENT_CLIENT).not_to receive(:track)
-
-      service.track_activity(activity)
-    end
-
-    it 'does not track activities initiated by a super admin' do
-      user = create(:super_admin)
       activity = create(:activity, user: user)
 
       expect(SEGMENT_CLIENT).not_to receive(:track)
@@ -107,6 +98,25 @@ describe TrackSegmentService do
       end
 
       service.track_activity(activity)
+    end
+  end
+
+  describe '#track_user' do
+    where(:user_factory, :is_tracked) do
+      [
+        [:user, false],
+        [:project_moderator, true],
+        [:project_folder_moderator, true],
+        [:admin, true],
+        [:super_admin, true],
+      ]
+    end
+
+    with_them do
+      it "returns #{params[:is_tracked]} for #{params[:user_factory].to_s.pluralize}" do
+        user = create(user_factory)
+        expect(service.send(:track_user?, user)).to eq(is_tracked)
+      end
     end
   end
 end

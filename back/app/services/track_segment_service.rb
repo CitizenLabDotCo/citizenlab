@@ -99,9 +99,7 @@ class TrackSegmentService
   private
 
   def track_user?(user)
-    return false if user.super_admin?
-
-    user.admin? || user.project_moderator?
+    !user.normal_user?
   end
 
   def event_from_activity(activity)
