@@ -115,7 +115,7 @@ fr-BE:
         description:
       author_id:
         title: Auteur
-        description: Author description
+        description: Description de l’auteur
       topic_ids:
         title: Étiquettes
         description:
@@ -127,7 +127,7 @@ fr-BE:
         description:
       budget:
         title: Budget
-        description: Budget description
+        description: Description du budget
       images:
         title: Images
         description:
@@ -137,10 +137,10 @@ fr-BE:
       section1:
         description:
       section2:
-        title: Images and attachments
+        title: Images et pièces jointes
         description:
       section3:
-        title: Details
+        title: Détails 
         description:
   custom_forms:
     categories:
