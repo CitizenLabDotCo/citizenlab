@@ -9,8 +9,6 @@ const schema = object({
   password: string().min(8, 'Too short'),
 });
 
-jest.mock('utils/cl-intl');
-jest.mock('hooks/useLocale');
 jest.mock('hooks/useAppConfiguration', () => () => ({
   attributes: { settings: { password_login: { minimum_length: 8 } } },
 }));

@@ -16,7 +16,6 @@ const defaultProps = {
   },
 };
 
-jest.mock('utils/cl-intl');
 jest.mock('hooks/useAppConfigurationLocales', () =>
   jest.fn(() => ['en', 'nl-NL'])
 );
@@ -29,15 +28,15 @@ describe('AreaForm', () => {
   it('submits correct data', async () => {
     const { container } = render(<AreaForm {...defaultProps} />);
 
-    fireEvent.change(screen.getByRole('textbox'), {
+    fireEvent.change(screen.getByRole('textbox', { name: 'Area name' }), {
       target: {
         value: titleEN,
       },
     });
 
-    fireEvent.click(screen.getByText(/nl-NL/i));
+    fireEvent.click(screen.getAllByText(/nl-NL/i)[0]);
 
-    fireEvent.change(screen.getByRole('textbox'), {
+    fireEvent.change(screen.getByRole('textbox', { name: 'Area name' }), {
       target: {
         value: titleNL,
       },

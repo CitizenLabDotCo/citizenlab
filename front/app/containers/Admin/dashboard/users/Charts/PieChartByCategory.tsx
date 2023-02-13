@@ -54,7 +54,7 @@ interface InputProps {
     streamParams?: IStreamParams | null,
     customId?: string
   ) => IStream<ISupportedDataType>;
-  convertToGraphFormat: (ISupportedDataType) => IGraphFormat | null;
+  convertToGraphFormat: (data: ISupportedDataType) => IGraphFormat | null;
   startAt: string | null | undefined;
   endAt: string | null;
   currentGroupFilter: string | undefined;

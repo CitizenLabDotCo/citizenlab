@@ -9,7 +9,7 @@ import Link from 'utils/cl-router/Link';
 import { parse } from 'qs';
 
 // components
-import { Success } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import PasswordInput, {
   hasPasswordMinimumLength,
@@ -19,6 +19,7 @@ import { Helmet } from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
 import { FormLabel } from 'components/UI/FormComponents';
 import Error from 'components/UI/Error';
+import { PasswordResetSuccess } from 'containers/PasswordReset/PasswordResetSuccess';
 
 // services
 import { resetPassword } from 'services/auth';
@@ -31,20 +32,12 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 // style
 import styled from 'styled-components';
 import messages from './messages';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, stylingConsts } from 'utils/styleUtils';
 
 // resources
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
-
-const Container = styled.div`
-  width: 100%;
-  min-height: calc(
-    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
-  );
-  background: ${colors.background};
-`;
 
 const StyledContentContainer = styled(ContentContainer)`
   padding-bottom: 100px;
@@ -240,12 +233,16 @@ class PasswordReset extends React.PureComponent<
     const title = formatMessage(messages.title);
     const passwordPlaceholder = formatMessage(messages.passwordPlaceholder);
     const updatePassword = formatMessage(messages.updatePassword);
-    const successMessage = success
-      ? formatMessage(messages.successMessage)
-      : null;
 
-    return (
-      <Container>
+    return success ? (
+      <PasswordResetSuccess />
+    ) : (
+      <Box
+        width="100%"
+        minHeight={`calc(100vh - ${
+          stylingConsts.menuHeight + stylingConsts.footerHeight
+        }px)`}
+      >
         <Helmet
           title={helmetTitle}
           meta={[{ name: 'description', content: helmetDescription }]}
@@ -261,7 +258,7 @@ class PasswordReset extends React.PureComponent<
                   width="max-content"
                   margin-right="5px"
                   labelMessage={messages.passwordLabel}
-                  htmlFor="password-reset-input"
+                  htmlFor="password"
                 />
                 <StyledPasswordIconTooltip />
               </LabelContainer>
@@ -289,12 +286,10 @@ class PasswordReset extends React.PureComponent<
                 text={updatePassword}
                 onClick={this.handleOnSubmit}
               />
-
-              <Success text={successMessage} />
             </Form>
           </StyledContentContainer>
         </main>
-      </Container>
+      </Box>
     );
   }
 }

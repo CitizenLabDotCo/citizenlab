@@ -3,8 +3,6 @@ import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
 import ImageDropzone from './';
 import { useForm, FormProvider } from 'react-hook-form';
 
-jest.mock('utils/cl-intl');
-
 const file = new File(['file'], 'file.png', {
   type: 'image/png',
 });

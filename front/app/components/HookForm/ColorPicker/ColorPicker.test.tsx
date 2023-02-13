@@ -9,8 +9,6 @@ const schema = object({
   color: string().required('Error message'),
 });
 
-jest.mock('utils/cl-intl');
-
 const onSubmit = jest.fn();
 
 const defaultFormValues = {

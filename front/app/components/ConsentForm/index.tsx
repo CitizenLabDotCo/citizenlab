@@ -205,7 +205,9 @@ export default class ConsentForm extends PureComponent<Props, State> {
     }));
   };
 
-  handleOnChangeCategory = (category) => () => {
+  // category's more precise type is TCategory
+  // but needs more refactoring
+  handleOnChangeCategory = (category: string) => () => {
     const { categorizedConsents } = this.state;
 
     if (
@@ -224,7 +226,9 @@ export default class ConsentForm extends PureComponent<Props, State> {
     }
   };
 
-  handleToggleOpenCategory = (category) => (event) => {
+  // category's more precise type is TCategory
+  // but needs more refactoring
+  handleToggleOpenCategory = (category: string) => (event) => {
     event.stopPropagation();
     this.setState(({ isCategoryOpen }) => ({
       isCategoryOpen: {
@@ -234,7 +238,7 @@ export default class ConsentForm extends PureComponent<Props, State> {
     }));
   };
 
-  isConsented = (consentId) => {
+  isConsented = (consentId: string) => {
     const { consents } = this.props;
     const consent = consents.find((consent) => consent.id === consentId);
     if (typeof this.state.consentChanges[consentId] === 'undefined') {
@@ -244,7 +248,9 @@ export default class ConsentForm extends PureComponent<Props, State> {
     }
   };
 
-  isConsentedCategory = (category) => {
+  // category's more precise type is TCategory
+  // but needs more refactoring
+  isConsentedCategory = (category: string) => {
     const { categorizedConsents } = this.state;
     if (
       categorizedConsents[category].find((consent) =>

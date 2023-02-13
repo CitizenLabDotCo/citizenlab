@@ -210,11 +210,17 @@ const SignUp = ({
 
   // this automatically completes the 'account-created' step (see stepUtils)
   useEffect(() => {
-    if (activeStep === 'account-created') {
+    if (
+      activeStep === 'account-created' &&
+      !isNilOrError(authUser) &&
+      !authUser.attributes.registration_completed_at
+    ) {
       onCompleteActiveStep();
       setAccountCreated(true);
     }
-  }, [activeStep, onCompleteActiveStep]);
+    // TODO: Temporary fix to prevent multiple calls to onCompleteActiveStep. It's dependencies need to be reviewed as they are causing more calls
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeStep, authUser]);
 
   const handleFlowCompleted = useCallback(() => {
     trackEventByName(tracks.signUpFlowCompleted);

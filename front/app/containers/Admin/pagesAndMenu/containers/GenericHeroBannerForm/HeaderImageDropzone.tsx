@@ -1,8 +1,9 @@
 import React from 'react';
+import styled from 'styled-components';
 
 // components and theming
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import styled from 'styled-components';
+import { TBannerError } from './BannerImageFields';
 import { TDevice } from 'components/admin/SelectPreviewDevice';
 import { viewportWidths } from '@citizenlab/cl2-component-library';
 
@@ -39,7 +40,7 @@ interface Props {
     | ICustomPageAttributes['banner_overlay_color'];
   onAdd: (newImage: UploadFile[]) => void;
   onRemove: () => void;
-  headerError: string | null;
+  headerError: TBannerError;
   header_bg: UploadFile | null;
   previewDevice: TDevice;
   layout: THomepageBannerLayout;

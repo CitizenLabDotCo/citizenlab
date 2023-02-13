@@ -22,7 +22,7 @@ const CodeSnippet = styled.textarea`
   user-select: all;
 `;
 
-interface Props {
+interface InputProps {
   path: string;
   width: number;
   height: number;
@@ -31,6 +31,8 @@ interface Props {
 interface DataProps {
   tenant: GetAppConfigurationChildProps;
 }
+
+interface Props extends InputProps, DataProps {}
 
 interface State {
   copied: boolean;
@@ -99,7 +101,7 @@ class WidgetCode extends PureComponent<Props & DataProps, State> {
   }
 }
 
-export default (inputProps) => (
+export default (inputProps: InputProps) => (
   <GetAppConfiguration>
     {(tenant) => <WidgetCode {...inputProps} tenant={tenant} />}
   </GetAppConfiguration>

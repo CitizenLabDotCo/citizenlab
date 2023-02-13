@@ -3,10 +3,6 @@ import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
 import UserHeader from './UserHeader';
 
-jest.mock('utils/cl-intl');
-jest.mock('hooks/useLocale');
-jest.mock('utils/cl-router/Link');
-
 jest.mock('hooks/useUser', () => {
   return () => ({
     id: 'userId',
