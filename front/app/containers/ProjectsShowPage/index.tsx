@@ -12,7 +12,7 @@ import ContinuousVolunteering from './continuous/Volunteering';
 import TimelineContainer from './timeline';
 import { Box, Spinner, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Navigate from 'utils/cl-router/Navigate';
-import Modal from './Modal';
+import SuccessModal from './SucessModal';
 import { ProjectCTABar } from './ProjectCTABar';
 import EventsViewer from 'containers/EventsPage/EventsViewer';
 import Centerer from 'components/UI/Centerer';
@@ -171,7 +171,7 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
             hideSectionIfNoEvents={true}
           />
         </Box>
-        <Modal projectId={projectId} />
+        <SuccessModal projectId={projectId} />
       </ContentWrapper>
     );
   }

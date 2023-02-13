@@ -24,7 +24,7 @@ interface Props {
   projectId: string;
 }
 
-const _Modal = ({ projectId }: Props) => {
+const SuccessModal = ({ projectId }: Props) => {
   const project = useProject({ projectId });
   const phases = usePhases(projectId);
 
@@ -115,4 +115,4 @@ const _Modal = ({ projectId }: Props) => {
   );
 };
 
-export default _Modal;
+export default SuccessModal;

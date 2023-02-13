@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 
 // components
-import { Box, useWindowSize } from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import IdeasShow from 'containers/IdeasShow';
 import IdeaShowPageTopBar from './IdeaShowPageTopBar';
 import PageNotFound from 'components/PageNotFound';
@@ -13,7 +13,7 @@ import useIdea from 'hooks/useIdea';
 
 // style
 import styled from 'styled-components';
-import { media, viewportWidths } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 
 // utils
 import { isError } from 'lodash-es';
@@ -53,8 +53,7 @@ const StyledIdeasShow = styled(IdeasShow)`
 const IdeasShowPage = () => {
   const { slug } = useParams() as { slug: string };
   const idea = useIdea({ ideaSlug: slug });
-  const { windowWidth } = useWindowSize();
-  const tablet = windowWidth <= viewportWidths.tablet;
+  const tablet = useBreakpoint('tablet');
 
   if (isUnauthorizedError(idea)) {
     return <Unauthorized />;
@@ -66,7 +65,7 @@ const IdeasShowPage = () => {
 
   if (idea) {
     return (
-      <Box background="white">
+      <Box background={colors.white}>
         {tablet && (
           <StyledIdeaShowPageTopBar
             projectId={idea.relationships.project.data.id}
