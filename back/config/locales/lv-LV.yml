@@ -115,7 +115,6 @@ lv:
         description:
       author_id:
         title: Autors
-        description: Author description
       topic_ids:
         title: Tagi
         description:
@@ -127,7 +126,6 @@ lv:
         description:
       budget:
         title: Budžets
-        description: Budget description
       images:
         title: Attēli
         description:
