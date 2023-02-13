@@ -23,8 +23,6 @@ class SideFxProjectService
     @sfx_pc.after_create project, user if project.participation_context?
   end
 
-  def before_copy; end
-
   def after_copy(source_project, copied_project, user, start_time)
     LogActivityJob.perform_later(
       copied_project,
