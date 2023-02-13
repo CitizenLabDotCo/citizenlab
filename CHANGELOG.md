@@ -1,5 +1,7 @@
 # Changelog
 
+## 2023-02-13
+
 ### Added
 
 - [CL-2746] Include content builder layouts & images when creating a platform using a template
