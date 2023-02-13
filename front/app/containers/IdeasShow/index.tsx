@@ -208,7 +208,7 @@ export const IdeasShow = ({
       clHistory.replace(window.location.pathname);
     }
 
-    () => {
+    return () => {
       clearTimeout(timeout);
     };
   }, [ideaIdParameter]);
