@@ -63,7 +63,8 @@ describe('New timeline project', () => {
 
   const twoMonthsAgo = moment().subtract(2, 'month').format('DD/MM/YYYY');
   const twoDaysAgo = moment().subtract(2, 'days').format('DD/MM/YYYY');
-  const today = moment().format('DD/MM/YYYY');
+  const yesterday = moment().add(1, 'days').format('DD/MM/YYYY');
+  const tomorrow = moment().add(1, 'days').format('DD/MM/YYYY');
   const inTwoDays = moment().add(2, 'days').format('DD/MM/YYYY');
   const inTwoMonths = moment().add(2, 'month').format('DD/MM/YYYY');
 
@@ -93,8 +94,8 @@ describe('New timeline project', () => {
       cy.apiCreatePhase(
         projectId,
         phaseCurrentTitle,
-        today,
-        today,
+        yesterday,
+        tomorrow,
         'ideation',
         true,
         true,
