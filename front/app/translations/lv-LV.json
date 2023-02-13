@@ -592,6 +592,7 @@
   "app.components.formBuilder.fileUpload": "Failu augšupielāde",
   "app.components.formBuilder.formEnd": "Veidlapas beigas",
   "app.components.formBuilder.goToPageInputLabel": "Tad nākamā lapa ir:",
+  "app.components.formBuilder.helmetTitle": "Form builder",
   "app.components.formBuilder.imageFileUpload": "Attēlu augšupielāde",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Nederīga loģika",
   "app.components.formBuilder.labels": "Etiķetes",
