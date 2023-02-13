@@ -1052,7 +1052,7 @@ GEM
       nokogiri (>= 1.8.1)
       nori (~> 2.4)
       wasabi (~> 3.4)
-    scenic (1.6.0)
+    scenic (1.7.0)
       activerecord (>= 4.0.0)
       railties (>= 4.0.0)
     semantic_logger (4.10.0)
