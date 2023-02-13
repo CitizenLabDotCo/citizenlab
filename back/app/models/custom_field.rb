@@ -188,7 +188,7 @@ class CustomField < ApplicationRecord
       super
     end
   end
-  
+
   def project_id
     resource.project_id if resource_type == 'CustomForm'
   end

@@ -77,7 +77,7 @@ RSpec.describe InputUiSchemaGeneratorService do
               {
                 type: 'Category',
                 label: 'What is your question?',
-                options: { 
+                options: {
                   id: custom_form.custom_fields.find_by(code: 'ideation_section1').id,
                   description: ''
                 },
