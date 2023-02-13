@@ -19,7 +19,6 @@ fr:
         description:
       author_id:
         title: Auteur
-        description:
       topic_ids:
         title: Étiquettes
         description:
@@ -31,7 +30,6 @@ fr:
         description:
       budget:
         title: Budget
-        description:
       images:
         title: Images
         description:

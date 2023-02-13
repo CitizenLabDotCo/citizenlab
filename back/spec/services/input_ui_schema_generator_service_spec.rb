@@ -77,7 +77,10 @@ RSpec.describe InputUiSchemaGeneratorService do
               {
                 type: 'Category',
                 label: 'What is your question?',
-                options: { id: custom_form.custom_fields.find_by(code: 'ideation_section1').id },
+                options: {
+                  id: custom_form.custom_fields.find_by(code: 'ideation_section1').id,
+                  description: ''
+                },
                 elements: [
                   {
                     type: 'VerticalLayout',
@@ -209,7 +212,8 @@ RSpec.describe InputUiSchemaGeneratorService do
                 type: 'Category',
                 label: 'Details',
                 options: {
-                  id: custom_form.custom_fields.find_by(code: 'ideation_section3').id
+                  id: custom_form.custom_fields.find_by(code: 'ideation_section3').id,
+                  description: ''
                 },
                 elements: [
                   {
