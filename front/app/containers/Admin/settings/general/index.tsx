@@ -64,25 +64,6 @@ const SettingsGeneralTab = () => {
 
   const handleOnSubmit = async (formValues: FormValues) => {
     await updateAppConfigurationCore(formValues);
-    // if (isCLErrorJSON(e)) {
-    //   const errors = e.json.errors;
-    //   setErrors(errors);
-    //   setLoading(false);
-    //   // This error check uses an undocumented API from the backend.
-    //   // Needs to be reimplemented to use frontend validation when converted to a React Hook Form.
-    //   if (errors.settings && errors.settings.length > 0) {
-    //     const foundUrlError = !!errors.settings.find((error) => {
-    //       return (
-    //         typeof error.error !== 'string' &&
-    //         error.error.fragment === '#/core/organization_site'
-    //       );
-    //     });
-
-    //     if (foundUrlError) {
-    //       setHasUrlError(true);
-    //     }
-    //   }
-    // }
   };
 
   const onToggleBlockProfanitySetting = () => {
