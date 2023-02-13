@@ -592,6 +592,7 @@
   "app.components.formBuilder.fileUpload": "Upload af fil",
   "app.components.formBuilder.formEnd": "Formularens afslutning",
   "app.components.formBuilder.goToPageInputLabel": "Så er næste side:",
+  "app.components.formBuilder.helmetTitle": "Form builder",
   "app.components.formBuilder.imageFileUpload": "Upload af billede",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Ugyldig logik",
   "app.components.formBuilder.labels": "Etiketter",
