@@ -2,8 +2,6 @@ import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
 import DesktopNavbar from '.';
 
-jest.mock('services/locale');
-jest.mock('services/appConfiguration');
 jest.mock('hooks/useNavbarItems');
 jest.mock('hooks/useCustomPageSlugById');
 
@@ -23,8 +21,6 @@ jest.mock('hooks/useAdminPublications', () =>
     list: mockAdminPublications,
   }))
 );
-
-jest.mock('utils/cl-router/Link');
 
 describe('<DesktopNavbar />', () => {
   it('renders', () => {

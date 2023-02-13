@@ -47,11 +47,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.projectFolderCardImageLabel',
     defaultMessage: 'Folder card image',
   },
-  projectFolderCardImageTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.projectFolderCardImageTooltip',
-    defaultMessage:
-      'This is the image displayed in the folder card. The ideal dimensions for this image are a width of 1440 pixels and a height between 1440 and 720 pixels.',
-  },
   save: {
     id: 'app.containers.AdminPage.FoldersEdit.save',
     defaultMessage: 'Save',
@@ -151,5 +146,9 @@ export default defineMessages({
   url: {
     id: 'app.containers.AdminPage.FoldersEdit.url',
     defaultMessage: 'URL',
+  },
+  headerImageInputLabel: {
+    id: 'app.containers.AdminPage.FoldersEdit.headerImageInputLabel',
+    defaultMessage: 'Header image',
   },
 });

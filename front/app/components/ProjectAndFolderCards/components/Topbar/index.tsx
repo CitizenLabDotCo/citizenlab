@@ -34,7 +34,7 @@ import clHistory from 'utils/cl-router/history';
 // typings
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
 import { PublicationTab } from '../..';
-import useURLQuery from 'utils/cl-router/useUrlQuery';
+import { useSearchParams } from 'react-router-dom';
 
 const Title = styled.h2<{ hasPublications: boolean }>`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -160,7 +160,7 @@ const Header = ({
   const localize = useLocalize();
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
-  const searchParams = useURLQuery();
+  const [searchParams] = useSearchParams();
   const [searchInputRef, setSearchInputRef] = useState<HTMLInputElement | null>(
     null
   );

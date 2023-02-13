@@ -25,8 +25,6 @@ jest.mock('modules/commercial/insights/hooks/useInsightsCategory', () => {
   return jest.fn(() => mockCategoryData);
 });
 
-jest.mock('hooks/useLocale');
-
 jest.mock('utils/cl-router/withRouter', () => {
   return {
     withRouter: (Component) => {

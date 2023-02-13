@@ -10,11 +10,9 @@ const schema = object({
   description: validateMultilocForEveryLocale('Error message'),
 });
 
-jest.mock('utils/cl-intl');
 jest.mock('hooks/useAppConfigurationLocales', () =>
   jest.fn(() => ['en', 'nl-NL'])
 );
-jest.mock('hooks/useLocale');
 
 const onSubmit = jest.fn();
 

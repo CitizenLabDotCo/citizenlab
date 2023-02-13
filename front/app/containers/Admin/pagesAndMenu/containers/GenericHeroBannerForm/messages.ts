@@ -78,22 +78,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.imageOverlayOpacity',
     defaultMessage: 'Image overlay opacity',
   },
-  bgHeaderPreviewSelectLabel: {
-    id: 'app.containers.AdminPage.SettingsPage.bgHeaderPreviewSelectLabel',
-    defaultMessage: 'Show preview for',
-  },
-  desktop: {
-    id: 'app.containers.AdminPage.SettingsPage.desktop',
-    defaultMessage: 'Desktop',
-  },
-  tablet: {
-    id: 'app.containers.AdminPage.SettingsPage.tablet',
-    defaultMessage: 'Tablet',
-  },
-  phone: {
-    id: 'app.containers.AdminPage.SettingsPage.phone',
-    defaultMessage: 'Phone',
-  },
   noHeader: {
     id: 'app.containers.AdminPage.SettingsPage.noHeader',
     defaultMessage: 'Please upload a header image',
@@ -192,5 +176,10 @@ export default defineMessages({
   overlayToggleLabel: {
     id: 'app.containers.AdminPage.SettingsPage.overlayToggleLabel',
     defaultMessage: 'Enable overlay',
+  },
+  imageSupportPageURL: {
+    id: 'app.containers.AdminPage.SettingsPage.imageSupportPageURL',
+    defaultMessage:
+      'https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
   },
 });

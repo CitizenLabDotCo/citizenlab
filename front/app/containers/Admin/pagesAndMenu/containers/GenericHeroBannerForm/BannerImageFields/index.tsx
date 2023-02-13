@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Box, IOption, Select } from '@citizenlab/cl2-component-library';
+import { Box, IOption } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import OverlayControls from './OverlayControls';
 import ImageUploader from './ImageUploader';
-
+import SelectPreviewDevice, {
+  TDevice,
+} from 'components/admin/SelectPreviewDevice';
 import { UploadFile } from 'typings';
 
 // i18n
@@ -12,7 +14,6 @@ import messages from '../messages';
 
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
-
 import {
   ICustomPageAttributes,
   TCustomPageBannerLayout,
@@ -21,8 +22,7 @@ import {
   IHomepageSettingsAttributes,
   THomepageBannerLayout,
 } from 'services/homepageSettings';
-
-import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
+import ImageInfoTooltip from './ImageInfoTooltip';
 
 export interface Props {
   onAddImage: (newImageBase64: string) => void;
@@ -49,7 +49,6 @@ export interface Props {
     | ICustomPageAttributes['header_bg'];
 }
 
-export type TPreviewDevice = 'phone' | 'tablet' | 'desktop';
 export type TLocalHeaderImage = UploadFile | null;
 export type TBannerError = string | null;
 type TBannerLayoutComponent =
@@ -67,7 +66,7 @@ const BannerImageField = ({
   onOverlayChange,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const [previewDevice, setPreviewDevice] = useState<TPreviewDevice>('desktop');
+  const [previewDevice, setPreviewDevice] = useState<TDevice>('desktop');
   const [headerLocalDisplayImage, setHeaderLocalDisplayImage] =
     useState<TLocalHeaderImage>(null);
   const [bannerError, setBannerError] = useState<TBannerError>(null);
@@ -141,7 +140,7 @@ const BannerImageField = ({
       fixed_ratio_layout: {
         // Only show for an unsaved image
         image_cropper: hasLocalHeaderImage && imageShouldBeSaved,
-        preview_device: false,
+        preview_device: hasLocalHeaderImage && !imageShouldBeSaved,
         // Only show when we have the image uploader. For this layout
         // that means: image is saved (for an unsaved image we show the cropper)
         overlay_controls: hasLocalHeaderImage && !imageShouldBeSaved,
@@ -160,25 +159,9 @@ const BannerImageField = ({
       <SectionField>
         {showConditions(bannerLayout).preview_device && (
           <Box mb="20px">
-            <Select
-              label={formatMessage(messages.bgHeaderPreviewSelectLabel)}
-              id="display-preview-device"
-              options={[
-                {
-                  value: 'desktop',
-                  label: formatMessage(messages.desktop),
-                },
-                {
-                  value: 'tablet',
-                  label: formatMessage(messages.tablet),
-                },
-                {
-                  value: 'phone',
-                  label: formatMessage(messages.phone),
-                },
-              ]}
+            <SelectPreviewDevice
+              selectedPreviewDevice={previewDevice}
               onChange={(option: IOption) => setPreviewDevice(option.value)}
-              value={previewDevice}
             />
           </Box>
         )}

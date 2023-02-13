@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Copies a project within a tenant.
-class LocalProjectCopyService
+class LocalProjectCopyService < ::ProjectCopyService
   def copy(source_project)
     new_title_multiloc = add_suffix_to_title(source_project.title_multiloc)
 
@@ -14,9 +14,9 @@ class LocalProjectCopyService
       new_publication_status: 'draft'
     }
 
-    template = AdminApi::ProjectCopyService.new.export source_project, **options
+    template = export(source_project, **options)
     folder_id = ProjectFolders::Folder.find(source_project.folder_id) if source_project.folder_id
-    copied_project = AdminApi::ProjectCopyService.new.import(template, folder: folder_id, local_copy: true)
+    copied_project = import(template, folder: folder_id, local_copy: true)
 
     copy_project_visibility_permission_groups(source_project, copied_project)
     copy_project_and_phases_actions_groups_permissions(source_project, copied_project)

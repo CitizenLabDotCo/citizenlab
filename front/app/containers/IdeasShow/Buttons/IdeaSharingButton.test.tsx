@@ -33,7 +33,7 @@ const ideaId = '5';
 
 jest.mock('services/projects');
 jest.mock('services/auth');
-jest.mock('services/appConfiguration');
+
 jest.mock('hooks/useProject', () => jest.fn(() => mockProjectData));
 jest.mock('hooks/useIdea', () => {
   return jest.fn(() => mockIdeaData);

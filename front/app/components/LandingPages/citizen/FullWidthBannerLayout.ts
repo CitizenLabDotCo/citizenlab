@@ -10,7 +10,7 @@ export const Container = styled.div`
 
 export const Header = styled.div`
   width: 100%;
-  min-height: ${homepageBannerLayoutHeights.full_width_banner_layout.desktop}px;
+  height: ${homepageBannerLayoutHeights.full_width_banner_layout.desktop}px;
   margin: 0;
   padding: 0;
   position: relative;
@@ -20,11 +20,11 @@ export const Header = styled.div`
   justify-content: center;
 
   ${media.tablet`
-    min-height: ${homepageBannerLayoutHeights.full_width_banner_layout.tablet}px;
+    height: ${homepageBannerLayoutHeights.full_width_banner_layout.tablet}px;
   `}
 
   ${media.phone`
-    min-height: ${homepageBannerLayoutHeights.full_width_banner_layout.phone}px;
+    height: ${homepageBannerLayoutHeights.full_width_banner_layout.phone}px;
   `}
 `;
 

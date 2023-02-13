@@ -2,12 +2,13 @@ import React, { memo, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { isEmpty } from 'lodash-es';
 import bowser from 'bowser';
+import { TLayout } from 'components/ProjectAndFolderCards';
 
 // router
 import Link from 'utils/cl-router/Link';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Image from 'components/UI/Image';
 
 // i18n
@@ -29,8 +30,16 @@ import {
   defaultCardHoverStyle,
 } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
+
+// hooks
 import useProjectFolderImages from 'hooks/useProjectFolderImages';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
+
+// services
+import {
+  getCardImageUrl,
+  CARD_IMAGE_ASPECT_RATIO,
+} from 'services/projectFolderImages';
 
 const Container = styled(Link)`
   width: calc(33% - 12px);
@@ -105,11 +114,8 @@ const Container = styled(Link)`
 
 const FolderImageContainer = styled.div`
   width: 100%;
-  height: 254px;
-  flex-grow: 0;
-  flex-shrink: 0;
-  flex-basis: 254px;
   display: flex;
+  aspect-ratio: ${CARD_IMAGE_ASPECT_RATIO} / 1;
   margin-right: 10px;
   overflow: hidden;
   position: relative;
@@ -117,15 +123,13 @@ const FolderImageContainer = styled.div`
   &.large {
     width: 50%;
     height: 100%;
-    flex-basis: 50%;
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
   }
 
-  &.small {
-    height: 224px;
-    flex-basis: 224px;
-  }
+  ${media.phone`
+    aspect-ratio: ${CARD_IMAGE_ASPECT_RATIO} / 1;
+  `}
 `;
 
 const FolderImagePlaceholder = styled.div`
@@ -283,15 +287,18 @@ const MapIconDescription = styled.span`
   color: ${({ theme }) => theme.colors.tenantSecondary};
 `;
 
+export type TProjectFolderCardSize = 'small' | 'medium' | 'large';
+
 export interface Props {
   publication: IAdminPublicationContent;
-  size: 'small' | 'medium' | 'large';
-  layout: 'dynamic' | 'threecolumns' | 'twocolumns';
+  size: TProjectFolderCardSize;
+  layout: TLayout;
   className?: string;
 }
 
 const ProjectFolderCard = memo<Props>(
   ({ publication, size, layout, className }) => {
+    const isPhone = useBreakpoint('phone');
     const projectFolderImages = useProjectFolderImages(
       publication.publicationId
     );
@@ -314,10 +321,13 @@ const ProjectFolderCard = memo<Props>(
       []
     );
 
-    const imageUrl =
-      !isNilOrError(projectFolderImages) && projectFolderImages.data.length > 0
-        ? projectFolderImages.data?.[0].attributes?.versions.medium
-        : null;
+    const imageVersions = isNilOrError(projectFolderImages)
+      ? null
+      : projectFolderImages.data[0]?.attributes.versions;
+
+    const imageUrl = imageVersions
+      ? getCardImageUrl(imageVersions, isPhone, size)
+      : null;
 
     const folderUrl = `/folders/${publication.attributes.publication_slug}`;
     const numberOfProjectsInFolder =
