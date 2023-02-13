@@ -115,7 +115,6 @@ hr:
         description:
       author_id:
         title: Autor
-        description: Opis autora
       topic_ids:
         title: Oznake
         description:
@@ -127,7 +126,6 @@ hr:
         description:
       budget:
         title: Proračun
-        description: Opis proračuna
       images:
         title: Slike
         description:
