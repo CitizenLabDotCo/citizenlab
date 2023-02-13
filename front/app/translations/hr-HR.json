@@ -592,6 +592,7 @@
   "app.components.formBuilder.fileUpload": "Prijenos datoteke",
   "app.components.formBuilder.formEnd": "Kraj obrasca",
   "app.components.formBuilder.goToPageInputLabel": "Sljedeća stranica je:",
+  "app.components.formBuilder.helmetTitle": "Form builder",
   "app.components.formBuilder.imageFileUpload": "Prijenos slike",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Nevaljana logika",
   "app.components.formBuilder.labels": "Natpisi",
