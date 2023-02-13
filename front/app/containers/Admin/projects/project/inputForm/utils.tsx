@@ -26,7 +26,7 @@ export const ideationConfig: FormBuilderConfig = {
   alwaysShowCustomFields: false,
 
   groupingType: 'section',
-  getTopNotice: () => {
+  getWarningNotice: () => {
     return (
       <Box mb="20px">
         <Warning>

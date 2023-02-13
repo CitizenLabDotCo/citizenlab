@@ -33,7 +33,9 @@ export type FormBuilderConfig = {
 
   viewFormLink?: string;
 
-  getTopNotice?: () => void;
+  getDeletionNotice?: (projectId: string) => void;
+  getWarningNotice?: () => void;
+
   goBackUrl?: string;
   groupingType: 'page' | 'section';
 };
