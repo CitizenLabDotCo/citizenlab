@@ -112,7 +112,7 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            content_builder: {
+            project_description_builder: {
               enabled: true,
               allowed: true
             },
@@ -377,6 +377,10 @@ module MultiTenancy
               allowed: true
             },
             report_builder: {
+              enabled: true,
+              allowed: true
+            },
+            posthog_integration: {
               enabled: true,
               allowed: true
             }
