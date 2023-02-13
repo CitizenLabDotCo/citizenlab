@@ -8,6 +8,7 @@ class TrackSegmentService
 
   def identify_user(user)
     return unless @segment_client
+    return unless track_user?(user)
 
     traits = user_traits(user)
     @segment_client.identify(
@@ -36,6 +37,7 @@ class TrackSegmentService
 
   def track_activity(activity)
     return unless @segment_client
+    return if activity.user && !track_user?(activity.user)
 
     event = event_from_activity(activity)
     @segment_client.track(event)
@@ -95,6 +97,12 @@ class TrackSegmentService
   end
 
   private
+
+  def track_user?(user)
+    return false if user.super_admin?
+
+    user.admin? || user.project_moderator?
+  end
 
   def event_from_activity(activity)
     event = {
