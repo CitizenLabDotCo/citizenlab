@@ -115,7 +115,6 @@ pt:
         description:
       author_id:
         title: Autor
-        description: Author description
       topic_ids:
         title: Tópicos
         description:
@@ -127,7 +126,6 @@ pt:
         description:
       budget:
         title: Orçamento
-        description: Budget description
       images:
         title: Imagens
         description:
