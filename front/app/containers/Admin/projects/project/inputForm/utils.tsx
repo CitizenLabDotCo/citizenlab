@@ -28,7 +28,7 @@ export const ideationConfig: FormBuilderConfig = {
   groupingType: 'section',
   getWarningNotice: () => {
     return (
-      <Box mb="20px">
+      <Box id="e2e-warning-notice" mb="20px">
         <Warning>
           <FormattedMessage {...messages.existingSubmissionsWarning} />
         </Warning>
