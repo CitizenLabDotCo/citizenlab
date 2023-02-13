@@ -118,7 +118,6 @@ module MultiTenancy
       end
 
       DumpTenantJob.perform_later(Tenant.current) unless local_copy
-      puts "local_copy_value: #{local_copy.inspect}"
 
       created_objects_ids
     end
