@@ -442,6 +442,8 @@
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Уклони",
   "app.components.UI.TranslateButton.original": "Оригинал",
   "app.components.UI.TranslateButton.translate": "Преведи",
+  "app.components.Unauthorized.noPermission": "You don't have permission to view this page",
+  "app.components.Unauthorized.notAuthorized": "Sorry, you're not authorized to access this page.",
   "app.components.Upload.errorImageMaxSizeExceeded": "Слика коју сте одабрали је већа од {maxFileSize}MB",
   "app.components.Upload.errorImagesMaxSizeExceeded": "Једна или више одабраних слика су веће од{maxFileSize}MB",
   "app.components.Upload.onlyOneImage": "Можете поставити само 1 слику",

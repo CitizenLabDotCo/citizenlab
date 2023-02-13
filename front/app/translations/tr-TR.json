@@ -442,6 +442,8 @@
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Kaldır",
   "app.components.UI.TranslateButton.original": "Orijinal",
   "app.components.UI.TranslateButton.translate": "Çevir",
+  "app.components.Unauthorized.noPermission": "You don't have permission to view this page",
+  "app.components.Unauthorized.notAuthorized": "Sorry, you're not authorized to access this page.",
   "app.components.Upload.errorImageMaxSizeExceeded": "Seçtiğiniz görsel {maxFileSize} MB'tan büyük",
   "app.components.Upload.errorImagesMaxSizeExceeded": "Seçtiğiniz bir veya birkaç görsel {maxFileSize} MB'tan büyük",
   "app.components.Upload.onlyOneImage": "Yalnızca 1 görsel yükleyebilirsiniz",

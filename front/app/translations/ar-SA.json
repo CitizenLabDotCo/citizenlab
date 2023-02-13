@@ -442,6 +442,8 @@
   "app.components.UI.RemoveImageButton.a11y_removeImage": "إزالة",
   "app.components.UI.TranslateButton.original": "الأصلي",
   "app.components.UI.TranslateButton.translate": "ترجمة",
+  "app.components.Unauthorized.noPermission": "You don't have permission to view this page",
+  "app.components.Unauthorized.notAuthorized": "Sorry, you're not authorized to access this page.",
   "app.components.Upload.errorImageMaxSizeExceeded": "حجم الصورة التي حدّدتها أكبر من {maxFileSize} ميغابايت",
   "app.components.Upload.errorImagesMaxSizeExceeded": "صورة أو أكثر من الصور التي حدّدتها حجمها أكبر من {maxFileSize} ميغابايت",
   "app.components.Upload.onlyOneImage": "يمكنك تحميل صورة واحدة فقط",

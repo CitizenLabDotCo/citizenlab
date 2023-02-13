@@ -442,6 +442,8 @@
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Verwijder",
   "app.components.UI.TranslateButton.original": "Origineel",
   "app.components.UI.TranslateButton.translate": "Vertaal",
+  "app.components.Unauthorized.noPermission": "Je hebt geen toestemming om deze pagina te bekijken",
+  "app.components.Unauthorized.notAuthorized": "Sorry, je bent niet gemachtigd om toegang tot deze pagina te krijgen.",
   "app.components.Upload.errorImageMaxSizeExceeded": "De afbeelding die je koos is groter dan {maxFileSize}MB",
   "app.components.Upload.errorImagesMaxSizeExceeded": "Eén of meer bestand(en) overschrijd(t)(en) de upload limiet van {maxFileSize} Mb",
   "app.components.Upload.onlyOneImage": "Je kan maximum 1 afbeelding uploaden",

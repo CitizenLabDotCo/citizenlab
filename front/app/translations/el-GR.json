@@ -442,6 +442,8 @@
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Κατάργηση",
   "app.components.UI.TranslateButton.original": "Αρχικό",
   "app.components.UI.TranslateButton.translate": "Μετάφραση",
+  "app.components.Unauthorized.noPermission": "You don't have permission to view this page",
+  "app.components.Unauthorized.notAuthorized": "Sorry, you're not authorized to access this page.",
   "app.components.Upload.errorImageMaxSizeExceeded": "Η εικόνα που επιλέξατε είναι μεγαλύτερη από {maxFileSize}MB",
   "app.components.Upload.errorImagesMaxSizeExceeded": "Μία ή περισσότερες εικόνες που επιλέξατε είναι μεγαλύτερες από {maxFileSize}MB",
   "app.components.Upload.onlyOneImage": "Μπορείτε να ανεβάσετε μόνο 1 εικόνα",

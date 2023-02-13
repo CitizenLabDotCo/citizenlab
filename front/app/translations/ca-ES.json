@@ -442,6 +442,8 @@
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Eliminar",
   "app.components.UI.TranslateButton.original": "Original",
   "app.components.UI.TranslateButton.translate": "Traduir",
+  "app.components.Unauthorized.noPermission": "You don't have permission to view this page",
+  "app.components.Unauthorized.notAuthorized": "Sorry, you're not authorized to access this page.",
   "app.components.Upload.errorImageMaxSizeExceeded": "La imatge que heu seleccionat és més gran que {maxFileSize}MB",
   "app.components.Upload.errorImagesMaxSizeExceeded": "Una o diverses imatges que heu seleccionat tenen més de {maxFileSize}MB",
   "app.components.Upload.onlyOneImage": "Només podeu penjar 1 imatge",

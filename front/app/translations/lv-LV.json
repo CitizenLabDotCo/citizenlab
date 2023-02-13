@@ -442,6 +442,8 @@
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Noņemt",
   "app.components.UI.TranslateButton.original": "Oriģināls",
   "app.components.UI.TranslateButton.translate": "Tulkot",
+  "app.components.Unauthorized.noPermission": "You don't have permission to view this page",
+  "app.components.Unauthorized.notAuthorized": "Sorry, you're not authorized to access this page.",
   "app.components.Upload.errorImageMaxSizeExceeded": "Jūsu izvēlētais attēls ir lielāks par {maxFileSize}MB",
   "app.components.Upload.errorImagesMaxSizeExceeded": "Viens vai vairāki jūsu atlasītie attēli ir lielāki par {maxFileSize}MB",
   "app.components.Upload.onlyOneImage": "Jūs varat augšupielādēt tikai 1 attēlu",
