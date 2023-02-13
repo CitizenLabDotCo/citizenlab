@@ -104,8 +104,9 @@ const TopBar = ({
     const deleteMessage = formatMessage(messages.deleteConfirmation);
 
     if (window.confirm(deleteMessage)) {
-      mutate(viewId);
-      clHistory.push('/admin/reporting/insights');
+      mutate(viewId, {
+        onSuccess: () => clHistory.push('/admin/reporting/insights'),
+      });
     }
   };
 

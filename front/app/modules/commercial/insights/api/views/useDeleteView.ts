@@ -3,11 +3,12 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import viewsKeys from './keys';
 import { IInsightsViews } from './types';
 
-const deleteView = (id: string) =>
-  fetcher({
+const deleteView = (id: string) => {
+  return fetcher({
     path: `/insights/views/${id}`,
     action: 'delete',
   });
+};
 
 const useDeleteView = () => {
   const queryClient = useQueryClient();
@@ -25,14 +26,17 @@ const useDeleteView = () => {
       );
 
       // Optimistically update to the new value
-      queryClient.setQueryData(viewsKeys.lists(), (old: IInsightsViews) => {
-        const newData = {
-          ...old,
-          data: old.data.filter((item) => item.id !== id),
-        };
+      queryClient.setQueryData(
+        viewsKeys.lists(),
+        (old: IInsightsViews = { data: [] }) => {
+          const newData = {
+            ...old,
+            data: old.data.filter((item) => item.id !== id),
+          };
 
-        return newData;
-      });
+          return newData;
+        }
+      );
 
       // Return a context object with the snapshotted value
       return { previous };
