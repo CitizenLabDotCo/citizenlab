@@ -115,7 +115,6 @@
         description:
       author_id:
         title: Forfatter
-        description: Forfatterbeskrivelse
       topic_ids:
         title: Emner
         description:
@@ -127,7 +126,6 @@
         description:
       budget:
         title: Budsjett
-        description: Budsjettbeskrivelse
       images:
         title: Bilder
         description:
