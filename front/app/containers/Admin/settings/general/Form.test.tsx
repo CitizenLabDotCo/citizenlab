@@ -1,31 +1,41 @@
 import React from 'react';
 import { screen, render, userEvent } from 'utils/testUtils/rtl';
-import Form from './Form';
+import Form, { Props } from './Form';
 
-const titleEN = 'en title';
-const titleNL = 'nl title';
-
-const defaultProps = {
+const orgNameEN = 'EN org name';
+const orgNameNL = 'NL org name';
+const defaultProps: Props = {
   onSubmit: jest.fn(),
   defaultValues: {
-    organization_name: { en: 'My city', 'nl-NL': 'Mijn stad' },
+    organization_name: { en: orgNameEN, 'nl-NL': orgNameNL },
     locales: ['en' as const, 'nl-NL' as const],
     organization_site: 'https://mywebsite.com',
   },
 };
 
+// Needed for language selector of org name multiloc input
+jest.mock('hooks/useAppConfigurationLocales', () =>
+  jest.fn(() => ['en', 'nl-NL'])
+);
+
 describe('Form', () => {
-  it('submits correct data', async () => {
+  it('Submits changes correctly', async () => {
     const { container } = render(<Form {...defaultProps} />);
     const user = userEvent.setup();
+    const orgNameInputField = screen.getByLabelText(
+      'Name of city or organization'
+    );
 
-    user.type(screen.getByRole('textbox'), titleEN);
-    user.click(screen.getByText(/nl-NL/i));
-    user.type(screen.getByRole('textbox'), titleNL);
+    await user.click(screen.getByRole('button', { name: 'nl-NL' }));
+    await user.clear(orgNameInputField);
+    const newOrgNameNl = 'Mijn stad';
+    await user.type(orgNameInputField, newOrgNameNl);
     await user.click(container.querySelector('button[type="submit"]'));
 
     expect(defaultProps.onSubmit).toHaveBeenCalledWith({
-      nav_bar_item_title_multiloc: { en: titleEN, 'nl-NL': titleNL },
+      locales: ['en', 'nl-NL'],
+      organization_name: { en: orgNameEN, 'nl-NL': newOrgNameNl },
+      organization_site: 'https://mywebsite.com',
     });
     expect(screen.getByTestId('feedbackSuccessMessage')).toBeInTheDocument();
   });

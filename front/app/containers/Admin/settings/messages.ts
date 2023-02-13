@@ -46,7 +46,7 @@ export default defineMessages({
   },
   organizationName: {
     id: 'app.containers.AdminPage.SettingsPage.organizationName',
-    defaultMessage: '{type, select, generic {Organization} other {City}} name',
+    defaultMessage: 'Name of city or organization',
   },
   languages: {
     id: 'app.containers.AdminPage.SettingsPage.languages',
