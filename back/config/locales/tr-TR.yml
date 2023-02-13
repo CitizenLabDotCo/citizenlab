@@ -115,7 +115,6 @@ tr:
         description:
       author_id:
         title: Yazan
-        description: Author description
       topic_ids:
         title: Etiketler
         description:
@@ -127,7 +126,6 @@ tr:
         description:
       budget:
         title: Bütçe
-        description: Budget description
       images:
         title: Görseller
         description:
