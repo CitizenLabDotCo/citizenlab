@@ -592,6 +592,7 @@
   "app.components.formBuilder.fileUpload": "Filopplasting",
   "app.components.formBuilder.formEnd": "Skjemaslutt",
   "app.components.formBuilder.goToPageInputLabel": "Deretter er neste side:",
+  "app.components.formBuilder.helmetTitle": "Form builder",
   "app.components.formBuilder.imageFileUpload": "Bildeopplasting",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Ugyldig logikk",
   "app.components.formBuilder.labels": "Etiketter",
