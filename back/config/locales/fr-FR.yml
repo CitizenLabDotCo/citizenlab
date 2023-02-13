@@ -115,7 +115,6 @@ fr:
         description:
       author_id:
         title: Auteur
-        description: Description de l’auteur
       topic_ids:
         title: Étiquettes
         description:
@@ -127,7 +126,6 @@ fr:
         description:
       budget:
         title: Budget
-        description: Description du budget
       images:
         title: Images
         description:
