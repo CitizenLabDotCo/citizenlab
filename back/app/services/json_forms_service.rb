@@ -7,18 +7,7 @@ class JsonFormsService
     key: 'author_id',
     code: 'author_id',
     input_type: 'text',
-    title_multiloc: MultilocService.new.i18n_to_multiloc(
-      'custom_fields.ideas.author_id.title',
-      locales: CL2_SUPPORTED_LOCALES
-    ),
-    description_multiloc: begin
-      MultilocService.new.i18n_to_multiloc(
-        'custom_fields.ideas.author_id.description',
-        locales: CL2_SUPPORTED_LOCALES
-      )
-    rescue StandardError
-      {}
-    end,
+    title_multiloc: MultilocService.new.i18n_to_multiloc('custom_fields.ideas.author_id.title', locales: CL2_SUPPORTED_LOCALES),
     required: false,
     enabled: true,
     answer_visible_to: 'public'
@@ -28,11 +17,6 @@ class JsonFormsService
     code: 'budget',
     input_type: 'number',
     title_multiloc: MultilocService.new.i18n_to_multiloc('custom_fields.ideas.budget.title', locales: CL2_SUPPORTED_LOCALES),
-    description_multiloc: begin
-      MultilocService.new.i18n_to_multiloc('custom_fields.ideas.budget.description', locales: CL2_SUPPORTED_LOCALES)
-    rescue StandardError
-      {}
-    end,
     required: false,
     enabled: true,
     answer_visible_to: 'public'
