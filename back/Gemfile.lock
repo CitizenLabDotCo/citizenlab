@@ -1065,7 +1065,7 @@ GEM
     sentry-ruby-core (5.3.1)
       concurrent-ruby
     set (1.0.2)
-    shoulda-matchers (5.0.0)
+    shoulda-matchers (5.3.0)
       activesupport (>= 5.2.0)
     signet (0.16.1)
       addressable (~> 2.8)
@@ -1159,7 +1159,7 @@ GEM
     with_env (1.1.0)
     xml-simple (1.1.9)
       rexml
-    zeitwerk (2.6.6)
+    zeitwerk (2.6.7)
 
 PLATFORMS
   aarch64-linux
@@ -1297,7 +1297,7 @@ DEPENDENCIES
   sentry-rails
   sentry-ruby
   seo!
-  shoulda-matchers (~> 5.0.0)
+  shoulda-matchers (~> 5.3.0)
   simple_segment (~> 1.2)
   simplecov
   simplecov-rcov
