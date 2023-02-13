@@ -115,7 +115,6 @@ el:
         description:
       author_id:
         title: Συντάκτης
-        description: Author description
       topic_ids:
         title: Ετικέτες
         description:
@@ -127,7 +126,6 @@ el:
         description:
       budget:
         title: Προϋπολογισμός
-        description: Budget description
       images:
         title: Εικόνες
         description:
