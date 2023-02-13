@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useState, useEffect } from 'react';
+import React, { lazy, Suspense, useState, useRef, useEffect } from 'react';
 import { isUndefined, isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
@@ -198,10 +198,11 @@ export const IdeasShow = ({
     useState<boolean>(false);
   const [queryParams] = useSearchParams();
   const ideaIdParameter = queryParams.get('new_idea_id');
+  const timeout = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
     if (isString(ideaIdParameter)) {
-      setTimeout(() => {
+      timeout.current = setTimeout(() => {
         setNewIdeaId(ideaIdParameter);
       }, 1500);
       clHistory.replace(window.location.pathname);
@@ -228,6 +229,9 @@ export const IdeasShow = ({
     !isUndefined(officialFeedbacks.officialFeedbacksList);
 
   const closeIdeaSocialSharingModal = () => {
+    if (timeout.current) {
+      clearTimeout(timeout.current);
+    }
     setNewIdeaId(null);
   };
 
