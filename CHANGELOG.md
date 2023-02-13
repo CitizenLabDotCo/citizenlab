@@ -1,10 +1,17 @@
 # Changelog
 
+## 2023-02-13
+
+### Added
+
+- [CL-2746] Include content builder layouts & images when creating a platform using a template
+
 ## 2023-02-10
 
 ### Changed
 
 - Tooltips for image uploaders in project and folder forms.
+- [CL-737] Show login screen after successful password reset
 
 ## 2023-02-09
 

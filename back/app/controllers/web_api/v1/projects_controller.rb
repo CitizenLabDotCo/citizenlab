@@ -83,7 +83,11 @@ class WebApi::V1::ProjectsController < ApplicationController
     @project = folder ? Project.new(folder: folder) : Project.new
 
     authorize @project
+
+    start_time = Time.now
     @project = LocalProjectCopyService.new.copy(source_project)
+
+    sidefx.after_copy(source_project, @project, current_user, start_time)
 
     render json: WebApi::V1::ProjectSerializer.new(
       @project,

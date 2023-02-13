@@ -30,6 +30,7 @@ class ProjectCopyService < ::TemplateService
     timeline_start_at: nil,
     new_publication_status: nil
   )
+    @local_copy = local_copy
     @project = project
     @template = { 'models' => {} }
 
@@ -277,8 +278,8 @@ class ProjectCopyService < ::TemplateService
         'project_ref' => lookup_ref(phase.project_id, :project),
         'title_multiloc' => phase.title_multiloc,
         'description_multiloc' => phase.description_multiloc,
-        'start_at' => shift_timestamp(phase.start_at, shift_timestamps)&.iso8601,
-        'end_at' => shift_timestamp(phase.end_at, shift_timestamps)&.iso8601,
+        'start_at' => shift_timestamp(phase.start_at, shift_timestamps, leave_blank: false)&.iso8601,
+        'end_at' => shift_timestamp(phase.end_at, shift_timestamps, leave_blank: false)&.iso8601,
         'created_at' => shift_timestamp(phase.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(phase.updated_at, shift_timestamps)&.iso8601,
         'text_images_attributes' => phase.text_images.map do |ti|
@@ -644,7 +645,9 @@ class ProjectCopyService < ::TemplateService
     end
   end
 
-  def shift_timestamp(value, shift_timestamps)
+  def shift_timestamp(value, shift_timestamps, leave_blank: @local_copy)
+    return if leave_blank
+
     value && (value + shift_timestamps.days)
   end
 end
