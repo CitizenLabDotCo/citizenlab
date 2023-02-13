@@ -57,6 +57,7 @@ describe('Proposals card data parsing', () => {
           aggregations: { all: 'count' },
           filters: {
             'dimension_type.name': 'initiative',
+            publication_status: 'published',
             'dimension_project.id': 'PROJECT_ID',
             'dimension_date_created.date': {
               from: '2020-10-31',
@@ -69,6 +70,7 @@ describe('Proposals card data parsing', () => {
           aggregations: { all: 'count' },
           filters: {
             'dimension_type.name': 'initiative',
+            publication_status: 'published',
             'dimension_project.id': 'PROJECT_ID',
             'dimension_date_created.date': {
               from: '2022-10-24',
@@ -81,6 +83,7 @@ describe('Proposals card data parsing', () => {
           aggregations: { all: 'count' },
           filters: {
             'dimension_type.name': 'initiative',
+            publication_status: 'published',
             'dimension_project.id': 'PROJECT_ID',
             'dimension_date_created.date': {
               from: '2020-10-31',
@@ -95,6 +98,7 @@ describe('Proposals card data parsing', () => {
           },
           filters: {
             'dimension_type.name': 'initiative',
+            publication_status: 'published',
             'dimension_project.id': 'PROJECT_ID',
             'dimension_date_created.date': {
               from: '2022-10-24',
@@ -123,6 +127,7 @@ describe('Proposals card data parsing', () => {
           aggregations: { all: 'count' },
           filters: {
             'dimension_type.name': 'initiative',
+            publication_status: 'published',
           },
         },
         {
@@ -130,6 +135,7 @@ describe('Proposals card data parsing', () => {
           aggregations: { all: 'count' },
           filters: {
             'dimension_type.name': 'initiative',
+            publication_status: 'published',
             'dimension_date_created.date': {
               from: '2022-10-01',
               to: '2022-10-31',
@@ -141,6 +147,7 @@ describe('Proposals card data parsing', () => {
           aggregations: { all: 'count' },
           filters: {
             'dimension_type.name': 'initiative',
+            publication_status: 'published',
           },
         },
         {
@@ -148,6 +155,7 @@ describe('Proposals card data parsing', () => {
           aggregations: { all: 'count' },
           filters: {
             'dimension_type.name': 'initiative',
+            publication_status: 'published',
             'dimension_date_created.date': {
               from: '2022-10-01',
               to: '2022-10-31',
