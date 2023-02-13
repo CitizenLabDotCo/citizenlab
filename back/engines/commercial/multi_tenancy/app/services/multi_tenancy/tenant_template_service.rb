@@ -22,7 +22,13 @@ module MultiTenancy
       template_names
     end
 
-    def resolve_and_apply_template(template_name, external_subfolder: 'release', validate: true, max_time: nil, local_copy: false)
+    def resolve_and_apply_template(
+      template_name,
+      external_subfolder: 'release',
+      validate: true,
+      max_time: nil,
+      local_copy: false
+    )
       Rails.logger.tagged('loading template', template_name: template_name) do
         apply_template(
           resolve_template(template_name, external_subfolder: external_subfolder),
