@@ -1,5 +1,9 @@
 # Changelog
 
+### Changed
+
+- [CL-2652] Flexible registration first iteration. Added new email with confirmation permission option for phase and project actions.
+
 ### Added
 
 - [CL-2746] Include content builder layouts & images when creating a platform using a template
