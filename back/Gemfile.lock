@@ -615,7 +615,7 @@ GEM
       thread
       thread_safe
     erubi (1.12.0)
-    excon (0.92.3)
+    excon (0.99.0)
     factory_bot (6.2.1)
       activesupport (>= 5.0.0)
     factory_bot_rails (6.2.0)
@@ -647,7 +647,7 @@ GEM
     faraday-rack (1.0.0)
     faraday-retry (1.0.3)
     ffi (1.15.5)
-    fog-aws (3.13.0)
+    fog-aws (3.17.0)
       fog-core (~> 2.1)
       fog-json (~> 1.1)
       fog-xml (~> 0.1)
@@ -1201,7 +1201,7 @@ DEPENDENCIES
   faker
   fast_jsonapi!
   flag_inappropriate_content!
-  fog-aws (~> 3.12)
+  fog-aws (~> 3.17)
   frontend!
   geographic_dashboard!
   google_tag_manager!
