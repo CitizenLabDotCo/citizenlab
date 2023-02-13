@@ -9,7 +9,7 @@ import { rest } from 'msw';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
 const server = setupServer(
-  rest.get('*insights/views/id', (_req, res, ctx) => {
+  rest.get('*insights/views/:id', (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json({ data: views[0] }));
   })
 );
@@ -33,7 +33,7 @@ describe('useView', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get('*insights/views/id', (_req, res, ctx) => {
+      rest.get('*insights/views/:id', (_req, res, ctx) => {
         return res(ctx.status(500));
       })
     );
