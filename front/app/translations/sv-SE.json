@@ -592,6 +592,7 @@
   "app.components.formBuilder.fileUpload": "Filuppladdning",
   "app.components.formBuilder.formEnd": "Formulärets slut",
   "app.components.formBuilder.goToPageInputLabel": "Nästa sida är sedan:",
+  "app.components.formBuilder.helmetTitle": "Form builder",
   "app.components.formBuilder.imageFileUpload": "Bilduppladdning",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Ogiltig logik",
   "app.components.formBuilder.labels": "Etiketter",
