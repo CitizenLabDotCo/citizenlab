@@ -94,6 +94,7 @@ const useScanForCategorySuggestions = (
       : false,
     refetchInterval: 5000,
     keepPreviousData: false,
+    retry: false,
     onSuccess: (data) => {
       if (data.data.count === 0 && data.data.status === 'isScanning') {
         queryClient.setQueryData(queryKey, () => {
@@ -133,7 +134,6 @@ const useScanForCategorySuggestions = (
     reset: resetTriggerScan,
   } = useMutation({
     mutationFn: triggerScanFetcher,
-
     onSuccess: async () => {
       if (data) {
         queryClient.setQueryData(
@@ -147,6 +147,7 @@ const useScanForCategorySuggestions = (
       }
       await refetch();
     },
+    retry: false,
   });
 
   const {
@@ -168,6 +169,7 @@ const useScanForCategorySuggestions = (
         );
       }
     },
+    retry: false,
   });
 
   const onDone = async () => {
