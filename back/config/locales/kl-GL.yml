@@ -115,7 +115,6 @@ kl:
         description:
       author_id:
         title: Author
-        description: Author description
       topic_ids:
         title: Pineqartut
         description:
@@ -127,7 +126,6 @@ kl:
         description:
       budget:
         title: Budget
-        description: Budget description
       images:
         title: Assit
         description:
