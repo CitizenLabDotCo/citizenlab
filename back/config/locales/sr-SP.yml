@@ -115,7 +115,6 @@ sr-SP:
         description:
       author_id:
         title: Autor
-        description: Author description
       topic_ids:
         title: Tema
         description:
@@ -127,7 +126,6 @@ sr-SP:
         description:
       budget:
         title: Budžet
-        description: Budget description
       images:
         title: Slike
         description:
