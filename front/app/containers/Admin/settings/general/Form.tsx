@@ -60,7 +60,8 @@ const Form = ({ defaultValues, onSubmit }: Props) => {
       formatMessage(messages.organizationNameMultilocError)
     ),
     locales: array(),
-    organization_site: string(),
+    // Taken from settings.schema.json.erb
+    organization_site: string().matches(/^$|^((http:\/\/.+)|(https:\/\/.+))/),
   });
   const methods = useForm({
     mode: 'onBlur',
