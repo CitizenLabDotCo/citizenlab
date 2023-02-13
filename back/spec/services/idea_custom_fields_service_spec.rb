@@ -56,6 +56,20 @@ describe IdeaCustomFieldsService do
       end
     end
 
+    describe 'submittable_fields' do
+      it 'excludes disabled fields, pages and sections' do
+        output = service.submittable_fields
+        expect(output.map(&:code)).to eq %w[
+          title_multiloc
+          body_multiloc
+          idea_images_attributes
+          idea_files_attributes
+          topic_ids
+          location_description
+        ]
+      end
+    end
+
     describe 'enabled_fields' do
       it 'excludes disabled fields' do
         output = service.enabled_fields
@@ -167,6 +181,23 @@ describe IdeaCustomFieldsService do
           'idea_images_attributes',
           'idea_files_attributes',
           'ideation_section3',
+          nil
+        ]
+      end
+    end
+
+    describe 'submittable_fields' do
+      it 'excludes disabled fields, pages and sections' do
+        topic_field = custom_form.custom_fields.find_by(code: 'topic_ids')
+        topic_field.update!(enabled: false)
+        custom_form.custom_fields.find_by(code: 'location_description').destroy!
+
+        output = service.submittable_fields
+        expect(output.map(&:code)).to eq [
+          'title_multiloc',
+          'body_multiloc',
+          'idea_images_attributes',
+          'idea_files_attributes',
           nil
         ]
       end
