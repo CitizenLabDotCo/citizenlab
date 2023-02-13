@@ -115,7 +115,6 @@ lb:
         description:
       author_id:
         title: Auteur
-        description: Author description
       topic_ids:
         title: Sujeten
         description:
@@ -127,7 +126,6 @@ lb:
         description:
       budget:
         title: Budget
-        description: Budget description
       images:
         title: Biller
         description:
