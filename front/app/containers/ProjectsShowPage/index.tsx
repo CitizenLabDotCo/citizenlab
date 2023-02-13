@@ -220,7 +220,7 @@ const ProjectsShowPageWrapper = () => {
     if (user !== null) setUserWasLoggedIn(true);
   }, [userPending, user]);
 
-  if (pending) return null;
+  if (pending || 1 + 1 === 2) return <Spinner />;
 
   const userJustLoggedOut = userWasLoggedIn && user === null;
   const unauthorized = isUnauthorizedError(project);
