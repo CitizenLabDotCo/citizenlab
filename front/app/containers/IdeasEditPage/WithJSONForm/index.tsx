@@ -102,8 +102,8 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   }
 
   const onSubmit = async (data) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       idea_files_attributes,
       idea_images_attributes,
       ...ideaWithoutFiles
@@ -124,7 +124,6 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
         deleteIdeaImage(ideaId, initialFormData?.idea_images_attributes[0].id);
       } catch (e) {
         // TODO: Add graceful error handling
-        console.log('ERROR DELETING!');
       }
     }
 
