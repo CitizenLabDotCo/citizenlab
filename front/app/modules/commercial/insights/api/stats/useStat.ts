@@ -13,7 +13,7 @@ const fetchStat = (viewId: string, queryParams: QueryParameters) =>
 
 const useStat = (viewId: string, queryParams: QueryParameters) => {
   return useQuery<IInsightsStats, CLErrors, IInsightsStats, StatsKeys>({
-    queryKey: statsKeys.detail(viewId, queryParams),
+    queryKey: statsKeys.item(viewId, queryParams),
     queryFn: () => fetchStat(viewId, queryParams),
   });
 };

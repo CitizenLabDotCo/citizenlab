@@ -27,7 +27,7 @@ const useAddInputCategories = () => {
     mutationFn: addInputCategories,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: inputsKeys.detail(variables.viewId, variables.inputId),
+        queryKey: inputsKeys.item(variables.viewId, variables.inputId),
       });
       queryClient.invalidateQueries({
         queryKey: inputsKeys.list(variables.viewId),
@@ -36,7 +36,7 @@ const useAddInputCategories = () => {
         queryKey: categoriesKeys.list(variables.viewId),
       });
       queryClient.invalidateQueries({
-        queryKey: statsKeys.detail(variables.viewId),
+        queryKey: statsKeys.item(variables.viewId),
       });
     },
   });

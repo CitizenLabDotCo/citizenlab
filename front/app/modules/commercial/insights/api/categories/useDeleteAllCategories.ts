@@ -18,7 +18,7 @@ const useDeleteAllCategories = () => {
 
     onSuccess: (_data, viewId) => {
       queryClient.invalidateQueries({ queryKey: categoriesKeys.list(viewId) });
-      queryClient.invalidateQueries({ queryKey: statsKeys.detail(viewId) });
+      queryClient.invalidateQueries({ queryKey: statsKeys.item(viewId) });
       queryClient.invalidateQueries({ queryKey: inputKeys.list(viewId) });
     },
   });

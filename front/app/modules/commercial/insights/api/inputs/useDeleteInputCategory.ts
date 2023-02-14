@@ -25,7 +25,7 @@ const useDeleteInputCategory = () => {
     mutationFn: deleteInputCategory,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: inputsKeys.detail(variables.viewId, variables.inputId),
+        queryKey: inputsKeys.item(variables.viewId, variables.inputId),
       });
       queryClient.invalidateQueries({
         queryKey: inputsKeys.list(variables.viewId),
@@ -34,7 +34,7 @@ const useDeleteInputCategory = () => {
         queryKey: categoriesKeys.list(variables.viewId),
       });
       queryClient.invalidateQueries({
-        queryKey: statsKeys.detail(variables.viewId),
+        queryKey: statsKeys.item(variables.viewId),
       });
     },
   });
