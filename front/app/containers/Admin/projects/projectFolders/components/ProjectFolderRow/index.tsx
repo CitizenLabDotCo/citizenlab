@@ -10,7 +10,7 @@ import {
   RowTitle,
   RowButton,
 } from 'containers/Admin/projects/components/StyledComponents';
-import MoreFolderActionsMenu from './MoreFolderActionsMenu';
+import FolderMoreActionsMenu from './FolderMoreActionsMenu';
 
 // styles
 import styled from 'styled-components';
@@ -89,7 +89,7 @@ const InFolderProjectRow = styled(ProjectRow)`
   }
 `;
 
-interface Props {
+export interface Props {
   publication: IAdminPublicationContent;
 }
 
@@ -156,11 +156,11 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
                 !userModeratesFolder(authUser, publication.publicationId)
               }
             >
-              <FormattedMessage {...messages.manageButtonLabel} />
+              <FormattedMessage {...messages.edit} />
             </RowButton>
           </FolderRowContent>
           <Box pb={hasProjects && folderOpen ? '10px' : undefined}>
-            <MoreFolderActionsMenu
+            <FolderMoreActionsMenu
               folderId={publication.publicationId}
               setError={setFolderDeletionError}
             />
@@ -171,12 +171,15 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
 
         {hasProjects && folderOpen && (
           <ProjectRows>
-            {folderChildAdminPublications.map((publication) => (
+            {folderChildAdminPublications.map((childPublication) => (
               <InFolderProjectRow
-                publication={publication}
-                key={publication.id}
+                publication={childPublication}
+                key={childPublication.id}
                 actions={['manage']}
-                showMoreActions
+                showMoreActions={userModeratesFolder(
+                  authUser,
+                  publication.publicationId
+                )}
               />
             ))}
           </ProjectRows>

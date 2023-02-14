@@ -8,12 +8,12 @@ import { isAdmin } from 'services/permissions/roles';
 import useAuthUser from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 
-interface Props {
+export interface Props {
   projectId: string;
   setError: (error: string | null) => void;
 }
 
-const MoreProjectActionsMenu = ({ projectId, setError }: Props) => {
+const ProjectMoreActionsMenu = ({ projectId, setError }: Props) => {
   const { formatMessage } = useIntl();
   const authUser = useAuthUser();
   if (isNilOrError(authUser)) return null;
@@ -60,10 +60,15 @@ const MoreProjectActionsMenu = ({ projectId, setError }: Props) => {
   }
 
   return (
-    <Box display="flex" alignItems="center" ml="1rem">
+    <Box
+      display="flex"
+      alignItems="center"
+      ml="1rem"
+      data-testid="moreProjectActionsMenu"
+    >
       <MoreActionsMenu showLabel={false} actions={actions} />
     </Box>
   );
 };
 
-export default MoreProjectActionsMenu;
+export default ProjectMoreActionsMenu;

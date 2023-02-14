@@ -190,6 +190,7 @@ const MoreActionsMenu = (props: Props) => {
           aria-expanded={visible}
           id={id}
           className="e2e-more-actions"
+          data-testid="moreOptionsButton"
         >
           <MoreOptionsIcon
             title={labelAndTitle}
