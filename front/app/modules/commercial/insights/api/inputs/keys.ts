@@ -15,12 +15,12 @@ const inputsKeys = {
       queryType: 'infinite',
     },
   ],
-  details: (viewId: string) => [
+  items: (viewId: string) => [
     { ...inputsKeys.all()[0], viewId, operation: 'item' },
   ],
-  detail: (viewId: string, id: string) => [
+  item: (viewId: string, id: string) => [
     {
-      ...inputsKeys.details(viewId)[0],
+      ...inputsKeys.items(viewId)[0],
       id,
     },
   ],

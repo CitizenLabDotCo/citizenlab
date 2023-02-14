@@ -104,8 +104,8 @@ const useScanForCategorySuggestions = (
         });
       }
       queryClient.invalidateQueries(inputsKeys.list(viewId));
-      queryClient.invalidateQueries(inputsKeys.details(viewId));
-      queryClient.invalidateQueries(statsKeys.detail(viewId));
+      queryClient.invalidateQueries(inputsKeys.items(viewId));
+      queryClient.invalidateQueries(statsKeys.item(viewId));
     },
     structuralSharing: (oldData, newData) => {
       if (!oldData) {

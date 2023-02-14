@@ -29,7 +29,7 @@ const useBatchUnassignCategories = () => {
         queryKey: categoriesKeys.list(variables.viewId),
       });
       queryClient.invalidateQueries({
-        queryKey: statsKeys.detail(variables.viewId),
+        queryKey: statsKeys.item(variables.viewId),
       });
       queryClient.invalidateQueries({
         queryKey: inputsKeys.list(variables.viewId),
