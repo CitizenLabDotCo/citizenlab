@@ -84,6 +84,10 @@ describe('New continuous project with poll', () => {
     cy.get('.e2e-form-completed');
   });
 
+  it('shows the CTA button on visting the project page of an active poll project', () => {
+    cy.get('#e2e-participation-cta-poll').should('exist');
+  });
+
   after(() => {
     cy.apiRemoveProject(projectId);
   });

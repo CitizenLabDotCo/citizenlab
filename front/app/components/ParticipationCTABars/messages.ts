@@ -34,6 +34,10 @@ export default defineMessages({
     id: 'app.components.ParticipationCTABars.volunteer',
     defaultMessage: 'Volunteer',
   },
+  poll: {
+    id: 'app.components.ParticipationCTABars.poll',
+    defaultMessage: 'Take the poll',
+  },
   seeIdeas: {
     id: 'app.components.ParticipationCTABars.seeIdeas',
     defaultMessage: 'See ideas',
