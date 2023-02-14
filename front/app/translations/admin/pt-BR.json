@@ -1077,6 +1077,7 @@
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip": "Você precisará adicionar o projeto a uma pasta sobre a qual você tem direitos de administrador.",
   "app.containers.AdminPage.ProjectEdit.folderSelectError": "Selecione uma pasta para adicionar este projeto.",
   "app.containers.AdminPage.ProjectEdit.formBuilder.customToolboxTitle": "Custom content",
+  "app.containers.AdminPage.ProjectEdit.formBuilder.existingSubmissionsWarning": "Submissions to this form have started to come in. Changes to the form may result in data loss and incomplete data in the exported files.",
   "app.containers.AdminPage.ProjectEdit.formBuilder.successMessage": "Form successfully saved",
   "app.containers.AdminPage.ProjectEdit.fromATemplate": "De um modelo",
   "app.containers.AdminPage.ProjectEdit.fromScratch": "Do princípio",
