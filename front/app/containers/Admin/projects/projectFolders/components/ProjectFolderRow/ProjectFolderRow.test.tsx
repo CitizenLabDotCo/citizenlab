@@ -1,7 +1,10 @@
 import React from 'react';
 import ProjectFolderRow, { Props } from '.';
 import { render, screen } from 'utils/testUtils/rtl';
-import { IAdminPublicationContent } from 'hooks/useAdminPublications';
+import {
+  IAdminPublicationContent,
+  IUseAdminPublicationsOutput,
+} from 'hooks/useAdminPublications';
 import { IUserData } from 'services/users';
 
 const folderId = 'folderId';
@@ -32,7 +35,7 @@ const folderPublication: IAdminPublicationContent = {
 };
 
 const projectId = 'projectId';
-const mockFolderChildAdminPublications: IAdminPublicationContent[] = [
+const mockFolderChildAdminPublicationsList: IAdminPublicationContent[] = [
   {
     id: '2',
     publicationType: 'project' as const,
@@ -64,6 +67,17 @@ const mockFolderChildAdminPublications: IAdminPublicationContent[] = [
     },
   },
 ];
+const mockFolderChildAdminPublications: IUseAdminPublicationsOutput = {
+  hasMore: false,
+  loadingInitial: false,
+  loadingMore: false,
+  list: mockFolderChildAdminPublicationsList,
+  onLoadMore: jest.fn,
+  onChangeTopics: jest.fn,
+  onChangeSearch: jest.fn,
+  onChangeAreas: jest.fn,
+  onChangePublicationStatus: jest.fn,
+};
 
 // Needed to render moreActionsMenu
 const mockUserData: IUserData = {
@@ -88,6 +102,8 @@ const mockUserData: IUserData = {
 jest.mock('hooks/useAuthUser', () => {
   return () => mockUserData;
 });
+
+// Needed to render folder with project inside
 jest.mock('hooks/useAdminPublications', () => {
   return () => mockFolderChildAdminPublications;
 });
@@ -97,6 +113,13 @@ const props: Props = {
 };
 
 describe('ProjectFolderRow', () => {
+  it('renders the project row inside', () => {
+    render(<ProjectFolderRow {...props} />);
+
+    const projectRows = screen.getAllByTestId('projectRow');
+    expect(projectRows.length).toEqual(1);
+  });
+
   describe('When user is an admin', () => {
     it('shows the edit button', () => {
       render(<ProjectFolderRow {...props} />);
@@ -153,8 +176,8 @@ describe('ProjectFolderRow', () => {
           project_folder_id: folderPublication.publicationId,
         },
       ];
-
       render(<ProjectFolderRow {...props} />);
+
       const moreOptions = screen.queryByTestId('moreOptionsButton');
       expect(moreOptions).toBeNull();
     });
