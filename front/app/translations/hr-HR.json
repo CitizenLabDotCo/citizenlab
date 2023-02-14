@@ -276,6 +276,7 @@
   "app.components.PagesForm.titleMissingOneLanguageError": "Unesite naslov za barem jedan jezik",
   "app.components.ParticipationCTABars.allocateBudget": "Rasporedite svoj proračun",
   "app.components.ParticipationCTABars.mobileProjectOpenForSubmission": "Otvoreno za sudjelovanje",
+  "app.components.ParticipationCTABars.poll": "Take the poll",
   "app.components.ParticipationCTABars.projectOpenForSubmission": "Ovaj je projekt trenutačno otvoren za sudjelovanje.",
   "app.components.ParticipationCTABars.seeIdeas": "Pogledajte ideje",
   "app.components.ParticipationCTABars.takeTheSurvey": "Popunite upitnik",
