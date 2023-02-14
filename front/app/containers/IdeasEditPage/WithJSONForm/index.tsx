@@ -83,7 +83,7 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
               ];
             } else if (
               prop === 'idea_images_attributes' &&
-              idea.relationships?.idea_images?.data?.length === 1
+              Array.isArray(idea.relationships?.idea_images?.data)
             ) {
               return [prop, remoteImages];
             } else if (prop === 'idea_files_attributes') {
