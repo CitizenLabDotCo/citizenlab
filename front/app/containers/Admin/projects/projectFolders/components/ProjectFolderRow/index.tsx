@@ -114,7 +114,7 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
           width="100%"
           display="flex"
           alignItems="center"
-          pb={folderOpen ? '10px' : '0'}
+          pb={hasProjects && folderOpen ? '12px' : '0'}
         >
           <FolderRowContent
             className="e2e-admin-adminPublications-list-item"
