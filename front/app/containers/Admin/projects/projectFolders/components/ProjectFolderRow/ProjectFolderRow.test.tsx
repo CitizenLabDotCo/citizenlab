@@ -80,7 +80,7 @@ describe('ProjectFolderRow', () => {
       mockUserData.attributes.roles = [
         {
           type: 'project_folder_moderator',
-          project_folder_id: 'publicationId',
+          project_folder_id: publication.publicationId,
         },
       ];
 
@@ -93,10 +93,10 @@ describe('ProjectFolderRow', () => {
       mockUserData.attributes.roles = [
         { type: 'project_folder_moderator', project_folder_id: 'testId' },
       ];
-
       render(<ProjectFolderRow {...props} />);
+
       const editButton = screen.getByTestId('edit-button');
-      expect(editButton).toHaveAttribute('disabled');
+      expect(editButton).toBeDisabled();
     });
 
     it('does not show the MoreActionsMenu', () => {
