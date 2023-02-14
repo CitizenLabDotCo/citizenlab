@@ -108,12 +108,7 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   }
 
   const onSubmit = async (data) => {
-    const {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      idea_files_attributes,
-      idea_images_attributes,
-      ...ideaWithoutFiles
-    } = data;
+    const { idea_images_attributes, ...ideaWithoutFiles } = data;
 
     const location_point_geojson = await getLocationGeojson(
       initialFormData,
@@ -142,7 +137,9 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
 
     const idea = await updateIdea(
       ideaId,
-      isImageNew ? payload : omit(payload, 'idea_images_attributes')
+      isImageNew
+        ? omit(payload, 'idea_files_attributes')
+        : omit(payload, ['idea_images_attributes', 'idea_files_attributes'])
     );
     clHistory.push({
       pathname: `/ideas/${idea.data.attributes.slug}`,
