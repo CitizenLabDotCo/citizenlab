@@ -121,7 +121,7 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
   if (!isNilOrError(authUser)) {
     return (
       <Container>
-        <Box width="100%" display="flex">
+        <Box width="100%" display="flex" alignItems="center">
           <FolderRowContent
             className="e2e-admin-adminPublications-list-item"
             expanded={hasProjects && folderOpen}
@@ -159,10 +159,12 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
               <FormattedMessage {...messages.manageButtonLabel} />
             </RowButton>
           </FolderRowContent>
-          <MoreFolderActionsMenu
-            folderId={publication.publicationId}
-            setError={setFolderDeletionError}
-          />
+          <Box pb={hasProjects && folderOpen ? '10px' : undefined}>
+            <MoreFolderActionsMenu
+              folderId={publication.publicationId}
+              setError={setFolderDeletionError}
+            />
+          </Box>
         </Box>
 
         {folderDeletionError && <Error text={folderDeletionError} />}
