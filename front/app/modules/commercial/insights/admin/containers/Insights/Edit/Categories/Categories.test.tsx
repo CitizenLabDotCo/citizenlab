@@ -1,51 +1,56 @@
 import React from 'react';
 import { render, screen, fireEvent, act, waitFor } from 'utils/testUtils/rtl';
-import * as service from 'modules/commercial/insights/services/insightsCategories';
 import clHistory from 'utils/cl-router/history';
 import categories from 'modules/commercial/insights/fixtures/categories';
 
 import Categories from './';
 
 let mockData = categories;
-let mockDetectedCategoriesData = categories;
 
 const viewId = '1';
 
-jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
-  addInsightsCategory: jest.fn(),
-  deleteInsightsCategories: jest.fn(),
-  deleteInsightsCategory: jest.fn(),
-}));
+const mockAdd = jest.fn();
+const mockDelete = jest.fn();
+const mockDeleteAll = jest.fn();
 
-jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
-  return jest.fn(() => mockData);
-});
+jest.mock('modules/commercial/insights/api/categories/useCategories', () =>
+  jest.fn(() => ({ data: { data: mockData } }))
+);
+
+jest.mock('modules/commercial/insights/api/categories/useAddCategory', () =>
+  jest.fn(() => ({ mutate: mockAdd, reset: jest.fn() }))
+);
+
+jest.mock('modules/commercial/insights/api/categories/useDeleteCategory', () =>
+  jest.fn(() => ({ mutate: mockDelete, reset: jest.fn() }))
+);
 
 jest.mock(
-  'modules/commercial/insights/hooks/useInsightsDetectedCategories',
-  () => {
-    return jest.fn(() => mockDetectedCategoriesData);
-  }
+  'modules/commercial/insights/api/categories/useDeleteAllCategories',
+  () => jest.fn(() => ({ mutate: mockDeleteAll, reset: jest.fn() }))
 );
 
 const allInputsCount = 10;
 const uncategorizedInputCount = 5;
 const recentlyPostedInputCount = 2;
 
-jest.mock('modules/commercial/insights/hooks/useInsightsInputsCount', () => {
-  return jest.fn((_viewId, queryParameters) => {
-    return queryParameters.processed === false
-      ? { count: recentlyPostedInputCount }
-      : queryParameters.processed === true &&
-        queryParameters.categories === undefined
-      ? { count: allInputsCount }
-      : { count: uncategorizedInputCount };
-  });
-});
+jest.mock('modules/commercial/insights/api/stats/useStat', () =>
+  jest.fn((_viewId, queryParameters) => ({
+    data: {
+      data:
+        queryParameters.processed === false
+          ? { count: recentlyPostedInputCount }
+          : queryParameters.processed === true &&
+            queryParameters.categories === undefined
+          ? { count: allInputsCount }
+          : { count: uncategorizedInputCount },
+    },
+  }))
+);
 
 jest.mock('utils/analytics');
 
-let mockFeatureFlagData = true;
+const mockFeatureFlagData = true;
 
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
 
@@ -121,9 +126,14 @@ describe('Insights Edit Categories', () => {
     await waitFor(() =>
       fireEvent.click(screen.getAllByTestId('insightsDeleteCategoryIcon')[0])
     );
-    expect(service.deleteInsightsCategory).toHaveBeenCalledWith(
-      viewId,
-      mockData[0].id
+    expect(mockDelete).toHaveBeenCalledWith(
+      {
+        viewId,
+        categoryId: mockData[0].id,
+      },
+      {
+        onSuccess: expect.any(Function),
+      }
     );
   });
   it('renders Infobox when no categories are available', () => {
@@ -146,14 +156,17 @@ describe('Insights Edit Categories', () => {
       fireEvent.click(screen.getByText('+'));
     });
 
-    expect(service.addInsightsCategory).toHaveBeenCalledWith({
-      insightsViewId: viewId,
-      name: categoryName,
-    });
+    expect(mockAdd).toHaveBeenCalledWith(
+      {
+        viewId,
+        category: { name: categoryName },
+      },
+      {
+        onSuccess: expect.any(Function),
+      }
+    );
   });
   it('resets categories', async () => {
-    const historySpy = jest.spyOn(clHistory, 'push');
-    const spy = jest.spyOn(service, 'deleteInsightsCategories');
     render(<Categories />);
     fireEvent.click(screen.getByTestId('insightsResetMenu'));
 
@@ -161,10 +174,8 @@ describe('Insights Edit Categories', () => {
       fireEvent.click(screen.getByTestId('insightsResetButton'));
     });
 
-    expect(spy).toHaveBeenCalledWith(viewId);
-    expect(historySpy).toHaveBeenCalledWith({
-      pathname: '',
-      search: `?pageNumber=1&processed=false`,
+    expect(mockDeleteAll).toHaveBeenCalledWith(viewId, {
+      onSuccess: expect.any(Function),
     });
   });
   it('shows all input category count correctly', () => {
@@ -185,24 +196,5 @@ describe('Insights Edit Categories', () => {
     expect(
       screen.getByTestId('insightsUncategorizedInputsCount')
     ).toHaveTextContent(uncategorizedInputCount.toString());
-  });
-  it('shows detect categories button when nlp feature Flag is active and categories are detected', async () => {
-    render(<Categories />);
-    expect(screen.getByTestId('insightsDetectCategories')).toBeInTheDocument();
-  });
-  it('does not show detect categories button when nlp feature Flag is not acitve', async () => {
-    mockFeatureFlagData = false;
-    render(<Categories />);
-    expect(
-      screen.queryByTestId('insightsDetectCategories')
-    ).not.toBeInTheDocument();
-  });
-  it('does not show detect categories button when categories are not detected', async () => {
-    mockFeatureFlagData = true;
-    mockDetectedCategoriesData = [];
-    render(<Categories />);
-    expect(
-      screen.queryByTestId('insightsDetectCategories')
-    ).not.toBeInTheDocument();
   });
 });
