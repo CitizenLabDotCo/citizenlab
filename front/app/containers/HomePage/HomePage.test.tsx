@@ -59,6 +59,6 @@ describe('HomePage', () => {
     const user = userEvent.setup();
     await user.keyboard('a');
 
-    expect(clHistory.push).not.toHaveBeenCalledWith(adminRedirectPath);
+    expect(clHistory.push).not.toHaveBeenCalled();
   });
 });
