@@ -276,6 +276,7 @@
   "app.components.PagesForm.titleMissingOneLanguageError": "Ange titel för minst ett språk",
   "app.components.ParticipationCTABars.allocateBudget": "Fördela din budget",
   "app.components.ParticipationCTABars.mobileProjectOpenForSubmission": "Öppet för deltagande",
+  "app.components.ParticipationCTABars.poll": "Take the poll",
   "app.components.ParticipationCTABars.projectOpenForSubmission": "Det här projektet är för närvarande öppet för deltagande.",
   "app.components.ParticipationCTABars.seeIdeas": "Se idéer",
   "app.components.ParticipationCTABars.takeTheSurvey": "Gör undersökningen",
