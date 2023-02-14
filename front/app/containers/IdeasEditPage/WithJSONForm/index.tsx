@@ -77,7 +77,7 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
               ];
             } else if (
               prop === 'idea_images_attributes' &&
-              Array.isArray(idea.relationships?.idea_images?.data)
+              idea.relationships?.idea_images?.data?.length === 1
             ) {
               return [prop, remoteImages];
             } else if (prop === 'idea_files_attributes') {
@@ -103,7 +103,11 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
 
   const onSubmit = async (data) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { idea_files_attributes, ...ideaWithOUtFiles } = data;
+    const {
+      idea_files_attributes,
+      idea_images_attributes,
+      ...ideaWithoutFiles
+    } = data;
 
     const location_point_geojson = await getLocationGeojson(
       initialFormData,
@@ -112,26 +116,42 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
 
     // Delete a remote image only on submission
     if (
-      data.idea_images_attributes !== initialFormData?.idea_images_attributes &&
-      initialFormData?.idea_images_attributes !== undefined
+      idea_images_attributes !== initialFormData?.idea_images_attributes &&
+      initialFormData?.idea_images_attributes !== undefined &&
+      initialFormData?.idea_images_attributes.length !== 0
     ) {
       try {
         deleteIdeaImage(ideaId, initialFormData?.idea_images_attributes[0].id);
       } catch (e) {
         // TODO: Add graceful error handling
+        console.log('ERROR DELETING!');
       }
     }
 
-    const idea = await updateIdea(ideaId, {
-      ...ideaWithOUtFiles,
-      location_point_geojson,
-      project_id: project?.id,
-      publication_status: 'published',
-    });
+    if (idea_images_attributes !== initialFormData?.idea_images_attributes) {
+      const idea = await updateIdea(ideaId, {
+        ...ideaWithoutFiles,
+        idea_images_attributes,
+        location_point_geojson,
+        project_id: project?.id,
+        publication_status: 'published',
+      });
 
-    clHistory.push({
-      pathname: `/ideas/${idea.data.attributes.slug}`,
-    });
+      clHistory.push({
+        pathname: `/ideas/${idea.data.attributes.slug}`,
+      });
+    } else {
+      const idea = await updateIdea(ideaId, {
+        ...ideaWithoutFiles,
+        location_point_geojson,
+        project_id: project?.id,
+        publication_status: 'published',
+      });
+
+      clHistory.push({
+        pathname: `/ideas/${idea.data.attributes.slug}`,
+      });
+    }
   };
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(
