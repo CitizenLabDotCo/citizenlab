@@ -4,7 +4,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
   def initialize(participation_context)
     super()
     form = participation_context.custom_form || CustomForm.new(participation_context: participation_context)
-    @fields = IdeaCustomFieldsService.new(form).reportable_fields
+    @fields = IdeaCustomFieldsService.new(form).enabled_fields # It would be nice if we could use reportable_fields instead
     @inputs = participation_context.ideas
     @locales = AppConfiguration.instance.settings('core', 'locales')
   end
