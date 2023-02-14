@@ -4,7 +4,9 @@ import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
-import useAdminPublications from 'hooks/useAdminPublications';
+import useAdminPublications, {
+  IAdminPublicationContent,
+} from 'hooks/useAdminPublications';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
@@ -17,22 +19,20 @@ import { ListHeader, HeaderTitle } from '../StyledComponents';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-interface Props {}
-
-const ModeratorProjectList = memo<Props>(() => {
+const ModeratorProjectList = memo(() => {
   const { list: rootLevelAdminPublications } = useAdminPublications({
     publicationStatusFilter: ['published', 'draft', 'archived'],
     rootLevelOnly: true,
   });
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
 
-  const adminPublicationRow = (adminPublication) => {
+  const adminPublicationRow = (adminPublication: IAdminPublicationContent) => {
     if (adminPublication.publicationType === 'project') {
       return (
         <ProjectRow
           publication={adminPublication}
           actions={['manage']}
-          showMoreActions
+          showMoreActions={false}
         />
       );
     }

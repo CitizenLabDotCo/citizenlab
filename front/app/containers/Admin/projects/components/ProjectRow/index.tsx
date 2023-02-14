@@ -23,7 +23,7 @@ import useAuthUser from 'hooks/useAuthUser';
 
 // types
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import MoreProjectActionsMenu from './MoreProjectActionsMenu';
+import ProjectMoreActionsMenu from './ProjectMoreActionsMenu';
 
 export const StyledStatusLabel = styled(StatusLabel)`
   margin-right: 5px;
@@ -45,7 +45,7 @@ type CustomButtonAction = {
 };
 type ButtonAction = CustomButtonAction | 'manage';
 
-interface Props {
+export interface Props {
   publication: IAdminPublicationContent;
   actions: ButtonAction[];
   hidePublicationStatusLabel?: boolean;
@@ -126,7 +126,7 @@ const ProjectRow = ({
             }
           })}
           {showMoreActions && (
-            <MoreProjectActionsMenu projectId={projectId} setError={setError} />
+            <ProjectMoreActionsMenu projectId={projectId} setError={setError} />
           )}
         </ActionsRowContainer>
       </RowContent>

@@ -1,7 +1,7 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  manageButtonLabel: {
+  edit: {
     id: 'app.containers.Admin.projects.all.components.manageButtonLabel',
     defaultMessage: 'Manage',
   },

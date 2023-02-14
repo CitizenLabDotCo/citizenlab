@@ -8,12 +8,12 @@ import { isAdmin } from 'services/permissions/roles';
 import useAuthUser from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 
-interface Props {
+export interface Props {
   folderId: string;
   setError: (error: string | null) => void;
 }
 
-const MoreFolderActionsMenu = ({ folderId, setError }: Props) => {
+const FolderMoreActionsMenu = ({ folderId, setError }: Props) => {
   const { formatMessage } = useIntl();
   const authUser = useAuthUser();
   if (isNilOrError(authUser)) return null;
@@ -49,10 +49,15 @@ const MoreFolderActionsMenu = ({ folderId, setError }: Props) => {
   }
 
   return (
-    <Box display="flex" alignItems="center" ml="1rem">
+    <Box
+      display="flex"
+      alignItems="center"
+      ml="1rem"
+      data-testid="folderMoreActionsMenu"
+    >
       <MoreActionsMenu showLabel={false} actions={actions} />
     </Box>
   );
 };
 
-export default MoreFolderActionsMenu;
+export default FolderMoreActionsMenu;
