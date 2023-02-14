@@ -113,8 +113,8 @@ describe('ProjectFolderRow', () => {
     });
   });
 
-  describe('When user is a folder moderator', () => {
-    it('shows the edit button for a folder the user is a moderator of', () => {
+  describe('When user is a folder moderator of the folder', () => {
+    it('shows the edit button', () => {
       mockUserData.attributes.roles = [
         {
           type: 'project_folder_moderator',
@@ -127,7 +127,16 @@ describe('ProjectFolderRow', () => {
       expect(editButton).toBeInTheDocument();
     });
 
-    it('shows a disabled edit button for a folder when the user is not a moderator of', async () => {
+    it('shows the MoreActionsMenu', () => {
+      render(<ProjectFolderRow {...props} />);
+
+      const moreActionsMenu = screen.getByTestId('folderMoreActionsMenu');
+      expect(moreActionsMenu).toBeInTheDocument();
+    });
+  });
+
+  describe('When user is a folder moderator but not of the folder', () => {
+    it('shows a disabled edit button', async () => {
       mockUserData.attributes.roles = [
         { type: 'project_folder_moderator', project_folder_id: 'testId' },
       ];
@@ -139,7 +148,10 @@ describe('ProjectFolderRow', () => {
 
     it('does not show the MoreActionsMenu', () => {
       mockUserData.attributes.roles = [
-        { type: 'project_folder_moderator', project_folder_id: 'folderId' },
+        {
+          type: 'project_folder_moderator',
+          project_folder_id: folderPublication.publicationId,
+        },
       ];
 
       render(<ProjectFolderRow {...props} />);
