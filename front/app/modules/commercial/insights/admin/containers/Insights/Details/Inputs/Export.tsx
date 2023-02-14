@@ -18,10 +18,9 @@ import { requestBlob } from 'utils/request';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
-import useInsightsView from 'modules/commercial/insights/hooks/useInsightsView';
+import useView from 'modules/commercial/insights/api/views/useView';
 
 // services
-import { getInsightsInputsEndpoint } from 'modules/commercial/insights/services/insightsInputs';
 
 type ExportProps = WithRouterProps & WrappedComponentProps;
 
@@ -30,7 +29,7 @@ const Export = ({
   location: { query },
   intl: { formatMessage, formatDate },
 }: ExportProps) => {
-  const view = useInsightsView(viewId);
+  const { data: view } = useView(viewId);
 
   if (isNilOrError(view)) {
     return null;
@@ -39,7 +38,7 @@ const Export = ({
   const handleExportClick = async () => {
     try {
       const blob = await requestBlob(
-        `${API_PATH}/${getInsightsInputsEndpoint(viewId)}/as_xlsx`,
+        `${API_PATH}/insights/views/${viewId}/inputs/as_xlsx`,
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         {
           categories:

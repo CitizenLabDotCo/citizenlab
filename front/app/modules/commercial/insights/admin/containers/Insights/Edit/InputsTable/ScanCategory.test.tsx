@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 
 import ScanCategory from './ScanCategory';
-import { ScanStatus } from 'modules/commercial/insights/hooks/useScanInsightsCategory';
+import { ScanStatus } from 'modules/commercial/insights/api/category_suggestions/types';
 
 let mockFeatureFlagData = true;
 
@@ -14,6 +14,7 @@ const defaultProps = {
   triggerScan: jest.fn(),
   cancelScan: jest.fn(),
   onClose: jest.fn(),
+  isLoading: false,
 };
 
 describe('Scan category', () => {
