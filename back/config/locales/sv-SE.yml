@@ -115,7 +115,6 @@ sv:
         description:
       author_id:
         title: Författare
-        description:
       topic_ids:
         title: Topics
         description:
@@ -127,12 +126,19 @@ sv:
         description:
       budget:
         title: Budget
-        description:
       images:
         title: Bilder
         description:
       attachments:
         title: Bilagor
+        description:
+      section1:
+        description:
+      section2:
+        title: Bilder och bilagor
+        description:
+      section3:
+        title: Detaljer
         description:
   custom_forms:
     categories:
@@ -189,6 +195,7 @@ sv:
       author_fullname: 'Författarens namn'
       author_email: 'Författarens e-postadress'
       author_id: 'Författar-ID'
+      budget: 'Budget'
       created_at: 'Skickades in'
       published_at: 'Publicerades'
       comments_count: 'Kommentarer'
