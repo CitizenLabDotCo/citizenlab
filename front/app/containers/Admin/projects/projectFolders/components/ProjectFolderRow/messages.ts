@@ -3,7 +3,7 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   edit: {
     id: 'app.containers.Admin.projects.all.components.manageButtonLabel',
-    defaultMessage: 'Manage',
+    defaultMessage: 'Edit',
   },
   deleteFolderError: {
     id: 'app.containers.Admin.projects.all.deleteFolderError',

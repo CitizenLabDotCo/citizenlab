@@ -63,7 +63,7 @@ describe('ProjectFolderRow', () => {
     it('shows the edit button', () => {
       render(<ProjectFolderRow {...props} />);
 
-      const editButton = screen.getByRole('button', { name: 'Manage' });
+      const editButton = screen.getByRole('button', { name: 'Edit' });
       expect(editButton).toBeInTheDocument();
     });
 
@@ -76,10 +76,6 @@ describe('ProjectFolderRow', () => {
   });
 
   describe('When user is a folder moderator', () => {
-    beforeAll(() => {
-      mockUserData.attributes.highest_role = 'project_moderator';
-    });
-
     it('shows the edit button for a folder the user is a moderator of', () => {
       mockUserData.attributes.roles = [
         {
@@ -89,11 +85,11 @@ describe('ProjectFolderRow', () => {
       ];
 
       render(<ProjectFolderRow {...props} />);
-      const editButton = screen.getByRole('button', { name: 'Manage' });
+      const editButton = screen.getByRole('button', { name: 'Edit' });
       expect(editButton).toBeInTheDocument();
     });
 
-    it('shows a disabled edit button for a folder the user is not a moderator of', () => {
+    it('shows a disabled edit button for a folder when the user is not a moderator of', async () => {
       mockUserData.attributes.roles = [
         { type: 'project_folder_moderator', project_folder_id: 'testId' },
       ];
