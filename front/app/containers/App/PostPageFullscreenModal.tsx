@@ -134,7 +134,7 @@ const PostPageFullscreenModal = memo<Props>(
         topBar={topBar}
         navbarRef={navbarRef}
         mobileNavbarRef={mobileNavbarRef}
-        zIndex={399}
+        zIndex={1005}
       >
         {content}
       </FullscreenModal>
