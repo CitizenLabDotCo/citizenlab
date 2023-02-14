@@ -52,10 +52,15 @@ describe('Rename Category', () => {
       fireEvent.click(screen.getByText('Save'));
     });
 
-    expect(mockUpdateCategory).toHaveBeenCalledWith({
-      viewId,
-      categoryId,
-      requestBody: { name: categoryName },
-    });
+    expect(mockUpdateCategory).toHaveBeenCalledWith(
+      {
+        viewId,
+        categoryId,
+        requestBody: { name: categoryName },
+      },
+      {
+        onSuccess: expect.any(Function),
+      }
+    );
   });
 });

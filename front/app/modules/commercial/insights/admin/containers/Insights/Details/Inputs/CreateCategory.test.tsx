@@ -74,16 +74,21 @@ describe('Insights CreateCategory from filters', () => {
     });
 
     const categoryIds = defaultProps.categories.map((category) => category.id);
-    expect(mockAdd).toHaveBeenCalledWith({
-      viewId,
-      category: {
-        name: categoryName,
-        inputs: {
-          categories: categoryIds,
-          keywords: defaultProps.keywords,
-          search: defaultProps.search,
+    expect(mockAdd).toHaveBeenCalledWith(
+      {
+        viewId,
+        category: {
+          name: categoryName,
+          inputs: {
+            categories: categoryIds,
+            keywords: defaultProps.keywords,
+            search: defaultProps.search,
+          },
         },
       },
-    });
+      {
+        onSuccess: expect.any(Function),
+      }
+    );
   });
 });

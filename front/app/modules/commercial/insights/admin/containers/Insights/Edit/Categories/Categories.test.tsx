@@ -126,10 +126,15 @@ describe('Insights Edit Categories', () => {
     await waitFor(() =>
       fireEvent.click(screen.getAllByTestId('insightsDeleteCategoryIcon')[0])
     );
-    expect(mockDelete).toHaveBeenCalledWith({
-      viewId,
-      categoryId: mockData[0].id,
-    });
+    expect(mockDelete).toHaveBeenCalledWith(
+      {
+        viewId,
+        categoryId: mockData[0].id,
+      },
+      {
+        onSuccess: expect.any(Function),
+      }
+    );
   });
   it('renders Infobox when no categories are available', () => {
     mockData = [];
@@ -151,10 +156,15 @@ describe('Insights Edit Categories', () => {
       fireEvent.click(screen.getByText('+'));
     });
 
-    expect(mockAdd).toHaveBeenCalledWith({
-      viewId,
-      category: { name: categoryName },
-    });
+    expect(mockAdd).toHaveBeenCalledWith(
+      {
+        viewId,
+        category: { name: categoryName },
+      },
+      {
+        onSuccess: expect.any(Function),
+      }
+    );
   });
   it('resets categories', async () => {
     render(<Categories />);
@@ -164,7 +174,9 @@ describe('Insights Edit Categories', () => {
       fireEvent.click(screen.getByTestId('insightsResetButton'));
     });
 
-    expect(mockDeleteAll).toHaveBeenCalledWith(viewId);
+    expect(mockDeleteAll).toHaveBeenCalledWith(viewId, {
+      onSuccess: expect.any(Function),
+    });
   });
   it('shows all input category count correctly', () => {
     render(<Categories />);

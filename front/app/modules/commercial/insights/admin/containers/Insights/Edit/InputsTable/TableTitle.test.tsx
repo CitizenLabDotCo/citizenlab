@@ -72,9 +72,14 @@ describe('Table Title', () => {
     await act(async () => {
       fireEvent.click(screen.getByText('Delete category'));
     });
-    expect(mockDelete).toHaveBeenCalledWith({
-      viewId,
-      categoryId: categories[0].id,
-    });
+    expect(mockDelete).toHaveBeenCalledWith(
+      {
+        viewId,
+        categoryId: categories[0].id,
+      },
+      {
+        onSuccess: expect.any(Function),
+      }
+    );
   });
 });

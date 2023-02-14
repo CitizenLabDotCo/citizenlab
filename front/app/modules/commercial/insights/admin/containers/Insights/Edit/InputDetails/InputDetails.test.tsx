@@ -135,10 +135,15 @@ describe('Insights Input Details', () => {
       fireEvent.click(screen.getByTestId('insightsCreateCategoryOption'));
     });
 
-    expect(mockAdd).toHaveBeenCalledWith({
-      viewId,
-      category: { name: newCategoryLabel },
-    });
+    expect(mockAdd).toHaveBeenCalledWith(
+      {
+        viewId,
+        category: { name: newCategoryLabel },
+      },
+      {
+        onSuccess: expect.any(Function),
+      }
+    );
   });
   it('shows loading state when loading', () => {
     mockInputData = undefined;
