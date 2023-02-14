@@ -1,6 +1,28 @@
+import { randomString } from '../../../support/commands';
+
 describe('Report builder Posts By Time widget', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
+
+    const projectTitle = randomString();
+    const projectDescriptionPreview = randomString();
+    const projectDescription = randomString();
+    const ideaTitle = randomString();
+    const ideaContent = randomString();
+
+    cy.apiCreateProject({
+      type: 'continuous',
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: projectDescription,
+      publicationStatus: 'published',
+      participationMethod: 'ideation',
+    }).then((project) => {
+      const projectId = project.body.data.id;
+      cy.wrap(projectId).as('projectId');
+      cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
+    });
+
     cy.apiCreateReportBuilder().then((report) => {
       const reportId = report.body.data.id;
       cy.wrap(reportId).as('reportId');
@@ -14,6 +36,9 @@ describe('Report builder Posts By Time widget', () => {
   afterEach(() => {
     cy.get<string>('@reportId').then((reportId) => {
       cy.apiRemoveReportBuilder(reportId);
+    });
+    cy.get<string>('@projectId').then((projectId) => {
+      cy.apiRemoveProject(projectId);
     });
   });
 
@@ -30,11 +55,19 @@ describe('Report builder Posts By Time widget', () => {
       .clear()
       .type('New Widget Title');
 
-    // Confirms that button displays and functions correctly on live page
+    // Set project filter
+    cy.get('#e2e-report-builder-project-filter-box select').select(
+      this.projectId
+    );
+
+    // Confirms that the widget displays correctly on live report
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveReportLayout');
     cy.visit(`/admin/reporting/report-builder/${this.reportId}/viewer`);
+    cy.get('.recharts-surface:first').trigger('mouseover');
+
     cy.contains('New Widget Title').should('exist');
+    cy.contains('Total : 1').should('be.visible');
   });
 
   it('deletes Posts By Time widget correctly', function () {
