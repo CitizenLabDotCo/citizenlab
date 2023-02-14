@@ -1077,7 +1077,7 @@
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip": "Vous devrez ajouter le projet à un dossier sur lequel vous avez des droits d'administration.",
   "app.containers.AdminPage.ProjectEdit.folderSelectError": "Sélectionnez un dossier pour y ajouter ce projet.",
   "app.containers.AdminPage.ProjectEdit.formBuilder.customToolboxTitle": "Contenu personnalisé",
-  "app.containers.AdminPage.ProjectEdit.formBuilder.existingSubmissionsWarning": "Submissions to this form have started to come in. Changes to the form may result in data loss and incomplete data in the exported files.",
+  "app.containers.AdminPage.ProjectEdit.formBuilder.existingSubmissionsWarning": "Les soumissions de ce formulaire ont commencé à arriver. Les modifications apportées au formulaire peuvent entraîner une perte de données et des données incomplètes dans les fichiers exportés.",
   "app.containers.AdminPage.ProjectEdit.formBuilder.successMessage": "Le formulaire a été sauvegardé avec succès",
   "app.containers.AdminPage.ProjectEdit.fromATemplate": "A partir d'un modèle",
   "app.containers.AdminPage.ProjectEdit.fromScratch": "À partir de zéro",
