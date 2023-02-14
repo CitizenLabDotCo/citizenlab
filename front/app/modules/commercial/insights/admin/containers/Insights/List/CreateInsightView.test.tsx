@@ -93,12 +93,15 @@ describe('Create Insights View', () => {
     screen.getAllByRole('checkbox')[1].click();
     fireEvent.click(screen.getByText('Create my insights'));
 
-    expect(mockMutate).toHaveBeenCalledWith({
-      view: {
-        name: viewName,
-        data_sources: [{ origin_id: project2Id }],
+    expect(mockMutate).toHaveBeenCalledWith(
+      {
+        view: {
+          name: viewName,
+          data_sources: [{ origin_id: project2Id }],
+        },
       },
-    });
+      { onSuccess: expect.any(Function) }
+    );
   });
 
   it('creates a view with correct viewName and multiple project ids', () => {
@@ -120,12 +123,15 @@ describe('Create Insights View', () => {
     screen.getAllByRole('checkbox')[1].click();
     fireEvent.click(screen.getByText('Create my insights'));
 
-    expect(mockMutate).toHaveBeenCalledWith({
-      view: {
-        name: viewName,
-        data_sources: [{ origin_id: project1Id }, { origin_id: project2Id }],
+    expect(mockMutate).toHaveBeenCalledWith(
+      {
+        view: {
+          name: viewName,
+          data_sources: [{ origin_id: project1Id }, { origin_id: project2Id }],
+        },
       },
-    });
+      { onSuccess: expect.any(Function) }
+    );
   });
 
   it('cannot save without projects being selected', () => {

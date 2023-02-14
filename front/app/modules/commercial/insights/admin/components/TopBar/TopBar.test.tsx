@@ -142,7 +142,9 @@ describe('Insights Top Bar', () => {
     render(<TopBar />);
     fireEvent.click(screen.getByRole('button'));
     fireEvent.click(screen.getByText('Delete'));
-    expect(mockDeleteView).toHaveBeenCalledWith(mockViewData.data.id);
+    expect(mockDeleteView).toHaveBeenCalledWith(mockViewData.data.id, {
+      onSuccess: expect.any(Function),
+    });
   });
 
   it('redirects to main screen there is view error', () => {

@@ -45,9 +45,12 @@ describe('Rename Insights View', () => {
       fireEvent.click(screen.getByText('Save'));
     });
 
-    expect(mockMutate).toHaveBeenCalledWith({
-      id: viewId,
-      requestBody: { view: { name: viewName } },
-    });
+    expect(mockMutate).toHaveBeenCalledWith(
+      {
+        id: viewId,
+        requestBody: { view: { name: viewName } },
+      },
+      { onSuccess: expect.any(Function) }
+    );
   });
 });
