@@ -276,6 +276,7 @@
   "app.components.PagesForm.titleMissingOneLanguageError": "Proporcionar un título para al menos un idioma",
   "app.components.ParticipationCTABars.allocateBudget": "Asigna tu presupuesto",
   "app.components.ParticipationCTABars.mobileProjectOpenForSubmission": "Abierto a la participación",
+  "app.components.ParticipationCTABars.poll": "Take the poll",
   "app.components.ParticipationCTABars.projectOpenForSubmission": "Este proyecto está actualmente abierto a la participación.",
   "app.components.ParticipationCTABars.seeIdeas": "Ver ideas",
   "app.components.ParticipationCTABars.takeTheSurvey": "Responde la consulta",
