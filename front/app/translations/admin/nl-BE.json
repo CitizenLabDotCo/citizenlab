@@ -1077,6 +1077,7 @@
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip": "Je moet het project toevoegen aan een map waar je beheersrechten op hebt.",
   "app.containers.AdminPage.ProjectEdit.folderSelectError": "Selecteer de map waar je dit project aan wilt toevoegen.",
   "app.containers.AdminPage.ProjectEdit.formBuilder.customToolboxTitle": "Aangepaste inhoud",
+  "app.containers.AdminPage.ProjectEdit.formBuilder.existingSubmissionsWarning": "Submissions to this form have started to come in. Changes to the form may result in data loss and incomplete data in the exported files.",
   "app.containers.AdminPage.ProjectEdit.formBuilder.successMessage": "Formulier succesvol opgeslagen",
   "app.containers.AdminPage.ProjectEdit.fromATemplate": "Start van een sjabloon",
   "app.containers.AdminPage.ProjectEdit.fromScratch": "Start van nul",
