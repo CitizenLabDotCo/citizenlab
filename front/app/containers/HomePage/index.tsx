@@ -42,7 +42,7 @@ const HomePage = () => {
     if (pressedLetterAKey && userHasAdminAccess) {
       clHistory.push(adminRedirectPath);
     }
-  }, [pressedLetterAKey]);
+  }, [pressedLetterAKey, userHasAdminAccess]);
 
   if (!isNilOrError(homepageSettings)) {
     return (
