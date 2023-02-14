@@ -111,8 +111,8 @@ const CauseForm = ({ onSubmit, defaultValues, imageUrl }: PageFormProps) => {
         <SectionField>
           <ImagesDropzone
             name="image"
-            imagePreviewRatio={120 / 480}
-            maxImagePreviewWidth="500px"
+            imagePreviewRatio={135 / 298}
+            maxImagePreviewWidth="298px"
             acceptedFileTypes={{
               'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
             }}
