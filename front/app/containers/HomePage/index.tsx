@@ -1,4 +1,5 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useEffect } from 'react';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import Fragment from 'components/Fragment';
@@ -22,6 +23,20 @@ import { isNilOrError } from 'utils/helperUtils';
 const HomePage = () => {
   const homepageSettings = useHomepageSettings();
   const authUser = useAuthUser();
+
+  const handleKeyPress = (event: KeyboardEvent) => {
+    if (event.key === 'a') {
+      clHistory.push('/admin/dashboard');
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [handleKeyPress]);
 
   if (!isNilOrError(homepageSettings)) {
     return (
