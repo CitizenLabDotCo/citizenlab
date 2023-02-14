@@ -127,20 +127,23 @@ const InputDetails = ({
   const { data: categories } = useCategories(viewId);
   const { data: previewedInput } = useInput(viewId, previewedInputId);
   const { mutate: addInputCategories, isLoading: addInputCategoryIsLoading } =
-    useAddInputCategories({
-      onSuccess: () => {
-        setSelectedOption(null);
-        selectRef.current?.blur();
-      },
-    });
+    useAddInputCategories();
   const { mutate: addCategory, isLoading: addCategoryIsLoading } =
     useAddCategory({
       onSuccess: (categoryId) => {
-        addInputCategories({
-          viewId,
-          inputId: previewedInputId,
-          categories: [{ id: categoryId, type: 'category' }],
-        });
+        addInputCategories(
+          {
+            viewId,
+            inputId: previewedInputId,
+            categories: [{ id: categoryId, type: 'category' }],
+          },
+          {
+            onSuccess: () => {
+              setSelectedOption(null);
+              selectRef.current?.blur();
+            },
+          }
+        );
       },
     });
 

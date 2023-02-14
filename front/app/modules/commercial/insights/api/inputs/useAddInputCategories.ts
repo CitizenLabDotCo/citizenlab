@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import fetcher from 'utils/cl-react-query/fetcher';
 import categoriesKeys from '../categories/keys';
+import { IInsightsCategories } from '../categories/types';
 import statsKeys from '../stats/keys';
 import inputsKeys from './keys';
 
@@ -13,13 +14,13 @@ const addInputCategories = ({
   inputId: string;
   categories: { id: string; type: string }[];
 }) =>
-  fetcher({
+  fetcher<IInsightsCategories>({
     path: `/insights/views/${viewId}/inputs/${inputId}/categories`,
     action: 'post',
     body: { data: categories },
   });
 
-const useAddInputCategories = (options?: { onSuccess?: () => void }) => {
+const useAddInputCategories = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -37,7 +38,6 @@ const useAddInputCategories = (options?: { onSuccess?: () => void }) => {
       queryClient.invalidateQueries({
         queryKey: statsKeys.detail(variables.viewId),
       });
-      options?.onSuccess && options.onSuccess();
     },
   });
 };
