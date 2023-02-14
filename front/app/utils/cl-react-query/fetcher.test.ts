@@ -54,12 +54,12 @@ describe('fetcher', () => {
       expect(mockSetQueryData).toHaveBeenCalledTimes(2);
       expect(mockSetQueryData).toHaveBeenNthCalledWith(
         1,
-        [{ entity: 'detail', id: 1, type: 'resource' }],
+        [{ operation: 'item', id: 1, type: 'resource' }],
         expect.anything()
       );
       expect(mockSetQueryData).toHaveBeenNthCalledWith(
         2,
-        [{ entity: 'detail', id: 2, type: 'resource' }],
+        [{ operation: 'item', id: 2, type: 'resource' }],
         expect.anything()
       );
     });
@@ -95,7 +95,7 @@ describe('fetcher', () => {
 
       expect(mockSetQueryData).toHaveBeenNthCalledWith(
         1,
-        [{ entity: 'detail', id: 1, type: 'resource' }],
+        [{ operation: 'item', id: 1, type: 'resource' }],
         expect.anything()
       );
     });
@@ -134,7 +134,7 @@ describe('fetcher', () => {
 
       expect(mockSetQueryData).toHaveBeenNthCalledWith(
         1,
-        [{ entity: 'detail', id: 1, type: 'resource' }],
+        [{ operation: 'item', id: 1, type: 'resource' }],
         expect.anything()
       );
     });

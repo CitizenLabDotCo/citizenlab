@@ -1,9 +1,9 @@
 const categoriesKeys = {
   all: () => [{ type: 'category' }] as const,
-  lists: () => [{ ...categoriesKeys.all()[0], entity: 'list' }] as const,
+  lists: () => [{ ...categoriesKeys.all()[0], operation: 'list' }] as const,
   list: (viewId: string) =>
-    [{ ...categoriesKeys.all()[0], entity: 'list', viewId }] as const,
-  details: () => [{ ...categoriesKeys.all()[0], entity: 'detail' }] as const,
+    [{ ...categoriesKeys.all()[0], operation: 'list', viewId }] as const,
+  details: () => [{ ...categoriesKeys.all()[0], operation: 'item' }] as const,
   detail: (viewId: string, id: string) =>
     [
       {

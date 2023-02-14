@@ -6,7 +6,7 @@ const categorySuggestionsKeys = {
     {
       ...categorySuggestionsKeys.all[0],
       type: 'category_suggestion_task',
-      entity: 'detail',
+      operation: 'item',
       viewId,
       ...filters,
     },

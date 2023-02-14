@@ -2,21 +2,21 @@ import { InfiniteQueryParameters, QueryParameters } from './types';
 
 const inputsKeys = {
   all: () => [{ type: 'input' }],
-  lists: () => [{ ...inputsKeys.all()[0], entity: 'list' }],
+  lists: () => [{ ...inputsKeys.all()[0], operation: 'list' }],
   list: (viewId: string, filters?: QueryParameters) => [
-    { ...inputsKeys.all()[0], entity: 'list', viewId, ...filters },
+    { ...inputsKeys.all()[0], operation: 'list', viewId, ...filters },
   ],
   infiniteList: (viewId: string, filters?: InfiniteQueryParameters) => [
     {
       ...inputsKeys.all()[0],
       ...filters,
       viewId,
-      entity: 'list',
+      operation: 'list',
       queryType: 'infinite',
     },
   ],
   details: (viewId: string) => [
-    { ...inputsKeys.all()[0], viewId, entity: 'detail' },
+    { ...inputsKeys.all()[0], viewId, operation: 'item' },
   ],
   detail: (viewId: string, id: string) => [
     {
