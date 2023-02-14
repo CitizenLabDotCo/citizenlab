@@ -1077,6 +1077,7 @@
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip": "Projekts jāpievieno mapē, kurā jums ir administratora tiesības.",
   "app.containers.AdminPage.ProjectEdit.folderSelectError": "Izvēlieties mapi, kurā pievienot šo projektu.",
   "app.containers.AdminPage.ProjectEdit.formBuilder.customToolboxTitle": "Custom content",
+  "app.containers.AdminPage.ProjectEdit.formBuilder.existingSubmissionsWarning": "Submissions to this form have started to come in. Changes to the form may result in data loss and incomplete data in the exported files.",
   "app.containers.AdminPage.ProjectEdit.formBuilder.successMessage": "Form successfully saved",
   "app.containers.AdminPage.ProjectEdit.fromATemplate": "No veidnes",
   "app.containers.AdminPage.ProjectEdit.fromScratch": "Veidot no nulles",
