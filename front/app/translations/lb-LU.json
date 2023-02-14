@@ -276,6 +276,7 @@
   "app.components.PagesForm.titleMissingOneLanguageError": "Stellt en Titel fir mindestems eng Sprooch bereet",
   "app.components.ParticipationCTABars.allocateBudget": "Verdeelt Äre Budget",
   "app.components.ParticipationCTABars.mobileProjectOpenForSubmission": "Op fir Bedeelegung",
+  "app.components.ParticipationCTABars.poll": "Take the poll",
   "app.components.ParticipationCTABars.projectOpenForSubmission": "Dëse Projet ass aktuell op fir Bedeelegung.",
   "app.components.ParticipationCTABars.seeIdeas": "Iddien ukucken",
   "app.components.ParticipationCTABars.takeTheSurvey": "Un der Ëmfro deelhuelen",
