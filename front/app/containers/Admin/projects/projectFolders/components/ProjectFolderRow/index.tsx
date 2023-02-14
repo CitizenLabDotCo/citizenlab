@@ -2,14 +2,13 @@ import React, { memo, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, Box } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import {
   RowContent,
   RowContentInner,
   RowTitle,
   RowButton,
-  ActionsRowContainer,
 } from 'containers/Admin/projects/components/StyledComponents';
 import FolderMoreActionsMenu from './FolderMoreActionsMenu';
 
@@ -61,14 +60,8 @@ const Container = styled.div`
 `;
 
 const FolderRowContent = styled(RowContent)<{
-  expanded: boolean;
   hasProjects: boolean;
 }>`
-  ${({ expanded }) =>
-    expanded &&
-    `
-    padding-bottom: 10px;
-  `}
   ${({ hasProjects }) =>
     hasProjects &&
     `
@@ -81,13 +74,8 @@ const ProjectRows = styled.div`
 `;
 
 const InFolderProjectRow = styled(ProjectRow)`
-  padding-bottom: 10px;
   padding-top: 10px;
   border-top: 1px solid ${colors.divider};
-
-  &:last-child {
-    padding-bottom: 0;
-  }
 `;
 
 export interface Props {
@@ -122,29 +110,33 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
   if (!isNilOrError(authUser)) {
     return (
       <Container>
-        <FolderRowContent
-          className="e2e-admin-adminPublications-list-item"
-          expanded={hasProjects && folderOpen}
-          hasProjects={hasProjects}
-          role="button"
-          onClick={toggleExpand}
+        <Box
+          width="100%"
+          display="flex"
+          alignItems="center"
+          pb={hasProjects && folderOpen ? '12px' : '0'}
         >
-          <RowContentInner className="expand primary">
-            {hasProjects && (
-              <ArrowIcon
-                expanded={hasProjects && folderOpen}
-                name="chevron-right"
+          <FolderRowContent
+            className="e2e-admin-adminPublications-list-item"
+            hasProjects={hasProjects}
+            role="button"
+            onClick={toggleExpand}
+          >
+            <RowContentInner className="expand primary">
+              {hasProjects && (
+                <ArrowIcon
+                  expanded={hasProjects && folderOpen}
+                  name="chevron-right"
+                />
+              )}
+              <FolderIcon name="folder-outline" />
+              <RowTitle
+                value={publication.attributes.publication_title_multiloc}
               />
-            )}
-            <FolderIcon name="folder-outline" />
-            <RowTitle
-              value={publication.attributes.publication_title_multiloc}
-            />
-            <PublicationStatusLabel
-              publicationStatus={publication.attributes.publication_status}
-            />
-          </RowContentInner>
-          <ActionsRowContainer>
+              <PublicationStatusLabel
+                publicationStatus={publication.attributes.publication_status}
+              />
+            </RowContentInner>
             <RowButton
               className={`e2e-admin-edit-project ${
                 publication.attributes.publication_title_multiloc['en-GB'] || ''
@@ -159,12 +151,12 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
             >
               <FormattedMessage {...messages.edit} />
             </RowButton>
-            <FolderMoreActionsMenu
-              folderId={publication.publicationId}
-              setError={setFolderDeletionError}
-            />
-          </ActionsRowContainer>
-        </FolderRowContent>
+          </FolderRowContent>
+          <FolderMoreActionsMenu
+            folderId={publication.publicationId}
+            setError={setFolderDeletionError}
+          />
+        </Box>
 
         {folderDeletionError && <Error text={folderDeletionError} />}
 
