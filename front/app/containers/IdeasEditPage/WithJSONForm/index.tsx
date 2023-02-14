@@ -108,7 +108,7 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   }
 
   const onSubmit = async (data) => {
-    const { idea_images_attributes, ...ideaWithoutFiles } = data;
+    const { idea_images_attributes, ...ideaWithoutImages } = data;
 
     const location_point_geojson = await getLocationGeojson(
       initialFormData,
@@ -128,7 +128,7 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
     }
 
     const payload = {
-      ...ideaWithoutFiles,
+      ...ideaWithoutImages,
       idea_images_attributes,
       location_point_geojson,
       project_id: project?.id,
