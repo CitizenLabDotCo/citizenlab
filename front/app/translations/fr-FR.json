@@ -592,7 +592,7 @@
   "app.components.formBuilder.fileUpload": "Téléchargement de fichier",
   "app.components.formBuilder.formEnd": "Fin du formulaire",
   "app.components.formBuilder.goToPageInputLabel": "Puis la page suivante est :",
-  "app.components.formBuilder.helmetTitle": "Form builder",
+  "app.components.formBuilder.helmetTitle": "Générateur de formulaires",
   "app.components.formBuilder.imageFileUpload": "Téléchargement d’image",
   "app.components.formBuilder.invalidLogicBadgeMessage": "Logique invalide",
   "app.components.formBuilder.labels": "Étiquettes",
