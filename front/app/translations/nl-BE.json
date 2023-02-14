@@ -276,6 +276,7 @@
   "app.components.PagesForm.titleMissingOneLanguageError": "Geef een titel op voor ten minste één taal",
   "app.components.ParticipationCTABars.allocateBudget": "Maak je keuze",
   "app.components.ParticipationCTABars.mobileProjectOpenForSubmission": "Open voor deelname",
+  "app.components.ParticipationCTABars.poll": "Take the poll",
   "app.components.ParticipationCTABars.projectOpenForSubmission": "Dit project staat momenteel open voor deelname.",
   "app.components.ParticipationCTABars.seeIdeas": "Bekijk ideeën",
   "app.components.ParticipationCTABars.takeTheSurvey": "Naar de enquête",
