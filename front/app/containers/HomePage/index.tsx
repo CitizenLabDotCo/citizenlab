@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useEffect } from 'react';
+import React, { lazy, Suspense, useCallback, useEffect } from 'react';
 import clHistory from 'utils/cl-router/history';
 
 // components
@@ -35,11 +35,11 @@ const HomePage = () => {
         )
       : false;
 
-  const handleKeyPress = (event: KeyboardEvent) => {
+  const handleKeyPress = useCallback((event: KeyboardEvent) => {
     if (userHasAdminAccess && event.key === 'a') {
       clHistory.push('/admin/dashboard');
     }
-  };
+  }, []);
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeyPress);
