@@ -60,14 +60,8 @@ const Container = styled.div`
 `;
 
 const FolderRowContent = styled(RowContent)<{
-  expanded: boolean;
   hasProjects: boolean;
 }>`
-  ${({ expanded }) =>
-    expanded &&
-    `
-    padding-bottom: 10px;
-  `}
   ${({ hasProjects }) =>
     hasProjects &&
     `
@@ -80,13 +74,8 @@ const ProjectRows = styled.div`
 `;
 
 const InFolderProjectRow = styled(ProjectRow)`
-  padding-bottom: 10px;
   padding-top: 10px;
   border-top: 1px solid ${colors.divider};
-
-  &:last-child {
-    padding-bottom: 0;
-  }
 `;
 
 export interface Props {
@@ -121,10 +110,14 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
   if (!isNilOrError(authUser)) {
     return (
       <Container>
-        <Box width="100%" display="flex" alignItems="center">
+        <Box
+          width="100%"
+          display="flex"
+          alignItems="center"
+          pb={folderOpen ? '10px' : '0'}
+        >
           <FolderRowContent
             className="e2e-admin-adminPublications-list-item"
-            expanded={hasProjects && folderOpen}
             hasProjects={hasProjects}
             role="button"
             onClick={toggleExpand}
@@ -159,12 +152,10 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
               <FormattedMessage {...messages.edit} />
             </RowButton>
           </FolderRowContent>
-          <Box pb={hasProjects && folderOpen ? '10px' : undefined}>
-            <FolderMoreActionsMenu
-              folderId={publication.publicationId}
-              setError={setFolderDeletionError}
-            />
-          </Box>
+          <FolderMoreActionsMenu
+            folderId={publication.publicationId}
+            setError={setFolderDeletionError}
+          />
         </Box>
 
         {folderDeletionError && <Error text={folderDeletionError} />}
