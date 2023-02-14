@@ -115,7 +115,6 @@ ar-MA:
         description:
       author_id:
         title: المؤلف
-        description:
       topic_ids:
         title: الموضوعات
         description:
@@ -127,12 +126,19 @@ ar-MA:
         description:
       budget:
         title: الميزانية
-        description:
       images:
         title: الصور
         description:
       attachments:
         title: المُرفقات
+        description:
+      section1:
+        description:
+      section2:
+        title: الصور والمرفقات
+        description:
+      section3:
+        title: تفاصيل
         description:
   custom_forms:
     categories:
@@ -189,6 +195,7 @@ ar-MA:
       author_fullname: 'اسم المؤلف'
       author_email: 'البريد الإلكتروني للمؤلف'
       author_id: 'معرِّف المؤلف'
+      budget: 'ميزانية'
       created_at: 'تم التقديم في'
       published_at: 'تم النشر في'
       comments_count: 'التعليقات ممكنة'
