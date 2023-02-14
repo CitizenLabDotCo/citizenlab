@@ -36,7 +36,12 @@ describe('Input form builder', () => {
     cy.visit(`admin/projects/${projectId}/ideaform`);
     cy.get('[data-cy="e2e-edit-input-form"]').click();
 
+    // Verify no warning is shown when there are no submissions
+    cy.get('#e2e-warning-notice').should('not.exist');
+
+    // Save the form
     cy.get('form').submit();
+
     // Should show success message on saving
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
 
@@ -99,6 +104,11 @@ describe('Input form builder', () => {
     cy.get('#e2e-idea-show')
       .find('#e2e-map-popup')
       .contains('Boulevard Anspach');
+
+    // Verify warning for altering the form is present in form builder
+    cy.visit(`admin/projects/${projectId}/ideaform`);
+    cy.get('[data-cy="e2e-edit-input-form"]').click();
+    cy.get('#e2e-warning-notice').should('exist');
   });
 
   it('can create input form with custom field, save form and user can respond to the form created', () => {

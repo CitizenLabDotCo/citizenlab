@@ -37,7 +37,7 @@ export const nativeSurveyConfig: FormBuilderConfig = {
   alwaysShowCustomFields: true,
 
   groupingType: 'page',
-  getDeleteFormResultsNotice: (projectId: string) => {
+  getDeletionNotice: (projectId: string) => {
     return (
       <DeleteFormResultsNotice
         projectId={projectId}

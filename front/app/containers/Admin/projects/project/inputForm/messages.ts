@@ -75,4 +75,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.formBuilder.customToolboxTitle',
     defaultMessage: 'Custom content',
   },
+  existingSubmissionsWarning: {
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.existingSubmissionsWarning',
+    defaultMessage:
+      'Submissions to this form have started to come in. Changes to the form may result in data loss and incomplete data in the exported files.',
+  },
 });
