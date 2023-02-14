@@ -15,13 +15,12 @@ interface IInsightsViewObject {
   view: { data_sources: { origin_id: string }[]; name: string };
 }
 
-const useCreateView = ({ onSuccess }: { onSuccess?: () => void }) => {
+const useCreateView = () => {
   const queryClient = useQueryClient();
   return useMutation<IInsightsView, CLErrors, IInsightsViewObject>({
     mutationFn: createView,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: viewsKeys.lists() });
-      onSuccess && onSuccess();
     },
   });
 };

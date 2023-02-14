@@ -16,13 +16,12 @@ const updateView = ({ id, requestBody }: IInsightViewUpdateObject) =>
     body: requestBody,
   });
 
-const useUpdateView = ({ onSuccess }: { onSuccess?: () => void }) => {
+const useUpdateView = () => {
   const queryClient = useQueryClient();
   return useMutation<IInsightsView, CLErrors, IInsightViewUpdateObject>({
     mutationFn: updateView,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: viewsKeys.lists() });
-      onSuccess && onSuccess();
     },
   });
 };

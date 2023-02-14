@@ -53,9 +53,7 @@ const RenameInsightsView = ({
   originalViewName,
   intl: { formatMessage },
 }: RenameInsightsViewProps & WrappedComponentProps) => {
-  const { mutate, isLoading, error, reset } = useUpdateView({
-    onSuccess: closeRenameModal,
-  });
+  const { mutate, isLoading, error, reset } = useUpdateView();
 
   const [name, setName] = useState<string>(originalViewName);
   const onChangeName = (value: string) => {
@@ -65,7 +63,10 @@ const RenameInsightsView = ({
 
   const handleSubmit = async () => {
     if (name) {
-      mutate({ id: insightsViewId, requestBody: { view: { name } } });
+      mutate(
+        { id: insightsViewId, requestBody: { view: { name } } },
+        { onSuccess: closeRenameModal }
+      );
     }
   };
 

@@ -132,9 +132,7 @@ export const CreateInsightsView = ({
   projects,
   closeCreateModal,
 }: DataProps & InputProps) => {
-  const { mutate, reset, error, isLoading } = useCreateView({
-    onSuccess: () => closeCreateModal(),
-  });
+  const { mutate, reset, error, isLoading } = useCreateView();
   const localize = useLocalize();
   const { projectFolders } = useProjectFolders({});
 
@@ -158,14 +156,19 @@ export const CreateInsightsView = ({
 
   const handleSubmit = async () => {
     if (name && selectedProjectsIds.length) {
-      mutate({
-        view: {
-          name,
-          data_sources: selectedProjectsIds.map((projectId) => ({
-            origin_id: projectId,
-          })),
+      mutate(
+        {
+          view: {
+            name,
+            data_sources: selectedProjectsIds.map((projectId) => ({
+              origin_id: projectId,
+            })),
+          },
         },
-      });
+        {
+          onSuccess: closeCreateModal,
+        }
+      );
     }
   };
 
