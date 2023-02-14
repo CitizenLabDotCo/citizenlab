@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useCallback, useEffect } from 'react';
+import React, { lazy, Suspense, useEffect } from 'react';
 import clHistory from 'utils/cl-router/history';
 
 // components
@@ -17,15 +17,18 @@ import { canAccessRoute } from 'services/permissions/rules/routePermissions';
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
 import useHomepageSettings from 'hooks/useHomepageSettings';
+import useKeyPress from 'hooks/useKeyPress';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import useAppConfiguration from 'hooks/useAppConfiguration';
+export const adminRedirectPath = '/admin/dashboard';
 
 const HomePage = () => {
   const homepageSettings = useHomepageSettings();
   const authUser = useAuthUser();
   const appConfiguration = useAppConfiguration();
+  const pressedLetterAKey = useKeyPress('a');
   const userHasAdminAccess =
     !isNilOrError(authUser) && !isNilOrError(appConfiguration)
       ? canAccessRoute(
@@ -35,19 +38,11 @@ const HomePage = () => {
         )
       : false;
 
-  const handleKeyPress = useCallback((event: KeyboardEvent) => {
-    if (userHasAdminAccess && event.key === 'a') {
-      clHistory.push('/admin/dashboard');
-    }
-  }, []);
-
   useEffect(() => {
-    document.addEventListener('keydown', handleKeyPress);
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyPress);
-    };
-  }, [handleKeyPress]);
+    if (pressedLetterAKey && userHasAdminAccess) {
+      clHistory.push(adminRedirectPath);
+    }
+  }, [pressedLetterAKey]);
 
   if (!isNilOrError(homepageSettings)) {
     return (
