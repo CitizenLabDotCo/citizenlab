@@ -46,7 +46,7 @@ const useNetwork = (viewId: string) => {
   return useQuery<IInsightsNetwork, CLErrors, IInsightsNetwork, NetworkKeys>({
     queryKey: networkKeys.network(viewId),
     queryFn: () => fetchNetwork(viewId),
-    enabled: tasks && tasks.data.length === 0,
+    enabled: tasks && tasks.data.length === 0 ? true : false,
     retry: false,
   });
 };
