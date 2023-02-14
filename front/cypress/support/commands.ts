@@ -51,6 +51,8 @@ declare global {
       apiVerifyBogus: typeof apiVerifyBogus;
       apiCreateEvent: typeof apiCreateEvent;
       apiEnableProjectDescriptionBuilder: typeof apiEnableProjectDescriptionBuilder;
+      apiCreateReportBuilder: typeof apiCreateReportBuilder;
+      apiRemoveReportBuilder: typeof apiRemoveReportBuilder;
       intersectsViewport: typeof intersectsViewport;
       notIntersectsViewport: typeof notIntersectsViewport;
       apiUpdateHomepageSettings: typeof apiUpdateHomepageSettings;
@@ -1205,6 +1207,42 @@ export function apiEnableProjectDescriptionBuilder({
   });
 }
 
+export function apiCreateReportBuilder() {
+  const reportName = randomString();
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: 'web_api/v1/reports',
+      body: {
+        report: {
+          name: reportName,
+        },
+      },
+    });
+  });
+}
+
+export function apiRemoveReportBuilder(reportId: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'DELETE',
+      url: `web_api/v1/reports/${reportId}`,
+    });
+  });
+}
+
 export function apiUpdateHomepageSettings({
   top_info_section_enabled,
   bottom_info_section_enabled,
@@ -1371,6 +1409,8 @@ Cypress.Commands.add(
   'apiEnableProjectDescriptionBuilder',
   apiEnableProjectDescriptionBuilder
 );
+Cypress.Commands.add('apiCreateReportBuilder', apiCreateReportBuilder);
+Cypress.Commands.add('apiRemoveReportBuilder', apiRemoveReportBuilder);
 Cypress.Commands.add(
   'intersectsViewport',
   { prevSubject: true },

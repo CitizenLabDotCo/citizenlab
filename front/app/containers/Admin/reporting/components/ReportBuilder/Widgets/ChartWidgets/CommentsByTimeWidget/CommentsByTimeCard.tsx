@@ -41,7 +41,14 @@ const CommentsByTime = ({
   }
 
   return (
-    <Box width="100%" height="220px" mt="20px" pb="8px" px="16px">
+    <Box
+      id="e2e-comments-by-time-widget"
+      width="100%"
+      height="220px"
+      mt="20px"
+      pb="8px"
+      px="16px"
+    >
       <Box pt="8px" width="95%" height="95%" maxWidth="800px">
         <Chart
           timeSeries={timeSeries}
