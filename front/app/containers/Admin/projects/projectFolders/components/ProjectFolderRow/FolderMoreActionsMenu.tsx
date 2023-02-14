@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import messages from './messages';
 import { deleteProjectFolder } from 'services/projectFolders';
@@ -15,6 +15,7 @@ export interface Props {
 
 const FolderMoreActionsMenu = ({ folderId, setError }: Props) => {
   const { formatMessage } = useIntl();
+  const [isDeleting, setIsDeleting] = useState(false);
   const authUser = useAuthUser();
   if (isNilOrError(authUser)) return null;
 
@@ -33,14 +34,17 @@ const FolderMoreActionsMenu = ({ folderId, setError }: Props) => {
   const deleteAction = {
     handler: async () => {
       if (window.confirm(formatMessage(messages.deleteFolderConfirmation))) {
+        setIsDeleting(true);
         await handleCallbackError(
           () => deleteProjectFolder(folderId),
           formatMessage(messages.deleteFolderError)
         );
+        setIsDeleting(false);
       }
     },
     label: formatMessage(messages.deleteFolderButton),
     icon: 'delete' as const,
+    isLoading: isDeleting,
   };
 
   const actions: IAction[] = [];
