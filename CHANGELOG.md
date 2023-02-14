@@ -1,5 +1,9 @@
 # Changelog
 
+### Fixed
+
+- [CL-2830] Fixed bug that prevented editing ideas
+
 ## 2023-02-13 (2)
 
 ### Changed
