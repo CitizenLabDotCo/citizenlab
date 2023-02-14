@@ -6,6 +6,7 @@ import tracks from './tracks';
 // components
 import InitiativeCard from 'components/InitiativeCard';
 import { Spinner, Button } from '@citizenlab/cl2-component-library';
+import Centerer from 'components/UI/Centerer';
 
 // resources
 import { IInitiativeData } from 'services/initiatives';
@@ -19,12 +20,7 @@ import styled, { useTheme } from 'styled-components';
 import { media } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
-const Loading = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
+const Loading = styled(Centerer)`
   ${media.desktop`
     height: calc(100vh - 280px);
     position: sticky;

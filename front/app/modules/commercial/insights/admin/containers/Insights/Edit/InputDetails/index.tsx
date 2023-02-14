@@ -17,6 +17,7 @@ import selectStyles from 'components/UI/MultipleSelect/styles';
 import Navigation, {
   NavigationProps,
 } from 'modules/commercial/insights/admin/components/Navigation';
+import Centerer from 'components/UI/Centerer';
 
 // hooks
 import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
@@ -77,14 +78,6 @@ const StyledSpinner = styled(Spinner)`
   width: auto;
 `;
 
-const LoadingContainer = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100%;
-  justify-context: center;
-  align-items: center;
-`;
-
 const StyledCreatable = styled(Creatable)<{ opitons: OptionProps[] }>`
   #react-select-2-option-${({ options }) => options.length} {
     background-color: ${colors.successLight};
@@ -131,9 +124,9 @@ const InputDetails = ({
   // Loading state
   if (previewedInput === undefined) {
     return (
-      <LoadingContainer data-testid="insightsEditDetailsLoading">
+      <Centerer height="100%" data-testid="insightsEditDetailsLoading">
         <Spinner />
-      </LoadingContainer>
+      </Centerer>
     );
   }
 

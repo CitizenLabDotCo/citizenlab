@@ -81,19 +81,6 @@ export default defineMessages({
     id: 'app.containers.Projects.navSurvey',
     defaultMessage: 'Survey',
   },
-  noProjectFoundHere: {
-    id: 'app.containers.Projects.noProjectFoundHere',
-    defaultMessage: 'There is no project here.',
-  },
-  thisProjectIsNotPubliclyVisibleVisitHomePageToDiscover: {
-    id: 'app.containers.Projects.thisProjectIsNotPubliclyVisibleVisitHomePageToDiscover',
-    defaultMessage:
-      'This project is not publicly visible. Visit the homepage to discover other engagement opportunities.',
-  },
-  goBackToList: {
-    id: 'app.containers.Projects.goBackToList',
-    defaultMessage: 'Go to the projects overview',
-  },
   archived: {
     id: 'app.containers.Projects.archived',
     defaultMessage: 'Archived',
