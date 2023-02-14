@@ -738,7 +738,7 @@
   "app.containers.IdeaCards.topicsTitle": "Themen",
   "app.containers.IdeaCards.trending": "Beliebt",
   "app.containers.IdeaCards.tryDifferentFilters": "Es wurden keine Ergebnisse gefunden. Bitte versuchen Sie es mit einem anderen Filter oder Suchbegriff.\n",
-  "app.containers.IdeaCards.xResults": "{ideasCount, Plural, keine {# Ergebnisse} ein {# Ergebnis} andere {# Ergebnisse}}\n",
+  "app.containers.IdeaCards.xResults": "{ideasCount, plural, one {# Ergebnis} other {# Ergebnisse}}",
   "app.containers.IdeasEditPage.contributionFormTitle": "Beitrag bearbeiten\n",
   "app.containers.IdeasEditPage.editedPostSave": "Speichern",
   "app.containers.IdeasEditPage.fileUploadError": "Das Hochladen von einer oder mehreren Dateien ist fehlgeschlagen. Bitte prüfen Sie die Dateigröße und das Format und versuchen Sie es erneut.\n",
