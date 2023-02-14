@@ -17,7 +17,7 @@ class IdeaCustomFieldsService
   def reportable_fields
     # idea_images_attributes is not supported by XlsxService.
     # Page and section fields do not capture data, so they are excluded.
-    enabled_fields.select do |field|
+    all_fields.select do |field|
       field.code != 'idea_images_attributes' && field.input_type != 'page' && field.input_type != 'section'
     end
   end
