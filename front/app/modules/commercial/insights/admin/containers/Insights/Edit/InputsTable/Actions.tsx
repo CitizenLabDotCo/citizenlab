@@ -112,19 +112,9 @@ const Actions = ({
   const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
   const { data: categories } = useCategories(viewId);
   const { mutate: batchAssignCategories, isLoading: isLoadingBatchAssign } =
-    useBatchAssignCategories({
-      onSuccess: () => {
-        setCategorySelection(new Set());
-        setDropdownOpened(false);
-      },
-    });
+    useBatchAssignCategories();
   const { mutate: batchUnassignCategories, isLoading: isLoadingBatchUnassign } =
-    useBatchUnassignCategories({
-      onSuccess: () => {
-        setCategorySelection(new Set());
-        setDropdownOpened(false);
-      },
-    });
+    useBatchUnassignCategories();
   const { mutate: addInputCategories, isLoading: processingBulkApprove } =
     useAddInputCategories();
   const selectedInputsIds = selectedInputs.map((input) => input.id);
@@ -149,11 +139,19 @@ const Actions = ({
   // assigns selectedCategories to selectedInputs
   const assign = async () => {
     if (selectedInputs.length > 0 && categorySelection.size > 0) {
-      batchAssignCategories({
-        viewId,
-        inputs: [...selectedInputsIds],
-        categories: [...categorySelection],
-      });
+      batchAssignCategories(
+        {
+          viewId,
+          inputs: [...selectedInputsIds],
+          categories: [...categorySelection],
+        },
+        {
+          onSuccess: () => {
+            setCategorySelection(new Set());
+            setDropdownOpened(false);
+          },
+        }
+      );
     }
   };
   const suggestedCategoriesInSelectedInputs = selectedInputs.some(
@@ -186,11 +184,19 @@ const Actions = ({
         selectedCount: selectedInputs.length,
       });
       if (window.confirm(deleteMessage)) {
-        batchUnassignCategories({
-          viewId,
-          inputs: [...selectedInputsIds],
-          categories: [selectedCategory.id],
-        });
+        batchUnassignCategories(
+          {
+            viewId,
+            inputs: [...selectedInputsIds],
+            categories: [selectedCategory.id],
+          },
+          {
+            onSuccess: () => {
+              setCategorySelection(new Set());
+              setDropdownOpened(false);
+            },
+          }
+        );
       }
     }
   };

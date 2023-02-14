@@ -379,11 +379,16 @@ describe('Insights Input Table', () => {
             fireEvent.click(screen.getByText('Add'));
           });
 
-          expect(mockAssign).toHaveBeenCalledWith({
-            viewId: '1',
-            inputs: [mockInputData[0].id],
-            categories: [categories[1].id],
-          });
+          expect(mockAssign).toHaveBeenCalledWith(
+            {
+              viewId: '1',
+              inputs: [mockInputData[0].id],
+              categories: [categories[1].id],
+            },
+            {
+              onSuccess: expect.any(Function),
+            }
+          );
         });
         it('has an unassign button that works as expected', async () => {
           expect(
@@ -398,11 +403,16 @@ describe('Insights Input Table', () => {
           });
 
           expect(window.confirm).toHaveBeenCalledTimes(1);
-          expect(mockUnassign).toHaveBeenCalledWith({
-            viewId: '1',
-            inputs: [mockInputData[0].id],
-            categories: [categories[0].id],
-          });
+          expect(mockUnassign).toHaveBeenCalledWith(
+            {
+              viewId: '1',
+              inputs: [mockInputData[0].id],
+              categories: [categories[0].id],
+            },
+            {
+              onSuccess: expect.any(Function),
+            }
+          );
         });
         it('has an approve button that works as expected', async () => {
           mockFeatureFlagData = true;

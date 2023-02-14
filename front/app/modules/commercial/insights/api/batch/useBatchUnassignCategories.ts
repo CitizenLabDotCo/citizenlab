@@ -19,11 +19,7 @@ const unassignCategories = ({
     body: { inputs, categories },
   });
 
-const useBatchUnassignCategories = ({
-  onSuccess,
-}: {
-  onSuccess: () => void;
-}) => {
+const useBatchUnassignCategories = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -38,7 +34,6 @@ const useBatchUnassignCategories = ({
       queryClient.invalidateQueries({
         queryKey: inputsKeys.list(variables.viewId),
       });
-      onSuccess();
     },
   });
 };

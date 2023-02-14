@@ -4,7 +4,7 @@ import categoriesKeys from '../categories/keys';
 import statsKeys from '../stats/keys';
 import inputsKeys from '../inputs/keys';
 
-const unassignCategories = ({
+const assignCategories = ({
   viewId,
   inputs,
   categories,
@@ -19,11 +19,11 @@ const unassignCategories = ({
     body: { inputs, categories },
   });
 
-const useBatchAssignCategories = ({ onSuccess }: { onSuccess: () => void }) => {
+const useBatchAssignCategories = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: unassignCategories,
+    mutationFn: assignCategories,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
         queryKey: categoriesKeys.list(variables.viewId),
@@ -34,7 +34,6 @@ const useBatchAssignCategories = ({ onSuccess }: { onSuccess: () => void }) => {
       queryClient.invalidateQueries({
         queryKey: inputsKeys.list(variables.viewId),
       });
-      onSuccess();
     },
   });
 };
