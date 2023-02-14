@@ -12,6 +12,7 @@ const InfoSection = lazy(
   () => import('components/LandingPages/citizen/InfoSection')
 );
 const Footer = lazy(() => import('./Footer'));
+import { canAccessRoute } from 'services/permissions/rules/routePermissions';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -19,13 +20,23 @@ import useHomepageSettings from 'hooks/useHomepageSettings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 const HomePage = () => {
   const homepageSettings = useHomepageSettings();
   const authUser = useAuthUser();
+  const appConfiguration = useAppConfiguration();
+  const userHasAdminAccess =
+    !isNilOrError(authUser) && !isNilOrError(appConfiguration)
+      ? canAccessRoute(
+          { type: 'route', path: '/admin' },
+          { data: authUser },
+          appConfiguration
+        )
+      : false;
 
   const handleKeyPress = (event: KeyboardEvent) => {
-    if (event.key === 'a') {
+    if (userHasAdminAccess && event.key === 'a') {
       clHistory.push('/admin/dashboard');
     }
   };
