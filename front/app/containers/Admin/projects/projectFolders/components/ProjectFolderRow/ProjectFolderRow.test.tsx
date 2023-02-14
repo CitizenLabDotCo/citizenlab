@@ -101,7 +101,7 @@ describe('ProjectFolderRow', () => {
     it('shows the edit button', () => {
       render(<ProjectFolderRow {...props} />);
 
-      const editButton = screen.getByRole('button', { name: 'Edit' });
+      const editButton = screen.getByTestId('folder-row-edit-button');
       expect(editButton).toBeInTheDocument();
     });
 
@@ -123,7 +123,7 @@ describe('ProjectFolderRow', () => {
       ];
 
       render(<ProjectFolderRow {...props} />);
-      const editButton = screen.getByRole('button', { name: 'Edit' });
+      const editButton = screen.getByTestId('folder-row-edit-button');
       expect(editButton).toBeInTheDocument();
     });
 
@@ -133,7 +133,7 @@ describe('ProjectFolderRow', () => {
       ];
       render(<ProjectFolderRow {...props} />);
 
-      const editButton = screen.getByTestId('edit-button');
+      const editButton = screen.getByTestId('folder-row-edit-button');
       expect(editButton).toHaveAttribute('disabled');
     });
 
