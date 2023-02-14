@@ -4,10 +4,11 @@ import { render, screen } from 'utils/testUtils/rtl';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { IUserData } from 'services/users';
 
-const publication: IAdminPublicationContent = {
+const folderId = 'folderId';
+const folderPublication: IAdminPublicationContent = {
   id: '1',
-  publicationType: 'project' as const,
-  publicationId: 'publicationId',
+  publicationType: 'folder' as const,
+  publicationId: folderId,
   attributes: {
     ordering: 0,
     depth: 0,
@@ -16,19 +17,53 @@ const publication: IAdminPublicationContent = {
     publication_title_multiloc: {},
     publication_description_multiloc: {},
     publication_description_preview_multiloc: {},
-    publication_slug: 'project_1',
+    publication_slug: 'folder_1',
   },
   relationships: {
     children: { data: [] },
     parent: {},
     publication: {
       data: {
-        id: '1',
-        type: 'project',
+        id: folderId,
+        type: 'folder',
       },
     },
   },
 };
+
+const projectId = 'projectId';
+const mockFolderChildAdminPublications: IAdminPublicationContent[] = [
+  {
+    id: '2',
+    publicationType: 'project' as const,
+    publicationId: projectId,
+    attributes: {
+      ordering: 0,
+      depth: 0,
+      publication_status: 'published',
+      visible_children_count: 0,
+      publication_title_multiloc: {},
+      publication_description_multiloc: {},
+      publication_description_preview_multiloc: {},
+      publication_slug: 'project_1',
+    },
+    relationships: {
+      children: { data: [] },
+      parent: {
+        data: {
+          type: 'folder',
+          id: folderPublication.id,
+        },
+      },
+      publication: {
+        data: {
+          id: projectId,
+          type: 'project',
+        },
+      },
+    },
+  },
+];
 
 // Needed to render moreActionsMenu
 const mockUserData: IUserData = {
@@ -53,9 +88,12 @@ const mockUserData: IUserData = {
 jest.mock('hooks/useAuthUser', () => {
   return () => mockUserData;
 });
+jest.mock('hooks/useAdminPublications', () => {
+  return () => mockFolderChildAdminPublications;
+});
 
 const props: Props = {
-  publication,
+  publication: folderPublication,
 };
 
 describe('ProjectFolderRow', () => {
@@ -80,7 +118,7 @@ describe('ProjectFolderRow', () => {
       mockUserData.attributes.roles = [
         {
           type: 'project_folder_moderator',
-          project_folder_id: publication.publicationId,
+          project_folder_id: folderPublication.publicationId,
         },
       ];
 
