@@ -15,7 +15,11 @@ import messages from './messages';
 // hooks
 import { useTheme } from 'styled-components';
 
-const Text = ({ text }) => {
+interface Props {
+  text: string;
+}
+
+const Text = ({ text }: Props) => {
   const theme = useTheme();
 
   return (
@@ -44,7 +48,7 @@ const TextSettings = () => {
         id="quill-editor"
         value={text}
         onChange={(value) => {
-          setProp((props) => (props.text = value));
+          setProp((props: Props) => (props.text = value));
         }}
       />
     </Box>
