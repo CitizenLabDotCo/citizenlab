@@ -1077,6 +1077,7 @@
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip": "You will need to add the project to a folder that you have admin rights over.",
   "app.containers.AdminPage.ProjectEdit.folderSelectError": "Select a folder to add this project to.",
   "app.containers.AdminPage.ProjectEdit.formBuilder.customToolboxTitle": "Custom content",
+  "app.containers.AdminPage.ProjectEdit.formBuilder.existingSubmissionsWarning": "Submissions to this form have started to come in. Changes to the form may result in data loss and incomplete data in the exported files.",
   "app.containers.AdminPage.ProjectEdit.formBuilder.successMessage": "Form successfully saved",
   "app.containers.AdminPage.ProjectEdit.fromATemplate": "From a template",
   "app.containers.AdminPage.ProjectEdit.fromScratch": "From scratch",
