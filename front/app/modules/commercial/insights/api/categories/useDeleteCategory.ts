@@ -14,11 +14,7 @@ const deleteCategory = ({
     action: 'delete',
   });
 
-const useDeleteCategory = ({
-  onSuccess,
-}: {
-  onSuccess?: (categoryId: string) => void;
-}) => {
+const useDeleteCategory = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -27,7 +23,6 @@ const useDeleteCategory = ({
       queryClient.invalidateQueries({
         queryKey: categoriesKeys.list(variables.viewId),
       });
-      onSuccess && onSuccess(variables.categoryId);
     },
   });
 };

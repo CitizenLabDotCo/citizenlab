@@ -122,28 +122,9 @@ const Categories = ({
   location: { query, pathname },
 }: WrappedComponentProps & WithRouterProps) => {
   const [name, setName] = useState<string | null>();
-  const {
-    mutate: addCategory,
-    isLoading,
-    error,
-    reset,
-  } = useAddCategory({
-    onSuccess: () => setName(''),
-  });
+  const { mutate: addCategory, isLoading, error, reset } = useAddCategory();
 
-  const { mutate: deleteCategory } = useDeleteCategory({
-    onSuccess: (categoryId) => {
-      if (query.category === categoryId) {
-        clHistory.replace({
-          pathname,
-          search: stringify(
-            { ...query, category: undefined },
-            { addQueryPrefix: true }
-          ),
-        });
-      }
-    },
-  });
+  const { mutate: deleteCategory } = useDeleteCategory();
 
   const selectRecentlyPosted = () => {
     clHistory.push({
@@ -158,9 +139,7 @@ const Categories = ({
   const {
     mutate: deleteAllCategories,
     isLoading: isDeleteAllCategoriesLoading,
-  } = useDeleteAllCategories({
-    onSuccess: selectRecentlyPosted,
-  });
+  } = useDeleteAllCategories();
   const [isDropdownOpened, setDropdownOpened] = useState(false);
 
   const { data: allInputsCount } = useStat(viewId, { processed: true });
@@ -185,7 +164,12 @@ const Categories = ({
 
   const handleCategorySubmit = () => {
     if (name) {
-      addCategory({ viewId, category: { name } });
+      addCategory(
+        { viewId, category: { name } },
+        {
+          onSuccess: () => setName(''),
+        }
+      );
     }
   };
 
@@ -237,7 +221,9 @@ const Categories = ({
     closeDropdown();
 
     if (window.confirm(deleteMessage)) {
-      deleteAllCategories(viewId);
+      deleteAllCategories(viewId, {
+        onSuccess: selectRecentlyPosted,
+      });
     }
     trackEventByName(tracks.resetCategories);
   };
@@ -250,7 +236,22 @@ const Categories = ({
           messages.deleteCategoryConfirmation
         );
         if (window.confirm(deleteMessage)) {
-          deleteCategory({ viewId, categoryId });
+          deleteCategory(
+            { viewId, categoryId },
+            {
+              onSuccess: (categoryId) => {
+                if (query.category === categoryId) {
+                  clHistory.replace({
+                    pathname,
+                    search: stringify(
+                      { ...query, category: undefined },
+                      { addQueryPrefix: true }
+                    ),
+                  });
+                }
+              },
+            }
+          );
         }
       }
     };

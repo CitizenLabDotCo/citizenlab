@@ -63,9 +63,7 @@ const RenameCategory = ({
   params: { viewId },
   location: { query },
 }: RenameCategoryProps) => {
-  const { mutate, error, isLoading, reset } = useUpdateCategory({
-    onSuccess: closeRenameModal,
-  });
+  const { mutate, error, isLoading, reset } = useUpdateCategory();
 
   const [name, setName] = useState<string>(originalCategoryName);
 
@@ -76,7 +74,12 @@ const RenameCategory = ({
 
   const handleSubmit = () => {
     if (name) {
-      mutate({ viewId, categoryId: query.category, requestBody: { name } });
+      mutate(
+        { viewId, categoryId: query.category, requestBody: { name } },
+        {
+          onSuccess: closeRenameModal,
+        }
+      );
       trackEventByName(tracks.editCategory);
     }
   };

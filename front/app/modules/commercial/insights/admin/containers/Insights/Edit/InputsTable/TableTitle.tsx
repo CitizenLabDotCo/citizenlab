@@ -50,18 +50,7 @@ const TableTitle = ({
   location: { query, pathname },
 }: WrappedComponentProps & WithRouterProps) => {
   const { data: categories } = useCategories(viewId);
-  const { mutate: deleteCategory } = useDeleteCategory({
-    onSuccess: () => {
-      clHistory.push({
-        pathname,
-        search: stringify(
-          { ...query, category: undefined },
-          { addQueryPrefix: true }
-        ),
-      });
-      setCategoryMenuOpened(false);
-    },
-  });
+  const { mutate: deleteCategory } = useDeleteCategory();
   const [renameCategoryModalOpened, setRenameCategoryModalOpened] =
     useState(false);
   const [isCategoryMenuOpened, setCategoryMenuOpened] = useState(false);
@@ -85,7 +74,21 @@ const TableTitle = ({
     {
       const deleteMessage = formatMessage(messages.deleteCategoryConfirmation);
       if (window.confirm(deleteMessage)) {
-        deleteCategory({ viewId, categoryId: query.category });
+        deleteCategory(
+          { viewId, categoryId: query.category },
+          {
+            onSuccess: () => {
+              clHistory.push({
+                pathname,
+                search: stringify(
+                  { ...query, category: undefined },
+                  { addQueryPrefix: true }
+                ),
+              });
+              setCategoryMenuOpened(false);
+            },
+          }
+        );
       }
     }
   };

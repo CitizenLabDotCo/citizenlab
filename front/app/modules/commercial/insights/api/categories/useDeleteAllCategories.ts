@@ -10,7 +10,7 @@ const deleteAllCategories = (viewId: string) =>
     action: 'delete',
   });
 
-const useDeleteAllCategories = ({ onSuccess }: { onSuccess?: () => void }) => {
+const useDeleteAllCategories = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -20,7 +20,6 @@ const useDeleteAllCategories = ({ onSuccess }: { onSuccess?: () => void }) => {
       queryClient.invalidateQueries({ queryKey: categoriesKeys.list(viewId) });
       queryClient.invalidateQueries({ queryKey: statsKeys.detail(viewId) });
       queryClient.invalidateQueries({ queryKey: inputKeys.list(viewId) });
-      onSuccess && onSuccess();
     },
   });
 };

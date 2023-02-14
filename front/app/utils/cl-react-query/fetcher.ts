@@ -58,7 +58,8 @@ async function fetcher({ path, action, body, queryParams }) {
     delete: 'DELETE',
   };
 
-  // Remove query parameters that have an empty value from query object in order to keep sanitization behaviour consistent current and previous data-fetchign setup
+  // Remove query parameters that have an empty value from query object in order to keep
+  // sanitization behaviour consistent current and previous data-fetchign setup
   const relevantQueryParams = omitBy(
     queryParams,
     (value) => isNil(value) || value === ''

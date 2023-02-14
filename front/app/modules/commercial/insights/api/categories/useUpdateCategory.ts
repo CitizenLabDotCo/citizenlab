@@ -21,7 +21,7 @@ const updateCategory = ({
     body: requestBody,
   });
 
-const useUpdateCategory = ({ onSuccess }: { onSuccess?: () => void }) => {
+const useUpdateCategory = () => {
   const queryClient = useQueryClient();
   return useMutation<
     IInsightsCategory,
@@ -33,7 +33,6 @@ const useUpdateCategory = ({ onSuccess }: { onSuccess?: () => void }) => {
       queryClient.invalidateQueries({
         queryKey: categoriesKeys.list(variables.viewId),
       });
-      onSuccess && onSuccess();
     },
   });
 };

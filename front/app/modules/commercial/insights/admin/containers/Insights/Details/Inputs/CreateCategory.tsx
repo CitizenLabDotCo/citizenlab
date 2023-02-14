@@ -48,14 +48,7 @@ const CreateCategory = ({
   intl: { formatMessage },
   params: { viewId },
 }: CreateCategoryProps) => {
-  const {
-    mutate: addCategory,
-    isLoading,
-    error,
-    reset,
-  } = useAddCategory({
-    onSuccess: closeCreateModal,
-  });
+  const { mutate: addCategory, isLoading, error, reset } = useAddCategory();
 
   const [name, setName] = useState<string | null>(null);
   const onChangeName = (value: string) => {
@@ -67,13 +60,18 @@ const CreateCategory = ({
 
   const handleCategorySubmit = () => {
     if (name) {
-      addCategory({
-        viewId,
-        category: {
-          name,
-          inputs: { categories: categoryIds, search, keywords },
+      addCategory(
+        {
+          viewId,
+          category: {
+            name,
+            inputs: { categories: categoryIds, search, keywords },
+          },
         },
-      });
+        {
+          onSuccess: closeCreateModal,
+        }
+      );
     }
   };
 

@@ -129,23 +129,7 @@ const InputDetails = ({
   const { mutate: addInputCategories, isLoading: addInputCategoryIsLoading } =
     useAddInputCategories();
   const { mutate: addCategory, isLoading: addCategoryIsLoading } =
-    useAddCategory({
-      onSuccess: (categoryId) => {
-        addInputCategories(
-          {
-            viewId,
-            inputId: previewedInputId,
-            categories: [{ id: categoryId, type: 'category' }],
-          },
-          {
-            onSuccess: () => {
-              setSelectedOption(null);
-              selectRef.current?.blur();
-            },
-          }
-        );
-      },
-    });
+    useAddCategory();
 
   // Loading state
   if (previewedInput === undefined) {
@@ -190,10 +174,29 @@ const InputDetails = ({
   };
 
   const handleCreate = (value: string) => {
-    addCategory({
-      viewId,
-      category: { name: value },
-    });
+    addCategory(
+      {
+        viewId,
+        category: { name: value },
+      },
+      {
+        onSuccess: (category) => {
+          addInputCategories(
+            {
+              viewId,
+              inputId: previewedInputId,
+              categories: [{ id: category.data.id, type: 'category' }],
+            },
+            {
+              onSuccess: () => {
+                setSelectedOption(null);
+                selectRef.current?.blur();
+              },
+            }
+          );
+        },
+      }
+    );
     trackEventByName(tracks.createCategoryFromInput);
   };
 
