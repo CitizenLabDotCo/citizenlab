@@ -1,10 +1,10 @@
 const viewsKeys = {
   all: () => [{ type: 'view' }],
   lists: () => [{ ...viewsKeys.all()[0], operation: 'list' }],
-  details: () => [{ ...viewsKeys.all()[0], operation: 'item' }],
-  detail: (id: string) => [
+  items: () => [{ ...viewsKeys.all()[0], operation: 'item' }],
+  item: (id: string) => [
     {
-      ...viewsKeys.details()[0],
+      ...viewsKeys.items()[0],
       id,
     },
   ],

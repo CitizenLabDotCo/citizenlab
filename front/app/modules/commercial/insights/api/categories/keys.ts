@@ -3,11 +3,11 @@ const categoriesKeys = {
   lists: () => [{ ...categoriesKeys.all()[0], operation: 'list' }] as const,
   list: (viewId: string) =>
     [{ ...categoriesKeys.all()[0], operation: 'list', viewId }] as const,
-  details: () => [{ ...categoriesKeys.all()[0], operation: 'item' }] as const,
-  detail: (viewId: string, id: string) =>
+  items: () => [{ ...categoriesKeys.all()[0], operation: 'item' }] as const,
+  item: (viewId: string, id: string) =>
     [
       {
-        ...categoriesKeys.details()[0],
+        ...categoriesKeys.items()[0],
         viewId,
         id,
       },
