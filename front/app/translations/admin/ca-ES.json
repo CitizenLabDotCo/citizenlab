@@ -1077,6 +1077,7 @@
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip": "Haureu d'afegir el projecte a una carpeta sobre la qual tingueu drets d'administrador.",
   "app.containers.AdminPage.ProjectEdit.folderSelectError": "Seleccioneu una carpeta per afegir aquest projecte.",
   "app.containers.AdminPage.ProjectEdit.formBuilder.customToolboxTitle": "Custom content",
+  "app.containers.AdminPage.ProjectEdit.formBuilder.existingSubmissionsWarning": "Submissions to this form have started to come in. Changes to the form may result in data loss and incomplete data in the exported files.",
   "app.containers.AdminPage.ProjectEdit.formBuilder.successMessage": "Form successfully saved",
   "app.containers.AdminPage.ProjectEdit.fromATemplate": "A partir d'una plantilla",
   "app.containers.AdminPage.ProjectEdit.fromScratch": "Des de zero",
