@@ -7,9 +7,7 @@ module XlsxExport
     def initialize(inputs, form, participation_method, include_private_attributes)
       super()
       @inputs = inputs
-      @fields_in_form = IdeaCustomFieldsService.new(form).all_fields.select do |field|
-        supported?(field)
-      end
+      @fields_in_form = IdeaCustomFieldsService.new(form).reportable_fields
       @include_private_attributes = include_private_attributes
       @participation_method = participation_method
     end
@@ -48,12 +46,6 @@ module XlsxExport
     private
 
     attr_reader :inputs, :fields_in_form, :participation_method, :include_private_attributes
-
-    def supported?(field)
-      # idea_images_attributes is not supported by XlsxService.
-      # Page fields do not capture data, so they are excluded.
-      field.code != 'idea_images_attributes' && field.input_type != 'page' && field.input_type != 'section' # TODO: use reportable fields instead? (line 10)
-    end
 
     def input_id_report_field
       ComputedFieldForReport.new(column_header_for('input_id'), ->(input) { input.id })
