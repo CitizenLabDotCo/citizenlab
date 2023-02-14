@@ -1077,6 +1077,7 @@
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip": "Potrebno je da dodate projekat u folder nad kojim imate administratorska prava.",
   "app.containers.AdminPage.ProjectEdit.folderSelectError": "Odaberite folder u koji ćete dodati ovaj projekat:",
   "app.containers.AdminPage.ProjectEdit.formBuilder.customToolboxTitle": "Custom content",
+  "app.containers.AdminPage.ProjectEdit.formBuilder.existingSubmissionsWarning": "Submissions to this form have started to come in. Changes to the form may result in data loss and incomplete data in the exported files.",
   "app.containers.AdminPage.ProjectEdit.formBuilder.successMessage": "Form successfully saved",
   "app.containers.AdminPage.ProjectEdit.fromATemplate": "Na osnovu šablona",
   "app.containers.AdminPage.ProjectEdit.fromScratch": "Iz početka",
