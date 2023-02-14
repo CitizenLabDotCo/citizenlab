@@ -7,6 +7,7 @@ import { useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'services/permissions/roles';
 import useAuthUser from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
+import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
 export interface Props {
   projectId: string;
@@ -54,8 +55,15 @@ const ProjectMoreActionsMenu = ({ projectId, setError }: Props) => {
     icon: 'delete' as const,
   };
 
-  const actions: IAction[] = [copyAction];
-  if (isAdmin({ data: authUser })) {
+  const actions: IAction[] = [];
+  const canModerate = canModerateProject(projectId, { data: authUser });
+  const isAdminUser = isAdmin({ data: authUser });
+
+  if (isAdminUser || canModerate) {
+    actions.push(copyAction);
+  }
+
+  if (isAdminUser) {
     actions.push(deleteAction);
   }
 
