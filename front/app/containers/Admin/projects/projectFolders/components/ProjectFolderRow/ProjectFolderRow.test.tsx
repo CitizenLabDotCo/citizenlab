@@ -96,7 +96,7 @@ describe('ProjectFolderRow', () => {
       render(<ProjectFolderRow {...props} />);
 
       const editButton = screen.getByTestId('edit-button');
-      expect(editButton).toBeDisabled();
+      expect(editButton).toHaveAttribute('disabled');
     });
 
     it('does not show the MoreActionsMenu', () => {
