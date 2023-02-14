@@ -33,6 +33,7 @@ declare global {
       apiRemoveIdea: typeof apiRemoveIdea;
       apiRemoveInitiative: typeof apiRemoveInitiative;
       apiUpvoteInitiative: typeof apiUpvoteInitiative;
+      apiDownvoteIdea: typeof apiDownvoteIdea;
       apiCreateOfficialFeedbackForIdea: typeof apiCreateOfficialFeedbackForIdea;
       apiCreateOfficialFeedbackForInitiative: typeof apiCreateOfficialFeedbackForInitiative;
       apiAddComment: typeof apiAddComment;
@@ -598,6 +599,25 @@ export function apiUpvoteInitiative(
       },
       method: 'POST',
       url: `web_api/v1/initiatives/${initiativeId}/votes/up`,
+    });
+  });
+}
+
+export function apiDownvoteIdea(
+  email: string,
+  password: string,
+  ideaId: string
+) {
+  return cy.apiLogin(email, password).then((response) => {
+    const jwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/ideas/${ideaId}/votes/down`,
     });
   });
 }
@@ -1375,7 +1395,7 @@ Cypress.Commands.add('apiCreateIdea', apiCreateIdea);
 Cypress.Commands.add('apiRemoveIdea', apiRemoveIdea);
 Cypress.Commands.add('apiCreateInitiative', apiCreateInitiative);
 Cypress.Commands.add('apiRemoveInitiative', apiRemoveInitiative);
-Cypress.Commands.add('apiUpvoteInitiative', apiUpvoteInitiative);
+Cypress.Commands.add('apiDownvoteIdea', apiDownvoteIdea);
 Cypress.Commands.add(
   'apiCreateOfficialFeedbackForIdea',
   apiCreateOfficialFeedbackForIdea

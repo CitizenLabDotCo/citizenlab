@@ -63,7 +63,7 @@ describe('Report builder Comments By Time widget', () => {
     cy.wait('@saveReportLayout');
     cy.visit(`/admin/reporting/report-builder/${this.reportId}/viewer`);
     cy.get('.recharts-surface:first').trigger('mouseover');
-    cy.pause();
+
     cy.contains('New Widget Title').should('exist');
     cy.contains('Total : 1').should('be.visible');
   });
