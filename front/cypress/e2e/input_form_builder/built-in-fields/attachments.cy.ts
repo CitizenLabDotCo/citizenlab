@@ -3,7 +3,6 @@ import { randomString } from '../../../support/commands';
 describe('Input form builder', () => {
   const projectTitle = randomString();
   const projectDescription = randomString();
-  let questionTitle = randomString();
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
   let projectSlug: string;
@@ -14,7 +13,6 @@ describe('Input form builder', () => {
     }
 
     cy.setAdminLoginCookie();
-    questionTitle = randomString();
 
     cy.apiCreateProject({
       type: 'continuous',

@@ -3,10 +3,8 @@ import { randomString } from '../../../support/commands';
 describe('Input form builder', () => {
   const projectTitle = randomString();
   const projectDescription = randomString();
-  let questionTitle = randomString();
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
-  let projectSlug: string;
 
   beforeEach(() => {
     if (projectId) {
@@ -14,7 +12,6 @@ describe('Input form builder', () => {
     }
 
     cy.setAdminLoginCookie();
-    questionTitle = randomString();
 
     cy.apiCreateProject({
       type: 'continuous',
@@ -25,7 +22,6 @@ describe('Input form builder', () => {
       participationMethod: 'ideation',
     }).then((project) => {
       projectId = project.body.data.id;
-      projectSlug = project.body.data.attributes.slug;
     });
   });
 
