@@ -39,7 +39,7 @@ const ModeratorProjectList = memo(() => {
         <List>
           {rootLevelAdminPublications.map((adminPublication, index) => {
             const adminPublicationId = adminPublication.id;
-            const isLastItem = index === rootLevelAdminPublications.length - 1;
+            const isLastItem = rootLevelAdminPublications.length - 1 === index;
 
             return (
               <Fragment key={adminPublicationId}>

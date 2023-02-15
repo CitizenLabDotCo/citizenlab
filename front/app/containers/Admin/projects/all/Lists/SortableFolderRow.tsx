@@ -40,48 +40,47 @@ const SortableFolderRow = ({
   publication,
 }: Props) => {
   const authUser = useAuthUser();
-
+  const { list: folderChildAdminPublications } = useAdminPublications({
+    childrenOfId: publication.relationships.publication.data.id,
+    publicationStatusFilter: publicationStatuses,
+  });
   const [folderOpen, setFolderOpen] = useState(true);
+
+  if (isNilOrError(authUser)) {
+    return null;
+  }
 
   const toggleFolder = () => {
     setFolderOpen((folderOpen) => !folderOpen);
   };
 
-  const { list: folderChildAdminPublications } = useAdminPublications({
-    childrenOfId: publication.relationships.publication.data.id,
-    publicationStatusFilter: publicationStatuses,
-  });
   const hasProjects =
     !isNilOrError(folderChildAdminPublications) &&
     folderChildAdminPublications.length > 0;
 
-  if (!isNilOrError(authUser)) {
-    return (
-      <>
-        <StyledSortableRow
-          id={id}
-          index={index}
-          moveRow={moveRow}
-          dropRow={dropRow}
-        >
-          <ProjectFolderRow
-            publication={publication}
-            toggleFolder={toggleFolder}
-            isFolderOpen={folderOpen}
-            hasProjects={hasProjects}
-          />
-        </StyledSortableRow>
-        {hasProjects && folderOpen && (
-          <FolderChildProjects
-            folderChildAdminPublications={folderChildAdminPublications}
-            authUser={authUser}
-          />
-        )}
-      </>
-    );
-  }
-
-  return null;
+  return (
+    <>
+      <StyledSortableRow
+        id={id}
+        index={index}
+        moveRow={moveRow}
+        dropRow={dropRow}
+      >
+        <ProjectFolderRow
+          publication={publication}
+          toggleFolder={toggleFolder}
+          isFolderOpen={folderOpen}
+          hasProjects={hasProjects}
+        />
+      </StyledSortableRow>
+      {hasProjects && folderOpen && (
+        <FolderChildProjects
+          folderChildAdminPublications={folderChildAdminPublications}
+          authUser={authUser}
+        />
+      )}
+    </>
+  );
 };
 
 export default SortableFolderRow;

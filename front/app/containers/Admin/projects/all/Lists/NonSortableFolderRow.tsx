@@ -24,16 +24,16 @@ const publicationStatuses: PublicationStatus[] = [
 
 const SortableFolderRow = ({ id, isLastItem, publication }: Props) => {
   const authUser = useAuthUser();
+  const { list: folderChildAdminPublications } = useAdminPublications({
+    childrenOfId: publication.relationships.publication.data.id,
+    publicationStatusFilter: publicationStatuses,
+  });
+  const [folderOpen, setFolderOpen] = useState(true);
 
   if (isNilOrError(authUser)) {
     return null;
   }
 
-  const [folderOpen, setFolderOpen] = useState(true);
-  const { list: folderChildAdminPublications } = useAdminPublications({
-    childrenOfId: publication.relationships.publication.data.id,
-    publicationStatusFilter: publicationStatuses,
-  });
   const hasProjects =
     !isNilOrError(folderChildAdminPublications) &&
     folderChildAdminPublications.length > 0;
