@@ -116,7 +116,7 @@ const ProjectFolderRow = memo<Props>(
                   disabled={
                     !userModeratesFolder(authUser, publication.publicationId)
                   }
-                  data-testid="edit-button"
+                  data-testid="folder-row-edit-button"
                 >
                   <FormattedMessage {...messages.edit} />
                 </RowButton>
