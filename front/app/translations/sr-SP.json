@@ -281,7 +281,6 @@
   "app.components.ParticipationCTABars.takeTheSurvey": "Попуните упитник",
   "app.components.ParticipationCTABars.userHasParticipated": "Учествовали сте у овом пројекту.",
   "app.components.ParticipationCTABars.volunteer": "Волонтирај",
-  "app.components.ParticipationCTABars.xDaysLeft": "{timeLeft, plural, =0 {Мање од дана} one {# преосталих дана} other {# дана}} преостало",
   "app.components.ParticipationCTABars.xWeeksLeft": "{timeLeft}  преостало недеља",
   "app.components.PasswordInput.a11y_passwordHidden": "Лозинка је скривена",
   "app.components.PasswordInput.a11y_passwordVisible": "Лозинка је видљива",

@@ -281,7 +281,6 @@
   "app.components.ParticipationCTABars.takeTheSurvey": "Popunite upitnik",
   "app.components.ParticipationCTABars.userHasParticipated": "Sudjelovali ste u ovom projektu.",
   "app.components.ParticipationCTABars.volunteer": "Volonter",
-  "app.components.ParticipationCTABars.xDaysLeft": "Preostalo je {timeLeft, plural, =0 {Manje od jednog dana} one {# još dan} other {# dan}}",
   "app.components.ParticipationCTABars.xWeeksLeft": "Preostalo je {timeLeft} tjedana",
   "app.components.PasswordInput.a11y_passwordHidden": "Zaporka je skrivena",
   "app.components.PasswordInput.a11y_passwordVisible": "Zaporka je vidljiva",
