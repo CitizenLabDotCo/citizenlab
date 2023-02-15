@@ -28,7 +28,7 @@ const slideInOutEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 const Container = styled.div<{ windowHeight: number; zIndex?: number }>`
   width: 100vw;
   height: ${(props) =>
-    `calc(${props.windowHeight} - ${props.theme.menuHeight}px)`};
+    `calc(${props.windowHeight}px - ${props.theme.menuHeight}px)`};
   position: fixed;
   top: ${({ theme }) => theme.menuHeight}px;
   left: 0;
@@ -56,7 +56,7 @@ const Container = styled.div<{ windowHeight: number; zIndex?: number }>`
   }
 
   ${(props) => media.tablet`
-    height: calc(${props.windowHeight} - ${props.theme.mobileMenuHeight}px);
+    height: calc(${props.windowHeight}px - ${props.theme.mobileMenuHeight}px);
     top: 0;
     bottom: ${props.theme.mobileMenuHeight}px;
     z-index: 1005; /* there is no top navbar at this screen size, so okay that it is higher than the z-index of NavBar here */
