@@ -141,7 +141,7 @@ const StyledFocusOn = styled(FocusOn)<{
 `;
 
 const ModalContainer = styled(clickOutside)<{
-  windowHeight: string;
+  windowHeight: number;
   fullScreen?: boolean;
 }>`
   width: 100%;
@@ -178,7 +178,7 @@ const ModalContainer = styled(clickOutside)<{
 
   ${(props) => media.phone`
     max-width: calc(100vw - 30px);
-    max-height: calc(${props.windowHeight} - 30px);
+    max-height: calc(${props.windowHeight}px - 30px);
     margin-top: 15px;
 
     &.fixedHeight {
@@ -442,7 +442,7 @@ export interface InputProps {
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  windowHeight: string;
+  windowHeight: number;
 }
 
 class Modal extends PureComponent<Props, State> {
@@ -457,7 +457,7 @@ class Modal extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      windowHeight: `${window.innerHeight}px`,
+      windowHeight: window.innerHeight,
     };
     this.unlisten = null;
     this.subscription = null;
@@ -469,7 +469,7 @@ class Modal extends PureComponent<Props, State> {
       .subscribe((event) => {
         if (event.target) {
           const height = event.target['innerHeight'] as number;
-          this.setState({ windowHeight: `${height}px` });
+          this.setState({ windowHeight: height });
         }
       });
   }
@@ -502,7 +502,7 @@ class Modal extends PureComponent<Props, State> {
     this.closeModal();
   };
 
-  handleKeypress = (event) => {
+  handleKeypress = (event: KeyboardEvent) => {
     if (event.type === 'keydown' && event.key === 'Escape') {
       event.preventDefault();
       this.closeModal();
