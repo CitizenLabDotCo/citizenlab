@@ -61,6 +61,7 @@
     "@sentry/tracing": "^7.34.0",
     "@tanstack/react-query": "^4.22.4",
     "@tippyjs/react": "4.2.6",
+    "@xstate/react": "^3.2.1",
     "ajv": "^8.12.0",
     "bowser": "1.x",
     "canvas-to-blob": "^1.0.0",
@@ -136,6 +137,7 @@
     "webfontloader": "1.6.28",
     "whatwg-fetch": "3.6.2",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.18.10/xlsx-0.18.10.tgz",
+    "xstate": "^4.36.0",
     "yup": "^0.32.11"
   },
   "devDependencies": {
