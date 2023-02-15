@@ -147,4 +147,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.url',
     defaultMessage: 'URL',
   },
+  headerImageInputLabel: {
+    id: 'app.containers.AdminPage.FoldersEdit.headerImageInputLabel',
+    defaultMessage: 'Header image',
+  },
 });

@@ -61,7 +61,7 @@ const WhiteSpaceSettings = () => {
       </Label>
       <Radio
         onChange={(value) => {
-          setProp((props) => (props.size = value));
+          setProp((props: Props) => (props.size = value));
         }}
         currentValue={size}
         id="white-space-small"
@@ -72,7 +72,7 @@ const WhiteSpaceSettings = () => {
       />
       <Radio
         onChange={(value) => {
-          setProp((props) => (props.size = value));
+          setProp((props: Props) => (props.size = value));
         }}
         currentValue={size}
         id="white-space-medium"
@@ -83,7 +83,7 @@ const WhiteSpaceSettings = () => {
       />
       <Radio
         onChange={(value) => {
-          setProp((props) => (props.size = value));
+          setProp((props: Props) => (props.size = value));
         }}
         currentValue={size}
         id="white-space-large"
@@ -95,7 +95,7 @@ const WhiteSpaceSettings = () => {
       <Box mt="40px">
         <Toggle
           onChange={() => {
-            setProp((props) => (props.withDivider = !props.withDivider));
+            setProp((props: Props) => (props.withDivider = !props.withDivider));
           }}
           checked={withDivider}
           id="e2e-white-space-divider-toggle"
