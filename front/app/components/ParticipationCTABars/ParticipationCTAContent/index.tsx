@@ -64,7 +64,7 @@ export const ParticipationCTAContent = ({
 
   if (timeLeft !== undefined && timeLeft < 2 && currentPhase) {
     timeLeft = getPeriodRemainingUntil(currentPhase.attributes.end_at, 'days');
-    timeLeftMessage = messages.xDaysLeft;
+    timeLeftMessage = messages.xDayLeft;
   }
 
   let userParticipationMessage = hasUserParticipated

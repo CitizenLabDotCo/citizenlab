@@ -21,10 +21,10 @@ export default defineMessages({
     id: 'app.components.ParticipationCTABars.xWeeksLeft',
     defaultMessage: '{timeLeft}  weeks left',
   },
-  xDaysLeft: {
-    id: 'app.components.ParticipationCTABars.xDaysLeft',
+  xDayLeft: {
+    id: 'app.components.ParticipationCTABars.xDayLeft',
     defaultMessage:
-      '{timeLeft, plural, =0 {Less than a day} one {# day left} other {# days}} left',
+      '{timeLeft, plural, =0 {Less than a day} one {# day} other {# days}} left',
   },
   allocateBudget: {
     id: 'app.components.ParticipationCTABars.allocateBudget',
