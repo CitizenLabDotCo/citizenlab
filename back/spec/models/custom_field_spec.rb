@@ -349,6 +349,7 @@ RSpec.describe CustomField, type: :model do
   describe 'title_multiloc behaviour for ideation section 1' do
     it 'returns the correct input term message regardless of what the field is set to' do
       resource = create :custom_form
+      resource.participation_context.input_term = 'idea'
       ignored_title = { en: 'anything' }
       section = described_class.new(
         resource: resource,
@@ -356,13 +357,8 @@ RSpec.describe CustomField, type: :model do
         code: 'ideation_section1',
         title_multiloc: ignored_title
       )
-      input_term = resource.participation_context.input_term
-
-      # TODO: JS Change this for fixture
-      key = "custom_forms.categories.main_content.#{input_term}.title"
-      expected_english_locale = I18n.t(key, default: '', locale: 'en')
-
-      expect(section.title_multiloc['en']).to eq expected_english_locale
+      expected_english_title = 'What is your idea?'
+      expect(section.title_multiloc['en']).to eq expected_english_title
     end
   end
 
