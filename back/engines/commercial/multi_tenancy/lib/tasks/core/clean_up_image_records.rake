@@ -32,7 +32,7 @@ namespace :cl2back do
         TextImage.all.each do |image|
           imageable = image.imageable_type.constantize.where(id: image.imageable_id).first
 
-          if imageable.nil? || image.image.blank?
+          if image.image.blank?
             image.destroy!
           else
             # check all multiloc values for the text_image.text_reference
