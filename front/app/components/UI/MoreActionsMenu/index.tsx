@@ -184,7 +184,7 @@ const MoreActionsMenu = (props: Props) => {
                   )}
                   {isLoading && (
                     <Box ml="12px">
-                      <Spinner size="20px" />
+                      <Spinner color="white" size="20px" />
                     </Box>
                   )}
                 </ListItem>
