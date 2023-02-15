@@ -1,15 +1,16 @@
 import React from 'react';
 import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
-import * as service from 'modules/commercial/insights/services/insightsCategories';
 
 import RenameCategory from './RenameCategory';
 
 const viewId = '1';
 const categoryId = '1';
 
-jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
-  updateInsightsCategory: jest.fn(),
-}));
+const mockUpdateCategory = jest.fn();
+
+jest.mock('modules/commercial/insights/api/categories/useUpdateCategory', () =>
+  jest.fn(() => ({ mutate: mockUpdateCategory, reset: jest.fn() }))
+);
 
 jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
 
@@ -33,7 +34,6 @@ describe('Rename Category', () => {
   it('renames view with correct viewId and name', () => {
     const categoryName = 'New name';
 
-    const spy = jest.spyOn(service, 'updateInsightsCategory');
     const closeModal = () => jest.fn();
     render(
       <RenameCategory
@@ -52,6 +52,15 @@ describe('Rename Category', () => {
       fireEvent.click(screen.getByText('Save'));
     });
 
-    expect(spy).toHaveBeenCalledWith(viewId, categoryId, categoryName);
+    expect(mockUpdateCategory).toHaveBeenCalledWith(
+      {
+        viewId,
+        categoryId,
+        requestBody: { name: categoryName },
+      },
+      {
+        onSuccess: expect.any(Function),
+      }
+    );
   });
 });

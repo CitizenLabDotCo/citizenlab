@@ -1457,7 +1457,7 @@
   "app.containers.AdminPage.SettingsPage.noHeader": "Proszę prześlij obraz nagłówka",
   "app.containers.AdminPage.SettingsPage.noLogo": "Prześlij logo",
   "app.containers.AdminPage.SettingsPage.no_button": "Brak przycisku",
-  "app.containers.AdminPage.SettingsPage.organizationName": "Nazwa {type, select, generic {Organizacji} other {miasta lub gminy}}",
+  "app.containers.AdminPage.SettingsPage.organizationName": "Nazwa organizacji, miasto lub gmina",
   "app.containers.AdminPage.SettingsPage.overlayToggleLabel": "Enable overlay",
   "app.containers.AdminPage.SettingsPage.pageTitle": "Ustawienia",
   "app.containers.AdminPage.SettingsPage.phone": "Telefon",

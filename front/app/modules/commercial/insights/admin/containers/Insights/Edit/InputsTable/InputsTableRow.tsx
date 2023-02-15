@@ -4,9 +4,6 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// services
-import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
-
 // hooks
 import useIdea from 'hooks/useIdea';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -19,6 +16,7 @@ import { colors } from 'utils/styleUtils';
 import { Checkbox, Td } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 import Category from 'modules/commercial/insights/admin/components/Category';
+import { IInsightsInputData } from 'modules/commercial/insights/api/inputs/types';
 
 const CategoryList = styled.div`
   > *:not(:only-of-type) {

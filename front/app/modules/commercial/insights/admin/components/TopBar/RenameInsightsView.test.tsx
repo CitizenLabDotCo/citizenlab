@@ -1,20 +1,9 @@
 import React from 'react';
 import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
-import * as service from 'modules/commercial/insights/services/insightsViews';
 
 import RenameInsightsView from './RenameInsightsView';
 
 const viewId = '1';
-
-jest.mock('modules/commercial/insights/services/insightsViews', () => ({
-  updateInsightsView: jest.fn(),
-}));
-
-jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
-  addInsightsCategory: jest.fn(),
-}));
-
-jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
 
 jest.mock('utils/cl-router/withRouter', () => {
   return {
@@ -26,11 +15,17 @@ jest.mock('utils/cl-router/withRouter', () => {
   };
 });
 
+const mockMutate = jest.fn();
+jest.mock('modules/commercial/insights/api/views/useUpdateView', () =>
+  jest.fn(() => {
+    return { mutate: mockMutate, reset: jest.fn() };
+  })
+);
+
 describe('Rename Insights View', () => {
   it('renames view with correct viewId and name', () => {
     const viewName = 'New name';
 
-    const spy = jest.spyOn(service, 'updateInsightsView');
     const closeModal = () => jest.fn();
     render(
       <RenameInsightsView
@@ -50,6 +45,12 @@ describe('Rename Insights View', () => {
       fireEvent.click(screen.getByText('Save'));
     });
 
-    expect(spy).toHaveBeenCalledWith(viewId, viewName);
+    expect(mockMutate).toHaveBeenCalledWith(
+      {
+        id: viewId,
+        requestBody: { view: { name: viewName } },
+      },
+      { onSuccess: expect.any(Function) }
+    );
   });
 });

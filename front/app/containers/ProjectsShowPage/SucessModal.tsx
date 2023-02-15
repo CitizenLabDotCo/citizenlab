@@ -16,6 +16,7 @@ import Modal from 'components/UI/Modal';
 import { isNilOrError } from 'utils/helperUtils';
 import { getMethodConfig, getPhase } from 'utils/participationMethodUtils';
 import { getCurrentPhase } from 'services/phases';
+import { isReady } from './utils';
 
 // typings
 import { ParticipationMethod } from 'services/participationContexts';
@@ -35,11 +36,7 @@ const SuccessModal = ({ projectId }: Props) => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [phaseIdUrl, setPhaseIdUrl] = useState<string | null>(null);
 
-  const ready =
-    !isNilOrError(project) &&
-    (project.attributes.process_type === 'continuous'
-      ? true
-      : isNilOrError(phases));
+  const ready = isReady(project, phases);
 
   useEffect(() => {
     if (!ready) return;
