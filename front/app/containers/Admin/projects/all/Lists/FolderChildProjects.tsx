@@ -1,0 +1,39 @@
+import React from 'react';
+import { List, Row } from 'components/admin/ResourceList';
+import { Box } from '@citizenlab/cl2-component-library';
+import { IAdminPublicationContent } from 'hooks/useAdminPublications';
+import ProjectRow from 'containers/Admin/projects/components/ProjectRow';
+import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
+import { IUserData } from 'services/users';
+
+interface Props {
+  folderChildAdminPublications: IAdminPublicationContent[];
+  authUser: IUserData;
+}
+
+const FolderChildProjects = ({
+  folderChildAdminPublications,
+  authUser,
+}: Props) => {
+  return (
+    <Box pl="60px">
+      <List>
+        {folderChildAdminPublications.map((childPublication) => (
+          <Row>
+            <ProjectRow
+              publication={childPublication}
+              key={childPublication.id}
+              actions={['manage']}
+              showMoreActions={userModeratesFolder(
+                authUser,
+                childPublication.publicationId
+              )}
+            />
+          </Row>
+        ))}
+      </List>
+    </Box>
+  );
+};
+
+export default FolderChildProjects;

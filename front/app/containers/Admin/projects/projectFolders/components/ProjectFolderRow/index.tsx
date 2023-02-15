@@ -11,6 +11,7 @@ import {
   RowButton,
 } from 'containers/Admin/projects/components/StyledComponents';
 import FolderMoreActionsMenu from './FolderMoreActionsMenu';
+import PublicationStatusLabel from 'containers/Admin/projects/components/PublicationStatusLabel';
 
 // styles
 import styled from 'styled-components';
@@ -21,24 +22,14 @@ import messages from './messages';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import useAdminPublications, {
-  IAdminPublicationContent,
-} from 'hooks/useAdminPublications';
+import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 // services
 import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
 
-// typings
-import { PublicationStatus } from 'services/projects';
-
 const FolderIcon = styled(Icon)`
   margin-right: 10px;
 `;
-
-// types & services
-import ProjectRow from 'containers/Admin/projects/components/ProjectRow';
-import PublicationStatusLabel from 'containers/Admin/projects/components/PublicationStatusLabel';
-import { List, Row } from 'components/admin/ResourceList';
 
 const ArrowIcon = styled(Icon)<{ expanded: boolean }>`
   flex: 0 0 24px;
@@ -65,123 +56,85 @@ const FolderRowContent = styled(RowContent)<{
   `}
 `;
 
-const InFolderProjectRow = styled(ProjectRow)<{ isLast: boolean }>``;
-
 export interface Props {
   publication: IAdminPublicationContent;
+  toggleFolder: () => void;
+  folderOpen: boolean;
+  hasProjects: boolean;
 }
 
-const publicationStatuses: PublicationStatus[] = [
-  'draft',
-  'published',
-  'archived',
-];
+const ProjectFolderRow = memo<Props>(
+  ({ publication, toggleFolder, folderOpen, hasProjects }) => {
+    const authUser = useAuthUser();
 
-const ProjectFolderRow = memo<Props>(({ publication }) => {
-  const authUser = useAuthUser();
+    const [folderDeletionError, setFolderDeletionError] = useState<
+      string | null
+    >(null);
 
-  const { list: folderChildAdminPublications } = useAdminPublications({
-    childrenOfId: publication.relationships.publication.data.id,
-    publicationStatusFilter: publicationStatuses,
-  });
-
-  const [folderOpen, setFolderOpen] = useState(true);
-  const [isBeingDeleted, _setIsBeingDeleted] = useState(false);
-  const [folderDeletionError, setFolderDeletionError] = useState<string | null>(
-    null
-  );
-
-  const toggleExpand = () => setFolderOpen((folderOpen) => !folderOpen);
-  const hasProjects =
-    !isNilOrError(folderChildAdminPublications) &&
-    folderChildAdminPublications.length > 0;
-
-  if (!isNilOrError(authUser)) {
-    return (
-      <Box display="flex" flexDirection="column" flexGrow={1}>
-        <Box
-          display="flex"
-          flexDirection="column"
-          width="100%"
-          alignItems="flex-start"
-        >
+    if (!isNilOrError(authUser)) {
+      return (
+        <Box display="flex" flexDirection="column" flexGrow={1}>
           <Box
-            width="100%"
             display="flex"
-            alignItems="center"
-            pb={hasProjects && folderOpen ? '10px' : '0'}
+            flexDirection="column"
+            width="100%"
+            alignItems="flex-start"
           >
-            <FolderRowContent
-              className="e2e-admin-adminPublications-list-item"
-              hasProjects={hasProjects}
-              role="button"
-              onClick={toggleExpand}
-            >
-              <RowContentInner className="expand primary">
-                {hasProjects && (
-                  <ArrowIcon
-                    expanded={hasProjects && folderOpen}
-                    name="chevron-right"
-                  />
-                )}
-                <FolderIcon name="folder-outline" />
-                <RowTitle
-                  value={publication.attributes.publication_title_multiloc}
-                />
-                <PublicationStatusLabel
-                  publicationStatus={publication.attributes.publication_status}
-                />
-              </RowContentInner>
-              <RowButton
-                className={`e2e-admin-edit-project ${
-                  publication.attributes.publication_title_multiloc['en-GB'] ||
-                  ''
-                }`}
-                linkTo={`/admin/projects/folders/${publication.publicationId}`}
-                buttonStyle="secondary"
-                icon="edit"
-                disabled={
-                  isBeingDeleted ||
-                  !userModeratesFolder(authUser, publication.publicationId)
-                }
-                data-testid="edit-button"
+            <Box width="100%" display="flex" alignItems="center">
+              <FolderRowContent
+                className="e2e-admin-adminPublications-list-item"
+                hasProjects={hasProjects}
+                role="button"
+                onClick={toggleFolder}
               >
-                <FormattedMessage {...messages.edit} />
-              </RowButton>
-            </FolderRowContent>
-            <FolderMoreActionsMenu
-              folderId={publication.publicationId}
-              setError={setFolderDeletionError}
-            />
-          </Box>
-
-          {folderDeletionError && <Error text={folderDeletionError} />}
-        </Box>
-        {hasProjects && folderOpen && (
-          <Box ml="30px">
-            <List>
-              {folderChildAdminPublications.map((childPublication, index) => (
-                <Row>
-                  <InFolderProjectRow
-                    publication={childPublication}
-                    key={childPublication.id}
-                    actions={['manage']}
-                    showMoreActions={userModeratesFolder(
-                      authUser,
-                      publication.publicationId
-                    )}
-                    isLast={folderChildAdminPublications.length === index + 1}
+                <RowContentInner className="expand primary">
+                  {hasProjects && (
+                    <ArrowIcon
+                      expanded={hasProjects && folderOpen}
+                      name="chevron-right"
+                    />
+                  )}
+                  <FolderIcon name="folder-outline" />
+                  <RowTitle
+                    value={publication.attributes.publication_title_multiloc}
                   />
-                </Row>
-              ))}
-            </List>
-          </Box>
-        )}
-      </Box>
-    );
-  }
+                  <PublicationStatusLabel
+                    publicationStatus={
+                      publication.attributes.publication_status
+                    }
+                  />
+                </RowContentInner>
+                <RowButton
+                  className={`e2e-admin-edit-project ${
+                    publication.attributes.publication_title_multiloc[
+                      'en-GB'
+                    ] || ''
+                  }`}
+                  linkTo={`/admin/projects/folders/${publication.publicationId}`}
+                  buttonStyle="secondary"
+                  icon="edit"
+                  disabled={
+                    !userModeratesFolder(authUser, publication.publicationId)
+                  }
+                  data-testid="edit-button"
+                >
+                  <FormattedMessage {...messages.edit} />
+                </RowButton>
+              </FolderRowContent>
+              <FolderMoreActionsMenu
+                folderId={publication.publicationId}
+                setError={setFolderDeletionError}
+              />
+            </Box>
 
-  return null;
-});
+            {folderDeletionError && <Error text={folderDeletionError} />}
+          </Box>
+        </Box>
+      );
+    }
+
+    return null;
+  }
+);
 
 export default ProjectFolderRow;

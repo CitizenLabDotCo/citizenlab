@@ -4,17 +4,14 @@ import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
-import useAdminPublications, {
-  IAdminPublicationContent,
-} from 'hooks/useAdminPublications';
+import useAdminPublications from 'hooks/useAdminPublications';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
 import { List, Row } from 'components/admin/ResourceList';
 import ProjectRow from '../../components/ProjectRow';
-import ProjectFolderRow from '../../projectFolders/components/ProjectFolderRow';
 import { ListHeader, HeaderTitle } from '../StyledComponents';
-
+import NonSortableFolderRow from './NonSortableFolderRow';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
@@ -25,22 +22,6 @@ const ModeratorProjectList = memo(() => {
     rootLevelOnly: true,
   });
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
-
-  const adminPublicationRow = (adminPublication: IAdminPublicationContent) => {
-    if (adminPublication.publicationType === 'project') {
-      return (
-        <ProjectRow
-          publication={adminPublication}
-          actions={['manage']}
-          showMoreActions={false}
-        />
-      );
-    }
-    if (adminPublication.publicationType === 'folder') {
-      return <ProjectFolderRow publication={adminPublication} />;
-    }
-    return null;
-  };
 
   if (
     !isNilOrError(rootLevelAdminPublications) &&
@@ -61,13 +42,33 @@ const ModeratorProjectList = memo(() => {
               return (
                 !isProjectFoldersEnabled ||
                 (!adminPublication.relationships.parent.data && (
-                  <Row
-                    key={index}
-                    id={adminPublication.id}
-                    isLastItem={index === rootLevelAdminPublications.length - 1}
-                  >
-                    {adminPublicationRow(adminPublication)}
-                  </Row>
+                  <>
+                    {adminPublication.publicationType === 'project' && (
+                      <Row
+                        key={index}
+                        id={adminPublication.id}
+                        isLastItem={
+                          index === rootLevelAdminPublications.length - 1
+                        }
+                      >
+                        <ProjectRow
+                          publication={adminPublication}
+                          actions={['manage']}
+                          showMoreActions={false}
+                        />
+                      </Row>
+                    )}
+                    {adminPublication.publicationType === 'folder' && (
+                      <NonSortableFolderRow
+                        key={index}
+                        id={adminPublication.id}
+                        isLastItem={
+                          index === rootLevelAdminPublications.length - 1
+                        }
+                        publication={adminPublication}
+                      />
+                    )}
+                  </>
                 ))
               );
             })}
