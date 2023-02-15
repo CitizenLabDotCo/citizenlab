@@ -621,6 +621,7 @@ jobs:
           docker-compose build
           docker-compose run web bin/rails db:drop db:create db:schema:load
           docker-compose run web bin/rails "cl2_back:create_tenant[e2e.front,e2etests_template]"
+          docker-compose run web bin/rails analytics:populate_dimensions
       - run:
           command: |
             cd e2e

@@ -81,7 +81,8 @@ e2e-ci-env-setup:
 	cd e2e && \
 	docker-compose build && \
 	docker-compose run web bin/rails db:drop db:create db:schema:load && \
-	docker-compose run web bin/rails "cl2_back:create_tenant[e2e.front,e2etests_template]"
+	docker-compose run web bin/rails "cl2_back:create_tenant[e2e.front,e2etests_template]" && \
+	docker-compose run web bin/rails analytics:populate_dimensions
 
 e2e-ci-env-setup-and-up:
 	make e2e-ci-env-setup
