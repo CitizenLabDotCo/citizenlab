@@ -25,7 +25,7 @@ import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // Typings
-import { Locale, CLError } from 'typings';
+import { Locale, CLError, RHFErrors } from 'typings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -93,10 +93,9 @@ const ConfigSelectWithLocaleSwitcher = ({
   };
 
   const defaultOptionValues = [{}];
-  const errors = get(formContextErrors, name);
-  const apiError =
-    (errors?.error as string | undefined) && ([errors] as unknown as CLError[]);
-  const validationError = errors?.message as string | undefined;
+  const errors = get(formContextErrors, name) as RHFErrors;
+  const apiError = errors?.error && ([errors] as CLError[]);
+  const validationError = errors?.message;
 
   if (selectedLocale) {
     return (
