@@ -197,26 +197,6 @@ module MultiTenancy
       locales.to_a
     end
 
-    def change_locales(template, locale_from, locale_to)
-      template['models'].each do |_, instances|
-        instances.each do |attributes|
-          attributes.each do |field_name, multiloc|
-            next unless (field_name =~ /_multiloc$/) && multiloc.is_a?(Hash) && multiloc[locale_to].blank?
-
-            multiloc[locale_to] = if locale_from.blank?
-              multiloc.values.first
-            else
-              multiloc[locale_from]
-            end
-          end
-        end
-      end
-      template['models']['user']&.each do |attributes|
-        attributes['locale'] = locale_to
-      end
-      template
-    end
-
     def required_locales(template_name, external_subfolder: 'release')
       template = resolve_template template_name, external_subfolder: external_subfolder
       locales = Set.new
