@@ -56,6 +56,9 @@ jest.mock('hooks/useAuthUser', () => {
 
 const props: Props = {
   publication,
+  toggleFolder: jest.fn,
+  folderOpen: true,
+  hasProjects: true,
 };
 
 describe('ProjectFolderRow', () => {
