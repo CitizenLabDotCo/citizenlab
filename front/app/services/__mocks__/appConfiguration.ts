@@ -81,3 +81,6 @@ export const currentAppConfigurationStream = jest.fn(() => {
 });
 
 export const currentAppConfigurationEndpoint = '/web_api/v1/app_configuration';
+
+export const coreSettings = (appConfiguration: IAppConfigurationData) =>
+  appConfiguration.attributes.settings.core;

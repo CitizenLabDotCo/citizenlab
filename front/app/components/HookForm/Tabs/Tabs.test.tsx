@@ -9,7 +9,6 @@ const schema = object({
   selectedTab: string().required('Error message'),
 });
 
-jest.mock('utils/cl-intl');
 const onSubmit = jest.fn();
 
 const Form = ({

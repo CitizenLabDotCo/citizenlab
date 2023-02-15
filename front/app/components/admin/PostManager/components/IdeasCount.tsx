@@ -41,7 +41,7 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 export class IdeasCount extends React.PureComponent<Props, State> {
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Props) {
     if (prevProps.searchTerm !== this.props.searchTerm) {
       if (isFunction(this.props.ideasCount.onChangeSearchTerm)) {
         this.props.ideasCount.onChangeSearchTerm(this.props.searchTerm);
@@ -103,7 +103,7 @@ const Data = adopt({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => (
+    {(dataProps: DataProps) => (
       <IdeasCount {...inputProps} ideasCount={dataProps.ideasCount} />
     )}
   </Data>

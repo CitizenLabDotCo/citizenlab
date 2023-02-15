@@ -32,7 +32,7 @@ const PageNotFound = () => {
   return (
     <PageNotFoundWrapper>
       <Title mb="0">{formatMessage(messages.notFoundTitle)}</Title>
-      <Text fontSize="l" color={'textSecondary'} mb="35px">
+      <Text fontSize="l" color={'textSecondary'} mb="36px">
         {formatMessage(messages.pageNotFoundDescription)}
       </Text>
       <Button

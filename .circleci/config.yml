@@ -287,8 +287,8 @@ jobs:
       - when:
           condition:
             or:
-              - equal: [ << pipeline.git.branch >>, master ]
-              - equal: [ << pipeline.git.branch >>, production ]
+              - equal: [<< pipeline.git.branch >>, master]
+              - equal: [<< pipeline.git.branch >>, production]
           steps:
             - run: |
                 curl --request POST \
@@ -518,8 +518,8 @@ jobs:
       - when:
           condition:
             or:
-              - equal: [ << pipeline.git.branch >>, master ]
-              - equal: [ << pipeline.git.branch >>, production ]
+              - equal: [<< pipeline.git.branch >>, master]
+              - equal: [<< pipeline.git.branch >>, production]
           steps:
             - run: |
                 curl --request POST \
@@ -548,7 +548,7 @@ jobs:
             - /root/.npm
           key: v1-npm-cache-{{ checksum "package.json" }}
       - run:
-          command: SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_DSN=$SENTRY_DSN SENTRY_ENV=$SENTRY_ENV_STAGING npm run build
+          command: SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_DSN=$SENTRY_DSN SENTRY_ENV=$SENTRY_ENV_STAGING SENTRY_ENV=$SENTRY_ENV_STAGING POSTHOG_API_KEY=$POSTHOG_API_KEY_STAGING npm run build
           no_output_timeout: "30m"
       - run:
           command: rm build/*.map
@@ -577,7 +577,7 @@ jobs:
             - /root/.npm
           key: v1-npm-cache-{{ checksum "package.json" }}
       - run:
-          command: SEGMENT_API_KEY=$SEGMENT_API_KEY_PRODUCTION SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_DSN=$SENTRY_DSN SENTRY_ENV=$SENTRY_ENV_PRODUCTION npm run build
+          command: SEGMENT_API_KEY=$SEGMENT_API_KEY_PRODUCTION SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_DSN=$SENTRY_DSN POSTHOG_API_KEY=$POSTHOG_API_KEY_PRODUCTION npm run build
           no_output_timeout: "30m"
       - run:
           command: rm build/*.map

@@ -2,8 +2,6 @@ import React from 'react';
 import BannerImageFields from '.';
 import { render, screen, userEvent } from 'utils/testUtils/rtl';
 
-jest.mock('utils/cl-intl');
-
 const props = {
   bannerOverlayColor: '#fff',
   bannerOverlayOpacity: 90,

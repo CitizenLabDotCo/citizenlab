@@ -105,7 +105,7 @@ export default class GetCommentsForUser extends React.Component<Props, State> {
     ];
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Props) {
     if (prevProps.userId !== this.props.userId) {
       this.setState(this.initialState);
       this.pageNumber$.next(1);

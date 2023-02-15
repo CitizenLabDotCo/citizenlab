@@ -6,7 +6,7 @@ class ProjectCopyService < ::TemplateService
     same_template = service.translate_and_fix_locales template
 
     created_objects_ids = ActiveRecord::Base.transaction do
-      service.resolve_and_apply_template same_template, validate: false
+      service.resolve_and_apply_template same_template, validate: false, local_copy: local_copy
     end
 
     project = Project.find(created_objects_ids['Project'].first)
@@ -30,6 +30,7 @@ class ProjectCopyService < ::TemplateService
     timeline_start_at: nil,
     new_publication_status: nil
   )
+    @local_copy = local_copy
     @project = project
     @template = { 'models' => {} }
 
@@ -49,6 +50,9 @@ class ProjectCopyService < ::TemplateService
     @template['models']['custom_maps/map_config']  = yml_maps_map_configs shift_timestamps: shift_timestamps
     @template['models']['custom_maps/layer']       = yml_maps_layers shift_timestamps: shift_timestamps
     @template['models']['custom_maps/legend_item'] = yml_maps_legend_items shift_timestamps: shift_timestamps
+
+    @template['models']['content_builder/layout'], layout_images_mapping = yml_content_builder_layouts shift_timestamps: shift_timestamps
+    @template['models']['content_builder/layout_image'] = yml_content_builder_layout_images layout_images_mapping, shift_timestamps: shift_timestamps
 
     unless local_copy
       @template['models']['event']      = yml_events shift_timestamps: shift_timestamps
@@ -72,6 +76,54 @@ class ProjectCopyService < ::TemplateService
   end
 
   private
+
+  def yml_content_builder_layouts(shift_timestamps: 0)
+    layout_images_mapping = {}
+
+    layouts = ContentBuilder::Layout.where(content_buildable_id: @project.id).map do |layout|
+      craftjs = layout.craftjs_jsonmultiloc
+
+      craftjs.each_key do |locale|
+        craftjs[locale].each_value do |node|
+          next unless ContentBuilder::LayoutService.new.craftjs_element_of_type?(node, 'Image')
+
+          source_image_code = node['props']['dataCode']
+          new_image_code = ContentBuilder::LayoutImage.generate_code
+          node['props']['dataCode'] = new_image_code
+          layout_images_mapping[source_image_code] = new_image_code
+        end
+      end
+
+      yml_layout = {
+        'content_buildable_ref' => lookup_ref(layout.content_buildable_id, :project),
+        'content_buildable_type' => layout.content_buildable_type,
+        'code' => layout.code,
+        'enabled' => layout.enabled,
+        'craftjs_jsonmultiloc' => craftjs,
+        'created_at' => shift_timestamp(layout.created_at, shift_timestamps)&.iso8601,
+        'updated_at' => shift_timestamp(layout.updated_at, shift_timestamps)&.iso8601
+      }
+      store_ref yml_layout, layout.id, :content_builder_layout
+      yml_layout
+    end
+
+    [layouts, layout_images_mapping]
+  end
+
+  def yml_content_builder_layout_images(layout_images_mapping, shift_timestamps: 0)
+    source_image_codes = layout_images_mapping.keys.map(&:to_s)
+
+    ContentBuilder::LayoutImage.where(code: source_image_codes).map do |image|
+      yml_layout_image = {
+        'code' => layout_images_mapping[image.code],
+        'remote_image_url' => image.image_url,
+        'created_at' => shift_timestamp(image.created_at, shift_timestamps)&.iso8601,
+        'updated_at' => shift_timestamp(image.updated_at, shift_timestamps)&.iso8601
+      }
+      store_ref yml_layout_image, image.id, :content_builder_layout_image
+      yml_layout_image
+    end
+  end
 
   def yml_custom_forms(shift_timestamps: 0)
     ([@project.custom_form] + @project.phases.map(&:custom_form)).compact.map do |cf|
@@ -226,8 +278,8 @@ class ProjectCopyService < ::TemplateService
         'project_ref' => lookup_ref(phase.project_id, :project),
         'title_multiloc' => phase.title_multiloc,
         'description_multiloc' => phase.description_multiloc,
-        'start_at' => shift_timestamp(phase.start_at, shift_timestamps)&.iso8601,
-        'end_at' => shift_timestamp(phase.end_at, shift_timestamps)&.iso8601,
+        'start_at' => shift_timestamp(phase.start_at, shift_timestamps, leave_blank: false)&.iso8601,
+        'end_at' => shift_timestamp(phase.end_at, shift_timestamps, leave_blank: false)&.iso8601,
         'created_at' => shift_timestamp(phase.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(phase.updated_at, shift_timestamps)&.iso8601,
         'text_images_attributes' => phase.text_images.map do |ti|
@@ -593,7 +645,9 @@ class ProjectCopyService < ::TemplateService
     end
   end
 
-  def shift_timestamp(value, shift_timestamps)
+  def shift_timestamp(value, shift_timestamps, leave_blank: @local_copy)
+    return if leave_blank
+
     value && (value + shift_timestamps.days)
   end
 end

@@ -86,7 +86,7 @@ sr-Latn:
     about:
       title: Više informacija
     faq:
-      title: FAQ
+      title: Najčešća pitanja
   projects:
     open_idea_project_title: Imate ideju? Predstavite je nadležnima!
     open_idea_project_description_preview: Imate ideju koja se ne uklapa u neki od postojećih projekata? Objavite je ovde, skupite podršku i uvrstite je na dnevni red!
@@ -192,13 +192,13 @@ sr-Latn:
       created_at: 'Predato u'
       published_at: 'Objavljeno u'
       comments_count: 'Komentari'
-      upvotes_count: 'Glasovi za'
+      upvotes_count: 'Glasovi podrške'
       downvotes_count: 'Glasovi protiv'
       baskets_count: 'Korpe'
       input_url: 'URL'
-      project: 'Projekti'
+      project: 'Projekat'
       status: 'Status'
-      assignee_fullname: 'Zadužena osoba'
+      assignee_fullname: 'Dodeljeni korisnik'
       assignee_email: 'E-pošta dodeljenog korisnika'
   form_builder:
     default_select_field:

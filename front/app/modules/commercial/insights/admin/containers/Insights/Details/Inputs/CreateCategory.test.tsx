@@ -3,12 +3,8 @@ import CreateCategory from './CreateCategory';
 
 import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
 import categories from 'modules/commercial/insights/fixtures/categories';
-import { addInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
 
 const viewId = '1';
-
-jest.mock('services/locale');
-jest.mock('utils/cl-intl');
 
 jest.mock('utils/cl-router/withRouter', () => {
   return {
@@ -19,11 +15,12 @@ jest.mock('utils/cl-router/withRouter', () => {
     },
   };
 });
-jest.mock('utils/cl-router/Link');
 
-jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
-  addInsightsCategory: jest.fn(),
-}));
+const mockAdd = jest.fn();
+
+jest.mock('modules/commercial/insights/api/categories/useAddCategory', () =>
+  jest.fn(() => ({ mutate: mockAdd, reset: jest.fn() }))
+);
 
 const defaultProps = {
   closeCreateModal: jest.fn(),
@@ -77,14 +74,21 @@ describe('Insights CreateCategory from filters', () => {
     });
 
     const categoryIds = defaultProps.categories.map((category) => category.id);
-    expect(addInsightsCategory).toHaveBeenCalledWith({
-      insightsViewId: viewId,
-      name: categoryName,
-      inputs: {
-        categories: categoryIds,
-        keywords: defaultProps.keywords,
-        search: defaultProps.search,
+    expect(mockAdd).toHaveBeenCalledWith(
+      {
+        viewId,
+        category: {
+          name: categoryName,
+          inputs: {
+            categories: categoryIds,
+            keywords: defaultProps.keywords,
+            search: defaultProps.search,
+          },
+        },
       },
-    });
+      {
+        onSuccess: expect.any(Function),
+      }
+    );
   });
 });

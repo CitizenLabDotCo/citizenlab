@@ -3,13 +3,13 @@ import streams from 'utils/streams';
 import { Multiloc } from 'typings';
 
 const CATEGORIES = [
-  'own',
-  'official',
-  'weekly',
-  'mention',
-  'commented',
-  'voted',
-  'admin',
+  'own' as const,
+  'official' as const,
+  'weekly' as const,
+  'mention' as const,
+  'commented' as const,
+  'voted' as const,
+  'admin' as const,
 ];
 
 export interface IConsentData {
@@ -48,7 +48,7 @@ export interface IConsent {
 }
 
 export function getCategorizedConsents(consents: IConsentData[]) {
-  const res = {} as { [category: string]: IConsentData[] };
+  const res = {};
   CATEGORIES.forEach((category) => {
     const categoryConsents = consents.filter(
       (consent) => consent.attributes.category === category
@@ -57,6 +57,7 @@ export function getCategorizedConsents(consents: IConsentData[]) {
       res[category] = categoryConsents;
     }
   });
+
   return res;
 }
 

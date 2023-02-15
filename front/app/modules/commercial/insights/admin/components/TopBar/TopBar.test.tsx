@@ -1,6 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
-import { deleteInsightsView } from 'modules/commercial/insights/services/insightsViews';
+import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import clHistory from 'utils/cl-router/history';
 
 import TopBar from './';
@@ -59,31 +58,26 @@ const mockProjectData3 = {
 
 const viewId = '1';
 
-jest.mock('utils/cl-router/Link');
-jest.mock('modules');
-
-jest.mock('modules/commercial/insights/services/insightsViews', () => ({
-  deleteInsightsView: jest.fn(),
-}));
-
-jest.mock('utils/cl-intl');
 jest.mock('utils/analytics');
 
-jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
-  addInsightsCategory: jest.fn(),
-}));
+jest.mock('modules/commercial/insights/api/views/useView', () =>
+  jest.fn(() => {
+    return { data: mockViewData };
+  })
+);
 
-jest.mock('modules/commercial/insights/hooks/useInsightsView', () => {
-  return jest.fn(() => mockViewData);
-});
+const mockDeleteView = jest.fn();
+jest.mock('modules/commercial/insights/api/views/useDeleteView', () =>
+  jest.fn(() => {
+    return { mutate: mockDeleteView };
+  })
+);
 
 jest.mock('hooks/useProject', () => {
   return jest.fn(({ projectId }) =>
     projectId === '2' ? mockProjectData2 : mockProjectData3
   );
 });
-
-jest.mock('hooks/useLocale');
 
 jest.mock('utils/cl-router/withRouter', () => {
   return {
@@ -94,9 +88,6 @@ jest.mock('utils/cl-router/withRouter', () => {
     },
   };
 });
-jest.mock('utils/cl-router/Link');
-
-jest.mock('utils/cl-router/history');
 
 describe('Insights Top Bar', () => {
   it('renders Top Bar', () => {
@@ -123,7 +114,7 @@ describe('Insights Top Bar', () => {
     );
   });
 
-  it('if multiple projects: renders Project dropdown with correct content', async () => {
+  it('if multiple projects: renders Project dropdown with correct content', () => {
     mockViewData = MOCK_VIEW_DATA_TWO_PROJECTS;
     render(<TopBar />);
     expect(screen.getByTestId('insightsProjectDropdown')).toBeInTheDocument();
@@ -134,20 +125,16 @@ describe('Insights Top Bar', () => {
     const dropdown = screen.getByTestId('insightsProjectDropdown');
     fireEvent.click(dropdown);
 
-    await waitFor(() => {
-      expect(screen.getByText('Test Project')).toBeInTheDocument();
-      expect(screen.getByText('Another Project')).toBeInTheDocument();
-
-      expect(screen.getByText('Test Project')).toHaveAttribute(
-        'href',
-        '/en/projects/test'
-      );
-
-      expect(screen.getByText('Another Project')).toHaveAttribute(
-        'href',
-        '/en/projects/test2'
-      );
-    });
+    expect(screen.getByText('Test Project')).toBeInTheDocument();
+    expect(screen.getByText('Another Project')).toBeInTheDocument();
+    expect(screen.getByText('Test Project')).toHaveAttribute(
+      'href',
+      '/en/projects/test'
+    );
+    expect(screen.getByText('Another Project')).toHaveAttribute(
+      'href',
+      '/en/projects/test2'
+    );
   });
 
   it('deletes view on menu item click', () => {
@@ -155,7 +142,9 @@ describe('Insights Top Bar', () => {
     render(<TopBar />);
     fireEvent.click(screen.getByRole('button'));
     fireEvent.click(screen.getByText('Delete'));
-    expect(deleteInsightsView).toHaveBeenCalledWith(mockViewData.data.id);
+    expect(mockDeleteView).toHaveBeenCalledWith(mockViewData.data.id, {
+      onSuccess: expect.any(Function),
+    });
   });
 
   it('redirects to main screen there is view error', () => {

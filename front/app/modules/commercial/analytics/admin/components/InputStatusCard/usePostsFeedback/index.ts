@@ -52,6 +52,7 @@ const query = ({
     },
     filters: {
       'dimension_type.name': 'idea',
+      publication_status: 'published',
       ...getProjectFilter('dimension_project', projectId),
       ...getDateFilter('dimension_date_created', startAtMoment, endAtMoment),
     },
@@ -67,6 +68,7 @@ const query = ({
     },
     filters: {
       'dimension_type.name': 'idea',
+      publication_status: 'published',
       ...getProjectFilter('dimension_project', projectId),
       ...getDateFilter('dimension_date_created', startAtMoment, endAtMoment),
     },
