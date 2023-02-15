@@ -30,15 +30,15 @@ namespace :checks do
         end
         schema_leaf_models.each do |claz|
           t1 = Time.zone.now
-          claz.all.find_each do |object|
+          claz.all.each do |object|
             errors = validation_errors object
-            if errors
-              issues[tenant.host] ||= {}
-              tenant_issues = issues[tenant.host]
-              tenant_issues[claz.name] ||= {}
-              claz_issues = tenant_issues[claz.name]
-              claz_issues[object.id] = errors
-            end
+            next if !errors
+
+            issues[tenant.host] ||= {}
+            tenant_issues = issues[tenant.host]
+            tenant_issues[claz.name] ||= {}
+            claz_issues = tenant_issues[claz.name]
+            claz_issues[object.id] = errors
           end
           t2 = Time.zone.now
           summary[:durations][claz.name] ||= 0

@@ -4,10 +4,6 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// services
-import { addInsightsInputCategory } from 'modules/commercial/insights/services/insightsInputs';
-import { addInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
-
 // components
 import Category from 'modules/commercial/insights/admin/components/Category';
 import Idea from 'modules/commercial/insights/admin/components/Idea';
@@ -17,10 +13,15 @@ import selectStyles from 'components/UI/MultipleSelect/styles';
 import Navigation, {
   NavigationProps,
 } from 'modules/commercial/insights/admin/components/Navigation';
+import Centerer from 'components/UI/Centerer';
+
+// api
+import useCategories from 'modules/commercial/insights/api/categories/useCategories';
+import useAddCategory from 'modules/commercial/insights/api/categories/useAddCategory';
+import useInput from 'modules/commercial/insights/api/inputs/useInput';
+import useAddInputCategories from 'modules/commercial/insights/api/inputs/useAddInputCategories';
 
 // hooks
-import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
-import useInsightsInput from 'modules/commercial/insights/hooks/useInsightsInput';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // styles
@@ -77,14 +78,6 @@ const StyledSpinner = styled(Spinner)`
   width: auto;
 `;
 
-const LoadingContainer = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100%;
-  justify-context: center;
-  align-items: center;
-`;
-
 const StyledCreatable = styled(Creatable)<{ opitons: OptionProps[] }>`
   #react-select-2-option-${({ options }) => options.length} {
     background-color: ${colors.successLight};
@@ -122,18 +115,21 @@ const InputDetails = ({
     useRef<Creatable<{ label: string; value: string }, false>>(null);
   const [selectedOption, setSelectedOption] = useState<null | OptionProps>();
   const [isSelectFocused, setIsSelectFocused] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
-  const categories = useInsightsCategories(viewId);
-  const previewedInput = useInsightsInput(viewId, previewedInputId);
+  const { data: categories } = useCategories(viewId);
+  const { data: previewedInput } = useInput(viewId, previewedInputId);
+  const { mutate: addInputCategories, isLoading: addInputCategoryIsLoading } =
+    useAddInputCategories();
+  const { mutate: addCategory, isLoading: addCategoryIsLoading } =
+    useAddCategory();
 
   // Loading state
   if (previewedInput === undefined) {
     return (
-      <LoadingContainer data-testid="insightsEditDetailsLoading">
+      <Centerer height="100%" data-testid="insightsEditDetailsLoading">
         <Spinner />
-      </LoadingContainer>
+      </Centerer>
     );
   }
 
@@ -141,13 +137,14 @@ const InputDetails = ({
     return null;
   }
 
-  const ideaId = previewedInput.relationships?.source.data.id;
+  const ideaId = previewedInput.data.relationships?.source.data.id;
 
-  const options = categories
+  const options = categories.data
     // Filter out already selected categories
     .filter((category) => {
-      const selectedCategoriesIds = previewedInput.relationships?.categories
-        ? previewedInput.relationships?.categories.data.map(
+      const selectedCategoriesIds = previewedInput.data.relationships
+        ?.categories
+        ? previewedInput.data.relationships?.categories.data.map(
             (category) => category.id
           )
         : [];
@@ -159,35 +156,41 @@ const InputDetails = ({
       value: category.id,
     }));
 
-  const handleChange = async (option: OptionProps) => {
+  const handleChange = (option: OptionProps) => {
     setSelectedOption(option);
-    setLoading(true);
-
-    try {
-      await addInsightsInputCategory(viewId, previewedInput.id, option.value);
-      setSelectedOption(null);
-      selectRef.current?.blur();
-    } catch {
-      // Do nothing
-    }
-    setLoading(false);
+    addInputCategories({
+      viewId,
+      inputId: previewedInput.data.id,
+      categories: [{ id: option.value, type: 'category' }],
+    });
     trackEventByName(tracks.addCategoryFromInput);
   };
 
-  const handleCreate = async (value: string) => {
-    setLoading(true);
-    try {
-      const result = await addInsightsCategory({
-        insightsViewId: viewId,
-        name: value,
-      });
-      await addInsightsInputCategory(viewId, previewedInput.id, result.data.id);
-      setSelectedOption(null);
-    } catch {
-      // Do nothing
-    }
+  const handleCreate = (value: string) => {
+    addCategory(
+      {
+        viewId,
+        category: { name: value },
+      },
+      {
+        onSuccess: (category) => {
+          addInputCategories(
+            {
+              viewId,
+              inputId: previewedInputId,
+              categories: [{ id: category.data.id, type: 'category' }],
+            },
+            {
+              onSuccess: () => {
+                setSelectedOption(null);
+                selectRef.current?.blur();
+              },
+            }
+          );
+        },
+      }
+    );
     trackEventByName(tracks.createCategoryFromInput);
-    setLoading(false);
   };
 
   const formatCreateLabel = (value: string) => {
@@ -223,12 +226,12 @@ const InputDetails = ({
       <Container data-testid="insightsInputDetails">
         {nlpFeatureFlag && (
           <CategoryList>
-            {previewedInput.relationships?.suggested_categories.data.map(
+            {previewedInput.data.relationships?.suggested_categories.data.map(
               (category) => (
                 <Category
                   id={category.id}
                   key={category.id}
-                  inputId={previewedInput.id}
+                  inputId={previewedInput.data.id}
                   variant="suggested"
                   size="large"
                 />
@@ -258,15 +261,19 @@ const InputDetails = ({
           </div>
         </FormContainer>
         <CategoryList>
-          {previewedInput.relationships?.categories.data.map((category) => (
-            <Category
-              id={category.id}
-              key={category.id}
-              inputId={previewedInput.id}
-              variant="approved"
-            />
-          ))}
-          {loading && <StyledSpinner color={colors.success} size="24px" />}
+          {previewedInput.data.relationships?.categories.data.map(
+            (category) => (
+              <Category
+                id={category.id}
+                key={category.id}
+                inputId={previewedInput.data.id}
+                variant="approved"
+              />
+            )
+          )}
+          {(addInputCategoryIsLoading || addCategoryIsLoading) && (
+            <StyledSpinner color={colors.success} size="24px" />
+          )}
         </CategoryList>
         {ideaId && <Idea ideaId={ideaId} />}
       </Container>

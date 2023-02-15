@@ -6,19 +6,14 @@ import { isNilOrError } from 'utils/helperUtils';
 import { Icon, Dropdown, Checkbox } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
-// Hooks
+// api
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
+import useCategories from 'modules/commercial/insights/api/categories/useCategories';
+import useAddInputCategories from 'modules/commercial/insights/api/inputs/useAddInputCategories';
+import { IInsightsInputData } from 'modules/commercial/insights/api/inputs/types';
 
-// Services
-import {
-  batchAssignCategories,
-  batchUnassignCategories,
-} from 'modules/commercial/insights/services/batchAssignment';
-import {
-  addInsightsInputCategories,
-  IInsightsInputData,
-} from 'modules/commercial/insights/services/insightsInputs';
+import useBatchAssignCategories from 'modules/commercial/insights/api/batch/useBatchAssignCategories';
+import useBatchUnassignCategories from 'modules/commercial/insights/api/batch/useBatchUnassignCategories';
 
 // I18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -115,7 +110,13 @@ const Actions = ({
   intl: { formatMessage },
 }: Props & WrappedComponentProps & WithRouterProps) => {
   const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
-  const categories = useInsightsCategories(viewId);
+  const { data: categories } = useCategories(viewId);
+  const { mutate: batchAssignCategories, isLoading: isLoadingBatchAssign } =
+    useBatchAssignCategories();
+  const { mutate: batchUnassignCategories, isLoading: isLoadingBatchUnassign } =
+    useBatchUnassignCategories();
+  const { mutate: addInputCategories, isLoading: processingBulkApprove } =
+    useAddInputCategories();
   const selectedInputsIds = selectedInputs.map((input) => input.id);
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const toggleDropdown = () => {
@@ -135,80 +136,72 @@ const Actions = ({
     }
   };
 
-  const [processing, setProcessing] = useState(false);
-  const [processingBulkApprove, setProcessingBulkApprove] = useState(false);
   // assigns selectedCategories to selectedInputs
   const assign = async () => {
     if (selectedInputs.length > 0 && categorySelection.size > 0) {
-      try {
-        setProcessing(true);
-        await batchAssignCategories(
+      batchAssignCategories(
+        {
           viewId,
-          [...selectedInputsIds],
-          [...categorySelection]
-        );
-        setCategorySelection(new Set());
-      } catch {
-        // do nothing
-      }
-      setProcessing(false);
-      setDropdownOpened(false);
+          inputs: [...selectedInputsIds],
+          categories: [...categorySelection],
+        },
+        {
+          onSuccess: () => {
+            setCategorySelection(new Set());
+            setDropdownOpened(false);
+          },
+        }
+      );
     }
   };
   const suggestedCategoriesInSelectedInputs = selectedInputs.some(
     (input) => input.relationships.suggested_categories.data.length > 0
   );
 
-  const approveSuggestedCategories = async () => {
-    setProcessingBulkApprove(true);
-
+  const approveSuggestedCategories = () => {
     for (const input of selectedInputs) {
-      try {
-        await addInsightsInputCategories(
-          viewId,
-          input.id,
-          input.relationships.suggested_categories.data
-        );
-      } catch {
-        // do nothing
-      }
+      addInputCategories({
+        viewId,
+        inputId: input.id,
+        categories: input.relationships.suggested_categories.data,
+      });
     }
-    setProcessingBulkApprove(false);
   };
 
   if (isNilOrError(categories)) {
     return null;
   }
 
-  const selectedCategory = categories?.find(
+  const selectedCategory = categories?.data.find(
     (category) => category.id === query.category
   );
 
   // unassigns categoryFilter from selectedInputs, with confirmation
-  const unassign = async () => {
+  const unassign = () => {
     if (selectedInputs.length > 0 && selectedCategory) {
       const deleteMessage = formatMessage(messages.deleteFromCategories, {
         categoryName: selectedCategory.attributes.name,
         selectedCount: selectedInputs.length,
       });
       if (window.confirm(deleteMessage)) {
-        try {
-          setProcessing(true);
-          await batchUnassignCategories(
+        batchUnassignCategories(
+          {
             viewId,
-            [...selectedInputsIds],
-            [selectedCategory.id]
-          );
-        } catch {
-          // do nothing
-        }
-        setProcessing(false);
-        setDropdownOpened(false);
+            inputs: [...selectedInputsIds],
+            categories: [selectedCategory.id],
+          },
+          {
+            onSuccess: () => {
+              setCategorySelection(new Set());
+              setDropdownOpened(false);
+            },
+          }
+        );
       }
     }
   };
 
-  const otherCategories = categories.filter(
+  const otherCategories = categories.data.filter(
     (category) => category.id !== selectedCategory?.id
   );
 
@@ -254,7 +247,7 @@ const Actions = ({
                     className="e2e-dropdown-submit"
                     buttonStyle="cl-blue"
                     onClick={assign}
-                    processing={processing}
+                    processing={isLoadingBatchAssign}
                     fullWidth={true}
                     padding="12px"
                     whiteSpace="normal"
@@ -282,7 +275,7 @@ const Actions = ({
               onClick={unassign}
               className="hasLeftMargin"
               buttonStyle="admin-dark-text"
-              processing={processing}
+              processing={isLoadingBatchUnassign}
             >
               <StyledIcon name="delete" />
               <FormattedMessage {...messages.bulkUnassign} />

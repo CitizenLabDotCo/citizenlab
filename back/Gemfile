@@ -76,7 +76,7 @@ end
 
 group :test do
   gem 'rubyXL'
-  gem 'shoulda-matchers', '~> 5.0.0'
+  gem 'shoulda-matchers', '~> 5.3.0'
   gem 'webmock', '~> 3.14'
 end
 
@@ -105,14 +105,14 @@ gem 'activerecord-postgis-adapter', '~> 7.0.0'
 gem 'carrierwave', git: 'https://github.com/carrierwaveuploader/carrierwave.git',
   ref: 'a3ffc5381e70a4014b61b27b35540aa3b945910d'
 gem 'carrierwave-base64', '~> 2.10'
-gem 'fog-aws', '~> 3.12'
+gem 'fog-aws', '~> 3.17'
 
 gem 'api-pagination', '~> 5.0.0'
 gem 'kaminari', '~> 1.2'
 gem 'rails-i18n', '~> 6.0.0'
 gem 'awesome_nested_set', '~> 3.5.0'
 gem 'axlsx', '3.0.0.pre'
-gem 'counter_culture', '~> 3.2'
+gem 'counter_culture', '~> 3.3'
 gem 'groupdate', '~> 4.1'
 gem 'interactor'
 gem 'interactor-rails'

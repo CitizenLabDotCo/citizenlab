@@ -24,6 +24,10 @@ import {
 } from 'react-router-dom';
 import { wrapUseRoutes } from '@sentry/react';
 
+import { QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
   environment: process.env.SENTRY_ENV,
@@ -55,15 +59,18 @@ function Routes() {
 
 const Root = () => {
   return (
-    <OutletsProvider>
-      <LanguageProvider>
-        <HistoryRouter history={history}>
-          <App>
-            <Routes />
-          </App>
-        </HistoryRouter>
-      </LanguageProvider>
-    </OutletsProvider>
+    <QueryClientProvider client={queryClient}>
+      <OutletsProvider>
+        <LanguageProvider>
+          <HistoryRouter history={history}>
+            <App>
+              <Routes />
+            </App>
+          </HistoryRouter>
+        </LanguageProvider>
+      </OutletsProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   );
 };
 

@@ -5,7 +5,7 @@ module Insights
     class StatsInputsController < ::ApplicationController
       def inputs_count
         inputs = Insights::InputsFinder.new(view, counts_params).execute
-        render json: { count: inputs.count }
+        render json: { data: { count: inputs.count, type: 'inputs_stat' } }
       end
 
       private

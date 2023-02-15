@@ -1,4 +1,5 @@
 import React from 'react';
+import { ChartWidgetProps } from '../typings';
 
 // components
 import { Box, Input, Text } from '@citizenlab/cl2-component-library';
@@ -36,7 +37,7 @@ const ChartWidgetSettings = () => {
   }));
 
   const setTitle = (value: string) => {
-    setProp((props) => {
+    setProp((props: ChartWidgetProps) => {
       props.title = value;
     });
   };
@@ -48,14 +49,14 @@ const ChartWidgetSettings = () => {
     startDate: Moment | null;
     endDate: Moment | null;
   }) => {
-    setProp((props) => {
+    setProp((props: ChartWidgetProps) => {
       props.startAt = startDate?.format('YYYY-MM-DDTHH:mm:ss.sss');
       props.endAt = endDate?.format('YYYY-MM-DDTHH:mm:ss.sss');
     });
   };
 
   const handleProjectFilter = ({ value }: IOption) => {
-    setProp((props) => {
+    setProp((props: ChartWidgetProps) => {
       props.projectId = value;
     });
   };

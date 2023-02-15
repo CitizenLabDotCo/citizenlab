@@ -1,5 +1,27 @@
 # Changelog
 
+### Fixed
+
+- [CL-2830] Fixed bug that prevented editing ideas
+
+## 2023-02-15
+
+### Added
+
+- [CL-2836] Admin shortcut from home page for users with admin access
+
+## 2023-02-13 (2)
+
+### Changed
+
+- [CL-2762] Fix redirecting in various places (e.g. after trying to post an idea after logging in), and added better messages if you don't have the right permissions to view a page (citizen-side).
+
+## 2023-02-13
+
+### Added
+
+- [CL-2746] Include content builder layouts & images when creating a platform using a template
+
 ## 2023-02-10
 
 ### Changed
