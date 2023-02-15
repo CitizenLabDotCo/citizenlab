@@ -12,11 +12,13 @@
 #
 module ContentBuilder
   class LayoutImage < ApplicationRecord
+    attr_accessor :skip_image_presence
+
     mount_base64_uploader :image, LayoutImageUploader
 
-    validates :image, presence: true
-
     before_validation :generate_code, on: :create
+
+    validates :image, presence: true, unless: :skip_image_presence
 
     def self.generate_code
       SecureRandom.uuid

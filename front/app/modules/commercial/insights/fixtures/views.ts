@@ -6,6 +6,11 @@ const views = [
       name: 'Test',
       updated_at: '2021-05-18T16:07:27.123Z',
     },
+    relationships: {
+      data_sources: {
+        data: [{ id: '1' }],
+      },
+    },
   },
   {
     id: '4b429681-1744-456f-8550-e89a2c2c74b2',
@@ -13,6 +18,11 @@ const views = [
     attributes: {
       name: 'Test 2',
       updated_at: '2021-05-18T16:07:49.156Z',
+    },
+    relationships: {
+      data_sources: {
+        data: [{ id: '2' }],
+      },
     },
   },
 ];

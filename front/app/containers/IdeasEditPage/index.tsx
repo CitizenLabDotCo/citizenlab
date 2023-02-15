@@ -2,10 +2,14 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { Subscription, combineLatest, of } from 'rxjs';
 import { switchMap, map, first } from 'rxjs/operators';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isUnauthorizedError } from 'utils/helperUtils';
+import { isError } from 'lodash-es';
 
 // router
 import clHistory from 'utils/cl-router/history';
+
+// hooks
+import useProject from 'hooks/useProject';
 
 // components
 import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
@@ -13,6 +17,8 @@ import IdeasEditButtonBar from './IdeasEditButtonBar';
 import IdeasEditMeta from './IdeasEditMeta';
 import GoBackToIdeaPage from 'containers/IdeasEditPage/GoBackToIdeaPage';
 import { Box } from '@citizenlab/cl2-component-library';
+import Unauthorized from 'components/Unauthorized';
+import PageNotFound from 'components/PageNotFound';
 
 // feature flag variant
 import IdeasEditPageWithJSONForm from './WithJSONForm';
@@ -582,6 +588,16 @@ export default withRouter((inputProps: InputProps & WithRouterProps) => {
   const isDynamicIdeaFormEnabled = useFeatureFlag({
     name: 'dynamic_idea_form',
   });
+
+  const project = useProject({ projectSlug: inputProps.params.slug });
+
+  if (isUnauthorizedError(project)) {
+    return <Unauthorized />;
+  }
+
+  if (isError(project)) {
+    return <PageNotFound />;
+  }
 
   if (isDynamicIdeaFormEnabled) {
     return <IdeasEditPageWithJSONForm {...inputProps} />;

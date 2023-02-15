@@ -16,7 +16,6 @@ export default function request<T>(
     arrayFormat: 'brackets',
     addQueryPrefix: true,
   });
-
   const urlWithParams = `${url}${urlParams}`;
   const jwt = getJwt();
 

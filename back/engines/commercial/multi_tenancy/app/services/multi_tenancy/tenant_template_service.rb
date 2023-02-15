@@ -8,7 +8,7 @@ module MultiTenancy
       Comment
     ].to_set.freeze
 
-    SKIP_IMAGE_PRESENCE_VALIDATION = %w[IdeaImage].freeze
+    SKIP_IMAGE_PRESENCE_VALIDATION = %w[IdeaImage ContentBuilder::LayoutImage].freeze
 
     def available_templates(external_subfolder: 'release')
       template_names = {}
@@ -22,25 +22,34 @@ module MultiTenancy
       template_names
     end
 
-    def resolve_and_apply_template(template_name, external_subfolder: 'release', validate: true, max_time: nil)
+    def resolve_and_apply_template(
+      template_name,
+      external_subfolder: 'release',
+      validate: true,
+      max_time: nil,
+      local_copy: false
+    )
       Rails.logger.tagged('loading template', template_name: template_name) do
         apply_template(
           resolve_template(template_name, external_subfolder: external_subfolder),
           validate: validate,
-          max_time: max_time
+          max_time: max_time,
+          local_copy: local_copy
         )
       end
     end
 
-    def apply_template(template, validate: true, max_time: nil)
+    def apply_template(template, validate: true, max_time: nil, local_copy: false)
       t1 = Time.zone.now
       obj_to_id_and_class = {}
       created_objects_ids = {}
       template['models'].each do |model_name, fields|
-        LogActivityJob.perform_later(Tenant.current, 'loading_template', nil, Time.now.to_i, payload: {
-          model_name: model_name,
-          model_name_pluralized: model_name.pluralize
-        })
+        unless local_copy
+          LogActivityJob.perform_later(Tenant.current, 'loading_template', nil, Time.now.to_i, payload: {
+            model_name: model_name,
+            model_name_pluralized: model_name.pluralize
+          })
+        end
         model_class = get_model_class(model_name)
 
         fields.each do |attributes|
@@ -114,7 +123,7 @@ module MultiTenancy
         end
       end
 
-      DumpTenantJob.perform_later(Tenant.current)
+      DumpTenantJob.perform_later(Tenant.current) unless local_copy
 
       created_objects_ids
     end

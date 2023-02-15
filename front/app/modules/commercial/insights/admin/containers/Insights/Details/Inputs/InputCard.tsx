@@ -14,9 +14,7 @@ import Button from 'components/UI/Button';
 
 // hooks
 import useIdea from 'hooks/useIdea';
-
-// types
-import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
+import { IInsightsInputData } from 'modules/commercial/insights/api/inputs/types';
 
 const InputTitle = styled.h2`
   color: ${colors.textPrimary};

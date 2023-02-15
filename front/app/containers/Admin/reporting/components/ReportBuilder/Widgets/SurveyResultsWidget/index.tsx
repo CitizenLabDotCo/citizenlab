@@ -76,7 +76,7 @@ const SurveyResultsWidgetSettings = () => {
 
   const setTitle = useCallback(
     (value: string) => {
-      setProp((props) => {
+      setProp((props: Props) => {
         props.title = value;
       });
     },
@@ -85,7 +85,7 @@ const SurveyResultsWidgetSettings = () => {
 
   const handleProjectFilter = useCallback(
     ({ value }: IOption) => {
-      setProp((props) => {
+      setProp((props: Props) => {
         props.projectId = value;
         props.phaseId = undefined;
         props.shownQuestions = undefined;
@@ -96,7 +96,7 @@ const SurveyResultsWidgetSettings = () => {
 
   const handlePhaseFilter = useCallback(
     ({ value }: IOption) => {
-      setProp((props) => {
+      setProp((props: Props) => {
         props.phaseId = value;
       });
     },
@@ -105,7 +105,7 @@ const SurveyResultsWidgetSettings = () => {
 
   const handleQuestionToggle = useCallback(
     (questionIndex: number, numberOfQuestions: number) => {
-      setProp((props) => {
+      setProp((props: Props) => {
         const newShownQuestions = props.shownQuestions
           ? [...props.shownQuestions]
           : Array(numberOfQuestions).fill(true);
