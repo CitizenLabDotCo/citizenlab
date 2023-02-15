@@ -983,7 +983,7 @@
   "app.containers.InitiativesIndexPage.success": "fertig",
   "app.containers.InitiativesIndexPage.successStoryTitle": "Inspirierende Vorschläge aus anderen Städten",
   "app.containers.InitiativesNewPage.elaborate": "Nimm dir Zeit, um deinen Vorschlag auszuarbeiten. Falls notwendig, entwickle zuerst einen Entwurf und füge deinen vollständigen Vorschlag dann hinzu. Sobald du diesen veröffentlichst, können andere ihn lesen.",
-  "app.containers.InitiativesNewPage.header": "Veröffentliche deinen Vorschlag hier und setze ihn auf die Tagesordnung der {styledOrgName}",
+  "app.containers.InitiativesNewPage.header": "Veröffentliche deinen Vorschlag hier und setze ihn auf die Tagesordnung von {styledOrgName}",
   "app.containers.InitiativesNewPage.locationNotFound": "Wir konnten keine ungefähre Adresse für den von Ihnen gewählten Standort finden. Sie können bestätigen, wie Sie diesen Ort speichern möchten, oder eine Adresse eingeben, um sie zu ändern.",
   "app.containers.InitiativesNewPage.meaningfulTitle": "Wähle einen aussagekräftigen Titel, der deutlich erklärt was dein Vorschlag beinhaltet.",
   "app.containers.InitiativesNewPage.metaDescription": "Reiche einen Vorschlag ein und verleihe deiner Meinung eine Stimme",
