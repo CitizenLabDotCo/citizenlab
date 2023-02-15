@@ -91,7 +91,6 @@ const AdminProjectList = memo<Props>((_props) => {
                       <Fragment key={item.id}>
                         {item.publicationType === 'project' && (
                           <StyledSortableRow
-                            key={item.id}
                             id={item.id}
                             index={index}
                             moveRow={handleDragRow}
@@ -109,7 +108,6 @@ const AdminProjectList = memo<Props>((_props) => {
                         )}
                         {item.publicationType === 'folder' && (
                           <SortableFolderRow
-                            key={item.id}
                             id={item.id}
                             index={index}
                             moveRow={handleDragRow}
