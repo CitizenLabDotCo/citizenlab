@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { Fragment, memo } from 'react';
 
 // style
 import styled from 'styled-components';
@@ -88,7 +88,7 @@ const AdminProjectList = memo<Props>((_props) => {
                 {itemsList.map(
                   (item: IAdminPublicationContent, index: number) => {
                     return (
-                      <>
+                      <Fragment key={item.id}>
                         {item.publicationType === 'project' && (
                           <StyledSortableRow
                             key={item.id}
@@ -120,7 +120,7 @@ const AdminProjectList = memo<Props>((_props) => {
                             publication={item}
                           />
                         )}
-                      </>
+                      </Fragment>
                     );
                   }
                 )}

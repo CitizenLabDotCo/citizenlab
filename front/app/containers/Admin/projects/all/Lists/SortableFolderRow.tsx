@@ -18,7 +18,6 @@ const StyledSortableRow = styled(SortableRow)`
   }
 `;
 interface Props {
-  key: string;
   id: string;
   index: number;
   moveRow: (fromIndex: number, toIndex: number) => void;
@@ -34,7 +33,6 @@ const publicationStatuses: PublicationStatus[] = [
 ];
 
 const SortableFolderRow = ({
-  key,
   id,
   index,
   moveRow,
@@ -61,7 +59,6 @@ const SortableFolderRow = ({
     return (
       <>
         <StyledSortableRow
-          key={key}
           id={id}
           index={index}
           moveRow={moveRow}
