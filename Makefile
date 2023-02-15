@@ -65,10 +65,12 @@ e2e-setup-and-up:
 	make up
 
 # Run it with:
-# make e2e-run-test file=cypress/e2e/about_page.cy.ts
+# make e2e-run-test spec=cypress/e2e/about_page.cy.ts
+# # or specify an entire folder
+# make e2e-run-test spec=cypress/e2e/project_description_builder/sections
 e2e-run-test:
 	cd front && \
-	npm run cypress:run -- --config baseUrl=http://localhost:3000 --spec ${file}
+	npm run cypress:run -- --config baseUrl=http://localhost:3000 --spec ${spec}
 
 # -----------------
 # The following e2e commands use the "ci-env" prefix which means
@@ -86,10 +88,12 @@ e2e-ci-env-setup-and-up:
 	cd e2e && docker-compose up
 
 # Run it with:
-# make e2e-ci-env-run-test file=cypress/e2e/about_page.cy.ts
+# make e2e-ci-env-run-test spec=cypress/e2e/about_page.cy.ts
+# # or specify an entire folder
+# make e2e-ci-env-run-test spec=cypress/e2e/project_description_builder/sections
 e2e-ci-env-run-test:
 	cd e2e && \
-	docker-compose run --rm --name cypress_run front npm run cypress:run -- --config baseUrl=http://e2e.front:3000 --spec ${file}
+	docker-compose run --rm --name cypress_run front npm run cypress:run -- --config baseUrl=http://e2e.front:3000 --spec ${spec}
 
 # =================
 # CircleCI
