@@ -262,6 +262,7 @@ ActiveRecord::Schema.define(version: 2023_02_13_120148) do
     t.jsonb "minimum_label_multiloc", default: {}, null: false
     t.jsonb "maximum_label_multiloc", default: {}, null: false
     t.jsonb "logic", default: {}, null: false
+    t.string "answer_visible_to"
     t.index ["resource_type", "resource_id"], name: "index_custom_fields_on_resource_type_and_resource_id"
   end
 

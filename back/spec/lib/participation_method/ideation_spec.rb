@@ -34,6 +34,25 @@ RSpec.describe ParticipationMethod::Ideation do
     end
   end
 
+  describe '#default_fields' do
+    it 'returns the default ideation fields' do
+      expect(
+        participation_method.default_fields(create(:custom_form, participation_context: project)).map(&:code)
+      ).to eq %w[
+        ideation_section1
+        title_multiloc
+        body_multiloc
+        ideation_section2
+        idea_images_attributes
+        idea_files_attributes
+        ideation_section3
+        topic_ids
+        location_description
+        proposed_budget
+      ]
+    end
+  end
+
   describe '#validate_built_in_fields?' do
     it 'returns true' do
       expect(participation_method.validate_built_in_fields?).to be true
@@ -128,10 +147,35 @@ RSpec.describe ParticipationMethod::Ideation do
     end
   end
 
+  describe 'constraints' do
+    it 'has constraints on built in fields to lock certain values from being changed' do
+      expect(participation_method.constraints.size).to be 8
+      expect(participation_method.constraints.keys).to match_array %i[
+        ideation_section1
+        title_multiloc
+        body_multiloc
+        idea_images_attributes
+        idea_files_attributes
+        topic_ids
+        location_description
+        proposed_budget
+      ]
+    end
+
+    it 'each constraint has locks only on enabled, required & title_multiloc' do
+      participation_method.constraints.each do |_key, value|
+        expect(value.key?(:locks)).to be true
+        valid_locks = %i[enabled required title_multiloc]
+        expect(valid_locks).to include(*value[:locks].keys)
+      end
+    end
+  end
+
   its(:supports_publication?) { is_expected.to be true }
   its(:supports_commenting?) { is_expected.to be true }
   its(:supports_voting?) { is_expected.to be true }
   its(:supports_baskets?) { is_expected.to be true }
+  its(:supports_budget?) { is_expected.to be true }
   its(:supports_status?) { is_expected.to be true }
   its(:supports_assignment?) { is_expected.to be true }
 end

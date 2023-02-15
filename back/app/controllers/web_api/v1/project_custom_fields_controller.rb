@@ -5,14 +5,6 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
   skip_after_action :verify_authorized
   skip_before_action :authenticate_user
 
-  def schema
-    if participation_context_for_form
-      render json: CustomFieldService.new.ui_and_json_multiloc_schemas(AppConfiguration.instance, custom_fields)
-    else
-      send_not_found
-    end
-  end
-
   def json_forms_schema
     if participation_context_for_form
       render json: JsonFormsService.new.input_ui_and_json_multiloc_schemas(custom_fields, current_user, input_term)

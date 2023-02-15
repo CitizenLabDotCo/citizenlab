@@ -41,8 +41,6 @@ module XlsxExport
     end
 
     def visit_multiselect(field)
-      return built_in_topics if field.code == 'topic_ids'
-
       option_values = value_for(field) || []
       return if option_values.empty?
 
@@ -79,6 +77,10 @@ module XlsxExport
       # The field does not capture data, so there is no value.
     end
 
+    def visit_section(field)
+      # The field does not capture data, so there is no value.
+    end
+
     def visit_file_upload(field)
       file_id = value_for(field)
       return unless file_id
@@ -87,13 +89,7 @@ module XlsxExport
       idea_file.file.url
     end
 
-    private
-
-    attr_reader :model, :option_index
-
-    VALUE_SEPARATOR = ', '
-
-    def built_in_topics
+    def visit_topic_ids(_field)
       return if model.topics.empty?
 
       topic_titles = model.topics.map do |topic|
@@ -101,6 +97,12 @@ module XlsxExport
       end
       topic_titles.join(VALUE_SEPARATOR)
     end
+
+    private
+
+    attr_reader :model, :option_index
+
+    VALUE_SEPARATOR = ', '
 
     def built_in_files
       return if model.idea_files.empty?
