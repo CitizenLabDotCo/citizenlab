@@ -2,10 +2,11 @@
 
 module MultiTenancy
   module Templates
-    class Serializer < ::TemplateService
+    class Serializer
       def initialize(tenant)
         super()
         @tenant = tenant
+        @ref_service = TemplateRefService.new
       end
 
       def run

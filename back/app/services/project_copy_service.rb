@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
-class ProjectCopyService < ::TemplateService
+class ProjectCopyService
+  def initialize
+    @ref_service = TemplateRefService.new
+  end
+
   def import(template, folder: nil, local_copy: false)
     service = MultiTenancy::TenantTemplateService.new
     same_template = service.translate_and_fix_locales template
@@ -95,7 +99,7 @@ class ProjectCopyService < ::TemplateService
       end
 
       yml_layout = {
-        'content_buildable_ref' => lookup_ref(layout.content_buildable_id, :project),
+        'content_buildable_ref' => @ref_service.lookup_ref(layout.content_buildable_id, :project),
         'content_buildable_type' => layout.content_buildable_type,
         'code' => layout.code,
         'enabled' => layout.enabled,
@@ -103,7 +107,7 @@ class ProjectCopyService < ::TemplateService
         'created_at' => shift_timestamp(layout.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(layout.updated_at, shift_timestamps)&.iso8601
       }
-      store_ref yml_layout, layout.id, :content_builder_layout
+      @ref_service.store_ref yml_layout, layout.id, :content_builder_layout
       yml_layout
     end
 
@@ -120,7 +124,7 @@ class ProjectCopyService < ::TemplateService
         'created_at' => shift_timestamp(image.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(image.updated_at, shift_timestamps)&.iso8601
       }
-      store_ref yml_layout_image, image.id, :content_builder_layout_image
+      @ref_service.store_ref yml_layout_image, image.id, :content_builder_layout_image
       yml_layout_image
     end
   end
@@ -141,7 +145,7 @@ class ProjectCopyService < ::TemplateService
     custom_form_ids = ([@project.custom_form_id] + @project.phases.map(&:custom_form_id)).compact
     CustomField.where(resource: custom_form_ids).map do |field|
       yml_custom_field = {
-        'resource_ref' => field.resource_id && lookup_ref(field.resource_id, :custom_form),
+        'resource_ref' => field.resource_id && @ref_service.lookup_ref(field.resource_id, :custom_form),
         'key' => field.key,
         'input_type' => field.input_type,
         'title_multiloc' => field.title_multiloc,
@@ -175,7 +179,7 @@ class ProjectCopyService < ::TemplateService
     custom_form_ids = ([@project.custom_form_id] + @project.phases.map(&:custom_form_id)).compact
     CustomFieldOption.where(custom_field: CustomField.where(resource: custom_form_ids)).map do |c|
       yml_custom_field_option = {
-        'custom_field_ref' => lookup_ref(c.custom_field_id, :custom_field),
+        'custom_field_ref' => @ref_service.lookup_ref(c.custom_field_id, :custom_field),
         'key' => c.key,
         'title_multiloc' => c.title_multiloc,
         'ordering' => c.ordering,
@@ -245,7 +249,7 @@ class ProjectCopyService < ::TemplateService
   def yml_project_files(shift_timestamps: 0)
     @project.project_files.map do |p|
       {
-        'project_ref' => lookup_ref(p.project_id, :project),
+        'project_ref' => @ref_service.lookup_ref(p.project_id, :project),
         'ordering' => p.ordering,
         'created_at' => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601,
@@ -258,7 +262,7 @@ class ProjectCopyService < ::TemplateService
   def yml_project_images(shift_timestamps: 0)
     @project.project_images.map do |p|
       {
-        'project_ref' => lookup_ref(p.project_id, :project),
+        'project_ref' => @ref_service.lookup_ref(p.project_id, :project),
         'remote_image_url' => p.image_url,
         'ordering' => p.ordering,
         'created_at' => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
@@ -275,7 +279,7 @@ class ProjectCopyService < ::TemplateService
     @project.phases.map do |phase|
       yml_phase = yml_participation_context phase, shift_timestamps: shift_timestamps
       yml_phase.merge!({
-        'project_ref' => lookup_ref(phase.project_id, :project),
+        'project_ref' => @ref_service.lookup_ref(phase.project_id, :project),
         'title_multiloc' => phase.title_multiloc,
         'description_multiloc' => phase.description_multiloc,
         'start_at' => shift_timestamp(phase.start_at, shift_timestamps, leave_blank: false)&.iso8601,
@@ -300,7 +304,7 @@ class ProjectCopyService < ::TemplateService
   def yml_phase_files(shift_timestamps: 0)
     @project.phases.flat_map(&:phase_files).map do |p|
       {
-        'phase_ref' => lookup_ref(p.phase_id, :phase),
+        'phase_ref' => @ref_service.lookup_ref(p.phase_id, :phase),
         'ordering' => p.ordering,
         'name' => p.name,
         'remote_file_url' => p.file_url,
@@ -314,7 +318,7 @@ class ProjectCopyService < ::TemplateService
     participation_context_ids = [@project.id] + @project.phases.ids
     Polls::Question.where(participation_context_id: participation_context_ids).map do |q|
       yml_question = {
-        'participation_context_ref' => lookup_ref(q.participation_context_id, %i[project phase]),
+        'participation_context_ref' => @ref_service.lookup_ref(q.participation_context_id, %i[project phase]),
         'title_multiloc' => q.title_multiloc,
         'ordering' => q.ordering,
         'created_at' => shift_timestamp(q.created_at, shift_timestamps)&.iso8601,
@@ -331,7 +335,7 @@ class ProjectCopyService < ::TemplateService
     participation_context_ids = [@project.id] + @project.phases.ids
     Polls::Option.left_outer_joins(:question).where(polls_questions: { participation_context_id: participation_context_ids }).map do |o|
       yml_option = {
-        'question_ref' => lookup_ref(o.question_id, :poll_question),
+        'question_ref' => @ref_service.lookup_ref(o.question_id, :poll_question),
         'title_multiloc' => o.title_multiloc,
         'ordering' => o.ordering,
         'created_at' => shift_timestamp(o.created_at, shift_timestamps)&.iso8601,
@@ -346,7 +350,7 @@ class ProjectCopyService < ::TemplateService
     participation_context_ids = [@project.id] + @project.phases.ids
     Volunteering::Cause.where(participation_context_id: participation_context_ids).map do |c|
       yml_cause = {
-        'participation_context_ref' => lookup_ref(c.participation_context_id, %i[project phase]),
+        'participation_context_ref' => @ref_service.lookup_ref(c.participation_context_id, %i[project phase]),
         'title_multiloc' => c.title_multiloc,
         'description_multiloc' => c.description_multiloc,
         'remote_image_url' => c.image_url,
@@ -362,7 +366,7 @@ class ProjectCopyService < ::TemplateService
   def yml_maps_map_configs(shift_timestamps: 0)
     CustomMaps::MapConfig.where(project_id: @project.id).map do |map_config|
       yml_map_config = {
-        'project_ref' => lookup_ref(map_config.project_id, :project),
+        'project_ref' => @ref_service.lookup_ref(map_config.project_id, :project),
         'center_geojson' => map_config.center_geojson,
         'zoom_level' => map_config.zoom_level&.to_f,
         'tile_provider' => map_config.tile_provider,
@@ -377,7 +381,7 @@ class ProjectCopyService < ::TemplateService
   def yml_maps_layers(shift_timestamps: 0)
     (@project.map_config&.layers || []).map do |layer|
       yml_layer = {
-        'map_config_ref' => lookup_ref(layer.map_config_id, :maps_map_config),
+        'map_config_ref' => @ref_service.lookup_ref(layer.map_config_id, :maps_map_config),
         'title_multiloc' => layer.title_multiloc,
         'geojson' => layer.geojson,
         'default_enabled' => layer.default_enabled,
@@ -392,7 +396,7 @@ class ProjectCopyService < ::TemplateService
   def yml_maps_legend_items(shift_timestamps: 0)
     (@project.map_config&.legend_items || []).map do |legend_item|
       {
-        'map_config_ref' => lookup_ref(legend_item.map_config_id, :maps_map_config),
+        'map_config_ref' => @ref_service.lookup_ref(legend_item.map_config_id, :maps_map_config),
         'title_multiloc' => legend_item.title_multiloc,
         'color' => legend_item.color,
         'ordering' => legend_item.ordering,
@@ -453,8 +457,8 @@ class ProjectCopyService < ::TemplateService
     Basket.where(participation_context_id: participation_context_ids).map do |b|
       yml_basket = {
         'submitted_at' => shift_timestamp(b.submitted_at, shift_timestamps)&.iso8601,
-        'user_ref' => lookup_ref(b.user_id, :user),
-        'participation_context_ref' => lookup_ref(b.participation_context_id, %i[project phase]),
+        'user_ref' => @ref_service.lookup_ref(b.user_id, :user),
+        'participation_context_ref' => @ref_service.lookup_ref(b.participation_context_id, %i[project phase]),
         'created_at' => shift_timestamp(b.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(b.updated_at, shift_timestamps)&.iso8601
       }
@@ -466,7 +470,7 @@ class ProjectCopyService < ::TemplateService
   def yml_events(shift_timestamps: 0)
     @project.events.map do |event|
       yml_event = {
-        'project_ref' => lookup_ref(event.project_id, :project),
+        'project_ref' => @ref_service.lookup_ref(event.project_id, :project),
         'title_multiloc' => event.title_multiloc,
         'description_multiloc' => event.description_multiloc,
         'location_multiloc' => event.location_multiloc,
@@ -492,7 +496,7 @@ class ProjectCopyService < ::TemplateService
   def yml_event_files(shift_timestamps: 0)
     @project.events.flat_map(&:event_files).map do |e|
       {
-        'event_ref' => lookup_ref(e.event_id, :event),
+        'event_ref' => @ref_service.lookup_ref(e.event_id, :event),
         'name' => e.name,
         'ordering' => e.ordering,
         'remote_file_url' => e.file_url,
