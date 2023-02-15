@@ -37,8 +37,8 @@ const FolderIcon = styled(Icon)`
 
 // types & services
 import ProjectRow from 'containers/Admin/projects/components/ProjectRow';
-import { colors } from 'utils/styleUtils';
 import PublicationStatusLabel from 'containers/Admin/projects/components/PublicationStatusLabel';
+import { List, Row } from 'components/admin/ResourceList';
 
 const ArrowIcon = styled(Icon)<{ expanded: boolean }>`
   flex: 0 0 24px;
@@ -53,15 +53,11 @@ const ArrowIcon = styled(Icon)<{ expanded: boolean }>`
   `}
 `;
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`;
-
 const FolderRowContent = styled(RowContent)<{
   hasProjects: boolean;
 }>`
+  flex-grow: 1;
+
   ${({ hasProjects }) =>
     hasProjects &&
     `
@@ -69,14 +65,7 @@ const FolderRowContent = styled(RowContent)<{
   `}
 `;
 
-const ProjectRows = styled.div`
-  margin-left: 30px;
-`;
-
-const InFolderProjectRow = styled(ProjectRow)`
-  padding-top: 10px;
-  border-top: 1px solid ${colors.divider};
-`;
+const InFolderProjectRow = styled(ProjectRow)<{ isLast: boolean }>``;
 
 export interface Props {
   publication: IAdminPublicationContent;
@@ -109,74 +98,86 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
 
   if (!isNilOrError(authUser)) {
     return (
-      <Container>
+      <Box display="flex" flexDirection="column" flexGrow={1}>
         <Box
-          width="100%"
           display="flex"
-          alignItems="center"
-          pb={hasProjects && folderOpen ? '12px' : '0'}
+          flexDirection="column"
+          width="100%"
+          alignItems="flex-start"
         >
-          <FolderRowContent
-            className="e2e-admin-adminPublications-list-item"
-            hasProjects={hasProjects}
-            role="button"
-            onClick={toggleExpand}
+          <Box
+            width="100%"
+            display="flex"
+            alignItems="center"
+            pb={hasProjects && folderOpen ? '10px' : '0'}
           >
-            <RowContentInner className="expand primary">
-              {hasProjects && (
-                <ArrowIcon
-                  expanded={hasProjects && folderOpen}
-                  name="chevron-right"
-                />
-              )}
-              <FolderIcon name="folder-outline" />
-              <RowTitle
-                value={publication.attributes.publication_title_multiloc}
-              />
-              <PublicationStatusLabel
-                publicationStatus={publication.attributes.publication_status}
-              />
-            </RowContentInner>
-            <RowButton
-              className={`e2e-admin-edit-project ${
-                publication.attributes.publication_title_multiloc['en-GB'] || ''
-              }`}
-              linkTo={`/admin/projects/folders/${publication.publicationId}`}
-              buttonStyle="secondary"
-              icon="edit"
-              disabled={
-                isBeingDeleted ||
-                !userModeratesFolder(authUser, publication.publicationId)
-              }
-              data-testid="edit-button"
+            <FolderRowContent
+              className="e2e-admin-adminPublications-list-item"
+              hasProjects={hasProjects}
+              role="button"
+              onClick={toggleExpand}
             >
-              <FormattedMessage {...messages.edit} />
-            </RowButton>
-          </FolderRowContent>
-          <FolderMoreActionsMenu
-            folderId={publication.publicationId}
-            setError={setFolderDeletionError}
-          />
-        </Box>
-
-        {folderDeletionError && <Error text={folderDeletionError} />}
-
-        {hasProjects && folderOpen && (
-          <ProjectRows>
-            {folderChildAdminPublications.map((childPublication) => (
-              <InFolderProjectRow
-                publication={childPublication}
-                key={childPublication.id}
-                actions={['manage']}
-                showMoreActions={userModeratesFolder(
-                  authUser,
-                  publication.publicationId
+              <RowContentInner className="expand primary">
+                {hasProjects && (
+                  <ArrowIcon
+                    expanded={hasProjects && folderOpen}
+                    name="chevron-right"
+                  />
                 )}
-              />
-            ))}
-          </ProjectRows>
+                <FolderIcon name="folder-outline" />
+                <RowTitle
+                  value={publication.attributes.publication_title_multiloc}
+                />
+                <PublicationStatusLabel
+                  publicationStatus={publication.attributes.publication_status}
+                />
+              </RowContentInner>
+              <RowButton
+                className={`e2e-admin-edit-project ${
+                  publication.attributes.publication_title_multiloc['en-GB'] ||
+                  ''
+                }`}
+                linkTo={`/admin/projects/folders/${publication.publicationId}`}
+                buttonStyle="secondary"
+                icon="edit"
+                disabled={
+                  isBeingDeleted ||
+                  !userModeratesFolder(authUser, publication.publicationId)
+                }
+                data-testid="edit-button"
+              >
+                <FormattedMessage {...messages.edit} />
+              </RowButton>
+            </FolderRowContent>
+            <FolderMoreActionsMenu
+              folderId={publication.publicationId}
+              setError={setFolderDeletionError}
+            />
+          </Box>
+
+          {folderDeletionError && <Error text={folderDeletionError} />}
+        </Box>
+        {hasProjects && folderOpen && (
+          <Box ml="30px">
+            <List>
+              {folderChildAdminPublications.map((childPublication, index) => (
+                <Row>
+                  <InFolderProjectRow
+                    publication={childPublication}
+                    key={childPublication.id}
+                    actions={['manage']}
+                    showMoreActions={userModeratesFolder(
+                      authUser,
+                      publication.publicationId
+                    )}
+                    isLast={folderChildAdminPublications.length === index + 1}
+                  />
+                </Row>
+              ))}
+            </List>
+          </Box>
         )}
-      </Container>
+      </Box>
     );
   }
 
