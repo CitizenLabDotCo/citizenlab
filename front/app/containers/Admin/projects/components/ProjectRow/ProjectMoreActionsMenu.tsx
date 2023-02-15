@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import messages from '../messages';
 import { copyProject, deleteProject } from 'services/projects';
@@ -17,6 +17,8 @@ export interface Props {
 const ProjectMoreActionsMenu = ({ projectId, setError }: Props) => {
   const { formatMessage } = useIntl();
   const authUser = useAuthUser();
+  const [isCopying, setIsCopying] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   if (isNilOrError(authUser)) return null;
 
   const handleCallbackError = async (
@@ -33,26 +35,32 @@ const ProjectMoreActionsMenu = ({ projectId, setError }: Props) => {
 
   const copyAction = {
     handler: async () => {
+      setIsCopying(true);
       await handleCallbackError(
         () => copyProject(projectId),
         formatMessage(messages.copyProjectError)
       );
+      setIsCopying(false);
     },
     label: formatMessage(messages.copyProjectButton),
     icon: 'copy' as const,
+    isLoading: isCopying,
   };
 
   const deleteAction = {
     handler: async () => {
       if (window.confirm(formatMessage(messages.deleteProjectConfirmation))) {
+        setIsDeleting(true);
         await handleCallbackError(
           () => deleteProject(projectId),
           formatMessage(messages.deleteProjectError)
         );
+        setIsDeleting(false);
       }
     },
     label: formatMessage(messages.deleteProjectButtonFull),
     icon: 'delete' as const,
+    isLoading: isDeleting,
   };
 
   const actions: IAction[] = [];

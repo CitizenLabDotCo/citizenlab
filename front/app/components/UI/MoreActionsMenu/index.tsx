@@ -3,7 +3,12 @@ import React, { useState } from 'react';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // Components
-import { Box, Icon, IconNames } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Icon,
+  IconNames,
+  Spinner,
+} from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
 // Styling
@@ -95,19 +100,12 @@ const ListItem = styled.button`
   }
 `;
 
-const IconWrapper = styled.div`
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  margin-left: 10px;
-`;
-
 export interface IAction {
   label: string | JSX.Element;
   handler: () => void;
   icon?: IconNames;
   name?: string;
+  isLoading?: boolean;
 }
 
 export interface Props {
@@ -163,7 +161,7 @@ const MoreActionsMenu = (props: Props) => {
         content={
           <List className="e2e-more-actions-list">
             {actions.map((action, index) => {
-              const { handler, label, icon, name } = action;
+              const { handler, label, icon, name, isLoading } = action;
 
               return (
                 <ListItem
@@ -173,10 +171,21 @@ const MoreActionsMenu = (props: Props) => {
                   className={name ? `e2e-action-${name}` : undefined}
                 >
                   {label}
-                  {icon && (
-                    <IconWrapper>
+                  {icon && isLoading === false && (
+                    <Box
+                      width="20px"
+                      height="20px"
+                      display="flex"
+                      alignItems="center"
+                      ml="12px"
+                    >
                       <Icon name={icon} fill="white" />
-                    </IconWrapper>
+                    </Box>
+                  )}
+                  {isLoading && (
+                    <Box ml="12px">
+                      <Spinner color="white" size="20px" />
+                    </Box>
                   )}
                 </ListItem>
               );
