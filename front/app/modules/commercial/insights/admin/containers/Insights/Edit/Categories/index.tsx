@@ -28,24 +28,17 @@ import clHistory from 'utils/cl-router/history';
 import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';
 
 // hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
-import useInsightsInputsCount from 'modules/commercial/insights/hooks/useInsightsInputsCount';
-import useDetectedCategories from 'modules/commercial/insights/hooks/useInsightsDetectedCategories';
+
+// api
+import useCategories from 'modules/commercial/insights/api/categories/useCategories';
+import useAddCategory from 'modules/commercial/insights/api/categories/useAddCategory';
+import useDeleteCategory from 'modules/commercial/insights/api/categories/useDeleteCategory';
+import useDeleteAllCategories from 'modules/commercial/insights/api/categories/useDeleteAllCategories';
+import useStat from 'modules/commercial/insights/api/stats/useStat';
 
 // intl
 import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
-
-// types
-import { CLErrors } from 'typings';
-
-// services
-import {
-  addInsightsCategory,
-  deleteInsightsCategories,
-  deleteInsightsCategory,
-} from 'modules/commercial/insights/services/insightsCategories';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -128,25 +121,37 @@ const Categories = ({
   params: { viewId },
   location: { query, pathname },
 }: WrappedComponentProps & WithRouterProps) => {
-  const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
+  const [name, setName] = useState<string | null>();
+  const { mutate: addCategory, isLoading, error, reset } = useAddCategory();
 
-  const [loadingAdd, setLoadingAdd] = useState(false);
-  const [loadingReset, setLoadingReset] = useState(false);
-  const [errors, setErrors] = useState<CLErrors | undefined>();
+  const { mutate: deleteCategory } = useDeleteCategory();
+
+  const selectRecentlyPosted = () => {
+    clHistory.push({
+      pathname,
+      search: stringify(
+        { ...query, pageNumber: 1, category: undefined, processed: false },
+        { addQueryPrefix: true }
+      ),
+    });
+  };
+
+  const {
+    mutate: deleteAllCategories,
+    isLoading: isDeleteAllCategoriesLoading,
+  } = useDeleteAllCategories();
   const [isDropdownOpened, setDropdownOpened] = useState(false);
 
-  const allInputsCount = useInsightsInputsCount(viewId, { processed: true });
-  const uncategorizedInputsCount = useInsightsInputsCount(viewId, {
+  const { data: allInputsCount } = useStat(viewId, { processed: true });
+  const { data: uncategorizedInputsCount } = useStat(viewId, {
     categories: [''],
     processed: true,
   });
-  const recentlyPostedInputsCount = useInsightsInputsCount(viewId, {
+  const { data: recentlyPostedInputsCount } = useStat(viewId, {
     processed: false,
   });
-  const detectedCategories = useDetectedCategories(viewId);
-  const categories = useInsightsCategories(viewId);
 
-  const [name, setName] = useState<string | null>();
+  const { data: categories } = useCategories(viewId);
 
   if (isNilOrError(categories)) {
     return null;
@@ -154,19 +159,17 @@ const Categories = ({
 
   const onChangeName = (value: string) => {
     setName(value);
-    setErrors(undefined);
+    reset();
   };
 
-  const handleCategorySubmit = async () => {
+  const handleCategorySubmit = () => {
     if (name) {
-      setLoadingAdd(true);
-      try {
-        await addInsightsCategory({ insightsViewId: viewId, name });
-      } catch (errors) {
-        setErrors(errors.json.errors);
-      }
-      setLoadingAdd(false);
-      setName('');
+      addCategory(
+        { viewId, category: { name } },
+        {
+          onSuccess: () => setName(''),
+        }
+      );
     }
   };
 
@@ -200,16 +203,6 @@ const Categories = ({
     });
   };
 
-  const selectRecentlyPosted = () => {
-    clHistory.push({
-      pathname,
-      search: stringify(
-        { ...query, pageNumber: 1, category: undefined, processed: false },
-        { addQueryPrefix: true }
-      ),
-    });
-  };
-
   const inputsCategoryFilter = getInputsCategoryFilter(
     query.category,
     query.processed
@@ -226,17 +219,13 @@ const Categories = ({
   const handleResetCategories = async () => {
     const deleteMessage = formatMessage(messages.resetCategoriesConfimation);
     closeDropdown();
-    setLoadingReset(true);
+
     if (window.confirm(deleteMessage)) {
-      try {
-        await deleteInsightsCategories(viewId);
-        selectRecentlyPosted();
-      } catch {
-        // Do nothing
-      }
+      deleteAllCategories(viewId, {
+        onSuccess: selectRecentlyPosted,
+      });
     }
     trackEventByName(tracks.resetCategories);
-    setLoadingReset(false);
   };
 
   const handleDeleteCategory =
@@ -247,20 +236,22 @@ const Categories = ({
           messages.deleteCategoryConfirmation
         );
         if (window.confirm(deleteMessage)) {
-          try {
-            await deleteInsightsCategory(viewId, categoryId);
-            if (query.category === categoryId) {
-              clHistory.replace({
-                pathname,
-                search: stringify(
-                  { ...query, category: undefined },
-                  { addQueryPrefix: true }
-                ),
-              });
+          deleteCategory(
+            { viewId, categoryId },
+            {
+              onSuccess: (categoryId) => {
+                if (query.category === categoryId) {
+                  clHistory.replace({
+                    pathname,
+                    search: stringify(
+                      { ...query, category: undefined },
+                      { addQueryPrefix: true }
+                    ),
+                  });
+                }
+              },
             }
-          } catch {
-            // Do nothing
-          }
+          );
         }
       }
     };
@@ -293,7 +284,7 @@ const Categories = ({
           <span> {formatMessage(messages.allInput)}</span>
           {!isNilOrError(allInputsCount) && (
             <span data-testid="insightsAllInputsCount">
-              {allInputsCount.count}
+              {allInputsCount.data.count}
             </span>
           )}
         </CategoryButton>
@@ -312,7 +303,7 @@ const Categories = ({
           <span>{formatMessage(messages.recentlyPosted)}</span>
           {!isNilOrError(recentlyPostedInputsCount) && (
             <span data-testid="insightsRecentlyPostedInputsCount">
-              {recentlyPostedInputsCount.count}
+              {recentlyPostedInputsCount.data.count}
             </span>
           )}
         </CategoryButton>
@@ -331,7 +322,7 @@ const Categories = ({
           <span>{formatMessage(messages.notCategorized)}</span>
           {!isNilOrError(uncategorizedInputsCount) && (
             <span data-testid="insightsUncategorizedInputsCount">
-              {uncategorizedInputsCount.count}
+              {uncategorizedInputsCount.data.count}
             </span>
           )}
         </CategoryButton>
@@ -360,7 +351,7 @@ const Categories = ({
           bgHoverColor="transparent"
           pr="0"
           onClick={toggleDropdown}
-          processing={loadingReset}
+          processing={isDeleteAllCategoriesLoading}
           data-testid="insightsResetMenu"
         />
         <Dropdown
@@ -399,30 +390,17 @@ const Categories = ({
           ml="4px"
           p="8px"
           onClick={handleCategorySubmit}
-          disabled={!name || loadingAdd}
+          disabled={!name || isLoading}
         >
-          {loadingAdd ? <Spinner size="22px" /> : <StyledPlus>+</StyledPlus>}
+          {isLoading ? <Spinner size="22px" /> : <StyledPlus>+</StyledPlus>}
         </Button>
       </Box>
       <div>
-        {errors && (
-          <Error apiErrors={errors['name']} fieldName="category_name" />
+        {error && (
+          <Error apiErrors={error.errors['name']} fieldName="category_name" />
         )}
       </div>
-      {nlpFeatureFlag &&
-        !isNilOrError(detectedCategories) &&
-        detectedCategories.length > 0 && (
-          <Button
-            buttonStyle="white"
-            mb="8px"
-            textColor={colors.primary}
-            linkTo={`/admin/reporting/insights/${viewId}/detect`}
-            data-testid="insightsDetectCategories"
-          >
-            {formatMessage(messages.detectCategories)}
-          </Button>
-        )}
-      {categories.length === 0 ? (
+      {categories.data.length === 0 ? (
         <CategoryInfoBox data-testid="insightsNoCategories">
           <p>
             <FormattedMessage
@@ -434,7 +412,7 @@ const Categories = ({
           </p>
         </CategoryInfoBox>
       ) : (
-        categories.map((category) => (
+        categories.data.map((category) => (
           <div data-testid="insightsCategory" key={category.id}>
             <CategoryButtonWithIcon
               bgColor={
