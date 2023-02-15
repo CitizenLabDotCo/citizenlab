@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, Fragment } from 'react';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -28,54 +28,50 @@ const ModeratorProjectList = memo(() => {
     rootLevelAdminPublications &&
     rootLevelAdminPublications.length > 0
   ) {
-    if (rootLevelAdminPublications && rootLevelAdminPublications.length > 0) {
-      return (
-        <>
-          <ListHeader>
-            <HeaderTitle>
-              <FormattedMessage {...messages.existingProjects} />
-            </HeaderTitle>
-          </ListHeader>
+    return (
+      <>
+        <ListHeader>
+          <HeaderTitle>
+            <FormattedMessage {...messages.existingProjects} />
+          </HeaderTitle>
+        </ListHeader>
 
-          <List>
-            {rootLevelAdminPublications.map((adminPublication, index) => {
-              return (
-                !isProjectFoldersEnabled ||
-                (!adminPublication.relationships.parent.data && (
-                  <>
-                    {adminPublication.publicationType === 'project' && (
-                      <Row
-                        key={index}
-                        id={adminPublication.id}
-                        isLastItem={
-                          index === rootLevelAdminPublications.length - 1
-                        }
-                      >
-                        <ProjectRow
-                          publication={adminPublication}
-                          actions={['manage']}
-                          showMoreActions={false}
-                        />
-                      </Row>
-                    )}
-                    {adminPublication.publicationType === 'folder' && (
-                      <NonSortableFolderRow
-                        key={index}
-                        id={adminPublication.id}
-                        isLastItem={
-                          index === rootLevelAdminPublications.length - 1
-                        }
-                        publication={adminPublication}
-                      />
-                    )}
-                  </>
-                ))
-              );
-            })}
-          </List>
-        </>
-      );
-    }
+        <List>
+          {rootLevelAdminPublications.map((adminPublication, index) => {
+            const adminPublicationId = adminPublication.id;
+
+            return (
+              <Fragment key={adminPublicationId}>
+                {adminPublication.publicationType === 'project' && (
+                  <Row
+                    key={index}
+                    id={adminPublicationId}
+                    isLastItem={index === rootLevelAdminPublications.length - 1}
+                  >
+                    <ProjectRow
+                      publication={adminPublication}
+                      actions={['manage']}
+                      showMoreActions={false}
+                    />
+                  </Row>
+                )}
+                {isProjectFoldersEnabled &&
+                  adminPublication.publicationType === 'folder' && (
+                    <NonSortableFolderRow
+                      key={index}
+                      id={adminPublicationId}
+                      isLastItem={
+                        index === rootLevelAdminPublications.length - 1
+                      }
+                      publication={adminPublication}
+                    />
+                  )}
+              </Fragment>
+            );
+          })}
+        </List>
+      </>
+    );
   }
 
   return null;
