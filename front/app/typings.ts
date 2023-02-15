@@ -158,6 +158,10 @@ export interface CLErrorsJSON {
   };
 }
 
+export type RHFErrors =
+  | { message?: string; error?: string; type?: string }
+  | undefined;
+
 export interface ImageSizes {
   small: string | null;
   medium: string | null;
