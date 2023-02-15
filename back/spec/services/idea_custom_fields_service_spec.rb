@@ -327,7 +327,56 @@ describe IdeaCustomFieldsService do
         expect(title_field.errors.errors.length).to eq 3
       end
 
-      # TODO: Add in tests for all field constraints
+      it 'returns errors if body locked attributes are different from default' do
+        body_field = custom_form.custom_fields.find_by(code: 'body_multiloc')
+        body_field.enabled = false
+        body_field.required = false
+        body_field.title_multiloc = { en: 'Changed value' }
+        service.validate_constraints_against_defaults(body_field)
+
+        expect(body_field.errors.errors.length).to eq 3
+      end
+
+      it 'returns errors if images locked attributes are different from default' do
+        images_field = custom_form.custom_fields.find_by(code: 'idea_images_attributes')
+        images_field.enabled = false
+        images_field.title_multiloc = { en: 'Changed value' }
+        service.validate_constraints_against_defaults(images_field)
+
+        expect(images_field.errors.errors.length).to eq 2
+      end
+
+      it 'returns errors if files locked attributes are different from default' do
+        files_field = custom_form.custom_fields.find_by(code: 'idea_files_attributes')
+        files_field.title_multiloc = { en: 'Changed value' }
+        service.validate_constraints_against_defaults(files_field)
+
+        expect(files_field.errors.errors.length).to eq 1
+      end
+
+      it 'returns errors if topic_ids locked attributes are different from default' do
+        topic_ids_field = custom_form.custom_fields.find_by(code: 'topic_ids')
+        topic_ids_field.title_multiloc = { en: 'Changed value' }
+        service.validate_constraints_against_defaults(topic_ids_field)
+
+        expect(topic_ids_field.errors.errors.length).to eq 1
+      end
+
+      it 'returns errors if location locked attributes are different from default' do
+        location_field = custom_form.custom_fields.find_by(code: 'location_description')
+        location_field.title_multiloc = { en: 'Changed value' }
+        service.validate_constraints_against_defaults(location_field)
+
+        expect(location_field.errors.errors.length).to eq 1
+      end
+
+      it 'returns errors if proposed budget locked attributes are different from default' do
+        proposed_budget_field = custom_form.custom_fields.find_by(code: 'proposed_budget')
+        proposed_budget_field.title_multiloc = { en: 'Changed value' }
+        service.validate_constraints_against_defaults(proposed_budget_field)
+
+        expect(proposed_budget_field.errors.errors.length).to eq 1
+      end
     end
 
     describe 'validate_constraints_against_updates' do
@@ -345,10 +394,7 @@ describe IdeaCustomFieldsService do
 
       it 'only returns 1 error for section 1 even if locked title is changed' do
         section1_field = custom_form.custom_fields.find_by(code: 'ideation_section1')
-        valid_params = {
-          enabled: false,
-          title_multiloc: { en: 'Changed value' }
-        }
+        valid_params = { enabled: false, title_multiloc: { en: 'Changed value' } }
         service.validate_constraints_against_updates(section1_field, valid_params)
 
         expect(section1_field.errors.errors.length).to eq 1
@@ -356,17 +402,59 @@ describe IdeaCustomFieldsService do
 
       it 'returns errors if title locked attributes are changed from previous values' do
         title_field = custom_form.custom_fields.find_by(code: 'title_multiloc')
-        bad_params = {
-          enabled: false,
-          required: false,
-          title_multiloc: { en: 'Changed value' }
-        }
+        bad_params = { enabled: false, required: false, title_multiloc: { en: 'Changed value' } }
         service.validate_constraints_against_updates(title_field, bad_params)
 
         expect(title_field.errors.errors.length).to eq 3
       end
 
-      # TODO: Add in tests for all field constraints
+      it 'returns errors if body locked attributes are changed from previous values' do
+        body_field = custom_form.custom_fields.find_by(code: 'body_multiloc')
+        bad_params = { enabled: false, required: false, title_multiloc: { en: 'Changed value' } }
+        service.validate_constraints_against_updates(body_field, bad_params)
+
+        expect(body_field.errors.errors.length).to eq 3
+      end
+
+      it 'returns errors if images locked attributes are changed from previous values' do
+        images_field = custom_form.custom_fields.find_by(code: 'idea_images_attributes')
+        bad_params = { enabled: false, title_multiloc: { en: 'Changed value' } }
+        service.validate_constraints_against_updates(images_field, bad_params)
+
+        expect(images_field.errors.errors.length).to eq 2
+      end
+
+      it 'returns errors if files locked attributes are changed from previous values' do
+        files_field = custom_form.custom_fields.find_by(code: 'idea_files_attributes')
+        bad_params = { title_multiloc: { en: 'Changed value' } }
+        service.validate_constraints_against_updates(files_field, bad_params)
+
+        expect(files_field.errors.errors.length).to eq 1
+      end
+
+      it 'returns errors if topic_ids locked attributes are changed from previous values' do
+        topic_ids_field = custom_form.custom_fields.find_by(code: 'topic_ids')
+        bad_params = { title_multiloc: { en: 'Changed value' } }
+        service.validate_constraints_against_updates(topic_ids_field, bad_params)
+
+        expect(topic_ids_field.errors.errors.length).to eq 1
+      end
+
+      it 'returns errors if location locked attributes are changed from previous values' do
+        location_field = custom_form.custom_fields.find_by(code: 'location_description')
+        bad_params = { title_multiloc: { en: 'Changed value' } }
+        service.validate_constraints_against_updates(location_field, bad_params)
+
+        expect(location_field.errors.errors.length).to eq 1
+      end
+
+      it 'returns errors if proposed budget locked attributes are changed from previous values' do
+        proposed_budget_field = custom_form.custom_fields.find_by(code: 'proposed_budget')
+        bad_params = { title_multiloc: { en: 'Changed value' } }
+        service.validate_constraints_against_updates(proposed_budget_field, bad_params)
+
+        expect(proposed_budget_field.errors.errors.length).to eq 1
+      end
     end
   end
 
