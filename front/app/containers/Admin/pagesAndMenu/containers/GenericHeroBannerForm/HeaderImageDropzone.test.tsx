@@ -1,6 +1,7 @@
 import React from 'react';
 import HeaderImageDropzone from './HeaderImageDropzone';
 import { render, screen, waitFor, fireEvent } from 'utils/testUtils/rtl';
+import { UploadFile } from 'typings';
 
 const file = new File(['file'], 'file.jpeg', {
   type: 'image/jpeg',
@@ -72,7 +73,7 @@ describe('HeaderImageDropzone', () => {
     const mockUploadFile = {
       ...file,
       ...mockUploadFileParams,
-    };
+    } as UploadFile;
 
     render(
       <HeaderImageDropzone
