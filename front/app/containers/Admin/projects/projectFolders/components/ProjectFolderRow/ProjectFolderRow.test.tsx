@@ -111,7 +111,7 @@ jest.mock('hooks/useAdminPublications', () => {
 const props: Props = {
   publication: folderPublication,
   toggleFolder: jest.fn,
-  folderOpen: true,
+  isFolderOpen: true,
   hasProjects: true,
 };
 

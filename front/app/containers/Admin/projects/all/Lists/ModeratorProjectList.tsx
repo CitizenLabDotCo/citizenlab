@@ -39,30 +39,23 @@ const ModeratorProjectList = memo(() => {
         <List>
           {rootLevelAdminPublications.map((adminPublication, index) => {
             const adminPublicationId = adminPublication.id;
+            const isLastItem = index === rootLevelAdminPublications.length - 1;
 
             return (
               <Fragment key={adminPublicationId}>
                 {adminPublication.publicationType === 'project' && (
-                  <Row
-                    key={index}
-                    id={adminPublicationId}
-                    isLastItem={index === rootLevelAdminPublications.length - 1}
-                  >
+                  <Row id={adminPublicationId} isLastItem={isLastItem}>
                     <ProjectRow
                       publication={adminPublication}
                       actions={['manage']}
-                      showMoreActions={false}
                     />
                   </Row>
                 )}
                 {isProjectFoldersEnabled &&
                   adminPublication.publicationType === 'folder' && (
                     <NonSortableFolderRow
-                      key={index}
                       id={adminPublicationId}
-                      isLastItem={
-                        index === rootLevelAdminPublications.length - 1
-                      }
+                      isLastItem={isLastItem}
                       publication={adminPublication}
                     />
                   )}

@@ -59,17 +59,23 @@ const FolderRowContent = styled(RowContent)<{
 export interface Props {
   publication: IAdminPublicationContent;
   toggleFolder: () => void;
-  folderOpen: boolean;
+  isFolderOpen: boolean;
   hasProjects: boolean;
 }
 
 const ProjectFolderRow = memo<Props>(
-  ({ publication, toggleFolder, folderOpen, hasProjects }) => {
+  ({ publication, toggleFolder, isFolderOpen, hasProjects }) => {
     const authUser = useAuthUser();
 
     const [folderDeletionError, setFolderDeletionError] = useState<
       string | null
     >(null);
+
+    const handleClick = () => {
+      if (hasProjects) {
+        toggleFolder();
+      }
+    };
 
     if (!isNilOrError(authUser)) {
       return (
@@ -85,12 +91,12 @@ const ProjectFolderRow = memo<Props>(
                 className="e2e-admin-adminPublications-list-item"
                 hasProjects={hasProjects}
                 role="button"
-                onClick={toggleFolder}
+                onClick={handleClick}
               >
                 <RowContentInner className="expand primary">
                   {hasProjects && (
                     <ArrowIcon
-                      expanded={hasProjects && folderOpen}
+                      expanded={hasProjects && isFolderOpen}
                       name="chevron-right"
                     />
                   )}

@@ -11,7 +11,6 @@ import { Row } from 'components/admin/ResourceList';
 import useAuthUser from 'hooks/useAuthUser';
 import FolderChildProjects from './FolderChildProjects';
 interface Props {
-  key: number;
   id: string;
   isLastItem: boolean;
   publication: IAdminPublicationContent;
@@ -23,14 +22,14 @@ const publicationStatuses: PublicationStatus[] = [
   'archived',
 ];
 
-const SortableFolderRow = ({ key, id, isLastItem, publication }: Props) => {
+const SortableFolderRow = ({ id, isLastItem, publication }: Props) => {
   const authUser = useAuthUser();
+
+  if (isNilOrError(authUser)) {
+    return null;
+  }
+
   const [folderOpen, setFolderOpen] = useState(true);
-
-  const toggleFolder = () => {
-    setFolderOpen((folderOpen) => !folderOpen);
-  };
-
   const { list: folderChildAdminPublications } = useAdminPublications({
     childrenOfId: publication.relationships.publication.data.id,
     publicationStatusFilter: publicationStatuses,
@@ -39,28 +38,28 @@ const SortableFolderRow = ({ key, id, isLastItem, publication }: Props) => {
     !isNilOrError(folderChildAdminPublications) &&
     folderChildAdminPublications.length > 0;
 
-  if (!isNilOrError(authUser)) {
-    return (
-      <>
-        <Row key={key} id={id} isLastItem={isLastItem}>
-          <ProjectFolderRow
-            publication={publication}
-            toggleFolder={toggleFolder}
-            folderOpen={folderOpen}
-            hasProjects={hasProjects}
-          />
-        </Row>
-        {hasProjects && folderOpen && (
-          <FolderChildProjects
-            folderChildAdminPublications={folderChildAdminPublications}
-            authUser={authUser}
-          />
-        )}
-      </>
-    );
-  }
+  const toggleFolder = () => {
+    setFolderOpen((folderOpen) => !folderOpen);
+  };
 
-  return null;
+  return (
+    <>
+      <Row id={id} isLastItem={isLastItem}>
+        <ProjectFolderRow
+          publication={publication}
+          toggleFolder={toggleFolder}
+          isFolderOpen={folderOpen}
+          hasProjects={hasProjects}
+        />
+      </Row>
+      {hasProjects && folderOpen && (
+        <FolderChildProjects
+          folderChildAdminPublications={folderChildAdminPublications}
+          authUser={authUser}
+        />
+      )}
+    </>
+  );
 };
 
 export default SortableFolderRow;

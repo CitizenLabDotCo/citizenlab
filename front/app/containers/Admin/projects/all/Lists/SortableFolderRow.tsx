@@ -67,7 +67,7 @@ const SortableFolderRow = ({
           <ProjectFolderRow
             publication={publication}
             toggleFolder={toggleFolder}
-            folderOpen={folderOpen}
+            isFolderOpen={folderOpen}
             hasProjects={hasProjects}
           />
         </StyledSortableRow>
