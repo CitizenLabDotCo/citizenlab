@@ -23,7 +23,7 @@ module MultiTenancy
           Project.where(participation_method: participation_method).all.sample
         end
 
-        return unless project && !project.custom_form
+        return if !project || project.custom_form
 
         custom_form = CustomForm.create!(participation_context: project)
         participation_context = Factory.instance.participation_method_for(project)
