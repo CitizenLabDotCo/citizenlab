@@ -19,10 +19,9 @@ const FolderChildProjects = ({
     <Box pl="60px">
       <List>
         {folderChildAdminPublications.map((childPublication) => (
-          <Row>
+          <Row key={childPublication.id}>
             <ProjectRow
               publication={childPublication}
-              key={childPublication.id}
               actions={['manage']}
               showMoreActions={userModeratesFolder(
                 authUser,
