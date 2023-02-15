@@ -67,7 +67,6 @@ describe('HeaderImageDropzone', () => {
       base64: 'test',
       url: 'test',
       remote: true,
-      path: 'file.jpeg',
     };
 
     const mockUploadFile = {
