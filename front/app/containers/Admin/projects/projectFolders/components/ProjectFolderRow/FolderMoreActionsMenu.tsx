@@ -52,7 +52,7 @@ const FolderMoreActionsMenu = ({ folderId, setError }: Props) => {
     actions.push(deleteAction);
   }
 
-  if (!actions.length) {
+  if (actions.length === 0) {
     return null;
   }
 
