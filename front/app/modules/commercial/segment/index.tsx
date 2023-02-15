@@ -1,14 +1,4 @@
-import {
-  IDestinationConfig,
-  registerDestination,
-} from 'components/ConsentManager/destinations';
-import {
-  bufferUntilInitialized,
-  events$,
-  initializeFor,
-  pageChanges$,
-  tenantInfo,
-} from 'utils/analytics';
+import { events$, pageChanges$, tenantInfo } from 'utils/analytics';
 import snippet from '@segment/snippet';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { authUserStream } from 'services/auth';
@@ -26,25 +16,7 @@ import { ModuleConfiguration } from 'utils/moduleUtils';
 export const CL_SEGMENT_API_KEY =
   process.env.SEGMENT_API_KEY || 'sIoYsVoTTCBmrcs7yAz1zRFRGhAofBlg';
 
-declare module 'components/ConsentManager/destinations' {
-  export interface IDestinationMap {
-    segment: 'segment';
-  }
-
-  interface IConsentManagerFeatureMap {
-    segment: 'segment';
-  }
-}
-
-const destinationConfig: IDestinationConfig = {
-  key: 'segment',
-  category: 'analytics',
-  feature_flag: 'segment',
-  name: (tenant) => {
-    const destinations = tenant.attributes.settings.segment?.destinations;
-    return `Segment${destinations ? ` (${destinations})` : ''}`;
-  },
-};
+// Add feature flag to enable/disable segment
 
 const integrations = (user: IUser | null) => {
   const output = {
@@ -64,21 +36,19 @@ const integrations = (user: IUser | null) => {
 
 const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
-    initializeFor('segment').subscribe(() => {
-      const code = snippet.min({
-        host: 'cdn.segment.com',
-        load: true,
-        page: false,
-        apiKey: CL_SEGMENT_API_KEY,
-      });
-
-      // eslint-disable-next-line no-eval
-      eval(code);
+    const code = snippet.min({
+      host: 'cdn.segment.com',
+      load: true,
+      page: false,
+      apiKey: CL_SEGMENT_API_KEY,
     });
+
+    // eslint-disable-next-line no-eval
+    eval(code);
 
     combineLatest([
       currentAppConfigurationStream().observable,
-      bufferUntilInitialized('segment', authUserStream().observable),
+      authUserStream().observable,
     ]).subscribe(([tenant, user]) => {
       if (
         !isNilOrError(tenant) &&
@@ -136,7 +106,7 @@ const configuration: ModuleConfiguration = {
     combineLatest([
       currentAppConfigurationStream().observable,
       authUserStream().observable,
-      bufferUntilInitialized('segment', events$),
+      events$,
     ]).subscribe(([tenant, user, event]) => {
       if (!isNilOrError(tenant)) {
         if (isFunction(get(window, 'analytics.track'))) {
@@ -156,7 +126,7 @@ const configuration: ModuleConfiguration = {
     combineLatest([
       currentAppConfigurationStream().observable,
       authUserStream().observable,
-      bufferUntilInitialized('segment', pageChanges$),
+      pageChanges$,
     ]).subscribe(([tenant, user, pageChange]) => {
       if (!isNilOrError(tenant) && isFunction(get(window, 'analytics.page'))) {
         analytics.page(
@@ -172,8 +142,6 @@ const configuration: ModuleConfiguration = {
         );
       }
     });
-
-    registerDestination(destinationConfig);
   },
 };
 
