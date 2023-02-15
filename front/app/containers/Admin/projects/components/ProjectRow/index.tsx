@@ -70,7 +70,7 @@ const ProjectRow = ({
     canModerateProject(publication.publicationId, { data: authUser });
 
   return (
-    <Container className={className}>
+    <Container className={className} data-testid="projectRow">
       <RowContent className="e2e-admin-projects-list-item">
         <RowContentInner className="expand primary">
           <RowTitle value={publication.attributes.publication_title_multiloc} />

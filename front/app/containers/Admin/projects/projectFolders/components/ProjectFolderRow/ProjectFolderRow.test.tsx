@@ -1,13 +1,17 @@
 import React from 'react';
 import ProjectFolderRow, { Props } from '.';
 import { render, screen } from 'utils/testUtils/rtl';
-import { IAdminPublicationContent } from 'hooks/useAdminPublications';
+import {
+  IAdminPublicationContent,
+  IUseAdminPublicationsOutput,
+} from 'hooks/useAdminPublications';
 import { IUserData } from 'services/users';
 
-const publication: IAdminPublicationContent = {
+const folderId = 'folderId';
+const folderPublication: IAdminPublicationContent = {
   id: '1',
-  publicationType: 'project' as const,
-  publicationId: 'publicationId',
+  publicationType: 'folder' as const,
+  publicationId: folderId,
   attributes: {
     ordering: 0,
     depth: 0,
@@ -16,18 +20,63 @@ const publication: IAdminPublicationContent = {
     publication_title_multiloc: {},
     publication_description_multiloc: {},
     publication_description_preview_multiloc: {},
-    publication_slug: 'project_1',
+    publication_slug: 'folder_1',
   },
   relationships: {
     children: { data: [] },
     parent: {},
     publication: {
       data: {
-        id: '1',
-        type: 'project',
+        id: folderId,
+        type: 'folder',
       },
     },
   },
+};
+
+const projectId = 'projectId';
+const mockFolderChildAdminPublicationsList: IAdminPublicationContent[] = [
+  {
+    id: '2',
+    publicationType: 'project' as const,
+    publicationId: projectId,
+    attributes: {
+      ordering: 0,
+      depth: 0,
+      publication_status: 'published',
+      visible_children_count: 0,
+      publication_title_multiloc: {},
+      publication_description_multiloc: {},
+      publication_description_preview_multiloc: {},
+      publication_slug: 'project_1',
+    },
+    relationships: {
+      children: { data: [] },
+      parent: {
+        data: {
+          type: 'folder',
+          id: folderPublication.id,
+        },
+      },
+      publication: {
+        data: {
+          id: projectId,
+          type: 'project',
+        },
+      },
+    },
+  },
+];
+const mockFolderChildAdminPublications: IUseAdminPublicationsOutput = {
+  hasMore: false,
+  loadingInitial: false,
+  loadingMore: false,
+  list: mockFolderChildAdminPublicationsList,
+  onLoadMore: jest.fn,
+  onChangeTopics: jest.fn,
+  onChangeSearch: jest.fn,
+  onChangeAreas: jest.fn,
+  onChangePublicationStatus: jest.fn,
 };
 
 // Needed to render moreActionsMenu
@@ -54,16 +103,28 @@ jest.mock('hooks/useAuthUser', () => {
   return () => mockUserData;
 });
 
+// Needed to render folder with project inside
+jest.mock('hooks/useAdminPublications', () => {
+  return () => mockFolderChildAdminPublications;
+});
+
 const props: Props = {
-  publication,
+  publication: folderPublication,
 };
 
 describe('ProjectFolderRow', () => {
+  it('renders the project row inside', () => {
+    render(<ProjectFolderRow {...props} />);
+
+    const projectRows = screen.getAllByTestId('projectRow');
+    expect(projectRows.length).toEqual(1);
+  });
+
   describe('When user is an admin', () => {
     it('shows the edit button', () => {
       render(<ProjectFolderRow {...props} />);
 
-      const editButton = screen.getByRole('button', { name: 'Edit' });
+      const editButton = screen.getByTestId('folder-row-edit-button');
       expect(editButton).toBeInTheDocument();
     });
 
@@ -75,36 +136,48 @@ describe('ProjectFolderRow', () => {
     });
   });
 
-  describe('When user is a folder moderator', () => {
-    it('shows the edit button for a folder the user is a moderator of', () => {
+  describe('When user is a folder moderator of the folder', () => {
+    it('shows the edit button', () => {
       mockUserData.attributes.roles = [
         {
           type: 'project_folder_moderator',
-          project_folder_id: publication.publicationId,
+          project_folder_id: folderPublication.publicationId,
         },
       ];
 
       render(<ProjectFolderRow {...props} />);
-      const editButton = screen.getByRole('button', { name: 'Edit' });
+      const editButton = screen.getByTestId('folder-row-edit-button');
       expect(editButton).toBeInTheDocument();
     });
 
-    it('shows a disabled edit button for a folder when the user is not a moderator of', async () => {
+    it('shows the MoreActionsMenu', () => {
+      render(<ProjectFolderRow {...props} />);
+
+      const moreActionsMenu = screen.getByTestId('folderMoreActionsMenu');
+      expect(moreActionsMenu).toBeInTheDocument();
+    });
+  });
+
+  describe('When user is a folder moderator but not of the folder', () => {
+    it('shows a disabled edit button', async () => {
       mockUserData.attributes.roles = [
         { type: 'project_folder_moderator', project_folder_id: 'testId' },
       ];
       render(<ProjectFolderRow {...props} />);
 
-      const editButton = screen.getByTestId('edit-button');
+      const editButton = screen.getByTestId('folder-row-edit-button');
       expect(editButton).toHaveAttribute('disabled');
     });
 
     it('does not show the MoreActionsMenu', () => {
       mockUserData.attributes.roles = [
-        { type: 'project_folder_moderator', project_folder_id: 'folderId' },
+        {
+          type: 'project_folder_moderator',
+          project_folder_id: folderPublication.publicationId,
+        },
       ];
-
       render(<ProjectFolderRow {...props} />);
+
       const moreOptions = screen.queryByTestId('moreOptionsButton');
       expect(moreOptions).toBeNull();
     });

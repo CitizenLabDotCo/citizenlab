@@ -148,7 +148,7 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
                 isBeingDeleted ||
                 !userModeratesFolder(authUser, publication.publicationId)
               }
-              data-testid="edit-button"
+              data-testid="folder-row-edit-button"
             >
               <FormattedMessage {...messages.edit} />
             </RowButton>
