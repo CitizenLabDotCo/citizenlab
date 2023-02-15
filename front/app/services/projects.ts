@@ -367,7 +367,11 @@ export async function copyProject(projectId: string) {
   const response = await streams.add(`${apiEndpoint}/${projectId}/copy`, {});
 
   await streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/projects`, `${API_PATH}/admin_publications`],
+    apiEndpoint: [
+      `${API_PATH}/projects`,
+      `${API_PATH}/admin_publications`,
+      `${API_PATH}/users/me`,
+    ],
   });
   return response;
 }
