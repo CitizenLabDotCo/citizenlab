@@ -4,9 +4,12 @@ require 'rails_helper'
 
 # rubocop:disable RSpec/DescribeClass
 describe 'rake cl2back:clean_up_image_records' do
-  before { load_rake_tasks_if_not_loaded }
+  before do
+    load_rake_tasks_if_not_loaded
+    ENV['EXECUTE_CLEAN_UP_UNUSED_IMAGE_RECORDS'] = 'true'
+  end
 
-  let(:task) { Rake::Task['cl2back:clean_up_image_records'] }
+  let(:task) { Rake::Task['cl2back:clean_up_unused_image_records'] }
 
   describe 'when processing layout_images' do
     let(:layout) { create(:layout, code: 'project_description') }
