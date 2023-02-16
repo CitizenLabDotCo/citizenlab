@@ -24,6 +24,7 @@ export const ideationConfig: FormBuilderConfig = {
   isLogicEnabled: false,
   isEditPermittedAfterSubmissions: true,
   alwaysShowCustomFields: false,
+  isFormPhaseSpecific: false,
 
   groupingType: 'section',
   getWarningNotice: () => {

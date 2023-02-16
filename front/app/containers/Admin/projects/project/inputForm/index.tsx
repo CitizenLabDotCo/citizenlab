@@ -13,11 +13,21 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // hooks
 import { useParams } from 'react-router-dom';
+import usePhases from 'hooks/usePhases';
+import { isNilOrError } from 'utils/helperUtils';
+import { getCurrentPhase, IPhaseData } from 'services/phases';
 
 export const IdeaForm = () => {
   const { projectId } = useParams() as {
     projectId: string;
   };
+
+  const phases = usePhases(projectId);
+  let phaseToUse;
+  if (!isNilOrError(phases)) {
+    phaseToUse = getCurrentOrLastIdeationPhase(phases);
+  }
+
   return (
     <Box gap="0px" flexWrap="wrap" width="100%" display="flex">
       <Box width="100%">
@@ -31,7 +41,11 @@ export const IdeaForm = () => {
       <Box>
         <Button
           onClick={() => {
-            clHistory.push(`/admin/projects/${projectId}/ideaform/edit`);
+            phaseToUse
+              ? clHistory.push(
+                  `/admin/projects/${projectId}/phases/${phaseToUse.id}/ideaform/edit`
+                )
+              : clHistory.push(`/admin/projects/${projectId}/ideaform/edit`);
           }}
           width="auto"
           icon="edit"
@@ -42,6 +56,26 @@ export const IdeaForm = () => {
       </Box>
     </Box>
   );
+};
+
+const isIdeationContext = (participationContext: string | undefined) => {
+  return (
+    participationContext === 'ideation' || participationContext === 'budgeting'
+  );
+};
+
+const getCurrentOrLastIdeationPhase = (phases: IPhaseData[]) => {
+  const currentPhase = getCurrentPhase(phases);
+  if (isIdeationContext(currentPhase?.attributes.participation_method)) {
+    return currentPhase;
+  }
+  const ideationPhases = phases.filter((phase) =>
+    isIdeationContext(phase.attributes.participation_method)
+  );
+  if (ideationPhases.length > 0) {
+    return ideationPhases.pop();
+  }
+  return undefined;
 };
 
 export default IdeaForm;

@@ -206,6 +206,10 @@ const createAdminProjectsRoutes = () => {
             element: <IdeaFormBuilder />,
           },
           {
+            path: 'phases/:phaseId/ideaform/edit',
+            element: <IdeaFormBuilder />,
+          },
+          {
             path: 'native-survey/edit',
             element: <SurveyFormBuilder />,
           },
