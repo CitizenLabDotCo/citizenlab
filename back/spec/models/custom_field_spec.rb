@@ -379,9 +379,9 @@ RSpec.describe CustomField, type: :model do
         expect(section.title_multiloc['en']).to eq expected_english_title
       end
 
-      it 'returns a title containing the first phase input term if there is not a current ideation/budget phase' do
+      it 'returns a title containing the last phase input term if there is not a current ideation/budget phase' do
         project = create :project_with_future_phases
-        project.phases.first.update! input_term: 'contribution'
+        project.phases.last.update! input_term: 'contribution'
         resource = build :custom_form, participation_context: project
 
         ignored_title = { en: 'anything' }
