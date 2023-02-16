@@ -16,10 +16,9 @@ namespace :cl2back do
         # ContentBuilder layout_images
         # Find all image codes used in all layouts for all projects, then destroy any layout_image with code not in use.
         image_codes = []
-        service = ContentBuilder::LayoutService.new
 
         ContentBuilder::Layout.all.each do |layout|
-          image_codes += service.images(layout).pluck(:code)
+          image_codes += ContentBuilder::LayoutService.new.images(layout).pluck(:code)
         end
 
         ContentBuilder::LayoutImage.all.each do |image|
