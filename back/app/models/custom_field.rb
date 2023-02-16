@@ -181,20 +181,9 @@ class CustomField < ApplicationRecord
   # Special behaviour for ideation section 1
   def title_multiloc
     if code == 'ideation_section1'
-      input_term = resource.participation_context.input_term || ParticipationContext::DEFAULT_INPUT_TERM
-
-      phases = resource.participation_context.phases
-      if phases.present?
-        now = Time.zone.now
-        ideation_types = %w[ideation budgeting]
-        ideation_phases = phases.select { |phase| ideation_types.include? phase.participation_method }
-        current_phase = ideation_phases.each.detect { |phase| phase.start_at <= now && now <= phase.end_at }
-        input_term = if current_phase
-          current_phase.input_term
-        else # there is no current ideation phase, return the first phase input term by default
-          phases.first.input_term
-        end
-      end
+      project = resource.participation_context
+      phase = TimelineService.new.current_or_first_ideation_phase project
+      input_term = phase ? phase.input_term : project.input_term || ParticipationContext::DEFAULT_INPUT_TERM
 
       key = "custom_forms.categories.main_content.#{input_term}.title"
       MultilocService.new.i18n_to_multiloc key
