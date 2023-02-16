@@ -4,7 +4,7 @@ import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { authUserStream } from 'services/auth';
 import { combineLatest } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
-import { get, isFunction } from 'lodash-es';
+import { get, isFunction, isNil } from 'lodash-es';
 import { IUser } from 'services/users';
 import {
   isAdmin,
@@ -54,7 +54,7 @@ const configuration: ModuleConfiguration = {
 
       // Ensure segment should be enabled but snippet hasn't been loaded already
       // in case of a user signing out and back in
-      if (isSegmentEnabled && !isFunction(get(window, 'analytics'))) {
+      if (isSegmentEnabled && isNil(get(window, 'analytics'))) {
         const code = snippet.min({
           host: 'cdn.segment.com',
           load: true,
