@@ -58,13 +58,23 @@ export const IdeaForm = () => {
   );
 };
 
+const isIdeationContext = (participationContext: string | undefined) => {
+  if (
+    participationContext === 'ideation' ||
+    participationContext === 'budgeting'
+  ) {
+    return true;
+  }
+  return false;
+};
+
 const getCurrentOrLastIdeationPhase = (phases: IPhaseData[]) => {
   const currentPhase = getCurrentPhase(phases);
-  if (currentPhase?.attributes.participation_method === 'ideation') {
+  if (isIdeationContext(currentPhase?.attributes.participation_method)) {
     return currentPhase;
   }
-  const ideationPhases = phases.filter(
-    (phase) => phase.attributes.participation_method === 'ideation'
+  const ideationPhases = phases.filter((phase) =>
+    isIdeationContext(phase.attributes.participation_method)
   );
   if (ideationPhases.length > 0) {
     return ideationPhases.pop();
