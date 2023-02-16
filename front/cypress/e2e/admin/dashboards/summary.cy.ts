@@ -13,12 +13,12 @@ describe('/admin route', () => {
     cy.get('.e2e-users-by-time-cumulative-chart')
       .find('.recharts-wrapper')
       .find('.recharts-surface');
-    cy.get('.e2e-active-users-chart')
+    cy.get('#e2e-active-users-chart')
       .find('.recharts-wrapper')
       .find('.recharts-surface');
-    cy.get('.e2e-ideas-chart');
-    cy.get('.e2e-comments-chart');
-    cy.get('.e2e-votes-chart');
+    cy.get('#e2e-ideas-chart');
+    cy.get('#e2e-comments-chart');
+    cy.get('#e2e-votes-chart');
     cy.get('.e2e-resource-by-topic-chart');
     cy.get('.e2e-resource-by-project-chart');
   });

@@ -57,7 +57,7 @@ const PostByTimeCard = ({
         resolution: currentResolution,
       }}
     >
-      <Box display="flex">
+      <Box display="flex" id="e2e-ideas-chart">
         <Box flexGrow={1} display="flex" justifyContent="flex-end">
           <Box pt="8px" height="200px" width="100%" maxWidth="800px" mt="-1px">
             <Chart
