@@ -20,7 +20,7 @@ jest.mock('hooks/useAppConfigurationLocales', () =>
 
 describe('Form', () => {
   it('Submits changes correctly', async () => {
-    const { container } = render(<Form {...defaultProps} />);
+    render(<Form {...defaultProps} />);
     const user = userEvent.setup();
     const orgNameInputField = screen.getByLabelText(
       'Name of city or organization'
@@ -30,7 +30,8 @@ describe('Form', () => {
     await user.clear(orgNameInputField);
     const newOrgNameNl = 'Mijn stad';
     await user.type(orgNameInputField, newOrgNameNl);
-    await user.click(container.querySelector('button[type="submit"]'));
+    const submitButton = screen.getByRole('button', { name: 'Save' });
+    await user.click(submitButton);
 
     expect(defaultProps.onSubmit).toHaveBeenCalledWith({
       locales: ['en', 'nl-NL'],
@@ -38,5 +39,25 @@ describe('Form', () => {
       organization_site: 'https://mywebsite.com',
     });
     expect(screen.getByTestId('feedbackSuccessMessage')).toBeInTheDocument();
+  });
+
+  it('shows the error summary and error message when organization name is missing for one or more locales', async () => {
+    const props: Props = {
+      onSubmit: jest.fn(),
+      defaultValues: {
+        organization_name: { en: '', 'nl-NL': '' },
+        locales: [],
+        organization_site: 'invalid URL',
+      },
+    };
+    render(<Form {...props} />);
+    const user = userEvent.setup();
+
+    const submitButton = screen.getByRole('button', { name: 'Save' });
+    await user.click(submitButton);
+
+    expect(screen.getAllByTestId('error-message')).toHaveLength(4);
+    expect(screen.getByTestId('feedbackErrorMessage')).toBeInTheDocument();
+    expect(props.onSubmit).not.toHaveBeenCalled();
   });
 });
