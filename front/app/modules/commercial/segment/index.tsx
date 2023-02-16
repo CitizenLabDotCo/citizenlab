@@ -13,8 +13,7 @@ import {
 } from 'services/permissions/roles';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
-export const CL_SEGMENT_API_KEY =
-  process.env.SEGMENT_API_KEY || 'sIoYsVoTTCBmrcs7yAz1zRFRGhAofBlg';
+const CL_SEGMENT_API_KEY = process.env.SEGMENT_API_KEY;
 
 // Add feature flag to enable/disable segment
 
