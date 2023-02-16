@@ -41,7 +41,7 @@ describe('Form', () => {
     expect(screen.getByTestId('feedbackSuccessMessage')).toBeInTheDocument();
   });
 
-  it('shows the error summary and error message when organization name is missing for one or more locales', async () => {
+  it('shows the error summary and error messages', async () => {
     const props: Props = {
       onSubmit: jest.fn(),
       defaultValues: {
