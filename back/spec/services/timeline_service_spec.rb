@@ -51,6 +51,44 @@ describe TimelineService do
     end
   end
 
+  describe 'current_or_last_ideation_phase' do
+    let(:project) { create(:project) }
+
+    it 'returns the currently active ideation phase of the project' do
+      active_phase = create_active_phase(project, 'ideation')
+      5.times { create_inactive_phase(project, 'ideation') }
+      expect(service.current_or_last_ideation_phase(project)&.id).to eq(active_phase.id)
+    end
+
+    it 'returns the currently active budgeting phase of the project' do
+      active_phase = create_active_phase(project, 'budgeting')
+      5.times { create_inactive_phase(project, 'ideation') }
+      expect(service.current_or_last_ideation_phase(project)&.id).to eq(active_phase.id)
+    end
+
+    it 'returns the last ideation phase of the project if there is no currently active phase' do
+      5.times { create_inactive_phase(project, 'ideation') }
+      expect(service.current_or_last_ideation_phase(project)&.id).to eq(project.phases.last.id)
+    end
+
+    it 'returns the last budgeting phase of the project if there is no currently active phase' do
+      4.times { create_inactive_phase(project, 'ideation') }
+      create_inactive_phase(project, 'budgeting')
+      expect(service.current_or_last_ideation_phase(project)&.id).to eq(project.phases.last.id)
+      expect(service.current_or_last_ideation_phase(project)&.participation_method).to eq('budgeting')
+    end
+
+    it 'returns nil if there are no phases' do
+      expect(service.current_or_last_ideation_phase(project)).to be_nil
+    end
+
+    it 'returns nil if there are no ideation phases' do
+      create_active_phase(project, 'native_survey')
+      5.times { create_inactive_phase(project, 'poll') }
+      expect(service.current_or_last_ideation_phase(project)).to be_nil
+    end
+  end
+
   describe 'current_and_future_phases' do
     it 'returns an array of current and future phases' do
       project = create(:project_with_current_phase)
@@ -128,14 +166,15 @@ describe TimelineService do
     end
   end
 
-  def create_active_phase(project)
+  def create_active_phase(project, participation_method = 'ideation')
     now = Time.now.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
     create(:phase, project: project,
+      participation_method: participation_method,
       start_at: now - 2.weeks,
       end_at: now)
   end
 
-  def create_inactive_phase(project)
-    create(:phase_sequence, project: project)
+  def create_inactive_phase(project, participation_method = 'ideation')
+    create(:phase_sequence, project: project, participation_method: participation_method)
   end
 end

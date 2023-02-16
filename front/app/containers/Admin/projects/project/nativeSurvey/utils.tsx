@@ -35,6 +35,7 @@ export const nativeSurveyConfig: FormBuilderConfig = {
   isLogicEnabled: true,
   isEditPermittedAfterSubmissions: false,
   alwaysShowCustomFields: true,
+  isFormPhaseSpecific: true,
 
   groupingType: 'page',
   getDeletionNotice: (projectId: string) => {
