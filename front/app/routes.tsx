@@ -46,6 +46,7 @@ const ReportViewerPage = lazy(
 const ReportPrintPage = lazy(
   () => import('containers/Admin/reporting/containers/PrintReport')
 );
+const NewSignUpModal = lazy(() => import('containers/NewSignUpModal'));
 
 export default function createRoutes() {
   return [
@@ -306,6 +307,14 @@ export default function createRoutes() {
           ),
         },
         ...moduleConfiguration.routes.citizen,
+        {
+          path: 'new-sign-up-modal',
+          element: (
+            <PageLoading>
+              <NewSignUpModal />
+            </PageLoading>
+          ),
+        },
       ],
     },
   ];

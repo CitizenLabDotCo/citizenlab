@@ -4,19 +4,25 @@ import React from 'react';
 import useStepMachine from './useStepMachine';
 
 // components
+import { Box, Text } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
 import SignUpAuthProviders from './steps/SignUpAuthProviders';
 import SignInAuthProviders from './steps/SignInAuthProviders';
 import EmailSignUp from './steps/EmailSignUp';
+import EmailConfirmation from './steps/EmailConfirmation';
 
 const Modal = () => {
   const { currentStep, send } = useStepMachine();
 
   return (
-    <>
+    <Box p="16px" border="1px solid grey">
       {currentStep === 'inactive' && (
-        <button onClick={() => send(currentStep, 'START_SIGN_UP_FLOW')}>
+        <Button
+          width="auto"
+          onClick={() => send(currentStep, 'START_SIGN_UP_FLOW')}
+        >
           Sign up
-        </button>
+        </Button>
       )}
 
       {currentStep === 'sign-up-auth-providers' && (
@@ -38,10 +44,12 @@ const Modal = () => {
         ))}
 
       {currentStep === 'email-confirmation' ||
-        (currentStep === 'email-confirmation:submitting' && <></>)}
+        (currentStep === 'email-confirmation:submitting' && (
+          <EmailConfirmation currentStep={currentStep} send={send} />
+        ))}
 
-      {currentStep === 'success' && 'Success!'}
-    </>
+      {currentStep === 'success' && <Text>Success!</Text>}
+    </Box>
   );
 };
 
