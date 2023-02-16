@@ -135,10 +135,10 @@ hr:
       section1:
         description:
       section2:
-        title: Slike i prilozi
+        title: Images and attachments
         description:
       section3:
-        title: Pojedinosti
+        title: Details
         description:
   custom_forms:
     categories:
@@ -195,7 +195,7 @@ hr:
       author_fullname: 'Ime autora'
       author_email: 'E-pošta autora'
       author_id: 'ID autora'
-      budget: 'Proračun'
+      budget: 'Budget'
       created_at: 'Predano'
       published_at: 'Objavljeno'
       comments_count: 'Komentari'
