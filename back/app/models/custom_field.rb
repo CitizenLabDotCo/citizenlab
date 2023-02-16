@@ -185,18 +185,14 @@ class CustomField < ApplicationRecord
 
       phases = resource.participation_context.phases
       if phases.present?
-        if phases.size == 1
-          input_term = phases[0].input_term
-        else
-          now = Time.zone.now
-          ideation_types = %w[ideation budgeting]
-          ideation_phases = phases.select { |phase| ideation_types.include? phase.participation_method }
-          current_phase = ideation_phases.each.detect { |phase| phase.start_at <= now && now <= phase.end_at }
-          input_term = if current_phase
-            current_phase.input_term
-          else # there is no current phase
-            current_phase.last.input_term
-          end
+        now = Time.zone.now
+        ideation_types = %w[ideation budgeting]
+        ideation_phases = phases.select { |phase| ideation_types.include? phase.participation_method }
+        current_phase = ideation_phases.each.detect { |phase| phase.start_at <= now && now <= phase.end_at }
+        input_term = if current_phase
+          current_phase.input_term
+        else # there is no current ideation phase, return the first phase input term by default
+          phases.first.input_term
         end
       end
 
