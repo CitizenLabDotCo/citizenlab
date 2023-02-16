@@ -7,10 +7,11 @@ namespace :cl2back do
       puts "Processing images for tenant #{tenant.name}"
 
       Apartment::Tenant.switch(tenant.schema_name) do
+        # ContentBuilder layout_images
+        # Find all image codes used in all layouts for all projects, then destroy any layout_image with code not in use.
+
         image_codes = []
         service = ContentBuilder::LayoutService.new
-
-        # ContentBuilder layout_images
 
         Project.all.each do |project|
           project.content_builder_layouts.each do |layout|
@@ -19,9 +20,14 @@ namespace :cl2back do
         end
 
         ContentBuilder::LayoutImage.all.each do |image|
-          if image_codes.exclude?(image.code) || image.image.blank?
+          if image.image.blank?
             image.destroy!
-            # Add logging here + LogActivityJob? (maybe log a summary?)
+            puts " destroyed layout_image with blank image field: #{image.id}"
+          end
+
+          if image_codes.exclude?(image.code)
+            image.destroy!
+            puts " destroyed layout_image with unused code field: #{image.id}"
           end
         end
 
@@ -34,8 +40,9 @@ namespace :cl2back do
 
           if image.image.blank?
             image.destroy!
+            puts " destroyed text_image with blank image field: #{image.id}, imageable_id: #{image.imageable.id}"
           else
-            # check all multiloc values for the text_image.text_reference
+            # check all imageable item multiloc values for the text_image.text_reference
             reference_found = false
 
             imageable.attributes.each do |k, v|
@@ -48,7 +55,10 @@ namespace :cl2back do
               end
             end
 
-            image.destroy! if reference_found == false
+            if reference_found == false
+              image.destroy!
+              puts " destroyed text_image with unused text_reference: #{image.id}, imageable_id: #{image.imageable.id}"
+            end
           end
         end
       end
