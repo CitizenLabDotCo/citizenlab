@@ -126,11 +126,12 @@ const Form = ({ defaultValues, onSubmit }: Props) => {
           </SectionField>
 
           <SectionField>
-            <Label>
+            <Label htmlFor="organization_site">
               <FormattedMessage {...messages.urlTitle} />
               <IconTooltip content={formatMessage(messages.urlTitleTooltip)} />
             </Label>
             <Input
+              id="organization_site"
               type="text"
               name="organization_site"
               placeholder="https://..."
