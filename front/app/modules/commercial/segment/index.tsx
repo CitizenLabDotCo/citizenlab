@@ -32,6 +32,8 @@ const integrations = (user: IUser | null) => {
   return output;
 };
 
+let isSegmentEnabled = false;
+
 const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
     if (!CL_SEGMENT_API_KEY) return;
@@ -41,25 +43,31 @@ const configuration: ModuleConfiguration = {
       authUserStream().observable,
     ]).subscribe(([tenant, user]) => {
       const segmentFeatureFlag = tenant.data.attributes.settings.segment;
-      const shouldLoadSegment =
+      isSegmentEnabled = Boolean(
         // Feature flag is in place
         segmentFeatureFlag?.allowed &&
-        segmentFeatureFlag.enabled &&
-        // User is admin or moderator
-        !isNilOrError(user) &&
-        (isAdmin(user) || isModerator(user));
+          segmentFeatureFlag?.enabled &&
+          // User is admin or moderator
+          !isNilOrError(user) &&
+          (isAdmin(user) || isModerator(user) || isSuperAdmin(user))
+      );
 
-      const code = snippet.min({
-        host: 'cdn.segment.com',
-        load: shouldLoadSegment,
-        page: false,
-        apiKey: CL_SEGMENT_API_KEY,
-      });
+      // Ensure segment should be enabled but snippet hasn't been loaded already
+      // in case of a user signing out and back in
+      if (isSegmentEnabled && !isFunction(get(window, 'analytics'))) {
+        const code = snippet.min({
+          host: 'cdn.segment.com',
+          load: true,
+          page: false,
+          apiKey: CL_SEGMENT_API_KEY,
+        });
 
-      // eslint-disable-next-line no-eval
-      eval(code);
+        // eslint-disable-next-line no-eval
+        eval(code);
+      }
 
       if (
+        isSegmentEnabled &&
         !isNilOrError(tenant) &&
         isFunction(get(window, 'analytics.identify')) &&
         isFunction(get(window, 'analytics.group'))
@@ -117,7 +125,7 @@ const configuration: ModuleConfiguration = {
       authUserStream().observable,
       events$,
     ]).subscribe(([tenant, user, event]) => {
-      if (!isNilOrError(tenant)) {
+      if (isSegmentEnabled && !isNilOrError(tenant)) {
         if (isFunction(get(window, 'analytics.track'))) {
           analytics.track(
             event.name,
@@ -137,7 +145,11 @@ const configuration: ModuleConfiguration = {
       authUserStream().observable,
       pageChanges$,
     ]).subscribe(([tenant, user, pageChange]) => {
-      if (!isNilOrError(tenant) && isFunction(get(window, 'analytics.page'))) {
+      if (
+        isSegmentEnabled &&
+        !isNilOrError(tenant) &&
+        isFunction(get(window, 'analytics.page'))
+      ) {
         analytics.page(
           '',
           {
