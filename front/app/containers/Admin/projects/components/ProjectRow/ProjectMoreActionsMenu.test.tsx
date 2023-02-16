@@ -28,9 +28,24 @@ const mockUserData: IUserData = {
     confirmation_required: false,
   },
 };
+
 jest.mock('hooks/useAuthUser', () => {
   return () => mockUserData;
 });
+
+const projectId = 'projectId';
+const folderId = 'folderId';
+const mockProjectData = {
+  id: projectId,
+  type: 'project',
+  attributes: {
+    process_type: 'continuous',
+    title_multiloc: { en: 'Test Project' },
+    slug: 'test',
+    folderId: folderId,
+  },
+};
+jest.mock('hooks/useProject', () => jest.fn(() => mockProjectData));
 
 describe('ProjectMoreActionsMenu', () => {
   describe('When user is an admin', () => {

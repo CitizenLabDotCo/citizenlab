@@ -77,7 +77,6 @@ const SortableFolderRow = ({
       {hasProjects && folderOpen && (
         <FolderChildProjects
           folderChildAdminPublications={folderChildAdminPublications}
-          authUser={authUser}
         />
       )}
     </>

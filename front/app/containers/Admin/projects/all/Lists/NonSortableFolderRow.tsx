@@ -56,7 +56,6 @@ const SortableFolderRow = ({ id, isLastItem, publication }: Props) => {
       {hasProjects && folderOpen && (
         <FolderChildProjects
           folderChildAdminPublications={folderChildAdminPublications}
-          authUser={authUser}
         />
       )}
     </>
