@@ -15,6 +15,9 @@ import {
 import { FormLabel } from 'components/UI/FormComponents';
 import VerificationIcon from '../VerificationIcon';
 import ErrorDisplay from '../ErrorDisplay';
+import { getSubtextElement } from './controlUtils';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // style
 import { colors } from 'utils/styleUtils';
@@ -34,6 +37,7 @@ const LinearScaleControl = ({
   const isSmallerThanXlPhone = useBreakpoint('phone');
   const theme = useTheme();
   const maximum = schema?.maximum;
+  const answerNotPublic = uischema.options?.answer_visible_to === 'admins';
 
   if (!visible) {
     return null;
@@ -52,9 +56,14 @@ const LinearScaleControl = ({
         htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
-        subtextValue={uischema.options?.description}
+        subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
       />
+      {answerNotPublic && (
+        <Text mb="8px" mt="0px" fontSize="s">
+          <FormattedMessage {...messages.notPublic} />
+        </Text>
+      )}
       <Box data-testid="linearScaleControl">
         <Box
           gap={isSmallerThanXlPhone ? '8px' : '12px'}

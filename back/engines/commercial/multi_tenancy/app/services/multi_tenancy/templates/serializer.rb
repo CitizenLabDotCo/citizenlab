@@ -172,6 +172,7 @@ module MultiTenancy
             'updated_at' => field.updated_at.to_s,
             'enabled' => field.enabled,
             'code' => field.code,
+            'answer_visible_to' => field.answer_visible_to,
             'maximum' => field.maximum,
             'minimum_label_multiloc' => field.minimum_label_multiloc,
             'maximum_label_multiloc' => field.maximum_label_multiloc,

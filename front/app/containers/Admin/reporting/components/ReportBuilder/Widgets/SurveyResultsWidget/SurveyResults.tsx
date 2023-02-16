@@ -9,7 +9,7 @@ import useFormResults from 'hooks/useFormResults';
 // components
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import NoData from '../_shared/NoData';
-import FormResultsQuestion from 'containers/Admin/formBuilder/components/FormResults/FormResultsQuestion';
+import FormResultsQuestion from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion';
 import Dot from './Dot';
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 

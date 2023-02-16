@@ -14,6 +14,7 @@ import ErrorDisplay from '../ErrorDisplay';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import styled from 'styled-components';
 import VerificationIcon from '../VerificationIcon';
+import { getSubtextElement } from './controlUtils';
 
 const StyledDateInput = styled(DateInput)`
   flex-grow: 1;
@@ -42,7 +43,7 @@ const DateControl = ({
         htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
-        subtextValue={uischema.options?.description}
+        subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
       />
       <Box display="flex" flexDirection="row">

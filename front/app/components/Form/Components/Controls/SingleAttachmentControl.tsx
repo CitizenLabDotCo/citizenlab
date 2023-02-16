@@ -8,6 +8,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import SingleFileUploader, {
   AttachmentFile,
 } from 'components/Form/Components/SingleFileUploader/SingleFileUploader';
+import { getSubtextElement } from './controlUtils';
 
 const SingleAttachementControl = ({
   uischema,
@@ -44,7 +45,7 @@ const SingleAttachementControl = ({
         htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
-        subtextValue={uischema.options?.description}
+        subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
       />
       <SingleFileUploader

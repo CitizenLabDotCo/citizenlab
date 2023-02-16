@@ -1,7 +1,6 @@
 import { loadModules } from 'utils/moduleUtils';
 
 import smartGroupsConfiguration from './commercial/smart_groups';
-import ideaCustomFieldsConfiguration from './commercial/idea_custom_fields';
 import granularPermissionsConfiguration from './commercial/granular_permissions';
 import ideaAssignmentConfiguration from './commercial/idea_assignment';
 import moderationConfiguration from './commercial/moderation';
@@ -50,10 +49,6 @@ const isEnabled = CITIZENLAB_EE === 'true';
 export default loadModules([
   {
     configuration: smartGroupsConfiguration,
-    isEnabled,
-  },
-  {
-    configuration: ideaCustomFieldsConfiguration,
     isEnabled,
   },
   {
