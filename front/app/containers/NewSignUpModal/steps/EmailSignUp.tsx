@@ -15,6 +15,12 @@ const EmailSignUp = ({ currentStep, send }: Props) => {
     }
   };
 
+  const handleGoBack = () => {
+    if (currentStep === 'email-sign-up') {
+      send(currentStep, 'GO_BACK');
+    }
+  };
+
   return (
     <Box>
       <Text>Email sign up</Text>
@@ -25,6 +31,16 @@ const EmailSignUp = ({ currentStep, send }: Props) => {
         processing={currentStep === 'email-sign-up:submitting'}
       >
         Submit email
+      </Button>
+      <Button
+        mt="12px"
+        width="auto"
+        buttonStyle="secondary"
+        onClick={handleGoBack}
+        disabled={currentStep === 'email-sign-up:submitting'}
+        processing={currentStep === 'email-sign-up:submitting'}
+      >
+        Go back
       </Button>
     </Box>
   );

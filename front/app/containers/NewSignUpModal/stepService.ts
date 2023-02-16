@@ -1,13 +1,8 @@
-import { createMachine, assign, interpret } from 'xstate';
 import {
   accountCreatedSuccessfully,
   emailConfirmationNecessary,
   emailConfirmedSuccessfully,
 } from './checks';
-
-const context = {
-  error: undefined,
-};
 
 const states = {
   inactive: {
@@ -29,6 +24,7 @@ const states = {
   },
   'email-sign-up': {
     on: {
+      GO_BACK: 'sign-up-auth-providers',
       SUBMIT_EMAIL: 'email-sign-up:submitting',
     },
   },
@@ -77,39 +73,7 @@ const services = {
   },
 };
 
-const actions = {
-  onSuccess: assign((_ctx, _event) => ({
-    error: undefined,
-  })),
-  onError: assign((_ctx, _event) => ({
-    error: 'Error!',
-  })),
-};
-
-export type States = typeof states;
-export type Step = keyof States;
-
-const stepMachine = createMachine(
-  {
-    initial: 'inactive' as Step,
-    context,
-    states,
-  },
-  {
-    services,
-    actions,
-  }
-);
-
-export const stepService = interpret(stepMachine);
-stepService.start();
-
-// @ts-ignore
-export const send = <S extends Step, E extends keyof States[S]['on']>(
+export const nextStep = <S extends Step, E extends keyof States[S]>(
   _: S,
   event: E
-): void => {
-  stepService.send(event as any);
-};
-
-export type Send = typeof send;
+): void => {};
