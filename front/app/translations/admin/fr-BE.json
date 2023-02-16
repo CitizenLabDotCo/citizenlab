@@ -1586,7 +1586,7 @@
   "app.containers.IdeasShow.proposedBudgetTitle": "Budget proposé",
   "app.containers.IdeasShow.xDaysLeft": "{x, plural, =0 {jours} one {un jour} other {# jours}}",
   "app.containers.admin.ContentBuilder.aboutBox": "À propos de Box",
-  "app.containers.admin.ContentBuilder.accordion": "Accordéon",
+  "app.containers.admin.ContentBuilder.accordion": "Accordion",
   "app.containers.admin.ContentBuilder.accordionDefaultOpenLabel": "Ouvrir par défaut",
   "app.containers.admin.ContentBuilder.accordionTextLabel": "Texte",
   "app.containers.admin.ContentBuilder.accordionTextValue": "Il s'agit d'un contenu accordion extensible. Vous pouvez le modifier et le formater en utilisant l'éditeur dans le panneau de droite.",

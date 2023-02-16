@@ -1077,7 +1077,7 @@
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip": "Tendrás que añadir el proyecto a una carpeta sobre la que tengas derechos de administrador.",
   "app.containers.AdminPage.ProjectEdit.folderSelectError": "Selecciona una carpeta a la que añadir este proyecto.",
   "app.containers.AdminPage.ProjectEdit.formBuilder.customToolboxTitle": "Contenido personalizado",
-  "app.containers.AdminPage.ProjectEdit.formBuilder.existingSubmissionsWarning": "Las respuestas a este formulario han empezado a llegar. Cambios en el formulario podrían resultar en pérdida de datos y en datos incompletos en los archivos exportados.",
+  "app.containers.AdminPage.ProjectEdit.formBuilder.existingSubmissionsWarning": "Ya han empezado a llegar envíos a este formulario. Los cambios en el formulario pueden dar lugar a la pérdida de datos y a datos incompletos en los archivos exportados.",
   "app.containers.AdminPage.ProjectEdit.formBuilder.successMessage": "Formulario guardado correctamente",
   "app.containers.AdminPage.ProjectEdit.fromATemplate": "Desde una plantilla",
   "app.containers.AdminPage.ProjectEdit.fromScratch": "Desde el principio",

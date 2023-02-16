@@ -1228,7 +1228,7 @@
   "app.containers.AdminPage.ProjectIdeaForm.save": "حفظ",
   "app.containers.AdminPage.ProjectIdeaForm.saveSuccessMessage": "تم حفظ تغييراتك بنجاح.",
   "app.containers.AdminPage.ProjectIdeaForm.saved": "تم الحفظ!",
-  "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "عرض النموذج",
+  "app.containers.AdminPage.ProjectIdeaForm.viewFormLinkCopy": "View form",
   "app.containers.AdminPage.ProjectTimeline.addPhaseButton": "أضِف مرحلة",
   "app.containers.AdminPage.ProjectTimeline.cancelDeleteButtonText": "إلغاء",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "التواريخ",
