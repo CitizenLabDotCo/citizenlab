@@ -1,79 +1,91 @@
-import {
-  accountCreatedSuccessfully,
-  emailConfirmationNecessary,
-  emailConfirmedSuccessfully,
-} from './checks';
+interface Requirements {
+  accountWithEmailCreated: boolean;
+  emailConfirmationRequired: boolean;
+}
 
-const states = {
+type GetRequirements = () => Promise<Requirements>;
+
+type Status = 'pending' | 'error' | 'ok';
+type Error = 'account_creation_failed' | 'email_confirmation_failed';
+
+export interface State {
+  status: Status;
+  error?: Error;
+}
+
+type SetState = (newState: Partial<State>) => void;
+
+const STEPS = {
   inactive: {
-    on: {
-      START_SIGN_IN_FLOW: 'sign-in-auth-providers',
-      START_SIGN_UP_FLOW: 'sign-up-auth-providers',
-    },
+    START_SIGN_IN_FLOW: () => 'sign-in-auth-providers',
+    START_SIGN_UP_FLOW: () => 'sign-up-auth-providers',
   },
   'sign-in-auth-providers': {
-    on: {
-      TOGGLE_FLOW: 'sign-up-auth-providers',
-    },
+    TOGGLE_FLOW: () => 'sign-up-auth-providers',
   },
   'sign-up-auth-providers': {
-    on: {
-      TOGGLE_FLOW: 'sign-in-auth-providers',
-      ENTER_EMAIL_SIGN_UP: 'email-sign-up',
-    },
+    TOGGLE_FLOW: () => 'sign-in-auth-providers',
+    ENTER_EMAIL_SIGN_UP: () => 'email-sign-up',
   },
   'email-sign-up': {
-    on: {
-      GO_BACK: 'sign-up-auth-providers',
-      SUBMIT_EMAIL: 'email-sign-up:submitting',
-    },
-  },
-  'email-sign-up:submitting': {
-    invoke: {
-      src: 'checkIfEmailSubmitSucceeded',
-      onDone: { target: 'maybe(email-confirmation)', actions: 'onSuccess' },
-      onError: { target: 'email-sign-up', actions: 'onError' },
-    },
-  },
-  'maybe(email-confirmation)': {
-    invoke: {
-      src: 'checkIfEmailConfirmationNecessary',
-      onDone: 'email-confirmation',
-      onError: 'success',
+    GO_BACK: () => 'sign-up-auth-providers',
+    SUBMIT_EMAIL: async (
+      getRequirements: GetRequirements,
+      setState: SetState
+    ) => {
+      setState({ status: 'pending' });
+      const { accountWithEmailCreated, emailConfirmationRequired } =
+        await getRequirements();
+
+      if (accountWithEmailCreated) {
+        setState({ status: 'ok' });
+
+        return emailConfirmationRequired ? 'email-confirmation' : 'success';
+      }
+
+      setState({
+        status: 'error',
+        error: 'account_creation_failed',
+      });
+
+      return 'email-sign-up';
     },
   },
   'email-confirmation': {
-    on: {
-      CONFIRM_EMAIL: 'email-confirmation:submitting',
-    },
-  },
-  'email-confirmation:submitting': {
-    invoke: {
-      src: 'checkIfEmailConfirmationSucceeded',
-      onDone: { target: 'success', actions: 'onSuccess' },
-      onError: { target: 'email-confirmation', actions: 'onError' },
+    CONFIRM_EMAIL: async (
+      getRequirements: GetRequirements,
+      setState: SetState
+    ) => {
+      setState({ status: 'pending' });
+      const { emailConfirmationRequired } = await getRequirements();
+
+      if (!emailConfirmationRequired) {
+        setState({ status: 'ok' });
+        return 'success';
+      }
+
+      setState({
+        status: 'error',
+        error: 'email_confirmation_failed',
+      });
+
+      return 'email-confirmation';
     },
   },
   success: {
-    on: {
-      EXIT: 'inactive',
-    },
-  },
-} as const;
-
-const services = {
-  checkIfEmailSubmitSucceeded: async () => {
-    return await accountCreatedSuccessfully();
-  },
-  checkIfEmailConfirmationNecessary: async () => {
-    return await emailConfirmationNecessary();
-  },
-  checkIfEmailConfirmationSucceeded: async () => {
-    return await emailConfirmedSuccessfully();
+    EXIT: () => 'inactive',
   },
 };
 
-export const nextStep = <S extends Step, E extends keyof States[S]>(
-  _: S,
-  event: E
-): void => {};
+type Steps = typeof STEPS;
+export type Step = keyof Steps;
+
+export const getNextStep = async <S extends Step, E extends keyof Steps[S]>(
+  currentStep: S,
+  event: E,
+  getRequirements: GetRequirements,
+  setState: SetState
+) => {
+  // @ts-ignore
+  return await STEPS[currentStep][event](getRequirements, setState);
+};

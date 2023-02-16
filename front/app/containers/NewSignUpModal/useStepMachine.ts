@@ -1,15 +1,15 @@
-import { useState, useEffect } from 'react';
-import { stepService, send, Step } from './stepService';
+import { useState, useCallback } from 'react';
+import { getNextStep, Step, State } from './stepService';
 
 export default function useStepMachine() {
-  const [currentStep, setCurrentStep] = useState<Step>(
-    stepService.initialState.value as Step
-  );
+  const [currentStep, setCurrentStep] = useState<Step>('inactive');
+  const [state, setState] = useState<State>({
+    status: 'pending',
+    error: undefined,
+  });
 
-  useEffect(() => {
-    stepService.onTransition((nextStep) => {
-      setCurrentStep(nextStep.value as Step);
-    });
+  const send = useCallback(async () => {
+    setCurrentStep(getNextStep());
   }, []);
 
   return {
