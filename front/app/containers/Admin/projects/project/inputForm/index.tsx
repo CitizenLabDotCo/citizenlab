@@ -59,17 +59,11 @@ export const IdeaForm = () => {
 };
 
 const isIdeationContext = (participationContext: string | undefined) => {
-  if (
-    participationContext === 'ideation' ||
-    participationContext === 'budgeting'
-  ) {
-    return true;
-  }
-  return false;
+  return (
+    participationContext === 'ideation' || participationContext === 'budgeting'
+  );
 };
-    const isIdeationContext = (participationContext: string | undefined) => {
-      return participationContext === 'ideation' || participationContext === 'budgeting';
-    };```
+
 const getCurrentOrLastIdeationPhase = (phases: IPhaseData[]) => {
   const currentPhase = getCurrentPhase(phases);
   if (isIdeationContext(currentPhase?.attributes.participation_method)) {
