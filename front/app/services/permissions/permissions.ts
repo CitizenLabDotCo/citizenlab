@@ -8,7 +8,7 @@ import {
 } from 'services/appConfiguration';
 import { map } from 'rxjs/operators';
 import useAuthUser from 'hooks/useAuthUser';
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
 
 export interface IRouteItem {
@@ -107,7 +107,7 @@ const usePermission = ({
   context?: any;
 }) => {
   const user = useAuthUser();
-  const appConfig = useAppConfiguration();
+  const { data: appConfig } = useAppConfiguration();
 
   if (!item) {
     return false;
@@ -120,7 +120,7 @@ const usePermission = ({
     return (
       !isNilOrError(user) &&
       !isNilOrError(appConfig) &&
-      rule(item, { data: user }, appConfig, context)
+      rule(item, { data: user }, appConfig?.data, context)
     );
   } else {
     throw `No permission rule is specified on resource '${resourceType}' for action '${action}'`;

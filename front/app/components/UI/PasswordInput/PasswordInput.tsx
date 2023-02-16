@@ -2,7 +2,7 @@ import React, { useState, lazy, Suspense } from 'react';
 import styled from 'styled-components';
 import { Input, IconButton, colors } from '@citizenlab/cl2-component-library';
 import useLocale from 'hooks/useLocale';
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { Props as WrapperProps } from './';
@@ -57,7 +57,7 @@ const PasswordInputComponent = ({
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
   const locale = useLocale();
-  const appConfig = useAppConfiguration();
+  const { data: appConfig } = useAppConfiguration();
   const [showPassword, setShowPassword] = useState(false);
   const [passwordScore, setPasswordScore] = useState<PasswordScore>(0);
   const { minimumLengthError, emptyError } = errors;

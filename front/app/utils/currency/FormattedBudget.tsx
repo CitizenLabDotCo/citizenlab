@@ -1,5 +1,5 @@
 import React from 'react';
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 import { Icon } from '@citizenlab/cl2-component-library';
@@ -24,10 +24,10 @@ const FormattedBudget = ({
   value,
   intl: { formatMessage, formatNumber },
 }: Props & WrappedComponentProps) => {
-  const appConfiguration = useAppConfiguration();
+  const { data: appConfiguration } = useAppConfiguration();
 
   if (!isNilOrError(appConfiguration)) {
-    const currency = appConfiguration.attributes.settings.core.currency;
+    const currency = appConfiguration.data.attributes.settings.core.currency;
 
     // custom implementations for custom currencies
     // see appConfiguration.ts for all currencies

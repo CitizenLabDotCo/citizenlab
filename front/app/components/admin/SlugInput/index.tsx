@@ -1,6 +1,6 @@
 import React from 'react';
 import useLocale from 'hooks/useLocale';
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { Text, Input } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 import Error from 'components/UI/Error';
@@ -32,11 +32,11 @@ const SlugInput = ({
   showSlugChangedWarning,
 }: Props) => {
   const locale = useLocale();
-  const appConfig = useAppConfiguration();
+  const { data: appConfig } = useAppConfiguration();
   const { formatMessage } = useIntl();
 
   if (!isNilOrError(locale) && !isNilOrError(appConfig)) {
-    const hostName = appConfig.attributes.host;
+    const hostName = appConfig.data.attributes.host;
     const previewUrl = `${hostName}/${locale}/${pathnameWithoutSlug}/${slug}`;
 
     return (

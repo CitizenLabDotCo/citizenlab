@@ -6,7 +6,7 @@ import { CLError, Multiloc } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
@@ -44,7 +44,7 @@ const SignUpFieldsSection = styled.div`
 `;
 
 const SettingsRegistrationTab = () => {
-  const appConfig = useAppConfiguration();
+  const { data: appConfig } = useAppConfiguration();
   const userConfirmationIsAllowed = useFeatureFlag({
     name: 'user_confirmation',
     onlyCheckAllowed: true,
@@ -59,7 +59,7 @@ const SettingsRegistrationTab = () => {
 
   useEffect(() => {
     if (!isNilOrError(appConfig)) {
-      setLatestAppConfigSettings(appConfig.attributes.settings);
+      setLatestAppConfigSettings(appConfig.data.attributes.settings);
     }
   }, [appConfig]);
 

@@ -34,7 +34,7 @@ import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 // hooks
 import useLocalize from 'hooks/useLocalize';
 import useAuthUser from 'hooks/useAuthUser';
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 const StyledSection = styled(Section)`
   margin-bottom: 2.5rem;
@@ -75,7 +75,7 @@ const CampaignForm = ({
   intl: { formatMessage },
 }: CampaignFormProps) => {
   const user = useAuthUser();
-  const appConfig = useAppConfiguration();
+  const { data: appConfig } = useAppConfiguration();
   const localize = useLocalize();
 
   const schema = object({
@@ -123,7 +123,7 @@ const CampaignForm = ({
       {
         value: 'organization',
         label: !isNilOrError(appConfig)
-          ? localize(appConfig.attributes.settings.core.organization_name)
+          ? localize(appConfig.data.attributes.settings.core.organization_name)
           : '',
       },
     ];

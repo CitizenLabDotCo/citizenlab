@@ -1,5 +1,5 @@
 import React from 'react';
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
@@ -10,10 +10,10 @@ import messages from './messages';
 const FormattedCurrency = ({
   intl: { formatMessage },
 }: WrappedComponentProps) => {
-  const appConfiguration = useAppConfiguration();
+  const { data: appConfiguration } = useAppConfiguration();
 
   if (!isNilOrError(appConfiguration)) {
-    const currency = appConfiguration.attributes.settings.core.currency;
+    const currency = appConfiguration.data.attributes.settings.core.currency;
 
     // custom implementations for custom currencies
     // see appConfiguration.ts for all currencies

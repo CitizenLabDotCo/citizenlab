@@ -9,7 +9,7 @@ import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
 // hooks
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // components
 import { Image } from '@citizenlab/cl2-component-library';
@@ -31,10 +31,10 @@ const Logo = styled(Image)`
 `;
 
 const TenantLogo = ({ intl: { formatMessage } }: WrappedComponentProps) => {
-  const appConfiguration = useAppConfiguration();
+  const { data: appConfiguration } = useAppConfiguration();
 
   if (!isNilOrError(appConfiguration)) {
-    const tenantLogo = appConfiguration.attributes.logo?.medium;
+    const tenantLogo = appConfiguration.data.attributes.logo?.medium;
 
     if (tenantLogo) {
       return (

@@ -7,7 +7,7 @@ import TerminologyConfig from 'components/admin/TerminologyConfig';
 import { updateAppConfiguration } from 'services/appConfiguration';
 
 // hooks
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // i18n
 import messages from '../messages';
@@ -20,7 +20,7 @@ interface Props {
 }
 
 const AreaTermConfig = ({ className }: Props) => {
-  const appConfiguration = useAppConfiguration();
+  const { data: appConfiguration } = useAppConfiguration();
   if (isNilOrError(appConfiguration)) return null;
 
   const save = async ({ singular, plural }) => {
@@ -34,7 +34,8 @@ const AreaTermConfig = ({ className }: Props) => {
     });
   };
 
-  const { areas_term, area_term } = appConfiguration.attributes.settings.core;
+  const { areas_term, area_term } =
+    appConfiguration.data.attributes.settings.core;
 
   return (
     <TerminologyConfig
