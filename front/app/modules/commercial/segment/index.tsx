@@ -8,14 +8,13 @@ import { get, isFunction } from 'lodash-es';
 import { IUser } from 'services/users';
 import {
   isAdmin,
+  isModerator,
   isProjectModerator,
   isSuperAdmin,
 } from 'services/permissions/roles';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
 const CL_SEGMENT_API_KEY = process.env.SEGMENT_API_KEY;
-
-// Add feature flag to enable/disable segment
 
 const integrations = (user: IUser | null) => {
   const output = {
@@ -35,20 +34,31 @@ const integrations = (user: IUser | null) => {
 
 const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
-    const code = snippet.min({
-      host: 'cdn.segment.com',
-      load: true,
-      page: false,
-      apiKey: CL_SEGMENT_API_KEY,
-    });
-
-    // eslint-disable-next-line no-eval
-    eval(code);
+    if (!CL_SEGMENT_API_KEY) return;
 
     combineLatest([
       currentAppConfigurationStream().observable,
       authUserStream().observable,
     ]).subscribe(([tenant, user]) => {
+      const segmentFeatureFlag = tenant.data.attributes.settings.segment;
+      const shouldLoadSegment =
+        // Feature flag is in place
+        segmentFeatureFlag?.allowed &&
+        segmentFeatureFlag.enabled &&
+        // User is admin or moderator
+        !isNilOrError(user) &&
+        (isAdmin(user) || isModerator(user));
+
+      const code = snippet.min({
+        host: 'cdn.segment.com',
+        load: shouldLoadSegment,
+        page: false,
+        apiKey: CL_SEGMENT_API_KEY,
+      });
+
+      // eslint-disable-next-line no-eval
+      eval(code);
+
       if (
         !isNilOrError(tenant) &&
         isFunction(get(window, 'analytics.identify')) &&
