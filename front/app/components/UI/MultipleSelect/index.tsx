@@ -86,7 +86,7 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
           menuShouldScrollIntoView={false}
           isClearable={false}
           value={value}
-          placeholder={placeholder as string}
+          placeholder={placeholder}
           options={options}
           onChange={this.handleOnChange}
           isDisabled={disabled}
