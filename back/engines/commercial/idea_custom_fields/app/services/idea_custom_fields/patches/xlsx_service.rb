@@ -15,7 +15,7 @@ module IdeaCustomFields
 
       def custom_form_custom_field_columns(ideas)
         idea_custom_fields = ideas.map(&:project).flat_map do |project|
-          ::IdeaCustomFieldsService.new(project.custom_form).reportable_fields
+          ::IdeaCustomFieldsService.new(project.custom_form).reportable_fields.reject(&:built_in?)
         end
 
         # options keys are only unique in the scope of their field, namespacing to avoid collisions

@@ -14,6 +14,7 @@ import { scrollToElement } from 'utils/scroll';
 import CloseIconButton from 'components/UI/CloseIconButton';
 import messages from './messages';
 import { get } from 'lodash-es';
+import { RHFErrors } from 'typings';
 
 type FeedbackProps = {
   successMessage?: string;
@@ -44,7 +45,7 @@ const Feedback = ({
     const errorMessages: Array<{ field: string; message?: string }> = [];
 
     for (const field in formContextErrors) {
-      const errors = get(formContextErrors, field);
+      const errors = get(formContextErrors, field) as RHFErrors;
       const standardFieldError = errors?.message;
       const apiError = errors?.error;
       const multilocFieldFirstError = Object.values(

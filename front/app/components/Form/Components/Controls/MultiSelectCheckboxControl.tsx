@@ -9,7 +9,7 @@ import React, { useState } from 'react';
 
 // utils
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
-import { getOptions } from './controlUtils';
+import { getOptions, getSubtextElement } from './controlUtils';
 
 // components
 import VerificationIcon from '../VerificationIcon';
@@ -44,6 +44,7 @@ const MultiSelectCheckboxControl = ({
   visible,
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
+  const answerNotPublic = uischema.options?.answer_visible_to === 'admins';
   const options = getOptions(schema, 'multi');
   const dataArray = Array.isArray(data) ? data : [];
 
@@ -57,13 +58,18 @@ const MultiSelectCheckboxControl = ({
         htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
-        subtextValue={uischema.options?.description}
+        subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
       />
       <Box display="block" id="e2e-multiselect-control">
-        <Text mt="4px" mb="8px" fontSize="s">
+        <Text mt="4px" mb={answerNotPublic ? '4px' : 'auto'} fontSize="s">
           <FormattedMessage {...messages.selectMany} />
         </Text>
+        {answerNotPublic && (
+          <Text mt="0px" fontSize="s">
+            <FormattedMessage {...messages.notPublic} />
+          </Text>
+        )}
         {options?.map((option, index: number) => (
           <StyledBox
             style={{ cursor: 'pointer' }}

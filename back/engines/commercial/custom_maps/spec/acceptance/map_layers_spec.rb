@@ -80,10 +80,8 @@ resource 'Map Layers' do
     include_examples 'unauthorized POST, PATCH and DELETE map layer'
   end
 
-  context 'when logged in as a normal user' do
-    before do
-      user_header_token
-    end
+  context 'when resident' do
+    before { resident_header_token }
 
     include_examples 'successful GET map layers'
     include_examples 'unauthorized POST, PATCH and DELETE map layer'
