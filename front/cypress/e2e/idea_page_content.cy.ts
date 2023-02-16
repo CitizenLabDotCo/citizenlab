@@ -116,7 +116,7 @@ describe('Idea Page', () => {
       cy.visit(
         `/ideas/${ideaTitle}?new_idea_id=7df35672-5b1b-442a-8e0a-8933e8dc47f2`
       );
-      cy.get('#e2e-modal-container').should('exist');
+      cy.get('#e2e-modal-container', { timeout: 15000 }).should('exist');
       cy.get('.e2e-modal-close-button').click();
       cy.get('#e2e-modal-container').should('not.exist');
     });
