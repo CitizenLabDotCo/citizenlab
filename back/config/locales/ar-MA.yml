@@ -135,10 +135,10 @@ ar-MA:
       section1:
         description:
       section2:
-        title: الصور والمرفقات
+        title: Images and attachments
         description:
       section3:
-        title: تفاصيل
+        title: Details
         description:
   custom_forms:
     categories:
@@ -195,7 +195,7 @@ ar-MA:
       author_fullname: 'اسم المؤلف'
       author_email: 'البريد الإلكتروني للمؤلف'
       author_id: 'معرِّف المؤلف'
-      budget: 'ميزانية'
+      budget: 'Budget'
       created_at: 'تم التقديم في'
       published_at: 'تم النشر في'
       comments_count: 'التعليقات ممكنة'
