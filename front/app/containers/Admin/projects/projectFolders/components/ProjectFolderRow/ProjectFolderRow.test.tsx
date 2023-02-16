@@ -93,11 +93,11 @@ describe('ProjectFolderRow', () => {
       expect(editButton).toBeInTheDocument();
     });
 
-    it('shows the MoreActionsMenu', () => {
+    it('doest not show the MoreActionsMenu', () => {
       render(<ProjectFolderRow {...props} />);
 
-      const moreActionsMenu = screen.getByTestId('folderMoreActionsMenu');
-      expect(moreActionsMenu).toBeInTheDocument();
+      const moreActionsMenu = screen.queryByTestId('folderMoreActionsMenu');
+      expect(moreActionsMenu).not.toBeInTheDocument();
     });
   });
 
@@ -122,7 +122,7 @@ describe('ProjectFolderRow', () => {
       render(<ProjectFolderRow {...props} />);
 
       const moreOptions = screen.queryByTestId('moreOptionsButton');
-      expect(moreOptions).toBeNull();
+      expect(moreOptions).not.toBeInTheDocument();
     });
   });
 });
