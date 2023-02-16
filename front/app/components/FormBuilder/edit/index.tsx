@@ -90,6 +90,7 @@ export const FormEdit = ({
     groupingType,
     isEditPermittedAfterSubmissions,
     formSavedSuccessMessage,
+    isFormPhaseSpecific,
   } = builderConfig;
 
   const isEditingDisabled =
@@ -201,8 +202,11 @@ export const FormEdit = ({
           maximum: field.maximum.toString(),
         }),
       }));
-
-      await updateFormCustomFields(projectId, finalResponseArray, phaseId);
+      await updateFormCustomFields(
+        projectId,
+        finalResponseArray,
+        isFormPhaseSpecific ? phaseId : undefined
+      );
     } catch (error) {
       handleHookFormSubmissionError(error, setError, 'customFields');
     }

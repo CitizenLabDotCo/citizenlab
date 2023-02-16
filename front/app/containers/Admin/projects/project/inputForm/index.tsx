@@ -15,6 +15,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { useParams } from 'react-router-dom';
 import usePhases from 'hooks/usePhases';
 import { isNilOrError } from 'utils/helperUtils';
+import { getCurrentPhase, IPhaseData } from 'services/phases';
 
 export const IdeaForm = () => {
   const { projectId } = useParams() as {
@@ -22,12 +23,10 @@ export const IdeaForm = () => {
   };
 
   const phases = usePhases(projectId);
-  const ideationPhases = !isNilOrError(phases)
-    ? phases.filter(
-        (phase) => phase.attributes.participation_method === 'ideation'
-      )
-    : [];
-  const ideationPhaseId = ideationPhases.length > 0 ? ideationPhases[0].id : '';
+  let phaseToUse;
+  if (!isNilOrError(phases)) {
+    phaseToUse = getCurrentOrLastIdeationPhase(phases);
+  }
 
   return (
     <Box gap="0px" flexWrap="wrap" width="100%" display="flex">
@@ -42,9 +41,9 @@ export const IdeaForm = () => {
       <Box>
         <Button
           onClick={() => {
-            ideationPhaseId
+            phaseToUse
               ? clHistory.push(
-                  `/admin/projects/${projectId}/phases/${ideationPhaseId}/ideaform/edit`
+                  `/admin/projects/${projectId}/phases/${phaseToUse.id}/ideaform/edit`
                 )
               : clHistory.push(`/admin/projects/${projectId}/ideaform/edit`);
           }}
@@ -57,6 +56,21 @@ export const IdeaForm = () => {
       </Box>
     </Box>
   );
+};
+
+const getCurrentOrLastIdeationPhase = (phases: IPhaseData[]) => {
+  const currentPhase = getCurrentPhase(phases);
+  if (currentPhase?.attributes.participation_method === 'ideation') {
+    return currentPhase;
+  }
+  const ideationPhases = phases.filter(
+    (phase) => phase.attributes.participation_method === 'ideation'
+  );
+  console.log({ ideationPhases });
+  if (ideationPhases.length > 0) {
+    return ideationPhases.pop();
+  }
+  return undefined;
 };
 
 export default IdeaForm;
