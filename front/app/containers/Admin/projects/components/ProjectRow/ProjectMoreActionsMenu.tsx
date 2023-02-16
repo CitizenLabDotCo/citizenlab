@@ -16,15 +16,14 @@ export interface Props {
 const ProjectMoreActionsMenu = ({ projectId, setError }: Props) => {
   const { formatMessage } = useIntl();
   const authUser = useAuthUser();
+  const [isCopying, setIsCopying] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   if (isNilOrError(authUser)) {
     return null;
   }
 
   const isAdminUser = isAdmin({ data: authUser });
-  const [isCopying, setIsCopying] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
-
   const handleCallbackError = async (
     callback: () => Promise<any>,
     error: string
@@ -70,20 +69,16 @@ const ProjectMoreActionsMenu = ({ projectId, setError }: Props) => {
     });
   }
 
-  if (actions.length > 0) {
-    return (
-      <Box
-        display="flex"
-        alignItems="center"
-        ml="1rem"
-        data-testid="moreProjectActionsMenu"
-      >
-        <MoreActionsMenu showLabel={false} actions={actions} />
-      </Box>
-    );
-  }
-
-  return null;
+  return (
+    <Box
+      display="flex"
+      alignItems="center"
+      ml="1rem"
+      data-testid="moreProjectActionsMenu"
+    >
+      <MoreActionsMenu showLabel={false} actions={actions} />
+    </Box>
+  );
 };
 
 export default ProjectMoreActionsMenu;
