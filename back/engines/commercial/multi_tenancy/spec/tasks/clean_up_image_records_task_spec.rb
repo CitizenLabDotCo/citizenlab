@@ -4,10 +4,7 @@ require 'rails_helper'
 
 # rubocop:disable RSpec/DescribeClass
 describe 'rake cl2back:clean_up_image_records' do
-  before do
-    load_rake_tasks_if_not_loaded
-    ENV['EXECUTE_CLEAN_UP_UNUSED_IMAGE_RECORDS'] = 'true'
-  end
+  before { load_rake_tasks_if_not_loaded }
 
   let(:task) { Rake::Task['cl2back:clean_up_unused_image_records'] }
 
@@ -22,7 +19,7 @@ describe 'rake cl2back:clean_up_image_records' do
       layout.update!(craftjs_jsonmultiloc: JSON.parse(craftjs_str))
 
       expect(ContentBuilder::LayoutImage.all).to include(images[0], images[1])
-      task.execute
+      task.execute(execute: 'execute')
       expect(ContentBuilder::LayoutImage.all).to include(images[0])
       expect(ContentBuilder::LayoutImage.all).not_to include(images[1])
     end
@@ -38,7 +35,7 @@ describe 'rake cl2back:clean_up_image_records' do
       )
 
       expect(TextImage.all).to include(images[0], images[1])
-      task.execute
+      task.execute(execute: 'execute')
       expect(TextImage.all).to include(images[0])
       expect(TextImage.all).not_to include(images[1])
     end

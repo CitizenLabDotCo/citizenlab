@@ -4,10 +4,10 @@ namespace :cl2back do
   desc 'Remove image records not associated with resource or with nil value for image field'
   # Usage:
   # Dry run (no changes): cl2back:clean_up_unused_image_records
-  # Execute (destroys records!): cl2back:clean_up_unused_image_records EXECUTE_CLEAN_UP_UNUSED_IMAGE_RECORDS=true
-  # We use an ENV var as this seems to work better with specs.
-  task clean_up_unused_image_records: :environment do
-    dry_run = true unless ENV['EXECUTE_CLEAN_UP_UNUSED_IMAGE_RECORDS'] == 'true'
+  # Execute (destroys records!): cl2back:clean_up_unused_image_records['execute']
+  task :clean_up_unused_image_records, [:execute] => [:environment] do |_t, args|
+    args.with_defaults(execute: false)
+    dry_run = true unless args[:execute] == 'execute'
 
     Tenant.all.each do |tenant|
       puts "Processing images for tenant #{tenant.name}"
