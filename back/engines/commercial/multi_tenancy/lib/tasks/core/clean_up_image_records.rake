@@ -7,7 +7,7 @@ namespace :cl2back do
   # Execute (destroys records!): cl2back:clean_up_unused_image_records EXECUTE_CLEAN_UP_UNUSED_IMAGE_RECORDS=true
   # We use an ENV var as this seems to work better with specs.
   task clean_up_unused_image_records: :environment do
-    dry_run = true unless ENV.fetch('EXECUTE_CLEAN_UP_UNUSED_IMAGE_RECORDS') == 'true'
+    dry_run = true unless ENV['EXECUTE_CLEAN_UP_UNUSED_IMAGE_RECORDS'] == 'true'
 
     Tenant.all.each do |tenant|
       puts "Processing images for tenant #{tenant.name}"
@@ -30,23 +30,11 @@ namespace :cl2back do
         end
 
         # text_images
-        # Destroy text_image if ref not found in any multiloc in imageable, or if imageable does not exist,
-        # or if text_image.image field is blank.
+        # Destroy text_image if ref not found anywhere in associated imageable record.
         TextImage.all.each do |image|
           imageable = image.imageable_type.constantize.find_by(id: image.imageable_id)
-          reference_found = false
 
-          imageable.attributes.each do |k, v|
-            next if k.exclude?('multiloc')
-
-            v.each_value do |val|
-              if val.include?(image.text_reference)
-                reference_found = true
-              end
-            end
-          end
-
-          if reference_found == false
+          unless imageable.to_json.include?(image.text_reference)
             image.destroy! unless dry_run
             puts " destroyed text_image with unused text_reference: #{image.id}, imageable_id: #{image.imageable.id}"
           end
