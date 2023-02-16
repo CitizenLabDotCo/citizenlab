@@ -3,7 +3,7 @@ import ProjectMoreActionsMenu, { Props } from './ProjectMoreActionsMenu';
 import { render, screen, userEvent } from 'utils/testUtils/rtl';
 import { IUserData } from 'services/users';
 
-const props: Props = {
+const defaultProps: Props = {
   projectId: 'projectId',
   setError: jest.fn(),
 };
@@ -33,24 +33,10 @@ jest.mock('hooks/useAuthUser', () => {
   return () => mockUserData;
 });
 
-const projectId = 'projectId';
-const folderId = 'folderId';
-const mockProjectData = {
-  id: projectId,
-  type: 'project',
-  attributes: {
-    process_type: 'continuous',
-    title_multiloc: { en: 'Test Project' },
-    slug: 'test',
-    folderId: folderId,
-  },
-};
-jest.mock('hooks/useProject', () => jest.fn(() => mockProjectData));
-
 describe('ProjectMoreActionsMenu', () => {
   describe('When user is an admin', () => {
     it('Has the buttons to copy and delete projects', async () => {
-      render(<ProjectMoreActionsMenu {...props} />);
+      render(<ProjectMoreActionsMenu {...defaultProps} />);
       const user = userEvent.setup();
 
       const threeDotsButton = screen.getByTestId('moreOptionsButton');
@@ -68,53 +54,15 @@ describe('ProjectMoreActionsMenu', () => {
     });
   });
 
-  describe('When user is a project moderator', () => {
-    beforeAll(() => {
-      mockUserData.attributes.roles = [
-        { type: 'project_moderator', project_id: props.projectId },
-      ];
-    });
-
-    it('Has the copy button but not the delete button', async () => {
-      render(<ProjectMoreActionsMenu {...props} />);
-      const user = userEvent.setup();
-
-      const threeDotsButton = screen.getByTestId('moreOptionsButton');
-      await user.click(threeDotsButton);
-
-      const copyProjectButton = await screen.findByRole('button', {
-        name: 'Copy project',
-      });
-      const deleteProjectButton = screen.queryByRole('button', {
-        name: 'Delete project',
-      });
-
-      expect(copyProjectButton).toBeInTheDocument();
-      expect(deleteProjectButton).toBeNull();
-    });
-  });
-
-  describe('When user is a folder moderator', () => {
-    it('has no copy nor delete button for project that they do not moderate', async () => {
-      mockUserData.attributes.roles = [
-        { type: 'project_folder_moderator', project_folder_id: 'folderId' },
-      ];
-      render(<ProjectMoreActionsMenu {...props} />);
-      const threeDotsButton = screen.queryByTestId('moreOptionsButton');
-
-      expect(threeDotsButton).not.toBeInTheDocument();
-    });
-
-    it('has copy button but not delete button for project that the user moderates', async () => {
-      mockUserData.attributes.highest_role = 'project_moderator';
+  describe('When user is not an admin', () => {
+    it('Has the button to copy but not the delete projects', async () => {
       mockUserData.attributes.roles = [
         {
-          type: 'project_moderator',
-          project_id: 'projectId',
+          type: 'project_folder_moderator',
+          project_folder_id: 'folderId',
         },
       ];
-
-      render(<ProjectMoreActionsMenu {...props} />);
+      render(<ProjectMoreActionsMenu {...defaultProps} />);
       const user = userEvent.setup();
 
       const threeDotsButton = screen.getByTestId('moreOptionsButton');
@@ -128,7 +76,7 @@ describe('ProjectMoreActionsMenu', () => {
       });
 
       expect(copyProjectButton).toBeInTheDocument();
-      expect(deleteProjectButton).toBeNull();
+      expect(deleteProjectButton).not.toBeInTheDocument();
     });
   });
 });

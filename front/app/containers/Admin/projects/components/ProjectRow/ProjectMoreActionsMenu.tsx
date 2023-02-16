@@ -11,19 +11,19 @@ import { isNilOrError } from 'utils/helperUtils';
 export interface Props {
   projectId: string;
   setError: (error: string | null) => void;
-  userCanModerateProject: boolean;
 }
 
-const ProjectMoreActionsMenu = ({
-  projectId,
-  setError,
-  userCanModerateProject,
-}: Props) => {
+const ProjectMoreActionsMenu = ({ projectId, setError }: Props) => {
   const { formatMessage } = useIntl();
   const authUser = useAuthUser();
+
+  if (isNilOrError(authUser)) {
+    return null;
+  }
+
+  const isAdminUser = isAdmin({ data: authUser });
   const [isCopying, setIsCopying] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  if (isNilOrError(authUser)) return null;
 
   const handleCallbackError = async (
     callback: () => Promise<any>,
@@ -36,46 +36,38 @@ const ProjectMoreActionsMenu = ({
       setError(error);
     }
   };
-
-  const copyAction = {
-    handler: async () => {
-      setIsCopying(true);
-      await handleCallbackError(
-        () => copyProject(projectId),
-        formatMessage(messages.copyProjectError)
-      );
-      setIsCopying(false);
-    },
-    label: formatMessage(messages.copyProjectButton),
-    icon: 'copy' as const,
-    isLoading: isCopying,
-  };
-
-  const deleteAction = {
-    handler: async () => {
-      if (window.confirm(formatMessage(messages.deleteProjectConfirmation))) {
-        setIsDeleting(true);
+  const actions: IAction[] = [
+    {
+      handler: async () => {
+        setIsCopying(true);
         await handleCallbackError(
-          () => deleteProject(projectId),
-          formatMessage(messages.deleteProjectError)
+          () => copyProject(projectId),
+          formatMessage(messages.copyProjectError)
         );
-        setIsDeleting(false);
-      }
+        setIsCopying(false);
+      },
+      label: formatMessage(messages.copyProjectButton),
+      icon: 'copy' as const,
+      isLoading: isCopying,
     },
-    label: formatMessage(messages.deleteProjectButtonFull),
-    icon: 'delete' as const,
-    isLoading: isDeleting,
-  };
-
-  const actions: IAction[] = [];
-  const isAdminUser = isAdmin({ data: authUser });
-
-  if (isAdminUser || userCanModerateProject) {
-    actions.push(copyAction);
-  }
+  ];
 
   if (isAdminUser) {
-    actions.push(deleteAction);
+    actions.push({
+      handler: async () => {
+        if (window.confirm(formatMessage(messages.deleteProjectConfirmation))) {
+          setIsDeleting(true);
+          await handleCallbackError(
+            () => deleteProject(projectId),
+            formatMessage(messages.deleteProjectError)
+          );
+          setIsDeleting(false);
+        }
+      },
+      label: formatMessage(messages.deleteProjectButtonFull),
+      icon: 'delete' as const,
+      isLoading: isDeleting,
+    });
   }
 
   if (actions.length > 0) {

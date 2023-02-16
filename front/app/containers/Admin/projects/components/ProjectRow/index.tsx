@@ -72,7 +72,6 @@ const ProjectRow = ({
   if (isNilOrError(authUser)) {
     return null;
   }
-
   const userCanModerateProject =
     // This means project is in a folder
     (typeof folderId === 'string' && userModeratesFolder(authUser, folderId)) ||
@@ -135,12 +134,8 @@ const ProjectRow = ({
               );
             }
           })}
-          {!hideMoreActions && (
-            <ProjectMoreActionsMenu
-              projectId={projectId}
-              setError={setError}
-              userCanModerateProject={userCanModerateProject}
-            />
+          {!hideMoreActions && userCanModerateProject && (
+            <ProjectMoreActionsMenu projectId={projectId} setError={setError} />
           )}
         </ActionsRowContainer>
       </RowContent>
