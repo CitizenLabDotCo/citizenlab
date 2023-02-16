@@ -4,7 +4,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import ProjectRow from 'containers/Admin/projects/components/ProjectRow';
 
-export interface Props {
+interface Props {
   folderChildAdminPublications: IAdminPublicationContent[];
 }
 
