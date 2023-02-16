@@ -66,7 +66,6 @@ const getCurrentOrLastIdeationPhase = (phases: IPhaseData[]) => {
   const ideationPhases = phases.filter(
     (phase) => phase.attributes.participation_method === 'ideation'
   );
-  console.log({ ideationPhases });
   if (ideationPhases.length > 0) {
     return ideationPhases.pop();
   }
