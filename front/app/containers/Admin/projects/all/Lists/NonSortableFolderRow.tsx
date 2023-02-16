@@ -10,7 +10,8 @@ import { PublicationStatus } from 'services/projects';
 import { Row } from 'components/admin/ResourceList';
 import useAuthUser from 'hooks/useAuthUser';
 import FolderChildProjects from './FolderChildProjects';
-interface Props {
+
+export interface Props {
   id: string;
   isLastItem: boolean;
   publication: IAdminPublicationContent;

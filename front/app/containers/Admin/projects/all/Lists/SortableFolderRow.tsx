@@ -17,6 +17,7 @@ const StyledSortableRow = styled(SortableRow)`
     align-self: flex-start;
   }
 `;
+
 interface Props {
   id: string;
   index: number;
