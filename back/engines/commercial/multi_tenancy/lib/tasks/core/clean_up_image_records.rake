@@ -6,7 +6,6 @@ namespace :cl2back do
   # Dry run (no changes): cl2back:clean_up_unused_image_records
   # Execute (destroys records!): cl2back:clean_up_unused_image_records['execute']
   task :clean_up_unused_image_records, [:execute] => [:environment] do |_t, args|
-    args.with_defaults(execute: false)
     dry_run = true unless args[:execute] == 'execute'
 
     Tenant.all.each do |tenant|
