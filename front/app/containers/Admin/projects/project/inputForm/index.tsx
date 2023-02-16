@@ -67,7 +67,9 @@ const isIdeationContext = (participationContext: string | undefined) => {
   }
   return false;
 };
-
+    const isIdeationContext = (participationContext: string | undefined) => {
+      return participationContext === 'ideation' || participationContext === 'budgeting';
+    };```
 const getCurrentOrLastIdeationPhase = (phases: IPhaseData[]) => {
   const currentPhase = getCurrentPhase(phases);
   if (isIdeationContext(currentPhase?.attributes.participation_method)) {
