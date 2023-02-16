@@ -6,8 +6,8 @@ export default function useStepMachine() {
   const [state, _send] = useMachine(stepMachine);
   const currentStep = state.value as Step;
 
-  // @ts-ignore
   const send = useCallback(
+    // @ts-ignore
     <S extends Step, E extends keyof States[S]['on']>(_: S, event: E): void => {
       _send(event as any);
     },

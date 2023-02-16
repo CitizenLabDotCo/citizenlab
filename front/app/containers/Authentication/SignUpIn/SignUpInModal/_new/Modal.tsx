@@ -21,6 +21,7 @@ const Modal = () => {
 
       {currentStep === 'sign-up-auth-providers' && (
         <SignUpAuthProviders
+          onSelectEmailSignUp={() => send(currentStep, 'ENTER_EMAIL_SIGN_UP')}
           onToggleFlow={() => send(currentStep, 'TOGGLE_FLOW')}
         />
       )}
@@ -35,6 +36,9 @@ const Modal = () => {
         (currentStep === 'email-sign-up:submitting' && (
           <EmailSignUp currentStep={currentStep} send={send} />
         ))}
+
+      {currentStep === 'email-confirmation' ||
+        (currentStep === 'email-confirmation:submitting' && <></>)}
 
       {currentStep === 'success' && 'Success!'}
     </>

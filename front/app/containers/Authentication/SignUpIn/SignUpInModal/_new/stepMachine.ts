@@ -1,4 +1,9 @@
-import { createMachine } from 'xstate';
+import { createMachine, assign } from 'xstate';
+import {
+  accountCreatedSuccessfully,
+  emailConfirmationNecessary,
+  emailConfirmedSuccessfully,
+} from './checks';
 
 const context = {
   error: undefined,
@@ -19,6 +24,7 @@ const states = {
   'sign-up-auth-providers': {
     on: {
       TOGGLE_FLOW: 'sign-in-auth-providers',
+      ENTER_EMAIL_SIGN_UP: 'email-sign-up',
     },
   },
   'email-sign-up': {
@@ -28,20 +34,52 @@ const states = {
   },
   'email-sign-up:submitting': {
     invoke: {
-      src: 'submitEmail',
-      onDone: { target: 'success' },
+      src: 'checkIfEmailSubmitSucceeded',
+      onDone: { target: 'maybe(email-confirmation)', actions: 'onSuccess' },
       onError: { target: 'email-sign-up', actions: 'onError' },
+    },
+  },
+  'maybe(email-confirmation)': {
+    invoke: {
+      src: 'checkIfEmailConfirmationNecessary',
+      onDone: 'email-confirmation',
+      onError: 'success',
+    },
+  },
+  'email-confirmation': {
+    on: {
+      CONFIRM_EMAIL: 'email-confirmation:submitting',
+    },
+  },
+  'email-confirmation:submitting': {
+    invoke: {
+      src: 'checkIfEmailConfirmationSucceeded',
+      onDone: { target: 'success', actions: 'onSuccess' },
+      onError: { target: 'email-confirmation', actions: 'onError' },
     },
   },
   success: {},
 } as const;
 
 const services = {
-  submitEmail: async () => {},
+  checkIfEmailSubmitSucceeded: async () => {
+    return await accountCreatedSuccessfully();
+  },
+  checkIfEmailConfirmationNecessary: async () => {
+    return await emailConfirmationNecessary();
+  },
+  checkIfEmailConfirmationSucceeded: async () => {
+    return await emailConfirmedSuccessfully();
+  },
 };
 
 const actions = {
-  // onError
+  onSuccess: assign((_ctx, _event) => ({
+    error: undefined,
+  })),
+  onError: assign((_ctx, _event) => ({
+    error: 'Error!',
+  })),
 };
 
 export type States = typeof states;
