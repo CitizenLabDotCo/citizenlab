@@ -49,7 +49,7 @@ const configuration: ModuleConfiguration = {
           segmentFeatureFlag?.enabled &&
           // User is admin or moderator
           !isNilOrError(user) &&
-          (isAdmin(user) || isModerator(user) || isSuperAdmin(user))
+          (isAdmin(user) || isModerator(user) || isProjectModerator(user))
       );
 
       // Ensure segment should be enabled but snippet hasn't been loaded already
