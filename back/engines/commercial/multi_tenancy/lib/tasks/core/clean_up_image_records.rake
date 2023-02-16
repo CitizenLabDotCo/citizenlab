@@ -3,8 +3,8 @@
 namespace :cl2back do
   desc 'Remove image records not associated with resource or with nil value for image field'
   # Usage:
-  # Dry run (no changes): cl2back:clean_up_image_records
-  # Execute (destroys records!): cl2back:clean_up_image_records EXECUTE_CLEAN_UP_UNUSED_IMAGE_RECORDS=true
+  # Dry run (no changes): cl2back:clean_up_unused_image_records
+  # Execute (destroys records!): cl2back:clean_up_unused_image_records EXECUTE_CLEAN_UP_UNUSED_IMAGE_RECORDS=true
   # We use an ENV var as this seems to work better with specs.
   task clean_up_unused_image_records: :environment do
     dry_run = true unless ENV.fetch('EXECUTE_CLEAN_UP_UNUSED_IMAGE_RECORDS') == 'true'
