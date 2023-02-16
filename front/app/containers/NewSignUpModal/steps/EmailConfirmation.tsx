@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import { Send } from '../useStepMachine';
+import { Send } from '../stepService';
 
 interface Props {
   currentStep: 'email-confirmation' | 'email-confirmation:submitting';
@@ -21,6 +21,7 @@ const EmailConfirmation = ({ currentStep, send }: Props) => {
       <Button
         width="auto"
         disabled={currentStep === 'email-confirmation:submitting'}
+        processing={currentStep === 'email-confirmation:submitting'}
         onClick={handleConfirmEmail}
       >
         Confirm email

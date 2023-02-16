@@ -1,4 +1,6 @@
 import React from 'react';
+import { Box, Text } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
 
 interface Props {
   onSelectEmailSignUp: () => void;
@@ -6,12 +8,15 @@ interface Props {
 }
 
 const SignUpAuthProviders = ({ onSelectEmailSignUp, onToggleFlow }: Props) => (
-  <div>
-    Sign up (auth providers)
-    <button onClick={onSelectEmailSignUp}>Email sign up</button>
-    <br />
-    <button onClick={onToggleFlow}>Go to sign in</button>
-  </div>
+  <Box>
+    <Text>Sign up (auth providers)</Text>
+    <Button width="auto" onClick={onSelectEmailSignUp}>
+      Email sign up
+    </Button>
+    <Button width="auto" onClick={onToggleFlow} mt="12px">
+      Go to sign in
+    </Button>
+  </Box>
 );
 
 export default SignUpAuthProviders;

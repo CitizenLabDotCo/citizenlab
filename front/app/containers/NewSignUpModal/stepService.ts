@@ -1,4 +1,4 @@
-import { createMachine, assign } from 'xstate';
+import { createMachine, assign, interpret } from 'xstate';
 import {
   accountCreatedSuccessfully,
   emailConfirmationNecessary,
@@ -58,7 +58,11 @@ const states = {
       onError: { target: 'email-confirmation', actions: 'onError' },
     },
   },
-  success: {},
+  success: {
+    on: {
+      EXIT: 'inactive',
+    },
+  },
 } as const;
 
 const services = {
@@ -87,7 +91,7 @@ export type Step = keyof States;
 
 const stepMachine = createMachine(
   {
-    initial: 'inactive',
+    initial: 'inactive' as Step,
     context,
     states,
   },
@@ -97,4 +101,15 @@ const stepMachine = createMachine(
   }
 );
 
-export default stepMachine;
+export const stepService = interpret(stepMachine);
+stepService.start();
+
+// @ts-ignore
+export const send = <S extends Step, E extends keyof States[S]['on']>(
+  _: S,
+  event: E
+): void => {
+  stepService.send(event as any);
+};
+
+export type Send = typeof send;

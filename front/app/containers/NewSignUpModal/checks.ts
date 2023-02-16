@@ -13,5 +13,9 @@ export const emailConfirmationNecessary = () => {
 };
 
 export const emailConfirmedSuccessfully = () => {
-  return new Promise((resolve) => resolve(true));
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, 1500);
+  });
 };

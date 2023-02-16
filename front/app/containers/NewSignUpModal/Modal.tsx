@@ -15,14 +15,25 @@ const Modal = () => {
   const { currentStep, send } = useStepMachine();
 
   return (
-    <Box p="16px" border="1px solid grey">
+    <Box p="16px" border="1px solid grey" w="400px" h="400px">
       {currentStep === 'inactive' && (
-        <Button
-          width="auto"
-          onClick={() => send(currentStep, 'START_SIGN_UP_FLOW')}
-        >
-          Sign up
-        </Button>
+        <>
+          <Text>Click sign up or sign in to start flow</Text>
+          <Button
+            width="auto"
+            onClick={() => send(currentStep, 'START_SIGN_UP_FLOW')}
+          >
+            Sign up
+          </Button>
+
+          <Button
+            mt="12px"
+            width="auto"
+            onClick={() => send(currentStep, 'START_SIGN_IN_FLOW')}
+          >
+            Sign in
+          </Button>
+        </>
       )}
 
       {currentStep === 'sign-up-auth-providers' && (
@@ -38,17 +49,24 @@ const Modal = () => {
         />
       )}
 
-      {currentStep === 'email-sign-up' ||
-        (currentStep === 'email-sign-up:submitting' && (
-          <EmailSignUp currentStep={currentStep} send={send} />
-        ))}
+      {(currentStep === 'email-sign-up' ||
+        currentStep === 'email-sign-up:submitting') && (
+        <EmailSignUp currentStep={currentStep} send={send} />
+      )}
 
-      {currentStep === 'email-confirmation' ||
-        (currentStep === 'email-confirmation:submitting' && (
-          <EmailConfirmation currentStep={currentStep} send={send} />
-        ))}
+      {(currentStep === 'email-confirmation' ||
+        currentStep === 'email-confirmation:submitting') && (
+        <EmailConfirmation currentStep={currentStep} send={send} />
+      )}
 
-      {currentStep === 'success' && <Text>Success!</Text>}
+      {currentStep === 'success' && (
+        <Box>
+          <Text>Success!</Text>
+          <Button width="auto" onClick={() => send(currentStep, 'EXIT')}>
+            Exit
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 };
