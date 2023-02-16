@@ -50,14 +50,14 @@ describe('ProjectRow', () => {
   });
 
   it('shows the MoreActionsMenu when it is enabled', () => {
-    render(<ProjectRow {...props} showMoreActions={true} />);
+    render(<ProjectRow {...props} />);
 
     const moreActionsMenu = screen.getByTestId('moreProjectActionsMenu');
     expect(moreActionsMenu).toBeInTheDocument();
   });
 
   it('does not show the MoreActionsMenu when it is not enabled', () => {
-    render(<ProjectRow {...props} />);
+    render(<ProjectRow {...props} hideMoreActions />);
 
     const moreActionsMenu = screen.queryByTestId('moreProjectActionsMenu');
     expect(moreActionsMenu).toBeNull();
