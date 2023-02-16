@@ -522,7 +522,7 @@ de:
       subject: 'Deine erste Idee auf der Plattform von %{organizationName}'
     welcome:
       cta_join_platform: 'Plattform entdecken'
-      subject: 'Ihre Registrierung für die Plattform der %{organizationName}'
+      subject: 'Ihre Registrierung für die %{organizationName} Plattform'
       main_header: Herzlich Willkommen!
       message_welcome: 'Sie haben sich erfolgreich auf der Beteiligungsplattform %{organizationName} registriert. Hier können Sie im Dialog mit uns zu bestimmten Fragestellungen Ihre Gedanken austauschen, Ideen sammeln und Feedback geben.'
       preheader: 'Das können Sie auf der Plattform von %{organizationName} tun:'
