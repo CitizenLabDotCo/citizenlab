@@ -826,6 +826,14 @@ resource 'Projects' do
         end
 
         context 'when there are inputs in the project' do
+          let!(:file_upload_field) do
+            create(
+              :custom_field,
+              resource: project_form,
+              title_multiloc: { 'en' => 'Upload your favourite file' },
+              input_type: 'file_upload'
+            )
+          end
           let!(:survey_response1) do
             create(
               :idea,
@@ -850,6 +858,7 @@ resource 'Projects' do
                 column_headers: [
                   'ID',
                   multiselect_field.title_multiloc['en'],
+                  'Upload your favourite file',
                   'Author name',
                   'Author email',
                   'Author ID',
@@ -860,6 +869,7 @@ resource 'Projects' do
                   [
                     survey_response1.id,
                     'Cat, Dog',
+                    '',
                     survey_response1.author_name,
                     survey_response1.author.email,
                     survey_response1.author_id,
@@ -869,6 +879,7 @@ resource 'Projects' do
                   [
                     survey_response2.id,
                     'Cat',
+                    '',
                     survey_response2.author_name,
                     survey_response2.author.email,
                     survey_response2.author_id,
