@@ -33,8 +33,10 @@ class TimelineService
 
     ideation_types = %w[ideation budgeting]
     ideation_phases = phases.select { |phase| ideation_types.include? phase.participation_method }
+    return if ideation_phases.blank?
+
     current_phase = ideation_phases.find { |phase| phase.start_at <= date && date <= phase.end_at }
-    current_phase || phases.first
+    current_phase || ideation_phases.first
   end
 
   def current_and_future_phases(project, time = Time.now)
