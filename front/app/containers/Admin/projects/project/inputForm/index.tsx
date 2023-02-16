@@ -13,11 +13,22 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // hooks
 import { useParams } from 'react-router-dom';
+import usePhases from 'hooks/usePhases';
+import { isNilOrError } from 'utils/helperUtils';
 
 export const IdeaForm = () => {
   const { projectId } = useParams() as {
     projectId: string;
   };
+
+  const phases = usePhases(projectId);
+  const ideationPhases = !isNilOrError(phases)
+    ? phases.filter(
+        (phase) => phase.attributes.participation_method === 'ideation'
+      )
+    : [];
+  const ideationPhaseId = ideationPhases.length > 0 ? ideationPhases[0].id : '';
+
   return (
     <Box gap="0px" flexWrap="wrap" width="100%" display="flex">
       <Box width="100%">
@@ -31,7 +42,11 @@ export const IdeaForm = () => {
       <Box>
         <Button
           onClick={() => {
-            clHistory.push(`/admin/projects/${projectId}/ideaform/edit`);
+            ideationPhaseId
+              ? clHistory.push(
+                  `/admin/projects/${projectId}/phases/${ideationPhaseId}/ideaform/edit`
+                )
+              : clHistory.push(`/admin/projects/${projectId}/ideaform/edit`);
           }}
           width="auto"
           icon="edit"
