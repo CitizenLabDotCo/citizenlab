@@ -4,7 +4,7 @@ import MultipleSelectComponent, {
 } from 'components/UI/MultipleSelect';
 import Error, { TFieldName } from 'components/UI/Error';
 import { Controller, useFormContext } from 'react-hook-form';
-import { CLError, IOption } from 'typings';
+import { CLError, IOption, RHFErrors } from 'typings';
 
 interface Props
   extends Omit<MultipleSelectComponentProps, 'onChange' | 'value'> {
@@ -15,15 +15,14 @@ const MultipleSelect = ({ name, ...rest }: Props) => {
   const {
     trigger,
     setValue,
-    formState: { errors },
+    formState: { errors: formContextErrors },
     control,
   } = useFormContext();
 
-  const validationError = errors[name]?.message as string | undefined;
+  const errors = formContextErrors[name] as RHFErrors;
+  const validationError = errors?.message;
 
-  const apiError =
-    (errors[name]?.error as string | undefined) &&
-    ([errors[name]] as unknown as CLError[]);
+  const apiError = errors?.error && ([errors] as CLError[]);
 
   return (
     <>

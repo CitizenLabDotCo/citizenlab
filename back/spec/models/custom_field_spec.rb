@@ -67,6 +67,14 @@ class TestVisitor < FieldVisitorService
     'page from visitor'
   end
 
+  def visit_section(_field)
+    'section from visitor'
+  end
+
+  def visit_topic_ids(_field)
+    'topic_ids from visitor'
+  end
+
   def visit_file_upload(_field)
     'file_upload from visitor'
   end
@@ -142,6 +150,35 @@ RSpec.describe CustomField, type: :model do
     end
   end
 
+  describe '#section?' do
+    it 'returns true when the input_type is "section"' do
+      section_field = described_class.new input_type: 'section'
+      expect(section_field.section?).to be true
+    end
+
+    it 'returns false otherwise' do
+      other_field = described_class.new input_type: 'something_else'
+      expect(other_field.section?).to be false
+    end
+  end
+
+  describe '#page_or_section?' do
+    it 'returns true when the input_type is "page"' do
+      page_field = described_class.new input_type: 'page'
+      expect(page_field.page_or_section?).to be true
+    end
+
+    it 'returns true when the input_type is "section"' do
+      section_field = described_class.new input_type: 'section'
+      expect(section_field.page_or_section?).to be true
+    end
+
+    it 'returns false otherwise' do
+      other_field = described_class.new input_type: 'something_else'
+      expect(other_field.page_or_section?).to be false
+    end
+  end
+
   describe 'title_multiloc validation' do
     let(:form) { create :custom_form }
 
@@ -181,6 +218,22 @@ RSpec.describe CustomField, type: :model do
 
       page_field.title_multiloc = nil
       expect(page_field.valid?).to be true
+    end
+
+    it 'does not happen when the field is a section' do
+      section_field = described_class.new(
+        resource: form,
+        input_type: 'section',
+        key: 'field_key',
+        title_multiloc: { 'en' => '' }
+      )
+      expect(section_field.valid?).to be true
+
+      section_field.title_multiloc = {}
+      expect(section_field.valid?).to be true
+
+      section_field.title_multiloc = nil
+      expect(section_field.valid?).to be true
     end
   end
 
@@ -289,6 +342,70 @@ RSpec.describe CustomField, type: :model do
 
       it 'raises an error' do
         expect { field.accept(visitor) }.to raise_error 'Unsupported input type: unsupported'
+      end
+    end
+  end
+
+  describe 'title_multiloc behaviour for ideation section 1' do
+    it 'returns the correct input term message regardless of what the field is set to' do
+      resource = create :custom_form
+      resource.participation_context.input_term = 'idea'
+      ignored_title = { en: 'anything' }
+      section = described_class.new(
+        resource: resource,
+        input_type: 'section',
+        code: 'ideation_section1',
+        title_multiloc: ignored_title
+      )
+      expected_english_title = 'What is your idea?'
+      expect(section.title_multiloc['en']).to eq expected_english_title
+    end
+  end
+
+  describe 'field_visible_to' do
+    context 'for an unsupported value' do
+      it 'is not valid' do
+        field = build(:custom_field, answer_visible_to: 'aliens')
+        expect(field).not_to be_valid
+      end
+    end
+
+    context 'when not set and is of type CustomForm' do
+      let(:field) { build(:custom_field, resource_type: 'CustomForm') }
+
+      it 'sets admins by default before validation' do
+        field.validate!
+        expect(field.answer_visible_to).to eq 'admins'
+      end
+
+      it 'sets public by default if field is a section' do
+        field.input_type = 'section'
+        field.validate!
+        expect(field.answer_visible_to).to eq 'public'
+      end
+
+      it 'sets public by default if field is a page' do
+        field.input_type = 'page'
+        field.validate!
+        expect(field.answer_visible_to).to eq 'public'
+      end
+
+      it 'sets public by default if the field is built-in' do
+        field.code = 'title_multiloc'
+        field.validate!
+        expect(field.answer_visible_to).to eq 'public'
+      end
+    end
+
+    context 'when not set and is of type User' do
+      let(:field) { build(:custom_field, resource_type: 'User') }
+
+      it 'always sets the value to "admins"' do
+        field.input_type = 'page'
+        field.input_type = 'section'
+        field.code = 'gender'
+        field.validate!
+        expect(field.answer_visible_to).to eq 'admins'
       end
     end
   end

@@ -115,7 +115,6 @@ pl:
         description:
       author_id:
         title: Autor
-        description:
       topic_ids:
         title: Tematy
         description:
@@ -127,12 +126,19 @@ pl:
         description:
       budget:
         title: Budżet
-        description:
       images:
         title: Zdjęcia
         description:
       attachments:
         title: Załączniki
+        description:
+      section1:
+        description:
+      section2:
+        title: Images and attachments
+        description:
+      section3:
+        title: Details
         description:
   custom_forms:
     categories:
@@ -189,6 +195,7 @@ pl:
       author_fullname: 'Nazwa autora'
       author_email: 'E-mail autora'
       author_id: 'ID autora'
+      budget: 'Budget'
       created_at: 'Zgłoszone'
       published_at: 'Opublikowane'
       comments_count: 'Komentarze'

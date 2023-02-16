@@ -536,68 +536,28 @@ resource 'Ideas' do
       end
     end
 
-    get 'web_api/v1/ideas/:idea_id/schema' do
+    get 'web_api/v1/ideas/:idea_id/json_forms_schema' do
       let(:project) { create(:project_with_active_ideation_phase) }
-      let(:custom_form) { create(:custom_form, participation_context: project) }
+      let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
       let!(:custom_field) { create(:custom_field_extra_custom_form, resource: custom_form) }
       let(:idea) { create :idea, project: project }
       let(:idea_id) { idea.id }
 
-      example_request 'Get the react-jsonschema-form json schema and ui schema for an ideation input' do
-        expect(status).to eq 200
+      example_request 'Get the jsonforms.io json schema and ui schema for an ideation input' do
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:json_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
         expect(json_response[:ui_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
-        built_in_field_keys = %i[
+        visible_built_in_field_keys = %i[
           title_multiloc
           body_multiloc
-          author_id
-          budget
-          topic_ids
-          location_description
           idea_images_attributes
           idea_files_attributes
+          topic_ids
+          location_description
         ]
-        if CitizenLab.ee?
-          %i[en fr-FR nl-NL].each do |locale|
-            expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq(built_in_field_keys + [custom_field.key.to_sym])
-          end
-        else
-          %i[en fr-FR nl-NL].each do |locale|
-            expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq built_in_field_keys
-          end
-        end
-      end
-
-      get 'web_api/v1/ideas/:idea_id/json_forms_schema' do
-        let(:project) { create(:project_with_active_ideation_phase) }
-        let(:custom_form) { create(:custom_form, participation_context: project) }
-        let!(:custom_field) { create(:custom_field_extra_custom_form, resource: custom_form) }
-        let(:idea) { create :idea, project: project }
-        let(:idea_id) { idea.id }
-
-        example_request 'Get the jsonforms.io json schema and ui schema for an ideation input' do
-          expect(status).to eq 200
-          json_response = json_parse(response_body)
-          expect(json_response[:json_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
-          expect(json_response[:ui_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
-          visible_built_in_field_keys = %i[
-            title_multiloc
-            body_multiloc
-            topic_ids
-            location_description
-            idea_images_attributes
-            idea_files_attributes
-          ]
-          if CitizenLab.ee?
-            %i[en fr-FR nl-NL].each do |locale|
-              expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq(visible_built_in_field_keys + [custom_field.key.to_sym])
-            end
-          else
-            %i[en fr-FR nl-NL].each do |locale|
-              expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq visible_built_in_field_keys
-            end
-          end
+        %i[en fr-FR nl-NL].each do |locale|
+          expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq(visible_built_in_field_keys + [custom_field.key.to_sym])
         end
       end
     end
@@ -675,20 +635,14 @@ resource 'Ideas' do
 
         describe 'when posting an idea in an active ideation phase, the correct form is used', skip: !CitizenLab.ee? do
           let(:project) { create(:project_with_active_ideation_phase) }
-          let!(:custom_form) { create(:custom_form, participation_context: project) }
-          let!(:custom_field) do
-            create(
-              :custom_field,
-              resource: custom_form,
-              key: 'proposed_budget',
-              code: 'proposed_budget',
-              input_type: 'number',
-              enabled: true
-            )
-          end
+          let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
           let(:proposed_budget) { 1234 }
 
-          example_request 'Post an idea in an ideation phase' do
+          example 'Post an idea in an ideation phase' do
+            custom_form.custom_fields.find_by(code: 'proposed_budget').update!(enabled: true)
+
+            do_request
+
             assert_status 201
             json_response = json_parse response_body
             idea = Idea.find(json_response.dig(:data, :id))
@@ -844,13 +798,13 @@ resource 'Ideas' do
           describe 'when posting an idea in an ideation phase, the form of the project is used for accepting the input', skip: !CitizenLab.ee? do
             let(:project) { create(:project_with_active_ideation_phase) }
             let!(:custom_form) do
-              create(:custom_form, participation_context: project).tap do |form|
+              create(:custom_form, :with_default_fields, participation_context: project).tap do |form|
                 fields = IdeaCustomFieldsService.new(form).all_fields
                 # proposed_budget is disabled by default
                 enabled_field_keys = %w[title_multiloc body_multiloc proposed_budget]
                 fields.each do |field|
                   field.enabled = enabled_field_keys.include? field.code
-                  field.save
+                  field.save!
                 end
               end
             end
