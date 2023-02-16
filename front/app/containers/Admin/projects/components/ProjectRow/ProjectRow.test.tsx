@@ -65,7 +65,7 @@ describe('ProjectRow', () => {
   it('shows the edit button', () => {
     render(<ProjectRow {...props} />);
 
-    const editButton = screen.getByRole('button', { name: 'Edit' });
+    const editButton = screen.getByTestId('project-row-edit-button');
     expect(editButton).toBeInTheDocument();
   });
 
