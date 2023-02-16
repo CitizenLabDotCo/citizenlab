@@ -20,6 +20,7 @@ import ManageButton from './ManageButton';
 // resources
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 import useAuthUser from 'hooks/useAuthUser';
+import useProject from 'hooks/useProject';
 import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
 
 // types
@@ -63,14 +64,14 @@ const ProjectRow = ({
 }: Props) => {
   const [error, setError] = useState<string | null>(null);
   const authUser = useAuthUser();
+  const projectId = publication.publicationId;
+  const project = useProject({ projectId });
+  const publicationStatus = publication.attributes.publication_status;
+  const folderId = project?.attributes.folder_id;
 
   if (isNilOrError(authUser)) {
     return null;
   }
-
-  const projectId = publication.publicationId;
-  const publicationStatus = publication.attributes.publication_status;
-  const folderId = publication.relationships.parent.data?.id;
 
   const userCanModerateProject =
     // This means project is in a folder
@@ -135,7 +136,11 @@ const ProjectRow = ({
             }
           })}
           {!hideMoreActions && (
-            <ProjectMoreActionsMenu projectId={projectId} setError={setError} />
+            <ProjectMoreActionsMenu
+              projectId={projectId}
+              setError={setError}
+              userCanModerateProject={userCanModerateProject}
+            />
           )}
         </ActionsRowContainer>
       </RowContent>
