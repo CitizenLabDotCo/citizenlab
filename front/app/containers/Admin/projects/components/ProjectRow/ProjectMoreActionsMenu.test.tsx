@@ -55,7 +55,7 @@ describe('ProjectMoreActionsMenu', () => {
   });
 
   describe('When user is not an admin', () => {
-    it('Has the button to copy but not the delete projects', async () => {
+    it('Has the copy project button and not the delete project button', async () => {
       mockUserData.attributes.roles = [
         {
           type: 'project_folder_moderator',
