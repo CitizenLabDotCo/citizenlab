@@ -45,7 +45,8 @@ const FolderMoreActionsMenu = ({
           () => deleteProjectFolder(folderId),
           formatMessage(messages.deleteFolderError)
         );
-        setIsRunningAction && setIsRunningAction(true);
+        setIsDeleting(false);
+        setIsRunningAction && setIsRunningAction(false);
       }
     },
     label: formatMessage(messages.deleteFolderButton),
