@@ -33,6 +33,16 @@ jest.mock('hooks/useAuthUser', () => {
   return () => mockUserData;
 });
 
+jest.mock('hooks/useProject', () => {
+  return jest.fn(() => ({
+    id: 'id',
+    type: 'project',
+    attributes: {
+      folder_id: 'folderId',
+    },
+  }));
+});
+
 describe('ProjectMoreActionsMenu', () => {
   describe('When user is an admin', () => {
     it('Has the buttons to copy and delete projects', async () => {
