@@ -652,7 +652,7 @@
   "app.containers.Admin.reporting.chartsSection": "GRAFIKONI",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "Ovo je neki tekst. Možete ga uređivati i formatirati pomoću uređivača na tabli sa desne strane.",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.participants": "Učesnici",
-  "app.containers.Admin.reporting.components.ReportBuilder.Templates.projectResults": "Project results",
+  "app.containers.Admin.reporting.components.ReportBuilder.Templates.projectResults": "Rezultati projekta",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummary": "Rezime izveštaja",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Dodaj cilj projekta, korišćene metode učešća i ishod",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Posetioci",
