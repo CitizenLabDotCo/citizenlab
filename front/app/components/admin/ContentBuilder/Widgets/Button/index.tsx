@@ -97,7 +97,7 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
           type="text"
           value={text}
           onChange={(value) => {
-            setProp((props) => (props.text = value));
+            setProp((props: ButtonProps) => (props.text = value));
           }}
         />
       </Box>
@@ -109,7 +109,7 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
           type="text"
           value={url}
           onChange={(value) => {
-            setProp((props) => (props.url = value));
+            setProp((props: ButtonProps) => (props.url = value));
           }}
         />
       </Box>
@@ -118,7 +118,7 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
       </Box>
       <Radio
         onChange={(value) => {
-          setProp((props) => (props.type = value));
+          setProp((props: ButtonProps) => (props.type = value));
         }}
         currentValue={type}
         id="style-primary"
@@ -139,7 +139,7 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
       />
       <Radio
         onChange={(value) => {
-          setProp((props) => (props.type = value));
+          setProp((props: ButtonProps) => (props.type = value));
         }}
         currentValue={type}
         id="style-secondary"
@@ -163,7 +163,7 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
       </Box>
       <Radio
         onChange={(value) => {
-          setProp((props) => (props.alignment = value));
+          setProp((props: ButtonProps) => (props.alignment = value));
         }}
         currentValue={alignment}
         id="alignment-left"
@@ -174,7 +174,7 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
       />
       <Radio
         onChange={(value) => {
-          setProp((props) => (props.alignment = value));
+          setProp((props: ButtonProps) => (props.alignment = value));
         }}
         currentValue={alignment}
         id="alignment-center"
@@ -185,7 +185,7 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
       />
       <Radio
         onChange={(value) => {
-          setProp((props) => (props.alignment = value));
+          setProp((props: ButtonProps) => (props.alignment = value));
         }}
         currentValue={alignment}
         id="alignment-right"
@@ -196,7 +196,7 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
       />
       <Radio
         onChange={(value) => {
-          setProp((props) => (props.alignment = value));
+          setProp((props: ButtonProps) => (props.alignment = value));
         }}
         currentValue={alignment}
         id="alignment-full-width"

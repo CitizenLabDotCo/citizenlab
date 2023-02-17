@@ -11,10 +11,6 @@ import {
   PROJECTABLE_HEADER_BG_ASPECT_RATIO_WIDTH,
 } from 'services/projects';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
-import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
 interface Props {
   imageUrl: string | null | undefined;
@@ -47,12 +43,7 @@ const ProjectableHeaderBgUploader = ({ imageUrl, onImageChange }: Props) => {
   const imageShouldBeSaved = headerBg ? !headerBg.remote : false;
 
   return (
-    <SectionField>
-      <SubSectionTitle>
-        <FormattedMessage {...messages.headerImageInputLabel} />
-        <ImageInfoTooltip />
-      </SubSectionTitle>
-
+    <>
       {imageShouldBeSaved ? (
         <Box display="flex" flexDirection="column" gap="8px">
           <ImageCropperContainer
@@ -74,7 +65,7 @@ const ProjectableHeaderBgUploader = ({ imageUrl, onImageChange }: Props) => {
           onRemove={handleImageRemove}
         />
       )}
-    </SectionField>
+    </>
   );
 };
 

@@ -8,17 +8,23 @@ import HelmetIntl from 'components/HelmetIntl';
 import TabbedResource from 'components/admin/TabbedResource';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
-import GetPermission from 'resources/GetPermission';
-import GetFeatureFlag from 'resources/GetFeatureFlag';
+import GetPermission, {
+  GetPermissionChildProps,
+} from 'resources/GetPermission';
+import GetFeatureFlag, {
+  GetFeatureFlagChildProps,
+} from 'resources/GetFeatureFlag';
 import { Outlet as RouterOutlet } from 'react-router-dom';
 
-type Props = {
-  canManageAutomatedCampaigns: boolean | null;
-  canManageManualCampaigns: boolean | null;
-  manualEmailingEnabled: boolean | null;
-  automatedEmailingEnabled: boolean | null;
-  textingEnabled: boolean | null;
-};
+interface DataProps {
+  canManageAutomatedCampaigns: GetPermissionChildProps;
+  canManageManualCampaigns: GetPermissionChildProps;
+  manualEmailingEnabled: GetFeatureFlagChildProps;
+  automatedEmailingEnabled: GetFeatureFlagChildProps;
+  textingEnabled: GetFeatureFlagChildProps;
+}
+
+interface Props extends DataProps {}
 
 interface State {}
 
@@ -108,7 +114,7 @@ class MessagingDashboard extends React.PureComponent<
 
 const MessagingDashboardWithHOCs = withRouter(injectIntl(MessagingDashboard));
 
-const Data = adopt<Props>({
+const Data = adopt({
   canManageAutomatedCampaigns: (
     <GetPermission item="automatedCampaign" action="manage" />
   ),
@@ -122,10 +128,8 @@ const Data = adopt<Props>({
   textingEnabled: <GetFeatureFlag name="texting" />,
 });
 
-export default (inputProps) => (
+export default () => (
   <Data>
-    {(dataProps) => (
-      <MessagingDashboardWithHOCs {...inputProps} {...dataProps} />
-    )}
+    {(dataProps: DataProps) => <MessagingDashboardWithHOCs {...dataProps} />}
   </Data>
 );

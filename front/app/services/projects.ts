@@ -3,13 +3,7 @@ import { API_PATH } from 'containers/App/constants';
 // typings
 import { ISubmitState } from 'components/admin/SubmitWrapper';
 import { Locale } from '@citizenlab/cl2-component-library';
-import {
-  IRelationship,
-  Multiloc,
-  ImageSizes,
-  UploadFile,
-  CLError,
-} from 'typings';
+import { IRelationship, Multiloc, UploadFile, CLError } from 'typings';
 import { IAreaData } from './areas';
 import { IAppConfiguration } from 'services/appConfiguration';
 
@@ -85,12 +79,16 @@ export type PollDisabledReason =
   | 'not_verified'
   | 'not_signed_in';
 
+interface ProjectHeaderBgImageSizes {
+  large: string | null;
+}
+
 export interface IProjectAttributes {
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
   description_preview_multiloc: Multiloc;
   slug: string;
-  header_bg: ImageSizes;
+  header_bg: ProjectHeaderBgImageSizes;
   ideas_count: number;
   comments_count: number;
   avatars_count: number;
@@ -197,14 +195,14 @@ export interface IProjectData {
 
 export interface IUpdatedProjectProperties {
   // header_bg is only a string or null when it's
-  // in IUpdatedProjectProperties. The ImageSizes needed
-  // to be added because we go from string here to ImageSizes
+  // in IUpdatedProjectProperties. The ProjectHeaderBgImageSizes needed
+  // to be added because we go from string here to ProjectHeaderBgImageSizes
   // in IProjectAttributes (also in this file) when we save an image
-  // selected for upload. ImageSizes needs to be here, because
+  // selected for upload. ProjectHeaderBgImageSizes needs to be here, because
   // Otherwise TS will complain about this mismatch in
   // front/app/containers/Admin/projects/general/index.tsx
   // This oddity needs to be dealt with
-  header_bg?: string | ImageSizes | null;
+  header_bg?: string | ProjectHeaderBgImageSizes | null;
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
   description_preview_multiloc?: Multiloc;

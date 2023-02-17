@@ -43,6 +43,7 @@ import { Observer, Observable, Subscription } from 'rxjs';
 import { authApiEndpoint } from 'services/auth';
 import { currentAppConfigurationEndpoint } from 'services/appConfiguration';
 import { currentOnboardingCampaignsApiEndpoint } from 'services/onboardingCampaigns';
+import { isUnauthorizedError } from 'utils/helperUtils';
 
 export type pureFn<T> = (arg: T) => T;
 
@@ -433,8 +434,13 @@ class Streams {
           ) {
             // push the error reponse into the stream
             this.streams[streamId].observer.next(error);
-            // destroy the stream
-            this.deleteStream(streamId, apiEndpoint);
+
+            // destroy the stream, except if it's an unauthorized error
+            // in that case we want to refetch when you log in
+            if (!isUnauthorizedError(error)) {
+              this.deleteStream(streamId, apiEndpoint);
+            }
+
             logError(error);
           } else if (streamId === authApiEndpoint) {
             this.streams[streamId].observer.next(null);

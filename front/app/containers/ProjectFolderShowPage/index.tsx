@@ -1,8 +1,4 @@
 import React, { memo } from 'react';
-import { isError, isUndefined } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { isNilOrError } from 'utils/helperUtils';
-import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
 
 // components
 import ProjectFolderShowPageMeta from './ProjectFolderShowPageMeta';
@@ -10,13 +6,15 @@ import ProjectFolderHeader from './ProjectFolderHeader';
 import ProjectFolderDescription from './ProjectFolderDescription';
 import ProjectFolderProjectCards from './ProjectFolderProjectCards';
 import Button from 'components/UI/Button';
+import PageNotFound from 'components/PageNotFound';
 import { Spinner, useWindowSize } from '@citizenlab/cl2-component-library';
 import ContentContainer from 'components/ContentContainer';
+import Centerer from 'components/UI/Centerer';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
 import useProjectFolder from 'hooks/useProjectFolder';
-import useAdminPublications from 'hooks/useAdminPublications';
+import { useParams } from 'react-router-dom';
 
 // i18n
 import messages from './messages';
@@ -25,11 +23,15 @@ import { FormattedMessage } from 'utils/cl-intl';
 // style
 import styled from 'styled-components';
 import { maxPageWidth } from './styles';
-import { media, fontSizes, colors } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
+
+// utils
+import { isError } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
+import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
 
 // typings
 import { IProjectFolderData } from 'services/projectFolders';
-import { PublicationStatus } from 'services/projects';
 
 const Container = styled.main`
   flex: 1 0 auto;
@@ -50,13 +52,6 @@ const Container = styled.main`
     props
   ) => props.theme.mobileTopBarHeight}px);
   `}
-`;
-
-const Loading = styled.div`
-  flex: 1 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
@@ -125,62 +120,36 @@ const StyledProjectFolderProjectCards = styled(ProjectFolderProjectCards)`
   `};
 `;
 
-const NotFoundWrapper = styled.div`
-  height: 100%;
-  flex: 1 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 4rem;
-  font-size: ${fontSizes.l}px;
-  color: ${colors.textSecondary};
-`;
-
 const CardsWrapper = styled.div`
   padding-top: 40px;
   padding-bottom: 40px;
   background: ${colors.background};
 `;
 
-const publicationStatuses: PublicationStatus[] = ['published', 'archived'];
-
 const ProjectFolderShowPage = memo<{
-  projectFolder: IProjectFolderData;
+  projectFolder: IProjectFolderData | null | undefined;
 }>(({ projectFolder }) => {
   const authUser = useAuthUser();
-  const { list: adminPublicationsList } = useAdminPublications({
-    publicationStatusFilter: publicationStatuses,
-  });
   const { windowWidth } = useWindowSize();
   const smallerThan1280px = windowWidth ? windowWidth <= 1280 : false;
-  const folderNotFound = isError(projectFolder);
 
-  const loading =
-    isUndefined(projectFolder) || isUndefined(adminPublicationsList);
+  const loading = projectFolder === undefined;
 
-  const userCanEditFolder =
-    !isNilOrError(authUser) && userModeratesFolder(authUser, projectFolder.id);
+  const userCanEditFolder = projectFolder
+    ? !isNilOrError(authUser) && userModeratesFolder(authUser, projectFolder.id)
+    : undefined;
 
   return (
     <>
-      <ProjectFolderShowPageMeta projectFolder={projectFolder} />
+      {projectFolder && (
+        <ProjectFolderShowPageMeta projectFolder={projectFolder} />
+      )}
       <Container id="e2e-folder-page">
-        {folderNotFound ? (
-          <NotFoundWrapper>
-            <p>
-              <FormattedMessage {...messages.noFolderFoundHere} />
-            </p>
-            <Button
-              linkTo="/projects"
-              text={<FormattedMessage {...messages.goBackToList} />}
-              icon="arrow-left"
-            />
-          </NotFoundWrapper>
-        ) : loading ? (
-          <Loading>
+        {loading ? (
+          <Centerer flex="1 0 auto">
             <Spinner />
-          </Loading>
-        ) : !isNilOrError(projectFolder) ? (
+          </Centerer>
+        ) : projectFolder ? (
           <>
             <StyledContentContainer maxWidth={maxPageWidth}>
               {userCanEditFolder && (
@@ -226,16 +195,15 @@ const ProjectFolderShowPage = memo<{
   );
 });
 
-const ProjectFolderShowPageWrapper = memo<WithRouterProps>(
-  ({ params: { slug } }) => {
-    const projectFolder = useProjectFolder({ projectFolderSlug: slug });
+const ProjectFolderShowPageWrapper = () => {
+  const { slug } = useParams();
+  const projectFolder = useProjectFolder({ projectFolderSlug: slug });
 
-    if (!isNilOrError(projectFolder)) {
-      return <ProjectFolderShowPage projectFolder={projectFolder} />;
-    }
-
-    return null;
+  if (isError(projectFolder)) {
+    return <PageNotFound />;
   }
-);
 
-export default withRouter(ProjectFolderShowPageWrapper);
+  return <ProjectFolderShowPage projectFolder={projectFolder} />;
+};
+
+export default ProjectFolderShowPageWrapper;

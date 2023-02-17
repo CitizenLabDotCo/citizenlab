@@ -149,6 +149,7 @@ const config = {
         CIRCLE_BRANCH: JSON.stringify(process.env.CIRCLE_BRANCH),
         GOOGLE_MAPS_API_KEY: JSON.stringify(process.env.GOOGLE_MAPS_API_KEY),
         MATOMO_HOST: JSON.stringify(process.env.MATOMO_HOST),
+        POSTHOG_API_KEY: JSON.stringify(process.env.POSTHOG_API_KEY),
       },
       CITIZENLAB_EE: JSON.stringify(process.env.CITIZENLAB_EE),
     }),

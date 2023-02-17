@@ -23,4 +23,8 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors',
     defaultMessage: 'Visitors',
   },
+  projectResults: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Templates.projectResults',
+    defaultMessage: 'Project results',
+  },
 });

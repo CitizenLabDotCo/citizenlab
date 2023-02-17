@@ -1,12 +1,11 @@
 import React from 'react';
 import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
-import * as insightsService from 'modules/commercial/insights/services/insightsInputs';
-import * as categoryService from 'modules/commercial/insights/services/insightsCategories';
 import inputs from 'modules/commercial/insights/fixtures/inputs';
 import categories from 'modules/commercial/insights/fixtures/categories';
 
 import selectEvent from 'react-select-event';
 import InputDetails from './';
+import { IInsightsInput } from 'modules/commercial/insights/api/inputs/types';
 
 const viewId = '1';
 
@@ -18,7 +17,9 @@ const defaultProps = {
   moveDown: jest.fn(),
 };
 
-let mockInputData: insightsService.IInsightsInputData | undefined = inputs[0];
+let mockInputData: IInsightsInput | undefined = {
+  data: inputs[0],
+};
 
 const mockIdeaData = {
   id: '2',
@@ -39,40 +40,30 @@ const mockCategoryData = {
   },
 };
 
-const mockCategoryDataResponse = {
-  data: {
-    id: 'b9f3f47a-7eb4-4db5-87ea-885fe42145c8',
-    type: 'category',
-    attributes: {
-      name: 'Some new category',
-    },
-  },
-};
+const mockAddInputCategories = jest.fn();
+jest.mock('modules/commercial/insights/api/inputs/useAddInputCategories', () =>
+  jest.fn(() => ({ mutate: mockAddInputCategories }))
+);
 
-jest.mock('modules/commercial/insights/services/insightsInputs', () => ({
-  addInsightsInputCategory: jest.fn(),
-}));
+const mockAdd = jest.fn();
 
-jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
-  addInsightsCategory: jest.fn(() => {
-    return mockCategoryDataResponse;
-  }),
-}));
+jest.mock('modules/commercial/insights/api/categories/useAddCategory', () =>
+  jest.fn(() => ({ mutate: mockAdd, reset: jest.fn() }))
+);
+
+jest.mock('modules/commercial/insights/api/categories/useCategories');
+
+jest.mock('modules/commercial/insights/api/categories/useCategory', () =>
+  jest.fn(() => ({ data: { data: mockCategoryData } }))
+);
 
 jest.mock('hooks/useIdea', () => {
   return jest.fn(() => mockIdeaData);
 });
 
-jest.mock('modules/commercial/insights/hooks/useInsightsInput', () => {
-  return jest.fn(() => mockInputData);
-});
-
-jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
-  return jest.fn(() => mockCategoriesData);
-});
-
-jest.mock('modules/commercial/insights/hooks/useInsightsCategory', () => {
-  return jest.fn(() => mockCategoryData);
+let mockIsLoading = false;
+jest.mock('modules/commercial/insights/api/inputs/useInput', () => () => {
+  return { data: mockInputData, isLoading: mockIsLoading };
 });
 
 jest.mock('utils/cl-router/withRouter', () => {
@@ -115,7 +106,6 @@ describe('Insights Input Details', () => {
     ).not.toBeInTheDocument();
   });
   it('adds existing category to category list correctly', async () => {
-    const spy = jest.spyOn(insightsService, 'addInsightsInputCategory');
     render(<InputDetails {...defaultProps} />);
     selectEvent.openMenu(screen.getByLabelText('Add a category'));
 
@@ -125,19 +115,13 @@ describe('Insights Input Details', () => {
 
     fireEvent.click(screen.getByText(mockCategoriesData[0].attributes.name));
 
-    expect(spy).toHaveBeenCalledWith(
+    expect(mockAddInputCategories).toHaveBeenCalledWith({
       viewId,
-      defaultProps.previewedInputId,
-      mockCategoriesData[0].id
-    );
+      inputId: defaultProps.previewedInputId,
+      categories: [{ id: mockCategoriesData[0].id, type: 'category' }],
+    });
   });
   it('adds new category to category list correctly', async () => {
-    const spyAddInputCategory = jest.spyOn(
-      insightsService,
-      'addInsightsInputCategory'
-    );
-    const spyAddCategory = jest.spyOn(categoryService, 'addInsightsCategory');
-
     render(<InputDetails {...defaultProps} />);
     const newCategoryLabel = 'New category';
     fireEvent.change(screen.getByRole('textbox'), {
@@ -151,18 +135,19 @@ describe('Insights Input Details', () => {
       fireEvent.click(screen.getByTestId('insightsCreateCategoryOption'));
     });
 
-    expect(spyAddCategory).toHaveBeenCalledWith({
-      insightsViewId: viewId,
-      name: newCategoryLabel,
-    });
-    expect(spyAddInputCategory).toHaveBeenCalledWith(
-      viewId,
-      defaultProps.previewedInputId,
-      mockCategoryDataResponse.data.id
+    expect(mockAdd).toHaveBeenCalledWith(
+      {
+        viewId,
+        category: { name: newCategoryLabel },
+      },
+      {
+        onSuccess: expect.any(Function),
+      }
     );
   });
   it('shows loading state when loading', () => {
     mockInputData = undefined;
+    mockIsLoading = true;
     render(<InputDetails {...defaultProps} />);
     expect(
       screen.getByTestId('insightsEditDetailsLoading')

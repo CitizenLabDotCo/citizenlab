@@ -174,7 +174,7 @@ const ProjectDescription = memo<
               />
             )}
             <Outlet
-              id="app.containers.Admin.projects.edit.description.contentBuilder"
+              id="app.containers.Admin.projects.edit.description.projectDescriptionBuilder"
               onMount={setModuleToActive}
               valueMultiloc={formValues.description_multiloc}
               onChange={handleDescriptionOnChange}

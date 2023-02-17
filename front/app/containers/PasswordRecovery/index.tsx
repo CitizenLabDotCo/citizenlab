@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Input, Success } from '@citizenlab/cl2-component-library';
+import { Input, Success, Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import { Helmet } from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
@@ -20,15 +20,7 @@ import { injectIntl } from 'utils/cl-intl';
 // style
 import styled from 'styled-components';
 import messages from './messages';
-import { fontSizes, colors } from 'utils/styleUtils';
-
-const Container = styled.div`
-  width: 100%;
-  min-height: calc(
-    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
-  );
-  background: ${colors.background};
-`;
+import { fontSizes, stylingConsts } from 'utils/styleUtils';
 
 const StyledContentContainer = styled(ContentContainer)`
   padding-bottom: 100px;
@@ -84,7 +76,6 @@ type State = {
   submitError: boolean;
   processing: boolean;
   success: boolean;
-  successEmail: string | null;
 };
 
 class PasswordRecovery extends React.PureComponent<
@@ -101,7 +92,6 @@ class PasswordRecovery extends React.PureComponent<
       submitError: false,
       processing: false,
       success: false,
-      successEmail: null,
     };
     this.emailInputElement = null;
   }
@@ -149,7 +139,6 @@ class PasswordRecovery extends React.PureComponent<
           email: null,
           processing: false,
           success: true,
-          successEmail: email,
         });
         /* setTimeout(() => this.setState({ success: false }), 8000); */
       } catch {
@@ -162,33 +151,32 @@ class PasswordRecovery extends React.PureComponent<
 
   render() {
     const { formatMessage } = this.props.intl;
-    const {
-      email,
-      emailError,
-      submitError,
-      processing,
-      success,
-      successEmail,
-    } = this.state;
+    const { email, emailError, submitError, processing, success } = this.state;
     const helmetTitle = formatMessage(messages.helmetTitle);
     const helmetDescription = formatMessage(messages.helmetDescription);
     const title = formatMessage(messages.title);
     const subtitle = formatMessage(messages.subtitle);
     const emailPlaceholder = formatMessage(messages.emailPlaceholder);
     const resetPassword = formatMessage(messages.resetPassword);
-    const successMessage = success
-      ? formatMessage(messages.successMessage, { email: `${successEmail}` })
-      : null;
+
+    // Showing the same message for success and submission error because we don't want to give away information about whether an email address is registered or not
+    const feedbackMessage =
+      success || submitError
+        ? formatMessage(messages.passwordResetSuccessMessage)
+        : null;
     let errorMessage: string | null = null;
 
     if (emailError) {
       errorMessage = formatMessage(messages.emailError);
-    } else if (submitError) {
-      errorMessage = formatMessage(messages.submitError);
     }
 
     return (
-      <Container>
+      <Box
+        width="100%"
+        minHeight={`calc(100vh - ${
+          stylingConsts.menuHeight + stylingConsts.footerHeight
+        }px)`}
+      >
         <Helmet
           title={helmetTitle}
           meta={[{ name: 'description', content: helmetDescription }]}
@@ -221,13 +209,13 @@ class PasswordRecovery extends React.PureComponent<
                 className="e2e-submit-reset"
               />
 
-              {successMessage && (
-                <Success text={successMessage} className="e2e-success-reset" />
+              {feedbackMessage && (
+                <Success text={feedbackMessage} className="e2e-success-reset" />
               )}
             </Form>
           </StyledContentContainer>
         </main>
-      </Container>
+      </Box>
     );
   }
 }

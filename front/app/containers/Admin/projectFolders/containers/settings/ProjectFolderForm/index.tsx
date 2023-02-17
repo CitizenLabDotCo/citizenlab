@@ -36,9 +36,10 @@ import useAdminPublication from 'hooks/useAdminPublication';
 import SlugInput from 'components/admin/SlugInput';
 import { validateSlug } from 'utils/textUtils';
 import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
-import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import ProjectFolderCardImageDropzone from './ProjectFolderCardImageDropzone';
+import FolderCardImageTooltip from './FolderCardImageTooltip';
+import FolderHeaderImageTooltip from './FolderHeaderImageTooltip';
 
 type IProjectFolderSubmitState =
   | 'disabled'
@@ -516,6 +517,10 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         </SectionField>
 
         <SectionField>
+          <SubSectionTitle>
+            <FormattedMessage {...messages.headerImageInputLabel} />
+            <FolderHeaderImageTooltip />
+          </SubSectionTitle>
           <HeaderBgUploader
             imageUrl={projectFolder?.attributes.header_bg?.large}
             onImageChange={handleHeaderBgChange}
@@ -525,7 +530,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         <SectionField>
           <SubSectionTitle>
             <FormattedMessage {...messages.projectFolderCardImageLabel} />
-            <ImageInfoTooltip />
+            <FolderCardImageTooltip />
           </SubSectionTitle>
           {folderCardImageShouldBeSaved ? (
             <Box display="flex" flexDirection="column" gap="8px">

@@ -15,14 +15,11 @@ import ForceGraph2D, {
 import { forceCollide } from 'd3-force';
 
 // hooks
-import useInsightsView from 'modules/commercial/insights/hooks/useInsightsView';
-import useNetwork from 'modules/commercial/insights/hooks/useInsightsNetwork';
-
-// types
-import { IInsightsNetworkNode } from 'modules/commercial/insights/services/insightsNetwork';
+import useView from 'modules/commercial/insights/api/views/useView';
+import useNetwork from 'modules/commercial/insights/api/network/useNetwork';
 
 // utils
-import { isNilOrError, isError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { cloneDeep } from 'lodash-es';
 import { colors } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
@@ -36,6 +33,7 @@ import {
   TooltipContent,
   SectionTitle,
 } from 'modules/commercial/insights/admin/components/StyledTextComponents';
+import Centerer from 'components/UI/Centerer';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -47,6 +45,7 @@ import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 // styles
 import styled from 'styled-components';
+import { IInsightsNetworkNode } from 'modules/commercial/insights/api/network/types';
 
 type CanvasCustomRenderMode = 'replace' | 'before' | 'after';
 type Node = NodeObject & IInsightsNetworkNode;
@@ -87,8 +86,8 @@ const Network = ({
   const [zoomLevel, setZoomLevel] = useState(0);
 
   const networkRef = useRef<ForceGraphMethods>();
-  const { loading, network } = useNetwork(viewId);
-  const view = useInsightsView(viewId);
+  const { data: network, isLoading, isError } = useNetwork(viewId);
+  const { data: view } = useView(viewId);
 
   useEffect(() => {
     if (networkRef.current) {
@@ -227,15 +226,15 @@ const Network = ({
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
-      <Box h="100%" display="flex" justifyContent="center" alignItems="center">
+      <Centerer>
         <Spinner />
-      </Box>
+      </Centerer>
     );
   }
 
-  if (isError(network)) {
+  if (isError) {
     return (
       <Box
         w="50%"
@@ -302,7 +301,7 @@ const Network = ({
           />
         </SectionTitle>
       </Box>
-      {height && width && (
+      {!!height && !!width && (
         <ForceGraph2D
           height={height}
           width={width}

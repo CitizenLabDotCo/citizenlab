@@ -33,6 +33,7 @@ const injectIntlReplacement = (Node) => {
 };
 
 Intl.injectIntl = injectIntlReplacement;
+Intl.useIntl = () => intlReplacement;
 
 // Override components by implementing the real components
 //  providing them the context they need in order to function

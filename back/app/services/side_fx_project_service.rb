@@ -23,6 +23,20 @@ class SideFxProjectService
     @sfx_pc.after_create project, user if project.participation_context?
   end
 
+  def after_copy(source_project, copied_project, user, start_time)
+    LogActivityJob.perform_later(
+      copied_project,
+      'local_copy_created',
+      user,
+      copied_project.created_at.to_i,
+      payload: {
+        time_taken: Time.now - start_time,
+        source_project_id: source_project.id,
+        copied_project_attributes: copied_project.attributes
+      }
+    )
+  end
+
   def before_update(project, user)
     @folder_id_was = project.admin_publication.parent_id_was
     project.description_multiloc = TextImageService.new.swap_data_images(project, :description_multiloc)

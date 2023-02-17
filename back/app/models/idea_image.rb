@@ -25,14 +25,6 @@ class IdeaImage < ApplicationRecord
   mount_base64_uploader :image, IdeaImageUploader
   belongs_to :idea, inverse_of: :idea_images
 
-  validate :image_presence, unless: :skip_image_presence
+  validates :image, presence: true, unless: :skip_image_presence
   validates :idea, presence: true
-
-  private
-
-  def image_presence
-    return if image.present?
-
-    errors.add(:image, 'cannot be blank!')
-  end
 end

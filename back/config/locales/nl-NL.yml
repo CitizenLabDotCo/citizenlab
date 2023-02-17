@@ -115,7 +115,6 @@ nl:
         description:
       author_id:
         title: Auteur
-        description:
       topic_ids:
         title: Tags
         description:
@@ -127,12 +126,19 @@ nl:
         description:
       budget:
         title: Bedrag
-        description:
       images:
         title: Afbeeldingen
         description:
       attachments:
         title: Bijlagen
+        description:
+      section1:
+        description:
+      section2:
+        title: Afbeeldingen en bijlagen
+        description:
+      section3:
+        title: Details
         description:
   custom_forms:
     categories:
@@ -189,6 +195,7 @@ nl:
       author_fullname: 'Naam auteur'
       author_email: 'Email auteur'
       author_id: 'ID auteur'
+      budget: 'Budget'
       created_at: 'Ingediend om'
       published_at: 'Gepubliceerd om'
       comments_count: 'Reacties'

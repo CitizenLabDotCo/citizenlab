@@ -21,10 +21,8 @@ import Preview from './Preview';
 import Navigation from 'modules/commercial/insights/admin/components/Navigation';
 
 // hooks
-import useInsightsInputsLoadMore from 'modules/commercial/insights/hooks/useInsightsInputsLoadMore';
-
-// types
-import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
+import useInfiniteInputs from 'modules/commercial/insights/api/inputs/useInfiniteInputs';
+import { IInsightsInputData } from 'modules/commercial/insights/api/inputs/types';
 
 const Container = styled.div`
   height: calc(100vh - ${stylingConsts.menuHeight + topBarHeight}px);
@@ -62,19 +60,17 @@ const DetailsInsightsView = ({
       ? [query.categories]
       : query.categories;
   const search = query.search;
+
   const keywords: string[] =
     typeof query.keywords === 'string' ? [query.keywords] : query.keywords;
 
-  const {
-    list: inputs,
-    loading,
-    hasMore,
-    onLoadMore,
-  } = useInsightsInputsLoadMore(viewId, {
-    categories,
-    search,
-    keywords,
-  });
+  const { data, isFetchingNextPage, fetchNextPage, hasNextPage } =
+    useInfiniteInputs(viewId, {
+      categories,
+      search,
+      keywords,
+    });
+  const inputs = data?.pages.map((page) => page.data).flat();
 
   // Navigate to correct index when moving up and down
   useEffect(() => {
@@ -165,11 +161,12 @@ const DetailsInsightsView = ({
               <Network />
             </Categories>
           </Left>
+
           <Inputs
-            hasMore={hasMore}
+            hasMore={hasNextPage}
             inputs={inputs}
-            loading={loading}
-            onLoadMore={onLoadMore}
+            loading={isFetchingNextPage}
+            onLoadMore={fetchNextPage}
             onPreviewInput={onPreviewInput}
           />
         </Container>

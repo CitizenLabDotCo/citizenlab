@@ -209,14 +209,16 @@ export interface IAppConfigurationSettings {
   };
   disable_user_bios?: AppConfigurationFeature;
   texting?: AppConfigurationFeature;
-  content_builder?: AppConfigurationFeature;
+  project_description_builder?: AppConfigurationFeature;
   representativeness?: AppConfigurationFeature;
   remove_vendor_branding?: AppConfigurationFeature;
   native_surveys?: AppConfigurationFeature;
   analytics?: AppConfigurationFeature;
   visitors_dashboard?: AppConfigurationFeature;
   user_confirmation?: AppConfigurationFeature;
+  input_form_custom_fields?: AppConfigurationFeature;
   report_builder?: AppConfigurationFeature;
+  posthog_integration?: AppConfigurationFeature;
 }
 
 interface AppConfigurationMapSettings extends AppConfigurationFeature {
@@ -295,6 +297,24 @@ export async function updateAppConfiguration(
     currentAppConfigurationEndpoint,
     'app_configuration',
     { app_configuration: object }
+  );
+  await currentAppConfigurationStream().fetch();
+  return tenant;
+}
+
+export async function updateAppConfigurationCore(
+  newCoreSettings: Partial<IAppConfigurationSettingsCore>
+) {
+  const tenant = await streams.update<IAppConfiguration>(
+    currentAppConfigurationEndpoint,
+    'app_configuration',
+    {
+      app_configuration: {
+        settings: {
+          core: newCoreSettings,
+        },
+      },
+    }
   );
   await currentAppConfigurationStream().fetch();
   return tenant;

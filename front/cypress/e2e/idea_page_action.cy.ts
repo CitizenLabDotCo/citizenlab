@@ -82,6 +82,10 @@ describe('Idea show page actions', () => {
         cy.wait('@ideaRequest');
         cy.get('#e2e-idea-show').should('exist');
 
+        cy.get('.e2e-vote-controls').should('exist');
+        cy.get('.e2e-ideacard-upvote-button').should('exist');
+        cy.get('.e2e-ideacard-downvote-button').should('exist');
+
         cy.get('.e2e-vote-controls')
           .find('.e2e-ideacard-upvote-button')
           .as('upvoteBtn');

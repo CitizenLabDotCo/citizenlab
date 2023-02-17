@@ -86,7 +86,7 @@ sr-SP:
     about:
       title: Više informacija
     faq:
-      title: FAQ
+      title: Најчешћа питања
   projects:
     open_idea_project_title: Imate ideju? Predstavite je nadležnima!
     open_idea_project_description_preview: Imate ideju koja se ne uklapa u neki od postojećih projekata? Objavite je ovde, skupite podršku i uvrstite je na dnevni red!
@@ -115,7 +115,6 @@ sr-SP:
         description:
       author_id:
         title: Autor
-        description:
       topic_ids:
         title: Tema
         description:
@@ -127,12 +126,19 @@ sr-SP:
         description:
       budget:
         title: Budžet
-        description:
       images:
         title: Slike
         description:
       attachments:
         title: Prilozi
+        description:
+      section1:
+        description:
+      section2:
+        title: Слике и прилози
+        description:
+      section3:
+        title: Детаљи
         description:
   custom_forms:
     categories:
@@ -189,6 +195,7 @@ sr-SP:
       author_fullname: 'Ime autora'
       author_email: 'E-pošta autora'
       author_id: 'ID autora'
+      budget: 'Буџет'
       created_at: 'Predato u'
       published_at: 'Objavljeno u'
       comments_count: 'Komentari'

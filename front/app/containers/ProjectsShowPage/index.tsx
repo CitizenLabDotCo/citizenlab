@@ -1,30 +1,24 @@
 import React, { memo, useEffect, useMemo, useState } from 'react';
-import { isError } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import clHistory from 'utils/cl-router/history';
 
 // components
 import ProjectHelmet from './shared/header/ProjectHelmet';
-import ProjectNotFound from './shared/header/ProjectNotFound';
-import ProjectNotVisible from './shared/header/ProjectNotVisible';
+import Unauthorized from 'components/Unauthorized';
+import PageNotFound from 'components/PageNotFound';
 import ProjectHeader from './shared/header/ProjectHeader';
 import ContinuousIdeas from './continuous/Ideas';
 import ContinuousSurvey from './continuous/Survey';
 import ContinuousPoll from './continuous/Poll';
 import ContinuousVolunteering from './continuous/Volunteering';
 import TimelineContainer from './timeline';
-import {
-  Box,
-  Spinner,
-  Title,
-  Image,
-  useBreakpoint,
-} from '@citizenlab/cl2-component-library';
-import ForbiddenRoute from 'components/routing/forbiddenRoute';
-import Modal from 'components/UI/Modal';
+import { Box, Spinner, useBreakpoint } from '@citizenlab/cl2-component-library';
+import Navigate from 'utils/cl-router/Navigate';
+import SuccessModal from './SucessModal';
 import { ProjectCTABar } from './ProjectCTABar';
+import EventsViewer from 'containers/EventsPage/EventsViewer';
+import Centerer from 'components/UI/Centerer';
 
 // hooks
+import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useProject from 'hooks/useProject';
@@ -33,28 +27,25 @@ import useEvents from 'hooks/useEvents';
 import useAuthUser from 'hooks/useAuthUser';
 import { useIntl } from 'utils/cl-intl';
 
+// i18n
+import messages from 'utils/messages';
+
 // style
 import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
-import rocket from 'assets/img/rocket.png';
 
 // typings
 import { IProjectData } from 'services/projects';
 
-// other
+// utils
 import { isValidPhase } from './phaseParam';
 import {
   anyIsUndefined,
   isNilOrError,
-  isApiError,
-  isNil,
+  isUnauthorizedError,
 } from 'utils/helperUtils';
-import { getCurrentPhase } from 'services/phases';
-import { getMethodConfig, getPhase } from 'utils/participationMethodUtils';
-import EventsViewer from 'containers/EventsPage/EventsViewer';
-import messages from 'utils/messages';
 import { scrollToElement } from 'utils/scroll';
-import { useSearchParams } from 'react-router-dom';
+import { isError } from 'lodash-es';
 
 const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;
@@ -80,38 +71,29 @@ const Container = styled.main<{ background: string }>`
   `}
 `;
 
-const Loading = styled.div`
-  flex: 1 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
 const ContentWrapper = styled.div`
   width: 100%;
 `;
+
 interface Props {
-  project: IProjectData | Error | null | undefined;
-  scrollToEventId?: string;
+  project: IProjectData | Error | null;
 }
 
-const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
+const ProjectsShowPage = memo<Props>(({ project }) => {
   const projectId = !isNilOrError(project) ? project.id : undefined;
-  const projectNotFound = isError(project);
   const processType = !isNilOrError(project)
     ? project.attributes.process_type
     : undefined;
 
   const smallerThanMinTablet = useBreakpoint('tablet');
   const { formatMessage } = useIntl();
-  const [queryParams] = useSearchParams();
-  const showModalParam = queryParams.get('show_modal');
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [phaseIdUrl, setPhaseIdUrl] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
   const locale = useLocale();
   const appConfig = useAppConfiguration();
   const phases = usePhases(projectId);
+
+  const [search] = useSearchParams();
+  const scrollToEventId = search.get('scrollToEventId');
 
   const { events } = useEvents({
     projectIds: projectId ? [projectId] : undefined,
@@ -127,20 +109,6 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
     setMounted(true);
   }, []);
 
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (!isNil(showModalParam)) {
-      // TODO: Handle animation when modal is open by default in Modal component
-      timer = setTimeout(() => {
-        setShowModal(!!showModalParam);
-      }, 1500);
-    }
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [showModalParam]);
-
   // UseEffect to scroll to event when provided
   useEffect(() => {
     if (scrollToEventId && mounted && !loading) {
@@ -150,68 +118,15 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
     }
   }, [mounted, loading, scrollToEventId]);
 
-  // UseEffect to handle modal state and phase parameters
-  useEffect(() => {
-    const phaseIdParam = queryParams.get('phase_id');
-    // Set phase id
-    if (!isNilOrError(phaseIdParam) && phaseIdUrl === null) {
-      setPhaseIdUrl(phaseIdParam);
-    }
-
-    // Clear URL parameters for continuous projects
-    // (handled elsewhere for timeline projects)
-    if (
-      !isNilOrError(project) &&
-      project.attributes.process_type === 'continuous'
-    ) {
-      window.history.replaceState(null, '', window.location.pathname);
-    }
-  }, [project, phaseIdUrl, queryParams]);
-
-  const user = useAuthUser();
-
-  const isUnauthorized = useMemo(() => {
-    if (!isApiError(project)) return false;
-
-    return project.json.errors?.base[0].error === 'Unauthorized!';
-  }, [project]);
-
-  const userSignedInButUnauthorized = !isNilOrError(user) && isUnauthorized;
-  const userNotSignedInAndUnauthorized = isNilOrError(user) && isUnauthorized;
-
   let content: JSX.Element | null = null;
 
-  if (userNotSignedInAndUnauthorized) return <ForbiddenRoute />;
-
-  if (userSignedInButUnauthorized) {
-    content = <ProjectNotVisible />;
-  } else if (loading) {
+  if (loading) {
     content = (
-      <Loading>
+      <Centerer flex="1 0 auto" height="500px">
         <Spinner />
-      </Loading>
+      </Centerer>
     );
-  } else if (projectNotFound) {
-    content = <ProjectNotFound />;
   } else if (projectId && processType) {
-    let phaseParticipationMethod;
-
-    if (!isNilOrError(phases)) {
-      const phase = phaseIdUrl ? getPhase(phaseIdUrl, phases) : null;
-      if (!isNilOrError(phase)) {
-        phaseParticipationMethod = phase.attributes.participation_method;
-      } else {
-        phaseParticipationMethod =
-          getCurrentPhase(phases)?.attributes.participation_method;
-      }
-    }
-
-    const config = getMethodConfig(
-      phaseParticipationMethod
-        ? phaseParticipationMethod
-        : project?.attributes.participation_method
-    );
-
     content = (
       <ContentWrapper id="e2e-project-page">
         <ProjectHeader projectId={projectId} />
@@ -256,26 +171,7 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
             hideSectionIfNoEvents={true}
           />
         </Box>
-        <Modal
-          opened={showModal}
-          close={() => {
-            setShowModal(false);
-          }}
-          hasSkipButton={false}
-        >
-          <Box
-            width="100%"
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Image width="80px" height="80px" src={rocket} alt="" />
-            <Title variant="h2" textAlign="center">
-              {config && config.getModalContent({})}
-            </Title>
-          </Box>
-        </Modal>
+        <SuccessModal projectId={projectId} />
       </ContentWrapper>
     );
   }
@@ -291,45 +187,74 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
   );
 });
 
-const ProjectsShowPageWrapper = memo<WithRouterProps>(
-  ({ location: { pathname, query }, params: { slug, phaseNumber } }) => {
-    const project = useProject({ projectSlug: slug });
-    const phases = usePhases(project?.id);
-    const { scrollToEventId } = query;
-    const processType = project?.attributes?.process_type;
+const ProjectsShowPageWrapper = () => {
+  const [userWasLoggedIn, setUserWasLoggedIn] = useState(false);
 
-    const urlSegments = pathname
-      .replace(/^\/|\/$/g, '')
-      .split('/')
-      .filter((segment) => segment !== '');
+  const { pathname } = useLocation();
+  const { slug, phaseNumber } = useParams();
 
-    // If processType is 'timeline' but the phases aren't loaded yet: don't render yet
-    if (processType === 'timeline' && isNilOrError(phases)) return null;
+  const project = useProject({ projectSlug: slug });
+  const phases = usePhases(project?.id);
+  const user = useAuthUser();
 
-    if (
-      processType === 'timeline' &&
-      urlSegments.length === 4 &&
-      !isNilOrError(phases) &&
-      isValidPhase(phaseNumber, phases)
-    ) {
-      // If this is a timeline project and a valid phase param was passed: continue
-      return <ProjectsShowPage project={project} />;
-    } else if (scrollToEventId) {
-      // If an event id was passed as a query param, pass it on
-      return (
-        <ProjectsShowPage project={project} scrollToEventId={scrollToEventId} />
-      );
-    } else if (urlSegments.length > 3 && urlSegments[1] === 'projects') {
-      // Redirect old childRoutes (e.g. /info, /process, ...) to the project index location
-      clHistory.replace(`/${urlSegments.slice(1, 3).join('/')}`);
-    } else if (slug) {
-      return <ProjectsShowPage project={project} />;
-    }
+  const processType = project?.attributes?.process_type;
+  const urlSegments = pathname
+    .replace(/^\/|\/$/g, '')
+    .split('/')
+    .filter((segment) => segment !== '');
 
-    return null;
+  const projectPending = project === undefined;
+  const userPending = user === undefined;
+  const pending = projectPending || userPending;
+
+  useEffect(() => {
+    if (userPending) return;
+    if (isError(user)) return;
+
+    if (user !== null) setUserWasLoggedIn(true);
+  }, [userPending, user]);
+
+  if (pending) {
+    return (
+      <Centerer height="500px">
+        <Spinner />
+      </Centerer>
+    );
   }
-);
 
-const ProjectsShowPageWrapperWithHoC = withRouter(ProjectsShowPageWrapper);
+  const userJustLoggedOut = userWasLoggedIn && user === null;
+  const unauthorized = isUnauthorizedError(project);
 
-export default ProjectsShowPageWrapperWithHoC;
+  if (userJustLoggedOut && unauthorized) {
+    return <Navigate to="/" replace />;
+  }
+
+  if (unauthorized) {
+    return <Unauthorized />;
+  }
+
+  if (isError(project)) {
+    return <PageNotFound />;
+  }
+
+  const isTimelineProjectAndHasValidPhaseParam =
+    processType === 'timeline' &&
+    !isNilOrError(phases) &&
+    urlSegments.length === 4 &&
+    isValidPhase(phaseNumber, phases);
+
+  if (
+    urlSegments[1] === 'projects' &&
+    urlSegments.length > 3 &&
+    !isTimelineProjectAndHasValidPhaseParam
+  ) {
+    // Redirect old childRoutes (e.g. /info, /process, ...) to the project index location
+    const projectRoot = `/${urlSegments.slice(1, 3).join('/')}`;
+    // return <Redirect method="replace" path={projectRoot} />;
+    return <Navigate to={projectRoot} replace />;
+  }
+
+  return <ProjectsShowPage project={project} />;
+};
+
+export default ProjectsShowPageWrapper;

@@ -10,16 +10,13 @@ import { TLayout } from 'components/ProjectAndFolderCards';
 import Link from 'utils/cl-router/Link';
 
 // components
-import { Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 import Image from 'components/UI/Image';
 import AvatarBubbles from 'components/AvatarBubbles';
 
 // services
 import { getProjectUrl } from 'services/projects';
-import {
-  CARD_IMAGE_ASPECT_RATIO,
-  getCardImageUrl,
-} from 'services/projectImages';
+import { CARD_IMAGE_ASPECT_RATIO } from 'services/projectImages';
 import { getInputTerm } from 'services/participationContexts';
 import { getIdeaPostingRules } from 'services/actionTakingRules';
 
@@ -475,7 +472,6 @@ const ProjectCard = memo<Props>(
     const phase = usePhase(currentPhaseId);
     const phases = usePhases(projectId);
     const theme = useTheme();
-    const isPhone = useBreakpoint('phone');
 
     const [visible, setVisible] = useState(false);
 
@@ -515,13 +511,9 @@ const ProjectCard = memo<Props>(
       const canComment =
         project.attributes.action_descriptor.commenting_idea.enabled;
 
-      const imageVersions = isNilOrError(projectImages)
+      const imageUrl = isNilOrError(projectImages)
         ? null
-        : projectImages[0]?.attributes.versions;
-
-      const imageUrl = imageVersions
-        ? getCardImageUrl(imageVersions, isPhone, size)
-        : null;
+        : projectImages[0]?.attributes.versions?.large;
 
       const projectUrl = getProjectUrl(project);
       const isFinished = project.attributes.timeline_active === 'past';

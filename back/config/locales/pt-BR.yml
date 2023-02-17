@@ -115,7 +115,6 @@ pt:
         description:
       author_id:
         title: Autor
-        description:
       topic_ids:
         title: Tópicos
         description:
@@ -127,12 +126,19 @@ pt:
         description:
       budget:
         title: Orçamento
-        description:
       images:
         title: Imagens
         description:
       attachments:
         title: Anexos
+        description:
+      section1:
+        description:
+      section2:
+        title: Images and attachments
+        description:
+      section3:
+        title: Details
         description:
   custom_forms:
     categories:
@@ -189,6 +195,7 @@ pt:
       author_fullname: 'Nome do autor'
       author_email: 'E-mail do autor'
       author_id: 'Identificação do autor'
+      budget: 'Budget'
       created_at: 'Submetido em'
       published_at: 'Publicado em'
       comments_count: 'Comentários'

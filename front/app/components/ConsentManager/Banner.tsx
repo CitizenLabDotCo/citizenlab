@@ -28,11 +28,12 @@ const Container = styled.div`
   justify-content: center;
   padding-top: 20px;
   padding-bottom: 20px;
-
-  ${media.tablet`
-    bottom: ${(props) => props.theme.mobileMenuHeight}px;
-    padding-right: 40px;
-  `}
+  ${(props) =>
+    media.tablet`
+      background: pink;
+      bottom: ${props.theme.mobileMenuHeight}px;
+      padding-right: 40px;
+    `}
 `;
 
 const ContentContainerInner = styled.div`

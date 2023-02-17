@@ -1,6 +1,8 @@
 import React from 'react';
+import moment from 'moment';
 
 // hooks
+import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 
 // craft
@@ -17,6 +19,9 @@ import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
 import Title from 'components/admin/ContentBuilder/Widgets/Title';
 import Text from 'components/admin/ContentBuilder/Widgets/Text';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
+import SurveyResultsWidget from '../Widgets/SurveyResultsWidget';
+import MostVotedIdeasWidget from '../Widgets/MostVotedIdeasWidget';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -25,7 +30,7 @@ import messages from './messages';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import getProjectPeriod from 'containers/Admin/reporting/utils/getProjectPeriod';
-import moment from 'moment';
+import { getTemplateData } from './getTemplateData';
 
 interface Props {
   reportId: string;
@@ -34,11 +39,15 @@ interface Props {
 
 const ProjectTemplate = ({ reportId, projectId }: Props) => {
   const { formatMessage } = useIntl();
+  const project = useProject({ projectId });
   const phases = usePhases(projectId);
 
-  if (isNilOrError(phases)) return null;
+  if (isNilOrError(project) || isNilOrError(phases)) return null;
 
-  const hasPhases = phases.length > 0;
+  const { participationMethod, phaseId } = getTemplateData(project, phases);
+
+  const hasPhases =
+    project.attributes.process_type === 'continuous' && phases.length > 0;
 
   const projectPeriod = hasPhases
     ? getProjectPeriod(phases)
@@ -54,9 +63,32 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
       <Title text={formatMessage(messages.reportSummary)} />
       <Text text={formatMessage(messages.reportSummaryDescription)} />
       <WhiteSpace />
+      <Title text={formatMessage(messages.projectResults)} />
+      <Text text={formatMessage(messages.descriptionPlaceHolder)} />
+      <ActiveUsersWidget
+        projectId={projectId}
+        title={formatMessage(ActiveUsersWidget.craft.custom.title)}
+        {...projectPeriod}
+      />
+      {participationMethod === 'native_survey' && (
+        <SurveyResultsWidget
+          projectId={projectId}
+          phaseId={phaseId}
+          title={formatMessage(SurveyResultsWidget.craft.custom.title)}
+        />
+      )}
+      {participationMethod === 'ideation' && (
+        <MostVotedIdeasWidget
+          projectId={projectId}
+          phaseId={phaseId}
+          title={formatMessage(MostVotedIdeasWidget.craft.custom.title)}
+          numberOfIdeas={5}
+          collapseLongText={false}
+        />
+      )}
+      <WhiteSpace />
       <Title text={formatMessage(messages.participants)} />
       <Text text={formatMessage(messages.descriptionPlaceHolder)} />
-      <WhiteSpace />
       <TwoColumn columnLayout="1-1">
         <Element id="left" is={Container} canvas>
           <GenderWidget
@@ -75,7 +107,6 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
       </TwoColumn>
       <Title text={formatMessage(messages.visitors)} />
       <Text text={formatMessage(messages.descriptionPlaceHolder)} />
-      <WhiteSpace />
       <VisitorsWidget
         projectId={projectId}
         title={formatMessage(VisitorsWidget.craft.custom.title)}

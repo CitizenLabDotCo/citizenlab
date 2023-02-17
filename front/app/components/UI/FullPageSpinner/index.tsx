@@ -25,10 +25,9 @@ const FullPageContainer = styled.div<{ admin: boolean }>`
   justify-content: center;
   align-items: center;
 
-  ${media.tablet`
-    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
-    props
-  ) => props.theme.mobileTopBarHeight}px);
+  ${(props) =>
+    media.tablet`
+    min-height: calc(100vh - ${props.theme.mobileMenuHeight}px - ${props.theme.mobileTopBarHeight}px);
   `}
 `;
 

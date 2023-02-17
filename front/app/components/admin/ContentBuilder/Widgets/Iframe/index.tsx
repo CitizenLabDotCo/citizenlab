@@ -67,9 +67,9 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
 
   const handleChange = (value: string) => {
     const validation = isValidUrl(value);
-    setProp((props) => (props.url = value));
-    setProp((props) => (props.errorType = 'invalidUrl'));
-    setProp((props) => (props.hasError = !validation));
+    setProp((props: Props) => (props.url = value));
+    setProp((props: Props) => (props.errorType = 'invalidUrl'));
+    setProp((props: Props) => (props.hasError = !validation));
     eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
       [id]: { hasError: !validation, selectedLocale },
     });
@@ -116,7 +116,7 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
           type="text"
           id="e2e-content-builder-iframe-title-input"
           onChange={(value) => {
-            setProp((props) => (props.title = value));
+            setProp((props: Props) => (props.title = value));
           }}
           value={title}
           label={

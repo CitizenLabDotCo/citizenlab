@@ -4,7 +4,7 @@ import TextAreaMultilocWithLocaleSwitcherComponent, {
 } from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 import Error, { TFieldName } from 'components/UI/Error';
 import { Controller, FieldError, useFormContext } from 'react-hook-form';
-import { CLError, Locale } from 'typings';
+import { CLError, Locale, RHFErrors } from 'typings';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { isNilOrError } from 'utils/helperUtils';
 import { get } from 'lodash-es';
@@ -41,7 +41,7 @@ const TextAreaMultilocWithLocaleSwitcher = ({
     {}
   );
 
-  const errors = get(formContextErrors, name);
+  const errors = get(formContextErrors, name) as RHFErrors;
 
   // Select the first error messages from the field's multiloc validation error
   const validationError = Object.values(
@@ -49,8 +49,7 @@ const TextAreaMultilocWithLocaleSwitcher = ({
   )[0]?.message;
 
   // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
-  const apiError =
-    (errors?.error as string | undefined) && ([errors] as unknown as CLError[]);
+  const apiError = errors?.error && ([errors] as CLError[]);
 
   return (
     <div id={name}>

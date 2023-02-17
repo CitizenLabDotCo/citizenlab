@@ -9,15 +9,28 @@ import React, { useState } from 'react';
 
 // utils
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+import { getOptions, getSubtextElement } from './controlUtils';
 
 // components
 import VerificationIcon from '../VerificationIcon';
-import { Box, Checkbox, Text } from '@citizenlab/cl2-component-library';
+import { Box, Checkbox, colors, Text } from '@citizenlab/cl2-component-library';
 import { FormLabel } from 'components/UI/FormComponents';
 import ErrorDisplay from '../ErrorDisplay';
+
+// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { getOptions } from './controlUtils';
+
+// style
+import { darken } from 'polished';
+import styled from 'styled-components';
+
+const StyledBox = styled(Box)`
+  background-color: ${colors.grey100};
+  &:hover {
+    background-color: ${darken(0.05, colors.grey100)};
+  }
+`;
 
 const MultiSelectCheckboxControl = ({
   data,
@@ -31,9 +44,8 @@ const MultiSelectCheckboxControl = ({
   visible,
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
-
+  const answerNotPublic = uischema.options?.answer_visible_to === 'admins';
   const options = getOptions(schema, 'multi');
-
   const dataArray = Array.isArray(data) ? data : [];
 
   if (!visible) {
@@ -46,16 +58,29 @@ const MultiSelectCheckboxControl = ({
         htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
-        subtextValue={uischema.options?.description}
+        subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
       />
       <Box display="block" id="e2e-multiselect-control">
-        <Text fontSize="s">
+        <Text mt="4px" mb={answerNotPublic ? '4px' : 'auto'} fontSize="s">
           <FormattedMessage {...messages.selectMany} />
         </Text>
+        {answerNotPublic && (
+          <Text mt="0px" fontSize="s">
+            <FormattedMessage {...messages.notPublic} />
+          </Text>
+        )}
         {options?.map((option, index: number) => (
-          <Box mt="12px" key={option.value}>
+          <StyledBox
+            style={{ cursor: 'pointer' }}
+            mb="12px"
+            key={option.value}
+            borderRadius="3px"
+          >
             <Checkbox
+              size="20px"
+              padding="18px 20px 18px 20px"
+              checkedColor={'tenantSecondary'}
               id={`${path}-checkbox-${index}`}
               label={option.label}
               checked={dataArray.includes(option.value)}
@@ -71,7 +96,7 @@ const MultiSelectCheckboxControl = ({
                 setDidBlur(true);
               }}
             />
-          </Box>
+          </StyledBox>
         ))}
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>

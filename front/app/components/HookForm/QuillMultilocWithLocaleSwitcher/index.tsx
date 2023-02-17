@@ -2,7 +2,7 @@ import React from 'react';
 
 import Error, { TFieldName } from 'components/UI/Error';
 import { Controller, useFormContext, FieldError } from 'react-hook-form';
-import { Locale, CLError } from 'typings';
+import { Locale, CLError, RHFErrors } from 'typings';
 
 // components
 import QuillMultilocWithLocaleSwitcherComponent, {
@@ -24,7 +24,7 @@ type Props = {
 
 const QuillMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
   const {
-    formState: { errors },
+    formState: { errors: formContextErrors },
     control,
   } = useFormContext();
   const locales = useAppConfigurationLocales();
@@ -38,15 +38,14 @@ const QuillMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
     {}
   );
 
+  const errors = get(formContextErrors, name) as RHFErrors;
   // Select the first error messages from the field's multiloc validation error
   const validationError = Object.values(
-    (get(errors, name) as Record<Locale, FieldError> | undefined) || {}
+    (errors as Record<Locale, FieldError> | undefined) || {}
   )[0]?.message;
 
   // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
-  const apiError =
-    (errors[name]?.error as string | undefined) &&
-    ([errors[name]] as unknown as CLError[]);
+  const apiError = errors?.error && ([errors] as CLError[]);
 
   return (
     <>

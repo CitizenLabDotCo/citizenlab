@@ -18,6 +18,7 @@
 #  votes_count                      :integer
 #  upvotes_count                    :integer
 #  downvotes_count                  :integer
+#  publication_status               :string
 #
 module Analytics
   class FactPost < Analytics::ApplicationRecordView

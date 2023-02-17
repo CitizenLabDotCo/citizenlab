@@ -65,13 +65,42 @@ module MultiTenancy
             'volunteering/volunteer'               => yml_volunteering_volunteers,
             'custom_maps/map_config'               => yml_maps_map_configs,
             'custom_maps/layer'                    => yml_maps_layers,
-            'custom_maps/legend_item'              => yml_maps_legend_items
+            'custom_maps/legend_item'              => yml_maps_legend_items,
+            'content_builder/layout'               => yml_content_builder_layouts,
+            'content_builder/layout_image'         => yml_content_builder_layout_images
           }
         end
         { 'models' => models }
       end
 
       private
+
+      def yml_content_builder_layouts
+        ContentBuilder::Layout.all.map do |layout|
+          yml_layout = {
+            'content_buildable_ref' => lookup_ref(layout.content_buildable_id, :project),
+            'content_buildable_type' => layout.content_buildable_type,
+            'code' => layout.code,
+            'enabled' => layout.enabled,
+            'craftjs_jsonmultiloc' => layout.craftjs_jsonmultiloc,
+            'created_at' => layout.created_at.to_s,
+            'updated_at' => layout.updated_at.to_s
+          }
+          store_ref yml_layout, layout.id, :content_builder_layout
+          yml_layout
+        end
+      end
+
+      def yml_content_builder_layout_images
+        ContentBuilder::LayoutImage.all.map do |image|
+          {
+            'code' => image.code,
+            'remote_image_url' => image.image_url,
+            'created_at' => image.created_at.to_s,
+            'updated_at' => image.updated_at.to_s
+          }
+        end
+      end
 
       def yml_home_pages
         HomePage.all.map do |hp|
@@ -143,6 +172,7 @@ module MultiTenancy
             'updated_at' => field.updated_at.to_s,
             'enabled' => field.enabled,
             'code' => field.code,
+            'answer_visible_to' => field.answer_visible_to,
             'maximum' => field.maximum,
             'minimum_label_multiloc' => field.minimum_label_multiloc,
             'maximum_label_multiloc' => field.maximum_label_multiloc,

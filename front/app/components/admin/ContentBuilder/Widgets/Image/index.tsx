@@ -27,15 +27,13 @@ import { injectIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
 import { IMAGE_UPLOADING_EVENT } from 'components/admin/ContentBuilder/constants';
 
-const Image = ({
-  imageUrl,
-  alt = '',
-  dataCode,
-}: {
+interface Props {
   imageUrl?: string;
   alt: string;
   dataCode?: string;
-}) => {
+}
+
+const Image = ({ imageUrl, alt = '', dataCode }: Props) => {
   const { enabled } = useEditor((state) => {
     return {
       enabled: state.options.enabled,
@@ -102,7 +100,7 @@ const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
 
     try {
       const response = await addContentBuilderImage(imageFiles[0].base64);
-      setProp((props) => {
+      setProp((props: Props) => {
         props.dataCode = response.data.attributes.code;
         props.imageUrl = response.data.attributes.image_url;
       });
@@ -112,7 +110,7 @@ const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
   };
 
   const handleOnRemove = () => {
-    setProp((props) => {
+    setProp((props: Props) => {
       props.imageUrl = '';
       props.dataCode = undefined;
       props.alt = '';
@@ -121,7 +119,7 @@ const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
   };
 
   const handleChange = (value: string) => {
-    setProp((props) => (props.alt = value));
+    setProp((props: Props) => (props.alt = value));
   };
 
   return (

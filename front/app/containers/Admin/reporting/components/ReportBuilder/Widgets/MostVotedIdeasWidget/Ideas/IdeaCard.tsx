@@ -82,6 +82,7 @@ const IdeaCard = ({
           borderRadius={stylingConsts.borderRadius}
           mr="8px"
           mt="-1px"
+          height="26px"
         >
           <Text
             mt="0px"

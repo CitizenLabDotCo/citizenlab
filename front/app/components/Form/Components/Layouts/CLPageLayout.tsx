@@ -144,8 +144,8 @@ const CLPageLayout = memo(
       <>
         <Box
           ref={topAnchorRef}
-          marginTop={'-92px'} // TODO: Find cleaner solution for mobile scrollTo behaviour.
-          marginBottom={'92px'}
+          marginTop={'-140px'} // TODO: Find cleaner solution for mobile scrollTo behaviour.
+          marginBottom={'140px'}
           id="top-anchor"
         />
 
@@ -201,6 +201,7 @@ const CLPageLayout = memo(
             flexDirection={isSmallerThanXlPhone ? 'column' : 'row-reverse'}
             justifyContent="space-between"
             width="100%"
+            mb="60px"
           >
             <Button
               onClick={handleNextAndSubmit}
@@ -210,7 +211,9 @@ const CLPageLayout = memo(
               iconPos="right"
               key={currentStep.toString()}
               bgColor={
-                showSubmit ? theme.colors.green500 : theme.colors.primary
+                showSubmit
+                  ? theme.colors.tenantSecondary
+                  : theme.colors.tenantPrimary
               }
               width="100%"
               boxShadow={defaultStyles.boxShadow}

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_31_143907) do
+ActiveRecord::Schema.define(version: 2023_02_13_120148) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -91,6 +91,7 @@ ActiveRecord::Schema.define(version: 2023_01_31_143907) do
   create_table "analytics_dimension_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "parent"
+    t.index ["name", "parent"], name: "index_analytics_dimension_types_on_name_and_parent", unique: true
   end
 
   create_table "analytics_fact_visits", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -262,6 +263,7 @@ ActiveRecord::Schema.define(version: 2023_01_31_143907) do
     t.jsonb "minimum_label_multiloc", default: {}, null: false
     t.jsonb "maximum_label_multiloc", default: {}, null: false
     t.jsonb "logic", default: {}, null: false
+    t.string "answer_visible_to"
     t.index ["resource_type", "resource_id"], name: "index_custom_fields_on_resource_type_and_resource_id"
   end
 
@@ -1605,138 +1607,6 @@ ActiveRecord::Schema.define(version: 2023_01_31_143907) do
             GROUP BY official_feedbacks.post_id) a
     GROUP BY a.post_id;
   SQL
-  create_view "analytics_fact_participations", sql_definition: <<-SQL
-      SELECT i.id,
-      i.author_id AS dimension_user_id,
-      i.project_id AS dimension_project_id,
-          CASE
-              WHEN (((pr.participation_method)::text = 'native_survey'::text) OR ((ph.participation_method)::text = 'native_survey'::text)) THEN survey.id
-              ELSE idea.id
-          END AS dimension_type_id,
-      (i.created_at)::date AS dimension_date_created_id,
-      (i.upvotes_count + i.downvotes_count) AS votes_count,
-      i.upvotes_count,
-      i.downvotes_count
-     FROM ((((ideas i
-       LEFT JOIN projects pr ON ((pr.id = i.project_id)))
-       LEFT JOIN phases ph ON ((ph.id = i.creation_phase_id)))
-       JOIN analytics_dimension_types idea ON (((idea.name)::text = 'idea'::text)))
-       LEFT JOIN analytics_dimension_types survey ON (((survey.name)::text = 'survey'::text)))
-  UNION ALL
-   SELECT i.id,
-      i.author_id AS dimension_user_id,
-      NULL::uuid AS dimension_project_id,
-      adt.id AS dimension_type_id,
-      (i.created_at)::date AS dimension_date_created_id,
-      (i.upvotes_count + i.downvotes_count) AS votes_count,
-      i.upvotes_count,
-      i.downvotes_count
-     FROM (initiatives i
-       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'initiative'::text)))
-  UNION ALL
-   SELECT c.id,
-      c.author_id AS dimension_user_id,
-      i.project_id AS dimension_project_id,
-      adt.id AS dimension_type_id,
-      (c.created_at)::date AS dimension_date_created_id,
-      (c.upvotes_count + c.downvotes_count) AS votes_count,
-      c.upvotes_count,
-      c.downvotes_count
-     FROM ((comments c
-       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'comment'::text)))
-       LEFT JOIN ideas i ON ((c.post_id = i.id)))
-  UNION ALL
-   SELECT v.id,
-      v.user_id AS dimension_user_id,
-      COALESCE(i.project_id, ic.project_id) AS dimension_project_id,
-      adt.id AS dimension_type_id,
-      (v.created_at)::date AS dimension_date_created_id,
-      1 AS votes_count,
-          CASE
-              WHEN ((v.mode)::text = 'up'::text) THEN 1
-              ELSE 0
-          END AS upvotes_count,
-          CASE
-              WHEN ((v.mode)::text = 'down'::text) THEN 1
-              ELSE 0
-          END AS downvotes_count
-     FROM ((((votes v
-       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'vote'::text)))
-       LEFT JOIN ideas i ON ((i.id = v.votable_id)))
-       LEFT JOIN comments c ON ((c.id = v.votable_id)))
-       LEFT JOIN ideas ic ON ((ic.id = c.post_id)))
-  UNION ALL
-   SELECT pr.id,
-      pr.user_id AS dimension_user_id,
-      COALESCE(p.project_id, pr.participation_context_id) AS dimension_project_id,
-      adt.id AS dimension_type_id,
-      (pr.created_at)::date AS dimension_date_created_id,
-      0 AS votes_count,
-      0 AS upvotes_count,
-      0 AS downvotes_count
-     FROM ((polls_responses pr
-       LEFT JOIN phases p ON ((p.id = pr.participation_context_id)))
-       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'poll'::text)))
-  UNION ALL
-   SELECT vv.id,
-      vv.user_id AS dimension_user_id,
-      COALESCE(p.project_id, vc.participation_context_id) AS dimension_project_id,
-      adt.id AS dimension_type_id,
-      (vv.created_at)::date AS dimension_date_created_id,
-      0 AS votes_count,
-      0 AS upvotes_count,
-      0 AS downvotes_count
-     FROM (((volunteering_volunteers vv
-       LEFT JOIN volunteering_causes vc ON ((vc.id = vv.cause_id)))
-       LEFT JOIN phases p ON ((p.id = vc.participation_context_id)))
-       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'volunteer'::text)));
-  SQL
-  create_view "analytics_fact_posts", sql_definition: <<-SQL
-      SELECT i.id,
-      i.author_id AS user_id,
-      i.project_id AS dimension_project_id,
-      adt.id AS dimension_type_id,
-      (i.created_at)::date AS dimension_date_created_id,
-      (abf.feedback_first_date)::date AS dimension_date_first_feedback_id,
-      i.idea_status_id AS dimension_status_id,
-      (abf.feedback_first_date - i.created_at) AS feedback_time_taken,
-      COALESCE(abf.feedback_official, 0) AS feedback_official,
-      COALESCE(abf.feedback_status_change, 0) AS feedback_status_change,
-          CASE
-              WHEN (abf.feedback_first_date IS NULL) THEN 1
-              ELSE 0
-          END AS feedback_none,
-      (i.upvotes_count + i.downvotes_count) AS votes_count,
-      i.upvotes_count,
-      i.downvotes_count
-     FROM ((ideas i
-       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'idea'::text)))
-       LEFT JOIN analytics_build_feedbacks abf ON ((abf.post_id = i.id)))
-  UNION ALL
-   SELECT i.id,
-      i.author_id AS user_id,
-      NULL::uuid AS dimension_project_id,
-      adt.id AS dimension_type_id,
-      (i.created_at)::date AS dimension_date_created_id,
-      (abf.feedback_first_date)::date AS dimension_date_first_feedback_id,
-      isc.initiative_status_id AS dimension_status_id,
-      (abf.feedback_first_date - i.created_at) AS feedback_time_taken,
-      COALESCE(abf.feedback_official, 0) AS feedback_official,
-      COALESCE(abf.feedback_status_change, 0) AS feedback_status_change,
-          CASE
-              WHEN (abf.feedback_first_date IS NULL) THEN 1
-              ELSE 0
-          END AS feedback_none,
-      (i.upvotes_count + i.downvotes_count) AS votes_count,
-      i.upvotes_count,
-      i.downvotes_count
-     FROM (((initiatives i
-       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'initiative'::text)))
-       LEFT JOIN analytics_build_feedbacks abf ON ((abf.post_id = i.id)))
-       LEFT JOIN initiative_status_changes isc ON (((isc.initiative_id = i.id) AND (isc.updated_at = ( SELECT max(isc_.updated_at) AS max
-             FROM initiative_status_changes isc_
-            WHERE (isc_.initiative_id = i.id))))));
-  SQL
   create_view "analytics_fact_email_deliveries", sql_definition: <<-SQL
       SELECT ecd.id,
       (ecd.sent_at)::date AS dimension_date_sent_id,
@@ -1798,5 +1668,139 @@ ActiveRecord::Schema.define(version: 2023_01_31_143907) do
        LEFT JOIN projects p ON ((ap.publication_id = p.id)))
        LEFT JOIN finished_statuses_for_timeline_projects fsftp ON ((fsftp.project_id = ap.publication_id)))
     WHERE ((ap.publication_type)::text = 'Project'::text);
+  SQL
+  create_view "analytics_fact_posts", sql_definition: <<-SQL
+      SELECT i.id,
+      i.author_id AS user_id,
+      i.project_id AS dimension_project_id,
+      adt.id AS dimension_type_id,
+      (i.created_at)::date AS dimension_date_created_id,
+      (abf.feedback_first_date)::date AS dimension_date_first_feedback_id,
+      i.idea_status_id AS dimension_status_id,
+      (abf.feedback_first_date - i.created_at) AS feedback_time_taken,
+      COALESCE(abf.feedback_official, 0) AS feedback_official,
+      COALESCE(abf.feedback_status_change, 0) AS feedback_status_change,
+          CASE
+              WHEN (abf.feedback_first_date IS NULL) THEN 1
+              ELSE 0
+          END AS feedback_none,
+      (i.upvotes_count + i.downvotes_count) AS votes_count,
+      i.upvotes_count,
+      i.downvotes_count,
+      i.publication_status
+     FROM ((ideas i
+       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'idea'::text)))
+       LEFT JOIN analytics_build_feedbacks abf ON ((abf.post_id = i.id)))
+  UNION ALL
+   SELECT i.id,
+      i.author_id AS user_id,
+      NULL::uuid AS dimension_project_id,
+      adt.id AS dimension_type_id,
+      (i.created_at)::date AS dimension_date_created_id,
+      (abf.feedback_first_date)::date AS dimension_date_first_feedback_id,
+      isc.initiative_status_id AS dimension_status_id,
+      (abf.feedback_first_date - i.created_at) AS feedback_time_taken,
+      COALESCE(abf.feedback_official, 0) AS feedback_official,
+      COALESCE(abf.feedback_status_change, 0) AS feedback_status_change,
+          CASE
+              WHEN (abf.feedback_first_date IS NULL) THEN 1
+              ELSE 0
+          END AS feedback_none,
+      (i.upvotes_count + i.downvotes_count) AS votes_count,
+      i.upvotes_count,
+      i.downvotes_count,
+      i.publication_status
+     FROM (((initiatives i
+       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'initiative'::text)))
+       LEFT JOIN analytics_build_feedbacks abf ON ((abf.post_id = i.id)))
+       LEFT JOIN initiative_status_changes isc ON (((isc.initiative_id = i.id) AND (isc.updated_at = ( SELECT max(isc_.updated_at) AS max
+             FROM initiative_status_changes isc_
+            WHERE (isc_.initiative_id = i.id))))));
+  SQL
+  create_view "analytics_fact_participations", sql_definition: <<-SQL
+      SELECT i.id,
+      i.author_id AS dimension_user_id,
+      i.project_id AS dimension_project_id,
+          CASE
+              WHEN (((pr.participation_method)::text = 'native_survey'::text) OR ((ph.participation_method)::text = 'native_survey'::text)) THEN survey.id
+              ELSE idea.id
+          END AS dimension_type_id,
+      (i.created_at)::date AS dimension_date_created_id,
+      (i.upvotes_count + i.downvotes_count) AS votes_count,
+      i.upvotes_count,
+      i.downvotes_count
+     FROM ((((ideas i
+       LEFT JOIN projects pr ON ((pr.id = i.project_id)))
+       LEFT JOIN phases ph ON ((ph.id = i.creation_phase_id)))
+       JOIN analytics_dimension_types idea ON (((idea.name)::text = 'idea'::text)))
+       LEFT JOIN analytics_dimension_types survey ON (((survey.name)::text = 'survey'::text)))
+  UNION ALL
+   SELECT i.id,
+      i.author_id AS dimension_user_id,
+      NULL::uuid AS dimension_project_id,
+      adt.id AS dimension_type_id,
+      (i.created_at)::date AS dimension_date_created_id,
+      (i.upvotes_count + i.downvotes_count) AS votes_count,
+      i.upvotes_count,
+      i.downvotes_count
+     FROM (initiatives i
+       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'initiative'::text)))
+  UNION ALL
+   SELECT c.id,
+      c.author_id AS dimension_user_id,
+      i.project_id AS dimension_project_id,
+      adt.id AS dimension_type_id,
+      (c.created_at)::date AS dimension_date_created_id,
+      (c.upvotes_count + c.downvotes_count) AS votes_count,
+      c.upvotes_count,
+      c.downvotes_count
+     FROM ((comments c
+       JOIN analytics_dimension_types adt ON ((((adt.name)::text = 'comment'::text) AND ((adt.parent)::text = lower((c.post_type)::text)))))
+       LEFT JOIN ideas i ON ((c.post_id = i.id)))
+  UNION ALL
+   SELECT v.id,
+      v.user_id AS dimension_user_id,
+      COALESCE(i.project_id, ic.project_id) AS dimension_project_id,
+      adt.id AS dimension_type_id,
+      (v.created_at)::date AS dimension_date_created_id,
+      1 AS votes_count,
+          CASE
+              WHEN ((v.mode)::text = 'up'::text) THEN 1
+              ELSE 0
+          END AS upvotes_count,
+          CASE
+              WHEN ((v.mode)::text = 'down'::text) THEN 1
+              ELSE 0
+          END AS downvotes_count
+     FROM ((((votes v
+       JOIN analytics_dimension_types adt ON ((((adt.name)::text = 'vote'::text) AND ((adt.parent)::text = lower((v.votable_type)::text)))))
+       LEFT JOIN ideas i ON ((i.id = v.votable_id)))
+       LEFT JOIN comments c ON ((c.id = v.votable_id)))
+       LEFT JOIN ideas ic ON ((ic.id = c.post_id)))
+  UNION ALL
+   SELECT pr.id,
+      pr.user_id AS dimension_user_id,
+      COALESCE(p.project_id, pr.participation_context_id) AS dimension_project_id,
+      adt.id AS dimension_type_id,
+      (pr.created_at)::date AS dimension_date_created_id,
+      0 AS votes_count,
+      0 AS upvotes_count,
+      0 AS downvotes_count
+     FROM ((polls_responses pr
+       LEFT JOIN phases p ON ((p.id = pr.participation_context_id)))
+       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'poll'::text)))
+  UNION ALL
+   SELECT vv.id,
+      vv.user_id AS dimension_user_id,
+      COALESCE(p.project_id, vc.participation_context_id) AS dimension_project_id,
+      adt.id AS dimension_type_id,
+      (vv.created_at)::date AS dimension_date_created_id,
+      0 AS votes_count,
+      0 AS upvotes_count,
+      0 AS downvotes_count
+     FROM (((volunteering_volunteers vv
+       LEFT JOIN volunteering_causes vc ON ((vc.id = vv.cause_id)))
+       LEFT JOIN phases p ON ((p.id = vc.participation_context_id)))
+       JOIN analytics_dimension_types adt ON (((adt.name)::text = 'volunteer'::text)));
   SQL
 end

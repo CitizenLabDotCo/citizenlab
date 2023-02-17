@@ -19,6 +19,11 @@ Layout/HashAlignment:
   EnforcedColonStyle: [key, table]
   EnforcedHashRocketStyle: [key, table]
 
+Metrics/BlockLength:
+  Exclude:
+    - 'engines/*/*/spec/**/*'
+    - 'spec/**/*'
+
 Style/Documentation:
   # Most classes are not documented, so turn off this Cop.
   Enabled: false
@@ -124,12 +129,16 @@ RSpec/DescribeClass:
   Exclude:
     - 'engines/commercial/multi_tenancy/spec/db/seedfile_spec.rb'
     - 'engines/commercial/multi_tenancy/spec/tasks/email_campaigns_task_spec.rb'
+    - 'engines/commercial/multi_tenancy/spec/tasks/invalid_data_checker_task_spec.rb'
 
 RSpec/EmptyExampleGroup:
   # `context` and `describe` are found as empty example groups when
   # `example_request`, `post`, etc are used, so exclude acceptance tests.
   Exclude:
     - '**/spec/acceptance/**/*'
+
+RSpec/ExampleLength:
+  Enabled: false
 
 Metrics/MethodLength:
   CountAsOne: ['array', 'hash', 'heredoc']

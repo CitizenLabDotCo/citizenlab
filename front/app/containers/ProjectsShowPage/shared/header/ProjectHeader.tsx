@@ -137,7 +137,7 @@ const ProjectHeader = memo<Props & WrappedComponentProps>(
             />
             {!moduleActive && <ProjectInfo projectId={projectId} />}
             <Outlet
-              id="app.ProjectsShowPage.shared.header.ProjectInfo.contentBuilder"
+              id="app.ProjectsShowPage.shared.header.ProjectInfo.projectDescriptionBuilder"
               onMount={setModuleToActive}
             />
           </ContentContainer>

@@ -30,19 +30,17 @@ import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
-// types
-import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
-
 // tracking
 import { trackEventByName } from 'utils/analytics';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
 
 // hooks
-import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
-import useInsightsInputsCount from 'modules/commercial/insights/hooks/useInsightsInputsCount';
+import useCategories from 'modules/commercial/insights/api/categories/useCategories';
+import useStat from 'modules/commercial/insights/api/stats/useStat';
+import { IInsightsInputData } from 'modules/commercial/insights/api/inputs/types';
 
 const InputsContainer = styled.div`
-  flex: 0 0 420px;
+  flex: 0 0 500px;
   padding: 12px 20px 0px 20px;
   height: 100%;
   background-color: ${colors.grey200};
@@ -65,7 +63,7 @@ type InputsProps = {
   onPreviewInput: (input: IInsightsInputData) => void;
   inputs: IInsightsInputData[];
   loading: boolean;
-  hasMore: boolean | null;
+  hasMore?: boolean;
   onLoadMore: () => void;
 } & WithRouterProps &
   WrappedComponentProps;
@@ -81,7 +79,7 @@ const Inputs = ({
   loading,
 }: InputsProps) => {
   const [createModalOpened, setCreateModalOpened] = useState(false);
-  const categories = useInsightsCategories(viewId);
+  const { data: categories } = useCategories(viewId);
 
   const queryCategories: string[] = query.categories
     ? typeof query.categories === 'string'
@@ -96,10 +94,12 @@ const Inputs = ({
     : [];
 
   const selectedCategories = !isNilOrError(categories)
-    ? categories.filter((category) => queryCategories.includes(category.id))
+    ? categories.data.filter((category) =>
+        queryCategories.includes(category.id)
+      )
     : [];
 
-  const inputsCount = useInsightsInputsCount(viewId, {
+  const { data: inputsCount } = useStat(viewId, {
     keywords,
     categories: selectedCategories.map(({ id }) => id),
     search: query.search,
@@ -154,11 +154,16 @@ const Inputs = ({
 
   return (
     <InputsContainer data-testid="insightsDetailsInputs">
-      <Box display="flex" justifyContent="space-between" alignItems="center">
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        minHeight="48px"
+      >
         <SectionTitle>
           {formatMessage(messages.inputsSectionTitle)}
           {!isNilOrError(inputsCount) && (
-            <StyledInputCount>{inputsCount?.count}</StyledInputCount>
+            <StyledInputCount>{inputsCount?.data.count}</StyledInputCount>
           )}
           <IconTooltip
             ml="8px"
@@ -176,7 +181,7 @@ const Inputs = ({
         onChange={onSearch}
         size="small"
         a11y_numberOfSearchResults={
-          !isNilOrError(inputsCount) ? inputsCount.count : 0
+          !isNilOrError(inputsCount) ? inputsCount.data.count : 0
         }
       />
       {selectedCategories.length > 0 && (

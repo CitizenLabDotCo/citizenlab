@@ -115,7 +115,6 @@ de:
         description:
       author_id:
         title: Autor
-        description:
       topic_ids:
         title: Themen
         description:
@@ -126,13 +125,20 @@ de:
         title: Vorgeschlagenes Budget
         description:
       budget:
-        title: Budget
-        description:
+        title: Haushalt
       images:
         title: Bilder
         description:
       attachments:
         title: Anhänge
+        description:
+      section1:
+        description:
+      section2:
+        title: Bilder und Anhänge
+        description:
+      section3:
+        title: Details
         description:
   custom_forms:
     categories:
@@ -189,6 +195,7 @@ de:
       author_fullname: 'Name des Autors / der Autorin'
       author_email: 'E-Mail-Adresse des Autors / der Autorin'
       author_id: 'ID des Autors / der Autorin'
+      budget: 'Budget'
       created_at: 'Eingereicht am'
       published_at: 'Veröffentlicht am'
       comments_count: 'Kommentare'

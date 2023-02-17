@@ -12,12 +12,7 @@ import GetNotifications, {
 } from 'resources/GetNotifications';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
-const LoadingContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+import Centerer from 'components/UI/Centerer';
 
 const EmptyStateContainer = styled.div`
   height: 200px;
@@ -84,9 +79,9 @@ const NotificationsDropdown = ({
             hasMore={notifications.hasMore}
             threshold={50}
             loader={
-              <LoadingContainer key="0">
+              <Centerer key="0">
                 <Spinner />
-              </LoadingContainer>
+              </Centerer>
             }
           >
             {!isNilOrError(notifications?.list) &&

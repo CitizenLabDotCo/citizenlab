@@ -18,7 +18,7 @@ import QuestionFilter from './QuestionFilter';
 // messages
 import messages from './messages';
 import widgetMessages from '../messages';
-import formBuilderMessages from 'containers/Admin/formBuilder/components/messages';
+import nativeSurveyMessages from 'containers/Admin/projects/project/nativeSurvey/messages';
 
 // types
 import { IOption } from 'typings';
@@ -76,7 +76,7 @@ const SurveyResultsWidgetSettings = () => {
 
   const setTitle = useCallback(
     (value: string) => {
-      setProp((props) => {
+      setProp((props: Props) => {
         props.title = value;
       });
     },
@@ -85,7 +85,7 @@ const SurveyResultsWidgetSettings = () => {
 
   const handleProjectFilter = useCallback(
     ({ value }: IOption) => {
-      setProp((props) => {
+      setProp((props: Props) => {
         props.projectId = value;
         props.phaseId = undefined;
         props.shownQuestions = undefined;
@@ -96,7 +96,7 @@ const SurveyResultsWidgetSettings = () => {
 
   const handlePhaseFilter = useCallback(
     ({ value }: IOption) => {
-      setProp((props) => {
+      setProp((props: Props) => {
         props.phaseId = value;
       });
     },
@@ -105,7 +105,7 @@ const SurveyResultsWidgetSettings = () => {
 
   const handleQuestionToggle = useCallback(
     (questionIndex: number, numberOfQuestions: number) => {
-      setProp((props) => {
+      setProp((props: Props) => {
         const newShownQuestions = props.shownQuestions
           ? [...props.shownQuestions]
           : Array(numberOfQuestions).fill(true);
@@ -141,7 +141,7 @@ const SurveyResultsWidgetSettings = () => {
             fill="textSecondary"
             display="inline"
           />
-          {formatMessage(formBuilderMessages.informationText)}
+          {formatMessage(nativeSurveyMessages.informationText)}
         </Text>
       </Box>
 

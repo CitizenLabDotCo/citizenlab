@@ -21,7 +21,6 @@ import styled from 'styled-components';
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
-import cropperMessages from 'components/admin/ImageCropper/messages';
 
 import {
   ICustomPageAttributes,
@@ -85,9 +84,7 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
                         values={{
                           link: (
                             <a
-                              href={formatMessage(
-                                cropperMessages.imageSupportPageURL
-                              )}
+                              href={formatMessage(messages.imageSupportPageURL)}
                               target="_blank"
                               rel="noreferrer"
                             >
@@ -153,9 +150,7 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
                         values={{
                           link: (
                             <a
-                              href={formatMessage(
-                                cropperMessages.imageSupportPageURL
-                              )}
+                              href={formatMessage(messages.imageSupportPageURL)}
                               target="_blank"
                               rel="noreferrer"
                             >
@@ -198,9 +193,7 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
                         values={{
                           link: (
                             <a
-                              href={formatMessage(
-                                cropperMessages.imageSupportPageURL
-                              )}
+                              href={formatMessage(messages.imageSupportPageURL)}
                               target="_blank"
                               rel="noreferrer"
                             >

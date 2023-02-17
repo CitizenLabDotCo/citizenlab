@@ -86,7 +86,7 @@ da:
     about:
       title: Om
     faq:
-      title: FAQ
+      title: OFTE STILLEDE SPØRGSMÅL
   projects:
     open_idea_project_title: En idé? Tag det med til dit råd!
     open_idea_project_description_preview: Måske har du en idé, der ikke passer til ét af de eksisterende projekter? Så post det her, saml støtte og få det på den politiske dagsorden!
@@ -115,7 +115,6 @@ da:
         description:
       author_id:
         title: Forfatter
-        description:
       topic_ids:
         title: Emner
         description:
@@ -127,12 +126,19 @@ da:
         description:
       budget:
         title: Budget
-        description:
       images:
         title: Billeder
         description:
       attachments:
         title: Vedhæftede filer
+        description:
+      section1:
+        description:
+      section2:
+        title: Billeder og vedhæftede filer
+        description:
+      section3:
+        title: Detaljer
         description:
   custom_forms:
     categories:
@@ -189,6 +195,7 @@ da:
       author_fullname: 'Forfatterens navn'
       author_email: 'Forfatter e-mail'
       author_id: 'Forfatter ID'
+      budget: 'Budget'
       created_at: 'Indsendt på'
       published_at: 'Udgivet på'
       comments_count: 'Kommentarer'

@@ -14,7 +14,6 @@ import messages from '../messages';
 
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
-
 import {
   ICustomPageAttributes,
   TCustomPageBannerLayout,
@@ -23,8 +22,7 @@ import {
   IHomepageSettingsAttributes,
   THomepageBannerLayout,
 } from 'services/homepageSettings';
-
-import ImageInfoTooltip from 'components/admin/ImageCropper/ImageInfoTooltip';
+import ImageInfoTooltip from './ImageInfoTooltip';
 
 export interface Props {
   onAddImage: (newImageBase64: string) => void;

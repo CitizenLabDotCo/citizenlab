@@ -9,6 +9,7 @@ import MapConfigOverview from './MapConfigOverview';
 import { Spinner } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Tippy from '@tippyjs/react';
+import Centerer from 'components/UI/Centerer';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -39,14 +40,6 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-
-const Loading = styled.div`
-  width: 100%;
-  height: 500px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
 
 const Container = styled.div`
   display: flex;
@@ -210,9 +203,9 @@ const ProjectCustomMapConfigPage = memo<
   }
 
   return (
-    <Loading>
+    <Centerer height="500px">
       <Spinner />
-    </Loading>
+    </Centerer>
   );
 });
 

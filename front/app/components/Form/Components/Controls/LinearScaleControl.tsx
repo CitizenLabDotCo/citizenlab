@@ -9,13 +9,19 @@ import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import {
   Box,
   Text,
-  Radio,
-  Label,
   useBreakpoint,
+  Button,
 } from '@citizenlab/cl2-component-library';
 import { FormLabel } from 'components/UI/FormComponents';
 import VerificationIcon from '../VerificationIcon';
 import ErrorDisplay from '../ErrorDisplay';
+import { getSubtextElement } from './controlUtils';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
+
+// style
+import { colors } from 'utils/styleUtils';
+import { useTheme } from 'styled-components';
 
 const LinearScaleControl = ({
   data,
@@ -29,11 +35,20 @@ const LinearScaleControl = ({
   visible,
 }: ControlProps) => {
   const isSmallerThanXlPhone = useBreakpoint('phone');
+  const theme = useTheme();
   const maximum = schema?.maximum;
+  const answerNotPublic = uischema.options?.answer_visible_to === 'admins';
 
   if (!visible) {
     return null;
   }
+
+  const getButtonWidth = () => {
+    if (maximum && maximum > 5) {
+      return maximum > 6 ? '64px' : '80px';
+    }
+    return 'auto';
+  };
 
   return (
     <>
@@ -41,69 +56,87 @@ const LinearScaleControl = ({
         htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
-        subtextValue={uischema.options?.description}
+        subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
       />
-      <Box
-        data-testid="linearScaleControl"
-        display={isSmallerThanXlPhone ? 'block' : 'flex'}
-        flexDirection="row"
-        gap="16px"
-        overflow="visible"
-        flexWrap="nowrap"
-        alignItems="flex-end"
-        mb="4px"
-      >
-        {uischema.options?.minimum_label && (
-          <Box mb={isSmallerThanXlPhone ? '12px' : '0'}>
-            <Text
-              mr="8px"
-              mt="0"
-              mb="0"
-              color="textSecondary"
-              textAlign={isSmallerThanXlPhone ? 'left' : 'right'}
-            >
-              {uischema.options?.minimum_label}
-            </Text>
-          </Box>
-        )}
-        <>
+      {answerNotPublic && (
+        <Text mb="8px" mt="0px" fontSize="s">
+          <FormattedMessage {...messages.notPublic} />
+        </Text>
+      )}
+      <Box data-testid="linearScaleControl">
+        <Box
+          gap={isSmallerThanXlPhone ? '8px' : '12px'}
+          display="flex"
+          flexWrap="wrap"
+          justifyContent="center"
+        >
           {[...Array(maximum).keys()].map((i) => {
             const rowId = `${path}-radio-${i}`;
             const visualIndex = i + 1;
             return (
               <Box
-                mb={isSmallerThanXlPhone ? '4px' : '0px'}
-                display={isSmallerThanXlPhone ? 'flex' : 'block'}
-                gap={isSmallerThanXlPhone ? '4px' : 'auto'}
-                key={i}
-                style={{ lineHeight: '0px' }}
+                flexGrow={
+                  isSmallerThanXlPhone && maximum && maximum > 5 ? 0 : 1
+                }
+                key={rowId}
+                minWidth={getButtonWidth()}
+                padding="16px, 20px, 16px, 20px"
               >
-                <Box
-                  mt="0"
-                  mr="4px"
-                  ml={isSmallerThanXlPhone ? '0px' : '5px'}
-                  minHeight="24px"
+                <Button
+                  py="12px"
+                  id={`linear-scale-option-${visualIndex}`}
+                  bgColor={
+                    data === visualIndex
+                      ? theme.colors.tenantSecondary
+                      : colors.grey100
+                  }
+                  textHoverColor={
+                    data === visualIndex ? 'white' : colors.textPrimary
+                  }
+                  textColor={
+                    data === visualIndex ? 'white' : colors.textPrimary
+                  }
+                  width="100%"
+                  onClick={() => handleChange(path, visualIndex)}
                 >
-                  <Label htmlFor={rowId}>{visualIndex}</Label>
-                </Box>
-                {!isSmallerThanXlPhone && <br />}
-                <Radio
-                  name="linear_scale"
-                  currentValue={data}
-                  value={visualIndex}
-                  key={i}
-                  id={rowId}
-                  onChange={(value) => handleChange(path, value)}
-                />
+                  {visualIndex}
+                </Button>
               </Box>
             );
           })}
-        </>
-        <Box>
-          <Text mr="8px" mt="0" mb="0" color="textSecondary">
-            {uischema.options?.maximum_label}
-          </Text>
+        </Box>
+        <Box
+          width="100%"
+          display={isSmallerThanXlPhone ? 'block' : 'flex'}
+          justifyContent="space-between"
+        >
+          {uischema.options?.minimum_label && (
+            <Box maxWidth={isSmallerThanXlPhone ? '100%' : '50%'}>
+              <Text
+                mt="8px"
+                mb="0px"
+                color="textSecondary"
+                fontSize={isSmallerThanXlPhone ? 's' : 'm'}
+              >
+                {isSmallerThanXlPhone && <>1. </>}
+                {uischema.options?.minimum_label}
+              </Text>
+            </Box>
+          )}
+          {uischema.options?.maximum_label && (
+            <Box maxWidth={isSmallerThanXlPhone ? '100%' : '50%'}>
+              <Text
+                mt={isSmallerThanXlPhone ? '0px' : '8px'}
+                m="0px"
+                color="textSecondary"
+                fontSize={isSmallerThanXlPhone ? 's' : 'm'}
+              >
+                {isSmallerThanXlPhone && <>{maximum}. </>}
+                {uischema.options?.maximum_label}
+              </Text>
+            </Box>
+          )}
         </Box>
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>

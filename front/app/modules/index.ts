@@ -1,7 +1,6 @@
 import { loadModules } from 'utils/moduleUtils';
 
 import smartGroupsConfiguration from './commercial/smart_groups';
-import ideaCustomFieldsConfiguration from './commercial/idea_custom_fields';
 import granularPermissionsConfiguration from './commercial/granular_permissions';
 import ideaAssignmentConfiguration from './commercial/idea_assignment';
 import moderationConfiguration from './commercial/moderation';
@@ -17,7 +16,8 @@ import intercomConfiguration from './commercial/intercom';
 import satismeterConfiguration from './commercial/satismeter';
 import segmentConfiguration from './commercial/segment';
 import matomoConfiguration from './commercial/matomo';
-import contentBuilderConfiguration from './commercial/content_builder';
+import posthogConfiguration from './commercial/posthog_integration';
+import projectDescriptionBuilderConfiguration from './commercial/project_description_builder';
 import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
 import bulkIdeaImportConfiguration from './commercial/bulk_idea_import';
 import impactTrackingConfiguration from './commercial/impact_tracking';
@@ -52,15 +52,15 @@ export default loadModules([
     isEnabled,
   },
   {
-    configuration: ideaCustomFieldsConfiguration,
-    isEnabled,
-  },
-  {
     configuration: googleTagManagerConfiguration,
     isEnabled,
   },
   {
     configuration: matomoConfiguration,
+    isEnabled,
+  },
+  {
+    configuration: posthogConfiguration,
     isEnabled,
   },
   {
@@ -96,7 +96,7 @@ export default loadModules([
     isEnabled,
   },
   {
-    configuration: contentBuilderConfiguration,
+    configuration: projectDescriptionBuilderConfiguration,
     isEnabled,
   },
   {

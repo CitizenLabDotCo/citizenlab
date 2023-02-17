@@ -11,6 +11,7 @@ class TrackEventJob < ApplicationJob
     # TODO We'd better not silently ignore those events
   else
     TrackIntercomService.new.track_activity(activity) if app_config.feature_activated?('intercom')
-    TrackSegmentService.new.track_activity(activity)  if app_config.feature_activated?('segment')
+    TrackSegmentService.new.track_activity(activity) if app_config.feature_activated?('segment')
+    PosthogIntegration::TrackPosthogService.new.track_activity(activity) if app_config.feature_activated?('posthog_integration')
   end
 end
