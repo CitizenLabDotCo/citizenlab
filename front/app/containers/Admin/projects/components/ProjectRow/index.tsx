@@ -11,7 +11,13 @@ import {
   ActionsRowContainer,
 } from '../StyledComponents';
 import PublicationStatusLabel from '../PublicationStatusLabel';
-import { IconNames, StatusLabel } from '@citizenlab/cl2-component-library';
+import {
+  IconNames,
+  StatusLabel,
+  Spinner,
+  Box,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import GroupsTag from './GroupsTag';
 import AdminTag from './AdminTag';
@@ -62,6 +68,7 @@ const ProjectRow = ({
 }: Props) => {
   const [isBeingDeleted, _setIsBeingDeleted] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const authUser = useAuthUser();
   const projectId = publication.publicationId;
   const publicationStatus = publication.attributes.publication_status;
@@ -74,6 +81,11 @@ const ProjectRow = ({
       <RowContent className="e2e-admin-projects-list-item">
         <RowContentInner className="expand primary">
           <RowTitle value={publication.attributes.publication_title_multiloc} />
+          {isLoading && (
+            <Box mr="12px">
+              <Spinner size="20px" color={colors.grey400} />
+            </Box>
+          )}
           {publication.attributes.publication_visible_to === 'groups' && (
             <GroupsTag
               projectId={projectId}
@@ -126,7 +138,11 @@ const ProjectRow = ({
             }
           })}
           {showMoreActions && (
-            <ProjectMoreActionsMenu projectId={projectId} setError={setError} />
+            <ProjectMoreActionsMenu
+              projectId={projectId}
+              setError={setError}
+              setIsRunningAction={setIsLoading}
+            />
           )}
         </ActionsRowContainer>
       </RowContent>

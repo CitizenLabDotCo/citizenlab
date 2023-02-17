@@ -12,9 +12,14 @@ import { canModerateProject } from 'services/permissions/rules/projectPermission
 export interface Props {
   projectId: string;
   setError: (error: string | null) => void;
+  setIsRunningAction?: (isLoading: boolean) => void;
 }
 
-const ProjectMoreActionsMenu = ({ projectId, setError }: Props) => {
+const ProjectMoreActionsMenu = ({
+  projectId,
+  setError,
+  setIsRunningAction,
+}: Props) => {
   const { formatMessage } = useIntl();
   const authUser = useAuthUser();
   const [isCopying, setIsCopying] = useState(false);
@@ -33,14 +38,27 @@ const ProjectMoreActionsMenu = ({ projectId, setError }: Props) => {
     }
   };
 
+  const setLoadingState = (
+    type: 'deleting' | 'copying',
+    isLoading: boolean
+  ) => {
+    if (type === 'copying') {
+      setIsCopying(isLoading);
+    } else if (type === 'deleting') {
+      setIsDeleting(isLoading);
+    }
+
+    setIsRunningAction && setIsRunningAction(isLoading);
+  };
+
   const copyAction = {
     handler: async () => {
-      setIsCopying(true);
+      setLoadingState('copying', true);
       await handleCallbackError(
         () => copyProject(projectId),
         formatMessage(messages.copyProjectError)
       );
-      setIsCopying(false);
+      setLoadingState('copying', false);
     },
     label: formatMessage(messages.copyProjectButton),
     icon: 'copy' as const,
@@ -50,12 +68,12 @@ const ProjectMoreActionsMenu = ({ projectId, setError }: Props) => {
   const deleteAction = {
     handler: async () => {
       if (window.confirm(formatMessage(messages.deleteProjectConfirmation))) {
-        setIsDeleting(true);
+        setLoadingState('deleting', true);
         await handleCallbackError(
           () => deleteProject(projectId),
           formatMessage(messages.deleteProjectError)
         );
-        setIsDeleting(false);
+        setLoadingState('deleting', false);
       }
     },
     label: formatMessage(messages.deleteProjectButtonFull),
