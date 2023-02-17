@@ -117,7 +117,7 @@ const FormActions = ({
               clHistory.push(viewFormResults);
             }}
           >
-            {formatMessage(messages.viewNativeSurveyResults, {
+            {formatMessage(messages.viewSurveyResults, {
               count: submissionCount.totalSubmissions,
             })}
           </Button>
@@ -132,7 +132,7 @@ const FormActions = ({
             }}
             data-cy="e2e-edit-survey-content"
           >
-            {formatMessage(messages.editNativeSurveyContent)}
+            {formatMessage(messages.editSurveyContent)}
           </Button>
           <Button
             linkTo={viewFormLink}
