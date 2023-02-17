@@ -19,7 +19,9 @@ describe MultiTenancy::Templates::Serializer do
         expect(HomePage.count).to be 1
         expect(Area.count).to be > 0
         expect(Comment.count).to be > 0
+        expect(CustomField.count).to be > 0
         expect(CustomFieldOption.count).to be > 0
+        expect(CustomForm.count).to be > 0
         expect(Event.count).to be > 0
         expect(IdeaStatus.count).to be > 0
         expect(Vote.count).to be > 0

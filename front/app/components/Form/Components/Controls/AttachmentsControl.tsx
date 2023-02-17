@@ -17,6 +17,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
 import { Box } from '@citizenlab/cl2-component-library';
+import { getSubtextElement } from './controlUtils';
 
 const AttachmentsControl = ({
   uischema,
@@ -111,7 +112,7 @@ const AttachmentsControl = ({
         htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
-        subtextValue={uischema.options?.description}
+        subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
       />
       <FileUploader

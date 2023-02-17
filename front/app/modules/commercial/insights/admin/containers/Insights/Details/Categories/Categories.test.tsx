@@ -7,11 +7,11 @@ import Categories, { visibleCategoriesNumber } from './';
 
 let mockData = categories;
 
-jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
-  return jest.fn(() => mockData);
-});
-
-jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
+jest.mock('modules/commercial/insights/api/categories/useCategories', () =>
+  jest.fn(() => ({
+    data: { data: mockData },
+  }))
+);
 
 const viewId = '1';
 

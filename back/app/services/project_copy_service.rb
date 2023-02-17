@@ -152,6 +152,7 @@ class ProjectCopyService < ::TemplateService
         'enabled' => field.enabled,
         'required' => field.required,
         'code' => field.code,
+        'answer_visible_to' => field.answer_visible_to,
         'hidden' => field.hidden,
         'maximum' => field.maximum,
         'minimum_label_multiloc' => field.minimum_label_multiloc,

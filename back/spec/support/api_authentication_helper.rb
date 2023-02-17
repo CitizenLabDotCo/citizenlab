@@ -5,7 +5,7 @@ module ApiAuthenticationHelper
     header_token_for create(:admin)
   end
 
-  def user_header_token
+  def resident_header_token
     header_token_for create(:user)
   end
 

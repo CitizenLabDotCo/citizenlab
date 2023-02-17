@@ -13,7 +13,7 @@ import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import styled from 'styled-components';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import VerificationIcon from '../VerificationIcon';
-import { getOptions } from './controlUtils';
+import { getOptions, getSubtextElement } from './controlUtils';
 
 const StyledMultipleSelect = styled(MultipleSelect)`
   flex-grow: 1;
@@ -43,7 +43,7 @@ const MultiSelectControl = ({
         htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
-        subtextValue={uischema.options?.description}
+        subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
       />
       <Box display="flex" flexDirection="row" overflow="visible">

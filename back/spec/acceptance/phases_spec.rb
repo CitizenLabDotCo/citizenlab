@@ -587,21 +587,21 @@ resource 'Phases' do
 
         example 'Download an empty sheet', document: false, skip: !CitizenLab.ee? do
           do_request
-          expect(status).to eq 200
-          expect(xlsx_contents(response_body)).to match_array([
+
+          assert_status 200
+          expect(xlsx_contents(response_body)).to eq([
             {
               sheet_name: ideation_phase.title_multiloc['en'],
               column_headers: [
                 'ID',
                 'Title',
                 'Description',
-                'Budget',
-                'Proposed Budget',
+                'Attachments',
                 'Tags',
                 'Latitude',
                 'Longitude',
                 'Location',
-                'Attachments',
+                'Proposed Budget',
                 'Author name',
                 'Author email',
                 'Author ID',
@@ -611,6 +611,7 @@ resource 'Phases' do
                 'Upvotes',
                 'Downvotes',
                 'Baskets',
+                'Budget',
                 'URL',
                 'Project',
                 'Status',
@@ -625,7 +626,7 @@ resource 'Phases' do
 
       context 'for an ideation phase with persisted form' do
         let(:project) { create(:project, process_type: 'timeline') }
-        let(:project_form) { create(:custom_form, participation_context: project) }
+        let(:project_form) { create(:custom_form, :with_default_fields, participation_context: project) }
         let(:ideation_phase) do
           create(
             :phase,
@@ -649,20 +650,19 @@ resource 'Phases' do
           example 'Download an empty sheet', document: false, skip: !CitizenLab.ee? do
             do_request
             expect(status).to eq 200
-            expect(xlsx_contents(response_body)).to match_array([
+            expect(xlsx_contents(response_body)).to eq([
               {
                 sheet_name: ideation_phase.title_multiloc['en'],
                 column_headers: [
                   'ID',
                   'Title',
                   'Description',
-                  'Budget',
-                  'Proposed Budget',
+                  'Attachments',
                   'Tags',
                   'Latitude',
                   'Longitude',
                   'Location',
-                  'Attachments',
+                  'Proposed Budget',
                   extra_idea_field.title_multiloc['en'],
                   'Author name',
                   'Author email',
@@ -673,6 +673,7 @@ resource 'Phases' do
                   'Upvotes',
                   'Downvotes',
                   'Baskets',
+                  'Budget',
                   'URL',
                   'Project',
                   'Status',
@@ -712,21 +713,20 @@ resource 'Phases' do
 
           example 'Download ideation phase inputs in one sheet', skip: !CitizenLab.ee? do
             do_request
-            expect(status).to eq 200
-            expect(xlsx_contents(response_body)).to match_array([
+            assert_status 200
+            expect(xlsx_contents(response_body)).to match([
               {
                 sheet_name: ideation_phase.title_multiloc['en'],
                 column_headers: [
                   'ID',
                   'Title',
                   'Description',
-                  'Budget',
-                  'Proposed Budget',
+                  'Attachments',
                   'Tags',
                   'Latitude',
                   'Longitude',
                   'Location',
-                  'Attachments',
+                  'Proposed Budget',
                   extra_idea_field.title_multiloc['en'],
                   'Author name',
                   'Author email',
@@ -737,6 +737,7 @@ resource 'Phases' do
                   'Upvotes',
                   'Downvotes',
                   'Baskets',
+                  'Budget',
                   'URL',
                   'Project',
                   'Status',
@@ -748,13 +749,12 @@ resource 'Phases' do
                     ideation_response1.id,
                     ideation_response1.title_multiloc['en'],
                     'It would improve the air quality!', # html tags are removed
-                    ideation_response1.budget,
-                    ideation_response1.proposed_budget,
+                    %r{\A/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\n/uploads/.+/idea_file/file/#{attachment2.id}/#{attachment2.name}\Z},
                     "#{ideation_response1.topics[0].title_multiloc['en']}, #{ideation_response1.topics[1].title_multiloc['en']}",
                     ideation_response1.location_point.coordinates.last,
                     ideation_response1.location_point.coordinates.first,
                     ideation_response1.location_description,
-                    %r{\A/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\n/uploads/.+/idea_file/file/#{attachment2.id}/#{attachment2.name}\Z},
+                    ideation_response1.proposed_budget,
                     'Answer',
                     ideation_response1.author_name,
                     ideation_response1.author.email,
@@ -765,6 +765,7 @@ resource 'Phases' do
                     upvotes.size,
                     downvotes.size,
                     baskets.size,
+                    ideation_response1.budget,
                     "http://example.org/ideas/#{ideation_response1.slug}",
                     project.title_multiloc['en'],
                     ideation_response1.idea_status.title_multiloc['en'],
@@ -967,7 +968,7 @@ resource 'Phases' do
 
       context 'for an ideation phase' do
         let(:project) { create(:project, process_type: 'timeline') }
-        let(:project_form) { create(:custom_form, participation_context: project) }
+        let(:project_form) { create(:custom_form, :with_default_fields, participation_context: project) }
         let(:ideation_phase) do
           create(
             :phase,
@@ -1000,20 +1001,19 @@ resource 'Phases' do
         example 'Download phase inputs without private user data', document: false do
           do_request
           expect(status).to eq 200
-          expect(xlsx_contents(response_body)).to match_array([
+          expect(xlsx_contents(response_body)).to match([
             {
               sheet_name: ideation_phase.title_multiloc['en'],
               column_headers: [
                 'ID',
                 'Title',
                 'Description',
-                'Budget',
-                'Proposed Budget',
+                'Attachments',
                 'Tags',
                 'Latitude',
                 'Longitude',
                 'Location',
-                'Attachments',
+                'Proposed Budget',
                 extra_idea_field.title_multiloc['en'],
                 'Author name',
                 'Submitted at',
@@ -1022,6 +1022,7 @@ resource 'Phases' do
                 'Upvotes',
                 'Downvotes',
                 'Baskets',
+                'Budget',
                 'URL',
                 'Project',
                 'Status',
@@ -1032,13 +1033,12 @@ resource 'Phases' do
                   ideation_response.id,
                   ideation_response.title_multiloc['en'],
                   'It would improve the air quality!', # html tags are removed
-                  ideation_response.budget,
-                  ideation_response.proposed_budget,
-                  nil,
+                  '',
+                  '',
                   ideation_response.location_point.coordinates.last,
                   ideation_response.location_point.coordinates.first,
                   ideation_response.location_description,
-                  nil,
+                  ideation_response.proposed_budget,
                   'Answer',
                   ideation_response.author_name,
                   an_instance_of(DateTime), # created_at
@@ -1047,6 +1047,7 @@ resource 'Phases' do
                   0,
                   0,
                   0,
+                  ideation_response.budget,
                   "http://example.org/ideas/#{ideation_response.slug}",
                   project.title_multiloc['en'],
                   ideation_response.idea_status.title_multiloc['en'],

@@ -8,9 +8,21 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
     TextImageService.new.render_data_images field, :description_multiloc
   end
 
+  attribute :answer_visible_to, if: proc { |_object, params|
+    params[:supports_answer_visible_to]
+  }
+
   attribute :hidden, if: proc { |object, _params|
     object.resource_type == 'User'
   }
+
+  attribute :constraints do |object, params|
+    if params[:constraints]
+      params[:constraints][object.code&.to_sym] || {}
+    else
+      {}
+    end
+  end
 
   attributes :maximum, :minimum_label_multiloc, :maximum_label_multiloc, if: proc { |object, _params|
     object.input_type == 'linear_scale'
