@@ -80,7 +80,16 @@ module MultiTenancy
           model.skip_image_presence = true if SKIP_IMAGE_PRESENCE_VALIDATION.include?(model_class.name)
 
           begin
-            if validate
+            if model.class.method_defined?(:in_list?) && model.in_list?
+              model_class.name.constantize.acts_as_list_no_update do
+                if validate
+                  model.save!
+                else
+                  model.save # Might fail but runs before_validations
+                  model.save(validate: false)
+                end
+              end
+            elsif validate
               model.save!
             else
               model.save # Might fail but runs before_validations
