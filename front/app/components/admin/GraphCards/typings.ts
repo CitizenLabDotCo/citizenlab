@@ -28,3 +28,15 @@ export interface Stat {
 
 // Component layouts
 export type Layout = 'wide' | 'narrow';
+
+export interface FormattedNumbers {
+  totalNumber: number | null;
+  formattedSerieChange: string | null;
+  typeOfChange: string | null;
+}
+
+export interface TimeSeriesTotalRow {
+  /* Date format: YYYY-MM-DD */
+  date: string;
+  total: number;
+}

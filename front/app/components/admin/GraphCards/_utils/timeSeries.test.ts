@@ -1,5 +1,10 @@
 import moment, { Moment } from 'moment';
-import { parseMonths, parseWeeks, parseDays } from './timeSeries';
+import {
+  parseMonths,
+  parseWeeks,
+  parseDays,
+  calculateCumulativeSerie,
+} from './timeSeries';
 
 type TimeSeriesResponse = TimeSeriesResponseRow[];
 
@@ -523,5 +528,31 @@ describe('parseDays', () => {
         parseRow
       )
     ).toEqual(expectedOutput);
+  });
+
+  describe('calculateCumulativeSerie', () => {
+    it('works', () => {
+      const data: TimeSeries = [
+        { date: '2021-11-01', visits: 1, visitors: 1 },
+        { date: '2021-12-01', visits: 0, visitors: 0 },
+        { date: '2022-01-01', visits: 3, visitors: 3 },
+        { date: '2022-02-01', visits: 4, visitors: 4 },
+      ];
+
+      const expectedOutput = [
+        { date: '2021-11-01', visits: 1, visitors: 1, total: 86 },
+        { date: '2021-12-01', visits: 0, visitors: 0, total: 86 },
+        { date: '2022-01-01', visits: 3, visitors: 3, total: 92 },
+        { date: '2022-02-01', visits: 4, visitors: 4, total: 100 },
+      ];
+
+      expect(
+        calculateCumulativeSerie(
+          data,
+          100,
+          (row: TimeSeriesRow) => row.visits + row.visitors
+        )
+      ).toEqual(expectedOutput);
+    });
   });
 });
