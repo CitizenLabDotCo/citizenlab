@@ -339,6 +339,7 @@ namespace :cl2_back do
         locale: tenant.configuration.settings('core', 'locales')&.first || 'en',
         registration_completed_at: Time.zone.now
       )
+      Analytics::PopulateDimensionsService.run
     end
 
     MultiTenancy::TenantService.new.finalize_creation(tenant)

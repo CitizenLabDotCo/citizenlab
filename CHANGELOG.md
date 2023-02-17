@@ -1,5 +1,11 @@
 # Changelog
 
+## 2023-02-17
+
+### Added
+
+- [CL-2659] Add posts by time, comments by time and votes by time charts to report builder
+
 ## 2023-02-15 (2)
 
 ### Added

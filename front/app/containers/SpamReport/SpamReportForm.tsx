@@ -1,5 +1,5 @@
 // libraries
-import React from 'react';
+import React, { FormEvent } from 'react';
 
 // Services
 import { Report } from 'services/spamReports';
@@ -73,7 +73,7 @@ interface Props extends CRUDParams {
   diff: Report | null;
   onReasonChange: { (value: Report['reason_code']): void };
   onTextChange: { (value: string): void };
-  onSubmit: { (event): void };
+  onSubmit: { (event: FormEvent): void };
 }
 
 interface State {}

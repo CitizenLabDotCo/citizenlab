@@ -631,7 +631,7 @@
   "app.components.formBuilder.showResponseToUsersToggleLabel": "Vis svar til brugerne",
   "app.components.formBuilder.singleChoice": "Enkelt valg",
   "app.components.formBuilder.supportArticleLinkText": "denne side",
-  "app.components.formBuilder.tags": "Tags",
+  "app.components.formBuilder.tags": "Mærker",
   "app.components.formBuilder.title": "Titel",
   "app.components.formBuilder.toLabel": "til",
   "app.container.IdeaForm.budgetIsTooBig": "Det afsatte budget er for stort",
