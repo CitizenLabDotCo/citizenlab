@@ -192,13 +192,13 @@ lb:
       created_at: 'Agereecht bei'
       published_at: 'Verëffentlecht bei'
       comments_count: 'Kommentaren'
-      upvotes_count: 'Upvotes'
-      downvotes_count: 'Downvotes'
+      upvotes_count: 'En Daum erop ginn'
+      downvotes_count: 'En Daum erof ginn'
       baskets_count: 'Kierf'
       input_url: 'URL'
       project: 'Projet'
       status: 'Status'
-      assignee_fullname: 'Assignee'
+      assignee_fullname: 'Mandataire'
       assignee_email: 'E-Mail vum Beoptragten'
   form_builder:
     default_select_field:
