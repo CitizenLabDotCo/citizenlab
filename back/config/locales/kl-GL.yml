@@ -115,7 +115,6 @@ kl:
         description:
       author_id:
         title: Author
-        description:
       topic_ids:
         title: Pineqartut
         description:
@@ -127,12 +126,19 @@ kl:
         description:
       budget:
         title: Budget
-        description:
       images:
         title: Assit
         description:
       attachments:
         title: Filit ilanngussat
+        description:
+      section1:
+        description:
+      section2:
+        title: Images and attachments
+        description:
+      section3:
+        title: Details
         description:
   custom_forms:
     categories:
@@ -189,6 +195,7 @@ kl:
       author_fullname: 'Author name'
       author_email: 'Author email'
       author_id: 'Author ID'
+      budget: 'Budget'
       created_at: 'Submitted at'
       published_at: 'Published at'
       comments_count: 'Comments'
