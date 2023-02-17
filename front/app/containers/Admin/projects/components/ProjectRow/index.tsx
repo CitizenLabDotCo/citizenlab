@@ -113,7 +113,6 @@ const ProjectRow = ({
         <ActionsRowContainer>
           {actions.map((action) => {
             if (action === 'manage') {
-              return null;
               return (
                 <ManageButton
                   isDisabled={isBeingDeleted || !userCanModerateProject}
