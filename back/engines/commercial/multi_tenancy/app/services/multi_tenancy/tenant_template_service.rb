@@ -39,7 +39,6 @@ module MultiTenancy
       end
     end
 
-    # rubocop:disable Metrics/MethodLength
     def apply_template(template, validate: true, max_time: nil, local_copy: false)
       t1 = Time.zone.now
       obj_to_id_and_class = {}
@@ -127,7 +126,6 @@ module MultiTenancy
 
       created_objects_ids
     end
-    # rubocop:enable Metrics/MethodLength
 
     def restore_template_attributes(attributes, obj_to_id_and_class, app_settings, model_class: nil)
       start_of_day = Time.now.in_time_zone(app_settings.dig('core', 'timezone')).beginning_of_day
