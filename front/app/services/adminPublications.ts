@@ -41,7 +41,7 @@ export interface IAdminPublicationData {
       data: IRelationship[];
     };
     parent: {
-      // The id here is the parent's publication id, *not* the folder id.
+      // The id in IRelationship is the parent's publication id, *not* the folder id.
       data?: IRelationship;
     };
     publication: {
