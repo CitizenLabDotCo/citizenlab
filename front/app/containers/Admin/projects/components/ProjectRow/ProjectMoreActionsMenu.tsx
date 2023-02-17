@@ -11,12 +11,19 @@ import { canModerateProject } from 'services/permissions/rules/projectPermission
 import useProject from 'hooks/useProject';
 import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
 
+export type ActionType = 'deleting' | 'copying';
+
 export interface Props {
   projectId: string;
   setError: (error: string | null) => void;
+  setIsRunningAction?: (actionType: ActionType, isRunning: boolean) => void;
 }
 
-const ProjectMoreActionsMenu = ({ projectId, setError }: Props) => {
+const ProjectMoreActionsMenu = ({
+  projectId,
+  setError,
+  setIsRunningAction,
+}: Props) => {
   const { formatMessage } = useIntl();
   const project = useProject({ projectId });
   const folderId = project?.attributes.folder_id;
@@ -48,18 +55,31 @@ const ProjectMoreActionsMenu = ({ projectId, setError }: Props) => {
     }
   };
 
+  const setLoadingState = (
+    type: 'deleting' | 'copying',
+    isLoading: boolean
+  ) => {
+    if (type === 'copying') {
+      setIsCopying(isLoading);
+    } else if (type === 'deleting') {
+      setIsDeleting(isLoading);
+    }
+
+    setIsRunningAction && setIsRunningAction(type, isLoading);
+  };
+
   const createActions = () => {
     const actions: IAction[] = [];
 
     if (userCanModerateProject) {
       actions.push({
         handler: async () => {
-          setIsCopying(true);
+          setLoadingState('copying', true);
           await handleCallbackError(
             () => copyProject(projectId),
             formatMessage(messages.copyProjectError)
           );
-          setIsCopying(false);
+          setLoadingState('copying', false);
         },
         label: formatMessage(messages.copyProjectButton),
         icon: 'copy' as const,
@@ -73,12 +93,12 @@ const ProjectMoreActionsMenu = ({ projectId, setError }: Props) => {
           if (
             window.confirm(formatMessage(messages.deleteProjectConfirmation))
           ) {
-            setIsDeleting(true);
+            setLoadingState('deleting', true);
             await handleCallbackError(
               () => deleteProject(projectId),
               formatMessage(messages.deleteProjectError)
             );
-            setIsDeleting(false);
+            setLoadingState('deleting', false);
           }
         },
         label: formatMessage(messages.deleteProjectButtonFull),

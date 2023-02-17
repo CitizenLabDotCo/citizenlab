@@ -11,7 +11,13 @@ import {
   ActionsRowContainer,
 } from '../StyledComponents';
 import PublicationStatusLabel from '../PublicationStatusLabel';
-import { IconNames, StatusLabel } from '@citizenlab/cl2-component-library';
+import {
+  IconNames,
+  StatusLabel,
+  Spinner,
+  Box,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import GroupsTag from './GroupsTag';
 import AdminTag from './AdminTag';
@@ -25,7 +31,7 @@ import { userModeratesFolder } from 'services/permissions/rules/projectFolderPer
 
 // types
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import ProjectMoreActionsMenu from './ProjectMoreActionsMenu';
+import ProjectMoreActionsMenu, { ActionType } from './ProjectMoreActionsMenu';
 
 export const StyledStatusLabel = styled(StatusLabel)`
   margin-right: 5px;
@@ -62,7 +68,9 @@ const ProjectRow = ({
   className,
   hideMoreActions = false,
 }: Props) => {
+  const [isBeingDeleted, setIsBeingDeleted] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [isBeingCopyied, setIsBeingCopyied] = useState(false);
   const authUser = useAuthUser();
   const projectId = publication.publicationId;
   const project = useProject({ projectId });
@@ -79,11 +87,24 @@ const ProjectRow = ({
       data: authUser,
     });
 
+  const handleActionLoading = (actionType: ActionType, isRunning: boolean) => {
+    if (actionType === 'copying') {
+      setIsBeingCopyied(isRunning);
+    } else if (actionType === 'deleting') {
+      setIsBeingDeleted(isRunning);
+    }
+  };
+
   return (
     <Container className={className} data-testid="projectRow">
       <RowContent className="e2e-admin-projects-list-item">
         <RowContentInner className="expand primary">
           <RowTitle value={publication.attributes.publication_title_multiloc} />
+          {(isBeingCopyied || isBeingDeleted) && (
+            <Box mr="12px">
+              <Spinner size="20px" color={colors.grey400} />
+            </Box>
+          )}
           {publication.attributes.publication_visible_to === 'groups' && (
             <GroupsTag
               projectId={projectId}
@@ -135,7 +156,11 @@ const ProjectRow = ({
             }
           })}
           {!hideMoreActions && (
-            <ProjectMoreActionsMenu projectId={projectId} setError={setError} />
+            <ProjectMoreActionsMenu
+              projectId={projectId}
+              setError={setError}
+              setIsRunningAction={handleActionLoading}
+            />
           )}
         </ActionsRowContainer>
       </RowContent>

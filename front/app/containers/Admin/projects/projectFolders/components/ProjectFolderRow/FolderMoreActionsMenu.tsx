@@ -11,9 +11,14 @@ import { isNilOrError } from 'utils/helperUtils';
 export interface Props {
   folderId: string;
   setError: (error: string | null) => void;
+  setIsRunningAction?: (isLoading: boolean) => void;
 }
 
-const FolderMoreActionsMenu = ({ folderId, setError }: Props) => {
+const FolderMoreActionsMenu = ({
+  folderId,
+  setError,
+  setIsRunningAction,
+}: Props) => {
   const { formatMessage } = useIntl();
   const [isDeleting, setIsDeleting] = useState(false);
   const authUser = useAuthUser();
@@ -42,11 +47,13 @@ const FolderMoreActionsMenu = ({ folderId, setError }: Props) => {
             window.confirm(formatMessage(messages.deleteFolderConfirmation))
           ) {
             setIsDeleting(true);
+            setIsRunningAction && setIsRunningAction(true);
             await handleCallbackError(
               () => deleteProjectFolder(folderId),
               formatMessage(messages.deleteFolderError)
             );
             setIsDeleting(false);
+            setIsRunningAction && setIsRunningAction(false);
           }
         },
         label: formatMessage(messages.deleteFolderButton),
