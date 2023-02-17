@@ -56,8 +56,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResults',
     defaultMessage: 'Delete survey results',
   },
-  viewSurveyResults: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurveyResults',
+  viewNativeSurveyResults: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.viewNativeSurveyResults',
     defaultMessage: 'View survey results ({count})',
   },
   editNativeSurveyContent: {

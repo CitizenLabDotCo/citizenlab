@@ -117,7 +117,7 @@ const FormActions = ({
               clHistory.push(viewFormResults);
             }}
           >
-            {formatMessage(messages.viewSurveyResults, {
+            {formatMessage(messages.viewNativeSurveyResults, {
               count: submissionCount.totalSubmissions,
             })}
           </Button>
