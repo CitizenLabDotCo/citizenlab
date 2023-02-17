@@ -2,11 +2,11 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   survey: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.BuilderTitle',
+    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.BuilderTitle2',
     defaultMessage: 'Survey',
   },
   surveyDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.surveyDescription',
+    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.surveyDescription2',
     defaultMessage: "Create and edit the questions in this projects's survey.",
   },
   downloadAllResults: {
