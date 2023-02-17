@@ -197,7 +197,7 @@ hr:
       baskets_count: 'Košarice'
       input_url: 'URL'
       project: 'Projekt'
-      status: 'Status'
+      status: 'Stanje'
       assignee_fullname: 'Opunomoćenik'
       assignee_email: 'E-pošta opunomoćenika'
   form_builder:
