@@ -88,7 +88,7 @@ const FormActions = ({
           )}
           <Toggle
             checked={postingEnabled}
-            label={formatMessage(messages.openForResponses)}
+            label={formatMessage(messages.openForResponses2)}
             onChange={() => {
               togglePostingEnabled();
             }}
@@ -117,7 +117,7 @@ const FormActions = ({
               clHistory.push(viewFormResults);
             }}
           >
-            {formatMessage(messages.viewSurveyResults, {
+            {formatMessage(messages.viewSurveyResults2, {
               count: submissionCount.totalSubmissions,
             })}
           </Button>
@@ -132,7 +132,7 @@ const FormActions = ({
             }}
             data-cy="e2e-edit-survey-content"
           >
-            {formatMessage(messages.editSurveyContent)}
+            {formatMessage(messages.editSurveyContent2)}
           </Button>
           <Button
             linkTo={viewFormLink}
@@ -142,7 +142,7 @@ const FormActions = ({
             width="auto"
             minWidth="312px"
           >
-            {formatMessage(messages.viewSurveyText)}
+            {formatMessage(messages.viewSurveyText2)}
           </Button>
         </Box>
         {haveSubmissionsComeIn && (
@@ -166,7 +166,7 @@ const FormActions = ({
               bgHoverColor={darken(0.12, colors.red600)}
               onClick={openModal}
             >
-              {formatMessage(messages.deleteSurveyResults)}
+              {formatMessage(messages.deleteSurveyResults2)}
             </Button>
           </Box>
         )}
@@ -174,10 +174,10 @@ const FormActions = ({
           <Box display="flex" flexDirection="column" width="100%" p="20px">
             <Box mb="40px">
               <Title variant="h3" color="primary">
-                {formatMessage(messages.deleteResultsConfirmationQuestion)}
+                {formatMessage(messages.deleteResultsConfirmationQuestion2)}
               </Title>
               <Text color="primary" fontSize="l">
-                {formatMessage(messages.deleteResultsInfo)}
+                {formatMessage(messages.deleteResultsInfo2)}
               </Text>
             </Box>
             <Box
@@ -194,10 +194,10 @@ const FormActions = ({
                 mr="20px"
                 onClick={deleteResults}
               >
-                {formatMessage(messages.confirmDeleteButtonText)}
+                {formatMessage(messages.confirmDeleteButtonText2)}
               </Button>
               <Button buttonStyle="secondary" width="auto" onClick={closeModal}>
-                {formatMessage(messages.cancelDeleteButtonText)}
+                {formatMessage(messages.cancelDeleteButtonText2)}
               </Button>
             </Box>
           </Box>

@@ -141,7 +141,7 @@ const SurveyResultsWidgetSettings = () => {
             fill="textSecondary"
             display="inline"
           />
-          {formatMessage(nativeSurveyMessages.informationText)}
+          {formatMessage(nativeSurveyMessages.informationText2)}
         </Text>
       </Box>
 

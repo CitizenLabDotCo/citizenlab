@@ -39,8 +39,8 @@ const FormResultsQuestion = ({
 
   const inputTypeText = get(messages, inputType, '');
   const requiredOrOptionalText = required
-    ? formatMessage(messages.required)
-    : formatMessage(messages.optional);
+    ? formatMessage(messages.required2)
+    : formatMessage(messages.optional2);
   const inputTypeLabel = `${formatMessage(
     inputTypeText
   )} - ${requiredOrOptionalText.toLowerCase()}`;
@@ -64,7 +64,7 @@ const FormResultsQuestion = ({
             bgColor={colors.primary}
             completed={percentage}
             leftLabel={answer}
-            rightLabel={formatMessage(messages.choiceCount, {
+            rightLabel={formatMessage(messages.choiceCount2, {
               choiceCount: responses,
               percentage,
             })}

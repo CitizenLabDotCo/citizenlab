@@ -1,139 +1,139 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  survey: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.BuilderTitle2',
+  survey2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.survey2',
     defaultMessage: 'Survey',
   },
-  surveyDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.surveyDescription2',
+  surveyDescription2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.surveyDescription2',
     defaultMessage: "Create and edit the questions in this projects's survey.",
   },
-  downloadAllResults: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.downloadAllResults',
+  downloadAllResults2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2',
     defaultMessage: 'Download all survey results',
   },
-  totalSurveyResponses: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.totalSurveyResponses',
+  totalSurveyResponses2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses2',
     defaultMessage: 'Total {count} responses',
   },
-  noSurveyResponses: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.noSurveyResponses',
+  noSurveyResponses2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2',
     defaultMessage: 'No survey responses yet',
   },
-  surveyResults: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.surveyResults',
+  surveyResults2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.surveyResults2',
     defaultMessage: 'Survey results',
   },
-  downloadResults: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.downloadResults',
+  downloadResults2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.downloadResults2',
     defaultMessage: 'Download survey results',
   },
-  informationText: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.informationText',
+  informationText2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.informationText2',
     defaultMessage:
       'Responses to short and long answer questions are currently only available in the survey download',
   },
-  required: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.required',
+  required2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.required2',
     defaultMessage: 'Required',
   },
-  optional: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.optional',
+  optional2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.optional2',
     defaultMessage: 'Optional',
   },
-  choiceCount: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.choiceCount',
+  choiceCount2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.choiceCount2',
     defaultMessage:
       '{percentage}% ({choiceCount, plural, no {# choices} one {# choice} other {# choices}})',
   },
   // DeleteFormResultsNotice
-  openForResponses: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.openForResponses',
+  openForResponses2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.openForResponses2',
     defaultMessage: 'Open for responses',
   },
-  deleteSurveyResults: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.deleteSurveyResults',
+  deleteSurveyResults2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResults2',
     defaultMessage: 'Delete survey results',
   },
-  viewSurveyResults: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.viewSurveyResults',
+  viewSurveyResults2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurveyResults2',
     defaultMessage: 'View survey results ({count})',
   },
-  editSurveyContent: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.editSurveyContent',
+  editSurveyContent2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.editSurveyContent2',
     defaultMessage: 'Edit survey content',
   },
-  viewSurveyText: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.viewSurveyText',
+  viewSurveyText2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurveyText2',
     defaultMessage: 'View survey',
   },
-  deleteResultsConfirmationQuestion: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.deleteSurveyResultsConfirmation',
+  deleteResultsConfirmationQuestion2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation2',
     defaultMessage: 'Are you sure you want to delete all survey results?',
   },
-  deleteResultsInfo: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.deleteResultsInfo',
+  deleteResultsInfo2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.deleteResultsInfo2',
     defaultMessage: 'This cannot be undone',
   },
-  cancelDeleteButtonText: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.cancelDeleteButtonText',
+  cancelDeleteButtonText2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.cancelDeleteButtonText2',
     defaultMessage: 'Cancel',
   },
-  confirmDeleteButtonText: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.confirmDeleteButtonText',
+  confirmDeleteButtonText2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.confirmDeleteButtonText2',
     defaultMessage: 'Yes, delete survey results',
   },
-  disabledSurveyMessage: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.disabledSurveyMessage',
+  disabledSurveyMessage2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2',
     defaultMessage:
       "Survey content can't be edited as survey results have started coming in.",
   },
-  deleteResultsLink: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.deleteResultsLink',
+  deleteResultsLink2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.deleteResultsLink2',
     defaultMessage: 'Delete the results if you need to make changes.',
   },
-  viewSurvey: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.viewSurvey',
+  viewSurvey2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurvey2',
     defaultMessage: 'View survey',
   },
-  addSurveyContent: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.addSurveyContent',
+  addSurveyContent2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.addSurveyContent2',
     defaultMessage: 'Add survey content',
   },
-  successMessage: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.successMessage',
+  successMessage2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.successMessage2',
     defaultMessage: 'Survey successfully saved',
   },
-  supportArticleLink: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.supportArticleLink',
+  supportArticleLink2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.supportArticleLink2',
     defaultMessage:
       'https://support.citizenlab.co/en/articles/6673873-creating-an-in-platform-survey',
   },
-  surveyEnd: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.formBuilder.surveyEnd',
+  surveyEnd2: {
+    id: 'app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd2',
     defaultMessage: 'Survey end',
   },
-  questionLogicHelperText: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.questionLogicHelperText',
+  questionLogicHelperText2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.questionLogicHelperText2',
     defaultMessage:
       'If no logic is added to an answer, the survey will follow its normal flow. Adding logic to a question will make it required by default. For more information, visit {supportPageLink}',
   },
-  pagesLogicHelperText: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.pagesLogicHelperText',
+  pagesLogicHelperText2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText2',
     defaultMessage:
       'If no logic is added, the survey will follow its normal flow. For more information, visit {supportPageLink}',
   },
-  multiselect: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.multiselectText',
+  multiselect2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.multiselectText2',
     defaultMessage: 'Multiple choice - choose many',
   },
-  select: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.selectText',
+  select2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.selectText2',
     defaultMessage: 'Multiple choice - choose one',
   },
-  linear_scale: {
-    id: 'app.containers.AdminPage.ProjectEdit.nativeSurvey.linear_scale',
+  linear_scale2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.linear_scale2',
     defaultMessage: 'Linear scale',
   },
 });
