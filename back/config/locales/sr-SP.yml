@@ -135,10 +135,10 @@ sr-SP:
       section1:
         description:
       section2:
-        title: Images and attachments
+        title: Слике и прилози
         description:
       section3:
-        title: Details
+        title: Детаљи
         description:
   custom_forms:
     categories:
@@ -195,7 +195,7 @@ sr-SP:
       author_fullname: 'Ime autora'
       author_email: 'E-pošta autora'
       author_id: 'ID autora'
-      budget: 'Budget'
+      budget: 'Буџет'
       created_at: 'Predato u'
       published_at: 'Objavljeno u'
       comments_count: 'Komentari'
