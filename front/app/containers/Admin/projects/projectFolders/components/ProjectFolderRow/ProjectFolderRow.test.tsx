@@ -1,10 +1,7 @@
 import React from 'react';
 import ProjectFolderRow, { Props } from '.';
 import { render, screen } from 'utils/testUtils/rtl';
-import {
-  IAdminPublicationContent,
-  IUseAdminPublicationsOutput,
-} from 'hooks/useAdminPublications';
+import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { IUserData } from 'services/users';
 
 const folderId = 'folderId';
@@ -34,51 +31,6 @@ const folderPublication: IAdminPublicationContent = {
   },
 };
 
-const projectId = 'projectId';
-const mockFolderChildAdminPublicationsList: IAdminPublicationContent[] = [
-  {
-    id: '2',
-    publicationType: 'project' as const,
-    publicationId: projectId,
-    attributes: {
-      ordering: 0,
-      depth: 0,
-      publication_status: 'published',
-      visible_children_count: 0,
-      publication_title_multiloc: {},
-      publication_description_multiloc: {},
-      publication_description_preview_multiloc: {},
-      publication_slug: 'project_1',
-    },
-    relationships: {
-      children: { data: [] },
-      parent: {
-        data: {
-          type: 'folder',
-          id: folderPublication.id,
-        },
-      },
-      publication: {
-        data: {
-          id: projectId,
-          type: 'project',
-        },
-      },
-    },
-  },
-];
-const mockFolderChildAdminPublications: IUseAdminPublicationsOutput = {
-  hasMore: false,
-  loadingInitial: false,
-  loadingMore: false,
-  list: mockFolderChildAdminPublicationsList,
-  onLoadMore: jest.fn,
-  onChangeTopics: jest.fn,
-  onChangeSearch: jest.fn,
-  onChangeAreas: jest.fn,
-  onChangePublicationStatus: jest.fn,
-};
-
 // Needed to render moreActionsMenu
 const mockUserData: IUserData = {
   id: 'userId',
@@ -103,23 +55,14 @@ jest.mock('hooks/useAuthUser', () => {
   return () => mockUserData;
 });
 
-// Needed to render folder with project inside
-jest.mock('hooks/useAdminPublications', () => {
-  return () => mockFolderChildAdminPublications;
-});
-
 const props: Props = {
   publication: folderPublication,
+  toggleFolder: jest.fn,
+  isFolderOpen: true,
+  hasProjects: true,
 };
 
 describe('ProjectFolderRow', () => {
-  it('renders the project row inside', () => {
-    render(<ProjectFolderRow {...props} />);
-
-    const projectRows = screen.getAllByTestId('projectRow');
-    expect(projectRows.length).toEqual(1);
-  });
-
   describe('When user is an admin', () => {
     it('shows the edit button', () => {
       render(<ProjectFolderRow {...props} />);
@@ -150,11 +93,11 @@ describe('ProjectFolderRow', () => {
       expect(editButton).toBeInTheDocument();
     });
 
-    it('shows the MoreActionsMenu', () => {
+    it('doest not show the MoreActionsMenu', () => {
       render(<ProjectFolderRow {...props} />);
 
-      const moreActionsMenu = screen.getByTestId('folderMoreActionsMenu');
-      expect(moreActionsMenu).toBeInTheDocument();
+      const moreActionsMenu = screen.queryByTestId('folderMoreActionsMenu');
+      expect(moreActionsMenu).not.toBeInTheDocument();
     });
   });
 
@@ -179,7 +122,7 @@ describe('ProjectFolderRow', () => {
       render(<ProjectFolderRow {...props} />);
 
       const moreOptions = screen.queryByTestId('moreOptionsButton');
-      expect(moreOptions).toBeNull();
+      expect(moreOptions).not.toBeInTheDocument();
     });
   });
 });

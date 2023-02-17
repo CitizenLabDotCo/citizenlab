@@ -26,6 +26,8 @@ import ManageButton from './ManageButton';
 // resources
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 import useAuthUser from 'hooks/useAuthUser';
+import useProject from 'hooks/useProject';
+import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
 
 // types
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
@@ -56,7 +58,7 @@ export interface Props {
   actions: ButtonAction[];
   hidePublicationStatusLabel?: boolean;
   className?: string;
-  showMoreActions?: boolean;
+  hideMoreActions?: boolean;
 }
 
 const ProjectRow = ({
@@ -64,17 +66,26 @@ const ProjectRow = ({
   actions,
   hidePublicationStatusLabel,
   className,
-  showMoreActions = false,
+  hideMoreActions = false,
 }: Props) => {
   const [isBeingDeleted, setIsBeingDeleted] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [isBeingCopyied, setIsBeingCopyied] = useState(false);
   const authUser = useAuthUser();
   const projectId = publication.publicationId;
+  const project = useProject({ projectId });
   const publicationStatus = publication.attributes.publication_status;
+  const folderId = project?.attributes.folder_id;
+
+  if (isNilOrError(authUser)) {
+    return null;
+  }
   const userCanModerateProject =
-    !isNilOrError(authUser) &&
-    canModerateProject(publication.publicationId, { data: authUser });
+    // This means project is in a folder
+    (typeof folderId === 'string' && userModeratesFolder(authUser, folderId)) ||
+    canModerateProject(publication.publicationId, {
+      data: authUser,
+    });
 
   const handleActionLoading = (actionType: ActionType, isRunning: boolean) => {
     if (actionType === 'copying') {
@@ -115,7 +126,7 @@ const ProjectRow = ({
             if (action === 'manage') {
               return (
                 <ManageButton
-                  isDisabled={isBeingDeleted || !userCanModerateProject}
+                  isDisabled={!userCanModerateProject}
                   publicationId={publication.publicationId}
                   key="manage"
                 />
@@ -138,14 +149,13 @@ const ProjectRow = ({
                   buttonStyle="secondary"
                   icon={action.icon}
                   processing={action.processing}
-                  disabled={isBeingDeleted}
                 >
                   {action.buttonContent}
                 </RowButton>
               );
             }
           })}
-          {showMoreActions && (
+          {!hideMoreActions && (
             <ProjectMoreActionsMenu
               projectId={projectId}
               setError={setError}

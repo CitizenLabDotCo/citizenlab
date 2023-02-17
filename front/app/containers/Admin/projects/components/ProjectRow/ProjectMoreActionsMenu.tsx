@@ -8,6 +8,8 @@ import { isAdmin } from 'services/permissions/roles';
 import useAuthUser from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
+import useProject from 'hooks/useProject';
+import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
 
 export type ActionType = 'deleting' | 'copying';
 
@@ -23,10 +25,23 @@ const ProjectMoreActionsMenu = ({
   setIsRunningAction,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const project = useProject({ projectId });
+  const folderId = project?.attributes.folder_id;
   const authUser = useAuthUser();
   const [isCopying, setIsCopying] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  if (isNilOrError(authUser)) return null;
+
+  if (isNilOrError(authUser)) {
+    return null;
+  }
+
+  const userCanDeleteProject = isAdmin({ data: authUser });
+  const userCanModerateProject =
+    // This means project is in a folder
+    (typeof folderId === 'string' && userModeratesFolder(authUser, folderId)) ||
+    canModerateProject(projectId, {
+      data: authUser,
+    });
 
   const handleCallbackError = async (
     callback: () => Promise<any>,
@@ -53,58 +68,68 @@ const ProjectMoreActionsMenu = ({
     setIsRunningAction && setIsRunningAction(type, isLoading);
   };
 
-  const copyAction = {
-    handler: async () => {
-      setLoadingState('copying', true);
-      await handleCallbackError(
-        () => copyProject(projectId),
-        formatMessage(messages.copyProjectError)
-      );
-      setLoadingState('copying', false);
-    },
-    label: formatMessage(messages.copyProjectButton),
-    icon: 'copy' as const,
-    isLoading: isCopying,
+  const createActions = () => {
+    const actions: IAction[] = [];
+
+    if (userCanModerateProject) {
+      actions.push({
+        handler: async () => {
+          setLoadingState('copying', true);
+          await handleCallbackError(
+            () => copyProject(projectId),
+            formatMessage(messages.copyProjectError)
+          );
+          setLoadingState('copying', false);
+        },
+        label: formatMessage(messages.copyProjectButton),
+        icon: 'copy' as const,
+        isLoading: isCopying,
+      });
+    }
+
+    if (userCanDeleteProject) {
+      actions.push({
+        handler: async () => {
+          if (
+            window.confirm(formatMessage(messages.deleteProjectConfirmation))
+          ) {
+            setLoadingState('deleting', true);
+            await handleCallbackError(
+              () => deleteProject(projectId),
+              formatMessage(messages.deleteProjectError)
+            );
+            setLoadingState('deleting', false);
+          }
+        },
+        label: formatMessage(messages.deleteProjectButtonFull),
+        icon: 'delete' as const,
+        isLoading: isDeleting,
+      });
+    }
+
+    if (actions.length > 0) {
+      return actions;
+    }
+
+    return null;
   };
 
-  const deleteAction = {
-    handler: async () => {
-      if (window.confirm(formatMessage(messages.deleteProjectConfirmation))) {
-        setLoadingState('deleting', true);
-        await handleCallbackError(
-          () => deleteProject(projectId),
-          formatMessage(messages.deleteProjectError)
-        );
-        setLoadingState('deleting', false);
-      }
-    },
-    label: formatMessage(messages.deleteProjectButtonFull),
-    icon: 'delete' as const,
-    isLoading: isDeleting,
-  };
+  const actions = createActions();
 
-  const actions: IAction[] = [];
-  const canModerate = canModerateProject(projectId, { data: authUser });
-  const isAdminUser = isAdmin({ data: authUser });
-
-  if (isAdminUser || canModerate) {
-    actions.push(copyAction);
+  if (actions) {
+    return (
+      <Box
+        display="flex"
+        alignItems="center"
+        ml="1rem"
+        data-testid="moreProjectActionsMenu"
+      >
+        <MoreActionsMenu showLabel={false} actions={actions} />
+      </Box>
+    );
   }
 
-  if (isAdminUser) {
-    actions.push(deleteAction);
-  }
-
-  return (
-    <Box
-      display="flex"
-      alignItems="center"
-      ml="1rem"
-      data-testid="moreProjectActionsMenu"
-    >
-      <MoreActionsMenu showLabel={false} actions={actions} />
-    </Box>
-  );
+  return null;
 };
 
 export default ProjectMoreActionsMenu;

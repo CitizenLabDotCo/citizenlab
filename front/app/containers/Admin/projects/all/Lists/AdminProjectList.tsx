@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { Fragment, memo } from 'react';
 
 // style
 import styled from 'styled-components';
@@ -9,10 +9,9 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 import ProjectRow from '../../components/ProjectRow';
-import ProjectFolderRow from '../../projectFolders/components/ProjectFolderRow';
 import { ListHeader, HeaderTitle } from '../StyledComponents';
 import Button from 'components/UI/Button';
-
+import SortableFolderRow from './SortableFolderRow';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
@@ -89,27 +88,36 @@ const AdminProjectList = memo<Props>((_props) => {
                 {itemsList.map(
                   (item: IAdminPublicationContent, index: number) => {
                     return (
-                      <StyledSortableRow
-                        key={item.id}
-                        id={item.id}
-                        index={index}
-                        moveRow={handleDragRow}
-                        dropRow={handleDropRow}
-                        isLastItem={
-                          index === rootLevelAdminPublications.length - 1
-                        }
-                      >
+                      <Fragment key={item.id}>
                         {item.publicationType === 'project' && (
-                          <ProjectRow
-                            actions={['manage']}
-                            publication={item}
-                            showMoreActions
-                          />
+                          <StyledSortableRow
+                            id={item.id}
+                            index={index}
+                            moveRow={handleDragRow}
+                            dropRow={handleDropRow}
+                            isLastItem={
+                              index === rootLevelAdminPublications.length - 1
+                            }
+                          >
+                            <ProjectRow
+                              actions={['manage']}
+                              publication={item}
+                            />
+                          </StyledSortableRow>
                         )}
                         {item.publicationType === 'folder' && (
-                          <ProjectFolderRow publication={item} />
+                          <SortableFolderRow
+                            id={item.id}
+                            index={index}
+                            moveRow={handleDragRow}
+                            dropRow={handleDropRow}
+                            isLastItem={
+                              index === rootLevelAdminPublications.length - 1
+                            }
+                            publication={item}
+                          />
                         )}
-                      </StyledSortableRow>
+                      </Fragment>
                     );
                   }
                 )}
