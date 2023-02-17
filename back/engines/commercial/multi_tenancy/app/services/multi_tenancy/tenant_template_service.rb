@@ -39,6 +39,7 @@ module MultiTenancy
       end
     end
 
+    # rubocop:disable Metrics/MethodLength
     def apply_template(template, validate: true, max_time: nil, local_copy: false)
       t1 = Time.zone.now
       obj_to_id_and_class = {}
@@ -81,19 +82,9 @@ module MultiTenancy
 
           begin
             if model.class.method_defined?(:in_list?) && model.in_list?
-              model_class.name.constantize.acts_as_list_no_update do
-                if validate
-                  model.save!
-                else
-                  model.save # Might fail but runs before_validations
-                  model.save(validate: false)
-                end
-              end
-            elsif validate
-              model.save!
+              model_class.name.constantize.acts_as_list_no_update { save_model(model, validate) }
             else
-              model.save # Might fail but runs before_validations
-              model.save(validate: false)
+              save_model(model, validate)
             end
             # taking original attributes to get correct object ID
             attributes.each do |field_name, field_value|
@@ -136,6 +127,7 @@ module MultiTenancy
 
       created_objects_ids
     end
+    # rubocop:enable Metrics/MethodLength
 
     def restore_template_attributes(attributes, obj_to_id_and_class, app_settings, model_class: nil)
       start_of_day = Time.now.in_time_zone(app_settings.dig('core', 'timezone')).beginning_of_day
@@ -388,6 +380,15 @@ module MultiTenancy
       end
 
       created_objects_ids
+    end
+
+    def save_model(model, validate)
+      if validate
+        model.save!
+      else
+        model.save # Might fail but runs before_validations
+        model.save(validate: false)
+      end
     end
   end
 end
