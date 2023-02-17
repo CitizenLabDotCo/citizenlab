@@ -115,7 +115,6 @@ en:
         description:
       author_id:
         title: Author
-        description:
       topic_ids:
         title: Tags
         description:
@@ -127,28 +126,35 @@ en:
         description:
       budget:
         title: Budget
-        description:
       images:
         title: Images
         description:
       attachments:
         title: Attachments
         description:
+      section1:
+        description:
+      section2:
+        title: Images and attachments
+        description:
+      section3:
+        title: Details
+        description:
   custom_forms:
     categories:
       main_content:
         idea:
-          title: What is your idea ?
+          title: What is your idea?
         question:
-          title: What is your question ?
+          title: What is your question?
         contribution:
           title: What is your contribution?
         project:
-          title: What is your project ?
+          title: What is your project?
         issue:
           title: What is your comment?
         option:
-          title: What is your option ?
+          title: What is your option?
       details:
         title: Details
       attachements:
@@ -189,6 +195,7 @@ en:
       author_fullname: 'Author name'
       author_email: 'Author email'
       author_id: 'Author ID'
+      budget: 'Budget'
       created_at: 'Submitted at'
       published_at: 'Published at'
       comments_count: 'Comments'
