@@ -115,7 +115,6 @@ hr:
         description:
       author_id:
         title: Autor
-        description:
       topic_ids:
         title: Oznake
         description:
@@ -127,12 +126,19 @@ hr:
         description:
       budget:
         title: Proračun
-        description:
       images:
         title: Slike
         description:
       attachments:
         title: Privici
+        description:
+      section1:
+        description:
+      section2:
+        title: Slike i prilozi
+        description:
+      section3:
+        title: Pojedinosti
         description:
   custom_forms:
     categories:
@@ -189,6 +195,7 @@ hr:
       author_fullname: 'Ime autora'
       author_email: 'E-pošta autora'
       author_id: 'ID autora'
+      budget: 'Proračun'
       created_at: 'Predano'
       published_at: 'Objavljeno'
       comments_count: 'Komentari'
