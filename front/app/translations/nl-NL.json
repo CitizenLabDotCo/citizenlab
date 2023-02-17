@@ -440,7 +440,7 @@
   "app.components.Sharing.shareViaWhatsApp": "Deel via WhatsApp",
   "app.components.SideModal.closeButtonAria": "Sluiten",
   "app.components.TopicsPicker.numberOfSelectedTopics": "{numberOfSelectedTopics, plural,=0 {Geen tags} one {Eén tag} other {# tags}} geselecteerd. {selectedTopicNames}",
-  "app.components.UI.MoreActionsMenu.showMoreActions": "Show more actions",
+  "app.components.UI.MoreActionsMenu.showMoreActions": "Meer acties tonen",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Verwijder",
   "app.components.UI.TranslateButton.original": "Origineel",
   "app.components.UI.TranslateButton.translate": "Vertaal",
