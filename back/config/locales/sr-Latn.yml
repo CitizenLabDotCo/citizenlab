@@ -135,10 +135,10 @@ sr-Latn:
       section1:
         description:
       section2:
-        title: Images and attachments
+        title: Slike i prilozi
         description:
       section3:
-        title: Details
+        title: Detalji
         description:
   custom_forms:
     categories:
@@ -195,7 +195,7 @@ sr-Latn:
       author_fullname: 'Ime autora'
       author_email: 'E-pošta autora'
       author_id: 'ID autora'
-      budget: 'Budget'
+      budget: 'Budžet'
       created_at: 'Predato u'
       published_at: 'Objavljeno u'
       comments_count: 'Komentari'
