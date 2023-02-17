@@ -134,7 +134,7 @@ const ProjectRow = ({
               );
             }
           })}
-          {!hideMoreActions && userCanModerateProject && (
+          {!hideMoreActions && (
             <ProjectMoreActionsMenu projectId={projectId} setError={setError} />
           )}
         </ActionsRowContainer>
