@@ -79,7 +79,6 @@ const mockFolderChildAdminPublications: IUseAdminPublicationsOutput = {
   onChangePublicationStatus: jest.fn,
 };
 
-// Needed to render moreActionsMenu
 const mockUserData: IUserData = {
   id: 'userId',
   type: 'user',
