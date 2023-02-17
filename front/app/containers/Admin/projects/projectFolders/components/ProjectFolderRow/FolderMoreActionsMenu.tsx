@@ -18,6 +18,7 @@ const FolderMoreActionsMenu = ({ folderId, setError }: Props) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const authUser = useAuthUser();
   if (isNilOrError(authUser)) return null;
+  const userCanDeleteProject = isAdmin({ data: authUser });
 
   const handleCallbackError = async (
     callback: () => Promise<any>,
@@ -31,41 +32,52 @@ const FolderMoreActionsMenu = ({ folderId, setError }: Props) => {
     }
   };
 
-  const deleteAction = {
-    handler: async () => {
-      if (window.confirm(formatMessage(messages.deleteFolderConfirmation))) {
-        setIsDeleting(true);
-        await handleCallbackError(
-          () => deleteProjectFolder(folderId),
-          formatMessage(messages.deleteFolderError)
-        );
-        setIsDeleting(false);
-      }
-    },
-    label: formatMessage(messages.deleteFolderButton),
-    icon: 'delete' as const,
-    isLoading: isDeleting,
+  const createActions = () => {
+    const actions: IAction[] = [];
+
+    if (userCanDeleteProject) {
+      actions.push({
+        handler: async () => {
+          if (
+            window.confirm(formatMessage(messages.deleteFolderConfirmation))
+          ) {
+            setIsDeleting(true);
+            await handleCallbackError(
+              () => deleteProjectFolder(folderId),
+              formatMessage(messages.deleteFolderError)
+            );
+            setIsDeleting(false);
+          }
+        },
+        label: formatMessage(messages.deleteFolderButton),
+        icon: 'delete' as const,
+        isLoading: isDeleting,
+      });
+    }
+
+    if (actions.length > 0) {
+      return actions;
+    }
+
+    return null;
   };
 
-  const actions: IAction[] = [];
-  if (isAdmin({ data: authUser })) {
-    actions.push(deleteAction);
+  const actions = createActions();
+
+  if (actions) {
+    return (
+      <Box
+        display="flex"
+        alignItems="center"
+        ml="1rem"
+        data-testid="folderMoreActionsMenu"
+      >
+        <MoreActionsMenu showLabel={false} actions={actions} />
+      </Box>
+    );
   }
 
-  if (actions.length === 0) {
-    return null;
-  }
-
-  return (
-    <Box
-      display="flex"
-      alignItems="center"
-      ml="1rem"
-      data-testid="folderMoreActionsMenu"
-    >
-      <MoreActionsMenu showLabel={false} actions={actions} />
-    </Box>
-  );
+  return null;
 };
 
 export default FolderMoreActionsMenu;
