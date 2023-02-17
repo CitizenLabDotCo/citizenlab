@@ -1186,7 +1186,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.emptyTitleError": "Geben Sie einen Fragentitel an",
   "app.containers.AdminPage.ProjectEdit.survey.errorMessage": "Es gibt ein Problem. Bitte beheben Sie das Problem, damit Sie Ihre Änderungen speichern können",
   "app.containers.AdminPage.ProjectEdit.survey.fieldLabel": "Antwortmöglichkeiten",
-  "app.containers.AdminPage.ProjectEdit.survey.fileUpload": "Dateien hochladen",
+  "app.containers.AdminPage.ProjectEdit.survey.fileUpload": "Anhänge",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.labels": "Beschriftungen",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.labelsTooltipContent": "Wählen Sie optionale Beschriftungen für Ihre Mindest- und Höchstwerte.",
   "app.containers.AdminPage.ProjectEdit.survey.formBuilder.page.description": "Beschreibung (optional)",
