@@ -2,9 +2,10 @@ import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { IRelationship } from 'typings';
 
+type ReasonCode = 'wrong_content' | 'inappropriate' | 'other';
 export interface Report {
   user_id?: string;
-  reason_code: 'wrong_content' | 'inappropriate' | 'other';
+  reason_code: ReasonCode;
   other_reason?: string;
 }
 

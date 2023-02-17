@@ -1,51 +1,27 @@
-import React, { PureComponent, FormEvent } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { get, map, merge, set } from 'lodash-es';
-import { Subscription } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
 
-// typings
-import { CLError, Multiloc, IOption } from 'typings';
-
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { appLocalePairs } from 'containers/App/constants';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // components
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import {
-  Input,
-  IconTooltip,
-  Label,
-  Success,
-  Error,
-  Toggle,
-} from '@citizenlab/cl2-component-library';
-import MultipleSelect from 'components/UI/MultipleSelect';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
-import {
-  Section,
-  SectionTitle,
-  SubSectionTitle,
-  SectionField,
-  SectionDescription,
-} from 'components/admin/Section';
+import { Success, Error, Toggle } from '@citizenlab/cl2-component-library';
+import { Section, SubSectionTitle } from 'components/admin/Section';
 import Outlet from 'components/Outlet';
+import Form from './Form';
 
 // services
 import {
-  currentAppConfigurationStream,
   updateAppConfiguration,
-  IUpdatedAppConfigurationProperties,
-  IAppConfigurationData,
   TAppConfigurationSettingWithEnabled,
+  IAppConfigurationSettingsCore,
+  updateAppConfigurationCore,
 } from 'services/appConfiguration';
 
 // Utils
-import getSubmitState from 'utils/getSubmitState';
-import { isCLErrorJSON } from 'utils/errorUtils';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 const StyledSection = styled(Section)`
   margin-bottom: 50px;
@@ -73,169 +49,31 @@ export const LabelContent = styled.div`
   flex-direction: column;
 `;
 
-export interface Props {}
-
-interface State {
-  loading: boolean;
-  saved: boolean;
-  attributesDiff: IUpdatedAppConfigurationProperties;
-  appConfiguration: IAppConfigurationData | null;
-  errors: {
-    [fieldName: string]: CLError[];
-  };
-  hasUrlError: boolean;
-  settingsUpdatedSuccessFully: boolean;
-  settingsSavingError: boolean;
+interface FormValues {
+  organization_name: IAppConfigurationSettingsCore['organization_name'];
+  locales: IAppConfigurationSettingsCore['locales'];
+  organization_site: IAppConfigurationSettingsCore['organization_site'];
 }
 
-class SettingsGeneralTab extends PureComponent<
-  Props & WrappedComponentProps,
-  State
-> {
-  subscriptions: Subscription[];
+const SettingsGeneralTab = () => {
+  const appConfiguration = useAppConfiguration();
+  const [settingsUpdatedSuccessFully, setSettingsUpdatedSuccessFully] =
+    useState(false);
+  const [settingsSavingError, setSettingsSavingError] = useState(false);
+  const { formatMessage } = useIntl();
 
-  constructor(props: Props & WrappedComponentProps) {
-    super(props);
-    this.state = {
-      attributesDiff: {},
-      appConfiguration: null,
-      loading: false,
-      errors: {},
-      hasUrlError: false,
-      saved: false,
-      settingsUpdatedSuccessFully: false,
-      settingsSavingError: false,
-    };
-  }
-
-  componentDidMount() {
-    const appConfiguration$ = currentAppConfigurationStream().observable;
-
-    this.subscriptions = [
-      appConfiguration$.subscribe((appConfiguration) => {
-        this.setState({ appConfiguration: appConfiguration.data });
-      }),
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach((subsription) => subsription.unsubscribe());
-  }
-
-  handleCoreMultilocSettingOnChange =
-    (propertyName: string) => (multiloc: Multiloc) => {
-      this.setState((state) => ({
-        attributesDiff: {
-          ...state.attributesDiff,
-          settings: {
-            ...get(state.attributesDiff, 'settings', {}),
-            core: {
-              ...get(state.attributesDiff, 'settings.core', {}),
-              [propertyName]: multiloc,
-            },
-          },
-        },
-      }));
-    };
-
-  handleLocalesOnChange = (selectedLocaleOptions: IOption[]) => {
-    this.setState((state) => ({
-      attributesDiff: {
-        ...state.attributesDiff,
-        settings: {
-          ...get(state.attributesDiff, 'settings', {}),
-          core: {
-            ...get(state.attributesDiff, 'settings.core', {}),
-            locales: selectedLocaleOptions.map((option) => option.value),
-          },
-        },
-      },
-    }));
+  const handleOnSubmit = async (formValues: FormValues) => {
+    await updateAppConfigurationCore(formValues);
   };
 
-  handleUrlOnChange = (url: string) => {
-    this.setState((state) => ({
-      hasUrlError: false,
-      attributesDiff: {
-        ...state.attributesDiff,
-        settings: {
-          ...get(state.attributesDiff, 'settings', {}),
-          core: {
-            ...get(state.attributesDiff, 'settings.core', {}),
-            organization_site: url,
-          },
-        },
-      },
-    }));
-  };
-
-  save = (event: FormEvent<any>) => {
-    event.preventDefault();
-
-    const { appConfiguration, attributesDiff } = this.state;
-
-    if (appConfiguration) {
-      this.setState({
-        loading: true,
-        saved: false,
-        hasUrlError: false,
-        errors: {},
-      });
-
-      updateAppConfiguration(attributesDiff)
-        .then(() => {
-          this.setState({ saved: true, attributesDiff: {}, loading: false });
-        })
-        .catch((e) => {
-          if (isCLErrorJSON(e)) {
-            const errors = e.json.errors;
-            this.setState({ errors, loading: false });
-            // This error check uses an undocumented API from the backend.
-            // Needs to be reimplemented to use frontend validation when converted to a React Hook Form.
-            if (errors.settings && errors.settings.length > 0) {
-              const foundUrlError = !!errors.settings.find(
-                (error) => error.error.fragment === '#/core/organization_site'
-              );
-              if (foundUrlError) {
-                this.setState({ hasUrlError: true });
-              }
-            }
-          } else {
-            this.setState({ errors: e, loading: false });
-          }
-        });
-    }
-  };
-
-  localeOptions = () => {
-    return map(appLocalePairs, (label, locale) => ({
-      label,
-      value: locale,
-    }));
-  };
-
-  localesToOptions = (locales) => {
-    return locales.map((locale) => ({
-      value: locale,
-      label: appLocalePairs[locale],
-    }));
-  };
-
-  handleOrganizatioNameOnChange =
-    this.handleCoreMultilocSettingOnChange('organization_name');
-
-  onToggleBlockProfanitySetting = () => {
-    const { appConfiguration } = this.state;
-
+  const onToggleBlockProfanitySetting = () => {
     if (
       !isNilOrError(appConfiguration) &&
       appConfiguration.attributes.settings.blocking_profanity
     ) {
       const oldProfanityBlockerEnabled =
         appConfiguration.attributes.settings.blocking_profanity.enabled;
-      this.setState({
-        settingsSavingError: false,
-      });
+      setSettingsSavingError(false);
       updateAppConfiguration({
         settings: {
           blocking_profanity: {
@@ -244,34 +82,26 @@ class SettingsGeneralTab extends PureComponent<
         },
       })
         .then(() => {
-          this.setState({
-            settingsUpdatedSuccessFully: true,
-          });
+          setSettingsUpdatedSuccessFully(true);
           setTimeout(() => {
-            this.setState({
-              settingsUpdatedSuccessFully: false,
-            });
+            setSettingsUpdatedSuccessFully(false);
           }, 2000);
         })
         .catch((_error) => {
-          this.setState({
-            settingsSavingError: true,
-          });
+          setSettingsSavingError(true);
         });
     }
   };
 
-  handleSettingChange = (settingName: TAppConfigurationSettingWithEnabled) => {
-    const { appConfiguration } = this.state;
-
+  const handleSettingChange = (
+    settingName: TAppConfigurationSettingWithEnabled
+  ) => {
     if (!isNilOrError(appConfiguration)) {
       const setting = appConfiguration.attributes.settings[settingName];
 
       if (setting) {
         const oldSettingEnabled = setting.enabled;
-        this.setState({
-          settingsSavingError: false,
-        });
+        setSettingsSavingError(false);
 
         updateAppConfiguration({
           settings: {
@@ -281,190 +111,77 @@ class SettingsGeneralTab extends PureComponent<
           },
         })
           .then(() => {
-            this.setState({
-              settingsUpdatedSuccessFully: true,
-            });
+            setSettingsUpdatedSuccessFully(true);
+
             setTimeout(() => {
-              this.setState({
-                settingsUpdatedSuccessFully: false,
-              });
+              setSettingsUpdatedSuccessFully(true);
             }, 2000);
           })
           .catch((_error) => {
-            this.setState({
-              settingsSavingError: true,
-            });
+            setSettingsUpdatedSuccessFully(true);
           });
       }
     }
   };
 
-  render() {
-    const {
-      appConfiguration,
-      settingsSavingError,
-      settingsUpdatedSuccessFully,
-    } = this.state;
-    const {
-      intl: { formatMessage },
-    } = this.props;
+  if (!isNilOrError(appConfiguration)) {
+    const profanityBlockerSetting =
+      appConfiguration.attributes.settings.blocking_profanity;
 
-    if (appConfiguration) {
-      const { errors, saved, attributesDiff, hasUrlError } = this.state;
-      const updatedLocales = get(attributesDiff, 'settings.core.locales');
+    const { organization_name, organization_site, locales } =
+      appConfiguration.attributes.settings.core;
 
-      let appConfigAttrs = appConfiguration
-        ? merge({}, appConfiguration.attributes, attributesDiff)
-        : merge({}, attributesDiff);
-
-      // Prevent merging the arrays of locales
-      if (updatedLocales) {
-        appConfigAttrs = set(
-          appConfigAttrs,
-          'settings.core.locales',
-          updatedLocales
-        );
-      }
-
-      const appConfigLocales: string[] | null = get(
-        appConfigAttrs,
-        'settings.core.locales',
-        null
-      );
-      const organizationType: string | null = get(
-        appConfigAttrs,
-        'settings.core.organization_type',
-        null
-      );
-      const appConfigSite: string | null = get(
-        appConfigAttrs,
-        'settings.core.organization_site',
-        null
-      );
-      const organizationNameMultiloc: Multiloc | null = get(
-        appConfigAttrs,
-        'settings.core.organization_name',
-        null
-      );
-      const localeOptions = this.localeOptions();
-      const selectedLocaleOptions = this.localesToOptions(appConfigLocales);
-      const profanityBlockerSetting =
-        appConfiguration.attributes.settings.blocking_profanity;
-
-      return (
-        <form onSubmit={this.save}>
-          <SectionTitle>
-            <FormattedMessage {...messages.titleBasic} />
-          </SectionTitle>
-          <StyledSection>
-            <SubSectionTitle>
-              <FormattedMessage {...messages.platformConfiguration} />
-            </SubSectionTitle>
-            <SectionDescription>
-              <FormattedMessage {...messages.subtitleBasic} />
-            </SectionDescription>
-
-            <SectionField>
-              <InputMultilocWithLocaleSwitcher
-                type="text"
-                id="organization_name"
-                label={
-                  <FormattedMessage
-                    {...messages.organizationName}
-                    values={{ type: organizationType }}
-                  />
-                }
-                valueMultiloc={organizationNameMultiloc}
-                onChange={this.handleOrganizatioNameOnChange}
-              />
-            </SectionField>
-
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.languages} />
-                <IconTooltip
-                  content={<FormattedMessage {...messages.languagesTooltip} />}
+    return (
+      <>
+        <Form
+          defaultValues={{
+            organization_name,
+            organization_site,
+            locales,
+          }}
+          onSubmit={handleOnSubmit}
+        />
+        <StyledSection>
+          <SubSectionTitle>
+            <FormattedMessage {...messages.contentModeration} />
+          </SubSectionTitle>
+          {profanityBlockerSetting && profanityBlockerSetting.allowed && (
+            <Setting>
+              <ToggleLabel>
+                <StyledToggle
+                  checked={profanityBlockerSetting.enabled}
+                  onChange={onToggleBlockProfanitySetting}
                 />
-              </Label>
-              <MultipleSelect
-                placeholder=""
-                value={selectedLocaleOptions}
-                onChange={this.handleLocalesOnChange}
-                options={localeOptions}
-              />
-            </SectionField>
-
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.urlTitle} />
-                <IconTooltip
-                  content={formatMessage(messages.urlTitleTooltip)}
-                />
-              </Label>
-              <Input
-                type="text"
-                placeholder="https://..."
-                onChange={this.handleUrlOnChange}
-                value={appConfigSite}
-                error={hasUrlError ? formatMessage(messages.urlError) : null}
-              />
-            </SectionField>
-
-            <SubmitWrapper
-              loading={this.state.loading}
-              status={getSubmitState({ errors, saved, diff: attributesDiff })}
-              messages={{
-                buttonSave: messages.save,
-                buttonSuccess: messages.saveSuccess,
-                messageError: messages.saveErrorMessage,
-                messageSuccess: messages.saveSuccessMessage,
-              }}
+                <LabelContent>
+                  <LabelTitle>
+                    {formatMessage(messages.profanityBlockerSetting)}
+                  </LabelTitle>
+                  <LabelDescription>
+                    {formatMessage(messages.profanityBlockerSettingDescription)}
+                  </LabelDescription>
+                </LabelContent>
+              </ToggleLabel>
+            </Setting>
+          )}
+          <Outlet
+            id="app.containers.Admin.settings.general.form"
+            onSettingChange={handleSettingChange}
+          />
+          {settingsUpdatedSuccessFully && (
+            <Success
+              showBackground
+              text={formatMessage(messages.successfulUpdateSettings)}
             />
-          </StyledSection>
-          <StyledSection>
-            <SubSectionTitle>
-              <FormattedMessage {...messages.contentModeration} />
-            </SubSectionTitle>
-            {profanityBlockerSetting && profanityBlockerSetting.allowed && (
-              <Setting>
-                <ToggleLabel>
-                  <StyledToggle
-                    checked={profanityBlockerSetting.enabled}
-                    onChange={this.onToggleBlockProfanitySetting}
-                  />
-                  <LabelContent>
-                    <LabelTitle>
-                      {formatMessage(messages.profanityBlockerSetting)}
-                    </LabelTitle>
-                    <LabelDescription>
-                      {formatMessage(
-                        messages.profanityBlockerSettingDescription
-                      )}
-                    </LabelDescription>
-                  </LabelContent>
-                </ToggleLabel>
-              </Setting>
-            )}
-            <Outlet
-              id="app.containers.Admin.settings.general.form"
-              onSettingChange={this.handleSettingChange}
-            />
-            {settingsUpdatedSuccessFully && (
-              <Success
-                showBackground
-                text={formatMessage(messages.successfulUpdateSettings)}
-              />
-            )}
-            {settingsSavingError && (
-              <Error text={formatMessage(messages.settingsSavingError)} />
-            )}
-          </StyledSection>
-        </form>
-      );
-    }
-
-    return null;
+          )}
+          {settingsSavingError && (
+            <Error text={formatMessage(messages.settingsSavingError)} />
+          )}
+        </StyledSection>
+      </>
+    );
   }
-}
 
-export default injectIntl(SettingsGeneralTab);
+  return null;
+};
+
+export default SettingsGeneralTab;

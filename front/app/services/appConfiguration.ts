@@ -302,6 +302,24 @@ export async function updateAppConfiguration(
   return tenant;
 }
 
+export async function updateAppConfigurationCore(
+  newCoreSettings: Partial<IAppConfigurationSettingsCore>
+) {
+  const tenant = await streams.update<IAppConfiguration>(
+    currentAppConfigurationEndpoint,
+    'app_configuration',
+    {
+      app_configuration: {
+        settings: {
+          core: newCoreSettings,
+        },
+      },
+    }
+  );
+  await currentAppConfigurationStream().fetch();
+  return tenant;
+}
+
 export const coreSettings = (appConfiguration: IAppConfigurationData) =>
   appConfiguration.attributes.settings.core;
 
