@@ -281,7 +281,6 @@
   "app.components.ParticipationCTABars.takeTheSurvey": "Svar på undersøkelsen",
   "app.components.ParticipationCTABars.userHasParticipated": "Du har deltatt i dette prosjektet.",
   "app.components.ParticipationCTABars.volunteer": "Frivillig",
-  "app.components.ParticipationCTABars.xDaysLeft": "{timeLeft, plural, =0 {Mindre enn én dag} one {# dag igjen} other {# dager}} igjen",
   "app.components.ParticipationCTABars.xWeeksLeft": "{timeLeft} uker igjen",
   "app.components.PasswordInput.a11y_passwordHidden": "Passord skjult",
   "app.components.PasswordInput.a11y_passwordVisible": "Passord synlig",
