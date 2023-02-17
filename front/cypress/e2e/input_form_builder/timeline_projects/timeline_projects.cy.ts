@@ -11,6 +11,8 @@ describe('Input form builder timeline projects', () => {
 
   beforeEach(() => {
     cy.setAdminLoginCookie();
+
+    // Project with active ideation phase
     cy.apiCreateProject({
       type: 'timeline',
       title: projectTitle1,
@@ -43,7 +45,7 @@ describe('Input form builder timeline projects', () => {
       );
     });
 
-    // Create second project
+    // Project with no active ideation phase
     cy.apiCreateProject({
       type: 'timeline',
       title: projectTitle2,
