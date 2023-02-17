@@ -589,7 +589,7 @@
   "app.components.formBuilder.fieldGroup.title": "Titel (optional)",
   "app.components.formBuilder.fieldIsNotVisibleTooltip": "Derzeit sind die Antworten auf diese Fragen nur in der exportierten Excel-Datei im Beitragsmanager verfügbar und für die Benutzer:innen nicht sichtbar.",
   "app.components.formBuilder.fieldLabel": "Antwortmöglichkeiten",
-  "app.components.formBuilder.fileUpload": "Dateien hochladen",
+  "app.components.formBuilder.fileUpload": "Anhänge",
   "app.components.formBuilder.formEnd": "Formular Ende",
   "app.components.formBuilder.goToPageInputLabel": "Die nächste Seite ist dann:",
   "app.components.formBuilder.helmetTitle": "Eingabeformular erstellen",
