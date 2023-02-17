@@ -1077,7 +1077,7 @@
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip": "سيتوجب عليك إضافة المشروع إلى مجلد تملك حقوق مسؤول للوصول إليه.",
   "app.containers.AdminPage.ProjectEdit.folderSelectError": "حدد مجلدًا لإضافة هذا المشروع إليه.",
   "app.containers.AdminPage.ProjectEdit.formBuilder.customToolboxTitle": "محتوى مخصص",
-  "app.containers.AdminPage.ProjectEdit.formBuilder.existingSubmissionsWarning": "Submissions to this form have started to come in. Changes to the form may result in data loss and incomplete data in the exported files.",
+  "app.containers.AdminPage.ProjectEdit.formBuilder.existingSubmissionsWarning": "بدأت مشاركات هذا النموذج في القدوم. قد يؤدي إجراء تغييرات في النموذج إلى فقدان بيانات وعدم اكتمال بيانات في الملفات التي تم تصديرها.",
   "app.containers.AdminPage.ProjectEdit.formBuilder.successMessage": "تم حفظ النموذج بنجاح.",
   "app.containers.AdminPage.ProjectEdit.fromATemplate": "من قالب",
   "app.containers.AdminPage.ProjectEdit.fromScratch": "من الصفر",
