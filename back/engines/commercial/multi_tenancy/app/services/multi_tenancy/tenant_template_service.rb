@@ -81,7 +81,7 @@ module MultiTenancy
 
           begin
             if model.class.method_defined?(:in_list?) && model.in_list?
-              model_class.name.constantize.acts_as_list_no_update { save_model(model, validate) }
+              model.class.acts_as_list_no_update { save_model(model, validate) }
             else
               save_model(model, validate)
             end
