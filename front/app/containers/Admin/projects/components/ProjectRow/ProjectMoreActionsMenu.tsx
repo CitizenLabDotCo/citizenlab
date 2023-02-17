@@ -9,10 +9,12 @@ import useAuthUser from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
+export type ActionType = 'deleting' | 'copying';
+
 export interface Props {
   projectId: string;
   setError: (error: string | null) => void;
-  setIsRunningAction?: (isLoading: boolean) => void;
+  setIsRunningAction?: (actionType: ActionType, isRunning: boolean) => void;
 }
 
 const ProjectMoreActionsMenu = ({
@@ -48,7 +50,7 @@ const ProjectMoreActionsMenu = ({
       setIsDeleting(isLoading);
     }
 
-    setIsRunningAction && setIsRunningAction(isLoading);
+    setIsRunningAction && setIsRunningAction(type, isLoading);
   };
 
   const copyAction = {

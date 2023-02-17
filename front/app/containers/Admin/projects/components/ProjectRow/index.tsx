@@ -29,7 +29,7 @@ import useAuthUser from 'hooks/useAuthUser';
 
 // types
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import ProjectMoreActionsMenu from './ProjectMoreActionsMenu';
+import ProjectMoreActionsMenu, { ActionType } from './ProjectMoreActionsMenu';
 
 export const StyledStatusLabel = styled(StatusLabel)`
   margin-right: 5px;
@@ -66,9 +66,9 @@ const ProjectRow = ({
   className,
   showMoreActions = false,
 }: Props) => {
-  const [isBeingDeleted, _setIsBeingDeleted] = useState<boolean>(false);
+  const [isBeingDeleted, setIsBeingDeleted] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isBeingCopyied, setIsBeingCopyied] = useState(false);
   const authUser = useAuthUser();
   const projectId = publication.publicationId;
   const publicationStatus = publication.attributes.publication_status;
@@ -76,12 +76,20 @@ const ProjectRow = ({
     !isNilOrError(authUser) &&
     canModerateProject(publication.publicationId, { data: authUser });
 
+  const handleActionLoading = (actionType: ActionType, isRunning: boolean) => {
+    if (actionType === 'copying') {
+      setIsBeingCopyied(isRunning);
+    } else if (actionType === 'deleting') {
+      setIsBeingDeleted(isRunning);
+    }
+  };
+
   return (
     <Container className={className} data-testid="projectRow">
       <RowContent className="e2e-admin-projects-list-item">
         <RowContentInner className="expand primary">
           <RowTitle value={publication.attributes.publication_title_multiloc} />
-          {isLoading && (
+          {(isBeingCopyied || isBeingDeleted) && (
             <Box mr="12px">
               <Spinner size="20px" color={colors.grey400} />
             </Box>
@@ -105,6 +113,7 @@ const ProjectRow = ({
         <ActionsRowContainer>
           {actions.map((action) => {
             if (action === 'manage') {
+              return null;
               return (
                 <ManageButton
                   isDisabled={isBeingDeleted || !userCanModerateProject}
@@ -141,7 +150,7 @@ const ProjectRow = ({
             <ProjectMoreActionsMenu
               projectId={projectId}
               setError={setError}
-              setIsRunningAction={setIsLoading}
+              setIsRunningAction={handleActionLoading}
             />
           )}
         </ActionsRowContainer>
