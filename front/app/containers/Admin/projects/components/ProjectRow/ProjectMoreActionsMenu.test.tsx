@@ -29,18 +29,20 @@ const mockUserData: IUserData = {
   },
 };
 
+const mockProject = {
+  id: defaultProps.projectId,
+  type: 'project',
+  attributes: {
+    folder_id: 'folderId',
+  },
+};
+
 jest.mock('hooks/useAuthUser', () => {
   return () => mockUserData;
 });
 
 jest.mock('hooks/useProject', () => {
-  return jest.fn(() => ({
-    id: 'id',
-    type: 'project',
-    attributes: {
-      folder_id: 'folderId',
-    },
-  }));
+  return jest.fn(() => mockProject);
 });
 
 describe('ProjectMoreActionsMenu', () => {
@@ -64,12 +66,38 @@ describe('ProjectMoreActionsMenu', () => {
     });
   });
 
-  describe('When user is not an admin', () => {
+  describe('When user is a folder moderator of folder that contains the project', () => {
     it('Has the copy project button and not the delete project button', async () => {
       mockUserData.attributes.roles = [
         {
           type: 'project_folder_moderator',
-          project_folder_id: 'folderId',
+          project_folder_id: mockProject.attributes.folder_id,
+        },
+      ];
+      render(<ProjectMoreActionsMenu {...defaultProps} />);
+      const user = userEvent.setup();
+
+      const threeDotsButton = screen.getByTestId('moreOptionsButton');
+      await user.click(threeDotsButton);
+
+      const copyProjectButton = await screen.findByRole('button', {
+        name: 'Copy project',
+      });
+      const deleteProjectButton = screen.queryByRole('button', {
+        name: 'Delete project',
+      });
+
+      expect(copyProjectButton).toBeInTheDocument();
+      expect(deleteProjectButton).not.toBeInTheDocument();
+    });
+  });
+
+  describe('When user is a project moderator', () => {
+    it('Has the copy project button and not the delete project button', async () => {
+      mockUserData.attributes.roles = [
+        {
+          type: 'project_moderator',
+          project_id: mockProject.id,
         },
       ];
       render(<ProjectMoreActionsMenu {...defaultProps} />);
