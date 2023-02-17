@@ -1077,7 +1077,7 @@
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip": "Potrebno je dodati projekt u mapu nad kojom imate administratorska prava.",
   "app.containers.AdminPage.ProjectEdit.folderSelectError": "Odaberite mapu u koji ćete dodati ovaj projekt:",
   "app.containers.AdminPage.ProjectEdit.formBuilder.customToolboxTitle": "Prilagođeni sadržaj",
-  "app.containers.AdminPage.ProjectEdit.formBuilder.existingSubmissionsWarning": "Submissions to this form have started to come in. Changes to the form may result in data loss and incomplete data in the exported files.",
+  "app.containers.AdminPage.ProjectEdit.formBuilder.existingSubmissionsWarning": "Počeli su pristizati zahtjevi za ovaj obrazac. Promjene obrasca mogu dovesti do gubitka podataka i nepotpunih podataka u izvezenim datotekama.",
   "app.containers.AdminPage.ProjectEdit.formBuilder.successMessage": "Obrazac je uspješno spremljen",
   "app.containers.AdminPage.ProjectEdit.fromATemplate": "Na osnovu predloška",
   "app.containers.AdminPage.ProjectEdit.fromScratch": "Ispočetka",
