@@ -60,8 +60,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurveyResults',
     defaultMessage: 'View survey results ({count})',
   },
-  editSurveyContent: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.editSurveyContent',
+  editNativeSurveyContent: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.editNativeSurveyContent',
     defaultMessage: 'Edit survey content',
   },
   viewSurveyText: {

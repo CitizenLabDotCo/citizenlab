@@ -132,7 +132,7 @@ const FormActions = ({
             }}
             data-cy="e2e-edit-survey-content"
           >
-            {formatMessage(messages.editSurveyContent)}
+            {formatMessage(messages.editNativeSurveyContent)}
           </Button>
           <Button
             linkTo={viewFormLink}
