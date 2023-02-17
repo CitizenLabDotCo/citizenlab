@@ -25,10 +25,10 @@ import { Box } from '@citizenlab/cl2-component-library';
 const slideInOutTimeout = 500;
 const slideInOutEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
-const Container = styled.div<{ windowHeight: string; zIndex?: number }>`
+const Container = styled.div<{ windowHeight: number; zIndex?: number }>`
   width: 100vw;
   height: ${(props) =>
-    `calc(${props.windowHeight} - ${props.theme.menuHeight}px)`};
+    `calc(${props.windowHeight}px - ${props.theme.menuHeight}px)`};
   position: fixed;
   top: ${({ theme }) => theme.menuHeight}px;
   left: 0;
@@ -55,15 +55,14 @@ const Container = styled.div<{ windowHeight: string; zIndex?: number }>`
     }
   }
 
-  ${media.tablet`
-    height: ${(props) =>
-      `calc(${props.windowHeight} - ${props.theme.mobileMenuHeight}px)`};
+  ${(props) => media.tablet`
+    height: calc(${props.windowHeight}px - ${props.theme.mobileMenuHeight}px);
     top: 0;
-    bottom: ${(props) => props.theme.mobileMenuHeight}px;
+    bottom: ${props.theme.mobileMenuHeight}px;
     z-index: 1005; /* there is no top navbar at this screen size, so okay that it is higher than the z-index of NavBar here */
 
     &.hasBottomBar {
-      height: ${(props) => props.windowHeight};
+      height: ${props.windowHeight}px;
       bottom: 0;
     }
   `}
@@ -107,7 +106,7 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  windowHeight: string;
+  windowHeight: number;
 }
 
 const useCapture = false;
@@ -121,7 +120,7 @@ class FullscreenModal extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      windowHeight: `${window.innerHeight}px`,
+      windowHeight: window.innerHeight,
     };
   }
 
@@ -131,7 +130,7 @@ class FullscreenModal extends PureComponent<Props, State> {
       .subscribe((event) => {
         if (event.target) {
           const height = event.target['innerHeight'] as number;
-          this.setState({ windowHeight: `${height}px` });
+          this.setState({ windowHeight: height });
         }
       });
   }
