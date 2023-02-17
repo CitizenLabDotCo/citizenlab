@@ -10,6 +10,10 @@ module MultiTenancy
 
     SKIP_IMAGE_PRESENCE_VALIDATION = %w[IdeaImage ContentBuilder::LayoutImage].freeze
 
+    def initialize(save_temp_remote_urls: false)
+      @save_temp_remote_urls = save_temp_remote_urls
+    end
+
     def available_templates(external_subfolder: 'release')
       template_names = {}
       template_names[:internal] = Dir[Rails.root.join('config/tenant_templates/*.yml')].map do |file|
@@ -321,7 +325,11 @@ module MultiTenancy
       # generation of templates remains within the 3 hours execution
       # limit of CircleCI.
 
-      ImageAssignmentJob.perform_now model, image_assignments
+      if @save_temp_remote_urls
+        CarrierwaveTempRemote.save_urls(model, image_assignments)
+      else
+        model.update!(image_assignments)
+      end
     end
 
     def get_model_class(model_name)

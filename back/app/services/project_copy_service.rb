@@ -2,7 +2,7 @@
 
 class ProjectCopyService < ::TemplateService
   def import(template, folder: nil, local_copy: false)
-    service = MultiTenancy::TenantTemplateService.new
+    service = MultiTenancy::TenantTemplateService.new(save_temp_remote_urls: true)
     same_template = service.translate_and_fix_locales template
 
     created_objects_ids = ActiveRecord::Base.transaction do
