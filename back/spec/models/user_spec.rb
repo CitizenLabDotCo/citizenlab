@@ -561,4 +561,34 @@ RSpec.describe User, type: :model do
         .to raise_error(ActiveRecord::RecordNotFound)
     end
   end
+
+  describe 'light users' do
+    it 'returns a fake first name and numeric last name if there is no first name' do
+      u = described_class.new(email: 'test@citizenlab.co')
+
+      expect(u.first_name).to eq 'user'
+      expect(u.last_name).to be_a_kind_of(Integer)
+    end
+
+    it 'does not return fake names if first_name is set' do
+      u = described_class.new(email: 'test@citizenlab.co', first_name: 'bob')
+
+      expect(u.first_name).to eq 'bob'
+      expect(u.last_name).to be_nil
+    end
+
+    it 'does not return fake names if last_name is set' do
+      u = described_class.new(email: 'test@citizenlab.co', last_name: 'smith')
+
+      expect(u.first_name).to be_nil
+      expect(u.last_name).to eq 'smith'
+    end
+
+    it 'does not return fake names if invite is pending' do
+      u = described_class.new(email: 'test@citizenlab.co', invite_status: 'pending')
+
+      expect(u.first_name).to be_nil
+      expect(u.last_name).to be_nil
+    end
+  end
 end

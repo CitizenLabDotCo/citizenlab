@@ -284,6 +284,23 @@ class User < ApplicationRecord
     [first_name, last_name].compact.join(' ')
   end
 
+  def first_name
+    if !self[:last_name] && !self[:first_name] && !invite_pending?
+      'user'
+    else
+      super
+    end
+  end
+
+  # Generate a uniquish integer for last_name based on email
+  def last_name
+    if !self[:last_name] && !self[:first_name] && !invite_pending?
+      ((email.length * email[0].ord * email[1].ord) - email[1].ord)
+    else
+      super
+    end
+  end
+
   def highest_role
     if super_admin?
       :super_admin
