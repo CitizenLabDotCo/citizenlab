@@ -320,7 +320,6 @@
   "app.components.PostComponents.OfficialFeedback.officialUpdates": "Званична обавештења",
   "app.components.PostComponents.OfficialFeedback.postedOn": "Објављено дана {date}",
   "app.components.PostComponents.OfficialFeedback.publishButtonText": "Објави",
-  "app.components.PostComponents.OfficialFeedback.showMoreActions": "Прикажи више акција",
   "app.components.PostComponents.OfficialFeedback.showPreviousUpdates": "Прикажи претходна обавештења",
   "app.components.PostComponents.OfficialFeedback.textAreaPlaceholder": "Објавите обавештење...",
   "app.components.PostComponents.OfficialFeedback.updateButtonError": "Жао нам је, дошло је до грешке",
