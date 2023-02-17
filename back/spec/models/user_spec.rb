@@ -563,7 +563,7 @@ RSpec.describe User, type: :model do
   end
 
   describe 'light users' do
-    it 'returns a fake first name and numeric last name if there is no first name' do
+    it 'returns a fake first name and numeric last name if there is no first name or last name' do
       u = described_class.new(email: 'test@citizenlab.co')
 
       expect(u.first_name).to eq 'user'
