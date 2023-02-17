@@ -2,7 +2,7 @@ import React, { memo, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { Icon, Box } from '@citizenlab/cl2-component-library';
+import { Icon, Box, Spinner } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import {
   RowContent,
@@ -97,7 +97,7 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
   });
 
   const [folderOpen, setFolderOpen] = useState(true);
-  const [isBeingDeleted, _setIsBeingDeleted] = useState(false);
+  const [isBeingDeleted, setIsBeingDeleted] = useState(false);
   const [folderDeletionError, setFolderDeletionError] = useState<string | null>(
     null
   );
@@ -133,6 +133,11 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
               <RowTitle
                 value={publication.attributes.publication_title_multiloc}
               />
+              {isBeingDeleted && (
+                <Box>
+                  <Spinner size="20px" color={colors.grey400} />
+                </Box>
+              )}
               <PublicationStatusLabel
                 publicationStatus={publication.attributes.publication_status}
               />
@@ -156,6 +161,7 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
           <FolderMoreActionsMenu
             folderId={publication.publicationId}
             setError={setFolderDeletionError}
+            setIsRunningAction={setIsBeingDeleted}
           />
         </Box>
 
