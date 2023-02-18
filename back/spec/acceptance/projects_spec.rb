@@ -674,16 +674,10 @@ resource 'Projects' do
           }
         end
 
-        example 'Enqueues DeleteTextImageJob when update description_multiloc' do
-          # First update request ensures we have a text_image associated with project before subsequent request.
-          ti_count = TextImage.count
-          do_request
-          assert_status 200
-          expect(TextImage.count).to eq(ti_count + 1)
-
+        example 'Enqueues DeleteOrphanedTextImagesJob' do
           expect do
             do_request
-          end.to have_enqueued_job(DeleteTextImageJob)
+          end.to have_enqueued_job(DeleteOrphanedTextImagesJob)
         end
       end
     end

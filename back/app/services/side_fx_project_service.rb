@@ -49,7 +49,7 @@ class SideFxProjectService
 
     after_folder_changed project, user if @folder_id_was != project.folder_id
     @sfx_pc.after_update project, user if project.participation_context?
-    delete_orphaned_text_images project, user
+    DeleteOrphanedTextImagesJob.perform_later(project, user) if project.text_images.any?
   end
 
   def before_destroy(project, user)
@@ -89,15 +89,6 @@ class SideFxProjectService
   def after_folder_changed(project, current_user)
     # Defined in core app to eliminate dependency between
     # idea assignment and folder engine.
-  end
-
-  def delete_orphaned_text_images(project, user)
-    project_as_json = project.to_json
-
-    project.text_images.each do |image|
-      # Make sure is perform_later when finish dev
-      DeleteTextImageJob.perform_later(image, user) unless project_as_json.include?(image.text_reference)
-    end
   end
 end
 
