@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
 class DeleteOrphanedTextImagesJob < ApplicationJob
-  include SideFxHelper
-
   self.priority = 90 # pretty low priority (lowest is 100)
 
-  # @param [Project,NilClass] resource
+  # @param [Project,Phase,NilClass] resource
   # @param [User,NilClass] current_user
   def run(resource, user)
     return unless resource.class.exists?(resource.id)
