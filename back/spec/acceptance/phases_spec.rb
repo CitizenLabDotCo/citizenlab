@@ -408,6 +408,20 @@ resource 'Phases' do
           expect(ideas_phase.valid?).to be true
         end
       end
+
+      describe 'When phase has associated text_image' do
+        let(:description_multiloc) do
+          {
+            'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
+          }
+        end
+
+        example 'Enqueues DeleteOrphanedTextImagesJob' do
+          expect do
+            do_request
+          end.to have_enqueued_job(DeleteOrphanedTextImagesJob)
+        end
+      end
     end
 
     delete 'web_api/v1/phases/:id' do

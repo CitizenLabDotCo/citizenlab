@@ -27,6 +27,7 @@ class SideFxPhaseService
   def after_update(phase, user)
     LogActivityJob.perform_later(phase, 'changed', user, phase.updated_at.to_i)
     @sfx_pc.after_update phase, user
+    DeleteOrphanedTextImagesJob.perform_later(phase, user) if phase.text_images.any?
   end
 
   def before_destroy(phase, user)
