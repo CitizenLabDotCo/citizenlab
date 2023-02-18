@@ -410,17 +410,6 @@ resource 'Projects' do
             expect(json_response[:errors][:title_multiloc]).to be_present
             expect(TextImage.count).to eq ti_count
           end
-
-          example 'enqueues job to delete unused text_image when updating mulitloc with text_image' do
-            ti_count = TextImage.count
-            do_request
-            assert_status 201
-            expect(TextImage.count).to eq(ti_count + 1)
-            do_request
-            assert_status 201
-            expect(TextImage.count).to eq(ti_count + 2)
-            # Insert expectation of enqueued job here
-          end
         end
       end
 
@@ -675,6 +664,26 @@ resource 'Projects' do
           expect(@project.reload.header_bg_url).to be_present
           do_request project: { header_bg: nil }
           expect(@project.reload.header_bg_url).to be_nil
+        end
+      end
+
+      describe 'When project has associated text_image' do
+        let(:description_multiloc) do
+          {
+            'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
+          }
+        end
+
+        example 'Enqueues DeleteTextImageJob when update description_multiloc' do
+          # First update request ensures we have a text_image associated with project before subsequent request.
+          ti_count = TextImage.count
+          do_request
+          assert_status 200
+          expect(TextImage.count).to eq(ti_count + 1)
+
+          expect do
+            do_request
+          end.to have_enqueued_job(DeleteTextImageJob)
         end
       end
     end
