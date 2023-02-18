@@ -410,6 +410,17 @@ resource 'Projects' do
             expect(json_response[:errors][:title_multiloc]).to be_present
             expect(TextImage.count).to eq ti_count
           end
+
+          example 'enqueues job to delete unused text_image when updating mulitloc with text_image' do
+            ti_count = TextImage.count
+            do_request
+            assert_status 201
+            expect(TextImage.count).to eq(ti_count + 1)
+            do_request
+            assert_status 201
+            expect(TextImage.count).to eq(ti_count + 2)
+            # Insert expectation of enqueued job here
+          end
         end
       end
 
