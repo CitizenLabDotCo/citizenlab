@@ -30,7 +30,6 @@ const Container = styled.div`
   padding-bottom: 20px;
   ${(props) =>
     media.tablet`
-      background: pink;
       bottom: ${props.theme.mobileMenuHeight}px;
       padding-right: 40px;
     `}
