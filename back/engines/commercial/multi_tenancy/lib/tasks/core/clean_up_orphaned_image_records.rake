@@ -3,9 +3,9 @@
 namespace :cl2back do
   desc 'Remove image records not associated with resource or with nil value for image field'
   # Usage:
-  # Dry run (no changes): cl2back:clean_up_unused_image_records
-  # Execute (destroys records!): cl2back:clean_up_unused_image_records['execute']
-  task :clean_up_unused_image_records, [:execute] => [:environment] do |_t, args|
+  # Dry run (no changes): cl2back:clean_up_orphaned_image_records
+  # Execute (destroys records!): cl2back:clean_up_orphaned_image_records['execute']
+  task :clean_up_orphaned_image_records, [:execute] => [:environment] do |_t, args|
     dry_run = true unless args[:execute] == 'execute'
 
     Tenant.all.each do |tenant|
@@ -13,7 +13,8 @@ namespace :cl2back do
 
       Apartment::Tenant.switch(tenant.schema_name) do
         # ContentBuilder layout_images
-        # Find all image codes used in all layouts for all projects, then destroy any layout_image with code not in use.
+        # Find all image codes used in all layouts for all projects, then destroy any layout_image with code not in use,
+        # and that is more than 6 hours old.
         image_codes = []
 
         ContentBuilder::Layout.all.each do |layout|
@@ -21,10 +22,14 @@ namespace :cl2back do
         end
 
         ContentBuilder::LayoutImage.all.each do |image|
-          if image_codes.exclude?(image.code)
-            image.destroy! unless dry_run
-            puts " destroyed layout_image with unused code field: #{image.id}"
-          end
+          next unless image_codes.exclude?(image.code)
+
+          # layout_images are created whenever an admin adds an image to a layout form, regardless of whether that image
+          # is eventually referenced by a layout (when / if the layout is saved).
+          # By only destroying unused layout_images with an age of 6+ hours, we can be reasonably confident that the
+          # admin does not intend to add the image to a layout, and the image is truly orphaned.
+          image.destroy! unless dry_run || image.created_at > 6.hours.ago
+          puts " destroyed layout_image with unused code field: #{image.id}"
         end
 
         # text_images
