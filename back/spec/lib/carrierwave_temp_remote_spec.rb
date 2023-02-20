@@ -20,6 +20,20 @@ RSpec.describe CarrierwaveTempRemote do
       temp_remote.save_urls(model, image_assignments)
       expect(model.reload['header_bg']).to match(/\A.{8}-.{4}-.{4}-.{4}-.{12}\.png\Z/)
     end
+
+    it 'raises error if column name is not correct' do
+      image_assignments = { remote_hhhhheader_bg_url: remote_url }
+      expect do
+        temp_remote.save_urls(model, image_assignments)
+      end.to raise_error(ActiveModel::MissingAttributeError)
+    end
+
+    it 'raises error if image assignment key is not correct' do
+      image_assignments = { header_bg: remote_url }
+      expect do
+        temp_remote.save_urls(model, image_assignments)
+      end.to raise_error(ArgumentError)
+    end
   end
 
   describe '.save_files!' do

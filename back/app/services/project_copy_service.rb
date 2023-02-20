@@ -77,8 +77,8 @@ class ProjectCopyService < ::TemplateService
   private
 
   def tenant_template_service
-    # save_temp_remote_urls: false
-    # Because if we store URLs on another domain, it's not possible to fetch these URLs by JS.
+    # `save_temp_remote_urls: false` because if we store images on another domain (URLs point to another domain),
+    # it's not possible to fetch these images by JS.
     # Currently, we fetch them by JS on Back Office to preview images.
     @tenant_template_service ||= MultiTenancy::TenantTemplateService.new(save_temp_remote_urls: false)
   end

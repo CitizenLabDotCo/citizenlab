@@ -316,18 +316,17 @@ module MultiTenancy
     end
 
     def assign_images(model, image_assignments)
-      # Images should not be assigned in the background
-      # while applying a template, so that they can be properly
-      # verified and so that the tenant status doesn't turn into
-      # "created", while the creation could actually still fail.
-      #
-      # Previously, we did it in the background so that the
-      # generation of templates remains within the 3 hours execution
-      # limit of CircleCI.
-
       if @save_temp_remote_urls
         CarrierwaveTempRemote.save_urls(model, image_assignments)
       else
+        # Images should not be assigned in the background
+        # while applying a template, so that they can be properly
+        # verified and so that the tenant status doesn't turn into
+        # "created", while the creation could actually still fail.
+        #
+        # Previously, we did it in the background so that the
+        # generation of templates remains within the 3 hours execution
+        # limit of CircleCI.
         model.update!(image_assignments)
       end
     end
