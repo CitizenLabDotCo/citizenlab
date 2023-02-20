@@ -47,7 +47,8 @@ class TrackSegmentService
     {
       All: true,
       Intercom: intercom_integration_enabled?(user.highest_role),
-      SatisMeter: satismeter_integration_enabled?(user.highest_role)
+      SatisMeter: satismeter_integration_enabled?(user.highest_role),
+      PlanHat: AppConfiguration.instance.feature_activated?('planhat')
     }
   end
 
