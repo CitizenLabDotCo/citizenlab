@@ -7,7 +7,6 @@ import { useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'services/permissions/roles';
 import useAuthUser from 'hooks/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
-import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 import useProject from 'hooks/useProject';
 import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
 
@@ -36,12 +35,10 @@ const ProjectMoreActionsMenu = ({
   }
 
   const userCanDeleteProject = isAdmin({ data: authUser });
-  const userCanModerateProject =
-    // This means project is in a folder
-    (typeof folderId === 'string' && userModeratesFolder(authUser, folderId)) ||
-    canModerateProject(projectId, {
-      data: authUser,
-    });
+  const userCanCopyProject =
+    isAdmin({ data: authUser }) ||
+    // If folderId is string, it means project is in a folder
+    (typeof folderId === 'string' && userModeratesFolder(authUser, folderId));
 
   const handleCallbackError = async (
     callback: () => Promise<any>,
@@ -71,7 +68,7 @@ const ProjectMoreActionsMenu = ({
   const createActions = () => {
     const actions: IAction[] = [];
 
-    if (userCanModerateProject) {
+    if (userCanCopyProject) {
       actions.push({
         handler: async () => {
           setLoadingState('copying', true);
