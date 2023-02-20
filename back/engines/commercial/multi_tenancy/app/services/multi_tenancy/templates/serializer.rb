@@ -92,7 +92,13 @@ module MultiTenancy
       end
 
       def yml_content_builder_layout_images
-        ContentBuilder::LayoutImage.all.map do |image|
+        source_image_codes = []
+
+        ContentBuilder::Layout.all.each do |layout|
+          source_image_codes += ContentBuilder::LayoutService.new.images(layout).pluck(:code)
+        end
+
+        ContentBuilder::LayoutImage.where(code: source_image_codes).map do |image|
           {
             'code' => image.code,
             'remote_image_url' => image.image_url,

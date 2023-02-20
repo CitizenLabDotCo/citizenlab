@@ -200,5 +200,27 @@ describe MultiTenancy::Templates::Serializer do
       expect(template['models']['idea'].size).to eq 1
       expect(template['models']['idea'].first['custom_field_values']).to match expected_custom_field_values
     end
+
+    it 'only serializes layout_images used by content builder layouts' do
+      layout = create(:layout, code: 'project_description')
+      images = create_list(:layout_image, 3)
+
+      craftjs_str = ERB.new(File.read('spec/fixtures/craftjs_layout_with_2_images.json.erb'))
+        .result_with_hash(code1: images[0].code, code2: images[1].code)
+
+      layout.update!(craftjs_jsonmultiloc: JSON.parse(craftjs_str))
+
+      serializer = described_class.new Tenant.current
+      template = serializer.run
+      tenant = create :tenant, locales: AppConfiguration.instance.settings('core', 'locales')
+
+      Apartment::Tenant.switch(tenant.schema_name) do
+        MultiTenancy::TenantTemplateService.new.apply_template template
+
+        expect(ContentBuilder::LayoutImage.find_by(code: images[0].code)).to be_truthy
+        expect(ContentBuilder::LayoutImage.find_by(code: images[1].code)).to be_truthy
+        expect(ContentBuilder::LayoutImage.find_by(code: images[2].code)).to be_falsey
+      end
+    end
   end
 end
