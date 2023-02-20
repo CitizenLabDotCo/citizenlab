@@ -224,5 +224,30 @@ describe MultiTenancy::Templates::Serializer do
           .to eq(ordering_of_source_causes)
       end
     end
+
+    describe 'when serializing text_images associated with parent resource' do
+      let(:text_ref) { SecureRandom.uuid }
+
+      it 'does not serialize orphaned text_images associated with project' do
+        project = create(
+          :continuous_project,
+          description_multiloc: { en: "<img data-cl2-text-image-text-reference=\"#{text_ref}\">" }
+        )
+        images = create_list(
+          :text_image,
+          2,
+          imageable_id: project.id,
+          imageable_type: 'Project',
+          imageable_field: 'description_multiloc'
+        )
+        images[0].update(text_reference: text_ref)
+
+        serializer = described_class.new Tenant.current
+        template = serializer.run
+
+        expect(template['models']['project'].first['text_images_attributes'].size).to eq 1
+        expect(template['models']['project'].first['text_images_attributes'].first['text_reference']).to eq(text_ref)
+      end
+    end
   end
 end

@@ -313,6 +313,8 @@ module MultiTenancy
 
       def yml_projects
         Project.all.map do |p|
+          project_to_json = p.to_json
+
           yml_project = yml_participation_context p
           yml_project.merge!({
             'title_multiloc' => p.title_multiloc,
@@ -326,15 +328,16 @@ module MultiTenancy
             'description_preview_multiloc' => p.description_preview_multiloc,
             'process_type' => p.process_type,
             'internal_role' => p.internal_role,
-            'text_images_attributes' => p.text_images.map do |ti|
-              {
-                'imageable_field' => ti.imageable_field,
-                'remote_image_url' => ti.image_url,
-                'text_reference' => ti.text_reference,
-                'created_at' => ti.created_at.to_s,
-                'updated_at' => ti.updated_at.to_s
-              }
-            end,
+            'text_images_attributes' =>
+              p.text_images.select { |ti| project_to_json.include?(ti.text_reference) }.map do |ti|
+                {
+                  'imageable_field' => ti.imageable_field,
+                  'remote_image_url' => ti.image_url,
+                  'text_reference' => ti.text_reference,
+                  'created_at' => ti.created_at.to_s,
+                  'updated_at' => ti.updated_at.to_s
+                }
+              end,
             'include_all_areas' => p.include_all_areas
           })
           if p.admin_publication.present?
