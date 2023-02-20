@@ -225,7 +225,7 @@ describe MultiTenancy::Templates::Serializer do
           .to eq(ordering_of_source_causes)
       end
     end
-    
+
     it 'only serializes layout_images used by content builder layouts' do
       layout = create(:layout, code: 'project_description')
       images = create_list(:layout_image, 3)
