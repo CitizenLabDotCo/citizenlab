@@ -3,13 +3,12 @@ import React, { PureComponent, FormEvent } from 'react';
 import { isAdmin } from 'services/permissions/roles';
 import moment from 'moment';
 import clHistory from 'utils/cl-router/history';
-import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // Components
-import { Tr, Td, Toggle, Icon } from '@citizenlab/cl2-component-library';
+import { Tr, Td, Toggle, Box } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
 import Checkbox from 'components/UI/Checkbox';
-import Tippy from '@tippyjs/react';
+import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 
 // Translation
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -28,90 +27,10 @@ import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // Styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { lighten } from 'polished';
-
-const StyledCheckbox = styled(Checkbox)`
-  margin-left: 5px;
-`;
-
-const MoreOptionsWrapper = styled.div`
-  width: 20px;
-  position: relative;
-`;
-
-const MoreOptionsIcon = styled(Icon)`
-  fill: ${colors.textSecondary};
-`;
-
-const MoreOptionsButton = styled.button`
-  width: 25px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  margin: 0;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-
-  &:hover ${MoreOptionsIcon} {
-    fill: #000;
-  }
-`;
+import { colors } from 'utils/styleUtils';
 
 const RegisteredAt = styled(Td)`
   white-space: nowrap;
-`;
-
-const DropdownList = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  margin-top: 5px;
-  margin-bottom: 5px;
-`;
-
-const DropdownListButton = styled.button`
-  flex: 1 1 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: ${colors.white};
-  font-size: ${fontSizes.s}px;
-  font-weight: 400;
-  white-space: nowrap;
-  padding: 10px;
-  border-radius: ${(props) => props.theme.borderRadius};
-  cursor: pointer;
-  white-space: nowrap;
-
-  &:hover,
-  &:focus {
-    outline: none;
-    color: white;
-    background: ${lighten(0.1, colors.grey800)};
-  }
-`;
-
-const IconWrapper = styled.div`
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 10px;
-
-  .cl-icon {
-    height: 100%;
-  }
-
-  .cl-icon-primary,
-  .cl-icon-secondary,
-  .cl-icon-accent {
-    fill: currentColor;
-  }
 `;
 
 interface Props {
@@ -159,13 +78,9 @@ class UserTableRow extends PureComponent<Props & WrappedComponentProps, State> {
     this.props.toggleAdmin();
   };
 
-  handleDeleteClick = (event: FormEvent) => {
-    const { authUser, user } = this.props;
-    const deleteMessage = this.props.intl.formatMessage(
-      messages.userDeletionConfirmation
-    );
-
-    event.preventDefault();
+  handleDeleteClick = () => {
+    const { authUser, user, intl } = this.props;
+    const deleteMessage = intl.formatMessage(messages.userDeletionConfirmation);
 
     if (window.confirm(deleteMessage)) {
       if (authUser && authUser.id === user.id) {
@@ -184,6 +99,23 @@ class UserTableRow extends PureComponent<Props & WrappedComponentProps, State> {
     }
   };
 
+  actions: IAction[] = [
+    {
+      handler: async () => {
+        clHistory.push(`/profile/${this.props.user.attributes.slug}`);
+      },
+      label: this.props.intl.formatMessage(messages.seeProfile),
+      icon: 'eye' as const,
+    },
+    {
+      handler: async () => {
+        this.handleDeleteClick();
+      },
+      label: this.props.intl.formatMessage(messages.deleteUser),
+      icon: 'delete' as const,
+    },
+  ];
+
   goToUserProfile = (slug: string) => (event: FormEvent) => {
     event.preventDefault();
     clHistory.push(`/profile/${slug}`);
@@ -200,10 +132,12 @@ class UserTableRow extends PureComponent<Props & WrappedComponentProps, State> {
         className={`e2e-user-table-row ${selected ? 'selected' : ''}`}
       >
         <Td>
-          <StyledCheckbox
-            checked={selected}
-            onChange={this.handleUserSelectedOnChange}
-          />
+          <Box ml="5px">
+            <Checkbox
+              checked={selected}
+              onChange={this.handleUserSelectedOnChange}
+            />
+          </Box>
         </Td>
         <Td>
           <Avatar userId={user.id} size={30} />
@@ -233,38 +167,7 @@ class UserTableRow extends PureComponent<Props & WrappedComponentProps, State> {
           <Toggle checked={isAdmin} onChange={this.handleAdminRoleOnChange} />
         </Td>
         <Td>
-          <MoreOptionsWrapper>
-            <Tippy
-              placement="bottom-end"
-              interactive={true}
-              trigger="click"
-              duration={[200, 0]}
-              content={
-                <DropdownList>
-                  <DropdownListButton
-                    onClick={this.goToUserProfile(
-                      this.props.user.attributes.slug
-                    )}
-                  >
-                    <FormattedMessage {...messages.seeProfile} />
-                    <IconWrapper>
-                      <Icon name="eye" fill="white" />
-                    </IconWrapper>
-                  </DropdownListButton>
-                  <DropdownListButton onClick={this.handleDeleteClick}>
-                    <FormattedMessage {...messages.deleteUser} />
-                    <IconWrapper>
-                      <Icon name="delete" fill="white" />
-                    </IconWrapper>
-                  </DropdownListButton>
-                </DropdownList>
-              }
-            >
-              <MoreOptionsButton onMouseDown={removeFocusAfterMouseClick}>
-                <MoreOptionsIcon name="dots-horizontal" />
-              </MoreOptionsButton>
-            </Tippy>
-          </MoreOptionsWrapper>
+          <MoreActionsMenu showLabel={false} actions={this.actions} />
         </Td>
       </Tr>
     );
