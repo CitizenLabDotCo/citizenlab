@@ -1,13 +1,13 @@
 import { get } from 'lodash-es';
 
 // services
-import { TAppConfigurationSetting } from 'services/appConfiguration';
+import { TAppConfigurationSetting } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 type children = (renderProps: GetFeatureFlagChildProps) => JSX.Element | null;
 
 interface Props {
-  name?: TAppConfigurationSetting;
+  name: TAppConfigurationSetting;
   children?: children;
 }
 

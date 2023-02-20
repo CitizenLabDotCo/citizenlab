@@ -12,6 +12,7 @@ import {
   isSuperAdmin,
 } from 'services/permissions/roles';
 import { ModuleConfiguration } from 'utils/moduleUtils';
+import appConfigurationObserver from 'api/app_configuration/appConfigurationObserver';
 
 const CL_SEGMENT_API_KEY = process.env.SEGMENT_API_KEY;
 
@@ -45,7 +46,11 @@ const configuration: ModuleConfiguration = {
     combineLatest([
       currentAppConfigurationStream().observable,
       authUserStream().observable,
+      // appConfigurationObserver
     ]).subscribe(async ([tenant, user]) => {
+      appConfigurationObserver.subscribe(({ data }) => {
+        console.log('appConfiguration', data);
+      });
       const segmentFeatureFlag = tenant.data.attributes.settings.segment;
       isSegmentEnabled = Boolean(
         // Feature flag is in place
