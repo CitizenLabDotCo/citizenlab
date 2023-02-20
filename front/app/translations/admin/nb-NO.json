@@ -1077,7 +1077,7 @@
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip": "Du må legge til prosjektet i en mappe du har administratorrettigheter til.",
   "app.containers.AdminPage.ProjectEdit.folderSelectError": "Velg en mappe dette prosjektet skal legges i.",
   "app.containers.AdminPage.ProjectEdit.formBuilder.customToolboxTitle": "Egendefinert innhold",
-  "app.containers.AdminPage.ProjectEdit.formBuilder.existingSubmissionsWarning": "Submissions to this form have started to come in. Changes to the form may result in data loss and incomplete data in the exported files.",
+  "app.containers.AdminPage.ProjectEdit.formBuilder.existingSubmissionsWarning": "Det har begynt å komme innsendinger i dette skjemaet. Hvis du gjør endringer i skjemaet kan det føre til datatap og ufullstendige data i de eksporterte filene.",
   "app.containers.AdminPage.ProjectEdit.formBuilder.successMessage": "Skjemaet er lagret",
   "app.containers.AdminPage.ProjectEdit.fromATemplate": "Fra en mal",
   "app.containers.AdminPage.ProjectEdit.fromScratch": "Fra bunnen av",
