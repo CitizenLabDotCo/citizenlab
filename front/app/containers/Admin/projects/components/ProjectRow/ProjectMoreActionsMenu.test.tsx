@@ -68,8 +68,6 @@ describe('ProjectMoreActionsMenu', () => {
       name: 'Copy project',
     });
 
-    expect(copyProjectButton).toBeInTheDocument();
-
     await user.click(copyProjectButton);
 
     expect(setErrorFn).toHaveBeenLastCalledWith(
