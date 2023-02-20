@@ -6,19 +6,11 @@ import { includes, uniq } from 'lodash-es';
 import moment from 'moment';
 import 'moment-timezone';
 import React, { lazy, Suspense, useEffect, useState } from 'react';
-import { adopt } from 'react-adopt';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import smoothscroll from 'smoothscroll-polyfill';
 import clHistory from 'utils/cl-router/history';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import {
-  endsWith,
-  isDesktop,
-  isNilOrError,
-  isNil,
-  isPage,
-} from 'utils/helperUtils';
+import { endsWith, isNilOrError, isNil, isPage } from 'utils/helperUtils';
 
 // constants
 import { appLocalesMomentPairs, locales } from 'containers/App/constants';
@@ -55,12 +47,6 @@ import { localeStream } from 'services/locale';
 import { TAuthUser } from 'hooks/useAuthUser';
 
 // resources
-import GetFeatureFlag, {
-  GetFeatureFlagChildProps,
-} from 'resources/GetFeatureFlag';
-import GetWindowSize, {
-  GetWindowSizeChildProps,
-} from 'resources/GetWindowSize';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
@@ -75,6 +61,9 @@ import { Locale } from 'typings';
 // utils
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import { useLocation } from 'react-router-dom';
 
 const Container = styled.div<{
   disableScroll?: boolean;
@@ -116,24 +105,13 @@ export interface IOpenPostPageModalEvent {
   type: 'idea' | 'initiative';
 }
 
-interface InputProps {}
-
-interface DataProps {
-  redirectsEnabled: GetFeatureFlagChildProps;
-  fullscreenModalEnabled: GetFeatureFlagChildProps;
-  windowSize: GetWindowSizeChildProps;
+interface Props {
   children: React.ReactNode;
 }
 
-interface Props extends WithRouterProps, InputProps, DataProps {}
-
-const App = ({
-  location,
-  children,
-  windowSize,
-  fullscreenModalEnabled,
-  redirectsEnabled,
-}: Props) => {
+const App = ({ children }: Props) => {
+  const location = useLocation();
+  const [isAppInitialized, setIsAppInitialized] = useState(false);
   const [previousPathname, setPreviousPathname] = useState<string | null>(null);
   const { data: appConfiguration } = useAppConfiguration();
 
@@ -154,6 +132,11 @@ const App = ({
   );
   const [locale, setLocale] = useState<Locale | null>(null);
   const [signUpInModalOpened, setSignUpInModalOpened] = useState(false);
+
+  const redirectsEnabled = useFeatureFlag({ name: 'redirects' });
+  const fullscreenModalEnabled = useFeatureFlag({
+    name: 'franceconnect_login',
+  });
 
   useEffect(() => {
     if (appConfiguration) {
@@ -242,80 +225,84 @@ const App = ({
         });
       }
     };
+    let unlisten: () => void;
+    let subscriptions: Subscription[] = [];
+    if (!isAppInitialized) {
+      const authUser$ = authUserStream().observable;
+      const locale$ = localeStream().observable;
+      unlisten = clHistory.listen(({ location }) => {
+        const newPreviousPathname = location.pathname;
+        const pathsToIgnore = [
+          'sign-up',
+          'sign-in',
+          'complete-signup',
+          'invite',
+          'authentication-error',
+        ];
+        setPreviousPathname(
+          !endsWith(newPreviousPathname, pathsToIgnore)
+            ? newPreviousPathname
+            : previousPathname
+        );
+        if (redirectsEnabled) {
+          handleCustomRedirect();
+        }
+        trackPage(location.pathname);
+      });
 
-    const authUser$ = authUserStream().observable;
-    const locale$ = localeStream().observable;
-    const unlisten = clHistory.listen(({ location }) => {
-      const newPreviousPathname = location.pathname;
-      const pathsToIgnore = [
-        'sign-up',
-        'sign-in',
-        'complete-signup',
-        'invite',
-        'authentication-error',
-      ];
-      setPreviousPathname(
-        !endsWith(newPreviousPathname, pathsToIgnore)
-          ? newPreviousPathname
-          : previousPathname
-      );
-      if (redirectsEnabled) {
-        handleCustomRedirect();
-      }
       trackPage(location.pathname);
-    });
 
-    trackPage(location.pathname);
+      smoothscroll.polyfill();
 
-    smoothscroll.polyfill();
-
-    const subscriptions = [
-      combineLatest([
-        authUser$.pipe(
-          tap((authUser) => {
-            if (isNilOrError(authUser)) {
-              signOut();
-            } else {
-              configureScope((scope) => {
-                scope.setUser({
-                  id: authUser.data.id,
+      subscriptions = [
+        combineLatest([
+          authUser$.pipe(
+            tap((authUser) => {
+              if (isNilOrError(authUser)) {
+                signOut();
+              } else {
+                configureScope((scope) => {
+                  scope.setUser({
+                    id: authUser.data.id,
+                  });
                 });
-              });
-            }
-          })
-        ),
-        locale$,
-      ]).subscribe(([authUser, locale]) => {
-        const momentLoc = appLocalesMomentPairs[locale] || 'en';
-        moment.locale(momentLoc);
-        setAuthUser(!isNil(authUser) ? authUser.data : null);
-        setLocale(locale);
-      }),
-
-      eventEmitter
-        .observeEvent<IOpenPostPageModalEvent>('cardClick')
-        .subscribe(({ eventValue: { id, slug, type } }) => {
-          openPostPageModal(id, slug, type);
+              }
+            })
+          ),
+          locale$,
+        ]).subscribe(([authUser, locale]) => {
+          const momentLoc = appLocalesMomentPairs[locale] || 'en';
+          moment.locale(momentLoc);
+          setAuthUser(!isNil(authUser) ? authUser.data : null);
+          setLocale(locale);
         }),
 
-      eventEmitter.observeEvent('closeIdeaModal').subscribe(() => {
-        closePostPageModal();
-      }),
+        eventEmitter
+          .observeEvent<IOpenPostPageModalEvent>('cardClick')
+          .subscribe(({ eventValue: { id, slug, type } }) => {
+            openPostPageModal(id, slug, type);
+          }),
 
-      eventEmitter
-        .observeEvent('deleteProfileAndShowSuccessModal')
-        .subscribe(() => {
-          signOutAndDeleteAccount().then((success) => {
-            if (success) {
-              setUserDeletedSuccessfullyModalOpened(true);
-              setUserSuccessfullyDeleted(true);
-            } else {
-              setUserDeletedSuccessfullyModalOpened(true);
-              setUserSuccessfullyDeleted(false);
-            }
-          });
+        eventEmitter.observeEvent('closeIdeaModal').subscribe(() => {
+          closePostPageModal();
         }),
-    ];
+
+        eventEmitter
+          .observeEvent('deleteProfileAndShowSuccessModal')
+          .subscribe(() => {
+            signOutAndDeleteAccount().then((success) => {
+              if (success) {
+                setUserDeletedSuccessfullyModalOpened(true);
+                setUserSuccessfullyDeleted(true);
+              } else {
+                setUserDeletedSuccessfullyModalOpened(true);
+                setUserSuccessfullyDeleted(false);
+              }
+            });
+          }),
+      ];
+      setIsAppInitialized(true);
+    }
 
     return () => {
       unlisten();
@@ -327,6 +314,7 @@ const App = ({
     redirectsEnabled,
     appConfiguration,
     location,
+    isAppInitialized,
   ]);
 
   const openPostPageModal = (
@@ -358,7 +346,7 @@ const App = ({
   const isIdeaFormPage = isPage('idea_form', location.pathname);
   const isIdeaEditPage = isPage('idea_edit', location.pathname);
   const isInitiativeEditPage = isPage('initiative_edit', location.pathname);
-  const isDesktopUser = windowSize && isDesktop(windowSize);
+  const isTablet = useBreakpoint('tablet');
   const fullScreenModalEnabledAndOpen =
     fullscreenModalEnabled && signUpInModalOpened;
 
@@ -370,7 +358,7 @@ const App = ({
     !isIdeaEditPage &&
     !isInitiativeEditPage;
   const showMobileNav =
-    !isDesktopUser &&
+    isTablet &&
     !isAdminPage &&
     !isIdeaFormPage &&
     !isInitiativeFormPage &&
@@ -468,15 +456,4 @@ const App = ({
   );
 };
 
-const Data = adopt<DataProps, InputProps>({
-  windowSize: <GetWindowSize />,
-  redirectsEnabled: <GetFeatureFlag name="redirects" />,
-  // CL-1101, FranceConnect platforms have full screen login experience
-  fullscreenModalEnabled: <GetFeatureFlag name="franceconnect_login" />,
-});
-
-const AppWithHoC = withRouter(App);
-
-export default (inputProps: InputProps) => (
-  <Data>{(dataProps) => <AppWithHoC {...dataProps} {...inputProps} />}</Data>
-);
+export default App;
