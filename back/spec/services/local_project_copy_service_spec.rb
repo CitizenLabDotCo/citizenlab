@@ -144,10 +144,10 @@ describe LocalProjectCopyService do
       copied_project = service.copy(continuous_project.reload)
 
       expect(copied_project.causes.map do |record|
-        record.as_json(only: %i[participation_context_type title_multiloc description_multiloc volunteers_count])
+        record.as_json(except: %i[id participation_context_id image updated_at created_at])
       end)
         .to match_array(continuous_project.causes.map do |record|
-          record.as_json(only: %i[participation_context_type title_multiloc description_multiloc volunteers_count])
+          record.as_json(except: %i[id participation_context_id image updated_at created_at])
         end)
     end
 
@@ -161,10 +161,10 @@ describe LocalProjectCopyService do
       copied_project = service.copy(continuous_project.reload)
 
       expect(copied_project.custom_form.custom_fields.map do |record|
-        record.as_json(except: %i[id ordering resource_id updated_at created_at])
+        record.as_json(except: %i[id resource_id updated_at created_at])
       end)
         .to match_array(continuous_project.custom_form.custom_fields.map do |record|
-          record.as_json(except: %i[id ordering resource_id updated_at created_at])
+          record.as_json(except: %i[id resource_id updated_at created_at])
         end)
 
       source_custom_field = continuous_project.custom_form.custom_fields.last
