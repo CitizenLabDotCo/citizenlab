@@ -171,7 +171,7 @@ const MoreActionsMenu = (props: Props) => {
                   className={name ? `e2e-action-${name}` : undefined}
                 >
                   {label}
-                  {icon && isLoading === false && (
+                  {icon && !isLoading && (
                     <Box
                       width="20px"
                       height="20px"
