@@ -4,7 +4,7 @@ import { Subscription, combineLatest } from 'rxjs';
 
 // Services
 import { localeStream } from 'services/locale';
-import { currentAppConfigurationStream } from 'services/appConfiguration';
+import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 
 // hooks
 import { Localize } from 'hooks/useLocalize';
@@ -45,7 +45,7 @@ export default function injectLocalize<P>(
 
     componentDidMount() {
       const locale$ = localeStream().observable;
-      const currentTenant$ = currentAppConfigurationStream().observable;
+      const currentTenant$ = appConfigurationStream;
 
       this.subscriptions = [
         combineLatest([locale$, currentTenant$]).subscribe(

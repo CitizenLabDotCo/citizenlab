@@ -2,15 +2,13 @@ import { authUserStream } from 'services/auth';
 import { IUser } from 'services/users';
 import { isObject } from 'lodash-es';
 import { combineLatest } from 'rxjs';
-import {
-  currentAppConfigurationStream,
-  IAppConfigurationData,
-} from 'services/appConfiguration';
 import { map } from 'rxjs/operators';
 import useAuthUser from 'hooks/useAuthUser';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
 
+import { IAppConfigurationData } from 'api/app_configuration/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 export interface IRouteItem {
   type: 'route';
   path: string;
@@ -78,7 +76,7 @@ const hasPermission = ({
 }) => {
   return combineLatest([
     authUserStream().observable,
-    currentAppConfigurationStream().observable,
+    appConfigurationStream,
   ]).pipe(
     map(([user, tenant]) => {
       if (!item) {
@@ -88,7 +86,7 @@ const hasPermission = ({
       const resourceType = isResource(item) ? item.type : item;
       const rule = getPermissionRule(resourceType, action);
 
-      if (rule) {
+      if (rule && tenant) {
         return rule(item, user, tenant.data, context);
       } else {
         throw `No permission rule is specified on resource '${resourceType}' for action '${action}'`;

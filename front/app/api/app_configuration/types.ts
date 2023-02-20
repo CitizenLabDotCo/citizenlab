@@ -255,7 +255,7 @@ interface IAppConfigurationAttributes {
   style?: IAppConfigurationStyle;
 }
 
-interface IAppConfigurationData {
+export interface IAppConfigurationData {
   id: string;
   type: string;
   attributes: IAppConfigurationAttributes;

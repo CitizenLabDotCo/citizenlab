@@ -1,5 +1,5 @@
 import { events$, pageChanges$, tenantInfo } from 'utils/analytics';
-import { currentAppConfigurationStream } from 'services/appConfiguration';
+import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 import { authUserStream } from 'services/auth';
 import { combineLatest } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
@@ -43,18 +43,20 @@ const configuration: ModuleConfiguration = {
     if (!CL_SEGMENT_API_KEY) return;
 
     combineLatest([
-      currentAppConfigurationStream().observable,
+      appConfigurationStream,
       authUserStream().observable,
     ]).subscribe(async ([tenant, user]) => {
-      const segmentFeatureFlag = tenant.data.attributes.settings.segment;
-      isSegmentEnabled = Boolean(
-        // Feature flag is in place
-        segmentFeatureFlag?.allowed &&
-          segmentFeatureFlag?.enabled &&
-          // User is admin or moderator
-          !isNilOrError(user) &&
-          isModerator(user)
-      );
+      if (tenant) {
+        const segmentFeatureFlag = tenant.data.attributes.settings.segment;
+        isSegmentEnabled = Boolean(
+          // Feature flag is in place
+          segmentFeatureFlag?.allowed &&
+            segmentFeatureFlag?.enabled &&
+            // User is admin or moderator
+            !isNilOrError(user) &&
+            isModerator(user)
+        );
+      }
 
       // Ensure segment should be enabled but snippet hasn't been loaded already
       // in case of a user signing out and back in
@@ -126,7 +128,7 @@ const configuration: ModuleConfiguration = {
     });
 
     combineLatest([
-      currentAppConfigurationStream().observable,
+      appConfigurationStream,
       authUserStream().observable,
       events$,
     ]).subscribe(([tenant, user, event]) => {
@@ -146,7 +148,7 @@ const configuration: ModuleConfiguration = {
     });
 
     combineLatest([
-      currentAppConfigurationStream().observable,
+      appConfigurationStream,
       authUserStream().observable,
       pageChanges$,
     ]).subscribe(([tenant, user, pageChange]) => {
