@@ -347,18 +347,53 @@ RSpec.describe CustomField, type: :model do
   end
 
   describe 'title_multiloc behaviour for ideation section 1' do
-    it 'returns the correct input term message regardless of what the field is set to' do
-      resource = create :custom_form
-      resource.participation_context.input_term = 'idea'
-      ignored_title = { en: 'anything' }
-      section = described_class.new(
-        resource: resource,
-        input_type: 'section',
-        code: 'ideation_section1',
-        title_multiloc: ignored_title
-      )
-      expected_english_title = 'What is your idea?'
-      expect(section.title_multiloc['en']).to eq expected_english_title
+    context 'continuous projects' do
+      it 'returns a title containing the project input term regardless of what it is set to' do
+        resource = build :custom_form
+        resource.participation_context.update! input_term: 'option'
+        ignored_title = { en: 'anything' }
+        section = described_class.new(
+          resource: resource,
+          input_type: 'section',
+          code: 'ideation_section1',
+          title_multiloc: ignored_title
+        )
+        expected_english_title = 'What is your option?'
+        expect(section.title_multiloc['en']).to eq expected_english_title
+      end
+    end
+
+    # Do budget too
+    context 'timeline projects' do
+      it 'returns a title containing the current ideation/budget phase input term if there is a current phase' do
+        project = create :project_with_current_phase, current_phase_attrs: { input_term: 'question' }
+        resource = build :custom_form, participation_context: project
+        ignored_title = { en: 'anything' }
+        section = described_class.new(
+          resource: resource,
+          input_type: 'section',
+          code: 'ideation_section1',
+          title_multiloc: ignored_title
+        )
+        expected_english_title = 'What is your question?'
+        expect(section.title_multiloc['en']).to eq expected_english_title
+      end
+
+      it 'returns a title containing the last phase input term if there is not a current ideation/budget phase' do
+        project = create :project_with_future_phases
+        project.phases.last.update! input_term: 'contribution'
+        resource = build :custom_form, participation_context: project
+
+        ignored_title = { en: 'anything' }
+        section = described_class.new(
+          resource: resource,
+          input_type: 'section',
+          code: 'ideation_section1',
+          title_multiloc: ignored_title
+        )
+        expected_english_title = 'What is your contribution?'
+        expect(section.title_multiloc['en']).to eq expected_english_title
+      end
     end
   end
 

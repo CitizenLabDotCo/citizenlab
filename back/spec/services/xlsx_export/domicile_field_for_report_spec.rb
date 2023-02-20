@@ -24,16 +24,16 @@ describe XlsxExport::DomicileFieldForReport do
     context 'when there are no areas' do
       let(:model) { create(:user) }
 
-      it 'returns nil' do
-        expect(report_field.value_from(model)).to be_nil
+      it 'returns the empty string' do
+        expect(report_field.value_from(model)).to eq ''
       end
     end
 
     context 'when the field value is "outside"' do
       let(:model) { create(:user, custom_field_values: { 'domicile' => 'outside' }) }
 
-      it 'returns nil' do
-        expect(report_field.value_from(model)).to be_nil
+      it 'returns empty string' do
+        expect(report_field.value_from(model)).to eq ''
       end
     end
 

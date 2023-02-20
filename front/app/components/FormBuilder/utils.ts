@@ -30,6 +30,7 @@ export type FormBuilderConfig = {
   isLogicEnabled: boolean;
   isEditPermittedAfterSubmissions: boolean;
   alwaysShowCustomFields: boolean;
+  isFormPhaseSpecific: boolean;
 
   viewFormLink?: string;
 
