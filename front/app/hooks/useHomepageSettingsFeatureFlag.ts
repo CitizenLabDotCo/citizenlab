@@ -5,7 +5,7 @@ import {
 import { THomepageSetting } from 'services/appConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
 import useHomepageSettings from './useHomepageSettings';
-import useAppConfiguration from './useAppConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // If we deal with a section whose allowed value needs to be checked
 // in appConfiguration, we require the appConfiguration setting name.
@@ -30,7 +30,7 @@ export default function useHomepageSettingsFeatureFlag({
   appConfigSettingName,
 }: Parameters) {
   const homepageSettings = useHomepageSettings();
-  const appConfig = useAppConfiguration();
+  const { data: appConfig } = useAppConfiguration();
 
   const appConfigExists = !isNilOrError(appConfig);
   const homepageSettingsExist = !isNilOrError(homepageSettings);
@@ -38,7 +38,7 @@ export default function useHomepageSettingsFeatureFlag({
 
   // It only makes sense to have appConfigSetting if there's an appConfigSettingName
   const appConfigSetting = appSettingNameandConfigExist
-    ? appConfig.attributes.settings?.[appConfigSettingName]
+    ? appConfig.data.attributes.settings?.[appConfigSettingName]
     : null;
 
   // if the named setting is enabled in homepageSettings

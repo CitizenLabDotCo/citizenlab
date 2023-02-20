@@ -21,7 +21,7 @@ import {
 } from 'services/appConfiguration';
 
 // Utils
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 const StyledSection = styled(Section)`
   margin-bottom: 50px;
@@ -56,7 +56,7 @@ interface FormValues {
 }
 
 const SettingsGeneralTab = () => {
-  const appConfiguration = useAppConfiguration();
+  const { data: appConfiguration } = useAppConfiguration();
   const [settingsUpdatedSuccessFully, setSettingsUpdatedSuccessFully] =
     useState(false);
   const [settingsSavingError, setSettingsSavingError] = useState(false);
@@ -69,10 +69,10 @@ const SettingsGeneralTab = () => {
   const onToggleBlockProfanitySetting = () => {
     if (
       !isNilOrError(appConfiguration) &&
-      appConfiguration.attributes.settings.blocking_profanity
+      appConfiguration.data.attributes.settings.blocking_profanity
     ) {
       const oldProfanityBlockerEnabled =
-        appConfiguration.attributes.settings.blocking_profanity.enabled;
+        appConfiguration.data.attributes.settings.blocking_profanity.enabled;
       setSettingsSavingError(false);
       updateAppConfiguration({
         settings: {
@@ -97,7 +97,7 @@ const SettingsGeneralTab = () => {
     settingName: TAppConfigurationSettingWithEnabled
   ) => {
     if (!isNilOrError(appConfiguration)) {
-      const setting = appConfiguration.attributes.settings[settingName];
+      const setting = appConfiguration.data.attributes.settings[settingName];
 
       if (setting) {
         const oldSettingEnabled = setting.enabled;
@@ -126,10 +126,10 @@ const SettingsGeneralTab = () => {
 
   if (!isNilOrError(appConfiguration)) {
     const profanityBlockerSetting =
-      appConfiguration.attributes.settings.blocking_profanity;
+      appConfiguration.data.attributes.settings.blocking_profanity;
 
     const { organization_name, organization_site, locales } =
-      appConfiguration.attributes.settings.core;
+      appConfiguration.data.attributes.settings.core;
 
     return (
       <>
