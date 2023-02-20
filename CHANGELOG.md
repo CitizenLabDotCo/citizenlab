@@ -1,5 +1,11 @@
 # Changelog
 
+## 2023-02-20
+
+### Added
+
+- [CL-2314] Ability to copy projects in the admin.
+
 ## 2023-02-17
 
 ### Added
