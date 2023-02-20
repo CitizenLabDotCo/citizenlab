@@ -19,4 +19,3 @@ class WebApi::V1::ResendCodesController < ApplicationController
     params.permit(:new_email)
   end
 end
-

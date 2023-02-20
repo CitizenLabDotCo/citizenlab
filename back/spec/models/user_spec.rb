@@ -578,12 +578,12 @@ RSpec.describe User, type: :model do
     end
 
     describe '#confirmed?' do
-      it 'returns false when the user has not yet been confirmed' do
+      it 'returns false when the user has not yet confirmed their account' do
         user.save!
         expect(user.confirmed?).to be false
       end
 
-      it 'returns true after the user has confirmed the account' do
+      it 'returns true after the user has confirmed their account' do
         user.save!
         user.confirm!
         expect(user.reload.confirmed?).to be true
@@ -647,17 +647,6 @@ RSpec.describe User, type: :model do
     describe '#confirmation_required=' do
       it 'raises a private method error' do
         expect { user.confirmation_required = false }.to raise_error NoMethodError
-      end
-    end
-
-    describe '#confirmed?' do
-      it 'returns false if the user has not yet confirmed their account' do
-        expect(user.confirmed?).to be false
-      end
-
-      it 'returns true if the user has confirmed their account' do
-        user.confirm!
-        expect(user.confirmation_required?).to be true
       end
     end
 
