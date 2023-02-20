@@ -1077,7 +1077,7 @@
   "app.containers.AdminPage.ProjectEdit.folderAdminProjectFolderSelectTooltip": "Du måste lägga till projektet i en mapp som du har administratörsrättigheter över.",
   "app.containers.AdminPage.ProjectEdit.folderSelectError": "Välj en mapp att lägga till detta projekt i.",
   "app.containers.AdminPage.ProjectEdit.formBuilder.customToolboxTitle": "Anpassat innehåll",
-  "app.containers.AdminPage.ProjectEdit.formBuilder.existingSubmissionsWarning": "Submissions to this form have started to come in. Changes to the form may result in data loss and incomplete data in the exported files.",
+  "app.containers.AdminPage.ProjectEdit.formBuilder.existingSubmissionsWarning": "Det har börjat komma inlämningar till det här formuläret. Ändringar av formuläret kan leda till förlust av data och ofullständiga uppgifter i de exporterade filerna.",
   "app.containers.AdminPage.ProjectEdit.formBuilder.successMessage": "Formuläret har sparats",
   "app.containers.AdminPage.ProjectEdit.fromATemplate": "Från en mall",
   "app.containers.AdminPage.ProjectEdit.fromScratch": "Från början",
