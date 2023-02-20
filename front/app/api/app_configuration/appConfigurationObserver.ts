@@ -3,14 +3,26 @@ import { CLErrors } from 'typings';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import appConfigurationKeys from './keys';
 import { AppConfigurationKeys, IAppConfiguration } from './types';
+import { Observable } from 'rxjs';
+import { fetchAppConfiguration } from './useAppConfiguration';
 
-const appConfigurationObserver = new QueryObserver<
+const appConfigurationQueryObserver = new QueryObserver<
   IAppConfiguration,
   CLErrors,
   IAppConfiguration,
   AppConfigurationKeys
 >(queryClient, {
   queryKey: appConfigurationKeys.all(),
+  queryFn: fetchAppConfiguration,
 });
 
-export default appConfigurationObserver;
+const appConfigurationStream = new Observable<IAppConfiguration | undefined>(
+  (subscriber) => {
+    const unsubscribe = appConfigurationQueryObserver.subscribe((query) => {
+      subscriber.next(query?.data);
+    });
+    return unsubscribe;
+  }
+);
+
+export default appConfigurationStream;

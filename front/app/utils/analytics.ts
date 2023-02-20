@@ -11,6 +11,7 @@ import {
 } from 'rxjs/operators';
 import { isEqual, mapValues } from 'lodash-es';
 import eventEmitter from 'utils/eventEmitter';
+import observer from 'api/app_configuration/appConfigurationObserver';
 
 import {
   IAppConfigurationData,
@@ -55,8 +56,10 @@ export const initializeFor = (destination: IDestination) => {
     destinationConsentChanged$,
     currentAppConfigurationStream().observable,
     authUserStream().observable,
+    observer,
   ]).pipe(
-    filter(([consent, tenant, user]) => {
+    filter(([consent, tenant, user, observer]) => {
+      console.log(observer);
       const config = getDestinationConfig(destination);
 
       return (
