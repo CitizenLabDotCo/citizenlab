@@ -54,7 +54,7 @@ class TrackSegmentService
 
   # @param [Symbol] role
   def intercom_integration_enabled?(role)
-    %i[admin project_moderator].include?(role)
+    %i[admin project_folder_moderator project_moderator].include?(role)
   end
 
   def planhat_integration_enabled?(role)
@@ -65,7 +65,7 @@ class TrackSegmentService
 
   # @param [Symbol] role
   def satismeter_integration_enabled?(role)
-    %i[admin project_moderator].include?(role)
+    %i[admin project_folder_moderator project_moderator].include?(role)
   end
 
   # @param [User] user
