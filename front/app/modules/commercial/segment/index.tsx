@@ -1,49 +1,23 @@
-import {
-  IDestinationConfig,
-  registerDestination,
-} from 'components/ConsentManager/destinations';
-import {
-  bufferUntilInitialized,
-  events$,
-  initializeFor,
-  pageChanges$,
-  tenantInfo,
-} from 'utils/analytics';
-import snippet from '@segment/snippet';
+import { events$, pageChanges$, tenantInfo } from 'utils/analytics';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { authUserStream } from 'services/auth';
 import { combineLatest } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
-import { get, isFunction } from 'lodash-es';
+import { get, isFunction, isNil } from 'lodash-es';
 import { IUser } from 'services/users';
 import {
-  isAdmin,
+  isModerator,
   isProjectModerator,
+  isAdmin,
   isSuperAdmin,
 } from 'services/permissions/roles';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
-export const CL_SEGMENT_API_KEY =
-  process.env.SEGMENT_API_KEY || 'sIoYsVoTTCBmrcs7yAz1zRFRGhAofBlg';
+const CL_SEGMENT_API_KEY = process.env.SEGMENT_API_KEY;
 
-declare module 'components/ConsentManager/destinations' {
-  export interface IDestinationMap {
-    segment: 'segment';
-  }
-
-  interface IConsentManagerFeatureMap {
-    segment: 'segment';
-  }
-}
-
-const destinationConfig: IDestinationConfig = {
-  key: 'segment',
-  category: 'analytics',
-  feature_flag: 'segment',
-  name: (tenant) => {
-    const destinations = tenant.attributes.settings.segment?.destinations;
-    return `Segment${destinations ? ` (${destinations})` : ''}`;
-  },
+const lazyLoadedSnippet = async () => {
+  const snippet = await import('@segment/snippet');
+  return snippet.default;
 };
 
 const integrations = (user: IUser | null) => {
@@ -62,25 +36,43 @@ const integrations = (user: IUser | null) => {
   return output;
 };
 
+let isSegmentEnabled = false;
+
 const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
-    initializeFor('segment').subscribe(() => {
-      const code = snippet.min({
-        host: 'cdn.segment.com',
-        load: true,
-        page: false,
-        apiKey: CL_SEGMENT_API_KEY,
-      });
-
-      // eslint-disable-next-line no-eval
-      eval(code);
-    });
+    if (!CL_SEGMENT_API_KEY) return;
 
     combineLatest([
       currentAppConfigurationStream().observable,
-      bufferUntilInitialized('segment', authUserStream().observable),
-    ]).subscribe(([tenant, user]) => {
+      authUserStream().observable,
+    ]).subscribe(async ([tenant, user]) => {
+      const segmentFeatureFlag = tenant.data.attributes.settings.segment;
+      isSegmentEnabled = Boolean(
+        // Feature flag is in place
+        segmentFeatureFlag?.allowed &&
+          segmentFeatureFlag?.enabled &&
+          // User is admin or moderator
+          !isNilOrError(user) &&
+          isModerator(user)
+      );
+
+      // Ensure segment should be enabled but snippet hasn't been loaded already
+      // in case of a user signing out and back in
+      if (isSegmentEnabled && isNil(get(window, 'analytics'))) {
+        const snippet = await lazyLoadedSnippet();
+        const code = snippet.min({
+          host: 'cdn.segment.com',
+          load: true,
+          page: false,
+          apiKey: CL_SEGMENT_API_KEY,
+        });
+
+        // eslint-disable-next-line no-eval
+        eval(code);
+      }
+
       if (
+        isSegmentEnabled &&
         !isNilOrError(tenant) &&
         isFunction(get(window, 'analytics.identify')) &&
         isFunction(get(window, 'analytics.group'))
@@ -136,9 +128,9 @@ const configuration: ModuleConfiguration = {
     combineLatest([
       currentAppConfigurationStream().observable,
       authUserStream().observable,
-      bufferUntilInitialized('segment', events$),
+      events$,
     ]).subscribe(([tenant, user, event]) => {
-      if (!isNilOrError(tenant)) {
+      if (isSegmentEnabled && !isNilOrError(tenant)) {
         if (isFunction(get(window, 'analytics.track'))) {
           analytics.track(
             event.name,
@@ -156,9 +148,13 @@ const configuration: ModuleConfiguration = {
     combineLatest([
       currentAppConfigurationStream().observable,
       authUserStream().observable,
-      bufferUntilInitialized('segment', pageChanges$),
+      pageChanges$,
     ]).subscribe(([tenant, user, pageChange]) => {
-      if (!isNilOrError(tenant) && isFunction(get(window, 'analytics.page'))) {
+      if (
+        isSegmentEnabled &&
+        !isNilOrError(tenant) &&
+        isFunction(get(window, 'analytics.page'))
+      ) {
         analytics.page(
           '',
           {
@@ -172,8 +168,6 @@ const configuration: ModuleConfiguration = {
         );
       }
     });
-
-    registerDestination(destinationConfig);
   },
 };
 
