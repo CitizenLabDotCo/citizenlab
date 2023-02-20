@@ -208,7 +208,7 @@ describe MultiTenancy::Templates::Serializer do
       craftjs_str = ERB.new(File.read('spec/fixtures/craftjs_layout_with_2_images.json.erb'))
         .result_with_hash(code1: images[0].code, code2: images[1].code)
 
-      layout.update!(craftjs_jsonmultiloc: JSON.parse(craftjs_str))
+      layout.update(craftjs_jsonmultiloc: JSON.parse(craftjs_str))
 
       serializer = described_class.new Tenant.current
       template = serializer.run
