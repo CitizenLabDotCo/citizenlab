@@ -7,6 +7,7 @@ import request from 'utils/request';
 import streams from 'utils/streams';
 import clHistory from 'utils/cl-router/history';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 export const authApiEndpoint = `${API_PATH}/users/me`;
 
@@ -50,6 +51,7 @@ export async function signIn(
     setJwt(jwt, rememberMe, tokenLifetime);
     const authUser = await getAuthUserAsync();
     await streams.reset();
+    queryClient.clear();
     return authUser;
   } catch (error) {
     signOut();
@@ -107,6 +109,7 @@ export async function signOut() {
       window.location.href = url;
     } else {
       await streams.reset();
+      queryClient.clear();
       const { pathname } = removeLocale(location.pathname);
 
       if (
@@ -136,6 +139,7 @@ export function signOutAndDeleteAccount() {
             window.location.href = url;
           } else {
             streams.reset();
+            queryClient.clear();
           }
           clHistory.push('/');
           resolve(true);

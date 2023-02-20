@@ -3,6 +3,7 @@ import streams, { IStreamParams } from 'utils/streams';
 import { ImageSizes, Multiloc, Locale } from 'typings';
 import { authApiEndpoint } from './auth';
 import { TRole } from 'services/permissions/roles';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 const apiEndpoint = `${API_PATH}/users`;
 
@@ -119,6 +120,7 @@ export async function completeRegistration(
     { user: { custom_field_values: customFieldValues || {} } }
   );
   await streams.reset();
+  queryClient.clear();
   await streams.fetchAllWith({
     apiEndpoint: [authApiEndpoint],
   });

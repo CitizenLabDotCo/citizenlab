@@ -21,6 +21,7 @@ import {
   IVerificationError,
   TVerificationStep,
 } from 'events/verificationModal';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 const Container = styled.div`
   display: flex;
@@ -86,6 +87,7 @@ const VerificationSteps = memo<Props>(
     const goToSuccessStep = useCallback(() => {
       if (!isNilOrError(authUser)) {
         streams.reset().then(() => {
+          queryClient.clear();
           setActiveStep('success');
           setMethod(null);
         });
