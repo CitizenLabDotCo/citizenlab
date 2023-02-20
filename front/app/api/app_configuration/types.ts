@@ -7,6 +7,7 @@ import { API_PATH } from 'containers/App/constants';
 import { ImageSizes, Multiloc, Locale } from 'typings';
 import { TCategory } from 'components/ConsentManager/destinations';
 export const currentAppConfigurationEndpoint = `${API_PATH}/app_configuration`;
+import { THomepageSettingKeyMap } from 'services/homepageSettings';
 
 interface AppConfigurationFeature {
   allowed: boolean;
@@ -56,7 +57,7 @@ type ProposalsSettings = {
   threshold_reached_message: Multiloc;
   voting_threshold: number;
 };
-interface IAppConfigurationSettings {
+export interface IAppConfigurationSettings {
   core: IAppConfigurationSettingsCore;
   advanced_custom_pages: {
     allowed: boolean;
@@ -210,6 +211,8 @@ interface IAppConfigurationSettings {
   posthog_integration?: AppConfigurationFeature;
 }
 
+export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
+
 interface AppConfigurationMapSettings extends AppConfigurationFeature {
   map_center: {
     lat: string;
@@ -257,6 +260,16 @@ interface IAppConfigurationData {
   type: string;
   attributes: IAppConfigurationAttributes;
 }
+
+// Settings that have their enabled values in homepageSettings.
+// Their allowed value is still in appConfiguration.
+export type THomepageSetting = keyof THomepageSettingKeyMap;
+
+// All appConfig setting names except those in THomepageSetting
+export type TAppConfigurationSettingWithEnabled = Exclude<
+  TAppConfigurationSetting,
+  THomepageSetting
+>;
 
 type TCurrency = TCustomCurrency | TCountryCurrency;
 type TCustomCurrency =

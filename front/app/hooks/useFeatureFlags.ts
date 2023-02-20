@@ -1,35 +1,17 @@
-import { useState, useEffect } from 'react';
-import {
-  currentAppConfigurationStream,
-  IAppConfiguration,
-  TAppConfigurationSetting,
-} from 'services/appConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { TAppConfigurationSetting } from 'api/app_configuration/types';
 
 type Parameters = {
   names: TAppConfigurationSetting[];
   onlyCheckAllowed?: boolean;
 };
 
-// copied and modified from front/app/hooks/useFeatureFlag.ts
 export default function useFeatureFlags({
   names,
   onlyCheckAllowed = false,
 }: Parameters) {
-  const [tenantSettings, setTenantSettings] = useState<
-    | IAppConfiguration['data']['attributes']['settings']
-    | undefined
-    | null
-    | Error
-  >(undefined);
-
-  useEffect(() => {
-    const subscription = currentAppConfigurationStream().observable.subscribe(
-      (tenantSettings) =>
-        setTenantSettings(tenantSettings.data.attributes.settings)
-    );
-
-    return subscription.unsubscribe();
-  }, []);
+  const { data: appConfiguration } = useAppConfiguration();
+  const tenantSettings = appConfiguration?.data.attributes.settings;
 
   const isFeatureActive = (featureName: TAppConfigurationSetting) =>
     tenantSettings?.[featureName]?.allowed &&
