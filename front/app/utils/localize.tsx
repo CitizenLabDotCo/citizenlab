@@ -21,11 +21,6 @@ export interface InjectedLocalized {
   tenantLocales: Locale[];
 }
 
-export interface State {
-  locale: Locale | undefined;
-  tenantLocales: Locale[];
-}
-
 export default function injectLocalize<P>(
   Component: React.ComponentType<P & InjectedLocalized>
 ) {
