@@ -111,7 +111,7 @@ describe('ProjectMoreActionsMenu', () => {
 
   describe('When user is a project moderator', () => {
     describe('project that user moderates', () => {
-      it('Has a button to copy but not delete a project', async () => {
+      it('Has no button to copy nor delete the project', async () => {
         mockUserData.attributes.roles = [
           {
             type: 'project_moderator',
@@ -119,20 +119,9 @@ describe('ProjectMoreActionsMenu', () => {
           },
         ];
         render(<ProjectMoreActionsMenu {...defaultProps} />);
-        const user = userEvent.setup();
+        const threeDotsButton = screen.queryByTestId('moreOptionsButton');
 
-        const threeDotsButton = screen.getByTestId('moreOptionsButton');
-        await user.click(threeDotsButton);
-
-        const copyProjectButton = await screen.findByRole('button', {
-          name: 'Copy project',
-        });
-        const deleteProjectButton = screen.queryByRole('button', {
-          name: 'Delete project',
-        });
-
-        expect(copyProjectButton).toBeInTheDocument();
-        expect(deleteProjectButton).not.toBeInTheDocument();
+        expect(threeDotsButton).not.toBeInTheDocument();
       });
     });
 
