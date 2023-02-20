@@ -6,6 +6,14 @@ describe TrackSegmentService do
   let(:segment_client) { instance_double(SimpleSegment::Client, 'segment_client') }
   let(:service) { described_class.new(segment_client) }
 
+  def activate_planhat_feature(bool = true) # rubocop:disable Style/OptionalBooleanParameter
+    app_config = AppConfiguration.instance
+    settings = app_config.settings
+    settings['segment'] = { 'allowed' => bool, 'enabled' => bool }
+    settings['planhat'] = { 'allowed' => bool, 'enabled' => bool }
+    app_config.update!(settings: settings)
+  end
+
   describe 'integrations' do
     it 'logs to all destinations by default' do
       user = build_stubbed(:user)
@@ -51,6 +59,60 @@ describe TrackSegmentService do
       user = build_stubbed(:project_moderator)
       expect(service.integrations(user)[:SatisMeter]).to be true
     end
+
+    context 'when Planhat feature is enabled' do
+      before_all { activate_planhat_feature }
+
+      where(:user_factory, :is_included) do
+        [
+          [:user, false],
+          [:project_moderator, true],
+          [:project_folder_moderator, true],
+          [:admin, true],
+          [:super_admin, false]
+        ]
+      end
+
+      with_them do
+        user_category = params[:user_factory].to_s.pluralize.tr('_', ' ')
+        includes = params[:is_included] ? 'includes' : 'does not include'
+
+        it "#{includes} Planhat for #{user_category}" do
+          user = build(user_factory)
+          expect(service.integrations(user)[:Planhat]).to eq(is_included)
+        end
+      end
+    end
+
+    context 'when Planhat feature is disabled' do
+      before_all { activate_planhat_feature(false) }
+      before_all do
+        app_config = AppConfiguration.instance
+        settings = app_config.settings
+        settings['segment'] = { 'allowed' => false, 'enabled' => false }
+        settings['planhat'] = { 'allowed' => false, 'enabled' => false }
+        app_config.update(settings: settings)
+      end
+
+      where(:user_factory) do
+        %i[
+          user
+          project_moderator
+          project_folder_moderator
+          admin
+          super_admin
+        ]
+      end
+
+      with_them do
+        user_category = params[:user_factory].to_s.pluralize.tr('_', ' ')
+
+        it "does not include Planhat for #{user_category}" do
+          user = build(user_factory)
+          expect(service.integrations(user)[:Planhat]).to be false
+        end
+      end
+    end
   end
 
   describe 'identify_user' do
@@ -79,6 +141,8 @@ describe TrackSegmentService do
     end
 
     it "calls segment's `identify` method with the correct payload" do
+      activate_planhat_feature
+
       user = create(:admin)
 
       expect(segment_client).to receive(:identify).with(
@@ -101,7 +165,8 @@ describe TrackSegmentService do
         integrations: {
           All: true,
           Intercom: true,
-          SatisMeter: true
+          SatisMeter: true,
+          Planhat: true
         }
       )
 
@@ -120,6 +185,8 @@ describe TrackSegmentService do
     end
 
     it 'generates an event with the desired content for (normal) activities' do
+      activate_planhat_feature(false)
+
       user = create(:admin)
       comment = create(:comment)
       activity = create(:activity, item: comment, action: 'created', user: user)
@@ -138,7 +205,8 @@ describe TrackSegmentService do
           integrations: {
             All: true,
             Intercom: true,
-            SatisMeter: true
+            SatisMeter: true,
+            Planhat: false
           }
         )
       )

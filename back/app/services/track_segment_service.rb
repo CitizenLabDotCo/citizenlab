@@ -47,13 +47,20 @@ class TrackSegmentService
     {
       All: true,
       Intercom: intercom_integration_enabled?(user.highest_role),
-      SatisMeter: satismeter_integration_enabled?(user.highest_role)
+      SatisMeter: satismeter_integration_enabled?(user.highest_role),
+      Planhat: planhat_integration_enabled?(user.highest_role)
     }
   end
 
   # @param [Symbol] role
   def intercom_integration_enabled?(role)
     %i[admin project_moderator].include?(role)
+  end
+
+  def planhat_integration_enabled?(role)
+    return false unless AppConfiguration.instance.feature_activated?('planhat')
+
+    %i[admin project_folder_moderator project_moderator].include?(role)
   end
 
   # @param [Symbol] role
