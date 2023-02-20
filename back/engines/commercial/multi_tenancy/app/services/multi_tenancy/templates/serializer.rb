@@ -2,6 +2,7 @@
 
 module MultiTenancy
   module Templates
+    # rubocop:disable Metrics/ClassLength
     class Serializer < ::TemplateService
       def initialize(tenant)
         super()
@@ -1074,5 +1075,6 @@ module MultiTenancy
         end
       end
     end
+    # rubocop:enable Metrics/ClassLength
   end
 end
