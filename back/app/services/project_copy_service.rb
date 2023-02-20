@@ -216,6 +216,8 @@ class ProjectCopyService < ::TemplateService
   end
 
   def yml_projects(shift_timestamps: 0, new_slug: nil, new_title_multiloc: nil, new_publication_status: nil)
+    project_to_json = @project.to_json
+
     yml_project = yml_participation_context @project, shift_timestamps: shift_timestamps
     yml_project.merge!({
       'title_multiloc' => new_title_multiloc || @project.title_multiloc,
@@ -226,16 +228,18 @@ class ProjectCopyService < ::TemplateService
       'visible_to' => @project.visible_to,
       'description_preview_multiloc' => @project.description_preview_multiloc,
       'process_type' => @project.process_type,
-      'admin_publication_attributes' => { 'publication_status' => new_publication_status || @project.admin_publication.publication_status },
-      'text_images_attributes' => @project.text_images.map do |ti|
-        {
-          'imageable_field' => ti.imageable_field,
-          'remote_image_url' => ti.image_url,
-          'text_reference' => ti.text_reference,
-          'created_at' => ti.created_at.to_s,
-          'updated_at' => ti.updated_at.to_s
-        }
-      end,
+      'admin_publication_attributes' =>
+        { 'publication_status' => new_publication_status || @project.admin_publication.publication_status },
+      'text_images_attributes' =>
+        @project.text_images.select { |ti| project_to_json.include?(ti.text_reference) }.map do |ti|
+          {
+            'imageable_field' => ti.imageable_field,
+            'remote_image_url' => ti.image_url,
+            'text_reference' => ti.text_reference,
+            'created_at' => ti.created_at.to_s,
+            'updated_at' => ti.updated_at.to_s
+          }
+        end,
       'include_all_areas' => @project.include_all_areas
     })
     yml_project['slug'] = new_slug if new_slug.present?
