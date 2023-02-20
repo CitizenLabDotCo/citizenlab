@@ -101,14 +101,14 @@ class UserTableRow extends PureComponent<Props & WrappedComponentProps, State> {
 
   actions: IAction[] = [
     {
-      handler: async () => {
+      handler: () => {
         clHistory.push(`/profile/${this.props.user.attributes.slug}`);
       },
       label: this.props.intl.formatMessage(messages.seeProfile),
       icon: 'eye' as const,
     },
     {
-      handler: async () => {
+      handler: () => {
         this.handleDeleteClick();
       },
       label: this.props.intl.formatMessage(messages.deleteUser),
