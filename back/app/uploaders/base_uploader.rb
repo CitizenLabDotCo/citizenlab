@@ -3,9 +3,9 @@
 class BaseUploader < CarrierWave::Uploader::Base
   def self.use_fog_engine?
     return false if Rails.env.test?
-    return true if Rails.env.development? && ENV['USE_AWS_S3_IN_DEV'] == 'true'
+    return false if Rails.env.development? && ENV['USE_AWS_S3_IN_DEV'] != 'true'
 
-    fog_credentials.present? && fog_directory
+    !!(fog_credentials.present? && fog_directory)
   end
 
   # Default storage engine is CarrierWave::Storage::File
