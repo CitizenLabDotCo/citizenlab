@@ -6,7 +6,7 @@ import { includes, uniq } from 'lodash-es';
 import moment from 'moment';
 import 'moment-timezone';
 import React, { lazy, Suspense, useEffect, useState } from 'react';
-import { combineLatest, Subscription } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import smoothscroll from 'smoothscroll-polyfill';
 import clHistory from 'utils/cl-router/history';
@@ -139,7 +139,7 @@ const App = ({ children }: Props) => {
   });
 
   useEffect(() => {
-    if (appConfiguration) {
+    if (appConfiguration && !isAppInitialized) {
       moment.tz.setDefault(
         appConfiguration.data.attributes.settings.core.timezone
       );
@@ -200,8 +200,9 @@ const App = ({ children }: Props) => {
           }
         });
       }
+      setIsAppInitialized(true);
     }
-  }, [appConfiguration]);
+  }, [appConfiguration, isAppInitialized]);
 
   useEffect(() => {
     const handleCustomRedirect = () => {
@@ -225,84 +226,80 @@ const App = ({ children }: Props) => {
         });
       }
     };
-    let unlisten: () => void;
-    let subscriptions: Subscription[] = [];
-    if (!isAppInitialized) {
-      const authUser$ = authUserStream().observable;
-      const locale$ = localeStream().observable;
-      unlisten = clHistory.listen(({ location }) => {
-        const newPreviousPathname = location.pathname;
-        const pathsToIgnore = [
-          'sign-up',
-          'sign-in',
-          'complete-signup',
-          'invite',
-          'authentication-error',
-        ];
-        setPreviousPathname(
-          !endsWith(newPreviousPathname, pathsToIgnore)
-            ? newPreviousPathname
-            : previousPathname
-        );
-        if (redirectsEnabled) {
-          handleCustomRedirect();
-        }
-        trackPage(location.pathname);
-      });
 
-      trackPage(location.pathname);
-
-      smoothscroll.polyfill();
-
-      subscriptions = [
-        combineLatest([
-          authUser$.pipe(
-            tap((authUser) => {
-              if (isNilOrError(authUser)) {
-                signOut();
-              } else {
-                configureScope((scope) => {
-                  scope.setUser({
-                    id: authUser.data.id,
-                  });
-                });
-              }
-            })
-          ),
-          locale$,
-        ]).subscribe(([authUser, locale]) => {
-          const momentLoc = appLocalesMomentPairs[locale] || 'en';
-          moment.locale(momentLoc);
-          setAuthUser(!isNil(authUser) ? authUser.data : null);
-          setLocale(locale);
-        }),
-
-        eventEmitter
-          .observeEvent<IOpenPostPageModalEvent>('cardClick')
-          .subscribe(({ eventValue: { id, slug, type } }) => {
-            openPostPageModal(id, slug, type);
-          }),
-
-        eventEmitter.observeEvent('closeIdeaModal').subscribe(() => {
-          closePostPageModal();
-        }),
-
-        eventEmitter
-          .observeEvent('deleteProfileAndShowSuccessModal')
-          .subscribe(() => {
-            signOutAndDeleteAccount().then((success) => {
-              if (success) {
-                setUserDeletedSuccessfullyModalOpened(true);
-                setUserSuccessfullyDeleted(true);
-              } else {
-                setUserDeletedSuccessfullyModalOpened(true);
-                setUserSuccessfullyDeleted(false);
-              }
-            });
-          }),
+    const authUser$ = authUserStream().observable;
+    const locale$ = localeStream().observable;
+    const unlisten = clHistory.listen(({ location }) => {
+      const newPreviousPathname = location.pathname;
+      const pathsToIgnore = [
+        'sign-up',
+        'sign-in',
+        'complete-signup',
+        'invite',
+        'authentication-error',
       ];
-      setIsAppInitialized(true);
-    }
+      setPreviousPathname(
+        !endsWith(newPreviousPathname, pathsToIgnore)
+          ? newPreviousPathname
+          : previousPathname
+      );
+      if (redirectsEnabled) {
+        handleCustomRedirect();
+      }
+      trackPage(location.pathname);
+    });
+
+    trackPage(location.pathname);
+
+    smoothscroll.polyfill();
+
+    const subscriptions = [
+      combineLatest([
+        authUser$.pipe(
+          tap((authUser) => {
+            if (isNilOrError(authUser)) {
+              signOut();
+            } else {
+              configureScope((scope) => {
+                scope.setUser({
+                  id: authUser.data.id,
+                });
+              });
+            }
+          })
+        ),
+        locale$,
+      ]).subscribe(([authUser, locale]) => {
+        const momentLoc = appLocalesMomentPairs[locale] || 'en';
+        moment.locale(momentLoc);
+        setAuthUser(!isNil(authUser) ? authUser.data : null);
+        setLocale(locale);
+      }),
+
+      eventEmitter
+        .observeEvent<IOpenPostPageModalEvent>('cardClick')
+        .subscribe(({ eventValue: { id, slug, type } }) => {
+          openPostPageModal(id, slug, type);
+        }),
+
+      eventEmitter.observeEvent('closeIdeaModal').subscribe(() => {
+        closePostPageModal();
+      }),
+
+      eventEmitter
+        .observeEvent('deleteProfileAndShowSuccessModal')
+        .subscribe(() => {
+          signOutAndDeleteAccount().then((success) => {
+            if (success) {
+              setUserDeletedSuccessfullyModalOpened(true);
+              setUserSuccessfullyDeleted(true);
+            } else {
+              setUserDeletedSuccessfullyModalOpened(true);
+              setUserSuccessfullyDeleted(false);
+            }
+          });
+        }),
+    ];
 
     return () => {
       unlisten();
@@ -314,7 +311,6 @@ const App = ({ children }: Props) => {
     redirectsEnabled,
     appConfiguration,
     location,
-    isAppInitialized,
   ]);
 
   const openPostPageModal = (
