@@ -88,7 +88,7 @@ const IndexElement = () => {
   const { data: appConfiguration } = useAppConfiguration();
   const authUser = useAuthUser();
 
-  if (isNilOrError(appConfiguration)) return null;
+  if (isNilOrError(appConfiguration) || authUser !== undefined) return null;
 
   const redirectURL = accessAuthorized
     ? null
