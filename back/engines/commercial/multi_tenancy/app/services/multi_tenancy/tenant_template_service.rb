@@ -80,11 +80,10 @@ module MultiTenancy
           model.skip_image_presence = true if SKIP_IMAGE_PRESENCE_VALIDATION.include?(model_class.name)
 
           begin
-            if validate
-              model.save!
+            if model.class.method_defined?(:in_list?) && model.in_list?
+              model.class.acts_as_list_no_update { save_model(model, validate) }
             else
-              model.save # Might fail but runs before_validations
-              model.save(validate: false)
+              save_model(model, validate)
             end
             # taking original attributes to get correct object ID
             attributes.each do |field_name, field_value|
@@ -379,6 +378,15 @@ module MultiTenancy
       end
 
       created_objects_ids
+    end
+
+    def save_model(model, validate)
+      if validate
+        model.save!
+      else
+        model.save # Might fail but runs before_validations
+        model.save(validate: false)
+      end
     end
   end
 end

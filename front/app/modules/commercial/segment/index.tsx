@@ -46,29 +46,31 @@ const configuration: ModuleConfiguration = {
       currentAppConfigurationStream().observable,
       authUserStream().observable,
     ]).subscribe(async ([tenant, user]) => {
-      const segmentFeatureFlag = tenant.data.attributes.settings.segment;
-      isSegmentEnabled = Boolean(
-        // Feature flag is in place
-        segmentFeatureFlag?.allowed &&
-          segmentFeatureFlag?.enabled &&
-          // User is admin or moderator
-          !isNilOrError(user) &&
-          isModerator(user)
-      );
+      if (!isNilOrError(tenant)) {
+        const segmentFeatureFlag = tenant.data.attributes.settings.segment;
+        isSegmentEnabled = Boolean(
+          // Feature flag is in place
+          segmentFeatureFlag?.allowed &&
+            segmentFeatureFlag?.enabled &&
+            // User is admin or moderator
+            !isNilOrError(user) &&
+            isModerator(user)
+        );
 
-      // Ensure segment should be enabled but snippet hasn't been loaded already
-      // in case of a user signing out and back in
-      if (isSegmentEnabled && isNil(get(window, 'analytics'))) {
-        const snippet = await lazyLoadedSnippet();
-        const code = snippet.min({
-          host: 'cdn.segment.com',
-          load: true,
-          page: false,
-          apiKey: CL_SEGMENT_API_KEY,
-        });
+        // Ensure segment should be enabled but snippet hasn't been loaded already
+        // in case of a user signing out and back in
+        if (isSegmentEnabled && isNil(get(window, 'analytics'))) {
+          const snippet = await lazyLoadedSnippet();
+          const code = snippet.min({
+            host: 'cdn.segment.com',
+            load: true,
+            page: false,
+            apiKey: CL_SEGMENT_API_KEY,
+          });
 
-        // eslint-disable-next-line no-eval
-        eval(code);
+          // eslint-disable-next-line no-eval
+          eval(code);
+        }
       }
 
       if (
