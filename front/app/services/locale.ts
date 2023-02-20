@@ -40,6 +40,7 @@ import { Locale } from 'typings';
 import { locales } from 'containers/App/constants';
 import { setCookieLocale, getCookieLocale } from 'utils/localeCookie';
 import clHistory from 'utils/cl-router/history';
+import { IAppConfiguration } from 'services/appConfiguration';
 
 export const LocaleSubject: BehaviorSubject<Locale> = new BehaviorSubject(
   null as any
@@ -104,12 +105,10 @@ combineLatest([$authUser, $tenantLocales]).subscribe(
  *   !! only used in the LanguageSelector component. Chances are it should only be used there.
  *   Checks the locale is supported by this tenant before tying to set the new locale
  */
-export function updateLocale(locale: Locale) {
+export function updateLocale(locale: Locale, appConfig: IAppConfiguration) {
+  const tenantLocales = appConfig.data.attributes.settings.core.locales;
   // "gets" the tenants locale and authUser
-  combineLatest([
-    $tenantLocales.pipe(first()),
-    $authUser.pipe(first()),
-  ]).subscribe(([tenantLocales, authUser]) => {
+  $authUser.pipe(first()).subscribe((authUser) => {
     // if the locale is supported on this tenant
     if (includes(tenantLocales, locale)) {
       // if there is an authenticated user

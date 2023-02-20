@@ -114,7 +114,9 @@ const LanguageSelector = ({ className }: Props) => {
   };
 
   const handleLanguageSelect = (selectedLocale: Locale) => () => {
-    updateLocale(selectedLocale);
+    if (appConfig) {
+      updateLocale(selectedLocale, appConfig);
+    }
     setDropdownOpened(false);
   };
 
