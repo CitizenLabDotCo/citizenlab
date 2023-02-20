@@ -438,6 +438,7 @@
   "app.components.Sharing.shareViaWhatsApp": "Per WhatsApp deelen",
   "app.components.SideModal.closeButtonAria": "Zoumaachen",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Ausgewielt {numberOfSelectedTopics, plural, =0 {null Sujeten} one {ee Sujet} other {# Sujet'en}}. {selectedTopicNames}",
+  "app.components.UI.MoreActionsMenu.showMoreActions": "Méi Aktioune weisen",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Ewechhuelen",
   "app.components.UI.TranslateButton.original": "Original",
   "app.components.UI.TranslateButton.translate": "Iwwersetzen",

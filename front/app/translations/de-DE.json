@@ -438,6 +438,7 @@
   "app.components.Sharing.shareViaWhatsApp": "Auf WhatsApp teilen",
   "app.components.SideModal.closeButtonAria": "Schließen",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Ausgewählt {numberOfSelectedTopics, plural, =0 {Null Themenfilter} ein { ein Themenfilter} other {# Themenfilter}}. {selectedTopicNames}",
+  "app.components.UI.MoreActionsMenu.showMoreActions": "Weitere Aktionen anzeigen",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Entfernen",
   "app.components.UI.TranslateButton.original": "Original",
   "app.components.UI.TranslateButton.translate": "Übersetzen",

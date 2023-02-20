@@ -438,6 +438,7 @@
   "app.components.Sharing.shareViaWhatsApp": "Κοινοποίηση μέσω WhatsApp",
   "app.components.SideModal.closeButtonAria": "Κλείσιμο",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Επιλεγμένα {numberOfSelectedTopics, plural, =0 {μηδενικές ετικέτες} one {μια ετικέτα} other {# ετικέτες}}. {selectedTopicNames}",
+  "app.components.UI.MoreActionsMenu.showMoreActions": "Show more actions",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Κατάργηση",
   "app.components.UI.TranslateButton.original": "Αρχικό",
   "app.components.UI.TranslateButton.translate": "Μετάφραση",

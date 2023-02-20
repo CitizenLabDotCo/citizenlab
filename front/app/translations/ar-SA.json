@@ -438,6 +438,7 @@
   "app.components.Sharing.shareViaWhatsApp": "شارك عبر الواتس أب",
   "app.components.SideModal.closeButtonAria": "إغلاق",
   "app.components.TopicsPicker.numberOfSelectedTopics": "تم تحديد {numberOfSelectedTopics, plural, =0 {لا يوجد موضوعات} one {موضوع واحد} other {# موضوعات}}. {selectedTopicNames}",
+  "app.components.UI.MoreActionsMenu.showMoreActions": "إظهار مزيد من الإجراءات",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "إزالة",
   "app.components.UI.TranslateButton.original": "الأصلي",
   "app.components.UI.TranslateButton.translate": "ترجمة",
