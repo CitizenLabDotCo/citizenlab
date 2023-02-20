@@ -182,7 +182,7 @@ describe TrackSegmentService do
 
     with_them do
       it "returns #{params[:is_tracked]} for #{params[:user_factory].to_s.pluralize}" do
-        user = create(user_factory)
+        user = build(user_factory)
         expect(service.send(:track_user?, user)).to eq(is_tracked)
       end
     end
