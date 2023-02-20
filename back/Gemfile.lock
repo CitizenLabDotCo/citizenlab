@@ -430,12 +430,6 @@ PATH
       rails (~> 6.1)
 
 PATH
-  remote: engines/free/user_confirmation
-  specs:
-    user_confirmation (0.1.0)
-      rails (~> 6.1)
-
-PATH
   remote: engines/free/volunteering
   specs:
     volunteering (0.1.0)
@@ -1309,7 +1303,6 @@ DEPENDENCIES
   surveys!
   test-prof (~> 1.1)
   texting!
-  user_confirmation!
   user_custom_fields!
   vcr (~> 6.1)
   verification!

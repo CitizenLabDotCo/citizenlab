@@ -29,6 +29,10 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
     object.unread_notifications.size
   end
 
+  attribute :confirmation_required do |user|
+    user.confirmation_required?
+  end
+
   has_many :granted_permissions, record_type: :permission, serializer: WebApi::V1::PermissionSerializer do |_object, params|
     params[:granted_permissions]
   end
@@ -38,5 +42,4 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   end
 end
 
-WebApi::V1::UserSerializer.include(UserConfirmation::Extensions::WebApi::V1::UserSerializer)
 WebApi::V1::UserSerializer.include_if_ee('Verification::Patches::WebApi::V1::UserSerializer')
