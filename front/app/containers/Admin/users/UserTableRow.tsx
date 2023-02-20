@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import { isAdmin } from 'services/permissions/roles';
 import moment from 'moment';
+
+// Utils
 import clHistory from 'utils/cl-router/history';
 
 // Components
@@ -11,8 +13,7 @@ import Checkbox from 'components/UI/Checkbox';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 
 // Translation
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // Events --- For error handling
@@ -47,8 +48,8 @@ const UserTableRow = ({
   toggleSelect,
   toggleAdmin,
   authUser,
-  intl,
-}: Props & WrappedComponentProps) => {
+}: Props) => {
+  const { formatMessage } = useIntl();
   const [isUserAdmin, setUserIsAdmin] = useState(isAdmin({ data: user }));
   const [registeredAt, setRegisteredAt] = useState(
     moment(user.attributes.registration_completed_at).format('LL')
@@ -62,7 +63,7 @@ const UserTableRow = ({
   }, [user]);
 
   const handleDeleteClick = () => {
-    const deleteMessage = intl.formatMessage(messages.userDeletionConfirmation);
+    const deleteMessage = formatMessage(messages.userDeletionConfirmation);
 
     if (window.confirm(deleteMessage)) {
       if (authUser && authUser.id === user.id) {
@@ -86,14 +87,14 @@ const UserTableRow = ({
       handler: () => {
         clHistory.push(`/profile/${user.attributes.slug}`);
       },
-      label: intl.formatMessage(messages.seeProfile),
+      label: formatMessage(messages.seeProfile),
       icon: 'eye' as const,
     },
     {
       handler: () => {
         handleDeleteClick();
       },
-      label: intl.formatMessage(messages.deleteUser),
+      label: formatMessage(messages.deleteUser),
       icon: 'delete' as const,
     },
   ];
@@ -143,4 +144,4 @@ const UserTableRow = ({
   );
 };
 
-export default injectIntl(UserTableRow);
+export default UserTableRow;
