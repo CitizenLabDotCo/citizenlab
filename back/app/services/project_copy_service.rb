@@ -35,24 +35,23 @@ class ProjectCopyService < ::TemplateService
     @template = { 'models' => {} }
 
     # TODO: deal with linking idea_statuses, topics, custom field values and maybe areas and groups
-    @template['models']['project']                 = yml_projects new_slug: new_slug, new_publication_status: new_publication_status, new_title_multiloc: new_title_multiloc, shift_timestamps: shift_timestamps
-    @template['models']['project_file']            = yml_project_files shift_timestamps: shift_timestamps
-    @template['models']['project_image']           = yml_project_images shift_timestamps: shift_timestamps
-    @template['models']['phase']                   = yml_phases timeline_start_at: timeline_start_at, shift_timestamps: shift_timestamps
-    @template['models']['phase_file']              = yml_phase_files shift_timestamps: shift_timestamps
-    @template['models']['custom_form']             = yml_custom_forms shift_timestamps: shift_timestamps
-    @template['models']['custom_field']            = yml_custom_fields shift_timestamps: shift_timestamps
-    @template['models']['custom_field_option']     = yml_custom_field_options shift_timestamps: shift_timestamps
-    @template['models']['permission']              = yml_permissions shift_timestamps: shift_timestamps
-    @template['models']['polls/question']          = yml_poll_questions shift_timestamps: shift_timestamps
-    @template['models']['polls/option']            = yml_poll_options shift_timestamps: shift_timestamps
-    @template['models']['volunteering/cause']      = yml_volunteering_causes shift_timestamps: shift_timestamps
-    @template['models']['custom_maps/map_config']  = yml_maps_map_configs shift_timestamps: shift_timestamps
-    @template['models']['custom_maps/layer']       = yml_maps_layers shift_timestamps: shift_timestamps
-    @template['models']['custom_maps/legend_item'] = yml_maps_legend_items shift_timestamps: shift_timestamps
-
-    @template['models']['content_builder/layout'], layout_images_mapping = yml_content_builder_layouts shift_timestamps: shift_timestamps
-    @template['models']['content_builder/layout_image'] = yml_content_builder_layout_images layout_images_mapping, shift_timestamps: shift_timestamps
+    @template['models']['project']                      = yml_projects new_slug: new_slug, new_publication_status: new_publication_status, new_title_multiloc: new_title_multiloc, shift_timestamps: shift_timestamps
+    @template['models']['project_file']                 = yml_project_files shift_timestamps: shift_timestamps
+    @template['models']['project_image']                = yml_project_images shift_timestamps: shift_timestamps
+    @template['models']['phase']                        = yml_phases timeline_start_at: timeline_start_at, shift_timestamps: shift_timestamps
+    @template['models']['phase_file']                   = yml_phase_files shift_timestamps: shift_timestamps
+    @template['models']['custom_form']                  = yml_custom_forms shift_timestamps: shift_timestamps
+    @template['models']['custom_field']                 = yml_custom_fields shift_timestamps: shift_timestamps
+    @template['models']['custom_field_option']          = yml_custom_field_options shift_timestamps: shift_timestamps
+    @template['models']['permission']                   = yml_permissions shift_timestamps: shift_timestamps
+    @template['models']['polls/question']               = yml_poll_questions shift_timestamps: shift_timestamps
+    @template['models']['polls/option']                 = yml_poll_options shift_timestamps: shift_timestamps
+    @template['models']['volunteering/cause']           = yml_volunteering_causes shift_timestamps: shift_timestamps
+    @template['models']['custom_maps/map_config']       = yml_maps_map_configs shift_timestamps: shift_timestamps
+    @template['models']['custom_maps/layer']            = yml_maps_layers shift_timestamps: shift_timestamps
+    @template['models']['custom_maps/legend_item']      = yml_maps_legend_items shift_timestamps: shift_timestamps
+    @template['models']['content_builder/layout']       = yml_content_builder_layouts shift_timestamps: shift_timestamps
+    @template['models']['content_builder/layout_image'] = yml_content_builder_layout_images shift_timestamps: shift_timestamps
 
     unless local_copy
       @template['models']['event']      = yml_events shift_timestamps: shift_timestamps
@@ -78,44 +77,31 @@ class ProjectCopyService < ::TemplateService
   private
 
   def yml_content_builder_layouts(shift_timestamps: 0)
-    layout_images_mapping = {}
-
-    layouts = ContentBuilder::Layout.where(content_buildable_id: @project.id).map do |layout|
-      craftjs = layout.craftjs_jsonmultiloc
-
-      craftjs.each_key do |locale|
-        craftjs[locale].each_value do |node|
-          next unless ContentBuilder::LayoutService.new.craftjs_element_of_type?(node, 'Image')
-
-          source_image_code = node['props']['dataCode']
-          new_image_code = ContentBuilder::LayoutImage.generate_code
-          node['props']['dataCode'] = new_image_code
-          layout_images_mapping[source_image_code] = new_image_code
-        end
-      end
-
+    ContentBuilder::Layout.where(content_buildable_id: @project.id).map do |layout|
       yml_layout = {
         'content_buildable_ref' => lookup_ref(layout.content_buildable_id, :project),
         'content_buildable_type' => layout.content_buildable_type,
         'code' => layout.code,
         'enabled' => layout.enabled,
-        'craftjs_jsonmultiloc' => craftjs,
+        'craftjs_jsonmultiloc' => layout.craftjs_jsonmultiloc,
         'created_at' => shift_timestamp(layout.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(layout.updated_at, shift_timestamps)&.iso8601
       }
       store_ref yml_layout, layout.id, :content_builder_layout
       yml_layout
     end
-
-    [layouts, layout_images_mapping]
   end
 
-  def yml_content_builder_layout_images(layout_images_mapping, shift_timestamps: 0)
-    source_image_codes = layout_images_mapping.keys.map(&:to_s)
+  def yml_content_builder_layout_images(shift_timestamps: 0)
+    source_image_codes = []
+
+    ContentBuilder::Layout.where(content_buildable_id: @project.id).map do |layout|
+      source_image_codes += ContentBuilder::LayoutService.new.images(layout).pluck(:code)
+    end
 
     ContentBuilder::LayoutImage.where(code: source_image_codes).map do |image|
       yml_layout_image = {
-        'code' => layout_images_mapping[image.code],
+        'code' => image.code,
         'remote_image_url' => image.image_url,
         'created_at' => shift_timestamp(image.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(image.updated_at, shift_timestamps)&.iso8601
