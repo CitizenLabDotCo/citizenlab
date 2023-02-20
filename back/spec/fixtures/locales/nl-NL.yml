@@ -9,3 +9,53 @@ nl:
       title: Standaardvraag
       option1: Eerste optie
       option2: Tweede optie
+  custom_fields:
+    ideas:
+      title:
+        title: Titel
+        description:
+      body:
+        title: Beschrijving
+        description:
+      author_id:
+        title: Auteur
+      topic_ids:
+        title: Tags
+        description:
+      location:
+        title: Locatie
+        description:
+      proposed_budget:
+        title: Voorgesteld budget
+        description:
+      budget:
+        title: Bedrag
+      images:
+        title: Afbeeldingen
+        description:
+      attachments:
+        title: Bijlagen
+        description:
+      section1:
+        description:
+      section2:
+        title: Afbeeldingen en bijlagen
+        description:
+      section3:
+        title: Details
+        description:
+  custom_forms:
+    categories:
+      main_content:
+        idea:
+          title: Wat is je idee?
+        question:
+          title: Wat is je vraag?
+        contribution:
+          title: Wat is je bijdrage?
+        project:
+          title: Wat is je project?
+        issue:
+          title: Wat is je probleem?
+        option:
+          title: Wat is je optie?

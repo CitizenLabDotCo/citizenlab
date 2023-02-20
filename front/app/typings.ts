@@ -146,6 +146,7 @@ export interface CLError {
   ideas_count?: number;
   blocked_words?: any;
   payload?: Record<string, any>;
+  fragment?: string;
 }
 
 export interface CLErrors {
@@ -157,6 +158,10 @@ export interface CLErrorsJSON {
     errors: CLErrors;
   };
 }
+
+export type RHFErrors =
+  | { message?: string; error?: string; type?: string }
+  | undefined;
 
 export interface ImageSizes {
   small: string | null;

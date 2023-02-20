@@ -12,10 +12,12 @@ import ErrorDisplay from '../ErrorDisplay';
 import { Box, colors, Text, Radio } from '@citizenlab/cl2-component-library';
 import { FormLabel } from 'components/UI/FormComponents';
 import VerificationIcon from '../VerificationIcon';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // utils
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
-import { getOptions } from './controlUtils';
+import { getOptions, getSubtextElement } from './controlUtils';
 
 // style
 import { darken } from 'polished';
@@ -43,6 +45,7 @@ const SingleSelectRadioControl = ({
   const [didBlur, setDidBlur] = useState(false);
   const theme = useTheme();
   const options = getOptions(schema, 'single');
+  const answerNotPublic = uischema.options?.answer_visible_to === 'admins';
 
   if (!visible) {
     return null;
@@ -54,9 +57,14 @@ const SingleSelectRadioControl = ({
         htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
-        subtextValue={uischema.options?.description}
+        subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
       />
+      {answerNotPublic && (
+        <Text mt="0px" fontSize="s">
+          <FormattedMessage {...messages.notPublic} />
+        </Text>
+      )}
       <Box display="block" id="e2e-single-select-control">
         {options?.map((option, index: number) => (
           <StyledBox mb="12px" key={option.value} borderRadius="3px">

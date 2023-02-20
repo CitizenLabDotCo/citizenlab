@@ -24,17 +24,17 @@ module IdeaCustomFields
     }
 
     before_action :verify_feature_flag
-    before_action :set_custom_field, only: %i[show update]
+    before_action :set_custom_field, only: %i[show]
     before_action :set_custom_form, only: %i[index update_all]
     skip_after_action :verify_policy_scoped
     rescue_from UpdatingFormWithInputError, with: :render_updating_form_with_input_error
 
     def index
       authorize CustomField.new(resource: @custom_form), :index?, policy_class: IdeaCustomFieldPolicy
-      fields = IdeaCustomFieldsService.new(@custom_form).configurable_fields
+      fields = IdeaCustomFieldsService.new(@custom_form).all_fields
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         fields,
-        params: fastjson_params,
+        params: serializer_params(@custom_form),
         include: [:options]
       ).serialized_json
     end
@@ -47,172 +47,178 @@ module IdeaCustomFields
       ).serialized_json
     end
 
-    # `update` by ID is not possible for default custom fields that have not been persisted yet,
-    # because default fields have a randomly generated ID. `upsert_by_code` should be used for
-    # default fields.
-    def update
-      update_field do |custom_form|
-        IdeaCustomFieldsService.new(custom_form).find_field_by_id(params[:id])
-      end
-    end
-
     def update_all
       authorize CustomField.new(resource: @custom_form), :update_all?, policy_class: IdeaCustomFieldPolicy
-      participation_method = Factory.instance.participation_method_for @custom_form.participation_context
-      verify_no_responses participation_method
+      @participation_method = Factory.instance.participation_method_for @custom_form.participation_context
+      verify_no_responses @participation_method
 
-      update_fields
+      page_temp_ids_to_ids_mapping = {}
+      option_temp_ids_to_ids_mapping = {}
+      errors = {}
+      update_fields! page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors
       @custom_form.reload if @custom_form.persisted?
+      update_logic! page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors
       render json: ::WebApi::V1::CustomFieldSerializer.new(
-        IdeaCustomFieldsService.new(@custom_form).configurable_fields,
-        params: fastjson_params,
+        IdeaCustomFieldsService.new(@custom_form).all_fields,
+        params: serializer_params(@custom_form),
         include: [:options]
       ).serialized_json
     rescue UpdateAllFailedError => e
       render json: { errors: e.errors }, status: :unprocessable_entity
     end
 
-    # `upsert_by_code` cannot be used for extra fields, because they do not have a code.
-    # `update` should be used for extra fields.
-    def upsert_by_code
-      update_field do |custom_form|
-        IdeaCustomFieldsService.new(custom_form).find_or_build_field(params[:code])
-      end
-    end
-
     private
 
-    def update_fields
-      errors = {}
-      fields = IdeaCustomFieldsService.new(@custom_form).configurable_fields
+    def update_fields!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors)
+      idea_custom_fields_service = IdeaCustomFieldsService.new(@custom_form)
+      fields = idea_custom_fields_service.all_fields
       fields_by_id = fields.index_by(&:id)
       given_fields = update_all_params.fetch :custom_fields, []
       given_field_ids = given_fields.pluck(:id)
 
+      idea_custom_fields_service.check_form_structure given_fields, errors
+      raise UpdateAllFailedError, errors if errors.present?
+
       ActiveRecord::Base.transaction do
-        deleted_fields = fields.reject { |field| given_field_ids.include? field.id }
-        deleted_fields.each do |field|
-          SideFxCustomFieldService.new.before_destroy(field, current_user)
-          field.destroy!
-          SideFxCustomFieldService.new.after_destroy(field, current_user)
-        end
-        page_temp_ids_to_ids_mapping = {}
-        option_temp_ids_to_ids_mapping = {}
+        delete_fields = fields.reject { |field| given_field_ids.include? field.id }
+        delete_fields.each { |field| delete_field! field }
         given_fields.each_with_index do |field_params, index|
           options_params = field_params.delete :options
-          if field_params[:id]
+          if field_params[:id] && fields_by_id.key?(field_params[:id])
             field = fields_by_id[field_params[:id]]
-            field.assign_attributes field_params
-            SideFxCustomFieldService.new.before_update(field, current_user)
-            unless field.save
-              errors[index.to_s] = field.errors.details
-              next
-            end
-            SideFxCustomFieldService.new.after_update(field, current_user)
+            next unless update_field! field, field_params, errors, index
           else
-            update_params = field_params.except('temp_id')
-            field = CustomField.new update_params.merge(resource: @custom_form)
-            SideFxCustomFieldService.new.before_create(field, current_user)
-            if field.save
-              page_temp_ids_to_ids_mapping[field_params[:temp_id]] = field.id if field_params[:temp_id]
-            else
-              errors[index.to_s] = field.errors.details
-              next
-            end
-            SideFxCustomFieldService.new.after_create(field, current_user)
+            field = create_field! field_params, errors, page_temp_ids_to_ids_mapping, index
+            next unless field
           end
           if options_params
-            option_temp_ids_to_ids_mapping_in_field_logic = update_options field, options_params, errors, index
+            option_temp_ids_to_ids_mapping_in_field_logic = update_options! field, options_params, errors, index
             option_temp_ids_to_ids_mapping.merge! option_temp_ids_to_ids_mapping_in_field_logic
           end
           field.move_to_bottom
         end
         raise UpdateAllFailedError, errors if errors.present?
-
-        fields = IdeaCustomFieldsService.new(@custom_form).configurable_fields
-        form_logic = FormLogicService.new(fields)
-        form_logic.replace_temp_ids!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping)
-        unless form_logic.valid?
-          fields.each_with_index do |field, index|
-            errors[index.to_s] = field.errors.details
-          end
-        end
-        raise UpdateAllFailedError, errors if errors.present?
       end
     end
 
-    def update_field(&_block)
-      # Wrapping this in a transaction, to avoid the race condition where
-      # simultaneous requests, when custom_form does not exist yet, make
-      # multiple custom_forms and the last form gets associated to the project
-      custom_field = ActiveRecord::Base.transaction do
-        # Row-level locking of the project record
-        # See https://www.2ndquadrant.com/en/blog/postgresql-anti-patterns-read-modify-write-cycles/
-        project = Project.lock.find(params[:project_id])
-        custom_form = CustomForm.find_or_initialize_by(participation_context: project)
-        custom_form.save! unless custom_form.persisted?
-
-        (yield custom_form).tap do |field|
-          assign_attributes_to(field)
+    def create_field!(field_params, errors, page_temp_ids_to_ids_mapping, index)
+      create_params = field_params.except('temp_id').to_h
+      if create_params.key? 'code'
+        default_field = @participation_method.default_fields(@custom_form).find do |field|
+          field.code == create_params['code']
         end
+        create_params['key'] = default_field.key
       end
+      field = CustomField.new create_params.merge(resource: @custom_form)
 
-      authorize custom_field, policy_class: IdeaCustomFieldPolicy
-      already_existed = custom_field.persisted?
-
-      SideFxCustomFieldService.new.before_update custom_field, current_user
-      if custom_field.save
-        if already_existed
-          SideFxCustomFieldService.new.after_update(custom_field, current_user)
+      IdeaCustomFieldsService.new(@custom_form).validate_constraints_against_defaults(field)
+      if field.errors.errors.empty?
+        SideFxCustomFieldService.new.before_create field, current_user
+        if field.save
+          page_temp_ids_to_ids_mapping[field_params[:temp_id]] = field.id if field_params[:temp_id]
+          SideFxCustomFieldService.new.after_create field, current_user
+          field
         else
-          SideFxCustomFieldService.new.after_create(custom_field, current_user)
+          errors[index.to_s] = field.errors.details
+          false
         end
-        render json: ::WebApi::V1::CustomFieldSerializer.new(
-          custom_field.reload,
-          params: fastjson_params
-        ).serialized_json, status: :ok
       else
-        render json: { errors: custom_field.errors.details }, status: :unprocessable_entity
+        errors[index.to_s] = field.errors.details
+        false
       end
     end
 
-    def update_options(field, options_params, errors, field_index)
+    def update_field!(field, field_params, errors, index)
+      idea_custom_field_service = IdeaCustomFieldsService.new(@custom_form)
+      idea_custom_field_service.validate_constraints_against_updates field, field_params
+      field_params = idea_custom_field_service.remove_ignored_update_params field_params
+      if field.errors.errors.empty?
+        field.assign_attributes field_params
+        SideFxCustomFieldService.new.before_update field, current_user
+        if field.save
+          SideFxCustomFieldService.new.after_update field, current_user
+          field
+        else
+          errors[index.to_s] = field.errors.details
+          false
+        end
+      else
+        errors[index.to_s] = field.errors.details
+        false
+      end
+    end
+
+    def delete_field!(field)
+      SideFxCustomFieldService.new.before_destroy field, current_user
+      field.destroy!
+      SideFxCustomFieldService.new.after_destroy field, current_user
+      field
+    end
+
+    def update_options!(field, options_params, errors, field_index)
       {}.tap do |option_temp_ids_to_ids_mapping|
         options = field.options
         options_by_id = options.index_by(&:id)
         given_ids = options_params.pluck :id
 
         deleted_options = options.reject { |option| given_ids.include? option.id }
-        deleted_options.each do |option|
-          SideFxCustomFieldOptionService.new.before_destroy option, current_user
-          option.destroy!
-          SideFxCustomFieldOptionService.new.after_destroy option, current_user
-        end
+        deleted_options.each { |option| delete_option! option }
         options_params.each_with_index do |option_params, option_index|
           if option_params[:id]
             option = options_by_id[option_params[:id]]
-            option.assign_attributes option_params
-            SideFxCustomFieldOptionService.new.before_update option, current_user
-            unless option.save
-              add_options_errors option.errors.details, errors, field_index, option_index
-              next
-            end
-            SideFxCustomFieldOptionService.new.after_update option, current_user
+            next unless update_option! option, option_params, errors, field_index, option_index
           else
-            create_params = option_params.except('temp_id')
-            option = CustomFieldOption.new create_params.merge(custom_field: field)
-            SideFxCustomFieldOptionService.new.before_create option, current_user
-            if option.save
-              option_temp_ids_to_ids_mapping[option_params[:temp_id]] = option.id if option_params[:temp_id]
-            else
-              add_options_errors option.errors.details, errors, field_index, option_index
-              next
-            end
-            SideFxCustomFieldOptionService.new.after_create option, current_user
+            option = create_option! option_params, field, errors, option_temp_ids_to_ids_mapping, field_index, option_index
+            next unless option
           end
           option.move_to_bottom
         end
       end
+    end
+
+    def create_option!(option_params, field, errors, option_temp_ids_to_ids_mapping, field_index, option_index)
+      create_params = option_params.except('temp_id')
+      option = CustomFieldOption.new create_params.merge(custom_field: field)
+      SideFxCustomFieldOptionService.new.before_create option, current_user
+      if option.save
+        option_temp_ids_to_ids_mapping[option_params[:temp_id]] = option.id if option_params[:temp_id]
+        SideFxCustomFieldOptionService.new.after_create option, current_user
+        option
+      else
+        add_options_errors option.errors.details, errors, field_index, option_index
+        false
+      end
+    end
+
+    def update_option!(option, option_params, errors, field_index, option_index)
+      option.assign_attributes option_params
+      SideFxCustomFieldOptionService.new.before_update option, current_user
+      if option.save
+        SideFxCustomFieldOptionService.new.after_update option, current_user
+        option
+      else
+        add_options_errors option.errors.details, errors, field_index, option_index
+        false
+      end
+    end
+
+    def delete_option!(option)
+      SideFxCustomFieldOptionService.new.before_destroy option, current_user
+      option.destroy!
+      SideFxCustomFieldOptionService.new.after_destroy option, current_user
+      option
+    end
+
+    def update_logic!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors)
+      fields = IdeaCustomFieldsService.new(@custom_form).all_fields
+      form_logic = FormLogicService.new fields
+      form_logic.replace_temp_ids! page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping
+      unless form_logic.valid?
+        fields.each_with_index do |field, index|
+          errors[index.to_s] = field.errors.details
+        end
+      end
+      raise UpdateAllFailedError, errors if errors.present?
     end
 
     def add_options_errors(options_errors, errors, field_index, option_index)
@@ -221,17 +227,11 @@ module IdeaCustomFields
       errors[field_index.to_s][:options][option_index.to_s] = options_errors
     end
 
-    def assign_attributes_to(custom_field)
-      field_params = params
-        .require(:custom_field)
-        .permit(IdeaCustomFieldPolicy.new(current_user, custom_field).permitted_attributes)
-      custom_field.assign_attributes field_params
-    end
-
     def update_all_params
       params.permit(custom_fields: [
         :id,
         :temp_id,
+        :code,
         :input_type,
         :required,
         :enabled,
@@ -274,6 +274,11 @@ module IdeaCustomFields
 
     def render_updating_form_with_input_error
       render json: { error: :updating_form_with_input }, status: :unauthorized
+    end
+
+    def serializer_params(custom_form)
+      participation_method = Factory.instance.participation_method_for custom_form.participation_context
+      fastjson_params({ constraints: participation_method.constraints, supports_answer_visible_to: participation_method.supports_answer_visible_to? })
     end
   end
 end

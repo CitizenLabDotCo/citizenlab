@@ -10,12 +10,6 @@ class WebApi::V1::IdeasController < ApplicationController
   after_action :verify_policy_scoped, only: %i[index index_mini]
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  def schema
-    input = Idea.find params[:id]
-    enabled_fields = IdeaCustomFieldsService.new(input.custom_form).enabled_fields
-    render json: CustomFieldService.new.ui_and_json_multiloc_schemas(AppConfiguration.instance, enabled_fields)
-  end
-
   def json_forms_schema
     input = Idea.find params[:id]
     enabled_fields = IdeaCustomFieldsService.new(input.custom_form).enabled_fields
@@ -275,9 +269,9 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def idea_attributes(custom_form, user_can_moderate_project)
-    enabled_field_keys = IdeaCustomFieldsService.new(custom_form).enabled_fields.map { |field| field.key.to_sym }
-    attributes = idea_simple_attributes(enabled_field_keys)
-    complex_attributes = idea_complex_attributes(custom_form, enabled_field_keys)
+    submittable_field_keys = IdeaCustomFieldsService.new(custom_form).submittable_fields.map { |field| field.key.to_sym }
+    attributes = idea_simple_attributes(submittable_field_keys)
+    complex_attributes = idea_complex_attributes(custom_form, submittable_field_keys)
     attributes << complex_attributes if complex_attributes.any?
     if user_can_moderate_project
       attributes.concat %i[idea_status_id budget] + [phase_ids: []]
@@ -285,19 +279,19 @@ class WebApi::V1::IdeasController < ApplicationController
     attributes
   end
 
-  def idea_simple_attributes(enabled_field_keys)
-    simple_attributes = %i[location_description proposed_budget] & enabled_field_keys
+  def idea_simple_attributes(submittable_field_keys)
+    simple_attributes = %i[location_description proposed_budget] & submittable_field_keys
     simple_attributes.concat %i[publication_status project_id author_id]
-    if enabled_field_keys.include?(:idea_images_attributes)
+    if submittable_field_keys.include?(:idea_images_attributes)
       simple_attributes << [idea_images_attributes: [:image]]
     end
-    if enabled_field_keys.include?(:idea_files_attributes)
+    if submittable_field_keys.include?(:idea_files_attributes)
       simple_attributes << [{ idea_files_attributes: [{ file_by_content: %i[content name] }, :name] }]
     end
     simple_attributes
   end
 
-  def idea_complex_attributes(custom_form, enabled_field_keys)
+  def idea_complex_attributes(custom_form, submittable_field_keys)
     complex_attributes = {
       location_point_geojson: [:type, { coordinates: [] }]
     }
@@ -305,13 +299,13 @@ class WebApi::V1::IdeasController < ApplicationController
     if allowed_extra_field_keys.any?
       complex_attributes[:custom_field_values] = allowed_extra_field_keys
     end
-    if enabled_field_keys.include?(:title_multiloc)
+    if submittable_field_keys.include?(:title_multiloc)
       complex_attributes[:title_multiloc] = CL2_SUPPORTED_LOCALES
     end
-    if enabled_field_keys.include?(:body_multiloc)
+    if submittable_field_keys.include?(:body_multiloc)
       complex_attributes[:body_multiloc] = CL2_SUPPORTED_LOCALES
     end
-    if enabled_field_keys.include?(:topic_ids)
+    if submittable_field_keys.include?(:topic_ids)
       complex_attributes[:topic_ids] = []
     end
     complex_attributes

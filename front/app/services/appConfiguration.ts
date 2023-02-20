@@ -216,6 +216,7 @@ export interface IAppConfigurationSettings {
   analytics?: AppConfigurationFeature;
   visitors_dashboard?: AppConfigurationFeature;
   user_confirmation?: AppConfigurationFeature;
+  input_form_custom_fields?: AppConfigurationFeature;
   report_builder?: AppConfigurationFeature;
   posthog_integration?: AppConfigurationFeature;
 }
@@ -296,6 +297,24 @@ export async function updateAppConfiguration(
     currentAppConfigurationEndpoint,
     'app_configuration',
     { app_configuration: object }
+  );
+  await currentAppConfigurationStream().fetch();
+  return tenant;
+}
+
+export async function updateAppConfigurationCore(
+  newCoreSettings: Partial<IAppConfigurationSettingsCore>
+) {
+  const tenant = await streams.update<IAppConfiguration>(
+    currentAppConfigurationEndpoint,
+    'app_configuration',
+    {
+      app_configuration: {
+        settings: {
+          core: newCoreSettings,
+        },
+      },
+    }
   );
   await currentAppConfigurationStream().fetch();
   return tenant;

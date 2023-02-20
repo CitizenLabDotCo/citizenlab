@@ -2,10 +2,11 @@ import React from 'react';
 
 import Error, { TFieldName } from 'components/UI/Error';
 import { useFormContext } from 'react-hook-form';
-import { CLError } from 'typings';
+import { CLError, RHFErrors } from 'typings';
 
 import Radio from './Radio';
 import { Box } from '@citizenlab/cl2-component-library';
+import { get } from 'lodash-es';
 
 interface Props {
   name: string;
@@ -14,15 +15,14 @@ interface Props {
 
 const RadioGroup = ({ name, children }: Props) => {
   const {
-    formState: { errors },
+    formState: { errors: formContextErrors },
   } = useFormContext();
 
-  const validationError = errors[name]?.message as string | undefined;
+  const errors = get(formContextErrors, name) as RHFErrors;
+  const validationError = errors?.message;
 
   // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
-  const apiError =
-    (errors[name]?.error as string | undefined) &&
-    ([errors[name]] as unknown as CLError[]);
+  const apiError = errors?.error && ([errors] as CLError[]);
 
   return (
     <Box border="none" as="fieldset">

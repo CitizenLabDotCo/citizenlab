@@ -24,6 +24,21 @@ class TimelineService
     end
   end
 
+  def current_or_last_ideation_phase(project, time = Time.now)
+    date = time.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
+    return unless project.timeline?
+
+    phases = project.phases
+    return if phases.blank?
+
+    ideation_types = %w[ideation budgeting]
+    ideation_phases = phases.select { |phase| ideation_types.include? phase.participation_method }
+    return if ideation_phases.blank?
+
+    current_phase = ideation_phases.find { |phase| phase.start_at <= date && date <= phase.end_at }
+    current_phase || ideation_phases.last
+  end
+
   def current_and_future_phases(project, time = Time.now)
     date = time.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
     return unless project.timeline?

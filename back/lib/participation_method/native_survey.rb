@@ -21,6 +21,10 @@ module ParticipationMethod
       input.idea_status = IdeaStatus.find_by!(code: 'proposed')
     end
 
+    def form_structure_element
+      'page'
+    end
+
     def create_default_form!
       form = CustomForm.create(participation_context: participation_context)
       CustomField.create(

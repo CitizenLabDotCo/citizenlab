@@ -50,7 +50,6 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'ideas#by_slug'
         get :as_markers, on: :collection, action: 'index_idea_markers'
         get :filter_counts, on: :collection
-        get :schema, on: :member
         get :json_forms_schema, on: :member
       end
 
@@ -127,7 +126,6 @@ Rails.application.routes.draw do
         get 'submission_count', on: :member
         delete 'inputs', on: :member, action: 'delete_inputs'
         resources :custom_fields, controller: 'phase_custom_fields', only: %i[] do
-          get 'schema', on: :collection
           get 'json_forms_schema', on: :collection
         end
       end
@@ -141,7 +139,6 @@ Rails.application.routes.draw do
         resources :groups_projects, shallow: true, except: [:update]
 
         resources :custom_fields, controller: 'project_custom_fields', only: %i[] do
-          get 'schema', on: :collection
           get 'json_forms_schema', on: :collection
         end
 

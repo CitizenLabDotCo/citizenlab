@@ -115,7 +115,6 @@ sr-Latn:
         description:
       author_id:
         title: Autor
-        description:
       topic_ids:
         title: Tema
         description:
@@ -127,12 +126,19 @@ sr-Latn:
         description:
       budget:
         title: Budžet
-        description:
       images:
         title: Slike
         description:
       attachments:
         title: Prilozi
+        description:
+      section1:
+        description:
+      section2:
+        title: Slike i prilozi
+        description:
+      section3:
+        title: Detalji
         description:
   custom_forms:
     categories:
@@ -189,6 +195,7 @@ sr-Latn:
       author_fullname: 'Ime autora'
       author_email: 'E-pošta autora'
       author_id: 'ID autora'
+      budget: 'Budžet'
       created_at: 'Predato u'
       published_at: 'Objavljeno u'
       comments_count: 'Komentari'

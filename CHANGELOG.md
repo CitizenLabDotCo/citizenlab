@@ -1,5 +1,17 @@
 # Changelog
 
+## 2023-02-17
+
+### Added
+
+- [CL-2659] Add posts by time, comments by time and votes by time charts to report builder
+
+## 2023-02-15 (2)
+
+### Added
+
+- [CL-1895] Flexible input form - form builder now in use for editing ideation forms with additional custom fields
+
 ### Fixed
 
 - [CL-2830] Fixed bug that prevented editing ideas

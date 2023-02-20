@@ -115,7 +115,6 @@ lb:
         description:
       author_id:
         title: Auteur
-        description:
       topic_ids:
         title: Sujeten
         description:
@@ -127,12 +126,19 @@ lb:
         description:
       budget:
         title: Budget
-        description:
       images:
         title: Biller
         description:
       attachments:
         title: Annexen
+        description:
+      section1:
+        description:
+      section2:
+        title: Biller an Annexen
+        description:
+      section3:
+        title: Detailer
         description:
   custom_forms:
     categories:
@@ -189,16 +195,17 @@ lb:
       author_fullname: 'Numm vum Auteur'
       author_email: 'E-Mail vum Auteur'
       author_id: 'ID vum Auteur'
+      budget: 'Budget'
       created_at: 'Agereecht bei'
       published_at: 'Verëffentlecht bei'
       comments_count: 'Kommentaren'
-      upvotes_count: 'Upvotes'
-      downvotes_count: 'Downvotes'
+      upvotes_count: 'En Daum erop ginn'
+      downvotes_count: 'En Daum erof ginn'
       baskets_count: 'Kierf'
       input_url: 'URL'
       project: 'Projet'
       status: 'Status'
-      assignee_fullname: 'Assignee'
+      assignee_fullname: 'Mandataire'
       assignee_email: 'E-Mail vum Beoptragten'
   form_builder:
     default_select_field:

@@ -115,7 +115,6 @@ tr:
         description:
       author_id:
         title: Yazan
-        description:
       topic_ids:
         title: Etiketler
         description:
@@ -127,12 +126,19 @@ tr:
         description:
       budget:
         title: Bütçe
-        description:
       images:
         title: Görseller
         description:
       attachments:
         title: Ekler
+        description:
+      section1:
+        description:
+      section2:
+        title: Images and attachments
+        description:
+      section3:
+        title: Details
         description:
   custom_forms:
     categories:
@@ -189,6 +195,7 @@ tr:
       author_fullname: 'Author name'
       author_email: 'Author email'
       author_id: 'Author ID'
+      budget: 'Budget'
       created_at: 'Submitted at'
       published_at: 'Published at'
       comments_count: 'Yorumlar'
