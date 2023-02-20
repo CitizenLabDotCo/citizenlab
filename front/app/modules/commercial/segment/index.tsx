@@ -1,5 +1,4 @@
 import { events$, pageChanges$, tenantInfo } from 'utils/analytics';
-import snippet from '@segment/snippet';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { authUserStream } from 'services/auth';
 import { combineLatest } from 'rxjs';
@@ -7,14 +6,19 @@ import { isNilOrError } from 'utils/helperUtils';
 import { get, isFunction, isNil } from 'lodash-es';
 import { IUser } from 'services/users';
 import {
-  isAdmin,
   isModerator,
   isProjectModerator,
+  isAdmin,
   isSuperAdmin,
 } from 'services/permissions/roles';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
 const CL_SEGMENT_API_KEY = process.env.SEGMENT_API_KEY;
+
+const lazyLoadedSnippet = async () => {
+  const snippet = await import('@segment/snippet');
+  return snippet.default;
+};
 
 const integrations = (user: IUser | null) => {
   const output = {
@@ -41,7 +45,7 @@ const configuration: ModuleConfiguration = {
     combineLatest([
       currentAppConfigurationStream().observable,
       authUserStream().observable,
-    ]).subscribe(([tenant, user]) => {
+    ]).subscribe(async ([tenant, user]) => {
       const segmentFeatureFlag = tenant.data.attributes.settings.segment;
       isSegmentEnabled = Boolean(
         // Feature flag is in place
@@ -49,12 +53,13 @@ const configuration: ModuleConfiguration = {
           segmentFeatureFlag?.enabled &&
           // User is admin or moderator
           !isNilOrError(user) &&
-          (isAdmin(user) || isModerator(user) || isProjectModerator(user))
+          isModerator(user)
       );
 
       // Ensure segment should be enabled but snippet hasn't been loaded already
       // in case of a user signing out and back in
       if (isSegmentEnabled && isNil(get(window, 'analytics'))) {
+        const snippet = await lazyLoadedSnippet();
         const code = snippet.min({
           host: 'cdn.segment.com',
           load: true,
