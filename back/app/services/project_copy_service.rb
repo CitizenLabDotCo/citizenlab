@@ -2,11 +2,10 @@
 
 class ProjectCopyService < ::TemplateService
   def import(template, folder: nil, local_copy: false)
-    service = MultiTenancy::TenantTemplateService.new(save_temp_remote_urls: true)
-    same_template = service.translate_and_fix_locales template
+    same_template = tenant_template_service.translate_and_fix_locales template
 
     created_objects_ids = ActiveRecord::Base.transaction do
-      service.resolve_and_apply_template same_template, validate: false, local_copy: local_copy
+      tenant_template_service.resolve_and_apply_template same_template, validate: false, local_copy: local_copy
     end
 
     project = Project.find(created_objects_ids['Project'].first)
@@ -76,6 +75,13 @@ class ProjectCopyService < ::TemplateService
   end
 
   private
+
+  def tenant_template_service
+    # save_temp_remote_urls: false
+    # Because if we store URLs on another domain, it's not possible to fetch these URLs by JS.
+    # Currently, we fetch them by JS on Back Office to preview images.
+    @tenant_template_service ||= MultiTenancy::TenantTemplateService.new(save_temp_remote_urls: false)
+  end
 
   def yml_content_builder_layouts(shift_timestamps: 0)
     layout_images_mapping = {}

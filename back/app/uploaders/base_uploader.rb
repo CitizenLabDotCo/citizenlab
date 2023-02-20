@@ -15,10 +15,6 @@ class BaseUploader < CarrierWave::Uploader::Base
     "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
 
-  def url(*)
-    CarrierwaveTempRemote.url(identifier, version_name) || super
-  end
-
   unless Rails.env.test?
     def asset_host
       AppConfiguration.instance.base_asset_host_uri

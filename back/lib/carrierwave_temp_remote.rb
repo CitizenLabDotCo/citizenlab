@@ -21,7 +21,7 @@ class CarrierwaveTempRemote
     def url(identifier, version_name)
       return unless url?(identifier)
 
-      version_name ? identifier.gsub(%r{/([^/]+)\Z}, "/#{version_name}_\\1") : identifier
+      version_name.present? ? identifier.gsub(%r{/([^/]+)\Z}, "/#{version_name}_\\1") : identifier
     end
 
     private
