@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe TrackSegmentService do
-  let(:segment_client) { instance_double(SimpleSegment::Client) }
+  let(:segment_client) { instance_double(SimpleSegment::Client, 'segment_client') }
   let(:service) { described_class.new(segment_client) }
 
   describe 'integrations' do
@@ -54,8 +54,32 @@ describe TrackSegmentService do
   end
 
   describe 'identify_user' do
-    it "calls segment's identify() method with the correct payload" do
+    it 'does not track normal users' do
       user = create(:user)
+      expect(SEGMENT_CLIENT).not_to receive(:identify)
+      service.identify_user(user)
+    end
+
+    it 'track super admins' do
+      user = create(:super_admin)
+      expect(segment_client).to receive(:identify)
+      service.identify_user(user)
+    end
+
+    it 'tracks admins' do
+      user = create(:admin)
+      expect(segment_client).to receive(:identify)
+      service.identify_user(user)
+    end
+
+    it 'tracks project moderators' do
+      user = create(:project_moderator)
+      expect(segment_client).to receive(:identify)
+      service.identify_user(user)
+    end
+
+    it "calls segment's `identify` method with the correct payload" do
+      user = create(:admin)
 
       expect(segment_client).to receive(:identify).with(
         user_id: user.id,
@@ -69,15 +93,15 @@ describe TrackSegmentService do
           birthday: nil,
           gender: nil,
           isSuperAdmin: false,
-          isAdmin: false,
+          isAdmin: true,
           isProjectModerator: false,
-          highestRole: :user,
+          highestRole: :admin,
           timezone: 'Brussels'
         ),
         integrations: {
           All: true,
-          Intercom: false,
-          SatisMeter: false
+          Intercom: true,
+          SatisMeter: true
         }
       )
 
@@ -86,8 +110,17 @@ describe TrackSegmentService do
   end
 
   describe 'track_activity' do
-    it 'generates an event with the desired content for (normal) activities' do
+    it 'does not track activities initiated by normal users' do
       user = create(:user)
+      activity = create(:activity, user: user)
+
+      expect(segment_client).not_to receive(:track)
+
+      service.track_activity(activity)
+    end
+
+    it 'generates an event with the desired content for (normal) activities' do
+      user = create(:admin)
       comment = create(:comment)
       activity = create(:activity, item: comment, action: 'created', user: user)
 
@@ -104,8 +137,8 @@ describe TrackSegmentService do
           ),
           integrations: {
             All: true,
-            Intercom: false,
-            SatisMeter: false
+            Intercom: true,
+            SatisMeter: true
           }
         )
       )
@@ -114,7 +147,7 @@ describe TrackSegmentService do
     end
 
     it 'generates an event with the desired content for activities about notifications' do
-      user = create(:user)
+      user = create(:admin)
       notification = create(:comment_on_your_comment, recipient: user)
       activity = create(:activity, item: notification, item_type: notification.type, action: 'created', user: user)
       activity.update!(item_type: notification.class.name)
@@ -133,6 +166,25 @@ describe TrackSegmentService do
       )
 
       service.track_activity(activity)
+    end
+  end
+
+  describe '#track_user' do
+    where(:user_factory, :is_tracked) do
+      [
+        [:user, false],
+        [:project_moderator, true],
+        [:project_folder_moderator, true],
+        [:admin, true],
+        [:super_admin, true]
+      ]
+    end
+
+    with_them do
+      it "returns #{params[:is_tracked]} for #{params[:user_factory].to_s.pluralize}" do
+        user = build(user_factory)
+        expect(service.send(:track_user?, user)).to eq(is_tracked)
+      end
     end
   end
 end

@@ -86,6 +86,7 @@ const ItemsNotInFolder = ({ projectFolderId }: Props) => {
                       icon: 'plus-circle',
                     },
                   ]}
+                  hideMoreActions
                 />
               </Row>
             )
