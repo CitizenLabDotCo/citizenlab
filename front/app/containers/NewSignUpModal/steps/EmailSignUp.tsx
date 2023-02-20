@@ -1,34 +1,27 @@
 import React from 'react';
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text, Error } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import { Send } from '../stepService';
+import { Status, Error as ErrorType } from '../stepService';
 
 interface Props {
-  currentStep: 'email-sign-up' | 'email-sign-up:submitting';
-  send: Send;
+  status: Status;
+  error?: ErrorType;
+  onSubmit: () => void;
+  onGoBack: () => void;
 }
 
-const EmailSignUp = ({ currentStep, send }: Props) => {
-  const handleClickSubmit = () => {
-    if (currentStep === 'email-sign-up') {
-      send(currentStep, 'SUBMIT_EMAIL');
-    }
-  };
-
-  const handleGoBack = () => {
-    if (currentStep === 'email-sign-up') {
-      send(currentStep, 'GO_BACK');
-    }
-  };
+const EmailSignUp = ({ status, error, onSubmit, onGoBack }: Props) => {
+  const loading = status === 'pending';
 
   return (
     <Box>
+      {error && <Error text={error} />}
       <Text>Email sign up</Text>
       <Button
-        onClick={handleClickSubmit}
+        onClick={onSubmit}
         width="auto"
-        disabled={currentStep === 'email-sign-up:submitting'}
-        processing={currentStep === 'email-sign-up:submitting'}
+        disabled={loading}
+        processing={loading}
       >
         Submit email
       </Button>
@@ -36,9 +29,9 @@ const EmailSignUp = ({ currentStep, send }: Props) => {
         mt="12px"
         width="auto"
         buttonStyle="secondary"
-        onClick={handleGoBack}
-        disabled={currentStep === 'email-sign-up:submitting'}
-        processing={currentStep === 'email-sign-up:submitting'}
+        onClick={onGoBack}
+        disabled={loading}
+        processing={loading}
       >
         Go back
       </Button>

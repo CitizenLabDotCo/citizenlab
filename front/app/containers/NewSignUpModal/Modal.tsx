@@ -12,7 +12,7 @@ import EmailSignUp from './steps/EmailSignUp';
 import EmailConfirmation from './steps/EmailConfirmation';
 
 const Modal = () => {
-  const { currentStep, send } = useStepMachine();
+  const { currentStep, state, send } = useStepMachine();
 
   return (
     <Box p="16px" border="1px solid grey" w="400px" h="400px">
@@ -49,14 +49,19 @@ const Modal = () => {
         />
       )}
 
-      {(currentStep === 'email-sign-up' ||
-        currentStep === 'email-sign-up:submitting') && (
-        <EmailSignUp currentStep={currentStep} send={send} />
+      {currentStep === 'email-sign-up' && (
+        <EmailSignUp
+          {...state}
+          onGoBack={() => send(currentStep, 'GO_BACK')}
+          onSubmit={() => send(currentStep, 'SUBMIT_EMAIL')}
+        />
       )}
 
-      {(currentStep === 'email-confirmation' ||
-        currentStep === 'email-confirmation:submitting') && (
-        <EmailConfirmation currentStep={currentStep} send={send} />
+      {currentStep === 'email-confirmation' && (
+        <EmailConfirmation
+          {...state}
+          onConfirm={() => send(currentStep, 'CONFIRM_EMAIL')}
+        />
       )}
 
       {currentStep === 'success' && (

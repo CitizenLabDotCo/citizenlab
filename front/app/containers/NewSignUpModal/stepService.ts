@@ -3,10 +3,11 @@ interface Requirements {
   emailConfirmationRequired: boolean;
 }
 
-type GetRequirements = () => Promise<Requirements>;
+// export type GetRequirements = () => Promise<Requirements>;
+export type GetRequirements = (r?: Requirements) => Promise<Requirements>;
 
-type Status = 'pending' | 'error' | 'ok';
-type Error = 'account_creation_failed' | 'email_confirmation_failed';
+export type Status = 'pending' | 'error' | 'ok';
+export type Error = 'account_creation_failed' | 'email_confirmation_failed';
 
 export interface State {
   status: Status;
@@ -14,6 +15,16 @@ export interface State {
 }
 
 type SetState = (newState: Partial<State>) => void;
+
+const _fakeSignUpRequirements: Requirements = {
+  accountWithEmailCreated: false,
+  emailConfirmationRequired: true,
+};
+
+const _fakeConfirmationRequirements: Requirements = {
+  accountWithEmailCreated: true,
+  emailConfirmationRequired: false,
+};
 
 const STEPS = {
   inactive: {
@@ -35,7 +46,7 @@ const STEPS = {
     ) => {
       setState({ status: 'pending' });
       const { accountWithEmailCreated, emailConfirmationRequired } =
-        await getRequirements();
+        await getRequirements(_fakeSignUpRequirements);
 
       if (accountWithEmailCreated) {
         setState({ status: 'ok' });
@@ -48,7 +59,7 @@ const STEPS = {
         error: 'account_creation_failed',
       });
 
-      return 'email-sign-up';
+      return null;
     },
   },
   'email-confirmation': {
@@ -57,7 +68,9 @@ const STEPS = {
       setState: SetState
     ) => {
       setState({ status: 'pending' });
-      const { emailConfirmationRequired } = await getRequirements();
+      const { emailConfirmationRequired } = await getRequirements(
+        _fakeConfirmationRequirements
+      );
 
       if (!emailConfirmationRequired) {
         setState({ status: 'ok' });
@@ -69,7 +82,7 @@ const STEPS = {
         error: 'email_confirmation_failed',
       });
 
-      return 'email-confirmation';
+      return null;
     },
   },
   success: {
@@ -77,15 +90,23 @@ const STEPS = {
   },
 };
 
-type Steps = typeof STEPS;
+export type Steps = typeof STEPS;
 export type Step = keyof Steps;
+
+const getStepTransition = <S extends Step, E extends keyof Steps[S]>(
+  currentStep: S,
+  event: E
+): Steps[S][E] => {
+  return STEPS[currentStep][event];
+};
 
 export const getNextStep = async <S extends Step, E extends keyof Steps[S]>(
   currentStep: S,
   event: E,
   getRequirements: GetRequirements,
   setState: SetState
-) => {
+): Promise<Step | null> => {
+  const stepTransition = getStepTransition(currentStep, event);
   // @ts-ignore
-  return await STEPS[currentStep][event](getRequirements, setState);
+  return await stepTransition(getRequirements, setState);
 };
