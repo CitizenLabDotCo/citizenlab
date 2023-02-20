@@ -228,7 +228,7 @@ class ProjectCopyService < ::TemplateService
       'process_type' => @project.process_type,
       'admin_publication_attributes' =>
         { 'publication_status' => new_publication_status || @project.admin_publication.publication_status },
-      'text_images_attributes' => filter_text_images(@project).map do |ti|
+      'text_images_attributes' => current_text_images(@project).map do |ti|
         {
           'imageable_field' => ti.imageable_field,
           'remote_image_url' => ti.image_url,
@@ -284,7 +284,7 @@ class ProjectCopyService < ::TemplateService
         'end_at' => shift_timestamp(phase.end_at, shift_timestamps, leave_blank: false)&.iso8601,
         'created_at' => shift_timestamp(phase.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(phase.updated_at, shift_timestamps)&.iso8601,
-        'text_images_attributes' => phase.text_images.map do |ti|
+        'text_images_attributes' => current_text_images(phase).map do |ti|
           {
             'imageable_field' => ti.imageable_field,
             'remote_image_url' => ti.image_url,
@@ -535,7 +535,7 @@ class ProjectCopyService < ::TemplateService
         'location_description' => idea.location_description,
         'budget' => idea.budget,
         'proposed_budget' => idea.proposed_budget,
-        'text_images_attributes' => idea.text_images.map do |text_image|
+        'text_images_attributes' => current_text_images(idea).map do |text_image|
           {
             'imageable_field' => text_image.imageable_field,
             'remote_image_url' => text_image.image_url,

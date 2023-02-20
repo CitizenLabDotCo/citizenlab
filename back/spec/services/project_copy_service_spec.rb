@@ -151,12 +151,10 @@ describe ProjectCopyService do
 
     describe 'when serializing text_images associated with parent resource' do
       let(:text_ref) { SecureRandom.uuid }
+      let(:project) { create(:project) }
 
       it 'does not serialize orphaned text_images associated with project' do
-        project = create(
-          :continuous_project,
-          description_multiloc: { en: "<img data-cl2-text-image-text-reference=\"#{text_ref}\">" }
-        )
+        project.update(description_multiloc: { en: "<img data-cl2-text-image-text-reference=\"#{text_ref}\">" })
         images = create_list(
           :text_image,
           2,
@@ -170,6 +168,48 @@ describe ProjectCopyService do
 
         expect(template['models']['project'].first['text_images_attributes'].size).to eq 1
         expect(template['models']['project'].first['text_images_attributes'].first['text_reference']).to eq(text_ref)
+      end
+
+      it 'does not serialize orphaned text_images associated with phase' do
+        phase = create(
+          :phase,
+          project_id: project.id,
+          description_multiloc: { en: "<img data-cl2-text-image-text-reference=\"#{text_ref}\">" }
+        )
+        images = create_list(
+          :text_image,
+          2,
+          imageable_id: phase.id,
+          imageable_type: 'Phase',
+          imageable_field: 'description_multiloc'
+        )
+        images[0].update(text_reference: text_ref)
+
+        template = service.export project
+
+        expect(template['models']['phase'].first['text_images_attributes'].size).to eq 1
+        expect(template['models']['phase'].first['text_images_attributes'].first['text_reference']).to eq(text_ref)
+      end
+
+      it 'does not serialize orphaned text_images associated with idea' do
+        idea = create(
+          :idea,
+          project_id: project.id,
+          body_multiloc: { en: "<img data-cl2-text-image-text-reference=\"#{text_ref}\">" }
+        )
+        images = create_list(
+          :text_image,
+          2,
+          imageable_id: idea.id,
+          imageable_type: 'Idea',
+          imageable_field: 'body_multiloc'
+        )
+        images[0].update(text_reference: text_ref)
+
+        template = service.export(project, include_ideas: true)
+
+        expect(template['models']['idea'].first['text_images_attributes'].size).to eq 1
+        expect(template['models']['idea'].first['text_images_attributes'].first['text_reference']).to eq(text_ref)
       end
     end
   end

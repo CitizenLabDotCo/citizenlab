@@ -34,7 +34,7 @@ class TemplateService
     custom_field_values.slice(*supported_fields.map(&:key))
   end
 
-  def filter_text_images(parent)
+  def current_text_images(parent)
     parent_to_json = parent.to_json
 
     parent.text_images.select { |ti| parent_to_json.include?(ti.text_reference) }

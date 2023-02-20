@@ -326,7 +326,7 @@ module MultiTenancy
             'description_preview_multiloc' => p.description_preview_multiloc,
             'process_type' => p.process_type,
             'internal_role' => p.internal_role,
-            'text_images_attributes' => filter_text_images(p).map do |ti|
+            'text_images_attributes' => current_text_images(p).map do |ti|
               {
                 'imageable_field' => ti.imageable_field,
                 'remote_image_url' => ti.image_url,
@@ -399,7 +399,7 @@ module MultiTenancy
             'input_term' => p.input_term,
             'created_at' => p.created_at.to_s,
             'updated_at' => p.updated_at.to_s,
-            'text_images_attributes' => p.text_images.map do |ti|
+            'text_images_attributes' => current_text_images(p).map do |ti|
               {
                 'imageable_field' => ti.imageable_field,
                 'remote_image_url' => ti.image_url,
@@ -717,7 +717,7 @@ module MultiTenancy
             'idea_status_ref' => lookup_ref(idea.idea_status_id, :idea_status),
             'budget' => idea.budget,
             'proposed_budget' => idea.proposed_budget,
-            'text_images_attributes' => idea.text_images.map do |img|
+            'text_images_attributes' => current_text_images(idea).map do |img|
               {
                 'imageable_field' => img.imageable_field,
                 'remote_image_url' => img.image_url,

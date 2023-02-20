@@ -248,6 +248,48 @@ describe MultiTenancy::Templates::Serializer do
         expect(template['models']['project'].first['text_images_attributes'].size).to eq 1
         expect(template['models']['project'].first['text_images_attributes'].first['text_reference']).to eq(text_ref)
       end
+
+      it 'does not serialize orphaned text_images associated with phase' do
+        phase = create(
+          :phase,
+          description_multiloc: { en: "<img data-cl2-text-image-text-reference=\"#{text_ref}\">" }
+        )
+        images = create_list(
+          :text_image,
+          2,
+          imageable_id: phase.id,
+          imageable_type: 'Phase',
+          imageable_field: 'description_multiloc'
+        )
+        images[0].update(text_reference: text_ref)
+
+        serializer = described_class.new Tenant.current
+        template = serializer.run
+
+        expect(template['models']['phase'].first['text_images_attributes'].size).to eq 1
+        expect(template['models']['phase'].first['text_images_attributes'].first['text_reference']).to eq(text_ref)
+      end
+
+      it 'does not serialize orphaned text_images associated with idea' do
+        idea = create(
+          :idea,
+          body_multiloc: { en: "<img data-cl2-text-image-text-reference=\"#{text_ref}\">" }
+        )
+        images = create_list(
+          :text_image,
+          2,
+          imageable_id: idea.id,
+          imageable_type: 'Idea',
+          imageable_field: 'body_multiloc'
+        )
+        images[0].update(text_reference: text_ref)
+
+        serializer = described_class.new Tenant.current
+        template = serializer.run
+
+        expect(template['models']['idea'].first['text_images_attributes'].size).to eq 1
+        expect(template['models']['idea'].first['text_images_attributes'].first['text_reference']).to eq(text_ref)
+      end
     end
   end
 end
