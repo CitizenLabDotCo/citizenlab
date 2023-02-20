@@ -9,7 +9,6 @@ import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { combineLatest } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import smoothscroll from 'smoothscroll-polyfill';
-import clHistory from 'utils/cl-router/history';
 import { endsWith, isNilOrError, isNil, isPage } from 'utils/helperUtils';
 
 // constants
@@ -134,6 +133,7 @@ const App = ({ children }: Props) => {
   const [signUpInModalOpened, setSignUpInModalOpened] = useState(false);
 
   const redirectsEnabled = useFeatureFlag({ name: 'redirects' });
+
   const fullscreenModalEnabled = useFeatureFlag({
     name: 'franceconnect_login',
   });
@@ -208,13 +208,11 @@ const App = ({ children }: Props) => {
     const handleCustomRedirect = () => {
       const { pathname } = location;
       const urlSegments = pathname.replace(/^\/+/g, '').split('/');
-
       if (
         appConfiguration &&
         appConfiguration.data.attributes.settings.redirects
       ) {
         const { rules } = appConfiguration.data.attributes.settings.redirects;
-
         rules.forEach((rule) => {
           if (
             urlSegments.length === 2 &&
@@ -229,26 +227,23 @@ const App = ({ children }: Props) => {
 
     const authUser$ = authUserStream().observable;
     const locale$ = localeStream().observable;
-    const unlisten = clHistory.listen(({ location }) => {
-      const newPreviousPathname = location.pathname;
-      const pathsToIgnore = [
-        'sign-up',
-        'sign-in',
-        'complete-signup',
-        'invite',
-        'authentication-error',
-      ];
-      setPreviousPathname(
-        !endsWith(newPreviousPathname, pathsToIgnore)
-          ? newPreviousPathname
-          : previousPathname
-      );
-      if (redirectsEnabled) {
-        handleCustomRedirect();
-      }
-      trackPage(location.pathname);
-    });
 
+    const newPreviousPathname = location.pathname;
+    const pathsToIgnore = [
+      'sign-up',
+      'sign-in',
+      'complete-signup',
+      'invite',
+      'authentication-error',
+    ];
+    setPreviousPathname(
+      !endsWith(newPreviousPathname, pathsToIgnore)
+        ? newPreviousPathname
+        : previousPathname
+    );
+    if (redirectsEnabled) {
+      handleCustomRedirect();
+    }
     trackPage(location.pathname);
 
     smoothscroll.polyfill();
@@ -302,7 +297,6 @@ const App = ({ children }: Props) => {
     ];
 
     return () => {
-      unlisten();
       subscriptions.forEach((subscription) => subscription.unsubscribe());
     };
   }, [

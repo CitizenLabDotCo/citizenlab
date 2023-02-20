@@ -27,7 +27,10 @@ import messages from './messages';
 
 // services
 import { localeStream } from 'services/locale';
-import { IAppConfiguration } from 'services/appConfiguration';
+import {
+  currentAppConfigurationStream,
+  IAppConfiguration,
+} from 'services/appConfiguration';
 import {
   eventStream,
   updateEvent,
@@ -45,7 +48,6 @@ import GetRemoteFiles, {
 // typings
 import { Multiloc, CLError, Locale, UploadFile } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
-import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 
 interface DataProps {
   remoteEventFiles: GetRemoteFilesChildProps;
@@ -57,7 +59,7 @@ interface Props extends DataProps {
 
 interface State {
   locale: Locale | null;
-  currentTenant: IAppConfiguration | undefined;
+  currentTenant: IAppConfiguration | null;
   event: IEvent | null;
   attributeDiff: IUpdatedEventProperties;
   errors:
@@ -85,7 +87,7 @@ class AdminProjectEventEdit extends PureComponent<
     super(props);
     this.state = {
       locale: null,
-      currentTenant: undefined,
+      currentTenant: null,
       event: null,
       attributeDiff: {},
       errors: {},
@@ -103,7 +105,7 @@ class AdminProjectEventEdit extends PureComponent<
   componentDidMount() {
     const { remoteEventFiles } = this.props;
     const locale$ = localeStream().observable;
-    const currentTenant$ = appConfigurationStream;
+    const currentTenant$ = currentAppConfigurationStream().observable;
     const event$ = this.props.params.id
       ? eventStream(this.props.params.id).observable
       : of(null);
