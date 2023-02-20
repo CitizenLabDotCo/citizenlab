@@ -42,7 +42,7 @@
   "app.components.admin.DateRangePicker.startDatePlaceholder": "Date de début",
   "app.components.admin.Graphs": "Aucune donnée disponible avec les filtres actuels.",
   "app.components.admin.Graphs.noDataShort": "Pas de données disponibles.",
-  "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "Comments over time",
+  "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "Commentaires",
   "app.components.admin.GraphsCards.PostsByTime.hooks.usePostsByTime.timeSeries": "Posts over time",
   "app.components.admin.GraphsCards.RegistrationsByTime.hooks.useRegistrationsByTime.timeSeries": "Registrations over time",
   "app.components.admin.GraphsCards.VotesByTime.hooks.useVotesByTime.timeSeries": "Votes over time",
