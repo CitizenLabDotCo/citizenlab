@@ -34,7 +34,7 @@ RSpec.describe User, type: :model do
       expect(invitee.invitee_invite.invitee.id).to eq invitee.id
     end
 
-    it 'does not generate a slug if no names given' do
+    it 'does not generate a slug if an invited user' do
       invitee = create(:invited_user, first_name: nil, last_name: nil)
       expect(invitee.slug).to be_nil
     end
@@ -82,9 +82,15 @@ RSpec.describe User, type: :model do
   end
 
   describe 'password' do
-    it 'is invalid when set to empty string' do
+    it 'is valid when set to empty string' do
+      # This is allowed to allow accounts without a password
       u = build(:user, password: '')
-      expect(u).to be_invalid
+      expect(u).to be_valid
+    end
+
+    it 'does not create a password digest if the password is empty' do
+      u = build(:user, password: '')
+      expect(u.password_digest).to be_nil
     end
 
     it 'is invalid if its a common password' do
