@@ -282,7 +282,7 @@
   "app.components.ParticipationCTABars.takeTheSurvey": "Un der Ëmfro deelhuelen",
   "app.components.ParticipationCTABars.userHasParticipated": "Dir hutt Iech un dësem Projet bedeelegt.",
   "app.components.ParticipationCTABars.volunteer": "Volontaire",
-  "app.components.ParticipationCTABars.xDayLeft": "{timeLeft, plural, =0 { Menos de un día} one {# día} other {# días}} iwwereg",
+  "app.components.ParticipationCTABars.xDayLeft": "{timeLeft, plural, =0 {Manner wéi een dag} one {# dag} other {# deeg}} left",
   "app.components.ParticipationCTABars.xWeeksLeft": "{timeLeft} Wochen iwwereg",
   "app.components.PasswordInput.a11y_passwordHidden": "Passwuert ausgeblent",
   "app.components.PasswordInput.a11y_passwordVisible": "Passwuert siichtbar",
