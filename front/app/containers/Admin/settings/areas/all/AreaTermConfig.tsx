@@ -4,7 +4,6 @@ import React from 'react';
 import TerminologyConfig from 'components/admin/TerminologyConfig';
 
 // resources
-import { updateAppConfiguration } from 'services/appConfiguration';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -14,6 +13,7 @@ import messages from '../messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
 
 interface Props {
   className?: string;
@@ -21,10 +21,12 @@ interface Props {
 
 const AreaTermConfig = ({ className }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
+  const { mutate: updateAppConfiguration, isLoading } =
+    useUpdateAppConfiguration();
   if (isNilOrError(appConfiguration)) return null;
 
-  const save = async ({ singular, plural }) => {
-    await updateAppConfiguration({
+  const save = ({ singular, plural }) => {
+    updateAppConfiguration({
       settings: {
         core: {
           area_term: singular,
@@ -49,6 +51,7 @@ const AreaTermConfig = ({ className }: Props) => {
       singularPlaceholderMessage={messages.areaTermPlaceholder}
       pluralPlaceholderMessage={messages.areasTermPlaceholder}
       onSave={save}
+      isLoading={isLoading}
     />
   );
 };
