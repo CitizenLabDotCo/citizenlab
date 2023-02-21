@@ -79,7 +79,7 @@ const PasswordSignin = ({
   className,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const tenant = useAppConfiguration();
+  const appConfig = useAppConfiguration();
   const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
   const googleLoginEnabled = useFeatureFlag({ name: 'google_login' });
   const facebookLoginEnabled = useFeatureFlag({ name: 'facebook_login' });
@@ -178,12 +178,13 @@ const PasswordSignin = ({
   const handleOnSubmit =
     (phoneLoginEnabled: boolean) => async (event: React.FormEvent) => {
       event.preventDefault();
-      if (isNilOrError(tenant)) {
+      if (isNilOrError(appConfig)) {
         return;
       }
 
       const tokenLifetime =
-        tenant.attributes.settings.core.authentication_token_lifetime_in_days;
+        appConfig.attributes.settings.core
+          .authentication_token_lifetime_in_days;
 
       if (validate(phoneLoginEnabled, email, password) && email && password) {
         try {
@@ -209,8 +210,9 @@ const PasswordSignin = ({
   };
 
   const phoneLoginEnabled =
-    !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone
-      ? tenant.attributes.settings.password_login.phone
+    !isNilOrError(appConfig) &&
+    appConfig.attributes.settings.password_login?.phone
+      ? appConfig.attributes.settings.password_login.phone
       : false;
   const enabledProviders = [
     passwordLoginEnabled,
