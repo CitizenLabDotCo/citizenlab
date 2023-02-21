@@ -1308,7 +1308,6 @@
   "app.containers.SignUp.emptyTokenError": "Davetiye kodunuzu girin",
   "app.containers.SignUp.firstNamesLabel": "Ad",
   "app.containers.SignUp.goToLogIn": "Hesabınız var mı? {goToOtherFlowLink}",
-  "app.containers.SignUp.goToSignUp": "Hesabınız yok mu? {goToOtherFlowLink}",
   "app.containers.SignUp.headerSubtitle": "Adım {activeStepNumber}/{totalStepsCount}: {stepName}",
   "app.containers.SignUp.iHaveReadAndAgreeTo": "{link} belgesini okudum ve kabul ediyorum.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "I accept that the data will be used on mitgestalten.wien.gv.at. Further information can befound {link}.",

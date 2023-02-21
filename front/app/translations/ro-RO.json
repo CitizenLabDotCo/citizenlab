@@ -1308,7 +1308,6 @@
   "app.containers.SignUp.emptyTokenError": "Introduceți codul de invitație",
   "app.containers.SignUp.firstNamesLabel": "Prenume",
   "app.containers.SignUp.goToLogIn": "Ai deja un cont? {goToOtherFlowLink}",
-  "app.containers.SignUp.goToSignUp": "Nu ai un cont? {goToOtherFlowLink}",
   "app.containers.SignUp.headerSubtitle": "Pasul {activeStepNumber} din {totalStepsCount}: {stepName}",
   "app.containers.SignUp.iHaveReadAndAgreeTo": "Am citit și sunt de acord cu {link}.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "Accept ca datele să fie utilizate pe mitgestalten.wien.gv.at. Informații suplimentare pot fi găsite {link}.",
