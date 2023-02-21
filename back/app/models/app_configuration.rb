@@ -157,18 +157,22 @@ class AppConfiguration < ApplicationRecord
   end
 
   def base_asset_host_uri
-    # ASSET_HOST_URI env var can be used for:
-    # - e2e tests (see e2e/docker-compose.yml)
-    # - demos on ngrok/localtunnel
-    #   run `lt --port 3000 --subdomain local-env` and set `ASSET_HOST_URI=https://local-env.loca.lt/`
-    # - in rake tasks that need to download images. Set `ASSET_HOST_URI=http://cl-back-web:4000/`
+    if Rails.env.development? && ENV['USE_AWS_S3_IN_DEV'] == 'true'
+      "https://#{ENV.fetch('AWS_S3_BUCKET')}.s3.#{ENV.fetch('AWS_REGION')}.amazonaws.com"
+    else
+      # ASSET_HOST_URI env var can be used for:
+      # - e2e tests (see e2e/docker-compose.yml)
+      # - demos on ngrok/localtunnel
+      #   run `lt --port 3000 --subdomain local-env` and set `ASSET_HOST_URI=https://local-env.loca.lt/`
+      # - in rake tasks that need to download images. Set `ASSET_HOST_URI=http://cl-back-web:4000/`
 
-    # localhost:3000 works (webpack proxies requests to localhost:4000)
-    # using the app from the browser, but localhost:4000 is a better default
-    # because it's more universal:
-    # it works both in the browser and in the BE code that runs in cl-back-web container
-    # (e.g., to copy images applying a tenant template or copying a project).
-    base_uri(ENV.fetch('ASSET_HOST_URI', 'http://localhost:4000'))
+      # localhost:3000 works (webpack proxies requests to localhost:4000)
+      # using the app from the browser, but localhost:4000 is a better default
+      # because it's more universal:
+      # it works both in the browser and in the BE code that runs in cl-back-web container
+      # (e.g., to copy images applying a tenant template or copying a project).
+      base_uri(ENV.fetch('ASSET_HOST_URI', 'http://localhost:4000'))
+    end
   end
 
   def lifecycle_stage
