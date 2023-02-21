@@ -20,49 +20,7 @@ describe TrackSegmentService do
       expect(service.integrations(user)[:All]).to be true
     end
 
-    it "doesn't include intercom for a super admin" do
-      user = build_stubbed(:admin, email: 'hello@citizenlab.co')
-      expect(service.integrations(user)[:Intercom]).to be false
-    end
-
-    it 'includes intercom for an admin' do
-      user = build_stubbed(:admin)
-      expect(service.integrations(user)[:Intercom]).to be true
-    end
-
-    it "doesn't include intercom for a normal user" do
-      user = build_stubbed(:user)
-      expect(service.integrations(user)[:Intercom]).to be false
-    end
-
-    it "doesn't include SatisMeter for a super admin" do
-      user = build_stubbed(:admin, email: 'hello@citizenlab.co')
-      expect(service.integrations(user)[:SatisMeter]).to be false
-    end
-
-    it 'includes SatisMeter for an admin' do
-      user = build_stubbed(:admin)
-      expect(service.integrations(user)[:SatisMeter]).to be true
-    end
-
-    it "doesn't include SatisMeter for a normal user" do
-      user = build_stubbed(:user)
-      expect(service.integrations(user)[:SatisMeter]).to be false
-    end
-
-    it 'includes intercom for a project moderator' do
-      user = build_stubbed(:project_moderator)
-      expect(service.integrations(user)[:Intercom]).to be true
-    end
-
-    it 'includes SatisMeter for a project moderator' do
-      user = build_stubbed(:project_moderator)
-      expect(service.integrations(user)[:SatisMeter]).to be true
-    end
-
-    context 'when Planhat feature is enabled' do
-      before_all { activate_planhat_feature }
-
+    context do
       where(:user_factory, :is_included) do
         [
           [:user, false],
@@ -77,9 +35,24 @@ describe TrackSegmentService do
         user_category = params[:user_factory].to_s.pluralize.tr('_', ' ')
         includes = params[:is_included] ? 'includes' : 'does not include'
 
-        it "#{includes} Planhat for #{user_category}" do
+        let(:user) { build(user_factory) }
+
+        it "#{includes} Intercom for #{user_category}" do
           user = build(user_factory)
-          expect(service.integrations(user)[:Planhat]).to eq(is_included)
+          expect(service.integrations(user)[:Intercom]).to eq(is_included)
+        end
+
+        it "#{includes} Satismeter for #{user_category}" do
+          expect(service.integrations(user)[:Intercom]).to eq(is_included)
+        end
+
+        context 'when Planhat feature is enabled' do
+          before_all { activate_planhat_feature }
+
+          it "#{includes} Planhat for #{user_category}" do
+            user = build(user_factory)
+            expect(service.integrations(user)[:Planhat]).to eq(is_included)
+          end
         end
       end
     end
