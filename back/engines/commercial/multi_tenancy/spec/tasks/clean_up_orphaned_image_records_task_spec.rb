@@ -40,7 +40,7 @@ describe 'rake cl2back:clean_up_image_records' do
 
   describe 'when processing text_images' do
     let(:project) { create(:continuous_project) }
-    let(:images) { create_list(:text_image, 2, imageable_type: 'Project', imageable_id: project.id) }
+    let(:images) { create_list(:text_image, 2, imageable: project) }
 
     it 'destroys unused text_images records' do
       project.update!(

@@ -33,10 +33,8 @@ namespace :cl2back do
 
       # text_images
       # Destroy text_image if ref not found anywhere in associated imageable record.
-      TextImage.all.each do |image|
-        imageable = image.imageable_type.constantize.find_by(id: image.imageable_id)
-
-        unless imageable.to_json.include?(image.text_reference)
+      TextImage.all.includes(:imageable).each do |image|
+        unless image.imageable.to_json.include?(image.text_reference)
           image.destroy! if live_run
           puts " destroyed text_image with unused text_reference: #{image.id}, imageable_id: #{image.imageable.id}"
         end
