@@ -23,7 +23,7 @@ const publicationStatuses: PublicationStatus[] = [
   'archived',
 ];
 
-const SortableFolderRow = ({ id, isLastItem, publication }: Props) => {
+const NonSortableFolderRow = ({ id, isLastItem, publication }: Props) => {
   const authUser = useAuthUser();
   const { list: folderChildAdminPublications } = useAdminPublications({
     childrenOfId: publication.relationships.publication.data.id,
@@ -42,10 +42,11 @@ const SortableFolderRow = ({ id, isLastItem, publication }: Props) => {
   const toggleFolder = () => {
     setFolderOpen((folderOpen) => !folderOpen);
   };
+  const showBottomBorder = isLastItem && !folderOpen;
 
   return (
     <>
-      <Row id={id} isLastItem={isLastItem}>
+      <Row id={id} isLastItem={showBottomBorder}>
         <ProjectFolderRow
           publication={publication}
           toggleFolder={toggleFolder}
@@ -62,4 +63,4 @@ const SortableFolderRow = ({ id, isLastItem, publication }: Props) => {
   );
 };
 
-export default SortableFolderRow;
+export default NonSortableFolderRow;

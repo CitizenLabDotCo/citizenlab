@@ -10,6 +10,10 @@ module MultiTenancy
 
     SKIP_IMAGE_PRESENCE_VALIDATION = %w[IdeaImage ContentBuilder::LayoutImage].freeze
 
+    def initialize(save_temp_remote_urls: false)
+      @save_temp_remote_urls = save_temp_remote_urls
+    end
+
     def available_templates(external_subfolder: 'release')
       template_names = {}
       template_names[:internal] = Dir[Rails.root.join('config/tenant_templates/*.yml')].map do |file|
@@ -311,16 +315,19 @@ module MultiTenancy
     end
 
     def assign_images(model, image_assignments)
-      # Images should not be assigned in the background
-      # while applying a template, so that they can be properly
-      # verified and so that the tenant status doesn't turn into
-      # "created", while the creation could actually still fail.
-      #
-      # Previously, we did it in the background so that the
-      # generation of templates remains within the 3 hours execution
-      # limit of CircleCI.
-
-      ImageAssignmentJob.perform_now model, image_assignments
+      if @save_temp_remote_urls
+        CarrierwaveTempRemote.save_urls(model, image_assignments)
+      else
+        # Images should not be assigned in the background
+        # while applying a template, so that they can be properly
+        # verified and so that the tenant status doesn't turn into
+        # "created", while the creation could actually still fail.
+        #
+        # Previously, we did it in the background so that the
+        # generation of templates remains within the 3 hours execution
+        # limit of CircleCI.
+        model.update!(image_assignments)
+      end
     end
 
     def get_model_class(model_name)
