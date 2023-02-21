@@ -1,11 +1,11 @@
 import React from 'react';
 import { Box, Text, Error } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import { Status, Error as ErrorType } from '../stepService';
+import { Status, ErrorCode } from '../typings';
 
 interface Props {
   status: Status;
-  error?: ErrorType;
+  error?: ErrorCode;
   onSubmit: () => void;
   onGoBack: () => void;
 }

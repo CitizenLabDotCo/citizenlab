@@ -1,11 +1,11 @@
 import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import { Status, Error } from '../stepService';
+import { Status, ErrorCode } from '../typings';
 
 interface Props {
   status: Status;
-  error?: Error;
+  error?: ErrorCode;
   onConfirm: () => void;
 }
 
