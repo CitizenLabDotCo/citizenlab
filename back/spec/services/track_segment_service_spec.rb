@@ -15,11 +15,6 @@ describe TrackSegmentService do
   end
 
   describe 'integrations' do
-    it 'logs to all destinations by default' do
-      user = build_stubbed(:user)
-      expect(service.integrations(user)[:All]).to be true
-    end
-
     context do
       where(:user_factory, :is_included) do
         [
@@ -37,20 +32,22 @@ describe TrackSegmentService do
 
         let(:user) { build(user_factory) }
 
+        it "#{includes} All for #{user_category}" do
+          expect(service.integrations(user)[:All]).to eq(is_included)
+        end
+
         it "#{includes} Intercom for #{user_category}" do
-          user = build(user_factory)
           expect(service.integrations(user)[:Intercom]).to eq(is_included)
         end
 
         it "#{includes} Satismeter for #{user_category}" do
-          expect(service.integrations(user)[:Intercom]).to eq(is_included)
+          expect(service.integrations(user)[:SatisMeter]).to eq(is_included)
         end
 
         context 'when Planhat feature is enabled' do
           before_all { activate_planhat_feature }
 
           it "#{includes} Planhat for #{user_category}" do
-            user = build(user_factory)
             expect(service.integrations(user)[:Planhat]).to eq(is_included)
           end
         end
@@ -217,7 +214,7 @@ describe TrackSegmentService do
         [:project_moderator, true],
         [:project_folder_moderator, true],
         [:admin, true],
-        [:super_admin, true]
+        [:super_admin, false]
       ]
     end
 

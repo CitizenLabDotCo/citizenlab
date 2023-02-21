@@ -45,27 +45,18 @@ class TrackSegmentService
 
   def integrations(user)
     {
-      All: true,
-      Intercom: intercom_integration_enabled?(user.highest_role),
-      SatisMeter: satismeter_integration_enabled?(user.highest_role),
-      Planhat: planhat_integration_enabled?(user.highest_role)
+      All: track_user?(user),
+      Intercom: track_user?(user),
+      SatisMeter: track_user?(user),
+      Planhat: planhat_integration_enabled?(user)
     }
   end
 
-  # @param [Symbol] role
-  def intercom_integration_enabled?(role)
-    %i[admin project_folder_moderator project_moderator].include?(role)
-  end
-
-  def planhat_integration_enabled?(role)
+  # @param [User] user
+  def planhat_integration_enabled?(user)
     return false unless AppConfiguration.instance.feature_activated?('planhat')
 
-    %i[admin project_folder_moderator project_moderator].include?(role)
-  end
-
-  # @param [Symbol] role
-  def satismeter_integration_enabled?(role)
-    %i[admin project_folder_moderator project_moderator].include?(role)
+    track_user?(user)
   end
 
   # @param [User] user
