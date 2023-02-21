@@ -284,18 +284,22 @@ class User < ApplicationRecord
     [first_name, last_name].compact.join(' ')
   end
 
+  def no_name?
+    !self[:last_name] && !self[:first_name] && !invite_pending?
+  end
+
   def first_name
-    if !self[:last_name] && !self[:first_name] && !invite_pending?
+    if no_name?
       'user'
     else
       super
     end
   end
 
-  # Generate a uniquish integer for last_name based on email
   def last_name
-    if !self[:last_name] && !self[:first_name] && !invite_pending?
-      ((email.length * email[0].ord * email[1].ord) - email[1].ord)
+    if no_name?
+      # Generate a unique-ish 6 figure number string based on email
+      email.hash.abs.to_s[0, 6]
     else
       super
     end

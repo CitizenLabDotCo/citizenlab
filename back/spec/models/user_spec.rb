@@ -563,30 +563,33 @@ RSpec.describe User, type: :model do
   end
 
   describe 'light users' do
-    it 'returns a fake first name and numeric last name if there is no first name or last name' do
+    it 'returns a fake first name and 6 figure numeric last name if there is no first name or last name' do
       u = described_class.new(email: 'test@citizenlab.co')
-
       expect(u.first_name).to eq 'user'
-      expect(u.last_name).to be_a_kind_of(Integer)
+      expect(u.last_name).to match(/\d{6}/)
+    end
+
+    it 'always returns the same 6 figure value with the same email' do
+      u = described_class.new(email: 'test@citizenlab.co')
+      first_value = u.last_name
+      expect(u.last_name).to match(/\d{6}/)
+      expect(u.last_name).to eq first_value
     end
 
     it 'does not return fake names if first_name is set' do
       u = described_class.new(email: 'test@citizenlab.co', first_name: 'bob')
-
       expect(u.first_name).to eq 'bob'
       expect(u.last_name).to be_nil
     end
 
     it 'does not return fake names if last_name is set' do
       u = described_class.new(email: 'test@citizenlab.co', last_name: 'smith')
-
       expect(u.first_name).to be_nil
       expect(u.last_name).to eq 'smith'
     end
 
     it 'does not return fake names if invite is pending' do
       u = described_class.new(email: 'test@citizenlab.co', invite_status: 'pending')
-
       expect(u.first_name).to be_nil
       expect(u.last_name).to be_nil
     end
