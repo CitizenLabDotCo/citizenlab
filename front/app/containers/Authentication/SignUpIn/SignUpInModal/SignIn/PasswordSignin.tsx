@@ -377,6 +377,7 @@ class PasswordSignin extends PureComponent<
                     <button
                       id="e2e-goto-signup"
                       onClick={this.handleGoToSignUp}
+                      className="link"
                     >
                       {formatMessage(messages.signUp)}
                     </button>
