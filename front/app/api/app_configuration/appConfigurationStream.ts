@@ -25,4 +25,5 @@ const appConfigurationStream = new Observable<IAppConfiguration | undefined>(
   }
 );
 
+/** @deprecated Only used for backwards compatibility reasons with streams. Do not use in React components or hooks */
 export default appConfigurationStream;
