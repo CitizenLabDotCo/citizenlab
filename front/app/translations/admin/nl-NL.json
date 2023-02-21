@@ -1591,7 +1591,7 @@
   "app.containers.IdeasShow.bodyTitle": "Beschrijving",
   "app.containers.IdeasShow.postedIn": "Geplaatst in {projectLink}",
   "app.containers.IdeasShow.proposedBudgetTitle": "Voorgesteld budget",
-  "app.containers.IdeasShow.xDaysLeft": "Nog {x, plural, =0 {minder dan een dag} one {één dag} other {# dagen}}",
+  "app.containers.IdeasShow.xDaysLeft": "Nog {x, plural, =0 {minder dan 1 dag} one {1 dag} other {# dagen}}",
   "app.containers.admin.ContentBuilder.aboutBox": "Over Box",
   "app.containers.admin.ContentBuilder.accordion": "Accordeon",
   "app.containers.admin.ContentBuilder.accordionDefaultOpenLabel": "Standaard openen",
