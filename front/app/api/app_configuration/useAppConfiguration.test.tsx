@@ -8,6 +8,8 @@ import { rest } from 'msw';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { IAppConfigurationData } from './types';
 
+jest.unmock('./useAppConfiguration');
+
 export const getAppConfigurationData = (
   attributes = {}
 ): IAppConfigurationData => ({

@@ -16,8 +16,10 @@ jest.mock('hooks/useHomepageSettings', () => {
 jest.mock('api/app_configuration/useAppConfiguration', () =>
   jest.fn(() => ({
     data: {
-      attributes: {
-        settings: { events_widget: { allowed: true } },
+      data: {
+        attributes: {
+          settings: { events_widget: { allowed: true } },
+        },
       },
     },
   }))
