@@ -353,14 +353,19 @@ class User < ApplicationRecord
   end
 
   def authenticate(unencrypted_password)
-    if !password_digest
-      false
+    if no_password?
+      # Allow authentication without password - but only if confirmation is required on the user
+      AppConfiguration.instance.feature_activated?('user_confirmation') && confirmation_required ? true : false
     elsif cl1_authenticate(unencrypted_password)
       self.password_digest = BCrypt::Password.create(unencrypted_password)
       self
     else
       original_authenticate(unencrypted_password) && self
     end
+  end
+
+  def no_password?
+    !password_digest && !invite_pending?
   end
 
   def member_of?(group_id)
