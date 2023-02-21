@@ -437,6 +437,7 @@ export interface InputProps {
   children: React.ReactNode;
   fullScreen?: boolean;
   zIndex?: number;
+  hideCloseButton?: boolean;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -544,6 +545,7 @@ class Modal extends PureComponent<Props, State> {
       skipText,
       fullScreen,
       zIndex,
+      hideCloseButton,
     } = this.props;
     const hasFixedHeight = this.props.fixedHeight;
     const smallerThanSmallTablet = windowSize
@@ -591,14 +593,16 @@ class Modal extends PureComponent<Props, State> {
                 aria-modal="true"
                 role="dialog"
               >
-                <StyledCloseIconButton
-                  fullScreen={fullScreen}
-                  className="e2e-modal-close-button"
-                  onClick={this.clickCloseButton}
-                  iconColor={colors.textSecondary}
-                  iconColorOnHover={'#000'}
-                  a11y_buttonActionMessage={messages.closeModal}
-                />
+                {!hideCloseButton && (
+                  <StyledCloseIconButton
+                    fullScreen={fullScreen}
+                    className="e2e-modal-close-button"
+                    onClick={this.clickCloseButton}
+                    iconColor={colors.textSecondary}
+                    iconColorOnHover={'#000'}
+                    a11y_buttonActionMessage={messages.closeModal}
+                  />
+                )}
 
                 {header && (
                   <HeaderContainer>
