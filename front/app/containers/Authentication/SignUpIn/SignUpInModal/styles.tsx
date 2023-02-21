@@ -10,7 +10,7 @@ import { fontSizes, defaultOutline, media } from 'utils/styleUtils';
 export const Options = styled.div`
   display: flex;
   flex-direction: column;
-
+  align-items: stretch;
   margin-bottom: 30px;
 
   ${media.phone`
