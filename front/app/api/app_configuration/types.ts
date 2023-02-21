@@ -14,7 +14,7 @@ interface AppConfigurationFeature {
   enabled: boolean;
 }
 
-type IAppConfigurationSettingsCore = {
+export type IAppConfigurationSettingsCore = {
   allowed: boolean;
   enabled: boolean;
   locales: Locale[];
@@ -210,6 +210,8 @@ export interface IAppConfigurationSettings {
   report_builder?: AppConfigurationFeature;
   posthog_integration?: AppConfigurationFeature;
 }
+
+export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
 
 export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
 

@@ -2,7 +2,7 @@ import {
   TAppConfigSectionSetting,
   TSectionSetting,
 } from 'services/homepageSettings';
-import { THomepageSetting } from 'services/appConfiguration';
+import { THomepageSetting } from 'api/app_configuration/types';
 import { isNilOrError } from 'utils/helperUtils';
 import useHomepageSettings from './useHomepageSettings';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';

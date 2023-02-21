@@ -20,7 +20,7 @@ import { getDestinationConfig, IDestination, TCategory } from '../destinations';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { IAppConfigurationData } from 'services/appConfiguration';
+import { IAppConfigurationData } from 'api/app_configuration/types';
 
 const Container = styled.div`
   display: flex;

@@ -20,7 +20,7 @@ import {
 } from 'components/ConsentManager/destinations';
 import { ISavedDestinations } from 'components/ConsentManager/consent';
 import { authUserStream } from 'services/auth';
-import { IAppConfigurationData } from 'services/appConfiguration';
+import { IAppConfigurationData } from 'api/app_configuration/types';
 
 export interface IEvent {
   name: string;

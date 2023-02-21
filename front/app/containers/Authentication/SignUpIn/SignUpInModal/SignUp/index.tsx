@@ -52,7 +52,7 @@ import styled, { useTheme } from 'styled-components';
 // typings
 import { ISignUpInMetaData, openSignUpInModal } from 'events/openSignUpInModal';
 import { Multiloc } from 'typings';
-import { IAppConfigurationData } from 'services/appConfiguration';
+import { IAppConfigurationData } from 'api/app_configuration/types';
 import { UserCustomFieldsInfos } from 'services/userCustomFields';
 
 const Container = styled.div`

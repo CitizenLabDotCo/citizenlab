@@ -20,7 +20,7 @@ import useTopics from 'hooks/useTopics';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // services
-import { coreSettings } from 'services/appConfiguration';
+import { coreSettings } from 'api/app_configuration/utils';
 
 interface SelectTopicsProps {
   className?: string;

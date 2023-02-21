@@ -284,12 +284,6 @@ export interface IUpdatedAppConfigurationProperties {
   style?: IAppConfigurationStyle;
 }
 
-export function currentAppConfigurationStream() {
-  return streams.get<IAppConfiguration>({
-    apiEndpoint: currentAppConfigurationEndpoint,
-  });
-}
-
 export async function updateAppConfiguration(
   object: IUpdatedAppConfigurationProperties
 ) {
@@ -298,7 +292,7 @@ export async function updateAppConfiguration(
     'app_configuration',
     { app_configuration: object }
   );
-  await currentAppConfigurationStream().fetch();
+
   return tenant;
 }
 
@@ -316,7 +310,7 @@ export async function updateAppConfigurationCore(
       },
     }
   );
-  await currentAppConfigurationStream().fetch();
+
   return tenant;
 }
 

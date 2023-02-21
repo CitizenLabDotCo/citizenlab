@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // services
-import { coreSettings } from 'services/appConfiguration';
+import { coreSettings } from 'api/app_configuration/utils';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';

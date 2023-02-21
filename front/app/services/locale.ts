@@ -40,7 +40,7 @@ import { Locale } from 'typings';
 import { locales } from 'containers/App/constants';
 import { setCookieLocale, getCookieLocale } from 'utils/localeCookie';
 import clHistory from 'utils/cl-router/history';
-import { IAppConfiguration } from 'services/appConfiguration';
+import { IAppConfiguration } from 'api/app_configuration/types';
 
 export const LocaleSubject: BehaviorSubject<Locale> = new BehaviorSubject(
   null as any

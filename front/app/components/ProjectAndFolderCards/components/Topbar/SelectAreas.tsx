@@ -20,7 +20,7 @@ import useAreas from 'hooks/useAreas';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // services
-import { coreSettings } from 'services/appConfiguration';
+import { coreSettings } from 'api/app_configuration/utils';
 
 interface SelectAreasProps {
   selectedAreas: string[];

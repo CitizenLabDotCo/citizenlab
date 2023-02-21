@@ -1,7 +1,7 @@
 import React from 'react';
 
 // services
-import { coreSettings } from 'services/appConfiguration';
+import { coreSettings } from 'api/app_configuration/utils';
 
 // hooks
 import useTopics from 'hooks/useTopics';
