@@ -10,7 +10,7 @@ describe 'rake cl2back:clean_up_image_records' do
 
   describe 'when processing layout_images' do
     let(:layout) { create(:layout, code: 'project_description') }
-    let(:images) { create_list(:layout_image, 2, created_at: 1.day.ago) }
+    let(:images) { create_list(:layout_image, 2, created_at: 4.days.ago) }
 
     it 'destroys unused layout_images records' do
       craftjs_str = ERB.new(File.read('spec/fixtures/craftjs_layout_with_2_images.json.erb'))
@@ -26,9 +26,9 @@ describe 'rake cl2back:clean_up_image_records' do
 
     # layout_images are created whenever an admin adds an image to a layout form, regardless of whether that image
     # is eventually referenced by a layout (when / if the layout is saved).
-    # By only destroying unused layout_images with an age > 6 hours, we can be reasonably confident that the
+    # By only destroying unused layout_images with an age > 3 days, we can be reasonably confident that the
     # admin does not intend to add the image to a layout, and the image is truly orphaned.
-    it 'does not destroy unused layout_images records created less than 6 hours ago' do
+    it 'does not destroy unused layout_images records created less than 3 days ago' do
       images[1].update(created_at: 5.hours.ago)
 
       expect(ContentBuilder::LayoutImage.all).to include(images[0], images[1])
