@@ -43,8 +43,11 @@ jest.mock('services/projectFolders', () =>
 describe('FolderMoreActionsMenu', () => {
   it('calls setError with an error when deleting fails', async () => {
     const setErrorFn = jest.fn();
-    props.setError = setErrorFn;
-    render(<FolderMoreActionsMenu {...props} />);
+    const customProps: Props = {
+      folderId: 'folderId',
+      setError: setErrorFn,
+    };
+    render(<FolderMoreActionsMenu {...customProps} />);
     const user = userEvent.setup();
 
     const threeDotsButton = screen.getByTestId('moreOptionsButton');

@@ -57,8 +57,11 @@ jest.mock('services/projects', () =>
 describe('ProjectMoreActionsMenu', () => {
   it('calls setError with an error when copying fails', async () => {
     const setErrorFn = jest.fn();
-    defaultProps.setError = setErrorFn;
-    render(<ProjectMoreActionsMenu {...defaultProps} />);
+    const props: Props = {
+      projectId: 'projectId',
+      setError: setErrorFn,
+    };
+    render(<ProjectMoreActionsMenu {...props} />);
     const user = userEvent.setup();
 
     const threeDotsButton = screen.getByTestId('moreOptionsButton');
