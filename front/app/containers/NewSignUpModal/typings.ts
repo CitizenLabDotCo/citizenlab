@@ -6,7 +6,7 @@ export type ErrorCode =
   | 'wrong_confirmation_code'
   | 'wrong_password';
 
-interface Requirements {
+export interface Requirements {
   authenticated: boolean;
   accountHasPassword: boolean;
   emailConfirmed: boolean;

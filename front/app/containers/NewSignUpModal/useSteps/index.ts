@@ -1,6 +1,17 @@
 import { useState, useCallback, useMemo } from 'react';
-import { Status, ErrorCode, Step } from '../typings';
+import { Status, ErrorCode, Step, Requirements } from '../typings';
 import { getStepConfig } from './stepConfig';
+
+let _mockRequirements = {
+  authenticated: false,
+  accountHasPassword: false,
+  emailConfirmed: false,
+  passwordAccepted: false,
+};
+
+export const _setMockRequirements = (newMockRequirements: Requirements) => {
+  _mockRequirements = newMockRequirements;
+};
 
 export default function useSteps() {
   const [currentStep, setCurrentStep] = useState<Step>('closed');
@@ -8,12 +19,7 @@ export default function useSteps() {
   const [error, setError] = useState<ErrorCode | null>(null);
 
   const getRequirements = useCallback(async () => {
-    return {
-      authenticated: true,
-      accountHasPassword: true,
-      emailConfirmed: true,
-      passwordAccepted: true,
-    };
+    return _mockRequirements;
   }, []);
 
   const stepConfig = useMemo(
