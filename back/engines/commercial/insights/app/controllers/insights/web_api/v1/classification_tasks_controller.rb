@@ -22,7 +22,7 @@ module Insights
             inputs: inputs
           ).execute.count
 
-          render json: { count: count }, status: :ok
+          render json: { data: { count: count, type: 'categories_suggestions_task_count' } }, status: :ok
         end
 
         def create

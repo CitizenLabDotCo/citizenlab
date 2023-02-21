@@ -32,7 +32,7 @@ resource 'ProjectImage' do
     example_request 'Get one image of a project' do
       assert_status 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :attributes, :versions).keys).to match %i[small large]
+      expect(json_response.dig(:data, :attributes, :versions).keys).to match %i[large]
     end
   end
 
@@ -49,7 +49,7 @@ resource 'ProjectImage' do
     example_request 'Add an image to a project' do
       assert_status 201
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :attributes, :versions).keys).to match %i[small large]
+      expect(json_response.dig(:data, :attributes, :versions).keys).to match %i[large]
       expect(json_response.dig(:data, :attributes, :ordering)).to eq(1)
     end
 
@@ -90,7 +90,7 @@ resource 'ProjectImage' do
     example_request 'Edit an image for a project' do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :attributes, :versions).keys).to match %i[small large]
+      expect(json_response.dig(:data, :attributes, :versions).keys).to match %i[large]
       expect(json_response.dig(:data, :attributes, :ordering)).to eq(2)
     end
   end

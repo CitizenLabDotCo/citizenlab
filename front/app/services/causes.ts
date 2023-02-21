@@ -1,8 +1,12 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { Multiloc, ImageSizes } from 'typings';
+import { Multiloc } from 'typings';
 
 const apiEndpoint = `${API_PATH}/causes`;
+
+interface CauseImageSizes {
+  medium: string | null;
+}
 
 export interface ICauseData {
   id: string;
@@ -10,7 +14,7 @@ export interface ICauseData {
   attributes: {
     title_multiloc: Multiloc;
     description_multiloc: Multiloc;
-    image: ImageSizes;
+    image: CauseImageSizes;
     volunteers_count: number;
     ordering: number;
   };

@@ -44,7 +44,7 @@ const Settings = () => {
 
   const setTitle = useCallback(
     (value: string) => {
-      setProp((props) => {
+      setProp((props: Props) => {
         props.title = value;
       });
     },
@@ -53,7 +53,7 @@ const Settings = () => {
 
   const handleProjectFilter = useCallback(
     ({ value }: IOption) => {
-      setProp((props) => {
+      setProp((props: Props) => {
         props.projectId = value;
         props.phaseId = undefined;
       });
@@ -63,7 +63,7 @@ const Settings = () => {
 
   const handlePhaseFilter = useCallback(
     ({ value }: IOption) => {
-      setProp((props) => {
+      setProp((props: Props) => {
         props.phaseId = value;
       });
     },
@@ -72,7 +72,7 @@ const Settings = () => {
 
   const handleChangeNumberOfIdeas = useCallback(
     (numberOfIdeas: number) => {
-      setProp((props) => {
+      setProp((props: Props) => {
         props.numberOfIdeas = numberOfIdeas;
       });
     },
@@ -81,7 +81,7 @@ const Settings = () => {
 
   const handleChangeCollapseLongText = useCallback(
     (collapseLongText: boolean) => {
-      setProp((props) => {
+      setProp((props: Props) => {
         props.collapseLongText = collapseLongText;
       });
     },

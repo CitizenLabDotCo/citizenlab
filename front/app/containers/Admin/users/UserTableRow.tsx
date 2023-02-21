@@ -1,19 +1,19 @@
 // Libraries
-import React, { PureComponent, FormEvent } from 'react';
+import React, { useEffect, useState } from 'react';
 import { isAdmin } from 'services/permissions/roles';
 import moment from 'moment';
+
+// Utils
 import clHistory from 'utils/cl-router/history';
-import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // Components
-import { Tr, Td, Toggle, Icon } from '@citizenlab/cl2-component-library';
+import { Tr, Td, Toggle, Box } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
 import Checkbox from 'components/UI/Checkbox';
-import Tippy from '@tippyjs/react';
+import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 
 // Translation
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // Events --- For error handling
@@ -28,90 +28,10 @@ import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // Styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { lighten } from 'polished';
-
-const StyledCheckbox = styled(Checkbox)`
-  margin-left: 5px;
-`;
-
-const MoreOptionsWrapper = styled.div`
-  width: 20px;
-  position: relative;
-`;
-
-const MoreOptionsIcon = styled(Icon)`
-  fill: ${colors.textSecondary};
-`;
-
-const MoreOptionsButton = styled.button`
-  width: 25px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  margin: 0;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-
-  &:hover ${MoreOptionsIcon} {
-    fill: #000;
-  }
-`;
+import { colors } from 'utils/styleUtils';
 
 const RegisteredAt = styled(Td)`
   white-space: nowrap;
-`;
-
-const DropdownList = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  margin-top: 5px;
-  margin-bottom: 5px;
-`;
-
-const DropdownListButton = styled.button`
-  flex: 1 1 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: ${colors.white};
-  font-size: ${fontSizes.s}px;
-  font-weight: 400;
-  white-space: nowrap;
-  padding: 10px;
-  border-radius: ${(props) => props.theme.borderRadius};
-  cursor: pointer;
-  white-space: nowrap;
-
-  &:hover,
-  &:focus {
-    outline: none;
-    color: white;
-    background: ${lighten(0.1, colors.grey800)};
-  }
-`;
-
-const IconWrapper = styled.div`
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 10px;
-
-  .cl-icon {
-    height: 100%;
-  }
-
-  .cl-icon-primary,
-  .cl-icon-secondary,
-  .cl-icon-accent {
-    fill: currentColor;
-  }
 `;
 
 interface Props {
@@ -122,50 +42,28 @@ interface Props {
   authUser: GetAuthUserChildProps;
 }
 
-interface State {
-  isAdmin: boolean;
-  registeredAt: string;
-}
+const UserTableRow = ({
+  user,
+  selected,
+  toggleSelect,
+  toggleAdmin,
+  authUser,
+}: Props) => {
+  const { formatMessage } = useIntl();
+  const [isUserAdmin, setUserIsAdmin] = useState(isAdmin({ data: user }));
+  const [registeredAt, setRegisteredAt] = useState(
+    moment(user.attributes.registration_completed_at).format('LL')
+  );
 
-class UserTableRow extends PureComponent<Props & WrappedComponentProps, State> {
-  constructor(props: Props & WrappedComponentProps) {
-    super(props);
-    this.state = {
-      isAdmin: isAdmin({ data: this.props.user }),
-      registeredAt: moment(
-        this.props.user.attributes.registration_completed_at
-      ).format('LL'),
-    };
-  }
-
-  static getDerivedStateFromProps(nextProps: Props, _prevState: State) {
-    return {
-      isAdmin: isAdmin({ data: nextProps.user }),
-      registeredAt: moment(
-        nextProps.user.attributes.registration_completed_at
-      ).format('LL'),
-    };
-  }
-
-  isUserAdmin = () => {
-    return isAdmin({ data: this.props.user });
-  };
-
-  handleUserSelectedOnChange = () => {
-    this.props.toggleSelect();
-  };
-
-  handleAdminRoleOnChange = () => {
-    this.props.toggleAdmin();
-  };
-
-  handleDeleteClick = (event: FormEvent) => {
-    const { authUser, user } = this.props;
-    const deleteMessage = this.props.intl.formatMessage(
-      messages.userDeletionConfirmation
+  useEffect(() => {
+    setUserIsAdmin(isAdmin({ data: user }));
+    setRegisteredAt(
+      moment(user.attributes.registration_completed_at).format('LL')
     );
+  }, [user]);
 
-    event.preventDefault();
+  const handleDeleteClick = () => {
+    const deleteMessage = formatMessage(messages.userDeletionConfirmation);
 
     if (window.confirm(deleteMessage)) {
       if (authUser && authUser.id === user.id) {
@@ -184,91 +82,66 @@ class UserTableRow extends PureComponent<Props & WrappedComponentProps, State> {
     }
   };
 
-  goToUserProfile = (slug: string) => (event: FormEvent) => {
-    event.preventDefault();
-    clHistory.push(`/profile/${slug}`);
-  };
+  const actions: IAction[] = [
+    {
+      handler: () => {
+        clHistory.push(`/profile/${user.attributes.slug}`);
+      },
+      label: formatMessage(messages.seeProfile),
+      icon: 'eye' as const,
+    },
+    {
+      handler: () => {
+        handleDeleteClick();
+      },
+      label: formatMessage(messages.deleteUser),
+      icon: 'delete' as const,
+    },
+  ];
 
-  render() {
-    const { user, selected } = this.props;
-    const { isAdmin } = this.state;
+  return (
+    <Tr
+      key={user.id}
+      background={selected ? colors.background : undefined}
+      className={`e2e-user-table-row ${selected ? 'selected' : ''}`}
+    >
+      <Td>
+        <Box ml="5px">
+          <Checkbox checked={selected} onChange={toggleSelect} />
+        </Box>
+      </Td>
+      <Td>
+        <Avatar userId={user.id} size={30} />
+      </Td>
+      <Td>
+        {user.attributes.first_name} {user.attributes.last_name}
+      </Td>
+      <Td>{user.attributes.email}</Td>
+      <RegisteredAt>
+        {/*
+          For the 'all registered users' group, we do not show invited Users who have not yet accepted their invites,
+          but we do in groups they have been added to when invited.
 
-    return (
-      <Tr
-        key={user.id}
-        background={selected ? colors.background : undefined}
-        className={`e2e-user-table-row ${selected ? 'selected' : ''}`}
-      >
-        <Td>
-          <StyledCheckbox
-            checked={selected}
-            onChange={this.handleUserSelectedOnChange}
-          />
-        </Td>
-        <Td>
-          <Avatar userId={user.id} size={30} />
-        </Td>
-        <Td>
-          {user.attributes.first_name} {user.attributes.last_name}
-        </Td>
-        <Td>{user.attributes.email}</Td>
-        <RegisteredAt>
-          {/*
-            For the 'all registered users' group, we do not show invited Users who have not yet accepted their invites,
-            but we do in groups they have been added to when invited.
+          The 'Invitation pending' messages should clarify this.
 
-            The 'Invitation pending' messages should clarify this.
+          https://citizenlab.atlassian.net/browse/CL-2255
+        */}
+        {user.attributes.invite_status === 'pending' ? (
+          <i>
+            <FormattedMessage {...messages.userInvitationPending} />
+          </i>
+        ) : (
+          registeredAt
+        )}
+      </RegisteredAt>
+      <Td>
+        <Toggle checked={isUserAdmin} onChange={toggleAdmin} />
+      </Td>
+      <Td>
+        <MoreActionsMenu showLabel={false} actions={actions} />
+      </Td>
+    </Tr>
+  );
+};
 
-            https://citizenlab.atlassian.net/browse/CL-2255
-          */}
-          {user.attributes.invite_status === 'pending' ? (
-            <i>
-              <FormattedMessage {...messages.userInvitationPending} />
-            </i>
-          ) : (
-            this.state.registeredAt
-          )}
-        </RegisteredAt>
-        <Td>
-          <Toggle checked={isAdmin} onChange={this.handleAdminRoleOnChange} />
-        </Td>
-        <Td>
-          <MoreOptionsWrapper>
-            <Tippy
-              placement="bottom-end"
-              interactive={true}
-              trigger="click"
-              duration={[200, 0]}
-              content={
-                <DropdownList>
-                  <DropdownListButton
-                    onClick={this.goToUserProfile(
-                      this.props.user.attributes.slug
-                    )}
-                  >
-                    <FormattedMessage {...messages.seeProfile} />
-                    <IconWrapper>
-                      <Icon name="eye" fill="white" />
-                    </IconWrapper>
-                  </DropdownListButton>
-                  <DropdownListButton onClick={this.handleDeleteClick}>
-                    <FormattedMessage {...messages.deleteUser} />
-                    <IconWrapper>
-                      <Icon name="delete" fill="white" />
-                    </IconWrapper>
-                  </DropdownListButton>
-                </DropdownList>
-              }
-            >
-              <MoreOptionsButton onMouseDown={removeFocusAfterMouseClick}>
-                <MoreOptionsIcon name="dots-horizontal" />
-              </MoreOptionsButton>
-            </Tippy>
-          </MoreOptionsWrapper>
-        </Td>
-      </Tr>
-    );
-  }
-}
-
-export default injectIntl(UserTableRow);
+export default UserTableRow;

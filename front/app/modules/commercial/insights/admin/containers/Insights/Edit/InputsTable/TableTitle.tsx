@@ -5,11 +5,9 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import messages from '../../messages';
 import { WrappedComponentProps } from 'react-intl';
 
-// hooks
-import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
-
-// services
-import { deleteInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
+// api
+import useCategories from 'modules/commercial/insights/api/categories/useCategories';
+import useDeleteCategory from 'modules/commercial/insights/api/categories/useDeleteCategory';
 
 // styles
 import styled from 'styled-components';
@@ -51,8 +49,8 @@ const TableTitle = ({
   params: { viewId },
   location: { query, pathname },
 }: WrappedComponentProps & WithRouterProps) => {
-  const categories = useInsightsCategories(viewId);
-
+  const { data: categories } = useCategories(viewId);
+  const { mutate: deleteCategory } = useDeleteCategory();
   const [renameCategoryModalOpened, setRenameCategoryModalOpened] =
     useState(false);
   const [isCategoryMenuOpened, setCategoryMenuOpened] = useState(false);
@@ -76,24 +74,26 @@ const TableTitle = ({
     {
       const deleteMessage = formatMessage(messages.deleteCategoryConfirmation);
       if (window.confirm(deleteMessage)) {
-        try {
-          await deleteInsightsCategory(viewId, query.category);
-        } catch {
-          // Do nothing
-        }
+        deleteCategory(
+          { viewId, categoryId: query.category },
+          {
+            onSuccess: () => {
+              clHistory.push({
+                pathname,
+                search: stringify(
+                  { ...query, category: undefined },
+                  { addQueryPrefix: true }
+                ),
+              });
+              setCategoryMenuOpened(false);
+            },
+          }
+        );
       }
-      clHistory.push({
-        pathname,
-        search: stringify(
-          { ...query, category: undefined },
-          { addQueryPrefix: true }
-        ),
-      });
-      setCategoryMenuOpened(false);
     }
   };
 
-  const selectedCategory = categories?.find(
+  const selectedCategory = categories?.data.find(
     (category) => category.id === query.category
   );
 

@@ -11,6 +11,10 @@ function phaseExists(phaseParam: string, phases: IPhaseData[]) {
   return +phaseParam <= phases.length;
 }
 
-export function isValidPhase(phaseParam: string, phases: IPhaseData[]) {
+export function isValidPhase(
+  phaseParam: string | undefined,
+  phases: IPhaseData[]
+) {
+  if (phaseParam === undefined) return false;
   return isIntegerOverZero(phaseParam) && phaseExists(phaseParam, phases);
 }

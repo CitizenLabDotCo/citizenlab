@@ -12,6 +12,7 @@ import {
   Title,
   Image,
 } from '@citizenlab/cl2-component-library';
+import Centerer from 'components/UI/Centerer';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -223,15 +224,9 @@ class SharingModalContent extends PureComponent<
     }
 
     return (
-      <Box
-        width="100%"
-        height="460px"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
+      <Centerer height="460px">
         <Spinner />
-      </Box>
+      </Centerer>
     );
   }
 }

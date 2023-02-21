@@ -84,6 +84,7 @@ export const proposalsConfig: StatCardConfig = {
         },
         filters: {
           'dimension_type.name': 'initiative',
+          publication_status: 'published',
           ...successStatus,
           ...getProjectFilter('dimension_project', projectId),
           ...getDateFilter('dimension_date_created', startMoment, endMoment),

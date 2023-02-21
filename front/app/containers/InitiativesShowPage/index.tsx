@@ -7,7 +7,6 @@ import { adopt } from 'react-adopt';
 // components
 import PageNotFound from 'components/PageNotFound';
 import InitiativesShow from 'containers/InitiativesShow';
-import Button from 'components/UI/Button';
 import InitiativeShowPageTopBar from './InitiativeShowPageTopBar';
 
 // resources
@@ -18,25 +17,8 @@ import GetInitiative, {
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
 // style
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
-
-const InitiativeNotFoundWrapper = styled.div`
-  height: calc(
-    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
-  );
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 4rem;
-  font-size: ${fontSizes.l}px;
-  color: ${colors.textSecondary};
-`;
 
 const Container = styled.div`
   background: #fff;
@@ -60,27 +42,10 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const goBackToListMessage = <FormattedMessage {...messages.goBackToList} />;
-
 const InitiativesShowPage = ({ initiative }: Props) => {
   const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
 
-  if (isError(initiative)) {
-    return (
-      <InitiativeNotFoundWrapper>
-        <p>
-          <FormattedMessage {...messages.noInitiativeFoundHere} />
-        </p>
-        <Button
-          linkTo="/initiatives"
-          text={goBackToListMessage}
-          icon="arrow-left"
-        />
-      </InitiativeNotFoundWrapper>
-    );
-  }
-
-  if (!initiativesEnabled) {
+  if (!initiativesEnabled || isError(initiative)) {
     return <PageNotFound />;
   }
 

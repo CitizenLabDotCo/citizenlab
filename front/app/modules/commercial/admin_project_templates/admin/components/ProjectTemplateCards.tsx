@@ -11,6 +11,7 @@ import Button from 'components/UI/Button';
 import DepartmentFilter from '../components/DepartmentFilter';
 import PurposeFilter from './PurposeFilter';
 import ParticipationLevelFilter from './ParticipationLevelFilter';
+import Centerer from 'components/UI/Centerer';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -45,14 +46,6 @@ const Right = styled.div``;
 
 const StyledSearchInput = styled(SearchInput)`
   width: 300px;
-`;
-
-const SpinnerWrapper = styled.div`
-  width: 100%;
-  height: 500px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 const Cards = styled.div`
@@ -153,9 +146,9 @@ const ProjectTemplateCards = memo<Props & WrappedComponentProps>(
         </Filters>
 
         {loading && !templates && (
-          <SpinnerWrapper>
+          <Centerer height="500px">
             <Spinner />
-          </SpinnerWrapper>
+          </Centerer>
         )}
 
         {templates && templates.edges && templates.edges.length > 0 && (

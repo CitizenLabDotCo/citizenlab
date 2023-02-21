@@ -17,9 +17,6 @@ const AdminInsightsViewComponent = React.lazy(
 const AdminInsightsViewEditComponent = React.lazy(
   () => import('./admin/containers/Insights/Edit')
 );
-const AdminInsightsViewDetectComponent = React.lazy(
-  () => import('./admin/containers/Insights/Detect')
-);
 
 declare module 'components/UI/Error' {
   interface TFieldNameMap {
@@ -38,10 +35,6 @@ const configuration: ModuleConfiguration = {
       {
         path: 'reporting/insights/:viewId/edit',
         element: <AdminInsightsViewEditComponent />,
-      },
-      {
-        path: 'reporting/insights/:viewId/detect',
-        element: <AdminInsightsViewDetectComponent />,
       },
     ],
     'admin.reporting': [

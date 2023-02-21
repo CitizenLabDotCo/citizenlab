@@ -23,6 +23,18 @@ module ParticipationMethod
       # Default is to do nothing.
     end
 
+    def default_fields(_custom_form)
+      []
+    end
+
+    def constraints
+      {}
+    end
+
+    def form_structure_element
+      nil
+    end
+
     def validate_built_in_fields?
       # Most participation methods do not have built-in fields,
       # so return false.
@@ -73,6 +85,10 @@ module ParticipationMethod
       false
     end
 
+    def supports_budget?
+      false
+    end
+
     def supports_status?
       false
     end
@@ -87,6 +103,14 @@ module ParticipationMethod
 
     def include_data_in_email?
       true
+    end
+
+    def include_author_budget_in_schema?
+      false
+    end
+
+    def supports_answer_visible_to?
+      false
     end
 
     private

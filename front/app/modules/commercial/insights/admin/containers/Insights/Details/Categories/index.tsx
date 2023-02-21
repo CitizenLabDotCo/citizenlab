@@ -10,8 +10,9 @@ import { stringify } from 'qs';
 import { trackEventByName } from 'utils/analytics';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
 
-// hooks
-import useInsightsCategories from 'modules/commercial/insights/hooks/useInsightsCategories';
+// api
+import useCategories from 'modules/commercial/insights/api/categories/useCategories';
+import { IInsightsCategoryData } from 'modules/commercial/insights/api/categories/types';
 
 // components
 import Tag from 'modules/commercial/insights/admin/components/Tag';
@@ -27,7 +28,6 @@ import messages from '../../messages';
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
-import { IInsightsCategoryData } from 'modules/commercial/insights/services/insightsCategories';
 import {
   TooltipContent,
   SectionTitle,
@@ -56,7 +56,7 @@ const Categories: React.FC<CategoryProps> = ({
   children,
 }) => {
   const [seeAllCategories, setSeeAllCategories] = useState(false);
-  const categories = useInsightsCategories(viewId);
+  const { data: categories } = useCategories(viewId);
 
   if (isNilOrError(categories)) {
     return null;
@@ -85,7 +85,7 @@ const Categories: React.FC<CategoryProps> = ({
     setSeeAllCategories(!seeAllCategories);
   };
 
-  const availableCategories = categories
+  const availableCategories = categories.data
     // Filter out categories with input count 0
     .filter((category) => category.attributes.inputs_count > 0)
     // Filter out categories that are included in the url
@@ -118,7 +118,7 @@ const Categories: React.FC<CategoryProps> = ({
             />
           </SectionTitle>
         </Box>
-        {categories.length > 0 ? (
+        {categories.data.length > 0 ? (
           <Box
             display="flex"
             justifyContent="space-between"

@@ -153,7 +153,7 @@ describe XlsxService do
         expect(field_idx).to be_present
       end
 
-      it 'excludes disabled custom fields' do
+      it 'includes disabled custom fields' do
         create(
           :custom_field,
           :for_custom_form,
@@ -163,7 +163,7 @@ describe XlsxService do
         )
         headers = worksheet[0].cells.map(&:value)
         field_idx = headers.find_index 'Disabled field'
-        expect(field_idx).to be_nil
+        expect(field_idx).to be_present
       end
     end
   end

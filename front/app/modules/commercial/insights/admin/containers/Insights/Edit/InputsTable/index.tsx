@@ -8,13 +8,12 @@ import clHistory from 'utils/cl-router/history';
 import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';
 
 // hooks
-import useInsightsInputs, {
-  defaultPageSize,
-} from 'modules/commercial/insights/hooks/useInsightsInputs';
-import { IInsightsInputData } from 'modules/commercial/insights/services/insightsInputs';
-import useScanInsightsCategory from 'modules/commercial/insights/hooks/useScanInsightsCategory';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-
+import useInputs, {
+  defaultPageSize,
+} from 'modules/commercial/insights/api/inputs/useInputs';
+import { getPageNumberFromUrl } from 'utils/paginationUtils';
+import useScanForCategorySuggestions from 'modules/commercial/insights/api/category_suggestions/useScanForCategorySuggestions';
 // components
 import {
   Table,
@@ -24,6 +23,7 @@ import {
   Tr,
   Icon,
   Box,
+  Spinner,
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import InputsTableRow from './InputsTableRow';
@@ -47,6 +47,7 @@ import { colors } from 'utils/styleUtils';
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
+import { IInsightsInputData } from 'modules/commercial/insights/api/inputs/types';
 
 const Inputs = styled.div`
   flex: 1;
@@ -126,21 +127,25 @@ const InputsTable = ({
       : // Include only processed input everywhere else
         true;
 
-  const {
-    list: inputs,
-    lastPage,
-    loading,
-    setLoading,
-  } = useInsightsInputs(viewId, {
+  const { data: inputs, isLoading } = useInputs(viewId, {
     pageNumber,
     search,
     sort,
     processed,
     category: selectedCategory,
+    pageSize: defaultPageSize,
   });
 
-  const { status, progress, triggerScan, cancelScan, onDone } =
-    useScanInsightsCategory(viewId, query.category, processed);
+  const lastPage = inputs ? getPageNumberFromUrl(inputs.links?.last) : 1;
+
+  const {
+    status,
+    progress,
+    triggerScan,
+    cancelScan,
+    onDone,
+    isLoading: isScanLoading,
+  } = useScanForCategorySuggestions(viewId, query.category, processed);
 
   const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
   // Callbacks and Effects -----------------------------------------------------
@@ -154,15 +159,15 @@ const InputsTable = ({
   // Update isPreviewedInputInTable ref value
   useEffect(() => {
     if (!isNilOrError(inputs)) {
-      const inputsIds = inputs.map((input) => input.id);
+      const inputsIds = inputs.data.map((input) => input.id);
       const isInTable = inputsIds.includes(query.previewedInputId);
 
       isPreviewedInputInTable.current = isInTable;
 
       setIsMoveDownDisabled(
         isInTable && pageNumber === lastPage
-          ? previewedInputIndex === inputs.length - 1
-          : previewedInputIndex === inputs.length
+          ? previewedInputIndex === inputs.data.length - 1
+          : previewedInputIndex === inputs.data.length
       );
     }
   }, [
@@ -178,23 +183,23 @@ const InputsTable = ({
     if (
       !isNilOrError(inputs) &&
       !isNilOrError(previewedInputIndex) &&
-      !isNilOrError(inputs[previewedInputIndex]) &&
+      !isNilOrError(inputs.data[previewedInputIndex]) &&
       movedUpDown &&
-      !loading
+      !isLoading
     ) {
+      setMovedUpDown(false);
       clHistory.replace({
         pathname,
         search: stringify(
           {
             ...query,
-            previewedInputId: inputs[previewedInputIndex].id,
+            previewedInputId: inputs.data[previewedInputIndex].id,
           },
           { addQueryPrefix: true }
         ),
       });
-      setMovedUpDown(false);
     }
-  }, [inputs, pathname, previewedInputIndex, query, movedUpDown, loading]);
+  }, [inputs, pathname, previewedInputIndex, query, movedUpDown, isLoading]);
 
   // Side Modal Preview
   // Use callback to keep references for moveUp and moveDown stable
@@ -226,27 +231,16 @@ const InputsTable = ({
           { addQueryPrefix: true }
         ),
       });
-      // Setting the loading state here to ensure it is true in the useEffect that navigates to the selected index
-      setLoading(true);
     }
-  }, [
-    pageNumber,
-    pathname,
-    selectedCategory,
-    sort,
-    search,
-    query.processed,
-    setLoading,
-  ]);
+  }, [pageNumber, pathname, selectedCategory, sort, search, query.processed]);
 
   const moveDown = useCallback(() => {
     let hasToLoadNextPage = false;
-
     setPreviewedInputIndex((prevSelectedIndex) => {
       hasToLoadNextPage = !isNilOrError(inputs)
         ? lastPage !== pageNumber && isPreviewedInputInTable.current
-          ? prevSelectedIndex === inputs.length - 1
-          : prevSelectedIndex === inputs.length
+          ? prevSelectedIndex === inputs.data.length - 1
+          : prevSelectedIndex === inputs.data.length
         : false;
 
       return hasToLoadNextPage
@@ -272,8 +266,6 @@ const InputsTable = ({
           { addQueryPrefix: true }
         ),
       });
-      // Setting the loading state here to ensure it is true in the useEffect that navigates to the selected index
-      setLoading(true);
     }
   }, [
     inputs,
@@ -284,7 +276,6 @@ const InputsTable = ({
     sort,
     search,
     query.processed,
-    setLoading,
   ]);
 
   // Search
@@ -309,8 +300,15 @@ const InputsTable = ({
     [pathname, selectedCategory, sort, search, query.processed]
   );
 
-  // From this point we need data ----------------------------------------------
-  if (isNilOrError(inputs)) {
+  if (isLoading) {
+    return (
+      <Box pt="40px" margin="auto">
+        <Spinner />
+      </Box>
+    );
+  }
+
+  if (!inputs) {
     return null;
   }
 
@@ -328,7 +326,7 @@ const InputsTable = ({
   // Selection and Actions -----------------------------------------------------
   const handleCheckboxChange = () => {
     if (selectedRows.size === 0) {
-      const newSelection = new Set(inputs.map((input) => input.id));
+      const newSelection = new Set(inputs?.data.map((input) => input.id));
       setSelectedRows(newSelection);
     } else {
       const newSelection = new Set<string>();
@@ -353,7 +351,7 @@ const InputsTable = ({
   const openSideModal = () => setIsSideModalOpen(true);
 
   const previewInput = (input: IInsightsInputData) => () => {
-    setPreviewedInputIndex(inputs.indexOf(input));
+    setPreviewedInputIndex(inputs.data.indexOf(input));
     clHistory.replace({
       pathname,
       search: stringify(
@@ -382,10 +380,10 @@ const InputsTable = ({
       <SearchContainer>
         <SearchInput
           onChange={onSearch}
-          a11y_numberOfSearchResults={inputs.length}
+          a11y_numberOfSearchResults={inputs.data.length}
         />
         <Box display="flex" alignItems="center">
-          {inputs.length > 0 && nlpFeatureFlag && status === 'isIdle' && (
+          {inputs.data.length > 0 && nlpFeatureFlag && status === 'isIdle' && (
             <Box alignItems="center" mr="16px">
               <Button
                 className="intercom-insights-edit-scan-button"
@@ -393,6 +391,7 @@ const InputsTable = ({
                 textColor={colors.primary}
                 onClick={triggerScan}
                 data-testid="insightsScanCategory-button"
+                processing={isLoading}
               >
                 {formatMessage(messages.categoriesScanButton)}
               </Button>
@@ -408,7 +407,7 @@ const InputsTable = ({
           </Button>
         </Box>
       </SearchContainer>
-      {inputsCategoryFilter === 'recentlyPosted' && inputs.length !== 0 && (
+      {inputsCategoryFilter === 'recentlyPosted' && inputs.data.length !== 0 && (
         <RecentlyPostedInfoBox data-testid="insightsRecentlyAddedInfobox">
           <Icon name="refresh" />
           {formatMessage(messages.inputsTableRecentlyPostedInfoBox)}
@@ -417,18 +416,18 @@ const InputsTable = ({
       <Box display="flex" justifyContent="space-between">
         <Box display="flex" minHeight="44px">
           <TableTitle />
-          {inputs.length !== 0 && (
+          {inputs.data.length !== 0 && (
             <StyledActions
-              selectedInputs={inputs.filter((input) =>
+              selectedInputs={inputs.data.filter((input) =>
                 selectedRows.has(input.id)
               )}
             />
           )}
         </Box>
-        {inputs.length !== 0 && <Export />}
+        {inputs.data.length !== 0 && <Export />}
       </Box>
       <StyledDivider />
-      {((inputs.length === 0 && inputsCategoryFilter === 'category') ||
+      {((inputs.data.length === 0 && inputsCategoryFilter === 'category') ||
         status !== 'isIdle') && (
         <ScanCategory
           status={status}
@@ -436,10 +435,11 @@ const InputsTable = ({
           triggerScan={triggerScan}
           cancelScan={cancelScan}
           onClose={onDone}
-          key={query.category}
+          key={`${query.category} ${processed}`}
+          isLoading={isScanLoading}
         />
       )}
-      {inputs.length === 0 ? (
+      {inputs.data.length === 0 ? (
         <EmptyState />
       ) : (
         <>
@@ -453,7 +453,7 @@ const InputsTable = ({
                   <CheckboxWithPartialCheck
                     onChange={handleCheckboxChange}
                     checked={
-                      selectedRows.size === inputs.length
+                      selectedRows.size === inputs.data.length
                         ? true
                         : selectedRows.size === 0
                         ? false
@@ -485,7 +485,7 @@ const InputsTable = ({
               </Tr>
             </Thead>
             <Tbody>
-              {inputs.map((input) => (
+              {inputs.data.map((input) => (
                 <InputsTableRow
                   input={input}
                   key={input.id}

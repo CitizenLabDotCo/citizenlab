@@ -91,10 +91,6 @@ export default defineMessages({
     id: 'app.containers.SignUp.goToLogIn',
     defaultMessage: 'Already have an account? {goToOtherFlowLink}',
   },
-  goToSignUp: {
-    id: 'app.containers.SignUp.goToSignUp',
-    defaultMessage: "Don't have an account? {goToOtherFlowLink}",
-  },
   logIn2: {
     id: 'app.containers.SignUp.logIn2',
     defaultMessage: 'Log in',

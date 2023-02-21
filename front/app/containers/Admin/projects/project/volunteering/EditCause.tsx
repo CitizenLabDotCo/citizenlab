@@ -60,7 +60,7 @@ const EditCause = () => {
           title_multiloc: cause.attributes.title_multiloc,
           description_multiloc: cause.attributes.description_multiloc,
         }}
-        imageUrl={cause.attributes.image?.large}
+        imageUrl={cause.attributes.image?.medium}
       />
     </div>
   );

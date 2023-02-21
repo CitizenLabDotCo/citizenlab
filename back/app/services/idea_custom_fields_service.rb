@@ -3,29 +3,40 @@
 class IdeaCustomFieldsService
   def initialize(custom_form)
     @custom_form = custom_form
+    @participation_method = Factory.instance.participation_method_for custom_form.participation_context
   end
 
   def all_fields
-    default_fields
-  end
-
-  def configurable_fields
-    disallowed_fields = %w[author_id budget]
-    all_fields.reject do |field|
-      disallowed_fields.include? field.code
+    if @custom_form.custom_field_ids.empty?
+      participation_method.default_fields custom_form
+    else
+      @custom_form.custom_fields
     end
   end
 
   def reportable_fields
-    enabled_fields.reject(&:built_in?)
+    # idea_images_attributes is not supported by XlsxService.
+    # Page and section fields do not capture data, so they are excluded.
+    all_fields.select do |field|
+      field.code != 'idea_images_attributes' && field.input_type != 'page' && field.input_type != 'section'
+    end
   end
 
   def visible_fields
     enabled_fields
   end
 
+  def submittable_fields
+    unsubbmittable_input_types = %w[page section]
+    enabled_fields.reject { |field| unsubbmittable_input_types.include? field.input_type }
+  end
+
   def enabled_fields
     all_fields.select(&:enabled?)
+  end
+
+  def enabled_public_fields
+    enabled_fields.select { |field| field.answer_visible_to == CustomField::VISIBLE_TO_PUBLIC }
   end
 
   def extra_visible_fields
@@ -35,7 +46,7 @@ class IdeaCustomFieldsService
   def allowed_extra_field_keys
     fields_with_simple_keys = []
     fields_with_array_keys = {}
-    extra_visible_fields.each do |field|
+    submittable_fields.reject(&:built_in?).each do |field|
       case field.input_type
       when 'multiselect'
         fields_with_array_keys[field.key.to_sym] = []
@@ -45,225 +56,71 @@ class IdeaCustomFieldsService
         fields_with_simple_keys << field.key.to_sym
       end
     end
-    [
-      *fields_with_simple_keys,
-      fields_with_array_keys
-    ]
+    if fields_with_array_keys.empty?
+      fields_with_simple_keys
+    else
+      fields_with_simple_keys + [fields_with_array_keys]
+    end
+  end
+
+  def validate_constraints_against_updates(field, field_params)
+    constraints = @participation_method.constraints[field.code&.to_sym]
+    return unless constraints
+
+    constraints[:locks]&.each do |attribute, value|
+      if value == true && field_params[attribute] != field[attribute] && !section1_title?(field, attribute)
+        field.errors.add :constraints, "Cannot change #{attribute}. It is locked."
+      end
+    end
+  end
+
+  def validate_constraints_against_defaults(field)
+    constraints = @participation_method.constraints[field.code&.to_sym]
+    return unless constraints
+
+    default_fields = @participation_method.default_fields @custom_form
+    default_field = default_fields.find { |f| f.code == field.code }
+
+    constraints[:locks]&.each do |attribute, value|
+      if value == true && field[attribute] != default_field[attribute] && !section1_title?(field, attribute)
+        field.errors.add :constraints, "Cannot change #{attribute} from default value. It is locked."
+      end
+    end
+  end
+
+  # The following params should not be editable after they have been created
+  def remove_ignored_update_params(field_params)
+    field_params.except(:code, :input_type)
+  end
+
+  def check_form_structure(fields, errors)
+    return if fields.empty?
+
+    can_have_type = @participation_method.form_structure_element
+    cannot_have_type = can_have_type == 'section' ? 'page' : 'section'
+    if fields[0][:input_type] != can_have_type
+      error = { error: "First field must be of type '#{can_have_type}'" }
+      errors['0'] = { structure: [error] }
+    end
+    fields.each_with_index do |field, index|
+      next unless field[:input_type] == cannot_have_type
+
+      error = { error: "Method '#{participation_method}' cannot contain fields with an input_type of '#{cannot_have_type}'" }
+      if errors[index.to_s] && errors[index.to_s][:structure]
+        errors[index.to_s][:structure] << error
+      else
+        errors[index.to_s] = { structure: [error] }
+      end
+    end
   end
 
   private
 
-  attr_reader :custom_form
-
-  def native_survey?
-    !!custom_form&.participation_context&.native_survey?
+  # Check required as it doesn't matter what is saved in title for section 1
+  # Constraints required for the front-end but response will always return input specific method
+  def section1_title?(field, attribute)
+    field.code == 'ideation_section1' && attribute == :title_multiloc
   end
 
-  def default_fields
-    return [] if native_survey?
-
-    ml_s = MultilocService.new
-    [
-      CustomField.new(
-        id: SecureRandom.uuid,
-        resource: custom_form,
-        key: 'title_multiloc',
-        code: 'title_multiloc',
-        input_type: 'text_multiloc',
-        title_multiloc: ml_s.i18n_to_multiloc(
-          'custom_fields.ideas.title.title',
-          locales: CL2_SUPPORTED_LOCALES
-        ),
-        description_multiloc: begin
-          ml_s.i18n_to_multiloc(
-            'custom_fields.ideas.title.description',
-            locales: CL2_SUPPORTED_LOCALES
-          )
-        rescue StandardError
-          {}
-        end,
-        required: true,
-        enabled: true,
-        ordering: 0
-      ),
-      CustomField.new(
-        id: SecureRandom.uuid,
-        resource: custom_form,
-        key: 'body_multiloc',
-        code: 'body_multiloc',
-        input_type: 'html_multiloc',
-        title_multiloc: ml_s.i18n_to_multiloc(
-          'custom_fields.ideas.body.title',
-          locales: CL2_SUPPORTED_LOCALES
-        ),
-        description_multiloc: begin
-          ml_s.i18n_to_multiloc(
-            'custom_fields.ideas.body.description',
-            locales: CL2_SUPPORTED_LOCALES
-          )
-        rescue StandardError
-          {}
-        end,
-        required: true,
-        enabled: true,
-        ordering: 1
-      ),
-      CustomField.new(
-        id: SecureRandom.uuid,
-        resource: custom_form,
-        key: 'author_id',
-        code: 'author_id',
-        input_type: 'text',
-        title_multiloc: ml_s.i18n_to_multiloc(
-          'custom_fields.ideas.author_id.title',
-          locales: CL2_SUPPORTED_LOCALES
-        ),
-        description_multiloc: begin
-          ml_s.i18n_to_multiloc(
-            'custom_fields.ideas.author_id.description',
-            locales: CL2_SUPPORTED_LOCALES
-          )
-        rescue StandardError
-          {}
-        end,
-        required: false,
-        enabled: true,
-        ordering: 2
-      ),
-      CustomField.new(
-        id: SecureRandom.uuid,
-        resource: custom_form,
-        key: 'budget',
-        code: 'budget',
-        input_type: 'number',
-        title_multiloc: ml_s.i18n_to_multiloc(
-          'custom_fields.ideas.budget.title',
-          locales: CL2_SUPPORTED_LOCALES
-        ),
-        description_multiloc: begin
-          ml_s.i18n_to_multiloc(
-            'custom_fields.ideas.budget.description',
-            locales: CL2_SUPPORTED_LOCALES
-          )
-        rescue StandardError
-          {}
-        end,
-        required: false,
-        enabled: true,
-        ordering: 3
-      ),
-      CustomField.new(
-        id: SecureRandom.uuid,
-        resource: custom_form,
-        key: 'proposed_budget',
-        code: 'proposed_budget',
-        input_type: 'number',
-        title_multiloc: ml_s.i18n_to_multiloc(
-          'custom_fields.ideas.proposed_budget.title',
-          locales: CL2_SUPPORTED_LOCALES
-        ),
-        description_multiloc: begin
-          ml_s.i18n_to_multiloc(
-            'custom_fields.ideas.proposed_budget.description',
-            locales: CL2_SUPPORTED_LOCALES
-          )
-        rescue StandardError
-          {}
-        end,
-        required: false,
-        enabled: false,
-        ordering: 4
-      ),
-      CustomField.new(
-        id: SecureRandom.uuid,
-        resource: custom_form,
-        key: 'topic_ids',
-        code: 'topic_ids',
-        input_type: 'multiselect',
-        title_multiloc: ml_s.i18n_to_multiloc(
-          'custom_fields.ideas.topic_ids.title',
-          locales: CL2_SUPPORTED_LOCALES
-        ),
-        description_multiloc: begin
-          ml_s.i18n_to_multiloc(
-            'custom_fields.ideas.topic_ids.description',
-            locales: CL2_SUPPORTED_LOCALES
-          )
-        rescue StandardError
-          {}
-        end,
-        required: false,
-        enabled: true,
-        ordering: 5
-      ),
-      CustomField.new(
-        id: SecureRandom.uuid,
-        resource: custom_form,
-        key: 'location_description',
-        code: 'location_description',
-        input_type: 'text',
-        title_multiloc: ml_s.i18n_to_multiloc(
-          'custom_fields.ideas.location.title',
-          locales: CL2_SUPPORTED_LOCALES
-        ),
-        description_multiloc: begin
-          ml_s.i18n_to_multiloc(
-            'custom_fields.ideas.location.description',
-            locales: CL2_SUPPORTED_LOCALES
-          )
-        rescue StandardError
-          {}
-        end,
-        required: false,
-        enabled: true,
-        ordering: 6
-      ),
-      CustomField.new(
-        id: SecureRandom.uuid,
-        resource: custom_form,
-        key: 'idea_images_attributes',
-        code: 'idea_images_attributes',
-        input_type: 'image_files',
-        title_multiloc: ml_s.i18n_to_multiloc(
-          'custom_fields.ideas.images.title',
-          locales: CL2_SUPPORTED_LOCALES
-        ),
-        description_multiloc: begin
-          ml_s.i18n_to_multiloc(
-            'custom_fields.ideas.images.description',
-            locales: CL2_SUPPORTED_LOCALES
-          )
-        rescue StandardError
-          {}
-        end,
-        required: false,
-        enabled: true,
-        ordering: 7
-      ),
-      CustomField.new(
-        id: SecureRandom.uuid,
-        resource: custom_form,
-        key: 'idea_files_attributes',
-        code: 'idea_files_attributes',
-        input_type: 'files',
-        title_multiloc: ml_s.i18n_to_multiloc(
-          'custom_fields.ideas.attachments.title',
-          locales: CL2_SUPPORTED_LOCALES
-        ),
-        description_multiloc: begin
-          ml_s.i18n_to_multiloc(
-            'custom_fields.ideas.attachments.description',
-            locales: CL2_SUPPORTED_LOCALES
-          )
-        rescue StandardError
-          {}
-        end,
-        required: false,
-        enabled: true,
-        ordering: 8
-      )
-    ]
-  end
+  attr_reader :custom_form, :participation_method
 end
-
-IdeaCustomFieldsService.prepend_if_ee('IdeaCustomFields::Patches::IdeaCustomFieldsService')

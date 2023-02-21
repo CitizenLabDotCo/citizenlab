@@ -25,11 +25,9 @@ import clHistory from 'utils/cl-router/history';
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError, isError } from 'utils/helperUtils';
 
-// services
-import { deleteInsightsView } from '../../../services/insightsViews';
-
 // hooks
-import useInsightsView from '../../../hooks/useInsightsView';
+import useView from 'modules/commercial/insights/api/views/useView';
+import useDeleteView from 'modules/commercial/insights/api/views/useDeleteView';
 
 export const topBarHeight = 60;
 
@@ -75,7 +73,8 @@ const TopBar = ({
   const [renameModalOpened, setRenameModalOpened] = useState(false);
   const [isDropdownOpened, setDropdownOpened] = useState(false);
   const viewId = params.viewId;
-  const view = useInsightsView(viewId);
+  const { data: view } = useView(viewId);
+  const { mutate } = useDeleteView();
 
   useEffect(() => {
     if (isError(view)) {
@@ -101,12 +100,13 @@ const TopBar = ({
   const closeRenameModal = () => setRenameModalOpened(false);
   const openRenameModal = () => setRenameModalOpened(true);
 
-  const handleDeleteClick = async () => {
+  const handleDeleteClick = () => {
     const deleteMessage = formatMessage(messages.deleteConfirmation);
 
     if (window.confirm(deleteMessage)) {
-      await deleteInsightsView(viewId);
-      clHistory.push('/admin/reporting/insights');
+      mutate(viewId, {
+        onSuccess: () => clHistory.push('/admin/reporting/insights'),
+      });
     }
   };
 

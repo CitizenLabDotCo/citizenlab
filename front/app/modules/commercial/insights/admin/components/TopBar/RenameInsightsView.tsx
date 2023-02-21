@@ -13,14 +13,7 @@ import { injectIntl } from 'utils/cl-intl';
 import { Button, Input } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 
-// services
-import { updateInsightsView } from 'modules/commercial/insights/services/insightsViews';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
-// types
-import { CLErrors } from 'typings';
+import useUpdateView from 'modules/commercial/insights/api/views/useUpdateView';
 
 const Container = styled.div`
   width: 100%;
@@ -60,27 +53,20 @@ const RenameInsightsView = ({
   originalViewName,
   intl: { formatMessage },
 }: RenameInsightsViewProps & WrappedComponentProps) => {
-  const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<CLErrors | undefined>();
+  const { mutate, isLoading, error, reset } = useUpdateView();
 
   const [name, setName] = useState<string>(originalViewName);
   const onChangeName = (value: string) => {
     setName(value);
-    setErrors(undefined);
+    reset();
   };
 
   const handleSubmit = async () => {
     if (name) {
-      setLoading(true);
-      try {
-        const result = await updateInsightsView(insightsViewId, name);
-        if (!isNilOrError(result)) {
-          closeRenameModal();
-        }
-      } catch (errors) {
-        setErrors(errors.json.errors);
-        setLoading(false);
-      }
+      mutate(
+        { id: insightsViewId, requestBody: { view: { name } } },
+        { onSuccess: closeRenameModal }
+      );
     }
   };
 
@@ -94,11 +80,13 @@ const RenameInsightsView = ({
           onChange={onChangeName}
           label={formatMessage(messages.renameModalNameLabel)}
         />
-        {errors && <Error apiErrors={errors['name']} fieldName="view_name" />}
+        {error && (
+          <Error apiErrors={error.errors['name']} fieldName="view_name" />
+        )}
 
         <ButtonContainer>
           <Button
-            processing={loading}
+            processing={isLoading}
             disabled={!name}
             onClick={handleSubmit}
             bgColor={colors.primary}

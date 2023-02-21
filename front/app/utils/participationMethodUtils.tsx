@@ -330,7 +330,7 @@ export function getAllParticipationMethods(
  * phaseId is the same as the provided phaseId
  */
 export const getParticipationMethod = (
-  project: IProjectData | null,
+  project: IProjectData | null | undefined,
   phases: Error | IPhaseData[] | null | undefined | null,
   phaseId?: string
 ): ParticipationMethod | undefined => {

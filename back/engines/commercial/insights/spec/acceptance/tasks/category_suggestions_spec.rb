@@ -12,8 +12,8 @@ resource 'Category-suggestion tasks' do
       end
     end
 
-    context 'when normal user' do
-      before { user_header_token }
+    context 'when resident' do
+      before { resident_header_token }
 
       example 'unauthorized', document: false do
         do_request
@@ -105,13 +105,13 @@ resource 'Category-suggestion tasks' do
 
       example_request 'returns the number of tasks' do
         expect(status).to eq(200)
-        expect(json_response_body[:count]).to eq(tasks_c1.count + tasks_c2.count)
+        expect(json_response_body[:data][:count]).to eq(tasks_c1.count + tasks_c2.count)
       end
 
       example 'returns the number of tasks for a subset of categories', document: false do
         do_request(categories: [c1.id])
         expect(status).to eq(200)
-        expect(json_response_body[:count]).to eq(tasks_c1.count)
+        expect(json_response_body[:data][:count]).to eq(tasks_c1.count)
       end
 
       example 'returns the number of tasks for a subset of inputs', document: false do
@@ -121,7 +121,7 @@ resource 'Category-suggestion tasks' do
         do_request(inputs: { processed: true })
 
         expect(status).to eq(200)
-        expect(json_response_body[:count]).to eq(1)
+        expect(json_response_body[:data][:count]).to eq(1)
       end
     end
 

@@ -9,7 +9,7 @@ resource 'ActionDescriptors' do
   let(:json_response) { json_parse(response_body) }
 
   before do
-    user_header_token
+    resident_header_token
     header 'Content-Type', 'application/json'
   end
 

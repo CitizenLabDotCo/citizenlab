@@ -1,11 +1,9 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { TProjectCardSize } from 'components/ProjectCard';
 
 const apiEndpoint = `${API_PATH}/projects`;
 
 type ProjectImageSizes = {
-  small: string | null;
   large: string | null;
 };
 
@@ -13,19 +11,6 @@ export const CARD_IMAGE_ASPECT_RATIO_WIDTH = 4;
 export const CARD_IMAGE_ASPECT_RATIO_HEIGHT = 3;
 export const CARD_IMAGE_ASPECT_RATIO =
   CARD_IMAGE_ASPECT_RATIO_WIDTH / CARD_IMAGE_ASPECT_RATIO_HEIGHT;
-
-export const getCardImageUrl = (
-  imageVersions: ProjectImageSizes,
-  isPhone: boolean,
-  cardSize?: TProjectCardSize
-) => {
-  if (isPhone || cardSize !== 'small') {
-    // image size is approximately the same for both medium and large desktop card sizes
-    return imageVersions.large;
-  } else {
-    return imageVersions.small;
-  }
-};
 
 export interface IProjectImageData {
   id: string;

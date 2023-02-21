@@ -1,12 +1,10 @@
 import React from 'react';
 import { render, screen, fireEvent, within } from 'utils/testUtils/rtl';
-import * as insightsService from 'modules/commercial/insights/services/insightsInputs';
-import inputs from 'modules/commercial/insights/fixtures/inputs';
-import categories from 'modules/commercial/insights/fixtures/categories';
-import useInsightsInput from 'modules/commercial/insights/hooks/useInsightsInput';
 import clHistory from 'utils/cl-router/history';
 
 import Preview from './';
+import useInput from 'modules/commercial/insights/api/inputs/useInput';
+import inputs from 'modules/commercial/insights/fixtures/inputs';
 
 const viewId = '1';
 
@@ -16,7 +14,9 @@ const defaultProps = {
   previewedInputId: '4e9ac1f1-6928-45e9-9ac9-313e86ad636f',
 };
 
-let mockInputData: insightsService.IInsightsInputData | undefined = inputs[0];
+let mockInputData: { data: typeof inputs[0] } | undefined = {
+  data: inputs[0],
+};
 
 const mockIdeaData = {
   id: '2',
@@ -27,51 +27,18 @@ const mockIdeaData = {
   },
 };
 
-const mockCategoriesData = categories;
-
-const mockCategoryData = {
-  id: '3612e489-a631-4e7d-8bdb-63be407ea123',
-  type: 'category',
-  attributes: {
-    name: 'Category',
-  },
-};
-
-const mockCategoryDataResponse = {
-  data: {
-    id: 'b9f3f47a-7eb4-4db5-87ea-885fe42145c8',
-    type: 'category',
-    attributes: {
-      name: 'Some new category',
-    },
-  },
-};
-
-jest.mock('modules/commercial/insights/services/insightsInputs', () => ({
-  addInsightsInputCategory: jest.fn(),
-}));
-
-jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
-  addInsightsCategory: jest.fn(() => {
-    return mockCategoryDataResponse;
-  }),
-}));
-
 jest.mock('hooks/useIdea', () => {
   return jest.fn(() => mockIdeaData);
 });
 
-jest.mock('modules/commercial/insights/hooks/useInsightsInput', () => {
-  return jest.fn(() => mockInputData);
-});
+let mockIsLoading = false;
+jest.mock('modules/commercial/insights/api/inputs/useInput', () =>
+  jest.fn(() => {
+    return { data: mockInputData, isLoading: mockIsLoading };
+  })
+);
 
-jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
-  return jest.fn(() => mockCategoriesData);
-});
-
-jest.mock('modules/commercial/insights/hooks/useInsightsCategory', () => {
-  return jest.fn(() => mockCategoryData);
-});
+jest.mock('modules/commercial/insights/api/categories/useCategory');
 
 jest.mock('utils/cl-router/withRouter', () => {
   return {
@@ -96,7 +63,7 @@ describe('Insights Input Details', () => {
   });
   it('calls useInsightsInput correctly', () => {
     render(<Preview {...defaultProps} />);
-    expect(useInsightsInput).toHaveBeenCalledWith(viewId, previewedInputId);
+    expect(useInput).toHaveBeenCalledWith(viewId, previewedInputId);
   });
   it('renders idea title and body correctly', () => {
     render(<Preview {...defaultProps} />);
@@ -123,6 +90,7 @@ describe('Insights Input Details', () => {
 
   it('shows loading state when loading', () => {
     mockInputData = undefined;
+    mockIsLoading = true;
     render(<Preview {...defaultProps} />);
     expect(
       screen.getByTestId('insightsDetailsPreviewLoading')

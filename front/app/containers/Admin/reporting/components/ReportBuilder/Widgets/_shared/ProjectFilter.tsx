@@ -105,7 +105,7 @@ const ProjectFilter = ({
   if (projectFilterOptions === null) return null;
 
   return (
-    <Box width="100%" mb="20px">
+    <Box id="e2e-report-builder-project-filter-box" width="100%" mb="20px">
       <StyledSelect
         id="projectFilter"
         label={formatMessage(dashboardFilterMessages.labelProjectFilter)}

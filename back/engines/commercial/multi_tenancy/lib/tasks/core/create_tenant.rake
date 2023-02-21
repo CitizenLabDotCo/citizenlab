@@ -308,6 +308,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        input_form_custom_fields: {
+          enabled: true,
+          allowed: true
+        },
         posthog_integration: {
           enabled: false,
           allowed: false
@@ -335,6 +339,7 @@ namespace :cl2_back do
         locale: tenant.configuration.settings('core', 'locales')&.first || 'en',
         registration_completed_at: Time.zone.now
       )
+      Analytics::PopulateDimensionsService.run
     end
 
     MultiTenancy::TenantService.new.finalize_creation(tenant)

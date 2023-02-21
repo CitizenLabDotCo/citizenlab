@@ -1,13 +1,13 @@
 import React from 'react';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
-import * as service from 'modules/commercial/insights/services/insightsViews';
-
-jest.mock('modules/commercial/insights/services/insightsViews', () => ({
-  addInsightsView: jest.fn(),
-}));
 
 jest.mock('utils/cl-router/Link', () => 'Link');
 jest.mock('resources/GetProjects', () => {});
+
+const mockMutate = jest.fn();
+jest.mock('modules/commercial/insights/api/views/useCreateView', () =>
+  jest.fn(() => ({ mutate: mockMutate, reset: jest.fn() }))
+);
 
 import { CreateInsightsView } from './CreateInsightsView';
 import { GetProjectsChildProps } from 'resources/GetProjects';
@@ -78,7 +78,6 @@ describe('Create Insights View', () => {
   it('creates a view with correct viewName and projectId', () => {
     const viewName = 'New name';
 
-    const spy = jest.spyOn(service, 'addInsightsView');
     render(
       <CreateInsightsView
         projects={mockProjectsData}
@@ -94,16 +93,20 @@ describe('Create Insights View', () => {
     screen.getAllByRole('checkbox')[1].click();
     fireEvent.click(screen.getByText('Create my insights'));
 
-    expect(spy).toHaveBeenCalledWith({
-      name: viewName,
-      data_sources: [{ origin_id: project2Id }],
-    });
+    expect(mockMutate).toHaveBeenCalledWith(
+      {
+        view: {
+          name: viewName,
+          data_sources: [{ origin_id: project2Id }],
+        },
+      },
+      { onSuccess: expect.any(Function) }
+    );
   });
 
   it('creates a view with correct viewName and multiple project ids', () => {
     const viewName = 'New name';
 
-    const spy = jest.spyOn(service, 'addInsightsView');
     render(
       <CreateInsightsView
         projects={mockProjectsData}
@@ -120,10 +123,15 @@ describe('Create Insights View', () => {
     screen.getAllByRole('checkbox')[1].click();
     fireEvent.click(screen.getByText('Create my insights'));
 
-    expect(spy).toHaveBeenCalledWith({
-      name: viewName,
-      data_sources: [{ origin_id: project1Id }, { origin_id: project2Id }],
-    });
+    expect(mockMutate).toHaveBeenCalledWith(
+      {
+        view: {
+          name: viewName,
+          data_sources: [{ origin_id: project1Id }, { origin_id: project2Id }],
+        },
+      },
+      { onSuccess: expect.any(Function) }
+    );
   });
 
   it('cannot save without projects being selected', () => {

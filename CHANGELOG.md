@@ -1,8 +1,40 @@
 # Changelog
 
+## 2023-02-20
+
+### Added
+
+- [CL-2314] Ability to copy projects in the admin.
+
+## 2023-02-17
+
+### Added
+
+- [CL-2659] Add posts by time, comments by time and votes by time charts to report builder
+
+## 2023-02-15 (2)
+
+### Added
+
+- [CL-1895] Flexible input form - form builder now in use for editing ideation forms with additional custom fields
+
+### Fixed
+
+- [CL-2830] Fixed bug that prevented editing ideas
+
+## 2023-02-15
+
+### Added
+
+- [CL-2836] Admin shortcut from home page for users with admin access
+
+## 2023-02-13 (2)
+
 ### Changed
 
-- [CL-2652] Flexible registration first iteration. Added new email with confirmation permission option for phase and project actions.
+- [CL-2762] Fix redirecting in various places (e.g. after trying to post an idea after logging in), and added better messages if you don't have the right permissions to view a page (citizen-side).
+
+## 2023-02-13
 
 ### Added
 

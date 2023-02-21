@@ -3,8 +3,9 @@ import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { State } from '..';
 import { isFinite, isNaN } from 'lodash-es';
+import { FormatMessage } from 'typings';
 
-export default (state: State, formatMessage) => {
+export default (state: State, formatMessage: FormatMessage) => {
   const {
     upvoting_method,
     downvoting_method,

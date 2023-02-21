@@ -3,6 +3,7 @@ import React, { memo, useEffect, useMemo, useState } from 'react';
 // components
 import ParentComment from './ParentComment';
 import { Spinner } from '@citizenlab/cl2-component-library';
+import Centerer from 'components/UI/Centerer';
 
 // services
 import { ICommentData } from 'services/comments';
@@ -23,19 +24,6 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 const Container = styled.div`
   position: relative;
-`;
-
-const SpinnerWrapper = styled.div`
-  width: 100%;
-  height: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: 40px;
-  left: 0;
-  right: 0;
-  z-index: 2;
 `;
 
 const StyledParentComment = styled(ParentComment)`
@@ -94,9 +82,16 @@ const CommentsSection = memo<Props & WrappedComponentProps>(
         </ScreenReaderOnly>
 
         {loading && (
-          <SpinnerWrapper>
+          <Centerer
+            height="100px"
+            position="absolute"
+            top="40px"
+            left="0"
+            right="0"
+            zIndex="2"
+          >
             <Spinner />
-          </SpinnerWrapper>
+          </Centerer>
         )}
 
         {parentComments.map((parentComment, _index) => {

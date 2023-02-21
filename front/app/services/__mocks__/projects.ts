@@ -20,10 +20,7 @@ export function getProject(
       slug: `${id}_slug`,
       input_term: 'idea',
       header_bg: {
-        small: `header${id}ImageUrlSmall`,
-        medium: `header${id}ImageUrlMedium`,
         large: `header${id}ImageUrlLarge`,
-        fb: `header${id}ImageUrlFb`,
       }, // ImageSizes,
       ideas_count: 25,
       comments_count: 10,

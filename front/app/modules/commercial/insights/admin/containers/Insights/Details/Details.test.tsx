@@ -2,18 +2,11 @@ import React from 'react';
 import Details from './';
 
 import { render, fireEvent, screen } from 'utils/testUtils/rtl';
-import useInsightsInputsLoadMore from 'modules/commercial/insights/hooks/useInsightsInputsLoadMore';
 import inputs from 'modules/commercial/insights/fixtures/inputs';
 import clHistory from 'utils/cl-router/history';
-import mockCategories from 'modules/commercial/insights/fixtures/categories';
+import useInfiniteInputs from 'modules/commercial/insights/api/inputs/useInfiniteInputs';
 
 const viewId = '1';
-
-const mockInputsData = {
-  loading: false,
-  hasMore: true,
-  list: inputs,
-};
 
 const mockIdeaData = {
   id: '2',
@@ -25,15 +18,7 @@ const mockIdeaData = {
 
 let mockLocationData = { pathname: '', query: {} };
 
-const mockInputData = inputs[0];
-
-jest.mock('modules/commercial/insights/hooks/useInsightsInputsLoadMore', () => {
-  return jest.fn(() => mockInputsData);
-});
-
-jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
-  return jest.fn(() => mockCategories);
-});
+jest.mock('modules/commercial/insights/api/categories/useCategories');
 
 jest.mock('utils/cl-router/withRouter', () => {
   return {
@@ -55,13 +40,13 @@ jest.mock('hooks/useIdea', () => {
   return jest.fn(() => mockIdeaData);
 });
 
-jest.mock('modules/commercial/insights/hooks/useInsightsInput', () => {
-  return jest.fn(() => mockInputData);
-});
-
 jest.mock('./Network', () => {
   return () => <div />;
 });
+
+jest.mock('modules/commercial/insights/api/views/useView');
+jest.mock('modules/commercial/insights/api/inputs/useInfiniteInputs');
+jest.mock('modules/commercial/insights/api/inputs/useInput');
 
 describe('Insights Details Inputs', () => {
   it('renders', () => {
@@ -75,13 +60,13 @@ describe('Insights Details Inputs', () => {
     fireEvent.click(screen.getAllByTestId('insightsInputCard')[0]);
     expect(clHistory.replace).toHaveBeenCalledWith({
       pathname: '',
-      search: `?previewedInputId=${mockInputsData.list[0].id}`,
+      search: `?previewedInputId=${inputs[0].id}`,
     });
   });
   it('renders input when previewedInputId is in url', () => {
     mockLocationData = {
       pathname: '',
-      query: { previewedInputId: mockInputsData.list[0].id },
+      query: { previewedInputId: inputs[0].id },
     };
     render(<Details />);
     expect(screen.getByTestId('insightsDetailsPreview')).toBeInTheDocument();
@@ -101,10 +86,10 @@ describe('Insights Details Inputs', () => {
 
     expect(clHistory.replace).toHaveBeenCalledWith({
       pathname: '',
-      search: `?previewedInputId=${mockInputsData.list[0].id}`,
+      search: `?previewedInputId=${inputs[0].id}`,
     });
   });
-  it('calls useInsightsInputsLoadMore with correct arguments', () => {
+  it('calls useInfiniteInputs with correct arguments', () => {
     mockLocationData = {
       pathname: '',
       query: {
@@ -114,7 +99,7 @@ describe('Insights Details Inputs', () => {
       },
     };
     render(<Details />);
-    expect(useInsightsInputsLoadMore).toHaveBeenCalledWith(
+    expect(useInfiniteInputs).toHaveBeenCalledWith(
       viewId,
       mockLocationData.query
     );

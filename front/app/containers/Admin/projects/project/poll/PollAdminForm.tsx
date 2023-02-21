@@ -79,7 +79,7 @@ export class PollAdminForm extends PureComponent<Props, State> {
     }
   }
 
-  handleDragRow = (fromIndex, toIndex) => {
+  handleDragRow = (fromIndex: number, toIndex: number) => {
     if (!this.state.isProcessing) {
       const listItems = this.listItems();
 
@@ -120,7 +120,7 @@ export class PollAdminForm extends PureComponent<Props, State> {
     this.setState({ newQuestionTitle: {}, editingOptionsId: null });
   };
 
-  changeNewQuestion = (value) => {
+  changeNewQuestion = (value: Multiloc) => {
     this.setState({ newQuestionTitle: value });
   };
 
@@ -158,7 +158,7 @@ export class PollAdminForm extends PureComponent<Props, State> {
     });
   };
 
-  changeEditingQuestion = (value) => {
+  changeEditingQuestion = (value: Multiloc) => {
     this.setState({ editingQuestionTitle: value });
   };
 
@@ -186,7 +186,7 @@ export class PollAdminForm extends PureComponent<Props, State> {
   };
 
   // Option edition
-  editOptions = (questionId) => () => {
+  editOptions = (questionId: string) => () => {
     this.setState({ editingOptionsId: questionId });
   };
 
@@ -265,7 +265,7 @@ export class PollAdminForm extends PureComponent<Props, State> {
 }
 
 // export default DragDropContext(HTML5Backend)(PollAdminForm);
-export default (props) => (
+export default (props: Props) => (
   <DndProvider backend={HTML5Backend}>
     <PollAdminForm {...props} />
   </DndProvider>

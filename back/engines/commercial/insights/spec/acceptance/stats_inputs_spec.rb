@@ -17,8 +17,8 @@ resource 'Stats - Inputs' do
       example_request('unauthorized', document: false) { expect(status).to eq(401) }
     end
 
-    context 'when normal user' do
-      before { user_header_token }
+    context 'when resident' do
+      before { resident_header_token }
 
       example_request('unauthorized', document: false) { expect(status).to eq(401) }
     end
@@ -41,7 +41,7 @@ resource 'Stats - Inputs' do
 
       example_request 'Count all inputs' do
         expect(response_status).to eq 200
-        expect(json_response_body[:count]).to eq ideas.length
+        expect(json_response_body[:data][:count]).to eq ideas.length
       end
 
       example 'delegates filtering to Insights::InputsFinder', document: false do
@@ -62,7 +62,7 @@ resource 'Stats - Inputs' do
         do_request(processed: true)
 
         expect(status).to eq(200)
-        expect(json_response_body[:count]).to eq(1)
+        expect(json_response_body[:data][:count]).to eq(1)
       end
     end
 

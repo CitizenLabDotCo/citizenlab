@@ -157,13 +157,6 @@ describe CustomFieldService do
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
       expect(schema.dig(:properties, 'domicile', :enum)).to match(Area.all.order(created_at: :desc).map(&:id).push('outside'))
     end
-
-    it 'it creates a valid schema for the built in idea custom fields' do
-      custom_form = create(:custom_form)
-      fields = IdeaCustomFieldsService.new(custom_form).all_fields
-      schema = service.fields_to_json_schema(fields, locale)
-      expect(JSON::Validator.validate!(metaschema, schema)).to be true
-    end
   end
 
   describe 'fields_to_ui_schema' do

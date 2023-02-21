@@ -15,7 +15,7 @@ import Button from 'components/UI/Button';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import { ScanStatus } from 'modules/commercial/insights/hooks/useScanInsightsCategory';
+import { ScanStatus } from 'modules/commercial/insights/api/category_suggestions/types';
 
 const ScanContainer = styled.div`
   width: 100%;
@@ -70,6 +70,7 @@ type ScanCategoryProps = {
   triggerScan: () => void;
   onClose: () => void;
   cancelScan: () => void;
+  isLoading: boolean;
 } & WrappedComponentProps;
 
 const ScanCategory = ({
@@ -79,6 +80,7 @@ const ScanCategory = ({
   triggerScan,
   cancelScan,
   onClose,
+  isLoading,
 }: ScanCategoryProps) => {
   const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
 
@@ -97,24 +99,14 @@ const ScanCategory = ({
       button: messages.categoriesScanButton,
       action: triggerScan,
     },
-    isInitializingScanning: {
-      title: messages.categoriesScanInProgressTitle,
-      description: messages.categoriesScanInProgressDescription,
-      button: messages.categoriesCancelScanButton,
-      action: cancelScan,
-    },
+
     isScanning: {
       title: messages.categoriesScanInProgressTitle,
       description: messages.categoriesScanInProgressDescription,
       button: messages.categoriesCancelScanButton,
       action: cancelScan,
     },
-    isCancelling: {
-      title: messages.categoriesScanInProgressTitle,
-      description: messages.categoriesScanInProgressDescription,
-      button: messages.categoriesCancelScanButton,
-      action: cancelScan,
-    },
+
     isFinished: {
       title: messages.categoriesScanDoneTitle,
       description: messages.categoriesScanDoneDescription,
@@ -133,8 +125,7 @@ const ScanCategory = ({
     return null;
   }
 
-  const isInProgress =
-    status === 'isScanning' || status === 'isInitializingScanning';
+  const isInProgress = status === 'isScanning';
 
   return (
     <ScanContainer data-testid="insightsScanCategory-banner">
@@ -164,9 +155,7 @@ const ScanCategory = ({
           }
           borderThickness="2px"
           onClick={scanCategoryMessagesMap[status].action}
-          processing={
-            status === 'isCancelling' || status === 'isInitializingScanning'
-          }
+          processing={isLoading}
         >
           {formatMessage(
             scanCategoryMessagesMap[status].button as MessageDescriptor

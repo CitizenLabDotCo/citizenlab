@@ -71,7 +71,7 @@ export const TwoColumnSettings = () => {
       </Label>
       <Radio
         onChange={(value) => {
-          setProp((props) => (props.columnLayout = value));
+          setProp((props: TwoColumnProps) => (props.columnLayout = value));
         }}
         id="layout-1-1"
         name="columnLayout"
@@ -91,7 +91,7 @@ export const TwoColumnSettings = () => {
       />
       <Radio
         onChange={(value) => {
-          setProp((props) => (props.columnLayout = value));
+          setProp((props: TwoColumnProps) => (props.columnLayout = value));
         }}
         currentValue={columnLayout}
         id="layout-2-1"
@@ -111,7 +111,7 @@ export const TwoColumnSettings = () => {
       />
       <Radio
         onChange={(value) => {
-          setProp((props) => (props.columnLayout = value));
+          setProp((props: TwoColumnProps) => (props.columnLayout = value));
         }}
         currentValue={columnLayout}
         id="layout-1-2"

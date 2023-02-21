@@ -194,10 +194,6 @@ export default defineMessages({
     id: 'app.components.Comments.yourComment',
     defaultMessage: 'Your comment',
   },
-  showMoreActions: {
-    id: 'app.containers.Comments.showMoreActions',
-    defaultMessage: 'Show more actions',
-  },
   deleteReason_other: {
     id: 'app.containers.Comments.deleteReason_other',
     defaultMessage: 'Other reason',

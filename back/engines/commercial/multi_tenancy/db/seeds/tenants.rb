@@ -50,7 +50,7 @@ module MultiTenancy
             },
             franceconnect_login: {
               allowed: true,
-              enabled: true,
+              enabled: false,
               environment: 'integration',
               identifier: ENV.fetch('DEFAULT_FRANCECONNECT_LOGIN_IDENTIFIER'),
               secret: ENV.fetch('DEFAULT_FRANCECONNECT_LOGIN_SECRET')
@@ -377,6 +377,10 @@ module MultiTenancy
               allowed: true
             },
             report_builder: {
+              enabled: true,
+              allowed: true
+            },
+            input_form_custom_fields: {
               enabled: true,
               allowed: true
             },

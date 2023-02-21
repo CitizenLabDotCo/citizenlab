@@ -1,19 +1,23 @@
 import React from 'react';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
-import * as service from 'modules/commercial/insights/services/insightsViews';
 import views from 'modules/commercial/insights/fixtures/views';
 
 import InsightsList from './';
 
-jest.mock('modules/commercial/insights/services/insightsViews', () => ({
-  deleteInsightsView: jest.fn(),
-}));
+let mockData = { data: views };
 
-let mockData = views;
+jest.mock('modules/commercial/insights/api/views/useViews', () =>
+  jest.fn(() => ({
+    data: mockData,
+  }))
+);
 
-jest.mock('modules/commercial/insights/hooks/useInsightsViews', () => {
-  return jest.fn(() => mockData);
-});
+const mockDeleteView = jest.fn();
+jest.mock('modules/commercial/insights/api/views/useDeleteView', () =>
+  jest.fn(() => ({
+    mutate: mockDeleteView,
+  }))
+);
 
 jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
 
@@ -33,16 +37,15 @@ describe('Insights List', () => {
       expect(screen.getByTestId('insightsCreateModal')).toBeInTheDocument();
     });
     it('deletes item on button click', () => {
-      const spy = jest.spyOn(service, 'deleteInsightsView');
       render(<InsightsList />);
       fireEvent.click(screen.getAllByText('Delete')[0]);
-      expect(spy).toHaveBeenCalledWith(mockData[0].id);
+      expect(mockDeleteView).toHaveBeenCalledWith(mockData.data[0].id);
     });
   });
 
   describe('Empty State', () => {
     it('renders empty state when no data is available', () => {
-      mockData = [];
+      mockData = { data: [] };
       render(<InsightsList />);
       expect(screen.getByTestId('insightsListEmptyState')).toBeInTheDocument();
       expect(screen.getAllByRole('button')).toHaveLength(1);

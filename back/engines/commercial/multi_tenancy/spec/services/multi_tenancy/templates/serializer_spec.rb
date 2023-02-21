@@ -19,7 +19,9 @@ describe MultiTenancy::Templates::Serializer do
         expect(HomePage.count).to be 1
         expect(Area.count).to be > 0
         expect(Comment.count).to be > 0
+        expect(CustomField.count).to be > 0
         expect(CustomFieldOption.count).to be > 0
+        expect(CustomForm.count).to be > 0
         expect(Event.count).to be > 0
         expect(IdeaStatus.count).to be > 0
         expect(Vote.count).to be > 0
@@ -197,6 +199,30 @@ describe MultiTenancy::Templates::Serializer do
       }
       expect(template['models']['idea'].size).to eq 1
       expect(template['models']['idea'].first['custom_field_values']).to match expected_custom_field_values
+    end
+
+    it 'copies exact :ordering values of records for models that use acts_as_list gem' do
+      project = create(:project, title_multiloc: { en: 'source project' })
+      create_list(
+        :cause,
+        5,
+        participation_context_id: project.id,
+        participation_context_type: 'Project',
+        ordering: rand(10) # Introduce some randomness, with the acts_as_list gem handling collisions & sequencing
+      )
+
+      ordering_of_source_causes = project.causes.order(:title_multiloc['en']).pluck(:ordering)
+      serializer = described_class.new Tenant.current
+      template = serializer.run
+      tenant = create :tenant, locales: AppConfiguration.instance.settings('core', 'locales')
+
+      Apartment::Tenant.switch(tenant.schema_name) do
+        MultiTenancy::TenantTemplateService.new.apply_template template
+
+        copied_project = Project.find_by(title_multiloc: project.title_multiloc)
+        expect(copied_project.causes.order(:title_multiloc['en']).pluck(:ordering))
+          .to eq(ordering_of_source_causes)
+      end
     end
   end
 end

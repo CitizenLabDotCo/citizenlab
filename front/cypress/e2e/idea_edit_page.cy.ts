@@ -109,6 +109,12 @@ describe('Idea edit page', () => {
     cy.get('#e2e-idea-image-upload');
     cy.get('#e2e-idea-file-upload');
 
+    // add an image
+    cy.get('#e2e-idea-image-upload input').attachFile('icon.png');
+
+    // check that the base64 image was added to the dropzone component
+    cy.get('#e2e-idea-image-upload input').should('have.length', 0);
+
     // save the form
     cy.get('.e2e-submit-idea-form').click();
     cy.intercept(`**/ideas/${ideaId}`).as('ideaPostRequest');

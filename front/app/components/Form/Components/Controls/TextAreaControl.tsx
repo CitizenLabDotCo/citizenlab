@@ -11,9 +11,12 @@ import { FormLabel } from 'components/UI/FormComponents';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import TextArea from 'components/UI/TextArea';
 import { isString } from 'utils/helperUtils';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import VerificationIcon from '../VerificationIcon';
+import { getSubtextElement } from './controlUtils';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 const StyledTextArea = styled(TextArea)`
   flex-grow: 1;
@@ -31,6 +34,7 @@ const TextAreaControl = ({
   visible,
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
+  const answerNotPublic = uischema.options?.answer_visible_to === 'admins';
 
   if (!visible) {
     return null;
@@ -42,9 +46,14 @@ const TextAreaControl = ({
         htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
-        subtextValue={uischema.options?.description}
+        subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
       />
+      {answerNotPublic && (
+        <Text mb="8px" mt="0px" fontSize="s">
+          <FormattedMessage {...messages.notPublic} />
+        </Text>
+      )}
       <Box display="flex" flexDirection="row">
         <StyledTextArea
           onChange={(value) => handleChange(path, value)}

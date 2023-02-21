@@ -22,7 +22,7 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
     'posting_initiative'
   ) || { disabledReason: null, action: null, enabled: null };
 
-  const redirectToInitiativeForm = () => {
+  const redirectToInitiativeForm = useCallback(() => {
     trackEventByName('redirected to initiatives form');
     clHistory.push({
       pathname: `/initiatives/new`,
@@ -31,7 +31,7 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
           ? stringify({ lat, lng }, { addQueryPrefix: true })
           : undefined,
     });
-  };
+  }, [lat, lng]);
 
   const onNewInitiativeButtonClick = useCallback(
     (event?: React.FormEvent) => {
@@ -87,8 +87,7 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
         }
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [enabled, action, disabledReason, location]
+    [enabled, action, disabledReason, location, redirectToInitiativeForm]
   );
 
   return (

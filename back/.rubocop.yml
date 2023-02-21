@@ -19,6 +19,11 @@ Layout/HashAlignment:
   EnforcedColonStyle: [key, table]
   EnforcedHashRocketStyle: [key, table]
 
+Metrics/BlockLength:
+  Exclude:
+    - 'engines/*/*/spec/**/*'
+    - 'spec/**/*'
+
 Style/Documentation:
   # Most classes are not documented, so turn off this Cop.
   Enabled: false
@@ -131,6 +136,9 @@ RSpec/EmptyExampleGroup:
   # `example_request`, `post`, etc are used, so exclude acceptance tests.
   Exclude:
     - '**/spec/acceptance/**/*'
+
+RSpec/ExampleLength:
+  Enabled: false
 
 Metrics/MethodLength:
   CountAsOne: ['array', 'hash', 'heredoc']
