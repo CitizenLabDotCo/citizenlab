@@ -5,12 +5,16 @@ import { Status, ErrorCode } from '../typings';
 
 interface Props {
   status: Status;
-  error?: ErrorCode;
-  onConfirm: () => void;
+  error: ErrorCode | null;
+  onConfirm: (code: number) => void;
 }
 
 const EmailConfirmation = ({ status, onConfirm }: Props) => {
   const loading = status === 'pending';
+  const handleConfirm = () => {
+    onConfirm(1234); // TODO
+  };
+
   return (
     <Box>
       <Text>Email confirmation</Text>
@@ -18,7 +22,7 @@ const EmailConfirmation = ({ status, onConfirm }: Props) => {
         width="auto"
         disabled={loading}
         processing={loading}
-        onClick={onConfirm}
+        onClick={handleConfirm}
       >
         Confirm email
       </Button>
