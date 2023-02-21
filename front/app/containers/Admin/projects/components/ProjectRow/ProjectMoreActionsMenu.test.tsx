@@ -45,7 +45,61 @@ jest.mock('hooks/useProject', () => {
   return jest.fn(() => mockProject);
 });
 
+jest.mock('services/projects', () =>
+  jest.fn(() => {
+    return {
+      copyProject: jest.fn().mockImplementation(() => Promise.reject()),
+      deleteProject: jest.fn().mockImplementation(() => Promise.reject()),
+    };
+  })
+);
+
 describe('ProjectMoreActionsMenu', () => {
+  it('calls setError with an error when copying fails', async () => {
+    const setErrorFn = jest.fn();
+    const props: Props = {
+      projectId: 'projectId',
+      setError: setErrorFn,
+    };
+    render(<ProjectMoreActionsMenu {...props} />);
+    const user = userEvent.setup();
+
+    const threeDotsButton = screen.getByTestId('moreOptionsButton');
+    await user.click(threeDotsButton);
+
+    const copyProjectButton = await screen.findByRole('button', {
+      name: 'Copy project',
+    });
+
+    await user.click(copyProjectButton);
+
+    expect(setErrorFn).toHaveBeenLastCalledWith(
+      'There was an error copying this project, please try again later.'
+    );
+  });
+
+  it('calls setError with an error when deleting fails', async () => {
+    const setErrorFn = jest.fn();
+    defaultProps.setError = setErrorFn;
+    render(<ProjectMoreActionsMenu {...defaultProps} />);
+    const user = userEvent.setup();
+
+    const threeDotsButton = screen.getByTestId('moreOptionsButton');
+    await user.click(threeDotsButton);
+
+    const deleteProjectButton = await screen.findByRole('button', {
+      name: 'Delete project',
+    });
+
+    expect(deleteProjectButton).toBeInTheDocument();
+
+    await user.click(deleteProjectButton);
+
+    expect(setErrorFn).toHaveBeenLastCalledWith(
+      'There was an error deleting this project, please try again later.'
+    );
+  });
+
   describe('When user is an admin', () => {
     it('Has the buttons to copy and delete projects', async () => {
       render(<ProjectMoreActionsMenu {...defaultProps} />);
