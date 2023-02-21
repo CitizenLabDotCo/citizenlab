@@ -4,7 +4,7 @@ import React from 'react';
 import TerminologyConfig from 'components/admin/TerminologyConfig';
 
 // resources
-import { updateAppConfiguration } from 'services/appConfiguration';
+import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -21,10 +21,12 @@ interface Props {
 
 const TopicTermConfig = ({ className }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
+  const { mutate: updateAppConfiguration, isLoading } =
+    useUpdateAppConfiguration();
   if (isNilOrError(appConfiguration)) return null;
 
-  const save = async ({ singular, plural }) => {
-    await updateAppConfiguration({
+  const save = ({ singular, plural }) => {
+    updateAppConfiguration({
       settings: {
         core: {
           topic_term: singular,
@@ -39,6 +41,7 @@ const TopicTermConfig = ({ className }: Props) => {
 
   return (
     <TerminologyConfig
+      isLoading={isLoading}
       className={className}
       terminologyMessage={messages.subtitleTerminology}
       tooltipMessage={messages.terminologyTooltip}

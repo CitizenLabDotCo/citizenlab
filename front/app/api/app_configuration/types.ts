@@ -462,3 +462,14 @@ type TCountryCurrency =
 export interface IAppConfiguration {
   data: IAppConfigurationData;
 }
+
+export interface IUpdatedAppConfigurationProperties {
+  settings?: Partial<{
+    [P in keyof IAppConfigurationSettings]: Partial<
+      IAppConfigurationSettings[P]
+    >;
+  }>;
+  logo?: string;
+  favicon?: string;
+  style?: IAppConfigurationStyle;
+}

@@ -8,12 +8,10 @@ import useNavbarItemEnabled from 'hooks/useNavbarItemEnabled';
 import useCustomPage from 'hooks/useCustomPage';
 
 // services
-import {
-  updateAppConfiguration,
-  ProposalsSettings,
-} from 'services/appConfiguration';
+import { ProposalsSettings } from 'services/appConfiguration';
 import { updateCustomPage } from 'services/customPages';
 import streams from 'utils/streams';
+import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
 
 // components
 import {
@@ -59,6 +57,11 @@ type ProposalsSettingName = keyof ProposalsSettings;
 
 const InitiativesSettingsPage = () => {
   const { data: appConfiguration } = useAppConfiguration();
+  const {
+    mutate: updateAppConfiguration,
+    isLoading: isAppConfigurationLoading,
+    isError: isAppConfigurationError,
+  } = useUpdateAppConfiguration();
   const proposalsNavbarItemEnabled = useNavbarItemEnabled('proposals');
   const proposalsPage = useCustomPage({ customPageSlug: 'initiatives' });
 
@@ -159,28 +162,21 @@ const InitiativesSettingsPage = () => {
 
     setProcessing(true);
 
+    if (proposalsSettingsChanged) {
+      updateAppConfiguration({
+        settings: {
+          initiatives: localProposalsSettings,
+        },
+      });
+    }
+
     try {
-      const promises: Promise<any>[] = [];
-
-      if (proposalsSettingsChanged) {
-        const promise = updateAppConfiguration({
-          settings: {
-            initiatives: localProposalsSettings,
-          },
-        });
-
-        promises.push(promise);
-      }
-
       if (proposalsPageBodyChanged) {
-        const promise = updateCustomPage(proposalsPage.id, {
+        await updateCustomPage(proposalsPage.id, {
           top_info_section_multiloc: newProposalsPageBody,
         });
-
-        promises.push(promise);
       }
 
-      await Promise.all(promises);
       await streams.fetchAllWith({
         apiEndpoint: [`${API_PATH}/nav_bar_items`],
       });
@@ -256,8 +252,8 @@ const InitiativesSettingsPage = () => {
 
       <SubmitButton
         disabled={!validate()}
-        processing={processing}
-        error={error}
+        processing={processing || isAppConfigurationLoading}
+        error={error || isAppConfigurationError}
         success={success}
         handleSubmit={handleSubmit}
       />
