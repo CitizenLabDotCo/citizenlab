@@ -27,7 +27,6 @@ import sharedSettingsMessages from '../messages';
 // services
 import { localeStream } from 'services/locale';
 import {
-  currentAppConfigurationStream,
   updateAppConfiguration,
   IAppConfigurationStyle,
   IAppConfiguration,
@@ -38,9 +37,13 @@ import {
 
 // typings
 import { UploadFile, Locale, Multiloc, CLErrors } from 'typings';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 
 interface Props {
   theme: any;
+  appConfiguration: GetAppConfigurationChildProps;
 }
 
 interface IAttributesDiff {
@@ -52,7 +55,6 @@ interface IAttributesDiff {
 export interface State {
   locale: Locale | null;
   attributesDiff: IAttributesDiff;
-  tenant: IAppConfiguration | null;
   logo: UploadFile[] | null;
   loading: boolean;
   errors: CLErrors;
@@ -83,7 +85,6 @@ class SettingsCustomizeTab extends PureComponent<
     this.state = {
       locale: null,
       attributesDiff: {},
-      tenant: null,
       logo: null,
       loading: false,
       errors: {},
@@ -98,14 +99,18 @@ class SettingsCustomizeTab extends PureComponent<
 
   componentDidMount() {
     const locale$ = localeStream().observable;
-    const tenant$ = currentAppConfigurationStream().observable;
+    const appConfiguration = this.props.appConfiguration;
 
     this.subscriptions = [
-      combineLatest([locale$, tenant$])
+      combineLatest([locale$])
         .pipe(
-          switchMap(([locale, tenant]) => {
-            const logoUrl = get(tenant, 'data.attributes.logo.large', null);
-            const settings = get(tenant, 'data.attributes.settings', {});
+          switchMap(([locale]) => {
+            const logoUrl = get(
+              appConfiguration,
+              'attributes.logo.large',
+              null
+            );
+            const settings = get(appConfiguration, 'attributes.settings', {});
 
             const logo$ = logoUrl
               ? convertUrlToUploadFileObservable(logoUrl, null, null)
@@ -114,17 +119,16 @@ class SettingsCustomizeTab extends PureComponent<
             return combineLatest([logo$]).pipe(
               map(([tenantLogo]) => ({
                 locale,
-                tenant,
+                appConfiguration,
                 tenantLogo,
                 settings,
               }))
             );
           })
         )
-        .subscribe(({ locale, tenant, tenantLogo, settings }) => {
+        .subscribe(({ locale, tenantLogo, settings }) => {
           const logo = !isNilOrError(tenantLogo) ? [tenantLogo] : [];
-
-          this.setState({ locale, tenant, logo, settings });
+          this.setState({ locale, logo, settings });
         }),
     ];
   }
@@ -135,7 +139,7 @@ class SettingsCustomizeTab extends PureComponent<
 
   validate = (tenant: IAppConfiguration, attributesDiff: IAttributesDiff) => {
     const { formatMessage } = this.props.intl;
-    const hasRemoteLogo = has(tenant, 'data.attributes.logo.large');
+    const hasRemoteLogo = has(tenant, 'attributes.logo.large');
     const localLogoIsNotSet = !has(attributesDiff, 'logo');
     const localLogoIsNull = !localLogoIsNotSet && attributesDiff.logo === null;
     const logoError =
@@ -155,9 +159,14 @@ class SettingsCustomizeTab extends PureComponent<
   save = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const { tenant, attributesDiff } = this.state;
+    const { attributesDiff } = this.state;
 
-    if (tenant && this.validate(tenant, attributesDiff)) {
+    const { appConfiguration } = this.props;
+
+    if (
+      !isNilOrError(appConfiguration) &&
+      this.validate({ data: appConfiguration }, attributesDiff)
+    ) {
       this.setState({ loading: true, saved: false });
 
       try {
@@ -187,7 +196,7 @@ class SettingsCustomizeTab extends PureComponent<
   getSetting = (setting: string) => {
     return (
       get(this.state.attributesDiff, `settings.${setting}`) ??
-      get(this.state.tenant, `data.attributes.settings.${setting}`)
+      get(this.props.appConfiguration, `attributes.settings.${setting}`)
     );
   };
 
@@ -213,13 +222,13 @@ class SettingsCustomizeTab extends PureComponent<
     };
 
   render() {
-    const { locale, tenant } = this.state;
-
-    if (!isNilOrError(locale) && !isNilOrError(tenant)) {
+    const { locale } = this.state;
+    const { appConfiguration } = this.props;
+    if (!isNilOrError(locale) && !isNilOrError(appConfiguration)) {
       const { logo, attributesDiff, logoError, errors, saved } = this.state;
 
       const latestAppConfigSettings = {
-        ...tenant.data.attributes,
+        ...appConfiguration.attributes,
         ...attributesDiff,
       }.settings;
       const latestAppConfigCoreSettings = latestAppConfigSettings.core;
@@ -261,4 +270,14 @@ class SettingsCustomizeTab extends PureComponent<
   }
 }
 
-export default withTheme(injectIntl(SettingsCustomizeTab));
+const SettingsCustomizeTabWithHocs = withTheme(
+  injectIntl(SettingsCustomizeTab)
+);
+
+export default () => (
+  <GetAppConfiguration>
+    {(appConfiguration) => (
+      <SettingsCustomizeTabWithHocs appConfiguration={appConfiguration} />
+    )}
+  </GetAppConfiguration>
+);
