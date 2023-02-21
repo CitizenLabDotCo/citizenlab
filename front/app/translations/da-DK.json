@@ -1308,7 +1308,6 @@
   "app.containers.SignUp.emptyTokenError": "Indtast din invitationskode",
   "app.containers.SignUp.firstNamesLabel": "Fornavn",
   "app.containers.SignUp.goToLogIn": "Har du allerede en konto? {goToOtherFlowLink}",
-  "app.containers.SignUp.goToSignUp": "Har du ikke en konto? {goToOtherFlowLink}",
   "app.containers.SignUp.headerSubtitle": "Trin {activeStepNumber} af {totalStepsCount}: {stepName}",
   "app.containers.SignUp.iHaveReadAndAgreeTo": "Jeg har læst og accepterer {link}.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "Jeg accepterer, at oplysningerne anvendes på mitgestalten.wien.gv.at. Yderligere oplysninger kan findes {link}.",

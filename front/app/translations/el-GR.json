@@ -1308,7 +1308,6 @@
   "app.containers.SignUp.emptyTokenError": "Εισάγετε τον κωδικό πρόσκλησής σας",
   "app.containers.SignUp.firstNamesLabel": "Μικρό όνομα",
   "app.containers.SignUp.goToLogIn": "Έχετε ήδη λογαριασμό; {goToOtherFlowLink}",
-  "app.containers.SignUp.goToSignUp": "Δεν έχετε λογαριασμό; {goToOtherFlowLink}",
   "app.containers.SignUp.headerSubtitle": "Βήμα {activeStepNumber} από {totalStepsCount}: {stepName}",
   "app.containers.SignUp.iHaveReadAndAgreeTo": "Έχω διαβάσει και συμφωνώ με {link}.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "Αποδέχομαι ότι τα δεδομένα θα χρησιμοποιηθούν στο mitgestalten.wien.gv.at. Περαιτέρω πληροφορίες μπορείτε να βρείτε {link}.",
