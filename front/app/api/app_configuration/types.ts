@@ -4,7 +4,7 @@ import appConfigurationKeys from './keys';
 export type AppConfigurationKeys = Keys<typeof appConfigurationKeys>;
 
 import { API_PATH } from 'containers/App/constants';
-import { ImageSizes, Multiloc, Locale } from 'typings';
+import { ImageSizes, Multiloc, Locale, UploadFile } from 'typings';
 import { TCategory } from 'components/ConsentManager/destinations';
 export const currentAppConfigurationEndpoint = `${API_PATH}/app_configuration`;
 import { THomepageSettingKeyMap } from 'services/homepageSettings';
@@ -469,7 +469,7 @@ export interface IUpdatedAppConfigurationProperties {
       IAppConfigurationSettings[P]
     >;
   }>;
-  logo?: string;
+  logo?: UploadFile;
   favicon?: string;
   style?: IAppConfigurationStyle;
 }

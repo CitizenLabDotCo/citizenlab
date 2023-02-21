@@ -38,18 +38,16 @@ export function createRemoveUploadHandler(type: TUploadType, setState) {
 
 export function createCoreMultilocHandler(property: string, setState) {
   return (multiloc: Multiloc) => {
-    setState((state) => {
+    setState((attributesDiff) => {
       return {
-        attributesDiff: {
-          ...state.attributesDiff,
-          settings: {
-            ...state.settings,
-            ...get(state.attributesDiff, 'settings', {}),
-            core: {
-              ...get(state.settings, 'core', {}),
-              ...get(state.attributesDiff, 'settings.core', {}),
-              [property]: multiloc,
-            },
+        ...attributesDiff,
+        settings: {
+          ...attributesDiff.settings,
+          ...get(attributesDiff, 'settings', {}),
+          core: {
+            ...get(attributesDiff.settings, 'core', {}),
+            ...get(attributesDiff, 'settings.core', {}),
+            [property]: multiloc,
           },
         },
       };
