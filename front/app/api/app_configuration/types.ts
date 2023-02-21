@@ -49,7 +49,7 @@ export type IAppConfigurationSettingsCore = {
   authentication_token_lifetime_in_days: number;
 };
 
-type ProposalsSettings = {
+export type ProposalsSettings = {
   allowed: boolean;
   enabled: boolean;
   days_limit: number;

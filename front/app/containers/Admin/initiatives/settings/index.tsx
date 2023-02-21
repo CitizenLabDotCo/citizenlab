@@ -8,7 +8,7 @@ import useNavbarItemEnabled from 'hooks/useNavbarItemEnabled';
 import useCustomPage from 'hooks/useCustomPage';
 
 // services
-import { ProposalsSettings } from 'services/appConfiguration';
+import { ProposalsSettings } from 'api/app_configuration/types';
 import { updateCustomPage } from 'services/customPages';
 import streams from 'utils/streams';
 import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';

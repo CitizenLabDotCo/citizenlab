@@ -16,7 +16,7 @@ import Form from './Form';
 import {
   TAppConfigurationSettingWithEnabled,
   IAppConfigurationSettingsCore,
-} from 'services/appConfiguration';
+} from 'api/app_configuration/types';
 
 // Utils
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';

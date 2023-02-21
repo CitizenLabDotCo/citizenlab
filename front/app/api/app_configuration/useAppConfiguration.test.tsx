@@ -6,7 +6,7 @@ import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { IAppConfigurationData } from 'services/appConfiguration';
+import { IAppConfigurationData } from './types';
 
 export const getAppConfigurationData = (
   attributes = {}

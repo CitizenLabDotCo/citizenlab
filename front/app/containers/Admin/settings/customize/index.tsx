@@ -25,7 +25,7 @@ import {
   IAppConfigurationStyle,
   IAppConfiguration,
   IAppConfigurationSettings,
-} from 'services/appConfiguration';
+} from 'api/app_configuration/types';
 
 // typings
 import { UploadFile, Multiloc } from 'typings';
