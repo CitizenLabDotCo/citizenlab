@@ -1308,7 +1308,6 @@
   "app.containers.SignUp.emptyTokenError": "Ievadiet savu uzaicinājuma kodu",
   "app.containers.SignUp.firstNamesLabel": "Vārds",
   "app.containers.SignUp.goToLogIn": "Jums jau ir konts? {goToOtherFlowLink}",
-  "app.containers.SignUp.goToSignUp": "Jums nav konta? {goToOtherFlowLink}",
   "app.containers.SignUp.headerSubtitle": "Solis {activeStepNumber} no {totalStepsCount}: {stepName}",
   "app.containers.SignUp.iHaveReadAndAgreeTo": "Esmu izlasījis un piekrītu {link}.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "Es piekrītu, ka visi dati tiks izmantoti mitgestalten.wien.gv.at. Sīkāka informācija pieejama {link}.",
