@@ -95,9 +95,9 @@ describe TrackSegmentService do
       service.identify_user(user)
     end
 
-    it 'track super admins' do
+    it 'does not track super admins' do
       user = create(:super_admin)
-      expect(segment_client).to receive(:identify)
+      expect(segment_client).not_to receive(:identify)
       service.identify_user(user)
     end
 
