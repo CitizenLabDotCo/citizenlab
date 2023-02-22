@@ -13,12 +13,10 @@ import messages from './messages';
 
 // hooks
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
-
-// streams
-
 import useUpdateIdeaStatus from 'api/idea_statuses/useUpdateIdeaStatus';
 import useDeleteIdeaStatus from 'api/idea_statuses/useDeleteIdeaStatus';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
+
 // components
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { IconTooltip } from '@citizenlab/cl2-component-library';

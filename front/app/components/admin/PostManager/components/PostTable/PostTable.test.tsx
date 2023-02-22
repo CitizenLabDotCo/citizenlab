@@ -3,7 +3,6 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import { getIdea } from 'services/ideas';
-import { makeStatus } from 'api/idea_statuses/types';
 
 // mocking dependencies
 jest.mock('services/globalState');
@@ -16,6 +15,20 @@ jest.mock('./header/InitiativesHeaderRow', () => 'InitiativesHeaderRow');
 jest.mock('components/admin/Pagination', () => 'Pagination');
 
 import PostTable from './';
+
+function makeStatus(id: string) {
+  return {
+    id,
+    type: 'idea_status',
+    attributes: {
+      title_multiloc: { en: 'Just a status' },
+      color: 'blue',
+      code: id,
+      ordering: 0,
+      description_multiloc: { en: 'The status of an idea that has a status' },
+    },
+  };
+}
 
 describe('<PostTable />', () => {
   let onChangeSort: jest.Mock;
