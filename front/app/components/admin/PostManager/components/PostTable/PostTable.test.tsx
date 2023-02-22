@@ -3,12 +3,12 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import { getIdea } from 'services/ideas';
-import { makeStatus } from 'services/ideaStatuses';
+import { makeStatus } from 'api/idea_statuses/types';
 
 // mocking dependencies
 jest.mock('services/globalState');
 jest.mock('services/ideas');
-jest.mock('services/ideaStatuses');
+jest.mock('api/idea_statuses/types');
 jest.mock('./Row', () => 'Row');
 jest.mock('./NoPost', () => 'NoPost');
 jest.mock('./header/IdeaHeaderRow', () => 'IdeaHeaderRow');
