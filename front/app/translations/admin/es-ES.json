@@ -672,6 +672,7 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.view": "Ver",
   "app.containers.Admin.reporting.components.ReportBuilderPage.anErrorOccurred": "Se ha producido un error al intentar crear este informe. Vuelva a intentarlo más tarde.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.blankTemplate": "Empezar con una página en blanco",
+  "app.containers.Admin.reporting.components.ReportBuilderPage.contactToAccess": "Creating a custom report is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.copyLink": "Copiar el enlace",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalDescription": "Personalice su informe y compártalo con las partes interesadas internas o la comunidad con un enlace web.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel": "Título del informe",
