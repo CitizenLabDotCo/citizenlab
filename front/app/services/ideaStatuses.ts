@@ -51,18 +51,6 @@ export interface IIdeaStatuses {
   data: IIdeaStatusData[];
 }
 
-export function ideaStatusStream(statusId: string) {
-  return streams.get<IIdeaStatus>({
-    apiEndpoint: `${API_PATH}/idea_statuses/${statusId}`,
-  });
-}
-
-export function ideaStatusesStream() {
-  return streams.get<IIdeaStatuses>({
-    apiEndpoint: `${API_PATH}/idea_statuses`,
-  });
-}
-
 export function addIdeaStatus(ideaStatus: IIdeaStatusAdd) {
   const response = streams.add<IIdeaStatusAdd>(`${API_PATH}/idea_statuses/`, {
     idea_status: ideaStatus,
