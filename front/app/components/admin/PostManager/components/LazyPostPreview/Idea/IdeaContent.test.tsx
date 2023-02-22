@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import { localizeProps } from 'utils/testUtils/localizeProps';
 import { getDummyIntlObject } from 'utils/testUtils/mockedIntl';
 import { getIdea } from 'services/__mocks__/ideas';
-import { getAppConfigurationData } from 'services/__mocks__/appConfiguration';
+import { appConfigurationData } from 'api/app_configuration/__mocks__/useAppConfiguration';
 import { getLocale } from 'services/__mocks__/locale';
 import { getProject } from 'services/__mocks__/projects';
 
@@ -97,7 +97,7 @@ describe('<IdeaContent />', () => {
     const ideaId = 'myIdeasiD';
     const idea = getIdea(ideaId);
     const locale = getLocale();
-    const tenant = getAppConfigurationData();
+    const tenant = { data: appConfigurationData };
     const project = getProject();
     const intl = getDummyIntlObject();
     const wrapper = shallow(
