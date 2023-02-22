@@ -5,16 +5,15 @@ import styled from 'styled-components';
 import GetCampaigns, { GetCampaignsChildProps } from 'resources/GetCampaigns';
 import { isDraft } from 'services/campaigns';
 
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 import { List } from 'components/admin/ResourceList';
-import Button from 'components/UI/Button';
 import { Icon } from '@citizenlab/cl2-component-library';
 import Pagination from 'components/admin/Pagination';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import DraftCampaignRow from './DraftCampaignRow';
 import SentCampaignRow from './SentCampaignRow';
+import NewCampaignButton from './NewCampaignButton';
 
 import messages from '../../messages';
 
@@ -44,73 +43,58 @@ const NoCampaignsDescription = styled.p`
 
 interface DataProps extends GetCampaignsChildProps {}
 
-export interface Props extends DataProps {}
+interface Props extends DataProps {}
 
-interface State {}
+const Campaigns = ({
+  campaigns,
+  currentPage,
+  lastPage,
+  onChangePage,
+}: Props) => {
+  if (isNilOrError(campaigns)) return null;
 
-class Campaigns extends React.Component<Props & WrappedComponentProps, State> {
-  render() {
-    const { campaigns, currentPage, lastPage } = this.props;
-
-    if (isNilOrError(campaigns)) return null;
-
-    if (campaigns.length === 0) {
-      return (
-        <>
-          <NoCampaignsWrapper>
-            <Icon name="email-2" width="80px" height="80px" />
-            <NoCampaignsHeader>
-              <FormattedMessage {...messages.noCampaignsHeader} />
-            </NoCampaignsHeader>
-            <NoCampaignsDescription>
-              <FormattedMessage {...messages.noCampaignsDescription} />
-            </NoCampaignsDescription>
-            <Button
-              buttonStyle="cl-blue"
-              icon="plus-circle"
-              linkTo="/admin/messaging/emails/custom/new"
-            >
-              <FormattedMessage {...messages.addCampaignButton} />
-            </Button>
-          </NoCampaignsWrapper>
-        </>
-      );
-    } else {
-      return (
-        <>
-          <ButtonWrapper>
-            <Button
-              buttonStyle="cl-blue"
-              icon="plus-circle"
-              linkTo="/admin/messaging/emails/custom/new"
-            >
-              <FormattedMessage {...messages.addCampaignButton} />
-            </Button>
-          </ButtonWrapper>
-          <List key={campaigns.map((c) => c.id).join()}>
-            {campaigns.map((campaign) =>
-              isDraft(campaign) ? (
-                <DraftCampaignRow key={campaign.id} campaign={campaign} />
-              ) : (
-                <SentCampaignRow key={campaign.id} campaign={campaign} />
-              )
-            )}
-          </List>
-          <Pagination
-            currentPage={currentPage}
-            totalPages={lastPage}
-            loadPage={this.props.onChangePage}
-          />
-        </>
-      );
-    }
+  if (campaigns.length === 0) {
+    return (
+      <>
+        <NoCampaignsWrapper>
+          <Icon name="email-2" width="80px" height="80px" />
+          <NoCampaignsHeader>
+            <FormattedMessage {...messages.noCampaignsHeader} />
+          </NoCampaignsHeader>
+          <NoCampaignsDescription>
+            <FormattedMessage {...messages.noCampaignsDescription} />
+          </NoCampaignsDescription>
+          <NewCampaignButton />
+        </NoCampaignsWrapper>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <ButtonWrapper>
+          <NewCampaignButton />
+        </ButtonWrapper>
+        <List key={campaigns.map((c) => c.id).join()}>
+          {campaigns.map((campaign) =>
+            isDraft(campaign) ? (
+              <DraftCampaignRow key={campaign.id} campaign={campaign} />
+            ) : (
+              <SentCampaignRow key={campaign.id} campaign={campaign} />
+            )
+          )}
+        </List>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={lastPage}
+          loadPage={onChangePage}
+        />
+      </>
+    );
   }
-}
-
-const CampaignsWithInjectedIntl = injectIntl(Campaigns);
+};
 
 export default () => (
   <GetCampaigns campaignNames={['manual']} pageSize={10}>
-    {(campaigns) => <CampaignsWithInjectedIntl {...campaigns} />}
+    {(campaigns) => <Campaigns {...campaigns} />}
   </GetCampaigns>
 );
