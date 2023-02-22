@@ -1,5 +1,11 @@
 # Changelog
 
+## 2023-02-22
+
+### Changed
+
+- [CL-2173] Remove access to Messaging in admin for project & folder moderators
+
 ## 2023-02-20
 
 ### Added
