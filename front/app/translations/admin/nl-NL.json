@@ -672,6 +672,7 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.view": "Toon",
   "app.containers.Admin.reporting.components.ReportBuilderPage.anErrorOccurred": "Er is een fout opgetreden bij het maken van dit rapport. Probeer het later nog eens.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.blankTemplate": "Begin met een lege pagina",
+  "app.containers.Admin.reporting.components.ReportBuilderPage.contactToAccess": "Creating a custom report is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.copyLink": "Kopieer de link",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalDescription": "Pas je rapport aan en deel het met interne belanghebbenden of de gemeenschap met een weblink.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel": "Titel van het rapport",
