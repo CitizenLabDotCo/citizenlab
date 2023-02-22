@@ -7,7 +7,7 @@ import request from 'utils/request';
 import streams from 'utils/streams';
 import clHistory from 'utils/cl-router/history';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
-import { queryClient } from 'utils/cl-react-query/queryClient';
+import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
 export const authApiEndpoint = `${API_PATH}/users/me`;
 
@@ -51,7 +51,7 @@ export async function signIn(
     setJwt(jwt, rememberMe, tokenLifetime);
     const authUser = await getAuthUserAsync();
     await streams.reset();
-    queryClient.clear();
+    await resetQueryCache();
     return authUser;
   } catch (error) {
     signOut();
@@ -109,7 +109,7 @@ export async function signOut() {
       window.location.href = url;
     } else {
       await streams.reset();
-      queryClient.clear();
+      await resetQueryCache();
       const { pathname } = removeLocale(location.pathname);
 
       if (
@@ -132,14 +132,14 @@ export function signOutAndDeleteAccount() {
       const { provider, sub } = decodedJwt;
 
       deleteUser(sub)
-        .then((_res) => {
+        .then(async (_res) => {
           removeJwt();
           if (decodedJwt.logout_supported) {
             const url = `${AUTH_PATH}/${provider}/logout?user_id=${sub}`;
             window.location.href = url;
           } else {
-            streams.reset();
-            queryClient.clear();
+            await streams.reset();
+            await resetQueryCache();
           }
           clHistory.push('/');
           resolve(true);
