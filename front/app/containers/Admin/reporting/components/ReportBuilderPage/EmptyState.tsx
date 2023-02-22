@@ -6,6 +6,7 @@ import EmptyProjectsImage from 'assets/img/landingpage/no_projects_image.svg';
 // components
 import { Box, Image, Title, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
+import Tippy from '@tippyjs/react';
 
 // styling
 import styled from 'styled-components';
@@ -14,6 +15,12 @@ import { colors } from 'utils/styleUtils';
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+
+// hooks
+import useAppConfiguration from 'hooks/useAppConfiguration';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
 
 const StyledBackgroundImage = styled(Image)`
   opacity: 0.5;
@@ -27,6 +34,14 @@ interface Props {
 }
 
 const EmptyState = ({ onOpenModal }: Props) => {
+  const appConfig = useAppConfiguration();
+
+  if (isNilOrError(appConfig)) {
+    return null;
+  }
+  const isReportBuilderAllowed =
+    appConfig.attributes.settings.report_builder?.allowed;
+
   return (
     <Box background="white" mb="36px" position="relative" height="460px">
       <StyledBackgroundImage alt="" src={EmptyProjectsImage} />
@@ -44,14 +59,25 @@ const EmptyState = ({ onOpenModal }: Props) => {
           <Text>
             <FormattedMessage {...messages.emptyStateDescription} />
           </Text>
-          <Button
-            mt="8px"
-            py="6px"
-            bgColor={colors.primary}
-            onClick={onOpenModal}
+          <Tippy
+            maxWidth="250px"
+            placement="right-start"
+            content={<FormattedMessage {...messages.contactToAccess} />}
+            hideOnClick={true}
+            disabled={isReportBuilderAllowed}
           >
-            <FormattedMessage {...messages.emptyStateButtonText} />
-          </Button>
+            <div>
+              <Button
+                mt="8px"
+                py="6px"
+                bgColor={colors.primary}
+                onClick={onOpenModal}
+                disabled={!isReportBuilderAllowed}
+              >
+                <FormattedMessage {...messages.emptyStateButtonText} />
+              </Button>
+            </div>
+          </Tippy>
         </Box>
       </Box>
     </Box>
