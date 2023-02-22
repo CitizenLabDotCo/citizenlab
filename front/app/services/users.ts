@@ -3,6 +3,7 @@ import streams, { IStreamParams } from 'utils/streams';
 import { ImageSizes, Multiloc, Locale } from 'typings';
 import { authApiEndpoint } from './auth';
 import { TRole } from 'services/permissions/roles';
+import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
 const apiEndpoint = `${API_PATH}/users`;
 
