@@ -147,7 +147,6 @@ class User < ApplicationRecord
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
 
   validates :email, :locale, presence: true, unless: :invite_pending?
-  # validates :first_name, :slug, presence: true, unless: :invite_pending?
 
   validates :email, uniqueness: true, allow_nil: true
   validates :slug, uniqueness: true, presence: true, unless: :invite_pending?
@@ -174,8 +173,6 @@ class User < ApplicationRecord
   validate :validate_password_not_common
 
   validate do |record|
-    # record.errors.add(:last_name, :blank) unless record.last_name.present? || record.cl1_migrated || record.invite_pending?
-    # record.errors.add(:password, :blank) unless record.password_digest.present? || record.identities.any? || record.invite_pending?
     if record.email && (duplicate_user = User.find_by_cimail(record.email)).present? && duplicate_user.id != id
       if duplicate_user.invite_pending?
         ErrorsService.new.remove record.errors, :email, :taken, value: record.email
