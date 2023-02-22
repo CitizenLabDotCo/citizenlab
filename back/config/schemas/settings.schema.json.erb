@@ -473,6 +473,18 @@
         }
       },
 
+      "planhat": {
+        "type": "object",
+        "title": "Planhat Integration",
+        "description":  "Planhat integration for data collection (via Segment).",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
       "satismeter": {
         "type": "object",
         "title": "Satismeter Integration",
@@ -1059,9 +1071,23 @@
           "allowed": { "type": "boolean", "default": true },
           "enabled": { "type": "boolean", "default": false }
         }
+      },
+
+      "user_confirmation": {
+        "type": "object",
+        "title": "User email confirmation",
+        "description": "Enables the ability for emails to be confirmed after registration.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }
       }
     },
   "dependencies": {
+    "planhat": ["segment"],
+
     "typeform_surveys": ["surveys"],
     "google_forms_surveys": ["surveys"],
     "enalyzer_surveys": ["surveys"],

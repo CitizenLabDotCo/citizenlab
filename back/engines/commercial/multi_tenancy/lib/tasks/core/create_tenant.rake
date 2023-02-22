@@ -112,6 +112,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        planhat: {
+          enabled: false,
+          allowed: false
+        },
         satismeter: {
           enabled: false,
           allowed: true
