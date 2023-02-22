@@ -672,6 +672,7 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.view": "Vy",
   "app.containers.Admin.reporting.components.ReportBuilderPage.anErrorOccurred": "Ett fel inträffade när du försökte skapa den här rapporten. Försök igen senare.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.blankTemplate": "Börja med en tom sida",
+  "app.containers.Admin.reporting.components.ReportBuilderPage.contactToAccess": "Creating a custom report is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.copyLink": "Kopiera länk",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalDescription": "Anpassa din rapport och dela den med interna intressenter eller en community med en webblänk.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel": "Rapporttitel",
