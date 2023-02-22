@@ -106,7 +106,7 @@ module UserCustomFields
 
         def find_users
           users = policy_scope(User.active, policy_scope_class: StatUserPolicy::Scope)
-          finder_params = params.permit(:group, :project).merge(registration_date_range: @start_at..@end_at)
+          finder_params = params.permit(:group, :project).merge({ participation_date_range: { since: @start_at, to: @end_at}})
           UsersFinder.new(users, finder_params).execute
         end
 
