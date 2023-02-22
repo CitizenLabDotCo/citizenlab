@@ -442,6 +442,14 @@ class User < ApplicationRecord
     save!
   end
 
+  def reset_confirmation_with_no_password!
+    return false unless no_password?
+
+    self.confirmation_required = true
+    reset_confirmation_code # NOTE: this use case does not need to increment reset count
+    save!
+  end
+
   def increment_confirmation_retry_count!
     increment_confirmation_retry_count
     save!

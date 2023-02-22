@@ -108,6 +108,13 @@ class WebApi::V1::UsersController < ::ApplicationController
         @user,
         params: fastjson_params(granted_permissions: permissions)
       ).serialized_json, status: :created
+    elsif existing_no_password_user?
+      SideFxUserService.new.after_update(@user, current_user)
+      permissions = Permission.for_user(@user)
+      render json: WebApi::V1::UserSerializer.new(
+        @user,
+        params: fastjson_params(granted_permissions: permissions)
+      ).serialized_json, status: :ok
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
     end
@@ -198,6 +205,20 @@ class WebApi::V1::UsersController < ::ApplicationController
     authorize @user
   rescue ActiveRecord::RecordNotFound
     send_error(nil, 404)
+  end
+
+  def existing_no_password_user?
+    return false unless AppConfiguration.instance.feature_activated?('user_confirmation')
+
+    errors = @user.errors.details[:email]
+    return false unless errors.any? { |hash| hash[:error] == :taken }
+
+    existing_user = User.find_by(email: @user.email)
+    return false unless existing_user.reset_confirmation_with_no_password!
+
+    SendConfirmationCode.call(user: existing_user)
+    @user = existing_user
+    true
   end
 
   def mark_custom_field_values_to_clear!
