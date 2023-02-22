@@ -39,6 +39,7 @@ const SortableFolderRow = ({
   moveRow,
   dropRow,
   publication,
+  isLastItem,
 }: Props) => {
   const authUser = useAuthUser();
   const { list: folderChildAdminPublications } = useAdminPublications({
@@ -58,6 +59,7 @@ const SortableFolderRow = ({
   const hasProjects =
     !isNilOrError(folderChildAdminPublications) &&
     folderChildAdminPublications.length > 0;
+  const showBottomBorder = isLastItem && !folderOpen;
 
   return (
     <>
@@ -66,6 +68,7 @@ const SortableFolderRow = ({
         index={index}
         moveRow={moveRow}
         dropRow={dropRow}
+        isLastItem={showBottomBorder}
       >
         <ProjectFolderRow
           publication={publication}

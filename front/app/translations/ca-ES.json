@@ -1308,7 +1308,6 @@
   "app.containers.SignUp.emptyTokenError": "Introduïu el vostre codi d'invitació",
   "app.containers.SignUp.firstNamesLabel": "Nom",
   "app.containers.SignUp.goToLogIn": "Ja teniu un compte? {goToOtherFlowLink}",
-  "app.containers.SignUp.goToSignUp": "No teniu un compte? {goToOtherFlowLink}",
   "app.containers.SignUp.headerSubtitle": "Pas {activeStepNumber} de {totalStepsCount}: {stepName}",
   "app.containers.SignUp.iHaveReadAndAgreeTo": "He llegit i accepto {link}.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "Accepto que les dades s'utilitzin a mitgestalten.wien.gv.at. Podeu trobar més informació a {link}.",

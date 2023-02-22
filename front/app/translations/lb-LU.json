@@ -1308,7 +1308,6 @@
   "app.containers.SignUp.emptyTokenError": "Gitt Ären Invitatiounscode an",
   "app.containers.SignUp.firstNamesLabel": "Virnumm",
   "app.containers.SignUp.goToLogIn": "Hutt Dir schonn e Kont? {goToOtherFlowLink}",
-  "app.containers.SignUp.goToSignUp": "Hutt Dir kee Kont? {goToOtherFlowLink}",
   "app.containers.SignUp.headerSubtitle": "Schrëtt {activeStepNumber} vun {totalStepsCount}: {stepName}",
   "app.containers.SignUp.iHaveReadAndAgreeTo": "Gelies an averstanen {link}.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "Ech akzeptéieren, datt d'Donéeën ob mitgestalten.wien.gv.at verwennt ginn. Weider Informatioune fannt Dir {link}.",

@@ -12,13 +12,20 @@ const FolderChildProjects = ({ folderChildAdminPublications }: Props) => {
   return (
     <Box pl="60px">
       <List>
-        {folderChildAdminPublications.map((childPublication) => {
-          return (
-            <Row key={childPublication.id}>
-              <ProjectRow publication={childPublication} actions={['manage']} />
-            </Row>
-          );
-        })}
+        <>
+          {folderChildAdminPublications.map((childPublication, index) => {
+            const isLastItem =
+              index === folderChildAdminPublications.length - 1;
+            return (
+              <Row key={childPublication.id} isLastItem={isLastItem}>
+                <ProjectRow
+                  publication={childPublication}
+                  actions={['manage']}
+                />
+              </Row>
+            );
+          })}
+        </>
       </List>
     </Box>
   );

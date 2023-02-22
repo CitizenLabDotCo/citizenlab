@@ -1308,7 +1308,6 @@
   "app.containers.SignUp.emptyTokenError": "Ange din inbjudningskod",
   "app.containers.SignUp.firstNamesLabel": "Förnamn",
   "app.containers.SignUp.goToLogIn": "Har du redan ett konto? {goToOtherFlowLink}",
-  "app.containers.SignUp.goToSignUp": "Har du inget konto? {goToOtherFlowLink}",
   "app.containers.SignUp.headerSubtitle": "Steg {activeStepNumber} av {totalStepsCount}: {stepName}",
   "app.containers.SignUp.iHaveReadAndAgreeTo": "Jag har läst och godkänner {link}.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "Jag godkänner att dessa data kommer att användas på mitgestalten.wien.gv.at. Ytterligare information finns på {link}.",
