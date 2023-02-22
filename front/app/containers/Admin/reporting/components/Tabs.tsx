@@ -2,7 +2,6 @@ import React, { useState, useMemo, useEffect } from 'react';
 
 // hooks
 import { useLocation } from 'react-router-dom';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
 import NavigationTabs, {
@@ -24,7 +23,6 @@ import clHistory from 'utils/cl-router/history';
 import { ITab } from 'typings';
 
 interface Props {
-  reportBuilderEnabled: boolean;
   children?: React.ReactNode;
 }
 
@@ -33,7 +31,7 @@ const removeTrailingSlash = (str: string) => {
   return str;
 };
 
-const DashboardTabs = ({ reportBuilderEnabled, children }: Props) => {
+const DashboardTabs = ({ children }: Props) => {
   const { pathname } = useLocation();
   const { formatMessage } = useIntl();
 
@@ -42,18 +40,14 @@ const DashboardTabs = ({ reportBuilderEnabled, children }: Props) => {
 
   const tabs = useMemo(
     () => [
-      ...(reportBuilderEnabled
-        ? [
-            {
-              label: formatMessage(messages.reportBuilder),
-              url: '/admin/reporting/report-builder',
-              name: 'report_builder',
-            },
-          ]
-        : []),
+      {
+        label: formatMessage(messages.reportBuilder),
+        url: '/admin/reporting/report-builder',
+        name: 'report_builder',
+      },
       ...additionalTabs,
     ],
-    [reportBuilderEnabled, additionalTabs, formatMessage]
+    [additionalTabs, formatMessage]
   );
 
   useEffect(() => {
@@ -85,14 +79,7 @@ const DashboardTabs = ({ reportBuilderEnabled, children }: Props) => {
 };
 
 const DashboardTabsWrapper = ({ children }: { children: React.ReactNode }) => {
-  const reportBuilderEnabled = useFeatureFlag({ name: 'report_builder' });
-  if (reportBuilderEnabled === undefined) return null;
-
-  return (
-    <DashboardTabs reportBuilderEnabled={reportBuilderEnabled}>
-      {children}
-    </DashboardTabs>
-  );
+  return <DashboardTabs>{children}</DashboardTabs>;
 };
 
 export default DashboardTabsWrapper;
