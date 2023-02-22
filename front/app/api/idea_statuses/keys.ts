@@ -1,12 +1,10 @@
 const ideaStatusesKeys = {
   all: () => [{ type: 'idea_status' }],
   lists: () => [{ ...ideaStatusesKeys.all()[0], operation: 'list' }],
-  items: (viewId: string) => [
-    { ...ideaStatusesKeys.all()[0], viewId, operation: 'item' },
-  ],
-  item: (viewId: string, id: string) => [
+  items: () => [{ ...ideaStatusesKeys.all()[0], operation: 'item' }],
+  item: (id: string) => [
     {
-      ...ideaStatusesKeys.items(viewId)[0],
+      ...ideaStatusesKeys.items()[0],
       id,
     },
   ],

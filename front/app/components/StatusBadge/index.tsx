@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import useIdeaStatus from 'hooks/useIdeaStatus';
+import useIdeaStatus from 'api/idea_statuses/useIdeaStatus';
 import T from 'components/T';
 import styled from 'styled-components';
 import { transparentize } from 'polished';
@@ -30,14 +30,14 @@ interface Props {
 }
 
 const StatusBadge = memo<Props>(({ statusId, id, className }) => {
-  const ideaStatus = useIdeaStatus({ statusId });
+  const { data: ideaStatus } = useIdeaStatus(statusId);
 
   if (!isNilOrError(ideaStatus)) {
-    const color = ideaStatus?.attributes?.color || '#bbb';
+    const color = ideaStatus?.data.attributes?.color || '#bbb';
 
     return (
       <Container id={id} className={className || ''} color={color}>
-        <T value={ideaStatus.attributes.title_multiloc} />
+        <T value={ideaStatus.data.attributes.title_multiloc} />
       </Container>
     );
   }

@@ -2,7 +2,7 @@ import React from 'react';
 import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
 
 // hooks
-import useIdeaStatus from 'hooks/useIdeaStatus';
+import useIdeaStatus from 'api/idea_statuses/useIdeaStatus';
 
 // components
 import StatusBadge from 'components/StatusBadge';
@@ -21,7 +21,7 @@ interface Props {
 }
 
 const Status = ({ statusId, compact, className }: Props) => {
-  const ideaStatus = useIdeaStatus({ statusId });
+  const { data: ideaStatus } = useIdeaStatus(statusId);
 
   if (!isNilOrError(ideaStatus)) {
     return (
