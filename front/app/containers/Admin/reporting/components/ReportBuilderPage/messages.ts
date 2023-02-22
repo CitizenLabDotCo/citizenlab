@@ -77,9 +77,4 @@ export default defineMessages({
     defaultMessage:
       'An error occurred when trying to create this report. Please try again later.',
   },
-  contactToAccess: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.contactToAccess',
-    defaultMessage:
-      'Creating a custom report is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.',
-  },
 });

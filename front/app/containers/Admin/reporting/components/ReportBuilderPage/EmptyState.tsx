@@ -14,13 +14,11 @@ import { colors } from 'utils/styleUtils';
 
 // i18n
 import messages from './messages';
+import reportingMessages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // hooks
-import useAppConfiguration from 'hooks/useAppConfiguration';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const StyledBackgroundImage = styled(Image)`
   opacity: 0.5;
@@ -34,13 +32,10 @@ interface Props {
 }
 
 const EmptyState = ({ onOpenModal }: Props) => {
-  const appConfig = useAppConfiguration();
-
-  if (isNilOrError(appConfig)) {
-    return null;
-  }
-  const isReportBuilderAllowed =
-    appConfig.attributes.settings.report_builder?.allowed;
+  const isReportBuilderAllowed = useFeatureFlag({
+    name: 'report_builder',
+    onlyCheckAllowed: true,
+  });
 
   return (
     <Box background="white" mb="36px" position="relative" height="460px">
@@ -62,7 +57,9 @@ const EmptyState = ({ onOpenModal }: Props) => {
           <Tippy
             maxWidth="250px"
             placement="right-start"
-            content={<FormattedMessage {...messages.contactToAccess} />}
+            content={
+              <FormattedMessage {...reportingMessages.contactToAccess} />
+            }
             hideOnClick
             disabled={isReportBuilderAllowed}
           >

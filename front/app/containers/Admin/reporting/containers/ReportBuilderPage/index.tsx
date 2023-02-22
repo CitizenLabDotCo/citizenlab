@@ -12,18 +12,27 @@ import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import ReportRow from '../../components/ReportBuilderPage/ReportRow';
 import CreateReportModal from '../../components/ReportBuilderPage/CreateReportModal';
+import Tippy from '@tippyjs/react';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import sharedMessages from '../../messages';
 import messages from './messages';
+import reportingMessages from '../../messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 const ReportBuilderPage = () => {
   const reports = useReports();
   const [modalOpen, setModalOpen] = useState(false);
+  const isReportBuilderAllowed = useFeatureFlag({
+    name: 'report_builder',
+    onlyCheckAllowed: true,
+  });
 
   if (isNilOrError(reports)) {
     return null;
@@ -58,15 +67,27 @@ const ReportBuilderPage = () => {
               <FormattedMessage {...messages.createReportDescription} />
             </Text>
             <Box display="flex">
-              <Button
-                onClick={openModal}
-                width="auto"
-                mt="12px"
-                bgColor={colors.primary}
-                p="8px 12px"
+              <Tippy
+                maxWidth="250px"
+                placement="right-start"
+                content={
+                  <FormattedMessage {...reportingMessages.contactToAccess} />
+                }
+                disabled={isReportBuilderAllowed}
+                hideOnClick
               >
-                <FormattedMessage {...messages.createAReport} />
-              </Button>
+                <div>
+                  <Button
+                    onClick={openModal}
+                    width="auto"
+                    mt="12px"
+                    bgColor={colors.primary}
+                    p="8px 12px"
+                  >
+                    <FormattedMessage {...messages.createAReport} />
+                  </Button>
+                </div>
+              </Tippy>
             </Box>
           </Box>
           <Box background="white" px="56px" py="40px" mt="20px">
