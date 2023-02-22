@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 // hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useReports from 'hooks/useReports';
 
 // styling
@@ -23,11 +22,10 @@ import messages from './messages';
 import { isNilOrError } from 'utils/helperUtils';
 
 const ReportBuilderPage = () => {
-  const reportBuilderEnabled = useFeatureFlag({ name: 'report_builder' });
   const reports = useReports();
   const [modalOpen, setModalOpen] = useState(false);
 
-  if (!reportBuilderEnabled || isNilOrError(reports)) {
+  if (isNilOrError(reports)) {
     return null;
   }
 
