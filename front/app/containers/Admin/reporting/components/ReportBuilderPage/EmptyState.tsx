@@ -63,7 +63,7 @@ const EmptyState = ({ onOpenModal }: Props) => {
             maxWidth="250px"
             placement="right-start"
             content={<FormattedMessage {...messages.contactToAccess} />}
-            hideOnClick={true}
+            hideOnClick
             disabled={isReportBuilderAllowed}
           >
             <div>
