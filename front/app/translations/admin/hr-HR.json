@@ -672,6 +672,7 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.view": "Prikaz",
   "app.containers.Admin.reporting.components.ReportBuilderPage.anErrorOccurred": "Došlo je do pogreške prilikom pokušaja izrade ovog izvješća. Pokušajte ponovno kasnije.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.blankTemplate": "Započni s praznom stranicom",
+  "app.containers.Admin.reporting.components.ReportBuilderPage.contactToAccess": "Creating a custom report is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.copyLink": "Kopiraj vezu",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalDescription": "Prilagodite svoj izvješće i podijelite ga s internim dionicima ili zajednicom putem web poveznice.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel": "Naslov izvješća",
