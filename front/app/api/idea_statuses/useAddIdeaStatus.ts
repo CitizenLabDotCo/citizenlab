@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import viewsKeys from './keys';
+import ideaStatusKeys from './keys';
 import { IIdeaStatus, IIdeaStatusAdd } from './types';
 
 const addIdeaStatus = async (requestBody: IIdeaStatusAdd) =>
@@ -16,7 +16,7 @@ const useAddIdeaStatus = () => {
   return useMutation<IIdeaStatus, CLErrors, IIdeaStatusAdd>({
     mutationFn: addIdeaStatus,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: viewsKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: ideaStatusKeys.lists() });
     },
   });
 };

@@ -15,12 +15,10 @@ import messages from './messages';
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 
 // streams
-import {
-  updateIdeaStatus,
-  deleteIdeaStatus,
-  IIdeaStatusData,
-} from 'services/ideaStatuses';
 
+import useUpdateIdeaStatus from 'api/idea_statuses/useUpdateIdeaStatus';
+import useDeleteIdeaStatus from 'api/idea_statuses/useDeleteIdeaStatus';
+import { IIdeaStatusData } from 'api/idea_statuses/types';
 // components
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { IconTooltip } from '@citizenlab/cl2-component-library';
@@ -71,16 +69,18 @@ const StyledIconTooltip = styled(IconTooltip)`
 
 const IdeaStatuses = () => {
   const { data: ideaStatuses } = useIdeaStatuses();
+  const { mutate: updateIdeaStatus } = useUpdateIdeaStatus();
+  const { mutate: deleteIdeaStatus } = useDeleteIdeaStatus();
 
   const handleReorder = (id: string, ordering: number) => () => {
-    updateIdeaStatus(id, { ordering });
+    updateIdeaStatus({ id, requestBody: { ordering } });
   };
 
   const isRequired = (ideaStatus: IIdeaStatusData) => {
     return ideaStatus === defaultStatus;
   };
 
-  const handleDelete = (id) => (_event: React.FormEvent<any>) => {
+  const handleDelete = (id: string) => () => {
     deleteIdeaStatus(id);
   };
 

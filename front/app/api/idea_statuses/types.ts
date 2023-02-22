@@ -39,7 +39,7 @@ export interface IIdeaStatusAdd {
 }
 
 export interface IIdeaStatusUpdate {
-  title_multiloc: Multiloc;
+  title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
   color?: string;
   code?: TIdeaStatusCode;
