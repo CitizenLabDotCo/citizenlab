@@ -32,7 +32,7 @@ const Statistic = ({
         mt="0px"
         mb="0px"
         display="inline"
-        textAlign="center"
+        textAlign="left"
       >
         {name}
       </Text>
