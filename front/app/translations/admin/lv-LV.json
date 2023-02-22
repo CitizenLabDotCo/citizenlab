@@ -672,6 +672,7 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.view": "Skatīt",
   "app.containers.Admin.reporting.components.ReportBuilderPage.anErrorOccurred": "Mēģinot izveidot šo pārskatu, radās kļūda. Lūdzu, mēģiniet vēlreiz vēlāk.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.blankTemplate": "Sāciet ar tukšu lapu",
+  "app.containers.Admin.reporting.components.ReportBuilderPage.contactToAccess": "Creating a custom report is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.copyLink": "Kopēt saiti",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalDescription": "Pielāgojiet savu ziņojumu un kopīgojiet to ar iekšējām ieinteresētajām personām vai sabiedrību, izmantojot tīmekļa saiti.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel": "Ziņojuma nosaukums",
