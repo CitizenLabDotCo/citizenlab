@@ -16,6 +16,12 @@ jest.mock('services/reports', () => ({
   deleteReport: jest.fn(),
 }));
 
+jest.mock('hooks/useAppConfiguration', () => () => ({
+  attributes: {
+    settings: { report_builder: { allowed: true, enabled: true } },
+  },
+}));
+
 const mockUser1 = { attributes: { first_name: 'User 1' } };
 const mockUser2 = { attributes: { first_name: 'User 2' } };
 jest.mock('hooks/useUser', () =>
