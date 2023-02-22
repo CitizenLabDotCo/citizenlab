@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 
 // hooks
 import { useLocation } from 'react-router-dom';
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
 import NavigationTabs, {
@@ -24,7 +24,6 @@ import clHistory from 'utils/cl-router/history';
 import { ITab } from 'typings';
 
 interface Props {
-  reportBuilderEnabled: boolean;
   children?: React.ReactNode;
 }
 
@@ -33,16 +32,20 @@ const removeTrailingSlash = (str: string) => {
   return str;
 };
 
-const DashboardTabs = ({ reportBuilderEnabled, children }: Props) => {
+const DashboardTabs = ({ children }: Props) => {
+  const reportBuilderEnabled = useFeatureFlag({ name: 'report_builder' });
+
   const { pathname } = useLocation();
   const { formatMessage } = useIntl();
 
   const [additionalTabs, setAdditionalTabs] = useState<ITab[]>([]);
   const [redirected, setRedirected] = useState(false);
 
+  const showReportBuilderTab = reportBuilderEnabled;
+
   const tabs = useMemo(
     () => [
-      ...(reportBuilderEnabled
+      ...(showReportBuilderTab
         ? [
             {
               label: formatMessage(messages.reportBuilder),
@@ -84,29 +87,4 @@ const DashboardTabs = ({ reportBuilderEnabled, children }: Props) => {
   );
 };
 
-const DashboardTabsWrapper = ({ children }: { children: React.ReactNode }) => {
-  const appConfig = useAppConfiguration();
-
-  if (isNilOrError(appConfig)) {
-    return null;
-  }
-
-  const isReportBuilderAllowed =
-    appConfig.attributes.settings.report_builder?.allowed;
-
-  const isReportBuilderEnabled =
-    appConfig.attributes.settings.report_builder?.enabled;
-
-  // We don't show the report builder tabs if the feature flag is allowed but was intentionally disabled
-  const reportBuilderEnabled = !(
-    isReportBuilderAllowed && !isReportBuilderEnabled
-  );
-
-  return (
-    <DashboardTabs reportBuilderEnabled={reportBuilderEnabled}>
-      {children}
-    </DashboardTabs>
-  );
-};
-
-export default DashboardTabsWrapper;
+export default DashboardTabs;
