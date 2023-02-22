@@ -73,10 +73,14 @@ RSpec.describe User, type: :model do
         SettingsService.new.activate_feature! 'user_confirmation'
       end
 
-      it 'should be allowed if no password has been set and confirmation is required' do
+      it 'should be allowed if the user has no password and confirmation is required' do
         u = described_class.new(email: 'bob@citizenlab.co')
         expect(u.authenticate('')).to be(true)
-        expect(u.authenticate('any_string')).to be(true)
+      end
+
+      it 'should not be allowed if a password has been supplied in the request' do
+        u = described_class.new(email: 'bob@citizenlab.co')
+        expect(u.authenticate('any_string')).to be(false)
       end
 
       it 'should not be allowed if a password has been set' do
