@@ -12,21 +12,21 @@ module XlsxExport
       value_for(field)
     end
 
-    def visit_html(field)
-      # Not supported yet. Field type not used in native surveys, nor in idea forms.
+    def visit_html(_field)
+      '' # Not supported yet. Field type not used in native surveys, nor in idea forms.
     end
 
     def visit_text_multiloc(field)
-      MultilocService.new.t(value_for(field))
+      value_for_multiloc value_for(field)
     end
 
-    def visit_multiline_text_multiloc(field)
-      # Not supported yet. Field type not used in native surveys, nor in idea forms.
+    def visit_multiline_text_multiloc(_field)
+      '' # Not supported yet. Field type not used in native surveys, nor in idea forms.
     end
 
     def visit_html_multiloc(field)
       value = value_for(field)
-      return unless value
+      return '' if value.blank?
 
       translation = MultilocService.new.t(value)
       Utils.new.convert_to_text_long_lines(translation)
@@ -34,66 +34,66 @@ module XlsxExport
 
     def visit_select(field)
       option_value = value_for(field)
-      return unless option_value
+      return '' if option_value.blank?
 
       option_title = option_index[option_value]&.title_multiloc
-      MultilocService.new.t(option_title)
+      value_for_multiloc option_title
     end
 
     def visit_multiselect(field)
       option_values = value_for(field) || []
-      return if option_values.empty?
+      return '' if option_values.empty?
 
       option_titles = option_values.filter_map do |option_value|
         option_title = option_index[option_value]&.title_multiloc
-        MultilocService.new.t option_title
+        value_for_multiloc option_title
       end
       option_titles.join(VALUE_SEPARATOR)
     end
 
-    def visit_checkbox(field)
-      # Not supported yet. Field type not used in native surveys, nor in idea forms.
+    def visit_checkbox(_field)
+      '' # Not supported yet. Field type not used in native surveys, nor in idea forms.
     end
 
-    def visit_date(field)
-      # Not supported yet. Field type not used in native surveys, nor in idea forms.
+    def visit_date(_field)
+      '' # Not supported yet. Field type not used in native surveys, nor in idea forms.
     end
 
     def visit_files(field)
       return built_in_files if field.code == 'idea_files_attributes'
 
-      # Not supported yet. Field type not used in native surveys, nor in idea forms.
+      '' # Not supported yet. Field type not used in native surveys, nor in idea forms.
     end
 
-    def visit_image_files(field)
-      # Not supported yet. Field type not used in native surveys, nor in idea forms.
+    def visit_image_files(_field)
+      '' # Not supported yet. Field type not used in native surveys, nor in idea forms.
     end
 
-    def visit_point(field)
-      # Not supported yet. Field type not used in native surveys, nor in idea forms.
+    def visit_point(_field)
+      '' # Not supported yet. Field type not used in native surveys, nor in idea forms.
     end
 
-    def visit_page(field)
-      # The field does not capture data, so there is no value.
+    def visit_page(_field)
+      '' # The field does not capture data, so there is no value.
     end
 
-    def visit_section(field)
-      # The field does not capture data, so there is no value.
+    def visit_section(_field)
+      '' # The field does not capture data, so there is no value.
     end
 
     def visit_file_upload(field)
       file_id = value_for(field)
-      return unless file_id
+      return '' if file_id.blank?
 
       idea_file = model.idea_files.detect { |file| file.id == file_id }
       idea_file.file.url
     end
 
     def visit_topic_ids(_field)
-      return if model.topics.empty?
+      return '' if model.topics.empty?
 
       topic_titles = model.topics.map do |topic|
-        MultilocService.new.t(topic.title_multiloc)
+        value_for_multiloc topic.title_multiloc
       end
       topic_titles.join(VALUE_SEPARATOR)
     end
@@ -105,17 +105,22 @@ module XlsxExport
     VALUE_SEPARATOR = ', '
 
     def built_in_files
-      return if model.idea_files.empty?
+      return '' if model.idea_files.empty?
 
       model.idea_files.map { |idea_file| idea_file.file.url }.join("\n")
     end
 
     def value_for(field)
-      if field.built_in?
+      stored_value = if field.built_in?
         model.public_send field.key
       else
         model.custom_field_values[field.key]
       end
+      stored_value.nil? ? '' : stored_value
+    end
+
+    def value_for_multiloc(maybe_multiloc)
+      maybe_multiloc.is_a?(Hash) ? MultilocService.new.t(maybe_multiloc) : ''
     end
   end
 end

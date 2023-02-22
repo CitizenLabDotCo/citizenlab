@@ -30,6 +30,10 @@ class LocalProjectCopyService < ::ProjectCopyService
 
   private
 
+  def tenant_template_service
+    @tenant_template_service ||= MultiTenancy::TenantTemplateService.new(save_temp_remote_urls: true)
+  end
+
   def add_suffix_to_title(multiloc)
     title_suffix_multiloc = MultilocService.new.i18n_to_multiloc('project_copy.title_suffix')
     multiloc.each { |k, v| multiloc[k] = "#{v} - #{title_suffix_multiloc[k]}" }

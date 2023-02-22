@@ -188,6 +188,10 @@ module MultiTenancy
               enabled: false,
               allowed: false
             },
+            planhat: {
+              enabled: false,
+              allowed: false
+            },
             satismeter: {
               enabled: true,
               allowed: true,

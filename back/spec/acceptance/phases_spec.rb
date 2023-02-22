@@ -1033,8 +1033,8 @@ resource 'Phases' do
                   ideation_response.id,
                   ideation_response.title_multiloc['en'],
                   'It would improve the air quality!', # html tags are removed
-                  nil,
-                  nil,
+                  '',
+                  '',
                   ideation_response.location_point.coordinates.last,
                   ideation_response.location_point.coordinates.first,
                   ideation_response.location_description,

@@ -135,10 +135,10 @@ lb:
       section1:
         description:
       section2:
-        title: Images and attachments
+        title: Biller an Annexen
         description:
       section3:
-        title: Details
+        title: Detailer
         description:
   custom_forms:
     categories:
@@ -199,13 +199,13 @@ lb:
       created_at: 'Agereecht bei'
       published_at: 'Verëffentlecht bei'
       comments_count: 'Kommentaren'
-      upvotes_count: 'Upvotes'
-      downvotes_count: 'Downvotes'
+      upvotes_count: 'En Daum erop ginn'
+      downvotes_count: 'En Daum erof ginn'
       baskets_count: 'Kierf'
       input_url: 'URL'
       project: 'Projet'
       status: 'Status'
-      assignee_fullname: 'Assignee'
+      assignee_fullname: 'Mandataire'
       assignee_email: 'E-Mail vum Beoptragten'
   form_builder:
     default_select_field:
@@ -217,3 +217,13 @@ lb:
       description: "Wgl. wielt ‘Ëmfro areechen’ hei ënnendrënner aus, fir Är Äntwert anzereechen."
   project_copy:
     title_suffix: 'Kopie'
+  confirmations_mailer:
+    send_confirmation_code:
+      subject: "Iwwerpréiwt Är E-Mail-Adress fir d'participativ Plattform %{organizationName}"
+      header: "Äre Bestätegungscode"
+      header_message: "Gudde Moie(n) %{firstName}!"
+      thanks_for_signing_up: "Merci, datt Dir Iech op der participativer Plattform %{organizationName} ugemellt hutt."
+      please_confirm_your_email_address: "Iwwerpréiwt wgl. Är E-Mail-Adress fir Är Registratioun ofzeschléissen."
+      copy_paste_the_link_below: "Kopéiert de Code hei ënnendrënner a füügt en an den Aschreiwungsformular op der Plattform an fir Är Aschreiwung ofzeschléissen."
+      the_link_is_valid_for: "De Link ass 24 Stonne gëlteg. Wann de Link ofgelaf ass, kënnt Dir <a href=\"%{link}\">en neie Code ufroen</a>."
+      did_you_receive_this_email_in_error: "Hutt Dir dës E-Mail iertemlech kritt? <a href=\"%{link}\">Gitt eis Bescheed</a>."

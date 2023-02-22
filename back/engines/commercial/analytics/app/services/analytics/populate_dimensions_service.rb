@@ -52,17 +52,22 @@ module Analytics
         types = [
           { name: 'idea', parent: 'post' },
           { name: 'initiative', parent: 'post' },
-          { name: 'comment', parent: nil },
-          { name: 'vote', parent: nil },
+          { name: 'comment', parent: 'initiative' },
+          { name: 'comment', parent: 'idea' },
+          { name: 'vote', parent: 'initiative' },
+          { name: 'vote', parent: 'idea' },
+          { name: 'vote', parent: 'comment' },
           { name: 'poll', parent: nil },
           { name: 'volunteer', parent: nil },
           { name: 'survey', parent: nil }
         ]
-        types.each do |type|
-          next if Analytics::DimensionType.exists?(name: type[:name])
 
-          Analytics::DimensionType.create!(name: type[:name], parent: type[:parent])
-        end
+        current_types = Analytics::DimensionType.all.as_json(only: %i[name parent])
+
+        return unless current_types & types != types
+
+        Analytics::DimensionType.delete_all
+        Analytics::DimensionType.insert_all(types)
       end
 
       def populate_locales

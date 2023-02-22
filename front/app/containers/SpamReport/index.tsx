@@ -1,5 +1,5 @@
 // libraries
-import React, { PureComponent } from 'react';
+import React, { useState, FormEvent } from 'react';
 
 // Services
 import { sendSpamReport, Report } from 'services/spamReports';
@@ -9,7 +9,7 @@ import ReportForm from './SpamReportForm';
 import { ModalContentContainer } from 'components/UI/Modal';
 
 // Typings
-import { CRUDParams, CLErrorsJSON } from 'typings';
+import { CLErrors } from 'typings';
 
 // Utils
 import { isCLErrorJSON } from 'utils/errorUtils';
@@ -17,101 +17,76 @@ import { isCLErrorJSON } from 'utils/errorUtils';
 interface Props {
   resourceType: 'comments' | 'ideas' | 'initiatives';
   resourceId: string;
-  className?: string;
 }
 
-interface State {
-  diff: Report | null;
-  loading: boolean;
-  errors: CLErrorsJSON | Error | null;
-  saved: boolean;
-}
+const SpamReportForm = ({ resourceType, resourceId }: Props) => {
+  const [diff, setDiff] = useState<Report | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<CLErrors | null>(null);
+  const [saved, setSaved] = useState(false);
 
-class SpamReportForm extends PureComponent<Props, State & CRUDParams> {
-  reasonCodes: Report['reason_code'][] = [
-    'wrong_content',
-    'inappropriate',
-    'other',
-  ];
-
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      diff: null,
-      loading: false,
-      errors: null,
-      saved: false,
-    };
-  }
-
-  handleSelectionChange = (reason_code) => {
-    const diff = {
-      ...this.state.diff,
-      reason_code,
-    } as Report;
-
+  const handleSelectionChange = (reason_code: Report['reason_code']) => {
     // Clear the "other reason" text when it's not necessary
-    if (reason_code !== 'other') {
-      delete diff.other_reason;
-    }
 
-    this.setState({ diff, errors: null });
-  };
+    setDiff((diff) => {
+      if (diff && reason_code !== 'other') {
+        delete diff.other_reason;
+      }
 
-  handleReasonTextUpdate = (other_reason) => {
-    this.setState({
-      diff: { ...this.state.diff, other_reason } as Report,
-      errors: null,
+      return {
+        ...diff,
+        reason_code,
+      };
     });
+
+    setErrors(null);
   };
 
-  handleSubmit = (event) => {
+  const handleReasonTextUpdate = (other_reason: string) => {
+    setDiff(
+      diff ? { ...diff, other_reason } : { reason_code: 'other', other_reason }
+    );
+    setErrors(null);
+  };
+
+  const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
 
-    if (!this.state.diff) {
+    if (!diff) {
       return;
     }
 
-    this.setState({ loading: true });
+    setLoading(true);
 
-    sendSpamReport(
-      this.props.resourceType,
-      this.props.resourceId,
-      this.state.diff
-    )
+    sendSpamReport(resourceType, resourceId, diff)
       .then(() => {
-        this.setState({
-          loading: false,
-          saved: true,
-          errors: null,
-          diff: null,
-        });
+        setLoading(false);
+        setSaved(true);
+        setErrors(null);
+        setDiff(null);
       })
       .catch((e) => {
+        setLoading(false);
         if (isCLErrorJSON(e)) {
-          this.setState({ errors: e.json.errors, loading: false });
-        } else {
-          this.setState({ errors: e, loading: false });
+          setErrors(e.json.errors);
         }
       });
   };
 
-  render() {
-    return (
-      <ModalContentContainer>
-        <ReportForm
-          reasonCodes={this.reasonCodes}
-          diff={this.state.diff}
-          onReasonChange={this.handleSelectionChange}
-          onTextChange={this.handleReasonTextUpdate}
-          onSubmit={this.handleSubmit}
-          loading={this.state.loading}
-          saved={this.state.saved}
-          errors={this.state.errors}
-        />
-      </ModalContentContainer>
-    );
-  }
-}
+  return (
+    <ModalContentContainer>
+      <ReportForm
+        reasonCodes={['wrong_content', 'inappropriate', 'other']}
+        diff={diff}
+        onReasonChange={handleSelectionChange}
+        onTextChange={handleReasonTextUpdate}
+        onSubmit={handleSubmit}
+        loading={loading}
+        saved={saved}
+        errors={errors}
+      />
+    </ModalContentContainer>
+  );
+};
 
 export default SpamReportForm;

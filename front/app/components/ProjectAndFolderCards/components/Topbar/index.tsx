@@ -47,12 +47,13 @@ const Title = styled.h2<{ hasPublications: boolean }>`
   text-align: center;
   margin-bottom: 28px;
 
-  ${media.phone`
-    text-align: left;
-    margin-bottom: ${({ hasPublications }) =>
-      hasPublications ? '36' : '20'}px;
-    margin-left: 4px;
-  `}
+  ${(props) =>
+    media.phone`
+      text-align: left;
+      margin-bottom: ${props.hasPublications ? '36' : '20'}px;
+      margin-left: 4px;
+    `}
+
   ${isRtl`
     direction: rtl;
   `}

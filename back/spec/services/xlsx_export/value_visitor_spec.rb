@@ -60,8 +60,8 @@ describe XlsxExport::ValueVisitor do
       context 'when there is no value' do
         let(:value) { nil }
 
-        it 'returns nil' do
-          expect(visitor.visit_text(field)).to be_nil
+        it 'returns the empty string' do
+          expect(visitor.visit_text(field)).to eq ''
         end
       end
 
@@ -80,8 +80,8 @@ describe XlsxExport::ValueVisitor do
       context 'when there is no value' do
         let(:value) { nil }
 
-        it 'returns nil' do
-          expect(visitor.visit_number(field)).to be_nil
+        it 'returns the empty string' do
+          expect(visitor.visit_number(field)).to eq ''
         end
       end
 
@@ -100,8 +100,8 @@ describe XlsxExport::ValueVisitor do
       context 'when there is no value' do
         let(:value) { nil }
 
-        it 'returns nil' do
-          expect(visitor.visit_multiline_text(field)).to be_nil
+        it 'returns the empty string' do
+          expect(visitor.visit_multiline_text(field)).to eq ''
         end
       end
 
@@ -120,16 +120,16 @@ describe XlsxExport::ValueVisitor do
       context 'when there is no value' do
         let(:value) { nil }
 
-        it 'returns nil' do
-          expect(visitor.visit_html(field)).to be_nil
+        it 'returns the empty string' do
+          expect(visitor.visit_html(field)).to eq ''
         end
       end
 
       context 'when there is a value' do
         let(:value) { +'<p>Some text.</p>' }
 
-        it 'returns nil, because the field is not supported yet' do
-          expect(visitor.visit_html(field)).to be_nil
+        it 'returns the empty string, because the field is not supported yet' do
+          expect(visitor.visit_html(field)).to eq ''
         end
       end
     end
@@ -140,8 +140,8 @@ describe XlsxExport::ValueVisitor do
       context 'when there is no value' do
         let(:value) { nil }
 
-        it 'returns nil' do
-          expect(visitor.visit_text_multiloc(field)).to be_nil
+        it 'returns the empty string' do
+          expect(visitor.visit_text_multiloc(field)).to eq ''
         end
       end
 
@@ -162,16 +162,16 @@ describe XlsxExport::ValueVisitor do
       context 'when there is no value' do
         let(:value) { nil }
 
-        it 'returns nil' do
-          expect(visitor.visit_multiline_text_multiloc(field)).to be_nil
+        it 'returns the empty string' do
+          expect(visitor.visit_multiline_text_multiloc(field)).to eq ''
         end
       end
 
       context 'when there is a value' do
         let(:value) { { 'en' => 'Line 1\nLine 2', 'nl-NL' => 'Lijn 1\nLijn2' } }
 
-        it 'returns nil, because the field is not supported yet' do
-          expect(visitor.visit_multiline_text_multiloc(field)).to be_nil
+        it 'returns the empty string, because the field is not supported yet' do
+          expect(visitor.visit_multiline_text_multiloc(field)).to eq ''
         end
       end
     end
@@ -182,15 +182,15 @@ describe XlsxExport::ValueVisitor do
       context 'when there is no value' do
         let(:value) { nil }
 
-        it 'returns nil' do
-          expect(visitor.visit_html_multiloc(field)).to be_nil
+        it 'returns the empty string' do
+          expect(visitor.visit_html_multiloc(field)).to eq ''
         end
       end
 
       context 'when there is a value' do
         let(:value) { { 'en' => +"<p>Line 1</p>\n<p>Line 2</p>", 'nl-NL' => +"<p>Lijn 1</p>\n<p>Lijn 2</p>" } }
 
-        it 'returns nil, because the field is not supported yet' do
+        it 'returns the value for the report' do
           I18n.with_locale('nl-NL') do
             expect(visitor.visit_html_multiloc(field)).to eq 'Lijn 1  Lijn 2'
           end
@@ -210,9 +210,9 @@ describe XlsxExport::ValueVisitor do
         context 'when there is no value' do
           let(:value) { nil }
 
-          it 'returns nil' do
+          it 'returns the empty string' do
             I18n.with_locale('nl-NL') do
-              expect(visitor.visit_select(field)).to be_nil
+              expect(visitor.visit_select(field)).to eq ''
             end
           end
         end
@@ -261,9 +261,9 @@ describe XlsxExport::ValueVisitor do
         context 'when there is no value' do
           let(:value) { nil }
 
-          it 'returns nil' do
+          it 'returns the empty string' do
             I18n.with_locale('nl-NL') do
-              expect(visitor.visit_select(field)).to be_nil
+              expect(visitor.visit_select(field)).to eq ''
             end
           end
         end
@@ -308,9 +308,9 @@ describe XlsxExport::ValueVisitor do
       context 'when there are no options selected' do
         let(:value) { [] }
 
-        it 'returns nil' do
+        it 'returns the empty string' do
           I18n.with_locale('nl-NL') do
-            expect(visitor.visit_multiselect(field)).to be_nil
+            expect(visitor.visit_multiselect(field)).to eq ''
           end
         end
       end
@@ -340,8 +340,8 @@ describe XlsxExport::ValueVisitor do
       let(:input_type) { 'checkbox' }
       let(:value) { true }
 
-      it 'returns nil, because the field is not supported yet' do
-        expect(visitor.visit_checkbox(field)).to be_nil
+      it 'returns the empty string, because the field is not supported yet' do
+        expect(visitor.visit_checkbox(field)).to eq ''
       end
     end
 
@@ -349,8 +349,8 @@ describe XlsxExport::ValueVisitor do
       let(:input_type) { 'date' }
       let(:value) { Time.zone.today }
 
-      it 'returns nil, because the field is not supported yet' do
-        expect(visitor.visit_date(field)).to be_nil
+      it 'returns the empty string, because the field is not supported yet' do
+        expect(visitor.visit_date(field)).to eq ''
       end
     end
 
@@ -363,9 +363,9 @@ describe XlsxExport::ValueVisitor do
         let(:model) { create(:idea, custom_field_values: { field_key => value }) }
 
         context 'when there is no value' do
-          it 'returns nil' do
+          it 'returns the empty string' do
             I18n.with_locale('nl-NL') do
-              expect(visitor.visit_files(field)).to be_nil
+              expect(visitor.visit_files(field)).to eq ''
             end
           end
         end
@@ -398,8 +398,8 @@ describe XlsxExport::ValueVisitor do
       context 'when the code is not idea_files_attributes' do
         let(:value) { nil }
 
-        it 'returns nil, because the field is not supported yet' do
-          expect(visitor.visit_files(field)).to be_nil
+        it 'returns the empty string, because the field is not supported yet' do
+          expect(visitor.visit_files(field)).to eq ''
         end
       end
     end
@@ -408,8 +408,8 @@ describe XlsxExport::ValueVisitor do
       let(:input_type) { 'image_files' }
       let(:value) { nil }
 
-      it 'returns nil, because the field is not supported yet' do
-        expect(visitor.visit_image_files(field)).to be_nil
+      it 'returns the empty string, because the field is not supported yet' do
+        expect(visitor.visit_image_files(field)).to eq ''
       end
     end
 
@@ -417,8 +417,8 @@ describe XlsxExport::ValueVisitor do
       let(:input_type) { 'point' }
       let(:value) { true }
 
-      it 'returns nil, because the field is not supported yet' do
-        expect(visitor.visit_point(field)).to be_nil
+      it 'returns the empty string, because the field is not supported yet' do
+        expect(visitor.visit_point(field)).to eq ''
       end
     end
 
@@ -426,8 +426,8 @@ describe XlsxExport::ValueVisitor do
       let(:input_type) { 'page' }
       let(:model) { instance_double Idea } # The model is irrelevant for this test.
 
-      it 'returns nil, because the field does not capture data' do
-        expect(visitor.visit_page(field)).to be_nil
+      it 'returns the empty string, because the field does not capture data' do
+        expect(visitor.visit_page(field)).to eq ''
       end
     end
 
@@ -435,8 +435,8 @@ describe XlsxExport::ValueVisitor do
       let(:input_type) { 'section' }
       let(:model) { instance_double Idea } # The model is irrelevant for this test.
 
-      it 'returns nil, because the field does not capture data' do
-        expect(visitor.visit_section(field)).to be_nil
+      it 'returns the empty string, because the field does not capture data' do
+        expect(visitor.visit_section(field)).to eq ''
       end
     end
 
@@ -446,9 +446,9 @@ describe XlsxExport::ValueVisitor do
       context 'when there is no value' do
         let(:value) { nil }
 
-        it 'returns nil' do
+        it 'returns the empty string' do
           I18n.with_locale('nl-NL') do
-            expect(visitor.visit_file_upload(field)).to be_nil
+            expect(visitor.visit_file_upload(field)).to eq ''
           end
         end
       end
@@ -477,9 +477,9 @@ describe XlsxExport::ValueVisitor do
         let(:topics) { [] }
         let(:value) { nil }
 
-        it 'returns nil' do
+        it 'returns the empty string' do
           I18n.with_locale('nl-NL') do
-            expect(visitor.visit_topic_ids(field)).to be_nil
+            expect(visitor.visit_topic_ids(field)).to eq ''
           end
         end
       end
