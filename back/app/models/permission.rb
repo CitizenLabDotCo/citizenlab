@@ -18,7 +18,7 @@
 #  index_permissions_on_permission_scope_id  (permission_scope_id)
 #
 class Permission < ApplicationRecord
-  PERMITTED_BIES = %w[everyone users groups admins_moderators].freeze
+  PERMITTED_BIES = %w[everyone everyone_confirmed_email users groups admins_moderators].freeze
 
   belongs_to :permission_scope, polymorphic: true, optional: true
   has_many :groups_permissions, dependent: :destroy
@@ -63,7 +63,7 @@ class Permission < ApplicationRecord
     return if user && UserRoleService.new.can_moderate?(permission_scope, user)
 
     reason = case permitted_by
-    when 'users' then :not_signed_in unless user
+    when 'users' then :not_signed_in unless user # TODO
     when 'admins_moderators' then :not_permitted
     when 'groups' then denied_when_permitted_by_groups?(user)
     else

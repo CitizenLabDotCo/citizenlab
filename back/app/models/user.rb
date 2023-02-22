@@ -318,6 +318,10 @@ class User < ApplicationRecord
     !admin? && moderatable_project_ids.blank? && moderated_project_folder_ids.blank?
   end
 
+  def light_resident?
+    !password_digest && user.identity_ids.empty?
+  end
+
   def moderatable_project_ids
     # Does not include folders
     roles.select { |role| role['type'] == 'project_moderator' }.pluck('project_id').compact

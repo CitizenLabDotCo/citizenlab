@@ -70,6 +70,28 @@ class PermissionsService
     permission.denied_reason user
   end
 
+  def requirements(permission, user)
+    requirements_mapping[permission.permitted_by].tap do |requirements|
+      break requirements if !user
+
+      requirements[:built_in]&.each_key do |attribute|
+        requirements[:built_in][attribute] = 'satisfied' if !user.send(attribute).nil?
+      end
+      requirements[:custom_fields]&.each_key do |key|
+        requirements[:custom_fields][key] = 'satisfied' if user.custom_field_values.key?(key)
+      end
+      requirements[:special]&.each_key do |special_key|
+        is_satisfied = case special_key
+        when 'password'
+          !user.light_resident?
+        when 'confirmation'
+          user.confirmed?
+        end
+        requirements[:special][special_key] = 'satisfied' if is_satisfied
+      end
+    end
+  end
+
   private
 
   def remove_extras_actions(scope, actions = nil)
@@ -88,5 +110,26 @@ class PermissionsService
   def missing_actions(scope, actions = nil)
     actions ||= self.class.actions(scope)
     actions - Permission.where(permission_scope: scope).pluck(:action)
+  end
+
+  def requirements_mapping
+    {
+      'everyone' => {},
+      'everyone_confirmed_email' => {
+        built_in: {
+          first_name: 'dont_ask',
+          last_name: 'dont_ask',
+          email: 'require'
+        },
+        custom_fields: CustomField.registration.map(&:key).index_with { 'dont_ask' },
+        special: {
+          password: 'dont_ask',
+          confirmation: 'require'
+        }
+      },
+      'users' => {},
+      'groups' => {},
+      'admins_moderators' => {}
+    }
   end
 end
