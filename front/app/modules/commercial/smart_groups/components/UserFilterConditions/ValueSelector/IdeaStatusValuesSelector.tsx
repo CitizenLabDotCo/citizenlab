@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { IOption } from 'typings';
-import useIdeaStatuses from 'hooks/useIdeaStatuses';
+import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import useLocalize from 'hooks/useLocalize';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import { isNilOrError } from 'utils/helperUtils';
@@ -11,11 +11,11 @@ export interface Props {
 }
 
 const IdeaStatusValuesSelector = memo(({ value, onChange }: Props) => {
-  const ideaStatuses = useIdeaStatuses();
+  const { data: ideaStatuses } = useIdeaStatuses();
   const localize = useLocalize();
   const generateOptions = (): IOption[] => {
     if (!isNilOrError(ideaStatuses)) {
-      return ideaStatuses.map((ideaStatus) => {
+      return ideaStatuses.data.map((ideaStatus) => {
         return {
           value: ideaStatus.id,
           label: localize(ideaStatus.attributes.title_multiloc),

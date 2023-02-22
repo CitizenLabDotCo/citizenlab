@@ -12,7 +12,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // hooks
-import useIdeaStatuses from 'hooks/useIdeaStatuses';
+import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 
 // streams
 import {
@@ -70,7 +70,7 @@ const StyledIconTooltip = styled(IconTooltip)`
 `;
 
 const IdeaStatuses = () => {
-  const ideaStatuses = useIdeaStatuses();
+  const { data: ideaStatuses } = useIdeaStatuses();
 
   const handleReorder = (id: string, ordering: number) => () => {
     updateIdeaStatus(id, { ordering });
@@ -94,7 +94,7 @@ const IdeaStatuses = () => {
 
   const defaultStatus = useMemo(() => {
     if (!isNilOrError(ideaStatuses)) {
-      return ideaStatuses.find(
+      return ideaStatuses.data.find(
         (status) => status.attributes.code === 'proposed'
       );
     }
@@ -104,7 +104,7 @@ const IdeaStatuses = () => {
 
   const sortableStatuses = useMemo(() => {
     if (!isNilOrError(ideaStatuses) && defaultStatus) {
-      return ideaStatuses.filter(
+      return ideaStatuses.data.filter(
         (status) => status.attributes !== defaultStatus.attributes
       );
     }
