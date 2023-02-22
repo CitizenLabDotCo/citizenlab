@@ -12,6 +12,10 @@
 
 - [CL-2314] Ability to copy projects in the admin.
 
+### Fixed
+
+- [CL-2826] Alignment of graphs in emails dashboard
+
 ## 2023-02-17
 
 ### Added
