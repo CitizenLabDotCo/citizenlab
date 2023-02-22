@@ -672,6 +672,7 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.view": "عرض",
   "app.containers.Admin.reporting.components.ReportBuilderPage.anErrorOccurred": "حدث خطأ عند محاولة إنشاء هذا التقرير. يرجى إعادة المحاولة لاحقًا.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.blankTemplate": "البدء بصفحة فارغة",
+  "app.containers.Admin.reporting.components.ReportBuilderPage.contactToAccess": "Creating a custom report is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.copyLink": "انسخ الرابط",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalDescription": "أضفِ طابعك الشخصي على التقرير وأتحه للمشاركة مع الأطراف المعنية الداخلية أو المجتمع عبر رابط ويب.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel": "عنوان التقرير",
