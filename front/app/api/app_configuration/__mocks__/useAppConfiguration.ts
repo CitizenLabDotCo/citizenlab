@@ -1,4 +1,4 @@
-const appConfigurationData = {
+export const appConfigurationData = {
   id: 'c4b400e1-1786-5be2-af55-40730c6a843d',
   type: 'app_configuration',
   attributes: {

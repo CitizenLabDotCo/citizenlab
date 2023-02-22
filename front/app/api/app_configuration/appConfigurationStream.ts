@@ -3,8 +3,12 @@ import { CLErrors } from 'typings';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import appConfigurationKeys from './keys';
 import { AppConfigurationKeys, IAppConfiguration } from './types';
-import { Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { fetchAppConfiguration } from './useAppConfiguration';
+
+const appConfigurationStream = new BehaviorSubject<
+  IAppConfiguration | undefined
+>(undefined);
 
 const appConfigurationQueryObserver = new QueryObserver<
   IAppConfiguration,
@@ -16,14 +20,9 @@ const appConfigurationQueryObserver = new QueryObserver<
   queryFn: fetchAppConfiguration,
 });
 
-const appConfigurationStream = new Observable<IAppConfiguration | undefined>(
-  (subscriber) => {
-    const unsubscribe = appConfigurationQueryObserver.subscribe((query) => {
-      subscriber.next(query?.data);
-    });
-    return unsubscribe;
-  }
-);
+appConfigurationQueryObserver.subscribe((query) => {
+  return appConfigurationStream.next(query?.data);
+});
 
 /** @deprecated Only used for backwards compatibility reasons with streams. Do not use in React components or hooks */
 export default appConfigurationStream;
