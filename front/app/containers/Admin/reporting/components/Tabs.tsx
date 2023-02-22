@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 
 // hooks
 import { useLocation } from 'react-router-dom';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // components
 import NavigationTabs, {
@@ -16,13 +17,14 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // utils
-import { matchPathToUrl } from 'utils/helperUtils';
+import { matchPathToUrl, isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
 // typings
 import { ITab } from 'typings';
 
 interface Props {
+  reportBuilderEnabled: boolean;
   children?: React.ReactNode;
 }
 
@@ -31,7 +33,7 @@ const removeTrailingSlash = (str: string) => {
   return str;
 };
 
-const DashboardTabs = ({ children }: Props) => {
+const DashboardTabs = ({ reportBuilderEnabled, children }: Props) => {
   const { pathname } = useLocation();
   const { formatMessage } = useIntl();
 
@@ -40,14 +42,18 @@ const DashboardTabs = ({ children }: Props) => {
 
   const tabs = useMemo(
     () => [
-      {
-        label: formatMessage(messages.reportBuilder),
-        url: '/admin/reporting/report-builder',
-        name: 'report_builder',
-      },
+      ...(reportBuilderEnabled
+        ? [
+            {
+              label: formatMessage(messages.reportBuilder),
+              url: '/admin/reporting/report-builder',
+              name: 'report_builder',
+            },
+          ]
+        : []),
       ...additionalTabs,
     ],
-    [additionalTabs, formatMessage]
+    [reportBuilderEnabled, additionalTabs, formatMessage]
   );
 
   useEffect(() => {
@@ -79,7 +85,28 @@ const DashboardTabs = ({ children }: Props) => {
 };
 
 const DashboardTabsWrapper = ({ children }: { children: React.ReactNode }) => {
-  return <DashboardTabs>{children}</DashboardTabs>;
+  const appConfig = useAppConfiguration();
+
+  if (isNilOrError(appConfig)) {
+    return null;
+  }
+
+  const isReportBuilderAllowed =
+    appConfig.attributes.settings.report_builder?.allowed;
+
+  const isReportBuilderEnabled =
+    appConfig.attributes.settings.report_builder?.enabled;
+
+  // We don't show the report builder tabs if the feature flag is allowed but was intentionally disabled
+  const reportBuilderEnabled = !(
+    isReportBuilderAllowed && !isReportBuilderEnabled
+  );
+
+  return (
+    <DashboardTabs reportBuilderEnabled={reportBuilderEnabled}>
+      {children}
+    </DashboardTabs>
+  );
 };
 
 export default DashboardTabsWrapper;
