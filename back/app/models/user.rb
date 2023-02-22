@@ -417,6 +417,13 @@ class User < ApplicationRecord
     self.confirmation_required = should_require_confirmation?
   end
 
+  def reset_confirmation_with_no_password!
+    return false unless no_password?
+
+    self.confirmation_required = true
+    save!
+  end
+
   def confirm
     self.email_confirmed_at    = Time.zone.now
     self.confirmation_required = false
@@ -436,14 +443,6 @@ class User < ApplicationRecord
   def reset_confirmation_code!
     reset_confirmation_code
     increment_confirmation_code_reset_count
-    save!
-  end
-
-  def reset_confirmation_with_no_password!
-    return false unless no_password?
-
-    self.confirmation_required = true
-    reset_confirmation_code # NOTE: this use case does not need to increment reset count
     save!
   end
 

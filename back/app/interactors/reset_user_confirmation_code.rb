@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ResetUserConfirmationCode < ApplicationInteractor
-  delegate :user, :first_code, to: :context
+  delegate :user, :first_code, :ignore_reset_count, to: :context
 
   def call
     validate_code
@@ -17,7 +17,7 @@ class ResetUserConfirmationCode < ApplicationInteractor
   end
 
   def validate_confirmation_reset_count
-    user.increment_confirmation_code_reset_count! unless first_code
+    user.increment_confirmation_code_reset_count! unless first_code || ignore_reset_count
   rescue ActiveRecord::RecordInvalid => _e
     fail_with_error! :code, :too_many_resets, message: 'You\'ve reset too many times.'
   end
