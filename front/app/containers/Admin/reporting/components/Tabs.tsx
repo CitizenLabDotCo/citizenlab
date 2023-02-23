@@ -19,12 +19,13 @@ import messages from '../messages';
 // utils
 import { matchPathToUrl, isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
+import { shouldShowReportBuilderTab } from './utils';
 
 // typings
 import { ITab } from 'typings';
 
 interface Props {
-  reportBuilderEnabled: boolean;
+  showReportBuilderTab: boolean;
   children?: React.ReactNode;
 }
 
@@ -33,7 +34,7 @@ const removeTrailingSlash = (str: string) => {
   return str;
 };
 
-const DashboardTabs = ({ reportBuilderEnabled, children }: Props) => {
+const DashboardTabs = ({ showReportBuilderTab, children }: Props) => {
   const { pathname } = useLocation();
   const { formatMessage } = useIntl();
 
@@ -42,7 +43,7 @@ const DashboardTabs = ({ reportBuilderEnabled, children }: Props) => {
 
   const tabs = useMemo(
     () => [
-      ...(reportBuilderEnabled
+      ...(showReportBuilderTab
         ? [
             {
               label: formatMessage(messages.reportBuilder),
@@ -53,7 +54,7 @@ const DashboardTabs = ({ reportBuilderEnabled, children }: Props) => {
         : []),
       ...additionalTabs,
     ],
-    [reportBuilderEnabled, additionalTabs, formatMessage]
+    [showReportBuilderTab, additionalTabs, formatMessage]
   );
 
   useEffect(() => {
@@ -89,20 +90,10 @@ const DashboardTabsWrapper = ({ children }: { children: React.ReactNode }) => {
   if (isNilOrError(appConfig)) {
     return null;
   }
-
-  const isReportBuilderAllowed =
-    appConfig.attributes.settings.report_builder?.allowed;
-
-  const isReportBuilderEnabled =
-    appConfig.attributes.settings.report_builder?.enabled;
-
-  // We don't show the report builder tabs if the feature flag is allowed but was intentionally disabled
-  const showReportBuilderTab = !(
-    isReportBuilderAllowed && !isReportBuilderEnabled
-  );
+  const showReportBuilderTab = shouldShowReportBuilderTab(appConfig);
 
   return (
-    <DashboardTabs reportBuilderEnabled={showReportBuilderTab}>
+    <DashboardTabs showReportBuilderTab={showReportBuilderTab}>
       {children}
     </DashboardTabs>
   );
