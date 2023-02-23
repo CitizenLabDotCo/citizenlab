@@ -6,13 +6,13 @@ import { Status, ErrorCode } from '../typings';
 interface Props {
   status: Status;
   error: ErrorCode | null;
-  onConfirm: (code: number) => void;
+  onConfirm: (code: string) => void;
 }
 
 const EmailConfirmation = ({ status, onConfirm }: Props) => {
   const loading = status === 'pending';
   const handleConfirm = () => {
-    onConfirm(1234); // TODO
+    onConfirm('1234'); // TODO
   };
 
   return (

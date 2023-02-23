@@ -61,7 +61,7 @@ export const getStepConfig = (
       setCurrentStep('email-registration');
     },
 
-    SUBMIT_CODE: async (code: number) => {
+    SUBMIT_CODE: async (code: string) => {
       setStatus('pending');
 
       await confirmCode(code);
