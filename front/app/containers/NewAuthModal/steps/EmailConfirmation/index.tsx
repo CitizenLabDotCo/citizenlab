@@ -1,9 +1,13 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, FormEvent } from 'react';
+
+// services
+import { resendCode } from 'services/confirmation';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import CodeSentMessage from 'containers/Authentication/SignUpIn/SignUpInModal/SignUp/ConfirmationSignupStep/CodeSentMessage';
+import FooterNotes from 'containers/Authentication/SignUpIn/SignUpInModal/SignUp/ConfirmationSignupStep/FooterNotes';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -23,6 +27,7 @@ interface Props {
   status: Status;
   error: ErrorCode | null;
   onConfirm: (code: string) => void;
+  onChangeEmail: () => void;
 }
 
 interface FormValues {
@@ -33,9 +38,12 @@ const DEFAULT_VALUES: Partial<FormValues> = {
   code: undefined,
 };
 
-const EmailConfirmation = ({ status, onConfirm }: Props) => {
+const EmailConfirmation = ({ status, onConfirm, onChangeEmail }: Props) => {
+  const [codeResent, setCodeResent] = useState(false);
+  const [resendingCode, setResendingCode] = useState(false);
+
   const { formatMessage } = useIntl();
-  const loading = status === 'pending';
+  const loading = status === 'pending' || resendingCode;
 
   const schema = useMemo(
     () =>
@@ -54,7 +62,25 @@ const EmailConfirmation = ({ status, onConfirm }: Props) => {
   });
 
   const handleConfirm = ({ code }: FormValues) => {
+    setResendingCode(false);
+    setCodeResent(false);
     onConfirm(code);
+  };
+
+  const handleResendCode = (e: FormEvent) => {
+    e.preventDefault();
+    setResendingCode(true);
+
+    resendCode()
+      .then(() => {
+        setResendingCode(false);
+        setCodeResent(true);
+        // setApiErrors({});
+      })
+      .catch((_errors) => {
+        // setApiErrors(errors);
+        setResendingCode(false);
+      });
   };
 
   return (
@@ -77,6 +103,13 @@ const EmailConfirmation = ({ status, onConfirm }: Props) => {
           >
             {formatMessage(oldMessages.verifyAndContinue)}
           </Button>
+        </Box>
+        <Box mt="24px">
+          <FooterNotes
+            codeResent={codeResent}
+            onResendCode={handleResendCode}
+            onChangeEmail={onChangeEmail}
+          />
         </Box>
       </form>
     </FormProvider>

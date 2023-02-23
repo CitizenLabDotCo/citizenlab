@@ -1,20 +1,27 @@
 import React, { useState, FormEvent } from 'react';
-import { FormattedMessage } from 'utils/cl-intl';
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-import messages from './messages';
-import Error from 'components/UI/Error';
-import { confirm, resendCode, IConfirmation } from 'services/confirmation';
-import { CLErrors, CLError } from 'typings';
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
 
-import { Icon, Input, Label } from '@citizenlab/cl2-component-library';
-import Link from 'utils/cl-router/Link';
+// services
+import { confirm, resendCode, IConfirmation } from 'services/confirmation';
+
+// components
+import Error from 'components/UI/Error';
+import { Input, Label, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import { FormLabel } from 'components/UI/FormComponents';
 import CodeSentMessage from './CodeSentMessage';
+import FooterNotes, { FooterNote, FooterNoteLink } from './FooterNotes';
+
+// styling
+import styled from 'styled-components';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
+
+// tracks
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
+import { CLErrors, CLError } from 'typings';
 
 const FormContainer = styled.div<{ inModal: boolean }>`
   display: flex;
@@ -52,42 +59,6 @@ const Footer = styled.div`
 const SubmitButton = styled(Button)`
   width: 100%;
   margin: 0.75rem 0;
-`;
-
-const FooterNotes = styled.div`
-  margin: 18px 0 0;
-  text-align: center;
-`;
-
-const FooterNote = styled.p`
-  color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.s}px;
-  line-height: normal;
-
-  &:not(:last-child) {
-    margin: 0 0 1rem;
-  }
-`;
-
-const FooterNoteLink = styled(Link)`
-  font-size: ${fontSizes.s}px;
-  padding-left: 4px;
-  color: ${({ theme }) => theme.colors.tenantText};
-  text-decoration: underline;
-
-  &:hover {
-    color: ${({ theme }) => darken(0.2, theme.colors.tenantText)};
-    text-decoration: underline;
-  }
-`;
-
-const FooterNoteSuccessMessage = styled.span`
-  color: ${colors.success};
-  padding-left: 6px;
-`;
-
-const FooterNoteSuccessMessageIcon = styled(Icon)`
-  margin-right: 4px;
 `;
 
 type Props = { onCompleted: () => void };
@@ -204,14 +175,14 @@ const ConfirmationSignupStep = ({ onCompleted }: Props) => {
               <FormattedMessage {...messages.sendEmailWithCode} />
             </SubmitButton>
           </Footer>
-          <FooterNotes>
+          <Text margin="18px 0 0" textAlign="center">
             <FooterNote>
               <FormattedMessage {...messages.foundYourCode} />
               <FooterNoteLink onClick={handleBackToCode} to="#">
                 <FormattedMessage {...messages.goBack} />
               </FooterNoteLink>
             </FooterNote>
-          </FooterNotes>
+          </Text>
         </Form>
       ) : (
         <Form inModal={inModal} onSubmit={handleSubmitConfirmation}>
@@ -243,28 +214,13 @@ const ConfirmationSignupStep = ({ onCompleted }: Props) => {
               <FormattedMessage {...messages.verifyAndContinue} />
             </SubmitButton>
           </Footer>
-          <FooterNotes>
-            <FooterNote>
-              <FormattedMessage {...messages.didntGetAnEmail} />
-
-              {codeResent ? (
-                <FooterNoteSuccessMessage>
-                  <FooterNoteSuccessMessageIcon name="check-circle" />
-                  <FormattedMessage {...messages.confirmationCodeSent} />
-                </FooterNoteSuccessMessage>
-              ) : (
-                <FooterNoteLink onClick={handleResendCode} to="#">
-                  <FormattedMessage {...messages.sendNewCode} />
-                </FooterNoteLink>
-              )}
-            </FooterNote>
-            <FooterNote>
-              <FormattedMessage {...messages.wrongEmail} />
-              <FooterNoteLink onClick={handleShowEmailInput} to="#">
-                <FormattedMessage {...messages.changeYourEmail} />
-              </FooterNoteLink>
-            </FooterNote>
-          </FooterNotes>
+          <Text margin="18px 0 0" textAlign="center">
+            <FooterNotes
+              codeResent={codeResent}
+              onResendCode={handleResendCode}
+              onChangeEmail={handleShowEmailInput}
+            />
+          </Text>
         </Form>
       )}
     </FormContainer>
