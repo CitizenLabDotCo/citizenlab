@@ -216,7 +216,7 @@ class WebApi::V1::UsersController < ::ApplicationController
     existing_user = User.find_by(email: @user.email)
     return false unless existing_user.reset_confirmation_with_no_password!
 
-    SendConfirmationCode.call(user: existing_user, ignore_reset_count: true)
+    SendConfirmationCode.call(user: existing_user)
     @user = existing_user
     true
   end
