@@ -146,6 +146,7 @@ class WebApi::V1::UsersController < ::ApplicationController
   end
 
   def complete_registration
+    # NOTE: Authorize fails if registration is already flagged as complete
     @user = current_user
     authorize @user
 
