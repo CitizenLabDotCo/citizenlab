@@ -1,5 +1,5 @@
 import React from 'react';
-import { IIdeaStatusData } from 'services/ideaStatuses';
+import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { flow, get } from 'lodash-es';
 import styled from 'styled-components';
