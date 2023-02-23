@@ -48,6 +48,8 @@ const DashboardTabs = ({ children }: Props) => {
   const [redirected, setRedirected] = useState(false);
 
   const showReportBuilderTab =
+    // !reportBuilderAllowed: if the feature is not allowed by the pricing plan,
+    // we want to show an info message about this, which requires seeing the tab.
     reportBuilderAllowedAndEnabled || !reportBuilderAllowed;
 
   const tabs = useMemo(
