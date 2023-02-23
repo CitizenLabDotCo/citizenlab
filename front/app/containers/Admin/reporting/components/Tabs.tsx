@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 
 // hooks
 import { useLocation } from 'react-router-dom';
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
 import NavigationTabs, {
@@ -17,14 +17,13 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // utils
-import { matchPathToUrl, isNilOrError } from 'utils/helperUtils';
+import { matchPathToUrl } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
 // typings
 import { ITab } from 'typings';
 
 interface Props {
-  reportBuilderEnabled: boolean;
   children?: React.ReactNode;
 }
 
@@ -33,16 +32,29 @@ const removeTrailingSlash = (str: string) => {
   return str;
 };
 
-const DashboardTabs = ({ reportBuilderEnabled, children }: Props) => {
+const DashboardTabs = ({ children }: Props) => {
+  const reportBuilderAllowedAndEnabled = useFeatureFlag({
+    name: 'report_builder',
+  });
+  const reportBuilderAllowed = useFeatureFlag({
+    name: 'report_builder',
+    onlyCheckAllowed: true,
+  });
+
   const { pathname } = useLocation();
   const { formatMessage } = useIntl();
 
   const [additionalTabs, setAdditionalTabs] = useState<ITab[]>([]);
   const [redirected, setRedirected] = useState(false);
 
+  const showReportBuilderTab =
+    // !reportBuilderAllowed: if the feature is not allowed by the pricing plan,
+    // we want to show an info message about this, which requires seeing the tab.
+    reportBuilderAllowedAndEnabled || !reportBuilderAllowed;
+
   const tabs = useMemo(
     () => [
-      ...(reportBuilderEnabled
+      ...(showReportBuilderTab
         ? [
             {
               label: formatMessage(messages.reportBuilder),
@@ -53,7 +65,7 @@ const DashboardTabs = ({ reportBuilderEnabled, children }: Props) => {
         : []),
       ...additionalTabs,
     ],
-    [reportBuilderEnabled, additionalTabs, formatMessage]
+    [showReportBuilderTab, additionalTabs, formatMessage]
   );
 
   useEffect(() => {
@@ -84,29 +96,4 @@ const DashboardTabs = ({ reportBuilderEnabled, children }: Props) => {
   );
 };
 
-const DashboardTabsWrapper = ({ children }: { children: React.ReactNode }) => {
-  const appConfig = useAppConfiguration();
-
-  if (isNilOrError(appConfig)) {
-    return null;
-  }
-
-  const isReportBuilderAllowed =
-    appConfig.attributes.settings.report_builder?.allowed;
-
-  const isReportBuilderEnabled =
-    appConfig.attributes.settings.report_builder?.enabled;
-
-  // We don't show the report builder tabs if the feature flag is allowed but was intentionally disabled
-  const reportBuilderEnabled = !(
-    isReportBuilderAllowed && !isReportBuilderEnabled
-  );
-
-  return (
-    <DashboardTabs reportBuilderEnabled={reportBuilderEnabled}>
-      {children}
-    </DashboardTabs>
-  );
-};
-
-export default DashboardTabsWrapper;
+export default DashboardTabs;

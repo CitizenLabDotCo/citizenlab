@@ -18,7 +18,6 @@ import Tippy from '@tippyjs/react';
 import { FormattedMessage } from 'utils/cl-intl';
 import sharedMessages from '../../messages';
 import messages from './messages';
-import reportingMessages from '../../messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -71,7 +70,7 @@ const ReportBuilderPage = () => {
                 maxWidth="250px"
                 placement="right-start"
                 content={
-                  <FormattedMessage {...reportingMessages.contactToAccess} />
+                  <FormattedMessage {...sharedMessages.contactToAccess} />
                 }
                 disabled={isReportBuilderAllowed}
                 hideOnClick
