@@ -17,7 +17,7 @@ const EmailConfirmation = ({ status, onConfirm }: Props) => {
 
   return (
     <Box>
-      <Text>Email confirmation</Text>
+      <Text mt="0px">Email confirmation</Text>
       <Button
         width="auto"
         disabled={loading}

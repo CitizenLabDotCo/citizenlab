@@ -21,7 +21,7 @@ const EmailSignUp = ({ status, error, onSubmit }: Props) => {
   return (
     <Box>
       {error && <Error text={error} />}
-      <Text>Email sign up</Text>
+      <Text mt="0px">Email sign up</Text>
       <Button
         onClick={handleSubmit}
         width="auto"
