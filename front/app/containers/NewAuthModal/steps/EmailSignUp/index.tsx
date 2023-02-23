@@ -6,6 +6,7 @@ import Button from 'components/UI/Button';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
+import stepMessages from '../messages';
 import messages from './messages';
 
 // form
@@ -15,11 +16,11 @@ import { string, object } from 'yup';
 import Input from 'components/HookForm/Input';
 
 // typings
-import { Status, ErrorCode } from '../typings';
+import { Status, ErrorCode } from '../../typings';
 import { SSOProvider } from 'services/singleSignOn';
 
 // mocks
-import { _setMockRequirements } from '../useSteps';
+import { _setMockRequirements } from '../../useSteps';
 
 interface Props {
   status: Status;
@@ -81,7 +82,7 @@ const EmailSignUp = ({ status, onSubmit }: Props) => {
             disabled={loading}
             processing={loading}
           >
-            {formatMessage(messages.continue)}
+            {formatMessage(stepMessages.continue)}
           </Button>
         </Box>
       </form>

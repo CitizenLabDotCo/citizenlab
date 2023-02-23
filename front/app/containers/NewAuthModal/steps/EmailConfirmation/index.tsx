@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import { Status, ErrorCode } from '../typings';
+import { Status, ErrorCode } from '../../typings';
 
 interface Props {
   status: Status;
