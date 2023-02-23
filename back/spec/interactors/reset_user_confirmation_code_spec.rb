@@ -24,19 +24,4 @@ RSpec.describe ResetUserConfirmationCode do
       expect(result.errors.details).to eq(code: [{ error: :too_many_resets }])
     end
   end
-
-  context 'when the reset count is ignored' do
-    before do
-      context[:user] = create(:user_with_confirmation)
-      context[:ignore_reset_count] = true
-
-      5.times do
-        context[:user].reset_confirmation_code!
-      end
-    end
-
-    it 'does not return errors' do
-      expect(result.errors).to be_nil
-    end
-  end
 end
