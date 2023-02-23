@@ -6,7 +6,7 @@ import useSteps from './useSteps';
 // components
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
-import EmailSignUp from './steps/EmailSignUp/EmailSignUp';
+import EmailSignUp from './steps/EmailSignUp';
 import EmailConfirmation from './steps/EmailConfirmation';
 import Password from './steps/Password';
 import Success from './steps/Success';
