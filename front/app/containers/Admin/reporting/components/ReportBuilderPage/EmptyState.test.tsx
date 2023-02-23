@@ -6,7 +6,7 @@ import * as FeatureFlag from 'hooks/useFeatureFlag';
 const mockFeatureFlag = FeatureFlag as { default: () => boolean };
 
 describe('EmptyState', () => {
-  it('renders with an enabled button to create a report when the feature flag is on', () => {
+  it('renders with an enabled button to create a report when the feature flag is turned on', () => {
     mockFeatureFlag.default = jest.fn(() => true);
     const onOpenModal = jest.fn();
     render(<EmptyState onOpenModal={onOpenModal} />);

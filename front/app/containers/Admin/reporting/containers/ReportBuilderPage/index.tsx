@@ -81,6 +81,7 @@ const ReportBuilderPage = () => {
                     width="auto"
                     mt="12px"
                     bgColor={colors.primary}
+                    disabled={!isReportBuilderAllowed}
                     p="8px 12px"
                   >
                     <FormattedMessage {...messages.createAReport} />

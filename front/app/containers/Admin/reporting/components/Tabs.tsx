@@ -19,7 +19,7 @@ import messages from '../messages';
 // utils
 import { matchPathToUrl, isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
-import { shouldShowReportBuilderTab } from './utils';
+import { showFeatureFlagPaymentTease } from 'utils/showFeatureFlagPaymentTease';
 
 // typings
 import { ITab } from 'typings';
@@ -90,7 +90,13 @@ const DashboardTabsWrapper = ({ children }: { children: React.ReactNode }) => {
   if (isNilOrError(appConfig)) {
     return null;
   }
-  const showReportBuilderTab = shouldShowReportBuilderTab(appConfig);
+
+  // If the feature is not allowed by the pricing plan,
+  // we want to show an info message about this, which requires seeing the tab
+  const showReportBuilderTab = showFeatureFlagPaymentTease(
+    appConfig,
+    'report_builder'
+  );
 
   return (
     <DashboardTabs showReportBuilderTab={showReportBuilderTab}>
