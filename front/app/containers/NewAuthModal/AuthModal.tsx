@@ -18,7 +18,7 @@ import messages from './messages';
 interface Props extends ReturnType<typeof useSteps> {}
 
 const AuthModal = ({ /* currentStep, */ status, error, transition }: Props) => {
-  const currentStep = 'password' as Props['currentStep'];
+  const currentStep = 'success' as Props['currentStep'];
   const { formatMessage } = useIntl();
 
   const closable =
@@ -69,7 +69,9 @@ const AuthModal = ({ /* currentStep, */ status, error, transition }: Props) => {
 
         {currentStep === 'enter-password' && <Password />}
 
-        {currentStep === 'success' && <Success />}
+        {currentStep === 'success' && (
+          <Success onContinue={transition(currentStep, 'CONTINUE')} />
+        )}
       </Box>
     </Modal>
   );

@@ -6,7 +6,7 @@ import Button from 'components/UI/Button';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
-import stepMessages from '../messages';
+import sharedMessages from '../messages';
 import messages from './messages';
 
 // form
@@ -78,7 +78,7 @@ const EmailSignUp = ({ status, onSubmit }: Props) => {
             disabled={loading}
             processing={loading}
           >
-            {formatMessage(stepMessages.continue)}
+            {formatMessage(sharedMessages.continue)}
           </Button>
         </Box>
       </form>
