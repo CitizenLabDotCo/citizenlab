@@ -19,7 +19,7 @@ import { IIdeaStatusData } from 'api/idea_statuses/types';
 
 // components
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import { IconTooltip } from '@citizenlab/cl2-component-library';
+import { IconTooltip, Spinner } from '@citizenlab/cl2-component-library';
 import {
   Section,
   SectionTitle,
@@ -66,7 +66,7 @@ const StyledIconTooltip = styled(IconTooltip)`
 `;
 
 const IdeaStatuses = () => {
-  const { data: ideaStatuses } = useIdeaStatuses();
+  const { data: ideaStatuses, isLoading } = useIdeaStatuses();
   const { mutate: updateIdeaStatus } = useUpdateIdeaStatus();
   const { mutate: deleteIdeaStatus } = useDeleteIdeaStatus();
 
@@ -91,7 +91,7 @@ const IdeaStatuses = () => {
   };
 
   const defaultStatus = useMemo(() => {
-    if (!isNilOrError(ideaStatuses)) {
+    if (ideaStatuses) {
       return ideaStatuses.data.find(
         (status) => status.attributes.code === 'proposed'
       );
@@ -110,7 +110,11 @@ const IdeaStatuses = () => {
     return [];
   }, [defaultStatus, ideaStatuses]);
 
-  if (!isNilOrError(ideaStatuses) && defaultStatus) {
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  if (ideaStatuses && defaultStatus) {
     return (
       <Section>
         <SectionTitle>

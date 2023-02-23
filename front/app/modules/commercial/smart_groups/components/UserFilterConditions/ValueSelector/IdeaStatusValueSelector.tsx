@@ -3,7 +3,6 @@ import { IOption } from 'typings';
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import useLocalize from 'hooks/useLocalize';
 import { Select } from '@citizenlab/cl2-component-library';
-import { isNilOrError } from 'utils/helperUtils';
 
 export interface Props {
   value: string;
@@ -14,7 +13,7 @@ const IdeaStatusValueSelector = memo(({ value, onChange }: Props) => {
   const { data: ideaStatuses } = useIdeaStatuses();
   const localize = useLocalize();
   const generateOptions = (): IOption[] => {
-    if (!isNilOrError(ideaStatuses)) {
+    if (ideaStatuses) {
       return ideaStatuses.data.map((ideaStatus) => {
         return {
           value: ideaStatus.id,

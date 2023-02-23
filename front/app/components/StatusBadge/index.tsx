@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import useIdeaStatus from 'api/idea_statuses/useIdeaStatus';
 import T from 'components/T';
 import styled from 'styled-components';
@@ -32,7 +31,7 @@ interface Props {
 const StatusBadge = memo<Props>(({ statusId, id, className }) => {
   const { data: ideaStatus } = useIdeaStatus(statusId);
 
-  if (!isNilOrError(ideaStatus)) {
+  if (ideaStatus) {
     const color = ideaStatus?.data.attributes?.color || '#bbb';
 
     return (

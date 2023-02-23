@@ -7,7 +7,6 @@ import { getIdea } from 'services/ideas';
 // mocking dependencies
 jest.mock('services/globalState');
 jest.mock('services/ideas');
-jest.mock('api/idea_statuses/types');
 jest.mock('./Row', () => 'Row');
 jest.mock('./NoPost', () => 'NoPost');
 jest.mock('./header/IdeaHeaderRow', () => 'IdeaHeaderRow');

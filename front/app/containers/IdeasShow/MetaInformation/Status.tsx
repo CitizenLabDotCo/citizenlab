@@ -12,7 +12,6 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   statusId: string;
@@ -23,7 +22,7 @@ interface Props {
 const Status = ({ statusId, compact, className }: Props) => {
   const { data: ideaStatus } = useIdeaStatus(statusId);
 
-  if (!isNilOrError(ideaStatus)) {
+  if (ideaStatus) {
     return (
       <Item className={className || ''} compact={compact}>
         <Header>
