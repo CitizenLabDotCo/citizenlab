@@ -318,7 +318,7 @@ class User < ApplicationRecord
     !admin? && moderatable_project_ids.blank? && moderated_project_folder_ids.blank?
   end
 
-  def light_resident?
+  def passwordless?
     !password_digest && user.identity_ids.empty?
   end
 

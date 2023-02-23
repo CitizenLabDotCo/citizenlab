@@ -202,6 +202,7 @@ resource 'Permissions' do
           email: 'my@email.com',
           first_name: 'Jack',
           last_name: nil,
+          password_digest: nil,
           email_confirmed_at: nil,
           custom_field_values: { 'gender' => 'male' }
         )
@@ -213,19 +214,22 @@ resource 'Permissions' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response).to eq({
-          built_in: {
-            first_name: 'satisfied',
-            last_name: 'dont_ask',
-            email: 'satisfied'
-          },
-          custom_fields: {
-            birthyear: 'dont_ask',
-            gender: 'satisfied',
-            extra_field: 'dont_ask'
-          },
-          special: {
-            password: 'dont_ask',
-            confirmation: 'require'
+          permitted: false,
+          requirements: {
+            built_in: {
+              first_name: 'satisfied',
+              last_name: 'dont_ask',
+              email: 'satisfied'
+            },
+            custom_fields: {
+              birthyear: 'dont_ask',
+              gender: 'satisfied',
+              extra_field: 'dont_ask'
+            },
+            special: {
+              password: 'dont_ask',
+              confirmation: 'require'
+            }
           }
         })
       end

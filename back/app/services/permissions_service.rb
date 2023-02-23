@@ -71,25 +71,15 @@ class PermissionsService
   end
 
   def requirements(permission, user)
-    requirements_mapping[permission.permitted_by].tap do |requirements|
-      break requirements if !user
-
-      requirements[:built_in]&.each_key do |attribute|
-        requirements[:built_in][attribute] = 'satisfied' if !user.send(attribute).nil?
-      end
-      requirements[:custom_fields]&.each_key do |key|
-        requirements[:custom_fields][key] = 'satisfied' if user.custom_field_values.key?(key)
-      end
-      requirements[:special]&.each_key do |special_key|
-        is_satisfied = case special_key
-        when 'password'
-          !user.light_resident?
-        when 'confirmation'
-          user.confirmed?
-        end
-        requirements[:special][special_key] = 'satisfied' if is_satisfied
-      end
+    requirements = requirements_mapping[permission.permitted_by]
+    mark_satisfied_requirements! requirements, user if user
+    permitted = requirements.values.none? do |subrequirements|
+      subrequirements.value? 'require'
     end
+    {
+      permitted: permitted,
+      requirements: requirements
+    }
   end
 
   private
@@ -131,5 +121,25 @@ class PermissionsService
       'groups' => {},
       'admins_moderators' => {}
     }
+  end
+
+  def mark_satisfied_requirements!(requirements, user)
+    return requirements if !user
+
+    requirements[:built_in]&.each_key do |attribute|
+      requirements[:built_in][attribute] = 'satisfied' if !user.send(attribute).nil?
+    end
+    requirements[:custom_fields]&.each_key do |key|
+      requirements[:custom_fields][key] = 'satisfied' if user.custom_field_values.key?(key)
+    end
+    requirements[:special]&.each_key do |special_key|
+      is_satisfied = case special_key
+      when 'password'
+        !user.passwordless?
+      when 'confirmation'
+        user.confirmed?
+      end
+      requirements[:special][special_key] = 'satisfied' if is_satisfied
+    end
   end
 end
