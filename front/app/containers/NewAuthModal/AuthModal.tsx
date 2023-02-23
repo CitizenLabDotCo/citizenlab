@@ -11,9 +11,15 @@ import EmailConfirmation from './steps/EmailConfirmation';
 import Password from './steps/Password';
 import Success from './steps/Success';
 
+// i18n
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
+
 interface Props extends ReturnType<typeof useSteps> {}
 
 const AuthModal = ({ currentStep, status, error, transition }: Props) => {
+  const { formatMessage } = useIntl();
+
   const closable =
     currentStep === 'email-registration' ||
     currentStep === 'email-confirmation' ||
@@ -35,7 +41,7 @@ const AuthModal = ({ currentStep, status, error, transition }: Props) => {
       header={
         showHeader ? (
           <Title variant="h3" as="h1" mt="0px" mb="0px">
-            Before you participate
+            {formatMessage(messages.beforeYouParticipate)}
           </Title>
         ) : undefined
       }

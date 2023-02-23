@@ -9,8 +9,10 @@ let _mockRequirements = {
   passwordAccepted: false,
 };
 
-export const _setMockRequirements = (newMockRequirements: Requirements) => {
-  _mockRequirements = newMockRequirements;
+export const _setMockRequirements = (
+  newMockRequirements: Partial<Requirements>
+) => {
+  _mockRequirements = { ..._mockRequirements, ...newMockRequirements };
 };
 
 export default function useSteps() {
