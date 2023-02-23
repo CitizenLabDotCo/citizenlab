@@ -1,12 +1,12 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
 import useAddIdeaStatus from './useAddIdeaStatus';
-import { ideaStatusesData } from './useIdeaStatuses.test';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { ideaStatusesData } from './__mocks__/useIdeaStatuses';
 
 const apiPath = '*idea_statuses';
 
