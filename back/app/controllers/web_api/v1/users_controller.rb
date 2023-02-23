@@ -108,7 +108,7 @@ class WebApi::V1::UsersController < ::ApplicationController
         @user,
         params: fastjson_params(granted_permissions: permissions)
       ).serialized_json, status: :created
-    elsif existing_no_password_user?
+    elsif update_existing_no_password_user?
       SideFxUserService.new.after_update(@user, current_user)
       permissions = Permission.for_user(@user)
       render json: WebApi::V1::UserSerializer.new(
@@ -207,17 +207,21 @@ class WebApi::V1::UsersController < ::ApplicationController
     send_error(nil, 404)
   end
 
-  def existing_no_password_user?
+  def update_existing_no_password_user?
     return false unless AppConfiguration.instance.feature_activated?('user_confirmation')
 
     errors = @user.errors.details[:email]
     return false unless errors.any? { |hash| hash[:error] == :taken }
 
     existing_user = User.find_by(email: @user.email)
-    return false unless existing_user.reset_confirmation_with_no_password!
+    return false unless existing_user.no_password?
+
+    @user = existing_user
+    @user.reset_confirmation_with_no_password
+    @user.assign_attributes(permitted_attributes(@user)) # In case this user is adding a first_name, password etc
+    return false unless @user.save
 
     SendConfirmationCode.call(user: existing_user)
-    @user = existing_user
     true
   end
 
