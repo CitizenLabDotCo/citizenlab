@@ -10,6 +10,7 @@ namespace :cl2back do
     tot_li_destroyed = 0
     tot_ti_destroyed = 0
     record_by_tenant = []
+    report = {}
 
     Tenant.switch_each do |tenant|
       puts "Processing images for tenant #{tenant.name}"
@@ -34,8 +35,13 @@ namespace :cl2back do
         next if image.created_at > 3.days.ago
 
         image.destroy! if live_run
+
         n_li_destroyed += 1
-        puts " destroyed layout_image with unused code field: #{image.id}"
+        log =
+          "destroyed layout_image #{image.id}, with unused code field: #{image.code} " \
+          "- tenant id: #{tenant.id}, host: #{tenant.host}"
+        puts "  #{log}"
+        report["li_#{format('%06d', tot_li_destroyed + n_li_destroyed)}"] = log
       end
 
       # text_images
@@ -44,24 +50,28 @@ namespace :cl2back do
         next if image.imageable.to_json.include?(image.text_reference)
 
         image.destroy! if live_run
+
         n_ti_destroyed += 1
-        puts " destroyed text_image with unused text_reference: #{image.id}, imageable_id: #{image.imageable.id}"
+        log =
+          "destroyed text_image id: #{image.id}, with unused text_reference: #{image.text_reference}, imageable_id: #{image.imageable.id}\n" \
+          "tenant id: #{tenant.id}, host: #{tenant.host}"
+        puts "  #{log}"
+        report["ti_#{format('%06d', tot_ti_destroyed + n_ti_destroyed)}"] = log
       end
 
       if n_ti_destroyed > 0 || n_li_destroyed > 0
         record_by_tenant <<
-          "tenant_host: #{tenant.host}, " \
-          "tenant_id: #{tenant.id}, " \
           "n_layout_images_destroyed: #{n_li_destroyed}, " \
-          "n_text_images_destroyed: #{n_ti_destroyed}"
-
+          "n_text_images_destroyed: #{n_ti_destroyed}, " \
+          "tenant_id: #{tenant.id}, " \
+          "tenant_host: #{tenant.host}"
       end
 
       tot_li_destroyed += n_li_destroyed
       tot_ti_destroyed += n_ti_destroyed
     end
 
-    report = {
+    digest = {
       cluster: CL2_CLUSTER,
       live_run: live_run ? 'true' : 'false',
       total_layout_images_destroyed: tot_li_destroyed,
@@ -69,7 +79,9 @@ namespace :cl2back do
       n_by_tenant: record_by_tenant
     }
 
-    pp report
+    report['digest'] = digest
+
+    pp digest
 
     # Log some event details (not an error).
     # Can be removed when we have log aggregation tool that catches logs of this task
