@@ -36,7 +36,7 @@ const DashboardTabs = ({ children }: Props) => {
   const reportBuilderAllowedAndEnabled = useFeatureFlag({
     name: 'report_builder',
   });
-  const reportBuilderNotAllowed = useFeatureFlag({
+  const reportBuilderAllowed = useFeatureFlag({
     name: 'report_builder',
     onlyCheckAllowed: true,
   });
@@ -48,7 +48,7 @@ const DashboardTabs = ({ children }: Props) => {
   const [redirected, setRedirected] = useState(false);
 
   const showReportBuilderTab =
-    reportBuilderAllowedAndEnabled || reportBuilderNotAllowed;
+    reportBuilderAllowedAndEnabled || !reportBuilderAllowed;
 
   const tabs = useMemo(
     () => [
