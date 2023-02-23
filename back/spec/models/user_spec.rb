@@ -69,52 +69,52 @@ RSpec.describe User, type: :model do
 
   describe 'authentication without password' do
     context 'when user_confirmation feature is active' do
-      before_all do
+      before do
         SettingsService.new.activate_feature! 'user_confirmation'
       end
 
       it 'should be allowed if the user has no password and confirmation is required' do
         u = described_class.new(email: 'bob@citizenlab.co')
-        expect(u.authenticate('')).to be(true)
+        expect(!!u.authenticate('')).to be(true)
       end
 
       it 'should not be allowed if a password has been supplied in the request' do
         u = described_class.new(email: 'bob@citizenlab.co')
-        expect(u.authenticate('any_string')).to be(false)
+        expect(!!u.authenticate('any_string')).to be(false)
       end
 
       it 'should not be allowed if a password has been set' do
         u = described_class.new(email: 'bob@citizenlab.co', password: 'democracy2.0')
-        expect(u.authenticate('')).to be(false)
+        expect(!!u.authenticate('')).to be(false)
       end
 
       it 'should not be allowed if confirmation is not required' do
         u = described_class.new(email: 'bob@citizenlab.co')
         u.confirm
-        expect(u.authenticate('')).to be(false)
+        expect(!!u.authenticate('')).to be(false)
       end
     end
 
     context 'when user_confirmation feature is not active' do
-      before_all do
+      before do
         SettingsService.new.deactivate_feature! 'user_confirmation'
       end
 
       it 'should not be allowed if no password has been set and confirmation is required' do
         u = described_class.new(email: 'bob@citizenlab.co')
-        expect(u.authenticate('')).to be(false)
-        expect(u.authenticate('any_string')).to be(false)
+        expect(!!u.authenticate('')).to be(false)
+        expect(!!u.authenticate('any_string')).to be(false)
       end
 
       it 'should not be allowed if a password has been set' do
         u = described_class.new(email: 'bob@citizenlab.co', password: 'democracy2.0')
-        expect(u.authenticate('')).to be(false)
+        expect(!!u.authenticate('')).to be(false)
       end
 
       it 'should not be allowed if confirmation is not required' do
         u = described_class.new(email: 'bob@citizenlab.co')
         u.confirm
-        expect(u.authenticate('')).to be(false)
+        expect(!!u.authenticate('')).to be(false)
       end
     end
   end
