@@ -430,6 +430,7 @@ class User < ApplicationRecord
   def confirm
     self.email_confirmed_at    = Time.zone.now
     self.confirmation_required = false
+    complete_registration if no_password? # temp change for flexible_registration_i1
   end
 
   def confirm!
@@ -480,6 +481,10 @@ class User < ApplicationRecord
 
   def reset_confirmed_at
     self.email_confirmed_at = nil
+  end
+
+  def complete_registration
+    self.registration_completed_at = Time.now if registration_completed_at.nil?
   end
 
   private

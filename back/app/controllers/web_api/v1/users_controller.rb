@@ -153,7 +153,7 @@ class WebApi::V1::UsersController < ::ApplicationController
     user_params[:custom_field_values] = @user.custom_field_values.merge(user_params[:custom_field_values] || {})
 
     @user.assign_attributes(user_params)
-    @user.registration_completed_at = Time.now
+    @user.complete_registration
 
     if @user.save
       SideFxUserService.new.after_update(@user, current_user)
