@@ -12,8 +12,10 @@ namespace :cl2back do
     record_by_tenant = []
     report = {}
 
+    puts "live_run: #{live_run ? 'ture' : 'false'}"
+
     Tenant.switch_each do |tenant|
-      puts "Processing images for tenant #{tenant.name}"
+      puts "Processing images for tenant: #{tenant.name}"
 
       n_li_destroyed = 0
       n_ti_destroyed = 0
@@ -53,8 +55,8 @@ namespace :cl2back do
 
         n_ti_destroyed += 1
         log =
-          "destroyed text_image id: #{image.id}, with unused text_reference: #{image.text_reference}, imageable_id: #{image.imageable.id}\n" \
-          "tenant id: #{tenant.id}, host: #{tenant.host}"
+          "destroyed text_image id: #{image.id}, with unused text_reference: #{image.text_reference}, " \
+          "imageable_id: #{image.imageable.id}\ntenant id: #{tenant.id}, host: #{tenant.host}"
         puts "  #{log}"
         report["ti_#{format('%06d', tot_ti_destroyed + n_ti_destroyed)}"] = log
       end
