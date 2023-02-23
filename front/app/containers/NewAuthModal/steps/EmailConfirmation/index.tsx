@@ -1,6 +1,11 @@
 import React from 'react';
-import { Box, Text } from '@citizenlab/cl2-component-library';
+
+// components
+import { Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
+import CodeSentMessage from 'containers/Authentication/SignUpIn/SignUpInModal/SignUp/ConfirmationSignupStep/CodeSentMessage';
+
+// typings
 import { Status, ErrorCode } from '../../typings';
 
 interface Props {
@@ -17,7 +22,7 @@ const EmailConfirmation = ({ status, onConfirm }: Props) => {
 
   return (
     <Box>
-      <Text mt="0px">Email confirmation</Text>
+      <CodeSentMessage />
       <Button
         width="auto"
         disabled={loading}

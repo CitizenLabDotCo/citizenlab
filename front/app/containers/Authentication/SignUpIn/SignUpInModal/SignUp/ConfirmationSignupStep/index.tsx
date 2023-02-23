@@ -5,23 +5,16 @@ import tracks from './tracks';
 import messages from './messages';
 import Error from 'components/UI/Error';
 import { confirm, resendCode, IConfirmation } from 'services/confirmation';
-import useAuthUser from 'hooks/useAuthUser';
-import { isNilOrError } from 'utils/helperUtils';
 import { CLErrors, CLError } from 'typings';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
-import {
-  Box,
-  Icon,
-  Input,
-  Label,
-  Success,
-} from '@citizenlab/cl2-component-library';
+import { Icon, Input, Label } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 import Button from 'components/UI/Button';
 import { FormLabel } from 'components/UI/FormComponents';
+import CodeSentMessage from './CodeSentMessage';
 
 const FormContainer = styled.div<{ inModal: boolean }>`
   display: flex;
@@ -100,7 +93,6 @@ const FooterNoteSuccessMessageIcon = styled(Icon)`
 type Props = { onCompleted: () => void };
 
 const ConfirmationSignupStep = ({ onCompleted }: Props) => {
-  const user = useAuthUser();
   const [confirmation, setConfirmation] = useState<IConfirmation>({
     code: null,
   });
@@ -109,10 +101,6 @@ const ConfirmationSignupStep = ({ onCompleted }: Props) => {
   const [processing, setProcessing] = useState(false);
   const [changingEmail, setChangingEmail] = useState(false);
   const [codeResent, setCodeResent] = useState(false);
-
-  if (isNilOrError(user)) {
-    return null;
-  }
 
   function handleCodeChange(code: string) {
     setApiErrors({});
@@ -228,24 +216,7 @@ const ConfirmationSignupStep = ({ onCompleted }: Props) => {
       ) : (
         <Form inModal={inModal} onSubmit={handleSubmitConfirmation}>
           <FormField>
-            <Box display="flex" alignItems="center" mb="20px">
-              <Icon
-                width="30px"
-                height="30px"
-                name="check-circle"
-                fill={colors.success}
-              />
-              <Success
-                text={
-                  <FormattedMessage
-                    {...messages.anExampleCodeHasBeenSent}
-                    values={{
-                      userEmail: <strong>{user.attributes.email}</strong>,
-                    }}
-                  />
-                }
-              />
-            </Box>
+            <CodeSentMessage />
             <StyledLabel htmlFor="e2e-confirmation-code-input">
               <FormattedMessage {...messages.codeInput} />
             </StyledLabel>
