@@ -40,7 +40,7 @@ namespace :cl2back do
 
         n_li_destroyed += 1
         log =
-          "destroyed layout_image #{image.id}, code: #{image.code} " \
+          "destroyed layout_image id: #{image.id}, code: #{image.code} " \
           "- tenant id: #{tenant.id}, host: #{tenant.host}"
         puts "  #{log}"
         report["li_#{format('%06d', tot_li_destroyed + n_li_destroyed)}"] = log
