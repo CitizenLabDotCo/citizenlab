@@ -1,5 +1,9 @@
 # Changelog
 
+### Changed
+
+- [CL-2903] Lock first and last name with FC verification
+
 ## 2023-02-22
 
 ### Changed
