@@ -475,6 +475,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.buttonSuccess": "Gespeichert!",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byAreaFilter": "Nach Gebiet",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byTagsFilter": "Nach Themen-Tag(s)",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contactToAccess": "Displaying projects by tag or area is part of the premium license. Reach out to your GovSuccess Managaer to learn more about it.",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contentEditorTitle": "Inhalt",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.editCustomPagePageTitle": "Benutzerdefinierte Seite bearbeiten",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedProjectsLabel": "Verknüpfte Projekte",
