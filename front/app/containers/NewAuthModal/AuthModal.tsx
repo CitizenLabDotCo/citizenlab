@@ -41,7 +41,7 @@ const AuthModal = ({ currentStep, status, error, transition }: Props) => {
       }
       niceHeader
     >
-      <Box p="16px" w="100%">
+      <Box px="32px" w="100%">
         {currentStep === 'email-registration' && (
           <EmailSignUp
             status={status}
