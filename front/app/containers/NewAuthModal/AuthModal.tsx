@@ -18,7 +18,7 @@ import messages from './messages';
 interface Props extends ReturnType<typeof useSteps> {}
 
 const AuthModal = ({ /* currentStep, */ status, error, transition }: Props) => {
-  const currentStep = 'email-confirmation' as Props['currentStep'];
+  const currentStep = 'password' as Props['currentStep'];
   const { formatMessage } = useIntl();
 
   const closable =

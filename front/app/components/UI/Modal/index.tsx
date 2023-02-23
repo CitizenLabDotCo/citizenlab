@@ -656,6 +656,7 @@ class Modal extends PureComponent<Props, State> {
                       display="flex"
                       alignItems="center"
                       ml={smallerThanSmallTablet ? '16px' : '24px'}
+                      minHeight="66px"
                     >
                       {header}
                     </Box>
