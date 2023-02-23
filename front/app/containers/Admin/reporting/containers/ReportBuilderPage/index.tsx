@@ -62,7 +62,7 @@ const ReportBuilderPage = () => {
             >
               <FormattedMessage {...messages.createAReport} />
             </Title>
-            <Text color="textSecondary" mt="4px" mb="0px">
+            <Text color="textSecondary" mt="4px" mb="16px">
               <FormattedMessage {...messages.createReportDescription} />
             </Text>
             <Box display="flex">
