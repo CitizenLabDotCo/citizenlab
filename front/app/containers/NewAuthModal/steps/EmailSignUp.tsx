@@ -14,12 +14,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { string, object } from 'yup';
 import Input from 'components/HookForm/Input';
 
-// mocks
-import { _setMockRequirements } from '../useSteps';
-
 // typings
 import { Status, ErrorCode } from '../typings';
 import { SSOProvider } from 'services/singleSignOn';
+
+// mocks
+import { _setMockRequirements } from '../useSteps';
 
 interface Props {
   status: Status;

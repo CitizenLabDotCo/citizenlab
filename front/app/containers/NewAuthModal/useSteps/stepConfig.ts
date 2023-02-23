@@ -1,4 +1,5 @@
 import { createAccount, confirmCode } from './mutations';
+import { signOut } from 'services/auth';
 
 // typings
 import { GetRequirements, Status, ErrorCode } from '../typings';
@@ -18,13 +19,16 @@ export const getStepConfig = (
   setError: (errorCode: ErrorCode) => void
 ) => ({
   closed: {
-    TRIGGER_REGISTRATION_FLOW: () => setCurrentStep('email-registration'),
+    TRIGGER_REGISTRATION_FLOW: async () => {
+      const { authenticated } = await getRequirements();
+      setCurrentStep(
+        authenticated ? 'email-confirmation' : 'email-registration'
+      );
+    },
   },
 
   'email-registration': {
-    CLOSE: () => {
-      setCurrentStep('closed');
-    },
+    CLOSE: () => setCurrentStep('closed'),
 
     SUBMIT_EMAIL: async (email: string) => {
       setStatus('pending');
@@ -52,8 +56,10 @@ export const getStepConfig = (
   'email-confirmation': {
     CLOSE: () => setCurrentStep('closed'),
 
-    // TODO log out
-    CHANGE_EMAIL: () => setCurrentStep('email-registration'),
+    CHANGE_EMAIL: async () => {
+      await signOut();
+      setCurrentStep('email-registration');
+    },
 
     SUBMIT_CODE: async (code: number) => {
       setStatus('pending');
