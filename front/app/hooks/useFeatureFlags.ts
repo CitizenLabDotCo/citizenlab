@@ -1,13 +1,8 @@
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import {
-  TAppConfigurationSetting,
-  THomepageSetting,
-} from 'api/app_configuration/types';
-
-type FeatureName = THomepageSetting | TAppConfigurationSetting;
+import { TAppConfigurationSetting } from 'api/app_configuration/types';
 
 type Parameters = {
-  names: FeatureName[];
+  names: TAppConfigurationSetting[];
   onlyCheckAllowed?: boolean;
 };
 
@@ -18,9 +13,15 @@ export default function useFeatureFlags({
   const { data: appConfiguration } = useAppConfiguration();
   const tenantSettings = appConfiguration?.data.attributes.settings;
 
-  const isFeatureActive = (featureName: FeatureName) =>
-    tenantSettings?.[featureName]?.allowed &&
-    (onlyCheckAllowed || tenantSettings?.[featureName]?.enabled);
+  const isFeatureActive = (featureName: TAppConfigurationSetting) => {
+    const setting = tenantSettings && tenantSettings[featureName];
+    const isEnabled =
+      setting && 'enabled' in setting ? setting.enabled : undefined;
+
+    return (
+      tenantSettings?.[featureName]?.allowed && (onlyCheckAllowed || isEnabled)
+    );
+  };
 
   return names.length === 0 || names.some(isFeatureActive);
 }
