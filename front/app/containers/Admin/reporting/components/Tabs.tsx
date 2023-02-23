@@ -17,7 +17,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // utils
-import { matchPathToUrl, isNilOrError } from 'utils/helperUtils';
+import { matchPathToUrl } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
 // typings
@@ -33,7 +33,13 @@ const removeTrailingSlash = (str: string) => {
 };
 
 const DashboardTabs = ({ children }: Props) => {
-  const reportBuilderEnabled = useFeatureFlag({ name: 'report_builder' });
+  const reportBuilderAllowedAndEnabled = useFeatureFlag({
+    name: 'report_builder',
+  });
+  const reportBuilderNotAllowed = useFeatureFlag({
+    name: 'report_builder',
+    onlyCheckAllowed: true,
+  });
 
   const { pathname } = useLocation();
   const { formatMessage } = useIntl();
@@ -41,7 +47,8 @@ const DashboardTabs = ({ children }: Props) => {
   const [additionalTabs, setAdditionalTabs] = useState<ITab[]>([]);
   const [redirected, setRedirected] = useState(false);
 
-  const showReportBuilderTab = reportBuilderEnabled;
+  const showReportBuilderTab =
+    reportBuilderAllowedAndEnabled || reportBuilderNotAllowed;
 
   const tabs = useMemo(
     () => [
@@ -56,7 +63,7 @@ const DashboardTabs = ({ children }: Props) => {
         : []),
       ...additionalTabs,
     ],
-    [reportBuilderEnabled, additionalTabs, formatMessage]
+    [showReportBuilderTab, additionalTabs, formatMessage]
   );
 
   useEffect(() => {
