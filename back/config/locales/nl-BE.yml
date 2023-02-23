@@ -195,7 +195,7 @@ nl-BE:
       author_fullname: 'Naam auteur'
       author_email: 'Email auteur'
       author_id: 'ID auteur'
-      budget: 'Budget'
+      budget: 'Begroting'
       created_at: 'Ingediend om'
       published_at: 'Gepubliceerd om'
       comments_count: 'Reacties'
