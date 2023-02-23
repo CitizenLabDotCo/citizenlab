@@ -14,7 +14,7 @@ import { colors } from 'utils/styleUtils';
 
 // i18n
 import messages from './messages';
-import reportingMessages from '../../messages';
+import sharedMessages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // hooks
@@ -57,9 +57,7 @@ const EmptyState = ({ onOpenModal }: Props) => {
           <Tippy
             maxWidth="250px"
             placement="right-start"
-            content={
-              <FormattedMessage {...reportingMessages.contactToAccess} />
-            }
+            content={<FormattedMessage {...sharedMessages.contactToAccess} />}
             hideOnClick
             disabled={isReportBuilderAllowed}
           >
