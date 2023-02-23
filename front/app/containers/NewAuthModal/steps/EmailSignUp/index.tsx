@@ -19,9 +19,6 @@ import Input from 'components/HookForm/Input';
 import { Status, ErrorCode } from '../../typings';
 import { SSOProvider } from 'services/singleSignOn';
 
-// mocks
-import { _setMockRequirements } from '../../useSteps';
-
 interface Props {
   status: Status;
   error: ErrorCode | null;
@@ -58,7 +55,6 @@ const EmailSignUp = ({ status, onSubmit }: Props) => {
   });
 
   const handleSubmit = ({ email }: FormValues) => {
-    _setMockRequirements({ authenticated: true });
     onSubmit(email);
   };
 

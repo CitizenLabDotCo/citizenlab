@@ -1,7 +1,7 @@
 import React from 'react';
 
 // hooks
-import useSteps, { _setMockRequirements } from './useSteps';
+import useSteps from './useSteps';
 
 // components
 import { Box, Text } from '@citizenlab/cl2-component-library';
@@ -14,7 +14,6 @@ const NewSignUpModal = () => {
 
   const triggerFlow = () => {
     if (currentStep !== 'closed') return;
-    _setMockRequirements({ authenticated: true });
     transition(currentStep, 'TRIGGER_REGISTRATION_FLOW')();
   };
 
