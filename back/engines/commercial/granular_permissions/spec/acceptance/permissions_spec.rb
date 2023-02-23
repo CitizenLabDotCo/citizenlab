@@ -198,7 +198,7 @@ resource 'Permissions' do
         create :custom_field_gender, required: false
         create :custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field'
 
-        @user.update_columns(
+        @user.update_columns( # TODO: replace by normal update
           email: 'my@email.com',
           first_name: 'Jack',
           last_name: nil,

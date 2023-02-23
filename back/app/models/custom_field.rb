@@ -73,6 +73,7 @@ class CustomField < ApplicationRecord
   scope :registration, -> { where(resource_type: 'User') }
   scope :enabled, -> { where(enabled: true) }
   scope :disabled, -> { where(enabled: false) }
+  scope :required, -> { where(required: true) }
   scope :not_hidden, -> { where(hidden: false) }
   scope :hidden, -> { where(hidden: true) }
   scope :support_multiple_values, -> { where(input_type: 'multiselect') }

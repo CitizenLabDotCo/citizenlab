@@ -103,21 +103,35 @@ class PermissionsService
   end
 
   def requirements_mapping
-    {
-      'everyone' => {},
-      'everyone_confirmed_email' => {
-        built_in: {
-          first_name: 'dont_ask',
-          last_name: 'dont_ask',
-          email: 'require'
-        },
-        custom_fields: CustomField.registration.map(&:key).index_with { 'dont_ask' },
-        special: {
-          password: 'dont_ask',
-          confirmation: 'require'
-        }
+    everyone = {
+      built_in: {
+        first_name: 'dont_ask',
+        last_name: 'dont_ask',
+        email: 'dont_ask'
       },
-      'users' => {},
+      custom_fields: CustomField.registration.map(&:key).index_with { 'dont_ask' },
+      special: {
+        password: 'dont_ask',
+        confirmation: 'dont_ask'
+      }
+    }
+    {
+      'everyone' => everyone,
+      'everyone_confirmed_email' => everyone.deep_dup.tap do |everyone_confirmed_email|
+        everyone_confirmed_email[:built_in][:email] = 'require'
+        everyone_confirmed_email[:special][:confirmation] = 'require'
+      end,
+      'users' => everyone.deep_dup.tap do |users|
+        users[:built_in][:first_name] = 'require'
+        users[:built_in][:last_name] = 'require'
+        users[:built_in][:email] = 'require'
+        required_field_keys = CustomField.registration.required.map(&:key)
+        users[:custom_fields].each_key do |key|
+          users[:custom_fields][key] = 'require' if required_field_keys.include? key
+        end
+        users[:special][:password] = 'require'
+        users[:special][:confirmation] = 'require' if AppConfiguration.instance.feature_activated?('user_confirmation')
+      end,
       'groups' => {},
       'admins_moderators' => {}
     }

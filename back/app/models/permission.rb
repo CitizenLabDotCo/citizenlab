@@ -58,6 +58,39 @@ class Permission < ApplicationRecord
   end
 
   def denied_reason(user)
+    if permitted_by == 'everyone_confirmed_email'
+      new_denied_reason user
+    else
+      old_denied_reason user
+    end
+  end
+
+  def participation_conditions
+    []
+  end
+
+  private
+
+  # Access reasons via Permission.denied_reasons
+  DENIED_REASONS = {
+    not_permitted: 'not_permitted',
+    missing_data: 'missing_data',
+    not_signed_in: 'not_signed_in'
+  }.freeze
+
+  def denied_when_permitted_by_groups?(user)
+    :not_permitted if user.nil? || !user.in_any_groups?(groups)
+  end
+
+  def available_actions
+    PermissionsService.actions(permission_scope)
+  end
+
+  def set_permitted_by
+    self.permitted_by ||= 'users'
+  end
+
+  def old_denied_reason(user)
     return if permitted_by == 'everyone'
     return if user&.admin?
     return if user && UserRoleService.new.can_moderate?(permission_scope, user)
@@ -73,28 +106,13 @@ class Permission < ApplicationRecord
     Permission.denied_reasons[reason]
   end
 
-  def participation_conditions
-    []
-  end
+  def new_denied_reason(user)
+    return Permission.denied_reasons[:not_signed_in] if !user && permitted_by != 'everyone'
 
-  private
+    user ||= User.new
+    return if PermissionsService.new.requirements(self, user)[:permitted] # TODO: circular dependency
 
-  # Access reasons via Permission.denied_reasons
-  DENIED_REASONS = {
-    not_permitted: 'not_permitted',
-    not_signed_in: 'not_signed_in'
-  }.freeze
-
-  def denied_when_permitted_by_groups?(user)
-    :not_permitted if user.nil? || !user.in_any_groups?(groups)
-  end
-
-  def available_actions
-    PermissionsService.actions(permission_scope)
-  end
-
-  def set_permitted_by
-    self.permitted_by ||= 'users'
+    Permission.denied_reasons[:missing_data]
   end
 end
 
