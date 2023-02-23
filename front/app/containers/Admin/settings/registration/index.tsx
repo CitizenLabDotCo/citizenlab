@@ -103,14 +103,11 @@ const SettingsRegistrationTab = () => {
 
   const handleSubmit = async (event?: React.FormEvent<HTMLFormElement>) => {
     event?.preventDefault();
-    updateAppConfiguration(
-      attributesDiff as IUpdatedAppConfigurationProperties,
-      {
-        onSuccess: () => {
-          setAttributesDiff({});
-        },
-      }
-    );
+    updateAppConfiguration(attributesDiff, {
+      onSuccess: () => {
+        setAttributesDiff({});
+      },
+    });
   };
 
   const userConfirmationToggleIsEnabled =
