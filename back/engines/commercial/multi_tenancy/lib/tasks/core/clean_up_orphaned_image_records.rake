@@ -40,7 +40,7 @@ namespace :cl2back do
 
         n_li_destroyed += 1
         log =
-          "destroyed layout_image #{image.id}, with unused code field: #{image.code} " \
+          "destroyed layout_image #{image.id}, code: #{image.code} " \
           "- tenant id: #{tenant.id}, host: #{tenant.host}"
         puts "  #{log}"
         report["li_#{format('%06d', tot_li_destroyed + n_li_destroyed)}"] = log
@@ -55,7 +55,7 @@ namespace :cl2back do
 
         n_ti_destroyed += 1
         log =
-          "destroyed text_image id: #{image.id}, with unused text_reference: #{image.text_reference}, " \
+          "destroyed text_image id: #{image.id}, text_reference: #{image.text_reference}, " \
           "imageable_id: #{image.imageable.id}\ntenant id: #{tenant.id}, host: #{tenant.host}"
         puts "  #{log}"
         report["ti_#{format('%06d', tot_ti_destroyed + n_ti_destroyed)}"] = log
