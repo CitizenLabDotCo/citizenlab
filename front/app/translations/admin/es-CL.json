@@ -688,7 +688,7 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.shareAsWebLink": "Compartir como enlace web",
   "app.containers.Admin.reporting.components.ReportBuilderPage.shareAsWebLinkDesc": "Solo los usuarios administradores pueden acceder a este enlace web.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.shareReportTitle": "Comparte",
-  "app.containers.Admin.reporting.contactToAccess": "Creating a custom report is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.",
+  "app.containers.Admin.reporting.contactToAccess": "La creación de un informe personalizado forma parte de la licencia Premium. Póngase en contacto con su gestor de GovSuccess para obtener más información.",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createAReport": "Crear un informe",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createReportDescription": "Personalice su informe y compártalo con las partes interesadas internas o la comunidad con un enlace web.",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.viewReports": "Ver informes",
