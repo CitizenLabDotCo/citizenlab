@@ -7,7 +7,6 @@ import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 // styling
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
 
 const Container = styled.div`
   display: flex;
