@@ -11,6 +11,7 @@ import { FocusOn } from 'react-focus-on';
 import messages from './messages';
 
 // components
+import { Box } from '@citizenlab/cl2-component-library';
 import CloseIconButton from 'components/UI/CloseIconButton';
 import clickOutside from 'utils/containers/clickOutside';
 
@@ -104,6 +105,24 @@ const StyledCloseIconButton = styled(CloseIconButton)<{
     ${props.fullScreen ? 'left: auto;' : ''};
     right: 15px;
   `}
+`;
+
+const StyledCloseIconButton2 = styled(CloseIconButton)`
+  z-index: 2000;
+  border-radius: 50%;
+  border: solid 1px transparent;
+  transition: all 100ms ease-out;
+  outline: none !important;
+  width: 50px;
+  height: 50px;
+
+  &:hover {
+    background: #e0e0e0;
+  }
+
+  &.focus-visible {
+    ${defaultOutline};
+  }
 `;
 
 // copy of the styled FocusOn container below
@@ -429,6 +448,7 @@ export interface InputProps {
   close: () => void;
   className?: string;
   header?: JSX.Element | string;
+  niceHeader?: boolean;
   footer?: JSX.Element;
   hasSkipButton?: boolean;
   skipText?: JSX.Element;
@@ -540,6 +560,7 @@ class Modal extends PureComponent<Props, State> {
       children,
       opened,
       header,
+      niceHeader,
       footer,
       hasSkipButton,
       skipText,
@@ -593,21 +614,64 @@ class Modal extends PureComponent<Props, State> {
                 aria-modal="true"
                 role="dialog"
               >
-                {!hideCloseButton && (
-                  <StyledCloseIconButton
-                    fullScreen={fullScreen}
-                    className="e2e-modal-close-button"
-                    onClick={this.clickCloseButton}
-                    iconColor={colors.textSecondary}
-                    iconColorOnHover={'#000'}
-                    a11y_buttonActionMessage={messages.closeModal}
-                  />
+                {!niceHeader && (
+                  <>
+                    {!hideCloseButton && (
+                      <StyledCloseIconButton
+                        fullScreen={fullScreen}
+                        className="e2e-modal-close-button"
+                        onClick={this.clickCloseButton}
+                        iconColor={colors.textSecondary}
+                        iconColorOnHover={'#000'}
+                        a11y_buttonActionMessage={messages.closeModal}
+                      />
+                    )}
+
+                    {header && (
+                      <HeaderContainer>
+                        <HeaderTitle id="modal-header">{header}</HeaderTitle>
+                      </HeaderContainer>
+                    )}
+                  </>
                 )}
 
-                {header && (
-                  <HeaderContainer>
-                    <HeaderTitle id="modal-header">{header}</HeaderTitle>
-                  </HeaderContainer>
+                {/* TODO: actually fix the header by always using the 'nice' header.
+                 * Didn't dare to do that yet because the modal with header is used
+                 * in so many different places, and I was scared of breaking something.
+                 * Made a task for this already: CL-2962
+                 * (Luuc)
+                 */}
+                {header && niceHeader && (
+                  <Box
+                    display="flex"
+                    flexDirection="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    w="100%"
+                    p="8px"
+                    borderBottom={`solid 1px ${colors.divider}`}
+                  >
+                    <Box
+                      h="100%"
+                      display="flex"
+                      alignItems="center"
+                      // ml="24px"
+                      ml={smallerThanSmallTablet ? '16px' : '24px'}
+                    >
+                      {header}
+                    </Box>
+                    {!hideCloseButton && (
+                      <Box mr={smallerThanSmallTablet ? '0px' : '8px'}>
+                        <StyledCloseIconButton2
+                          className="e2e-modal-close-button"
+                          iconColor={colors.textSecondary}
+                          iconColorOnHover={colors.black}
+                          a11y_buttonActionMessage={messages.closeModal}
+                          onClick={this.clickCloseButton}
+                        />
+                      </Box>
+                    )}
+                  </Box>
                 )}
 
                 <ModalContentContainer

@@ -52,6 +52,7 @@ export const getStepConfig = (
   'email-confirmation': {
     CLOSE: () => setCurrentStep('closed'),
 
+    // TODO log out
     CHANGE_EMAIL: () => setCurrentStep('email-registration'),
 
     SUBMIT_CODE: async (code: number) => {

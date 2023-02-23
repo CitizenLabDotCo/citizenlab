@@ -4,7 +4,7 @@ import React from 'react';
 import useSteps from './useSteps';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Title } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 import EmailSignUp from './steps/EmailSignUp';
 import EmailConfirmation from './steps/EmailConfirmation';
@@ -28,12 +28,20 @@ const AuthModal = ({ currentStep, status, error, transition }: Props) => {
 
   return (
     <Modal
+      width="580px"
       opened={currentStep !== 'closed'}
       close={handleClose}
       hideCloseButton={!closable}
-      header={showHeader ? <>Before you participate</> : undefined}
+      header={
+        showHeader ? (
+          <Title variant="h3" as="h1" mt="0px" mb="0px">
+            Before you participate
+          </Title>
+        ) : undefined
+      }
+      niceHeader
     >
-      <Box p="16px" w="100%" h="400px">
+      <Box p="16px" w="100%">
         {currentStep === 'email-registration' && (
           <EmailSignUp
             status={status}
