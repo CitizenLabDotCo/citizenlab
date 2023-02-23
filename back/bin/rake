@@ -11,7 +11,7 @@ end
 require_relative '../config/boot'
 require 'rake'
 
-if (profiling_path = ENV['PROFILING_PATH'])
+if (profile_path = ENV['PROFILER_OUTPUT_PATH'])
   require 'json'
   require 'stackprof'
   require 'fileutils'
@@ -20,7 +20,7 @@ if (profiling_path = ENV['PROFILING_PATH'])
     Rake.application.run
   end
 
-  File.write(profiling_path, JSON.generate(profile))
+  File.write(profile_path, JSON.generate(profile))
 else
   Rake.application.run
 end
