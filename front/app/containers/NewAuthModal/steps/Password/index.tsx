@@ -1,5 +1,8 @@
 import React, { useMemo } from 'react';
 
+// hooks
+import useAppConfiguration from 'hooks/useAppConfiguration';
+
 // components
 import { Box, Text, Icon } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
@@ -22,6 +25,7 @@ import Checkbox from 'components/HookForm/Checkbox';
 
 // typings
 import { Status } from '../../typings';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   status: Status;
@@ -45,6 +49,8 @@ const DEFAULT_VALUES: Partial<FormValues> = {
 
 const Password = ({ status, onSubmit }: Props) => {
   const { formatMessage } = useIntl();
+  const appConfiguration = useAppConfiguration();
+
   const loading = status === 'pending';
 
   const schema = useMemo(
@@ -62,10 +68,15 @@ const Password = ({ status, onSubmit }: Props) => {
     resolver: yupResolver(schema),
   });
 
+  if (isNilOrError(appConfiguration)) return null;
+
   const email = 'henk@piet.com'; // TODO
-  const tokenLifetime = 10; // TODO
 
   const handleSubmit = ({ password, rememberMe }: FormValues) => {
+    const tokenLifetime =
+      appConfiguration.attributes.settings.core
+        .authentication_token_lifetime_in_days;
+
     onSubmit(email, password, rememberMe, tokenLifetime);
   };
 
