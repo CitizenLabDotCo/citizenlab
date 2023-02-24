@@ -25,7 +25,7 @@ const getHeaderMessage = (step: Props['currentStep']) => {
 };
 
 const AuthModal = ({ /* currentStep, */ status, error, transition }: Props) => {
-  const currentStep = 'success' as Props['currentStep'];
+  const currentStep = 'enter-password' as Props['currentStep'];
   const { formatMessage } = useIntl();
 
   const closable =
