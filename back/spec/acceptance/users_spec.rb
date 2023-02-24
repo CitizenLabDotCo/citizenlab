@@ -765,13 +765,23 @@ resource 'Users' do
         let(:locale) { 'fr-FR' }
         let(:birthyear) { 1969 }
 
+        example "Can't change some attributes of a user verified with FranceConnect", document: false, skip: !CitizenLab.ee? do
+          create(:verification, method_name: 'franceconnect', user: @user)
+          @user.update!(custom_field_values: { cf.key => 'original value', birthyear_cf.key => 1950 })
+          do_request
+          expect(response_status).to eq 200
+          @user.reload
+          expect(@user.custom_field_values[cf.key]).to eq 'new value'
+          expect(@user.first_name).not_to eq first_name
+          expect(@user.last_name).not_to eq last_name
+          expect(@user.email).to eq email
+        end
+
         example 'Can change many attributes of a user verified with FranceConnect', document: false, skip: !CitizenLab.ee? do
           create(:verification, method_name: 'franceconnect', user: @user)
           do_request
           expect(response_status).to eq 200
           @user.reload
-          expect(@user.first_name).to eq first_name
-          expect(@user.last_name).to eq last_name
           expect(@user.email).to eq email
           expect(@user.locale).to eq locale
           expect(@user.birthyear).to eq birthyear

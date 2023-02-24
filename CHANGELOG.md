@@ -1,10 +1,24 @@
 # Changelog
 
+### Changed
+
+- [CL-2903] Lock first and last name with FC verification
+
+## 2023-02-22
+
+### Changed
+
+- [CL-2173] Remove access to Messaging in admin for project & folder moderators
+
 ## 2023-02-20
 
 ### Added
 
 - [CL-2314] Ability to copy projects in the admin.
+
+### Fixed
+
+- [CL-2826] Alignment of graphs in emails dashboard
 
 ## 2023-02-17
 

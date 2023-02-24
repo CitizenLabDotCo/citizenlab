@@ -1071,6 +1071,18 @@
           "allowed": { "type": "boolean", "default": true },
           "enabled": { "type": "boolean", "default": false }
         }
+      },
+
+      "user_confirmation": {
+        "type": "object",
+        "title": "User email confirmation",
+        "description": "Enables the ability for emails to be confirmed after registration.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }
       }
     },
   "dependencies": {

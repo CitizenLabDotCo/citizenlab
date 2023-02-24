@@ -14,7 +14,6 @@ import { IAppConfigurationData } from 'services/appConfiguration';
 const MODERATOR_ROUTES = [
   '/admin/dashboard',
   '/admin/projects',
-  '/admin/messaging',
   '/admin/ideas',
   '/admin/ideas/import',
   '/admin/workshops',
