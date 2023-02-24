@@ -82,7 +82,11 @@ const Password = ({ status, onSubmit }: Props) => {
         <Box mt="28px">
           <Checkbox
             name="rememberMe"
-            label={formatMessage(messages.rememberMe)}
+            label={
+              <Text mt="0" mb="0" mr="4px">
+                {formatMessage(messages.rememberMe)}
+              </Text>
+            }
             labelTooltipText={formatMessage(messages.rememberMeTooltip)}
           />
         </Box>
