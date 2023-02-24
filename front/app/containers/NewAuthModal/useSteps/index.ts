@@ -1,25 +1,12 @@
 import { useState, useCallback, useMemo } from 'react';
-import {
-  Status,
-  ErrorCode,
-  State,
-  StepConfig,
-  Step,
-  Requirements,
-} from '../typings';
+import { Status, ErrorCode, State, StepConfig, Step } from '../typings';
 import { getStepConfig } from './stepConfig';
 
-let _mockRequirements = {
+const _mockRequirements = {
   authenticated: false,
   accountHasPassword: false,
   emailConfirmed: false,
   passwordAccepted: false,
-};
-
-export const _setMockRequirements = (
-  newMockRequirements: Partial<Requirements>
-) => {
-  _mockRequirements = { ..._mockRequirements, ...newMockRequirements };
 };
 
 export default function useSteps() {
