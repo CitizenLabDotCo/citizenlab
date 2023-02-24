@@ -3,6 +3,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 // hooks
 import { useLocation } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // components
 import NavigationTabs, {
@@ -17,7 +18,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // utils
-import { matchPathToUrl } from 'utils/helperUtils';
+import { matchPathToUrl, isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
 // typings
@@ -85,11 +86,18 @@ const DashboardTabs = ({ showReportBuilderTab, children }: Props) => {
 };
 
 const DashboardTabsWrapper = ({ children }: { children: React.ReactNode }) => {
+  const appConfig = useAppConfiguration();
   const isFeatureEnabled = useFeatureFlag({ name: 'report_builder' });
   const isFeatureAllowed = useFeatureFlag({
     name: 'report_builder',
     onlyCheckAllowed: true,
   });
+
+  // We need to wait for the appConfig to be loaded before we can check for allowed and enabled
+  // This is particularly important for the first load of the page where we don't want a wrong url set
+  if (isNilOrError(appConfig)) {
+    return null;
+  }
 
   // If the feature is not allowed by the pricing plan,
   // we want to show an info message about this, which requires seeing the tab
