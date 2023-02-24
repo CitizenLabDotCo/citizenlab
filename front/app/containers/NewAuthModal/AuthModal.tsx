@@ -17,6 +17,13 @@ import messages from './messages';
 
 interface Props extends ReturnType<typeof useSteps> {}
 
+const getHeaderMessage = (step: Props['currentStep']) => {
+  if (step === 'email-registration') return messages.beforeYouParticipate;
+  if (step === 'email-confirmation') return messages.confirmYourEmail;
+  if (step === 'enter-password') return messages.logIn;
+  return null;
+};
+
 const AuthModal = ({ /* currentStep, */ status, error, transition }: Props) => {
   const currentStep = 'success' as Props['currentStep'];
   const { formatMessage } = useIntl();
@@ -26,7 +33,7 @@ const AuthModal = ({ /* currentStep, */ status, error, transition }: Props) => {
     currentStep === 'email-confirmation' ||
     currentStep === 'enter-password';
 
-  const showHeader = currentStep !== 'success';
+  const headerMessage = getHeaderMessage(currentStep);
 
   const handleClose = () => {
     if (!closable) return;
@@ -40,9 +47,9 @@ const AuthModal = ({ /* currentStep, */ status, error, transition }: Props) => {
       close={handleClose}
       hideCloseButton={!closable}
       header={
-        showHeader ? (
+        headerMessage ? (
           <Title variant="h3" as="h1" mt="0px" mb="0px">
-            {formatMessage(messages.beforeYouParticipate)}
+            {formatMessage(headerMessage)}
           </Title>
         ) : undefined
       }
