@@ -475,7 +475,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.buttonSuccess": "Uspeh",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byAreaFilter": "Po oblasti",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byTagsFilter": "Po oznaci(ama)",
-  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contactToAccess": "Displaying projects by tag or area is part of the premium license. Reach out to your GovSuccess Managaer to learn more about it.",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contactGovSuccessToAccess": "Displaying projects by tag or area is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contentEditorTitle": "Sadržaj",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.editCustomPagePageTitle": "Uredi prilagođenu stranicu",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedProjectsLabel": "Povezani projekti",
