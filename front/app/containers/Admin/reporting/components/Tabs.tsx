@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 
 // hooks
 import { useLocation } from 'react-router-dom';
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
 import NavigationTabs, {
@@ -17,9 +17,8 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // utils
-import { matchPathToUrl, isNilOrError } from 'utils/helperUtils';
+import { matchPathToUrl } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
-import { showFeatureFlagPaymentTease } from 'utils/showFeatureFlagPaymentTease';
 
 // typings
 import { ITab } from 'typings';
@@ -86,17 +85,16 @@ const DashboardTabs = ({ showReportBuilderTab, children }: Props) => {
 };
 
 const DashboardTabsWrapper = ({ children }: { children: React.ReactNode }) => {
-  const appConfig = useAppConfiguration();
-  if (isNilOrError(appConfig)) {
-    return null;
-  }
+  const isFeatureEnabled = useFeatureFlag({ name: 'report_builder' });
+  const isFeatureAllowed = useFeatureFlag({
+    name: 'report_builder',
+    onlyCheckAllowed: true,
+  });
 
   // If the feature is not allowed by the pricing plan,
   // we want to show an info message about this, which requires seeing the tab
-  const showReportBuilderTab = showFeatureFlagPaymentTease(
-    appConfig,
-    'report_builder'
-  );
+  const showPlanUpgradeTease = !isFeatureAllowed;
+  const showReportBuilderTab = showPlanUpgradeTease || isFeatureEnabled;
 
   return (
     <DashboardTabs showReportBuilderTab={showReportBuilderTab}>
