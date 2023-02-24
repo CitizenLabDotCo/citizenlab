@@ -541,6 +541,40 @@ resource 'Stats - Users' do
           })
         end
       end
+
+      describe 'without filter by participation' do
+        before do
+          @group = create(:group)
+          @custom_field = create(:custom_field_checkbox)
+
+          travel_to(start_at + 24.days) do
+            create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
+            create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
+            user = create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
+            comment = create(:comment)
+            create(:activity, item: comment, action: 'created', user: user)
+          end
+        end
+
+        let(:group) { @group.id }
+        let(:custom_field_id) { @custom_field.id }
+
+        example_request 'Users by custom field (chekbox)' do
+          expect(response_status).to eq 200
+          expect(json_response_body).to match({
+            series: {
+              users: {
+                # rubocop:disable Lint/BooleanSymbol
+                false: 3,
+                # rubocop:enable Lint/BooleanSymbol
+                _blank: 0
+              },
+              expected_users: nil,
+              reference_population: nil
+            }
+          })
+        end
+      end
     end
 
     get 'web_api/v1/stats/users_by_custom_field_as_xlsx/:custom_field_id' do
