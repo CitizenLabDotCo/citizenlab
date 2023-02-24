@@ -13,7 +13,7 @@ import sharedMessages from '../../messages';
 // form
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { string, object } from 'yup';
+import { string, object, boolean } from 'yup';
 import PasswordInput from 'components/HookForm/PasswordInput';
 
 // typings
@@ -21,15 +21,22 @@ import { Status } from '../../typings';
 
 interface Props {
   status: Status;
-  onSubmit: (email: string, password: string) => void;
+  onSubmit: (
+    email: string,
+    password: string,
+    rememberMe: boolean,
+    tokenLifetime: number
+  ) => void;
 }
 
 interface FormValues {
   password: string;
+  rememberMe: boolean;
 }
 
 const DEFAULT_VALUES: Partial<FormValues> = {
   password: undefined,
+  rememberMe: false,
 };
 
 const Password = ({ status, onSubmit }: Props) => {
@@ -40,6 +47,7 @@ const Password = ({ status, onSubmit }: Props) => {
     () =>
       object({
         password: string().required(formatMessage(messages.noPasswordError)),
+        rememberMe: boolean(),
       }),
     [formatMessage]
   );
@@ -51,9 +59,10 @@ const Password = ({ status, onSubmit }: Props) => {
   });
 
   const email = 'henk@piet.com'; // TODO
+  const tokenLifetime = 10; // TODO
 
-  const handleSubmit = ({ password }: FormValues) => {
-    onSubmit(email, password);
+  const handleSubmit = ({ password, rememberMe }: FormValues) => {
+    onSubmit(email, password, rememberMe, tokenLifetime);
   };
 
   return (

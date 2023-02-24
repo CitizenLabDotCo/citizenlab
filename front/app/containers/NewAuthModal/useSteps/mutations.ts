@@ -1,4 +1,9 @@
-export const createAccount = (_email: string, _password?: string) => {
+export const createAccount = (
+  _email: string,
+  _password?: string,
+  _rememberMe?: boolean,
+  _tokenLifetime?: number
+) => {
   return new Promise((resolve) => setTimeout(() => resolve(true), 1500));
 };
 

@@ -81,10 +81,15 @@ export const getStepConfig = (
     'enter-password': {
       CLOSE: () => setCurrentStep('closed'),
 
-      SUBMIT_PASSWORD: async (email: string, password: string) => {
+      SUBMIT_PASSWORD: async (
+        email: string,
+        password: string,
+        rememberMe: boolean,
+        tokenLifetime: number
+      ) => {
         setStatus('pending');
 
-        await createAccount(email, password);
+        await createAccount(email, password, rememberMe, tokenLifetime);
         const { passwordAccepted, emailConfirmed } = await getRequirements();
 
         if (passwordAccepted) {
