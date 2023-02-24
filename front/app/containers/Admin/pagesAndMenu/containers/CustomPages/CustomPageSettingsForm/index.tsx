@@ -262,7 +262,7 @@ const CustomPageSettingsForm = ({
                 <Tippy
                   maxWidth="250px"
                   placement="right-end"
-                  content={formatMessage(messages.contactToAccess)}
+                  content={formatMessage(messages.contactGovSuccessToAccess)}
                   disabled={isFeatureAllowed}
                   hideOnClick={false}
                 >
