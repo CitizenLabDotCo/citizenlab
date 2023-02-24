@@ -14,13 +14,12 @@ import React from 'react';
 import styled from 'styled-components';
 import { trackEventByName } from 'utils/analytics';
 import { injectIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
+import { isEmptyMultiloc, isNilOrError } from 'utils/helperUtils';
 import { media } from 'utils/styleUtils';
 import messages from '../messages';
 import tracks from '../tracks';
 import CTA from './CTA';
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
-import { isEmpty } from 'lodash-es';
 
 const StyledAvatarBubbles = styled(AvatarBubbles)`
   min-height: 40px;
@@ -65,12 +64,12 @@ const HeaderContent = ({
 
   if (!isNilOrError(homepageSettings)) {
     const homepageAttributes = homepageSettings.attributes;
-    const headerTitle = !isEmpty(
+    const headerTitle = !isEmptyMultiloc(
       homepageAttributes.banner_signed_out_header_multiloc
     )
       ? localize(homepageAttributes.banner_signed_out_header_multiloc)
       : formatMessage(messages.titleCity);
-    const headerSubtitle = !isEmpty(
+    const headerSubtitle = !isEmptyMultiloc(
       homepageAttributes.banner_signed_out_subheader_multiloc
     )
       ? localize(homepageAttributes.banner_signed_out_subheader_multiloc)
