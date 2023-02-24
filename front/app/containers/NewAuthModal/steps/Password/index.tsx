@@ -24,10 +24,11 @@ import PasswordInput from 'components/HookForm/PasswordInput';
 import Checkbox from 'components/HookForm/Checkbox';
 
 // typings
-import { Status } from '../../typings';
+import { State, Status } from '../../typings';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
+  state: State;
   status: Status;
   onSubmit: (
     email: string,
@@ -47,7 +48,7 @@ const DEFAULT_VALUES: Partial<FormValues> = {
   rememberMe: false,
 };
 
-const Password = ({ status, onSubmit }: Props) => {
+const Password = ({ state, status, onSubmit }: Props) => {
   const { formatMessage } = useIntl();
   const appConfiguration = useAppConfiguration();
 
@@ -70,7 +71,8 @@ const Password = ({ status, onSubmit }: Props) => {
 
   if (isNilOrError(appConfiguration)) return null;
 
-  const email = 'henk@piet.com'; // TODO
+  const { email } = state;
+  if (email === null) return null;
 
   const handleSubmit = ({ password, rememberMe }: FormValues) => {
     const tokenLifetime =
@@ -95,7 +97,7 @@ const Password = ({ status, onSubmit }: Props) => {
           <FormattedMessage
             {...messages.logInToYourAccount}
             values={{
-              account: <strong>{email}</strong>,
+              account: <strong>{state.email}</strong>,
             }}
           />
         </Text>

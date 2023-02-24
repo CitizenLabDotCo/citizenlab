@@ -2,7 +2,7 @@ import { createAccount, confirmCode } from './mutations';
 import { signOut } from 'services/auth';
 
 // typings
-import { GetRequirements, Status, ErrorCode } from '../typings';
+import { State, GetRequirements, Status, ErrorCode } from '../typings';
 import { SSOProvider } from 'services/singleSignOn';
 
 type Step =
@@ -16,11 +16,14 @@ export const getStepConfig = (
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   setStatus: (status: Status) => void,
-  setError: (errorCode: ErrorCode) => void
+  setError: (errorCode: ErrorCode) => void,
+  updateState: (state: Partial<State>) => void
 ) => {
   return {
     closed: {
       TRIGGER_REGISTRATION_FLOW: async () => {
+        updateState({ email: null });
+
         const { authenticated } = await getRequirements();
         setCurrentStep(
           authenticated ? 'email-confirmation' : 'email-registration'
@@ -39,6 +42,8 @@ export const getStepConfig = (
 
         if (authenticated) {
           setStatus('ok');
+          updateState({ email });
+
           setCurrentStep(
             accountHasPassword ? 'enter-password' : 'email-confirmation'
           );
@@ -59,6 +64,7 @@ export const getStepConfig = (
 
       CHANGE_EMAIL: async () => {
         await signOut();
+        updateState({ email: null });
         setCurrentStep('email-registration');
       },
 

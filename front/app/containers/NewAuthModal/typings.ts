@@ -1,10 +1,17 @@
 import { getStepConfig } from './useSteps/stepConfig';
 
 export type Status = 'pending' | 'error' | 'ok';
+
 export type ErrorCode =
   | 'account_creation_failed'
   | 'wrong_confirmation_code'
   | 'wrong_password';
+
+export interface State {
+  email: string | null;
+}
+
+export type UpdateState = (state: Partial<State>) => void;
 
 export interface Requirements {
   authenticated: boolean;
