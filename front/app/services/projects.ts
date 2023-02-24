@@ -234,7 +234,7 @@ export interface IUpdatedProjectProperties {
   slug?: string;
   topic_ids?: string[];
   include_all_areas?: boolean;
-  folder_id?: string;
+  folder_id?: string | null;
 }
 
 export interface IProjectFormState {
@@ -258,7 +258,7 @@ export interface IProjectFormState {
   submitState: ISubmitState;
   slug: string | null;
   showSlugErrorMessage: boolean;
-  folder_id?: string;
+  folder_id?: string | null;
 }
 
 export interface IProject {
