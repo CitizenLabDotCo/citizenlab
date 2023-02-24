@@ -76,7 +76,7 @@ const Password = ({ status, onSubmit }: Props) => {
           <PasswordInput
             name="password"
             isLoginPasswordInput
-            // label={formatMessage(messages.email)}
+            label={formatMessage(messages.password)}
           />
         </Box>
         <Box mt="28px">

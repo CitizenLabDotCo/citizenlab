@@ -7,6 +7,7 @@ import { CLError, RHFErrors } from 'typings';
 import PasswordInputComponent, {
   Props as PasswordInputComponentProps,
 } from 'components/UI/PasswordInput';
+import { FormLabel } from 'components/UI/FormComponents';
 
 interface Props
   extends Omit<
@@ -14,9 +15,10 @@ interface Props
     'id' | 'password' | 'onChange' | 'errors'
   > {
   name: string;
+  label?: string;
 }
 
-const PasswordInput = ({ name, ...rest }: Props) => {
+const PasswordInput = ({ name, label, ...rest }: Props) => {
   const {
     getValues,
     formState: { errors: formContextErrors },
@@ -33,6 +35,8 @@ const PasswordInput = ({ name, ...rest }: Props) => {
 
   return (
     <>
+      {label && <FormLabel htmlFor={name} labelValue={label} />}
+
       <Controller
         name={name}
         control={control}
