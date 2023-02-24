@@ -15,6 +15,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { string, object, boolean } from 'yup';
 import PasswordInput from 'components/HookForm/PasswordInput';
+import Checkbox from 'components/HookForm/Checkbox';
 
 // typings
 import { Status } from '../../typings';
@@ -76,6 +77,13 @@ const Password = ({ status, onSubmit }: Props) => {
             name="password"
             isLoginPasswordInput
             // label={formatMessage(messages.email)}
+          />
+        </Box>
+        <Box mt="28px">
+          <Checkbox
+            name="rememberMe"
+            label={formatMessage(messages.rememberMe)}
+            labelTooltipText={formatMessage(messages.rememberMeTooltip)}
           />
         </Box>
         <Box w="100%" display="flex" mt="32px">

@@ -17,4 +17,12 @@ export default defineMessages({
     id: 'app.containers.NewAuthModal.steps.Password.forgotPassword',
     defaultMessage: 'Forgot password?',
   },
+  rememberMe: {
+    id: 'app.containers.NewAuthModal.steps.Password.rememberMe',
+    defaultMessage: 'Remember me',
+  },
+  rememberMeTooltip: {
+    id: 'app.containers.NewAuthModal.steps.Password.rememberMeTooltip',
+    defaultMessage: 'Do not select if using a public computer',
+  },
 });

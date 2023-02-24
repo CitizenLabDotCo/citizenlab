@@ -1,24 +1,27 @@
 import React from 'react';
-import TextareaComponent, {
-  Props as TextAreaProps,
-} from 'components/UI/TextArea';
+import { Checkbox as CheckboxComponent } from '@citizenlab/cl2-component-library';
 import Error, { TFieldName } from 'components/UI/Error';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
 import { get } from 'lodash-es';
 
-interface Props extends TextAreaProps {
+interface Props
+  extends Omit<
+    React.ComponentProps<typeof CheckboxComponent>,
+    'checked' | 'onChange'
+  > {
   name: string;
 }
 
-const TextArea = ({ name, ...rest }: Props) => {
+const Checkbox = ({ name, ...rest }: Props) => {
   const {
     formState: { errors: formContextErrors },
     control,
-    trigger,
+    watch,
+    setValue,
   } = useFormContext();
 
-  const defaultValue = '';
+  const defaultValue = false;
 
   const errors = get(formContextErrors, name) as RHFErrors;
   const validationError = errors?.message;
@@ -26,19 +29,21 @@ const TextArea = ({ name, ...rest }: Props) => {
   // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
   const apiError = errors?.error && ([errors] as CLError[]);
 
+  const currentValue = watch(name);
   return (
     <>
       <Controller
         name={name}
         control={control}
         defaultValue={defaultValue}
-        render={({ field: { ref: _ref, ...field } }) => (
-          <TextareaComponent
+        render={({ field: { ref: _ref, value, ...field } }) => (
+          <CheckboxComponent
             id={name}
             {...field}
             {...rest}
-            onBlur={() => {
-              trigger();
+            checked={value}
+            onChange={() => {
+              setValue(name, !currentValue);
             }}
           />
         )}
@@ -64,4 +69,4 @@ const TextArea = ({ name, ...rest }: Props) => {
   );
 };
 
-export default TextArea;
+export default Checkbox;
