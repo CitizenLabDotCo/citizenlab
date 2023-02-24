@@ -7,31 +7,9 @@ describe PermissionPolicy do
 
   let(:scope) { PermissionPolicy::Scope.new(user, Permission) }
 
-  before(:all) do
-    @scope_types = PermissionsService.instance_variable_get(:@scope_spec_hash)
-
-    # rubocop:disable Style/SingleLineMethods
-    dummy_global_scope = Module.new do
-      def self.actions(_scope = nil) %w[a1 a2] end
-
-      def self.scope_type; nil end
-
-      def self.scope_class; nil end
-    end
-    # rubocop:enable Style/SingleLineMethods
-
-    PermissionsService.clear_scope_types
-    PermissionsService.register_scope_type(dummy_global_scope)
-  end
-
-  after(:all) do
-    # Restore registered scope-types as they were before the tests.
-    PermissionsService.instance_variable_set(:@scope_spec_hash, @scope_types)
-  end
-
   context 'for a visitor' do
     let(:user) { nil }
-    let!(:permission) { create(:global_permission, :by_everyone, action: 'a1') }
+    let!(:permission) { create :permission, :by_everyone }
 
     it { is_expected.not_to permit(:show)         }
     it { is_expected.not_to permit(:update)       }
@@ -45,7 +23,7 @@ describe PermissionPolicy do
 
   context 'for a user' do
     let(:user) { create(:user) }
-    let!(:permission) { create(:global_permission, :by_everyone, action: 'a1') }
+    let!(:permission) { create :permission, :by_everyone }
 
     it { is_expected.not_to permit(:show)         }
     it { is_expected.not_to permit(:update)       }
@@ -60,7 +38,7 @@ describe PermissionPolicy do
   context 'for a member of a group with granular permissions' do
     let(:user) { create(:user) }
     let(:group) { create(:group) }
-    let!(:permission) { create(:global_permission, permitted_by: 'groups', groups: [group], action: 'a1') }
+    let!(:permission) { create :permission, permitted_by: 'groups', groups: [group] }
 
     before do
       group.members << user
@@ -78,7 +56,7 @@ describe PermissionPolicy do
 
   context 'for an admin' do
     let(:user) { create(:admin) }
-    let!(:permission) { create(:global_permission, :by_admins_moderators, action: 'a1') }
+    let!(:permission) { create :permission, :by_admins_moderators }
 
     it { is_expected.to permit(:show)             }
     it { is_expected.to permit(:update)           }
