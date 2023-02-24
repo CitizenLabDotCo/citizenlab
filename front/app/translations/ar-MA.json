@@ -1308,7 +1308,6 @@
   "app.containers.SignUp.emptyTokenError": "أدخل رمز الدعوة",
   "app.containers.SignUp.firstNamesLabel": "الاسم الشخصي",
   "app.containers.SignUp.goToLogIn": "ألديك حساب بالفعل؟ {goToOtherFlowLink}",
-  "app.containers.SignUp.goToSignUp": "أليس لديك حساب؟ {goToOtherFlowLink}",
   "app.containers.SignUp.headerSubtitle": "الخطوة {activeStepNumber} من أصل {totalStepsCount}: {stepName}",
   "app.containers.SignUp.iHaveReadAndAgreeTo": "لقد قرأت وأوافق على {link}.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "قبل استخدام البيانات في mitgestalten.wien.gv.at. يمكن العثور على مزيد من المعلومات {link}.",

@@ -1308,7 +1308,6 @@
   "app.containers.SignUp.emptyTokenError": "Geben Sie Ihren Einladungscode ein",
   "app.containers.SignUp.firstNamesLabel": "Vorname",
   "app.containers.SignUp.goToLogIn": "Sie haben bereits ein Konto? {goToOtherFlowLink}",
-  "app.containers.SignUp.goToSignUp": "Sie haben kein Konto? {goToOtherFlowLink}",
   "app.containers.SignUp.headerSubtitle": "Schritt {activeStepNumber} von {totalStepsCount}: {stepName}",
   "app.containers.SignUp.iHaveReadAndAgreeTo": "Ich stimme {link} zu.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "Ich stimme zu, dass diese Daten für meine Anmeldung auf mitgestalten.wien.gv.at übernommen werden. Weitere Informationen finden Sie in den {link}.",

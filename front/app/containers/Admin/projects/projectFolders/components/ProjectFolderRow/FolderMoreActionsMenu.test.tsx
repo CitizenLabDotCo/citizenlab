@@ -32,7 +32,37 @@ jest.mock('hooks/useAuthUser', () => {
   return () => mockUserData;
 });
 
+jest.mock('services/projectFolders', () =>
+  jest.fn(() => {
+    return {
+      deleteProjectFolder: jest.fn().mockImplementation(() => Promise.reject()),
+    };
+  })
+);
+
 describe('FolderMoreActionsMenu', () => {
+  it('calls setError with an error when deleting fails', async () => {
+    const setErrorFn = jest.fn();
+    const customProps: Props = {
+      folderId: 'folderId',
+      setError: setErrorFn,
+    };
+    render(<FolderMoreActionsMenu {...customProps} />);
+    const user = userEvent.setup();
+
+    const threeDotsButton = screen.getByTestId('moreOptionsButton');
+    await user.click(threeDotsButton);
+
+    const deleteFolderButton = await screen.findByRole('button', {
+      name: 'Delete folder',
+    });
+    await user.click(deleteFolderButton);
+
+    expect(setErrorFn).toHaveBeenLastCalledWith(
+      'There was an issue removing this folder. Please try again.'
+    );
+  });
+
   describe('When user is an admin', () => {
     it('Has the folder delete button', async () => {
       render(<FolderMoreActionsMenu {...props} />);

@@ -1389,7 +1389,7 @@
   "app.containers.AdminPage.SettingsPage.noLogo": "Lūdzu, augšupielādējiet logotipu",
   "app.containers.AdminPage.SettingsPage.no_button": "Nav pogas",
   "app.containers.AdminPage.SettingsPage.organizationName": "Pilsētas vai organizācijas nosaukums",
-  "app.containers.AdminPage.SettingsPage.organizationNameMultilocError": "Provide an organization name or city for all languages.",
+  "app.containers.AdminPage.SettingsPage.organizationNameMultilocError": "Norādiet organizācijas nosaukumu vai pilsētu visām valodām.",
   "app.containers.AdminPage.SettingsPage.overlayToggleLabel": "Pārklājuma iespējošana",
   "app.containers.AdminPage.SettingsPage.pageTitle": "Iestatījumi",
   "app.containers.AdminPage.SettingsPage.phone": "Tālrunis",

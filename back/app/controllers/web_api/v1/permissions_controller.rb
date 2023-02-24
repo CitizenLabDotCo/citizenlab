@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::PermissionsController < ApplicationController
-  before_action :set_permission, only: %i[show update participation_conditions]
+  before_action :set_permission, only: %i[show update participation_conditions requirements]
   skip_before_action :authenticate_user
 
   def index
@@ -30,6 +30,12 @@ class WebApi::V1::PermissionsController < ApplicationController
 
   def participation_conditions
     render json: @permission.participation_conditions, status: :ok
+  end
+
+  def requirements
+    authorize @permission
+    json_requirements = PermissionsService.new.requirements @permission, current_user
+    render json: json_requirements, status: :ok
   end
 
   private

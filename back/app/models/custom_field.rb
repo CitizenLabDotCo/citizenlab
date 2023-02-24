@@ -70,8 +70,10 @@ class CustomField < ApplicationRecord
   after_create(if: :domicile?) { Area.recreate_custom_field_options }
 
   scope :with_resource_type, ->(resource_type) { where(resource_type: resource_type) }
+  scope :registration, -> { where(resource_type: 'User') }
   scope :enabled, -> { where(enabled: true) }
   scope :disabled, -> { where(enabled: false) }
+  scope :required, -> { where(required: true) }
   scope :not_hidden, -> { where(hidden: false) }
   scope :hidden, -> { where(hidden: true) }
   scope :support_multiple_values, -> { where(input_type: 'multiselect') }
