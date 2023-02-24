@@ -475,7 +475,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.buttonSuccess": "Gespeichert!",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byAreaFilter": "Nach Gebiet",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byTagsFilter": "Nach Themen-Tag(s)",
-  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contactToAccess": "Die Anzeige von Projekten nach Schlagwort oder geografischem Gebiet ist Teil der Premium-Lizenz. Wenden Sie sich an Ihre Kundenbetreuerin, um mehr darüber zu erfahren.",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contactGovSuccessToAccess": "Die Anzeige von Projekten nach Schlagwort/Thema oder geografischem Gebiet ist Teil der Premium-Lizenz. Wenden Sie sich an Ihre Kundenbetreuerin, um mehr darüber zu erfahren.",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contentEditorTitle": "Inhalt",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.editCustomPagePageTitle": "Benutzerdefinierte Seite bearbeiten",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedProjectsLabel": "Verknüpfte Projekte",
