@@ -23,6 +23,14 @@ FactoryBot.define do
     min_budget { 1 }
     max_budget { 10_000 }
 
+    transient do
+      with_permissions { false }
+    end
+
+    after(:create) do |phase, evaluator|
+      PermissionsService.new.update_permissions_for_context(phase) if evaluator.with_permissions
+    end
+
     factory :active_phase do
       after(:create) do |phase, _evaluator|
         phase.start_at = Time.now - 7.days

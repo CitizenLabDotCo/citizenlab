@@ -3,30 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe Permission, type: :model do
+  describe 'Default factory' do
+    it 'is valid' do
+      expect(build(:permission)).to be_valid
+    end
+  end
+
   describe '#for_user' do
-    before(:all) do
-      @scope_types = PermissionsService.instance_variable_get(:@scope_spec_hash)
-
-      # rubocop:disable Style/SingleLineMethods Layout/EmptyLineBetweenDefs
-      dummy_global_scope = Module.new do
-        def self.actions(_scope = nil) %w[a1 a2 a3 a4 a5] end
-        def self.scope_type; nil end
-        def self.scope_class; nil end
-      end
-      # rubocop:enable Style/SingleLineMethods Layout/EmptyLineBetweenDefs
-
-      PermissionsService.clear_scope_types
-      PermissionsService.register_scope_type(dummy_global_scope)
-    end
-
-    after(:all) do
-      # Restore registered scope-types as they were before the tests.
-      PermissionsService.instance_variable_set(:@scope_spec_hash, @scope_types)
-    end
-
-    before { described_class.destroy_all }
-
-    # +let!(permissions)+ must be run after +before(:each)+ which deletes all permission records
     let!(:permissions) do
       [
         create(:global_permission, :by_everyone, action: 'a1'),

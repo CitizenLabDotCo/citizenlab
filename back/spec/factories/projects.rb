@@ -25,6 +25,14 @@ FactoryBot.define do
     end
     sequence(:slug) { |n| "renew-west-parc-#{n}" }
 
+    transient do
+      with_permissions { false }
+    end
+
+    after(:create) do |phase, evaluator|
+      PermissionsService.new.update_permissions_for_context(phase) if evaluator.with_permissions
+    end
+
     trait :that_can_have_children do
       after(:create) do |project, _|
         project.admin_publication.update(children_allowed: true)
