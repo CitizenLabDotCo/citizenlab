@@ -8,6 +8,10 @@ jest.mock('services/permissions', () => {
   return { usePermission: () => mockPermission };
 });
 
+beforeEach(() => {
+  mockPermission = false;
+});
+
 const projectFolders = {
   projectFolders: [
     { id: 'folder1', attributes: { title_multiloc: { en: 'Folder 1' } } },
@@ -95,8 +99,6 @@ describe('ProjectFolderSelect', () => {
     );
   });
   it('should set folder_id to null when "no" option is selected', () => {
-    mockPermission = false;
-
     const onProjectAttributesDiffChange = jest.fn();
     const { container } = render(
       <ProjectFolderSelect
