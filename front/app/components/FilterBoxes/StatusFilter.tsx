@@ -19,7 +19,7 @@ import { Header, Title } from './styles';
 
 // typings
 import { IIdeasFilterCounts } from 'services/ideas';
-import { IIdeaStatusData } from 'services/ideaStatuses';
+import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IInitiativesFilterCounts } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 
