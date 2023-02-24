@@ -475,7 +475,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.buttonSuccess": "Succes",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byAreaFilter": "Efter område",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byTagsFilter": "Efter tag(s)",
-  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contactToAccess": "Displaying projects by tag or area is part of the premium license. Reach out to your GovSuccess Managaer to learn more about it.",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contactGovSuccessToAccess": "Displaying projects by tag or area is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contentEditorTitle": "Indhold",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.editCustomPagePageTitle": "Rediger brugerdefineret side",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedProjectsLabel": "Forbundne projekter",
