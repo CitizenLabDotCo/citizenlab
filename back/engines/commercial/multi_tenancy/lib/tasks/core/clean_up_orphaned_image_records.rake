@@ -63,7 +63,7 @@ namespace :cl2back do
       tot_ti += n_ti
     end
 
-    digest = log_digest(live_run, tot_li, tot_ti, record_by_tenant)
+    digest = digest_log(live_run, tot_li, tot_ti, record_by_tenant)
     report['digest'] = digest
     pp digest
 
@@ -99,7 +99,7 @@ namespace :cl2back do
     }
   end
 
-  def log_digest(live_run, tot_li, tot_ti, record_by_tenant)
+  def digest_log(live_run, tot_li, tot_ti, record_by_tenant)
     {
       cluster: CL2_CLUSTER,
       live_run: live_run ? 'true' : 'false',
