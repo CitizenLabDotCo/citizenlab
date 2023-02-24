@@ -108,6 +108,13 @@ class WebApi::V1::UsersController < ::ApplicationController
         @user,
         params: fastjson_params(granted_permissions: permissions)
       ).serialized_json, status: :created
+    elsif update_existing_no_password_user?
+      SideFxUserService.new.after_update(@user, current_user)
+      permissions = Permission.for_user(@user)
+      render json: WebApi::V1::UserSerializer.new(
+        @user,
+        params: fastjson_params(granted_permissions: permissions)
+      ).serialized_json, status: :ok
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
     end
@@ -139,6 +146,7 @@ class WebApi::V1::UsersController < ::ApplicationController
   end
 
   def complete_registration
+    # NOTE: Authorize fails if registration is already flagged as complete
     @user = current_user
     authorize @user
 
@@ -146,7 +154,7 @@ class WebApi::V1::UsersController < ::ApplicationController
     user_params[:custom_field_values] = @user.custom_field_values.merge(user_params[:custom_field_values] || {})
 
     @user.assign_attributes(user_params)
-    @user.registration_completed_at = Time.now
+    @user.complete_registration
 
     if @user.save
       SideFxUserService.new.after_update(@user, current_user)
@@ -198,6 +206,24 @@ class WebApi::V1::UsersController < ::ApplicationController
     authorize @user
   rescue ActiveRecord::RecordNotFound
     send_error(nil, 404)
+  end
+
+  def update_existing_no_password_user?
+    return false unless AppConfiguration.instance.feature_activated?('user_confirmation')
+
+    errors = @user.errors.details[:email]
+    return false unless errors.any? { |hash| hash[:error] == :taken }
+
+    existing_user = User.find_by(email: @user.email)
+    return false unless existing_user.no_password?
+
+    @user = existing_user
+    @user.reset_confirmation_with_no_password
+    @user.assign_attributes(permitted_attributes(@user)) # In case this user is adding a first_name, password etc
+    return false unless @user.save
+
+    SendConfirmationCode.call(user: existing_user)
+    true
   end
 
   def mark_custom_field_values_to_clear!

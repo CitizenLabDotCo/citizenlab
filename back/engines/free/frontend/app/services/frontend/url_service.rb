@@ -148,6 +148,10 @@ module Frontend
       "#{configuration.base_frontend_uri}/ideas/edit/#{idea_id}"
     end
 
+    def reset_confirmation_code_url(options = {})
+      "#{home_url(options)}/reset-confirmation-code"
+    end
+
     private
 
     # @return [AppConfiguration]
@@ -165,5 +169,3 @@ module Frontend
     end
   end
 end
-
-Frontend::UrlService.include(UserConfirmation::Patches::Frontend::UrlService)
