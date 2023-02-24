@@ -1308,7 +1308,6 @@
   "app.containers.SignUp.emptyTokenError": "Унесите кôд позива",
   "app.containers.SignUp.firstNamesLabel": "Име",
   "app.containers.SignUp.goToLogIn": "Већ имате налог? {goToOtherFlowLink}",
-  "app.containers.SignUp.goToSignUp": "Немате налог? {goToOtherFlowLink}",
   "app.containers.SignUp.headerSubtitle": "Корак {activeStepNumber} од {totalStepsCount}: {stepName}",
   "app.containers.SignUp.iHaveReadAndAgreeTo": "Прочитао/ла сам и слажем се са {link}.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "Прихватам да се подаци користе на mitgestalten.wien.gv.at. Даље информације могу се пронаћи на {link}.",

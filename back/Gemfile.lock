@@ -430,12 +430,6 @@ PATH
       rails (~> 6.1)
 
 PATH
-  remote: engines/free/user_confirmation
-  specs:
-    user_confirmation (0.1.0)
-      rails (~> 6.1)
-
-PATH
   remote: engines/free/volunteering
   specs:
     volunteering (0.1.0)
@@ -565,7 +559,7 @@ GEM
     binding_ninja (0.2.3)
     binding_of_caller (1.0.0)
       debug_inspector (>= 0.0.1)
-    bootsnap (1.12.0)
+    bootsnap (1.16.0)
       msgpack (~> 1.2)
     builder (3.2.4)
     bullet (7.0.2)
@@ -780,11 +774,11 @@ GEM
     mimemagic (0.4.3)
       nokogiri (~> 1)
       rake
-    mini_magick (4.11.0)
+    mini_magick (4.12.0)
     mini_mime (1.1.2)
     minitest (5.17.0)
     mjml-rails (4.7.2)
-    msgpack (1.5.2)
+    msgpack (1.6.0)
     multi_json (1.15.0)
     multi_xml (0.6.0)
     multipart-post (2.1.1)
@@ -1052,7 +1046,7 @@ GEM
       nokogiri (>= 1.8.1)
       nori (~> 2.4)
       wasabi (~> 3.4)
-    scenic (1.6.0)
+    scenic (1.7.0)
       activerecord (>= 4.0.0)
       railties (>= 4.0.0)
     semantic_logger (4.10.0)
@@ -1060,7 +1054,7 @@ GEM
     sentry-rails (5.3.1)
       railties (>= 5.0)
       sentry-ruby-core (~> 5.3.1)
-    sentry-ruby (5.7.0)
+    sentry-ruby (5.8.0)
       concurrent-ruby (~> 1.0, >= 1.0.2)
     sentry-ruby-core (5.3.1)
       concurrent-ruby
@@ -1233,7 +1227,7 @@ DEPENDENCIES
   machine_translations!
   mailgun-ruby (~> 1.2.0)
   matomo!
-  mini_magick (~> 4.9)
+  mini_magick (~> 4.12)
   mjml-rails (~> 4.4)
   moderation!
   multi_tenancy!
@@ -1309,7 +1303,6 @@ DEPENDENCIES
   surveys!
   test-prof (~> 1.1)
   texting!
-  user_confirmation!
   user_custom_fields!
   vcr (~> 6.1)
   verification!

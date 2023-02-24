@@ -45,20 +45,18 @@ class TrackSegmentService
 
   def integrations(user)
     {
-      All: true,
-      Intercom: intercom_integration_enabled?(user.highest_role),
-      SatisMeter: satismeter_integration_enabled?(user.highest_role)
+      All: track_user?(user),
+      Intercom: track_user?(user),
+      SatisMeter: track_user?(user),
+      Planhat: planhat_integration_enabled?(user)
     }
   end
 
-  # @param [Symbol] role
-  def intercom_integration_enabled?(role)
-    %i[admin project_moderator].include?(role)
-  end
+  # @param [User] user
+  def planhat_integration_enabled?(user)
+    return false unless AppConfiguration.instance.feature_activated?('planhat')
 
-  # @param [Symbol] role
-  def satismeter_integration_enabled?(role)
-    %i[admin project_moderator].include?(role)
+    track_user?(user)
   end
 
   # @param [User] user
@@ -99,7 +97,7 @@ class TrackSegmentService
   private
 
   def track_user?(user)
-    !user.normal_user?
+    !(user.normal_user? || user.super_admin?)
   end
 
   def event_from_activity(activity)

@@ -14,6 +14,7 @@ class SideFxUserService
       LogActivityJob.set(wait: 5.seconds).perform_later(user, 'admin_rights_given', current_user, user.created_at.to_i)
     end
     user.create_email_campaigns_unsubscription_token
+    SendConfirmationCode.call(user: user) if user.confirmation_required?
   end
 
   def before_update(user, current_user); end
@@ -90,8 +91,6 @@ class SideFxUserService
     user.assigned_initiatives.update_all(assignee_id: nil)
   end
 end
-
-::SideFxUserService.prepend UserConfirmation::Patches::SideFxUserService
 
 SideFxUserService.prepend_if_ee 'IdeaAssignment::Patches::SideFxUserService'
 SideFxUserService.prepend_if_ee 'Matomo::Patches::SideFxUserService'

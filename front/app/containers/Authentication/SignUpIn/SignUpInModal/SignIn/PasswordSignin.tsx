@@ -1,32 +1,26 @@
-import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
+import React, { useState, useRef, useEffect } from 'react';
 
 // libraries
 import Link from 'utils/cl-router/Link';
 
 // components
-import { Input, Checkbox, Box } from '@citizenlab/cl2-component-library';
+import {
+  Input,
+  Checkbox,
+  Box,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import PasswordInput from 'components/UI/PasswordInput';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
 import { Options, Option } from '../styles';
 
-// resources
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-import GetWindowSize, {
-  GetWindowSizeChildProps,
-} from 'resources/GetWindowSize';
-import GetFeatureFlag from 'resources/GetFeatureFlag';
-
 // services
 import { signIn } from 'services/auth';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
@@ -39,10 +33,11 @@ import tracks from '../tracks';
 
 // style
 import styled from 'styled-components';
-import { viewportWidths } from 'utils/styleUtils';
 
 // typings
 import { ISignUpInMetaData } from '../typings';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 const Container = styled.div`
   flex: 1 1 auto;
@@ -68,7 +63,7 @@ const ButtonWrapper = styled.div`
   padding-top: 10px;
 `;
 
-export interface InputProps {
+interface Props {
   metaData: ISignUpInMetaData;
   onSignInCompleted: (userId: string) => void;
   onGoToSignUp: () => void;
@@ -76,98 +71,72 @@ export interface InputProps {
   className?: string;
 }
 
-interface DataProps {
-  tenant: GetAppConfigurationChildProps;
-  windowSize: GetWindowSizeChildProps;
-  passwordLoginEnabled: boolean | null;
-  googleLoginEnabled: boolean | null;
-  facebookLoginEnabled: boolean | null;
-  azureAdLoginEnabled: boolean | null;
-  franceconnectLoginEnabled: boolean | null;
-}
+const PasswordSignin = ({
+  metaData,
+  onSignInCompleted,
+  onGoToLogInOptions,
+  onGoToSignUp,
+  className,
+}: Props) => {
+  const { formatMessage } = useIntl();
+  const appConfig = useAppConfiguration();
+  const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
+  const googleLoginEnabled = useFeatureFlag({ name: 'google_login' });
+  const facebookLoginEnabled = useFeatureFlag({ name: 'facebook_login' });
+  const azureAdLoginEnabled = useFeatureFlag({ name: 'azure_ad_login' });
+  const franceconnectLoginEnabled = useFeatureFlag({
+    name: 'franceconnect_login',
+  });
+  const [email, setEmail] = useState<string | null>(null);
+  const [password, setPassword] = useState<string | null>(null);
+  const [rememberMe, setRememberMe] = useState(false);
+  const [processing, setProcessing] = useState(false);
+  const [emailOrPhoneNumberError, setEmailOrPhoneNumberError] = useState<
+    string | null
+  >(null);
+  const [signInError, setSignInError] = useState<string | null>(null);
 
-interface Props extends InputProps, DataProps {}
+  const [hasEmptyPasswordError, setHasEmptyPasswordError] = useState(false);
+  let emailInputElement = useRef<HTMLInputElement | null>(null);
+  let passwordInputElement = useRef<HTMLInputElement | null>(null);
 
-type State = {
-  email: string | null;
-  password: string | null;
-  rememberMe: boolean;
-  processing: boolean;
-  emailOrPhoneNumberError: string | null;
-  signInError: string | null;
-  hasEmptyPasswordError: boolean;
-};
-
-class PasswordSignin extends PureComponent<
-  Props & WrappedComponentProps,
-  State
-> {
-  emailInputElement: HTMLInputElement | null;
-  passwordInputElement: HTMLInputElement | null;
-
-  constructor(props: Props & WrappedComponentProps) {
-    super(props);
-    this.state = {
-      email: null,
-      password: null,
-      rememberMe: false,
-      processing: false,
-      emailOrPhoneNumberError: null,
-      signInError: null,
-      hasEmptyPasswordError: false,
-    };
-    this.emailInputElement = null;
-    this.passwordInputElement = null;
-  }
-
-  handleEmailOnChange = (email: string) => {
-    this.setState({
-      email,
-      emailOrPhoneNumberError: null,
-      signInError: null,
-    });
-  };
-
-  componentDidMount() {
+  useEffect(() => {
     trackEventByName(tracks.signInEmailPasswordEntered);
-  }
 
-  componentWillUnmount() {
-    trackEventByName(tracks.signInEmailPasswordExited);
-  }
+    return () => trackEventByName(tracks.signInEmailPasswordExited);
+  }, []);
 
-  handlePasswordOnChange = (password: string) => {
-    this.setState({
-      password,
-      hasEmptyPasswordError: false,
-      signInError: null,
-    });
+  const handleEmailOnChange = (email: string) => {
+    setEmail(email);
+    setEmailOrPhoneNumberError(null);
+    setSignInError(null);
   };
 
-  handleRememberMeOnChange = () => {
-    this.setState({
-      rememberMe: !this.state.rememberMe,
-    });
+  const handlePasswordOnChange = (password: string) => {
+    setPassword(password);
+    setHasEmptyPasswordError(false);
+    setSignInError(null);
   };
 
-  handleGoToLogInOptions = (event: React.FormEvent) => {
+  const handleRememberMeOnChange = () => {
+    setRememberMe((rememberMe) => !rememberMe);
+  };
+
+  const handleGoToLogInOptions = (event: React.FormEvent) => {
     event.preventDefault();
-    this.props.onGoToLogInOptions();
+    onGoToLogInOptions();
   };
 
-  handleGoToSignUp = (event: React.FormEvent) => {
+  const handleGoToSignUp = (event: React.FormEvent) => {
     event.preventDefault();
-    this.props.onGoToSignUp();
+    onGoToSignUp();
   };
 
-  validate(
+  const validate = (
     phoneLoginEnabled: boolean,
     emailOrPhoneNumber: string | null,
     password: string | null
-  ) {
-    const {
-      intl: { formatMessage },
-    } = this.props;
+  ) => {
     const hasValidPhoneNumber = emailOrPhoneNumber
       ? isValidPhoneNumber(emailOrPhoneNumber)
       : false;
@@ -180,233 +149,185 @@ class PasswordSignin extends PureComponent<
       : !hasValidEmail;
     const hasEmptyPasswordError = password ? password.length === 0 : true;
 
-    this.setState({
-      emailOrPhoneNumberError: hasEmailOrPhoneNumberValidationError
+    setEmailOrPhoneNumberError(
+      hasEmailOrPhoneNumberValidationError
         ? formatMessage(
             phoneLoginEnabled
               ? messages.emailOrPhoneNumberError
               : messages.emailError
           )
-        : null,
-      hasEmptyPasswordError,
-    });
+        : null
+    );
+    setHasEmptyPasswordError(hasEmptyPasswordError);
 
-    if (hasEmailOrPhoneNumberValidationError && this.emailInputElement) {
-      this.emailInputElement.focus();
+    if (hasEmailOrPhoneNumberValidationError && emailInputElement.current) {
+      emailInputElement.current.focus();
     }
 
     if (
       !hasEmailOrPhoneNumberValidationError &&
       hasEmptyPasswordError &&
-      this.passwordInputElement
+      passwordInputElement.current
     ) {
-      this.passwordInputElement.focus();
+      passwordInputElement.current.focus();
     }
 
     return !hasEmailOrPhoneNumberValidationError && !hasEmptyPasswordError;
-  }
+  };
 
-  handleOnSubmit =
+  const handleOnSubmit =
     (phoneLoginEnabled: boolean) => async (event: React.FormEvent) => {
       event.preventDefault();
-      if (isNilOrError(this.props.tenant)) {
+      if (isNilOrError(appConfig)) {
         return;
       }
 
-      const { onSignInCompleted } = this.props;
-      const { formatMessage } = this.props.intl;
-      const { email, password, rememberMe } = this.state;
       const tokenLifetime =
-        this.props.tenant.attributes.settings.core
+        appConfig.attributes.settings.core
           .authentication_token_lifetime_in_days;
 
-      if (
-        this.validate(phoneLoginEnabled, email, password) &&
-        email &&
-        password
-      ) {
+      if (validate(phoneLoginEnabled, email, password) && email && password) {
         try {
-          this.setState({ processing: true });
+          setProcessing(true);
           const user = await signIn(email, password, rememberMe, tokenLifetime);
           trackEventByName(tracks.signInEmailPasswordCompleted);
           onSignInCompleted(user.data.id);
         } catch (error) {
           trackEventByName(tracks.signInEmailPasswordFailed, { error });
           const signInError = formatMessage(messages.signInError);
-          this.setState({ signInError, processing: false });
+          setSignInError(signInError);
+          setProcessing(false);
         }
       }
     };
 
-  handleEmailInputSetRef = (element: HTMLInputElement) => {
-    if (element) {
-      this.emailInputElement = element;
-    }
+  const handleEmailInputSetRef = (element: HTMLInputElement) => {
+    emailInputElement.current = element;
   };
 
-  handlePasswordInputSetRef = (element: HTMLInputElement) => {
-    this.passwordInputElement = element;
+  const handlePasswordInputSetRef = (element: HTMLInputElement) => {
+    passwordInputElement.current = element;
   };
 
-  render() {
-    const {
-      email,
-      password,
-      rememberMe,
-      processing,
-      emailOrPhoneNumberError,
-      signInError,
-      hasEmptyPasswordError,
-    } = this.state;
-    const {
-      className,
-      tenant,
-      windowSize,
-      passwordLoginEnabled,
-      googleLoginEnabled,
-      facebookLoginEnabled,
-      azureAdLoginEnabled,
-      franceconnectLoginEnabled,
-    } = this.props;
-    const { formatMessage } = this.props.intl;
-    const phoneLoginEnabled =
-      !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone
-        ? tenant.attributes.settings.password_login.phone
-        : false;
-    const enabledProviders = [
-      passwordLoginEnabled,
-      googleLoginEnabled,
-      facebookLoginEnabled,
-      azureAdLoginEnabled,
-      franceconnectLoginEnabled,
-    ].filter((provider) => provider === true);
-    const isDesktop = windowSize ? windowSize > viewportWidths.tablet : true;
+  const phoneLoginEnabled =
+    !isNilOrError(appConfig) &&
+    appConfig.attributes.settings.password_login?.phone
+      ? appConfig.attributes.settings.password_login.phone
+      : false;
+  const enabledProviders = [
+    passwordLoginEnabled,
+    googleLoginEnabled,
+    facebookLoginEnabled,
+    azureAdLoginEnabled,
+    franceconnectLoginEnabled,
+  ].filter((provider) => provider === true);
+  const tabletOrSmaller = useBreakpoint('tablet');
+  const isDesktop = !tabletOrSmaller;
 
-    return (
-      <Container
-        id="e2e-sign-in-email-password-container"
-        className={className || ''}
+  return (
+    <Container
+      id="e2e-sign-in-email-password-container"
+      className={className || ''}
+    >
+      <Form
+        id="signin"
+        onSubmit={handleOnSubmit(phoneLoginEnabled)}
+        noValidate={true}
       >
-        <Form
-          id="signin"
-          onSubmit={this.handleOnSubmit(phoneLoginEnabled)}
-          noValidate={true}
-        >
-          <FormElement>
-            <FormLabel
-              htmlFor="email"
-              labelMessage={
-                phoneLoginEnabled
-                  ? messages.emailOrPhoneLabel
-                  : messages.emailLabel
-              }
-            />
-            <Input
-              type="email"
-              id="email"
-              value={email}
-              error={emailOrPhoneNumberError}
-              onChange={this.handleEmailOnChange}
-              setRef={this.handleEmailInputSetRef}
-              autocomplete="email"
-              autoFocus={!!(isDesktop && !this.props.metaData?.noAutofocus)}
-            />
-          </FormElement>
+        <FormElement>
+          <FormLabel
+            htmlFor="email"
+            labelMessage={
+              phoneLoginEnabled
+                ? messages.emailOrPhoneLabel
+                : messages.emailLabel
+            }
+          />
+          <Input
+            type="email"
+            id="email"
+            value={email}
+            error={emailOrPhoneNumberError}
+            onChange={handleEmailOnChange}
+            setRef={handleEmailInputSetRef}
+            autocomplete="email"
+            autoFocus={!!(isDesktop && !metaData?.noAutofocus)}
+          />
+        </FormElement>
 
-          <FormElement>
-            <FormLabel
-              htmlFor="password"
-              labelMessage={messages.passwordLabel}
-            />
-            <PasswordInput
-              id="password"
-              password={password}
-              onChange={this.handlePasswordOnChange}
-              setRef={this.handlePasswordInputSetRef}
-              autocomplete="current-password"
-              isLoginPasswordInput
-              errors={{ emptyError: hasEmptyPasswordError }}
-            />
-          </FormElement>
+        <FormElement>
+          <FormLabel htmlFor="password" labelMessage={messages.passwordLabel} />
+          <PasswordInput
+            id="password"
+            password={password}
+            onChange={handlePasswordOnChange}
+            setRef={handlePasswordInputSetRef}
+            autocomplete="current-password"
+            isLoginPasswordInput
+            errors={{ emptyError: hasEmptyPasswordError }}
+          />
+        </FormElement>
 
-          <FormElement paddingTop="8px">
-            <Checkbox
-              label={formatMessage(messages.rememberMeLabel)}
-              labelTooltipText={formatMessage(messages.rememberMeTooltip)}
-              checked={rememberMe}
-              onChange={this.handleRememberMeOnChange}
+        <FormElement paddingTop="8px">
+          <Checkbox
+            label={formatMessage(messages.rememberMeLabel)}
+            labelTooltipText={formatMessage(messages.rememberMeTooltip)}
+            checked={rememberMe}
+            onChange={handleRememberMeOnChange}
+          />
+        </FormElement>
+
+        <FormElement>
+          <ButtonWrapper>
+            <Button
+              onClick={handleOnSubmit(phoneLoginEnabled)}
+              processing={processing}
+              text={formatMessage(messages.submit)}
+              id="e2e-signin-password-submit-button"
             />
-          </FormElement>
+          </ButtonWrapper>
+          <Error marginTop="10px" text={signInError} />
+        </FormElement>
+      </Form>
 
-          <FormElement>
-            <ButtonWrapper>
-              <Button
-                onClick={this.handleOnSubmit(phoneLoginEnabled)}
-                processing={processing}
-                text={formatMessage(messages.submit)}
-                id="e2e-signin-password-submit-button"
-              />
-            </ButtonWrapper>
-            <Error marginTop="10px" text={signInError} />
-          </FormElement>
-        </Form>
-
-        <Options>
-          <Option>
-            <Link
-              to="/password-recovery"
-              className="link e2e-password-recovery-link"
+      <Options>
+        <Option>
+          <Link
+            to="/password-recovery"
+            className="link e2e-password-recovery-link"
+          >
+            <FormattedMessage {...messages.forgotPassword2} />
+          </Link>
+        </Option>
+        <Option>
+          {enabledProviders.length > 1 ? (
+            <button
+              id="e2e-login-options"
+              onClick={handleGoToLogInOptions}
+              className="link"
             >
-              <FormattedMessage {...messages.forgotPassword2} />
-            </Link>
-          </Option>
-          <Option>
-            {enabledProviders.length > 1 ? (
-              <button
-                id="e2e-login-options"
-                onClick={this.handleGoToLogInOptions}
-                className="link"
-              >
-                <FormattedMessage {...messages.backToLoginOptions} />
-              </button>
-            ) : (
-              <FormattedMessage
-                {...messages.goToSignUp}
-                values={{
-                  goToOtherFlowLink: (
-                    <button
-                      id="e2e-goto-signup"
-                      onClick={this.handleGoToSignUp}
-                    >
-                      {formatMessage(messages.signUp)}
-                    </button>
-                  ),
-                }}
-              />
-            )}
-          </Option>
-        </Options>
-      </Container>
-    );
-  }
-}
+              <FormattedMessage {...messages.backToLoginOptions} />
+            </button>
+          ) : (
+            <FormattedMessage
+              {...messages.goToSignUp}
+              values={{
+                goToOtherFlowLink: (
+                  <button
+                    id="e2e-goto-signup"
+                    onClick={handleGoToSignUp}
+                    className="link"
+                  >
+                    {formatMessage(messages.signUp)}
+                  </button>
+                ),
+              }}
+            />
+          )}
+        </Option>
+      </Options>
+    </Container>
+  );
+};
 
-const PasswordSigninWithHoC = injectIntl(PasswordSignin);
-
-const Data = adopt<DataProps>({
-  tenant: <GetAppConfiguration />,
-  windowSize: <GetWindowSize />,
-  passwordLoginEnabled: <GetFeatureFlag name="password_login" />,
-  googleLoginEnabled: <GetFeatureFlag name="google_login" />,
-  facebookLoginEnabled: <GetFeatureFlag name="facebook_login" />,
-  azureAdLoginEnabled: <GetFeatureFlag name="azure_ad_login" />,
-  franceconnectLoginEnabled: <GetFeatureFlag name="franceconnect_login" />,
-});
-
-export default (inputProps: InputProps) => (
-  <Data>
-    {(dataProps: DataProps) => (
-      <PasswordSigninWithHoC {...inputProps} {...dataProps} />
-    )}
-  </Data>
-);
+export default PasswordSignin;

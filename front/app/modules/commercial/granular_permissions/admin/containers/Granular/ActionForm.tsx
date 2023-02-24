@@ -6,12 +6,13 @@ import localize, { InjectedLocalized } from 'utils/localize';
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 
 import MultipleSelect from 'components/UI/MultipleSelect';
-import { Radio } from '@citizenlab/cl2-component-library';
+import { Box, Radio } from '@citizenlab/cl2-component-library';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import permissionsMessages from 'containers/Admin/projects/project/permissions/messages';
 import { IPermissionData } from 'services/actionPermissions';
+import Warning from 'components/UI/Warning';
 
 const StyledFieldset = styled.fieldset`
   border: none;
@@ -46,6 +47,7 @@ const ActionForm = ({
   onChange,
   localize,
 }: Props) => {
+  const { formatMessage } = useIntl();
   const groupsOptions = () => {
     if (isNilOrError(groupsList)) {
       return [];
@@ -94,6 +96,16 @@ const ActionForm = ({
         )}
         <Radio
           name={`permittedBy-${permissionId}`}
+          value="everyone_confirmed_email"
+          currentValue={permittedBy}
+          label={
+            <FormattedMessage {...messages.permissionsEveryoneEmailLabel} />
+          }
+          onChange={handlePermittedByUpdate('everyone_confirmed_email')}
+          id={`participation-permission-users-${permissionId}`}
+        />
+        <Radio
+          name={`permittedBy-${permissionId}`}
           value="users"
           currentValue={permittedBy}
           label={<FormattedMessage {...messages.permissionsUsersLabel} />}
@@ -133,6 +145,13 @@ const ActionForm = ({
           />
         )}
       </StyledFieldset>
+      {permittedBy === 'everyone_confirmed_email' && (
+        <Box mt="16px" maxWidth="620px">
+          <Warning>
+            {formatMessage(messages.permissionEveryoneEmailWarning)}
+          </Warning>
+        </Box>
+      )}
     </form>
   );
 };
