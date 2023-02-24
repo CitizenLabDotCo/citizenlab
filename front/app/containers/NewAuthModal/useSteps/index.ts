@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo } from 'react';
-import { Status, ErrorCode, Step, Requirements } from '../typings';
+import { Status, ErrorCode, StepConfig, Step, Requirements } from '../typings';
 import { getStepConfig } from './stepConfig';
 
 let _mockRequirements = {
@@ -28,8 +28,6 @@ export default function useSteps() {
     () => getStepConfig(getRequirements, setCurrentStep, setStatus, setError),
     [getRequirements]
   );
-
-  type StepConfig = typeof stepConfig;
 
   const transition = <S extends Step, T extends keyof StepConfig[S]>(
     currentStep: S,

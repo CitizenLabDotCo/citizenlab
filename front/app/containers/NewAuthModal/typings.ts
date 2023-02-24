@@ -15,4 +15,5 @@ export interface Requirements {
 
 export type GetRequirements = () => Promise<Requirements>;
 
-export type Step = keyof ReturnType<typeof getStepConfig>;
+export type StepConfig = ReturnType<typeof getStepConfig>;
+export type Step = keyof StepConfig;
