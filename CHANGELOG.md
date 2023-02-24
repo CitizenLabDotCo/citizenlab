@@ -3,6 +3,7 @@
 ### Changed
 
 - [CL-2903] Lock first and last name with FC verification
+- [CL-2721] Make it possible to move project out of folder
 
 ## 2023-02-22
 
