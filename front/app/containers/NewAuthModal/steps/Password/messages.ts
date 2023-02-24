@@ -13,4 +13,8 @@ export default defineMessages({
     id: 'app.containers.NewAuthModal.steps.Password.noPasswordError',
     defaultMessage: 'Please enter your password',
   },
+  forgotPassword: {
+    id: 'app.containers.NewAuthModal.steps.Password.forgotPassword',
+    defaultMessage: 'Forgot password?',
+  },
 });

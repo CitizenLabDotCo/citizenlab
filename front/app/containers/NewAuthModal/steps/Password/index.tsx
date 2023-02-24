@@ -3,6 +3,7 @@ import React, { useMemo } from 'react';
 // components
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
+import TextLink from '../components/TextLink';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -20,7 +21,7 @@ import { Status } from '../../typings';
 
 interface Props {
   status: Status;
-  onSubmit: (password: string) => void;
+  onSubmit: (email: string, password: string) => void;
 }
 
 interface FormValues {
@@ -49,11 +50,11 @@ const Password = ({ status, onSubmit }: Props) => {
     resolver: yupResolver(schema),
   });
 
-  const handleSubmit = ({ password }: FormValues) => {
-    onSubmit(password);
-  };
-
   const email = 'henk@piet.com'; // TODO
+
+  const handleSubmit = ({ password }: FormValues) => {
+    onSubmit(email, password);
+  };
 
   return (
     <FormProvider {...methods}>
@@ -79,6 +80,11 @@ const Password = ({ status, onSubmit }: Props) => {
           </Button>
         </Box>
       </form>
+      <Box mt="32px">
+        <TextLink to="/password-recovery">
+          {formatMessage(messages.forgotPassword)}
+        </TextLink>
+      </Box>
     </FormProvider>
   );
 };

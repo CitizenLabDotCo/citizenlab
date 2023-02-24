@@ -74,7 +74,12 @@ const AuthModal = ({ /* currentStep, */ status, error, transition }: Props) => {
           />
         )}
 
-        {currentStep === 'enter-password' && <Password />}
+        {currentStep === 'enter-password' && (
+          <Password
+            status={status}
+            onSubmit={transition(currentStep, 'SUBMIT_PASSWORD')}
+          />
+        )}
 
         {currentStep === 'success' && (
           <Success onContinue={transition(currentStep, 'CONTINUE')} />
