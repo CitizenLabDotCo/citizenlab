@@ -634,7 +634,7 @@
   "app.components.formBuilder.supportArticleLinkText": "deze pagina",
   "app.components.formBuilder.tags": "Tags",
   "app.components.formBuilder.title": "Titel",
-  "app.components.formBuilder.toLabel": "om",
+  "app.components.formBuilder.toLabel": "tot",
   "app.container.IdeaForm.budgetIsTooBig": "Het voorziene bedrag is te groot",
   "app.container.IdeaForm.budgetIsZeroError": "Geef een bedrag groter dan 0",
   "app.container.IdeaForm.budgetLabel": "Bedrag",
