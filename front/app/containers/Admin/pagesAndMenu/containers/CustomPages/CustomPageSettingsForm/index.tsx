@@ -90,10 +90,13 @@ const CustomPageSettingsForm = ({
   defaultValues,
 }: Props) => {
   const localize = useLocalize();
-  const isAdvancedCustomPagesAllowed = useFeatureFlag({
+  const isFeatureEnabled = useFeatureFlag({ name: 'advanced_custom_pages' });
+  const isFeatureAllowed = useFeatureFlag({
     name: 'advanced_custom_pages',
     onlyCheckAllowed: true,
   });
+  const showPlanUpgradeTease = !isFeatureAllowed;
+  const showAdvancedCustomPages = showPlanUpgradeTease || isFeatureEnabled;
   const areas = useAreas();
   const appConfig = useAppConfiguration();
   const locale = useLocale();
@@ -251,66 +254,68 @@ const CustomPageSettingsForm = ({
               </Box>
             )}
 
-            <LinkedProjectContainer
-              display="inline-flex"
-              disabled={!isAdvancedCustomPagesAllowed}
-            >
-              <Tippy
-                maxWidth="250px"
-                placement="right-end"
-                content={formatMessage(messages.contactToAccess)}
-                disabled={isAdvancedCustomPagesAllowed}
-                hideOnClick={false}
+            {showAdvancedCustomPages && (
+              <LinkedProjectContainer
+                display="inline-flex"
+                disabled={!isFeatureAllowed}
               >
-                <div>
-                  <Box mb={fieldMarginBottom}>
-                    <Box
-                      display="flex"
-                      justifyContent="flex-start"
-                      width="100%"
-                    >
-                      <Label>
-                        <span>
-                          {formatMessage(messages.linkedProjectsLabel)}
-                        </span>
-                        <IconTooltip
-                          ml="10px"
-                          content={formatMessage(
-                            messages.linkedProjectsTooltip
-                          )}
-                        />
-                      </Label>
-                    </Box>
-                    <Box mb="30px">
-                      <Tabs
-                        name="projects_filter_type"
-                        items={projectsFilterTabs}
-                        minTabWidth={120}
-                        disabled={!isAdvancedCustomPagesAllowed}
-                      />
-                    </Box>
-                    {methods.watch('projects_filter_type') === 'topics' && (
+                <Tippy
+                  maxWidth="250px"
+                  placement="right-end"
+                  content={formatMessage(messages.contactToAccess)}
+                  disabled={isFeatureAllowed}
+                  hideOnClick={false}
+                >
+                  <div>
+                    <Box mb={fieldMarginBottom}>
+                      <Box
+                        display="flex"
+                        justifyContent="flex-start"
+                        width="100%"
+                      >
+                        <Label>
+                          <span>
+                            {formatMessage(messages.linkedProjectsLabel)}
+                          </span>
+                          <IconTooltip
+                            ml="10px"
+                            content={formatMessage(
+                              messages.linkedProjectsTooltip
+                            )}
+                          />
+                        </Label>
+                      </Box>
                       <Box mb="30px">
-                        <MultipleSelect
-                          name="topic_ids"
-                          options={mapFilterEntityToOptions(topics)}
-                          label={formatMessage(messages.selectedTagsLabel)}
+                        <Tabs
+                          name="projects_filter_type"
+                          items={projectsFilterTabs}
+                          minTabWidth={120}
+                          disabled={!isFeatureAllowed}
                         />
                       </Box>
-                    )}
-                    {methods.watch('projects_filter_type') === 'areas' && (
-                      <Box mb="20px">
-                        <Select
-                          name="area_id"
-                          options={mapFilterEntityToOptions(areas)}
-                          label={formatMessage(messages.selectedAreasLabel)}
-                        />
-                      </Box>
-                    )}
-                  </Box>
-                </div>
-              </Tippy>
-            </LinkedProjectContainer>
+                      {methods.watch('projects_filter_type') === 'topics' && (
+                        <Box mb="30px">
+                          <MultipleSelect
+                            name="topic_ids"
+                            options={mapFilterEntityToOptions(topics)}
+                            label={formatMessage(messages.selectedTagsLabel)}
+                          />
+                        </Box>
+                      )}
+                      {methods.watch('projects_filter_type') === 'areas' && (
+                        <Box mb="20px">
+                          <Select
+                            name="area_id"
+                            options={mapFilterEntityToOptions(areas)}
+                            label={formatMessage(messages.selectedAreasLabel)}
+                          />
+                        </Box>
+                      )}
+                    </Box>
+                  </div>
+                </Tippy>
+              </LinkedProjectContainer>
+            )}
           </SectionField>
         </SectionFormWrapper>
       </form>
