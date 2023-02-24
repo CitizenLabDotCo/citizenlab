@@ -1,14 +1,17 @@
 import React, { useMemo } from 'react';
 
 // components
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text, Icon } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import TextLink from '../components/TextLink';
 
 // i18n
-import { useIntl } from 'utils/cl-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import sharedMessages from '../../messages';
+
+// styling
+import { colors } from 'utils/styleUtils';
 
 // form
 import { useForm, FormProvider } from 'react-hook-form';
@@ -70,7 +73,20 @@ const Password = ({ status, onSubmit }: Props) => {
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(handleSubmit)}>
         <Text mt="0px" mb="32px">
-          {formatMessage(messages.logInToYourAccount, { account: email })}
+          <Icon
+            width="20px"
+            height="20px"
+            name="user-circle"
+            fill={colors.textSecondary}
+            mr="8px"
+            transform="translate(0,-1)"
+          />
+          <FormattedMessage
+            {...messages.logInToYourAccount}
+            values={{
+              account: <strong>{email}</strong>,
+            }}
+          />
         </Text>
         <Box>
           <PasswordInput
