@@ -37,8 +37,8 @@ const initializePosthog = async (token, user, appConfig) => {
   posthog.init(token, {
     api_host: 'https://eu.posthog.com',
     autocapture: false,
-    persistence: 'memory', //no cookies
-    loaded: function (ph) {
+    persistence: 'memory', // no cookies
+    loaded(ph) {
       posthogInitialized = true;
 
       if (posthog.has_opted_out_capturing({ enable_persistence: false })) {

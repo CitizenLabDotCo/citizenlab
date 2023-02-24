@@ -97,8 +97,8 @@ const PasswordSignin = ({
   const [signInError, setSignInError] = useState<string | null>(null);
 
   const [hasEmptyPasswordError, setHasEmptyPasswordError] = useState(false);
-  let emailInputElement = useRef<HTMLInputElement | null>(null);
-  let passwordInputElement = useRef<HTMLInputElement | null>(null);
+  const emailInputElement = useRef<HTMLInputElement | null>(null);
+  const passwordInputElement = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     trackEventByName(tracks.signInEmailPasswordEntered);
