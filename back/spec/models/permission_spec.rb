@@ -12,10 +12,10 @@ RSpec.describe Permission, type: :model do
   describe '#for_user' do
     let!(:permissions) do
       [
-        create(:global_permission, :by_everyone, action: 'a1'),
-        create(:global_permission, :by_users, action: 'a2'),
-        create(:global_permission, :by_admins_moderators, action: 'a3'),
-        create(:global_permission, permitted_by: 'groups', groups: [manual_grp], action: 'a4')
+        create(:global_permission, :by_everyone, action: 'posting_initiative'),
+        create(:global_permission, :by_users, action: 'voting_initiative'),
+        create(:global_permission, :by_admins_moderators, action: 'commenting_initiative'),
+        create(:permission, permitted_by: 'groups', groups: [manual_grp])
       ]
     end
     let(:manual_grp) { create(:group) }

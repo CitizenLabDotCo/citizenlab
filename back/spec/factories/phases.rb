@@ -28,7 +28,7 @@ FactoryBot.define do
     end
 
     after(:create) do |phase, evaluator|
-      PermissionsService.new.update_permissions_for_context(phase) if evaluator.with_permissions
+      PermissionsService.new.update_permissions_for_scope(phase) if evaluator.with_permissions
     end
 
     factory :active_phase do
