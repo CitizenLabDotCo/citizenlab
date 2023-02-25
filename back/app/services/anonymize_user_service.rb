@@ -161,26 +161,18 @@ class AnonymizeUserService
   end
 
   def random_avatar_assignment(first_name, last_name, gender)
+    initials_avatars_url =
+      'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/avatars/initials_avatars/'
     gender = mismatch_gender(gender) if rand(30) == 0
+
     if rand(5) == 0
       { 'remote_avatar_url' => random_face_avatar_url(gender) }
     else
-      { 'avatar' => random_initials_avatar_base64(first_name, last_name) }
+      { 'remote_avatar_url' => "#{initials_avatars_url}#{first_name[0]}#{last_name[0]}_avatar.png".downcase }
     end
   rescue StandardError => e
     ErrorReporter.report e
     {}
-  end
-
-  def random_initials_avatar_base64(first_name, last_name)
-    name_param = I18n.transliterate "#{first_name}+#{last_name}" # Convert to all ASCII chars
-    uri = URI "https://eu.ui-avatars.com/api/?name=#{name_param}"
-    res = Net::HTTP.get_response uri
-    unless res.is_a?(Net::HTTPSuccess)
-      raise "API request to eu.ui-avatars.com failed. Code: #{res.code}. Body: #{res.body}."
-    end
-
-    "data:image/png;base64,#{Base64.encode64 res.body}"
   end
 
   def random_face_avatar_url(gender)
