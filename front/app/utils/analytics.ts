@@ -1,4 +1,3 @@
-import React from 'react';
 import { Subject, Observable, concat, combineLatest } from 'rxjs';
 import {
   buffer,
@@ -9,7 +8,7 @@ import {
   distinctUntilChanged,
   map,
 } from 'rxjs/operators';
-import { isEqual, mapValues } from 'lodash-es';
+import { isEqual } from 'lodash-es';
 import eventEmitter from 'utils/eventEmitter';
 
 import {
@@ -120,39 +119,9 @@ export function trackPage(path: string, properties = {}) {
   });
 }
 
-// Use this function, trackEvent/injectTracks will get factored out in the future
 export function trackEventByName(eventName: string, properties = {}) {
   events$.next({
     properties,
     name: eventName,
   });
 }
-
-/** @deprecated Use `trackEventByName` instead */
-export function trackEvent(event: IEvent) {
-  events$.next({
-    properties: event.properties || {},
-    name: event.name,
-  });
-}
-
-/** @deprecated Directly call trackEventByName instead */
-export const injectTracks =
-  <P extends Record<string, any>>(events: { [key: string]: IEvent }) =>
-  (component: React.ComponentClass<P>) => {
-    return (props: P) => {
-      const eventFunctions = mapValues(events, (event) => (extra) => {
-        const extraProps = extra && extra.extra;
-        trackEventByName(event.name, { ...event.properties, ...extraProps });
-      });
-
-      const propsWithEvents = {
-        ...eventFunctions,
-        ...(props as any),
-      };
-
-      const wrappedComponent = React.createElement(component, propsWithEvents);
-
-      return wrappedComponent;
-    };
-  };
