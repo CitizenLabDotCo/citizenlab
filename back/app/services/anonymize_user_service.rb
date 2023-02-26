@@ -57,6 +57,8 @@ class AnonymizeUserService
     @avatars = load_csv 'avatars.csv'
     @male_avatars = @avatars.select { |d| d['gender'] == 'male' }
     @female_avatars = @avatars.select { |d| d['gender'] == 'female' }
+    @initials_avatars_url =
+      'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/avatars/initials_avatars/'
   end
 
   def load_csv(filename)
@@ -161,14 +163,12 @@ class AnonymizeUserService
   end
 
   def random_avatar_assignment(first_name, last_name, gender)
-    initials_avatars_url =
-      'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/avatars/initials_avatars/'
     gender = mismatch_gender(gender) if rand(30) == 0
 
     if rand(5) == 0
       { 'remote_avatar_url' => random_face_avatar_url(gender) }
     else
-      { 'remote_avatar_url' => "#{initials_avatars_url}#{first_name[0]}#{last_name[0]}_avatar.png".downcase }
+      { 'remote_avatar_url' => "#{@initials_avatars_url}#{(first_name[0] + last_name[0]).downcase}_avatar.png" }
     end
   rescue StandardError => e
     ErrorReporter.report e
