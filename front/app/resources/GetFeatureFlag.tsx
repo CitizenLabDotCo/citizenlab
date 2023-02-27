@@ -1,62 +1,28 @@
-import { PureComponent } from 'react';
 import { get } from 'lodash-es';
-import { Subscription } from 'rxjs';
 
 // services
-import {
-  currentAppConfigurationStream,
-  IAppConfiguration,
-  TAppConfigurationSetting,
-} from 'services/appConfiguration';
+import { TAppConfigurationSetting } from 'api/app_configuration/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 type children = (renderProps: GetFeatureFlagChildProps) => JSX.Element | null;
 
 interface Props {
-  name?: TAppConfigurationSetting;
+  name: TAppConfigurationSetting;
   children?: children;
-}
-
-interface State {
-  appConfigurationSettings:
-    | IAppConfiguration['data']['attributes']['settings']
-    | null;
 }
 
 export type GetFeatureFlagChildProps = boolean;
 
-export default class GetFeatureFlag extends PureComponent<Props, State> {
-  subscription: Subscription | null;
+const GetFeatureFlag = (props: Props) => {
+  const { data: appConfiguration } = useAppConfiguration();
+  const appConfigurationSettings = appConfiguration?.data?.attributes?.settings;
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      appConfigurationSettings: null,
-    };
-    this.subscription = null;
-  }
+  const { name, children } = props;
+  const showFeature =
+    !name ||
+    (get(appConfigurationSettings, `${name}.allowed`) === true &&
+      get(appConfigurationSettings, `${name}.enabled`) === true);
+  return (children as children)(showFeature);
+};
 
-  componentDidMount() {
-    const currentTenant$ = currentAppConfigurationStream().observable;
-
-    this.subscription = currentTenant$.subscribe((currentTenant) => {
-      this.setState({
-        appConfigurationSettings: currentTenant.data.attributes.settings,
-      });
-    });
-  }
-
-  componentWillUnmount() {
-    this.subscription?.unsubscribe();
-    this.subscription = null;
-  }
-
-  render() {
-    const { appConfigurationSettings } = this.state;
-    const { name, children } = this.props;
-    const showFeature =
-      !name ||
-      (get(appConfigurationSettings, `${name}.allowed`) === true &&
-        get(appConfigurationSettings, `${name}.enabled`) === true);
-    return (children as children)(showFeature);
-  }
-}
+export default GetFeatureFlag;

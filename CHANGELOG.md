@@ -1,5 +1,9 @@
 # Changelog
 
+### Fixed
+
+- [CL-2921] Configure header image URL and overlay in base template. Use default header and subheader text if none is set
+
 ## 2023-02-24
 
 ### Changed
