@@ -37,7 +37,8 @@ const FormResultsQuestion = ({
 }: FormResultsQuestionProps) => {
   const { formatMessage } = useIntl();
 
-  const inputTypeText = get(messages, inputType, '');
+  // TODO: Replace hardcoded '2' here. Urgent to relese to fix bug though right now.
+  const inputTypeText = get(messages, inputType.concat('2'), '');
   const requiredOrOptionalText = required
     ? formatMessage(messages.required2)
     : formatMessage(messages.optional2);
