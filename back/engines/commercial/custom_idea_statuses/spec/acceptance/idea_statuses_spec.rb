@@ -28,7 +28,8 @@ resource 'IdeaStatuses' do
       let(:color) { idea_status.color }
       let(:ordering) { 2 }
 
-      example_request 'Cannot create an idea status', document: false do
+      example 'Cannot create an idea status', document: false do
+        do_request
         expect(status).to eq 401
       end
     end
@@ -51,7 +52,8 @@ resource 'IdeaStatuses' do
       let(:color) { new_idea_status.color }
       let(:ordering) { 1 }
 
-      example_request 'Cannot update an idea status by id', document: false do
+      example 'Cannot update an idea status by id', document: false do
+        do_request
         expect(status).to eq 401
       end
     end
@@ -59,7 +61,8 @@ resource 'IdeaStatuses' do
     delete 'web_api/v1/idea_statuses/:id' do
       let(:id) { @statuses.first.id }
 
-      example_request 'Cannot delete a idea status by id', document: false do
+      example 'Cannot delete a idea status by id', document: false do
+        do_request
         expect(status).to eq 401
       end
     end
@@ -84,7 +87,8 @@ resource 'IdeaStatuses' do
       let(:color) { idea_status.color }
       let(:ordering) { 2 }
 
-      example_request 'Cannot create an idea status', document: false do
+      example 'Cannot create an idea status', document: false do
+        do_request
         expect(status).to eq 401
       end
     end
@@ -107,7 +111,8 @@ resource 'IdeaStatuses' do
       let(:color) { new_idea_status.color }
       let(:ordering) { 1 }
 
-      example_request 'Cannot update an idea status by id', document: false do
+      example 'Cannot update an idea status by id', document: false do
+        do_request
         expect(status).to eq 401
       end
     end
@@ -115,7 +120,8 @@ resource 'IdeaStatuses' do
     delete 'web_api/v1/idea_statuses/:id' do
       let(:id) { @statuses.first.id }
 
-      example_request 'Cannot delete a idea status by id', document: false do
+      example 'Cannot delete a idea status by id', document: false do
+        do_request
         expect(status).to eq 401
       end
     end

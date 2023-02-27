@@ -228,7 +228,8 @@ resource 'Initiatives' do
         header 'Authorization', "Bearer #{token}"
       end
 
-      example_request '[error] XLSX export by a normal user', document: false do
+      example '[error] XLSX export by a normal user', document: false do
+        do_request
         expect(status).to eq 401
       end
     end

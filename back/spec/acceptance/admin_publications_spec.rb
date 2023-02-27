@@ -248,7 +248,7 @@ resource 'AdminPublication' do
       end
 
       context 'search param' do
-        example_request 'Search param should return the proper projects and folders', document: false do
+        example 'Search param should return the proper projects and folders', document: false do
           p1 = create(
             :project,
             admin_publication_attributes: { publication_status: 'published' },

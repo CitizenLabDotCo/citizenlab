@@ -111,7 +111,8 @@ resource 'Groups' do
           let(:membership_type) { 'rules' }
           let(:rules) { [{ ruleType: 'email', predicate: 'contains', value: 'k' }] }
 
-          example_request 'Membership count should only count active users', document: false do
+          example 'Membership count should only count active users', document: false do
+            do_request
             expect(response_status).to eq 201
             json_response = json_parse(response_body)
             group = Group.find json_response.dig(:data, :id)
