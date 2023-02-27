@@ -506,21 +506,20 @@ resource 'Stats - Users' do
       time_boundary_parameters self
       group_filter_parameter self
       participant_filter_parameter self
-      parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
-      describe 'with filter by participation' do
-        before do
-          @group = create(:group)
-          @custom_field = create(:custom_field_checkbox)
+      before do
+        @group = create(:group)
+        @custom_field = create(:custom_field_checkbox)
 
-          travel_to(start_at + 24.days) do
-            create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
-            create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
-            user = create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
-            comment = create(:comment)
-            create(:activity, item: comment, action: 'created', user: user)
-          end
+        travel_to(start_at + 24.days) do
+          create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
+          create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
+          user = create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
+          comment = create(:comment)
+          create(:activity, item: comment, action: 'created', user: user)
         end
+      end
 
+      describe 'with filter by participation' do
         let(:group) { @group.id }
         let(:custom_field_id) { @custom_field.id }
         let(:filter_by_participation) { true }
@@ -543,23 +542,10 @@ resource 'Stats - Users' do
       end
 
       describe 'without filter by participation' do
-        before do
-          @group = create(:group)
-          @custom_field = create(:custom_field_checkbox)
-
-          travel_to(start_at + 24.days) do
-            create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
-            create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
-            user = create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
-            comment = create(:comment)
-            create(:activity, item: comment, action: 'created', user: user)
-          end
-        end
-
         let(:group) { @group.id }
         let(:custom_field_id) { @custom_field.id }
 
-        example_request 'Users by custom field (chekbox)' do
+        example_request 'Users by custom field (filtered)' do
           expect(response_status).to eq 200
           expect(json_response_body).to match({
             series: {
