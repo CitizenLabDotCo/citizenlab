@@ -688,7 +688,7 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.shareAsWebLink": "إتاحة للمشاركة كرابط ويب",
   "app.containers.Admin.reporting.components.ReportBuilderPage.shareAsWebLinkDesc": "لا يمكن الوصول إلى رابط الويب هذا إلا من قِبل المستخدمين المسؤولين",
   "app.containers.Admin.reporting.components.ReportBuilderPage.shareReportTitle": "مشاركة",
-  "app.containers.Admin.reporting.contactToAccess": "Creating a custom report is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.",
+  "app.containers.Admin.reporting.contactToAccess": "يشكِّل إنشاء تقرير مخصص جزءًا من الترخيص المتميز. تواصل مع مدير GovSuccess لمعرفة مزيد من المعلومات عن هذا الأمر.",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createAReport": "إنشاء تقرير",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createReportDescription": "أضفِ طابعك الشخصي على التقرير وأتحه للمشاركة مع الأطراف المعنية الداخلية أو المجتمع عبر رابط ويب.",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.viewReports": "عرض التقارير",
