@@ -140,6 +140,7 @@ const App = ({ children }: Props) => {
 
   useEffect(() => {
     if (appConfiguration && !isAppInitialized) {
+      smoothscroll.polyfill();
       moment.tz.setDefault(
         appConfiguration.data.attributes.settings.core.timezone
       );
@@ -249,9 +250,6 @@ const App = ({ children }: Props) => {
     if (redirectsEnabled) {
       handleCustomRedirect();
     }
-    trackPage(location.pathname);
-
-    smoothscroll.polyfill();
 
     const subscriptions = [
       combineLatest([
@@ -311,6 +309,10 @@ const App = ({ children }: Props) => {
     appConfiguration,
     location,
   ]);
+
+  useEffect(() => {
+    trackPage(location.pathname);
+  }, [location.pathname]);
 
   const openPostPageModal = (
     id: string,
