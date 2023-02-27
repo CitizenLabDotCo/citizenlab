@@ -39,7 +39,7 @@ jest.mock('components/T', () => 'T');
 jest.mock('services/ideas');
 jest.mock('resources/GetResourceFiles', () => 'GetResourceFiles');
 jest.mock('resources/GetIdea', () => 'GetIdea');
-jest.mock('resources/GetIdeaImages', () => 'GetIdeaImages');
+jest.mock('hooks/useIdeaImages', () => 'useIdeaImages');
 jest.mock('resources/GetAppConfiguration', () => 'GetAppConfiguration');
 jest.mock('resources/GetProject', () => 'GetProject');
 jest.mock('resources/GetPermission', () => 'GetPermission');
