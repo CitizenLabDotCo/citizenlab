@@ -688,7 +688,7 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.shareAsWebLink": "Podijeli kao web poveznicu",
   "app.containers.Admin.reporting.components.ReportBuilderPage.shareAsWebLinkDesc": "Ovoj web poveznici mogu pristupiti samo administratori.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.shareReportTitle": "Podijeli",
-  "app.containers.Admin.reporting.contactToAccess": "Creating a custom report is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.",
+  "app.containers.Admin.reporting.contactToAccess": "Izrada prilagođenog izvješća dio je premium licence. Obratite se svom GovSuccess upravitelju kako biste saznali više o tome.",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createAReport": "Izradite izvješće",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createReportDescription": "Prilagodite svoj izvješće i podijelite ga s internim dionicima ili zajednicom putem web poveznice.",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.viewReports": "Prikaz izvješća",
