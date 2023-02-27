@@ -9,7 +9,7 @@ import {
   canAccessRoute,
   isModeratorRoute,
 } from 'services/permissions/rules/routePermissions';
-import { IAppConfigurationData } from 'services/appConfiguration';
+import { IAppConfigurationData } from 'api/app_configuration/types';
 import { isNilOrError } from 'utils/helperUtils';
 
 export function userModeratesFolder(
