@@ -688,7 +688,7 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.shareAsWebLink": "Del som en nettkobling",
   "app.containers.Admin.reporting.components.ReportBuilderPage.shareAsWebLinkDesc": "Denne nettkoblingen kan bare brukes av administratorbrukere.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.shareReportTitle": "Del",
-  "app.containers.Admin.reporting.contactToAccess": "Creating a custom report is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.",
+  "app.containers.Admin.reporting.contactToAccess": "Opprettelse av tilpassede rapporter er en del av premiumlisensen. Ta kontakt med din GovSuccess-leder for å finne ut mer.",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createAReport": "Opprett en rapport",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createReportDescription": "Tilpass rapporten og del den med interne interessenter eller fellesskapet med en nettkobling.",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.viewReports": "Vis rapporter",
