@@ -5,15 +5,12 @@ import { NilOrError } from 'utils/helperUtils';
 interface Props {
   ideaId?: string | null;
   ideaSlug?: string | null;
+  children?: children;
 }
 
 export type GetIdeaChildProps = IIdeaData | NilOrError;
 
 type children = (renderProps: GetIdeaChildProps) => JSX.Element | null;
-
-interface Props {
-  children?: children;
-}
 
 const GetIdea = ({ ideaId, ideaSlug, children }: Props) => {
   const idea = useIdea({ ideaId, ideaSlug });
