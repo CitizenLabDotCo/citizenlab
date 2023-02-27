@@ -360,7 +360,9 @@ export class PostManager extends React.PureComponent<Props, State> {
                 />
               ) : type === 'AllIdeas' || type === 'ProjectIdeas' ? (
                 <IdeasCount
-                  feedbackNeeded={feedbackNeeded}
+                  feedbackNeeded={
+                    feedbackNeeded === true ? feedbackNeeded : undefined
+                  }
                   project={selectedProject}
                   phaseId={selectedPhase ?? undefined}
                   topics={selectedTopics ?? undefined}
