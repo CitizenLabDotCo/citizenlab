@@ -247,7 +247,7 @@ resource 'AdminPublication' do
         expect(json_response[:data].find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 1
       end
 
-      context 'search param' do
+      context 'search param', document: false do
         example_request 'Search param should return the proper projects and folders' do
           p1 = create(
             :project,
