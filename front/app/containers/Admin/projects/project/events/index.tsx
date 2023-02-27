@@ -8,11 +8,9 @@ import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
-// services
-import { deleteEvent } from 'services/events';
-
 // hooks
 import useEvents from 'hooks/useEvents';
+import useDeleteEvent from 'api/events/useDeleteEvent';
 
 // components
 import T from 'components/T';
@@ -42,6 +40,7 @@ const AdminProjectEventsIndex = ({
     projectIds: [projectId],
     pageSize: 1000,
   });
+  const { mutate: deleteEvent } = useDeleteEvent();
 
   const createDeleteClickHandler =
     (eventId: string) => (event: React.FormEvent<any>) => {

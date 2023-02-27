@@ -38,7 +38,7 @@ import {
   IEvent,
   IUpdatedEventProperties,
 } from 'services/events';
-import { useAddEvent } from 'api/events/useAddEvent';
+// import useAddEvent from 'api/events/useAddEvent';
 import { addEventFile, deleteEventFile } from 'services/eventFiles';
 
 // resources
