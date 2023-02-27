@@ -1,6 +1,5 @@
 import { Keys } from 'utils/cl-react-query/types';
 import eventsKeys from './keys';
-import { IStreamParams } from 'utils/streams';
 import { Multiloc, ILinks } from 'typings';
 
 export type EventsKeys = Keys<typeof eventsKeys>;
@@ -26,6 +25,16 @@ export interface IEventData {
   };
 }
 
+export interface QueryParameters {
+  project_ids?: string[] | undefined;
+  ends_before_date?: string | undefined;
+  ends_on_or_after_date?: string | undefined;
+  sort?: 'start_at' | '-start_at' | undefined;
+  'page[number]'?: number | undefined;
+  'page[size]'?: number | undefined;
+  project_publication_statuses?: string[] | undefined;
+}
+
 export interface IEvent {
   data: IEventData;
 }
@@ -43,15 +52,3 @@ export interface IUpdatedEventProperties {
   start_at?: string;
   end_at?: string;
 }
-
-export type IEventsStreamParams = IStreamParams & {
-  queryParameters: {
-    project_ids?: string[];
-    ends_before_date?: string;
-    ends_on_or_after_date?: string;
-    sort?: 'start_at' | '-start_at';
-    'page[number]'?: number;
-    'page[size]'?: number;
-    project_publication_statuses?: string[];
-  };
-};
