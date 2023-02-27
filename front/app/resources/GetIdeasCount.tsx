@@ -18,8 +18,12 @@ export interface GetIdeasCountChildProps {
   onChangeSearchTerm: (search: string) => void;
 }
 
-const GetIdeasCount = ({ search, children, ...otherProps }: Props) => {
+const GetIdeasCount = ({ children, search, ...otherProps }: Props) => {
   const [currentSearch, setCurrentSearch] = useState(search);
+  const count = useIdeasCount({
+    search: currentSearch,
+    ...otherProps,
+  });
 
   const onChangeSearchTerm = useMemo(
     () =>
@@ -28,11 +32,6 @@ const GetIdeasCount = ({ search, children, ...otherProps }: Props) => {
       }, 500),
     []
   );
-
-  const count = useIdeasCount({
-    search: currentSearch,
-    ...otherProps,
-  });
 
   return (children as children)({
     count,

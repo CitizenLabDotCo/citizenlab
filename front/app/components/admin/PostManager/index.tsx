@@ -362,11 +362,11 @@ export class PostManager extends React.PureComponent<Props, State> {
                 <IdeasCount
                   feedbackNeeded={feedbackNeeded}
                   project={selectedProject}
-                  phase={selectedPhase}
-                  topics={selectedTopics}
-                  ideaStatus={selectedStatus}
-                  searchTerm={searchTerm}
-                  assignee={selectedAssignee}
+                  phaseId={selectedPhase ?? undefined}
+                  topics={selectedTopics ?? undefined}
+                  ideaStatusId={selectedStatus ?? undefined}
+                  search={searchTerm}
+                  assignee={selectedAssignee ?? undefined}
                 />
               ) : null}
               <StyledInput icon="search" onChange={this.handleSearchChange} />
