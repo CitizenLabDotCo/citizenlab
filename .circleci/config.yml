@@ -257,7 +257,7 @@ jobs:
           at: /tmp/workspace
       - run: rake templates:release['/tmp/workspace/failed-templates.txt']
 
-  back-web-api-docs-not-blocking:
+  back-web-api-docs:
     resource_class: small
     executor:
       name: cl2-back
@@ -709,7 +709,7 @@ workflows:
             - citizenlab-ee-environment
           requires:
             - back-build-docker-image
-      - back-web-api-docs-not-blocking:
+      - back-web-api-docs:
           context:
             - docker-hub-access
             - citizenlab-ee-environment
