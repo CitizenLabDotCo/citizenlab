@@ -208,6 +208,11 @@ const App = ({ children }: Props) => {
     const handleCustomRedirect = () => {
       const { pathname } = location;
       const urlSegments = pathname.replace(/^\/+/g, '').split('/');
+      const pathnameWithoutLocale = removeLocale(pathname).pathname?.replace(
+        /\//,
+        ''
+      );
+
       if (
         appConfiguration &&
         appConfiguration.data.attributes.settings.redirects
@@ -215,9 +220,9 @@ const App = ({ children }: Props) => {
         const { rules } = appConfiguration.data.attributes.settings.redirects;
         rules.forEach((rule) => {
           if (
-            urlSegments.length === 2 &&
+            urlSegments.length > 1 &&
             includes(locales, urlSegments[0]) &&
-            urlSegments[1] === rule.path
+            pathnameWithoutLocale === rule.path
           ) {
             window.location.href = rule.target;
           }
