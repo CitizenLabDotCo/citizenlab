@@ -403,7 +403,7 @@ class IdeaCards extends PureComponent<Props & WrappedComponentProps, State> {
         )}
 
         <ScreenReaderOnly aria-live="polite">
-          {ideasFilterCounts && (
+          {!isNilOrError(ideasFilterCounts) && (
             <FormattedMessage
               {...messages.a11y_totalItems}
               values={{ ideasCount: ideasFilterCounts.total }}
@@ -466,7 +466,7 @@ class IdeaCards extends PureComponent<Props & WrappedComponentProps, State> {
                     <GetIdeasFilterCounts queryParameters={selectedIdeaFilters}>
                       {(newIdeasFilterCounts) => {
                         const bottomBarButtonText =
-                          newIdeasFilterCounts &&
+                          !isNilOrError(newIdeasFilterCounts) &&
                           isNumber(newIdeasFilterCounts.total) ? (
                             <FormattedMessage
                               {...messages.showXResults}

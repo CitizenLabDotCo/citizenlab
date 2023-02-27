@@ -248,9 +248,9 @@ export interface IIdeasQueryParameters {
   filter_can_moderate?: boolean | null;
 }
 
-type IdeasParams = { queryParameters: IIdeasQueryParameters } | null;
-
-export function ideasStream(streamParams: IdeasParams = null) {
+export function ideasStream(
+  streamParams: { queryParameters: IIdeasQueryParameters } | null = null
+) {
   return streams.get<IIdeas>({
     apiEndpoint: `${API_PATH}/ideas`,
     ...streamParams,
@@ -264,7 +264,16 @@ export function ideasMiniStream(streamParams: IStreamParams | null = null) {
   });
 }
 
-export function ideasFilterCountsStream(streamParams: IdeasParams = null) {
+export interface IIdeasFilterCountsQueryParameters
+  extends Omit<IIdeasQueryParameters, 'page[number]' | 'page[size]' | 'sort'> {
+  sort?: Sort;
+}
+
+export function ideasFilterCountsStream(
+  streamParams: {
+    queryParameters: IIdeasFilterCountsQueryParameters;
+  } | null = null
+) {
   return streams.get<IIdeasFilterCounts>({
     apiEndpoint: `${API_PATH}/ideas/filter_counts`,
     ...streamParams,

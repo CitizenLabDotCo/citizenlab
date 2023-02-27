@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import {
   IIdeasFilterCounts,
   ideasFilterCountsStream,
-  IIdeasQueryParameters,
+  IIdeasFilterCountsQueryParameters,
 } from 'services/ideas';
 
 // utils
@@ -14,7 +14,7 @@ import { omitBy, isNil } from 'lodash-es';
 import { NilOrError } from 'utils/helperUtils';
 
 export default function useIdeasFilterCounts(
-  props: IIdeasQueryParameters | null
+  props: IIdeasFilterCountsQueryParameters | null
 ) {
   const [ideasFilterCounts, setIdeasFilterCounts] = useState<
     IIdeasFilterCounts | NilOrError
