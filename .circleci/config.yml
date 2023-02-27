@@ -486,6 +486,7 @@ jobs:
     working_directory: ~/
     environment:
       CITIZENLAB_EE: true
+    parallelism: 2
     steps:
       - checkout:
           path: ./citizenlab
@@ -501,7 +502,11 @@ jobs:
           key: v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
       - run:
           name: Run tests with JUnit as reporter
-          command: cd citizenlab/front && npm run test:ci
+          command: |
+            cd citizenlab/front
+            TEST_FILES=$(circleci tests glob '**/*.test.{ts,tsx}' | circleci tests split --split-by=timings)
+            echo $TEST_FILES
+            npm run test:ci -- $TEST_FILES
           environment:
             JEST_JUNIT_OUTPUT_DIR: ./reports/
       - store_test_results:
