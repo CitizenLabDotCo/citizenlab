@@ -475,7 +475,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.buttonSuccess": "Suksess",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byAreaFilter": "Etter område",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byTagsFilter": "Etter tagg(er)",
-  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contactGovSuccessToAccess": "Displaying projects by tag or area is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contactGovSuccessToAccess": "Visning av prosjekter etter tagg eller område er en del av premiumlisensen. Ta kontakt med din GovSuccess-leder for å finne ut mer.",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contentEditorTitle": "Innhold",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.editCustomPagePageTitle": "Rediger egendefinert side",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedProjectsLabel": "Koblede prosjekter",
