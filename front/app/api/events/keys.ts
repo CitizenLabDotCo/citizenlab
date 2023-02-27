@@ -1,11 +1,12 @@
 const eventsKeys = {
   all: () => [{ type: 'events' }],
   lists: () => [{ ...eventsKeys.all()[0], operation: 'list' }],
+  // TODO: List using project ids + query params (for useEvents)
   items: () => [{ ...eventsKeys.all()[0], operation: 'item' }],
-  item: (id: string) => [
+  item: (eventId: string) => [
     {
       ...eventsKeys.items()[0],
-      id,
+      eventId,
     },
   ],
 } as const;
