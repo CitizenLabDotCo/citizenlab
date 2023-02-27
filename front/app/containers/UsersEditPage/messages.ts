@@ -236,4 +236,19 @@ export default defineMessages({
     defaultMessage:
       'This is the profile settings page of {firstName} {lastName} on the online participation platform of {tenantName}. Here you can verify your identity, edit your account information, delete your account and edit your email preferences.',
   },
+  /*
+   * Meta
+   */
+  passwordChangeSection: {
+    id: 'app.containers.UsersEditPage.passwordChangeSection',
+    defaultMessage: 'Change your password',
+  },
+  passwordChangeSubtitle: {
+    id: 'app.containers.UsersEditPage.passwordChangeSubtitle',
+    defaultMessage: 'Confirm your current password and change to new password.',
+  },
+  changePassword: {
+    id: 'app.containers.UsersEditPage.changePassword',
+    defaultMessage: 'Change my password',
+  },
 });

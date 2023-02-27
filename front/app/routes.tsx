@@ -6,6 +6,7 @@ import React, { lazy } from 'react';
 const HomePage = lazy(() => import('containers/HomePage'));
 const SiteMap = lazy(() => import('containers/SiteMap'));
 const UsersEditPage = lazy(() => import('containers/UsersEditPage'));
+const ChangePasswordPage = lazy(() => import('containers/ChangePasswordPage'));
 const UsersShowPage = lazy(() => import('containers/UsersShowPage'));
 const IdeasEditPage = lazy(() => import('containers/IdeasEditPage'));
 const IdeasIndexPage = lazy(() => import('containers/IdeasIndexPage'));
@@ -97,6 +98,14 @@ export default function createRoutes() {
           element: (
             <PageLoading>
               <UsersEditPage />
+            </PageLoading>
+          ),
+        },
+        {
+          path: 'profile/change-password',
+          element: (
+            <PageLoading>
+              <ChangePasswordPage />
             </PageLoading>
           ),
         },
