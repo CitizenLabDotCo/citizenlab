@@ -315,7 +315,7 @@ resource 'AdminPublication' do
           expect(response_ids).not_to include f3.admin_publication.id
         end
 
-        example_request 'searching with query and filtering by topic', document: false do
+        example 'searching with query and filtering by topic', document: false do
           topic = create(:topic)
           project_with_topic = create(:project, topics: [topic],
             admin_publication_attributes: { publication_status: 'published' },
@@ -327,7 +327,7 @@ resource 'AdminPublication' do
           expect(response_ids).to contain_exactly(project_with_topic.admin_publication.id)
         end
 
-        example_request 'Search param should return a project within a folder', document: false do
+        example 'Search param should return a project within a folder', document: false do
           project_in_folder = create(
             :project,
             admin_publication_attributes: { publication_status: 'published' },
@@ -352,7 +352,7 @@ resource 'AdminPublication' do
           expect(response_ids).not_to include folder.admin_publication.id
         end
 
-        example_request 'Search param should return a project within a folder and folder', document: false do
+        example 'Search param should return a project within a folder and folder', document: false do
           project_in_folder = create(
             :project,
             admin_publication_attributes: { publication_status: 'published' },
@@ -381,7 +381,7 @@ resource 'AdminPublication' do
         end
 
         if CitizenLab.ee?
-          example_request 'Search project by content from content builder', document: false do
+          example 'Search project by content from content builder', document: false do
             project = create(:project, content_builder_layouts: [
               build(:layout, craftjs_jsonmultiloc: { en: { someid: { props: { text: 'sometext' } } } })
             ])
