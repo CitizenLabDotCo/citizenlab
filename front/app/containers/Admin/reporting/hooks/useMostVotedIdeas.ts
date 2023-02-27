@@ -4,7 +4,12 @@ import { useState, useEffect } from 'react';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings
-import { ideasStream, IIdeaData, IIdeas } from 'services/ideas';
+import {
+  ideasStream,
+  IIdeaData,
+  IIdeas,
+  IIdeasQueryParameters,
+} from 'services/ideas';
 
 interface Props {
   projectId: string;
@@ -16,7 +21,7 @@ function useMostVotedIdeas({ projectId, phaseId, numberOfIdeas }: Props) {
   const [ideas, setIdeas] = useState<IIdeaData[] | NilOrError>();
 
   useEffect(() => {
-    const queryParameters = {
+    const queryParameters: IIdeasQueryParameters = {
       'page[number]': 1,
       'page[size]': numberOfIdeas,
       projects: [projectId],

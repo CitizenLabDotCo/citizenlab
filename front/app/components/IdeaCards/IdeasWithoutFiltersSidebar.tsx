@@ -19,7 +19,6 @@ import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
 import GetIdeas, {
-  Sort,
   GetIdeasChildProps,
   InputProps as GetIdeasInputProps,
 } from 'resources/GetIdeas';
@@ -45,6 +44,7 @@ import {
 } from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
 import { isFieldEnabled } from 'utils/projectUtils';
+import { Sort } from 'services/ideas';
 
 const Container = styled.div`
   width: 100%;

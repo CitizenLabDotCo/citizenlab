@@ -1,17 +1,24 @@
 import React from 'react';
 import { BehaviorSubject, Subscription, of } from 'rxjs';
 import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
+
+// services
+import {
+  IIdeasFilterCounts,
+  ideasFilterCountsStream,
+  IIdeasQueryParameters,
+} from 'services/ideas';
+
+// utils
 import { isEqual, omitBy, isNil } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-import { IIdeasFilterCounts, ideasFilterCountsStream } from 'services/ideas';
-import { IQueryParameters } from './GetIdeas';
 
 type children = (
   renderProps: GetIdeasFilterCountsChildProps
 ) => JSX.Element | null;
 
 interface Props {
-  queryParameters: Partial<IQueryParameters> | null;
+  queryParameters: Partial<IIdeasQueryParameters> | null;
   children?: children;
 }
 
@@ -28,7 +35,7 @@ export default class GetIdeasFilterCounts extends React.Component<
   Props,
   State
 > {
-  private queryParameters$: BehaviorSubject<Partial<IQueryParameters> | null>;
+  private queryParameters$: BehaviorSubject<Partial<IIdeasQueryParameters> | null>;
   private subscriptions: Subscription[];
 
   constructor(props: Props) {
@@ -48,7 +55,7 @@ export default class GetIdeasFilterCounts extends React.Component<
             queryParameters ? omitBy(queryParameters, isNil) : queryParameters
           ),
           distinctUntilChanged((prev, next) => isEqual(prev, next)),
-          switchMap((queryParameters) => {
+          switchMap((queryParameters: IIdeasQueryParameters) => {
             if (queryParameters) {
               return ideasFilterCountsStream({ queryParameters }).observable;
             }

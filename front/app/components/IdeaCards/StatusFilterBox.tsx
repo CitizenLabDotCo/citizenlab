@@ -17,13 +17,13 @@ import GetIdeasFilterCounts, {
 import styled from 'styled-components';
 
 // typings
-import { IQueryParameters } from 'resources/GetIdeas';
+import { IIdeasQueryParameters } from 'services/ideas';
 
 const Container = styled.div``;
 
 interface InputProps {
   selectedStatusId: string | null | undefined;
-  selectedIdeaFilters: Partial<IQueryParameters>;
+  selectedIdeaFilters: Partial<IIdeasQueryParameters>;
   onChange: (arg: string | null) => void;
   className?: string;
 }
@@ -72,12 +72,12 @@ const StatusFilterBox = memo<Props>(
 const Data = adopt<DataProps, InputProps>({
   ideaStatuses: <GetIdeaStatuses />,
   ideasFilterCounts: ({ selectedIdeaFilters, render }) => {
-    const queryParameters = {
+    const queryParameters: Partial<IIdeasQueryParameters> = {
       ...selectedIdeaFilters,
       idea_status: undefined,
       project_publication_status: 'published',
       publication_status: 'published',
-    } as Partial<IQueryParameters>;
+    };
 
     return (
       <GetIdeasFilterCounts queryParameters={queryParameters}>

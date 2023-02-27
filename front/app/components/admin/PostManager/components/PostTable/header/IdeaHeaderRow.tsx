@@ -28,7 +28,7 @@ import {
   InsertConfigurationOptions,
   Override,
 } from 'typings';
-import { SortAttribute as IdeasSortAttribute } from 'resources/GetIdeas';
+import { SortAttribute as IdeasSortAttribute } from 'services/ideas';
 import { SortDirection } from 'utils/paginationUtils';
 
 interface SortableHeaderCellProps {
