@@ -247,8 +247,8 @@ resource 'AdminPublication' do
         expect(json_response[:data].find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 1
       end
 
-      context 'search param', document: false do
-        example_request 'Search param should return the proper projects and folders' do
+      context 'search param' do
+        example_request 'Search param should return the proper projects and folders', document: false do
           p1 = create(
             :project,
             admin_publication_attributes: { publication_status: 'published' },
@@ -327,7 +327,7 @@ resource 'AdminPublication' do
           expect(response_ids).to contain_exactly(project_with_topic.admin_publication.id)
         end
 
-        example_request 'Search param should return a project within a folder' do
+        example_request 'Search param should return a project within a folder', document: false do
           project_in_folder = create(
             :project,
             admin_publication_attributes: { publication_status: 'published' },
@@ -352,7 +352,7 @@ resource 'AdminPublication' do
           expect(response_ids).not_to include folder.admin_publication.id
         end
 
-        example_request 'Search param should return a project within a folder and folder' do
+        example_request 'Search param should return a project within a folder and folder', document: false do
           project_in_folder = create(
             :project,
             admin_publication_attributes: { publication_status: 'published' },
@@ -381,7 +381,7 @@ resource 'AdminPublication' do
         end
 
         if CitizenLab.ee?
-          example_request 'Search project by content from content builder' do
+          example_request 'Search project by content from content builder', document: false do
             project = create(:project, content_builder_layouts: [
               build(:layout, craftjs_jsonmultiloc: { en: { someid: { props: { text: 'sometext' } } } })
             ])
