@@ -31,8 +31,8 @@ export default function useIdeasCount({
 }: Props) {
   const [count, setCount] = useState<number | NilOrError>();
 
-  const projectIdsStr = JSON.stringify(projectIds);
-  const topicsStr = JSON.stringify(topics);
+  const projectIdsStr = JSON.stringify(projectIds ?? []);
+  const topicsStr = JSON.stringify(topics ?? []);
 
   useEffect(() => {
     const projectIds = JSON.parse(projectIdsStr);
