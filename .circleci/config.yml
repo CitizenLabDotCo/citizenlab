@@ -486,7 +486,7 @@ jobs:
     working_directory: ~/
     environment:
       CITIZENLAB_EE: true
-    parallelism: 2
+    parallelism: 4
     steps:
       - checkout:
           path: ./citizenlab
