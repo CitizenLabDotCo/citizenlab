@@ -9,8 +9,12 @@ const schema = object({
   password: string().min(8, 'Too short'),
 });
 
-jest.mock('hooks/useAppConfiguration', () => () => ({
-  attributes: { settings: { password_login: { minimum_length: 8 } } },
+jest.mock('api/app_configuration/useAppConfiguration', () => () => ({
+  data: {
+    data: {
+      attributes: { settings: { password_login: { minimum_length: 8 } } },
+    },
+  },
 }));
 
 const onSubmit = jest.fn();
