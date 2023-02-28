@@ -1,5 +1,4 @@
-import React from 'react';
-import { adopt } from 'react-adopt';
+import React, { useEffect } from 'react';
 // components
 import InitiativeForm, {
   FormValues,
@@ -7,7 +6,7 @@ import InitiativeForm, {
 } from 'components/InitiativeForm';
 
 // services
-import { CLErrors, Locale, Multiloc, UploadFile } from 'typings';
+import { Locale, Multiloc, UploadFile } from 'typings';
 import {
   updateInitiative,
   IInitiativeData,
@@ -33,27 +32,14 @@ import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
 
 // resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
 
-import {
-  AddInitiativeImageObject,
-  IInitiativeImageData,
-  IInitiativeImage,
-} from 'api/initiative_images/types';
+import { IInitiativeImageData } from 'api/initiative_images/types';
 import useAddInitiativeImage from 'api/initiative_images/useAddInitiativeImage';
 import useDeleteInitiativeImage from 'api/initiative_images/useDeleteInitiativeImage';
-import { UseMutateFunction } from '@tanstack/react-query';
-import { BaseResponseData } from 'utils/cl-react-query/fetcher';
+import useAuthUser from 'hooks/useAuthUser';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-interface DataProps {
-  authUser: GetAuthUserChildProps;
-  appConfiguration: GetAppConfigurationChildProps;
-}
-
-interface InputProps {
+interface Props {
   locale: Locale;
   initiative: IInitiativeData;
   initiativeImage: IInitiativeImageData | null;
@@ -62,91 +48,73 @@ interface InputProps {
   topics: ITopicData[];
 }
 
-interface Props extends DataProps, InputProps {
-  addInitiativeImage: UseMutateFunction<
-    IInitiativeImage,
-    CLErrors,
-    AddInitiativeImageObject,
-    unknown
-  >;
-  deleteInitiativeImage: UseMutateFunction<
-    Omit<BaseResponseData, 'included'>,
-    unknown,
-    {
-      initiativeId: string;
-      imageId: string;
-    },
-    unknown
-  >;
-}
-
-interface State extends FormValues {
-  initiativeId: string;
-  publishing: boolean;
-  hasBannerChanged: boolean;
-  oldImageId: string | null;
-  publishError: boolean;
-  apiErrors: any;
-  filesToRemove: UploadFile[];
-  titleProfanityError: boolean;
-  descriptionProfanityError: boolean;
-}
-
 function doNothing() {
   return;
 }
 
-class InitiativesEditFormWrapper extends React.PureComponent<Props, State> {
-  initialValues: SimpleFormValues;
-  constructor(props: Props) {
-    super(props);
+const InitiativesEditFormWrapper = ({
+  initiative,
+  initiativeImage,
+  onPublished,
+  locale,
 
-    const { initiative, initiativeFiles } = props;
+  topics,
+  initiativeFiles,
+}: Props) => {
+  const { data: appConfiguration } = useAppConfiguration();
+  const authUser = useAuthUser();
+  const { mutate: addInitiativeImage } = useAddInitiativeImage();
+  const { mutate: deleteInitiativeImage } = useDeleteInitiativeImage();
 
-    this.initialValues = this.getFormValues(initiative);
+  const initialValues = {
+    title_multiloc: initiative.attributes.title_multiloc,
+    body_multiloc: initiative.attributes.body_multiloc,
+    position: initiative.attributes.location_description,
+    topic_ids: initiative.relationships.topics.data.map((topic) => topic.id),
+  };
 
-    this.state = {
-      ...this.initialValues,
-      oldImageId: null,
-      image: undefined,
-      initiativeId: initiative.id,
-      publishing: false,
-      hasBannerChanged: false,
-      banner: undefined,
-      files: initiativeFiles || [],
-      publishError: false,
-      apiErrors: null,
-      filesToRemove: [],
-      titleProfanityError: false,
-      descriptionProfanityError: false,
-    };
-  }
+  const [formValues, setFormValues] =
+    React.useState<SimpleFormValues>(initialValues);
 
-  componentDidMount() {
-    const { initiativeImage, initiative } = this.props;
+  const [oldImageId, setOldImageId] = React.useState<string | null>(null);
+  const [image, setImage] = React.useState<UploadFile | null>(null);
+  const [publishing, setPublishing] = React.useState<boolean>(false);
+  const [hasBannerChanged, setHasBannerChanged] =
+    React.useState<boolean>(false);
+  const [banner, setBanner] = React.useState<UploadFile | null>(null);
+  const [files, setFiles] = React.useState<UploadFile[]>(initiativeFiles || []);
+  const [publishError, setPublishError] = React.useState<boolean>(false);
+  const [apiErrors, setApiErrors] = React.useState<any>(null);
+  const [filesToRemove, setFilesToRemove] = React.useState<UploadFile[]>([]);
+  const [titleProfanityError, setTitleProfanityError] =
+    React.useState<boolean>(false);
+  const [descriptionProfanityError, setDescriptionProfanityError] =
+    React.useState<boolean>(false);
+
+  useEffect(() => {
     if (initiativeImage && initiativeImage.attributes.versions.large) {
       const url = initiativeImage.attributes.versions.large;
       const id = initiativeImage.id;
       convertUrlToUploadFile(url, id, null).then((image) => {
-        this.setState({ image });
+        setImage(image);
       });
     }
     if (initiative && initiative.attributes.header_bg.large) {
       const url = initiative.attributes.header_bg.large;
       convertUrlToUploadFile(url, null, null).then((banner) => {
-        this.setState({ banner });
+        setBanner(banner);
       });
     }
-  }
+  }, [initiative, initiativeImage]);
 
-  changedValues = () => {
-    const changedKeys = Object.keys(this.initialValues).filter((key) => {
-      return !isEqual(this.initialValues[key], this.state[key]);
+  const getChangedValues = () => {
+    const changedKeys = Object.keys(initialValues).filter((key) => {
+      return !isEqual(initialValues[key], formValues[key]);
     });
-    return pick(this.state, changedKeys);
+    return pick(formValues, changedKeys);
   };
 
-  async parsePosition(position: string | undefined | null) {
+  const parsePosition = async (position: string | undefined | null) => {
     let location_point_geojson: Point | null | undefined;
     let location_description: string | null | undefined;
     switch (position) {
@@ -167,17 +135,17 @@ class InitiativesEditFormWrapper extends React.PureComponent<Props, State> {
         break;
     }
     return { location_point_geojson, location_description };
-  }
+  };
 
-  async getValuesToSend(
+  const getValuesToSend = async (
     changedValues: Partial<FormValues>,
     hasBannerChanged: boolean,
     banner: UploadFile | undefined | null
-  ) {
+  ) => {
     // build API readable object
     const { title_multiloc, body_multiloc, topic_ids, position } =
       changedValues;
-    const positionInfo = await this.parsePosition(position);
+    const positionInfo = await parsePosition(position);
 
     // removes undefined values, not null values that are used to remove previously used values
     const formAPIValues = omitBy(
@@ -194,42 +162,24 @@ class InitiativesEditFormWrapper extends React.PureComponent<Props, State> {
       formAPIValues.header_bg = banner ? banner.base64 : null;
     }
     return formAPIValues as Partial<IInitiativeAdd>;
-  }
+  };
 
-  handlePublish = async () => {
-    const changedValues = this.changedValues();
-    const {
-      initiativeId,
-      hasBannerChanged,
-      image,
-      oldImageId,
-      banner,
-      publishing,
-      filesToRemove,
-      files,
-    } = this.state;
-    const {
-      onPublished,
-      locale,
-      appConfiguration,
-      authUser,
-      addInitiativeImage,
-      deleteInitiativeImage,
-    } = this.props;
+  const handlePublish = async () => {
+    const changedValues = getChangedValues();
 
     // if we're already saving, do nothing.
     if (publishing) return;
 
     // setting flags for user feedback and avoiding double sends.
-    this.setState({ publishing: true });
+    setPublishing(true);
 
     try {
-      const formAPIValues = await this.getValuesToSend(
+      const formAPIValues = await getValuesToSend(
         changedValues,
         hasBannerChanged,
         banner
       );
-      const initiative = await updateInitiative(initiativeId, {
+      await updateInitiative(initiative.id, {
         ...formAPIValues,
         publication_status: 'published',
       });
@@ -237,22 +187,24 @@ class InitiativesEditFormWrapper extends React.PureComponent<Props, State> {
       // feed back what was saved to the api into the initialValues object
       // so that we can determine with certainty what has changed since last
       // successful save.
-      this.initialValues = this.getFormValues(initiative.data);
-      this.setState({ hasBannerChanged: false });
+
+      setHasBannerChanged(false);
 
       // save any changes to initiative image.
       if (image && image.base64 && !image.id) {
+        console.log(image.base64);
+        console.log(image.id);
         addInitiativeImage({
-          initiativeId,
+          initiativeId: initiative.id,
           image: { image: image.base64 },
         });
       }
       if (oldImageId) {
         deleteInitiativeImage(
-          { initiativeId, imageId: oldImageId },
+          { initiativeId: initiative.id, imageId: oldImageId },
           {
             onSuccess: () => {
-              this.setState({ oldImageId: null });
+              setOldImageId(null);
             },
           }
         );
@@ -260,35 +212,38 @@ class InitiativesEditFormWrapper extends React.PureComponent<Props, State> {
 
       // saves changes to files
       filesToRemove.map((file) => {
-        deleteInitiativeFile(initiativeId, file.id as string)
+        deleteInitiativeFile(initiative.id, file.id as string)
           // we checked for id before adding them in this array
           .catch((errorResponse) => {
             const apiErrors = errorResponse.json.errors;
-            this.setState((state) => ({
-              apiErrors: { ...state.apiErrors, ...apiErrors },
-            }));
+
+            setApiErrors((oldApiErrors) => ({ ...oldApiErrors, ...apiErrors }));
 
             setTimeout(() => {
-              this.setState((state) => ({
-                apiErrors: { ...state.apiErrors, file: undefined },
+              setApiErrors((oldApiErrors) => ({
+                ...oldApiErrors,
+                file: undefined,
               }));
             }, 5000);
           });
       });
       files.map((file) => {
         if (!file.id) {
-          addInitiativeFile(initiativeId, file.base64, file.name)
+          addInitiativeFile(initiative.id, file.base64, file.name)
             .then((res) => {
               file.id = res.data.id;
             })
             .catch((errorResponse) => {
               const apiErrors = get(errorResponse, 'json.errors');
-              this.setState((state) => ({
-                apiErrors: { ...state.apiErrors, ...apiErrors },
+
+              setApiErrors((oldApiErrors) => ({
+                ...oldApiErrors,
+                ...apiErrors,
               }));
               setTimeout(() => {
-                this.setState((state) => ({
-                  apiErrors: { ...state.apiErrors, file: undefined },
+                setApiErrors((oldApiErrors) => ({
+                  ...oldApiErrors,
+                  file: undefined,
                 }));
               }, 5000);
             });
@@ -298,11 +253,9 @@ class InitiativesEditFormWrapper extends React.PureComponent<Props, State> {
       onPublished();
     } catch (errorResponse) {
       const apiErrors = get(errorResponse, 'json.errors');
-      this.setState((state) => ({
-        apiErrors: { ...state.apiErrors, ...apiErrors },
-        publishError: true,
-      }));
 
+      setApiErrors((oldApiErrors) => ({ ...oldApiErrors, ...apiErrors }));
+      setPublishError(true);
       const profanityApiError = apiErrors.base.find(
         (apiError) => apiError.error === 'includes_banned_words'
       );
@@ -319,155 +272,125 @@ class InitiativesEditFormWrapper extends React.PureComponent<Props, State> {
           trackEventByName(tracks.titleProfanityError.name, {
             locale,
             profaneMessage: changedValues.title_multiloc?.[locale],
-            proposalId: initiativeId,
+            proposalId: initiative.id,
             location: 'InitiativesEditFormWrapper (citizen side)',
             userId: !isNilOrError(authUser) ? authUser.id : null,
             host: !isNilOrError(appConfiguration)
-              ? appConfiguration.attributes.host
+              ? appConfiguration.data.attributes.host
               : null,
           });
 
-          this.setState({
-            titleProfanityError,
-          });
+          setTitleProfanityError(titleProfanityError);
         }
 
         if (descriptionProfanityError) {
           trackEventByName(tracks.descriptionProfanityError.name, {
             locale,
             profaneMessage: changedValues.body_multiloc?.[locale],
-            proposalId: initiativeId,
+            proposalId: initiative.id,
             location: 'InitiativesEditFormWrapper (citizen side)',
             userId: !isNilOrError(authUser) ? authUser.id : null,
             host: !isNilOrError(appConfiguration)
-              ? appConfiguration.attributes.host
+              ? appConfiguration.data.attributes.host
               : null,
           });
 
-          this.setState({
-            descriptionProfanityError,
-          });
+          setDescriptionProfanityError(descriptionProfanityError);
         }
       }
     }
-    this.setState({ publishing: false });
+    setPublishing(false);
   };
 
-  onChangeTitle = (title_multiloc: Multiloc) => {
-    this.setState({ title_multiloc, titleProfanityError: false });
-  };
-
-  onChangeBody = (body_multiloc: Multiloc) => {
-    this.setState({ body_multiloc, descriptionProfanityError: false });
-  };
-
-  onChangeTopics = (topic_ids: string[]) => {
-    this.setState({ topic_ids });
-  };
-
-  onChangePosition = (position: string) => {
-    this.setState({ position });
-  };
-
-  onChangeBanner = (newValue: UploadFile | null) => {
-    this.setState({ banner: newValue, hasBannerChanged: true });
-  };
-
-  onChangeImage = (newValue: UploadFile | null) => {
-    if (newValue) {
-      this.setState({ image: newValue });
-    } else {
-      this.setState((state) => {
-        const currentImageId = state.image && state.image.id;
-        if (currentImageId) {
-          return { image: newValue, oldImageId: currentImageId };
-        } else return { image: newValue, oldImageId: state.oldImageId };
-      });
-    }
-  };
-
-  onAddFile = (file: UploadFile) => {
-    this.setState(({ files }) => ({ files: [...files, file] }));
-  };
-
-  onRemoveFile = (fileToRemove: UploadFile) => {
-    this.setState(({ files }) => ({
-      files: [...files].filter((file) => file.base64 !== fileToRemove.base64),
+  const onChangeTitle = (title_multiloc: Multiloc) => {
+    setFormValues((formValues) => ({
+      ...formValues,
+      title_multiloc,
     }));
-    if (fileToRemove.id) {
-      this.setState(({ filesToRemove }) => ({
-        filesToRemove: [...filesToRemove, fileToRemove],
-      }));
+    setTitleProfanityError(false);
+  };
+
+  const onChangeBody = (body_multiloc: Multiloc) => {
+    setFormValues((formValues) => ({
+      ...formValues,
+      body_multiloc,
+    }));
+    setDescriptionProfanityError(false);
+  };
+
+  const onChangeTopics = (topic_ids: string[]) => {
+    setFormValues((formValues) => ({
+      ...formValues,
+      topic_ids,
+    }));
+  };
+
+  const onChangePosition = (position: string) => {
+    setFormValues((formValues) => ({
+      ...formValues,
+      position,
+    }));
+  };
+
+  const onChangeBanner = (newValue: UploadFile | null) => {
+    setBanner(newValue);
+    setHasBannerChanged(true);
+  };
+
+  const onChangeImage = (newValue: UploadFile | null) => {
+    if (newValue) {
+      setImage(newValue);
+    } else {
+      const currentImageId = image?.id;
+      if (currentImageId) {
+        setImage(newValue);
+        setOldImageId(currentImageId);
+      } else {
+        setImage(newValue);
+      }
     }
   };
 
-  getFormValues(initiative: IInitiativeData) {
-    if (isNilOrError(initiative)) {
-      return this.initialValues;
-    } else {
-      return {
-        title_multiloc:
-          get(initiative, 'attributes.title_multiloc', undefined) || undefined,
-        body_multiloc:
-          get(initiative, 'attributes.body_multiloc', undefined) || undefined,
-        topic_ids: get(initiative, 'relationships.topics.data', []).map(
-          (topic) => topic.id
-        ),
-        position:
-          get(initiative, 'attributes.location_description', undefined) ||
-          undefined,
-      };
-    }
-  }
+  const onAddFile = (file: UploadFile) => {
+    setFiles((files) => [...files, file]);
+  };
 
-  render() {
-    const { titleProfanityError, descriptionProfanityError, ...otherProps } =
-      this.state;
-    const { locale, initiativeImage, topics } = this.props;
-
-    if (this.state.image === undefined && initiativeImage) return null;
-
-    return (
-      <InitiativeForm
-        onPublish={this.handlePublish}
-        onSave={doNothing}
-        locale={locale}
-        {...otherProps}
-        onChangeTitle={this.onChangeTitle}
-        onChangeBody={this.onChangeBody}
-        onChangeTopics={this.onChangeTopics}
-        onChangePosition={this.onChangePosition}
-        onChangeBanner={this.onChangeBanner}
-        onChangeImage={this.onChangeImage}
-        onAddFile={this.onAddFile}
-        onRemoveFile={this.onRemoveFile}
-        topics={topics}
-        titleProfanityError={titleProfanityError}
-        descriptionProfanityError={descriptionProfanityError}
-      />
+  const onRemoveFile = (fileToRemove: UploadFile) => {
+    setFiles((files) =>
+      [...files].filter((file) => file.base64 !== fileToRemove.base64)
     );
-  }
-}
+    if (fileToRemove.id) {
+      setFilesToRemove((filesToRemove) => [...filesToRemove, fileToRemove]);
+    }
+  };
 
-const Data = adopt<DataProps, InputProps>({
-  appConfiguration: <GetAppConfiguration />,
-  authUser: <GetAuthUser />,
-});
-
-export default (inputProps: InputProps) => {
-  const { mutate: addInitiativeImage } = useAddInitiativeImage();
-  const { mutate: deleteInitiativeImage } = useDeleteInitiativeImage();
+  if (image === undefined && initiativeImage) return null;
 
   return (
-    <Data {...inputProps}>
-      {(dataProps) => (
-        <InitiativesEditFormWrapper
-          {...inputProps}
-          {...dataProps}
-          addInitiativeImage={addInitiativeImage}
-          deleteInitiativeImage={deleteInitiativeImage}
-        />
-      )}
-    </Data>
+    <InitiativeForm
+      onPublish={handlePublish}
+      onSave={doNothing}
+      locale={locale}
+      {...formValues}
+      image={image}
+      banner={banner}
+      files={files}
+      publishing={publishing}
+      publishError={publishError}
+      apiErrors={apiErrors}
+      onChangeTitle={onChangeTitle}
+      onChangeBody={onChangeBody}
+      onChangeTopics={onChangeTopics}
+      onChangePosition={onChangePosition}
+      onChangeBanner={onChangeBanner}
+      onChangeImage={onChangeImage}
+      onAddFile={onAddFile}
+      onRemoveFile={onRemoveFile}
+      topics={topics}
+      titleProfanityError={titleProfanityError}
+      descriptionProfanityError={descriptionProfanityError}
+    />
   );
 };
+
+export default InitiativesEditFormWrapper;
