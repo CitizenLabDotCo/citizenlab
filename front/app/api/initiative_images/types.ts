@@ -26,7 +26,6 @@ export interface IInitiativeImages {
 export interface AddInitiativeImageObject {
   initiativeId: string;
   image: {
-    base64: string;
-    ordering: number | null;
+    image: string;
   };
 }
