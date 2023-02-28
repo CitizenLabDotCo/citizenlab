@@ -107,7 +107,7 @@ const DaysLeft = styled.div`
 interface State {}
 
 export interface InputProps {
-  initiativeId: string | null;
+  initiativeId: string;
   closePreview: () => void;
   handleClickEdit: () => void;
 }
