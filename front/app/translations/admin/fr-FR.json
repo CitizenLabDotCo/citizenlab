@@ -475,7 +475,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.buttonSuccess": "Enregistré !",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byAreaFilter": "Par zone",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byTagsFilter": "Par balise(s)",
-  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contactGovSuccessToAccess": "Displaying projects by tag or area is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contactGovSuccessToAccess": "L'affichage des projets par étiquette ou par domaine fait partie de la licence premium. Contactez votre responsable GovSuccess pour en savoir plus.",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contentEditorTitle": "Contenu",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.editCustomPagePageTitle": "Modifier une page personnalisée",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedProjectsLabel": "Projets liés",
