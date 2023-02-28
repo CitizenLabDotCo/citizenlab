@@ -79,7 +79,6 @@ export type GetIdeasChildProps = State & {
     partialQueryParameters: Partial<IIdeasQueryParameters>
   ) => void;
   onResetParams: (paramsToOmit?: (keyof IIdeasQueryParameters)[]) => void;
-  type: 'ideas';
 };
 
 interface State {
@@ -475,7 +474,6 @@ export default class GetIdeas extends React.Component<Props, State> {
       onChangeFeedbackFilter: this.handleFeedbackFilterOnChange,
       onIdeaFiltering: this.handleIdeaFiltering,
       onResetParams: this.handleResetParamsToProps,
-      type: 'ideas',
     });
   }
 }
