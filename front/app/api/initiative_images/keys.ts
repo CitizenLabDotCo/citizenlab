@@ -8,12 +8,12 @@ const initiativeImagesKeys = {
     ] as const,
   items: () =>
     [{ ...initiativeImagesKeys.all()[0], operation: 'item' }] as const,
-  item: (initiativeId: string, id: string) =>
+  item: (initiativeId: string, imageId: string) =>
     [
       {
         ...initiativeImagesKeys.items()[0],
         initiativeId,
-        id,
+        imageId,
       },
     ] as const,
 };
