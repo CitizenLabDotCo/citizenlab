@@ -17,7 +17,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
     ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
       .where(published_at: @start_at..@end_at)
     result = IdeasFinder.new(params, scope: ideas, current_user: current_user, paginate: false).find_records
-    render json: { count: result.count }
+    render json: raw_json({ count: result.count })
   end
 
   def ideas_by_topic_serie
@@ -37,7 +37,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
     topics = Topic.pluck(:id, :title_multiloc).map do |id, title_multiloc|
       [id, { title_multiloc: title_multiloc }]
     end
-    render json: { series: { ideas: serie }, topics: topics.to_h }
+    render json: raw_json({ series: { ideas: serie }, topics: topics.to_h })
   end
 
   def ideas_by_topic_as_xlsx
@@ -73,7 +73,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   def ideas_by_project
     serie = ideas_by_project_serie
     projects = Project.where(id: serie.keys).select(:id, :title_multiloc)
-    render json: { series: { ideas: serie }, projects: projects.to_h { |t| [t.id, t.attributes.except('id')] } }
+    render json: raw_json({ series: { ideas: serie }, projects: projects.to_h { |t| [t.id, t.attributes.except('id')] } })
   end
 
   def ideas_by_project_as_xlsx
@@ -107,7 +107,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   def ideas_by_status
     serie = ideas_by_status_serie
     idea_statuses = IdeaStatus.all.select(:id, :title_multiloc, :color, :ordering).order(:ordering)
-    render json: { series: { ideas: serie }, idea_status: idea_statuses.to_h { |a| [a.id, a.attributes.except('id')] } }
+    render json: raw_json({ series: { ideas: serie }, idea_status: idea_statuses.to_h { |a| [a.id, a.attributes.except('id')] } })
   end
 
   def ideas_by_status_as_xlsx
@@ -126,7 +126,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   end
 
   def ideas_by_time
-    render json: { series: { ideas: ideas_by_time_serie } }
+    render json: raw_json({ series: { ideas: ideas_by_time_serie } })
   end
 
   def ideas_by_time_as_xlsx
@@ -136,7 +136,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   end
 
   def ideas_by_time_cumulative
-    render json: { series: { ideas: ideas_by_time_cumulative_serie } }
+    render json: raw_json({ series: { ideas: ideas_by_time_cumulative_serie } })
   end
 
   def ideas_by_time_cumulative_as_xlsx

@@ -545,9 +545,11 @@ resource 'Ideas' do
 
       example_request 'Get the jsonforms.io json schema and ui schema for an ideation input' do
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:json_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
-        expect(json_response[:ui_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'json_forms_schema'
+        json_attributes = json_response.dig(:data, :attributes)
+        expect(json_attributes[:json_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
+        expect(json_attributes[:ui_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
         visible_built_in_field_keys = %i[
           title_multiloc
           body_multiloc
@@ -557,7 +559,7 @@ resource 'Ideas' do
           location_description
         ]
         %i[en fr-FR nl-NL].each do |locale|
-          expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq(visible_built_in_field_keys + [custom_field.key.to_sym])
+          expect(json_attributes[:json_schema_multiloc][locale][:properties].keys).to eq(visible_built_in_field_keys + [custom_field.key.to_sym])
         end
       end
     end
