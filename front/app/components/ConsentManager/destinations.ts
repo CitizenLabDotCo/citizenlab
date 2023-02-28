@@ -1,4 +1,4 @@
-import { IAppConfigurationData } from 'services/appConfiguration';
+import { IAppConfigurationData } from 'api/app_configuration/types';
 import { IUserData } from 'services/users';
 
 export interface IDestinationMap {}

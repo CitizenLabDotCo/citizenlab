@@ -1,25 +1,15 @@
-import { useState, useEffect } from 'react';
-import { currentAppConfigurationStream } from 'services/appConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { Locale } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 
 export default function useAppConfigurationLocales() {
-  const [appConfigurationLocales, setAppConfigurationLocales] = useState<
-    Locale[] | undefined | null | Error
-  >(undefined);
+  const { data: appConfiguration } = useAppConfiguration();
 
-  useEffect(() => {
-    const subscription = currentAppConfigurationStream().observable.subscribe(
-      (currentAppConfiguration) => {
-        setAppConfigurationLocales(
-          !isNilOrError(currentAppConfiguration)
-            ? currentAppConfiguration.data.attributes.settings.core.locales
-            : currentAppConfiguration
-        );
-      }
-    );
-    return () => subscription.unsubscribe();
-  }, []);
+  const appConfigurationLocales: Locale[] | undefined = !isNilOrError(
+    appConfiguration
+  )
+    ? appConfiguration.data.attributes.settings.core.locales
+    : appConfiguration;
 
   return appConfigurationLocales;
 }
