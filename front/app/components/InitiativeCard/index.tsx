@@ -177,6 +177,7 @@ class InitiativeCard extends PureComponent<Props & InjectedLocalized, State> {
   }
 }
 
+// TODO: Move to functional component after converting the other dependencies to hooks
 const Data = adopt<DataProps, InputProps>({
   initiative: ({ initiativeId, render }) => (
     <GetInitiative id={initiativeId}>{render}</GetInitiative>
