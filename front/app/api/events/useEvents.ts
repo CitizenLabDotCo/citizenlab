@@ -2,14 +2,63 @@ import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import eventsKeys from './keys';
-import { IEvents, EventsKeys } from './types';
+import { IEvents, EventsKeys, InputParameters, QueryParameters } from './types';
 
-const fetchEvents = () => fetcher<IEvents>({ path: '/events', action: 'get' });
+const fetchEvents = ({
+  // TODO: replace params with one object
+  project_ids,
+  ends_before_date,
+  ends_on_or_after_date,
+  sort,
+  'page[number]': pageNumber,
+  'page[size]': pageSize,
+  project_publication_statuses,
+}: QueryParameters) =>
+  fetcher<IEvents>({
+    path: '/events',
+    action: 'get',
+    queryParams: {
+      project_ids,
+      ends_before_date,
+      ends_on_or_after_date,
+      sort,
+      'page[number]': pageNumber,
+      'page[size]': pageSize,
+      project_publication_statuses,
+    },
+  });
 
-const useEvents = () => {
+const useEvents = ({
+  projectIds,
+  staticPageId,
+  currentAndFutureOnly,
+  pastOnly,
+  pageSize,
+  sort,
+  projectPublicationStatuses,
+}: InputParameters) => {
+  const queryParams: QueryParameters = {
+    ...(projectIds && { project_ids: projectIds }),
+    ...(staticPageId && {
+      static_page_id: staticPageId,
+    }),
+  };
+  if (projectPublicationStatuses) {
+    queryParams.project_publication_statuses = projectPublicationStatuses;
+  }
+
+  if (currentAndFutureOnly) {
+    queryParams.ends_on_or_after_date = new Date().toJSON();
+    queryParams.sort = 'start_at';
+  }
+
+  if (pastOnly) {
+    queryParams.ends_before_date = new Date().toJSON();
+    queryParams.sort = '-start_at';
+  }
   return useQuery<IEvents, CLErrors, IEvents, EventsKeys>({
     queryKey: eventsKeys.lists(),
-    queryFn: fetchEvents,
+    queryFn: () => fetchEvents(queryParams),
   });
 };
 

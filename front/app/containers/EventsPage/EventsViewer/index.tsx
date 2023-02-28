@@ -12,7 +12,7 @@ import messages from '../messages';
 import { MessageDescriptor } from 'react-intl';
 
 // hooks
-import useEvents from 'hooks/useEvents';
+import useEvents from 'api/events/useEvents';
 
 // styling
 import styled from 'styled-components';
@@ -55,6 +55,7 @@ const EventsViewer = memo<Props>(
     hideSectionIfNoEvents,
     showProjectFilter,
   }) => {
+    const [currentPage, setCurrentPage] = useState(1);
     const {
       events,
       currentPage,
@@ -67,6 +68,7 @@ const EventsViewer = memo<Props>(
       currentAndFutureOnly: eventsTime === 'currentAndFuture',
       pastOnly: eventsTime === 'past',
       sort: eventsTime === 'past' ? 'newest' : 'oldest',
+      pageNumber: currentPage,
     });
 
     useEffect(() => {
@@ -87,6 +89,9 @@ const EventsViewer = memo<Props>(
     if (shouldHideSection) {
       return null;
     }
+    const onCurrentPageChange = (newPage: number) => {
+      setCurrentPage(newPage);
+    };
 
     return (
       <div className={className}>

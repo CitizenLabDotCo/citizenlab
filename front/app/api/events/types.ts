@@ -1,6 +1,7 @@
 import { Keys } from 'utils/cl-react-query/types';
 import eventsKeys from './keys';
 import { Multiloc, ILinks } from 'typings';
+import { PublicationStatus } from 'services/projects';
 
 export type EventsKeys = Keys<typeof eventsKeys>;
 export interface IEventData {
@@ -33,6 +34,18 @@ export interface QueryParameters {
   'page[number]'?: number | undefined;
   'page[size]'?: number | undefined;
   project_publication_statuses?: string[] | undefined;
+}
+
+type sort = 'newest' | 'oldest';
+
+export interface InputParameters {
+  projectIds?: string[];
+  staticPageId?: string;
+  currentAndFutureOnly?: boolean;
+  pastOnly?: boolean;
+  pageSize?: number;
+  sort?: sort;
+  projectPublicationStatuses?: PublicationStatus[];
 }
 
 export interface IEvent {
