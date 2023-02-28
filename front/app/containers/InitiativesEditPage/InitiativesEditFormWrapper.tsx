@@ -57,7 +57,6 @@ const InitiativesEditFormWrapper = ({
   initiativeImage,
   onPublished,
   locale,
-
   topics,
   initiativeFiles,
 }: Props) => {
