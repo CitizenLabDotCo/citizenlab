@@ -7,10 +7,10 @@ export const ideaStatusesData: IIdeaStatusData[] = [
     attributes: {
       code: 'proposed',
       title_multiloc: {
-        en: 'Idea 1',
+        en: 'Idea status 1',
       },
       description_multiloc: {
-        en: 'Description of idea 1',
+        en: 'Description of idea status 1',
       },
       color: '#FF0000',
       ordering: 1,
@@ -22,10 +22,10 @@ export const ideaStatusesData: IIdeaStatusData[] = [
     attributes: {
       code: 'under_consideration',
       title_multiloc: {
-        en: 'Idea 2',
+        en: 'Idea status 2',
       },
       description_multiloc: {
-        en: 'Description of idea 2',
+        en: 'Description of idea status 2',
       },
       color: '#00FF00',
       ordering: 2,
