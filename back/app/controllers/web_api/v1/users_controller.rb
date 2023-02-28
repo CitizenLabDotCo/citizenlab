@@ -217,9 +217,13 @@ class WebApi::V1::UsersController < ::ApplicationController
     existing_user = User.find_by(email: @user.email)
     return false unless existing_user.no_password?
 
+    # NOT WORKING!!
+    # This will man we can only do one or the other in the front end
     @user = existing_user
+    @user.assign_attributes(permitted_attributes(@user))
+    return false if @user.changed?
+
     @user.reset_confirmation_with_no_password
-    @user.assign_attributes(permitted_attributes(@user)) # In case this user is adding a first_name, password etc
     return false unless @user.save
 
     SendConfirmationCode.call(user: existing_user)
