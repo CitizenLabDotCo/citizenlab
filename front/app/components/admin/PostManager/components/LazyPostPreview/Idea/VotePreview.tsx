@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
 
 // resources
-import useIdea from 'hooks/useIdea';
+import GetIdeaVotesCount, {
+  GetIdeaVotesCountChildProps,
+} from 'resources/GetIdeaVotesCount';
 
 // i18n
 import messages from '../messages';
@@ -70,18 +72,19 @@ const DownvotesCount = styled(VotesCount)`
   color: ${colors.error};
 `;
 
-interface Props {
+interface DataProps {
+  votesCount: GetIdeaVotesCountChildProps;
+}
+
+interface InputProps {
   ideaId: string;
   className?: string;
 }
 
-const VotePreview = ({ ideaId, className }: Props) => {
-  const idea = useIdea({ ideaId });
+interface Props extends InputProps, DataProps {}
 
-  if (!isNilOrError(idea)) {
-    const upvotesCount = idea.attributes.upvotes_count;
-    const downvotesCount = idea.attributes.downvotes_count;
-
+const VotePreview = memo<Props>(({ votesCount, className }) => {
+  if (!isNilOrError(votesCount)) {
     return (
       <Container className={className}>
         <Label>
@@ -90,11 +93,11 @@ const VotePreview = ({ ideaId, className }: Props) => {
         <Block>
           <UpvotesContainer>
             <UpvoteIcon name="vote-up" />
-            <UpvotesCount>{upvotesCount}</UpvotesCount>
+            <UpvotesCount>{votesCount.up}</UpvotesCount>
           </UpvotesContainer>
           <DownvotesContainer>
             <DownvoteIcon name="vote-down" />
-            <DownvotesCount>{downvotesCount}</DownvotesCount>
+            <DownvotesCount>{votesCount.down}</DownvotesCount>
           </DownvotesContainer>
         </Block>
       </Container>
@@ -102,6 +105,10 @@ const VotePreview = ({ ideaId, className }: Props) => {
   }
 
   return null;
-};
+});
 
-export default VotePreview;
+export default (inputProps: InputProps) => (
+  <GetIdeaVotesCount ideaId={inputProps.ideaId}>
+    {(votesCount) => <VotePreview {...inputProps} votesCount={votesCount} />}
+  </GetIdeaVotesCount>
+);

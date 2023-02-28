@@ -4,7 +4,7 @@ import { uuidRegExp } from 'utils/helperUtils';
 
 export type TVoteMode = 'up' | 'down';
 
-interface IIdeaVoteData {
+export interface IIdeaVoteData {
   id: string;
   type: 'vote';
   attributes: {
@@ -90,6 +90,7 @@ export async function addVote(
 }
 
 export async function deleteVote(
+  _ideaId,
   voteId: string,
   refetchAllActiveIdeas = false
 ) {
