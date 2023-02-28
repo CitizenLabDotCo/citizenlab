@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 
 // components
 import TopBar from './TopBar';
@@ -12,13 +12,14 @@ import messages from '../messages';
 import { MessageDescriptor } from 'react-intl';
 
 // hooks
-import useEvents from 'hooks/useEvents';
+import useEvents from 'api/events/useEvents';
 
 // styling
 import styled from 'styled-components';
 
 // other
 import { isNilOrError, isNil, isError } from 'utils/helperUtils';
+import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 interface IStyledEventCard {
   last: boolean;
@@ -55,57 +56,58 @@ const EventsViewer = memo<Props>(
     hideSectionIfNoEvents,
     showProjectFilter,
   }) => {
+    const [currentPage, setCurrentPage] = useState(1);
+    const [localProjectIds, setLocalProjectIds] = useState<
+      string[] | undefined
+    >(projectIds);
+
     const {
-      events,
-      currentPage,
-      lastPage,
-      onProjectIdsChange,
-      onCurrentPageChange,
+      data: events,
+      isLoading,
+      isError,
     } = useEvents({
-      projectIds,
+      projectIds: localProjectIds,
       projectPublicationStatuses: ['published'],
       currentAndFutureOnly: eventsTime === 'currentAndFuture',
       pastOnly: eventsTime === 'past',
       sort: eventsTime === 'past' ? 'newest' : 'oldest',
+      pageNumber: currentPage,
     });
-
-    useEffect(() => {
-      if (!isNilOrError(projectIds)) {
-        onProjectIdsChange(projectIds);
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [projectIds]);
-
-    const eventsLoading = isNil(events);
-    const eventsError = isError(events);
+    // Todo: rename localProjectIds
+    const lastPageNumber =
+      (events && getPageNumberFromUrl(events.links?.last)) ?? 1;
 
     const shouldHideSection =
-      (!isNilOrError(events) && events.length === 0 && hideSectionIfNoEvents) ||
-      (eventsLoading && hideSectionIfNoEvents) ||
+      (events && events.data.length === 0 && hideSectionIfNoEvents) ||
+      (isLoading && hideSectionIfNoEvents) ||
+      // Todo: fix this
       (isNilOrError(events) && hideSectionIfNoEvents);
 
     if (shouldHideSection) {
       return null;
     }
+    const onCurrentPageChange = (newPage: number) => {
+      setCurrentPage(newPage);
+    };
 
     return (
       <div className={className}>
         <TopBar
           showProjectFilter={showProjectFilter}
           title={title}
-          setProjectIds={onProjectIdsChange}
+          setProjectIds={setLocalProjectIds}
         />
 
-        {eventsError && (
+        {isError && (
           <EventsMessage message={messages.errorWhenFetchingEvents} />
         )}
 
-        {eventsLoading && <EventsSpinner />}
+        {isLoading && <EventsSpinner />}
 
         {!isNilOrError(events) && (
           <>
-            {events.length > 0 &&
-              events.map((event, i) => (
+            {events.data.length > 0 &&
+              events.data.map((event, i) => (
                 <StyledEventCard
                   id={event.id}
                   event={event}
@@ -116,16 +118,18 @@ const EventsViewer = memo<Props>(
                   showLocation
                   showDescription
                   showAttachments
-                  last={events.length - 1 === i}
+                  last={events.data.length - 1 === i}
                   key={event.id}
                 />
               ))}
 
-            {events.length === 0 && <EventsMessage message={fallbackMessage} />}
+            {events.data.length === 0 && (
+              <EventsMessage message={fallbackMessage} />
+            )}
 
             <StyledPagination
               currentPage={currentPage}
-              totalPages={lastPage}
+              totalPages={lastPageNumber}
               loadPage={onCurrentPageChange}
               useColorsTheme
             />

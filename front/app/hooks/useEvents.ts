@@ -30,9 +30,9 @@ const sortEvents = (_events: IEventData[], sort: sort) => {
 export type TEvents = IEventData[] | null | Error;
 export default function useEvents(parameters: InputParameters) {
   const [events, setEvents] = useState<TEvents>(null);
-  const [projectIds, setProjectIds] = useState<string[] | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [lastPage, setLastPage] = useState(1);
+  // const [projectIds, setProjectIds] = useState<string[] | null>(null);
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const [lastPage, setLastPage] = useState(1);
   const [pageSize] = useState(parameters.pageSize ?? DEFAULT_PAGE_SIZE);
 
   // projectIds can be based off other
@@ -58,36 +58,36 @@ export default function useEvents(parameters: InputParameters) {
     setEvents(null);
 
     const streamParams: IEventsStreamParams = {
-      queryParameters: {
-        ...(projectIds && { project_ids: projectIds }),
-        ...(parameters.staticPageId && {
-          static_page_id: parameters.staticPageId,
-        }),
-      },
+      // queryParameters: {
+      //   ...(projectIds && { project_ids: projectIds }),
+      //   ...(parameters.staticPageId && {
+      //     static_page_id: parameters.staticPageId,
+      //   }),
+      // },
     };
 
-    if (parameters.projectPublicationStatuses) {
-      streamParams.queryParameters.project_publication_statuses =
-        parameters.projectPublicationStatuses;
-    }
+    // if (parameters.projectPublicationStatuses) {
+    //   streamParams.queryParameters.project_publication_statuses =
+    //     parameters.projectPublicationStatuses;
+    // }
 
-    if (parameters.currentAndFutureOnly) {
-      streamParams.queryParameters.ends_on_or_after_date = new Date().toJSON();
-      streamParams.queryParameters.sort = 'start_at';
-    }
+    // if (parameters.currentAndFutureOnly) {
+    //   streamParams.queryParameters.ends_on_or_after_date = new Date().toJSON();
+    //   streamParams.queryParameters.sort = 'start_at';
+    // }
 
-    if (parameters.pastOnly) {
-      streamParams.queryParameters.ends_before_date = new Date().toJSON();
-      streamParams.queryParameters.sort = '-start_at';
-    }
+    // if (parameters.pastOnly) {
+    //   streamParams.queryParameters.ends_before_date = new Date().toJSON();
+    //   streamParams.queryParameters.sort = '-start_at';
+    // }
 
-    if (currentPage) {
-      streamParams.queryParameters['page[number]'] = currentPage;
-    }
+    // if (currentPage) {
+    //   streamParams.queryParameters['page[number]'] = currentPage;
+    // }
 
-    if (pageSize) {
-      streamParams.queryParameters['page[size]'] = pageSize;
-    }
+    // if (pageSize) {
+    //   streamParams.queryParameters['page[size]'] = pageSize;
+    // }
 
     const subscription = eventsStream(streamParams).observable.subscribe(
       (response) => {
@@ -97,7 +97,7 @@ export default function useEvents(parameters: InputParameters) {
           return;
         }
 
-        const lastPageNumber = getPageNumberFromUrl(response.links?.last) ?? 1;
+        // const lastPageNumber = getPageNumberFromUrl(response.links?.last) ?? 1;
 
         setEvents(sortEvents(response.data, parameters.sort ?? 'oldest'));
         setLastPage(lastPageNumber);
@@ -116,7 +116,7 @@ export default function useEvents(parameters: InputParameters) {
 
   return {
     events,
-    projectIds,
+    // projectIds,
     currentPage,
     lastPage,
     pageSize,
