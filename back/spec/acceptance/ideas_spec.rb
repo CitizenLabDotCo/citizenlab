@@ -434,24 +434,26 @@ resource 'Ideas' do
         let(:projects) { [@project.id] }
 
         example_request 'List idea counts per filter option' do
-          expect(status).to eq 200
-          json_response = json_parse(response_body)
+          assert_status 200
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :type)).to eq 'filter_counts'
+          json_attributes = json_response.dig(:data, :attributes)
 
-          expect(json_response[:idea_status_id][@s1.id.to_sym]).to eq 1
-          expect(json_response[:idea_status_id][@s2.id.to_sym]).to eq 3
-          expect(json_response[:topic_id][@t1.id.to_sym]).to eq 2
-          expect(json_response[:topic_id][@t2.id.to_sym]).to eq 2
-          expect(json_response[:total]).to eq 4
+          expect(json_attributes[:idea_status_id][@s1.id.to_sym]).to eq 1
+          expect(json_attributes[:idea_status_id][@s2.id.to_sym]).to eq 3
+          expect(json_attributes[:topic_id][@t1.id.to_sym]).to eq 2
+          expect(json_attributes[:topic_id][@t2.id.to_sym]).to eq 2
+          expect(json_attributes[:total]).to eq 4
         end
 
         example 'List idea counts per filter option on topic' do
           do_request topics: [@t1.id], projects: nil
-          expect(status).to eq 200
+          assert_status 200
         end
 
         example 'List idea counts per filter option with a search string' do
           do_request search: 'trees'
-          expect(status).to eq 200
+          assert_status 200
         end
       end
     end

@@ -47,20 +47,22 @@ resource 'Project level Custom Fields' do
 
     get 'web_api/v1/projects/:project_id/custom_fields/json_forms_schema' do
       example_request 'Get the jsonforms.io json schema and ui schema for the custom fields' do
-        expect(status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response[:json_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'json_forms_schema'
+        json_attributes = json_response.dig(:data, :attributes)
+        expect(json_attributes[:json_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
         %i[en fr-FR nl-NL].each do |locale|
-          expect(json_response[:json_schema_multiloc][locale][:properties].keys).to match_array(
+          expect(json_attributes[:json_schema_multiloc][locale][:properties].keys).to match_array(
             %i[title_multiloc body_multiloc topic_ids location_description idea_images_attributes idea_files_attributes]
           )
         end
-        ui_schema = json_response[:ui_schema_multiloc][:en]
+        ui_schema = json_attributes[:ui_schema_multiloc][:en]
         expect(ui_schema.keys).to match_array %i[type options elements]
         expect(ui_schema[:type]).to eq 'Categorization'
         expect(ui_schema[:options]).to eq({ formId: 'idea-form', inputTerm: 'question' })
         expect(ui_schema[:elements].size).to eq 3
-        expect(json_response[:ui_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
+        expect(json_attributes[:ui_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
       end
     end
   end
@@ -88,13 +90,15 @@ resource 'Project level Custom Fields' do
 
     get 'web_api/v1/projects/:project_id/custom_fields/json_forms_schema' do
       example_request 'Get the jsonforms.io json schema and ui schema for the custom fields' do
-        expect(status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response[:json_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'json_forms_schema'
+        json_attributes = json_response.dig(:data, :attributes)
+        expect(json_attributes[:json_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
         %i[en fr-FR nl-NL].each do |locale|
-          expect(json_response[:json_schema_multiloc][locale][:properties].keys).to match_array expected_json_forms_field_keys
+          expect(json_attributes[:json_schema_multiloc][locale][:properties].keys).to match_array expected_json_forms_field_keys
         end
-        expect(json_response[:ui_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
+        expect(json_attributes[:ui_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
       end
     end
   end
@@ -122,13 +126,15 @@ resource 'Project level Custom Fields' do
 
     get 'web_api/v1/projects/:project_id/custom_fields/json_forms_schema' do
       example_request 'Get the jsonforms.io json schema and ui schema for the custom fields' do
-        expect(status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response[:json_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'json_forms_schema'
+        json_attributes = json_response.dig(:data, :attributes)
+        expect(json_attributes[:json_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
         %i[en fr-FR nl-NL].each do |locale|
-          expect(json_response[:json_schema_multiloc][locale][:properties].keys).to match_array expected_json_forms_field_keys
+          expect(json_attributes[:json_schema_multiloc][locale][:properties].keys).to match_array expected_json_forms_field_keys
         end
-        expect(json_response[:ui_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
+        expect(json_attributes[:ui_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
       end
     end
   end
@@ -141,13 +147,15 @@ resource 'Project level Custom Fields' do
 
     get 'web_api/v1/projects/:project_id/custom_fields/json_forms_schema' do
       example_request 'Get the jsonforms.io json schema and ui schema for the custom fields' do
-        expect(status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response[:json_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'json_forms_schema'
+        json_attributes = json_response.dig(:data, :attributes)
+        expect(json_attributes[:json_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
         %i[en fr-FR nl-NL].each do |locale|
-          expect(json_response[:json_schema_multiloc][locale][:properties].keys).to match_array([custom_field.key.to_sym])
+          expect(json_attributes[:json_schema_multiloc][locale][:properties].keys).to match_array([custom_field.key.to_sym])
         end
-        expect(json_response[:ui_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
+        expect(json_attributes[:ui_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
       end
     end
   end
@@ -158,9 +166,9 @@ resource 'Project level Custom Fields' do
 
     get 'web_api/v1/projects/:project_id/custom_fields/json_forms_schema' do
       example_request 'Get the jsonforms.io json schema and ui schema for the custom fields' do
-        expect(status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response).to be_nil
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response).to eq({ data: { type: 'json_forms_schema', attributes: nil } })
       end
     end
   end
@@ -171,7 +179,7 @@ resource 'Project level Custom Fields' do
 
     get 'web_api/v1/projects/:project_id/custom_fields/json_forms_schema' do
       example_request 'Get the jsonforms.io json schema and ui schema for the custom fields' do
-        expect(status).to eq 404
+        assert_status 404
         expect(response_body).to be_empty
       end
     end
@@ -182,7 +190,7 @@ resource 'Project level Custom Fields' do
 
     get 'web_api/v1/projects/:project_id/custom_fields/json_forms_schema' do
       example_request 'Get the jsonforms.io json schema and ui schema for the custom fields' do
-        expect(status).to eq 404
+        assert_status 404
         expect(response_body).to be_empty
       end
     end

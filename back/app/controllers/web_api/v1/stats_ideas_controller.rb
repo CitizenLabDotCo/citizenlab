@@ -176,7 +176,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   def render_no_data
     return unless @no_data
 
-    render json: { series: { ideas: {} } }
+    render json: raw_json({ series: { ideas: {} } })
   end
 
   def render_no_data_as_xlsx
