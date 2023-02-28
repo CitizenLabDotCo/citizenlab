@@ -192,8 +192,6 @@ const InitiativesEditFormWrapper = ({
 
       // save any changes to initiative image.
       if (image && image.base64 && !image.id) {
-        console.log(image.base64);
-        console.log(image.id);
         addInitiativeImage({
           initiativeId: initiative.id,
           image: { image: image.base64 },
