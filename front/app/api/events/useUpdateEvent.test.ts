@@ -26,8 +26,8 @@ describe('useUpdateEvent', () => {
 
     act(() => {
       result.current.mutate({
-        id: 'id',
-        requestBody: { title_multiloc: { en: 'name' } },
+        eventId: 'id',
+        event: { title_multiloc: { en: 'name' } },
       });
     });
 
@@ -47,8 +47,8 @@ describe('useUpdateEvent', () => {
     });
     act(() => {
       result.current.mutate({
-        id: 'id',
-        requestBody: { title_multiloc: { en: 'name' } },
+        eventId: 'id',
+        event: { title_multiloc: { en: 'name' } },
       });
     });
     await waitFor(() => expect(result.current.isError).toBe(true));

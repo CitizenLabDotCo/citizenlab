@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Subscription, combineLatest, of } from 'rxjs';
 import moment from 'moment';
 import { isEmpty, get, isError } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
@@ -15,28 +14,19 @@ import DateTimePicker from 'components/admin/DateTimePicker';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import FileUploader from 'components/UI/FileUploader';
-import { IconTooltip, Label } from '@citizenlab/cl2-component-library';
+import { IconTooltip, Label, Spinner } from '@citizenlab/cl2-component-library';
 
 // utils
-import unsubscribe from 'utils/unsubscribe';
 import { withRouter } from 'utils/cl-router/withRouter';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+// react query
+import { IEvent, IEventProperties } from 'api/events/types';
+
 // services
-import { localeStream } from 'services/locale';
-import {
-  currentAppConfigurationStream,
-  IAppConfiguration,
-} from 'services/appConfiguration';
-import {
-  eventStream,
-  updateEvent,
-  IEvent,
-  IUpdatedEventProperties,
-} from 'services/events';
 import { addEventFile, deleteEventFile } from 'services/eventFiles';
 
 // resources
@@ -45,10 +35,13 @@ import GetRemoteFiles, {
 } from 'resources/GetRemoteFiles';
 
 // typings
-import { Multiloc, CLError, Locale, UploadFile } from 'typings';
+import { Multiloc, CLError, UploadFile } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
 import useAddEvent from 'api/events/useAddEvent';
-import { IAddEventProperties } from 'api/events/types';
+import useUpdateEvent from 'api/events/useUpdateEvent';
+import useEvent from 'api/events/useEvent';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useLocale from 'hooks/useLocale';
 
 interface DataProps {
   remoteEventFiles: GetRemoteFilesChildProps;
@@ -59,69 +52,38 @@ interface Props extends DataProps {
 
 type SubmitState = 'disabled' | 'enabled' | 'error' | 'success';
 type ErrorType =
+  | Error
   | {
       [fieldName: string]: CLError[];
-    }
-  | Error;
+    };
 
 const AdminProjectEventEdit = ({
   params,
   remoteEventFiles,
 }: Props & DataProps) => {
-  const { mutate: addEvent, isSuccess, data } = useAddEvent();
+  const { mutate: addEvent } = useAddEvent();
+  const { data: event, isInitialLoading } = useEvent(params.id);
+  const { mutate: updateEvent } = useUpdateEvent();
+  const locale = useLocale();
+  const appConfiguration = useAppConfiguration();
 
-  const [locale, setLocale] = useState<Locale | null>(null);
-  const [currentTenant, setCurrentTenant] = useState<IAppConfiguration | null>(
-    null
-  );
-  const [event, setEvent] = useState<IEvent | null>(null);
-  const [attributeDiff, setAttributeDiff] = useState<IUpdatedEventProperties>(
-    {}
-  );
   const [errors, setErrors] = useState<ErrorType>({});
   const [saving, setSaving] = useState<boolean>(false);
-  const [loaded, setLoaded] = useState<boolean>(false);
+  const [submitState, setSubmitState] = useState<SubmitState>('disabled');
   const [eventFiles, setEventFiles] = useState<UploadFile[]>([]);
+  const [attributeDiff, setAttributeDiff] = useState<IEventProperties>({});
   const [eventFilesToRemove, setEventFilesToRemove] = useState<UploadFile[]>(
     []
   );
-  const [submitState, setSubmitState] = useState<SubmitState>('disabled');
-
-  // Moved subscriptions away from here - might need to move it back + use useRef ???
 
   useEffect(() => {
-    const locale$ = localeStream().observable;
-    const currentTenant$ = currentAppConfigurationStream().observable;
-    const event$ = params.id ? eventStream(params.id).observable : of(null);
-
-    let subscriptions: Subscription[] = [];
-    subscriptions = [
-      combineLatest([locale$, currentTenant$, event$]).subscribe(
-        ([locale, currentTenant, event]) => {
-          setLocale(locale);
-          setCurrentTenant(currentTenant);
-          setEvent(event);
-          setLoaded(true);
-        }
-      ),
-    ];
-    setEventFiles(!isNilOrError(remoteEventFiles) ? remoteEventFiles : []);
-    return () => {
-      unsubscribe(subscriptions);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // useEffect(() => {
-  //   // Set the event files once remote files are loaded
-  //   if (
-  //     remoteEventFiles !== eventFiles &&
-  //     eventFiles.length === 0 &&
-  //     eventFilesToRemove.length === 0
-  //   ) {
-  //     setEventFiles(!isNilOrError(remoteEventFiles) ? remoteEventFiles : []);
-  //   }
-  // }, [eventFiles, eventFilesToRemove.length, remoteEventFiles]);
+    // Set the event files once remote files are loaded
+    if (!isNilOrError(remoteEventFiles)) {
+      setEventFiles((previousEventFiles) =>
+        previousEventFiles.length === 0 ? remoteEventFiles : []
+      );
+    }
+  }, [remoteEventFiles]);
 
   const handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
     setSubmitState('enabled');
@@ -149,14 +111,16 @@ const AdminProjectEventEdit = ({
 
   const handleDateTimePickerOnChange =
     (name: 'start_at' | 'end_at') => (moment: moment.Moment) => {
-      setSubmitState('enabled');
-      setAttributeDiff((previousState) => {
-        return {
-          ...previousState,
-          [name]: moment.toISOString(),
-        };
-      });
-      setErrors({});
+      if (!isInitialLoading) {
+        setSubmitState('enabled');
+        setAttributeDiff((previousState) => {
+          return {
+            ...previousState,
+            [name]: moment.toISOString(),
+          };
+        });
+        setErrors({});
+      }
     };
 
   const handleEventFileOnAdd = (newFile: UploadFile) => {
@@ -174,11 +138,27 @@ const AdminProjectEventEdit = ({
     );
   };
 
+  const handleEventFiles = async (data: IEvent) => {
+    if (data) {
+      const { id: eventId } = data.data;
+      const filesToAddPromises = eventFiles
+        .filter((file) => !file.remote)
+        .map((file) => addEventFile(eventId, file.base64, file.name));
+      const filesToRemovePromises = eventFilesToRemove
+        .filter((file) => !!(file.remote && file.id))
+        .map((file) => deleteEventFile(eventId, file.id as string));
+
+      await Promise.all([
+        ...filesToAddPromises,
+        ...filesToRemovePromises,
+      ] as Promise<any>[]);
+    }
+  };
+
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     if (!isNilOrError(params.projectId)) {
       const { projectId } = params;
-      let eventResponse = event;
       let redirect = false;
       try {
         setSaving(true);
@@ -186,40 +166,45 @@ const AdminProjectEventEdit = ({
         if (!isEmpty(attributeDiff)) {
           // event already exists (in the state)
           if (event) {
-            eventResponse = await updateEvent(event.data.id, attributeDiff);
-            setEvent(eventResponse);
-            setAttributeDiff({});
+            updateEvent(
+              {
+                eventId: event.data.id,
+                event: attributeDiff,
+              },
+              {
+                onSuccess: async (data) => {
+                  setSubmitState('success');
+                  handleEventFiles(data);
+                },
+                onError: async (errors) => {
+                  setErrors(errors);
+                  setSubmitState('error');
+                },
+              }
+            );
           } else if (projectId) {
             // event doesn't exist, create with project id
-            const payload: IAddEventProperties = {
-              projectId,
-              event: attributeDiff,
-            };
-            addEvent(payload);
-            setEvent(eventResponse);
-            setAttributeDiff({});
+            addEvent(
+              {
+                projectId,
+                event: attributeDiff,
+              },
+              {
+                onSuccess: async (data) => {
+                  setSubmitState('success');
+                  handleEventFiles(data);
+                },
+                onError: async (errors) => {
+                  setErrors(errors);
+                  setSubmitState('error');
+                },
+              }
+            );
             redirect = true;
           }
         }
 
-        if (isSuccess && data) {
-          const { id: eventId } = data.data;
-          const filesToAddPromises = eventFiles
-            .filter((file) => !file.remote)
-            .map((file) => addEventFile(eventId, file.base64, file.name));
-          const filesToRemovePromises = eventFilesToRemove
-            .filter((file) => !!(file.remote && file.id))
-            .map((file) => deleteEventFile(eventId, file.id as string));
-
-          await Promise.all([
-            ...filesToAddPromises,
-            ...filesToRemovePromises,
-          ] as Promise<any>[]);
-        }
-
         setSaving(false);
-        setErrors({});
-        setSubmitState('success');
         setEventFilesToRemove([]);
 
         if (redirect && projectId) {
@@ -240,10 +225,14 @@ const AdminProjectEventEdit = ({
 
   const descriptionLabel = <FormattedMessage {...messages.descriptionLabel} />;
 
-  if (locale && currentTenant && loaded) {
+  if (locale && appConfiguration) {
     const eventAttrs = event
       ? { ...event.data.attributes, ...attributeDiff }
       : { ...attributeDiff };
+
+    if (event !== undefined && isInitialLoading) {
+      return <Spinner />;
+    }
 
     return (
       <>

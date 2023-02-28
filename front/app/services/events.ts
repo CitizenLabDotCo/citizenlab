@@ -56,13 +56,6 @@ export type IEventsStreamParams = IStreamParams & {
   };
 };
 
-export function eventsStream(streamParams: IEventsStreamParams | null = null) {
-  return streams.get<IEvents>({
-    apiEndpoint: `${API_PATH}/events`,
-    ...streamParams,
-  });
-}
-
 export function eventStream(
   eventId: string,
   streamParams: IStreamParams | null = null

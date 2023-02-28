@@ -29,14 +29,13 @@ const fetchEvents = ({
   });
 };
 
-// ToDo: type project id and static page id, currentAndFutureOnly
 const useEvents = ({
   projectIds,
   staticPageId,
   currentAndFutureOnly,
   pastOnly,
   pageSize,
-  // sort,
+  sort,
   projectPublicationStatuses,
   pageNumber,
 }: InputParameters) => {
@@ -63,6 +62,10 @@ const useEvents = ({
 
   if (pageNumber) {
     queryParams['page[number]'] = pageNumber;
+  }
+
+  if (sort) {
+    queryParams[sort] = sort;
   }
 
   if (pageSize) {

@@ -58,7 +58,7 @@ export interface IEvents {
   links: ILinks;
 }
 
-export interface IUpdatedEventProperties {
+export interface IEventProperties {
   project_id?: string;
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
@@ -69,5 +69,10 @@ export interface IUpdatedEventProperties {
 
 export interface IAddEventProperties {
   projectId: string;
-  event: IUpdatedEventProperties;
+  event: IEventProperties;
+}
+
+export interface IUpdateEventProperties {
+  eventId: string;
+  event: IEventProperties;
 }

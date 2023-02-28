@@ -7,7 +7,7 @@ const eventsKeys = {
     { ...eventsKeys.all()[0], entity: 'list', ...filters },
   ],
   items: () => [{ ...eventsKeys.all()[0], operation: 'item' }],
-  item: (eventId: string) => [
+  item: (eventId?: string) => [
     {
       ...eventsKeys.items()[0],
       eventId,

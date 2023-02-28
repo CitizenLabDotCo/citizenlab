@@ -15,7 +15,7 @@ const useDeleteEvent = () => {
     mutationFn: deleteEvent,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: eventsKeys.lists(),
+        queryKey: eventsKeys.all(),
       });
     },
   });
