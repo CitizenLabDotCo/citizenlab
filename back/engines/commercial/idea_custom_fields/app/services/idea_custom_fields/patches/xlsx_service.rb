@@ -14,7 +14,6 @@ module IdeaCustomFields
       private
 
       def custom_form_custom_field_columns(ideas)
-
         idea_custom_fields = ideas.map(&:project).flat_map do |project|
           next unless project.custom_form
 
