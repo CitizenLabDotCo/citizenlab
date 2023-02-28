@@ -86,7 +86,7 @@ export interface Props {
 }
 
 const Tabs = memo<Props>(
-  ({ items, selectedValue, onClick, className, minTabWidth, disabled }) => {
+  ({ items, selectedValue, onClick, className, minTabWidth, disabled = false }) => {
     const handleTabOnClick = useCallback((event: MouseEvent<HTMLElement>) => {
       const newSelectedValue = event.currentTarget.dataset.itemvalue as string;
       onClick(newSelectedValue);
