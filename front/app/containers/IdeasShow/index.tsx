@@ -49,8 +49,7 @@ import GetPermission, {
 import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { getInputTermMessage } from 'utils/i18n';
 
