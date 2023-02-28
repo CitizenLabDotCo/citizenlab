@@ -580,7 +580,7 @@ const Data = adopt<DataProps, InputProps>({
     </GetIdeas>
   ),
   ideasFilterCounts: ({ ideas, render }) => (
-    <GetIdeasFilterCounts queryParameters={get(ideas, 'queryParameters', null)}>
+    <GetIdeasFilterCounts queryParameters={ideas.queryParameters}>
       {render}
     </GetIdeasFilterCounts>
   ),

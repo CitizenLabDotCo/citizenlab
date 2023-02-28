@@ -14,21 +14,20 @@ import { omitBy, isNil } from 'lodash-es';
 import { NilOrError } from 'utils/helperUtils';
 
 export default function useIdeasFilterCounts(
-  props: IIdeasFilterCountsQueryParameters | null
+  props: IIdeasFilterCountsQueryParameters
 ) {
   const [ideasFilterCounts, setIdeasFilterCounts] = useState<
     IIdeasFilterCounts | NilOrError
   >();
 
-  const propsStr = props === null ? null : JSON.stringify(omitBy(props, isNil));
+  const propsStr = JSON.stringify(omitBy(props, isNil));
 
   useEffect(() => {
-    const streamParams =
-      propsStr === null
-        ? null
-        : {
-            queryParameters: JSON.parse(propsStr),
-          };
+    const streamParams = {
+      queryParameters: JSON.parse(
+        propsStr
+      ) as IIdeasFilterCountsQueryParameters,
+    };
 
     const { observable } = ideasFilterCountsStream(streamParams);
     const subscription = observable.subscribe(

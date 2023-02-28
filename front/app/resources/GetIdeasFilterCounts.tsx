@@ -13,7 +13,7 @@ type children = (
 ) => JSX.Element | null;
 
 interface Props {
-  queryParameters: IIdeasFilterCountsQueryParameters | null;
+  queryParameters: IIdeasFilterCountsQueryParameters;
   children?: children;
 }
 
