@@ -8,6 +8,6 @@ const ideasKeys = {
       id,
     },
   ],
-} as const;
+};
 
 export default ideasKeys;
