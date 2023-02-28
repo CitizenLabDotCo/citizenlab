@@ -258,7 +258,7 @@ jobs:
       - run: rake templates:release['/tmp/workspace/failed-templates.txt']
 
   back-web-api-docs:
-    resource_class: small
+    resource_class: medium
     executor:
       name: cl2-back
       image-tag: $CIRCLE_SHA1
