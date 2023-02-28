@@ -21,7 +21,6 @@ import {
   ideasStream,
   IIdeaData,
   IdeaPublicationStatus,
-  ideasMiniStream,
   Sort,
   SortAttribute,
   IIdeasQueryParameters,
@@ -38,24 +37,15 @@ type PublicationStatus = IdeaPublicationStatus;
 
 export interface InputProps {
   type: 'load-more' | 'paginated';
-  pageNumber?: number;
-  pageSize?: number;
   projectIds?: string[] | 'all';
   phaseId?: string;
   authorId?: string;
   sort?: Sort;
-  search?: string;
-  topics?: string[];
   ideaStatusId?: string;
-  publicationStatus?: PublicationStatus;
   projectPublicationStatus?: ProjectPublicationStatus;
-  boundingBox?: number[];
   assignee?: string;
   feedbackNeeded?: boolean;
   filterCanModerate?: boolean;
-  // prop mini Gets stripped down ideas containing only title, should never be cached,
-  // and is not tested in all scenarios, but improves performance drastically.
-  mini?: boolean;
 }
 
 interface IAccumulator {
@@ -118,8 +108,8 @@ export default class GetIdeas extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.defaultQueryParameters = {
-      'page[number]': props.pageNumber as number,
-      'page[size]': props.pageSize as number,
+      'page[number]': 1,
+      'page[size]': 12,
       sort: props.sort as Sort,
       projects: undefined,
       phase: undefined,
@@ -202,9 +192,7 @@ export default class GetIdeas extends React.Component<Props, State> {
                   loadingMore: isLoadingMore,
                 });
 
-                const stream = this.props.mini ? ideasMiniStream : ideasStream;
-
-                return stream({ queryParameters }).observable.pipe(
+                return ideasStream({ queryParameters }).observable.pipe(
                   map((ideas) => {
                     const selfLink = get(ideas, 'links.self');
                     const lastLink = get(ideas, 'links.last');
@@ -246,9 +234,7 @@ export default class GetIdeas extends React.Component<Props, State> {
               queryParameters['page[number]'] =
                 newPageNumber !== oldPageNumber ? newPageNumber : 1;
 
-              const stream = this.props.mini ? ideasMiniStream : ideasStream;
-
-              return stream({
+              return ideasStream({
                 queryParameters,
               }).observable.pipe(map((ideas) => ({ queryParameters, ideas })));
             })
@@ -290,16 +276,13 @@ export default class GetIdeas extends React.Component<Props, State> {
 
   propsToQueryParamsShape = () => ({
     projects: this.props.projectIds,
-    'page[number]': this.props.pageNumber as number,
-    'page[size]': this.props.pageSize as number,
+    'page[number]': 1,
+    'page[size]': 12,
     phase: this.props.phaseId,
     author: this.props.authorId,
     sort: this.props.sort as Sort,
-    topics: this.props.topics,
     idea_status: this.props.ideaStatusId,
-    publication_status: this.props.publicationStatus,
     project_publication_status: this.props.projectPublicationStatus,
-    bounding_box: this.props.boundingBox,
     assignee: this.props.assignee,
     feedback_needed: this.props.feedbackNeeded,
     filter_can_moderate: this.props.filterCanModerate,
@@ -328,17 +311,13 @@ export default class GetIdeas extends React.Component<Props, State> {
 
     const inputPropsQueryParameters: IIdeasQueryParameters = {
       projects,
-      'page[number]': props.pageNumber as number,
-      'page[size]': props.pageSize as number,
+      'page[number]': 1,
+      'page[size]': 12,
       phase: props.phaseId,
       author: props.authorId,
       sort: props.sort as Sort,
-      search: props.search,
-      topics: props.topics,
       idea_status: props.ideaStatusId,
-      publication_status: props.publicationStatus,
       project_publication_status: props.projectPublicationStatus,
-      bounding_box: props.boundingBox,
       assignee: props.assignee,
       feedback_needed: props.feedbackNeeded,
       filter_can_moderate: props.filterCanModerate,

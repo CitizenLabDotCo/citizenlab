@@ -256,13 +256,6 @@ export function ideasStream(
     ...streamParams,
   });
 }
-export function ideasMiniStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IIdeas>({
-    apiEndpoint: `${API_PATH}/ideas/mini`,
-    ...streamParams,
-    cacheStream: false,
-  });
-}
 
 export interface IIdeasFilterCountsQueryParameters
   extends Omit<IIdeasQueryParameters, 'page[number]' | 'page[size]' | 'sort'> {
