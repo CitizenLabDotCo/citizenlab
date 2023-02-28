@@ -257,13 +257,13 @@ const CustomPageSettingsForm = ({
             {showAdvancedCustomPages && (
               <LinkedProjectContainer
                 display="inline-flex"
-                disabled={!isFeatureAllowed}
+                disabled={showPlanUpgradeTease}
               >
                 <Tippy
                   maxWidth="250px"
                   placement="right-end"
                   content={formatMessage(messages.contactGovSuccessToAccess)}
-                  disabled={isFeatureAllowed}
+                  disabled={!showPlanUpgradeTease}
                   hideOnClick={false}
                 >
                   <div>
@@ -290,7 +290,7 @@ const CustomPageSettingsForm = ({
                           name="projects_filter_type"
                           items={projectsFilterTabs}
                           minTabWidth={120}
-                          disabled={!isFeatureAllowed}
+                          disabled={showPlanUpgradeTease}
                         />
                       </Box>
                       {methods.watch('projects_filter_type') === 'topics' && (
