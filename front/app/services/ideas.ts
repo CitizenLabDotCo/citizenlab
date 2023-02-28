@@ -1,9 +1,16 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { IRelationship, Multiloc } from 'typings';
 import { firstValueFrom } from 'rxjs';
+
+// utils
 import { get } from 'lodash-es';
-import { CommentingDisabledReason } from './projects';
+
+// typings
+import { IRelationship, Multiloc } from 'typings';
+import {
+  CommentingDisabledReason,
+  PublicationStatus as ProjectPublicationStatus,
+} from 'services/projects';
 
 export type IdeaPublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
 
@@ -38,6 +45,35 @@ export type IdeaBudgetingDisabledReason =
   | 'not_signed_in'
   | null
   | undefined;
+
+export type Sort =
+  | 'random'
+  | 'new'
+  | '-new'
+  | 'trending'
+  | '-trending'
+  | 'popular'
+  | '-popular'
+  | 'author_name'
+  | '-author_name'
+  | 'upvotes_count'
+  | '-upvotes_count'
+  | 'downvotes_count'
+  | '-downvotes_count'
+  | 'baskets_count'
+  | '-baskets_count'
+  | 'status'
+  | '-status';
+
+export type SortAttribute =
+  | 'new'
+  | 'trending'
+  | 'popular'
+  | 'author_name'
+  | 'upvotes_count'
+  | 'downvotes_count'
+  | 'baskets_count'
+  | 'status';
 
 export interface IIdeaData {
   id: string;
@@ -194,7 +230,27 @@ export function ideaBySlugStream(ideaSlug: string) {
   });
 }
 
-export function ideasStream(streamParams: IStreamParams | null = null) {
+export interface IIdeasQueryParameters {
+  'page[number]': number;
+  'page[size]': number;
+  projects?: string[] | null;
+  phase?: string | null;
+  author?: string | null;
+  sort: Sort;
+  search?: string | null;
+  topics?: string[] | null;
+  idea_status?: string | null;
+  publication_status?: IdeaPublicationStatus | null;
+  project_publication_status?: ProjectPublicationStatus | null;
+  bounding_box?: number[] | null;
+  assignee?: string | null;
+  feedback_needed?: boolean | null;
+  filter_can_moderate?: boolean | null;
+}
+
+export function ideasStream(
+  streamParams: { queryParameters: IIdeasQueryParameters } | null = null
+) {
   return streams.get<IIdeas>({
     apiEndpoint: `${API_PATH}/ideas`,
     ...streamParams,
@@ -208,8 +264,15 @@ export function ideasMiniStream(streamParams: IStreamParams | null = null) {
   });
 }
 
+export interface IIdeasFilterCountsQueryParameters
+  extends Omit<IIdeasQueryParameters, 'page[number]' | 'page[size]' | 'sort'> {
+  sort?: Sort;
+}
+
 export function ideasFilterCountsStream(
-  streamParams: IStreamParams | null = null
+  streamParams: {
+    queryParameters: IIdeasFilterCountsQueryParameters;
+  } | null = null
 ) {
   return streams.get<IIdeasFilterCounts>({
     apiEndpoint: `${API_PATH}/ideas/filter_counts`,

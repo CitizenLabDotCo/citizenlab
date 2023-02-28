@@ -35,11 +35,11 @@ import { FormattedMessage } from 'utils/cl-intl';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
-// typings
-import { Sort } from 'resources/GetIdeas';
-
 // utils
 import { isFieldEnabled } from 'utils/projectUtils';
+
+// typings
+import { Sort } from 'services/ideas';
 
 const Container = styled.div`
   width: 100%;

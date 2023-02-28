@@ -21,10 +21,8 @@ import IdeasView from './IdeasView';
 
 // resources
 import GetIdeas, {
-  Sort,
   GetIdeasChildProps,
   InputProps as GetIdeasInputProps,
-  IQueryParameters,
 } from 'resources/GetIdeas';
 import GetIdeasFilterCounts, {
   GetIdeasFilterCountsChildProps,
@@ -57,6 +55,7 @@ import {
   ideaDefaultSortMethodFallback,
 } from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
+import { Sort, IIdeasQueryParameters } from 'services/ideas';
 
 const gapWidth = 35;
 
@@ -228,8 +227,8 @@ interface Props extends InputProps, DataProps {
 
 interface State {
   filtersModalOpened: boolean;
-  selectedIdeaFilters: Partial<IQueryParameters>;
-  previouslySelectedIdeaFilters: Partial<IQueryParameters> | null;
+  selectedIdeaFilters: Partial<IIdeasQueryParameters>;
+  previouslySelectedIdeaFilters: Partial<IIdeasQueryParameters> | null;
 }
 
 class IdeaCards extends PureComponent<Props & WrappedComponentProps, State> {
@@ -296,7 +295,7 @@ class IdeaCards extends PureComponent<Props & WrappedComponentProps, State> {
   };
 
   handleIdeaFiltersOnChange = (
-    newSelectedIdeaFilters: Partial<IQueryParameters>,
+    newSelectedIdeaFilters: Partial<IIdeasQueryParameters>,
     applyFilter = false
   ) => {
     this.setState((state) => {
@@ -404,7 +403,7 @@ class IdeaCards extends PureComponent<Props & WrappedComponentProps, State> {
         )}
 
         <ScreenReaderOnly aria-live="polite">
-          {ideasFilterCounts && (
+          {!isNilOrError(ideasFilterCounts) && (
             <FormattedMessage
               {...messages.a11y_totalItems}
               values={{ ideasCount: ideasFilterCounts.total }}
@@ -467,7 +466,7 @@ class IdeaCards extends PureComponent<Props & WrappedComponentProps, State> {
                     <GetIdeasFilterCounts queryParameters={selectedIdeaFilters}>
                       {(newIdeasFilterCounts) => {
                         const bottomBarButtonText =
-                          newIdeasFilterCounts &&
+                          !isNilOrError(newIdeasFilterCounts) &&
                           isNumber(newIdeasFilterCounts.total) ? (
                             <FormattedMessage
                               {...messages.showXResults}
@@ -581,7 +580,7 @@ const Data = adopt<DataProps, InputProps>({
     </GetIdeas>
   ),
   ideasFilterCounts: ({ ideas, render }) => (
-    <GetIdeasFilterCounts queryParameters={get(ideas, 'queryParameters', null)}>
+    <GetIdeasFilterCounts queryParameters={ideas.queryParameters}>
       {render}
     </GetIdeasFilterCounts>
   ),
