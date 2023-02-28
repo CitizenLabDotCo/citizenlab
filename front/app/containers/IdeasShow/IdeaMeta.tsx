@@ -13,13 +13,10 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
-import GetIdeaImages, {
-  GetIdeaImagesChildProps,
-} from 'resources/GetIdeaImages';
+import useIdeaImages from 'hooks/useIdeaImages';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import useLocalize from 'hooks/useLocalize';
 
 // utils
 import { stripHtml } from 'utils/textUtils';
@@ -39,22 +36,15 @@ interface DataProps {
   locale: GetLocaleChildProps;
   tenant: GetAppConfigurationChildProps;
   authUser: GetAuthUserChildProps;
-  ideaImages: GetIdeaImagesChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
-const IdeaMeta = memo<Props & WrappedComponentProps & InjectedLocalized>(
-  ({
-    idea,
-    locale,
-    tenant,
-    authUser,
-    ideaImages,
-    author,
-    project,
-    localize,
-  }) => {
+const IdeaMeta = memo<Props>(
+  ({ idea, locale, tenant, authUser, author, project, ideaId }) => {
+    const ideaImages = useIdeaImages(ideaId);
+    const localize = useLocalize();
+
     if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(idea)) {
       const { title_multiloc, body_multiloc } = idea.attributes;
       const tenantLocales = tenant.attributes.settings.core.locales;
@@ -180,9 +170,6 @@ const IdeaMeta = memo<Props & WrappedComponentProps & InjectedLocalized>(
 
 const Data = adopt<DataProps, InputProps>({
   idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
-  ideaImages: ({ ideaId, render }) => (
-    <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>
-  ),
   project: ({ idea, render }) =>
     !isNilOrError(idea) ? (
       <GetProject projectId={idea.relationships.project.data.id}>
@@ -199,10 +186,8 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
 });
 
-const IdeaMetaWithHoc = injectLocalize<Props>(IdeaMeta);
-
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <IdeaMetaWithHoc {...inputProps} {...dataProps} />}
+    {(dataProps) => <IdeaMeta {...inputProps} {...dataProps} />}
   </Data>
 );
