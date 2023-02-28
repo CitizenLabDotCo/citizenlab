@@ -5,9 +5,9 @@ import {
 } from 'services/initiatives';
 import { isNilOrError } from 'utils/helperUtils';
 import { ActionPermission } from 'services/actionTakingRules';
-import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { authUserStream } from 'services/auth';
 import { combineLatest } from 'rxjs';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 export type IInitiativeDisabledReason = 'notPermitted';
 
@@ -15,14 +15,15 @@ export default function useInitiativesPermissions(action: IInitiativeAction) {
   const [actionPermission, setActionPermission] = useState<
     ActionPermission<IInitiativeDisabledReason> | null | undefined
   >(undefined);
+  const { data: appConfiguration } = useAppConfiguration();
 
   useEffect(() => {
     const subscription = combineLatest([
       getInitiativeActionDescriptors().observable,
-      currentAppConfigurationStream().observable,
+
       authUserStream().observable,
-    ]).subscribe(([actionDescriptors, tenant, authUser]) => {
-      if (!isNilOrError(tenant) && !isNilOrError(actionDescriptors)) {
+    ]).subscribe(([actionDescriptors, authUser]) => {
+      if (!isNilOrError(appConfiguration) && !isNilOrError(actionDescriptors)) {
         const actionDescriptor = actionDescriptors[action];
 
         if (actionDescriptor.enabled) {
@@ -73,7 +74,7 @@ export default function useInitiativesPermissions(action: IInitiativeAction) {
 
     return () => subscription.unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [appConfiguration]);
 
   return actionPermission;
 }
