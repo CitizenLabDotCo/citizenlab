@@ -7,7 +7,6 @@ import { getAppConfiguration } from '../../services/__mocks__/appConfiguration';
 
 jest.mock('components/InitiativeForm', () => 'InitiativeForm');
 jest.mock('services/initiatives'); // TODO
-jest.mock('services/initiativeImages', () => {}); // TODO
 jest.mock('services/initiativeFiles', () => {}); // TODO
 
 jest.mock('utils/locationTools');
