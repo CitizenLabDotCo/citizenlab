@@ -37,10 +37,11 @@ const FormResultsQuestion = ({
 }: FormResultsQuestionProps) => {
   const { formatMessage } = useIntl();
 
-  const inputTypeText = get(messages, inputType, '');
+  // TODO: Replace hardcoded '2' here. Urgent to relese to fix bug though right now.
+  const inputTypeText = get(messages, inputType.concat('2'), '');
   const requiredOrOptionalText = required
-    ? formatMessage(messages.required)
-    : formatMessage(messages.optional);
+    ? formatMessage(messages.required2)
+    : formatMessage(messages.optional2);
   const inputTypeLabel = `${formatMessage(
     inputTypeText
   )} - ${requiredOrOptionalText.toLowerCase()}`;
@@ -64,7 +65,7 @@ const FormResultsQuestion = ({
             bgColor={colors.primary}
             completed={percentage}
             leftLabel={answer}
-            rightLabel={formatMessage(messages.choiceCount, {
+            rightLabel={formatMessage(messages.choiceCount2, {
               choiceCount: responses,
               percentage,
             })}

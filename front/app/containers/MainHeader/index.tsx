@@ -19,7 +19,7 @@ import tracks from './tracks';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
 
 // utils
@@ -252,7 +252,7 @@ const MainHeader = ({
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const appConfiguration = useAppConfiguration();
+  const { data: appConfiguration } = useAppConfiguration();
   const authUser = useAuthUser();
   const locale = useLocale();
   const theme = useTheme();
@@ -281,7 +281,7 @@ const MainHeader = ({
   }, []);
 
   const tenantLocales = !isNilOrError(appConfiguration)
-    ? appConfiguration.attributes.settings.core.locales
+    ? appConfiguration.data.attributes.settings.core.locales
     : [];
   const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
   const firstUrlSegment = urlSegments[0];
