@@ -59,6 +59,7 @@ class XlsxService
   end
 
   def generate_xlsx(sheetname, columns, instances)
+    binding.pry
     columns = columns.uniq { |c| c[:header] }
     pa = Axlsx::Package.new
     generate_sheet pa.workbook, sheetname, columns, instances
