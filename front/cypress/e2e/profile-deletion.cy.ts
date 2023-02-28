@@ -7,12 +7,13 @@ describe('profile deletion', () => {
   const peasantPassword = randomString();
 
   before(() => {
-    cy.apiSignup(firstName, lastName, peasantEmail, peasantPassword);
-  });
-  beforeEach(() => {
-    cy.setLoginCookie(peasantEmail, peasantPassword);
-    cy.visit('/profile/edit');
-    cy.acceptCookies();
+    cy.apiSignup(firstName, lastName, peasantEmail, peasantPassword).then(
+      () => {
+        cy.setLoginCookie(peasantEmail, peasantPassword);
+        cy.visit('/profile/edit');
+        cy.acceptCookies();
+      }
+    );
   });
   it('lets user delete their profile', () => {
     cy.get('.e2e-delete-profile').find('button').click();
