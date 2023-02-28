@@ -40,7 +40,7 @@ type FetcherArgs = Get | Patch | Post | Delete;
 
 type BaseData = { id?: string; type: string };
 
-type BaseResponseData =
+export type BaseResponseData =
   | { data: BaseData; included?: BaseData[] }
   | { data: BaseData[]; included?: BaseData[] };
 
