@@ -284,30 +284,28 @@ jobs:
       - image: cimg/base:2021.03
     steps:
       - echo_pipeline_parameters
-      - when:
-          condition:
-            or:
-              - equal: [<< pipeline.git.branch >>, master]
-              - equal: [<< pipeline.git.branch >>, production]
-          steps:
-            - run: |
-                curl --request POST \
-                  -u $CIRCLECI_API_TOKEN: \
-                  --url https://circleci.com/api/v2/project/github/CitizenLabDotCo/citizenlab/pipeline \
-                  --header 'content-type: application/json' \
-                  --header 'x-attribution-login: '"$CIRCLE_USERNAME" \
-                  --data '{"branch": "'"$CIRCLE_BRANCH"'","parameters": {"image_tag": "'"$CIRCLE_SHA1"'", "run_deploy": true, "back": true, "trigger": false}}'
+      - run: |
+          curl --request POST \
+            -u $CIRCLECI_API_TOKEN: \
+            --url https://circleci.com/api/v2/project/github/CitizenLabDotCo/citizenlab/pipeline \
+            --header 'content-type: application/json' \
+            --header 'x-attribution-login: '"$CIRCLE_USERNAME" \
+            --data '{"branch": "'"$CIRCLE_BRANCH"'","parameters": {"image_tag": "'"$CIRCLE_SHA1"'", "run_deploy": true, "back": true, "trigger": false}}'
 
   back-push-deployment-docker-image:
     resource_class: small
     docker:
       - image: cimg/base:2021.03
+    parameters:
+      image_tag:
+        type: string
+        default: << pipeline.parameters.image_tag >>
     steps:
       - echo_pipeline_parameters
       - setup_remote_docker
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-      - run: docker pull citizenlabdotco/back-ee:<< pipeline.parameters.image_tag >>
-      - run: docker tag citizenlabdotco/back-ee:<< pipeline.parameters.image_tag >> citizenlabdotco/back-ee:$CIRCLE_BRANCH
+      - run: docker pull citizenlabdotco/back-ee:<< parameters.image_tag >>
+      - run: docker tag citizenlabdotco/back-ee:<< parameters.image_tag >> citizenlabdotco/back-ee:$CIRCLE_BRANCH
       - deploy:
           command: docker push citizenlabdotco/back-ee:$CIRCLE_BRANCH
 
@@ -668,10 +666,17 @@ workflows:
   back:
     when:
       and:
-        - not: <<pipeline.parameters.run_deploy>>
         - << pipeline.parameters.back >>
+        - not: <<pipeline.parameters.run_deploy>>
+        - not:
+            equal: ["production", << pipeline.git.branch >>]
     jobs:
       - back-build-docker-image:
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
           context:
             - docker-hub-access
             - citizenlab-ee-environment
@@ -732,9 +737,8 @@ workflows:
             branches:
               only:
                 - master
-                - production
 
-  back-deploy:
+  back-deploy-staging:
     when:
       and:
         - <<pipeline.parameters.run_deploy>>
@@ -746,8 +750,8 @@ workflows:
             branches:
               only:
                 - master
-                - production
       - back-deploy-to-swarm:
+          name: Deploy to staging
           requires:
             - back-push-deployment-docker-image
           filters:
@@ -758,7 +762,26 @@ workflows:
           compose_file: docker-compose-staging.yml
           stack_name: cl2-back-stg
           env_file: ".env-staging"
+
+  back-deploy-production:
+    when: << pipeline.parameters.back >>
+    jobs:
+      - back-build-docker-image:
+          filters:
+            branches:
+              only: production
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+      - back-push-deployment-docker-image:
+          context: docker-hub-access
+          filters:
+            branches:
+              only:
+                - production
+          image_tag: $CIRCLE_SHA1
       - back-deploy-to-swarm:
+          name: Deploy to Europe
           requires:
             - back-push-deployment-docker-image
           filters:
@@ -770,6 +793,7 @@ workflows:
           stack_name: cl2-prd-bnlx-stack
           env_file: ".env-production-benelux"
       - back-deploy-to-swarm:
+          name: Deploy to Canada
           requires:
             - back-push-deployment-docker-image
           filters:
@@ -781,6 +805,7 @@ workflows:
           env_file: ".env-web"
           stack_name: "cl2"
       - back-deploy-to-swarm:
+          name: Deploy to South-America
           requires:
             - back-push-deployment-docker-image
           filters:
@@ -792,6 +817,7 @@ workflows:
           env_file: ".env-web"
           stack_name: "cl2"
       - back-deploy-to-swarm:
+          name: Deploy to US-West
           requires:
             - back-push-deployment-docker-image
           filters:
@@ -803,6 +829,7 @@ workflows:
           env_file: ".env-web"
           stack_name: "cl2"
       - back-deploy-to-swarm:
+          name: Deploy to UK
           requires:
             - back-push-deployment-docker-image
           filters:
@@ -818,8 +845,10 @@ workflows:
   front:
     when:
       and:
-        - not: <<pipeline.parameters.run_deploy>>
         - << pipeline.parameters.front >>
+        - not: <<pipeline.parameters.run_deploy>>
+        - not:
+            equal: ["production", << pipeline.git.branch >>]
     jobs:
       - front-test
       - front-lint:
@@ -829,7 +858,6 @@ workflows:
               ignore:
                 - crowdin_master
                 - /l10n_.*/
-                - master
       - front-detect-deadcode:
           context: citizenlab-ee-environment
           filters:
@@ -837,7 +865,6 @@ workflows:
               ignore:
                 - crowdin_master
                 - /l10n_.*/
-                - master
       - front-license-check:
           context: citizenlab-ee-environment
           filters:
@@ -852,7 +879,6 @@ workflows:
               ignore:
                 - crowdin_master
                 - /l10n_.*/
-                - master
       - front-extract-intl:
           context: citizenlab-ee-environment
           filters:
@@ -860,8 +886,6 @@ workflows:
               ignore:
                 - crowdin_master
                 - /l10n_.*/
-                - master
-                - production
       - front-trigger-deploy:
           context: circleci-api-token
           requires:
@@ -870,9 +894,8 @@ workflows:
             branches:
               only:
                 - master
-                - production
 
-  front-deploy:
+  front-deploy-staging:
     when:
       and:
         - <<pipeline.parameters.run_deploy>>
@@ -881,15 +904,7 @@ workflows:
       - front-deploy-staging:
           filters:
             branches:
-              only:
-                - master
-          context:
-            - citizenlab-ee-environment
-      - front-deploy-production:
-          filters:
-            branches:
-              only:
-                - production
+              only: master
           context:
             - citizenlab-ee-environment
       - front-test-lighthouse:
@@ -898,6 +913,17 @@ workflows:
           filters:
             branches:
               only: master
+
+  front-deploy-production:
+    when: <<pipeline.parameters.front>>
+    jobs:
+      - front-deploy-production:
+          filters:
+            branches:
+              only:
+                - production
+          context:
+            - citizenlab-ee-environment
 
   # OTHER
   manually-e2e-tests:
