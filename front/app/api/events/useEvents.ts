@@ -28,14 +28,16 @@ const fetchEvents = ({
     },
   });
 
+// ToDo: type project id and static page id, currentAndFutureOnly
 const useEvents = ({
   projectIds,
   staticPageId,
   currentAndFutureOnly,
   pastOnly,
   pageSize,
-  sort,
+  // sort,
   projectPublicationStatuses,
+  pageNumber,
 }: InputParameters) => {
   const queryParams: QueryParameters = {
     ...(projectIds && { project_ids: projectIds }),
@@ -56,6 +58,15 @@ const useEvents = ({
     queryParams.ends_before_date = new Date().toJSON();
     queryParams.sort = '-start_at';
   }
+
+  if (pageNumber) {
+    queryParams['page[number]'] = pageNumber;
+  }
+
+  if (pageSize) {
+    queryParams['page[size]'] = pageSize;
+  }
+
   return useQuery<IEvents, CLErrors, IEvents, EventsKeys>({
     queryKey: eventsKeys.lists(),
     queryFn: () => fetchEvents(queryParams),

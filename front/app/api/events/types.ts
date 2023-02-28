@@ -44,6 +44,7 @@ export interface InputParameters {
   currentAndFutureOnly?: boolean;
   pastOnly?: boolean;
   pageSize?: number;
+  pageNumber?: number;
   sort?: sort;
   projectPublicationStatuses?: PublicationStatus[];
 }
