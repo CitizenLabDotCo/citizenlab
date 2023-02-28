@@ -36,9 +36,6 @@ import RightColumnDesktop from './RightColumnDesktop';
 import { isFieldEnabled } from 'utils/projectUtils';
 
 // resources
-import GetIdeaImages, {
-  GetIdeaImagesChildProps,
-} from 'resources/GetIdeaImages';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetWindowSize, {
   GetWindowSizeChildProps,
@@ -52,9 +49,7 @@ import GetPermission, {
 import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage } from 'utils/cl-intl';
-import injectIntl from 'utils/cl-intl/injectIntl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { getInputTermMessage } from 'utils/i18n';
 
@@ -70,8 +65,6 @@ import { media, viewportWidths, isRtl } from 'utils/styleUtils';
 import { columnsGapDesktop, pageContentMaxWidth } from './styleConstants';
 import Outlet from 'components/Outlet';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -79,6 +72,8 @@ import usePhases from 'hooks/usePhases';
 import useIdea from 'hooks/useIdea';
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
 import { useSearchParams } from 'react-router-dom';
+import useIdeaImages from 'hooks/useIdeaImages';
+import useLocalize from 'hooks/useLocalize';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -160,7 +155,6 @@ const BodySectionTitle = styled.h2`
 
 interface DataProps {
   project: GetProjectChildProps;
-  ideaImages: GetIdeaImagesChildProps;
   windowSize: GetWindowSizeChildProps;
   officialFeedbacks: GetOfficialFeedbacksChildProps;
   postOfficialFeedbackPermission: GetPermissionChildProps;
@@ -179,11 +173,9 @@ interface InputProps {
 interface Props extends DataProps, InputProps {}
 
 export const IdeasShow = ({
-  ideaImages,
   windowSize,
   className,
   postOfficialFeedbackPermission,
-  localize,
   projectId,
   insideModal,
   project,
@@ -191,8 +183,10 @@ export const IdeasShow = ({
   ideaId,
   officialFeedbacks,
   setRef,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps & InjectedLocalized & WithRouterProps) => {
+}: Props) => {
+  const { formatMessage } = useIntl();
+  const localize = useLocalize();
+  const ideaImages = useIdeaImages(ideaId);
   const [newIdeaId, setNewIdeaId] = useState<string | null>(null);
   const [translateButtonIsClicked, setTranslateButtonIsClicked] =
     useState<boolean>(false);
@@ -224,7 +218,7 @@ export const IdeasShow = ({
 
   const isLoaded =
     !isNilOrError(idea) &&
-    !isUndefined(ideaImages) &&
+    !isNilOrError(ideaImages) &&
     !isNilOrError(project) &&
     !isUndefined(officialFeedbacks.officialFeedbacksList);
 
@@ -467,15 +461,8 @@ export const IdeasShow = ({
   return null;
 };
 
-const IdeasShowWithHOCs = injectLocalize<Props>(
-  withRouter(injectIntl(IdeasShow))
-);
-
 const Data = adopt<DataProps, InputProps>({
   windowSize: <GetWindowSize />,
-  ideaImages: ({ ideaId, render }) => (
-    <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>
-  ),
   project: ({ projectId, render }) => (
     <GetProject projectId={projectId}>{render}</GetProject>
   ),
@@ -501,6 +488,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <IdeasShowWithHOCs {...inputProps} {...dataProps} />}
+    {(dataProps) => <IdeasShow {...inputProps} {...dataProps} />}
   </Data>
 );
