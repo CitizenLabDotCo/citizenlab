@@ -78,6 +78,7 @@ class IdeasContainer extends PureComponent<Props, State> {
               participationContextId={phase.id}
               participationContextType="phase"
               invisibleTitleMessage={messages.a11y_titleInputsPhase}
+              hideFiltersSidebar
             />
           </Container>
         );

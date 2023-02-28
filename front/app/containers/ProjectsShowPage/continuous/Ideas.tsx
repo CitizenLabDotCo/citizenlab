@@ -99,6 +99,7 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
               defaultSortingMethod={project.attributes.ideas_order || null}
               defaultView={project.attributes.presentation_mode || null}
               invisibleTitleMessage={messages.a11y_titleInputs}
+              hideFiltersSidebar
             />
           </SectionContainer>
         </StyledContentContainer>

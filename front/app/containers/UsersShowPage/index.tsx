@@ -130,6 +130,7 @@ export const UsersShowPage = memo<
                   type="load-more"
                   authorId={user.id}
                   invisibleTitleMessage={messages.invisibleTitlePostsList}
+                  hideFiltersSidebar
                 />
               </UserIdeas>
             )}
