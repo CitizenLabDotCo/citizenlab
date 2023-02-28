@@ -34,7 +34,6 @@ import {
 import {
   eventStream,
   updateEvent,
-  addEvent,
   IEvent,
   IUpdatedEventProperties,
 } from 'services/events';
@@ -48,6 +47,7 @@ import GetRemoteFiles, {
 // typings
 import { Multiloc, CLError, Locale, UploadFile } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
+import useAddEvent from 'api/events/useAddEvent';
 
 interface DataProps {
   remoteEventFiles: GetRemoteFilesChildProps;
@@ -67,6 +67,8 @@ const AdminProjectEventEdit = ({
   params,
   remoteEventFiles,
 }: Props & DataProps) => {
+  const { mutate: addEvent, isSuccess, data } = useAddEvent();
+
   const [locale, setLocale] = useState<Locale | null>(null);
   const [currentTenant, setCurrentTenant] = useState<IAppConfiguration | null>(
     null
@@ -111,10 +113,15 @@ const AdminProjectEventEdit = ({
 
   useEffect(() => {
     // Set the event files once remote files are loaded
-    if (remoteEventFiles !== eventFiles && eventFiles.length === 0) {
+    if (
+      remoteEventFiles !== eventFiles &&
+      eventFiles.length === 0 &&
+      eventFilesToRemove.length === 0
+    ) {
       setEventFiles(!isNilOrError(remoteEventFiles) ? remoteEventFiles : []);
     }
-  }, [eventFiles, remoteEventFiles]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [eventFiles, eventFilesToRemove.length, remoteEventFiles]);
 
   const handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
     setSubmitState('enabled');
@@ -185,15 +192,19 @@ const AdminProjectEventEdit = ({
             setAttributeDiff({});
           } else if (projectId) {
             // event doesn't exist, create with project id
-            eventResponse = await addEvent(projectId, attributeDiff);
+            const payload: IUpdatedEventProperties = {
+              project_id: projectId,
+              ...attributeDiff,
+            };
+            addEvent(payload);
             setEvent(eventResponse);
             setAttributeDiff({});
             redirect = true;
           }
         }
 
-        if (eventResponse) {
-          const { id: eventId } = eventResponse.data;
+        if (isSuccess && data) {
+          const { id: eventId } = data.data;
           const filesToAddPromises = eventFiles
             .filter((file) => !file.remote)
             .map((file) => addEventFile(eventId, file.base64, file.name));
