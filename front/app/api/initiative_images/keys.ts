@@ -1,17 +1,14 @@
 const initiativeImagesKeys = {
   all: () => [{ type: 'initiative_images' }] as const,
-  lists: () =>
-    [{ ...initiativeImagesKeys.all()[0], operation: 'list' }] as const,
-  list: (initiativeId: string) =>
+  items: (initiativeId: string) =>
     [
-      { ...initiativeImagesKeys.all()[0], operation: 'list', initiativeId },
+      { ...initiativeImagesKeys.all()[0], operation: 'items', initiativeId },
     ] as const,
-  items: () =>
-    [{ ...initiativeImagesKeys.all()[0], operation: 'item' }] as const,
   item: (initiativeId: string, imageId: string) =>
     [
       {
-        ...initiativeImagesKeys.items()[0],
+        ...initiativeImagesKeys.all()[0],
+        operation: 'item',
         initiativeId,
         imageId,
       },

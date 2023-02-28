@@ -17,7 +17,7 @@ const useInitiativeImages = (initiativeId: string) => {
     IInitiativeImages,
     InitiativeImagesKeys
   >({
-    queryKey: initiativeImagesKeys.list(initiativeId),
+    queryKey: initiativeImagesKeys.items(initiativeId),
     queryFn: () => fetchInitiativeImages(initiativeId),
   });
 };
