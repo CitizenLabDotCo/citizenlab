@@ -73,7 +73,6 @@ const InitiativesNewFormWrapper = ({ topics, locale }: Props) => {
   };
 
   const [formValues, setFormValues] = useState<SimpleFormValues>(initialValues);
-
   const [image, setImage] = useState<UploadFile | null>(null);
   const [imageId, setImageId] = useState<string | null>(null);
   const [publishing, setPublishing] = useState<boolean>(false);

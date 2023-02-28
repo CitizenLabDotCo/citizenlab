@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 // components
 import InitiativeForm, {
   FormValues,
@@ -72,23 +72,21 @@ const InitiativesEditFormWrapper = ({
     topic_ids: initiative.relationships.topics.data.map((topic) => topic.id),
   };
 
-  const [formValues, setFormValues] =
-    React.useState<SimpleFormValues>(initialValues);
+  const [formValues, setFormValues] = useState<SimpleFormValues>(initialValues);
 
-  const [oldImageId, setOldImageId] = React.useState<string | null>(null);
-  const [image, setImage] = React.useState<UploadFile | null>(null);
-  const [publishing, setPublishing] = React.useState<boolean>(false);
-  const [hasBannerChanged, setHasBannerChanged] =
-    React.useState<boolean>(false);
-  const [banner, setBanner] = React.useState<UploadFile | null>(null);
-  const [files, setFiles] = React.useState<UploadFile[]>(initiativeFiles || []);
-  const [publishError, setPublishError] = React.useState<boolean>(false);
-  const [apiErrors, setApiErrors] = React.useState<any>(null);
-  const [filesToRemove, setFilesToRemove] = React.useState<UploadFile[]>([]);
+  const [oldImageId, setOldImageId] = useState<string | null>(null);
+  const [image, setImage] = useState<UploadFile | null>(null);
+  const [publishing, setPublishing] = useState<boolean>(false);
+  const [hasBannerChanged, setHasBannerChanged] = useState<boolean>(false);
+  const [banner, setBanner] = useState<UploadFile | null>(null);
+  const [files, setFiles] = useState<UploadFile[]>(initiativeFiles || []);
+  const [publishError, setPublishError] = useState<boolean>(false);
+  const [apiErrors, setApiErrors] = useState<any>(null);
+  const [filesToRemove, setFilesToRemove] = useState<UploadFile[]>([]);
   const [titleProfanityError, setTitleProfanityError] =
-    React.useState<boolean>(false);
+    useState<boolean>(false);
   const [descriptionProfanityError, setDescriptionProfanityError] =
-    React.useState<boolean>(false);
+    useState<boolean>(false);
 
   useEffect(() => {
     if (initiativeImage && initiativeImage.attributes.versions.large) {
