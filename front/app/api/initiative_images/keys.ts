@@ -3,9 +3,7 @@ const initiativeImagesKeys = {
   lists: () =>
     [{ ...initiativeImagesKeys.all()[0], operation: 'list' }] as const,
   list: (initiativeId: string) =>
-    [
-      { ...initiativeImagesKeys.all()[0], entity: 'list', initiativeId },
-    ] as const,
+    [{ ...initiativeImagesKeys.lists()[0], initiativeId }] as const,
   items: () =>
     [{ ...initiativeImagesKeys.all()[0], operation: 'item' }] as const,
   item: (initiativeId: string, imageId: string) =>
