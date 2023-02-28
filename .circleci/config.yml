@@ -271,10 +271,25 @@ jobs:
           rake db:create
           rake db:schema:load
       - run: bundle exec rake web_api:docs:generate
+      - run: apt-get -y install awscli
+      - run: aws s3 sync doc/api s3://developers.citizenlab.co/api-docs/ee/frontweb_api/$CIRCLE_BRANCH --delete --acl public-read
+
+  back-other-api-docs:
+    resource_class: small
+    executor:
+      name: cl2-back
+      image-tag: $CIRCLE_SHA1
+    working_directory: /cl2_back
+    environment:
+      RAILS_ENV: test
+    steps:
+      - wait-for-postgres
+      - run: |
+          rake db:create
+          rake db:schema:load
       - run: bundle exec rake public_api:docs:generate
       - run: bundle exec rake admin_api:docs:generate
       - run: apt-get -y install awscli
-      - run: aws s3 sync doc/api s3://developers.citizenlab.co/api-docs/ee/frontweb_api/$CIRCLE_BRANCH --delete --acl public-read
       - run: aws s3 sync doc/public_api s3://developers.citizenlab.co/api-docs/ee/public_api/$CIRCLE_BRANCH --delete --acl public-read
       - run: aws s3 sync doc/admin_api s3://developers.citizenlab.co/api-docs/ee/admin_api/$CIRCLE_BRANCH --delete --acl public-read
 
@@ -710,6 +725,12 @@ workflows:
           requires:
             - back-build-docker-image
       - back-web-api-docs:
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+          requires:
+            - back-test
+      - back-other-api-docs:
           context:
             - docker-hub-access
             - citizenlab-ee-environment
