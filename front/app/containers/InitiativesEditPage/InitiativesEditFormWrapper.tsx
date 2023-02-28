@@ -7,17 +7,12 @@ import InitiativeForm, {
 } from 'components/InitiativeForm';
 
 // services
-import { Locale, Multiloc, UploadFile } from 'typings';
+import { CLErrors, Locale, Multiloc, UploadFile } from 'typings';
 import {
   updateInitiative,
   IInitiativeData,
   IInitiativeAdd,
 } from 'services/initiatives';
-import {
-  addInitiativeImage,
-  deleteInitiativeImage,
-  IInitiativeImageData,
-} from 'services/initiativeImages';
 import {
   deleteInitiativeFile,
   addInitiativeFile,
@@ -43,6 +38,16 @@ import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 
+import {
+  AddInitiativeImageObject,
+  IInitiativeImageData,
+  IInitiativeImage,
+} from 'api/initiative_images/types';
+import useAddInitiativeImage from 'api/initiative_images/useAddInitiativeImage';
+import useDeleteInitiativeImage from 'api/initiative_images/useDeleteInitiativeImage';
+import { UseMutateFunction } from '@tanstack/react-query';
+import { BaseResponseData } from 'utils/cl-react-query/fetcher';
+
 interface DataProps {
   authUser: GetAuthUserChildProps;
   appConfiguration: GetAppConfigurationChildProps;
@@ -57,7 +62,23 @@ interface InputProps {
   topics: ITopicData[];
 }
 
-interface Props extends DataProps, InputProps {}
+interface Props extends DataProps, InputProps {
+  addInitiativeImage: UseMutateFunction<
+    IInitiativeImage,
+    CLErrors,
+    AddInitiativeImageObject,
+    unknown
+  >;
+  deleteInitiativeImage: UseMutateFunction<
+    Omit<BaseResponseData, 'included'>,
+    unknown,
+    {
+      initiativeId: string;
+      imageId: string;
+    },
+    unknown
+  >;
+}
 
 interface State extends FormValues {
   initiativeId: string;
@@ -187,7 +208,14 @@ class InitiativesEditFormWrapper extends React.PureComponent<Props, State> {
       filesToRemove,
       files,
     } = this.state;
-    const { onPublished, locale, appConfiguration, authUser } = this.props;
+    const {
+      onPublished,
+      locale,
+      appConfiguration,
+      authUser,
+      addInitiativeImage,
+      deleteInitiativeImage,
+    } = this.props;
 
     // if we're already saving, do nothing.
     if (publishing) return;
@@ -214,14 +242,20 @@ class InitiativesEditFormWrapper extends React.PureComponent<Props, State> {
 
       // save any changes to initiative image.
       if (image && image.base64 && !image.id) {
-        await addInitiativeImage(initiativeId, image.base64);
+        addInitiativeImage({
+          initiativeId,
+          image: { image: image.base64 },
+        });
       }
       if (oldImageId) {
-        deleteInitiativeImage(initiativeId, oldImageId).then(() => {
-          // save image id in case we need to remove it later.
-          this.setState({ oldImageId: null });
-          // remove image from remote if it was saved
-        });
+        deleteInitiativeImage(
+          { initiativeId, imageId: oldImageId },
+          {
+            onSuccess: () => {
+              this.setState({ oldImageId: null });
+            },
+          }
+        );
       }
 
       // saves changes to files
@@ -420,10 +454,20 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
 });
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => (
-      <InitiativesEditFormWrapper {...inputProps} {...dataProps} />
-    )}
-  </Data>
-);
+export default (inputProps: InputProps) => {
+  const { mutate: addInitiativeImage } = useAddInitiativeImage();
+  const { mutate: deleteInitiativeImage } = useDeleteInitiativeImage();
+
+  return (
+    <Data {...inputProps}>
+      {(dataProps) => (
+        <InitiativesEditFormWrapper
+          {...inputProps}
+          {...dataProps}
+          addInitiativeImage={addInitiativeImage}
+          deleteInitiativeImage={deleteInitiativeImage}
+        />
+      )}
+    </Data>
+  );
+};

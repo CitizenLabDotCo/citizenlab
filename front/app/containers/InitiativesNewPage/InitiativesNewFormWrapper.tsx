@@ -8,7 +8,7 @@ import InitiativeForm, {
 } from 'components/InitiativeForm';
 
 // services
-import { Locale, Multiloc, UploadFile } from 'typings';
+import { CLErrors, Locale, Multiloc, UploadFile } from 'typings';
 import {
   addInitiative,
   updateInitiative,
@@ -30,10 +30,6 @@ import { geocode } from 'utils/locationTools';
 import { isEqual, pick, get, omitBy, isEmpty, debounce } from 'lodash-es';
 import { Point } from 'geojson';
 import {
-  addInitiativeImage,
-  deleteInitiativeImage,
-} from 'services/initiativeImages';
-import {
   deleteInitiativeFile,
   addInitiativeFile,
 } from 'services/initiativeFiles';
@@ -48,6 +44,15 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
+
+import {
+  AddInitiativeImageObject,
+  IInitiativeImage,
+} from 'api/initiative_images/types';
+import useAddInitiativeImage from 'api/initiative_images/useAddInitiativeImage';
+import useDeleteInitiativeImage from 'api/initiative_images/useDeleteInitiativeImage';
+import { UseMutateFunction } from '@tanstack/react-query';
+import { BaseResponseData } from 'utils/cl-react-query/fetcher';
 
 const StyledInitiativeForm = styled(InitiativeForm)`
   width: 100%;
@@ -70,7 +75,23 @@ interface DataProps {
   appConfiguration: GetAppConfigurationChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps {
+  addInitiativeImage: UseMutateFunction<
+    IInitiativeImage,
+    CLErrors,
+    AddInitiativeImageObject,
+    unknown
+  >;
+  deleteInitiativeImage: UseMutateFunction<
+    Omit<BaseResponseData, 'included'>,
+    unknown,
+    {
+      initiativeId: string;
+      imageId: string;
+    },
+    unknown
+  >;
+}
 
 interface State extends FormValues {
   initiativeId: string | null;
@@ -207,6 +228,7 @@ export class InitiativesNewFormWrapper extends React.PureComponent<
     } = this.state;
     // if nothing has changed, do noting.
     if (isEmpty(changedValues) && !hasBannerChanged && !hasImageChanged) return;
+    const { addInitiativeImage, deleteInitiativeImage } = this.props;
 
     // if we're already publishing, do nothing.
     if (saving) return;
@@ -243,15 +265,26 @@ export class InitiativesNewFormWrapper extends React.PureComponent<
       // save any changes to initiative image.
       if (hasImageChanged && initiativeId) {
         if (image && image.base64) {
-          const imageRemote = await addInitiativeImage(
-            initiativeId,
-            image.base64
+          addInitiativeImage(
+            {
+              initiativeId,
+              image: { image: image.base64 },
+            },
+            {
+              onSuccess: (data) => {
+                this.setState({ imageId: data.data.id });
+              },
+            }
           );
-          // save image id in case we need to remove it later.
-          this.setState({ imageId: imageRemote.data.id });
         } else if (!image && this.state.imageId) {
-          deleteInitiativeImage(initiativeId, this.state.imageId);
-          this.setState({ imageId: null });
+          deleteInitiativeImage(
+            { initiativeId, imageId: this.state.imageId },
+            {
+              onSuccess: () => {
+                this.setState({ imageId: null });
+              },
+            }
+          );
         } else {
           // Image saving mechanism works on the hypothesis that any defined
           // image will have a base64 key, and when you need to remove an image
@@ -281,7 +314,13 @@ export class InitiativesNewFormWrapper extends React.PureComponent<
       banner,
       publishing,
     } = this.state;
-    const { locale, appConfiguration, authUser } = this.props;
+    const {
+      locale,
+      appConfiguration,
+      authUser,
+      addInitiativeImage,
+      deleteInitiativeImage,
+    } = this.props;
 
     // if we're already saving, do nothing.
     if (publishing) return;
@@ -320,17 +359,28 @@ export class InitiativesNewFormWrapper extends React.PureComponent<
       // save any changes to initiative image.
       if (hasImageChanged && initiativeId) {
         if (image && image.base64) {
-          const imageRemote = await addInitiativeImage(
-            initiativeId,
-            image.base64
+          addInitiativeImage(
+            {
+              initiativeId,
+              image: { image: image.base64 },
+            },
+            {
+              onSuccess: (data) => {
+                this.setState({ imageId: data.data.id });
+              },
+            }
           );
-          // save image id in case we need to remove it later.
-          this.setState({ imageId: imageRemote.data.id });
+
           // remove image from remote if it was saved
         } else if (!image && this.state.imageId) {
-          deleteInitiativeImage(initiativeId, this.state.imageId).then(() => {
-            this.setState({ imageId: null });
-          });
+          deleteInitiativeImage(
+            { initiativeId, imageId: this.state.imageId },
+            {
+              onSuccess: () => {
+                this.setState({ imageId: null });
+              },
+            }
+          );
         } else if (image) {
           // Image saving mechanism works on the hypothesis that any defined
           // image will have a base64 key, if not, something wrong has happened.
@@ -524,10 +574,19 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
 });
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => (
-      <InitiativesNewFormWrapper {...inputProps} {...dataProps} />
-    )}
-  </Data>
-);
+export default (inputProps: InputProps) => {
+  const { mutate: addInitiativeImage } = useAddInitiativeImage();
+  const { mutate: deleteInitiativeImage } = useDeleteInitiativeImage();
+  return (
+    <Data {...inputProps}>
+      {(dataProps) => (
+        <InitiativesNewFormWrapper
+          {...inputProps}
+          {...dataProps}
+          addInitiativeImage={addInitiativeImage}
+          deleteInitiativeImage={deleteInitiativeImage}
+        />
+      )}
+    </Data>
+  );
+};
