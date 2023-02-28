@@ -714,7 +714,7 @@ workflows:
             - docker-hub-access
             - citizenlab-ee-environment
           requires:
-            - back-test
+            - back-build-docker-image
       - back-slow-tests:
           context:
             - docker-hub-access
