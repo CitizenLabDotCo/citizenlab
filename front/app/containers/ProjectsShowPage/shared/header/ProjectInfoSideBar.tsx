@@ -12,7 +12,7 @@ import moment from 'moment';
 // hooks
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
-import useEvents from 'hooks/useEvents';
+import useEvents from 'api/events/useEvents';
 import useAuthUser from 'hooks/useAuthUser';
 
 // router
@@ -129,7 +129,7 @@ interface Props {
 const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   const project = useProject({ projectId });
   const phases = usePhases(projectId);
-  const { events } = useEvents({
+  const { data: events } = useEvents({
     projectIds: [projectId],
     sort: 'newest',
   });
@@ -423,7 +423,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                 </ListItemButton>
               </ListItem>
             )}
-            {!isNilOrError(events) && events.length > 0 && (
+            {!isNilOrError(events) && events.data.length > 0 && (
               <ListItem>
                 <ListItemIcon ariaHidden name="calendar" />
                 <ListItemButton
@@ -432,7 +432,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                 >
                   <FormattedMessage
                     {...messages.xEvents}
-                    values={{ eventsCount: events.length }}
+                    values={{ eventsCount: events.data.length }}
                   />
                 </ListItemButton>
               </ListItem>

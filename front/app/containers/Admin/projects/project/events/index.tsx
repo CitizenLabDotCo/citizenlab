@@ -9,7 +9,7 @@ import moment from 'moment';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // hooks
-import useEvents from 'hooks/useEvents';
+import useEvents from 'api/events/useEvents';
 import useDeleteEvent from 'api/events/useDeleteEvent';
 
 // components
@@ -36,7 +36,7 @@ const AdminProjectEventsIndex = ({
   params,
 }: WithRouterProps & WrappedComponentProps) => {
   const { projectId } = params;
-  const { events } = useEvents({
+  const { data: events } = useEvents({
     projectIds: [projectId],
     pageSize: 1000,
   });
@@ -70,14 +70,14 @@ const AdminProjectEventsIndex = ({
           <FormattedMessage {...messages.addEventButton} />
         </AddButton>
 
-        {!isNilOrError(events) && events.length > 0 && (
+        {!isNilOrError(events) && events.data.length > 0 && (
           <StyledList>
             <HeadRow>
               <div className="expand">
                 <FormattedMessage {...messages.titleColumnHeader} />
               </div>
             </HeadRow>
-            {events.map((event) => {
+            {events.data.map((event) => {
               const startAt = moment(event.attributes.start_at).format('LLL');
               const endAt = moment(event.attributes.end_at).format('LLL');
 

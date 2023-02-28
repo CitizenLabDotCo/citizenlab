@@ -21,9 +21,15 @@ describe('useEvents', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useEvents(), {
-      wrapper: createQueryClientWrapper(),
-    });
+    const { result, waitFor } = renderHook(
+      () =>
+        useEvents({
+          projectIds: ['dummyId'],
+        }),
+      {
+        wrapper: createQueryClientWrapper(),
+      }
+    );
 
     expect(result.current.isLoading).toBe(true);
 
@@ -40,9 +46,15 @@ describe('useEvents', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useEvents(), {
-      wrapper: createQueryClientWrapper(),
-    });
+    const { result, waitFor } = renderHook(
+      () =>
+        useEvents({
+          projectIds: ['dummyId'],
+        }),
+      {
+        wrapper: createQueryClientWrapper(),
+      }
+    );
 
     expect(result.current.isLoading).toBe(true);
     await waitFor(() => expect(result.current.isError).toBe(true));

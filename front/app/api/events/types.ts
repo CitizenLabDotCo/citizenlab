@@ -66,3 +66,8 @@ export interface IUpdatedEventProperties {
   start_at?: string;
   end_at?: string;
 }
+
+export interface IAddEventProperties {
+  projectId: string;
+  event: IUpdatedEventProperties;
+}

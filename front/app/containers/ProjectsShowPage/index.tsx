@@ -23,7 +23,7 @@ import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
-import useEvents from 'hooks/useEvents';
+import useEvents from 'api/events/useEvents';
 import useAuthUser from 'hooks/useAuthUser';
 import { useIntl } from 'utils/cl-intl';
 
@@ -95,7 +95,7 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
   const [search] = useSearchParams();
   const scrollToEventId = search.get('scrollToEventId');
 
-  const { events } = useEvents({
+  const { data: events } = useEvents({
     projectIds: projectId ? [projectId] : undefined,
     sort: 'newest',
   });
@@ -177,7 +177,9 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
   }
 
   const bgColor =
-    !isNilOrError(events) && events.length > 0 ? '#fff' : colors.background;
+    !isNilOrError(events) && events.data.length > 0
+      ? '#fff'
+      : colors.background;
 
   return (
     <Container background={bgColor}>

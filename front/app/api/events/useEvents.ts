@@ -13,8 +13,8 @@ const fetchEvents = ({
   'page[number]': pageNumber,
   'page[size]': pageSize,
   project_publication_statuses,
-}: QueryParameters) =>
-  fetcher<IEvents>({
+}: QueryParameters) => {
+  return fetcher<IEvents>({
     path: '/events',
     action: 'get',
     queryParams: {
@@ -27,6 +27,7 @@ const fetchEvents = ({
       project_publication_statuses,
     },
   });
+};
 
 // ToDo: type project id and static page id, currentAndFutureOnly
 const useEvents = ({
@@ -45,6 +46,7 @@ const useEvents = ({
       static_page_id: staticPageId,
     }),
   };
+
   if (projectPublicationStatuses) {
     queryParams.project_publication_statuses = projectPublicationStatuses;
   }
@@ -68,7 +70,7 @@ const useEvents = ({
   }
 
   return useQuery<IEvents, CLErrors, IEvents, EventsKeys>({
-    queryKey: eventsKeys.lists(),
+    queryKey: eventsKeys.list(queryParams),
     queryFn: () => fetchEvents(queryParams),
   });
 };

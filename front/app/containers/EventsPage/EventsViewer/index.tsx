@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useState } from 'react';
 
 // components
 import TopBar from './TopBar';
@@ -18,7 +18,7 @@ import useEvents from 'api/events/useEvents';
 import styled from 'styled-components';
 
 // other
-import { isNilOrError, isNil, isError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 interface IStyledEventCard {

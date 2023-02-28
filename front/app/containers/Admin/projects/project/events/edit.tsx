@@ -48,6 +48,7 @@ import GetRemoteFiles, {
 import { Multiloc, CLError, Locale, UploadFile } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
 import useAddEvent from 'api/events/useAddEvent';
+import { IAddEventProperties } from 'api/events/types';
 
 interface DataProps {
   remoteEventFiles: GetRemoteFilesChildProps;
@@ -111,17 +112,16 @@ const AdminProjectEventEdit = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    // Set the event files once remote files are loaded
-    if (
-      remoteEventFiles !== eventFiles &&
-      eventFiles.length === 0 &&
-      eventFilesToRemove.length === 0
-    ) {
-      setEventFiles(!isNilOrError(remoteEventFiles) ? remoteEventFiles : []);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [eventFiles, eventFilesToRemove.length, remoteEventFiles]);
+  // useEffect(() => {
+  //   // Set the event files once remote files are loaded
+  //   if (
+  //     remoteEventFiles !== eventFiles &&
+  //     eventFiles.length === 0 &&
+  //     eventFilesToRemove.length === 0
+  //   ) {
+  //     setEventFiles(!isNilOrError(remoteEventFiles) ? remoteEventFiles : []);
+  //   }
+  // }, [eventFiles, eventFilesToRemove.length, remoteEventFiles]);
 
   const handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
     setSubmitState('enabled');
@@ -182,7 +182,6 @@ const AdminProjectEventEdit = ({
       let redirect = false;
       try {
         setSaving(true);
-
         // non-file input fields have changed
         if (!isEmpty(attributeDiff)) {
           // event already exists (in the state)
@@ -192,9 +191,9 @@ const AdminProjectEventEdit = ({
             setAttributeDiff({});
           } else if (projectId) {
             // event doesn't exist, create with project id
-            const payload: IUpdatedEventProperties = {
-              project_id: projectId,
-              ...attributeDiff,
+            const payload: IAddEventProperties = {
+              projectId,
+              event: attributeDiff,
             };
             addEvent(payload);
             setEvent(eventResponse);

@@ -2,18 +2,18 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import eventsKeys from './keys';
-import { IEvent, IUpdatedEventProperties } from './types';
+import { IAddEventProperties, IEvent } from './types';
 
-const addEvent = async (requestBody: IUpdatedEventProperties) =>
+const addEvent = async (requestBody: IAddEventProperties) =>
   fetcher<IEvent>({
-    path: '/events',
+    path: `/projects/${requestBody.projectId}/events`,
     action: 'post',
-    body: requestBody,
+    body: requestBody.event,
   });
 
 const useAddEvent = () => {
   const queryClient = useQueryClient();
-  return useMutation<IEvent, CLErrors, IUpdatedEventProperties>({
+  return useMutation<IEvent, CLErrors, IAddEventProperties>({
     mutationFn: addEvent,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: eventsKeys.all() });
