@@ -28,7 +28,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:update-snapshots": "jest --updateSnapshot",
-    "test:ci": "jest --ci --reporters=default --reporters=jest-junit --runInBand --coverage --coverageReporters=text-summary --",
+    "test:ci": "jest --ci --reporters=default --reporters=jest-junit -w 2 --coverage --coverageReporters=text-summary --",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --spec 'cypress/e2e/**/*.ts' --browser chrome",
     "majestic": "majestic --port 4231",
