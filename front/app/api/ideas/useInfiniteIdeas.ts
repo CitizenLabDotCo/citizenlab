@@ -1,0 +1,34 @@
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { CLErrors } from 'typings';
+import fetcher from 'utils/cl-react-query/fetcher';
+import { getPageNumberFromUrl } from 'utils/paginationUtils';
+import ideaKeys from './keys';
+import { IIdeas, IQueryParameters, IdeaKeys } from './types';
+
+const defaultPageSize = 12;
+
+const fetchInfiniteIdeas = (queryParameters: IQueryParameters) =>
+  fetcher<IIdeas>({
+    path: `/ideas`,
+    action: 'get',
+    queryParams: {
+      ...queryParameters,
+      'page[number]': queryParameters['page[number]'] || 1,
+      'page[size]': queryParameters['page[size]'] || defaultPageSize,
+    },
+  });
+
+const useInfitineInitiatives = (queryParams: IQueryParameters) => {
+  return useInfiniteQuery<IIdeas, CLErrors, IIdeas, IdeaKeys>({
+    queryKey: ideaKeys.infiniteList(queryParams),
+    queryFn: ({ pageParam }) =>
+      fetchInfiniteIdeas({ ...queryParams, 'page[number]': pageParam }),
+    getNextPageParam: (lastPage) => {
+      const hasNextPage = lastPage.links?.next;
+      const pageNumber = getPageNumberFromUrl(lastPage.links.self);
+      return hasNextPage && pageNumber ? pageNumber + 1 : null;
+    },
+  });
+};
+
+export default useInfitineInitiatives;
