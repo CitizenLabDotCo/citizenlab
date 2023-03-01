@@ -3,7 +3,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 // hooks
 import { useLocation } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // components
 import NavigationTabs, {
