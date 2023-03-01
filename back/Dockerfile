@@ -10,7 +10,7 @@ COPY back/Gemfile back/Gemfile.* ./
 COPY back/engines ./engines
 
 # `version.rb` files are also kept as they are required by gemspec files.
-RUN find engines -type f -not -name "*.gemspec" -not -name "version.rb" -print | xargs rm -rf && \
+RUN find engines -type f -not -name "*.gemspec" -not -name "version.rb" -print0 | xargs -0 rm -rf && \
     find engines -type d -empty -delete
 
 FROM ruby:2.7.6-slim
