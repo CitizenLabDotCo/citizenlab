@@ -12,10 +12,7 @@ import {
   IInitiativeData,
   IInitiativeAdd,
 } from 'services/initiatives';
-import {
-  deleteInitiativeFile,
-  addInitiativeFile,
-} from 'services/initiativeFiles';
+import { deleteInitiativeFile } from 'services/initiativeFiles';
 import { ITopicData } from 'services/topics';
 
 // utils
@@ -38,6 +35,8 @@ import useAddInitiativeImage from 'api/initiative_images/useAddInitiativeImage';
 import useDeleteInitiativeImage from 'api/initiative_images/useDeleteInitiativeImage';
 import useAuthUser from 'hooks/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import useAddInitiativeFile from 'api/initiative_files/useAddInitiativeFile';
 
 interface Props {
   locale: Locale;
@@ -63,6 +62,7 @@ const InitiativesEditFormWrapper = ({
   const { data: appConfiguration } = useAppConfiguration();
   const authUser = useAuthUser();
   const { mutate: addInitiativeImage } = useAddInitiativeImage();
+  const { mutate: addInitiativeFile } = useAddInitiativeFile();
   const { mutate: deleteInitiativeImage } = useDeleteInitiativeImage();
 
   const initialValues = {
@@ -224,24 +224,31 @@ const InitiativesEditFormWrapper = ({
       });
       files.map((file) => {
         if (!file.id) {
-          addInitiativeFile(initiative.id, file.base64, file.name)
-            .then((res) => {
-              file.id = res.data.id;
-            })
-            .catch((errorResponse) => {
-              const apiErrors = get(errorResponse, 'json.errors');
+          addInitiativeFile(
+            {
+              initiativeId: initiative.id,
+              file: { file: file.base64, name: file.name },
+            },
+            {
+              onSuccess: (res) => {
+                file.id = res.data.id;
+              },
+              onError: (errorResponse) => {
+                const apiErrors = get(errorResponse, 'json.errors');
 
-              setApiErrors((oldApiErrors) => ({
-                ...oldApiErrors,
-                ...apiErrors,
-              }));
-              setTimeout(() => {
                 setApiErrors((oldApiErrors) => ({
                   ...oldApiErrors,
-                  file: undefined,
+                  ...apiErrors,
                 }));
-              }, 5000);
-            });
+                setTimeout(() => {
+                  setApiErrors((oldApiErrors) => ({
+                    ...oldApiErrors,
+                    file: undefined,
+                  }));
+                }, 5000);
+              },
+            }
+          );
         }
       });
 
