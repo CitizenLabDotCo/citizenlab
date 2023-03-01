@@ -22,13 +22,7 @@ import { UploadFile } from 'typings';
 // Useful when you combining local files and remote files,
 // so you don't have to convert (file uploader)
 
-export type TResourceType =
-  | 'project'
-  | 'phase'
-  | 'event'
-  | 'page'
-  | 'idea'
-  | 'initiative';
+export type TResourceType = 'project' | 'phase' | 'event' | 'page' | 'idea';
 
 export interface InputProps {
   resetOnChange?: boolean;
