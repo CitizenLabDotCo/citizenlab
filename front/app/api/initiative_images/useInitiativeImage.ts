@@ -19,6 +19,7 @@ const useInitiativeImage = (initiativeId: string, imageId: string) => {
   >({
     queryKey: initiativeImagesKeys.item(initiativeId, imageId),
     queryFn: () => fetchInitiativeImage(initiativeId, imageId),
+    enabled: !!imageId,
   });
 };
 
