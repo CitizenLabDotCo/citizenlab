@@ -44,7 +44,7 @@ import rocket from 'assets/img/rocket.png';
 
 interface InputProps {
   postType: PostType;
-  postId: string | null;
+  postId: string;
   className?: string;
   title: string;
   subtitle: string;
@@ -237,15 +237,15 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
-  idea: ({ postId, postType, render }) => (
-    <GetIdea ideaId={postId && postType === 'idea' ? postId : null}>
-      {render}
-    </GetIdea>
-  ),
+  idea: ({ postId, postType, render }) => {
+    if (postType === 'idea') {
+      return <GetIdea ideaId={postId}>{render}</GetIdea>;
+    }
+
+    return null;
+  },
   initiative: ({ postId, postType, render }) => (
-    <GetInitiative
-      id={postId && postType === 'initiative' ? postId : undefined}
-    >
+    <GetInitiative id={postType === 'initiative' ? postId : undefined}>
       {render}
     </GetInitiative>
   ),

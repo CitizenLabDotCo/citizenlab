@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
-import useIdea from 'hooks/useIdea';
+import useIdeaById from 'api/ideas/useIdeaById';
 
 import Idea from './';
 
@@ -39,6 +39,6 @@ describe('Insights Idea', () => {
   });
   it('calls useIdea with correct idea id', () => {
     render(<Idea ideaId={ideaId} />);
-    expect(useIdea).toHaveBeenCalledWith({ ideaId });
+    expect(useIdeaById).toHaveBeenCalledWith({ ideaId });
   });
 });

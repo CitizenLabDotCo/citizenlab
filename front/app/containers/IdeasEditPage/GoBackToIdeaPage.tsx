@@ -10,10 +10,10 @@ import { ScreenReaderOnly } from 'utils/a11y';
 // Hooks
 import useLocalize from 'hooks/useLocalize';
 
-import { IIdea } from 'api/ideas/types';
+import { IIdeaData } from 'api/ideas/types';
 
 interface Props {
-  idea: IIdea;
+  idea: IIdeaData;
 }
 
 const GoBackToIdeaPage = ({ idea }: Props) => {
@@ -33,7 +33,7 @@ const GoBackToIdeaPage = ({ idea }: Props) => {
     >
       <Button
         icon="arrow-left-circle"
-        linkTo={`/ideas/${idea.data.attributes.slug}`}
+        linkTo={`/ideas/${idea.attributes.slug}`}
         buttonStyle="text"
         iconSize="24px"
         padding="0"
@@ -42,10 +42,10 @@ const GoBackToIdeaPage = ({ idea }: Props) => {
         data-cy="e2e-back-to-idea-page-button"
       >
         <Box as="span" display={isPhone ? 'none' : 'block'} aria-hidden>
-          {localize(idea.data.attributes.title_multiloc)}
+          {localize(idea.attributes.title_multiloc)}
         </Box>
         <ScreenReaderOnly>
-          {localize(idea.data.attributes.title_multiloc)}
+          {localize(idea.attributes.title_multiloc)}
         </ScreenReaderOnly>
       </Button>
     </Box>
