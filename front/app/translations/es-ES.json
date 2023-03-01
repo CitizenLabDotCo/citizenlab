@@ -281,7 +281,6 @@
   "app.components.ParticipationCTABars.takeTheSurvey": "Responde la consulta",
   "app.components.ParticipationCTABars.userHasParticipated": "Ha participado en este proyecto.",
   "app.components.ParticipationCTABars.volunteer": "Voluntario",
-  "app.components.ParticipationCTABars.xDaysLeft": "{timeLeft, plural, =0 {Menos de un día} one {# queda día} other {# días}} restantes",
   "app.components.ParticipationCTABars.xWeeksLeft": "quedan {timeLeft} semanas",
   "app.components.PasswordInput.a11y_passwordHidden": "Contraseña oculta",
   "app.components.PasswordInput.a11y_passwordVisible": "Contraseña visible",

@@ -281,7 +281,6 @@
   "app.components.ParticipationCTABars.takeTheSurvey": "Prendi il sondaggio",
   "app.components.ParticipationCTABars.userHasParticipated": "You have participated in this project.",
   "app.components.ParticipationCTABars.volunteer": "Volunteer",
-  "app.components.ParticipationCTABars.xDaysLeft": "{timeLeft, plural, =0 {Less than a day} one {# day left} other {# days}} left",
   "app.components.ParticipationCTABars.xWeeksLeft": "{timeLeft}  weeks left",
   "app.components.PasswordInput.a11y_passwordHidden": "Password nascosta",
   "app.components.PasswordInput.a11y_passwordVisible": "Password visibile",

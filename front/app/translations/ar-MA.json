@@ -281,7 +281,6 @@
   "app.components.ParticipationCTABars.takeTheSurvey": "شارك في الاستبيان",
   "app.components.ParticipationCTABars.userHasParticipated": "لقد شاركت في هذا المشروع.",
   "app.components.ParticipationCTABars.volunteer": "متطوع",
-  "app.components.ParticipationCTABars.xDaysLeft": "يتبقى {timeLeft, plural, =0 {أقل من يوم} one {# يوم} other {# يوم/أيام}}",
   "app.components.ParticipationCTABars.xWeeksLeft": "يتبقى {timeLeft} أسبوع/أسابيع",
   "app.components.PasswordInput.a11y_passwordHidden": "كلمة المرور مخفية",
   "app.components.PasswordInput.a11y_passwordVisible": "كلمة المرور مرئية",
