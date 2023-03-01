@@ -7,7 +7,7 @@ import { adopt } from 'react-adopt';
 import { getInputTerm } from 'services/participationContexts';
 
 // analytics
-import { trackEvent } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // components
@@ -232,9 +232,9 @@ export const IdeasShow = ({
   const onTranslateIdea = () => {
     // analytics
     if (translateButtonIsClicked === true) {
-      trackEvent(tracks.clickGoBackToOriginalIdeaCopyButton);
+      trackEventByName(tracks.clickGoBackToOriginalIdeaCopyButton.name);
     } else if (translateButtonIsClicked === false) {
-      trackEvent(tracks.clickTranslateIdeaButton);
+      trackEventByName(tracks.clickTranslateIdeaButton.name);
     }
     setTranslateButtonIsClicked(!translateButtonIsClicked);
   };

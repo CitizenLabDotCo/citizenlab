@@ -19,14 +19,11 @@ import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
 import GetIdeas, {
-  Sort,
   GetIdeasChildProps,
   InputProps as GetIdeasInputProps,
 } from 'resources/GetIdeas';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetIdeaCustomFieldsSchemas, {
-  GetIdeaCustomFieldsSchemasChildProps,
-} from 'resources/GetIdeaCustomFieldsSchemas';
+import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // i18n
@@ -45,6 +42,7 @@ import {
 } from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
 import { isFieldEnabled } from 'utils/projectUtils';
+import { Sort } from 'services/ideas';
 
 const Container = styled.div`
   width: 100%;
@@ -156,7 +154,6 @@ interface DataProps {
   windowSize: GetWindowSizeChildProps;
   ideas: GetIdeasChildProps;
   project: GetProjectChildProps;
-  ideaCustomFieldsSchemas: GetIdeaCustomFieldsSchemasChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -170,7 +167,6 @@ const IdeasWithoutFiltersSidebar = ({
   className,
   allowProjectsFilter,
   project,
-  ideaCustomFieldsSchemas,
   locale,
   participationMethod,
   participationContextId,
@@ -178,6 +174,10 @@ const IdeasWithoutFiltersSidebar = ({
   projectId,
 }: Props) => {
   const [selectedView, setSelectedView] = useState<'card' | 'map'>('card');
+  const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({
+    phaseId: ideas.queryParameters.phase,
+    projectId: projectId || null,
+  });
 
   useEffect(() => {
     setSelectedView(defaultView || 'card');
@@ -349,22 +349,6 @@ const Data = adopt<DataProps, InputProps>({
   project: ({ render, projectId }) => (
     <GetProject projectId={projectId}>{render}</GetProject>
   ),
-  ideaCustomFieldsSchemas: ({
-    render,
-    projectId,
-    ideas: {
-      queryParameters: { phase: phaseId },
-    },
-  }) => {
-    return (
-      <GetIdeaCustomFieldsSchemas
-        projectId={projectId || null}
-        phaseId={phaseId}
-      >
-        {render}
-      </GetIdeaCustomFieldsSchemas>
-    );
-  },
 });
 
 export default (inputProps: InputProps) => (

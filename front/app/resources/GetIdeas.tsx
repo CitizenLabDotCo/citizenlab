@@ -22,6 +22,9 @@ import {
   IIdeaData,
   IdeaPublicationStatus,
   ideasMiniStream,
+  Sort,
+  SortAttribute,
+  IIdeasQueryParameters,
 } from 'services/ideas';
 import { PublicationStatus as ProjectPublicationStatus } from 'services/projects';
 import {
@@ -31,33 +34,6 @@ import {
   SortDirection,
 } from 'utils/paginationUtils';
 
-export type SortAttribute =
-  | 'new'
-  | 'trending'
-  | 'popular'
-  | 'author_name'
-  | 'upvotes_count'
-  | 'downvotes_count'
-  | 'baskets_count'
-  | 'status';
-export type Sort =
-  | 'random'
-  | 'new'
-  | '-new'
-  | 'trending'
-  | '-trending'
-  | 'popular'
-  | '-popular'
-  | 'author_name'
-  | '-author_name'
-  | 'upvotes_count'
-  | '-upvotes_count'
-  | 'downvotes_count'
-  | '-downvotes_count'
-  | 'baskets_count'
-  | '-baskets_count'
-  | 'status'
-  | '-status';
 type PublicationStatus = IdeaPublicationStatus;
 
 export interface InputProps {
@@ -80,29 +56,12 @@ export interface InputProps {
   // prop mini Gets stripped down ideas containing only title, should never be cached,
   // and is not tested in all scenarios, but improves performance drastically.
   mini?: boolean;
-}
-
-export interface IQueryParameters {
-  'page[number]': number;
-  'page[size]': number;
-  projects?: string[] | null;
-  phase?: string | null;
-  author?: string | null;
-  sort: Sort;
-  search?: string | null;
-  topics?: string[] | null;
-  idea_status?: string | null;
-  publication_status?: PublicationStatus | null;
-  project_publication_status?: ProjectPublicationStatus | null;
-  bounding_box?: number[] | null;
-  assignee?: string | null;
-  feedback_needed?: boolean | null;
-  filter_can_moderate?: boolean | null;
+  basketId?: string;
 }
 
 interface IAccumulator {
   ideas: IIdeaData[] | null;
-  queryParameters: IQueryParameters;
+  queryParameters: IIdeasQueryParameters;
   hasMore: boolean;
 }
 
@@ -127,13 +86,15 @@ export type GetIdeasChildProps = State & {
   ) => void;
   onChangeAssignee: (assignee: string | undefined) => void;
   onChangeFeedbackFilter: (feedbackNeeded: boolean) => void;
-  onIdeaFiltering: (partialQueryParameters: Partial<IQueryParameters>) => void;
-  onResetParams: (paramsToOmit?: (keyof IQueryParameters)[]) => void;
+  onIdeaFiltering: (
+    partialQueryParameters: Partial<IIdeasQueryParameters>
+  ) => void;
+  onResetParams: (paramsToOmit?: (keyof IIdeasQueryParameters)[]) => void;
   type: 'ideas';
 };
 
 interface State {
-  queryParameters: IQueryParameters;
+  queryParameters: IIdeasQueryParameters;
   list: IIdeaData[] | undefined | null;
   hasMore: boolean;
   querying: boolean;
@@ -145,8 +106,8 @@ interface State {
 }
 
 export default class GetIdeas extends React.Component<Props, State> {
-  defaultQueryParameters: IQueryParameters;
-  queryParameters$: BehaviorSubject<IQueryParameters>;
+  defaultQueryParameters: IIdeasQueryParameters;
+  queryParameters$: BehaviorSubject<IIdeasQueryParameters>;
   subscriptions: Subscription[];
 
   static defaultProps = {
@@ -212,7 +173,7 @@ export default class GetIdeas extends React.Component<Props, State> {
       this.subscriptions = [
         queryParameters$
           .pipe(
-            mergeScan<IQueryParameters, IAccumulator>(
+            mergeScan<IIdeasQueryParameters, IAccumulator>(
               (acc, newQueryParameters) => {
                 const oldQueryParamsWithoutPageNumber = omit(
                   cloneDeep(acc.queryParameters),
@@ -232,7 +193,7 @@ export default class GetIdeas extends React.Component<Props, State> {
                 const pageNumber = isLoadingMore
                   ? newQueryParameters['page[number]']
                   : 1;
-                const queryParameters: IQueryParameters = {
+                const queryParameters: IIdeasQueryParameters = {
                   ...newQueryParameters,
                   'page[number]': pageNumber,
                 };
@@ -344,6 +305,7 @@ export default class GetIdeas extends React.Component<Props, State> {
     feedback_needed: this.props.feedbackNeeded,
     filter_can_moderate: this.props.filterCanModerate,
     search: undefined,
+    basket_id: this.props.basketId,
   });
 
   getQueryParametersFromProps = () => {
@@ -351,10 +313,13 @@ export default class GetIdeas extends React.Component<Props, State> {
     Object.keys(queryParamsShaped)
       .filter((key) => queryParamsShaped[key] === null)
       .forEach((key) => (queryParamsShaped[key] = undefined));
-    return queryParamsShaped as IQueryParameters; // legal because last line changes null values to undefined
+    return queryParamsShaped as IIdeasQueryParameters; // legal because last line changes null values to undefined
   };
 
-  getQueryParameters = (queryParameters: IQueryParameters, props: Props) => {
+  getQueryParameters = (
+    queryParameters: IIdeasQueryParameters,
+    props: Props
+  ) => {
     let projects: string[] | undefined | null = undefined;
 
     if (isNil(props.projectIds)) {
@@ -363,7 +328,7 @@ export default class GetIdeas extends React.Component<Props, State> {
       projects = props.projectIds;
     }
 
-    const inputPropsQueryParameters: IQueryParameters = {
+    const inputPropsQueryParameters: IIdeasQueryParameters = {
       projects,
       'page[number]': props.pageNumber as number,
       'page[size]': props.pageSize as number,
@@ -379,6 +344,7 @@ export default class GetIdeas extends React.Component<Props, State> {
       assignee: props.assignee,
       feedback_needed: props.feedbackNeeded,
       filter_can_moderate: props.filterCanModerate,
+      basket_id: props.basketId,
     };
 
     // Omit all queryParameters that are nil.
@@ -491,7 +457,7 @@ export default class GetIdeas extends React.Component<Props, State> {
     });
   };
 
-  handleIdeaFiltering = (ideaFilters: Partial<IQueryParameters>) => {
+  handleIdeaFiltering = (ideaFilters: Partial<IIdeasQueryParameters>) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
       ...ideaFilters,
@@ -499,7 +465,9 @@ export default class GetIdeas extends React.Component<Props, State> {
     });
   };
 
-  handleResetParamsToProps = (paramsToOmit?: (keyof IQueryParameters)[]) => {
+  handleResetParamsToProps = (
+    paramsToOmit?: (keyof IIdeasQueryParameters)[]
+  ) => {
     const defaultQueryParameters = this.getQueryParametersFromProps();
 
     if (paramsToOmit && paramsToOmit.length > 0) {

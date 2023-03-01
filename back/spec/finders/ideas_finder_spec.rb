@@ -239,6 +239,19 @@ describe IdeasFinder do
     end
   end
 
+  describe '#basket_condition' do
+    let(:basket_id) { Basket.pick(:id) }
+    let(:expected_record_ids) { Idea.joins(:baskets).where('baskets.id': basket_id).pluck(:id) }
+
+    before do
+      params[:basket] = basket_id
+    end
+
+    it 'returns the correct records' do
+      expect(result_record_ids).to match_array expected_record_ids
+    end
+  end
+
   describe '#topics_condition' do
     let(:topic_ids) { Topic.first(2).pluck(:id) }
     let(:expected_record_ids) do

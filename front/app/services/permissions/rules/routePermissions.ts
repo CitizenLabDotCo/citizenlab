@@ -9,7 +9,7 @@ import {
   isSuperAdmin,
 } from '../roles';
 import { IUser } from 'services/users';
-import { IAppConfigurationData } from 'services/appConfiguration';
+import { IAppConfigurationData } from 'api/app_configuration/types';
 
 const MODERATOR_ROUTES = [
   '/admin/dashboard',

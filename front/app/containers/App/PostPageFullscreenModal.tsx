@@ -28,10 +28,8 @@ const StyledIdeasShow = styled(IdeasShow)`
   padding-left: 60px;
   padding-right: 60px;
 
-  ${media.tablet`
-    min-height: calc(100vh - ${({
-      theme: { mobileMenuHeight, mobileTopBarHeight },
-    }) => mobileMenuHeight + mobileTopBarHeight}px);
+  ${({ theme: { mobileMenuHeight, mobileTopBarHeight } }) => media.tablet`
+    min-height: calc(100vh - ${mobileMenuHeight + mobileTopBarHeight}px);
     padding-top: 35px;
   `}
 
@@ -131,7 +129,7 @@ const PostPageFullscreenModal = memo<Props>(
         topBar={topBar}
         navbarRef={navbarRef}
         mobileNavbarRef={mobileNavbarRef}
-        zIndex={399}
+        zIndex={1005}
       >
         {content}
       </FullscreenModal>

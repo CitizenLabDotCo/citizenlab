@@ -1,6 +1,6 @@
 import React, { memo, useCallback } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isError } from 'utils/helperUtils';
 
 // components
 import StatusFilter from 'components/FilterBoxes/StatusFilter';
@@ -17,13 +17,13 @@ import GetIdeasFilterCounts, {
 import styled from 'styled-components';
 
 // typings
-import { IQueryParameters } from 'resources/GetIdeas';
+import { IIdeasFilterCountsQueryParameters } from 'services/ideas';
 
 const Container = styled.div``;
 
 interface InputProps {
   selectedStatusId: string | null | undefined;
-  selectedIdeaFilters: Partial<IQueryParameters>;
+  selectedIdeaFilters: IIdeasFilterCountsQueryParameters;
   onChange: (arg: string | null) => void;
   className?: string;
 }
@@ -51,7 +51,11 @@ const StatusFilterBox = memo<Props>(
       []
     );
 
-    if (!isNilOrError(ideaStatuses) && ideaStatuses.length > 0) {
+    if (
+      !isNilOrError(ideaStatuses) &&
+      ideaStatuses.length > 0 &&
+      !isError(ideasFilterCounts)
+    ) {
       return (
         <Container className={className}>
           <StatusFilter
@@ -72,12 +76,12 @@ const StatusFilterBox = memo<Props>(
 const Data = adopt<DataProps, InputProps>({
   ideaStatuses: <GetIdeaStatuses />,
   ideasFilterCounts: ({ selectedIdeaFilters, render }) => {
-    const queryParameters = {
+    const queryParameters: IIdeasFilterCountsQueryParameters = {
       ...selectedIdeaFilters,
       idea_status: undefined,
       project_publication_status: 'published',
       publication_status: 'published',
-    } as Partial<IQueryParameters>;
+    };
 
     return (
       <GetIdeasFilterCounts queryParameters={queryParameters}>

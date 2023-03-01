@@ -11,7 +11,6 @@ import InitiativesHeaderRow from './header/InitiativesHeaderRow';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 // services
-import { IIdeaData } from 'services/ideas';
 import { IInitiativeData } from 'services/initiatives';
 import { IPhaseData } from 'services/phases';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
@@ -26,9 +25,10 @@ import { ManagerType, TFilterMenu } from '../..';
 
 // typings
 import {
-  Sort as IdeasSort,
   SortAttribute as IdeasSortAttribute,
-} from 'resources/GetIdeas';
+  Sort as IdeasSort,
+  IIdeaData,
+} from 'services/ideas';
 import {
   Sort as InitiativesSort,
   SortAttribute as InitiativesSortAttribute,
