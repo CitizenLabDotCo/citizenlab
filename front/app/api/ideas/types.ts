@@ -38,7 +38,7 @@ type IdeaBudgetingDisabledReason =
   | null
   | undefined;
 
-interface IIdeaData {
+export interface IIdeaData {
   id: string;
   type: string;
   attributes: {

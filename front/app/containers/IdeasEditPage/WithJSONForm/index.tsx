@@ -196,7 +196,7 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
       pt="60px"
       pb="40px"
     >
-      <GoBackToIdeaPage idea={idea} />
+      <GoBackToIdeaPage idea={idea.data} />
 
       <FormattedMessage
         {...{

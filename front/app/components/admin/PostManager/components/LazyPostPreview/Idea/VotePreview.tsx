@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { Icon } from '@citizenlab/cl2-component-library';
 
 // resources
-import useIdea from 'hooks/useIdea';
+import useIdeaById from 'api/ideas/useIdeaById';
 
 // i18n
 import messages from '../messages';
@@ -76,11 +76,11 @@ interface Props {
 }
 
 const VotePreview = ({ ideaId, className }: Props) => {
-  const idea = useIdea({ ideaId });
+  const { data: idea } = useIdeaById(ideaId);
 
   if (!isNilOrError(idea)) {
-    const upvotesCount = idea.attributes.upvotes_count;
-    const downvotesCount = idea.attributes.downvotes_count;
+    const upvotesCount = idea.data.attributes.upvotes_count;
+    const downvotesCount = idea.data.attributes.downvotes_count;
 
     return (
       <Container className={className}>

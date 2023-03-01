@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks';
 
 import useIdeaBySlug from './useIdeaBySlug';
-import { ideasData } from './__mocks__/useIdea';
+import { ideaData } from './__mocks__/useIdeaById';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
@@ -12,7 +12,7 @@ const apiPath = '*ideas/by_slug/:slug';
 
 const server = setupServer(
   rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: ideasData[0] }));
+    return res(ctx.status(200), ctx.json({ data: ideaData[0] }));
   })
 );
 
@@ -30,7 +30,7 @@ describe('useIdeaBySlug', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.data).toEqual(ideasData[0]);
+    expect(result.current.data?.data).toEqual(ideaData[0]);
   });
 
   it('returns error correctly', async () => {
