@@ -105,7 +105,7 @@ export async function updateUser(userId: string, object: IUserUpdate) {
 }
 
 export async function changePassword(object: IChangePassword) {
-  const response = await streams.add<IUser>(`${apiEndpoint}/password`, {
+  const response = await streams.add<IUser>(`${apiEndpoint}/update_password`, {
     user: object,
   });
   return response;
