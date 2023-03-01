@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { adopt } from 'react-adopt';
 import { get, isNumber } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
@@ -50,6 +50,7 @@ import {
 import { ScreenReaderOnly } from 'utils/a11y';
 import EmptyProposals from './EmptyProposals';
 import ProposalsList from './ProposalsList';
+import useInfitineInitiatives from 'api/initiatives/useInfiniteInitiatives';
 
 const gapWidth = 35;
 
@@ -212,121 +213,86 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 const InitiativeCards = ({
-  initiatives,
   className,
   invisibleTitleMessage,
   windowSize,
   initiativesFilterCounts,
 }: Props) => {
   const { formatMessage } = useIntl();
+
   const [selectedView, setSelectedView] = useState<'map' | 'card'>('card');
   const [filtersModalOpened, setFiltersModalOpened] = useState(false);
-  const [selectedInitiativeFilters, setSelectedInitiativeFilters] =
-    useState<Partial<IQueryParameters> | null>(
-      get(initiatives, 'queryParameters', {})
-    );
-  const [
-    previouslySelectedInitiativeFilters,
-    setPreviouslySelectedInitiativeFilters,
-  ] = useState<Partial<IQueryParameters> | null>(null);
+  const [selectedInitiativeFilters, setSelectedInitiativeFilters] = useState<
+    Partial<IQueryParameters>
+  >({});
+  const {
+    data: initiatives,
+    fetchNextPage,
+    isFetchingNextPage,
+    isFetching,
+    hasNextPage,
+  } = useInfitineInitiatives(selectedInitiativeFilters);
 
-  useEffect(() => {
-    setSelectedInitiativeFilters(get(initiatives, 'queryParameters', {}));
-  }, [initiatives]);
+  const flatInitiatives = initiatives?.pages.flatMap((page) => page.data) || [];
 
   const openFiltersModal = () => {
     setFiltersModalOpened(true);
-    setPreviouslySelectedInitiativeFilters(selectedInitiativeFilters);
   };
 
   const loadMore = () => {
     trackEventByName(tracks.loadMoreProposals);
-    initiatives.onLoadMore();
+    fetchNextPage();
   };
 
   const handleSortOnChange = (sort: Sort) => {
     trackEventByName(tracks.sortingFilter, {
       sort,
     });
-    initiatives.onChangeSorting(sort);
+    setSelectedInitiativeFilters({ ...selectedInitiativeFilters, sort });
   };
 
-  const handleSearchOnChange = (searchTerm: string) => {
-    initiatives.onChangeSearchTerm(searchTerm);
-  };
+  const handleSearchOnChange = useCallback((search: string) => {
+    setSelectedInitiativeFilters((selectedInitiativeFilters) => ({
+      ...selectedInitiativeFilters,
+      search,
+    }));
+  }, []);
 
   const handleStatusOnChange = (initiative_status: string | null) => {
-    handleInitiativeFiltersOnChange({ initiative_status });
+    setSelectedInitiativeFilters({
+      ...selectedInitiativeFilters,
+      initiative_status,
+    });
   };
 
   const handleTopicsOnChange = (topics: string[] | null) => {
     trackEventByName(tracks.topicsFilter, {
       topics,
     });
-    handleInitiativeFiltersOnChange({ topics });
+    setSelectedInitiativeFilters({ ...selectedInitiativeFilters, topics });
   };
 
   const handleStatusOnChangeAndApplyFilter = (
     initiative_status: string | null
   ) => {
-    handleInitiativeFiltersOnChange({ initiative_status }, true);
+    setSelectedInitiativeFilters({ initiative_status });
   };
 
   const handleTopicsOnChangeAndApplyFilter = (topics: string[] | null) => {
-    handleInitiativeFiltersOnChange({ topics }, true);
-  };
-
-  const handleInitiativeFiltersOnChange = (
-    newSelectedInitiativeFilters: Partial<IQueryParameters>,
-    applyFilter = false
-  ) => {
-    const totalSelectedInitiativeFilters = {
-      ...selectedInitiativeFilters,
-      ...newSelectedInitiativeFilters,
-    };
-    setSelectedInitiativeFilters(totalSelectedInitiativeFilters);
-
-    if (applyFilter) {
-      initiatives.onInitiativeFiltering(totalSelectedInitiativeFilters);
-    }
+    setSelectedInitiativeFilters({ topics });
   };
 
   const handleInitiativeFiltersOnReset = () => {
-    setSelectedInitiativeFilters({
-      ...selectedInitiativeFilters,
-      initiative_status: null,
-      areas: null,
-      topics: null,
-    });
-  };
-
-  const handleInitiativeFiltersOnResetAndApply = () => {
-    const newSelectedInitiativeFilters = {
-      ...selectedInitiativeFilters,
-      search: null,
-      initiative_status: null,
-      areas: null,
-      topics: null,
-    };
-
-    setSelectedInitiativeFilters(newSelectedInitiativeFilters);
-
-    initiatives.onInitiativeFiltering(newSelectedInitiativeFilters);
+    setSelectedInitiativeFilters({});
   };
 
   const closeModalAndApplyFilters = () => {
-    initiatives.onInitiativeFiltering(selectedInitiativeFilters || {});
     setFiltersModalOpened(false);
-    setPreviouslySelectedInitiativeFilters(null);
   };
 
   const closeModalAndRevertFilters = () => {
-    initiatives.onInitiativeFiltering(
-      previouslySelectedInitiativeFilters || {}
-    );
     setFiltersModalOpened(false);
-    setSelectedInitiativeFilters(previouslySelectedInitiativeFilters || {});
-    setPreviouslySelectedInitiativeFilters(null);
+    setSelectedInitiativeFilters({});
   };
 
   const selectView = (selectedView: 'card' | 'map') => {
@@ -337,9 +303,7 @@ const InitiativeCards = ({
   const searchPlaceholder = formatMessage(messages.searchPlaceholder);
   const searchAriaLabel = formatMessage(messages.searchPlaceholder);
 
-  const { list, querying, hasMore, loadingMore } = initiatives;
-
-  const hasInitiatives = !isNilOrError(list) && list.length > 0;
+  const hasInitiatives = initiatives && initiatives.pages.length > 0;
   const biggerThanLargeTablet =
     windowSize && windowSize >= viewportWidths.tablet;
   const biggerThanSmallTablet =
@@ -354,7 +318,7 @@ const InitiativeCards = ({
   const filtersSidebar = (
     <FiltersSidebarContainer className={className}>
       {filtersActive && (
-        <ClearFiltersButton onClick={handleInitiativeFiltersOnResetAndApply}>
+        <ClearFiltersButton onClick={handleInitiativeFiltersOnReset}>
           <ClearFiltersText>
             <FormattedMessage {...messages.resetFilters} />
           </ClearFiltersText>
@@ -374,7 +338,7 @@ const InitiativeCards = ({
         placeholder={searchPlaceholder}
         ariaLabel={searchAriaLabel}
         onChange={handleSearchOnChange}
-        a11y_numberOfSearchResults={list?.length || 0}
+        a11y_numberOfSearchResults={flatInitiatives?.length || 0}
       />
       <StyledInitiativesStatusFilter
         selectedStatusId={selectedInitiativeFilters?.initiative_status}
@@ -402,13 +366,13 @@ const InitiativeCards = ({
         <FormattedMessage tagName="h2" {...invisibleTitleMessage} />
       </ScreenReaderOnly>
 
-      {list === undefined && (
+      {flatInitiatives === undefined && (
         <InitialLoading id="initiatives-loading">
           <Spinner />
         </InitialLoading>
       )}
 
-      {list !== undefined && (
+      {flatInitiatives !== undefined && (
         <>
           {!biggerThanLargeTablet && (
             <>
@@ -418,11 +382,7 @@ const InitiativeCards = ({
                 animateInOut={true}
                 topBar={
                   <TopBar
-                    onReset={
-                      !biggerThanLargeTablet
-                        ? handleInitiativeFiltersOnReset
-                        : handleInitiativeFiltersOnResetAndApply
-                    }
+                    onReset={handleInitiativeFiltersOnReset}
                     onClose={closeModalAndRevertFilters}
                   />
                 }
@@ -464,7 +424,7 @@ const InitiativeCards = ({
                 placeholder={searchPlaceholder}
                 ariaLabel={searchAriaLabel}
                 onChange={handleSearchOnChange}
-                a11y_numberOfSearchResults={list?.length || 0}
+                a11y_numberOfSearchResults={flatInitiatives?.length || 0}
               />
 
               <MobileFilterButton
@@ -512,17 +472,17 @@ const InitiativeCards = ({
 
           <Content>
             <ContentLeft>
-              {!querying && hasInitiatives ? (
+              {!isFetchingNextPage && hasInitiatives ? (
                 <>
                   {selectedView === 'card' && (
                     <ProposalsList
                       ariaLabelledBy={'view-tab-1'}
                       id={'view-panel-1'}
-                      hasMore={hasMore}
-                      loadingMore={loadingMore}
-                      querying={querying}
+                      hasMore={!!hasNextPage}
+                      loadingMore={isFetchingNextPage}
+                      querying={isFetching}
                       onLoadMore={loadMore}
-                      list={list}
+                      list={flatInitiatives}
                     />
                   )}
 

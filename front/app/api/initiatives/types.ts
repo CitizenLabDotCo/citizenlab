@@ -16,18 +16,18 @@ export type Sort =
   | 'random';
 
 export interface IQueryParameters {
-  'page[number]': number;
-  'page[size]': number;
-  author: string | undefined | null;
-  sort: Sort;
-  search: string | undefined | null;
-  topics: string[] | undefined | null;
-  areas: string[] | undefined | null;
-  initiative_status: string | undefined | null;
-  publication_status: InitiativePublicationStatus | undefined | null;
-  bounding_box: number[] | undefined | null;
-  assignee: string | undefined | null;
-  feedback_needed: boolean | undefined | null;
+  pageNumber?: number;
+  pageSize?: number;
+  author?: string | undefined | null;
+  sort?: Sort;
+  search?: string | undefined | null;
+  topics?: string[] | undefined | null;
+  areas?: string[] | undefined | null;
+  initiative_status?: string | undefined | null;
+  publication_status?: InitiativePublicationStatus | undefined | null;
+  bounding_box?: number[] | undefined | null;
+  assignee?: string | undefined | null;
+  feedback_needed?: boolean | undefined | null;
 }
 
 export type InitiativePublicationStatus =

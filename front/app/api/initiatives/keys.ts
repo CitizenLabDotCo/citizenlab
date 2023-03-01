@@ -4,6 +4,9 @@ const initiativesKeys = {
   list: (filters: Record<string, any>) => [
     { ...initiativesKeys.lists()[0], ...filters },
   ],
+  infiniteList: (filters: Record<string, any>) => [
+    { ...initiativesKeys.lists()[0], queryType: 'infitite', ...filters },
+  ],
   items: () => [{ ...initiativesKeys.all()[0], operation: 'item' }],
   item: (id: string) => [
     {
