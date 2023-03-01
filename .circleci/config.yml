@@ -188,7 +188,7 @@ jobs:
       name: cl2-back
       image-tag: $CIRCLE_SHA1
     working_directory: /cl2_back
-    parallelism: 4
+    parallelism: 8
     environment:
       RAILS_ENV: test
       COVERAGE: ON
