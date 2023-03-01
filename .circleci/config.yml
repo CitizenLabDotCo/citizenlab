@@ -119,7 +119,9 @@ jobs:
     docker:
       - image: ghcr.io/danger/danger-js:10.6.6
     steps:
-      - checkout
+      - git-shallow-clone/checkout:
+          depth: 1
+          path: ./citizenlab
       - run: danger ci
 
   slack-invalid-data-success:
@@ -162,9 +164,6 @@ jobs:
       - image: cimg/base:2021.03
     steps:
       - echo_pipeline_parameters
-      # - checkout:
-      #     path: ./citizenlab
-      # - run: git clone -b "$CIRCLE_BRANCH" "$CIRCLE_REPOSITORY_URL" --depth 1 -q
       - git-shallow-clone/checkout:
           depth: 1
           path: ./citizenlab
@@ -379,8 +378,9 @@ jobs:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     working_directory: /citizenlab/front
     steps:
-      - checkout:
-          path: /citizenlab
+      - git-shallow-clone/checkout:
+          depth: 1
+          path: ./citizenlab
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -399,8 +399,9 @@ jobs:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     working_directory: /citizenlab/front
     steps:
-      - checkout:
-          path: /citizenlab
+      - git-shallow-clone/checkout:
+          depth: 1
+          path: ./citizenlab
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -420,8 +421,9 @@ jobs:
     working_directory: /citizenlab/front
     resource_class: small
     steps:
-      - checkout:
-          path: /citizenlab
+      - git-shallow-clone/checkout:
+          depth: 1
+          path: ./citizenlab
       - restore_cache:
           keys:
             - v1-npm-cache-{{ checksum "package.json" }}
@@ -436,8 +438,9 @@ jobs:
     resource_class: large
     working_directory: /citizenlab/front
     steps:
-      - checkout:
-          path: /citizenlab
+      - git-shallow-clone/checkout:
+          depth: 1
+          path: ./citizenlab
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -458,8 +461,9 @@ jobs:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     working_directory: /citizenlab/front
     steps:
-      - checkout:
-          path: /citizenlab
+      - git-shallow-clone/checkout:
+          depth: 1
+          path: ./citizenlab
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -503,7 +507,8 @@ jobs:
       CITIZENLAB_EE: true
     parallelism: 4
     steps:
-      - checkout:
+      - git-shallow-clone/checkout:
+          depth: 1
           path: ./citizenlab
       - restore_cache:
           keys:
@@ -555,8 +560,9 @@ jobs:
     resource_class: large
     working_directory: /citizenlab/front
     steps:
-      - checkout:
-          path: /citizenlab
+      - git-shallow-clone/checkout:
+          depth: 1
+          path: ./citizenlab
       - restore_cache:
           keys:
             - v1-npm-cache-{{ checksum "package.json" }}
@@ -584,8 +590,9 @@ jobs:
     resource_class: large
     working_directory: /citizenlab/front
     steps:
-      - checkout:
-          path: /citizenlab
+      - git-shallow-clone/checkout:
+          depth: 1
+          path: ./citizenlab
       - restore_cache:
           keys:
             - v1-npm-cache-{{ checksum "package.json" }}
@@ -631,7 +638,9 @@ jobs:
       - image: cimg/base:2021.03
     resource_class: medium+
     steps:
-      - checkout
+      - git-shallow-clone/checkout:
+          depth: 1
+          path: ./citizenlab
       - copy_secrets_from_lastpass
       - setup_remote_docker:
           version: 19.03.13 # https://support.circleci.com/hc/en-us/articles/360050934711
