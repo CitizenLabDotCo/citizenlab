@@ -161,12 +161,12 @@ interface Props extends InputProps, DataProps {}
 
 const IdeaCards = ({
   // idea query
-  phaseId,
-  authorId,
-  projectPublicationStatus,
+  // phaseId,
+  // authorId,
+  // projectPublicationStatus,
 
   // shared
-  projectId,
+  // projectId,
 
   // other
   className,
@@ -174,6 +174,7 @@ const IdeaCards = ({
   defaultSortingMethod,
 }: Props) => {
   const { windowWidth } = useWindowSize();
+  const ideas: any = null;
 
   const [filtersModalOpened, setFiltersModalOpened] = useState(false);
   const [selectedIdeaFilters, setSelectedIdeaFilters] = useState<
@@ -361,11 +362,19 @@ const IdeaCards = ({
 };
 
 const Data = adopt<DataProps, InputProps>({
-  ideasFilterCounts: ({ render, projectId, ...getIdeasInputProps }) => (
+  ideasFilterCounts: ({
+    render,
+    projectId,
+    phaseId,
+    authorId,
+    projectPublicationStatus,
+  }) => (
     <GetIdeasFilterCounts
       queryParameters={{
-        ...getIdeasInputProps,
         projects: projectId ? [projectId] : undefined,
+        phase: phaseId,
+        author: authorId,
+        project_publication_status: projectPublicationStatus,
       }}
     >
       {render}

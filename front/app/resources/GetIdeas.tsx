@@ -47,6 +47,15 @@ export interface InputProps {
   feedbackNeeded?: boolean;
   filterCanModerate?: boolean;
   basketId?: string;
+
+  // test
+  pageNumber: never;
+  pageSize: never;
+  search: never;
+  topics: never;
+  publicationStatus: never;
+  boundingBox: never;
+  mini: never;
 }
 
 interface IAccumulator {
