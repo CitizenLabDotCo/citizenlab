@@ -1272,7 +1272,7 @@
   "app.containers.AdminPage.ProjectTimeline.cancelDeleteButtonText": "Annuleer",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Data",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseButton": "Verwijder",
-  "app.containers.AdminPage.ProjectTimeline.deletePhaseButtonText": "Ja, verwijder deze zin",
+  "app.containers.AdminPage.ProjectTimeline.deletePhaseButtonText": "Ja, verwijder deze fase",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "Weet u zeker dat u deze fase wilt verwijderen?",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmationQuestion": "Weet u zeker dat u deze fase wilt verwijderen?",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseInfo": "Alle aan deze zin gerelateerde data wordt verwijderd. Dit kan niet ongedaan gemaakt worden.",
