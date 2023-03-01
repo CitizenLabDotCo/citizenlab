@@ -14,13 +14,10 @@ import GetInitiative, {
 import GetInitiativeImages, {
   GetInitiativeImagesChildProps,
 } from 'resources/GetInitiativeImages';
-import GetRemoteFiles, {
-  GetRemoteFilesChildProps,
-} from 'resources/GetRemoteFiles';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // utils
-import { isNilOrError, isError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import InitiativesEditFormWrapper from 'containers/InitiativesEditPage/InitiativesEditFormWrapper';
@@ -34,8 +31,12 @@ import messages from '../messages';
 import { colors } from 'utils/styleUtils';
 
 // typings
-import { Locale } from 'typings';
+import { Locale, UploadFile } from 'typings';
 import { ITopicData } from 'services/topics';
+
+// hooks
+import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 export interface InputProps {
   initiativeId: string;
@@ -47,7 +48,6 @@ interface DataProps {
   tenantLocales: GetAppConfigurationLocalesChildProps;
   initiative: GetInitiativeChildProps;
   initiativeImages: GetInitiativeImagesChildProps;
-  initiativeFiles: GetRemoteFilesChildProps;
   topics: GetTopicsChildProps;
 }
 
@@ -58,11 +58,35 @@ const InitiativesEditPage = ({
   initiative,
   initiativeImages,
   goBack,
-  initiativeFiles,
   topics,
   tenantLocales,
+  initiativeId,
 }: Props) => {
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
+  const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
+  const [files, setFiles] = useState<UploadFile[]>([]);
+
+  useEffect(() => {
+    async function getFiles() {
+      let files: UploadFile[] = [];
+
+      if (initiativeFiles) {
+        files = (await Promise.all(
+          initiativeFiles.data.map(async (file) => {
+            const uploadFile = convertUrlToUploadFile(
+              file.attributes.file.url,
+              file.id,
+              file.attributes.name
+            );
+            return uploadFile;
+          })
+        )) as UploadFile[];
+      }
+      setFiles(files);
+    }
+
+    getFiles();
+  }, [initiativeFiles]);
 
   const onLocaleChange = (locale: Locale) => {
     setSelectedLocale(locale);
@@ -78,8 +102,6 @@ const InitiativesEditPage = ({
     !selectedLocale ||
     isNilOrError(initiative) ||
     initiativeImages === undefined ||
-    initiativeFiles === undefined ||
-    isError(initiativeFiles) ||
     isNilOrError(topics)
   ) {
     return null;
@@ -121,7 +143,7 @@ const InitiativesEditPage = ({
               : initiativeImages[0]
           }
           onPublished={goBack}
-          initiativeFiles={initiativeFiles}
+          initiativeFiles={files}
           topics={initiativeTopics}
         />
       </Content>
@@ -140,11 +162,6 @@ const Data = adopt<DataProps, InputProps>({
     <GetInitiativeImages initiativeId={initiativeId}>
       {render}
     </GetInitiativeImages>
-  ),
-  initiativeFiles: ({ initiativeId, render }) => (
-    <GetRemoteFiles resourceId={initiativeId} resourceType="initiative">
-      {render}
-    </GetRemoteFiles>
   ),
 });
 
