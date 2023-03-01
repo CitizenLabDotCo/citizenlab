@@ -3,6 +3,7 @@
 # installing all the dependencies before copying the remaining project files to the
 # Docker image in the later stages.
 FROM alpine:3.17.2 AS dependency_files
+SHELL ["/bin/ash", "-o", "pipefail", "-c"]
 
 WORKDIR /app
 
@@ -14,6 +15,7 @@ RUN find engines -type f -not -name "*.gemspec" -not -name "version.rb" -print0 
     find engines -type d -empty -delete
 
 FROM ruby:2.7.6-slim
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ARG CITIZENLAB_EE=false
 ENV CITIZENLAB_EE=$CITIZENLAB_EE
