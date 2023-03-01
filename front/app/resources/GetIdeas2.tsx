@@ -110,10 +110,23 @@ const GetIdeas = ({
 
   // Keep queryParameters in sync with props
   useEffect(() => {
-    setQueryParameters((queryParameters) => ({
-      ...queryParameters,
-      ...omitBy(getQueryParametersFromProps(), isNil),
-    }));
+    setQueryParameters((queryParameters) => {
+      const queryParametersFromProps = getQueryParametersFromProps();
+
+      return {
+        ...queryParameters,
+
+        // Omit all queryParameters that are nil.
+        // Why do this? Because we assume that an input prop that's nil is an input prop that should be ignored,
+        // and not overwrite a none-nil value that's part of the queryParameters state.
+        ...omitBy(queryParametersFromProps, isNil),
+
+        // Make an exception for 'projects', because when it's undefined we don't want to ignore it but instead pass it along
+        // to let the request know we don't want to apply a projects filter but load the ideas for all projects
+        // Note Luuc: I just copied these comments over during a refactor, we should really improve this
+        projects: queryParametersFromProps.projects,
+      };
+    });
   }, [getQueryParametersFromProps]);
 
   // Load data
