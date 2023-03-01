@@ -59,6 +59,7 @@ exports[`<UsersShowPage /> renders correctly by default 1`] = `
       <UsersShowPage__UserIdeas>
         <Memo()
           authorId="522ae8cc-a5ed-4d31-9aa0-470904934ec6"
+          hideFiltersSidebar={true}
           invisibleTitleMessage={
             {
               "defaultMessage": "All posts submitted by this participant",
@@ -132,6 +133,7 @@ exports[`<UsersShowPage /> renders correctly on the other tab 1`] = `
       <UsersShowPage__UserIdeas>
         <Memo()
           authorId="522ae8cc-a5ed-4d31-9aa0-470904934ec6"
+          hideFiltersSidebar={true}
           invisibleTitleMessage={
             {
               "defaultMessage": "All posts submitted by this participant",
