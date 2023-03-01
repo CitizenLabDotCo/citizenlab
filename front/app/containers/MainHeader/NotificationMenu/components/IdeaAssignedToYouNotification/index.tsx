@@ -1,8 +1,6 @@
 import React, { MouseEvent, KeyboardEvent } from 'react';
-import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { IIdeaAssignedToYouNotificationData } from 'services/notifications';
-import { get } from 'lodash-es';
 
 // i18n
 import messages from '../../messages';
