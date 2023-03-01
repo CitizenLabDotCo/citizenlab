@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -qq -y --no-install-recommends \
       build-essential libpq-dev file imagemagick curl git optipng jpegoptim pngquant libgeos-dev libgmp3-dev netcat shared-mime-info \
       less
 
-RUN curl -sL https://deb.nodesource.com/setup_15.x  | bash -
+RUN curl -sL https://deb.nodesource.com/setup_14.x  | bash -
 RUN apt-get -y install nodejs
 
 # Install MJML parser required by email engine.
