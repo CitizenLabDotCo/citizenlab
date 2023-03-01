@@ -1173,7 +1173,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent2": "Enquête-inhoud toevoegen",
   "app.containers.AdminPage.ProjectEdit.survey.cancelDeleteButtonText2": "Annuleren",
   "app.containers.AdminPage.ProjectEdit.survey.cancelQuitButtonText": "Annuleer",
-  "app.containers.AdminPage.ProjectEdit.survey.choiceCount2": "{percentage}% ({choiceCount, plural, no {# choices} one {# choice} other {# choices}})",
+  "app.containers.AdminPage.ProjectEdit.survey.choiceCount2": "{percentage}% ({choiceCount, plural, no {# keuzes} one {# keuze} other {# keuzes}})",
   "app.containers.AdminPage.ProjectEdit.survey.confirmDeleteButtonText2": "Ja, verwijder de enquêteresultaten",
   "app.containers.AdminPage.ProjectEdit.survey.confirmQuitButtonText": "Ja, ik wil vertrekken",
   "app.containers.AdminPage.ProjectEdit.survey.deleteResultsInfo2": "Dit kan niet ongedaan worden gemaakt",
