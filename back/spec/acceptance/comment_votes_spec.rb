@@ -74,7 +74,8 @@ resource 'Comment Votes' do
     describe do
       before { @comment.update!(post: create(:initiative)) }
 
-      example_request 'Create a vote on a comment of an initiative', document: false do
+      example 'Create a vote on a comment of an initiative', document: false do
+        do_request
         assert_status 201
       end
     end
