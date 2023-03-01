@@ -347,7 +347,6 @@ const Data = adopt<Props, WithRouterProps>({
   ),
   mostVotedIdeas: ({ params, render }) => (
     <GetIdeas
-      pageNumber={1}
       pageSize={5}
       sort="popular"
       type="paginated"

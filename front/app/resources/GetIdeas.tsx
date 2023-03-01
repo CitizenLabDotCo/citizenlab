@@ -47,15 +47,7 @@ export interface InputProps {
   feedbackNeeded?: boolean;
   filterCanModerate?: boolean;
   basketId?: string;
-
-  // test
-  pageNumber: never;
-  pageSize: never;
-  search: never;
-  topics: never;
-  publicationStatus: never;
-  boundingBox: never;
-  mini: never;
+  pageSize?: number;
 }
 
 interface IAccumulator {
@@ -118,7 +110,7 @@ export default class GetIdeas extends React.Component<Props, State> {
     super(props);
     this.defaultQueryParameters = {
       'page[number]': 1,
-      'page[size]': 12,
+      'page[size]': props.pageSize ?? 12,
       sort: props.sort as Sort,
       projects: undefined,
       phase: undefined,
@@ -286,7 +278,7 @@ export default class GetIdeas extends React.Component<Props, State> {
   propsToQueryParamsShape = () => ({
     projects: this.props.projectIds,
     'page[number]': 1,
-    'page[size]': 12,
+    'page[size]': this.props.pageSize ?? 12,
     phase: this.props.phaseId,
     author: this.props.authorId,
     sort: this.props.sort as Sort,
@@ -322,7 +314,7 @@ export default class GetIdeas extends React.Component<Props, State> {
     const inputPropsQueryParameters: IIdeasQueryParameters = {
       projects,
       'page[number]': 1,
-      'page[size]': 12,
+      'page[size]': props.pageSize ?? 12,
       phase: props.phaseId,
       author: props.authorId,
       sort: props.sort as Sort,
