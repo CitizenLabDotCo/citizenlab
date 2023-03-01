@@ -37,7 +37,7 @@ type PublicationStatus = IdeaPublicationStatus;
 
 export interface InputProps {
   type: 'load-more' | 'paginated';
-  projectIds?: string[] | 'all';
+  projectIds?: string[];
   phaseId?: string;
   authorId?: string;
   sort?: Sort;
@@ -157,7 +157,7 @@ export default class GetIdeas extends React.Component<Props, State> {
       distinctUntilChanged((prev, next) => isEqual(prev, next))
     );
 
-    if (!this.props.type || this.props.type === 'load-more') {
+    if (this.props.type === 'load-more') {
       this.subscriptions = [
         queryParameters$
           .pipe(
@@ -440,19 +440,9 @@ export default class GetIdeas extends React.Component<Props, State> {
     });
   };
 
-  handleResetParamsToProps = (
-    paramsToOmit?: (keyof IIdeasQueryParameters)[]
-  ) => {
+  handleResetParamsToProps = () => {
     const defaultQueryParameters = this.getQueryParametersFromProps();
-
-    if (paramsToOmit && paramsToOmit.length > 0) {
-      this.queryParameters$.next({
-        ...this.state.queryParameters,
-        ...omit(defaultQueryParameters, paramsToOmit),
-      });
-    } else {
-      this.queryParameters$.next(defaultQueryParameters);
-    }
+    this.queryParameters$.next(defaultQueryParameters);
   };
 
   render() {

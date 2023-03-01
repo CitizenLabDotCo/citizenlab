@@ -337,7 +337,7 @@ const Data = adopt<DataProps, InputProps>({
   ideas: ({ render, projectId, ...getIdeasInputProps }) => (
     <GetIdeas
       {...getIdeasInputProps}
-      projectIds={projectId ? [projectId] : 'all'}
+      projectIds={projectId ? [projectId] : undefined}
       pageSize={24}
       sort={
         getIdeasInputProps.defaultSortingMethod || ideaDefaultSortMethodFallback
