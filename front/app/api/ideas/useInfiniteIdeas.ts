@@ -18,7 +18,7 @@ const fetchInfiniteIdeas = (queryParameters: IQueryParameters) =>
     },
   });
 
-const useInfitineInitiatives = (queryParams: IQueryParameters) => {
+const useInfiniteIdeas = (queryParams: IQueryParameters) => {
   return useInfiniteQuery<IIdeas, CLErrors, IIdeas, IdeaKeys>({
     queryKey: ideaKeys.infiniteList(queryParams),
     queryFn: ({ pageParam }) =>
@@ -31,4 +31,4 @@ const useInfitineInitiatives = (queryParams: IQueryParameters) => {
   });
 };
 
-export default useInfitineInitiatives;
+export default useInfiniteIdeas;
