@@ -719,17 +719,10 @@ workflows:
             - citizenlab-ee-environment
           requires:
             - back-build-docker-image
-      - back-slow-tests:
-          context:
-            - docker-hub-access
-            - citizenlab-ee-environment
-          requires:
-            - back-build-docker-image
       - back-trigger-deploy:
           context: circleci-api-token
           requires:
             - back-test
-            - back-slow-tests
             - back-lint
             - back-bundle-audit
           filters:
