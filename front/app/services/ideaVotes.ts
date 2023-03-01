@@ -4,7 +4,7 @@ import { uuidRegExp } from 'utils/helperUtils';
 
 export type TVoteMode = 'up' | 'down';
 
-export interface IIdeaVoteData {
+interface IIdeaVoteData {
   id: string;
   type: 'vote';
   attributes: {
@@ -26,24 +26,11 @@ export interface IIdeaVoteData {
   };
 }
 
-interface ILinks {
-  self: string;
-  first: string;
-  prev: string;
-  next: string;
-  last: string;
-}
-
-export interface IIdeaVotes {
-  data: IIdeaVoteData[];
-  links: ILinks;
-}
-
-export interface IIdeaVote {
+interface IIdeaVote {
   data: IIdeaVoteData;
 }
 
-export interface INewVoteProperties {
+interface INewVoteProperties {
   user_id?: string;
   mode: 'up' | 'down';
 }
@@ -54,16 +41,6 @@ export function voteStream(
 ) {
   return streams.get<IIdeaVote>({
     apiEndpoint: `${API_PATH}/votes/${voteId}`,
-    ...streamParams,
-  });
-}
-
-export function votesStream(
-  ideaId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IIdeaVotes>({
-    apiEndpoint: `${API_PATH}/ideas/${ideaId}/votes`,
     ...streamParams,
   });
 }
@@ -90,7 +67,6 @@ export async function addVote(
 }
 
 export async function deleteVote(
-  _ideaId,
   voteId: string,
   refetchAllActiveIdeas = false
 ) {

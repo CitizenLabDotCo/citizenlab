@@ -66,6 +66,7 @@ resource 'Ideas' do
       parameter :topics, 'Filter by topics (OR)', required: false
       parameter :projects, 'Filter by projects (OR)', required: false
       parameter :phase, 'Filter by project phase', required: false
+      parameter :basket, 'Filter by basket', required: false
       parameter :author, 'Filter by author (user id)', required: false
       parameter :idea_status, 'Filter by status (idea status id)', required: false
       parameter :search, 'Filter by searching in title and body', required: false
@@ -182,6 +183,16 @@ resource 'Ideas' do
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 2
           expect(json_response[:data].pluck(:id)).to match_array [ideas[1].id, ideas[2].id]
+        end
+
+        example 'List all ideas in a basket' do
+          basket = create(:basket)
+          [@ideas[1], @ideas[2], @ideas[5]].each { _1.baskets << basket }
+
+          do_request(basket: basket.id)
+          json_response = json_parse(response_body)
+          expect(json_response[:data].size).to eq 2
+          expect(json_response[:data].pluck(:id)).to match_array [@ideas[1].id, @ideas[5].id]
         end
 
         example 'List all ideas in published projects' do
@@ -390,7 +401,8 @@ resource 'Ideas' do
             header 'Authorization', "Bearer #{token}"
           end
 
-          example_request '[error] XLSX export by a normal user', document: false do
+          example '[error] XLSX export by a normal user', document: false do
+            do_request
             expect(status).to eq 401
           end
         end
@@ -434,24 +446,26 @@ resource 'Ideas' do
         let(:projects) { [@project.id] }
 
         example_request 'List idea counts per filter option' do
-          expect(status).to eq 200
-          json_response = json_parse(response_body)
+          assert_status 200
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :type)).to eq 'filter_counts'
+          json_attributes = json_response.dig(:data, :attributes)
 
-          expect(json_response[:idea_status_id][@s1.id.to_sym]).to eq 1
-          expect(json_response[:idea_status_id][@s2.id.to_sym]).to eq 3
-          expect(json_response[:topic_id][@t1.id.to_sym]).to eq 2
-          expect(json_response[:topic_id][@t2.id.to_sym]).to eq 2
-          expect(json_response[:total]).to eq 4
+          expect(json_attributes[:idea_status_id][@s1.id.to_sym]).to eq 1
+          expect(json_attributes[:idea_status_id][@s2.id.to_sym]).to eq 3
+          expect(json_attributes[:topic_id][@t1.id.to_sym]).to eq 2
+          expect(json_attributes[:topic_id][@t2.id.to_sym]).to eq 2
+          expect(json_attributes[:total]).to eq 4
         end
 
         example 'List idea counts per filter option on topic' do
           do_request topics: [@t1.id], projects: nil
-          expect(status).to eq 200
+          assert_status 200
         end
 
         example 'List idea counts per filter option with a search string' do
           do_request search: 'trees'
-          expect(status).to eq 200
+          assert_status 200
         end
       end
     end
@@ -545,9 +559,11 @@ resource 'Ideas' do
 
       example_request 'Get the jsonforms.io json schema and ui schema for an ideation input' do
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:json_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
-        expect(json_response[:ui_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'json_forms_schema'
+        json_attributes = json_response.dig(:data, :attributes)
+        expect(json_attributes[:json_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
+        expect(json_attributes[:ui_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
         visible_built_in_field_keys = %i[
           title_multiloc
           body_multiloc
@@ -557,7 +573,7 @@ resource 'Ideas' do
           location_description
         ]
         %i[en fr-FR nl-NL].each do |locale|
-          expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq(visible_built_in_field_keys + [custom_field.key.to_sym])
+          expect(json_attributes[:json_schema_multiloc][locale][:properties].keys).to eq(visible_built_in_field_keys + [custom_field.key.to_sym])
         end
       end
     end
@@ -620,7 +636,8 @@ resource 'Ideas' do
           describe 'Values for disabled fields are ignored' do
             let(:proposed_budget) { 12_345 }
 
-            example_request 'Create an idea with values for disabled fields', document: false do
+            example 'Create an idea with values for disabled fields', document: false do
+              do_request
               expect(status).to be 201
               json_response = json_parse(response_body)
               expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Plant more trees'
@@ -669,7 +686,8 @@ resource 'Ideas' do
             project.update_attribute(:ideas_order, nil)
           end
 
-          example_request 'Creates an idea', document: false do
+          example 'Creates an idea', document: false do
+            do_request
             assert_status 201
             json_response = json_parse(response_body)
             expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
@@ -751,7 +769,8 @@ resource 'Ideas' do
               .update!(permitted_by: 'groups', groups: [group])
           end
 
-          example_request '[error] Create an idea in a project with groups posting permission', document: false do
+          example '[error] Create an idea in a project with groups posting permission', document: false do
+            do_request
             assert_status 401
           end
 
@@ -836,7 +855,8 @@ resource 'Ideas' do
             let!(:custom_form) { create(:custom_form, participation_context: project) }
             let(:phase_ids) { [project.phases.first.id] }
 
-            example_request 'Post an idea in an ideation phase', document: false do
+            example 'Post an idea in an ideation phase', document: false do
+              do_request
               assert_status 201
               json_response = json_parse response_body
               idea = Idea.find(json_response.dig(:data, :id))
@@ -925,7 +945,8 @@ resource 'Ideas' do
         describe 'Values for disabled fields are ignored' do
           let(:proposed_budget) { 12_345 }
 
-          example_request 'Update an idea with values for disabled fields', document: false do
+          example 'Update an idea with values for disabled fields', document: false do
+            do_request
             expect(status).to be 200
             json_response = json_parse(response_body)
             expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'

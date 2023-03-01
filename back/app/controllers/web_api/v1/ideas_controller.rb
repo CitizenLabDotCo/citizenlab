@@ -13,7 +13,8 @@ class WebApi::V1::IdeasController < ApplicationController
   def json_forms_schema
     input = Idea.find params[:id]
     enabled_fields = IdeaCustomFieldsService.new(input.custom_form).enabled_fields
-    render json: JsonFormsService.new.input_ui_and_json_multiloc_schemas(enabled_fields, current_user, input.input_term)
+    json_attributes = JsonFormsService.new.input_ui_and_json_multiloc_schemas enabled_fields, current_user, input.input_term
+    render json: raw_json(json_attributes)
   end
 
   def index
@@ -95,7 +96,7 @@ class WebApi::V1::IdeasController < ApplicationController
         end
       end
     counts['total'] = all_ideas.count
-    render json: counts
+    render json: raw_json(counts)
   end
 
   def show

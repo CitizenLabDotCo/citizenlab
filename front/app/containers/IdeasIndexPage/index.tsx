@@ -80,7 +80,6 @@ export default memo(() => (
           allowProjectsFilter={true}
           projectPublicationStatus="published"
           showViewToggle={false}
-          showFiltersSidebar={true}
           invisibleTitleMessage={messages.a11y_IdeasListTitle}
         />
       </StyledContentContainer>

@@ -246,6 +246,7 @@ export interface IIdeasQueryParameters {
   assignee?: string | null;
   feedback_needed?: boolean | null;
   filter_can_moderate?: boolean | null;
+  basket_id?: string;
 }
 
 export function ideasStream(
