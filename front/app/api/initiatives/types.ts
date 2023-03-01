@@ -44,7 +44,7 @@ export type IInitiativeAction =
 
 export interface IInitiativeData {
   id: string;
-  type: 'initiatives';
+  type: 'initiative';
   attributes: {
     title_multiloc: Multiloc;
     body_multiloc: Multiloc;
