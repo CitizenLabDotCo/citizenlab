@@ -111,6 +111,7 @@ jobs:
     steps:
       - git-shallow-clone/checkout:
           depth: 1000
+          fetch_depth: 10000
           path: ./citizenlab
       - run:
           name: Trigger workflows
