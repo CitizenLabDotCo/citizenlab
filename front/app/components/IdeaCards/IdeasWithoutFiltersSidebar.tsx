@@ -7,8 +7,8 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // components
-import TopicFilterDropdown from './TopicFilterDropdown';
-import SelectSort from './SortFilterDropdown';
+import TopicFilterDropdown from './Filters/TopicFilterDropdown';
+import SelectSort from './Filters/SortFilterDropdown';
 import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
