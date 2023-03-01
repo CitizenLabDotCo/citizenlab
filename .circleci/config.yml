@@ -110,7 +110,7 @@ jobs:
       - image: cimg/base:stable
     steps:
       - git-shallow-clone/checkout:
-          depth: 1
+          depth: 1000
           path: ./citizenlab
       - run:
           name: Trigger workflows
