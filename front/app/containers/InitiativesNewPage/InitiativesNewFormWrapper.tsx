@@ -40,9 +40,9 @@ import useAddInitiativeImage from 'api/initiative_images/useAddInitiativeImage';
 import useDeleteInitiativeImage from 'api/initiative_images/useDeleteInitiativeImage';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'hooks/useAuthUser';
-import { deleteInitiativeFile } from 'services/initiativeFiles';
 
 import useAddInitiativeFile from 'api/initiative_files/useAddInitiativeFile';
+import useDeleteInitiativeFile from 'api/initiative_files/useDeleteInitiativeFile';
 
 const StyledInitiativeForm = styled(InitiativeForm)`
   width: 100%;
@@ -64,6 +64,7 @@ const InitiativesNewFormWrapper = ({ topics, locale }: Props) => {
   const { mutate: addInitiativeImage } = useAddInitiativeImage();
   const { mutate: deleteInitiativeImage } = useDeleteInitiativeImage();
   const { mutate: addInitiativeFile } = useAddInitiativeFile();
+  const { mutate: deleteInitiativeFile } = useDeleteInitiativeFile();
 
   const initialValues = {
     title_multiloc: undefined,
@@ -443,12 +444,17 @@ const InitiativesNewFormWrapper = ({ topics, locale }: Props) => {
   const onRemoveFile = (fileToRemove: UploadFile) => {
     if (initiativeId && fileToRemove.id) {
       setSaving(true);
-      deleteInitiativeFile(initiativeId, fileToRemove.id).then(() => {
-        setSaving(false);
-        setFiles((files) =>
-          [...files].filter((file) => file.base64 !== fileToRemove.base64)
-        );
-      });
+      deleteInitiativeFile(
+        { initiativeId, fileId: fileToRemove.id },
+        {
+          onSuccess: () => {
+            setSaving(false);
+            setFiles((files) =>
+              [...files].filter((file) => file.base64 !== fileToRemove.base64)
+            );
+          },
+        }
+      );
     }
   };
 
