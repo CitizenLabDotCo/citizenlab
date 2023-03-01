@@ -56,6 +56,10 @@ class IdeasFinder < ApplicationFinder
     where(project_id: project_id)
   end
 
+  def basket_condition(basket_id)
+    where(basket_id: basket_id)
+  end
+
   def topics_condition(topics)
     return if topics.blank?
 

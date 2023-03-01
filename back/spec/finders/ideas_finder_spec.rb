@@ -226,6 +226,11 @@ describe IdeasFinder do
     end
   end
 
+
+  describe '#basket_condition' do
+
+  end
+
   describe '#project_condition' do
     let(:project_id) { Project.pick(:id) }
     let(:expected_record_ids) { Idea.where(project_id: project_id).pluck(:id) }
