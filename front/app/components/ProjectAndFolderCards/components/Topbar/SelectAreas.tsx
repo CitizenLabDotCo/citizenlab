@@ -17,10 +17,10 @@ import messages from './messages';
 // hooks
 import useLocalize from 'hooks/useLocalize';
 import useAreas from 'hooks/useAreas';
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // services
-import { coreSettings } from 'services/appConfiguration';
+import { coreSettings } from 'api/app_configuration/utils';
 
 interface SelectAreasProps {
   selectedAreas: string[];
@@ -34,7 +34,7 @@ const SelectAreas = ({
 }: SelectAreasProps & WrappedComponentProps) => {
   const localize = useLocalize();
   const areas = useAreas({ forHomepageFilter: true });
-  const appConfig = useAppConfiguration();
+  const { data: appConfig } = useAppConfiguration();
   const smallerThanMinTablet = useBreakpoint('tablet');
 
   if (isNilOrError(appConfig)) return null;
@@ -52,7 +52,7 @@ const SelectAreas = ({
 
   const areaTerm = () => {
     const fallback = formatMessage(messages.areaTitle);
-    const areaTerm = coreSettings(appConfig).area_term;
+    const areaTerm = coreSettings(appConfig.data).area_term;
 
     return capitalize(localize(areaTerm, { fallback }));
   };

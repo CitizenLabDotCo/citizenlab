@@ -166,5 +166,72 @@ describe XlsxService do
         expect(field_idx).to be_present
       end
     end
+
+    context 'when a project has no custom form - and therefore no fields' do
+      before do
+        SettingsService.new.activate_feature! 'idea_custom_fields'
+        @project_no_form = create :project
+        @idea = create :idea, project: @project_no_form
+      end
+
+      let(:xlsx) { service.generate_ideas_xlsx([@idea], view_private_attributes: false) }
+      let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }
+      let(:worksheet) { workbook.worksheets[0] }
+
+      it 'does not add any custom_fields' do
+        headers = worksheet[0].cells.map(&:value)
+        row = worksheet[1].cells.map(&:value)
+        expect(headers).to match_array(
+          %w[id title description author_name proposed_budget published_at comments upvotes downvotes baskets url project topics status assignee latitude longitude location_description attachments]
+        )
+        expect(row.size).to eq headers.size
+      end
+    end
+
+    context 'when there is a mix of projects with custom fields and without' do
+      before do
+        SettingsService.new.activate_feature! 'idea_custom_fields'
+        @project_no_form = create :project
+        @project_with_form = create :project
+        @form = create :custom_form, participation_context: @project_with_form
+        create(
+          :custom_field,
+          :for_custom_form,
+          resource: @form,
+          required: false,
+          input_type: 'number',
+          key: 'number_field',
+          title_multiloc: { 'en' => 'How many sugars?' }
+        )
+        @idea1 = create :idea, project: @project_no_form
+        @idea2 = create :idea, project: @project_with_form, custom_field_values: { 'number_field' => 5 }
+      end
+
+      let(:xlsx) { service.generate_ideas_xlsx([@idea1, @idea2], view_private_attributes: false) }
+      let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }
+      let(:worksheet) { workbook.worksheets[0] }
+
+      it 'returns custom fields in the header' do
+        headers = worksheet[0].cells.map(&:value)
+        custom_field_index = headers.find_index 'How many sugars?'
+        expect(custom_field_index).to be_present
+      end
+
+      it 'returns an empty value for custom field columns for projects with no form' do
+        headers = worksheet[0].cells.map(&:value)
+        row_no_form = worksheet[1].cells.map(&:value)
+        custom_field_index = headers.find_index 'How many sugars?'
+        expect(row_no_form.size).to eq headers.size
+        expect(row_no_form[custom_field_index]).to eq ''
+      end
+
+      it 'returns the custom field value for projects with a form' do
+        headers = worksheet[0].cells.map(&:value)
+        row_with_form = worksheet[2].cells.map(&:value)
+        custom_field_index = headers.find_index 'How many sugars?'
+        expect(row_with_form.size).to eq headers.size
+        expect(row_with_form[custom_field_index]).to eq 5
+      end
+    end
   end
 end

@@ -34,7 +34,7 @@ interface Props extends GetIdeasInputProps {
   participationContextId?: string | null;
   participationContextType?: IParticipationContextType | null;
   allowProjectsFilter?: boolean;
-  showFiltersSidebar?: boolean;
+  hideFiltersSidebar?: boolean;
   className?: string;
   invisibleTitleMessage?: MessageDescriptor;
   projectId?: string;
@@ -44,7 +44,7 @@ const IdeaCards = memo<Props>(
   ({
     className,
     invisibleTitleMessage,
-    showFiltersSidebar = false,
+    hideFiltersSidebar = false,
     ...props
   }) => {
     return (
@@ -55,10 +55,10 @@ const IdeaCards = memo<Props>(
           </ScreenReaderOnly>
         )}
         <Suspense fallback={null}>
-          {showFiltersSidebar ? (
-            <IdeasWithFiltersSidebar {...props} />
-          ) : (
+          {hideFiltersSidebar ? (
             <IdeasWithoutFiltersSidebar {...props} />
+          ) : (
+            <IdeasWithFiltersSidebar {...props} />
           )}
         </Suspense>
       </Container>
