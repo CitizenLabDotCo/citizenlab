@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { IRelationship, Multiloc, ImageSizes, ILinks } from 'typings';
+import { IRelationship, Multiloc, ImageSizes } from 'typings';
 import { first } from 'rxjs/operators';
 import { get } from 'lodash-es';
 
@@ -60,11 +60,6 @@ export interface IInitiativeData {
 
 export interface IInitiative {
   data: IInitiativeData;
-}
-
-export interface IInitiatives {
-  data: IInitiativeData[];
-  links: ILinks;
 }
 
 export interface IInitiativeAdd {
