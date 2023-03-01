@@ -15,10 +15,6 @@ import { phaseFilesStream, IPhaseFiles } from 'services/phaseFiles';
 import { pageFilesStream, ICustomPageFiles } from 'services/pageFiles';
 import { eventFilesStream, IEventFiles } from 'services/eventFiles';
 import { ideaFilesStream, IIdeaFiles } from 'services/ideaFiles';
-import {
-  initiativeFilesStream,
-  IInitiativeFiles,
-} from 'services/initiativeFiles';
 import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
 import { UploadFile } from 'typings';
 
@@ -26,13 +22,7 @@ import { UploadFile } from 'typings';
 // Useful when you combining local files and remote files,
 // so you don't have to convert (file uploader)
 
-export type TResourceType =
-  | 'project'
-  | 'phase'
-  | 'event'
-  | 'page'
-  | 'idea'
-  | 'initiative';
+export type TResourceType = 'project' | 'phase' | 'event' | 'page' | 'idea';
 
 export interface InputProps {
   resetOnChange?: boolean;
@@ -102,9 +92,6 @@ export default class GetRemoteFiles extends React.Component<Props, State> {
               if (resourceType === 'idea') {
                 streamFn = ideaFilesStream;
               }
-              if (resourceType === 'initiative') {
-                streamFn = initiativeFilesStream;
-              }
 
               return streamFn(resourceId).observable as Observable<
                 | IProjectFiles
@@ -112,7 +99,6 @@ export default class GetRemoteFiles extends React.Component<Props, State> {
                 | IEventFiles
                 | ICustomPageFiles
                 | IIdeaFiles
-                | IInitiativeFiles
                 | null
               >;
             }
