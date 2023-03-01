@@ -7,7 +7,7 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
 
   def json_forms_schema
     if participation_context_for_form
-      render json: JsonFormsService.new.input_ui_and_json_multiloc_schemas(custom_fields, current_user, input_term)
+      render json: raw_json(JsonFormsService.new.input_ui_and_json_multiloc_schemas(custom_fields, current_user, input_term))
     else
       send_not_found
     end

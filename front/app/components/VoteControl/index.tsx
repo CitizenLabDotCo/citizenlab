@@ -398,7 +398,7 @@ class VoteControl extends PureComponent<Props, State> {
                   : state.downvotesCount - 1,
               myVoteMode: voteMode,
             }));
-            await deleteVote(ideaId, myVoteId, refetchIdeas);
+            await deleteVote(myVoteId, refetchIdeas);
             await addVote(
               ideaId,
               { user_id: authUser.data.id, mode: voteMode },
@@ -417,7 +417,7 @@ class VoteControl extends PureComponent<Props, State> {
                   : state.downvotesCount,
               myVoteMode: null,
             }));
-            await deleteVote(ideaId, myVoteId, refetchIdeas);
+            await deleteVote(myVoteId, refetchIdeas);
           }
 
           // Vote

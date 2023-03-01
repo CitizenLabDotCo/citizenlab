@@ -890,9 +890,8 @@ resource 'Users' do
         create(:idea, author: @user, publication_status: 'draft')
         create(:idea, author: @user, project: create(:continuous_native_survey_project))
         do_request
-        expect(status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response[:count]).to eq 1
+        assert_status 200
+        expect(json_parse(response_body)).to eq({ data: { type: 'ideas_count', attributes: { count: 1 } } })
       end
     end
 

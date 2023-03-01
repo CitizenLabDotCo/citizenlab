@@ -1,13 +1,11 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
 
 // resources
-import GetIdeaVotesCount, {
-  GetIdeaVotesCountChildProps,
-} from 'resources/GetIdeaVotesCount';
+import useIdea from 'hooks/useIdea';
 
 // i18n
 import messages from '../messages';
@@ -72,19 +70,18 @@ const DownvotesCount = styled(VotesCount)`
   color: ${colors.error};
 `;
 
-interface DataProps {
-  votesCount: GetIdeaVotesCountChildProps;
-}
-
-interface InputProps {
+interface Props {
   ideaId: string;
   className?: string;
 }
 
-interface Props extends InputProps, DataProps {}
+const VotePreview = ({ ideaId, className }: Props) => {
+  const idea = useIdea({ ideaId });
 
-const VotePreview = memo<Props>(({ votesCount, className }) => {
-  if (!isNilOrError(votesCount)) {
+  if (!isNilOrError(idea)) {
+    const upvotesCount = idea.attributes.upvotes_count;
+    const downvotesCount = idea.attributes.downvotes_count;
+
     return (
       <Container className={className}>
         <Label>
@@ -93,11 +90,11 @@ const VotePreview = memo<Props>(({ votesCount, className }) => {
         <Block>
           <UpvotesContainer>
             <UpvoteIcon name="vote-up" />
-            <UpvotesCount>{votesCount.up}</UpvotesCount>
+            <UpvotesCount>{upvotesCount}</UpvotesCount>
           </UpvotesContainer>
           <DownvotesContainer>
             <DownvoteIcon name="vote-down" />
-            <DownvotesCount>{votesCount.down}</DownvotesCount>
+            <DownvotesCount>{downvotesCount}</DownvotesCount>
           </DownvotesContainer>
         </Block>
       </Container>
@@ -105,10 +102,6 @@ const VotePreview = memo<Props>(({ votesCount, className }) => {
   }
 
   return null;
-});
+};
 
-export default (inputProps: InputProps) => (
-  <GetIdeaVotesCount ideaId={inputProps.ideaId}>
-    {(votesCount) => <VotePreview {...inputProps} votesCount={votesCount} />}
-  </GetIdeaVotesCount>
-);
+export default VotePreview;
