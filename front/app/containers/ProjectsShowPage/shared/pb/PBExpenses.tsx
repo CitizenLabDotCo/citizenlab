@@ -35,7 +35,7 @@ import { colors, fontSizes, defaultCardStyle } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useBasket from 'hooks/useBasket';
 import useProject from 'hooks/useProject';
 import usePhase from 'hooks/usePhase';
@@ -273,7 +273,7 @@ const PBExpenses = ({
 }: Props & WrappedComponentProps) => {
   const [processing, setProcessing] = useState(false);
   const locale = useLocale();
-  const { data: appConfiguration } = useAppConfiguration();
+  const appConfiguration = useAppConfiguration();
   const project = useProject({
     projectId:
       participationContextType === 'project' ? participationContextId : null,
@@ -319,7 +319,7 @@ const PBExpenses = ({
     ((participationContextType === 'project' && !isNilOrError(project)) ||
       (participationContextType === 'phase' && !isNilOrError(phase)))
   ) {
-    const currency = appConfiguration.data.attributes.settings.core.currency;
+    const currency = appConfiguration.attributes.settings.core.currency;
     const spentBudget = !isNilOrError(basket)
       ? basket.attributes.total_budget
       : 0;

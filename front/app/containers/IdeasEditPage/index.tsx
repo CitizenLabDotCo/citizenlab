@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { Subscription, combineLatest, of } from 'rxjs';
-import { switchMap, first } from 'rxjs/operators';
+import { switchMap, map, first } from 'rxjs/operators';
 import { isNilOrError, isUnauthorizedError } from 'utils/helperUtils';
 import { isError } from 'lodash-es';
 
@@ -25,6 +25,7 @@ import IdeasEditPageWithJSONForm from './WithJSONForm';
 
 // services
 import { localeStream } from 'services/locale';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { ideaByIdStream, IIdeaData, updateIdea } from 'services/ideas';
 import {
   ideaImageStream,
@@ -185,9 +186,19 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
   componentDidMount() {
     const { ideaId } = this.props.params;
     const locale$ = localeStream().observable;
+    const currentTenantLocales$ =
+      currentAppConfigurationStream().observable.pipe(
+        map(
+          (currentTenant) => currentTenant.data.attributes.settings.core.locales
+        )
+      );
     const idea$ = ideaByIdStream(ideaId).observable;
-    const ideaWithRelationships$ = combineLatest([locale$, idea$]).pipe(
-      switchMap(([_locale, idea]) => {
+    const ideaWithRelationships$ = combineLatest([
+      locale$,
+      currentTenantLocales$,
+      idea$,
+    ]).pipe(
+      switchMap(([_locale, _currentTenantLocales, idea]) => {
         const ideaId = idea.data.id;
         const ideaImages = idea.data.relationships.idea_images.data;
         const ideaImageId =

@@ -1,5 +1,5 @@
 import { CitizenlabThemeProps } from '@citizenlab/cl2-component-library';
-import { IAppConfigurationStyle } from 'api/app_configuration/types';
+import { IAppConfigurationStyle } from 'services/appConfiguration';
 import 'styled-components';
 
 declare module 'styled-components' {

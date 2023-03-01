@@ -10,7 +10,7 @@ import { WrappedComponentProps } from 'react-intl';
 // hooks
 import useLocale from 'hooks/useLocale';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAuthUser from 'hooks/useAuthUser';
 
 // services
@@ -31,7 +31,7 @@ const UsersEditPageMeta = React.memo<Props & WrappedComponentProps>(
     const locale = useLocale();
     const tenantLocales = useAppConfigurationLocales();
     const authUser = useAuthUser();
-    const { data: appConfig } = useAppConfiguration();
+    const appConfig = useAppConfiguration();
 
     if (
       !isNilOrError(tenantLocales) &&
@@ -44,7 +44,7 @@ const UsersEditPageMeta = React.memo<Props & WrappedComponentProps>(
       const firstName = user.attributes.first_name;
       const lastName = user.attributes.last_name;
       const organizationNameMultiLoc =
-        appConfig.data.attributes.settings.core.organization_name;
+        appConfig.attributes.settings.core.organization_name;
       const tenantName = getLocalized(
         organizationNameMultiLoc,
         locale,

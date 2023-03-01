@@ -69,18 +69,14 @@ jest.mock('hooks/useAdminPublicationsStatusCounts', () =>
   }))
 );
 
-jest.mock('api/app_configuration/useAppConfiguration', () =>
+jest.mock('hooks/useAppConfiguration', () =>
   jest.fn(() => ({
-    data: {
-      data: {
-        attributes: {
-          settings: {
-            core: {
-              currently_working_on_text: { en: 'Working on text' },
-              area_term: { en: 'Area' },
-              topic_term: { en: 'Topic' },
-            },
-          },
+    attributes: {
+      settings: {
+        core: {
+          currently_working_on_text: { en: 'Working on text' },
+          area_term: { en: 'Area' },
+          topic_term: { en: 'Topic' },
         },
       },
     },

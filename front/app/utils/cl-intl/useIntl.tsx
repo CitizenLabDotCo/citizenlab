@@ -5,13 +5,13 @@ import {
   MessageDescriptor,
 } from 'react-intl';
 import { isNilOrError } from 'utils/helperUtils';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocalize from 'hooks/useLocalize';
 
 const useIntl = () => {
   const intl = useOriginalUseIntl();
   const localize = useLocalize();
-  const { data: appConfig } = useAppConfiguration();
+  const appConfig = useAppConfiguration();
 
   const formatMessageReplacement = useCallback(
     (
@@ -20,13 +20,13 @@ const useIntl = () => {
     ) => {
       return intl.formatMessage(messageDescriptor, {
         tenantName: !isNilOrError(appConfig)
-          ? appConfig.data.attributes.name
+          ? appConfig.attributes.name
           : undefined,
         orgName: !isNilOrError(appConfig)
-          ? localize(appConfig.data.attributes.settings.core.organization_name)
+          ? localize(appConfig.attributes.settings.core.organization_name)
           : undefined,
         orgType: !isNilOrError(appConfig)
-          ? appConfig.data.attributes.settings.core.organization_type
+          ? appConfig.attributes.settings.core.organization_type
           : undefined,
         ...(values || {}),
       });

@@ -2,8 +2,8 @@ import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
 import SlugInput, { Props } from '.';
 
-jest.mock('api/app_configuration/useAppConfiguration', () => () => ({
-  data: { data: { attributes: { name: 'orgName', host: 'localhost' } } },
+jest.mock('hooks/useAppConfiguration', () => () => ({
+  attributes: { name: 'orgName', host: 'localhost' },
 }));
 
 const slug = 'my-folder';

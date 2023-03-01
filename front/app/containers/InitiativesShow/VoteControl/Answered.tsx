@@ -4,7 +4,7 @@ import { fontSizes } from 'utils/styleUtils';
 
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { IAppConfigurationSettings } from 'api/app_configuration/types';
+import { IAppConfigurationSettings } from 'services/appConfiguration';
 
 import { Icon } from '@citizenlab/cl2-component-library';
 import { StatusWrapper, StatusExplanation } from './SharedStyles';

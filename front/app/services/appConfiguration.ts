@@ -1,18 +1,28 @@
-import { Keys } from 'utils/cl-react-query/types';
-import appConfigurationKeys from './keys';
-
-export type AppConfigurationKeys = Keys<typeof appConfigurationKeys>;
-
 import { API_PATH } from 'containers/App/constants';
-import { ImageSizes, Multiloc, Locale, UploadFile } from 'typings';
+import streams from 'utils/streams';
+import { ImageSizes, Multiloc, Locale } from 'typings';
 import { TCategory } from 'components/ConsentManager/destinations';
-export const currentAppConfigurationEndpoint = `${API_PATH}/app_configuration`;
 import { THomepageSettingKeyMap } from 'services/homepageSettings';
+export const currentAppConfigurationEndpoint = `${API_PATH}/app_configuration`;
 
-interface AppConfigurationFeature {
+export interface AppConfigurationFeature {
   allowed: boolean;
   enabled: boolean;
 }
+
+export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
+
+// Settings that have their enabled values in homepageSettings.
+// Their allowed value is still in appConfiguration.
+export type THomepageSetting = keyof THomepageSettingKeyMap;
+
+// All appConfig setting names except those in THomepageSetting
+export type TAppConfigurationSettingWithEnabled = Exclude<
+  TAppConfigurationSetting,
+  THomepageSetting
+>;
+
+export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
 
 export type IAppConfigurationSettingsCore = {
   allowed: boolean;
@@ -211,10 +221,6 @@ export interface IAppConfigurationSettings {
   posthog_integration?: AppConfigurationFeature;
 }
 
-export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
-
-export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
-
 interface AppConfigurationMapSettings extends AppConfigurationFeature {
   map_center: {
     lat: string;
@@ -248,7 +254,7 @@ export interface IAppConfigurationStyle {
   projectNavbarIdeaButtonTextColor?: string;
 }
 
-interface IAppConfigurationAttributes {
+export interface IAppConfigurationAttributes {
   name: string;
   host: string;
   settings: IAppConfigurationSettings;
@@ -263,15 +269,59 @@ export interface IAppConfigurationData {
   attributes: IAppConfigurationAttributes;
 }
 
-// Settings that have their enabled values in homepageSettings.
-// Their allowed value is still in appConfiguration.
-export type THomepageSetting = keyof THomepageSettingKeyMap;
+export interface IAppConfiguration {
+  data: IAppConfigurationData;
+}
 
-// All appConfig setting names except those in THomepageSetting
-export type TAppConfigurationSettingWithEnabled = Exclude<
-  TAppConfigurationSetting,
-  THomepageSetting
->;
+export interface IUpdatedAppConfigurationProperties {
+  settings?: Partial<{
+    [P in keyof IAppConfigurationSettings]: Partial<
+      IAppConfigurationSettings[P]
+    >;
+  }>;
+  logo?: string;
+  favicon?: string;
+  style?: IAppConfigurationStyle;
+}
+
+export function currentAppConfigurationStream() {
+  return streams.get<IAppConfiguration>({
+    apiEndpoint: currentAppConfigurationEndpoint,
+  });
+}
+
+export async function updateAppConfiguration(
+  object: IUpdatedAppConfigurationProperties
+) {
+  const tenant = await streams.update<IAppConfiguration>(
+    currentAppConfigurationEndpoint,
+    'app_configuration',
+    { app_configuration: object }
+  );
+  await currentAppConfigurationStream().fetch();
+  return tenant;
+}
+
+export async function updateAppConfigurationCore(
+  newCoreSettings: Partial<IAppConfigurationSettingsCore>
+) {
+  const tenant = await streams.update<IAppConfiguration>(
+    currentAppConfigurationEndpoint,
+    'app_configuration',
+    {
+      app_configuration: {
+        settings: {
+          core: newCoreSettings,
+        },
+      },
+    }
+  );
+  await currentAppConfigurationStream().fetch();
+  return tenant;
+}
+
+export const coreSettings = (appConfiguration: IAppConfigurationData) =>
+  appConfiguration.attributes.settings.core;
 
 type TCurrency = TCustomCurrency | TCountryCurrency;
 type TCustomCurrency =
@@ -458,18 +508,3 @@ type TCountryCurrency =
   | 'YER'
   | 'ZAR'
   | 'ZMW';
-
-export interface IAppConfiguration {
-  data: IAppConfigurationData;
-}
-
-export interface IUpdatedAppConfigurationProperties {
-  settings?: Partial<{
-    [P in keyof IAppConfigurationSettings]: Partial<
-      IAppConfigurationSettings[P]
-    >;
-  }>;
-  logo?: UploadFile;
-  favicon?: string;
-  style?: IAppConfigurationStyle;
-}

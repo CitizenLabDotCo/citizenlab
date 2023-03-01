@@ -12,10 +12,6 @@ def group_filter_parameter(s)
   s.parameter :group, 'Group ID. Only return users that are a member of the given group', required: false
 end
 
-def participant_filter_parameter(s)
-  s.parameter :filter_by_participation, 'Filter by participants', required: false
-end
-
 shared_examples 'xlsx export' do |field_name, request_time|
   example "Users xlsx by #{field_name}" do
     if request_time.present?
@@ -493,67 +489,6 @@ resource 'Stats - Users' do
                 false: 1,
                 # rubocop:enable Lint/BooleanSymbol
                 _blank: 1
-              },
-              expected_users: nil,
-              reference_population: nil
-            }
-          })
-        end
-      end
-    end
-
-    get 'web_api/v1/stats/users_by_custom_field/:custom_field_id' do
-      time_boundary_parameters self
-      group_filter_parameter self
-      participant_filter_parameter self
-      before do
-        @group = create(:group)
-        @custom_field = create(:custom_field_checkbox)
-
-        travel_to(start_at + 24.days) do
-          create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
-          create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
-          user = create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
-          comment = create(:comment)
-          create(:activity, item: comment, action: 'created', user: user)
-        end
-      end
-
-      describe 'with filter by participation' do
-        let(:group) { @group.id }
-        let(:custom_field_id) { @custom_field.id }
-        let(:filter_by_participation) { true }
-
-        example_request 'Users by custom field (filtered)' do
-          expect(response_status).to eq 200
-          expect(json_response_body).to match({
-            series: {
-              users: {
-                # rubocop:disable Lint/BooleanSymbol
-                false: 1,
-                # rubocop:enable Lint/BooleanSymbol
-                _blank: 0
-              },
-              expected_users: nil,
-              reference_population: nil
-            }
-          })
-        end
-      end
-
-      describe 'without filter by participation' do
-        let(:group) { @group.id }
-        let(:custom_field_id) { @custom_field.id }
-
-        example_request 'Users by custom field (filtered)' do
-          expect(response_status).to eq 200
-          expect(json_response_body).to match({
-            series: {
-              users: {
-                # rubocop:disable Lint/BooleanSymbol
-                false: 3,
-                # rubocop:enable Lint/BooleanSymbol
-                _blank: 0
               },
               expected_users: nil,
               reference_population: nil

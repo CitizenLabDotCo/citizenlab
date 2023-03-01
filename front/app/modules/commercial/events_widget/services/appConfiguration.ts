@@ -1,7 +1,7 @@
-import 'api/app_configuration/types';
+import 'services/appConfiguration';
 import { Multiloc } from 'typings';
 
-declare module 'api/app_configuration/types' {
+declare module 'services/appConfiguration' {
   export interface IAppConfigurationSettings {
     // the enabled value needs to be checked in homepageSettings
     // (with e.g. useHomepageSettingsFeatureFlag)

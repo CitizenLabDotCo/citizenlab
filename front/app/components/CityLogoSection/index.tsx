@@ -12,7 +12,7 @@ import messages from './messages';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocalize from 'hooks/useLocalize';
 
 // style
@@ -41,17 +41,16 @@ const CityLogoSection = ({
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
   const locale = useLocale();
-  const { data: appConfiguration } = useAppConfiguration();
+  const appConfiguration = useAppConfiguration();
   const localize = useLocalize();
 
   if (!isNilOrError(appConfiguration)) {
-    const currentTenantLogo =
-      appConfiguration.data.attributes.logo?.large || null;
+    const currentTenantLogo = appConfiguration.attributes.logo?.large || null;
     const tenantSite =
-      appConfiguration.data.attributes.settings.core.organization_site;
+      appConfiguration.attributes.settings.core.organization_site;
     const footerLocale = `footer-city-logo-${locale}`;
     const localizedOrgName = localize(
-      appConfiguration.data.attributes.settings.core.organization_name
+      appConfiguration.attributes.settings.core.organization_name
     );
 
     if (currentTenantLogo) {

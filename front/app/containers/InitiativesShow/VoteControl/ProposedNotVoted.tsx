@@ -7,7 +7,7 @@ import { getPeriodRemainingUntil } from 'utils/dateUtils';
 
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { IAppConfigurationSettings } from 'api/app_configuration/types';
+import { IAppConfigurationSettings } from 'services/appConfiguration';
 
 import CountDown from './CountDown';
 import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';

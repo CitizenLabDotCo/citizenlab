@@ -1,5 +1,5 @@
 import { events$, pageChanges$, tenantInfo } from 'utils/analytics';
-import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { authUserStream } from 'services/auth';
 import { combineLatest } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
@@ -43,10 +43,10 @@ const configuration: ModuleConfiguration = {
     if (!CL_SEGMENT_API_KEY) return;
 
     combineLatest([
-      appConfigurationStream,
+      currentAppConfigurationStream().observable,
       authUserStream().observable,
     ]).subscribe(async ([tenant, user]) => {
-      if (tenant) {
+      if (!isNilOrError(tenant)) {
         const segmentFeatureFlag = tenant.data.attributes.settings.segment;
         isSegmentEnabled = Boolean(
           // Feature flag is in place
@@ -56,21 +56,21 @@ const configuration: ModuleConfiguration = {
             !isNilOrError(user) &&
             isModerator(user)
         );
-      }
 
-      // Ensure segment should be enabled but snippet hasn't been loaded already
-      // in case of a user signing out and back in
-      if (isSegmentEnabled && isNil(get(window, 'analytics'))) {
-        const snippet = await lazyLoadedSnippet();
-        const code = snippet.min({
-          host: 'cdn.segment.com',
-          load: true,
-          page: false,
-          apiKey: CL_SEGMENT_API_KEY,
-        });
+        // Ensure segment should be enabled but snippet hasn't been loaded already
+        // in case of a user signing out and back in
+        if (isSegmentEnabled && isNil(get(window, 'analytics'))) {
+          const snippet = await lazyLoadedSnippet();
+          const code = snippet.min({
+            host: 'cdn.segment.com',
+            load: true,
+            page: false,
+            apiKey: CL_SEGMENT_API_KEY,
+          });
 
-        // eslint-disable-next-line no-eval
-        eval(code);
+          // eslint-disable-next-line no-eval
+          eval(code);
+        }
       }
 
       if (
@@ -128,7 +128,7 @@ const configuration: ModuleConfiguration = {
     });
 
     combineLatest([
-      appConfigurationStream,
+      currentAppConfigurationStream().observable,
       authUserStream().observable,
       events$,
     ]).subscribe(([tenant, user, event]) => {
@@ -148,7 +148,7 @@ const configuration: ModuleConfiguration = {
     });
 
     combineLatest([
-      appConfigurationStream,
+      currentAppConfigurationStream().observable,
       authUserStream().observable,
       pageChanges$,
     ]).subscribe(([tenant, user, pageChange]) => {

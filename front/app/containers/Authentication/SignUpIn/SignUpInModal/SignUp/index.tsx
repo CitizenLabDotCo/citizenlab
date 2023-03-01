@@ -17,7 +17,7 @@ import { StyledModalContentContainer } from '../styles';
 import VerificationSignUpStep from './VerificationSignUpStep';
 
 // hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
 import useUserCustomFieldsSchema from 'hooks/useUserCustomFieldsSchema';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -52,7 +52,7 @@ import styled, { useTheme } from 'styled-components';
 // typings
 import { ISignUpInMetaData, openSignUpInModal } from 'events/openSignUpInModal';
 import { Multiloc } from 'typings';
-import { IAppConfigurationData } from 'api/app_configuration/types';
+import { IAppConfigurationData } from 'services/appConfiguration';
 import { UserCustomFieldsInfos } from 'services/userCustomFields';
 
 const Container = styled.div`
@@ -129,7 +129,7 @@ const SignUp = ({
   const { formatMessage } = useIntl();
   const authUser = useAuthUser();
   const theme = useTheme();
-  const { data: appConfig } = useAppConfiguration();
+  const appConfig = useAppConfiguration();
 
   const modalContentRef = useRef<HTMLDivElement>(null);
 
@@ -268,7 +268,7 @@ const SignUp = ({
     : null;
   const activeStepConfiguration = activeStep ? configuration[activeStep] : null;
   const helpText = activeStepConfiguration?.helperText?.(
-    !isNilOrError(appConfig) ? appConfig.data : undefined
+    !isNilOrError(appConfig) ? appConfig : undefined
   );
   const stepDescription = activeStepConfiguration?.stepDescriptionMessage
     ? formatMessage(activeStepConfiguration.stepDescriptionMessage)

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { PureComponent } from 'react';
 
 // components
 import { Label } from '@citizenlab/cl2-component-library';
@@ -11,8 +11,15 @@ import { convertUrlToUploadFile } from 'utils/fileUtils';
 import getSubmitState from 'utils/getSubmitState';
 
 // services
+import {
+  updateAppConfiguration,
+  IUpdatedAppConfigurationProperties,
+} from 'services/appConfiguration';
 
 // resources
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 
 // intl
 import messages from './messages';
@@ -25,9 +32,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 
 // typings
-import { UploadFile } from 'typings';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
+import { CLError, UploadFile } from 'typings';
+import { isCLErrorJSON } from 'utils/errorUtils';
 
 const MainDropzone = styled(ImagesDropzone)`
   margin-top: 20px;
@@ -49,111 +55,151 @@ interface IAttributesDiff {
   favicon?: string;
 }
 
-const Favicon = () => {
-  const { data: appConfiguration } = useAppConfiguration();
-  const {
-    mutate: updateAppConfiguration,
-    isLoading,
-    error,
-    isSuccess,
-  } = useUpdateAppConfiguration();
+interface Props {
+  tenant: GetAppConfigurationChildProps;
+}
 
-  const [attributesDiff, setAttributesDiff] = useState<IAttributesDiff>({});
-  const [favicon, setFavicon] = useState<UploadFile[] | null>(null);
+type State = {
+  attributesDiff: IAttributesDiff;
+  errors: { [fieldName: string]: CLError[] };
+  favicon: UploadFile[] | null;
+  faviconError: string | null;
+  saved: boolean;
+  loading: boolean;
+};
 
-  useEffect(() => {
-    if (appConfiguration) {
-      if (
-        appConfiguration.data.attributes.favicon &&
-        appConfiguration.data.attributes.favicon.large
-      ) {
-        const url = appConfiguration.data.attributes.favicon.large;
+class Favicon extends PureComponent<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      attributesDiff: {},
+      errors: {},
+      favicon: null,
+      faviconError: null,
+      saved: false,
+      loading: false,
+    };
+  }
+
+  componentDidUpdate(prevProps) {
+    const { tenant } = this.props;
+
+    if (prevProps.tenant !== tenant && !isNilOrError(tenant)) {
+      if (tenant.attributes.favicon && tenant.attributes.favicon.large) {
+        const url = tenant.attributes.favicon.large;
         convertUrlToUploadFile(url, null, null).then((res) => {
           if (res) {
-            setFavicon([res]);
+            this.setState({ favicon: [res] });
           }
         });
       }
     }
-  }, [appConfiguration]);
+  }
 
-  const handleUploadOnAdd = (newImage: UploadFile[]) => {
-    setAttributesDiff({ favicon: newImage[0].base64 });
-    setFavicon([newImage[0]]);
+  handleUploadOnAdd = (newImage: UploadFile[]) => {
+    this.setState({
+      attributesDiff: {
+        favicon: newImage[0].base64,
+      },
+      favicon: [newImage[0]],
+    });
   };
 
-  const handleUploadOnRemove = () => {
-    setAttributesDiff({});
-    setFavicon(null);
+  handleUploadOnRemove = () => {
+    this.setState({ attributesDiff: {}, favicon: null });
   };
 
-  const save = async (event) => {
+  save = async (event) => {
     event.preventDefault();
+    const { tenant } = this.props;
 
-    if (!isNilOrError(appConfiguration)) {
-      updateAppConfiguration(attributesDiff);
+    if (!isNilOrError(tenant)) {
+      this.setState({ loading: true, saved: false });
+
+      try {
+        await updateAppConfiguration(
+          this.state.attributesDiff as IUpdatedAppConfigurationProperties
+        );
+        this.setState({ loading: false, saved: true, attributesDiff: {} });
+      } catch (error) {
+        if (isCLErrorJSON(error)) {
+          this.setState({ loading: false, errors: error.json.errors });
+        } else {
+          this.setState({ loading: false, errors: error });
+        }
+      }
     }
   };
 
-  if (!isNilOrError(appConfiguration)) {
-    return (
-      <form onSubmit={save}>
-        <Section>
-          <SectionField key={'favicon'}>
-            <Label>Favicon</Label>
-            <FormattedMessage {...messages.faviconExplaination} />
-            <MainDropzone
-              acceptedFileTypes={{ 'image/*': ['.png'] }}
-              images={favicon}
-              imagePreviewRatio={1}
-              maxImagePreviewWidth="152px"
-              objectFit="contain"
-              onAdd={handleUploadOnAdd}
-              onRemove={handleUploadOnRemove}
-              label="Drop file here"
-            />
-            <Preview
-              acceptedFileTypes={{ 'image/*': ['.png'] }}
-              images={favicon}
-              imagePreviewRatio={1}
-              maxImagePreviewWidth="32px"
-              objectFit="contain"
-              onAdd={handleUploadOnAdd}
-              onRemove={handleUploadOnRemove}
-              label=" "
-            />
-            <Preview
-              acceptedFileTypes={{ 'image/*': ['.png'] }}
-              images={favicon}
-              imagePreviewRatio={1}
-              maxImagePreviewWidth="16px"
-              objectFit="contain"
-              onAdd={handleUploadOnAdd}
-              onRemove={handleUploadOnRemove}
-              label=" "
-            />
-          </SectionField>
-        </Section>
+  render() {
+    const { errors, saved } = this.state;
+    const { tenant } = this.props;
 
-        <SubmitWrapper
-          loading={isLoading}
-          status={getSubmitState({
-            errors: error,
-            saved: isSuccess,
-            diff: attributesDiff,
-          })}
-          messages={{
-            buttonSave: messages.save,
-            buttonSuccess: messages.saveSuccess,
-            messageError: messages.saveErrorMessage,
-            messageSuccess: messages.saveSuccessMessage,
-          }}
-        />
-      </form>
-    );
+    if (!isNilOrError(tenant)) {
+      const { attributesDiff, faviconError, favicon } = this.state;
+
+      return (
+        <form onSubmit={this.save}>
+          <Section>
+            <SectionField key={'favicon'}>
+              <Label>Favicon</Label>
+              <FormattedMessage {...messages.faviconExplaination} />
+              <MainDropzone
+                acceptedFileTypes={{ 'image/*': ['.png'] }}
+                images={favicon}
+                imagePreviewRatio={1}
+                maxImagePreviewWidth="152px"
+                objectFit="contain"
+                onAdd={this.handleUploadOnAdd}
+                onRemove={this.handleUploadOnRemove}
+                label="Drop file here"
+                errorMessage={faviconError}
+              />
+              <Preview
+                acceptedFileTypes={{ 'image/*': ['.png'] }}
+                images={favicon}
+                imagePreviewRatio={1}
+                maxImagePreviewWidth="32px"
+                objectFit="contain"
+                onAdd={this.handleUploadOnAdd}
+                onRemove={this.handleUploadOnRemove}
+                label=" "
+                errorMessage={faviconError}
+              />
+              <Preview
+                acceptedFileTypes={{ 'image/*': ['.png'] }}
+                images={favicon}
+                imagePreviewRatio={1}
+                maxImagePreviewWidth="16px"
+                objectFit="contain"
+                onAdd={this.handleUploadOnAdd}
+                onRemove={this.handleUploadOnRemove}
+                label=" "
+                errorMessage={faviconError}
+              />
+            </SectionField>
+          </Section>
+
+          <SubmitWrapper
+            loading={this.state.loading}
+            status={getSubmitState({ errors, saved, diff: attributesDiff })}
+            messages={{
+              buttonSave: messages.save,
+              buttonSuccess: messages.saveSuccess,
+              messageError: messages.saveErrorMessage,
+              messageSuccess: messages.saveSuccessMessage,
+            }}
+          />
+        </form>
+      );
+    }
+
+    return null;
   }
+}
 
-  return null;
-};
-
-export default Favicon;
+export default () => (
+  <GetAppConfiguration>
+    {(tenant) => <Favicon tenant={tenant} />}
+  </GetAppConfiguration>
+);

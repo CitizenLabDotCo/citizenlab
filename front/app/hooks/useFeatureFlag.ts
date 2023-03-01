@@ -1,8 +1,10 @@
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { useState, useEffect } from 'react';
 import {
+  currentAppConfigurationStream,
+  IAppConfiguration,
   TAppConfigurationSettingWithEnabled,
   THomepageSetting,
-} from 'api/app_configuration/types';
+} from 'services/appConfiguration';
 
 export type Parameters = HomepageSettingProps | AppConfigSettingProps;
 
@@ -22,14 +24,24 @@ export default function useFeatureFlag({
   name,
   onlyCheckAllowed = false,
 }: Parameters): boolean {
-  const { data: appConfiguration } = useAppConfiguration();
-  const tenantSettings = appConfiguration?.data.attributes.settings;
+  const [tenantSettings, setTenantSettings] = useState<
+    | IAppConfiguration['data']['attributes']['settings']
+    | undefined
+    | null
+    | Error
+  >(undefined);
 
-  const setting = tenantSettings && tenantSettings[name];
-  const isEnabled =
-    setting && 'enabled' in setting ? setting.enabled : undefined;
+  useEffect(() => {
+    const subscription = currentAppConfigurationStream().observable.subscribe(
+      (tenantSettings) =>
+        setTenantSettings(tenantSettings.data.attributes.settings)
+    );
 
-  return Boolean(
-    tenantSettings?.[name]?.allowed && (onlyCheckAllowed || isEnabled)
+    return subscription.unsubscribe();
+  }, []);
+
+  return (
+    tenantSettings?.[name]?.allowed &&
+    (onlyCheckAllowed || tenantSettings?.[name]?.enabled)
   );
 }

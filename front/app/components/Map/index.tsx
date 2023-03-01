@@ -14,7 +14,7 @@ import Outlet from 'components/Outlet';
 const LeafletMap = lazy(() => import('components/UI/LeafletMap'));
 
 // hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // utils
 import {
@@ -136,21 +136,21 @@ const Map = memo<IMapProps & IMapConfigProps>(
     className,
     hideLegend,
   }) => {
-    const { data: appConfig } = useAppConfiguration();
+    const appConfig = useAppConfiguration();
 
     const [additionalLeafletConfig, setAdditionalLeafletConfig] =
       useState<ILeafletMapConfig | null>(null);
 
     const center = useMemo(() => {
-      return getCenter(centerLatLng, appConfig?.data);
+      return getCenter(centerLatLng, appConfig);
     }, [centerLatLng, appConfig]);
 
     const zoom = useMemo(() => {
-      return getZoomLevel(zoomLevel, appConfig?.data);
+      return getZoomLevel(zoomLevel, appConfig);
     }, [zoomLevel, appConfig]);
 
     const tileProvider = useMemo(() => {
-      return getTileProvider(appConfig?.data);
+      return getTileProvider(appConfig);
     }, [appConfig]);
 
     const tileOptions = useMemo(() => {

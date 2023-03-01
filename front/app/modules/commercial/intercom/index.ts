@@ -1,6 +1,6 @@
 import { combineLatest } from 'rxjs';
 import { authUserStream } from 'services/auth';
-import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 import {
   bufferUntilInitialized,
   events$,
@@ -41,7 +41,7 @@ const destinationConfig: IDestinationConfig = {
 const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
     combineLatest([
-      appConfigurationStream,
+      currentAppConfigurationStream().observable,
       authUserStream().observable,
       initializeFor('intercom'),
     ]).subscribe(([tenant, user, _]) => {
@@ -82,8 +82,7 @@ const configuration: ModuleConfiguration = {
         }
       })();
 
-      tenant &&
-        window.Intercom &&
+      window.Intercom &&
         window.Intercom('boot', {
           app_id: INTERCOM_APP_ID,
           ...(!isNilOrError(user)
@@ -117,7 +116,7 @@ const configuration: ModuleConfiguration = {
 
     combineLatest([
       bufferUntilInitialized('intercom', events$),
-      appConfigurationStream,
+      currentAppConfigurationStream().observable,
     ]).subscribe(([event, tenant]) => {
       if (!isNilOrError(tenant) && window.Intercom) {
         const properties = {

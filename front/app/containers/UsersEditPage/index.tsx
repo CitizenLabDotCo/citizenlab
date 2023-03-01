@@ -22,7 +22,7 @@ import { colors } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // Hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAuthUser from 'hooks/useAuthUser';
 import VerificationStatus from './VerificationStatus';
 
@@ -43,7 +43,7 @@ const Container = styled.main`
 const Wrapper = styled.div``;
 
 export default () => {
-  const { data: appConfig } = useAppConfiguration();
+  const appConfig = useAppConfiguration();
   const authUser = useAuthUser();
   const loaded = appConfig !== undefined && authUser !== undefined;
 

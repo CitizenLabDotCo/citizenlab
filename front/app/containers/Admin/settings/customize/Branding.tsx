@@ -20,6 +20,10 @@ import messages from './messages';
 // utils
 import { calculateContrastRatio, hexToRgb } from 'utils/styleUtils';
 import { get } from 'lodash-es';
+import {
+  createAddUploadHandler,
+  createRemoveUploadHandler,
+} from './createHandler';
 
 // typings
 import { UploadFile } from 'typings';
@@ -31,9 +35,8 @@ const ContrastWarning = styled(Warning)`
 interface Props {
   logo: UploadFile[] | null;
   logoError: string | null;
-  setAttributesDiff: (state: any) => void;
+  setParentState: (state: any) => void;
   getSetting: (setting: string) => any;
-  setLogo: (logo: UploadFile[] | null) => void;
 }
 
 interface ContrastRatios {
@@ -56,13 +59,7 @@ const TENANT_COLORS: TenantColor[] = [
   'color_text',
 ];
 
-export default ({
-  logo,
-  logoError,
-  setAttributesDiff,
-  getSetting,
-  setLogo,
-}: Props) => {
+export default ({ logo, logoError, setParentState, getSetting }: Props) => {
   const [contrastRatios, setContrastRatios] = useState<ContrastRatios>({
     color_main: null,
     color_secondary: null,
@@ -96,51 +93,24 @@ export default ({
         [colorName]: contrastRatio && contrastRatio < 4.5 ? true : false,
       }));
 
-      setAttributesDiff((attributesDiff) => {
+      setParentState((state) => {
         return {
-          ...attributesDiff,
-          settings: {
-            ...get(attributesDiff, 'settings', {}),
-            core: {
-              ...get(attributesDiff, 'settings.core', {}),
-              [colorName]: hexColor,
+          attributesDiff: {
+            ...state.attributesDiff,
+            settings: {
+              ...get(state.attributesDiff, 'settings', {}),
+              core: {
+                ...get(state.attributesDiff, 'settings.core', {}),
+                [colorName]: hexColor,
+              },
             },
           },
         };
       });
     };
 
-  const handleLogoOnAdd = (newImage: UploadFile[]) => {
-    setLogo([newImage[0]]);
-    setAttributesDiff((attributesDiff) => {
-      return {
-        ...attributesDiff,
-        logo: newImage[0].base64,
-        settings: {
-          ...get(attributesDiff, 'settings', {}),
-          core: {
-            ...get(attributesDiff, 'settings.core', {}),
-          },
-        },
-      };
-    });
-  };
-
-  const handleLogoOnRemove = () => {
-    setLogo(null);
-    setAttributesDiff((attributesDiff) => {
-      return {
-        ...attributesDiff,
-        logo: null,
-        settings: {
-          ...get(attributesDiff, 'settings', {}),
-          core: {
-            ...get(attributesDiff, 'settings.core', {}),
-          },
-        },
-      };
-    });
-  };
+  const handleLogoOnAdd = createAddUploadHandler('logo', setParentState);
+  const handleLogoOnRemove = createRemoveUploadHandler('logo', setParentState);
 
   return (
     <Section key={'branding'}>

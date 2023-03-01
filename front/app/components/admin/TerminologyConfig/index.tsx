@@ -44,8 +44,9 @@ interface Props {
   singularPlaceholderMessage: MessageDescriptor;
   pluralPlaceholderMessage: MessageDescriptor;
   onSave: (params: ISaveParams) => void;
-  isLoading?: boolean;
 }
+
+type TSubmitState = 'enabled' | 'saving' | 'error' | 'success';
 
 export const getTerm = (
   localTerm: Multiloc | undefined,
@@ -64,8 +65,8 @@ const TerminologyConfig = ({
   pluralPlaceholderMessage,
   onSave,
   intl: { formatMessage },
-  isLoading,
 }: Props & WrappedComponentProps) => {
+  const [submitState, setSubmitState] = useState<TSubmitState>('enabled');
   const [opened, setOpened] = useState<boolean>(false);
   const [singular, setSingular] = useState<Multiloc | undefined>();
   const [plural, setPlural] = useState<Multiloc | undefined>();
@@ -81,7 +82,15 @@ const TerminologyConfig = ({
   };
 
   const save = async () => {
-    onSave({ singular, plural });
+    setSubmitState('saving');
+
+    try {
+      await onSave({ singular, plural });
+
+      setSubmitState('success');
+    } catch (error) {
+      setSubmitState('error');
+    }
   };
 
   return (
@@ -115,7 +124,7 @@ const TerminologyConfig = ({
 
         <ButtonWrapper>
           <Button
-            processing={isLoading}
+            processing={submitState === 'saving'}
             onClick={save}
             buttonStyle="cl-blue"
             type="submit"

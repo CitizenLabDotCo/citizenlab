@@ -3,10 +3,10 @@ import {
   registerDestination,
 } from 'components/ConsentManager/destinations';
 import { combineLatest } from 'rxjs';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { initializeFor, shutdownFor } from 'utils/analytics';
 import { isNilOrError } from 'utils/helperUtils';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 
 declare module 'components/ConsentManager/destinations' {
   export interface IDestinationMap {
@@ -29,7 +29,7 @@ const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
     // Initialize
     combineLatest([
-      appConfigurationStream,
+      currentAppConfigurationStream().observable,
       initializeFor('google_analytics'),
     ]).subscribe(([tenant, _]) => {
       if (isNilOrError(tenant)) return;
@@ -77,14 +77,12 @@ const configuration: ModuleConfiguration = {
 
     // Shutdown
     combineLatest([
-      appConfigurationStream,
+      currentAppConfigurationStream().observable,
       shutdownFor('google_analytics'),
     ]).subscribe(([tenant, _]) => {
-      if (tenant) {
-        window[
-          `ga-disable-${tenant.data.attributes.settings.google_analytics?.tracking_id}`
-        ];
-      }
+      window[
+        `ga-disable-${tenant.data.attributes.settings.google_analytics?.tracking_id}`
+      ];
     });
 
     registerDestination(destinationConfig);

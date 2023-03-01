@@ -24,7 +24,7 @@ const AdminFavicon = lazy(() => import('containers/Admin/favicon'));
 
 // hooks
 import { usePermission } from 'services/permissions';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
 
 // utils
@@ -33,7 +33,7 @@ import { isNilOrError, isUUID } from 'utils/helperUtils';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 
 // typings
-import { IAppConfigurationData } from 'api/app_configuration/types';
+import { IAppConfigurationData } from 'services/appConfiguration';
 
 const isTemplatePreviewPage = (urlSegments: string[]) =>
   urlSegments.length === 4 &&
@@ -85,14 +85,14 @@ const IndexElement = () => {
     item: { type: 'route', path: pathname },
     action: 'access',
   });
-  const { data: appConfiguration } = useAppConfiguration();
+  const appConfiguration = useAppConfiguration();
   const authUser = useAuthUser();
 
-  if (isNilOrError(appConfiguration) || authUser === undefined) return null;
+  if (isNilOrError(appConfiguration)) return null;
 
   const redirectURL = accessAuthorized
     ? null
-    : getRedirectURL(appConfiguration.data, authUser, pathname, urlLocale);
+    : getRedirectURL(appConfiguration, authUser, pathname, urlLocale);
 
   if (redirectURL) return <Navigate to={redirectURL} />;
 

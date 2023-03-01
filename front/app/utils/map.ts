@@ -1,5 +1,5 @@
 import { isNilOrError } from 'utils/helperUtils';
-import { IAppConfigurationData } from 'api/app_configuration/types';
+import { IAppConfigurationData } from 'services/appConfiguration';
 import {
   DEFAULT_TILE_PROVIDER,
   DEFAULT_TILE_OPTIONS,

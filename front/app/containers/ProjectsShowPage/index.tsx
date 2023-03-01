@@ -20,7 +20,7 @@ import Centerer from 'components/UI/Centerer';
 // hooks
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import useLocale from 'hooks/useLocale';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import useEvents from 'hooks/useEvents';
@@ -89,7 +89,7 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
   const { formatMessage } = useIntl();
   const [mounted, setMounted] = useState(false);
   const locale = useLocale();
-  const { data: appConfig } = useAppConfiguration();
+  const appConfig = useAppConfiguration();
   const phases = usePhases(projectId);
 
   const [search] = useSearchParams();

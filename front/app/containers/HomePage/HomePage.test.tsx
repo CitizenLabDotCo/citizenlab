@@ -27,6 +27,20 @@ jest.mock('hooks/useHomepageSettings');
 jest.mock('hooks/useAuthUser', () => {
   return () => mockUserData;
 });
+jest.mock('hooks/useAppConfiguration', () => {
+  return jest.fn(() => ({
+    attributes: {
+      settings: {
+        core: {
+          lifecycle_stage: 'active',
+          organization_name: {
+            en: 'Org name',
+          },
+        },
+      },
+    },
+  }));
+});
 
 describe('HomePage', () => {
   it('Tries to redirect on hitting the A key if you have admin access', async () => {

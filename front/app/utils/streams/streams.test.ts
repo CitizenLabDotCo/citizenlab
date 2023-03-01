@@ -2,6 +2,7 @@ import { Streams } from '.';
 // @ts-ignore
 import _request, { __setResponseFor } from 'utils/request';
 import { authApiEndpoint } from 'services/auth';
+import { currentAppConfigurationEndpoint } from 'services/appConfiguration';
 
 const request = _request as jest.MockedFunction<any>;
 
@@ -11,6 +12,11 @@ jest.mock('services/auth');
 let streams: Streams;
 
 // Dummy responses
+const dummyAppConfig = {
+  data: { id: 'app-config-id', type: 'app_configuration', attributes: {} },
+};
+__setResponseFor(currentAppConfigurationEndpoint, null, null, dummyAppConfig);
+
 const dummyAuth = {
   data: { id: 'auth-id', type: 'user', attributes: {} },
 };
@@ -54,6 +60,7 @@ beforeEach(async () => {
 
   // fetch app config and auth, always need to be available
   // (see .reset method)
+  await streams.get({ apiEndpoint: currentAppConfigurationEndpoint });
   await streams.get({ apiEndpoint: authApiEndpoint });
   jest.clearAllMocks();
 });
@@ -187,6 +194,7 @@ describe('streams.reset', () => {
 
       expect(request.mock.calls).toEqual([
         ['/web_api/v1/users/me', null, { method: 'GET' }, null],
+        ['/web_api/v1/app_configuration', null, { method: 'GET' }, null],
         ['/web_api/v1/test', null, { method: 'GET' }, null],
       ]);
     });
@@ -205,6 +213,7 @@ describe('streams.reset', () => {
 
       expect(request.mock.calls).toEqual([
         ['/web_api/v1/users/me', null, { method: 'GET' }, null],
+        ['/web_api/v1/app_configuration', null, { method: 'GET' }, null],
       ]);
     });
   });
@@ -262,6 +271,7 @@ describe('streams.reset', () => {
 
       expect(request.mock.calls).toEqual([
         ['/web_api/v1/users/me', null, { method: 'GET' }, null],
+        ['/web_api/v1/app_configuration', null, { method: 'GET' }, null],
         [
           '/web_api/v1/param_test',
           null,

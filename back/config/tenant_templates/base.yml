@@ -1,9 +1,6 @@
 models:
   home_page:
-    -
-      remote_header_bg_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/header.jpg
-      banner_signed_out_header_overlay_color: '#0A5159'
-      banner_signed_out_header_overlay_opacity: 90
+    - {}
   idea_status:
     -
       title_multiloc: idea_statuses.proposed

@@ -25,29 +25,25 @@ let mockAuthUser: IUserData | null = null;
 jest.mock('hooks/useAuthUser', () => () => mockAuthUser);
 
 const mockAppConfiguration = {
-  data: {
-    id: '1',
-    attributes: {
-      settings: {
-        matomo: {
-          allowed: true,
-          enabled: true,
-        },
-        google_analytics: {
-          allowed: true,
-          enabled: true,
-        },
-        intercom: {
-          allowed: true,
-          enabled: true,
-        },
+  id: '1',
+  attributes: {
+    settings: {
+      matomo: {
+        allowed: true,
+        enabled: true,
+      },
+      google_analytics: {
+        allowed: true,
+        enabled: true,
+      },
+      intercom: {
+        allowed: true,
+        enabled: true,
       },
     },
   },
 };
-jest.mock('api/app_configuration/useAppConfiguration', () => () => {
-  return { data: mockAppConfiguration };
-});
+jest.mock('hooks/useAppConfiguration', () => () => mockAppConfiguration);
 
 let mockCookie: IConsentCookie | null = null;
 jest.mock('./consent', () => ({

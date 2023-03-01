@@ -5,7 +5,7 @@ import { fontSizes } from 'utils/styleUtils';
 // services
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { IAppConfigurationSettings } from 'api/app_configuration/types';
+import { IAppConfigurationSettings } from 'services/appConfiguration';
 
 // components
 import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';

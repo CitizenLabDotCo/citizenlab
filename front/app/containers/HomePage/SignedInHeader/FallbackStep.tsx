@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import { OnboardingCampaignName } from 'services/onboardingCampaigns';
 import { Left, Right } from './';
 import useHomepageSettings from 'hooks/useHomepageSettings';
-import { isEmptyMultiloc, isNilOrError } from 'utils/helperUtils';
+import { isEmpty } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import T from 'components/T';
@@ -67,7 +68,7 @@ const FallbackStep = ({ currentOnboardingCampaignName }: Props) => {
       >
         <HeaderContent id="e2e-signed-in-header-default-cta">
           <Left>
-            {defaultMessage && !isEmptyMultiloc(defaultMessage) ? (
+            {defaultMessage && !isEmpty(defaultMessage) ? (
               <T as="h2" value={defaultMessage} supportHtml />
             ) : (
               <FormattedMessage

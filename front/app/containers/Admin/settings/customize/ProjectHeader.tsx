@@ -18,20 +18,16 @@ import { createCoreMultilocHandler } from './createHandler';
 
 // typings
 import { Multiloc } from 'typings';
-import { IAttributesDiff } from '.';
 
 interface Props {
   currentlyWorkingOnText?: Multiloc | null;
-  setAttributesDiff: (state: IAttributesDiff) => void;
+  setParentState: (state: any) => void;
 }
 
-const ProjectHeader = ({
-  currentlyWorkingOnText,
-  setAttributesDiff,
-}: Props) => {
+const ProjectHeader = ({ currentlyWorkingOnText, setParentState }: Props) => {
   const handleChangeCurrentlyWorkingOnText = createCoreMultilocHandler(
     'currently_working_on_text',
-    setAttributesDiff
+    setParentState
   );
 
   return (

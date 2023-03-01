@@ -2,7 +2,7 @@ import { combineLatest } from 'rxjs';
 
 // services
 import { authUserStream } from 'services/auth';
-import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 
 // utils
 import {
@@ -44,13 +44,11 @@ const configuration: ModuleConfiguration = {
     // Subscribe to changes in app configuration, users
     // and matomo enabled state
     combineLatest([
-      appConfigurationStream,
+      currentAppConfigurationStream().observable,
       authUserStream().observable,
       initializeFor('matomo'),
     ]).subscribe(([appConfiguration, user, _]) => {
-      if (appConfiguration) {
-        setupMatomo(appConfiguration, user);
-      }
+      setupMatomo(appConfiguration, user);
     });
 
     // Disable matomo tracking when necessary
@@ -62,18 +60,16 @@ const configuration: ModuleConfiguration = {
     // and post to Matomo
     combineLatest([
       bufferUntilInitialized('matomo', events$),
-      appConfigurationStream,
+      currentAppConfigurationStream().observable,
     ]).subscribe(([event, appConfiguration]) => {
-      if (appConfiguration) {
-        trackEvent(event, appConfiguration);
-      }
+      trackEvent(event, appConfiguration);
     });
 
     // Subscribe to new page changes and app configuration changes
     // and post to Matomo
     combineLatest([
       bufferUntilInitialized('matomo', pageChanges$),
-      appConfigurationStream,
+      currentAppConfigurationStream().observable,
     ]).subscribe(([pageChange, _]) => {
       trackPageChange(pageChange.path);
     });

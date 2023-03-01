@@ -4,6 +4,9 @@ import CookiePolicy from '../CookiePolicy';
 import eventEmitter from 'utils/eventEmitter';
 
 jest.mock('utils/eventEmitter');
+jest.mock('hooks/useAppConfiguration', () => () => ({
+  attributes: { name: 'orgName' },
+}));
 
 jest.mock('components/Fragment', () => ({ children }) => {
   return <div>{children}</div>;

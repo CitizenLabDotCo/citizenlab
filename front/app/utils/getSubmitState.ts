@@ -1,7 +1,13 @@
-import { CLErrors } from 'typings';
+import { CLError } from 'typings';
 import { isEmpty, isError } from 'lodash-es';
 
-export type Errors = CLErrors | null | Record<string, never> | Error;
+export type Errors =
+  | {
+      [fieldName: string]: CLError[];
+    }
+  | null
+  | Record<string, never>
+  | Error;
 
 interface Parameters {
   errors: Errors;

@@ -1,11 +1,11 @@
 import React from 'react';
 
 // services
-import { coreSettings } from 'api/app_configuration/utils';
+import { coreSettings } from 'services/appConfiguration';
 
 // hooks
 import useTopics from 'hooks/useTopics';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocalize from 'hooks/useLocalize';
 
 // components
@@ -30,14 +30,14 @@ interface Props {
 const TopicInputs = ({ selectedTopicIds, onChange }: Props) => {
   const { formatMessage } = useIntl();
   const availableTopics = useTopics();
-  const { data: appConfiguration } = useAppConfiguration();
+  const appConfiguration = useAppConfiguration();
   const localize = useLocalize();
 
   if (isNilOrError(availableTopics) || isNilOrError(appConfiguration)) {
     return null;
   }
 
-  const { topics_term } = coreSettings(appConfiguration.data);
+  const { topics_term } = coreSettings(appConfiguration);
   const topicsCopy = getTopicsCopy(
     formatMessage(messages.topicsLabel),
     localize(topics_term)

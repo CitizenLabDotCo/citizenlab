@@ -6,7 +6,7 @@ import { getLocalized } from 'utils/i18n';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 import { isRtl } from 'utils/styleUtils';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
 
 type Props = {
@@ -20,22 +20,22 @@ const RtlBox = styled.span`
 `;
 
 const FormattedMessageComponent = (props: Props) => {
-  const { data: appConfig } = useAppConfiguration();
+  const appConfig = useAppConfiguration();
   const locale = useLocale();
 
   if (isNilOrError(appConfig) || isNilOrError(locale)) {
     return null;
   }
 
-  const locales = appConfig.data.attributes.settings.core.locales;
-  const tenantName = appConfig.data.attributes.name;
+  const locales = appConfig.attributes.settings.core.locales;
+  const tenantName = appConfig.attributes.name;
   const orgName = getLocalized(
-    appConfig.data.attributes.settings.core.organization_name,
+    appConfig.attributes.settings.core.organization_name,
     locale,
     locales
   );
 
-  const orgType = appConfig.data.attributes.settings.core.organization_type;
+  const orgType = appConfig.attributes.settings.core.organization_type;
 
   const values = {
     ...props.values,

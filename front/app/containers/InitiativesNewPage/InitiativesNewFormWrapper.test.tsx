@@ -3,7 +3,7 @@ import React from 'react';
 
 import { shallow } from 'enzyme';
 import { makeUser } from '../../services/__mocks__/users';
-import { appConfigurationData } from 'api/app_configuration/__mocks__/useAppConfiguration';
+import { getAppConfiguration } from '../../services/__mocks__/appConfiguration';
 
 jest.mock('components/InitiativeForm', () => 'InitiativeForm');
 jest.mock('services/initiatives'); // TODO
@@ -18,10 +18,6 @@ jest.mock('lodash-es/debounce', () => jest.fn((fn) => fn));
 import { addInitiative, updateInitiative } from '../../services/initiatives';
 
 import { InitiativesNewFormWrapper } from './InitiativesNewFormWrapper';
-
-const getAppConfiguration = () => {
-  return { data: appConfigurationData };
-};
 
 describe('InitiativesNewPage', () => {
   // jest.useRealTimers();

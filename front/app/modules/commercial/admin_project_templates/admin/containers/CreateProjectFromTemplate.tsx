@@ -2,7 +2,7 @@ import React, { ReactElement, memo, useState, useCallback } from 'react';
 import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 import { isNilOrError } from 'utils/helperUtils';
 import { gql, useQuery } from '@apollo/client';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { trackEventByName } from 'utils/analytics';
 import { get, isEmpty } from 'lodash-es';
@@ -17,13 +17,13 @@ interface Props {
 
 const CreateProjectFromTemplate = memo(
   ({ graphqlTenantLocales, className }: Props): ReactElement => {
-    const { data: appConfig } = useAppConfiguration();
+    const appConfig = useAppConfiguration();
 
     const locales = !isNilOrError(appConfig)
-      ? appConfig.data.attributes.settings.core.locales
+      ? appConfig.attributes.settings.core.locales
       : null;
     const organizationTypes = !isNilOrError(appConfig)
-      ? appConfig.data.attributes.settings.core.organization_type
+      ? appConfig.attributes.settings.core.organization_type
       : null;
 
     const [departments, setDepartments] = useState<string[] | null>(null);

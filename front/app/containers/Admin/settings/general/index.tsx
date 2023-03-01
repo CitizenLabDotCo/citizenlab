@@ -14,13 +14,14 @@ import Form from './Form';
 
 // services
 import {
+  updateAppConfiguration,
   TAppConfigurationSettingWithEnabled,
   IAppConfigurationSettingsCore,
-} from 'api/app_configuration/types';
+  updateAppConfigurationCore,
+} from 'services/appConfiguration';
 
 // Utils
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 const StyledSection = styled(Section)`
   margin-bottom: 50px;
@@ -55,41 +56,40 @@ interface FormValues {
 }
 
 const SettingsGeneralTab = () => {
+  const appConfiguration = useAppConfiguration();
   const [settingsUpdatedSuccessFully, setSettingsUpdatedSuccessFully] =
     useState(false);
-  const { data: appConfiguration } = useAppConfiguration();
-  const {
-    mutate: updateAppConfiguration,
-    mutateAsync: updateAppConfigurationAsync,
-
-    isError: settingsSavingError,
-    reset,
-  } = useUpdateAppConfiguration();
-
+  const [settingsSavingError, setSettingsSavingError] = useState(false);
   const { formatMessage } = useIntl();
 
   const handleOnSubmit = async (formValues: FormValues) => {
-    await updateAppConfigurationAsync({ settings: { core: formValues } });
+    await updateAppConfigurationCore(formValues);
   };
 
   const onToggleBlockProfanitySetting = () => {
     if (
       !isNilOrError(appConfiguration) &&
-      appConfiguration.data.attributes.settings.blocking_profanity
+      appConfiguration.attributes.settings.blocking_profanity
     ) {
       const oldProfanityBlockerEnabled =
-        appConfiguration.data.attributes.settings.blocking_profanity.enabled;
-
-      updateAppConfiguration(
-        {
-          settings: {
-            blocking_profanity: {
-              enabled: !oldProfanityBlockerEnabled,
-            },
+        appConfiguration.attributes.settings.blocking_profanity.enabled;
+      setSettingsSavingError(false);
+      updateAppConfiguration({
+        settings: {
+          blocking_profanity: {
+            enabled: !oldProfanityBlockerEnabled,
           },
         },
-        { onSuccess: () => setSettingsUpdatedSuccessFully(true) }
-      );
+      })
+        .then(() => {
+          setSettingsUpdatedSuccessFully(true);
+          setTimeout(() => {
+            setSettingsUpdatedSuccessFully(false);
+          }, 2000);
+        })
+        .catch((_error) => {
+          setSettingsSavingError(true);
+        });
     }
   };
 
@@ -97,11 +97,11 @@ const SettingsGeneralTab = () => {
     settingName: TAppConfigurationSettingWithEnabled
   ) => {
     if (!isNilOrError(appConfiguration)) {
-      const setting = appConfiguration.data.attributes.settings[settingName];
+      const setting = appConfiguration.attributes.settings[settingName];
 
       if (setting) {
         const oldSettingEnabled = setting.enabled;
-        reset();
+        setSettingsSavingError(false);
 
         updateAppConfiguration({
           settings: {
@@ -109,17 +109,27 @@ const SettingsGeneralTab = () => {
               enabled: !oldSettingEnabled,
             },
           },
-        });
+        })
+          .then(() => {
+            setSettingsUpdatedSuccessFully(true);
+
+            setTimeout(() => {
+              setSettingsUpdatedSuccessFully(true);
+            }, 2000);
+          })
+          .catch((_error) => {
+            setSettingsUpdatedSuccessFully(true);
+          });
       }
     }
   };
 
   if (!isNilOrError(appConfiguration)) {
     const profanityBlockerSetting =
-      appConfiguration.data.attributes.settings.blocking_profanity;
+      appConfiguration.attributes.settings.blocking_profanity;
 
     const { organization_name, organization_site, locales } =
-      appConfiguration.data.attributes.settings.core;
+      appConfiguration.attributes.settings.core;
 
     return (
       <>

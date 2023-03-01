@@ -11,7 +11,6 @@ export interface ICustomFieldParams extends IStreamParams {
     end_at?: string | null;
     group?: string;
     project?: string;
-    filter_by_participation?: boolean | null;
   };
 }
 

@@ -15,7 +15,7 @@ import {
 } from 'components/UI/LeafletMap/events';
 
 // hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useProject from 'hooks/useProject';
 import usePhase from 'hooks/usePhase';
 
@@ -142,7 +142,7 @@ interface Props {
 
 const IdeaMapCard = memo<Props>(
   ({ ideaMarker, onClose, className, projectId, phaseId }) => {
-    const { data: appConfig } = useAppConfiguration();
+    const appConfig = useAppConfiguration();
     const phase = usePhase(phaseId || null);
     const project = useProject({ projectId });
     const { windowWidth } = useWindowSize();
@@ -214,7 +214,7 @@ const IdeaMapCard = memo<Props>(
       !isNilOrError(ideaMarker) &&
       !isNilOrError(project)
     ) {
-      const tenantCurrency = appConfig.data.attributes.settings.core.currency;
+      const tenantCurrency = appConfig.attributes.settings.core.currency;
       const ideaBudget = ideaMarker.attributes?.budget;
       const votingActionDescriptor =
         project.attributes.action_descriptor.voting_idea;

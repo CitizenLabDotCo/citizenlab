@@ -29,7 +29,7 @@ import useTopics from 'hooks/useTopics';
 import useAreas from 'hooks/useAreas';
 import useLocalize from 'hooks/useLocalize';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
 
 // utils
@@ -83,7 +83,7 @@ const CustomPageSettingsForm = ({
     name: 'advanced_custom_pages',
   });
   const areas = useAreas();
-  const { data: appConfig } = useAppConfiguration();
+  const appConfig = useAppConfiguration();
   const locale = useLocale();
   const configuredLocales = useAppConfigurationLocales();
   const topics = useTopics();
@@ -181,7 +181,7 @@ const CustomPageSettingsForm = ({
   }
 
   const previewUrl = slug
-    ? `${appConfig.data.attributes.host}/${locale}/pages/${slug}`
+    ? `${appConfig.attributes.host}/${locale}/pages/${slug}`
     : null;
 
   return (

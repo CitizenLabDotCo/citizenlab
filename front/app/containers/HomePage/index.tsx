@@ -21,20 +21,20 @@ import useKeyPress from 'hooks/useKeyPress';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 export const adminRedirectPath = '/admin/dashboard';
 
 const HomePage = () => {
   const homepageSettings = useHomepageSettings();
   const authUser = useAuthUser();
-  const { data: appConfiguration } = useAppConfiguration();
+  const appConfiguration = useAppConfiguration();
   const pressedLetterAKey = useKeyPress('a');
   const userHasAdminAccess =
     !isNilOrError(authUser) && !isNilOrError(appConfiguration)
       ? canAccessRoute(
           { type: 'route', path: '/admin' },
           { data: authUser },
-          appConfiguration.data
+          appConfiguration
         )
       : false;
 

@@ -29,7 +29,7 @@ import MultipleSelect from 'components/HookForm/MultipleSelect';
 import Feedback from 'components/HookForm/Feedback';
 
 // services
-import { IAppConfigurationSettingsCore } from 'api/app_configuration/types';
+import { IAppConfigurationSettingsCore } from 'services/appConfiguration';
 
 // Utils
 import { handleHookFormSubmissionError } from 'utils/errorUtils';

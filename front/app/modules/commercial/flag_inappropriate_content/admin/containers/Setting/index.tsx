@@ -1,4 +1,4 @@
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import messages from './messages';
 import React, { ReactElement } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
@@ -50,11 +50,11 @@ const FlagInnapropriateContentSetting = ({
   onSettingChange,
   intl: { formatMessage },
 }: Props & WrappedComponentProps): ReactElement | null => {
-  const { data: appConfiguration } = useAppConfiguration();
+  const appConfiguration = useAppConfiguration();
   const flagInnaproperiateContentSetting =
     !isNilOrError(appConfiguration) &&
-    appConfiguration.data.attributes.settings.flag_inappropriate_content
-      ? appConfiguration.data.attributes.settings.flag_inappropriate_content
+    appConfiguration.attributes.settings.flag_inappropriate_content
+      ? appConfiguration.attributes.settings.flag_inappropriate_content
       : undefined;
 
   if (flagInnaproperiateContentSetting) {

@@ -1,17 +1,5 @@
 # Changelog
 
-## 2023-02-28
-
-### Fixed
-
-- [CL-2989] Fixed Excel downloads
-
-## 2023-02-27
-
-### Fixed
-
-- [CL-2921] Configure header image URL and overlay in base template. Use default header and subheader text if none is set
-
 ## 2023-02-24
 
 ### Changed

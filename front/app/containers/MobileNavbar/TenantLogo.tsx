@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocalize from 'hooks/useLocalize';
 
 const Logo = styled.img`
@@ -19,14 +19,14 @@ interface Props {
 }
 
 const TenantLogo = ({ className }: Props) => {
-  const { data: appConfiguration } = useAppConfiguration();
+  const appConfiguration = useAppConfiguration();
   const localize = useLocalize();
 
   if (!isNilOrError(appConfiguration)) {
-    const tenantLogo = appConfiguration.data.attributes.logo?.medium;
+    const tenantLogo = appConfiguration.attributes.logo?.medium;
     // just the org's name works fine as alt text for a11y purposes
     const localizedOrgName = localize(
-      appConfiguration.data.attributes.settings.core.organization_name
+      appConfiguration.attributes.settings.core.organization_name
     );
 
     if (tenantLogo) {

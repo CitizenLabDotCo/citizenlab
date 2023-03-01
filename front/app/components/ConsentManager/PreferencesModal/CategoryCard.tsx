@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 
 // hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // styling
 import styled from 'styled-components';
@@ -20,7 +20,7 @@ import { getDestinationConfig, IDestination, TCategory } from '../destinations';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { IAppConfigurationData } from 'api/app_configuration/types';
+import { IAppConfigurationData } from 'services/appConfiguration';
 
 const Container = styled.div`
   display: flex;
@@ -133,7 +133,7 @@ const CategoryCard = ({
   onChange,
   disableUncheck,
 }: Props) => {
-  const { data: appConfig } = useAppConfiguration();
+  const appConfig = useAppConfiguration();
 
   const handleChange = (category: TCategory, value: boolean) => () => {
     onChange(category, value);
@@ -198,7 +198,7 @@ const CategoryCard = ({
                 {index !== 0 && <Separator>•</Separator>}
                 <SSpan>
                   <DestinationName
-                    tenant={!isNilOrError(appConfig) ? appConfig.data : null}
+                    tenant={!isNilOrError(appConfig) ? appConfig : null}
                     destination={d}
                   />
                 </SSpan>

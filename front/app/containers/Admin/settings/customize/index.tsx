@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { PureComponent } from 'react';
+import { Subscription, combineLatest, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { get, has, isEmpty, omitBy } from 'lodash-es';
 
 // components
@@ -8,35 +10,57 @@ import Branding from './Branding';
 import ProjectHeader from './ProjectHeader';
 
 // style
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 
 // utils
-import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
 import getSubmitState from './getSubmitState';
 import { isNilOrError } from 'utils/helperUtils';
+import { isCLErrorJSON } from 'utils/errorUtils';
 
 // i18n
-import { useIntl } from 'utils/cl-intl';
+import { WrappedComponentProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import sharedSettingsMessages from '../messages';
 
 // services
+import { localeStream } from 'services/locale';
 import {
+  currentAppConfigurationStream,
+  updateAppConfiguration,
   IAppConfigurationStyle,
   IAppConfiguration,
   IAppConfigurationSettings,
-} from 'api/app_configuration/types';
+  IUpdatedAppConfigurationProperties,
+  TAppConfigurationSetting,
+} from 'services/appConfiguration';
 
 // typings
-import { UploadFile, Multiloc } from 'typings';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useLocale from 'hooks/useLocale';
-import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
+import { UploadFile, Locale, Multiloc, CLErrors } from 'typings';
 
-export interface IAttributesDiff {
+interface Props {
+  theme: any;
+}
+
+interface IAttributesDiff {
   settings?: Partial<IAppConfigurationSettings>;
   logo?: UploadFile;
   style?: IAppConfigurationStyle;
+}
+
+export interface State {
+  locale: Locale | null;
+  attributesDiff: IAttributesDiff;
+  tenant: IAppConfiguration | null;
+  logo: UploadFile[] | null;
+  loading: boolean;
+  errors: CLErrors;
+  saved: boolean;
+  logoError: string | null;
+  titleError: Multiloc;
+  settings: Partial<IAppConfigurationSettings>;
+  subtitleError: Multiloc;
 }
 
 // Styles and custom components
@@ -48,40 +72,69 @@ export const StyledSectionTitle = styled(SectionTitle)`
   margin-bottom 30px;
 `;
 
-const SettingsCustomizeTab = () => {
-  const [logo, setLogo] = useState<UploadFile[] | null>(null);
-  const [logoError, setLogoError] = useState<string | null>(null);
-  const [attributesDiff, setAttributesDiff] = useState<IAttributesDiff>({});
-  const [titleError, setTitleError] = useState<Multiloc>({});
-  const [subtitleError, setSubtitleError] = useState<Multiloc>({});
+class SettingsCustomizeTab extends PureComponent<
+  Props & WrappedComponentProps,
+  State
+> {
+  subscriptions: Subscription[];
 
-  const { formatMessage } = useIntl();
+  constructor(props: Props & WrappedComponentProps) {
+    super(props);
+    this.state = {
+      locale: null,
+      attributesDiff: {},
+      tenant: null,
+      logo: null,
+      loading: false,
+      errors: {},
+      saved: false,
+      logoError: null,
+      titleError: {},
+      subtitleError: {},
+      settings: {},
+    };
+    this.subscriptions = [];
+  }
 
-  const locale = useLocale();
-  const { data: appConfiguration } = useAppConfiguration();
-  const {
-    mutate: updateAppConfiguration,
-    isLoading,
-    error,
-    isSuccess,
-  } = useUpdateAppConfiguration();
+  componentDidMount() {
+    const locale$ = localeStream().observable;
+    const tenant$ = currentAppConfigurationStream().observable;
 
-  useEffect(() => {
-    const logoUrl = get(appConfiguration, 'data.attributes.logo.large', null);
-    if (logoUrl) {
-      (async () => {
-        const imageFile = await convertUrlToUploadFile(logoUrl);
-        if (imageFile) {
-          setLogo([imageFile]);
-        }
-      })();
-    }
-  }, [appConfiguration]);
+    this.subscriptions = [
+      combineLatest([locale$, tenant$])
+        .pipe(
+          switchMap(([locale, tenant]) => {
+            const logoUrl = get(tenant, 'data.attributes.logo.large', null);
+            const settings = get(tenant, 'data.attributes.settings', {});
 
-  const validate = (
-    tenant: IAppConfiguration,
-    attributesDiff: IAttributesDiff
-  ) => {
+            const logo$ = logoUrl
+              ? convertUrlToUploadFileObservable(logoUrl, null, null)
+              : of(null);
+
+            return combineLatest([logo$]).pipe(
+              map(([tenantLogo]) => ({
+                locale,
+                tenant,
+                tenantLogo,
+                settings,
+              }))
+            );
+          })
+        )
+        .subscribe(({ locale, tenant, tenantLogo, settings }) => {
+          const logo = !isNilOrError(tenantLogo) ? [tenantLogo] : [];
+
+          this.setState({ locale, tenant, logo, settings });
+        }),
+    ];
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach((subsription) => subsription.unsubscribe());
+  }
+
+  validate = (tenant: IAppConfiguration, attributesDiff: IAttributesDiff) => {
+    const { formatMessage } = this.props.intl;
     const hasRemoteLogo = has(tenant, 'data.attributes.logo.large');
     const localLogoIsNotSet = !has(attributesDiff, 'logo');
     const localLogoIsNull = !localLogoIsNotSet && attributesDiff.logo === null;
@@ -89,86 +142,123 @@ const SettingsCustomizeTab = () => {
       !localLogoIsNull || (hasRemoteLogo && localLogoIsNotSet)
         ? null
         : formatMessage(messages.noLogo);
-    const hasTitleError = !isEmpty(omitBy(titleError, isEmpty));
-    const hasSubtitleError = !isEmpty(omitBy(subtitleError, isEmpty));
+    const hasTitleError = !isEmpty(omitBy(this.state.titleError, isEmpty));
+    const hasSubtitleError = !isEmpty(
+      omitBy(this.state.subtitleError, isEmpty)
+    );
 
-    setLogoError(logoError);
-    setTitleError(titleError);
-    setSubtitleError(subtitleError);
+    this.setState({ logoError });
+
     return !logoError && !hasTitleError && !hasSubtitleError;
   };
 
-  const save = async (event: React.FormEvent<HTMLFormElement>) => {
+  save = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (
-      !isNilOrError(appConfiguration) &&
-      validate(appConfiguration, attributesDiff)
-    ) {
-      if (!isEmpty(attributesDiff)) {
-        updateAppConfiguration(attributesDiff, {
-          onSuccess: () => {
-            setAttributesDiff({});
-          },
+    const { tenant, attributesDiff } = this.state;
+
+    if (tenant && this.validate(tenant, attributesDiff)) {
+      this.setState({ loading: true, saved: false });
+
+      try {
+        if (!isEmpty(attributesDiff)) {
+          await updateAppConfiguration(
+            // to remove type casting and have correct types instead
+            attributesDiff as IUpdatedAppConfigurationProperties
+          );
+        }
+
+        this.setState({
+          loading: false,
+          saved: true,
+          errors: {},
+          attributesDiff: {},
         });
+      } catch (error) {
+        if (isCLErrorJSON(error)) {
+          this.setState({ loading: false, errors: error.json.errors });
+        } else {
+          this.setState({ loading: false, errors: error });
+        }
       }
     }
   };
 
-  const getSetting = (setting: string) => {
+  getSetting = (setting: string) => {
     return (
-      get(attributesDiff, `settings.${setting}`) ??
-      get(appConfiguration, `data.attributes.settings.${setting}`)
+      get(this.state.attributesDiff, `settings.${setting}`) ??
+      get(this.state.tenant, `data.attributes.settings.${setting}`)
     );
   };
 
-  if (!isNilOrError(locale) && !isNilOrError(appConfiguration)) {
-    const latestAppConfigSettings = {
-      ...appConfiguration.data.attributes.settings,
-      ...attributesDiff.settings,
-      core: {
-        ...appConfiguration.data.attributes.settings.core,
-        ...attributesDiff.settings?.core,
-      },
+  handleSettingOnChange =
+    (settingName: TAppConfigurationSetting) =>
+    (settingKey: string, newSettingValue: any) => {
+      this.setState((state) => {
+        return {
+          attributesDiff: {
+            ...state.attributesDiff,
+            settings: {
+              ...state.settings,
+              ...get(state.attributesDiff, 'settings', {}),
+              [settingName]: {
+                ...get(state.settings, settingName, {}),
+                ...get(state.attributesDiff, `settings.${settingName}`, {}),
+                [settingKey]: newSettingValue,
+              },
+            },
+          },
+        };
+      });
     };
-    const latestAppConfigCoreSettings = latestAppConfigSettings.core;
 
-    return (
-      <form onSubmit={save}>
-        <Branding
-          logo={logo}
-          logoError={logoError}
-          setAttributesDiff={setAttributesDiff}
-          setLogo={setLogo}
-          getSetting={getSetting}
-        />
+  render() {
+    const { locale, tenant } = this.state;
 
-        <ProjectHeader
-          currentlyWorkingOnText={
-            latestAppConfigCoreSettings?.['currently_working_on_text']
-          }
-          setAttributesDiff={setAttributesDiff}
-        />
+    if (!isNilOrError(locale) && !isNilOrError(tenant)) {
+      const { logo, attributesDiff, logoError, errors, saved } = this.state;
 
-        <SubmitWrapper
-          loading={isLoading}
-          status={getSubmitState({
-            errors: error,
-            saved: isSuccess,
-            attributeDiff: attributesDiff,
-          })}
-          messages={{
-            buttonSave: sharedSettingsMessages.save,
-            buttonSuccess: sharedSettingsMessages.saveSuccess,
-            messageError: sharedSettingsMessages.saveErrorMessage,
-            messageSuccess: sharedSettingsMessages.saveSuccessMessage,
-          }}
-        />
-      </form>
-    );
+      const latestAppConfigSettings = {
+        ...tenant.data.attributes,
+        ...attributesDiff,
+      }.settings;
+      const latestAppConfigCoreSettings = latestAppConfigSettings.core;
+
+      const setState = this.setState.bind(this);
+      const getSetting = this.getSetting.bind(this);
+
+      return (
+        <form onSubmit={this.save}>
+          <Branding
+            logo={logo}
+            logoError={logoError}
+            setParentState={setState}
+            getSetting={getSetting}
+          />
+
+          <ProjectHeader
+            currentlyWorkingOnText={
+              latestAppConfigCoreSettings?.['currently_working_on_text']
+            }
+            setParentState={setState}
+          />
+
+          <SubmitWrapper
+            loading={this.state.loading}
+            status={getSubmitState({ errors, saved, state: this.state })}
+            messages={{
+              buttonSave: sharedSettingsMessages.save,
+              buttonSuccess: sharedSettingsMessages.saveSuccess,
+              messageError: sharedSettingsMessages.saveErrorMessage,
+              messageSuccess: sharedSettingsMessages.saveSuccessMessage,
+            }}
+          />
+        </form>
+      );
+    }
+
+    return null;
   }
+}
 
-  return null;
-};
-
-export default SettingsCustomizeTab;
+export default withTheme(injectIntl(SettingsCustomizeTab));

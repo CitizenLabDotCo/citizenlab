@@ -10,7 +10,11 @@ import {
 } from 'rxjs/operators';
 import { isEqual } from 'lodash-es';
 import eventEmitter from 'utils/eventEmitter';
-import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
+
+import {
+  IAppConfigurationData,
+  currentAppConfigurationStream,
+} from 'services/appConfiguration';
 
 import {
   getDestinationConfig,
@@ -19,7 +23,6 @@ import {
 } from 'components/ConsentManager/destinations';
 import { ISavedDestinations } from 'components/ConsentManager/consent';
 import { authUserStream } from 'services/auth';
-import { IAppConfigurationData } from 'api/app_configuration/types';
 
 export interface IEvent {
   name: string;
@@ -49,18 +52,16 @@ const destinationConsentChanged$ = eventEmitter
 export const initializeFor = (destination: IDestination) => {
   return combineLatest([
     destinationConsentChanged$,
-    appConfigurationStream,
+    currentAppConfigurationStream().observable,
     authUserStream().observable,
   ]).pipe(
     filter(([consent, tenant, user]) => {
-      if (tenant) {
-        const config = getDestinationConfig(destination);
+      const config = getDestinationConfig(destination);
 
-        return (
-          consent.eventValue[destination] &&
-          (!config || isDestinationActive(config, tenant.data, user?.data))
-        );
-      }
+      return (
+        consent.eventValue[destination] &&
+        (!config || isDestinationActive(config, tenant.data, user?.data))
+      );
     })
   );
 };
@@ -82,14 +83,13 @@ export const bufferUntilInitialized = <T>(
 export const shutdownFor = (destination: IDestination) => {
   return combineLatest([
     destinationConsentChanged$,
-    appConfigurationStream,
+    currentAppConfigurationStream().observable,
     authUserStream().observable,
   ]).pipe(
     map(([consent, tenant, user]) => {
       const config = getDestinationConfig(destination);
       return (
         consent.eventValue[destination] &&
-        tenant &&
         (!config || isDestinationActive(config, tenant.data, user?.data))
       );
     }),

@@ -3,7 +3,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { Subscription, combineLatest, of } from 'rxjs';
-import { switchMap, first } from 'rxjs/operators';
+import { switchMap, map, first } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
 
 // router
@@ -17,6 +17,7 @@ import { Content, Top, Container } from '../PostPreview';
 
 // services
 import { localeStream } from 'services/locale';
+import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { ideaByIdStream, updateIdea } from 'services/ideas';
 import {
   ideaImageStream,
@@ -135,11 +136,20 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
   componentDidMount() {
     const { ideaId } = this.props;
     const locale$ = localeStream().observable;
-
+    const currentTenantLocales$ =
+      currentAppConfigurationStream().observable.pipe(
+        map(
+          (currentTenant) => currentTenant.data.attributes.settings.core.locales
+        )
+      );
     const idea$ = ideaByIdStream(ideaId).observable;
 
-    const ideaWithRelationships$ = combineLatest([locale$, idea$]).pipe(
-      switchMap(([_locale, idea]) => {
+    const ideaWithRelationships$ = combineLatest([
+      locale$,
+      currentTenantLocales$,
+      idea$,
+    ]).pipe(
+      switchMap(([_locale, _currentTenantLocales, idea]) => {
         const ideaId = idea.data.id;
         const ideaImages = idea.data.relationships.idea_images.data;
         const ideaImageId =

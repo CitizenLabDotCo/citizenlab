@@ -2,18 +2,18 @@ import { useState, useEffect } from 'react';
 import { isNilOrError, convertToGraphqlLocale } from 'utils/helperUtils';
 import { GraphqlLocale } from 'typings';
 import { includes } from 'lodash-es';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 export default function useGraphqlTenantLocales() {
   const [graphqlTenantLocales, setGraphqlTenantLocales] = useState<
     GraphqlLocale[]
   >(['en']);
-  const { data: appConfig } = useAppConfiguration();
+  const appConfig = useAppConfiguration();
 
   useEffect(() => {
     if (isNilOrError(appConfig)) return;
 
-    const graphqlLocales = appConfig.data.attributes.settings.core.locales.map(
+    const graphqlLocales = appConfig.attributes.settings.core.locales.map(
       (locale) => convertToGraphqlLocale(locale)
     );
 

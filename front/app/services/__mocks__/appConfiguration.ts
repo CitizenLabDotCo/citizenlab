@@ -1,6 +1,18 @@
-export const appConfigurationData = {
+import {
+  IAppConfiguration,
+  IAppConfigurationData,
+} from 'services/appConfiguration';
+import { BehaviorSubject } from 'rxjs';
+
+export const getAppConfiguration = (): IAppConfiguration => ({
+  data: getAppConfigurationData(),
+});
+
+export const getAppConfigurationData = (
+  attributes = {}
+): IAppConfigurationData => ({
   id: 'c4b400e1-1786-5be2-af55-40730c6a843d',
-  type: 'app_configuration',
+  type: 'tenant',
   attributes: {
     name: 'wonderville',
     host: 'wonderville.com',
@@ -49,9 +61,26 @@ export const appConfigurationData = {
       medium: 'http://fepe.et/fivacsok.jpg',
       large: 'http://jostoska.gt/timihosin.jpg',
     },
+    ...attributes,
   },
+});
+
+let mockAppConfiguration: IAppConfiguration = getAppConfiguration();
+
+export const __setMockAppConfiguration = (
+  appConfiguration: IAppConfiguration
+) => {
+  mockAppConfiguration = appConfiguration;
 };
 
-export default jest.fn(() => {
-  return { data: { data: appConfigurationData } };
+export const currentAppConfigurationStream = jest.fn(() => {
+  const observable = new BehaviorSubject(mockAppConfiguration);
+  return {
+    observable,
+  };
 });
+
+export const currentAppConfigurationEndpoint = '/web_api/v1/app_configuration';
+
+export const coreSettings = (appConfiguration: IAppConfigurationData) =>
+  appConfiguration.attributes.settings.core;

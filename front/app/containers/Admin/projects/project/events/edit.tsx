@@ -28,6 +28,10 @@ import messages from './messages';
 // services
 import { localeStream } from 'services/locale';
 import {
+  currentAppConfigurationStream,
+  IAppConfiguration,
+} from 'services/appConfiguration';
+import {
   eventStream,
   updateEvent,
   addEvent,
@@ -44,24 +48,18 @@ import GetRemoteFiles, {
 // typings
 import { Multiloc, CLError, Locale, UploadFile } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
-import { adopt } from 'react-adopt';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
 
 interface DataProps {
   remoteEventFiles: GetRemoteFilesChildProps;
-  appConfiguration: GetAppConfigurationChildProps;
 }
 
-interface InputProps {
+interface Props extends DataProps {
   params: Record<string, string>;
 }
 
-type Props = InputProps & DataProps;
-
 interface State {
   locale: Locale | null;
+  currentTenant: IAppConfiguration | null;
   event: IEvent | null;
   attributeDiff: IUpdatedEventProperties;
   errors:
@@ -89,6 +87,7 @@ class AdminProjectEventEdit extends PureComponent<
     super(props);
     this.state = {
       locale: null,
+      currentTenant: null,
       event: null,
       attributeDiff: {},
       errors: {},
@@ -106,19 +105,22 @@ class AdminProjectEventEdit extends PureComponent<
   componentDidMount() {
     const { remoteEventFiles } = this.props;
     const locale$ = localeStream().observable;
+    const currentTenant$ = currentAppConfigurationStream().observable;
     const event$ = this.props.params.id
       ? eventStream(this.props.params.id).observable
       : of(null);
 
     this.subscriptions = [
-      combineLatest([locale$, event$]).subscribe(([locale, event]) => {
-        this.setState({
-          locale,
-
-          event,
-          loaded: true,
-        });
-      }),
+      combineLatest([locale$, currentTenant$, event$]).subscribe(
+        ([locale, currentTenant, event]) => {
+          this.setState({
+            locale,
+            currentTenant,
+            event,
+            loaded: true,
+          });
+        }
+      ),
     ];
 
     this.setState({
@@ -270,10 +272,9 @@ class AdminProjectEventEdit extends PureComponent<
   descriptionLabel = (<FormattedMessage {...messages.descriptionLabel} />);
 
   render() {
-    const { appConfiguration } = this.props;
-    const { locale, loaded, submitState } = this.state;
+    const { locale, currentTenant, loaded, submitState } = this.state;
 
-    if (locale && appConfiguration && loaded) {
+    if (locale && currentTenant && loaded) {
       const { errors, event, attributeDiff, saving, eventFiles } = this.state;
       const eventAttrs = event
         ? { ...event.data.attributes, ...attributeDiff }
@@ -386,19 +387,10 @@ class AdminProjectEventEdit extends PureComponent<
   }
 }
 
-const Data = adopt<DataProps, InputProps>({
-  remoteEventFiles: ({ params, render }) => (
-    <GetRemoteFiles resourceId={params.id} resourceType="event">
-      {render}
-    </GetRemoteFiles>
-  ),
-  appConfiguration: <GetAppConfiguration />,
-});
-
-export default withRouter((inputProps: InputProps) => {
-  return (
-    <Data {...inputProps}>
-      {(dataProps) => <AdminProjectEventEdit {...inputProps} {...dataProps} />}
-    </Data>
-  );
-});
+export default withRouter((props) => (
+  <GetRemoteFiles resourceId={props.params.id} resourceType="event">
+    {(remoteEventFiles) => (
+      <AdminProjectEventEdit remoteEventFiles={remoteEventFiles} {...props} />
+    )}
+  </GetRemoteFiles>
+));

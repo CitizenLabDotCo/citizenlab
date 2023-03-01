@@ -14,7 +14,7 @@ import PageNotFound from 'components/PageNotFound';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useCustomPage from 'hooks/useCustomPage';
 import useResourceFiles from 'hooks/useResourceFiles';
 import { useParams } from 'react-router-dom';
@@ -76,7 +76,7 @@ const CustomPageShow = () => {
   const { slug } = useParams() as {
     slug: string;
   };
-  const { data: appConfiguration } = useAppConfiguration();
+  const appConfiguration = useAppConfiguration();
   const localize = useLocalize();
   const page = useCustomPage({ customPageSlug: slug });
   const proposalsEnabled = useFeatureFlag({ name: 'initiatives' });
@@ -105,7 +105,7 @@ const CustomPageShow = () => {
 
   const pageAttributes = page.attributes;
   const localizedOrgName = localize(
-    appConfiguration.data.attributes.settings.core.organization_name
+    appConfiguration.attributes.settings.core.organization_name
   );
   return (
     <Container className={`e2e-page-${slug}`}>

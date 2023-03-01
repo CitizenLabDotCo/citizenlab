@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { updateProjectMapConfig } from '../../../services/mapConfigs';
 
 // hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useMapConfig from '../../../hooks/useMapConfig';
 
 // components
@@ -93,13 +93,13 @@ interface IFormValues {
 
 const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
   ({ projectId, className, intl: { formatMessage } }) => {
-    const { data: appConfig } = useAppConfiguration();
+    const appConfig = useAppConfiguration();
     const mapConfig = useMapConfig({ projectId });
 
-    const defaultLatLng = getCenter(undefined, appConfig?.data, mapConfig);
+    const defaultLatLng = getCenter(undefined, appConfig, mapConfig);
     const defaultLat = defaultLatLng[0];
     const defaultLng = defaultLatLng[1];
-    const defaultZoom = getZoomLevel(undefined, appConfig?.data, mapConfig);
+    const defaultZoom = getZoomLevel(undefined, appConfig, mapConfig);
 
     const [touched, setTouched] = useState(false);
     const [processing, setProcessing] = useState(false);
@@ -112,10 +112,10 @@ const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
 
     useEffect(() => {
       if (!isNilOrError(appConfig) && mapConfig) {
-        const defaultLatLng = getCenter(undefined, appConfig?.data, mapConfig);
+        const defaultLatLng = getCenter(undefined, appConfig, mapConfig);
         const defaultLat = defaultLatLng[0];
         const defaultLng = defaultLatLng[1];
-        const defaultZoom = getZoomLevel(undefined, appConfig?.data, mapConfig);
+        const defaultZoom = getZoomLevel(undefined, appConfig, mapConfig);
 
         formChange(
           {

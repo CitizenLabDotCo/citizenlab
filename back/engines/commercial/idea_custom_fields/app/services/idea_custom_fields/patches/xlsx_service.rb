@@ -15,15 +15,13 @@ module IdeaCustomFields
 
       def custom_form_custom_field_columns(ideas)
         idea_custom_fields = ideas.map(&:project).flat_map do |project|
-          next unless project.custom_form
-
           ::IdeaCustomFieldsService.new(project.custom_form).reportable_fields.reject(&:built_in?)
         end
 
         # options keys are only unique in the scope of their field, namespacing to avoid collisions
         options = CustomFieldOption.where(custom_field: idea_custom_fields).index_by { |option| namespace(option.custom_field_id, option.key) }
 
-        idea_custom_fields.compact.map do |field|
+        idea_custom_fields.map do |field|
           column_name = multiloc_service.t(field.title_multiloc)
           { header: column_name, f: value_getter_for_custom_form_custom_field_columns(field, options) }
         end

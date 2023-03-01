@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks';
 import useHomepageSettingsFeatureFlag from './useHomepageSettingsFeatureFlag';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAppConfiguration from './useAppConfiguration';
 import useHomepageSettings from './useHomepageSettings';
 
 jest.mock('hooks/useHomepageSettings', () => {
@@ -13,14 +13,10 @@ jest.mock('hooks/useHomepageSettings', () => {
   }));
 });
 
-jest.mock('api/app_configuration/useAppConfiguration', () =>
+jest.mock('hooks/useAppConfiguration', () =>
   jest.fn(() => ({
-    data: {
-      data: {
-        attributes: {
-          settings: { events_widget: { allowed: true } },
-        },
-      },
+    attributes: {
+      settings: { events_widget: { allowed: true } },
     },
   }))
 );

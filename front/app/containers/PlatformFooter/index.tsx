@@ -22,7 +22,7 @@ import styled, { css } from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 
 // hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.footer<{ insideModal?: boolean }>`
@@ -219,7 +219,7 @@ const PlatformFooter = ({
   insideModal,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
-  const { data: appConfiguration } = useAppConfiguration();
+  const appConfiguration = useAppConfiguration();
   const customizedA11yHrefEnabled = useFeatureFlag({
     name: 'custom_accessibility_statement_link',
   });
@@ -233,8 +233,8 @@ const PlatformFooter = ({
       !isNilOrError(appConfiguration) &&
       customizedA11yHrefEnabled &&
       !isEmpty(
-        appConfiguration.data.attributes.settings
-          .custom_accessibility_statement_link.url
+        appConfiguration.attributes.settings.custom_accessibility_statement_link
+          .url
       )
     );
   };
@@ -244,7 +244,7 @@ const PlatformFooter = ({
       return null;
     }
 
-    return appConfiguration.data.attributes.settings
+    return appConfiguration.attributes.settings
       .custom_accessibility_statement_link.url;
   };
 

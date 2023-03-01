@@ -1,7 +1,7 @@
 import { memo, useMemo, useEffect, useCallback } from 'react';
 
 // hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 import useMapConfig from '../../../hooks/useMapConfig';
 
 // utils
@@ -34,19 +34,19 @@ interface Props {
 const LeafletConfig = memo<Props>(
   ({ onLeafletConfigChange, projectId, centerLatLng, zoomLevel, points }) => {
     const localize = useLocalize();
-    const { data: appConfig } = useAppConfiguration();
+    const appConfig = useAppConfiguration();
     const mapConfig = useMapConfig({ projectId });
 
     const center = useMemo(() => {
-      return getCenter(centerLatLng, appConfig?.data, mapConfig);
+      return getCenter(centerLatLng, appConfig, mapConfig);
     }, [centerLatLng, appConfig, mapConfig]);
 
     const zoom = useMemo(() => {
-      return getZoomLevel(zoomLevel, appConfig?.data, mapConfig);
+      return getZoomLevel(zoomLevel, appConfig, mapConfig);
     }, [zoomLevel, appConfig, mapConfig]);
 
     const tileProvider = useMemo(() => {
-      return getTileProvider(appConfig?.data, mapConfig);
+      return getTileProvider(appConfig, mapConfig);
     }, [appConfig, mapConfig]);
 
     const tileOptions = useMemo(() => {

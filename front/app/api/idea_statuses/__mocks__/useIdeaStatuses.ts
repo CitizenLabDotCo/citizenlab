@@ -1,34 +1,30 @@
-import { IIdeaStatusData } from '../types';
-
-export const ideaStatusesData: IIdeaStatusData[] = [
+export const ideaStatusesData = [
   {
     id: '1',
     type: 'idea_status',
     attributes: {
-      code: 'proposed',
-      title_multiloc: {
-        en: 'Idea status 1',
-      },
-      description_multiloc: {
-        en: 'Description of idea status 1',
+      code: 'new',
+      name_multiloc: {
+        en: 'New',
       },
       color: '#FF0000',
       ordering: 1,
+      created_at: '2021-03-03T09:00:00.000Z',
+      updated_at: '2021-03-03T09:00:00.000Z',
     },
   },
   {
     id: '2',
     type: 'idea_status',
     attributes: {
-      code: 'under_consideration',
-      title_multiloc: {
-        en: 'Idea status 2',
-      },
-      description_multiloc: {
-        en: 'Description of idea status 2',
+      code: 'in_progress',
+      name_multiloc: {
+        en: 'In progress',
       },
       color: '#00FF00',
       ordering: 2,
+      created_at: '2021-03-03T09:00:00.000Z',
+      updated_at: '2021-03-03T09:00:00.000Z',
     },
   },
 ];
