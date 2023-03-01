@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Subscription, combineLatest, of, Observable } from 'rxjs';
+import { Subscription, of, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import shallowCompare from 'utils/shallowCompare';
@@ -31,10 +31,9 @@ import Link from 'utils/cl-router/Link';
 
 // services
 import { localeStream } from 'services/locale';
-import {
-  currentAppConfigurationStream,
-  IAppConfiguration,
-} from 'services/appConfiguration';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 import { projectByIdStream, IProject, IProjectData } from 'services/projects';
 import { phasesStream, IPhaseData } from 'services/phases';
 import {
@@ -156,13 +155,13 @@ interface DataProps {
   project: GetProjectChildProps;
   phases: GetPhasesChildProps;
   authUser: GetAuthUserChildProps;
+  appConfiguration: GetAppConfigurationChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
 interface State {
   locale: Locale | null;
-  tenant: IAppConfiguration | null;
   pbContext: IProjectData | IPhaseData | null;
   projects: IOption[] | null;
   title: string;
@@ -199,7 +198,6 @@ class IdeaForm extends PureComponent<
     super(props);
     this.state = {
       locale: null,
-      tenant: null,
       pbContext: null,
       projects: null,
       title: '',
@@ -237,7 +235,6 @@ class IdeaForm extends PureComponent<
       isDynamicIdeaFormEnabled,
     } = this.props;
     const locale$ = localeStream().observable;
-    const tenant$ = currentAppConfigurationStream().observable;
     const project$: Observable<IProject | null> =
       projectByIdStream(projectId).observable;
 
@@ -287,10 +284,9 @@ class IdeaForm extends PureComponent<
     this.mapPropsToState();
 
     this.subscriptions = [
-      combineLatest([locale$, tenant$]).subscribe(([locale, tenant]) => {
+      locale$.subscribe((locale) => {
         this.setState({
           locale,
-          tenant,
         });
       }),
 
@@ -707,11 +703,11 @@ class IdeaForm extends PureComponent<
       hasDescriptionProfanityError,
       authUser,
       ideaAuthorChangeEnabled,
+      appConfiguration,
     } = this.props;
     const { formatMessage } = this.props.intl;
     const {
       locale,
-      tenant,
       pbContext,
       title,
       description,
@@ -734,8 +730,8 @@ class IdeaForm extends PureComponent<
 
     const mapsLoaded = window.googleMaps;
 
-    const tenantCurrency = tenant
-      ? tenant.data.attributes.settings.core.currency
+    const tenantCurrency = !isNilOrError(appConfiguration)
+      ? appConfiguration.attributes.settings.core.currency
       : '';
 
     if (
@@ -1148,6 +1144,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: ({ render }) => {
     return <GetAuthUser>{render}</GetAuthUser>;
   },
+  appConfiguration: <GetAppConfiguration />,
 });
 
 const IdeaFormWitHOCs = injectIntl(withRouter(IdeaForm));

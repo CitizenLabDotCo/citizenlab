@@ -281,7 +281,6 @@
   "app.components.ParticipationCTABars.takeTheSurvey": "Naar de enquête",
   "app.components.ParticipationCTABars.userHasParticipated": "U heeft deelgenomen aan dit project.",
   "app.components.ParticipationCTABars.volunteer": "Vrijwilliger",
-  "app.components.ParticipationCTABars.xDaysLeft": "nog {timeLeft, plural, =0 {Minder dan 1 dag} one {# dag} other {# dagen}}",
   "app.components.ParticipationCTABars.xWeeksLeft": "nog {timeLeft}  weken",
   "app.components.PasswordInput.a11y_passwordHidden": "Wachtwoord verborgen",
   "app.components.PasswordInput.a11y_passwordVisible": "Wachtwoord zichtbaar",
