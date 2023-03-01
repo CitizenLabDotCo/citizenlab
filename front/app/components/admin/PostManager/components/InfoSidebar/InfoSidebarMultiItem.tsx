@@ -2,14 +2,14 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import T from 'components/T';
 import { List } from 'semantic-ui-react';
-import GetIdea from 'resources/GetIdea';
+import GetIdeaById from 'resources/GetIdeaById';
 import { handlePreviewCLick, StyledLink } from './';
 
 export default (props: {
   postId: string;
   openPreview: (id: string) => void;
 }) => (
-  <GetIdea ideaId={props.postId}>
+  <GetIdeaById ideaId={props.postId}>
     {(post) => {
       if (isNilOrError(post)) return null;
 
@@ -23,5 +23,5 @@ export default (props: {
         </List.Item>
       );
     }}
-  </GetIdea>
+  </GetIdeaById>
 );

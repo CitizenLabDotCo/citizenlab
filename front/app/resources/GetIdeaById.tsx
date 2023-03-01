@@ -1,10 +1,9 @@
 import { IIdeaData } from 'services/ideas';
-import useIdea from 'hooks/useIdea';
 import { NilOrError } from 'utils/helperUtils';
+import useIdeaById from 'api/ideas/useIdeaById';
 
 interface Props {
-  ideaId?: string | null;
-  ideaSlug?: string | null;
+  ideaId: string;
   children?: children;
 }
 
@@ -12,9 +11,9 @@ export type GetIdeaChildProps = IIdeaData | NilOrError;
 
 type children = (renderProps: GetIdeaChildProps) => JSX.Element | null;
 
-const GetIdea = ({ ideaId, ideaSlug, children }: Props) => {
-  const idea = useIdea({ ideaId, ideaSlug });
-  return (children as children)(idea);
+const GetIdeaById = ({ ideaId, children }: Props) => {
+  const { data: idea } = useIdeaById(ideaId);
+  return (children as children)(idea?.data);
 };
 
-export default GetIdea;
+export default GetIdeaById;

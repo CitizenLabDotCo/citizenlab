@@ -15,9 +15,8 @@ import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
 
 // services
 import { deleteIdea, IIdeaData } from 'services/ideas';

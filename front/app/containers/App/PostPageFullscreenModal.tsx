@@ -116,7 +116,7 @@ const PostPageFullscreenModal = memo<Props>(
       }
 
       return null;
-    }, [idea]);
+    }, [idea, type, postId]);
 
     const onClose = useCallback(() => {
       close();

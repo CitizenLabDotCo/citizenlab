@@ -20,7 +20,7 @@ import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetIdeaById, { GetIdeaChildProps } from 'resources/GetIdeaById';
 import GetInitiative, {
   GetInitiativeChildProps,
 } from 'resources/GetInitiative';
@@ -239,7 +239,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   idea: ({ postId, postType, render }) => {
     if (postType === 'idea') {
-      return <GetIdea ideaId={postId}>{render}</GetIdea>;
+      return <GetIdeaById ideaId={postId}>{render}</GetIdeaById>;
     }
 
     return null;

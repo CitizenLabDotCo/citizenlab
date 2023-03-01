@@ -28,7 +28,7 @@ import { ProcessType } from 'services/projects';
 import GetResourceFiles, {
   GetResourceFilesChildProps,
 } from 'resources/GetResourceFiles';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetIdeaById, { GetIdeaChildProps } from 'resources/GetIdeaById';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPermission, {
@@ -339,7 +339,9 @@ const IdeaContent = ({
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
+  idea: ({ ideaId, render }) => (
+    <GetIdeaById ideaId={ideaId}>{render}</GetIdeaById>
+  ),
   project: ({ idea, render }) => (
     <GetProject projectId={get(idea, 'relationships.project.data.id')}>
       {render}

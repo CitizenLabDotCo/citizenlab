@@ -59,7 +59,7 @@ import GetRemoteFiles, {
   GetRemoteFilesChildProps,
 } from 'resources/GetRemoteFiles';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetIdeaById, { GetIdeaChildProps } from 'resources/GetIdeaById';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetAppConfiguration, {
@@ -561,7 +561,7 @@ const Data = adopt<DataProps, InputProps>({
     </GetRemoteFiles>
   ),
   idea: ({ params: { ideaId }, render }) => {
-    return <GetIdea ideaId={ideaId}>{render}</GetIdea>;
+    return <GetIdeaById ideaId={ideaId}>{render}</GetIdeaById>;
   },
   project: ({ idea, render }) => {
     return (

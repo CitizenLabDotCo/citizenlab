@@ -10,7 +10,7 @@ import {
   initiativeByIdStream,
   initiativeBySlugStream,
 } from 'services/initiatives';
-import { GetIdeaChildProps } from 'resources/GetIdea';
+import { GetIdeaChildProps } from 'resources/GetIdeaById';
 import { GetInitiativeChildProps } from 'resources/GetInitiative';
 
 export type PostType = 'idea' | 'initiative';

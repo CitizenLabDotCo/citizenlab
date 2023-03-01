@@ -28,7 +28,7 @@ import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 import GetIdeaStatuses, {
   GetIdeaStatusesChildProps,
 } from 'resources/GetIdeaStatuses';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetIdeaById, { GetIdeaChildProps } from 'resources/GetIdeaById';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
@@ -211,7 +211,9 @@ class FeedbackSettings extends PureComponent<
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
-  idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
+  idea: ({ ideaId, render }) => (
+    <GetIdeaById ideaId={ideaId}>{render}</GetIdeaById>
+  ),
   statuses: <GetIdeaStatuses />,
   prospectAssignees: ({ idea, render }) => (
     <GetUsers canModerateProject={get(idea, 'relationships.project.data.id')}>

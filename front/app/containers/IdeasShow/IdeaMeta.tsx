@@ -10,7 +10,7 @@ import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetIdeaById, { GetIdeaChildProps } from 'resources/GetIdeaById';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 import useIdeaImages from 'hooks/useIdeaImages';
@@ -169,7 +169,9 @@ const IdeaMeta = memo<Props>(
 );
 
 const Data = adopt<DataProps, InputProps>({
-  idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
+  idea: ({ ideaId, render }) => (
+    <GetIdeaById ideaId={ideaId}>{render}</GetIdeaById>
+  ),
   project: ({ idea, render }) =>
     !isNilOrError(idea) ? (
       <GetProject projectId={idea.relationships.project.data.id}>
