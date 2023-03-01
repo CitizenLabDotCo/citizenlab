@@ -14,7 +14,7 @@ import GetInitiativeStatuses, {
 import styled from 'styled-components';
 
 // typings
-import { IQueryParameters } from 'resources/GetInitiatives';
+import { IQueryParameters } from 'api/initiatives/types';
 import useInitiativesFilterCounts from 'api/initiatives_filter_counts/useInitiativesFilterCounts';
 
 const Container = styled.div``;

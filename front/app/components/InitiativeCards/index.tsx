@@ -20,7 +20,7 @@ import Button from 'components/UI/Button';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 
 // resources
-import { Sort, IQueryParameters } from 'resources/GetInitiatives';
+import { Sort, IQueryParameters } from 'api/initiatives/types';
 
 // i18n
 import messages from './messages';
