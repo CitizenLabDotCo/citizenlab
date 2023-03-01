@@ -10,13 +10,6 @@ export interface IIdea {
   data: IIdeaData;
 }
 
-// keys in ideas.attributes.action_descriptor
-export type IIdeaAction =
-  | 'voting_idea'
-  | 'commenting_idea'
-  | 'comment_voting_idea'
-  | 'budgeting';
-
 export type IdeaVotingDisabledReason =
   | 'project_inactive'
   | 'not_ideation'
