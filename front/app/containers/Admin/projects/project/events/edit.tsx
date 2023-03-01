@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { isEmpty, get, isError } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-
-// libraries
-import clHistory from 'utils/cl-router/history';
 
 // components
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
@@ -15,9 +11,6 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import FileUploader from 'components/UI/FileUploader';
 import { IconTooltip, Label, Spinner } from '@citizenlab/cl2-component-library';
-
-// utils
-import { withRouter } from 'utils/cl-router/withRouter';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -31,16 +24,17 @@ import useEvent from 'api/events/useEvent';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
 import useEventFiles from 'api/event_files/useEventFiles';
-
-// services
-import { addEventFile, deleteEventFile } from 'services/eventFiles';
+import useAddEventFile from 'api/event_files/useAddEventFile';
+import useDeleteEventFile from 'api/event_files/useDeleteEventFile';
 
 // typings
 import { Multiloc, CLError, UploadFile } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 // utils
+import { withRouter } from 'utils/cl-router/withRouter';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   params: Record<string, string>;
@@ -48,6 +42,13 @@ interface Props {
 
 type SubmitState = 'disabled' | 'enabled' | 'error' | 'success';
 type ErrorType =
+  | Error
+  | CLError[]
+  | {
+      [fieldName: string]: CLError[];
+    };
+
+type ApiErrorType =
   | Error
   | {
       [fieldName: string]: CLError[];
@@ -57,10 +58,13 @@ const AdminProjectEventEdit = ({ params }: Props) => {
   const { mutate: addEvent } = useAddEvent();
   const { data: event, isInitialLoading } = useEvent(params.id);
   const { mutate: updateEvent } = useUpdateEvent();
+  const { mutate: addEventFile } = useAddEventFile();
+  const { mutate: deleteEventFile } = useDeleteEventFile();
+  const { data: remoteEventFiles } = useEventFiles(params.id);
   const locale = useLocale();
   const appConfiguration = useAppConfiguration();
-  const { data: remoteEventFiles } = useEventFiles(params.id);
   const [errors, setErrors] = useState<ErrorType>({});
+  const [apiErrors, setApiErrors] = useState<ApiErrorType>({});
   const [saving, setSaving] = useState<boolean>(false);
   const [submitState, setSubmitState] = useState<SubmitState>('disabled');
   const [eventFiles, setEventFiles] = useState<UploadFile[]>([]);
@@ -70,16 +74,15 @@ const AdminProjectEventEdit = ({ params }: Props) => {
   );
 
   useEffect(() => {
-    // Set the event files once remote files are loaded
     if (!isNilOrError(remoteEventFiles)) {
       (async () => {
-        const file = await convertUrlToUploadFile(
-          remoteEventFiles.data[0].attributes.file.url
+        const files = await Promise.all(
+          remoteEventFiles.data.map(
+            async (file) =>
+              await convertUrlToUploadFile(file.attributes.file.url, file.id)
+          )
         );
-        setEventFiles(
-          (previousEventFiles) =>
-            previousEventFiles.length === 0 && file ? [file] : [] // TODO Fix this logic
-        );
+        setEventFiles(files as UploadFile[]);
       })();
     }
   }, [remoteEventFiles]);
@@ -138,19 +141,47 @@ const AdminProjectEventEdit = ({ params }: Props) => {
   };
 
   const handleEventFiles = async (data: IEvent) => {
+    setSubmitState('success');
+
     if (data) {
       const { id: eventId } = data.data;
-      const filesToAddPromises = eventFiles
+      eventFiles
         .filter((file) => !file.remote)
-        .map((file) => addEventFile(eventId, file.base64, file.name));
-      const filesToRemovePromises = eventFilesToRemove
-        .filter((file) => !!(file.remote && file.id))
-        .map((file) => deleteEventFile(eventId, file.id as string));
-
-      await Promise.all([
-        ...filesToAddPromises,
-        ...filesToRemovePromises,
-      ] as Promise<any>[]);
+        .map((file) =>
+          addEventFile(
+            {
+              eventId,
+              file: file.base64,
+              name: file.name,
+              ordering: null,
+            },
+            {
+              onSuccess: () => {
+                setSubmitState('success');
+              },
+              onError: () => {
+                setSubmitState('error');
+              },
+            }
+          )
+        );
+      eventFilesToRemove
+        .filter((file) => !!file.remote)
+        .map((file) => {
+          if (file.id) {
+            deleteEventFile(
+              { eventId, fileId: file.id },
+              {
+                onSuccess: () => {
+                  setSubmitState('success');
+                },
+                onError: () => {
+                  setSubmitState('error');
+                },
+              }
+            );
+          }
+        });
     }
   };
 
@@ -158,9 +189,16 @@ const AdminProjectEventEdit = ({ params }: Props) => {
     e.preventDefault();
     if (!isNilOrError(params.projectId)) {
       const { projectId } = params;
-      let redirect = false;
       try {
         setSaving(true);
+
+        // If only files have changed
+        if (isEmpty(attributeDiff) && eventFilesToRemove) {
+          if (event) {
+            handleEventFiles(event);
+          }
+        }
+
         // non-file input fields have changed
         if (!isEmpty(attributeDiff)) {
           // event already exists (in the state)
@@ -172,11 +210,11 @@ const AdminProjectEventEdit = ({ params }: Props) => {
               },
               {
                 onSuccess: async (data) => {
-                  setSubmitState('success');
                   handleEventFiles(data);
                 },
                 onError: async (errors) => {
-                  setErrors(errors);
+                  setSaving(false);
+                  setErrors(errors.errors);
                   setSubmitState('error');
                 },
               }
@@ -190,7 +228,6 @@ const AdminProjectEventEdit = ({ params }: Props) => {
               },
               {
                 onSuccess: async (data) => {
-                  setSubmitState('success');
                   handleEventFiles(data);
                 },
                 onError: async (errors) => {
@@ -199,20 +236,13 @@ const AdminProjectEventEdit = ({ params }: Props) => {
                 },
               }
             );
-            redirect = true;
           }
         }
-
         setSaving(false);
-        setEventFilesToRemove([]);
-
-        if (redirect && projectId) {
-          clHistory.push(`/admin/projects/${projectId}/events/`);
-        }
       } catch (errors) {
         if (isCLErrorJSON(errors)) {
           setSaving(false);
-          setErrors(errors.json.errors);
+          setApiErrors(errors.json.errors);
           setSubmitState('error');
         } else {
           setSaving(false);
@@ -311,7 +341,7 @@ const AdminProjectEventEdit = ({ params }: Props) => {
                 onFileAdd={handleEventFileOnAdd}
                 onFileRemove={handleEventFileOnRemove}
                 files={eventFiles}
-                apiErrors={isError(errors) ? undefined : errors}
+                apiErrors={isError(apiErrors) ? undefined : apiErrors}
               />
             </SectionField>
           </Section>

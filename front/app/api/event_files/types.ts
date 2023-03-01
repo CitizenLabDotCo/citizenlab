@@ -26,27 +26,14 @@ export interface IEventFiles {
   data: IEventFileData[];
 }
 
-// export function eventFilesStream(
-//   eventId: string,
-//   streamParams: IStreamParams | null = null
-// ) {
-//   return streams.get<IEventFiles>({
-//     apiEndpoint: `${apiEndpoint}/${eventId}/files`,
-//     ...streamParams,
-//   });
-// }
+export interface IAddEventFileProperties {
+  eventId: string;
+  file: string;
+  name: string;
+  ordering?: number | null;
+}
 
-// export function addEventFile(
-//   eventId: string,
-//   base64: string,
-//   name: string,
-//   ordering: number | null = null
-// ) {
-//   return streams.add<IEventFile>(`${apiEndpoint}/${eventId}/files`, {
-//     file: { name, ordering, file: base64 },
-//   });
-// }
-
-// export function deleteEventFile(eventId: string, fileId: string) {
-//   return streams.delete(`${apiEndpoint}/${eventId}/files/${fileId}`, fileId);
-// }
+export interface IDeleteEventFileProperties {
+  eventId: string;
+  fileId?: string;
+}

@@ -4,12 +4,13 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import eventsKeys from './keys';
 import { IAddEventProperties, IEvent } from './types';
 
-const addEvent = async (requestBody: IAddEventProperties) =>
-  fetcher<IEvent>({
+const addEvent = async (requestBody: IAddEventProperties) => {
+  return fetcher<IEvent>({
     path: `/projects/${requestBody.projectId}/events`,
     action: 'post',
     body: requestBody.event,
   });
+};
 
 const useAddEvent = () => {
   const queryClient = useQueryClient();

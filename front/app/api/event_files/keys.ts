@@ -1,3 +1,5 @@
+import { IDeleteEventFileProperties } from './types';
+
 const eventFilesKeys = {
   all: () => [{ type: 'file' }],
   lists: () => [{ ...eventFilesKeys.all()[0], operation: 'list' }],
@@ -5,10 +7,10 @@ const eventFilesKeys = {
     { ...eventFilesKeys.all()[0], entity: 'list', eventId },
   ],
   items: () => [{ ...eventFilesKeys.all()[0], operation: 'item' }],
-  item: (eventId?: string) => [
+  item: (properties: IDeleteEventFileProperties) => [
     {
       ...eventFilesKeys.items()[0],
-      eventId,
+      properties,
     },
   ],
 } as const;
