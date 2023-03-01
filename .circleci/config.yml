@@ -114,7 +114,7 @@ jobs:
           path: ./citizenlab
       - run:
           name: Trigger workflows
-          command: chmod +x ./.circleci/monorepo.sh && ./.circleci/monorepo.sh
+          command: chmod +x ../.circleci/monorepo.sh && ../.circleci/monorepo.sh
 
   danger-check:
     resource_class: small
