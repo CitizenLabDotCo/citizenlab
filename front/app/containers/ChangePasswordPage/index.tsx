@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { adopt } from 'react-adopt';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -29,7 +28,6 @@ import { changePassword } from 'services/users';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -86,11 +84,10 @@ type FormValues = {
 };
 
 type Props = {
-  authUser: GetAuthUserChildProps;
   tenant: GetAppConfigurationChildProps;
 };
 
-const ChangePassword = ({ authUser, tenant }: Props) => {
+const ChangePassword = ({ tenant }: Props) => {
   const { formatMessage } = useIntl();
   const [success, setSuccess] = useState(false);
 
@@ -133,8 +130,6 @@ const ChangePassword = ({ authUser, tenant }: Props) => {
     },
     resolver: yupResolver(schema),
   });
-
-  if (isNilOrError(authUser)) return null;
 
   const onFormSubmit = async ({ ...formValues }: FormValues) => {
     try {
@@ -207,11 +202,8 @@ const ChangePassword = ({ authUser, tenant }: Props) => {
   );
 };
 
-const Data = adopt({
-  authUser: <GetAuthUser />,
-  tenant: <GetAppConfiguration />,
-});
-
 export default () => (
-  <Data>{(dataProps) => <ChangePassword {...dataProps} />}</Data>
+  <GetAppConfiguration>
+    {(tenant) => <ChangePassword tenant={tenant} />}
+  </GetAppConfiguration>
 );
