@@ -107,7 +107,7 @@ const InitiativesEditPage = ({
     if (!isPrivilegedUser && authUser === null) {
       clHistory.replace(previousPathName || '/sign-up');
     }
-  }, [authUser]);
+  }, [authUser, previousPathName]);
 
   if (
     isNilOrError(authUser) ||

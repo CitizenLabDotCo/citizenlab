@@ -375,7 +375,7 @@ const InitiativesShow = ({
     ) {
       setLoaded(true);
     }
-  }, [initiative, initiativeImages, officialFeedbacks]);
+  }, [initiative, initiativeImages, officialFeedbacks, loaded]);
 
   useEffect(() => {
     if (a11y_pronounceLatestOfficialFeedbackPost) {
