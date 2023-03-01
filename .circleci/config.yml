@@ -491,6 +491,10 @@ jobs:
       - run:
           command: TEST_BUILD="true" npm run build
           no_output_timeout: "30m"
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - build
 
   front-extract-intl:
     docker:
@@ -680,16 +684,19 @@ jobs:
       - image: cimg/base:2021.03
     parallelism: 3
     working_directory: ~/citizenlab
-    resource_class: medium+
+    resource_class: medium
     steps:
       - shallow-clone
       - copy_secrets_from_lastpass
       - setup_remote_docker
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - attach_workspace:
+          # we attach the build with html/css/js files to e2e/build folder
+          at: e2e
+      # --parallel is weird https://github.com/docker/compose/issues/7901 but it seems to work.
+      # `docker compose` (w/o hyphen) doesn't work atm "docker: 'compose' is not a docker command"
       - run: |
           cd e2e
-          # --parallel is weird https://github.com/docker/compose/issues/7901 but it seems to work.
-          # `docker compose` (w/o hythen) doesn't work atm "docker: 'compose' is not a docker command"
           docker-compose build --parallel
       - run: |
           cd e2e
@@ -700,13 +707,10 @@ jobs:
             cd e2e
             docker-compose up
           background: true
-      # Wait until build is finished.
-      - run: |
-          sleep 10 # if we run `docker-compose run` immediately, it fails with "network is ambiguous (2 matches found on name)"
-          cd e2e
-          # we cannot access localhost:3000, so we call it from the container
-          # https://discuss.circleci.com/t/cannot-communicate-with-docker-container/27253/2
-          docker-compose run front curl --retry 2 --retry-delay 5 --retry-connrefused -v http://e2e.front:3000
+      # Wait until docker-compose is up and running.
+      # if we run `docker-compose run` immediately, it fails with "network is ambiguous (2 matches found on name)".
+      # Some tests fail if the port 80 is explicitly specified in the url like http://nginx:80.
+      - run: sleep 3
       - run: |
           cd front
           mkdir -p reports
@@ -714,7 +718,8 @@ jobs:
           COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | sed 's/ /,/g')
           echo $COMMA_SEPARATED_TESTFILES
           cd ../e2e
-          docker-compose run --name cypress_run front npm run cypress:run -- --reporter junit --reporter-options "mochaFile=../front/reports/cypress.xml" --config baseUrl=http://e2e.front:3000 --spec ${COMMA_SEPARATED_TESTFILES}
+          docker-compose run --name cypress_run front npm run cypress:run -- --reporter junit --reporter-options "mochaFile=../front/reports/cypress.xml" --config baseUrl=http://nginx --spec ${COMMA_SEPARATED_TESTFILES}
+
       # We run cypress tests in container, so we need to copy the results out.
       - run: |
           mkdir -p front/reports
@@ -724,10 +729,15 @@ jobs:
           # If `when: always`, it fails on success with
           # Error: No such container:path: cypress_run:/front/cypress/screenshots
           when: on_fail
+      - run:
+          command: docker cp cypress_run:/front/cypress/videos .
+          when: on_fail
       - store_test_results:
           path: front/reports
       - store_artifacts:
           path: screenshots
+      - store_artifacts:
+          path: videos
 
 workflows:
   version: 2
@@ -1045,10 +1055,13 @@ workflows:
   manually-e2e-tests:
     when: << pipeline.parameters.e2e >>
     jobs:
+      - front-build
       - e2e-tests:
           context:
             - docker-hub-access
             - lastpass
+          requires:
+            - front-build
 
   nightly-e2e-tests:
     triggers:

@@ -26,12 +26,48 @@ services:
     environment:
       POSTGRES_HOST: e2e-postgres
       OVERRIDE_HOST: "e2e.front"
-      ASSET_HOST_URI: "http://e2e.front:3000" # it's proxied to `API_HOST: e2e-web` by webpack server
+      ASSET_HOST_URI: "http://nginx:80" # it's proxied to `API_HOST: e2e-web` by nginx server (see e2e/nginx.conf)
       WEB_CONCURRENCY: 3
 
   rabbitmq:
     container_name: e2e-rabbit
     image: "rabbitmq:3.7-management"
+
+  # frontcypress:
+  #   ipc: "host" #See https://github.com/cypress-io/cypress/issues/350
+  #   container_name: "e2e.front.cypress"
+  #   build:
+  #     context: ..
+  #     dockerfile: front/Dockerfile
+  #   env_file:
+  #     - "../env_files/front-safe.env"
+  #     - "../env_files/front-secret.env"
+  #   environment:
+  #     API_HOST: e2e-web
+  #   We need this container only to run cypress.
+  #   command: npm start
+
+  # frontdynamic:
+  #   ipc: "host" #See https://github.com/cypress-io/cypress/issues/350
+  #   container_name: "e2e.front.dynamic"
+  #   build:
+  #     context: ..
+  #     dockerfile: front/Dockerfile
+  #   # To easily test locally. Volumes are not supported on CircleCI https://support.circleci.com/hc/en-us/articles/360007324514-How-can-I-use-Docker-volume-mounting-on-CircleCI-
+  #   volumes:
+  #     # - "../front/cypress/videos:/front/cypress/videos"
+  #     # - "../front/cypress/screenshots:/front/cypress/screenshots"
+  #     # - "../front/build:/front/build"
+  #     - "../front:/front"
+  #   ports:
+  #     - "3001:3000"
+  #   env_file:
+  #     - "../env_files/front-safe.env"
+  #     - "../env_files/front-secret.env"
+  #   environment:
+  #     API_HOST: e2e-web
+  #   # We need this container only to run cypress.
+  #   command: npm start
 
   front:
     ipc: "host" #See https://github.com/cypress-io/cypress/issues/350
@@ -41,12 +77,24 @@ services:
       dockerfile: front/Dockerfile
     # To easily test locally. Volumes are not supported on CircleCI
     # volumes:
+    #   - "../front/cypress/videos:/front/cypress/videos"
+    #   - "../front/cypress/screenshots:/front/cypress/screenshots"
+    #   - "../front/build:/front/build"
     #   - "../front:/front"
-    ports:
-      - "3000:3000"
+    # ports:
+    #   - "3000:3000"
     env_file:
       - "../env_files/front-safe.env"
       - "../env_files/front-secret.env"
     environment:
       API_HOST: e2e-web
-    command: npm start
+    # We need this container only to run cypress.
+    # command: npm start
+    # command: npm run start:prod
+
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    ports:
+      - 8080:80

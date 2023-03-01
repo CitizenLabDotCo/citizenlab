@@ -17,4 +17,4 @@ RUN npm install
 ADD front/. .
 
 # Define the command to start your application
-CMD ["npm", "start"]
+# CMD ["npm", "start"]

@@ -9,7 +9,7 @@ dotenv.config({
 export default defineConfig({
   viewportWidth: 1400,
   viewportHeight: 800,
-  video: false,
+  video: true,
   videoUploadOnPasses: false,
   chromeWebSecurity: false,
   numTestsKeptInMemory: process.env.CYPRESS_NUM_TESTS_KEPT_IN_MEMORY

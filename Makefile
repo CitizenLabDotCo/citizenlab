@@ -1,4 +1,4 @@
-.PHONY: build reset-dev-env migrate be-up fe-up up c rails-console rails-console-exec e2e-setup e2e-setup-and-up e2e-run-test e2e-ci-env-setup e2e-ci-env-setup-and-up e2e-ci-env-run-test ci-regenerate-templates ci-trigger-build ci-run-e2e
+.PHONY: build reset-dev-env migrate be-up fe-up up c rails-console rails-console-exec e2e-setup e2e-setup-and-up e2e-run-test e2e-ci-env-setup e2e-ci-env-setup-and-up e2e-ci-env-run-spec ci-regenerate-templates ci-trigger-build ci-run-e2e
 
 # You can run this file with `make` command:
 # make reset-dev-env
@@ -100,14 +100,29 @@ e2e-run-test:
 # that the used environment will be very similar to CI (the same docker-compose.yml file)
 # -----------------
 
+e2e-ci-env-front-build:
+	cd front && \
+	CITIZENLAB_EE=true TEST_BUILD=true npm run build && \
+	rm -r ../e2e/build && \
+	mv build ../e2e
+	cd e2e && docker-compose build
+
+e2e-ci-env-create-db:
+	cd e2e && \
+	docker-compose run --rm web bin/rails db:drop db:create db:schema:load && \
+	docker-compose run --rm web bin/rails "cl2_back:create_tenant[e2e.front,e2etests_template]"
+
+# make -j 2 e2e-ci-env-create-db e2e-ci-env-front-build
 e2e-ci-env-setup:
 	cd e2e && \
-	docker-compose build && \
-	docker-compose run web bin/rails db:drop db:create db:schema:load && \
-	docker-compose run web bin/rails "cl2_back:create_tenant[e2e.front,e2etests_template]"
+	mkdir -p build && \
+	docker-compose build
+	make e2e-ci-env-front-build
+	make e2e-ci-env-create-db
 
+# We need --build to reflect code changes because volumes are not used by default
+# https://www.notion.so/citizenlab/Testing-253d0c3cd99841a59929f7f615179935?pvs=4#f088eb9d2c304af59d5d5d2ede6e4439
 e2e-ci-env-up:
-	# we need --build because volumes are not used by default https://www.notion.so/citizenlab/Testing-253d0c3cd99841a59929f7f615179935?pvs=4#f088eb9d2c304af59d5d5d2ede6e4439
 	cd e2e && docker-compose up --build
 
 e2e-ci-env-setup-and-up:
@@ -115,12 +130,12 @@ e2e-ci-env-setup-and-up:
 	make e2e-ci-env-up
 
 # Run it with:
-# make e2e-ci-env-run-test spec=cypress/e2e/about_page.cy.ts
+# make e2e-ci-env-run-spec spec=cypress/e2e/about_page.cy.ts
 # # or specify an entire folder
-# make e2e-ci-env-run-test spec=cypress/e2e/project_description_builder/sections
-e2e-ci-env-run-test:
+# make e2e-ci-env-run-spec spec=cypress/e2e/project_description_builder/sections
+e2e-ci-env-run-spec:
 	cd e2e && \
-	docker-compose run --rm --name cypress_run front npm run cypress:run -- --config baseUrl=http://e2e.front:3000 --spec ${spec}
+	docker-compose run --rm front npm run cypress:run -- --config baseUrl=http://nginx --spec ${spec}
 
 e2e-ci-env-db-dump:
 	cd e2e && \
