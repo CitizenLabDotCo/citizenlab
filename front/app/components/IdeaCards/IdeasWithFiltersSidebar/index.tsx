@@ -1,6 +1,5 @@
-import React, { PureComponent } from 'react';
+import React, { useCallback, useState } from 'react';
 import { adopt } from 'react-adopt';
-import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // tracking
@@ -8,7 +7,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
 
 // components
-import { Spinner } from '@citizenlab/cl2-component-library';
+import { Spinner, useWindowSize } from '@citizenlab/cl2-component-library';
 import FiltersModal from './FiltersModal';
 import FiltersSideBar from './FiltersSideBar';
 import SortFilterDropdown from '../Filters/SortFilterDropdown';
@@ -24,17 +23,13 @@ import GetIdeas, {
 import GetIdeasFilterCounts, {
   GetIdeasFilterCountsChildProps,
 } from 'resources/GetIdeasFilterCounts';
-import GetWindowSize, {
-  GetWindowSizeChildProps,
-} from 'resources/GetWindowSize';
 
 // i18n
 import messages from '../messages';
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // style
-import styled, { withTheme } from 'styled-components';
+import styled from 'styled-components';
 import {
   media,
   fontSizes,
@@ -161,375 +156,206 @@ interface InputProps extends GetIdeasInputProps {
 }
 
 interface DataProps {
-  windowWidth: GetWindowSizeChildProps;
   ideas: GetIdeasChildProps;
   ideasFilterCounts: GetIdeasFilterCountsChildProps;
 }
 
-interface Props extends InputProps, DataProps {
-  theme: any;
-}
+interface Props extends InputProps, DataProps {}
 
-interface State {
-  filtersModalOpened: boolean;
-  selectedIdeaFilters: Partial<IIdeasQueryParameters>;
-}
+const IdeaCards = ({
+  className,
+  ideas,
+  ideasFilterCounts,
+  defaultSortingMethod,
+}: Props) => {
+  const { windowWidth } = useWindowSize();
 
-// const _IdeaCards = ({ ideas }: Props) => {
-//   const { windowWidth } = useWindowSize();
+  const [filtersModalOpened, setFiltersModalOpened] = useState(false);
+  const [selectedIdeaFilters, setSelectedIdeaFilters] = useState<
+    Partial<IIdeasQueryParameters>
+  >({});
 
-//   const [filtersModalOpened, setFiltersModalOpened] = useState(false);
-//   const [selectedIdeaFilters, setSelectedIdeaFilters] = useState<
-//     Partial<IIdeasQueryParameters>
-//   >({});
+  const openFiltersModal = useCallback(() => {
+    setFiltersModalOpened(true);
+  }, []);
 
-//   const openFiltersModal = useCallback(() => {
-//     setFiltersModalOpened(true);
-//   }, []);
-
-//   const handleSortOnChange = useCallback((sort: Sort) => {
-//     trackEventByName(tracks.sortingFilter, {
-//       sort,
-//     });
-
-//     ideas.onChangeSorting(sort);
-//   }, [ideas]);
-
-//   handleSearchOnChange = (searchTerm: string) => {
-//     this.props.ideas.onChangeSearchTerm(searchTerm);
-//   };
-
-//   handleStatusOnChange = (idea_status: string | null) => {
-//     this.handleIdeaFiltersOnChange({ idea_status });
-//   };
-
-//   handleTopicsOnChange = (topics: string[] | null) => {
-//     trackEventByName(tracks.topicsFilter, {
-//       topics,
-//     });
-
-//     this.handleIdeaFiltersOnChange({ topics });
-//   };
-
-//   handleStatusOnChangeAndApplyFilter = (idea_status: string | null) => {
-//     this.handleIdeaFiltersOnChange({ idea_status }, true);
-//   };
-
-//   handleTopicsOnChangeAndApplyFilter = (topics: string[] | null) => {
-//     this.handleIdeaFiltersOnChange({ topics }, true);
-//   };
-
-//   handleIdeaFiltersOnChange = (
-//     newSelectedIdeaFilters: Partial<IIdeasQueryParameters>,
-//     applyFilter = false
-//   ) => {
-//     this.setState((state) => {
-//       const selectedIdeaFilters = {
-//         ...state.selectedIdeaFilters,
-//         ...newSelectedIdeaFilters,
-//       };
-
-//       if (applyFilter) {
-//         this.props.ideas.onIdeaFiltering(selectedIdeaFilters);
-//       }
-
-//       return { selectedIdeaFilters };
-//     });
-//   };
-
-//   handleIdeaFiltersOnReset = () => {
-//     this.setState((state) => {
-//       const selectedIdeaFilters = {
-//         ...state.selectedIdeaFilters,
-//         idea_status: null,
-//         topics: null,
-//       };
-
-//       return { selectedIdeaFilters };
-//     });
-//   };
-
-//   handleIdeaFiltersOnResetAndApply = () => {
-//     this.setState((state) => {
-//       const selectedIdeaFilters = {
-//         ...state.selectedIdeaFilters,
-//         search: null,
-//         idea_status: null,
-//         topics: null,
-//       };
-
-//       this.desktopSearchInputClearButton?.click();
-//       this.mobileSearchInputClearButton?.click();
-
-//       this.props.ideas.onIdeaFiltering(selectedIdeaFilters);
-
-//       return { selectedIdeaFilters };
-//     });
-//   };
-
-//   closeModalAndApplyFilters = () => {
-//     this.setState((state) => {
-//       this.props.ideas.onIdeaFiltering(state.selectedIdeaFilters);
-
-//       return {
-//         filtersModalOpened: false,
-//         previouslySelectedIdeaFilters: null,
-//       };
-//     });
-//   };
-
-//   closeModalAndRevertFilters = () => {
-//     this.setState((state) => {
-//       this.props.ideas.onIdeaFiltering(
-//         state.previouslySelectedIdeaFilters || {}
-//       );
-
-//       return {
-//         filtersModalOpened: false,
-//         selectedIdeaFilters: state.previouslySelectedIdeaFilters || {},
-//         previouslySelectedIdeaFilters: null,
-//       };
-//     });
-//   };
-
-//   return (
-
-//   )
-// }
-
-class IdeaCards extends PureComponent<Props & WrappedComponentProps, State> {
-  desktopSearchInputClearButton: HTMLButtonElement | null = null;
-  mobileSearchInputClearButton: HTMLButtonElement | null = null;
-
-  constructor(props: Props & WrappedComponentProps) {
-    super(props);
-    this.state = {
-      filtersModalOpened: false,
-      selectedIdeaFilters: get(props.ideas, 'queryParameters', {}),
-    };
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    const oldQueryParameters = get(prevProps.ideas, 'queryParameters', null);
-    const newQueryParameters = get(this.props.ideas, 'queryParameters', null);
-
-    if (newQueryParameters !== oldQueryParameters) {
-      this.setState({
-        selectedIdeaFilters: get(this.props.ideas, 'queryParameters', {}),
+  const handleSortOnChange = useCallback(
+    (sort: Sort) => {
+      trackEventByName(tracks.sortingFilter, {
+        sort,
       });
-    }
-  }
 
-  openFiltersModal = () => {
-    this.setState({
-      filtersModalOpened: true,
-    });
+      ideas.onChangeSorting(sort);
+    },
+    [ideas]
+  );
+
+  const handleStatusOnChange = (idea_status: string | null) => {
+    handleIdeaFiltersOnChange({ idea_status });
   };
 
-  handleSortOnChange = (sort: Sort) => {
-    trackEventByName(tracks.sortingFilter, {
-      sort,
-    });
-
-    this.props.ideas.onChangeSorting(sort);
+  const handleTopicsOnChange = (topics: string[] | null) => {
+    handleIdeaFiltersOnChange({ topics });
   };
 
-  handleSearchOnChange = (searchTerm: string) => {
-    this.props.ideas.onChangeSearchTerm(searchTerm);
-  };
-
-  handleStatusOnChangeAndApplyFilter = (idea_status: string | null) => {
-    this.handleIdeaFiltersOnChange({ idea_status }, true);
-  };
-
-  handleTopicsOnChangeAndApplyFilter = (topics: string[] | null) => {
-    this.handleIdeaFiltersOnChange({ topics }, true);
-  };
-
-  handleIdeaFiltersOnChange = (
-    newSelectedIdeaFilters: Partial<IIdeasQueryParameters>,
-    applyFilter = false
+  const handleIdeaFiltersOnChange = (
+    newSelectedIdeaFilters: Partial<IIdeasQueryParameters>
   ) => {
-    this.setState((state) => {
+    setSelectedIdeaFilters((current) => {
       const selectedIdeaFilters = {
-        ...state.selectedIdeaFilters,
+        ...current,
         ...newSelectedIdeaFilters,
       };
 
-      if (applyFilter) {
-        this.props.ideas.onIdeaFiltering(selectedIdeaFilters);
-      }
+      ideas.onIdeaFiltering(selectedIdeaFilters);
 
-      return { selectedIdeaFilters };
+      return selectedIdeaFilters;
     });
   };
 
-  handleIdeaFiltersOnResetAndApply = () => {
-    this.setState((state) => {
+  const clearFilters = () => {
+    setSelectedIdeaFilters((current) => {
       const selectedIdeaFilters = {
-        ...state.selectedIdeaFilters,
+        ...current,
         search: null,
         idea_status: null,
         topics: null,
       };
 
-      this.desktopSearchInputClearButton?.click();
-      this.mobileSearchInputClearButton?.click();
+      ideas.onIdeaFiltering(selectedIdeaFilters);
 
-      this.props.ideas.onIdeaFiltering(selectedIdeaFilters);
-
-      return { selectedIdeaFilters };
+      return selectedIdeaFilters;
     });
   };
 
-  closeModalAndApplyFilters = () => {
-    this.setState((state) => {
-      this.props.ideas.onIdeaFiltering(state.selectedIdeaFilters);
-
-      return {
-        filtersModalOpened: false,
-      };
-    });
+  const closeModal = () => {
+    setFiltersModalOpened(false);
   };
 
-  filterMessage = (<FormattedMessage {...messages.filter} />);
+  const { list, hasMore, querying, onLoadMore } = ideas;
+  const filterColumnWidth = windowWidth && windowWidth < 1400 ? 340 : 352;
+  const filtersActive = !!(
+    selectedIdeaFilters.search ||
+    selectedIdeaFilters.idea_status ||
+    selectedIdeaFilters.topics
+  );
+  const biggerThanLargeTablet = !!(
+    windowWidth && windowWidth >= viewportWidths.tablet
+  );
+  const smallerThan1440px = !!(windowWidth && windowWidth <= 1440);
+  const smallerThanPhone = !!(
+    windowWidth && windowWidth <= viewportWidths.phone
+  );
 
-  render() {
-    const { selectedIdeaFilters, filtersModalOpened } = this.state;
-    const {
-      defaultSortingMethod,
-      ideas,
-      ideasFilterCounts,
-      windowWidth,
-      className,
-    } = this.props;
-    const { list, hasMore, querying, onLoadMore } = ideas;
-    const filterColumnWidth = windowWidth && windowWidth < 1400 ? 340 : 352;
-    const filtersActive = !!(
-      selectedIdeaFilters.search ||
-      selectedIdeaFilters.idea_status ||
-      selectedIdeaFilters.topics
-    );
-    const biggerThanLargeTablet = !!(
-      windowWidth && windowWidth >= viewportWidths.tablet
-    );
-    const smallerThan1440px = !!(windowWidth && windowWidth <= 1440);
-    const smallerThanPhone = !!(
-      windowWidth && windowWidth <= viewportWidths.phone
-    );
+  return (
+    <Container id="e2e-ideas-container" className={className}>
+      {list === undefined && (
+        <InitialLoading id="ideas-loading">
+          <Spinner />
+        </InitialLoading>
+      )}
 
-    return (
-      <Container id="e2e-ideas-container" className={className}>
-        {list === undefined && (
-          <InitialLoading id="ideas-loading">
-            <Spinner />
-          </InitialLoading>
-        )}
+      {list && (
+        <>
+          {!biggerThanLargeTablet && (
+            <>
+              <FiltersModal
+                opened={filtersModalOpened}
+                selectedIdeaFilters={selectedIdeaFilters}
+                className={className}
+                filtersActive={filtersActive}
+                ideasFilterCounts={ideasFilterCounts}
+                numberOfSearchResults={list ? list.length : 0}
+                onClearFilters={clearFilters}
+                onSearch={ideas.onChangeSearchTerm}
+                onChangeStatus={handleStatusOnChange}
+                onChangeTopics={handleTopicsOnChange}
+                onClose={closeModal}
+              />
 
-        {list && (
-          <>
-            {!biggerThanLargeTablet && (
-              <>
-                <FiltersModal
-                  opened={filtersModalOpened}
+              <MobileSearchInput
+                onChange={ideas.onChangeSearchTerm}
+                a11y_numberOfSearchResults={list.length}
+              />
+
+              <MobileFilterButton
+                buttonStyle="secondary-outlined"
+                onClick={openFiltersModal}
+                icon="filter"
+                text={<FormattedMessage {...messages.filter} />}
+              />
+            </>
+          )}
+
+          <AboveContent filterColumnWidth={filterColumnWidth}>
+            {/* This is effectively on the right,
+              with the help of flexbox. The HTML order, however,
+              needed to be like this for a11y (tab order).
+             */}
+            <AboveContentRight>
+              <SortFilterDropdown
+                defaultSortingMethod={defaultSortingMethod || null}
+                onChange={handleSortOnChange}
+                alignment="right"
+              />
+            </AboveContentRight>
+            <AboveContentLeft>
+              {!isNilOrError(ideasFilterCounts) && (
+                <IdeasCount>
+                  <FormattedMessage
+                    {...messages.xResults}
+                    values={{ ideasCount: ideasFilterCounts.total }}
+                  />
+                </IdeasCount>
+              )}
+            </AboveContentLeft>
+          </AboveContent>
+
+          <Content>
+            <ContentLeft>
+              <IdeasView
+                list={list}
+                querying={querying}
+                onLoadMore={onLoadMore}
+                hasMore={hasMore}
+                loadingMore={querying}
+                hideImage={biggerThanLargeTablet && smallerThan1440px}
+                hideImagePlaceholder={smallerThan1440px}
+                hideIdeaStatus={
+                  (biggerThanLargeTablet && smallerThan1440px) ||
+                  smallerThanPhone
+                }
+                showListView={true}
+                showMapView={false}
+              />
+            </ContentLeft>
+
+            {biggerThanLargeTablet && (
+              <ContentRight
+                id="e2e-ideas-filters"
+                filterColumnWidth={filterColumnWidth}
+              >
+                <FiltersSideBar
                   selectedIdeaFilters={selectedIdeaFilters}
                   className={className}
                   filtersActive={filtersActive}
                   ideasFilterCounts={ideasFilterCounts}
                   numberOfSearchResults={list ? list.length : 0}
-                  onClearFilters={this.handleIdeaFiltersOnResetAndApply}
-                  onSearch={this.handleSearchOnChange}
-                  onChangeStatus={this.handleStatusOnChangeAndApplyFilter}
-                  onChangeTopics={this.handleTopicsOnChangeAndApplyFilter}
-                  onReset={this.handleIdeaFiltersOnResetAndApply}
-                  onClose={this.closeModalAndApplyFilters}
+                  onClearFilters={clearFilters}
+                  onSearch={ideas.onChangeSearchTerm}
+                  onChangeStatus={handleStatusOnChange}
+                  onChangeTopics={handleTopicsOnChange}
                 />
-
-                <MobileSearchInput
-                  onChange={this.handleSearchOnChange}
-                  a11y_numberOfSearchResults={list.length}
-                />
-
-                <MobileFilterButton
-                  buttonStyle="secondary-outlined"
-                  onClick={this.openFiltersModal}
-                  icon="filter"
-                  text={this.filterMessage}
-                />
-              </>
+              </ContentRight>
             )}
-
-            <AboveContent filterColumnWidth={filterColumnWidth}>
-              {/* This is effectively on the right,
-                with the help of flexbox. The HTML order, however,
-                needed to be like this for a11y (tab order).
-               */}
-              <AboveContentRight>
-                <SortFilterDropdown
-                  defaultSortingMethod={defaultSortingMethod || null}
-                  onChange={this.handleSortOnChange}
-                  alignment="right"
-                />
-              </AboveContentRight>
-              <AboveContentLeft>
-                {!isNilOrError(ideasFilterCounts) && (
-                  <IdeasCount>
-                    <FormattedMessage
-                      {...messages.xResults}
-                      values={{ ideasCount: ideasFilterCounts.total }}
-                    />
-                  </IdeasCount>
-                )}
-              </AboveContentLeft>
-            </AboveContent>
-
-            <Content>
-              <ContentLeft>
-                <IdeasView
-                  list={list}
-                  querying={querying}
-                  onLoadMore={onLoadMore}
-                  hasMore={hasMore}
-                  loadingMore={querying}
-                  hideImage={biggerThanLargeTablet && smallerThan1440px}
-                  hideImagePlaceholder={smallerThan1440px}
-                  hideIdeaStatus={
-                    (biggerThanLargeTablet && smallerThan1440px) ||
-                    smallerThanPhone
-                  }
-                  showListView={true}
-                  showMapView={false}
-                />
-              </ContentLeft>
-
-              {biggerThanLargeTablet && (
-                <ContentRight
-                  id="e2e-ideas-filters"
-                  filterColumnWidth={filterColumnWidth}
-                >
-                  <FiltersSideBar
-                    selectedIdeaFilters={selectedIdeaFilters}
-                    className={className}
-                    filtersActive={filtersActive}
-                    ideasFilterCounts={ideasFilterCounts}
-                    numberOfSearchResults={list ? list.length : 0}
-                    onClearFilters={this.handleIdeaFiltersOnResetAndApply}
-                    onSearch={this.handleSearchOnChange}
-                    onChangeStatus={this.handleStatusOnChangeAndApplyFilter}
-                    onChangeTopics={this.handleTopicsOnChangeAndApplyFilter}
-                  />
-                </ContentRight>
-              )}
-            </Content>
-          </>
-        )}
-      </Container>
-    );
-  }
-}
+          </Content>
+        </>
+      )}
+    </Container>
+  );
+};
 
 const Data = adopt<DataProps, InputProps>({
-  windowWidth: <GetWindowSize />,
   ideas: ({ render, children: _children, ...getIdeasInputProps }) => (
     <GetIdeas
       {...getIdeasInputProps}
@@ -548,12 +374,8 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const WithFiltersSidebarWithHoCs = withTheme(injectIntl(IdeaCards));
-
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps: DataProps) => (
-      <WithFiltersSidebarWithHoCs {...inputProps} {...dataProps} />
-    )}
+    {(dataProps: DataProps) => <IdeaCards {...inputProps} {...dataProps} />}
   </Data>
 );

@@ -21,14 +21,13 @@ import { isNumber } from 'lodash-es';
 
 interface Props extends FiltersSideBarProps {
   opened: boolean;
-  onReset: () => void;
   onClose: () => void;
 }
 
 const FiltersModal = ({
   opened,
   selectedIdeaFilters,
-  onReset,
+  onClearFilters,
   onClose,
   ...filtersSideBarProps
 }: Props) => {
@@ -41,7 +40,7 @@ const FiltersModal = ({
       opened={opened}
       close={onClose}
       animateInOut={true}
-      topBar={<TopBar onReset={onReset} onClose={onClose} />}
+      topBar={<TopBar onReset={onClearFilters} onClose={onClose} />}
       bottomBar={
         <BottomBar
           buttonText={
@@ -63,6 +62,7 @@ const FiltersModal = ({
       <Box background={colors.background} padding="15px">
         <FiltersSideBar
           selectedIdeaFilters={selectedIdeaFilters}
+          onClearFilters={onClearFilters}
           {...filtersSideBarProps}
         />
       </Box>
