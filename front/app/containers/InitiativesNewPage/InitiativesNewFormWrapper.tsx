@@ -40,10 +40,9 @@ import useAddInitiativeImage from 'api/initiative_images/useAddInitiativeImage';
 import useDeleteInitiativeImage from 'api/initiative_images/useDeleteInitiativeImage';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'hooks/useAuthUser';
-import {
-  addInitiativeFile,
-  deleteInitiativeFile,
-} from 'services/initiativeFiles';
+import { deleteInitiativeFile } from 'services/initiativeFiles';
+
+import useAddInitiativeFile from 'api/initiative_files/useAddInitiativeFile';
 
 const StyledInitiativeForm = styled(InitiativeForm)`
   width: 100%;
@@ -64,6 +63,7 @@ const InitiativesNewFormWrapper = ({ topics, locale }: Props) => {
   const authUser = useAuthUser();
   const { mutate: addInitiativeImage } = useAddInitiativeImage();
   const { mutate: deleteInitiativeImage } = useDeleteInitiativeImage();
+  const { mutate: addInitiativeFile } = useAddInitiativeFile();
 
   const initialValues = {
     title_multiloc: undefined,
@@ -409,26 +409,34 @@ const InitiativesNewFormWrapper = ({ topics, locale }: Props) => {
   const onAddFile = (file: UploadFile) => {
     if (initiativeId) {
       setSaving(true);
-      addInitiativeFile(initiativeId, file.base64, file.name)
-        .then(() => {
-          setSaving(false);
-          setFiles((files) => [...files, file]);
-        })
-        .catch((errorResponse) => {
-          const apiErrors = get(errorResponse, 'json.errors');
 
-          setSaving(false);
-          setApiErrors((oldApiErrors) => ({
-            ...oldApiErrors,
-            ...apiErrors,
-          }));
-          setTimeout(() => {
+      addInitiativeFile(
+        {
+          initiativeId,
+          file: { file: file.base64, name: file.name },
+        },
+        {
+          onSuccess: () => {
+            setSaving(false);
+            setFiles((files) => [...files, file]);
+          },
+          onError: (errorResponse) => {
+            const apiErrors = get(errorResponse, 'json.errors');
+
+            setSaving(false);
             setApiErrors((oldApiErrors) => ({
               ...oldApiErrors,
-              file: undefined,
+              ...apiErrors,
             }));
-          }, 5000);
-        });
+            setTimeout(() => {
+              setApiErrors((oldApiErrors) => ({
+                ...oldApiErrors,
+                file: undefined,
+              }));
+            }, 5000);
+          },
+        }
+      );
     }
   };
 
