@@ -90,6 +90,12 @@ const InitiativesEditFormWrapper = ({
     useState<boolean>(false);
 
   useEffect(() => {
+    if (initiativeFiles) {
+      setFiles(initiativeFiles);
+    }
+  }, [initiativeFiles]);
+
+  useEffect(() => {
     if (initiativeImage && initiativeImage.attributes.versions.large) {
       const url = initiativeImage.attributes.versions.large;
       const id = initiativeImage.id;
