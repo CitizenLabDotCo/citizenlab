@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import GoToCommentsButton from '../../Buttons/GoToCommentsButton';
 import { isNilOrError } from 'utils/helperUtils';
-import useIdea from 'hooks/useIdea';
+import useIdeaById from 'api/ideas/useIdeaById';
 
 const Container = styled.div``;
 
@@ -17,11 +17,11 @@ interface Props {
 }
 
 const IdeaCTAButtons = ({ ideaId, className }: Props) => {
-  const idea = useIdea({ ideaId });
+  const { data: idea } = useIdeaById(ideaId);
 
   if (!isNilOrError(idea)) {
     const commentingEnabled =
-      idea.attributes.action_descriptor.commenting_idea.enabled;
+      idea.data.attributes.action_descriptor.commenting_idea.enabled;
 
     return (
       <Container className={className || ''}>

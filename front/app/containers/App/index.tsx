@@ -455,15 +455,17 @@ class App extends PureComponent<Props, State> {
                 <Meta />
                 <ErrorBoundary>
                   <Suspense fallback={null}>
-                    <PostPageFullscreenModal
-                      signUpInModalOpened={signUpInModalOpened}
-                      type={modalType}
-                      postId={modalId}
-                      slug={modalSlug}
-                      close={this.closePostPageModal}
-                      navbarRef={navbarRef}
-                      mobileNavbarRef={mobileNavbarRef}
-                    />
+                    {modalId && (
+                      <PostPageFullscreenModal
+                        signUpInModalOpened={signUpInModalOpened}
+                        type={modalType}
+                        postId={modalId}
+                        slug={modalSlug}
+                        close={this.closePostPageModal}
+                        navbarRef={navbarRef}
+                        mobileNavbarRef={mobileNavbarRef}
+                      />
+                    )}
                   </Suspense>
                 </ErrorBoundary>
                 <ErrorBoundary>
