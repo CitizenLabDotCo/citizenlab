@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // libraries
 import clHistory from 'utils/cl-router/history';
@@ -19,17 +19,17 @@ import GetInitiative, {
 import GetInitiativeImages, {
   GetInitiativeImagesChildProps,
 } from 'resources/GetInitiativeImages';
-import GetRemoteFiles, {
-  GetRemoteFilesChildProps,
-} from 'resources/GetRemoteFiles';
 import { PreviousPathnameContext } from 'context';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import { useParams } from 'react-router-dom';
+import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
 
 // utils
-import { isNilOrError, isError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 // components
 import PageNotFound from 'components/PageNotFound';
@@ -40,6 +40,9 @@ import PageLayout from 'components/InitiativeForm/PageLayout';
 // style
 import { media } from 'utils/styleUtils';
 import styled from 'styled-components';
+
+// types
+import { UploadFile } from 'typings';
 
 const StyledInitiativesEditFormWrapper = styled(InitiativesEditFormWrapper)`
   width: 100%;
@@ -53,7 +56,6 @@ const StyledInitiativesEditFormWrapper = styled(InitiativesEditFormWrapper)`
 interface DataProps {
   initiative: GetInitiativeChildProps;
   initiativeImages: GetInitiativeImagesChildProps;
-  initiativeFiles: GetRemoteFilesChildProps;
   authUser: GetAuthUserChildProps;
   locale: GetLocaleChildProps;
   previousPathName: string | null;
@@ -68,9 +70,36 @@ const InitiativesEditPage = ({
   authUser,
   locale,
   initiativeImages,
-  initiativeFiles,
   topics,
 }: Props) => {
+  const { initiativeId } = useParams() as {
+    initiativeId: string;
+  };
+  const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
+  const [files, setFiles] = useState<UploadFile[]>([]);
+
+  useEffect(() => {
+    async function getFiles() {
+      let files: UploadFile[] = [];
+
+      if (initiativeFiles) {
+        files = (await Promise.all(
+          initiativeFiles.data.map(async (file) => {
+            const uploadFile = convertUrlToUploadFile(
+              file.attributes.file.url,
+              file.id,
+              file.attributes.name
+            );
+            return uploadFile;
+          })
+        )) as UploadFile[];
+      }
+      setFiles(files);
+    }
+
+    getFiles();
+  }, [initiativeFiles]);
+
   useEffect(() => {
     const isPrivilegedUser =
       !isNilOrError(authUser) &&
@@ -88,8 +117,6 @@ const InitiativesEditPage = ({
     isNilOrError(locale) ||
     isNilOrError(initiative) ||
     initiativeImages === undefined ||
-    initiativeFiles === undefined ||
-    isError(initiativeFiles) ||
     isNilOrError(topics)
   ) {
     return null;
@@ -120,7 +147,7 @@ const InitiativesEditPage = ({
               : initiativeImages[0]
           }
           onPublished={onPublished}
-          initiativeFiles={initiativeFiles}
+          initiativeFiles={files}
           topics={initiativeTopics}
         />
       </PageLayout>
@@ -139,11 +166,6 @@ const Data = adopt<DataProps, WithRouterProps>({
     <GetInitiativeImages initiativeId={params.initiativeId}>
       {render}
     </GetInitiativeImages>
-  ),
-  initiativeFiles: ({ params, render }) => (
-    <GetRemoteFiles resourceId={params.initiativeId} resourceType="initiative">
-      {render}
-    </GetRemoteFiles>
   ),
   previousPathName: ({ render }) => (
     <PreviousPathnameContext.Consumer>
