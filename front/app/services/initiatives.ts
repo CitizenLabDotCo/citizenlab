@@ -81,19 +81,6 @@ export interface IInitiativeAdd {
   location_description?: string | null;
 }
 
-export interface IInitiativesFilterCounts {
-  initiative_status_id: {
-    [key: string]: number;
-  };
-  area_id: {
-    [key: string]: number;
-  };
-  topic_id: {
-    [key: string]: number;
-  };
-  total: number;
-}
-
 export interface IGeotaggedInitiativeData {
   id: string;
   type: string;
@@ -126,23 +113,6 @@ export function initiativeByIdStream(initiativeId: string) {
 export function initiativeBySlugStream(initiativeSlug: string) {
   return streams.get<IInitiative>({
     apiEndpoint: `${API_PATH}/initiatives/by_slug/${initiativeSlug}`,
-  });
-}
-
-export function initiativesStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IInitiatives>({
-    apiEndpoint: `${API_PATH}/initiatives`,
-    ...streamParams,
-  });
-}
-
-export function initiativesFilterCountsStream(
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IInitiativesFilterCounts>({
-    apiEndpoint: `${API_PATH}/initiatives/filter_counts`,
-    ...streamParams,
-    cacheStream: false,
   });
 }
 
@@ -203,8 +173,13 @@ export async function deleteInitiative(initiativeId: string) {
 }
 
 export interface IInitiativeAllowedTransitions {
-  [key: string]: {
-    feedback_needed: boolean;
+  data: {
+    type: 'initiative_allowed_transitions';
+    attributes: {
+      [key: string]: {
+        feedback_needed: boolean;
+      };
+    };
   };
 }
 
@@ -214,23 +189,15 @@ export function initiativeAllowedTransitionsStream(initiativeId: string) {
   });
 }
 
-export interface IInitiativesFilterCounts {
-  initiative_status_id: {
-    [key: string]: number;
-  };
-  area_id: {
-    [key: string]: number;
-  };
-  topic_id: {
-    [key: string]: number;
-  };
-  total: number;
-}
-
 export type IInitiativeActionDescriptors = {
-  [key in IInitiativeAction]: {
-    enabled: boolean;
-    disabled_reason: InitiativeDisabledReason | null;
+  data: {
+    type: 'initiative_action_descriptors';
+    attributes: {
+      [key in IInitiativeAction]: {
+        enabled: boolean;
+        disabled_reason: InitiativeDisabledReason | null;
+      };
+    };
   };
 };
 
