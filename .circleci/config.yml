@@ -188,7 +188,7 @@ jobs:
       name: cl2-back
       image-tag: $CIRCLE_SHA1
     working_directory: /cl2_back
-    parallelism: 4
+    parallelism: 8
     environment:
       RAILS_ENV: test
       COVERAGE: ON
@@ -200,25 +200,7 @@ jobs:
       - run: |
           TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" "engines/*/*/spec/**/*_spec.rb" | circleci tests split  --split-by=timings)
           echo $TESTFILES
-          bundle exec rspec --format documentation --profile --format RspecJunitFormatter -o spec/reports/rspec.xml -- ${TESTFILES}
-      - store_test_results:
-          path: spec/reports
-
-  back-slow-tests:
-    resource_class: small
-    executor:
-      name: cl2-back
-      image-tag: $CIRCLE_SHA1
-    working_directory: /cl2_back
-    environment:
-      RAILS_ENV: test
-    steps:
-      - wait-for-postgres
-      - run: |
-          rake db:create
-          rake db:schema:load
-      - run: |
-          bundle exec rspec --format documentation --format RspecJunitFormatter -o spec/reports/rspec.xml -t slow_test -P "spec/**/*_spec.rb,engines/*/*/spec/**/*_spec.rb"
+          bundle exec rspec --format documentation --profile --format RspecJunitFormatter -o -t slow_test spec/reports/rspec.xml -- ${TESTFILES}
       - store_test_results:
           path: spec/reports
 
