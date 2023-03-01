@@ -56,6 +56,7 @@ export interface InputProps {
   // prop mini Gets stripped down ideas containing only title, should never be cached,
   // and is not tested in all scenarios, but improves performance drastically.
   mini?: boolean;
+  basketId?: string;
 }
 
 interface IAccumulator {
@@ -304,6 +305,7 @@ export default class GetIdeas extends React.Component<Props, State> {
     feedback_needed: this.props.feedbackNeeded,
     filter_can_moderate: this.props.filterCanModerate,
     search: undefined,
+    basket_id: this.props.basketId,
   });
 
   getQueryParametersFromProps = () => {
@@ -342,6 +344,7 @@ export default class GetIdeas extends React.Component<Props, State> {
       assignee: props.assignee,
       feedback_needed: props.feedbackNeeded,
       filter_can_moderate: props.filterCanModerate,
+      basket_id: props.basketId,
     };
 
     // Omit all queryParameters that are nil.
