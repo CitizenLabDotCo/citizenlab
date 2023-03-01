@@ -580,7 +580,7 @@ resource 'Initiatives' do
             **InitiativeStatus.where(code: 'ineligible').ids.to_h do |id|
               [id.to_sym, { feedback_required: true }]
             end
-          },
+          }
         }
       })
     end
