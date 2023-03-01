@@ -33,9 +33,6 @@ import VoteControl from './VoteControl';
 import InitiativeMoreActions from './ActionBar/InitiativeMoreActions';
 
 // resources
-import GetResourceFiles, {
-  GetResourceFilesChildProps,
-} from 'resources/GetResourceFiles';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetInitiativeImages, {
   GetInitiativeImagesChildProps,
@@ -82,6 +79,9 @@ import {
   rightColumnWidthTablet,
   pageContentMaxWidth,
 } from './styleConstants';
+
+// hooks
+import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
 
 import Outlet from 'components/Outlet';
 
@@ -314,7 +314,6 @@ interface DataProps {
   initiative: GetInitiativeChildProps;
   locale: GetLocaleChildProps;
   initiativeImages: GetInitiativeImagesChildProps;
-  initiativeFiles: GetResourceFilesChildProps;
   authUser: GetAuthUserChildProps;
   windowSize: GetWindowSizeChildProps;
   officialFeedbacks: GetOfficialFeedbacksChildProps;
@@ -330,7 +329,6 @@ interface InputProps {
 interface Props extends DataProps, InputProps {}
 
 const InitiativesShow = ({
-  initiativeFiles,
   locale,
   initiative,
   localize,
@@ -341,6 +339,7 @@ const InitiativesShow = ({
   postOfficialFeedbackPermission,
   tenant,
   officialFeedbacks,
+  initiativeId,
   intl: { formatMessage },
 }: Props & WrappedComponentProps & InjectedLocalized & WithRouterProps) => {
   const [loaded, setLoaded] = useState(false);
@@ -355,6 +354,7 @@ const InitiativesShow = ({
   const timeoutRef = useRef<NodeJS.Timeout>();
   const queryParams = new URLSearchParams(window.location.search);
   const newInitiativeId = queryParams.get('new_initiative_id');
+  const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
 
   useEffect(() => {
     if (isString(newInitiativeId)) {
@@ -578,9 +578,9 @@ const InitiativesShow = ({
                 translateButtonClicked={translateButtonClicked}
               />
 
-              {!isNilOrError(initiativeFiles) && initiativeFiles.length > 0 && (
+              {!isNilOrError(initiativeFiles) && (
                 <Box mb="25px">
-                  <FileAttachments files={initiativeFiles} />
+                  <FileAttachments files={initiativeFiles.data} />
                 </Box>
               )}
 
@@ -733,11 +733,6 @@ const Data = adopt<DataProps, InputProps>({
     <GetInitiativeImages initiativeId={initiativeId}>
       {render}
     </GetInitiativeImages>
-  ),
-  initiativeFiles: ({ initiativeId, render }) => (
-    <GetResourceFiles resourceId={initiativeId} resourceType="initiative">
-      {render}
-    </GetResourceFiles>
   ),
   officialFeedbacks: ({ initiativeId, render }) => (
     <GetOfficialFeedbacks postId={initiativeId} postType="initiative">
