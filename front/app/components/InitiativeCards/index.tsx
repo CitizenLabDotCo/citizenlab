@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { useState, useEffect } from 'react';
 import { adopt } from 'react-adopt';
 import { get, isNumber } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
@@ -35,11 +35,11 @@ import GetWindowSize, {
 
 // i18n
 import messages from './messages';
-import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { MessageDescriptor } from 'react-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // style
-import styled, { withTheme } from 'styled-components';
+import styled from 'styled-components';
 import {
   media,
   colors,
@@ -209,413 +209,349 @@ interface DataProps {
   initiativesFilterCounts: GetInitiativesFilterCountsChildProps;
 }
 
-interface Props extends InputProps, DataProps {
-  theme: any;
-}
+interface Props extends InputProps, DataProps {}
 
-interface State {
-  selectedView: 'card' | 'map';
-  filtersModalOpened: boolean;
-  selectedInitiativeFilters: Partial<IQueryParameters>;
-  previouslySelectedInitiativeFilters: Partial<IQueryParameters> | null;
-}
-
-class InitiativeCards extends PureComponent<
-  Props & WrappedComponentProps,
-  State
-> {
-  desktopSearchInputClearButton: HTMLButtonElement | null = null;
-  mobileSearchInputClearButton: HTMLButtonElement | null = null;
-
-  constructor(props: Props & WrappedComponentProps) {
-    super(props);
-    this.state = {
-      selectedView: 'card',
-      filtersModalOpened: false,
-      selectedInitiativeFilters: get(props.initiatives, 'queryParameters', {}),
-      previouslySelectedInitiativeFilters: null,
-    };
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    const oldQueryParameters = get(
-      prevProps.initiatives,
-      'queryParameters',
-      null
+const InitiativeCards = ({
+  initiatives,
+  className,
+  invisibleTitleMessage,
+  windowSize,
+  initiativesFilterCounts,
+}: Props) => {
+  const { formatMessage } = useIntl();
+  const [selectedView, setSelectedView] = useState<'map' | 'card'>('card');
+  const [filtersModalOpened, setFiltersModalOpened] = useState(false);
+  const [selectedInitiativeFilters, setSelectedInitiativeFilters] =
+    useState<Partial<IQueryParameters> | null>(
+      get(initiatives, 'queryParameters', {})
     );
-    const newQueryParameters = get(
-      this.props.initiatives,
-      'queryParameters',
-      null
-    );
+  const [
+    previouslySelectedInitiativeFilters,
+    setPreviouslySelectedInitiativeFilters,
+  ] = useState<Partial<IQueryParameters> | null>(null);
 
-    if (newQueryParameters !== oldQueryParameters) {
-      this.setState({
-        selectedInitiativeFilters: get(
-          this.props.initiatives,
-          'queryParameters',
-          {}
-        ),
-      });
-    }
-  }
+  useEffect(() => {
+    setSelectedInitiativeFilters(get(initiatives, 'queryParameters', {}));
+  }, [initiatives]);
 
-  openFiltersModal = () => {
-    this.setState((state) => ({
-      filtersModalOpened: true,
-      previouslySelectedInitiativeFilters: state.selectedInitiativeFilters,
-    }));
+  const openFiltersModal = () => {
+    setFiltersModalOpened(true);
+    setPreviouslySelectedInitiativeFilters(selectedInitiativeFilters);
   };
 
-  loadMore = () => {
+  const loadMore = () => {
     trackEventByName(tracks.loadMoreProposals);
-    this.props.initiatives.onLoadMore();
+    initiatives.onLoadMore();
   };
 
-  handleSortOnChange = (sort: Sort) => {
+  const handleSortOnChange = (sort: Sort) => {
     trackEventByName(tracks.sortingFilter, {
       sort,
     });
-    this.props.initiatives.onChangeSorting(sort);
+    initiatives.onChangeSorting(sort);
   };
 
-  handleSearchOnChange = (searchTerm: string) => {
-    this.props.initiatives.onChangeSearchTerm(searchTerm);
+  const handleSearchOnChange = (searchTerm: string) => {
+    initiatives.onChangeSearchTerm(searchTerm);
   };
 
-  handleStatusOnChange = (initiative_status: string | null) => {
-    this.handleInitiativeFiltersOnChange({ initiative_status });
+  const handleStatusOnChange = (initiative_status: string | null) => {
+    handleInitiativeFiltersOnChange({ initiative_status });
   };
 
-  handleTopicsOnChange = (topics: string[] | null) => {
+  const handleTopicsOnChange = (topics: string[] | null) => {
     trackEventByName(tracks.topicsFilter, {
       topics,
     });
-    this.handleInitiativeFiltersOnChange({ topics });
+    handleInitiativeFiltersOnChange({ topics });
   };
 
-  handleStatusOnChangeAndApplyFilter = (initiative_status: string | null) => {
-    this.handleInitiativeFiltersOnChange({ initiative_status }, true);
+  const handleStatusOnChangeAndApplyFilter = (
+    initiative_status: string | null
+  ) => {
+    handleInitiativeFiltersOnChange({ initiative_status }, true);
   };
 
-  handleTopicsOnChangeAndApplyFilter = (topics: string[] | null) => {
-    this.handleInitiativeFiltersOnChange({ topics }, true);
+  const handleTopicsOnChangeAndApplyFilter = (topics: string[] | null) => {
+    handleInitiativeFiltersOnChange({ topics }, true);
   };
 
-  handleInitiativeFiltersOnChange = (
+  const handleInitiativeFiltersOnChange = (
     newSelectedInitiativeFilters: Partial<IQueryParameters>,
     applyFilter = false
   ) => {
-    this.setState((state) => {
-      const selectedInitiativeFilters = {
-        ...state.selectedInitiativeFilters,
-        ...newSelectedInitiativeFilters,
-      };
+    const totalSelectedInitiativeFilters = {
+      ...selectedInitiativeFilters,
+      ...newSelectedInitiativeFilters,
+    };
+    setSelectedInitiativeFilters(totalSelectedInitiativeFilters);
 
-      if (applyFilter) {
-        this.props.initiatives.onInitiativeFiltering(selectedInitiativeFilters);
-      }
+    if (applyFilter) {
+      initiatives.onInitiativeFiltering(totalSelectedInitiativeFilters);
+    }
+  };
 
-      return { selectedInitiativeFilters };
+  const handleInitiativeFiltersOnReset = () => {
+    setSelectedInitiativeFilters({
+      ...selectedInitiativeFilters,
+      initiative_status: null,
+      areas: null,
+      topics: null,
     });
   };
 
-  handleInitiativeFiltersOnReset = () => {
-    this.setState((state) => {
-      const selectedInitiativeFilters = {
-        ...state.selectedInitiativeFilters,
-        initiative_status: null,
-        areas: null,
-        topics: null,
-      };
+  const handleInitiativeFiltersOnResetAndApply = () => {
+    const newSelectedInitiativeFilters = {
+      ...selectedInitiativeFilters,
+      search: null,
+      initiative_status: null,
+      areas: null,
+      topics: null,
+    };
 
-      return { selectedInitiativeFilters };
-    });
+    setSelectedInitiativeFilters(newSelectedInitiativeFilters);
+
+    initiatives.onInitiativeFiltering(newSelectedInitiativeFilters);
   };
 
-  handleInitiativeFiltersOnResetAndApply = () => {
-    this.setState((state) => {
-      const selectedInitiativeFilters = {
-        ...state.selectedInitiativeFilters,
-        search: null,
-        initiative_status: null,
-        areas: null,
-        topics: null,
-      };
-
-      this.desktopSearchInputClearButton?.click();
-      this.mobileSearchInputClearButton?.click();
-
-      this.props.initiatives.onInitiativeFiltering(selectedInitiativeFilters);
-
-      return { selectedInitiativeFilters };
-    });
+  const closeModalAndApplyFilters = () => {
+    initiatives.onInitiativeFiltering(selectedInitiativeFilters || {});
+    setFiltersModalOpened(false);
+    setPreviouslySelectedInitiativeFilters(null);
   };
 
-  closeModalAndApplyFilters = () => {
-    this.setState((state) => {
-      this.props.initiatives.onInitiativeFiltering(
-        state.selectedInitiativeFilters
-      );
-
-      return {
-        filtersModalOpened: false,
-        previouslySelectedInitiativeFilters: null,
-      };
-    });
-  };
-
-  closeModalAndRevertFilters = () => {
-    this.setState((state) => {
-      this.props.initiatives.onInitiativeFiltering(
-        state.previouslySelectedInitiativeFilters || {}
-      );
-
-      return {
-        filtersModalOpened: false,
-        selectedInitiativeFilters:
-          state.previouslySelectedInitiativeFilters || {},
-        previouslySelectedInitiativeFilters: null,
-      };
-    });
-  };
-
-  selectView = (selectedView: 'card' | 'map') => {
-    this.setState({ selectedView });
-  };
-
-  filterMessage = (<FormattedMessage {...messages.filter} />);
-  searchPlaceholder = this.props.intl.formatMessage(messages.searchPlaceholder);
-  searchAriaLabel = this.props.intl.formatMessage(messages.searchPlaceholder);
-
-  render() {
-    const { selectedView, selectedInitiativeFilters, filtersModalOpened } =
-      this.state;
-    const {
-      initiatives,
-      initiativesFilterCounts,
-      windowSize,
-      className,
-      invisibleTitleMessage,
-    } = this.props;
-    const { list, querying, onLoadMore, hasMore, loadingMore } = initiatives;
-    const hasInitiatives = !isNilOrError(list) && list.length > 0;
-    const biggerThanLargeTablet =
-      windowSize && windowSize >= viewportWidths.tablet;
-    const biggerThanSmallTablet =
-      windowSize && windowSize >= viewportWidths.tablet;
-    const filterColumnWidth = windowSize && windowSize < 1400 ? 340 : 352;
-    const filtersActive =
-      selectedInitiativeFilters.search ||
-      selectedInitiativeFilters.initiative_status ||
-      selectedInitiativeFilters.areas ||
-      selectedInitiativeFilters.topics;
-
-    const filtersSidebar = (
-      <FiltersSidebarContainer className={className}>
-        {filtersActive && (
-          <ClearFiltersButton
-            onClick={this.handleInitiativeFiltersOnResetAndApply}
-          >
-            <ClearFiltersText>
-              <FormattedMessage {...messages.resetFilters} />
-            </ClearFiltersText>
-          </ClearFiltersButton>
-        )}
-
-        <ScreenReaderOnly aria-live="polite">
-          {initiativesFilterCounts && (
-            <FormattedMessage
-              {...messages.a11y_totalInitiatives}
-              values={{ initiativeCount: initiativesFilterCounts.total }}
-            />
-          )}
-        </ScreenReaderOnly>
-
-        <DesktopSearchInput
-          placeholder={this.searchPlaceholder}
-          ariaLabel={this.searchAriaLabel}
-          onChange={this.handleSearchOnChange}
-          a11y_numberOfSearchResults={list?.length || 0}
-        />
-        <StyledInitiativesStatusFilter
-          selectedStatusId={selectedInitiativeFilters.initiative_status}
-          selectedInitiativeFilters={selectedInitiativeFilters}
-          onChange={
-            !biggerThanLargeTablet
-              ? this.handleStatusOnChange
-              : this.handleStatusOnChangeAndApplyFilter
-          }
-        />
-        <StyledInitiativesTopicsFilter
-          selectedTopicIds={selectedInitiativeFilters.topics}
-          onChange={
-            !biggerThanLargeTablet
-              ? this.handleTopicsOnChange
-              : this.handleTopicsOnChangeAndApplyFilter
-          }
-        />
-      </FiltersSidebarContainer>
+  const closeModalAndRevertFilters = () => {
+    initiatives.onInitiativeFiltering(
+      previouslySelectedInitiativeFilters || {}
     );
+    setFiltersModalOpened(false);
+    setSelectedInitiativeFilters(previouslySelectedInitiativeFilters || {});
+    setPreviouslySelectedInitiativeFilters(null);
+  };
 
-    return (
-      <Container id="e2e-initiatives-container" className={className}>
-        <ScreenReaderOnly>
-          <FormattedMessage tagName="h2" {...invisibleTitleMessage} />
-        </ScreenReaderOnly>
+  const selectView = (selectedView: 'card' | 'map') => {
+    setSelectedView(selectedView);
+  };
 
-        {list === undefined && (
-          <InitialLoading id="initiatives-loading">
-            <Spinner />
-          </InitialLoading>
+  const filterMessage = <FormattedMessage {...messages.filter} />;
+  const searchPlaceholder = formatMessage(messages.searchPlaceholder);
+  const searchAriaLabel = formatMessage(messages.searchPlaceholder);
+
+  const { list, querying, hasMore, loadingMore } = initiatives;
+
+  const hasInitiatives = !isNilOrError(list) && list.length > 0;
+  const biggerThanLargeTablet =
+    windowSize && windowSize >= viewportWidths.tablet;
+  const biggerThanSmallTablet =
+    windowSize && windowSize >= viewportWidths.tablet;
+  const filterColumnWidth = windowSize && windowSize < 1400 ? 340 : 352;
+  const filtersActive =
+    selectedInitiativeFilters?.search ||
+    selectedInitiativeFilters?.initiative_status ||
+    selectedInitiativeFilters?.areas ||
+    selectedInitiativeFilters?.topics;
+
+  const filtersSidebar = (
+    <FiltersSidebarContainer className={className}>
+      {filtersActive && (
+        <ClearFiltersButton onClick={handleInitiativeFiltersOnResetAndApply}>
+          <ClearFiltersText>
+            <FormattedMessage {...messages.resetFilters} />
+          </ClearFiltersText>
+        </ClearFiltersButton>
+      )}
+
+      <ScreenReaderOnly aria-live="polite">
+        {initiativesFilterCounts && (
+          <FormattedMessage
+            {...messages.a11y_totalInitiatives}
+            values={{ initiativeCount: initiativesFilterCounts.total }}
+          />
         )}
+      </ScreenReaderOnly>
 
-        {list !== undefined && (
-          <>
-            {!biggerThanLargeTablet && (
-              <>
-                <FullscreenModal
-                  opened={filtersModalOpened}
-                  close={this.closeModalAndRevertFilters}
-                  animateInOut={true}
-                  topBar={
-                    <TopBar
-                      onReset={
-                        !biggerThanLargeTablet
-                          ? this.handleInitiativeFiltersOnReset
-                          : this.handleInitiativeFiltersOnResetAndApply
-                      }
-                      onClose={this.closeModalAndRevertFilters}
-                    />
-                  }
-                  bottomBar={
-                    <GetInitiativesFilterCounts
-                      queryParameters={selectedInitiativeFilters}
-                    >
-                      {(newInitiativesFilterCounts) => {
-                        const bottomBarButtonText =
-                          newInitiativesFilterCounts &&
-                          isNumber(newInitiativesFilterCounts.total) ? (
-                            <FormattedMessage
-                              {...messages.showXInitiatives}
-                              values={{
-                                initiativesCount:
-                                  newInitiativesFilterCounts.total,
-                              }}
-                            />
-                          ) : (
-                            <FormattedMessage {...messages.showInitiatives} />
-                          );
+      <DesktopSearchInput
+        placeholder={searchPlaceholder}
+        ariaLabel={searchAriaLabel}
+        onChange={handleSearchOnChange}
+        a11y_numberOfSearchResults={list?.length || 0}
+      />
+      <StyledInitiativesStatusFilter
+        selectedStatusId={selectedInitiativeFilters?.initiative_status}
+        selectedInitiativeFilters={selectedInitiativeFilters || {}}
+        onChange={
+          !biggerThanLargeTablet
+            ? handleStatusOnChange
+            : handleStatusOnChangeAndApplyFilter
+        }
+      />
+      <StyledInitiativesTopicsFilter
+        selectedTopicIds={selectedInitiativeFilters?.topics}
+        onChange={
+          !biggerThanLargeTablet
+            ? handleTopicsOnChange
+            : handleTopicsOnChangeAndApplyFilter
+        }
+      />
+    </FiltersSidebarContainer>
+  );
 
-                        return (
-                          <BottomBar
-                            buttonText={bottomBarButtonText}
-                            onClick={this.closeModalAndApplyFilters}
+  return (
+    <Container id="e2e-initiatives-container" className={className}>
+      <ScreenReaderOnly>
+        <FormattedMessage tagName="h2" {...invisibleTitleMessage} />
+      </ScreenReaderOnly>
+
+      {list === undefined && (
+        <InitialLoading id="initiatives-loading">
+          <Spinner />
+        </InitialLoading>
+      )}
+
+      {list !== undefined && (
+        <>
+          {!biggerThanLargeTablet && (
+            <>
+              <FullscreenModal
+                opened={filtersModalOpened}
+                close={closeModalAndRevertFilters}
+                animateInOut={true}
+                topBar={
+                  <TopBar
+                    onReset={
+                      !biggerThanLargeTablet
+                        ? handleInitiativeFiltersOnReset
+                        : handleInitiativeFiltersOnResetAndApply
+                    }
+                    onClose={closeModalAndRevertFilters}
+                  />
+                }
+                bottomBar={
+                  <GetInitiativesFilterCounts
+                    queryParameters={selectedInitiativeFilters}
+                  >
+                    {(newInitiativesFilterCounts) => {
+                      const bottomBarButtonText =
+                        newInitiativesFilterCounts &&
+                        isNumber(newInitiativesFilterCounts.total) ? (
+                          <FormattedMessage
+                            {...messages.showXInitiatives}
+                            values={{
+                              initiativesCount:
+                                newInitiativesFilterCounts.total,
+                            }}
                           />
+                        ) : (
+                          <FormattedMessage {...messages.showInitiatives} />
                         );
-                      }}
-                    </GetInitiativesFilterCounts>
-                  }
-                >
-                  <MobileFiltersSidebarWrapper>
-                    {filtersSidebar}
-                  </MobileFiltersSidebarWrapper>
-                </FullscreenModal>
 
-                <MobileSearchInput
-                  placeholder={this.searchPlaceholder}
-                  ariaLabel={this.searchAriaLabel}
-                  onChange={this.handleSearchOnChange}
-                  a11y_numberOfSearchResults={list?.length || 0}
-                />
+                      return (
+                        <BottomBar
+                          buttonText={bottomBarButtonText}
+                          onClick={closeModalAndApplyFilters}
+                        />
+                      );
+                    }}
+                  </GetInitiativesFilterCounts>
+                }
+              >
+                <MobileFiltersSidebarWrapper>
+                  {filtersSidebar}
+                </MobileFiltersSidebarWrapper>
+              </FullscreenModal>
 
-                <MobileFilterButton
-                  buttonStyle="secondary-outlined"
-                  onClick={this.openFiltersModal}
-                  icon="filter"
-                  text={this.filterMessage}
-                />
-              </>
-            )}
+              <MobileSearchInput
+                placeholder={searchPlaceholder}
+                ariaLabel={searchAriaLabel}
+                onChange={handleSearchOnChange}
+                a11y_numberOfSearchResults={list?.length || 0}
+              />
 
-            <AboveContent filterColumnWidth={filterColumnWidth}>
-              {/* This is effectively on the right,
+              <MobileFilterButton
+                buttonStyle="secondary-outlined"
+                onClick={openFiltersModal}
+                icon="filter"
+                text={filterMessage}
+              />
+            </>
+          )}
+
+          <AboveContent filterColumnWidth={filterColumnWidth}>
+            {/* This is effectively on the right,
                 with the help of flexbox. The HTML order, however,
                 needed to be like this for a11y (tab order).
                */}
 
-              {selectedView === 'card' && (
-                <AboveContentRight>
-                  <SortFilterDropdown
-                    onChange={this.handleSortOnChange}
-                    alignment="right"
-                  />
-                </AboveContentRight>
-              )}
-
-              <AboveContentLeft>
-                <StyledViewButtons
-                  onClick={this.selectView}
-                  selectedView={selectedView}
+            {selectedView === 'card' && (
+              <AboveContentRight>
+                <SortFilterDropdown
+                  onChange={handleSortOnChange}
+                  alignment="right"
                 />
+              </AboveContentRight>
+            )}
 
-                {!isNilOrError(initiativesFilterCounts) &&
-                  biggerThanSmallTablet && (
-                    <InitiativesCount>
-                      <FormattedMessage
-                        {...messages.xInitiatives}
-                        values={{
-                          initiativesCount: initiativesFilterCounts.total,
-                        }}
-                      />
-                    </InitiativesCount>
-                  )}
-              </AboveContentLeft>
-            </AboveContent>
+            <AboveContentLeft>
+              <StyledViewButtons
+                onClick={selectView}
+                selectedView={selectedView}
+              />
 
-            <Content>
-              <ContentLeft>
-                {!querying && hasInitiatives ? (
-                  <>
-                    {selectedView === 'card' && (
-                      <ProposalsList
-                        ariaLabelledBy={'view-tab-1'}
-                        id={'view-panel-1'}
-                        hasMore={hasMore}
-                        loadingMore={loadingMore}
-                        querying={querying}
-                        onLoadMore={onLoadMore}
-                        list={list}
-                      />
-                    )}
-
-                    {selectedView === 'map' && (
-                      <InitiativesMap
-                        ariaLabelledBy={'view-tab-2'}
-                        id={'view-panel-2'}
-                      />
-                    )}
-                  </>
-                ) : (
-                  <EmptyProposals />
-                )}
-              </ContentLeft>
-
-              {biggerThanLargeTablet && (
-                <ContentRight
-                  id="e2e-initiatives-filters"
-                  filterColumnWidth={filterColumnWidth}
-                >
-                  {filtersSidebar}
-                </ContentRight>
+              {!isNilOrError(initiativesFilterCounts) && biggerThanSmallTablet && (
+                <InitiativesCount>
+                  <FormattedMessage
+                    {...messages.xInitiatives}
+                    values={{
+                      initiativesCount: initiativesFilterCounts.total,
+                    }}
+                  />
+                </InitiativesCount>
               )}
-            </Content>
-          </>
-        )}
-      </Container>
-    );
-  }
-}
+            </AboveContentLeft>
+          </AboveContent>
+
+          <Content>
+            <ContentLeft>
+              {!querying && hasInitiatives ? (
+                <>
+                  {selectedView === 'card' && (
+                    <ProposalsList
+                      ariaLabelledBy={'view-tab-1'}
+                      id={'view-panel-1'}
+                      hasMore={hasMore}
+                      loadingMore={loadingMore}
+                      querying={querying}
+                      onLoadMore={loadMore}
+                      list={list}
+                    />
+                  )}
+
+                  {selectedView === 'map' && (
+                    <InitiativesMap
+                      ariaLabelledBy={'view-tab-2'}
+                      id={'view-panel-2'}
+                    />
+                  )}
+                </>
+              ) : (
+                <EmptyProposals />
+              )}
+            </ContentLeft>
+
+            {biggerThanLargeTablet && (
+              <ContentRight
+                id="e2e-initiatives-filters"
+                filterColumnWidth={filterColumnWidth}
+              >
+                {filtersSidebar}
+              </ContentRight>
+            )}
+          </Content>
+        </>
+      )}
+    </Container>
+  );
+};
 
 const Data = adopt<DataProps, InputProps>({
   windowSize: <GetWindowSize />,
@@ -631,12 +567,8 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const WithFiltersSidebarWithHoCs = withTheme(injectIntl(InitiativeCards));
-
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => (
-      <WithFiltersSidebarWithHoCs {...inputProps} {...dataProps} />
-    )}
+    {(dataProps) => <InitiativeCards {...inputProps} {...dataProps} />}
   </Data>
 );
