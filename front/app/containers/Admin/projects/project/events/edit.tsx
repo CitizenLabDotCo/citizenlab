@@ -25,28 +25,24 @@ import messages from './messages';
 
 // react query
 import { IEvent, IEventProperties } from 'api/events/types';
-
-// services
-import { addEventFile, deleteEventFile } from 'services/eventFiles';
-
-// resources
-import GetRemoteFiles, {
-  GetRemoteFilesChildProps,
-} from 'resources/GetRemoteFiles';
-
-// typings
-import { Multiloc, CLError, UploadFile } from 'typings';
-import { isCLErrorJSON } from 'utils/errorUtils';
 import useAddEvent from 'api/events/useAddEvent';
 import useUpdateEvent from 'api/events/useUpdateEvent';
 import useEvent from 'api/events/useEvent';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
+import useEventFiles from 'api/event_files/useEventFiles';
 
-interface DataProps {
-  remoteEventFiles: GetRemoteFilesChildProps;
-}
-interface Props extends DataProps {
+// services
+import { addEventFile, deleteEventFile } from 'services/eventFiles';
+
+// typings
+import { Multiloc, CLError, UploadFile } from 'typings';
+import { isCLErrorJSON } from 'utils/errorUtils';
+
+// utils
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+
+interface Props {
   params: Record<string, string>;
 }
 
@@ -57,16 +53,13 @@ type ErrorType =
       [fieldName: string]: CLError[];
     };
 
-const AdminProjectEventEdit = ({
-  params,
-  remoteEventFiles,
-}: Props & DataProps) => {
+const AdminProjectEventEdit = ({ params }: Props) => {
   const { mutate: addEvent } = useAddEvent();
   const { data: event, isInitialLoading } = useEvent(params.id);
   const { mutate: updateEvent } = useUpdateEvent();
   const locale = useLocale();
   const appConfiguration = useAppConfiguration();
-
+  const { data: remoteEventFiles } = useEventFiles(params.id);
   const [errors, setErrors] = useState<ErrorType>({});
   const [saving, setSaving] = useState<boolean>(false);
   const [submitState, setSubmitState] = useState<SubmitState>('disabled');
@@ -79,9 +72,15 @@ const AdminProjectEventEdit = ({
   useEffect(() => {
     // Set the event files once remote files are loaded
     if (!isNilOrError(remoteEventFiles)) {
-      setEventFiles((previousEventFiles) =>
-        previousEventFiles.length === 0 ? remoteEventFiles : []
-      );
+      (async () => {
+        const file = await convertUrlToUploadFile(
+          remoteEventFiles.data[0].attributes.file.url
+        );
+        setEventFiles(
+          (previousEventFiles) =>
+            previousEventFiles.length === 0 && file ? [file] : [] // TODO Fix this logic
+        );
+      })();
     }
   }, [remoteEventFiles]);
 
@@ -335,10 +334,4 @@ const AdminProjectEventEdit = ({
   return null;
 };
 
-export default withRouter((props) => (
-  <GetRemoteFiles resourceId={props.params.id} resourceType="event">
-    {(remoteEventFiles) => (
-      <AdminProjectEventEdit remoteEventFiles={remoteEventFiles} {...props} />
-    )}
-  </GetRemoteFiles>
-));
+export default withRouter((props) => <AdminProjectEventEdit {...props} />);
