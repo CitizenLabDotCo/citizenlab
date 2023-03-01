@@ -18,6 +18,7 @@ module UserCustomFields
     # @return [ActiveRecord::Relation]
     def execute
       users = filter_by_registration_date(@user_scope)
+      users = filter_by_participation_date(users)
       users = filter_by_group(users)
       filter_by_project(users)
     end
@@ -26,6 +27,14 @@ module UserCustomFields
       return users unless @params[:registration_date_range]
 
       users.where(registration_completed_at: @params[:registration_date_range])
+    end
+
+    def filter_by_participation_date(users)
+      return users unless @params[:participation_date_range]
+
+      options = @params[:participation_date_range]
+      participants = ParticipantsService.new.participants(options)
+      users.where(id: participants)
     end
 
     def filter_by_group(users)
