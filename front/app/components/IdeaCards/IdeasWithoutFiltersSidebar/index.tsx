@@ -4,15 +4,15 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // tracks
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+import tracks from '../tracks';
 
 // components
-import TopicFilterDropdown from './Filters/TopicFilterDropdown';
-import SelectSort from './Filters/SortFilterDropdown';
+import TopicFilterDropdown from '../shared/Filters/TopicFilterDropdown';
+import SelectSort from '../shared/Filters/SortFilterDropdown';
 import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
-import IdeasView from './IdeasView';
+import IdeasView from '../shared/IdeasView';
 
 // resources
 import GetWindowSize, {
@@ -24,7 +24,7 @@ import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // i18n
-import messages from './messages';
+import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // style

@@ -10,10 +10,10 @@ import tracks from '../tracks';
 import { Spinner, useWindowSize } from '@citizenlab/cl2-component-library';
 import FiltersModal from './FiltersModal';
 import FiltersSideBar from './FiltersSideBar';
-import SortFilterDropdown from '../Filters/SortFilterDropdown';
+import SortFilterDropdown from '../shared/Filters/SortFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
 import Button from 'components/UI/Button';
-import IdeasView from '../IdeasView';
+import IdeasView from '../shared/IdeasView';
 
 // resources
 import GetIdeasFilterCounts, {

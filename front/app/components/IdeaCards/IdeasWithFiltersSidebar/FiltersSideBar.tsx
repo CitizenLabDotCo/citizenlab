@@ -1,8 +1,8 @@
 import React from 'react';
 
 // components
-import StatusFilterBox from '../Filters/StatusFilterBox';
-import TopicFilterBox from '../Filters/TopicFilterBox';
+import StatusFilterBox from '../shared/Filters/StatusFilterBox';
+import TopicFilterBox from '../shared/Filters/TopicFilterBox';
 import { ScreenReaderOnly } from 'utils/a11y';
 import SearchInput from 'components/UI/SearchInput';
 

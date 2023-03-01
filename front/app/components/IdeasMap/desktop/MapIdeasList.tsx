@@ -2,8 +2,8 @@ import React, { memo, useState, useEffect } from 'react';
 
 // components
 import { Icon, Spinner } from '@citizenlab/cl2-component-library';
-import TopicFilterDropdown from 'components/IdeaCards/Filters/TopicFilterDropdown';
-import SelectSort from 'components/IdeaCards/Filters/SortFilterDropdown';
+import TopicFilterDropdown from 'components/IdeaCards/shared/Filters/TopicFilterDropdown';
+import SelectSort from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
 import IdeaMapCard from '../IdeaMapCard';
 import Centerer from 'components/UI/Centerer';

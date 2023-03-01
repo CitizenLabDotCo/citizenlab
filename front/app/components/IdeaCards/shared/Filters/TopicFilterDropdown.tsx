@@ -9,7 +9,7 @@ import { getTopicIds } from 'services/projectAllowedInputTopics';
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from '../../messages';
 
 // hooks
 import useProjectAllowedInputTopics from 'hooks/useProjectAllowedInputTopics';
