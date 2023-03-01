@@ -18,10 +18,6 @@ export interface IInitiativeFileData {
   };
 }
 
-export interface IInitiativeFile {
-  data: IInitiativeFileData;
-}
-
 export interface IInitiativeFiles {
   data: IInitiativeFileData[];
 }
@@ -34,22 +30,4 @@ export function initiativeFilesStream(
     apiEndpoint: `${apiEndpoint}/${initiativeId}/files`,
     ...streamParams,
   });
-}
-
-export function addInitiativeFile(
-  initiativeId: string,
-  base64: string,
-  name: string,
-  ordering: number | null = null
-) {
-  return streams.add<IInitiativeFile>(`${apiEndpoint}/${initiativeId}/files`, {
-    file: { name, ordering, file: base64 },
-  });
-}
-
-export function deleteInitiativeFile(initiativeId: string, fileId: string) {
-  return streams.delete(
-    `${apiEndpoint}/${initiativeId}/files/${fileId}`,
-    fileId
-  );
 }
