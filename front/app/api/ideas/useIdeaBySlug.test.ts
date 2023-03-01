@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks';
 
 import useIdeaBySlug from './useIdeaBySlug';
-import { ideaData } from './__mocks__/useIdeaById';
+import { ideaData } from './__mocks__/useIdeaBySlug';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
