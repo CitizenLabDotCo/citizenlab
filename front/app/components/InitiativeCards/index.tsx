@@ -20,7 +20,11 @@ import Button from 'components/UI/Button';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 
 // resources
-import { Sort, IQueryParameters } from 'api/initiatives/types';
+import {
+  Sort,
+  IQueryParameters,
+  InitiativePublicationStatus,
+} from 'api/initiatives/types';
 
 // i18n
 import messages from './messages';
@@ -195,13 +199,16 @@ interface Props {
 }
 
 const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
+  const defaultFilters = {
+    publication_status: 'published' as InitiativePublicationStatus,
+  };
+
   const { formatMessage } = useIntl();
   const { windowWidth } = useWindowSize();
   const [selectedView, setSelectedView] = useState<'map' | 'card'>('card');
   const [filtersModalOpened, setFiltersModalOpened] = useState(false);
-  const [selectedInitiativeFilters, setSelectedInitiativeFilters] = useState<
-    Partial<IQueryParameters>
-  >({});
+  const [selectedInitiativeFilters, setSelectedInitiativeFilters] =
+    useState<Partial<IQueryParameters>>(defaultFilters);
   const {
     data: initiatives,
     fetchNextPage,
@@ -264,7 +271,7 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
   };
 
   const handleInitiativeFiltersOnReset = () => {
-    setSelectedInitiativeFilters({});
+    setSelectedInitiativeFilters(defaultFilters);
   };
 
   const closeModalAndApplyFilters = () => {
@@ -273,7 +280,7 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
 
   const closeModalAndRevertFilters = () => {
     setFiltersModalOpened(false);
-    setSelectedInitiativeFilters({});
+    setSelectedInitiativeFilters(defaultFilters);
   };
 
   const selectView = (selectedView: 'card' | 'map') => {
@@ -325,7 +332,7 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
       />
       <StyledInitiativesStatusFilter
         selectedStatusId={selectedInitiativeFilters?.initiative_status}
-        selectedInitiativeFilters={selectedInitiativeFilters || {}}
+        selectedInitiativeFilters={selectedInitiativeFilters || defaultFilters}
         onChange={
           !biggerThanLargeTablet
             ? handleStatusOnChange
