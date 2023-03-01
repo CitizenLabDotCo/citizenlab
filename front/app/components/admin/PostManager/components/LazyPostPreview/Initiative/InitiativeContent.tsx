@@ -22,9 +22,6 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { deleteInitiative } from 'services/initiatives';
 
 // resources
-import GetResourceFiles, {
-  GetResourceFilesChildProps,
-} from 'resources/GetResourceFiles';
 import GetInitiative, {
   GetInitiativeChildProps,
 } from 'resources/GetInitiative';
@@ -42,6 +39,9 @@ import messages from '../messages';
 // style
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
+
+// hooks
+import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
 
 const StyledTitle = styled(Title)`
   margin-bottom: 30px;
@@ -113,7 +113,6 @@ export interface InputProps {
 interface DataProps {
   initiative: GetInitiativeChildProps;
   initiativeImages: GetInitiativeImagesChildProps;
-  initiativeFiles: GetResourceFilesChildProps;
   locale: GetLocaleChildProps;
 }
 
@@ -123,12 +122,14 @@ const InitiativeContent = ({
   initiative,
   localize,
   initiativeImages,
-  initiativeFiles,
   handleClickEdit,
   locale,
   closePreview,
   intl,
+  initiativeId,
 }: Props & InjectedLocalized & WrappedComponentProps) => {
+  const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
+
   const handleClickDelete = () => {
     const message = intl.formatMessage(messages.deleteInitiativeConfirmation);
 
@@ -141,7 +142,6 @@ const InitiativeContent = ({
   };
 
   if (!isNilOrError(initiative) && !isNilOrError(locale)) {
-    const initiativeId = initiative.id;
     const initiativeTitle = localize(initiative.attributes.title_multiloc);
     const initiativeImageLarge =
       !isNilOrError(initiativeImages) && initiativeImages.length > 0
@@ -208,9 +208,9 @@ const InitiativeContent = ({
                 />
               )}
 
-              {initiativeFiles && !isNilOrError(initiativeFiles) && (
+              {initiativeFiles && (
                 <Box mb="25px">
-                  <FileAttachments files={initiativeFiles} />
+                  <FileAttachments files={initiativeFiles.data} />
                 </Box>
               )}
 
@@ -248,11 +248,6 @@ const InitiativeContent = ({
 const Data = adopt<DataProps, InputProps>({
   initiative: ({ initiativeId, render }) => (
     <GetInitiative id={initiativeId}>{render}</GetInitiative>
-  ),
-  initiativeFiles: ({ initiativeId, render }) => (
-    <GetResourceFiles resourceId={initiativeId} resourceType="initiative">
-      {render}
-    </GetResourceFiles>
   ),
   initiativeImages: ({ initiativeId, render }) => (
     <GetInitiativeImages initiativeId={initiativeId}>
