@@ -1,4 +1,15 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
+
+// services
+import {
+  ideasStream,
+  Sort,
+  SortAttribute,
+  IIdeasQueryParameters,
+  IIdeaData,
+  IdeaPublicationStatus,
+  IIdeas,
+} from 'services/ideas';
 
 // utils
 import {
@@ -8,16 +19,9 @@ import {
   SortDirection,
 } from 'utils/paginationUtils';
 import { omitBy } from 'lodash-es';
-import { isNil, NilOrError } from 'utils/helperUtils';
+import { isNil, isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings
-import {
-  Sort,
-  SortAttribute,
-  IIdeasQueryParameters,
-  IIdeaData,
-  IdeaPublicationStatus,
-} from 'services/ideas';
 import { PublicationStatus as ProjectPublicationStatus } from 'services/projects';
 
 interface QueryParameterProps {
@@ -72,6 +76,17 @@ export type GetIdeasChildProps = State & {
   onResetParams: (paramsToOmit?: (keyof IIdeasQueryParameters)[]) => void;
 };
 
+const noChanges = (
+  newQueryParameters: Partial<IIdeasQueryParameters>,
+  combinedQueryParameters: IIdeasQueryParameters
+) => {
+  for (const key in newQueryParameters) {
+    if (newQueryParameters[key] !== combinedQueryParameters) return false;
+  }
+
+  return true;
+};
+
 const GetIdeas = ({
   children,
   type,
@@ -80,7 +95,7 @@ const GetIdeas = ({
 }: Props) => {
   const otherPropsStr = JSON.stringify(otherProps);
 
-  const getQueryParametersFromProps = useCallback(
+  const queryParametersFromProps = useMemo(
     () =>
       ({
         ...JSON.parse(otherPropsStr),
@@ -93,13 +108,30 @@ const GetIdeas = ({
   );
 
   const [queryParameters, setQueryParameters] = useState<IIdeasQueryParameters>(
-    getQueryParametersFromProps()
+    queryParametersFromProps
+  );
+
+  const combinedQueryParameters = useMemo(
+    (): IIdeasQueryParameters => ({
+      ...queryParameters,
+
+      // Omit all queryParameters that are nil.
+      // Why do this? Because we assume that an input prop that's nil is an input prop that should be ignored,
+      // and not overwrite a none-nil value that's part of the queryParameters state.
+      ...omitBy(queryParametersFromProps, isNil),
+
+      // Make an exception for 'projects', because when it's undefined we don't want to ignore it but instead pass it along
+      // to let the request know we don't want to apply a projects filter but load the ideas for all projects
+      // Note Luuc: I just copied these comments over during a refactor, we should really improve this weirdness
+      projects: queryParametersFromProps.projects,
+    }),
+    [queryParameters, queryParametersFromProps]
   );
 
   const [list, setList] = useState<IIdeaData[] | NilOrError>();
-  const [hasMore, setHasMore] = useState(false);
+  const [hasMore /* , setHasMore */] = useState(false);
   const [querying, setQuerying] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
+  const [loadingMore /* , setLoadingMore */] = useState(false);
   const [lastPage, setLastPage] = useState(1);
 
   const sortAttribute = getSortAttribute<Sort, SortAttribute>(
@@ -108,38 +140,44 @@ const GetIdeas = ({
   const sortDirection = getSortDirection<Sort>(queryParameters.sort);
   const currentPage = queryParameters['page[number]'];
 
-  // Keep queryParameters in sync with props
-  useEffect(() => {
-    setQueryParameters((queryParameters) => {
-      const queryParametersFromProps = getQueryParametersFromProps();
-
-      return {
-        ...queryParameters,
-
-        // Omit all queryParameters that are nil.
-        // Why do this? Because we assume that an input prop that's nil is an input prop that should be ignored,
-        // and not overwrite a none-nil value that's part of the queryParameters state.
-        ...omitBy(queryParametersFromProps, isNil),
-
-        // Make an exception for 'projects', because when it's undefined we don't want to ignore it but instead pass it along
-        // to let the request know we don't want to apply a projects filter but load the ideas for all projects
-        // Note Luuc: I just copied these comments over during a refactor, we should really improve this
-        projects: queryParametersFromProps.projects,
-      };
-    });
-  }, [getQueryParametersFromProps]);
-
   // Load data
-  useEffect(() => {}, [type, queryParameters]);
+  useEffect(() => {
+    setQuerying(true);
+
+    if (type === 'paginated') {
+      const { observable } = ideasStream({
+        queryParameters: combinedQueryParameters,
+      });
+
+      const subscription = observable.subscribe(
+        (response: IIdeas | NilOrError) => {
+          if (isNilOrError(response)) {
+            setList(response);
+          } else {
+            setList(response.data);
+            setLastPage(getPageNumberFromUrl(response.links.last) || 1);
+          }
+
+          setQuerying(false);
+        }
+      );
+
+      return () => subscription.unsubscribe();
+    }
+
+    return;
+  }, [type, combinedQueryParameters]);
 
   const updateQuery = useCallback(
     (newQueryParameters: Partial<IIdeasQueryParameters>) => {
+      if (noChanges(newQueryParameters, combinedQueryParameters)) return;
+
       setQueryParameters((currentQueryParameters) => ({
         ...currentQueryParameters,
         ...newQueryParameters,
       }));
     },
-    []
+    [combinedQueryParameters]
   );
 
   const loadMore = useCallback(() => {
@@ -232,8 +270,8 @@ const GetIdeas = ({
   );
 
   const handleResetParamsToProps = useCallback(() => {
-    setQueryParameters(getQueryParametersFromProps());
-  }, [getQueryParametersFromProps]);
+    setQueryParameters(queryParametersFromProps);
+  }, [queryParametersFromProps]);
 
   return (children as children)({
     queryParameters,
