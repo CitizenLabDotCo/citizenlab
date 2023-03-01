@@ -55,7 +55,8 @@ resource 'Invites' do
         let(:search) { 'abc' }
         let(:sort) { '-email' }
 
-        example_request 'List all invites by combining filter, sort and search', document: false do
+        example 'List all invites by combining filter, sort and search', document: false do
+          do_request
           assert_status 200
         end
       end
@@ -103,7 +104,8 @@ resource 'Invites' do
           header 'Authorization', "Bearer #{token}"
         end
 
-        example_request '[error] XLSX export by a normal user', document: false do
+        example '[error] XLSX export by a normal user', document: false do
+          do_request
           expect(status).to eq 401
         end
       end
@@ -294,7 +296,8 @@ resource 'Invites' do
       describe do
         let(:email) { 'Super.Boulette@hotmail.com' }
 
-        example_request 'Accept an invite using different capitalization for the email', document: false do
+        example 'Accept an invite using different capitalization for the email', document: false do
+          do_request
           expect(status).to eq 200
         end
       end

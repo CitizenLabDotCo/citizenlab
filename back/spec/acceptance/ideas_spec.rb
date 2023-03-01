@@ -390,7 +390,8 @@ resource 'Ideas' do
             header 'Authorization', "Bearer #{token}"
           end
 
-          example_request '[error] XLSX export by a normal user', document: false do
+          example '[error] XLSX export by a normal user', document: false do
+            do_request
             expect(status).to eq 401
           end
         end
@@ -624,7 +625,8 @@ resource 'Ideas' do
           describe 'Values for disabled fields are ignored' do
             let(:proposed_budget) { 12_345 }
 
-            example_request 'Create an idea with values for disabled fields', document: false do
+            example 'Create an idea with values for disabled fields', document: false do
+              do_request
               expect(status).to be 201
               json_response = json_parse(response_body)
               expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Plant more trees'
@@ -673,7 +675,8 @@ resource 'Ideas' do
             project.update_attribute(:ideas_order, nil)
           end
 
-          example_request 'Creates an idea', document: false do
+          example 'Creates an idea', document: false do
+            do_request
             assert_status 201
             json_response = json_parse(response_body)
             expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
@@ -755,7 +758,8 @@ resource 'Ideas' do
               .update!(permitted_by: 'groups', groups: [group])
           end
 
-          example_request '[error] Create an idea in a project with groups posting permission', document: false do
+          example '[error] Create an idea in a project with groups posting permission', document: false do
+            do_request
             assert_status 401
           end
 
@@ -840,7 +844,8 @@ resource 'Ideas' do
             let!(:custom_form) { create(:custom_form, participation_context: project) }
             let(:phase_ids) { [project.phases.first.id] }
 
-            example_request 'Post an idea in an ideation phase', document: false do
+            example 'Post an idea in an ideation phase', document: false do
+              do_request
               assert_status 201
               json_response = json_parse response_body
               idea = Idea.find(json_response.dig(:data, :id))
@@ -929,7 +934,8 @@ resource 'Ideas' do
         describe 'Values for disabled fields are ignored' do
           let(:proposed_budget) { 12_345 }
 
-          example_request 'Update an idea with values for disabled fields', document: false do
+          example 'Update an idea with values for disabled fields', document: false do
+            do_request
             expect(status).to be 200
             json_response = json_parse(response_body)
             expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'

@@ -173,7 +173,8 @@ resource 'User Custom Fields' do
         let(:key) { 'No spaces allowed' }
         let(:title_multiloc) { { 'en' => '' } }
 
-        example_request '[error] Create an invalid custom field', document: false do
+        example '[error] Create an invalid custom field', document: false do
+          do_request
           assert_status 422
           json_response = json_parse response_body
           expect(json_response).to include_response_error(:key, 'invalid', value: key)

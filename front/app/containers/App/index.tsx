@@ -5,20 +5,11 @@ import 'intersection-observer';
 import { includes, uniq } from 'lodash-es';
 import moment from 'moment';
 import 'moment-timezone';
-import React, { lazy, PureComponent, Suspense } from 'react';
-import { adopt } from 'react-adopt';
-import { combineLatest, Subscription } from 'rxjs';
-import { first, tap } from 'rxjs/operators';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
+import { combineLatest } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import smoothscroll from 'smoothscroll-polyfill';
-import clHistory from 'utils/cl-router/history';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import {
-  endsWith,
-  isDesktop,
-  isNilOrError,
-  isNil,
-  isPage,
-} from 'utils/helperUtils';
+import { endsWith, isNilOrError, isNil, isPage } from 'utils/helperUtils';
 
 // constants
 import { appLocalesMomentPairs, locales } from 'containers/App/constants';
@@ -45,11 +36,7 @@ const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
 import HasPermission from 'components/HasPermission';
 
 // services
-import {
-  currentAppConfigurationStream,
-  IAppConfiguration,
-  IAppConfigurationStyle,
-} from 'services/appConfiguration';
+import { IAppConfigurationStyle } from 'api/app_configuration/types';
 import {
   authUserStream,
   signOut,
@@ -59,12 +46,6 @@ import { localeStream } from 'services/locale';
 import { TAuthUser } from 'hooks/useAuthUser';
 
 // resources
-import GetFeatureFlag, {
-  GetFeatureFlagChildProps,
-} from 'resources/GetFeatureFlag';
-import GetWindowSize, {
-  GetWindowSizeChildProps,
-} from 'resources/GetWindowSize';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
@@ -78,6 +59,10 @@ import { Locale } from 'typings';
 
 // utils
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import { useLocation } from 'react-router-dom';
 
 const Container = styled.div<{
   disableScroll?: boolean;
@@ -119,85 +104,154 @@ export interface IOpenPostPageModalEvent {
   type: 'idea' | 'initiative';
 }
 
-interface InputProps {}
-
-interface DataProps {
-  redirectsEnabled: GetFeatureFlagChildProps;
-  fullscreenModalEnabled: GetFeatureFlagChildProps;
-  windowSize: GetWindowSizeChildProps;
+interface Props {
+  children: React.ReactNode;
 }
 
-interface Props extends WithRouterProps, InputProps, DataProps {}
+const App = ({ children }: Props) => {
+  const location = useLocation();
+  const [isAppInitialized, setIsAppInitialized] = useState(false);
+  const [previousPathname, setPreviousPathname] = useState<string | null>(null);
+  const { data: appConfiguration } = useAppConfiguration();
 
-interface State {
-  previousPathname: string | null;
-  appConfiguration: IAppConfiguration | null;
-  authUser: TAuthUser;
-  modalId: string | null;
-  modalSlug: string | null;
-  modalType: 'idea' | 'initiative' | null;
-  userDeletedSuccessfullyModalOpened: boolean;
-  userSuccessfullyDeleted: boolean;
-  navbarRef: HTMLElement | null;
-  mobileNavbarRef: HTMLElement | null;
-  locale: Locale | null;
-  signUpInModalOpened: boolean;
-}
+  const [authUser, setAuthUser] = useState<TAuthUser>(undefined);
+  const [modalId, setModalId] = useState<string | null>(null);
+  const [modalSlug, setModalSlug] = useState<string | null>(null);
+  const [modalType, setModalType] = useState<'idea' | 'initiative' | null>(
+    null
+  );
+  const [
+    userDeletedSuccessfullyModalOpened,
+    setUserDeletedSuccessfullyModalOpened,
+  ] = useState(false);
+  const [userSuccessfullyDeleted, setUserSuccessfullyDeleted] = useState(false);
+  const [navbarRef, setNavbarRef] = useState<HTMLElement | null>(null);
+  const [mobileNavbarRef, setMobileNavbarRef] = useState<HTMLElement | null>(
+    null
+  );
+  const [locale, setLocale] = useState<Locale | null>(null);
+  const [signUpInModalOpened, setSignUpInModalOpened] = useState(false);
 
-class App extends PureComponent<Props, State> {
-  subscriptions: Subscription[];
-  unlisten: () => void;
+  const redirectsEnabled = useFeatureFlag({ name: 'redirects' });
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      previousPathname: null,
-      appConfiguration: null,
-      authUser: undefined,
-      modalId: null,
-      modalSlug: null,
-      modalType: null,
-      userDeletedSuccessfullyModalOpened: false,
-      userSuccessfullyDeleted: false,
-      navbarRef: null,
-      mobileNavbarRef: null,
-      locale: null,
-      signUpInModalOpened: false,
+  const fullscreenModalEnabled = useFeatureFlag({
+    name: 'franceconnect_login',
+  });
+
+  useEffect(() => {
+    if (appConfiguration && !isAppInitialized) {
+      smoothscroll.polyfill();
+      moment.tz.setDefault(
+        appConfiguration.data.attributes.settings.core.timezone
+      );
+
+      uniq(
+        appConfiguration.data.attributes.settings.core.locales
+          .filter((locale) => locale !== 'en')
+          .map((locale) => appLocalesMomentPairs[locale])
+      ).forEach((locale) => require(`moment/locale/${locale}.js`));
+
+      if (appConfiguration.data.attributes.settings.core.weglot_api_key) {
+        const script = document.createElement('script');
+        script.async = false;
+        script.defer = false;
+        document.head.appendChild(script);
+
+        script.onload = function () {
+          window.Weglot.initialize({
+            api_key:
+              appConfiguration.data.attributes.settings.core.weglot_api_key,
+          });
+        };
+
+        script.src = 'https://cdn.weglot.com/weglot.min.js';
+      }
+
+      if (
+        appConfiguration.data.attributes.style &&
+        appConfiguration.data.attributes.style.customFontAdobeId
+      ) {
+        import('webfontloader').then((WebfontLoader) => {
+          WebfontLoader.load({
+            typekit: {
+              id: (
+                appConfiguration.data.attributes.style as IAppConfigurationStyle
+              ).customFontAdobeId,
+            },
+          });
+        });
+      } else if (
+        appConfiguration.data.attributes.style &&
+        appConfiguration.data.attributes.style.customFontURL
+      ) {
+        import('webfontloader').then((WebfontLoader) => {
+          const fontName = (
+            appConfiguration.data.attributes.style as IAppConfigurationStyle
+          ).customFontName;
+          const fontURL = (
+            appConfiguration.data.attributes.style as IAppConfigurationStyle
+          ).customFontURL;
+          if (fontName !== undefined && fontURL !== undefined) {
+            WebfontLoader.load({
+              custom: {
+                families: [fontName],
+                urls: [fontURL],
+              },
+            });
+          }
+        });
+      }
+      setIsAppInitialized(true);
+    }
+  }, [appConfiguration, isAppInitialized]);
+
+  useEffect(() => {
+    const handleCustomRedirect = () => {
+      const { pathname } = location;
+      const urlSegments = pathname.replace(/^\/+/g, '').split('/');
+      const pathnameWithoutLocale = removeLocale(pathname).pathname?.replace(
+        /\//,
+        ''
+      );
+
+      if (
+        appConfiguration &&
+        appConfiguration.data.attributes.settings.redirects
+      ) {
+        const { rules } = appConfiguration.data.attributes.settings.redirects;
+        rules.forEach((rule) => {
+          if (
+            urlSegments.length > 1 &&
+            includes(locales, urlSegments[0]) &&
+            pathnameWithoutLocale === rule.path
+          ) {
+            window.location.href = rule.target;
+          }
+        });
+      }
     };
-    this.subscriptions = [];
-  }
 
-  componentDidMount() {
-    const { redirectsEnabled } = this.props;
     const authUser$ = authUserStream().observable;
     const locale$ = localeStream().observable;
-    const tenant$ = currentAppConfigurationStream().observable;
 
-    this.unlisten = clHistory.listen(({ location }) => {
-      const newPreviousPathname = location.pathname;
-      const pathsToIgnore = [
-        'sign-up',
-        'sign-in',
-        'complete-signup',
-        'invite',
-        'authentication-error',
-      ];
-      this.setState((state) => ({
-        previousPathname: !endsWith(newPreviousPathname, pathsToIgnore)
-          ? newPreviousPathname
-          : state.previousPathname,
-      }));
-      if (redirectsEnabled) {
-        this.handleCustomRedirect();
-      }
-      trackPage(location.pathname);
-    });
+    const newPreviousPathname = location.pathname;
+    const pathsToIgnore = [
+      'sign-up',
+      'sign-in',
+      'complete-signup',
+      'invite',
+      'authentication-error',
+    ];
+    setPreviousPathname(
+      !endsWith(newPreviousPathname, pathsToIgnore)
+        ? newPreviousPathname
+        : previousPathname
+    );
+    if (redirectsEnabled) {
+      handleCustomRedirect();
+    }
 
-    trackPage(location.pathname);
-
-    smoothscroll.polyfill();
-
-    this.subscriptions = [
+    const subscriptions = [
       combineLatest([
         authUser$.pipe(
           tap((authUser) => {
@@ -213,86 +267,21 @@ class App extends PureComponent<Props, State> {
           })
         ),
         locale$,
-        tenant$.pipe(
-          tap((tenant) => {
-            moment.tz.setDefault(tenant.data.attributes.settings.core.timezone);
-
-            uniq(
-              tenant.data.attributes.settings.core.locales
-                .filter((locale) => locale !== 'en')
-                .map((locale) => appLocalesMomentPairs[locale])
-            ).forEach((locale) => require(`moment/locale/${locale}.js`));
-          })
-        ),
-      ]).subscribe(([authUser, locale, tenant]) => {
+      ]).subscribe(([authUser, locale]) => {
         const momentLoc = appLocalesMomentPairs[locale] || 'en';
         moment.locale(momentLoc);
-        this.setState({
-          appConfiguration: tenant,
-          authUser: !isNil(authUser) ? authUser.data : null,
-          locale,
-        });
-      }),
-
-      tenant$.pipe(first()).subscribe((tenant) => {
-        if (tenant.data.attributes.settings.core.weglot_api_key) {
-          const script = document.createElement('script');
-          script.async = false;
-          script.defer = false;
-          document.head.appendChild(script);
-
-          script.onload = function () {
-            window.Weglot.initialize({
-              api_key: tenant.data.attributes.settings.core.weglot_api_key,
-            });
-          };
-
-          script.src = 'https://cdn.weglot.com/weglot.min.js';
-        }
-
-        if (
-          tenant.data.attributes.style &&
-          tenant.data.attributes.style.customFontAdobeId
-        ) {
-          import('webfontloader').then((WebfontLoader) => {
-            WebfontLoader.load({
-              typekit: {
-                id: (tenant.data.attributes.style as IAppConfigurationStyle)
-                  .customFontAdobeId,
-              },
-            });
-          });
-        } else if (
-          tenant.data.attributes.style &&
-          tenant.data.attributes.style.customFontURL
-        ) {
-          import('webfontloader').then((WebfontLoader) => {
-            const fontName = (
-              tenant.data.attributes.style as IAppConfigurationStyle
-            ).customFontName;
-            const fontURL = (
-              tenant.data.attributes.style as IAppConfigurationStyle
-            ).customFontURL;
-            if (fontName !== undefined && fontURL !== undefined) {
-              WebfontLoader.load({
-                custom: {
-                  families: [fontName],
-                  urls: [fontURL],
-                },
-              });
-            }
-          });
-        }
+        setAuthUser(!isNil(authUser) ? authUser.data : null);
+        setLocale(locale);
       }),
 
       eventEmitter
         .observeEvent<IOpenPostPageModalEvent>('cardClick')
         .subscribe(({ eventValue: { id, slug, type } }) => {
-          this.openPostPageModal(id, slug, type);
+          openPostPageModal(id, slug, type);
         }),
 
       eventEmitter.observeEvent('closeIdeaModal').subscribe(() => {
-        this.closePostPageModal();
+        closePostPageModal();
       }),
 
       eventEmitter
@@ -300,244 +289,168 @@ class App extends PureComponent<Props, State> {
         .subscribe(() => {
           signOutAndDeleteAccount().then((success) => {
             if (success) {
-              this.setState({
-                userDeletedSuccessfullyModalOpened: true,
-                userSuccessfullyDeleted: true,
-              });
+              setUserDeletedSuccessfullyModalOpened(true);
+              setUserSuccessfullyDeleted(true);
             } else {
-              this.setState({
-                userDeletedSuccessfullyModalOpened: true,
-                userSuccessfullyDeleted: false,
-              });
+              setUserDeletedSuccessfullyModalOpened(true);
+              setUserSuccessfullyDeleted(false);
             }
           });
         }),
     ];
-  }
 
-  componentDidUpdate(prevProps: Props, prevState: State) {
-    const { appConfiguration } = this.state;
-    const {
-      redirectsEnabled,
-      location: { pathname },
-    } = this.props;
+    return () => {
+      subscriptions.forEach((subscription) => subscription.unsubscribe());
+    };
+  }, [
+    location.pathname,
+    previousPathname,
+    redirectsEnabled,
+    appConfiguration,
+    location,
+  ]);
 
-    if (
-      redirectsEnabled &&
-      (prevState.appConfiguration !== appConfiguration ||
-        prevProps.location.pathname !== pathname)
-    ) {
-      this.handleCustomRedirect();
-    }
-  }
+  useEffect(() => {
+    trackPage(location.pathname);
+  }, [location.pathname]);
 
-  componentWillUnmount() {
-    this.unlisten();
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }
-
-  handleCustomRedirect() {
-    const {
-      location: { pathname },
-    } = this.props;
-    const { appConfiguration } = this.state;
-    const urlSegments = pathname.replace(/^\/+/g, '').split('/');
-
-    if (
-      !isNilOrError(appConfiguration) &&
-      appConfiguration.data.attributes.settings.redirects
-    ) {
-      const { rules } = appConfiguration.data.attributes.settings.redirects;
-
-      rules.forEach((rule) => {
-        if (
-          urlSegments.length === 2 &&
-          includes(locales, urlSegments[0]) &&
-          urlSegments[1] === rule.path
-        ) {
-          window.location.href = rule.target;
-        }
-      });
-    }
-  }
-
-  openPostPageModal = (
+  const openPostPageModal = (
     id: string,
     slug: string,
     type: 'idea' | 'initiative'
   ) => {
-    this.setState({
-      modalId: id,
-      modalSlug: slug,
-      modalType: type,
-    });
+    setModalId(id);
+    setModalSlug(slug);
+    setModalType(type);
   };
 
-  closePostPageModal = () => {
-    this.setState({
-      modalId: null,
-      modalSlug: null,
-      modalType: null,
-    });
+  const closePostPageModal = () => {
+    setModalId(null);
+    setModalSlug(null);
+    setModalType(null);
   };
 
-  closeUserDeletedModal = () => {
-    this.setState({ userDeletedSuccessfullyModalOpened: false });
+  const closeUserDeletedModal = () => {
+    setUserDeletedSuccessfullyModalOpened(false);
   };
 
-  setNavbarRef = (navbarRef: HTMLElement) => {
-    this.setState({ navbarRef });
+  const handleSignUpInModalOpened = (isOpened: boolean) => {
+    setSignUpInModalOpened(isOpened);
   };
 
-  setMobileNavigationRef = (mobileNavbarRef: HTMLElement) => {
-    this.setState({ mobileNavbarRef });
-  };
+  const isAdminPage = isPage('admin', location.pathname);
+  const isInitiativeFormPage = isPage('initiative_form', location.pathname);
+  const isIdeaFormPage = isPage('idea_form', location.pathname);
+  const isIdeaEditPage = isPage('idea_edit', location.pathname);
+  const isInitiativeEditPage = isPage('initiative_edit', location.pathname);
+  const isTablet = useBreakpoint('tablet');
+  const fullScreenModalEnabledAndOpen =
+    fullscreenModalEnabled && signUpInModalOpened;
 
-  handleSignUpInModalOpened = (isOpened: boolean) => {
-    this.setState({ signUpInModalOpened: isOpened });
-  };
+  const theme = getTheme(appConfiguration);
+  const showFooter =
+    !isAdminPage &&
+    !isIdeaFormPage &&
+    !isInitiativeFormPage &&
+    !isIdeaEditPage &&
+    !isInitiativeEditPage;
+  const showMobileNav =
+    isTablet &&
+    !isAdminPage &&
+    !isIdeaFormPage &&
+    !isInitiativeFormPage &&
+    !isIdeaEditPage &&
+    !isInitiativeEditPage;
+  const { pathname } = removeLocale(location.pathname);
 
-  render() {
-    const { location, children, windowSize, fullscreenModalEnabled } =
-      this.props;
-    const {
-      previousPathname,
-      appConfiguration,
-      modalId,
-      modalSlug,
-      modalType,
-      userDeletedSuccessfullyModalOpened,
-      userSuccessfullyDeleted,
-      navbarRef,
-      mobileNavbarRef,
-      signUpInModalOpened,
-    } = this.state;
-
-    const isAdminPage = isPage('admin', location.pathname);
-    const isInitiativeFormPage = isPage('initiative_form', location.pathname);
-    const isIdeaFormPage = isPage('idea_form', location.pathname);
-    const isIdeaEditPage = isPage('idea_edit', location.pathname);
-    const isInitiativeEditPage = isPage('initiative_edit', location.pathname);
-    const isDesktopUser = windowSize && isDesktop(windowSize);
-    const fullScreenModalEnabledAndOpen =
-      fullscreenModalEnabled && signUpInModalOpened;
-
-    const theme = getTheme(appConfiguration);
-    const showFooter =
-      !isAdminPage &&
-      !isIdeaFormPage &&
-      !isInitiativeFormPage &&
-      !isIdeaEditPage &&
-      !isInitiativeEditPage;
-    const showMobileNav =
-      !isDesktopUser &&
-      !isAdminPage &&
-      !isIdeaFormPage &&
-      !isInitiativeFormPage &&
-      !isIdeaEditPage &&
-      !isInitiativeEditPage;
-    const { pathname } = removeLocale(location.pathname);
-
-    return (
-      <>
-        {appConfiguration && (
-          <PreviousPathnameContext.Provider value={previousPathname}>
-            <ThemeProvider
-              theme={{ ...theme, isRtl: !!this.state.locale?.startsWith('ar') }}
+  return (
+    <>
+      {appConfiguration && (
+        <PreviousPathnameContext.Provider value={previousPathname}>
+          <ThemeProvider
+            theme={{ ...theme, isRtl: !!locale?.startsWith('ar') }}
+          >
+            <GlobalStyle />
+            <Container
+              // when the fullscreen modal is enabled on a platform and
+              // is currently open, we want to disable scrolling on the
+              // app sitting below it (CL-1101)
+              disableScroll={fullscreenModalEnabled && signUpInModalOpened}
             >
-              <GlobalStyle />
-              <Container
-                // when the fullscreen modal is enabled on a platform and
-                // is currently open, we want to disable scrolling on the
-                // app sitting below it (CL-1101)
-                disableScroll={fullscreenModalEnabled && signUpInModalOpened}
-              >
-                <Meta />
-                <ErrorBoundary>
-                  <Suspense fallback={null}>
-                    <PostPageFullscreenModal
-                      signUpInModalOpened={signUpInModalOpened}
-                      type={modalType}
-                      postId={modalId}
-                      slug={modalSlug}
-                      close={this.closePostPageModal}
-                      navbarRef={navbarRef}
-                      mobileNavbarRef={mobileNavbarRef}
-                    />
-                  </Suspense>
-                </ErrorBoundary>
-                <ErrorBoundary>
-                  <Suspense fallback={null}>
-                    <UserDeletedModal
-                      modalOpened={userDeletedSuccessfullyModalOpened}
-                      closeUserDeletedModal={this.closeUserDeletedModal}
-                      userSuccessfullyDeleted={userSuccessfullyDeleted}
-                    />
-                  </Suspense>
-                </ErrorBoundary>
-                <ErrorBoundary>
-                  <Authentication
-                    authUser={this.state.authUser}
-                    onModalOpenedStateChange={this.handleSignUpInModalOpened}
+              <Meta />
+              <ErrorBoundary>
+                <Suspense fallback={null}>
+                  <PostPageFullscreenModal
+                    signUpInModalOpened={signUpInModalOpened}
+                    type={modalType}
+                    postId={modalId}
+                    slug={modalSlug}
+                    close={closePostPageModal}
+                    navbarRef={navbarRef}
+                    mobileNavbarRef={mobileNavbarRef}
                   />
-                </ErrorBoundary>
-                <ErrorBoundary>
-                  <div id="modal-portal" />
-                </ErrorBoundary>
-                <ErrorBoundary>
-                  <div id="topbar-portal" />
-                </ErrorBoundary>
-                <ErrorBoundary>
-                  <Suspense fallback={null}>
-                    <ConsentManager />
-                  </Suspense>
-                </ErrorBoundary>
-                <ErrorBoundary>
-                  <MainHeader setRef={this.setNavbarRef} />
-                </ErrorBoundary>
-                <InnerContainer>
-                  <HasPermission
-                    item={{
-                      type: 'route',
-                      path: pathname,
-                    }}
-                    action="access"
-                  >
-                    <ErrorBoundary>{children}</ErrorBoundary>
-                    <HasPermission.No>
-                      <Navigate to="/" />
-                    </HasPermission.No>
-                  </HasPermission>
-                </InnerContainer>
-                {showFooter && (
-                  <Suspense fallback={null}>
-                    <PlatformFooter />
-                  </Suspense>
-                )}
-                {showMobileNav && !fullScreenModalEnabledAndOpen && (
-                  <MobileNavbar setRef={this.setMobileNavigationRef} />
-                )}
-                <ErrorBoundary>
-                  <div id="mobile-nav-portal" />
-                </ErrorBoundary>
-              </Container>
-            </ThemeProvider>
-          </PreviousPathnameContext.Provider>
-        )}
-      </>
-    );
-  }
-}
+                </Suspense>
+              </ErrorBoundary>
+              <ErrorBoundary>
+                <Suspense fallback={null}>
+                  <UserDeletedModal
+                    modalOpened={userDeletedSuccessfullyModalOpened}
+                    closeUserDeletedModal={closeUserDeletedModal}
+                    userSuccessfullyDeleted={userSuccessfullyDeleted}
+                  />
+                </Suspense>
+              </ErrorBoundary>
+              <ErrorBoundary>
+                <Authentication
+                  authUser={authUser}
+                  onModalOpenedStateChange={handleSignUpInModalOpened}
+                />
+              </ErrorBoundary>
+              <ErrorBoundary>
+                <div id="modal-portal" />
+              </ErrorBoundary>
+              <ErrorBoundary>
+                <div id="topbar-portal" />
+              </ErrorBoundary>
+              <ErrorBoundary>
+                <Suspense fallback={null}>
+                  <ConsentManager />
+                </Suspense>
+              </ErrorBoundary>
+              <ErrorBoundary>
+                <MainHeader setRef={setNavbarRef} />
+              </ErrorBoundary>
+              <InnerContainer>
+                <HasPermission
+                  item={{
+                    type: 'route',
+                    path: pathname,
+                  }}
+                  action="access"
+                >
+                  <ErrorBoundary>{children}</ErrorBoundary>
+                  <HasPermission.No>
+                    <Navigate to="/" />
+                  </HasPermission.No>
+                </HasPermission>
+              </InnerContainer>
+              {showFooter && (
+                <Suspense fallback={null}>
+                  <PlatformFooter />
+                </Suspense>
+              )}
+              {showMobileNav && !fullScreenModalEnabledAndOpen && (
+                <MobileNavbar setRef={setMobileNavbarRef} />
+              )}
+              <ErrorBoundary>
+                <div id="mobile-nav-portal" />
+              </ErrorBoundary>
+            </Container>
+          </ThemeProvider>
+        </PreviousPathnameContext.Provider>
+      )}
+    </>
+  );
+};
 
-const Data = adopt<DataProps, InputProps>({
-  windowSize: <GetWindowSize />,
-  redirectsEnabled: <GetFeatureFlag name="redirects" />,
-  // CL-1101, FranceConnect platforms have full screen login experience
-  fullscreenModalEnabled: <GetFeatureFlag name="franceconnect_login" />,
-});
-
-const AppWithHoC = withRouter(App);
-
-export default (inputProps: InputProps) => (
-  <Data>{(dataProps) => <AppWithHoC {...dataProps} {...inputProps} />}</Data>
-);
+export default App;

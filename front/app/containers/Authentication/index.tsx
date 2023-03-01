@@ -4,12 +4,12 @@ import { TAuthUser } from 'hooks/useAuthUser';
 import SignUpIn from './SignUpIn';
 import VerificationModal from './VerificationModal';
 
-type Authentication = {
+interface Props {
   authUser: TAuthUser;
   onModalOpenedStateChange: (isOpened: boolean) => void;
-};
+}
 
-const Authentication = ({ authUser, onModalOpenedStateChange }) => {
+const Authentication = ({ authUser, onModalOpenedStateChange }: Props) => {
   return (
     <>
       <SignUpIn
