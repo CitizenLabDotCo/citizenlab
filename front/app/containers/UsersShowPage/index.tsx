@@ -6,7 +6,7 @@ import { isError } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
-import IdeaCards from 'components/IdeaCards';
+import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
 import ContentContainer from 'components/ContentContainer';
 import UsersShowPageMeta from './UsersShowPageMeta';
 import Button from 'components/UI/Button';
@@ -126,10 +126,9 @@ export const UsersShowPage = memo<
           <StyledContentContainer maxWidth={maxPageWidth}>
             {currentTab === 'ideas' && (
               <UserIdeas>
-                <IdeaCards
+                <IdeaCardsWithoutFiltersSidebar
                   authorId={user.id}
                   invisibleTitleMessage={messages.invisibleTitlePostsList}
-                  hideFiltersSidebar
                 />
               </UserIdeas>
             )}

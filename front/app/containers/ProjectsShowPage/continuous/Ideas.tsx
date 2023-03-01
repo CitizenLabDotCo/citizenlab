@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ContentContainer from 'components/ContentContainer';
-import IdeaCards from 'components/IdeaCards';
+import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
 import PBExpenses from '../shared/pb/PBExpenses';
 import {
   ProjectPageSectionTitle,
@@ -89,7 +89,7 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
               />
             </StyledProjectPageSectionTitle>
 
-            <IdeaCards
+            <IdeaCardsWithoutFiltersSidebar
               projectId={projectId}
               participationMethod={project.attributes.participation_method}
               participationContextId={projectId}
@@ -98,7 +98,6 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
               defaultSortingMethod={project.attributes.ideas_order || null}
               defaultView={project.attributes.presentation_mode || null}
               invisibleTitleMessage={messages.a11y_titleInputs}
-              hideFiltersSidebar
             />
           </SectionContainer>
         </StyledContentContainer>

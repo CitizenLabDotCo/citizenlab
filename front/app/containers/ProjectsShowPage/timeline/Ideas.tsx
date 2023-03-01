@@ -3,7 +3,7 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import IdeaCards from 'components/IdeaCards';
+import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
 // resources
@@ -66,7 +66,7 @@ class IdeasContainer extends PureComponent<Props, State> {
                 })}
               />
             </StyledProjectPageSectionTitle>
-            <IdeaCards
+            <IdeaCardsWithoutFiltersSidebar
               className={participationMethod}
               projectId={projectId}
               phaseId={phaseId}
@@ -77,7 +77,6 @@ class IdeasContainer extends PureComponent<Props, State> {
               participationContextId={phase.id}
               participationContextType="phase"
               invisibleTitleMessage={messages.a11y_titleInputsPhase}
-              hideFiltersSidebar
             />
           </Container>
         );

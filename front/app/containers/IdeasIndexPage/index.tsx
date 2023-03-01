@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 
 // components
 import ContentContainer from 'components/ContentContainer';
-import IdeaCards from 'components/IdeaCards';
+import { IdeaCardsWithFiltersSidebar } from 'components/IdeaCards';
 import CityLogoSection from 'components/CityLogoSection';
 import IdeasIndexMeta from './IdeaIndexMeta';
 
@@ -75,10 +75,8 @@ export default memo(() => (
         <PageTitle>
           <FormattedMessage {...messages.inputsPageTitle} />
         </PageTitle>
-        <IdeaCards
-          allowProjectsFilter={true}
+        <IdeaCardsWithFiltersSidebar
           projectPublicationStatus="published"
-          showViewToggle={false}
           invisibleTitleMessage={messages.a11y_IdeasListTitle}
         />
       </StyledContentContainer>

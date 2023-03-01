@@ -135,7 +135,7 @@ const StyledSearchInput = styled(SearchInput)`
   `}
 `;
 
-interface InputProps {
+export interface InputProps {
   // idea query
   phaseId?: string;
   authorId?: string;
