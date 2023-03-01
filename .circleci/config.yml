@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   slack: circleci/slack@4.3.3
+  git-shallow-clone: guitarrapc/git-shallow-clone@2.4.1
 
 # REUSABLE YAML FRAGMENTS (yml anchors)
 slack-fail-post-step-templates: &slack-fail-post-step-templates
@@ -163,7 +164,9 @@ jobs:
       - echo_pipeline_parameters
       # - checkout:
       #     path: ./citizenlab
-      - run: git clone -b "$CIRCLE_BRANCH" "$CIRCLE_REPOSITORY_URL" --depth 1 -q
+      # - run: git clone -b "$CIRCLE_BRANCH" "$CIRCLE_REPOSITORY_URL" --depth 1 -q
+      - git-shallow-clone/checkout:
+        - depth: 1
       - setup_remote_docker:
           docker_layer_caching: true
       - run: |
