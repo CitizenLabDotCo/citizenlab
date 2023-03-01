@@ -28,7 +28,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:update-snapshots": "jest --updateSnapshot",
-    "test:ci": "jest --ci --reporters=default --reporters=jest-junit --runInBand --coverage --coverageReporters=text-summary",
+    "test:ci": "jest --ci --reporters=default --reporters=jest-junit -w 3 --coverage --coverageReporters=text-summary --",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --spec 'cypress/e2e/**/*.ts' --browser chrome",
     "majestic": "majestic --port 4231",
@@ -36,6 +36,9 @@
     "prettier": "prettier --write .",
     "lint:eslint": "eslint --ext .js,.jsx,.ts,.tsx app --color --max-warnings=0 --fix",
     "detect-deadcode": "ts-prune -p app/tsconfig.json -i '(node_modules|utils/testUtils/rtl.tsx|services/permissions|i18n|/*/*/__mocks__)' | (! grep -v 'used in module')"
+  },
+  "jest-junit": {
+    "addFileAttribute": "true"
   },
   "majestic": {
     "jestScriptPath": "node_modules/jest/bin/jest.js"
@@ -48,7 +51,7 @@
   "dependencies": {
     "@apollo/client": "^3.5.6",
     "@babel/runtime": "7.x",
-    "@citizenlab/cl2-component-library": "^0.10.27",
+    "@citizenlab/cl2-component-library": "^0.10.29",
     "@craftjs/core": "^0.2.0-beta.5",
     "@hookform/resolvers": "^2.9.10",
     "@jsonforms/core": "3.0.0-beta.0",

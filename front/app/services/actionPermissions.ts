@@ -26,6 +26,7 @@ export interface IGlobalPermissionData {
   };
 }
 export type IPCPermissionAction =
+  | 'posting_idea'
   | 'voting_idea'
   | 'commenting_idea'
   | 'commenting_idea'

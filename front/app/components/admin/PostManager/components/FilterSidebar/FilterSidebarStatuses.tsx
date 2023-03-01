@@ -1,5 +1,5 @@
 import React from 'react';
-import { IIdeaStatusData } from 'services/ideaStatuses';
+import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { Menu, Divider } from 'semantic-ui-react';
 import FilterSidebarStatusesItem from './FilterSidebarStatusesItem';

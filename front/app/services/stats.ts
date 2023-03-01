@@ -75,24 +75,6 @@ export function ideasByStatusStream(streamParams: IStreamParams | null = null) {
 }
 export const ideasByStatusXlsxEndpoint = `${apiEndpoint}/ideas_by_status_as_xlsx`;
 
-export function ideasByTimeStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IIdeasByTime>({
-    apiEndpoint: `${apiEndpoint}/ideas_by_time`,
-    ...streamParams,
-  });
-}
-
-export const ideasByTimeCumulativeXlsxEndpoint = `${apiEndpoint}/ideas_by_time_cumulative_as_xlsx`;
-
-export function ideasByTimeCumulativeStream(
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IIdeasByTime>({
-    apiEndpoint: `${apiEndpoint}/ideas_by_time_cumulative`,
-    ...streamParams,
-  });
-}
-
 export const ideasByTopicXlsxEndpoint = `${apiEndpoint}/ideas_by_topic_as_xlsx`;
 
 export function ideasByTopicStream(streamParams: IStreamParams | null = null) {
@@ -147,33 +129,6 @@ export function usersCount(streamParams: IStreamParams | null = null) {
   });
 }
 
-export const usersByTimeXlsxEndpoint = `${apiEndpoint}/users_by_time_as_xlsx`;
-
-export function usersByTimeStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IUsersByTime>({
-    apiEndpoint: `${apiEndpoint}/users_by_time`,
-    ...streamParams,
-  });
-}
-
-export function commentsByTimeStream(
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<ICommentsByTime>({
-    apiEndpoint: `${apiEndpoint}/comments_by_time`,
-    ...streamParams,
-  });
-}
-
-export function usersByTimeCumulativeStream(
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IUsersByTime>({
-    apiEndpoint: `${apiEndpoint}/users_by_time_cumulative`,
-    ...streamParams,
-  });
-}
-
 export const activeUsersByTimeXlsxEndpoint = `${apiEndpoint}/active_users_by_time_as_xlsx`;
 
 export function activeUsersByTimeStream(
@@ -220,17 +175,6 @@ export interface ICommentsByProject {
       title_multiloc: Multiloc;
     };
   };
-}
-
-export const commentsByTimeCumulativeXlsxEndpoint = `${apiEndpoint}/comments_by_time_cumulative_as_xlsx`;
-
-export function commentsByTimeCumulativeStream(
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<ICommentsByTime>({
-    apiEndpoint: `${apiEndpoint}/comments_by_time_cumulative`,
-    ...streamParams,
-  });
 }
 
 export const commentsByTopicXlsxEndpoint = `${apiEndpoint}/comments_by_topic_as_xlsx`;
@@ -294,31 +238,6 @@ export interface IVotesByProject {
       title_multiloc: Multiloc;
     };
   };
-}
-
-export interface IVotesByTimeCumulative {
-  series: {
-    up: { [key: string]: number };
-    down: { [key: string]: number };
-    total: { [key: string]: number };
-  };
-}
-
-export function votesByTimeCumulativeStream(
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IVotesByTimeCumulative>({
-    apiEndpoint: `${apiEndpoint}/votes_by_time_cumulative`,
-    ...streamParams,
-  });
-}
-export const votesByTimeXlsxEndpoint = `${apiEndpoint}/votes_by_time_as_xlsx`;
-
-export function votesByTimeStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IVotesByTime>({
-    apiEndpoint: `${apiEndpoint}/votes_by_time`,
-    ...streamParams,
-  });
 }
 
 export const votesByTopicXlsxEndpoint = `${apiEndpoint}/votes_by_topic_as_xlsx`;

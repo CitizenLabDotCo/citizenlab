@@ -3,6 +3,7 @@ import streams, { IStreamParams } from 'utils/streams';
 import { ImageSizes, Multiloc, Locale } from 'typings';
 import { authApiEndpoint } from './auth';
 import { TRole } from 'services/permissions/roles';
+import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
 const apiEndpoint = `${API_PATH}/users`;
 
@@ -13,23 +14,23 @@ export interface IUserAttributes {
   last_name: string | null;
   slug: string;
   locale: Locale;
-  avatar?: ImageSizes;
-  roles?: TRole[];
   highest_role: 'super_admin' | 'admin' | 'project_moderator' | 'user';
   bio_multiloc: Multiloc;
   registration_completed_at: string | null;
   created_at: string;
   updated_at: string;
+  unread_notifications: number;
+  invite_status: 'pending' | 'accepted' | null;
+  confirmation_required: boolean;
+  custom_field_values?: Record<string, any>;
+  avatar?: ImageSizes;
+  roles?: TRole[];
   email?: string;
   gender?: 'male' | 'female' | 'unspecified';
   birthyear?: number;
   domicile?: string;
   education?: string;
-  unread_notifications: number;
-  custom_field_values?: Record<string, any>;
-  invite_status: 'pending' | 'accepted' | null;
   verified?: boolean;
-  confirmation_required: boolean;
 }
 
 export interface IUserData {
@@ -119,6 +120,7 @@ export async function completeRegistration(
     { user: { custom_field_values: customFieldValues || {} } }
   );
   await streams.reset();
+  await resetQueryCache();
   await streams.fetchAllWith({
     apiEndpoint: [authApiEndpoint],
   });

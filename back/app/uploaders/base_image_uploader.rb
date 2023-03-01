@@ -24,6 +24,10 @@ class BaseImageUploader < BaseUploader
     ALLOWED_TYPES
   end
 
+  def url(*)
+    CarrierwaveTempRemote.url(identifier, version_name) || super
+  end
+
   protected
 
   def secure_token

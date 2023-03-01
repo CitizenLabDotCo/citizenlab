@@ -112,6 +112,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        planhat: {
+          enabled: false,
+          allowed: false
+        },
         satismeter: {
           enabled: false,
           allowed: true
@@ -339,6 +343,7 @@ namespace :cl2_back do
         locale: tenant.configuration.settings('core', 'locales')&.first || 'en',
         registration_completed_at: Time.zone.now
       )
+      Analytics::PopulateDimensionsService.run
     end
 
     MultiTenancy::TenantService.new.finalize_creation(tenant)

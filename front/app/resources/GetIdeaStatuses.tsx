@@ -1,6 +1,5 @@
-import React from 'react';
-import { Subscription } from 'rxjs';
-import { IIdeaStatusData, ideaStatusesStream } from 'services/ideaStatuses';
+import { IIdeaStatusData } from 'api/idea_statuses/types';
+import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 
 interface InputProps {}
 
@@ -10,39 +9,11 @@ interface Props extends InputProps {
   children?: children;
 }
 
-interface State {
-  ideaStatuses: IIdeaStatusData[] | undefined | null;
-}
-
 export type GetIdeaStatusesChildProps = IIdeaStatusData[] | undefined | null;
 
-export default class GetIdeaStatuses extends React.Component<Props, State> {
-  private subscriptions: Subscription[];
+const GetIdeaStatuses = ({ children }: Props) => {
+  const { data: ideaStatuses } = useIdeaStatuses();
+  return (children as children)(ideaStatuses?.data);
+};
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      ideaStatuses: undefined,
-    };
-  }
-
-  componentDidMount() {
-    this.subscriptions = [
-      ideaStatusesStream().observable.subscribe((ideaStatuses) => {
-        this.setState({
-          ideaStatuses: ideaStatuses ? ideaStatuses.data : null,
-        });
-      }),
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }
-
-  render() {
-    const { children } = this.props;
-    const { ideaStatuses } = this.state;
-    return (children as children)(ideaStatuses);
-  }
-}
+export default GetIdeaStatuses;
