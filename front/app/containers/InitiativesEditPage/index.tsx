@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 // libraries
 import clHistory from 'utils/cl-router/history';
@@ -62,19 +62,16 @@ interface DataProps {
 
 interface Props extends DataProps {}
 
-export class InitiativesEditPage extends React.PureComponent<Props> {
-  componentDidMount() {
-    this.checkPageAccess();
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    if (prevProps.authUser !== this.props.authUser) {
-      this.checkPageAccess();
-    }
-  }
-
-  checkPageAccess = () => {
-    const { authUser } = this.props;
+const InitiativesEditPage = ({
+  previousPathName,
+  initiative,
+  authUser,
+  locale,
+  initiativeImages,
+  initiativeFiles,
+  topics,
+}: Props) => {
+  useEffect(() => {
     const isPrivilegedUser =
       !isNilOrError(authUser) &&
       (isAdmin({ data: authUser }) ||
@@ -82,65 +79,54 @@ export class InitiativesEditPage extends React.PureComponent<Props> {
         isSuperAdmin({ data: authUser }));
 
     if (!isPrivilegedUser && authUser === null) {
-      clHistory.replace(this.props.previousPathName || '/sign-up');
+      clHistory.replace(previousPathName || '/sign-up');
     }
-  };
+  }, [authUser]);
 
-  onPublished = () => {
-    const { initiative } = this.props;
+  if (
+    isNilOrError(authUser) ||
+    isNilOrError(locale) ||
+    isNilOrError(initiative) ||
+    initiativeImages === undefined ||
+    initiativeFiles === undefined ||
+    isError(initiativeFiles) ||
+    isNilOrError(topics)
+  ) {
+    return null;
+  }
+
+  const onPublished = () => {
     if (!isNilOrError(initiative)) {
       clHistory.push(`/initiatives/${initiative.attributes.slug}`);
     }
   };
 
-  render() {
-    const {
-      authUser,
-      locale,
-      initiative,
-      initiativeImages,
-      initiativeFiles,
-      topics,
-    } = this.props;
-    if (
-      isNilOrError(authUser) ||
-      isNilOrError(locale) ||
-      isNilOrError(initiative) ||
-      initiativeImages === undefined ||
-      initiativeFiles === undefined ||
-      isError(initiativeFiles) ||
-      isNilOrError(topics)
-    ) {
-      return null;
-    }
-
-    const initiativeTopics = topics.filter(
-      (topic) => !isNilOrError(topic)
-    ) as ITopicData[];
-    return (
-      <HasPermission item={initiative} action="edit" context={initiative}>
-        <InitiativesEditMeta />
-        <PageLayout
-          isAdmin={isAdmin({ data: authUser })}
-          className="e2e-initiative-edit-page"
-        >
-          <StyledInitiativesEditFormWrapper
-            locale={locale}
-            initiative={initiative}
-            initiativeImage={
-              isNilOrError(initiativeImages) || initiativeImages.length === 0
-                ? null
-                : initiativeImages[0]
-            }
-            onPublished={this.onPublished}
-            initiativeFiles={initiativeFiles}
-            topics={initiativeTopics}
-          />
-        </PageLayout>
-      </HasPermission>
-    );
-  }
-}
+  const initiativeTopics = topics.filter(
+    (topic) => !isNilOrError(topic)
+  ) as ITopicData[];
+  return (
+    <HasPermission item={initiative} action="edit" context={initiative}>
+      <InitiativesEditMeta />
+      <PageLayout
+        isAdmin={isAdmin({ data: authUser })}
+        className="e2e-initiative-edit-page"
+      >
+        <StyledInitiativesEditFormWrapper
+          locale={locale}
+          initiative={initiative}
+          initiativeImage={
+            isNilOrError(initiativeImages) || initiativeImages.length === 0
+              ? null
+              : initiativeImages[0]
+          }
+          onPublished={onPublished}
+          initiativeFiles={initiativeFiles}
+          topics={initiativeTopics}
+        />
+      </PageLayout>
+    </HasPermission>
+  );
+};
 
 const Data = adopt<DataProps, WithRouterProps>({
   authUser: <GetAuthUser />,
