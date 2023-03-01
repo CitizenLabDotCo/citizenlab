@@ -9,4 +9,4 @@ RUN npm install
 
 ADD front/. .
 
-CMD ["npm", "start"]
+# CMD ["npm", "start"]

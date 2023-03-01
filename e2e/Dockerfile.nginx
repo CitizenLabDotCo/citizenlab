@@ -1,0 +1,6 @@
+FROM nginx:1.16.1-alpine
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/custom.conf
+# Volumes don't work on CircleCI because docker runs remotely
+# https://support.circleci.com/hc/en-us/articles/360007324514-How-can-I-use-Docker-volume-mounting-on-CircleCI-
+COPY build /html
