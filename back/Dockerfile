@@ -39,9 +39,7 @@ RUN apt-get update &&                                            \
     # Install MJML parser required by email engine.
     npm install -g mjml@4.4.1
 
-ENV INSTALL_PATH /cl2_back
-RUN mkdir -p $INSTALL_PATH
-WORKDIR $INSTALL_PATH
+WORKDIR /cl2_back
 
 RUN gem install bundler:2.3.20
 
