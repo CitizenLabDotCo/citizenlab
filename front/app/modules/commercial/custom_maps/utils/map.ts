@@ -1,6 +1,6 @@
 import { isNilOrError } from 'utils/helperUtils';
 import { IMapConfigState } from '../hooks/useMapConfig';
-import { IAppConfigurationData } from 'services/appConfiguration';
+import { IAppConfigurationData } from 'api/app_configuration/types';
 import { IMapLayerAttributes } from '../services/mapLayers';
 import { Locale } from 'typings';
 import { LatLngTuple } from 'leaflet';

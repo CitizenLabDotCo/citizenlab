@@ -8,16 +8,14 @@
 
 import { combineLatest, pairwise, startWith, Subscription } from 'rxjs';
 import { authUserStream } from 'services/auth';
-import {
-  currentAppConfigurationStream,
-  IAppConfiguration,
-} from 'services/appConfiguration';
 import { events$, pageChanges$ } from 'utils/analytics';
 import { isNilOrError } from 'utils/helperUtils';
 
 import { isAdmin, isModerator } from 'services/permissions/roles';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import { IUser } from 'services/users';
+import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
+import { IAppConfiguration } from 'api/app_configuration/types';
 
 const POSTHOG_API_KEY = process.env.POSTHOG_API_KEY;
 
@@ -96,30 +94,32 @@ const configuration: ModuleConfiguration = {
     if (!POSTHOG_API_KEY) return;
 
     combineLatest([
-      currentAppConfigurationStream().observable,
+      appConfigurationStream,
       authUserStream().observable.pipe(startWith(null), pairwise()),
     ]).subscribe(async ([appConfig, [prevUser, user]]) => {
-      // Check the feature flag
-      const posthogSettings =
-        appConfig.data.attributes.settings.posthog_integration;
-      if (!posthogSettings?.allowed || !posthogSettings.enabled) return;
+      if (appConfig) {
+        // Check the feature flag
+        const posthogSettings =
+          appConfig.data.attributes.settings.posthog_integration;
+        if (!posthogSettings?.allowed || !posthogSettings.enabled) return;
 
-      // In case the user signs in or visits signed in as an admin/moderator
-      if (!isNilOrError(user) && (isAdmin(user) || isModerator(user))) {
-        initializePosthog(POSTHOG_API_KEY, user, appConfig);
-      }
+        // In case the user signs in or visits signed in as an admin/moderator
+        if (!isNilOrError(user) && (isAdmin(user) || isModerator(user))) {
+          initializePosthog(POSTHOG_API_KEY, user, appConfig);
+        }
 
-      // In case the user signs out
-      if (prevUser && !user && posthogInitialized) {
-        const posthog = await lazyLoadedPosthog();
-        pagesSubscription?.unsubscribe();
-        eventsSubscription?.unsubscribe();
+        // In case the user signs out
+        if (prevUser && !user && posthogInitialized) {
+          const posthog = await lazyLoadedPosthog();
+          pagesSubscription?.unsubscribe();
+          eventsSubscription?.unsubscribe();
 
-        // There seems to be no way to call opt_out_capturing without posthog
-        // writing to localstorage. Clearing it, instead, seems to work fine.
-        posthog.clear_opt_in_out_capturing({ enable_persistence: false });
+          // There seems to be no way to call opt_out_capturing without posthog
+          // writing to localstorage. Clearing it, instead, seems to work fine.
+          posthog.clear_opt_in_out_capturing({ enable_persistence: false });
 
-        posthogInitialized = false;
+          posthogInitialized = false;
+        }
       }
     });
   },
