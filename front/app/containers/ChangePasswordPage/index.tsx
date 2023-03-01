@@ -138,7 +138,7 @@ const ChangePassword = ({ authUser, tenant }: Props) => {
 
   const onFormSubmit = async ({ ...formValues }: FormValues) => {
     try {
-      await changePassword(authUser.id, { ...formValues });
+      await changePassword(formValues);
       setSuccess(true);
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);

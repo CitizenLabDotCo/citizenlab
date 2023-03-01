@@ -79,7 +79,7 @@ Rails.application.routes.draw do
         get :as_xlsx, on: :collection, action: 'index_xlsx'
         post 'reset_password_email' => 'reset_password#reset_password_email', on: :collection
         post 'reset_password' => 'reset_password#reset_password', on: :collection
-        patch 'password', on: :member, action: 'update_password'
+        post 'password', on: :collection, action: 'update_password'
         get 'by_slug/:slug', on: :collection, to: 'users#by_slug'
         get 'by_invite/:token', on: :collection, to: 'users#by_invite'
         get 'ideas_count', on: :member
