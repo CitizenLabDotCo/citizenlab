@@ -236,7 +236,7 @@ const SignUp = ({
     }
   }, [metaData?.error, formatMessage]);
 
-  const onResize = (_width, height) => {
+  const onResize = (_width: number, height: number) => {
     setHeaderHeight(`${Math.round(height) + 2}px`);
   };
 

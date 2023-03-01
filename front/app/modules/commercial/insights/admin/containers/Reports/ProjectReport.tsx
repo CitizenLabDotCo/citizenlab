@@ -150,7 +150,7 @@ const ProjectReport = memo(
 
     if (isNilOrError(project)) return null;
 
-    const formatDateLabel = (date) =>
+    const formatDateLabel = (date: string) =>
       formatDate(date, {
         day: resolution === 'month' ? undefined : '2-digit',
         month: 'short',
