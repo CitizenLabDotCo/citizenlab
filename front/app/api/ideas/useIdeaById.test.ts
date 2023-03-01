@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks';
 
-import useIdea from './useIdea';
+import useIdea from './useIdeaById';
 import { ideasData } from './__mocks__/useIdea';
 
 import { setupServer } from 'msw/node';
