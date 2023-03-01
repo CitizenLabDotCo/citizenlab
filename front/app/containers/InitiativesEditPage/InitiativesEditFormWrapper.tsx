@@ -12,7 +12,6 @@ import {
   IInitiativeData,
   IInitiativeAdd,
 } from 'services/initiatives';
-import { deleteInitiativeFile } from 'services/initiativeFiles';
 import { ITopicData } from 'services/topics';
 
 // utils
@@ -37,6 +36,7 @@ import useAuthUser from 'hooks/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useAddInitiativeFile from 'api/initiative_files/useAddInitiativeFile';
+import useDeleteInitiativeFile from 'api/initiative_files/useDeleteInitiativeFile';
 
 interface Props {
   locale: Locale;
@@ -62,8 +62,9 @@ const InitiativesEditFormWrapper = ({
   const { data: appConfiguration } = useAppConfiguration();
   const authUser = useAuthUser();
   const { mutate: addInitiativeImage } = useAddInitiativeImage();
-  const { mutate: addInitiativeFile } = useAddInitiativeFile();
   const { mutate: deleteInitiativeImage } = useDeleteInitiativeImage();
+  const { mutate: addInitiativeFile } = useAddInitiativeFile();
+  const { mutate: deleteInitiativeFile } = useDeleteInitiativeFile();
 
   const initialValues = {
     title_multiloc: initiative.attributes.title_multiloc,
@@ -207,20 +208,26 @@ const InitiativesEditFormWrapper = ({
 
       // saves changes to files
       filesToRemove.map((file) => {
-        deleteInitiativeFile(initiative.id, file.id as string)
-          // we checked for id before adding them in this array
-          .catch((errorResponse) => {
-            const apiErrors = errorResponse.json.errors;
+        deleteInitiativeFile(
+          { initiativeId: initiative.id, fileId: file.id as string },
+          {
+            onError: (errorResponse) => {
+              const apiErrors = get(errorResponse, 'json.errors');
 
-            setApiErrors((oldApiErrors) => ({ ...oldApiErrors, ...apiErrors }));
-
-            setTimeout(() => {
               setApiErrors((oldApiErrors) => ({
                 ...oldApiErrors,
-                file: undefined,
+                ...apiErrors,
               }));
-            }, 5000);
-          });
+
+              setTimeout(() => {
+                setApiErrors((oldApiErrors) => ({
+                  ...oldApiErrors,
+                  file: undefined,
+                }));
+              }, 5000);
+            },
+          }
+        );
       });
       files.map((file) => {
         if (!file.id) {
