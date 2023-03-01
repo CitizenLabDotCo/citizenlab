@@ -109,11 +109,7 @@ jobs:
     docker:
       - image: cimg/base:stable
     steps:
-      - git-shallow-clone/checkout:
-          depth: 1000
-          fetch_depth: 10000
-          keyscan_github: true
-          path: ./citizenlab
+      - checkout
       - run:
           name: Trigger workflows
           command: chmod +x ./citizenlab/.circleci/monorepo.sh && ./citizenlab/.circleci/monorepo.sh
