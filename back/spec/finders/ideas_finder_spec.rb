@@ -226,17 +226,25 @@ describe IdeasFinder do
     end
   end
 
-
-  describe '#basket_condition' do
-
-  end
-
   describe '#project_condition' do
     let(:project_id) { Project.pick(:id) }
     let(:expected_record_ids) { Idea.where(project_id: project_id).pluck(:id) }
 
     before do
       params[:project] = project_id
+    end
+
+    it 'returns the correct records' do
+      expect(result_record_ids).to match_array expected_record_ids
+    end
+  end
+
+  describe '#basket_condition' do
+    let(:basket_id) { Basket.pick(:id) }
+    let(:expected_record_ids) { Idea.joins(:baskets).where('baskets.id': basket_id).pluck(:id) }
+
+    before do
+      params[:basket] = basket_id
     end
 
     it 'returns the correct records' do
