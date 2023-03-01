@@ -71,6 +71,11 @@ export interface IUserUpdate {
   custom_field_values?: Record<string, any>;
 }
 
+interface IChangePassword {
+  current_password: string;
+  new_password: string;
+}
+
 export function usersStream(streamParams: IStreamParams | null = null) {
   return streams.get<IUsers>({ apiEndpoint, ...streamParams });
 }
@@ -96,6 +101,15 @@ export async function updateUser(userId: string, object: IUserUpdate) {
     dataId: [userId],
     apiEndpoint: [`${API_PATH}/groups`, `${API_PATH}/users`],
   });
+  return response;
+}
+
+export async function changePassword(userId: string, object: IChangePassword) {
+  const response = await streams.update<IUser>(
+    `${apiEndpoint}/${userId}/change-password`,
+    userId,
+    { user: object }
+  );
   return response;
 }
 

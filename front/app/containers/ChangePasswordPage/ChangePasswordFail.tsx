@@ -1,13 +1,7 @@
 import React from 'react';
 
 // Components
-import {
-  Box,
-  Icon,
-  Text,
-  Button,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Box, Text, Button } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -16,7 +10,7 @@ import messages from './messages';
 // utils
 import clHistory from 'utils/cl-router/history';
 
-export const PasswordResetSuccess = () => {
+export default () => {
   const signIn = () => {
     clHistory.push('/sign-in');
   };
@@ -32,19 +26,11 @@ export const PasswordResetSuccess = () => {
       flexDirection="column"
       mt="60px"
     >
-      <Box display="flex" justifyContent="center">
-        <Icon
-          name="check-circle"
-          fill={colors.green400}
-          width="60px"
-          height="60px"
-        />
-      </Box>
       <Text variant="bodyL" textAlign="center">
-        <FormattedMessage {...messages.passwordUpdatedSuccessMessage} />
+        <FormattedMessage {...messages.passwordChangeFailMessage} />
       </Text>
       <Text variant="bodyS" textAlign="center">
-        <FormattedMessage {...messages.pleaseLogInMessage} />
+        <FormattedMessage {...messages.pleaseLogInAgainMessage} />
       </Text>
       <Button onClick={signIn}>
         <FormattedMessage {...messages.login} />

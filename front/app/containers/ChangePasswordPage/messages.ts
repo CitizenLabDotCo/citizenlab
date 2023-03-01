@@ -2,51 +2,76 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   helmetTitle: {
-    id: 'app.containers.PasswordReset.helmetTitle',
-    defaultMessage: 'Reset your password',
+    id: 'app.containers.ChangePassword.helmetTitle',
+    defaultMessage: 'Change your password',
   },
   helmetDescription: {
-    id: 'app.containers.PasswordReset.helmetDescription',
-    defaultMessage: 'Reset your password page',
+    id: 'app.containers.ChangePassword.helmetDescription',
+    defaultMessage: 'Change your password page',
   },
   title: {
-    id: 'app.containers.PasswordReset.title',
-    defaultMessage: 'Reset your password',
+    id: 'app.containers.ChangePassword.title',
+    defaultMessage: 'Change your password',
   },
-  passwordPlaceholder: {
-    id: 'app.containers.PasswordReset.passwordPlaceholder',
+  minimumPasswordLengthError: {
+    id: 'app.containers.ChangePassword.password.minimumPasswordLengthError',
+    defaultMessage:
+      'Provide a password that is at least {minimumPasswordLength} characters long',
+  },
+  passwordEmptyError: {
+    id: 'app.containers.ChangePassword.passwordEmptyError',
+    defaultMessage: 'Enter your password',
+  },
+  currentPasswordLabel: {
+    id: 'app.containers.ChangePassword.currentPasswordLabel',
+    defaultMessage: 'Current password',
+  },
+  newPasswordLabel: {
+    id: 'app.containers.ChangePassword.newPasswordLabel',
     defaultMessage: 'New password',
   },
-  passwordLabel: {
-    id: 'app.containers.PasswordReset.passwordLabel',
-    defaultMessage: 'Password',
-  },
-  passwordError: {
-    id: 'app.containers.PasswordReset.passwordError',
-    defaultMessage: 'Your password must contain at least 8 characters',
-  },
-  submitError: {
-    id: 'app.containers.PasswordReset.submitError',
-    defaultMessage: 'Something went wrong. Please try again later.',
-  },
-  passwordUpdatedSuccessMessage: {
-    id: 'app.containers.PasswordReset.passwordUpdatedSuccessMessage',
-    defaultMessage: 'Your password has been successfully updated.',
-  },
-  updatePassword: {
-    id: 'app.containers.PasswordReset.updatePassword',
+  confirmPasswordLabel: {
+    id: 'app.containers.ChangePassword.confirmPasswordLabel',
     defaultMessage: 'Confirm new password',
   },
-  requestNewPasswordReset: {
-    id: 'app.containers.PasswordReset.requestNewPasswordReset',
-    defaultMessage: 'Request a new password reset',
+  login: {
+    id: 'app.containers.ChangePassword.login',
+    defaultMessage: 'Log in',
   },
   pleaseLogInMessage: {
-    id: 'app.containers.PasswordReset.pleaseLogInMessage',
+    id: 'app.containers.ChangePassword.pleaseLogInMessage',
     defaultMessage: 'Please log in with your new password.',
   },
-  login: {
-    id: 'app.containers.PasswordReset.login',
-    defaultMessage: 'Log in',
+  passwordChangeSuccessMessage: {
+    id: 'app.containers.ChangePassword.passwordChangeSuccessMessage',
+    defaultMessage: 'Your password has been successfully updated.',
+  },
+  passwordChangeFailMessage: {
+    id: 'app.containers.ChangePassword.passwordChangeFailMessage',
+    defaultMessage: 'You’re logged out.',
+  },
+  pleaseLogInAgainMessage: {
+    id: 'app.containers.ChangePassword.pleaseLogInAgainMessage',
+    defaultMessage: 'Please log in again.',
+  },
+  currentPasswordRequired: {
+    id: 'app.containers.ChangePassword.currentPasswordRequired',
+    defaultMessage: 'Enter your current password.',
+  },
+  passwordsDontMatch: {
+    id: 'app.containers.ChangePassword.passwordsDontMatch',
+    defaultMessage: 'Passwords don’t match.',
+  },
+  submitButton: {
+    id: 'app.containers.ChangePassword.passwordsDontMatch',
+    defaultMessage: 'Confirm new password',
+  },
+  newPasswordRequired: {
+    id: 'app.containers.ChangePassword.newPasswordRequired',
+    defaultMessage: 'Enter your new password.',
+  },
+  confirmPasswordRequired: {
+    id: 'app.containers.ChangePassword.confirmPasswordRequired',
+    defaultMessage: 'Enter your new password again.',
   },
 });
