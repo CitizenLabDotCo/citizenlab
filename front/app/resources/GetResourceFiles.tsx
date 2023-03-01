@@ -27,13 +27,7 @@ import { ideaFilesStream, IIdeaFileData, IIdeaFiles } from 'services/ideaFiles';
 
 import { isNilOrError } from 'utils/helperUtils';
 
-export type ResourceType =
-  | 'project'
-  | 'phase'
-  | 'event'
-  | 'page'
-  | 'idea'
-  | 'initiative';
+export type ResourceType = 'project' | 'phase' | 'event' | 'page' | 'idea';
 
 export type TResourceFileData =
   | IProjectFileData
