@@ -229,8 +229,9 @@ const InitiativeCards = ({
     data: initiatives,
     fetchNextPage,
     isFetchingNextPage,
-    isFetching,
+
     hasNextPage,
+    isLoading,
   } = useInfitineInitiatives(selectedInitiativeFilters);
 
   const flatInitiatives = initiatives?.pages.flatMap((page) => page.data) || [];
@@ -360,17 +361,19 @@ const InitiativeCards = ({
     </FiltersSidebarContainer>
   );
 
+  if (isLoading) {
+    return (
+      <InitialLoading id="initiatives-loading">
+        <Spinner />
+      </InitialLoading>
+    );
+  }
+
   return (
     <Container id="e2e-initiatives-container" className={className}>
       <ScreenReaderOnly>
         <FormattedMessage tagName="h2" {...invisibleTitleMessage} />
       </ScreenReaderOnly>
-
-      {flatInitiatives === undefined && (
-        <InitialLoading id="initiatives-loading">
-          <Spinner />
-        </InitialLoading>
-      )}
 
       {flatInitiatives !== undefined && (
         <>
@@ -472,7 +475,7 @@ const InitiativeCards = ({
 
           <Content>
             <ContentLeft>
-              {!isFetchingNextPage && hasInitiatives ? (
+              {hasInitiatives ? (
                 <>
                   {selectedView === 'card' && (
                     <ProposalsList
@@ -480,7 +483,7 @@ const InitiativeCards = ({
                       id={'view-panel-1'}
                       hasMore={!!hasNextPage}
                       loadingMore={isFetchingNextPage}
-                      querying={isFetching}
+                      querying={isLoading}
                       onLoadMore={loadMore}
                       list={flatInitiatives}
                     />
