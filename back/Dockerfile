@@ -18,15 +18,26 @@ FROM ruby:2.7.6-slim
 ARG CITIZENLAB_EE=false
 ENV CITIZENLAB_EE=$CITIZENLAB_EE
 
-RUN apt-get update && apt-get install -qq -y --no-install-recommends \
-      build-essential libpq-dev file imagemagick curl git optipng jpegoptim pngquant libgeos-dev libgmp3-dev netcat shared-mime-info \
-      less
-
-RUN curl -sL https://deb.nodesource.com/setup_14.x  | bash -
-RUN apt-get -y install nodejs
-
-# Install MJML parser required by email engine.
-RUN npm install -g mjml@4.4.1
+RUN apt-get update &&                                            \
+    apt-get install -qq -y --no-install-recommends               \
+      build-essential                                            \
+      curl                                                       \
+      file                                                       \
+      git                                                        \
+      imagemagick                                                \
+      jpegoptim                                                  \
+      less                                                       \
+      libgeos-dev                                                \
+      libgmp3-dev                                                \
+      libpq-dev                                                  \
+      netcat                                                     \
+      optipng                                                    \
+      pngquant                                                   \
+      shared-mime-info &&                                        \
+    curl -sL https://deb.nodesource.com/setup_14.x  | bash - &&  \
+    apt-get -y --no-install-recommends install nodejs &&         \
+    # Install MJML parser required by email engine.
+    npm install -g mjml@4.4.1
 
 ENV INSTALL_PATH /cl2_back
 RUN mkdir -p $INSTALL_PATH
