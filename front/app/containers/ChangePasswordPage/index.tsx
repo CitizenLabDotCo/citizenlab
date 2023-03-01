@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { adopt } from 'react-adopt';
 
 // components
@@ -9,13 +9,12 @@ import PasswordIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTo
 import { Helmet } from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
 import { FormLabel } from 'components/UI/FormComponents';
-// import ChangePasswordFail from './ChangePasswordFail'
-// import ChangePasswordSuccess from './ChangePasswordSuccess'
+import ChangePasswordSuccess from './ChangePasswordSuccess';
 
 // form
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { string, object, ref } from 'yup';
+import { string, object } from 'yup';
 
 // style
 import styled from 'styled-components';
@@ -84,7 +83,6 @@ const StyledPasswordIconTooltip = styled(PasswordIconTooltip)`
 type FormValues = {
   current_password: string;
   new_password: string;
-  confirm_password: string;
 };
 
 type Props = {
@@ -94,6 +92,7 @@ type Props = {
 
 const ChangePassword = ({ authUser, tenant }: Props) => {
   const { formatMessage } = useIntl();
+  const [success, setSuccess] = useState(false);
 
   const minimumPasswordLength =
     (!isNilOrError(tenant) &&
@@ -124,12 +123,6 @@ const ChangePassword = ({ authUser, tenant }: Props) => {
         }
       )
       .required(formatMessage(messages.newPasswordRequired)),
-    confirm_password: string()
-      .oneOf(
-        [ref('new_password'), null],
-        formatMessage(messages.passwordsDontMatch)
-      )
-      .required(formatMessage(messages.confirmPasswordRequired)),
   });
 
   const methods = useForm<FormValues>({
@@ -137,27 +130,22 @@ const ChangePassword = ({ authUser, tenant }: Props) => {
     defaultValues: {
       current_password: '',
       new_password: '',
-      confirm_password: '',
     },
     resolver: yupResolver(schema),
   });
 
   if (isNilOrError(authUser)) return null;
 
-  const onFormSubmit = async ({
-    confirm_password,
-    ...formValues
-  }: FormValues) => {
-    console.log(formValues);
+  const onFormSubmit = async ({ ...formValues }: FormValues) => {
     try {
       await changePassword(authUser.id, { ...formValues });
+      setSuccess(true);
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }
   };
 
-  // if (fail) <ChangePasswordFail />
-  // if (success) <ChangePasswordSuccess />
+  if (success) return <ChangePasswordSuccess />;
   return (
     <Box
       width="100%"
@@ -185,7 +173,7 @@ const ChangePassword = ({ authUser, tenant }: Props) => {
                   width="max-content"
                   margin-right="5px"
                   labelMessage={messages.currentPasswordLabel}
-                  htmlFor="password"
+                  htmlFor="current_password"
                 />
               </LabelContainer>
               <PasswordInput
@@ -198,23 +186,11 @@ const ChangePassword = ({ authUser, tenant }: Props) => {
                   width="max-content"
                   margin-right="5px"
                   labelMessage={messages.newPasswordLabel}
-                  htmlFor="password"
+                  htmlFor="new_password"
                 />
                 <StyledPasswordIconTooltip />
               </LabelContainer>
               <PasswordInput name="new_password" autocomplete="new-password" />
-              <LabelContainer>
-                <FormLabel
-                  width="max-content"
-                  margin-right="5px"
-                  labelMessage={messages.confirmPasswordLabel}
-                  htmlFor="password"
-                />
-              </LabelContainer>
-              <PasswordInput
-                name="confirm_password"
-                autocomplete="new-password"
-              />
 
               <StyledButton
                 type="submit"

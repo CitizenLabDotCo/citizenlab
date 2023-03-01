@@ -469,6 +469,10 @@ class User < ApplicationRecord
     self.email_confirmed_at = nil
   end
 
+  def original_authenticate(unencrypted_password)
+    BCrypt::Password.new(password_digest).is_password?(unencrypted_password)
+  end
+
   private
 
   def generate_slug
@@ -489,10 +493,6 @@ class User < ApplicationRecord
 
   def set_cl1_migrated
     self.cl1_migrated ||= false
-  end
-
-  def original_authenticate(unencrypted_password)
-    BCrypt::Password.new(password_digest).is_password?(unencrypted_password)
   end
 
   def cl1_authenticate(unencrypted_password)

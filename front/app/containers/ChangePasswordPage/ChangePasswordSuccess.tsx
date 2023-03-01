@@ -43,11 +43,8 @@ export default () => {
       <Text variant="bodyL" textAlign="center">
         <FormattedMessage {...messages.passwordChangeSuccessMessage} />
       </Text>
-      <Text variant="bodyS" textAlign="center">
-        <FormattedMessage {...messages.pleaseLogInMessage} />
-      </Text>
       <Button onClick={signIn}>
-        <FormattedMessage {...messages.login} />
+        <FormattedMessage {...messages.goHome} />
       </Button>
     </Box>
   );

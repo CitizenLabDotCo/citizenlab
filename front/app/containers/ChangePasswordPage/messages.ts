@@ -30,37 +30,17 @@ export default defineMessages({
     id: 'app.containers.ChangePassword.newPasswordLabel',
     defaultMessage: 'New password',
   },
-  confirmPasswordLabel: {
-    id: 'app.containers.ChangePassword.confirmPasswordLabel',
-    defaultMessage: 'Confirm new password',
-  },
-  login: {
-    id: 'app.containers.ChangePassword.login',
-    defaultMessage: 'Log in',
-  },
-  pleaseLogInMessage: {
-    id: 'app.containers.ChangePassword.pleaseLogInMessage',
-    defaultMessage: 'Please log in with your new password.',
+  goHome: {
+    id: 'app.containers.ChangePassword.goHome',
+    defaultMessage: 'Go to home',
   },
   passwordChangeSuccessMessage: {
     id: 'app.containers.ChangePassword.passwordChangeSuccessMessage',
-    defaultMessage: 'Your password has been successfully updated.',
-  },
-  passwordChangeFailMessage: {
-    id: 'app.containers.ChangePassword.passwordChangeFailMessage',
-    defaultMessage: 'You’re logged out.',
-  },
-  pleaseLogInAgainMessage: {
-    id: 'app.containers.ChangePassword.pleaseLogInAgainMessage',
-    defaultMessage: 'Please log in again.',
+    defaultMessage: 'Your password has been successfully updated',
   },
   currentPasswordRequired: {
     id: 'app.containers.ChangePassword.currentPasswordRequired',
-    defaultMessage: 'Enter your current password.',
-  },
-  passwordsDontMatch: {
-    id: 'app.containers.ChangePassword.passwordsDontMatch',
-    defaultMessage: 'Passwords don’t match.',
+    defaultMessage: 'Enter your current password',
   },
   submitButton: {
     id: 'app.containers.ChangePassword.passwordsDontMatch',
@@ -68,10 +48,6 @@ export default defineMessages({
   },
   newPasswordRequired: {
     id: 'app.containers.ChangePassword.newPasswordRequired',
-    defaultMessage: 'Enter your new password.',
-  },
-  confirmPasswordRequired: {
-    id: 'app.containers.ChangePassword.confirmPasswordRequired',
-    defaultMessage: 'Enter your new password again.',
+    defaultMessage: 'Enter your new password',
   },
 });
