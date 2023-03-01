@@ -12,10 +12,6 @@ import {
   IInitiativeData,
   IInitiativeAdd,
 } from 'services/initiatives';
-import {
-  deleteInitiativeFile,
-  addInitiativeFile,
-} from 'services/initiativeFiles';
 import { ITopicData } from 'services/topics';
 
 // utils
@@ -38,6 +34,9 @@ import useAddInitiativeImage from 'api/initiative_images/useAddInitiativeImage';
 import useDeleteInitiativeImage from 'api/initiative_images/useDeleteInitiativeImage';
 import useAuthUser from 'hooks/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import useAddInitiativeFile from 'api/initiative_files/useAddInitiativeFile';
+import useDeleteInitiativeFile from 'api/initiative_files/useDeleteInitiativeFile';
 
 interface Props {
   locale: Locale;
@@ -64,6 +63,8 @@ const InitiativesEditFormWrapper = ({
   const authUser = useAuthUser();
   const { mutate: addInitiativeImage } = useAddInitiativeImage();
   const { mutate: deleteInitiativeImage } = useDeleteInitiativeImage();
+  const { mutate: addInitiativeFile } = useAddInitiativeFile();
+  const { mutate: deleteInitiativeFile } = useDeleteInitiativeFile();
 
   const initialValues = {
     title_multiloc: initiative.attributes.title_multiloc,
@@ -87,6 +88,12 @@ const InitiativesEditFormWrapper = ({
     useState<boolean>(false);
   const [descriptionProfanityError, setDescriptionProfanityError] =
     useState<boolean>(false);
+
+  useEffect(() => {
+    if (initiativeFiles) {
+      setFiles(initiativeFiles);
+    }
+  }, [initiativeFiles]);
 
   useEffect(() => {
     if (initiativeImage && initiativeImage.attributes.versions.large) {
@@ -207,41 +214,54 @@ const InitiativesEditFormWrapper = ({
 
       // saves changes to files
       filesToRemove.map((file) => {
-        deleteInitiativeFile(initiative.id, file.id as string)
-          // we checked for id before adding them in this array
-          .catch((errorResponse) => {
-            const apiErrors = errorResponse.json.errors;
-
-            setApiErrors((oldApiErrors) => ({ ...oldApiErrors, ...apiErrors }));
-
-            setTimeout(() => {
-              setApiErrors((oldApiErrors) => ({
-                ...oldApiErrors,
-                file: undefined,
-              }));
-            }, 5000);
-          });
-      });
-      files.map((file) => {
-        if (!file.id) {
-          addInitiativeFile(initiative.id, file.base64, file.name)
-            .then((res) => {
-              file.id = res.data.id;
-            })
-            .catch((errorResponse) => {
+        deleteInitiativeFile(
+          { initiativeId: initiative.id, fileId: file.id as string },
+          {
+            onError: (errorResponse) => {
               const apiErrors = get(errorResponse, 'json.errors');
 
               setApiErrors((oldApiErrors) => ({
                 ...oldApiErrors,
                 ...apiErrors,
               }));
+
               setTimeout(() => {
                 setApiErrors((oldApiErrors) => ({
                   ...oldApiErrors,
                   file: undefined,
                 }));
               }, 5000);
-            });
+            },
+          }
+        );
+      });
+      files.map((file) => {
+        if (!file.id) {
+          addInitiativeFile(
+            {
+              initiativeId: initiative.id,
+              file: { file: file.base64, name: file.name },
+            },
+            {
+              onSuccess: (res) => {
+                file.id = res.data.id;
+              },
+              onError: (errorResponse) => {
+                const apiErrors = get(errorResponse, 'json.errors');
+
+                setApiErrors((oldApiErrors) => ({
+                  ...oldApiErrors,
+                  ...apiErrors,
+                }));
+                setTimeout(() => {
+                  setApiErrors((oldApiErrors) => ({
+                    ...oldApiErrors,
+                    file: undefined,
+                  }));
+                }, 5000);
+              },
+            }
+          );
         }
       });
 

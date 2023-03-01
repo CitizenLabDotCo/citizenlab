@@ -5,7 +5,7 @@ import { IPhaseFileData } from 'services/phaseFiles';
 import { IEventFileData } from 'services/eventFiles';
 import { ICustomPageFileData } from 'services/pageFiles';
 import { IIdeaFileData } from 'services/ideaFiles';
-import { IInitiativeFileData } from 'services/initiativeFiles';
+import { IInitiativeFileData } from 'api/initiative_files/types';
 
 interface Props {
   files:

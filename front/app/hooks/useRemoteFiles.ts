@@ -7,7 +7,6 @@ import { phaseFilesStream } from 'services/phaseFiles';
 import { pageFilesStream } from 'services/pageFiles';
 import { eventFilesStream } from 'services/eventFiles';
 import { ideaFilesStream } from 'services/ideaFiles';
-import { initiativeFilesStream } from 'services/initiativeFiles';
 import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
 import { UploadFile } from 'typings';
 import { InputProps } from 'resources/GetRemoteFiles';
@@ -31,7 +30,6 @@ function useRemoteFiles({
       event: eventFilesStream,
       page: pageFilesStream,
       idea: ideaFilesStream,
-      initiative: initiativeFilesStream,
     }[resourceType];
     let observable: Observable<(UploadFile | null)[] | null> = of(null);
 
