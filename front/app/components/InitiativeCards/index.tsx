@@ -378,12 +378,12 @@ const InitiativeCards = ({
             <>
               <FullscreenModal
                 opened={filtersModalOpened}
-                close={closeModalAndRevertFilters}
+                close={closeModalAndApplyFilters}
                 animateInOut={true}
                 topBar={
                   <TopBar
-                    onReset={handleInitiativeFiltersOnReset}
-                    onClose={closeModalAndRevertFilters}
+                    onReset={closeModalAndRevertFilters}
+                    onClose={closeModalAndApplyFilters}
                   />
                 }
                 bottomBar={
