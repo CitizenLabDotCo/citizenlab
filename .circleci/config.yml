@@ -257,7 +257,7 @@ jobs:
           at: /tmp/workspace
       - run: rake templates:release['/tmp/workspace/failed-templates.txt']
 
-  back-web-api-docs:
+  back-docs-not-blocking:
     resource_class: small
     executor:
       name: cl2-back
@@ -731,12 +731,12 @@ workflows:
             - citizenlab-ee-environment
           requires:
             - back-build-docker-image
-      - back-web-api-docs:
+      - back-docs-not-blocking:
           context:
             - docker-hub-access
             - citizenlab-ee-environment
           requires:
-            - back-test
+            - back-build-docker-image
       - back-slow-tests:
           context:
             - docker-hub-access
@@ -797,6 +797,8 @@ workflows:
               only:
                 - production
           image_tag: $CIRCLE_SHA1
+          requires:
+            - back-build-docker-image
       - back-deploy-to-swarm:
           name: Deploy to Europe
           requires:
@@ -903,10 +905,13 @@ workflows:
               ignore:
                 - crowdin_master
                 - /l10n_.*/
+                - master
       - front-trigger-deploy:
           context: circleci-api-token
           requires:
             - front-test
+            - front-build
+            - front-license-check
           filters:
             branches:
               only:

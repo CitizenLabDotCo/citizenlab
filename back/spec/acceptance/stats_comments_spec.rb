@@ -90,7 +90,8 @@ resource 'Stats - Comments' do
         create(:comment, post: create(:idea, project: create(:private_admins_project)))
       end
 
-      example_request 'Count all comments (as a moderator)', document: false do
+      example 'Count all comments (as a moderator)', document: false do
+        do_request
         assert_status 200
         expect(json_response[:count]).to eq 2
       end
@@ -203,7 +204,8 @@ resource 'Stats - Comments' do
 
         let(:project) { @project.id }
 
-        example_request 'Count all comments filtered by project', document: false do
+        example 'Count all comments filtered by project', document: false do
+          do_request
           assert_status 200
 
           expect(json_response[:series][:comments].values.last).to eq 1
@@ -305,7 +307,8 @@ resource 'Stats - Comments' do
 
         let(:project) { @project.id }
 
-        example_request 'Count all comments filtered by project', document: false do
+        example 'Count all comments filtered by project', document: false do
+          do_request
           assert_status 200
           worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
           expect(worksheet[0].cells.map(&:value)).to match %w[date amount]

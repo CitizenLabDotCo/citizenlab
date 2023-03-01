@@ -23,6 +23,7 @@ import {
   Label,
   colors,
 } from '@citizenlab/cl2-component-library';
+import Tippy from '@tippyjs/react';
 
 // hooks
 import useTopics from 'hooks/useTopics';
@@ -46,6 +47,16 @@ import { IAreaData } from 'services/areas';
 import { ITopicData } from 'services/topics';
 import { ProjectsFilterTypes } from 'services/customPages';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
+// styles
+import styled from 'styled-components';
+
+const LinkedProjectContainer = styled(Box)<{ disabled: boolean }>`
+  &:hover {
+    cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+  }
+  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
+`;
 
 export interface FormValues {
   title_multiloc: Multiloc;
@@ -79,9 +90,13 @@ const CustomPageSettingsForm = ({
   defaultValues,
 }: Props) => {
   const localize = useLocalize();
-  const advancedCustomPagesEnabled = useFeatureFlag({
+  const isFeatureEnabled = useFeatureFlag({ name: 'advanced_custom_pages' });
+  const isFeatureAllowed = useFeatureFlag({
     name: 'advanced_custom_pages',
+    onlyCheckAllowed: true,
   });
+  const showPlanUpgradeTease = !isFeatureAllowed;
+  const showAdvancedCustomPages = showPlanUpgradeTease || isFeatureEnabled;
   const areas = useAreas();
   const { data: appConfig } = useAppConfiguration();
   const locale = useLocale();
@@ -239,43 +254,67 @@ const CustomPageSettingsForm = ({
               </Box>
             )}
 
-            {advancedCustomPagesEnabled && (
-              <Box mb={fieldMarginBottom}>
-                <Box display="flex" justifyContent="flex-start">
-                  <Label>
-                    <span>{formatMessage(messages.linkedProjectsLabel)}</span>
-                    <IconTooltip
-                      ml="10px"
-                      content={formatMessage(messages.linkedProjectsTooltip)}
-                    />
-                  </Label>
-                </Box>
-                <Box mb="30px">
-                  <Tabs
-                    name="projects_filter_type"
-                    items={projectsFilterTabs}
-                    minTabWidth={120}
-                  />
-                </Box>
-                {methods.watch('projects_filter_type') === 'topics' && (
-                  <Box mb="30px">
-                    <MultipleSelect
-                      name="topic_ids"
-                      options={mapFilterEntityToOptions(topics)}
-                      label={formatMessage(messages.selectedTagsLabel)}
-                    />
-                  </Box>
-                )}
-                {methods.watch('projects_filter_type') === 'areas' && (
-                  <Box mb="20px">
-                    <Select
-                      name="area_id"
-                      options={mapFilterEntityToOptions(areas)}
-                      label={formatMessage(messages.selectedAreasLabel)}
-                    />
-                  </Box>
-                )}
-              </Box>
+            {showAdvancedCustomPages && (
+              <LinkedProjectContainer
+                display="inline-flex"
+                disabled={showPlanUpgradeTease}
+              >
+                <Tippy
+                  maxWidth="250px"
+                  placement="right-end"
+                  content={formatMessage(messages.contactGovSuccessToAccess)}
+                  disabled={!showPlanUpgradeTease}
+                  hideOnClick={false}
+                >
+                  <div>
+                    <Box mb={fieldMarginBottom}>
+                      <Box
+                        display="flex"
+                        justifyContent="flex-start"
+                        width="100%"
+                      >
+                        <Label>
+                          <span>
+                            {formatMessage(messages.linkedProjectsLabel)}
+                          </span>
+                          <IconTooltip
+                            ml="10px"
+                            content={formatMessage(
+                              messages.linkedProjectsTooltip
+                            )}
+                          />
+                        </Label>
+                      </Box>
+                      <Box mb="30px">
+                        <Tabs
+                          name="projects_filter_type"
+                          items={projectsFilterTabs}
+                          minTabWidth={120}
+                          disabled={showPlanUpgradeTease}
+                        />
+                      </Box>
+                      {methods.watch('projects_filter_type') === 'topics' && (
+                        <Box mb="30px">
+                          <MultipleSelect
+                            name="topic_ids"
+                            options={mapFilterEntityToOptions(topics)}
+                            label={formatMessage(messages.selectedTagsLabel)}
+                          />
+                        </Box>
+                      )}
+                      {methods.watch('projects_filter_type') === 'areas' && (
+                        <Box mb="20px">
+                          <Select
+                            name="area_id"
+                            options={mapFilterEntityToOptions(areas)}
+                            label={formatMessage(messages.selectedAreasLabel)}
+                          />
+                        </Box>
+                      )}
+                    </Box>
+                  </div>
+                </Tippy>
+              </LinkedProjectContainer>
             )}
           </SectionField>
         </SectionFormWrapper>

@@ -26,7 +26,7 @@ const TabIcon = styled(Icon)`
   margin-left: 10px;
 `;
 
-const Tab = styled.button<{ minWidth?: number }>`
+const Tab = styled.button<{ minWidth?: number; disabled?: boolean }>`
   display: flex;
   align-items: center;
   margin: 0;
@@ -35,7 +35,7 @@ const Tab = styled.button<{ minWidth?: number }>`
   background: #fff;
   border-radius: 0;
   border: solid 1px ${colors.grey700};
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   transition: all 80ms ease-out;
   justify-content: center;
   ${(props) => props.minWidth && `min-width: ${props.minWidth}px;`}
@@ -53,7 +53,6 @@ const Tab = styled.button<{ minWidth?: number }>`
   &:not(.selected):hover,
   &:not(.selected):focus {
     z-index: 10;
-    border-color: ${colors.primary};
   }
 
   &.selected {
@@ -83,10 +82,11 @@ export interface Props {
   className?: string;
   onClick: (itemName: string) => void;
   minTabWidth?: number;
+  disabled?: boolean;
 }
 
 const Tabs = memo<Props>(
-  ({ items, selectedValue, onClick, className, minTabWidth }) => {
+  ({ items, selectedValue, onClick, className, minTabWidth, disabled = false }) => {
     const handleTabOnClick = useCallback((event: MouseEvent<HTMLElement>) => {
       const newSelectedValue = event.currentTarget.dataset.itemvalue as string;
       onClick(newSelectedValue);
@@ -110,6 +110,7 @@ const Tabs = memo<Props>(
             data-itemvalue={item.name}
             type="button"
             minWidth={minTabWidth}
+            disabled={disabled}
           >
             <TabText>{item.label}</TabText>
             {item.icon && <TabIcon name={item.icon} />}

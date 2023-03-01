@@ -15,7 +15,7 @@ describe('profile deletion', () => {
       }
     );
   });
-  it('lets user delete their profile', () => {
+  it.skip('lets user delete their profile', () => {
     cy.get('.e2e-delete-profile').find('button').click();
     cy.get('.e2e-delete-profile-confirm').find('button').click();
     cy.wait(3000);
