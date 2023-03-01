@@ -434,24 +434,26 @@ resource 'Ideas' do
         let(:projects) { [@project.id] }
 
         example_request 'List idea counts per filter option' do
-          expect(status).to eq 200
-          json_response = json_parse(response_body)
+          assert_status 200
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :type)).to eq 'filter_counts'
+          json_attributes = json_response.dig(:data, :attributes)
 
-          expect(json_response[:idea_status_id][@s1.id.to_sym]).to eq 1
-          expect(json_response[:idea_status_id][@s2.id.to_sym]).to eq 3
-          expect(json_response[:topic_id][@t1.id.to_sym]).to eq 2
-          expect(json_response[:topic_id][@t2.id.to_sym]).to eq 2
-          expect(json_response[:total]).to eq 4
+          expect(json_attributes[:idea_status_id][@s1.id.to_sym]).to eq 1
+          expect(json_attributes[:idea_status_id][@s2.id.to_sym]).to eq 3
+          expect(json_attributes[:topic_id][@t1.id.to_sym]).to eq 2
+          expect(json_attributes[:topic_id][@t2.id.to_sym]).to eq 2
+          expect(json_attributes[:total]).to eq 4
         end
 
         example 'List idea counts per filter option on topic' do
           do_request topics: [@t1.id], projects: nil
-          expect(status).to eq 200
+          assert_status 200
         end
 
         example 'List idea counts per filter option with a search string' do
           do_request search: 'trees'
-          expect(status).to eq 200
+          assert_status 200
         end
       end
     end
@@ -545,9 +547,11 @@ resource 'Ideas' do
 
       example_request 'Get the jsonforms.io json schema and ui schema for an ideation input' do
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:json_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
-        expect(json_response[:ui_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'json_forms_schema'
+        json_attributes = json_response.dig(:data, :attributes)
+        expect(json_attributes[:json_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
+        expect(json_attributes[:ui_schema_multiloc].keys).to eq %i[en fr-FR nl-NL]
         visible_built_in_field_keys = %i[
           title_multiloc
           body_multiloc
@@ -557,7 +561,7 @@ resource 'Ideas' do
           location_description
         ]
         %i[en fr-FR nl-NL].each do |locale|
-          expect(json_response[:json_schema_multiloc][locale][:properties].keys).to eq(visible_built_in_field_keys + [custom_field.key.to_sym])
+          expect(json_attributes[:json_schema_multiloc][locale][:properties].keys).to eq(visible_built_in_field_keys + [custom_field.key.to_sym])
         end
       end
     end
