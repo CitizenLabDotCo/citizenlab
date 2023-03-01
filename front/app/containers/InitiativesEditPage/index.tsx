@@ -16,9 +16,6 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetInitiative, {
   GetInitiativeChildProps,
 } from 'resources/GetInitiative';
-import GetInitiativeImages, {
-  GetInitiativeImagesChildProps,
-} from 'resources/GetInitiativeImages';
 import { PreviousPathnameContext } from 'context';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
@@ -26,6 +23,7 @@ import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { useParams } from 'react-router-dom';
 import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
+import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -55,7 +53,6 @@ const StyledInitiativesEditFormWrapper = styled(InitiativesEditFormWrapper)`
 
 interface DataProps {
   initiative: GetInitiativeChildProps;
-  initiativeImages: GetInitiativeImagesChildProps;
   authUser: GetAuthUserChildProps;
   locale: GetLocaleChildProps;
   previousPathName: string | null;
@@ -69,13 +66,13 @@ const InitiativesEditPage = ({
   initiative,
   authUser,
   locale,
-  initiativeImages,
   topics,
 }: Props) => {
   const { initiativeId } = useParams() as {
     initiativeId: string;
   };
   const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
+  const { data: initiativeImages } = useInitiativeImages(initiativeId);
   const [files, setFiles] = useState<UploadFile[]>([]);
 
   useEffect(() => {
@@ -142,9 +139,9 @@ const InitiativesEditPage = ({
           locale={locale}
           initiative={initiative}
           initiativeImage={
-            isNilOrError(initiativeImages) || initiativeImages.length === 0
+            isNilOrError(initiativeImages) || initiativeImages.data.length === 0
               ? null
-              : initiativeImages[0]
+              : initiativeImages.data[0]
           }
           onPublished={onPublished}
           initiativeFiles={files}
@@ -161,11 +158,6 @@ const Data = adopt<DataProps, WithRouterProps>({
   topics: <GetTopics excludeCode={'custom'} />,
   initiative: ({ params, render }) => (
     <GetInitiative id={params.initiativeId}>{render}</GetInitiative>
-  ),
-  initiativeImages: ({ params, render }) => (
-    <GetInitiativeImages initiativeId={params.initiativeId}>
-      {render}
-    </GetInitiativeImages>
   ),
   previousPathName: ({ render }) => (
     <PreviousPathnameContext.Consumer>
