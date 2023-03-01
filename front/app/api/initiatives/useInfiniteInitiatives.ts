@@ -5,7 +5,8 @@ import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import inputsKeys from './keys';
 import { IInitiatives, IQueryParameters, InitiativesKeys } from './types';
 
-const defaultPageSize = 3;
+const defaultPageSize = 12;
+
 const fetchInfiniteInputs = ({
   pageNumber,
   pageSize,

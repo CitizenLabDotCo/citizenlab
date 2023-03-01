@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { adopt } from 'react-adopt';
-import { get, isNumber } from 'lodash-es';
+import { isNumber } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // tracks
@@ -9,7 +8,7 @@ import tracks from './tracks';
 
 // components
 import InitiativesMap from 'components/InitiativesMap';
-import { Spinner } from '@citizenlab/cl2-component-library';
+import { Spinner, useWindowSize } from '@citizenlab/cl2-component-library';
 import SortFilterDropdown from './SortFilterDropdown';
 import StatusFilterBox from './StatusFilterBox';
 import TopicFilterBox from './TopicFilterBox';
@@ -21,17 +20,7 @@ import Button from 'components/UI/Button';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 
 // resources
-import GetInitiatives, {
-  Sort,
-  GetInitiativesChildProps,
-  IQueryParameters,
-} from 'resources/GetInitiatives';
-import GetInitiativesFilterCounts, {
-  GetInitiativesFilterCountsChildProps,
-} from 'resources/GetInitiativesFilterCounts';
-import GetWindowSize, {
-  GetWindowSizeChildProps,
-} from 'resources/GetWindowSize';
+import { Sort, IQueryParameters } from 'resources/GetInitiatives';
 
 // i18n
 import messages from './messages';
@@ -51,6 +40,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import EmptyProposals from './EmptyProposals';
 import ProposalsList from './ProposalsList';
 import useInfitineInitiatives from 'api/initiatives/useInfiniteInitiatives';
+import useInitiativesFilterCounts from 'api/initiatives_filter_counts/useInitiativesFilterCounts';
 
 const gapWidth = 35;
 
@@ -199,27 +189,14 @@ const StyledViewButtons = styled(ViewButtons)`
   margin-right: 20px;
 `;
 
-interface InputProps {
+interface Props {
   className?: string;
   invisibleTitleMessage: MessageDescriptor;
 }
 
-interface DataProps {
-  windowSize: GetWindowSizeChildProps;
-  initiatives: GetInitiativesChildProps;
-  initiativesFilterCounts: GetInitiativesFilterCountsChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-const InitiativeCards = ({
-  className,
-  invisibleTitleMessage,
-  windowSize,
-  initiativesFilterCounts,
-}: Props) => {
+const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
   const { formatMessage } = useIntl();
-
+  const { windowWidth } = useWindowSize();
   const [selectedView, setSelectedView] = useState<'map' | 'card'>('card');
   const [filtersModalOpened, setFiltersModalOpened] = useState(false);
   const [selectedInitiativeFilters, setSelectedInitiativeFilters] = useState<
@@ -229,10 +206,13 @@ const InitiativeCards = ({
     data: initiatives,
     fetchNextPage,
     isFetchingNextPage,
-
     hasNextPage,
     isLoading,
   } = useInfitineInitiatives(selectedInitiativeFilters);
+
+  const { data: initiativesFilterCounts } = useInitiativesFilterCounts(
+    selectedInitiativeFilters
+  );
 
   const flatInitiatives = initiatives?.pages.flatMap((page) => page.data) || [];
 
@@ -306,10 +286,10 @@ const InitiativeCards = ({
 
   const hasInitiatives = initiatives && initiatives.pages.length > 0;
   const biggerThanLargeTablet =
-    windowSize && windowSize >= viewportWidths.tablet;
+    windowWidth && windowWidth >= viewportWidths.tablet;
   const biggerThanSmallTablet =
-    windowSize && windowSize >= viewportWidths.tablet;
-  const filterColumnWidth = windowSize && windowSize < 1400 ? 340 : 352;
+    windowWidth && windowWidth >= viewportWidths.tablet;
+  const filterColumnWidth = windowWidth && windowWidth < 1400 ? 340 : 352;
   const filtersActive =
     selectedInitiativeFilters?.search ||
     selectedInitiativeFilters?.initiative_status ||
@@ -330,7 +310,9 @@ const InitiativeCards = ({
         {initiativesFilterCounts && (
           <FormattedMessage
             {...messages.a11y_totalInitiatives}
-            values={{ initiativeCount: initiativesFilterCounts.total }}
+            values={{
+              initiativeCount: initiativesFilterCounts.data.attributes.total,
+            }}
           />
         )}
       </ScreenReaderOnly>
@@ -390,32 +372,25 @@ const InitiativeCards = ({
                   />
                 }
                 bottomBar={
-                  <GetInitiativesFilterCounts
-                    queryParameters={selectedInitiativeFilters}
-                  >
-                    {(newInitiativesFilterCounts) => {
-                      const bottomBarButtonText =
-                        newInitiativesFilterCounts &&
-                        isNumber(newInitiativesFilterCounts.total) ? (
-                          <FormattedMessage
-                            {...messages.showXInitiatives}
-                            values={{
-                              initiativesCount:
-                                newInitiativesFilterCounts.total,
-                            }}
-                          />
-                        ) : (
-                          <FormattedMessage {...messages.showInitiatives} />
-                        );
-
-                      return (
-                        <BottomBar
-                          buttonText={bottomBarButtonText}
-                          onClick={closeModalAndApplyFilters}
+                  <BottomBar
+                    buttonText={
+                      initiativesFilterCounts?.data.attributes.total &&
+                      isNumber(
+                        initiativesFilterCounts?.data.attributes.total
+                      ) ? (
+                        <FormattedMessage
+                          {...messages.showXInitiatives}
+                          values={{
+                            initiativesCount:
+                              initiativesFilterCounts?.data.attributes.total,
+                          }}
                         />
-                      );
-                    }}
-                  </GetInitiativesFilterCounts>
+                      ) : (
+                        <FormattedMessage {...messages.showInitiatives} />
+                      )
+                    }
+                    onClick={closeModalAndApplyFilters}
+                  />
                 }
               >
                 <MobileFiltersSidebarWrapper>
@@ -465,7 +440,8 @@ const InitiativeCards = ({
                   <FormattedMessage
                     {...messages.xInitiatives}
                     values={{
-                      initiativesCount: initiativesFilterCounts.total,
+                      initiativesCount:
+                        initiativesFilterCounts.data.attributes.total,
                     }}
                   />
                 </InitiativesCount>
@@ -516,22 +492,4 @@ const InitiativeCards = ({
   );
 };
 
-const Data = adopt<DataProps, InputProps>({
-  windowSize: <GetWindowSize />,
-  initiatives: (
-    <GetInitiatives type="load-more" publicationStatus="published" />
-  ),
-  initiativesFilterCounts: ({ initiatives, render }) => (
-    <GetInitiativesFilterCounts
-      queryParameters={get(initiatives, 'queryParameters', null)}
-    >
-      {render}
-    </GetInitiativesFilterCounts>
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <InitiativeCards {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default InitiativeCards;

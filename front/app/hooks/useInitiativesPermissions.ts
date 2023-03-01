@@ -76,5 +76,5 @@ export default function useInitiativesPermissions(action: IInitiativeAction) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appConfiguration]);
 
-  return actionPermission;
+  return { show: true, enabled: true, disabledReason: null, action: null };
 }

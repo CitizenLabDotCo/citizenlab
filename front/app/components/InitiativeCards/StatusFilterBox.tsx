@@ -9,15 +9,13 @@ import StatusFilter from 'components/FilterBoxes/StatusFilter';
 import GetInitiativeStatuses, {
   GetInitiativeStatusesChildProps,
 } from 'resources/GetInitiativeStatuses';
-import GetInitiativesFilterCounts, {
-  GetInitiativesFilterCountsChildProps,
-} from 'resources/GetInitiativesFilterCounts';
 
 // styling
 import styled from 'styled-components';
 
 // typings
 import { IQueryParameters } from 'resources/GetInitiatives';
+import useInitiativesFilterCounts from 'api/initiatives_filter_counts/useInitiativesFilterCounts';
 
 const Container = styled.div``;
 
@@ -30,7 +28,6 @@ interface InputProps {
 
 interface DataProps {
   initiativeStatuses: GetInitiativeStatusesChildProps;
-  initiativesFilterCounts: GetInitiativesFilterCountsChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -39,16 +36,25 @@ const StatusFilterBox = memo<Props>(
   ({
     selectedStatusId,
     initiativeStatuses,
-    initiativesFilterCounts,
     onChange,
     className,
+    selectedInitiativeFilters,
   }) => {
+    const queryParameters = {
+      ...selectedInitiativeFilters,
+      initiative_status: undefined,
+      project_publication_status: 'published',
+      publication_status: 'published',
+    } as IQueryParameters;
+
+    const { data: initiativesFilterCounts } =
+      useInitiativesFilterCounts(queryParameters);
+
     const handleOnChange = useCallback(
       (nextSelectedStatusId: string | null) => {
         onChange(nextSelectedStatusId);
       },
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      []
+      [onChange]
     );
 
     if (!isNilOrError(initiativeStatuses) && initiativeStatuses.length > 0) {
@@ -57,7 +63,7 @@ const StatusFilterBox = memo<Props>(
           <StatusFilter
             type="initiative"
             statuses={initiativeStatuses}
-            filterCounts={initiativesFilterCounts}
+            filterCounts={initiativesFilterCounts?.data.attributes}
             selectedStatusId={selectedStatusId}
             onChange={handleOnChange}
           />
@@ -71,20 +77,6 @@ const StatusFilterBox = memo<Props>(
 
 const Data = adopt<DataProps, InputProps>({
   initiativeStatuses: <GetInitiativeStatuses />,
-  initiativesFilterCounts: ({ selectedInitiativeFilters, render }) => {
-    const queryParameters = {
-      ...selectedInitiativeFilters,
-      initiative_status: undefined,
-      project_publication_status: 'published',
-      publication_status: 'published',
-    } as Partial<IQueryParameters>;
-
-    return (
-      <GetInitiativesFilterCounts queryParameters={queryParameters}>
-        {render}
-      </GetInitiativesFilterCounts>
-    );
-  },
 });
 
 export default (inputProps: InputProps) => (

@@ -1,10 +1,12 @@
+import { IQueryParameters } from './types';
+
 const initiativesKeys = {
   all: () => [{ type: 'initiative' }],
   lists: () => [{ ...initiativesKeys.all()[0], operation: 'list' }],
-  list: (filters: Record<string, any>) => [
+  list: (filters: IQueryParameters) => [
     { ...initiativesKeys.lists()[0], ...filters },
   ],
-  infiniteList: (filters: Record<string, any>) => [
+  infiniteList: (filters: IQueryParameters) => [
     { ...initiativesKeys.lists()[0], queryType: 'infitite', ...filters },
   ],
   items: () => [{ ...initiativesKeys.all()[0], operation: 'item' }],
