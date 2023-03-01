@@ -266,15 +266,17 @@ resource 'Initiatives' do
 
     example_request 'List initiative counts per filter option' do
       assert_status 200
-      json_response = json_parse(response_body)
+      json_response = json_parse response_body
+      expect(json_response.dig(:data, :type)).to eq 'filter_counts'
+      json_attributes = json_response.dig(:data, :attributes)
 
-      expect(json_response[:initiative_status_id][@s1.id.to_sym]).to eq 1
-      expect(json_response[:initiative_status_id][@s2.id.to_sym]).to eq 3
-      expect(json_response[:area_id][@a1.id.to_sym]).to eq 3
-      expect(json_response[:area_id][@a2.id.to_sym]).to eq 1
-      expect(json_response[:topic_id][@t1.id.to_sym]).to eq 2
-      expect(json_response[:topic_id][@t2.id.to_sym]).to eq 2
-      expect(json_response[:total]).to eq 4
+      expect(json_attributes[:initiative_status_id][@s1.id.to_sym]).to eq 1
+      expect(json_attributes[:initiative_status_id][@s2.id.to_sym]).to eq 3
+      expect(json_attributes[:area_id][@a1.id.to_sym]).to eq 3
+      expect(json_attributes[:area_id][@a2.id.to_sym]).to eq 1
+      expect(json_attributes[:topic_id][@t1.id.to_sym]).to eq 2
+      expect(json_attributes[:topic_id][@t2.id.to_sym]).to eq 2
+      expect(json_attributes[:total]).to eq 4
     end
 
     example 'List initiative counts per filter option on topic' do
@@ -566,14 +568,20 @@ resource 'Initiatives' do
 
     example_request 'Allowed transitions' do
       assert_status 200
-      json_response = json_parse(response_body)
+      json_response = json_parse response_body
+      expect(json_response.dig(:data, :type)).to eq 'allowed_transitions'
       expect(json_response).to eq({
-        **InitiativeStatus.where(code: 'answered').ids.to_h do |id|
-          [id.to_sym, { feedback_required: true }]
-        end,
-        **InitiativeStatus.where(code: 'ineligible').ids.to_h do |id|
-          [id.to_sym, { feedback_required: true }]
-        end
+        data: {
+          type: 'allowed_transitions',
+          attributes: {
+            **InitiativeStatus.where(code: 'answered').ids.to_h do |id|
+              [id.to_sym, { feedback_required: true }]
+            end,
+            **InitiativeStatus.where(code: 'ineligible').ids.to_h do |id|
+              [id.to_sym, { feedback_required: true }]
+            end
+          }
+        }
       })
     end
   end
