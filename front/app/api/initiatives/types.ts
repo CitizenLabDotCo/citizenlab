@@ -36,12 +36,6 @@ export type InitiativePublicationStatus =
   | 'archived'
   | 'spam';
 
-export type IInitiativeAction =
-  | 'posting_initiative'
-  | 'commenting_initiative'
-  | 'voting_initiative'
-  | 'comment_voting_initiative';
-
 export interface IInitiativeData {
   id: string;
   type: 'initiative';
@@ -84,61 +78,7 @@ export interface IInitiativeData {
   };
 }
 
-export interface IInitiative {
-  data: IInitiativeData;
-}
-
 export interface IInitiatives {
   data: IInitiativeData[];
   links: ILinks;
 }
-
-export interface IInitiativeAdd {
-  author_id?: string | null;
-  assignee_id?: string | null;
-  initiative_status_id?: string | null;
-  publication_status?: InitiativePublicationStatus;
-  title_multiloc?: Multiloc;
-  body_multiloc?: Multiloc;
-  topic_ids?: string[] | null;
-  area_ids?: string[] | null;
-  phase_ids?: string[] | null;
-  location_point_geojson?: GeoJSON.Point | null;
-  location_description?: string | null;
-}
-
-export interface IInitiativesFilterCounts {
-  initiative_status_id: {
-    [key: string]: number;
-  };
-  area_id: {
-    [key: string]: number;
-  };
-  topic_id: {
-    [key: string]: number;
-  };
-  total: number;
-}
-
-export interface IGeotaggedInitiativeData {
-  id: string;
-  type: string;
-  attributes: {
-    title_multiloc: Multiloc;
-    location_point_geojson: GeoJSON.Point;
-    location_description: string;
-  };
-}
-
-export interface IInitiativeLinks {
-  self: string;
-  first: string;
-  prev: string;
-  next: string;
-  last: string;
-}
-
-export type InitiativeDisabledReason =
-  | 'not_permitted'
-  | 'not_verified'
-  | 'not_signed_in';
