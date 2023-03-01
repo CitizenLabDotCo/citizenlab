@@ -3,7 +3,7 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import inputsKeys from './keys';
-import { IInitiatives, IQueryParameters, InitiativeKeys } from './types';
+import { IInitiatives, IQueryParameters, InitiativesKeys } from './types';
 
 const defaultPageSize = 3;
 const fetchInfiniteInputs = ({
@@ -22,18 +22,21 @@ const fetchInfiniteInputs = ({
   });
 
 const useInfitineInitiatives = (queryParams: IQueryParameters) => {
-  return useInfiniteQuery<IInitiatives, CLErrors, IInitiatives, InitiativeKeys>(
-    {
-      queryKey: inputsKeys.infiniteList(queryParams),
-      queryFn: ({ pageParam }) =>
-        fetchInfiniteInputs({ ...queryParams, pageNumber: pageParam }),
-      getNextPageParam: (lastPage) => {
-        const hasNextPage = lastPage.links?.next;
-        const pageNumber = getPageNumberFromUrl(lastPage.links.self);
-        return hasNextPage && pageNumber ? pageNumber + 1 : null;
-      },
-    }
-  );
+  return useInfiniteQuery<
+    IInitiatives,
+    CLErrors,
+    IInitiatives,
+    InitiativesKeys
+  >({
+    queryKey: inputsKeys.infiniteList(queryParams),
+    queryFn: ({ pageParam }) =>
+      fetchInfiniteInputs({ ...queryParams, pageNumber: pageParam }),
+    getNextPageParam: (lastPage) => {
+      const hasNextPage = lastPage.links?.next;
+      const pageNumber = getPageNumberFromUrl(lastPage.links.self);
+      return hasNextPage && pageNumber ? pageNumber + 1 : null;
+    },
+  });
 };
 
 export default useInfitineInitiatives;

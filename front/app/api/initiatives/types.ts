@@ -2,7 +2,7 @@ import { IRelationship, Multiloc, ImageSizes, ILinks } from 'typings';
 import { Keys } from 'utils/cl-react-query/types';
 import initiativesKeys from './keys';
 
-export type InitiativeKeys = Keys<typeof initiativesKeys>;
+export type InitiativesKeys = Keys<typeof initiativesKeys>;
 
 export type Sort =
   | 'new'
