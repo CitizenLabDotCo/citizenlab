@@ -166,7 +166,7 @@ jobs:
       #     path: ./citizenlab
       # - run: git clone -b "$CIRCLE_BRANCH" "$CIRCLE_REPOSITORY_URL" --depth 1 -q
       - git-shallow-clone/checkout:
-        - depth: 1
+        depth: 1
       - setup_remote_docker:
           docker_layer_caching: true
       - run: |
