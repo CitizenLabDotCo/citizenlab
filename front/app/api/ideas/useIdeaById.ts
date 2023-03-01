@@ -7,11 +7,11 @@ import { IIdea, IdeasKeys } from './types';
 const fetchIdea = (id: string) =>
   fetcher<IIdea>({ path: `/ideas/${id}`, action: 'get' });
 
-const useIdea = (id: string) => {
+const useIdeaById = (id: string) => {
   return useQuery<IIdea, CLErrors, IIdea, IdeasKeys>({
     queryKey: ideasKeys.item(id),
     queryFn: () => fetchIdea(id),
   });
 };
 
-export default useIdea;
+export default useIdeaById;

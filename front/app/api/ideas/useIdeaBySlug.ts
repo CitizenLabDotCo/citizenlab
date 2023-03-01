@@ -7,11 +7,11 @@ import { IIdea, IdeasKeys } from './types';
 const fetchIdea = (slug: string) =>
   fetcher<IIdea>({ path: `/ideas/by_slug/${slug}`, action: 'get' });
 
-const useIdea = (id: string) => {
+const useIdeaBySlug = (slug: string) => {
   return useQuery<IIdea, CLErrors, IIdea, IdeasKeys>({
-    queryKey: ideasKeys.item(id),
-    queryFn: () => fetchIdea(id),
+    queryKey: ideasKeys.item(slug),
+    queryFn: () => fetchIdea(slug),
   });
 };
 
-export default useIdea;
+export default useIdeaBySlug;
