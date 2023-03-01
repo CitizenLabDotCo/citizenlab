@@ -323,7 +323,7 @@ interface DataProps {
 }
 
 interface InputProps {
-  initiativeId: string | null;
+  initiativeId: string;
   className?: string;
 }
 
