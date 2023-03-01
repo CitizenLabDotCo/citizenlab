@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 // libraries
 import { adopt } from 'react-adopt';
@@ -53,98 +53,81 @@ interface DataProps {
 
 interface Props extends DataProps, InputProps {}
 
-interface State {
-  selectedLocale: GetLocaleChildProps;
-}
+const InitiativesEditPage = ({
+  locale,
+  initiative,
+  initiativeImages,
+  goBack,
+  initiativeFiles,
+  topics,
+  tenantLocales,
+}: Props) => {
+  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
 
-export class InitiativesEditPage extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      selectedLocale: props.locale,
-    };
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    const { locale } = this.props;
-    if (!this.state.selectedLocale && locale !== prevProps.locale) {
-      this.setState({ selectedLocale: locale });
-    }
-  }
-
-  onLocaleChange = (locale: Locale) => {
-    this.setState({ selectedLocale: locale });
+  const onLocaleChange = (locale: Locale) => {
+    setSelectedLocale(locale);
   };
 
-  render() {
-    const {
-      locale,
-      initiative,
-      initiativeImages,
-      goBack,
-      initiativeFiles,
-      topics,
-      tenantLocales,
-    } = this.props;
-    const { selectedLocale } = this.state;
+  useEffect(() => {
+    !isNilOrError(locale) && setSelectedLocale(locale);
+  }, [locale]);
 
-    if (
-      isNilOrError(locale) ||
-      isNilOrError(tenantLocales) ||
-      !selectedLocale ||
-      isNilOrError(initiative) ||
-      initiativeImages === undefined ||
-      initiativeFiles === undefined ||
-      isError(initiativeFiles) ||
-      isNilOrError(topics)
-    ) {
-      return null;
-    }
-    const initiativeTopics = topics.filter(
-      (topic) => !isNilOrError(topic)
-    ) as ITopicData[];
-
-    return (
-      <Container>
-        <Top>
-          <Box width="100%" justifyContent="space-between" display="flex">
-            <Box>
-              <Button
-                icon="arrow-left"
-                buttonStyle="text"
-                textColor={colors.primary}
-                onClick={goBack}
-              >
-                <FormattedMessage {...messages.cancelEdit} />
-              </Button>
-            </Box>
-            <Box my="auto" mr="8px">
-              <LocaleSwitcher
-                onSelectedLocaleChange={this.onLocaleChange}
-                locales={tenantLocales}
-                selectedLocale={selectedLocale}
-              />
-            </Box>
-          </Box>
-        </Top>
-        <Content>
-          <InitiativesEditFormWrapper
-            locale={selectedLocale}
-            initiative={initiative}
-            initiativeImage={
-              isNilOrError(initiativeImages) || initiativeImages.length === 0
-                ? null
-                : initiativeImages[0]
-            }
-            onPublished={goBack}
-            initiativeFiles={initiativeFiles}
-            topics={initiativeTopics}
-          />
-        </Content>
-      </Container>
-    );
+  if (
+    isNilOrError(locale) ||
+    isNilOrError(tenantLocales) ||
+    !selectedLocale ||
+    isNilOrError(initiative) ||
+    initiativeImages === undefined ||
+    initiativeFiles === undefined ||
+    isError(initiativeFiles) ||
+    isNilOrError(topics)
+  ) {
+    return null;
   }
-}
+  const initiativeTopics = topics.filter(
+    (topic) => !isNilOrError(topic)
+  ) as ITopicData[];
+
+  return (
+    <Container>
+      <Top>
+        <Box width="100%" justifyContent="space-between" display="flex">
+          <Box>
+            <Button
+              icon="arrow-left"
+              buttonStyle="text"
+              textColor={colors.primary}
+              onClick={goBack}
+            >
+              <FormattedMessage {...messages.cancelEdit} />
+            </Button>
+          </Box>
+          <Box my="auto" mr="8px">
+            <LocaleSwitcher
+              onSelectedLocaleChange={onLocaleChange}
+              locales={tenantLocales}
+              selectedLocale={selectedLocale}
+            />
+          </Box>
+        </Box>
+      </Top>
+      <Content>
+        <InitiativesEditFormWrapper
+          locale={selectedLocale}
+          initiative={initiative}
+          initiativeImage={
+            isNilOrError(initiativeImages) || initiativeImages.length === 0
+              ? null
+              : initiativeImages[0]
+          }
+          onPublished={goBack}
+          initiativeFiles={initiativeFiles}
+          topics={initiativeTopics}
+        />
+      </Content>
+    </Container>
+  );
+};
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
