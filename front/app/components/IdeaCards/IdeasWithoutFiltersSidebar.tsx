@@ -18,10 +18,7 @@ import IdeasView from './IdeasView';
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
-import GetIdeas, {
-  GetIdeasChildProps,
-  InputProps as GetIdeasInputProps,
-} from 'resources/GetIdeas';
+import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -43,6 +40,7 @@ import {
 import { IParticipationContextType } from 'typings';
 import { isFieldEnabled } from 'utils/projectUtils';
 import { Sort } from 'services/ideas';
+import { PublicationStatus as ProjectPublicationStatus } from 'services/projects';
 
 const Container = styled.div`
   width: 100%;
@@ -137,7 +135,16 @@ const StyledSearchInput = styled(SearchInput)`
   `}
 `;
 
-interface InputProps extends GetIdeasInputProps {
+interface InputProps {
+  // idea query
+  phaseId?: string;
+  authorId?: string;
+  projectPublicationStatus?: ProjectPublicationStatus;
+
+  // shared
+  projectId?: string;
+
+  // other
   showViewToggle?: boolean | undefined;
   defaultSortingMethod?: IdeaDefaultSortMethod;
   defaultView?: 'card' | 'map' | null | undefined;
@@ -146,7 +153,6 @@ interface InputProps extends GetIdeasInputProps {
   participationContextType?: IParticipationContextType | null;
   className?: string;
   allowProjectsFilter?: boolean;
-  projectId?: string;
 }
 
 interface DataProps {
@@ -336,6 +342,7 @@ const Data = adopt<DataProps, InputProps>({
   windowSize: <GetWindowSize />,
   ideas: ({ render, projectId, ...getIdeasInputProps }) => (
     <GetIdeas
+      type="load-more"
       {...getIdeasInputProps}
       projectIds={projectId ? [projectId] : undefined}
       pageSize={24}

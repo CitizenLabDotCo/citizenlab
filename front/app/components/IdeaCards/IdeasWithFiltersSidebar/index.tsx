@@ -16,10 +16,6 @@ import Button from 'components/UI/Button';
 import IdeasView from '../IdeasView';
 
 // resources
-import GetIdeas, {
-  GetIdeasChildProps,
-  InputProps as GetIdeasInputProps,
-} from 'resources/GetIdeas';
 import GetIdeasFilterCounts, {
   GetIdeasFilterCountsChildProps,
 } from 'resources/GetIdeasFilterCounts';
@@ -39,13 +35,9 @@ import {
 } from 'utils/styleUtils';
 
 // typings
-import {
-  IdeaDefaultSortMethod,
-  ParticipationMethod,
-  ideaDefaultSortMethodFallback,
-} from 'services/participationContexts';
-import { IParticipationContextType } from 'typings';
+import { IdeaDefaultSortMethod } from 'services/participationContexts';
 import { Sort, IIdeasQueryParameters } from 'services/ideas';
+import { PublicationStatus as ProjectPublicationStatus } from 'services/projects';
 
 const gapWidth = 35;
 
@@ -147,24 +139,37 @@ const ContentRight = styled.div<{ filterColumnWidth: number }>`
   top: 100px;
 `;
 
-interface InputProps extends GetIdeasInputProps {
+interface InputProps {
+  // idea query
+  phaseId?: string;
+  authorId?: string;
+  projectPublicationStatus?: ProjectPublicationStatus;
+
+  // shared
+  projectId?: string;
+
+  // other
   defaultSortingMethod?: IdeaDefaultSortMethod;
-  participationMethod?: ParticipationMethod | null;
-  participationContextId?: string | null;
-  participationContextType?: IParticipationContextType | null;
   className?: string;
 }
 
 interface DataProps {
-  ideas: GetIdeasChildProps;
   ideasFilterCounts: GetIdeasFilterCountsChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
 const IdeaCards = ({
+  // idea query
+  phaseId,
+  authorId,
+  projectPublicationStatus,
+
+  // shared
+  projectId,
+
+  // other
   className,
-  ideas,
   ideasFilterCounts,
   defaultSortingMethod,
 }: Props) => {
@@ -356,19 +361,13 @@ const IdeaCards = ({
 };
 
 const Data = adopt<DataProps, InputProps>({
-  ideas: ({ render, children: _children, ...getIdeasInputProps }) => (
-    <GetIdeas
-      {...getIdeasInputProps}
-      pageSize={12}
-      sort={
-        getIdeasInputProps.defaultSortingMethod || ideaDefaultSortMethodFallback
-      }
+  ideasFilterCounts: ({ render, projectId, ...getIdeasInputProps }) => (
+    <GetIdeasFilterCounts
+      queryParameters={{
+        ...getIdeasInputProps,
+        projects: projectId ? [projectId] : undefined,
+      }}
     >
-      {render}
-    </GetIdeas>
-  ),
-  ideasFilterCounts: ({ ideas, render }) => (
-    <GetIdeasFilterCounts queryParameters={ideas.queryParameters}>
       {render}
     </GetIdeasFilterCounts>
   ),

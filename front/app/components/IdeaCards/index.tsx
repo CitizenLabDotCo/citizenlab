@@ -14,11 +14,11 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // typings
+import { PublicationStatus as ProjectPublicationStatus } from 'services/projects';
 import {
   ParticipationMethod,
   IdeaDefaultSortMethod,
 } from 'services/participationContexts';
-import { InputProps as GetIdeasInputProps } from 'resources/GetIdeas';
 import { IParticipationContextType } from 'typings';
 import { MessageDescriptor } from 'react-intl';
 
@@ -26,7 +26,16 @@ const Container = styled.div`
   width: 100%;
 `;
 
-interface Props extends GetIdeasInputProps {
+interface Props {
+  // idea query
+  phaseId?: string;
+  authorId?: string;
+  projectPublicationStatus?: ProjectPublicationStatus;
+
+  // shared
+  projectId?: string;
+
+  // other
   showViewToggle?: boolean | undefined;
   defaultView?: 'card' | 'map' | null | undefined;
   defaultSortingMethod?: IdeaDefaultSortMethod;
@@ -37,7 +46,6 @@ interface Props extends GetIdeasInputProps {
   hideFiltersSidebar?: boolean;
   className?: string;
   invisibleTitleMessage?: MessageDescriptor;
-  projectId?: string;
 }
 
 const IdeaCards = memo<Props>(

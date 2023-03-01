@@ -90,8 +90,7 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
             </StyledProjectPageSectionTitle>
 
             <IdeaCards
-              type="load-more"
-              projectId={projectId}
+              projectIds={[projectId]}
               participationMethod={project.attributes.participation_method}
               participationContextId={projectId}
               participationContextType="project"

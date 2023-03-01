@@ -68,8 +68,7 @@ class IdeasContainer extends PureComponent<Props, State> {
             </StyledProjectPageSectionTitle>
             <IdeaCards
               className={participationMethod}
-              type="load-more"
-              projectId={projectId}
+              projectIds={[projectId]}
               phaseId={phaseId}
               showViewToggle={true}
               defaultSortingMethod={phase.attributes.ideas_order || null}

@@ -76,7 +76,6 @@ export default memo(() => (
           <FormattedMessage {...messages.inputsPageTitle} />
         </PageTitle>
         <IdeaCards
-          type="load-more"
           allowProjectsFilter={true}
           projectPublicationStatus="published"
           showViewToggle={false}

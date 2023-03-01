@@ -127,7 +127,6 @@ export const UsersShowPage = memo<
             {currentTab === 'ideas' && (
               <UserIdeas>
                 <IdeaCards
-                  type="load-more"
                   authorId={user.id}
                   invisibleTitleMessage={messages.invisibleTitlePostsList}
                   hideFiltersSidebar
