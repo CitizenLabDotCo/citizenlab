@@ -26,24 +26,11 @@ interface IIdeaVoteData {
   };
 }
 
-interface ILinks {
-  self: string;
-  first: string;
-  prev: string;
-  next: string;
-  last: string;
-}
-
-export interface IIdeaVotes {
-  data: IIdeaVoteData[];
-  links: ILinks;
-}
-
-export interface IIdeaVote {
+interface IIdeaVote {
   data: IIdeaVoteData;
 }
 
-export interface INewVoteProperties {
+interface INewVoteProperties {
   user_id?: string;
   mode: 'up' | 'down';
 }
