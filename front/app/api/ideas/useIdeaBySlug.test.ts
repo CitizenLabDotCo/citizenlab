@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks';
 
-import useIdeaById from './useIdeaById';
+import useIdeaBySlug from './useIdeaBySlug';
 import { ideasData } from './__mocks__/useIdea';
 
 import { setupServer } from 'msw/node';
@@ -8,7 +8,7 @@ import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath = '*ideas/:id';
+const apiPath = '*ideas/by_slug/:slug';
 
 const server = setupServer(
   rest.get(apiPath, (_req, res, ctx) => {
@@ -16,12 +16,12 @@ const server = setupServer(
   })
 );
 
-describe('useIdeaById', () => {
+describe('useIdeaBySlug', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useIdeaById('id'), {
+    const { result, waitFor } = renderHook(() => useIdeaBySlug('slug'), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -40,7 +40,7 @@ describe('useIdeaById', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useIdeaById('id'), {
+    const { result, waitFor } = renderHook(() => useIdeaBySlug('slug'), {
       wrapper: createQueryClientWrapper(),
     });
 
