@@ -25,7 +25,7 @@ resource 'ContentBuilderLayouts' do
           {
             data: {
               id: layout.id,
-              type: 'content_builder_layout CAUSE TEST FAILURE',
+              type: 'content_builder_layout',
               attributes: hash_including(
                 code: code,
                 created_at: match(time_regex),
