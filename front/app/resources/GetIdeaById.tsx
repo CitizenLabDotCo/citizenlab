@@ -7,9 +7,9 @@ interface Props {
   children?: children;
 }
 
-export type GetIdeaChildProps = IIdeaData | NilOrError;
+export type GetIdeaByIdChildProps = IIdeaData | NilOrError;
 
-type children = (renderProps: GetIdeaChildProps) => JSX.Element | null;
+type children = (renderProps: GetIdeaByIdChildProps) => JSX.Element | null;
 
 const GetIdeaById = ({ ideaId, children }: Props) => {
   const { data: idea } = useIdeaById(ideaId);

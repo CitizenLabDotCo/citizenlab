@@ -28,7 +28,7 @@ import { ProcessType } from 'services/projects';
 import GetResourceFiles, {
   GetResourceFilesChildProps,
 } from 'resources/GetResourceFiles';
-import GetIdeaById, { GetIdeaChildProps } from 'resources/GetIdeaById';
+import GetIdeaById, { GetIdeaByIdChildProps } from 'resources/GetIdeaById';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPermission, {
@@ -163,7 +163,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  idea: GetIdeaChildProps;
+  idea: GetIdeaByIdChildProps;
   ideaFiles: GetResourceFilesChildProps;
   locale: GetLocaleChildProps;
   project: GetProjectChildProps;

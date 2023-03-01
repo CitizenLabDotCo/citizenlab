@@ -10,7 +10,7 @@ import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetIdeaById, { GetIdeaChildProps } from 'resources/GetIdeaById';
+import GetIdeaById, { GetIdeaByIdChildProps } from 'resources/GetIdeaById';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 import useIdeaImages from 'hooks/useIdeaImages';
@@ -30,7 +30,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  idea: GetIdeaChildProps;
+  idea: GetIdeaByIdChildProps;
   project: GetProjectChildProps;
   author: GetUserChildProps;
   locale: GetLocaleChildProps;

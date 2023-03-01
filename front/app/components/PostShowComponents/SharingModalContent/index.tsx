@@ -20,7 +20,7 @@ import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetIdeaById, { GetIdeaChildProps } from 'resources/GetIdeaById';
+import GetIdeaById, { GetIdeaByIdChildProps } from 'resources/GetIdeaById';
 import GetInitiative, {
   GetInitiativeChildProps,
 } from 'resources/GetInitiative';
@@ -54,7 +54,7 @@ interface DataProps {
   locale: GetLocaleChildProps;
   tenant: GetAppConfigurationChildProps;
   authUser: GetAuthUserChildProps;
-  idea: GetIdeaChildProps;
+  idea: GetIdeaByIdChildProps;
   initiative: GetInitiativeChildProps;
   project: GetProjectChildProps;
   phases: GetPhasesChildProps;

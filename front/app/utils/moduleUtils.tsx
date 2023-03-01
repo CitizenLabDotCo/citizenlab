@@ -28,7 +28,7 @@ import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import { NavItem } from 'containers/Admin/sideBar';
 import { LatLngTuple } from 'leaflet';
 import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
-import { GetIdeaChildProps } from 'resources/GetIdeaById';
+import { GetIdeaByIdChildProps } from 'resources/GetIdeaById';
 import { GetInitiativeChildProps } from 'resources/GetInitiative';
 import { GetLocaleChildProps } from 'resources/GetLocale';
 import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
@@ -207,7 +207,7 @@ export interface OutletsPropertyMap {
   'app.containers.IdeasShow.left': {
     translateButtonClicked: boolean;
     onClick: () => void;
-    idea: GetIdeaChildProps;
+    idea: GetIdeaByIdChildProps;
     locale: GetLocaleChildProps;
   };
   'app.components.PostShowComponents.CommentBody.translation': {

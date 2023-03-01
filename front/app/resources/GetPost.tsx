@@ -10,7 +10,7 @@ import {
   initiativeByIdStream,
   initiativeBySlugStream,
 } from 'services/initiatives';
-import { GetIdeaChildProps } from 'resources/GetIdeaById';
+import { GetIdeaByIdChildProps } from 'resources/GetIdeaById';
 import { GetInitiativeChildProps } from 'resources/GetInitiative';
 
 export type PostType = 'idea' | 'initiative';
@@ -23,7 +23,7 @@ interface InputProps {
 
 type children = (renderProps: GetPostChildProps) => JSX.Element | null;
 
-export type GetPostChildProps = GetIdeaChildProps | GetInitiativeChildProps;
+export type GetPostChildProps = GetIdeaByIdChildProps | GetInitiativeChildProps;
 
 interface Props extends InputProps {
   children?: children;
