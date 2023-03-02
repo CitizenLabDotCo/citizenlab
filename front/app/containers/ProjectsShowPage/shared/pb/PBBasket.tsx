@@ -1,19 +1,15 @@
 import React, { FormEvent } from 'react';
-import { adopt } from 'react-adopt';
-import {
-  isNilOrError,
-  capitalizeParticipationContextType,
-} from 'utils/helperUtils';
-import { get } from 'lodash-es';
 
 // services
 import { updateBasket } from 'services/baskets';
 
+// hooks
+import useProject from 'hooks/useProject';
+import usePhase from 'hooks/usePhase';
+import useBasket from 'hooks/useBasket';
+import useAuthUser from 'hooks/useAuthUser';
+
 // resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetBasket, { GetBasketChildProps } from 'resources/GetBasket';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 
 // styles
@@ -36,8 +32,17 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 
+// utils
+import {
+  isNilOrError,
+  NilOrError,
+  capitalizeParticipationContextType,
+} from 'utils/helperUtils';
+
 // typings
 import { IParticipationContextType } from 'typings';
+import { IPhaseData } from 'services/phases';
+import { GetBasketChildProps } from 'resources/GetBasket';
 
 const Container = styled.div`
   padding: 10px;
@@ -123,17 +128,14 @@ interface InputProps {
 }
 
 interface DataProps {
-  authUser: GetAuthUserChildProps;
   basket: GetBasketChildProps;
-  project: GetProjectChildProps;
-  phase: GetPhaseChildProps;
+  phase: IPhaseData | NilOrError;
   ideas: GetIdeasChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
 const PBBasket = ({
-  authUser,
   basket,
   participationContextId,
   participationContextType,
@@ -141,6 +143,7 @@ const PBBasket = ({
   ideas,
   className,
 }: Props) => {
+  const authUser = useAuthUser();
   const { formatMessage } = useIntl();
   const ideaList = ideas.list;
 
@@ -273,60 +276,57 @@ const PBBasket = ({
   return null;
 };
 
-const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />,
-  project: ({ participationContextType, participationContextId, render }) => (
-    <GetProject
-      projectId={
-        participationContextType === 'project' ? participationContextId : null
-      }
-    >
-      {render}
-    </GetProject>
-  ),
-  phase: ({ participationContextType, participationContextId, render }) => (
-    <GetPhase
-      id={participationContextType === 'phase' ? participationContextId : null}
-    >
-      {render}
-    </GetPhase>
-  ),
-  basket: ({ participationContextType, project, phase, render }) => {
-    let basketId: string | null = null;
+const Wrapper = ({
+  participationContextType,
+  participationContextId,
+  className,
+}: InputProps) => {
+  const project = useProject({
+    projectId:
+      participationContextType === 'project' ? participationContextId : null,
+  });
 
-    if (participationContextType === 'project') {
-      basketId =
-        !isNilOrError(project) && project.relationships.user_basket
-          ? get(project.relationships.user_basket.data, 'id', null)
-          : null;
-    } else {
-      basketId =
-        !isNilOrError(phase) && phase.relationships.user_basket
-          ? get(phase.relationships.user_basket.data, 'id', null)
-          : null;
-    }
+  const phase = usePhase(
+    participationContextType === 'phase' ? participationContextId : null
+  );
 
-    return <GetBasket id={basketId}>{render}</GetBasket>;
-  },
-  ideas: ({ basket, render }) => {
-    if (!isNilOrError(basket)) {
-      const basketId = basket.id;
-      const pageSize = basket.relationships.ideas.data.length;
+  let basketId: string | undefined;
 
-      const props = {
-        'page[size]': pageSize,
-        basket_id: basketId,
-      } as const;
+  if (!isNilOrError(project)) {
+    basketId = project.relationships.user_basket?.data?.id;
+  }
 
-      return <GetIdeas {...props}>{render}</GetIdeas>;
-    }
+  if (!isNilOrError(phase)) {
+    basketId = phase.relationships.user_basket?.data?.id;
+  }
 
+  const basket = useBasket(basketId);
+
+  if (basketId === undefined || isNilOrError(basket)) {
     return null;
-  },
-});
+  }
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <PBBasket {...inputProps} {...dataProps} />}
-  </Data>
-);
+  const pageSize = basket.relationships.ideas.data.length;
+
+  const getIdeasProps = {
+    'page[size]': pageSize,
+    basket_id: basketId,
+  } as const;
+
+  return (
+    <GetIdeas {...getIdeasProps}>
+      {(ideas) => (
+        <PBBasket
+          className={className}
+          participationContextId={participationContextId}
+          participationContextType={participationContextType}
+          basket={basket}
+          phase={phase}
+          ideas={ideas}
+        />
+      )}
+    </GetIdeas>
+  );
+};
+
+export default Wrapper;
