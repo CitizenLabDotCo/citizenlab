@@ -11,7 +11,7 @@ export type IdeaKeys = Keys<typeof ideaKeys>;
 export type IdeaPublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
 
 // keys in ideas.attributes.action_descriptor
-export type IIdeaAction = keyof IIdeaData['attributes']['action_descriptor'];
+// export type IIdeaAction = keyof IIdeaData['attributes']['action_descriptor'];
 
 export type IdeaVotingDisabledReason =
   | 'project_inactive'
