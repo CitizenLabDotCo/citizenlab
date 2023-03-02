@@ -103,23 +103,18 @@ commands:
       - run: echo $LASTPASS_PASSWORD | LPASS_DISABLE_PINENTRY=1 lpass login ${LASTPASS_EMAIL}
       - run: lpass show --notes 'citizenlab back-secret.env' > env_files/back-secret.env
       - run: lpass show --notes 'citizenlab front-secret.env' > env_files/front-secret.env
-  shallow-checkout:
+  shallow-clone:
     steps:
       - run: mkdir ~/.ssh
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts
       - run: cd ~ && rm -rf * && git clone -b "$CIRCLE_BRANCH" "$CIRCLE_REPOSITORY_URL" --depth 1 # Would be nice to only remove working directory
-  clone:
-    steps:
-      - git-shallow-clone/checkout:
-          depth: 1
-          path: ~/citizenlab
 
 jobs:
   trigger-workflows:
     docker:
       - image: cimg/base:stable
     steps:
-      - checkout
+      - checkout # Difficult
       - run:
           name: Trigger workflows
           command: chmod +x .circleci/monorepo.sh && .circleci/monorepo.sh
@@ -129,7 +124,7 @@ jobs:
     docker:
       - image: ghcr.io/danger/danger-js:10.6.6
     steps:
-      - clone # Has no git installed in img
+      - checkout # Has no git installed in img
       - run: danger ci
 
   slack-invalid-data-success:
@@ -172,7 +167,7 @@ jobs:
       - image: cimg/base:2021.03
     steps:
       - echo_pipeline_parameters
-      - shallow-checkout
+      - shallow-clone
       - setup_remote_docker:
           docker_layer_caching: true
       - run: |
@@ -384,7 +379,7 @@ jobs:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     working_directory: /citizenlab/front
     steps:
-      - clone
+      - shallow-clone
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -403,17 +398,7 @@ jobs:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     working_directory: ~/citizenlab/front
     steps:
-      # - run: pwd
-      # - run: cd .. && rm -r front
-      - run: pwd
-      - shallow-checkout
-      # - run: echo 'export CIRCLE_WORKING_DIRECTORY="$CIRCLE_WORKING_DIRECTORY"/citizenlab/front' >> "$BASH_ENV"
-      # - run: echo $CIRCLE_WORKING_DIRECTORY
-      # - run: 
-      # - checkout
-      #     path: /citizenlab
-      - run: pwd
-      - run: ls
+      - shallow-clone
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -433,7 +418,7 @@ jobs:
     working_directory: /citizenlab/front
     resource_class: small
     steps:
-      - clone
+      - shallow-clone
       - restore_cache:
           keys:
             - v1-npm-cache-{{ checksum "package.json" }}
@@ -448,7 +433,7 @@ jobs:
     resource_class: large
     working_directory: /citizenlab/front
     steps:
-      - clone
+      - shallow-clone
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -469,7 +454,7 @@ jobs:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     working_directory: /citizenlab/front
     steps:
-      - clone
+      - shallow-clone
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -513,7 +498,7 @@ jobs:
       CITIZENLAB_EE: true
     parallelism: 4
     steps:
-      - clone
+      - shallow-clone
       - restore_cache:
           keys:
             - v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
@@ -564,7 +549,7 @@ jobs:
     resource_class: large
     working_directory: /citizenlab/front
     steps:
-      - clone
+      - shallow-clone
       - restore_cache:
           keys:
             - v1-npm-cache-{{ checksum "package.json" }}
@@ -592,7 +577,7 @@ jobs:
     resource_class: large
     working_directory: /citizenlab/front
     steps:
-      - clone
+      - shallow-clone
       - restore_cache:
           keys:
             - v1-npm-cache-{{ checksum "package.json" }}
@@ -638,7 +623,7 @@ jobs:
       - image: cimg/base:2021.03
     resource_class: medium+
     steps:
-      - clone
+      - shallow-clone
       - copy_secrets_from_lastpass
       - setup_remote_docker:
           version: 19.03.13 # https://support.circleci.com/hc/en-us/articles/360050934711
