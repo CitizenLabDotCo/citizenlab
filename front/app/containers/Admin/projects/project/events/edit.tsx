@@ -56,7 +56,7 @@ type ApiErrorType =
 
 const AdminProjectEventEdit = ({ params }: Props) => {
   const { mutate: addEvent } = useAddEvent();
-  const { data: event, isInitialLoading } = useEvent(params.id);
+  const { data: remoteEvent, isInitialLoading } = useEvent(params.id);
   const { mutate: updateEvent } = useUpdateEvent();
   const { mutate: addEventFile } = useAddEventFile();
   const { mutate: deleteEventFile } = useDeleteEventFile();
@@ -64,6 +64,7 @@ const AdminProjectEventEdit = ({ params }: Props) => {
   const locale = useLocale();
   const appConfiguration = useAppConfiguration();
   const [errors, setErrors] = useState<ErrorType>({});
+  const [event, setEvent] = useState(remoteEvent);
   const [apiErrors, setApiErrors] = useState<ApiErrorType>({});
   const [saving, setSaving] = useState<boolean>(false);
   const [submitState, setSubmitState] = useState<SubmitState>('disabled');
@@ -72,6 +73,12 @@ const AdminProjectEventEdit = ({ params }: Props) => {
   const [eventFilesToRemove, setEventFilesToRemove] = useState<UploadFile[]>(
     []
   );
+
+  useEffect(() => {
+    if (remoteEvent) {
+      setEvent(remoteEvent);
+    }
+  }, [remoteEvent]);
 
   useEffect(() => {
     if (!isNilOrError(remoteEventFiles)) {
@@ -205,7 +212,7 @@ const AdminProjectEventEdit = ({ params }: Props) => {
           if (event) {
             updateEvent(
               {
-                eventId: event.data.id,
+                eventId: event?.data.id,
                 event: attributeDiff,
               },
               {
@@ -229,6 +236,7 @@ const AdminProjectEventEdit = ({ params }: Props) => {
               {
                 onSuccess: async (data) => {
                   handleEventFiles(data);
+                  setEvent(data);
                 },
                 onError: async (errors) => {
                   setErrors(errors.errors);
@@ -256,7 +264,7 @@ const AdminProjectEventEdit = ({ params }: Props) => {
 
   if (locale && appConfiguration) {
     const eventAttrs = event
-      ? { ...event.data.attributes, ...attributeDiff }
+      ? { ...event?.data.attributes, ...attributeDiff }
       : { ...attributeDiff };
 
     if (event !== undefined && isInitialLoading) {
