@@ -1,4 +1,7 @@
-import React, { memo } from 'react';
+import React, { memo, useState, useCallback } from 'react';
+
+// services
+import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -13,6 +16,9 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
+
+// typings
+import { IIdeasQueryParameters } from 'services/ideas';
 
 const Container = styled.main`
   min-height: calc(
@@ -67,20 +73,38 @@ const PageTitle = styled.h1`
  `}
 `;
 
-export default memo(() => (
-  <>
-    <IdeasIndexMeta />
-    <Container>
-      <StyledContentContainer maxWidth="100%">
-        <PageTitle>
-          <FormattedMessage {...messages.inputsPageTitle} />
-        </PageTitle>
-        <IdeaCardsWithFiltersSidebar
-          projectPublicationStatus="published"
-          invisibleTitleMessage={messages.a11y_IdeasListTitle}
-        />
-      </StyledContentContainer>
-      <CityLogoSection />
-    </Container>
-  </>
-));
+export default memo(() => {
+  const [ideasQueryParameters, setIdeasQueryParameters] =
+    useState<IIdeasQueryParameters>({
+      'page[number]': 1,
+      'page[size]': 12,
+      sort: ideaDefaultSortMethodFallback,
+      project_publication_status: 'published',
+    });
+
+  const updateQuery = useCallback(
+    (newParams: Partial<IIdeasQueryParameters>) => {
+      setIdeasQueryParameters((current) => ({ ...current, ...newParams }));
+    },
+    []
+  );
+
+  return (
+    <>
+      <IdeasIndexMeta />
+      <Container>
+        <StyledContentContainer maxWidth="100%">
+          <PageTitle>
+            <FormattedMessage {...messages.inputsPageTitle} />
+          </PageTitle>
+          <IdeaCardsWithFiltersSidebar
+            invisibleTitleMessage={messages.a11y_IdeasListTitle}
+            ideaQueryParameters={ideasQueryParameters}
+            onUpdateQuery={updateQuery}
+          />
+        </StyledContentContainer>
+        <CityLogoSection />
+      </Container>
+    </>
+  );
+});

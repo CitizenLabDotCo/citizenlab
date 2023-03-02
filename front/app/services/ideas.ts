@@ -233,10 +233,10 @@ export function ideaBySlugStream(ideaSlug: string) {
 export interface IIdeasQueryParameters {
   'page[number]': number;
   'page[size]': number;
+  sort: Sort;
   projects?: string[] | null;
   phase?: string | null;
   author?: string | null;
-  sort: Sort;
   search?: string | null;
   topics?: string[] | null;
   idea_status?: string | null;

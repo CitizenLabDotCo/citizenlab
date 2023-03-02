@@ -1,6 +1,9 @@
 import React, { useCallback, useState } from 'react';
-import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
+
+// hooks
+import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
+import useIdeasFilterCounts from 'hooks/useIdeasFilterCounts';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -14,11 +17,6 @@ import SortFilterDropdown from '../shared/Filters/SortFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
 import Button from 'components/UI/Button';
 import IdeasView from '../shared/IdeasView';
-
-// resources
-import GetIdeasFilterCounts, {
-  GetIdeasFilterCountsChildProps,
-} from 'resources/GetIdeasFilterCounts';
 
 // i18n
 import messages from '../messages';
@@ -35,9 +33,7 @@ import {
 } from 'utils/styleUtils';
 
 // typings
-import { IdeaDefaultSortMethod } from 'services/participationContexts';
 import { Sort, IIdeasQueryParameters } from 'services/ideas';
-import { PublicationStatus as ProjectPublicationStatus } from 'services/projects';
 
 const gapWidth = 35;
 
@@ -139,51 +135,32 @@ const ContentRight = styled.div<{ filterColumnWidth: number }>`
   top: 100px;
 `;
 
-export interface InputProps {
-  // idea query
-  phaseId?: string;
-  authorId?: string;
-  projectPublicationStatus?: ProjectPublicationStatus;
-
-  // shared
-  projectId?: string;
-
-  // other
-  defaultSortingMethod?: IdeaDefaultSortMethod;
-  className?: string;
+export interface Props {
+  ideaQueryParameters: IIdeasQueryParameters;
+  onUpdateQuery: (newParams: Partial<IIdeasQueryParameters>) => void;
 }
 
-interface DataProps {
-  ideasFilterCounts: GetIdeasFilterCountsChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-const IdeaCards = ({
-  // idea query
-  // phaseId,
-  // authorId,
-  // projectPublicationStatus,
-
-  // shared
-  // projectId,
-
-  // other
-  className,
-  ideasFilterCounts,
-  defaultSortingMethod,
-}: Props) => {
+const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
   const { windowWidth } = useWindowSize();
-  const ideas: any = null;
+
+  const { data, isFetching, fetchNextPage, hasNextPage } =
+    useInfiniteIdeas(ideaQueryParameters);
+
+  const list = data?.pages.map((page) => page.data).flat();
+  const ideasFilterCounts = useIdeasFilterCounts(ideaQueryParameters);
 
   const [filtersModalOpened, setFiltersModalOpened] = useState(false);
-  const [selectedIdeaFilters, setSelectedIdeaFilters] = useState<
-    Partial<IIdeasQueryParameters>
-  >({});
 
   const openFiltersModal = useCallback(() => {
     setFiltersModalOpened(true);
   }, []);
+
+  const handleSearchOnChange = useCallback(
+    (search: string) => {
+      onUpdateQuery({ search });
+    },
+    [onUpdateQuery]
+  );
 
   const handleSortOnChange = useCallback(
     (sort: Sort) => {
@@ -191,59 +168,39 @@ const IdeaCards = ({
         sort,
       });
 
-      ideas.onChangeSorting(sort);
+      onUpdateQuery({ sort });
     },
-    [ideas]
+    [onUpdateQuery]
   );
 
-  const handleStatusOnChange = (idea_status: string | null) => {
-    handleIdeaFiltersOnChange({ idea_status });
-  };
+  const handleStatusOnChange = useCallback(
+    (idea_status: string | null) => {
+      onUpdateQuery({ idea_status });
+    },
+    [onUpdateQuery]
+  );
 
-  const handleTopicsOnChange = (topics: string[] | null) => {
-    handleIdeaFiltersOnChange({ topics });
-  };
+  const handleTopicsOnChange = useCallback((topics: string[] | null) => {
+    onUpdateQuery({ topics });
+  }, []);
 
-  const handleIdeaFiltersOnChange = (
-    newSelectedIdeaFilters: Partial<IIdeasQueryParameters>
-  ) => {
-    setSelectedIdeaFilters((current) => {
-      const selectedIdeaFilters = {
-        ...current,
-        ...newSelectedIdeaFilters,
-      };
-
-      ideas.onIdeaFiltering(selectedIdeaFilters);
-
-      return selectedIdeaFilters;
+  const clearFilters = useCallback(() => {
+    onUpdateQuery({
+      search: undefined,
+      idea_status: undefined,
+      topics: undefined,
     });
-  };
+  }, [onUpdateQuery]);
 
-  const clearFilters = () => {
-    setSelectedIdeaFilters((current) => {
-      const selectedIdeaFilters = {
-        ...current,
-        search: null,
-        idea_status: null,
-        topics: null,
-      };
-
-      ideas.onIdeaFiltering(selectedIdeaFilters);
-
-      return selectedIdeaFilters;
-    });
-  };
-
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setFiltersModalOpened(false);
-  };
+  }, []);
 
-  const { list, hasMore, querying, onLoadMore } = ideas;
   const filterColumnWidth = windowWidth && windowWidth < 1400 ? 340 : 352;
   const filtersActive = !!(
-    selectedIdeaFilters.search ||
-    selectedIdeaFilters.idea_status ||
-    selectedIdeaFilters.topics
+    ideaQueryParameters.search ||
+    ideaQueryParameters.idea_status ||
+    ideaQueryParameters.topics
   );
   const biggerThanLargeTablet = !!(
     windowWidth && windowWidth >= viewportWidths.tablet
@@ -254,7 +211,7 @@ const IdeaCards = ({
   );
 
   return (
-    <Container id="e2e-ideas-container" className={className}>
+    <Container id="e2e-ideas-container">
       {list === undefined && (
         <InitialLoading id="ideas-loading">
           <Spinner />
@@ -267,20 +224,19 @@ const IdeaCards = ({
             <>
               <FiltersModal
                 opened={filtersModalOpened}
-                selectedIdeaFilters={selectedIdeaFilters}
-                className={className}
+                selectedIdeaFilters={ideaQueryParameters}
                 filtersActive={filtersActive}
                 ideasFilterCounts={ideasFilterCounts}
                 numberOfSearchResults={list ? list.length : 0}
                 onClearFilters={clearFilters}
-                onSearch={ideas.onChangeSearchTerm}
+                onSearch={handleSearchOnChange}
                 onChangeStatus={handleStatusOnChange}
                 onChangeTopics={handleTopicsOnChange}
                 onClose={closeModal}
               />
 
               <MobileSearchInput
-                onChange={ideas.onChangeSearchTerm}
+                onChange={handleSearchOnChange}
                 a11y_numberOfSearchResults={list.length}
               />
 
@@ -300,7 +256,6 @@ const IdeaCards = ({
              */}
             <AboveContentRight>
               <SortFilterDropdown
-                defaultSortingMethod={defaultSortingMethod || null}
                 onChange={handleSortOnChange}
                 alignment="right"
               />
@@ -321,10 +276,10 @@ const IdeaCards = ({
             <ContentLeft>
               <IdeasView
                 list={list}
-                querying={querying}
-                onLoadMore={onLoadMore}
-                hasMore={hasMore}
-                loadingMore={querying}
+                querying={isFetching}
+                onLoadMore={fetchNextPage}
+                hasMore={!!hasNextPage}
+                loadingMore={isFetching}
                 hideImage={biggerThanLargeTablet && smallerThan1440px}
                 hideImagePlaceholder={smallerThan1440px}
                 hideIdeaStatus={
@@ -342,13 +297,12 @@ const IdeaCards = ({
                 filterColumnWidth={filterColumnWidth}
               >
                 <FiltersSideBar
-                  selectedIdeaFilters={selectedIdeaFilters}
-                  className={className}
+                  selectedIdeaFilters={ideaQueryParameters}
                   filtersActive={filtersActive}
                   ideasFilterCounts={ideasFilterCounts}
                   numberOfSearchResults={list ? list.length : 0}
                   onClearFilters={clearFilters}
-                  onSearch={ideas.onChangeSearchTerm}
+                  onSearch={handleSearchOnChange}
                   onChangeStatus={handleStatusOnChange}
                   onChangeTopics={handleTopicsOnChange}
                 />
@@ -361,29 +315,4 @@ const IdeaCards = ({
   );
 };
 
-const Data = adopt<DataProps, InputProps>({
-  ideasFilterCounts: ({
-    render,
-    projectId,
-    phaseId,
-    authorId,
-    projectPublicationStatus,
-  }) => (
-    <GetIdeasFilterCounts
-      queryParameters={{
-        projects: projectId ? [projectId] : undefined,
-        phase: phaseId,
-        author: authorId,
-        project_publication_status: projectPublicationStatus,
-      }}
-    >
-      {render}
-    </GetIdeasFilterCounts>
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps: DataProps) => <IdeaCards {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default IdeaCards;
