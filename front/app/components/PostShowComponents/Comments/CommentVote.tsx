@@ -1,6 +1,6 @@
-import React, { PureComponent, MouseEvent, useState, useEffect } from 'react';
+import React, { MouseEvent, useState, useEffect } from 'react';
 import { adopt } from 'react-adopt';
-import { cloneDeep, isNumber, get } from 'lodash-es';
+import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -40,6 +40,9 @@ import { lighten } from 'polished';
 
 // a11y
 import { ScreenReaderOnly } from 'utils/a11y';
+
+// hooks
+import useInitiativeById from 'api/initiatives/useInitiativeById';
 
 const Container = styled.li`
   display: flex;
@@ -126,17 +129,12 @@ interface InputProps {
 interface DataProps {
   commentVotingPermissionInitiative: GetInitiativesPermissionsChildProps;
   authUser: GetAuthUserChildProps;
-  post: GetPostChildProps;
+  idea: GetPostChildProps;
   comment: GetCommentChildProps;
   commentVote: GetCommentVoteChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
-
-interface State {
-  voted: boolean;
-  upvoteCount: number;
-}
 
 const CommentVote = ({
   comment,
@@ -146,13 +144,16 @@ const CommentVote = ({
   commentId,
   commentType,
   authUser,
-  post,
+  idea,
   commentVotingPermissionInitiative,
   className,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
   const [voted, setVoted] = useState(false);
   const [upvoteCount, setUpvoteCount] = useState(0);
+  const initiativeId = postType === 'initiative' ? postId : null;
+  const { data: initiative } = useInitiativeById(initiativeId);
+  const post = postType === 'idea' ? idea : initiative?.data;
 
   useEffect(() => {
     setVoted(!isNilOrError(commentVote));
@@ -348,8 +349,8 @@ const CommentVoteWithHOCs = injectIntl(CommentVote);
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  post: ({ postId, postType, render }) => (
-    <GetPost id={postId} type={postType}>
+  idea: ({ postId, render }) => (
+    <GetPost id={postId} type="idea">
       {render}
     </GetPost>
   ),
