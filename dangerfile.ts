@@ -1,11 +1,15 @@
 import { warn, message, danger } from "danger";
 
 // Changelog modification
-const hasChangelog = !danger.github.pr.body.includes(
-  "<replace by bullet list items>"
-);
+const hasChangelog =
+  danger.github.pr.body.includes("Changelog") &&
+  !danger.github.pr.body.includes("Replace this comment by a bullet list");
 if (!hasChangelog) {
-  warn("The changelog is empty");
+  warn(
+    "The changelog is empty. [What should I put in the changelog?](https://www.notion.so/citizenlab/Changelog-How-it-works-f418426c75994454a332bf067634f3f1)"
+  );
+} else {
+  message("Changelog provided 🎉");
 }
 
 // PR title and branch Jira key reference
