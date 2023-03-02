@@ -399,7 +399,7 @@ jobs:
     # working_directory: /citizenlab/front
     steps:
       - clone
-      - CIRCLE_WORKING_DIRECTORY=CIRCLE_WORKING_DIRECTORY/citizenlab/front
+      - run: CIRCLE_WORKING_DIRECTORY=$CIRCLE_WORKING_DIRECTORY/citizenlab/front
       - run: echo $CIRCLE_WORKING_DIRECTORY
       # - run: 
       # - checkout
