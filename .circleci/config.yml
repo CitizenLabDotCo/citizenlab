@@ -108,7 +108,6 @@ commands:
       - git-shallow-clone/checkout:
           depth: 1
           path: ./citizenlab
-      - run: cd citizenlab
 
 jobs:
   trigger-workflows:
@@ -397,10 +396,9 @@ jobs:
   front-lint:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
-    # working_directory: /citizenlab/front
+    working_directory: /citizenlab/front
     steps:
       - clone
-      - run: cd citizenlab/front
       - run: ls
       # Download and cache dependencies
       - restore_cache:
