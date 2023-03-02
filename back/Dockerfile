@@ -54,4 +54,4 @@ COPY back/. .
 
 EXPOSE 4000
 
-CMD bundle exec puma -C config/puma.rb
+CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
