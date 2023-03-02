@@ -26,6 +26,13 @@ import styled from 'styled-components';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 import Outlet from 'components/Outlet';
 
+// hooks
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+
+// Types
+import { IIdeaData } from 'services/ideas';
+import { IInitiativeData } from 'api/initiatives/types';
+
 const footerHeight = '30px';
 const footerTopMargin = '6px';
 
@@ -112,7 +119,7 @@ interface DataProps {
   tenantLocales: GetAppConfigurationLocalesChildProps;
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
-  post: GetPostChildProps;
+  idea: GetPostChildProps;
   comment: GetCommentChildProps;
   author: GetUserChildProps;
   commentingPermissionInitiative: GetInitiativesPermissionsChildProps;
@@ -133,9 +140,18 @@ const CommentFooter = ({
   comment,
   tenantLocales,
   locale,
-  post,
+  idea,
   commentingPermissionInitiative,
 }: Props) => {
+  const initiativeId = postType === 'initiative' ? postId : null;
+  const { data: initiative } = useInitiativeById(initiativeId);
+  let post: IIdeaData | IInitiativeData | undefined | null | Error = null;
+  if (postType === 'idea') {
+    post = idea;
+  } else if (postType === 'initiative') {
+    post = initiative?.data;
+  }
+
   if (
     isNilOrError(post) ||
     isNilOrError(comment) ||
@@ -187,8 +203,8 @@ const Data = adopt<DataProps, InputProps>({
   tenantLocales: <GetAppConfigurationLocales />,
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
-  post: ({ postId, postType, render }) => (
-    <GetPost id={postId} type={postType}>
+  idea: ({ postId, render }) => (
+    <GetPost id={postId} type="idea">
       {render}
     </GetPost>
   ),
