@@ -105,7 +105,8 @@ commands:
       - run: lpass show --notes 'citizenlab front-secret.env' > env_files/front-secret.env
   shallow-checkout:
     steps:
-      - run: ssh-keyscan github.com >> /home/circleci/project/.ssh/known_hosts
+      - run: mkdir ~/.ssh
+      - run: ssh-keyscan github.com >> ~/.ssh/known_hosts
       - run: git clone -b "$CIRCLE_BRANCH" "$CIRCLE_REPOSITORY_URL" --depth 1
   clone:
     steps:
