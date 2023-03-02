@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { IIdeaMarkerData, ideasMarkersStream, Sort } from 'services/ideas';
+import { ideasMarkersStream } from 'services/ideas';
+import { IIdeaMarkerData, Sort } from 'api/ideas/types';
 import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
 
 interface Props {
