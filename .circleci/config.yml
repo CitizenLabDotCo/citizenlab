@@ -125,7 +125,7 @@ jobs:
     docker:
       - image: ghcr.io/danger/danger-js:10.6.6
     steps:
-      - clone
+      - clone # Has no git installed in img
       - run: danger ci
 
   slack-invalid-data-success:
@@ -400,6 +400,7 @@ jobs:
     working_directory: /citizenlab/front
     steps:
       - clone
+      - run: cd front
       # Download and cache dependencies
       - restore_cache:
           keys:
