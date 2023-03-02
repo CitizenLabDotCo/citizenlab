@@ -6,7 +6,7 @@ import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { IInitiativeVoteData } from 'services/initiativeVotes';
+import { IInitiativeVoteData } from 'api/initiative_votes/types';
 
 const apiPath = '*initiatives/:initiativeId/votes';
 
