@@ -377,7 +377,7 @@ jobs:
   front-detect-deadcode:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
-    working_directory: /citizenlab/front
+    working_directory: ~/citizenlab/front
     steps:
       - shallow-clone
       # Download and cache dependencies
@@ -415,7 +415,7 @@ jobs:
   front-license-check:
     docker:
       - image: licensefinder/license_finder
-    working_directory: /citizenlab/front
+    working_directory: ~/citizenlab/front
     resource_class: small
     steps:
       - shallow-clone
@@ -431,7 +431,7 @@ jobs:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     resource_class: large
-    working_directory: /citizenlab/front
+    working_directory: ~/citizenlab/front
     steps:
       - shallow-clone
       # Download and cache dependencies
@@ -452,7 +452,7 @@ jobs:
   front-extract-intl:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
-    working_directory: /citizenlab/front
+    working_directory: ~/citizenlab/front
     steps:
       - shallow-clone
       # Download and cache dependencies
@@ -547,7 +547,7 @@ jobs:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     resource_class: large
-    working_directory: /citizenlab/front
+    working_directory: ~/citizenlab/front
     steps:
       - shallow-clone
       - restore_cache:
@@ -575,7 +575,7 @@ jobs:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     resource_class: large
-    working_directory: /citizenlab/front
+    working_directory: ~/citizenlab/front
     steps:
       - shallow-clone
       - restore_cache:
