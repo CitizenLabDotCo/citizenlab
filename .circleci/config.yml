@@ -398,6 +398,7 @@ jobs:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     working_directory: /citizenlab/front
     steps:
+      - run: pwd
       - clone
       # - run: echo 'export CIRCLE_WORKING_DIRECTORY="$CIRCLE_WORKING_DIRECTORY"/citizenlab/front' >> "$BASH_ENV"
       # - run: echo $CIRCLE_WORKING_DIRECTORY
