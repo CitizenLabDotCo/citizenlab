@@ -400,7 +400,7 @@ jobs:
     steps:
       - clone
       # - run: echo 'export CIRCLE_WORKING_DIRECTORY="$CIRCLE_WORKING_DIRECTORY"/citizenlab/front' >> "$BASH_ENV"
-      - run: echo $CIRCLE_WORKING_DIRECTORY
+      # - run: echo $CIRCLE_WORKING_DIRECTORY
       # - run: 
       # - checkout
       #     path: /citizenlab
