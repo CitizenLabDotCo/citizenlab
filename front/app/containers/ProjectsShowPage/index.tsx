@@ -97,7 +97,7 @@ const ProjectsShowPage = ({ project }: Props) => {
 
   const { data: events } = useEvents({
     projectIds: projectId ? [projectId] : undefined,
-    sort: '-start_at', // TODO: Clean up types, do the transformation in the fetcher instead.
+    sort: '-start_at',
   });
 
   const loading = useMemo(() => {
