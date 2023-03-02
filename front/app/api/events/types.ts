@@ -30,13 +30,13 @@ export interface QueryParameters {
   project_ids?: string[] | undefined;
   ends_before_date?: string | undefined;
   ends_on_or_after_date?: string | undefined;
-  sort?: 'start_at' | '-start_at' | undefined;
-  pageNumber?: number | undefined;
-  pageSize?: number | undefined;
+  sort?: SortType;
+  pageSize?: number;
+  pageNumber?: number;
   project_publication_statuses?: string[] | undefined;
 }
 
-type sort = 'newest' | 'oldest';
+type SortType = 'start_at' | '-start_at';
 
 export interface InputParameters {
   projectIds?: string[];
@@ -45,7 +45,7 @@ export interface InputParameters {
   pastOnly?: boolean;
   pageSize?: number;
   pageNumber?: number;
-  sort?: sort;
+  sort?: SortType;
   projectPublicationStatuses?: PublicationStatus[];
 }
 

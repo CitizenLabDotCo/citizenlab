@@ -33,6 +33,8 @@ const fetchEvents = ({ filters }: Props) => {
   });
 };
 
+const newDate = new Date().toJSON();
+
 const useEvents = ({
   projectIds,
   staticPageId,
@@ -44,37 +46,17 @@ const useEvents = ({
   pageNumber,
 }: InputParameters) => {
   const queryParams: QueryParameters = {
+    project_publication_statuses: projectPublicationStatuses,
+    sort: currentAndFutureOnly ? 'start_at' : pastOnly ? '-start_at' : sort,
+    ends_on_or_after_date: currentAndFutureOnly ? newDate : undefined,
+    ends_before_date: pastOnly ? newDate : undefined,
+    pageNumber,
+    pageSize,
     ...(projectIds && { project_ids: projectIds }),
     ...(staticPageId && {
       static_page_id: staticPageId,
     }),
   };
-
-  if (projectPublicationStatuses) {
-    queryParams.project_publication_statuses = projectPublicationStatuses;
-  }
-
-  if (currentAndFutureOnly) {
-    queryParams.ends_on_or_after_date = new Date().toJSON();
-    queryParams.sort = 'start_at';
-  }
-
-  if (pastOnly) {
-    queryParams.ends_before_date = new Date().toJSON();
-    queryParams.sort = '-start_at';
-  }
-
-  if (pageNumber) {
-    queryParams[pageNumber] = pageNumber;
-  }
-
-  if (sort) {
-    queryParams[sort] = sort;
-  }
-
-  if (pageSize) {
-    queryParams[pageSize] = pageSize;
-  }
 
   return useQuery<IEvents, CLErrors, IEvents, EventsKeys>({
     queryKey: eventsKeys.list({ filters: queryParams }),

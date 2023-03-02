@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 // components
 import ProjectHelmet from './shared/header/ProjectHelmet';
@@ -79,7 +79,7 @@ interface Props {
   project: IProjectData | Error | null;
 }
 
-const ProjectsShowPage = memo<Props>(({ project }) => {
+const ProjectsShowPage = ({ project }: Props) => {
   const projectId = !isNilOrError(project) ? project.id : undefined;
   const processType = !isNilOrError(project)
     ? project.attributes.process_type
@@ -97,7 +97,7 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
 
   const { data: events } = useEvents({
     projectIds: projectId ? [projectId] : undefined,
-    sort: 'newest',
+    sort: '-start_at', // TODO: Clean up types, do the transformation in the fetcher instead.
   });
 
   const loading = useMemo(() => {
@@ -154,7 +154,7 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
         >
           <EventsViewer
             showProjectFilter={false}
-            projectIds={[projectId]}
+            projectId={projectId}
             eventsTime="currentAndFuture"
             title={formatMessage(messages.upcomingAndOngoingEvents)}
             fallbackMessage={messages.noUpcomingOrOngoingEvents}
@@ -163,7 +163,7 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
           />
           <EventsViewer
             showProjectFilter={false}
-            projectIds={[projectId]}
+            projectId={projectId}
             eventsTime="past"
             title={formatMessage(messages.pastEvents)}
             fallbackMessage={messages.noPastEvents}
@@ -187,14 +187,13 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
       {content}
     </Container>
   );
-});
+};
 
 const ProjectsShowPageWrapper = () => {
   const [userWasLoggedIn, setUserWasLoggedIn] = useState(false);
 
   const { pathname } = useLocation();
   const { slug, phaseNumber } = useParams();
-
   const project = useProject({ projectSlug: slug });
   const phases = usePhases(project?.id);
   const user = useAuthUser();

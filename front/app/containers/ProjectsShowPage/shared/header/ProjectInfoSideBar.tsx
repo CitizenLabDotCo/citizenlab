@@ -131,7 +131,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   const phases = usePhases(projectId);
   const { data: events } = useEvents({
     projectIds: [projectId],
-    sort: 'newest',
+    sort: '-start_at',
   });
   const authUser = useAuthUser();
 

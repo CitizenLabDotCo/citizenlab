@@ -107,7 +107,7 @@ const EventsWidget = ({ staticPageId }: Props) => {
     projectPublicationStatuses: ['published'],
     currentAndFutureOnly: true,
     pageSize: 3,
-    sort: 'oldest',
+    sort: 'start_at',
     ...(staticPageId && { staticPageId }),
   });
 
