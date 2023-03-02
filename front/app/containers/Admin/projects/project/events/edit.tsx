@@ -231,7 +231,7 @@ const AdminProjectEventEdit = ({ params }: Props) => {
                   handleEventFiles(data);
                 },
                 onError: async (errors) => {
-                  setErrors(errors);
+                  setErrors(errors.errors);
                   setSubmitState('error');
                 },
               }
