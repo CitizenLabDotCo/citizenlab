@@ -34,6 +34,9 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 
+// hooks
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+
 const Container = styled.div`
   width: 100%;
   display: flex;
@@ -130,7 +133,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  post: GetPostChildProps;
+  idea: GetPostChildProps;
   user: GetUserChildProps;
 }
 
@@ -139,12 +142,17 @@ const nothingHappens = () => {};
 interface Props extends InputProps, DataProps {}
 
 const PostCommentGroup = ({
-  post,
+  idea,
   postType,
   comments,
   userId,
   user,
+  postId,
 }: Props) => {
+  const initiativeId = postType === 'initiative' ? postId : null;
+  const { data: initiative } = useInitiativeById(initiativeId);
+  const post = postType === 'idea' ? idea : initiative?.data;
+
   const onIdeaLinkClick = (event: FormEvent<any>) => {
     event.preventDefault();
 
@@ -234,8 +242,8 @@ const PostCommentGroup = ({
 };
 
 const Data = adopt<DataProps, InputProps>({
-  post: ({ postId, postType, render }) => (
-    <GetPost id={postId} type={postType}>
+  idea: ({ postId, render }) => (
+    <GetPost id={postId} type="idea">
       {render}
     </GetPost>
   ),
