@@ -37,9 +37,6 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetInitiativeImages, {
   GetInitiativeImagesChildProps,
 } from 'resources/GetInitiativeImages';
-import GetInitiative, {
-  GetInitiativeChildProps,
-} from 'resources/GetInitiative';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetWindowSize, {
   GetWindowSizeChildProps,
@@ -82,6 +79,10 @@ import {
 
 // hooks
 import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+
+// types
+import { IInitiativeData } from 'api/initiatives/types';
 
 import Outlet from 'components/Outlet';
 
@@ -311,7 +312,6 @@ const StyledVoteControl = styled(VoteControl)`
 `;
 
 interface DataProps {
-  initiative: GetInitiativeChildProps;
   locale: GetLocaleChildProps;
   initiativeImages: GetInitiativeImagesChildProps;
   authUser: GetAuthUserChildProps;
@@ -321,16 +321,19 @@ interface DataProps {
   tenant: GetAppConfigurationChildProps;
 }
 
+interface IntiativeInputProps {
+  initiative: IInitiativeData;
+}
+
 interface InputProps {
   initiativeId: string;
   className?: string;
 }
 
-interface Props extends DataProps, InputProps {}
+interface Props extends DataProps, InputProps, IntiativeInputProps {}
 
 const InitiativesShow = ({
   locale,
-  initiative,
   localize,
   initiativeImages,
   authUser,
@@ -355,6 +358,7 @@ const InitiativesShow = ({
   const queryParams = new URLSearchParams(window.location.search);
   const newInitiativeId = queryParams.get('new_initiative_id');
   const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
+  const { data: initiative } = useInitiativeById(initiativeId);
 
   useEffect(() => {
     if (isString(newInitiativeId)) {
@@ -369,7 +373,6 @@ const InitiativesShow = ({
   useEffect(() => {
     if (
       !loaded &&
-      !isNilOrError(initiative) &&
       !isUndefined(initiativeImages) &&
       !isUndefined(officialFeedbacks.officialFeedbacksList)
     ) {
@@ -430,22 +433,24 @@ const InitiativesShow = ({
     !isNilOrError(locale) &&
     loaded
   ) {
-    const initiativeHeaderImageLarge = initiative?.attributes?.header_bg?.large;
-    const authorId = initiative?.relationships?.author?.data?.id;
-    const initiativeTitle = localize(initiative?.attributes?.title_multiloc);
+    const initiativeHeaderImageLarge =
+      initiative.data.attributes?.header_bg?.large;
+    const authorId = initiative.data.relationships?.author?.data?.id;
+    const initiativeTitle = localize(
+      initiative.data.attributes?.title_multiloc
+    );
     const initiativeImageLarge =
       initiativeImages?.[0]?.attributes?.versions?.large;
     const initiativeGeoPosition =
-      initiative?.attributes?.location_point_geojson;
+      initiative.data.attributes?.location_point_geojson;
     const initiativeAddress = getAddressOrFallbackDMS(
-      initiative?.attributes?.location_description,
-      initiative?.attributes?.location_point_geojson
+      initiative.data.attributes?.location_description,
+      initiative.data.attributes?.location_point_geojson
     );
     const topicIds =
-      initiative?.relationships?.topics?.data?.map((item) => item.id) || [];
+      initiative.data.relationships?.topics?.data?.map((item) => item.id) || [];
     const initiativeUrl = location.href;
-    const initiativeId = initiative?.id;
-    const initiativeBody = localize(initiative?.attributes?.body_multiloc);
+    const initiativeBody = localize(initiative.data.attributes?.body_multiloc);
     const isDesktop = windowSize ? windowSize > viewportWidths.tablet : true;
     const isNotDesktop = windowSize
       ? windowSize <= viewportWidths.tablet
@@ -484,7 +489,7 @@ const InitiativesShow = ({
             <InitiativeBannerContent>
               <MobileMoreActionContainer>
                 <InitiativeMoreActions
-                  initiative={initiative}
+                  initiative={initiative.data}
                   id="e2e-initiative-more-actions-mobile"
                   color="white"
                 />
@@ -552,7 +557,7 @@ const InitiativesShow = ({
                 windowSize={windowSize}
                 translateButtonClicked={translateButtonClicked}
                 onClick={onTranslateInitiative}
-                initiative={initiative}
+                initiative={initiative.data}
                 locale={locale}
               />
 
@@ -630,7 +635,7 @@ const InitiativesShow = ({
                     />
                   </ScreenReaderOnly>
                   <VoteControl
-                    initiativeId={initiative.id}
+                    initiativeId={initiativeId}
                     onScrollToOfficialFeedback={onScrollToOfficialFeedback}
                     id="e2e-initiative-vote-control"
                   />
@@ -721,14 +726,11 @@ const InitiativesShowWithHOCs = injectLocalize<Props>(
   withRouter(injectIntl(InitiativesShow))
 );
 
-const Data = adopt<DataProps, InputProps>({
+const Data = adopt<DataProps, InputProps & IntiativeInputProps>({
   locale: <GetLocale />,
   tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
   windowSize: <GetWindowSize />,
-  initiative: ({ initiativeId, render }) => (
-    <GetInitiative id={initiativeId}>{render}</GetInitiative>
-  ),
   initiativeImages: ({ initiativeId, render }) => (
     <GetInitiativeImages initiativeId={initiativeId}>
       {render}
@@ -749,8 +751,20 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <InitiativesShowWithHOCs {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default (inputProps: InputProps) => {
+  // TODO: Move this logic to InitiativesShow after working on the officialFeedbacks. It's dependency here is why we need to pass in the initiative to the Data component
+  const { data: initiative } = useInitiativeById(inputProps.initiativeId);
+  if (!initiative) return null;
+
+  return (
+    <Data {...inputProps} initiative={initiative.data}>
+      {(dataProps) => (
+        <InitiativesShowWithHOCs
+          {...inputProps}
+          {...dataProps}
+          initiative={initiative.data}
+        />
+      )}
+    </Data>
+  );
+};
