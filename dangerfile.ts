@@ -1,9 +1,11 @@
 import { warn, message, danger } from "danger";
 
 // Changelog modification
-const hasChangelog = danger.git.modified_files.includes("CHANGELOG.md");
+const hasChangelog = !danger.github.pr.body.includes(
+  "<replace by bullet list items>"
+);
 if (!hasChangelog) {
-  warn("The changelog hasn't been modified");
+  warn("The changelog is empty");
 }
 
 // PR title and branch Jira key reference
