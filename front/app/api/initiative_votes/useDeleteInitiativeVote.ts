@@ -4,14 +4,14 @@ import { IInitiativeVote } from './types';
 import initiativesKeys from 'api/initiatives/keys';
 
 const deleteInitiativeVote = async ({
-  initiativeId,
+  initiativeId: _initiativeId,
   voteId,
 }: {
   initiativeId: string;
   voteId: string;
 }) =>
   fetcher<IInitiativeVote>({
-    path: `/initiatives/${initiativeId}/votes/${voteId}`,
+    path: `/votes/${voteId}`,
     action: 'delete',
   });
 
