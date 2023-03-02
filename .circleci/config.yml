@@ -399,7 +399,8 @@ jobs:
     # working_directory: /citizenlab/front
     steps:
       - clone
-      - run: export CIRCLE_WORKING_DIRECTORY=$CIRCLE_WORKING_DIRECTORY/citizenlab/front
+      - run: echo 'export CIRCLE_WORKING_DIRECTORY="$CIRCLE_WORKING_DIRECTORY"/citizenlab/front' >> "$BASH_ENV"
+      # - run: export CIRCLE_WORKING_DIRECTORY=$CIRCLE_WORKING_DIRECTORY/citizenlab/front
       - run: echo $CIRCLE_WORKING_DIRECTORY
       # - run: 
       # - checkout
