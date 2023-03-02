@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
@@ -114,13 +114,24 @@ interface DataProps {
   votingPermission: GetInitiativesPermissionsChildProps;
 }
 
-interface State {}
-
 interface Props extends InputProps, DataProps {}
 
-class VoteControl extends PureComponent<Props, State> {
-  handleOnvote = () => {
-    const { votingPermission } = this.props;
+const VoteControl = ({
+  initiative,
+  initiativeStatus,
+  tenant,
+  className,
+  onScrollToOfficialFeedback,
+  id,
+  votingPermission,
+}: Props) => {
+  const vote = () => {
+    if (!isNilOrError(initiative)) {
+      addVote(initiative.id, { mode: 'up' });
+    }
+  };
+
+  const handleOnvote = () => {
     const requiredAction = votingPermission?.action;
     switch (requiredAction) {
       case 'sign_in_up':
@@ -131,7 +142,7 @@ class VoteControl extends PureComponent<Props, State> {
           flow: 'signup',
           verification: false,
           verificationContext: undefined,
-          action: () => this.vote(),
+          action: () => vote(),
         });
         break;
       case 'sign_in_up_and_verify':
@@ -145,7 +156,7 @@ class VoteControl extends PureComponent<Props, State> {
             type: 'initiative',
             action: 'voting_initiative',
           },
-          action: () => this.vote(),
+          action: () => vote(),
         });
         break;
       case 'verify':
@@ -160,21 +171,11 @@ class VoteControl extends PureComponent<Props, State> {
         });
         break;
       default:
-        this.vote();
+        vote();
     }
   };
 
-  vote = () => {
-    const { initiative } = this.props;
-
-    if (!isNilOrError(initiative)) {
-      addVote(initiative.id, { mode: 'up' });
-    }
-  };
-
-  handleOnCancelVote = () => {
-    const { initiative } = this.props;
-
+  const handleOnCancelVote = () => {
     if (
       !isNilOrError(initiative) &&
       initiative.relationships?.user_vote?.data?.id
@@ -183,64 +184,53 @@ class VoteControl extends PureComponent<Props, State> {
     }
   };
 
-  render() {
-    const {
-      initiative,
-      initiativeStatus,
-      tenant,
-      className,
-      onScrollToOfficialFeedback,
-      id,
-      votingPermission,
-    } = this.props;
-    if (
-      isNilOrError(initiative) ||
-      isNilOrError(initiativeStatus) ||
-      isNilOrError(tenant) ||
-      !tenant.attributes.settings.initiatives
-    ) {
-      return null;
-    }
-
-    const expiresAt = moment(
-      initiative.attributes.expires_at,
-      'YYYY-MM-DDThh:mm:ss.SSSZ'
-    );
-    const durationAsSeconds = moment
-      .duration(expiresAt.diff(moment()))
-      .asSeconds();
-    const isExpired = durationAsSeconds < 0;
-    const statusCode =
-      initiativeStatus.attributes.code === 'proposed' && isExpired
-        ? 'expired'
-        : initiativeStatus.attributes.code;
-    const userVoted = !!(
-      initiative.relationships.user_vote &&
-      initiative.relationships.user_vote.data
-    );
-    const StatusComponent =
-      componentMap[statusCode][userVoted ? 'voted' : 'notVoted'];
-    const initiativeSettings = tenant.attributes.settings.initiatives;
-
-    return (
-      <Container id={id} className={className || ''} aria-live="polite">
-        <ScreenReaderOnly>
-          <FormattedMessage tagName="h3" {...messages.invisibleTitle} />
-        </ScreenReaderOnly>
-        <StatusComponent
-          initiative={initiative}
-          initiativeStatus={initiativeStatus}
-          initiativeSettings={initiativeSettings}
-          userVoted={userVoted}
-          onVote={this.handleOnvote}
-          onCancelVote={this.handleOnCancelVote}
-          onScrollToOfficialFeedback={onScrollToOfficialFeedback}
-          disabledReason={votingPermission?.disabledReason}
-        />
-      </Container>
-    );
+  if (
+    isNilOrError(initiative) ||
+    isNilOrError(initiativeStatus) ||
+    isNilOrError(tenant) ||
+    !tenant.attributes.settings.initiatives
+  ) {
+    return null;
   }
-}
+
+  const expiresAt = moment(
+    initiative.attributes.expires_at,
+    'YYYY-MM-DDThh:mm:ss.SSSZ'
+  );
+  const durationAsSeconds = moment
+    .duration(expiresAt.diff(moment()))
+    .asSeconds();
+  const isExpired = durationAsSeconds < 0;
+  const statusCode =
+    initiativeStatus.attributes.code === 'proposed' && isExpired
+      ? 'expired'
+      : initiativeStatus.attributes.code;
+  const userVoted = !!(
+    initiative.relationships.user_vote &&
+    initiative.relationships.user_vote.data
+  );
+  const StatusComponent =
+    componentMap[statusCode][userVoted ? 'voted' : 'notVoted'];
+  const initiativeSettings = tenant.attributes.settings.initiatives;
+
+  return (
+    <Container id={id} className={className || ''} aria-live="polite">
+      <ScreenReaderOnly>
+        <FormattedMessage tagName="h3" {...messages.invisibleTitle} />
+      </ScreenReaderOnly>
+      <StatusComponent
+        initiative={initiative}
+        initiativeStatus={initiativeStatus}
+        initiativeSettings={initiativeSettings}
+        userVoted={userVoted}
+        onVote={handleOnvote}
+        onCancelVote={handleOnCancelVote}
+        onScrollToOfficialFeedback={onScrollToOfficialFeedback}
+        disabledReason={votingPermission?.disabledReason}
+      />
+    </Container>
+  );
+};
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetAppConfiguration />,
