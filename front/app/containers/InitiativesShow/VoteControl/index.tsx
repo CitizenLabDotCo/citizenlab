@@ -20,7 +20,6 @@ import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import { addVote, deleteVote } from 'services/initiativeVotes';
 import ProposedNotVoted from './ProposedNotVoted';
 import ProposedVoted from './ProposedVoted';
 import Expired from './Expired';
@@ -35,6 +34,8 @@ import GetInitiativesPermissions, {
 import { IInitiativeDisabledReason } from 'hooks/useInitiativesPermissions';
 import { trackEventByName } from 'utils/analytics';
 import { openVerificationModal } from 'events/verificationModal';
+import useAddInitiativeVote from 'api/initiative_votes/useAddInitiativeVote';
+import useDeleteInitiativeVote from 'api/initiative_votes/useDeleteInitiativeVote';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 
 const Container = styled.div`
@@ -126,12 +127,8 @@ const VoteControl = ({
   id,
   votingPermission,
 }: Props) => {
-  const vote = () => {
-    if (!isNilOrError(initiative)) {
-      addVote(initiative.id, { mode: 'up' });
-    }
-  };
-
+  const { mutate: addVote } = useAddInitiativeVote();
+  const { mutate: deleteVote } = useDeleteInitiativeVote();
   const handleOnvote = () => {
     const requiredAction = votingPermission?.action;
     switch (requiredAction) {
@@ -176,12 +173,21 @@ const VoteControl = ({
     }
   };
 
+  const vote = () => {
+    if (!isNilOrError(initiative)) {
+      addVote({ initiativeId: initiative.id, mode: 'up' });
+    }
+  };
+
   const handleOnCancelVote = () => {
     if (
       !isNilOrError(initiative) &&
       initiative.relationships?.user_vote?.data?.id
     ) {
-      deleteVote(initiative.id, initiative.relationships.user_vote.data.id);
+      deleteVote({
+        initiativeId: initiative.id,
+        voteId: initiative.relationships.user_vote.data.id,
+      });
     }
   };
 
