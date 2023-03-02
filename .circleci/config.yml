@@ -124,8 +124,8 @@ jobs:
     docker:
       - image: citizenlabdotco/cl2-devops-danger-check
     steps:
-      - checkout # shallow-clone
-      - run: danger ci
+      - shallow-clone
+      - run: cd citizenlab && danger ci
 
   slack-invalid-data-success:
     resource_class: small
