@@ -396,11 +396,14 @@ jobs:
   front-lint:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
-    working_directory: /citizenlab/front
+    # working_directory: /citizenlab/front
     steps:
-      # - clone
-      - checkout
-        path: /citizenlab
+      - clone
+      - CIRCLE_WORKING_DIRECTORY=CIRCLE_WORKING_DIRECTORY/citizenlab/front
+      - run: echo $CIRCLE_WORKING_DIRECTORY
+      # - run: 
+      # - checkout
+      #     path: /citizenlab
       - run: ls
       # Download and cache dependencies
       - restore_cache:
