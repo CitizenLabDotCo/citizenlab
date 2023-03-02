@@ -14,13 +14,12 @@ import { ParticipationMethod } from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
 
 // hooks
-import useIdea from 'hooks/useIdea';
+import useIdeaById from 'api/ideas/useIdeaById';
 import useIdeaImage from 'hooks/useIdeaImage';
 import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
 
 // utils
-import { get } from 'lodash-es';
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -121,25 +120,27 @@ const CompactIdeaCard = memo<Props>(
   }) => {
     const locale = useLocale();
     const localize = useLocalize();
-    const idea = useIdea({ ideaId });
+    const { data: idea } = useIdeaById(ideaId);
     const project = useProject({
       projectId: !isNilOrError(idea)
-        ? idea.relationships.project.data.id
+        ? idea.data.relationships.project.data.id
         : null,
     });
     const ideaImage = useIdeaImage({
       ideaId,
-      ideaImageId: get(idea, 'relationships.idea_images.data[0].id'),
+      ideaImageId: idea
+        ? idea.data.relationships.idea_images.data?.[0].id
+        : null,
     });
 
     if (isNilOrError(idea)) {
       return null;
     }
 
-    const authorId = idea.relationships.author.data?.id;
-    const ideaTitle = localize(idea.attributes.title_multiloc);
+    const authorId = idea.data.relationships.author.data?.id;
+    const ideaTitle = localize(idea.data.attributes.title_multiloc);
     // remove html tags from wysiwyg output
-    const bodyText = localize(idea.attributes.body_multiloc)
+    const bodyText = localize(idea.data.attributes.body_multiloc)
       .replace(/<[^>]*>?/gm, '')
       .replaceAll('&amp;', '&')
       .trim();
@@ -184,8 +185,8 @@ const CompactIdeaCard = memo<Props>(
       event.preventDefault();
 
       eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
-        id: idea.id,
-        slug: idea.attributes.slug,
+        id: idea.data.id,
+        slug: idea.data.attributes.slug,
         type: 'idea',
       });
     };
@@ -197,7 +198,7 @@ const CompactIdeaCard = memo<Props>(
           .filter((item) => typeof item === 'string' && item !== '')
           .join(' ')}
         title={ideaTitle}
-        to={`/ideas/${idea.attributes.slug}`}
+        to={`/ideas/${idea.data.attributes.slug}`}
         image={
           !isNilOrError(ideaImage) ? ideaImage.attributes.versions.medium : null
         }
@@ -225,7 +226,7 @@ const CompactIdeaCard = memo<Props>(
               <Separator aria-hidden>&bull;</Separator>
               {!isNilOrError(locale) && (
                 <TimeAgo>
-                  {timeAgo(Date.parse(idea.attributes.created_at), locale)}
+                  {timeAgo(Date.parse(idea.data.attributes.created_at), locale)}
                 </TimeAgo>
               )}
               <span aria-hidden> {bodyText}</span>

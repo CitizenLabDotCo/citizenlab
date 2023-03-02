@@ -1,8 +1,6 @@
 import React, { MouseEvent, KeyboardEvent } from 'react';
-import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { IIdeaAssignedToYouNotificationData } from 'services/notifications';
-import { get } from 'lodash-es';
 
 // i18n
 import messages from '../../messages';
@@ -17,30 +15,20 @@ import Link from 'utils/cl-router/Link';
 import T from 'components/T';
 
 // resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
+import useAuthUser from 'hooks/useAuthUser';
 
-type DataProps = {
-  authUser: GetAuthUserChildProps;
-  idea: GetIdeaChildProps;
-  project: GetProjectChildProps;
-};
-
-type InputProps = {
+interface Props {
   notification: IIdeaAssignedToYouNotificationData;
-};
+}
 
-type Props = DataProps & InputProps;
-
-const IdeaAssignedToYouNotification = ({
-  authUser,
-  project,
-  notification,
-}: Props) => {
+const IdeaAssignedToYouNotification = ({ notification }: Props) => {
+  const { data: idea } = useIdeaBySlug(notification.attributes.post_slug);
   const onClickUserName = (event: MouseEvent | KeyboardEvent) => {
     event.stopPropagation();
   };
+  const authUser = useAuthUser();
+  const projectId = idea ? idea.data.relationships.project.data.id : null;
 
   const getNotificationMessage = (): JSX.Element => {
     const sharedValues = {
@@ -77,14 +65,14 @@ const IdeaAssignedToYouNotification = ({
   };
 
   const getLinkTo = () => {
-    if (authUser) {
+    if (!isNilOrError(authUser)) {
       if (isAdmin({ data: authUser })) {
         return '/admin/ideas';
       } else if (
-        !isNilOrError(project) &&
-        isProjectModerator({ data: authUser })
+        projectId &&
+        isProjectModerator({ data: authUser }, projectId)
       ) {
-        return `/admin/projects/${project.id}/ideas`;
+        return `/admin/projects/${projectId}/ideas`;
       }
     }
 
@@ -109,22 +97,4 @@ const IdeaAssignedToYouNotification = ({
   return null;
 };
 
-const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />,
-  idea: ({ notification, render }) => (
-    <GetIdea ideaSlug={notification?.attributes?.post_slug}>{render}</GetIdea>
-  ),
-  project: ({ idea, render }) => (
-    <GetProject projectId={get(idea, 'relationships.project.data.id')}>
-      {render}
-    </GetProject>
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => (
-      <IdeaAssignedToYouNotification {...dataProps} {...inputProps} />
-    )}
-  </Data>
-);
+export default IdeaAssignedToYouNotification;

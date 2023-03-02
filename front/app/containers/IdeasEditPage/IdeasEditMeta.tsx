@@ -5,13 +5,12 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useIdea from 'hooks/useIdea';
+import useIdeaById from 'api/ideas/useIdeaById';
 import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
 
@@ -24,34 +23,30 @@ interface Props {
   projectId: string;
 }
 
-const IdeasNewMeta = memo(
-  ({
-    intl: { formatMessage },
-    ideaId,
-    projectId,
-  }: Props & WrappedComponentProps) => {
-    const tenantLocales = useAppConfigurationLocales();
-    const authUser = useAuthUser();
-    const idea = useIdea({ ideaId });
-    const project = useProject({ projectId });
-    const localize = useLocalize();
+const IdeasNewMeta = memo(({ ideaId, projectId }: Props) => {
+  const { formatMessage } = useIntl();
+  const tenantLocales = useAppConfigurationLocales();
+  const authUser = useAuthUser();
+  const { data: idea } = useIdeaById(ideaId);
+  const project = useProject({ projectId });
+  const localize = useLocalize();
 
-    if (!isNilOrError(idea) && !isNilOrError(project)) {
-      const postTitle = localize(idea.attributes.title_multiloc);
-      const projectName = localize(project.attributes.title_multiloc);
+  if (!isNilOrError(idea) && !isNilOrError(project)) {
+    const postTitle = localize(idea.data.attributes.title_multiloc);
+    const projectName = localize(project.attributes.title_multiloc);
 
-      const ideasIndexTitle = formatMessage(messages.ideasEditMetaTitle, {
-        postTitle,
-        projectName,
-      });
-      const ideasIndexDescription = formatMessage(
-        messages.ideasEditMetaDescription
-      );
+    const ideasIndexTitle = formatMessage(messages.ideasEditMetaTitle, {
+      postTitle,
+      projectName,
+    });
+    const ideasIndexDescription = formatMessage(
+      messages.ideasEditMetaDescription
+    );
 
-      return (
-        <Helmet>
-          <title>
-            {`
+    return (
+      <Helmet>
+        <title>
+          {`
             ${
               !isNilOrError(authUser) &&
               authUser.attributes.unread_notifications
@@ -60,19 +55,18 @@ const IdeasNewMeta = memo(
             }
             ${ideasIndexTitle}
           `}
-          </title>
-          {getAlternateLinks(tenantLocales)}
-          {getCanonicalLink()}
-          <meta name="title" content={ideasIndexTitle} />
-          <meta name="description" content={ideasIndexDescription} />
-          <meta property="og:title" content={ideasIndexTitle} />
-          <meta property="og:description" content={ideasIndexDescription} />
-        </Helmet>
-      );
-    }
-
-    return null;
+        </title>
+        {getAlternateLinks(tenantLocales)}
+        {getCanonicalLink()}
+        <meta name="title" content={ideasIndexTitle} />
+        <meta name="description" content={ideasIndexDescription} />
+        <meta property="og:title" content={ideasIndexTitle} />
+        <meta property="og:description" content={ideasIndexDescription} />
+      </Helmet>
+    );
   }
-);
 
-export default injectIntl(IdeasNewMeta);
+  return null;
+});
+
+export default IdeasNewMeta;

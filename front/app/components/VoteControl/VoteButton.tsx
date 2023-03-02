@@ -10,7 +10,7 @@ import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import { IdeaVotingDisabledReason } from 'services/ideas';
 import useAuthUser from 'hooks/useAuthUser';
-import useIdea from 'hooks/useIdea';
+import useIdeaById from 'api/ideas/useIdeaById';
 import { FormattedDate } from 'react-intl';
 import useLocalize from 'hooks/useLocalize';
 import useProject from 'hooks/useProject';
@@ -328,9 +328,9 @@ const VoteButton = ({
   userVoteMode,
 }: Props) => {
   const authUser = useAuthUser();
-  const idea = useIdea({ ideaId });
+  const { data: idea } = useIdeaById(ideaId);
   const projectId = !isNilOrError(idea)
-    ? idea.relationships.project.data.id
+    ? idea.data.relationships.project.data.id
     : null;
   const project = useProject({ projectId });
   const localize = useLocalize();
@@ -365,13 +365,13 @@ const VoteButton = ({
   };
 
   if (!isNilOrError(idea) && !isNilOrError(project)) {
-    const votingDescriptor = idea.attributes.action_descriptor.voting_idea;
+    const votingDescriptor = idea.data.attributes.action_descriptor.voting_idea;
     const buttonVoteModeEnabled = votingDescriptor[buttonVoteMode].enabled;
     const disabledReason =
-      idea.attributes.action_descriptor.voting_idea[buttonVoteMode]
+      idea.data.attributes.action_descriptor.voting_idea[buttonVoteMode]
         .disabled_reason;
     const futureEnabled =
-      idea.attributes.action_descriptor.voting_idea[buttonVoteMode]
+      idea.data.attributes.action_descriptor.voting_idea[buttonVoteMode]
         .future_enabled;
     const cancellingEnabled = votingDescriptor.cancelling_enabled;
     const isSignedIn = !isNilOrError(authUser);
