@@ -13,7 +13,6 @@ import shallowCompare from 'utils/shallowCompare';
 import { projectFilesStream, IProjectFiles } from 'services/projectFiles';
 import { phaseFilesStream, IPhaseFiles } from 'services/phaseFiles';
 import { pageFilesStream, ICustomPageFiles } from 'services/pageFiles';
-import { eventFilesStream, IEventFiles } from 'services/eventFiles';
 import { ideaFilesStream, IIdeaFiles } from 'services/ideaFiles';
 import {
   initiativeFilesStream,
@@ -29,7 +28,6 @@ import { UploadFile } from 'typings';
 export type TResourceType =
   | 'project'
   | 'phase'
-  | 'event'
   | 'page'
   | 'idea'
   | 'initiative';
@@ -93,9 +91,6 @@ export default class GetRemoteFiles extends React.Component<Props, State> {
               if (resourceType === 'phase') {
                 streamFn = phaseFilesStream;
               }
-              if (resourceType === 'event') {
-                streamFn = eventFilesStream;
-              }
               if (resourceType === 'page') {
                 streamFn = pageFilesStream;
               }
@@ -109,7 +104,6 @@ export default class GetRemoteFiles extends React.Component<Props, State> {
               return streamFn(resourceId).observable as Observable<
                 | IProjectFiles
                 | IPhaseFiles
-                | IEventFiles
                 | ICustomPageFiles
                 | IIdeaFiles
                 | IInitiativeFiles
