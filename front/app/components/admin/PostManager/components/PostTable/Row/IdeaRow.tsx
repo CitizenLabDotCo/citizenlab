@@ -23,6 +23,7 @@ import FeatureFlag from 'components/FeatureFlag';
 
 // utils
 import { timeAgo } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
@@ -42,7 +43,7 @@ import {
 import { insertConfiguration } from 'utils/moduleUtils';
 
 // hooks
-import { isNilOrError } from 'utils/helperUtils';
+import useUpdateIdea from 'api/ideas/useUpdateIdea';
 
 type InputProps = {
   type: ManagerType;
@@ -81,6 +82,8 @@ const IdeaRow = ({
   selection,
   locale,
 }: Props & WrappedComponentProps) => {
+  const { mutate: updateIdea } = useUpdateIdea();
+
   const [cells, setCells] = useState<
     CellConfiguration<IdeaCellComponentProps>[]
   >([
@@ -217,23 +220,17 @@ const IdeaRow = ({
   };
 
   const onUpdateIdeaPhases = (selectedPhases: string[]) => {
-    updateIdea(idea.id, {
-      phase_ids: selectedPhases,
-    });
+    updateIdea({ id: idea.id, requestBody: { phase_ids: selectedPhases } });
   };
 
   const onUpdateIdeaTopics = (selectedTopics: string[]) => {
-    updateIdea(idea.id, {
-      topic_ids: selectedTopics,
-    });
+    updateIdea({ id: idea.id, requestBody: { topic_ids: selectedTopics } });
   };
 
   const onUpdateIdeaStatus = (statusId: string) => {
     const ideaId = idea.id;
 
-    updateIdea(ideaId, {
-      idea_status_id: statusId,
-    });
+    updateIdea({ id: ideaId, requestBody: { idea_status_id: statusId } });
 
     trackEventByName(tracks.ideaStatusChange, {
       location: 'Idea overview',
