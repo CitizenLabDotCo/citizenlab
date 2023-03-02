@@ -400,7 +400,7 @@ jobs:
     # working_directory: /citizenlab/front
     steps:
       - clone
-      - run: cd front
+      - run: cd citizenlab/front
       # Download and cache dependencies
       - restore_cache:
           keys:
