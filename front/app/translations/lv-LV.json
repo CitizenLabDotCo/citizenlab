@@ -281,7 +281,6 @@
   "app.components.ParticipationCTABars.takeTheSurvey": "Veiciet aptauju",
   "app.components.ParticipationCTABars.userHasParticipated": "Jūs esat piedalījies šajā projektā.",
   "app.components.ParticipationCTABars.volunteer": "Brīvprātīgais",
-  "app.components.ParticipationCTABars.xDaysLeft": "{timeLeft, plural, =0 {Mazāk nekā diena} one {# atlikušas dienas} other {# dienas}} atlicis",
   "app.components.ParticipationCTABars.xWeeksLeft": "{timeLeft} atlikušās nedēļas",
   "app.components.PasswordInput.a11y_passwordHidden": "Parole paslēpta",
   "app.components.PasswordInput.a11y_passwordVisible": "Parole redzama",

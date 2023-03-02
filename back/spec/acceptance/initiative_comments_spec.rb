@@ -151,7 +151,8 @@ resource 'Comments' do
 
       let(:initiatives) { @comments.map(&:post_id) }
 
-      example_request 'XLSX export by initiative ids', document: false do
+      example 'XLSX export by initiative ids', document: false do
+        do_request
         expect(status).to eq 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet.count).to eq(initiatives.size + 1)
@@ -165,7 +166,8 @@ resource 'Comments' do
         header 'Authorization', "Bearer #{token}"
       end
 
-      example_request '[error] XLSX export by a normal user', document: false do
+      example '[error] XLSX export by a normal user', document: false do
+        do_request
         expect(status).to eq 401
       end
     end

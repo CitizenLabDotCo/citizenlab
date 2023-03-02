@@ -21,11 +21,11 @@ import { IEvent, IEventProperties } from 'api/events/types';
 import useAddEvent from 'api/events/useAddEvent';
 import useUpdateEvent from 'api/events/useUpdateEvent';
 import useEvent from 'api/events/useEvent';
-import useAppConfiguration from 'hooks/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
 import useEventFiles from 'api/event_files/useEventFiles';
 import useAddEventFile from 'api/event_files/useAddEventFile';
 import useDeleteEventFile from 'api/event_files/useDeleteEventFile';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // typings
 import { Multiloc, CLError, UploadFile } from 'typings';

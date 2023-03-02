@@ -31,7 +31,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import Outlet from 'components/Outlet';
 import { InsertConfigurationOptions } from 'typings';
 import { insertConfiguration } from 'utils/moduleUtils';
-import { TAppConfigurationSetting } from 'services/appConfiguration';
+import { TAppConfigurationSetting } from 'api/app_configuration/types';
 
 const Menu = styled.div`
   z-index: 10;
