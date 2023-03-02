@@ -82,3 +82,7 @@ export interface IInitiatives {
   data: IInitiativeData[];
   links: ILinks;
 }
+
+export interface IInitiative {
+  data: IInitiativeData;
+}

@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import initiativesKeys from './keys';
-import { IInitiative, InitiativeKeys } from './types';
+import { IInitiative, InitiativesKeys } from './types';
 
 const fetchInitiativeBySlug = (initiativeSlug: string) =>
   fetcher<IInitiative>({
@@ -11,7 +11,7 @@ const fetchInitiativeBySlug = (initiativeSlug: string) =>
   });
 
 const useInitiativeBySlug = (initiativeSlug: string) => {
-  return useQuery<IInitiative, CLErrors, IInitiative, InitiativeKeys>({
+  return useQuery<IInitiative, CLErrors, IInitiative, InitiativesKeys>({
     queryKey: initiativesKeys.item(initiativeSlug),
     queryFn: () => fetchInitiativeBySlug(initiativeSlug),
   });
