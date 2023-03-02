@@ -105,12 +105,6 @@ export function initiativeByIdStream(initiativeId: string) {
   });
 }
 
-export function initiativeBySlugStream(initiativeSlug: string) {
-  return streams.get<IInitiative>({
-    apiEndpoint: `${API_PATH}/initiatives/by_slug/${initiativeSlug}`,
-  });
-}
-
 export function initiativesMarkersStream(
   streamParams: IStreamParams | null = null
 ) {
