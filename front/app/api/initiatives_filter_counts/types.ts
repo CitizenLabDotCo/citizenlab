@@ -6,12 +6,6 @@ export type InitiativeFilterCountsKeys = Keys<
   typeof initiativeFilterCountsKeys
 >;
 
-export type InitiativePublicationStatus =
-  | 'draft'
-  | 'published'
-  | 'archived'
-  | 'spam';
-
 export interface IInitiativesFilterCounts {
   data: {
     type: 'filter_counts';
