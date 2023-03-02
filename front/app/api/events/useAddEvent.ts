@@ -17,7 +17,7 @@ const useAddEvent = () => {
   return useMutation<IEvent, CLErrors, IAddEventProperties>({
     mutationFn: addEvent,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: eventsKeys.all() });
+      queryClient.invalidateQueries({ queryKey: eventsKeys.lists() });
     },
   });
 };

@@ -4,11 +4,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import eventsKeys from './keys';
 import { IEvents, EventsKeys, InputParameters } from './types';
 
-type Props = {
-  filters: InputParameters;
-};
-
-const fetchEvents = ({ filters }: Props) => {
+const fetchEvents = (filters: InputParameters) => {
   const {
     projectIds: project_ids,
     endsBeforeDate: ends_before_date,
@@ -59,8 +55,8 @@ const useEvents = ({
   };
 
   return useQuery<IEvents, CLErrors, IEvents, EventsKeys>({
-    queryKey: eventsKeys.list({ filters: queryParams }),
-    queryFn: () => fetchEvents({ filters: queryParams }),
+    queryKey: eventsKeys.list(queryParams),
+    queryFn: () => fetchEvents(queryParams),
   });
 };
 

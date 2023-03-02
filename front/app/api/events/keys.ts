@@ -3,8 +3,8 @@ import { InputParameters } from './types';
 const eventsKeys = {
   all: () => [{ type: 'events' }],
   lists: () => [{ ...eventsKeys.all()[0], operation: 'list' }],
-  list: (parameters?: { filters: InputParameters }) => [
-    { ...eventsKeys.all()[0], entity: 'list', ...parameters?.filters },
+  list: (filters: InputParameters) => [
+    { ...eventsKeys.lists()[0], ...filters },
   ],
   items: () => [{ ...eventsKeys.all()[0], operation: 'item' }],
   item: (eventId?: string) => [

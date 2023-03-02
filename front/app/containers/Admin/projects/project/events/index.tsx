@@ -40,7 +40,8 @@ const AdminProjectEventsIndex = ({
     projectIds: [projectId],
     pageSize: 1000,
   });
-  const { mutate: deleteEvent } = useDeleteEvent();
+
+  const { mutate: deleteEvent, isLoading } = useDeleteEvent();
 
   const createDeleteClickHandler =
     (eventId: string) => (event: React.FormEvent<any>) => {
@@ -72,45 +73,48 @@ const AdminProjectEventsIndex = ({
 
         {!isNilOrError(events) && events.data.length > 0 && (
           <StyledList>
-            <HeadRow>
-              <div className="expand">
-                <FormattedMessage {...messages.titleColumnHeader} />
-              </div>
-            </HeadRow>
-            {events.data.map((event) => {
-              const startAt = moment(event.attributes.start_at).format('LLL');
-              const endAt = moment(event.attributes.end_at).format('LLL');
+            <>
+              <HeadRow>
+                <div className="expand">
+                  <FormattedMessage {...messages.titleColumnHeader} />
+                </div>
+              </HeadRow>
+              {events.data.map((event) => {
+                const startAt = moment(event.attributes.start_at).format('LLL');
+                const endAt = moment(event.attributes.end_at).format('LLL');
 
-              return (
-                <Row key={event.id}>
-                  <div className="expand">
-                    <h1>
-                      <T value={event.attributes.title_multiloc} />
-                    </h1>
-                    <p>
-                      <T value={event.attributes.location_multiloc} />
-                    </p>
-                    <p>
-                      {startAt} → {endAt}
-                    </p>
-                  </div>
-                  <Button
-                    buttonStyle="text"
-                    icon="delete"
-                    onClick={createDeleteClickHandler(event.id)}
-                  >
-                    <FormattedMessage {...messages.deleteButtonLabel} />
-                  </Button>
-                  <Button
-                    buttonStyle="secondary"
-                    icon="edit"
-                    linkTo={`/admin/projects/${projectId}/events/${event.id}`}
-                  >
-                    <FormattedMessage {...messages.editButtonLabel} />
-                  </Button>
-                </Row>
-              );
-            })}
+                return (
+                  <Row key={event.id}>
+                    <div className="expand">
+                      <h1>
+                        <T value={event.attributes.title_multiloc} />
+                      </h1>
+                      <p>
+                        <T value={event.attributes.location_multiloc} />
+                      </p>
+                      <p>
+                        {startAt} → {endAt}
+                      </p>
+                    </div>
+                    <Button
+                      buttonStyle="text"
+                      icon="delete"
+                      onClick={createDeleteClickHandler(event.id)}
+                      processing={isLoading}
+                    >
+                      <FormattedMessage {...messages.deleteButtonLabel} />
+                    </Button>
+                    <Button
+                      buttonStyle="secondary"
+                      icon="edit"
+                      linkTo={`/admin/projects/${projectId}/events/${event.id}`}
+                    >
+                      <FormattedMessage {...messages.editButtonLabel} />
+                    </Button>
+                  </Row>
+                );
+              })}
+            </>
           </StyledList>
         )}
       </ListWrapper>
