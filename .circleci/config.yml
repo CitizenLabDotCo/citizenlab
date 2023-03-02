@@ -125,7 +125,7 @@ jobs:
       - image: citizenlabdotco/cl2-devops-danger-check
     steps:
       - shallow-clone
-      - run: cd citizenlab && danger ci
+      - run: cd ~/citizenlab && danger ci
 
   slack-invalid-data-success:
     resource_class: small
