@@ -6,7 +6,6 @@ import Observer from '@researchgate/react-intersection-observer';
 
 // resources
 import GetPost, { GetPostChildProps } from 'resources/GetPost';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 
 // utils
@@ -31,8 +30,6 @@ import { Title } from '@citizenlab/cl2-component-library';
 import { CommentsSort } from 'services/comments';
 import { IdeaCommentingDisabledReason } from 'services/ideas';
 import CommentingInitiativeDisabled from './CommentingInitiativeDisabled';
-import { IIdeaData } from 'services/ideas';
-import { IInitiativeData } from 'api/initiatives/types';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -100,7 +97,6 @@ export interface InputProps {
 interface DataProps {
   idea: GetPostChildProps;
   comments: GetCommentsChildProps;
-  project: GetProjectChildProps;
 }
 
 interface Props extends InputProps, DataProps {}

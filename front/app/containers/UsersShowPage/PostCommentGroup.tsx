@@ -1,4 +1,4 @@
-import React, { PureComponent, FormEvent } from 'react';
+import React, { FormEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';

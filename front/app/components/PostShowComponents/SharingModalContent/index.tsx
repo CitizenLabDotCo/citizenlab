@@ -23,7 +23,6 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import { PostType } from 'resources/GetPost';
 
 // i18n
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
@@ -43,7 +42,7 @@ import rocket from 'assets/img/rocket.png';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 
 interface InputProps {
-  postType: PostType;
+  postType: 'idea' | 'initiative';
   postId: string | null;
   className?: string;
   title: string;
