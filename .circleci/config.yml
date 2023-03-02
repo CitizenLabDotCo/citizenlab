@@ -401,6 +401,7 @@ jobs:
     steps:
       - clone
       - run: cd citizenlab/front
+      - run: ls
       # Download and cache dependencies
       - restore_cache:
           keys:
