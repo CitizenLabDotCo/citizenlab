@@ -107,7 +107,7 @@ commands:
     steps:
       - run: mkdir ~/.ssh
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts
-      - run: git clone -b "$CIRCLE_BRANCH" "$CIRCLE_REPOSITORY_URL" --depth 1
+      - run: cd ~/project && git clone -b "$CIRCLE_BRANCH" "$CIRCLE_REPOSITORY_URL" --depth 1
   clone:
     steps:
       - git-shallow-clone/checkout:
