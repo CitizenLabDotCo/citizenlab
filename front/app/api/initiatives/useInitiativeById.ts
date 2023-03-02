@@ -10,10 +10,11 @@ const fetchInitiativeById = (initiativeId: string) =>
     action: 'get',
   });
 
-const useInitiativeById = (initiativeId: string) => {
+const useInitiativeById = (initiativeId: string | null) => {
   return useQuery<IInitiative, CLErrors, IInitiative, InitiativeKeys>({
-    queryKey: initiativesKeys.item(initiativeId),
-    queryFn: () => fetchInitiativeById(initiativeId),
+    queryKey: initiativeId ? initiativesKeys.item(initiativeId) : undefined,
+    queryFn: initiativeId ? () => fetchInitiativeById(initiativeId) : undefined,
+    enabled: !!initiativeId,
   });
 };
 
