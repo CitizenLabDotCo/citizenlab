@@ -3,8 +3,8 @@ import { QueryParameters } from './types';
 const eventsKeys = {
   all: () => [{ type: 'events' }],
   lists: () => [{ ...eventsKeys.all()[0], operation: 'list' }],
-  list: (filters?: QueryParameters) => [
-    { ...eventsKeys.all()[0], entity: 'list', ...filters },
+  list: (parameters?: { filters: QueryParameters }) => [
+    { ...eventsKeys.all()[0], entity: 'list', ...parameters?.filters },
   ],
   items: () => [{ ...eventsKeys.all()[0], operation: 'item' }],
   item: (eventId?: string) => [

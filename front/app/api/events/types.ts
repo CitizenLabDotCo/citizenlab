@@ -31,8 +31,8 @@ export interface QueryParameters {
   ends_before_date?: string | undefined;
   ends_on_or_after_date?: string | undefined;
   sort?: 'start_at' | '-start_at' | undefined;
-  'page[number]'?: number | undefined;
-  'page[size]'?: number | undefined;
+  pageNumber?: number | undefined;
+  pageSize?: number | undefined;
   project_publication_statuses?: string[] | undefined;
 }
 

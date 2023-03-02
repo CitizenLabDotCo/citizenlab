@@ -4,16 +4,20 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import eventsKeys from './keys';
 import { IEvents, EventsKeys, InputParameters, QueryParameters } from './types';
 
-const fetchEvents = ({
-  // TODO: replace params with one object
-  project_ids,
-  ends_before_date,
-  ends_on_or_after_date,
-  sort,
-  'page[number]': pageNumber,
-  'page[size]': pageSize,
-  project_publication_statuses,
-}: QueryParameters) => {
+type Props = {
+  filters: QueryParameters;
+};
+
+const fetchEvents = ({ filters }: Props) => {
+  const {
+    project_ids,
+    ends_before_date,
+    ends_on_or_after_date,
+    sort,
+    pageNumber,
+    pageSize,
+    project_publication_statuses,
+  } = filters;
   return fetcher<IEvents>({
     path: '/events',
     action: 'get',
@@ -61,7 +65,7 @@ const useEvents = ({
   }
 
   if (pageNumber) {
-    queryParams['page[number]'] = pageNumber;
+    queryParams[pageNumber] = pageNumber;
   }
 
   if (sort) {
@@ -69,12 +73,12 @@ const useEvents = ({
   }
 
   if (pageSize) {
-    queryParams['page[size]'] = pageSize;
+    queryParams[pageSize] = pageSize;
   }
 
   return useQuery<IEvents, CLErrors, IEvents, EventsKeys>({
-    queryKey: eventsKeys.list(queryParams),
-    queryFn: () => fetchEvents(queryParams),
+    queryKey: eventsKeys.list({ filters: queryParams }),
+    queryFn: () => fetchEvents({ filters: queryParams }),
   });
 };
 
