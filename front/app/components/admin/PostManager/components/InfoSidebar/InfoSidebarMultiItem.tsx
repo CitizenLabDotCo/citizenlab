@@ -1,27 +1,28 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import T from 'components/T';
 import { List } from 'semantic-ui-react';
-import GetIdeaById from 'resources/GetIdeaById';
+import useIdeaById from 'api/ideas/useIdeaById';
 import { handlePreviewCLick, StyledLink } from './';
 
-export default (props: {
+interface Props {
   postId: string;
   openPreview: (id: string) => void;
-}) => (
-  <GetIdeaById ideaId={props.postId}>
-    {(post) => {
-      if (isNilOrError(post)) return null;
+}
 
-      return (
-        <List.Item>
-          <StyledLink
-            onClick={handlePreviewCLick(props.postId, props.openPreview)}
-          >
-            <T value={post.attributes.title_multiloc} />
-          </StyledLink>
-        </List.Item>
-      );
-    }}
-  </GetIdeaById>
-);
+const InfoSidebarMultiItem = ({ postId, openPreview }: Props) => {
+  const { data: post } = useIdeaById(postId);
+
+  if (post) {
+    return (
+      <List.Item>
+        <StyledLink onClick={handlePreviewCLick(postId, openPreview)}>
+          <T value={post.data.attributes.title_multiloc} />
+        </StyledLink>
+      </List.Item>
+    );
+  }
+
+  return null;
+};
+
+export default InfoSidebarMultiItem;
