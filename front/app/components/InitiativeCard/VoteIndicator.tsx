@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { withTheme } from 'styled-components';
+import styled from 'styled-components';
 
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
@@ -25,6 +25,7 @@ import { get } from 'lodash-es';
 
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
+import { useTheme } from 'styled-components';
 
 // Types
 import { IInitiativeData } from 'api/initiatives/types';
@@ -134,12 +135,8 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps, IntiativeInputProps {}
 
-const VoteIndicator = ({
-  initiative,
-  initiativeStatus,
-  theme,
-  tenant,
-}: Props & { theme: any }) => {
+const VoteIndicator = ({ initiative, initiativeStatus, tenant }: Props) => {
+  const theme = useTheme();
   if (isNilOrError(initiative) || isNilOrError(initiativeStatus)) return null;
 
   const statusCode = initiativeStatus.attributes.code;
@@ -251,8 +248,6 @@ const Data = adopt<DataProps, InputProps & IntiativeInputProps>({
   ),
 });
 
-const VoteIndicatorWithHOCs = withTheme(VoteIndicator);
-
 export default (inputProps: InputProps) => {
   // TODO: Move this logic to VoteIndicator after working on the initiativeStatus. It's dependency here is why we need to pass in the initiative to the Data component
   const { data: initiative } = useInitiativeById(inputProps.initiativeId);
@@ -261,7 +256,7 @@ export default (inputProps: InputProps) => {
   return (
     <Data {...inputProps} initiative={initiative.data}>
       {(dataProps) => (
-        <VoteIndicatorWithHOCs
+        <VoteIndicator
           initiative={initiative.data}
           {...inputProps}
           {...dataProps}
