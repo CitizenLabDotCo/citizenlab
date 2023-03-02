@@ -152,12 +152,12 @@ export interface IIdeas {
 }
 
 export interface IQueryParameters {
+  sort: Sort;
   'page[number]'?: number;
   'page[size]'?: number;
   projects?: string[] | null;
   phase?: string | null;
   author?: string | null;
-  sort: Sort;
   search?: string | null;
   topics?: string[] | null;
   idea_status?: string | null;

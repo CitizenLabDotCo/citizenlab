@@ -1,31 +1,9 @@
-import React from 'react';
-import {
-  get,
-  isString,
-  isEqual,
-  omit,
-  cloneDeep,
-  omitBy,
-  isNil,
-  isArray,
-  unionBy,
-} from 'lodash-es';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import {
-  map,
-  distinctUntilChanged,
-  mergeScan,
-  switchMap,
-} from 'rxjs/operators';
-import {
-  ideasStream,
-  IIdeaData,
-  IdeaPublicationStatus,
-  Sort,
-  SortAttribute,
-  IIdeasQueryParameters,
-} from 'services/ideas';
-import { PublicationStatus as ProjectPublicationStatus } from 'services/projects';
+import { useState, useCallback } from 'react';
+
+// hooks
+import useIdeas from 'api/ideas/useIdeas';
+
+// utils
 import {
   getPageNumberFromUrl,
   getSortAttribute,
@@ -33,33 +11,33 @@ import {
   SortDirection,
 } from 'utils/paginationUtils';
 
-type PublicationStatus = IdeaPublicationStatus;
+// typings
+import { PublicationStatus as ProjectPublicationStatus } from 'services/projects';
+import {
+  IQueryParameters,
+  Sort,
+  SortAttribute,
+  IIdeaData,
+  IdeaPublicationStatus,
+} from 'api/ideas/types';
 
-export interface InputProps {
-  type: 'load-more' | 'paginated';
-  projectIds?: string[];
-  phaseId?: string;
-  authorId?: string;
+interface Props extends Omit<IQueryParameters, 'sort'> {
   sort?: Sort;
-  ideaStatusId?: string;
-  projectPublicationStatus?: ProjectPublicationStatus;
-  assignee?: string;
-  feedbackNeeded?: boolean;
-  filterCanModerate?: boolean;
-  basketId?: string;
-  pageSize?: number;
-}
-
-interface IAccumulator {
-  ideas: IIdeaData[] | null;
-  queryParameters: IIdeasQueryParameters;
-  hasMore: boolean;
+  children?: children;
 }
 
 type children = (renderProps: GetIdeasChildProps) => JSX.Element | null;
 
-interface Props extends InputProps {
-  children?: (obj: GetIdeasChildProps) => JSX.Element | null;
+interface State {
+  queryParameters: IQueryParameters;
+  list: IIdeaData[] | undefined;
+  hasMore: boolean;
+  querying: boolean;
+  loadingMore: boolean;
+  sortAttribute: SortAttribute;
+  sortDirection: SortDirection;
+  currentPage: number;
+  lastPage: number;
 }
 
 export type GetIdeasChildProps = State & {
@@ -70,404 +48,185 @@ export type GetIdeasChildProps = State & {
   onChangeSearchTerm: (search: string) => void;
   onChangeSorting: (sort: Sort) => void;
   onChangeTopics: (topics: string[]) => void;
-  onChangeStatus: (ideaStatus: string | null) => void;
-  onChangePublicationStatus: (publicationStatus: PublicationStatus) => void;
+  onChangeStatus: (ideaStatus?: string) => void;
+  onChangePublicationStatus: (publicationStatus: IdeaPublicationStatus) => void;
   onChangeProjectPublicationStatus: (
     ProjectPublicationStatus: ProjectPublicationStatus
   ) => void;
-  onChangeAssignee: (assignee: string | undefined) => void;
+  onChangeAssignee: (assignee?: string) => void;
   onChangeFeedbackFilter: (feedbackNeeded: boolean) => void;
-  onIdeaFiltering: (
-    partialQueryParameters: Partial<IIdeasQueryParameters>
-  ) => void;
-  onResetParams: (paramsToOmit?: (keyof IIdeasQueryParameters)[]) => void;
+  onIdeaFiltering: (partialQueryParameters: Partial<IQueryParameters>) => void;
+  onResetParams: (paramsToOmit?: (keyof IQueryParameters)[]) => void;
 };
 
-interface State {
-  queryParameters: IIdeasQueryParameters;
-  list: IIdeaData[] | undefined | null;
-  hasMore: boolean;
-  querying: boolean;
-  loadingMore: boolean;
-  sortAttribute: SortAttribute;
-  sortDirection: SortDirection;
-  currentPage: number;
-  lastPage: number;
-}
-
-export default class GetIdeas extends React.Component<Props, State> {
-  defaultQueryParameters: IIdeasQueryParameters;
-  queryParameters$: BehaviorSubject<IIdeasQueryParameters>;
-  subscriptions: Subscription[];
-
-  static defaultProps = {
-    pageNumber: 1,
-    pageSize: 12,
-    sort: 'random',
-  };
-
-  constructor(props: Props) {
-    super(props);
-    this.defaultQueryParameters = {
-      'page[number]': 1,
-      'page[size]': props.pageSize ?? 12,
-      sort: props.sort as Sort,
-      projects: undefined,
-      phase: undefined,
-      author: undefined,
-      search: undefined,
-      topics: undefined,
-      idea_status: undefined,
-      publication_status: undefined,
-      project_publication_status: undefined,
-      bounding_box: undefined,
-      assignee: undefined,
-      feedback_needed: undefined,
-      filter_can_moderate: undefined,
-    };
-    const queryParameters = this.getQueryParameters(
-      this.defaultQueryParameters,
-      props
-    );
-    this.state = {
-      // defaults
-      queryParameters,
-      list: undefined,
-      hasMore: false,
-      querying: true,
-      loadingMore: false,
-      sortAttribute: getSortAttribute<Sort, SortAttribute>(props.sort as Sort),
-      sortDirection: getSortDirection<Sort>(props.sort as Sort),
-      currentPage: 1,
-      lastPage: 1,
-    };
-    this.queryParameters$ = new BehaviorSubject(queryParameters);
-    this.subscriptions = [];
+const noChanges = (
+  newQueryParameters: Partial<IQueryParameters>,
+  combinedQueryParameters: IQueryParameters
+) => {
+  for (const key in newQueryParameters) {
+    if (newQueryParameters[key] !== combinedQueryParameters) return false;
   }
 
-  componentDidMount() {
-    const queryParameters = this.getQueryParameters(
-      this.state.queryParameters,
-      this.props
-    );
-    const startAccumulatorValue: IAccumulator = {
-      queryParameters,
-      ideas: null,
-      hasMore: false,
-    };
-    const queryParameters$ = this.queryParameters$.pipe(
-      distinctUntilChanged((prev, next) => isEqual(prev, next))
-    );
+  return true;
+};
 
-    if (this.props.type === 'load-more') {
-      this.subscriptions = [
-        queryParameters$
-          .pipe(
-            mergeScan<IIdeasQueryParameters, IAccumulator>(
-              (acc, newQueryParameters) => {
-                const oldQueryParamsWithoutPageNumber = omit(
-                  cloneDeep(acc.queryParameters),
-                  'page[number]'
-                );
-                const newQueryParamsWithoutPageNumber = omit(
-                  cloneDeep(newQueryParameters),
-                  'page[number]'
-                );
-                const oldPageNumber = acc.queryParameters['page[number]'];
-                const newPageNumber = newQueryParameters['page[number]'];
-                const isLoadingMore =
-                  isEqual(
-                    oldQueryParamsWithoutPageNumber,
-                    newQueryParamsWithoutPageNumber
-                  ) && oldPageNumber !== newPageNumber;
-                const pageNumber = isLoadingMore
-                  ? newQueryParameters['page[number]']
-                  : 1;
-                const queryParameters: IIdeasQueryParameters = {
-                  ...newQueryParameters,
-                  'page[number]': pageNumber,
-                };
-
-                this.setState({
-                  querying: !isLoadingMore,
-                  loadingMore: isLoadingMore,
-                });
-
-                return ideasStream({ queryParameters }).observable.pipe(
-                  map((ideas) => {
-                    const selfLink = get(ideas, 'links.self');
-                    const lastLink = get(ideas, 'links.last');
-                    const hasMore =
-                      isString(selfLink) &&
-                      isString(lastLink) &&
-                      selfLink !== lastLink;
-
-                    return {
-                      queryParameters,
-                      hasMore,
-                      ideas: !isLoadingMore
-                        ? ideas.data
-                        : unionBy(acc.ideas || [], ideas.data, 'id'),
-                    };
-                  })
-                );
-              },
-              startAccumulatorValue
-            )
-          )
-          .subscribe(({ ideas, queryParameters, hasMore }) => {
-            this.setState({
-              queryParameters,
-              hasMore,
-              list: ideas,
-              querying: false,
-              loadingMore: false,
-            });
-          }),
-      ];
-    } else {
-      this.subscriptions = [
-        queryParameters$
-          .pipe(
-            switchMap((queryParameters) => {
-              const oldPageNumber = this.state.queryParameters['page[number]'];
-              const newPageNumber = queryParameters['page[number]'];
-              queryParameters['page[number]'] =
-                newPageNumber !== oldPageNumber ? newPageNumber : 1;
-
-              return ideasStream({
-                queryParameters,
-              }).observable.pipe(map((ideas) => ({ queryParameters, ideas })));
-            })
-          )
-          .subscribe(({ ideas, queryParameters }) => {
-            this.setState({
-              queryParameters,
-              list: ideas ? ideas.data : null,
-              querying: false,
-              loadingMore: false,
-              sortAttribute: getSortAttribute<Sort, SortAttribute>(
-                queryParameters.sort
-              ),
-              sortDirection: getSortDirection<Sort>(queryParameters.sort),
-              currentPage: getPageNumberFromUrl(ideas.links.self) || 1,
-              lastPage: getPageNumberFromUrl(ideas.links.last) || 1,
-            });
-          }),
-      ];
-    }
-  }
-
-  componentDidUpdate(prevProps: Props, _prevState: State) {
-    const { children: _prevChildren, ...prevPropsWithoutChildren } = prevProps;
-    const { children: _nextChildren, ...nextPropsWithoutChildren } = this.props;
-
-    if (!isEqual(prevPropsWithoutChildren, nextPropsWithoutChildren)) {
-      const queryParameters = this.getQueryParameters(
-        this.state.queryParameters,
-        this.props
-      );
-      this.queryParameters$.next(queryParameters);
-    }
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }
-
-  propsToQueryParamsShape = () => ({
-    projects: this.props.projectIds,
+const GetIdeas = ({ children, sort = 'random', ...otherProps }: Props) => {
+  const [queryParameters, setQueryParameters] = useState({
+    sort,
+    ...otherProps,
     'page[number]': 1,
-    'page[size]': this.props.pageSize ?? 12,
-    phase: this.props.phaseId,
-    author: this.props.authorId,
-    sort: this.props.sort as Sort,
-    idea_status: this.props.ideaStatusId,
-    project_publication_status: this.props.projectPublicationStatus,
-    assignee: this.props.assignee,
-    feedback_needed: this.props.feedbackNeeded,
-    filter_can_moderate: this.props.filterCanModerate,
-    search: undefined,
-    basket_id: this.props.basketId,
+    'page[size]': otherProps['page[size]'] ?? 24,
   });
+  const { data, isFetching, isRefetching } = useIdeas(queryParameters);
 
-  getQueryParametersFromProps = () => {
-    const queryParamsShaped = this.propsToQueryParamsShape();
-    Object.keys(queryParamsShaped)
-      .filter((key) => queryParamsShaped[key] === null)
-      .forEach((key) => (queryParamsShaped[key] = undefined));
-    return queryParamsShaped as IIdeasQueryParameters; // legal because last line changes null values to undefined
-  };
+  const list = data?.data;
 
-  getQueryParameters = (
-    queryParameters: IIdeasQueryParameters,
-    props: Props
-  ) => {
-    let projects: string[] | undefined | null = undefined;
+  const currentPage =
+    (data?.links.self ? getPageNumberFromUrl(data?.links?.self) : null) ?? 1;
 
-    if (isNil(props.projectIds)) {
-      projects = queryParameters.projects;
-    } else if (isArray(props.projectIds)) {
-      projects = props.projectIds;
-    }
+  const lastPage =
+    (data?.links.last ? getPageNumberFromUrl(data?.links?.last) : null) ?? 1;
 
-    const inputPropsQueryParameters: IIdeasQueryParameters = {
-      projects,
-      'page[number]': 1,
-      'page[size]': props.pageSize ?? 12,
-      phase: props.phaseId,
-      author: props.authorId,
-      sort: props.sort as Sort,
-      idea_status: props.ideaStatusId,
-      project_publication_status: props.projectPublicationStatus,
-      assignee: props.assignee,
-      feedback_needed: props.feedbackNeeded,
-      filter_can_moderate: props.filterCanModerate,
-      basket_id: props.basketId,
-    };
+  const sortAttribute = getSortAttribute<Sort, SortAttribute>(
+    queryParameters.sort
+  );
+  const sortDirection = getSortDirection<Sort>(queryParameters.sort);
 
-    // Omit all queryParameters that are nil.
-    // Why do this? Because we assume that an input prop that's nil is an input prop that should be ignored,
-    // and not overwrite a none-nil value that's part of this.state.queryParameters.
-    return {
-      ...queryParameters,
-      ...omitBy(inputPropsQueryParameters, isNil),
-      // Make an exception for 'projects', because when it's undefined we don't want to ignore it but instead pass it along
-      // to let the request know we don't want to apply a projects filter but load the ideas for all projects
-      projects,
-    };
-  };
+  const updateQuery = useCallback(
+    (newQueryParameters: Partial<IQueryParameters>) => {
+      if (noChanges(newQueryParameters, queryParameters)) return;
 
-  loadMore = () => {
-    if (!this.state.loadingMore) {
-      this.queryParameters$.next({
-        ...this.state.queryParameters,
-        'page[number]': this.state.queryParameters['page[number]'] + 1,
-      });
-    }
-  };
+      setQueryParameters((currentQueryParameters) => ({
+        ...currentQueryParameters,
+        ...newQueryParameters,
+      }));
+    },
+    [queryParameters]
+  );
 
-  handleChangePage = (pageNumber: number) => {
-    this.queryParameters$.next({
-      ...this.state.queryParameters,
-      'page[number]': pageNumber,
-    });
-  };
+  const loadMore = useCallback(() => {
+    if (isFetching || isRefetching) return;
+    updateQuery({ 'page[number]': currentPage + 1 });
+  }, [isFetching, isRefetching, updateQuery, currentPage]);
 
-  handlePhaseOnChange = (phaseId: string) => {
-    this.queryParameters$.next({
-      ...this.state.queryParameters,
-      phase: phaseId,
-      'page[number]': 1,
-    });
-  };
+  const handleChangePage = useCallback(
+    (pageNumber: number) => {
+      updateQuery({ 'page[number]': pageNumber });
+    },
+    [updateQuery]
+  );
 
-  handleSearchOnChange = (search: string) => {
-    this.queryParameters$.next({
-      ...this.state.queryParameters,
-      search: search ? search : undefined,
-      'page[number]': 1,
-    });
-  };
+  const handlePhaseOnChange = useCallback(
+    (phase: string) => {
+      updateQuery({ phase, 'page[number]': 1 });
+    },
+    [updateQuery]
+  );
 
-  handleSortOnChange = (sort: Sort) => {
-    this.queryParameters$.next({
-      ...this.state.queryParameters,
+  const handleSearchOnChange = useCallback(
+    (search: string) => {
+      updateQuery({ search, 'page[number]': 1 });
+    },
+    [updateQuery]
+  );
+
+  const handleSortOnChange = useCallback(
+    (sort: Sort) => {
+      updateQuery({ sort, 'page[number]': 1 });
+    },
+    [updateQuery]
+  );
+
+  const handleProjectsOnChange = useCallback(
+    (projects: string[]) => {
+      updateQuery({ projects, 'page[number]': 1 });
+    },
+    [updateQuery]
+  );
+
+  const handleTopicsOnChange = useCallback(
+    (topics: string[]) => {
+      updateQuery({ topics, 'page[number]': 1 });
+    },
+    [updateQuery]
+  );
+
+  const handleStatusOnChange = useCallback(
+    (idea_status: string | undefined) => {
+      updateQuery({ idea_status, 'page[number]': 1 });
+    },
+    [updateQuery]
+  );
+
+  const handlePublicationStatusOnChange = useCallback(
+    (publication_status: IdeaPublicationStatus) => {
+      updateQuery({ publication_status, 'page[number]': 1 });
+    },
+    [updateQuery]
+  );
+
+  const handleProjectPublicationStatusOnChange = useCallback(
+    (project_publication_status: ProjectPublicationStatus) => {
+      updateQuery({ project_publication_status, 'page[number]': 1 });
+    },
+    [updateQuery]
+  );
+
+  const handleAssigneeOnChange = useCallback(
+    (assignee: string | undefined) => {
+      updateQuery({ assignee, 'page[number]': 1 });
+    },
+    [updateQuery]
+  );
+
+  const handleFeedbackFilterOnChange = useCallback(
+    (feedback_needed: boolean) => {
+      updateQuery({ feedback_needed, 'page[number]': 1 });
+    },
+    [updateQuery]
+  );
+
+  const handleIdeaFiltering = useCallback(
+    (ideaFilters: Partial<IQueryParameters>) => {
+      updateQuery({ ...ideaFilters, 'page[number]': 1 });
+    },
+    [updateQuery]
+  );
+
+  const handleResetParamsToProps = useCallback(() => {
+    setQueryParameters({
       sort,
+      ...otherProps,
       'page[number]': 1,
+      'page[size]': otherProps['page[size]'] ?? 24,
     });
-  };
+  }, [sort, otherProps]);
 
-  handleProjectsOnChange = (projects: string[]) => {
-    this.queryParameters$.next({
-      ...this.state.queryParameters,
-      projects,
-      'page[number]': 1,
-    });
-  };
+  return (children as children)({
+    queryParameters,
+    list,
+    hasMore: currentPage !== lastPage,
+    querying: isFetching,
+    loadingMore: isRefetching,
+    sortAttribute,
+    sortDirection,
+    currentPage,
+    lastPage,
+    onLoadMore: loadMore,
+    onChangePage: handleChangePage,
+    onChangeProjects: handleProjectsOnChange,
+    onChangePhase: handlePhaseOnChange,
+    onChangeSearchTerm: handleSearchOnChange,
+    onChangeSorting: handleSortOnChange,
+    onChangeTopics: handleTopicsOnChange,
+    onChangeStatus: handleStatusOnChange,
+    onChangePublicationStatus: handlePublicationStatusOnChange,
+    onChangeProjectPublicationStatus: handleProjectPublicationStatusOnChange,
+    onChangeAssignee: handleAssigneeOnChange,
+    onChangeFeedbackFilter: handleFeedbackFilterOnChange,
+    onIdeaFiltering: handleIdeaFiltering,
+    onResetParams: handleResetParamsToProps,
+  });
+};
 
-  handleTopicsOnChange = (topics: string[]) => {
-    this.queryParameters$.next({
-      ...this.state.queryParameters,
-      topics,
-      'page[number]': 1,
-    });
-  };
-
-  handleStatusOnChange = (ideaStatus: string | null) => {
-    this.queryParameters$.next({
-      ...this.state.queryParameters,
-      idea_status: ideaStatus || undefined,
-      'page[number]': 1,
-    });
-  };
-
-  handlePublicationStatusOnChange = (publicationStatus: PublicationStatus) => {
-    this.queryParameters$.next({
-      ...this.state.queryParameters,
-      publication_status: publicationStatus,
-      'page[number]': 1,
-    });
-  };
-
-  handleProjectPublicationStatusOnChange = (
-    projectPublicationStatus: ProjectPublicationStatus
-  ) => {
-    this.queryParameters$.next({
-      ...this.state.queryParameters,
-      project_publication_status: projectPublicationStatus,
-      'page[number]': 1,
-    });
-  };
-
-  handleAssigneeOnChange = (assignee: string | undefined) => {
-    this.queryParameters$.next({
-      ...this.state.queryParameters,
-      assignee,
-      'page[number]': 1,
-    });
-  };
-
-  handleFeedbackFilterOnChange = (feedbackNeeded: boolean) => {
-    this.queryParameters$.next({
-      ...this.state.queryParameters,
-      feedback_needed: feedbackNeeded || undefined,
-      'page[number]': 1,
-    });
-  };
-
-  handleIdeaFiltering = (ideaFilters: Partial<IIdeasQueryParameters>) => {
-    this.queryParameters$.next({
-      ...this.state.queryParameters,
-      ...ideaFilters,
-      'page[number]': 1,
-    });
-  };
-
-  handleResetParamsToProps = () => {
-    const defaultQueryParameters = this.getQueryParametersFromProps();
-    this.queryParameters$.next(defaultQueryParameters);
-  };
-
-  render() {
-    const { children } = this.props;
-    return (children as children)({
-      ...this.state,
-      onLoadMore: this.loadMore,
-      onChangePage: this.handleChangePage,
-      onChangeProjects: this.handleProjectsOnChange,
-      onChangePhase: this.handlePhaseOnChange,
-      onChangeSearchTerm: this.handleSearchOnChange,
-      onChangeSorting: this.handleSortOnChange,
-      onChangeTopics: this.handleTopicsOnChange,
-      onChangeStatus: this.handleStatusOnChange,
-      onChangePublicationStatus: this.handlePublicationStatusOnChange,
-      onChangeProjectPublicationStatus:
-        this.handleProjectPublicationStatusOnChange,
-      onChangeAssignee: this.handleAssigneeOnChange,
-      onChangeFeedbackFilter: this.handleFeedbackFilterOnChange,
-      onIdeaFiltering: this.handleIdeaFiltering,
-      onResetParams: this.handleResetParamsToProps,
-    });
-  }
-}
+export default GetIdeas;

@@ -313,11 +313,12 @@ const Data = adopt<DataProps, InputProps>({
       const basketId = basket.id;
       const pageSize = basket.relationships.ideas.data.length;
 
-      return (
-        <GetIdeas type="paginated" pageSize={pageSize} basketId={basketId}>
-          {render}
-        </GetIdeas>
-      );
+      const props = {
+        'page[size]': pageSize,
+        basket_id: basketId,
+      } as const;
+
+      return <GetIdeas {...props}>{render}</GetIdeas>;
     }
 
     return null;

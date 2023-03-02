@@ -347,10 +347,11 @@ const Data = adopt<Props, WithRouterProps>({
   ),
   mostVotedIdeas: ({ params, render }) => (
     <GetIdeas
-      pageSize={5}
-      sort="popular"
-      type="paginated"
-      projectIds={[params.projectId]}
+      {...{
+        'page[size]': 5,
+        sort: 'popular',
+        projects: [params.projectId],
+      }}
     >
       {render}
     </GetIdeas>
