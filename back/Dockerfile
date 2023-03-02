@@ -36,7 +36,7 @@ RUN apt-get update                                               \
       optipng                                                    \
       pngquant                                                   \
       shared-mime-info                                           \
- && curl -sL https://deb.nodesource.com/setup_14.x  | bash -     \
+ && curl -sL https://deb.nodesource.com/setup_18.x  | bash -     \
  && apt-get -y --no-install-recommends install nodejs            \
     # Install MJML parser required by email engine.
  && npm install -g mjml@4.4.1                                    \
