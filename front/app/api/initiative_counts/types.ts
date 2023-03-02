@@ -4,14 +4,14 @@ import { Keys } from 'utils/cl-react-query/types';
 export type InitiativesCountKeys = Keys<typeof initiativesCountKeys>;
 
 export interface IQueryParameters {
-  author?: string | undefined;
-  search?: string | undefined;
-  topics?: string[] | undefined;
-  areas?: string[] | undefined;
-  initiative_status?: string | undefined;
-  bounding_box?: number[] | undefined;
-  assignee?: string | undefined;
-  feedback_needed?: boolean | undefined;
+  author?: string;
+  search?: string;
+  topics?: string[];
+  areas?: string[];
+  initiative_status?: string;
+  bounding_box?: number[];
+  assignee?: string;
+  feedback_needed?: boolean;
 }
 
 export type IInitiativesCount = {
