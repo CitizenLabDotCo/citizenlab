@@ -10,7 +10,7 @@ import {
 
 const fetchInitiativesCount = (queryParams: IQueryParameters) =>
   fetcher<IInitiativesCount>({
-    path: `/initiatives_count`,
+    path: `/stats/initiatives_count`,
     action: 'get',
     queryParams,
   });

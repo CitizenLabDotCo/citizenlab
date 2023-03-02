@@ -6,7 +6,7 @@ import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath = '*initiatives_count';
+const apiPath = '*stats/initiatives_count';
 
 const statData = {
   data: {
