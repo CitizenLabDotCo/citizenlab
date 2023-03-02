@@ -1,4 +1,4 @@
-import React, { PureComponent, MouseEvent } from 'react';
+import React, { PureComponent, MouseEvent, useState, useEffect } from 'react';
 import { adopt } from 'react-adopt';
 import { cloneDeep, isNumber, get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
@@ -138,78 +138,52 @@ interface State {
   upvoteCount: number;
 }
 
-class CommentVote extends PureComponent<Props & WrappedComponentProps, State> {
-  constructor(props: Props & WrappedComponentProps) {
-    super(props);
-    this.state = {
-      voted: false,
-      upvoteCount: 0,
-    };
-  }
+const CommentVote = ({
+  comment,
+  commentVote,
+  postId,
+  postType,
+  commentId,
+  commentType,
+  authUser,
+  post,
+  commentVotingPermissionInitiative,
+  className,
+  intl: { formatMessage },
+}: Props & WrappedComponentProps) => {
+  const [voted, setVoted] = useState(false);
+  const [upvoteCount, setUpvoteCount] = useState(0);
 
-  componentDidMount() {
-    const { comment, commentVote } = this.props;
+  useEffect(() => {
+    setVoted(!isNilOrError(commentVote));
+    setUpvoteCount(
+      !isNilOrError(comment) ? comment.attributes.upvotes_count : 0
+    );
+  }, [commentVote, comment]);
 
-    this.setState({
-      voted: !isNilOrError(commentVote),
-      upvoteCount: !isNilOrError(comment)
-        ? comment.attributes.upvotes_count
-        : 0,
-    });
-  }
-
-  componentDidUpdate(prevProps: Props, _prevState: State) {
-    const { comment, commentVote } = this.props;
-    const { voted } = this.state;
-    const prevUpvoteCount = !isNilOrError(prevProps.comment)
-      ? prevProps.comment?.attributes?.upvotes_count
-      : 0;
-    const upvoteCount = !isNilOrError(comment)
-      ? comment?.attributes?.upvotes_count
-      : 0;
-
-    // Whenever the upvote count number returned by the GetComment resource component has changed
-    // we update the value kept in the state to make sure we always use the correct and up-to-date upvote count coming back from the server
-    if (upvoteCount !== prevUpvoteCount && isNumber(upvoteCount)) {
-      this.setState({ upvoteCount });
+  useEffect(() => {
+    if (!isNilOrError(comment)) {
+      const upvoteCount = comment.attributes.upvotes_count;
+      setUpvoteCount(upvoteCount);
     }
 
-    if (
-      voted === false &&
-      isNilOrError(prevProps.commentVote) &&
-      !isNilOrError(commentVote)
-    ) {
-      this.setState({ voted: true });
+    if (!voted && !isNilOrError(commentVote)) {
+      setVoted(true);
     }
 
-    if (
-      voted === true &&
-      !isNilOrError(prevProps.commentVote) &&
-      isNilOrError(commentVote)
-    ) {
-      this.setState({ voted: false });
+    if (voted && isNilOrError(commentVote)) {
+      setVoted(false);
     }
-  }
+  }, [comment, commentVote]);
 
-  vote = async () => {
-    const {
-      postId,
-      postType,
-      commentId,
-      commentType,
-      authUser,
-      comment,
-      commentVote,
-    } = this.props;
-    const oldVotedValue = cloneDeep(this.state.voted);
-    const oldUpvoteCount = cloneDeep(this.state.upvoteCount);
+  const vote = async () => {
+    const oldVotedValue = voted;
+    const oldUpvoteCount = upvoteCount;
     if (!isNilOrError(authUser)) {
       if (!oldVotedValue) {
         try {
-          this.setState((state) => ({
-            voted: true,
-            upvoteCount: state.upvoteCount + 1,
-          }));
+          setVoted(true);
+          setUpvoteCount(upvoteCount + 1);
 
           await addCommentVote(postId, postType, commentId, {
             user_id: authUser.id,
@@ -224,7 +198,8 @@ class CommentVote extends PureComponent<Props & WrappedComponentProps, State> {
             trackEventByName(tracks.clickCommentUpvoteButton);
           }
         } catch (error) {
-          this.setState({ voted: oldVotedValue, upvoteCount: oldUpvoteCount });
+          setVoted(oldVotedValue);
+          setUpvoteCount(oldUpvoteCount);
         }
       }
 
@@ -234,10 +209,8 @@ class CommentVote extends PureComponent<Props & WrappedComponentProps, State> {
         !isNilOrError(commentVote)
       ) {
         try {
-          this.setState((state) => ({
-            voted: false,
-            upvoteCount: state.upvoteCount - 1,
-          }));
+          setVoted(false);
+          setUpvoteCount(upvoteCount - 1);
           await deleteCommentVote(comment.id, commentVote.id);
 
           if (commentType === 'parent') {
@@ -248,17 +221,15 @@ class CommentVote extends PureComponent<Props & WrappedComponentProps, State> {
             trackEventByName(tracks.clickCommentCancelUpvoteButton);
           }
         } catch (error) {
-          this.setState({ voted: oldVotedValue, upvoteCount: oldUpvoteCount });
+          setVoted(oldVotedValue);
+          setUpvoteCount(oldUpvoteCount);
         }
       }
     }
   };
 
-  handleVoteClick = async (event?: MouseEvent) => {
+  const handleVoteClick = async (event?: MouseEvent) => {
     event?.preventDefault();
-
-    const { post, postType, authUser, commentVotingPermissionInitiative } =
-      this.props;
 
     const commentingDisabledReason = get(
       post,
@@ -270,7 +241,7 @@ class CommentVote extends PureComponent<Props & WrappedComponentProps, State> {
 
     if (postType === 'idea') {
       if (!isNilOrError(authUser) && !commentingDisabledReason) {
-        this.vote();
+        vote();
       } else if (
         !isNilOrError(authUser) &&
         !authUserIsVerified &&
@@ -280,19 +251,19 @@ class CommentVote extends PureComponent<Props & WrappedComponentProps, State> {
       } else if (!authUser) {
         openSignUpInModal({
           verification: commentingDisabledReason === 'not_verified',
-          action: () => this.handleVoteClick(),
+          action: () => handleVoteClick(),
         });
       }
     } else {
       if (commentVotingPermissionInitiative?.action === 'sign_in_up') {
         openSignUpInModal({
-          action: () => this.handleVoteClick(),
+          action: () => handleVoteClick(),
         });
       } else if (
         commentVotingPermissionInitiative?.action === 'sign_in_up_and_verify'
       ) {
         openSignUpInModal({
-          action: () => this.handleVoteClick(),
+          action: () => handleVoteClick(),
           verification: true,
           verificationContext: {
             action: 'commenting_initiative',
@@ -307,84 +278,71 @@ class CommentVote extends PureComponent<Props & WrappedComponentProps, State> {
           },
         });
       } else if (commentVotingPermissionInitiative?.enabled === true) {
-        this.vote();
+        vote();
       }
     }
   };
 
-  render() {
-    const {
-      authUser,
+  if (!isNilOrError(comment)) {
+    const commentingVotingDisabledReason = get(
       post,
-      postType,
-      className,
-      comment,
-      commentVotingPermissionInitiative,
-      intl: { formatMessage },
-    } = this.props;
-    const { voted, upvoteCount } = this.state;
+      'attributes.action_descriptor.comment_voting_idea.disabled_reason'
+    );
+    const isSignedIn = !isNilOrError(authUser);
+    const disabled =
+      postType === 'initiative'
+        ? !commentVotingPermissionInitiative?.enabled
+        : isSignedIn && commentingVotingDisabledReason === 'not_permitted';
 
-    if (!isNilOrError(comment)) {
-      const commentingVotingDisabledReason = get(
-        post,
-        'attributes.action_descriptor.comment_voting_idea.disabled_reason'
+    if (!disabled || upvoteCount > 0) {
+      return (
+        <Container className={`vote ${className || ''}`}>
+          <UpvoteButton
+            onClick={handleVoteClick}
+            disabled={disabled}
+            className={`
+              e2e-comment-vote
+              ${voted ? 'voted' : 'notVoted'}
+              ${disabled ? 'disabled' : 'enabled'}
+            `}
+          >
+            <>
+              <UpvoteIcon
+                name="vote-up"
+                className={`
+                ${voted ? 'voted' : 'notVoted'}
+                ${disabled ? 'disabled' : 'enabled'}
+              `}
+              />
+              <ScreenReaderOnly>
+                {!voted
+                  ? formatMessage(messages.upvoteComment)
+                  : formatMessage(messages.a11y_undoUpvote)}
+              </ScreenReaderOnly>
+            </>
+            {upvoteCount > 0 && (
+              <UpvoteCount
+                className={`
+              ${voted ? 'voted' : 'notVoted'}
+              ${disabled ? 'disabled' : 'enabled'}
+            `}
+              >
+                {upvoteCount}
+              </UpvoteCount>
+            )}
+          </UpvoteButton>
+          <ScreenReaderOnly aria-live="polite">
+            {formatMessage(messages.a11y_upvoteCount, {
+              upvoteCount,
+            })}
+          </ScreenReaderOnly>
+        </Container>
       );
-      const isSignedIn = !isNilOrError(authUser);
-      const disabled =
-        postType === 'initiative'
-          ? !commentVotingPermissionInitiative?.enabled
-          : isSignedIn && commentingVotingDisabledReason === 'not_permitted';
-
-      if (!disabled || upvoteCount > 0) {
-        return (
-          <Container className={`vote ${className || ''}`}>
-            <UpvoteButton
-              onClick={this.handleVoteClick}
-              disabled={disabled}
-              className={`
-                e2e-comment-vote
-                ${voted ? 'voted' : 'notVoted'}
-                ${disabled ? 'disabled' : 'enabled'}
-              `}
-            >
-              <>
-                <UpvoteIcon
-                  name="vote-up"
-                  className={`
-                  ${voted ? 'voted' : 'notVoted'}
-                  ${disabled ? 'disabled' : 'enabled'}
-                `}
-                />
-                <ScreenReaderOnly>
-                  {!voted
-                    ? formatMessage(messages.upvoteComment)
-                    : formatMessage(messages.a11y_undoUpvote)}
-                </ScreenReaderOnly>
-              </>
-              {upvoteCount > 0 && (
-                <UpvoteCount
-                  className={`
-                ${voted ? 'voted' : 'notVoted'}
-                ${disabled ? 'disabled' : 'enabled'}
-              `}
-                >
-                  {upvoteCount}
-                </UpvoteCount>
-              )}
-            </UpvoteButton>
-            <ScreenReaderOnly aria-live="polite">
-              {formatMessage(messages.a11y_upvoteCount, {
-                upvoteCount,
-              })}
-            </ScreenReaderOnly>
-          </Container>
-        );
-      }
     }
-
-    return null;
   }
-}
+
+  return null;
+};
 
 const CommentVoteWithHOCs = injectIntl(CommentVote);
 
