@@ -2,13 +2,18 @@ import React, { useState } from 'react';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
 import PasswordInput from 'components/HookForm/PasswordInput';
-import PasswordIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
 import { Helmet } from 'react-helmet';
-import ContentContainer from 'components/ContentContainer';
 import { FormLabel } from 'components/UI/FormComponents';
 import ChangePasswordSuccess from './ChangePasswordSuccess';
+import {
+  StyledContentContainer,
+  Title,
+  StyledButton,
+  Form,
+  LabelContainer,
+  StyledPasswordIconTooltip,
+} from 'components/smallForm';
 
 // form
 import { useForm, FormProvider } from 'react-hook-form';
@@ -16,9 +21,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { string, object } from 'yup';
 
 // style
-import styled from 'styled-components';
 import messages from './messages';
-import { fontSizes, stylingConsts } from 'utils/styleUtils';
+import { stylingConsts } from 'utils/styleUtils';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -32,51 +36,6 @@ import GetAppConfiguration, {
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-
-const StyledContentContainer = styled(ContentContainer)`
-  padding-bottom: 100px;
-`;
-
-const Title = styled.h1`
-  width: 100%;
-  color: #333;
-  font-size: ${fontSizes.xxxxl}px;
-  line-height: 40px;
-  font-weight: 500;
-  text-align: center;
-  margin: 0;
-  padding: 0;
-  padding-top: 60px;
-  margin-bottom: 50px;
-`;
-
-const StyledButton = styled(Button)`
-  margin-top: 20px;
-  margin-bottom: 10px;
-`;
-
-const Form = styled.form`
-  width: 100%;
-  max-width: 380px;
-  padding-left: 20px;
-  padding-right: 20px;
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  flex-direction: column;
-`;
-
-const LabelContainer = styled.div`
-  display: flex;
-  align-items: center;
-  &.margin-top {
-    margin-top: 33px;
-  }
-`;
-
-const StyledPasswordIconTooltip = styled(PasswordIconTooltip)`
-  margin-bottom: 6px;
-`;
 
 type FormValues = {
   current_password: string;
@@ -101,25 +60,13 @@ const ChangePassword = ({ tenant }: Props) => {
       formatMessage(messages.currentPasswordRequired)
     ),
     new_password: string()
-      .test(
-        'length',
-        'Value can be empty or contain a string at with least the minimum password length',
-        (value, { createError, path }) => {
-          if (
-            value &&
-            value.length > 0 &&
-            value.length < minimumPasswordLength
-          ) {
-            return createError({
-              path,
-              message: formatMessage(messages.minimumPasswordLengthError, {
-                minimumPasswordLength,
-              }),
-            });
-          } else return true;
-        }
-      )
-      .required(formatMessage(messages.newPasswordRequired)),
+      .required(formatMessage(messages.newPasswordRequired))
+      .min(
+        minimumPasswordLength,
+        formatMessage(messages.minimumPasswordLengthError, {
+          minimumPasswordLength,
+        })
+      ),
   });
 
   const methods = useForm<FormValues>({

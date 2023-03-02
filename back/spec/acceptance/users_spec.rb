@@ -879,8 +879,7 @@ resource 'Users' do
         let(:current_password) { 'test_current_password' }
         let(:new_password) { 'test_new_password' }
 
-        example 'update password with wrong current password' do
-          do_request
+        example_request 'update password with wrong current password' do
           expect(response_status).to eq 422
           json_response = json_parse(response_body)
           expect(json_response[:errors][:current_password][0][:error]).to eq 'invalid'
@@ -891,8 +890,7 @@ resource 'Users' do
         let(:current_password) { 'democracy2.0' }
         let(:new_password) { 'test_new_password' }
 
-        example 'update password with correct current password' do
-          do_request
+        example_request 'update password with correct current password' do
           @user.reload
           expect(response_status).to eq 200
           expect(@user.password).to eq 'test_new_password'

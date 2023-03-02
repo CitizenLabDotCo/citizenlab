@@ -29,7 +29,6 @@ export default () => (
     />
     <Row>
       <Button
-        id="deletion"
         linkTo="/profile/change-password"
         width="auto"
         justifyWrapper="left"

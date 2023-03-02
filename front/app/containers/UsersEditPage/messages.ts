@@ -224,20 +224,7 @@ export default defineMessages({
       "You can't edit this field because it contains verified information",
   },
   /*
-   * Meta
-   */
-  metaTitle: {
-    id: 'app.containers.UsersEditPage.metaTitle',
-    defaultMessage:
-      'Profile settings page of {firstName} {lastName} | CitizenLab',
-  },
-  metaDescription: {
-    id: 'app.containers.UsersEditPage.metaDescription',
-    defaultMessage:
-      'This is the profile settings page of {firstName} {lastName} on the online participation platform of {tenantName}. Here you can verify your identity, edit your account information, delete your account and edit your email preferences.',
-  },
-  /*
-   * Meta
+   * Password change
    */
   passwordChangeSection: {
     id: 'app.containers.UsersEditPage.passwordChangeSection',
@@ -250,5 +237,18 @@ export default defineMessages({
   changePassword: {
     id: 'app.containers.UsersEditPage.changePassword',
     defaultMessage: 'Change my password',
+  },
+  /*
+   * Meta
+   */
+  metaTitle: {
+    id: 'app.containers.UsersEditPage.metaTitle',
+    defaultMessage:
+      'Profile settings page of {firstName} {lastName} | CitizenLab',
+  },
+  metaDescription: {
+    id: 'app.containers.UsersEditPage.metaDescription',
+    defaultMessage:
+      'This is the profile settings page of {firstName} {lastName} on the online participation platform of {tenantName}. Here you can verify your identity, edit your account information, delete your account and edit your email preferences.',
   },
 });

@@ -1,7 +1,8 @@
 import React from 'react';
 
 // components
-import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
+import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
+import { Title } from 'components/smallForm';
 import Button from 'components/UI/Button';
 
 // i18n
@@ -27,9 +28,9 @@ export default () => (
         height="60px"
       />
     </Box>
-    <Text variant="bodyL" textAlign="center">
+    <Title style={{ paddingTop: '26px' }}>
       <FormattedMessage {...messages.passwordChangeSuccessMessage} />
-    </Text>
+    </Title>
     <Button linkTo={'/'}>
       <FormattedMessage {...messages.goHome} />
     </Button>
