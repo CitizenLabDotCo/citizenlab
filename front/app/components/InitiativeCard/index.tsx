@@ -1,4 +1,4 @@
-import React, { PureComponent, FormEvent } from 'react';
+import React, { FormEvent } from 'react';
 import { get, isUndefined, isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
@@ -84,13 +84,15 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {}
-
-class InitiativeCard extends PureComponent<Props & InjectedLocalized, State> {
-  onCardClick = (event: FormEvent) => {
+const InitiativeCard = ({
+  initiative,
+  initiativeImage,
+  initiativeAuthor,
+  localize,
+  className,
+}: Props & InjectedLocalized) => {
+  const onCardClick = (event: FormEvent) => {
     event.preventDefault();
-
-    const { initiative } = this.props;
 
     if (!isNilOrError(initiative)) {
       eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
@@ -101,83 +103,73 @@ class InitiativeCard extends PureComponent<Props & InjectedLocalized, State> {
     }
   };
 
-  render() {
-    const {
-      initiative,
+  if (
+    !isNilOrError(initiative) &&
+    !isUndefined(initiativeImage) &&
+    !isUndefined(initiativeAuthor)
+  ) {
+    const initiativeTitle = localize(initiative.attributes.title_multiloc);
+    const initiativeAuthorId = !isNilOrError(initiativeAuthor)
+      ? initiativeAuthor.id
+      : null;
+    const initiativeImageUrl: string | null = get(
       initiativeImage,
-      initiativeAuthor,
-      localize,
+      'attributes.versions.medium',
+      null
+    );
+    const commentsCount = initiative.attributes.comments_count;
+    const cardClassNames = [
       className,
-    } = this.props;
+      'e2e-initiative-card',
+      get(initiative, 'relationships.user_vote.data') ? 'voted' : 'not-voted',
+      commentsCount > 0 ? 'e2e-has-comments' : null,
+    ]
+      .filter((item) => isString(item) && item !== '')
+      .join(' ');
 
-    if (
-      !isNilOrError(initiative) &&
-      !isUndefined(initiativeImage) &&
-      !isUndefined(initiativeAuthor)
-    ) {
-      const initiativeTitle = localize(initiative.attributes.title_multiloc);
-      const initiativeAuthorId = !isNilOrError(initiativeAuthor)
-        ? initiativeAuthor.id
-        : null;
-      const initiativeImageUrl: string | null = get(
-        initiativeImage,
-        'attributes.versions.medium',
-        null
-      );
-      const commentsCount = initiative.attributes.comments_count;
-      const cardClassNames = [
-        className,
-        'e2e-initiative-card',
-        get(initiative, 'relationships.user_vote.data') ? 'voted' : 'not-voted',
-        commentsCount > 0 ? 'e2e-has-comments' : null,
-      ]
-        .filter((item) => isString(item) && item !== '')
-        .join(' ');
-
-      return (
-        <Card
-          className={cardClassNames}
-          onClick={this.onCardClick}
-          to={`/initiatives/${initiative.attributes.slug}`}
-          imageUrl={initiativeImageUrl}
-          title={initiativeTitle}
-          body={
-            <StyledAuthor
-              authorId={initiativeAuthorId}
-              createdAt={initiative.attributes.published_at}
-              size={34}
-            />
-          }
-          footer={
-            <FooterInner>
-              <VoteIndicator initiativeId={initiative.id} />
-              <Spacer />
-              <CommentInfo>
-                <CommentIcon name="comments" ariaHidden />
-                <CommentCount
-                  aria-hidden
-                  className="e2e-initiativecard-comment-count"
-                >
-                  {commentsCount}
-                </CommentCount>
-                <ScreenReaderOnly>
-                  <FormattedMessage
-                    {...messages.xComments}
-                    values={{ commentsCount }}
-                  />
-                </ScreenReaderOnly>
-              </CommentInfo>
-            </FooterInner>
-          }
-        />
-      );
-    }
-
-    return null;
+    return (
+      <Card
+        className={cardClassNames}
+        onClick={onCardClick}
+        to={`/initiatives/${initiative.attributes.slug}`}
+        imageUrl={initiativeImageUrl}
+        title={initiativeTitle}
+        body={
+          <StyledAuthor
+            authorId={initiativeAuthorId}
+            createdAt={initiative.attributes.published_at}
+            size={34}
+          />
+        }
+        footer={
+          <FooterInner>
+            <VoteIndicator initiativeId={initiative.id} />
+            <Spacer />
+            <CommentInfo>
+              <CommentIcon name="comments" ariaHidden />
+              <CommentCount
+                aria-hidden
+                className="e2e-initiativecard-comment-count"
+              >
+                {commentsCount}
+              </CommentCount>
+              <ScreenReaderOnly>
+                <FormattedMessage
+                  {...messages.xComments}
+                  values={{ commentsCount }}
+                />
+              </ScreenReaderOnly>
+            </CommentInfo>
+          </FooterInner>
+        }
+      />
+    );
   }
-}
 
-// TODO: Move to functional component after converting the other dependencies to hooks
+  return null;
+};
+
+// TODO: Use hooks in functional component after converting in other places
 const Data = adopt<DataProps, InputProps>({
   initiative: ({ initiativeId, render }) => (
     <GetInitiative id={initiativeId}>{render}</GetInitiative>
