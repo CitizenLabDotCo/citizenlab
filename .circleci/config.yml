@@ -107,7 +107,7 @@ commands:
     steps:
       - run: mkdir ~/.ssh
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts
-      - run: cd ~ && rm -rf citizenlab && git clone -b "$CIRCLE_BRANCH" "$CIRCLE_REPOSITORY_URL" --depth 1 # Would be nice to only remove working directory
+      - run: cd ~ && rm -rf * && git clone -b "$CIRCLE_BRANCH" "$CIRCLE_REPOSITORY_URL" --depth 1 # Would be nice to only remove working directory
 
 jobs:
   trigger-workflows:
@@ -124,7 +124,7 @@ jobs:
     docker:
       - image: citizenlabdotco/cl2-devops-danger-check
     steps:
-      - shallow-clone
+      - checkout # shallow-clone
       - run: danger ci
 
   slack-invalid-data-success:
