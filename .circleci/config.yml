@@ -400,6 +400,7 @@ jobs:
     steps:
       # - clone
       - checkout
+        path: /citizenlab
       - run: ls
       # Download and cache dependencies
       - restore_cache:
