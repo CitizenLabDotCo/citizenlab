@@ -400,12 +400,14 @@ jobs:
     steps:
       - run: pwd
       - run: cd .. && rm -r front
+      - run: pwd
       - clone
       # - run: echo 'export CIRCLE_WORKING_DIRECTORY="$CIRCLE_WORKING_DIRECTORY"/citizenlab/front' >> "$BASH_ENV"
       # - run: echo $CIRCLE_WORKING_DIRECTORY
       # - run: 
       # - checkout
       #     path: /citizenlab
+      - run: pwd
       - run: ls
       # Download and cache dependencies
       - restore_cache:
