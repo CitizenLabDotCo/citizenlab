@@ -1,10 +1,10 @@
 const initiativeAllowedTransitionsKeys = {
   all: () => [{ type: 'allowed_transitions', postType: 'initiative' }],
-  lists: () => [
-    { ...initiativeAllowedTransitionsKeys.all()[0], operation: 'list' },
+  items: () => [
+    { ...initiativeAllowedTransitionsKeys.all()[0], operation: 'item' },
   ],
-  list: (id: string) => [
-    { ...initiativeAllowedTransitionsKeys.lists()[0], id },
+  item: (id: string) => [
+    { ...initiativeAllowedTransitionsKeys.items()[0], id },
   ],
 } as const;
 

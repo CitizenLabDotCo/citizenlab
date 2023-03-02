@@ -20,7 +20,7 @@ const useInitativeAllowedTransitions = (id: string) => {
     IInitiativeAllowedTransitions,
     InitiativeAllowedTransitonsKeys
   >({
-    queryKey: initiativesAllowedTransitionsKeys.list(id),
+    queryKey: initiativesAllowedTransitionsKeys.item(id),
     queryFn: () => fetchInitativeAllowedTransitions(id),
   });
 };
