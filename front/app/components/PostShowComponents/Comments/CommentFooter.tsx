@@ -145,12 +145,7 @@ const CommentFooter = ({
 }: Props) => {
   const initiativeId = postType === 'initiative' ? postId : null;
   const { data: initiative } = useInitiativeById(initiativeId);
-  let post: IIdeaData | IInitiativeData | undefined | null | Error = null;
-  if (postType === 'idea') {
-    post = idea;
-  } else if (postType === 'initiative') {
-    post = initiative?.data;
-  }
+  const post = postType === 'idea' ? idea : initiative?.data;
 
   if (
     isNilOrError(post) ||
