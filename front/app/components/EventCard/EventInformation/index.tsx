@@ -9,7 +9,6 @@ import { Icon, Text, Box } from '@citizenlab/cl2-component-library';
 import FileAttachments from 'components/UI/FileAttachments';
 
 // hooks
-import useResourceFiles from 'hooks/useResourceFiles';
 import useProject from 'hooks/useProject';
 
 // services
@@ -29,6 +28,9 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 import checkTextOverflow from './checkTextOverflow';
 import { isNilOrError } from 'utils/helperUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
+
+// hooks
+import useEventFiles from 'api/event_files/useEventFiles';
 
 const EventInformationContainer = styled.div`
   flex: 1;
@@ -182,10 +184,7 @@ const EventInformation = memo<Props & WrappedComponentProps>((props) => {
 
   const theme = useTheme();
 
-  const eventFiles = useResourceFiles({
-    resourceType: 'event',
-    resourceId: event.id,
-  });
+  const { data: eventFiles } = useEventFiles(event.id);
 
   const hasLocation = !every(event.attributes.location_multiloc, isEmpty);
   const eventDateTime = isMultiDayEvent
@@ -310,11 +309,13 @@ const EventInformation = memo<Props & WrappedComponentProps>((props) => {
         </EventDescription>
       )}
 
-      {!isNilOrError(eventFiles) && eventFiles.length > 0 && showAttachments && (
-        <Box mb="25px">
-          <FileAttachments files={eventFiles} />
-        </Box>
-      )}
+      {!isNilOrError(eventFiles) &&
+        eventFiles.data.length > 0 &&
+        showAttachments && (
+          <Box mb="25px">
+            <FileAttachments files={eventFiles.data} />
+          </Box>
+        )}
     </EventInformationContainer>
   );
 });

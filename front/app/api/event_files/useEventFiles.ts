@@ -1,10 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import { IEventFiles } from 'services/eventFiles';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { isNilOrError } from 'utils/helperUtils';
 import eventFilesKeys from './keys';
-import { EventFilesKeys } from './types';
+import { IEventFiles, EventFilesKeys } from './types';
 
 const fetchEvents = (eventId: string) => {
   return fetcher<IEventFiles>({
