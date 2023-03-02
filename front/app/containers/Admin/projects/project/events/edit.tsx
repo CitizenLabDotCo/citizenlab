@@ -164,6 +164,7 @@ const AdminProjectEventEdit = ({ params }: Props) => {
             },
             {
               onSuccess: () => {
+                file.remote = true;
                 setSubmitState('success');
               },
               onError: () => {
