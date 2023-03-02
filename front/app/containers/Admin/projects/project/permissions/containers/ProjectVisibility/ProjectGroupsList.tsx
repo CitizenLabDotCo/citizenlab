@@ -17,7 +17,6 @@ import { List, Row } from 'components/admin/ResourceList';
 
 // Services
 import { localeStream } from 'services/locale';
-import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { getGroups, IGroups, IGroupData } from 'services/groups';
 import {
   addProjectGroup,
@@ -31,6 +30,10 @@ import styled from 'styled-components';
 
 // Typings
 import { IOption, Locale } from 'typings';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -71,6 +74,7 @@ interface IProjectGroup {
 interface Props {
   projectId: string;
   onAddButtonClicked: () => void;
+  appConfiguration: GetAppConfigurationChildProps;
 }
 
 interface State {
@@ -102,55 +106,53 @@ class ProjectGroupsList extends PureComponent<
   }
 
   componentDidMount() {
-    const { projectId } = this.props;
+    const { projectId, appConfiguration } = this.props;
     const locale$ = localeStream().observable;
-    const currentTenant$ = currentAppConfigurationStream().observable;
+
     const groups$ = getGroups().observable;
     const groupsProjects$ =
       projectGroupsByProjectIdStream(projectId).observable;
 
     this.subscriptions = [
-      combineLatest([
-        locale$,
-        currentTenant$,
-        groups$,
-        groupsProjects$,
-      ]).subscribe(([locale, currentTenant, groups, groupsProjects]) => {
-        const currentTenantLocales =
-          currentTenant.data.attributes.settings.core.locales;
-        const projectGroups = map(groupsProjects.data, (groupProject) => {
-          const group = find(
-            groups.data,
-            (group) => group.id === groupProject.relationships.group.data.id
-          ) as IGroupData;
+      combineLatest([locale$, groups$, groupsProjects$]).subscribe(
+        ([locale, groups, groupsProjects]) => {
+          const currentTenantLocales = !isNilOrError(appConfiguration)
+            ? appConfiguration.attributes.settings.core.locales
+            : [];
+          const projectGroups = map(groupsProjects.data, (groupProject) => {
+            const group = find(
+              groups.data,
+              (group) => group.id === groupProject.relationships.group.data.id
+            ) as IGroupData;
 
-          return {
-            group_id: group.id,
-            group_project_id: groupProject.id,
-            title: getLocalized(
-              group.attributes.title_multiloc,
-              locale,
-              currentTenantLocales
-            ),
-            membership_count: group.attributes.memberships_count,
-          };
-        }).reverse();
-        const groupsOptions = this.getOptions(
-          groups,
-          groupsProjects,
-          locale,
-          currentTenantLocales
-        );
-        const loading = false;
+            return {
+              group_id: group.id,
+              group_project_id: groupProject.id,
+              title: getLocalized(
+                group.attributes.title_multiloc,
+                locale,
+                currentTenantLocales
+              ),
+              membership_count: group.attributes.memberships_count,
+            };
+          }).reverse();
+          const groupsOptions = this.getOptions(
+            groups,
+            groupsProjects,
+            locale,
+            currentTenantLocales
+          );
+          const loading = false;
 
-        this.setState({
-          locale,
-          currentTenantLocales,
-          projectGroups,
-          groupsOptions,
-          loading,
-        });
-      }),
+          this.setState({
+            locale,
+            currentTenantLocales,
+            projectGroups,
+            groupsOptions,
+            loading,
+          });
+        }
+      ),
     ];
   }
 
@@ -289,4 +291,15 @@ class ProjectGroupsList extends PureComponent<
   }
 }
 
-export default injectIntl(ProjectGroupsList);
+const ProjectGroupsListWithHocs = injectIntl(ProjectGroupsList);
+
+export default (props) => (
+  <GetAppConfiguration>
+    {(appConfiguration) => (
+      <ProjectGroupsListWithHocs
+        appConfiguration={appConfiguration}
+        {...props}
+      />
+    )}
+  </GetAppConfiguration>
+);

@@ -77,7 +77,7 @@ describe('timeAgo is reported correctly', () => {
     let date = new Date();
     date.setMonth(date.getMonth() - 1);
     let timeAgoResponse = timeAgo(date.valueOf(), 'en') || '';
-    expect(timeAgoResponse).toEqual('1 month ago');
+    expect(timeAgoResponse).toEqual('4 weeks ago');
 
     date = new Date();
     date.setMonth(date.getMonth() - 2);

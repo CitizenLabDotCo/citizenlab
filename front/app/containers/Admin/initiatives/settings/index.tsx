@@ -3,17 +3,15 @@ import { isEmpty, isNaN, isEqual } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { API_PATH } from 'containers/App/constants';
 // hooks
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useNavbarItemEnabled from 'hooks/useNavbarItemEnabled';
 import useCustomPage from 'hooks/useCustomPage';
 
 // services
-import {
-  updateAppConfiguration,
-  ProposalsSettings,
-} from 'services/appConfiguration';
+import { ProposalsSettings } from 'api/app_configuration/types';
 import { updateCustomPage } from 'services/customPages';
 import streams from 'utils/streams';
+import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
 
 // components
 import {
@@ -58,19 +56,24 @@ export const StyledSectionDescription = styled(SectionDescription)`
 type ProposalsSettingName = keyof ProposalsSettings;
 
 const InitiativesSettingsPage = () => {
-  const appConfiguration = useAppConfiguration();
+  const { data: appConfiguration } = useAppConfiguration();
+  const {
+    mutate: updateAppConfiguration,
+    isLoading: isAppConfigurationLoading,
+    isError: isAppConfigurationError,
+  } = useUpdateAppConfiguration();
   const proposalsNavbarItemEnabled = useNavbarItemEnabled('proposals');
   const proposalsPage = useCustomPage({ customPageSlug: 'initiatives' });
 
   const remoteProposalsSettings = useMemo(() => {
     if (
       isNilOrError(appConfiguration) ||
-      !appConfiguration.attributes.settings.initiatives
+      !appConfiguration.data.attributes.settings.initiatives
     ) {
       return null;
     }
 
-    return appConfiguration.attributes.settings.initiatives;
+    return appConfiguration.data.attributes.settings.initiatives;
   }, [appConfiguration]);
 
   const [localProposalsSettings, setLocalProposalsSettings] =
@@ -107,7 +110,8 @@ const InitiativesSettingsPage = () => {
   }
 
   const validate = () => {
-    const tenantLocales = appConfiguration.attributes.settings.core.locales;
+    const tenantLocales =
+      appConfiguration.data.attributes.settings.core.locales;
     let validated = false;
 
     const proposalsSettingsChanged = !isEqual(
@@ -158,28 +162,21 @@ const InitiativesSettingsPage = () => {
 
     setProcessing(true);
 
+    if (proposalsSettingsChanged) {
+      updateAppConfiguration({
+        settings: {
+          initiatives: localProposalsSettings,
+        },
+      });
+    }
+
     try {
-      const promises: Promise<any>[] = [];
-
-      if (proposalsSettingsChanged) {
-        const promise = updateAppConfiguration({
-          settings: {
-            initiatives: localProposalsSettings,
-          },
-        });
-
-        promises.push(promise);
-      }
-
       if (proposalsPageBodyChanged) {
-        const promise = updateCustomPage(proposalsPage.id, {
+        await updateCustomPage(proposalsPage.id, {
           top_info_section_multiloc: newProposalsPageBody,
         });
-
-        promises.push(promise);
       }
 
-      await Promise.all(promises);
       await streams.fetchAllWith({
         apiEndpoint: [`${API_PATH}/nav_bar_items`],
       });
@@ -209,7 +206,7 @@ const InitiativesSettingsPage = () => {
   };
 
   const onToggle = () => {
-    if (appConfiguration.attributes.settings.initiatives) {
+    if (appConfiguration.data.attributes.settings.initiatives) {
       setLocalProposalsSettings({
         ...localProposalsSettings,
         enabled: !localProposalsSettings.enabled,
@@ -255,8 +252,8 @@ const InitiativesSettingsPage = () => {
 
       <SubmitButton
         disabled={!validate()}
-        processing={processing}
-        error={error}
+        processing={processing || isAppConfigurationLoading}
+        error={error || isAppConfigurationError}
         success={success}
         handleSubmit={handleSubmit}
       />

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FormEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
@@ -139,7 +139,7 @@ class PasswordReset extends React.PureComponent<
     this.passwordInputElement = element;
   };
 
-  handleOnSubmit = async (event) => {
+  handleOnSubmit = async (event: FormEvent) => {
     const { password, token } = this.state;
 
     event.preventDefault();
