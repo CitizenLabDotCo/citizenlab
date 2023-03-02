@@ -17,16 +17,13 @@ import GetIdeaImages, {
   GetIdeaImagesChildProps,
 } from 'resources/GetIdeaImages';
 
-// i18n
-import { WrappedComponentProps } from 'react-intl';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-
 // utils
 import { stripHtml } from 'utils/textUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { imageSizes } from 'utils/fileUtils';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import useLocalize from 'hooks/useLocalize';
 
 interface InputProps {
   ideaId: string;
@@ -44,17 +41,9 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const IdeaMeta = memo<Props & WrappedComponentProps & InjectedLocalized>(
-  ({
-    idea,
-    locale,
-    tenant,
-    authUser,
-    ideaImages,
-    author,
-    project,
-    localize,
-  }) => {
+const IdeaMeta = memo(
+  ({ idea, locale, tenant, authUser, ideaImages, author, project }: Props) => {
+    const localize = useLocalize();
     if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(idea)) {
       const { title_multiloc, body_multiloc } = idea.attributes;
       const tenantLocales = tenant.attributes.settings.core.locales;
@@ -199,10 +188,8 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
 });
 
-const IdeaMetaWithHoc = injectLocalize<Props>(IdeaMeta);
-
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <IdeaMetaWithHoc {...inputProps} {...dataProps} />}
+    {(dataProps) => <IdeaMeta {...inputProps} {...dataProps} />}
   </Data>
 );
