@@ -180,9 +180,12 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
     [onUpdateQuery]
   );
 
-  const handleTopicsOnChange = useCallback((topics: string[] | null) => {
-    onUpdateQuery({ topics });
-  }, []);
+  const handleTopicsOnChange = useCallback(
+    (topics: string[] | null) => {
+      onUpdateQuery({ topics });
+    },
+    [onUpdateQuery]
+  );
 
   const clearFilters = useCallback(() => {
     onUpdateQuery({
