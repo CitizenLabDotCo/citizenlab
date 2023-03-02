@@ -1,4 +1,4 @@
-import React, { PureComponent, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { isString, trim, get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
@@ -42,6 +42,9 @@ import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
 import { GetAppConfigurationChildProps } from 'resources/GetAppConfiguration';
+
+// hooks
+import useInitiativeById from 'api/initiatives/useInitiativeById';
 
 const Container = styled.div`
   display: flex;
@@ -116,7 +119,7 @@ interface DataProps {
   commentingPermissionInitiative: GetInitiativesPermissionsChildProps;
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
-  post: GetPostChildProps;
+  idea: GetPostChildProps;
   windowSize: GetWindowSizeChildProps;
   appConfiguration: GetAppConfigurationChildProps;
 }
@@ -128,13 +131,13 @@ const ParentCommentForm = ({
   authUser,
   postId,
   postType,
-  post,
   appConfiguration,
   intl: { formatMessage },
   windowSize,
   commentingPermissionInitiative,
   className,
   postingComment,
+  idea,
 }: Props & WrappedComponentProps) => {
   let textareaElement: HTMLTextAreaElement | null = null;
   const [inputValue, setInputValue] = useState('');
@@ -143,6 +146,9 @@ const ParentCommentForm = ({
   const [hasApiError, setHasApiError] = useState(false);
   const [profanityApiError, setProfanityApiError] = useState(false);
   const [hasEmptyError, setHasEmptyError] = useState(true);
+  const initiativeId = postType === 'initiative' ? postId : null;
+  const { data: initiative } = useInitiativeById(initiativeId);
+  const post = postType === 'idea' ? idea : initiative?.data;
 
   useEffect(() => {
     postingComment(processing);
@@ -390,8 +396,8 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
   windowSize: <GetWindowSize />,
-  post: ({ postId, postType, render }) => (
-    <GetPost id={postId} type={postType}>
+  idea: ({ postId, render }) => (
+    <GetPost id={postId} type="idea">
       {render}
     </GetPost>
   ),
