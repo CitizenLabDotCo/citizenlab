@@ -11,9 +11,6 @@ import {
   InitiativeStatusCode,
   IInitiativeStatusData,
 } from 'services/initiativeStatuses';
-import GetInitiative, {
-  GetInitiativeChildProps,
-} from 'resources/GetInitiative';
 import GetInitiativeStatus, {
   GetInitiativeStatusChildProps,
 } from 'resources/GetInitiativeStatus';
@@ -38,6 +35,7 @@ import GetInitiativesPermissions, {
 import { IInitiativeDisabledReason } from 'hooks/useInitiativesPermissions';
 import { trackEventByName } from 'utils/analytics';
 import { openVerificationModal } from 'events/verificationModal';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
 
 const Container = styled.div`
   ${media.desktop`
@@ -106,15 +104,18 @@ interface InputProps {
   id?: string;
 }
 
+interface IntiativeInputProps {
+  initiative: IInitiativeData;
+}
+
 interface DataProps {
   tenant: GetAppConfigurationChildProps;
-  initiative: GetInitiativeChildProps;
   initiativeStatus: GetInitiativeStatusChildProps;
   authUser: GetAuthUserChildProps;
   votingPermission: GetInitiativesPermissionsChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps, IntiativeInputProps {}
 
 const VoteControl = ({
   initiative,
@@ -232,12 +233,9 @@ const VoteControl = ({
   );
 };
 
-const Data = adopt<DataProps, InputProps>({
+const Data = adopt<DataProps, InputProps & IntiativeInputProps>({
   tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
-  initiative: ({ initiativeId, render }) => (
-    <GetInitiative id={initiativeId}>{render}</GetInitiative>
-  ),
   initiativeStatus: ({ initiative, render }) => {
     if (
       !isNilOrError(initiative) &&
@@ -258,8 +256,20 @@ const Data = adopt<DataProps, InputProps>({
   votingPermission: <GetInitiativesPermissions action="voting_initiative" />,
 });
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <VoteControl {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default (inputProps: InputProps) => {
+  // TODO: Move this logic to VoteControl after working on the initiativeStatus. It's dependency here is why we need to pass in the initiative to the Data component
+  const { data: initiative } = useInitiativeById(inputProps.initiativeId);
+  if (!initiative) return null;
+
+  return (
+    <Data {...inputProps} initiative={initiative.data}>
+      {(dataProps) => (
+        <VoteControl
+          {...inputProps}
+          {...dataProps}
+          initiative={initiative.data}
+        />
+      )}
+    </Data>
+  );
+};
