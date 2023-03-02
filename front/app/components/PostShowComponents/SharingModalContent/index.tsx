@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import { getInputTerm } from 'services/participationContexts';
@@ -62,23 +62,29 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {}
-
-class SharingModalContent extends PureComponent<
-  Props & WrappedComponentProps & InjectedLocalized,
-  State
-> {
-  componentDidMount() {
-    const { postId, postType } = this.props;
-
+const SharingModalContent = ({
+  postId,
+  postType,
+  initiative,
+  localize,
+  locale,
+  idea,
+  project,
+  phases,
+  intl: { formatMessage },
+  className,
+  authUser,
+  title,
+  subtitle,
+}: Props & WrappedComponentProps & InjectedLocalized) => {
+  useEffect(() => {
     trackEventByName(tracks.sharingModalOpened.name, {
       postId,
       postType,
     });
-  }
+  }, []);
 
-  getPostValues = () => {
-    const { postType, idea, initiative, localize, locale } = this.props;
+  const getPostValues = () => {
     let postTitle: string | null = null;
     let postUrl: string | null = null;
 
@@ -95,8 +101,7 @@ class SharingModalContent extends PureComponent<
     return { postTitle, postUrl };
   };
 
-  getIdeaMessages = () => {
-    const { project, phases } = this.props;
+  const getIdeaMessages = () => {
     let emailSharingSubject: MessageDescriptor | null = null;
     let emailSharingBody: MessageDescriptor | null = null;
     let whatsAppMessage: MessageDescriptor | null = null;
@@ -137,7 +142,7 @@ class SharingModalContent extends PureComponent<
     return { emailSharingSubject, emailSharingBody, whatsAppMessage };
   };
 
-  getInitiativeMessages = () => {
+  const getInitiativeMessages = () => {
     const emailSharingSubject = messages.initiativeEmailSharingSubject;
     const emailSharingBody = messages.initiativeEmailSharingBody;
     const whatsAppMessage = messages.whatsAppMessageProposal;
@@ -145,91 +150,84 @@ class SharingModalContent extends PureComponent<
     return { emailSharingSubject, emailSharingBody, whatsAppMessage };
   };
 
-  getMessages = () => {
-    const { postType } = this.props;
-
+  const getMessages = () => {
     if (postType === 'idea') {
-      return this.getIdeaMessages();
+      return getIdeaMessages();
     } else {
-      return this.getInitiativeMessages();
+      return getInitiativeMessages();
     }
   };
 
-  render() {
-    const { postType, authUser, className, title, subtitle } = this.props;
-    const { formatMessage } = this.props.intl;
+  const { postTitle, postUrl } = getPostValues();
+  const { emailSharingBody, emailSharingSubject, whatsAppMessage } =
+    getMessages();
 
-    const { postTitle, postUrl } = this.getPostValues();
-    const { emailSharingBody, emailSharingSubject, whatsAppMessage } =
-      this.getMessages();
-
-    if (
-      !isNilOrError(authUser) &&
-      postUrl &&
-      emailSharingBody &&
-      emailSharingSubject &&
-      whatsAppMessage
-    ) {
-      return (
-        <Box
-          width="100%"
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          justifyContent="center"
-          className={className}
-        >
-          <Image width="80px" height="80px" src={rocket} alt="" />
-          <Title
-            variant="h2"
-            textAlign="center"
-            className={`e2e-${postType}-social-sharing-modal-title`}
-          >
-            {title}
-          </Title>
-          <Text
-            color="textPrimary"
-            mt="12px"
-            mb="36px"
-            fontSize={'m'}
-            textAlign="center"
-          >
-            {subtitle}
-          </Text>
-          <SharingButtons
-            context={postType}
-            url={postUrl}
-            facebookMessage={formatMessage(messages.twitterMessage, {
-              postTitle,
-            })}
-            twitterMessage={formatMessage(messages.twitterMessage, {
-              postTitle,
-            })}
-            whatsAppMessage={formatMessage(whatsAppMessage, {
-              postTitle,
-            })}
-            emailSubject={formatMessage(emailSharingSubject, { postTitle })}
-            emailBody={formatMessage(emailSharingBody, {
-              postTitle,
-              postUrl,
-            })}
-            utmParams={{
-              source: `share_${postType}`,
-              campaign: `${postType}flow`,
-              content: authUser.id,
-            }}
-          />
-        </Box>
-      );
-    }
-
+  if (
+    !isNilOrError(authUser) &&
+    postUrl &&
+    emailSharingBody &&
+    emailSharingSubject &&
+    whatsAppMessage
+  ) {
     return (
-      <Centerer height="460px">
-        <Spinner />
-      </Centerer>
+      <Box
+        width="100%"
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        className={className}
+      >
+        <Image width="80px" height="80px" src={rocket} alt="" />
+        <Title
+          variant="h2"
+          textAlign="center"
+          className={`e2e-${postType}-social-sharing-modal-title`}
+        >
+          {title}
+        </Title>
+        <Text
+          color="textPrimary"
+          mt="12px"
+          mb="36px"
+          fontSize={'m'}
+          textAlign="center"
+        >
+          {subtitle}
+        </Text>
+        <SharingButtons
+          context={postType}
+          url={postUrl}
+          facebookMessage={formatMessage(messages.twitterMessage, {
+            postTitle,
+          })}
+          twitterMessage={formatMessage(messages.twitterMessage, {
+            postTitle,
+          })}
+          whatsAppMessage={formatMessage(whatsAppMessage, {
+            postTitle,
+          })}
+          emailSubject={formatMessage(emailSharingSubject, { postTitle })}
+          emailBody={formatMessage(emailSharingBody, {
+            postTitle,
+            postUrl,
+          })}
+          utmParams={{
+            source: `share_${postType}`,
+            campaign: `${postType}flow`,
+            content: authUser.id,
+          }}
+        />
+      </Box>
     );
   }
-}
+
+  return (
+    <Centerer height="460px">
+      <Spinner />
+    </Centerer>
+  );
+};
 
 const SharingModalContentWithHoCs = injectIntl(localize(SharingModalContent));
 
