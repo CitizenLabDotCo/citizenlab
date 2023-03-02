@@ -1,10 +1,7 @@
-import { IQueryParameters } from 'api/initiatives/types';
+import { IQueryParameters, IInitiativeData, Sort } from 'api/initiatives/types';
 import useInitiatives from 'api/initiatives/useInitiatives';
 import { useState } from 'react';
-import {
-  IInitiativeData,
-  InitiativePublicationStatus,
-} from 'services/initiatives';
+import { InitiativePublicationStatus } from 'services/initiatives';
 import {
   getPageNumberFromUrl,
   getSortAttribute,
@@ -13,16 +10,6 @@ import {
 } from 'utils/paginationUtils';
 
 export type SortAttribute = 'new' | 'author_name' | 'upvotes_count' | 'status';
-export type Sort =
-  | 'new'
-  | '-new'
-  | 'author_name'
-  | '-author_name'
-  | 'upvotes_count'
-  | '-upvotes_count'
-  | 'status'
-  | '-status'
-  | 'random';
 
 export type PublicationStatus = InitiativePublicationStatus;
 
