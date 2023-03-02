@@ -26,21 +26,13 @@ export interface IEventData {
   };
 }
 
-export interface QueryParameters {
-  project_ids?: string[] | undefined;
-  ends_before_date?: string | undefined;
-  ends_on_or_after_date?: string | undefined;
-  sort?: SortType;
-  pageSize?: number;
-  pageNumber?: number;
-  project_publication_statuses?: string[] | undefined;
-}
-
 type SortType = 'start_at' | '-start_at';
 
 export interface InputParameters {
   projectIds?: string[];
   staticPageId?: string;
+  endsOnOrAfterDate?: string;
+  endsBeforeDate?: string;
   currentAndFutureOnly?: boolean;
   pastOnly?: boolean;
   pageSize?: number;

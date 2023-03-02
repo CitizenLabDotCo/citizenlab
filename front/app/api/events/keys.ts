@@ -1,9 +1,9 @@
-import { QueryParameters } from './types';
+import { InputParameters } from './types';
 
 const eventsKeys = {
   all: () => [{ type: 'events' }],
   lists: () => [{ ...eventsKeys.all()[0], operation: 'list' }],
-  list: (parameters?: { filters: QueryParameters }) => [
+  list: (parameters?: { filters: InputParameters }) => [
     { ...eventsKeys.all()[0], entity: 'list', ...parameters?.filters },
   ],
   items: () => [{ ...eventsKeys.all()[0], operation: 'item' }],
