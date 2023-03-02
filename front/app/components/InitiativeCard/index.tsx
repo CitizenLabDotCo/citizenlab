@@ -88,7 +88,7 @@ const InitiativeCard = ({
     initiativeImageId
   );
 
-  if (!initiative) return null;
+  if (!initiative || isNilOrError(initiativeAuthor)) return null;
 
   const onCardClick = (event: FormEvent) => {
     event.preventDefault();
@@ -102,7 +102,6 @@ const InitiativeCard = ({
     }
   };
 
-  console.log('initiative', initiative);
   const initiativeTitle = localize(initiative.data.attributes.title_multiloc);
   const initiativeAuthorId = !isNilOrError(initiativeAuthor)
     ? initiativeAuthor.id
