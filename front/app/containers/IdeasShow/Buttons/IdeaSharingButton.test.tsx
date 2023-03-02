@@ -3,6 +3,11 @@ import { render, screen } from 'utils/testUtils/rtl';
 import IdeaSharingButton from './IdeaSharingButton';
 import SharingButtonComponent from './SharingButtonComponent';
 import translationMessages from 'i18n/en';
+import { ideaData as mockIdeaData } from 'api/ideas/__mocks__/useIdeaById';
+
+jest.mock('api/ideas/useIdeaById', () => {
+  return jest.fn(() => ({ data: { data: mockIdeaData[0] } }));
+});
 
 const mockProjectData = {
   id: '2',
@@ -14,30 +19,12 @@ const mockProjectData = {
   },
 };
 
-const mockIdeaData = {
-  id: '5',
-  type: 'idea',
-  attributes: {
-    title_multiloc: { en: 'Test Idea' },
-  },
-  relationships: {
-    project: {
-      data: {
-        id: '2',
-      },
-    },
-  },
-};
-
 const ideaId = '5';
 
 jest.mock('services/projects');
 jest.mock('services/auth');
 
 jest.mock('hooks/useProject', () => jest.fn(() => mockProjectData));
-jest.mock('hooks/useIdea', () => {
-  return jest.fn(() => mockIdeaData);
-});
 
 describe('IdeaSharingButton', () => {
   it('should result in correct sharing URL', () => {
