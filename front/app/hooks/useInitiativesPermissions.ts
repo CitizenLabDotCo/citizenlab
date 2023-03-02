@@ -15,7 +15,7 @@ export default function useInitiativesPermissions(action: IInitiativeAction) {
   const { data: appConfiguration } = useAppConfiguration();
   const { data: actionDescriptors } = useInitativeActionDescriptors();
   const authUser = useAuthUser();
-  console.log({ actionDescriptors });
+
   useEffect(() => {
     if (appConfiguration && actionDescriptors) {
       const actionDescriptor = actionDescriptors.data.attributes[action];
