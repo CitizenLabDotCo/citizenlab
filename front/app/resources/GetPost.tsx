@@ -6,7 +6,6 @@ import { distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { IIdeaData, ideaByIdStream, ideaBySlugStream } from 'services/ideas';
 import { GetIdeaChildProps } from 'resources/GetIdea';
-import { GetInitiativeChildProps } from 'resources/GetInitiative';
 
 type PostType = 'idea';
 interface InputProps {
@@ -18,7 +17,7 @@ interface InputProps {
 
 type children = (renderProps: GetPostChildProps) => JSX.Element | null;
 
-export type GetPostChildProps = GetIdeaChildProps | GetInitiativeChildProps;
+export type GetPostChildProps = GetIdeaChildProps;
 
 interface Props extends InputProps {
   children?: children;
