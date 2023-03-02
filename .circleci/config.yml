@@ -107,7 +107,7 @@ commands:
     steps:
       - git-shallow-clone/checkout:
           depth: 1
-          path: /citizenlab
+          path: ~/citizenlab
 
 jobs:
   trigger-workflows:
