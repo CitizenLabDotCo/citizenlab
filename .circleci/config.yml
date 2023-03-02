@@ -103,6 +103,12 @@ commands:
       - run: echo $LASTPASS_PASSWORD | LPASS_DISABLE_PINENTRY=1 lpass login ${LASTPASS_EMAIL}
       - run: lpass show --notes 'citizenlab back-secret.env' > env_files/back-secret.env
       - run: lpass show --notes 'citizenlab front-secret.env' > env_files/front-secret.env
+  clone:
+    steps:
+      - git-shallow-clone/checkout:
+          depth: 1
+          path: ./citizenlab
+      - run: cd citizenlab
 
 jobs:
   trigger-workflows:
@@ -164,9 +170,7 @@ jobs:
       - image: cimg/base:2021.03
     steps:
       - echo_pipeline_parameters
-      - git-shallow-clone/checkout:
-          depth: 1
-          path: ./citizenlab
+      - clone
       - setup_remote_docker:
           docker_layer_caching: true
       - run: |
