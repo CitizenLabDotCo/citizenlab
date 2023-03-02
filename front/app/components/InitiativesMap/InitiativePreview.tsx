@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
@@ -142,16 +142,14 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {}
-
-class InitiativePreview extends PureComponent<
-  Props & InjectedLocalized,
-  State
-> {
-  createInitiativeClickHandler = (event: React.MouseEvent) => {
+const InitiativePreview = ({
+  initiative,
+  locale,
+  className,
+  localize,
+}: Props & InjectedLocalized) => {
+  const createInitiativeClickHandler = (event: React.MouseEvent) => {
     event.preventDefault();
-
-    const { initiative } = this.props;
 
     if (!isNilOrError(initiative)) {
       eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
@@ -162,58 +160,51 @@ class InitiativePreview extends PureComponent<
     }
   };
 
-  render() {
-    const { initiative, locale, className, localize } = this.props;
-
-    if (!isNilOrError(initiative)) {
-      const initiativeAddress = get(
-        initiative,
-        'attributes.location_description'
-      );
-      const initiativeBody = localize(initiative.attributes.body_multiloc);
-
-      return (
-        <Container className={className}>
-          <Title>
-            <T value={initiative.attributes.title_multiloc} />
-          </Title>
-
-          {initiativeAddress && (
-            <Address>
-              <MapMarkerIcon name="position" />
-              {initiativeAddress}
-            </Address>
-          )}
-
-          <Description>
-            <Body
-              postId={initiative.id}
-              postType="initiative"
-              locale={locale}
-              body={initiativeBody}
-            />
-          </Description>
-
-          <Footer>
-            <CommentsCount>
-              <CommentIcon name="comments" />
-              {initiative.attributes.comments_count}
-            </CommentsCount>
-          </Footer>
-
-          <ViewInitiativeButton
-            fullWidth={true}
-            onClick={this.createInitiativeClickHandler}
-          >
-            <FormattedMessage {...messages.seeInitiative} />
-          </ViewInitiativeButton>
-        </Container>
-      );
-    }
-
+  if (isNilOrError(initiative)) {
     return null;
   }
-}
+
+  const initiativeAddress = get(initiative, 'attributes.location_description');
+  const initiativeBody = localize(initiative.attributes.body_multiloc);
+
+  return (
+    <Container className={className}>
+      <Title>
+        <T value={initiative.attributes.title_multiloc} />
+      </Title>
+
+      {initiativeAddress && (
+        <Address>
+          <MapMarkerIcon name="position" />
+          {initiativeAddress}
+        </Address>
+      )}
+
+      <Description>
+        <Body
+          postId={initiative.id}
+          postType="initiative"
+          locale={locale}
+          body={initiativeBody}
+        />
+      </Description>
+
+      <Footer>
+        <CommentsCount>
+          <CommentIcon name="comments" />
+          {initiative.attributes.comments_count}
+        </CommentsCount>
+      </Footer>
+
+      <ViewInitiativeButton
+        fullWidth={true}
+        onClick={createInitiativeClickHandler}
+      >
+        <FormattedMessage {...messages.seeInitiative} />
+      </ViewInitiativeButton>
+    </Container>
+  );
+};
 
 const InitiativePreviewWithHOCs = injectLocalize<Props>(InitiativePreview);
 
