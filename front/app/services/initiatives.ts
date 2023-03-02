@@ -136,23 +136,6 @@ export async function deleteInitiative(initiativeId: string) {
   return response;
 }
 
-export interface IInitiativeAllowedTransitions {
-  data: {
-    type: 'initiative_allowed_transitions';
-    attributes: {
-      [key: string]: {
-        feedback_needed: boolean;
-      };
-    };
-  };
-}
-
-export function initiativeAllowedTransitionsStream(initiativeId: string) {
-  return streams.get<IInitiativeAllowedTransitions>({
-    apiEndpoint: `${API_PATH}/initiatives/${initiativeId}/allowed_transitions`,
-  });
-}
-
 export type IInitiativeActionDescriptors = {
   data: {
     type: 'initiative_action_descriptors';
