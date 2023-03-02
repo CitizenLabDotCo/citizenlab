@@ -76,14 +76,6 @@ export interface IInitiativeAdd {
   location_description?: string | null;
 }
 
-export interface IInitiativeLinks {
-  self: string;
-  first: string;
-  prev: string;
-  next: string;
-  last: string;
-}
-
 export type InitiativeDisabledReason =
   | 'not_permitted'
   | 'not_verified'

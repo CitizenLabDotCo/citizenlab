@@ -1,0 +1,28 @@
+import { useQuery } from '@tanstack/react-query';
+import { CLErrors } from 'typings';
+import fetcher from 'utils/cl-react-query/fetcher';
+import initiativesAllowedTransitionsKeys from './keys';
+import {
+  IInitiativeAllowedTransitions,
+  InitiativeAllowedTransitonsKeys,
+} from './types';
+
+const fetchInitativeAllowedTransitions = (id: string) =>
+  fetcher<IInitiativeAllowedTransitions>({
+    path: `/initiatives/${id}/allowed_transitions`,
+    action: 'get',
+  });
+
+const useInitativeAllowedTransitions = (id: string) => {
+  return useQuery<
+    IInitiativeAllowedTransitions,
+    CLErrors,
+    IInitiativeAllowedTransitions,
+    InitiativeAllowedTransitonsKeys
+  >({
+    queryKey: initiativesAllowedTransitionsKeys.list(id),
+    queryFn: () => fetchInitativeAllowedTransitions(id),
+  });
+};
+
+export default useInitativeAllowedTransitions;

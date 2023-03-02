@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import viewsKeys from './keys';
+import initiativeMarkersKeys from './keys';
 import { IInitiativeMarkers, InitiativeMarkersKeys } from './types';
 
 const fetchInitativeMarkers = () =>
@@ -17,7 +17,7 @@ const useInitativeMarkers = () => {
     IInitiativeMarkers,
     InitiativeMarkersKeys
   >({
-    queryKey: viewsKeys.lists(),
+    queryKey: initiativeMarkersKeys.lists(),
     queryFn: fetchInitativeMarkers,
   });
 };
