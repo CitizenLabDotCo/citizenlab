@@ -1,5 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
+import streams from 'utils/streams';
 import { IRelationship, Multiloc, ImageSizes } from 'typings';
 import { first } from 'rxjs/operators';
 import { get } from 'lodash-es';
@@ -76,16 +76,6 @@ export interface IInitiativeAdd {
   location_description?: string | null;
 }
 
-export interface IGeotaggedInitiativeData {
-  id: string;
-  type: string;
-  attributes: {
-    title_multiloc: Multiloc;
-    location_point_geojson: GeoJSON.Point;
-    location_description: string;
-  };
-}
-
 export interface IInitiativeLinks {
   self: string;
   first: string;
@@ -108,19 +98,6 @@ export function initiativeByIdStream(initiativeId: string) {
 export function initiativeBySlugStream(initiativeSlug: string) {
   return streams.get<IInitiative>({
     apiEndpoint: `${API_PATH}/initiatives/by_slug/${initiativeSlug}`,
-  });
-}
-
-export function initiativesMarkersStream(
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<{
-    data: IGeotaggedInitiativeData[];
-    links: IInitiativeLinks;
-  }>({
-    apiEndpoint: `${API_PATH}/initiatives/as_markers`,
-    ...streamParams,
-    cacheStream: false,
   });
 }
 
