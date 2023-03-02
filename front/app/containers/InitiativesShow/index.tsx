@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
 // analytics
-import { trackEvent } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // router
@@ -396,9 +396,9 @@ const InitiativesShow = ({
 
   const onTranslateInitiative = () => {
     if (translateButtonClicked) {
-      trackEvent(tracks.clickGoBackToOriginalInitiativeCopyButton);
+      trackEventByName(tracks.clickGoBackToOriginalInitiativeCopyButton.name);
     } else {
-      trackEvent(tracks.clickTranslateInitiativeButton);
+      trackEventByName(tracks.clickTranslateInitiativeButton.name);
     }
     setTranslateButtonClicked(!translateButtonClicked);
   };
