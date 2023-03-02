@@ -25,6 +25,7 @@ import { isNil, isNilOrError, NilOrError } from 'utils/helperUtils';
 import { PublicationStatus as ProjectPublicationStatus } from 'services/projects';
 
 interface QueryParameterProps {
+  'page[size]': number;
   projects?: string[];
   phase?: string;
   author?: string;
@@ -34,6 +35,7 @@ interface QueryParameterProps {
   assignee?: string;
   feedback_needed?: boolean;
   filter_can_moderate: boolean;
+  basket_id: string;
 }
 
 interface Props extends QueryParameterProps {
