@@ -1,16 +1,14 @@
 import React, { FormEvent } from 'react';
 
 // services
-import { updateBasket } from 'services/baskets';
+import { IBasketData, updateBasket } from 'services/baskets';
 
 // hooks
 import useProject from 'hooks/useProject';
 import usePhase from 'hooks/usePhase';
 import useBasket from 'hooks/useBasket';
 import useAuthUser from 'hooks/useAuthUser';
-
-// resources
-import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
+import useIdeasInBasket from 'api/ideas/useIdeasInBasket';
 
 // styles
 import { colors, fontSizes } from 'utils/styleUtils';
@@ -42,7 +40,6 @@ import {
 // typings
 import { IParticipationContextType } from 'typings';
 import { IPhaseData } from 'services/phases';
-import { GetBasketChildProps } from 'resources/GetBasket';
 
 const Container = styled.div`
   padding: 10px;
@@ -128,9 +125,8 @@ interface InputProps {
 }
 
 interface DataProps {
-  basket: GetBasketChildProps;
+  basket: IBasketData;
   phase: IPhaseData | NilOrError;
-  ideas: GetIdeasChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -140,22 +136,23 @@ const PBBasket = ({
   participationContextId,
   participationContextType,
   phase,
-  ideas,
   className,
 }: Props) => {
   const authUser = useAuthUser();
   const { formatMessage } = useIntl();
-  const ideaList = ideas.list;
+
+  const { data: ideas } = useIdeasInBasket({
+    basket_id: basket.id,
+    'page[size]': basket.relationships.ideas.data.length,
+  });
+
+  const ideaList = ideas?.data;
 
   const ideaRemovedFromBasket =
     (ideaIdToRemove: string) => async (event: FormEvent<any>) => {
       event.preventDefault();
 
-      if (
-        !isNilOrError(basket) &&
-        !isNilOrError(authUser) &&
-        participationContextId
-      ) {
+      if (!isNilOrError(authUser) && participationContextId) {
         const newIdeas = basket.relationships.ideas.data
           .filter((idea) => idea.id !== ideaIdToRemove)
           .map((idea) => idea.id);
@@ -306,26 +303,14 @@ const Wrapper = ({
     return null;
   }
 
-  const pageSize = basket.relationships.ideas.data.length;
-
-  const getIdeasProps = {
-    'page[size]': pageSize,
-    basket_id: basketId,
-  } as const;
-
   return (
-    <GetIdeas {...getIdeasProps}>
-      {(ideas) => (
-        <PBBasket
-          className={className}
-          participationContextId={participationContextId}
-          participationContextType={participationContextType}
-          basket={basket}
-          phase={phase}
-          ideas={ideas}
-        />
-      )}
-    </GetIdeas>
+    <PBBasket
+      className={className}
+      participationContextId={participationContextId}
+      participationContextType={participationContextType}
+      basket={basket}
+      phase={phase}
+    />
   );
 };
 

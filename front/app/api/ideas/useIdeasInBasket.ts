@@ -16,16 +16,16 @@ const fetchIdeas = (queryParameters: QueryParameters) =>
     queryParams: queryParameters,
   });
 
-const useIdeas = (queryParametersWithoutSort: QueryParameters) => {
-  const queryParameters = {
-    ...queryParametersWithoutSort,
+const useIdeasInBasket = (queryParameters: QueryParameters) => {
+  const queryParametersWithSort = {
+    ...queryParameters,
     sort: 'random',
   } as const;
 
   return useQuery<IIdeas, CLErrors, IIdeas, IdeaKeys>({
-    queryKey: ideaKeys.list(queryParameters),
-    queryFn: () => fetchIdeas(queryParameters),
+    queryKey: ideaKeys.list(queryParametersWithSort),
+    queryFn: () => fetchIdeas(queryParametersWithSort),
   });
 };
 
-export default useIdeas;
+export default useIdeasInBasket;
