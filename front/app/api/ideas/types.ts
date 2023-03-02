@@ -152,8 +152,8 @@ export interface IIdeas {
 }
 
 export interface IQueryParameters {
-  'page[number]': number;
-  'page[size]': number;
+  'page[number]'?: number;
+  'page[size]'?: number;
   projects?: string[] | null;
   phase?: string | null;
   author?: string | null;
