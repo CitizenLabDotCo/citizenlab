@@ -396,12 +396,11 @@ jobs:
   front-lint:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
-    # working_directory: /citizenlab/front
+    working_directory: /citizenlab/front
     steps:
       - clone
-      - run: echo 'export CIRCLE_WORKING_DIRECTORY="$CIRCLE_WORKING_DIRECTORY"/citizenlab/front' >> "$BASH_ENV"
-      # - run: export CIRCLE_WORKING_DIRECTORY=$CIRCLE_WORKING_DIRECTORY/citizenlab/front
-      - run: echo $CIRCLE_WORKING_DIRECTORY
+      # - run: echo 'export CIRCLE_WORKING_DIRECTORY="$CIRCLE_WORKING_DIRECTORY"/citizenlab/front' >> "$BASH_ENV"
+      # - run: echo $CIRCLE_WORKING_DIRECTORY
       # - run: 
       # - checkout
       #     path: /citizenlab
