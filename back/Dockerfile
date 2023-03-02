@@ -14,11 +14,10 @@ COPY back/engines ./engines
 RUN find engines -type f -not -name "*.gemspec" -not -name "version.rb" -print0 | xargs -0 rm -rf \
  && find engines -type d -empty -delete
 
-FROM ruby:2.7.6-slim
+FROM ruby:2.7.6-slim AS builder
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-ARG CITIZENLAB_EE=false
-ENV CITIZENLAB_EE=$CITIZENLAB_EE
+ENV CITIZENLAB_EE=true
 
 RUN apt-get update                                                             \
  && apt-get install -qq -y --no-install-recommends                             \
@@ -29,13 +28,35 @@ RUN apt-get update                                                             \
       libpq-dev=13.9-0+deb11u1                                                 \
       git=1:2.30.2-1+deb11u2                                                   \
       netcat=1.10-46                                                           \
+      # Required by mimemagic on which depends axlsx (3.0.0.pre)
       shared-mime-info=2.0-1                                                   \
+ && apt-get clean                                                              \
+ && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /cl2_back
+
+RUN gem install bundler:2.3.20
+
+COPY --from=dependency_files /app .
+RUN bundle install --deployment
+
+COPY back/. .
+
+FROM ruby:2.7.6-slim
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+ENV CITIZENLAB_EE=true
+
+RUN apt-get update                                                             \
+ && apt-get install -qq -y --no-install-recommends                             \
+      curl=7.74.0-1.3+deb11u7                                                  \
       # Image processing
       imagemagick=8:6.9.11.60+dfsg-1.3+deb11u1                                 \
       jpegoptim=1.4.6-1                                                        \
       optipng=0.7.7-1+b1                                                       \
       pngquant=2.13.1-1                                                        \
  && curl -sL https://deb.nodesource.com/setup_18.x  | bash -                   \
+ && apt-get -y remove curl                                                     \
  && apt-get -y --no-install-recommends install nodejs=18.14.2-deb-1nodesource1 \
     # Install MJML parser required by email engine.
  && npm install -g mjml@4.4.1                                                  \
@@ -46,10 +67,8 @@ WORKDIR /cl2_back
 
 RUN gem install bundler:2.3.20
 
-COPY --from=dependency_files /app .
-RUN bundle install
-
-COPY back/. .
+COPY --from=builder /cl2_back .
+RUN bundle config --local path vendor/bundle
 
 EXPOSE 4000
 
