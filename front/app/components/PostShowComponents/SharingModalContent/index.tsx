@@ -21,9 +21,6 @@ import GetAppConfiguration, {
 } from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-import GetInitiative, {
-  GetInitiativeChildProps,
-} from 'resources/GetInitiative';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import { PostType } from 'resources/GetPost';
@@ -42,6 +39,9 @@ import tracks from './tracks';
 // style
 import rocket from 'assets/img/rocket.png';
 
+// hooks
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+
 interface InputProps {
   postType: PostType;
   postId: string | null;
@@ -55,7 +55,6 @@ interface DataProps {
   tenant: GetAppConfigurationChildProps;
   authUser: GetAuthUserChildProps;
   idea: GetIdeaChildProps;
-  initiative: GetInitiativeChildProps;
   project: GetProjectChildProps;
   phases: GetPhasesChildProps;
 }
@@ -65,7 +64,6 @@ interface Props extends InputProps, DataProps {}
 const SharingModalContent = ({
   postId,
   postType,
-  initiative,
   localize,
   locale,
   idea,
@@ -77,6 +75,9 @@ const SharingModalContent = ({
   title,
   subtitle,
 }: Props & WrappedComponentProps & InjectedLocalized) => {
+  const initiativeId = postType === 'initiative' ? postId : null;
+  const { data: initiative } = useInitiativeById(initiativeId);
+
   useEffect(() => {
     trackEventByName(tracks.sharingModalOpened.name, {
       postId,
@@ -94,8 +95,8 @@ const SharingModalContent = ({
     }
 
     if (postType === 'initiative' && !isNilOrError(initiative)) {
-      postTitle = localize(initiative.attributes.title_multiloc);
-      postUrl = `${location.origin}/${locale}/${postType}s/${initiative.attributes.slug}`;
+      postTitle = localize(initiative.data.attributes.title_multiloc);
+      postUrl = `${location.origin}/${locale}/${postType}s/${initiative.data.attributes.slug}`;
     }
 
     return { postTitle, postUrl };
@@ -239,13 +240,6 @@ const Data = adopt<DataProps, InputProps>({
     <GetIdea ideaId={postId && postType === 'idea' ? postId : null}>
       {render}
     </GetIdea>
-  ),
-  initiative: ({ postId, postType, render }) => (
-    <GetInitiative
-      id={postId && postType === 'initiative' ? postId : undefined}
-    >
-      {render}
-    </GetInitiative>
   ),
   project: ({ idea, render }) => (
     <GetProject
