@@ -239,8 +239,6 @@ const IdeaRow = ({
         }
 
         if (dropResult.type === 'project') {
-          console.log(1);
-
           combineLatest(observables)
             .pipe(take(1))
             .subscribe((ideas) => {

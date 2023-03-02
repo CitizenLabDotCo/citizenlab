@@ -61,8 +61,6 @@ const FeedbackSettings = ({ ideaId, className, prospectAssignees }: Props) => {
   const adminAtWorkId = !isNilOrError(authUser) ? authUser.id : null;
 
   const getIdeaStatusOption = (idea: IIdea, statuses: IIdeaStatuses) => {
-    console.log(idea.data.relationships.idea_status.data.id);
-
     const ideaStatus = statuses.data.find(
       (status) => status.id === idea.data.relationships.idea_status.data.id
     );
@@ -137,8 +135,6 @@ const FeedbackSettings = ({ ideaId, className, prospectAssignees }: Props) => {
     const assigneeOptions = getAssigneeOptions();
     const ideaAssigneeOption =
       idea.data.relationships.assignee?.data?.id || 'unassigned';
-
-    console.log(ideaStatusOption?.label);
 
     return (
       <Container className={`${className} e2e-idea-settings`}>
