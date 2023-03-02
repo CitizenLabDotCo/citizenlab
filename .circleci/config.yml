@@ -396,7 +396,7 @@ jobs:
   front-lint:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
-    working_directory: /citizenlab/front
+    working_directory: ~/citizenlab/front
     steps:
       - run: pwd
       - clone
