@@ -101,7 +101,8 @@ resource 'Users' do
           let(:email) { '+324 875 12 12' }
           let(:password) { 'supersecret' }
 
-          example_request 'Authenticate a registered user by phone number', document: false do
+          example 'Authenticate a registered user by phone number', document: false do
+            do_request
             assert_status 201
             json_response = json_parse(response_body)
             expect(json_response[:jwt]).to be_present
@@ -113,7 +114,8 @@ resource 'Users' do
           let(:email) { user.email }
           let(:password) { 'supersecret' }
 
-          example_request 'Authenticate a registered user by email', document: false do
+          example 'Authenticate a registered user by email', document: false do
+            do_request
             assert_status 201
             json_response = json_parse(response_body)
             expect(json_response[:jwt]).to be_present
@@ -222,7 +224,8 @@ resource 'Users' do
 
         let(:password) { 'ab' }
 
-        example_request '[error] Create an invalid user', document: false do
+        example '[error] Create an invalid user', document: false do
+          do_request
           assert_status 422
           json_response = json_parse response_body
           expect(json_response).to include_response_error(:password, 'too_short', count: 5)
@@ -252,7 +255,8 @@ resource 'Users' do
 
         let(:email) { 'jEzUs@citizenlab.co' }
 
-        example_request '[error] Registering a user with case insensitive email duplicate', document: false do
+        example '[error] Registering a user with case insensitive email duplicate', document: false do
+          do_request
           assert_status 422
         end
       end
@@ -274,7 +278,8 @@ resource 'Users' do
         describe do
           let(:email) { 'someone@citizenlab.co' }
 
-          example_request 'Register with email when an email is passed', document: false do
+          example 'Register with email when an email is passed', document: false do
+            do_request
             assert_status 201
             expect(User.find_by(email: email)).to be_present
           end
@@ -283,7 +288,8 @@ resource 'Users' do
         describe do
           let(:email) { '+32 487 36 58 98' }
 
-          example_request 'Registers a user with a phone number in the email when a phone number is passed', document: false do
+          example 'Registers a user with a phone number in the email when a phone number is passed', document: false do
+            do_request
             assert_status 201
             expect(User.find_by(email: 'phone+32487365898@test.com')).to be_present
           end
@@ -511,7 +517,8 @@ resource 'Users' do
           let(:group) { @group.id }
           let(:users) { @selected.map(&:id) }
 
-          example_request 'XLSX export all users by filtering on both group and user ids', document: false do
+          example 'XLSX export all users by filtering on both group and user ids', document: false do
+            do_request
             expect(status).to eq 200
             xlsx_hash = XlsxService.new.xlsx_to_hash_array RubyXL::Parser.parse_buffer(response_body).stream
             expect(xlsx_hash.map { |r| r['id'] }).to match_array(@members.map(&:id) & @selected.map(&:id))

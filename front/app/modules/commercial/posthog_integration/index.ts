@@ -13,7 +13,9 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import { isAdmin, isModerator } from 'services/permissions/roles';
 import { ModuleConfiguration } from 'utils/moduleUtils';
+import { IUser } from 'services/users';
 import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
+import { IAppConfiguration } from 'api/app_configuration/types';
 
 const POSTHOG_API_KEY = process.env.POSTHOG_API_KEY;
 
@@ -31,7 +33,11 @@ const lazyLoadedPosthog = async () => {
   return ph.default;
 };
 
-const initializePosthog = async (token, user, appConfig) => {
+const initializePosthog = async (
+  token: string,
+  user: IUser,
+  appConfig: IAppConfiguration
+) => {
   const posthog = await lazyLoadedPosthog();
 
   posthog.init(token, {
