@@ -103,6 +103,10 @@ commands:
       - run: echo $LASTPASS_PASSWORD | LPASS_DISABLE_PINENTRY=1 lpass login ${LASTPASS_EMAIL}
       - run: lpass show --notes 'citizenlab back-secret.env' > env_files/back-secret.env
       - run: lpass show --notes 'citizenlab front-secret.env' > env_files/front-secret.env
+  shallow-checkout:
+    steps:
+      - run: ssh-keyscan github.com >> ~/.ssh/known_hosts
+      - run: git clone -b "$CIRCLE_BRANCH" "$CIRCLE_REPOSITORY_URL" --depth 1
   clone:
     steps:
       - git-shallow-clone/checkout:
@@ -114,8 +118,7 @@ jobs:
     docker:
       - image: cimg/base:stable
     steps:
-      # - checkout
-      - run: 1 + x
+      - checkout
       - run:
           name: Trigger workflows
           command: chmod +x .circleci/monorepo.sh && .circleci/monorepo.sh
@@ -168,7 +171,7 @@ jobs:
       - image: cimg/base:2021.03
     steps:
       - echo_pipeline_parameters
-      - clone
+      - shallow-checkout
       - setup_remote_docker:
           docker_layer_caching: true
       - run: |
@@ -399,10 +402,10 @@ jobs:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     working_directory: ~/citizenlab/front
     steps:
+      # - run: pwd
+      # - run: cd .. && rm -r front
       - run: pwd
-      - run: cd .. && rm -r front
-      - run: pwd
-      - clone
+      - shallow-checkout
       # - run: echo 'export CIRCLE_WORKING_DIRECTORY="$CIRCLE_WORKING_DIRECTORY"/citizenlab/front' >> "$BASH_ENV"
       # - run: echo $CIRCLE_WORKING_DIRECTORY
       # - run: 
