@@ -137,7 +137,7 @@ const ParentComment = ({
     ) {
       setCanLoadMore(true);
     }
-  }, [comment]);
+  }, [comment, canLoadMore]);
 
   const loadMore = (event: FormEvent<any>) => {
     if (!isLoadingMore) {

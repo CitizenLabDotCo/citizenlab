@@ -152,7 +152,7 @@ const ParentCommentForm = ({
 
   useEffect(() => {
     postingComment(processing);
-  }, [processing]);
+  }, [processing, postingComment]);
 
   const onChange = (inputValue: string) => {
     setInputValue(inputValue);

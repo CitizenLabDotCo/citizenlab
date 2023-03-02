@@ -175,7 +175,7 @@ const CommentVote = ({
     if (voted && isNilOrError(commentVote)) {
       setVoted(false);
     }
-  }, [comment, commentVote]);
+  }, [comment, commentVote, voted]);
 
   const vote = async () => {
     const oldVotedValue = voted;

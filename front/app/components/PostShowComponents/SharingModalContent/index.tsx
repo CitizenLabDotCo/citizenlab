@@ -82,7 +82,7 @@ const SharingModalContent = ({
       postId,
       postType,
     });
-  }, []);
+  }, [postId, postType]);
 
   const getPostValues = () => {
     let postTitle: string | null = null;
