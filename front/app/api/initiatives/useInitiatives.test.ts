@@ -15,7 +15,7 @@ export const links = {
     'http://localhost:3000/web_api/v1/initiatives/?page%5Bnumber%5D=1&page%5Bsize%5D=20',
   prev: null,
 };
-export const data: IInitiativeData[] = [
+export const initiativesData: IInitiativeData[] = [
   {
     id: '1',
     type: 'initiative',
@@ -85,7 +85,7 @@ import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 const apiPath = '*initiatives';
 const server = setupServer(
   rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data, links }));
+    return res(ctx.status(200), ctx.json({ data: initiativesData, links }));
   })
 );
 
@@ -110,7 +110,7 @@ describe('useInitiatives', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.data).toEqual(data);
+    expect(result.current.data?.data).toEqual(initiativesData);
   });
 
   it('returns error correctly', async () => {

@@ -8,11 +8,9 @@ import InitiativeForm, {
 
 // services
 import { Locale, Multiloc, UploadFile } from 'typings';
-import {
-  addInitiative,
-  updateInitiative,
-  IInitiativeAdd,
-} from 'services/initiatives';
+import { updateInitiative } from 'services/initiatives';
+import useAddInitiative from 'api/initiatives/useAddInitiative';
+import { IInitiativeAdd } from 'api/initiatives/types';
 import { ITopicData } from 'services/topics';
 
 // utils
@@ -60,6 +58,7 @@ interface Props {
 
 const InitiativesNewFormWrapper = ({ topics, locale }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
+  const { mutate: addInitiative } = useAddInitiative();
   const authUser = useAuthUser();
   const { mutate: addInitiativeImage } = useAddInitiativeImage();
   const { mutate: deleteInitiativeImage } = useDeleteInitiativeImage();
@@ -91,10 +90,11 @@ const InitiativesNewFormWrapper = ({ topics, locale }: Props) => {
   const [hasImageChanged, setHasImageChanged] = useState<boolean>(false);
 
   useEffect(() => {
-    addInitiative({ publication_status: 'draft' }).then((initiative) => {
-      setInitiativeId(initiative.data.id);
-    });
-  }, []);
+    addInitiative(
+      { publication_status: 'draft' },
+      { onSuccess: (initiative) => setInitiativeId(initiative.data.id) }
+    );
+  }, [addInitiative]);
 
   const getChangedValues = () => {
     const changedKeys = Object.keys(initialValues).filter((key) => {

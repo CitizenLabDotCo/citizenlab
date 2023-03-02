@@ -124,13 +124,6 @@ export function initiativesMarkersStream(
   });
 }
 
-export async function addInitiative(object: IInitiativeAdd) {
-  const response = await streams.add<IInitiative>(`${API_PATH}/initiatives`, {
-    initiative: object,
-  });
-  return response;
-}
-
 export async function updateInitiative(
   initiativeId: string,
   object: Partial<IInitiativeAdd>
