@@ -2,7 +2,6 @@ import React, { MouseEvent } from 'react';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { uniq, get } from 'lodash-es';
-import { findDOMNode } from 'react-dom';
 import { useDrag } from 'react-dnd';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
@@ -18,16 +17,12 @@ import { IInitiativeStatusData } from 'services/initiativeStatuses';
 // components
 import { TitleLink } from '.';
 import StyledRow from './StyledRow';
-import { Icon, Input } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
 import T from 'components/T';
 import Checkbox from 'components/UI/Checkbox';
 import { Td, StatusLabel } from '@citizenlab/cl2-component-library';
 import SubRow from './SubRow';
 import AssigneeSelect from '../AssigneeSelect';
-
-// i18n
-import { WrappedComponentProps } from 'react-intl';
-import { useIntl } from 'utils/cl-intl';
 
 // styling
 import { colors } from 'utils/styleUtils';
@@ -97,7 +92,6 @@ const InitiativeRow = ({
   allowedTransitions,
   tenant,
 }: Props) => {
-  const { formatMessage } = useIntl();
   const [_collected, drag] = useDrag({
     type: 'IDEA',
     item: {
@@ -160,7 +154,7 @@ const InitiativeRow = ({
     });
   };
 
-  const onUpdateInitiativeAssignee = (assigneeId: string | null) => {
+  const onUpdateInitiativeAssignee = (assigneeId: string | undefined) => {
     const initiativeId = initiative.id;
 
     updateInitiative(initiativeId, {

@@ -23,7 +23,7 @@ interface DataProps {
 interface InputProps {
   projectId?: string;
   assigneeId: string | undefined;
-  onAssigneeChange: (assigneeId: string | null) => void;
+  onAssigneeChange: (assigneeId: string | undefined) => void;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -74,7 +74,7 @@ class AssigneeSelect extends PureComponent<Props & WrappedComponentProps> {
     const { onAssigneeChange } = this.props;
 
     if (typeof value === 'string') {
-      onAssigneeChange(value === 'unassigned' ? null : value);
+      onAssigneeChange(value === 'unassigned' ? undefined : value);
     }
   };
 
