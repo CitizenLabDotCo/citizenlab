@@ -1,4 +1,4 @@
-import React, { PureComponent, FormEvent } from 'react';
+import React, { FormEvent, useState, useEffect, useRef } from 'react';
 import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
@@ -72,38 +72,37 @@ interface Props extends InputProps, DataProps {
   theme: any;
 }
 
-interface State {
-  canLoadMore: boolean;
-  isLoadingMore: boolean;
-  hasLoadedMore: boolean;
-  childComments: IComments | null;
-}
+const ParentComment = ({
+  commentId,
+  comment,
+  postId,
+  postType,
+  authUser,
+  post,
+  className,
+  commentingPermissionInitiative,
+  theme,
+  childCommentIds,
+}: Props) => {
+  const loadMore$ = useRef(new BehaviorSubject(false));
+  const subscriptions = useRef<Subscription[]>([]);
 
-class ParentComment extends PureComponent<Props, State> {
-  private loadMore$: BehaviorSubject<boolean>;
-  private subscriptions: Subscription[];
+  const [canLoadMore, setCanLoadMore] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [hasLoadedMore, setHasLoadedMore] = useState(false);
+  const [childComments, setChildComments] = useState<IComments | null>(null);
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      canLoadMore: false,
-      isLoadingMore: false,
-      hasLoadedMore: false,
-      childComments: null,
-    };
-  }
+  useEffect(() => {
+    loadMore$.current = new BehaviorSubject(false);
 
-  componentDidMount() {
-    this.loadMore$ = new BehaviorSubject(false);
-
-    this.subscriptions = [
-      this.loadMore$
+    subscriptions.current = [
+      loadMore$.current
         .pipe(
           distinctUntilChanged(),
           filter((loadMore) => loadMore),
-          tap(() => this.setState({ isLoadingMore: true })),
+          tap(() => setHasLoadedMore(true)),
           switchMap(() => {
-            return childCommentsStream(this.props.commentId, {
+            return childCommentsStream(commentId, {
               queryParameters: {
                 'page[number]': 1,
                 'page[size]': 500,
@@ -112,156 +111,134 @@ class ParentComment extends PureComponent<Props, State> {
           })
         )
         .subscribe((childComments) => {
-          this.setState({
-            childComments,
-            isLoadingMore: false,
-            hasLoadedMore: true,
-          });
+          setChildComments(childComments);
+          setIsLoadingMore(false);
+          setHasLoadedMore(true);
         }),
     ];
-  }
 
-  componentDidUpdate(_prevProps: Props) {
-    const currentComment = this.props.comment;
+    return () => {
+      subscriptions.current.forEach((subscription) =>
+        subscription.unsubscribe()
+      );
+    };
+  });
 
+  useEffect(() => {
     if (
-      !isNilOrError(currentComment) &&
-      currentComment.attributes.children_count > 5 &&
-      !this.state.canLoadMore
+      !isNilOrError(comment) &&
+      comment.attributes.children_count > 5 &&
+      !canLoadMore
     ) {
-      this.setState({ canLoadMore: true });
+      setCanLoadMore(true);
     }
-  }
+  }, [comment]);
 
-  componentWillUnmount() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }
-
-  loadMore = (event: FormEvent<any>) => {
-    if (!this.state.isLoadingMore) {
+  const loadMore = (event: FormEvent<any>) => {
+    if (!isLoadingMore) {
       event.preventDefault();
       trackEventByName(tracks.clickParentCommentLoadMoreButton);
-      this.loadMore$.next(true);
+      loadMore$.current.next(true);
     }
   };
 
-  render() {
-    const {
-      postId,
-      postType,
-      commentId,
-      authUser,
-      comment,
+  if (!isNilOrError(comment) && !isNilOrError(post)) {
+    const projectId: string | null = get(
       post,
-      className,
-      commentingPermissionInitiative,
-      theme,
-    } = this.props;
-    const { canLoadMore, isLoadingMore, hasLoadedMore, childComments } =
-      this.state;
+      'relationships.project.data.id',
+      null
+    );
+    const commentDeleted = comment.attributes.publication_status === 'deleted';
+    const commentingEnabled =
+      postType === 'initiative'
+        ? commentingPermissionInitiative?.enabled === true
+        : get(
+            post,
+            'attributes.action_descriptor.commenting_idea.enabled',
+            true
+          );
+    const showCommentForm = authUser && commentingEnabled && !commentDeleted;
+    const hasChildComments = childCommentIds && childCommentIds.length > 0;
+    const modifiedChildCommentIds = !isNilOrError(childComments)
+      ? childComments.data
+          .filter(
+            (comment) => comment.attributes.publication_status !== 'deleted'
+          )
+          .map((comment) => comment.id)
+      : childCommentIds;
+    const showLoadMore = canLoadMore && !hasLoadedMore;
 
-    if (!isNilOrError(comment) && !isNilOrError(post)) {
-      const projectId: string | null = get(
-        post,
-        'relationships.project.data.id',
-        null
-      );
-      const commentDeleted =
-        comment.attributes.publication_status === 'deleted';
-      const commentingEnabled =
-        postType === 'initiative'
-          ? commentingPermissionInitiative?.enabled === true
-          : get(
-              post,
-              'attributes.action_descriptor.commenting_idea.enabled',
-              true
-            );
-      const showCommentForm = authUser && commentingEnabled && !commentDeleted;
-      const hasChildComments =
-        this.props.childCommentIds && this.props.childCommentIds.length > 0;
-      const childCommentIds = !isNilOrError(childComments)
-        ? childComments.data
-            .filter(
-              (comment) => comment.attributes.publication_status !== 'deleted'
-            )
-            .map((comment) => comment.id)
-        : this.props.childCommentIds;
-      const showLoadMore = canLoadMore && !hasLoadedMore;
+    // hide parent comments that are deleted when they have no children
+    if (
+      comment.attributes.publication_status === 'deleted' &&
+      !hasChildComments
+    ) {
+      return null;
+    }
 
-      // hide parent comments that are deleted when they have no children
-      if (
-        comment.attributes.publication_status === 'deleted' &&
-        !hasChildComments
-      ) {
-        return null;
-      }
+    return (
+      <Container className={`${className || ''} e2e-parent-and-childcomments`}>
+        <ParentCommentContainer className={commentDeleted ? 'deleted' : ''}>
+          <Comment
+            postId={postId}
+            postType={postType}
+            projectId={projectId}
+            commentId={commentId}
+            commentType="parent"
+            hasChildComments={hasChildComments}
+          />
+        </ParentCommentContainer>
 
-      return (
-        <Container
-          className={`${className || ''} e2e-parent-and-childcomments`}
-        >
-          <ParentCommentContainer className={commentDeleted ? 'deleted' : ''}>
+        {showLoadMore && (
+          <LoadMoreButton
+            onClick={loadMore}
+            className={!isLoadingMore ? 'clickable' : ''}
+            disabled={isLoadingMore}
+            bgColor="white"
+            textColor={theme.colors.tenantText}
+            bgHoverColor="white"
+            textHoverColor={darken(0.1, theme.colors.tenantText)}
+            fontWeight="bold"
+            borderColor="#E0E0E0"
+            borderThickness="2px"
+          >
+            {!isLoadingMore ? (
+              <FormattedMessage {...messages.loadMoreComments} />
+            ) : (
+              <Spinner size="25px" />
+            )}
+          </LoadMoreButton>
+        )}
+
+        {modifiedChildCommentIds &&
+          modifiedChildCommentIds.length > 0 &&
+          modifiedChildCommentIds.map((childCommentId, index) => (
             <Comment
               postId={postId}
               postType={postType}
               projectId={projectId}
-              commentId={commentId}
-              commentType="parent"
-              hasChildComments={hasChildComments}
+              key={childCommentId}
+              commentId={childCommentId}
+              commentType="child"
+              last={index === modifiedChildCommentIds.length - 1}
             />
-          </ParentCommentContainer>
+          ))}
 
-          {showLoadMore && (
-            <LoadMoreButton
-              onClick={this.loadMore}
-              className={!isLoadingMore ? 'clickable' : ''}
-              disabled={isLoadingMore}
-              bgColor="white"
-              textColor={theme.colors.tenantText}
-              bgHoverColor="white"
-              textHoverColor={darken(0.1, theme.colors.tenantText)}
-              fontWeight="bold"
-              borderColor="#E0E0E0"
-              borderThickness="2px"
-            >
-              {!isLoadingMore ? (
-                <FormattedMessage {...messages.loadMoreComments} />
-              ) : (
-                <Spinner size="25px" />
-              )}
-            </LoadMoreButton>
-          )}
-
-          {childCommentIds &&
-            childCommentIds.length > 0 &&
-            childCommentIds.map((childCommentId, index) => (
-              <Comment
-                postId={postId}
-                postType={postType}
-                projectId={projectId}
-                key={childCommentId}
-                commentId={childCommentId}
-                commentType="child"
-                last={index === childCommentIds.length - 1}
-              />
-            ))}
-
-          {showCommentForm && (
-            <StyledChildCommentForm
-              postId={postId}
-              postType={postType}
-              projectId={projectId}
-              parentId={commentId}
-              waitForChildCommentsRefetch={!isNilOrError(childComments)}
-            />
-          )}
-        </Container>
-      );
-    }
-
-    return null;
+        {showCommentForm && (
+          <StyledChildCommentForm
+            postId={postId}
+            postType={postType}
+            projectId={projectId}
+            parentId={commentId}
+            waitForChildCommentsRefetch={!isNilOrError(childComments)}
+          />
+        )}
+      </Container>
+    );
   }
-}
+
+  return null;
+};
 
 const ParentCommentWithHoC = withTheme(ParentComment);
 
