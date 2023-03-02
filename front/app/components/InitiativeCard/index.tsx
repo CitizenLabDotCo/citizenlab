@@ -110,11 +110,7 @@ class InitiativeCard extends PureComponent<Props & InjectedLocalized, State> {
       className,
     } = this.props;
 
-    if (
-      !isNilOrError(initiative) &&
-      !isUndefined(initiativeImage) &&
-      !isUndefined(initiativeAuthor)
-    ) {
+    if (!isNilOrError(initiative) && !isUndefined(initiativeAuthor)) {
       const initiativeTitle = localize(initiative.attributes.title_multiloc);
       const initiativeAuthorId = !isNilOrError(initiativeAuthor)
         ? initiativeAuthor.id

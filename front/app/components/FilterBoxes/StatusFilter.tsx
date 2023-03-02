@@ -20,7 +20,7 @@ import { Header, Title } from './styles';
 // typings
 import { IIdeasFilterCounts } from 'services/ideas';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
-import { IInitiativesFilterCounts } from 'services/initiatives';
+import { IInitiativesFilterCounts } from 'api/initiatives_filter_counts/types';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 
 const Container = styled.div`
@@ -113,6 +113,7 @@ interface Props {
     | IInitiativesFilterCounts
     | null
     | undefined;
+
   selectedStatusId: string | null | undefined;
   onChange: (arg: string | null) => void;
   className?: string;
@@ -133,8 +134,16 @@ const StatusFilter = memo<Props>(
     );
 
     if (!isNilOrError(statuses) && statuses.length > 0) {
+      const ideaPostCount =
+        filterCounts && type === 'idea' && 'total' in filterCounts
+          ? filterCounts?.total
+          : 0;
+      const initiativePostCount =
+        filterCounts && type === 'initiative' && 'data' in filterCounts
+          ? filterCounts?.data.attributes.total
+          : 0;
       const allPostsCount =
-        filterCounts && filterCounts.total ? filterCounts.total : 0;
+        type === 'idea' ? ideaPostCount : initiativePostCount;
       const allFilterSelected = !selectedStatusId;
 
       return (

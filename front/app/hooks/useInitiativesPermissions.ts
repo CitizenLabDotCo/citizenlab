@@ -20,11 +20,10 @@ export default function useInitiativesPermissions(action: IInitiativeAction) {
   useEffect(() => {
     const subscription = combineLatest([
       getInitiativeActionDescriptors().observable,
-
       authUserStream().observable,
     ]).subscribe(([actionDescriptors, authUser]) => {
       if (!isNilOrError(appConfiguration) && !isNilOrError(actionDescriptors)) {
-        const actionDescriptor = actionDescriptors[action];
+        const actionDescriptor = actionDescriptors.data.attributes[action];
 
         if (actionDescriptor.enabled) {
           setActionPermission({
