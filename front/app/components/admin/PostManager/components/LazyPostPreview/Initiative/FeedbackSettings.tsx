@@ -12,6 +12,7 @@ import messages from '../messages';
 
 // typings
 import { IOption } from 'typings';
+import { IInitiativeData } from 'api/initiatives/types';
 
 // styles
 import styled from 'styled-components';
@@ -30,9 +31,6 @@ import GetInitiativeStatuses, {
 import GetInitiativeAllowedTransitions, {
   GetInitiativeAllowedTransitionsChildProps,
 } from 'resources/GetInitiativeAllowedTransitions';
-import GetInitiative, {
-  GetInitiativeChildProps,
-} from 'resources/GetInitiative';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
@@ -49,6 +47,9 @@ import events, {
   StatusChangeModalOpen,
 } from 'components/admin/PostManager/events';
 
+// hooks
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+
 const StyledLabel = styled(Label)`
   margin-top: 20px;
 `;
@@ -59,7 +60,6 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
   tenant: GetAppConfigurationChildProps;
   statuses: GetInitiativeStatusesChildProps;
-  initiative: GetInitiativeChildProps;
   prospectAssignees: GetUsersChildProps;
   allowedTransitions: GetInitiativeAllowedTransitionsChildProps;
 }
@@ -77,12 +77,12 @@ const FeedbackSettings = ({
   tenant,
   initiativeId,
   authUser,
-  initiative,
   className,
   statuses,
   prospectAssignees,
   allowedTransitions,
 }: Props & InjectedLocalized & WrappedComponentProps) => {
+  const { data: initiative } = useInitiativeById(initiativeId);
   const getStatusOptions = (statuses, allowedTransitions) => {
     if (!isNilOrError(statuses)) {
       return statuses.map((status) => ({
@@ -97,7 +97,7 @@ const FeedbackSettings = ({
   };
 
   const getInitiativeStatusOption = memoize(
-    (initiative: GetInitiativeChildProps, statuses) => {
+    (initiative: IInitiativeData, statuses) => {
       if (
         !isNilOrError(initiative) &&
         initiative.relationships.initiative_status &&
@@ -122,7 +122,7 @@ const FeedbackSettings = ({
 
       return null;
     },
-    (initiative: GetInitiativeChildProps, statuses) =>
+    (initiative: IInitiativeData, statuses) =>
       JSON.stringify({
         initiativeId: isNilOrError(initiative)
           ? undefined
@@ -184,9 +184,13 @@ const FeedbackSettings = ({
     });
   };
 
+  if (!initiative) {
+    return null;
+  }
+
   const statusOptions = getStatusOptions(statuses, allowedTransitions);
   const initiativeStatusOption = getInitiativeStatusOption(
-    initiative,
+    initiative.data,
     statuses
   );
   const assigneeOptions = getAssigneeOptions(prospectAssignees);
@@ -195,10 +199,6 @@ const FeedbackSettings = ({
     'relationships.assignee.data.id',
     'unassigned'
   );
-
-  if (isNilOrError(initiative)) {
-    return null;
-  }
 
   return (
     <Container className={`${className} e2e-initiative-settings`}>
@@ -229,9 +229,6 @@ const FeedbackSettings = ({
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
-  initiative: ({ initiativeId, render }) => (
-    <GetInitiative id={initiativeId}>{render}</GetInitiative>
-  ),
   statuses: <GetInitiativeStatuses />,
   prospectAssignees: <GetUsers canAdmin />,
   allowedTransitions: ({ initiativeId, render }) => (
