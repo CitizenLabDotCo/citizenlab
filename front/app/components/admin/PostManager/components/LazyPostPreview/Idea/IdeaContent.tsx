@@ -1,7 +1,6 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
-import { get } from 'lodash-es';
 
 // components
 import Title from 'components/PostShowComponents/Title';
@@ -204,7 +203,7 @@ const IdeaContent = ({
     const ideaTitle = localize(idea.attributes.title_multiloc);
     const ideaImageLarge =
       !isNilOrError(ideaImages) && ideaImages.length > 0
-        ? get(ideaImages[0], 'attributes.versions.large', null)
+        ? ideaImages[0].attributes.versions.large
         : null;
     const ideaGeoPosition = idea.attributes.location_point_geojson || null;
     const ideaAddress = getAddressOrFallbackDMS(
@@ -343,7 +342,11 @@ const Data = adopt<DataProps, InputProps>({
     <GetIdeaById ideaId={ideaId}>{render}</GetIdeaById>
   ),
   project: ({ idea, render }) => (
-    <GetProject projectId={get(idea, 'relationships.project.data.id')}>
+    <GetProject
+      projectId={
+        !isNilOrError(idea) ? idea.relationships.project.data.id : null
+      }
+    >
       {render}
     </GetProject>
   ),

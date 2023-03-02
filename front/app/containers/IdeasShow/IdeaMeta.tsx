@@ -1,7 +1,6 @@
 // libraries
 import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
-import { get } from 'lodash-es';
 import { Helmet } from 'react-helmet';
 
 // resources
@@ -179,7 +178,9 @@ const Data = adopt<DataProps, InputProps>({
       </GetProject>
     ) : null,
   author: ({ idea, render }) => (
-    <GetUser id={get(idea, 'relationships.author.data.id', null)}>
+    <GetUser
+      id={!isNilOrError(idea) ? idea.relationships.author.data?.id : null}
+    >
       {render}
     </GetUser>
   ),
