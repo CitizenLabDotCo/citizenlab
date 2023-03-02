@@ -425,7 +425,7 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-npm-cache-
       - run: npm ci
-      - run: /bin/bash -lc "cd /citizenlab/front && license_finder"
+      - run: /bin/bash -lc "cd ~/citizenlab/front && license_finder"
 
   front-build:
     docker:
