@@ -14,7 +14,6 @@ import messages from '../../messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { IOption } from '@citizenlab/cl2-component-library';
 
 interface DataProps {
   prospectAssignees: GetUsersChildProps;
@@ -24,7 +23,7 @@ interface DataProps {
 interface InputProps {
   projectId?: string;
   assigneeId: string | undefined;
-  onAssigneeChange: (assigneeId: string | undefined) => void;
+  onAssigneeChange: (assigneeId: string | null) => void;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -71,11 +70,12 @@ class AssigneeSelect extends PureComponent<Props & WrappedComponentProps> {
     return assigneeOptions;
   });
 
-  onAssigneeChange = (_event, assigneeOption: IOption) => {
+  onAssigneeChange = (_event, { value }: { value?: unknown }) => {
     const { onAssigneeChange } = this.props;
-    onAssigneeChange(
-      assigneeOption.value === 'unassigned' ? undefined : assigneeOption.value
-    );
+
+    if (typeof value === 'string') {
+      onAssigneeChange(value === 'unassigned' ? null : value);
+    }
   };
 
   render() {

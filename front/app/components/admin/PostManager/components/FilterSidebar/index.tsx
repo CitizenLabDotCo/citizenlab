@@ -36,7 +36,7 @@ interface Props {
   selectedPhase?: string | null;
   selectedProject?: string | null;
   selectedStatus?: string | null;
-  onChangePhaseFilter?: (arg: string) => void;
+  onChangePhaseFilter?: (arg: string | null) => void;
   onChangeTopicsFilter?: (topics: string[]) => void;
   onChangeProjectFilter?: (projects: string[] | undefined) => void;
   onChangeStatusFilter?: (arg: string) => void;

@@ -9,19 +9,19 @@ import messages from '../../messages';
 type Props = {
   phases?: IPhaseData[];
   selectedPhase?: string | null;
-  onChangePhaseFilter?: (string) => void;
+  onChangePhaseFilter?: (phase: string | null) => void;
 };
 
 export default class FilterSidebarPhases extends React.PureComponent<Props> {
-  handleItemClick = (id) => () => {
-    this.props.onChangePhaseFilter && this.props.onChangePhaseFilter(id);
+  handleItemClick = (phaseId: string) => () => {
+    this.props.onChangePhaseFilter?.(phaseId);
   };
 
   clearFilter = () => {
-    this.props.onChangePhaseFilter && this.props.onChangePhaseFilter(null);
+    this.props.onChangePhaseFilter?.(null);
   };
 
-  isActive = (id) => {
+  isActive = (id: string) => {
     return this.props.selectedPhase === id;
   };
 
