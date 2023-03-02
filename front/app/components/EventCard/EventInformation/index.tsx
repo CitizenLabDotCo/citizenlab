@@ -13,7 +13,7 @@ import useResourceFiles from 'hooks/useResourceFiles';
 import useProject from 'hooks/useProject';
 
 // services
-import { IEventData } from 'services/events';
+import { IEventData } from 'api/events/types';
 
 // i18n
 import T from 'components/T';
