@@ -34,6 +34,9 @@ import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
 
+// hooks
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+
 const Container = styled.div`
   position: relative;
   margin-bottom: 20px;
@@ -64,7 +67,7 @@ interface InputProps {
 interface DataProps {
   authUser: GetAuthUserChildProps;
   comment: GetCommentChildProps;
-  post: GetPostChildProps;
+  idea: GetPostChildProps;
   commentingPermissionInitiative: GetInitiativesPermissionsChildProps;
 }
 
@@ -78,15 +81,17 @@ const ParentComment = ({
   postId,
   postType,
   authUser,
-  post,
+  idea,
   className,
   commentingPermissionInitiative,
   theme,
   childCommentIds,
 }: Props) => {
+  const initiativeId = postType === 'initiative' ? postId : null;
+  const { data: initiative } = useInitiativeById(initiativeId);
+  const post = postType === 'idea' ? idea : initiative?.data;
   const loadMore$ = useRef(new BehaviorSubject(false));
   const subscriptions = useRef<Subscription[]>([]);
-
   const [canLoadMore, setCanLoadMore] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [hasLoadedMore, setHasLoadedMore] = useState(false);
@@ -247,8 +252,8 @@ const Data = adopt<DataProps, InputProps>({
   comment: ({ commentId, render }) => (
     <GetComment id={commentId}>{render}</GetComment>
   ),
-  post: ({ comment, postType, render }) => (
-    <GetPost id={get(comment, 'relationships.post.data.id')} type={postType}>
+  idea: ({ comment, render }) => (
+    <GetPost id={get(comment, 'relationships.post.data.id')} type="idea">
       {render}
     </GetPost>
   ),
