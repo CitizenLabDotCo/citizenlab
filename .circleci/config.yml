@@ -399,6 +399,7 @@ jobs:
     working_directory: ~/citizenlab/front
     steps:
       - run: pwd
+      - run: cd .. && rm -r front
       - clone
       # - run: echo 'export CIRCLE_WORKING_DIRECTORY="$CIRCLE_WORKING_DIRECTORY"/citizenlab/front' >> "$BASH_ENV"
       # - run: echo $CIRCLE_WORKING_DIRECTORY
