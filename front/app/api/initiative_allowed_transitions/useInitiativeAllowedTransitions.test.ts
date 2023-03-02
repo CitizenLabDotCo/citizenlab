@@ -7,7 +7,7 @@ import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath = '*initiatives/allowed_transitions';
+const apiPath = '*initiatives/:id/allowed_transitions';
 
 const initiativeAllowedTransitionsData = {
   data: {
