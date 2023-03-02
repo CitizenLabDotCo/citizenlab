@@ -5,15 +5,10 @@ import { Subscription, BehaviorSubject, of } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { IIdeaData, ideaByIdStream, ideaBySlugStream } from 'services/ideas';
-import {
-  IInitiativeData,
-  initiativeByIdStream,
-  initiativeBySlugStream,
-} from 'services/initiatives';
 import { GetIdeaChildProps } from 'resources/GetIdea';
 import { GetInitiativeChildProps } from 'resources/GetInitiative';
 
-export type PostType = 'idea' | 'initiative';
+type PostType = 'idea';
 interface InputProps {
   id?: string | null;
   slug?: string | null;
@@ -30,7 +25,7 @@ interface Props extends InputProps {
 }
 
 interface State {
-  post: IIdeaData | IInitiativeData | undefined | null | Error;
+  post: IIdeaData | undefined | null | Error;
 }
 
 export default class GetPost extends React.Component<Props, State> {
@@ -63,16 +58,8 @@ export default class GetPost extends React.Component<Props, State> {
               return ideaByIdStream(id).observable;
             }
 
-            if (isString(id) && type === 'initiative') {
-              return initiativeByIdStream(id).observable;
-            }
-
             if (isString(slug) && type === 'idea') {
               return ideaBySlugStream(slug).observable;
-            }
-
-            if (isString(slug) && type === 'initiative') {
-              return initiativeBySlugStream(slug).observable;
             }
 
             return of(null);
