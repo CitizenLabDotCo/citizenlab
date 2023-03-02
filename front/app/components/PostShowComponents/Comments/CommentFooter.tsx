@@ -29,10 +29,6 @@ import Outlet from 'components/Outlet';
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 
-// Types
-import { IIdeaData } from 'services/ideas';
-import { IInitiativeData } from 'api/initiatives/types';
-
 const footerHeight = '30px';
 const footerTopMargin = '6px';
 
