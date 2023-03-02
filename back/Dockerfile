@@ -27,7 +27,6 @@ RUN apt-get update                                                             \
       libgmp3-dev=2:6.2.1+dfsg-1+deb11u1                                       \
       libpq-dev=13.9-0+deb11u1                                                 \
       git=1:2.30.2-1+deb11u2                                                   \
-      netcat=1.10-46                                                           \
       # Required by mimemagic on which depends axlsx (3.0.0.pre)
       shared-mime-info=2.0-1                                                   \
  && apt-get clean                                                              \
@@ -38,7 +37,12 @@ WORKDIR /cl2_back
 RUN gem install bundler:2.3.20
 
 COPY --from=dependency_files /app .
-RUN bundle install --deployment
+RUN bundle config set --local clean 'true'      \
+ && bundle config set --local deployment 'true' \
+ && bundle install --no-cache                   \
+ # Removing the cached files manually as --no-cache does not seem to work
+ # (or at least it's not doing what I expect from it).
+ && rm -rf ./vendor/bundle/ruby/2.7.0/cache
 
 COPY back/. .
 
@@ -50,6 +54,8 @@ ENV CITIZENLAB_EE=true
 RUN apt-get update                                                             \
  && apt-get install -qq -y --no-install-recommends                             \
       curl=7.74.0-1.3+deb11u7                                                  \
+      # Used to wait for Postgres to be up in CircleCI
+      netcat=1.10-46                                                           \
       # Image processing
       imagemagick=8:6.9.11.60+dfsg-1.3+deb11u1                                 \
       jpegoptim=1.4.6-1                                                        \
@@ -58,7 +64,7 @@ RUN apt-get update                                                             \
  && curl -sL https://deb.nodesource.com/setup_18.x  | bash -                   \
  && apt-get -y remove curl                                                     \
  && apt-get -y --no-install-recommends install nodejs=18.14.2-deb-1nodesource1 \
-    # Install MJML parser required by email engine.
+ # Install MJML parser required by email engine.
  && npm install -g mjml@4.4.1                                                  \
  && apt-get clean                                                              \
  && rm -rf /var/lib/apt/lists/*
