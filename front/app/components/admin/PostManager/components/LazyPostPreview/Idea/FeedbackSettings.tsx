@@ -216,7 +216,11 @@ const Data = adopt<DataProps, InputProps>({
   ),
   statuses: <GetIdeaStatuses />,
   prospectAssignees: ({ idea, render }) => (
-    <GetUsers canModerateProject={get(idea, 'relationships.project.data.id')}>
+    <GetUsers
+      canModerateProject={
+        !isNilOrError(idea) ? idea.relationships.project.data.id : undefined
+      }
+    >
       {render}
     </GetUsers>
   ),

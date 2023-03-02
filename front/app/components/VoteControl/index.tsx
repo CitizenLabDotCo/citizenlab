@@ -1,5 +1,5 @@
 import React, { PureComponent, MouseEvent, KeyboardEvent } from 'react';
-import { isString, get, isEmpty, includes } from 'lodash-es';
+import { isString, isEmpty, includes } from 'lodash-es';
 import {
   BehaviorSubject,
   Subscription,
@@ -193,9 +193,7 @@ class VoteControl extends PureComponent<Props, State> {
           switchMap((idea) => {
             let project$: Observable<IProject | null> = of(null);
             let phases$: Observable<IPhase[] | null> = of(null);
-            const hasPhases = !isEmpty(
-              get(idea.data.relationships.phases, 'data', null)
-            );
+            const hasPhases = !isEmpty(idea.data.relationships.phases.data);
 
             if (!hasPhases && idea.data.relationships.project.data) {
               project$ = projectByIdStream(

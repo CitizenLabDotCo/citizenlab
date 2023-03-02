@@ -20,7 +20,6 @@ import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
 
 // utils
-import { get } from 'lodash-es';
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -129,7 +128,9 @@ const CompactIdeaCard = memo<Props>(
     });
     const ideaImage = useIdeaImage({
       ideaId,
-      ideaImageId: get(idea, 'relationships.idea_images.data[0].id'),
+      ideaImageId: idea
+        ? idea.data.relationships.idea_images.data?.[0].id
+        : null,
     });
 
     if (isNilOrError(idea)) {

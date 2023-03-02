@@ -1,5 +1,4 @@
 import React, { FC, useEffect } from 'react';
-import { get } from 'lodash-es';
 
 import AssigneeSelect from 'components/admin/PostManager/components/PostTable/AssigneeSelect';
 import { IIdeaData, updateIdea } from 'services/ideas';
@@ -55,8 +54,8 @@ const IdeaRowCell: FC<Props> = ({ onData }) => {
             return (
               <AssigneeSelect
                 onAssigneeChange={onChange(idea)}
-                projectId={get(idea, 'relationships.project.data.id')}
-                assigneeId={get(idea, 'relationships.assignee.data.id')}
+                projectId={idea.relationships.project.data.id}
+                assigneeId={idea.relationships.assignee?.data?.id}
               />
             );
           },
