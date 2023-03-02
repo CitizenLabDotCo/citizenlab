@@ -1,5 +1,5 @@
 import useInitativeMarkers from 'api/initiative_markers/useInitiativeMarkers';
-import { IGeotaggedInitiativeData } from 'services/initiatives';
+import { IGeotaggedInitiativeData } from 'api/initiative_markers/types';
 
 interface InputProps {}
 
