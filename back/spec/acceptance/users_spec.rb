@@ -874,10 +874,6 @@ resource 'Users' do
     end
 
     post 'web_api/v1/users/update_password' do
-      before do
-        @user = create(:user)
-      end
-
       with_options scope: :user do
         parameter :current_password, required: true
         parameter :new_password, required: true
@@ -900,7 +896,7 @@ resource 'Users' do
         example_request 'update password with correct current password' do
           @user.reload
           expect(response_status).to eq 200
-          expect(@user.password).to eq 'test_new_password'
+          expect(BCrypt::Password.new(@user.password_digest)).to be_is_password('test_new_password')
         end
       end
     end
