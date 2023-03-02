@@ -119,7 +119,7 @@ export interface IIdeaData {
 
 export interface IIdeaAdd {
   // Required
-  project_id: string | null;
+  project_id: string;
   publication_status: IdeaPublicationStatus;
   title_multiloc: Multiloc;
   // Optional
