@@ -14,9 +14,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
-import GetInitiative, {
-  GetInitiativeChildProps,
-} from 'resources/GetInitiative';
 import GetInitiativeStatus, {
   GetInitiativeStatusChildProps,
 } from 'resources/GetInitiativeStatus';
@@ -39,6 +36,9 @@ import T from 'components/T';
 // Typings
 import { Multiloc, MultilocFormValues } from 'typings';
 
+// hooks
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+
 const Container = styled.div`
   background: ${colors.background};
   padding: 25px;
@@ -59,7 +59,6 @@ interface InputProps {
 
 interface DataProps {
   tenantLocales: GetAppConfigurationLocalesChildProps;
-  initiative: GetInitiativeChildProps;
   newStatus: GetInitiativeStatusChildProps;
   officialFeedbacks: GetOfficialFeedbacksChildProps;
 }
@@ -77,7 +76,6 @@ const StatusChangeFormWrapper = ({
   newStatusId,
   closeModal,
   officialFeedbacks,
-  initiative,
   newStatus,
 }: Props & WrappedComponentProps) => {
   const [mode, setMode] = useState<'latest' | 'new'>('new');
@@ -87,6 +85,7 @@ const StatusChangeFormWrapper = ({
   });
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
+  const { data: initiative } = useInitiativeById(initiativeId);
 
   const onChangeMode = (event) => {
     setMode(event);
@@ -186,7 +185,7 @@ const StatusChangeFormWrapper = ({
           values={{
             initiativeTitle: (
               <ColoredText color={colors.teal}>
-                <T value={initiative.attributes.title_multiloc} />
+                <T value={initiative.data.attributes.title_multiloc} />
               </ColoredText>
             ),
             newStatus: (
@@ -221,9 +220,6 @@ const StatusChangeFormWrapper = ({
 
 const Data = adopt<DataProps, InputProps>({
   tenantLocales: <GetAppConfigurationLocales />,
-  initiative: ({ initiativeId, render }) => (
-    <GetInitiative id={initiativeId}>{render}</GetInitiative>
-  ),
   newStatus: ({ newStatusId, render }) => (
     <GetInitiativeStatus id={newStatusId}>{render}</GetInitiativeStatus>
   ),
