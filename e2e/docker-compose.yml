@@ -51,7 +51,3 @@ services:
     environment:
       API_HOST: e2e-web
     command: npm start
-
-networks:
-  default:
-    name: citizenlab-e2e
