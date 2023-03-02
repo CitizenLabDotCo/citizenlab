@@ -6,7 +6,7 @@ const IdeasWithoutFiltersSidebar = lazy(
   () => import('./IdeasWithoutFiltersSidebar')
 );
 import { Props as WithSidebarProps } from './IdeasWithFiltersSidebar';
-import { InputProps as WithoutSidebarProps } from './IdeasWithoutFiltersSidebar';
+import { Props as WithoutSidebarProps } from './IdeasWithoutFiltersSidebar';
 
 // styling
 import styled from 'styled-components';
