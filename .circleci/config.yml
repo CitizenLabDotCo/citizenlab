@@ -122,8 +122,7 @@ jobs:
   danger-check:
     resource_class: small
     docker:
-      # - image: citizenlabdotco/cl2-devops-danger-check
-      - image: citizenlabdotco/cl2-devops-front-buildenv
+      - image: citizenlabdotco/cl2-devops-danger-check
     steps:
       - shallow-clone
       - run: danger ci
