@@ -122,9 +122,9 @@ jobs:
   danger-check:
     resource_class: small
     docker:
-      - image: ghcr.io/danger/danger-js:10.6.6
+      - image: citizenlabdotco/cl2-devops-danger-check
     steps:
-      - checkout # Has no git installed in img
+      - shallow-clone
       - run: danger ci
 
   slack-invalid-data-success:
