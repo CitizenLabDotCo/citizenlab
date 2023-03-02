@@ -29,10 +29,8 @@ import {
   Sort as IdeasSort,
   SortAttribute as IdeasSortAttribute,
 } from 'resources/GetIdeas';
-import {
-  Sort as InitiativesSort,
-  SortAttribute as InitiativesSortAttribute,
-} from 'resources/GetInitiatives';
+import { SortAttribute as InitiativesSortAttribute } from 'resources/GetInitiatives';
+import { Sort as InitiativesSort } from 'api/initiatives/types';
 import { SortDirection } from 'utils/paginationUtils';
 
 const Container = styled.div`
