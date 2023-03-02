@@ -16,7 +16,7 @@ const updateIdea = ({ id, requestBody }: IUpdateIdeaObject) =>
     body: requestBody,
   });
 
-const useUpdateIdeaStatus = () => {
+const useUpdateIdea = () => {
   const queryClient = useQueryClient();
   return useMutation<IIdea, CLErrors, IUpdateIdeaObject>({
     mutationFn: updateIdea,
@@ -26,4 +26,4 @@ const useUpdateIdeaStatus = () => {
   });
 };
 
-export default useUpdateIdeaStatus;
+export default useUpdateIdea;
