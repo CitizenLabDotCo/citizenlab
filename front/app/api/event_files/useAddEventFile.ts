@@ -18,7 +18,7 @@ const useAddEventFile = () => {
   return useMutation<IEventFile, CLErrors, IAddEventFileProperties>({
     mutationFn: addEventFile,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: eventsKeys.all() });
+      queryClient.invalidateQueries({ queryKey: eventsKeys.lists() });
     },
   });
 };

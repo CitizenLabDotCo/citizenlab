@@ -16,7 +16,7 @@ const useDeleteEventFile = () => {
     mutationFn: deleteEventFile,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: eventsKeys.all(),
+        queryKey: eventsKeys.lists(),
       });
     },
   });
