@@ -12,6 +12,9 @@ import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import FileUploader from 'components/UI/FileUploader';
 import { IconTooltip, Label, Spinner } from '@citizenlab/cl2-component-library';
 
+// router
+import clHistory from 'utils/cl-router/history';
+
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -56,7 +59,7 @@ type ApiErrorType =
 
 const AdminProjectEventEdit = ({ params }: Props) => {
   const { mutate: addEvent } = useAddEvent();
-  const { data: remoteEvent, isInitialLoading } = useEvent(params.id);
+  const { data: event, isInitialLoading } = useEvent(params.id);
   const { mutate: updateEvent } = useUpdateEvent();
   const { mutate: addEventFile } = useAddEventFile();
   const { mutate: deleteEventFile } = useDeleteEventFile();
@@ -64,7 +67,6 @@ const AdminProjectEventEdit = ({ params }: Props) => {
   const locale = useLocale();
   const appConfiguration = useAppConfiguration();
   const [errors, setErrors] = useState<ErrorType>({});
-  const [event, setEvent] = useState(remoteEvent);
   const [apiErrors, setApiErrors] = useState<ApiErrorType>({});
   const [saving, setSaving] = useState<boolean>(false);
   const [submitState, setSubmitState] = useState<SubmitState>('disabled');
@@ -73,12 +75,6 @@ const AdminProjectEventEdit = ({ params }: Props) => {
   const [eventFilesToRemove, setEventFilesToRemove] = useState<UploadFile[]>(
     []
   );
-
-  useEffect(() => {
-    if (remoteEvent) {
-      setEvent(remoteEvent);
-    }
-  }, [remoteEvent]);
 
   useEffect(() => {
     if (!isNilOrError(remoteEventFiles)) {
@@ -164,7 +160,6 @@ const AdminProjectEventEdit = ({ params }: Props) => {
             },
             {
               onSuccess: () => {
-                file.remote = true;
                 setSubmitState('success');
               },
               onError: () => {
@@ -181,6 +176,11 @@ const AdminProjectEventEdit = ({ params }: Props) => {
               { eventId, fileId: file.id },
               {
                 onSuccess: () => {
+                  setEventFilesToRemove(
+                    eventFilesToRemove.filter((fileToRemove) => {
+                      fileToRemove.id !== file.id;
+                    })
+                  );
                   setSubmitState('success');
                 },
                 onError: () => {
@@ -218,6 +218,7 @@ const AdminProjectEventEdit = ({ params }: Props) => {
               },
               {
                 onSuccess: async (data) => {
+                  setSubmitState('success');
                   handleEventFiles(data);
                 },
                 onError: async (errors) => {
@@ -236,8 +237,9 @@ const AdminProjectEventEdit = ({ params }: Props) => {
               },
               {
                 onSuccess: async (data) => {
+                  setSubmitState('success');
                   handleEventFiles(data);
-                  setEvent(data);
+                  clHistory.push(`/admin/projects/${projectId}/events`);
                 },
                 onError: async (errors) => {
                   setErrors(errors.errors);
