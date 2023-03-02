@@ -218,9 +218,7 @@ jobs:
       COVERAGE: ON
     steps:
       - wait-for-postgres
-      - run: |
-          rake db:create
-          rake db:schema:load
+      - run: bin/rails db:create db:schema:load
       - run: |
           TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" "engines/*/*/spec/**/*_spec.rb" | circleci tests split  --split-by=timings)
           echo $TESTFILES
@@ -239,13 +237,11 @@ jobs:
     steps:
       - run: mkdir -p workspace
       - wait-for-postgres
-      - run: |
-          rake db:create
-          rake db:schema:load
+      - run: bin/rails db:create db:schema:load
       - run: SPEC_OPTS="-t template_test -P "spec/**/*_spec.rb"" bundle exec rspec
       - run: SPEC_OPTS="-t template_test -P "engines/*/*/spec/**/*_spec.rb"" bundle exec rspec
       - run:
-          command: rake templates:verify['workspace/failed-templates.txt']
+          command: bin/rake templates:verify['workspace/failed-templates.txt']
           no_output_timeout: 60m
       - persist_to_workspace:
           root: workspace
@@ -261,7 +257,7 @@ jobs:
     steps:
       - attach_workspace:
           at: /tmp/workspace
-      - run: rake templates:release['/tmp/workspace/failed-templates.txt']
+      - run: bin/rake templates:release['/tmp/workspace/failed-templates.txt']
 
   back-docs-not-blocking:
     resource_class: small
@@ -273,9 +269,7 @@ jobs:
       RAILS_ENV: test
     steps:
       - wait-for-postgres
-      - run: |
-          rake db:create
-          rake db:schema:load
+      - run: bin/rails db:create db:schema:load
       - run: bundle exec rake web_api:docs:generate
       - run: bundle exec rake public_api:docs:generate
       - run: bundle exec rake admin_api:docs:generate
@@ -336,7 +330,7 @@ jobs:
         default: .env-production
     steps:
       - run:
-          command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker pull citizenlabdotco/back-ee:$CIRCLE_BRANCH && docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH rake db:migrate cl2back:clean_tenant_settings email_campaigns:assure_campaign_records fix_existing_tenants:update_permissions cl2back:clear_cache_store email_campaigns:remove_deprecated"
+          command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker pull citizenlabdotco/back-ee:$CIRCLE_BRANCH && docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH bin/rake db:migrate cl2back:clean_tenant_settings email_campaigns:assure_campaign_records fix_existing_tenants:update_permissions cl2back:clear_cache_store email_campaigns:remove_deprecated"
       - deploy:
           command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "cd cl2-deployment && docker stack deploy --compose-file << parameters.compose_file >> << parameters.stack_name >> --with-registry-auth"
 
@@ -354,7 +348,7 @@ jobs:
         type: string
         default: .env-production-benelux
     steps:
-      - run: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH rake templates:generate[true]"
+      - run: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH bin/rake templates:generate[true]"
 
   check-for-inconsistent-data:
     resource_class: small
@@ -372,7 +366,7 @@ jobs:
     steps:
       - run:
           name: Check for inconsistent data
-          command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH rake checks:invalid_data"
+          command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH bin/rake checks:invalid_data"
           no_output_timeout: 60m
 
   front-detect-deadcode:
