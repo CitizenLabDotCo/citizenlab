@@ -4,9 +4,6 @@ import styled, { withTheme } from 'styled-components';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
-import GetInitiative, {
-  GetInitiativeChildProps,
-} from 'resources/GetInitiative';
 import GetInitiativeStatus, {
   GetInitiativeStatusChildProps,
 } from 'resources/GetInitiativeStatus';
@@ -25,6 +22,12 @@ import messages from './messages';
 
 import T from 'components/T';
 import { get } from 'lodash-es';
+
+// hooks
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+
+// Types
+import { IInitiativeData } from 'api/initiatives/types';
 
 const Container = styled.div``;
 
@@ -120,13 +123,16 @@ interface InputProps {
   initiativeId: string;
 }
 
+interface IntiativeInputProps {
+  initiative: IInitiativeData;
+}
+
 interface DataProps {
   tenant: GetAppConfigurationChildProps;
-  initiative: GetInitiativeChildProps;
   initiativeStatus: GetInitiativeStatusChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps, IntiativeInputProps {}
 
 const VoteIndicator = ({
   initiative,
@@ -234,11 +240,8 @@ const VoteIndicator = ({
   );
 };
 
-const Data = adopt<DataProps, InputProps>({
+const Data = adopt<DataProps, InputProps & IntiativeInputProps>({
   tenant: <GetAppConfiguration />,
-  initiative: ({ initiativeId, render }) => (
-    <GetInitiative id={initiativeId}>{render}</GetInitiative>
-  ),
   initiativeStatus: ({ initiative, render }) => (
     <GetInitiativeStatus
       id={get(initiative, 'relationships.initiative_status.data.id')}
@@ -250,8 +253,20 @@ const Data = adopt<DataProps, InputProps>({
 
 const VoteIndicatorWithHOCs = withTheme(VoteIndicator);
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <VoteIndicatorWithHOCs {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default (inputProps: InputProps) => {
+  // TODO: Move this logic to VoteIndicator after working on the initiativeStatus. It's dependency here is why we need to pass in the initiative to the Data component
+  const { data: initiative } = useInitiativeById(inputProps.initiativeId);
+  if (!initiative) return null;
+
+  return (
+    <Data {...inputProps} initiative={initiative.data}>
+      {(dataProps) => (
+        <VoteIndicatorWithHOCs
+          initiative={initiative.data}
+          {...inputProps}
+          {...dataProps}
+        />
+      )}
+    </Data>
+  );
+};
