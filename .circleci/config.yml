@@ -696,8 +696,6 @@ workflows:
             branches:
               only:
                 - production
-                # Temporary, to test:
-                - CL-2911-changelog-automation
           context:
             - docker-hub-access
             - changelogger
