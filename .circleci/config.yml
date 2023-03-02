@@ -107,7 +107,10 @@ commands:
     steps:
       - run: mkdir ~/.ssh
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts
-      - run: cd ~ && rm -rf ~/citizenlab && git clone -b "$CIRCLE_BRANCH" "$CIRCLE_REPOSITORY_URL" --depth 1
+      - run: cd ~ && \
+             repo_dir=${"$CIRCLE_REPOSITORY_URL" | cut -d '/' -f 2 | cut -d '.' -f 1}
+             rm -rf ~/$repo_dir && \
+             git clone -b "$CIRCLE_BRANCH" "$CIRCLE_REPOSITORY_URL" --depth 1
 
 jobs:
   trigger-workflows:
