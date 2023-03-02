@@ -398,7 +398,8 @@ jobs:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     working_directory: /citizenlab/front
     steps:
-      - clone
+      # - clone
+      - checkout
       - run: ls
       # Download and cache dependencies
       - restore_cache:
