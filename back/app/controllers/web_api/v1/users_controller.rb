@@ -194,7 +194,7 @@ class WebApi::V1::UsersController < ::ApplicationController
   def update_password
     @user = current_user
     authorize @user
-    if @user.original_authenticate(params[:user][:current_password])
+    if @user.authenticate(params[:user][:current_password])
       if @user.update(password: params[:user][:new_password])
         render json: WebApi::V1::UserSerializer.new(
           @user,
