@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { useState } from 'react';
 import { adopt } from 'react-adopt';
 import { get, isEmpty } from 'lodash-es';
 
@@ -71,59 +71,42 @@ export interface FormValues extends MultilocFormValues {
   body_multiloc: Multiloc;
 }
 
-interface State {
-  mode: 'latest' | 'new';
-  newOfficialFeedback: FormValues;
-  loading: boolean;
-  touched: boolean;
-  error: boolean;
-}
+const StatusChangeFormWrapper = ({
+  tenantLocales,
+  initiativeId,
+  newStatusId,
+  closeModal,
+  officialFeedbacks,
+  initiative,
+  newStatus,
+}: Props & WrappedComponentProps) => {
+  const [mode, setMode] = useState<'latest' | 'new'>('new');
+  const [newOfficialFeedback, setNewOfficialFeedback] = useState<FormValues>({
+    author_multiloc: {},
+    body_multiloc: {},
+  });
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
 
-class StatusChangeFormWrapper extends PureComponent<
-  Props & WrappedComponentProps,
-  State
-> {
-  constructor(props: Props & WrappedComponentProps) {
-    super(props);
-    this.state = {
-      mode: 'new',
-      newOfficialFeedback: {
-        author_multiloc: {},
-        body_multiloc: {},
-      },
-      loading: false,
-      touched: false,
-      error: false,
-    };
-  }
-
-  onChangeMode = (event) => {
-    this.setState({ mode: event });
+  const onChangeMode = (event) => {
+    setMode(event);
   };
 
-  onChangeBody = (value: Multiloc) => {
-    this.setState((state) => ({
-      newOfficialFeedback: {
-        ...state.newOfficialFeedback,
-        body_multiloc: value,
-      },
-      touched: true,
-    }));
+  const onChangeBody = (value: Multiloc) => {
+    setNewOfficialFeedback({
+      ...newOfficialFeedback,
+      body_multiloc: value,
+    });
   };
 
-  onChangeAuthor = (value: Multiloc) => {
-    this.setState((state) => ({
-      newOfficialFeedback: {
-        ...state.newOfficialFeedback,
-        author_multiloc: value,
-      },
-      touched: true,
-    }));
+  const onChangeAuthor = (value: Multiloc) => {
+    setNewOfficialFeedback({
+      ...newOfficialFeedback,
+      author_multiloc: value,
+    });
   };
 
-  validate = () => {
-    const { tenantLocales } = this.props;
-    const { mode, newOfficialFeedback } = this.state;
+  const validate = () => {
     let validated = true;
 
     if (!isNilOrError(tenantLocales) && mode === 'new') {
@@ -153,16 +136,11 @@ class StatusChangeFormWrapper extends PureComponent<
     return validated;
   };
 
-  submit = () => {
-    const { initiativeId, newStatusId, closeModal, officialFeedbacks } =
-      this.props;
-    const {
-      mode,
-      newOfficialFeedback: { body_multiloc, author_multiloc },
-    } = this.state;
-    if (this.validate()) {
+  const submit = () => {
+    const { body_multiloc, author_multiloc } = newOfficialFeedback;
+    if (validate()) {
       if (mode === 'new') {
-        this.setState({ loading: true });
+        setLoading(true);
         updateInitiativeStatusAddFeedback(
           initiativeId,
           newStatusId,
@@ -171,7 +149,8 @@ class StatusChangeFormWrapper extends PureComponent<
         )
           .then(() => closeModal())
           .catch(() => {
-            this.setState({ loading: false, error: true });
+            setLoading(false);
+            setError(true);
           });
       } else if (
         mode === 'latest' &&
@@ -184,65 +163,61 @@ class StatusChangeFormWrapper extends PureComponent<
         )
           .then(() => closeModal())
           .catch(() => {
-            this.setState({ loading: false, error: true });
+            setLoading(false);
+            setError(true);
           });
       }
     }
   };
 
-  render() {
-    const { initiative, newStatus, officialFeedbacks } = this.props;
-    const { loading, error, newOfficialFeedback, mode } = this.state;
-
-    if (
-      isNilOrError(initiative) ||
-      isNilOrError(newStatus) ||
-      officialFeedbacks.officialFeedbacksList === undefined
-    ) {
-      return null;
-    }
-
-    return (
-      <Container>
-        <ContextLine>
-          <FormattedMessage
-            {...messages.statusChange}
-            values={{
-              initiativeTitle: (
-                <ColoredText color={colors.teal}>
-                  <T value={initiative.attributes.title_multiloc} />
-                </ColoredText>
-              ),
-              newStatus: (
-                <ColoredText color={newStatus.attributes.color}>
-                  <T value={newStatus.attributes.title_multiloc} />
-                </ColoredText>
-              ),
-            }}
-          />
-        </ContextLine>
-        <StatusChangeForm
-          {...{
-            loading,
-            error,
-            newOfficialFeedback,
-            mode,
-          }}
-          valid={this.validate()}
-          onChangeAuthor={this.onChangeAuthor}
-          onChangeBody={this.onChangeBody}
-          onChangeMode={this.onChangeMode}
-          latestOfficialFeedback={get(
-            officialFeedbacks,
-            'officialFeedbacksList.data[0]',
-            null
-          )}
-          submit={this.submit}
-        />
-      </Container>
-    );
+  if (
+    isNilOrError(initiative) ||
+    isNilOrError(newStatus) ||
+    officialFeedbacks.officialFeedbacksList === undefined
+  ) {
+    return null;
   }
-}
+
+  return (
+    <Container>
+      <ContextLine>
+        <FormattedMessage
+          {...messages.statusChange}
+          values={{
+            initiativeTitle: (
+              <ColoredText color={colors.teal}>
+                <T value={initiative.attributes.title_multiloc} />
+              </ColoredText>
+            ),
+            newStatus: (
+              <ColoredText color={newStatus.attributes.color}>
+                <T value={newStatus.attributes.title_multiloc} />
+              </ColoredText>
+            ),
+          }}
+        />
+      </ContextLine>
+      <StatusChangeForm
+        {...{
+          loading,
+          error,
+          newOfficialFeedback,
+          mode,
+        }}
+        valid={validate()}
+        onChangeAuthor={onChangeAuthor}
+        onChangeBody={onChangeBody}
+        onChangeMode={onChangeMode}
+        latestOfficialFeedback={get(
+          officialFeedbacks,
+          'officialFeedbacksList.data[0]',
+          null
+        )}
+        submit={submit}
+      />
+    </Container>
+  );
+};
 
 const Data = adopt<DataProps, InputProps>({
   tenantLocales: <GetAppConfigurationLocales />,
