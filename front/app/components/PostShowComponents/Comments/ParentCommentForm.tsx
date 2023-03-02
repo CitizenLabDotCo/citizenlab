@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { isString, trim, get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
@@ -139,7 +139,7 @@ const ParentCommentForm = ({
   postingComment,
   idea,
 }: Props & WrappedComponentProps) => {
-  let textareaElement: HTMLTextAreaElement | null = null;
+  const textareaElement = useRef<HTMLTextAreaElement | null>(null);
   const [inputValue, setInputValue] = useState('');
   const [focused, setFocused] = useState(false);
   const [processing, setProcessing] = useState(false);
@@ -178,7 +178,7 @@ const ParentCommentForm = ({
       setFocused(false);
       setInputValue('');
 
-      textareaElement?.blur();
+      textareaElement.current?.blur();
     }
   };
 
@@ -276,7 +276,7 @@ const ParentCommentForm = ({
   };
 
   const setRef = (element: HTMLTextAreaElement) => {
-    textareaElement = element;
+    textareaElement.current = element;
   };
 
   const getErrorMessage = () => {
