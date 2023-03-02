@@ -124,7 +124,7 @@ jobs:
   changelogger:
     resource_class: small
     docker:
-      - image: CitizenlabDotCo/cl2-devops-changelogger:master
+      - image: citizenlabdotco/cl2-devops-changelogger:master
     steps:
       - run: ruby script.rb
 
