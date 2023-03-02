@@ -1,5 +1,5 @@
 const ideasKeys = {
-  all: () => [{ type: 'idea_status' }],
+  all: () => [{ type: 'idea' }],
   lists: () => [{ ...ideasKeys.all()[0], operation: 'list' }],
   items: () => [{ ...ideasKeys.all()[0], operation: 'item' }],
   item: (id: string) => [
