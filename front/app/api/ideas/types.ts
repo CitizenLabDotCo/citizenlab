@@ -35,6 +35,7 @@ export type IdeaBudgetingDisabledReason =
   | 'not_permitted'
   | 'not_verified'
   | 'not_signed_in'
+  | 'not_budgeting'
   | null
   | undefined;
 
@@ -79,6 +80,7 @@ export interface IIdeaData {
     upvotes_count: number;
     downvotes_count: number;
     comments_count: number;
+    official_feedbacks_count: number;
     baskets_count: number;
     location_point_geojson: GeoJSON.Point | null;
     location_description: string | null;
@@ -110,6 +112,8 @@ export interface IIdeaData {
       };
       comment_voting_idea: {
         enabled: boolean;
+        disabled_reason: null;
+        future_enabled: null;
       };
       budgeting?: {
         enabled: boolean;
@@ -141,7 +145,7 @@ export interface IIdeaData {
       data: IRelationship;
     };
     user_vote?: {
-      data: IRelationship;
+      data: IRelationship | null;
     };
   };
 }
