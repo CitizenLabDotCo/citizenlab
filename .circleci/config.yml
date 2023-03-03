@@ -121,6 +121,17 @@ jobs:
       - checkout
       - run: danger ci
 
+  changelogger:
+    resource_class: small
+    docker:
+      - image: citizenlabdotco/cl2-devops-changelogger:master
+        auth:
+          username: $DOCKER_USER
+          password: $DOCKER_PASS
+    working_directory: /app
+    steps:
+      - run: ruby script.rb
+
   slack-invalid-data-success:
     resource_class: small
     docker:
@@ -680,6 +691,14 @@ workflows:
                 - /l10n_.*/
                 - master
                 - production
+      - changelogger:
+          filters:
+            branches:
+              only:
+                - production
+          context:
+            - docker-hub-access
+            - changelogger
 
   # BACK-END
   back:
