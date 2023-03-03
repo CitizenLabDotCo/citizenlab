@@ -54,7 +54,9 @@ export default class GetUserStats extends React.PureComponent<Props, State> {
       )
       .subscribe((response) => {
         this.setState({
-          count: !isNilOrError(response) ? response.count : response,
+          count: !isNilOrError(response)
+            ? response.data.attributes.count
+            : response,
         });
       });
   }

@@ -207,14 +207,16 @@ const IdeasWithoutFiltersSidebar = ({
 
   const phaseId = ideaQueryParameters.phase;
 
+  if (isNilOrError(ideaCustomFieldsSchemas)) return null;
+
   const locationEnabled = isFieldEnabled(
     'location_description',
-    ideaCustomFieldsSchemas,
+    ideaCustomFieldsSchemas.data.attributes,
     locale
   );
   const topicsEnabled = isFieldEnabled(
     'topic_ids',
-    ideaCustomFieldsSchemas,
+    ideaCustomFieldsSchemas.data.attributes,
     locale
   );
   const showViewButtons = !!(locationEnabled && showViewToggle);

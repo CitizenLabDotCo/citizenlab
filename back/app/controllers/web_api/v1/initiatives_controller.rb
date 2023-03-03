@@ -74,7 +74,7 @@ class WebApi::V1::InitiativesController < ApplicationController
         end
       end
     counts['total'] = initiatives.count
-    render json: counts
+    render json: raw_json(counts)
   end
 
   def show

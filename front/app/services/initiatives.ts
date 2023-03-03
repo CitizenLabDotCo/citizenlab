@@ -82,16 +82,20 @@ export interface IInitiativeAdd {
 }
 
 export interface IInitiativesFilterCounts {
-  initiative_status_id: {
-    [key: string]: number;
+  data: {
+    attributes: {
+      initiative_status_id: {
+        [key: string]: number;
+      };
+      area_id: {
+        [key: string]: number;
+      };
+      topic_id: {
+        [key: string]: number;
+      };
+      total: number;
+    };
   };
-  area_id: {
-    [key: string]: number;
-  };
-  topic_id: {
-    [key: string]: number;
-  };
-  total: number;
 }
 
 export interface IGeotaggedInitiativeData {

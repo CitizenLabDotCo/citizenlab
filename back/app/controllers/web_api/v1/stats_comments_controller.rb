@@ -12,7 +12,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
       .published
       .count
 
-    render json: { count: count }
+    render json: raw_json({ count: count })
   end
 
   def comments_by_time_serie

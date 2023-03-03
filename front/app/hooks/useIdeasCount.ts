@@ -52,7 +52,9 @@ export default function useIdeasCount({
 
     const subscription = observable.subscribe(
       (response: IIdeasCount | NilOrError) => {
-        setCount(isNilOrError(response) ? response : response.count);
+        setCount(
+          isNilOrError(response) ? response : response.data.attributes.count
+        );
       }
     );
 
