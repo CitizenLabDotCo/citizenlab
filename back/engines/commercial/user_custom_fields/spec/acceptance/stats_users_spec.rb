@@ -85,9 +85,7 @@ resource 'Stats - Users' do
       context "when 'gender' custom field has no reference distribution" do
         example_request 'Users by gender' do
           expect(response_status).to eq 200
-          json_response = json_response_body
-          expect(json_response.dig(:data, :type)).to eq 'users_by_gender'
-          json_attributes = json_response.dig(:data, :attributes)
+          json_attributes = json_response_body.dig(:data, :attributes)
           expect(json_attributes).to include(
             series: {
               users: { female: 2, unspecified: 1, male: 0, _blank: 0 },
@@ -105,10 +103,7 @@ resource 'Stats - Users' do
 
         example_request 'Users by gender with expected user counts' do
           expect(response_status).to eq 200
-          json_response = json_response_body
-          expect(json_response.dig(:data, :type)).to eq 'users_by_gender'
-          json_attributes = json_response.dig(:data, :attributes)
-          expect(json_attributes).to include(
+          expect(json_response_body).to include(
             series: {
               users: { female: 2, unspecified: 1, male: 0, _blank: 0 },
               expected_users: {
@@ -192,10 +187,7 @@ resource 'Stats - Users' do
 
         example_request 'Users by birthyear' do
           expect(response_status).to eq 200
-          json_response = json_response_body
-          expect(json_response.dig(:data, :type)).to eq 'users_by_birthyear'
-          json_attributes = json_response.dig(:data, :attributes)
-          expect(json_attributes).to match({
+          expect(json_response_body).to match({
             series: {
               users: { '1980': 2, '1976': 1, _blank: 0 },
               expected_users: nil,
@@ -210,10 +202,7 @@ resource 'Stats - Users' do
 
         example_request 'Users by birthyear filtered by project' do
           expect(response_status).to eq 200
-          json_response = json_response_body
-          expect(json_response.dig(:data, :type)).to eq 'users_by_birthyear'
-          json_attributes = json_response.dig(:data, :attributes)
-          expect(json_attributes[:series][:users].values.sum).to eq 1
+          expect(json_response_body[:series][:users].values.sum).to eq 1
         end
       end
 
@@ -262,10 +251,7 @@ resource 'Stats - Users' do
 
       example_request 'Users by domicile' do
         expect(response_status).to eq 200
-        json_response = json_response_body
-        expect(json_response.dig(:data, :type)).to eq 'users_by_domicile'
-        json_attributes = json_response.dig(:data, :attributes)
-        expect(json_attributes).to match({
+        expect(json_response_body).to match({
           areas: Area.all.to_h { |area| [area.id, area.attributes.slice('title_multiloc')] },
           series: {
             users: {
@@ -323,10 +309,8 @@ resource 'Stats - Users' do
           .options.to_h { |option| [option.key, 0] }
           .merge('3': 2, '5': 1, _blank: 0)
           .symbolize_keys
-        json_response = json_response_body
-        expect(json_response.dig(:data, :type)).to eq 'users_by_education'
-        json_attributes = json_response.dig(:data, :attributes)
-        expect(json_attributes).to include(
+
+        expect(json_response_body).to include(
           series: {
             users: expected_users,
             expected_users: nil,
@@ -400,10 +384,7 @@ resource 'Stats - Users' do
         context 'when the custom field has no reference distribution' do
           example_request 'Users by custom field (select)' do
             expect(response_status).to eq 200
-            json_response = json_response_body
-            expect(json_response.dig(:data, :type)).to eq 'users_by_customfield'
-            json_attributes = json_response.dig(:data, :attributes)
-            expect(json_attributes).to match({
+            expect(json_response_body).to match({
               options: {
                 @option1.key => { title_multiloc: @option1.title_multiloc, ordering: 0 },
                 @option2.key => { title_multiloc: @option2.title_multiloc, ordering: 1 },
@@ -428,10 +409,7 @@ resource 'Stats - Users' do
 
           example_request 'Users by custom field (select) including expected nb of users' do
             expect(response_status).to eq 200
-            json_response = json_response_body
-            expect(json_response.dig(:data, :type)).to eq 'users_by_customfield'
-            json_attributes = json_response.dig(:data, :attributes)
-            expect(json_attributes).to include(series: hash_including(
+            expect(json_response_body).to include(series: hash_including(
               expected_users: @custom_field.options.to_h { |option| [option.key.to_sym, kind_of(Numeric)] }
             ))
           end
@@ -464,10 +442,7 @@ resource 'Stats - Users' do
 
         example_request 'Users by custom field (multiselect)' do
           expect(response_status).to eq 200
-          json_response = json_response_body
-          expect(json_response.dig(:data, :type)).to eq 'users_by_customfield'
-          json_attributes = json_response.dig(:data, :attributes)
-          expect(json_attributes).to match({
+          expect(json_response_body).to match({
             options: {
               @option1.key => { title_multiloc: @option1.title_multiloc, ordering: 0 },
               @option2.key => { title_multiloc: @option2.title_multiloc, ordering: 1 },
@@ -511,10 +486,7 @@ resource 'Stats - Users' do
 
         example_request 'Users by custom field (checkbox)' do
           expect(response_status).to eq 200
-          json_response = json_response_body
-          expect(json_response.dig(:data, :type)).to eq 'users_by_customfield'
-          json_attributes = json_response.dig(:data, :attributes)
-          expect(json_attributes).to match({
+          expect(json_response_body).to match({
             series: {
               users: {
                 # rubocop:disable Lint/BooleanSymbol
@@ -555,10 +527,7 @@ resource 'Stats - Users' do
 
         example_request 'Users by custom field (filtered)' do
           expect(response_status).to eq 200
-          json_response = json_response_body
-          expect(json_response.dig(:data, :type)).to eq 'users_by_customfield'
-          json_attributes = json_response.dig(:data, :attributes)
-          expect(json_attributes).to match({
+          expect(json_response_body).to match({
             series: {
               users: {
                 # rubocop:disable Lint/BooleanSymbol
@@ -579,10 +548,7 @@ resource 'Stats - Users' do
 
         example_request 'Users by custom field (filtered)' do
           expect(response_status).to eq 200
-          json_response = json_response_body
-          expect(json_response.dig(:data, :type)).to eq 'users_by_customfield'
-          json_attributes = json_response.dig(:data, :attributes)
-          expect(json_attributes).to match({
+          expect(json_response_body).to match({
             series: {
               users: {
                 # rubocop:disable Lint/BooleanSymbol
