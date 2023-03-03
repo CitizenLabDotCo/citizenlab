@@ -75,8 +75,14 @@ const InitiativeMoreActions = ({
     const message = formatMessage(messages.deleteInitiativeConfirmation);
 
     if (window.confirm(message)) {
-      deleteInitiative({ initiativeId });
-      clHistory.goBack();
+      deleteInitiative(
+        { initiativeId },
+        {
+          onSuccess: () => {
+            clHistory.goBack();
+          },
+        }
+      );
     }
   };
 

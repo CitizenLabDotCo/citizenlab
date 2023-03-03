@@ -130,8 +130,14 @@ const InitiativeContent = ({
 
     if (initiative) {
       if (window.confirm(message)) {
-        deleteInitiative({ initiativeId: initiative.data.id });
-        closePreview();
+        deleteInitiative(
+          { initiativeId: initiative.data.id },
+          {
+            onSuccess: () => {
+              closePreview();
+            },
+          }
+        );
       }
     }
   };

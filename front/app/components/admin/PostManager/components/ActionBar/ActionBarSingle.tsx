@@ -37,10 +37,15 @@ const ActionBarSingle = ({
     const message = formatMessage(messages.deleteInitiativeConfirmation);
 
     if (window.confirm(message)) {
-      deleteInitiative({ initiativeId: postId });
+      deleteInitiative(
+        { initiativeId: postId },
+        {
+          onSuccess: () => {
+            resetSelection();
+          },
+        }
+      );
     }
-
-    resetSelection();
   };
 
   if (type === 'AllIdeas' || type === 'ProjectIdeas') {
