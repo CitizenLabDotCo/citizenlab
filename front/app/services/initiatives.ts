@@ -1,8 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { IRelationship, Multiloc, ImageSizes } from 'typings';
-import { first } from 'rxjs/operators';
-import { get } from 'lodash-es';
 
 export type InitiativePublicationStatus =
   | 'draft'
@@ -70,12 +68,6 @@ export interface IInitiativeAdd {
   location_description?: string | null;
 }
 
-export function initiativeByIdStream(initiativeId: string) {
-  return streams.get<IInitiative>({
-    apiEndpoint: `${API_PATH}/initiatives/${initiativeId}`,
-  });
-}
-
 export async function updateInitiative(
   initiativeId: string,
   object: Partial<IInitiativeAdd>
@@ -92,22 +84,5 @@ export async function updateInitiative(
       `${API_PATH}/initiatives/${initiativeId}/activities`,
     ],
   });
-  return response;
-}
-
-export async function deleteInitiative(initiativeId: string) {
-  const [initiative, response] = await Promise.all([
-    initiativeByIdStream(initiativeId).observable.pipe(first()).toPromise(),
-    streams.delete(`${API_PATH}/initiatives/${initiativeId}`, initiativeId),
-  ]);
-
-  const authorId = get(initiative, 'relationships.author.data.id', false);
-
-  streams.fetchAllWith({
-    apiEndpoint: authorId
-      ? [`${API_PATH}/users/${authorId}/initiatives_count`]
-      : [],
-  });
-
   return response;
 }
