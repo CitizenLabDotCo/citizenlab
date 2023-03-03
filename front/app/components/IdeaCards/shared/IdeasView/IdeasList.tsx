@@ -3,11 +3,11 @@ import styled, { useTheme } from 'styled-components';
 import { Box, media, Button, Spinner } from '@citizenlab/cl2-component-library';
 import IdeaCard from 'components/IdeaCard';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../../messages';
 import { rgba } from 'polished';
 import { ParticipationMethod } from 'services/participationContexts';
 import EmptyIdeas from './EmptyIdeas';
-import { IIdeaData } from 'services/ideas';
+import { IIdeaData } from 'api/ideas/types';
 import { IParticipationContextType } from 'typings';
 
 const StyledIdeaCard = styled(IdeaCard)`

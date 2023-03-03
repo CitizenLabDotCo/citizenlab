@@ -2,8 +2,8 @@ import React, { ChangeEvent, useState, MouseEvent } from 'react';
 import { uniq, isEmpty } from 'lodash-es';
 import { useDrag } from 'react-dnd';
 // services
-import { IIdeaData } from 'services/ideas';
 import { IPhaseData } from 'services/phases';
+import { IIdeaData } from 'api/ideas/types';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 
 // components
