@@ -21,7 +21,7 @@ import {
   IdeaPublicationStatus,
 } from 'api/ideas/types';
 
-interface Props extends Omit<IQueryParameters, 'sort'> {
+interface Props extends Omit<IQueryParameters, 'sort' | 'basket_id'> {
   sort?: Sort;
   children?: children;
 }
