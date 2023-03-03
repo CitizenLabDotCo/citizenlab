@@ -100,3 +100,8 @@ export interface IInitiativeAdd {
   location_point_geojson?: GeoJSON.Point | null;
   location_description?: string | null;
 }
+
+export interface IUpdateInitiativeObject {
+  initiativeId: string;
+  requestBody: Partial<IInitiativeAdd>;
+}

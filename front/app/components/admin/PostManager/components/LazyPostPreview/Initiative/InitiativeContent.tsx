@@ -18,9 +18,6 @@ import { Top, Content, Container } from '../PostPreview';
 import VoteIndicator from 'components/InitiativeCard/VoteIndicator';
 import { Box } from '@citizenlab/cl2-component-library';
 
-// services
-import { deleteInitiative } from 'services/initiatives';
-
 // resources
 import GetInitiativeImages, {
   GetInitiativeImagesChildProps,
@@ -40,6 +37,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 // hooks
 import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
 
 const StyledTitle = styled(Title)`
   margin-bottom: 30px;
@@ -125,14 +123,21 @@ const InitiativeContent = ({
   initiativeId,
 }: Props & InjectedLocalized & WrappedComponentProps) => {
   const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
+  const { mutate: deleteInitiative } = useDeleteInitiative();
   const { data: initiative } = useInitiativeById(initiativeId);
   const handleClickDelete = () => {
     const message = intl.formatMessage(messages.deleteInitiativeConfirmation);
 
-    if (!initiative) {
+    if (initiative) {
       if (window.confirm(message)) {
-        deleteInitiative(initiativeId);
-        closePreview();
+        deleteInitiative(
+          { initiativeId: initiative.data.id },
+          {
+            onSuccess: () => {
+              closePreview();
+            },
+          }
+        );
       }
     }
   };
@@ -188,7 +193,11 @@ const InitiativeContent = ({
               )}
 
               <PostedBy
-                authorId={get(initiative, 'relationships.author.data.id', null)}
+                authorId={get(
+                  initiative,
+                  'data.relationships.author.data.id',
+                  null
+                )}
                 showAboutInitiatives={false}
               />
 

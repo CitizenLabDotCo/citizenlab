@@ -1,7 +1,11 @@
-import { IQueryParameters, IInitiativeData, Sort } from 'api/initiatives/types';
+import {
+  IInitiativeData,
+  InitiativePublicationStatus,
+  IQueryParameters,
+  Sort,
+} from 'api/initiatives/types';
 import useInitiatives from 'api/initiatives/useInitiatives';
 import { useState } from 'react';
-import { InitiativePublicationStatus } from 'services/initiatives';
 import {
   getPageNumberFromUrl,
   getSortAttribute,

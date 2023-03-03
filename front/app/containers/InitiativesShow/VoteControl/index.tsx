@@ -14,7 +14,6 @@ import {
 import GetInitiativeStatus, {
   GetInitiativeStatusChildProps,
 } from 'resources/GetInitiativeStatus';
-import { IInitiativeData } from 'services/initiatives';
 import { IAppConfigurationSettings } from 'api/app_configuration/types';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
@@ -37,6 +36,7 @@ import { openVerificationModal } from 'events/verificationModal';
 import useAddInitiativeVote from 'api/initiative_votes/useAddInitiativeVote';
 import useDeleteInitiativeVote from 'api/initiative_votes/useDeleteInitiativeVote';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
+import { IInitiativeData } from 'api/initiatives/types';
 
 const Container = styled.div`
   ${media.desktop`

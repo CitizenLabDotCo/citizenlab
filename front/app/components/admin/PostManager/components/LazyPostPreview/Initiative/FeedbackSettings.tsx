@@ -20,9 +20,6 @@ import styled from 'styled-components';
 // components
 import { Select, Label } from '@citizenlab/cl2-component-library';
 
-// services
-import { updateInitiative } from 'services/initiatives';
-
 // resources
 import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 import GetInitiativeStatuses, {
@@ -49,6 +46,7 @@ import events, {
 
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
 
 const StyledLabel = styled(Label)`
   margin-top: 20px;
@@ -83,6 +81,8 @@ const FeedbackSettings = ({
   allowedTransitions,
 }: Props & InjectedLocalized & WrappedComponentProps) => {
   const { data: initiative } = useInitiativeById(initiativeId);
+  const { mutate: updateInitiative } = useUpdateInitiative();
+
   const getStatusOptions = (statuses, allowedTransitions) => {
     if (!isNilOrError(statuses)) {
       return statuses.map((status) => ({
@@ -171,8 +171,11 @@ const FeedbackSettings = ({
     const adminAtWorkId = authUser ? authUser.id : null;
     const tenantId = !isNilOrError(tenant) && tenant.id;
 
-    updateInitiative(initiativeId, {
-      assignee_id: assigneeId,
+    updateInitiative({
+      initiativeId,
+      requestBody: {
+        assignee_id: assigneeId,
+      },
     });
 
     trackEventByName(tracks.changeInitiativeAssignment, {
