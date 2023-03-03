@@ -18,7 +18,7 @@ import PageNotFound from 'components/PageNotFound';
 import IdeasNewPageWithJSONForm from './WithJSONForm';
 
 // services
-import { addIdea, IIdeaAdd } from 'services/ideas';
+import useAddIdea from 'api/ideas/useAddIdea';
 import { addIdeaFile } from 'services/ideaFiles';
 import { addIdeaImage } from 'services/ideaImages';
 import {
@@ -56,6 +56,7 @@ import { getParticipationMethod } from 'utils/participationMethodUtils';
 import { isEmpty, isNumber, get, isError } from 'lodash-es';
 import { isNilOrError, isUnauthorizedError } from 'utils/helperUtils';
 import { useLocation, useParams } from 'react-router-dom';
+import { IIdeaAdd } from 'api/ideas/types';
 
 const Container = styled.div`
   background: ${colors.background};
@@ -129,6 +130,7 @@ const initialGlobalState: IIdeasPageGlobalState = {
 };
 
 const IdeasNewPage = ({ locale, appConfiguration, authUser }: Props) => {
+  const { mutateAsync: addIdea } = useAddIdea();
   const globalState = useRef<IGlobalStateService<IIdeasPageGlobalState>>();
   const location = useLocation();
   const { slug } = useParams<{ slug: string }>();

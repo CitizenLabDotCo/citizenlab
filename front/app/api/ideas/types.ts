@@ -116,3 +116,19 @@ export interface IIdeaData {
     };
   };
 }
+
+export interface IIdeaAdd {
+  author_id: string | null;
+  project_id: string | null;
+  assignee_id?: string | null;
+  idea_status_id?: string | null;
+  publication_status: IdeaPublicationStatus;
+  title_multiloc: Multiloc;
+  body_multiloc: Multiloc;
+  topic_ids: string[] | null;
+  phase_ids?: string[] | null;
+  location_point_geojson: GeoJSON.Point | null;
+  location_description: string | null;
+  budget: number | null;
+  proposed_budget: number | null;
+}
