@@ -28,7 +28,7 @@ import {
   SortAttribute as IdeasSortAttribute,
   Sort as IdeasSort,
   IIdeaData,
-} from 'services/ideas';
+} from 'api/ideas/types';
 import {
   Sort as InitiativesSort,
   SortAttribute as InitiativesSortAttribute,

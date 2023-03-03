@@ -19,6 +19,7 @@ export const ideaData: IIdeaData[] = [
       upvotes_count: 10,
       downvotes_count: 1,
       comments_count: 2,
+      official_feedbacks_count: 0,
       location_point_geojson: {
         type: 'Point',
         coordinates: [4.418731568531502, 50.86899604801978],
@@ -53,6 +54,8 @@ export const ideaData: IIdeaData[] = [
         },
         comment_voting_idea: {
           enabled: true,
+          disabled_reason: null,
+          future_enabled: null,
         },
         budgeting: {
           enabled: false,
@@ -110,6 +113,7 @@ export const ideaData: IIdeaData[] = [
       upvotes_count: 10,
       downvotes_count: 1,
       comments_count: 2,
+      official_feedbacks_count: 0,
       location_point_geojson: {
         type: 'Point',
         coordinates: [4.418731568531502, 50.86899604801978],
@@ -144,6 +148,8 @@ export const ideaData: IIdeaData[] = [
         },
         comment_voting_idea: {
           enabled: true,
+          disabled_reason: null,
+          future_enabled: null,
         },
         budgeting: {
           enabled: false,

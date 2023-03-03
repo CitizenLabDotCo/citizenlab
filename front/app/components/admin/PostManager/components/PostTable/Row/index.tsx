@@ -2,7 +2,7 @@ import React, { lazy, Suspense, MouseEvent } from 'react';
 import { ManagerType, TFilterMenu } from '../../..';
 
 // services
-import { IIdeaData } from 'services/ideas';
+import { IIdeaData } from 'api/ideas/types';
 import { IInitiativeData } from 'services/initiatives';
 import { IPhaseData } from 'services/phases';
 import { IIdeaStatusData } from 'api/idea_statuses/types';

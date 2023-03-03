@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { Subscription, BehaviorSubject, of } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
-import { IIdeaData, ideaByIdStream, ideaBySlugStream } from 'services/ideas';
+import { ideaByIdStream, ideaBySlugStream } from 'services/ideas';
 import {
   IInitiativeData,
   initiativeByIdStream,
@@ -12,6 +12,7 @@ import {
 } from 'services/initiatives';
 import { GetIdeaByIdChildProps } from 'resources/GetIdeaById';
 import { GetInitiativeChildProps } from 'resources/GetInitiative';
+import { IIdeaData } from 'api/ideas/types';
 
 export type PostType = 'idea' | 'initiative';
 interface InputProps {
