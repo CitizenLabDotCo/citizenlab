@@ -334,9 +334,8 @@ const IdeaEditPage = ({
     setIdeaFiles(ideaFiles);
   };
 
-  const title = locale && titleMultiloc ? titleMultiloc[locale] || '' : '';
-  const description =
-    locale && descriptionMultiloc ? descriptionMultiloc[locale] || '' : null;
+  const title = titleMultiloc?.[locale] || null;
+  const description = descriptionMultiloc?.[locale] || null;
   const projectId = project.id;
   const inputTerm = getInputTerm(
     project.attributes.process_type,
