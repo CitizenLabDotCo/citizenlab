@@ -22,12 +22,13 @@ import PageNotFound from 'components/PageNotFound';
 import IdeasEditPageWithJSONForm from './WithJSONForm';
 
 // services
-import { IIdeaData, updateIdea } from 'services/ideas';
+import { IIdeaData } from 'services/ideas';
 import { addIdeaImage, deleteIdeaImage } from 'services/ideaImages';
 import { hasPermission } from 'services/permissions';
 import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
 import { getInputTerm } from 'services/participationContexts';
 import useLocale from 'hooks/useLocale';
+import useUpdateIdea from 'api/ideas/useUpdateIdea';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -131,6 +132,7 @@ const IdeaEditPage = ({
   phases,
 }: Props) => {
   const locale = useLocale();
+  const { mutate: updateIdea } = useUpdateIdea();
   const [ideaFiles, setIdeaFiles] = useState<UploadFile[]>([]);
   const [imageFileIsChanged, setImageFileIsChanged] = useState(false);
   const [submitError, setSubmitError] = useState(false);
@@ -209,20 +211,23 @@ const IdeaEditPage = ({
       addressDiff.location_description = address;
     }
 
-    const updateIdeaPromise = updateIdea(ideaId, {
-      budget,
-      proposed_budget: proposedBudget,
-      title_multiloc: {
-        ...titleMultiloc,
-        [locale]: title,
+    updateIdea({
+      id: ideaId,
+      requestBody: {
+        budget,
+        proposed_budget: proposedBudget,
+        title_multiloc: {
+          ...titleMultiloc,
+          [locale]: title,
+        },
+        body_multiloc: {
+          ...descriptionMultiloc,
+          [locale]: description,
+        },
+        topic_ids: selectedTopics,
+        author_id: finalAuthorId,
+        ...addressDiff,
       },
-      body_multiloc: {
-        ...descriptionMultiloc,
-        [locale]: description,
-      },
-      topic_ids: selectedTopics,
-      author_id: finalAuthorId,
-      ...addressDiff,
     });
 
     setSubmitError(false);
@@ -234,7 +239,6 @@ const IdeaEditPage = ({
       }
 
       await Promise.all([
-        updateIdeaPromise,
         imageToAddPromise,
         ...filesToAddPromises,
         ...filesToRemovePromises,
