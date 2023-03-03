@@ -78,7 +78,30 @@ export interface IInitiativeData {
   };
 }
 
+export interface IInitiative {
+  data: IInitiativeData;
+}
+
 export interface IInitiatives {
   data: IInitiativeData[];
   links: ILinks;
+}
+
+export interface IInitiativeAdd {
+  author_id?: string | null;
+  assignee_id?: string | null;
+  initiative_status_id?: string | null;
+  publication_status?: InitiativePublicationStatus;
+  title_multiloc?: Multiloc;
+  body_multiloc?: Multiloc;
+  topic_ids?: string[] | null;
+  area_ids?: string[] | null;
+  phase_ids?: string[] | null;
+  location_point_geojson?: GeoJSON.Point | null;
+  location_description?: string | null;
+}
+
+export interface IUpdateInitiativeObject {
+  initiativeId: string;
+  requestBody: Partial<IInitiativeAdd>;
 }
