@@ -7,7 +7,6 @@ import InitiativeForm, {
 } from 'components/InitiativeForm';
 
 import { Locale, Multiloc, UploadFile } from 'typings';
-import { updateInitiative } from 'services/initiatives';
 
 import { ITopicData } from 'services/topics';
 
@@ -36,7 +35,7 @@ import useAddInitiativeImage from 'api/initiative_images/useAddInitiativeImage';
 import useDeleteInitiativeImage from 'api/initiative_images/useDeleteInitiativeImage';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'hooks/useAuthUser';
-
+import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
 import useAddInitiativeFile from 'api/initiative_files/useAddInitiativeFile';
 import useDeleteInitiativeFile from 'api/initiative_files/useDeleteInitiativeFile';
 
@@ -62,6 +61,7 @@ const InitiativesNewFormWrapper = ({ topics, locale }: Props) => {
   const { mutate: deleteInitiativeImage } = useDeleteInitiativeImage();
   const { mutate: addInitiativeFile } = useAddInitiativeFile();
   const { mutate: deleteInitiativeFile } = useDeleteInitiativeFile();
+  const { mutate: updateInitiative } = useUpdateInitiative();
 
   const initialValues = {
     title_multiloc: undefined,
@@ -172,7 +172,10 @@ const InitiativesNewFormWrapper = ({ topics, locale }: Props) => {
       // save any changes to the initiative data.
       if (!isEmpty(formAPIValues)) {
         if (initiativeId) {
-          await updateInitiative(initiativeId, formAPIValues);
+          updateInitiative({
+            initiativeId,
+            requestBody: formAPIValues,
+          });
         } else {
           addInitiative(
             {
@@ -252,17 +255,21 @@ const InitiativesNewFormWrapper = ({ topics, locale }: Props) => {
 
       // save any changes to the initiative data.
       if (initiativeId) {
-        initiative = await updateInitiative(initiativeId, {
-          ...formAPIValues,
-          publication_status: 'published',
+        updateInitiative({
+          initiativeId,
+          requestBody: {
+            ...formAPIValues,
+            publication_status: 'published',
+          },
         });
       } else {
-        initiative = await addInitiative({
-          ...formAPIValues,
-          publication_status: 'published',
-        });
-
-        setInitiativeId(initiative.data.id);
+        addInitiative(
+          {
+            ...formAPIValues,
+            publication_status: 'published',
+          },
+          { onSuccess: (initiative) => setInitiativeId(initiative.data.id) }
+        );
       }
 
       setHasBannerChanged(false);
