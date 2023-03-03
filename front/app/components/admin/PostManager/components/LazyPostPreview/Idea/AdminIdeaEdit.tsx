@@ -351,9 +351,11 @@ const AdminIdeaEdit = ({
           setDescriptionProfanityError(descriptionProfanityError);
         }
       }
+
       setSubmitError(true);
-      setProcessing(false);
     }
+
+    setProcessing(false);
   };
 
   const onTitleChange = (title: string) => {
