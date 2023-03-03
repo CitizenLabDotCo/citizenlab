@@ -6,7 +6,7 @@ import {
 import { Keys } from 'utils/cl-react-query/types';
 import ideaKeys from './keys';
 
-export type IdeaKeys = Keys<typeof ideaKeys>;
+export type IdeasKeys = Keys<typeof ideaKeys>;
 
 export type IdeaPublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
 
@@ -153,6 +153,10 @@ export interface IIdeaData {
 export interface IIdeas {
   data: IIdeaData[];
   links: ILinks;
+}
+
+export interface IIdea {
+  data: IIdeaData;
 }
 
 export interface IQueryParameters {

@@ -3,11 +3,12 @@ import streams, { IStreamParams } from 'utils/streams';
 import { firstValueFrom } from 'rxjs';
 
 // typings
-import { IRelationship, Multiloc } from 'typings';
+import { Multiloc } from 'typings';
 import {
   CommentingDisabledReason,
   PublicationStatus as ProjectPublicationStatus,
 } from 'services/projects';
+import { IIdeaData } from 'api/ideas/types';
 
 export type IdeaPublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
 
@@ -71,85 +72,6 @@ export type SortAttribute =
   | 'downvotes_count'
   | 'baskets_count'
   | 'status';
-
-export interface IIdeaData {
-  id: string;
-  type: string;
-  attributes: {
-    title_multiloc: Multiloc;
-    body_multiloc: Multiloc;
-    author_name: string;
-    slug: string;
-    publication_status: IdeaPublicationStatus;
-    upvotes_count: number;
-    downvotes_count: number;
-    comments_count: number;
-    baskets_count: number;
-    location_point_geojson: GeoJSON.Point | null;
-    location_description: string | null;
-    budget: number | null;
-    proposed_budget: number | null;
-    created_at: string;
-    updated_at: string;
-    published_at: string;
-    action_descriptor: {
-      voting_idea: {
-        enabled: boolean;
-        disabled_reason: IdeaVotingDisabledReason | null;
-        cancelling_enabled: boolean;
-        up: {
-          enabled: boolean;
-          disabled_reason: IdeaVotingDisabledReason | null;
-          future_enabled: string | null;
-        };
-        down: {
-          enabled: boolean;
-          disabled_reason: IdeaVotingDisabledReason | null;
-          future_enabled: string | null;
-        };
-      };
-      commenting_idea: {
-        enabled: boolean;
-        future_enabled: string | null;
-        disabled_reason: IdeaCommentingDisabledReason | null;
-      };
-      comment_voting_idea: {
-        enabled: boolean;
-      };
-      budgeting?: {
-        enabled: boolean;
-        future_enabled: string | null;
-        disabled_reason: IdeaBudgetingDisabledReason;
-      };
-    };
-  };
-  relationships: {
-    topics?: {
-      data: IRelationship[];
-    };
-    idea_images: {
-      data: IRelationship[] | null;
-    };
-    author: {
-      data: IRelationship | null;
-    };
-    assignee?: {
-      data: IRelationship | null;
-    };
-    phases: {
-      data: IRelationship[];
-    };
-    project: {
-      data: IRelationship;
-    };
-    idea_status: {
-      data: IRelationship;
-    };
-    user_vote?: {
-      data: IRelationship;
-    };
-  };
-}
 
 export interface IMinimalIdeaData {
   id: string;

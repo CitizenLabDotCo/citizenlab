@@ -19,11 +19,14 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
-import { deleteIdea, IIdeaData } from 'services/ideas';
+import { deleteIdea } from 'services/ideas';
 import { ProcessType } from 'services/projects';
 
 // styling
 import styled from 'styled-components';
+
+// typings
+import { IIdeaData } from 'api/ideas/types';
 
 const Container = styled.div``;
 

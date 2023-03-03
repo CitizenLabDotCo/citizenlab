@@ -7,7 +7,7 @@ import messages from '../../messages';
 import { rgba } from 'polished';
 import { ParticipationMethod } from 'services/participationContexts';
 import EmptyIdeas from './EmptyIdeas';
-import { IIdeaData } from 'services/ideas';
+import { IIdeaData } from 'api/ideas/types';
 import { IParticipationContextType } from 'typings';
 
 const StyledIdeaCard = styled(IdeaCard)`
