@@ -3,22 +3,22 @@
 namespace :cl2back do
   desc 'Remove image records not associated with resource or with nil value for image field'
   # Usage:
-  # Dry run (no changes): cl2back:clean_up_orphaned_image_records
-  # Execute (destroys records!): cl2back:clean_up_orphaned_image_records['execute']
+  # Dry run (no changes): rake cl2back:clean_up_orphaned_image_records
+  # Execute (destroys records!): rake cl2back:clean_up_orphaned_image_records['execute']
   task :clean_up_orphaned_image_records, [:execute] => [:environment] do |_t, args|
     live_run = true if args[:execute] == 'execute'
-    tot_li = 0
-    tot_ti = 0
+    @total_li_destroyed = 0
+    @total_ti_destroyed = 0
+    @report = {}
     record_by_tenant = []
-    report = {}
 
-    puts "live_run: #{live_run ? 'ture' : 'false'}"
+    puts "live_run: #{live_run ? 'true' : 'false'}"
 
     Tenant.switch_each do |tenant|
       puts "Processing images for tenant: #{tenant.name}"
 
-      n_li = 0
-      n_ti = 0
+      @n_li_destroyed = 0
+      @n_ti_destroyed = 0
 
       # ContentBuilder layout_images
       # Find all image codes used in all layouts for all projects, then destroy any layout_images with code not in use,
@@ -37,11 +37,7 @@ namespace :cl2back do
         next if image.created_at > 3.days.ago
 
         image.destroy! if live_run
-
-        n_li += 1
-        log = layout_image_log(image, tenant)
-        puts log
-        report["li_#{format('%06d', tot_li + n_li)}"] = log
+        add_layout_image_log_to_report(image, tenant)
       end
 
       # text_images
@@ -50,25 +46,35 @@ namespace :cl2back do
         next if image.imageable.to_json.include?(image.text_reference)
 
         image.destroy! if live_run
-
-        n_ti += 1
-        log = text_image_log(image, tenant)
-        puts log
-        report["ti_#{format('%06d', tot_ti + n_ti)}"] = log
+        add_text_image_log_to_report(image, tenant)
       end
 
-      record_by_tenant << tenant_log(tenant, n_li, n_ti) if n_ti > 0 || n_li > 0
+      record_by_tenant << tenant_log(tenant) if @n_ti_destroyed > 0 || @n_li_destroyed > 0
 
-      tot_li += n_li
-      tot_ti += n_ti
+      @total_li_destroyed += @n_li_destroyed
+      @total_ti_destroyed += @n_ti_destroyed
     end
 
-    digest = digest_log(live_run, tot_li, tot_ti, record_by_tenant)
-    report['digest'] = digest
+    digest = digest_log(live_run, record_by_tenant)
+    @report['digest'] = digest
     pp digest
 
     # Log some event details (not error). Can remove when we have log aggregation tool that catches logs of this task.
-    ErrorReporter.report_msg('cl2back:clean_up_orphaned_image_records rake task', extra: report, backtrace: false)
+    ErrorReporter.report_msg('cl2back:clean_up_orphaned_image_records rake task', extra: @report, backtrace: false)
+  end
+
+  def add_layout_image_log_to_report(image, tenant)
+    @n_li_destroyed += 1
+    log = layout_image_log(image, tenant)
+    puts log
+    @report["li_#{format('%06d', @total_li_destroyed + @n_li_destroyed)}"] = log
+  end
+
+  def add_text_image_log_to_report(image, tenant)
+    @n_ti_destroyed += 1
+    log = text_image_log(image, tenant)
+    puts log
+    @report["ti_#{format('%06d', @total_ti_destroyed + @n_ti_destroyed)}"] = log
   end
 
   def layout_image_log(image, tenant)
@@ -90,21 +96,21 @@ namespace :cl2back do
     }
   end
 
-  def tenant_log(tenant, n_li, n_ti)
+  def tenant_log(tenant)
     {
-      n_layout_images_destroyed: n_li,
-      n_text_images_destroyed: n_ti,
+      n_layout_images_destroyed: @n_li_destroyed,
+      n_text_images_destroyed: @n_ti_destroyed,
       tenant_id: tenant.id,
       tenant_host: tenant.host
     }
   end
 
-  def digest_log(live_run, tot_li, tot_ti, record_by_tenant)
+  def digest_log(live_run, record_by_tenant)
     {
       cluster: CL2_CLUSTER,
       live_run: live_run ? 'true' : 'false',
-      total_layout_images_destroyed: tot_li,
-      total_text_images_destroyed: tot_ti,
+      total_layout_images_destroyed: @total_li_destroyed,
+      total_text_images_destroyed: @total_ti_destroyed,
       n_by_tenant: record_by_tenant
     }
   end
