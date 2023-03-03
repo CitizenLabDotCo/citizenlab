@@ -6,7 +6,6 @@ import Observer from '@researchgate/react-intersection-observer';
 
 // resources
 import GetPost, { GetPostChildProps } from 'resources/GetPost';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 
 // utils
@@ -35,6 +34,10 @@ import CommentingInitiativeDisabled from './CommentingInitiativeDisabled';
 // analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
+
+// hooks
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useProject from 'hooks/useProject';
 
 const Container = styled.div``;
 
@@ -92,17 +95,22 @@ export interface InputProps {
 }
 
 interface DataProps {
-  post: GetPostChildProps;
+  idea: GetPostChildProps;
   comments: GetCommentsChildProps;
-  project: GetProjectChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
 const CommentsSection = memo<Props>(
-  ({ postId, postType, post, comments, project, className }) => {
+  ({ postId, postType, idea, comments, className }) => {
+    const initiativeId = postType === 'initiative' ? postId : null;
+    const { data: initiative } = useInitiativeById(initiativeId);
+    const post = postType === 'idea' ? idea : initiative?.data;
+    const projectId = get(post, 'relationships.project.data.id');
+    const project = useProject({ projectId });
     const [sortOrder, setSortOrder] = useState<CommentsSort>('-new');
     const [posting, setPosting] = useState(false);
+
     const {
       commentsList,
       hasMore,
@@ -217,8 +225,8 @@ const CommentsSection = memo<Props>(
 );
 
 const Data = adopt<DataProps, InputProps>({
-  post: ({ postId, postType, render }) => (
-    <GetPost id={postId} type={postType}>
+  idea: ({ postId, render }) => (
+    <GetPost id={postId} type="idea">
       {render}
     </GetPost>
   ),
@@ -226,11 +234,6 @@ const Data = adopt<DataProps, InputProps>({
     <GetComments postId={postId} postType={postType}>
       {render}
     </GetComments>
-  ),
-  project: ({ post, render }) => (
-    <GetProject projectId={get(post, 'relationships.project.data.id')}>
-      {render}
-    </GetProject>
   ),
 });
 

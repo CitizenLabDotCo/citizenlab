@@ -8,12 +8,6 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
-import GetInitiative, {
-  GetInitiativeChildProps,
-} from 'resources/GetInitiative';
-import GetInitiativeImages, {
-  GetInitiativeImagesChildProps,
-} from 'resources/GetInitiativeImages';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // utils
@@ -37,6 +31,8 @@ import { ITopicData } from 'services/topics';
 // hooks
 import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
 
 export interface InputProps {
   initiativeId: string;
@@ -46,8 +42,6 @@ export interface InputProps {
 interface DataProps {
   locale: GetLocaleChildProps;
   tenantLocales: GetAppConfigurationLocalesChildProps;
-  initiative: GetInitiativeChildProps;
-  initiativeImages: GetInitiativeImagesChildProps;
   topics: GetTopicsChildProps;
 }
 
@@ -55,8 +49,6 @@ interface Props extends DataProps, InputProps {}
 
 const InitiativesEditPage = ({
   locale,
-  initiative,
-  initiativeImages,
   goBack,
   topics,
   tenantLocales,
@@ -65,6 +57,8 @@ const InitiativesEditPage = ({
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
   const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
   const [files, setFiles] = useState<UploadFile[]>([]);
+  const { data: initiative } = useInitiativeById(initiativeId);
+  const { data: initiativeImages } = useInitiativeImages(initiativeId);
 
   useEffect(() => {
     async function getFiles() {
@@ -136,11 +130,11 @@ const InitiativesEditPage = ({
       <Content>
         <InitiativesEditFormWrapper
           locale={selectedLocale}
-          initiative={initiative}
+          initiative={initiative.data}
           initiativeImage={
-            isNilOrError(initiativeImages) || initiativeImages.length === 0
+            isNilOrError(initiativeImages) || initiativeImages.data.length === 0
               ? null
-              : initiativeImages[0]
+              : initiativeImages.data[0]
           }
           onPublished={goBack}
           initiativeFiles={files}
@@ -155,14 +149,6 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   topics: <GetTopics excludeCode={'custom'} />,
   tenantLocales: <GetAppConfigurationLocales />,
-  initiative: ({ initiativeId, render }) => (
-    <GetInitiative id={initiativeId}>{render}</GetInitiative>
-  ),
-  initiativeImages: ({ initiativeId, render }) => (
-    <GetInitiativeImages initiativeId={initiativeId}>
-      {render}
-    </GetInitiativeImages>
-  ),
 });
 
 export default (inputProps: InputProps) => (

@@ -76,12 +76,6 @@ export function initiativeByIdStream(initiativeId: string) {
   });
 }
 
-export function initiativeBySlugStream(initiativeSlug: string) {
-  return streams.get<IInitiative>({
-    apiEndpoint: `${API_PATH}/initiatives/by_slug/${initiativeSlug}`,
-  });
-}
-
 export async function updateInitiative(
   initiativeId: string,
   object: Partial<IInitiativeAdd>

@@ -1,21 +1,15 @@
 import React from 'react';
 import { isError } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { adopt } from 'react-adopt';
 
 // components
 import PageNotFound from 'components/PageNotFound';
 import InitiativesShow from 'containers/InitiativesShow';
 import InitiativeShowPageTopBar from './InitiativeShowPageTopBar';
 
-// resources
-import GetInitiative, {
-  GetInitiativeChildProps,
-} from 'resources/GetInitiative';
-
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useInitiativeBySlug from 'api/initiatives/useInitiativeBySlug';
+import { useParams } from 'react-router-dom';
 
 // style
 import styled from 'styled-components';
@@ -32,45 +26,27 @@ const StyledInitiativeShowPageTopBar = styled(InitiativeShowPageTopBar)`
   z-index: 1000;
 `;
 
-const StyledInitiativesShow = styled(InitiativesShow)``;
-
-interface InputProps {}
-
-interface DataProps {
-  initiative: GetInitiativeChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-const InitiativesShowPage = ({ initiative }: Props) => {
+const InitiativesShowPage = () => {
   const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
+  const { slug } = useParams() as { slug: string };
+
+  // TODO: It looks like this is called and then just used to get the id. We might want to just pass the initiative as a prop
+  const { data: initiative } = useInitiativeBySlug(slug);
 
   if (!initiativesEnabled || isError(initiative)) {
     return <PageNotFound />;
   }
 
-  if (!isNilOrError(initiative)) {
-    return (
-      <Container>
-        <StyledInitiativeShowPageTopBar initiativeId={initiative.id} />
-        <StyledInitiativesShow initiativeId={initiative.id} />
-      </Container>
-    );
+  if (!initiative) {
+    return null;
   }
 
-  return null;
+  return (
+    <Container>
+      <StyledInitiativeShowPageTopBar initiativeId={initiative.data.id} />
+      <InitiativesShow initiativeId={initiative.data.id} />
+    </Container>
+  );
 };
 
-const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  initiative: ({ params, render }) => (
-    <GetInitiative slug={params.slug}>{render}</GetInitiative>
-  ),
-});
-
-export default withRouter((inputProps: InputProps & WithRouterProps) => {
-  return (
-    <Data {...inputProps}>
-      {(dataProps) => <InitiativesShowPage {...inputProps} {...dataProps} />}
-    </Data>
-  );
-});
+export default InitiativesShowPage;
