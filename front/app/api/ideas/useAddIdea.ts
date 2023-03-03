@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import categoriesKeys from './keys';
+import ideasKeys from './keys';
 import { IIdea, IIdeaAdd } from './types';
 
 const addIdea = async (requestBody: IIdeaAdd) =>
@@ -17,7 +17,7 @@ const useAddIdea = () => {
     mutationFn: addIdea,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: categoriesKeys.lists(),
+        queryKey: ideasKeys.lists(),
       });
     },
   });
