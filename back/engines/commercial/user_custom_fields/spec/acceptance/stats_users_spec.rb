@@ -464,9 +464,9 @@ resource 'Stats - Users' do
 
         example_request 'Users by custom field (multiselect)' do
           expect(response_status).to eq 200
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data, :type)).to eq 'users_by_customfield'
-            json_attributes = json_response.dig(:data, :attributes)
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :type)).to eq 'users_by_customfield'
+          json_attributes = json_response.dig(:data, :attributes)
           expect(json_attributes).to match({
             options: {
               @option1.key => { title_multiloc: @option1.title_multiloc, ordering: 0 },
