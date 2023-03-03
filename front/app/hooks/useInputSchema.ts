@@ -37,15 +37,17 @@ export default ({ projectId, phaseId, inputId }: Props) => {
       } else {
         setIsError(false);
         setSchema(
-          (!isNilOrError(locale) && response.json_schema_multiloc[locale]) ||
+          (!isNilOrError(locale) &&
+            response.data.attributes.json_schema_multiloc[locale]) ||
             (!isNilOrError(locales) &&
-              response.json_schema_multiloc[locales[0]]) ||
+              response.data.attributes.json_schema_multiloc[locales[0]]) ||
             null
         );
         setUiSchema(
-          (!isNilOrError(locale) && response.ui_schema_multiloc[locale]) ||
+          (!isNilOrError(locale) &&
+            response.data.attributes.ui_schema_multiloc[locale]) ||
             (!isNilOrError(locales) &&
-              response.ui_schema_multiloc[locales[0]]) ||
+              response.data.attributes.ui_schema_multiloc[locales[0]]) ||
             null
         );
       }

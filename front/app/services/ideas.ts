@@ -1,6 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { firstValueFrom } from 'rxjs';
 
 // typings
 import { Multiloc } from 'typings';
@@ -191,17 +190,6 @@ export function similarIdeasStream(
   });
 }
 
-export async function addIdea(object: IIdeaAdd) {
-  const response = await streams.add<IIdea>(`${API_PATH}/ideas/`, {
-    idea: object,
-  });
-  streams.fetchAllWith({
-    dataId: [response.data.relationships.project.data.id],
-    apiEndpoint: [`${API_PATH}/users/${object.author_id}/ideas_count`],
-  });
-  return response;
-}
-
 export async function updateIdea(ideaId: string, object: Partial<IIdeaAdd>) {
   const response = await streams.update<IIdea>(
     `${API_PATH}/ideas/${ideaId}`,
@@ -218,28 +206,6 @@ export async function updateIdea(ideaId: string, object: Partial<IIdeaAdd>) {
       `${API_PATH}/analytics`,
     ],
     partialApiEndpoint: [`${API_PATH}/ideas/${ideaId}/images`],
-  });
-
-  return response;
-}
-
-export async function deleteIdea(ideaId: string) {
-  const [idea, response] = await Promise.all([
-    firstValueFrom(ideaByIdStream(ideaId).observable),
-    streams.delete(`${API_PATH}/ideas/${ideaId}`, ideaId),
-  ]);
-
-  const authorId = idea.data.relationships.author.data?.id || null;
-  const projectId = idea.data.relationships.project.data.id;
-
-  streams.fetchAllWith({
-    dataId: [projectId],
-    apiEndpoint: authorId
-      ? [
-          `${API_PATH}/users/${authorId}/ideas_count`,
-          `${API_PATH}/stats/ideas_count`,
-        ]
-      : [`${API_PATH}/stats/ideas_count`],
   });
 
   return response;
