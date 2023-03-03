@@ -1,17 +1,11 @@
 import React, { MouseEvent } from 'react';
-import { combineLatest } from 'rxjs';
-import { take } from 'rxjs/operators';
 import { uniq, get } from 'lodash-es';
 import { useDrag } from 'react-dnd';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import {
-  IInitiativeData,
-  updateInitiative,
-  initiativeByIdStream,
-} from 'services/initiatives';
+import { updateInitiative } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 
 // components
@@ -48,6 +42,12 @@ import eventEmitter from 'utils/eventEmitter';
 import events, {
   StatusChangeModalOpen,
 } from 'components/admin/PostManager/events';
+
+// hooks
+import useInitiatives from 'api/initiatives/useInitiatives';
+
+// types
+import { IInitiativeData } from 'api/initiatives/types';
 
 interface DataProps {
   tenant: GetAppConfigurationChildProps;
@@ -92,6 +92,7 @@ const InitiativeRow = ({
   allowedTransitions,
   tenant,
 }: Props) => {
+  const { data: initiatives } = useInitiatives({});
   const [_collected, drag] = useDrag({
     type: 'IDEA',
     item: {
@@ -105,24 +106,28 @@ const InitiativeRow = ({
       }>();
 
       if (dropResult && dropResult.type) {
-        const observables = selection.has(item.id)
-          ? [...selection].map((id) => initiativeByIdStream(id).observable)
-          : [initiativeByIdStream(item.id).observable];
-
-        if (dropResult.type === 'topic') {
-          combineLatest(observables)
-            .pipe(take(1))
-            .subscribe((initiatives) => {
-              initiatives.map((initiative) => {
-                const currentTopics =
-                  initiative.data.relationships.topics.data.map((d) => d.id);
-                const newTopics = uniq(currentTopics.concat(dropResult.id));
-                updateInitiative(initiative.data.id, {
-                  topic_ids: newTopics,
-                });
-              });
-            });
+        let droppedIniatitives: IInitiativeData[] = [];
+        if (selection.has(item.id)) {
+          droppedIniatitives =
+            initiatives?.data.filter((i) => {
+              return selection.has(i.id);
+            }) || [];
+        } else {
+          const draggedIni = initiatives?.data.find((i) => i.id === item.id);
+          droppedIniatitives = draggedIni ? [draggedIni] : [];
         }
+
+        droppedIniatitives.map((initiative) => {
+          if (dropResult.type === 'topic') {
+            const currentTopics = initiative.relationships.topics.data.map(
+              (d) => d.id
+            );
+            const newTopics = uniq(currentTopics.concat(dropResult.id));
+            updateInitiative(initiative.id, {
+              topic_ids: newTopics,
+            });
+          }
+        });
       }
     },
   });
