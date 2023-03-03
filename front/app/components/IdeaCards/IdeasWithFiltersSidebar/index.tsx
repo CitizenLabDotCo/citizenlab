@@ -268,7 +268,9 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
                 <IdeasCount>
                   <FormattedMessage
                     {...messages.xResults}
-                    values={{ ideasCount: ideasFilterCounts.total }}
+                    values={{
+                      ideasCount: ideasFilterCounts.data.attributes.total,
+                    }}
                   />
                 </IdeasCount>
               )}

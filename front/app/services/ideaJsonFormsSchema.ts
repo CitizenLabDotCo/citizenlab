@@ -26,10 +26,14 @@ export interface JsonFormsSchema {
 }
 
 export interface IIdeaJsonFormSchemas {
-  json_schema_multiloc: {
-    [key in Locale]?: JsonFormsSchema;
+  data: {
+    attributes: {
+      json_schema_multiloc: {
+        [key in Locale]?: JsonFormsSchema;
+      };
+      ui_schema_multiloc: { [key in Locale]?: Layout };
+    };
   };
-  ui_schema_multiloc: { [key in Locale]?: Layout };
 }
 
 const getInputFormsSchemaEndpoint = (

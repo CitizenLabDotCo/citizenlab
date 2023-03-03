@@ -37,6 +37,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 // utils
 import { isFieldEnabled } from 'utils/projectUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { Sort } from 'services/ideas';
@@ -144,12 +145,6 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
 
   const isFiltered = (search && search.length > 0) || topics.length > 0;
 
-  const topicsEnabled = isFieldEnabled(
-    'topic_ids',
-    ideaCustomFieldsSchemas,
-    locale
-  );
-
   useEffect(() => {
     const subscriptions = [
       ideasSearch$.subscribe((search) => {
@@ -167,6 +162,14 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
       subscriptions.forEach((subscription) => subscription.unsubscribe());
     };
   }, []);
+
+  if (isNilOrError(ideaCustomFieldsSchemas)) return null;
+
+  const topicsEnabled = isFieldEnabled(
+    'topic_ids',
+    ideaCustomFieldsSchemas.data.attributes,
+    locale
+  );
 
   const handleSearchOnChange = (newSearchValue: string) => {
     setIdeasSearch(newSearchValue || null);

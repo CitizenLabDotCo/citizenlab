@@ -77,7 +77,7 @@ resource 'Stats - Comments' do
 
       example_request 'Count all comments' do
         assert_status 200
-        expect(json_response[:count]).to eq 2
+        expect(json_response.dig(:data, :attributes, :count)).to eq 2
       end
     end
 
@@ -93,7 +93,7 @@ resource 'Stats - Comments' do
       example 'Count all comments (as a moderator)', document: false do
         do_request
         assert_status 200
-        expect(json_response[:count]).to eq 2
+        expect(json_response.dig(:data, :attributes, :count)).to eq 2
       end
     end
 

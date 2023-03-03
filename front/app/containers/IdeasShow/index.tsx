@@ -265,9 +265,11 @@ export const IdeasShow = ({
       compact === true ||
       (windowSize ? windowSize <= viewportWidths.tablet : false);
 
+    if (isNilOrError(ideaCustomFieldsSchemas)) return null;
+
     const proposedBudgetEnabled = isFieldEnabled(
       'proposed_budget',
-      ideaCustomFieldsSchemas,
+      ideaCustomFieldsSchemas.data.attributes,
       locale
     );
 

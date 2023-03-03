@@ -133,8 +133,8 @@ const StatusFilter = memo<Props>(
     );
 
     if (!isNilOrError(statuses) && statuses.length > 0) {
-      const allPostsCount =
-        filterCounts && filterCounts.total ? filterCounts.total : 0;
+      const total = filterCounts?.data.attributes.total;
+      const allPostsCount = total ?? 0;
       const allFilterSelected = !selectedStatusId;
 
       return (
