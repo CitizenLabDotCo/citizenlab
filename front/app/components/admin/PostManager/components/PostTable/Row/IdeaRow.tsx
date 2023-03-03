@@ -1,13 +1,10 @@
 import React, { ChangeEvent, useState, MouseEvent } from 'react';
-import { combineLatest } from 'rxjs';
-import { take } from 'rxjs/operators';
 import { uniq, isEmpty } from 'lodash-es';
 import { useDrag } from 'react-dnd';
 // services
-import { IIdeaData, ideaByIdStream } from 'services/ideas';
+import { IIdeaData } from 'services/ideas';
 import { IPhaseData } from 'services/phases';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
-import streams from 'utils/streams';
 
 // components
 import { TitleLink } from '.';
@@ -76,11 +73,6 @@ const IdeaRow = ({
   locale,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const onSuccess = (ideaId: string) => () => {
-    streams.fetchAllWith({
-      dataId: [ideaId],
-    });
-  };
   const [cells, setCells] = useState<
     CellConfiguration<IdeaCellComponentProps>[]
   >([
@@ -181,124 +173,81 @@ const IdeaRow = ({
       if (dropResult && dropResult.type === 'status') {
         selection.has(itemIdeaId) &&
           selection.forEach((ideaId) => {
-            updateIdea(
-              {
-                id: ideaId,
-                requestBody: {
-                  idea_status_id: dropResult.id,
-                },
-              },
-              {
-                onSuccess: onSuccess(ideaId),
-              }
-            );
-          });
-
-        !selection.has(itemIdeaId) &&
-          updateIdea(
-            {
-              id: itemIdeaId,
+            updateIdea({
+              id: ideaId,
               requestBody: {
                 idea_status_id: dropResult.id,
               },
+            });
+          });
+
+        !selection.has(itemIdeaId) &&
+          updateIdea({
+            id: itemIdeaId,
+            requestBody: {
+              idea_status_id: dropResult.id,
             },
-            {
-              onSuccess: onSuccess(itemIdeaId),
-            }
-          );
+          });
 
         trackEventByName(tracks.ideaStatusChange, {
           location: 'Idea overview',
           method: 'Dragged and dropped idea(s) in manager',
         });
       } else if (dropResult && dropResult.type) {
-        const observables = selection.has(item.id)
-          ? [...selection].map((id) => ideaByIdStream(id).observable)
-          : [ideaByIdStream(item.id).observable];
-
+        const ideaIds = selection.has(item.id)
+          ? [...selection].map((id) => id)
+          : [item.id];
         if (dropResult.type === 'topic') {
-          combineLatest(observables)
-            .pipe(take(1))
-            .subscribe((ideas) => {
-              ideas.map((idea) => {
-                const currentTopics = idea.data.relationships.topics?.data.map(
-                  (d) => d.id
-                );
-                const newTopics = uniq(currentTopics?.concat(dropResult.id));
-                updateIdea(
-                  {
-                    id: idea.data.id,
-                    requestBody: {
-                      topic_ids: newTopics,
-                    },
-                  },
-                  {
-                    onSuccess: onSuccess(idea.data.id),
-                  }
-                );
-              });
+          const currentTopics = idea.relationships.topics?.data.map(
+            (d) => d.id
+          );
+          const newTopics = uniq(currentTopics?.concat(dropResult.id));
+
+          ideaIds.forEach((ideaId) => {
+            updateIdea({
+              id: ideaId,
+              requestBody: {
+                topic_ids: newTopics,
+              },
             });
+          });
         }
 
         if (dropResult.type === 'phase') {
-          combineLatest(observables)
-            .pipe(take(1))
-            .subscribe((ideas) => {
-              ideas.map((idea) => {
-                const currentPhases = idea.data.relationships.phases.data.map(
-                  (d) => d.id
-                );
-                const newPhases = uniq(currentPhases.concat(dropResult.id));
-                updateIdea(
-                  {
-                    id: idea.data.id,
-                    requestBody: {
-                      phase_ids: newPhases,
-                    },
-                  },
-                  {
-                    onSuccess: onSuccess(idea.data.id),
-                  }
-                );
-              });
+          const currentPhases = idea.relationships.phases.data.map((d) => d.id);
+          const newPhases = uniq(currentPhases.concat(dropResult.id));
+
+          ideaIds.forEach((ideaId) => {
+            updateIdea({
+              id: ideaId,
+              requestBody: {
+                phase_ids: newPhases,
+              },
             });
+          });
         }
 
         if (dropResult.type === 'project') {
-          combineLatest(observables)
-            .pipe(take(1))
-            .subscribe((ideas) => {
-              ideas.map((idea) => {
-                const newProject = dropResult.id;
-                const hasPhases = !isEmpty(idea.data.relationships.phases.data);
-                const onUpdateIdea = () => {
-                  updateIdea(
-                    {
-                      id: idea.data.id,
-                      requestBody: {
-                        project_id: newProject,
-                        phase_ids: [],
-                      },
-                    },
-                    {
-                      onSuccess: onSuccess(idea.data.id),
-                    }
-                  );
-                };
+          const newProject = dropResult.id;
+          const hasPhases = !isEmpty(idea.relationships.phases.data);
 
-                if (hasPhases) {
-                  const message = formatMessage(
-                    messages.loseIdeaPhaseInfoConfirmation
-                  );
-
-                  if (window.confirm(message)) {
-                    onUpdateIdea();
-                  }
-                } else {
-                  onUpdateIdea();
-                }
+          ideaIds.forEach((ideaId) => {
+            if (
+              !hasPhases ||
+              (hasPhases &&
+                window.confirm(
+                  formatMessage(messages.loseIdeaPhaseInfoConfirmation)
+                ))
+            ) {
+              updateIdea({
+                id: ideaId,
+                requestBody: {
+                  project_id: newProject,
+                  phase_ids: [],
+                },
               });
-            });
+            }
+          });
         }
       }
     },
@@ -354,32 +303,17 @@ const IdeaRow = ({
   };
 
   const onUpdateIdeaPhases = (selectedPhases: string[]) => {
-    updateIdea(
-      { id: idea.id, requestBody: { phase_ids: selectedPhases } },
-      {
-        onSuccess: onSuccess(idea.id),
-      }
-    );
+    updateIdea({ id: idea.id, requestBody: { phase_ids: selectedPhases } });
   };
 
   const onUpdateIdeaTopics = (selectedTopics: string[]) => {
-    updateIdea(
-      { id: idea.id, requestBody: { topic_ids: selectedTopics } },
-      {
-        onSuccess: onSuccess(idea.id),
-      }
-    );
+    updateIdea({ id: idea.id, requestBody: { topic_ids: selectedTopics } });
   };
 
   const onUpdateIdeaStatus = (statusId: string) => {
     const ideaId = idea.id;
 
-    updateIdea(
-      { id: ideaId, requestBody: { idea_status_id: statusId } },
-      {
-        onSuccess: onSuccess(idea.id),
-      }
-    );
+    updateIdea({ id: ideaId, requestBody: { idea_status_id: statusId } });
 
     trackEventByName(tracks.ideaStatusChange, {
       location: 'Idea overview',
