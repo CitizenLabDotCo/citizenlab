@@ -100,10 +100,6 @@ export interface IIdea {
   data: IIdeaData;
 }
 
-export interface IIdeas {
-  data: IIdeaData[];
-  links: IIdeaLinks;
-}
 export interface IIdeaAdd {
   author_id: string | null;
   project_id: string | null;
