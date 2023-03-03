@@ -15,9 +15,6 @@ import SpamReportForm from 'containers/SpamReport';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-// services
-import { deleteInitiative, IInitiativeData } from 'services/initiatives';
-
 // router
 import clHistory from 'utils/cl-router/history';
 
@@ -25,6 +22,10 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // hooks
 import { useIntl } from 'utils/cl-intl';
+import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
+
+// Types
+import { IInitiativeData } from 'api/initiatives/types';
 
 const Container = styled.div``;
 
@@ -56,6 +57,7 @@ const InitiativeMoreActions = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const [spamModalVisible, setSpamModalVisible] = useState(false);
+  const { mutate: deleteInitiative } = useDeleteInitiative();
 
   const openSpamModal = () => {
     setSpamModalVisible(true);
@@ -73,7 +75,7 @@ const InitiativeMoreActions = ({
     const message = formatMessage(messages.deleteInitiativeConfirmation);
 
     if (window.confirm(message)) {
-      deleteInitiative(initiativeId);
+      deleteInitiative({ initiativeId });
       clHistory.goBack();
     }
   };
