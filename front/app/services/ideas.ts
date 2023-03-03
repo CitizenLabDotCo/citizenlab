@@ -1,13 +1,13 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { firstValueFrom } from 'rxjs';
 
 // typings
-import { IRelationship, Multiloc } from 'typings';
+import { Multiloc } from 'typings';
 import {
   CommentingDisabledReason,
   PublicationStatus as ProjectPublicationStatus,
 } from 'services/projects';
+import { IIdeaData } from 'api/ideas/types';
 
 export type IdeaPublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
 
@@ -33,15 +33,6 @@ export type IdeaVotingDisabledReason =
 export type IdeaCommentingDisabledReason =
   | 'idea_not_in_current_phase'
   | CommentingDisabledReason;
-
-export type IdeaBudgetingDisabledReason =
-  | 'project_inactive'
-  | 'idea_not_in_current_phase'
-  | 'not_permitted'
-  | 'not_verified'
-  | 'not_signed_in'
-  | null
-  | undefined;
 
 export type Sort =
   | 'random'
@@ -71,85 +62,6 @@ export type SortAttribute =
   | 'downvotes_count'
   | 'baskets_count'
   | 'status';
-
-export interface IIdeaData {
-  id: string;
-  type: string;
-  attributes: {
-    title_multiloc: Multiloc;
-    body_multiloc: Multiloc;
-    author_name: string;
-    slug: string;
-    publication_status: IdeaPublicationStatus;
-    upvotes_count: number;
-    downvotes_count: number;
-    comments_count: number;
-    baskets_count: number;
-    location_point_geojson: GeoJSON.Point | null;
-    location_description: string | null;
-    budget: number | null;
-    proposed_budget: number | null;
-    created_at: string;
-    updated_at: string;
-    published_at: string;
-    action_descriptor: {
-      voting_idea: {
-        enabled: boolean;
-        disabled_reason: IdeaVotingDisabledReason | null;
-        cancelling_enabled: boolean;
-        up: {
-          enabled: boolean;
-          disabled_reason: IdeaVotingDisabledReason | null;
-          future_enabled: string | null;
-        };
-        down: {
-          enabled: boolean;
-          disabled_reason: IdeaVotingDisabledReason | null;
-          future_enabled: string | null;
-        };
-      };
-      commenting_idea: {
-        enabled: boolean;
-        future_enabled: string | null;
-        disabled_reason: IdeaCommentingDisabledReason | null;
-      };
-      comment_voting_idea: {
-        enabled: boolean;
-      };
-      budgeting?: {
-        enabled: boolean;
-        future_enabled: string | null;
-        disabled_reason: IdeaBudgetingDisabledReason;
-      };
-    };
-  };
-  relationships: {
-    topics?: {
-      data: IRelationship[];
-    };
-    idea_images: {
-      data: IRelationship[] | null;
-    };
-    author: {
-      data: IRelationship | null;
-    };
-    assignee?: {
-      data: IRelationship | null;
-    };
-    phases: {
-      data: IRelationship[];
-    };
-    project: {
-      data: IRelationship;
-    };
-    idea_status: {
-      data: IRelationship;
-    };
-    user_vote?: {
-      data: IRelationship;
-    };
-  };
-}
 
 export interface IMinimalIdeaData {
   id: string;
@@ -187,10 +99,6 @@ export interface IIdea {
   data: IIdeaData;
 }
 
-export interface IIdeas {
-  data: IIdeaData[];
-  links: IIdeaLinks;
-}
 export interface IIdeaAdd {
   author_id: string | null;
   project_id: string | null;
@@ -230,10 +138,10 @@ export function ideaBySlugStream(ideaSlug: string) {
 export interface IIdeasQueryParameters {
   'page[number]': number;
   'page[size]': number;
+  sort: Sort;
   projects?: string[] | null;
   phase?: string | null;
   author?: string | null;
-  sort: Sort;
   search?: string | null;
   topics?: string[] | null;
   idea_status?: string | null;
@@ -244,22 +152,6 @@ export interface IIdeasQueryParameters {
   feedback_needed?: boolean | null;
   filter_can_moderate?: boolean | null;
   basket_id?: string;
-}
-
-export function ideasStream(
-  streamParams: { queryParameters: IIdeasQueryParameters } | null = null
-) {
-  return streams.get<IIdeas>({
-    apiEndpoint: `${API_PATH}/ideas`,
-    ...streamParams,
-  });
-}
-export function ideasMiniStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IIdeas>({
-    apiEndpoint: `${API_PATH}/ideas/mini`,
-    ...streamParams,
-    cacheStream: false,
-  });
 }
 
 export interface IIdeasFilterCountsQueryParameters
@@ -298,17 +190,6 @@ export function similarIdeasStream(
   });
 }
 
-export async function addIdea(object: IIdeaAdd) {
-  const response = await streams.add<IIdea>(`${API_PATH}/ideas/`, {
-    idea: object,
-  });
-  streams.fetchAllWith({
-    dataId: [response.data.relationships.project.data.id],
-    apiEndpoint: [`${API_PATH}/users/${object.author_id}/ideas_count`],
-  });
-  return response;
-}
-
 export async function updateIdea(ideaId: string, object: Partial<IIdeaAdd>) {
   const response = await streams.update<IIdea>(
     `${API_PATH}/ideas/${ideaId}`,
@@ -325,28 +206,6 @@ export async function updateIdea(ideaId: string, object: Partial<IIdeaAdd>) {
       `${API_PATH}/analytics`,
     ],
     partialApiEndpoint: [`${API_PATH}/ideas/${ideaId}/images`],
-  });
-
-  return response;
-}
-
-export async function deleteIdea(ideaId: string) {
-  const [idea, response] = await Promise.all([
-    firstValueFrom(ideaByIdStream(ideaId).observable),
-    streams.delete(`${API_PATH}/ideas/${ideaId}`, ideaId),
-  ]);
-
-  const authorId = idea.data.relationships.author.data?.id || null;
-  const projectId = idea.data.relationships.project.data.id;
-
-  streams.fetchAllWith({
-    dataId: [projectId],
-    apiEndpoint: authorId
-      ? [
-          `${API_PATH}/users/${authorId}/ideas_count`,
-          `${API_PATH}/stats/ideas_count`,
-        ]
-      : [`${API_PATH}/stats/ideas_count`],
   });
 
   return response;

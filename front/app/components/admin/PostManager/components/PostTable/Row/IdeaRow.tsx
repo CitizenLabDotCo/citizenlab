@@ -6,8 +6,9 @@ import { findDOMNode } from 'react-dom';
 import { DragSource } from 'react-dnd-cjs';
 
 // services
-import { IIdeaData, updateIdea, ideaByIdStream } from 'services/ideas';
+import { updateIdea, ideaByIdStream } from 'services/ideas';
 import { IPhaseData } from 'services/phases';
+import { IIdeaData } from 'api/ideas/types';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 
 // components

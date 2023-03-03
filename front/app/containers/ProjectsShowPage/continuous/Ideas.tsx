@@ -1,9 +1,8 @@
-import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import React, { memo, useCallback, useState } from 'react';
 
 // components
 import ContentContainer from 'components/ContentContainer';
-import IdeaCards from 'components/IdeaCards';
+import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
 import PBExpenses from '../shared/pb/PBExpenses';
 import {
   ProjectPageSectionTitle,
@@ -24,6 +23,14 @@ import { getInputTermMessage } from 'utils/i18n';
 import styled from 'styled-components';
 import { viewportWidths, colors } from 'utils/styleUtils';
 
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
+
+// typings
+import { IProjectData } from 'services/projects';
+import { IIdeasQueryParameters } from 'services/ideas';
+
 const Container = styled.div``;
 
 const StyledContentContainer = styled(ContentContainer)`
@@ -39,17 +46,30 @@ const StyledPBExpenses = styled(PBExpenses)`
   margin-bottom: 50px;
 `;
 
-interface Props {
-  projectId: string;
+interface InnerProps {
   className?: string;
+  project: IProjectData;
 }
 
-const IdeasContainer = memo<Props>(({ projectId, className }) => {
-  const project = useProject({ projectId });
+const IdeasContainer = memo<InnerProps>(({ project, className }) => {
   const windowSize = useWindowSize();
+  const [ideaQueryParameters, setIdeaQueryParameters] =
+    useState<IIdeasQueryParameters>({
+      projects: [project.id],
+      sort: project.attributes.ideas_order ?? ideaDefaultSortMethodFallback,
+      'page[number]': 1,
+      'page[size]': 24,
+    });
 
-  const projectType = project?.attributes.process_type;
-  const participationMethod = project?.attributes.participation_method;
+  const updateQuery = useCallback(
+    (newParams: Partial<IIdeasQueryParameters>) => {
+      setIdeaQueryParameters((current) => ({ ...current, ...newParams }));
+    },
+    []
+  );
+
+  const projectType = project.attributes.process_type;
+  const participationMethod = project.attributes.participation_method;
   const showIdeas = !!(
     projectType === 'continuous' &&
     (participationMethod === 'budgeting' || participationMethod === 'ideation')
@@ -71,7 +91,7 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
           <SectionContainer>
             {isPBProject && (
               <StyledPBExpenses
-                participationContextId={projectId}
+                participationContextId={project.id}
                 participationContextType="project"
                 viewMode={smallerThanBigTablet ? 'column' : 'row'}
               />
@@ -89,17 +109,17 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
               />
             </StyledProjectPageSectionTitle>
 
-            <IdeaCards
-              type="load-more"
-              projectId={projectId}
+            <IdeaCardsWithoutFiltersSidebar
+              ideaQueryParameters={ideaQueryParameters}
+              onUpdateQuery={updateQuery}
+              projectId={project.id}
               participationMethod={project.attributes.participation_method}
-              participationContextId={projectId}
+              defaultSortingMethod={project.attributes.ideas_order}
+              participationContextId={project.id}
               participationContextType="project"
               showViewToggle={true}
-              defaultSortingMethod={project.attributes.ideas_order || null}
               defaultView={project.attributes.presentation_mode || null}
               invisibleTitleMessage={messages.a11y_titleInputs}
-              hideFiltersSidebar
             />
           </SectionContainer>
         </StyledContentContainer>
@@ -110,4 +130,16 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
   return null;
 });
 
-export default IdeasContainer;
+interface Props {
+  projectId: string;
+  className?: string;
+}
+
+const IdeasContainerWrapper = ({ projectId, className }: Props) => {
+  const project = useProject({ projectId });
+  if (isNilOrError(project)) return null;
+
+  return <IdeasContainer className={className} project={project} />;
+};
+
+export default IdeasContainerWrapper;
