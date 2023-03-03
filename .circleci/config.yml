@@ -2,7 +2,6 @@ version: 2.1
 
 orbs:
   slack: circleci/slack@4.3.3
-  git-shallow-clone: guitarrapc/git-shallow-clone@2.4.1
 
 # REUSABLE YAML FRAGMENTS (yml anchors)
 slack-fail-post-step-templates: &slack-fail-post-step-templates
@@ -126,9 +125,10 @@ jobs:
     resource_class: small
     docker:
       - image: citizenlabdotco/cl2-devops-danger-check
+    working_directory: ~/citizenlab
     steps:
       - shallow-clone
-      - run: cd ~/citizenlab && danger ci
+      - run: danger ci
 
   slack-invalid-data-success:
     resource_class: small
