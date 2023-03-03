@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks';
 
 import useInitiativeBySlug from './useInitiativeBySlug';
-import { initiativesData } from './__mocks__/initiatives';
+import { initiativesData } from './__mocks__/useInitiatives';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';

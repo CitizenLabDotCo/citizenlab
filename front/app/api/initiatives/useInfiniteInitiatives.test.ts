@@ -5,7 +5,7 @@ import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import useInfiniteInitiatives from './useInfiniteInitiatives';
-import { initiativesData, links } from './useInitiatives.test';
+import { initiativesData, links } from './__mocks__/useInitiatives';
 
 const apiPath = '*initiatives';
 const server = setupServer(
