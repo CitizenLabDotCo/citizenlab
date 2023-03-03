@@ -18,9 +18,6 @@ import { Top, Content, Container } from '../PostPreview';
 import VoteIndicator from 'components/InitiativeCard/VoteIndicator';
 import { Box } from '@citizenlab/cl2-component-library';
 
-// services
-import { deleteInitiative } from 'services/initiatives';
-
 // resources
 import GetInitiative, {
   GetInitiativeChildProps,
@@ -42,6 +39,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 // hooks
 import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
+import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
 
 const StyledTitle = styled(Title)`
   margin-bottom: 30px;
@@ -129,13 +127,14 @@ const InitiativeContent = ({
   initiativeId,
 }: Props & InjectedLocalized & WrappedComponentProps) => {
   const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
+  const { mutate: deleteInitiative } = useDeleteInitiative();
 
   const handleClickDelete = () => {
     const message = intl.formatMessage(messages.deleteInitiativeConfirmation);
 
     if (!isNilOrError(initiative)) {
       if (window.confirm(message)) {
-        deleteInitiative(initiative.id);
+        deleteInitiative({ initiativeId: initiative.id });
         closePreview();
       }
     }
