@@ -25,6 +25,7 @@ RUN apt-get update                                                             \
       curl=7.74.0-1.3+deb11u7                                                  \
       libgeos-dev=3.9.0-1                                                      \
       libgmp3-dev=2:6.2.1+dfsg-1+deb11u1                                       \
+      # Required by `pg` gem
       libpq-dev=13.9-0+deb11u1                                                 \
       # Required to install git dependencies in Gemfile
       git=1:2.30.2-1+deb11u2                                                   \
@@ -55,8 +56,12 @@ ENV CITIZENLAB_EE=true
 RUN apt-get update                                                             \
  && apt-get install -qq -y --no-install-recommends                             \
       curl=7.74.0-1.3+deb11u7                                                  \
+      # Required by `pg` gem
+      libpq-dev=13.9-0+deb11u1                                                 \
       # Required by bundle-audit (to checkout the ruby-advisory-db)
       git=1:2.30.2-1+deb11u2                                                   \
+      # Required by mimemagic on which depends axlsx (3.0.0.pre)
+      shared-mime-info=2.0-1                                                   \
       # Used to wait for Postgres to be up in CircleCI
       netcat=1.10-46                                                           \
       # Image processing
