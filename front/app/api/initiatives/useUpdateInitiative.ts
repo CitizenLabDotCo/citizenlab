@@ -12,7 +12,7 @@ const updateInitiative = ({
   fetcher<IInitiative>({
     path: `/initiatives/${initiativeId}`,
     action: 'patch',
-    body: requestBody,
+    body: { initiative: requestBody },
   });
 
 const useUpdateInitiative = () => {
