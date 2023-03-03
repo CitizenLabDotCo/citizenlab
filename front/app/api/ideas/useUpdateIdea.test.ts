@@ -1,71 +1,56 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
-import useAddIdea from './useAddIdea';
+import useUpdateIdea from './useUpdateIdea';
+import { ideaData } from './__mocks__/useIdeaById';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { ideaData } from './__mocks__/useIdeaById';
 
-const apiPath = '*ideas';
-
+const apiPath = '*idea_statuses/:id';
 const server = setupServer(
-  rest.post(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: ideaData }));
+  rest.patch(apiPath, (_req, res, ctx) => {
+    return res(ctx.status(200), ctx.json({ data: ideaData[0] }));
   })
 );
 
-describe('useAddIdea', () => {
+describe('useUpdateIdea', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useAddIdea(), {
+    const { result, waitFor } = renderHook(() => useUpdateIdea(), {
       wrapper: createQueryClientWrapper(),
     });
 
     act(() => {
       result.current.mutate({
-        project_id: 'id',
-        title_multiloc: {
-          en: 'test',
-        },
-        publication_status: 'published',
-        body_multiloc: {
-          en: 'test',
-        },
+        id: 'id',
+        requestBody: { title_multiloc: { en: 'name' } },
       });
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data?.data).toEqual(ideaData);
+    expect(result.current.data?.data).toEqual(ideaData[0]);
   });
 
   it('returns error correctly', async () => {
     server.use(
-      rest.post(apiPath, (_req, res, ctx) => {
+      rest.patch(apiPath, (_req, res, ctx) => {
         return res(ctx.status(500));
       })
     );
 
-    const { result, waitFor } = renderHook(() => useAddIdea(), {
+    const { result, waitFor } = renderHook(() => useUpdateIdea(), {
       wrapper: createQueryClientWrapper(),
     });
-
     act(() => {
       result.current.mutate({
-        project_id: 'id',
-        title_multiloc: {
-          en: 'test',
-        },
-        publication_status: 'published',
-        body_multiloc: {
-          en: 'test',
-        },
+        id: 'id',
+        requestBody: { title_multiloc: { en: 'name' } },
       });
     });
-
     await waitFor(() => expect(result.current.isError).toBe(true));
     expect(result.current.error).toBeDefined();
   });

@@ -1,6 +1,14 @@
+import { IQueryParameters } from './types';
+
 const ideasKeys = {
-  all: () => [{ type: 'idea_status' }],
+  all: () => [{ type: 'idea' }],
   lists: () => [{ ...ideasKeys.all()[0], operation: 'list' }],
+  list: (filters: IQueryParameters) => [
+    { ...ideasKeys.lists()[0], ...filters },
+  ],
+  infiniteList: (filters: IQueryParameters) => [
+    { ...ideasKeys.lists()[0], queryType: 'infinite', ...filters },
+  ],
   items: () => [{ ...ideasKeys.all()[0], operation: 'item' }],
   item: (id: string) => [
     {
@@ -8,6 +16,6 @@ const ideasKeys = {
       id,
     },
   ],
-} as const;
+};
 
 export default ideasKeys;

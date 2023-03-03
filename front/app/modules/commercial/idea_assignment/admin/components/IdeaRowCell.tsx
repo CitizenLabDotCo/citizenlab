@@ -1,7 +1,6 @@
 import React, { FC, useEffect } from 'react';
 
 import AssigneeSelect from 'components/admin/PostManager/components/PostTable/AssigneeSelect';
-import { IIdeaData, updateIdea } from 'services/ideas';
 import {
   InsertConfigurationOptions,
   CellConfiguration,
@@ -11,6 +10,8 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from 'components/admin/PostManager/tracks';
 
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/Row/IdeaRow';
+import useUpdateIdea from 'api/ideas/useUpdateIdea';
+import { IIdeaData } from 'api/ideas/types';
 
 type Props = {
   onData: (
@@ -19,6 +20,7 @@ type Props = {
 };
 
 const IdeaRowCell: FC<Props> = ({ onData }) => {
+  const { mutate: updateIdea } = useUpdateIdea();
   useEffect(
     () =>
       onData({
@@ -34,7 +36,10 @@ const IdeaRowCell: FC<Props> = ({ onData }) => {
           onChange: (idea: IIdeaData) => (assigneeId: string | undefined) => {
             const ideaId = idea.id;
 
-            updateIdea(ideaId, { assignee_id: assigneeId || null });
+            updateIdea({
+              id: ideaId,
+              requestBody: { assignee_id: assigneeId || null },
+            });
 
             trackEventByName(tracks.changeIdeaAssignment, {
               location: 'Idea Manager',

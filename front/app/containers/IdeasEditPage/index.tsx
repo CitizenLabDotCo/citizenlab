@@ -25,7 +25,7 @@ import IdeasEditPageWithJSONForm from './WithJSONForm';
 
 // services
 import { localeStream } from 'services/locale';
-import { ideaByIdStream, IIdeaData, updateIdea } from 'services/ideas';
+import { ideaByIdStream, updateIdea } from 'services/ideas';
 import {
   ideaImageStream,
   addIdeaImage,
@@ -70,6 +70,9 @@ import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+// typings
+import { IIdeaData } from 'api/ideas/types';
 
 const Container = styled.div`
   background: ${colors.background};

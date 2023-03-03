@@ -326,7 +326,7 @@ const IdeaContent = ({
                 </>
               )}
 
-              <FeedbackSettings ideaId={ideaId} />
+              <FeedbackSettings ideaId={ideaId} projectId={project.id} />
             </Right>
           </Row>
         </Content>
