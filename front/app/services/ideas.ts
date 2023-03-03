@@ -1,6 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { firstValueFrom } from 'rxjs';
 
 // typings
 import { Multiloc } from 'typings';
@@ -218,28 +217,6 @@ export async function updateIdea(ideaId: string, object: Partial<IIdeaAdd>) {
       `${API_PATH}/analytics`,
     ],
     partialApiEndpoint: [`${API_PATH}/ideas/${ideaId}/images`],
-  });
-
-  return response;
-}
-
-export async function deleteIdea(ideaId: string) {
-  const [idea, response] = await Promise.all([
-    firstValueFrom(ideaByIdStream(ideaId).observable),
-    streams.delete(`${API_PATH}/ideas/${ideaId}`, ideaId),
-  ]);
-
-  const authorId = idea.data.relationships.author.data?.id || null;
-  const projectId = idea.data.relationships.project.data.id;
-
-  streams.fetchAllWith({
-    dataId: [projectId],
-    apiEndpoint: authorId
-      ? [
-          `${API_PATH}/users/${authorId}/ideas_count`,
-          `${API_PATH}/stats/ideas_count`,
-        ]
-      : [`${API_PATH}/stats/ideas_count`],
   });
 
   return response;
