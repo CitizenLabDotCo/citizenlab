@@ -14,6 +14,7 @@ const useInitiativeBySlug = (initiativeSlug: string) => {
   return useQuery<IInitiative, CLErrors, IInitiative, InitiativesKeys>({
     queryKey: initiativesKeys.item(initiativeSlug),
     queryFn: () => fetchInitiativeBySlug(initiativeSlug),
+    enabled: !!initiativeSlug,
   });
 };
 
