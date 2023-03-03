@@ -35,15 +35,6 @@ export type IdeaCommentingDisabledReason =
   | 'idea_not_in_current_phase'
   | CommentingDisabledReason;
 
-export type IdeaBudgetingDisabledReason =
-  | 'project_inactive'
-  | 'idea_not_in_current_phase'
-  | 'not_permitted'
-  | 'not_verified'
-  | 'not_signed_in'
-  | null
-  | undefined;
-
 export type Sort =
   | 'random'
   | 'new'
@@ -166,15 +157,6 @@ export interface IIdeasQueryParameters {
   feedback_needed?: boolean | null;
   filter_can_moderate?: boolean | null;
   basket_id?: string;
-}
-
-export function ideasStream(
-  streamParams: { queryParameters: IIdeasQueryParameters } | null = null
-) {
-  return streams.get<IIdeas>({
-    apiEndpoint: `${API_PATH}/ideas`,
-    ...streamParams,
-  });
 }
 
 export interface IIdeasFilterCountsQueryParameters
