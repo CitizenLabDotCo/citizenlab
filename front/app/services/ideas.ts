@@ -2,9 +2,6 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { firstValueFrom } from 'rxjs';
 
-// utils
-import { get } from 'lodash-es';
-
 // typings
 import { IRelationship, Multiloc } from 'typings';
 import {
@@ -339,7 +336,7 @@ export async function deleteIdea(ideaId: string) {
     streams.delete(`${API_PATH}/ideas/${ideaId}`, ideaId),
   ]);
 
-  const authorId = get(idea, 'relationships.author.data.id', false);
+  const authorId = idea.data.relationships.author.data?.id || null;
   const projectId = idea.data.relationships.project.data.id;
 
   streams.fetchAllWith({

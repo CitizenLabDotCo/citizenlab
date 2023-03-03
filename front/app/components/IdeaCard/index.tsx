@@ -20,7 +20,6 @@ import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
 
 // utils
-import { get } from 'lodash-es';
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -30,6 +29,7 @@ import { transparentize } from 'polished';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 import { timeAgo } from 'utils/dateUtils';
 import useLocale from 'hooks/useLocale';
+import { IIdea } from 'api/ideas/types';
 
 const BodyWrapper = styled.div`
   display: flex;
@@ -108,9 +108,23 @@ interface Props {
   hideIdeaStatus?: boolean;
 }
 
-const CompactIdeaCard = memo<Props>(
+const IdeaLoading = (props: Props) => {
+  const { data: idea } = useIdeaById(props.ideaId);
+
+  if (idea) {
+    return <CompactIdeaCard idea={idea} {...props} />;
+  }
+
+  return null;
+};
+
+interface IdeaCardProps extends Props {
+  idea: IIdea;
+}
+
+const CompactIdeaCard = memo<IdeaCardProps>(
   ({
-    ideaId,
+    idea,
     className,
     participationMethod,
     participationContextId,
@@ -121,21 +135,13 @@ const CompactIdeaCard = memo<Props>(
   }) => {
     const locale = useLocale();
     const localize = useLocalize();
-    const { data: idea } = useIdeaById(ideaId);
     const project = useProject({
-      projectId: !isNilOrError(idea)
-        ? idea.data.relationships.project.data.id
-        : null,
+      projectId: idea.data.relationships.project.data.id,
     });
     const ideaImage = useIdeaImage({
-      ideaId,
-      ideaImageId: get(idea, 'relationships.idea_images.data[0].id'),
+      ideaId: idea.data.id,
+      ideaImageId: idea.data.relationships.idea_images.data?.[0]?.id,
     });
-
-    if (isNilOrError(idea)) {
-      return null;
-    }
-
     const authorId = idea.data.relationships.author.data?.id;
     const ideaTitle = localize(idea.data.attributes.title_multiloc);
     // remove html tags from wysiwyg output
@@ -238,4 +244,4 @@ const CompactIdeaCard = memo<Props>(
   }
 );
 
-export default CompactIdeaCard;
+export default IdeaLoading;
