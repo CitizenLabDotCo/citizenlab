@@ -6,11 +6,9 @@ import InitiativeForm, {
   SimpleFormValues,
 } from 'components/InitiativeForm';
 
-// services
 import { Locale, Multiloc, UploadFile } from 'typings';
 import { updateInitiative } from 'services/initiatives';
-import useAddInitiative from 'api/initiatives/useAddInitiative';
-import { IInitiativeAdd } from 'api/initiatives/types';
+
 import { ITopicData } from 'services/topics';
 
 // utils
@@ -32,8 +30,8 @@ import { reportError } from 'utils/loggingUtils';
 import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
 
-// resources
-
+import useAddInitiative from 'api/initiatives/useAddInitiative';
+import { IInitiativeAdd } from 'api/initiatives/types';
 import useAddInitiativeImage from 'api/initiative_images/useAddInitiativeImage';
 import useDeleteInitiativeImage from 'api/initiative_images/useDeleteInitiativeImage';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -173,17 +171,16 @@ const InitiativesNewFormWrapper = ({ topics, locale }: Props) => {
       );
       // save any changes to the initiative data.
       if (!isEmpty(formAPIValues)) {
-        let initiative;
-
         if (initiativeId) {
-          initiative = await updateInitiative(initiativeId, formAPIValues);
+          await updateInitiative(initiativeId, formAPIValues);
         } else {
-          initiative = await addInitiative({
-            ...formAPIValues,
-            publication_status: 'draft',
-          });
-
-          setInitiativeId(initiative.data.id);
+          addInitiative(
+            {
+              ...formAPIValues,
+              publication_status: 'draft',
+            },
+            { onSuccess: (initiative) => setInitiativeId(initiative.data.id) }
+          );
         }
         // feed back what was saved to the api into the initialValues object
         // so that we can determine with certainty what has changed since last
