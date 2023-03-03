@@ -104,7 +104,7 @@ commands:
       - run: lpass show --notes 'citizenlab front-secret.env' > env_files/front-secret.env
   shallow-clone:
     steps:
-      - run: mkdir ~/.ssh
+      - run: mkdir -p ~/.ssh
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts
       # Git clone can fail when the repository directory exists and is not empty. This
       # can happen when e.g. setting the working_directory to ~/citizenlab/front because
