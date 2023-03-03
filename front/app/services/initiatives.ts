@@ -1,5 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
+import streams from 'utils/streams';
 import { IRelationship, Multiloc, ImageSizes } from 'typings';
 import { first } from 'rxjs/operators';
 import { get } from 'lodash-es';
@@ -9,12 +9,6 @@ export type InitiativePublicationStatus =
   | 'published'
   | 'archived'
   | 'spam';
-
-export type IInitiativeAction =
-  | 'posting_initiative'
-  | 'commenting_initiative'
-  | 'voting_initiative'
-  | 'comment_voting_initiative';
 
 export interface IInitiativeData {
   id: string;
@@ -76,53 +70,10 @@ export interface IInitiativeAdd {
   location_description?: string | null;
 }
 
-export interface IGeotaggedInitiativeData {
-  id: string;
-  type: string;
-  attributes: {
-    title_multiloc: Multiloc;
-    location_point_geojson: GeoJSON.Point;
-    location_description: string;
-  };
-}
-
-export interface IInitiativeLinks {
-  self: string;
-  first: string;
-  prev: string;
-  next: string;
-  last: string;
-}
-
-export type InitiativeDisabledReason =
-  | 'not_permitted'
-  | 'not_verified'
-  | 'not_signed_in';
-
 export function initiativeByIdStream(initiativeId: string) {
   return streams.get<IInitiative>({
     apiEndpoint: `${API_PATH}/initiatives/${initiativeId}`,
   });
-}
-
-export function initiativesMarkersStream(
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<{
-    data: IGeotaggedInitiativeData[];
-    links: IInitiativeLinks;
-  }>({
-    apiEndpoint: `${API_PATH}/initiatives/as_markers`,
-    ...streamParams,
-    cacheStream: false,
-  });
-}
-
-export async function addInitiative(object: IInitiativeAdd) {
-  const response = await streams.add<IInitiative>(`${API_PATH}/initiatives`, {
-    initiative: object,
-  });
-  return response;
 }
 
 export async function updateInitiative(
@@ -159,39 +110,4 @@ export async function deleteInitiative(initiativeId: string) {
   });
 
   return response;
-}
-
-export interface IInitiativeAllowedTransitions {
-  data: {
-    type: 'initiative_allowed_transitions';
-    attributes: {
-      [key: string]: {
-        feedback_needed: boolean;
-      };
-    };
-  };
-}
-
-export function initiativeAllowedTransitionsStream(initiativeId: string) {
-  return streams.get<IInitiativeAllowedTransitions>({
-    apiEndpoint: `${API_PATH}/initiatives/${initiativeId}/allowed_transitions`,
-  });
-}
-
-export type IInitiativeActionDescriptors = {
-  data: {
-    type: 'initiative_action_descriptors';
-    attributes: {
-      [key in IInitiativeAction]: {
-        enabled: boolean;
-        disabled_reason: InitiativeDisabledReason | null;
-      };
-    };
-  };
-};
-
-export function getInitiativeActionDescriptors() {
-  return streams.get<IInitiativeActionDescriptors>({
-    apiEndpoint: `${API_PATH}/action_descriptors/initiatives`,
-  });
 }

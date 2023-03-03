@@ -6,13 +6,9 @@ import InitiativeForm, {
   SimpleFormValues,
 } from 'components/InitiativeForm';
 
-// services
 import { Locale, Multiloc, UploadFile } from 'typings';
-import {
-  addInitiative,
-  updateInitiative,
-  IInitiativeAdd,
-} from 'services/initiatives';
+import { updateInitiative } from 'services/initiatives';
+
 import { ITopicData } from 'services/topics';
 
 // utils
@@ -34,8 +30,8 @@ import { reportError } from 'utils/loggingUtils';
 import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
 
-// resources
-
+import useAddInitiative from 'api/initiatives/useAddInitiative';
+import { IInitiativeAdd } from 'api/initiatives/types';
 import useAddInitiativeImage from 'api/initiative_images/useAddInitiativeImage';
 import useDeleteInitiativeImage from 'api/initiative_images/useDeleteInitiativeImage';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -60,6 +56,7 @@ interface Props {
 
 const InitiativesNewFormWrapper = ({ topics, locale }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
+  const { mutate: addInitiative } = useAddInitiative();
   const authUser = useAuthUser();
   const { mutate: addInitiativeImage } = useAddInitiativeImage();
   const { mutate: deleteInitiativeImage } = useDeleteInitiativeImage();
@@ -91,10 +88,11 @@ const InitiativesNewFormWrapper = ({ topics, locale }: Props) => {
   const [hasImageChanged, setHasImageChanged] = useState<boolean>(false);
 
   useEffect(() => {
-    addInitiative({ publication_status: 'draft' }).then((initiative) => {
-      setInitiativeId(initiative.data.id);
-    });
-  }, []);
+    addInitiative(
+      { publication_status: 'draft' },
+      { onSuccess: (initiative) => setInitiativeId(initiative.data.id) }
+    );
+  }, [addInitiative]);
 
   const getChangedValues = () => {
     const changedKeys = Object.keys(initialValues).filter((key) => {
@@ -173,17 +171,16 @@ const InitiativesNewFormWrapper = ({ topics, locale }: Props) => {
       );
       // save any changes to the initiative data.
       if (!isEmpty(formAPIValues)) {
-        let initiative;
-
         if (initiativeId) {
-          initiative = await updateInitiative(initiativeId, formAPIValues);
+          await updateInitiative(initiativeId, formAPIValues);
         } else {
-          initiative = await addInitiative({
-            ...formAPIValues,
-            publication_status: 'draft',
-          });
-
-          setInitiativeId(initiative.data.id);
+          addInitiative(
+            {
+              ...formAPIValues,
+              publication_status: 'draft',
+            },
+            { onSuccess: (initiative) => setInitiativeId(initiative.data.id) }
+          );
         }
         // feed back what was saved to the api into the initialValues object
         // so that we can determine with certainty what has changed since last
