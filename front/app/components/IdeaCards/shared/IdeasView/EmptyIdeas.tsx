@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { colors, fontSizes, defaultCardStyle } from 'utils/styleUtils';
 import { Icon } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../../messages';
 
 const EmptyContainer = styled.div`
   flex: 1;

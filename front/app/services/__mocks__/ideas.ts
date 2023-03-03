@@ -1,5 +1,5 @@
 import { BehaviorSubject } from 'rxjs';
-import { IIdeas, IIdeaData } from 'services/ideas';
+import { IIdeas, IIdeaData } from 'api/ideas/types';
 
 const mockIdeas = new BehaviorSubject<IIdeas | null>(null);
 
@@ -29,6 +29,7 @@ export const getIdea = (id: string, enTitle?: string): IIdeaData => ({
     upvotes_count: 10,
     downvotes_count: 1,
     comments_count: 2,
+    official_feedbacks_count: 0,
     location_point_geojson: {
       type: 'Point',
       coordinates: [4.418731568531502, 50.86899604801978],
@@ -63,6 +64,8 @@ export const getIdea = (id: string, enTitle?: string): IIdeaData => ({
       },
       comment_voting_idea: {
         enabled: true,
+        disabled_reason: null,
+        future_enabled: null,
       },
       budgeting: {
         enabled: false,

@@ -1,33 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
+
+// hooks
+import useLocale from 'hooks/useLocale';
+import { useWindowSize } from '@citizenlab/cl2-component-library';
+import useProject from 'hooks/useProject';
+import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
+import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 
 // tracks
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+import tracks from '../tracks';
 
 // components
-import TopicFilterDropdown from './TopicFilterDropdown';
-import SelectSort from './SortFilterDropdown';
+import TopicFilterDropdown from '../shared/Filters/TopicFilterDropdown';
+import SelectSort from '../shared/Filters/SortFilterDropdown';
 import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
-import IdeasView from './IdeasView';
-
-// resources
-import GetWindowSize, {
-  GetWindowSizeChildProps,
-} from 'resources/GetWindowSize';
-import GetIdeas, {
-  GetIdeasChildProps,
-  InputProps as GetIdeasInputProps,
-} from 'resources/GetIdeas';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import IdeasView from '../shared/IdeasView';
 
 // i18n
-import messages from './messages';
+import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // style
@@ -38,11 +32,10 @@ import { media, viewportWidths, isRtl } from 'utils/styleUtils';
 import {
   IdeaDefaultSortMethod,
   ParticipationMethod,
-  ideaDefaultSortMethodFallback,
 } from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
 import { isFieldEnabled } from 'utils/projectUtils';
-import { Sort } from 'services/ideas';
+import { IIdeasQueryParameters, Sort } from 'services/ideas';
 
 const Container = styled.div`
   width: 100%;
@@ -137,7 +130,12 @@ const StyledSearchInput = styled(SearchInput)`
   `}
 `;
 
-interface InputProps extends GetIdeasInputProps {
+export interface Props {
+  ideaQueryParameters: IIdeasQueryParameters;
+  onUpdateQuery: (newParams: Partial<IIdeasQueryParameters>) => void;
+
+  // other
+  projectId?: string;
   showViewToggle?: boolean | undefined;
   defaultSortingMethod?: IdeaDefaultSortMethod;
   defaultView?: 'card' | 'map' | null | undefined;
@@ -146,75 +144,68 @@ interface InputProps extends GetIdeasInputProps {
   participationContextType?: IParticipationContextType | null;
   className?: string;
   allowProjectsFilter?: boolean;
-  projectId?: string;
 }
-
-interface DataProps {
-  locale: GetLocaleChildProps;
-  windowSize: GetWindowSizeChildProps;
-  ideas: GetIdeasChildProps;
-  project: GetProjectChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
 
 const IdeasWithoutFiltersSidebar = ({
+  ideaQueryParameters,
+  onUpdateQuery,
+  projectId,
   showViewToggle = false,
   defaultView,
   defaultSortingMethod,
-  windowSize,
-  ideas,
   className,
   allowProjectsFilter,
-  project,
-  locale,
   participationMethod,
   participationContextId,
   participationContextType,
-  projectId,
 }: Props) => {
+  const locale = useLocale();
+  const { windowWidth } = useWindowSize();
+  const project = useProject({ projectId });
+
   const [selectedView, setSelectedView] = useState<'card' | 'map'>('card');
   const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({
-    phaseId: ideas.queryParameters.phase,
+    phaseId: ideaQueryParameters.phase,
     projectId: projectId || null,
   });
+
+  const { data, isFetching, fetchNextPage, hasNextPage } =
+    useInfiniteIdeas(ideaQueryParameters);
+  const list = data?.pages.map((page) => page.data).flat();
 
   useEffect(() => {
     setSelectedView(defaultView || 'card');
   }, [defaultView]);
 
   const handleSearchOnChange = (search: string) => {
-    ideas.onChangeSearchTerm(search);
+    onUpdateQuery({ search });
   };
 
-  const handleProjectsOnChange = (projectIds: string[]) => {
-    ideas.onChangeProjects(projectIds);
+  const handleProjectsOnChange = (projects: string[]) => {
+    onUpdateQuery({ projects });
   };
 
   const handleSortOnChange = (sort: Sort) => {
     trackEventByName(tracks.sortingFilter, {
       sort,
     });
-    ideas.onChangeSorting(sort);
+
+    onUpdateQuery({ sort });
   };
 
   const handleTopicsOnChange = (topics: string[]) => {
     trackEventByName(tracks.topicsFilter, {
       topics,
     });
-    ideas.onChangeTopics(topics);
+
+    onUpdateQuery({ topics });
   };
 
   const selectView = (selectedView: 'card' | 'map') => {
     setSelectedView(selectedView);
   };
 
-  const {
-    list,
-    hasMore,
-    querying,
-    queryParameters: { phase: phaseId },
-  } = ideas;
+  const phaseId = ideaQueryParameters.phase;
 
   const locationEnabled = isFieldEnabled(
     'location_description',
@@ -231,19 +222,21 @@ const IdeasWithoutFiltersSidebar = ({
     !locationEnabled || (locationEnabled && selectedView === 'card');
   const showMapView = locationEnabled && selectedView === 'map';
   const smallerThanBigTablet = !!(
-    windowSize && windowSize <= viewportWidths.tablet
+    windowWidth && windowWidth <= viewportWidths.tablet
   );
   const smallerThanSmallTablet = !!(
-    windowSize && windowSize <= viewportWidths.tablet
+    windowWidth && windowWidth <= viewportWidths.tablet
   );
   const biggerThanSmallTablet = !!(
-    windowSize && windowSize >= viewportWidths.tablet
+    windowWidth && windowWidth >= viewportWidths.tablet
   );
   const biggerThanLargeTablet = !!(
-    windowSize && windowSize >= viewportWidths.tablet
+    windowWidth && windowWidth >= viewportWidths.tablet
   );
-  const smallerThan1100px = !!(windowSize && windowSize <= 1100);
-  const smallerThanPhone = !!(windowSize && windowSize <= viewportWidths.phone);
+  const smallerThan1100px = !!(windowWidth && windowWidth <= 1100);
+  const smallerThanPhone = !!(
+    windowWidth && windowWidth <= viewportWidths.phone
+  );
 
   if (list) {
     return (
@@ -307,10 +300,10 @@ const IdeasWithoutFiltersSidebar = ({
         </FiltersArea>
         <IdeasView
           list={list}
-          querying={querying}
-          onLoadMore={ideas.onLoadMore}
-          hasMore={hasMore}
-          loadingMore={querying}
+          querying={isFetching}
+          onLoadMore={fetchNextPage}
+          hasMore={!!hasNextPage}
+          loadingMore={isFetching}
           hideImage={smallerThanBigTablet && biggerThanSmallTablet}
           hideImagePlaceholder={smallerThanBigTablet}
           hideIdeaStatus={
@@ -331,30 +324,4 @@ const IdeasWithoutFiltersSidebar = ({
   return null;
 };
 
-const Data = adopt<DataProps, InputProps>({
-  locale: <GetLocale />,
-  windowSize: <GetWindowSize />,
-  ideas: ({ render, projectId, ...getIdeasInputProps }) => (
-    <GetIdeas
-      {...getIdeasInputProps}
-      projectIds={projectId ? [projectId] : 'all'}
-      pageSize={24}
-      sort={
-        getIdeasInputProps.defaultSortingMethod || ideaDefaultSortMethodFallback
-      }
-    >
-      {render}
-    </GetIdeas>
-  ),
-  project: ({ render, projectId }) => (
-    <GetProject projectId={projectId}>{render}</GetProject>
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps: DataProps) => (
-      <IdeasWithoutFiltersSidebar {...inputProps} {...dataProps} />
-    )}
-  </Data>
-);
+export default IdeasWithoutFiltersSidebar;
