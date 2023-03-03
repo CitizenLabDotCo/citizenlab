@@ -1,7 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { Multiloc } from 'typings';
-import { PublicationStatus as ProjectPublicationStatus } from 'services/projects';
 
 export const apiEndpoint = `${API_PATH}/stats`;
 
@@ -35,14 +34,19 @@ export interface IIdeasByStatus {
 }
 
 export interface IIdeasByTopic {
-  series: {
-    ideas: {
-      [key: string]: number;
-    };
-  };
-  topics: {
-    [key: string]: {
-      title_multiloc: Multiloc;
+  data: {
+    type: 'ideas_by_topics';
+    attributes: {
+      series: {
+        ideas: {
+          [key: string]: number;
+        };
+      };
+      topics: {
+        [key: string]: {
+          title_multiloc: Multiloc;
+        };
+      };
     };
   };
 }
@@ -96,22 +100,7 @@ export function ideasByProjectStream(
   });
 }
 
-export interface IdeasCountQueryParameters {
-  projects?: string[];
-  phase?: string;
-  author?: string;
-  search?: string;
-  topics?: string[];
-  idea_status?: string;
-  project_publication_status?: ProjectPublicationStatus;
-  bounding_box?: number[];
-  assignee?: string;
-  feedback_needed?: boolean;
-}
-
-export function ideasCount(
-  streamParams: { queryParameters: IdeasCountQueryParameters } | null = null
-) {
+export function ideasCount(streamParams: IStreamParams | null = null) {
   return streams.get<IIdeasCount>({
     apiEndpoint: `${apiEndpoint}/ideas_count`,
     ...streamParams,
@@ -168,14 +157,19 @@ export interface ICommentsByTime {
 }
 
 export interface ICommentsByTopic {
-  series: {
-    comments: {
-      [key: string]: number;
-    };
-  };
-  topics: {
-    [key: string]: {
-      title_multiloc: Multiloc;
+  data: {
+    type: 'comments_by_topic';
+    attributes: {
+      series: {
+        comments: {
+          [key: string]: number;
+        };
+      };
+      topics: {
+        [key: string]: {
+          title_multiloc: Multiloc;
+        };
+      };
     };
   };
 }
@@ -231,14 +225,19 @@ export interface IVotesByTime {
 }
 
 export interface IVotesByTopic {
-  series: {
-    votes: {
-      [key: string]: number;
-    };
-  };
-  topics: {
-    [key: string]: {
-      title_multiloc: Multiloc;
+  data: {
+    type: 'votes_by_topic';
+    attributes: {
+      series: {
+        votes: {
+          [key: string]: number;
+        };
+      };
+      topics: {
+        [key: string]: {
+          title_multiloc: Multiloc;
+        };
+      };
     };
   };
 }

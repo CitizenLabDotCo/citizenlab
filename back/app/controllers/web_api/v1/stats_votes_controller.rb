@@ -151,7 +151,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   def votes_by_project
     serie = votes_by_project_serie
     projects = Project.where(id: serie.keys).select(:id, :title_multiloc)
-    render json: { series: { total: serie }, projects: projects.to_h { |p| [p.id, p.attributes.except('id')] } }
+    render json: raw_json({ series: { total: serie }, projects: projects.to_h { |p| [p.id, p.attributes.except('id')] } })
   end
 
   def votes_by_project_as_xlsx
