@@ -2,11 +2,11 @@ import React from 'react';
 import { FormattedMessage } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import { deleteIdea } from 'services/ideas';
-import { deleteInitiative } from 'services/initiatives';
 import { Button, Icon } from 'semantic-ui-react';
 import messages from '../../messages';
 import { ManagerType } from '../..';
 import { useIntl } from 'utils/cl-intl';
+import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
 
 interface Props {
   type: ManagerType;
@@ -21,6 +21,7 @@ const ActionBarMulti = ({
   type,
 }: Props & WrappedComponentProps) => {
   const { formatMessage } = useIntl();
+  const { mutate: deleteInitiative } = useDeleteInitiative();
 
   const handleClickDeleteIdeas = () => {
     const message = formatMessage(messages.deleteInputsConfirmation, {
@@ -43,7 +44,7 @@ const ActionBarMulti = ({
 
     if (window.confirm(message)) {
       selection.forEach((id) => {
-        deleteInitiative(id);
+        deleteInitiative({ initiativeId: id });
       });
     }
 
