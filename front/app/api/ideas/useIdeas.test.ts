@@ -7,7 +7,7 @@ import useIdeas from './useIdeas';
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
-const links = {
+export const links = {
   last: 'http://localhost:3000/web_api/v1/ideas?page%5Bnumber%5D=9&page%5Bsize%5D=12&sort=random',
   next: 'http://localhost:3000/web_api/v1/ideas?page%5Bnumber%5D=2&page%5Bsize%5D=12&sort=random',
   self: 'http://localhost:3000/web_api/v1/ideas?page%5Bnumber%5D=1&page%5Bsize%5D=12&sort=random',
