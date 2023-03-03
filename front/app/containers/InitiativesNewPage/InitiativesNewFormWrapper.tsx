@@ -57,11 +57,13 @@ const InitiativesNewFormWrapper = ({ topics, locale }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
   const { mutate: addInitiative } = useAddInitiative();
   const authUser = useAuthUser();
-  const { mutate: addInitiativeImage } = useAddInitiativeImage();
+  const { mutate: addInitiativeImage, isLoading: isAdding } =
+    useAddInitiativeImage();
   const { mutate: deleteInitiativeImage } = useDeleteInitiativeImage();
   const { mutate: addInitiativeFile } = useAddInitiativeFile();
   const { mutate: deleteInitiativeFile } = useDeleteInitiativeFile();
-  const { mutate: updateInitiative } = useUpdateInitiative();
+  const { mutate: updateInitiative, isLoading: isUpdating } =
+    useUpdateInitiative();
 
   const initialValues = {
     title_multiloc: undefined,
@@ -73,7 +75,6 @@ const InitiativesNewFormWrapper = ({ topics, locale }: Props) => {
   const [formValues, setFormValues] = useState<SimpleFormValues>(initialValues);
   const [image, setImage] = useState<UploadFile | null>(null);
   const [imageId, setImageId] = useState<string | null>(null);
-  const [publishing, setPublishing] = useState<boolean>(false);
   const [hasBannerChanged, setHasBannerChanged] = useState<boolean>(false);
   const [banner, setBanner] = useState<UploadFile | null>(null);
   const [files, setFiles] = useState<UploadFile[]>([]);
@@ -238,30 +239,32 @@ const InitiativesNewFormWrapper = ({ topics, locale }: Props) => {
   const handlePublish = async () => {
     const changedValues = getChangedValues();
 
-    // if we're already saving, do nothing.
-    if (publishing) return;
-
-    // setting flags for user feedback and avoiding double sends.
-
-    setPublishing(true);
-
     try {
       const formAPIValues = await getValuesToSend(
         changedValues,
         hasBannerChanged,
         banner
       );
-      let initiative;
 
       // save any changes to the initiative data.
       if (initiativeId) {
-        updateInitiative({
-          initiativeId,
-          requestBody: {
-            ...formAPIValues,
-            publication_status: 'published',
+        updateInitiative(
+          {
+            initiativeId,
+            requestBody: {
+              ...formAPIValues,
+              publication_status: 'published',
+            },
           },
-        });
+          {
+            onSuccess: (initiative) => {
+              clHistory.push({
+                pathname: `/initiatives/${initiative.data.attributes.slug}`,
+                search: `?new_initiative_id=${initiative.data.id}`,
+              });
+            },
+          }
+        );
       } else {
         addInitiative(
           {
@@ -306,16 +309,7 @@ const InitiativesNewFormWrapper = ({ topics, locale }: Props) => {
 
         setHasImageChanged(false);
       }
-
-      setPublishing(false);
-
-      clHistory.push({
-        pathname: `/initiatives/${initiative.data.attributes.slug}`,
-        search: `?new_initiative_id=${initiative.data.id}`,
-      });
     } catch (errorResponse) {
-      setPublishing(false);
-
       const apiErrors = get(errorResponse, 'json.errors');
 
       const profanityApiError = apiErrors.base.find(
@@ -473,7 +467,7 @@ const InitiativesNewFormWrapper = ({ topics, locale }: Props) => {
       files={files}
       apiErrors={apiErrors}
       publishError={publishError}
-      publishing={publishing}
+      publishing={isAdding && isUpdating}
       onChangeTitle={onChangeTitle}
       onChangeBody={onChangeBody}
       onChangeTopics={onChangeTopics}
