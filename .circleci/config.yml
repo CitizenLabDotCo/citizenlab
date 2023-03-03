@@ -623,6 +623,7 @@ jobs:
     docker:
       - image: cimg/base:2021.03
     parallelism: 3
+    working_directory: ~/citizenlab
     resource_class: medium+
     steps:
       - shallow-clone
