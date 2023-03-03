@@ -69,6 +69,19 @@ export interface UserCustomFieldsInfos {
   hasCustomFields: boolean;
 }
 
+interface IUserCustomFieldSchemas {
+  data: {
+    attributes: {
+      json_schema_multiloc: {
+        [key in Locale]?: any;
+      };
+      ui_schema_multiloc: {
+        [key in Locale]?: any;
+      };
+    };
+  };
+}
+
 export interface IUserJsonFormSchemas {
   json_schema_multiloc: {
     [key in Locale]?: JsonSchema7;
@@ -114,7 +127,7 @@ export function userCustomFieldsStream(
 export function customFieldsSchemaForUsersStream(
   streamParams: IStreamParams | null = null
 ) {
-  return streams.get<any>({
+  return streams.get<IUserCustomFieldSchemas>({
     apiEndpoint: userCustomFieldsSchemaApiEndpoint,
     ...streamParams,
   });
