@@ -287,9 +287,8 @@ const AdminIdeaEdit = ({
     setIdeaFiles(ideaFiles);
   };
 
-  const title = locale && titleMultiloc ? titleMultiloc[locale] || '' : '';
-  const description =
-    locale && descriptionMultiloc ? descriptionMultiloc[locale] || '' : null;
+  const title = titleMultiloc?.[locale] || null;
+  const description = descriptionMultiloc?.[locale] || null;
   const submitErrorMessage = submitError ? (
     <FormattedMessage {...messages.submitError} />
   ) : null;
