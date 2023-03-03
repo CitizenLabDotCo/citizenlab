@@ -50,7 +50,12 @@ RUN gem install bundler:2.3.20
 COPY --from=dependency_files /app .
 
 ARG BUNDLER_JOBS
-RUN bundle install ${BUNDLER_JOBS:+--jobs=$BUNDLER_JOBS}
+RUN bundle config set --local clean 'true'               \
+ && bundle config set --local deployment 'true'          \
+ && bundle install ${BUNDLER_JOBS:+--jobs=$BUNDLER_JOBS} \
+ # Removing the cached files manually as --no-cache does not seem to work
+ # (or at least it's not doing what I expect from it).
+ && rm -rf ./vendor/bundle/ruby/2.7.0/cache
 
 COPY back/. .
 
