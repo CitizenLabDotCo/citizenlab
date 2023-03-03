@@ -6,7 +6,7 @@ import {
   ParticipationMethod,
 } from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
-import { IIdeaData } from 'services/ideas';
+import { IIdeaData } from 'api/ideas/types';
 
 interface Props {
   showListView: boolean;
