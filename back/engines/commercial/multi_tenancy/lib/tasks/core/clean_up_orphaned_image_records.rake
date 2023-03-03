@@ -41,7 +41,7 @@ namespace :cl2back do
       end
 
       # text_images
-      # Destroy text_image if ref not found anywhere in associated imageable record.
+      # Destroy text_image if ref not found anywhere in the associated imageable record's imageable_field.
       TextImage.all.includes(:imageable).each do |image|
         next if image.imageable.instance_eval(image.imageable_field).to_json.include?(image.text_reference)
 
