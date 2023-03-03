@@ -8,7 +8,7 @@ import useProject from 'hooks/useProject';
 import usePhase from 'hooks/usePhase';
 import useBasket from 'hooks/useBasket';
 import useAuthUser from 'hooks/useAuthUser';
-import useIdeasInBasket from 'api/ideas/useIdeasInBasket';
+import useIdeas from 'api/ideas/useIdeas';
 
 // styles
 import { colors, fontSizes } from 'utils/styleUtils';
@@ -141,9 +141,10 @@ const PBBasket = ({
   const authUser = useAuthUser();
   const { formatMessage } = useIntl();
 
-  const { data: ideas } = useIdeasInBasket({
+  const { data: ideas } = useIdeas({
     basket_id: basket.id,
     'page[size]': basket.relationships.ideas.data.length,
+    sort: 'random',
   });
 
   const ideaList = ideas?.data;
