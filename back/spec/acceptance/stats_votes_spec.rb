@@ -544,7 +544,7 @@ resource 'Stats - Votes' do
           project1.id => 3,
           project2.id => 1
         })
-        expect(json_response[:projects].keys.map(&:to_s)).to match_array [project1.id, project2.id]
+        expect(json_attributes[:projects].keys.map(&:to_s)).to match_array [project1.id, project2.id]
       end
     end
 
