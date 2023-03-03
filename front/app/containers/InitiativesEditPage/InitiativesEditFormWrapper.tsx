@@ -7,11 +7,7 @@ import InitiativeForm, {
 
 // services
 import { Locale, Multiloc, UploadFile } from 'typings';
-import {
-  updateInitiative,
-  IInitiativeData,
-  IInitiativeAdd,
-} from 'services/initiatives';
+import { IInitiativeData, IInitiativeAdd } from 'services/initiatives';
 import { ITopicData } from 'services/topics';
 
 // utils
@@ -37,6 +33,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useAddInitiativeFile from 'api/initiative_files/useAddInitiativeFile';
 import useDeleteInitiativeFile from 'api/initiative_files/useDeleteInitiativeFile';
+import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
 
 interface Props {
   locale: Locale;
@@ -65,6 +62,7 @@ const InitiativesEditFormWrapper = ({
   const { mutate: deleteInitiativeImage } = useDeleteInitiativeImage();
   const { mutate: addInitiativeFile } = useAddInitiativeFile();
   const { mutate: deleteInitiativeFile } = useDeleteInitiativeFile();
+  const { mutate: updateInitiative } = useUpdateInitiative();
 
   const initialValues = {
     title_multiloc: initiative.attributes.title_multiloc,
@@ -183,9 +181,13 @@ const InitiativesEditFormWrapper = ({
         hasBannerChanged,
         banner
       );
-      await updateInitiative(initiative.id, {
-        ...formAPIValues,
-        publication_status: 'published',
+
+      updateInitiative({
+        initiativeId: initiative.id,
+        requestBody: {
+          ...formAPIValues,
+          publication_status: 'published',
+        },
       });
 
       // feed back what was saved to the api into the initialValues object
