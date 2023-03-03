@@ -83,10 +83,14 @@ interface IUserCustomFieldSchemas {
 }
 
 export interface IUserJsonFormSchemas {
-  json_schema_multiloc: {
-    [key in Locale]?: JsonSchema7;
+  data: {
+    attributes: {
+      json_schema_multiloc: {
+        [key in Locale]?: JsonSchema7;
+      };
+      ui_schema_multiloc: { [key in Locale]?: Layout };
+    };
   };
-  ui_schema_multiloc: { [key in Locale]?: Layout };
 }
 
 export function isBuiltInField(field: IUserCustomFieldData) {
