@@ -19,11 +19,11 @@ const useUpdateInitiative = () => {
   const queryClient = useQueryClient();
   return useMutation<IInitiative, CLErrors, IUpdateInitiativeObject>({
     mutationFn: updateInitiative,
-    onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({ queryKey: initiativesCountKeys.all() });
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: initiativesKeys.item(variables.initiativeId),
+        queryKey: initiativesKeys.lists(),
       });
+      queryClient.invalidateQueries({ queryKey: initiativesCountKeys.all() });
     },
   });
 };

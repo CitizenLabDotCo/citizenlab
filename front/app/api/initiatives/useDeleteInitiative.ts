@@ -17,9 +17,6 @@ const useDeleteInitiative = () => {
       queryClient.invalidateQueries({
         queryKey: initiativesKeys.lists(),
       });
-
-      // TODO: Invalidate user's initiatives count
-      //   `${API_PATH}/users/${authorId}/initiatives_count`
     },
   });
 };
