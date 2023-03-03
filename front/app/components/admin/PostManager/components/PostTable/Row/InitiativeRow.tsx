@@ -5,7 +5,6 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import { updateInitiative } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 
 // components
@@ -45,6 +44,7 @@ import events, {
 
 // hooks
 import useInitiatives from 'api/initiatives/useInitiatives';
+import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
 
 // types
 import { IInitiativeData } from 'api/initiatives/types';
@@ -93,6 +93,8 @@ const InitiativeRow = ({
   tenant,
 }: Props) => {
   const { data: initiatives } = useInitiatives({});
+  const { mutate: updateInitiative } = useUpdateInitiative();
+
   const [_collected, drag] = useDrag({
     type: 'IDEA',
     item: {
@@ -123,8 +125,11 @@ const InitiativeRow = ({
               (d) => d.id
             );
             const newTopics = uniq(currentTopics.concat(dropResult.id));
-            updateInitiative(initiative.id, {
-              topic_ids: newTopics,
+            updateInitiative({
+              initiativeId: initiative.id,
+              requestBody: {
+                topic_ids: newTopics,
+              },
             });
           }
         });
@@ -133,14 +138,20 @@ const InitiativeRow = ({
   });
 
   const onUpdateInitiativePhases = (selectedPhases: string[]) => {
-    updateInitiative(initiative.id, {
-      phase_ids: selectedPhases,
+    updateInitiative({
+      initiativeId: initiative.id,
+      requestBody: {
+        phase_ids: selectedPhases,
+      },
     });
   };
 
   const onUpdateInitiativeTopics = (selectedTopics: string[]) => {
-    updateInitiative(initiative.id, {
-      topic_ids: selectedTopics,
+    updateInitiative({
+      initiativeId: initiative.id,
+      requestBody: {
+        topic_ids: selectedTopics,
+      },
     });
   };
 
@@ -162,8 +173,11 @@ const InitiativeRow = ({
   const onUpdateInitiativeAssignee = (assigneeId: string | undefined) => {
     const initiativeId = initiative.id;
 
-    updateInitiative(initiativeId, {
-      assignee_id: assigneeId || null,
+    updateInitiative({
+      initiativeId: initiative.id,
+      requestBody: {
+        assignee_id: assigneeId || null,
+      },
     });
 
     trackEventByName(tracks.changeInitiativeAssignment, {
