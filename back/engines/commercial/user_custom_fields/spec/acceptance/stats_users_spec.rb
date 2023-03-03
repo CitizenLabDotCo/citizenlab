@@ -85,7 +85,7 @@ resource 'Stats - Users' do
       context "when 'gender' custom field has no reference distribution" do
         example_request 'Users by gender' do
           expect(response_status).to eq 200
-          json_response = json_parse(json_response_body)
+          json_response = json_parse(response_body)
           expect(json_response.dig(:data, :type)).to eq 'users_by_gender'
           json_attributes = json_response.dig(:data, :attributes)
           expect(json_attributes).to include(
@@ -105,7 +105,7 @@ resource 'Stats - Users' do
 
         example_request 'Users by gender with expected user counts' do
           expect(response_status).to eq 200
-          json_response = json_parse(json_response_body)
+          json_response = json_parse(response_body)
           expect(json_response.dig(:data, :type)).to eq 'users_by_gender'
           json_attributes = json_response.dig(:data, :attributes)
           expect(json_attributes).to include(
@@ -192,7 +192,7 @@ resource 'Stats - Users' do
 
         example_request 'Users by birthyear' do
           expect(response_status).to eq 200
-          json_response = json_parse(json_response_body)
+          json_response = json_parse(response_body)
           expect(json_response.dig(:data, :type)).to eq 'users_by_birthyear'
           json_attributes = json_response.dig(:data, :attributes)
           expect(json_attributes).to match({
@@ -210,7 +210,7 @@ resource 'Stats - Users' do
 
         example_request 'Users by birthyear filtered by project' do
           expect(response_status).to eq 200
-          json_response = json_parse(json_response_body)
+          json_response = json_parse(response_body)
           expect(json_response.dig(:data, :type)).to eq 'users_by_birthyear'
           json_attributes = json_response.dig(:data, :attributes)
           expect(json_attributes[:series][:users].values.sum).to eq 1
@@ -262,7 +262,7 @@ resource 'Stats - Users' do
 
       example_request 'Users by domicile' do
         expect(response_status).to eq 200
-        json_response = json_parse(json_response_body)
+        json_response = json_parse(response_body)
         expect(json_response.dig(:data, :type)).to eq 'users_by_domicile'
         json_attributes = json_response.dig(:data, :attributes)
         expect(json_attributes).to match({
@@ -323,7 +323,7 @@ resource 'Stats - Users' do
           .options.to_h { |option| [option.key, 0] }
           .merge('3': 2, '5': 1, _blank: 0)
           .symbolize_keys
-        json_response = json_parse(json_response_body)
+        json_response = json_parse(response_body)
         expect(json_response.dig(:data, :type)).to eq 'users_by_education'
         json_attributes = json_response.dig(:data, :attributes)
         expect(json_attributes).to include(
@@ -400,7 +400,7 @@ resource 'Stats - Users' do
         context 'when the custom field has no reference distribution' do
           example_request 'Users by custom field (select)' do
             expect(response_status).to eq 200
-            json_response = json_parse(json_response_body)
+            json_response = json_parse(response_body)
             expect(json_response.dig(:data, :type)).to eq 'users_by_customfield'
             json_attributes = json_response.dig(:data, :attributes)
             expect(json_attributes).to match({
@@ -428,7 +428,7 @@ resource 'Stats - Users' do
 
           example_request 'Users by custom field (select) including expected nb of users' do
             expect(response_status).to eq 200
-            json_response = json_parse(json_response_body)
+            json_response = json_parse(response_body)
             expect(json_response.dig(:data, :type)).to eq 'users_by_customfield'
             json_attributes = json_response.dig(:data, :attributes)
             expect(json_attributes).to include(series: hash_including(
@@ -464,7 +464,7 @@ resource 'Stats - Users' do
 
         example_request 'Users by custom field (multiselect)' do
           expect(response_status).to eq 200
-            json_response = json_parse(json_response_body)
+            json_response = json_parse(response_body)
             expect(json_response.dig(:data, :type)).to eq 'users_by_customfield'
             json_attributes = json_response.dig(:data, :attributes)
           expect(json_attributes).to match({
@@ -511,7 +511,7 @@ resource 'Stats - Users' do
 
         example_request 'Users by custom field (checkbox)' do
           expect(response_status).to eq 200
-          json_response = json_parse(json_response_body)
+          json_response = json_parse(response_body)
           expect(json_response.dig(:data, :type)).to eq 'users_by_customfield'
           json_attributes = json_response.dig(:data, :attributes)
           expect(json_attributes).to match({
@@ -555,7 +555,7 @@ resource 'Stats - Users' do
 
         example_request 'Users by custom field (filtered)' do
           expect(response_status).to eq 200
-          json_response = json_parse(json_response_body)
+          json_response = json_parse(response_body)
           expect(json_response.dig(:data, :type)).to eq 'users_by_customfield'
           json_attributes = json_response.dig(:data, :attributes)
           expect(json_attributes).to match({
@@ -579,7 +579,7 @@ resource 'Stats - Users' do
 
         example_request 'Users by custom field (filtered)' do
           expect(response_status).to eq 200
-          json_response = json_parse(json_response_body)
+          json_response = json_parse(response_body)
           expect(json_response.dig(:data, :type)).to eq 'users_by_customfield'
           json_attributes = json_response.dig(:data, :attributes)
           expect(json_attributes).to match({
