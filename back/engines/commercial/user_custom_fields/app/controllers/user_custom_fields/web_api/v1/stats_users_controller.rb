@@ -31,7 +31,7 @@ module UserCustomFields
             end
           end
 
-          render json: json_response
+          render raw_json(json: json_response)
         rescue NotSupportedFieldTypeError
           head :not_implemented
         end

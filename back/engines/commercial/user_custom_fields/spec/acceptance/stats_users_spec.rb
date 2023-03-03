@@ -383,7 +383,10 @@ resource 'Stats - Users' do
         context 'when the custom field has no reference distribution' do
           example_request 'Users by custom field (select)' do
             expect(response_status).to eq 200
-            expect(json_response_body).to match({
+            json_response = json_parse(json_response_body)
+            expect(json_response.dig(:data, :type)).to eq 'users_by_customfield'
+            json_attributes = json_response.dig(:data, :attributes)
+            expect(json_attributes).to match({
               options: {
                 @option1.key => { title_multiloc: @option1.title_multiloc, ordering: 0 },
                 @option2.key => { title_multiloc: @option2.title_multiloc, ordering: 1 },
