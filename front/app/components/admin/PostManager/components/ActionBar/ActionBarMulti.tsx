@@ -1,6 +1,5 @@
 import React from 'react';
 import { FormattedMessage } from 'utils/cl-intl';
-import { deleteIdea } from 'services/ideas';
 import { Button, Icon } from 'semantic-ui-react';
 import messages from '../../messages';
 import { ManagerType } from '../..';
