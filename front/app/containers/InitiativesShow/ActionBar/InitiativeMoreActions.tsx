@@ -12,7 +12,7 @@ import Modal from 'components/UI/Modal';
 import SpamReportForm from 'containers/SpamReport';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // router
@@ -21,7 +21,6 @@ import clHistory from 'utils/cl-router/history';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // hooks
-import { useIntl } from 'utils/cl-intl';
 import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
 
 // Types
