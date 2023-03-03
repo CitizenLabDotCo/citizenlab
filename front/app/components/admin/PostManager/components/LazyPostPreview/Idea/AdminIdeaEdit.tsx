@@ -108,7 +108,7 @@ const AdminIdeaEdit = ({
         clHistory.push('/');
       }
     }
-  }, []);
+  }, [idea]);
 
   if (isNilOrError(locale) || isNilOrError(idea)) {
     return null;
