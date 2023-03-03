@@ -1,4 +1,4 @@
-import { IIdeaData } from 'services/ideas';
+import { IIdeaData } from 'api/ideas/types';
 import { NilOrError } from 'utils/helperUtils';
 import useIdeaById from 'api/ideas/useIdeaById';
 
