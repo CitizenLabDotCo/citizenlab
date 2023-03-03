@@ -7,7 +7,6 @@ import InitiativeForm, {
 
 // services
 import { Locale, Multiloc, UploadFile } from 'typings';
-import { IInitiativeData, IInitiativeAdd } from 'services/initiatives';
 import { ITopicData } from 'services/topics';
 
 // utils
@@ -23,17 +22,15 @@ import { Point } from 'geojson';
 import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
 
-// resources
-
 import { IInitiativeImageData } from 'api/initiative_images/types';
 import useAddInitiativeImage from 'api/initiative_images/useAddInitiativeImage';
 import useDeleteInitiativeImage from 'api/initiative_images/useDeleteInitiativeImage';
 import useAuthUser from 'hooks/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-
 import useAddInitiativeFile from 'api/initiative_files/useAddInitiativeFile';
 import useDeleteInitiativeFile from 'api/initiative_files/useDeleteInitiativeFile';
 import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
+import { IInitiativeAdd, IInitiativeData } from 'api/initiatives/types';
 
 interface Props {
   locale: Locale;
