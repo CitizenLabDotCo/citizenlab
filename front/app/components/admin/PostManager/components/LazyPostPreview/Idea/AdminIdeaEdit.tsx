@@ -1,6 +1,6 @@
 // Copied IdeaEditPage and made the minimal modifications for this use.
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -14,12 +14,8 @@ import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
 import { Content, Top, Container } from '../PostPreview';
 
 // services
-import { ideaByIdStream, updateIdea } from 'services/ideas';
-import {
-  ideaImageStream,
-  addIdeaImage,
-  deleteIdeaImage,
-} from 'services/ideaImages';
+import { updateIdea } from 'services/ideas';
+import { addIdeaImage, deleteIdeaImage } from 'services/ideaImages';
 import { hasPermission } from 'services/permissions';
 import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
 
@@ -32,7 +28,7 @@ import eventEmitter from 'utils/eventEmitter';
 import { geocode } from 'utils/locationTools';
 
 // typings
-import { UploadFile, Multiloc, Locale, ILocationInfo } from 'typings';
+import { UploadFile, Multiloc, ILocationInfo } from 'typings';
 
 // style
 import { colors } from 'utils/styleUtils';
@@ -77,29 +73,6 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {
-  projectId: string | null;
-  locale: Locale;
-  titleMultiloc: Multiloc | null;
-  descriptionMultiloc: Multiloc | null;
-  selectedTopics: string[];
-  budget: number | null;
-  proposedBudget: number | null;
-  address: string | null;
-  imageFile: UploadFile[];
-  imageFileIsChanged: boolean;
-  ideaFiles: UploadFile[];
-  imageId: string | null;
-  submitError: boolean;
-  titleProfanityError: boolean;
-  descriptionProfanityError: boolean;
-  loaded: boolean;
-  processing: boolean;
-  authorId: string | null;
-  attachments: UploadFile[];
-  originalLocationDescription: string | null;
-}
-
 const AdminIdeaEdit = ({
   ideaId,
   remoteIdeaFiles,
@@ -115,7 +88,6 @@ const AdminIdeaEdit = ({
   const [titleProfanityError, setTitleProfanityError] = useState(false);
   const [descriptionProfanityError, setDescriptionProfanityError] =
     useState(false);
-  const [fileOrImageError, setFileOrImageError] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
   const [descriptionMultiloc, setDescriptionMultiloc] =
@@ -123,101 +95,20 @@ const AdminIdeaEdit = ({
   const [imageFile, setImageFile] = useState<UploadFile[]>([]);
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [address, setAddress] = useState<string | null>(null);
-  // constructor(props: Props) {
-  //   super(props);
-  //   this.state = {
-  //     projectId: null,
-  //     authorId: null,
-  //     locale: 'en',
-  //     titleMultiloc: null,
-  //     descriptionMultiloc: null,
-  //     selectedTopics: [],
-  //     budget: null,
-  //     proposedBudget: null,
-  //     address: null,
-  //     imageFile: [],
-  //     imageFileIsChanged: false,
-  //     ideaFiles: [],
-  //     imageId: null,
-  //     submitError: false,
-  //     titleProfanityError: false,
-  //     descriptionProfanityError: false,
-  //     loaded: false,
-  //     processing: false,
-  //     attachments: [],
-  //     originalLocationDescription: null,
-  //   };
-  //   this.subscriptions = [];
-  // }
 
-  // componentDidMount() {
-  //   const { ideaId } = this.props;
-  //   const locale$ = localeStream().observable;
+  useEffect(() => {
+    if (!isNilOrError(idea)) {
+      const granted = hasPermission({
+        item: idea.data,
+        action: 'edit',
+        context: idea.data,
+      });
 
-  //   const idea$ = ideaByIdStream(ideaId).observable;
-
-  //   const ideaWithRelationships$ = combineLatest([locale$, idea$]).pipe(
-  //     switchMap(([_locale, idea]) => {
-  //       const ideaId = idea.data.id;
-  //       const ideaImages = idea.data.relationships.idea_images.data;
-  //       const ideaImageId =
-  //         ideaImages && ideaImages.length > 0 ? ideaImages[0].id : null;
-  //       const ideaImage$ = ideaImageId
-  //         ? ideaImageStream(ideaId, ideaImageId).observable.pipe(
-  //             first(),
-  //             switchMap((ideaImage) => {
-  //               if (
-  //                 ideaImage &&
-  //                 ideaImage.data &&
-  //                 ideaImage.data.attributes.versions.large
-  //               ) {
-  //                 const url = ideaImage.data.attributes.versions.large;
-  //                 const id = ideaImage.data.id;
-  //                 return convertUrlToUploadFileObservable(url, id, null);
-  //               }
-
-  //               return of(null);
-  //             })
-  //           )
-  //         : of(null);
-
-  //       const granted$ = hasPermission({
-  //         item: idea.data,
-  //         action: 'edit',
-  //         context: idea.data,
-  //       });
-
-  //       return combineLatest([locale$, idea$, ideaImage$, granted$]);
-  //     })
-  //   );
-
-  //   this.subscriptions = [
-  //     ideaWithRelationships$.subscribe(([locale, idea, ideaImage, granted]) => {
-  //       if (granted) {
-  //         this.setState({
-  //           locale,
-  //           selectedTopics:
-  //             idea.data.relationships.topics?.data.map((topic) => topic.id) ||
-  //             [],
-  //           projectId: idea.data.relationships.project.data.id,
-  //           loaded: true,
-  //           titleMultiloc: idea.data.attributes.title_multiloc,
-  //           descriptionMultiloc: idea.data.attributes.body_multiloc,
-  //           address: idea.data.attributes.location_description,
-  //           originalLocationDescription:
-  //             idea.data.attributes.location_description,
-  //           budget: idea.data.attributes.budget,
-  //           authorId: idea.data.relationships.author.data?.id || null,
-  //           proposedBudget: idea.data.attributes.proposed_budget,
-  //           imageFile: ideaImage ? [ideaImage] : [],
-  //           imageId: ideaImage && ideaImage.id ? ideaImage.id : null,
-  //         });
-  //       } else {
-  //         clHistory.push('/');
-  //       }
-  //     }),
-  //   ];
-  // }
+      if (!granted) {
+        clHistory.push('/');
+      }
+    }
+  }, []);
 
   if (isNilOrError(locale) || isNilOrError(idea)) {
     return null;
@@ -230,6 +121,7 @@ const AdminIdeaEdit = ({
   const budget = idea.data.attributes.budget;
   const proposedBudget = idea.data.attributes.proposed_budget;
   const projectId = idea.data.relationships.project.data.id;
+  const originalLocationDescription = idea.data.attributes.location_description;
 
   const handleOnSaveButtonClick = () => {
     eventEmitter.emit('IdeaFormSubmitEvent');
@@ -248,7 +140,7 @@ const AdminIdeaEdit = ({
       ideaFilesToRemove,
       authorId: newAuthorId,
     } = ideaFormOutput;
-    const oldImageId = imageId;
+    const oldImageId = ideaImageId;
     const newImage = imageFile && imageFile.length > 0 ? imageFile[0] : null;
 
     const newImageBase64 = newImage ? newImage.base64 : null;
@@ -394,71 +286,67 @@ const AdminIdeaEdit = ({
     setIdeaFiles(ideaFiles);
   };
 
-  if (loaded) {
-    const title = locale && titleMultiloc ? titleMultiloc[locale] || '' : '';
-    const description =
-      locale && descriptionMultiloc ? descriptionMultiloc[locale] || '' : null;
-    const submitErrorMessage = submitError ? (
-      <FormattedMessage {...messages.submitError} />
-    ) : null;
+  const title = locale && titleMultiloc ? titleMultiloc[locale] || '' : '';
+  const description =
+    locale && descriptionMultiloc ? descriptionMultiloc[locale] || '' : null;
+  const submitErrorMessage = submitError ? (
+    <FormattedMessage {...messages.submitError} />
+  ) : null;
 
-    if (projectId) {
-      return (
-        <Container>
-          <Top>
-            <Button
-              icon="arrow-left"
-              buttonStyle="text"
-              textColor={colors.primary}
-              onClick={goBack}
-            >
-              <FormattedMessage {...messages.cancelEdit} />
-            </Button>
-          </Top>
+  if (projectId) {
+    return (
+      <Container>
+        <Top>
+          <Button
+            icon="arrow-left"
+            buttonStyle="text"
+            textColor={colors.primary}
+            onClick={goBack}
+          >
+            <FormattedMessage {...messages.cancelEdit} />
+          </Button>
+        </Top>
 
-          <Content className="idea-form">
-            <IdeaForm
-              ideaId={ideaId}
-              authorId={authorId}
-              projectId={projectId}
-              title={title}
-              description={description}
-              selectedTopics={selectedTopics}
-              budget={budget}
-              proposedBudget={proposedBudget}
-              address={address || ''}
-              imageFile={imageFile}
-              ideaFiles={ideaFiles}
-              onSubmit={handleIdeaFormOutput}
-              remoteIdeaFiles={
-                !isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null
-              }
-              hasTitleProfanityError={titleProfanityError}
-              hasDescriptionProfanityError={descriptionProfanityError}
-              onTitleChange={onTitleChange}
-              onDescriptionChange={onDescriptionChange}
-              onImageFileAdd={onImageFileAdd}
-              onImageFileRemove={onImageFileRemove}
-              onTagsChange={onTagsChange}
-              onAddressChange={onAddressChange}
-              onIdeaFilesChange={onIdeaFilesChange}
+        <Content className="idea-form">
+          <IdeaForm
+            ideaId={ideaId}
+            authorId={authorId}
+            projectId={projectId}
+            title={title}
+            description={description}
+            selectedTopics={selectedTopics}
+            budget={budget}
+            proposedBudget={proposedBudget}
+            address={address || ''}
+            imageFile={imageFile}
+            ideaFiles={ideaFiles}
+            onSubmit={handleIdeaFormOutput}
+            remoteIdeaFiles={
+              !isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null
+            }
+            hasTitleProfanityError={titleProfanityError}
+            hasDescriptionProfanityError={descriptionProfanityError}
+            onTitleChange={onTitleChange}
+            onDescriptionChange={onDescriptionChange}
+            onImageFileAdd={onImageFileAdd}
+            onImageFileRemove={onImageFileRemove}
+            onTagsChange={onTagsChange}
+            onAddressChange={onAddressChange}
+            onIdeaFilesChange={onIdeaFilesChange}
+          />
+
+          <ButtonWrapper>
+            <SaveButton
+              processing={processing}
+              text={<FormattedMessage {...messages.save} />}
+              onClick={handleOnSaveButtonClick}
             />
-
-            <ButtonWrapper>
-              <SaveButton
-                processing={processing}
-                text={<FormattedMessage {...messages.save} />}
-                onClick={handleOnSaveButtonClick}
-              />
-              <Error text={submitErrorMessage} marginTop="0px" />
-            </ButtonWrapper>
-          </Content>
-        </Container>
-      );
-    }
-    return null;
+            <Error text={submitErrorMessage} marginTop="0px" />
+          </ButtonWrapper>
+        </Content>
+      </Container>
+    );
   }
-
   return null;
 };
 
