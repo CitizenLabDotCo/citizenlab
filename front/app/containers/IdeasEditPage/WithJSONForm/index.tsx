@@ -12,8 +12,7 @@ import IdeasEditMeta from '../IdeasEditMeta';
 // services
 import { deleteIdeaImage } from 'services/ideaImages';
 import { usePermission } from 'services/permissions';
-import { updateIdea } from 'services/ideas';
-
+import useUpdateIdea from 'api/ideas/useUpdateIdea';
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'hooks/useAuthUser';
@@ -39,6 +38,7 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
   const authUser = useAuthUser();
   const { data: idea } = useIdeaById(ideaId);
+  const { mutate: updateIdea } = useUpdateIdea();
   const project = useProject({
     projectId: isNilOrError(idea)
       ? null
@@ -137,15 +137,21 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
       publication_status: 'published',
     };
 
-    const idea = await updateIdea(
-      ideaId,
-      isImageNew
-        ? omit(payload, 'idea_files_attributes')
-        : omit(payload, ['idea_images_attributes', 'idea_files_attributes'])
+    updateIdea(
+      {
+        id: ideaId,
+        requestBody: isImageNew
+          ? omit(payload, 'idea_files_attributes')
+          : omit(payload, ['idea_images_attributes', 'idea_files_attributes']),
+      },
+      {
+        onSuccess: (idea) => {
+          clHistory.push({
+            pathname: `/ideas/${idea.data.attributes.slug}`,
+          });
+        },
+      }
     );
-    clHistory.push({
-      pathname: `/ideas/${idea.data.attributes.slug}`,
-    });
   };
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(
