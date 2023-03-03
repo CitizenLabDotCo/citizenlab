@@ -1,9 +1,7 @@
 // Copied IdeaEditPage and made the minimal modifications for this use.
 
-import React, { PureComponent } from 'react';
+import React, { useState } from 'react';
 import { adopt } from 'react-adopt';
-import { Subscription, combineLatest, of } from 'rxjs';
-import { switchMap, first } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
 
 // router
@@ -16,7 +14,6 @@ import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
 import { Content, Top, Container } from '../PostPreview';
 
 // services
-import { localeStream } from 'services/locale';
 import { ideaByIdStream, updateIdea } from 'services/ideas';
 import {
   ideaImageStream,
@@ -32,7 +29,6 @@ import messages from '../messages';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
 import { geocode } from 'utils/locationTools';
 
 // typings
@@ -51,10 +47,12 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
+import useLocale from 'hooks/useLocale';
 
 // tracks
 import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
+import useIdeaById from 'api/ideas/useIdeaById';
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -102,125 +100,142 @@ interface State {
   originalLocationDescription: string | null;
 }
 
-class AdminIdeaEdit extends PureComponent<Props, State> {
-  subscriptions: Subscription[];
+const AdminIdeaEdit = ({
+  ideaId,
+  remoteIdeaFiles,
+  goBack,
+  authUser,
+  appConfiguration,
+}: Props) => {
+  const locale = useLocale();
+  const { data: idea } = useIdeaById(ideaId);
+  const [ideaFiles, setIdeaFiles] = useState<UploadFile[]>([]);
+  const [imageFileIsChanged, setImageFileIsChanged] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
+  const [titleProfanityError, setTitleProfanityError] = useState(false);
+  const [descriptionProfanityError, setDescriptionProfanityError] =
+    useState(false);
+  const [fileOrImageError, setFileOrImageError] = useState(false);
+  const [processing, setProcessing] = useState(false);
+  const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
+  const [descriptionMultiloc, setDescriptionMultiloc] =
+    useState<Multiloc | null>(null);
+  const [imageFile, setImageFile] = useState<UploadFile[]>([]);
+  const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
+  const [address, setAddress] = useState<string | null>(null);
+  // constructor(props: Props) {
+  //   super(props);
+  //   this.state = {
+  //     projectId: null,
+  //     authorId: null,
+  //     locale: 'en',
+  //     titleMultiloc: null,
+  //     descriptionMultiloc: null,
+  //     selectedTopics: [],
+  //     budget: null,
+  //     proposedBudget: null,
+  //     address: null,
+  //     imageFile: [],
+  //     imageFileIsChanged: false,
+  //     ideaFiles: [],
+  //     imageId: null,
+  //     submitError: false,
+  //     titleProfanityError: false,
+  //     descriptionProfanityError: false,
+  //     loaded: false,
+  //     processing: false,
+  //     attachments: [],
+  //     originalLocationDescription: null,
+  //   };
+  //   this.subscriptions = [];
+  // }
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      projectId: null,
-      authorId: null,
-      locale: 'en',
-      titleMultiloc: null,
-      descriptionMultiloc: null,
-      selectedTopics: [],
-      budget: null,
-      proposedBudget: null,
-      address: null,
-      imageFile: [],
-      imageFileIsChanged: false,
-      ideaFiles: [],
-      imageId: null,
-      submitError: false,
-      titleProfanityError: false,
-      descriptionProfanityError: false,
-      loaded: false,
-      processing: false,
-      attachments: [],
-      originalLocationDescription: null,
-    };
-    this.subscriptions = [];
+  // componentDidMount() {
+  //   const { ideaId } = this.props;
+  //   const locale$ = localeStream().observable;
+
+  //   const idea$ = ideaByIdStream(ideaId).observable;
+
+  //   const ideaWithRelationships$ = combineLatest([locale$, idea$]).pipe(
+  //     switchMap(([_locale, idea]) => {
+  //       const ideaId = idea.data.id;
+  //       const ideaImages = idea.data.relationships.idea_images.data;
+  //       const ideaImageId =
+  //         ideaImages && ideaImages.length > 0 ? ideaImages[0].id : null;
+  //       const ideaImage$ = ideaImageId
+  //         ? ideaImageStream(ideaId, ideaImageId).observable.pipe(
+  //             first(),
+  //             switchMap((ideaImage) => {
+  //               if (
+  //                 ideaImage &&
+  //                 ideaImage.data &&
+  //                 ideaImage.data.attributes.versions.large
+  //               ) {
+  //                 const url = ideaImage.data.attributes.versions.large;
+  //                 const id = ideaImage.data.id;
+  //                 return convertUrlToUploadFileObservable(url, id, null);
+  //               }
+
+  //               return of(null);
+  //             })
+  //           )
+  //         : of(null);
+
+  //       const granted$ = hasPermission({
+  //         item: idea.data,
+  //         action: 'edit',
+  //         context: idea.data,
+  //       });
+
+  //       return combineLatest([locale$, idea$, ideaImage$, granted$]);
+  //     })
+  //   );
+
+  //   this.subscriptions = [
+  //     ideaWithRelationships$.subscribe(([locale, idea, ideaImage, granted]) => {
+  //       if (granted) {
+  //         this.setState({
+  //           locale,
+  //           selectedTopics:
+  //             idea.data.relationships.topics?.data.map((topic) => topic.id) ||
+  //             [],
+  //           projectId: idea.data.relationships.project.data.id,
+  //           loaded: true,
+  //           titleMultiloc: idea.data.attributes.title_multiloc,
+  //           descriptionMultiloc: idea.data.attributes.body_multiloc,
+  //           address: idea.data.attributes.location_description,
+  //           originalLocationDescription:
+  //             idea.data.attributes.location_description,
+  //           budget: idea.data.attributes.budget,
+  //           authorId: idea.data.relationships.author.data?.id || null,
+  //           proposedBudget: idea.data.attributes.proposed_budget,
+  //           imageFile: ideaImage ? [ideaImage] : [],
+  //           imageId: ideaImage && ideaImage.id ? ideaImage.id : null,
+  //         });
+  //       } else {
+  //         clHistory.push('/');
+  //       }
+  //     }),
+  //   ];
+  // }
+
+  if (isNilOrError(locale) || isNilOrError(idea)) {
+    return null;
   }
 
-  componentDidMount() {
-    const { ideaId } = this.props;
-    const locale$ = localeStream().observable;
+  const authorId = idea.data.relationships.author.data?.id || null;
+  const ideaImages = idea.data.relationships.idea_images.data;
+  const ideaImageId =
+    ideaImages && ideaImages.length > 0 ? ideaImages[0].id : null;
+  const budget = idea.data.attributes.budget;
+  const proposedBudget = idea.data.attributes.proposed_budget;
+  const projectId = idea.data.relationships.project.data.id;
 
-    const idea$ = ideaByIdStream(ideaId).observable;
-
-    const ideaWithRelationships$ = combineLatest([locale$, idea$]).pipe(
-      switchMap(([_locale, idea]) => {
-        const ideaId = idea.data.id;
-        const ideaImages = idea.data.relationships.idea_images.data;
-        const ideaImageId =
-          ideaImages && ideaImages.length > 0 ? ideaImages[0].id : null;
-        const ideaImage$ = ideaImageId
-          ? ideaImageStream(ideaId, ideaImageId).observable.pipe(
-              first(),
-              switchMap((ideaImage) => {
-                if (
-                  ideaImage &&
-                  ideaImage.data &&
-                  ideaImage.data.attributes.versions.large
-                ) {
-                  const url = ideaImage.data.attributes.versions.large;
-                  const id = ideaImage.data.id;
-                  return convertUrlToUploadFileObservable(url, id, null);
-                }
-
-                return of(null);
-              })
-            )
-          : of(null);
-
-        const granted$ = hasPermission({
-          item: idea.data,
-          action: 'edit',
-          context: idea.data,
-        });
-
-        return combineLatest([locale$, idea$, ideaImage$, granted$]);
-      })
-    );
-
-    this.subscriptions = [
-      ideaWithRelationships$.subscribe(([locale, idea, ideaImage, granted]) => {
-        if (granted) {
-          this.setState({
-            locale,
-            selectedTopics:
-              idea.data.relationships.topics?.data.map((topic) => topic.id) ||
-              [],
-            projectId: idea.data.relationships.project.data.id,
-            loaded: true,
-            titleMultiloc: idea.data.attributes.title_multiloc,
-            descriptionMultiloc: idea.data.attributes.body_multiloc,
-            address: idea.data.attributes.location_description,
-            originalLocationDescription:
-              idea.data.attributes.location_description,
-            budget: idea.data.attributes.budget,
-            authorId: idea.data.relationships.author.data?.id || null,
-            proposedBudget: idea.data.attributes.proposed_budget,
-            imageFile: ideaImage ? [ideaImage] : [],
-            imageId: ideaImage && ideaImage.id ? ideaImage.id : null,
-          });
-        } else {
-          clHistory.push('/');
-        }
-      }),
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }
-
-  handleOnSaveButtonClick = () => {
+  const handleOnSaveButtonClick = () => {
     eventEmitter.emit('IdeaFormSubmitEvent');
   };
 
-  handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
-    const { ideaId, goBack, authUser, appConfiguration } = this.props;
-    const {
-      locale,
-      titleMultiloc,
-      descriptionMultiloc,
-      imageFileIsChanged,
-      originalLocationDescription,
-      imageId,
-      authorId,
-      projectId,
-    } = this.state;
+  const handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
     const {
       title,
       imageFile,
@@ -275,7 +290,8 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
       ...addressDiff,
     });
 
-    this.setState({ processing: true, submitError: false });
+    setProcessing(true);
+    setSubmitError(false);
     try {
       if (oldImageId && imageFileIsChanged) {
         await deleteIdeaImage(ideaId, oldImageId);
@@ -317,9 +333,7 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
               ? appConfiguration.attributes.host
               : null,
           });
-          this.setState({
-            titleProfanityError,
-          });
+          setTitleProfanityError(titleProfanityError);
         }
 
         if (descriptionProfanityError) {
@@ -334,144 +348,117 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
               ? appConfiguration.attributes.host
               : null,
           });
-          this.setState({
-            descriptionProfanityError,
-          });
+          setDescriptionProfanityError(descriptionProfanityError);
         }
       }
-      this.setState({ processing: false, submitError: true });
+      setSubmitError(true);
+      setProcessing(false);
     }
   };
 
-  onTitleChange = (title: string) => {
-    const { locale } = this.props;
-
-    if (!isNilOrError(locale)) {
-      const titleMultiloc = { [locale]: title };
-
-      this.setState({ titleMultiloc, titleProfanityError: false });
-    }
+  const onTitleChange = (title: string) => {
+    setTitleMultiloc({ ...titleMultiloc, [locale]: title });
+    setTitleProfanityError(false);
   };
 
-  onImageFileAdd = (newImageFile: UploadFile[]) => {
-    this.setState({ imageFile: [newImageFile[0]], imageFileIsChanged: true });
+  const onImageFileAdd = (imageFile: UploadFile[]) => {
+    setImageFile([imageFile[0]]);
+    setImageFileIsChanged(true);
   };
 
-  onImageFileRemove = () => {
-    this.setState({ imageFile: [], imageFileIsChanged: true });
+  const onImageFileRemove = () => {
+    setImageFile([]);
+    setImageFileIsChanged(true);
   };
 
-  onTagsChange = (selectedTopics: string[]) => {
-    this.setState({ selectedTopics });
+  const onTagsChange = (selectedTopics: string[]) => {
+    setSelectedTopics(selectedTopics);
   };
 
-  onAddressChange = (address: string) => {
-    this.setState({ address });
+  const onAddressChange = (address: string) => {
+    setAddress(address);
   };
 
-  onDescriptionChange = (description: string) => {
-    const { locale } = this.props;
+  const onDescriptionChange = (description: string) => {
+    setDescriptionMultiloc({
+      ...descriptionMultiloc,
+      [locale]: description,
+    });
 
-    if (!isNilOrError(locale)) {
-      const descriptionMultiloc = { [locale]: description };
-
-      this.setState({ descriptionMultiloc, descriptionProfanityError: false });
-    }
+    setDescriptionProfanityError(false);
   };
 
-  onIdeaFilesChange = (ideaFiles: UploadFile[]) => {
-    this.setState({ ideaFiles });
+  const onIdeaFilesChange = (ideaFiles: UploadFile[]) => {
+    setIdeaFiles(ideaFiles);
   };
 
-  render() {
-    if (this.state && this.state.loaded) {
-      const { remoteIdeaFiles, goBack, ideaId } = this.props;
-      const {
-        locale,
-        projectId,
-        titleMultiloc,
-        descriptionMultiloc,
-        selectedTopics,
-        address,
-        imageFile,
-        ideaFiles,
-        submitError,
-        processing,
-        budget,
-        proposedBudget,
-        titleProfanityError,
-        descriptionProfanityError,
-        authorId,
-      } = this.state;
-      const title = locale && titleMultiloc ? titleMultiloc[locale] || '' : '';
-      const description =
-        locale && descriptionMultiloc
-          ? descriptionMultiloc[locale] || ''
-          : null;
-      const submitErrorMessage = submitError ? (
-        <FormattedMessage {...messages.submitError} />
-      ) : null;
+  if (loaded) {
+    const title = locale && titleMultiloc ? titleMultiloc[locale] || '' : '';
+    const description =
+      locale && descriptionMultiloc ? descriptionMultiloc[locale] || '' : null;
+    const submitErrorMessage = submitError ? (
+      <FormattedMessage {...messages.submitError} />
+    ) : null;
 
-      if (projectId) {
-        return (
-          <Container>
-            <Top>
-              <Button
-                icon="arrow-left"
-                buttonStyle="text"
-                textColor={colors.primary}
-                onClick={goBack}
-              >
-                <FormattedMessage {...messages.cancelEdit} />
-              </Button>
-            </Top>
+    if (projectId) {
+      return (
+        <Container>
+          <Top>
+            <Button
+              icon="arrow-left"
+              buttonStyle="text"
+              textColor={colors.primary}
+              onClick={goBack}
+            >
+              <FormattedMessage {...messages.cancelEdit} />
+            </Button>
+          </Top>
 
-            <Content className="idea-form">
-              <IdeaForm
-                ideaId={ideaId}
-                authorId={authorId}
-                projectId={projectId}
-                title={title}
-                description={description}
-                selectedTopics={selectedTopics}
-                budget={budget}
-                proposedBudget={proposedBudget}
-                address={address || ''}
-                imageFile={imageFile}
-                ideaFiles={ideaFiles}
-                onSubmit={this.handleIdeaFormOutput}
-                remoteIdeaFiles={
-                  !isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null
-                }
-                hasTitleProfanityError={titleProfanityError}
-                hasDescriptionProfanityError={descriptionProfanityError}
-                onTitleChange={this.onTitleChange}
-                onDescriptionChange={this.onDescriptionChange}
-                onImageFileAdd={this.onImageFileAdd}
-                onImageFileRemove={this.onImageFileRemove}
-                onTagsChange={this.onTagsChange}
-                onAddressChange={this.onAddressChange}
-                onIdeaFilesChange={this.onIdeaFilesChange}
+          <Content className="idea-form">
+            <IdeaForm
+              ideaId={ideaId}
+              authorId={authorId}
+              projectId={projectId}
+              title={title}
+              description={description}
+              selectedTopics={selectedTopics}
+              budget={budget}
+              proposedBudget={proposedBudget}
+              address={address || ''}
+              imageFile={imageFile}
+              ideaFiles={ideaFiles}
+              onSubmit={handleIdeaFormOutput}
+              remoteIdeaFiles={
+                !isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null
+              }
+              hasTitleProfanityError={titleProfanityError}
+              hasDescriptionProfanityError={descriptionProfanityError}
+              onTitleChange={onTitleChange}
+              onDescriptionChange={onDescriptionChange}
+              onImageFileAdd={onImageFileAdd}
+              onImageFileRemove={onImageFileRemove}
+              onTagsChange={onTagsChange}
+              onAddressChange={onAddressChange}
+              onIdeaFilesChange={onIdeaFilesChange}
+            />
+
+            <ButtonWrapper>
+              <SaveButton
+                processing={processing}
+                text={<FormattedMessage {...messages.save} />}
+                onClick={handleOnSaveButtonClick}
               />
-
-              <ButtonWrapper>
-                <SaveButton
-                  processing={processing}
-                  text={<FormattedMessage {...messages.save} />}
-                  onClick={this.handleOnSaveButtonClick}
-                />
-                <Error text={submitErrorMessage} marginTop="0px" />
-              </ButtonWrapper>
-            </Content>
-          </Container>
-        );
-      }
-      return null;
+              <Error text={submitErrorMessage} marginTop="0px" />
+            </ButtonWrapper>
+          </Content>
+        </Container>
+      );
     }
-
     return null;
   }
-}
+
+  return null;
+};
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
