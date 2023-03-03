@@ -85,8 +85,7 @@ resource 'Stats - Users' do
       context "when 'gender' custom field has no reference distribution" do
         example_request 'Users by gender' do
           expect(response_status).to eq 200
-          json_attributes = json_response_body.dig(:data, :attributes)
-          expect(json_attributes).to include(
+          expect(json_response_body).to include(
             series: {
               users: { female: 2, unspecified: 1, male: 0, _blank: 0 },
               expected_users: nil,
