@@ -403,7 +403,9 @@ resource 'Stats - Votes' do
       example_request 'Votes by topic filtered by project' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:series][:total].values.sum).to eq 2
+        expect(json_response.dig(:data, :type)).to eq 'votes_by_topic'
+        json_attributes = json_response.dig(:data, :attributes)
+        expect(json_attributes[:series][:total].values.sum).to eq 2
       end
     end
 
@@ -422,7 +424,9 @@ resource 'Stats - Votes' do
       example_request 'Votes by topic filtered by group' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:series][:total].values.sum).to eq 2
+        expect(json_response.dig(:data, :type)).to eq 'votes_by_topic'
+        json_attributes = json_response.dig(:data, :attributes)
+        expect(json_attributes[:series][:total].values.sum).to eq 2
       end
     end
   end

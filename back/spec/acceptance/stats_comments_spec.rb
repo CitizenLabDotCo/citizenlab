@@ -388,7 +388,10 @@ resource 'Stats - Comments' do
 
         example_request 'Comments by topic filtered by project' do
           assert_status 200
-          expect(json_response[:series][:comments].values.sum).to eq 2
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :type)).to eq 'comments_by_topic'
+          json_attributes = json_response.dig(:data, :attributes)
+          expect(json_attributes[:series][:comments].values.sum).to eq 2
         end
       end
 
@@ -408,7 +411,10 @@ resource 'Stats - Comments' do
 
         example_request 'Comments by topic filtered by group' do
           assert_status 200
-          expect(json_response[:series][:comments].values.sum).to eq 2
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :type)).to eq 'comments_by_topic'
+          json_attributes = json_response.dig(:data, :attributes)
+          expect(json_attributes[:series][:comments].values.sum).to eq 2
         end
       end
     end
