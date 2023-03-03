@@ -14,11 +14,10 @@ import IdeaForm, { IIdeaFormOutput } from 'components/IdeaForm';
 import { Content, Top, Container } from '../PostPreview';
 
 // services
-import { updateIdea } from 'services/ideas';
 import { addIdeaImage, deleteIdeaImage } from 'services/ideaImages';
 import { hasPermission } from 'services/permissions';
 import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
-
+import useUpdateIdea from 'api/ideas/useUpdateIdea';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
@@ -81,6 +80,7 @@ const AdminIdeaEdit = ({
   appConfiguration,
 }: Props) => {
   const locale = useLocale();
+  const { mutate: updateIdea } = useUpdateIdea();
   const { data: idea } = useIdeaById(ideaId);
   const [ideaFiles, setIdeaFiles] = useState<UploadFile[]>([]);
   const [imageFileIsChanged, setImageFileIsChanged] = useState(false);
@@ -165,21 +165,23 @@ const AdminIdeaEdit = ({
     if (locationPoint && originalLocationDescription !== ideaFormAddress) {
       addressDiff.location_point_geojson = locationPoint;
     }
-
-    const updateIdeaPromise = updateIdea(ideaId, {
-      budget,
-      proposed_budget: proposedBudget,
-      title_multiloc: {
-        ...titleMultiloc,
-        [locale]: title,
+    updateIdea({
+      id: ideaId,
+      requestBody: {
+        budget,
+        proposed_budget: proposedBudget,
+        title_multiloc: {
+          ...titleMultiloc,
+          [locale]: title,
+        },
+        body_multiloc: {
+          ...descriptionMultiloc,
+          [locale]: description,
+        },
+        topic_ids: selectedTopics,
+        author_id: finalAuthorId,
+        ...addressDiff,
       },
-      body_multiloc: {
-        ...descriptionMultiloc,
-        [locale]: description,
-      },
-      topic_ids: selectedTopics,
-      author_id: finalAuthorId,
-      ...addressDiff,
     });
 
     setProcessing(true);
@@ -190,7 +192,6 @@ const AdminIdeaEdit = ({
       }
 
       await Promise.all([
-        updateIdeaPromise,
         imageToAddPromise,
         ...filesToAddPromises,
         ...filesToRemovePromises,
