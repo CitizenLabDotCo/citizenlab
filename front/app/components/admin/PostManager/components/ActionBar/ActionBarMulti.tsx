@@ -4,7 +4,6 @@ import { Button, Icon } from 'semantic-ui-react';
 import messages from '../../messages';
 import { ManagerType } from '../..';
 import { useIntl } from 'utils/cl-intl';
-import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 
 interface Props {

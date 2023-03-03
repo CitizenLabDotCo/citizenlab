@@ -1,5 +1,4 @@
 import React from 'react';
-import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 import { Icon, Button } from 'semantic-ui-react';
 import { FormattedMessage } from 'utils/cl-intl';
