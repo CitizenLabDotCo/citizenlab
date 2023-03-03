@@ -252,8 +252,6 @@ const IdeaEditPage = ({
         clHistory.push('/');
       }
     }
-
-    clHistory.push('/');
   }, [idea]);
 
   if (isNilOrError(locale) || isNilOrError(idea) || isNilOrError(project)) {
