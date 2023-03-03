@@ -17,49 +17,64 @@ export interface ICustomFieldParams extends IStreamParams {
 
 // Response types
 export interface IUsersByRegistrationField {
-  series: {
-    users: {
-      [key: string]: number;
-    };
-    reference_population: {
-      [key: string]: number;
-    };
-    expected_users: {
-      [key: string]: number;
-    };
-  };
-  options: {
-    [key: string]: {
-      title_multiloc: Multiloc;
-      ordering: number;
+  data: {
+    type: 'users_by_registration_field';
+    attributes: {
+      series: {
+        users: {
+          [key: string]: number;
+        };
+        reference_population: {
+          [key: string]: number;
+        };
+        expected_users: {
+          [key: string]: number;
+        };
+      };
+      options: {
+        [key: string]: {
+          title_multiloc: Multiloc;
+          ordering: number;
+        };
+      };
     };
   };
 }
 
 export interface IUsersByDomicile {
-  series: {
-    users: {
-      [key: string]: number;
-    };
-    // reference_population: {
-    //   [key: string]: number;
-    // }
-    // expected_users: {
-    //   [key: string]: number;
-    // };
-  };
-  areas: {
-    [key: string]: {
-      title_multiloc: Multiloc;
-      ordering: number;
+  data: {
+    type: 'users_by_domicile';
+    attributes: {
+      series: {
+        users: {
+          [key: string]: number;
+        };
+        // reference_population: {
+        //   [key: string]: number;
+        // }
+        // expected_users: {
+        //   [key: string]: number;
+        // };
+      };
+      areas: {
+        [key: string]: {
+          title_multiloc: Multiloc;
+          ordering: number;
+        };
+      };
     };
   };
 }
 
 export interface IUsersByBirthyear {
-  series: {
-    users: {
-      [key: string]: number;
+  data: {
+    type: 'users_by_birthyear';
+    attributes: {
+      series: {
+        users: {
+          [key: string]: number;
+        };
+      };
     };
   };
 }
