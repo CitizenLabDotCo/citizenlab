@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState, useCallback } from 'react';
 import { PreviousPathnameContext } from 'context';
 
-import { WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 
 import { isAdmin, isModerator, isSuperAdmin } from 'services/permissions/roles';
@@ -13,7 +12,7 @@ import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import usePhase from 'hooks/usePhase';
 import useInputSchema from 'hooks/useInputSchema';
-import { useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 import messages from '../messages';
 
@@ -33,7 +32,8 @@ import { getCurrentPhase } from 'services/phases';
 import { getMethodConfig } from 'utils/participationMethodUtils';
 import { getLocationGeojson } from '../utils';
 
-const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
+const IdeasNewPageWithJSONForm = () => {
+  const params = useParams<{ slug: string }>();
   const previousPathName = useContext(PreviousPathnameContext);
   const authUser = useAuthUser();
   const project = useProject({ projectSlug: params.slug });
