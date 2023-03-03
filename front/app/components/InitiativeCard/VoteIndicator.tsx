@@ -137,7 +137,7 @@ interface Props extends InputProps, DataProps, IntiativeInputProps {}
 
 const VoteIndicator = ({ initiative, initiativeStatus, tenant }: Props) => {
   const theme = useTheme();
-  if (isNilOrError(initiative) || isNilOrError(initiativeStatus)) return null;
+  if (isNilOrError(initiativeStatus)) return null;
 
   const statusCode = initiativeStatus.attributes.code;
   const voteCount = initiative.attributes.upvotes_count;
