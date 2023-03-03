@@ -1,7 +1,6 @@
 import React from 'react';
 import { deleteIdea } from 'services/ideas';
-import { deleteInitiative } from 'services/initiatives';
-
+import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
 import { Icon, Button } from 'semantic-ui-react';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
@@ -22,6 +21,7 @@ const ActionBarSingle = ({
   resetSelection,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const { mutate: deleteInitiative } = useDeleteInitiative();
 
   const handleClickDeleteIdea = () => {
     const message = formatMessage(messages.deleteInputConfirmation);
@@ -37,7 +37,7 @@ const ActionBarSingle = ({
     const message = formatMessage(messages.deleteInitiativeConfirmation);
 
     if (window.confirm(message)) {
-      deleteInitiative(postId);
+      deleteInitiative({ initiativeId: postId });
     }
 
     resetSelection();
