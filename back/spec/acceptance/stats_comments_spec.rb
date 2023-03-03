@@ -361,11 +361,14 @@ resource 'Stats - Comments' do
 
         example_request 'Comments by topic' do
           assert_status 200
-          expect(json_response[:series][:comments].stringify_keys).to match({
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :type)).to eq 'comments_by_topic'
+          json_attributes = json_response.dig(:data, :attributes)
+          expect(json_attributes[:series][:comments].stringify_keys).to match({
             @topic1.id => 3,
             @topic2.id => 2
           })
-          expect(json_response[:topics].keys.map(&:to_s)).to match_array [@topic1.id, @topic2.id, @topic3.id]
+          expect(json_attributes[:topics].keys.map(&:to_s)).to match_array [@topic1.id, @topic2.id, @topic3.id]
         end
       end
 
