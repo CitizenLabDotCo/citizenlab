@@ -322,7 +322,7 @@ const IdeaEditPage = ({
     });
 
     setSubmitError(false);
-    setProcessing(false);
+    setProcessing(true);
 
     try {
       if (oldImageId && imageFileIsChanged) {
