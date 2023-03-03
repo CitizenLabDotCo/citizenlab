@@ -5,7 +5,6 @@ import { switchMap } from 'rxjs/operators';
 import { projectFilesStream } from 'services/projectFiles';
 import { phaseFilesStream } from 'services/phaseFiles';
 import { pageFilesStream } from 'services/pageFiles';
-import { eventFilesStream } from 'services/eventFiles';
 import { ideaFilesStream } from 'services/ideaFiles';
 import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
 import { UploadFile } from 'typings';
@@ -27,7 +26,6 @@ function useRemoteFiles({
     const streamFn = {
       project: projectFilesStream,
       phase: phaseFilesStream,
-      event: eventFilesStream,
       page: pageFilesStream,
       idea: ideaFilesStream,
     }[resourceType];

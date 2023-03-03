@@ -14,11 +14,6 @@ import {
   IPhaseFiles,
 } from 'services/phaseFiles';
 import {
-  eventFilesStream,
-  IEventFileData,
-  IEventFiles,
-} from 'services/eventFiles';
-import {
   pageFilesStream,
   ICustomPageFileData,
   ICustomPageFiles,
@@ -27,19 +22,17 @@ import { ideaFilesStream, IIdeaFileData, IIdeaFiles } from 'services/ideaFiles';
 
 import { isNilOrError } from 'utils/helperUtils';
 
-export type ResourceType = 'project' | 'phase' | 'event' | 'page' | 'idea';
+export type ResourceType = 'project' | 'phase' | 'page' | 'idea';
 
 export type TResourceFileData =
   | IProjectFileData
   | IPhaseFileData
-  | IEventFileData
   | ICustomPageFileData
   | IIdeaFileData;
 
 export type TResourceFiles =
   | IProjectFiles
   | IPhaseFiles
-  | IEventFiles
   | ICustomPageFiles
   | IIdeaFiles;
 
@@ -101,9 +94,6 @@ export default class GetResourceFiles extends React.Component<Props, State> {
               }
               if (resourceType === 'phase') {
                 streamFn = phaseFilesStream;
-              }
-              if (resourceType === 'event') {
-                streamFn = eventFilesStream;
               }
               if (resourceType === 'page') {
                 streamFn = pageFilesStream;

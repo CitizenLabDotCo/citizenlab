@@ -121,6 +121,17 @@ jobs:
       - checkout
       - run: danger ci
 
+  changelogger:
+    resource_class: small
+    docker:
+      - image: citizenlabdotco/cl2-devops-changelogger:master
+        auth:
+          username: $DOCKER_USER
+          password: $DOCKER_PASS
+    working_directory: /app
+    steps:
+      - run: ruby script.rb
+
   slack-invalid-data-success:
     resource_class: small
     docker:
@@ -188,7 +199,7 @@ jobs:
       name: cl2-back
       image-tag: $CIRCLE_SHA1
     working_directory: /cl2_back
-    parallelism: 4
+    parallelism: 8
     environment:
       RAILS_ENV: test
       COVERAGE: ON
@@ -201,24 +212,6 @@ jobs:
           TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" "engines/*/*/spec/**/*_spec.rb" | circleci tests split  --split-by=timings)
           echo $TESTFILES
           bundle exec rspec --format documentation --profile --format RspecJunitFormatter -o spec/reports/rspec.xml -- ${TESTFILES}
-      - store_test_results:
-          path: spec/reports
-
-  back-slow-tests:
-    resource_class: small
-    executor:
-      name: cl2-back
-      image-tag: $CIRCLE_SHA1
-    working_directory: /cl2_back
-    environment:
-      RAILS_ENV: test
-    steps:
-      - wait-for-postgres
-      - run: |
-          rake db:create
-          rake db:schema:load
-      - run: |
-          bundle exec rspec --format documentation --format RspecJunitFormatter -o spec/reports/rspec.xml -t slow_test -P "spec/**/*_spec.rb,engines/*/*/spec/**/*_spec.rb"
       - store_test_results:
           path: spec/reports
 
@@ -273,7 +266,7 @@ jobs:
       - run: bundle exec rake web_api:docs:generate
       - run: bundle exec rake public_api:docs:generate
       - run: bundle exec rake admin_api:docs:generate
-      - run: apt-get -y install awscli
+      - run: apt-get update && apt-get -y install awscli
       - run: aws s3 sync doc/api s3://developers.citizenlab.co/api-docs/ee/frontweb_api/$CIRCLE_BRANCH --delete --acl public-read
       - run: aws s3 sync doc/public_api s3://developers.citizenlab.co/api-docs/ee/public_api/$CIRCLE_BRANCH --delete --acl public-read
       - run: aws s3 sync doc/admin_api s3://developers.citizenlab.co/api-docs/ee/admin_api/$CIRCLE_BRANCH --delete --acl public-read
@@ -563,7 +556,7 @@ jobs:
             - /root/.npm
           key: v1-npm-cache-{{ checksum "package.json" }}
       - run:
-          command: SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_DSN=$SENTRY_DSN SENTRY_ENV=$SENTRY_ENV_STAGING SENTRY_ENV=$SENTRY_ENV_STAGING POSTHOG_API_KEY=$POSTHOG_API_KEY_STAGING npm run build
+          command: SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_DSN=$SENTRY_DSN SENTRY_ENV=$SENTRY_ENV_STAGING POSTHOG_API_KEY=$POSTHOG_API_KEY_STAGING npm run build
           no_output_timeout: "30m"
       - run:
           command: rm build/*.map
@@ -624,16 +617,20 @@ jobs:
   e2e-tests:
     docker:
       - image: cimg/base:2021.03
+    parallelism: 3
     resource_class: medium+
     steps:
       - checkout
       - copy_secrets_from_lastpass
-      - setup_remote_docker:
-          version: 19.03.13 # https://support.circleci.com/hc/en-us/articles/360050934711
+      - setup_remote_docker
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: |
           cd e2e
-          docker-compose build
+          # --parallel is weird https://github.com/docker/compose/issues/7901 but it seems to work.
+          # `docker compose` (w/o hythen) doesn't work atm "docker: 'compose' is not a docker command"
+          docker-compose build --parallel
+      - run: |
+          cd e2e
           docker-compose run web bin/rails db:drop db:create db:schema:load
           docker-compose run web bin/rails "cl2_back:create_tenant[e2e.front,e2etests_template]"
       - run:
@@ -641,16 +638,32 @@ jobs:
             cd e2e
             docker-compose up
           background: true
-      # Wait until build is finished. TODO: Use prebuilt images.
-      - run: sleep 280
+      # Wait until build is finished.
       - run: |
+          sleep 10 # if we run `docker-compose run` immediately, it fails with "network is ambiguous (2 matches found on name)"
           cd e2e
-          docker-compose run --name cypress_run front npm run cypress:run -- --config baseUrl=http://e2e.front:3000
+          # we cannot access localhost:3000, so we call it from the container
+          # https://discuss.circleci.com/t/cannot-communicate-with-docker-container/27253/2
+          docker-compose run front curl --retry 2 --retry-delay 5 --retry-connrefused -v http://e2e.front:3000
+      - run: |
+          cd front
+          TESTFILES=$(circleci tests glob "cypress/e2e/**/*.cy.ts" | circleci tests split  --split-by=timings)
+          COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | sed 's/ /,/g')
+          echo $COMMA_SEPARATED_TESTFILES
+          cd ../e2e
+          docker-compose run --name cypress_run front npm run cypress:run -- --reporter junit --reporter-options "mochaFile=reports/cypress.xml,toConsole=true" --config baseUrl=http://e2e.front:3000 --spec ${COMMA_SEPARATED_TESTFILES}
+      # We run cypress tests in container, so we need to copy the results out.
+      # ToDo: fix it. Reporting doesn't work atm.
+      - run: |
+          mkdir -p front/reports
+          docker cp cypress_run:/front/reports/cypress.xml front/reports/cypress.xml
       - run:
           command: docker cp cypress_run:/front/cypress/screenshots .
           # If `when: always`, it fails on success with
           # Error: No such container:path: cypress_run:/front/cypress/screenshots
           when: on_fail
+      - store_test_results:
+          path: front/reports
       - store_artifacts:
           path: screenshots
 
@@ -678,6 +691,14 @@ workflows:
                 - /l10n_.*/
                 - master
                 - production
+      - changelogger:
+          filters:
+            branches:
+              only:
+                - production
+          context:
+            - docker-hub-access
+            - changelogger
 
   # BACK-END
   back:
@@ -737,17 +758,10 @@ workflows:
             - citizenlab-ee-environment
           requires:
             - back-build-docker-image
-      - back-slow-tests:
-          context:
-            - docker-hub-access
-            - citizenlab-ee-environment
-          requires:
-            - back-build-docker-image
       - back-trigger-deploy:
           context: circleci-api-token
           requires:
             - back-test
-            - back-slow-tests
             - back-lint
             - back-bundle-audit
           filters:
