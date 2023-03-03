@@ -48,7 +48,9 @@ WORKDIR /cl2_back
 RUN gem install bundler:2.3.20
 
 COPY --from=dependency_files /app .
-RUN bundle install
+
+ARG BUNDLER_JOBS
+RUN bundle install ${BUNDLER_JOBS:+--jobs=$BUNDLER_JOBS}
 
 COPY back/. .
 
