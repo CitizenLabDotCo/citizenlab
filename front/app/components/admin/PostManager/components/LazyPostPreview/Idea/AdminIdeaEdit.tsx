@@ -37,7 +37,6 @@ import styled from 'styled-components';
 import GetRemoteFiles, {
   GetRemoteFilesChildProps,
 } from 'resources/GetRemoteFiles';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
@@ -65,7 +64,6 @@ export interface InputProps {
 
 interface DataProps {
   remoteIdeaFiles: GetRemoteFilesChildProps;
-  locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
   appConfiguration: GetAppConfigurationChildProps;
 }
@@ -353,7 +351,6 @@ const AdminIdeaEdit = ({
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   appConfiguration: <GetAppConfiguration />,
-  locale: <GetLocale />,
   remoteIdeaFiles: ({ ideaId, render }) => (
     <GetRemoteFiles resourceId={ideaId} resourceType="idea">
       {render}
