@@ -114,7 +114,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   def votes_by_topic
     serie = votes_by_topic_serie
     topics = Topic.all.select(:id, :title_multiloc)
-    render json: { series: { total: serie }, topics: topics.to_h { |t| [t.id, t.attributes.except('id')] } }
+    render json: raw_json({ series: { total: serie }, topics: topics.to_h { |t| [t.id, t.attributes.except('id')] } })
   end
 
   def votes_by_topic_as_xlsx
