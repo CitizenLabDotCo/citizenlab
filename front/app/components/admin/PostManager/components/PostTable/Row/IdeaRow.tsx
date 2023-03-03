@@ -1,6 +1,8 @@
 import React, { ChangeEvent, useState, MouseEvent } from 'react';
 import { uniq, isEmpty } from 'lodash-es';
 import { useDrag } from 'react-dnd';
+import streams from 'utils/streams';
+import { getListEndpoint } from 'services/projectAllowedInputTopics';
 // services
 import { IPhaseData } from 'services/phases';
 import { IIdeaData } from 'api/ideas/types';
@@ -39,6 +41,7 @@ import { insertConfiguration } from 'utils/moduleUtils';
 
 // hooks
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
+import { API_PATH } from 'containers/App/constants';
 
 type Props = {
   type: ManagerType;
@@ -197,6 +200,7 @@ const IdeaRow = ({
         const ideaIds = selection.has(item.id)
           ? [...selection].map((id) => id)
           : [item.id];
+
         if (dropResult.type === 'topic') {
           const currentTopics = idea.relationships.topics?.data.map(
             (d) => d.id
@@ -204,12 +208,26 @@ const IdeaRow = ({
           const newTopics = uniq(currentTopics?.concat(dropResult.id));
 
           ideaIds.forEach((ideaId) => {
-            updateIdea({
-              id: ideaId,
-              requestBody: {
-                topic_ids: newTopics,
+            updateIdea(
+              {
+                id: ideaId,
+                requestBody: {
+                  topic_ids: newTopics,
+                },
               },
-            });
+              {
+                onSuccess: () => {
+                  streams.fetchAllWith({
+                    apiEndpoint: [
+                      // If in /admin/ideas
+                      getListEndpoint(projectId),
+                      // If in /admin/projects/:projectId/manage/ideas
+                      `${API_PATH}/topics`,
+                    ],
+                  });
+                },
+              }
+            );
           });
         }
 
