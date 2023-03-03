@@ -120,6 +120,7 @@ jobs:
   trigger-workflows:
     docker:
       - image: cimg/base:stable
+    working_directory: ~/citizenlab
     steps:
       - shallow-clone
       - run:
