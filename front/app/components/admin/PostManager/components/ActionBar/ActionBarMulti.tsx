@@ -1,6 +1,5 @@
 import React from 'react';
 import { FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 import { deleteIdea } from 'services/ideas';
 import { Button, Icon } from 'semantic-ui-react';
 import messages from '../../messages';
@@ -15,11 +14,7 @@ interface Props {
   resetSelection: () => void;
 }
 
-const ActionBarMulti = ({
-  selection,
-  resetSelection,
-  type,
-}: Props & WrappedComponentProps) => {
+const ActionBarMulti = ({ selection, resetSelection, type }: Props) => {
   const { formatMessage } = useIntl();
   const { mutate: deleteInitiative } = useDeleteInitiative();
 
