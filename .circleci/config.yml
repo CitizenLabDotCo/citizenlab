@@ -121,7 +121,7 @@ jobs:
     docker:
       - image: cimg/base:stable
     steps:
-      - checkout
+      - shallow-clone
       - run:
           name: Trigger workflows
           command: chmod +x .circleci/monorepo.sh && .circleci/monorepo.sh
