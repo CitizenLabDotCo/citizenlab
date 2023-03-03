@@ -32,8 +32,9 @@ const FiltersModal = ({
   ...filtersSideBarProps
 }: Props) => {
   const ideasFilterCounts = useIdeasFilterCounts(selectedIdeaFilters);
-  const results =
-    !isNilOrError(ideasFilterCounts) && isNumber(ideasFilterCounts.total);
+  const total = isNilOrError(ideasFilterCounts)
+    ? null
+    : ideasFilterCounts.data.attributes.total;
 
   return (
     <FullscreenModal
@@ -44,11 +45,11 @@ const FiltersModal = ({
       bottomBar={
         <BottomBar
           buttonText={
-            results ? (
+            total && isNumber(total) ? (
               <FormattedMessage
                 {...messages.showXResults}
                 values={{
-                  ideasCount: ideasFilterCounts.total,
+                  ideasCount: total,
                 }}
               />
             ) : (
