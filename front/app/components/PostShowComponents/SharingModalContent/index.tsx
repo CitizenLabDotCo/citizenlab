@@ -20,7 +20,7 @@ import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetIdeaById, { GetIdeaByIdChildProps } from 'resources/GetIdeaById';
 import GetInitiative, {
   GetInitiativeChildProps,
 } from 'resources/GetInitiative';
@@ -44,7 +44,7 @@ import rocket from 'assets/img/rocket.png';
 
 interface InputProps {
   postType: PostType;
-  postId: string | null;
+  postId: string;
   className?: string;
   title: string;
   subtitle: string;
@@ -54,7 +54,7 @@ interface DataProps {
   locale: GetLocaleChildProps;
   tenant: GetAppConfigurationChildProps;
   authUser: GetAuthUserChildProps;
-  idea: GetIdeaChildProps;
+  idea: GetIdeaByIdChildProps;
   initiative: GetInitiativeChildProps;
   project: GetProjectChildProps;
   phases: GetPhasesChildProps;
@@ -237,15 +237,15 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
-  idea: ({ postId, postType, render }) => (
-    <GetIdea ideaId={postId && postType === 'idea' ? postId : null}>
-      {render}
-    </GetIdea>
-  ),
+  idea: ({ postId, postType, render }) => {
+    if (postType === 'idea') {
+      return <GetIdeaById ideaId={postId}>{render}</GetIdeaById>;
+    }
+
+    return null;
+  },
   initiative: ({ postId, postType, render }) => (
-    <GetInitiative
-      id={postId && postType === 'initiative' ? postId : undefined}
-    >
+    <GetInitiative id={postType === 'initiative' ? postId : undefined}>
       {render}
     </GetInitiative>
   ),

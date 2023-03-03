@@ -58,7 +58,7 @@ import GetRemoteFiles, {
   GetRemoteFilesChildProps,
 } from 'resources/GetRemoteFiles';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetIdeaById, { GetIdeaByIdChildProps } from 'resources/GetIdeaById';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetAppConfiguration, {
@@ -123,7 +123,7 @@ interface InputProps {
 interface DataProps {
   remoteIdeaFiles: GetRemoteFilesChildProps;
   project: GetProjectChildProps;
-  idea: GetIdeaChildProps;
+  idea: GetIdeaByIdChildProps;
   appConfiguration: GetAppConfigurationChildProps;
   phases: GetPhasesChildProps;
   authUser: GetAuthUserChildProps;
@@ -550,7 +550,7 @@ const Data = adopt<DataProps, InputProps>({
     </GetRemoteFiles>
   ),
   idea: ({ params: { ideaId }, render }) => {
-    return <GetIdea ideaId={ideaId}>{render}</GetIdea>;
+    return <GetIdeaById ideaId={ideaId}>{render}</GetIdeaById>;
   },
   project: ({ idea, render }) => {
     return (

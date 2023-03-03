@@ -15,10 +15,8 @@ import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-import injectIntl from 'utils/cl-intl/injectIntl';
 
 // services
 import { deleteIdea, IIdeaData } from 'services/ideas';
@@ -40,101 +38,94 @@ interface Props {
   projectId: string;
 }
 
-const IdeaMoreActions = memo(
-  ({
-    idea,
-    className,
-    projectId,
-    intl: { formatMessage },
-  }: Props & WrappedComponentProps) => {
-    const [isSpamModalVisible, setIsSpamModalVisible] =
-      useState<boolean>(false);
-    const authUser = useAuthUser();
-    const project = useProject({ projectId });
+const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
+  const { formatMessage } = useIntl();
+  const [isSpamModalVisible, setIsSpamModalVisible] = useState<boolean>(false);
+  const authUser = useAuthUser();
+  const project = useProject({ projectId });
 
-    const openSpamModal = () => {
-      setIsSpamModalVisible(true);
-    };
+  const openSpamModal = () => {
+    setIsSpamModalVisible(true);
+  };
 
-    const closeSpamModal = () => {
-      setIsSpamModalVisible(false);
-    };
+  const closeSpamModal = () => {
+    setIsSpamModalVisible(false);
+  };
 
-    const onEditIdea = () => {
-      clHistory.push(`/ideas/edit/${idea.id}`);
-    };
+  const onEditIdea = () => {
+    clHistory.push(`/ideas/edit/${idea.id}`);
+  };
 
-    const onDeleteIdea = (ideaId: string, processType: ProcessType) => () => {
-      const deleteConfirmationMessage = {
-        continuous: messages.deleteInputConfirmation,
-        timeline: messages.deleteInputInTimelineConfirmation,
-      }[processType];
+  const onDeleteIdea = (ideaId: string, processType: ProcessType) => () => {
+    const deleteConfirmationMessage = {
+      continuous: messages.deleteInputConfirmation,
+      timeline: messages.deleteInputInTimelineConfirmation,
+    }[processType];
 
-      if (window.confirm(formatMessage(deleteConfirmationMessage))) {
-        deleteIdea(ideaId);
-        clHistory.goBack();
-      }
-    };
+    if (window.confirm(formatMessage(deleteConfirmationMessage))) {
+      deleteIdea(ideaId);
+      clHistory.goBack();
+    }
+  };
 
-    if (
-      !isNilOrError(authUser) &&
-      !isNilOrError(idea) &&
-      !isNilOrError(project)
-    ) {
-      const ideaId = idea.id;
-      const processType = project.attributes.process_type;
+  if (
+    !isNilOrError(authUser) &&
+    !isNilOrError(idea) &&
+    !isNilOrError(project)
+  ) {
+    const ideaId = idea.id;
+    const processType = project.attributes.process_type;
 
-      return (
-        <Container className={className}>
-          <MoreActionsMenuWrapper>
-            <HasPermission item={idea} action="edit" context={idea}>
+    return (
+      <Container className={className}>
+        <MoreActionsMenuWrapper>
+          <HasPermission item={idea} action="edit" context={idea}>
+            <MoreActionsMenu
+              labelAndTitle={<FormattedMessage {...messages.moreOptions} />}
+              showLabel={false}
+              id="e2e-idea-more-actions"
+              actions={[
+                {
+                  label: <FormattedMessage {...messages.reportAsSpam} />,
+                  handler: openSpamModal,
+                },
+                {
+                  label: <FormattedMessage {...messages.editPost} />,
+                  handler: onEditIdea,
+                },
+                {
+                  label: <FormattedMessage {...messages.deletePost} />,
+                  handler: onDeleteIdea(ideaId, processType),
+                },
+              ]}
+            />
+            <HasPermission.No>
               <MoreActionsMenu
-                labelAndTitle={<FormattedMessage {...messages.moreOptions} />}
-                showLabel={false}
                 id="e2e-idea-more-actions"
                 actions={[
                   {
                     label: <FormattedMessage {...messages.reportAsSpam} />,
                     handler: openSpamModal,
                   },
-                  {
-                    label: <FormattedMessage {...messages.editPost} />,
-                    handler: onEditIdea,
-                  },
-                  {
-                    label: <FormattedMessage {...messages.deletePost} />,
-                    handler: onDeleteIdea(ideaId, processType),
-                  },
                 ]}
+                labelAndTitle={<FormattedMessage {...messages.moreOptions} />}
+                showLabel={false}
               />
-              <HasPermission.No>
-                <MoreActionsMenu
-                  id="e2e-idea-more-actions"
-                  actions={[
-                    {
-                      label: <FormattedMessage {...messages.reportAsSpam} />,
-                      handler: openSpamModal,
-                    },
-                  ]}
-                  labelAndTitle={<FormattedMessage {...messages.moreOptions} />}
-                  showLabel={false}
-                />
-              </HasPermission.No>
-            </HasPermission>
-          </MoreActionsMenuWrapper>
-          <Modal
-            opened={isSpamModalVisible}
-            close={closeSpamModal}
-            header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
-          >
-            <SpamReportForm resourceId={idea.id} resourceType="ideas" />
-          </Modal>
-        </Container>
-      );
-    }
-
-    return null;
+            </HasPermission.No>
+          </HasPermission>
+        </MoreActionsMenuWrapper>
+        <Modal
+          opened={isSpamModalVisible}
+          close={closeSpamModal}
+          header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
+        >
+          <SpamReportForm resourceId={idea.id} resourceType="ideas" />
+        </Modal>
+      </Container>
+    );
   }
-);
 
-export default injectIntl(IdeaMoreActions);
+  return null;
+});
+
+export default IdeaMoreActions;

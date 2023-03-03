@@ -175,7 +175,7 @@ const IdeaRow = ({
   const selectedPhases = idea.relationships.phases.data.map((p) => p.id);
   const selectedTopics = idea.relationships.topics?.data.map((p) => p.id);
   const active = selection.has(idea.id);
-  const projectId = get(idea, 'relationships.project.data.id');
+  const projectId = idea.relationships.project.data.id;
   const selectedStatus: string | undefined = get(
     idea,
     'relationships.idea_status.data.id'

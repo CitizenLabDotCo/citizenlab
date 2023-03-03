@@ -28,7 +28,7 @@ import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 import GetIdeaStatuses, {
   GetIdeaStatusesChildProps,
 } from 'resources/GetIdeaStatuses';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetIdeaById, { GetIdeaByIdChildProps } from 'resources/GetIdeaById';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
@@ -48,7 +48,7 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
   tenant: GetAppConfigurationChildProps;
   statuses: GetIdeaStatusesChildProps;
-  idea: GetIdeaChildProps;
+  idea: GetIdeaByIdChildProps;
   prospectAssignees: GetUsersChildProps;
 }
 
@@ -75,7 +75,7 @@ class FeedbackSettings extends PureComponent<
   });
 
   getIdeaStatusOption = memoize(
-    (idea: GetIdeaChildProps, statuses) => {
+    (idea: GetIdeaByIdChildProps, statuses) => {
       const { localize } = this.props;
       if (
         !isNilOrError(idea) &&
@@ -100,7 +100,7 @@ class FeedbackSettings extends PureComponent<
 
       return null;
     },
-    (idea: GetIdeaChildProps, statuses) =>
+    (idea: GetIdeaByIdChildProps, statuses) =>
       JSON.stringify({
         ideaId: isNilOrError(idea)
           ? undefined
@@ -211,10 +211,16 @@ class FeedbackSettings extends PureComponent<
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
-  idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
+  idea: ({ ideaId, render }) => (
+    <GetIdeaById ideaId={ideaId}>{render}</GetIdeaById>
+  ),
   statuses: <GetIdeaStatuses />,
   prospectAssignees: ({ idea, render }) => (
-    <GetUsers canModerateProject={get(idea, 'relationships.project.data.id')}>
+    <GetUsers
+      canModerateProject={
+        !isNilOrError(idea) ? idea.relationships.project.data.id : undefined
+      }
+    >
       {render}
     </GetUsers>
   ),

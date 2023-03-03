@@ -7,7 +7,7 @@ import CommentCount from './CommentCount';
 
 // types
 import { IParticipationContextType } from 'typings';
-import { IIdeaData } from 'services/ideas';
+import { IIdea } from 'api/ideas/types';
 
 // styles
 import styled from 'styled-components';
@@ -35,7 +35,7 @@ const IdeaBudget = styled.span`
 `;
 
 interface Props {
-  idea: IIdeaData;
+  idea: IIdea;
   participationContextId?: string | null;
   participationContextType?: IParticipationContextType | null;
   showCommentCount: boolean;
@@ -47,13 +47,13 @@ const FooterWithBudgetControl = ({
   participationContextType,
   showCommentCount,
 }: Props) => {
-  const projectId = idea.relationships.project.data.id;
-  const ideaBudget = idea.attributes.budget;
+  const projectId = idea.data.relationships.project.data.id;
+  const ideaBudget = idea.data.attributes.budget;
 
   return (
     <Footer>
       {showCommentCount && (
-        <CommentCount commentCount={idea.attributes.comments_count} />
+        <CommentCount commentCount={idea.data.attributes.comments_count} />
       )}{' '}
       {participationContextId && participationContextType && ideaBudget && (
         <BudgetControl>
@@ -63,7 +63,7 @@ const FooterWithBudgetControl = ({
           <AssignBudgetControl
             view="ideaCard"
             projectId={projectId}
-            ideaId={idea.id}
+            ideaId={idea.data.id}
           />
         </BudgetControl>
       )}

@@ -3,13 +3,12 @@ import { isNilOrError } from 'utils/helperUtils';
 import { getInputTerm } from 'services/participationContexts';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import { getInputTermMessage } from 'utils/i18n';
 
 // hooks
-import useIdea from 'hooks/useIdea';
+import useIdeaById from 'api/ideas/useIdeaById';
 import useLocalize from 'hooks/useLocalize';
 import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
@@ -22,13 +21,11 @@ interface Props {
   buttonComponent: JSX.Element;
 }
 
-const Component = ({
-  ideaId,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
-  const idea = useIdea({ ideaId });
+const Component = ({ ideaId }: Props) => {
+  const { formatMessage } = useIntl();
+  const { data: idea } = useIdeaById(ideaId);
   const projectId = !isNilOrError(idea)
-    ? idea.relationships.project.data.id
+    ? idea.data.relationships.project.data.id
     : null;
   const project = useProject({ projectId });
   const phases = usePhases(projectId);
@@ -36,8 +33,8 @@ const Component = ({
   const localize = useLocalize();
 
   if (!isNilOrError(idea) && !isNilOrError(project)) {
-    const postUrl = `${location.origin}/ideas/${idea.attributes.slug}`;
-    const titleMultiloc = idea.attributes.title_multiloc;
+    const postUrl = `${location.origin}/ideas/${idea.data.attributes.slug}`;
+    const titleMultiloc = idea.data.attributes.title_multiloc;
     const postTitle = localize(titleMultiloc);
     const inputTerm = getInputTerm(
       project.attributes.process_type,
@@ -134,4 +131,4 @@ const Component = ({
   return null;
 };
 
-export default injectIntl(Component);
+export default Component;
