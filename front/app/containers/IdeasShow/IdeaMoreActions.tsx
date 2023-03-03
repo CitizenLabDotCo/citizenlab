@@ -19,8 +19,8 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
-import { deleteIdea } from 'services/ideas';
 import { ProcessType } from 'services/projects';
+import useDeleteIdea from 'api/ideas/useDeleteIdea';
 
 // styling
 import styled from 'styled-components';
@@ -46,6 +46,7 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
   const [isSpamModalVisible, setIsSpamModalVisible] = useState<boolean>(false);
   const authUser = useAuthUser();
   const project = useProject({ projectId });
+  const { mutate: deleteIdea } = useDeleteIdea();
 
   const openSpamModal = () => {
     setIsSpamModalVisible(true);

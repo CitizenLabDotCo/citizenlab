@@ -1,6 +1,6 @@
 import React from 'react';
 import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
-import useDeleteIdea from 'api/Ideas/useDeleteInitiative';
+import useDeleteIdea from 'api/ideas/useDeleteIdea';
 import { Icon, Button } from 'semantic-ui-react';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
@@ -28,7 +28,7 @@ const ActionBarSingle = ({
     const message = formatMessage(messages.deleteInputConfirmation);
 
     if (window.confirm(message)) {
-      deleteIdea({ id: postId });
+      deleteIdea(postId);
     }
 
     resetSelection();

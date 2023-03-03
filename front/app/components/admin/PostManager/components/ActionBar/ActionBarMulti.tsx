@@ -5,7 +5,7 @@ import messages from '../../messages';
 import { ManagerType } from '../..';
 import { useIntl } from 'utils/cl-intl';
 import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
-import useDeleteIdea from 'api/Ideas/useDeleteInitiative';
+import useDeleteIdea from 'api/ideas/useDeleteIdea';
 
 interface Props {
   type: ManagerType;
@@ -26,7 +26,7 @@ const ActionBarMulti = ({ selection, resetSelection, type }: Props) => {
 
     if (window.confirm(message)) {
       selection.forEach((id) => {
-        deleteIdea({ id });
+        deleteIdea(id);
       });
     }
 
