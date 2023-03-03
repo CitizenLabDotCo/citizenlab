@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { isString, trim, get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
@@ -42,6 +42,9 @@ import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
 import { GetAppConfigurationChildProps } from 'resources/GetAppConfiguration';
+
+// hooks
+import useInitiativeById from 'api/initiatives/useInitiativeById';
 
 const Container = styled.div`
   display: flex;
@@ -116,59 +119,50 @@ interface DataProps {
   commentingPermissionInitiative: GetInitiativesPermissionsChildProps;
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
-  post: GetPostChildProps;
+  idea: GetPostChildProps;
   windowSize: GetWindowSizeChildProps;
   appConfiguration: GetAppConfigurationChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
-interface State {
-  inputValue: string;
-  focused: boolean;
-  processing: boolean;
-  profanityApiError: boolean;
-  hasEmptyError: boolean;
-  hasApiError: boolean;
-}
+const ParentCommentForm = ({
+  locale,
+  authUser,
+  postId,
+  postType,
+  appConfiguration,
+  intl: { formatMessage },
+  windowSize,
+  commentingPermissionInitiative,
+  className,
+  postingComment,
+  idea,
+}: Props & WrappedComponentProps) => {
+  const textareaElement = useRef<HTMLTextAreaElement | null>(null);
+  const [inputValue, setInputValue] = useState('');
+  const [focused, setFocused] = useState(false);
+  const [processing, setProcessing] = useState(false);
+  const [hasApiError, setHasApiError] = useState(false);
+  const [profanityApiError, setProfanityApiError] = useState(false);
+  const [hasEmptyError, setHasEmptyError] = useState(true);
+  const initiativeId = postType === 'initiative' ? postId : null;
+  const { data: initiative } = useInitiativeById(initiativeId);
+  const post = postType === 'idea' ? idea : initiative?.data;
 
-class ParentCommentForm extends PureComponent<
-  Props & WrappedComponentProps,
-  State
-> {
-  textareaElement: HTMLTextAreaElement | null = null;
+  useEffect(() => {
+    postingComment(processing);
+  }, [processing, postingComment]);
 
-  constructor(props: Props & WrappedComponentProps) {
-    super(props);
-    this.state = {
-      inputValue: '',
-      focused: false,
-      processing: false,
-      hasApiError: false,
-      profanityApiError: false,
-      hasEmptyError: true,
-    };
-  }
-
-  componentDidUpdate(_prevProps: Props, prevState: State) {
-    if (prevState.processing !== this.state.processing) {
-      this.props.postingComment(this.state.processing);
-    }
-  }
-
-  onChange = (inputValue: string) => {
-    this.setState({
-      inputValue,
-      focused: true,
-      hasApiError: false,
-      profanityApiError: false,
-      hasEmptyError: inputValue.trim().length < 1,
-    });
+  const onChange = (inputValue: string) => {
+    setInputValue(inputValue);
+    setFocused(true);
+    setHasApiError(false);
+    setProfanityApiError(false);
+    setHasEmptyError(inputValue.trim().length < 1);
   };
 
-  onFocus = () => {
-    const { postId, postType } = this.props;
-
+  const onFocus = () => {
     trackEventByName(tracks.focusParentCommentEditor, {
       extra: {
         postId,
@@ -176,30 +170,27 @@ class ParentCommentForm extends PureComponent<
       },
     });
 
-    this.setState({ focused: true });
+    setFocused(true);
   };
 
-  close = () => {
-    if (!this.state.processing) {
-      this.setState({ focused: false, inputValue: '' });
-      this.textareaElement?.blur();
+  const close = () => {
+    if (!processing) {
+      setFocused(false);
+      setInputValue('');
+
+      textareaElement.current?.blur();
     }
   };
 
-  onSubmit = async () => {
-    const { locale, authUser, postId, postType, post, appConfiguration } =
-      this.props;
-    const { inputValue } = this.state;
+  const onSubmit = async () => {
     const projectId: string | null = get(
       post,
       'relationships.project.data.id',
       null
     );
 
-    this.setState({
-      focused: false,
-      processing: true,
-    });
+    setFocused(false);
+    setProcessing(true);
 
     if (locale && authUser && isString(inputValue) && trim(inputValue) !== '') {
       const commentBodyMultiloc = {
@@ -215,7 +206,7 @@ class ParentCommentForm extends PureComponent<
       });
 
       try {
-        this.setState({ processing: true });
+        setProcessing(true);
 
         if (postType === 'idea' && projectId) {
           await addCommentToIdea(
@@ -249,8 +240,8 @@ class ParentCommentForm extends PureComponent<
         }
 
         commentAdded();
-        this.setState({ processing: false });
-        this.close();
+        setProcessing(false);
+        close();
       } catch (error) {
         // eslint-disable-next-line no-console
         if (process.env.NODE_ENV === 'development') console.log(error);
@@ -259,10 +250,8 @@ class ParentCommentForm extends PureComponent<
           (apiError) => apiError.error === 'includes_banned_words'
         );
 
-        this.setState({
-          hasApiError: true,
-          processing: false,
-        });
+        setHasApiError(true);
+        setProcessing(false);
 
         if (profanityApiError) {
           trackEventByName(tracks.parentCommentProfanityError.name, {
@@ -278,9 +267,7 @@ class ParentCommentForm extends PureComponent<
               : null,
           });
 
-          this.setState({
-            profanityApiError: true,
-          });
+          setProfanityApiError(true);
         }
 
         throw error;
@@ -288,16 +275,11 @@ class ParentCommentForm extends PureComponent<
     }
   };
 
-  setRef = (element: HTMLTextAreaElement) => {
-    this.textareaElement = element;
+  const setRef = (element: HTMLTextAreaElement) => {
+    textareaElement.current = element;
   };
 
-  getErrorMessage = () => {
-    const { hasApiError, profanityApiError } = this.state;
-    const {
-      intl: { formatMessage },
-    } = this.props;
-
+  const getErrorMessage = () => {
     if (hasApiError) {
       // Profanity error is the only error we're checking specifically
       // at the moment to provide a specific error message.
@@ -323,118 +305,99 @@ class ParentCommentForm extends PureComponent<
     return null;
   };
 
-  render() {
-    const {
-      authUser,
-      post,
-      postId,
-      postType,
-      className,
-      intl: { formatMessage },
-      commentingPermissionInitiative,
-      windowSize,
-    } = this.props;
-    const { inputValue, focused, processing, hasEmptyError } = this.state;
-    const commentingEnabled =
-      postType === 'initiative'
-        ? commentingPermissionInitiative?.enabled === true
-        : get(
-            post,
-            'attributes.action_descriptor.commenting_idea.enabled',
-            true
-          );
-    const projectId: string | null = get(
-      post,
-      'relationships.project.data.id',
-      null
-    );
-    const isModerator =
-      !isNilOrError(authUser) &&
-      canModerateProject(projectId, { data: authUser });
-    const canComment = authUser && commentingEnabled;
-    const placeholder = formatMessage(
-      messages[`${postType}CommentBodyPlaceholder`]
-    );
-    const smallerThanSmallTablet =
-      !isNilOrError(windowSize) && windowSize <= viewportWidths.tablet;
+  const commentingEnabled =
+    postType === 'initiative'
+      ? commentingPermissionInitiative?.enabled === true
+      : get(post, 'attributes.action_descriptor.commenting_idea.enabled', true);
+  const projectId: string | null = get(
+    post,
+    'relationships.project.data.id',
+    null
+  );
+  const isModerator =
+    !isNilOrError(authUser) &&
+    canModerateProject(projectId, { data: authUser });
+  const canComment = authUser && commentingEnabled;
+  const placeholder = formatMessage(
+    messages[`${postType}CommentBodyPlaceholder`]
+  );
+  const smallerThanSmallTablet =
+    !isNilOrError(windowSize) && windowSize <= viewportWidths.tablet;
 
-    if (!isNilOrError(authUser) && canComment) {
-      return (
-        <Container className={className || ''}>
-          <StyledAvatar
-            userId={authUser?.id}
-            size={30}
-            isLinkToProfile={!!authUser?.id}
-            moderator={isModerator}
-          />
-          <FormContainer
-            className="ideaCommentForm"
-            onClickOutside={this.close}
-            closeOnClickOutsideEnabled={false}
-          >
-            <Anchor id="submit-comment-anchor" />
-            <Form className={focused ? 'focused' : ''}>
-              <label htmlFor="submit-comment">
-                <HiddenLabel>
-                  <FormattedMessage {...messages.yourComment} />
-                </HiddenLabel>
-                <MentionsTextArea
-                  id="submit-comment"
-                  className="e2e-parent-comment-form"
-                  name="comment"
-                  placeholder={placeholder}
-                  rows={focused || processing ? 4 : 1}
-                  postId={postId}
-                  postType={postType}
-                  value={inputValue}
-                  error={this.getErrorMessage()}
-                  onChange={this.onChange}
-                  onFocus={this.onFocus}
-                  fontWeight="300"
-                  padding="10px"
-                  borderRadius="none"
-                  border="none"
-                  boxShadow="none"
-                  getTextareaRef={this.setRef}
-                />
-                <ButtonWrapper
-                  className={focused || processing ? 'visible' : ''}
+  if (!isNilOrError(authUser) && canComment) {
+    return (
+      <Container className={className || ''}>
+        <StyledAvatar
+          userId={authUser?.id}
+          size={30}
+          isLinkToProfile={!!authUser?.id}
+          moderator={isModerator}
+        />
+        <FormContainer
+          className="ideaCommentForm"
+          onClickOutside={close}
+          closeOnClickOutsideEnabled={false}
+        >
+          <Anchor id="submit-comment-anchor" />
+          <Form className={focused ? 'focused' : ''}>
+            <label htmlFor="submit-comment">
+              <HiddenLabel>
+                <FormattedMessage {...messages.yourComment} />
+              </HiddenLabel>
+              <MentionsTextArea
+                id="submit-comment"
+                className="e2e-parent-comment-form"
+                name="comment"
+                placeholder={placeholder}
+                rows={focused || processing ? 4 : 1}
+                postId={postId}
+                postType={postType}
+                value={inputValue}
+                error={getErrorMessage()}
+                onChange={onChange}
+                onFocus={onFocus}
+                fontWeight="300"
+                padding="10px"
+                borderRadius="none"
+                border="none"
+                boxShadow="none"
+                getTextareaRef={setRef}
+              />
+              <ButtonWrapper className={focused || processing ? 'visible' : ''}>
+                <CancelButton
+                  disabled={processing}
+                  onClick={close}
+                  buttonStyle="secondary"
+                  padding={smallerThanSmallTablet ? '6px 12px' : undefined}
                 >
-                  <CancelButton
-                    disabled={processing}
-                    onClick={this.close}
-                    buttonStyle="secondary"
-                    padding={smallerThanSmallTablet ? '6px 12px' : undefined}
-                  >
-                    <FormattedMessage {...messages.cancel} />
-                  </CancelButton>
-                  <Button
-                    className="e2e-submit-parentcomment"
-                    processing={processing}
-                    onClick={this.onSubmit}
-                    disabled={hasEmptyError}
-                    padding={smallerThanSmallTablet ? '6px 12px' : undefined}
-                  >
-                    <FormattedMessage {...messages.publishComment} />
-                  </Button>
-                </ButtonWrapper>
-              </label>
-            </Form>
-          </FormContainer>
-        </Container>
-      );
-    }
-
-    return null;
+                  <FormattedMessage {...messages.cancel} />
+                </CancelButton>
+                <Button
+                  className="e2e-submit-parentcomment"
+                  processing={processing}
+                  onClick={onSubmit}
+                  disabled={hasEmptyError}
+                  padding={smallerThanSmallTablet ? '6px 12px' : undefined}
+                >
+                  <FormattedMessage {...messages.publishComment} />
+                </Button>
+              </ButtonWrapper>
+            </label>
+          </Form>
+        </FormContainer>
+      </Container>
+    );
   }
-}
+
+  return null;
+};
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
   windowSize: <GetWindowSize />,
-  post: ({ postId, postType, render }) => (
-    <GetPost id={postId} type={postType}>
+  idea: ({ postId, render }) => (
+    <GetPost id={postId} type="idea">
       {render}
     </GetPost>
   ),

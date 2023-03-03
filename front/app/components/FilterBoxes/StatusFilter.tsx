@@ -110,7 +110,7 @@ interface Props {
   statuses: (IIdeaStatusData | IInitiativeStatusData)[];
   filterCounts:
     | IIdeasFilterCounts
-    | IInitiativesFilterCounts
+    | IInitiativesFilterCounts['data']['attributes']
     | null
     | undefined;
 
@@ -129,23 +129,12 @@ const StatusFilter = memo<Props>(
           selectedStatusId !== statusId ? statusId : null;
         onChange(nextSelectedStatusId);
       },
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [selectedStatusId]
+      [selectedStatusId, onChange]
     );
 
     if (!isNilOrError(statuses) && statuses.length > 0) {
-      const ideaPostCount =
-        filterCounts && type === 'idea' && 'total' in filterCounts
-          ? filterCounts?.total
-          : 0;
-      const initiativePostCount =
-        filterCounts && type === 'initiative' && 'data' in filterCounts
-          ? filterCounts?.data.attributes.total
-          : 0;
-      const allPostsCount =
-        type === 'idea' ? ideaPostCount : initiativePostCount;
+      const allPostsCount = filterCounts?.total || 0;
       const allFilterSelected = !selectedStatusId;
-
       return (
         <Container className={`e2e-statuses-filters ${className}`}>
           <Header>

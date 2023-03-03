@@ -5,12 +5,12 @@ import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import useInfiniteInitiatives from './useInfiniteInitiatives';
-import { data, links } from './useInitiatives.test';
+import { initiativesData, links } from './__mocks__/useInitiatives';
 
 const apiPath = '*initiatives';
 const server = setupServer(
   rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data, links }));
+    return res(ctx.status(200), ctx.json({ data: initiativesData, links }));
   })
 );
 
@@ -35,7 +35,7 @@ describe('useInfiniteInitiatives', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.pages[0].data).toEqual(data);
+    expect(result.current.data?.pages[0].data).toEqual(initiativesData);
     expect(result.current.hasNextPage).toBe(true);
   });
 
@@ -43,7 +43,10 @@ describe('useInfiniteInitiatives', () => {
     const newLinks = { ...links, next: null };
     server.use(
       rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(200), ctx.json({ data, links: newLinks }));
+        return res(
+          ctx.status(200),
+          ctx.json({ data: initiativesData, links: newLinks })
+        );
       })
     );
     const { result, waitFor } = renderHook(
@@ -62,7 +65,7 @@ describe('useInfiniteInitiatives', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.pages[0].data).toEqual(data);
+    expect(result.current.data?.pages[0].data).toEqual(initiativesData);
     expect(result.current.hasNextPage).toBe(false);
   });
 

@@ -13,9 +13,6 @@ import { ITopicData } from 'services/topics';
 import HasPermission from 'components/HasPermission';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetInitiative, {
-  GetInitiativeChildProps,
-} from 'resources/GetInitiative';
 import { PreviousPathnameContext } from 'context';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
@@ -24,6 +21,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { useParams } from 'react-router-dom';
 import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
 import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -52,7 +50,6 @@ const StyledInitiativesEditFormWrapper = styled(InitiativesEditFormWrapper)`
 `;
 
 interface DataProps {
-  initiative: GetInitiativeChildProps;
   authUser: GetAuthUserChildProps;
   locale: GetLocaleChildProps;
   previousPathName: string | null;
@@ -63,7 +60,6 @@ interface Props extends DataProps {}
 
 const InitiativesEditPage = ({
   previousPathName,
-  initiative,
   authUser,
   locale,
   topics,
@@ -71,6 +67,7 @@ const InitiativesEditPage = ({
   const { initiativeId } = useParams() as {
     initiativeId: string;
   };
+  const { data: initiative } = useInitiativeById(initiativeId);
   const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
   const { data: initiativeImages } = useInitiativeImages(initiativeId);
   const [files, setFiles] = useState<UploadFile[]>([]);
@@ -112,7 +109,7 @@ const InitiativesEditPage = ({
   if (
     isNilOrError(authUser) ||
     isNilOrError(locale) ||
-    isNilOrError(initiative) ||
+    !initiative ||
     initiativeImages === undefined ||
     isNilOrError(topics)
   ) {
@@ -121,7 +118,7 @@ const InitiativesEditPage = ({
 
   const onPublished = () => {
     if (!isNilOrError(initiative)) {
-      clHistory.push(`/initiatives/${initiative.attributes.slug}`);
+      clHistory.push(`/initiatives/${initiative.data.attributes.slug}`);
     }
   };
 
@@ -129,7 +126,7 @@ const InitiativesEditPage = ({
     (topic) => !isNilOrError(topic)
   ) as ITopicData[];
   return (
-    <HasPermission item={initiative} action="edit" context={initiative}>
+    <HasPermission item={initiative.data} action="edit" context={initiative}>
       <InitiativesEditMeta />
       <PageLayout
         isAdmin={isAdmin({ data: authUser })}
@@ -137,7 +134,7 @@ const InitiativesEditPage = ({
       >
         <StyledInitiativesEditFormWrapper
           locale={locale}
-          initiative={initiative}
+          initiative={initiative.data}
           initiativeImage={
             isNilOrError(initiativeImages) || initiativeImages.data.length === 0
               ? null
@@ -156,9 +153,6 @@ const Data = adopt<DataProps, WithRouterProps>({
   authUser: <GetAuthUser />,
   locale: <GetLocale />,
   topics: <GetTopics excludeCode={'custom'} />,
-  initiative: ({ params, render }) => (
-    <GetInitiative id={params.initiativeId}>{render}</GetInitiative>
-  ),
   previousPathName: ({ render }) => (
     <PreviousPathnameContext.Consumer>
       {render as any}

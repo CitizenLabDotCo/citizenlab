@@ -19,9 +19,6 @@ import VoteIndicator from 'components/InitiativeCard/VoteIndicator';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // resources
-import GetInitiative, {
-  GetInitiativeChildProps,
-} from 'resources/GetInitiative';
 import GetInitiativeImages, {
   GetInitiativeImagesChildProps,
 } from 'resources/GetInitiativeImages';
@@ -39,6 +36,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 // hooks
 import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
 
 const StyledTitle = styled(Title)`
@@ -109,7 +107,6 @@ export interface InputProps {
 }
 
 interface DataProps {
-  initiative: GetInitiativeChildProps;
   initiativeImages: GetInitiativeImagesChildProps;
   locale: GetLocaleChildProps;
 }
@@ -117,7 +114,6 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 const InitiativeContent = ({
-  initiative,
   localize,
   initiativeImages,
   handleClickEdit,
@@ -128,29 +124,31 @@ const InitiativeContent = ({
 }: Props & InjectedLocalized & WrappedComponentProps) => {
   const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
   const { mutate: deleteInitiative } = useDeleteInitiative();
-
+  const { data: initiative } = useInitiativeById(initiativeId);
   const handleClickDelete = () => {
     const message = intl.formatMessage(messages.deleteInitiativeConfirmation);
 
-    if (!isNilOrError(initiative)) {
+    if (initiative) {
       if (window.confirm(message)) {
-        deleteInitiative({ initiativeId: initiative.id });
+        deleteInitiative({ initiativeId: initiative.data.id });
         closePreview();
       }
     }
   };
 
   if (!isNilOrError(initiative) && !isNilOrError(locale)) {
-    const initiativeTitle = localize(initiative.attributes.title_multiloc);
+    const initiativeTitle = localize(initiative.data.attributes.title_multiloc);
     const initiativeImageLarge =
       !isNilOrError(initiativeImages) && initiativeImages.length > 0
         ? get(initiativeImages[0], 'attributes.versions.large', null)
         : null;
     const initiativeGeoPosition =
-      initiative.attributes.location_point_geojson || null;
+      initiative.data.attributes.location_point_geojson || null;
     const initiativeAddress =
-      initiative.attributes.location_description || null;
-    const daysLeft = getPeriodRemainingUntil(initiative.attributes.expires_at);
+      initiative.data.attributes.location_description || null;
+    const daysLeft = getPeriodRemainingUntil(
+      initiative.data.attributes.expires_at
+    );
 
     return (
       <Container>
@@ -189,14 +187,18 @@ const InitiativeContent = ({
               )}
 
               <PostedBy
-                authorId={get(initiative, 'relationships.author.data.id', null)}
+                authorId={get(
+                  initiative,
+                  'data.relationships.author.data.id',
+                  null
+                )}
                 showAboutInitiatives={false}
               />
 
               <StyledBody
                 postId={initiativeId}
                 postType="initiative"
-                body={localize(initiative.attributes.body_multiloc)}
+                body={localize(initiative.data.attributes.body_multiloc)}
                 locale={locale}
               />
 
@@ -245,9 +247,6 @@ const InitiativeContent = ({
 };
 
 const Data = adopt<DataProps, InputProps>({
-  initiative: ({ initiativeId, render }) => (
-    <GetInitiative id={initiativeId}>{render}</GetInitiative>
-  ),
   initiativeImages: ({ initiativeId, render }) => (
     <GetInitiativeImages initiativeId={initiativeId}>
       {render}
