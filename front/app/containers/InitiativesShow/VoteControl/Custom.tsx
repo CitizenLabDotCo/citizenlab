@@ -6,7 +6,7 @@ import { StatusExplanation } from './SharedStyles';
 
 import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { IAppConfigurationSettings } from 'services/appConfiguration';
+import { IAppConfigurationSettings } from 'api/app_configuration/types';
 
 import CountDown from './CountDown';
 import Button from 'components/UI/Button';

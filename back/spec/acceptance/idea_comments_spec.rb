@@ -148,7 +148,8 @@ resource 'Comments' do
 
       let(:project) { @project.id }
 
-      example_request 'XLSX export by project', document: false do
+      example 'XLSX export by project', document: false do
+        do_request
         expect(status).to eq 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet.count).to eq(@comments.size + 1)
@@ -162,7 +163,8 @@ resource 'Comments' do
 
       let(:ideas) { @comments.map(&:post_id) }
 
-      example_request 'XLSX export by idea ids', document: false do
+      example 'XLSX export by idea ids', document: false do
+        do_request
         expect(status).to eq 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet.count).to eq(ideas.size + 1)
@@ -178,7 +180,10 @@ resource 'Comments' do
 
       let(:project) { @project.id }
 
-      example_request('XLSX export', document: false) { expect(status).to eq 200 }
+      example 'XLSX export', document: false do
+        do_request
+        expect(status).to eq 200
+      end
     end
 
     context 'when the user moderates another project' do
@@ -190,7 +195,10 @@ resource 'Comments' do
 
       let(:project) { @project.id }
 
-      example_request('[error] XLSX export', document: false) { expect(status).to eq 401 }
+      example '[error] XLSX export', document: false do
+        do_request
+        expect(status).to eq 401
+      end
     end
 
     describe do
@@ -200,7 +208,8 @@ resource 'Comments' do
         header 'Authorization', "Bearer #{token}"
       end
 
-      example_request '[error] XLSX export by a normal user', document: false do
+      example '[error] XLSX export by a normal user', document: false do
+        do_request
         expect(status).to eq 401
       end
     end

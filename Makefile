@@ -119,7 +119,7 @@ ci-regenerate-templates:
 
 # Triggers a build for the current branch.
 # Also, builds images for the Epic platform.
-ci-trigger-build:
+ci-build:
 	curl \
 		--request POST \
 		-u ${CIRCLE_CI_TOKEN}: \
@@ -127,10 +127,11 @@ ci-trigger-build:
 		--header 'content-type: application/json' \
 		--data "{\"branch\": \"$$(git branch --show-current)\",\"parameters\": {\"trigger\": false, \"back\": true, \"front\": true } }"
 
-ci-run-e2e:
+ci-e2e:
 	curl \
 		--request POST \
 		-u ${CIRCLE_CI_TOKEN}: \
 		--url https://circleci.com/api/v2/project/github/CitizenLabDotCo/citizenlab/pipeline \
 		--header 'content-type: application/json' \
 		--data "{\"branch\": \"$$(git branch --show-current)\",\"parameters\": {\"e2e\": true } }"
+	$(info You can check the status of the build here: https://app.circleci.com/pipelines/github/CitizenLabDotCo/citizenlab)

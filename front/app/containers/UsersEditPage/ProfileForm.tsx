@@ -9,21 +9,12 @@ import GetLockedFields, {
   GetLockedFieldsChildProps,
 } from 'resources/GetLockedFields';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 // components
 import { IconTooltip, Box, Button } from '@citizenlab/cl2-component-library';
 import { SectionField } from 'components/admin/Section';
-import {
-  FormSection,
-  FormLabel,
-  FormSectionTitle,
-} from 'components/UI/FormComponents';
-import PasswordInputIconTooltip from 'components/UI/PasswordInput/PasswordInputIconTooltip';
+import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
 import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
 
 // form
@@ -33,7 +24,6 @@ import { string, object, mixed } from 'yup';
 import ImagesDropzone from 'components/HookForm/ImagesDropzone';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Input from 'components/HookForm/Input';
-import PasswordInput from 'components/HookForm/PasswordInput';
 import Select from 'components/HookForm/Select';
 import Feedback from 'components/HookForm/Feedback';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
@@ -61,10 +51,6 @@ const StyledIconTooltip = styled(IconTooltip)`
   margin-top: 20px;
 `;
 
-const StyledPasswordInputIconTooltip = styled(PasswordInputIconTooltip)`
-  margin-bottom: 4px;
-`;
-
 const InputContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -74,7 +60,6 @@ interface InputProps {}
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
-  tenant: GetAppConfigurationChildProps;
   lockedFields: GetLockedFieldsChildProps;
   disableBio: GetFeatureFlagChildProps;
 }
@@ -95,7 +80,6 @@ type FormValues = {
 const ProfileForm = ({
   intl: { formatMessage },
   disableBio,
-  tenant,
   tenantLocales,
   lockedFields,
   authUser,
@@ -109,11 +93,6 @@ const ProfileForm = ({
     [field in ExtraFormDataKey]?: Record<string, any>;
   }>({});
 
-  const minimumPasswordLength =
-    (!isNilOrError(tenant) &&
-      tenant.attributes.settings.password_login?.minimum_length) ||
-    0;
-
   const schema = object({
     first_name: string().required(formatMessage(messages.firstNamesEmptyError)),
     last_name: string().required(formatMessage(messages.lastNameEmptyError)),
@@ -123,20 +102,6 @@ const ProfileForm = ({
     ...(!disableBio && {
       bio_multiloc: object(),
     }),
-    password: string().test(
-      'length',
-      'Value can be empty or contain a string at with least the minimum password length',
-      (value, { createError, path }) => {
-        if (value && value.length > 0 && value.length < minimumPasswordLength) {
-          return createError({
-            path,
-            message: formatMessage(messages.minimumPasswordLengthError, {
-              minimumPasswordLength,
-            }),
-          });
-        } else return true;
-      }
-    ),
     locale: string(),
     avatar: mixed().nullable(),
   });
@@ -310,19 +275,6 @@ const ProfileForm = ({
           )}
 
           <SectionField>
-            <Box display="flex" alignItems="center">
-              <FormLabel
-                width="max-content"
-                margin-right="5px"
-                labelMessage={messages.password}
-                htmlFor="password"
-              />
-              <StyledPasswordInputIconTooltip />
-            </Box>
-            <PasswordInput name="password" />
-          </SectionField>
-
-          <SectionField>
             <Select
               name="locale"
               options={localeOptions}
@@ -352,7 +304,6 @@ const ProfileFormWithHocs = injectIntl(localize(ProfileForm));
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  tenant: <GetAppConfiguration />,
   lockedFields: <GetLockedFields />,
   disableBio: <GetFeatureFlag name="disable_user_bios" />,
 });
