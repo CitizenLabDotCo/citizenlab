@@ -44,10 +44,10 @@ module UserCustomFields
 
         def users_by_domicile
           areas = Area.all.select(:id, :title_multiloc)
-          render json: {
+          render raw_json(json: {
             series: { users: user_counts_by_area_id },
             areas: areas.to_h { |a| [a.id, a.attributes.except('id')] }
-          }
+          })
         end
 
         def users_by_domicile_as_xlsx

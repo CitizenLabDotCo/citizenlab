@@ -250,7 +250,7 @@ resource 'Stats - Users' do
 
       example_request 'Users by domicile' do
         expect(response_status).to eq 200
-        expect(json_response_body).to match({
+        expect(json_response_body.dig(:data, :attributes)).to match({
           areas: Area.all.to_h { |area| [area.id, area.attributes.slice('title_multiloc')] },
           series: {
             users: {
@@ -383,7 +383,7 @@ resource 'Stats - Users' do
         context 'when the custom field has no reference distribution' do
           example_request 'Users by custom field (select)' do
             expect(response_status).to eq 200
-            expect(json_response_body).to match({
+            expect(json_response_body.dig(:data, :attributes)).to match({
               options: {
                 @option1.key => { title_multiloc: @option1.title_multiloc, ordering: 0 },
                 @option2.key => { title_multiloc: @option2.title_multiloc, ordering: 1 },
@@ -408,7 +408,7 @@ resource 'Stats - Users' do
 
           example_request 'Users by custom field (select) including expected nb of users' do
             expect(response_status).to eq 200
-            expect(json_response_body).to include(series: hash_including(
+            expect(json_response_body.dig(:data, :attributes)).to include(series: hash_including(
               expected_users: @custom_field.options.to_h { |option| [option.key.to_sym, kind_of(Numeric)] }
             ))
           end
@@ -441,7 +441,7 @@ resource 'Stats - Users' do
 
         example_request 'Users by custom field (multiselect)' do
           expect(response_status).to eq 200
-          expect(json_response_body).to match({
+          expect(json_response_body.dig(:data, :attributes)).to match({
             options: {
               @option1.key => { title_multiloc: @option1.title_multiloc, ordering: 0 },
               @option2.key => { title_multiloc: @option2.title_multiloc, ordering: 1 },
@@ -485,7 +485,7 @@ resource 'Stats - Users' do
 
         example_request 'Users by custom field (checkbox)' do
           expect(response_status).to eq 200
-          expect(json_response_body).to match({
+          expect(json_response_body.dig(:data, :attributes)).to match({
             series: {
               users: {
                 # rubocop:disable Lint/BooleanSymbol
@@ -526,7 +526,7 @@ resource 'Stats - Users' do
 
         example_request 'Users by custom field (filtered)' do
           expect(response_status).to eq 200
-          expect(json_response_body).to match({
+          expect(json_response_body.dig(:data, :attributes)).to match({
             series: {
               users: {
                 # rubocop:disable Lint/BooleanSymbol
@@ -547,7 +547,7 @@ resource 'Stats - Users' do
 
         example_request 'Users by custom field (filtered)' do
           expect(response_status).to eq 200
-          expect(json_response_body).to match({
+          expect(json_response_body.dig(:data, :attributes)).to match({
             series: {
               users: {
                 # rubocop:disable Lint/BooleanSymbol
@@ -741,7 +741,7 @@ resource 'Stats - Users' do
           travel_to(Time.zone.local(2020, 1, 1)) { do_request }
 
           expect(response_status).to eq 200
-          expect(json_response_body).to match(
+          expect(json_response_body.dig(:data, :attributes)).to match(
             total_user_count: 8,
             unknown_age_count: 1,
             series: {
@@ -767,7 +767,7 @@ resource 'Stats - Users' do
           travel_to(Time.zone.local(2020, 1, 1)) { do_request }
 
           expect(response_status).to eq 200
-          expect(json_response_body).to match(
+          expect(json_response_body.dig(:data, :attributes)).to match(
             total_user_count: 8,
             unknown_age_count: 1,
             series: {
