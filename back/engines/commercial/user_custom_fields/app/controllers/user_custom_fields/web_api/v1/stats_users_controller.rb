@@ -31,7 +31,7 @@ module UserCustomFields
             end
           end
 
-          render raw_json(json: json_response)
+          render json: raw_json(json_response)
         rescue NotSupportedFieldTypeError
           head :not_implemented
         end
@@ -44,7 +44,7 @@ module UserCustomFields
 
         def users_by_domicile
           areas = Area.all.select(:id, :title_multiloc)
-          render raw_json(json: {
+          render json: raw_json({
             series: { users: user_counts_by_area_id },
             areas: areas.to_h { |a| [a.id, a.attributes.except('id')] }
           })
