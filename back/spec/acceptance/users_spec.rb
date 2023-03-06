@@ -873,6 +873,34 @@ resource 'Users' do
       end
     end
 
+    post 'web_api/v1/users/update_password' do
+      with_options scope: :user do
+        parameter :current_password, required: true
+        parameter :new_password, required: true
+      end
+      describe do
+        let(:current_password) { 'test_current_password' }
+        let(:new_password) { 'test_new_password' }
+
+        example_request 'update password with wrong current password' do
+          expect(response_status).to eq 422
+          json_response = json_parse(response_body)
+          expect(json_response[:errors][:current_password][0][:error]).to eq 'invalid'
+        end
+      end
+
+      describe do
+        let(:current_password) { 'democracy2.0' }
+        let(:new_password) { 'test_new_password' }
+
+        example_request 'update password with correct current password' do
+          @user.reload
+          expect(response_status).to eq 200
+          expect(BCrypt::Password.new(@user.password_digest)).to be_is_password('test_new_password')
+        end
+      end
+    end
+
     delete 'web_api/v1/users/:id' do
       before do
         @user.update!(roles: [{ type: 'admin' }])
