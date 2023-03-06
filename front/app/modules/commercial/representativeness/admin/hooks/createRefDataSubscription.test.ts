@@ -15,25 +15,30 @@ jest.mock('services/auth');
 describe('regFieldToReferenceData', () => {
   it('works if users and reference_population have same keys', () => {
     const usersByField: IUsersByRegistrationField = {
-      series: {
-        users: {
-          id123: 100,
-          id456: 300,
-        },
-        expected_users: {},
-        reference_population: {
-          id123: 2000,
-          id456: 3000,
-        },
-      },
-      options: {
-        id123: {
-          title_multiloc: { en: '123' },
-          ordering: 0,
-        },
-        id456: {
-          title_multiloc: { en: '456' },
-          ordering: 1,
+      data: {
+        type: 'users_by_registration_field',
+        attributes: {
+          series: {
+            users: {
+              id123: 100,
+              id456: 300,
+            },
+            expected_users: {},
+            reference_population: {
+              id123: 2000,
+              id456: 3000,
+            },
+          },
+          options: {
+            id123: {
+              title_multiloc: { en: '123' },
+              ordering: 0,
+            },
+            id456: {
+              title_multiloc: { en: '456' },
+              ordering: 1,
+            },
+          },
         },
       },
     };
@@ -60,25 +65,30 @@ describe('regFieldToReferenceData', () => {
 
   it('works if users and reference_population have same keys, weird ordering', () => {
     const usersByField: IUsersByRegistrationField = {
-      series: {
-        users: {
-          id123: 100,
-          id456: 300,
-        },
-        expected_users: {},
-        reference_population: {
-          id123: 2000,
-          id456: 3000,
-        },
-      },
-      options: {
-        id123: {
-          title_multiloc: { en: '123' },
-          ordering: 1,
-        },
-        id456: {
-          title_multiloc: { en: '456' },
-          ordering: 0,
+      data: {
+        type: 'users_by_registration_field',
+        attributes: {
+          series: {
+            users: {
+              id123: 100,
+              id456: 300,
+            },
+            expected_users: {},
+            reference_population: {
+              id123: 2000,
+              id456: 3000,
+            },
+          },
+          options: {
+            id123: {
+              title_multiloc: { en: '123' },
+              ordering: 1,
+            },
+            id456: {
+              title_multiloc: { en: '456' },
+              ordering: 0,
+            },
+          },
         },
       },
     };
@@ -105,30 +115,35 @@ describe('regFieldToReferenceData', () => {
 
   it('works if reference data has fewer keys van user data', () => {
     const usersByField: IUsersByRegistrationField = {
-      series: {
-        users: {
-          id123: 100,
-          id456: 300,
-          id789: 200,
-        },
-        expected_users: {},
-        reference_population: {
-          id123: 2000,
-          id456: 3000,
-        },
-      },
-      options: {
-        id123: {
-          title_multiloc: { en: '123' },
-          ordering: 0,
-        },
-        id456: {
-          title_multiloc: { en: '456' },
-          ordering: 1,
-        },
-        id789: {
-          title_multiloc: { en: '789' },
-          ordering: 2,
+      data: {
+        type: 'users_by_registration_field',
+        attributes: {
+          series: {
+            users: {
+              id123: 100,
+              id456: 300,
+              id789: 200,
+            },
+            expected_users: {},
+            reference_population: {
+              id123: 2000,
+              id456: 3000,
+            },
+          },
+          options: {
+            id123: {
+              title_multiloc: { en: '123' },
+              ordering: 0,
+            },
+            id456: {
+              title_multiloc: { en: '456' },
+              ordering: 1,
+            },
+            id789: {
+              title_multiloc: { en: '789' },
+              ordering: 2,
+            },
+          },
         },
       },
     };
@@ -155,33 +170,38 @@ describe('regFieldToReferenceData', () => {
 
   it('actual numbers fall back to zero if all relevant user data entries are zero (i.e. missing)', () => {
     const usersByField: IUsersByRegistrationField = {
-      series: {
-        users: {
-          id789: 200,
-          id000: 300,
-        },
-        expected_users: {},
-        reference_population: {
-          id123: 2000,
-          id456: 3000,
-        },
-      },
-      options: {
-        id123: {
-          title_multiloc: { en: '123' },
-          ordering: 0,
-        },
-        id456: {
-          title_multiloc: { en: '456' },
-          ordering: 1,
-        },
-        id789: {
-          title_multiloc: { en: '789' },
-          ordering: 2,
-        },
-        id000: {
-          title_multiloc: { en: '000' },
-          ordering: 3,
+      data: {
+        type: 'users_by_registration_field',
+        attributes: {
+          series: {
+            users: {
+              id789: 200,
+              id000: 300,
+            },
+            expected_users: {},
+            reference_population: {
+              id123: 2000,
+              id456: 3000,
+            },
+          },
+          options: {
+            id123: {
+              title_multiloc: { en: '123' },
+              ordering: 0,
+            },
+            id456: {
+              title_multiloc: { en: '456' },
+              ordering: 1,
+            },
+            id789: {
+              title_multiloc: { en: '789' },
+              ordering: 2,
+            },
+            id000: {
+              title_multiloc: { en: '000' },
+              ordering: 3,
+            },
+          },
         },
       },
     };
@@ -209,16 +229,23 @@ describe('regFieldToReferenceData', () => {
 
 describe('regFieldToIncludedUsers', () => {
   it('works', () => {
-    const usersByField: any = {
-      series: {
-        users: {
-          id123: 100,
-          id456: 300,
-          _blank: 400,
-        },
-        reference_population: {
-          id123: 2000,
-          id456: 3000,
+    const usersByField: IUsersByRegistrationField = {
+      data: {
+        type: 'users_by_registration_field',
+        attributes: {
+          series: {
+            users: {
+              id123: 100,
+              id456: 300,
+              _blank: 400,
+            },
+            reference_population: {
+              id123: 2000,
+              id456: 3000,
+            },
+            expected_users: {},
+          },
+          options: {},
         },
       },
     };
@@ -233,17 +260,24 @@ describe('regFieldToIncludedUsers', () => {
   });
 
   it('works if not all keys in users are in reference_population', () => {
-    const usersByField: any = {
-      series: {
-        users: {
-          id123: 100,
-          id456: 300,
-          id789: 200,
-          _blank: 400,
-        },
-        reference_population: {
-          id123: 2000,
-          id456: 3000,
+    const usersByField: IUsersByRegistrationField = {
+      data: {
+        type: 'users_by_registration_field',
+        attributes: {
+          series: {
+            users: {
+              id123: 100,
+              id456: 300,
+              id789: 200,
+              _blank: 400,
+            },
+            reference_population: {
+              id123: 2000,
+              id456: 3000,
+            },
+            expected_users: {},
+          },
+          options: {},
         },
       },
     };
@@ -258,17 +292,24 @@ describe('regFieldToIncludedUsers', () => {
   });
 
   it('returns 0 if all relevant keys are 0', () => {
-    const usersByField: any = {
-      series: {
-        users: {
-          id123: 0,
-          id456: 0,
-          id789: 200,
-          _blank: 400,
-        },
-        reference_population: {
-          id123: 2000,
-          id456: 3000,
+    const usersByField: IUsersByRegistrationField = {
+      data: {
+        type: 'users_by_registration_field',
+        attributes: {
+          series: {
+            users: {
+              id123: 0,
+              id456: 0,
+              id789: 200,
+              _blank: 400,
+            },
+            reference_population: {
+              id123: 2000,
+              id456: 3000,
+            },
+            expected_users: {},
+          },
+          options: {},
         },
       },
     };
@@ -283,17 +324,24 @@ describe('regFieldToIncludedUsers', () => {
   });
 
   it('returns 0 if all relevant keys (including _blank) are 0', () => {
-    const usersByField: any = {
-      series: {
-        users: {
-          id123: 0,
-          id456: 0,
-          id789: 200,
-          _blank: 0,
-        },
-        reference_population: {
-          id123: 2000,
-          id456: 3000,
+    const usersByField: IUsersByRegistrationField = {
+      data: {
+        type: 'users_by_registration_field',
+        attributes: {
+          series: {
+            users: {
+              id123: 0,
+              id456: 0,
+              id789: 200,
+              _blank: 0,
+            },
+            reference_population: {
+              id123: 2000,
+              id456: 3000,
+            },
+            expected_users: {},
+          },
+          options: {},
         },
       },
     };
@@ -308,23 +356,30 @@ describe('regFieldToIncludedUsers', () => {
   });
 
   it('works if less keys in users than in reference data', () => {
-    const usersByField: any = {
-      series: {
-        users: {
-          south_sunday: 1,
-          _blank: 23,
-        },
-        reference_population: {
-          south_sunday: 100,
-          mosciskimouth: 100,
-          east_teganmouth: 100,
-          west_hopeport: 100,
-          homenickville: 100,
-          derrickville: 100,
-          strackestad: 100,
-          ake_tammarastad: 100,
-          west_sheridan: 100,
-          west_orval: 100,
+    const usersByField: IUsersByRegistrationField = {
+      data: {
+        type: 'users_by_registration_field',
+        attributes: {
+          series: {
+            users: {
+              south_sunday: 1,
+              _blank: 23,
+            },
+            reference_population: {
+              south_sunday: 100,
+              mosciskimouth: 100,
+              east_teganmouth: 100,
+              west_hopeport: 100,
+              homenickville: 100,
+              derrickville: 100,
+              strackestad: 100,
+              ake_tammarastad: 100,
+              west_sheridan: 100,
+              west_orval: 100,
+            },
+            expected_users: {},
+          },
+          options: {},
         },
       },
     };
@@ -340,13 +395,18 @@ describe('regFieldToIncludedUsers', () => {
 });
 
 const ageField: IUsersByAge = {
-  total_user_count: 100,
-  unknown_age_count: 10,
-  series: {
-    user_counts: [100, 100, 100, 100, 100],
-    expected_user_counts: [100, 100, 100, 100, 100],
-    reference_population: [1000, 500, 1500, 1000, 1000],
-    bins: [18, 25, 35, 45, 65, null],
+  data: {
+    type: 'users_by_age',
+    attributes: {
+      total_user_count: 100,
+      unknown_age_count: 10,
+      series: {
+        user_counts: [100, 100, 100, 100, 100],
+        expected_user_counts: [100, 100, 100, 100, 100],
+        reference_population: [1000, 500, 1500, 1000, 1000],
+        bins: [18, 25, 35, 45, 65, null],
+      },
+    },
   },
 };
 

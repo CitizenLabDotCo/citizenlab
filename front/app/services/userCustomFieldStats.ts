@@ -80,13 +80,18 @@ export interface IUsersByBirthyear {
 }
 
 export interface IUsersByAge {
-  total_user_count: number;
-  unknown_age_count: number;
-  series: {
-    user_counts: number[];
-    expected_user_counts: number[];
-    reference_population: number[];
-    bins: (number | null)[];
+  data: {
+    type: 'users_by_age';
+    attributes: {
+      total_user_count: number;
+      unknown_age_count: number;
+      series: {
+        user_counts: number[];
+        expected_user_counts: number[];
+        reference_population: number[];
+        bins: (number | null)[];
+      };
+    };
   };
 }
 
