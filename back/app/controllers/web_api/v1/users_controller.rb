@@ -228,22 +228,22 @@ class WebApi::V1::UsersController < ::ApplicationController
   def update_existing_no_password_user?
     return false unless AppConfiguration.instance.feature_activated?('user_confirmation')
 
-    errors = @user.errors.details[:email]
+    original_user = @user
+    errors = original_user.errors.details[:email]
     return false unless errors.any? { |hash| hash[:error] == :taken }
 
     existing_user = User.find_by(email: @user.email)
     return false unless existing_user.no_password?
 
-    # NOT WORKING!!
-    # This will man we can only do one or the other in the front end
-    @user = existing_user
-    @user.assign_attributes(permitted_attributes(@user))
-    return false if @user.changed?
+    # If any attributes try to change then ignore this found user
+    existing_user.assign_attributes(permitted_attributes(existing_user))
+    return false if existing_user.changed?
 
+    @user = existing_user
     @user.reset_confirmation_with_no_password
     return false unless @user.save
 
-    SendConfirmationCode.call(user: existing_user)
+    SendConfirmationCode.call(user: @user)
     true
   end
 
