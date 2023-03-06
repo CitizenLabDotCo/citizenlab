@@ -322,7 +322,8 @@ namespace :cl2_back do
         },
         user_blocking: {
           enabled: false,
-          allowed: false
+          allowed: false,
+          duration: 90
         }
       }
     )

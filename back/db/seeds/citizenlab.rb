@@ -172,6 +172,11 @@ AppConfiguration.create!(
     user_confirmation: {
       allowed: true,
       enabled: false
+    },
+    user_blocking: {
+      allowed: true,
+      enabled: false,
+      duration: 90
     }
   })
 )

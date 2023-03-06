@@ -186,16 +186,24 @@
       },
 
       "user_blocking": {
-        "type": "object",
-        "title": "User blocking",
-        "description": "User blocking features.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
+      "type": "object",
+      "title": "User blocking",
+      "description":	"User blocking features.",
+      "additionalProperties": false,
+      "required": ["allowed", "enabled"],
+      "required-settings": ["duration"],
+      "properties": {
+        "allowed": { "type": "boolean", "default": false },
+        "enabled": { "type": "boolean", "default": false },
+        "duration": {
+          "title": "Duration of ban period (in days)",
+          "description": "Default value for how many days a user will be banned for. This value can be changed in the admin panel on the platform. Changing this value only changes the duration of subsequent bans.",
+          "type": "integer",
+          "minimum": 1,
+          "default": 90
         }
-      },
+      }
+    },
 
       "dynamic_idea_form": {
         "type": "object",

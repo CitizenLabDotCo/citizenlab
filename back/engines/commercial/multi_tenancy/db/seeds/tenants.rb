@@ -394,7 +394,8 @@ module MultiTenancy
             },
             user_blocking: {
               enabled: true,
-              allowed: true
+              allowed: true,
+              duration: 90
             }
           })
         )
