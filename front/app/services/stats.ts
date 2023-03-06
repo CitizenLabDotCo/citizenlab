@@ -19,16 +19,21 @@ export interface IIdeasByTime {
   };
 }
 export interface IIdeasByStatus {
-  series: {
-    ideas: {
-      [key: string]: number;
-    };
-  };
-  idea_status: {
-    [key: string]: {
-      title_multiloc: Multiloc;
-      color: string;
-      ordering: number;
+  data: {
+    type: 'ideas_by_status';
+    attributes: {
+      series: {
+        ideas: {
+          [key: string]: number;
+        };
+      };
+      idea_status: {
+        [key: string]: {
+          title_multiloc: Multiloc;
+          color: string;
+          ordering: number;
+        };
+      };
     };
   };
 }
