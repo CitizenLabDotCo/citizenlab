@@ -2,7 +2,7 @@ import React from 'react';
 // eslint-disable-next-line no-restricted-imports
 import { useIntl, MessageDescriptor, WrappedComponentProps } from 'react-intl';
 import { isNilOrError } from 'utils/helperUtils';
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useLocalize from 'hooks/useLocalize';
 
 const injectIntl = <P extends WrappedComponentProps>(
@@ -10,7 +10,7 @@ const injectIntl = <P extends WrappedComponentProps>(
 ) => {
   return (props: Omit<P, keyof WrappedComponentProps>) => {
     const localize = useLocalize();
-    const appConfig = useAppConfiguration();
+    const { data: appConfig } = useAppConfiguration();
     const intl = useIntl();
 
     if (isNilOrError(appConfig)) return null;
@@ -20,9 +20,11 @@ const injectIntl = <P extends WrappedComponentProps>(
       values?: { [key: string]: string | number | boolean | Date } | undefined
     ) => {
       return intl.formatMessage(messageDescriptor, {
-        tenantName: appConfig.attributes.name,
-        orgName: localize(appConfig.attributes.settings.core.organization_name),
-        orgType: appConfig.attributes.settings.core.organization_type,
+        tenantName: appConfig.data.attributes.name,
+        orgName: localize(
+          appConfig.data.attributes.settings.core.organization_name
+        ),
+        orgType: appConfig.data.attributes.settings.core.organization_type,
         ...(values || {}),
       });
     };

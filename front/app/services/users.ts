@@ -3,6 +3,7 @@ import streams, { IStreamParams } from 'utils/streams';
 import { ImageSizes, Multiloc, Locale } from 'typings';
 import { authApiEndpoint } from './auth';
 import { TRole } from 'services/permissions/roles';
+import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
 const apiEndpoint = `${API_PATH}/users`;
 
@@ -71,6 +72,11 @@ export interface IUserUpdate {
   custom_field_values?: Record<string, any>;
 }
 
+interface IChangePassword {
+  current_password: string;
+  new_password: string;
+}
+
 export function usersStream(streamParams: IStreamParams | null = null) {
   return streams.get<IUsers>({ apiEndpoint, ...streamParams });
 }
@@ -99,6 +105,13 @@ export async function updateUser(userId: string, object: IUserUpdate) {
   return response;
 }
 
+export async function changePassword(object: IChangePassword) {
+  const response = await streams.add<IUser>(`${apiEndpoint}/update_password`, {
+    user: object,
+  });
+  return response;
+}
+
 export async function deleteUser(userId: string) {
   const response = await streams.delete(`${apiEndpoint}/${userId}`, userId);
   await streams.fetchAllWith({
@@ -119,6 +132,7 @@ export async function completeRegistration(
     { user: { custom_field_values: customFieldValues || {} } }
   );
   await streams.reset();
+  await resetQueryCache();
   await streams.fetchAllWith({
     apiEndpoint: [authApiEndpoint],
   });

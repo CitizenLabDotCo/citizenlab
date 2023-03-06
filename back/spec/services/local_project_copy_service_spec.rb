@@ -5,7 +5,7 @@ require 'rails_helper'
 describe LocalProjectCopyService do
   let(:service) { described_class.new }
 
-  describe 'project copy', slow_test: true do
+  describe 'project copy' do
     # Some factories use en & nl-NL multilocs, others use en & nl-BE, but the apply_template method, invoked by the
     # LocalProjectCopyService, will only apply multiloc k-v pairs with keys that match the target tenant locale(s).
     # Thus, we specify all 3 locales to enable easier testing with factory generated multilocs.
@@ -332,16 +332,8 @@ describe LocalProjectCopyService do
         layout.update(craftjs_jsonmultiloc: JSON.parse(craftjs_str))
         copied_project = service.copy(layout.content_buildable)
 
-        new_craftjs = copied_project.content_builder_layouts.first.craftjs_jsonmultiloc
-        new_image_codes = []
-
-        new_craftjs.each_key do |locale|
-          new_craftjs[locale].each_value do |node|
-            next unless ContentBuilder::LayoutService.new.craftjs_element_of_type?(node, 'Image')
-
-            new_image_codes << node['props']['dataCode']
-          end
-        end
+        new_image_codes =
+          ContentBuilder::LayoutService.new.images(copied_project.content_builder_layouts.first).pluck(:code)
 
         expect(copied_project.content_builder_layouts.first
           .as_json(only: %i[content_buildable_type code enabled]))

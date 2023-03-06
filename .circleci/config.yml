@@ -102,6 +102,19 @@ commands:
       - run: echo $LASTPASS_PASSWORD | LPASS_DISABLE_PINENTRY=1 lpass login ${LASTPASS_EMAIL}
       - run: lpass show --notes 'citizenlab back-secret.env' > env_files/back-secret.env
       - run: lpass show --notes 'citizenlab front-secret.env' > env_files/front-secret.env
+  shallow-clone:
+    steps:
+      - run: mkdir -p ~/.ssh
+      - run: ssh-keyscan github.com >> ~/.ssh/known_hosts
+      # Git clone can fail when the repository directory exists and is not empty. This
+      # can happen when e.g. setting the working_directory to ~/citizenlab/front because
+      # CircleCI will create those directories in this case. The solution is to remove
+      # the created directories before cloning. The name of the directory to remove is
+      # inferred from the repository URL (the part between the "/" and "." characters).
+      - run: |
+          cd ~
+          rm -rf ~/$(echo $CIRCLE_REPOSITORY_URL | cut -d '/' -f 2 | cut -d '.' -f 1)
+          git clone -b "$CIRCLE_BRANCH" "$CIRCLE_REPOSITORY_URL" --depth 1
 
 jobs:
   trigger-workflows:
@@ -116,10 +129,22 @@ jobs:
   danger-check:
     resource_class: small
     docker:
-      - image: ghcr.io/danger/danger-js:10.6.6
+      - image: citizenlabdotco/cl2-devops-danger-check
+    working_directory: ~/citizenlab
     steps:
-      - checkout
+      - shallow-clone
       - run: danger ci
+
+  changelogger:
+    resource_class: small
+    docker:
+      - image: citizenlabdotco/cl2-devops-changelogger:master
+        auth:
+          username: $DOCKER_USER
+          password: $DOCKER_PASS
+    working_directory: /app
+    steps:
+      - run: ruby script.rb
 
   slack-invalid-data-success:
     resource_class: small
@@ -161,8 +186,7 @@ jobs:
       - image: cimg/base:2021.03
     steps:
       - echo_pipeline_parameters
-      - checkout:
-          path: ./citizenlab
+      - shallow-clone
       - setup_remote_docker:
           docker_layer_caching: true
       - run: |
@@ -188,7 +212,7 @@ jobs:
       name: cl2-back
       image-tag: $CIRCLE_SHA1
     working_directory: /cl2_back
-    parallelism: 4
+    parallelism: 8
     environment:
       RAILS_ENV: test
       COVERAGE: ON
@@ -201,24 +225,6 @@ jobs:
           TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" "engines/*/*/spec/**/*_spec.rb" | circleci tests split  --split-by=timings)
           echo $TESTFILES
           bundle exec rspec --format documentation --profile --format RspecJunitFormatter -o spec/reports/rspec.xml -- ${TESTFILES}
-      - store_test_results:
-          path: spec/reports
-
-  back-slow-tests:
-    resource_class: small
-    executor:
-      name: cl2-back
-      image-tag: $CIRCLE_SHA1
-    working_directory: /cl2_back
-    environment:
-      RAILS_ENV: test
-    steps:
-      - wait-for-postgres
-      - run: |
-          rake db:create
-          rake db:schema:load
-      - run: |
-          bundle exec rspec --format documentation --format RspecJunitFormatter -o spec/reports/rspec.xml -t slow_test -P "spec/**/*_spec.rb,engines/*/*/spec/**/*_spec.rb"
       - store_test_results:
           path: spec/reports
 
@@ -257,7 +263,7 @@ jobs:
           at: /tmp/workspace
       - run: rake templates:release['/tmp/workspace/failed-templates.txt']
 
-  back-web-api-docs:
+  back-docs-not-blocking:
     resource_class: small
     executor:
       name: cl2-back
@@ -273,7 +279,7 @@ jobs:
       - run: bundle exec rake web_api:docs:generate
       - run: bundle exec rake public_api:docs:generate
       - run: bundle exec rake admin_api:docs:generate
-      - run: apt-get -y install awscli
+      - run: apt-get update && apt-get -y install awscli
       - run: aws s3 sync doc/api s3://developers.citizenlab.co/api-docs/ee/frontweb_api/$CIRCLE_BRANCH --delete --acl public-read
       - run: aws s3 sync doc/public_api s3://developers.citizenlab.co/api-docs/ee/public_api/$CIRCLE_BRANCH --delete --acl public-read
       - run: aws s3 sync doc/admin_api s3://developers.citizenlab.co/api-docs/ee/admin_api/$CIRCLE_BRANCH --delete --acl public-read
@@ -284,30 +290,28 @@ jobs:
       - image: cimg/base:2021.03
     steps:
       - echo_pipeline_parameters
-      - when:
-          condition:
-            or:
-              - equal: [<< pipeline.git.branch >>, master]
-              - equal: [<< pipeline.git.branch >>, production]
-          steps:
-            - run: |
-                curl --request POST \
-                  -u $CIRCLECI_API_TOKEN: \
-                  --url https://circleci.com/api/v2/project/github/CitizenLabDotCo/citizenlab/pipeline \
-                  --header 'content-type: application/json' \
-                  --header 'x-attribution-login: '"$CIRCLE_USERNAME" \
-                  --data '{"branch": "'"$CIRCLE_BRANCH"'","parameters": {"image_tag": "'"$CIRCLE_SHA1"'", "run_deploy": true, "back": true, "trigger": false}}'
+      - run: |
+          curl --request POST \
+            -u $CIRCLECI_API_TOKEN: \
+            --url https://circleci.com/api/v2/project/github/CitizenLabDotCo/citizenlab/pipeline \
+            --header 'content-type: application/json' \
+            --header 'x-attribution-login: '"$CIRCLE_USERNAME" \
+            --data '{"branch": "'"$CIRCLE_BRANCH"'","parameters": {"image_tag": "'"$CIRCLE_SHA1"'", "run_deploy": true, "back": true, "trigger": false}}'
 
   back-push-deployment-docker-image:
     resource_class: small
     docker:
       - image: cimg/base:2021.03
+    parameters:
+      image_tag:
+        type: string
+        default: << pipeline.parameters.image_tag >>
     steps:
       - echo_pipeline_parameters
       - setup_remote_docker
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-      - run: docker pull citizenlabdotco/back-ee:<< pipeline.parameters.image_tag >>
-      - run: docker tag citizenlabdotco/back-ee:<< pipeline.parameters.image_tag >> citizenlabdotco/back-ee:$CIRCLE_BRANCH
+      - run: docker pull citizenlabdotco/back-ee:<< parameters.image_tag >>
+      - run: docker tag citizenlabdotco/back-ee:<< parameters.image_tag >> citizenlabdotco/back-ee:$CIRCLE_BRANCH
       - deploy:
           command: docker push citizenlabdotco/back-ee:$CIRCLE_BRANCH
 
@@ -374,10 +378,9 @@ jobs:
   front-detect-deadcode:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
-    working_directory: /citizenlab/front
+    working_directory: ~/citizenlab/front
     steps:
-      - checkout:
-          path: /citizenlab
+      - shallow-clone
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -394,10 +397,9 @@ jobs:
   front-lint:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
-    working_directory: /citizenlab/front
+    working_directory: ~/citizenlab/front
     steps:
-      - checkout:
-          path: /citizenlab
+      - shallow-clone
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -414,27 +416,25 @@ jobs:
   front-license-check:
     docker:
       - image: licensefinder/license_finder
-    working_directory: /citizenlab/front
+    working_directory: ~/citizenlab/front
     resource_class: small
     steps:
-      - checkout:
-          path: /citizenlab
+      - shallow-clone
       - restore_cache:
           keys:
             - v1-npm-cache-{{ checksum "package.json" }}
             # fallback to using the latest cache if no exact match is found
             - v1-npm-cache-
       - run: npm ci
-      - run: /bin/bash -lc "cd /citizenlab/front && license_finder"
+      - run: /bin/bash -lc "cd ~/citizenlab/front && license_finder"
 
   front-build:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     resource_class: large
-    working_directory: /citizenlab/front
+    working_directory: ~/citizenlab/front
     steps:
-      - checkout:
-          path: /citizenlab
+      - shallow-clone
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -453,10 +453,9 @@ jobs:
   front-extract-intl:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
-    working_directory: /citizenlab/front
+    working_directory: ~/citizenlab/front
     steps:
-      - checkout:
-          path: /citizenlab
+      - shallow-clone
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -483,12 +482,24 @@ jobs:
   front-test:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
+    # If you modify the resource_class, ensure that you also adjust the number of
+    # workers utilized by `npm run test:ci` (in package.json) to correspond with the
+    # number of vCPUs available for this instance class.
+    #
+    # Note: when running tests in parallel with Jest, the number of workers must
+    # be specified explicitly. Otherwise, Jest attempts to use all available resources
+    # of the machine instead of restricting itself to the test virtual environment.
+    # See:
+    # - https://circleci.com/docs/collect-test-data/#jest
+    # - https://github.com/facebook/jest/issues/1524#issuecomment-262366820
+    # - https://github.com/facebook/jest/issues/5239#issuecomment-355867359
+    resource_class: medium+
     working_directory: ~/
     environment:
       CITIZENLAB_EE: true
+    parallelism: 4
     steps:
-      - checkout:
-          path: ./citizenlab
+      - shallow-clone
       - restore_cache:
           keys:
             - v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
@@ -501,7 +512,11 @@ jobs:
           key: v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
       - run:
           name: Run tests with JUnit as reporter
-          command: cd citizenlab/front && npm run test:ci
+          command: |
+            cd citizenlab/front
+            TEST_FILES=$(circleci tests glob '**/*.test.{ts,tsx}' | circleci tests split --split-by=timings)
+            echo $TEST_FILES
+            npm run test:ci -- $TEST_FILES
           environment:
             JEST_JUNIT_OUTPUT_DIR: ./reports/
       - store_test_results:
@@ -533,10 +548,9 @@ jobs:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     resource_class: large
-    working_directory: /citizenlab/front
+    working_directory: ~/citizenlab/front
     steps:
-      - checkout:
-          path: /citizenlab
+      - shallow-clone
       - restore_cache:
           keys:
             - v1-npm-cache-{{ checksum "package.json" }}
@@ -548,7 +562,7 @@ jobs:
             - /root/.npm
           key: v1-npm-cache-{{ checksum "package.json" }}
       - run:
-          command: SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_DSN=$SENTRY_DSN SENTRY_ENV=$SENTRY_ENV_STAGING SENTRY_ENV=$SENTRY_ENV_STAGING POSTHOG_API_KEY=$POSTHOG_API_KEY_STAGING npm run build
+          command: SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_DSN=$SENTRY_DSN SENTRY_ENV=$SENTRY_ENV_STAGING POSTHOG_API_KEY=$POSTHOG_API_KEY_STAGING npm run build
           no_output_timeout: "30m"
       - run:
           command: rm build/*.map
@@ -562,10 +576,9 @@ jobs:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     resource_class: large
-    working_directory: /citizenlab/front
+    working_directory: ~/citizenlab/front
     steps:
-      - checkout:
-          path: /citizenlab
+      - shallow-clone
       - restore_cache:
           keys:
             - v1-npm-cache-{{ checksum "package.json" }}
@@ -609,16 +622,20 @@ jobs:
   e2e-tests:
     docker:
       - image: cimg/base:2021.03
+    parallelism: 3
     resource_class: medium+
     steps:
-      - checkout
+      - shallow-clone
       - copy_secrets_from_lastpass
-      - setup_remote_docker:
-          version: 19.03.13 # https://support.circleci.com/hc/en-us/articles/360050934711
+      - setup_remote_docker
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: |
           cd e2e
-          docker-compose build
+          # --parallel is weird https://github.com/docker/compose/issues/7901 but it seems to work.
+          # `docker compose` (w/o hythen) doesn't work atm "docker: 'compose' is not a docker command"
+          docker-compose build --parallel
+      - run: |
+          cd e2e
           docker-compose run web bin/rails db:drop db:create db:schema:load
           docker-compose run web bin/rails "cl2_back:create_tenant[e2e.front,e2etests_template]"
       - run:
@@ -626,16 +643,32 @@ jobs:
             cd e2e
             docker-compose up
           background: true
-      # Wait until build is finished. TODO: Use prebuilt images.
-      - run: sleep 280
+      # Wait until build is finished.
       - run: |
+          sleep 10 # if we run `docker-compose run` immediately, it fails with "network is ambiguous (2 matches found on name)"
           cd e2e
-          docker-compose run --name cypress_run front npm run cypress:run -- --config baseUrl=http://e2e.front:3000
+          # we cannot access localhost:3000, so we call it from the container
+          # https://discuss.circleci.com/t/cannot-communicate-with-docker-container/27253/2
+          docker-compose run front curl --retry 2 --retry-delay 5 --retry-connrefused -v http://e2e.front:3000
+      - run: |
+          cd front
+          TESTFILES=$(circleci tests glob "cypress/e2e/**/*.cy.ts" | circleci tests split  --split-by=timings)
+          COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | sed 's/ /,/g')
+          echo $COMMA_SEPARATED_TESTFILES
+          cd ../e2e
+          docker-compose run --name cypress_run front npm run cypress:run -- --reporter junit --reporter-options "mochaFile=reports/cypress.xml,toConsole=true" --config baseUrl=http://e2e.front:3000 --spec ${COMMA_SEPARATED_TESTFILES}
+      # We run cypress tests in container, so we need to copy the results out.
+      # ToDo: fix it. Reporting doesn't work atm.
+      - run: |
+          mkdir -p front/reports
+          docker cp cypress_run:/front/reports/cypress.xml front/reports/cypress.xml
       - run:
           command: docker cp cypress_run:/front/cypress/screenshots .
           # If `when: always`, it fails on success with
           # Error: No such container:path: cypress_run:/front/cypress/screenshots
           when: on_fail
+      - store_test_results:
+          path: front/reports
       - store_artifacts:
           path: screenshots
 
@@ -663,15 +696,30 @@ workflows:
                 - /l10n_.*/
                 - master
                 - production
+      - changelogger:
+          filters:
+            branches:
+              only:
+                - production
+          context:
+            - docker-hub-access
+            - changelogger
 
   # BACK-END
   back:
     when:
       and:
-        - not: <<pipeline.parameters.run_deploy>>
         - << pipeline.parameters.back >>
+        - not: <<pipeline.parameters.run_deploy>>
+        - not:
+            equal: ["production", << pipeline.git.branch >>]
     jobs:
       - back-build-docker-image:
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
           context:
             - docker-hub-access
             - citizenlab-ee-environment
@@ -709,13 +757,7 @@ workflows:
             - citizenlab-ee-environment
           requires:
             - back-build-docker-image
-      - back-web-api-docs:
-          context:
-            - docker-hub-access
-            - citizenlab-ee-environment
-          requires:
-            - back-test
-      - back-slow-tests:
+      - back-docs-not-blocking:
           context:
             - docker-hub-access
             - citizenlab-ee-environment
@@ -725,16 +767,14 @@ workflows:
           context: circleci-api-token
           requires:
             - back-test
-            - back-slow-tests
             - back-lint
             - back-bundle-audit
           filters:
             branches:
               only:
                 - master
-                - production
 
-  back-deploy:
+  back-deploy-staging:
     when:
       and:
         - <<pipeline.parameters.run_deploy>>
@@ -746,8 +786,8 @@ workflows:
             branches:
               only:
                 - master
-                - production
       - back-deploy-to-swarm:
+          name: Deploy to staging
           requires:
             - back-push-deployment-docker-image
           filters:
@@ -758,7 +798,28 @@ workflows:
           compose_file: docker-compose-staging.yml
           stack_name: cl2-back-stg
           env_file: ".env-staging"
+
+  back-deploy-production:
+    when: << pipeline.parameters.back >>
+    jobs:
+      - back-build-docker-image:
+          filters:
+            branches:
+              only: production
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+      - back-push-deployment-docker-image:
+          context: docker-hub-access
+          filters:
+            branches:
+              only:
+                - production
+          image_tag: $CIRCLE_SHA1
+          requires:
+            - back-build-docker-image
       - back-deploy-to-swarm:
+          name: Deploy to Europe
           requires:
             - back-push-deployment-docker-image
           filters:
@@ -770,6 +831,7 @@ workflows:
           stack_name: cl2-prd-bnlx-stack
           env_file: ".env-production-benelux"
       - back-deploy-to-swarm:
+          name: Deploy to Canada
           requires:
             - back-push-deployment-docker-image
           filters:
@@ -781,6 +843,7 @@ workflows:
           env_file: ".env-web"
           stack_name: "cl2"
       - back-deploy-to-swarm:
+          name: Deploy to South-America
           requires:
             - back-push-deployment-docker-image
           filters:
@@ -792,6 +855,7 @@ workflows:
           env_file: ".env-web"
           stack_name: "cl2"
       - back-deploy-to-swarm:
+          name: Deploy to US-West
           requires:
             - back-push-deployment-docker-image
           filters:
@@ -803,6 +867,7 @@ workflows:
           env_file: ".env-web"
           stack_name: "cl2"
       - back-deploy-to-swarm:
+          name: Deploy to UK
           requires:
             - back-push-deployment-docker-image
           filters:
@@ -818,8 +883,10 @@ workflows:
   front:
     when:
       and:
-        - not: <<pipeline.parameters.run_deploy>>
         - << pipeline.parameters.front >>
+        - not: <<pipeline.parameters.run_deploy>>
+        - not:
+            equal: ["production", << pipeline.git.branch >>]
     jobs:
       - front-test
       - front-lint:
@@ -829,7 +896,6 @@ workflows:
               ignore:
                 - crowdin_master
                 - /l10n_.*/
-                - master
       - front-detect-deadcode:
           context: citizenlab-ee-environment
           filters:
@@ -837,7 +903,6 @@ workflows:
               ignore:
                 - crowdin_master
                 - /l10n_.*/
-                - master
       - front-license-check:
           context: citizenlab-ee-environment
           filters:
@@ -852,7 +917,6 @@ workflows:
               ignore:
                 - crowdin_master
                 - /l10n_.*/
-                - master
       - front-extract-intl:
           context: citizenlab-ee-environment
           filters:
@@ -861,18 +925,18 @@ workflows:
                 - crowdin_master
                 - /l10n_.*/
                 - master
-                - production
       - front-trigger-deploy:
           context: circleci-api-token
           requires:
             - front-test
+            - front-build
+            - front-license-check
           filters:
             branches:
               only:
                 - master
-                - production
 
-  front-deploy:
+  front-deploy-staging:
     when:
       and:
         - <<pipeline.parameters.run_deploy>>
@@ -881,15 +945,7 @@ workflows:
       - front-deploy-staging:
           filters:
             branches:
-              only:
-                - master
-          context:
-            - citizenlab-ee-environment
-      - front-deploy-production:
-          filters:
-            branches:
-              only:
-                - production
+              only: master
           context:
             - citizenlab-ee-environment
       - front-test-lighthouse:
@@ -898,6 +954,17 @@ workflows:
           filters:
             branches:
               only: master
+
+  front-deploy-production:
+    when: <<pipeline.parameters.front>>
+    jobs:
+      - front-deploy-production:
+          filters:
+            branches:
+              only:
+                - production
+          context:
+            - citizenlab-ee-environment
 
   # OTHER
   manually-e2e-tests:
