@@ -30,7 +30,9 @@ FactoryBot.define do
           'color_main' => '#335533',
           'color_secondary' => Faker::Color.hex_color,
           'color_text' => Faker::Color.hex_color,
-          'authentication_token_lifetime_in_days' => 30
+          'authentication_token_lifetime_in_days' => 30,
+          'maximum_admins_number' => 10,
+          'maximum_project_managers_number' => 10
         },
         'initiatives' => {
           'enabled' => true,
@@ -70,7 +72,9 @@ FactoryBot.define do
           'color_main' => '#335533',
           'color_secondary' => Faker::Color.hex_color,
           'color_text' => Faker::Color.hex_color,
-          'authentication_token_lifetime_in_days' => 30
+          'authentication_token_lifetime_in_days' => 30,
+          'maximum_admins_number' => 10,
+          'maximum_project_managers_number' => 10
         },
         'initiatives' => {
           'enabled' => true,

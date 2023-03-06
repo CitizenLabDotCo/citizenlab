@@ -19,7 +19,9 @@
           "color_secondary",
           "color_text",
           "lifecycle_stage",
-          "authentication_token_lifetime_in_days"
+          "authentication_token_lifetime_in_days",
+          "maximum_admins_number",
+          "maximum_project_managers_number"
         ],
         "additionalProperties": false,
         "required": ["allowed", "enabled", "lifecycle_stage"],
@@ -181,6 +183,18 @@
             "minimum": 1,
             "maximum": 30,
             "default": 30
+          },
+          "maximum_admins_number": {
+            "title": "Maximum number of admins",
+            "description": "Maximum allowed number of admins on the platform.",
+            "type": "integer",
+            "default": 10
+          },
+          "maximum_project_managers_number": {
+            "title": "Maximum number of project managers",
+            "description": "Maximum allowed number of project managers on the platform.",
+            "type": "integer",
+            "default": 10
           }
         }
       },

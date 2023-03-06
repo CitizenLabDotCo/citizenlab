@@ -22,7 +22,9 @@ describe 'WebApi::V1::External::TenantSerializer' do
             'lifecycle_stage' => 'active',
             'organization_name' => { 'en' => 'Liege', 'fr-FR' => 'Liege', 'nl-NL' => 'Luik' },
             'organization_type' => 'medium_city',
-            'authentication_token_lifetime_in_days' => 30
+            'authentication_token_lifetime_in_days' => 30,
+            'maximum_admins_number' => 10,
+            'maximum_project_managers_number' => 10
           },
         'initiatives' =>
           { 'allowed' => true,
