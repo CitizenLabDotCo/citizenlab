@@ -392,7 +392,7 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            user_banning: {
+            user_blocking: {
               enabled: true,
               allowed: true
             }

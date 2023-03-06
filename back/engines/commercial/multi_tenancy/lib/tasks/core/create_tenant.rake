@@ -320,7 +320,7 @@ namespace :cl2_back do
           enabled: false,
           allowed: false
         },
-        user_banning: {
+        user_blocking: {
           enabled: false,
           allowed: false
         }
