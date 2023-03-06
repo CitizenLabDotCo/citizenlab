@@ -11,7 +11,7 @@ module UserCustomFields
           age_stats = AgeStats.calculate(find_users)
 
           render json: raw_json({
-            total_user_count: age_stats.total_user_count,
+            total_user_count: age_stats.user_count,
             unknown_age_count: age_stats.unknown_age_count,
             series: {
               user_counts: age_stats.binned_counts,
