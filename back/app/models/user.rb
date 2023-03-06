@@ -333,7 +333,7 @@ class User < ApplicationRecord
   end
 
   def passwordless?
-    !password_digest && user.identity_ids.empty?
+    !password_digest && identity_ids.empty?
   end
 
   def moderatable_project_ids

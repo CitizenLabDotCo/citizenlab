@@ -15,9 +15,11 @@ describe LocalProjectCopyService do
       config.save!
     end
 
+    let(:with_permissions) { false }
     let!(:continuous_project) do
       create(
         :continuous_project,
+        with_permissions: with_permissions,
         admin_publication_attributes: { publication_status: 'published' },
         title_multiloc: { en: 'Copy me' },
         slug: 'copy-me',
@@ -216,6 +218,7 @@ describe LocalProjectCopyService do
     end
 
     describe 'when a certain project action is permitted only for groups' do
+      let(:with_permissions) { true }
       let(:groups) { create_list(:group, 2) }
       let(:permission) do
         ParticipationContextService.new
@@ -261,9 +264,10 @@ describe LocalProjectCopyService do
     end
 
     describe 'when a certain phase action is permitted only for groups' do
-      let(:source_project) { create(:project_with_active_ideation_phase) }
+      let!(:source_project) { create(:project_with_active_ideation_phase) }
       let(:groups) { create_list(:group, 2) }
       let(:permission) do
+        PermissionsService.new.update_all_permissions
         ParticipationContextService.new
           .get_participation_context(source_project).permissions
           .find_by(action: 'commenting_idea')
