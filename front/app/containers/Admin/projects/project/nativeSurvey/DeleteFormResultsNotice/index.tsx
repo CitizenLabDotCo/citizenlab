@@ -48,7 +48,7 @@ const DeleteFormResultsNotice = ({
     </Box>
 
     <Text ml="16px" color="teal700">
-      {formatMessage(messages.disabledSurveyMessage)}
+      {formatMessage(messages.disabledSurveyMessage2)}
       &nbsp;
       {redirectToSurveyPage ? (
         <StyledLink
@@ -56,10 +56,10 @@ const DeleteFormResultsNotice = ({
           data-cy="e2e-delete-form-results-notice-link"
           onlyActiveOnIndex
         >
-          {formatMessage(messages.deleteResultsLink)}
+          {formatMessage(messages.deleteResultsLink2)}
         </StyledLink>
       ) : (
-        formatMessage(messages.deleteResultsLink)
+        formatMessage(messages.deleteResultsLink2)
       )}
     </Text>
   </Box>

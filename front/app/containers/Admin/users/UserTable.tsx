@@ -20,7 +20,7 @@ import eventEmitter from 'utils/eventEmitter';
 import events from './events';
 
 // tracking
-import { injectTracks } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // I18n
@@ -65,27 +65,16 @@ interface InputProps {
 
 interface Props extends InputProps, GetUsersChildProps {}
 
-interface State {}
-
-type Extra = { sortAttribute: SortAttribute };
-
-interface Tracks {
-  trackPagination: () => void;
-  trackToggleOneUser: () => void;
-  trackAdminToggle: () => void;
-  trackSortChange: (value: { extra: Extra }) => void;
-}
-
-class UsersTable extends PureComponent<Props & Tracks, State> {
+class UsersTable extends PureComponent<Props> {
   isUserAdmin = (user: IUserData) => {
     return isAdmin({ data: user });
   };
 
   handleAdminRoleOnChange = (user: IUserData) => () => {
     let newRoles: TRole[] = [];
-    const { authUser, trackAdminToggle } = this.props;
+    const { authUser } = this.props;
 
-    trackAdminToggle();
+    trackEventByName(tracks.adminToggle.name);
 
     if (authUser && authUser.id === user.id) {
       eventEmitter.emit<JSX.Element>(
@@ -106,7 +95,7 @@ class UsersTable extends PureComponent<Props & Tracks, State> {
   };
 
   handleSortingOnChange = (sortAttribute: SortAttribute) => () => {
-    this.props.trackSortChange({
+    trackEventByName(tracks.sortChange.name, {
       extra: {
         sortAttribute,
       },
@@ -115,12 +104,12 @@ class UsersTable extends PureComponent<Props & Tracks, State> {
   };
 
   handlePaginationClick = (pageNumber: number) => {
-    this.props.trackPagination();
+    trackEventByName(tracks.pagination.name);
     this.props.onChangePage(pageNumber);
   };
 
-  handleUserToggle = (userId) => () => {
-    this.props.trackToggleOneUser();
+  handleUserToggle = (userId: string) => () => {
+    trackEventByName(tracks.toggleOneUser.name);
     this.props.handleSelect(userId);
   };
 
@@ -211,9 +200,4 @@ class UsersTable extends PureComponent<Props & Tracks, State> {
   }
 }
 
-export default injectTracks<Props>({
-  trackPagination: tracks.pagination,
-  trackToggleOneUser: tracks.toggleOneUser,
-  trackAdminToggle: tracks.adminToggle,
-  trackSortChange: tracks.sortChange,
-})(UsersTable);
+export default UsersTable;

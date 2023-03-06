@@ -9,6 +9,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { deleteProjectModerator } from 'services/projectModerators';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
+import { Text, Box } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useProjectModerators from 'hooks/useProjectModerators';
@@ -50,40 +51,50 @@ const ModeratorList = memo(
     if (!isNilOrError(authUser) && !isNilOrError(moderators)) {
       return (
         <List>
-          {moderators.map((moderator, index) => {
-            const firstName = moderator.attributes.first_name;
-            const lastName = moderator.attributes.last_name;
-            const invitationPending =
-              moderator.attributes.invite_status === 'pending';
-            const displayName = invitationPending ? (
-              <PendingInvitation>
-                {formatMessage(messages.pendingInvitation)}
-              </PendingInvitation>
-            ) : firstName && lastName ? (
-              `${firstName} ${lastName}`
-            ) : (
-              <UnknownName>{formatMessage(messages.unknownName)}</UnknownName>
-            );
+          <>
+            {moderators.map((moderator, index) => {
+              const firstName = moderator.attributes.first_name;
+              const lastName = moderator.attributes.last_name;
+              const invitationPending =
+                moderator.attributes.invite_status === 'pending';
+              const displayName = invitationPending ? (
+                <PendingInvitation>
+                  {formatMessage(messages.pendingInvitation)}
+                </PendingInvitation>
+              ) : firstName && lastName ? (
+                `${firstName} ${lastName}`
+              ) : (
+                <UnknownName>{formatMessage(messages.unknownName)}</UnknownName>
+              );
 
-            return (
-              <Row
-                key={moderator.id}
-                isLastItem={index === moderators.length - 1}
-              >
-                <Avatar userId={moderator.id} size={30} />
-                <p className="expand">{displayName}</p>
-                <p className="expand">{moderator.attributes.email}</p>
-                <Button
-                  onClick={handleDeleteClick(projectId, moderator.id)}
-                  buttonStyle="text"
-                  icon="delete"
-                  disabled={authUser.id === moderator.id}
+              return (
+                <Row
+                  key={moderator.id}
+                  isLastItem={index === moderators.length - 1}
                 >
-                  <FormattedMessage {...messages.deleteModeratorLabel} />
-                </Button>
-              </Row>
-            );
-          })}
+                  <Box display="flex" alignItems="center">
+                    <Box mr="8px">
+                      <Avatar userId={moderator.id} size={30} />
+                    </Box>
+                    <Text as="span" m={'0'}>
+                      {displayName}
+                    </Text>
+                  </Box>
+                  <Text as="span" m={'0'}>
+                    {moderator.attributes.email}
+                  </Text>
+                  <Button
+                    onClick={handleDeleteClick(projectId, moderator.id)}
+                    buttonStyle="text"
+                    icon="delete"
+                    disabled={authUser.id === moderator.id}
+                  >
+                    <FormattedMessage {...messages.deleteModeratorLabel} />
+                  </Button>
+                </Row>
+              );
+            })}
+          </>
         </List>
       );
     }

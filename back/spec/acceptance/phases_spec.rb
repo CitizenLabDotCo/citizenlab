@@ -223,7 +223,8 @@ resource 'Phases' do
       describe do
         let(:start_at) { nil }
 
-        example_request '[error] Create an invalid phase', document: false do
+        example '[error] Create an invalid phase', document: false do
+          do_request
           assert_status 422
           expect(json_response).to include_response_error(:start_at, 'blank')
         end

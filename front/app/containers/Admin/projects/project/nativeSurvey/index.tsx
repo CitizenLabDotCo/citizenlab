@@ -69,8 +69,8 @@ const Forms = ({ intl: { formatMessage } }: WrappedComponentProps) => {
           alignItems="center"
         >
           <Box width="100%">
-            <Title>{formatMessage(messages.survey)}</Title>
-            <Text>{formatMessage(messages.surveyDescription)}</Text>
+            <Title>{formatMessage(messages.survey2)}</Title>
+            <Text>{formatMessage(messages.surveyDescription2)}</Text>
           </Box>
           {project.attributes.process_type === 'timeline' && (
             <Box>
@@ -82,7 +82,7 @@ const Forms = ({ intl: { formatMessage } }: WrappedComponentProps) => {
                 onClick={handleDownloadResults}
                 processing={isDownloading}
               >
-                {formatMessage(messages.downloadAllResults)}
+                {formatMessage(messages.downloadAllResults2)}
               </Button>
             </Box>
           )}

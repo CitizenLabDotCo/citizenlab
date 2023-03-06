@@ -66,7 +66,8 @@ resource 'Campaign consents' do
     context 'with an invalid unsubscription_token' do
       let(:unsubscription_token) { 'garbage' }
 
-      example_request 'List all campaigns with an invalid unsubscription token', document: false do
+      example 'List all campaigns with an invalid unsubscription token', document: false do
+        do_request
         expect(status).to eq 401
       end
     end

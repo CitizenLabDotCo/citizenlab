@@ -5,9 +5,9 @@ import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
-import useIdeaStatus from 'hooks/useIdeaStatus';
+import useIdeaStatus from 'api/idea_statuses/useIdeaStatus';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import { updateIdeaStatus } from 'services/ideaStatuses';
+import useUpdateIdeaStatus from 'api/idea_statuses/useUpdateIdeaStatus';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -27,14 +27,17 @@ const StyledSectionTitle = styled(SectionTitle)`
 
 const Edit = () => {
   const { id: statusId } = useParams() as { id: string };
-  const ideaStatus = useIdeaStatus({ statusId });
+  const { data: ideaStatus } = useIdeaStatus(statusId);
+  const { mutate: updateIdeaStatus } = useUpdateIdeaStatus();
   const tenantLocales = useAppConfigurationLocales();
 
   const handleSubmit = async (values: FormValues) => {
     const { ...params } = values;
 
-    await updateIdeaStatus(statusId, params);
-    goBack();
+    updateIdeaStatus(
+      { id: statusId, requestBody: params },
+      { onSuccess: goBack }
+    );
   };
 
   const goBack = () => {
@@ -43,7 +46,7 @@ const Edit = () => {
 
   if (!isNilOrError(ideaStatus) && !isNilOrError(tenantLocales)) {
     const { color, title_multiloc, description_multiloc, code } =
-      ideaStatus.attributes;
+      ideaStatus.data.attributes;
     return (
       <>
         <StyledGoBackButton onClick={goBack} />
