@@ -188,20 +188,12 @@
       "user_banning": {
         "type": "object",
         "title": "User banning",
-        "description":	"User banning features.",
+        "description": "User banning features.",
         "additionalProperties": false,
-        "required-settings": ["duration"],
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false },
-          "duration": {
-            "title": "Duration of ban period (in days)",
-            "description": "Default value for how many days a user will be banned for. This value can be changed in the admin panel on the platform. Changing this value only changes the duration of subsequent bans.",
-            "type": "integer",
-            "minimum": 1,
-            "default": 90
-          }
+          "enabled": { "type": "boolean", "default": false }
         }
       },
 

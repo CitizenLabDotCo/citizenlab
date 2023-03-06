@@ -391,6 +391,10 @@ module MultiTenancy
             posthog_integration: {
               enabled: true,
               allowed: true
+            },
+            user_banning: {
+              enabled: true,
+              allowed: true
             }
           })
         )

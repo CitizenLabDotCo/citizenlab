@@ -319,6 +319,10 @@ namespace :cl2_back do
         posthog_integration: {
           enabled: false,
           allowed: false
+        },
+        user_banning: {
+          enabled: false,
+          allowed: false
         }
       }
     )
