@@ -285,64 +285,6 @@ resource 'Stats - Users' do
     end
   end
 
-  describe 'by_education endpoints' do
-    before do
-      travel_to start_at + 24.days do
-        group_members = %w[3 3 5].map { |education| create(:user, education: education) }
-        @group = create_group(group_members)
-        _non_member = create(:user, education: '3')
-      end
-    end
-
-    let(:group) { @group.id }
-
-    get 'web_api/v1/stats/users_by_education' do
-      time_boundary_parameters self
-      group_filter_parameter self
-      parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
-
-      example_request 'Users by education' do
-        expect(response_status).to eq 200
-
-        expected_users = CustomField.find_by(key: 'education')
-          .options.to_h { |option| [option.key, 0] }
-          .merge('3': 2, '5': 1, _blank: 0)
-          .symbolize_keys
-
-        expect(json_response_body).to include(
-          series: {
-            users: expected_users,
-            expected_users: nil,
-            reference_population: nil
-          }
-        )
-      end
-    end
-
-    get 'web_api/v1/stats/users_by_education_as_xlsx' do
-      time_boundary_parameters self
-      group_filter_parameter self
-      parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
-
-      include_examples('xlsx export', 'education') do
-        let(:expected_worksheet_name) { 'users_by_education' }
-        let(:expected_worksheet_values) do
-          [
-            %w[option option_id users],
-            ['youth council', 2, 0],
-            ['youth council', 3, 2],
-            ['youth council', 4, 0],
-            ['youth council', 5, 1],
-            ['youth council', 6, 0],
-            ['youth council', 7, 0],
-            ['youth council', 8, 0],
-            ['_blank', '_blank', 0]
-          ]
-        end
-      end
-    end
-  end
-
   describe 'by_custom_field endpoints' do
     get 'web_api/v1/stats/users_by_custom_field/:custom_field_id' do
       time_boundary_parameters self
