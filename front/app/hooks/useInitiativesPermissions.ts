@@ -5,10 +5,12 @@ import { isNilOrError } from 'utils/helperUtils';
 import { ActionPermission } from 'services/actionTakingRules';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from './useAuthUser';
+import { useLocation } from 'react-router-dom';
 
 export type IInitiativeDisabledReason = 'notPermitted';
 
 export default function useInitiativesPermissions(action: IInitiativeAction) {
+  const location = useLocation();
   const [actionPermission, setActionPermission] = useState<
     ActionPermission<IInitiativeDisabledReason> | null | undefined
   >(undefined);
@@ -64,7 +66,7 @@ export default function useInitiativesPermissions(action: IInitiativeAction) {
         }
       }
     }
-  }, [appConfiguration, actionDescriptors, authUser, action]);
+  }, [appConfiguration, actionDescriptors, authUser, action, location]);
 
   return actionPermission;
 }

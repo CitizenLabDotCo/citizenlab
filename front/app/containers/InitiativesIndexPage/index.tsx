@@ -79,7 +79,6 @@ const InitiativeIndexPage = () => {
   if (!initiativesEnabled) {
     return <PageNotFound />;
   }
-  console.log(initiativePermissions);
   if (!isNilOrError(initiativePermissions)) {
     const { enabled } = initiativePermissions;
     const proposalSubmissionEnabled = enabled === true || enabled === 'maybe';
