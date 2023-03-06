@@ -52,14 +52,19 @@ export interface IIdeasByTopic {
 }
 
 export interface IIdeasByProject {
-  series: {
-    ideas: {
-      [key: string]: number;
-    };
-  };
-  projects: {
-    [key: string]: {
-      title_multiloc: Multiloc;
+  data: {
+    type: 'ideas_by_project';
+    attributes: {
+      series: {
+        ideas: {
+          [key: string]: number;
+        };
+      };
+      projects: {
+        [key: string]: {
+          title_multiloc: Multiloc;
+        };
+      };
     };
   };
 }
@@ -185,14 +190,19 @@ export interface ICommentsByTopic {
 }
 
 export interface ICommentsByProject {
-  series: {
-    comments: {
-      [key: string]: number;
-    };
-  };
-  projects: {
-    [key: string]: {
-      title_multiloc: Multiloc;
+  data: {
+    type: 'comments_by_project';
+    attributes: {
+      series: {
+        comments: {
+          [key: string]: number;
+        };
+      };
+      projects: {
+        [key: string]: {
+          title_multiloc: Multiloc;
+        };
+      };
     };
   };
 }
@@ -253,14 +263,19 @@ export interface IVotesByTopic {
 }
 
 export interface IVotesByProject {
-  series: {
-    total: {
-      [key: string]: number;
-    };
-  };
-  projects: {
-    [key: string]: {
-      title_multiloc: Multiloc;
+  data: {
+    type: 'votes_by_project';
+    attributes: {
+      series: {
+        total: {
+          [key: string]: number;
+        };
+      };
+      projects: {
+        [key: string]: {
+          title_multiloc: Multiloc;
+        };
+      };
     };
   };
 }
