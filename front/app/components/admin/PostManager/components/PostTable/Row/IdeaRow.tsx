@@ -8,7 +8,7 @@ import { DragSource } from 'react-dnd-cjs';
 // services
 import { IIdeaData, updateIdea, ideaByIdStream } from 'services/ideas';
 import { IPhaseData } from 'services/phases';
-import { IIdeaStatusData } from 'services/ideaStatuses';
+import { IIdeaStatusData } from 'api/idea_statuses/types';
 
 // components
 import { TitleLink } from '.';

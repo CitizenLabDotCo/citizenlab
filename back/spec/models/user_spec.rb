@@ -234,7 +234,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe 'demographic fields', slow_test: true do
+  describe 'demographic fields' do
     before do
       create(:custom_field_birthyear)
       create(:custom_field_gender, :with_options)

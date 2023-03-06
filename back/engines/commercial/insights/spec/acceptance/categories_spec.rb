@@ -12,13 +12,19 @@ resource 'Categories' do
 
   shared_examples 'unauthorized requests' do
     context 'when visitor' do
-      example_request('unauthorized', document: false) { expect(status).to eq(401) }
+      example 'unauthorized', document: false do
+        do_request
+        expect(status).to eq(401)
+      end
     end
 
     context 'when resident' do
       before { resident_header_token }
 
-      example_request('unauthorized', document: false) { expect(status).to eq(401) }
+      example 'unauthorized', document: false do
+        do_request
+        expect(status).to eq(401)
+      end
     end
   end
 
@@ -26,7 +32,8 @@ resource 'Categories' do
     context 'when name is empty' do
       let(:name) { '' }
 
-      example_request 'returns unprocessable-entity error', document: false do
+      example 'returns unprocessable-entity error', document: false do
+        do_request
         assert_status 422
       end
     end

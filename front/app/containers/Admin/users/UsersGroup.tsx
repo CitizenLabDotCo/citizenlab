@@ -36,7 +36,7 @@ import { deleteGroup, updateGroup, MembershipType } from 'services/groups';
 import { deleteMembershipByUserId } from 'services/groupMemberships';
 
 // tracking
-import { injectTracks } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 import Outlet from 'components/Outlet';
@@ -55,19 +55,11 @@ export interface State {
   search: string | undefined;
 }
 
-interface Tracks {
-  trackEditGroup: ({
-    extra: { groupType },
-  }: {
-    extra: { groupType: MembershipType };
-  }) => void;
-}
-
 export class UsersGroup extends React.PureComponent<
-  Props & WrappedComponentProps & Tracks,
+  Props & WrappedComponentProps,
   State
 > {
-  constructor(props: Props & WrappedComponentProps & Tracks) {
+  constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       groupEditionModal: false,
@@ -80,15 +72,16 @@ export class UsersGroup extends React.PureComponent<
   };
 
   openGroupEditionModal = () => {
-    const { group, trackEditGroup } = this.props;
+    const { group } = this.props;
 
     if (!isNilOrError(group)) {
       const groupType = group.attributes.membership_type;
-      trackEditGroup({
+      trackEventByName(tracks.editGroup.name, {
         extra: {
           groupType,
         },
       });
+
       this.setState({ groupEditionModal: groupType });
     }
   };
@@ -218,10 +211,7 @@ export class UsersGroup extends React.PureComponent<
     return null;
   }
 }
-
-const UsersGroupWithHoCs = injectTracks<Props>({
-  trackEditGroup: tracks.editGroup,
-})(injectIntl(UsersGroup) as any);
+const UsersGroupWithIntl = injectIntl(UsersGroup);
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   group: ({ params, render }) => (
@@ -232,6 +222,6 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <UsersGroupWithHoCs {...inputProps} {...dataProps} />}
+    {(dataProps) => <UsersGroupWithIntl {...inputProps} {...dataProps} />}
   </Data>
 ));

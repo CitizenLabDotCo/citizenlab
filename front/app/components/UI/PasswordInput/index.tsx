@@ -2,7 +2,7 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // components
 import PasswordInputComponent from './PasswordInput';
@@ -46,11 +46,11 @@ const PasswordInput = ({
   isLoginPasswordInput,
   errors,
 }: Props) => {
-  const appConfig = useAppConfiguration();
+  const { data: appConfig } = useAppConfiguration();
 
   if (!isNilOrError(appConfig)) {
     const minimumPasswordLength =
-      appConfig.attributes.settings.password_login?.minimum_length ||
+      appConfig.data.attributes.settings.password_login?.minimum_length ||
       DEFAULT_MINIMUM_PASSWORD_LENGTH;
 
     return (
