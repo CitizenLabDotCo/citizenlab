@@ -28,6 +28,7 @@ export interface UISchemaObject {
 
 export interface IIdeaFormSchemas {
   data: {
+    type: 'json_forms_schema';
     attributes: {
       json_schema_multiloc: {
         [locale: string]: {

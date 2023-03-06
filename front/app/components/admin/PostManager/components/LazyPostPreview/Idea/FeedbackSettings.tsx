@@ -1,14 +1,11 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { adopt } from 'react-adopt';
-import { get, memoize } from 'lodash-es';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // typings
@@ -20,23 +17,20 @@ import styled from 'styled-components';
 // components
 import { Select, Label } from '@citizenlab/cl2-component-library';
 
-// services
-import { updateIdea } from 'services/ideas';
-
 // resources
 import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
-import GetIdeaStatuses, {
-  GetIdeaStatusesChildProps,
-} from 'resources/GetIdeaStatuses';
-import GetIdeaById, { GetIdeaByIdChildProps } from 'resources/GetIdeaById';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../../tracks';
+import useLocalize from 'hooks/useLocalize';
+import useAuthUser from 'hooks/useAuthUser';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useIdeaById from 'api/ideas/useIdeaById';
+import useUpdateIdea from 'api/ideas/useUpdateIdea';
+import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
+import { IIdea } from 'api/ideas/types';
+import { IIdeaStatuses } from 'api/idea_statuses/types';
 
 const StyledLabel = styled(Label)`
   margin-top: 20px;
@@ -45,76 +39,44 @@ const StyledLabel = styled(Label)`
 const Container = styled.div``;
 
 interface DataProps {
-  authUser: GetAuthUserChildProps;
-  tenant: GetAppConfigurationChildProps;
-  statuses: GetIdeaStatusesChildProps;
-  idea: GetIdeaByIdChildProps;
   prospectAssignees: GetUsersChildProps;
 }
 
 interface InputProps {
+  projectId: string;
   ideaId: string;
   className?: string;
 }
 
 interface Props extends InputProps, DataProps {}
 
-class FeedbackSettings extends PureComponent<
-  Props & InjectedLocalized & WrappedComponentProps
-> {
-  getStatusOptions = memoize((statuses) => {
-    const { localize } = this.props;
-    if (!isNilOrError(statuses)) {
-      return statuses.map((status) => ({
-        value: status.id,
-        label: localize(status.attributes.title_multiloc),
-      }));
+const FeedbackSettings = ({ ideaId, className, prospectAssignees }: Props) => {
+  const { formatMessage } = useIntl();
+  const localize = useLocalize();
+  const authUser = useAuthUser();
+  const { data: idea } = useIdeaById(ideaId);
+  const { data: appConfig } = useAppConfiguration();
+  const { data: statuses } = useIdeaStatuses();
+  const { mutate: updateIdea } = useUpdateIdea();
+  const adminAtWorkId = !isNilOrError(authUser) ? authUser.id : null;
+
+  const getIdeaStatusOption = (idea: IIdea, statuses: IIdeaStatuses) => {
+    const ideaStatus = statuses.data.find(
+      (status) => status.id === idea.data.relationships.idea_status.data.id
+    );
+
+    if (ideaStatus) {
+      return {
+        value: ideaStatus.id,
+        label: localize(ideaStatus.attributes.title_multiloc),
+        color: ideaStatus.attributes.color,
+      };
     }
 
-    return [];
-  });
+    return null;
+  };
 
-  getIdeaStatusOption = memoize(
-    (idea: GetIdeaByIdChildProps, statuses) => {
-      const { localize } = this.props;
-      if (
-        !isNilOrError(idea) &&
-        idea.relationships.idea_status &&
-        idea.relationships.idea_status.data &&
-        !isNilOrError(statuses)
-      ) {
-        const ideaStatus = statuses.find(
-          (status) =>
-            status.id === get(idea, 'relationships.idea_status.data.id')
-        );
-        if (ideaStatus) {
-          return {
-            value: ideaStatus.id,
-            label: localize(ideaStatus.attributes.title_multiloc),
-            color: ideaStatus.attributes.color,
-          };
-        }
-
-        return null;
-      }
-
-      return null;
-    },
-    (idea: GetIdeaByIdChildProps, statuses) =>
-      JSON.stringify({
-        ideaId: isNilOrError(idea)
-          ? undefined
-          : get(idea, 'relationships.idea_status.data.id'),
-        statusesId: isNilOrError(statuses)
-          ? undefined
-          : statuses.map((status) => status.id),
-      })
-  );
-
-  getAssigneeOptions = memoize((prospectAssignees) => {
-    const {
-      intl: { formatMessage },
-    } = this.props;
+  const getAssigneeOptions = () => {
     if (!isNilOrError(prospectAssignees.usersList)) {
       const assigneeOptions = prospectAssignees.usersList.map((assignee) => ({
         value: assignee.id,
@@ -128,15 +90,14 @@ class FeedbackSettings extends PureComponent<
     }
 
     return [];
-  });
+  };
 
-  onStatusChange = (statusOption: IOption) => {
-    const { tenant, ideaId, authUser } = this.props;
-    const adminAtWorkId = authUser ? authUser.id : null;
-    const tenantId = !isNilOrError(tenant) && tenant.id;
+  const onStatusChange = (statusOption: IOption) => {
+    const tenantId = !isNilOrError(appConfig) && appConfig.data.id;
 
-    updateIdea(this.props.ideaId, {
-      idea_status_id: statusOption.value,
+    updateIdea({
+      id: ideaId,
+      requestBody: { idea_status_id: statusOption.value },
     });
 
     trackEventByName(tracks.ideaStatusChange, {
@@ -147,14 +108,13 @@ class FeedbackSettings extends PureComponent<
     });
   };
 
-  onAssigneeChange = (assigneeOption: IOption | null) => {
-    const { tenant, ideaId, authUser } = this.props;
+  const onAssigneeChange = (assigneeOption: IOption | null) => {
     const assigneeId = assigneeOption ? assigneeOption.value : null;
-    const adminAtWorkId = authUser ? authUser.id : null;
-    const tenantId = !isNilOrError(tenant) && tenant.id;
+    const tenantId = !isNilOrError(appConfig) && appConfig.data.id;
 
-    updateIdea(ideaId, {
-      assignee_id: assigneeId,
+    updateIdea({
+      id: ideaId,
+      requestBody: { assignee_id: assigneeId },
     });
 
     trackEventByName(tracks.changeIdeaAssignment, {
@@ -166,70 +126,54 @@ class FeedbackSettings extends PureComponent<
     });
   };
 
-  render() {
-    const { idea, className, statuses, prospectAssignees } = this.props;
+  if (idea && statuses) {
+    const statusOptions = statuses.data.map((status) => ({
+      value: status.id,
+      label: localize(status.attributes.title_multiloc),
+    }));
+    const ideaStatusOption = getIdeaStatusOption(idea, statuses);
+    const assigneeOptions = getAssigneeOptions();
+    const ideaAssigneeOption =
+      idea.data.relationships.assignee?.data?.id || 'unassigned';
 
-    const statusOptions = this.getStatusOptions(statuses);
-    const ideaStatusOption = this.getIdeaStatusOption(idea, statuses);
-    const assigneeOptions = this.getAssigneeOptions(prospectAssignees);
-    const ideaAssigneeOption = get(
-      idea,
-      'relationships.assignee.data.id',
-      'unassigned'
+    return (
+      <Container className={`${className} e2e-idea-settings`}>
+        <StyledLabel
+          value={<FormattedMessage {...messages.currentStatus} />}
+          htmlFor="idea-preview-select-status"
+        />
+        <Select
+          id="idea-preview-select-status"
+          options={statusOptions}
+          onChange={onStatusChange}
+          value={ideaStatusOption}
+        />
+        <StyledLabel
+          value={<FormattedMessage {...messages.assignee} />}
+          htmlFor="idea-preview-select-assignee"
+        />
+        <Select
+          id="idea-preview-select-assignee"
+          options={assigneeOptions}
+          onChange={onAssigneeChange}
+          value={ideaAssigneeOption}
+        />
+      </Container>
     );
-
-    if (!isNilOrError(idea)) {
-      return (
-        <Container className={`${className} e2e-idea-settings`}>
-          <StyledLabel
-            value={<FormattedMessage {...messages.currentStatus} />}
-            htmlFor="idea-preview-select-status"
-          />
-          <Select
-            id="idea-preview-select-status"
-            options={statusOptions}
-            onChange={this.onStatusChange}
-            value={ideaStatusOption}
-          />
-          <StyledLabel
-            value={<FormattedMessage {...messages.assignee} />}
-            htmlFor="idea-preview-select-assignee"
-          />
-          <Select
-            id="idea-preview-select-assignee"
-            options={assigneeOptions}
-            onChange={this.onAssigneeChange}
-            value={ideaAssigneeOption}
-          />
-        </Container>
-      );
-    }
-    return null;
   }
-}
+  return null;
+};
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetAppConfiguration />,
-  authUser: <GetAuthUser />,
-  idea: ({ ideaId, render }) => (
-    <GetIdeaById ideaId={ideaId}>{render}</GetIdeaById>
-  ),
-  statuses: <GetIdeaStatuses />,
-  prospectAssignees: ({ idea, render }) => (
-    <GetUsers
-      canModerateProject={
-        !isNilOrError(idea) ? idea.relationships.project.data.id : undefined
-      }
-    >
-      {render}
-    </GetUsers>
+  prospectAssignees: ({ projectId, render }) => (
+    <GetUsers canModerateProject={projectId}>{render}</GetUsers>
   ),
 });
 
-const FeedbackSettingsWithHOCs = injectIntl(injectLocalize(FeedbackSettings));
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <FeedbackSettingsWithHOCs {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default (inputProps: InputProps) => {
+  return (
+    <Data {...inputProps}>
+      {(dataProps) => <FeedbackSettings {...inputProps} {...dataProps} />}
+    </Data>
+  );
+};

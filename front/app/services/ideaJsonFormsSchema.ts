@@ -27,6 +27,7 @@ export interface JsonFormsSchema {
 
 export interface IIdeaJsonFormSchemas {
   data: {
+    type: 'json_forms_schema';
     attributes: {
       json_schema_multiloc: {
         [key in Locale]?: JsonFormsSchema;

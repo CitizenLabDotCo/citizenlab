@@ -17,8 +17,9 @@ export function isFieldEnabled(
   locale: Locale | undefined | Error | null
 ): boolean {
   if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {
-    return !!ideaCustomFieldsSchemas.json_schema_multiloc?.[locale]
-      ?.properties?.[fieldCode];
+    return !!ideaCustomFieldsSchemas.data.attributes.json_schema_multiloc?.[
+      locale
+    ]?.properties?.[fieldCode];
   }
 
   return true;

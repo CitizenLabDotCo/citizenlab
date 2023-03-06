@@ -687,9 +687,9 @@ class IdeaForm extends PureComponent<
     locale: Locale
   ) => {
     return (
-      ideaCustomFieldsSchemas.json_schema_multiloc[locale]?.required?.includes(
-        fieldCode
-      ) || false
+      ideaCustomFieldsSchemas.data.attributes.json_schema_multiloc[
+        locale
+      ]?.required?.includes(fieldCode) || false
     );
   };
 
@@ -773,7 +773,8 @@ class IdeaForm extends PureComponent<
       const showProposedBudget = proposedBudgetEnabled;
 
       const uiSchemaOptions =
-        ideaCustomFieldsSchemas?.ui_schema_multiloc[locale]?.options;
+        ideaCustomFieldsSchemas?.data.attributes.ui_schema_multiloc[locale]
+          ?.options;
 
       let inputTerm = getInputTerm(
         project.attributes.process_type,
@@ -830,8 +831,9 @@ class IdeaForm extends PureComponent<
                   )
                 }
                 subtextValue={
-                  ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']
-                    ?.properties?.title_multiloc?.description
+                  ideaCustomFieldsSchemas?.data.attributes
+                    .json_schema_multiloc?.[locale || '']?.properties
+                    ?.title_multiloc?.description
                 }
                 subtextSupportsHtml={true}
               />
@@ -893,8 +895,9 @@ class IdeaForm extends PureComponent<
                   )
                 }
                 subtextValue={
-                  ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']
-                    ?.properties?.body_multiloc?.description
+                  ideaCustomFieldsSchemas?.data.attributes
+                    .json_schema_multiloc?.[locale || '']?.properties
+                    ?.body_multiloc?.description
                 }
                 subtextSupportsHtml={true}
               />
@@ -973,9 +976,9 @@ class IdeaForm extends PureComponent<
                       )
                     }
                     subtextValue={
-                      ideaCustomFieldsSchemas?.json_schema_multiloc?.[
-                        locale || ''
-                      ]?.properties?.proposed_budget?.description
+                      ideaCustomFieldsSchemas?.data.attributes
+                        .json_schema_multiloc?.[locale || '']?.properties
+                        ?.proposed_budget?.description
                     }
                     subtextSupportsHtml={true}
                   />
@@ -1005,9 +1008,9 @@ class IdeaForm extends PureComponent<
                       )
                     }
                     subtextValue={
-                      ideaCustomFieldsSchemas?.json_schema_multiloc?.[
-                        locale || ''
-                      ]?.properties?.topic_ids?.description
+                      ideaCustomFieldsSchemas?.data.attributes
+                        .json_schema_multiloc?.[locale || '']?.properties
+                        ?.topic_ids?.description
                     }
                     subtextSupportsHtml={true}
                   />
@@ -1034,9 +1037,9 @@ class IdeaForm extends PureComponent<
                       )
                     }
                     subtextValue={
-                      ideaCustomFieldsSchemas?.json_schema_multiloc?.[
-                        locale || ''
-                      ]?.properties?.location_description?.description
+                      ideaCustomFieldsSchemas?.data.attributes
+                        .json_schema_multiloc?.[locale || '']?.properties
+                        ?.location_description?.description
                     }
                     subtextSupportsHtml={true}
                     htmlFor="idea-form-location-input-field"
@@ -1069,8 +1072,9 @@ class IdeaForm extends PureComponent<
                   )
                 }
                 subtextValue={
-                  ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']
-                    ?.properties?.idea_images_attributes?.description
+                  ideaCustomFieldsSchemas?.data.attributes
+                    .json_schema_multiloc?.[locale || '']?.properties
+                    ?.idea_images_attributes?.description
                 }
                 subtextSupportsHtml={true}
               />
@@ -1099,9 +1103,9 @@ class IdeaForm extends PureComponent<
                     )
                   }
                   subtextValue={
-                    ideaCustomFieldsSchemas?.json_schema_multiloc?.[
-                      locale || ''
-                    ]?.properties?.idea_files_attributes?.description
+                    ideaCustomFieldsSchemas?.data.attributes
+                      .json_schema_multiloc?.[locale || '']?.properties
+                      ?.idea_files_attributes?.description
                   }
                   subtextSupportsHtml={true}
                   htmlFor="idea-form-file-uploader"

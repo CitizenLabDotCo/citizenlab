@@ -20,7 +20,6 @@ import T from 'components/T';
 import { Top, Content, Container } from '../PostPreview';
 
 // services
-import { deleteIdea } from 'services/ideas';
 import { ProcessType } from 'services/projects';
 
 // resources
@@ -34,6 +33,8 @@ import GetPermission, {
   GetPermissionChildProps,
 } from 'resources/GetPermission';
 import useIdeaImages from 'hooks/useIdeaImages';
+import useDeleteIdea from 'api/ideas/useDeleteIdea';
+
 // utils
 import { getAddressOrFallbackDMS } from 'utils/map';
 
@@ -183,6 +184,7 @@ const IdeaContent = ({
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const ideaImages = useIdeaImages(ideaId);
+  const { mutate: deleteIdea } = useDeleteIdea();
 
   const handleClickDelete = (processType: ProcessType) => () => {
     const deleteConfirmationMessage = {
@@ -326,7 +328,7 @@ const IdeaContent = ({
                 </>
               )}
 
-              <FeedbackSettings ideaId={ideaId} />
+              <FeedbackSettings ideaId={ideaId} projectId={project.id} />
             </Right>
           </Row>
         </Content>
