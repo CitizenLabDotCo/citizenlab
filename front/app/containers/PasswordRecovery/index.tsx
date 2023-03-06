@@ -1,11 +1,17 @@
 import React from 'react';
 
 // components
-import { Input, Success, Box } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
+import { Success, Box } from '@citizenlab/cl2-component-library';
 import { Helmet } from 'react-helmet';
-import ContentContainer from 'components/ContentContainer';
 import { FormLabel } from 'components/UI/FormComponents';
+import {
+  StyledContentContainer,
+  Title,
+  StyledButton,
+  Form,
+  Subtitle,
+  StyledInput,
+} from 'components/smallForm';
 
 // services
 import { sendPasswordResetMail } from 'services/auth';
@@ -18,55 +24,8 @@ import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
 // style
-import styled from 'styled-components';
 import messages from './messages';
-import { fontSizes, stylingConsts } from 'utils/styleUtils';
-
-const StyledContentContainer = styled(ContentContainer)`
-  padding-bottom: 100px;
-`;
-
-const Title = styled.h1`
-  width: 100%;
-  color: #333;
-  font-size: ${fontSizes.xxxxl}px;
-  line-height: 40px;
-  font-weight: 500;
-  text-align: center;
-  margin: 0;
-  padding: 0;
-  padding-top: 60px;
-  margin-bottom: 15px;
-`;
-
-const Subtitle = styled.p`
-  color: #444;
-  font-size: 18px;
-  line-height: 22px;
-  font-weight: 300;
-  text-align: center;
-  margin: 0;
-  padding: 0;
-  margin-bottom: 50px;
-`;
-
-const StyledInput = styled(Input)``;
-
-const StyledButton = styled(Button)`
-  margin-top: 20px;
-  margin-bottom: 10px;
-`;
-
-const Form = styled.form`
-  width: 100%;
-  max-width: 380px;
-  padding-left: 20px;
-  padding-right: 20px;
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  flex-direction: column;
-`;
+import { stylingConsts } from 'utils/styleUtils';
 
 interface Props {}
 
@@ -183,7 +142,7 @@ class PasswordRecovery extends React.PureComponent<
         />
         <main>
           <StyledContentContainer>
-            <Title>{title}</Title>
+            <Title style={{ marginBottom: '15px' }}>{title}</Title>
 
             <Subtitle>{subtitle}</Subtitle>
 

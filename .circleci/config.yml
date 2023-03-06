@@ -102,6 +102,19 @@ commands:
       - run: echo $LASTPASS_PASSWORD | LPASS_DISABLE_PINENTRY=1 lpass login ${LASTPASS_EMAIL}
       - run: lpass show --notes 'citizenlab back-secret.env' > env_files/back-secret.env
       - run: lpass show --notes 'citizenlab front-secret.env' > env_files/front-secret.env
+  shallow-clone:
+    steps:
+      - run: mkdir -p ~/.ssh
+      - run: ssh-keyscan github.com >> ~/.ssh/known_hosts
+      # Git clone can fail when the repository directory exists and is not empty. This
+      # can happen when e.g. setting the working_directory to ~/citizenlab/front because
+      # CircleCI will create those directories in this case. The solution is to remove
+      # the created directories before cloning. The name of the directory to remove is
+      # inferred from the repository URL (the part between the "/" and "." characters).
+      - run: |
+          cd ~
+          rm -rf ~/$(echo $CIRCLE_REPOSITORY_URL | cut -d '/' -f 2 | cut -d '.' -f 1)
+          git clone -b "$CIRCLE_BRANCH" "$CIRCLE_REPOSITORY_URL" --depth 1
 
 jobs:
   trigger-workflows:
@@ -116,9 +129,10 @@ jobs:
   danger-check:
     resource_class: small
     docker:
-      - image: ghcr.io/danger/danger-js:10.6.6
+      - image: citizenlabdotco/cl2-devops-danger-check
+    working_directory: ~/citizenlab
     steps:
-      - checkout
+      - shallow-clone
       - run: danger ci
 
   changelogger:
@@ -172,12 +186,11 @@ jobs:
       - image: cimg/base:2021.03
     steps:
       - echo_pipeline_parameters
-      - checkout:
-          path: ./citizenlab
+      - shallow-clone
       - setup_remote_docker:
           docker_layer_caching: true
       - run: |
-          docker build -t citizenlabdotco/back-ee:$CIRCLE_SHA1 --build-arg CITIZENLAB_EE=true -f citizenlab/back/Dockerfile citizenlab/.
+          docker build -t citizenlabdotco/back-ee:$CIRCLE_SHA1 --build-arg BUNDLE_JOBS=4 --build-arg CITIZENLAB_EE=true -f citizenlab/back/Dockerfile citizenlab/.
       - run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASS
           docker push citizenlabdotco/back-ee:$CIRCLE_SHA1
@@ -205,9 +218,7 @@ jobs:
       COVERAGE: ON
     steps:
       - wait-for-postgres
-      - run: |
-          rake db:create
-          rake db:schema:load
+      - run: bin/rails db:create db:schema:load
       - run: |
           TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" "engines/*/*/spec/**/*_spec.rb" | circleci tests split  --split-by=timings)
           echo $TESTFILES
@@ -226,13 +237,11 @@ jobs:
     steps:
       - run: mkdir -p workspace
       - wait-for-postgres
-      - run: |
-          rake db:create
-          rake db:schema:load
+      - run: bin/rails db:create db:schema:load
       - run: SPEC_OPTS="-t template_test -P "spec/**/*_spec.rb"" bundle exec rspec
       - run: SPEC_OPTS="-t template_test -P "engines/*/*/spec/**/*_spec.rb"" bundle exec rspec
       - run:
-          command: rake templates:verify['workspace/failed-templates.txt']
+          command: bin/rake templates:verify['workspace/failed-templates.txt']
           no_output_timeout: 60m
       - persist_to_workspace:
           root: workspace
@@ -248,7 +257,7 @@ jobs:
     steps:
       - attach_workspace:
           at: /tmp/workspace
-      - run: rake templates:release['/tmp/workspace/failed-templates.txt']
+      - run: bin/rake templates:release['/tmp/workspace/failed-templates.txt']
 
   back-docs-not-blocking:
     resource_class: small
@@ -260,9 +269,7 @@ jobs:
       RAILS_ENV: test
     steps:
       - wait-for-postgres
-      - run: |
-          rake db:create
-          rake db:schema:load
+      - run: bin/rails db:create db:schema:load
       - run: bundle exec rake web_api:docs:generate
       - run: bundle exec rake public_api:docs:generate
       - run: bundle exec rake admin_api:docs:generate
@@ -323,7 +330,7 @@ jobs:
         default: .env-production
     steps:
       - run:
-          command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker pull citizenlabdotco/back-ee:$CIRCLE_BRANCH && docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH rake db:migrate cl2back:clean_tenant_settings email_campaigns:assure_campaign_records fix_existing_tenants:update_permissions cl2back:clear_cache_store email_campaigns:remove_deprecated"
+          command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker pull citizenlabdotco/back-ee:$CIRCLE_BRANCH && docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH bin/rake db:migrate cl2back:clean_tenant_settings email_campaigns:assure_campaign_records fix_existing_tenants:update_permissions cl2back:clear_cache_store email_campaigns:remove_deprecated"
       - deploy:
           command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "cd cl2-deployment && docker stack deploy --compose-file << parameters.compose_file >> << parameters.stack_name >> --with-registry-auth"
 
@@ -341,7 +348,7 @@ jobs:
         type: string
         default: .env-production-benelux
     steps:
-      - run: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH rake templates:generate[true]"
+      - run: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH bin/rake templates:generate[true]"
 
   check-for-inconsistent-data:
     resource_class: small
@@ -359,16 +366,15 @@ jobs:
     steps:
       - run:
           name: Check for inconsistent data
-          command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH rake checks:invalid_data"
+          command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH bin/rake checks:invalid_data"
           no_output_timeout: 60m
 
   front-detect-deadcode:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
-    working_directory: /citizenlab/front
+    working_directory: ~/citizenlab/front
     steps:
-      - checkout:
-          path: /citizenlab
+      - shallow-clone
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -385,10 +391,9 @@ jobs:
   front-lint:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
-    working_directory: /citizenlab/front
+    working_directory: ~/citizenlab/front
     steps:
-      - checkout:
-          path: /citizenlab
+      - shallow-clone
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -405,27 +410,25 @@ jobs:
   front-license-check:
     docker:
       - image: licensefinder/license_finder
-    working_directory: /citizenlab/front
+    working_directory: ~/citizenlab/front
     resource_class: small
     steps:
-      - checkout:
-          path: /citizenlab
+      - shallow-clone
       - restore_cache:
           keys:
             - v1-npm-cache-{{ checksum "package.json" }}
             # fallback to using the latest cache if no exact match is found
             - v1-npm-cache-
       - run: npm ci
-      - run: /bin/bash -lc "cd /citizenlab/front && license_finder"
+      - run: /bin/bash -lc "cd ~/citizenlab/front && license_finder"
 
   front-build:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     resource_class: large
-    working_directory: /citizenlab/front
+    working_directory: ~/citizenlab/front
     steps:
-      - checkout:
-          path: /citizenlab
+      - shallow-clone
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -444,10 +447,9 @@ jobs:
   front-extract-intl:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
-    working_directory: /citizenlab/front
+    working_directory: ~/citizenlab/front
     steps:
-      - checkout:
-          path: /citizenlab
+      - shallow-clone
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -491,8 +493,7 @@ jobs:
       CITIZENLAB_EE: true
     parallelism: 4
     steps:
-      - checkout:
-          path: ./citizenlab
+      - shallow-clone
       - restore_cache:
           keys:
             - v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
@@ -541,10 +542,9 @@ jobs:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     resource_class: large
-    working_directory: /citizenlab/front
+    working_directory: ~/citizenlab/front
     steps:
-      - checkout:
-          path: /citizenlab
+      - shallow-clone
       - restore_cache:
           keys:
             - v1-npm-cache-{{ checksum "package.json" }}
@@ -570,10 +570,9 @@ jobs:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     resource_class: large
-    working_directory: /citizenlab/front
+    working_directory: ~/citizenlab/front
     steps:
-      - checkout:
-          path: /citizenlab
+      - shallow-clone
       - restore_cache:
           keys:
             - v1-npm-cache-{{ checksum "package.json" }}
@@ -618,9 +617,10 @@ jobs:
     docker:
       - image: cimg/base:2021.03
     parallelism: 3
+    working_directory: ~/citizenlab
     resource_class: medium+
     steps:
-      - checkout
+      - shallow-clone
       - copy_secrets_from_lastpass
       - setup_remote_docker
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
