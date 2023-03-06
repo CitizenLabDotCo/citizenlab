@@ -85,7 +85,7 @@ resource 'Stats - Users' do
       context "when 'gender' custom field has no reference distribution" do
         example_request 'Users by gender' do
           expect(response_status).to eq 200
-          expect(json_response_body).to include(
+          expect(json_response_body.dig(:data, :attributes)).to include(
             series: {
               users: { female: 2, unspecified: 1, male: 0, _blank: 0 },
               expected_users: nil,
@@ -102,7 +102,7 @@ resource 'Stats - Users' do
 
         example_request 'Users by gender with expected user counts' do
           expect(response_status).to eq 200
-          expect(json_response_body).to include(
+          expect(json_response_body.dig(:data, :attributes)).to include(
             series: {
               users: { female: 2, unspecified: 1, male: 0, _blank: 0 },
               expected_users: {
@@ -186,7 +186,7 @@ resource 'Stats - Users' do
 
         example_request 'Users by birthyear' do
           expect(response_status).to eq 200
-          expect(json_response_body).to match({
+          expect(json_response_body.dig(:data, :attributes)).to match({
             series: {
               users: { '1980': 2, '1976': 1, _blank: 0 },
               expected_users: nil,
@@ -201,7 +201,7 @@ resource 'Stats - Users' do
 
         example_request 'Users by birthyear filtered by project' do
           expect(response_status).to eq 200
-          expect(json_response_body[:series][:users].values.sum).to eq 1
+          expect(json_response_body.dig(:data, :attributes)[:series][:users].values.sum).to eq 1
         end
       end
 
