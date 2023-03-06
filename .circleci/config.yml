@@ -102,6 +102,19 @@ commands:
       - run: echo $LASTPASS_PASSWORD | LPASS_DISABLE_PINENTRY=1 lpass login ${LASTPASS_EMAIL}
       - run: lpass show --notes 'citizenlab back-secret.env' > env_files/back-secret.env
       - run: lpass show --notes 'citizenlab front-secret.env' > env_files/front-secret.env
+  shallow-clone:
+    steps:
+      - run: mkdir -p ~/.ssh
+      - run: ssh-keyscan github.com >> ~/.ssh/known_hosts
+      # Git clone can fail when the repository directory exists and is not empty. This
+      # can happen when e.g. setting the working_directory to ~/citizenlab/front because
+      # CircleCI will create those directories in this case. The solution is to remove
+      # the created directories before cloning. The name of the directory to remove is
+      # inferred from the repository URL (the part between the "/" and "." characters).
+      - run: |
+          cd ~
+          rm -rf ~/$(echo $CIRCLE_REPOSITORY_URL | cut -d '/' -f 2 | cut -d '.' -f 1)
+          git clone -b "$CIRCLE_BRANCH" "$CIRCLE_REPOSITORY_URL" --depth 1
 
 jobs:
   trigger-workflows:
@@ -116,9 +129,10 @@ jobs:
   danger-check:
     resource_class: small
     docker:
-      - image: ghcr.io/danger/danger-js:10.6.6
+      - image: citizenlabdotco/cl2-devops-danger-check
+    working_directory: ~/citizenlab
     steps:
-      - checkout
+      - shallow-clone
       - run: danger ci
 
   changelogger:
@@ -172,8 +186,7 @@ jobs:
       - image: cimg/base:2021.03
     steps:
       - echo_pipeline_parameters
-      - checkout:
-          path: ./citizenlab
+      - shallow-clone
       - setup_remote_docker:
           docker_layer_caching: true
       - run: |
@@ -365,10 +378,9 @@ jobs:
   front-detect-deadcode:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
-    working_directory: /citizenlab/front
+    working_directory: ~/citizenlab/front
     steps:
-      - checkout:
-          path: /citizenlab
+      - shallow-clone
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -385,10 +397,9 @@ jobs:
   front-lint:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
-    working_directory: /citizenlab/front
+    working_directory: ~/citizenlab/front
     steps:
-      - checkout:
-          path: /citizenlab
+      - shallow-clone
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -405,27 +416,25 @@ jobs:
   front-license-check:
     docker:
       - image: licensefinder/license_finder
-    working_directory: /citizenlab/front
+    working_directory: ~/citizenlab/front
     resource_class: small
     steps:
-      - checkout:
-          path: /citizenlab
+      - shallow-clone
       - restore_cache:
           keys:
             - v1-npm-cache-{{ checksum "package.json" }}
             # fallback to using the latest cache if no exact match is found
             - v1-npm-cache-
       - run: npm ci
-      - run: /bin/bash -lc "cd /citizenlab/front && license_finder"
+      - run: /bin/bash -lc "cd ~/citizenlab/front && license_finder"
 
   front-build:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     resource_class: large
-    working_directory: /citizenlab/front
+    working_directory: ~/citizenlab/front
     steps:
-      - checkout:
-          path: /citizenlab
+      - shallow-clone
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -444,10 +453,9 @@ jobs:
   front-extract-intl:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
-    working_directory: /citizenlab/front
+    working_directory: ~/citizenlab/front
     steps:
-      - checkout:
-          path: /citizenlab
+      - shallow-clone
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -491,8 +499,7 @@ jobs:
       CITIZENLAB_EE: true
     parallelism: 4
     steps:
-      - checkout:
-          path: ./citizenlab
+      - shallow-clone
       - restore_cache:
           keys:
             - v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
@@ -541,10 +548,9 @@ jobs:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     resource_class: large
-    working_directory: /citizenlab/front
+    working_directory: ~/citizenlab/front
     steps:
-      - checkout:
-          path: /citizenlab
+      - shallow-clone
       - restore_cache:
           keys:
             - v1-npm-cache-{{ checksum "package.json" }}
@@ -570,10 +576,9 @@ jobs:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     resource_class: large
-    working_directory: /citizenlab/front
+    working_directory: ~/citizenlab/front
     steps:
-      - checkout:
-          path: /citizenlab
+      - shallow-clone
       - restore_cache:
           keys:
             - v1-npm-cache-{{ checksum "package.json" }}
@@ -620,7 +625,7 @@ jobs:
     parallelism: 3
     resource_class: medium+
     steps:
-      - checkout
+      - shallow-clone
       - copy_secrets_from_lastpass
       - setup_remote_docker
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS

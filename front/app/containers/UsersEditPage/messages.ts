@@ -224,6 +224,21 @@ export default defineMessages({
       "You can't edit this field because it contains verified information",
   },
   /*
+   * Password change
+   */
+  passwordChangeSection: {
+    id: 'app.containers.UsersEditPage.passwordChangeSection',
+    defaultMessage: 'Change your password',
+  },
+  passwordChangeSubtitle: {
+    id: 'app.containers.UsersEditPage.passwordChangeSubtitle',
+    defaultMessage: 'Confirm your current password and change to new password.',
+  },
+  changePassword: {
+    id: 'app.containers.UsersEditPage.changePassword',
+    defaultMessage: 'Change my password',
+  },
+  /*
    * Meta
    */
   metaTitle: {
