@@ -4,20 +4,7 @@ import { Multiloc } from 'typings';
 
 export const apiEndpoint = `${API_PATH}/stats`;
 
-export type IResourceByTime =
-  | IIdeasByTime
-  | IUsersByTime
-  | ICommentsByTime
-  | IVotesByTime;
-
 // Ideas
-export interface IIdeasByTime {
-  series: {
-    ideas: {
-      [key: string]: number;
-    };
-  };
-}
 export interface IIdeasByStatus {
   data: {
     type: 'ideas_by_status';
@@ -168,14 +155,6 @@ export function activeUsersByTimeStream(
 export const activeUsersByTimeCumulativeXlsxEndpoint = `${apiEndpoint}/active_users_by_time_cumulative_as_xlsx`;
 
 // Comments
-export interface ICommentsByTime {
-  series: {
-    comments: {
-      [key: string]: number;
-    };
-  };
-}
-
 export interface ICommentsByTopic {
   data: {
     type: 'comments_by_topic';
@@ -241,14 +220,6 @@ export function commentsCountForUser(userId: string) {
 }
 
 // Votes
-export interface IVotesByTime {
-  series: {
-    up: { [key: string]: number };
-    down: { [key: string]: number };
-    total: { [key: string]: number };
-  };
-}
-
 export interface IVotesByTopic {
   data: {
     type: 'votes_by_topic';
