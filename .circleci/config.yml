@@ -190,7 +190,7 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - run: |
-          docker build -t citizenlabdotco/back-ee:$CIRCLE_SHA1 --build-arg BUNDLER_JOBS=4 --build-arg CITIZENLAB_EE=true -f citizenlab/back/Dockerfile citizenlab/.
+          docker build -t citizenlabdotco/back-ee:$CIRCLE_SHA1 --build-arg BUNDLE_JOBS=4 --build-arg CITIZENLAB_EE=true -f citizenlab/back/Dockerfile citizenlab/.
       - run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASS
           docker push citizenlabdotco/back-ee:$CIRCLE_SHA1
