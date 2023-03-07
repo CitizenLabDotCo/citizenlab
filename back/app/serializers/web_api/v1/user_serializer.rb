@@ -1,11 +1,26 @@
 # frozen_string_literal: true
 
 class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
-  attributes :first_name, :slug, :locale, :roles, :highest_role, :bio_multiloc, :registration_completed_at, :invite_status, :created_at, :updated_at
+  attributes :slug, :locale, :roles, :highest_role, :bio_multiloc, :registration_completed_at, :invite_status, :created_at, :updated_at
 
   attribute :last_name do |object, params|
     name_service = UserDisplayNameService.new(AppConfiguration.instance, current_user(params))
     name_service.last_name(object)
+  end
+
+  attribute :first_name do |object, params|
+    name_service = UserDisplayNameService.new(AppConfiguration.instance, current_user(params))
+    name_service.first_name(object)
+  end
+
+  attribute :no_name do |object|
+    object.no_name?
+  end
+
+  attribute :no_password, if: proc { |object, params|
+    view_private_attributes? object, params
+  } do |object|
+    object.no_password?
   end
 
   attribute :email, if: proc { |object, params|

@@ -300,23 +300,6 @@ class User < ApplicationRecord
     !self[:last_name] && !self[:first_name] && !invite_pending?
   end
 
-  def first_name
-    if no_name?
-      'user'
-    else
-      super
-    end
-  end
-
-  def last_name
-    if no_name?
-      # Generate a unique-ish 6 figure number string based on email
-      email.hash.abs.to_s[0, 6]
-    else
-      super
-    end
-  end
-
   def highest_role
     if super_admin?
       :super_admin

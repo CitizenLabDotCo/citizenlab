@@ -60,9 +60,18 @@ class UserDisplayNameService
   # @param [User, nil] user
   # @return [String]
   def last_name!(user)
+    # Generate last name in the format of 'user' '123456'
+    return user&.email.hash.abs.to_s[0, 6] if user&.no_name?
+
     return nil if user&.last_name.nil?
 
     can_see_fullname_of?(user) ? user.last_name : initial(user.last_name)
+  end
+
+  def first_name(user)
+    return 'User' if user&.no_name?
+
+    user.first_name
   end
 
   def restricted?
@@ -87,5 +96,11 @@ class UserDisplayNameService
   # @return [String]
   def initial(name)
     "#{name[0]}."
+  end
+
+  # Generate first and last name in the format 'user' '123456'
+  def create_anonymous_names(user)
+    user.first_name = 'user'
+    user.last_name = user.email.hash.abs.to_s[0, 6]
   end
 end
