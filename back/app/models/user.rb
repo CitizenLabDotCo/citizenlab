@@ -312,8 +312,12 @@ class User < ApplicationRecord
     end
   end
 
+  def citizenlab_user?
+    !!(email =~ /citizenlab\.(eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$/i)
+  end
+
   def super_admin?
-    admin? && !!(email =~ /citizen-?lab\.(eu|be|fr|ch|de|nl|co|uk|us|cl|dk|pl)$/i)
+    admin? && citizenlab_user?
   end
 
   def admin?

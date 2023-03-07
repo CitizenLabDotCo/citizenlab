@@ -419,7 +419,6 @@ RSpec.describe User, type: :model do
         build_stubbed(:admin, email: 'hello+admin@citizenLab.co'),
         build_stubbed(:admin, email: 'hello@citizenlab.eu'),
         build_stubbed(:admin, email: 'moderator+admin@citizenlab.be'),
-        build_stubbed(:admin, email: 'some.person@citizen-lab.fr'),
         build_stubbed(:admin, email: 'cheese.lover@CitizenLab.ch'),
         build_stubbed(:admin, email: 'Fritz+Wurst@Citizenlab.de'),
         build_stubbed(:admin, email: 'breek.nou.mijn.klomp@citizenlab.NL'),

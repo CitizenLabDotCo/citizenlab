@@ -54,7 +54,7 @@ class WebApi::V1::UsersController < ::ApplicationController
   def seats
     authorize :user, :seats?
 
-    admins = User.admin.or(User.project_folder_moderator).reject(&:super_admin?)
+    admins = User.admin.or(User.project_folder_moderator).reject(&:citizenlab_user?)
     render json: {
       data: {
         type: 'seats',
