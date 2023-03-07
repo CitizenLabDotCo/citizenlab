@@ -293,8 +293,6 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
   const filterMessage = <FormattedMessage {...messages.filter} />;
   const searchPlaceholder = formatMessage(messages.searchPlaceholder);
   const searchAriaLabel = formatMessage(messages.searchPlaceholder);
-
-  const hasInitiatives = initiatives && initiatives.pages.length > 0;
   const biggerThanLargeTablet =
     windowWidth && windowWidth >= viewportWidths.tablet;
   const biggerThanSmallTablet =
@@ -461,7 +459,7 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
 
           <Content>
             <ContentLeft>
-              {hasInitiatives ? (
+              {flatInitiatives?.length > 0 ? (
                 <>
                   {selectedView === 'card' && (
                     <ProposalsList

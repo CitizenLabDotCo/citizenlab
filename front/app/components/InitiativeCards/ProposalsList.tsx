@@ -108,7 +108,7 @@ const ProposalsList = ({
         </Loading>
       ) : (
         <>
-          {hasInitiatives && list && (
+          {hasInitiatives && (
             <InitiativesList id="e2e-initiatives-list">
               {list.map((initiative) => (
                 <StyledInitiativeCard
