@@ -51,9 +51,14 @@ const StyledInitiativeForm = styled(InitiativeForm)`
 interface Props {
   locale: Locale;
   topics: ITopicData[];
+  location_description?: string;
 }
 
-const InitiativesNewFormWrapper = ({ topics, locale }: Props) => {
+const InitiativesNewFormWrapper = ({
+  topics,
+  locale,
+  location_description,
+}: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
   const { mutate: addInitiative } = useAddInitiative();
   const authUser = useAuthUser();
@@ -69,7 +74,7 @@ const InitiativesNewFormWrapper = ({ topics, locale }: Props) => {
     title_multiloc: undefined,
     body_multiloc: undefined,
     topic_ids: [],
-    position: undefined,
+    position: location_description,
   };
 
   const [formValues, setFormValues] = useState<SimpleFormValues>(initialValues);
@@ -133,8 +138,8 @@ const InitiativesNewFormWrapper = ({ topics, locale }: Props) => {
     // build API readable object
     const { title_multiloc, body_multiloc, topic_ids, position } =
       changedValues;
-    const positionInfo = await parsePosition(position);
 
+    const positionInfo = await parsePosition(position ?? location_description);
     // removes undefined values, not null values that are used to remove previously used values
     const formAPIValues = omitBy(
       {
