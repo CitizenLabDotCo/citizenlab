@@ -17,61 +17,81 @@ export interface ICustomFieldParams extends IStreamParams {
 
 // Response types
 export interface IUsersByRegistrationField {
-  series: {
-    users: {
-      [key: string]: number;
-    };
-    reference_population: {
-      [key: string]: number;
-    };
-    expected_users: {
-      [key: string]: number;
-    };
-  };
-  options: {
-    [key: string]: {
-      title_multiloc: Multiloc;
-      ordering: number;
+  data: {
+    type: 'users_by_registration_field';
+    attributes: {
+      series: {
+        users: {
+          [key: string]: number;
+        };
+        reference_population: {
+          [key: string]: number;
+        };
+        expected_users: {
+          [key: string]: number;
+        };
+      };
+      options: {
+        [key: string]: {
+          title_multiloc: Multiloc;
+          ordering: number;
+        };
+      };
     };
   };
 }
 
 export interface IUsersByDomicile {
-  series: {
-    users: {
-      [key: string]: number;
-    };
-    // reference_population: {
-    //   [key: string]: number;
-    // }
-    // expected_users: {
-    //   [key: string]: number;
-    // };
-  };
-  areas: {
-    [key: string]: {
-      title_multiloc: Multiloc;
-      ordering: number;
+  data: {
+    type: 'users_by_domicile';
+    attributes: {
+      series: {
+        users: {
+          [key: string]: number;
+        };
+        // reference_population: {
+        //   [key: string]: number;
+        // }
+        // expected_users: {
+        //   [key: string]: number;
+        // };
+      };
+      areas: {
+        [key: string]: {
+          title_multiloc: Multiloc;
+          ordering: number;
+        };
+      };
     };
   };
 }
 
 export interface IUsersByBirthyear {
-  series: {
-    users: {
-      [key: string]: number;
+  data: {
+    type: 'users_by_birthyear';
+    attributes: {
+      series: {
+        users: {
+          [key: string]: number;
+        };
+      };
     };
   };
 }
 
 export interface IUsersByAge {
-  total_user_count: number;
-  unknown_age_count: number;
-  series: {
-    user_counts: number[];
-    expected_user_counts: number[];
-    reference_population: number[];
-    bins: (number | null)[];
+  data: {
+    type: 'users_by_age';
+    attributes: {
+      total_user_count: number;
+      unknown_age_count: number;
+      series: {
+        user_counts: number[];
+        expected_user_counts: number[];
+        reference_population: number[];
+        bins: (number | null)[];
+      };
+    };
   };
 }
 

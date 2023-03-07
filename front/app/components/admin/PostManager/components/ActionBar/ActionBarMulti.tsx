@@ -15,7 +15,7 @@ interface Props {
 
 const ActionBarMulti = ({ selection, resetSelection, type }: Props) => {
   const { formatMessage } = useIntl();
-  const { mutate: deleteInitiative } = useDeleteInitiative();
+  // const { mutate: deleteInitiative } = useDeleteInitiative();
   const { mutate: deleteIdea } = useDeleteIdea();
 
   const handleClickDeleteIdeas = () => {
@@ -38,9 +38,10 @@ const ActionBarMulti = ({ selection, resetSelection, type }: Props) => {
     });
 
     if (window.confirm(message)) {
-      selection.forEach((id) => {
-        deleteInitiative({ initiativeId: id });
-      });
+      // TODO fix after merging in initiatives code
+      // selection.forEach((id) => {
+      //   deleteInitiative({ initiativeId: id });
+      // });
     }
 
     resetSelection();

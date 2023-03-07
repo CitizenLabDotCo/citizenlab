@@ -1,11 +1,7 @@
 import { useState, useEffect } from 'react';
 
 // services
-import {
-  ideasCount,
-  IdeasCountQueryParameters,
-  IIdeasCount,
-} from 'services/stats';
+import { ideasCount, IIdeasCount } from 'services/stats';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
@@ -38,7 +34,7 @@ export default function useIdeasCount({
     const projectIds = JSON.parse(projectIdsStr);
     const topics = JSON.parse(topicsStr);
 
-    const queryParameters: IdeasCountQueryParameters = {
+    const queryParameters = {
       projects: projectIds,
       phase: phaseId,
       topics,
@@ -52,7 +48,9 @@ export default function useIdeasCount({
 
     const subscription = observable.subscribe(
       (response: IIdeasCount | NilOrError) => {
-        setCount(isNilOrError(response) ? response : response.count);
+        setCount(
+          isNilOrError(response) ? response : response.data.attributes.count
+        );
       }
     );
 

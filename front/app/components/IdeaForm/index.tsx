@@ -182,7 +182,10 @@ interface State {
   ideaFiles: UploadFile[];
   ideaFilesToRemove: UploadFile[];
   ideaFilesChanged: boolean;
-  ideaCustomFieldsSchemas: IIdeaFormSchemas | IIdeaJsonFormSchemas | null;
+  ideaCustomFieldsSchemas:
+    | IIdeaFormSchemas['data']['attributes']
+    | IIdeaJsonFormSchemas['data']['attributes']
+    | null;
   authorId: string | null;
 }
 
@@ -292,8 +295,9 @@ class IdeaForm extends PureComponent<
 
       pbContext$.subscribe((pbContext) => this.setState({ pbContext })),
 
-      ideaCustomFieldsSchemas$.subscribe((ideaCustomFieldsSchemas) => {
-        if (!isNilOrError(ideaCustomFieldsSchemas)) {
+      ideaCustomFieldsSchemas$.subscribe((response) => {
+        if (!isNilOrError(response)) {
+          const ideaCustomFieldsSchemas = response.data.attributes;
           this.setState({ ideaCustomFieldsSchemas });
         }
       }),
@@ -677,13 +681,15 @@ class IdeaForm extends PureComponent<
 
   isFieldRequired = (
     fieldCode: CustomFieldCodes,
-    ideaCustomFieldsSchemas: IIdeaFormSchemas | IIdeaJsonFormSchemas,
+    ideaCustomFieldsSchemas:
+      | IIdeaFormSchemas['data']['attributes']
+      | IIdeaJsonFormSchemas['data']['attributes'],
     locale: Locale
   ) => {
     return (
-      ideaCustomFieldsSchemas.data.attributes.json_schema_multiloc[
-        locale
-      ]?.required?.includes(fieldCode) || false
+      ideaCustomFieldsSchemas.json_schema_multiloc[locale]?.required?.includes(
+        fieldCode
+      ) || false
     );
   };
 
@@ -767,8 +773,7 @@ class IdeaForm extends PureComponent<
       const showProposedBudget = proposedBudgetEnabled;
 
       const uiSchemaOptions =
-        ideaCustomFieldsSchemas?.data.attributes.ui_schema_multiloc[locale]
-          ?.options;
+        ideaCustomFieldsSchemas?.ui_schema_multiloc[locale]?.options;
 
       let inputTerm = getInputTerm(
         project.attributes.process_type,
@@ -825,9 +830,8 @@ class IdeaForm extends PureComponent<
                   )
                 }
                 subtextValue={
-                  ideaCustomFieldsSchemas?.data.attributes
-                    .json_schema_multiloc?.[locale || '']?.properties
-                    ?.title_multiloc?.description
+                  ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']
+                    ?.properties?.title_multiloc?.description
                 }
                 subtextSupportsHtml={true}
               />
@@ -889,9 +893,8 @@ class IdeaForm extends PureComponent<
                   )
                 }
                 subtextValue={
-                  ideaCustomFieldsSchemas?.data.attributes
-                    .json_schema_multiloc?.[locale || '']?.properties
-                    ?.body_multiloc?.description
+                  ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']
+                    ?.properties?.body_multiloc?.description
                 }
                 subtextSupportsHtml={true}
               />
@@ -970,9 +973,9 @@ class IdeaForm extends PureComponent<
                       )
                     }
                     subtextValue={
-                      ideaCustomFieldsSchemas?.data.attributes
-                        .json_schema_multiloc?.[locale || '']?.properties
-                        ?.proposed_budget?.description
+                      ideaCustomFieldsSchemas?.json_schema_multiloc?.[
+                        locale || ''
+                      ]?.properties?.proposed_budget?.description
                     }
                     subtextSupportsHtml={true}
                   />
@@ -1002,9 +1005,9 @@ class IdeaForm extends PureComponent<
                       )
                     }
                     subtextValue={
-                      ideaCustomFieldsSchemas?.data.attributes
-                        .json_schema_multiloc?.[locale || '']?.properties
-                        ?.topic_ids?.description
+                      ideaCustomFieldsSchemas?.json_schema_multiloc?.[
+                        locale || ''
+                      ]?.properties?.topic_ids?.description
                     }
                     subtextSupportsHtml={true}
                   />
@@ -1031,9 +1034,9 @@ class IdeaForm extends PureComponent<
                       )
                     }
                     subtextValue={
-                      ideaCustomFieldsSchemas?.data.attributes
-                        .json_schema_multiloc?.[locale || '']?.properties
-                        ?.location_description?.description
+                      ideaCustomFieldsSchemas?.json_schema_multiloc?.[
+                        locale || ''
+                      ]?.properties?.location_description?.description
                     }
                     subtextSupportsHtml={true}
                     htmlFor="idea-form-location-input-field"
@@ -1066,9 +1069,8 @@ class IdeaForm extends PureComponent<
                   )
                 }
                 subtextValue={
-                  ideaCustomFieldsSchemas?.data.attributes
-                    .json_schema_multiloc?.[locale || '']?.properties
-                    ?.idea_images_attributes?.description
+                  ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']
+                    ?.properties?.idea_images_attributes?.description
                 }
                 subtextSupportsHtml={true}
               />
@@ -1097,9 +1099,9 @@ class IdeaForm extends PureComponent<
                     )
                   }
                   subtextValue={
-                    ideaCustomFieldsSchemas?.data.attributes
-                      .json_schema_multiloc?.[locale || '']?.properties
-                      ?.idea_files_attributes?.description
+                    ideaCustomFieldsSchemas?.json_schema_multiloc?.[
+                      locale || ''
+                    ]?.properties?.idea_files_attributes?.description
                   }
                   subtextSupportsHtml={true}
                   htmlFor="idea-form-file-uploader"
