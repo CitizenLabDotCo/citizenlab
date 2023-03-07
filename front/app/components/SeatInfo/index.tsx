@@ -83,11 +83,6 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
                 <Text color="teal700" mr="8px" variant="bodyS" my="0px">
                   {formatMessage(messages.additionalSeats)}
                 </Text>
-                <IconTooltip
-                  content={
-                    <FormattedMessage {...messages.additionalSeatsToolTip} />
-                  }
-                />
               </Box>
               <Text fontSize="xl" color="textPrimary" my="0px">
                 {additionalSeats}
