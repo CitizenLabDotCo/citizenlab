@@ -1,12 +1,10 @@
-// Libraries
 import React, { useState } from 'react';
 import { isString, isEmpty } from 'lodash-es';
 
-// Components
-import UserManager from './UserManager';
-import UsersHeader from './UsersHeader';
+import UserManager from '../UserManager';
+import UsersHeader from '../UsersHeader';
 
-import messages from './messages';
+import messages from '../messages';
 
 const AllUsers = () => {
   const [search, setSearch] = useState<string | undefined>(undefined);
@@ -19,10 +17,10 @@ const AllUsers = () => {
     <>
       <UsersHeader
         onSearch={searchUser}
-        title={messages.allUsers}
-        subtitle={messages.usersSubtitle}
+        title={messages.administratorsAndManagers}
+        subtitle={messages.administratorsAndManagersSubtitle}
       />
-      <UserManager search={search} />
+      <UserManager search={search} canModerate={true} />
     </>
   );
 };

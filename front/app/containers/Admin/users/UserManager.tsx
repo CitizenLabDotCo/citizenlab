@@ -26,6 +26,7 @@ interface InputProps {
   groupId?: string;
   groupType?: MembershipType;
   deleteUsersFromGroup?: (userIds: string[]) => void;
+  canModerate?: boolean;
 }
 
 interface DataProps {
