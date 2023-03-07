@@ -110,7 +110,7 @@ const SignUpInModal = memo<Props>(
         !isNilOrError(authUser) && authUser.attributes.verified;
 
       if (!requiresVerification || authUserIsVerified) {
-        metaData?.action?.();
+        metaData?.onSuccess?.();
       }
     };
 

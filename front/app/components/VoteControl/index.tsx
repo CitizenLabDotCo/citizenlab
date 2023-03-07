@@ -472,7 +472,7 @@ class VoteControl extends PureComponent<Props, State> {
                   type: participationContextType,
                 }
               : undefined,
-          action: () => this.vote(voteMode),
+          onSuccess: () => this.vote(voteMode),
         });
       } else if (votingDisabledReason) {
         disabledVoteClick?.(votingDisabledReason);

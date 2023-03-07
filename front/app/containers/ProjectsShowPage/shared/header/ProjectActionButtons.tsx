@@ -119,7 +119,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
         flow: 'signup',
         verification: shouldVerify,
         verificationContext: undefined,
-        action: () => scrollTo('project-survey')(event),
+        onSuccess: () => scrollTo('project-survey')(event),
       });
     }
 

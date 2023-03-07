@@ -131,7 +131,7 @@ class VoteControl extends PureComponent<Props, State> {
           flow: 'signup',
           verification: false,
           verificationContext: undefined,
-          action: () => this.vote(),
+          onSuccess: () => this.vote(),
         });
         break;
       case 'sign_in_up_and_verify':
@@ -145,7 +145,7 @@ class VoteControl extends PureComponent<Props, State> {
             type: 'initiative',
             action: 'voting_initiative',
           },
-          action: () => this.vote(),
+          onSuccess: () => this.vote(),
         });
         break;
       case 'verify':

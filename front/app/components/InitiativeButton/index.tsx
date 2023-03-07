@@ -54,7 +54,7 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
               flow: 'signup',
               verification: false,
               verificationContext: undefined,
-              action: redirectToInitiativeForm,
+              onSuccess: redirectToInitiativeForm,
             });
             break;
           case 'sign_in_up_and_verify':
@@ -68,7 +68,7 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
                 type: 'initiative',
                 action: 'posting_initiative',
               },
-              action: redirectToInitiativeForm,
+              onSuccess: redirectToInitiativeForm,
             });
             break;
           case 'verify':

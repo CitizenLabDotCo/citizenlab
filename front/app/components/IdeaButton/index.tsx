@@ -245,7 +245,7 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
                     type: pcType,
                   }
                 : undefined,
-            action: () => redirectToIdeaForm(),
+            onSuccess: () => redirectToIdeaForm(),
           });
         }
       };

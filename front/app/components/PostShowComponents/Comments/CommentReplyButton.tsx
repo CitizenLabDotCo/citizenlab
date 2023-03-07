@@ -128,19 +128,19 @@ const CommentReplyButton = memo<Props>(
           } else if (!authUser) {
             openSignUpInModal({
               verification: commentingDisabledReason === 'not_verified',
-              action: () => onReply(),
+              onSuccess: () => onReply(),
             });
           }
         } else {
           if (commentingPermissionInitiative?.action === 'sign_in_up') {
             openSignUpInModal({
-              action: () => onReply(),
+              onSuccess: () => onReply(),
             });
           } else if (
             commentingPermissionInitiative?.action === 'sign_in_up_and_verify'
           ) {
             openSignUpInModal({
-              action: () => onReply(),
+              onSuccess: () => onReply(),
               verification: true,
               verificationContext: {
                 action: 'commenting_initiative',

@@ -89,7 +89,7 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
         flow: 'signup',
         verification: shouldVerify,
         verificationContext: undefined,
-        action: () => scrollTo('project-survey')(event),
+        onSuccess: () => scrollTo('project-survey')(event),
       });
     }
 

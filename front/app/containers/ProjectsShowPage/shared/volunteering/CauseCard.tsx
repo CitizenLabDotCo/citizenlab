@@ -186,18 +186,16 @@ const CauseCard = memo<Props>(({ cause, className }) => {
   const signIn = useCallback(() => {
     openSignUpInModal({
       flow: 'signin',
-      action: () => handleOnVolunteerButtonClick(),
+      onSuccess: () => handleOnVolunteerButtonClick(),
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [handleOnVolunteerButtonClick]);
 
   const signUp = useCallback(() => {
     openSignUpInModal({
       flow: 'signup',
-      action: () => handleOnVolunteerButtonClick(),
+      onSuccess: () => handleOnVolunteerButtonClick(),
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [handleOnVolunteerButtonClick]);
 
   const isVolunteer = !!cause.relationships?.user_volunteer?.data;
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;

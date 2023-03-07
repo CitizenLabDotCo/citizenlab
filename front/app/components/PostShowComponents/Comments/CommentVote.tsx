@@ -280,19 +280,19 @@ class CommentVote extends PureComponent<Props & WrappedComponentProps, State> {
       } else if (!authUser) {
         openSignUpInModal({
           verification: commentingDisabledReason === 'not_verified',
-          action: () => this.handleVoteClick(),
+          onSuccess: () => this.handleVoteClick(),
         });
       }
     } else {
       if (commentVotingPermissionInitiative?.action === 'sign_in_up') {
         openSignUpInModal({
-          action: () => this.handleVoteClick(),
+          onSuccess: () => this.handleVoteClick(),
         });
       } else if (
         commentVotingPermissionInitiative?.action === 'sign_in_up_and_verify'
       ) {
         openSignUpInModal({
-          action: () => this.handleVoteClick(),
+          onSuccess: () => this.handleVoteClick(),
           verification: true,
           verificationContext: {
             action: 'commenting_initiative',
