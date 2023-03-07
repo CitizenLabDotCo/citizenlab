@@ -58,11 +58,78 @@ describe PermissionsService do
     context 'when permitted_by is set to everyone_confirmed_email' do
       let(:permission) { create :permission, permitted_by: 'everyone_confirmed_email' }
 
-      # no user
-      # light user not permitted
-      # light user permitted
-      # registered user no confirmation
-      it 'does not permit a registered unconfirmed user' do
+      it 'does not permit a visitor' do
+        expect(service.requirements(permission, nil)).to eq({
+          permitted: false,
+          requirements: {
+            built_in: {
+              first_name: 'dont_ask',
+              last_name: 'dont_ask',
+              email: 'require'
+            },
+            custom_fields: {
+              'birthyear' => 'dont_ask',
+              'gender' => 'dont_ask',
+              'extra_required_field' => 'dont_ask',
+              'extra_optional_field' => 'dont_ask'
+            },
+            special: {
+              password: 'dont_ask',
+              confirmation: 'require'
+            }
+          }
+        })
+      end
+
+      it 'does not permit a light unconfirmed resident' do
+        user.update!(email_confirmed_at: nil, password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
+        expect(service.requirements(permission, user)).to eq({
+          permitted: false,
+          requirements: {
+            built_in: {
+              first_name: 'dont_ask',
+              last_name: 'satisfied',
+              email: 'satisfied'
+            },
+            custom_fields: {
+              'birthyear' => 'dont_ask',
+              'gender' => 'dont_ask',
+              'extra_required_field' => 'dont_ask',
+              'extra_optional_field' => 'dont_ask'
+            },
+            special: {
+              password: 'dont_ask',
+              confirmation: 'require'
+            }
+          }
+        })
+      end
+
+      it 'permits a light confirmed resident' do
+        user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
+        expect(service.requirements(permission, user)).to eq({
+          permitted: true,
+          requirements: {
+            built_in: {
+              first_name: 'dont_ask',
+              last_name: 'satisfied',
+              email: 'satisfied'
+            },
+            custom_fields: {
+              'birthyear' => 'dont_ask',
+              'gender' => 'dont_ask',
+              'extra_required_field' => 'dont_ask',
+              'extra_optional_field' => 'dont_ask'
+            },
+            special: {
+              password: 'dont_ask',
+              confirmation: 'satisfied'
+            }
+          }
+        })
+      end
+
+      it 'does not permit a fully registered unconfirmed resident' do # https://citizenlabco.slack.com/archives/C04FX2ATE5B/p1677170928400679
         user.update!(email_confirmed_at: nil)
         expect(service.requirements(permission, user)).to eq({
           permitted: false,
@@ -85,10 +152,80 @@ describe PermissionsService do
           }
         })
       end
-      # registered user permitted
-      # admin
-    end
 
-    # TODO: everyone, users, groups and admins
+      it 'permits a fully registered confirmed resident' do
+        expect(service.requirements(permission, user)).to eq({
+          permitted: true,
+          requirements: {
+            built_in: {
+              first_name: 'satisfied',
+              last_name: 'satisfied',
+              email: 'satisfied'
+            },
+            custom_fields: {
+              'birthyear' => 'satisfied',
+              'gender' => 'satisfied',
+              'extra_required_field' => 'satisfied',
+              'extra_optional_field' => 'satisfied'
+            },
+            special: {
+              password: 'satisfied',
+              confirmation: 'satisfied'
+            }
+          }
+        })
+      end
+
+      it 'does not permit an unconfirmed admin' do
+        user.add_role 'admin'
+        user.save!
+        user.update!(email_confirmed_at: nil)
+        expect(service.requirements(permission, user)).to eq({
+          permitted: false,
+          requirements: {
+            built_in: {
+              first_name: 'satisfied',
+              last_name: 'satisfied',
+              email: 'satisfied'
+            },
+            custom_fields: {
+              'birthyear' => 'satisfied',
+              'gender' => 'satisfied',
+              'extra_required_field' => 'satisfied',
+              'extra_optional_field' => 'satisfied'
+            },
+            special: {
+              password: 'satisfied',
+              confirmation: 'require'
+            }
+          }
+        })
+      end
+
+      it 'permits a confirmed admin' do
+        user.add_role 'admin'
+        user.save!
+        expect(service.requirements(permission, user)).to eq({
+          permitted: true,
+          requirements: {
+            built_in: {
+              first_name: 'satisfied',
+              last_name: 'satisfied',
+              email: 'satisfied'
+            },
+            custom_fields: {
+              'birthyear' => 'satisfied',
+              'gender' => 'satisfied',
+              'extra_required_field' => 'satisfied',
+              'extra_optional_field' => 'satisfied'
+            },
+            special: {
+              password: 'satisfied',
+              confirmation: 'satisfied'
+            }
+          }
+        })
+      end
+    end
   end
 end
