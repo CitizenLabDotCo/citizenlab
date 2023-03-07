@@ -11,5 +11,5 @@ RSpec::Core::RakeTask.new('web_api:docs:generate' => :environment) do |t, _task_
   else
     '{spec,engines/free/*/spec}/acceptance/**/*_spec.rb'
   end
-  t.rspec_opts = ['--format RspecApiDocumentation::ApiFormatter --exclude-pattern="engines/{admin_api,public_api}/**/*_spec.rb" -t ~admin_api']
+  t.rspec_opts = ['--format RspecApiDocumentation::ApiFormatter --exclude-pattern="engines/commercial/{admin_api,public_api}/**/*_spec.rb" -t ~admin_api -t ~document:false']
 end

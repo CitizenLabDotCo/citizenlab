@@ -9,7 +9,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import { projectFilesStream } from 'services/projectFiles';
 import { phaseFilesStream } from 'services/phaseFiles';
-import { eventFilesStream } from 'services/eventFiles';
 import { pageFilesStream } from 'services/pageFiles';
 import { ideaFilesStream } from 'services/ideaFiles';
 import { initiativeFilesStream } from 'services/initiativeFiles';
@@ -31,8 +30,6 @@ export default function useResourceFiles({ resourceId, resourceType }: Props) {
           return projectFilesStream;
         case 'phase':
           return phaseFilesStream;
-        case 'event':
-          return eventFilesStream;
         case 'page':
           return pageFilesStream;
         case 'idea':

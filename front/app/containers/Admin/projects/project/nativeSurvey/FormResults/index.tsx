@@ -69,16 +69,16 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
 
   const surveyResponseMessage =
     totalSubmissions > 0
-      ? formatMessage(messages.totalSurveyResponses, {
+      ? formatMessage(messages.totalSurveyResponses2, {
           count: totalSubmissions,
         })
-      : formatMessage(messages.noSurveyResponses);
+      : formatMessage(messages.noSurveyResponses2);
 
   return (
     <Box width="100%">
       <Box width="100%" display="flex" alignItems="center">
         <Box width="100%">
-          <Title variant="h2">{formatMessage(messages.surveyResults)}</Title>
+          <Title variant="h2">{formatMessage(messages.surveyResults2)}</Title>
           <Text variant="bodyM" color="textSecondary">
             {surveyResponseMessage}
           </Text>
@@ -93,7 +93,7 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
             onClick={handleDownloadResults}
             processing={isDownloading}
           >
-            {formatMessage(messages.downloadResults)}
+            {formatMessage(messages.downloadResults2)}
           </Button>
         </Box>
       </Box>
@@ -118,7 +118,7 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
             fill="textSecondary"
           />
           <Text variant="bodyM" color="textSecondary">
-            {formatMessage(messages.informationText)}
+            {formatMessage(messages.informationText2)}
           </Text>
         </Box>
       </Box>

@@ -9,7 +9,7 @@ import { updateLocale } from 'services/locale';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // style
 import styled from 'styled-components';
@@ -105,7 +105,7 @@ interface Props {
 
 const LanguageSelector = ({ className }: Props) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
-  const appConfig = useAppConfiguration();
+  const { data: appConfig } = useAppConfiguration();
   const locale = useLocale();
 
   const toggleDropdown = (event: React.FormEvent) => {
@@ -114,7 +114,9 @@ const LanguageSelector = ({ className }: Props) => {
   };
 
   const handleLanguageSelect = (selectedLocale: Locale) => () => {
-    updateLocale(selectedLocale);
+    if (appConfig) {
+      updateLocale(selectedLocale, appConfig);
+    }
     setDropdownOpened(false);
   };
 
@@ -127,7 +129,7 @@ const LanguageSelector = ({ className }: Props) => {
   };
 
   if (!isNilOrError(appConfig) && !isNilOrError(locale)) {
-    const tenantLocales = appConfig.attributes.settings.core.locales;
+    const tenantLocales = appConfig.data.attributes.settings.core.locales;
     const isRtl = !!locale.startsWith('ar');
 
     const selectedLocale = getSelectedLocale(locale);

@@ -14,6 +14,7 @@ AllCops:
   - '**/.*.*'
   - '**/bin/**/*'
   - 'engines/ee/**/*'
+  - 'vendor/**/*'
 
 Layout/HashAlignment:
   EnforcedColonStyle: [key, table]
