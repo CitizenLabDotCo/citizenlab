@@ -40,9 +40,18 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
   const currentAdminSeats = seats.data.attributes.admins_number;
   const currentProjectManagerSeats =
     seats.data.attributes.project_moderators_number;
-  const currentSeatNumber =
+  let currentSeatNumber =
     seatType === 'admin' ? currentAdminSeats : currentProjectManagerSeats;
   const additionalSeats = currentSeatNumber - maximumSeatNumber;
+  const currentSeatTypeTitle =
+    seatType === 'admin'
+      ? messages.currentAdminSeatsTitle
+      : messages.currentProjectManagerSeatsTitle;
+
+  // Show maximum number of seats if user has used more for this value
+  if (currentSeatNumber >= maximumSeatNumber) {
+    currentSeatNumber = maximumSeatNumber;
+  }
 
   return (
     <Box
@@ -55,7 +64,7 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
       <Box display="flex" flexDirection="row" alignItems="center">
         <Icon name="shield-checkered" fill={colors.teal300} />
         <Text color="teal700" ml="8px" variant="bodyM" fontWeight="bold">
-          {formatMessage(messages.currentAdminSeats)}
+          {formatMessage(currentSeatTypeTitle)}
         </Text>
       </Box>
 

@@ -1,9 +1,13 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  currentAdminSeats: {
-    id: 'app.components.SeatInfo.currentAdminSeats',
+  currentAdminSeatsTitle: {
+    id: 'app.components.SeatInfo.currentAdminSeatsTitle',
     defaultMessage: 'Current admin seats',
+  },
+  currentProjectManagerSeatsTitle: {
+    id: 'app.components.SeatInfo.currentProjectManagerSeats',
+    defaultMessage: 'Current project manager seats',
   },
   includedSeats: {
     id: 'app.components.SeatInfo.includedSeats',
