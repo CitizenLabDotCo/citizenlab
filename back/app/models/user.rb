@@ -28,6 +28,9 @@
 #  email_confirmation_code_reset_count :integer          default(0), not null
 #  email_confirmation_code_sent_at     :datetime
 #  confirmation_required               :boolean          default(TRUE), not null
+#  block_start_at                      :datetime
+#  block_duration                      :integer
+#  block_reason                        :string
 #
 # Indexes
 #
