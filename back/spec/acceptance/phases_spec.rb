@@ -50,7 +50,7 @@ resource 'Phases' do
 
       if CitizenLab.ee?
         expect(json_response.dig(:data, :relationships, :permissions, :data).size)
-          .to eq(Permission::ACTIONS[@phases.first.participation_method].length)
+          .to eq(Permission.available_actions(@phases.first).length)
       end
     end
   end

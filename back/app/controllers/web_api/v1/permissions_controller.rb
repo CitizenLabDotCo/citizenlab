@@ -35,7 +35,7 @@ class WebApi::V1::PermissionsController < ApplicationController
   def requirements
     authorize @permission
     json_requirements = PermissionsService.new.requirements @permission, current_user
-    render json: json_requirements, status: :ok
+    render json: json_requirements, status: :ok # TODO: use raw_json
   end
 
   private

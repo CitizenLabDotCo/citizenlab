@@ -32,7 +32,7 @@ resource 'Permissions' do
       example_request 'List all permissions of a project' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq Permission::ACTIONS[@project.participation_method].size
+        expect(json_response[:data].size).to eq Permission.available_actions(@project).size
       end
     end
 
@@ -45,7 +45,7 @@ resource 'Permissions' do
       example_request 'List all permissions of a phase' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq Permission::ACTIONS[@phase.participation_method].size
+        expect(json_response[:data].size).to eq Permission.available_actions(@phase).size
       end
     end
 
@@ -58,7 +58,7 @@ resource 'Permissions' do
       example_request 'List all global permissions' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq Permission::ACTIONS[nil].size
+        expect(json_response[:data].size).to eq Permission.available_actions(nil).size
       end
     end
 
