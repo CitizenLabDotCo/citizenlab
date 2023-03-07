@@ -460,6 +460,20 @@ resource 'Users' do
         end
       end
 
+      get 'web_api/v1/users/seats' do
+        before do
+          create_list(:admin, 2)
+          create_list(:project_moderator, 3, projects: [create(:project)])
+          create_list(:project_folder_moderator, 1, project_folders: [create(:project_folder)])
+        end
+
+        example_request 'Get number of admin and manager (moderator) seats' do
+          expect(status).to eq 200
+          expect(response_data[:admins]).to eq 3
+          expect(response_data[:moderators]).to eq 4
+        end
+      end
+
       get 'web_api/v1/users/as_xlsx' do
         parameter :group, 'Filter by group_id', required: false
         parameter :users, 'Filter out only users with the provided user ids', required: false
@@ -535,6 +549,12 @@ resource 'Users' do
       example 'Get all users as non-admin', document: false do
         do_request
         assert_status 401
+      end
+    end
+
+    get 'web_api/v1/users/seats' do
+      example_request '[error] Get number of admin seats when current user is not admin' do
+        expect(status).to eq 401
       end
     end
 
