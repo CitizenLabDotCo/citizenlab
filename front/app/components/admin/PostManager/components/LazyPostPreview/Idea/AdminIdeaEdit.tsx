@@ -163,90 +163,96 @@ const AdminIdeaEdit = ({
     if (locationPoint && originalLocationDescription !== ideaFormAddress) {
       addressDiff.location_point_geojson = locationPoint;
     }
-    updateIdea({
-      id: ideaId,
-      requestBody: {
-        budget,
-        proposed_budget: proposedBudget,
-        title_multiloc: {
-          ...titleMultiloc,
-          [locale]: title,
+    updateIdea(
+      {
+        id: ideaId,
+        requestBody: {
+          budget,
+          proposed_budget: proposedBudget,
+          title_multiloc: {
+            ...titleMultiloc,
+            [locale]: title,
+          },
+          body_multiloc: {
+            ...descriptionMultiloc,
+            [locale]: description,
+          },
+          topic_ids: selectedTopics,
+          author_id: finalAuthorId,
+          ...addressDiff,
         },
-        body_multiloc: {
-          ...descriptionMultiloc,
-          [locale]: description,
-        },
-        topic_ids: selectedTopics,
-        author_id: finalAuthorId,
-        ...addressDiff,
       },
-    });
+      {
+        onSuccess: async () => {
+          setProcessing(true);
+          setSubmitError(false);
+          try {
+            if (oldImageId && imageFileIsChanged) {
+              await deleteIdeaImage(ideaId, oldImageId);
+            }
 
-    setProcessing(true);
-    setSubmitError(false);
-    try {
-      if (oldImageId && imageFileIsChanged) {
-        await deleteIdeaImage(ideaId, oldImageId);
+            await Promise.all([
+              imageToAddPromise,
+              ...filesToAddPromises,
+              ...filesToRemovePromises,
+            ] as Promise<any>[]);
+
+            goBack();
+          } catch (error) {
+            // eslint-disable-next-line no-console
+            if (process.env.NODE_ENV === 'development') console.log(error);
+            const apiErrors = error.json.errors;
+            const profanityApiError = apiErrors.base.find(
+              (apiError) => apiError.error === 'includes_banned_words'
+            );
+
+            if (profanityApiError) {
+              const titleProfanityError = profanityApiError.blocked_words.some(
+                (blockedWord) => blockedWord.attribute === 'title_multiloc'
+              );
+              const descriptionProfanityError =
+                profanityApiError.blocked_words.some(
+                  (blockedWord) => blockedWord.attribute === 'body_multiloc'
+                );
+
+              if (titleProfanityError) {
+                trackEventByName(tracks.titleProfanityError.name, {
+                  ideaId,
+                  projectId,
+                  locale,
+                  profaneMessage: title,
+                  location: 'IdeaEdit (Input manager in admin)',
+                  userId: !isNilOrError(authUser) ? authUser.id : null,
+                  host: !isNilOrError(appConfiguration)
+                    ? appConfiguration.attributes.host
+                    : null,
+                });
+                setTitleProfanityError(titleProfanityError);
+              }
+
+              if (descriptionProfanityError) {
+                trackEventByName(tracks.descriptionProfanityError.name, {
+                  ideaId,
+                  projectId,
+                  locale,
+                  profaneMessage: description,
+                  location: 'IdeaEdit (Input manager in admin)',
+                  userId: !isNilOrError(authUser) ? authUser.id : null,
+                  host: !isNilOrError(appConfiguration)
+                    ? appConfiguration.attributes.host
+                    : null,
+                });
+                setDescriptionProfanityError(descriptionProfanityError);
+              }
+            }
+
+            setSubmitError(true);
+          }
+
+          setProcessing(false);
+        },
       }
-
-      await Promise.all([
-        imageToAddPromise,
-        ...filesToAddPromises,
-        ...filesToRemovePromises,
-      ] as Promise<any>[]);
-
-      goBack();
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      if (process.env.NODE_ENV === 'development') console.log(error);
-      const apiErrors = error.json.errors;
-      const profanityApiError = apiErrors.base.find(
-        (apiError) => apiError.error === 'includes_banned_words'
-      );
-
-      if (profanityApiError) {
-        const titleProfanityError = profanityApiError.blocked_words.some(
-          (blockedWord) => blockedWord.attribute === 'title_multiloc'
-        );
-        const descriptionProfanityError = profanityApiError.blocked_words.some(
-          (blockedWord) => blockedWord.attribute === 'body_multiloc'
-        );
-
-        if (titleProfanityError) {
-          trackEventByName(tracks.titleProfanityError.name, {
-            ideaId,
-            projectId,
-            locale,
-            profaneMessage: title,
-            location: 'IdeaEdit (Input manager in admin)',
-            userId: !isNilOrError(authUser) ? authUser.id : null,
-            host: !isNilOrError(appConfiguration)
-              ? appConfiguration.attributes.host
-              : null,
-          });
-          setTitleProfanityError(titleProfanityError);
-        }
-
-        if (descriptionProfanityError) {
-          trackEventByName(tracks.descriptionProfanityError.name, {
-            ideaId,
-            projectId,
-            locale,
-            profaneMessage: description,
-            location: 'IdeaEdit (Input manager in admin)',
-            userId: !isNilOrError(authUser) ? authUser.id : null,
-            host: !isNilOrError(appConfiguration)
-              ? appConfiguration.attributes.host
-              : null,
-          });
-          setDescriptionProfanityError(descriptionProfanityError);
-        }
-      }
-
-      setSubmitError(true);
-    }
-
-    setProcessing(false);
+    );
   };
 
   const onTitleChange = (title: string) => {
