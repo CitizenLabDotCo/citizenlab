@@ -263,11 +263,14 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
   const handleStatusOnChangeAndApplyFilter = (
     initiative_status: string | null
   ) => {
-    setSelectedInitiativeFilters({ initiative_status });
+    setSelectedInitiativeFilters({
+      ...selectedInitiativeFilters,
+      initiative_status,
+    });
   };
 
   const handleTopicsOnChangeAndApplyFilter = (topics: string[] | null) => {
-    setSelectedInitiativeFilters({ topics });
+    setSelectedInitiativeFilters({ ...selectedInitiativeFilters, topics });
   };
 
   const handleInitiativeFiltersOnReset = () => {

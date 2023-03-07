@@ -30,7 +30,6 @@ const InitiativesShowPage = () => {
   const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
   const { slug } = useParams() as { slug: string };
 
-  // TODO: It looks like this is called and then just used to get the id. We might want to just pass the initiative as a prop
   const { data: initiative } = useInitiativeBySlug(slug);
 
   if (!initiativesEnabled || isError(initiative)) {
