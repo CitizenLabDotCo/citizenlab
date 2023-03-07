@@ -238,8 +238,10 @@ class User < ApplicationRecord
   scope :active, -> { where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'") }
 
   scope :blocked, lambda {
-    where.not(block_start_at: nil).and(where.not(block_duration: nil))
-      .and(where('block_start_at >= NOW() - MAKE_INTERVAL(DAYS => block_duration)'))
+    where.not(block_start_at: nil)
+      .and(where(block_start_at: ((
+        Time.zone.now - AppConfiguration.instance.settings('user_blocking', 'duration').days
+      )..Time.zone.now)))
   }
 
   scope :order_role, lambda { |direction = :asc|
