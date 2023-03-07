@@ -77,7 +77,7 @@ resource 'Stats - Comments' do
 
       example_request 'Count all comments' do
         assert_status 200
-        expect(json_response[:count]).to eq 2
+        expect(json_response.dig(:data, :attributes, :count)).to eq 2
       end
     end
 
@@ -93,7 +93,7 @@ resource 'Stats - Comments' do
       example 'Count all comments (as a moderator)', document: false do
         do_request
         assert_status 200
-        expect(json_response[:count]).to eq 2
+        expect(json_response.dig(:data, :attributes, :count)).to eq 2
       end
     end
 
@@ -361,11 +361,14 @@ resource 'Stats - Comments' do
 
         example_request 'Comments by topic' do
           assert_status 200
-          expect(json_response[:series][:comments].stringify_keys).to match({
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :type)).to eq 'comments_by_topic'
+          json_attributes = json_response.dig(:data, :attributes)
+          expect(json_attributes[:series][:comments].stringify_keys).to match({
             @topic1.id => 3,
             @topic2.id => 2
           })
-          expect(json_response[:topics].keys.map(&:to_s)).to match_array [@topic1.id, @topic2.id, @topic3.id]
+          expect(json_attributes[:topics].keys.map(&:to_s)).to match_array [@topic1.id, @topic2.id, @topic3.id]
         end
       end
 
@@ -385,7 +388,10 @@ resource 'Stats - Comments' do
 
         example_request 'Comments by topic filtered by project' do
           assert_status 200
-          expect(json_response[:series][:comments].values.sum).to eq 2
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :type)).to eq 'comments_by_topic'
+          json_attributes = json_response.dig(:data, :attributes)
+          expect(json_attributes[:series][:comments].values.sum).to eq 2
         end
       end
 
@@ -405,7 +411,10 @@ resource 'Stats - Comments' do
 
         example_request 'Comments by topic filtered by group' do
           assert_status 200
-          expect(json_response[:series][:comments].values.sum).to eq 2
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :type)).to eq 'comments_by_topic'
+          json_attributes = json_response.dig(:data, :attributes)
+          expect(json_attributes[:series][:comments].values.sum).to eq 2
         end
       end
     end
@@ -547,11 +556,14 @@ resource 'Stats - Comments' do
         end
 
         example_request 'Comments by project' do
-          expect(json_response[:series][:comments].stringify_keys).to match({
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :type)).to eq 'comments_by_project'
+          json_attributes = json_response.dig(:data, :attributes)
+          expect(json_attributes[:series][:comments].stringify_keys).to match({
             @project1.id => 3,
             @project2.id => 1
           })
-          expect(json_response[:projects].keys.map(&:to_s)).to match_array [@project1.id, @project2.id]
+          expect(json_attributes[:projects].keys.map(&:to_s)).to match_array [@project1.id, @project2.id]
         end
       end
 
@@ -573,7 +585,10 @@ resource 'Stats - Comments' do
 
         example_request 'Comments by project filtered by topic' do
           assert_status 200
-          expect(json_response[:series][:comments].values.sum).to eq 1
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :type)).to eq 'comments_by_project'
+          json_attributes = json_response.dig(:data, :attributes)
+          expect(json_attributes[:series][:comments].values.sum).to eq 1
         end
       end
 
@@ -594,7 +609,10 @@ resource 'Stats - Comments' do
 
         example_request 'Comments by project filtered by group' do
           assert_status 200
-          expect(json_response[:series][:comments].values.sum).to eq 1
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :type)).to eq 'comments_by_project'
+          json_attributes = json_response.dig(:data, :attributes)
+          expect(json_attributes[:series][:comments].values.sum).to eq 1
         end
       end
     end

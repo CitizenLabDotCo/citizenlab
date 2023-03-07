@@ -9,17 +9,16 @@ import { isNilOrError } from './helperUtils';
 export function isFieldEnabled(
   fieldCode: CustomFieldCodes,
   ideaCustomFieldsSchemas:
-    | IIdeaFormSchemas
-    | IIdeaJsonFormSchemas
+    | IIdeaFormSchemas['data']['attributes']
+    | IIdeaJsonFormSchemas['data']['attributes']
     | undefined
     | null
     | Error,
   locale: Locale | undefined | Error | null
 ): boolean {
   if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {
-    return !!ideaCustomFieldsSchemas.data.attributes.json_schema_multiloc?.[
-      locale
-    ]?.properties?.[fieldCode];
+    return !!ideaCustomFieldsSchemas.json_schema_multiloc?.[locale]
+      ?.properties?.[fieldCode];
   }
 
   return true;

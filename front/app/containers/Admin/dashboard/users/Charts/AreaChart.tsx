@@ -46,7 +46,7 @@ const AreaChart = (
   const convertToGraphFormat = (data: IUsersByDomicile) => {
     if (isNilOrError(data)) return null;
 
-    const { series, areas } = data;
+    const { series, areas } = data.data.attributes;
 
     const parseName = (key, value) =>
       key in fallbackMessages

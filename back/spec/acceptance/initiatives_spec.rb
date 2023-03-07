@@ -269,13 +269,13 @@ resource 'Initiatives' do
       assert_status 200
       json_response = json_parse(response_body)
 
-      expect(json_response[:initiative_status_id][@s1.id.to_sym]).to eq 1
-      expect(json_response[:initiative_status_id][@s2.id.to_sym]).to eq 3
-      expect(json_response[:area_id][@a1.id.to_sym]).to eq 3
-      expect(json_response[:area_id][@a2.id.to_sym]).to eq 1
-      expect(json_response[:topic_id][@t1.id.to_sym]).to eq 2
-      expect(json_response[:topic_id][@t2.id.to_sym]).to eq 2
-      expect(json_response[:total]).to eq 4
+      expect(json_response.dig(:data, :attributes, :initiative_status_id)[@s1.id.to_sym]).to eq 1
+      expect(json_response.dig(:data, :attributes, :initiative_status_id)[@s2.id.to_sym]).to eq 3
+      expect(json_response.dig(:data, :attributes, :area_id)[@a1.id.to_sym]).to eq 3
+      expect(json_response.dig(:data, :attributes, :area_id)[@a2.id.to_sym]).to eq 1
+      expect(json_response.dig(:data, :attributes, :topic_id)[@t1.id.to_sym]).to eq 2
+      expect(json_response.dig(:data, :attributes, :topic_id)[@t2.id.to_sym]).to eq 2
+      expect(json_response.dig(:data, :attributes, :total)).to eq 4
     end
 
     example 'List initiative counts per filter option on topic', document: false do

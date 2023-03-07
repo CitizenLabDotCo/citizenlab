@@ -1,71 +1,82 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { Multiloc } from 'typings';
-import { PublicationStatus as ProjectPublicationStatus } from 'services/projects';
 
 export const apiEndpoint = `${API_PATH}/stats`;
 
-export type IResourceByTime =
-  | IIdeasByTime
-  | IUsersByTime
-  | ICommentsByTime
-  | IVotesByTime;
-
 // Ideas
-export interface IIdeasByTime {
-  series: {
-    ideas: {
-      [key: string]: number;
-    };
-  };
-}
 export interface IIdeasByStatus {
-  series: {
-    ideas: {
-      [key: string]: number;
-    };
-  };
-  idea_status: {
-    [key: string]: {
-      title_multiloc: Multiloc;
-      color: string;
-      ordering: number;
+  data: {
+    type: 'ideas_by_status';
+    attributes: {
+      series: {
+        ideas: {
+          [key: string]: number;
+        };
+      };
+      idea_status: {
+        [key: string]: {
+          title_multiloc: Multiloc;
+          color: string;
+          ordering: number;
+        };
+      };
     };
   };
 }
 
 export interface IIdeasByTopic {
-  series: {
-    ideas: {
-      [key: string]: number;
-    };
-  };
-  topics: {
-    [key: string]: {
-      title_multiloc: Multiloc;
+  data: {
+    type: 'ideas_by_topics';
+    attributes: {
+      series: {
+        ideas: {
+          [key: string]: number;
+        };
+      };
+      topics: {
+        [key: string]: {
+          title_multiloc: Multiloc;
+        };
+      };
     };
   };
 }
 
 export interface IIdeasByProject {
-  series: {
-    ideas: {
-      [key: string]: number;
-    };
-  };
-  projects: {
-    [key: string]: {
-      title_multiloc: Multiloc;
+  data: {
+    type: 'ideas_by_project';
+    attributes: {
+      series: {
+        ideas: {
+          [key: string]: number;
+        };
+      };
+      projects: {
+        [key: string]: {
+          title_multiloc: Multiloc;
+        };
+      };
     };
   };
 }
 
 export interface IIdeasCount {
-  count: number;
+  data: {
+    type: 'ideas_count';
+    attributes: {
+      count: number;
+    };
+  };
 }
 
-export interface ICount {
-  count: number;
+interface ICommentsCount {
+  data: {
+    type: 'comments_count';
+    attributes: {
+      count: number;
+    };
+  };
 }
 
 export function ideasByStatusStream(streamParams: IStreamParams | null = null) {
@@ -96,22 +107,7 @@ export function ideasByProjectStream(
   });
 }
 
-export interface IdeasCountQueryParameters {
-  projects?: string[];
-  phase?: string;
-  author?: string;
-  search?: string;
-  topics?: string[];
-  idea_status?: string;
-  project_publication_status?: ProjectPublicationStatus;
-  bounding_box?: number[];
-  assignee?: string;
-  feedback_needed?: boolean;
-}
-
-export function ideasCount(
-  streamParams: { queryParameters: IdeasCountQueryParameters } | null = null
-) {
+export function ideasCount(streamParams: IStreamParams | null = null) {
   return streams.get<IIdeasCount>({
     apiEndpoint: `${apiEndpoint}/ideas_count`,
     ...streamParams,
@@ -119,7 +115,7 @@ export function ideasCount(
 }
 
 export function ideasCountForUser(userId: string) {
-  return streams.get<ICount>({
+  return streams.get<IIdeasCount>({
     apiEndpoint: `${API_PATH}/users/${userId}/ideas_count`,
   });
 }
@@ -159,36 +155,38 @@ export function activeUsersByTimeStream(
 export const activeUsersByTimeCumulativeXlsxEndpoint = `${apiEndpoint}/active_users_by_time_cumulative_as_xlsx`;
 
 // Comments
-export interface ICommentsByTime {
-  series: {
-    comments: {
-      [key: string]: number;
-    };
-  };
-}
-
 export interface ICommentsByTopic {
-  series: {
-    comments: {
-      [key: string]: number;
-    };
-  };
-  topics: {
-    [key: string]: {
-      title_multiloc: Multiloc;
+  data: {
+    type: 'comments_by_topic';
+    attributes: {
+      series: {
+        comments: {
+          [key: string]: number;
+        };
+      };
+      topics: {
+        [key: string]: {
+          title_multiloc: Multiloc;
+        };
+      };
     };
   };
 }
 
 export interface ICommentsByProject {
-  series: {
-    comments: {
-      [key: string]: number;
-    };
-  };
-  projects: {
-    [key: string]: {
-      title_multiloc: Multiloc;
+  data: {
+    type: 'comments_by_project';
+    attributes: {
+      series: {
+        comments: {
+          [key: string]: number;
+        };
+      };
+      projects: {
+        [key: string]: {
+          title_multiloc: Multiloc;
+        };
+      };
     };
   };
 }
@@ -216,42 +214,44 @@ export function commentsByProjectStream(
 }
 
 export function commentsCountForUser(userId: string) {
-  return streams.get<ICount>({
+  return streams.get<ICommentsCount>({
     apiEndpoint: `${API_PATH}/users/${userId}/comments_count`,
   });
 }
 
 // Votes
-export interface IVotesByTime {
-  series: {
-    up: { [key: string]: number };
-    down: { [key: string]: number };
-    total: { [key: string]: number };
-  };
-}
-
 export interface IVotesByTopic {
-  series: {
-    votes: {
-      [key: string]: number;
-    };
-  };
-  topics: {
-    [key: string]: {
-      title_multiloc: Multiloc;
+  data: {
+    type: 'votes_by_topic';
+    attributes: {
+      series: {
+        votes: {
+          [key: string]: number;
+        };
+      };
+      topics: {
+        [key: string]: {
+          title_multiloc: Multiloc;
+        };
+      };
     };
   };
 }
 
 export interface IVotesByProject {
-  series: {
-    total: {
-      [key: string]: number;
-    };
-  };
-  projects: {
-    [key: string]: {
-      title_multiloc: Multiloc;
+  data: {
+    type: 'votes_by_project';
+    attributes: {
+      series: {
+        total: {
+          [key: string]: number;
+        };
+      };
+      projects: {
+        [key: string]: {
+          title_multiloc: Multiloc;
+        };
+      };
     };
   };
 }

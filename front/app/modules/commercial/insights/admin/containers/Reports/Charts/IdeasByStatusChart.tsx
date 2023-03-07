@@ -134,7 +134,12 @@ const IdeasByStatusChartWithHoCs = injectIntl(IdeasByStatusChart);
 const WrappedIdeasByStatusChart = (
   inputProps: InputProps & InjectedLocalized
 ) => {
-  const convertToGraphFormat = ({ series: { ideas }, idea_status }) => {
+  const convertToGraphFormat = (response) => {
+    const {
+      series: { ideas },
+      idea_status,
+    } = response.data.attributes;
+
     if (Object.keys(ideas).length <= 0) {
       return null;
     }

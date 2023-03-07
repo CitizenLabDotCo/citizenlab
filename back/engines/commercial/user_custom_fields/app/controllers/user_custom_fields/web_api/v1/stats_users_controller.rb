@@ -9,7 +9,17 @@ module UserCustomFields
 
         def users_by_age
           age_stats = AgeStats.calculate(find_users)
-          render json: age_stats, serializer: AgeStatsSerializer, adapter: :attributes
+
+          render json: raw_json({
+            total_user_count: age_stats.user_count,
+            unknown_age_count: age_stats.unknown_age_count,
+            series: {
+              user_counts: age_stats.binned_counts,
+              expected_user_counts: age_stats.expected_binned_counts,
+              reference_population: age_stats.population_counts,
+              bins: age_stats.bins
+            }
+          })
         end
 
         def users_by_age_as_xlsx
@@ -31,7 +41,7 @@ module UserCustomFields
             end
           end
 
-          render json: json_response
+          render json: raw_json(json_response)
         rescue NotSupportedFieldTypeError
           head :not_implemented
         end
@@ -44,10 +54,10 @@ module UserCustomFields
 
         def users_by_domicile
           areas = Area.all.select(:id, :title_multiloc)
-          render json: {
+          render json: raw_json({
             series: { users: user_counts_by_area_id },
             areas: areas.to_h { |a| [a.id, a.attributes.except('id')] }
-          }
+          })
         end
 
         def users_by_domicile_as_xlsx

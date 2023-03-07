@@ -59,7 +59,7 @@ export class RegistrationFieldsToGraphs extends PureComponent<
     const {
       series: { users },
       options,
-    } = data;
+    } = data.data.attributes;
     let res: GraphOption[] = [];
     if (options) {
       res = Object.entries(options)
@@ -84,7 +84,7 @@ export class RegistrationFieldsToGraphs extends PureComponent<
   convertCheckboxToGraphFormat = (data: IUsersByRegistrationField) => {
     const {
       series: { users },
-    } = data;
+    } = data.data.attributes;
     const res = ['_blank', 'true', 'false'].map((key) => ({
       value: users[key] || 0,
       name: this.props.intl.formatMessage(messages[key]),

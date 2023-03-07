@@ -20,7 +20,7 @@ const ActionBarSingle = ({
   resetSelection,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { mutate: deleteInitiative } = useDeleteInitiative();
+  // const { mutate: deleteInitiative } = useDeleteInitiative();
   const { mutate: deleteIdea } = useDeleteIdea();
 
   const handleClickDeleteIdea = () => {
@@ -37,14 +37,15 @@ const ActionBarSingle = ({
     const message = formatMessage(messages.deleteInitiativeConfirmation);
 
     if (window.confirm(message)) {
-      deleteInitiative(
-        { initiativeId: postId },
-        {
-          onSuccess: () => {
-            resetSelection();
-          },
-        }
-      );
+      // TODO fix after merging in initiatives code
+      // deleteInitiative(
+      //   { initiativeId: postId },
+      //   {
+      //     onSuccess: () => {
+      //       resetSelection();
+      //     },
+      //   }
+      // );
     }
   };
 

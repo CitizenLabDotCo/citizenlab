@@ -51,19 +51,19 @@ const MetaInformation = ({
   if (!isNilOrError(locale) && !isNilOrError(ideaCustomFieldsSchemas)) {
     const topicsEnabled = isFieldEnabled(
       'topic_ids',
-      ideaCustomFieldsSchemas,
+      ideaCustomFieldsSchemas.data.attributes,
       locale
     );
 
     const locationEnabled = isFieldEnabled(
       'location_description',
-      ideaCustomFieldsSchemas,
+      ideaCustomFieldsSchemas.data.attributes,
       locale
     );
 
     const attachmentsEnabled = isFieldEnabled(
       'idea_files_attributes',
-      ideaCustomFieldsSchemas,
+      ideaCustomFieldsSchemas.data.attributes,
       locale
     );
 
