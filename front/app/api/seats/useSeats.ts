@@ -4,17 +4,17 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import seatsKeys from './keys';
 import { SeatsType, SeatsKeys } from './types';
 
-const fetchInitativeActionDescriptors = () =>
+const fetchSeats = () =>
   fetcher<SeatsType>({
     path: '/users/seats',
     action: 'get',
   });
 
-const useInitativeActionDescriptors = () => {
+const useSeats = () => {
   return useQuery<SeatsType, CLErrors, SeatsType, SeatsKeys>({
     queryKey: seatsKeys.items(),
-    queryFn: fetchInitativeActionDescriptors,
+    queryFn: fetchSeats,
   });
 };
 
-export default useInitativeActionDescriptors;
+export default useSeats;
