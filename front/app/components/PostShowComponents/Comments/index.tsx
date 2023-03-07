@@ -1,6 +1,6 @@
 // libraries
 import React, { memo, useState, useCallback } from 'react';
-import { get, isUndefined } from 'lodash-es';
+import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import Observer from '@researchgate/react-intersection-observer';
 
@@ -142,11 +142,7 @@ const CommentsSection = memo<Props>(
       setPosting(isPosting);
     }, []);
 
-    if (
-      !isNilOrError(post) &&
-      !isNilOrError(commentsList) &&
-      !isUndefined(project)
-    ) {
+    if (!isNilOrError(post) && !isNilOrError(commentsList)) {
       const commentingEnabled = get(
         post,
         'attributes.action_descriptor.commenting_idea.enabled',
