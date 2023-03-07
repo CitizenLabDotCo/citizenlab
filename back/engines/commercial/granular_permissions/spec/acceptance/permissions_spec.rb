@@ -169,7 +169,7 @@ resource 'Permissions' do
       example_request 'Get the participation conditions of a user' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response).to eq [[SmartGroups::RulesService.new.parse_json_rule(@rule).description_multiloc.symbolize_keys]]
+        expect(json_response.dig(:data, :attributes, :participation_conditions)).to eq [[SmartGroups::RulesService.new.parse_json_rule(@rule).description_multiloc.symbolize_keys]]
       end
     end
 
@@ -186,7 +186,7 @@ resource 'Permissions' do
       example_request 'Get the participation conditions of a user' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response).to eq [[SmartGroups::RulesService.new.parse_json_rule(@rule).description_multiloc.symbolize_keys]]
+        expect(json_response.dig(:data, :attributes, :participation_conditions)).to eq [[SmartGroups::RulesService.new.parse_json_rule(@rule).description_multiloc.symbolize_keys]]
       end
     end
 
@@ -213,7 +213,7 @@ resource 'Permissions' do
       example_request 'Get the participation requirements of a user' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response).to eq({
+        expect(json_response.dig(:data, :attributes, :requirements)).to eq({
           permitted: false,
           requirements: {
             built_in: {
