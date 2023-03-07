@@ -588,7 +588,8 @@ resource 'Ideas' do
         before { IdeaStatus.create_defaults }
 
         let(:idea) { build(:idea) }
-        let(:project) { create(:continuous_project) }
+        let(:with_permissions) { false }
+        let(:project) { create :continuous_project, with_permissions: with_permissions }
         let(:project_id) { project.id }
         let(:publication_status) { 'published' }
         let(:title_multiloc) { idea.title_multiloc }
@@ -747,6 +748,7 @@ resource 'Ideas' do
         end
 
         example_group 'with granular permissions', skip: !CitizenLab.ee? do
+          let(:with_permissions) { true }
           let(:group) { create(:group) }
 
           before do

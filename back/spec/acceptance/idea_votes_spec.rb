@@ -130,6 +130,7 @@ resource 'Votes' do
 
     describe 'when voting idea is allowed by moderators/admins', skip: !CitizenLab.ee? do
       before do
+        PermissionsService.new.update_all_permissions
         project = @idea.project
         project.permissions.find_by(action: 'voting_idea').update!(permitted_by: 'admins_moderators')
         @user.update!(roles: [])
