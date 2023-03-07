@@ -9,6 +9,9 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
+// Hooks
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 // Intl
 import messages from './messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -22,6 +25,17 @@ type SeatInfoType = {
 
 const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
   const { formatMessage } = useIntl();
+  const { data: appConfiguration } = useAppConfiguration();
+
+  if (!appConfiguration) return null;
+
+  const maximumAdmins =
+    appConfiguration.data.attributes.settings.core.maximum_admins_number;
+  const maximumProjectManagers =
+    appConfiguration.data.attributes.settings.core
+      .maximum_project_moderators_number;
+  const maximumNumber =
+    seatType === 'admin' ? maximumAdmins : maximumProjectManagers;
 
   return (
     <Box
@@ -49,7 +63,7 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
             />
           </Box>
           <Text fontSize="xl" color="textPrimary" my="0px">
-            6/6
+            {`6/${maximumNumber}`}
           </Text>
         </Box>
 
@@ -82,7 +96,7 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
                   <Text as="span" fontWeight="bold" variant="bodyS">
                     {formatMessage(
                       messages.projectManagerSeatsIncludedSubText,
-                      { projectManagerSeats: 6 }
+                      { projectManagerSeats: maximumNumber }
                     )}
                   </Text>
                 ),
@@ -97,7 +111,7 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
                 adminSeatsIncluded: (
                   <Text as="span" fontWeight="bold" variant="bodyS">
                     {formatMessage(messages.adminSeatsIncludedSubText, {
-                      adminSeats: 6,
+                      adminSeats: maximumNumber,
                     })}
                   </Text>
                 ),
