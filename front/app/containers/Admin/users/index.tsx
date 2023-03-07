@@ -13,6 +13,7 @@ import Modal from 'components/UI/Modal';
 import GroupsListPanel from './GroupsListPanel';
 import GroupCreationStep1 from './GroupCreationStep1';
 import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
+import BlockUserModal from './UserBlockModal';
 
 // Global state
 import {
@@ -179,6 +180,7 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
             />
           </>
         </Modal>
+        <BlockUserModal />
       </>
     );
   }
