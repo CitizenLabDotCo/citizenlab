@@ -1,8 +1,5 @@
 import React from 'react';
 
-// Hooks
-import { useIntl } from 'utils/cl-intl';
-
 // Components
 import {
   Box,
@@ -14,7 +11,7 @@ import {
 
 // Intl
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import { rgba } from 'polished';
 
