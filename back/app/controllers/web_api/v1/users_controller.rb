@@ -57,8 +57,8 @@ class WebApi::V1::UsersController < ::ApplicationController
     admins = User.admin.or(User.project_folder_moderator).reject(&:super_admin?)
     render json: {
       data: {
-        admins: admins.count,
-        moderators: User.project_moderator.count
+        admins_number: admins.count,
+        project_moderators_number: User.project_moderator.count
       }
     }
   end
