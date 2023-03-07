@@ -7,10 +7,9 @@ import { initializeFor } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { combineLatest } from 'rxjs';
-import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-
+import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 declare module 'components/ConsentManager/destinations' {
   export interface IDestinationMap {
     google_tag_manager: 'google_tag_manager';
@@ -40,7 +39,7 @@ const destinationConfig: IDestinationConfig = {
 const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
     combineLatest([
-      currentAppConfigurationStream().observable,
+      appConfigurationStream,
       initializeFor('google_tag_manager'),
     ]).subscribe(([tenant, _]) => {
       if (isNilOrError(tenant)) return;

@@ -19,6 +19,7 @@ import { NativeSurveyCTABar } from 'components/ParticipationCTABars/NativeSurvey
 import { EmbeddedSurveyCTABar } from 'components/ParticipationCTABars/EmbeddedSurveyCTABar';
 import { BudgetingCTABar } from 'components/ParticipationCTABars/BudgetingCTABar';
 import { VolunteeringCTABar } from 'components/ParticipationCTABars/VolunteeringCTABar';
+import { PollCTABar } from 'components/ParticipationCTABars/PollCTABar';
 
 import { CTABarProps } from 'components/ParticipationCTABars/utils';
 
@@ -261,8 +262,8 @@ const pollConfig: ParticipationMethodConfig = {
   postType: 'defaultInput',
   showInputManager: false,
   isMethodLocked: false,
-  renderCTABar: () => {
-    return null;
+  renderCTABar: (props: CTABarProps) => {
+    return <PollCTABar project={props.project} phases={props.phases} />;
   },
 };
 

@@ -152,7 +152,8 @@ resource 'Tenants', admin_api: true do
   end
 
   delete 'admin_api/tenants/:tenant_id' do
-    example_request 'Deleting a tenant', document: false do
+    example 'Deleting a tenant', document: false do
+      do_request
       assert_status 200
       expect(tenant.reload.deleted_at).not_to be_nil
     end

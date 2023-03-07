@@ -101,7 +101,8 @@ resource 'Users' do
           let(:email) { '+324 875 12 12' }
           let(:password) { 'supersecret' }
 
-          example_request 'Authenticate a registered user by phone number', document: false do
+          example 'Authenticate a registered user by phone number', document: false do
+            do_request
             assert_status 201
             json_response = json_parse(response_body)
             expect(json_response[:jwt]).to be_present
@@ -113,7 +114,8 @@ resource 'Users' do
           let(:email) { user.email }
           let(:password) { 'supersecret' }
 
-          example_request 'Authenticate a registered user by email', document: false do
+          example 'Authenticate a registered user by email', document: false do
+            do_request
             assert_status 201
             json_response = json_parse(response_body)
             expect(json_response[:jwt]).to be_present
@@ -137,10 +139,10 @@ resource 'Users' do
       end
 
       with_options scope: 'user' do
-        parameter :first_name, 'User full name', required: true
-        parameter :last_name, 'User full name', required: true
+        parameter :first_name, 'User full name', required: false
+        parameter :last_name, 'User full name', required: false
         parameter :email, 'E-mail address', required: true
-        parameter :password, 'Password', required: true
+        parameter :password, 'Password', required: false
         parameter :locale, 'Locale. Should be one of the tenants locales', required: true
         parameter :avatar, 'Base64 encoded avatar image'
         parameter :roles, 'Roles array, only allowed when admin'
@@ -148,144 +150,230 @@ resource 'Users' do
       end
       ValidationErrorHelper.new.error_fields(self, User)
 
-      let(:first_name) { Faker::Name.first_name }
-      let(:last_name) { Faker::Name.last_name }
-      let(:email) { Faker::Internet.email }
-      let(:password) { Faker::Internet.password }
-      let(:locale) { 'en' }
-      let(:avatar) { png_image_as_base64 'lorem-ipsum.jpg' }
+      context 'full registration with a password' do
+        let(:first_name) { Faker::Name.first_name }
+        let(:last_name) { Faker::Name.last_name }
+        let(:email) { Faker::Internet.email }
+        let(:password) { Faker::Internet.password }
+        let(:locale) { 'en' }
+        let(:avatar) { png_image_as_base64 'lorem-ipsum.jpg' }
 
-      example_request 'Create a user' do
-        assert_status 201
+        example_request 'Create a user' do
+          assert_status 201
+        end
+
+        context 'when the user_confirmation module is active' do
+          before do
+            SettingsService.new.activate_feature! 'user_confirmation'
+          end
+
+          example_request 'Registration is not completed by default' do
+            assert_status 201
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data, :attributes, :registration_completed_at)).to be_nil # when no custom fields
+          end
+
+          example_request 'Sends a confirmation email' do
+            last_email = ActionMailer::Base.deliveries.last
+            user       = User.order(:created_at).last
+            expect(last_email.body.encoded).to include user.reload.email_confirmation_code
+          end
+
+          example_request 'Requires confirmation' do
+            assert_status 201
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data, :attributes, :confirmation_required)).to be true # when no custom fields
+          end
+        end
+
+        describe 'Creating an admin user' do
+          before do
+            settings = AppConfiguration.instance.settings
+            settings['password_login'] = {
+              'enabled' => true,
+              'allowed' => true,
+              'enable_signup' => true,
+              'minimum_length' => 5,
+              'phone' => false
+            }
+            AppConfiguration.instance.update! settings: settings
+          end
+
+          let(:roles) { [{ type: 'admin' }] }
+
+          example 'creates a user, but not an admin', document: false do
+            create(:admin) # there must be at least on admin, otherwise the next user will automatically be made an admin
+            do_request
+            assert_status 201
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data, :attributes, :roles)).to be_empty
+          end
+        end
+
+        describe 'invalid user errors' do
+          before do
+            settings = AppConfiguration.instance.settings
+            settings['password_login'] = {
+              'enabled' => true,
+              'allowed' => true,
+              'enable_signup' => true,
+              'minimum_length' => 5,
+              'phone' => false
+            }
+            AppConfiguration.instance.update! settings: settings
+          end
+
+          let(:password) { 'ab' }
+
+          example '[error] Create an invalid user', document: false do
+            do_request
+            assert_status 422
+            json_response = json_parse response_body
+            expect(json_response).to include_response_error(:password, 'too_short', count: 5)
+          end
+        end
+
+        describe 'invited user creation error' do
+          let!(:invitee) { create(:invited_user) }
+          let(:email) { invitee.email }
+
+          example_request '[error] Registering an invited user' do
+            assert_status 422
+            json_response = json_parse response_body
+            expect(json_response).to include_response_error(
+              :email,
+              'taken_by_invite',
+              value: email,
+              inviter_email: invitee.invitee_invite.inviter.email
+            )
+          end
+        end
+
+        describe 'case insensitive email error' do
+          before do
+            create(:user, email: 'JeZuS@citizenlab.co')
+          end
+
+          let(:email) { 'jEzUs@citizenlab.co' }
+
+          example '[error] Registering a user with case insensitive email duplicate', document: false do
+            do_request
+            assert_status 422
+          end
+        end
+
+        context 'with phone password_login turned on' do
+          before do
+            settings = AppConfiguration.instance.settings
+            settings['password_login'] = {
+              'allowed' => true,
+              'enabled' => true,
+              'enable_signup' => true,
+              'phone' => true,
+              'phone_email_pattern' => 'phone+__PHONE__@test.com',
+              'minimum_length' => 6
+            }
+            AppConfiguration.instance.update!(settings: settings)
+          end
+
+          describe 'email registration' do
+            let(:email) { 'someone@citizenlab.co' }
+
+            example 'Register with email when an email is passed', document: false do
+              do_request
+              assert_status 201
+              expect(User.find_by(email: email)).to be_present
+            end
+          end
+
+          describe 'phone registration' do
+            let(:email) { '+32 487 36 58 98' }
+
+            example 'Registers a user with a phone number in the email when a phone number is passed', document: false do
+              do_request
+              assert_status 201
+              expect(User.find_by(email: 'phone+32487365898@test.com')).to be_present
+            end
+          end
+        end
       end
 
-      context 'when the user_confirmation module is active' do
+      context 'light registration without a password' do
+        let(:email) { Faker::Internet.email }
+        let(:locale) { 'en' }
+
         before do
           SettingsService.new.activate_feature! 'user_confirmation'
         end
 
-        example_request 'Registration is not completed by default' do
-          assert_status 201
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :attributes, :registration_completed_at)).to be_nil # when no custom fields
-        end
-
-        example_request 'Sends a confirmation email' do
-          last_email = ActionMailer::Base.deliveries.last
-          user       = User.order(:created_at).last
-          expect(last_email.body.encoded).to include user.reload.email_confirmation_code
-        end
-
-        example_request 'Requires confirmation' do
-          assert_status 201
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :attributes, :confirmation_required)).to be true # when no custom fields
-        end
-      end
-
-      describe 'Creating an admin user' do
-        before do
-          settings = AppConfiguration.instance.settings
-          settings['password_login'] = {
-            'enabled' => true,
-            'allowed' => true,
-            'enable_signup' => true,
-            'minimum_length' => 5,
-            'phone' => false
-          }
-          AppConfiguration.instance.update! settings: settings
-        end
-
-        let(:roles) { [{ type: 'admin' }] }
-
-        example 'creates a user, but not an admin', document: false do
-          create(:admin) # there must be at least on admin, otherwise the next user will automatically be made an admin
-          do_request
-          assert_status 201
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :attributes, :roles)).to be_empty
-        end
-      end
-
-      describe do
-        before do
-          settings = AppConfiguration.instance.settings
-          settings['password_login'] = {
-            'enabled' => true,
-            'allowed' => true,
-            'enable_signup' => true,
-            'minimum_length' => 5,
-            'phone' => false
-          }
-          AppConfiguration.instance.update! settings: settings
-        end
-
-        let(:password) { 'ab' }
-
-        example_request '[error] Create an invalid user', document: false do
-          assert_status 422
-          json_response = json_parse response_body
-          expect(json_response).to include_response_error(:password, 'too_short', count: 5)
-        end
-      end
-
-      describe do
-        let!(:invitee) { create(:invited_user) }
-        let(:email) { invitee.email }
-
-        example_request '[error] Registering an invited user' do
-          assert_status 422
-          json_response = json_parse response_body
-          expect(json_response).to include_response_error(
-            :email,
-            'taken_by_invite',
-            value: email,
-            inviter_email: invitee.invitee_invite.inviter.email
-          )
-        end
-      end
-
-      describe do
-        before do
-          create(:user, email: 'JeZuS@citizenlab.co')
-        end
-
-        let(:email) { 'jEzUs@citizenlab.co' }
-
-        example_request '[error] Registering a user with case insensitive email duplicate', document: false do
-          assert_status 422
-        end
-      end
-
-      context 'with phone password_login turned on' do
-        before do
-          settings = AppConfiguration.instance.settings
-          settings['password_login'] = {
-            'allowed' => true,
-            'enabled' => true,
-            'enable_signup' => true,
-            'phone' => true,
-            'phone_email_pattern' => 'phone+__PHONE__@test.com',
-            'minimum_length' => 6
-          }
-          AppConfiguration.instance.update!(settings: settings)
-        end
-
-        describe do
-          let(:email) { 'someone@citizenlab.co' }
-
-          example_request 'Register with email when an email is passed', document: false do
+        describe 'create a user with no password' do
+          example_request 'User successfully created and requires confirmation' do
             assert_status 201
-            expect(User.find_by(email: email)).to be_present
+
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data, :attributes, :confirmation_required)).to be(true)
+          end
+
+          example_request 'Registration is not completed by default' do
+            assert_status 201
+
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data, :attributes, :registration_completed_at)).to be_nil
+          end
+
+          example_request 'Sends a confirmation email' do
+            last_email = ActionMailer::Base.deliveries.last
+            user       = User.order(:created_at).last
+            expect(last_email.body.encoded).to include user.reload.email_confirmation_code
           end
         end
 
-        describe do
-          let(:email) { '+32 487 36 58 98' }
+        describe 'Reusing an existing user with no password' do
+          context 'when there is an existing user that has no password' do
+            before do
+              create(:user, email: email, password: nil)
+            end
 
-          example_request 'Registers a user with a phone number in the email when a phone number is passed', document: false do
-            assert_status 201
-            expect(User.find_by(email: 'phone+32487365898@test.com')).to be_present
+            example_request 'existing user is successfully returned and confirmation requirement is reset and email resent' do
+              assert_status 200
+
+              json_response = json_parse(response_body)
+              expect(json_response.dig(:data, :attributes, :confirmation_required)).to be(true)
+
+              last_email = ActionMailer::Base.deliveries.last
+              user       = User.order(:created_at).last
+              expect(last_email.body.encoded).to include user.reload.email_confirmation_code
+            end
+
+            context 'when the request tries to pass additional changed attributes' do
+              let(:first_name) { Faker::Name.first_name }
+
+              example_request 'email taken error is returned and confirmation requirement is not reset' do
+                assert_status 422
+
+                json_response = json_parse(response_body)
+                expect(json_response.dig(:errors, :email, 0, :error)).to eq('taken')
+
+                user = User.order(:created_at).last
+                expect(user.confirmation_required?).to be(false)
+              end
+            end
+          end
+
+          context 'when there is an existing user WITH a password' do
+            before do
+              create(:user, email: email, password: 'gravy123')
+            end
+
+            example_request 'email taken error is returned and confirmation requirement is not reset' do
+              assert_status 422
+
+              json_response = json_parse(response_body)
+              expect(json_response.dig(:errors, :email, 0, :error)).to eq('taken')
+
+              user = User.order(:created_at).last
+              expect(user.confirmation_required?).to be(false)
+            end
           end
         end
       end
@@ -511,7 +599,8 @@ resource 'Users' do
           let(:group) { @group.id }
           let(:users) { @selected.map(&:id) }
 
-          example_request 'XLSX export all users by filtering on both group and user ids', document: false do
+          example 'XLSX export all users by filtering on both group and user ids', document: false do
+            do_request
             expect(status).to eq 200
             xlsx_hash = XlsxService.new.xlsx_to_hash_array RubyXL::Parser.parse_buffer(response_body).stream
             expect(xlsx_hash.map { |r| r['id'] }).to match_array(@members.map(&:id) & @selected.map(&:id))
@@ -765,13 +854,23 @@ resource 'Users' do
         let(:locale) { 'fr-FR' }
         let(:birthyear) { 1969 }
 
+        example "Can't change some attributes of a user verified with FranceConnect", document: false, skip: !CitizenLab.ee? do
+          create(:verification, method_name: 'franceconnect', user: @user)
+          @user.update!(custom_field_values: { cf.key => 'original value', birthyear_cf.key => 1950 })
+          do_request
+          expect(response_status).to eq 200
+          @user.reload
+          expect(@user.custom_field_values[cf.key]).to eq 'new value'
+          expect(@user.first_name).not_to eq first_name
+          expect(@user.last_name).not_to eq last_name
+          expect(@user.email).to eq email
+        end
+
         example 'Can change many attributes of a user verified with FranceConnect', document: false, skip: !CitizenLab.ee? do
           create(:verification, method_name: 'franceconnect', user: @user)
           do_request
           expect(response_status).to eq 200
           @user.reload
-          expect(@user.first_name).to eq first_name
-          expect(@user.last_name).to eq last_name
           expect(@user.email).to eq email
           expect(@user.locale).to eq locale
           expect(@user.birthyear).to eq birthyear
@@ -852,6 +951,34 @@ resource 'Users' do
           @user.reload
           expect(@user.custom_field_values[cf.key]).to eq 'new value'
           expect(@user.custom_field_values[gender_cf.key]).to eq 'male'
+        end
+      end
+    end
+
+    post 'web_api/v1/users/update_password' do
+      with_options scope: :user do
+        parameter :current_password, required: true
+        parameter :new_password, required: true
+      end
+      describe do
+        let(:current_password) { 'test_current_password' }
+        let(:new_password) { 'test_new_password' }
+
+        example_request 'update password with wrong current password' do
+          expect(response_status).to eq 422
+          json_response = json_parse(response_body)
+          expect(json_response[:errors][:current_password][0][:error]).to eq 'invalid'
+        end
+      end
+
+      describe do
+        let(:current_password) { 'democracy2.0' }
+        let(:new_password) { 'test_new_password' }
+
+        example_request 'update password with correct current password' do
+          @user.reload
+          expect(response_status).to eq 200
+          expect(BCrypt::Password.new(@user.password_digest)).to be_is_password('test_new_password')
         end
       end
     end

@@ -34,7 +34,7 @@ RSpec.describe User, type: :model do
       expect(invitee.invitee_invite.invitee.id).to eq invitee.id
     end
 
-    it 'does not generate a slug if no names given' do
+    it 'does not generate a slug if an invited user' do
       invitee = create(:invited_user, first_name: nil, last_name: nil)
       expect(invitee.slug).to be_nil
     end
@@ -67,6 +67,58 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe 'authentication without password' do
+    context 'when user_confirmation feature is active' do
+      before do
+        SettingsService.new.activate_feature! 'user_confirmation'
+      end
+
+      it 'should be allowed if the user has no password and confirmation is required' do
+        u = described_class.new(email: 'bob@citizenlab.co')
+        expect(!!u.authenticate('')).to be(true)
+      end
+
+      it 'should not be allowed if a password has been supplied in the request' do
+        u = described_class.new(email: 'bob@citizenlab.co')
+        expect(!!u.authenticate('any_string')).to be(false)
+      end
+
+      it 'should not be allowed if a password has been set' do
+        u = described_class.new(email: 'bob@citizenlab.co', password: 'democracy2.0')
+        expect(!!u.authenticate('')).to be(false)
+      end
+
+      it 'should not be allowed if confirmation is not required' do
+        u = described_class.new(email: 'bob@citizenlab.co')
+        u.confirm
+        expect(!!u.authenticate('')).to be(false)
+      end
+    end
+
+    context 'when user_confirmation feature is not active' do
+      before do
+        SettingsService.new.deactivate_feature! 'user_confirmation'
+      end
+
+      it 'should not be allowed if no password has been set and confirmation is required' do
+        u = described_class.new(email: 'bob@citizenlab.co')
+        expect(!!u.authenticate('')).to be(false)
+        expect(!!u.authenticate('any_string')).to be(false)
+      end
+
+      it 'should not be allowed if a password has been set' do
+        u = described_class.new(email: 'bob@citizenlab.co', password: 'democracy2.0')
+        expect(!!u.authenticate('')).to be(false)
+      end
+
+      it 'should not be allowed if confirmation is not required' do
+        u = described_class.new(email: 'bob@citizenlab.co')
+        u.confirm
+        expect(!!u.authenticate('')).to be(false)
+      end
+    end
+  end
+
   describe 'email' do
     it 'is invalid if there is a case insensitive duplicate' do
       create(:user, email: 'KoEn@citizenlab.co')
@@ -82,9 +134,15 @@ RSpec.describe User, type: :model do
   end
 
   describe 'password' do
-    it 'is invalid when set to empty string' do
+    it 'is valid when set to empty string' do
+      # This is allowed to allow accounts without a password
       u = build(:user, password: '')
-      expect(u).to be_invalid
+      expect(u).to be_valid
+    end
+
+    it 'does not create a password digest if the password is empty' do
+      u = build(:user, password: '')
+      expect(u.password_digest).to be_nil
     end
 
     it 'is invalid if its a common password' do
@@ -176,7 +234,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe 'demographic fields', slow_test: true do
+  describe 'demographic fields' do
     before do
       create(:custom_field_birthyear)
       create(:custom_field_gender, :with_options)

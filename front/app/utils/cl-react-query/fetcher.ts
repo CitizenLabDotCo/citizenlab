@@ -8,8 +8,6 @@ import { CLErrors } from 'typings';
 
 // FETCHER
 
-const jwt = getJwt();
-
 type Path = `/${string}`;
 interface Get {
   path: Path;
@@ -57,7 +55,7 @@ async function fetcher({ path, action, body, queryParams }) {
     post: 'POST',
     delete: 'DELETE',
   };
-
+  const jwt = getJwt();
   // Remove query parameters that have an empty value from query object in order to keep
   // sanitization behaviour consistent current and previous data-fetchign setup
   const relevantQueryParams = omitBy(

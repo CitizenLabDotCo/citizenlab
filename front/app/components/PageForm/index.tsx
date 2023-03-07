@@ -29,6 +29,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useCustomPage from 'hooks/useCustomPage';
+import useRemoteFiles from 'hooks/useRemoteFiles';
 
 export interface FormValues {
   nav_bar_item_title_multiloc?: Multiloc;
@@ -46,7 +47,10 @@ interface Props {
 const PageForm = ({ onSubmit, defaultValues, pageId }: Props) => {
   const { formatMessage } = useIntl();
   const page = useCustomPage({ customPageId: pageId });
-
+  const remoteFiles = useRemoteFiles({
+    resourceId: pageId,
+    resourceType: 'page',
+  });
   const schema = object({
     title_multiloc: validateAtLeastOneLocale(
       formatMessage(messages.titleMissingOneLanguageError)
@@ -116,11 +120,7 @@ const PageForm = ({ onSubmit, defaultValues, pageId }: Props) => {
               }
             />
           </Label>
-          <FileUploader
-            name="local_page_files"
-            resourceId={pageId}
-            resourceType="page"
-          />
+          <FileUploader name="local_page_files" remoteFiles={remoteFiles} />
         </SectionField>
         <Box display="flex">
           <Button type="submit" processing={methods.formState.isSubmitting}>
