@@ -21,7 +21,7 @@
           "lifecycle_stage",
           "authentication_token_lifetime_in_days",
           "maximum_admins_number",
-          "maximum_project_managers_number"
+          "maximum_project_moderators_number"
         ],
         "additionalProperties": false,
         "required": ["allowed", "enabled", "lifecycle_stage"],
@@ -190,7 +190,7 @@
             "type": "integer",
             "default": 10
           },
-          "maximum_project_managers_number": {
+          "maximum_project_moderators_number": {
             "title": "Maximum number of project managers",
             "description": "Maximum allowed number of project managers on the platform.",
             "type": "integer",
