@@ -1,4 +1,5 @@
 import React from 'react';
+import { rgba } from 'polished';
 
 // Components
 import {
@@ -11,12 +12,11 @@ import {
 
 // Hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useSeats from 'api/seats/useSeats';
 
 // Intl
 import messages from './messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-import { rgba } from 'polished';
 
 type SeatInfoType = {
   seatType: 'project_manager' | 'admin';
@@ -26,16 +26,23 @@ type SeatInfoType = {
 const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
+  const { data: seats } = useSeats();
 
-  if (!appConfiguration) return null;
+  if (!appConfiguration || !seats) return null;
 
   const maximumAdmins =
     appConfiguration.data.attributes.settings.core.maximum_admins_number;
   const maximumProjectManagers =
     appConfiguration.data.attributes.settings.core
       .maximum_project_moderators_number;
-  const maximumNumber =
+  const maximumSeatNumber =
     seatType === 'admin' ? maximumAdmins : maximumProjectManagers;
+  const currentAdminSeats = seats.data.attributes.admins_number;
+  const currentProjectManagerSeats =
+    seats.data.attributes.project_moderators_number;
+  const currentSeatNumber =
+    seatType === 'admin' ? currentAdminSeats : currentProjectManagerSeats;
+  const additionalSeats = currentSeatNumber - maximumSeatNumber;
 
   return (
     <Box
@@ -63,27 +70,31 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
             />
           </Box>
           <Text fontSize="xl" color="textPrimary" my="0px">
-            {`6/${maximumNumber}`}
+            {`${currentSeatNumber}/${maximumSeatNumber}`}
           </Text>
         </Box>
 
-        <Box mr="24px" border={`1px solid ${colors.divider}`} />
+        {additionalSeats > 0 && (
+          <>
+            <Box mr="24px" border={`1px solid ${colors.divider}`} />
 
-        <Box display="flex" flexDirection="column">
-          <Box display="flex" flexDirection="row" alignItems="center">
-            <Text color="teal700" mr="8px" variant="bodyS" my="0px">
-              {formatMessage(messages.additionalSeats)}
-            </Text>
-            <IconTooltip
-              content={
-                <FormattedMessage {...messages.additionalSeatsToolTip} />
-              }
-            />
-          </Box>
-          <Text fontSize="xl" color="textPrimary" my="0px">
-            0
-          </Text>
-        </Box>
+            <Box display="flex" flexDirection="column">
+              <Box display="flex" flexDirection="row" alignItems="center">
+                <Text color="teal700" mr="8px" variant="bodyS" my="0px">
+                  {formatMessage(messages.additionalSeats)}
+                </Text>
+                <IconTooltip
+                  content={
+                    <FormattedMessage {...messages.additionalSeatsToolTip} />
+                  }
+                />
+              </Box>
+              <Text fontSize="xl" color="textPrimary" my="0px">
+                {additionalSeats}
+              </Text>
+            </Box>
+          </>
+        )}
       </Box>
 
       <Box mt="20px">
@@ -96,7 +107,7 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
                   <Text as="span" fontWeight="bold" variant="bodyS">
                     {formatMessage(
                       messages.projectManagerSeatsIncludedSubText,
-                      { projectManagerSeats: maximumNumber }
+                      { projectManagerSeats: maximumSeatNumber }
                     )}
                   </Text>
                 ),
@@ -111,7 +122,7 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
                 adminSeatsIncluded: (
                   <Text as="span" fontWeight="bold" variant="bodyS">
                     {formatMessage(messages.adminSeatsIncludedSubText, {
-                      adminSeats: maximumNumber,
+                      adminSeats: maximumSeatNumber,
                     })}
                   </Text>
                 ),
