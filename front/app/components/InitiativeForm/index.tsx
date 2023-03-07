@@ -3,7 +3,6 @@ import { get } from 'lodash-es';
 import { stripHtmlTags, isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
-import scrollToComponent from 'react-scroll-to-component';
 
 // Components
 import {
@@ -251,35 +250,6 @@ class InitiativeForm extends React.Component<
       });
 
       this.setState({ touched: newTouched, errors: newErrors });
-
-      if (newErrors.title_multiloc && this.titleInputElement) {
-        scrollToComponent(this.titleInputElement, {
-          align: 'top',
-          offset: -240,
-          duration: 300,
-        });
-        setTimeout(
-          () => this.titleInputElement && this.titleInputElement.focus(),
-          300
-        );
-      } else if (newErrors.body_multiloc && this.descriptionElement) {
-        scrollToComponent(this.descriptionElement, {
-          align: 'top',
-          offset: -200,
-          duration: 300,
-        });
-        setTimeout(
-          () => this.descriptionElement && this.descriptionElement.focus(),
-          300
-        );
-      } else if (newErrors.topic_ids && this.topicElement) {
-        scrollToComponent(this.topicElement, {
-          align: 'top',
-          offset: -200,
-          duration: 300,
-        });
-        setTimeout(() => this.topicElement?.focus(), 300);
-      }
     }
   };
 
