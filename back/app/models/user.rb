@@ -240,7 +240,7 @@ class User < ApplicationRecord
   scope :blocked, lambda {
     where.not(block_start_at: nil)
       .and(where(block_start_at: ((
-        Time.zone.now - AppConfiguration.instance.settings('user_blocking', 'duration').days
+        AppConfiguration.instance.settings('user_blocking', 'duration').days.ago
       )..Time.zone.now)))
   }
 
@@ -384,7 +384,7 @@ class User < ApplicationRecord
     if block_start_at.present?
       duration = AppConfiguration.instance.settings('user_blocking', 'duration').days
 
-      return true if block_start_at >= (Time.zone.now - duration.days)
+      return true if block_start_at.between?(duration.days.ago, Time.zone.now)
     end
 
     false
