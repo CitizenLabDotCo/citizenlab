@@ -4,6 +4,8 @@ import { adopt } from 'react-adopt';
 import styled from 'styled-components';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
+import { DndProvider as LegacyDndProvider } from 'react-dnd-cjs';
+import LegacyHTML5Backend from 'react-dnd-html5-backend-cjs';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
@@ -510,11 +512,17 @@ const Data = adopt<DataProps, InputProps>({
 });
 
 export default (inputProps: InputProps) => {
-  return (
+  return inputProps.type === 'Initiatives' ? (
     <DndProvider backend={HTML5Backend}>
       <Data {...inputProps}>
         {(dataProps) => <PostManager {...inputProps} {...dataProps} />}
       </Data>
     </DndProvider>
+  ) : (
+    <LegacyDndProvider backend={LegacyHTML5Backend}>
+      <Data {...inputProps}>
+        {(dataProps) => <PostManager {...inputProps} {...dataProps} />}
+      </Data>
+    </LegacyDndProvider>
   );
 };
