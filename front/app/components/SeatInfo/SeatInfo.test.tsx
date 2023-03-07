@@ -60,6 +60,7 @@ describe('SeatInfo', () => {
       screen.getByText('Current project manager seats')
     ).toBeInTheDocument();
     expect(screen.getByText('9/9')).toBeInTheDocument();
+    expect(screen.getByText('6')).toBeInTheDocument();
     expect(screen.queryByText('Additional seats')).toBeInTheDocument();
   });
 });
