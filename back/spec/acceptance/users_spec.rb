@@ -462,15 +462,17 @@ resource 'Users' do
 
       get 'web_api/v1/users/seats' do
         before do
-          create_list(:admin, 2)
-          create_list(:project_moderator, 3, projects: [create(:project)])
-          create_list(:project_folder_moderator, 1, project_folders: [create(:project_folder)])
+          create(:super_admin) # super admin are not included in admins
+          folder_moderators = create_list(:project_folder_moderator, 2, project_folders: [create(:project_folder)])
+
+          @admins = [@user, *create_list(:admin, 3), *folder_moderators]
+          @managers = create_list(:project_moderator, 4, projects: [create(:project)])
         end
 
         example_request 'Get number of admin and manager (moderator) seats' do
           expect(status).to eq 200
-          expect(response_data[:admins]).to eq 3
-          expect(response_data[:moderators]).to eq 4
+          expect(response_data[:admins]).to eq @admins.size
+          expect(response_data[:moderators]).to eq @managers.size
         end
       end
 

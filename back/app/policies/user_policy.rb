@@ -31,7 +31,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def seats?
-    user&.active? && (user&.admin? || user&.project_moderator?)
+    user&.active? && (user&.admin? || user&.project_moderator? || user&.project_folder_moderator?)
   end
 
   def index_xlsx?
