@@ -5,7 +5,7 @@ require 'rails_helper'
 describe PermissionsService do
   let(:service) { described_class.new }
 
-  describe '#denied_reason' do
+  describe '#denied_reason_for_resource' do
     let(:action) { 'posting_initiative' }
     let(:permission) { Permission.find_by(permission_scope: nil, action: action) }
     let(:user) { create(:user) }
@@ -16,17 +16,47 @@ describe PermissionsService do
       groups = create_list(:group, 2)
       groups.first.add_member(user).save!
       permission.update!(permitted_by: 'groups', group_ids: groups.map(&:id))
-      expect(service.denied_reason(user, action)).to be_nil
+      expect(service.denied_reason_for_resource(user, action)).to be_nil
     end
 
     it 'returns `not_signed_in` when user needs to be signed in' do
       permission.update!(permitted_by: 'users')
-      expect(service.denied_reason(nil, action)).to eq 'not_signed_in'
+      expect(service.denied_reason_for_resource(nil, action)).to eq 'not_signed_in'
     end
 
     it 'returns `not_permitted` when user is not in authorized groups' do
       permission.update!(permitted_by: 'groups', group_ids: create_list(:group, 2).map(&:id))
-      expect(service.denied_reason(user, action)).to eq 'not_permitted'
+      expect(service.denied_reason_for_resource(user, action)).to eq 'not_permitted'
+    end
+  end
+
+  describe '#denied_reason_for_permission' do
+    let(:everyone_permission) { build(:permission, :by_everyone) }
+    let(:users_permission) { build(:permission, :by_users) }
+    let(:admins_mods_permission) { build(:permission, :by_admins_moderators) }
+
+    context 'when not signed in' do
+      let(:user) { nil }
+
+      it { expect(service.denied_reason_for_permission(everyone_permission, user)).to be_nil }
+      it { expect(service.denied_reason_for_permission(users_permission, user)).to eq('not_signed_in') }
+      it { expect(service.denied_reason_for_permission(admins_mods_permission, user)).to eq('not_permitted') }
+    end
+
+    context 'when user is admin' do
+      let(:admin) { build(:admin) }
+
+      it { expect(service.denied_reason_for_permission(everyone_permission, admin)).to be_nil }
+      it { expect(service.denied_reason_for_permission(users_permission, admin)).to be_nil }
+      it { expect(service.denied_reason_for_permission(admins_mods_permission, admin)).to be_nil }
+    end
+
+    context 'when signed in' do
+      let(:user) { build(:user) }
+
+      it { expect(service.denied_reason_for_permission(everyone_permission, user)).to be_nil }
+      it { expect(service.denied_reason_for_permission(users_permission, user)).to be_nil }
+      it { expect(service.denied_reason_for_permission(admins_mods_permission, user)).to eq 'not_permitted' }
     end
   end
 

@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 class PermissionsService
+  DENIED_REASONS = {
+    not_permitted: 'not_permitted',
+    missing_data: 'missing_data',
+    not_signed_in: 'not_signed_in'
+  }.freeze
+
   def update_permissions_for_scope(scope)
     actions = Permission.available_actions scope
     remove_extras_actions(scope, actions)
@@ -21,7 +27,7 @@ class PermissionsService
     Permission.select(&:invalid?).each(&:destroy!)
   end
 
-  def denied_reason(user, action, resource = nil)
+  def denied_reason_for_resource(user, action, resource = nil)
     scope = resource&.permission_scope
     permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
 
@@ -32,7 +38,15 @@ class PermissionsService
 
     raise "Unknown action '#{action}' for resource: #{resource}" unless permission
 
-    permission.denied_reason user
+    denied_reason_for_permission permission, user
+  end
+
+  def denied_reason_for_permission(permission, user)
+    if permission.permitted_by == 'everyone_confirmed_email'
+      new_denied_reason permission, user
+    else
+      old_denied_reason permission, user
+    end
   end
 
   def requirements(permission, user)
@@ -65,6 +79,31 @@ class PermissionsService
   def missing_actions(scope, actions = nil)
     actions ||= Permission.available_actions(scope)
     actions - Permission.where(permission_scope: scope).pluck(:action)
+  end
+
+  def old_denied_reason(permission, user)
+    return if permission.permitted_by == 'everyone'
+    return if user&.admin?
+    return if user && UserRoleService.new.can_moderate?(permission.permission_scope, user)
+
+    reason = case permission.permitted_by
+    when 'users' then :not_signed_in unless user # TODO
+    when 'admins_moderators' then :not_permitted
+    when 'groups' then denied_when_permitted_by_groups?(user)
+    else
+      raise "Unsupported permitted_by: '#{permission.permitted_by}'."
+    end
+
+    DENIED_REASONS[reason]
+  end
+
+  def new_denied_reason(permission, user)
+    return DENIED_REASONS[:not_signed_in] if !user && permission.permitted_by != 'everyone'
+
+    user ||= User.new
+    return if requirements(permission, user)[:permitted]
+
+    DENIED_REASONS[:missing_data]
   end
 
   def requirements_mapping
