@@ -81,6 +81,7 @@ const SignUpInModal = memo<Props>(
     }, [authUser]);
 
     const onClose = async () => {
+      // TODO: Confirm sign out can be removed (no edge cases?)
       const signedUpButNotCompleted =
         !isNilOrError(authUser) &&
         !authUser.attributes.registration_completed_at;
@@ -91,7 +92,7 @@ const SignUpInModal = memo<Props>(
         // it would cause openSignUpInModalIfNecessary in App/index.tsx to open the modal again.
         // This happens because the user is indeed not completely registered/verified
         // (see openSignUpInModalIfNecessary).
-        await signOut();
+        // await signOut();
         trackEventByName(tracks.signUpFlowExitedAtEmailVerificationStep);
       }
 

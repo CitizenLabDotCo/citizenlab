@@ -73,9 +73,10 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
     if (isNilOrError(authUser)) return;
     if (metaData) return;
 
-    if (!authUser.attributes.registration_completed_at) {
-      openSignUpInModal({ flow: 'signup' });
-    }
+    // TODO: Confirm that this can be removed.
+    // if (!authUser.attributes.registration_completed_at) {
+    //   openSignUpInModal({ flow: 'signup' });
+    // }
   }, [authUser, metaData]);
 
   // In case of a sign up / in route, open modal and redirect to homepage

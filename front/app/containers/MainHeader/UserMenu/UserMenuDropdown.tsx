@@ -18,6 +18,7 @@ import { colors } from 'utils/styleUtils';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { openSignUpInModal } from 'events/openSignUpInModal';
 
 const DropdownListItem = styled(Button)``;
 
@@ -29,6 +30,9 @@ interface Props {
 
 const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
   const authUser = useAuthUser();
+
+  const isRegisteredUser =
+    !isNilOrError(authUser) && authUser.attributes.registration_completed_at;
 
   const handleToggleDropdown = (event: MouseEvent | KeyboardEvent) => {
     event.preventDefault();
@@ -43,7 +47,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
   return (
     <Dropdown
       id="e2e-user-menu-dropdown"
-      width="220px"
+      minWidth="220px"
       mobileWidth="220px"
       top="68px"
       right="-12px"
@@ -72,7 +76,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
             </DropdownListItem>
           </HasPermission>
 
-          {!isNilOrError(authUser) && (
+          {isRegisteredUser && (
             <DropdownListItem
               id="e2e-my-ideas-page-link"
               linkTo={`/profile/${authUser.attributes.slug}`}
@@ -89,20 +93,40 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
             </DropdownListItem>
           )}
 
-          <DropdownListItem
-            id="e2e-profile-edit-link"
-            linkTo={'/profile/edit'}
-            onClick={handleCloseDropdown}
-            buttonStyle="text"
-            bgHoverColor={colors.grey300}
-            icon="sidebar-settings"
-            iconPos="right"
-            iconSize="20px"
-            padding="11px 11px"
-            justify="space-between"
-          >
-            <FormattedMessage {...messages.editProfile} />
-          </DropdownListItem>
+          {isRegisteredUser && (
+            <DropdownListItem
+              id="e2e-profile-edit-link"
+              linkTo={'/profile/edit'}
+              onClick={handleCloseDropdown}
+              buttonStyle="text"
+              bgHoverColor={colors.grey300}
+              icon="sidebar-settings"
+              iconPos="right"
+              iconSize="20px"
+              padding="11px 11px"
+              justify="space-between"
+            >
+              <FormattedMessage {...messages.editProfile} />
+            </DropdownListItem>
+          )}
+
+          {!isRegisteredUser && (
+            <DropdownListItem
+              id="e2e-confirm-email-link"
+              onClick={() => {
+                openSignUpInModal();
+              }}
+              buttonStyle="text"
+              bgHoverColor={colors.grey300}
+              icon="email"
+              iconPos="right"
+              iconSize="20px"
+              padding="11px 11px"
+              justify="space-between"
+            >
+              <FormattedMessage {...messages.confirmEmail} />
+            </DropdownListItem>
+          )}
 
           <DropdownListItem
             id="e2e-sign-out-link"
