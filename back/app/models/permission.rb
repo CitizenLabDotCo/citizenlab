@@ -74,14 +74,9 @@ class Permission < ApplicationRecord
 
   private
 
-  # def denied_when_permitted_by_groups?(user)
-  #   :not_permitted if user.nil? || !user.in_any_groups?(groups)
-  # end
-
   def set_permitted_by
     self.permitted_by ||= 'users'
   end
 end
 
 Permission.prepend_if_ee('SmartGroups::Patches::Permission')
-Permission.prepend_if_ee('Verification::Patches::Permission')

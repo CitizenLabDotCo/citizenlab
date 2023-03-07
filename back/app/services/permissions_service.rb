@@ -4,7 +4,8 @@ class PermissionsService
   DENIED_REASONS = {
     not_permitted: 'not_permitted',
     missing_data: 'missing_data',
-    not_signed_in: 'not_signed_in'
+    not_signed_in: 'not_signed_in',
+    not_verified: 'not_verified'
   }.freeze
 
   def update_permissions_for_scope(scope)
@@ -89,7 +90,7 @@ class PermissionsService
     reason = case permission.permitted_by
     when 'users' then :not_signed_in unless user # TODO
     when 'admins_moderators' then :not_permitted
-    when 'groups' then denied_when_permitted_by_groups?(user)
+    when 'groups' then permission.denied_when_permitted_by_groups?(user)
     else
       raise "Unsupported permitted_by: '#{permission.permitted_by}'."
     end
@@ -104,6 +105,10 @@ class PermissionsService
     return if requirements(permission, user)[:permitted]
 
     DENIED_REASONS[:missing_data]
+  end
+
+  def denied_when_permitted_by_groups?(user)
+    :not_permitted if user.nil? || !user.in_any_groups?(groups)
   end
 
   def requirements_mapping
@@ -161,3 +166,5 @@ class PermissionsService
     end
   end
 end
+
+PermissionsService.prepend_if_ee('Verification::Patches::PermissionsService')
