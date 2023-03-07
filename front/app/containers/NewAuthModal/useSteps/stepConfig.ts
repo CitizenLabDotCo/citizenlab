@@ -2,7 +2,7 @@ import { createAccount, confirmCode } from './mutations';
 import { signOut } from 'services/auth';
 
 // typings
-import { State, GetRequirements, Status, ErrorCode } from '../typings';
+import { GetRequirements, Status, ErrorCode, UpdateState } from '../typings';
 import { SSOProvider } from 'services/singleSignOn';
 
 type Step =
@@ -17,7 +17,7 @@ export const getStepConfig = (
   setCurrentStep: (step: Step) => void,
   setStatus: (status: Status) => void,
   setError: (errorCode: ErrorCode) => void,
-  updateState: (state: Partial<State>) => void
+  updateState: UpdateState
 ) => {
   return {
     closed: {
