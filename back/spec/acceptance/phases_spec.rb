@@ -223,7 +223,8 @@ resource 'Phases' do
       describe do
         let(:start_at) { nil }
 
-        example_request '[error] Create an invalid phase', document: false do
+        example '[error] Create an invalid phase', document: false do
+          do_request
           assert_status 422
           expect(json_response).to include_response_error(:start_at, 'blank')
         end
@@ -1033,8 +1034,8 @@ resource 'Phases' do
                   ideation_response.id,
                   ideation_response.title_multiloc['en'],
                   'It would improve the air quality!', # html tags are removed
-                  nil,
-                  nil,
+                  '',
+                  '',
                   ideation_response.location_point.coordinates.last,
                   ideation_response.location_point.coordinates.first,
                   ideation_response.location_description,

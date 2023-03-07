@@ -181,7 +181,10 @@ class CustomField < ApplicationRecord
   # Special behaviour for ideation section 1
   def title_multiloc
     if code == 'ideation_section1'
-      input_term = resource.participation_context.input_term || ParticipationContext::DEFAULT_INPUT_TERM
+      project = resource.participation_context
+      phase = TimelineService.new.current_or_last_ideation_phase project
+      input_term = phase ? phase.input_term : project.input_term || ParticipationContext::DEFAULT_INPUT_TERM
+
       key = "custom_forms.categories.main_content.#{input_term}.title"
       MultilocService.new.i18n_to_multiloc key
     else

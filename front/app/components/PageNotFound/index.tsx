@@ -13,13 +13,10 @@ const PageNotFoundWrapper = styled.div`
   height: calc(
     100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
   );
-
-  ${media.tablet`
-    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
-    props
-  ) => props.theme.mobileTopBarHeight}px);
+  ${(props) =>
+    media.tablet`
+    min-height: calc(100vh - ${props.theme.mobileMenuHeight}px - ${props.theme.mobileTopBarHeight}px);
   `}
-
   display: flex;
   flex-direction: column;
   align-items: center;

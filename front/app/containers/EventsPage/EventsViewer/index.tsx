@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // components
 import TopBar from './TopBar';
@@ -12,13 +12,14 @@ import messages from '../messages';
 import { MessageDescriptor } from 'react-intl';
 
 // hooks
-import useEvents from 'hooks/useEvents';
+import useEvents from 'api/events/useEvents';
 
 // styling
 import styled from 'styled-components';
 
 // other
-import { isNilOrError, isNil, isError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 interface IStyledEventCard {
   last: boolean;
@@ -38,102 +39,105 @@ interface Props {
   fallbackMessage: MessageDescriptor;
   eventsTime: 'past' | 'currentAndFuture';
   className?: string;
-  projectIds?: string[];
+  projectId?: string;
   onClickTitleGoToProjectAndScrollToEvent?: boolean;
   hideSectionIfNoEvents?: boolean;
   showProjectFilter: boolean;
 }
 
-const EventsViewer = memo<Props>(
-  ({
-    title,
-    fallbackMessage,
-    eventsTime,
-    className,
-    projectIds,
-    onClickTitleGoToProjectAndScrollToEvent,
-    hideSectionIfNoEvents,
-    showProjectFilter,
-  }) => {
-    const {
-      events,
-      currentPage,
-      lastPage,
-      onProjectIdsChange,
-      onCurrentPageChange,
-    } = useEvents({
-      projectIds,
-      projectPublicationStatuses: ['published'],
-      currentAndFutureOnly: eventsTime === 'currentAndFuture',
-      pastOnly: eventsTime === 'past',
-      sort: eventsTime === 'past' ? 'newest' : 'oldest',
-    });
+const EventsViewer = ({
+  title,
+  fallbackMessage,
+  eventsTime,
+  className,
+  projectId,
+  onClickTitleGoToProjectAndScrollToEvent,
+  hideSectionIfNoEvents,
+  showProjectFilter,
+}: Props) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [projectIdList, setProjectIdList] = useState<string[] | undefined>(
+    projectId ? [projectId] : []
+  );
 
-    useEffect(() => {
-      if (!isNilOrError(projectIds)) {
-        onProjectIdsChange(projectIds);
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [projectIds]);
-
-    const eventsLoading = isNil(events);
-    const eventsError = isError(events);
-
-    const shouldHideSection =
-      (!isNilOrError(events) && events.length === 0 && hideSectionIfNoEvents) ||
-      (eventsLoading && hideSectionIfNoEvents) ||
-      (isNilOrError(events) && hideSectionIfNoEvents);
-
-    if (shouldHideSection) {
-      return null;
+  useEffect(() => {
+    if (projectId) {
+      setProjectIdList([projectId]);
     }
+  }, [projectId]);
 
-    return (
-      <div className={className}>
-        <TopBar
-          showProjectFilter={showProjectFilter}
-          title={title}
-          setProjectIds={onProjectIdsChange}
-        />
+  const {
+    data: events,
+    isLoading,
+    isError,
+  } = useEvents({
+    projectIds: projectIdList,
+    projectPublicationStatuses: ['published'],
+    currentAndFutureOnly: eventsTime === 'currentAndFuture',
+    pastOnly: eventsTime === 'past',
+    sort: eventsTime === 'past' ? 'start_at' : '-start_at',
+    pageNumber: currentPage,
+  });
+  const lastPageNumber =
+    (events && getPageNumberFromUrl(events.links?.last)) ?? 1;
 
-        {eventsError && (
-          <EventsMessage message={messages.errorWhenFetchingEvents} />
-        )}
+  const shouldHideSection =
+    (events && events.data.length === 0 && hideSectionIfNoEvents) ||
+    (isLoading && hideSectionIfNoEvents) ||
+    (isNilOrError(events) && hideSectionIfNoEvents);
 
-        {eventsLoading && <EventsSpinner />}
-
-        {!isNilOrError(events) && (
-          <>
-            {events.length > 0 &&
-              events.map((event, i) => (
-                <StyledEventCard
-                  id={event.id}
-                  event={event}
-                  showProjectTitle
-                  onClickTitleGoToProjectAndScrollToEvent={
-                    onClickTitleGoToProjectAndScrollToEvent
-                  }
-                  showLocation
-                  showDescription
-                  showAttachments
-                  last={events.length - 1 === i}
-                  key={event.id}
-                />
-              ))}
-
-            {events.length === 0 && <EventsMessage message={fallbackMessage} />}
-
-            <StyledPagination
-              currentPage={currentPage}
-              totalPages={lastPage}
-              loadPage={onCurrentPageChange}
-              useColorsTheme
-            />
-          </>
-        )}
-      </div>
-    );
+  if (shouldHideSection) {
+    return null;
   }
-);
+  const onCurrentPageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
+
+  return (
+    <div className={className}>
+      <TopBar
+        showProjectFilter={showProjectFilter}
+        title={title}
+        setProjectIds={setProjectIdList}
+      />
+
+      {isError && <EventsMessage message={messages.errorWhenFetchingEvents} />}
+
+      {isLoading && <EventsSpinner />}
+
+      {!isNilOrError(events) && (
+        <>
+          {events.data.length > 0 &&
+            events.data.map((event, i) => (
+              <StyledEventCard
+                id={event.id}
+                event={event}
+                showProjectTitle
+                onClickTitleGoToProjectAndScrollToEvent={
+                  onClickTitleGoToProjectAndScrollToEvent
+                }
+                showLocation
+                showDescription
+                showAttachments
+                last={events.data.length - 1 === i}
+                key={event.id}
+              />
+            ))}
+
+          {events.data.length === 0 && (
+            <EventsMessage message={fallbackMessage} />
+          )}
+
+          <StyledPagination
+            currentPage={currentPage}
+            totalPages={lastPageNumber}
+            loadPage={onCurrentPageChange}
+            useColorsTheme
+          />
+        </>
+      )}
+    </div>
+  );
+};
 
 export default EventsViewer;

@@ -178,9 +178,9 @@ el:
       ISCED8: Doctoral or equivalent
   initiatives:
     default_threshold_reached_message: >
-      <p>The initiators are invited to present their proposal at the next council meeting. We will provide an official update.</p>
+      <p>Οι εμπνευστές καλούνται να παρουσιάσουν την πρότασή τους στην επόμενη συνεδρίαση του Συμβουλίου. Θα παράσχουμε επίσημη ενημέρωση.</p>
     default_eligibility_criteria: >
-      <ul> <li>It must fall within the policy areas and competencies of local policy</li> <li>It serves the public interest rather than your individual interest</li> <li>It does not discriminate based on gender, race, age, or background</li> <li>It does not harm others</li> </ul>
+      <ul> <li>Πρέπει να εμπίπτει στους τομείς πολιτικής και στις αρμοδιότητες της τοπικής πολιτικής</li> <li>Εξυπηρετεί το δημόσιο συμφέρον και όχι το ατομικό σας συμφέρον</li> <li>Δεν κάνει διακρίσεις με βάση το φύλο, τη φυλή, την ηλικία ή το υπόβαθρο</li> <li>Δεν βλάπτει τους άλλους</li> </ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Επαναφορά του κωδικού πρόσβασής σας'
@@ -195,7 +195,7 @@ el:
       author_fullname: 'Όνομα συγγραφέα'
       author_email: 'Συγγραφέας email'
       author_id: 'Ταυτότητα συγγραφέα'
-      budget: 'Budget'
+      budget: 'Προϋπολογισμός'
       created_at: 'Υποβλήθηκε στο'
       published_at: 'Δημοσιεύθηκε στις'
       comments_count: 'Σχόλια'
@@ -213,7 +213,17 @@ el:
       option1: 'Επιλογή'
       option2: 'Επιλογή'
     survey_end_page:
-      title: 'Survey end'
+      title: 'Τέλος της έρευνας'
       description: "Υποβάλετε τις απαντήσεις σας επιλέγοντας \"Υποβολή έρευνας\" παρακάτω."
   project_copy:
     title_suffix: 'Aντίγραφο'
+  confirmations_mailer:
+    send_confirmation_code:
+      subject: "Επιβεβαιώστε τη διεύθυνση ηλεκτρονικού ταχυδρομείου σας για την πλατφόρμα συμμετοχής %{organizationName}"
+      header: "Ο κωδικός επιβεβαίωσης"
+      header_message: "Γεια σας %{firstName}!"
+      thanks_for_signing_up: "Σας ευχαριστούμε για την εγγραφή σας στην πλατφόρμα συμμετοχής %{organizationName}."
+      please_confirm_your_email_address: "Για να ολοκληρώσετε την εγγραφή σας, επαληθεύστε τη διεύθυνση ηλεκτρονικού ταχυδρομείου σας."
+      copy_paste_the_link_below: "Αντιγράψτε και επικολλήστε τον παρακάτω κωδικό στη φόρμα εγγραφής στην πλατφόρμα."
+      the_link_is_valid_for: "Αυτός ο σύνδεσμος ισχύει για 24 ώρες. Εάν ο σύνδεσμος έχει λήξει, μπορείτε να ζητήσετε νέο κωδικό <a href=\"%{link}\"></a>."
+      did_you_receive_this_email_in_error: "Λάβατε αυτό το email κατά λάθος; <a href=\"%{link}\">Ενημερώστε μας</a>."

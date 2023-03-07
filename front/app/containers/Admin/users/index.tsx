@@ -66,13 +66,15 @@ import { IGroupData, addGroup, MembershipType } from 'services/groups';
 
 import Outlet from 'components/Outlet';
 
-export interface Props {
+interface DataProps {
   isVerificationEnabled: GetFeatureFlagChildProps;
 }
 
+interface Props extends DataProps {}
+
 export type GroupCreationModal = false | 'step1' | MembershipType;
 
-export interface State {
+interface State {
   groupCreationModal: GroupCreationModal;
 }
 
@@ -184,13 +186,10 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
 
 const UsersPageWithHocs = withRouter(UsersPage);
 
-export default (props) => (
+export default () => (
   <GetFeatureFlag name="verification">
     {(isVerificationEnabled) => (
-      <UsersPageWithHocs
-        {...props}
-        isVerificationEnabled={isVerificationEnabled}
-      />
+      <UsersPageWithHocs isVerificationEnabled={isVerificationEnabled} />
     )}
   </GetFeatureFlag>
 );

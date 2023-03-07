@@ -1,5 +1,47 @@
 # Changelog
 
+## 2023-02-28
+
+### Fixed
+
+- [CL-2989] Fixed Excel downloads
+
+## 2023-02-27
+
+### Fixed
+
+- [CL-2921] Configure header image URL and overlay in base template. Use default header and subheader text if none is set
+
+## 2023-02-24
+
+### Changed
+
+- [CL-2903] Lock first and last name with FC verification
+- [CL-2721] Make it possible to move project out of folder
+- Release missing native survey translations
+
+## 2023-02-22
+
+### Changed
+
+- [CL-2173] Remove access to Messaging in admin for project & folder moderators
+
+## 2023-02-20
+
+### Added
+
+- [CL-2314] Ability to copy projects in the admin.
+
+### Fixed
+
+- [CL-2826] Alignment of graphs in emails dashboard
+
+## 2023-02-17
+
+### Added
+
+- [CL-2659] Add posts by time, comments by time and votes by time charts to report builder
+
 ## 2023-02-15 (2)
 
 ### Added

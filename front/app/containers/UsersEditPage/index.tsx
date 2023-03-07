@@ -15,6 +15,7 @@ import CampaignsConsentForm from './CampaignsConsentForm';
 import ProfileDeletion from './ProfileDeletion';
 import UsersEditPageMeta from './UsersEditPageMeta';
 import FragmentForm from './FragmentForm';
+import PasswordChange from './PasswordChange';
 
 // Styles
 import styled from 'styled-components';
@@ -22,7 +23,7 @@ import { colors } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // Hooks
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'hooks/useAuthUser';
 import VerificationStatus from './VerificationStatus';
 
@@ -43,7 +44,7 @@ const Container = styled.main`
 const Wrapper = styled.div``;
 
 export default () => {
-  const appConfig = useAppConfiguration();
+  const { data: appConfig } = useAppConfiguration();
   const authUser = useAuthUser();
   const loaded = appConfig !== undefined && authUser !== undefined;
 
@@ -65,6 +66,7 @@ export default () => {
           <VerificationStatus />
           <ProfileForm />
           <FragmentForm />
+          <PasswordChange />
           <ProfileDeletion />
           <CampaignsConsentForm />
         </Wrapper>

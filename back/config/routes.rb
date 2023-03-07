@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  mount UserConfirmation::Engine => '', as: 'user_confirmation'
   mount EmailCampaigns::Engine => '', as: 'email_campaigns'
   mount Frontend::Engine => '', as: 'frontend'
   mount Onboarding::Engine => '', as: 'onboarding'
@@ -80,6 +79,7 @@ Rails.application.routes.draw do
         get :as_xlsx, on: :collection, action: 'index_xlsx'
         post 'reset_password_email' => 'reset_password#reset_password_email', on: :collection
         post 'reset_password' => 'reset_password#reset_password', on: :collection
+        post 'update_password', on: :collection
         get 'by_slug/:slug', on: :collection, to: 'users#by_slug'
         get 'by_invite/:token', on: :collection, to: 'users#by_invite'
         get 'ideas_count', on: :member
@@ -89,6 +89,11 @@ Rails.application.routes.draw do
         resources :comments, only: [:index], controller: 'user_comments'
       end
       get 'users/:id', to: 'users#show', constraints: { id: /\b(?!custom_fields|me)\b\S+/ }
+
+      scope path: 'user' do
+        resource :confirmation, path: :confirm, only: %i[create]
+        resource :resend_code, only: %i[create]
+      end
 
       resources :topics do
         patch 'reorder', on: :member

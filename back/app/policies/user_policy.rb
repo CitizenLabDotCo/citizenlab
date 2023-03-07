@@ -75,6 +75,10 @@ class UserPolicy < ApplicationPolicy
     true
   end
 
+  def update_password?
+    user&.active? && (record.id == user.id)
+  end
+
   def view_private_attributes?
     # When the policy was created with a class
     # instead of an instance, record is set to

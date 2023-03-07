@@ -83,9 +83,13 @@ e2e-ci-env-setup:
 	docker-compose run web bin/rails db:drop db:create db:schema:load && \
 	docker-compose run web bin/rails "cl2_back:create_tenant[e2e.front,e2etests_template]"
 
+e2e-ci-env-up:
+	# we need --build because volumes are not used by default https://www.notion.so/citizenlab/Testing-253d0c3cd99841a59929f7f615179935?pvs=4#f088eb9d2c304af59d5d5d2ede6e4439
+	cd e2e && docker-compose up --build
+
 e2e-ci-env-setup-and-up:
 	make e2e-ci-env-setup
-	cd e2e && docker-compose up
+	make e2e-ci-env-up
 
 # Run it with:
 # make e2e-ci-env-run-test spec=cypress/e2e/about_page.cy.ts
@@ -115,7 +119,7 @@ ci-regenerate-templates:
 
 # Triggers a build for the current branch.
 # Also, builds images for the Epic platform.
-ci-trigger-build:
+ci-build:
 	curl \
 		--request POST \
 		-u ${CIRCLE_CI_TOKEN}: \
@@ -123,10 +127,11 @@ ci-trigger-build:
 		--header 'content-type: application/json' \
 		--data "{\"branch\": \"$$(git branch --show-current)\",\"parameters\": {\"trigger\": false, \"back\": true, \"front\": true } }"
 
-ci-run-e2e:
+ci-e2e:
 	curl \
 		--request POST \
 		-u ${CIRCLE_CI_TOKEN}: \
 		--url https://circleci.com/api/v2/project/github/CitizenLabDotCo/citizenlab/pipeline \
 		--header 'content-type: application/json' \
 		--data "{\"branch\": \"$$(git branch --show-current)\",\"parameters\": {\"e2e\": true } }"
+	$(info You can check the status of the build here: https://app.circleci.com/pipelines/github/CitizenLabDotCo/citizenlab)

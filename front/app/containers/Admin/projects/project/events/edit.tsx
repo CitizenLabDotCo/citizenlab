@@ -1,11 +1,6 @@
-import React, { PureComponent } from 'react';
-import { Subscription, combineLatest, of } from 'rxjs';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { isEmpty, get, isError } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-
-// libraries
-import clHistory from 'utils/cl-router/history';
 
 // components
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
@@ -15,382 +10,369 @@ import DateTimePicker from 'components/admin/DateTimePicker';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import FileUploader from 'components/UI/FileUploader';
-import { IconTooltip, Label } from '@citizenlab/cl2-component-library';
+import { IconTooltip, Label, Spinner } from '@citizenlab/cl2-component-library';
 
-// utils
-import unsubscribe from 'utils/unsubscribe';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+// router
+import clHistory from 'utils/cl-router/history';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// services
-import { localeStream } from 'services/locale';
-import {
-  currentAppConfigurationStream,
-  IAppConfiguration,
-} from 'services/appConfiguration';
-import {
-  eventStream,
-  updateEvent,
-  addEvent,
-  IEvent,
-  IUpdatedEventProperties,
-} from 'services/events';
-import { addEventFile, deleteEventFile } from 'services/eventFiles';
-
-// resources
-import GetRemoteFiles, {
-  GetRemoteFilesChildProps,
-} from 'resources/GetRemoteFiles';
+// react query
+import { IEvent, IEventProperties } from 'api/events/types';
+import useAddEvent from 'api/events/useAddEvent';
+import useUpdateEvent from 'api/events/useUpdateEvent';
+import useEvent from 'api/events/useEvent';
+import useLocale from 'hooks/useLocale';
+import useEventFiles from 'api/event_files/useEventFiles';
+import useAddEventFile from 'api/event_files/useAddEventFile';
+import useDeleteEventFile from 'api/event_files/useDeleteEventFile';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // typings
-import { Multiloc, CLError, Locale, UploadFile } from 'typings';
+import { Multiloc, CLError, UploadFile } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
-interface DataProps {
-  remoteEventFiles: GetRemoteFilesChildProps;
-}
+// utils
+import { withRouter } from 'utils/cl-router/withRouter';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
-interface Props extends DataProps {
+interface Props {
   params: Record<string, string>;
 }
 
-interface State {
-  locale: Locale | null;
-  currentTenant: IAppConfiguration | null;
-  event: IEvent | null;
-  attributeDiff: IUpdatedEventProperties;
-  errors:
-    | {
-        [fieldName: string]: CLError[];
-      }
-    | Error;
-  saving: boolean;
-  focusedInput: 'startDate' | 'endDate' | null;
-  saved: boolean;
-  loaded: boolean;
-  eventFiles: UploadFile[];
-  eventFilesToRemove: UploadFile[];
-  submitState: 'disabled' | 'enabled' | 'error' | 'success';
-}
-
-class AdminProjectEventEdit extends PureComponent<
-  Props,
-  State,
-  WithRouterProps
-> {
-  subscriptions: Subscription[];
-
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      locale: null,
-      currentTenant: null,
-      event: null,
-      attributeDiff: {},
-      errors: {},
-      saving: false,
-      focusedInput: null,
-      saved: false,
-      loaded: false,
-      eventFiles: [],
-      eventFilesToRemove: [],
-      submitState: 'disabled',
+type SubmitState = 'disabled' | 'enabled' | 'error' | 'success';
+type ErrorType =
+  | Error
+  | CLError[]
+  | {
+      [fieldName: string]: CLError[];
     };
-    this.subscriptions = [];
-  }
 
-  componentDidMount() {
-    const { remoteEventFiles } = this.props;
-    const locale$ = localeStream().observable;
-    const currentTenant$ = currentAppConfigurationStream().observable;
-    const event$ = this.props.params.id
-      ? eventStream(this.props.params.id).observable
-      : of(null);
+type ApiErrorType =
+  | Error
+  | {
+      [fieldName: string]: CLError[];
+    };
 
-    this.subscriptions = [
-      combineLatest([locale$, currentTenant$, event$]).subscribe(
-        ([locale, currentTenant, event]) => {
-          this.setState({
-            locale,
-            currentTenant,
-            event,
-            loaded: true,
-          });
-        }
-      ),
-    ];
+const AdminProjectEventEdit = ({ params }: Props) => {
+  const { mutate: addEvent } = useAddEvent();
+  const { data: event, isInitialLoading } = useEvent(params.id);
+  const { mutate: updateEvent } = useUpdateEvent();
+  const { mutate: addEventFile } = useAddEventFile();
+  const { mutate: deleteEventFile } = useDeleteEventFile();
+  const { data: remoteEventFiles } = useEventFiles(params.id);
+  const locale = useLocale();
+  const appConfiguration = useAppConfiguration();
+  const [errors, setErrors] = useState<ErrorType>({});
+  const [apiErrors, setApiErrors] = useState<ApiErrorType>({});
+  const [saving, setSaving] = useState<boolean>(false);
+  const [submitState, setSubmitState] = useState<SubmitState>('disabled');
+  const [eventFiles, setEventFiles] = useState<UploadFile[]>([]);
+  const [attributeDiff, setAttributeDiff] = useState<IEventProperties>({});
+  const [eventFilesToRemove, setEventFilesToRemove] = useState<UploadFile[]>(
+    []
+  );
 
-    this.setState({
-      eventFiles: !isNilOrError(remoteEventFiles) ? remoteEventFiles : [],
-    });
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    const { remoteEventFiles } = this.props;
-
-    if (prevProps.remoteEventFiles !== remoteEventFiles) {
-      this.setState({
-        eventFiles: !isNilOrError(remoteEventFiles) ? remoteEventFiles : [],
-      });
+  useEffect(() => {
+    if (!isNilOrError(remoteEventFiles)) {
+      (async () => {
+        const files = await Promise.all(
+          remoteEventFiles.data.map(
+            async (file) =>
+              await convertUrlToUploadFile(file.attributes.file.url, file.id)
+          )
+        );
+        setEventFiles(files as UploadFile[]);
+      })();
     }
-  }
+  }, [remoteEventFiles]);
 
-  componentWillUnmount() {
-    unsubscribe(this.subscriptions);
-  }
-
-  handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
-    this.setState((state) => ({
-      submitState: 'enabled',
-      attributeDiff: {
-        ...state.attributeDiff,
-        title_multiloc: titleMultiloc,
-      },
-    }));
+  const handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
+    setSubmitState('enabled');
+    setAttributeDiff({
+      ...attributeDiff,
+      title_multiloc: titleMultiloc,
+    });
   };
 
-  handleLocationMultilocOnChange = (locationMultiloc: Multiloc) => {
-    this.setState((state) => ({
-      submitState: 'enabled',
-      attributeDiff: {
-        ...state.attributeDiff,
-        location_multiloc: locationMultiloc,
-      },
-    }));
+  const handleLocationMultilocOnChange = (locationMultiloc: Multiloc) => {
+    setSubmitState('enabled');
+    setAttributeDiff({
+      ...attributeDiff,
+      location_multiloc: locationMultiloc,
+    });
   };
 
-  handleDescriptionMultilocOnChange = (descriptionMultiloc: Multiloc) => {
-    this.setState((state) => ({
-      submitState: 'enabled',
-      attributeDiff: {
-        ...state.attributeDiff,
-        description_multiloc: descriptionMultiloc,
-      },
-    }));
+  const handleDescriptionMultilocOnChange = (descriptionMultiloc: Multiloc) => {
+    setSubmitState('enabled');
+    setAttributeDiff({
+      ...attributeDiff,
+      description_multiloc: descriptionMultiloc,
+    });
   };
 
-  handleDateTimePickerOnChange =
+  const handleDateTimePickerOnChange =
     (name: 'start_at' | 'end_at') => (moment: moment.Moment) => {
-      this.setState((state) => ({
-        submitState: 'enabled',
-        attributeDiff: {
-          ...state.attributeDiff,
-          [name]: moment.toISOString(),
-        },
-        errors: {},
-      }));
+      if (!isInitialLoading) {
+        setSubmitState('enabled');
+        setAttributeDiff((previousState) => {
+          return {
+            ...previousState,
+            [name]: moment.toISOString(),
+          };
+        });
+        setErrors({});
+      }
     };
 
-  handleEventFileOnAdd = (newFile: UploadFile) => {
-    this.setState((prevState) => ({
-      submitState: 'enabled',
-      eventFiles: [...prevState.eventFiles, newFile],
-    }));
+  const handleEventFileOnAdd = (newFile: UploadFile) => {
+    setSubmitState('enabled');
+    setEventFiles([...eventFiles, newFile]);
   };
 
-  handleEventFileOnRemove = (eventFileToRemove: UploadFile) => {
-    this.setState((prevState) => ({
-      submitState: 'enabled',
-      eventFiles: prevState.eventFiles.filter(
+  const handleEventFileOnRemove = (eventFileToRemove: UploadFile) => {
+    setSubmitState('enabled');
+    setEventFilesToRemove([...eventFilesToRemove, eventFileToRemove]);
+    setEventFiles(
+      eventFiles.filter(
         (eventFile) => eventFile.base64 !== eventFileToRemove.base64
-      ),
-      eventFilesToRemove: [...prevState.eventFilesToRemove, eventFileToRemove],
-    }));
+      )
+    );
   };
 
-  handleOnSubmit = async (e) => {
-    e.preventDefault();
-    if (!isNilOrError(this.props.params.projectId)) {
-      const { projectId } = this.props.params;
-      const { event, eventFiles, eventFilesToRemove } = this.state;
-      let eventResponse = event;
-      let redirect = false;
+  const handleEventFiles = async (data: IEvent) => {
+    setSubmitState('success');
 
-      try {
-        this.setState({ saving: true, saved: false });
-
-        // non-file input fields have changed
-        if (!isEmpty(this.state.attributeDiff)) {
-          // event already exists (in the state)
-          if (event) {
-            eventResponse = await updateEvent(
-              event.data.id,
-              this.state.attributeDiff
+    if (data) {
+      const { id: eventId } = data.data;
+      eventFiles
+        .filter((file) => !file.remote)
+        .map((file) =>
+          addEventFile(
+            {
+              eventId,
+              file: file.base64,
+              name: file.name,
+              ordering: null,
+            },
+            {
+              onSuccess: () => {
+                setSubmitState('success');
+              },
+              onError: () => {
+                setSubmitState('error');
+              },
+            }
+          )
+        );
+      eventFilesToRemove
+        .filter((file) => !!file.remote)
+        .map((file) => {
+          if (file.id) {
+            deleteEventFile(
+              { eventId, fileId: file.id },
+              {
+                onSuccess: () => {
+                  setEventFilesToRemove(
+                    eventFilesToRemove.filter((fileToRemove) => {
+                      fileToRemove.id !== file.id;
+                    })
+                  );
+                  setSubmitState('success');
+                },
+                onError: () => {
+                  setSubmitState('error');
+                },
+              }
             );
-            this.setState({ event: eventResponse, attributeDiff: {} });
-          } else if (projectId) {
-            // event doesn't exist, create with project id
-            eventResponse = await addEvent(projectId, this.state.attributeDiff);
-            this.setState({ event: eventResponse, attributeDiff: {} });
-            redirect = true;
+          }
+        });
+    }
+  };
+
+  const handleOnSubmit = async (e) => {
+    e.preventDefault();
+    if (!isNilOrError(params.projectId)) {
+      const { projectId } = params;
+      try {
+        setSaving(true);
+
+        // If only files have changed
+        if (isEmpty(attributeDiff) && eventFilesToRemove) {
+          if (event) {
+            handleEventFiles(event);
           }
         }
 
-        if (eventResponse) {
-          const { id: eventId } = eventResponse.data;
-          const filesToAddPromises = eventFiles
-            .filter((file) => !file.remote)
-            .map((file) => addEventFile(eventId, file.base64, file.name));
-          const filesToRemovePromises = eventFilesToRemove
-            .filter((file) => !!(file.remote && file.id))
-            .map((file) => deleteEventFile(eventId, file.id as string));
-
-          await Promise.all([
-            ...filesToAddPromises,
-            ...filesToRemovePromises,
-          ] as Promise<any>[]);
+        // non-file input fields have changed
+        if (!isEmpty(attributeDiff)) {
+          // event already exists (in the state)
+          if (event) {
+            updateEvent(
+              {
+                eventId: event?.data.id,
+                event: attributeDiff,
+              },
+              {
+                onSuccess: async (data) => {
+                  setSubmitState('success');
+                  handleEventFiles(data);
+                },
+                onError: async (errors) => {
+                  setSaving(false);
+                  setErrors(errors.errors);
+                  setSubmitState('error');
+                },
+              }
+            );
+          } else if (projectId) {
+            // event doesn't exist, create with project id
+            addEvent(
+              {
+                projectId,
+                event: attributeDiff,
+              },
+              {
+                onSuccess: async (data) => {
+                  setSubmitState('success');
+                  handleEventFiles(data);
+                  clHistory.push(`/admin/projects/${projectId}/events`);
+                },
+                onError: async (errors) => {
+                  setErrors(errors.errors);
+                  setSubmitState('error');
+                },
+              }
+            );
+          }
         }
-
-        this.setState({
-          saving: false,
-          saved: true,
-          errors: {},
-          submitState: 'success',
-          eventFilesToRemove: [],
-        });
-
-        if (redirect && projectId) {
-          clHistory.push(`/admin/projects/${projectId}/events/`);
-        }
+        setSaving(false);
       } catch (errors) {
         if (isCLErrorJSON(errors)) {
-          this.setState({
-            saving: false,
-            errors: errors.json.errors,
-            submitState: 'error',
-          });
+          setSaving(false);
+          setApiErrors(errors.json.errors);
+          setSubmitState('error');
         } else {
-          this.setState({ saving: false, submitState: 'error' });
+          setSaving(false);
+          setSubmitState('error');
         }
       }
     }
   };
 
-  descriptionLabel = (<FormattedMessage {...messages.descriptionLabel} />);
+  const descriptionLabel = <FormattedMessage {...messages.descriptionLabel} />;
 
-  render() {
-    const { locale, currentTenant, loaded, submitState } = this.state;
+  if (locale && appConfiguration) {
+    const eventAttrs = event
+      ? { ...event?.data.attributes, ...attributeDiff }
+      : { ...attributeDiff };
 
-    if (locale && currentTenant && loaded) {
-      const { errors, event, attributeDiff, saving, eventFiles } = this.state;
-      const eventAttrs = event
-        ? { ...event.data.attributes, ...attributeDiff }
-        : { ...attributeDiff };
-
-      return (
-        <>
-          <SectionTitle>
-            {event && <FormattedMessage {...messages.editEventTitle} />}
-            {!event && <FormattedMessage {...messages.newEventTitle} />}
-          </SectionTitle>
-
-          <form
-            className="e2e-project-event-edit"
-            onSubmit={this.handleOnSubmit}
-          >
-            <Section>
-              <SectionField>
-                <InputMultilocWithLocaleSwitcher
-                  id="title"
-                  label={<FormattedMessage {...messages.titleLabel} />}
-                  type="text"
-                  valueMultiloc={eventAttrs.title_multiloc}
-                  onChange={this.handleTitleMultilocOnChange}
-                />
-                <ErrorComponent apiErrors={get(errors, 'title_multiloc')} />
-              </SectionField>
-
-              <SectionField>
-                <InputMultilocWithLocaleSwitcher
-                  id="location"
-                  label={<FormattedMessage {...messages.locationLabel} />}
-                  type="text"
-                  valueMultiloc={eventAttrs.location_multiloc}
-                  onChange={this.handleLocationMultilocOnChange}
-                />
-                <ErrorComponent apiErrors={get(errors, 'location_multiloc')} />
-              </SectionField>
-
-              <SectionField>
-                <Label>
-                  <FormattedMessage {...messages.dateStartLabel} />
-                </Label>
-                <DateTimePicker
-                  value={eventAttrs.start_at}
-                  onChange={this.handleDateTimePickerOnChange('start_at')}
-                />
-                <ErrorComponent apiErrors={get(errors, 'start_at')} />
-              </SectionField>
-
-              <SectionField>
-                <Label>
-                  <FormattedMessage {...messages.datesEndLabel} />
-                </Label>
-                <DateTimePicker
-                  value={eventAttrs.end_at}
-                  onChange={this.handleDateTimePickerOnChange('end_at')}
-                />
-                <ErrorComponent apiErrors={get(errors, 'end_at')} />
-              </SectionField>
-
-              <SectionField className="fullWidth">
-                <QuillMultilocWithLocaleSwitcher
-                  id="description"
-                  label={this.descriptionLabel}
-                  valueMultiloc={eventAttrs.description_multiloc}
-                  onChange={this.handleDescriptionMultilocOnChange}
-                  withCTAButton
-                />
-                <ErrorComponent
-                  apiErrors={get(errors, 'description_multiloc')}
-                />
-              </SectionField>
-
-              <SectionField>
-                <Label>
-                  <FormattedMessage {...messages.fileUploadLabel} />
-                  <IconTooltip
-                    content={
-                      <FormattedMessage {...messages.fileUploadLabelTooltip} />
-                    }
-                  />
-                </Label>
-                <FileUploader
-                  id="project-events-edit-form-file-uploader"
-                  onFileAdd={this.handleEventFileOnAdd}
-                  onFileRemove={this.handleEventFileOnRemove}
-                  files={eventFiles}
-                  apiErrors={isError(errors) ? undefined : errors}
-                />
-              </SectionField>
-            </Section>
-
-            <SubmitWrapper
-              loading={saving}
-              status={submitState}
-              messages={{
-                buttonSave: messages.saveButtonLabel,
-                buttonSuccess: messages.saveSuccessLabel,
-                messageError: messages.saveErrorMessage,
-                messageSuccess: messages.saveSuccessMessage,
-              }}
-            />
-          </form>
-        </>
-      );
+    if (event !== undefined && isInitialLoading) {
+      return <Spinner />;
     }
 
-    return null;
-  }
-}
+    return (
+      <>
+        <SectionTitle>
+          {event && <FormattedMessage {...messages.editEventTitle} />}
+          {!event && <FormattedMessage {...messages.newEventTitle} />}
+        </SectionTitle>
 
-export default withRouter((props) => (
-  <GetRemoteFiles resourceId={props.params.id} resourceType="event">
-    {(remoteEventFiles) => (
-      <AdminProjectEventEdit remoteEventFiles={remoteEventFiles} {...props} />
-    )}
-  </GetRemoteFiles>
-));
+        <form className="e2e-project-event-edit" onSubmit={handleOnSubmit}>
+          <Section>
+            <SectionField>
+              <InputMultilocWithLocaleSwitcher
+                id="title"
+                label={<FormattedMessage {...messages.titleLabel} />}
+                type="text"
+                valueMultiloc={eventAttrs.title_multiloc}
+                onChange={handleTitleMultilocOnChange}
+              />
+              <ErrorComponent apiErrors={get(errors, 'title_multiloc')} />
+            </SectionField>
+
+            <SectionField>
+              <InputMultilocWithLocaleSwitcher
+                id="location"
+                label={<FormattedMessage {...messages.locationLabel} />}
+                type="text"
+                valueMultiloc={eventAttrs.location_multiloc}
+                onChange={handleLocationMultilocOnChange}
+              />
+              <ErrorComponent apiErrors={get(errors, 'location_multiloc')} />
+            </SectionField>
+
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.dateStartLabel} />
+              </Label>
+              <DateTimePicker
+                value={eventAttrs.start_at}
+                onChange={handleDateTimePickerOnChange('start_at')}
+              />
+              <ErrorComponent apiErrors={get(errors, 'start_at')} />
+            </SectionField>
+
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.datesEndLabel} />
+              </Label>
+              <DateTimePicker
+                value={eventAttrs.end_at}
+                onChange={handleDateTimePickerOnChange('end_at')}
+              />
+              <ErrorComponent apiErrors={get(errors, 'end_at')} />
+            </SectionField>
+
+            <SectionField className="fullWidth">
+              <QuillMultilocWithLocaleSwitcher
+                id="description"
+                label={descriptionLabel}
+                valueMultiloc={eventAttrs.description_multiloc}
+                onChange={handleDescriptionMultilocOnChange}
+                withCTAButton
+              />
+              <ErrorComponent apiErrors={get(errors, 'description_multiloc')} />
+            </SectionField>
+
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.fileUploadLabel} />
+                <IconTooltip
+                  content={
+                    <FormattedMessage {...messages.fileUploadLabelTooltip} />
+                  }
+                />
+              </Label>
+              <FileUploader
+                id="project-events-edit-form-file-uploader"
+                onFileAdd={handleEventFileOnAdd}
+                onFileRemove={handleEventFileOnRemove}
+                files={eventFiles}
+                apiErrors={isError(apiErrors) ? undefined : apiErrors}
+              />
+            </SectionField>
+          </Section>
+
+          <SubmitWrapper
+            loading={saving}
+            status={submitState}
+            messages={{
+              buttonSave: messages.saveButtonLabel,
+              buttonSuccess: messages.saveSuccessLabel,
+              messageError: messages.saveErrorMessage,
+              messageSuccess: messages.saveSuccessMessage,
+            }}
+          />
+        </form>
+      </>
+    );
+  }
+
+  return null;
+};
+
+export default withRouter((props) => <AdminProjectEventEdit {...props} />);

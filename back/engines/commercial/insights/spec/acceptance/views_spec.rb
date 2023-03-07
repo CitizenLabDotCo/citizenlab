@@ -39,7 +39,8 @@ resource 'Views' do
     context 'when name is empty' do
       let(:name) { '' }
 
-      example_request 'returns unprocessable-entity error', document: false do
+      example 'returns unprocessable-entity error', document: false do
+        do_request
         assert_status 422
       end
     end

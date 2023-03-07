@@ -5,7 +5,7 @@ require 'rails_helper'
 describe ProjectCopyService do
   let(:service) { described_class.new }
 
-  describe 'project copy', slow_test: true do
+  describe 'project copy' do
     it 'works' do
       load Rails.root.join('db/seeds.rb')
       Apartment::Tenant.switch('localhost') do
@@ -122,6 +122,31 @@ describe ProjectCopyService do
       }
       expect(template['models']['idea'].size).to eq 1
       expect(template['models']['idea'].first['custom_field_values']).to match expected_custom_field_values
+    end
+
+    describe 'when copying records for models that use acts_as_list gem' do
+      it 'copies exact :ordering values' do
+        project = create :continuous_project
+        custom_form = create(
+          :custom_form,
+          participation_context_id: project.id,
+          participation_context_type: 'Project'
+        )
+        create_list(
+          :custom_field_select,
+          5,
+          :with_options,
+          resource_type: 'CustomForm',
+          resource_id: custom_form.id,
+          ordering: rand(10) # Introduce some randomness, with the acts_as_list gem handling collisions & sequencing
+        )
+
+        template = service.export project
+        copied_project = service.import template
+
+        expect(copied_project.custom_form.custom_fields.order(:key).pluck(:ordering))
+          .to eq(project.custom_form.custom_fields.order(:key).pluck(:ordering))
+      end
     end
   end
 end

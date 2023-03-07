@@ -5,7 +5,7 @@ require 'rails_helper'
 describe LocalProjectCopyService do
   let(:service) { described_class.new }
 
-  describe 'project copy', slow_test: true do
+  describe 'project copy' do
     # Some factories use en & nl-NL multilocs, others use en & nl-BE, but the apply_template method, invoked by the
     # LocalProjectCopyService, will only apply multiloc k-v pairs with keys that match the target tenant locale(s).
     # Thus, we specify all 3 locales to enable easier testing with factory generated multilocs.
@@ -144,10 +144,10 @@ describe LocalProjectCopyService do
       copied_project = service.copy(continuous_project.reload)
 
       expect(copied_project.causes.map do |record|
-        record.as_json(only: %i[participation_context_type title_multiloc description_multiloc volunteers_count])
+        record.as_json(except: %i[id participation_context_id image updated_at created_at])
       end)
         .to match_array(continuous_project.causes.map do |record|
-          record.as_json(only: %i[participation_context_type title_multiloc description_multiloc volunteers_count])
+          record.as_json(except: %i[id participation_context_id image updated_at created_at])
         end)
     end
 
@@ -161,10 +161,10 @@ describe LocalProjectCopyService do
       copied_project = service.copy(continuous_project.reload)
 
       expect(copied_project.custom_form.custom_fields.map do |record|
-        record.as_json(except: %i[id ordering resource_id updated_at created_at])
+        record.as_json(except: %i[id resource_id updated_at created_at])
       end)
         .to match_array(continuous_project.custom_form.custom_fields.map do |record|
-          record.as_json(except: %i[id ordering resource_id updated_at created_at])
+          record.as_json(except: %i[id resource_id updated_at created_at])
         end)
 
       source_custom_field = continuous_project.custom_form.custom_fields.last
@@ -332,16 +332,8 @@ describe LocalProjectCopyService do
         layout.update(craftjs_jsonmultiloc: JSON.parse(craftjs_str))
         copied_project = service.copy(layout.content_buildable)
 
-        new_craftjs = copied_project.content_builder_layouts.first.craftjs_jsonmultiloc
-        new_image_codes = []
-
-        new_craftjs.each_key do |locale|
-          new_craftjs[locale].each_value do |node|
-            next unless ContentBuilder::LayoutService.new.craftjs_element_of_type?(node, 'Image')
-
-            new_image_codes << node['props']['dataCode']
-          end
-        end
+        new_image_codes =
+          ContentBuilder::LayoutService.new.images(copied_project.content_builder_layouts.first).pluck(:code)
 
         expect(copied_project.content_builder_layouts.first
           .as_json(only: %i[content_buildable_type code enabled]))

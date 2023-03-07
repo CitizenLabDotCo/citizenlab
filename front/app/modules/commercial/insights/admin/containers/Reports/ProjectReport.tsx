@@ -12,19 +12,13 @@ import messages from './messages';
 import ResolutionControl, {
   IResolution,
 } from 'components/admin/ResolutionControl';
-import { GraphsContainer } from 'components/admin/GraphWrappers';
+import { GraphsContainer, Column } from 'components/admin/GraphWrappers';
 
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import {
   activeUsersByTimeCumulativeXlsxEndpoint,
   activeUsersByTimeStream,
-  ideasByTimeCumulativeXlsxEndpoint,
-  ideasByTimeCumulativeStream,
-  ideasByTimeStream,
-  commentsByTimeCumulativeXlsxEndpoint,
-  commentsByTimeCumulativeStream,
-  commentsByTimeStream,
 } from 'services/stats';
 import { colors } from 'utils/styleUtils';
 import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
@@ -39,11 +33,12 @@ import T from 'components/T';
 import HorizontalBarChartWithoutStream from './Charts/HorizontalBarChartWithoutStream';
 import IdeasByStatusChart from './Charts/IdeasByStatusChart';
 import ParticipationPerTopic from './Charts/ParticipationPerTopic';
-import LineBarChart from './Charts/LineBarChart';
-import LineBarChartVotesByTime from './Charts/LineBarChartVotesByTime';
 import BarChartActiveUsersByTime from './Charts/BarChartActiveUsersByTime';
 import PollReport from './PollReport';
 import UserCharts from './Charts/UserCharts';
+import PostByTimeCard from 'components/admin/GraphCards/PostsByTimeCard';
+import VotesByTimeCard from 'components/admin/GraphCards/VotesByTimeCard';
+import CommentsByTimeCard from 'components/admin/GraphCards/CommentsByTimeCard';
 
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
@@ -155,7 +150,7 @@ const ProjectReport = memo(
 
     if (isNilOrError(project)) return null;
 
-    const formatDateLabel = (date) =>
+    const formatDateLabel = (date: string) =>
       formatDate(date, {
         day: resolution === 'month' ? undefined : '2-digit',
         month: 'short',
@@ -268,65 +263,48 @@ const ProjectReport = memo(
           )}
           {participationMethods.includes('ideation') && timeBoundariesSet && (
             <GraphsContainer>
-              <LineBarChart
-                graphTitle={formatMessage(messages.inputs)}
-                graphUnit="ideas"
-                graphUnitMessageKey="ideas"
-                startAt={startAt}
-                endAt={endAt}
-                resolution={resolution}
-                currentProjectFilter={project.id}
-                currentProjectFilterLabel={projectTitle}
-                xlsxEndpoint={ideasByTimeCumulativeXlsxEndpoint}
-                className="e2e-ideas-chart"
-                lineStream={ideasByTimeCumulativeStream}
-                barStream={ideasByTimeStream}
-              />
-              <LineBarChart
-                graphTitle={formatMessage(messages.commentsByTimeTitle)}
-                graphUnit="comments"
-                graphUnitMessageKey="comments"
-                startAt={startAt}
-                endAt={endAt}
-                resolution={resolution}
-                currentProjectFilter={project.id}
-                currentProjectFilterLabel={projectTitle}
-                xlsxEndpoint={commentsByTimeCumulativeXlsxEndpoint}
-                className="e2e-comments-chart"
-                lineStream={commentsByTimeCumulativeStream}
-                barStream={commentsByTimeStream}
-              />
-
-              <LineBarChartVotesByTime
-                className="e2e-votes-chart"
-                startAt={startAt}
-                endAt={endAt}
-                resolution={resolution}
-                currentProjectFilter={project.id}
-                currentProjectFilterLabel={projectTitle}
-              />
-
-              <IdeasByStatusChart
-                className="dynamicHeight"
-                startAt={startAt}
-                endAt={endAt}
-                currentProjectFilter={project.id}
-              />
-
-              <HorizontalBarChartWithoutStream
-                serie={mostVotedIdeasSerie}
-                graphTitleString={formatMessage(
-                  messages.fiveInputsWithMostVotes
-                )}
-                graphUnit="votes"
-                className="dynamicHeight"
-              />
-              <ParticipationPerTopic
-                startAt={startAt}
-                endAt={endAt}
-                projectId={project.id}
-                className="dynamicHeight"
-              />
+              <Column>
+                <PostByTimeCard
+                  projectId={project.id}
+                  startAtMoment={moment(startAt)}
+                  endAtMoment={moment(endAt)}
+                  resolution={resolution}
+                />
+                <VotesByTimeCard
+                  projectId={project.id}
+                  startAtMoment={moment(startAt)}
+                  endAtMoment={moment(endAt)}
+                  resolution={resolution}
+                />
+                <HorizontalBarChartWithoutStream
+                  serie={mostVotedIdeasSerie}
+                  graphTitleString={formatMessage(
+                    messages.fiveInputsWithMostVotes
+                  )}
+                  graphUnit="votes"
+                  className="dynamicHeight fullWidth"
+                />
+              </Column>
+              <Column>
+                <CommentsByTimeCard
+                  projectId={project.id}
+                  startAtMoment={moment(startAt)}
+                  endAtMoment={moment(endAt)}
+                  resolution={resolution}
+                />
+                <IdeasByStatusChart
+                  className="dynamicHeight fullWidth"
+                  startAt={startAt}
+                  endAt={endAt}
+                  currentProjectFilter={project.id}
+                />
+                <ParticipationPerTopic
+                  startAt={startAt}
+                  endAt={endAt}
+                  projectId={project.id}
+                  className="dynamicHeight fullWidth"
+                />
+              </Column>
             </GraphsContainer>
           )}
           {participationMethods.includes('poll') ? (

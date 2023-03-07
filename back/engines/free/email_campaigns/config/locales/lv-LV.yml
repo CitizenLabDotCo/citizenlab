@@ -476,7 +476,7 @@ lv:
     user_digest:
       subject: "Jūsu aktivitāte %{organizationName} līdzdalības platformā"
       commented: "%{authorFirstName} komentēja:"
-      preheader: "%{organizācijas nosaukums} nedēļas pārskats"
+      preheader: "Nedēļas pārskats par %{organizationName}"
       title_your_weekly_report: "Uzziniet, kas notika pagājušajā nedēļā"
       intro_text: "Šeit ir kopsavilkums par to, kas notika %{organizationName} līdzdalības platformā."
       cta_go_to_the_platform: "Dodieties uz platformu"

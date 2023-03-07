@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // services
-import { coreSettings } from 'services/appConfiguration';
+import { coreSettings } from 'api/app_configuration/utils';
 
 // hooks
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useTopics from 'hooks/useTopics';
 import useAreas from 'hooks/useAreas';
 import useLocalize from 'hooks/useLocalize';
@@ -47,12 +47,13 @@ const Title = styled.h2<{ hasPublications: boolean }>`
   text-align: center;
   margin-bottom: 28px;
 
-  ${media.phone`
-    text-align: left;
-    margin-bottom: ${({ hasPublications }) =>
-      hasPublications ? '36' : '20'}px;
-    margin-left: 4px;
-  `}
+  ${(props) =>
+    media.phone`
+      text-align: left;
+      margin-bottom: ${props.hasPublications ? '36' : '20'}px;
+      margin-left: 4px;
+    `}
+
   ${isRtl`
     direction: rtl;
   `}
@@ -152,7 +153,7 @@ const Header = ({
   onChangeSearch,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
-  const appConfiguration = useAppConfiguration();
+  const { data: appConfiguration } = useAppConfiguration();
   const smallerThanXlPhone = useBreakpoint('phone');
   const smallerThanMinTablet = useBreakpoint('tablet');
   const topics = useTopics({ forHomepageFilter: true });
@@ -183,8 +184,9 @@ const Header = ({
 
   if (isNilOrError(appConfiguration)) return null;
 
-  const customCurrentlyWorkingOn =
-    coreSettings(appConfiguration).currently_working_on_text;
+  const customCurrentlyWorkingOn = coreSettings(
+    appConfiguration.data
+  ).currently_working_on_text;
   const fallback = formatMessage(messages.currentlyWorkingOn);
   const currentlyWorkingOnText = localize(customCurrentlyWorkingOn, {
     fallback,

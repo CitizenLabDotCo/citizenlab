@@ -20,8 +20,13 @@ resource 'Analytics - FactParticipations' do
       end
 
       # Type dimensions
-      %w[idea initiative comment vote].each do |type|
-        create(:dimension_type, name: type)
+      [
+        { name: 'idea', parent: 'post' },
+        { name: 'initiative', parent: 'post' },
+        { name: 'comment', parent: 'idea' },
+        { name: 'vote', parent: 'idea' }
+      ].each do |type|
+        create(:dimension_type, name: type[:name], parent: type[:parent])
       end
 
       # Create participations (3 by citizens, 1 by admin)

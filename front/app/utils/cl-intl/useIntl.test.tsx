@@ -18,11 +18,18 @@ const messages = defineMessages({
   },
 });
 
-jest.mock('hooks/useAppConfiguration', () => () => ({
-  attributes: {
-    name: 'tenant name',
-    settings: {
-      core: { organization_name: { en: 'organization name' }, locales: ['en'] },
+jest.mock('api/app_configuration/useAppConfiguration', () => () => ({
+  data: {
+    data: {
+      attributes: {
+        name: 'tenant name',
+        settings: {
+          core: {
+            organization_name: { en: 'organization name' },
+            locales: ['en'],
+          },
+        },
+      },
     },
   },
 }));

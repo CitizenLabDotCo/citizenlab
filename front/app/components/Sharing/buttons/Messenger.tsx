@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { clickSocialSharingLink, Medium } from '../utils';
 
 // hooks
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -25,7 +25,7 @@ const Messenger = ({
   url,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
-  const appConfig = useAppConfiguration();
+  const { data: appConfig } = useAppConfiguration();
   const handleClick = (href: string) => () => {
     clickSocialSharingLink(href);
     trackClick('messenger');
@@ -36,7 +36,8 @@ const Messenger = ({
     trackEventByName(tracks.shareButtonClicked.name, properties);
   };
   if (!isNilOrError(appConfig)) {
-    const facebookAppId = appConfig.attributes.settings.facebook_login?.app_id;
+    const facebookAppId =
+      appConfig.data.attributes.settings.facebook_login?.app_id;
     const messengerHref = facebookAppId
       ? `fb-messenger://share/?link=${url}&app_id=${facebookAppId}`
       : null;
