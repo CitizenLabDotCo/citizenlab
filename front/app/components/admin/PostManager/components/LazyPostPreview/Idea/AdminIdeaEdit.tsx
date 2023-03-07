@@ -116,10 +116,17 @@ const AdminIdeaEdit = ({
   const ideaImages = idea.data.relationships.idea_images.data;
   const ideaImageId =
     ideaImages && ideaImages.length > 0 ? ideaImages[0].id : null;
+
   const budget = idea.data.attributes.budget;
   const proposedBudget = idea.data.attributes.proposed_budget;
   const projectId = idea.data.relationships.project.data.id;
   const originalLocationDescription = idea.data.attributes.location_description;
+  const originalTitle = idea.data.attributes.title_multiloc[locale] || null;
+  const originalDescription =
+    idea.data.attributes.body_multiloc[locale] || null;
+  const submitErrorMessage = submitError ? (
+    <FormattedMessage {...messages.submitError} />
+  ) : null;
 
   const handleOnSaveButtonClick = () => {
     eventEmitter.emit('IdeaFormSubmitEvent');
@@ -291,12 +298,10 @@ const AdminIdeaEdit = ({
     setIdeaFiles(ideaFiles);
   };
 
-  const title = titleMultiloc?.[locale] || null;
-  const description = descriptionMultiloc?.[locale] || null;
-  const submitErrorMessage = submitError ? (
-    <FormattedMessage {...messages.submitError} />
-  ) : null;
-
+  const title = titleMultiloc ? titleMultiloc[locale] || null : originalTitle;
+  const description = descriptionMultiloc
+    ? descriptionMultiloc[locale] || null
+    : originalDescription;
   if (projectId) {
     return (
       <Container>
