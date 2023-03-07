@@ -238,6 +238,11 @@ class User < ApplicationRecord
   scope :not_invited, -> { where.not(invite_status: 'pending').or(where(invite_status: nil)) }
   scope :active, -> { where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'") }
 
+  scope :blocked, lambda {
+    where.not(block_start_at: nil).and(where.not(block_duration: nil))
+      .and(where('block_start_at >= NOW() - MAKE_INTERVAL(DAYS => block_duration)'))
+  }
+
   scope :order_role, lambda { |direction = :asc|
     joins('LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id')
       .order(Arel.sql("(roles @> '[{\"type\":\"admin\"}]')::integer #{direction}"))
@@ -372,6 +377,10 @@ class User < ApplicationRecord
 
   def active?
     registration_completed_at.present? && !invite_pending?
+  end
+
+  def blocked?
+    block_start_at.present? && block_duration.present? && block_start_at >= (Time.zone.now - block_duration.days)
   end
 
   def groups
