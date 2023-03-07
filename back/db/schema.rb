@@ -1292,7 +1292,6 @@ ActiveRecord::Schema.define(version: 2023_03_07_101320) do
     t.datetime "email_confirmation_code_sent_at"
     t.boolean "confirmation_required", default: true, null: false
     t.datetime "block_start_at"
-    t.integer "block_duration"
     t.string "block_reason"
     t.index "lower((email)::text)", name: "users_unique_lower_email_idx", unique: true
     t.index ["email"], name: "index_users_on_email"
