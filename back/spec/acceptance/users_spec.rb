@@ -471,8 +471,10 @@ resource 'Users' do
 
         example_request 'Get number of admin and manager (moderator) seats' do
           expect(status).to eq 200
-          expect(response_data[:admins_number]).to eq @admins.size
-          expect(response_data[:project_moderators_number]).to eq @managers.size
+          expect(response_data[:type]).to eq 'seats'
+          attributes = response_data[:attributes]
+          expect(attributes[:admins_number]).to eq @admins.size
+          expect(attributes[:project_moderators_number]).to eq @managers.size
         end
       end
 
