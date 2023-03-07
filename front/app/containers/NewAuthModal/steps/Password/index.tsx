@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 
 // hooks
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // components
 import { Box, Text, Icon } from '@citizenlab/cl2-component-library';
@@ -50,7 +50,7 @@ const DEFAULT_VALUES: Partial<FormValues> = {
 
 const Password = ({ state, status, onSubmit }: Props) => {
   const { formatMessage } = useIntl();
-  const appConfiguration = useAppConfiguration();
+  const { data: appConfiguration } = useAppConfiguration();
 
   const loading = status === 'pending';
 
@@ -76,7 +76,7 @@ const Password = ({ state, status, onSubmit }: Props) => {
 
   const handleSubmit = ({ password, rememberMe }: FormValues) => {
     const tokenLifetime =
-      appConfiguration.attributes.settings.core
+      appConfiguration.data.attributes.settings.core
         .authentication_token_lifetime_in_days;
 
     onSubmit(email, password, rememberMe, tokenLifetime);
