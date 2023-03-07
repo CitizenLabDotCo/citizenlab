@@ -379,7 +379,13 @@ class User < ApplicationRecord
   end
 
   def blocked?
-    block_start_at.present? && block_duration.present? && block_start_at >= (Time.zone.now - block_duration.days)
+    if block_start_at.present?
+      duration = AppConfiguration.instance.settings('user_blocking', 'duration').days
+
+      return true if block_start_at >= (Time.zone.now - duration.days)
+    end
+
+    false
   end
 
   def groups
