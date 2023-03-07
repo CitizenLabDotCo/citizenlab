@@ -4,13 +4,13 @@ import streams from 'utils/streams';
 import { Multiloc, IParticipationContextType, IPCAction } from 'typings';
 import { IInitiativeAction } from './initiatives';
 
-export type Response = {
+export interface Response {
   data: {
     attributes: {
       participation_conditions: Multiloc[][];
     };
   };
-};
+}
 
 export type ParticipationConditions = Multiloc[][];
 
