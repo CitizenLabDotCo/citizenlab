@@ -26,7 +26,6 @@ import { MessageDescriptor, injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // typings
 import { Multiloc, Locale, UploadFile } from 'typings';
-import bowser from 'bowser';
 import { ITopicData } from 'services/topics';
 import { FormSubmitFooter } from './SubmitFooter';
 
@@ -98,19 +97,12 @@ class InitiativeForm extends React.Component<
   static bodyMinLength = process.env.NODE_ENV === 'development' ? 10 : 30;
   static requiredFields = ['title_multiloc', 'body_multiloc', 'topic_ids'];
 
-  titleInputElement: HTMLInputElement | null;
-  descriptionElement: HTMLDivElement | null;
-  topicElement: HTMLButtonElement | null;
-
   constructor(props: Props & WrappedComponentProps) {
     super(props);
     this.state = {
       touched: {} as State['touched'],
       errors: {} as State['errors'],
     };
-    this.titleInputElement = null;
-    this.descriptionElement = null;
-    this.topicElement = null;
   }
 
   componentDidMount() {
@@ -119,13 +111,6 @@ class InitiativeForm extends React.Component<
       errors[fieldName] = this.validations[fieldName]();
     });
     this.setState({ errors });
-
-    if (!bowser.mobile && this.titleInputElement !== null) {
-      setTimeout(
-        () => (this.titleInputElement as HTMLInputElement).focus(),
-        50
-      );
-    }
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -234,7 +219,6 @@ class InitiativeForm extends React.Component<
 
   handleOnPublish = () => {
     const { errors, touched } = this.state;
-
     if (Object.values(errors).every((val) => val === undefined)) {
       this.props.onPublish();
     } else {
@@ -256,6 +240,7 @@ class InitiativeForm extends React.Component<
   changeAndSaveTopics = (topic_ids: string[]) => {
     this.props.onChangeTopics(topic_ids);
     this.onBlur('topic_ids')();
+    this.onBlur('body_multiloc')();
   };
 
   addBanner = (banner: UploadFile[]) => {
@@ -278,32 +263,20 @@ class InitiativeForm extends React.Component<
     this.onBlur('image')();
   };
 
-  handleTitleInputSetRef = (element: HTMLInputElement) => {
-    this.titleInputElement = element;
-  };
-
-  handleDescriptionSetRef = (element: HTMLDivElement) => {
-    this.descriptionElement = element;
-  };
-
-  handleTopicsPickerSetRef = (element: HTMLButtonElement) => {
-    this.topicElement = element;
-  };
-
-  handleTitleOnChange = (value: string, locale: Locale | undefined) => {
-    if (locale && this.props.onChangeTitle) {
+  handleTitleOnChange = (value: string) => {
+    if (this.props.locale && this.props.onChangeTitle) {
       this.props.onChangeTitle({
         ...this.props.title_multiloc,
-        [locale]: value,
+        [this.props.locale]: value,
       });
     }
   };
 
-  handleBodyOnChange = (value: string, locale: Locale | undefined) => {
-    if (locale && this.props.onChangeBody) {
+  handleBodyOnChange = (value: string) => {
+    if (this.props.locale && this.props.onChangeBody) {
       this.props.onChangeBody({
         ...this.props.body_multiloc,
-        [locale]: value,
+        [this.props.locale]: value,
       });
     }
   };
@@ -358,7 +331,6 @@ class InitiativeForm extends React.Component<
                   onChange={this.handleTitleOnChange}
                   onBlur={this.onBlur('title_multiloc')}
                   autocomplete="off"
-                  setRef={this.handleTitleInputSetRef}
                   maxCharCount={72}
                 />
                 {touched.title_multiloc && errors.title_multiloc ? (
@@ -406,7 +378,6 @@ class InitiativeForm extends React.Component<
                 noAlign={true}
                 onChange={this.handleBodyOnChange}
                 onBlur={this.onBlur('body_multiloc')}
-                setRef={this.handleDescriptionSetRef}
               />
               {touched.body_multiloc && errors.body_multiloc ? (
                 <Error text={formatMessage(errors.body_multiloc.message)} />
@@ -448,7 +419,6 @@ class InitiativeForm extends React.Component<
                 id="field-topic-multiple-picker"
                 selectedTopicIds={topic_ids}
                 onChange={this.changeAndSaveTopics}
-                setRef={this.handleTopicsPickerSetRef}
                 availableTopics={availableTopics}
               />
               {touched.topic_ids && errors.topic_ids ? (
