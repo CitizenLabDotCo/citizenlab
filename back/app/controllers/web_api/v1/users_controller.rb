@@ -51,6 +51,17 @@ class WebApi::V1::UsersController < ::ApplicationController
     render json: linked_json(@users, WebApi::V1::UserSerializer, params: fastjson_params)
   end
 
+  def seats
+    authorize :user, :seats?
+
+    render json: {
+      data: {
+        admins: User.admin.count,
+        moderators: User.project_moderator.or(User.project_folder_moderator).count
+      }
+    }
+  end
+
   def index_xlsx
     authorize :user, :index_xlsx?
 
