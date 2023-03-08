@@ -55,7 +55,7 @@ export default () => {
     clHistory.push('/');
   }
 
-  if (showEditPage && authUser.attributes.confirmation_required) {
+  if (showEditPage && !authUser.attributes.registration_completed_at) {
     return <Unauthorized />;
   }
 

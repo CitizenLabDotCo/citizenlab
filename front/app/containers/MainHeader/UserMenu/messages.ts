@@ -22,6 +22,10 @@ export default defineMessages({
     id: 'app.containers.Navbar.confirmEmail',
     defaultMessage: 'Confirm email address',
   },
+  completeRegistration: {
+    id: 'app.containers.Navbar.completeRegistration',
+    defaultMessage: 'Complete registration',
+  },
   admin: {
     id: 'app.containers.app.navbar.admin',
     defaultMessage: 'Admin',

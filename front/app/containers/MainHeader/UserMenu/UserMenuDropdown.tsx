@@ -79,7 +79,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
             </DropdownListItem>
           </HasPermission>
 
-          {isConfirmedUser && (
+          {isRegisteredUser && (
             <DropdownListItem
               id="e2e-my-ideas-page-link"
               linkTo={`/profile/${authUser.attributes.slug}`}
@@ -96,7 +96,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
             </DropdownListItem>
           )}
 
-          {isConfirmedUser && (
+          {isRegisteredUser && (
             <DropdownListItem
               id="e2e-profile-edit-link"
               linkTo={'/profile/edit'}
@@ -128,6 +128,24 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
               justify="space-between"
             >
               <FormattedMessage {...messages.confirmEmail} />
+            </DropdownListItem>
+          )}
+
+          {isConfirmedUser && !isRegisteredUser && (
+            <DropdownListItem
+              id="e2e-complete-registration-link"
+              onClick={() => {
+                openSignUpInModal();
+              }}
+              buttonStyle="text"
+              bgHoverColor={colors.grey300}
+              icon="user-check"
+              iconPos="right"
+              iconSize="20px"
+              padding="11px 11px"
+              justify="space-between"
+            >
+              <FormattedMessage {...messages.completeRegistration} />
             </DropdownListItem>
           )}
 

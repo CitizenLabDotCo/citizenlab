@@ -113,7 +113,7 @@ export const UsersShowPage = memo<
     );
   }
 
-  if (!isNilOrError(user) && user.attributes.confirmation_required) {
+  if (!isNilOrError(user) && !user.attributes.registration_completed_at) {
     return <Unauthorized />;
   }
 
