@@ -32,9 +32,7 @@ interface AuthenticationRequirements {
       email: RequirementStatus;
     };
 
-    custom_fields: {
-      // TODO
-    };
+    custom_fields: Record<string, RequirementStatus>;
 
     special: {
       password: RequirementStatus;
