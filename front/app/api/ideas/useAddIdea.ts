@@ -18,11 +18,9 @@ const useAddIdea = () => {
   return useMutation<IIdea, CLErrors, IIdeaAdd>({
     mutationFn: addIdea,
     onSuccess: (idea) => {
-      queryClient.invalidateQueries({
-        queryKey: ideasKeys.lists(),
-      });
+      queryClient.invalidateQueries({ queryKey: ideasKeys.lists() });
       streams.fetchAllWith({
-        dataId: [idea.data.relationships.project.data.id],
+        dataId: [idea.data.relationships?.project.data.id],
         apiEndpoint: [`${API_PATH}/stats/ideas_count`, `${API_PATH}/analytics`],
         partialApiEndpoint: [`${API_PATH}/ideas/${idea.data.id}/images`],
       });
