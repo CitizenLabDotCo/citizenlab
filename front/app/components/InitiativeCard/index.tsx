@@ -1,22 +1,12 @@
-import React, { PureComponent, FormEvent } from 'react';
-import { get, isUndefined, isString } from 'lodash-es';
+import React, { FormEvent } from 'react';
+import { get, isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-import { adopt } from 'react-adopt';
 
 // components
 import Card from 'components/UI/Card';
 import { Icon } from '@citizenlab/cl2-component-library';
 import Author from 'components/Author';
 import VoteIndicator from './VoteIndicator';
-
-// resources
-import GetInitiative, {
-  GetInitiativeChildProps,
-} from 'resources/GetInitiative';
-import GetInitiativeImage, {
-  GetInitiativeImageChildProps,
-} from 'resources/GetInitiativeImage';
-import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -33,6 +23,11 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 // typings
 import { IOpenPostPageModalEvent } from 'containers/App';
+
+// hooks
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useUser from 'hooks/useUser';
+import useInitiativeImage from 'api/initiative_images/useInitiativeImage';
 
 const StyledAuthor = styled(Author)`
   margin-left: -4px;
@@ -71,138 +66,98 @@ const CommentInfo = styled.div`
   align-items: center;
 `;
 
-export interface InputProps {
+export interface Props {
   initiativeId: string;
   className?: string;
 }
 
-interface DataProps {
-  initiative: GetInitiativeChildProps;
-  initiativeImage: GetInitiativeImageChildProps;
-  initiativeAuthor: GetUserChildProps;
-}
+const InitiativeCard = ({
+  localize,
+  className,
+  initiativeId,
+}: Props & InjectedLocalized) => {
+  const { data: initiative } = useInitiativeById(initiativeId);
+  const authorId = get(initiative, 'data.relationships.author.data.id');
+  const initiativeAuthor = useUser({ userId: authorId });
+  const initiativeImageId = get(
+    initiative,
+    'data.relationships.initiative_images.data[0].id'
+  );
+  const { data: initiativeImage } = useInitiativeImage(
+    initiativeId,
+    initiativeImageId
+  );
 
-interface Props extends InputProps, DataProps {}
+  if (!initiative || isNilOrError(initiativeAuthor)) return null;
 
-interface State {}
-
-class InitiativeCard extends PureComponent<Props & InjectedLocalized, State> {
-  onCardClick = (event: FormEvent) => {
+  const onCardClick = (event: FormEvent) => {
     event.preventDefault();
-
-    const { initiative } = this.props;
 
     if (!isNilOrError(initiative)) {
       eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
-        id: initiative.id,
-        slug: initiative.attributes.slug,
+        id: initiativeId,
+        slug: initiative.data.attributes.slug,
         type: 'initiative',
       });
     }
   };
 
-  render() {
-    const {
-      initiative,
-      initiativeImage,
-      initiativeAuthor,
-      localize,
-      className,
-    } = this.props;
+  const initiativeTitle = localize(initiative.data.attributes.title_multiloc);
+  const initiativeAuthorId = !isNilOrError(initiativeAuthor)
+    ? initiativeAuthor.id
+    : null;
+  const initiativeImageUrl: string | null = get(
+    initiativeImage,
+    'data.attributes.versions.medium',
+    null
+  );
+  const commentsCount = initiative.data.attributes.comments_count;
+  const cardClassNames = [
+    className,
+    'e2e-initiative-card',
+    get(initiative, 'relationships.user_vote.data') ? 'voted' : 'not-voted',
+    commentsCount > 0 ? 'e2e-has-comments' : null,
+  ]
+    .filter((item) => isString(item) && item !== '')
+    .join(' ');
 
-    if (
-      !isNilOrError(initiative) &&
-      !isUndefined(initiativeImage) &&
-      !isUndefined(initiativeAuthor)
-    ) {
-      const initiativeTitle = localize(initiative.attributes.title_multiloc);
-      const initiativeAuthorId = !isNilOrError(initiativeAuthor)
-        ? initiativeAuthor.id
-        : null;
-      const initiativeImageUrl: string | null = get(
-        initiativeImage,
-        'attributes.versions.medium',
-        null
-      );
-      const commentsCount = initiative.attributes.comments_count;
-      const cardClassNames = [
-        className,
-        'e2e-initiative-card',
-        get(initiative, 'relationships.user_vote.data') ? 'voted' : 'not-voted',
-        commentsCount > 0 ? 'e2e-has-comments' : null,
-      ]
-        .filter((item) => isString(item) && item !== '')
-        .join(' ');
-
-      return (
-        <Card
-          className={cardClassNames}
-          onClick={this.onCardClick}
-          to={`/initiatives/${initiative.attributes.slug}`}
-          imageUrl={initiativeImageUrl}
-          title={initiativeTitle}
-          body={
-            <StyledAuthor
-              authorId={initiativeAuthorId}
-              createdAt={initiative.attributes.published_at}
-              size={34}
-            />
-          }
-          footer={
-            <FooterInner>
-              <VoteIndicator initiativeId={initiative.id} />
-              <Spacer />
-              <CommentInfo>
-                <CommentIcon name="comments" ariaHidden />
-                <CommentCount
-                  aria-hidden
-                  className="e2e-initiativecard-comment-count"
-                >
-                  {commentsCount}
-                </CommentCount>
-                <ScreenReaderOnly>
-                  <FormattedMessage
-                    {...messages.xComments}
-                    values={{ commentsCount }}
-                  />
-                </ScreenReaderOnly>
-              </CommentInfo>
-            </FooterInner>
-          }
+  return (
+    <Card
+      className={cardClassNames}
+      onClick={onCardClick}
+      to={`/initiatives/${initiative.data.attributes.slug}`}
+      imageUrl={initiativeImageUrl}
+      title={initiativeTitle}
+      body={
+        <StyledAuthor
+          authorId={initiativeAuthorId}
+          createdAt={initiative.data.attributes.published_at}
+          size={34}
         />
-      );
-    }
+      }
+      footer={
+        <FooterInner>
+          <VoteIndicator initiativeId={initiativeId} />
+          <Spacer />
+          <CommentInfo>
+            <CommentIcon name="comments" ariaHidden />
+            <CommentCount
+              aria-hidden
+              className="e2e-initiativecard-comment-count"
+            >
+              {commentsCount}
+            </CommentCount>
+            <ScreenReaderOnly>
+              <FormattedMessage
+                {...messages.xComments}
+                values={{ commentsCount }}
+              />
+            </ScreenReaderOnly>
+          </CommentInfo>
+        </FooterInner>
+      }
+    />
+  );
+};
 
-    return null;
-  }
-}
-
-const Data = adopt<DataProps, InputProps>({
-  initiative: ({ initiativeId, render }) => (
-    <GetInitiative id={initiativeId}>{render}</GetInitiative>
-  ),
-  initiativeImage: ({ initiativeId, initiative, render }) => (
-    <GetInitiativeImage
-      initiativeId={initiativeId}
-      initiativeImageId={get(
-        initiative,
-        'relationships.initiative_images.data[0].id'
-      )}
-    >
-      {render}
-    </GetInitiativeImage>
-  ),
-  initiativeAuthor: ({ initiative, render }) => (
-    <GetUser id={get(initiative, 'relationships.author.data.id')}>
-      {render}
-    </GetUser>
-  ),
-});
-
-const InitiativeCardWithHoC = injectLocalize(InitiativeCard);
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <InitiativeCardWithHoC {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default injectLocalize(InitiativeCard);

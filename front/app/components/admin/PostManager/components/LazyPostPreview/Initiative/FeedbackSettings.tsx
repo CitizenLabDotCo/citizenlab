@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { adopt } from 'react-adopt';
 import { get, memoize } from 'lodash-es';
 
@@ -12,15 +12,13 @@ import messages from '../messages';
 
 // typings
 import { IOption } from 'typings';
+import { IInitiativeData } from 'api/initiatives/types';
 
 // styles
 import styled from 'styled-components';
 
 // components
 import { Select, Label } from '@citizenlab/cl2-component-library';
-
-// services
-import { updateInitiative } from 'services/initiatives';
 
 // resources
 import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
@@ -30,9 +28,6 @@ import GetInitiativeStatuses, {
 import GetInitiativeAllowedTransitions, {
   GetInitiativeAllowedTransitionsChildProps,
 } from 'resources/GetInitiativeAllowedTransitions';
-import GetInitiative, {
-  GetInitiativeChildProps,
-} from 'resources/GetInitiative';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
@@ -49,6 +44,10 @@ import events, {
   StatusChangeModalOpen,
 } from 'components/admin/PostManager/events';
 
+// hooks
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
+
 const StyledLabel = styled(Label)`
   margin-top: 20px;
 `;
@@ -59,7 +58,6 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
   tenant: GetAppConfigurationChildProps;
   statuses: GetInitiativeStatusesChildProps;
-  initiative: GetInitiativeChildProps;
   prospectAssignees: GetUsersChildProps;
   allowedTransitions: GetInitiativeAllowedTransitionsChildProps;
 }
@@ -71,11 +69,21 @@ interface InputProps {
 
 interface Props extends InputProps, DataProps {}
 
-class FeedbackSettings extends PureComponent<
-  Props & InjectedLocalized & WrappedComponentProps
-> {
-  getStatusOptions = (statuses, allowedTransitions) => {
-    const { localize } = this.props;
+const FeedbackSettings = ({
+  localize,
+  intl: { formatMessage },
+  tenant,
+  initiativeId,
+  authUser,
+  className,
+  statuses,
+  prospectAssignees,
+  allowedTransitions,
+}: Props & InjectedLocalized & WrappedComponentProps) => {
+  const { data: initiative } = useInitiativeById(initiativeId);
+  const { mutate: updateInitiative } = useUpdateInitiative();
+
+  const getStatusOptions = (statuses, allowedTransitions) => {
     if (!isNilOrError(statuses)) {
       return statuses.map((status) => ({
         value: status.id,
@@ -88,9 +96,8 @@ class FeedbackSettings extends PureComponent<
     }
   };
 
-  getInitiativeStatusOption = memoize(
-    (initiative: GetInitiativeChildProps, statuses) => {
-      const { localize } = this.props;
+  const getInitiativeStatusOption = memoize(
+    (initiative: IInitiativeData, statuses) => {
       if (
         !isNilOrError(initiative) &&
         initiative.relationships.initiative_status &&
@@ -115,7 +122,7 @@ class FeedbackSettings extends PureComponent<
 
       return null;
     },
-    (initiative: GetInitiativeChildProps, statuses) =>
+    (initiative: IInitiativeData, statuses) =>
       JSON.stringify({
         initiativeId: isNilOrError(initiative)
           ? undefined
@@ -126,10 +133,7 @@ class FeedbackSettings extends PureComponent<
       })
   );
 
-  getAssigneeOptions = memoize((prospectAssignees) => {
-    const {
-      intl: { formatMessage },
-    } = this.props;
+  const getAssigneeOptions = memoize((prospectAssignees) => {
     if (!isNilOrError(prospectAssignees.usersList)) {
       const assigneeOptions = prospectAssignees.usersList.map((assignee) => ({
         value: assignee.id,
@@ -145,8 +149,7 @@ class FeedbackSettings extends PureComponent<
     return [];
   });
 
-  onStatusChange = (statusOption: IOption) => {
-    const { tenant, initiativeId, authUser } = this.props;
+  const onStatusChange = (statusOption: IOption) => {
     const adminAtWorkId = authUser ? authUser.id : null;
     const tenantId = !isNilOrError(tenant) && tenant.id;
 
@@ -163,14 +166,16 @@ class FeedbackSettings extends PureComponent<
     });
   };
 
-  onAssigneeChange = (assigneeOption: IOption | null) => {
-    const { tenant, initiativeId, authUser } = this.props;
+  const onAssigneeChange = (assigneeOption: IOption | null) => {
     const assigneeId = assigneeOption ? assigneeOption.value : null;
     const adminAtWorkId = authUser ? authUser.id : null;
     const tenantId = !isNilOrError(tenant) && tenant.id;
 
-    updateInitiative(initiativeId, {
-      assignee_id: assigneeId,
+    updateInitiative({
+      initiativeId,
+      requestBody: {
+        assignee_id: assigneeId,
+      },
     });
 
     trackEventByName(tracks.changeInitiativeAssignment, {
@@ -182,63 +187,51 @@ class FeedbackSettings extends PureComponent<
     });
   };
 
-  render() {
-    const {
-      initiative,
-      className,
-      statuses,
-      prospectAssignees,
-      allowedTransitions,
-    } = this.props;
-
-    const statusOptions = this.getStatusOptions(statuses, allowedTransitions);
-    const initiativeStatusOption = this.getInitiativeStatusOption(
-      initiative,
-      statuses
-    );
-    const assigneeOptions = this.getAssigneeOptions(prospectAssignees);
-    const initiativeAssigneeOption = get(
-      initiative,
-      'relationships.assignee.data.id',
-      'unassigned'
-    );
-
-    if (!isNilOrError(initiative)) {
-      return (
-        <Container className={`${className} e2e-initiative-settings`}>
-          <StyledLabel
-            value={<FormattedMessage {...messages.currentStatus} />}
-            htmlFor="initiative-preview-select-status"
-          />
-          <Select
-            id="initiative-preview-select-status"
-            options={statusOptions}
-            onChange={this.onStatusChange}
-            value={initiativeStatusOption}
-          />
-          <StyledLabel
-            value={<FormattedMessage {...messages.assignee} />}
-            htmlFor="initiative-preview-select-assignee"
-          />
-          <Select
-            id="initiative-preview-select-assignee"
-            options={assigneeOptions}
-            onChange={this.onAssigneeChange}
-            value={initiativeAssigneeOption}
-          />
-        </Container>
-      );
-    }
+  if (!initiative) {
     return null;
   }
-}
+
+  const statusOptions = getStatusOptions(statuses, allowedTransitions);
+  const initiativeStatusOption = getInitiativeStatusOption(
+    initiative.data,
+    statuses
+  );
+  const assigneeOptions = getAssigneeOptions(prospectAssignees);
+  const initiativeAssigneeOption = get(
+    initiative,
+    'relationships.assignee.data.id',
+    'unassigned'
+  );
+
+  return (
+    <Container className={`${className} e2e-initiative-settings`}>
+      <StyledLabel
+        value={<FormattedMessage {...messages.currentStatus} />}
+        htmlFor="initiative-preview-select-status"
+      />
+      <Select
+        id="initiative-preview-select-status"
+        options={statusOptions}
+        onChange={onStatusChange}
+        value={initiativeStatusOption}
+      />
+      <StyledLabel
+        value={<FormattedMessage {...messages.assignee} />}
+        htmlFor="initiative-preview-select-assignee"
+      />
+      <Select
+        id="initiative-preview-select-assignee"
+        options={assigneeOptions}
+        onChange={onAssigneeChange}
+        value={initiativeAssigneeOption}
+      />
+    </Container>
+  );
+};
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
-  initiative: ({ initiativeId, render }) => (
-    <GetInitiative id={initiativeId}>{render}</GetInitiative>
-  ),
   statuses: <GetInitiativeStatuses />,
   prospectAssignees: <GetUsers canAdmin />,
   allowedTransitions: ({ initiativeId, render }) => (

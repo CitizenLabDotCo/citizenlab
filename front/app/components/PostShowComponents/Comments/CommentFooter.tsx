@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
@@ -25,6 +25,9 @@ import GetInitiativesPermissions, {
 import styled from 'styled-components';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 import Outlet from 'components/Outlet';
+
+// hooks
+import useInitiativeById from 'api/initiatives/useInitiativeById';
 
 const footerHeight = '30px';
 const footerTopMargin = '6px';
@@ -112,7 +115,7 @@ interface DataProps {
   tenantLocales: GetAppConfigurationLocalesChildProps;
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
-  post: GetPostChildProps;
+  idea: GetPostChildProps;
   comment: GetCommentChildProps;
   author: GetUserChildProps;
   commentingPermissionInitiative: GetInitiativesPermissionsChildProps;
@@ -120,83 +123,79 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {}
+const CommentFooter = ({
+  onEditing,
+  authUser,
+  author,
+  commentType,
+  postId,
+  postType,
+  projectId,
+  commentId,
+  className,
+  comment,
+  tenantLocales,
+  locale,
+  idea,
+  commentingPermissionInitiative,
+}: Props) => {
+  const initiativeId = postType === 'initiative' ? postId : null;
+  const { data: initiative } = useInitiativeById(initiativeId);
+  const post = postType === 'idea' ? idea : initiative?.data;
 
-class CommentFooter extends PureComponent<Props, State> {
-  onCommentEdit = () => {
-    this.props.onEditing();
-  };
-
-  render() {
-    const {
-      authUser,
-      author,
-      commentType,
-      postId,
-      postType,
-      projectId,
-      commentId,
-      className,
-      comment,
-      tenantLocales,
-      locale,
-      post,
-      commentingPermissionInitiative,
-    } = this.props;
-    if (
-      !isNilOrError(post) &&
-      !isNilOrError(comment) &&
-      !isNilOrError(locale) &&
-      !isNilOrError(tenantLocales)
-    ) {
-      return (
-        <Container className={className || ''}>
-          <Left>
-            <StyledCommentVote
-              postId={postId}
-              postType={postType}
-              commentId={commentId}
-              commentType={commentType}
-            />
-            <StyledCommentReplyButton
-              postId={postId}
-              postType={postType}
-              commentId={commentId}
-              commentType={commentType}
-              authUser={authUser}
-              author={author}
-              post={post}
-              comment={comment}
-              commentingPermissionInitiative={commentingPermissionInitiative}
-            />
-            <Outlet
-              id="app.components.PostShowComponents.CommentFooter.left"
-              comment={comment}
-              locale={locale}
-              tenantLocales={tenantLocales}
-            />
-          </Left>
-          <Right>
-            <StyledCommentsMoreActions
-              projectId={projectId}
-              comment={comment}
-              onCommentEdit={this.onCommentEdit}
-            />
-          </Right>
-        </Container>
-      );
-    }
-
+  if (
+    isNilOrError(post) ||
+    isNilOrError(comment) ||
+    isNilOrError(locale) ||
+    isNilOrError(tenantLocales)
+  ) {
     return null;
   }
-}
+
+  return (
+    <Container className={className || ''}>
+      <Left>
+        <StyledCommentVote
+          postId={postId}
+          postType={postType}
+          commentId={commentId}
+          commentType={commentType}
+        />
+        <StyledCommentReplyButton
+          postId={postId}
+          postType={postType}
+          commentId={commentId}
+          commentType={commentType}
+          authUser={authUser}
+          author={author}
+          post={post}
+          comment={comment}
+          commentingPermissionInitiative={commentingPermissionInitiative}
+        />
+        <Outlet
+          id="app.components.PostShowComponents.CommentFooter.left"
+          comment={comment}
+          locale={locale}
+          tenantLocales={tenantLocales}
+        />
+      </Left>
+      <Right>
+        <StyledCommentsMoreActions
+          projectId={projectId}
+          comment={comment}
+          onCommentEdit={onEditing}
+        />
+      </Right>
+    </Container>
+  );
+};
 
 const Data = adopt<DataProps, InputProps>({
   tenantLocales: <GetAppConfigurationLocales />,
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
-  post: ({ postId, postType, render }) => (
-    <GetPost id={postId} type={postType}>
+  idea: ({ postId, render }) => (
+    <GetPost id={postId} type="idea">
       {render}
     </GetPost>
   ),
