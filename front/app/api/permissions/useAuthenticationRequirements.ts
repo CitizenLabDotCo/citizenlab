@@ -14,18 +14,18 @@ const fetchAuthenticationRequirements = (
   const { type, action } = authenticationContext;
 
   if (type === 'initiative') {
-    fetcher<AuthenticationRequirementsResponse>({
+    return fetcher<AuthenticationRequirementsResponse>({
       path: `/permissions/${action}/requirements`,
       action: 'get',
     });
-  } else {
-    const { id } = authenticationContext;
-
-    fetcher<AuthenticationRequirementsResponse>({
-      path: `/${type}s/${id}/permissions/${action}/requirements`,
-      action: 'get',
-    });
   }
+
+  const { id } = authenticationContext;
+
+  return fetcher<AuthenticationRequirementsResponse>({
+    path: `/${type}s/${id}/permissions/${action}/requirements`,
+    action: 'get',
+  });
 };
 
 const useAuthenticationRequirements = (
@@ -39,7 +39,7 @@ const useAuthenticationRequirements = (
   >({
     queryKey: authenticationRequirementKeys.item(authenticationContext),
     queryFn: () => fetchAuthenticationRequirements(authenticationContext),
-  } as any);
+  });
 };
 
 export default useAuthenticationRequirements;
