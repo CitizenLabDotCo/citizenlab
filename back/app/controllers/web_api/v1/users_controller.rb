@@ -34,6 +34,14 @@ class WebApi::V1::UsersController < ::ApplicationController
         @users.order(email: :asc) if view_private_attributes?
       when '-email'
         @users.order(email: :desc) if view_private_attributes?
+      when 'block_start_at'
+        @users.order(block_start_at: :asc) if view_private_attributes?
+      when '-block_start_at'
+        @users.order(block_start_at: :desc) if view_private_attributes?
+      when 'block_reason'
+        @users.order(block_reason: :asc) if view_private_attributes?
+      when '-block_reason'
+        @users.order(block_reason: :desc) if view_private_attributes?
       when 'role'
         @users.order_role(:asc)
       when '-role'

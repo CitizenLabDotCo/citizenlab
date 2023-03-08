@@ -389,6 +389,14 @@ class User < ApplicationRecord
     false
   end
 
+  def block_end_at
+    return nil unless blocked?
+
+    duration = AppConfiguration.instance.settings('user_blocking', 'duration')
+
+    block_start_at + duration.days
+  end
+
   def groups
     manual_groups
   end
