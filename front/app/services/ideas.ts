@@ -72,14 +72,6 @@ export interface IMinimalIdeaData {
   };
 }
 
-export interface IIdeaLinks {
-  self: string;
-  first: string;
-  prev: string;
-  next: string;
-  last: string;
-}
-
 export interface IIdea {
   data: IIdeaData;
 }
