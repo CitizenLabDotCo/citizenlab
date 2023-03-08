@@ -239,9 +239,9 @@ class User < ApplicationRecord
 
   scope :blocked, lambda {
     where.not(block_start_at: nil)
-      .and(where(block_start_at: ((
+      .and(where(block_start_at: (
         AppConfiguration.instance.settings('user_blocking', 'duration').days.ago
-      )..Time.zone.now)))
+        ..Time.zone.now)))
   }
 
   scope :order_role, lambda { |direction = :asc|
