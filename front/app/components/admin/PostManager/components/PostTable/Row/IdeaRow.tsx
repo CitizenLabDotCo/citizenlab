@@ -40,8 +40,8 @@ import {
 import { insertConfiguration } from 'utils/moduleUtils';
 
 // hooks
-import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import { API_PATH } from 'containers/App/constants';
+import useUpdateIdea from 'api/ideas/useUpdateIdea';
 
 type Props = {
   type: ManagerType;

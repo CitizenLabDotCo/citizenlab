@@ -446,7 +446,7 @@ const Data = adopt<DataProps, InputProps>({
   posts: ({ type, projectId, render }) => {
     if (type === 'Initiatives') {
       return (
-        <GetInitiatives type="paginated" pageSize={10} sort="new">
+        <GetInitiatives pageSize={10} sort="new">
           {render}
         </GetInitiatives>
       );

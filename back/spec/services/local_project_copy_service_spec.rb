@@ -5,7 +5,7 @@ require 'rails_helper'
 describe LocalProjectCopyService do
   let(:service) { described_class.new }
 
-  describe 'project copy', slow_test: true do
+  describe 'project copy' do
     # Some factories use en & nl-NL multilocs, others use en & nl-BE, but the apply_template method, invoked by the
     # LocalProjectCopyService, will only apply multiloc k-v pairs with keys that match the target tenant locale(s).
     # Thus, we specify all 3 locales to enable easier testing with factory generated multilocs.

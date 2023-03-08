@@ -1,7 +1,5 @@
-import React, { PureComponent } from 'react';
+import React, { useEffect, useState } from 'react';
 import { adopt } from 'react-adopt';
-import { Subscription, combineLatest, of } from 'rxjs';
-import { switchMap, first } from 'rxjs/operators';
 import { isNilOrError, isUnauthorizedError } from 'utils/helperUtils';
 import { isError } from 'lodash-es';
 
@@ -24,30 +22,21 @@ import PageNotFound from 'components/PageNotFound';
 import IdeasEditPageWithJSONForm from './WithJSONForm';
 
 // services
-import { localeStream } from 'services/locale';
-import { ideaByIdStream, updateIdea } from 'services/ideas';
-import {
-  ideaImageStream,
-  addIdeaImage,
-  deleteIdeaImage,
-} from 'services/ideaImages';
-import { hasPermission } from 'services/permissions';
+import { addIdeaImage, deleteIdeaImage } from 'services/ideaImages';
 import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
 import { getInputTerm } from 'services/participationContexts';
-
+import useLocale from 'hooks/useLocale';
+import useUpdateIdea from 'api/ideas/useUpdateIdea';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { getInputTermMessage } from 'utils/i18n';
 
 // utils
-import eventEmitter from 'utils/eventEmitter';
-import { convertUrlToUploadFileObservable } from 'utils/fileUtils';
 import { geocode } from 'utils/locationTools';
 
 // typings
-import { UploadFile, Multiloc, Locale } from 'typings';
+import { UploadFile, Multiloc } from 'typings';
 
 // style
 import { media, fontSizes, colors } from 'utils/styleUtils';
@@ -73,6 +62,9 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // typings
 import { IIdeaData } from 'api/ideas/types';
+import useIdeaImage from 'hooks/useIdeaImage';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { hasPermission } from 'services/permissions';
 
 const Container = styled.div`
   background: ${colors.background};
@@ -134,141 +126,83 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {
-  locale: Locale;
-  ideaSlug: string | null;
-  titleMultiloc: Multiloc | null;
-  descriptionMultiloc: Multiloc | null;
-  selectedTopics: string[];
-  budget: number | null;
-  proposedBudget: number | null;
-  address: string | null;
-  imageFile: UploadFile[];
-  imageFileIsChanged: boolean;
-  ideaFiles: UploadFile[];
-  imageId: string | null;
-  loaded: boolean;
-  submitError: boolean;
-  titleProfanityError: boolean;
-  descriptionProfanityError: boolean;
-  fileOrImageError: boolean;
-  processing: boolean;
-  authorId: string | null;
-}
+const IdeaEditPage = ({
+  params: { ideaId },
+  project,
+  authUser,
+  appConfiguration,
+  remoteIdeaFiles,
+  idea,
+  phases,
+}: Props) => {
+  const locale = useLocale();
+  const { mutate: updateIdea } = useUpdateIdea();
 
-class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
-  subscriptions: Subscription[];
+  const ideaImages = !isNilOrError(idea) && idea.relationships.idea_images.data;
+  const ideaImageId =
+    ideaImages && ideaImages.length > 0 ? ideaImages[0].id : null;
 
-  constructor(props: Props & InjectedLocalized) {
-    super(props);
-    this.state = {
-      locale: 'en',
-      ideaSlug: null,
-      titleMultiloc: null,
-      descriptionMultiloc: null,
-      selectedTopics: [],
-      budget: null,
-      proposedBudget: null,
-      address: null,
-      imageFile: [],
-      imageFileIsChanged: false,
-      ideaFiles: [],
-      imageId: null,
-      loaded: false,
-      submitError: false,
-      titleProfanityError: false,
-      descriptionProfanityError: false,
-      fileOrImageError: false,
-      processing: false,
-      authorId: null,
-    };
-    this.subscriptions = [];
-  }
+  const ideaImage = useIdeaImage({
+    ideaId: !isNilOrError(idea) ? idea.id : null,
+    ideaImageId,
+  });
 
-  componentDidMount() {
-    const { ideaId } = this.props.params;
-    const locale$ = localeStream().observable;
-    const idea$ = ideaByIdStream(ideaId).observable;
-    const ideaWithRelationships$ = combineLatest([locale$, idea$]).pipe(
-      switchMap(([_locale, idea]) => {
-        const ideaId = idea.data.id;
-        const ideaImages = idea.data.relationships.idea_images.data;
-        const ideaImageId =
-          ideaImages && ideaImages.length > 0 ? ideaImages[0].id : null;
-        const ideaImage$ = ideaImageId
-          ? ideaImageStream(ideaId, ideaImageId).observable.pipe(
-              first(),
-              switchMap((ideaImage) => {
-                if (
-                  ideaImage &&
-                  ideaImage.data &&
-                  ideaImage.data.attributes.versions.large
-                ) {
-                  const url = ideaImage.data.attributes.versions.large;
-                  const id = ideaImage.data.id;
-                  return convertUrlToUploadFileObservable(url, id, null);
-                }
+  const [ideaFiles, setIdeaFiles] = useState<UploadFile[]>([]);
+  const [imageFileIsChanged, setImageFileIsChanged] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
+  const [titleProfanityError, setTitleProfanityError] = useState(false);
+  const [descriptionProfanityError, setDescriptionProfanityError] =
+    useState(false);
+  const [fileOrImageError, setFileOrImageError] = useState(false);
+  const [processing, setProcessing] = useState(false);
+  const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
+  const [descriptionMultiloc, setDescriptionMultiloc] =
+    useState<Multiloc | null>(null);
+  const [imageFile, setImageFile] = useState<UploadFile[]>([]);
+  const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
+  const [address, setAddress] = useState<string | null>(null);
 
-                return of(null);
-              })
-            )
-          : of(null);
+  useEffect(() => {
+    if (!isNilOrError(idea)) {
+      const granted = hasPermission({
+        item: idea,
+        action: 'edit',
+        context: idea,
+      });
 
-        const granted$ = hasPermission({
-          item: idea.data,
-          action: 'edit',
-          context: idea.data,
-        });
+      if (!granted) {
+        clHistory.push('/');
+      }
+    }
+  }, [idea]);
 
-        return combineLatest([locale$, idea$, ideaImage$, granted$]);
-      })
-    );
-
-    this.subscriptions = [
-      ideaWithRelationships$.subscribe(([locale, idea, ideaImage, granted]) => {
-        if (granted) {
-          this.setState({
-            locale,
-            selectedTopics:
-              idea.data.relationships.topics?.data.map((topic) => topic.id) ||
-              [],
-            loaded: true,
-            ideaSlug: idea.data.attributes.slug,
-            titleMultiloc: idea.data.attributes.title_multiloc,
-            descriptionMultiloc: idea.data.attributes.body_multiloc,
-            address: idea.data.attributes.location_description,
-            budget: idea.data.attributes.budget,
-            authorId: idea.data.relationships.author.data?.id || null,
-            proposedBudget: idea.data.attributes.proposed_budget,
-            imageFile: ideaImage ? [ideaImage] : [],
-            imageId: ideaImage && ideaImage.id ? ideaImage.id : null,
-          });
-        } else {
-          clHistory.push('/');
+  useEffect(() => {
+    if (!isNilOrError(ideaImage)) {
+      (async () => {
+        const imageUrl = ideaImage.attributes.versions.large;
+        if (imageUrl) {
+          const imageFile = await convertUrlToUploadFile(imageUrl);
+          if (imageFile) {
+            setImageFile([imageFile]);
+          }
         }
-      }),
-    ];
+      })();
+    }
+  }, [ideaImage]);
+
+  if (isNilOrError(locale) || isNilOrError(idea)) {
+    return null;
   }
 
-  componentWillUnmount() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  if (isNilOrError(locale) || isNilOrError(idea) || isNilOrError(project)) {
+    return null;
   }
 
-  handleOnSaveButtonClick = () => {
-    eventEmitter.emit('IdeaFormSubmitEvent');
-  };
+  const authorId = idea.relationships.author.data?.id || null;
+  const budget = idea.attributes.budget;
+  const proposedBudget = idea.attributes.proposed_budget;
 
-  handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
-    const { ideaId } = this.props.params;
-    const { project, authUser, appConfiguration } = this.props;
-    const {
-      locale,
-      imageFileIsChanged,
-      titleMultiloc,
-      descriptionMultiloc,
-      ideaSlug,
-      imageId,
-    } = this.state;
+  const handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
     const {
       title,
       description,
@@ -279,7 +213,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
       ideaFilesToRemove,
       address,
     } = ideaFormOutput;
-    const oldImageId = imageId;
+    const oldImageId = ideaImageId;
     const newImage =
       ideaFormOutput.imageFile && ideaFormOutput.imageFile.length > 0
         ? ideaFormOutput.imageFile[0]
@@ -295,7 +229,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
     const filesToRemovePromises = ideaFilesToRemove
       .filter((file) => !!(file.remote && file.id))
       .map((file) => deleteIdeaFile(ideaId, file.id as string));
-    const finalAuthorId = ideaFormOutput?.authorId || this.state.authorId;
+    const finalAuthorId = ideaFormOutput?.authorId || authorId;
     const addressDiff: Partial<IIdeaData['attributes']> = {
       location_point_geojson: null,
       location_description: null,
@@ -306,23 +240,27 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
       addressDiff.location_description = address;
     }
 
-    const updateIdeaPromise = updateIdea(ideaId, {
-      budget,
-      proposed_budget: proposedBudget,
-      title_multiloc: {
-        ...titleMultiloc,
-        [locale]: title,
+    updateIdea({
+      id: ideaId,
+      requestBody: {
+        budget,
+        proposed_budget: proposedBudget,
+        title_multiloc: {
+          ...titleMultiloc,
+          [locale]: title,
+        },
+        body_multiloc: {
+          ...descriptionMultiloc,
+          [locale]: description,
+        },
+        topic_ids: selectedTopics,
+        author_id: finalAuthorId,
+        ...addressDiff,
       },
-      body_multiloc: {
-        ...descriptionMultiloc,
-        [locale]: description,
-      },
-      topic_ids: selectedTopics,
-      author_id: finalAuthorId,
-      ...addressDiff,
     });
 
-    this.setState({ submitError: false, processing: true });
+    setSubmitError(false);
+    setProcessing(true);
 
     try {
       if (oldImageId && imageFileIsChanged) {
@@ -330,13 +268,12 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
       }
 
       await Promise.all([
-        updateIdeaPromise,
         imageToAddPromise,
         ...filesToAddPromises,
         ...filesToRemovePromises,
       ] as Promise<any>[]);
 
-      clHistory.push(`/ideas/${ideaSlug}`);
+      clHistory.push(`/ideas/${idea.attributes.slug}`);
     } catch (error) {
       const apiErrors = error.json.errors;
       const profanityApiError = apiErrors.base.find(
@@ -364,9 +301,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
               : null,
           });
 
-          this.setState({
-            titleProfanityError,
-          });
+          setTitleProfanityError(titleProfanityError);
         }
 
         if (descriptionProfanityError) {
@@ -378,171 +313,132 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
             location: 'IdeasEditPage (citizen side)',
           });
 
-          this.setState({
-            descriptionProfanityError,
-          });
+          setDescriptionProfanityError(descriptionProfanityError);
         }
       }
 
       if (apiErrors && (apiErrors.image || apiErrors.file)) {
-        this.setState({
-          fileOrImageError: true,
-        });
+        setFileOrImageError(true);
       }
 
-      this.setState({ submitError: true });
+      setSubmitError(true);
     }
 
-    this.setState({ processing: false });
+    setProcessing(false);
   };
 
-  onTitleChange = (title: string) => {
-    const { locale } = this.props;
-    const titleMultiloc = { ...this.state.titleMultiloc, [locale]: title };
-
-    this.setState({ titleMultiloc, titleProfanityError: false });
+  const onTitleChange = (title: string) => {
+    setTitleMultiloc({ ...titleMultiloc, [locale]: title });
+    setTitleProfanityError(false);
   };
 
-  onImageFileAdd = (imageFile: UploadFile[]) => {
-    this.setState({ imageFile: [imageFile[0]], imageFileIsChanged: true });
+  const onImageFileAdd = (imageFile: UploadFile[]) => {
+    setImageFile([imageFile[0]]);
+    setImageFileIsChanged(true);
   };
 
-  onImageFileRemove = () => {
-    this.setState({ imageFile: [], imageFileIsChanged: true });
+  const onImageFileRemove = () => {
+    setImageFile([]);
+    setImageFileIsChanged(true);
   };
 
-  onTagsChange = (selectedTopics: string[]) => {
-    this.setState({ selectedTopics });
+  const onTagsChange = (selectedTopics: string[]) => {
+    setSelectedTopics(selectedTopics);
   };
 
-  onAddressChange = (address: string) => {
-    this.setState({ address });
+  const onAddressChange = (address: string) => {
+    setAddress(address);
   };
 
-  onDescriptionChange = (description: string) => {
-    const { locale } = this.props;
-    const descriptionMultiloc = {
-      ...this.state.descriptionMultiloc,
+  const onDescriptionChange = (description: string) => {
+    setDescriptionMultiloc({
+      ...descriptionMultiloc,
       [locale]: description,
-    };
-
-    this.setState({ descriptionMultiloc, descriptionProfanityError: false });
-  };
-
-  onIdeaFilesChange = (ideaFiles: UploadFile[]) => {
-    this.setState({
-      ideaFiles,
     });
+
+    setDescriptionProfanityError(false);
   };
 
-  render() {
-    if (this.state && this.state.loaded) {
-      const { remoteIdeaFiles, project, idea, phases } = this.props;
-      const {
-        locale,
-        titleMultiloc,
-        descriptionMultiloc,
-        selectedTopics,
-        address,
-        imageFile,
-        ideaFiles,
-        budget,
-        proposedBudget,
-        titleProfanityError,
-        descriptionProfanityError,
-        submitError,
-        fileOrImageError,
-        processing,
-        authorId,
-      } = this.state;
+  const onIdeaFilesChange = (ideaFiles: UploadFile[]) => {
+    setIdeaFiles(ideaFiles);
+  };
 
-      const title = locale && titleMultiloc ? titleMultiloc[locale] || '' : '';
-      const description =
-        locale && descriptionMultiloc
-          ? descriptionMultiloc[locale] || ''
-          : null;
+  const title = titleMultiloc?.[locale] || null;
+  const description = descriptionMultiloc?.[locale] || null;
+  const projectId = project.id;
+  const inputTerm = getInputTerm(
+    project.attributes.process_type,
+    project,
+    phases
+  );
 
-      if (!isNilOrError(project) && !isNilOrError(idea)) {
-        const projectId = project.id;
-        const ideaId = idea.id;
-        const inputTerm = getInputTerm(
-          project.attributes.process_type,
-          project,
-          phases
-        );
+  return (
+    <Container id="e2e-idea-edit-page">
+      <IdeasEditMeta ideaId={ideaId} projectId={projectId} />
+      <FormContainer>
+        <Box
+          width="100%"
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+          mt="52px"
+        >
+          <GoBackToIdeaPage idea={idea} />
 
-        return (
-          <Container id="e2e-idea-edit-page">
-            <IdeasEditMeta ideaId={ideaId} projectId={projectId} />
-            <FormContainer>
-              <Box
-                width="100%"
-                display="flex"
-                flexDirection="column"
-                justifyContent="center"
-                alignItems="center"
-                mt="52px"
-              >
-                <GoBackToIdeaPage idea={idea} />
+          <Title>
+            <FormattedMessage
+              {...getInputTermMessage(inputTerm, {
+                idea: messages.formTitle,
+                option: messages.optionFormTitle,
+                project: messages.projectFormTitle,
+                question: messages.questionFormTitle,
+                issue: messages.issueFormTitle,
+                contribution: messages.contributionFormTitle,
+              })}
+            />
+          </Title>
+        </Box>
 
-                <Title>
-                  <FormattedMessage
-                    {...getInputTermMessage(inputTerm, {
-                      idea: messages.formTitle,
-                      option: messages.optionFormTitle,
-                      project: messages.projectFormTitle,
-                      question: messages.questionFormTitle,
-                      issue: messages.issueFormTitle,
-                      contribution: messages.contributionFormTitle,
-                    })}
-                  />
-                </Title>
-              </Box>
+        <IdeaForm
+          authorId={authorId}
+          ideaId={ideaId}
+          projectId={projectId}
+          title={title}
+          description={description}
+          selectedTopics={selectedTopics}
+          budget={budget}
+          proposedBudget={proposedBudget}
+          address={address || ''}
+          imageFile={imageFile}
+          ideaFiles={ideaFiles}
+          onSubmit={handleIdeaFormOutput}
+          remoteIdeaFiles={
+            !isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null
+          }
+          hasTitleProfanityError={titleProfanityError}
+          hasDescriptionProfanityError={descriptionProfanityError}
+          onImageFileAdd={onImageFileAdd}
+          onImageFileRemove={onImageFileRemove}
+          onTagsChange={onTagsChange}
+          onTitleChange={onTitleChange}
+          onDescriptionChange={onDescriptionChange}
+          onAddressChange={onAddressChange}
+          onIdeaFilesChange={onIdeaFilesChange}
+        />
 
-              <IdeaForm
-                authorId={authorId}
-                ideaId={ideaId}
-                projectId={projectId}
-                title={title}
-                description={description}
-                selectedTopics={selectedTopics}
-                budget={budget}
-                proposedBudget={proposedBudget}
-                address={address || ''}
-                imageFile={imageFile}
-                ideaFiles={ideaFiles}
-                onSubmit={this.handleIdeaFormOutput}
-                remoteIdeaFiles={
-                  !isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null
-                }
-                hasTitleProfanityError={titleProfanityError}
-                hasDescriptionProfanityError={descriptionProfanityError}
-                onImageFileAdd={this.onImageFileAdd}
-                onImageFileRemove={this.onImageFileRemove}
-                onTagsChange={this.onTagsChange}
-                onTitleChange={this.onTitleChange}
-                onDescriptionChange={this.onDescriptionChange}
-                onAddressChange={this.onAddressChange}
-                onIdeaFilesChange={this.onIdeaFilesChange}
-              />
-
-              <ButtonBarContainer>
-                <IdeasEditButtonBar
-                  form="idea-form"
-                  submitError={submitError}
-                  processing={processing}
-                  fileOrImageError={fileOrImageError}
-                />
-              </ButtonBarContainer>
-            </FormContainer>
-          </Container>
-        );
-      }
-    }
-
-    return null;
-  }
-}
+        <ButtonBarContainer>
+          <IdeasEditButtonBar
+            form="idea-form"
+            submitError={submitError}
+            processing={processing}
+            fileOrImageError={fileOrImageError}
+          />
+        </ButtonBarContainer>
+      </FormContainer>
+    </Container>
+  );
+};
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
@@ -574,7 +470,6 @@ const Data = adopt<DataProps, InputProps>({
     );
   },
 });
-const IdeaEditPageWithHOCs = injectLocalize<Props>(IdeaEditPage);
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => {
   const isDynamicIdeaFormEnabled = useFeatureFlag({
@@ -597,7 +492,7 @@ export default withRouter((inputProps: InputProps & WithRouterProps) => {
 
   return (
     <Data {...inputProps}>
-      {(dataProps) => <IdeaEditPageWithHOCs {...inputProps} {...dataProps} />}
+      {(dataProps) => <IdeaEditPage {...inputProps} {...dataProps} />}
     </Data>
   );
 });

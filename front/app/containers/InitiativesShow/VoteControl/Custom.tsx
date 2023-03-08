@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { fontSizes, media } from 'utils/styleUtils';
 import { StatusExplanation } from './SharedStyles';
 
-import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { IAppConfigurationSettings } from 'api/app_configuration/types';
 
@@ -15,6 +14,7 @@ import ProposalProgressBar from './ProposalProgressBar';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import T from 'components/T';
+import { IInitiativeData } from 'api/initiatives/types';
 
 const Container = styled.div``;
 
