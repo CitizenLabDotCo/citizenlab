@@ -9,6 +9,7 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
     :bio_multiloc,
     :registration_completed_at,
     :invite_status,
+    :blocked,
     :block_start_at,
     :block_end_at,
     :block_reason,
@@ -43,6 +44,12 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
 
   attribute :confirmation_required do |user|
     user.confirmation_required?
+  end
+
+  attribute :blocked, if: proc { |object, params|
+    view_private_attributes? object, params
+  } do |object|
+    object.blocked?
   end
 
   attribute :block_start_at, if: proc { |object, params|
