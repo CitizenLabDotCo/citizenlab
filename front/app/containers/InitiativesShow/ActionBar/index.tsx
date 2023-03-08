@@ -1,16 +1,9 @@
 import React, { memo } from 'react';
-import { adopt } from 'react-adopt';
 
 // components
 import BreadCrumbs from 'components/PostShowComponents/Breadcrumbs';
 import ActionBarLayout from 'components/PostShowComponents/ActionBar';
 import InitiativeMoreActions from './InitiativeMoreActions';
-
-// resource
-import GetInitiative, {
-  GetInitiativeChildProps,
-} from 'resources/GetInitiative';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 import messages from '../messages';
 
@@ -20,23 +13,27 @@ import { isNilOrError } from 'utils/helperUtils';
 // styling
 import styled from 'styled-components';
 
+// hooks
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useLocale from 'hooks/useLocale';
+
 const StyledInitiativeMoreActions = styled(InitiativeMoreActions)``;
 
-interface InputProps {
+interface Props {
   initiativeId: string;
   onTranslateInitiative: () => void;
   translateButtonClicked: boolean;
 }
 
-interface DataProps {
-  initiative: GetInitiativeChildProps;
-  locale: GetLocaleChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
 const ActionBar = memo<Props>(
-  ({ onTranslateInitiative, translateButtonClicked, initiative, locale }) => {
+  ({ onTranslateInitiative, translateButtonClicked, initiativeId }) => {
+    const { data: initiative } = useInitiativeById(initiativeId);
+    const locale = useLocale();
+
+    if (!initiative || isNilOrError(locale)) {
+      return null;
+    }
+
     return (
       <ActionBarLayout
         leftContent={
@@ -56,11 +53,11 @@ const ActionBar = memo<Props>(
           isNilOrError(initiative) ? null : (
             <StyledInitiativeMoreActions
               id="e2e-initiative-more-actions-desktop"
-              initiative={initiative}
+              initiative={initiative.data}
             />
           )
         }
-        initiative={initiative}
+        initiative={initiative.data}
         locale={locale}
         onTranslate={onTranslateInitiative}
         translateButtonClicked={translateButtonClicked}
@@ -69,15 +66,4 @@ const ActionBar = memo<Props>(
   }
 );
 
-const Data = adopt<DataProps, InputProps>({
-  locale: <GetLocale />,
-  initiative: ({ initiativeId, render }) => (
-    <GetInitiative id={initiativeId}>{render}</GetInitiative>
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <ActionBar {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default ActionBar;

@@ -1,6 +1,6 @@
 import React, { MouseEvent } from 'react';
 import { Popup } from 'semantic-ui-react';
-import { IInitiativeAllowedTransitions } from 'services/initiatives';
+import { IInitiativeAllowedTransitions } from 'api/initiative_allowed_transitions/types';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import T from 'components/T';
 import styled from 'styled-components';
@@ -25,7 +25,9 @@ type Props = {
   selectedStatus?: string;
   statuses: IInitiativeStatusData[];
   onUpdateStatus: (statusId: string) => void;
-  allowedTransitions: IInitiativeAllowedTransitions | null;
+  allowedTransitions:
+    | IInitiativeAllowedTransitions['data']['attributes']
+    | null;
 };
 
 class InitiativesStatusSelector extends React.PureComponent<Props> {

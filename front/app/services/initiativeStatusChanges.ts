@@ -1,6 +1,10 @@
 import { API_PATH } from 'containers/App/constants';
 import { IRelationship, Multiloc } from 'typings';
 import streams from 'utils/streams';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import initiativesKeys from 'api/initiatives/keys';
+import initiativeFilterCountsKeys from 'api/initiatives_filter_counts/keys';
+import initiativesAllowedTransitionsKeys from 'api/initiative_allowed_transitions/keys';
 
 export type IInitiativeStatusChange = {
   id: string;
@@ -51,14 +55,14 @@ export async function updateInitiativeStatusWithExistingFeedback(
       },
     }
   );
-  streams.fetchAllWith({
-    apiEndpoint: [
-      `${API_PATH}/initiatives`,
-      `${API_PATH}/initiatives/${initiativeId}`,
-      `${API_PATH}/initiatives/filter_counts`,
-      `${API_PATH}/initiatives/${initiativeId}/allowed_transitions`,
-    ],
-  });
+
+  queryClient.invalidateQueries(initiativesKeys.lists());
+  queryClient.invalidateQueries(initiativesKeys.item(initiativeId));
+  queryClient.invalidateQueries(initiativeFilterCountsKeys.items());
+  queryClient.invalidateQueries(
+    initiativesAllowedTransitionsKeys.item(initiativeId)
+  );
+
   return response;
 }
 
@@ -80,14 +84,16 @@ export async function updateInitiativeStatusAddFeedback(
       },
     }
   );
+
+  queryClient.invalidateQueries(initiativesKeys.lists());
+  queryClient.invalidateQueries(initiativesKeys.item(initiativeId));
+  queryClient.invalidateQueries(initiativeFilterCountsKeys.items());
+  queryClient.invalidateQueries(
+    initiativesAllowedTransitionsKeys.item(initiativeId)
+  );
+
   streams.fetchAllWith({
-    apiEndpoint: [
-      `${API_PATH}/initiatives`,
-      `${API_PATH}/initiatives/${initiativeId}`,
-      `${API_PATH}/initiatives/filter_counts`,
-      `${API_PATH}/initiatives/${initiativeId}/official_feedback`,
-      `${API_PATH}/initiatives/${initiativeId}/allowed_transitions`,
-    ],
+    apiEndpoint: [`${API_PATH}/initiatives/${initiativeId}/official_feedback`],
   });
   return response;
 }

@@ -221,6 +221,8 @@ const config = {
       https: require.resolve('https-browserify'),
       http: require.resolve('stream-http'),
       buffer: require.resolve('buffer'),
+      // https://github.com/react-dnd/react-dnd/issues/3425
+      'process/browser': require.resolve('process/browser')
     },
   },
 };
