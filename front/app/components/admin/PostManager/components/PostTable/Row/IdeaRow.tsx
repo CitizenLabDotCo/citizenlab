@@ -3,7 +3,6 @@ import { uniq, isEmpty } from 'lodash-es';
 import { useDrag } from 'react-dnd';
 import streams from 'utils/streams';
 import { getListEndpoint } from 'services/projectAllowedInputTopics';
-
 // services
 import { IPhaseData } from 'services/phases';
 import { IIdeaData } from 'api/ideas/types';
@@ -77,7 +76,6 @@ const IdeaRow = ({
   locale,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { mutate: updateIdea } = useUpdateIdea();
   const [cells, setCells] = useState<
     CellConfiguration<IdeaCellComponentProps>[]
   >([
@@ -161,13 +159,14 @@ const IdeaRow = ({
     },
   ]);
 
+  const { mutate: updateIdea } = useUpdateIdea();
   const [_collected, drag] = useDrag({
     type: 'IDEA',
     item: {
       type: 'idea',
       id: idea.id,
     },
-    end: async (item, monitor) => {
+    end: (item, monitor) => {
       const dropResult = monitor.getDropResult<{
         type: 'status' | 'project' | 'phase' | 'topic';
         id: string;
@@ -179,14 +178,18 @@ const IdeaRow = ({
           selection.forEach((ideaId) => {
             updateIdea({
               id: ideaId,
-              requestBody: { idea_status_id: dropResult.id },
+              requestBody: {
+                idea_status_id: dropResult.id,
+              },
             });
           });
 
         !selection.has(itemIdeaId) &&
           updateIdea({
             id: itemIdeaId,
-            requestBody: { idea_status_id: dropResult.id },
+            requestBody: {
+              idea_status_id: dropResult.id,
+            },
           });
 
         trackEventByName(tracks.ideaStatusChange, {
@@ -205,16 +208,26 @@ const IdeaRow = ({
           const newTopics = uniq(currentTopics?.concat(dropResult.id));
 
           ideaIds.forEach((ideaId) => {
-            updateIdea({ id: ideaId, requestBody: { topic_ids: newTopics } });
-
-            streams.fetchAllWith({
-              apiEndpoint: [
-                // If in /admin/ideas
-                getListEndpoint(projectId),
-                // If in /admin/projects/:projectId/manage/ideas
-                `${API_PATH}/topics`,
-              ],
-            });
+            updateIdea(
+              {
+                id: ideaId,
+                requestBody: {
+                  topic_ids: newTopics,
+                },
+              },
+              {
+                onSuccess: () => {
+                  streams.fetchAllWith({
+                    apiEndpoint: [
+                      // If in /admin/ideas
+                      getListEndpoint(projectId),
+                      // If in /admin/projects/:projectId/manage/ideas
+                      `${API_PATH}/topics`,
+                    ],
+                  });
+                },
+              }
+            );
           });
         }
 
@@ -246,7 +259,10 @@ const IdeaRow = ({
             ) {
               updateIdea({
                 id: ideaId,
-                requestBody: { project_id: newProject, phase_ids: [] },
+                requestBody: {
+                  project_id: newProject,
+                  phase_ids: [],
+                },
               });
             }
           });
