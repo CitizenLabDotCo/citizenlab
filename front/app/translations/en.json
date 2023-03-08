@@ -1051,6 +1051,7 @@
   "app.containers.InitiativesShow.reportAsSpamModalTitle": "Why do you want to report this as spam?",
   "app.containers.InitiativesShow.twitterMessage": "Vote for {initiativeTitle} on",
   "app.containers.InitiativesShow.whatsAppMessage": "{initiativeTitle} | from the participation platform of {orgName}",
+  "app.containers.Navbar.completeRegistration": "Complete registration",
   "app.containers.Navbar.confirmEmail": "Confirm email address",
   "app.containers.Navbar.unverified": "Unverified",
   "app.containers.Navbar.verified": "Verified",
