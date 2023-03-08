@@ -27,10 +27,8 @@ const mockIdeaObservable = new Observable((subscriber) => {
   subscriber.next(mockIdea);
 }).pipe(delay(1));
 
-jest.mock('services/ideas', () => ({
-  ideaBySlugStream: jest.fn(() => ({
-    observable: mockIdeaObservable,
-  })),
+jest.mock('@tanstack/react-query', () => ({
+  QueryObserver: jest.fn(() => mockIdeaObservable),
 }));
 
 describe('trackPageChange', () => {

@@ -41,6 +41,8 @@ import { isRtl } from 'utils/styleUtils';
 
 // typings
 import { IParticipationContextType } from 'typings';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import ideasKeys from 'api/ideas/keys';
 
 type TSize = '1' | '2' | '3' | '4';
 type TStyleType = 'border' | 'shadow';
@@ -436,13 +438,13 @@ class VoteControl extends PureComponent<Props, State> {
             );
           }
 
-          await ideaByIdStream(ideaId).fetch();
+          queryClient.invalidateQueries(ideasKeys.itemId(ideaId));
           this.voting$.next(null);
 
           return 'success';
         } catch (error) {
           this.voting$.next(null);
-          await ideaByIdStream(ideaId).fetch();
+          queryClient.invalidateQueries(ideasKeys.itemId(ideaId));
           throw 'error';
         }
       } else if (

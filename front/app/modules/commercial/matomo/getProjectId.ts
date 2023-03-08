@@ -1,6 +1,6 @@
 // services
 import { projectBySlugStream, IProject } from 'services/projects';
-import { ideaBySlugStream, IIdea } from 'services/ideas';
+import { IIdea } from 'api/ideas/types';
 
 // utils
 import { slugRegEx } from 'utils/textUtils';
@@ -8,6 +8,18 @@ import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings
 import { Subscription } from 'rxjs';
+import { QueryObserver } from '@tanstack/react-query';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import ideasKeys from 'api/ideas/keys';
+import { fetchIdea } from 'api/ideas/useIdeaBySlug';
+
+let unsubscribe: () => void;
+
+const ideaSubscription = (slug: string) =>
+  new QueryObserver<IIdea>(queryClient, {
+    queryKey: ideasKeys.itemSlug(slug),
+    queryFn: () => fetchIdea(slug),
+  });
 
 export const getProjectId = async (path: string) => {
   if (isProjectPage(path)) {
@@ -33,8 +45,7 @@ export const getProjectId = async (path: string) => {
     if (!slug) return null;
 
     const projectId = await getProjectIdFromIdeaSlug(slug);
-    ideaSubscriptions[slug].unsubscribe();
-    delete ideaSubscriptions[slug];
+    unsubscribe();
 
     return projectId;
   }
@@ -92,20 +103,14 @@ export const extractIdeaSlug = (path: string) => {
   return ideaPageMatches && ideaPageMatches[1];
 };
 
-const ideaSubscriptions: Record<string, Subscription> = {};
-
 const getProjectIdFromIdeaSlug = (slug: string): Promise<string | null> => {
   return new Promise((resolve) => {
-    const observable = ideaBySlugStream(slug).observable;
-
-    ideaSubscriptions[slug] = observable.subscribe(
-      (idea: IIdea | NilOrError) => {
-        if (isNilOrError(idea)) {
-          resolve(null);
-        } else {
-          resolve(idea.data.relationships.project.data.id);
-        }
+    unsubscribe = ideaSubscription(slug).subscribe((result) => {
+      if (isNilOrError(result.data)) {
+        resolve(null);
+      } else {
+        resolve(result.data.data.relationships.project.data.id);
       }
-    );
+    });
   });
 };
