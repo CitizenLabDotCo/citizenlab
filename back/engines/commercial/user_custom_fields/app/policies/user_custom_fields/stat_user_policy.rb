@@ -18,10 +18,6 @@ module UserCustomFields
       active_admin_or_project_moderator?
     end
 
-    def users_by_education?
-      active_admin_or_project_moderator?
-    end
-
     def users_by_custom_field?
       active_admin_or_project_moderator?
     end
@@ -39,10 +35,6 @@ module UserCustomFields
     end
 
     def users_by_domicile_as_xlsx?
-      active_admin_or_project_moderator?
-    end
-
-    def users_by_education_as_xlsx?
       active_admin_or_project_moderator?
     end
 

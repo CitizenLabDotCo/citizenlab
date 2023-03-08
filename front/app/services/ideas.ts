@@ -1,16 +1,13 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { firstValueFrom } from 'rxjs';
-
-// utils
-import { get } from 'lodash-es';
 
 // typings
-import { IRelationship, Multiloc } from 'typings';
+import { Multiloc } from 'typings';
 import {
   CommentingDisabledReason,
   PublicationStatus as ProjectPublicationStatus,
 } from 'services/projects';
+import { IIdeaData } from 'api/ideas/types';
 
 export type IdeaPublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
 
@@ -36,15 +33,6 @@ export type IdeaVotingDisabledReason =
 export type IdeaCommentingDisabledReason =
   | 'idea_not_in_current_phase'
   | CommentingDisabledReason;
-
-export type IdeaBudgetingDisabledReason =
-  | 'project_inactive'
-  | 'idea_not_in_current_phase'
-  | 'not_permitted'
-  | 'not_verified'
-  | 'not_signed_in'
-  | null
-  | undefined;
 
 export type Sort =
   | 'random'
@@ -75,85 +63,6 @@ export type SortAttribute =
   | 'baskets_count'
   | 'status';
 
-export interface IIdeaData {
-  id: string;
-  type: string;
-  attributes: {
-    title_multiloc: Multiloc;
-    body_multiloc: Multiloc;
-    author_name: string;
-    slug: string;
-    publication_status: IdeaPublicationStatus;
-    upvotes_count: number;
-    downvotes_count: number;
-    comments_count: number;
-    baskets_count: number;
-    location_point_geojson: GeoJSON.Point | null;
-    location_description: string | null;
-    budget: number | null;
-    proposed_budget: number | null;
-    created_at: string;
-    updated_at: string;
-    published_at: string;
-    action_descriptor: {
-      voting_idea: {
-        enabled: boolean;
-        disabled_reason: IdeaVotingDisabledReason | null;
-        cancelling_enabled: boolean;
-        up: {
-          enabled: boolean;
-          disabled_reason: IdeaVotingDisabledReason | null;
-          future_enabled: string | null;
-        };
-        down: {
-          enabled: boolean;
-          disabled_reason: IdeaVotingDisabledReason | null;
-          future_enabled: string | null;
-        };
-      };
-      commenting_idea: {
-        enabled: boolean;
-        future_enabled: string | null;
-        disabled_reason: IdeaCommentingDisabledReason | null;
-      };
-      comment_voting_idea: {
-        enabled: boolean;
-      };
-      budgeting?: {
-        enabled: boolean;
-        future_enabled: string | null;
-        disabled_reason: IdeaBudgetingDisabledReason;
-      };
-    };
-  };
-  relationships: {
-    topics?: {
-      data: IRelationship[];
-    };
-    idea_images: {
-      data: IRelationship[] | null;
-    };
-    author: {
-      data: IRelationship | null;
-    };
-    assignee?: {
-      data: IRelationship | null;
-    };
-    phases: {
-      data: IRelationship[];
-    };
-    project: {
-      data: IRelationship;
-    };
-    idea_status: {
-      data: IRelationship;
-    };
-    user_vote?: {
-      data: IRelationship;
-    };
-  };
-}
-
 export interface IMinimalIdeaData {
   id: string;
   type: string;
@@ -175,34 +84,18 @@ export interface IIdea {
   data: IIdeaData;
 }
 
-export interface IIdeas {
-  data: IIdeaData[];
-  links: IIdeaLinks;
-}
-export interface IIdeaAdd {
-  author_id: string | null;
-  project_id: string | null;
-  assignee_id?: string | null;
-  idea_status_id?: string | null;
-  publication_status: IdeaPublicationStatus;
-  title_multiloc: Multiloc;
-  body_multiloc: Multiloc;
-  topic_ids: string[] | null;
-  phase_ids?: string[] | null;
-  location_point_geojson: GeoJSON.Point | null;
-  location_description: string | null;
-  budget: number | null;
-  proposed_budget: number | null;
-}
-
 export interface IIdeasFilterCounts {
-  idea_status_id: {
-    [key: string]: number;
+  data: {
+    attributes: {
+      idea_status_id: {
+        [key: string]: number;
+      };
+      topic_id: {
+        [key: string]: number;
+      };
+      total: number;
+    };
   };
-  topic_id: {
-    [key: string]: number;
-  };
-  total: number;
 }
 
 export function ideaByIdStream(ideaId: string) {
@@ -234,15 +127,6 @@ export interface IIdeasQueryParameters {
   basket_id?: string;
 }
 
-export function ideasStream(
-  streamParams: { queryParameters: IIdeasQueryParameters } | null = null
-) {
-  return streams.get<IIdeas>({
-    apiEndpoint: `${API_PATH}/ideas`,
-    ...streamParams,
-  });
-}
-
 export interface IIdeasFilterCountsQueryParameters
   extends Omit<IIdeasQueryParameters, 'page[number]' | 'page[size]' | 'sort'> {
   sort?: Sort;
@@ -271,56 +155,4 @@ export function similarIdeasStream(
   });
 }
 
-export async function addIdea(object: IIdeaAdd) {
-  const response = await streams.add<IIdea>(`${API_PATH}/ideas/`, {
-    idea: object,
-  });
-  streams.fetchAllWith({
-    dataId: [response.data.relationships.project.data.id],
-    apiEndpoint: [`${API_PATH}/users/${object.author_id}/ideas_count`],
-  });
-  return response;
-}
-
-export async function updateIdea(ideaId: string, object: Partial<IIdeaAdd>) {
-  const response = await streams.update<IIdea>(
-    `${API_PATH}/ideas/${ideaId}`,
-    ideaId,
-    { idea: object }
-  );
-
-  streams.fetchAllWith({
-    dataId: [response.data.relationships.project.data.id],
-    apiEndpoint: [
-      `${API_PATH}/stats/ideas_count`,
-      `${API_PATH}/ideas`,
-      `${API_PATH}/ideas/${ideaId}/activities`,
-      `${API_PATH}/analytics`,
-    ],
-    partialApiEndpoint: [`${API_PATH}/ideas/${ideaId}/images`],
-  });
-
-  return response;
-}
-
-export async function deleteIdea(ideaId: string) {
-  const [idea, response] = await Promise.all([
-    firstValueFrom(ideaByIdStream(ideaId).observable),
-    streams.delete(`${API_PATH}/ideas/${ideaId}`, ideaId),
-  ]);
-
-  const authorId = get(idea, 'relationships.author.data.id', false);
-  const projectId = idea.data.relationships.project.data.id;
-
-  streams.fetchAllWith({
-    dataId: [projectId],
-    apiEndpoint: authorId
-      ? [
-          `${API_PATH}/users/${authorId}/ideas_count`,
-          `${API_PATH}/stats/ideas_count`,
-        ]
-      : [`${API_PATH}/stats/ideas_count`],
-  });
-
-  return response;
-}
+export { IIdeaData };

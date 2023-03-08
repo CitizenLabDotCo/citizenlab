@@ -61,7 +61,7 @@ const SelectableResourceByProjectChart = ({
   const convertToGraphFormat = (
     data: IIdeasByProject | IVotesByProject | ICommentsByProject
   ) => {
-    const { series, projects } = data;
+    const { series, projects } = data.data.attributes;
     const dataKey =
       currentResourceByProject === 'votes' ? 'total' : currentResourceByProject;
 

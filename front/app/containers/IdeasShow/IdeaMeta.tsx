@@ -1,7 +1,6 @@
 // libraries
 import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
-import { get } from 'lodash-es';
 import { Helmet } from 'react-helmet';
 
 // resources
@@ -10,7 +9,7 @@ import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetIdeaById, { GetIdeaByIdChildProps } from 'resources/GetIdeaById';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 import useIdeaImages from 'hooks/useIdeaImages';
@@ -30,7 +29,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  idea: GetIdeaChildProps;
+  idea: GetIdeaByIdChildProps;
   project: GetProjectChildProps;
   author: GetUserChildProps;
   locale: GetLocaleChildProps;
@@ -169,7 +168,9 @@ const IdeaMeta = memo<Props>(
 );
 
 const Data = adopt<DataProps, InputProps>({
-  idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
+  idea: ({ ideaId, render }) => (
+    <GetIdeaById ideaId={ideaId}>{render}</GetIdeaById>
+  ),
   project: ({ idea, render }) =>
     !isNilOrError(idea) ? (
       <GetProject projectId={idea.relationships.project.data.id}>
@@ -177,7 +178,9 @@ const Data = adopt<DataProps, InputProps>({
       </GetProject>
     ) : null,
   author: ({ idea, render }) => (
-    <GetUser id={get(idea, 'relationships.author.data.id', null)}>
+    <GetUser
+      id={!isNilOrError(idea) ? idea.relationships.author.data?.id : null}
+    >
       {render}
     </GetUser>
   ),

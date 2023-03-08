@@ -12,16 +12,14 @@ import {
 } from 'utils/paginationUtils';
 
 // typings
-import { PublicationStatus as ProjectPublicationStatus } from 'services/projects';
 import {
   IQueryParameters,
   Sort,
   SortAttribute,
   IIdeaData,
-  IdeaPublicationStatus,
 } from 'api/ideas/types';
 
-interface Props extends Omit<IQueryParameters, 'sort'> {
+interface Props extends Omit<IQueryParameters, 'sort' | 'basket_id'> {
   sort?: Sort;
   children?: children;
 }
@@ -31,9 +29,6 @@ type children = (renderProps: GetIdeasChildProps) => JSX.Element | null;
 interface State {
   queryParameters: IQueryParameters;
   list: IIdeaData[] | undefined;
-  hasMore: boolean;
-  querying: boolean;
-  loadingMore: boolean;
   sortAttribute: SortAttribute;
   sortDirection: SortDirection;
   currentPage: number;
@@ -41,7 +36,6 @@ interface State {
 }
 
 export type GetIdeasChildProps = State & {
-  onLoadMore: () => void;
   onChangePage: (pageNumber: number) => void;
   onChangeProjects: (projectIds: string[]) => void;
   onChangePhase: (phaseId: string) => void;
@@ -49,13 +43,8 @@ export type GetIdeasChildProps = State & {
   onChangeSorting: (sort: Sort) => void;
   onChangeTopics: (topics: string[]) => void;
   onChangeStatus: (ideaStatus?: string) => void;
-  onChangePublicationStatus: (publicationStatus: IdeaPublicationStatus) => void;
-  onChangeProjectPublicationStatus: (
-    ProjectPublicationStatus: ProjectPublicationStatus
-  ) => void;
   onChangeAssignee: (assignee?: string) => void;
   onChangeFeedbackFilter: (feedbackNeeded: boolean) => void;
-  onIdeaFiltering: (partialQueryParameters: Partial<IQueryParameters>) => void;
   onResetParams: (paramsToOmit?: (keyof IQueryParameters)[]) => void;
 };
 
@@ -77,7 +66,7 @@ const GetIdeas = ({ children, sort = 'random', ...otherProps }: Props) => {
     'page[number]': 1,
     'page[size]': otherProps['page[size]'] ?? 24,
   });
-  const { data, isFetching, isRefetching } = useIdeas(queryParameters);
+  const { data } = useIdeas(queryParameters);
 
   const list = data?.data;
 
@@ -103,11 +92,6 @@ const GetIdeas = ({ children, sort = 'random', ...otherProps }: Props) => {
     },
     [queryParameters]
   );
-
-  const loadMore = useCallback(() => {
-    if (isFetching || isRefetching) return;
-    updateQuery({ 'page[number]': currentPage + 1 });
-  }, [isFetching, isRefetching, updateQuery, currentPage]);
 
   const handleChangePage = useCallback(
     (pageNumber: number) => {
@@ -158,20 +142,6 @@ const GetIdeas = ({ children, sort = 'random', ...otherProps }: Props) => {
     [updateQuery]
   );
 
-  const handlePublicationStatusOnChange = useCallback(
-    (publication_status: IdeaPublicationStatus) => {
-      updateQuery({ publication_status, 'page[number]': 1 });
-    },
-    [updateQuery]
-  );
-
-  const handleProjectPublicationStatusOnChange = useCallback(
-    (project_publication_status: ProjectPublicationStatus) => {
-      updateQuery({ project_publication_status, 'page[number]': 1 });
-    },
-    [updateQuery]
-  );
-
   const handleAssigneeOnChange = useCallback(
     (assignee: string | undefined) => {
       updateQuery({ assignee, 'page[number]': 1 });
@@ -182,13 +152,6 @@ const GetIdeas = ({ children, sort = 'random', ...otherProps }: Props) => {
   const handleFeedbackFilterOnChange = useCallback(
     (feedback_needed: boolean) => {
       updateQuery({ feedback_needed, 'page[number]': 1 });
-    },
-    [updateQuery]
-  );
-
-  const handleIdeaFiltering = useCallback(
-    (ideaFilters: Partial<IQueryParameters>) => {
-      updateQuery({ ...ideaFilters, 'page[number]': 1 });
     },
     [updateQuery]
   );
@@ -205,14 +168,10 @@ const GetIdeas = ({ children, sort = 'random', ...otherProps }: Props) => {
   return (children as children)({
     queryParameters,
     list,
-    hasMore: currentPage !== lastPage,
-    querying: isFetching,
-    loadingMore: isRefetching,
     sortAttribute,
     sortDirection,
     currentPage,
     lastPage,
-    onLoadMore: loadMore,
     onChangePage: handleChangePage,
     onChangeProjects: handleProjectsOnChange,
     onChangePhase: handlePhaseOnChange,
@@ -220,11 +179,8 @@ const GetIdeas = ({ children, sort = 'random', ...otherProps }: Props) => {
     onChangeSorting: handleSortOnChange,
     onChangeTopics: handleTopicsOnChange,
     onChangeStatus: handleStatusOnChange,
-    onChangePublicationStatus: handlePublicationStatusOnChange,
-    onChangeProjectPublicationStatus: handleProjectPublicationStatusOnChange,
     onChangeAssignee: handleAssigneeOnChange,
     onChangeFeedbackFilter: handleFeedbackFilterOnChange,
-    onIdeaFiltering: handleIdeaFiltering,
     onResetParams: handleResetParamsToProps,
   });
 };

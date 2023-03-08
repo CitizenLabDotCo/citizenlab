@@ -9,7 +9,7 @@ import ContinuousProject from './ContinuousProject';
 import TimelineProject from './TimelineProject';
 
 // hooks
-import useEvents from 'hooks/useEvents';
+import useEvents from 'api/events/useEvents';
 import useProject from 'hooks/useProject';
 
 // intl
@@ -22,7 +22,7 @@ interface Props {
 }
 
 const Project = ({ projectId, hightestTitle }: Props) => {
-  const { events } = useEvents({
+  const { data: events } = useEvents({
     projectIds: [projectId],
   });
   const project = useProject({ projectId });
@@ -46,7 +46,7 @@ const Project = ({ projectId, hightestTitle }: Props) => {
           ) : (
             <TimelineProject key={project.id} project={project} />
           )}
-          {!isNilOrError(events) && events.length > 0 && (
+          {!isNilOrError(events) && events.data.length > 0 && (
             <li>
               <Link to={`/projects/${project.attributes.slug}/events`}>
                 <FormattedMessage {...messages.projectEvents} />

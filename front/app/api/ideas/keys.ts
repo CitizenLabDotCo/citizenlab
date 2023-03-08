@@ -1,19 +1,21 @@
 import { IQueryParameters } from './types';
 
-const ideaKeys = {
+const ideasKeys = {
   all: () => [{ type: 'idea' }],
-  lists: () => [{ ...ideaKeys.all()[0], operation: 'list' }],
-  list: (filters: IQueryParameters) => [{ ...ideaKeys.lists()[0], ...filters }],
-  infiniteList: (filters: IQueryParameters) => [
-    { ...ideaKeys.lists()[0], queryType: 'infinite', ...filters },
+  lists: () => [{ ...ideasKeys.all()[0], operation: 'list' }],
+  list: (filters: IQueryParameters) => [
+    { ...ideasKeys.lists()[0], ...filters },
   ],
-  items: () => [{ ...ideaKeys.all()[0], operation: 'item' }],
-  item: (id: string) => [
+  infiniteList: (filters: IQueryParameters) => [
+    { ...ideasKeys.lists()[0], queryType: 'infinite', ...filters },
+  ],
+  items: () => [{ ...ideasKeys.all()[0], operation: 'item' }],
+  item: (id?: string) => [
     {
-      ...ideaKeys.items()[0],
+      ...ideasKeys.items()[0],
       id,
     },
   ],
 };
 
-export default ideaKeys;
+export default ideasKeys;

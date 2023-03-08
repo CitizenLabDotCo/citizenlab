@@ -11,7 +11,6 @@ import InitiativesHeaderRow from './header/InitiativesHeaderRow';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 // services
-import { IInitiativeData } from 'services/initiatives';
 import { IPhaseData } from 'services/phases';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
@@ -28,11 +27,12 @@ import {
   SortAttribute as IdeasSortAttribute,
   Sort as IdeasSort,
   IIdeaData,
-} from 'services/ideas';
+} from 'api/ideas/types';
+import { SortAttribute as InitiativesSortAttribute } from 'resources/GetInitiatives';
 import {
+  IInitiativeData,
   Sort as InitiativesSort,
-  SortAttribute as InitiativesSortAttribute,
-} from 'resources/GetInitiatives';
+} from 'api/initiatives/types';
 import { SortDirection } from 'utils/paginationUtils';
 
 const Container = styled.div`

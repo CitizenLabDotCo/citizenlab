@@ -69,7 +69,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 // hooks
 import useLocale from 'hooks/useLocale';
 import usePhases from 'hooks/usePhases';
-import useIdea from 'hooks/useIdea';
+import useIdeaById from 'api/ideas/useIdeaById';
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
 import { useSearchParams } from 'react-router-dom';
 import useIdeaImages from 'hooks/useIdeaImages';
@@ -204,7 +204,7 @@ export const IdeasShow = ({
   }, [ideaIdParameter]);
 
   const phases = usePhases(projectId);
-  const idea = useIdea({ ideaId });
+  const { data: idea } = useIdeaById(ideaId);
   const locale = useLocale();
 
   const ideaflowSocialSharingIsEnabled = useFeatureFlag({
@@ -253,21 +253,23 @@ export const IdeasShow = ({
     isLoaded
   ) {
     // If the user deletes their profile, authorId can be null
-    const authorId = idea.relationships?.author?.data?.id || null;
-    const titleMultiloc = idea.attributes.title_multiloc;
+    const authorId = idea.data.relationships?.author?.data?.id || null;
+    const titleMultiloc = idea.data.attributes.title_multiloc;
     const ideaTitle = localize(titleMultiloc);
-    const statusId = idea?.relationships?.idea_status?.data?.id;
+    const statusId = idea.data.relationships?.idea_status?.data?.id;
     const ideaImageLarge = ideaImages?.[0]?.attributes?.versions?.large || null;
-    const ideaId = idea.id;
-    const proposedBudget = idea.attributes?.proposed_budget;
-    const ideaBody = localize(idea?.attributes?.body_multiloc);
+    const ideaId = idea.data.id;
+    const proposedBudget = idea.data.attributes?.proposed_budget;
+    const ideaBody = localize(idea.data.attributes?.body_multiloc);
     const isCompactView =
       compact === true ||
       (windowSize ? windowSize <= viewportWidths.tablet : false);
 
+    if (isNilOrError(ideaCustomFieldsSchemas)) return null;
+
     const proposedBudgetEnabled = isFieldEnabled(
       'proposed_budget',
-      ideaCustomFieldsSchemas,
+      ideaCustomFieldsSchemas.data.attributes,
       locale
     );
 
@@ -280,7 +282,7 @@ export const IdeasShow = ({
             <Box mb="40px">
               <GoBackButton projectId={projectId} insideModal={insideModal} />
             </Box>
-            <IdeaMoreActions idea={idea} projectId={projectId} />
+            <IdeaMoreActions idea={idea.data} projectId={projectId} />
           </TopBar>
         )}
 
@@ -297,7 +299,7 @@ export const IdeasShow = ({
               {isCompactView && (
                 <Box ml="30px">
                   {' '}
-                  <IdeaMoreActions idea={idea} projectId={projectId} />
+                  <IdeaMoreActions idea={idea.data} projectId={projectId} />
                 </Box>
               )}
             </IdeaHeader>
@@ -308,7 +310,7 @@ export const IdeasShow = ({
 
             <Outlet
               id="app.containers.IdeasShow.left"
-              idea={idea}
+              idea={idea.data}
               locale={locale}
               onClick={onTranslateIdea}
               translateButtonClicked={translateButtonIsClicked}

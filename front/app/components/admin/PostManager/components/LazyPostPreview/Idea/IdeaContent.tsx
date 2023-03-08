@@ -1,7 +1,6 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
-import { get } from 'lodash-es';
 
 // components
 import Title from 'components/PostShowComponents/Title';
@@ -21,20 +20,21 @@ import T from 'components/T';
 import { Top, Content, Container } from '../PostPreview';
 
 // services
-import { deleteIdea } from 'services/ideas';
 import { ProcessType } from 'services/projects';
 
 // resources
 import GetResourceFiles, {
   GetResourceFilesChildProps,
 } from 'resources/GetResourceFiles';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetIdeaById, { GetIdeaByIdChildProps } from 'resources/GetIdeaById';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPermission, {
   GetPermissionChildProps,
 } from 'resources/GetPermission';
 import useIdeaImages from 'hooks/useIdeaImages';
+import useDeleteIdea from 'api/ideas/useDeleteIdea';
+
 // utils
 import { getAddressOrFallbackDMS } from 'utils/map';
 
@@ -163,7 +163,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  idea: GetIdeaChildProps;
+  idea: GetIdeaByIdChildProps;
   ideaFiles: GetResourceFilesChildProps;
   locale: GetLocaleChildProps;
   project: GetProjectChildProps;
@@ -184,6 +184,7 @@ const IdeaContent = ({
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const ideaImages = useIdeaImages(ideaId);
+  const { mutate: deleteIdea } = useDeleteIdea();
 
   const handleClickDelete = (processType: ProcessType) => () => {
     const deleteConfirmationMessage = {
@@ -204,7 +205,7 @@ const IdeaContent = ({
     const ideaTitle = localize(idea.attributes.title_multiloc);
     const ideaImageLarge =
       !isNilOrError(ideaImages) && ideaImages.length > 0
-        ? get(ideaImages[0], 'attributes.versions.large', null)
+        ? ideaImages[0].attributes.versions.large
         : null;
     const ideaGeoPosition = idea.attributes.location_point_geojson || null;
     const ideaAddress = getAddressOrFallbackDMS(
@@ -327,7 +328,7 @@ const IdeaContent = ({
                 </>
               )}
 
-              <FeedbackSettings ideaId={ideaId} />
+              <FeedbackSettings ideaId={ideaId} projectId={project.id} />
             </Right>
           </Row>
         </Content>
@@ -339,9 +340,15 @@ const IdeaContent = ({
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
+  idea: ({ ideaId, render }) => (
+    <GetIdeaById ideaId={ideaId}>{render}</GetIdeaById>
+  ),
   project: ({ idea, render }) => (
-    <GetProject projectId={get(idea, 'relationships.project.data.id')}>
+    <GetProject
+      projectId={
+        !isNilOrError(idea) ? idea.relationships.project.data.id : null
+      }
+    >
       {render}
     </GetProject>
   ),

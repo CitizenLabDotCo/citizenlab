@@ -28,8 +28,7 @@ import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import { NavItem } from 'containers/Admin/sideBar';
 import { LatLngTuple } from 'leaflet';
 import { GetAppConfigurationLocalesChildProps } from 'resources/GetAppConfigurationLocales';
-import { GetIdeaChildProps } from 'resources/GetIdea';
-import { GetInitiativeChildProps } from 'resources/GetInitiative';
+import { GetIdeaByIdChildProps } from 'resources/GetIdeaById';
 import { GetLocaleChildProps } from 'resources/GetLocale';
 import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import { ICommentData } from 'services/comments';
@@ -47,6 +46,7 @@ import {
 } from 'typings';
 import { IntlFormatters } from 'react-intl';
 import { StatCardProps } from '../modules/commercial/analytics/admin/components/StatCard/useStatCard/typings';
+import { IInitiativeData } from 'api/initiatives/types';
 
 export type ITabsOutlet = {
   formatMessage: IntlFormatters['formatMessage'];
@@ -189,7 +189,7 @@ export interface OutletsPropertyMap {
   'app.components.PostShowComponents.ActionBar.right': {
     translateButtonClicked: boolean;
     onClick: () => void;
-    initiative: GetInitiativeChildProps;
+    initiative: IInitiativeData;
     locale: GetLocaleChildProps;
   };
   'app.components.PostShowComponents.CommentFooter.left': {
@@ -201,13 +201,13 @@ export interface OutletsPropertyMap {
     windowSize: GetWindowSizeChildProps;
     translateButtonClicked: boolean;
     onClick: () => void;
-    initiative: GetInitiativeChildProps;
+    initiative: IInitiativeData;
     locale: GetLocaleChildProps;
   };
   'app.containers.IdeasShow.left': {
     translateButtonClicked: boolean;
     onClick: () => void;
-    idea: GetIdeaChildProps;
+    idea: GetIdeaByIdChildProps;
     locale: GetLocaleChildProps;
   };
   'app.components.PostShowComponents.CommentBody.translation': {

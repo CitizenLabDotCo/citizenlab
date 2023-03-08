@@ -100,7 +100,7 @@ const FiltersSideBar = ({
         {!isNilOrError(ideasFilterCounts) && (
           <FormattedMessage
             {...messages.a11y_totalItems}
-            values={{ ideasCount: ideasFilterCounts.total }}
+            values={{ ideasCount: ideasFilterCounts.data.attributes.total }}
           />
         )}
       </ScreenReaderOnly>

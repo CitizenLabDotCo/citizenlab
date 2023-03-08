@@ -1,12 +1,11 @@
 import React from 'react';
 import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
 import Topics from 'components/PostShowComponents/Topics';
-import useIdea from 'hooks/useIdea';
+import useIdeaById from 'api/ideas/useIdeaById';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props {
@@ -15,17 +14,13 @@ interface Props {
   className?: string;
 }
 
-const IdeaTopics = ({
-  ideaId,
-  compact,
-  className,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
-  const idea = useIdea({ ideaId });
+const IdeaTopics = ({ ideaId, compact, className }: Props) => {
+  const { formatMessage } = useIntl();
+  const { data: idea } = useIdeaById(ideaId);
 
   if (!isNilOrError(idea)) {
     const topicIds =
-      idea.relationships.topics?.data.map((item) => item.id) || [];
+      idea.data.relationships.topics?.data.map((item) => item.id) || [];
 
     if (topicIds.length > 0) {
       return (
@@ -40,4 +35,4 @@ const IdeaTopics = ({
   return null;
 };
 
-export default injectIntl(IdeaTopics);
+export default IdeaTopics;

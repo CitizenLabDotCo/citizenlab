@@ -31,8 +31,7 @@ import useObserveEvent from 'hooks/useObserveEvent';
 
 import { CLErrors, Message } from 'typings';
 import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
-import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl, MessageDescriptor } from 'utils/cl-intl';
 import { ErrorObject } from 'ajv';
 import { forOwn } from 'lodash-es';
 import { APIErrorsContext, FormContext } from './contexts';
@@ -113,8 +112,8 @@ const Form = memo(
     getAjvErrorMessage,
     getApiErrorMessage,
     config,
-    intl: { formatMessage },
-  }: Props & WrappedComponentProps) => {
+  }: Props) => {
+    const { formatMessage } = useIntl();
     const [data, setData] = useState<FormData>(initialFormData);
     const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
     const [loading, setLoading] = useState(false);
@@ -308,4 +307,4 @@ const Form = memo(
   }
 );
 
-export default injectIntl(Form);
+export default Form;

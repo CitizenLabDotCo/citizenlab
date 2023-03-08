@@ -11,11 +11,10 @@ import IdeasEditMeta from '../IdeasEditMeta';
 
 // services
 import { deleteIdeaImage } from 'services/ideaImages';
-import { usePermission } from 'services/permissions';
-import { updateIdea } from 'services/ideas';
-
+import { hasPermission } from 'services/permissions';
+import useUpdateIdea from 'api/ideas/useUpdateIdea';
 // hooks
-import useIdea from 'hooks/useIdea';
+import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
 import useInputSchema from 'hooks/useInputSchema';
@@ -38,9 +37,12 @@ import { PreviousPathnameContext } from 'context';
 const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
   const authUser = useAuthUser();
-  const idea = useIdea({ ideaId });
+  const { data: idea } = useIdeaById(ideaId);
+  const { mutate: updateIdea } = useUpdateIdea();
   const project = useProject({
-    projectId: isNilOrError(idea) ? null : idea.relationships.project.data.id,
+    projectId: isNilOrError(idea)
+      ? null
+      : idea.data.relationships.project.data.id,
   });
   const remoteImages = useIdeaImages(ideaId);
   const remoteFiles = useResourceFiles({
@@ -52,17 +54,20 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
     projectId: project?.id,
     inputId: ideaId,
   });
-  const permisison = usePermission({
-    item: isNilOrError(idea) ? null : idea,
-    action: 'edit',
-    context: idea,
-  });
 
   useEffect(() => {
-    if (!isNilOrError(idea) && !permisison) {
-      clHistory.replace(previousPathName || (!authUser ? '/sign-up' : '/'));
+    if (!isNilOrError(idea)) {
+      const granted = hasPermission({
+        item: idea.data,
+        action: 'edit',
+        context: idea.data,
+      });
+
+      if (!granted) {
+        clHistory.replace(previousPathName || (!authUser ? '/sign-up' : '/'));
+      }
     }
-  }, [authUser, idea, previousPathName, permisison]);
+  }, [idea, previousPathName, authUser]);
 
   const initialFormData =
     isNilOrError(idea) || !schema
@@ -70,20 +75,20 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
       : Object.fromEntries(
           Object.keys(schema.properties).map((prop) => {
             if (prop === 'author_id') {
-              return [prop, idea.relationships?.author?.data?.id];
-            } else if (idea.attributes?.[prop]) {
-              return [prop, idea.attributes?.[prop]];
+              return [prop, idea.data.relationships?.author?.data?.id];
+            } else if (idea.data.attributes?.[prop]) {
+              return [prop, idea.data.attributes?.[prop]];
             } else if (
               prop === 'topic_ids' &&
-              Array.isArray(idea.relationships?.topics?.data)
+              Array.isArray(idea.data.relationships?.topics?.data)
             ) {
               return [
                 prop,
-                idea.relationships?.topics?.data.map((rel) => rel.id),
+                idea.data.relationships?.topics?.data.map((rel) => rel.id),
               ];
             } else if (
               prop === 'idea_images_attributes' &&
-              Array.isArray(idea.relationships?.idea_images?.data)
+              Array.isArray(idea.data.relationships?.idea_images?.data)
             ) {
               return [prop, remoteImages];
             } else if (prop === 'idea_files_attributes') {
@@ -100,11 +105,11 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   if (
     initialFormData &&
     !isNilOrError(idea) &&
-    idea.attributes &&
-    idea.attributes.location_point_geojson
+    idea.data.attributes &&
+    idea.data.attributes.location_point_geojson
   ) {
     initialFormData['location_point_geojson'] =
-      idea.attributes.location_point_geojson;
+      idea.data.attributes.location_point_geojson;
   }
 
   const onSubmit = async (data) => {
@@ -135,15 +140,21 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
       publication_status: 'published',
     };
 
-    const idea = await updateIdea(
-      ideaId,
-      isImageNew
-        ? omit(payload, 'idea_files_attributes')
-        : omit(payload, ['idea_images_attributes', 'idea_files_attributes'])
+    updateIdea(
+      {
+        id: ideaId,
+        requestBody: isImageNew
+          ? omit(payload, 'idea_files_attributes')
+          : omit(payload, ['idea_images_attributes', 'idea_files_attributes']),
+      },
+      {
+        onSuccess: (idea) => {
+          clHistory.push({
+            pathname: `/ideas/${idea.data.attributes.slug}`,
+          });
+        },
+      }
     );
-    clHistory.push({
-      pathname: `/ideas/${idea.data.attributes.slug}`,
-    });
   };
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(
@@ -194,7 +205,7 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
       pt="60px"
       pb="40px"
     >
-      <GoBackToIdeaPage idea={idea} />
+      <GoBackToIdeaPage idea={idea.data} />
 
       <FormattedMessage
         {...{
@@ -223,7 +234,7 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
             uiSchema={uiSchema}
             onSubmit={onSubmit}
             initialFormData={initialFormData}
-            inputId={idea.id}
+            inputId={idea.data.id}
             getAjvErrorMessage={getAjvErrorMessage}
             getApiErrorMessage={getApiErrorMessage}
             config={'input'}

@@ -12,7 +12,7 @@ import { WrappedComponentProps, FormattedDate } from 'react-intl';
 import messages from './messages';
 
 // hooks
-import useIdea from 'hooks/useIdea';
+import useIdeaById from 'api/ideas/useIdeaById';
 
 // style
 import styled from 'styled-components';
@@ -50,10 +50,10 @@ export interface Props {
 
 const PostedBy = memo<Props & WrappedComponentProps>(
   ({ authorId, ideaId, compact, className, intl: { formatMessage } }) => {
-    const idea = useIdea({ ideaId });
+    const { data: idea } = useIdeaById(ideaId);
 
     if (!isNilOrError(idea)) {
-      const ideaPublishedAtDate = idea.attributes.published_at;
+      const ideaPublishedAtDate = idea.data.attributes.published_at;
       const userName = (
         <UserName
           userId={authorId}

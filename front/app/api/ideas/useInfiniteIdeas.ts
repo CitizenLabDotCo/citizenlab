@@ -2,8 +2,8 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
-import ideaKeys from './keys';
-import { IIdeas, IQueryParameters, IdeaKeys } from './types';
+import ideasKeys from './keys';
+import { IIdeas, IQueryParameters, IdeasKeys } from './types';
 
 const defaultPageSize = 12;
 
@@ -19,8 +19,8 @@ const fetchInfiniteIdeas = (queryParameters: IQueryParameters) =>
   });
 
 const useInfiniteIdeas = (queryParams: IQueryParameters) => {
-  return useInfiniteQuery<IIdeas, CLErrors, IIdeas, IdeaKeys>({
-    queryKey: ideaKeys.infiniteList(queryParams),
+  return useInfiniteQuery<IIdeas, CLErrors, IIdeas, IdeasKeys>({
+    queryKey: ideasKeys.infiniteList(queryParams),
     queryFn: ({ pageParam }) =>
       fetchInfiniteIdeas({ ...queryParams, 'page[number]': pageParam }),
     getNextPageParam: (lastPage) => {

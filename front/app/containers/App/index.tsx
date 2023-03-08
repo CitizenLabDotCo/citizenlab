@@ -380,15 +380,17 @@ const App = ({ children }: Props) => {
               <Meta />
               <ErrorBoundary>
                 <Suspense fallback={null}>
-                  <PostPageFullscreenModal
-                    signUpInModalOpened={signUpInModalOpened}
-                    type={modalType}
-                    postId={modalId}
-                    slug={modalSlug}
-                    close={closePostPageModal}
-                    navbarRef={navbarRef}
-                    mobileNavbarRef={mobileNavbarRef}
-                  />
+                  {modalId && (
+                    <PostPageFullscreenModal
+                      signUpInModalOpened={signUpInModalOpened}
+                      type={modalType}
+                      postId={modalId}
+                      slug={modalSlug}
+                      close={closePostPageModal}
+                      navbarRef={navbarRef}
+                      mobileNavbarRef={mobileNavbarRef}
+                    />
+                  )}
                 </Suspense>
               </ErrorBoundary>
               <ErrorBoundary>

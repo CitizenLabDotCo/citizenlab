@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import ideaKeys from './keys';
-import { IIdeas, IQueryParameters, IdeaKeys } from './types';
+import ideasKeys from './keys';
+import { IIdeas, IQueryParameters, IdeasKeys } from './types';
 
 export const defaultPageSize = 24;
 
@@ -18,8 +18,8 @@ const fetchIdeas = (queryParameters: IQueryParameters) =>
   });
 
 const useIdeas = (queryParams: IQueryParameters) => {
-  return useQuery<IIdeas, CLErrors, IIdeas, IdeaKeys>({
-    queryKey: ideaKeys.list(queryParams),
+  return useQuery<IIdeas, CLErrors, IIdeas, IdeasKeys>({
+    queryKey: ideasKeys.list(queryParams),
     queryFn: () => fetchIdeas(queryParams),
   });
 };

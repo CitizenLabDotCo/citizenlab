@@ -61,7 +61,7 @@ const StatusFilterBox = memo<Props>(
           <StatusFilter
             type="idea"
             statuses={ideaStatuses}
-            filterCounts={ideasFilterCounts}
+            filterCounts={ideasFilterCounts?.data.attributes}
             selectedStatusId={selectedStatusId}
             onChange={handleOnChange}
           />

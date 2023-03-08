@@ -23,7 +23,7 @@ RSpec.describe Analytics::ImportLatestMatomoDataJob do
   end
 
   describe '.perform_for_all_tenants' do
-    it 'enqueues an import job for each tenant', slow_test: true do
+    it 'enqueues an import job for each tenant' do
       create(:tenant)
 
       options = { min_duration: 2.days, max_nb_batches: 3, batch_size: 100 }

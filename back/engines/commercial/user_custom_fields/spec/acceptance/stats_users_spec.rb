@@ -85,7 +85,7 @@ resource 'Stats - Users' do
       context "when 'gender' custom field has no reference distribution" do
         example_request 'Users by gender' do
           expect(response_status).to eq 200
-          expect(json_response_body).to include(
+          expect(json_response_body.dig(:data, :attributes)).to include(
             series: {
               users: { female: 2, unspecified: 1, male: 0, _blank: 0 },
               expected_users: nil,
@@ -102,7 +102,7 @@ resource 'Stats - Users' do
 
         example_request 'Users by gender with expected user counts' do
           expect(response_status).to eq 200
-          expect(json_response_body).to include(
+          expect(json_response_body.dig(:data, :attributes)).to include(
             series: {
               users: { female: 2, unspecified: 1, male: 0, _blank: 0 },
               expected_users: {
@@ -186,7 +186,7 @@ resource 'Stats - Users' do
 
         example_request 'Users by birthyear' do
           expect(response_status).to eq 200
-          expect(json_response_body).to match({
+          expect(json_response_body.dig(:data, :attributes)).to match({
             series: {
               users: { '1980': 2, '1976': 1, _blank: 0 },
               expected_users: nil,
@@ -201,7 +201,7 @@ resource 'Stats - Users' do
 
         example_request 'Users by birthyear filtered by project' do
           expect(response_status).to eq 200
-          expect(json_response_body[:series][:users].values.sum).to eq 1
+          expect(json_response_body.dig(:data, :attributes)[:series][:users].values.sum).to eq 1
         end
       end
 
@@ -250,7 +250,7 @@ resource 'Stats - Users' do
 
       example_request 'Users by domicile' do
         expect(response_status).to eq 200
-        expect(json_response_body).to match({
+        expect(json_response_body.dig(:data, :attributes)).to match({
           areas: Area.all.to_h { |area| [area.id, area.attributes.slice('title_multiloc')] },
           series: {
             users: {
@@ -279,64 +279,6 @@ resource 'Stats - Users' do
             ['Westside', Area.ids[1], 1],
             ['Westside', Area.ids[2], 0],
             ['unknown', '_blank', 1]
-          ]
-        end
-      end
-    end
-  end
-
-  describe 'by_education endpoints' do
-    before do
-      travel_to start_at + 24.days do
-        group_members = %w[3 3 5].map { |education| create(:user, education: education) }
-        @group = create_group(group_members)
-        _non_member = create(:user, education: '3')
-      end
-    end
-
-    let(:group) { @group.id }
-
-    get 'web_api/v1/stats/users_by_education' do
-      time_boundary_parameters self
-      group_filter_parameter self
-      parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
-
-      example_request 'Users by education' do
-        expect(response_status).to eq 200
-
-        expected_users = CustomField.find_by(key: 'education')
-          .options.to_h { |option| [option.key, 0] }
-          .merge('3': 2, '5': 1, _blank: 0)
-          .symbolize_keys
-
-        expect(json_response_body).to include(
-          series: {
-            users: expected_users,
-            expected_users: nil,
-            reference_population: nil
-          }
-        )
-      end
-    end
-
-    get 'web_api/v1/stats/users_by_education_as_xlsx' do
-      time_boundary_parameters self
-      group_filter_parameter self
-      parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
-
-      include_examples('xlsx export', 'education') do
-        let(:expected_worksheet_name) { 'users_by_education' }
-        let(:expected_worksheet_values) do
-          [
-            %w[option option_id users],
-            ['youth council', 2, 0],
-            ['youth council', 3, 2],
-            ['youth council', 4, 0],
-            ['youth council', 5, 1],
-            ['youth council', 6, 0],
-            ['youth council', 7, 0],
-            ['youth council', 8, 0],
-            ['_blank', '_blank', 0]
           ]
         end
       end
@@ -383,7 +325,7 @@ resource 'Stats - Users' do
         context 'when the custom field has no reference distribution' do
           example_request 'Users by custom field (select)' do
             expect(response_status).to eq 200
-            expect(json_response_body).to match({
+            expect(json_response_body.dig(:data, :attributes)).to match({
               options: {
                 @option1.key => { title_multiloc: @option1.title_multiloc, ordering: 0 },
                 @option2.key => { title_multiloc: @option2.title_multiloc, ordering: 1 },
@@ -408,7 +350,7 @@ resource 'Stats - Users' do
 
           example_request 'Users by custom field (select) including expected nb of users' do
             expect(response_status).to eq 200
-            expect(json_response_body).to include(series: hash_including(
+            expect(json_response_body.dig(:data, :attributes)).to include(series: hash_including(
               expected_users: @custom_field.options.to_h { |option| [option.key.to_sym, kind_of(Numeric)] }
             ))
           end
@@ -441,7 +383,7 @@ resource 'Stats - Users' do
 
         example_request 'Users by custom field (multiselect)' do
           expect(response_status).to eq 200
-          expect(json_response_body).to match({
+          expect(json_response_body.dig(:data, :attributes)).to match({
             options: {
               @option1.key => { title_multiloc: @option1.title_multiloc, ordering: 0 },
               @option2.key => { title_multiloc: @option2.title_multiloc, ordering: 1 },
@@ -485,7 +427,7 @@ resource 'Stats - Users' do
 
         example_request 'Users by custom field (checkbox)' do
           expect(response_status).to eq 200
-          expect(json_response_body).to match({
+          expect(json_response_body.dig(:data, :attributes)).to match({
             series: {
               users: {
                 # rubocop:disable Lint/BooleanSymbol
@@ -526,7 +468,7 @@ resource 'Stats - Users' do
 
         example_request 'Users by custom field (filtered)' do
           expect(response_status).to eq 200
-          expect(json_response_body).to match({
+          expect(json_response_body.dig(:data, :attributes)).to match({
             series: {
               users: {
                 # rubocop:disable Lint/BooleanSymbol
@@ -547,7 +489,7 @@ resource 'Stats - Users' do
 
         example_request 'Users by custom field (filtered)' do
           expect(response_status).to eq 200
-          expect(json_response_body).to match({
+          expect(json_response_body.dig(:data, :attributes)).to match({
             series: {
               users: {
                 # rubocop:disable Lint/BooleanSymbol
@@ -741,7 +683,7 @@ resource 'Stats - Users' do
           travel_to(Time.zone.local(2020, 1, 1)) { do_request }
 
           expect(response_status).to eq 200
-          expect(json_response_body).to match(
+          expect(json_response_body.dig(:data, :attributes)).to match(
             total_user_count: 8,
             unknown_age_count: 1,
             series: {
@@ -767,7 +709,7 @@ resource 'Stats - Users' do
           travel_to(Time.zone.local(2020, 1, 1)) { do_request }
 
           expect(response_status).to eq 200
-          expect(json_response_body).to match(
+          expect(json_response_body.dig(:data, :attributes)).to match(
             total_user_count: 8,
             unknown_age_count: 1,
             series: {
