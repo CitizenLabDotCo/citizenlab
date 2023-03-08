@@ -79,7 +79,7 @@ resource 'AppConfigurations' do
     let(:organization_name) do
       {
         'en' => 'TestTown',
-        'nl-BE' => 'TestTowm',
+        'nl-BE' => 'TestTown',
         'fr-FR' => 'TestTown'
       }
     end
