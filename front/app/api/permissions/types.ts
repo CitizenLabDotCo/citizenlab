@@ -1,11 +1,5 @@
 import { IInitiativeAction } from 'services/initiatives';
 import { IPCAction } from 'typings';
-import { Keys } from 'utils/cl-react-query/types';
-import authenticationRequirementKeys from './keys';
-
-export type AuthenticationRequirementKeys = Keys<
-  typeof authenticationRequirementKeys
->;
 
 interface InitiativeContext {
   type: 'initiative';
