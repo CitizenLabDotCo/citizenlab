@@ -227,4 +227,4 @@ class AppConfiguration < ApplicationRecord
   end
 end
 
-AppConfiguration.include_if_ee('MultiTenancy::Extensions::AppConfiguration')
+AppConfiguration.include(MultiTenancy::Extensions::AppConfiguration)

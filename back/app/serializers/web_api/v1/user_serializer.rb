@@ -42,4 +42,4 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   end
 end
 
-WebApi::V1::UserSerializer.include_if_ee('Verification::Patches::WebApi::V1::UserSerializer')
+WebApi::V1::UserSerializer.include(Verification::Patches::WebApi::V1::UserSerializer)

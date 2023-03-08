@@ -554,9 +554,9 @@ class User < ApplicationRecord
   end
 end
 
-User.include_if_ee('IdeaAssignment::Extensions::User')
-User.include_if_ee('Verification::Patches::User')
+User.include(IdeaAssignment::Extensions::User)
+User.include(Verification::Patches::User)
 
-User.prepend_if_ee('MultiTenancy::Patches::User')
-User.prepend_if_ee('MultiTenancy::Patches::UserConfirmation::User')
-User.prepend_if_ee('SmartGroups::Patches::User')
+User.prepend(MultiTenancy::Patches::User)
+User.prepend(MultiTenancy::Patches::UserConfirmation::User)
+User.prepend(SmartGroups::Patches::User)
