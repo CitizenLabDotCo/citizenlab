@@ -88,9 +88,9 @@ class PermissionsService
     return if user && UserRoleService.new.can_moderate?(permission.permission_scope, user)
 
     reason = case permission.permitted_by
-    when 'users' then :not_signed_in unless user # TODO
+    when 'users' then :not_signed_in unless user
     when 'admins_moderators' then :not_permitted
-    when 'groups' then permission.denied_when_permitted_by_groups?(user)
+    when 'groups' then denied_when_permitted_by_groups?(permission, user)
     else
       raise "Unsupported permitted_by: '#{permission.permitted_by}'."
     end
@@ -107,8 +107,8 @@ class PermissionsService
     DENIED_REASONS[:missing_data]
   end
 
-  def denied_when_permitted_by_groups?(user)
-    :not_permitted if user.nil? || !user.in_any_groups?(groups)
+  def denied_when_permitted_by_groups?(permission, user)
+    :not_permitted if user.nil? || !user.in_any_groups?(permission.groups)
   end
 
   def requirements_mapping
