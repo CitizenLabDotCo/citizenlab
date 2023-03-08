@@ -10,6 +10,8 @@ import { deleteProjectModerator } from 'services/projectModerators';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 import { Text, Box } from '@citizenlab/cl2-component-library';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import seatsKeys from 'api/seats/keys';
 
 // hooks
 import useProjectModerators from 'hooks/useProjectModerators';
@@ -23,6 +25,10 @@ const UnknownName = styled.span`
   font-style: italic;
 `;
 
+const Container = styled(List)`
+  margin-bottom: 20px;
+`;
+
 interface Props {
   projectId: string;
 }
@@ -33,14 +39,15 @@ const ModeratorList = memo(
     const authUser = useAuthUser();
 
     const handleDeleteClick =
-      (projectId: string, moderatorId: string) => (event: FormEvent) => {
+      (projectId: string, moderatorId: string) => async (event: FormEvent) => {
         event.preventDefault();
         const deleteMessage = formatMessage(
           messages.moderatorDeletionConfirmation
         );
 
         if (window.confirm(deleteMessage)) {
-          deleteProjectModerator(projectId, moderatorId);
+          await deleteProjectModerator(projectId, moderatorId);
+          queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
         }
       };
 
@@ -50,7 +57,7 @@ const ModeratorList = memo(
 
     if (!isNilOrError(authUser) && !isNilOrError(moderators)) {
       return (
-        <List>
+        <Container>
           <>
             {moderators.map((moderator, index) => {
               const firstName = moderator.attributes.first_name;
@@ -95,7 +102,7 @@ const ModeratorList = memo(
               );
             })}
           </>
-        </List>
+        </Container>
       );
     }
 
