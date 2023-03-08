@@ -46,9 +46,7 @@ resource 'Votes' do
     end
   end
 
-  def disabled_reasons
-    @disabled_reasons ||= ParticipationContextService::VOTING_DISABLED_REASONS.values + Permission.denied_reasons.values
-  end
+  disabled_reasons = ParticipationContextService::VOTING_DISABLED_REASONS.values + Permission.denied_reasons.values
 
   post 'web_api/v1/initiatives/:initiative_id/votes' do
     with_options scope: :vote do
