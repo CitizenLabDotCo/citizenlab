@@ -320,7 +320,7 @@ resource 'Users' do
         parameter :sort, "Sort user by 'created_at', '-created_at', 'last_name', '-last_name', 'email', '-email', 'role', '-role'", required: false
         parameter :group, 'Filter by group_id', required: false
         parameter :can_moderate_project, 'Filter by users (and admins) who can moderate the project (by id)', required: false
-        parameter :can_moderate, 'Filter out admins and moderators', required: false
+        parameter :blocked, 'Return only blocked users', required: false
 
         example_request 'List all users' do
           expect(status).to eq 200
@@ -457,6 +457,26 @@ resource 'Users' do
           do_request(can_admin: true)
           json_response = json_parse(response_body)
           expect(json_response[:data].pluck(:id)).to match_array [a.id, @user.id]
+        end
+
+        example 'List all blocked users' do
+          blocked_users = create_list(:user, 2, block_start_at: 30.days.ago)
+
+          settings = AppConfiguration.instance.settings
+          settings['user_blocking'] = {
+            'enabled' => true,
+            'allowed' => true,
+            'duration' => 90
+          }
+          AppConfiguration.instance.update!(settings: settings)
+
+          do_request blocked: true
+
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(User.count).to be > blocked_users.count # If unblocked users exist, then subsequent tests meaningful.
+          expect(json_response[:data].size).to eq 2
+          expect(json_response[:data].pluck(:id)).to match_array blocked_users.map(&:id)
         end
       end
 
