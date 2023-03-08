@@ -284,12 +284,16 @@ class CommentVote extends PureComponent<Props & WrappedComponentProps, State> {
         });
       }
     } else {
-      if (commentVotingPermissionInitiative?.action === 'sign_in_up') {
+      if (
+        commentVotingPermissionInitiative?.authenticationRequirements ===
+        'sign_in_up'
+      ) {
         openSignUpInModal({
           onSuccess: () => this.handleVoteClick(),
         });
       } else if (
-        commentVotingPermissionInitiative?.action === 'sign_in_up_and_verify'
+        commentVotingPermissionInitiative?.authenticationRequirements ===
+        'sign_in_up_and_verify'
       ) {
         openSignUpInModal({
           onSuccess: () => this.handleVoteClick(),
@@ -299,7 +303,10 @@ class CommentVote extends PureComponent<Props & WrappedComponentProps, State> {
             type: 'initiative',
           },
         });
-      } else if (commentVotingPermissionInitiative?.action === 'verify') {
+      } else if (
+        commentVotingPermissionInitiative?.authenticationRequirements ===
+        'verify'
+      ) {
         openVerificationModal({
           context: {
             action: 'commenting_initiative',

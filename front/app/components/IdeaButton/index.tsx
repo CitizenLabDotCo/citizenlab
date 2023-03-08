@@ -148,11 +148,12 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
       notActivePhase: messages.postingInNonActivePhases,
       maybeNotPermitted: messages.postingMayNotBePermitted,
     };
-    const { enabled, show, disabledReason, action } = getIdeaPostingRules({
-      project,
-      phase,
-      authUser,
-    });
+    const { enabled, show, disabledReason, authenticationRequirements } =
+      getIdeaPostingRules({
+        project,
+        phase,
+        authUser,
+      });
 
     const onClick = (event: React.MouseEvent) => {
       event.preventDefault();
@@ -160,12 +161,15 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
       trackEventByName(tracks.postYourIdeaButtonClicked);
 
       // if not logged in
-      if (action === 'sign_in_up' || action === 'sign_in_up_and_verify') {
+      if (
+        authenticationRequirements === 'sign_in_up' ||
+        authenticationRequirements === 'sign_in_up_and_verify'
+      ) {
         signUp();
       }
 
       // if logged in but not verified and verification required
-      if (action === 'verify') {
+      if (authenticationRequirements === 'verify') {
         verify();
       }
 
@@ -230,7 +234,8 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
 
         const pcType = participationContextType;
         const pcId = pcType === 'phase' ? phaseId : projectId;
-        const shouldVerify = action === 'sign_in_up_and_verify';
+        const shouldVerify =
+          authenticationRequirements === 'sign_in_up_and_verify';
 
         if (isNilOrError(authUser) && !isNilOrError(project)) {
           trackEventByName(tracks.signUpInModalOpened);

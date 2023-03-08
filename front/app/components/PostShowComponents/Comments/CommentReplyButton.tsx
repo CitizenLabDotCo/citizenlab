@@ -132,12 +132,16 @@ const CommentReplyButton = memo<Props>(
             });
           }
         } else {
-          if (commentingPermissionInitiative?.action === 'sign_in_up') {
+          if (
+            commentingPermissionInitiative?.authenticationRequirements ===
+            'sign_in_up'
+          ) {
             openSignUpInModal({
               onSuccess: () => onReply(),
             });
           } else if (
-            commentingPermissionInitiative?.action === 'sign_in_up_and_verify'
+            commentingPermissionInitiative?.authenticationRequirements ===
+            'sign_in_up_and_verify'
           ) {
             openSignUpInModal({
               onSuccess: () => onReply(),
@@ -147,7 +151,10 @@ const CommentReplyButton = memo<Props>(
                 type: 'initiative',
               },
             });
-          } else if (commentingPermissionInitiative?.action === 'verify') {
+          } else if (
+            commentingPermissionInitiative?.authenticationRequirements ===
+            'verify'
+          ) {
             openVerificationModal({
               context: {
                 action: 'commenting_initiative',

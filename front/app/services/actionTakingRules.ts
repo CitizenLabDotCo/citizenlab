@@ -18,25 +18,25 @@ interface ActionPermissionHide {
   show: false;
   enabled: null;
   disabledReason: null;
-  action: null;
+  authenticationRequirements: null;
 }
 interface ActionPermissionEnabled {
   show: true;
   enabled: true;
   disabledReason: null;
-  action: null;
+  authenticationRequirements: null;
 }
 interface ActionPermissionDisabled<DisabledReasons> {
   show: true;
   enabled: false;
   disabledReason: DisabledReasons;
-  action: null;
+  authenticationRequirements: null;
 }
 interface ActionPermissionMaybe {
   show: true;
   enabled: 'maybe';
   disabledReason: null;
-  action: IPreliminaryAction;
+  authenticationRequirements: AuthenticationRequirements;
 }
 
 export type ActionPermission<DisabledReasons> =
@@ -58,7 +58,7 @@ export type IIdeaPostingDisabledReason =
   | 'futureEnabled';
 
 // When disabled but user might get access, here are the next steps for this user
-export type IPreliminaryAction =
+export type AuthenticationRequirements =
   | 'sign_in_up'
   | 'verify'
   | 'sign_in_up_and_verify';
@@ -69,48 +69,48 @@ const ideaPostingDisabledReason = (
   futureEnabled: string | null
 ): {
   disabledReason: IIdeaPostingDisabledReason | null;
-  action: IPreliminaryAction | null;
+  authenticationRequirements: AuthenticationRequirements | null;
 } => {
   switch (backendReason) {
     case 'not_verified':
       return signedIn
         ? {
             disabledReason: null,
-            action: 'verify',
+            authenticationRequirements: 'verify',
           }
         : {
             disabledReason: null,
-            action: 'sign_in_up_and_verify',
+            authenticationRequirements: 'sign_in_up_and_verify',
           };
     case 'not_signed_in':
       return {
         disabledReason: null,
-        action: 'sign_in_up',
+        authenticationRequirements: 'sign_in_up',
       };
     case 'project_inactive':
       return {
         disabledReason: futureEnabled ? 'futureEnabled' : 'projectInactive',
-        action: null,
+        authenticationRequirements: null,
       };
     case 'posting_disabled':
       return {
         disabledReason: 'postingDisabled',
-        action: null,
+        authenticationRequirements: null,
       };
     case 'posting_limited_max_reached':
       return {
         disabledReason: 'postingLimitedMaxReached',
-        action: null,
+        authenticationRequirements: null,
       };
     case 'not_permitted':
       return {
         disabledReason: signedIn ? 'notPermitted' : 'maybeNotPermitted',
-        action: null,
+        authenticationRequirements: null,
       };
     default:
       return {
         disabledReason: 'notPermitted',
-        action: null,
+        authenticationRequirements: null,
       };
   }
 };
@@ -142,7 +142,7 @@ export const getIdeaPostingRules = ({
         show: true,
         enabled: true,
         disabledReason: null,
-        action: null,
+        authenticationRequirements: null,
       };
     }
 
@@ -161,7 +161,7 @@ export const getIdeaPostingRules = ({
           show: false,
           enabled: null,
           disabledReason: null,
-          action: null,
+          authenticationRequirements: null,
         };
       }
 
@@ -176,7 +176,7 @@ export const getIdeaPostingRules = ({
           show: true,
           enabled: false,
           disabledReason: 'notActivePhase' as IIdeaPostingDisabledReason,
-          action: null,
+          authenticationRequirements: null,
         };
       }
     }
@@ -192,18 +192,15 @@ export const getIdeaPostingRules = ({
           show: true,
           enabled: false,
           disabledReason: 'notPermitted' as IIdeaPostingDisabledReason,
-          action: null,
+          authenticationRequirements: null,
         };
       }
       if (disabled_reason) {
-        const { disabledReason, action } = ideaPostingDisabledReason(
-          disabled_reason,
-          signedIn,
-          future_enabled
-        );
-        if (action) {
+        const { disabledReason, authenticationRequirements } =
+          ideaPostingDisabledReason(disabled_reason, signedIn, future_enabled);
+        if (authenticationRequirements) {
           return {
-            action,
+            authenticationRequirements,
             disabledReason: null,
             show: true,
             enabled: 'maybe',
@@ -212,7 +209,7 @@ export const getIdeaPostingRules = ({
         if (disabledReason) {
           return {
             disabledReason,
-            action: null,
+            authenticationRequirements: null,
             show: true,
             enabled: false,
           } as ActionPermissionDisabled<IIdeaPostingDisabledReason>;
@@ -222,7 +219,7 @@ export const getIdeaPostingRules = ({
           show: true,
           enabled: true,
           disabledReason: null,
-          action: null,
+          authenticationRequirements: null,
         };
       }
     }
@@ -239,7 +236,7 @@ export const getIdeaPostingRules = ({
         show: false,
         enabled: null,
         disabledReason: null,
-        action: null,
+        authenticationRequirements: null,
       };
     }
 
@@ -248,19 +245,16 @@ export const getIdeaPostingRules = ({
         show: true,
         enabled: true,
         disabledReason: null,
-        action: null,
+        authenticationRequirements: null,
       };
     }
 
-    const { disabledReason, action } = ideaPostingDisabledReason(
-      disabled_reason,
-      signedIn,
-      future_enabled
-    );
+    const { disabledReason, authenticationRequirements } =
+      ideaPostingDisabledReason(disabled_reason, signedIn, future_enabled);
 
-    if (action) {
+    if (authenticationRequirements) {
       return {
-        action,
+        authenticationRequirements,
         disabledReason: null,
         show: true,
         enabled: 'maybe',
@@ -269,7 +263,7 @@ export const getIdeaPostingRules = ({
 
     return {
       disabledReason,
-      action: null,
+      authenticationRequirements: null,
       show: true,
       enabled: false,
     } as ActionPermissionDisabled<IIdeaPostingDisabledReason>;
@@ -280,7 +274,7 @@ export const getIdeaPostingRules = ({
     show: true,
     enabled: true,
     disabledReason: null,
-    action: null,
+    authenticationRequirements: null,
   };
 };
 
@@ -345,7 +339,7 @@ export const getPollTakingRules = ({
         enabled: false,
         disabledReason: 'notActivePhase',
         show: true,
-        action: null,
+        authenticationRequirements: null,
       };
     }
   }
@@ -355,7 +349,7 @@ export const getPollTakingRules = ({
       enabled,
       disabledReason: null,
       show: true,
-      action: null,
+      authenticationRequirements: null,
     };
   }
   // if not in phase context
@@ -363,7 +357,7 @@ export const getPollTakingRules = ({
     enabled: false,
     disabledReason: pollTakingDisabledReason(disabled_reason, !!signedIn),
     show: true,
-    action: null,
+    authenticationRequirements: null,
   };
 };
 
@@ -423,7 +417,7 @@ export const getSurveyTakingRules = ({
         disabledReason: enabled
           ? null
           : surveyTakingDisabledReason(disabled_reason, !!signedIn),
-        action: null,
+        authenticationRequirements: null,
         show: true,
       } as
         | ActionPermissionDisabled<ISurveyTakingDisabledReason>
@@ -433,7 +427,7 @@ export const getSurveyTakingRules = ({
       return {
         enabled: false,
         disabledReason: 'notActivePhase',
-        action: null,
+        authenticationRequirements: null,
         show: true,
       };
     }
@@ -446,7 +440,7 @@ export const getSurveyTakingRules = ({
       disabledReason: enabled
         ? null
         : surveyTakingDisabledReason(disabled_reason, !!signedIn),
-      action: null,
+      authenticationRequirements: null,
       show: true,
     } as
       | ActionPermissionDisabled<ISurveyTakingDisabledReason>

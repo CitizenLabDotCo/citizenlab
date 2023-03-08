@@ -31,7 +31,7 @@ export default function useInitiativesPermissions(action: IInitiativeAction) {
             show: true,
             enabled: true,
             disabledReason: null,
-            action: null,
+            authenticationRequirements: null,
           });
         } else {
           switch (actionDescriptor.disabled_reason) {
@@ -41,14 +41,14 @@ export default function useInitiativesPermissions(action: IInitiativeAction) {
                   show: true,
                   enabled: 'maybe',
                   disabledReason: null,
-                  action: 'sign_in_up_and_verify',
+                  authenticationRequirements: 'sign_in_up_and_verify',
                 });
               } else {
                 setActionPermission({
                   show: true,
                   enabled: 'maybe',
                   disabledReason: null,
-                  action: 'verify',
+                  authenticationRequirements: 'verify',
                 });
               }
               break;
@@ -57,7 +57,7 @@ export default function useInitiativesPermissions(action: IInitiativeAction) {
                 show: true,
                 enabled: 'maybe',
                 disabledReason: null,
-                action: 'sign_in_up',
+                authenticationRequirements: 'sign_in_up',
               });
               break;
             default:
@@ -65,7 +65,7 @@ export default function useInitiativesPermissions(action: IInitiativeAction) {
                 show: true,
                 enabled: false,
                 disabledReason: 'notPermitted',
-                action: null,
+                authenticationRequirements: null,
               });
           }
         }

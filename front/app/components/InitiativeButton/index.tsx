@@ -18,9 +18,12 @@ interface Props {
 }
 
 const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
-  const { disabledReason, action, enabled } = useInitiativesPermissions(
-    'posting_initiative'
-  ) || { disabledReason: null, action: null, enabled: null };
+  const { disabledReason, authenticationRequirements, enabled } =
+    useInitiativesPermissions('posting_initiative') || {
+      disabledReason: null,
+      action: null,
+      enabled: null,
+    };
 
   const redirectToInitiativeForm = useCallback(() => {
     trackEventByName('redirected to initiatives form');
@@ -45,7 +48,7 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
       });
 
       if (enabled) {
-        switch (action) {
+        switch (authenticationRequirements) {
           case 'sign_in_up':
             trackEventByName(
               'Sign up/in modal opened in response to clicking new initiative'
@@ -87,7 +90,13 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
         }
       }
     },
-    [enabled, action, disabledReason, location, redirectToInitiativeForm]
+    [
+      enabled,
+      authenticationRequirements,
+      disabledReason,
+      location,
+      redirectToInitiativeForm,
+    ]
   );
 
   return (

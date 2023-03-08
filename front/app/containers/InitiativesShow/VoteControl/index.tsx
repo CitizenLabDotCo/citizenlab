@@ -121,8 +121,9 @@ interface Props extends InputProps, DataProps {}
 class VoteControl extends PureComponent<Props, State> {
   handleOnvote = () => {
     const { votingPermission } = this.props;
-    const requiredAction = votingPermission?.action;
-    switch (requiredAction) {
+    const authenticationRequirements =
+      votingPermission?.authenticationRequirements;
+    switch (authenticationRequirements) {
       case 'sign_in_up':
         trackEventByName(
           'Sign up/in modal opened in response to clicking vote initiative'

@@ -39,6 +39,9 @@ class CommentingInitiativesDisabled extends PureComponent<Props> {
   calculateMessageDescriptor = () => {
     const { authUser, commetingPermissions } = this.props;
     const isLoggedIn = !isNilOrError(authUser);
+    const authenticationRequirements =
+      commetingPermissions?.authenticationRequirements;
+
     if (commetingPermissions?.enabled === true) {
       return null;
     } else if (
@@ -51,11 +54,11 @@ class CommentingInitiativesDisabled extends PureComponent<Props> {
       isLoggedIn
     ) {
       return messages.commentingInitiativeNotPermitted;
-    } else if (commetingPermissions?.action === 'verify') {
+    } else if (authenticationRequirements === 'verify') {
       return messages.commentingDisabledUnverified;
-    } else if (commetingPermissions?.action === 'sign_in_up') {
+    } else if (authenticationRequirements === 'sign_in_up') {
       return messages.signInToCommentInitiative;
-    } else if (commetingPermissions?.action === 'sign_in_up_and_verify') {
+    } else if (authenticationRequirements === 'sign_in_up_and_verify') {
       return messages.signInAndVerifyToCommentInitiative;
     }
     return;
@@ -63,7 +66,7 @@ class CommentingInitiativesDisabled extends PureComponent<Props> {
 
   onVerify = () => {
     const { commetingPermissions } = this.props;
-    if (commetingPermissions?.action === 'verify') {
+    if (commetingPermissions?.authenticationRequirements === 'verify') {
       openVerificationModal({
         context: {
           action: 'commenting_initiative',
@@ -79,9 +82,12 @@ class CommentingInitiativesDisabled extends PureComponent<Props> {
     if (isNilOrError(authUser)) {
       openSignUpInModal({
         flow,
-        verification: commetingPermissions?.action === 'sign_in_up_and_verify',
+        verification:
+          commetingPermissions?.authenticationRequirements ===
+          'sign_in_up_and_verify',
         verificationContext:
-          commetingPermissions?.action === 'sign_in_up_and_verify'
+          commetingPermissions?.authenticationRequirements ===
+          'sign_in_up_and_verify'
             ? {
                 action: 'commenting_initiative',
                 type: 'initiative',
