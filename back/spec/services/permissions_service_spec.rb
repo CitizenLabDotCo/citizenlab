@@ -40,7 +40,7 @@ describe PermissionsService do
 
       it { expect(service.denied_reason_for_permission(everyone_permission, user)).to be_nil }
       it { expect(service.denied_reason_for_permission(users_permission, user)).to eq('not_signed_in') }
-      it { expect(service.denied_reason_for_permission(admins_mods_permission, user)).to eq('not_permitted') }
+      it { expect(service.denied_reason_for_permission(admins_mods_permission, user)).to eq('not_signed_in') }
     end
 
     context 'when user is admin' do
