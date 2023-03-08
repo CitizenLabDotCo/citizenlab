@@ -1,5 +1,3 @@
-// Copied IdeaEditPage and made the minimal modifications for this use.
-
 import React, { useState, useEffect } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
@@ -47,6 +45,8 @@ import useLocale from 'hooks/useLocale';
 import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
 import useIdeaById from 'api/ideas/useIdeaById';
+import useIdeaImage from 'hooks/useIdeaImage';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -78,8 +78,18 @@ const AdminIdeaEdit = ({
   appConfiguration,
 }: Props) => {
   const locale = useLocale();
+
   const { mutate: updateIdea } = useUpdateIdea();
   const { data: idea } = useIdeaById(ideaId);
+  const ideaImages = idea?.data.relationships.idea_images.data;
+  const ideaImageId =
+    ideaImages && ideaImages.length > 0 ? ideaImages[0].id : null;
+
+  const ideaImage = useIdeaImage({
+    ideaId: idea?.data.id,
+    ideaImageId,
+  });
+
   const [ideaFiles, setIdeaFiles] = useState<UploadFile[]>([]);
   const [imageFileIsChanged, setImageFileIsChanged] = useState(false);
   const [submitError, setSubmitError] = useState(false);
@@ -108,14 +118,25 @@ const AdminIdeaEdit = ({
     }
   }, [idea]);
 
+  useEffect(() => {
+    if (!isNilOrError(ideaImage)) {
+      (async () => {
+        const imageUrl = ideaImage.attributes.versions.large;
+        if (imageUrl) {
+          const imageFile = await convertUrlToUploadFile(imageUrl);
+          if (imageFile) {
+            setImageFile([imageFile]);
+          }
+        }
+      })();
+    }
+  }, [ideaImage]);
+
   if (isNilOrError(locale) || isNilOrError(idea)) {
     return null;
   }
 
   const authorId = idea.data.relationships.author.data?.id || null;
-  const ideaImages = idea.data.relationships.idea_images.data;
-  const ideaImageId =
-    ideaImages && ideaImages.length > 0 ? ideaImages[0].id : null;
 
   const budget = idea.data.attributes.budget;
   const proposedBudget = idea.data.attributes.proposed_budget;
@@ -302,6 +323,7 @@ const AdminIdeaEdit = ({
   const description = descriptionMultiloc
     ? descriptionMultiloc[locale] || null
     : originalDescription;
+
   if (projectId) {
     return (
       <Container>
