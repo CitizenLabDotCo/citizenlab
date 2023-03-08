@@ -419,10 +419,11 @@ class User < ApplicationRecord
 
   def reset_confirmation_with_no_password
     if confirmation_required == false
-      # Only reset code and retry count if account has already been confirmed
+      # Only reset code and retry/reset counts if account has already been confirmed
       # To keep limits in place for non-legit requests
       self.email_confirmation_code = nil
       self.email_confirmation_retry_count = 0
+      self.email_confirmation_code_reset_count = 0
     end
     self.confirmation_required = true
   end
