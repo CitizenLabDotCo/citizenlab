@@ -11,6 +11,7 @@ import {
   IconTooltip,
   Toggle,
   Label,
+  Box,
 } from '@citizenlab/cl2-component-library';
 import Tabs from 'components/UI/Tabs';
 import Collapse from 'components/UI/Collapse';
@@ -21,6 +22,7 @@ import QuillEditor from 'components/UI/QuillEditor';
 import HelmetIntl from 'components/HelmetIntl';
 import Button from 'components/UI/Button';
 import Warning from 'components/UI/Warning';
+import SeatInfo from 'components/SeatInfo';
 
 // services
 import {
@@ -560,6 +562,11 @@ class Invitations extends React.PureComponent<
                 onChange={this.handleAdminRightsOnToggle}
               />
             </FlexWrapper>
+            {hasAdminRights && (
+              <Box marginTop="20px">
+                <SeatInfo seatType="admin" width={null} />
+              </Box>
+            )}
           </SectionField>
 
           <SectionField>
@@ -612,6 +619,9 @@ class Invitations extends React.PureComponent<
                     <FormattedMessage {...messages.required} />
                   </StyledWarning>
                 )}
+                <Box marginTop="20px">
+                  <SeatInfo seatType="project_manager" width={null} />
+                </Box>
               </>
             )}
           </SectionField>
