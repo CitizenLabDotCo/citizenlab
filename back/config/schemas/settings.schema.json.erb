@@ -1083,6 +1083,18 @@
           "allowed": { "type": "boolean", "default": true },
           "enabled": { "type": "boolean", "default": true }
         }
+      },
+
+      "permission_option_email_confirmation": {
+        "type": "object",
+        "title": "Registration via email confirmation",
+        "description": "Enables a light registration flow where users enter just an email address and a confirmation code.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
       }
     },
   "dependencies": {
@@ -1106,7 +1118,9 @@
     "id_franceconnect": ["verification"],
     "id_gent_rrn": ["verification"],
     "id_oostende_rrn": ["verification"],
-    "id_id_card_lookup": ["verification"]
+    "id_id_card_lookup": ["verification"],
+
+    "permission_option_email_confirmation": ["user_confirmation"]
   },
   "definitions": {
     "multiloc_string": {
