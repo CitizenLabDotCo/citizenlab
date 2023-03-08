@@ -43,7 +43,7 @@ resource 'Initiatives' do
       expect(json_response[:data].size).to eq 0
     end
 
-    example 'List all initiatives which match one of the given topics' do
+    example 'List all initiatives which match one of the given topics', document: false do
       t1 = create(:topic)
       t2 = create(:topic)
 
@@ -60,7 +60,7 @@ resource 'Initiatives' do
       expect(json_response[:data].pluck(:id)).to match_array [i1.id, i2.id]
     end
 
-    example 'List all initiatives which match one of the given areas' do
+    example 'List all initiatives which match one of the given areas', document: false do
       a1 = create(:area)
       a2 = create(:area)
 
@@ -87,7 +87,7 @@ resource 'Initiatives' do
       expect(json_response[:data][0][:id]).to eq i.id
     end
 
-    example 'List all initiatives for an initiative status' do
+    example 'List all initiatives for an initiative status', document: false do
       status = create(:initiative_status)
       i = create(:initiative, initiative_status: status)
 
@@ -97,7 +97,7 @@ resource 'Initiatives' do
       expect(json_response[:data][0][:id]).to eq i.id
     end
 
-    example 'List all initiatives for an assignee' do
+    example 'List all initiatives for an assignee', document: false do
       a = create(:admin)
       i = create(:initiative, assignee: a)
 
@@ -107,7 +107,7 @@ resource 'Initiatives' do
       expect(json_response[:data][0][:id]).to eq i.id
     end
 
-    example 'List all initiatives that need feedback' do
+    example 'List all initiatives that need feedback', document: false do
       threshold_reached = create(:initiative_status_threshold_reached)
       i = create(:initiative, initiative_status: threshold_reached)
 
@@ -117,7 +117,7 @@ resource 'Initiatives' do
       expect(json_response[:data][0][:id]).to eq i.id
     end
 
-    example 'Search for initiatives' do
+    example 'Search for initiatives', document: false do
       create(:user)
       initiatives = [
         create(:initiative, title_multiloc: { en: 'This initiative is uniqque' }),
@@ -130,7 +130,7 @@ resource 'Initiatives' do
       expect(json_response[:data][0][:id]).to eq initiatives[0].id
     end
 
-    example 'List all initiatives sorted by new' do
+    example 'List all initiatives sorted by new', document: false do
       create(:user)
       i1 = create(:initiative)
 
@@ -214,7 +214,7 @@ resource 'Initiatives' do
 
       let(:initiatives) { @selected_initiatives.map(&:id) }
 
-      example_request 'XLSX export by initiative ids' do
+      example_request 'XLSX export by initiative ids', document: false do
         assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet.count).to eq(@selected_initiatives.size + 1)
@@ -228,7 +228,8 @@ resource 'Initiatives' do
         header 'Authorization', "Bearer #{token}"
       end
 
-      example_request '[error] XLSX export by a normal user', document: false do
+      example '[error] XLSX export by a normal user', document: false do
+        do_request
         expect(status).to eq 401
       end
     end
@@ -266,23 +267,25 @@ resource 'Initiatives' do
 
     example_request 'List initiative counts per filter option' do
       assert_status 200
-      json_response = json_parse(response_body)
+      json_response = json_parse response_body
+      expect(json_response.dig(:data, :type)).to eq 'filter_counts'
+      json_attributes = json_response.dig(:data, :attributes)
 
-      expect(json_response[:initiative_status_id][@s1.id.to_sym]).to eq 1
-      expect(json_response[:initiative_status_id][@s2.id.to_sym]).to eq 3
-      expect(json_response[:area_id][@a1.id.to_sym]).to eq 3
-      expect(json_response[:area_id][@a2.id.to_sym]).to eq 1
-      expect(json_response[:topic_id][@t1.id.to_sym]).to eq 2
-      expect(json_response[:topic_id][@t2.id.to_sym]).to eq 2
-      expect(json_response[:total]).to eq 4
+      expect(json_attributes[:initiative_status_id][@s1.id.to_sym]).to eq 1
+      expect(json_attributes[:initiative_status_id][@s2.id.to_sym]).to eq 3
+      expect(json_attributes[:area_id][@a1.id.to_sym]).to eq 3
+      expect(json_attributes[:area_id][@a2.id.to_sym]).to eq 1
+      expect(json_attributes[:topic_id][@t1.id.to_sym]).to eq 2
+      expect(json_attributes[:topic_id][@t2.id.to_sym]).to eq 2
+      expect(json_attributes[:total]).to eq 4
     end
 
-    example 'List initiative counts per filter option on topic' do
+    example 'List initiative counts per filter option on topic', document: false do
       do_request topics: [@t1.id]
       assert_status 200
     end
 
-    example 'List initiative counts per filter option on area' do
+    example 'List initiative counts per filter option on area', document: false do
       do_request areas: [@a1.id]
       assert_status 200
     end
@@ -566,14 +569,20 @@ resource 'Initiatives' do
 
     example_request 'Allowed transitions' do
       assert_status 200
-      json_response = json_parse(response_body)
+      json_response = json_parse response_body
+      expect(json_response.dig(:data, :type)).to eq 'allowed_transitions'
       expect(json_response).to eq({
-        **InitiativeStatus.where(code: 'answered').ids.to_h do |id|
-          [id.to_sym, { feedback_required: true }]
-        end,
-        **InitiativeStatus.where(code: 'ineligible').ids.to_h do |id|
-          [id.to_sym, { feedback_required: true }]
-        end
+        data: {
+          type: 'allowed_transitions',
+          attributes: {
+            **InitiativeStatus.where(code: 'answered').ids.to_h do |id|
+              [id.to_sym, { feedback_required: true }]
+            end,
+            **InitiativeStatus.where(code: 'ineligible').ids.to_h do |id|
+              [id.to_sym, { feedback_required: true }]
+            end
+          }
+        }
       })
     end
   end

@@ -170,7 +170,7 @@ class WebApi::V1::UsersController < ::ApplicationController
   end
 
   def initiatives_count
-    render json: { count: policy_scope(@user.initiatives.published).count }, status: :ok
+    render json: raw_json({ count: policy_scope(@user.initiatives.published).count }), status: :ok
   end
 
   def comments_count
@@ -189,6 +189,23 @@ class WebApi::V1::UsersController < ::ApplicationController
       ).count
     end
     render json: { count: count }, status: :ok
+  end
+
+  def update_password
+    @user = current_user
+    authorize @user
+    if @user.authenticate(params[:user][:current_password])
+      if @user.update(password: params[:user][:new_password])
+        render json: WebApi::V1::UserSerializer.new(
+          @user,
+          params: fastjson_params
+        ).serialized_json
+      else
+        render json: { errors: @user.errors.details }, status: :unprocessable_entity
+      end
+    else
+      render json: { errors: { current_password: [{ error: 'invalid' }] } }, status: :unprocessable_entity
+    end
   end
 
   private

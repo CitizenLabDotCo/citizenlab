@@ -37,7 +37,7 @@ import styled from 'styled-components';
 // typings
 import { ISignUpInMetaData } from '../typings';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 const Container = styled.div`
   flex: 1 1 auto;
@@ -79,7 +79,7 @@ const PasswordSignin = ({
   className,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const appConfig = useAppConfiguration();
+  const { data: appConfig } = useAppConfiguration();
   const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
   const googleLoginEnabled = useFeatureFlag({ name: 'google_login' });
   const facebookLoginEnabled = useFeatureFlag({ name: 'facebook_login' });
@@ -97,8 +97,8 @@ const PasswordSignin = ({
   const [signInError, setSignInError] = useState<string | null>(null);
 
   const [hasEmptyPasswordError, setHasEmptyPasswordError] = useState(false);
-  let emailInputElement = useRef<HTMLInputElement | null>(null);
-  let passwordInputElement = useRef<HTMLInputElement | null>(null);
+  const emailInputElement = useRef<HTMLInputElement | null>(null);
+  const passwordInputElement = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     trackEventByName(tracks.signInEmailPasswordEntered);
@@ -183,7 +183,7 @@ const PasswordSignin = ({
       }
 
       const tokenLifetime =
-        appConfig.attributes.settings.core
+        appConfig.data.attributes.settings.core
           .authentication_token_lifetime_in_days;
 
       if (validate(phoneLoginEnabled, email, password) && email && password) {
@@ -211,8 +211,8 @@ const PasswordSignin = ({
 
   const phoneLoginEnabled =
     !isNilOrError(appConfig) &&
-    appConfig.attributes.settings.password_login?.phone
-      ? appConfig.attributes.settings.password_login.phone
+    appConfig.data.attributes.settings.password_login?.phone
+      ? appConfig.data.attributes.settings.password_login.phone
       : false;
   const enabledProviders = [
     passwordLoginEnabled,

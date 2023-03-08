@@ -12,9 +12,8 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 // services
 import { IIdeaData } from 'services/ideas';
-import { IInitiativeData } from 'services/initiatives';
 import { IPhaseData } from 'services/phases';
-import { IIdeaStatusData } from 'services/ideaStatuses';
+import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 
 // styling
@@ -29,10 +28,11 @@ import {
   Sort as IdeasSort,
   SortAttribute as IdeasSortAttribute,
 } from 'resources/GetIdeas';
+import { SortAttribute as InitiativesSortAttribute } from 'resources/GetInitiatives';
 import {
+  IInitiativeData,
   Sort as InitiativesSort,
-  SortAttribute as InitiativesSortAttribute,
-} from 'resources/GetInitiatives';
+} from 'api/initiatives/types';
 import { SortDirection } from 'utils/paginationUtils';
 
 const Container = styled.div`

@@ -3,7 +3,6 @@
 # You can have Apartment route to the appropriate Tenant by adding some Rack middleware.
 # Apartment can support many different "Elevators" that can take care of this routing to your data.
 # Require whichever Elevator you're using below or none if you have a custom one.
-#
 require 'apartment/elevators/generic'
 
 # require 'apartment/elevators/domain'
@@ -15,7 +14,6 @@ require 'apartment/elevators/generic'
 Apartment.configure do |config|
   # Add any models that you do not want to be multi-tenanted, but remain in the global (public) namespace.
   # A typical example would be a Customer or Tenant model that stores each Tenant's information.
-  # df
   config.excluded_models += ['Tenant']
 
   # In order to migrate all of your Tenants you need to provide a list of Tenant names to Apartment.
@@ -50,7 +48,30 @@ Apartment.configure do |config|
   #
   config.tenant_names = -> { Tenant.not_deleted.pluck(:host).map { |h| h.tr('.', '_') } }
 
-  #
+  # Enable migrations in parallel.
+  parallel_migration_threads = ENV.fetch('PARALLEL_MIGRATION_THREADS', 1).to_i
+  if parallel_migration_threads > 1
+    # Patch `ActiveRecord` to solve: https://github.com/influitive/apartment/issues/506
+    # This solution draws heavily from the discussions in this PR: https://github.com/rails/rails/pull/43500
+    # and in particular from this comment: https://github.com/rails/rails/pull/43500#issuecomment-1174949533
+    #
+    # However, patching `Apartment::Adapters::PostgresqlAdapter` as suggested in the
+    # comment did not work (the patched code was not executed during the migrations).
+    # So we opted to patch `ActiveRecord::ConnectionAdapters::PostgreSQLAdapter`
+    # instead. Patching `ActiveRecord::ConnectionAdapters::PostgreSQLAdapter` is not an
+    # acceptable solution for Rails in general as it breaks the thread safety of
+    # migrations that touches to multiple schemas. But in our case, all migrations are
+    # run at the schema level and are replicated over all schemas. So that's fine. It's
+    # not excluded that we can make this work by patching
+    # `Apartment::Adapters::PostgresqlAdapter`, but this would require more research and
+    # our time budget on this is limited.
+    ActiveRecord::Migrator.prepend(GemExtensions::ActiveRecord::Migrator)
+    ActiveRecord::ConnectionAdapters::AbstractAdapter.prepend(GemExtensions::ActiveRecord::ConnectionAdapters::AbstractAdapter)
+    ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.prepend(GemExtensions::ActiveRecord::ConnectionAdapters::PostgreSqlAdapter)
+
+    config.parallel_migration_threads = parallel_migration_threads
+  end
+
   # ==> PostgreSQL only options
 
   # Specifies whether to use PostgreSQL schemas or create a new database per Tenant.

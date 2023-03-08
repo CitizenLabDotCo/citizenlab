@@ -198,7 +198,6 @@ RSpec.configure do |config|
   end
 
   # By default, skip the slow tests and template tests. Can be overriden on the command line.
-  config.filter_run_excluding slow_test: true
   config.filter_run_excluding template_test: true
 end
 

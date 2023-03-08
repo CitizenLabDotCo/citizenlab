@@ -391,6 +391,11 @@ module MultiTenancy
             posthog_integration: {
               enabled: true,
               allowed: true
+            },
+            user_blocking: {
+              enabled: true,
+              allowed: true,
+              duration: 90
             }
           })
         )

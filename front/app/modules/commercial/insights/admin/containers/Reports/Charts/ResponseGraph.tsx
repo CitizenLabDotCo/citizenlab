@@ -21,7 +21,7 @@ import {
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
 import BarChart from 'components/admin/Graphs/BarChart';
-import { LabelList } from 'recharts';
+import { LabelList, LabelProps } from 'recharts';
 
 // types
 import { IGraphPoint } from 'typings';
@@ -43,7 +43,7 @@ export const ResponseGraph = memo(
   ({ graphTitleString, serie }: Props & WrappedComponentProps) => {
     const currentChart: React.RefObject<any> = React.createRef();
 
-    const NameLabel = (props) => {
+    const NameLabel = (props: LabelProps) => {
       const { x, y, value } = props;
       return (
         <g style={{ pointerEvents: 'none' }}>
@@ -61,7 +61,7 @@ export const ResponseGraph = memo(
       );
     };
 
-    const ValueLabel = (props) => {
+    const ValueLabel = (props: LabelProps) => {
       const { x, y, value } = props;
       return (
         <g style={{ pointerEvents: 'none' }}>

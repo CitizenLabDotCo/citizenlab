@@ -1,10 +1,10 @@
 import React from 'react';
-import { IIdeaStatusData } from 'services/ideaStatuses';
+import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
-import { flow, get } from 'lodash-es';
+import { get } from 'lodash-es';
 import styled from 'styled-components';
 import { Menu } from 'semantic-ui-react';
-import { DropTarget } from 'react-dnd-cjs';
+import { useDrop } from 'react-dnd';
 import T from 'components/T';
 
 // i18n
@@ -37,21 +37,23 @@ interface Props {
   status: IIdeaStatusData | IInitiativeStatusData;
   active: boolean;
   onClick: any;
-  isOver: boolean;
-  canDrop: boolean;
-  connectDropTarget: any;
 }
 
-const FilterSidebarStatusesItem = ({
-  status,
-  active,
-  onClick,
-  connectDropTarget,
-  isOver,
-  canDrop,
-}: Props) => {
-  return connectDropTarget(
-    <div>
+const FilterSidebarStatusesItem = ({ status, active, onClick }: Props) => {
+  const [{ canDrop, isOver }, drop] = useDrop({
+    accept: 'IDEA',
+    drop: () => ({
+      type: 'status',
+      id: status.id,
+    }),
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+    }),
+  });
+
+  return (
+    <div ref={drop}>
       <Menu.Item active={active || (isOver && canDrop)} onClick={onClick}>
         <ItemWrapper>
           <ColorIndicator color={status.attributes.color} />
@@ -72,21 +74,4 @@ const FilterSidebarStatusesItem = ({
   );
 };
 
-const statusTarget = {
-  drop({ status }: Props) {
-    return {
-      type: 'status',
-      id: status.id,
-    };
-  },
-};
-
-const collect = (connect, monitor) => ({
-  connectDropTarget: connect.dropTarget(),
-  isOver: monitor.isOver(),
-  canDrop: monitor.canDrop(),
-});
-
-export default flow([DropTarget('IDEA', statusTarget, collect)])(
-  FilterSidebarStatusesItem
-);
+export default FilterSidebarStatusesItem;
