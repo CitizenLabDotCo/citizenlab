@@ -884,7 +884,7 @@ GEM
       que (~> 1.0.0.beta3)
       sinatra
     racc (1.6.2)
-    rack (2.2.6.2)
+    rack (2.2.6.3)
     rack-attack (6.6.1)
       rack (>= 1.0, < 3)
     rack-cors (1.1.1)
