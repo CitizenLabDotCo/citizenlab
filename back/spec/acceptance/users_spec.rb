@@ -400,7 +400,7 @@ resource 'Users' do
           end
         end
 
-        describe 'List all users in group', skip: !CitizenLab.ee? do
+        describe 'List all users in group' do
           example 'with correct pagination', document: false do
             page_size = 5
             project = create(:project)
@@ -600,7 +600,7 @@ resource 'Users' do
       example_request 'Get the authenticated user' do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq(@user.id)
-        expect(json_response.dig(:data, :attributes, :verified)).to be false if CitizenLab.ee?
+        expect(json_response.dig(:data, :attributes, :verified)).to be false
       end
     end
 
@@ -626,30 +626,25 @@ resource 'Users' do
         let(:project) { create(:continuous_project) }
 
         before do
-          if CitizenLab.ee?
-            old_timers = create(:smart_group, rules: [
-              {
-                ruleType: 'custom_field_number',
-                customFieldId: create(:custom_field_number, title_multiloc: { 'en' => 'Birthyear?' }, key: 'birthyear', code: 'birthyear').id,
-                predicate: 'is_smaller_than_or_equal',
-                value: 1988
-              }
-            ])
+          old_timers = create(:smart_group, rules: [
+            {
+              ruleType: 'custom_field_number',
+              customFieldId: create(:custom_field_number, title_multiloc: { 'en' => 'Birthyear?' }, key: 'birthyear', code: 'birthyear').id,
+              predicate: 'is_smaller_than_or_equal',
+              value: 1988
+            }
+          ])
 
-            project.permissions.find_by(action: 'posting_idea')
-              .update!(permitted_by: 'groups', groups: [old_timers])
-          end
+          project.permissions.find_by(action: 'posting_idea')
+                 .update!(permitted_by: 'groups', groups: [old_timers])
         end
 
         example_request 'Update a user' do
           expect(response_status).to eq 200
           expect(response_data.dig(:attributes, :first_name)).to eq(first_name)
-
-          if CitizenLab.ee?
-            expect(json_response_body[:included].find { |i| i[:type] == 'project' }&.dig(:attributes, :slug)).to eq project.slug
-            expect(json_response_body[:included].find { |i| i[:type] == 'permission' }&.dig(:attributes, :permitted_by)).to eq 'groups'
-            expect(response_data.dig(:relationships, :granted_permissions, :data).size).to eq(1)
-          end
+          expect(json_response_body[:included].find { |i| i[:type] == 'project' }&.dig(:attributes, :slug)).to eq project.slug
+          expect(json_response_body[:included].find { |i| i[:type] == 'permission' }&.dig(:attributes, :permitted_by)).to eq 'groups'
+          expect(response_data.dig(:relationships, :granted_permissions, :data).size).to eq(1)
         end
       end
 
@@ -772,7 +767,7 @@ resource 'Users' do
         let(:locale) { 'fr-FR' }
         let(:birthyear) { 1969 }
 
-        example "Can't change some attributes of a user verified with FranceConnect", document: false, skip: !CitizenLab.ee? do
+        example "Can't change some attributes of a user verified with FranceConnect", document: false do
           create(:verification, method_name: 'franceconnect', user: @user)
           @user.update!(custom_field_values: { cf.key => 'original value', birthyear_cf.key => 1950 })
           do_request
@@ -784,7 +779,7 @@ resource 'Users' do
           expect(@user.email).to eq email
         end
 
-        example 'Can change many attributes of a user verified with FranceConnect', document: false, skip: !CitizenLab.ee? do
+        example 'Can change many attributes of a user verified with FranceConnect', document: false do
           create(:verification, method_name: 'franceconnect', user: @user)
           do_request
           expect(response_status).to eq 200
@@ -805,7 +800,7 @@ resource 'Users' do
           }
         end
 
-        example "Can't change gender of a user verified with Bogus", document: false, skip: !CitizenLab.ee? do
+        example "Can't change gender of a user verified with Bogus", document: false do
           create(:verification, method_name: 'bogus', user: @user)
           @user.update!(custom_field_values: { cf.key => 'original value', gender_cf.key => 'male' })
           do_request
@@ -858,7 +853,7 @@ resource 'Users' do
           }
         end
 
-        example "Can't change some custom_field_values of a user verified with Bogus", document: false, skip: !CitizenLab.ee? do
+        example "Can't change some custom_field_values of a user verified with Bogus", document: false do
           @user.update!(
             registration_completed_at: nil,
             custom_field_values: { cf.key => 'original value', gender_cf.key => 'male' }
