@@ -12,10 +12,10 @@ namespace :cl2back do
     @report = {}
     record_by_tenant = []
 
-    Rails.logger.info("live_run: #{live_run ? 'true' : 'false'}")
+    Rails.logger.info("#{log_prefix}live_run: #{live_run ? 'true' : 'false'}")
 
     Tenant.switch_each do |tenant|
-      Rails.logger.info("Processing images for tenant: #{tenant.name}")
+      Rails.logger.info("#{log_prefix}Processing images for tenant: #{tenant.name}")
 
       @n_li_destroyed = 0
       @n_ti_destroyed = 0
@@ -57,23 +57,27 @@ namespace :cl2back do
 
     digest = digest_log(live_run, record_by_tenant)
     @report['digest'] = digest
-    Rails.logger.info(digest.inspect)
+    Rails.logger.info("#{log_prefix}#{digest.inspect}")
 
     # Log some event details (not error). Can remove when we have log aggregation tool that catches logs of this task.
     ErrorReporter.report_msg('cl2back:clean_up_orphaned_image_records rake task', extra: @report, backtrace: false)
   end
 
+  def log_prefix
+    "task :clean_up_orphaned_image_records\n"
+  end
+
   def add_layout_image_log_to_report(image, tenant)
     @n_li_destroyed += 1
     log = layout_image_log(image, tenant)
-    Rails.logger.info(log)
+    Rails.logger.info("#{log_prefix}#{log}")
     @report["li_#{format('%06d', @total_li_destroyed + @n_li_destroyed)}"] = log
   end
 
   def add_text_image_log_to_report(image, tenant)
     @n_ti_destroyed += 1
     log = text_image_log(image, tenant)
-    Rails.logger.info(log)
+    Rails.logger.info("#{log_prefix}#{log}")
     @report["ti_#{format('%06d', @total_ti_destroyed + @n_ti_destroyed)}"] = log
   end
 
