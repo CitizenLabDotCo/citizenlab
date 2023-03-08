@@ -489,8 +489,6 @@ jobs:
     # - https://github.com/facebook/jest/issues/5239#issuecomment-355867359
     resource_class: medium+
     working_directory: ~/
-    environment:
-      CITIZENLAB_EE: true
     parallelism: 4
     steps:
       - shallow-clone
