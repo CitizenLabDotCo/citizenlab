@@ -15,7 +15,7 @@ class WebApi::V1::UsersController < ::ApplicationController
     @users = @users.search_by_all(params[:search]) if params[:search].present?
 
     @users = @users.active unless params[:include_inactive]
-    @users = @users.blocked if params[:blocked]
+    @users = @users.blocked if params[:only_blocked]
     @users = @users.in_group(Group.find(params[:group])) if params[:group]
     @users = @users.admin.or(@users.project_moderator(params[:can_moderate_project])) if params[:can_moderate_project].present?
     @users = @users.admin.or(@users.project_moderator) if params[:can_moderate].present?
