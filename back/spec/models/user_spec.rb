@@ -88,7 +88,7 @@ RSpec.describe User, type: :model do
       expect(blocked_users).not_to include(user2)
     end
 
-    it 'should be none if block_duration is zero' do
+    it 'should be none if block duration is zero' do
       settings = AppConfiguration.instance.settings
       settings['user_blocking']['duration'] = 0
       AppConfiguration.instance.update!(settings: settings)
