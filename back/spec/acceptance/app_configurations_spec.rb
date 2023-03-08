@@ -61,8 +61,8 @@ resource 'AppConfigurations' do
 
       # Style parameters
       parameter :style, <<~DESC, extra: ''
-          The changes to the style object. This will be merged with the existing
-          style. Arrays will not be merged, but override their values.
+        The changes to the style object. This will be merged with the existing
+        style. Arrays will not be merged, but override their values.
       DESC
 
       AppConfiguration.style_json_schema['properties'].each do |style, style_descriptor|

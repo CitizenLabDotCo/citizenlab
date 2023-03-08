@@ -636,7 +636,7 @@ resource 'Users' do
           ])
 
           project.permissions.find_by(action: 'posting_idea')
-                 .update!(permitted_by: 'groups', groups: [old_timers])
+            .update!(permitted_by: 'groups', groups: [old_timers])
         end
 
         example_request 'Update a user' do
