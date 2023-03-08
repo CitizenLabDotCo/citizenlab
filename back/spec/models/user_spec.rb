@@ -40,6 +40,15 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe 'creating a light user - email & locale only' do
+    it 'is valid and generates a slug' do
+      u = described_class.new(email: 'test@test.com', locale: 'en')
+      u.save
+      expect(u).to be_valid
+      expect(u.slug).not_to be_nil
+    end
+  end
+
   describe 'user password authentication' do
     it 'should be compatible with meteor encryption' do
       u = build(:user)
@@ -140,8 +149,19 @@ RSpec.describe User, type: :model do
       expect(u).to be_valid
     end
 
+    it 'is valid when nil' do
+      # This is allowed to allow accounts without a password
+      u = build(:user, password: nil)
+      expect(u).to be_valid
+    end
+
     it 'does not create a password digest if the password is empty' do
       u = build(:user, password: '')
+      expect(u.password_digest).to be_nil
+    end
+
+    it 'does not create a password digest if the password is nil' do
+      u = build(:user, password: nil)
       expect(u.password_digest).to be_nil
     end
 
