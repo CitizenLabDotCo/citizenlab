@@ -79,7 +79,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
             </DropdownListItem>
           </HasPermission>
 
-          {isRegisteredUser && (
+          {isConfirmedUser && (
             <DropdownListItem
               id="e2e-my-ideas-page-link"
               linkTo={`/profile/${authUser.attributes.slug}`}
@@ -96,7 +96,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
             </DropdownListItem>
           )}
 
-          {isRegisteredUser && (
+          {isConfirmedUser && (
             <DropdownListItem
               id="e2e-profile-edit-link"
               linkTo={'/profile/edit'}
