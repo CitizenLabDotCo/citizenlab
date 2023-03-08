@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe Rake::Task do
   before(:context) do
-    Rails.application.load_tasks
+    load_rake_tasks_if_not_loaded
   end
 
   let(:task) { described_class[task_name] }
