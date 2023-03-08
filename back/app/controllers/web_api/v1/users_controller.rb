@@ -108,7 +108,7 @@ class WebApi::V1::UsersController < ::ApplicationController
         @user,
         params: fastjson_params(granted_permissions: permissions)
       ).serialized_json, status: :created
-    elsif update_existing_no_password_user?
+    elsif reset_confirm_on_existing_no_password_user?
       SideFxUserService.new.after_update(@user, current_user)
       permissions = Permission.for_user(@user)
       render json: WebApi::V1::UserSerializer.new(
@@ -225,7 +225,7 @@ class WebApi::V1::UsersController < ::ApplicationController
     send_error(nil, 404)
   end
 
-  def update_existing_no_password_user?
+  def reset_confirm_on_existing_no_password_user?
     return false unless AppConfiguration.instance.feature_activated?('user_confirmation')
 
     original_user = @user
