@@ -238,6 +238,18 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.changePassword',
     defaultMessage: 'Change my password',
   },
+  passwordAddSection: {
+    id: 'app.containers.UsersEditPage.passwordAddSection',
+    defaultMessage: 'Add a password',
+  },
+  passwordAddSubtitle: {
+    id: 'app.containers.UsersEditPage.passwordAddSubtitle',
+    defaultMessage: 'Add a password to your account.',
+  },
+  addPassword: {
+    id: 'app.containers.UsersEditPage.addPassword',
+    defaultMessage: 'Add password',
+  },
   /*
    * Meta
    */

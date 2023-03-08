@@ -31,6 +31,8 @@ export interface IUserAttributes {
   domicile?: string;
   education?: string;
   verified?: boolean;
+  no_name?: boolean;
+  no_password?: boolean;
 }
 
 export interface IUserData {

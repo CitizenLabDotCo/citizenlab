@@ -36,6 +36,7 @@ import GetAppConfiguration, {
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import useAuthUser from 'hooks/useAuthUser';
 
 type FormValues = {
   current_password: string;
@@ -47,15 +48,21 @@ type Props = {
 };
 
 const ChangePassword = ({ tenant }: Props) => {
+  const authUser = useAuthUser();
   const { formatMessage } = useIntl();
   const [success, setSuccess] = useState(false);
+  const userHasPreviousPassword =
+    !isNilOrError(authUser) && !authUser.attributes?.no_password;
+  const pageTitle = userHasPreviousPassword
+    ? messages.titleChangePassword
+    : messages.titleAddPassword;
 
   const minimumPasswordLength =
     (!isNilOrError(tenant) &&
       tenant.attributes.settings.password_login?.minimum_length) ||
     0;
 
-  const schema = object({
+  const schemaPreviousPasswordExists = object({
     current_password: string().required(
       formatMessage(messages.currentPasswordRequired)
     ),
@@ -68,6 +75,21 @@ const ChangePassword = ({ tenant }: Props) => {
         })
       ),
   });
+
+  const schemaNoPreviousPassword = object({
+    new_password: string()
+      .required(formatMessage(messages.newPasswordRequired))
+      .min(
+        minimumPasswordLength,
+        formatMessage(messages.minimumPasswordLengthError, {
+          minimumPasswordLength,
+        })
+      ),
+  });
+
+  const schema = userHasPreviousPassword
+    ? schemaPreviousPasswordExists
+    : schemaNoPreviousPassword;
 
   const methods = useForm<FormValues>({
     mode: 'onBlur',
@@ -86,6 +108,10 @@ const ChangePassword = ({ tenant }: Props) => {
       handleHookFormSubmissionError(error, methods.setError);
     }
   };
+
+  if (isNilOrError(authUser)) {
+    return null;
+  }
 
   if (success) return <ChangePasswordSuccess />;
   return (
@@ -107,22 +133,25 @@ const ChangePassword = ({ tenant }: Props) => {
         />
         <main>
           <StyledContentContainer>
-            <Title>{formatMessage(messages.title)}</Title>
-
+            <Title>{formatMessage(pageTitle)}</Title>
             <Form>
-              <LabelContainer>
-                <FormLabel
-                  width="max-content"
-                  margin-right="5px"
-                  labelMessage={messages.currentPasswordLabel}
-                  htmlFor="current_password"
-                />
-              </LabelContainer>
-              <PasswordInput
-                name="current_password"
-                autocomplete="current-password"
-                isLoginPasswordInput={true}
-              />
+              {userHasPreviousPassword && (
+                <>
+                  <LabelContainer>
+                    <FormLabel
+                      width="max-content"
+                      margin-right="5px"
+                      labelMessage={messages.currentPasswordLabel}
+                      htmlFor="current_password"
+                    />
+                  </LabelContainer>
+                  <PasswordInput
+                    name="current_password"
+                    autocomplete="current-password"
+                    isLoginPasswordInput={true}
+                  />
+                </>
+              )}
               <LabelContainer className="margin-top">
                 <FormLabel
                   width="max-content"

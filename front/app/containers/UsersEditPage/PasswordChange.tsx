@@ -11,6 +11,7 @@ import Button from 'components/UI/Button';
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { IUserData } from 'services/users';
 
 const Row = styled.div`
   display: flex;
@@ -21,20 +22,40 @@ const Row = styled.div`
   }
 `;
 
-export default () => (
-  <FormSection>
-    <FormSectionTitle
-      message={messages.passwordChangeSection}
-      subtitleMessage={messages.passwordChangeSubtitle}
-    />
-    <Row>
-      <Button
-        linkTo="/profile/change-password"
-        width="auto"
-        justifyWrapper="left"
-      >
-        <FormattedMessage {...messages.changePassword} />
-      </Button>
-    </Row>
-  </FormSection>
-);
+type PasswordChangeProps = {
+  user: IUserData;
+};
+
+const PasswordChange = ({ user }: PasswordChangeProps) => {
+  const userHasPreviousPassword = !user.attributes.no_password;
+
+  const passwordChangeTitle = !userHasPreviousPassword
+    ? messages.passwordAddSection
+    : messages.passwordChangeSection;
+  const passwordChangeSubtitle = !userHasPreviousPassword
+    ? messages.passwordAddSubtitle
+    : messages.passwordChangeSubtitle;
+  const passwordChangeButtonText = !userHasPreviousPassword
+    ? messages.addPassword
+    : messages.changePassword;
+
+  return (
+    <FormSection>
+      <FormSectionTitle
+        message={passwordChangeTitle}
+        subtitleMessage={passwordChangeSubtitle}
+      />
+      <Row>
+        <Button
+          linkTo="/profile/change-password"
+          width="auto"
+          justifyWrapper="left"
+        >
+          <FormattedMessage {...passwordChangeButtonText} />
+        </Button>
+      </Row>
+    </FormSection>
+  );
+};
+
+export default PasswordChange;
