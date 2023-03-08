@@ -3,6 +3,7 @@ import { ISignUpInMetaData, TSignUpInError } from 'events/openSignUpInModal';
 import { stringify } from 'qs';
 import { omitBy, isNil } from 'lodash-es';
 import { isProjectContext } from 'events/verificationModal';
+
 export interface SSOProviderMap {
   azureactivedirectory: 'azureactivedirectory';
   facebook: 'facebook';

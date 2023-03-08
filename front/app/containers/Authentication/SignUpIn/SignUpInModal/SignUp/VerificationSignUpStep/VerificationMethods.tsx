@@ -26,7 +26,7 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 // typings
 import { TVerificationMethod } from 'services/verificationMethods';
 import Outlet from 'components/Outlet';
-import { ContextShape } from 'events/verificationModal';
+import { AuthenticationContext } from 'api/permissions/types';
 
 const Container = styled.div`
   display: flex;
@@ -159,7 +159,7 @@ const SkipButtonContainer = styled.div`
 `;
 
 interface Props {
-  context: ContextShape | null;
+  context: AuthenticationContext | null;
   showHeader?: boolean;
   skippable?: boolean;
   inModal: boolean;

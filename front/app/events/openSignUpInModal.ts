@@ -1,23 +1,5 @@
-import { IInitiativeAction } from 'services/initiatives';
-import { IPCAction, IParticipationContextType } from 'typings';
+import { AuthenticationContext } from 'api/permissions/types';
 import eventEmitter from 'utils/eventEmitter';
-
-export type ProjectContext = {
-  id: string;
-  type: IParticipationContextType;
-  action: IPCAction;
-};
-
-export type InitiativeContext = {
-  type: 'initiative';
-  action: IInitiativeAction;
-};
-
-export type ContextShape =
-  | ProjectContext
-  | InitiativeContext
-  | null
-  | undefined;
 
 export type TSignUpInError = 'general' | 'franceconnect_merging_failed';
 
@@ -31,7 +13,7 @@ export interface ISignUpInMetaData {
   flow: TSignUpInFlow;
   pathname: string;
   verification?: boolean;
-  verificationContext?: ContextShape;
+  verificationContext?: AuthenticationContext;
   error?: ISignUpInError;
   isInvitation?: boolean;
   token?: string;

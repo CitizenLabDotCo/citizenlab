@@ -7,11 +7,13 @@ import {
   getPCParticipationConditions,
 } from 'services/participationConditions';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { ContextShape } from 'events/verificationModal';
+import { AuthenticationContext } from 'api/permissions/types';
 
 // doesn't react to prop changes, which is ok here because components are unmounted btwn uses
 
-export default function useParticipationConditions(props: ContextShape) {
+export default function useParticipationConditions(
+  props: AuthenticationContext | null
+) {
   const [conditions, setConditions] = useState<
     ParticipationConditions | undefined | null | Error
   >(undefined);

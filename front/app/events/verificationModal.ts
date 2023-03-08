@@ -1,5 +1,4 @@
-import { IInitiativeAction } from 'services/initiatives';
-import { IParticipationContextType, IPCAction } from 'typings';
+import { AuthenticationContext, ProjectContext } from 'api/permissions/types';
 import eventEmitter from 'utils/eventEmitter';
 
 // search for verification_error in back to find these
@@ -42,12 +41,6 @@ function isOmniAuthVerificationError(
   );
 }
 
-export type ProjectContext = {
-  id: string;
-  type: IParticipationContextType;
-  action: IPCAction;
-};
-
 export type TVerificationStep =
   | 'method-selection'
   | 'method-step'
@@ -55,20 +48,9 @@ export type TVerificationStep =
   | 'error'
   | null;
 
-export type InitiativeContext = {
-  type: 'initiative';
-  action: IInitiativeAction;
-};
-
-export type ContextShape =
-  | ProjectContext
-  | InitiativeContext
-  | null
-  | undefined;
-
 export interface OpenVerificationModalData {
   step: TVerificationStep;
-  context: ContextShape | null;
+  context: AuthenticationContext | null;
   error?: IVerificationError | null;
 }
 
@@ -78,11 +60,13 @@ export enum VerificationModalEvents {
 }
 
 interface IOpenVerificationModalParams {
-  context?: ContextShape;
+  context?: AuthenticationContext;
   step?: TVerificationStep;
   error?: IVerificationError | null;
 }
-export function isProjectContext(obj: ContextShape): obj is ProjectContext {
+export function isProjectContext(
+  obj?: AuthenticationContext
+): obj is ProjectContext {
   return (obj as ProjectContext)?.id !== undefined;
 }
 

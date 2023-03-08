@@ -17,10 +17,11 @@ import { media } from 'utils/styleUtils';
 import { TVerificationMethod } from 'services/verificationMethods';
 import { isNilOrError } from 'utils/helperUtils';
 import {
-  ContextShape,
   IVerificationError,
   TVerificationStep,
 } from 'events/verificationModal';
+import { AuthenticationContext } from 'api/permissions/types';
+
 import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
 const Container = styled.div`
@@ -35,7 +36,7 @@ const Container = styled.div`
 `;
 
 export interface Props {
-  context: ContextShape; // TODO change to pass in additionnal rules info
+  context: AuthenticationContext | null; // TODO change to pass in additionnal rules info
   initialActiveStep: TVerificationStep;
   showHeader?: boolean;
   inModal: boolean;

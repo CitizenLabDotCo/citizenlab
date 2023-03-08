@@ -14,7 +14,6 @@ import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // events
 import {
-  ContextShape,
   IVerificationError,
   TVerificationStep,
   openVerificationModal$,
@@ -30,6 +29,8 @@ import ErrorBoundary from 'components/ErrorBoundary';
 import { useSearchParams } from 'react-router-dom';
 
 // typings
+import { AuthenticationContext } from 'api/permissions/types';
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -47,7 +48,7 @@ const VerificationModal = () => {
   const isMounted = useIsMounted();
   const mounted = isMounted();
   const [activeStep, setActiveStep] = useState<TVerificationStep>(null);
-  const [context, setContext] = useState<ContextShape>(null);
+  const [context, setContext] = useState<AuthenticationContext | null>(null);
   const [error, setError] = useState<IVerificationError | null>(null);
   const opened = !!activeStep;
 

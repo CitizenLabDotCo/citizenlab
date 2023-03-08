@@ -1,17 +1,15 @@
-import { Keys } from 'utils/cl-react-query/types';
-import permissionsKeys from './keys';
-import { Multiloc } from 'typings';
+import { IInitiativeAction } from 'services/initiatives';
+import { IPCAction } from 'typings';
 
-export type PermissionsKeys = Keys<typeof permissionsKeys>;
+export type InitiativeContext = {
+  type: 'initiative';
+  action: IInitiativeAction;
+};
 
-export interface ParticipationConditionsResponse {
-  data: {
-    id: string;
-    type: 'participation_conditions';
-    attributes: {
-      participation_conditions: ParticipationConditions;
-    };
-  };
-}
+export type ProjectContext = {
+  type: 'project' | 'phase';
+  action: IPCAction;
+  id: string /* project or phase id, depending on type attribute */;
+};
 
-export type ParticipationConditions = Multiloc[][];
+export type AuthenticationContext = InitiativeContext | ProjectContext;

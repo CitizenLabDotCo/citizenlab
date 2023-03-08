@@ -1,10 +1,10 @@
-import { ContextShape } from 'events/verificationModal';
+import { AuthenticationContext } from 'api/permissions/types';
 
 export interface ISignUpInMetaData {
   flow: TSignUpInFlow;
   pathname: string;
   verification?: boolean;
-  verificationContext?: ContextShape;
+  verificationContext?: AuthenticationContext;
   error?: ISignUpInError;
   isInvitation?: boolean;
   token?: string;
