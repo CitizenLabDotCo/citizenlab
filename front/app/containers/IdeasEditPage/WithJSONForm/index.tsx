@@ -11,7 +11,7 @@ import IdeasEditMeta from '../IdeasEditMeta';
 
 // services
 import { deleteIdeaImage } from 'services/ideaImages';
-import { usePermission } from 'services/permissions';
+import { hasPermission } from 'services/permissions';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';
@@ -54,17 +54,20 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
     projectId: project?.id,
     inputId: ideaId,
   });
-  const permisison = usePermission({
-    item: isNilOrError(idea) ? null : idea.data,
-    action: 'edit',
-    context: idea,
-  });
 
   useEffect(() => {
-    if (!isNilOrError(idea) && !permisison) {
-      clHistory.replace(previousPathName || (!authUser ? '/sign-up' : '/'));
+    if (!isNilOrError(idea)) {
+      const granted = hasPermission({
+        item: idea.data,
+        action: 'edit',
+        context: idea.data,
+      });
+
+      if (!granted) {
+        clHistory.replace(previousPathName || (!authUser ? '/sign-up' : '/'));
+      }
     }
-  }, [authUser, idea, previousPathName, permisison]);
+  }, [idea, previousPathName, authUser]);
 
   const initialFormData =
     isNilOrError(idea) || !schema

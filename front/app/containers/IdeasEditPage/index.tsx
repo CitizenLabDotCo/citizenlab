@@ -23,7 +23,6 @@ import IdeasEditPageWithJSONForm from './WithJSONForm';
 
 // services
 import { addIdeaImage, deleteIdeaImage } from 'services/ideaImages';
-import { hasPermission } from 'services/permissions';
 import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
 import { getInputTerm } from 'services/participationContexts';
 import useLocale from 'hooks/useLocale';
@@ -63,6 +62,9 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // typings
 import { IIdeaData } from 'api/ideas/types';
+import useIdeaImage from 'hooks/useIdeaImage';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { hasPermission } from 'services/permissions';
 
 const Container = styled.div`
   background: ${colors.background};
@@ -135,6 +137,16 @@ const IdeaEditPage = ({
 }: Props) => {
   const locale = useLocale();
   const { mutate: updateIdea } = useUpdateIdea();
+
+  const ideaImages = !isNilOrError(idea) && idea.relationships.idea_images.data;
+  const ideaImageId =
+    ideaImages && ideaImages.length > 0 ? ideaImages[0].id : null;
+
+  const ideaImage = useIdeaImage({
+    ideaId: !isNilOrError(idea) ? idea.id : null,
+    ideaImageId,
+  });
+
   const [ideaFiles, setIdeaFiles] = useState<UploadFile[]>([]);
   const [imageFileIsChanged, setImageFileIsChanged] = useState(false);
   const [submitError, setSubmitError] = useState(false);
@@ -164,14 +176,29 @@ const IdeaEditPage = ({
     }
   }, [idea]);
 
+  useEffect(() => {
+    if (!isNilOrError(ideaImage)) {
+      (async () => {
+        const imageUrl = ideaImage.attributes.versions.large;
+        if (imageUrl) {
+          const imageFile = await convertUrlToUploadFile(imageUrl);
+          if (imageFile) {
+            setImageFile([imageFile]);
+          }
+        }
+      })();
+    }
+  }, [ideaImage]);
+
+  if (isNilOrError(locale) || isNilOrError(idea)) {
+    return null;
+  }
+
   if (isNilOrError(locale) || isNilOrError(idea) || isNilOrError(project)) {
     return null;
   }
 
   const authorId = idea.relationships.author.data?.id || null;
-  const ideaImages = idea.relationships.idea_images.data;
-  const ideaImageId =
-    ideaImages && ideaImages.length > 0 ? ideaImages[0].id : null;
   const budget = idea.attributes.budget;
   const proposedBudget = idea.attributes.proposed_budget;
 
