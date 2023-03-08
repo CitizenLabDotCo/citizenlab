@@ -4,7 +4,7 @@ import EventsMessage from 'containers/EventsPage/EventsViewer/EventsMessage';
 import EventsSpinner from 'containers/EventsPage/EventsViewer/EventsSpinner';
 import VerticalCenterer from 'components/VerticalCenterer';
 import Link from 'utils/cl-router/Link';
-import useEvents from 'hooks/useEvents';
+import useEvents from 'api/events/useEvents';
 import { useIntl } from 'utils/cl-intl';
 import styled from 'styled-components';
 import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
@@ -103,11 +103,11 @@ interface Props {
 
 const EventsWidget = ({ staticPageId }: Props) => {
   const { formatMessage } = useIntl();
-  const { events } = useEvents({
+  const { data: events } = useEvents({
     projectPublicationStatuses: ['published'],
     currentAndFutureOnly: true,
     pageSize: 3,
-    sort: 'oldest',
+    sort: 'start_at',
     ...(staticPageId && { staticPageId }),
   });
 
@@ -131,7 +131,7 @@ const EventsWidget = ({ staticPageId }: Props) => {
               />
             )}
 
-            {!isNilOrError(events) && events.length === 0 && (
+            {!isNilOrError(events) && events.data.length === 0 && (
               <VerticalCenterer>
                 <NoEventsText>
                   {formatMessage(eventsPageMessages.noUpcomingOrOngoingEvents)}
@@ -139,9 +139,9 @@ const EventsWidget = ({ staticPageId }: Props) => {
               </VerticalCenterer>
             )}
 
-            {!isNilOrError(events) && events.length > 0 && (
+            {!isNilOrError(events) && events.data.length > 0 && (
               <CardsContainer>
-                {events.map((event) => (
+                {events.data.map((event) => (
                   <StyledEventCard
                     event={event}
                     key={event.id}

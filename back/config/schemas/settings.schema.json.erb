@@ -185,6 +185,26 @@
         }
       },
 
+      "user_blocking": {
+      "type": "object",
+      "title": "User blocking",
+      "description": "User blocking and unblocking features. WIP - Don't enable for customer platforms",
+      "additionalProperties": false,
+      "required": ["allowed", "enabled"],
+      "required-settings": ["duration"],
+      "properties": {
+        "allowed": { "type": "boolean", "default": false },
+        "enabled": { "type": "boolean", "default": false },
+        "duration": {
+          "title": "Duration of block (in days)",
+          "description": "How many days a user will be blocked for. The user will remain blocked until this period expires, or an admin manually removes the block on the user. Setting this value to zero effectively unblocks all blocked users.",
+          "type": "integer",
+          "minimum": 0,
+          "default": 90
+        }
+      }
+    },
+
       "dynamic_idea_form": {
         "type": "object",
         "title": "Dynamic idea form",

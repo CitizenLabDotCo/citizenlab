@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe AppConfiguration, slow_test: true do
+describe AppConfiguration do
   unless CitizenLab.ee?
     it 'generates a valid app configuration, user and initial data' do
       described_class.first.destroy!

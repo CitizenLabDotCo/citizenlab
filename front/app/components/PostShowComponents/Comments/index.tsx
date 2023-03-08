@@ -1,12 +1,9 @@
 // libraries
 import React, { memo, useState, useCallback } from 'react';
-import { get, isUndefined } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import Observer from '@researchgate/react-intersection-observer';
 
 // resources
-import GetPost, { GetPostChildProps } from 'resources/GetPost';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 
 // utils
@@ -35,6 +32,11 @@ import CommentingInitiativeDisabled from './CommentingInitiativeDisabled';
 // analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
+
+// hooks
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useProject from 'hooks/useProject';
+import useIdeaById from 'api/ideas/useIdeaById';
 
 const Container = styled.div``;
 
@@ -92,17 +94,24 @@ export interface InputProps {
 }
 
 interface DataProps {
-  post: GetPostChildProps;
   comments: GetCommentsChildProps;
-  project: GetProjectChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
 const CommentsSection = memo<Props>(
-  ({ postId, postType, post, comments, project, className }) => {
+  ({ postId, postType, comments, className }) => {
+    const initiativeId = postType === 'initiative' ? postId : undefined;
+    const ideaId = postType === 'idea' ? postId : undefined;
+    const { data: initiative } = useInitiativeById(initiativeId);
+    const { data: idea } = useIdeaById(ideaId);
+
+    const post = initiative || idea;
+    const projectId = idea?.data.relationships?.project.data.id;
+    const project = useProject({ projectId });
     const [sortOrder, setSortOrder] = useState<CommentsSort>('-new');
     const [posting, setPosting] = useState(false);
+
     const {
       commentsList,
       hasMore,
@@ -134,25 +143,17 @@ const CommentsSection = memo<Props>(
       setPosting(isPosting);
     }, []);
 
-    if (
-      !isNilOrError(post) &&
-      !isNilOrError(commentsList) &&
-      !isUndefined(project)
-    ) {
-      const commentingEnabled = get(
-        post,
-        'attributes.action_descriptor.commenting_idea.enabled',
-        true
-      ) as boolean;
-      const commentingDisabledReason = get(
-        post,
-        'attributes.action_descriptor.commenting_idea.disabled_reason',
-        null
-      ) as IdeaCommentingDisabledReason | null;
+    if (!isNilOrError(post) && !isNilOrError(commentsList)) {
+      const commentingEnabled =
+        idea?.data.attributes.action_descriptor.commenting_idea.enabled;
+
+      const commentingDisabledReason =
+        idea?.data.attributes.action_descriptor.commenting_idea
+          .disabled_reason || (null as IdeaCommentingDisabledReason | null);
       const phaseId = isNilOrError(project)
         ? undefined
         : project.relationships?.current_phase?.data?.id;
-      const commentCount = post.attributes.comments_count;
+      const commentCount = post.data.attributes.comments_count;
 
       return (
         <Container className={className || ''}>
@@ -171,9 +172,9 @@ const CommentsSection = memo<Props>(
 
           {postType === 'idea' ? (
             <CommentingDisabled
-              commentingEnabled={commentingEnabled}
+              commentingEnabled={!!commentingEnabled}
               commentingDisabledReason={commentingDisabledReason}
-              projectId={get(post, 'relationships.project.data.id')}
+              projectId={idea?.data.relationships.project.data.id || null}
               phaseId={phaseId}
               postId={postId}
               postType={postType}
@@ -217,20 +218,10 @@ const CommentsSection = memo<Props>(
 );
 
 const Data = adopt<DataProps, InputProps>({
-  post: ({ postId, postType, render }) => (
-    <GetPost id={postId} type={postType}>
-      {render}
-    </GetPost>
-  ),
   comments: ({ postId, postType, render }) => (
     <GetComments postId={postId} postType={postType}>
       {render}
     </GetComments>
-  ),
-  project: ({ post, render }) => (
-    <GetProject projectId={get(post, 'relationships.project.data.id')}>
-      {render}
-    </GetProject>
   ),
 });
 

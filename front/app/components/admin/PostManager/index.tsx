@@ -2,8 +2,8 @@ import React, { Suspense } from 'react';
 import { isFunction } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
-import HTML5Backend from 'react-dnd-html5-backend-cjs';
-import { DndProvider } from 'react-dnd-cjs';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { DndProvider } from 'react-dnd';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
@@ -446,7 +446,7 @@ const Data = adopt<DataProps, InputProps>({
   posts: ({ type, projectId, render }) => {
     if (type === 'Initiatives') {
       return (
-        <GetInitiatives type="paginated" pageSize={10} sort="new">
+        <GetInitiatives pageSize={10} sort="new">
           {render}
         </GetInitiatives>
       );

@@ -214,3 +214,4 @@ export async function updateIdea(ideaId: string, object: Partial<IIdeaAdd>) {
 
   return response;
 }
+export { IIdeaData };
