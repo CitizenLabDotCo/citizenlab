@@ -1,12 +1,13 @@
 // Libraries
 import React, { useState } from 'react';
 import { isString, isEmpty } from 'lodash-es';
+import { useIntl } from 'utils/cl-intl';
+
 // Components
 import UserManager from './UserManager';
 import UsersHeader from './UsersHeader';
 
 // i18n
-import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 const AllUsers = () => {
@@ -20,8 +21,8 @@ const AllUsers = () => {
   return (
     <>
       <UsersHeader
-        title={formatMessage(messages.allUsers)}
-        subtitle={formatMessage(messages.usersSubtitle)}
+        title={formatMessage(messages.blockedUsers)}
+        subtitle={formatMessage(messages.blockedUsersSubtitle)}
         onSearch={searchUser}
       />
       <UserManager search={search} />

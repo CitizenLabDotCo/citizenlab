@@ -8,6 +8,9 @@ import { Subscription } from 'rxjs';
 // Resources
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import GetUserCount, { GetUserCountChildProps } from 'resources/GetUserCount';
+import GetBlockedUserCount, {
+  GetBlockedUserCountChildProps,
+} from 'resources/GetBlockedUserCount';
 import { IGroupData } from 'services/groups';
 
 // Events
@@ -156,6 +159,7 @@ export interface InputProps {
 interface DataProps {
   groups: GetGroupsChildProps;
   usercount: GetUserCountChildProps;
+  blockedUsercount: GetBlockedUserCountChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -202,6 +206,7 @@ export class GroupsListPanel extends React.PureComponent<Props, State> {
   render() {
     const {
       usercount,
+      blockedUsercount,
       groups: { groupsList },
     } = this.props;
     const { highlightedGroups } = this.state;
@@ -213,6 +218,14 @@ export class GroupsListPanel extends React.PureComponent<Props, State> {
             <FormattedMessage {...messages.allUsers} />
           </GroupName>
           {!isNilOrError(usercount) && <MembersCount>{usercount}</MembersCount>}
+        </MenuLink>
+        <MenuLink to="/admin/users/blocked" onlyActiveOnIndex>
+          <GroupName>
+            <FormattedMessage {...messages.blockedUsers} />
+          </GroupName>
+          {!isNilOrError(blockedUsercount) && (
+            <MembersCount>{blockedUsercount}</MembersCount>
+          )}
         </MenuLink>
         <Separator />
         <MenuTitle>
@@ -263,6 +276,7 @@ export class GroupsListPanel extends React.PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   groups: <GetGroups />,
   usercount: <GetUserCount />,
+  blockedUsercount: <GetBlockedUserCount />,
 });
 
 export default (inputProps: InputProps) => (

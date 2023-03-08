@@ -129,6 +129,13 @@ export function usersCount(streamParams: IStreamParams | null = null) {
   });
 }
 
+export function blockedUsersCount(streamParams: IStreamParams | null = null) {
+  return streams.get<IUsersCount>({
+    apiEndpoint: `${apiEndpoint}/blocked_users_count`,
+    ...streamParams,
+  });
+}
+
 export const activeUsersByTimeXlsxEndpoint = `${apiEndpoint}/active_users_by_time_as_xlsx`;
 
 export function activeUsersByTimeStream(

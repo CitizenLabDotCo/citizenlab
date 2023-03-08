@@ -200,4 +200,12 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.UserTableRow.userInvitationPending',
     defaultMessage: 'Invitation pending',
   },
+  blockedUsers: {
+    id: 'app.containers.Admin.Users.BlockedUsers.blockedUsers',
+    defaultMessage: 'Blocked users',
+  },
+  blockedUsersSubtitle: {
+    id: 'app.containers.Admin.Users.BlockedUsers.blockedUsersSubtitle',
+    defaultMessage: 'Manage blocked users.',
+  },
 });
