@@ -99,22 +99,6 @@ export interface IIdea {
   data: IIdeaData;
 }
 
-export interface IIdeaAdd {
-  author_id: string | null;
-  project_id: string | null;
-  assignee_id?: string | null;
-  idea_status_id?: string | null;
-  publication_status: IdeaPublicationStatus;
-  title_multiloc: Multiloc;
-  body_multiloc: Multiloc;
-  topic_ids: string[] | null;
-  phase_ids?: string[] | null;
-  location_point_geojson: GeoJSON.Point | null;
-  location_description: string | null;
-  budget: number | null;
-  proposed_budget: number | null;
-}
-
 export interface IIdeasFilterCounts {
   data: {
     attributes: {
@@ -194,24 +178,4 @@ export function similarIdeasStream(
   });
 }
 
-export async function updateIdea(ideaId: string, object: Partial<IIdeaAdd>) {
-  const response = await streams.update<IIdea>(
-    `${API_PATH}/ideas/${ideaId}`,
-    ideaId,
-    { idea: object }
-  );
-
-  streams.fetchAllWith({
-    dataId: [response.data.relationships.project.data.id],
-    apiEndpoint: [
-      `${API_PATH}/stats/ideas_count`,
-      `${API_PATH}/ideas`,
-      `${API_PATH}/ideas/${ideaId}/activities`,
-      `${API_PATH}/analytics`,
-    ],
-    partialApiEndpoint: [`${API_PATH}/ideas/${ideaId}/images`],
-  });
-
-  return response;
-}
 export { IIdeaData };
