@@ -722,7 +722,6 @@
   "app.containers.ChangePassword.passwordChangeSuccessMessage": "Äert Passwuert gouf erfollegräich aktualiséiert",
   "app.containers.ChangePassword.passwordEmptyError": "Gitt Äert Passwuert an",
   "app.containers.ChangePassword.passwordsDontMatch": "Neit Passwuert bestätegen",
-  "app.containers.ChangePassword.title": "Äert Passwuert änneren",
   "app.containers.Comments.a11y_commentDeleted": "Kommentar geläscht",
   "app.containers.Comments.a11y_commentPosted": "Kommentar gepost",
   "app.containers.Comments.a11y_undoUpvote": "Ofstëmmen réckgängeg maachen",

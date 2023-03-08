@@ -722,7 +722,6 @@
   "app.containers.ChangePassword.passwordChangeSuccessMessage": "Ditt lösenord har uppdaterats",
   "app.containers.ChangePassword.passwordEmptyError": "Ange ditt lösenord",
   "app.containers.ChangePassword.passwordsDontMatch": "Bekräfta nytt lösenord",
-  "app.containers.ChangePassword.title": "Ändra ditt lösenord",
   "app.containers.Comments.a11y_commentDeleted": "Kommentar har tagits bort",
   "app.containers.Comments.a11y_commentPosted": "Kommentar har publicerats",
   "app.containers.Comments.a11y_undoUpvote": "Ångra uppröstning",
