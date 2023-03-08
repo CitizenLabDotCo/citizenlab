@@ -16,6 +16,7 @@ import ProfileDeletion from './ProfileDeletion';
 import UsersEditPageMeta from './UsersEditPageMeta';
 import FragmentForm from './FragmentForm';
 import PasswordChange from './PasswordChange';
+import Unauthorized from 'components/Unauthorized';
 
 // Styles
 import styled from 'styled-components';
@@ -47,12 +48,18 @@ export default () => {
   const { data: appConfig } = useAppConfiguration();
   const authUser = useAuthUser();
   const loaded = appConfig !== undefined && authUser !== undefined;
+  const showEditPage =
+    loaded && !isNilOrError(appConfig) && !isNilOrError(authUser);
 
   if (loaded && !authUser) {
     clHistory.push('/');
   }
 
-  if (loaded && !isNilOrError(appConfig) && !isNilOrError(authUser)) {
+  if (showEditPage && authUser.attributes.confirmation_required) {
+    return <Unauthorized />;
+  }
+
+  if (showEditPage) {
     return (
       <Container id="e2e-user-edit-profile-page">
         <UsersEditPageMeta user={authUser} />

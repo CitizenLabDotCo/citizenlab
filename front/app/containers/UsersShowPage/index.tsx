@@ -26,6 +26,7 @@ import UserHeader from './UserHeader';
 import UserNavbar from './UserNavbar';
 import UserComments from './UserComments';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
+import Unauthorized from 'components/Unauthorized';
 
 const NotFoundContainer = styled.main`
   min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px - 4rem);
@@ -110,7 +111,13 @@ export const UsersShowPage = memo<
         />
       </NotFoundContainer>
     );
-  } else if (!isNilOrError(user)) {
+  }
+
+  if (!isNilOrError(user) && user.attributes.confirmation_required) {
+    return <Unauthorized />;
+  }
+
+  if (!isNilOrError(user)) {
     return (
       <>
         <UsersShowPageMeta user={user} />

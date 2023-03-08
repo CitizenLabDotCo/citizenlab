@@ -34,6 +34,9 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
   const isRegisteredUser =
     !isNilOrError(authUser) && authUser.attributes.registration_completed_at;
 
+  const isConfirmedUser =
+    !isNilOrError(authUser) && !authUser.attributes.confirmation_required;
+
   const handleToggleDropdown = (event: MouseEvent | KeyboardEvent) => {
     event.preventDefault();
     toggleDropdown();
@@ -110,7 +113,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
             </DropdownListItem>
           )}
 
-          {!isRegisteredUser && (
+          {!isConfirmedUser && (
             <DropdownListItem
               id="e2e-confirm-email-link"
               onClick={() => {
