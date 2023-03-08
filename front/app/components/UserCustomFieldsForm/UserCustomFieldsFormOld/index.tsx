@@ -53,7 +53,9 @@ import { IUserData } from 'services/users';
 // utils
 import eventEmitter from 'utils/eventEmitter';
 
-const Container = styled.div``;
+const Container = styled.div`
+  margin-bottom: -30px;
+`;
 
 const StyledSectionField = styled(SectionField)`
   margin-bottom: 30px;
@@ -61,6 +63,7 @@ const StyledSectionField = styled(SectionField)`
 
 const InvisibleSubmitButton = styled.button`
   visibility: hidden;
+  position: absolute;
 `;
 
 const InputContainer = styled.div`

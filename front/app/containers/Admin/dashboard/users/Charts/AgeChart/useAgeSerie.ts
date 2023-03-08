@@ -57,7 +57,7 @@ const convertToGraphFormat = (
 ) => {
   if (isNilOrError(data)) return null;
 
-  return binBirthyear(data.series.users, {
+  return binBirthyear(data.data.attributes.series.users, {
     missingBin: formatMessage(messages._blank),
   });
 };

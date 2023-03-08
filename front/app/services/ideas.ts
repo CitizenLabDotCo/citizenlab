@@ -116,13 +116,17 @@ export interface IIdeaAdd {
 }
 
 export interface IIdeasFilterCounts {
-  idea_status_id: {
-    [key: string]: number;
+  data: {
+    attributes: {
+      idea_status_id: {
+        [key: string]: number;
+      };
+      topic_id: {
+        [key: string]: number;
+      };
+      total: number;
+    };
   };
-  topic_id: {
-    [key: string]: number;
-  };
-  total: number;
 }
 
 export function ideaByIdStream(ideaId: string) {
@@ -210,3 +214,4 @@ export async function updateIdea(ideaId: string, object: Partial<IIdeaAdd>) {
 
   return response;
 }
+export { IIdeaData };

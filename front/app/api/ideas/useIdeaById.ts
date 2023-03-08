@@ -4,13 +4,14 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import ideasKeys from './keys';
 import { IIdea, IdeasKeys } from './types';
 
-const fetchIdea = (id: string) =>
+const fetchIdea = (id?: string) =>
   fetcher<IIdea>({ path: `/ideas/${id}`, action: 'get' });
 
-const useIdeaById = (id: string) => {
+const useIdeaById = (id?: string) => {
   return useQuery<IIdea, CLErrors, IIdea, IdeasKeys>({
     queryKey: ideasKeys.item(id),
     queryFn: () => fetchIdea(id),
+    enabled: !!id,
   });
 };
 

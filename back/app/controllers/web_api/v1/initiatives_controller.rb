@@ -74,7 +74,7 @@ class WebApi::V1::InitiativesController < ApplicationController
         end
       end
     counts['total'] = initiatives.count
-    render json: counts
+    render json: raw_json(counts)
   end
 
   def show
@@ -171,7 +171,7 @@ class WebApi::V1::InitiativesController < ApplicationController
 
   def allowed_transitions
     authorize @initiative
-    render json: InitiativeStatusService.new.allowed_transitions(@initiative)
+    render json: raw_json(InitiativeStatusService.new.allowed_transitions(@initiative))
   end
 
   private
