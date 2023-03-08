@@ -12,13 +12,14 @@ describe Rake::Task do
   describe ':schedule_email_campaigns' do
     let(:task_name) { 'email_campaigns:schedule_email_campaigns' }
 
-    it 'enqueues a TriggerOnScheduleJob for every tenant', skip: CitizenLab.ee? do
-      t = Time.now
-      travel_to(t) do
+    it 'enqueues a TriggerOnScheduleJob for every tenant' do
+      time = Time.now
+
+      travel_to(time) do
         expect { task.execute }
           .to have_enqueued_job(EmailCampaigns::TriggerOnScheduleJob)
-          .with(t.to_i)
-          .exactly(1).times
+          .with(time.to_i)
+          .exactly(Tenant.count).times
       end
     end
   end
