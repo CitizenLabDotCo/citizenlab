@@ -10,7 +10,7 @@ const ideasKeys = {
     { ...ideasKeys.lists()[0], queryType: 'infinite', ...filters },
   ],
   items: () => [{ ...ideasKeys.all()[0], operation: 'item' }],
-  item: (id: string) => [
+  item: (id?: string) => [
     {
       ...ideasKeys.items()[0],
       id,

@@ -171,7 +171,7 @@ class WebApi::V1::InitiativesController < ApplicationController
 
   def allowed_transitions
     authorize @initiative
-    render json: InitiativeStatusService.new.allowed_transitions(@initiative)
+    render json: raw_json(InitiativeStatusService.new.allowed_transitions(@initiative))
   end
 
   private

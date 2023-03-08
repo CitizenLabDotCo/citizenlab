@@ -1,10 +1,10 @@
 import React from 'react';
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
+import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
 import { Icon, Button } from 'semantic-ui-react';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 import { ManagerType } from '../..';
-import { useIntl } from 'utils/cl-intl';
 
 interface Props {
   type: ManagerType;
@@ -20,8 +20,8 @@ const ActionBarSingle = ({
   resetSelection,
 }: Props) => {
   const { formatMessage } = useIntl();
-  // const { mutate: deleteInitiative } = useDeleteInitiative();
   const { mutate: deleteIdea } = useDeleteIdea();
+  const { mutate: deleteInitiative } = useDeleteInitiative();
 
   const handleClickDeleteIdea = () => {
     const message = formatMessage(messages.deleteInputConfirmation);
@@ -37,15 +37,14 @@ const ActionBarSingle = ({
     const message = formatMessage(messages.deleteInitiativeConfirmation);
 
     if (window.confirm(message)) {
-      // TODO fix after merging in initiatives code
-      // deleteInitiative(
-      //   { initiativeId: postId },
-      //   {
-      //     onSuccess: () => {
-      //       resetSelection();
-      //     },
-      //   }
-      // );
+      deleteInitiative(
+        { initiativeId: postId },
+        {
+          onSuccess: () => {
+            resetSelection();
+          },
+        }
+      );
     }
   };
 

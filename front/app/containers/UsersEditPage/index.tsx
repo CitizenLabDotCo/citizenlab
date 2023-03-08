@@ -15,6 +15,7 @@ import CampaignsConsentForm from './CampaignsConsentForm';
 import ProfileDeletion from './ProfileDeletion';
 import UsersEditPageMeta from './UsersEditPageMeta';
 import FragmentForm from './FragmentForm';
+import PasswordChange from './PasswordChange';
 
 // Styles
 import styled from 'styled-components';
@@ -65,6 +66,7 @@ export default () => {
           <VerificationStatus />
           <ProfileForm />
           <FragmentForm />
+          <PasswordChange />
           <ProfileDeletion />
           <CampaignsConsentForm />
         </Wrapper>

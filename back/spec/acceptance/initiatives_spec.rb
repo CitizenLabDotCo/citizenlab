@@ -267,7 +267,8 @@ resource 'Initiatives' do
 
     example_request 'List initiative counts per filter option' do
       assert_status 200
-      json_response = json_parse(response_body)
+      json_response = json_parse response_body
+      expect(json_response.dig(:data, :type)).to eq 'filter_counts'
 
       expect(json_response.dig(:data, :attributes, :initiative_status_id)[@s1.id.to_sym]).to eq 1
       expect(json_response.dig(:data, :attributes, :initiative_status_id)[@s2.id.to_sym]).to eq 3
@@ -567,14 +568,20 @@ resource 'Initiatives' do
 
     example_request 'Allowed transitions' do
       assert_status 200
-      json_response = json_parse(response_body)
+      json_response = json_parse response_body
+      expect(json_response.dig(:data, :type)).to eq 'allowed_transitions'
       expect(json_response).to eq({
-        **InitiativeStatus.where(code: 'answered').ids.to_h do |id|
-          [id.to_sym, { feedback_required: true }]
-        end,
-        **InitiativeStatus.where(code: 'ineligible').ids.to_h do |id|
-          [id.to_sym, { feedback_required: true }]
-        end
+        data: {
+          type: 'allowed_transitions',
+          attributes: {
+            **InitiativeStatus.where(code: 'answered').ids.to_h do |id|
+              [id.to_sym, { feedback_required: true }]
+            end,
+            **InitiativeStatus.where(code: 'ineligible').ids.to_h do |id|
+              [id.to_sym, { feedback_required: true }]
+            end
+          }
+        }
       })
     end
   end
