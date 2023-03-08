@@ -29,14 +29,14 @@ const fetchAuthenticationRequirements = (
 const useGetAuthenticationRequirements = (
   authenticationContext: AuthenticationContext
 ) => {
-  const { mutate, ...other } = useMutation<
+  const { mutateAsync } = useMutation<
     AuthenticationRequirementsResponse,
     CLErrors
   >({
     mutationFn: () => fetchAuthenticationRequirements(authenticationContext),
   });
 
-  return { get: mutate, ...other };
+  return mutateAsync;
 };
 
 export default useGetAuthenticationRequirements;

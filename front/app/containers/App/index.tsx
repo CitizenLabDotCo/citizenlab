@@ -45,7 +45,11 @@ import {
 import { localeStream } from 'services/locale';
 import { TAuthUser } from 'hooks/useAuthUser';
 
-// resources
+// hooks
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import { useLocation } from 'react-router-dom';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
@@ -59,10 +63,6 @@ import { Locale } from 'typings';
 
 // utils
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import { useLocation } from 'react-router-dom';
 
 const Container = styled.div<{
   disableScroll?: boolean;
