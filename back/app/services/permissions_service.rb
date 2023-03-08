@@ -84,8 +84,8 @@ class PermissionsService
 
   def old_denied_reason(permission, user)
     return if permission.permitted_by == 'everyone'
-    return if user&.admin?
-    return if user && UserRoleService.new.can_moderate?(permission.permission_scope, user)
+    return DENIED_REASONS[:not_signed_in] if !user
+    return if UserRoleService.new.can_moderate? permission.permission_scope, user
 
     reason = case permission.permitted_by
     when 'users' then :not_signed_in unless user
@@ -108,7 +108,7 @@ class PermissionsService
   end
 
   def denied_when_permitted_by_groups?(permission, user)
-    :not_permitted if user.nil? || !user.in_any_groups?(permission.groups)
+    :not_permitted if !user.in_any_groups?(permission.groups)
   end
 
   def requirements_mapping
