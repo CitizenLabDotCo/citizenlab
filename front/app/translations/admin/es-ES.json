@@ -344,7 +344,6 @@
   "app.containers.Admin.Insights.supportLinkUrl": "https://support.citizenlab.co/articles/5525933",
   "app.containers.Admin.Insights.title": "Tendencias",
   "app.containers.Admin.Invitations.addToGroupLabel": "Añade estas personas a grupos manuales específicos",
-  "app.containers.Admin.Invitations.adminLabel": "Dale a estas personas permisos de administrador",
   "app.containers.Admin.Invitations.adminLabelTooltip": "Cuando se activa, las personas que reciben y aceptan su invitación también tendrán acceso a todas las configuraciones de administrador de la plataforma.",
   "app.containers.Admin.Invitations.configureInvitations": "3. Configurar las invitaciones",
   "app.containers.Admin.Invitations.confirmDelete": "Si, estoy seguro(a)",
