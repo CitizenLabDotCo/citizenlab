@@ -21,7 +21,7 @@ import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
 import usePhase from 'hooks/usePhase';
-import useIdeaMarkers from 'hooks/useIdeaMarkers';
+import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
 
 // services
 import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
@@ -55,7 +55,8 @@ import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import { media, viewportWidths, colors, fontSizes } from 'utils/styleUtils';
 
 // typings
-import { IIdeaMarkerData, Sort } from 'services/ideas';
+import { Sort } from 'services/ideas';
+import { IIdeaMarkerData } from 'api/idea_markers/types';
 
 const mapMarginDesktop = 70;
 const mapHeightDesktop = '83vh';
@@ -250,7 +251,7 @@ const IdeasMap = memo<Props>((props) => {
   const defaultIdeasTopics: string[] = [];
   const [search, setSearch] = useState<string | null>(defaultIdeasSearch);
   const [topics, setTopics] = useState<string[]>(defaultIdeasTopics);
-  const ideaMarkers = useIdeaMarkers({
+  const { data: ideaMarkers } = useIdeaMarkers({
     projectIds: [projectId],
     phaseId,
     search,
@@ -341,8 +342,8 @@ const IdeasMap = memo<Props>((props) => {
   useEffect(() => {
     const ideaPoints: Point[] = [];
 
-    if (!isNilOrError(ideaMarkers) && ideaMarkers.length > 0) {
-      ideaMarkers.forEach((ideaMarker) => {
+    if (!isNilOrError(ideaMarkers) && ideaMarkers.data.length > 0) {
+      ideaMarkers.data.forEach((ideaMarker) => {
         if (
           ideaMarker.attributes &&
           ideaMarker.attributes.location_point_geojson
@@ -369,7 +370,7 @@ const IdeasMap = memo<Props>((props) => {
   };
 
   const selectedIdeaMarker = useMemo(() => {
-    return ideaMarkers?.find(({ id }) => id === selectedIdeaMarkerId);
+    return ideaMarkers?.data.find(({ id }) => id === selectedIdeaMarkerId);
   }, [ideaMarkers, selectedIdeaMarkerId]);
 
   return (
