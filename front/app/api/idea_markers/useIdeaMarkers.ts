@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
+import { QueryParameters, IIdeaMarkers, IdeaMarkersKeys } from './types';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import ideaMarkerKeys from '../keys';
-import { QueryParameters, IIdeaMarkers, IdeaMarkerKeys } from './types';
+import ideaMarkerKeys from './keys';
 
 export const defaultPageSize = 24;
 
@@ -17,11 +17,11 @@ const fetchIdeaMarkers = (queryParameters: QueryParameters) =>
     },
   });
 
-const useIdeas = (queryParameters: QueryParameters) => {
-  return useQuery<IIdeaMarkers, CLErrors, IIdeaMarkers, IdeaMarkerKeys>({
+const useIdeaMarkers = (queryParameters: QueryParameters) => {
+  return useQuery<IIdeaMarkers, CLErrors, IIdeaMarkers, IdeaMarkersKeys>({
     queryKey: ideaMarkerKeys.list(queryParameters), // TODO
     queryFn: () => fetchIdeaMarkers(queryParameters),
   });
 };
 
-export default useIdeas;
+export default useIdeaMarkers;

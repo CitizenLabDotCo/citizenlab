@@ -5,6 +5,7 @@ import { apiEndpoint as projectsApiEndpoint } from './projects';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 const apiEndpoint = `${API_PATH}/projects_allowed_input_topics`;
+
 export const getListEndpoint = (projectId: string) =>
   `${projectsApiEndpoint}/${projectId}/projects_allowed_input_topics`;
 
