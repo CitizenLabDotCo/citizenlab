@@ -60,7 +60,7 @@ namespace :cl2back do
     Rails.logger.info("#{log_prefix}#{digest.to_yaml}")
 
     # Log some event details (not error). Can remove when we have log aggregation tool that catches logs of this task.
-    ErrorReporter.report_msg('cl2back:clean_up_orphaned_image_records rake task', extra: @report, backtrace: false)
+    ErrorReporter.report_msg('cl2back:clean_up_orphaned_image_records rake task', extra: @report)
   end
 
   def log_prefix

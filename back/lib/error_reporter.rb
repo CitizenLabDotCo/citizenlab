@@ -35,13 +35,10 @@ class ErrorReporter
     # 3. You may use specific method for controller or add specific controller `extra` fields (e.g. `extra: { params: params }`)
     # https://github.com/getsentry/sentry-ruby/blob/4.7.2/sentry-rails/lib/sentry/rails/controller_methods.rb
 
-    def report_msg(msg, extra: {}, backtrace: true)
+    def report_msg(msg, extra: {})
       Sentry::Rails.capture_message(msg, extra: extra) # it sends the backtrace to Sentry.
 
-      # It's considered as an exceptional situation, so printing the entire backtrace to make it visible,
-      # unless this is explicitly skipped.
-      return unless backtrace
-
+      # It's considered as an exceptional situation, so printing the entire backtrace to make it visible.
       Rails.logger.error(
         "Reported message: #{msg}\n" + caller.join("\n"),
         extra
