@@ -163,10 +163,11 @@ class User < ApplicationRecord
 
   validates :invite_status, inclusion: { in: INVITE_STATUSES }, allow_nil: true
 
-  validates :custom_field_values, json: {
-    schema: -> { CustomFieldService.new.fields_to_json_schema(CustomField.with_resource_type('User')) },
-    message: ->(errors) { errors }
-  }, if: %i[custom_field_values_changed? active?]
+  # TODO: Allow light users without required fields
+  # validates :custom_field_values, json: {
+  #   schema: -> { CustomFieldService.new.fields_to_json_schema(CustomField.with_resource_type('User')) },
+  #   message: ->(errors) { errors }
+  # }, if: %i[custom_field_values_changed? active?]
 
   validates :password, length: { maximum: 72 }, allow_nil: true
   # Custom validation is required to deal with the
