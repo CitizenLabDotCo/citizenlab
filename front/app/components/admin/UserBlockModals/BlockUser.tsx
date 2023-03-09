@@ -8,7 +8,6 @@ import TextArea from 'components/HookForm/TextArea';
 import Modal from 'components/UI/Modal';
 import { Button, Text, Box } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
-import SuccessfulBlockModal from './SuccessfulBlockModal';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -31,10 +30,7 @@ export default () => {
     defaultValues: {},
   });
   const { formatMessage } = useIntl();
-  const succesfulBlock = true;
-  return succesfulBlock ? (
-    <SuccessfulBlockModal />
-  ) : (
+  return (
     <Modal
       close={() => {}}
       opened={true}
