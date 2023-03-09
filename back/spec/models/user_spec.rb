@@ -867,5 +867,12 @@ RSpec.describe User, type: :model do
       user = described_class.new(email: 'test@citizenlab.co', invite_status: 'pending')
       expect(user.no_name?).to be false
     end
+
+    it 'returns an anonymous full_name and slug in format "User 123456" if true' do
+      user = described_class.new(email: 'test@citizenlab.co')
+      user.save
+      expect(user.full_name).to match(/User \d{6}/)
+      expect(user.slug).to match(/user-\d{6}/)
+    end
   end
 end

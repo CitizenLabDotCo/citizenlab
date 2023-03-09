@@ -293,7 +293,8 @@ class User < ApplicationRecord
   end
 
   def full_name
-    [first_name, last_name].compact.join(' ') unless no_name?
+    return [first_name, last_name].compact.join(' ') unless no_name?
+
     [anon_first_name, anon_last_name].compact.join(' ')
   end
 
