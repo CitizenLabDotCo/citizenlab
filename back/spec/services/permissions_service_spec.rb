@@ -74,6 +74,12 @@ describe PermissionsService do
         it { expect(denied_reason).to be_nil }
       end
 
+      context 'when light unconfirmed inactive resident' do
+        before { user.update!(email_confirmed_at: nil, password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}, registration_completed_at: nil) }
+
+        it { expect(denied_reason).to be_nil }
+      end
+
       context 'when fully registered confirmed resident' do
         it { expect(denied_reason).to be_nil }
       end
@@ -100,6 +106,12 @@ describe PermissionsService do
         it { expect(denied_reason).to eq 'missing_data' }
       end
 
+      context 'when light unconfirmed inactive resident' do
+        before { user.update!(email_confirmed_at: nil, password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}, registration_completed_at: nil) }
+
+        it { expect(denied_reason).to eq 'not_active' }
+      end
+
       context 'when light confirmed resident' do
         before { user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}) }
 
@@ -116,6 +128,12 @@ describe PermissionsService do
         it { expect(denied_reason).to be_nil }
       end
 
+      context 'when fully registered confirmed inactive resident' do
+        before { user.update!(registration_completed_at: nil) }
+
+        it { expect(denied_reason).to eq 'not_active' }
+      end
+
       context 'when unconfirmed admin' do
         before { user.update!(email_confirmed_at: nil, roles: [{ type: 'admin' }]) }
 
@@ -126,6 +144,12 @@ describe PermissionsService do
         before { user.update!(roles: [{ type: 'admin' }]) }
 
         it { expect(denied_reason).to be_nil }
+      end
+
+      context 'when confirmed inactive admin' do
+        before { user.update!(roles: [{ type: 'admin' }], registration_completed_at: nil) }
+
+        it { expect(denied_reason).to eq 'not_active' }
       end
     end
 
@@ -144,6 +168,12 @@ describe PermissionsService do
         it { expect(denied_reason).to be_nil } # TODO: change to missing_data when applying the new implementation to all permitted_by's
       end
 
+      context 'when light confirmed inactive resident' do
+        before { user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}, registration_completed_at: nil) }
+
+        it { expect(denied_reason).to eq 'not_active' }
+      end
+
       context 'when fully registered unconfirmed resident' do
         before { user.update!(email_confirmed_at: nil) }
 
@@ -152,6 +182,12 @@ describe PermissionsService do
 
       context 'when fully registered confirmed resident' do
         it { expect(denied_reason).to be_nil }
+      end
+
+      context 'when fully registered confirmed inactive resident' do
+        before { user.update!(registration_completed_at: nil) }
+
+        it { expect(denied_reason).to eq 'not_active' }
       end
 
       context 'when unconfirmed admin' do
@@ -164,6 +200,12 @@ describe PermissionsService do
         before { user.update!(roles: [{ type: 'admin' }]) }
 
         it { expect(denied_reason).to be_nil }
+      end
+
+      context 'when confirmed inactive admin' do
+        before { user.update!(roles: [{ type: 'admin' }], registration_completed_at: nil) }
+
+        it { expect(denied_reason).to eq 'not_active' }
       end
     end
 
@@ -198,6 +240,12 @@ describe PermissionsService do
 
         it { expect(denied_reason).to be_nil }
       end
+
+      context 'when confirmed inactive admin' do
+        before { user.update!(roles: [{ type: 'admin' }], registration_completed_at: nil) }
+
+        it { expect(denied_reason).to eq 'not_active' }
+      end
     end
 
     context 'when permitted by moderators' do
@@ -231,6 +279,12 @@ describe PermissionsService do
         before { user.update!(roles: [{ type: 'admin' }]) }
 
         it { expect(denied_reason).to be_nil }
+      end
+
+      context 'when confirmed inactive admin' do
+        before { user.update!(roles: [{ type: 'admin' }], registration_completed_at: nil) }
+
+        it { expect(denied_reason).to eq 'not_active' }
       end
     end
   end

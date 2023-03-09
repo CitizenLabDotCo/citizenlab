@@ -2,9 +2,10 @@
 
 class PermissionsService
   DENIED_REASONS = {
+    not_signed_in: 'not_signed_in',
+    not_active: 'not_active',
     not_permitted: 'not_permitted',
     missing_data: 'missing_data',
-    not_signed_in: 'not_signed_in',
     not_verified: 'not_verified'
   }.freeze
 
@@ -84,7 +85,9 @@ class PermissionsService
 
   def old_denied_reason(permission, user)
     return if permission.permitted_by == 'everyone'
-    return DENIED_REASONS[:not_signed_in] if !user&.active?
+    return DENIED_REASONS[:not_signed_in] if !user
+    return DENIED_REASONS[:not_active] if !user.active?
+
     return if UserRoleService.new.can_moderate? permission.permission_scope, user
 
     reason = case permission.permitted_by
@@ -99,9 +102,14 @@ class PermissionsService
   end
 
   def new_denied_reason(permission, user)
-    return DENIED_REASONS[:not_signed_in] if !user&.active? && permission.permitted_by != 'everyone'
+    if permission.permitted_by == 'everyone'
+      user ||= User.new
+    elsif !user
+      return DENIED_REASONS[:not_signed_in]
+    elsif !user.active?
+      return DENIED_REASONS[:not_active]
+    end
 
-    user ||= User.new
     return if requirements(permission, user)[:permitted]
 
     DENIED_REASONS[:missing_data]
