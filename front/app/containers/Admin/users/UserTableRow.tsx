@@ -7,7 +7,7 @@ import moment from 'moment';
 import clHistory from 'utils/cl-router/history';
 
 // Components
-import { Tr, Td, Toggle, Box } from '@citizenlab/cl2-component-library';
+import { Tr, Td, Box } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
 import Checkbox from 'components/UI/Checkbox';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
@@ -135,7 +135,10 @@ const UserTableRow = ({
         )}
       </RegisteredAt>
       <Td>
-        <Toggle checked={isUserAdmin} onChange={toggleAdmin} />
+        <FormattedMessage
+          {...(isUserAdmin ? messages.admin : messages.registeredUser)}
+        />
+        {/* <Toggle checked={isUserAdmin} onChange={toggleAdmin} /> */}
       </Td>
       <Td>
         <MoreActionsMenu showLabel={false} actions={actions} />

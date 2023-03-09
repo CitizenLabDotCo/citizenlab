@@ -162,7 +162,7 @@ class UsersTable extends PureComponent<Props> {
                   }
                   onClick={this.handleSortingOnChange('role')}
                 >
-                  <FormattedMessage {...messages.admin} />
+                  <FormattedMessage {...messages.status} />
                 </SortableTh>
                 <Th>
                   <Uppercase>

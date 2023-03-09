@@ -25,6 +25,14 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.admin',
     defaultMessage: 'Admin',
   },
+  registeredUser: {
+    id: 'app.containers.Admin.Users.registeredUser',
+    defaultMessage: 'Registered user',
+  },
+  status: {
+    id: 'app.containers.Admin.Users.status',
+    defaultMessage: 'Status',
+  },
   options: {
     id: 'app.containers.Admin.Users.options',
     defaultMessage: 'Options',
