@@ -64,10 +64,6 @@ class Permission < ApplicationRecord
     ACTIONS[permission_scope&.participation_method]
   end
 
-  # def granted_to?(user)
-  #   !denied_reason user
-  # end
-
   def participation_conditions
     []
   end

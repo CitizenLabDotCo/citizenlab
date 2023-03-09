@@ -31,6 +31,110 @@ describe PermissionsService do
   end
 
   describe '#denied_reason_for_permission' do
+    before do
+      create :custom_field_birthyear, required: true
+      create :custom_field_gender, required: false
+      create :custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_required_field'
+      create :custom_field_number, resource_type: 'User', required: false, key: 'extra_optional_field'
+    end
+
+    let(:user) do
+      create(
+        :user,
+        first_name: 'Jerry',
+        last_name: 'Jones',
+        email: 'jerry@jones.com',
+        custom_field_values: {
+          'gender' => 'male',
+          'birthyear' => 1982,
+          'extra_required_field' => false,
+          'extra_optional_field' => 29
+        },
+        registration_completed_at: Time.now,
+        password: 'supersecret',
+        email_confirmed_at: Time.now
+      )
+    end
+
+    let(:permission) { create :permission, permitted_by: permitted_by }
+    let(:denied_reason) { service.denied_reason_for_permission permission, user }
+
+    context 'when permitted by everyone' do
+      let(:permitted_by) { 'everyone' }
+
+      context 'when not signed in' do
+        let(:user) { nil }
+
+        it { expect(denied_reason).to be_nil }
+      end
+
+      context 'when light unconfirmed resident' do
+        before { user.update!(email_confirmed_at: nil, password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}) }
+
+        it { expect(denied_reason).to be_nil }
+      end
+
+      context 'when fully registered confirmed resident' do
+        it { expect(denied_reason).to be_nil }
+      end
+
+      context 'when unconfirmed admin' do
+        before { user.update!(email_confirmed_at: nil, roles: [{ type: 'admin' }]) }
+
+        it { expect(denied_reason).to be_nil }
+      end
+    end
+
+    context 'when permitted by light users' do
+      let(:permitted_by) { 'everyone_confirmed_email' }
+
+      context 'when not signed in' do
+        let(:user) { nil }
+
+        it { expect(denied_reason).to eq 'not_signed_in' }
+      end
+
+      context 'when light unconfirmed resident' do
+        before { user.update!(email_confirmed_at: nil, password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}) }
+
+        it { expect(denied_reason).to eq 'missing_data' }
+      end
+
+      context 'when light confirmed resident' do
+        before { user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}) }
+
+        it { expect(denied_reason).to be_nil }
+      end
+
+      context 'when fully registered unconfirmed resident' do
+        before { user.update!(email_confirmed_at: nil) }
+
+        it { expect(denied_reason).to eq 'missing_data' }
+      end
+
+      context 'when fully registered confirmed resident' do
+        it { expect(denied_reason).to be_nil }
+      end
+
+      context 'when unconfirmed admin' do
+        before { user.update!(email_confirmed_at: nil, roles: [{ type: 'admin' }]) }
+
+        it { expect(denied_reason).to eq 'missing_data' }
+      end
+
+      context 'when confirmed admin' do
+        before { user.update!(roles: [{ type: 'admin' }]) }
+
+        it { expect(denied_reason).to be_nil }
+      end
+    end
+
+
+
+
+
+
+
     let(:everyone_permission) { build(:permission, :by_everyone) }
     let(:users_permission) { build(:permission, :by_users) }
     let(:admins_mods_permission) { build(:permission, :by_admins_moderators) }

@@ -84,7 +84,7 @@ class PermissionsService
 
   def old_denied_reason(permission, user)
     return if permission.permitted_by == 'everyone'
-    return DENIED_REASONS[:not_signed_in] if !user
+    return DENIED_REASONS[:not_signed_in] if !user&.active?
     return if UserRoleService.new.can_moderate? permission.permission_scope, user
 
     reason = case permission.permitted_by
@@ -99,7 +99,7 @@ class PermissionsService
   end
 
   def new_denied_reason(permission, user)
-    return DENIED_REASONS[:not_signed_in] if !user && permission.permitted_by != 'everyone'
+    return DENIED_REASONS[:not_signed_in] if !user&.active? && permission.permitted_by != 'everyone'
 
     user ||= User.new
     return if requirements(permission, user)[:permitted]
