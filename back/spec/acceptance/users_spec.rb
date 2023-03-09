@@ -561,7 +561,8 @@ resource 'Users' do
       end
 
       get 'web_api/v1/users/:id' do
-        let(:id) { @user.id }
+        let(:user) { create :user }
+        let(:id) { user.id }
 
         example_request 'Get a user by id includes user block data' do
           expect(status).to eq 200

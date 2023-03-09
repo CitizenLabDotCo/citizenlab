@@ -63,6 +63,10 @@ class UserPolicy < ApplicationPolicy
     record.id == user&.id || (user&.active? && user&.admin?)
   end
 
+  def block
+    index?
+  end
+
   def blocked_count
     index?
   end
