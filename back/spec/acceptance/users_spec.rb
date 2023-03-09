@@ -470,7 +470,7 @@ resource 'Users' do
           }
           AppConfiguration.instance.update!(settings: settings)
 
-          do_request blocked: true
+          do_request only_blocked: true
 
           expect(status).to eq 200
           json_response = json_parse(response_body)
