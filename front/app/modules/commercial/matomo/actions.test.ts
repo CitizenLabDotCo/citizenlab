@@ -2,6 +2,8 @@ import { trackPageChange } from './actions';
 import { mockRoutes } from './mockRoutes.mock';
 import { Observable } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import ideasKeys from 'api/ideas/keys';
 
 jest.mock('services/auth');
 
@@ -21,24 +23,16 @@ jest.mock('services/projects', () => ({
   })),
 }));
 
-let mockIdea;
-
-const mockIdeaObservable = new Observable((subscriber) => {
-  subscriber.next(mockIdea);
-}).pipe(delay(1));
-
-jest.mock('@tanstack/react-query', () => ({
-  QueryObserver: jest.fn(() => mockIdeaObservable),
-}));
+const mockIdea = {
+  data: { relationships: { project: { data: { id: 'project-id2' } } } },
+};
 
 describe('trackPageChange', () => {
   beforeEach(() => {
+    queryClient.setQueryData(ideasKeys.itemSlug('some-idea'), mockIdea);
     window._paq = [];
     mockProject = {
       data: { id: 'project-id' },
-    };
-    mockIdea = {
-      data: { relationships: { project: { data: { id: 'project-id2' } } } },
     };
   });
 
@@ -58,6 +52,7 @@ describe('trackPageChange', () => {
   });
 
   it('sets project id path is idea', async () => {
+    queryClient.setQueryData(ideasKeys.itemSlug('some-idea'), mockIdea);
     await trackPageChange('/en/ideas/some-idea');
     expect(window._paq[1]).toEqual(['setCustomDimension', 4, 'project-id2']);
   });

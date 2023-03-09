@@ -1,5 +1,7 @@
+import ideasKeys from 'api/ideas/keys';
 import { Observable } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 import {
   extractIdeaSlug,
@@ -59,6 +61,9 @@ jest.mock('services/ideas', () => ({
 }));
 
 describe('getProjectId', () => {
+  beforeEach(() => {
+    queryClient.setQueryData(ideasKeys.itemSlug('some-idea'), mockIdea);
+  });
   it('returns the project id directly when the project link is an admin link', async () => {
     const projectId = await getProjectId(
       '/en/admin/projects/e20f63ae-1fe4-49be-8bf9-599cc34e6515'
