@@ -1,12 +1,9 @@
-import React, { PureComponent } from 'react';
-import styled, { withTheme } from 'styled-components';
+import React from 'react';
+import styled from 'styled-components';
 
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
-import GetInitiative, {
-  GetInitiativeChildProps,
-} from 'resources/GetInitiative';
 import GetInitiativeStatus, {
   GetInitiativeStatusChildProps,
 } from 'resources/GetInitiativeStatus';
@@ -25,6 +22,13 @@ import messages from './messages';
 
 import T from 'components/T';
 import { get } from 'lodash-es';
+
+// hooks
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+import { useTheme } from 'styled-components';
+
+// Types
+import { IInitiativeData } from 'api/initiatives/types';
 
 const Container = styled.div``;
 
@@ -120,123 +124,121 @@ interface InputProps {
   initiativeId: string;
 }
 
+interface IntiativeInputProps {
+  initiative: IInitiativeData;
+}
+
 interface DataProps {
   tenant: GetAppConfigurationChildProps;
-  initiative: GetInitiativeChildProps;
   initiativeStatus: GetInitiativeStatusChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps, IntiativeInputProps {}
 
-class VoteIndicator extends PureComponent<Props & { theme: any }> {
-  render() {
-    const { initiative, initiativeStatus, theme, tenant } = this.props;
-    if (isNilOrError(initiative) || isNilOrError(initiativeStatus)) return null;
+const VoteIndicator = ({ initiative, initiativeStatus, tenant }: Props) => {
+  const theme = useTheme();
+  if (isNilOrError(initiativeStatus)) return null;
 
-    const statusCode = initiativeStatus.attributes.code;
-    const voteCount = initiative.attributes.upvotes_count;
-    const voteLimit: number = get(
-      tenant,
-      'attributes.settings.initiatives.voting_threshold',
-      1
-    );
+  const statusCode = initiativeStatus.attributes.code;
+  const voteCount = initiative.attributes.upvotes_count;
+  const voteLimit: number = get(
+    tenant,
+    'attributes.settings.initiatives.voting_threshold',
+    1
+  );
 
-    return (
-      <Container className="e2e-initiative-card-vote-indicator">
-        {statusCode === 'proposed' && (
-          <div>
-            <VoteCounter>
-              <VoteIcon name="vote-up" ariaHidden />
-              <VoteText aria-hidden>
-                <b className="e2e-initiative-card-vote-count">{voteCount}</b>
-                <span className="division-bar">/</span>
-                {voteLimit}
-              </VoteText>
-            </VoteCounter>
-            <StyledProposalProgressBar
-              voteCount={voteCount}
-              voteLimit={voteLimit}
-              barColor="linear-gradient(270deg, #DE7756 -30.07%, #FF672F 100%)"
+  return (
+    <Container className="e2e-initiative-card-vote-indicator">
+      {statusCode === 'proposed' && (
+        <div>
+          <VoteCounter>
+            <VoteIcon name="vote-up" ariaHidden />
+            <VoteText aria-hidden>
+              <b className="e2e-initiative-card-vote-count">{voteCount}</b>
+              <span className="division-bar">/</span>
+              {voteLimit}
+            </VoteText>
+          </VoteCounter>
+          <StyledProposalProgressBar
+            voteCount={voteCount}
+            voteLimit={voteLimit}
+            barColor="linear-gradient(270deg, #DE7756 -30.07%, #FF672F 100%)"
+          />
+          <ScreenReaderOnly>
+            <FormattedMessage
+              {...messages.xVotesOfY}
+              values={{ xVotes: voteCount, votingThreshold: voteLimit }}
             />
-            <ScreenReaderOnly>
-              <FormattedMessage
-                {...messages.xVotesOfY}
-                values={{ xVotes: voteCount, votingThreshold: voteLimit }}
-              />
-            </ScreenReaderOnly>
-          </div>
-        )}
+          </ScreenReaderOnly>
+        </div>
+      )}
 
-        {statusCode === 'expired' && (
-          <div>
-            <ExpiredText>
-              <ExpiredIcon name="clock" ariaHidden />
-              <T value={initiativeStatus.attributes.title_multiloc} />
-            </ExpiredText>
+      {statusCode === 'expired' && (
+        <div>
+          <ExpiredText>
+            <ExpiredIcon name="clock" ariaHidden />
+            <T value={initiativeStatus.attributes.title_multiloc} />
+          </ExpiredText>
 
-            <StyledProposalProgressBar
-              voteCount={voteCount}
-              voteLimit={voteLimit}
-              barColor={colors.textSecondary}
-              bgShaded
-            />
-          </div>
-        )}
+          <StyledProposalProgressBar
+            voteCount={voteCount}
+            voteLimit={voteLimit}
+            barColor={colors.textSecondary}
+            bgShaded
+          />
+        </div>
+      )}
 
-        {statusCode === 'threshold_reached' && (
-          <div>
-            <VoteCounter>
-              <VoteIcon name="vote-up" ariaHidden />
-              <VoteText aria-hidden>
-                <b>{voteCount}</b>
-                <span className="division-bar">/</span>
-                {voteLimit}
-              </VoteText>
-            </VoteCounter>
+      {statusCode === 'threshold_reached' && (
+        <div>
+          <VoteCounter>
+            <VoteIcon name="vote-up" ariaHidden />
+            <VoteText aria-hidden>
+              <b>{voteCount}</b>
+              <span className="division-bar">/</span>
+              {voteLimit}
+            </VoteText>
+          </VoteCounter>
 
-            <StyledProposalProgressBar
-              voteCount={voteCount}
-              voteLimit={voteLimit}
-              barColor={theme.colors.tenantPrimary}
-            />
-          </div>
-        )}
+          <StyledProposalProgressBar
+            voteCount={voteCount}
+            voteLimit={voteLimit}
+            barColor={theme.colors.tenantPrimary}
+          />
+        </div>
+      )}
 
-        {statusCode === 'answered' && (
-          <AnsweredStatusBadge color={initiativeStatus.attributes.color}>
-            <AnsweredBadgeIcon name="check-circle" ariaHidden />
-            <BadgeLabel>
-              <T value={initiativeStatus.attributes.title_multiloc} />
-            </BadgeLabel>
-          </AnsweredStatusBadge>
-        )}
+      {statusCode === 'answered' && (
+        <AnsweredStatusBadge color={initiativeStatus.attributes.color}>
+          <AnsweredBadgeIcon name="check-circle" ariaHidden />
+          <BadgeLabel>
+            <T value={initiativeStatus.attributes.title_multiloc} />
+          </BadgeLabel>
+        </AnsweredStatusBadge>
+      )}
 
-        {statusCode === 'ineligible' && (
-          <IneligibleStatusBadge color={initiativeStatus.attributes.color}>
-            <IneligibleBadgeIcon name="halt" ariaHidden />
-            <BadgeLabel>
-              <T value={initiativeStatus.attributes.title_multiloc} />
-            </BadgeLabel>
-          </IneligibleStatusBadge>
-        )}
+      {statusCode === 'ineligible' && (
+        <IneligibleStatusBadge color={initiativeStatus.attributes.color}>
+          <IneligibleBadgeIcon name="halt" ariaHidden />
+          <BadgeLabel>
+            <T value={initiativeStatus.attributes.title_multiloc} />
+          </BadgeLabel>
+        </IneligibleStatusBadge>
+      )}
 
-        {statusCode === 'custom' && (
-          <CustomStatusBadge color={initiativeStatus.attributes.color}>
-            <BadgeLabel>
-              <T value={initiativeStatus.attributes.title_multiloc} />
-            </BadgeLabel>
-          </CustomStatusBadge>
-        )}
-      </Container>
-    );
-  }
-}
+      {statusCode === 'custom' && (
+        <CustomStatusBadge color={initiativeStatus.attributes.color}>
+          <BadgeLabel>
+            <T value={initiativeStatus.attributes.title_multiloc} />
+          </BadgeLabel>
+        </CustomStatusBadge>
+      )}
+    </Container>
+  );
+};
 
-const Data = adopt<DataProps, InputProps>({
+const Data = adopt<DataProps, InputProps & IntiativeInputProps>({
   tenant: <GetAppConfiguration />,
-  initiative: ({ initiativeId, render }) => (
-    <GetInitiative id={initiativeId}>{render}</GetInitiative>
-  ),
   initiativeStatus: ({ initiative, render }) => (
     <GetInitiativeStatus
       id={get(initiative, 'relationships.initiative_status.data.id')}
@@ -246,10 +248,20 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const VoteIndicatorWithHOCs = withTheme(VoteIndicator);
+export default (inputProps: InputProps) => {
+  // TODO: Move this logic to VoteIndicator after working on the initiativeStatus. It's dependency here is why we need to pass in the initiative to the Data component
+  const { data: initiative } = useInitiativeById(inputProps.initiativeId);
+  if (!initiative) return null;
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <VoteIndicatorWithHOCs {...inputProps} {...dataProps} />}
-  </Data>
-);
+  return (
+    <Data {...inputProps} initiative={initiative.data}>
+      {(dataProps) => (
+        <VoteIndicator
+          initiative={initiative.data}
+          {...inputProps}
+          {...dataProps}
+        />
+      )}
+    </Data>
+  );
+};

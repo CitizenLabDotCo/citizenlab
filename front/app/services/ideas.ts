@@ -175,7 +175,7 @@ export interface IIdeaAdd {
 }
 
 export interface IIdeasFilterCounts {
-  idea_status_id: {
+  idea_status_id?: {
     [key: string]: number;
   };
   topic_id: {

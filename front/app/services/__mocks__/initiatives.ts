@@ -1,6 +1,3 @@
-export const addInitiative = jest
-  .fn()
-  .mockImplementation(() => Promise.resolve({ data: { id: 'initiativeID' } }));
 export const updateInitiative = jest
   .fn()
   .mockImplementation(() => Promise.resolve());

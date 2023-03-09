@@ -952,9 +952,10 @@ resource 'Users' do
         create(:initiative)
         create(:initiative, author: @user, publication_status: 'draft')
         do_request
-        expect(status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response[:count]).to eq 1
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'initiatives_count'
+        expect(json_response.dig(:data, :attributes, :count)).to eq 1
       end
     end
 
