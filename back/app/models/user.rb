@@ -28,6 +28,8 @@
 #  email_confirmation_code_reset_count :integer          default(0), not null
 #  email_confirmation_code_sent_at     :datetime
 #  confirmation_required               :boolean          default(TRUE), not null
+#  block_start_at                      :datetime
+#  block_reason                        :string
 #
 # Indexes
 #
@@ -146,7 +148,7 @@ class User < ApplicationRecord
 
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
 
-  validates :email, :first_name, :slug, :locale, presence: true, unless: :invite_pending?
+  validates :email, :locale, presence: true, unless: :invite_pending?
 
   validates :email, uniqueness: true, allow_nil: true
   validates :slug, uniqueness: true, presence: true, unless: :invite_pending?
@@ -173,8 +175,6 @@ class User < ApplicationRecord
   validate :validate_password_not_common
 
   validate do |record|
-    record.errors.add(:last_name, :blank) unless record.last_name.present? || record.cl1_migrated || record.invite_pending?
-    record.errors.add(:password, :blank) unless record.password_digest.present? || record.identities.any? || record.invite_pending?
     if record.email && (duplicate_user = User.find_by_cimail(record.email)).present? && duplicate_user.id != id
       if duplicate_user.invite_pending?
         ErrorsService.new.remove record.errors, :email, :taken, value: record.email
@@ -234,6 +234,12 @@ class User < ApplicationRecord
   }
   scope :not_invited, -> { where.not(invite_status: 'pending').or(where(invite_status: nil)) }
   scope :active, -> { where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'") }
+
+  scope :blocked, lambda {
+    where.not(block_start_at: nil)
+      .and(where(block_start_at: (
+        AppConfiguration.instance.settings('user_blocking', 'duration').days.ago..Time.zone.now)))
+  }
 
   scope :order_role, lambda { |direction = :asc|
     joins('LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id')
@@ -357,8 +363,9 @@ class User < ApplicationRecord
   end
 
   def authenticate(unencrypted_password)
-    if !password_digest
-      false
+    if no_password?
+      # Allow authentication without password - but only if confirmation is required on the user
+      unencrypted_password.empty? && confirmation_required? ? self : false
     elsif cl1_authenticate(unencrypted_password)
       self.password_digest = BCrypt::Password.create(unencrypted_password)
       self
@@ -367,12 +374,26 @@ class User < ApplicationRecord
     end
   end
 
+  def no_password?
+    !password_digest && !invite_pending? && identity_ids.empty?
+  end
+
   def member_of?(group_id)
     !memberships.select { |m| m.group_id == group_id }.empty?
   end
 
   def active?
     registration_completed_at.present? && !invite_pending?
+  end
+
+  def blocked?
+    if block_start_at.present?
+      duration = AppConfiguration.instance.settings('user_blocking', 'duration')
+
+      return true if block_start_at.between?(duration.days.ago, Time.zone.now)
+    end
+
+    false
   end
 
   def groups
@@ -418,9 +439,21 @@ class User < ApplicationRecord
     self.confirmation_required = should_require_confirmation?
   end
 
+  def reset_confirmation_with_no_password
+    if confirmation_required == false
+      # Only reset code and retry/reset counts if account has already been confirmed
+      # To keep limits in place for non-legit requests
+      self.email_confirmation_code = nil
+      self.email_confirmation_retry_count = 0
+      self.email_confirmation_code_reset_count = 0
+    end
+    self.confirmation_required = true
+  end
+
   def confirm
     self.email_confirmed_at    = Time.zone.now
     self.confirmation_required = false
+    complete_registration if no_password? # temp change for flexible_registration_i1
   end
 
   def confirm!
@@ -473,12 +506,16 @@ class User < ApplicationRecord
     self.email_confirmed_at = nil
   end
 
+  def complete_registration
+    self.registration_completed_at = Time.now if registration_completed_at.nil?
+  end
+
   private
 
   def generate_slug
     return if slug.present?
 
-    self.slug = UserSlugService.new.generate_slug(self, full_name) if first_name.present?
+    self.slug = UserSlugService.new.generate_slug(self, full_name) unless invite_pending?
   end
 
   def sanitize_bio_multiloc
