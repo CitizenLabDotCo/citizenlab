@@ -77,6 +77,10 @@ interface IChangePassword {
   new_password: string;
 }
 
+export interface IUsersCount {
+  count: number;
+}
+
 export function usersStream(streamParams: IStreamParams | null = null) {
   return streams.get<IUsers>({ apiEndpoint, ...streamParams });
 }
@@ -138,4 +142,11 @@ export async function completeRegistration(
   });
 
   return authUser;
+}
+
+export function blockedUsersCount(streamParams: IStreamParams | null = null) {
+  return streams.get<IUsersCount>({
+    apiEndpoint: `${apiEndpoint}/blocked_count`,
+    ...streamParams,
+  });
 }

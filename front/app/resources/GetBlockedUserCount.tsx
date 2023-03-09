@@ -1,7 +1,7 @@
 // Libraries
 import React from 'react';
 import { Subscription } from 'rxjs';
-import { blockedUsersCount } from 'services/stats';
+import { blockedUsersCount } from 'services/users';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {}
