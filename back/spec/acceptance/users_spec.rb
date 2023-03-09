@@ -545,6 +545,33 @@ resource 'Users' do
           end
         end
       end
+
+      get 'web_api/v1/users/by_slug/:slug' do
+        let(:user) { create :user }
+        let(:slug) { user.slug }
+
+        example_request 'Get one user by slug includes user block data' do
+          expect(status).to eq 200
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :attributes)).to have_key(:blocked)
+          expect(json_response.dig(:data, :attributes)).to have_key(:block_start_at)
+          expect(json_response.dig(:data, :attributes)).to have_key(:block_end_at)
+          expect(json_response.dig(:data, :attributes)).to have_key(:block_reason)
+        end
+      end
+
+      get 'web_api/v1/users/:id' do
+        let(:id) { @user.id }
+
+        example_request 'Get a user by id includes user block data' do
+          expect(status).to eq 200
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :attributes)).to have_key(:blocked)
+          expect(json_response.dig(:data, :attributes)).to have_key(:block_start_at)
+          expect(json_response.dig(:data, :attributes)).to have_key(:block_end_at)
+          expect(json_response.dig(:data, :attributes)).to have_key(:block_reason)
+        end
+      end
     end
 
     get 'web_api/v1/users' do
@@ -566,6 +593,20 @@ resource 'Users' do
         expect(status).to eq 200
         json_response = json_parse response_body
         expect(json_response.dig(:data, :attributes, :highest_role)).to eq 'user'
+      end
+    end
+
+    get 'web_api/v1/users/:id' do
+      let(:user) { create :user }
+      let(:id) { user.id }
+
+      example_request 'Get a user by id as non-admin does not include user block data' do
+        expect(status).to eq 200
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :attributes)).not_to have_key(:blocked)
+        expect(json_response.dig(:data, :attributes)).not_to have_key(:block_start_at)
+        expect(json_response.dig(:data, :attributes)).not_to have_key(:block_end_at)
+        expect(json_response.dig(:data, :attributes)).not_to have_key(:block_reason)
       end
     end
 
@@ -592,6 +633,15 @@ resource 'Users' do
       example '[error] Get an unexisting user by slug', document: false do
         do_request slug: 'unexisting-user'
         expect(status).to eq 404
+      end
+
+      example_request 'Get a user by slug as non-admin does not include user block data' do
+        expect(status).to eq 200
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :attributes)).not_to have_key(:blocked)
+        expect(json_response.dig(:data, :attributes)).not_to have_key(:block_start_at)
+        expect(json_response.dig(:data, :attributes)).not_to have_key(:block_end_at)
+        expect(json_response.dig(:data, :attributes)).not_to have_key(:block_reason)
       end
     end
 
