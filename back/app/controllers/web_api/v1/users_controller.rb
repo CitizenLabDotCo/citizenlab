@@ -167,11 +167,10 @@ class WebApi::V1::UsersController < ::ApplicationController
 
   def block
     @user = User.find params[:id]
-    user_params = permitted_attributes @user
-    reason = user_params['block_reason'] if user_params['block_reason']
+    reason = permitted_attributes(@user)['block_reason'] if params[:user] && params[:user][:block_reason]
 
     authorize @user, :block
-    if @user.update(block_reason: reason, block_start_at: Time.zone.now)
+    if @user.update(block_start_at: Time.zone.now, block_reason: reason)
       # SideFxUserService.new.after_block(@user, current_user)
 
       render json: WebApi::V1::UserSerializer.new(@user, params: fastjson_params).serialized_json
@@ -184,7 +183,7 @@ class WebApi::V1::UsersController < ::ApplicationController
     @user = User.find params[:id]
 
     authorize @user, :block
-    if @user.update(block_reason: nil, block_start_at: nil)
+    if @user.update(block_start_at: nil, block_reason: nil)
       # SideFxUserService.new.after_block(@user, current_user)
 
       render json: WebApi::V1::UserSerializer.new(@user, params: fastjson_params).serialized_json
