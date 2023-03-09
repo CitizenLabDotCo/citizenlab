@@ -319,6 +319,11 @@ namespace :cl2_back do
         posthog_integration: {
           enabled: false,
           allowed: false
+        },
+        user_blocking: {
+          enabled: false,
+          allowed: false,
+          duration: 90
         }
       }
     )

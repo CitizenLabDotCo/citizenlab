@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
-import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { IAppConfigurationSettings } from 'api/app_configuration/types';
 
@@ -13,6 +12,7 @@ import Button from 'components/UI/Button';
 import T from 'components/T';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import { IInitiativeData } from 'api/initiatives/types';
 
 const Container = styled.div``;
 

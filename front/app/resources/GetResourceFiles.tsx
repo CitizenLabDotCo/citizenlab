@@ -19,29 +19,22 @@ import {
   ICustomPageFiles,
 } from 'services/pageFiles';
 import { ideaFilesStream, IIdeaFileData, IIdeaFiles } from 'services/ideaFiles';
-import {
-  initiativeFilesStream,
-  IInitiativeFileData,
-  IInitiativeFiles,
-} from 'services/initiativeFiles';
 
 import { isNilOrError } from 'utils/helperUtils';
 
-export type ResourceType = 'project' | 'phase' | 'page' | 'idea' | 'initiative';
+export type ResourceType = 'project' | 'phase' | 'page' | 'idea';
 
 export type TResourceFileData =
   | IProjectFileData
   | IPhaseFileData
   | ICustomPageFileData
-  | IIdeaFileData
-  | IInitiativeFileData;
+  | IIdeaFileData;
 
 export type TResourceFiles =
   | IProjectFiles
   | IPhaseFiles
   | ICustomPageFiles
-  | IIdeaFiles
-  | IInitiativeFiles;
+  | IIdeaFiles;
 
 interface InputProps {
   resetOnChange?: boolean;
@@ -107,9 +100,6 @@ export default class GetResourceFiles extends React.Component<Props, State> {
               }
               if (resourceType === 'idea') {
                 streamFn = ideaFilesStream;
-              }
-              if (resourceType === 'initiative') {
-                streamFn = initiativeFilesStream;
               }
 
               return streamFn(resourceId)
