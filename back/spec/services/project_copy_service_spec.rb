@@ -5,7 +5,7 @@ require 'rails_helper'
 describe ProjectCopyService do
   let(:service) { described_class.new }
 
-  describe 'project copy', slow_test: true do
+  describe 'project copy' do
     it 'works' do
       load Rails.root.join('db/seeds.rb')
       Apartment::Tenant.switch('localhost') do

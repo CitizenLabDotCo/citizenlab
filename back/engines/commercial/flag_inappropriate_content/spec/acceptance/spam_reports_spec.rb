@@ -25,7 +25,8 @@ resource 'Spam Reports' do
     describe do
       before { idea.inappropriate_content_flag&.destroy! }
 
-      example_request 'A new flag is created when spam is reported', document: false do
+      example 'A new flag is created when spam is reported', document: false do
+        do_request
         expect(response_status).to eq 201
         expect(idea.reload.inappropriate_content_flag).to be_present
       end

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { Multiloc } from 'typings';
-import { ideaStatusCodes, TIdeaStatusCode } from 'services/ideaStatuses';
+import { ideaStatusCodes, TIdeaStatusCode } from 'api/idea_statuses/types';
 
 // components
 import { Section, SectionField } from 'components/admin/Section';

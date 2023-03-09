@@ -18,14 +18,14 @@ import { FormBuilderConfig } from 'components/FormBuilder/utils';
 import messages from './messages';
 
 export const nativeSurveyConfig: FormBuilderConfig = {
-  formBuilderTitle: messages.survey,
-  viewFormLinkCopy: messages.viewSurvey,
-  toolboxTitle: messages.addSurveyContent,
-  formSavedSuccessMessage: messages.successMessage,
-  supportArticleLink: messages.supportArticleLink,
-  formEndPageLogicOption: messages.surveyEnd,
-  questionLogicHelperText: messages.questionLogicHelperText,
-  pagesLogicHelperText: messages.pagesLogicHelperText,
+  formBuilderTitle: messages.survey2,
+  viewFormLinkCopy: messages.viewSurvey2,
+  toolboxTitle: messages.addSurveyContent2,
+  formSavedSuccessMessage: messages.successMessage2,
+  supportArticleLink: messages.supportArticleLink2,
+  formEndPageLogicOption: messages.surveyEnd2,
+  questionLogicHelperText: messages.questionLogicHelperText2,
+  pagesLogicHelperText: messages.pagesLogicHelperText2,
 
   toolboxFieldsToExclude: [],
   formCustomFields: undefined,

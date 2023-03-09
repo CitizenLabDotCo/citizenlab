@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 // components
 import ProjectHelmet from './shared/header/ProjectHelmet';
@@ -20,10 +20,10 @@ import Centerer from 'components/UI/Centerer';
 // hooks
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import useLocale from 'hooks/useLocale';
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
-import useEvents from 'hooks/useEvents';
+import useEvents from 'api/events/useEvents';
 import useAuthUser from 'hooks/useAuthUser';
 import { useIntl } from 'utils/cl-intl';
 
@@ -79,7 +79,7 @@ interface Props {
   project: IProjectData | Error | null;
 }
 
-const ProjectsShowPage = memo<Props>(({ project }) => {
+const ProjectsShowPage = ({ project }: Props) => {
   const projectId = !isNilOrError(project) ? project.id : undefined;
   const processType = !isNilOrError(project)
     ? project.attributes.process_type
@@ -89,15 +89,15 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
   const { formatMessage } = useIntl();
   const [mounted, setMounted] = useState(false);
   const locale = useLocale();
-  const appConfig = useAppConfiguration();
+  const { data: appConfig } = useAppConfiguration();
   const phases = usePhases(projectId);
 
   const [search] = useSearchParams();
   const scrollToEventId = search.get('scrollToEventId');
 
-  const { events } = useEvents({
+  const { data: events } = useEvents({
     projectIds: projectId ? [projectId] : undefined,
-    sort: 'newest',
+    sort: '-start_at',
   });
 
   const loading = useMemo(() => {
@@ -154,7 +154,7 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
         >
           <EventsViewer
             showProjectFilter={false}
-            projectIds={[projectId]}
+            projectId={projectId}
             eventsTime="currentAndFuture"
             title={formatMessage(messages.upcomingAndOngoingEvents)}
             fallbackMessage={messages.noUpcomingOrOngoingEvents}
@@ -163,7 +163,7 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
           />
           <EventsViewer
             showProjectFilter={false}
-            projectIds={[projectId]}
+            projectId={projectId}
             eventsTime="past"
             title={formatMessage(messages.pastEvents)}
             fallbackMessage={messages.noPastEvents}
@@ -177,7 +177,9 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
   }
 
   const bgColor =
-    !isNilOrError(events) && events.length > 0 ? '#fff' : colors.background;
+    !isNilOrError(events) && events.data.length > 0
+      ? '#fff'
+      : colors.background;
 
   return (
     <Container background={bgColor}>
@@ -185,14 +187,13 @@ const ProjectsShowPage = memo<Props>(({ project }) => {
       {content}
     </Container>
   );
-});
+};
 
 const ProjectsShowPageWrapper = () => {
   const [userWasLoggedIn, setUserWasLoggedIn] = useState(false);
 
   const { pathname } = useLocation();
   const { slug, phaseNumber } = useParams();
-
   const project = useProject({ projectSlug: slug });
   const phases = usePhases(project?.id);
   const user = useAuthUser();
