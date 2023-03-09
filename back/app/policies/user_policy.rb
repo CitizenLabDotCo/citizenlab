@@ -67,6 +67,10 @@ class UserPolicy < ApplicationPolicy
     index?
   end
 
+  def unblock
+    index?
+  end
+
   def blocked_count
     index?
   end
