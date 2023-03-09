@@ -165,15 +165,6 @@ class WebApi::V1::UsersController < ::ApplicationController
     head :ok
   end
 
-  def block
-    puts '========= user_block_test ======='
-    puts @user.inspect
-    puts '================================='
-
-    authorize :user, :test
-    render json: { data: { test: 'success' } }, status: :ok
-  end
-
   def ideas_count
     ideas = policy_scope(IdeasFinder.new({}, scope: @user.ideas.published, current_user: current_user).find_records)
     render json: { count: ideas.count }, status: :ok

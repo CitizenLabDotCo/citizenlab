@@ -80,7 +80,6 @@ Rails.application.routes.draw do
         post 'reset_password_email' => 'reset_password#reset_password_email', on: :collection
         post 'reset_password' => 'reset_password#reset_password', on: :collection
         post 'update_password', on: :collection
-        patch 'block', on: :member
         get 'by_slug/:slug', on: :collection, to: 'users#by_slug'
         get 'by_invite/:token', on: :collection, to: 'users#by_invite'
         get 'ideas_count', on: :member
