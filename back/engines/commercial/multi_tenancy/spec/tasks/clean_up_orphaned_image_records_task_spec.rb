@@ -12,7 +12,7 @@ describe 'rake cl2back:clean_up_image_records' do
     let(:layout) { create(:layout, code: 'project_description') }
     let(:images) { create_list(:layout_image, 2, created_at: 4.days.ago) }
 
-    it 'destroys unused layout_images records' do
+    it 'destroys only unused layout_images records' do
       craftjs_str = ERB.new(File.read('spec/fixtures/craftjs_layout_with_2_images.json.erb'))
         .result_with_hash(code1: images[0].code, code2: SecureRandom.uuid)
 
@@ -42,7 +42,7 @@ describe 'rake cl2back:clean_up_image_records' do
     let(:project) { create(:continuous_project) }
     let(:images) { create_list(:text_image, 2, imageable: project) }
 
-    it 'destroys unused text_images records' do
+    it 'destroys only unused text_images records' do
       project.update!(
         description_multiloc: { en: "<p><img data-cl2-text-image-text-reference=\"#{images[0].text_reference}\"></p>" }
       )

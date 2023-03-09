@@ -256,7 +256,9 @@ module MultiTenancy
             'cl1_migrated' => u.cl1_migrated,
             'custom_field_values' => u.custom_field_values.delete_if { |k, v| v.nil? || (k == 'domicile') },
             'registration_completed_at' => u.registration_completed_at.to_s,
-            'verified' => u.verified
+            'verified' => u.verified,
+            'block_start_at' => u.block_start_at,
+            'block_reason' => u.block_reason
           }
           unless yml_user['password_digest']
             yml_user['password'] = SecureRandom.urlsafe_base64 32
