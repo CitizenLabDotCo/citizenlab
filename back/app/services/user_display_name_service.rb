@@ -60,8 +60,7 @@ class UserDisplayNameService
   # @param [User, nil] user
   # @return [String]
   def last_name!(user)
-    # Generate last name in the format of 'user' '123456'
-    return user&.email.hash.abs.to_s[0, 6] if user&.no_name?
+    return user&.anon_last_name if user&.no_name?
 
     return nil if user&.last_name.nil?
 
@@ -69,7 +68,7 @@ class UserDisplayNameService
   end
 
   def first_name(user)
-    return 'User' if user&.no_name?
+    return user&.anon_first_name if user&.no_name?
 
     user.first_name
   end
