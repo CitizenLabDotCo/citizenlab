@@ -182,9 +182,9 @@ class WebApi::V1::UsersController < ::ApplicationController
   def unblock
     @user = User.find params[:id]
 
-    authorize @user, :block
+    authorize @user, :unblock
     if @user.update(block_start_at: nil, block_reason: nil)
-      # SideFxUserService.new.after_block(@user, current_user)
+      # SideFxUserService.new.after_unblock(@user, current_user)
 
       render json: WebApi::V1::UserSerializer.new(@user, params: fastjson_params).serialized_json
     else
