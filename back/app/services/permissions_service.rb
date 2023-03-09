@@ -166,7 +166,7 @@ class PermissionsService
     requirements[:special]&.each_key do |special_key|
       is_satisfied = case special_key
       when :password
-        !user.passwordless?
+        !user.no_password?
       when :confirmation
         user.confirmed?
       end
