@@ -573,6 +573,26 @@ resource 'Users' do
         end
       end
 
+      get 'web_api/v1/users/blocked_count' do
+        example 'Get count of blocked users' do
+          create_list(:user, 2, block_start_at: 30.days.ago)
+
+          settings = AppConfiguration.instance.settings
+          settings['user_blocking'] = {
+            'enabled' => true,
+            'allowed' => true,
+            'duration' => 90
+          }
+          AppConfiguration.instance.update!(settings: settings)
+
+          do_request
+
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :blocked_users_count)).to eq 2
+        end
+      end
+
       put 'web_api/v1/users/:id' do
         with_options scope: 'user' do
           parameter :first_name, 'User full name'
@@ -738,6 +758,12 @@ resource 'Users' do
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :id)).to eq(@user.id)
           expect(json_response.dig(:data, :attributes, :verified)).to be false if CitizenLab.ee?
+        end
+      end
+
+      get 'web_api/v1/users/blocked_count' do
+        example_request 'Get count of blocked users' do
+          expect(status).to eq 401
         end
       end
 
