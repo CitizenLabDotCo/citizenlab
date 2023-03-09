@@ -65,8 +65,8 @@ export default defineMessages({
     `,
   },
   adminLabel: {
-    id: 'app.containers.Admin.Invitations.adminLabel',
-    defaultMessage: 'Grant administrator rights to the invited people?',
+    id: 'app.containers.Admin.Invitations.adminLabel1',
+    defaultMessage: 'Give invitees admin rights',
   },
   adminLabelTooltip: {
     id: 'app.containers.Admin.Invitations.adminLabelTooltip',

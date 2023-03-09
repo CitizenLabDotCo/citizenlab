@@ -20,7 +20,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 type SeatInfoType = {
   seatType: 'project_manager' | 'admin';
-  width?: number;
+  width?: number | null;
 };
 
 const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
@@ -55,7 +55,7 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
 
   return (
     <Box
-      width={`${width}px`}
+      width={(width && `${width}px`) || undefined}
       display="flex"
       flexDirection="column"
       padding="20px"
