@@ -97,10 +97,4 @@ class UserDisplayNameService
   def initial(name)
     "#{name[0]}."
   end
-
-  # Generate first and last name in the format 'user' '123456'
-  def create_anonymous_names(user)
-    user.first_name = 'user'
-    user.last_name = user.email.hash.abs.to_s[0, 6]
-  end
 end
