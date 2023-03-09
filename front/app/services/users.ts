@@ -77,8 +77,10 @@ interface IChangePassword {
   new_password: string;
 }
 
-export interface IUsersCount {
-  count: number;
+export interface IBlockedUsersCount {
+  data: {
+    blocked_users_count: number;
+  };
 }
 
 export function usersStream(streamParams: IStreamParams | null = null) {
@@ -145,7 +147,7 @@ export async function completeRegistration(
 }
 
 export function blockedUsersCount(streamParams: IStreamParams | null = null) {
-  return streams.get<IUsersCount>({
+  return streams.get<IBlockedUsersCount>({
     apiEndpoint: `${apiEndpoint}/blocked_count`,
     ...streamParams,
   });

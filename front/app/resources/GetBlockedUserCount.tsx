@@ -36,7 +36,9 @@ export default class GetBlockedUserCount extends React.PureComponent<
   componentDidMount() {
     this.subscription = blockedUsersCount().observable.subscribe((response) => {
       this.setState({
-        count: !isNilOrError(response) ? response.count : response,
+        count: !isNilOrError(response)
+          ? response.data.blocked_users_count
+          : response,
       });
     });
   }
