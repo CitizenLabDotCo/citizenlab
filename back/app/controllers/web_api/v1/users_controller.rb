@@ -165,6 +165,21 @@ class WebApi::V1::UsersController < ::ApplicationController
     head :ok
   end
 
+  def block
+    @user = User.find params[:id]
+    user_params = permitted_attributes @user
+    reason = user_params['block_reason'] if user_params['block_reason']
+
+    authorize @user, :block
+    if @user.update(block_reason: reason, block_start_at: Time.zone.now)
+      # SideFxUserService.new.after_block(@user, current_user)
+
+      render json: WebApi::V1::UserSerializer.new(@user, params: fastjson_params).serialized_json
+    else
+      render json: { errors: @user.errors.details }, status: :unprocessable_entity
+    end
+  end
+
   def ideas_count
     ideas = policy_scope(IdeasFinder.new({}, scope: @user.ideas.published, current_user: current_user).find_records)
     render json: { count: ideas.count }, status: :ok
