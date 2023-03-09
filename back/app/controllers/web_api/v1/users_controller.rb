@@ -6,7 +6,6 @@ class WebApi::V1::UsersController < ::ApplicationController
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  # rubocop:disable Metrics/CyclomaticComplexity
   def index
     authorize :user, :index?
 
@@ -35,14 +34,6 @@ class WebApi::V1::UsersController < ::ApplicationController
         @users.order(email: :asc) if view_private_attributes?
       when '-email'
         @users.order(email: :desc) if view_private_attributes?
-      when 'block_start_at'
-        @users.order(block_start_at: :asc) if view_private_attributes?
-      when '-block_start_at'
-        @users.order(block_start_at: :desc) if view_private_attributes?
-      when 'block_reason'
-        @users.order(block_reason: :asc) if view_private_attributes?
-      when '-block_reason'
-        @users.order(block_reason: :desc) if view_private_attributes?
       when 'role'
         @users.order_role(:asc)
       when '-role'
@@ -60,7 +51,6 @@ class WebApi::V1::UsersController < ::ApplicationController
 
     render json: linked_json(@users, WebApi::V1::UserSerializer, params: fastjson_params)
   end
-  # rubocop:enable Metrics/CyclomaticComplexity
 
   def index_xlsx
     authorize :user, :index_xlsx?
