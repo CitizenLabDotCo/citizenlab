@@ -27,10 +27,14 @@ export default function useUserCustomFieldsSchema() {
       customFieldsSchemaForUsersStream$,
     ]).subscribe(([locale, customFields]) => {
       setCustomFields({
-        schema: customFields['json_schema_multiloc'][locale],
-        uiSchema: customFields['ui_schema_multiloc'][locale],
+        schema: customFields.data['json_schema_multiloc'][locale],
+        uiSchema: customFields.data['ui_schema_multiloc'][locale],
         hasRequiredFields: !isEmpty(
-          get(customFields, `json_schema_multiloc.${locale}.required`, null)
+          get(
+            customFields.data,
+            `json_schema_multiloc.${locale}.required`,
+            null
+          )
         ),
         hasCustomFields: hasCustomFields(customFields, locale),
       });

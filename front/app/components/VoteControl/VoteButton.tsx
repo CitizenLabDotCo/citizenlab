@@ -309,7 +309,7 @@ interface Props {
   styleType: TStyleType;
   ariaHidden?: boolean;
   onClick: (event: React.FormEvent) => void;
-  setRef: (el: HTMLButtonElement) => void;
+  setRef?: (el: HTMLButtonElement) => void;
   iconName: IconNames;
   ideaId: string;
 }

@@ -91,8 +91,6 @@ class VoteControl extends PureComponent<Props, State> {
   voting$: BehaviorSubject<'up' | 'down' | null>;
   id$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
-  upvoteElement: HTMLButtonElement | null;
-  downvoteElement: HTMLButtonElement | null;
 
   static defaultProps = {
     ariaHidden: false,
@@ -118,8 +116,6 @@ class VoteControl extends PureComponent<Props, State> {
     this.voting$ = new BehaviorSubject(null);
     this.id$ = new BehaviorSubject(null);
     this.subscriptions = [];
-    this.upvoteElement = null;
-    this.downvoteElement = null;
   }
 
   componentDidMount() {
@@ -131,14 +127,6 @@ class VoteControl extends PureComponent<Props, State> {
     ) as Observable<string>;
 
     this.id$.next(this.props.ideaId);
-    this.upvoteElement?.addEventListener(
-      'animationend',
-      this.votingAnimationDone
-    );
-    this.downvoteElement?.addEventListener(
-      'animationend',
-      this.votingAnimationDone
-    );
 
     const idea$ = id$.pipe(
       switchMap((ideaId: string) => {
@@ -317,14 +305,6 @@ class VoteControl extends PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
-    this.upvoteElement?.removeEventListener(
-      'animationend',
-      this.votingAnimationDone
-    );
-    this.downvoteElement?.removeEventListener(
-      'animationend',
-      this.votingAnimationDone
-    );
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
@@ -482,18 +462,6 @@ class VoteControl extends PureComponent<Props, State> {
     return;
   };
 
-  setContainerRef = (element: HTMLDivElement) => {
-    this.props?.setRef?.(element);
-  };
-
-  setUpvoteRef = (element: HTMLButtonElement) => {
-    this.upvoteElement = element;
-  };
-
-  setDownvoteRef = (element: HTMLButtonElement) => {
-    this.downvoteElement = element;
-  };
-
   render() {
     const { size, className, ariaHidden, styleType } = this.props;
     const {
@@ -531,13 +499,11 @@ class VoteControl extends PureComponent<Props, State> {
               .filter((item) => item)
               .join(' ')}
             aria-hidden={ariaHidden}
-            ref={this.setContainerRef}
           >
             <VoteButton
               buttonVoteMode="up"
               userVoteMode={myVoteMode}
               onClick={this.onClickUpvote}
-              setRef={this.setUpvoteRef}
               className={votingAnimation === 'up' ? 'voteClick' : ''}
               ariaHidden={ariaHidden}
               styleType={styleType}
@@ -552,7 +518,6 @@ class VoteControl extends PureComponent<Props, State> {
                 buttonVoteMode="down"
                 userVoteMode={myVoteMode}
                 onClick={this.onClickDownvote}
-                setRef={this.setDownvoteRef}
                 className={votingAnimation === 'down' ? 'voteClick' : ''}
                 ariaHidden={ariaHidden}
                 styleType={styleType}
