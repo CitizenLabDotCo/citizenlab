@@ -63,7 +63,7 @@ class Permission < ApplicationRecord
     return if user && UserRoleService.new.can_moderate?(permission_scope, user)
 
     reason = case permitted_by
-    when 'users' then :not_signed_in unless user
+    when 'users' then :not_signed_in unless user.active?
     when 'admins_moderators' then :not_permitted
     when 'groups' then denied_when_permitted_by_groups?(user)
     else
