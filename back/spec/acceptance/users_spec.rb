@@ -320,6 +320,7 @@ resource 'Users' do
         parameter :sort, "Sort user by 'created_at', '-created_at', 'last_name', '-last_name', 'email', '-email', 'role', '-role'", required: false
         parameter :group, 'Filter by group_id', required: false
         parameter :can_moderate_project, 'Filter by users (and admins) who can moderate the project (by id)', required: false
+        parameter :can_moderate, 'Filter out admins and moderators', required: false
         parameter :blocked, 'Return only blocked users', required: false
 
         example_request 'List all users' do
