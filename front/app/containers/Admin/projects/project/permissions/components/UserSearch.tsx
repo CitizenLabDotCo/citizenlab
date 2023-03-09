@@ -7,11 +7,9 @@ import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
 // Services
 import { findMembership, addMembership } from 'services/projectModerators';
 import { IGroupMembershipsFoundUserData } from 'services/groupMemberships';
-import seatsKeys from 'api/seats/keys';
 
 // hooks
 import useProjectModerators from 'hooks/useProjectModerators';
-import { useQueryClient } from '@tanstack/react-query';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
@@ -68,7 +66,6 @@ const UserSearch = memo(
     const [processing, setProcessing] = useState(false);
     const [searchInput, setSearchInput] = useState('');
     const moderators = useProjectModerators(projectId);
-    const queryClient = useQueryClient();
 
     const getOptions = (users: IGroupMembershipsFoundUserData[]) => {
       return users
@@ -128,7 +125,6 @@ const UserSearch = memo(
 
         try {
           await Promise.all(promises);
-          queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
           setSelection([]);
           setProcessing(false);
         } catch {

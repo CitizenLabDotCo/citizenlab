@@ -10,8 +10,6 @@ import { deleteProjectModerator } from 'services/projectModerators';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 import { Text, Box } from '@citizenlab/cl2-component-library';
-import { queryClient } from 'utils/cl-react-query/queryClient';
-import seatsKeys from 'api/seats/keys';
 
 // hooks
 import useProjectModerators from 'hooks/useProjectModerators';
@@ -39,15 +37,14 @@ const ModeratorList = memo(
     const authUser = useAuthUser();
 
     const handleDeleteClick =
-      (projectId: string, moderatorId: string) => async (event: FormEvent) => {
+      (projectId: string, moderatorId: string) => (event: FormEvent) => {
         event.preventDefault();
         const deleteMessage = formatMessage(
           messages.moderatorDeletionConfirmation
         );
 
         if (window.confirm(deleteMessage)) {
-          await deleteProjectModerator(projectId, moderatorId);
-          queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
+          deleteProjectModerator(projectId, moderatorId);
         }
       };
 
