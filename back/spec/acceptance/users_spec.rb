@@ -329,6 +329,15 @@ resource 'Users' do
           expect(json_response[:data].size).to eq 6
         end
 
+        example_request 'List all users includes user blocking related data' do
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data][0][:attributes]).to have_key(:blocked)
+          expect(json_response[:data][0][:attributes]).to have_key(:block_start_at)
+          expect(json_response[:data][0][:attributes]).to have_key(:block_end_at)
+          expect(json_response[:data][0][:attributes]).to have_key(:block_reason)
+        end
+
         example 'Get all users on the second page with fixed page size' do
           do_request({ 'page[number]' => 2, 'page[size]' => 2 })
           expect(status).to eq 200
