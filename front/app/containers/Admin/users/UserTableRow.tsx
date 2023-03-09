@@ -82,6 +82,22 @@ const UserTableRow = ({
     }
   };
 
+  const setAsAdminAction: IAction = {
+    handler: () => {
+      // Show set as admin modal
+    },
+    label: formatMessage(messages.setAsAdmin),
+    icon: 'shield-checkered' as const,
+  };
+
+  const setAsNormalUserAction: IAction = {
+    handler: () => {
+      // Show set as normal user modal
+    },
+    label: formatMessage(messages.setAsNormalUser),
+    icon: 'user-circle' as const,
+  };
+
   const actions: IAction[] = [
     {
       handler: () => {
@@ -90,6 +106,7 @@ const UserTableRow = ({
       label: formatMessage(messages.seeProfile),
       icon: 'eye' as const,
     },
+    ...(isUserAdmin ? [setAsNormalUserAction] : [setAsAdminAction]),
     {
       handler: () => {
         handleDeleteClick();
