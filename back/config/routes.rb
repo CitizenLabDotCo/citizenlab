@@ -85,6 +85,7 @@ Rails.application.routes.draw do
         get 'ideas_count', on: :member
         get 'initiatives_count', on: :member
         get 'comments_count', on: :member
+        get 'blocked_count', on: :collection
 
         resources :comments, only: [:index], controller: 'user_comments'
       end

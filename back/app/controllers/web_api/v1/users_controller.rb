@@ -180,6 +180,13 @@ class WebApi::V1::UsersController < ::ApplicationController
     render json: { count: ideas.count }, status: :ok
   end
 
+  def blocked_count
+    authorize :user, :blocked_count
+    count = User.all.blocked.count
+
+    render json: { data: { blocked_users_count: count } }, status: :ok
+  end
+
   def initiatives_count
     render json: raw_json({ count: policy_scope(@user.initiatives.published).count }), status: :ok
   end
