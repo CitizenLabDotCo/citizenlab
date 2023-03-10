@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+
+// events
+import { triggerAuthenticationFlow$ } from './events';
 
 // hooks
 import useSteps from './useSteps';
@@ -9,7 +12,7 @@ import Centerer from 'components/UI/Centerer';
 import Button from 'components/UI/Button';
 import AuthModal from './AuthModal';
 
-const NewSignUpModal = () => {
+const NewAuthModal = () => {
   const { currentStep, transition, ...rest } = useSteps();
 
   const triggerFlow = () => {
@@ -34,4 +37,4 @@ const NewSignUpModal = () => {
   );
 };
 
-export default NewSignUpModal;
+export default NewAuthModal;

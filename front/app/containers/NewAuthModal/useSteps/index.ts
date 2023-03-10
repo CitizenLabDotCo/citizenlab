@@ -1,17 +1,28 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
+
+// events
+import { triggerAuthenticationFlow$ } from '../events';
+
+// hooks
+import useGetAuthenticationRequirements from 'api/permissions/getAuthenticationRequirements';
+
+// utils
 import { getStepConfig } from './stepConfig';
-import useGetAuthenticationRequirements from 'api/permissions/useGetAuthenticationRequirements';
+
+// typings
 import { Status, ErrorCode, State, StepConfig, Step } from '../typings';
+import { AuthenticationContext } from 'api/permissions/types';
 
 export default function useSteps() {
+  const [authenticationContext, setAuthenticationContext] =
+    useState<AuthenticationContext>();
+
   const [currentStep, setCurrentStep] = useState<Step>('closed');
   const [state, setState] = useState<State>({ email: null });
   const [status, setStatus] = useState<Status>('ok');
   const [error, setError] = useState<ErrorCode | null>(null);
 
-  const getAuthenticationRequirements = useGetAuthenticationRequirements(
-    {} as any
-  ); // TODO
+  const getAuthenticationRequirements = useGetAuthenticationRequirements();
 
   const getRequirements = useCallback(async () => {
     const response = await getAuthenticationRequirements();
@@ -33,6 +44,12 @@ export default function useSteps() {
       ),
     [getRequirements, updateState]
   );
+
+  useEffect(() => {
+    triggerAuthenticationFlow$.subscribe((event) => {
+      setAuthenticationContext(event.eventValue);
+    });
+  }, []);
 
   const transition = <S extends Step, T extends keyof StepConfig[S]>(
     currentStep: S,

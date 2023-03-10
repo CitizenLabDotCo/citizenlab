@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks';
 
-import useGetAuthenticationRequirements from './useGetAuthenticationRequirements';
+import useGetAuthenticationRequirements from './getAuthenticationRequirements';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
