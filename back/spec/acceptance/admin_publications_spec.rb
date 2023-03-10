@@ -79,9 +79,7 @@ resource 'AdminPublication' do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 8
         expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 8
-        if CitizenLab.ee?
-          expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 0
-        end
+        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 0
       end
 
       ProjectsFilteringService::HOMEPAGE_FILTER_PARAMS.each do |filter_param|
@@ -380,19 +378,17 @@ resource 'AdminPublication' do
           )
         end
 
-        if CitizenLab.ee?
-          example 'Search project by content from content builder', document: false do
-            project = create(:project, content_builder_layouts: [
-              build(:layout, craftjs_jsonmultiloc: { en: { someid: { props: { text: 'sometext' } } } })
-            ])
-            create(:project, content_builder_layouts: [
-              build(:layout, craftjs_jsonmultiloc: { en: { sometext: { props: { text: 'othertext' } } } })
-            ])
-            do_request search: 'sometext'
+        example 'Search project by content from content builder', document: false do
+          project = create(:project, content_builder_layouts: [
+            build(:layout, craftjs_jsonmultiloc: { en: { someid: { props: { text: 'sometext' } } } })
+          ])
+          create(:project, content_builder_layouts: [
+            build(:layout, craftjs_jsonmultiloc: { en: { sometext: { props: { text: 'othertext' } } } })
+          ])
+          do_request search: 'sometext'
 
-            expect(response_data.size).to eq 1
-            expect(response_ids).to contain_exactly(project.admin_publication.id)
-          end
+          expect(response_data.size).to eq 1
+          expect(response_ids).to contain_exactly(project.admin_publication.id)
         end
       end
 

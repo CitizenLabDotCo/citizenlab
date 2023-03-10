@@ -30,7 +30,7 @@ describe Insights::CategorySuggestionsService do
     end
 
     # It should work independently of the current tenant.
-    before { Apartment::Tenant.reset if CitizenLab.ee? }
+    before { Apartment::Tenant.reset }
 
     context 'when the task is unknown' do
       it 'ignores the result' do

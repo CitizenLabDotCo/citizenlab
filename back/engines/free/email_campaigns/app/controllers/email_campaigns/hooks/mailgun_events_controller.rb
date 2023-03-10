@@ -62,4 +62,4 @@ module EmailCampaigns
   end
 end
 
-EmailCampaigns::Hooks::MailgunEventsController.include_if_ee('MultiTenancy::Patches::EmailCampaigns::Hooks::MailgunEventsController')
+EmailCampaigns::Hooks::MailgunEventsController.include(MultiTenancy::Patches::EmailCampaigns::Hooks::MailgunEventsController)
