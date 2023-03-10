@@ -14,6 +14,7 @@ type Step =
 
 export const getStepConfig = (
   getRequirements: GetRequirements,
+  mutations: Mutations,
   setCurrentStep: (step: Step) => void,
   setStatus: (status: Status) => void,
   setError: (errorCode: ErrorCode) => void,
@@ -21,13 +22,11 @@ export const getStepConfig = (
 ) => {
   return {
     closed: {
+      // When we fire this, we are already sure that we need the new flow.
+      // i.e. we have already checked the requirements endpoint and stuff
       TRIGGER_REGISTRATION_FLOW: async () => {
         updateState({ email: null });
-
-        const { authenticated } = await getRequirements();
-        setCurrentStep(
-          authenticated ? 'email-confirmation' : 'email-registration'
-        );
+        setCurrentStep('email-registration');
       },
     },
 
@@ -38,7 +37,10 @@ export const getStepConfig = (
         setStatus('pending');
 
         await createAccount(email);
-        const { authenticated, accountHasPassword } = await getRequirements();
+        const requirements = await getRequirements();
+        const authenticated = requirements.built_in.email === 'satisfied';
+        const account;
+        // const { authenticated, accountHasPassword } = await getRequirements();
 
         if (authenticated) {
           setStatus('ok');

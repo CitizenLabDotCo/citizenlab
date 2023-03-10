@@ -1,13 +1,7 @@
 import { useState, useCallback, useMemo } from 'react';
-import { Status, ErrorCode, State, StepConfig, Step } from '../typings';
 import { getStepConfig } from './stepConfig';
-
-const _mockRequirements = {
-  authenticated: false,
-  accountHasPassword: false,
-  emailConfirmed: false,
-  passwordAccepted: false,
-};
+import useGetAuthenticationRequirements from 'api/permissions/useGetAuthenticationRequirements';
+import { Status, ErrorCode, State, StepConfig, Step } from '../typings';
 
 export default function useSteps() {
   const [currentStep, setCurrentStep] = useState<Step>('closed');
@@ -15,9 +9,14 @@ export default function useSteps() {
   const [status, setStatus] = useState<Status>('ok');
   const [error, setError] = useState<ErrorCode | null>(null);
 
+  const getAuthenticationRequirements = useGetAuthenticationRequirements(
+    {} as any
+  ); // TODO
+
   const getRequirements = useCallback(async () => {
-    return _mockRequirements;
-  }, []);
+    const response = await getAuthenticationRequirements();
+    return response.data.requirements.requirements;
+  }, [getAuthenticationRequirements]);
 
   const updateState = useCallback((newState: Partial<State>) => {
     setState((state) => ({ ...state, ...newState }));

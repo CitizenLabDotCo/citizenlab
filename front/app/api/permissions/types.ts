@@ -23,7 +23,7 @@ export interface AuthenticationRequirementsResponse {
 
 type RequirementStatus = 'dont_ask' | 'require' | 'satisfied';
 
-interface AuthenticationRequirements {
+export interface AuthenticationRequirements {
   permitted: boolean;
   requirements: {
     built_in: {

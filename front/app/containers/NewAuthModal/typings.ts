@@ -1,4 +1,5 @@
 import { getStepConfig } from './useSteps/stepConfig';
+import { AuthenticationRequirements } from 'api/permissions/types';
 
 export type Status = 'pending' | 'error' | 'ok';
 
@@ -13,14 +14,9 @@ export interface State {
 
 export type UpdateState = (state: Partial<State>) => void;
 
-export interface Requirements {
-  authenticated: boolean;
-  accountHasPassword: boolean;
-  emailConfirmed: boolean;
-  passwordAccepted: boolean;
-}
-
-export type GetRequirements = () => Promise<Requirements>;
+export type GetRequirements = () => Promise<
+  AuthenticationRequirements['requirements']
+>;
 
 export type StepConfig = ReturnType<typeof getStepConfig>;
 export type Step = keyof StepConfig;
