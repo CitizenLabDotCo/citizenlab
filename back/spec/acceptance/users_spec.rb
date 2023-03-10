@@ -473,11 +473,7 @@ resource 'Users' do
           blocked_users = create_list(:user, 2, block_start_at: 30.days.ago)
 
           settings = AppConfiguration.instance.settings
-          settings['user_blocking'] = {
-            'enabled' => true,
-            'allowed' => true,
-            'duration' => 90
-          }
+          settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
           AppConfiguration.instance.update!(settings: settings)
 
           do_request only_blocked: true
@@ -587,11 +583,7 @@ resource 'Users' do
       context 'when user blocking duration is set to 90 days' do
         before do
           settings = AppConfiguration.instance.settings
-          settings['user_blocking'] = {
-            'enabled' => true,
-            'allowed' => true,
-            'duration' => 90
-          }
+          settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
           AppConfiguration.instance.update!(settings: settings)
         end
 

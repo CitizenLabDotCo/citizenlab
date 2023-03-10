@@ -618,6 +618,18 @@ resource 'Ideas' do
             expect(json_response[:data][:attributes][:upvotes_count]).to eq 1
           end
 
+          context 'when user is blocked' do
+            example 'user attempts to create an idea' do
+              settings = AppConfiguration.instance.settings
+              settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
+              AppConfiguration.instance.update!(settings: settings)
+              @user.update(block_start_at: Time.now)
+
+              do_request
+              expect(status).to be 401
+            end
+          end
+
           describe 'Values for disabled fields are ignored' do
             let(:proposed_budget) { 12_345 }
 

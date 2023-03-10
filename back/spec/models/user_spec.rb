@@ -47,11 +47,7 @@ RSpec.describe User, type: :model do
 
     before do
       settings = AppConfiguration.instance.settings
-      settings['user_blocking'] = {
-        'enabled' => true,
-        'allowed' => true,
-        'duration' => 90
-      }
+      settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
       AppConfiguration.instance.update!(settings: settings)
     end
 
@@ -551,11 +547,7 @@ RSpec.describe User, type: :model do
       u = build(:user, block_start_at: Time.now)
 
       settings = AppConfiguration.instance.settings
-      settings['user_blocking'] = {
-        'enabled' => true,
-        'allowed' => true,
-        'duration' => 90
-      }
+      settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
       AppConfiguration.instance.update!(settings: settings)
 
       expect(u.active?).to be false
