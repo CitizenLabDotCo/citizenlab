@@ -241,7 +241,6 @@ const UserTableRow = ({
       </RegisteredAt>
       <Td>
         <FormattedMessage {...statusMessage} />
-        {/* <Toggle checked={isUserAdmin} onChange={toggleAdmin} /> */}
       </Td>
       <Td>
         <MoreActionsMenu showLabel={false} actions={actions} />
@@ -282,7 +281,13 @@ const UserTableRow = ({
             width="100%"
             alignItems="center"
           >
-            <Button width="auto" onClick={() => {}}>
+            <Button
+              width="auto"
+              onClick={() => {
+                toggleAdmin();
+                closeModal();
+              }}
+            >
               {formatMessage(buttonText)}
             </Button>
           </Box>
