@@ -7,12 +7,11 @@ import moment from 'moment';
 import clHistory from 'utils/cl-router/history';
 
 // Components
-import { Tr, Td, Box, Button, Text } from '@citizenlab/cl2-component-library';
+import { Tr, Td, Box } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
 import Checkbox from 'components/UI/Checkbox';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
-import Modal from 'components/UI/Modal';
-import SeatInfo from 'components/SeatInfo';
+import ChangeSeatModal from './ChangeSeatModal';
 
 // Translation
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
@@ -31,10 +30,6 @@ import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // Styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
-
-// hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useSeats from 'api/seats/useSeats';
 
 const RegisteredAt = styled(Td)`
   white-space: nowrap;
@@ -61,42 +56,6 @@ const getStatusMessage = (user: IUserData): MessageDescriptor => {
   return roleMessage[highestRole];
 };
 
-const getInfoText = (
-  isUserAdmin: boolean,
-  maximumAdmins: number,
-  currentAdminSeats: number
-): MessageDescriptor => {
-  if (isUserAdmin) {
-    return messages.confirmNormalUserQuestion;
-  }
-
-  let confirmChangeQuestion = messages.confirmAdminQuestion;
-
-  if (maximumAdmins === currentAdminSeats) {
-    confirmChangeQuestion = messages.reachedLimitMessage;
-  } else if (currentAdminSeats > maximumAdmins) {
-    confirmChangeQuestion = messages.permissionToBuy;
-  }
-
-  return confirmChangeQuestion;
-};
-
-const getButtonText = (
-  isUserAdmin: boolean,
-  maximumAdmins: number,
-  currentAdminSeats: number
-): MessageDescriptor => {
-  let buttonText = messages.confirm;
-
-  if (isUserAdmin) {
-    return buttonText;
-  }
-
-  return currentAdminSeats >= maximumAdmins
-    ? messages.buyAditionalSeat
-    : buttonText;
-};
-
 const UserTableRow = ({
   user,
   selected,
@@ -109,9 +68,6 @@ const UserTableRow = ({
   const [registeredAt, setRegisteredAt] = useState(
     moment(user.attributes.registration_completed_at).format('LL')
   );
-  const { data: appConfiguration } = useAppConfiguration();
-  const { data: seats } = useSeats();
-
   const [showModal, setShowModal] = useState(false);
   const closeModal = () => {
     setShowModal(false);
@@ -177,26 +133,7 @@ const UserTableRow = ({
     },
   ];
 
-  if (!appConfiguration || !seats) return null;
-
-  const maximumAdmins =
-    appConfiguration.data.attributes.settings.core.maximum_admins_number;
-  const currentAdminSeats = seats.data.attributes.admins_number;
-
-  const confirmChangeQuestion = getInfoText(
-    isUserAdmin,
-    maximumAdmins,
-    currentAdminSeats
-  );
-  const modalTitle = isUserAdmin
-    ? messages.setAsNormalUser
-    : messages.giveAdminRights;
   const statusMessage = getStatusMessage(user);
-  const buttonText = getButtonText(
-    isUserAdmin,
-    maximumAdmins,
-    currentAdminSeats
-  );
 
   return (
     <Tr
@@ -240,53 +177,13 @@ const UserTableRow = ({
         <MoreActionsMenu showLabel={false} actions={actions} />
       </Td>
 
-      <Modal
-        opened={showModal}
-        close={closeModal}
-        header={
-          <Box px="2px">
-            <Text color="primary" my="8px" fontSize="l" fontWeight="bold">
-              {formatMessage(modalTitle)}
-            </Text>
-          </Box>
-        }
-      >
-        <Box display="flex" flexDirection="column" width="100%" p="32px">
-          <Box>
-            <Text color="textPrimary" fontSize="m" my="0px">
-              <FormattedMessage
-                {...confirmChangeQuestion}
-                values={{
-                  name: (
-                    <Text as="span" fontWeight="bold" fontSize="m">
-                      {`${user.attributes.first_name} ${user.attributes.last_name}`}
-                    </Text>
-                  ),
-                }}
-              />
-            </Text>
-            <Box py="32px">
-              <SeatInfo seatType="admin" width={null} />
-            </Box>
-          </Box>
-          <Box
-            display="flex"
-            flexDirection="row"
-            width="100%"
-            alignItems="center"
-          >
-            <Button
-              width="auto"
-              onClick={() => {
-                toggleAdmin();
-                closeModal();
-              }}
-            >
-              {formatMessage(buttonText)}
-            </Button>
-          </Box>
-        </Box>
-      </Modal>
+      <ChangeSeatModal
+        user={user}
+        isUserAdmin={isUserAdmin}
+        toggleAdmin={toggleAdmin}
+        showModal={showModal}
+        closeModal={closeModal}
+      />
     </Tr>
   );
 };
