@@ -321,11 +321,21 @@ resource 'Users' do
         parameter :group, 'Filter by group_id', required: false
         parameter :can_moderate_project, 'Filter by users (and admins) who can moderate the project (by id)', required: false
         parameter :can_moderate, 'Filter out admins and moderators', required: false
+        parameter :blocked, 'Return only blocked users', required: false
 
         example_request 'List all users' do
           expect(status).to eq 200
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 6
+        end
+
+        example_request 'List all users includes user blocking related data' do
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data][0][:attributes]).to have_key(:blocked)
+          expect(json_response[:data][0][:attributes]).to have_key(:block_start_at)
+          expect(json_response[:data][0][:attributes]).to have_key(:block_end_at)
+          expect(json_response[:data][0][:attributes]).to have_key(:block_reason)
         end
 
         example 'Get all users on the second page with fixed page size' do
@@ -458,6 +468,26 @@ resource 'Users' do
           json_response = json_parse(response_body)
           expect(json_response[:data].pluck(:id)).to match_array [a.id, @user.id]
         end
+
+        example 'List all blocked users' do
+          blocked_users = create_list(:user, 2, block_start_at: 30.days.ago)
+
+          settings = AppConfiguration.instance.settings
+          settings['user_blocking'] = {
+            'enabled' => true,
+            'allowed' => true,
+            'duration' => 90
+          }
+          AppConfiguration.instance.update!(settings: settings)
+
+          do_request only_blocked: true
+
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(User.count).to be > blocked_users.count # If unblocked users exist, then subsequent tests meaningful.
+          expect(json_response[:data].size).to eq 2
+          expect(json_response[:data].pluck(:id)).to match_array blocked_users.map(&:id)
+        end
       end
 
       get 'web_api/v1/users/as_xlsx' do
@@ -525,460 +555,572 @@ resource 'Users' do
           end
         end
       end
-    end
 
-    get 'web_api/v1/users' do
-      with_options scope: :page do
-        parameter :number, 'Page number'
-        parameter :size, 'Number of users per page'
-      end
-      example 'Get all users as non-admin', document: false do
-        do_request
-        assert_status 401
-      end
-    end
+      get 'web_api/v1/users/by_slug/:slug' do
+        let(:user) { create :user }
+        let(:slug) { user.slug }
 
-    get 'web_api/v1/users/:id' do
-      let(:id) { @user.id }
-
-      example_request 'Get one user by id' do
-        do_request
-        expect(status).to eq 200
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :attributes, :highest_role)).to eq 'user'
-      end
-    end
-
-    get 'web_api/v1/users/:id' do
-      let(:id) { @user.id }
-
-      example 'Get the authenticated user exposes the email field', document: false do
-        do_request
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :attributes, :email)).to eq @user.email
-      end
-    end
-
-    get 'web_api/v1/users/by_slug/:slug' do
-      let(:user) { create :user }
-      let(:slug) { user.slug }
-
-      example_request 'Get one user by slug' do
-        expect(status).to eq 200
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :id)).to eq user.id
+        example_request 'Get one user by slug includes user block data' do
+          expect(status).to eq 200
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :attributes)).to have_key(:blocked)
+          expect(json_response.dig(:data, :attributes)).to have_key(:block_start_at)
+          expect(json_response.dig(:data, :attributes)).to have_key(:block_end_at)
+          expect(json_response.dig(:data, :attributes)).to have_key(:block_reason)
+        end
       end
 
-      example '[error] Get an unexisting user by slug', document: false do
-        do_request slug: 'unexisting-user'
-        expect(status).to eq 404
-      end
-    end
+      get 'web_api/v1/users/:id' do
+        let(:user) { create :user }
+        let(:id) { user.id }
 
-    get 'web_api/v1/users/by_invite/:token' do
-      let!(:invite) { create(:invite) }
-      let(:token) { invite.token }
-
-      example_request 'Get a user by invite' do
-        expect(status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :id)).to eq invite.invitee.id
-        expect(json_response.dig(:data, :attributes, :email)).to eq invite.invitee.email
+        example_request 'Get a user by id includes user block data' do
+          expect(status).to eq 200
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :attributes)).to have_key(:blocked)
+          expect(json_response.dig(:data, :attributes)).to have_key(:block_start_at)
+          expect(json_response.dig(:data, :attributes)).to have_key(:block_end_at)
+          expect(json_response.dig(:data, :attributes)).to have_key(:block_reason)
+        end
       end
 
-      describe do
-        let(:token) { 'n0ns3ns3' }
+      get 'web_api/v1/users/blocked_count' do
+        example 'Get count of blocked users' do
+          create_list(:user, 2, block_start_at: 30.days.ago)
 
-        example '[error] Get an unexisting user by invite token', document: false do
+          settings = AppConfiguration.instance.settings
+          settings['user_blocking'] = {
+            'enabled' => true,
+            'allowed' => true,
+            'duration' => 90
+          }
+          AppConfiguration.instance.update!(settings: settings)
+
           do_request
+
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :blocked_users_count)).to eq 2
+        end
+      end
+
+      put 'web_api/v1/users/:id' do
+        with_options scope: 'user' do
+          parameter :first_name, 'User full name'
+          parameter :last_name, 'User full name'
+          parameter :email, 'E-mail address'
+          parameter :password, 'Password'
+          parameter :locale, 'Locale. Should be one of the tenants locales'
+          parameter :avatar, 'Base64 encoded avatar image'
+          parameter :roles, 'Roles array, only allowed when admin'
+          parameter :bio_multiloc, 'A little text, allowing the user to describe herself. Multiloc and non-html'
+          parameter :custom_field_values, 'An object that can only contain keys for custom fields for users'
+        end
+        ValidationErrorHelper.new.error_fields(self, User)
+
+        let(:id) { @user.id }
+        let(:first_name) { 'Edmond' }
+
+        describe do
+          let(:custom_field_values) { { birthyear: 1984 } }
+          let(:project) { create(:continuous_project) }
+
+          before do
+            old_timers = create(:smart_group, rules: [
+              {
+                ruleType: 'custom_field_number',
+                customFieldId: create(:custom_field_number, title_multiloc: { 'en' => 'Birthyear?' }, key: 'birthyear', code: 'birthyear').id,
+                predicate: 'is_smaller_than_or_equal',
+                value: 1988
+              }
+            ])
+
+            project.permissions.find_by(action: 'posting_idea')
+              .update!(permitted_by: 'groups', groups: [old_timers])
+          end
+
+          context 'on a resident' do
+            let(:resident) { create :user }
+            let(:id) { resident.id }
+            let(:roles) { [type: 'admin'] }
+
+            example_request 'Make the user (resident) admin' do
+              assert_status 200
+              json_response = json_parse response_body
+              expect(json_response.dig(:data, :id)).to eq id
+              expect(json_response.dig(:data, :attributes, :roles)).to eq [{ type: 'admin' }]
+            end
+          end
+
+          context 'on a folder moderator' do
+            let(:folder) { create :project_folder }
+            let(:moderator) { create :project_folder_moderator, project_folders: [folder] }
+            let(:id) { moderator.id }
+            let(:roles) { moderator.roles + [{ 'type' => 'admin' }] }
+
+            example_request 'Make the user (folder moderator) admin' do
+              assert_status 200
+              json_response = json_parse response_body
+              expect(json_response.dig(:data, :id)).to eq id
+              expect(json_response.dig(:data, :attributes, :roles)).to include({ type: 'admin' })
+            end
+          end
+        end
+      end
+    end
+
+    context 'when non-admin' do
+      get 'web_api/v1/users' do
+        with_options scope: :page do
+          parameter :number, 'Page number'
+          parameter :size, 'Number of users per page'
+        end
+        example 'Get all users as non-admin', document: false do
+          do_request
+          assert_status 401
+        end
+      end
+
+      get 'web_api/v1/users/:id' do
+        let(:id) { @user.id }
+
+        example_request 'Get one user by id' do
+          do_request
+          expect(status).to eq 200
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :attributes, :highest_role)).to eq 'user'
+        end
+      end
+
+      get 'web_api/v1/users/:id' do
+        let(:user) { create :user }
+        let(:id) { user.id }
+
+        example_request 'Get a user by id does not include user block data' do
+          expect(status).to eq 200
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :attributes)).not_to have_key(:blocked)
+          expect(json_response.dig(:data, :attributes)).not_to have_key(:block_start_at)
+          expect(json_response.dig(:data, :attributes)).not_to have_key(:block_end_at)
+          expect(json_response.dig(:data, :attributes)).not_to have_key(:block_reason)
+        end
+      end
+
+      get 'web_api/v1/users/:id' do
+        let(:id) { @user.id }
+
+        example 'Get the authenticated user exposes the email field', document: false do
+          do_request
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :attributes, :email)).to eq @user.email
+        end
+      end
+
+      get 'web_api/v1/users/by_slug/:slug' do
+        let(:user) { create :user }
+        let(:slug) { user.slug }
+
+        example_request 'Get one user by slug' do
+          expect(status).to eq 200
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :id)).to eq user.id
+        end
+
+        example '[error] Get an unexisting user by slug', document: false do
+          do_request slug: 'unexisting-user'
           expect(status).to eq 404
         end
+
+        example_request 'Get a user by slug does not include user block data' do
+          expect(status).to eq 200
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :attributes)).not_to have_key(:blocked)
+          expect(json_response.dig(:data, :attributes)).not_to have_key(:block_start_at)
+          expect(json_response.dig(:data, :attributes)).not_to have_key(:block_end_at)
+          expect(json_response.dig(:data, :attributes)).not_to have_key(:block_reason)
+        end
       end
-    end
 
-    get 'web_api/v1/users/me' do
-      example_request 'Get the authenticated user' do
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :id)).to eq(@user.id)
-        expect(json_response.dig(:data, :attributes, :verified)).to be false
+      get 'web_api/v1/users/by_invite/:token' do
+        let!(:invite) { create(:invite) }
+        let(:token) { invite.token }
+
+        example_request 'Get a user by invite' do
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :id)).to eq invite.invitee.id
+          expect(json_response.dig(:data, :attributes, :email)).to eq invite.invitee.email
+        end
+
+        describe do
+          let(:token) { 'n0ns3ns3' }
+
+          example '[error] Get an unexisting user by invite token', document: false do
+            do_request
+            expect(status).to eq 404
+          end
+        end
       end
-    end
 
-    put 'web_api/v1/users/:id' do
-      with_options scope: 'user' do
-        parameter :first_name, 'User full name'
-        parameter :last_name, 'User full name'
-        parameter :email, 'E-mail address'
-        parameter :password, 'Password'
-        parameter :locale, 'Locale. Should be one of the tenants locales'
-        parameter :avatar, 'Base64 encoded avatar image'
-        parameter :roles, 'Roles array, only allowed when admin'
-        parameter :bio_multiloc, 'A little text, allowing the user to describe herself. Multiloc and non-html'
-        parameter :custom_field_values, 'An object that can only contain keys for custom fields for users'
+      get 'web_api/v1/users/me' do
+        example_request 'Get the authenticated user' do
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :id)).to eq(@user.id)
+          expect(json_response.dig(:data, :attributes, :verified)).to be false
+        end
       end
-      ValidationErrorHelper.new.error_fields(self, User)
 
-      let(:id) { @user.id }
-      let(:first_name) { 'Edmond' }
+      get 'web_api/v1/users/blocked_count' do
+        example_request 'Get count of blocked users' do
+          expect(status).to eq 401
+        end
+      end
 
-      describe do
-        let(:custom_field_values) { { birthyear: 1984 } }
-        let(:project) { create(:continuous_project) }
+      put 'web_api/v1/users/:id' do
+        with_options scope: 'user' do
+          parameter :first_name, 'User full name'
+          parameter :last_name, 'User full name'
+          parameter :email, 'E-mail address'
+          parameter :password, 'Password'
+          parameter :locale, 'Locale. Should be one of the tenants locales'
+          parameter :avatar, 'Base64 encoded avatar image'
+          parameter :roles, 'Roles array, only allowed when admin'
+          parameter :bio_multiloc, 'A little text, allowing the user to describe herself. Multiloc and non-html'
+          parameter :custom_field_values, 'An object that can only contain keys for custom fields for users'
+        end
+        ValidationErrorHelper.new.error_fields(self, User)
 
-        before do
-          old_timers = create(:smart_group, rules: [
+        let(:id) { @user.id }
+        let(:first_name) { 'Edmond' }
+
+        describe do
+          let(:custom_field_values) { { birthyear: 1984 } }
+          let(:project) { create(:continuous_project) }
+
+          before do
+            old_timers = create(:smart_group, rules: [
+              {
+                ruleType: 'custom_field_number',
+                customFieldId: create(:custom_field_number, title_multiloc: { 'en' => 'Birthyear?' }, key: 'birthyear', code: 'birthyear').id,
+                predicate: 'is_smaller_than_or_equal',
+                value: 1988
+              }
+            ])
+
+            project.permissions.find_by(action: 'posting_idea')
+              .update!(permitted_by: 'groups', groups: [old_timers])
+          end
+
+          example_request 'Update a user' do
+            expect(response_status).to eq 200
+            expect(response_data.dig(:attributes, :first_name)).to eq(first_name)
+            expect(json_response_body[:included].find { |i| i[:type] == 'project' }&.dig(:attributes, :slug)).to eq project.slug
+            expect(json_response_body[:included].find { |i| i[:type] == 'permission' }&.dig(:attributes, :permitted_by)).to eq 'groups'
+            expect(response_data.dig(:relationships, :granted_permissions, :data).size).to eq(1)
+          end
+        end
+
+        # NOTE: To be included in an upcoming iteration
+        # context 'when the user_confirmation module is active' do
+        #   before do
+        #     SettingsService.new.activate_feature! 'user_confirmation'
+        #   end
+
+        #   describe 'Changing the email' do
+        #     let(:email) { 'new-email@email.com' }
+
+        #     example_request 'Requires confirmation' do
+        #       json_response = json_parse(response_body)
+        #       expect(json_response.dig(:data, :attributes, :confirmation_required)).to be true
+        #     end
+
+        #     example_request 'Sends a confirmation email' do
+        #       last_email = ActionMailer::Base.deliveries.last
+        #       user       = User.find(id)
+        #       expect(last_email.to).to include user.reload.email
+        #     end
+        #   end
+        # end
+
+        describe do
+          example "Update a user's custom field values" do
+            cf = create(:custom_field)
+            do_request(user: { custom_field_values: { cf.key => 'somevalue' } })
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data, :attributes, :custom_field_values, cf.key.to_sym)).to eq 'somevalue'
+          end
+
+          example "Clear out a user's custom field value" do
+            cf = create(:custom_field)
+            @user.update!(custom_field_values: { cf.key => 'somevalue' })
+
+            do_request(user: { custom_field_values: {} })
+            expect(response_status).to eq 200
+            expect(@user.reload.custom_field_values).to eq({})
+          end
+
+          example 'Cannot modify values of hidden custom fields' do
+            cf = create(:custom_field, hidden: true, enabled: true)
+            some_value = 'some_value'
+            @user.update!(custom_field_values: { cf.key => some_value })
+
+            do_request(user: { custom_field_values: { cf.key => 'another_value' } })
+            json_response = json_parse(response_body)
+
+            expect(json_response.dig(:data, :attributes, :custom_field_values)).not_to include(cf.key.to_sym)
+            expect(@user.custom_field_values[cf.key]).to eq(some_value)
+          end
+
+          example 'Cannot modify values of disabled custom fields' do
+            cf = create(:custom_field, hidden: false, enabled: false)
+            some_value = 'some_value'
+            @user.update!(custom_field_values: { cf.key => some_value })
+
+            do_request(user: { custom_field_values: { cf.key => 'another_value' } })
+            json_response = json_parse(response_body)
+
+            expect(json_response.dig(:data, :attributes, :custom_field_values)).not_to include(cf.key.to_sym)
+            expect(@user.custom_field_values[cf.key]).to eq(some_value)
+          end
+        end
+
+        describe do
+          example 'The user avatar can be removed' do
+            @user.update!(avatar: Rails.root.join('spec/fixtures/male_avatar_1.jpg').open)
+            expect(@user.reload.avatar_url).to be_present
+            do_request user: { avatar: nil }
+            expect(@user.reload.avatar_url).to be_nil
+          end
+        end
+
+        describe do
+          let(:cf) { create(:custom_field) }
+          let(:birthyear_cf) { create(:custom_field_birthyear) }
+          let(:custom_field_values) do
             {
-              ruleType: 'custom_field_number',
-              customFieldId: create(:custom_field_number, title_multiloc: { 'en' => 'Birthyear?' }, key: 'birthyear', code: 'birthyear').id,
-              predicate: 'is_smaller_than_or_equal',
-              value: 1988
+              cf.key => 'new value',
+              birthyear_cf.key => birthyear
             }
-          ])
+          end
+          let(:first_name) { 'Raymond' }
+          let(:last_name) { 'Betancourt' }
+          let(:email) { 'ray.mond@rocks.com' }
+          let(:locale) { 'fr-FR' }
+          let(:birthyear) { 1969 }
 
-          project.permissions.find_by(action: 'posting_idea')
-            .update!(permitted_by: 'groups', groups: [old_timers])
-        end
+          example "Can't change some attributes of a user verified with FranceConnect", document: false do
+            create(:verification, method_name: 'franceconnect', user: @user)
+            @user.update!(custom_field_values: { cf.key => 'original value', birthyear_cf.key => 1950 })
+            do_request
+            expect(response_status).to eq 200
+            @user.reload
+            expect(@user.custom_field_values[cf.key]).to eq 'new value'
+            expect(@user.first_name).not_to eq first_name
+            expect(@user.last_name).not_to eq last_name
+            expect(@user.email).to eq email
+          end
 
-        example_request 'Update a user' do
-          expect(response_status).to eq 200
-          expect(response_data.dig(:attributes, :first_name)).to eq(first_name)
-          expect(json_response_body[:included].find { |i| i[:type] == 'project' }&.dig(:attributes, :slug)).to eq project.slug
-          expect(json_response_body[:included].find { |i| i[:type] == 'permission' }&.dig(:attributes, :permitted_by)).to eq 'groups'
-          expect(response_data.dig(:relationships, :granted_permissions, :data).size).to eq(1)
-        end
-      end
-
-      # NOTE: To be included in an upcoming iteration
-      # context 'when the user_confirmation module is active' do
-      #   before do
-      #     SettingsService.new.activate_feature! 'user_confirmation'
-      #   end
-
-      #   describe 'Changing the email' do
-      #     let(:email) { 'new-email@email.com' }
-
-      #     example_request 'Requires confirmation' do
-      #       json_response = json_parse(response_body)
-      #       expect(json_response.dig(:data, :attributes, :confirmation_required)).to be true
-      #     end
-
-      #     example_request 'Sends a confirmation email' do
-      #       last_email = ActionMailer::Base.deliveries.last
-      #       user       = User.find(id)
-      #       expect(last_email.to).to include user.reload.email
-      #     end
-      #   end
-      # end
-
-      context 'when admin' do
-        before { @user.update! roles: [{ type: 'admin' }] }
-
-        context 'on a resident' do
-          let(:resident) { create :user }
-          let(:id) { resident.id }
-          let(:roles) { [type: 'admin'] }
-
-          example_request 'Make the user admin' do
-            assert_status 200
-            json_response = json_parse response_body
-            expect(json_response.dig(:data, :id)).to eq id
-            expect(json_response.dig(:data, :attributes, :roles)).to eq [{ type: 'admin' }]
+          example 'Can change many attributes of a user verified with FranceConnect', document: false do
+            create(:verification, method_name: 'franceconnect', user: @user)
+            do_request
+            expect(response_status).to eq 200
+            @user.reload
+            expect(@user.email).to eq email
+            expect(@user.locale).to eq locale
+            expect(@user.birthyear).to eq birthyear
           end
         end
 
-        context 'on a folder moderator' do
-          let(:folder) { create :project_folder }
-          let(:moderator) { create :project_folder_moderator, project_folders: [folder] }
-          let(:id) { moderator.id }
-          let(:roles) { moderator.roles + [{ 'type' => 'admin' }] }
+        describe do
+          let(:cf) { create(:custom_field) }
+          let(:gender_cf) { create(:custom_field_gender) }
+          let(:custom_field_values) do
+            {
+              cf.key => 'new value',
+              gender_cf.key => 'female'
+            }
+          end
 
-          example_request 'Make the user admin' do
-            assert_status 200
-            json_response = json_parse response_body
-            expect(json_response.dig(:data, :id)).to eq id
-            expect(json_response.dig(:data, :attributes, :roles)).to include({ type: 'admin' })
+          example "Can't change gender of a user verified with Bogus", document: false do
+            create(:verification, method_name: 'bogus', user: @user)
+            @user.update!(custom_field_values: { cf.key => 'original value', gender_cf.key => 'male' })
+            do_request
+            expect(response_status).to eq 200
+            @user.reload
+            expect(@user.custom_field_values[cf.key]).to eq 'new value'
+            expect(@user.custom_field_values[gender_cf.key]).to eq 'male'
           end
         end
       end
 
-      describe do
-        example "Update a user's custom field values" do
-          cf = create(:custom_field)
-          do_request(user: { custom_field_values: { cf.key => 'somevalue' } })
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :attributes, :custom_field_values, cf.key.to_sym)).to eq 'somevalue'
+      post 'web_api/v1/users/complete_registration' do
+        with_options scope: :user do
+          parameter :custom_field_values, 'An object that can only contain keys for custom fields for users', required: true
         end
 
-        example "Clear out a user's custom field value" do
-          cf = create(:custom_field)
-          @user.update!(custom_field_values: { cf.key => 'somevalue' })
+        let(:cf1) { create(:custom_field) }
+        let(:cf2) { create(:custom_field_multiselect, required: true) }
+        let(:cf2_options) { create_list(:custom_field_option, 2, custom_field: cf2) }
+        let(:custom_field_values) { { cf1.key => 'somevalue', cf2.key => [cf2_options.first.key] } }
 
-          do_request(user: { custom_field_values: {} })
-          expect(response_status).to eq 200
-          expect(@user.reload.custom_field_values).to eq({})
-        end
-
-        example 'Cannot modify values of hidden custom fields' do
-          cf = create(:custom_field, hidden: true, enabled: true)
-          some_value = 'some_value'
-          @user.update!(custom_field_values: { cf.key => some_value })
-
-          do_request(user: { custom_field_values: { cf.key => 'another_value' } })
-          json_response = json_parse(response_body)
-
-          expect(json_response.dig(:data, :attributes, :custom_field_values)).not_to include(cf.key.to_sym)
-          expect(@user.custom_field_values[cf.key]).to eq(some_value)
-        end
-
-        example 'Cannot modify values of disabled custom fields' do
-          cf = create(:custom_field, hidden: false, enabled: false)
-          some_value = 'some_value'
-          @user.update!(custom_field_values: { cf.key => some_value })
-
-          do_request(user: { custom_field_values: { cf.key => 'another_value' } })
-          json_response = json_parse(response_body)
-
-          expect(json_response.dig(:data, :attributes, :custom_field_values)).not_to include(cf.key.to_sym)
-          expect(@user.custom_field_values[cf.key]).to eq(some_value)
-        end
-      end
-
-      describe do
-        example 'The user avatar can be removed' do
-          @user.update!(avatar: Rails.root.join('spec/fixtures/male_avatar_1.jpg').open)
-          expect(@user.reload.avatar_url).to be_present
-          do_request user: { avatar: nil }
-          expect(@user.reload.avatar_url).to be_nil
-        end
-      end
-
-      describe do
-        let(:cf) { create(:custom_field) }
-        let(:birthyear_cf) { create(:custom_field_birthyear) }
-        let(:custom_field_values) do
-          {
-            cf.key => 'new value',
-            birthyear_cf.key => birthyear
-          }
-        end
-        let(:first_name) { 'Raymond' }
-        let(:last_name) { 'Betancourt' }
-        let(:email) { 'ray.mond@rocks.com' }
-        let(:locale) { 'fr-FR' }
-        let(:birthyear) { 1969 }
-
-        example "Can't change some attributes of a user verified with FranceConnect", document: false do
-          create(:verification, method_name: 'franceconnect', user: @user)
-          @user.update!(custom_field_values: { cf.key => 'original value', birthyear_cf.key => 1950 })
+        example 'Complete the registration of a user' do
+          @user.update! registration_completed_at: nil
           do_request
           expect(response_status).to eq 200
-          @user.reload
-          expect(@user.custom_field_values[cf.key]).to eq 'new value'
-          expect(@user.first_name).not_to eq first_name
-          expect(@user.last_name).not_to eq last_name
-          expect(@user.email).to eq email
-        end
-
-        example 'Can change many attributes of a user verified with FranceConnect', document: false do
-          create(:verification, method_name: 'franceconnect', user: @user)
-          do_request
-          expect(response_status).to eq 200
-          @user.reload
-          expect(@user.email).to eq email
-          expect(@user.locale).to eq locale
-          expect(@user.birthyear).to eq birthyear
-        end
-      end
-
-      describe do
-        let(:cf) { create(:custom_field) }
-        let(:gender_cf) { create(:custom_field_gender) }
-        let(:custom_field_values) do
-          {
-            cf.key => 'new value',
-            gender_cf.key => 'female'
-          }
-        end
-
-        example "Can't change gender of a user verified with Bogus", document: false do
-          create(:verification, method_name: 'bogus', user: @user)
-          @user.update!(custom_field_values: { cf.key => 'original value', gender_cf.key => 'male' })
-          do_request
-          expect(response_status).to eq 200
-          @user.reload
-          expect(@user.custom_field_values[cf.key]).to eq 'new value'
-          expect(@user.custom_field_values[gender_cf.key]).to eq 'male'
-        end
-      end
-    end
-
-    post 'web_api/v1/users/complete_registration' do
-      with_options scope: :user do
-        parameter :custom_field_values, 'An object that can only contain keys for custom fields for users', required: true
-      end
-
-      let(:cf1) { create(:custom_field) }
-      let(:cf2) { create(:custom_field_multiselect, required: true) }
-      let(:cf2_options) { create_list(:custom_field_option, 2, custom_field: cf2) }
-      let(:custom_field_values) { { cf1.key => 'somevalue', cf2.key => [cf2_options.first.key] } }
-
-      example 'Complete the registration of a user' do
-        @user.update! registration_completed_at: nil
-        do_request
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :registration_completed_at)).to be_present
-        expect(json_response.dig(:data, :attributes, :custom_field_values, cf1.key.to_sym)).to eq 'somevalue'
-        expect(json_response.dig(:data, :attributes, :custom_field_values, cf2.key.to_sym)).to eq [cf2_options.first.key]
-      end
-
-      example '[error] Complete the registration of a user fails if not all required fields are provided' do
-        @user.update! registration_completed_at: nil
-        do_request(user: { custom_field_values: { cf2.key => nil } })
-        assert_status 422
-      end
-
-      example '[error] Complete the registration of a user fails if the user has already completed signup' do
-        do_request
-        expect(response_status).to eq 401
-      end
-
-      describe do
-        let(:cf) { create(:custom_field) }
-        let(:gender_cf) { create(:custom_field_gender) }
-        let(:custom_field_values) do
-          {
-            cf.key => 'new value',
-            gender_cf.key => 'female'
-          }
-        end
-
-        example "Can't change some custom_field_values of a user verified with Bogus", document: false do
-          @user.update!(
-            registration_completed_at: nil,
-            custom_field_values: { cf.key => 'original value', gender_cf.key => 'male' }
-          )
-          create(:verification, method_name: 'bogus', user: @user)
-          do_request
-          expect(response_status).to eq 200
-          @user.reload
-          expect(@user.custom_field_values[cf.key]).to eq 'new value'
-          expect(@user.custom_field_values[gender_cf.key]).to eq 'male'
-        end
-      end
-    end
-
-    post 'web_api/v1/users/update_password' do
-      with_options scope: :user do
-        parameter :current_password, required: true
-        parameter :new_password, required: true
-      end
-      describe do
-        let(:current_password) { 'test_current_password' }
-        let(:new_password) { 'test_new_password' }
-
-        example_request 'update password with wrong current password' do
-          expect(response_status).to eq 422
           json_response = json_parse(response_body)
-          expect(json_response[:errors][:current_password][0][:error]).to eq 'invalid'
+          expect(json_response.dig(:data, :attributes, :registration_completed_at)).to be_present
+          expect(json_response.dig(:data, :attributes, :custom_field_values, cf1.key.to_sym)).to eq 'somevalue'
+          expect(json_response.dig(:data, :attributes, :custom_field_values, cf2.key.to_sym)).to eq [cf2_options.first.key]
+        end
+
+        example '[error] Complete the registration of a user fails if not all required fields are provided' do
+          @user.update! registration_completed_at: nil
+          do_request(user: { custom_field_values: { cf2.key => nil } })
+          assert_status 422
+        end
+
+        example '[error] Complete the registration of a user fails if the user has already completed signup' do
+          do_request
+          expect(response_status).to eq 401
+        end
+
+        describe do
+          let(:cf) { create(:custom_field) }
+          let(:gender_cf) { create(:custom_field_gender) }
+          let(:custom_field_values) do
+            {
+              cf.key => 'new value',
+              gender_cf.key => 'female'
+            }
+          end
+
+          example "Can't change some custom_field_values of a user verified with Bogus", document: false do
+            @user.update!(
+              registration_completed_at: nil,
+              custom_field_values: { cf.key => 'original value', gender_cf.key => 'male' }
+            )
+            create(:verification, method_name: 'bogus', user: @user)
+            do_request
+            expect(response_status).to eq 200
+            @user.reload
+            expect(@user.custom_field_values[cf.key]).to eq 'new value'
+            expect(@user.custom_field_values[gender_cf.key]).to eq 'male'
+          end
         end
       end
 
-      describe do
-        let(:current_password) { 'democracy2.0' }
-        let(:new_password) { 'test_new_password' }
+      post 'web_api/v1/users/update_password' do
+        with_options scope: :user do
+          parameter :current_password, required: true
+          parameter :new_password, required: true
+        end
+        describe do
+          let(:current_password) { 'test_current_password' }
+          let(:new_password) { 'test_new_password' }
 
-        example_request 'update password with correct current password' do
-          @user.reload
+          example_request 'update password with wrong current password' do
+            expect(response_status).to eq 422
+            json_response = json_parse(response_body)
+            expect(json_response[:errors][:current_password][0][:error]).to eq 'invalid'
+          end
+        end
+
+        describe do
+          let(:current_password) { 'democracy2.0' }
+          let(:new_password) { 'test_new_password' }
+
+          example_request 'update password with correct current password' do
+            @user.reload
+            expect(response_status).to eq 200
+            expect(BCrypt::Password.new(@user.password_digest)).to be_is_password('test_new_password')
+          end
+        end
+      end
+
+      delete 'web_api/v1/users/:id' do
+        before do
+          @user.update!(roles: [{ type: 'admin' }])
+          @subject_user = create :admin
+        end
+
+        let(:id) { @subject_user.id }
+
+        example_request 'Delete a user' do
           expect(response_status).to eq 200
-          expect(BCrypt::Password.new(@user.password_digest)).to be_is_password('test_new_password')
+          expect { User.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
         end
       end
-    end
 
-    delete 'web_api/v1/users/:id' do
-      before do
-        @user.update!(roles: [{ type: 'admin' }])
-        @subject_user = create :admin
+      get 'web_api/v1/users/:id/ideas_count' do
+        let(:id) { @user.id }
+
+        example 'Get the number of ideas published by one user' do
+          IdeaStatus.create_defaults
+          create(:idea, author: @user)
+          create(:idea)
+          create(:idea, author: @user, publication_status: 'draft')
+          create(:idea, author: @user, project: create(:continuous_native_survey_project))
+          do_request
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response[:count]).to eq 1
+        end
       end
 
-      let(:id) { @subject_user.id }
+      get 'web_api/v1/users/:id/initiatives_count' do
+        let(:id) { @user.id }
 
-      example_request 'Delete a user' do
-        expect(response_status).to eq 200
-        expect { User.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
-      end
-    end
-
-    get 'web_api/v1/users/:id/ideas_count' do
-      let(:id) { @user.id }
-
-      example 'Get the number of ideas published by one user' do
-        IdeaStatus.create_defaults
-        create(:idea, author: @user)
-        create(:idea)
-        create(:idea, author: @user, publication_status: 'draft')
-        create(:idea, author: @user, project: create(:continuous_native_survey_project))
-        do_request
-        expect(status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response[:count]).to eq 1
-      end
-    end
-
-    get 'web_api/v1/users/:id/initiatives_count' do
-      let(:id) { @user.id }
-
-      example 'Get the number of initiatives published by one user' do
-        create(:initiative, author: @user)
-        create(:initiative)
-        create(:initiative, author: @user, publication_status: 'draft')
-        do_request
-        assert_status 200
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :type)).to eq 'initiatives_count'
-        expect(json_response.dig(:data, :attributes, :count)).to eq 1
-      end
-    end
-
-    get 'web_api/v1/users/:id/comments_count' do
-      parameter :post_type, "Count only comments of one post type. Either 'Idea' or 'Initiative'.", required: false
-
-      let(:id) { @user.id }
-
-      example 'Get the number of comments posted by one user' do
-        create(:comment, author: @user, post: create(:initiative))
-        create(:comment)
-        create(:comment, author: @user, post: create(:idea))
-        create(:comment, author: @user, publication_status: 'deleted')
-        do_request
-        expect(status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response[:count]).to eq 2
+        example 'Get the number of initiatives published by one user' do
+          create(:initiative, author: @user)
+          create(:initiative)
+          create(:initiative, author: @user, publication_status: 'draft')
+          do_request
+          assert_status 200
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :type)).to eq 'initiatives_count'
+          expect(json_response.dig(:data, :attributes, :count)).to eq 1
+        end
       end
 
-      example 'Get the number of comments on ideas posted by one user' do
-        create(:comment, author: @user, post: create(:initiative))
-        create(:comment, post: create(:initiative))
-        create(:comment, author: @user, post: create(:idea))
-        create(:comment, author: @user, post: create(:idea))
-        create(:comment, author: @user, publication_status: 'deleted', post: create(:idea))
-        do_request post_type: 'Idea'
-        expect(status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response[:count]).to eq 2
-      end
+      get 'web_api/v1/users/:id/comments_count' do
+        parameter :post_type, "Count only comments of one post type. Either 'Idea' or 'Initiative'.", required: false
 
-      example 'Get the number of comments on initiatives posted by one user' do
-        create(:comment, author: @user, post: create(:initiative))
-        create(:comment, author: @user, post: create(:initiative))
-        create(:comment, post: create(:idea))
-        create(:comment, author: @user, post: create(:idea))
-        create(:comment, author: @user, publication_status: 'deleted', post: create(:initiative))
-        do_request post_type: 'Initiative'
-        expect(status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response[:count]).to eq 2
+        let(:id) { @user.id }
+
+        example 'Get the number of comments posted by one user' do
+          create(:comment, author: @user, post: create(:initiative))
+          create(:comment)
+          create(:comment, author: @user, post: create(:idea))
+          create(:comment, author: @user, publication_status: 'deleted')
+          do_request
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response[:count]).to eq 2
+        end
+
+        example 'Get the number of comments on ideas posted by one user' do
+          create(:comment, author: @user, post: create(:initiative))
+          create(:comment, post: create(:initiative))
+          create(:comment, author: @user, post: create(:idea))
+          create(:comment, author: @user, post: create(:idea))
+          create(:comment, author: @user, publication_status: 'deleted', post: create(:idea))
+          do_request post_type: 'Idea'
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response[:count]).to eq 2
+        end
+
+        example 'Get the number of comments on initiatives posted by one user' do
+          create(:comment, author: @user, post: create(:initiative))
+          create(:comment, author: @user, post: create(:initiative))
+          create(:comment, post: create(:idea))
+          create(:comment, author: @user, post: create(:idea))
+          create(:comment, author: @user, publication_status: 'deleted', post: create(:initiative))
+          do_request post_type: 'Initiative'
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response[:count]).to eq 2
+        end
       end
     end
   end
