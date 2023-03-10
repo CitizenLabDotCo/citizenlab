@@ -66,7 +66,7 @@ export default defineMessages({
     defaultMessage: 'Are you sure you want to set {name} as a normal user?',
   },
   confirmAdminQuestion: {
-    id: 'app.containers.Admin.Users.confirmNormalUserQuestion',
+    id: 'app.containers.Admin.Users.confirmAdminQuestion',
     defaultMessage:
       'Are you sure you want to give {name} platform admin rights?',
   },
