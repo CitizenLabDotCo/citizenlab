@@ -89,7 +89,7 @@ class AnonymizeUserService
       'email' => email,
       'password' => SecureRandom.urlsafe_base64(32),
       'locale' => locale,
-      'custom_field_values' => custom_field_values.to_json,
+      'custom_field_values' => custom_field_values,
       'bio_multiloc' => bio,
       'registration_completed_at' => registration,
       'created_at' => registration,

@@ -23,17 +23,6 @@ resource 'ActionDescriptors' do
     end
 
     context 'with granular permissions enabled', document: false, skip: !CitizenLab.ee? do
-      before(:all) do
-        @cached_scope_types = PermissionsService.instance_variable_get(:@scope_spec_hash)
-        PermissionsService.clear_scope_types
-        PermissionsService.register_scope_type(CitizenLab::Permissions::ScopeTypes::Global)
-      end
-
-      after(:all) do
-        # Restore registered scope-types as they were before the tests.
-        PermissionsService.instance_variable_set(:@scope_spec_hash, @cached_scope_types)
-      end
-
       before do
         PermissionsService.new.update_all_permissions
         Permission.find_by(permission_scope: nil, action: 'commenting_initiative')
