@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 // events
 import { triggerAuthenticationFlow$ } from './events';
@@ -7,34 +7,52 @@ import { triggerAuthenticationFlow$ } from './events';
 import useSteps from './useSteps';
 
 // components
-import { Box, Text } from '@citizenlab/cl2-component-library';
-import Centerer from 'components/UI/Centerer';
-import Button from 'components/UI/Button';
 import AuthModal from './AuthModal';
 
-const NewAuthModal = () => {
-  const { currentStep, transition, ...rest } = useSteps();
+// types
+import { AuthenticationContext } from 'api/permissions/types';
 
-  const triggerFlow = () => {
-    if (currentStep !== 'closed') return;
-    transition(currentStep, 'TRIGGER_REGISTRATION_FLOW')();
-  };
+interface Props {
+  authenticationContext: AuthenticationContext;
+  endAuthenticationFlow: () => void;
+}
+
+const NewAuthModal = ({
+  authenticationContext,
+  endAuthenticationFlow,
+}: Props) => {
+  const { currentStep, transition, ...rest } = useSteps(
+    authenticationContext,
+    endAuthenticationFlow
+  );
 
   return (
-    <>
-      <Box w="100%" h="100%">
-        <Centerer flexDirection="column">
-          <Text>Click sign up to start flow</Text>
-          {currentStep === 'closed' && (
-            <Button width="auto" onClick={triggerFlow}>
-              Sign up
-            </Button>
-          )}
-        </Centerer>
-      </Box>
-      <AuthModal currentStep={currentStep} transition={transition} {...rest} />
-    </>
+    <AuthModal currentStep={currentStep} transition={transition} {...rest} />
   );
 };
 
-export default NewAuthModal;
+const NewAuthModalWrapper = () => {
+  const [authenticationContext, setAuthenticationContext] =
+    useState<AuthenticationContext | null>(null);
+
+  useEffect(() => {
+    triggerAuthenticationFlow$.subscribe((event) => {
+      setAuthenticationContext(event.eventValue);
+    });
+  }, []);
+
+  const endAuthenticationFlow = useCallback(() => {
+    setAuthenticationContext(null);
+  }, []);
+
+  if (!authenticationContext) return null;
+
+  return (
+    <NewAuthModal
+      authenticationContext={authenticationContext}
+      endAuthenticationFlow={endAuthenticationFlow}
+    />
+  );
+};
+
+export default NewAuthModalWrapper;

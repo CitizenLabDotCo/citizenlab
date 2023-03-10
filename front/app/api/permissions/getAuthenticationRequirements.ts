@@ -1,12 +1,10 @@
-import { useMutation } from '@tanstack/react-query';
-import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import {
   AuthenticationContext,
   AuthenticationRequirementsResponse,
 } from './types';
 
-const fetchAuthenticationRequirements = (
+const getAuthenticationRequirements = (
   authenticationContext: AuthenticationContext
 ) => {
   const { type, action } = authenticationContext;
@@ -26,17 +24,4 @@ const fetchAuthenticationRequirements = (
   });
 };
 
-const useGetAuthenticationRequirements = (
-  authenticationContext: AuthenticationContext
-) => {
-  const { mutateAsync } = useMutation<
-    AuthenticationRequirementsResponse,
-    CLErrors
-  >({
-    mutationFn: () => fetchAuthenticationRequirements(authenticationContext),
-  });
-
-  return mutateAsync;
-};
-
-export default useGetAuthenticationRequirements;
+export default getAuthenticationRequirements;

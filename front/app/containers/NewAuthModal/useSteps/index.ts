@@ -1,10 +1,7 @@
-import { useState, useCallback, useMemo, useEffect } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 
-// events
-import { triggerAuthenticationFlow$ } from '../events';
-
-// hooks
-import useGetAuthenticationRequirements from 'api/permissions/getAuthenticationRequirements';
+// api
+import getAuthenticationRequirements from 'api/permissions/getAuthenticationRequirements';
 
 // utils
 import { getStepConfig } from './stepConfig';
@@ -13,31 +10,32 @@ import { getStepConfig } from './stepConfig';
 import { Status, ErrorCode, State, StepConfig, Step } from '../typings';
 import { AuthenticationContext } from 'api/permissions/types';
 
-export default function useSteps() {
-  const [authenticationContext, setAuthenticationContext] =
-    useState<AuthenticationContext>();
-
-  useEffect(() => {
-    triggerAuthenticationFlow$.subscribe((event) => {
-      setAuthenticationContext(event.eventValue);
-    });
-  }, []);
-
-  const [currentStep, setCurrentStep] = useState<Step>('closed');
+export default function useSteps(
+  authenticationContext: AuthenticationContext,
+  endAuthenticationFlow: () => void
+) {
+  const [currentStep, _setCurrentStep] = useState<Step>('closed');
   const [state, setState] = useState<State>({ email: null });
   const [status, setStatus] = useState<Status>('ok');
   const [error, setError] = useState<ErrorCode | null>(null);
 
-  const getAuthenticationRequirements = useGetAuthenticationRequirements();
-
   const getRequirements = useCallback(async () => {
-    const response = await getAuthenticationRequirements();
+    const response = await getAuthenticationRequirements(authenticationContext);
     return response.data.requirements.requirements;
-  }, [getAuthenticationRequirements]);
+  }, [authenticationContext]);
 
   const updateState = useCallback((newState: Partial<State>) => {
     setState((state) => ({ ...state, ...newState }));
   }, []);
+
+  const setCurrentStep = useCallback(
+    (step: Step) => {
+      if (step === 'closed') {
+        endAuthenticationFlow();
+      }
+    },
+    [endAuthenticationFlow]
+  );
 
   const stepConfig = useMemo(
     () =>
