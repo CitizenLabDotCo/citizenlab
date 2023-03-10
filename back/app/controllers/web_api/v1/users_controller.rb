@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::UsersController < ::ApplicationController
-  before_action :set_user, only: %i[show update destroy ideas_count initiatives_count comments_count]
+  before_action :set_user, only: %i[show update destroy ideas_count initiatives_count comments_count block unblock]
   skip_before_action :authenticate_user, only: %i[create show by_slug by_invite ideas_count initiatives_count comments_count]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -166,11 +166,8 @@ class WebApi::V1::UsersController < ::ApplicationController
   end
 
   def block
-    @user = User.find params[:id]
-    reason = permitted_attributes(@user)['block_reason'] if params[:user] && params[:user][:block_reason]
-
-    authorize @user, :block
-    if @user.update(block_start_at: Time.zone.now, block_reason: reason)
+    authorize @user, :block?
+    if @user.update(block_start_at: Time.zone.now, block_reason: params.dig(:user, :block_reason))
       # SideFxUserService.new.after_block(@user, current_user)
 
       render json: WebApi::V1::UserSerializer.new(@user, params: fastjson_params).serialized_json
@@ -180,9 +177,7 @@ class WebApi::V1::UsersController < ::ApplicationController
   end
 
   def unblock
-    @user = User.find params[:id]
-
-    authorize @user, :unblock
+    authorize @user, :unblock?
     if @user.update(block_start_at: nil, block_reason: nil)
       # SideFxUserService.new.after_unblock(@user, current_user)
 
@@ -198,10 +193,8 @@ class WebApi::V1::UsersController < ::ApplicationController
   end
 
   def blocked_count
-    authorize :user, :blocked_count
-    count = User.all.blocked.count
-
-    render json: { data: { blocked_users_count: count } }, status: :ok
+    authorize :user, :blocked_count?
+    render json: { data: { blocked_users_count: User.all.blocked.count } }, status: :ok
   end
 
   def initiatives_count

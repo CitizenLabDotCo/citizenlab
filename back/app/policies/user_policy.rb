@@ -63,15 +63,15 @@ class UserPolicy < ApplicationPolicy
     record.id == user&.id || (user&.active? && user&.admin?)
   end
 
-  def block
+  def block?
     index?
   end
 
-  def unblock
+  def unblock?
     index?
   end
 
-  def blocked_count
+  def blocked_count?
     index?
   end
 
@@ -104,7 +104,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    shared = [:first_name, :last_name, :email, :password, :avatar, :block_reason, :locale, { custom_field_values: allowed_custom_field_keys, bio_multiloc: CL2_SUPPORTED_LOCALES }]
+    shared = [:first_name, :last_name, :email, :password, :avatar, :locale, { custom_field_values: allowed_custom_field_keys, bio_multiloc: CL2_SUPPORTED_LOCALES }]
     admin? ? shared + role_permitted_params : shared
   end
 
