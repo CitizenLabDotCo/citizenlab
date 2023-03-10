@@ -618,13 +618,9 @@ resource 'Ideas' do
             expect(json_response[:data][:attributes][:upvotes_count]).to eq 1
           end
 
-          context 'when user is blocked' do
-            example 'user attempts to create an idea' do
-              settings = AppConfiguration.instance.settings
-              settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
-              AppConfiguration.instance.update!(settings: settings)
+          include_context 'when user_blocking duration is 90 days' do
+            example 'Blocked user attempts to create an idea' do
               @user.update(block_start_at: Time.now)
-
               do_request
               expect(status).to be 401
             end

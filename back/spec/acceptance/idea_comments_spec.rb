@@ -307,16 +307,10 @@ resource 'Comments' do
         end
       end
 
-      context 'when user is blocked' do
-        before do
-          settings = AppConfiguration.instance.settings
-          settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
-          AppConfiguration.instance.update!(settings: settings)
+      include_context 'when user_blocking duration is 90 days' do
+        before { @user.update(block_start_at: Time.now) }
 
-          @user.update(block_start_at: Time.now)
-        end
-
-        example 'user attempts to comment on an idea', document: false do
+        example 'Blocked user attempts to comment on an idea', document: false do
           do_request
           expect(status).to be 401
         end
@@ -324,7 +318,7 @@ resource 'Comments' do
         describe do
           let(:parent_id) { create(:comment, post: @idea).id }
 
-          example 'user attempts to comment on a comment', document: false do
+          example 'Blocked user attempts to comment on a comment', document: false do
             do_request
             expect(status).to be 401
           end
@@ -424,13 +418,9 @@ resource 'Comments' do
         expect(@idea.reload.comments_count).to eq 1
       end
 
-      context 'when user is blocked' do
-        example 'user attempts to update a comment on an idea', document: false do
-          settings = AppConfiguration.instance.settings
-          settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
-          AppConfiguration.instance.update!(settings: settings)
+      include_context 'when user_blocking duration is 90 days' do
+        example 'Blocked user attempts to update a comment on an idea', document: false do
           @user.update(block_start_at: Time.now)
-
           do_request
           expect(status).to be 401
         end

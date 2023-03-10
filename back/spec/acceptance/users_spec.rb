@@ -469,20 +469,18 @@ resource 'Users' do
           expect(json_response[:data].pluck(:id)).to match_array [a.id, @user.id]
         end
 
-        example 'List all blocked users' do
-          blocked_users = create_list(:user, 2, block_start_at: 30.days.ago)
+        include_context 'when user_blocking duration is 90 days' do
+          example 'List all blocked users' do
+            blocked_users = create_list(:user, 2, block_start_at: 30.days.ago)
 
-          settings = AppConfiguration.instance.settings
-          settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
-          AppConfiguration.instance.update!(settings: settings)
+            do_request only_blocked: true
 
-          do_request only_blocked: true
-
-          expect(status).to eq 200
-          json_response = json_parse(response_body)
-          expect(User.count).to be > blocked_users.count # If unblocked users exist, then subsequent tests meaningful.
-          expect(json_response[:data].size).to eq 2
-          expect(json_response[:data].pluck(:id)).to match_array blocked_users.map(&:id)
+            expect(status).to eq 200
+            json_response = json_parse(response_body)
+            expect(User.count).to be > blocked_users.count # If unblocked users exist, then subsequent tests meaningful.
+            expect(json_response[:data].size).to eq 2
+            expect(json_response[:data].pluck(:id)).to match_array blocked_users.map(&:id)
+          end
         end
       end
 
@@ -580,13 +578,7 @@ resource 'Users' do
         end
       end
 
-      context 'when user blocking duration is set to 90 days' do
-        before do
-          settings = AppConfiguration.instance.settings
-          settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
-          AppConfiguration.instance.update!(settings: settings)
-        end
-
+      include_context 'when user_blocking duration is 90 days' do
         get 'web_api/v1/users/blocked_count' do
           example 'Get count of blocked users' do
             create_list(:user, 2, block_start_at: 30.days.ago)
@@ -608,7 +600,7 @@ resource 'Users' do
           let!(:user) { create(:user) }
           let!(:id) { user.id }
 
-          example 'block a user with an empty request' do
+          example 'Block a user using an empty request' do
             do_request
 
             expect(status).to eq 200
@@ -616,7 +608,7 @@ resource 'Users' do
             expect(json_response.dig(:data, :attributes, :blocked)).to be true
           end
 
-          example 'block a user with a null value for block_reason' do
+          example 'Block a user using a null value for block_reason' do
             do_request user: { block_reason: nil }
 
             expect(status).to eq 200
@@ -624,7 +616,7 @@ resource 'Users' do
             expect(json_response.dig(:data, :attributes, :blocked)).to be true
           end
 
-          example 'block a user and provide a reason' do
+          example 'Block a user and provide a reason' do
             do_request user: { block_reason: 'reason' }
 
             expect(status).to eq 200
@@ -869,13 +861,9 @@ resource 'Users' do
             end
           end
 
-          context 'when user is blocked' do
-            example 'user attempts to update her details', document: false do
-              settings = AppConfiguration.instance.settings
-              settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
-              AppConfiguration.instance.update!(settings: settings)
+          include_context 'when user_blocking duration is 90 days' do
+            example 'Blocked user attempts to update her details', document: false do
               @user.update(block_start_at: Time.now)
-
               do_request
               expect(status).to be 401
             end

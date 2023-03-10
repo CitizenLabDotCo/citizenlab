@@ -63,13 +63,9 @@ resource 'Votes' do
       expect(@idea.reload.upvotes_count).to eq 3
     end
 
-    context 'when user is blocked' do
-      example 'user attempts to create a vote on an idea', document: false do
-        settings = AppConfiguration.instance.settings
-        settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
-        AppConfiguration.instance.update!(settings: settings)
+    include_context 'when user_blocking duration is 90 days' do
+      example 'Blocked user attempts to create a vote on an idea', document: false do
         @user.update(block_start_at: Time.now)
-
         do_request
         expect(status).to be 401
       end
@@ -107,13 +103,9 @@ resource 'Votes' do
       expect(@idea.reload.downvotes_count).to eq 0
     end
 
-    context 'when user is blocked' do
-      example 'user attempts to upvote an idea', document: false do
-        settings = AppConfiguration.instance.settings
-        settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
-        AppConfiguration.instance.update!(settings: settings)
+    include_context 'when user_blocking duration is 90 days' do
+      example 'Blocked user attempts to upvote an idea', document: false do
         @user.update(block_start_at: Time.now)
-
         do_request
         expect(status).to be 401
       end
@@ -200,13 +192,9 @@ resource 'Votes' do
       expect(@idea.reload.downvotes_count).to eq 1
     end
 
-    context 'when user is blocked' do
-      example 'user attempts to downvote an idea', document: false do
-        settings = AppConfiguration.instance.settings
-        settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
-        AppConfiguration.instance.update!(settings: settings)
+    include_context 'when user_blocking duration is 90 days' do
+      example 'Blocked user attempts to downvote an idea', document: false do
         @user.update(block_start_at: Time.now)
-
         do_request
         expect(status).to be 401
       end
@@ -251,13 +239,9 @@ resource 'Votes' do
       expect { Vote.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
 
-    context 'when user is blocked' do
-      example 'user attempts to delete a vote on an idea', document: false do
-        settings = AppConfiguration.instance.settings
-        settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
-        AppConfiguration.instance.update!(settings: settings)
+    include_context 'when user_blocking duration is 90 days' do
+      example 'Blocked user attempts to delete a vote on an idea', document: false do
         @user.update(block_start_at: Time.now)
-
         do_request
         expect(status).to be 401
       end
