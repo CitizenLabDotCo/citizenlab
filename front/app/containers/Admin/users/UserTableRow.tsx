@@ -15,7 +15,7 @@ import Modal from 'components/UI/Modal';
 import SeatInfo from 'components/SeatInfo';
 
 // Translation
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // Events --- For error handling
@@ -48,7 +48,7 @@ interface Props {
   authUser: GetAuthUserChildProps;
 }
 
-const getStatusMessage = (user: IUserData) => {
+const getStatusMessage = (user: IUserData): MessageDescriptor => {
   const highestRole = user.attributes.highest_role;
   let statusMessage = messages.registeredUser;
   if (['admin', 'super_admin'].includes(highestRole)) {
@@ -65,7 +65,7 @@ const getInfoText = (
   isUserAdmin: boolean,
   maximumAdmins: number,
   currentAdminSeats: number
-) => {
+): MessageDescriptor => {
   if (isUserAdmin) {
     return messages.confirmNormalUserQuestion;
   }
@@ -85,7 +85,7 @@ const getButtonText = (
   isUserAdmin: boolean,
   maximumAdmins: number,
   currentAdminSeats: number
-) => {
+): MessageDescriptor => {
   let buttonText = messages.confirm;
 
   if (isUserAdmin) {
@@ -148,19 +148,13 @@ const UserTableRow = ({
   };
 
   const setAsAdminAction: IAction = {
-    handler: () => {
-      openModal();
-      // Show set as admin modal
-    },
+    handler: openModal,
     label: formatMessage(messages.setAsAdmin),
     icon: 'shield-checkered' as const,
   };
 
   const setAsNormalUserAction: IAction = {
-    handler: () => {
-      openModal();
-      // Show set as normal user modal
-    },
+    handler: openModal,
     label: formatMessage(messages.setAsNormalUser),
     icon: 'user-circle' as const,
   };
