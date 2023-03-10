@@ -33,32 +33,6 @@ export function lockedFieldsStream() {
   });
 }
 
-export async function signIn(
-  email: string,
-  password: string,
-  rememberMe = false,
-  tokenLifetime?: number
-) {
-  try {
-    const bodyData = { auth: { email, password, remember_me: rememberMe } };
-    const httpMethod: IHttpMethod = { method: 'POST' };
-    const { jwt } = await request<IUserToken>(
-      `${API_PATH}/user_token`,
-      bodyData,
-      httpMethod,
-      null
-    );
-    setJwt(jwt, rememberMe, tokenLifetime);
-    const authUser = await getAuthUserAsync();
-    await streams.reset();
-    await resetQueryCache();
-    return authUser;
-  } catch (error) {
-    signOut();
-    throw error;
-  }
-}
-
 export async function signUp(
   firstName: string,
   lastName: string,
@@ -149,21 +123,6 @@ export function signOutAndDeleteAccount() {
         });
     }
   });
-}
-
-export async function getAuthUserAsync() {
-  try {
-    const authenticatedUser = await request<IUser>(
-      authApiEndpoint,
-      null,
-      null,
-      null
-    );
-    return authenticatedUser;
-  } catch {
-    signOut();
-    throw new Error('not_authenticated');
-  }
 }
 
 export async function sendPasswordResetMail(email: string) {

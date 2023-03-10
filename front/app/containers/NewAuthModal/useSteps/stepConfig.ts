@@ -14,7 +14,6 @@ type Step =
 
 export const getStepConfig = (
   getRequirements: GetRequirements,
-  mutations: Mutations,
   setCurrentStep: (step: Step) => void,
   setStatus: (status: Status) => void,
   setError: (errorCode: ErrorCode) => void,

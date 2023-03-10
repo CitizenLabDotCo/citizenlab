@@ -1,13 +1,23 @@
 import { API_PATH } from 'containers/App/constants';
 import { Locale } from 'typings';
 
-const path = `${API_PATH}/users`;
+const createAccountPath = `${API_PATH}/users`;
+const userTokenPath = `${API_PATH}/user_token`;
 
-export default async function createEmailOnlyAccount(
-  email: string,
-  locale: Locale
-) {
-  return await fetch(path, {
+const accountCreatedSuccessfully = (response: Response) => {
+  return response.status === 200 || response.status === 201;
+};
+
+interface Parameters {
+  email: string;
+  locale: Locale;
+}
+
+export default async function createEmailOnlyAccount({
+  email,
+  locale,
+}: Parameters) {
+  const response = await fetch(createAccountPath, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -16,4 +26,8 @@ export default async function createEmailOnlyAccount(
       user: { email, locale },
     }),
   });
+
+  if (accountCreatedSuccessfully(response)) {
+    const response = await fetch(userTokenPath);
+  }
 }
