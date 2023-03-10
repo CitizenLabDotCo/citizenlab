@@ -8,8 +8,8 @@ const accountCreatedSuccessfully = (response: Response) => {
   return response.status === 200 || response.status === 201;
 };
 
-const emailIsTaken = async (response: Response) => {
-  const json = await response.json();
+const emailIsTaken = async (_response: Response) => {
+  // const json = await response.json();
   // return json. // TODO: figure out structure of this object
   return true;
 };
