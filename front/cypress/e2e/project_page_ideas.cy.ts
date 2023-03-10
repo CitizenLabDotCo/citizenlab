@@ -36,6 +36,15 @@ describe('Existing continuous ideation project', () => {
     cy.get('.e2e-idea-card');
   });
 
+  it('shows the corrent sorting options', () => {
+    cy.get('.e2e-filter-selector-button').first().click();
+    cy.get('#e2e-item-random').should('exist');
+    cy.get('#e2e-item-new').should('exist');
+    cy.get('#e2e-item--new').should('exist');
+    cy.get('#e2e-item-trending').should('exist');
+    cy.get('#e2e-item-popular').should('exist');
+  });
+
   it('asks unauthorised users to log in or sign up before they vote', () => {
     cy.get('#e2e-ideas-container')
       .find('.e2e-idea-card')

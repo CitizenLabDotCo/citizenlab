@@ -21,6 +21,15 @@ describe('Continuous PB project', () => {
   it('shows the idea cards', () => {
     cy.get('#e2e-continuos-project-idea-cards');
   });
+
+  it('shows the corrent sorting options', () => {
+    cy.get('.e2e-filter-selector-button').first().click();
+    cy.get('#e2e-item-random').should('exist');
+    cy.get('#e2e-item-new').should('exist');
+    cy.get('#e2e-item--new').should('exist');
+    cy.get('#e2e-item-trending').should('not.exist');
+    cy.get('#e2e-item-popular').should('not.exist');
+  });
 });
 
 describe('Budgeting CTA bar', () => {
