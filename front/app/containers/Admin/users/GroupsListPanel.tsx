@@ -214,7 +214,7 @@ export class GroupsListPanel extends React.PureComponent<Props, State> {
           </GroupName>
           <MembersCount>{usercount.count}</MembersCount>
         </MenuLink>
-        <MenuLink to="/admin/users/administrators_and_managers">
+        <MenuLink to="/admin/users/admins_and_managers">
           <GroupName>
             <FormattedMessage {...messages.adminsAndManagers} />
           </GroupName>

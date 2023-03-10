@@ -22,7 +22,7 @@ const createAdminUsersRoutes = () => ({
       ),
     },
     {
-      path: 'administrators_and_managers',
+      path: 'admins_and_managers',
       element: (
         <PageLoading>
           <AdminAdminsAndManagers />
