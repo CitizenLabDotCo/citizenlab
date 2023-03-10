@@ -126,7 +126,7 @@ resource 'Votes' do
       end
     end
 
-    describe 'when voting idea is allowed by moderators/admins', skip: !CitizenLab.ee? do
+    describe 'when voting idea is allowed by moderators/admins' do
       before do
         PermissionsService.new.update_all_permissions
         project = @idea.project

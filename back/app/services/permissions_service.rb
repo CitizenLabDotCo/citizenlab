@@ -45,7 +45,7 @@ class PermissionsService
 
   def denied_reason_for_permission(permission, user)
     if permission.permitted_by == 'everyone_confirmed_email'
-      new_denied_reason permission, user
+      denied_reason permission, user
     else
       old_denied_reason permission, user
     end
@@ -101,7 +101,7 @@ class PermissionsService
     DENIED_REASONS[reason]
   end
 
-  def new_denied_reason(permission, user)
+  def denied_reason(permission, user)
     if permission.permitted_by == 'everyone'
       user ||= User.new
     elsif !user
@@ -144,7 +144,7 @@ class PermissionsService
         users[:built_in][:email] = 'require'
         required_field_keys = CustomField.registration.required.map(&:key)
         users[:custom_fields].each_key do |key|
-          users[:custom_fields][key] = 'require' if required_field_keys.include? key
+          users[:custom_fields][key] = required_field_keys.include? key ? 'require' : 'ask'
         end
         users[:special][:password] = 'require'
         users[:special][:confirmation] = 'require' if AppConfiguration.instance.feature_activated?('user_confirmation')
