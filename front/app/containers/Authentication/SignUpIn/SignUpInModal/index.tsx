@@ -1,6 +1,8 @@
 import React, { memo, useState, useEffect, useCallback } from 'react';
-import { signOut } from 'services/auth';
 import tracks from './tracks';
+
+// api
+import signOut from 'api/authentication/signOut';
 
 // components
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';

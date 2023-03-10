@@ -4,6 +4,9 @@ import React, { useMemo } from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
+// hooks
+import useLocale from 'hooks/useLocale';
+
 // i18n
 import { useIntl } from 'utils/cl-intl';
 import sharedMessages from '../messages';
@@ -15,14 +18,18 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { string, object } from 'yup';
 import Input from 'components/HookForm/Input';
 
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+
 // typings
 import { Status, ErrorCode } from '../../typings';
 import { SSOProvider } from 'services/singleSignOn';
+import { Locale } from 'typings';
 
 interface Props {
   status: Status;
   error: ErrorCode | null;
-  onSubmit: (email: string) => void;
+  onSubmit: (email: string, locale: Locale) => void;
   onSwitchToSSO: (ssoProvider: SSOProvider) => void;
 }
 
@@ -36,6 +43,8 @@ const DEFAULT_VALUES: Partial<FormValues> = {
 
 const EmailSignUp = ({ status, onSubmit }: Props) => {
   const { formatMessage } = useIntl();
+  const locale = useLocale();
+
   const loading = status === 'pending';
 
   const schema = useMemo(
@@ -54,8 +63,10 @@ const EmailSignUp = ({ status, onSubmit }: Props) => {
     resolver: yupResolver(schema),
   });
 
+  if (isNilOrError(locale)) return null;
+
   const handleSubmit = ({ email }: FormValues) => {
-    onSubmit(email);
+    onSubmit(email, locale);
   };
 
   return (
