@@ -21,7 +21,7 @@ module GranularPermissions
             descriptors[:comment_voting_initiative] = descriptors[:commenting_initiative]
             descriptors[:cancelling_initiative_votes] = descriptors[:voting_initiative]
 
-            render(json: descriptors)
+            render(json: raw_json(descriptors))
           end
         end
       end

@@ -7,13 +7,14 @@ import moment from 'moment';
 import clHistory from 'utils/cl-router/history';
 
 // Components
-import { Tr, Td, Toggle, Box } from '@citizenlab/cl2-component-library';
+import { Tr, Td, Box } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
 import Checkbox from 'components/UI/Checkbox';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
+import ChangeSeatModal from './ChangeSeatModal';
 
 // Translation
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // Events --- For error handling
@@ -42,6 +43,19 @@ interface Props {
   authUser: GetAuthUserChildProps;
 }
 
+const getStatusMessage = (user: IUserData): MessageDescriptor => {
+  const highestRole = user.attributes.highest_role;
+  const roleMessage = {
+    admin: messages.platformAdmin,
+    super_admin: messages.platformAdmin,
+    project_folder_moderator: messages.folderAdmin,
+    project_moderator: messages.projectManager,
+    user: messages.registeredUser,
+  };
+
+  return roleMessage[highestRole];
+};
+
 const UserTableRow = ({
   user,
   selected,
@@ -54,6 +68,13 @@ const UserTableRow = ({
   const [registeredAt, setRegisteredAt] = useState(
     moment(user.attributes.registration_completed_at).format('LL')
   );
+  const [showModal, setShowModal] = useState(false);
+  const closeModal = () => {
+    setShowModal(false);
+  };
+  const openModal = () => {
+    setShowModal(true);
+  };
 
   useEffect(() => {
     setUserIsAdmin(isAdmin({ data: user }));
@@ -82,6 +103,18 @@ const UserTableRow = ({
     }
   };
 
+  const setAsAdminAction: IAction = {
+    handler: openModal,
+    label: formatMessage(messages.setAsAdmin),
+    icon: 'shield-checkered' as const,
+  };
+
+  const setAsNormalUserAction: IAction = {
+    handler: openModal,
+    label: formatMessage(messages.setAsNormalUser),
+    icon: 'user-circle' as const,
+  };
+
   const actions: IAction[] = [
     {
       handler: () => {
@@ -90,6 +123,7 @@ const UserTableRow = ({
       label: formatMessage(messages.seeProfile),
       icon: 'eye' as const,
     },
+    ...(isUserAdmin ? [setAsNormalUserAction] : [setAsAdminAction]),
     {
       handler: () => {
         handleDeleteClick();
@@ -98,6 +132,8 @@ const UserTableRow = ({
       icon: 'delete' as const,
     },
   ];
+
+  const statusMessage = getStatusMessage(user);
 
   return (
     <Tr
@@ -135,11 +171,19 @@ const UserTableRow = ({
         )}
       </RegisteredAt>
       <Td>
-        <Toggle checked={isUserAdmin} onChange={toggleAdmin} />
+        <FormattedMessage {...statusMessage} />
       </Td>
       <Td>
         <MoreActionsMenu showLabel={false} actions={actions} />
       </Td>
+
+      <ChangeSeatModal
+        user={user}
+        isUserAdmin={isUserAdmin}
+        toggleAdmin={toggleAdmin}
+        showModal={showModal}
+        closeModal={closeModal}
+      />
     </Tr>
   );
 };

@@ -187,7 +187,7 @@ class WebApi::V1::UsersController < ::ApplicationController
   end
 
   def initiatives_count
-    render json: { count: policy_scope(@user.initiatives.published).count }, status: :ok
+    render json: raw_json({ count: policy_scope(@user.initiatives.published).count }), status: :ok
   end
 
   def comments_count

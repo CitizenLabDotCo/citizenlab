@@ -344,7 +344,6 @@
   "app.containers.Admin.Insights.supportLinkUrl": "https://support.citizenlab.co/articles/5525933",
   "app.containers.Admin.Insights.title": "Uvidi",
   "app.containers.Admin.Invitations.addToGroupLabel": "Dodajte ove osobe u željene manualne grupe korisnika",
-  "app.containers.Admin.Invitations.adminLabel": "Ovlastite ove osobe da budu administratori",
   "app.containers.Admin.Invitations.adminLabelTooltip": "Kada odaberete ovu opciju, osobe koje ste pozvali će imati pristup svim podešavanjima vaše platforme.",
   "app.containers.Admin.Invitations.configureInvitations": "3. Podesite pozivnice",
   "app.containers.Admin.Invitations.confirmDelete": "Da, želim ovo",

@@ -261,16 +261,4 @@ export function votesByProjectStream(
     ...streamParams,
   });
 }
-
-export interface IInitiativesCount {
-  count: number;
-}
-
-export function initiativesCount(streamParams: IStreamParams | null = null) {
-  return streams.get<IInitiativesCount>({
-    apiEndpoint: `${apiEndpoint}/initiatives_count`,
-    ...streamParams,
-  });
-}
-
 // -----

@@ -38,6 +38,8 @@ export const getAppConfigurationData = (
         segment_destinations_blacklist: null,
         reply_to_email: 'not-support@citizenlab.co',
         authentication_token_lifetime_in_days: 30,
+        maximum_admins_number: 12,
+        maximum_project_moderators_number: 14,
       },
       advanced_custom_pages: {
         allowed: true,

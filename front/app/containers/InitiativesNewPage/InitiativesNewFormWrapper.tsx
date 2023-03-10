@@ -1,5 +1,4 @@
-import React from 'react';
-import { adopt } from 'react-adopt';
+import React, { useState, useEffect } from 'react';
 
 // components
 import InitiativeForm, {
@@ -7,14 +6,8 @@ import InitiativeForm, {
   SimpleFormValues,
 } from 'components/InitiativeForm';
 
-// services
 import { Locale, Multiloc, UploadFile } from 'typings';
-import {
-  addInitiative,
-  updateInitiative,
-  IInitiativeData,
-  IInitiativeAdd,
-} from 'services/initiatives';
+
 import { ITopicData } from 'services/topics';
 
 // utils
@@ -29,25 +22,22 @@ import styled from 'styled-components';
 import { geocode } from 'utils/locationTools';
 import { isEqual, pick, get, omitBy, isEmpty, debounce } from 'lodash-es';
 import { Point } from 'geojson';
-import {
-  addInitiativeImage,
-  deleteInitiativeImage,
-} from 'services/initiativeImages';
-import {
-  deleteInitiativeFile,
-  addInitiativeFile,
-} from 'services/initiativeFiles';
+
 import { reportError } from 'utils/loggingUtils';
 
 // tracks
 import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
 
-// resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
+import useAddInitiative from 'api/initiatives/useAddInitiative';
+import { IInitiativeAdd } from 'api/initiatives/types';
+import useAddInitiativeImage from 'api/initiative_images/useAddInitiativeImage';
+import useDeleteInitiativeImage from 'api/initiative_images/useDeleteInitiativeImage';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAuthUser from 'hooks/useAuthUser';
+import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
+import useAddInitiativeFile from 'api/initiative_files/useAddInitiativeFile';
+import useDeleteInitiativeFile from 'api/initiative_files/useDeleteInitiativeFile';
 
 const StyledInitiativeForm = styled(InitiativeForm)`
   width: 100%;
@@ -58,84 +48,66 @@ const StyledInitiativeForm = styled(InitiativeForm)`
   `}
 `;
 
-interface InputProps {
+interface Props {
   locale: Locale;
-  location_description?: string;
-  location_point_geojson?: Point;
   topics: ITopicData[];
+  location_description?: string;
 }
 
-interface DataProps {
-  authUser: GetAuthUserChildProps;
-  appConfiguration: GetAppConfigurationChildProps;
-}
+const InitiativesNewFormWrapper = ({
+  topics,
+  locale,
+  location_description,
+}: Props) => {
+  const { data: appConfiguration } = useAppConfiguration();
+  const { mutate: addInitiative } = useAddInitiative();
+  const authUser = useAuthUser();
+  const { mutate: addInitiativeImage, isLoading: isAdding } =
+    useAddInitiativeImage();
+  const { mutate: deleteInitiativeImage } = useDeleteInitiativeImage();
+  const { mutate: addInitiativeFile } = useAddInitiativeFile();
+  const { mutate: deleteInitiativeFile } = useDeleteInitiativeFile();
+  const { mutate: updateInitiative, isLoading: isUpdating } =
+    useUpdateInitiative();
 
-interface Props extends InputProps, DataProps {}
-
-interface State extends FormValues {
-  initiativeId: string | null;
-  saving: boolean;
-  publishing: boolean;
-  hasBannerChanged: boolean;
-  hasImageChanged: boolean;
-  imageId: string | null;
-  publishError: boolean;
-  apiErrors: any;
-  location_point_geojson?: Point;
-  titleProfanityError: boolean;
-  descriptionProfanityError: boolean;
-}
-
-export class InitiativesNewFormWrapper extends React.PureComponent<
-  Props,
-  State
-> {
-  initialValues: SimpleFormValues;
-  constructor(props: Props) {
-    super(props);
-    // These are the properties that really get matched against back-end before re-send
-    // the rest of formvalues (image, banner, files) get sent on each change.
-    this.initialValues = {
-      title_multiloc: undefined,
-      body_multiloc: undefined,
-      topic_ids: [],
-      position: undefined,
-    };
-
-    this.state = {
-      ...this.initialValues,
-      initiativeId: null,
-      saving: false,
-      publishing: false,
-      hasBannerChanged: false,
-      hasImageChanged: false,
-      imageId: null,
-      banner: undefined,
-      image: undefined,
-      files: [],
-      publishError: false,
-      apiErrors: null,
-      position: props.location_description,
-      location_point_geojson: props.location_point_geojson,
-      titleProfanityError: false,
-      descriptionProfanityError: false,
-    };
-  }
-
-  componentDidMount() {
-    addInitiative({ publication_status: 'draft' }).then((initiative) => {
-      this.setState({ initiativeId: initiative.data.id });
-    });
-  }
-
-  changedValues = () => {
-    const changedKeys = Object.keys(this.initialValues).filter((key) => {
-      return !isEqual(this.initialValues[key], this.state[key]);
-    });
-    return pick(this.state, changedKeys);
+  const initialValues = {
+    title_multiloc: undefined,
+    body_multiloc: undefined,
+    topic_ids: [],
+    position: location_description,
   };
 
-  async parsePosition(position: string | undefined | null) {
+  const [formValues, setFormValues] = useState<SimpleFormValues>(initialValues);
+  const [image, setImage] = useState<UploadFile | null>(null);
+  const [imageId, setImageId] = useState<string | null>(null);
+  const [hasBannerChanged, setHasBannerChanged] = useState<boolean>(false);
+  const [banner, setBanner] = useState<UploadFile | null>(null);
+  const [files, setFiles] = useState<UploadFile[]>([]);
+  const [publishError, setPublishError] = useState<boolean>(false);
+  const [apiErrors, setApiErrors] = useState<any>(null);
+  const [titleProfanityError, setTitleProfanityError] =
+    useState<boolean>(false);
+  const [descriptionProfanityError, setDescriptionProfanityError] =
+    useState<boolean>(false);
+  const [initiativeId, setInitiativeId] = useState<string | null>(null);
+  const [saving, setSaving] = useState<boolean>(false);
+  const [hasImageChanged, setHasImageChanged] = useState<boolean>(false);
+
+  useEffect(() => {
+    addInitiative(
+      { publication_status: 'draft' },
+      { onSuccess: (initiative) => setInitiativeId(initiative.data.id) }
+    );
+  }, [addInitiative]);
+
+  const getChangedValues = () => {
+    const changedKeys = Object.keys(initialValues).filter((key) => {
+      return !isEqual(initialValues[key], formValues[key]);
+    });
+    return pick(formValues, changedKeys);
+  };
+
+  const parsePosition = async (position: string | undefined | null) => {
     let location_point_geojson: Point | null | undefined;
     let location_description: string | null | undefined;
     switch (position) {
@@ -156,28 +128,18 @@ export class InitiativesNewFormWrapper extends React.PureComponent<
         break;
     }
     return { location_point_geojson, location_description };
-  }
+  };
 
-  async getValuesToSend(
+  const getValuesToSend = async (
     changedValues: Partial<FormValues>,
     hasBannerChanged: boolean,
     banner: UploadFile | undefined | null
-  ) {
+  ) => {
+    // build API readable object
     const { title_multiloc, body_multiloc, topic_ids, position } =
       changedValues;
-    const { location_point_geojson } = this.state;
 
-    let positionInfo;
-
-    if (location_point_geojson) {
-      positionInfo = {
-        location_point_geojson,
-        location_description: position,
-      };
-    } else {
-      positionInfo = await this.parsePosition(position);
-    }
-
+    const positionInfo = await parsePosition(position ?? location_description);
     // removes undefined values, not null values that are used to remove previously used values
     const formAPIValues = omitBy(
       {
@@ -193,18 +155,10 @@ export class InitiativesNewFormWrapper extends React.PureComponent<
       formAPIValues.header_bg = banner ? banner.base64 : null;
     }
     return formAPIValues as Partial<IInitiativeAdd>;
-  }
+  };
 
-  handleSave = async () => {
-    const changedValues = this.changedValues();
-    const {
-      initiativeId,
-      hasBannerChanged,
-      hasImageChanged,
-      image,
-      banner,
-      saving,
-    } = this.state;
+  const handleSave = async () => {
+    const changedValues = getChangedValues();
     // if nothing has changed, do noting.
     if (isEmpty(changedValues) && !hasBannerChanged && !hasImageChanged) return;
 
@@ -212,141 +166,155 @@ export class InitiativesNewFormWrapper extends React.PureComponent<
     if (saving) return;
 
     // setting flags for user feedback and avoiding double sends.
-    this.setState({ saving: true });
+
+    setSaving(true);
 
     try {
-      const formAPIValues = await this.getValuesToSend(
+      const formAPIValues = await getValuesToSend(
         changedValues,
         hasBannerChanged,
         banner
       );
       // save any changes to the initiative data.
       if (!isEmpty(formAPIValues)) {
-        let initiative;
-
         if (initiativeId) {
-          initiative = await updateInitiative(initiativeId, formAPIValues);
-        } else {
-          initiative = await addInitiative({
-            ...formAPIValues,
-            publication_status: 'draft',
+          updateInitiative({
+            initiativeId,
+            requestBody: formAPIValues,
           });
-          this.setState({ initiativeId: initiative.data.id });
+        } else {
+          addInitiative(
+            {
+              ...formAPIValues,
+              publication_status: 'draft',
+            },
+            { onSuccess: (initiative) => setInitiativeId(initiative.data.id) }
+          );
         }
         // feed back what was saved to the api into the initialValues object
         // so that we can determine with certainty what has changed since last
         // successful save.
-        this.initialValues = this.getFormValues(initiative.data);
-        this.setState({ hasBannerChanged: false });
+
+        setHasBannerChanged(false);
       }
 
       // save any changes to initiative image.
       if (hasImageChanged && initiativeId) {
         if (image && image.base64) {
-          const imageRemote = await addInitiativeImage(
-            initiativeId,
-            image.base64
+          addInitiativeImage(
+            {
+              initiativeId,
+              image: { image: image.base64 },
+            },
+            {
+              onSuccess: (data) => {
+                setImageId(data.data.id);
+              },
+            }
           );
-          // save image id in case we need to remove it later.
-          this.setState({ imageId: imageRemote.data.id });
-        } else if (!image && this.state.imageId) {
-          deleteInitiativeImage(initiativeId, this.state.imageId);
-          this.setState({ imageId: null });
+        } else if (!image && imageId) {
+          deleteInitiativeImage(
+            { initiativeId, imageId },
+            {
+              onSuccess: () => {
+                setImageId(null);
+              },
+            }
+          );
         } else {
           // Image saving mechanism works on the hypothesis that any defined
           // image will have a base64 key, and when you need to remove an image
           // it was previously saved. If not, let's report it so it gets fixed.
           reportError('There was an error with an initiative image');
         }
-        this.setState({ hasImageChanged: false });
+
+        setHasImageChanged(false);
       }
-      this.setState({ saving: false });
+      setSaving(false);
     } catch (errorResponse) {
       // saving changes while working should have a minimal error feedback,
       // maybe in the saving indicator, since it's error-resistant, ie what wasn't
       // saved this time will be next time user leaves a field, or on publish call.
-      this.setState({ saving: false });
+      setSaving(false);
     }
   };
 
-  debouncedSave = debounce(this.handleSave, 500);
+  const debouncedSave = debounce(handleSave, 500);
 
-  handlePublish = async () => {
-    const changedValues = this.changedValues();
-    const {
-      initiativeId,
-      hasBannerChanged,
-      hasImageChanged,
-      image,
-      banner,
-      publishing,
-    } = this.state;
-    const { locale, appConfiguration, authUser } = this.props;
-
-    // if we're already saving, do nothing.
-    if (publishing) return;
-
-    // setting flags for user feedback and avoiding double sends.
-    this.setState({ publishing: true });
+  const handlePublish = async () => {
+    const changedValues = getChangedValues();
 
     try {
-      const formAPIValues = await this.getValuesToSend(
+      const formAPIValues = await getValuesToSend(
         changedValues,
         hasBannerChanged,
         banner
       );
-      let initiative;
 
       // save any changes to the initiative data.
       if (initiativeId) {
-        initiative = await updateInitiative(initiativeId, {
-          ...formAPIValues,
-          publication_status: 'published',
-        });
+        updateInitiative(
+          {
+            initiativeId,
+            requestBody: {
+              ...formAPIValues,
+              publication_status: 'published',
+            },
+          },
+          {
+            onSuccess: (initiative) => {
+              clHistory.push({
+                pathname: `/initiatives/${initiative.data.attributes.slug}`,
+                search: `?new_initiative_id=${initiative.data.id}`,
+              });
+            },
+          }
+        );
       } else {
-        initiative = await addInitiative({
-          ...formAPIValues,
-          publication_status: 'published',
-        });
-
-        this.setState({ initiativeId: initiative.data.id });
+        addInitiative(
+          {
+            ...formAPIValues,
+            publication_status: 'published',
+          },
+          { onSuccess: (initiative) => setInitiativeId(initiative.data.id) }
+        );
       }
-      // feed back what was saved to the api into the initialValues object
-      // so that we can determine with certainty what has changed since last
-      // successful save.
-      this.initialValues = this.getFormValues(initiative.data);
-      this.setState({ hasBannerChanged: false });
 
+      setHasBannerChanged(false);
       // save any changes to initiative image.
       if (hasImageChanged && initiativeId) {
         if (image && image.base64) {
-          const imageRemote = await addInitiativeImage(
-            initiativeId,
-            image.base64
+          addInitiativeImage(
+            {
+              initiativeId,
+              image: { image: image.base64 },
+            },
+            {
+              onSuccess: (data) => {
+                setImageId(data.data.id);
+              },
+            }
           );
-          // save image id in case we need to remove it later.
-          this.setState({ imageId: imageRemote.data.id });
+
           // remove image from remote if it was saved
-        } else if (!image && this.state.imageId) {
-          deleteInitiativeImage(initiativeId, this.state.imageId).then(() => {
-            this.setState({ imageId: null });
-          });
+        } else if (!image && imageId) {
+          deleteInitiativeImage(
+            { initiativeId, imageId },
+            {
+              onSuccess: () => {
+                setImageId(null);
+              },
+            }
+          );
         } else if (image) {
           // Image saving mechanism works on the hypothesis that any defined
           // image will have a base64 key, if not, something wrong has happened.
           reportError('Unexpected state of initiative image');
         }
-        this.setState({ hasImageChanged: false });
+
+        setHasImageChanged(false);
       }
-      this.setState({ publishing: false });
-
-      clHistory.push({
-        pathname: `/initiatives/${initiative.data.attributes.slug}`,
-        search: `?new_initiative_id=${initiative.data.id}`,
-      });
     } catch (errorResponse) {
-      this.setState({ publishing: false });
-
       const apiErrors = get(errorResponse, 'json.errors');
 
       const profanityApiError = apiErrors.base.find(
@@ -369,13 +337,11 @@ export class InitiativesNewFormWrapper extends React.PureComponent<
             location: 'InitiativesNewFormWrapper (citizen side)',
             userId: !isNilOrError(authUser) ? authUser.id : null,
             host: !isNilOrError(appConfiguration)
-              ? appConfiguration.attributes.host
+              ? appConfiguration.data.attributes.host
               : null,
           });
 
-          this.setState({
-            titleProfanityError,
-          });
+          setTitleProfanityError(titleProfanityError);
         }
 
         if (descriptionProfanityError) {
@@ -386,148 +352,140 @@ export class InitiativesNewFormWrapper extends React.PureComponent<
             location: 'InitiativesNewFormWrapper (citizen side)',
             userId: !isNilOrError(authUser) ? authUser.id : null,
             host: !isNilOrError(appConfiguration)
-              ? appConfiguration.attributes.host
+              ? appConfiguration.data.attributes.host
               : null,
           });
-          this.setState({
-            descriptionProfanityError,
-          });
+
+          setDescriptionProfanityError(descriptionProfanityError);
         }
       }
 
-      this.setState((state) => ({
-        apiErrors: { ...state.apiErrors, ...apiErrors },
-        publishError: true,
+      setApiErrors((oldApiErrors) => ({
+        ...oldApiErrors,
+        ...apiErrors,
       }));
+      setPublishError(true);
     }
   };
 
-  onChangeTitle = (title_multiloc: Multiloc) => {
-    this.setState({ title_multiloc, titleProfanityError: false });
+  const onChangeTitle = (title_multiloc: Multiloc) => {
+    setFormValues((formValues) => ({
+      ...formValues,
+      title_multiloc,
+    }));
+    setTitleProfanityError(false);
   };
 
-  onChangeBody = (body_multiloc: Multiloc) => {
-    this.setState({ body_multiloc, descriptionProfanityError: false });
+  const onChangeBody = (body_multiloc: Multiloc) => {
+    setFormValues((formValues) => ({
+      ...formValues,
+      body_multiloc,
+    }));
+    setDescriptionProfanityError(false);
   };
 
-  onChangeTopics = (topic_ids: string[]) => {
-    this.setState({ topic_ids });
+  const onChangeTopics = (topic_ids: string[]) => {
+    setFormValues((formValues) => ({
+      ...formValues,
+      topic_ids,
+    }));
   };
 
-  onChangePosition = (position: string) => {
-    this.setState({ position, location_point_geojson: undefined });
+  const onChangePosition = (position: string) => {
+    setFormValues((formValues) => ({
+      ...formValues,
+      position,
+    }));
   };
 
-  onChangeBanner = (newValue: UploadFile | null) => {
-    this.setState({ banner: newValue, hasBannerChanged: true });
+  const onChangeBanner = (newValue: UploadFile | null) => {
+    setBanner(newValue);
+    setHasBannerChanged(true);
   };
 
-  onChangeImage = (newValue: UploadFile | null) => {
-    this.setState({ image: newValue, hasImageChanged: true });
+  const onChangeImage = (newValue: UploadFile | null) => {
+    if (newValue) {
+      setImage(newValue);
+      setHasImageChanged(true);
+    }
   };
 
-  onAddFile = (file: UploadFile) => {
-    const { initiativeId } = this.state;
+  const onAddFile = (file: UploadFile) => {
     if (initiativeId) {
-      this.setState({ saving: true });
-      addInitiativeFile(initiativeId, file.base64, file.name)
-        .then((res) => {
-          file.id = res.data.id;
-          this.setState(({ files }) => ({
-            files: [...files, file],
-            saving: false,
-          }));
-        })
-        .catch((errorResponse) => {
-          const apiErrors = get(errorResponse, 'json.errors');
-          this.setState((state) => ({
-            apiErrors: { ...state.apiErrors, ...apiErrors },
-            saving: false,
-          }));
-          setTimeout(() => {
-            this.setState((state) => ({
-              apiErrors: { ...state.apiErrors, file: undefined },
+      setSaving(true);
+
+      addInitiativeFile(
+        {
+          initiativeId,
+          file: { file: file.base64, name: file.name },
+        },
+        {
+          onSuccess: () => {
+            setSaving(false);
+            setFiles((files) => [...files, file]);
+          },
+          onError: (errorResponse) => {
+            const apiErrors = get(errorResponse, 'json.errors');
+
+            setSaving(false);
+            setApiErrors((oldApiErrors) => ({
+              ...oldApiErrors,
+              ...apiErrors,
             }));
-          }, 5000);
-        });
-    }
-  };
-
-  onRemoveFile = (fileToRemove: UploadFile) => {
-    const { initiativeId } = this.state;
-
-    if (initiativeId && fileToRemove.id) {
-      this.setState({ saving: true });
-      deleteInitiativeFile(initiativeId, fileToRemove.id).then(() =>
-        this.setState(({ files }) => ({
-          files: files.filter((file) => file.base64 !== fileToRemove.base64),
-          saving: false,
-        }))
+            setTimeout(() => {
+              setApiErrors((oldApiErrors) => ({
+                ...oldApiErrors,
+                file: undefined,
+              }));
+            }, 5000);
+          },
+        }
       );
     }
   };
 
-  getFormValues(initiative: IInitiativeData) {
-    if (isNilOrError(initiative)) {
-      return this.initialValues;
-    } else {
-      return {
-        title_multiloc:
-          get(initiative, 'attributes.title_multiloc', undefined) || undefined,
-        body_multiloc:
-          get(initiative, 'attributes.body_multiloc', undefined) || undefined,
-        topic_ids: get(initiative, 'relationships.topics.data', []).map(
-          (topic) => topic.id
-        ),
-        position:
-          get(initiative, 'attributes.location_description', undefined) ||
-          undefined,
-      };
+  const onRemoveFile = (fileToRemove: UploadFile) => {
+    if (initiativeId && fileToRemove.id) {
+      setSaving(true);
+      deleteInitiativeFile(
+        { initiativeId, fileId: fileToRemove.id },
+        {
+          onSuccess: () => {
+            setSaving(false);
+            setFiles((files) =>
+              [...files].filter((file) => file.base64 !== fileToRemove.base64)
+            );
+          },
+        }
+      );
     }
-  }
+  };
 
-  render() {
-    const {
-      initiativeId: _initiativeId,
-      hasBannerChanged: _hasBannerChanged,
-      hasImageChanged: _hasImageChanged,
-      titleProfanityError,
-      descriptionProfanityError,
-      ...otherProps
-    } = this.state;
-    const { locale, topics } = this.props;
+  return (
+    <StyledInitiativeForm
+      onPublish={handlePublish}
+      onSave={debouncedSave}
+      locale={locale}
+      {...formValues}
+      image={image}
+      banner={banner}
+      files={files}
+      apiErrors={apiErrors}
+      publishError={publishError}
+      publishing={isAdding && isUpdating}
+      onChangeTitle={onChangeTitle}
+      onChangeBody={onChangeBody}
+      onChangeTopics={onChangeTopics}
+      onChangePosition={onChangePosition}
+      onChangeBanner={onChangeBanner}
+      onChangeImage={onChangeImage}
+      onAddFile={onAddFile}
+      onRemoveFile={onRemoveFile}
+      topics={topics}
+      titleProfanityError={titleProfanityError}
+      descriptionProfanityError={descriptionProfanityError}
+    />
+  );
+};
 
-    return (
-      <StyledInitiativeForm
-        onPublish={this.handlePublish}
-        onSave={this.debouncedSave}
-        locale={locale}
-        {...otherProps}
-        onChangeTitle={this.onChangeTitle}
-        onChangeBody={this.onChangeBody}
-        onChangeTopics={this.onChangeTopics}
-        onChangePosition={this.onChangePosition}
-        onChangeBanner={this.onChangeBanner}
-        onChangeImage={this.onChangeImage}
-        onAddFile={this.onAddFile}
-        onRemoveFile={this.onRemoveFile}
-        topics={topics}
-        titleProfanityError={titleProfanityError}
-        descriptionProfanityError={descriptionProfanityError}
-      />
-    );
-  }
-}
-
-const Data = adopt<DataProps, InputProps>({
-  appConfiguration: <GetAppConfiguration />,
-  authUser: <GetAuthUser />,
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => (
-      <InitiativesNewFormWrapper {...inputProps} {...dataProps} />
-    )}
-  </Data>
-);
+export default InitiativesNewFormWrapper;

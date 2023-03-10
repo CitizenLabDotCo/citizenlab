@@ -340,7 +340,6 @@
   "app.containers.Admin.Insights.supportLinkUrl": "https://support.citizenlab.co/articles/5525933",
   "app.containers.Admin.Insights.title": "Insights",
   "app.containers.Admin.Invitations.addToGroupLabel": "Προσθέστε αυτά τα άτομα σε συγκεκριμένες μη αυτόματες ομάδες χρηστών",
-  "app.containers.Admin.Invitations.adminLabel": "Δώστε στα άτομα αυτά δικαιώματα διαχειριστή",
   "app.containers.Admin.Invitations.adminLabelTooltip": "Όταν επιλέγετε αυτή την επιλογή, τα άτομα που προσκαλείτε θα έχουν πρόσβαση σε όλες τις ρυθμίσεις της πλατφόρμας σας.",
   "app.containers.Admin.Invitations.configureInvitations": "3. Διαμόρφωση των προσκλήσεων",
   "app.containers.Admin.Invitations.confirmDelete": "Ναι, είμαι σίγουρος",
