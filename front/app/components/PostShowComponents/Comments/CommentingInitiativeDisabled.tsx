@@ -53,6 +53,8 @@ class CommentingInitiativesDisabled extends PureComponent<Props> {
       return messages.commentingInitiativeNotPermitted;
     } else if (commetingPermissions?.action === 'verify') {
       return messages.commentingDisabledUnverified;
+    } else if (authUser && commetingPermissions?.action === 'sign_in_up') {
+      return messages.completeRegistrationToComment;
     } else if (commetingPermissions?.action === 'sign_in_up') {
       return messages.signInToCommentInitiative;
     } else if (commetingPermissions?.action === 'sign_in_up_and_verify') {
@@ -117,6 +119,17 @@ class CommentingInitiativesDisabled extends PureComponent<Props> {
                 signInLink: (
                   <button onClick={this.signIn}>
                     <FormattedMessage {...messages.signInLinkText} />
+                  </button>
+                ),
+                completeRegistrationLink: (
+                  <button
+                    onClick={() => {
+                      openSignUpInModal();
+                    }}
+                  >
+                    <FormattedMessage
+                      {...messages.completeRegistrationLinkText}
+                    />
                   </button>
                 ),
                 verifyIdentityLink: (

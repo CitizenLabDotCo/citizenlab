@@ -62,10 +62,11 @@ class CommentingDisabled extends PureComponent<Props> {
       return messages.commentingDisabledUnverified;
     } else if (isLoggedIn && commentingDisabledReason === 'not_permitted') {
       return messages.commentingDisabledProject;
+    } else if (isLoggedIn && commentingDisabledReason === 'not_active') {
+      return messages.completeRegistrationToComment;
     } else if (!isLoggedIn) {
       return messages.commentingMaybeNotPermitted;
     }
-
     return messages.signInToComment;
   };
 
@@ -136,6 +137,17 @@ class CommentingDisabled extends PureComponent<Props> {
                 signInLink: (
                   <button onClick={this.signIn}>
                     <FormattedMessage {...messages.signInLinkText} />
+                  </button>
+                ),
+                completeRegistrationLink: (
+                  <button
+                    onClick={() => {
+                      openSignUpInModal();
+                    }}
+                  >
+                    <FormattedMessage
+                      {...messages.completeRegistrationLinkText}
+                    />
                   </button>
                 ),
                 verifyIdentityLink: (

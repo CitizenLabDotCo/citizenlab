@@ -159,6 +159,11 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
 
       trackEventByName(tracks.postYourIdeaButtonClicked);
 
+      // if logged in but not complete user
+      if (action === 'sign_in_up' && authUser) {
+        openSignUpInModal();
+      }
+
       // if not logged in
       if (action === 'sign_in_up' || action === 'sign_in_up_and_verify') {
         signUp();

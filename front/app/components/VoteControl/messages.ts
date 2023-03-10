@@ -39,6 +39,10 @@ export default defineMessages({
     id: 'app.components.VoteControl.votingNotPermitted',
     defaultMessage: 'Voting is only enabled for certain groups',
   },
+  completeRegistrationToVote: {
+    id: 'app.components.VoteControl.completeRegistrationToVote',
+    defaultMessage: 'Complete registration to vote',
+  },
   votingVerifyToVote: {
     id: 'app.components.VoteControl.votingVerifyToVote',
     defaultMessage: 'Verify your identity in order to vote.',
