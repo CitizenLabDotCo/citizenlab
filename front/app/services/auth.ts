@@ -1,13 +1,12 @@
 import { IUser, deleteUser } from 'services/users';
 import { IHttpMethod, Locale } from 'typings';
 import { API_PATH, AUTH_PATH } from 'containers/App/constants';
-import { getJwt, setJwt, removeJwt, decode } from 'utils/auth/jwt';
-import { endsWith } from 'utils/helperUtils';
+import { getJwt, removeJwt, decode } from 'utils/auth/jwt';
 import request from 'utils/request';
 import streams from 'utils/streams';
 import clHistory from 'utils/cl-router/history';
-import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
+import signIn from 'api/authentication/signIn';
 
 export const authApiEndpoint = `${API_PATH}/users/me`;
 
@@ -62,37 +61,10 @@ export async function signUp(
         : `${API_PATH}/users`;
     const bodyData = { [token ? 'invite' : 'user']: innerBodyData };
     await request(signUpEndpoint, bodyData, httpMethod, null);
-    const authenticatedUser = await signIn(email, password);
+    const authenticatedUser = await signIn({ email, password });
     return authenticatedUser;
   } catch (error) {
     throw error;
-  }
-}
-
-export async function signOut() {
-  const jwt = getJwt();
-
-  if (jwt) {
-    const decodedJwt = decode(jwt);
-
-    removeJwt();
-
-    if (decodedJwt.logout_supported) {
-      const { provider, sub } = decodedJwt;
-      const url = `${AUTH_PATH}/${provider}/logout?user_id=${sub}`;
-      window.location.href = url;
-    } else {
-      await streams.reset();
-      await resetQueryCache();
-      const { pathname } = removeLocale(location.pathname);
-
-      if (
-        pathname &&
-        (endsWith(pathname, '/sign-up') || pathname.startsWith('/admin'))
-      ) {
-        clHistory.push('/');
-      }
-    }
   }
 }
 

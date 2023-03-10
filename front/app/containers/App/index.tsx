@@ -37,11 +37,8 @@ import HasPermission from 'components/HasPermission';
 
 // services
 import { IAppConfigurationStyle } from 'api/app_configuration/types';
-import {
-  authUserStream,
-  signOut,
-  signOutAndDeleteAccount,
-} from 'services/auth';
+import signOut from 'api/authentication/signOut';
+import { authUserStream, signOutAndDeleteAccount } from 'services/auth';
 import { localeStream } from 'services/locale';
 import { TAuthUser } from 'hooks/useAuthUser';
 

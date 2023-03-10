@@ -17,7 +17,7 @@ import { FormLabel } from 'components/UI/FormComponents';
 import { Options, Option } from '../styles';
 
 // services
-import { signIn } from 'services/auth';
+import signIn from 'api/authentication/signIn';
 
 // i18n
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
@@ -189,7 +189,13 @@ const PasswordSignin = ({
       if (validate(phoneLoginEnabled, email, password) && email && password) {
         try {
           setProcessing(true);
-          const user = await signIn(email, password, rememberMe, tokenLifetime);
+          const user = await signIn({
+            email,
+            password,
+            rememberMe,
+            tokenLifetime,
+          });
+
           trackEventByName(tracks.signInEmailPasswordCompleted);
           onSignInCompleted(user.data.id);
         } catch (error) {

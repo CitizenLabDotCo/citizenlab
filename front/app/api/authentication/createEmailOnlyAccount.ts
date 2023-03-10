@@ -2,7 +2,7 @@ import { API_PATH } from 'containers/App/constants';
 import { Locale } from 'typings';
 
 const createAccountPath = `${API_PATH}/users`;
-const userTokenPath = `${API_PATH}/user_token`;
+// const userTokenPath = `${API_PATH}/user_token`;
 
 const accountCreatedSuccessfully = (response: Response) => {
   return response.status === 200 || response.status === 201;
@@ -28,6 +28,6 @@ export default async function createEmailOnlyAccount({
   });
 
   if (accountCreatedSuccessfully(response)) {
-    const response = await fetch(userTokenPath);
+    // const response = await fetch(userTokenPath);
   }
 }

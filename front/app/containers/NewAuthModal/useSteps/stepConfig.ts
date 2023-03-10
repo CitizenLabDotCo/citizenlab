@@ -1,5 +1,5 @@
 import { createAccount, confirmCode } from './mutations';
-import { signOut } from 'services/auth';
+import signOut from 'api/authentication/signOut';
 
 // typings
 import { GetRequirements, Status, ErrorCode, UpdateState } from '../typings';
@@ -38,7 +38,7 @@ export const getStepConfig = (
         await createAccount(email);
         const requirements = await getRequirements();
         const authenticated = requirements.built_in.email === 'satisfied';
-        const account;
+        // const account;
         // const { authenticated, accountHasPassword } = await getRequirements();
 
         if (authenticated) {

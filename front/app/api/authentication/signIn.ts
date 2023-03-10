@@ -5,6 +5,7 @@ import { setJwt } from 'utils/auth/jwt';
 import request from 'utils/request';
 import streams from 'utils/streams';
 import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
+import signOut from './signOut';
 
 interface Parameters {
   email: string;
