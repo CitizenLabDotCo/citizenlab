@@ -1,8 +1,6 @@
 import { IUser, deleteUser } from 'services/users';
-import { IHttpMethod } from 'typings';
 import { API_PATH, AUTH_PATH } from 'containers/App/constants';
 import { getJwt, removeJwt, decode } from 'utils/auth/jwt';
-import request from 'utils/request';
 import streams from 'utils/streams';
 import clHistory from 'utils/cl-router/history';
 import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
@@ -58,47 +56,4 @@ export function signOutAndDeleteAccount() {
         });
     }
   });
-}
-
-export async function sendPasswordResetMail(email: string) {
-  // eslint-disable-next-line no-useless-catch
-  try {
-    const bodyData = {
-      user: {
-        email,
-      },
-    };
-    const httpMethod: IHttpMethod = { method: 'POST' };
-    const response = await request(
-      `${API_PATH}/users/reset_password_email`,
-      bodyData,
-      httpMethod,
-      null
-    );
-    return response;
-  } catch (error) {
-    throw error;
-  }
-}
-
-export async function resetPassword(password: string, token: string) {
-  // eslint-disable-next-line no-useless-catch
-  try {
-    const bodyData = {
-      user: {
-        password,
-        token,
-      },
-    };
-    const httpMethod: IHttpMethod = { method: 'POST' };
-    const response = await request(
-      `${API_PATH}/users/reset_password`,
-      bodyData,
-      httpMethod,
-      null
-    );
-    return response;
-  } catch (error) {
-    throw error;
-  }
 }
