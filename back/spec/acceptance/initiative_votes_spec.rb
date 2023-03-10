@@ -60,12 +60,24 @@ resource 'Votes' do
     let(:initiative_id) { @initiative.id }
     let(:mode) { 'up' }
 
-    example_request 'Create a vote to an initiative' do
+    example_request 'Create a vote on an initiative' do
       assert_status 201
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :relationships, :user, :data, :id)).to be_nil
       expect(json_response.dig(:data, :attributes, :mode)).to eq 'up'
       expect(@initiative.reload.upvotes_count).to eq 3
+    end
+
+    context 'when user is blocked' do
+      example 'user attempts to vote on an initiative', document: false do
+        settings = AppConfiguration.instance.settings
+        settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
+        AppConfiguration.instance.update!(settings: settings)
+        @user.update(block_start_at: Time.now)
+
+        do_request
+        expect(status).to be 401
+      end
     end
 
     example 'Reaching the voting threshold immediately triggers status change', document: false do
@@ -92,6 +104,18 @@ resource 'Votes' do
       assert_status 201
       expect(@initiative.reload.upvotes_count).to eq 3
       expect(@initiative.reload.downvotes_count).to eq 0
+    end
+
+    context 'when user is blocked' do
+      example 'user attempts to upvote an initiative', document: false do
+        settings = AppConfiguration.instance.settings
+        settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
+        AppConfiguration.instance.update!(settings: settings)
+        @user.update(block_start_at: Time.now)
+
+        do_request
+        expect(status).to be 401
+      end
     end
 
     example 'Upvote an initiative that you downvoted before' do
@@ -129,6 +153,18 @@ resource 'Votes' do
       expect(@initiative.reload.upvotes_count).to eq 2
       expect(@initiative.reload.downvotes_count).to eq 0
     end
+
+    context 'when user is blocked' do
+      example 'user attempts to downvote an initiative', document: false do
+        settings = AppConfiguration.instance.settings
+        settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
+        AppConfiguration.instance.update!(settings: settings)
+        @user.update(block_start_at: Time.now)
+
+        do_request
+        expect(status).to be 401
+      end
+    end
   end
 
   delete 'web_api/v1/votes/:id' do
@@ -138,6 +174,18 @@ resource 'Votes' do
     example_request 'Delete a vote from an initiative' do
       assert_status 200
       expect { Vote.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+
+    context 'when user is blocked' do
+      example 'user attempts to delete a vote on an initiative', document: false do
+        settings = AppConfiguration.instance.settings
+        settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
+        AppConfiguration.instance.update!(settings: settings)
+        @user.update(block_start_at: Time.now)
+
+        do_request
+        expect(status).to be 401
+      end
     end
   end
 end

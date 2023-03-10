@@ -868,6 +868,18 @@ resource 'Users' do
               expect(response_data.dig(:relationships, :granted_permissions, :data).size).to eq(1)
             end
           end
+
+          context 'when user is blocked' do
+            example 'user attempts to update her details', document: false do
+              settings = AppConfiguration.instance.settings
+              settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
+              AppConfiguration.instance.update!(settings: settings)
+              @user.update(block_start_at: Time.now)
+
+              do_request
+              expect(status).to be 401
+            end
+          end
         end
 
         # NOTE: To be included in an upcoming iteration

@@ -77,6 +77,18 @@ resource 'Baskets' do
         expect(json_response.dig(:data, :relationships, :participation_context, :data, :id)).to eq participation_context_id
       end
 
+      context 'when user is blocked' do
+        example 'user attempts to create a basket', document: false do
+          settings = AppConfiguration.instance.settings
+          settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
+          AppConfiguration.instance.update!(settings: settings)
+          @user.update(block_start_at: Time.now)
+
+          do_request
+          expect(status).to be 401
+        end
+      end
+
       example '[error] Create a basket in a survey' do
         do_request(
           basket: {

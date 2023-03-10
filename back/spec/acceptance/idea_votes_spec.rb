@@ -55,12 +55,24 @@ resource 'Votes' do
     let(:idea_id) { @idea.id }
     let(:mode) { 'up' }
 
-    example_request 'Create a vote to an idea' do
+    example_request 'Create a vote on an idea' do
       assert_status 201
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :relationships, :user, :data, :id)).to be_nil
       expect(json_response.dig(:data, :attributes, :mode)).to eq 'up'
       expect(@idea.reload.upvotes_count).to eq 3
+    end
+
+    context 'when user is blocked' do
+      example 'user attempts to create a vote on an idea', document: false do
+        settings = AppConfiguration.instance.settings
+        settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
+        AppConfiguration.instance.update!(settings: settings)
+        @user.update(block_start_at: Time.now)
+
+        do_request
+        expect(status).to be 401
+      end
     end
 
     describe 'When the user already voted' do
@@ -93,6 +105,18 @@ resource 'Votes' do
       expect(status).to eq 201
       expect(@idea.reload.upvotes_count).to eq 3
       expect(@idea.reload.downvotes_count).to eq 0
+    end
+
+    context 'when user is blocked' do
+      example 'user attempts to upvote an idea', document: false do
+        settings = AppConfiguration.instance.settings
+        settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
+        AppConfiguration.instance.update!(settings: settings)
+        @user.update(block_start_at: Time.now)
+
+        do_request
+        expect(status).to be 401
+      end
     end
 
     example 'Upvote an idea that you downvoted before' do
@@ -176,6 +200,18 @@ resource 'Votes' do
       expect(@idea.reload.downvotes_count).to eq 1
     end
 
+    context 'when user is blocked' do
+      example 'user attempts to downvote an idea', document: false do
+        settings = AppConfiguration.instance.settings
+        settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
+        AppConfiguration.instance.update!(settings: settings)
+        @user.update(block_start_at: Time.now)
+
+        do_request
+        expect(status).to be 401
+      end
+    end
+
     example 'Downvote an idea that you upvoted before' do
       @idea.votes.create(user: @user, mode: 'up')
       do_request
@@ -213,6 +249,18 @@ resource 'Votes' do
     example_request 'Delete a vote from an idea' do
       expect(response_status).to eq 200
       expect { Vote.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+
+    context 'when user is blocked' do
+      example 'user attempts to delete a vote on an idea', document: false do
+        settings = AppConfiguration.instance.settings
+        settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
+        AppConfiguration.instance.update!(settings: settings)
+        @user.update(block_start_at: Time.now)
+
+        do_request
+        expect(status).to be 401
+      end
     end
   end
 end
