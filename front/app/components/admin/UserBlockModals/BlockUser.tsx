@@ -24,7 +24,12 @@ const WarningContainer = styled.div`
   margin: 30px 0;
 `;
 
-export default () => {
+type Props = {
+  open: boolean;
+  setClose: () => void;
+};
+
+export default ({ open, setClose }: Props) => {
   const methods = useForm({
     mode: 'onBlur',
     defaultValues: {},
@@ -32,8 +37,8 @@ export default () => {
   const { formatMessage } = useIntl();
   return (
     <Modal
-      close={() => {}}
-      opened={true}
+      close={setClose}
+      opened={open}
       header={formatMessage(messages.header)}
     >
       <Container>
