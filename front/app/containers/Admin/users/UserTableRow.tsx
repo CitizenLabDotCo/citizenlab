@@ -50,15 +50,15 @@ interface Props {
 
 const getStatusMessage = (user: IUserData): MessageDescriptor => {
   const highestRole = user.attributes.highest_role;
-  let statusMessage = messages.registeredUser;
-  if (['admin', 'super_admin'].includes(highestRole)) {
-    statusMessage = messages.platformAdmin;
-  } else if (highestRole === 'project_folder_moderator') {
-    statusMessage = messages.folderAdmin;
-  } else if (highestRole === 'project_moderator') {
-    statusMessage = messages.projectManager;
-  }
-  return statusMessage;
+  const roleMessage = {
+    admin: messages.platformAdmin,
+    super_admin: messages.platformAdmin,
+    project_folder_moderator: messages.folderAdmin,
+    project_moderator: messages.projectManager,
+    user: messages.registeredUser,
+  };
+
+  return roleMessage[highestRole];
 };
 
 const getInfoText = (
