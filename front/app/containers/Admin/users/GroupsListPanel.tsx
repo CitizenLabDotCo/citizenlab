@@ -212,12 +212,17 @@ export class GroupsListPanel extends React.PureComponent<Props, State> {
           <GroupName>
             <FormattedMessage {...messages.allUsers} />
           </GroupName>
-          {!isNilOrError(usercount) && <MembersCount>{usercount}</MembersCount>}
+          <MembersCount>{usercount.count}</MembersCount>
         </MenuLink>
         <MenuLink to="/admin/users/administrators_and_managers">
           <GroupName>
             <FormattedMessage {...messages.administratorsAndManagers} />
           </GroupName>
+          {usercount.administrators_count && usercount.managers_count && (
+            <MembersCount>
+              {usercount.administrators_count + usercount.managers_count}
+            </MembersCount>
+          )}
         </MenuLink>
         <Separator />
         <MenuTitle>

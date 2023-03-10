@@ -20,7 +20,7 @@ const AllUsers = () => {
         title={messages.administratorsAndManagers}
         subtitle={messages.administratorsAndManagersSubtitle}
       />
-      <UserManager search={search} canModerate={true} />
+      <UserManager search={search} canModerate notCitizenlabMember />
     </>
   );
 };

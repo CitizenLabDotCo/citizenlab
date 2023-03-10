@@ -16,7 +16,8 @@ class WebApi::V1::UsersController < ::ApplicationController
     @users = @users.active unless params[:include_inactive]
     @users = @users.in_group(Group.find(params[:group])) if params[:group]
     @users = @users.admin.or(@users.project_moderator(params[:can_moderate_project])) if params[:can_moderate_project].present?
-    @users = @users.admin.or(@users.project_moderator) if params[:can_moderate].present?
+    @users = @users.admin.or(@users.project_moderator).or(@users.project_folder_moderator) if params[:can_moderate].present?
+    @users = @users.not_citizenlab_member if params[:not_citizenlab_member].present?
     @users = @users.admin if params[:can_admin].present?
 
     if params[:search].blank?
@@ -54,13 +55,14 @@ class WebApi::V1::UsersController < ::ApplicationController
   def seats
     authorize :user, :seats?
 
-    admins = User.admin.or(User.project_folder_moderator).reject(&:citizenlab_user?)
+    admins = User.admin.or(User.project_folder_moderator).not_citizenlab_member
+    moderators = User.project_moderator.not_citizenlab_member
     render json: {
       data: {
         type: 'seats',
         attributes: {
           admins_number: admins.count,
-          project_moderators_number: User.project_moderator.count
+          project_moderators_number: moderators.count
         }
       }
     }
