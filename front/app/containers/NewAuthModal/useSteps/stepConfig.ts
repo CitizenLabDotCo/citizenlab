@@ -38,18 +38,18 @@ export const getStepConfig = (
       SUBMIT_EMAIL: async (email: string, locale: Locale) => {
         setStatus('pending');
 
-        const status = await createEmailOnlyAccount({ email, locale });
+        const result = await createEmailOnlyAccount({ email, locale });
 
-        if (status === 'account_created_successfully') {
+        if (result === 'account_created_successfully') {
           setCurrentStep('email-confirmation');
         }
 
-        if (status === 'email_taken') {
+        if (result === 'email_taken') {
           updateState({ email });
           setCurrentStep('enter-password');
         }
 
-        if (status === 'error') {
+        if (result === 'error') {
           setStatus('error');
           setError('account_creation_failed');
         }
