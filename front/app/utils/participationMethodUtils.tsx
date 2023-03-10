@@ -127,7 +127,7 @@ const ideationConfig: ParticipationMethodConfig = {
   postSortingOptions: [
     { text: <FormattedMessage {...messages.trending} />, value: 'trending' },
     { text: <FormattedMessage {...messages.random} />, value: 'random' },
-    { text: <FormattedMessage {...messages.popular} />, value: 'popular' },
+    { text: <FormattedMessage {...messages.mostVoted} />, value: 'popular' },
     { text: <FormattedMessage {...messages.newest} />, value: 'new' },
     { text: <FormattedMessage {...messages.oldest} />, value: '-new' },
   ],

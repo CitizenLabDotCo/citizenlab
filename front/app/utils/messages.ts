@@ -190,9 +190,9 @@ export default defineMessages({
     id: 'app.utils.IdeaCards.random',
     defaultMessage: 'Random',
   },
-  popular: {
-    id: 'app.utils.IdeaCards.popular',
-    defaultMessage: 'Popular',
+  mostVoted: {
+    id: 'app.utils.IdeaCards.mostVoted',
+    defaultMessage: 'Most voted',
   },
   newest: {
     id: 'app.utils.IdeaCards.newest',
