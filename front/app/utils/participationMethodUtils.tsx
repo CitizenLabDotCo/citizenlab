@@ -28,6 +28,14 @@ import { isNilOrError } from './helperUtils';
 import clHistory from 'utils/cl-router/history';
 import { IIdea } from 'services/ideas';
 
+export const defaultSortingOptions = [
+  { text: <FormattedMessage {...messages.trending} />, value: 'trending' },
+  { text: <FormattedMessage {...messages.random} />, value: 'random' },
+  { text: <FormattedMessage {...messages.mostVoted} />, value: 'popular' },
+  { text: <FormattedMessage {...messages.newest} />, value: 'new' },
+  { text: <FormattedMessage {...messages.oldest} />, value: '-new' },
+];
+
 type FormSubmissionMethodProps = {
   project?: IProjectData;
   ideaId?: string;
@@ -124,13 +132,7 @@ const ideationConfig: ParticipationMethodConfig = {
   renderCTABar: (props: CTABarProps) => {
     return <IdeationCTABar project={props.project} phases={props.phases} />;
   },
-  postSortingOptions: [
-    { text: <FormattedMessage {...messages.trending} />, value: 'trending' },
-    { text: <FormattedMessage {...messages.random} />, value: 'random' },
-    { text: <FormattedMessage {...messages.mostVoted} />, value: 'popular' },
-    { text: <FormattedMessage {...messages.newest} />, value: 'new' },
-    { text: <FormattedMessage {...messages.oldest} />, value: '-new' },
-  ],
+  postSortingOptions: defaultSortingOptions,
 };
 
 const nativeSurveyConfig: ParticipationMethodConfig = {
@@ -256,11 +258,9 @@ const budgetingConfig: ParticipationMethodConfig = {
   renderCTABar: (props: CTABarProps) => {
     return <BudgetingCTABar project={props.project} phases={props.phases} />;
   },
-  postSortingOptions: [
-    { text: <FormattedMessage {...messages.random} />, value: 'random' },
-    { text: <FormattedMessage {...messages.newest} />, value: 'new' },
-    { text: <FormattedMessage {...messages.oldest} />, value: '-new' },
-  ],
+  postSortingOptions: defaultSortingOptions.filter(
+    (option) => option.value !== 'trending' && option.value !== 'popular'
+  ),
 };
 
 const pollConfig: ParticipationMethodConfig = {
