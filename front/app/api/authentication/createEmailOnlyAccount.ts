@@ -1,11 +1,17 @@
+import signIn from './signIn';
 import { API_PATH } from 'containers/App/constants';
 import { Locale } from 'typings';
 
 const createAccountPath = `${API_PATH}/users`;
-// const userTokenPath = `${API_PATH}/user_token`;
 
 const accountCreatedSuccessfully = (response: Response) => {
   return response.status === 200 || response.status === 201;
+};
+
+const emailIsTaken = async (response: Response) => {
+  const json = await response.json();
+  // return json. // TODO: figure out structure of this object
+  return true;
 };
 
 interface Parameters {
@@ -28,6 +34,13 @@ export default async function createEmailOnlyAccount({
   });
 
   if (accountCreatedSuccessfully(response)) {
-    // const response = await fetch(userTokenPath);
+    await signIn({ email });
+    return 'account_created_successfully';
   }
+
+  if (await emailIsTaken(response)) {
+    return 'email_taken';
+  }
+
+  return 'error';
 }
