@@ -62,7 +62,7 @@ class CommentingDisabled extends PureComponent<Props> {
       return messages.commentingDisabledUnverified;
     } else if (isLoggedIn && commentingDisabledReason === 'not_permitted') {
       return messages.commentingDisabledProject;
-    } else if (isLoggedIn && commentingDisabledReason === 'not_active') {
+    } else if (isLoggedIn && commentingDisabledReason === 'not_signed_in') {
       return messages.completeRegistrationToComment;
     } else if (!isLoggedIn) {
       return messages.commentingMaybeNotPermitted;
