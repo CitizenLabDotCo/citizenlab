@@ -4,6 +4,8 @@ import { ImageSizes, Multiloc, Locale } from 'typings';
 import { authApiEndpoint } from './auth';
 import { TRole } from 'services/permissions/roles';
 import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import seatsKeys from 'api/seats/keys';
 
 const apiEndpoint = `${API_PATH}/users`;
 
@@ -107,6 +109,12 @@ export async function updateUser(userId: string, object: IUserUpdate) {
     dataId: [userId],
     apiEndpoint: [`${API_PATH}/groups`, `${API_PATH}/users`],
   });
+
+  // Invalidate seats if the user's roles have changed
+  if (object.roles) {
+    queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
+  }
+
   return response;
 }
 
@@ -126,6 +134,9 @@ export async function deleteUser(userId: string) {
       `${API_PATH}/stats/users_count`,
     ],
   });
+
+  queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
+
   return response;
 }
 
