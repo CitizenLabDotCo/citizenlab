@@ -40,7 +40,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe 'blocked users' do
+  describe 'blocked?' do
     let!(:user1) { create(:user, block_start_at: 89.days.ago) }
     let!(:user2) { create(:user, block_start_at: 90.days.ago) }
     let!(:user3) { create(:user, block_start_at: 50.days.ago) }
@@ -545,6 +545,20 @@ RSpec.describe User, type: :model do
     it 'returns true when the user has completed signup' do
       u = build(:user)
       expect(u.active?).to be true
+    end
+
+    it 'returns false when the user is blocked' do
+      u = build(:user, block_start_at: Time.now)
+
+      settings = AppConfiguration.instance.settings
+      settings['user_blocking'] = {
+        'enabled' => true,
+        'allowed' => true,
+        'duration' => 90
+      }
+      AppConfiguration.instance.update!(settings: settings)
+
+      expect(u.active?).to be false
     end
   end
 
