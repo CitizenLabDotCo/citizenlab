@@ -22,7 +22,7 @@ describe('Continuous PB project', () => {
     cy.get('#e2e-continuos-project-idea-cards');
   });
 
-  it('shows the corrent sorting options', () => {
+  it('shows the current sorting options', () => {
     cy.get('.e2e-filter-selector-button').first().click();
     cy.get('#e2e-item-random').should('exist');
     cy.get('#e2e-item-new').should('exist');
