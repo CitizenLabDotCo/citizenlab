@@ -1,7 +1,8 @@
 import React, { useState, FormEvent } from 'react';
 
 // services
-import { confirm, resendCode, IConfirmation } from 'services/confirmation';
+import confirmEmail, { IConfirmation } from 'api/authentication/confirmEmail';
+import resendEmailConfirmationCode from 'api/authentication/resendEmailConfirmationCode';
 
 // components
 import Error from 'components/UI/Error';
@@ -84,7 +85,7 @@ const ConfirmationSignupStep = ({ onCompleted }: Props) => {
   function handleSubmitConfirmation() {
     setProcessing(true);
 
-    confirm(confirmation)
+    confirmEmail(confirmation)
       .then(() => {
         setApiErrors({});
         setProcessing(false);
@@ -102,7 +103,7 @@ const ConfirmationSignupStep = ({ onCompleted }: Props) => {
     e.preventDefault();
     setProcessing(true);
 
-    resendCode()
+    resendEmailConfirmationCode()
       .then(() => {
         setProcessing(false);
         setCodeResent(true);
@@ -117,7 +118,7 @@ const ConfirmationSignupStep = ({ onCompleted }: Props) => {
   function handleEmailSubmit() {
     setProcessing(true);
 
-    resendCode(newEmail)
+    resendEmailConfirmationCode(newEmail ?? undefined)
       .then(() => {
         setProcessing(false);
         setChangingEmail(false);

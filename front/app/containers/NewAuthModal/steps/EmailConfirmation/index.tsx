@@ -1,7 +1,7 @@
 import React, { useMemo, useState, FormEvent } from 'react';
 
 // services
-import { resendCode } from 'services/confirmation';
+import resendEmailConfirmationCode from 'api/authentication/resendEmailConfirmationCode';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -71,7 +71,7 @@ const EmailConfirmation = ({ status, onConfirm, onChangeEmail }: Props) => {
     e.preventDefault();
     setResendingCode(true);
 
-    resendCode()
+    resendEmailConfirmationCode()
       .then(() => {
         setResendingCode(false);
         setCodeResent(true);

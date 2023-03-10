@@ -1,6 +1,7 @@
 import createEmailOnlyAccount from 'api/authentication/createEmailOnlyAccount';
 import signIn from 'api/authentication/signIn';
 import signOut from 'api/authentication/signOut';
+import confirmEmail from 'api/authentication/confirmEmail';
 
 // typings
 import { GetRequirements, Status, ErrorCode, UpdateState } from '../typings';
@@ -72,8 +73,11 @@ export const getStepConfig = (
       SUBMIT_CODE: async (code: string) => {
         setStatus('pending');
 
-        await confirmCode(code);
-        const { emailConfirmed } = await getRequirements();
+        await confirmEmail({ code });
+
+        const requirements = await getRequirements();
+        const emailConfirmed =
+          requirements.special.confirmation === 'satisfied';
 
         if (emailConfirmed) {
           setStatus('ok');
