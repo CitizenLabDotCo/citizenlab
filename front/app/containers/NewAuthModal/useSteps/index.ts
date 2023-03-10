@@ -17,6 +17,12 @@ export default function useSteps() {
   const [authenticationContext, setAuthenticationContext] =
     useState<AuthenticationContext>();
 
+  useEffect(() => {
+    triggerAuthenticationFlow$.subscribe((event) => {
+      setAuthenticationContext(event.eventValue);
+    });
+  }, []);
+
   const [currentStep, setCurrentStep] = useState<Step>('closed');
   const [state, setState] = useState<State>({ email: null });
   const [status, setStatus] = useState<Status>('ok');
@@ -44,12 +50,6 @@ export default function useSteps() {
       ),
     [getRequirements, updateState]
   );
-
-  useEffect(() => {
-    triggerAuthenticationFlow$.subscribe((event) => {
-      setAuthenticationContext(event.eventValue);
-    });
-  }, []);
 
   const transition = <S extends Step, T extends keyof StepConfig[S]>(
     currentStep: S,
