@@ -642,11 +642,6 @@ resource 'Users' do
         end
 
         patch 'web_api/v1/users/:id/unblock' do
-          with_options scope: 'user' do
-            parameter :block_reason, 'Reason for blocking & any additional information', required: false
-          end
-          ValidationErrorHelper.new.error_fields(self, User)
-
           let!(:user) { create(:user, block_start_at: 5.days.ago) }
           let!(:id) { user.id }
 
