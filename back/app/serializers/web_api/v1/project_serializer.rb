@@ -149,4 +149,4 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   end
 end
 
-WebApi::V1::ProjectSerializer.include_if_ee('IdeaAssignment::Extensions::WebApi::V1::ProjectSerializer')
+WebApi::V1::ProjectSerializer.include(IdeaAssignment::Extensions::WebApi::V1::ProjectSerializer)

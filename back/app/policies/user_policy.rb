@@ -125,4 +125,4 @@ class UserPolicy < ApplicationPolicy
   end
 end
 
-UserPolicy.prepend_if_ee('Verification::Patches::UserPolicy')
+UserPolicy.prepend(Verification::Patches::UserPolicy)

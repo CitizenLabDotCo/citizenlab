@@ -91,4 +91,4 @@ class SideFxProjectService
   end
 end
 
-SideFxProjectService.prepend_if_ee 'IdeaAssignment::Patches::SideFxProjectService'
+SideFxProjectService.prepend(IdeaAssignment::Patches::SideFxProjectService)

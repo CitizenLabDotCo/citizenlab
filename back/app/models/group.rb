@@ -99,4 +99,4 @@ class Group < ApplicationRecord
   end
 end
 
-Group.prepend_if_ee('SmartGroups::Patches::Group')
+Group.prepend(SmartGroups::Patches::Group)
