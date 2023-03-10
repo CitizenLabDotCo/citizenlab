@@ -14,7 +14,12 @@ export interface IUserAttributes {
   last_name: string | null;
   slug: string;
   locale: Locale;
-  highest_role: 'super_admin' | 'admin' | 'project_moderator' | 'user';
+  highest_role:
+    | 'super_admin'
+    | 'admin'
+    | 'project_folder_moderator'
+    | 'project_moderator'
+    | 'user';
   bio_multiloc: Multiloc;
   registration_completed_at: string | null;
   created_at: string;
