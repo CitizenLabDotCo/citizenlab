@@ -1,9 +1,11 @@
-import { createAccount, confirmCode } from './mutations';
+import createEmailOnlyAccount from 'api/authentication/createEmailOnlyAccount';
+import signIn from 'api/authentication/signIn';
 import signOut from 'api/authentication/signOut';
 
 // typings
 import { GetRequirements, Status, ErrorCode, UpdateState } from '../typings';
 import { SSOProvider } from 'services/singleSignOn';
+import { Locale } from 'typings';
 
 type Step =
   | 'closed'
@@ -32,23 +34,21 @@ export const getStepConfig = (
     'email-registration': {
       CLOSE: () => setCurrentStep('closed'),
 
-      SUBMIT_EMAIL: async (email: string) => {
+      SUBMIT_EMAIL: async (email: string, locale: Locale) => {
         setStatus('pending');
 
-        await createAccount(email);
-        const requirements = await getRequirements();
-        const authenticated = requirements.built_in.email === 'satisfied';
-        // const account;
-        // const { authenticated, accountHasPassword } = await getRequirements();
+        const status = await createEmailOnlyAccount({ email, locale });
 
-        if (authenticated) {
-          setStatus('ok');
+        if (status === 'account_created_successfully') {
+          setCurrentStep('email-confirmation');
+        }
+
+        if (status === 'email_taken') {
           updateState({ email });
+          setCurrentStep('enter-password');
+        }
 
-          setCurrentStep(
-            accountHasPassword ? 'enter-password' : 'email-confirmation'
-          );
-        } else {
+        if (status === 'error') {
           setStatus('error');
           setError('account_creation_failed');
         }
@@ -96,13 +96,19 @@ export const getStepConfig = (
       ) => {
         setStatus('pending');
 
-        await createAccount(email, password, rememberMe, tokenLifetime);
-        const { passwordAccepted, emailConfirmed } = await getRequirements();
+        try {
+          await signIn({ email, password, rememberMe, tokenLifetime });
 
-        if (passwordAccepted) {
+          const requirements = await getRequirements();
+
+          if (requirements.special.confirmation === 'require') {
+            setCurrentStep('email-confirmation');
+          } else {
+            setCurrentStep('success');
+          }
+
           setStatus('ok');
-          setCurrentStep(emailConfirmed ? 'success' : 'email-confirmation');
-        } else {
+        } catch {
           setStatus('error');
           setError('wrong_password');
         }
