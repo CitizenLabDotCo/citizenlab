@@ -22,7 +22,7 @@ import { isCLErrorJSON } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import { signUp } from 'services/auth';
+import createAccountWithPassword from 'api/authentication/createAccountWithPassword';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -428,15 +428,15 @@ class PasswordSignup extends PureComponent<
       ) {
         try {
           this.setState({ processing: true, unknownError: null });
-          await signUp(
+          await createAccountWithPassword({
             firstName,
             lastName,
-            emailOrPhoneNumber,
+            email: emailOrPhoneNumber,
             password,
             locale,
             isInvitation,
-            token
-          );
+            token,
+          });
           this.setState({ processing: false });
           trackEventByName(tracks.signUpEmailPasswordStepCompleted);
           this.props.onCompleted();

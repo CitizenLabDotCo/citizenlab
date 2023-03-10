@@ -1,12 +1,11 @@
 import { IUser, deleteUser } from 'services/users';
-import { IHttpMethod, Locale } from 'typings';
+import { IHttpMethod } from 'typings';
 import { API_PATH, AUTH_PATH } from 'containers/App/constants';
 import { getJwt, removeJwt, decode } from 'utils/auth/jwt';
 import request from 'utils/request';
 import streams from 'utils/streams';
 import clHistory from 'utils/cl-router/history';
 import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
-import signIn from 'api/authentication/signIn';
 
 export const authApiEndpoint = `${API_PATH}/users/me`;
 
@@ -30,42 +29,6 @@ export function lockedFieldsStream() {
   return streams.get<{ data: ILockedField[] }>({
     apiEndpoint: `${authApiEndpoint}/locked_attributes`,
   });
-}
-
-export async function signUp(
-  firstName: string,
-  lastName: string,
-  email: string,
-  password: string,
-  locale: Locale,
-  isInvitation: boolean | null | undefined,
-  token: string | undefined | null
-) {
-  const innerBodyData = {
-    email,
-    password,
-    locale,
-    first_name: firstName,
-    last_name: lastName,
-  };
-
-  const httpMethod: IHttpMethod = {
-    method: 'POST',
-  };
-
-  // eslint-disable-next-line no-useless-catch
-  try {
-    const signUpEndpoint =
-      isInvitation === true
-        ? `${API_PATH}/invites/by_token/${token}/accept`
-        : `${API_PATH}/users`;
-    const bodyData = { [token ? 'invite' : 'user']: innerBodyData };
-    await request(signUpEndpoint, bodyData, httpMethod, null);
-    const authenticatedUser = await signIn({ email, password });
-    return authenticatedUser;
-  } catch (error) {
-    throw error;
-  }
 }
 
 export function signOutAndDeleteAccount() {
