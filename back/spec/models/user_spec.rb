@@ -923,4 +923,33 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe '#no_name?' do
+    it 'returns true if first_name and last_name are not set' do
+      user = described_class.new(email: 'test@citizenlab.co')
+      expect(user.no_name?).to be true
+    end
+
+    it 'returns false if first_name is set' do
+      user = described_class.new(email: 'test@citizenlab.co', first_name: 'Bob')
+      expect(user.no_name?).to be false
+    end
+
+    it 'returns false if last_name is set' do
+      user = described_class.new(email: 'test@citizenlab.co', last_name: 'Smith')
+      expect(user.no_name?).to be false
+    end
+
+    it 'returns false if invite is pending' do
+      user = described_class.new(email: 'test@citizenlab.co', invite_status: 'pending')
+      expect(user.no_name?).to be false
+    end
+
+    it 'returns an anonymous full_name and slug in format "User 123456" if true' do
+      user = described_class.new(email: 'test@citizenlab.co')
+      user.save
+      expect(user.full_name).to match(/User \d{6}/)
+      expect(user.slug).to match(/user-\d{6}/)
+    end
+  end
 end

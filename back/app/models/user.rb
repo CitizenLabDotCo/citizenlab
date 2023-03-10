@@ -301,7 +301,23 @@ class User < ApplicationRecord
   end
 
   def full_name
-    [first_name, last_name].compact.join(' ')
+    return [first_name, last_name].compact.join(' ') unless no_name?
+
+    [anon_first_name, anon_last_name].compact.join(' ')
+  end
+
+  def no_name?
+    !self[:last_name] && !self[:first_name] && !invite_pending?
+  end
+
+  # Anonymous names to use if no first name and last name
+  def anon_first_name
+    'User'
+  end
+
+  def anon_last_name
+    # Generate a last name based on email in the format of '123456'
+    email.hash.abs.to_s[0, 6]
   end
 
   def highest_role
