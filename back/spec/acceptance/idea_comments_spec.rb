@@ -308,9 +308,8 @@ resource 'Comments' do
       end
 
       include_context 'when user_blocking duration is 90 days' do
-        before { @user.update(block_start_at: Time.now) }
-
         example 'Blocked user attempts to comment on an idea', document: false do
+          @user.update(block_start_at: Time.now)
           do_request
           expect(status).to be 401
         end
@@ -319,6 +318,7 @@ resource 'Comments' do
           let(:parent_id) { create(:comment, post: @idea).id }
 
           example 'Blocked user attempts to comment on a comment', document: false do
+            @user.update(block_start_at: Time.now)
             do_request
             expect(status).to be 401
           end

@@ -81,15 +81,15 @@ resource 'Comment Votes' do
     end
 
     include_context 'when user_blocking duration is 90 days' do
-      before { @user.update(block_start_at: Time.now) }
-
       example 'Blocked user attempts to vote on a comment', document: false do
+        @user.update(block_start_at: Time.now)
         do_request
         expect(status).to be 401
       end
 
       example 'Blocked user attempts to vote on a comment of an initiative', document: false do
         @comment.update(post: create(:initiative))
+        @user.update(block_start_at: Time.now)
         do_request
         expect(status).to be 401
       end
