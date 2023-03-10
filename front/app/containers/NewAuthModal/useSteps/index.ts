@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 
 // api
 import getAuthenticationRequirements from 'api/permissions/getAuthenticationRequirements';
@@ -63,6 +63,11 @@ export default function useSteps(
 
     return wrappedAction;
   };
+
+  useEffect(() => {
+    transition('closed', 'TRIGGER_REGISTRATION_FLOW')();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return {
     currentStep,
