@@ -225,14 +225,6 @@ resource 'Comments' do
         expect(json_response.dig(:data, :relationships, :post, :data, :id)).to eq initiative_id
         expect(@initiative.reload.comments_count).to eq 1
       end
-
-      include_context 'when user_blocking duration is 90 days' do
-        example 'Blocked user attempts to create a comment on an initiative', document: false do
-          @user.update(block_start_at: Time.now)
-          do_request
-          expect(status).to be 401
-        end
-      end
     end
 
     post 'web_api/v1/comments/:id/mark_as_deleted' do
@@ -268,14 +260,6 @@ resource 'Comments' do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
         expect(@initiative.reload.comments_count).to eq 1
-      end
-
-      include_context 'when user_blocking duration is 90 days' do
-        example 'Blocked user attempts to update a comment on an initiative', document: false do
-          @user.update(block_start_at: Time.now)
-          do_request
-          expect(status).to be 401
-        end
       end
 
       example 'Admins cannot modify a comment on an initiative', document: false do

@@ -618,14 +618,6 @@ resource 'Ideas' do
             expect(json_response[:data][:attributes][:upvotes_count]).to eq 1
           end
 
-          include_context 'when user_blocking duration is 90 days' do
-            example 'Blocked user attempts to create an idea' do
-              @user.update(block_start_at: Time.now)
-              do_request
-              expect(status).to be 401
-            end
-          end
-
           describe 'Values for disabled fields are ignored' do
             let(:proposed_budget) { 12_345 }
 

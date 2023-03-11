@@ -860,14 +860,6 @@ resource 'Users' do
               expect(response_data.dig(:relationships, :granted_permissions, :data).size).to eq(1)
             end
           end
-
-          include_context 'when user_blocking duration is 90 days' do
-            example 'Blocked user attempts to update her details', document: false do
-              @user.update(block_start_at: Time.now)
-              do_request
-              expect(status).to be 401
-            end
-          end
         end
 
         # NOTE: To be included in an upcoming iteration

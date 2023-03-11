@@ -79,21 +79,6 @@ resource 'Comment Votes' do
         assert_status 201
       end
     end
-
-    include_context 'when user_blocking duration is 90 days' do
-      example 'Blocked user attempts to vote on a comment', document: false do
-        @user.update(block_start_at: Time.now)
-        do_request
-        expect(status).to be 401
-      end
-
-      example 'Blocked user attempts to vote on a comment of an initiative', document: false do
-        @comment.update(post: create(:initiative))
-        @user.update(block_start_at: Time.now)
-        do_request
-        expect(status).to be 401
-      end
-    end
   end
 
   post 'web_api/v1/comments/:comment_id/votes/up' do
@@ -103,14 +88,6 @@ resource 'Comment Votes' do
       assert_status 201
       expect(@comment.reload.upvotes_count).to eq 3
       expect(@comment.reload.downvotes_count).to eq 0
-    end
-
-    include_context 'when user_blocking duration is 90 days' do
-      example 'Blocked user attempts to upvote a comment', document: false do
-        @user.update(block_start_at: Time.now)
-        do_request
-        expect(status).to be 401
-      end
     end
 
     example 'Upvote a comment that you downvoted before' do
@@ -141,14 +118,6 @@ resource 'Comment Votes' do
       assert_status 401
       expect(@comment.reload.upvotes_count).to eq 3
       expect(@comment.reload.downvotes_count).to eq 0
-    end
-
-    include_context 'when user_blocking duration is 90 days' do
-      example 'Blocked user attempts to downvote a comment', document: false do
-        @user.update(block_start_at: Time.now)
-        do_request
-        expect(status).to be 401
-      end
     end
 
     # example_request "Downvote a comment that doesn't have your vote yet" do
@@ -183,14 +152,6 @@ resource 'Comment Votes' do
     example_request 'Delete a vote from a comment' do
       expect(response_status).to eq 200
       expect { Vote.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
-    end
-
-    include_context 'when user_blocking duration is 90 days' do
-      example 'Blocked user attempts to delete a vote from a comment', document: false do
-        @user.update(block_start_at: Time.now)
-        do_request
-        expect(status).to be 401
-      end
     end
   end
 end

@@ -77,14 +77,6 @@ resource 'Baskets' do
         expect(json_response.dig(:data, :relationships, :participation_context, :data, :id)).to eq participation_context_id
       end
 
-      include_context 'when user_blocking duration is 90 days' do
-        example 'Blocked user attempts to create a basket', document: false do
-          @user.update(block_start_at: Time.now)
-          do_request
-          expect(status).to be 401
-        end
-      end
-
       example '[error] Create a basket in a survey' do
         do_request(
           basket: {

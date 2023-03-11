@@ -63,14 +63,6 @@ resource 'Votes' do
       expect(@idea.reload.upvotes_count).to eq 3
     end
 
-    include_context 'when user_blocking duration is 90 days' do
-      example 'Blocked user attempts to create a vote on an idea', document: false do
-        @user.update(block_start_at: Time.now)
-        do_request
-        expect(status).to be 401
-      end
-    end
-
     describe 'When the user already voted' do
       before do
         @vote = create(:vote, votable: @idea, user: @user, mode: 'up')
@@ -101,14 +93,6 @@ resource 'Votes' do
       expect(status).to eq 201
       expect(@idea.reload.upvotes_count).to eq 3
       expect(@idea.reload.downvotes_count).to eq 0
-    end
-
-    include_context 'when user_blocking duration is 90 days' do
-      example 'Blocked user attempts to upvote an idea', document: false do
-        @user.update(block_start_at: Time.now)
-        do_request
-        expect(status).to be 401
-      end
     end
 
     example 'Upvote an idea that you downvoted before' do
@@ -192,14 +176,6 @@ resource 'Votes' do
       expect(@idea.reload.downvotes_count).to eq 1
     end
 
-    include_context 'when user_blocking duration is 90 days' do
-      example 'Blocked user attempts to downvote an idea', document: false do
-        @user.update(block_start_at: Time.now)
-        do_request
-        expect(status).to be 401
-      end
-    end
-
     example 'Downvote an idea that you upvoted before' do
       @idea.votes.create(user: @user, mode: 'up')
       do_request
@@ -237,14 +213,6 @@ resource 'Votes' do
     example_request 'Delete a vote from an idea' do
       expect(response_status).to eq 200
       expect { Vote.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
-    end
-
-    include_context 'when user_blocking duration is 90 days' do
-      example 'Blocked user attempts to delete a vote on an idea', document: false do
-        @user.update(block_start_at: Time.now)
-        do_request
-        expect(status).to be 401
-      end
     end
   end
 end

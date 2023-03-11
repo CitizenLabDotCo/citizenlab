@@ -307,24 +307,6 @@ resource 'Comments' do
         end
       end
 
-      include_context 'when user_blocking duration is 90 days' do
-        example 'Blocked user attempts to comment on an idea', document: false do
-          @user.update(block_start_at: Time.now)
-          do_request
-          expect(status).to be 401
-        end
-
-        describe do
-          let(:parent_id) { create(:comment, post: @idea).id }
-
-          example 'Blocked user attempts to comment on a comment', document: false do
-            @user.update(block_start_at: Time.now)
-            do_request
-            expect(status).to be 401
-          end
-        end
-      end
-
       describe do
         let(:body_multiloc) { { 'fr-FR' => '' } }
 
@@ -416,14 +398,6 @@ resource 'Comments' do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
         expect(@idea.reload.comments_count).to eq 1
-      end
-
-      include_context 'when user_blocking duration is 90 days' do
-        example 'Blocked user attempts to update a comment on an idea', document: false do
-          @user.update(block_start_at: Time.now)
-          do_request
-          expect(status).to be 401
-        end
       end
 
       example 'Admins cannot modify a comment on an idea', document: false do

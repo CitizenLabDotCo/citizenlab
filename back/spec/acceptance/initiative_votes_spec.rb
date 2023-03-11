@@ -68,14 +68,6 @@ resource 'Votes' do
       expect(@initiative.reload.upvotes_count).to eq 3
     end
 
-    include_context 'when user_blocking duration is 90 days' do
-      example 'Blocked user attempts to vote on an initiative', document: false do
-        @user.update(block_start_at: Time.now)
-        do_request
-        expect(status).to be 401
-      end
-    end
-
     example 'Reaching the voting threshold immediately triggers status change', document: false do
       settings = AppConfiguration.instance.settings
       settings['initiatives']['voting_threshold'] = 3
@@ -100,14 +92,6 @@ resource 'Votes' do
       assert_status 201
       expect(@initiative.reload.upvotes_count).to eq 3
       expect(@initiative.reload.downvotes_count).to eq 0
-    end
-
-    include_context 'when user_blocking duration is 90 days' do
-      example 'Blocked user attempts to upvote an initiative', document: false do
-        @user.update(block_start_at: Time.now)
-        do_request
-        expect(status).to be 401
-      end
     end
 
     example 'Upvote an initiative that you downvoted before' do
@@ -145,14 +129,6 @@ resource 'Votes' do
       expect(@initiative.reload.upvotes_count).to eq 2
       expect(@initiative.reload.downvotes_count).to eq 0
     end
-
-    include_context 'when user_blocking duration is 90 days' do
-      example 'Blocked user attempts to downvote an initiative', document: false do
-        @user.update(block_start_at: Time.now)
-        do_request
-        expect(status).to be 401
-      end
-    end
   end
 
   delete 'web_api/v1/votes/:id' do
@@ -162,14 +138,6 @@ resource 'Votes' do
     example_request 'Delete a vote from an initiative' do
       assert_status 200
       expect { Vote.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
-    end
-
-    include_context 'when user_blocking duration is 90 days' do
-      example 'Blocked user attempts to delete a vote on an initiative', document: false do
-        @user.update(block_start_at: Time.now)
-        do_request
-        expect(status).to be 401
-      end
     end
   end
 end
