@@ -39,19 +39,24 @@ describe UserPolicy do
         subject_user.save!
         expect(scope.resolve.size).to eq 0
       end
+    end
 
-      context 'for blocked user on theirself' do
-        before { subject_user.update(block_start_at: Time.now) }
+    context 'for a blocked resident on theirself' do
+      let(:current_user) { create(:user, block_start_at: Time.now) }
+      let(:subject_user) { current_user }
 
-        it_behaves_like 'policy for blocked user', destroy: true, skip: 'create'
+      include_context 'when user_blocking duration is 90 days' do
+        it { is_expected.to     permit(:show) }
+        it { is_expected.not_to permit(:update) }
+        it { is_expected.to     permit(:destroy) }
       end
     end
 
     context 'on someone else' do
       let(:subject_user) { create :user }
 
-      it { is_expected.to     permit(:show)    }
-      it { is_expected.not_to permit(:update)  }
+      it { is_expected.to     permit(:show) }
+      it { is_expected.not_to permit(:update) }
       it { is_expected.not_to permit(:destroy) }
       it { is_expected.not_to permit(:index) }
       it { is_expected.not_to permit(:index_xlsx) }

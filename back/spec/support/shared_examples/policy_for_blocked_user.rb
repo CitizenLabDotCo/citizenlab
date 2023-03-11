@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.shared_examples_for 'policy for blocked user' do |show: true, destroy: false, skip: nil|
+RSpec.shared_examples_for 'policy for blocked user' do |show: true|
   before do
     settings = AppConfiguration.instance.settings
     settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
@@ -10,12 +10,9 @@ RSpec.shared_examples_for 'policy for blocked user' do |show: true, destroy: fal
   it { is_expected.to     permit(:show) } if show
   it { is_expected.not_to permit(:show) } unless show
 
-  it { is_expected.not_to permit(:create) } unless skip == 'create'
-
+  it { is_expected.not_to permit(:create) }
   it { is_expected.not_to permit(:update) }
-
-  it { is_expected.to     permit(:destroy) } if destroy
-  it { is_expected.not_to permit(:destroy) } unless destroy
+  it { is_expected.not_to permit(:destroy) }
 end
 
 RSpec.shared_examples_for 'policy for blocked user vote' do |down_not_authorized: false|
