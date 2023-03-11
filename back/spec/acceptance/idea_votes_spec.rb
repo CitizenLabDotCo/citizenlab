@@ -55,7 +55,7 @@ resource 'Votes' do
     let(:idea_id) { @idea.id }
     let(:mode) { 'up' }
 
-    example_request 'Create a vote on an idea' do
+    example_request 'Create a vote to an idea' do
       assert_status 201
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :relationships, :user, :data, :id)).to be_nil
