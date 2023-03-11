@@ -51,9 +51,8 @@ describe InitiativeCommentPolicy do
     end
 
     context 'for blocked comment author' do
-      before { user.update(block_start_at: Time.now) }
-
-      let(:user) { comment.author }
+      let(:user) { create(:user, block_start_at: Time.now) }
+      let(:comment) { create(:comment, author: user, post: initiave) }
 
       it_behaves_like 'policy for blocked user'
     end

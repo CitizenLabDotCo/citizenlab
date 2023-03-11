@@ -53,9 +53,8 @@ describe IdeaVotePolicy do
   end
 
   context 'for blocked vote owner' do
-    before { user.update(block_start_at: Time.now) }
-
-    let(:user) { vote.user }
+    let(:user) { create(:user, block_start_at: Time.now) }
+    let(:vote) { create(:vote, user: user, votable: votable) }
 
     it_behaves_like 'policy for blocked user vote'
   end

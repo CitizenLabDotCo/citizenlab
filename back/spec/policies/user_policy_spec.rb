@@ -43,8 +43,6 @@ describe UserPolicy do
       context 'for blocked user on theirself' do
         before { subject_user.update(block_start_at: Time.now) }
 
-        let(:subject_user) { current_user }
-
         it_behaves_like 'policy for blocked user', destroy: true, skip: 'create'
       end
     end
