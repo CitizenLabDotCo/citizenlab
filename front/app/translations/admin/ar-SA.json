@@ -532,6 +532,8 @@
   "app.containers.Admin.PagesAndMenu.viewButton": "عرض",
   "app.containers.Admin.Users.GroupsHeader.deleteGroup": "حذف المجموعة",
   "app.containers.Admin.Users.GroupsHeader.editGroup": "تعديل المجموعة",
+  "app.containers.Admin.Users.GroupsPanel.adminsAndManagers": "Admins & managers",
+  "app.containers.Admin.Users.GroupsPanel.adminsAndManagersSubtitle": "View who are selected as admins, folder admins, and project managers.",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "المستخدمون",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "المجموعات",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "أنشئ مجموعات وأضِف المستخدمين إليها.",
