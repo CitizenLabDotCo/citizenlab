@@ -722,7 +722,6 @@
   "app.containers.ChangePassword.passwordChangeSuccessMessage": "Je wachtwoord is succesvol bijgewerkt",
   "app.containers.ChangePassword.passwordEmptyError": "Voer uw wachtwoord in",
   "app.containers.ChangePassword.passwordsDontMatch": "Nieuw wachtwoord bevestigen",
-  "app.containers.ChangePassword.title": "Wijzig uw wachtwoord",
   "app.containers.Comments.a11y_commentDeleted": "Reactie verwijderd",
   "app.containers.Comments.a11y_commentPosted": "Reactie geplaatst",
   "app.containers.Comments.a11y_undoUpvote": "Stem ongedaan maken",

@@ -722,7 +722,6 @@
   "app.containers.ChangePassword.passwordChangeSuccessMessage": "Vaša lozinka je uspešno ažurirana",
   "app.containers.ChangePassword.passwordEmptyError": "Unesi lozinku",
   "app.containers.ChangePassword.passwordsDontMatch": "Potvrdi novu lozinku",
-  "app.containers.ChangePassword.title": "Promena lozinke",
   "app.containers.Comments.a11y_commentDeleted": "Komentar je obrisan",
   "app.containers.Comments.a11y_commentPosted": "Komentar je objavljen",
   "app.containers.Comments.a11y_undoUpvote": "Poništite glas",

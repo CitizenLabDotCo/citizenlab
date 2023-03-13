@@ -722,7 +722,6 @@
   "app.containers.ChangePassword.passwordChangeSuccessMessage": "Votre mot de passe a été mis à jour avec succès",
   "app.containers.ChangePassword.passwordEmptyError": "Saisissez votre mot de passe",
   "app.containers.ChangePassword.passwordsDontMatch": "Confirmez le nouveau mot de passe",
-  "app.containers.ChangePassword.title": "Modifiez votre mot de passe",
   "app.containers.Comments.a11y_commentDeleted": "Commentaire supprimé",
   "app.containers.Comments.a11y_commentPosted": "Commentaire publié",
   "app.containers.Comments.a11y_undoUpvote": "Annuler le vote",
