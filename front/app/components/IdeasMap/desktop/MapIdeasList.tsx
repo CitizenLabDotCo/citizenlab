@@ -10,7 +10,7 @@ import Centerer from 'components/UI/Centerer';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-import useIdeaMarkers from 'hooks/useIdeaMarkers';
+import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
 import useProject from 'hooks/useProject';
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
 
@@ -135,7 +135,7 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
   const [sort, setSort] = useState<Sort>(
     project?.attributes.ideas_order || ideaDefaultSortMethodFallback
   );
-  const ideaMarkers = useIdeaMarkers({
+  const { data: ideaMarkers } = useIdeaMarkers({
     projectIds: [projectId],
     phaseId,
     sort,
@@ -206,7 +206,9 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
         <StyledSearchInput
           onChange={handleSearchOnChange}
           a11y_numberOfSearchResults={
-            ideaMarkers && ideaMarkers.length > 0 ? ideaMarkers.length : 0
+            ideaMarkers && ideaMarkers.data.length > 0
+              ? ideaMarkers.data.length
+              : 0
           }
         />
       </Header>
@@ -219,8 +221,8 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
         )}
 
         {ideaMarkers &&
-          ideaMarkers.length > 0 &&
-          ideaMarkers.map((ideaMarker) => (
+          ideaMarkers.data.length > 0 &&
+          ideaMarkers.data.map((ideaMarker) => (
             <StyledIdeaMapCard
               projectId={projectId}
               ideaMarker={ideaMarker}
@@ -229,7 +231,7 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
             />
           ))}
 
-        {(ideaMarkers === null || ideaMarkers?.length === 0) && (
+        {(ideaMarkers === null || ideaMarkers?.data.length === 0) && (
           <EmptyContainer>
             <IdeaIcon ariaHidden name="idea" />
             <EmptyMessage>

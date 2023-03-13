@@ -72,29 +72,6 @@ export interface IMinimalIdeaData {
   };
 }
 
-export interface IIdeaMarkerData {
-  id: string;
-  type: string;
-  attributes: {
-    slug: string;
-    title_multiloc: Multiloc;
-    location_point_geojson: GeoJSON.Point;
-    location_description: string;
-    upvotes_count: number;
-    downvotes_count: number;
-    comments_count: number;
-    budget: number | null;
-  };
-}
-
-export interface IIdeaLinks {
-  self: string;
-  first: string;
-  prev: string;
-  next: string;
-  last: string;
-}
-
 export interface IIdea {
   data: IIdeaData;
 }
@@ -144,14 +121,6 @@ export function ideasFilterCountsStream(
 ) {
   return streams.get<IIdeasFilterCounts>({
     apiEndpoint: `${API_PATH}/ideas/filter_counts`,
-    ...streamParams,
-    cacheStream: false,
-  });
-}
-
-export function ideasMarkersStream(streamParams: IStreamParams | null = null) {
-  return streams.get<{ data: IIdeaMarkerData[]; links: IIdeaLinks }>({
-    apiEndpoint: `${API_PATH}/ideas/as_markers`,
     ...streamParams,
     cacheStream: false,
   });
