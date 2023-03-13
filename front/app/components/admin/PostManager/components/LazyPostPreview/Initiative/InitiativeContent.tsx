@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
@@ -18,16 +18,7 @@ import { Top, Content, Container } from '../PostPreview';
 import VoteIndicator from 'components/InitiativeCard/VoteIndicator';
 import { Box } from '@citizenlab/cl2-component-library';
 
-// services
-import { deleteInitiative } from 'services/initiatives';
-
 // resources
-import GetResourceFiles, {
-  GetResourceFilesChildProps,
-} from 'resources/GetResourceFiles';
-import GetInitiative, {
-  GetInitiativeChildProps,
-} from 'resources/GetInitiative';
 import GetInitiativeImages, {
   GetInitiativeImagesChildProps,
 } from 'resources/GetInitiativeImages';
@@ -42,6 +33,11 @@ import messages from '../messages';
 // style
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
+
+// hooks
+import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
 
 const StyledTitle = styled(Title)`
   margin-bottom: 30px;
@@ -104,172 +100,159 @@ const DaysLeft = styled.div`
   margin-bottom: 20px;
 `;
 
-interface State {}
-
 export interface InputProps {
-  initiativeId: string | null;
+  initiativeId: string;
   closePreview: () => void;
   handleClickEdit: () => void;
 }
 
 interface DataProps {
-  initiative: GetInitiativeChildProps;
   initiativeImages: GetInitiativeImagesChildProps;
-  initiativeFiles: GetResourceFilesChildProps;
   locale: GetLocaleChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
-export class InitiativeContent extends PureComponent<
-  Props & InjectedLocalized & WrappedComponentProps,
-  State
-> {
-  handleClickDelete = () => {
-    const { initiative, closePreview } = this.props;
-    const message = this.props.intl.formatMessage(
-      messages.deleteInitiativeConfirmation
-    );
+const InitiativeContent = ({
+  localize,
+  initiativeImages,
+  handleClickEdit,
+  locale,
+  closePreview,
+  intl,
+  initiativeId,
+}: Props & InjectedLocalized & WrappedComponentProps) => {
+  const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
+  const { mutate: deleteInitiative } = useDeleteInitiative();
+  const { data: initiative } = useInitiativeById(initiativeId);
+  const handleClickDelete = () => {
+    const message = intl.formatMessage(messages.deleteInitiativeConfirmation);
 
-    if (!isNilOrError(initiative)) {
+    if (initiative) {
       if (window.confirm(message)) {
-        deleteInitiative(initiative.id);
-        closePreview();
+        deleteInitiative(
+          { initiativeId: initiative.data.id },
+          {
+            onSuccess: () => {
+              closePreview();
+            },
+          }
+        );
       }
     }
   };
 
-  render() {
-    const {
-      initiative,
-      localize,
-      initiativeImages,
-      initiativeFiles,
-      handleClickEdit,
-      locale,
-    } = this.props;
+  if (!isNilOrError(initiative) && !isNilOrError(locale)) {
+    const initiativeTitle = localize(initiative.data.attributes.title_multiloc);
+    const initiativeImageLarge =
+      !isNilOrError(initiativeImages) && initiativeImages.length > 0
+        ? get(initiativeImages[0], 'attributes.versions.large', null)
+        : null;
+    const initiativeGeoPosition =
+      initiative.data.attributes.location_point_geojson || null;
+    const initiativeAddress =
+      initiative.data.attributes.location_description || null;
+    const daysLeft = getPeriodRemainingUntil(
+      initiative.data.attributes.expires_at
+    );
 
-    if (!isNilOrError(initiative) && !isNilOrError(locale)) {
-      const initiativeId = initiative.id;
-      const initiativeTitle = localize(initiative.attributes.title_multiloc);
-      const initiativeImageLarge =
-        !isNilOrError(initiativeImages) && initiativeImages.length > 0
-          ? get(initiativeImages[0], 'attributes.versions.large', null)
-          : null;
-      const initiativeGeoPosition =
-        initiative.attributes.location_point_geojson || null;
-      const initiativeAddress =
-        initiative.attributes.location_description || null;
-      const daysLeft = getPeriodRemainingUntil(
-        initiative.attributes.expires_at
-      );
+    return (
+      <Container>
+        <Top>
+          <Button
+            icon="edit"
+            buttonStyle="text"
+            textColor={colors.primary}
+            onClick={handleClickEdit}
+          >
+            <FormattedMessage {...messages.edit} />
+          </Button>
+          <Button
+            icon="delete"
+            buttonStyle="text"
+            textColor={colors.primary}
+            onClick={handleClickDelete}
+          >
+            <FormattedMessage {...messages.delete} />
+          </Button>
+        </Top>
+        <Content>
+          <StyledTitle
+            postId={initiativeId}
+            title={initiativeTitle}
+            postType="initiative"
+          />
+          <Row>
+            <Left>
+              {initiativeImageLarge && (
+                <Image
+                  src={initiativeImageLarge}
+                  alt=""
+                  className="e2e-initiativeImage"
+                />
+              )}
 
-      return (
-        <Container>
-          <Top>
-            <Button
-              icon="edit"
-              buttonStyle="text"
-              textColor={colors.primary}
-              onClick={handleClickEdit}
-            >
-              <FormattedMessage {...messages.edit} />
-            </Button>
-            <Button
-              icon="delete"
-              buttonStyle="text"
-              textColor={colors.primary}
-              onClick={this.handleClickDelete}
-            >
-              <FormattedMessage {...messages.delete} />
-            </Button>
-          </Top>
-          <Content>
-            <StyledTitle
-              postId={initiativeId}
-              title={initiativeTitle}
-              postType="initiative"
-            />
-            <Row>
-              <Left>
-                {initiativeImageLarge && (
-                  <Image
-                    src={initiativeImageLarge}
-                    alt=""
-                    className="e2e-initiativeImage"
+              <PostedBy
+                authorId={get(
+                  initiative,
+                  'data.relationships.author.data.id',
+                  null
+                )}
+                showAboutInitiatives={false}
+              />
+
+              <StyledBody
+                postId={initiativeId}
+                postType="initiative"
+                body={localize(initiative.data.attributes.body_multiloc)}
+                locale={locale}
+              />
+
+              {initiativeGeoPosition && initiativeAddress && (
+                <StyledMap
+                  address={initiativeAddress}
+                  position={initiativeGeoPosition}
+                />
+              )}
+
+              {initiativeFiles && (
+                <Box mb="25px">
+                  <FileAttachments files={initiativeFiles.data} />
+                </Box>
+              )}
+
+              <StyledOfficialFeedback
+                postId={initiativeId}
+                postType="initiative"
+                // If the user has access to the post preview,
+                // it means they are in the admin and therefore have permission
+                permissionToPost
+              />
+
+              <StyledComments postId={initiativeId} postType="initiative" />
+            </Left>
+            <Right>
+              <VotePreview>
+                <DaysLeft>
+                  <FormattedMessage
+                    {...messages.xDaysLeft}
+                    values={{ x: daysLeft }}
                   />
-                )}
+                </DaysLeft>
+                <VoteIndicator initiativeId={initiativeId} />
+              </VotePreview>
 
-                <PostedBy
-                  authorId={get(
-                    initiative,
-                    'relationships.author.data.id',
-                    null
-                  )}
-                  showAboutInitiatives={false}
-                />
-
-                <StyledBody
-                  postId={initiativeId}
-                  postType="initiative"
-                  body={localize(initiative.attributes.body_multiloc)}
-                  locale={locale}
-                />
-
-                {initiativeGeoPosition && initiativeAddress && (
-                  <StyledMap
-                    address={initiativeAddress}
-                    position={initiativeGeoPosition}
-                  />
-                )}
-
-                {initiativeFiles && !isNilOrError(initiativeFiles) && (
-                  <Box mb="25px">
-                    <FileAttachments files={initiativeFiles} />
-                  </Box>
-                )}
-
-                <StyledOfficialFeedback
-                  postId={initiativeId}
-                  postType="initiative"
-                  // If the user has access to the post preview,
-                  // it means they are in the admin and therefore have permission
-                  permissionToPost
-                />
-
-                <StyledComments postId={initiativeId} postType="initiative" />
-              </Left>
-              <Right>
-                <VotePreview>
-                  <DaysLeft>
-                    <FormattedMessage
-                      {...messages.xDaysLeft}
-                      values={{ x: daysLeft }}
-                    />
-                  </DaysLeft>
-                  <VoteIndicator initiativeId={initiativeId} />
-                </VotePreview>
-
-                <FeedbackSettings initiativeId={initiativeId} />
-              </Right>
-            </Row>
-          </Content>
-        </Container>
-      );
-    }
-    return null;
+              <FeedbackSettings initiativeId={initiativeId} />
+            </Right>
+          </Row>
+        </Content>
+      </Container>
+    );
   }
-}
+  return null;
+};
 
 const Data = adopt<DataProps, InputProps>({
-  initiative: ({ initiativeId, render }) => (
-    <GetInitiative id={initiativeId}>{render}</GetInitiative>
-  ),
-  initiativeFiles: ({ initiativeId, render }) => (
-    <GetResourceFiles resourceId={initiativeId} resourceType="initiative">
-      {render}
-    </GetResourceFiles>
-  ),
   initiativeImages: ({ initiativeId, render }) => (
     <GetInitiativeImages initiativeId={initiativeId}>
       {render}

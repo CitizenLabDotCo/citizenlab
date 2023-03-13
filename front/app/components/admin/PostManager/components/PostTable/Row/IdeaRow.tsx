@@ -1,13 +1,12 @@
 import React, { ChangeEvent, useState, MouseEvent } from 'react';
-import { combineLatest } from 'rxjs';
-import { take } from 'rxjs/operators';
-import { uniq, isEmpty, get } from 'lodash-es';
-import { findDOMNode } from 'react-dom';
-import { DragSource } from 'react-dnd-cjs';
+import { uniq, isEmpty } from 'lodash-es';
+import { useDrag } from 'react-dnd';
+import streams from 'utils/streams';
+import { getListEndpoint } from 'services/projectAllowedInputTopics';
 
 // services
-import { IIdeaData, updateIdea, ideaByIdStream } from 'services/ideas';
 import { IPhaseData } from 'services/phases';
+import { IIdeaData, updateIdea } from 'services/ideas';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 
 // components
@@ -23,10 +22,10 @@ import FeatureFlag from 'components/FeatureFlag';
 
 // utils
 import { timeAgo } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from '../../../messages';
 
 // analytics
@@ -42,9 +41,9 @@ import {
 import { insertConfiguration } from 'utils/moduleUtils';
 
 // hooks
-import { isNilOrError } from 'utils/helperUtils';
+import { API_PATH } from 'containers/App/constants';
 
-type InputProps = {
+type Props = {
   type: ManagerType;
   idea: IIdeaData;
   phases?: IPhaseData[];
@@ -65,12 +64,7 @@ export type IdeaCellComponentProps = {
   onClick?: (event: unknown) => void;
 };
 
-type Props = InputProps & {
-  connectDragSource: any;
-};
-
 const IdeaRow = ({
-  connectDragSource,
   onClickCheckbox,
   onClickTitle,
   className,
@@ -80,7 +74,8 @@ const IdeaRow = ({
   idea,
   selection,
   locale,
-}: Props & WrappedComponentProps) => {
+}: Props) => {
+  const { formatMessage } = useIntl();
   const [cells, setCells] = useState<
     CellConfiguration<IdeaCellComponentProps>[]
   >([
@@ -164,6 +159,102 @@ const IdeaRow = ({
     },
   ]);
 
+  const [_collected, drag] = useDrag({
+    type: 'IDEA',
+    item: {
+      type: 'idea',
+      id: idea.id,
+    },
+    end: async (item, monitor) => {
+      const dropResult = monitor.getDropResult<{
+        type: 'status' | 'project' | 'phase' | 'topic';
+        id: string;
+      }>();
+      const itemIdeaId = item.id;
+
+      if (dropResult && dropResult.type === 'status') {
+        selection.has(itemIdeaId) &&
+          selection.forEach((ideaId) => {
+            updateIdea(ideaId, {
+              idea_status_id: dropResult.id,
+            });
+          });
+
+        !selection.has(itemIdeaId) &&
+          updateIdea(itemIdeaId, {
+            idea_status_id: dropResult.id,
+          });
+
+        trackEventByName(tracks.ideaStatusChange, {
+          location: 'Idea overview',
+          method: 'Dragged and dropped idea(s) in manager',
+        });
+      } else if (dropResult && dropResult.type) {
+        const ideaIds = selection.has(item.id)
+          ? [...selection].map((id) => id)
+          : [item.id];
+
+        if (dropResult.type === 'topic') {
+          const currentTopics = idea.relationships.topics?.data.map(
+            (d) => d.id
+          );
+          const newTopics = uniq(currentTopics?.concat(dropResult.id));
+
+          ideaIds.forEach(async (ideaId) => {
+            try {
+              await updateIdea(
+                ideaId,
+
+                { topic_ids: newTopics }
+              );
+            } catch {
+              // Do nothing
+            }
+            streams.fetchAllWith({
+              apiEndpoint: [
+                // If in /admin/ideas
+                getListEndpoint(projectId),
+                // If in /admin/projects/:projectId/manage/ideas
+                `${API_PATH}/topics`,
+              ],
+            });
+          });
+        }
+
+        if (dropResult.type === 'phase') {
+          const currentPhases = idea.relationships.phases.data.map((d) => d.id);
+          const newPhases = uniq(currentPhases.concat(dropResult.id));
+
+          ideaIds.forEach((ideaId) => {
+            updateIdea(ideaId, {
+              phase_ids: newPhases,
+            });
+          });
+        }
+
+        if (dropResult.type === 'project') {
+          const newProject = dropResult.id;
+          const hasPhases = !isEmpty(idea.relationships.phases.data);
+
+          ideaIds.forEach((ideaId) => {
+            if (
+              !hasPhases ||
+              (hasPhases &&
+                window.confirm(
+                  formatMessage(messages.loseIdeaPhaseInfoConfirmation)
+                ))
+            ) {
+              updateIdea(ideaId, {
+                project_id: newProject,
+                phase_ids: [],
+              });
+            }
+          });
+        }
+      }
+    },
+  });
+
   const handleData = (
     insertCellOptions: InsertConfigurationOptions<
       CellConfiguration<IdeaCellComponentProps>
@@ -175,11 +266,8 @@ const IdeaRow = ({
   const selectedPhases = idea.relationships.phases.data.map((p) => p.id);
   const selectedTopics = idea.relationships.topics?.data.map((p) => p.id);
   const active = selection.has(idea.id);
-  const projectId = get(idea, 'relationships.project.data.id');
-  const selectedStatus: string | undefined = get(
-    idea,
-    'relationships.idea_status.data.id'
-  );
+  const projectId = idea.relationships.project.data.id;
+  const selectedStatus = idea.relationships.idea_status.data.id;
 
   const renderCell = (
     { idea, selection }: IdeaCellComponentProps,
@@ -217,23 +305,17 @@ const IdeaRow = ({
   };
 
   const onUpdateIdeaPhases = (selectedPhases: string[]) => {
-    updateIdea(idea.id, {
-      phase_ids: selectedPhases,
-    });
+    updateIdea(idea.id, { phase_ids: selectedPhases });
   };
 
   const onUpdateIdeaTopics = (selectedTopics: string[]) => {
-    updateIdea(idea.id, {
-      topic_ids: selectedTopics,
-    });
+    updateIdea(idea.id, { topic_ids: selectedTopics });
   };
 
   const onUpdateIdeaStatus = (statusId: string) => {
     const ideaId = idea.id;
 
-    updateIdea(ideaId, {
-      idea_status_id: statusId,
-    });
+    updateIdea(ideaId, { idea_status_id: statusId });
 
     trackEventByName(tracks.ideaStatusChange, {
       location: 'Idea overview',
@@ -252,10 +334,7 @@ const IdeaRow = ({
         className={`${className} e2e-idea-manager-idea-row`}
         undraggable={false}
         background={active ? colors.grey300 : undefined}
-        ref={(instance) => {
-          // eslint-disable-next-line react/no-find-dom-node
-          instance && connectDragSource(findDOMNode(instance));
-        }}
+        ref={drag}
       >
         {cells.map((cellConfiguration) =>
           renderCell({ idea, selection }, cellConfiguration)
@@ -283,109 +362,4 @@ const IdeaRow = ({
   );
 };
 
-const ideaSource = {
-  beginDrag(props: Props) {
-    return {
-      type: 'idea',
-      id: props.idea.id,
-    };
-  },
-  endDrag(props: Props & WrappedComponentProps, monitor) {
-    const item = monitor.getItem();
-    const dropResult = monitor.getDropResult();
-    const { selection } = props;
-
-    if (dropResult && dropResult.type === 'status') {
-      selection.has(item.id) &&
-        selection.forEach((ideaId) => {
-          updateIdea(ideaId, {
-            idea_status_id: dropResult.id,
-          });
-        });
-
-      !selection.has(item.id) &&
-        updateIdea(item.id, {
-          idea_status_id: dropResult.id,
-        });
-
-      trackEventByName(tracks.ideaStatusChange, {
-        location: 'Idea overview',
-        method: 'Dragged and dropped idea(s) in manager',
-      });
-    } else if (dropResult && dropResult.type) {
-      const observables = selection.has(item.id)
-        ? [...selection].map((id) => ideaByIdStream(id).observable)
-        : [ideaByIdStream(item.id).observable];
-
-      if (dropResult.type === 'topic') {
-        combineLatest(observables)
-          .pipe(take(1))
-          .subscribe((ideas) => {
-            ideas.map((idea) => {
-              const currentTopics = idea.data.relationships.topics?.data.map(
-                (d) => d.id
-              );
-              const newTopics = uniq(currentTopics?.concat(dropResult.id));
-              updateIdea(idea.data.id, {
-                topic_ids: newTopics,
-              });
-            });
-          });
-      }
-
-      if (dropResult.type === 'phase') {
-        combineLatest(observables)
-          .pipe(take(1))
-          .subscribe((ideas) => {
-            ideas.map((idea) => {
-              const currentPhases = idea.data.relationships.phases.data.map(
-                (d) => d.id
-              );
-              const newPhases = uniq(currentPhases.concat(dropResult.id));
-              updateIdea(idea.data.id, {
-                phase_ids: newPhases,
-              });
-            });
-          });
-      }
-
-      if (dropResult.type === 'project') {
-        combineLatest(observables)
-          .pipe(take(1))
-          .subscribe((ideas) => {
-            ideas.map((idea) => {
-              const newProject = dropResult.id;
-              const hasPhases = !isEmpty(idea.data.relationships.phases.data);
-
-              if (hasPhases) {
-                const message = props.intl.formatMessage(
-                  messages.loseIdeaPhaseInfoConfirmation
-                );
-
-                if (window.confirm(message)) {
-                  updateIdea(idea.data.id, {
-                    project_id: newProject,
-                    phase_ids: [],
-                  });
-                }
-              } else {
-                updateIdea(idea.data.id, {
-                  project_id: newProject,
-                  phase_ids: [],
-                });
-              }
-            });
-          });
-      }
-    }
-  },
-};
-
-function collect(connect, monitor) {
-  return {
-    connectDragSource: connect.dragSource(),
-    isDragging: monitor.isDragging(),
-  };
-}
-
-export default injectIntl(DragSource('IDEA', ideaSource, collect)(IdeaRow));
+export default IdeaRow;

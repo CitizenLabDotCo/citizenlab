@@ -88,8 +88,7 @@ describe('Idea new page', () => {
 
     // Intercept the payload, and make sure the original lat/long values are saved as the point
     cy.wait('@submitIdea').then((interception) => {
-      const keys = Object.keys(interception.request.body.idea);
-      const value = interception.request.body.idea[keys[3]];
+      const value = interception.request.body.idea['location_point_geojson'];
       expect(value.coordinates[0]).to.equal(long);
       expect(value.coordinates[1]).to.equal(lat);
     });

@@ -104,6 +104,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            permission_option_email_confirmation: {
+              enabled: true,
+              allowed: true
+            },
             representativeness: {
               enabled: true,
               allowed: true
@@ -391,6 +395,11 @@ module MultiTenancy
             posthog_integration: {
               enabled: true,
               allowed: true
+            },
+            user_blocking: {
+              enabled: true,
+              allowed: true,
+              duration: 90
             }
           })
         )
