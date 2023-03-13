@@ -70,7 +70,8 @@ const ToggleUserConfirmation = ({ isEnabled, onChange }: Props) => {
         )}
         {includeEmailConfirmedOption && (
           <IconTooltip
-            content={'Cannot disable this due to tenante settings.'}
+            icon="info-outline"
+            content={'Cannot disable this due to tenant settings.'}
             ml="8px"
             mb="4px"
           />
