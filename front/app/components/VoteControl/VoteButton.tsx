@@ -309,7 +309,6 @@ interface Props {
   styleType: TStyleType;
   ariaHidden?: boolean;
   onClick: (event: React.FormEvent) => void;
-  setRef?: (el: HTMLButtonElement) => void;
   iconName: IconNames;
   ideaId: string;
 }
@@ -322,7 +321,6 @@ const VoteButton = ({
   styleType,
   ariaHidden = false,
   onClick,
-  setRef,
   iconName,
   ideaId,
   userVoteMode,
@@ -422,7 +420,6 @@ const VoteButton = ({
           votingEnabled={buttonEnabled}
           onMouseDown={removeFocusAfterMouseClick}
           onClick={onClick}
-          ref={setRef}
           className={[
             className,
             {
