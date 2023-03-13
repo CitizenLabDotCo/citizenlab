@@ -123,7 +123,7 @@ export default ({ open, setClose, user }: Props) => {
             </FormLabel>
             <TextArea name="reason" />
             <WarningContainer>
-              <Warning>{formatMessage(messages.info)}</Warning>
+              <Warning>{formatMessage(messages.blockInfo)}</Warning>
             </WarningContainer>
             <Box display="flex">
               <Button

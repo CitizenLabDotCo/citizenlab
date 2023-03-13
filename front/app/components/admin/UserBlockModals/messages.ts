@@ -22,8 +22,8 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.userBlockModal.reasonLabelTooltip',
     defaultMessage: 'This will be comunicated to the blocked user.',
   },
-  info: {
-    id: 'app.containers.Admin.Users.userBlockModal.reasonLabel',
+  blockInfo: {
+    id: 'app.containers.Admin.Users.userBlockModal.blockInfo',
     defaultMessage:
       'The content of this user won’t be removed through this action. Don’t forget to moderate this user’s content if needed.',
   },
