@@ -10,7 +10,13 @@ import Avatar from 'components/Avatar';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Button from 'components/UI/Button';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
-import { Badge } from '@citizenlab/cl2-component-library';
+import {
+  Badge,
+  useBreakpoint,
+  Box,
+  Title,
+  Text,
+} from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
 // i18n
@@ -25,12 +31,6 @@ import { colors } from 'utils/styleUtils';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAuthUser from 'hooks/useAuthUser';
 import useUser from 'hooks/useUser';
-import {
-  useBreakpoint,
-  Box,
-  Title,
-  Text,
-} from '@citizenlab/cl2-component-library';
 
 const BlockUser = React.lazy(
   () => import('components/admin/UserBlockModals/BlockUser')
@@ -60,6 +60,7 @@ const UserHeader = ({ userSlug }: Props) => {
   const hideBio = useFeatureFlag({ name: 'disable_user_bios' });
   const { formatMessage } = useIntl();
   const [showBlockUserModal, setShowBlockUserModal] = useState(false);
+  const [showUnblockUserModal, setShowUnblockUserModal] = useState(false);
 
   if (isNilOrError(user)) {
     return null;
@@ -76,12 +77,11 @@ const UserHeader = ({ userSlug }: Props) => {
   const isBlocked = user.attributes?.blocked;
   const isCurrentUserAdmin =
     !isNilOrError(authUser) && isAdmin({ data: authUser });
-  const setShowBlockUserModalFunc = (bool) => () => setShowBlockUserModal(bool);
 
   const actions: IAction[] = [
     isBlocked
       ? {
-          handler: () => setShowBlockUserModal(true),
+          handler: () => setShowUnblockUserModal(true),
           label: formatMessage(blockUserMessages.unblockAction),
           icon: 'user-circle' as const,
         }
@@ -160,13 +160,13 @@ const UserHeader = ({ userSlug }: Props) => {
           <>
             <BlockUser
               user={user}
-              setClose={setShowBlockUserModalFunc(false)}
-              open={showBlockUserModal && !isBlocked}
+              setClose={() => setShowBlockUserModal(false)}
+              open={showBlockUserModal}
             />
             <UnblockUser
               user={user}
-              setClose={setShowBlockUserModalFunc(false)}
-              open={showBlockUserModal && !!isBlocked}
+              setClose={() => setShowUnblockUserModal(false)}
+              open={showUnblockUserModal}
             />
           </>
         )}

@@ -5,9 +5,8 @@ import Modal from 'components/UI/Modal';
 import { Title, Text, Box, Icon } from '@citizenlab/cl2-component-library';
 
 // i18n
-import { useIntl } from 'utils/cl-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 // Styling
 import styled from 'styled-components';

@@ -58,6 +58,7 @@ const UserTableRow = ({
     moment(user.attributes.registration_completed_at).format('LL')
   );
   const [showBlockUserModal, setShowBlockUserModal] = useState(false);
+  const [showUnblockUserModal, setShowUnblockUserModal] = useState(false);
 
   useEffect(() => {
     setUserIsAdmin(isAdmin({ data: user }));
@@ -67,7 +68,6 @@ const UserTableRow = ({
   }, [user]);
 
   const isBlocked = user.attributes?.blocked;
-  const setShowBlockUserModalFunc = (bool) => () => setShowBlockUserModal(bool);
 
   const handleDeleteClick = () => {
     const deleteMessage = formatMessage(messages.userDeletionConfirmation);
@@ -106,7 +106,7 @@ const UserTableRow = ({
     },
     isBlocked
       ? {
-          handler: () => setShowBlockUserModal(true),
+          handler: () => setShowUnblockUserModal(true),
           label: formatMessage(blockUserMessages.unblockAction),
           icon: 'user-circle' as const,
         }
@@ -160,13 +160,13 @@ const UserTableRow = ({
       </Td>
       <BlockUser
         user={user}
-        setClose={setShowBlockUserModalFunc(false)}
-        open={showBlockUserModal && !isBlocked}
+        setClose={() => setShowBlockUserModal(false)}
+        open={showBlockUserModal}
       />
       <UnblockUser
         user={user}
-        setClose={setShowBlockUserModalFunc(false)}
-        open={showBlockUserModal && !!isBlocked}
+        setClose={() => setShowUnblockUserModal(false)}
+        open={showUnblockUserModal}
       />
     </Tr>
   );

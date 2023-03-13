@@ -20,8 +20,7 @@ import Warning from 'components/UI/Warning';
 import SuccessfulUserBlock from './SuccessfulUserBlock';
 
 // i18n
-import { useIntl } from 'utils/cl-intl';
-import { FormattedMessage } from 'utils/cl-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // styling
@@ -81,7 +80,7 @@ export default ({ open, setClose, user }: Props) => {
     setClose();
   };
 
-  if (success && !isNilOrError(updatedUser))
+  if (success && !isNilOrError(updatedUser)) {
     return (
       <SuccessfulUserBlock
         name={`${user.attributes.first_name} ${user.attributes.last_name}`}
@@ -90,6 +89,7 @@ export default ({ open, setClose, user }: Props) => {
         opened={true}
       />
     );
+  }
 
   return (
     <Modal
