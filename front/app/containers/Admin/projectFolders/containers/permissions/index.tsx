@@ -150,7 +150,7 @@ const FolderPermissions = ({
       width="100%"
       mb="25px"
       display="flex"
-      flexDirection="row"
+      flexDirection="column"
       justifyContent="space-between"
     >
       <Box width="100%">
@@ -238,8 +238,8 @@ const FolderPermissions = ({
           </>
         </List>
       </Box>
-      <Box width="100%">
-        <SeatInfo seatType="admin" width={null} />
+      <Box width="100%" py="32px">
+        <SeatInfo seatType="admin" />
       </Box>
     </Box>
   );

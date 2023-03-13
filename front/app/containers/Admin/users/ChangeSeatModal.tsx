@@ -22,33 +22,11 @@ const getInfoText = (
 ): MessageDescriptor => {
   if (isUserAdmin) {
     return messages.confirmNormalUserQuestion;
+  } else if (currentAdminSeats >= maximumAdmins) {
+    return messages.reachedLimitMessage;
   }
 
-  let confirmChangeQuestion = messages.confirmAdminQuestion;
-
-  if (maximumAdmins === currentAdminSeats) {
-    confirmChangeQuestion = messages.reachedLimitMessage;
-  } else if (currentAdminSeats > maximumAdmins) {
-    confirmChangeQuestion = messages.permissionToBuy;
-  }
-
-  return confirmChangeQuestion;
-};
-
-const getButtonText = (
-  isUserAdmin: boolean,
-  maximumAdmins: number,
-  currentAdminSeats: number
-): MessageDescriptor => {
-  let buttonText = messages.confirm;
-
-  if (isUserAdmin) {
-    return buttonText;
-  }
-
-  return currentAdminSeats >= maximumAdmins
-    ? messages.buyAditionalSeat
-    : buttonText;
+  return messages.confirmAdminQuestion;
 };
 
 interface Props {
@@ -83,11 +61,6 @@ const ChangeSeatModal = ({
   const modalTitle = isUserAdmin
     ? messages.setAsNormalUser
     : messages.giveAdminRights;
-  const buttonText = getButtonText(
-    isUserAdmin,
-    maximumAdmins,
-    currentAdminSeats
-  );
 
   return (
     <Modal
@@ -132,7 +105,7 @@ const ChangeSeatModal = ({
               closeModal();
             }}
           >
-            {formatMessage(buttonText)}
+            {formatMessage(messages.confirm)}
           </Button>
         </Box>
       </Box>
