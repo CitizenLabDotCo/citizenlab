@@ -636,7 +636,7 @@ resource 'Users' do
 
         describe do
           let(:custom_field_values) { { birthyear: 1984 } }
-          let(:project) { create(:continuous_project) }
+          let(:project) { create(:continuous_project, with_permissions: true) }
 
           before do
             old_timers = create(:smart_group, rules: [
