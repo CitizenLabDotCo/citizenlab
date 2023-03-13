@@ -539,14 +539,11 @@ RSpec.describe User, type: :model do
       expect(u.active?).to be true
     end
 
-    it 'returns false when the user is blocked' do
-      u = build(:user, block_start_at: Time.now)
-
-      settings = AppConfiguration.instance.settings
-      settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
-      AppConfiguration.instance.update!(settings: settings)
-
-      expect(u.active?).to be false
+    include_context 'when user_blocking duration is 90 days' do
+      it 'returns false when the user is blocked' do
+        u = build(:user, block_start_at: Time.now)
+        expect(u.active?).to be false
+      end
     end
   end
 
