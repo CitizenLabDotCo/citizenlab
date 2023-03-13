@@ -14,7 +14,7 @@ import { FormattedDate } from 'react-intl';
 import useLocalize from 'hooks/useLocalize';
 import useProject from 'hooks/useProject';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { TVoteMode } from 'api/ideaVotes/types';
+import { TVoteMode } from 'api/idea_votes/types';
 
 type TSize = '1' | '2' | '3' | '4';
 type TStyleType = 'border' | 'shadow';

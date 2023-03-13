@@ -23,11 +23,11 @@ import { isRtl } from 'utils/styleUtils';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
-import useIdeaVote from 'api/ideaVotes/useIdeaVote';
+import useIdeaVote from 'api/idea_votes/useIdeaVote';
 import usePhases from 'hooks/usePhases';
-import useAddIdeaVote from 'api/ideaVotes/useAddIdeaVote';
-import { TVoteMode } from 'api/ideaVotes/types';
-import useDeleteIdeaVote from 'api/ideaVotes/useDeleteIdeaVote';
+import useAddIdeaVote from 'api/idea_votes/useAddIdeaVote';
+import { TVoteMode } from 'api/idea_votes/types';
+import useDeleteIdeaVote from 'api/idea_votes/useDeleteIdeaVote';
 
 type TSize = '1' | '2' | '3' | '4';
 type TStyleType = 'border' | 'shadow';
