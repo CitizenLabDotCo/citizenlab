@@ -58,10 +58,6 @@ interface Props {
 }
 
 const UsersHeader = memo(({ onSearch, title, subtitle }: Props) => {
-  const handleSearchChange = (newValue: string) => {
-    onSearch(newValue);
-  };
-
   return (
     <TitleWrapper>
       <FirstRow>
@@ -70,7 +66,7 @@ const UsersHeader = memo(({ onSearch, title, subtitle }: Props) => {
         </TextAndButtons>
         <Spacer />
         <StyledSearchInput
-          onChange={handleSearchChange}
+          onChange={onSearch}
           // Not important here. Requires quite some refactoring
           // to get users here in a nice and consistent manner.
           // This a11y_... prop needs to be required so we always have it

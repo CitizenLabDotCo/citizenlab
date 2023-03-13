@@ -39,10 +39,6 @@ interface Props {
 }
 const UsersGroupHeader = memo(
   ({ title, groupType, onEdit, onDelete, onSearch }: Props) => {
-    const handleSearchChange = (newValue: string) => {
-      onSearch(newValue);
-    };
-
     return (
       <OnlyRow>
         {groupType && (
@@ -72,7 +68,7 @@ const UsersGroupHeader = memo(
         </TextAndButtons>
         <Spacer />
         <StyledSearchInput
-          onChange={handleSearchChange}
+          onChange={onSearch}
           // Not important here. Requires quite some refactoring
           // to get users here in a nice and consistent manner.
           // This a11y_... prop needs to be a required one
