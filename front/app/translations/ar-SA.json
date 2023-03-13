@@ -722,7 +722,6 @@
   "app.containers.ChangePassword.passwordChangeSuccessMessage": "تم تحديث كلمة مرورك بنجاح.",
   "app.containers.ChangePassword.passwordEmptyError": "أدخل كلمة مرورك",
   "app.containers.ChangePassword.passwordsDontMatch": "تأكيد كلمة المرور الجديدة",
-  "app.containers.ChangePassword.title": "تغيير كلمة مرورك",
   "app.containers.Comments.a11y_commentDeleted": "تم حذف التعليق",
   "app.containers.Comments.a11y_commentPosted": "تم نشر التعليق",
   "app.containers.Comments.a11y_undoUpvote": "إلغاء التصويت الإيجابي",

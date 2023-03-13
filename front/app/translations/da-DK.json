@@ -722,7 +722,6 @@
   "app.containers.ChangePassword.passwordChangeSuccessMessage": "Din adgangskode er blevet opdateret med succes",
   "app.containers.ChangePassword.passwordEmptyError": "Indtast din adgangskode",
   "app.containers.ChangePassword.passwordsDontMatch": "Bekræft den nye adgangskode",
-  "app.containers.ChangePassword.title": "Ændre din adgangskode",
   "app.containers.Comments.a11y_commentDeleted": "Kommentar slettet",
   "app.containers.Comments.a11y_commentPosted": "Kommentar opslået",
   "app.containers.Comments.a11y_undoUpvote": "Fortryd opstemning",
