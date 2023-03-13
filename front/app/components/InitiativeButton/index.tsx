@@ -41,6 +41,11 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
     });
 
     if (initiativePermissions?.enabled) {
+      const context = {
+        type: 'initiative',
+        action: 'posting_initiative',
+      } as const;
+
       switch (initiativePermissions?.authenticationRequirements) {
         case 'sign_in_up':
           trackEventByName(
@@ -49,7 +54,7 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
           openSignUpInModal({
             flow: 'signup',
             verification: false,
-            context: undefined,
+            context,
             onSuccess: redirectToInitiativeForm,
           });
           break;
@@ -60,10 +65,7 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
           openSignUpInModal({
             flow: 'signup',
             verification: true,
-            context: {
-              type: 'initiative',
-              action: 'posting_initiative',
-            },
+            context,
             onSuccess: redirectToInitiativeForm,
           });
           break;
@@ -71,12 +73,7 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
           trackEventByName(
             'Verification modal opened in response to clicking new initiative'
           );
-          openVerificationModal({
-            context: {
-              action: 'posting_initiative',
-              type: 'initiative',
-            },
-          });
+          openVerificationModal({ context });
           break;
         default:
           redirectToInitiativeForm();

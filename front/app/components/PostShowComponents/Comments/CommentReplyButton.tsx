@@ -132,7 +132,9 @@ const CommentReplyButton = memo<Props>(
               onSuccess: () => onReply(),
             });
           }
-        } else {
+        }
+
+        if (post.type === 'initiative') {
           if (
             commentingPermissionInitiative?.authenticationRequirements ===
             'sign_in_up'

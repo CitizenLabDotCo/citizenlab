@@ -237,19 +237,17 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
         const shouldVerify =
           authenticationRequirements === 'sign_in_up_and_verify';
 
-        if (isNilOrError(authUser) && !isNilOrError(project)) {
+        if (isNilOrError(authUser) && !isNilOrError(project) && pcId) {
           trackEventByName(tracks.signUpInModalOpened);
+
           openSignUpInModal({
             flow,
             verification: shouldVerify,
-            context:
-              shouldVerify && pcId && pcType
-                ? {
-                    action: 'posting_idea',
-                    id: pcId,
-                    type: pcType,
-                  }
-                : undefined,
+            context: {
+              action: 'posting_idea',
+              id: pcId,
+              type: pcType,
+            },
             onSuccess: () => redirectToIdeaForm(),
           });
         }
