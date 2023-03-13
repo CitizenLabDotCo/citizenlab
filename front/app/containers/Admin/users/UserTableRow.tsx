@@ -11,10 +11,13 @@ import { Tr, Td, Toggle, Box } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
 import Checkbox from 'components/UI/Checkbox';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
+import BlockUser from 'components/admin/UserBlockModals/BlockUser';
+import UnblockUser from 'components/admin/UserBlockModals/UnblockUser';
 
 // Translation
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
+import blockUserMessages from 'components/admin/UserBlockModals/messages';
 
 // Events --- For error handling
 import eventEmitter from 'utils/eventEmitter';
@@ -54,6 +57,7 @@ const UserTableRow = ({
   const [registeredAt, setRegisteredAt] = useState(
     moment(user.attributes.registration_completed_at).format('LL')
   );
+  const [showBlockUserModal, setShowBlockUserModal] = useState(false);
 
   useEffect(() => {
     setUserIsAdmin(isAdmin({ data: user }));
@@ -61,6 +65,9 @@ const UserTableRow = ({
       moment(user.attributes.registration_completed_at).format('LL')
     );
   }, [user]);
+
+  const isBlocked = user.attributes?.blocked;
+  const setShowBlockUserModalFunc = (bool) => () => setShowBlockUserModal(bool);
 
   const handleDeleteClick = () => {
     const deleteMessage = formatMessage(messages.userDeletionConfirmation);
@@ -97,6 +104,17 @@ const UserTableRow = ({
       label: formatMessage(messages.deleteUser),
       icon: 'delete' as const,
     },
+    isBlocked
+      ? {
+          handler: () => setShowBlockUserModal(true),
+          label: formatMessage(blockUserMessages.unblockAction),
+          icon: 'user-circle' as const,
+        }
+      : {
+          handler: () => setShowBlockUserModal(true),
+          label: formatMessage(blockUserMessages.blockAction),
+          icon: 'halt' as const,
+        },
   ];
 
   return (
@@ -140,6 +158,16 @@ const UserTableRow = ({
       <Td>
         <MoreActionsMenu showLabel={false} actions={actions} />
       </Td>
+      <BlockUser
+        user={user}
+        setClose={setShowBlockUserModalFunc(false)}
+        open={showBlockUserModal && !isBlocked}
+      />
+      <UnblockUser
+        user={user}
+        setClose={setShowBlockUserModalFunc(false)}
+        open={showBlockUserModal && !!isBlocked}
+      />
     </Tr>
   );
 };

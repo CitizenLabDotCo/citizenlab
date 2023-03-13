@@ -10,7 +10,7 @@ import UsersHeader from './UsersHeader';
 // i18n
 import messages from './messages';
 
-const AllUsers = () => {
+export default () => {
   const { formatMessage } = useIntl();
   const [search, setSearch] = useState<string | undefined>(undefined);
 
@@ -25,9 +25,7 @@ const AllUsers = () => {
         subtitle={formatMessage(messages.blockedUsersSubtitle)}
         onSearch={searchUser}
       />
-      <UserManager search={search} />
+      <UserManager onlyBlocked={true} search={search} />
     </>
   );
 };
-
-export default AllUsers;
