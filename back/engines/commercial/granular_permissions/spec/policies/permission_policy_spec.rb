@@ -7,12 +7,8 @@ describe PermissionPolicy do
 
   let(:scope) { PermissionPolicy::Scope.new(user, Permission) }
 
-  before(:all) do
-    PermissionsService.register_scope_type(CitizenLab::Permissions::ScopeTypes::Project)
-  end
-
   context 'when user is moderator of the corresponding project' do
-    let(:project) { create(:continuous_project, participation_method: 'ideation') }
+    let(:project) { create :continuous_project, with_permissions: true, participation_method: 'ideation' }
     let(:user) { create(:project_moderator, projects: [project]) }
     let(:permission) { project.permissions.first }
 
@@ -25,7 +21,7 @@ describe PermissionPolicy do
   end
 
   context 'when user is moderator of another project' do
-    let(:project) { create(:continuous_project, participation_method: 'ideation') }
+    let(:project) { create :continuous_project, with_permissions: true, participation_method: 'ideation' }
     let(:permission) { project.permissions.first }
     let(:user) { create(:project_moderator, projects: [create(:project)]) }
 

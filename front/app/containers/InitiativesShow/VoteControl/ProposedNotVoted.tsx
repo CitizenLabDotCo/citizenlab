@@ -5,7 +5,6 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 import { StatusExplanation } from './SharedStyles';
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
 
-import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { IAppConfigurationSettings } from 'api/app_configuration/types';
 
@@ -21,6 +20,7 @@ import T from 'components/T';
 import { IInitiativeDisabledReason } from 'hooks/useInitiativesPermissions';
 import { darken } from 'polished';
 import Tippy from '@tippyjs/react';
+import { IInitiativeData } from 'api/initiatives/types';
 
 const Container = styled.div``;
 

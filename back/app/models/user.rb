@@ -28,6 +28,8 @@
 #  email_confirmation_code_reset_count :integer          default(0), not null
 #  email_confirmation_code_sent_at     :datetime
 #  confirmation_required               :boolean          default(TRUE), not null
+#  block_start_at                      :datetime
+#  block_reason                        :string
 #
 # Indexes
 #
@@ -161,10 +163,11 @@ class User < ApplicationRecord
 
   validates :invite_status, inclusion: { in: INVITE_STATUSES }, allow_nil: true
 
-  validates :custom_field_values, json: {
-    schema: -> { CustomFieldService.new.fields_to_json_schema(CustomField.with_resource_type('User')) },
-    message: ->(errors) { errors }
-  }, if: %i[custom_field_values_changed? active?]
+  # TODO: Allow light users without required fields
+  # validates :custom_field_values, json: {
+  #   schema: -> { CustomFieldService.new.fields_to_json_schema(CustomField.with_resource_type('User')) },
+  #   message: ->(errors) { errors }
+  # }, if: %i[custom_field_values_changed? active?]
 
   validates :password, length: { maximum: 72 }, allow_nil: true
   # Custom validation is required to deal with the
@@ -233,6 +236,12 @@ class User < ApplicationRecord
   scope :not_invited, -> { where.not(invite_status: 'pending').or(where(invite_status: nil)) }
   scope :active, -> { where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'") }
 
+  scope :blocked, lambda {
+    where.not(block_start_at: nil)
+      .and(where(block_start_at: (
+        AppConfiguration.instance.settings('user_blocking', 'duration').days.ago..Time.zone.now)))
+  }
+
   scope :order_role, lambda { |direction = :asc|
     joins('LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id')
       .order(Arel.sql("(roles @> '[{\"type\":\"admin\"}]')::integer #{direction}"))
@@ -293,11 +302,23 @@ class User < ApplicationRecord
   end
 
   def full_name
-    [first_name, last_name].compact.join(' ')
+    return [first_name, last_name].compact.join(' ') unless no_name?
+
+    [anon_first_name, anon_last_name].compact.join(' ')
   end
 
   def no_name?
     !self[:last_name] && !self[:first_name] && !invite_pending?
+  end
+
+  # Anonymous names to use if no first name and last name
+  def anon_first_name
+    'User'
+  end
+
+  def anon_last_name
+    # Generate a last name based on email in the format of '123456'
+    email.hash.abs.to_s[0, 6]
   end
 
   def highest_role
@@ -357,7 +378,7 @@ class User < ApplicationRecord
   def authenticate(unencrypted_password)
     if no_password?
       # Allow authentication without password - but only if confirmation is required on the user
-      unencrypted_password.empty? && AppConfiguration.instance.feature_activated?('user_confirmation') && confirmation_required ? self : false
+      unencrypted_password.empty? && confirmation_required? ? self : false
     elsif cl1_authenticate(unencrypted_password)
       self.password_digest = BCrypt::Password.create(unencrypted_password)
       self
@@ -367,7 +388,7 @@ class User < ApplicationRecord
   end
 
   def no_password?
-    !password_digest && !invite_pending?
+    !password_digest && !invite_pending? && identity_ids.empty?
   end
 
   def member_of?(group_id)
@@ -376,6 +397,16 @@ class User < ApplicationRecord
 
   def active?
     registration_completed_at.present? && !invite_pending?
+  end
+
+  def blocked?
+    if block_start_at.present?
+      duration = AppConfiguration.instance.settings('user_blocking', 'duration')
+
+      return true if block_start_at.between?(duration.days.ago, Time.zone.now)
+    end
+
+    false
   end
 
   def groups
@@ -423,10 +454,11 @@ class User < ApplicationRecord
 
   def reset_confirmation_with_no_password
     if confirmation_required == false
-      # Only reset code and retry count if account has already been confirmed
+      # Only reset code and retry/reset counts if account has already been confirmed
       # To keep limits in place for non-legit requests
       self.email_confirmation_code = nil
       self.email_confirmation_retry_count = 0
+      self.email_confirmation_code_reset_count = 0
     end
     self.confirmation_required = true
   end

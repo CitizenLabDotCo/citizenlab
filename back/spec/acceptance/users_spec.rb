@@ -636,7 +636,7 @@ resource 'Users' do
 
       describe do
         let(:custom_field_values) { { birthyear: 1984 } }
-        let(:project) { create(:continuous_project) }
+        let(:project) { create :continuous_project, with_permissions: true }
 
         before do
           if CitizenLab.ee?
@@ -850,11 +850,12 @@ resource 'Users' do
         expect(json_response.dig(:data, :attributes, :custom_field_values, cf2.key.to_sym)).to eq [cf2_options.first.key]
       end
 
-      example '[error] Complete the registration of a user fails if not all required fields are provided' do
-        @user.update! registration_completed_at: nil
-        do_request(user: { custom_field_values: { cf2.key => nil } })
-        assert_status 422
-      end
+      # TODO: Allow light users without required fields
+      # example '[error] Complete the registration of a user fails if not all required fields are provided' do
+      #   @user.update! registration_completed_at: nil
+      #   do_request(user: { custom_field_values: { cf2.key => nil } })
+      #   assert_status 422
+      # end
 
       example '[error] Complete the registration of a user fails if the user has already completed signup' do
         do_request
@@ -952,9 +953,10 @@ resource 'Users' do
         create(:initiative)
         create(:initiative, author: @user, publication_status: 'draft')
         do_request
-        expect(status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response[:count]).to eq 1
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'initiatives_count'
+        expect(json_response.dig(:data, :attributes, :count)).to eq 1
       end
     end
 

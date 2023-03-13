@@ -33,6 +33,7 @@ resource 'Phases' do
 
     example 'Get one phase by id' do
       create_list(:idea, 2, project: @project, phases: @phases)
+      PermissionsService.new.update_all_permissions
       do_request
       assert_status 200
 
@@ -49,7 +50,7 @@ resource 'Phases' do
 
       if CitizenLab.ee?
         expect(json_response.dig(:data, :relationships, :permissions, :data).size)
-          .to eq(PermissionsService.actions(@phases.first).length)
+          .to eq(Permission.available_actions(@phases.first).length)
       end
     end
   end
