@@ -635,7 +635,7 @@ resource 'Ideas' do
           end
         end
 
-        describe 'when posting an idea in an active ideation phase, the correct form is used', skip: !CitizenLab.ee? do
+        describe 'when posting an idea in an active ideation phase, the correct form is used' do
           let(:project) { create(:project_with_active_ideation_phase) }
           let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
           let(:proposed_budget) { 1234 }
@@ -746,7 +746,7 @@ resource 'Ideas' do
           expect(json_parse(response_body)).to include_response_error(:base, 'i_dont_like_you')
         end
 
-        example_group 'with granular permissions', skip: !CitizenLab.ee? do
+        example_group 'with granular permissions' do
           let(:group) { create(:group) }
 
           before do
@@ -799,7 +799,7 @@ resource 'Ideas' do
             end
           end
 
-          describe 'when posting an idea in an ideation phase, the form of the project is used for accepting the input', skip: !CitizenLab.ee? do
+          describe 'when posting an idea in an ideation phase, the form of the project is used for accepting the input' do
             let(:project) { create(:project_with_active_ideation_phase) }
             let!(:custom_form) do
               create(:custom_form, :with_default_fields, participation_context: project).tap do |form|
