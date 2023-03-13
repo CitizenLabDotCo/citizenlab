@@ -162,15 +162,31 @@ export function blockedUsersCount(streamParams: IStreamParams | null = null) {
 }
 
 export async function blockUser(userId: string, reason: IUserBlockReason) {
-  return await streams.update<IUser>(`${apiEndpoint}/${userId}/block`, userId, {
-    reason,
+  const response = await streams.update<IUser>(
+    `${apiEndpoint}/${userId}/block`,
+    userId,
+    {
+      reason,
+    }
+  );
+
+  await streams.fetchAllWith({
+    apiEndpoint: [`${apiEndpoint}/blocked_count`],
   });
+
+  return response;
 }
 
 export async function unBlockUser(userId: string) {
-  return await streams.update<IUser>(
+  const response = await streams.update<IUser>(
     `${apiEndpoint}/${userId}/unblock`,
     userId,
     {}
   );
+
+  await streams.fetchAllWith({
+    apiEndpoint: [`${apiEndpoint}/blocked_count`],
+  });
+
+  return response;
 }
