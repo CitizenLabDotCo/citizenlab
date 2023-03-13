@@ -846,8 +846,8 @@ RSpec.describe User, type: :model do
   end
 
   context 'billed users' do
-    def create_admin_moderator
-      create(:project_moderator).tap do |user|
+    def create_admin_moderator(factory)
+      create(factory).tap do |user|
         user.roles << { type: 'admin' }
         user.save!
       end
@@ -875,10 +875,11 @@ RSpec.describe User, type: :model do
         expect(described_class.billed_admins).to match_array([admin])
       end
 
-      it 'returns admins who are also moderators' do
+      it 'returns admins who are also project or folder moderators' do
         create(:user)
-        admin = create_admin_moderator
-        expect(described_class.billed_admins).to match_array([admin])
+        admin = create_admin_moderator(:project_moderator)
+        admin1 = create_admin_moderator(:project_folder_moderator)
+        expect(described_class.billed_admins).to match_array([admin, admin1])
       end
     end
 
@@ -900,16 +901,19 @@ RSpec.describe User, type: :model do
       it 'does not return admins' do
         create(:user)
         project_moderator = create(:project_moderator)
+        folder_moderator = create(:project_folder_moderator)
         create(:admin)
-        expect(described_class.billed_moderators).to match_array([project_moderator])
+        expect(described_class.billed_moderators).to match_array([project_moderator, folder_moderator])
       end
 
-      it 'does not return admins who are also moderators' do
+      it 'does not return admins who are also project or folder moderators' do
         create(:user)
         create(:admin)
         project_moderator = create(:project_moderator)
-        create_admin_moderator
-        expect(described_class.billed_moderators).to match_array([project_moderator])
+        folder_moderator = create(:project_folder_moderator)
+        create_admin_moderator(:project_moderator)
+        create_admin_moderator(:project_folder_moderator)
+        expect(described_class.billed_moderators).to match_array([project_moderator, folder_moderator])
       end
     end
   end

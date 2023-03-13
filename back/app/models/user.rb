@@ -263,7 +263,8 @@ class User < ApplicationRecord
   scope :not_citizenlab_member, -> { where.not('email ~* ?', CITIZENLAB_MEMBER_REGEX_CONTENT) }
   scope :billed_admins, -> { admin.not_citizenlab_member }
   scope :billed_moderators, lambda {
-    where.not(id: admin).project_moderator.or(User.project_folder_moderator).not_citizenlab_member
+    # use any conditions before `or` very carefully (inspect the generated SQL)
+    project_moderator.or(User.project_folder_moderator).where.not(id: admin).not_citizenlab_member
   }
 
   def self.oldest_admin
