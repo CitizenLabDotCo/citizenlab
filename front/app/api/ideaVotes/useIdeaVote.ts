@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import voteKeys from './keys';
-import { VoteKeys, IIdeaVote } from './types';
+import { IdeaVotesKeys, IIdeaVote } from './types';
 
 const fetchVote = (id?: string) =>
   fetcher<IIdeaVote>({
@@ -10,12 +10,12 @@ const fetchVote = (id?: string) =>
     action: 'get',
   });
 
-const useVote = (id?: string) => {
-  return useQuery<IIdeaVote, CLErrors, IIdeaVote, VoteKeys>({
+const useIdeaVote = (id?: string) => {
+  return useQuery<IIdeaVote, CLErrors, IIdeaVote, IdeaVotesKeys>({
     queryKey: voteKeys.item(id),
     queryFn: () => fetchVote(id),
     enabled: !!id,
   });
 };
 
-export default useVote;
+export default useIdeaVote;

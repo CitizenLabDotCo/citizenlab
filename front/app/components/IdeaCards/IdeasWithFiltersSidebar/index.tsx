@@ -143,7 +143,7 @@ export interface Props {
 const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
   const { windowWidth } = useWindowSize();
 
-  const { data, isFetching, fetchNextPage, hasNextPage } =
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteIdeas(ideaQueryParameters);
 
   const list = data?.pages.map((page) => page.data).flat();
@@ -281,10 +281,10 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
             <ContentLeft>
               <IdeasView
                 list={list}
-                querying={isFetching}
+                querying={isLoading}
                 onLoadMore={fetchNextPage}
                 hasMore={!!hasNextPage}
-                loadingMore={isFetching}
+                loadingMore={isFetchingNextPage}
                 hideImage={biggerThanLargeTablet && smallerThan1440px}
                 hideImagePlaceholder={smallerThan1440px}
                 hideIdeaStatus={

@@ -1,7 +1,7 @@
 import { Keys } from 'utils/cl-react-query/types';
-import voteKeys from './keys';
+import ideaVotesKeys from './keys';
 
-export type VoteKeys = Keys<typeof voteKeys>;
+export type IdeaVotesKeys = Keys<typeof ideaVotesKeys>;
 
 export type TVoteMode = 'up' | 'down';
 
@@ -32,6 +32,7 @@ export interface IIdeaVote {
 }
 
 export interface INewVoteProperties {
-  user_id?: string;
+  ideaId: string;
+  userId: string;
   mode: 'up' | 'down';
 }
