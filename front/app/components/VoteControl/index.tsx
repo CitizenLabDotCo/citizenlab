@@ -146,7 +146,7 @@ const VoteControl = ({
       verifiedButNotPermitted)
   );
 
-  const myVoteMode = voteData?.data.attributes.mode;
+  const myVoteMode = voteId ? voteData?.data.attributes.mode : null;
 
   const onClickUpvote = (event: MouseEvent | KeyboardEvent) => {
     event.preventDefault();
