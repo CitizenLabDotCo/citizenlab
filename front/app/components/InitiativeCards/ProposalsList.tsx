@@ -8,9 +8,6 @@ import InitiativeCard from 'components/InitiativeCard';
 import { Spinner, Button } from '@citizenlab/cl2-component-library';
 import Centerer from 'components/UI/Centerer';
 
-// resources
-import { IInitiativeData } from 'services/initiatives';
-
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -19,6 +16,9 @@ import { FormattedMessage } from 'utils/cl-intl';
 import styled, { useTheme } from 'styled-components';
 import { media } from 'utils/styleUtils';
 import { rgba } from 'polished';
+
+// Types
+import { IInitiativeData } from 'api/initiatives/types';
 
 const Loading = styled(Centerer)`
   ${media.desktop`
@@ -108,7 +108,7 @@ const ProposalsList = ({
         </Loading>
       ) : (
         <>
-          {hasInitiatives && list && (
+          {hasInitiatives && (
             <InitiativesList id="e2e-initiatives-list">
               {list.map((initiative) => (
                 <StyledInitiativeCard

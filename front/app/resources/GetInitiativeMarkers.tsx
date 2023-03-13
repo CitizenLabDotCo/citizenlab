@@ -1,9 +1,5 @@
-import React from 'react';
-import { Subscription } from 'rxjs';
-import {
-  IGeotaggedInitiativeData,
-  initiativesMarkersStream,
-} from 'services/initiatives';
+import useInitativeMarkers from 'api/initiative_markers/useInitiativeMarkers';
+import { IGeotaggedInitiativeData } from 'api/initiative_markers/types';
 
 interface InputProps {}
 
@@ -15,45 +11,15 @@ interface Props extends InputProps {
   children?: children;
 }
 
-interface State {
-  initiativeMarkers: IGeotaggedInitiativeData[] | undefined | null;
-}
-
 export type GetInitiativeMarkersChildProps =
   | IGeotaggedInitiativeData[]
   | undefined
   | null;
 
-export default class GetInitiativeMarkers extends React.Component<
-  Props,
-  State
-> {
-  private subscriptions: Subscription[];
+const GetInitiativeMarkers = ({ children }: Props) => {
+  const { data: initiativeMarkers } = useInitativeMarkers();
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      initiativeMarkers: undefined,
-    };
-  }
+  return (children as children)(initiativeMarkers?.data);
+};
 
-  componentDidMount() {
-    this.subscriptions = [
-      initiativesMarkersStream().observable.subscribe((initiativeMarkers) => {
-        this.setState({
-          initiativeMarkers: initiativeMarkers ? initiativeMarkers.data : null,
-        });
-      }),
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }
-
-  render() {
-    const { children } = this.props;
-    const { initiativeMarkers } = this.state;
-    return (children as children)(initiativeMarkers);
-  }
-}
+export default GetInitiativeMarkers;

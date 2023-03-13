@@ -7,9 +7,9 @@ module GranularPermissions
         module ActionDescriptorsController
           def initiatives
             ps = PermissionsService.new
-            posting_disabled_reason = ps.denied_reason(current_user, 'posting_initiative')
-            commenting_disabled_reason = ps.denied_reason(current_user, 'commenting_initiative')
-            voting_disabled_reason = ps.denied_reason(current_user, 'voting_initiative')
+            posting_disabled_reason = ps.denied_reason_for_resource(current_user, 'posting_initiative')
+            commenting_disabled_reason = ps.denied_reason_for_resource(current_user, 'commenting_initiative')
+            voting_disabled_reason = ps.denied_reason_for_resource(current_user, 'voting_initiative')
 
             descriptors = {
               posting_initiative: { disabled_reason: posting_disabled_reason },
@@ -21,7 +21,7 @@ module GranularPermissions
             descriptors[:comment_voting_initiative] = descriptors[:commenting_initiative]
             descriptors[:cancelling_initiative_votes] = descriptors[:voting_initiative]
 
-            render(json: descriptors)
+            render(json: raw_json(descriptors))
           end
         end
       end

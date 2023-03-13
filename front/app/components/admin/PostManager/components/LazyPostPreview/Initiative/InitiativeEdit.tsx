@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 // libraries
 import { adopt } from 'react-adopt';
@@ -8,19 +8,10 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
-import GetInitiative, {
-  GetInitiativeChildProps,
-} from 'resources/GetInitiative';
-import GetInitiativeImages, {
-  GetInitiativeImagesChildProps,
-} from 'resources/GetInitiativeImages';
-import GetRemoteFiles, {
-  GetRemoteFilesChildProps,
-} from 'resources/GetRemoteFiles';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // utils
-import { isNilOrError, isError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import InitiativesEditFormWrapper from 'containers/InitiativesEditPage/InitiativesEditFormWrapper';
@@ -34,8 +25,14 @@ import messages from '../messages';
 import { colors } from 'utils/styleUtils';
 
 // typings
-import { Locale } from 'typings';
+import { Locale, UploadFile } from 'typings';
 import { ITopicData } from 'services/topics';
+
+// hooks
+import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
 
 export interface InputProps {
   initiativeId: string;
@@ -45,124 +42,113 @@ export interface InputProps {
 interface DataProps {
   locale: GetLocaleChildProps;
   tenantLocales: GetAppConfigurationLocalesChildProps;
-  initiative: GetInitiativeChildProps;
-  initiativeImages: GetInitiativeImagesChildProps;
-  initiativeFiles: GetRemoteFilesChildProps;
   topics: GetTopicsChildProps;
 }
 
 interface Props extends DataProps, InputProps {}
 
-interface State {
-  selectedLocale: GetLocaleChildProps;
-}
+const InitiativesEditPage = ({
+  locale,
+  goBack,
+  topics,
+  tenantLocales,
+  initiativeId,
+}: Props) => {
+  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
+  const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
+  const [files, setFiles] = useState<UploadFile[]>([]);
+  const { data: initiative } = useInitiativeById(initiativeId);
+  const { data: initiativeImages } = useInitiativeImages(initiativeId);
 
-export class InitiativesEditPage extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      selectedLocale: props.locale,
-    };
-  }
+  useEffect(() => {
+    async function getFiles() {
+      let files: UploadFile[] = [];
 
-  componentDidUpdate(prevProps: Props) {
-    const { locale } = this.props;
-    if (!this.state.selectedLocale && locale !== prevProps.locale) {
-      this.setState({ selectedLocale: locale });
+      if (initiativeFiles) {
+        files = (await Promise.all(
+          initiativeFiles.data.map(async (file) => {
+            const uploadFile = convertUrlToUploadFile(
+              file.attributes.file.url,
+              file.id,
+              file.attributes.name
+            );
+            return uploadFile;
+          })
+        )) as UploadFile[];
+      }
+      setFiles(files);
     }
-  }
 
-  onLocaleChange = (locale: Locale) => {
-    this.setState({ selectedLocale: locale });
+    getFiles();
+  }, [initiativeFiles]);
+
+  const onLocaleChange = (locale: Locale) => {
+    setSelectedLocale(locale);
   };
 
-  render() {
-    const {
-      locale,
-      initiative,
-      initiativeImages,
-      goBack,
-      initiativeFiles,
-      topics,
-      tenantLocales,
-    } = this.props;
-    const { selectedLocale } = this.state;
+  useEffect(() => {
+    !isNilOrError(locale) && setSelectedLocale(locale);
+  }, [locale]);
 
-    if (
-      isNilOrError(locale) ||
-      isNilOrError(tenantLocales) ||
-      !selectedLocale ||
-      isNilOrError(initiative) ||
-      initiativeImages === undefined ||
-      initiativeFiles === undefined ||
-      isError(initiativeFiles) ||
-      isNilOrError(topics)
-    ) {
-      return null;
-    }
-    const initiativeTopics = topics.filter(
-      (topic) => !isNilOrError(topic)
-    ) as ITopicData[];
-
-    return (
-      <Container>
-        <Top>
-          <Box width="100%" justifyContent="space-between" display="flex">
-            <Box>
-              <Button
-                icon="arrow-left"
-                buttonStyle="text"
-                textColor={colors.primary}
-                onClick={goBack}
-              >
-                <FormattedMessage {...messages.cancelEdit} />
-              </Button>
-            </Box>
-            <Box my="auto" mr="8px">
-              <LocaleSwitcher
-                onSelectedLocaleChange={this.onLocaleChange}
-                locales={tenantLocales}
-                selectedLocale={selectedLocale}
-              />
-            </Box>
-          </Box>
-        </Top>
-        <Content>
-          <InitiativesEditFormWrapper
-            locale={selectedLocale}
-            initiative={initiative}
-            initiativeImage={
-              isNilOrError(initiativeImages) || initiativeImages.length === 0
-                ? null
-                : initiativeImages[0]
-            }
-            onPublished={goBack}
-            initiativeFiles={initiativeFiles}
-            topics={initiativeTopics}
-          />
-        </Content>
-      </Container>
-    );
+  if (
+    isNilOrError(locale) ||
+    isNilOrError(tenantLocales) ||
+    !selectedLocale ||
+    isNilOrError(initiative) ||
+    initiativeImages === undefined ||
+    isNilOrError(topics)
+  ) {
+    return null;
   }
-}
+  const initiativeTopics = topics.filter(
+    (topic) => !isNilOrError(topic)
+  ) as ITopicData[];
+
+  return (
+    <Container>
+      <Top>
+        <Box width="100%" justifyContent="space-between" display="flex">
+          <Box>
+            <Button
+              icon="arrow-left"
+              buttonStyle="text"
+              textColor={colors.primary}
+              onClick={goBack}
+            >
+              <FormattedMessage {...messages.cancelEdit} />
+            </Button>
+          </Box>
+          <Box my="auto" mr="8px">
+            <LocaleSwitcher
+              onSelectedLocaleChange={onLocaleChange}
+              locales={tenantLocales}
+              selectedLocale={selectedLocale}
+            />
+          </Box>
+        </Box>
+      </Top>
+      <Content>
+        <InitiativesEditFormWrapper
+          locale={selectedLocale}
+          initiative={initiative.data}
+          initiativeImage={
+            isNilOrError(initiativeImages) || initiativeImages.data.length === 0
+              ? null
+              : initiativeImages.data[0]
+          }
+          onPublished={goBack}
+          initiativeFiles={files}
+          topics={initiativeTopics}
+        />
+      </Content>
+    </Container>
+  );
+};
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   topics: <GetTopics excludeCode={'custom'} />,
   tenantLocales: <GetAppConfigurationLocales />,
-  initiative: ({ initiativeId, render }) => (
-    <GetInitiative id={initiativeId}>{render}</GetInitiative>
-  ),
-  initiativeImages: ({ initiativeId, render }) => (
-    <GetInitiativeImages initiativeId={initiativeId}>
-      {render}
-    </GetInitiativeImages>
-  ),
-  initiativeFiles: ({ initiativeId, render }) => (
-    <GetRemoteFiles resourceId={initiativeId} resourceType="initiative">
-      {render}
-    </GetRemoteFiles>
-  ),
 });
 
 export default (inputProps: InputProps) => (

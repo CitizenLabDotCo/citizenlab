@@ -108,6 +108,13 @@ class WebApi::V1::UsersController < ::ApplicationController
         @user,
         params: fastjson_params(granted_permissions: permissions)
       ).serialized_json, status: :created
+    elsif reset_confirm_on_existing_no_password_user?
+      SideFxUserService.new.after_update(@user, current_user)
+      permissions = Permission.for_user(@user)
+      render json: WebApi::V1::UserSerializer.new(
+        @user,
+        params: fastjson_params(granted_permissions: permissions)
+      ).serialized_json, status: :ok
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
     end
@@ -139,6 +146,7 @@ class WebApi::V1::UsersController < ::ApplicationController
   end
 
   def complete_registration
+    # NOTE: Authorize fails if registration is already flagged as complete
     @user = current_user
     authorize @user
 
@@ -146,7 +154,7 @@ class WebApi::V1::UsersController < ::ApplicationController
     user_params[:custom_field_values] = @user.custom_field_values.merge(user_params[:custom_field_values] || {})
 
     @user.assign_attributes(user_params)
-    @user.registration_completed_at = Time.now
+    @user.complete_registration
 
     if @user.save
       SideFxUserService.new.after_update(@user, current_user)
@@ -170,7 +178,7 @@ class WebApi::V1::UsersController < ::ApplicationController
   end
 
   def initiatives_count
-    render json: { count: policy_scope(@user.initiatives.published).count }, status: :ok
+    render json: raw_json({ count: policy_scope(@user.initiatives.published).count }), status: :ok
   end
 
   def comments_count
@@ -215,6 +223,28 @@ class WebApi::V1::UsersController < ::ApplicationController
     authorize @user
   rescue ActiveRecord::RecordNotFound
     send_error(nil, 404)
+  end
+
+  def reset_confirm_on_existing_no_password_user?
+    return false unless AppConfiguration.instance.feature_activated?('user_confirmation')
+
+    original_user = @user
+    errors = original_user.errors.details[:email]
+    return false unless errors.any? { |hash| hash[:error] == :taken }
+
+    existing_user = User.find_by(email: @user.email)
+    return false unless existing_user.no_password?
+
+    # If any attributes try to change then ignore this found user
+    existing_user.assign_attributes(permitted_attributes(existing_user))
+    return false if existing_user.changed?
+
+    @user = existing_user
+    @user.reset_confirmation_with_no_password
+    return false unless @user.save
+
+    SendConfirmationCode.call(user: @user)
+    true
   end
 
   def mark_custom_field_values_to_clear!

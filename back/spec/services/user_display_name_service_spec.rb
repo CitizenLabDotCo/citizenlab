@@ -68,4 +68,38 @@ describe UserDisplayNameService do
       expect(display_name).to eq 'Another User'
     end
   end
+
+  context 'when users have no first or last name' do
+    let(:no_name_user) { build(:user, first_name: nil, last_name: nil) }
+    let(:name_service) { described_class.new(@app_configuration, @admin) }
+
+    it 'returns a fake first name and 6 figure numeric last name' do
+      expect(name_service.first_name(no_name_user)).to eq 'User'
+      expect(name_service.last_name(no_name_user)).to match(/\d{6}/)
+    end
+
+    it 'always returns the same 6 figure value for last_name given the same email' do
+      first_value = name_service.last_name(no_name_user)
+      expect(name_service.last_name(no_name_user)).to match(/\d{6}/)
+      expect(name_service.last_name(no_name_user)).to eq first_value
+    end
+
+    it 'does not return fake names if first_name is set' do
+      no_name_user.update(first_name: 'Bob')
+      expect(name_service.first_name(no_name_user)).to eq 'Bob'
+      expect(name_service.last_name(no_name_user)).to be_nil
+    end
+
+    it 'does not return fake names if last_name is set' do
+      no_name_user.update(last_name: 'Smith')
+      expect(name_service.first_name(no_name_user)).to be_nil
+      expect(name_service.last_name(no_name_user)).to eq 'Smith'
+    end
+
+    it 'does not return fake names if invite is pending' do
+      no_name_user.update(invite_status: 'pending')
+      expect(name_service.first_name(no_name_user)).to be_nil
+      expect(name_service.last_name(no_name_user)).to be_nil
+    end
+  end
 end

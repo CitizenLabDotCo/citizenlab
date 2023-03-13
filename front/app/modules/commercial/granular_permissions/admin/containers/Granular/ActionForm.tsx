@@ -6,12 +6,14 @@ import localize, { InjectedLocalized } from 'utils/localize';
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 
 import MultipleSelect from 'components/UI/MultipleSelect';
-import { Radio } from '@citizenlab/cl2-component-library';
+import { Box, Radio } from '@citizenlab/cl2-component-library';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import permissionsMessages from 'containers/Admin/projects/project/permissions/messages';
 import { IPermissionData } from 'services/actionPermissions';
+import Warning from 'components/UI/Warning';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const StyledFieldset = styled.fieldset`
   border: none;
@@ -46,6 +48,10 @@ const ActionForm = ({
   onChange,
   localize,
 }: Props) => {
+  const { formatMessage } = useIntl();
+  const includeEmailConfirmedOption = useFeatureFlag({
+    name: 'permission_option_email_confirmation',
+  });
   const groupsOptions = () => {
     if (isNilOrError(groupsList)) {
       return [];
@@ -92,6 +98,18 @@ const ActionForm = ({
             id={`participation-permission-everyone-${permissionId}`}
           />
         )}
+        {includeEmailConfirmedOption && (
+          <Radio
+            name={`permittedBy-${permissionId}`}
+            value="everyone_confirmed_email"
+            currentValue={permittedBy}
+            label={
+              <FormattedMessage {...messages.permissionsEveryoneEmailLabel} />
+            }
+            onChange={handlePermittedByUpdate('everyone_confirmed_email')}
+            id={`participation-permission-users-${permissionId}`}
+          />
+        )}
         <Radio
           name={`permittedBy-${permissionId}`}
           value="users"
@@ -133,6 +151,13 @@ const ActionForm = ({
           />
         )}
       </StyledFieldset>
+      {permittedBy === 'everyone_confirmed_email' && (
+        <Box mt="16px" maxWidth="620px">
+          <Warning>
+            {formatMessage(messages.permissionEveryoneEmailWarning)}
+          </Warning>
+        </Box>
+      )}
     </form>
   );
 };
