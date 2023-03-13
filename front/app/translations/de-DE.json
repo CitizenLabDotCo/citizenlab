@@ -141,7 +141,7 @@
   "app.components.HookForm.Feedback.errorTitle": "Es gibt ein Problem",
   "app.components.HookForm.Feedback.submissionError": "Versuchen Sie es erneut. Wenn das Problem weiterhin besteht, kontaktieren Sie uns",
   "app.components.HookForm.Feedback.submissionErrorTitle": "Es gab ein Problem auf unserer Seite, entschuldigen Sie",
-  "app.components.HookForm.Feedback.successMessage": "Formular erfolgreich abgeschickt",
+  "app.components.HookForm.Feedback.successMessage": "Änderungen erfolgreich vorgenommen",
   "app.components.IdeaCards.showMore": "Mehr anzeigen",
   "app.components.IdeaForm.adminFieldTooltip": "Feld nur für Admins sichtbar",
   "app.components.IdeaForm.author": "Autor:in",
