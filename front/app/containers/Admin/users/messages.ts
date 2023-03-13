@@ -41,9 +41,9 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.platformAdmin',
     defaultMessage: 'Platform admin',
   },
-  folderAdmin: {
-    id: 'app.containers.Admin.Users.folderAdmin',
-    defaultMessage: 'Folder admin',
+  folderManager: {
+    id: 'app.containers.Admin.Users.folderManager',
+    defaultMessage: 'Folder manager',
   },
   projectManager: {
     id: 'app.containers.Admin.Users.projectManager',
@@ -69,10 +69,6 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.confirmAdminQuestion',
     defaultMessage:
       'Are you sure you want to give {name} platform admin rights?',
-  },
-  buyAditionalSeat: {
-    id: 'app.containers.Admin.Users.buyAditionalSeat',
-    defaultMessage: 'Buy 1 additional seat',
   },
   permissionToBuy: {
     id: 'app.containers.Admin.Users.permissionToBuy',

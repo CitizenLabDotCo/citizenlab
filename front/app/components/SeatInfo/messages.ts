@@ -17,19 +17,19 @@ export default defineMessages({
     id: 'app.components.SeatInfo.additionalSeats',
     defaultMessage: 'Additional seats',
   },
-  adminSeatInfoMessage: {
-    id: 'app.components.SeatInfo.adminSeatInfoMessage',
+  adminInfoMessage: {
+    id: 'app.components.SeatInfo.adminInfoMessage',
     defaultMessage:
-      'Your plan has {adminSeatsIncluded}, including platform admins and folder admins. Once you’ve used all the seats, you agree on us billing the additional seats according to your license.',
+      "Your plan has {adminSeatsIncluded}, including platform admins and folder managers. Once you’ve used all the seats, seats will be added under 'Additional seats'.",
   },
   adminSeatsIncludedSubText: {
     id: 'app.components.SeatInfo.adminSeatsIncludedSubText',
     defaultMessage: '{adminSeats} admin seats included',
   },
-  projectManagerSeatInfoMessage: {
-    id: 'app.components.SeatInfo.projectManagerSeatInfoMessage',
+  projectManagerInfoMessage: {
+    id: 'app.components.SeatInfo.projectManagerInfoMessage',
     defaultMessage:
-      'Your plan has {adminSeatsIncluded}, on top of admin seats. Once you’ve used all the seats, you agree on us billing the additional seats according to your license.',
+      "Your plan has {adminSeatsIncluded}, on top of admin seats. Once you’ve used all the seats, seats will be added under 'Additional seats'.",
   },
   projectManagerSeatsIncludedSubText: {
     id: 'app.components.SeatInfo.projectManagerSeatsIncludedSubText',
