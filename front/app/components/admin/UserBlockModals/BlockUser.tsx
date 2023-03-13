@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import moment from 'moment';
 
 // form
 import { useForm, FormProvider } from 'react-hook-form';
@@ -20,6 +21,7 @@ import SuccessfulUserBlock from './SuccessfulUserBlock';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // styling
@@ -29,6 +31,7 @@ import styled from 'styled-components';
 import { IUserData, blockUser } from 'services/users';
 
 // utils
+import { isNilOrError } from 'utils/helperUtils';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 const Container = styled.div`
@@ -51,6 +54,7 @@ type FormValues = {
 
 export default ({ open, setClose, user }: Props) => {
   const [success, setSuccess] = useState(false);
+  const [updatedUser, setUpdatedUser] = useState<IUserData | undefined>();
 
   const schema = object({
     current_password: string(),
@@ -68,7 +72,8 @@ export default ({ open, setClose, user }: Props) => {
 
   const onFormSubmit = async ({ reason }: FormValues) => {
     try {
-      await blockUser(user.id, { reason });
+      const response = await blockUser(user.id, { reason });
+      setUpdatedUser(response.data);
       setSuccess(true);
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
@@ -76,9 +81,11 @@ export default ({ open, setClose, user }: Props) => {
     setClose();
   };
 
-  if (success)
+  if (success && !isNilOrError(updatedUser))
     return (
       <SuccessfulUserBlock
+        name={`${user.attributes.first_name} ${user.attributes.last_name}`}
+        date={moment(updatedUser?.attributes.block_end_at).format('LL')}
         resetSuccess={() => setSuccess(false)}
         opened={true}
       />
@@ -94,7 +101,12 @@ export default ({ open, setClose, user }: Props) => {
         <FormProvider {...methods}>
           <form>
             <Text mt="0" color="textSecondary">
-              {formatMessage(messages.subtitle)}
+              <FormattedMessage
+                {...messages.subtitle}
+                values={{
+                  ninetyDays: <b>{formatMessage(messages.ninetyDays)}</b>,
+                }}
+              />
             </Text>
             <FormLabel
               display="flex"

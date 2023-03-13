@@ -8,7 +8,11 @@ export default defineMessages({
   subtitle: {
     id: 'app.containers.Admin.Users.userBlockModal.subtitle',
     defaultMessage:
-      'The selected user won’t be able to login to the platform for 90 days. If you wish to revert this, you can unblock them from the list of blocked users.',
+      'The selected user won’t be able to login to the platform for {ninetyDays}. If you wish to revert this, you can unblock them from the list of blocked users.',
+  },
+  ninetyDays: {
+    id: 'app.containers.Admin.Users.userBlockModal.ninetyDays',
+    defaultMessage: '90 days',
   },
   reasonLabel: {
     id: 'app.containers.Admin.Users.userBlockModal.reasonLabel',

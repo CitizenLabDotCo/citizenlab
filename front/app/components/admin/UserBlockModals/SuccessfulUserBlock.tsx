@@ -7,6 +7,7 @@ import { Title, Text, Box, Icon } from '@citizenlab/cl2-component-library';
 // i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // Styling
 import styled from 'styled-components';
@@ -19,9 +20,11 @@ const Container = styled.div`
 type Props = {
   opened: boolean;
   resetSuccess: () => void;
+  date: string;
+  name: string;
 };
 
-export default ({ opened, resetSuccess }: Props) => {
+export default ({ opened, resetSuccess, date, name }: Props) => {
   const [localOpened, setLocaloOpened] = useState(opened);
   const { formatMessage } = useIntl();
 
@@ -45,10 +48,13 @@ export default ({ opened, resetSuccess }: Props) => {
           {formatMessage(messages.allDone)}
         </Title>
         <Text textAlign="center">
-          {formatMessage(messages.confirmation, {
-            name: 'Wilbur Mayert',
-            date: 'Jun 3, 2023',
-          })}
+          <FormattedMessage
+            {...messages.confirmation}
+            values={{
+              name: <b>{name}</b>,
+              date,
+            }}
+          />
         </Text>
       </Container>
     </Modal>

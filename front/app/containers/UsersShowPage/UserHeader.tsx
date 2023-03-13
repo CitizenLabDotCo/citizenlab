@@ -116,8 +116,8 @@ const UserHeader = ({ userSlug }: Props) => {
             placement={'top'}
             theme={'dark'}
             content={formatMessage(blockUserMessages.bocknigInfo, {
-              from: 'March 2, 2023',
-              to: 'June 2, 2023',
+              from: moment(user.attributes.block_start_at).format('LL'),
+              to: moment(user.attributes.block_end_at).format('LL'),
             })}
           >
             <Badge color={colors.error}>
