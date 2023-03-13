@@ -10,6 +10,7 @@ import { colors } from 'utils/styleUtils';
 import messages from './messages';
 import styled from 'styled-components';
 import { SubSectionTitle } from 'components/admin/Section';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const StyledToggle = styled(Toggle)`
   flex-direction: row-reverse;
@@ -35,6 +36,10 @@ type Props = {
 };
 
 const ToggleUserConfirmation = ({ isEnabled, onChange }: Props) => {
+  const includeEmailConfirmedOption = useFeatureFlag({
+    name: 'permission_option_email_confirmation',
+  });
+
   const handleChange = () => {
     onChange(!isEnabled);
   };
@@ -56,11 +61,19 @@ const ToggleUserConfirmation = ({ isEnabled, onChange }: Props) => {
           checked={isEnabled}
           onChange={handleChange}
           labelTextColor={colors.primary}
+          disabled={includeEmailConfirmedOption}
         />
         {isEnabled ? (
           <FormattedMessage {...messages.enabled} />
         ) : (
           <FormattedMessage {...messages.disabled} />
+        )}
+        {includeEmailConfirmedOption && (
+          <IconTooltip
+            content={'Cannot disable this due to tenante settings.'}
+            ml="8px"
+            mb="4px"
+          />
         )}
       </ToggleLabel>
     </Box>
