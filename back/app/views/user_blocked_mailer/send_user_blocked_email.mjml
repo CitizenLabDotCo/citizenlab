@@ -1,0 +1,10 @@
+<mj-section padding="30px 25px">
+  <mj-column>
+    <mj-text color="black">
+      <h1 style="font-size: 25px; margin-bottom: 40px;"><%= t('.title_user_blocked', organizationName: organization_name) %></h1>
+      <p style="margin-bottom: 40px;">
+        <%= t('.message_user_blocked', organizationName: organization_name) %>
+      </p>
+    </mj-text>
+  </mj-column>
+</mj-section>
