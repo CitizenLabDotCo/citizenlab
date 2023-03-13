@@ -1,13 +1,10 @@
 import { useState, useEffect } from 'react';
-import {
-  getInitiativeActionDescriptors,
-  IInitiativeAction,
-} from 'services/initiatives';
+import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
+import useInitativeActionDescriptors from 'api/initiative_action_descriptors/useInitiativeActionDescriptors';
 import { isNilOrError } from 'utils/helperUtils';
 import { ActionPermission } from 'services/actionTakingRules';
-import { authUserStream } from 'services/auth';
-import { combineLatest } from 'rxjs';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAuthUser from './useAuthUser';
 
 export type IInitiativeDisabledReason = 'notPermitted';
 
@@ -16,65 +13,57 @@ export default function useInitiativesPermissions(action: IInitiativeAction) {
     ActionPermission<IInitiativeDisabledReason> | null | undefined
   >(undefined);
   const { data: appConfiguration } = useAppConfiguration();
+  const { data: actionDescriptors } = useInitativeActionDescriptors();
+  const authUser = useAuthUser();
+  const actionDescriptor = actionDescriptors?.data.attributes[action];
 
   useEffect(() => {
-    const subscription = combineLatest([
-      getInitiativeActionDescriptors().observable,
-
-      authUserStream().observable,
-    ]).subscribe(([actionDescriptors, authUser]) => {
-      if (!isNilOrError(appConfiguration) && !isNilOrError(actionDescriptors)) {
-        const actionDescriptor = actionDescriptors[action];
-
-        if (actionDescriptor.enabled) {
-          setActionPermission({
-            show: true,
-            enabled: true,
-            disabledReason: null,
-            authenticationRequirements: null,
-          });
-        } else {
-          switch (actionDescriptor.disabled_reason) {
-            case 'not_verified':
-              if (isNilOrError(authUser)) {
-                setActionPermission({
-                  show: true,
-                  enabled: 'maybe',
-                  disabledReason: null,
-                  authenticationRequirements: 'sign_in_up_and_verify',
-                });
-              } else {
-                setActionPermission({
-                  show: true,
-                  enabled: 'maybe',
-                  disabledReason: null,
-                  authenticationRequirements: 'verify',
-                });
-              }
-              break;
-            case 'not_signed_in':
+    if (appConfiguration && actionDescriptor) {
+      if (actionDescriptor.enabled) {
+        setActionPermission({
+          show: true,
+          enabled: true,
+          disabledReason: null,
+          authenticationRequirements: null,
+        });
+      } else {
+        switch (actionDescriptor.disabled_reason) {
+          case 'not_verified':
+            if (isNilOrError(authUser)) {
               setActionPermission({
                 show: true,
                 enabled: 'maybe',
                 disabledReason: null,
-                authenticationRequirements: 'sign_in_up',
+                authenticationRequirements: 'sign_in_up_and_verify',
               });
-              break;
-            default:
+            } else {
               setActionPermission({
                 show: true,
-                enabled: false,
-                disabledReason: 'notPermitted',
-                authenticationRequirements: null,
+                enabled: 'maybe',
+                disabledReason: null,
+                authenticationRequirements: 'verify',
               });
-          }
+            }
+            break;
+          case 'not_signed_in':
+            setActionPermission({
+              show: true,
+              enabled: 'maybe',
+              disabledReason: null,
+              authenticationRequirements: 'sign_in_up',
+            });
+            break;
+          default:
+            setActionPermission({
+              show: true,
+              enabled: false,
+              disabledReason: 'notPermitted',
+              authenticationRequirements: null,
+            });
         }
       }
-    });
-
-    return () => subscription.unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [appConfiguration]);
+    }
+  }, [appConfiguration, actionDescriptor, authUser]);
 
   return actionPermission;
 }

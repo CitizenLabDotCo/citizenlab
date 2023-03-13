@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
 class PermissionsService
+  DENIED_REASONS = {
+    not_signed_in: 'not_signed_in',
+    not_active: 'not_active',
+    not_permitted: 'not_permitted',
+    missing_data: 'missing_data',
+    not_verified: 'not_verified'
+  }.freeze
+
   def update_permissions_for_scope(scope)
     actions = Permission.available_actions scope
     remove_extras_actions(scope, actions)
@@ -21,7 +29,7 @@ class PermissionsService
     Permission.select(&:invalid?).each(&:destroy!)
   end
 
-  def denied_reason(user, action, resource = nil)
+  def denied_reason_for_resource(user, action, resource = nil)
     scope = resource&.permission_scope
     permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
 
@@ -32,7 +40,15 @@ class PermissionsService
 
     raise "Unknown action '#{action}' for resource: #{resource}" unless permission
 
-    permission.denied_reason user
+    denied_reason_for_permission permission, user
+  end
+
+  def denied_reason_for_permission(permission, user)
+    if permission.permitted_by == 'everyone_confirmed_email'
+      denied_reason permission, user
+    else
+      old_denied_reason permission, user
+    end
   end
 
   def requirements(permission, user)
@@ -67,6 +83,42 @@ class PermissionsService
     actions - Permission.where(permission_scope: scope).pluck(:action)
   end
 
+  def old_denied_reason(permission, user)
+    return if permission.permitted_by == 'everyone'
+    return DENIED_REASONS[:not_signed_in] if !user
+    return DENIED_REASONS[:not_active] if !user.active?
+
+    return if UserRoleService.new.can_moderate? permission.permission_scope, user
+
+    reason = case permission.permitted_by
+    when 'users' then :not_signed_in unless user
+    when 'admins_moderators' then :not_permitted
+    when 'groups' then denied_when_permitted_by_groups?(permission, user)
+    else
+      raise "Unsupported permitted_by: '#{permission.permitted_by}'."
+    end
+
+    DENIED_REASONS[reason]
+  end
+
+  def denied_reason(permission, user)
+    if permission.permitted_by == 'everyone'
+      user ||= User.new
+    elsif !user
+      return DENIED_REASONS[:not_signed_in]
+    elsif !user.active?
+      return DENIED_REASONS[:not_active]
+    end
+
+    return if requirements(permission, user)[:permitted]
+
+    DENIED_REASONS[:missing_data]
+  end
+
+  def denied_when_permitted_by_groups?(permission, user)
+    :not_permitted if !user.in_any_groups?(permission.groups)
+  end
+
   def requirements_mapping
     everyone = {
       built_in: {
@@ -92,7 +144,7 @@ class PermissionsService
         users[:built_in][:email] = 'require'
         required_field_keys = CustomField.registration.required.map(&:key)
         users[:custom_fields].each_key do |key|
-          users[:custom_fields][key] = 'require' if required_field_keys.include? key
+          users[:custom_fields][key] = required_field_keys.include? key ? 'require' : 'ask'
         end
         users[:special][:password] = 'require'
         users[:special][:confirmation] = 'require' if AppConfiguration.instance.feature_activated?('user_confirmation')
@@ -114,7 +166,7 @@ class PermissionsService
     requirements[:special]&.each_key do |special_key|
       is_satisfied = case special_key
       when :password
-        !user.passwordless?
+        !user.no_password?
       when :confirmation
         user.confirmed?
       end
@@ -122,3 +174,5 @@ class PermissionsService
     end
   end
 end
+
+PermissionsService.prepend_if_ee('Verification::Patches::PermissionsService')

@@ -131,7 +131,7 @@ describe ParticipationContextService do
       context 'for an unauthenticated visitor' do
         let(:user) { nil }
 
-        it "returns 'not_permitted' if voting is not permitted and verification is not involved" do
+        it "returns 'not_signed_in' if voting is not permitted and verification is not involved" do
           project = create :continuous_project, with_permissions: true
           idea = create(:idea, project: project)
           permission = project.permissions.find_by(action: 'voting_idea')
@@ -139,10 +139,10 @@ describe ParticipationContextService do
             permitted_by: 'groups',
             group_ids: create_list(:group, 2).map(&:id)
           )
-          expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'not_permitted'
-          expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'not_permitted'
-          expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'up')).to eq 'not_permitted'
-          expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'down')).to eq 'not_permitted'
+          expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'not_signed_in'
+          expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'not_signed_in'
+          expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'up')).to eq 'not_signed_in'
+          expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'down')).to eq 'not_signed_in'
         end
       end
     end

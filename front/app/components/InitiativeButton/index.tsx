@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 import { trackEventByName } from 'utils/analytics';
 import clHistory from 'utils/cl-router/history';
@@ -18,14 +18,9 @@ interface Props {
 }
 
 const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
-  const { disabledReason, authenticationRequirements, enabled } =
-    useInitiativesPermissions('posting_initiative') || {
-      disabledReason: null,
-      action: null,
-      enabled: null,
-    };
+  const initiativePermissions = useInitiativesPermissions('posting_initiative');
 
-  const redirectToInitiativeForm = useCallback(() => {
+  const redirectToInitiativeForm = () => {
     trackEventByName('redirected to initiatives form');
     clHistory.push({
       pathname: `/initiatives/new`,
@@ -34,70 +29,60 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
           ? stringify({ lat, lng }, { addQueryPrefix: true })
           : undefined,
     });
-  }, [lat, lng]);
+  };
 
-  const onNewInitiativeButtonClick = useCallback(
-    (event?: React.FormEvent) => {
-      event?.preventDefault();
+  const onNewInitiativeButtonClick = (event?: React.FormEvent) => {
+    event?.preventDefault();
+    trackEventByName('New initiative button clicked', {
+      extra: {
+        disabledReason: initiativePermissions?.disabledReason,
+        location,
+      },
+    });
 
-      trackEventByName('New initiative button clicked', {
-        extra: {
-          disabledReason,
-          location,
-        },
-      });
-
-      if (enabled) {
-        switch (authenticationRequirements) {
-          case 'sign_in_up':
-            trackEventByName(
-              'Sign up/in modal opened in response to clicking new initiative'
-            );
-            openSignUpInModal({
-              flow: 'signup',
-              verification: false,
-              verificationContext: undefined,
-              onSuccess: redirectToInitiativeForm,
-            });
-            break;
-          case 'sign_in_up_and_verify':
-            trackEventByName(
-              'Sign up/in modal opened in response to clicking new initiative'
-            );
-            openSignUpInModal({
-              flow: 'signup',
-              verification: true,
-              verificationContext: {
-                type: 'initiative',
-                action: 'posting_initiative',
-              },
-              onSuccess: redirectToInitiativeForm,
-            });
-            break;
-          case 'verify':
-            trackEventByName(
-              'Verification modal opened in response to clicking new initiative'
-            );
-            openVerificationModal({
-              context: {
-                action: 'posting_initiative',
-                type: 'initiative',
-              },
-            });
-            break;
-          default:
-            redirectToInitiativeForm();
-        }
+    if (initiativePermissions?.enabled) {
+      switch (initiativePermissions?.authenticationRequirements) {
+        case 'sign_in_up':
+          trackEventByName(
+            'Sign up/in modal opened in response to clicking new initiative'
+          );
+          openSignUpInModal({
+            flow: 'signup',
+            verification: false,
+            verificationContext: undefined,
+            onSuccess: redirectToInitiativeForm,
+          });
+          break;
+        case 'sign_in_up_and_verify':
+          trackEventByName(
+            'Sign up/in modal opened in response to clicking new initiative'
+          );
+          openSignUpInModal({
+            flow: 'signup',
+            verification: true,
+            verificationContext: {
+              type: 'initiative',
+              action: 'posting_initiative',
+            },
+            onSuccess: redirectToInitiativeForm,
+          });
+          break;
+        case 'verify':
+          trackEventByName(
+            'Verification modal opened in response to clicking new initiative'
+          );
+          openVerificationModal({
+            context: {
+              action: 'posting_initiative',
+              type: 'initiative',
+            },
+          });
+          break;
+        default:
+          redirectToInitiativeForm();
       }
-    },
-    [
-      enabled,
-      authenticationRequirements,
-      disabledReason,
-      location,
-      redirectToInitiativeForm,
-    ]
-  );
+    }
+  };
 
   return (
     <Button
@@ -107,7 +92,7 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
       onClick={onNewInitiativeButtonClick}
       icon="arrow-right"
       iconPos="right"
-      disabled={!!disabledReason}
+      disabled={!!initiativePermissions?.disabledReason}
       text={<FormattedMessage {...messages.startInitiative} />}
     />
   );

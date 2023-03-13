@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import { getInputTerm } from 'services/participationContexts';
@@ -21,12 +21,8 @@ import GetAppConfiguration, {
 } from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-import GetInitiative, {
-  GetInitiativeChildProps,
-} from 'resources/GetInitiative';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import { PostType } from 'resources/GetPost';
 
 // i18n
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
@@ -42,8 +38,11 @@ import tracks from './tracks';
 // style
 import rocket from 'assets/img/rocket.png';
 
+// hooks
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+
 interface InputProps {
-  postType: PostType;
+  postType: 'idea' | 'initiative';
   postId: string | null;
   className?: string;
   title: string;
@@ -55,30 +54,37 @@ interface DataProps {
   tenant: GetAppConfigurationChildProps;
   authUser: GetAuthUserChildProps;
   idea: GetIdeaChildProps;
-  initiative: GetInitiativeChildProps;
   project: GetProjectChildProps;
   phases: GetPhasesChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
-interface State {}
+const SharingModalContent = ({
+  postId,
+  postType,
+  localize,
+  locale,
+  idea,
+  project,
+  phases,
+  intl: { formatMessage },
+  className,
+  authUser,
+  title,
+  subtitle,
+}: Props & WrappedComponentProps & InjectedLocalized) => {
+  const initiativeId = postType === 'initiative' ? postId : null;
+  const { data: initiative } = useInitiativeById(initiativeId);
 
-class SharingModalContent extends PureComponent<
-  Props & WrappedComponentProps & InjectedLocalized,
-  State
-> {
-  componentDidMount() {
-    const { postId, postType } = this.props;
-
+  useEffect(() => {
     trackEventByName(tracks.sharingModalOpened.name, {
       postId,
       postType,
     });
-  }
+  }, [postId, postType]);
 
-  getPostValues = () => {
-    const { postType, idea, initiative, localize, locale } = this.props;
+  const getPostValues = () => {
     let postTitle: string | null = null;
     let postUrl: string | null = null;
 
@@ -88,15 +94,14 @@ class SharingModalContent extends PureComponent<
     }
 
     if (postType === 'initiative' && !isNilOrError(initiative)) {
-      postTitle = localize(initiative.attributes.title_multiloc);
-      postUrl = `${location.origin}/${locale}/${postType}s/${initiative.attributes.slug}`;
+      postTitle = localize(initiative.data.attributes.title_multiloc);
+      postUrl = `${location.origin}/${locale}/${postType}s/${initiative.data.attributes.slug}`;
     }
 
     return { postTitle, postUrl };
   };
 
-  getIdeaMessages = () => {
-    const { project, phases } = this.props;
+  const getIdeaMessages = () => {
     let emailSharingSubject: MessageDescriptor | null = null;
     let emailSharingBody: MessageDescriptor | null = null;
     let whatsAppMessage: MessageDescriptor | null = null;
@@ -137,7 +142,7 @@ class SharingModalContent extends PureComponent<
     return { emailSharingSubject, emailSharingBody, whatsAppMessage };
   };
 
-  getInitiativeMessages = () => {
+  const getInitiativeMessages = () => {
     const emailSharingSubject = messages.initiativeEmailSharingSubject;
     const emailSharingBody = messages.initiativeEmailSharingBody;
     const whatsAppMessage = messages.whatsAppMessageProposal;
@@ -145,91 +150,84 @@ class SharingModalContent extends PureComponent<
     return { emailSharingSubject, emailSharingBody, whatsAppMessage };
   };
 
-  getMessages = () => {
-    const { postType } = this.props;
-
+  const getMessages = () => {
     if (postType === 'idea') {
-      return this.getIdeaMessages();
+      return getIdeaMessages();
     } else {
-      return this.getInitiativeMessages();
+      return getInitiativeMessages();
     }
   };
 
-  render() {
-    const { postType, authUser, className, title, subtitle } = this.props;
-    const { formatMessage } = this.props.intl;
+  const { postTitle, postUrl } = getPostValues();
+  const { emailSharingBody, emailSharingSubject, whatsAppMessage } =
+    getMessages();
 
-    const { postTitle, postUrl } = this.getPostValues();
-    const { emailSharingBody, emailSharingSubject, whatsAppMessage } =
-      this.getMessages();
-
-    if (
-      !isNilOrError(authUser) &&
-      postUrl &&
-      emailSharingBody &&
-      emailSharingSubject &&
-      whatsAppMessage
-    ) {
-      return (
-        <Box
-          width="100%"
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          justifyContent="center"
-          className={className}
-        >
-          <Image width="80px" height="80px" src={rocket} alt="" />
-          <Title
-            variant="h2"
-            textAlign="center"
-            className={`e2e-${postType}-social-sharing-modal-title`}
-          >
-            {title}
-          </Title>
-          <Text
-            color="textPrimary"
-            mt="12px"
-            mb="36px"
-            fontSize={'m'}
-            textAlign="center"
-          >
-            {subtitle}
-          </Text>
-          <SharingButtons
-            context={postType}
-            url={postUrl}
-            facebookMessage={formatMessage(messages.twitterMessage, {
-              postTitle,
-            })}
-            twitterMessage={formatMessage(messages.twitterMessage, {
-              postTitle,
-            })}
-            whatsAppMessage={formatMessage(whatsAppMessage, {
-              postTitle,
-            })}
-            emailSubject={formatMessage(emailSharingSubject, { postTitle })}
-            emailBody={formatMessage(emailSharingBody, {
-              postTitle,
-              postUrl,
-            })}
-            utmParams={{
-              source: `share_${postType}`,
-              campaign: `${postType}flow`,
-              content: authUser.id,
-            }}
-          />
-        </Box>
-      );
-    }
-
+  if (
+    !isNilOrError(authUser) &&
+    postUrl &&
+    emailSharingBody &&
+    emailSharingSubject &&
+    whatsAppMessage
+  ) {
     return (
-      <Centerer height="460px">
-        <Spinner />
-      </Centerer>
+      <Box
+        width="100%"
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        className={className}
+      >
+        <Image width="80px" height="80px" src={rocket} alt="" />
+        <Title
+          variant="h2"
+          textAlign="center"
+          className={`e2e-${postType}-social-sharing-modal-title`}
+        >
+          {title}
+        </Title>
+        <Text
+          color="textPrimary"
+          mt="12px"
+          mb="36px"
+          fontSize={'m'}
+          textAlign="center"
+        >
+          {subtitle}
+        </Text>
+        <SharingButtons
+          context={postType}
+          url={postUrl}
+          facebookMessage={formatMessage(messages.twitterMessage, {
+            postTitle,
+          })}
+          twitterMessage={formatMessage(messages.twitterMessage, {
+            postTitle,
+          })}
+          whatsAppMessage={formatMessage(whatsAppMessage, {
+            postTitle,
+          })}
+          emailSubject={formatMessage(emailSharingSubject, { postTitle })}
+          emailBody={formatMessage(emailSharingBody, {
+            postTitle,
+            postUrl,
+          })}
+          utmParams={{
+            source: `share_${postType}`,
+            campaign: `${postType}flow`,
+            content: authUser.id,
+          }}
+        />
+      </Box>
     );
   }
-}
+
+  return (
+    <Centerer height="460px">
+      <Spinner />
+    </Centerer>
+  );
+};
 
 const SharingModalContentWithHoCs = injectIntl(localize(SharingModalContent));
 
@@ -241,13 +239,6 @@ const Data = adopt<DataProps, InputProps>({
     <GetIdea ideaId={postId && postType === 'idea' ? postId : null}>
       {render}
     </GetIdea>
-  ),
-  initiative: ({ postId, postType, render }) => (
-    <GetInitiative
-      id={postId && postType === 'initiative' ? postId : undefined}
-    >
-      {render}
-    </GetInitiative>
   ),
   project: ({ idea, render }) => (
     <GetProject

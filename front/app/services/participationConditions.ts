@@ -2,7 +2,7 @@ import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 
 import { Multiloc, IParticipationContextType, IPCAction } from 'typings';
-import { IInitiativeAction } from './initiatives';
+import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
 
 export interface Response {
   data: {

@@ -15,9 +15,11 @@ resource 'ActionDescriptors' do
 
   get 'web_api/v1/action_descriptors/initiatives' do
     example_request 'Get the global action descriptors for initiatives' do
-      expect(response_status).to eq 200
-      expect(json_response.values.pluck(:enabled).all?).to be true
-      expect(json_response.values.pluck(:disabled_reason).none?).to be true
+      assert_status 200
+      expect(json_response.dig(:data, :type)).to eq 'initiatives'
+      json_attributes = json_response.dig(:data, :attributes)
+      expect(json_attributes.values.pluck(:enabled).all?).to be true
+      expect(json_attributes.values.pluck(:disabled_reason).none?).to be true
     end
 
     context 'with granular permissions enabled', document: false, skip: !CitizenLab.ee? do
@@ -28,28 +30,32 @@ resource 'ActionDescriptors' do
       end
 
       example_request 'Get the global action descriptors for initiatives' do
-        json_response = json_parse(response_body)
         expect(json_response).to eq(
           {
-            posting_initiative: {
-              enabled: true,
-              disabled_reason: nil
-            },
-            commenting_initiative: {
-              enabled: false,
-              disabled_reason: 'not_permitted'
-            },
-            voting_initiative: {
-              enabled: true,
-              disabled_reason: nil
-            },
-            cancelling_initiative_votes: {
-              enabled: true,
-              disabled_reason: nil
-            },
-            comment_voting_initiative: {
-              enabled: false,
-              disabled_reason: 'not_permitted'
+            data: {
+              type: 'initiatives',
+              attributes: {
+                posting_initiative: {
+                  enabled: true,
+                  disabled_reason: nil
+                },
+                commenting_initiative: {
+                  enabled: false,
+                  disabled_reason: 'not_permitted'
+                },
+                voting_initiative: {
+                  enabled: true,
+                  disabled_reason: nil
+                },
+                cancelling_initiative_votes: {
+                  enabled: true,
+                  disabled_reason: nil
+                },
+                comment_voting_initiative: {
+                  enabled: false,
+                  disabled_reason: 'not_permitted'
+                }
+              }
             }
           }
         )

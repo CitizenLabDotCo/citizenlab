@@ -13,6 +13,7 @@ import messages from './messages';
 import permissionsMessages from 'containers/Admin/projects/project/permissions/messages';
 import { IPermissionData } from 'services/actionPermissions';
 import Warning from 'components/UI/Warning';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const StyledFieldset = styled.fieldset`
   border: none;
@@ -48,6 +49,9 @@ const ActionForm = ({
   localize,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const includeEmailConfirmedOption = useFeatureFlag({
+    name: 'permission_option_email_confirmation',
+  });
   const groupsOptions = () => {
     if (isNilOrError(groupsList)) {
       return [];
@@ -94,16 +98,18 @@ const ActionForm = ({
             id={`participation-permission-everyone-${permissionId}`}
           />
         )}
-        <Radio
-          name={`permittedBy-${permissionId}`}
-          value="everyone_confirmed_email"
-          currentValue={permittedBy}
-          label={
-            <FormattedMessage {...messages.permissionsEveryoneEmailLabel} />
-          }
-          onChange={handlePermittedByUpdate('everyone_confirmed_email')}
-          id={`participation-permission-users-${permissionId}`}
-        />
+        {includeEmailConfirmedOption && (
+          <Radio
+            name={`permittedBy-${permissionId}`}
+            value="everyone_confirmed_email"
+            currentValue={permittedBy}
+            label={
+              <FormattedMessage {...messages.permissionsEveryoneEmailLabel} />
+            }
+            onChange={handlePermittedByUpdate('everyone_confirmed_email')}
+            id={`participation-permission-users-${permissionId}`}
+          />
+        )}
         <Radio
           name={`permittedBy-${permissionId}`}
           value="users"

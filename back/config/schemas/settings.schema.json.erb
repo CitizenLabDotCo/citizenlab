@@ -185,6 +185,26 @@
         }
       },
 
+      "user_blocking": {
+      "type": "object",
+      "title": "User blocking",
+      "description": "User blocking and unblocking features. WIP - Don't enable for customer platforms",
+      "additionalProperties": false,
+      "required": ["allowed", "enabled"],
+      "required-settings": ["duration"],
+      "properties": {
+        "allowed": { "type": "boolean", "default": false },
+        "enabled": { "type": "boolean", "default": false },
+        "duration": {
+          "title": "Duration of block (in days)",
+          "description": "How many days a user will be blocked for. The user will remain blocked until this period expires, or an admin manually removes the block on the user. Setting this value to zero effectively unblocks all blocked users.",
+          "type": "integer",
+          "minimum": 0,
+          "default": 90
+        }
+      }
+    },
+
       "dynamic_idea_form": {
         "type": "object",
         "title": "Dynamic idea form",
@@ -1083,6 +1103,18 @@
           "allowed": { "type": "boolean", "default": true },
           "enabled": { "type": "boolean", "default": true }
         }
+      },
+
+      "permission_option_email_confirmation": {
+        "type": "object",
+        "title": "Registration via email confirmation",
+        "description": "Enables a light registration flow where users enter just an email address and a confirmation code.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
       }
     },
   "dependencies": {
@@ -1106,7 +1138,9 @@
     "id_franceconnect": ["verification"],
     "id_gent_rrn": ["verification"],
     "id_oostende_rrn": ["verification"],
-    "id_id_card_lookup": ["verification"]
+    "id_id_card_lookup": ["verification"],
+
+    "permission_option_email_confirmation": ["user_confirmation"]
   },
   "definitions": {
     "multiloc_string": {

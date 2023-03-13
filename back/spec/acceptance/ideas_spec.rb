@@ -747,7 +747,7 @@ resource 'Ideas' do
           expect(json_parse(response_body)).to include_response_error(:base, 'i_dont_like_you')
         end
 
-        example_group 'with granular permissions', skip: !CitizenLab.ee? do
+        example_group 'with granular permissions' do
           let(:with_permissions) { true }
           let(:group) { create(:group) }
 

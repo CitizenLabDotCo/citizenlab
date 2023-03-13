@@ -69,18 +69,20 @@ resource 'Stats - Initiatives' do
     feedback_needed_filter_parameter self
 
     example_request 'Count all initiatives' do
-      expect(response_status).to eq 200
-      json_response = json_parse(response_body)
-      expect(json_response[:count]).to eq Initiative.published.count
+      assert_status 200
+      json_response = json_parse response_body
+      expect(json_response.dig(:data, :type)).to eq 'initiatives_count'
+      expect(json_response.dig(:data, :attributes, :count)).to eq Initiative.published.count
     end
 
     describe 'with feedback_needed filter' do
       let(:feedback_needed) { true }
 
       example_request 'Count all initiatives that need feedback' do
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response[:count]).to eq Initiative.published.count
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'initiatives_count'
+        expect(json_response.dig(:data, :attributes, :count)).to eq Initiative.published.count
       end
 
       example 'Count all initiatives that need feedback for a specific assignee' do
@@ -88,9 +90,10 @@ resource 'Stats - Initiatives' do
         create(:initiative, initiative_status: @threshold_reached, assignee: assignee)
         do_request assignee: assignee.id
 
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response[:count]).to eq 1
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'initiatives_count'
+        expect(json_response.dig(:data, :attributes, :count)).to eq 1
       end
     end
   end
@@ -105,11 +108,13 @@ resource 'Stats - Initiatives' do
       let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
 
       example_request 'Initiatives by topic' do
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'initiatives_by_topic'
+        json_attributes = json_response.dig(:data, :attributes)
         expected_topics = @initiatives_with_topics.flat_map { |i| i.initiatives_topics.map(&:topic_id) }.uniq
-        expect(json_response[:series][:initiatives].keys.map(&:to_s).uniq - expected_topics).to eq []
-        expect(json_response[:series][:initiatives].values.map(&:class).uniq).to eq [Integer]
+        expect(json_attributes[:series][:initiatives].keys.map(&:to_s).uniq - expected_topics).to eq []
+        expect(json_attributes[:series][:initiatives].values.map(&:class).uniq).to eq [Integer]
       end
     end
 
@@ -126,9 +131,10 @@ resource 'Stats - Initiatives' do
       end
 
       example_request 'Initiatives by topic filtered by group' do
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response[:series][:initiatives].values.sum).to eq 2
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'initiatives_by_topic'
+        expect(json_response.dig(:data, :attributes, :series, :initiatives).values.sum).to eq 2
       end
     end
   end
@@ -143,11 +149,13 @@ resource 'Stats - Initiatives' do
     let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
 
     example_request 'Initiatives by area' do
-      expect(response_status).to eq 200
-      json_response = json_parse(response_body)
+      assert_status 200
+      json_response = json_parse response_body
+      expect(json_response.dig(:data, :type)).to eq 'initiatives_by_area'
+      json_attributes = json_response.dig(:data, :attributes)
       expected_areas = @initiatives_with_areas.flat_map { |i| i.areas_initiatives.map(&:area_id) }.uniq
-      expect(json_response[:series][:initiatives].keys.map(&:to_s).uniq - expected_areas).to eq []
-      expect(json_response[:series][:initiatives].values.map(&:class).uniq).to eq [Integer]
+      expect(json_attributes[:series][:initiatives].keys.map(&:to_s).uniq - expected_areas).to eq []
+      expect(json_attributes[:series][:initiatives].values.map(&:class).uniq).to eq [Integer]
     end
   end
 
@@ -162,10 +170,12 @@ resource 'Stats - Initiatives' do
     let(:interval) { 'day' }
 
     example_request 'Initiatives by time (published_at)' do
-      expect(response_status).to eq 200
-      json_response = json_parse(response_body)
-      expect(json_response[:series][:initiatives].size).to eq end_at.yday
-      expect(json_response[:series][:initiatives].values.sum).to eq 11
+      assert_status 200
+      json_response = json_parse response_body
+      expect(json_response.dig(:data, :type)).to eq 'initiatives_by_time'
+      json_attributes = json_response.dig(:data, :attributes)
+      expect(json_attributes[:series][:initiatives].size).to eq end_at.yday
+      expect(json_attributes[:series][:initiatives].values.sum).to eq 11
     end
   end
 
@@ -180,7 +190,7 @@ resource 'Stats - Initiatives' do
 
       example 'Initiatives by time (published_at) cumulative without time filters', document: false do
         do_request
-        expect(response_status).to eq 200
+        assert_status 200
       end
     end
 
@@ -190,12 +200,14 @@ resource 'Stats - Initiatives' do
       let(:interval) { 'day' }
 
       example_request 'Initiatives by time (published_at) cumulative' do
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response[:series][:initiatives].size).to eq end_at.yday
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'initiatives_by_time_cumulative'
+        json_attributes = json_response.dig(:data, :attributes)
+        expect(json_attributes[:series][:initiatives].size).to eq end_at.yday
         # monotonically increasing
-        expect(json_response[:series][:initiatives].values.uniq).to eq json_response[:series][:initiatives].values.uniq.sort
-        expect(json_response[:series][:initiatives].values.last).to eq Initiative.published.count
+        expect(json_attributes[:series][:initiatives].values.uniq).to eq json_attributes[:series][:initiatives].values.uniq.sort
+        expect(json_attributes[:series][:initiatives].values.last).to eq Initiative.published.count
       end
     end
   end

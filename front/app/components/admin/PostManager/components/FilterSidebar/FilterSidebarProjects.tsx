@@ -26,7 +26,7 @@ const FilterSidebarProjects = ({
   };
 
   const isActive = (id: string) => {
-    return selectedProject && selectedProject === id;
+    return selectedProject === id;
   };
 
   return (
