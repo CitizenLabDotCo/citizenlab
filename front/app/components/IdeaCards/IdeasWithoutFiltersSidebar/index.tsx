@@ -35,7 +35,7 @@ import {
 } from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
 import { isFieldEnabled } from 'utils/projectUtils';
-import { IIdeasQueryParameters, Sort } from 'services/ideas';
+import { IQueryParameters, Sort } from 'api/ideas/types';
 
 const Container = styled.div`
   width: 100%;
@@ -131,8 +131,8 @@ const StyledSearchInput = styled(SearchInput)`
 `;
 
 export interface Props {
-  ideaQueryParameters: IIdeasQueryParameters;
-  onUpdateQuery: (newParams: Partial<IIdeasQueryParameters>) => void;
+  ideaQueryParameters: IQueryParameters;
+  onUpdateQuery: (newParams: Partial<IQueryParameters>) => void;
 
   // other
   projectId?: string;

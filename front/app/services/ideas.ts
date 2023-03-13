@@ -3,65 +3,12 @@ import streams, { IStreamParams } from 'utils/streams';
 
 // typings
 import { Multiloc } from 'typings';
-import {
-  CommentingDisabledReason,
-  PublicationStatus as ProjectPublicationStatus,
-} from 'services/projects';
-import { IIdeaData } from 'api/ideas/types';
-
-export type IdeaPublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
-
-// keys in ideas.attributes.action_descriptor
-export type IIdeaAction =
-  | 'voting_idea'
-  | 'commenting_idea'
-  | 'comment_voting_idea'
-  | 'budgeting';
-
-export type IdeaVotingDisabledReason =
-  | 'project_inactive'
-  | 'not_ideation'
-  | 'voting_disabled'
-  | 'downvoting_disabled'
-  | 'not_signed_in'
-  | 'upvoting_limited_max_reached'
-  | 'downvoting_limited_max_reached'
-  | 'idea_not_in_current_phase'
-  | 'not_permitted'
-  | 'not_verified';
+import { CommentingDisabledReason } from 'services/projects';
+import { IIdeaData, IQueryParameters, Sort } from 'api/ideas/types';
 
 export type IdeaCommentingDisabledReason =
   | 'idea_not_in_current_phase'
   | CommentingDisabledReason;
-
-export type Sort =
-  | 'random'
-  | 'new'
-  | '-new'
-  | 'trending'
-  | '-trending'
-  | 'popular'
-  | '-popular'
-  | 'author_name'
-  | '-author_name'
-  | 'upvotes_count'
-  | '-upvotes_count'
-  | 'downvotes_count'
-  | '-downvotes_count'
-  | 'baskets_count'
-  | '-baskets_count'
-  | 'status'
-  | '-status';
-
-export type SortAttribute =
-  | 'new'
-  | 'trending'
-  | 'popular'
-  | 'author_name'
-  | 'upvotes_count'
-  | 'downvotes_count'
-  | 'baskets_count'
-  | 'status';
 
 export interface IMinimalIdeaData {
   id: string;
@@ -70,10 +17,6 @@ export interface IMinimalIdeaData {
     slug: string;
     title_multiloc: Multiloc;
   };
-}
-
-export interface IIdea {
-  data: IIdeaData;
 }
 
 export interface IIdeasFilterCounts {
@@ -90,27 +33,8 @@ export interface IIdeasFilterCounts {
   };
 }
 
-export interface IIdeasQueryParameters {
-  'page[number]': number;
-  'page[size]': number;
-  sort: Sort;
-  projects?: string[] | null;
-  phase?: string | null;
-  author?: string | null;
-  search?: string | null;
-  topics?: string[] | null;
-  idea_status?: string | null;
-  publication_status?: IdeaPublicationStatus | null;
-  project_publication_status?: ProjectPublicationStatus | null;
-  bounding_box?: number[] | null;
-  assignee?: string | null;
-  feedback_needed?: boolean | null;
-  filter_can_moderate?: boolean | null;
-  basket_id?: string;
-}
-
 export interface IIdeasFilterCountsQueryParameters
-  extends Omit<IIdeasQueryParameters, 'page[number]' | 'page[size]' | 'sort'> {
+  extends Omit<IQueryParameters, 'page[number]' | 'page[size]' | 'sort'> {
   sort?: Sort;
 }
 

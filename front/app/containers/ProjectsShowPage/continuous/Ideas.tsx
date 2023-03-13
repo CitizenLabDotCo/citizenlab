@@ -29,7 +29,7 @@ import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
 
 // typings
 import { IProjectData } from 'services/projects';
-import { IIdeasQueryParameters } from 'services/ideas';
+import { IQueryParameters } from 'api/ideas/types';
 
 const Container = styled.div``;
 
@@ -54,19 +54,16 @@ interface InnerProps {
 const IdeasContainer = memo<InnerProps>(({ project, className }) => {
   const windowSize = useWindowSize();
   const [ideaQueryParameters, setIdeaQueryParameters] =
-    useState<IIdeasQueryParameters>({
+    useState<IQueryParameters>({
       projects: [project.id],
       sort: project.attributes.ideas_order ?? ideaDefaultSortMethodFallback,
       'page[number]': 1,
       'page[size]': 24,
     });
 
-  const updateQuery = useCallback(
-    (newParams: Partial<IIdeasQueryParameters>) => {
-      setIdeaQueryParameters((current) => ({ ...current, ...newParams }));
-    },
-    []
-  );
+  const updateQuery = useCallback((newParams: Partial<IQueryParameters>) => {
+    setIdeaQueryParameters((current) => ({ ...current, ...newParams }));
+  }, []);
 
   const projectType = project.attributes.process_type;
   const participationMethod = project.attributes.participation_method;

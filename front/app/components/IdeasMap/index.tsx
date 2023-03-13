@@ -55,7 +55,7 @@ import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import { media, viewportWidths, colors, fontSizes } from 'utils/styleUtils';
 
 // typings
-import { Sort } from 'services/ideas';
+import { Sort } from 'api/ideas/types';
 import { IIdeaMarkerData } from 'api/idea_markers/types';
 
 const mapMarginDesktop = 70;

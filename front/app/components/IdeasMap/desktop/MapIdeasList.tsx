@@ -40,7 +40,7 @@ import { isFieldEnabled } from 'utils/projectUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { Sort } from 'services/ideas';
+import { Sort } from 'api/ideas/types';
 
 const Container = styled.div`
   width: 100%;

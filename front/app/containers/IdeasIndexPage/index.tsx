@@ -18,7 +18,7 @@ import styled from 'styled-components';
 import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
 
 // typings
-import { IIdeasQueryParameters } from 'services/ideas';
+import { IQueryParameters } from 'api/ideas/types';
 
 const Container = styled.main`
   min-height: calc(
@@ -75,19 +75,16 @@ const PageTitle = styled.h1`
 
 export default memo(() => {
   const [ideasQueryParameters, setIdeasQueryParameters] =
-    useState<IIdeasQueryParameters>({
+    useState<IQueryParameters>({
       'page[number]': 1,
       'page[size]': 12,
       sort: ideaDefaultSortMethodFallback,
       project_publication_status: 'published',
     });
 
-  const updateQuery = useCallback(
-    (newParams: Partial<IIdeasQueryParameters>) => {
-      setIdeasQueryParameters((current) => ({ ...current, ...newParams }));
-    },
-    []
-  );
+  const updateQuery = useCallback((newParams: Partial<IQueryParameters>) => {
+    setIdeasQueryParameters((current) => ({ ...current, ...newParams }));
+  }, []);
 
   return (
     <>

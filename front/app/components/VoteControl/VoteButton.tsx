@@ -7,7 +7,7 @@ import messages from './messages';
 import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import { FormattedMessage } from 'utils/cl-intl';
-import { IdeaVotingDisabledReason } from 'services/ideas';
+import { IdeaVotingDisabledReason } from 'api/ideas/types';
 import useAuthUser from 'hooks/useAuthUser';
 import useIdeaById from 'api/ideas/useIdeaById';
 import { FormattedDate } from 'react-intl';

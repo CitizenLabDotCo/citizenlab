@@ -13,10 +13,11 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import { IIdeasFilterCounts, IIdeasQueryParameters } from 'services/ideas';
+import { IQueryParameters } from 'api/ideas/types';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { IIdeasFilterCounts } from 'services/ideas';
 
 const FiltersSidebarContainer = styled.div`
   position: relative;
@@ -68,7 +69,7 @@ export interface Props {
   filtersActive: boolean;
   ideasFilterCounts: IIdeasFilterCounts | NilOrError;
   numberOfSearchResults: number;
-  selectedIdeaFilters: Partial<IIdeasQueryParameters>;
+  selectedIdeaFilters: Partial<IQueryParameters>;
   onClearFilters: () => void;
   onSearch: (searchTerm: string) => void;
   onChangeStatus: (ideaStatus: string | null) => void;

@@ -26,7 +26,7 @@ import { CTABarProps } from 'components/ParticipationCTABars/utils';
 // utils
 import { isNilOrError } from './helperUtils';
 import clHistory from 'utils/cl-router/history';
-import { IIdea } from 'services/ideas';
+import { IIdea } from 'api/ideas/types';
 
 type FormSubmissionMethodProps = {
   project?: IProjectData;

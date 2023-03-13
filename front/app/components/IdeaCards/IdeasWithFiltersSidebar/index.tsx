@@ -33,7 +33,7 @@ import {
 } from 'utils/styleUtils';
 
 // typings
-import { Sort, IIdeasQueryParameters } from 'services/ideas';
+import { Sort, IQueryParameters } from 'api/ideas/types';
 
 const gapWidth = 35;
 
@@ -136,8 +136,8 @@ const ContentRight = styled.div<{ filterColumnWidth: number }>`
 `;
 
 export interface Props {
-  ideaQueryParameters: IIdeasQueryParameters;
-  onUpdateQuery: (newParams: Partial<IIdeasQueryParameters>) => void;
+  ideaQueryParameters: IQueryParameters;
+  onUpdateQuery: (newParams: Partial<IQueryParameters>) => void;
 }
 
 const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {

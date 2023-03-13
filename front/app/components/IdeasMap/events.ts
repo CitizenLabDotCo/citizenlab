@@ -6,7 +6,7 @@ import {
 } from 'rxjs/operators';
 import { isEqual } from 'lodash-es';
 import eventEmitter from 'utils/eventEmitter';
-import { Sort } from 'services/ideas';
+import { Sort } from 'api/ideas/types';
 
 enum events {
   ideaMapCardSelectedChange = 'ideaMapCardSelectedChange',

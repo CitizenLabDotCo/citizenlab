@@ -18,7 +18,7 @@ import { media, colors } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 // typings
-import { IdeaVotingDisabledReason } from 'services/ideas';
+import { IdeaVotingDisabledReason } from 'api/ideas/types';
 
 const Container = styled.div`
   flex: 0 0 ${(props) => props.theme.mobileTopBarHeight}px;

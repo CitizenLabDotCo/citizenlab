@@ -8,7 +8,7 @@ import ScreenReaderContent from './ScreenReaderContent';
 import VoteButton from './VoteButton';
 
 // services
-import { IdeaVotingDisabledReason } from 'services/ideas';
+import { IdeaVotingDisabledReason } from 'api/ideas/types';
 import { getLatestRelevantPhase } from 'services/phases';
 
 // utils

@@ -9,7 +9,7 @@ import {
   TAppConfigurationSetting,
   TAppConfigurationSettingWithEnabled,
 } from 'api/app_configuration/types';
-import { IIdeaAction } from 'services/ideas';
+import { IIdeaAction } from 'api/ideas/types';
 import { IProjectAction } from 'services/projects';
 import { WrappedComponentProps } from 'react-intl';
 

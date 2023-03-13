@@ -32,7 +32,7 @@ import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
 
 // typings
 import { IUserData } from 'services/users';
-import { IIdeasQueryParameters } from 'services/ideas';
+import { IQueryParameters } from 'api/ideas/types';
 
 const NotFoundContainer = styled.main`
   min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px - 4rem);
@@ -92,19 +92,16 @@ export const UsersShowPage = memo<InnerProps>(({ className, user }) => {
   const [savedScrollIndex, setSavedScrollIndex] = useState<number>(0);
 
   const [ideaQueryParameters, setIdeaQueryParameters] =
-    useState<IIdeasQueryParameters>({
+    useState<IQueryParameters>({
       author: user.id,
       sort: ideaDefaultSortMethodFallback,
       'page[number]': 1,
       'page[size]': 24,
     });
 
-  const updateQuery = useCallback(
-    (newParams: Partial<IIdeasQueryParameters>) => {
-      setIdeaQueryParameters((current) => ({ ...current, ...newParams }));
-    },
-    []
-  );
+  const updateQuery = useCallback((newParams: Partial<IQueryParameters>) => {
+    setIdeaQueryParameters((current) => ({ ...current, ...newParams }));
+  }, []);
 
   const changeTab = (toTab: UserTab) => () => {
     const oldScroll = savedScrollIndex;
