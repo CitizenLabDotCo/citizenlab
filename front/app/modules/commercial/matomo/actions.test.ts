@@ -52,7 +52,6 @@ describe('trackPageChange', () => {
   });
 
   it('sets project id path is idea', async () => {
-    queryClient.setQueryData(ideasKeys.itemSlug('some-idea'), mockIdea);
     await trackPageChange('/en/ideas/some-idea');
     expect(window._paq[1]).toEqual(['setCustomDimension', 4, 'project-id2']);
   });
