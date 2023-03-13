@@ -24,11 +24,9 @@ resource 'AppConfigurations' do
       end
     end
 
-    if CitizenLab.ee?
-      with_options scope: :style do
-        AppConfiguration.available_style_attributes.each do |attr|
-          response_field attr[:name], attr[:description]
-        end
+    with_options scope: :style do
+      AppConfiguration.available_style_attributes.each do |attr|
+        response_field attr[:name], attr[:description]
       end
     end
 
@@ -36,7 +34,7 @@ resource 'AppConfigurations' do
       assert_status 200
       json_response = json_parse(response_body)
       expect(json_response.with_indifferent_access.dig(:data, :attributes, :host)).to eq 'example.org'
-      expect(json_response.with_indifferent_access.dig(:data, :attributes, :style)).to eq({}) if CitizenLab.ee?
+      expect(json_response.with_indifferent_access.dig(:data, :attributes, :style)).to eq({})
     end
   end
 
@@ -61,17 +59,15 @@ resource 'AppConfigurations' do
         end
       end
 
-      if CitizenLab.ee?
-        # Style parameters
-        parameter :style, <<~DESC, extra: ''
-          The changes to the style object. This will be merged with the existing
-          style. Arrays will not be merged, but override their values.
-        DESC
+      # Style parameters
+      parameter :style, <<~DESC, extra: ''
+        The changes to the style object. This will be merged with the existing
+        style. Arrays will not be merged, but override their values.
+      DESC
 
-        AppConfiguration.style_json_schema['properties'].each do |style, style_descriptor|
-          parameter_description = "#{style_descriptor['description']}. Type: #{style_descriptor['type']}"
-          parameter style, parameter_description, scope: %i[app_configuration style]
-        end
+      AppConfiguration.style_json_schema['properties'].each do |style, style_descriptor|
+        parameter_description = "#{style_descriptor['description']}. Type: #{style_descriptor['type']}"
+        parameter style, parameter_description, scope: %i[app_configuration style]
       end
     end
 
@@ -79,16 +75,13 @@ resource 'AppConfigurations' do
 
     let(:logo) { png_image_as_base64 'logo.png' }
     let(:favicon) { png_image_as_base64 'favicon.png' }
+    let(:style) { { signedInHeaderOverlayColor: '#db2577' } }
     let(:organization_name) do
       {
         'en' => 'TestTown',
-        'nl-BE' => 'TestTowm',
+        'nl-BE' => 'TestTown',
         'fr-FR' => 'TestTown'
       }
-    end
-
-    if CitizenLab.ee?
-      let(:style) { { signedInHeaderOverlayColor: '#db2577' } }
     end
 
     example_request 'Update the app configuration' do
@@ -97,9 +90,7 @@ resource 'AppConfigurations' do
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :attributes, :settings, :core, :organization_name, :en)).to eq 'TestTown'
       expect(json_response.dig(:data, :attributes, :favicon)).to be_present
-      if CitizenLab.ee?
-        expect(json_response.dig(:data, :attributes, :style, :signedInHeaderOverlayColor)).to eq '#db2577'
-      end
+      expect(json_response.dig(:data, :attributes, :style, :signedInHeaderOverlayColor)).to eq '#db2577'
     end
 
     describe do

@@ -14,6 +14,7 @@ class WebApi::V1::UsersController < ::ApplicationController
     @users = @users.search_by_all(params[:search]) if params[:search].present?
 
     @users = @users.active unless params[:include_inactive]
+    @users = @users.blocked if params[:only_blocked]
     @users = @users.in_group(Group.find(params[:group])) if params[:group]
     @users = @users.admin.or(@users.project_moderator(params[:can_moderate_project])) if params[:can_moderate_project].present?
     @users = @users.admin.or(@users.project_moderator) if params[:can_moderate].present?
@@ -175,6 +176,13 @@ class WebApi::V1::UsersController < ::ApplicationController
   def ideas_count
     ideas = policy_scope(IdeasFinder.new({}, scope: @user.ideas.published, current_user: current_user).find_records)
     render json: { count: ideas.count }, status: :ok
+  end
+
+  def blocked_count
+    authorize :user, :blocked_count
+    count = User.all.blocked.count
+
+    render json: { data: { blocked_users_count: count } }, status: :ok
   end
 
   def initiatives_count

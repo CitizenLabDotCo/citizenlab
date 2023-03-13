@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   # (unfortunate route naming) is captured by /web_api/v1/ideas/<idea-id>.
   # Already tried +Rails.applications.routes.prepend+. That does not work:
   # https://github.com/rails/rails/issues/11663
-  mount GeographicDashboard::Engine => '', as: 'geographic_dashboard' if CitizenLab.ee?
+  mount GeographicDashboard::Engine => '', as: 'geographic_dashboard'
 
   namespace :web_api, defaults: { format: :json } do
     namespace :v1 do
@@ -85,6 +85,7 @@ Rails.application.routes.draw do
         get 'ideas_count', on: :member
         get 'initiatives_count', on: :member
         get 'comments_count', on: :member
+        get 'blocked_count', on: :collection
 
         resources :comments, only: [:index], controller: 'user_comments'
       end

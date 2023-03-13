@@ -92,5 +92,5 @@ class SideFxUserService
   end
 end
 
-SideFxUserService.prepend_if_ee 'IdeaAssignment::Patches::SideFxUserService'
-SideFxUserService.prepend_if_ee 'Matomo::Patches::SideFxUserService'
+SideFxUserService.prepend(IdeaAssignment::Patches::SideFxUserService)
+SideFxUserService.prepend(Matomo::Patches::SideFxUserService)
