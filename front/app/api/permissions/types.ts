@@ -1,4 +1,4 @@
-import { IInitiativeAction } from 'services/initiatives';
+import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
 import { IPCAction } from 'typings';
 
 interface InitiativeContext {
