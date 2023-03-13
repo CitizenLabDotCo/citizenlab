@@ -75,8 +75,9 @@ Rails.application.routes.draw do
 
       resources :users, only: %i[index create update destroy] do
         get :me, on: :collection
-        post :complete_registration, on: :collection
         get :as_xlsx, on: :collection, action: 'index_xlsx'
+        post :complete_registration, on: :collection
+        patch :block, :unblock, on: :member
         post 'reset_password_email' => 'reset_password#reset_password_email', on: :collection
         post 'reset_password' => 'reset_password#reset_password', on: :collection
         post 'update_password', on: :collection

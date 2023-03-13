@@ -58,9 +58,7 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
 
   attribute :block_end_at, if: proc { |object, params|
     view_private_attributes? object, params
-  } do |object|
-    object.block_end_at
-  end
+  }
 
   attribute :block_reason, if: proc { |object, params|
     view_private_attributes? object, params
