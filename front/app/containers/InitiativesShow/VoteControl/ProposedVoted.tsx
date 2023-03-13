@@ -6,7 +6,6 @@ import { darken } from 'polished';
 
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
 
-import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { IAppConfigurationSettings } from 'api/app_configuration/types';
 
@@ -16,6 +15,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 import ProposalProgressbar from './ProposalProgressBar';
+import { IInitiativeData } from 'api/initiatives/types';
 
 const Container = styled.div`
   display: flex;

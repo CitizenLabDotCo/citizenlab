@@ -15,7 +15,7 @@ describe IdeaVotePolicy do
     let!(:idea) { create(:idea, project: project) }
     let!(:vote) { create(:vote, votable: idea, user: user) }
     let!(:project) do
-      create(:continuous_project).tap do |project|
+      create(:continuous_project, with_permissions: true).tap do |project|
         project.permissions.find_by(action: 'voting_idea')
           .update!(permitted_by: 'admins_moderators')
       end

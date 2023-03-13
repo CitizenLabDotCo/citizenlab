@@ -206,6 +206,7 @@ export interface IAppConfigurationSettings {
   analytics?: AppConfigurationFeature;
   visitors_dashboard?: AppConfigurationFeature;
   user_confirmation?: AppConfigurationFeature;
+  permission_option_email_confirmation?: AppConfigurationFeature;
   input_form_custom_fields?: AppConfigurationFeature;
   report_builder?: AppConfigurationFeature;
   posthog_integration?: AppConfigurationFeature;

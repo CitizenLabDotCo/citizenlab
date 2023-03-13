@@ -37,6 +37,7 @@ class ErrorReporter
 
     def report_msg(msg, extra: {})
       Sentry::Rails.capture_message(msg, extra: extra) # it sends the backtrace to Sentry.
+
       # It's considered as an exceptional situation, so printing the entire backtrace to make it visible.
       Rails.logger.error(
         "Reported message: #{msg}\n" + caller.join("\n"),
