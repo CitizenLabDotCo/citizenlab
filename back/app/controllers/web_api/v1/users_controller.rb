@@ -56,14 +56,12 @@ class WebApi::V1::UsersController < ::ApplicationController
   def seats
     authorize :user, :seats?
 
-    admins = User.admin.or(User.project_folder_moderator).not_citizenlab_member
-    moderators = User.project_moderator.not_citizenlab_member
     render json: {
       data: {
         type: 'seats',
         attributes: {
-          admins_number: admins.count,
-          project_moderators_number: moderators.count
+          admins_number: User.billed_admins.count,
+          project_moderators_number: User.billed_moderators.count
         }
       }
     }

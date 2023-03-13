@@ -211,8 +211,6 @@ class User < ApplicationRecord
   end
 
   scope :admin, -> { where("roles @> '[{\"type\":\"admin\"}]'") }
-  # https://www.postgresql.org/docs/12/functions-matching.html#FUNCTIONS-POSIX-REGEXP
-  scope :not_citizenlab_member, -> { where.not('email ~* ?', CITIZENLAB_MEMBER_REGEX_CONTENT) }
   scope :not_admin, -> { where.not("roles @> '[{\"type\":\"admin\"}]'") }
   scope :normal_user, -> { where("roles = '[]'::jsonb") }
   scope :not_normal_user, -> { where.not("roles = '[]'::jsonb") }
@@ -259,6 +257,14 @@ class User < ApplicationRecord
   scope :in_any_group, lambda { |groups|
     user_ids = groups.flat_map { |group| in_group(group).ids }.uniq
     where(id: user_ids)
+  }
+
+  # https://www.postgresql.org/docs/12/functions-matching.html#FUNCTIONS-POSIX-REGEXP
+  scope :not_citizenlab_member, -> { where.not('email ~* ?', CITIZENLAB_MEMBER_REGEX_CONTENT) }
+  scope :billed_admins, -> { admin.not_citizenlab_member }
+  scope :billed_moderators, lambda {
+    # use any conditions before `or` very carefully (inspect the generated SQL)
+    project_moderator.or(User.project_folder_moderator).where.not(id: admin).not_citizenlab_member
   }
 
   def self.oldest_admin
