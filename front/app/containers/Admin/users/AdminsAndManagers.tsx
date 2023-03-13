@@ -1,10 +1,10 @@
-// Libraries
 import React, { useState } from 'react';
 import { isString, isEmpty } from 'lodash-es';
 
-// Components
 import UserManager from './UserManager';
 import UsersHeader from './UsersHeader';
+import SeatInfo from 'components/SeatInfo';
+import { Box } from '@citizenlab/cl2-component-library';
 
 import messages from './messages';
 
@@ -19,10 +19,19 @@ const AllUsers = () => {
     <>
       <UsersHeader
         onSearch={searchUser}
-        title={messages.allUsers}
-        subtitle={messages.usersSubtitle}
+        title={messages.adminsAndManagers}
+        subtitle={messages.adminsAndManagersSubtitle}
       />
-      <UserManager search={search} />
+      <UserManager search={search} canModerate notCitizenlabMember />
+      <Box
+        py="32px"
+        display="flex"
+        flexDirection="row"
+        justifyContent="space-between"
+      >
+        <SeatInfo seatType="admin" width={null} />
+        <SeatInfo seatType="project_manager" width={null} />
+      </Box>
     </>
   );
 };
