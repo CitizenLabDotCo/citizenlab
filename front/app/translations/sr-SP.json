@@ -722,7 +722,6 @@
   "app.containers.ChangePassword.passwordChangeSuccessMessage": "Ваша лозинка је успешно ажурирана",
   "app.containers.ChangePassword.passwordEmptyError": "Унеси лозинку",
   "app.containers.ChangePassword.passwordsDontMatch": "Потврди нову лозинку",
-  "app.containers.ChangePassword.title": "Промена лозинке",
   "app.containers.Comments.a11y_commentDeleted": "Коментар је обрисан",
   "app.containers.Comments.a11y_commentPosted": "Коментар је објављен",
   "app.containers.Comments.a11y_undoUpvote": "Поништите глас",

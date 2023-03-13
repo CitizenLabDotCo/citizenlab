@@ -1410,7 +1410,7 @@
   "app.containers.UsersEditPage.password": "Choose a new password",
   "app.containers.UsersEditPage.password.minimumPasswordLengthError": "Provide a password that is at least {minimumPasswordLength} characters long",
   "app.containers.UsersEditPage.passwordAddSection": "Add a password",
-  "app.containers.UsersEditPage.passwordAddSubtitle": "Add a password to your account.",
+  "app.containers.UsersEditPage.passwordAddSubtitle2": "Set a password and easily login to the platform, without having to confirm your email every time.",
   "app.containers.UsersEditPage.passwordChangeSection": "Change your password",
   "app.containers.UsersEditPage.passwordChangeSubtitle": "Confirm your current password and change to new password.",
   "app.containers.UsersEditPage.privacyReasons": "If you are worried about your privacy, you can read {conditionsLink}.",

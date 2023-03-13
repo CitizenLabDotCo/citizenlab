@@ -722,7 +722,6 @@
   "app.containers.ChangePassword.passwordChangeSuccessMessage": "Passordet ditt er oppdatert",
   "app.containers.ChangePassword.passwordEmptyError": "Skriv inn passordet",
   "app.containers.ChangePassword.passwordsDontMatch": "Bekreft det nye passordet",
-  "app.containers.ChangePassword.title": "Endre passordet ditt",
   "app.containers.Comments.a11y_commentDeleted": "Kommentar slettet",
   "app.containers.Comments.a11y_commentPosted": "Kommentar postet",
   "app.containers.Comments.a11y_undoUpvote": "Angre 'tumbs up' din",
