@@ -242,9 +242,10 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.passwordAddSection',
     defaultMessage: 'Add a password',
   },
-  passwordAddSubtitle: {
-    id: 'app.containers.UsersEditPage.passwordAddSubtitle',
-    defaultMessage: 'Add a password to your account.',
+  passwordAddSubtitle2: {
+    id: 'app.containers.UsersEditPage.passwordAddSubtitle2',
+    defaultMessage:
+      'Set a password and easily login to the platform, without having to confirm your email every time.',
   },
   addPassword: {
     id: 'app.containers.UsersEditPage.addPassword',

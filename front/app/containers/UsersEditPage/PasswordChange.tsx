@@ -33,7 +33,7 @@ const PasswordChange = ({ user }: PasswordChangeProps) => {
     ? messages.passwordAddSection
     : messages.passwordChangeSection;
   const passwordChangeSubtitle = !userHasPreviousPassword
-    ? messages.passwordAddSubtitle
+    ? messages.passwordAddSubtitle2
     : messages.passwordChangeSubtitle;
   const passwordChangeButtonText = !userHasPreviousPassword
     ? messages.addPassword
