@@ -18,4 +18,4 @@ class LogoUploader < BaseImageUploader
   end
 end
 
-LogoUploader.prepend_if_ee('MultiTenancy::Patches::LogoUploader')
+LogoUploader.prepend(MultiTenancy::Patches::LogoUploader)

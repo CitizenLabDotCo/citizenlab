@@ -233,7 +233,7 @@ resource 'Projects' do
         parameter :min_budget, 'The minimum budget amount. Participatory budget should be greater or equal to input.', required: false
         parameter :max_budget, 'The maximal budget amount each citizen can spend during participatory budgeting.', required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(',')}. Defaults to card.", required: false
-        parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned', required: false if CitizenLab.ee?
+        parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned', required: false
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
         parameter :ideas_order, 'The default order of ideas.'
         parameter :input_term, 'The input term for posts.'
@@ -262,8 +262,7 @@ resource 'Projects' do
         let(:topic_ids) { create_list(:topic, 2).map(&:id) }
         let(:visible_to) { 'admins' }
         let(:publication_status) { 'draft' }
-
-        let(:default_assignee_id) { create(:admin).id } if CitizenLab.ee?
+        let(:default_assignee_id) { create(:admin).id }
 
         example_request 'Create a timeline project' do
           assert_status 201
@@ -275,9 +274,8 @@ resource 'Projects' do
           expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
           expect(json_response.dig(:data, :attributes, :visible_to)).to eq 'admins'
           expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :publication_status)).to eq 'draft'
-          if CitizenLab.ee?
-            expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to eq default_assignee_id
-          end
+          expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to eq default_assignee_id
+
           expect(json_response.dig(:data, :attributes, :header_bg)).to be_present
           # New projects are added to the top
           expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
@@ -503,7 +501,7 @@ resource 'Projects' do
         parameter :min_budget, 'The minimum budget amount. Participatory budget should be greater or equal to input.', required: false
         parameter :max_budget, 'The maximal budget amount each citizen can spend during participatory budgeting.', required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(',')}.", required: false
-        parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned', required: false if CitizenLab.ee?
+        parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned', required: false
         parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false
         parameter :ideas_order, 'The default order of ideas.'
         parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)'
@@ -529,8 +527,7 @@ resource 'Projects' do
       let(:ideas_order) { 'new' }
       let(:min_budget) { 100 }
       let(:max_budget) { 1000 }
-
-      let(:default_assignee_id) { create(:admin).id } if CitizenLab.ee?
+      let(:default_assignee_id) { create(:admin).id }
 
       example 'Update a project' do
         old_publcation_ids = AdminPublication.ids
@@ -554,9 +551,7 @@ resource 'Projects' do
         expect(json_response.dig(:data, :attributes, :max_budget)).to eq 1000
         expect(json_response.dig(:data, :attributes, :presentation_mode)).to eq 'card'
         expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :publication_status)).to eq 'archived'
-        if CitizenLab.ee?
-          expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to eq default_assignee_id
-        end
+        expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to eq default_assignee_id
       end
 
       example 'Log activities', document: false do
@@ -638,12 +633,10 @@ resource 'Projects' do
         expect(json_response.dig(:data, :relationships, :topics, :data).size).to eq 0
       end
 
-      if CitizenLab.ee?
-        example 'Set default assignee to unassigned', document: false do
-          @project.update!(default_assignee: create(:admin))
-          do_request(project: { default_assignee_id: nil })
-          expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to be_nil
-        end
+      example 'Set default assignee to unassigned', document: false do
+        @project.update!(default_assignee: create(:admin))
+        do_request(project: { default_assignee_id: nil })
+        expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to be_nil
       end
 
       example 'Disable downvoting', document: false do
@@ -677,7 +670,7 @@ resource 'Projects' do
         expect { Project.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
 
-      example 'Deleting a project removes associated moderator rights', document: false, skip: !CitizenLab.ee? do
+      example 'Deleting a project removes associated moderator rights', document: false do
         moderator = create(:project_moderator, projects: [project])
         expect(moderator.project_moderator?(id)).to be true
         do_request
@@ -710,7 +703,7 @@ resource 'Projects' do
         create(:idea, project: project, custom_field_values: { multiselect_field.key => %w[cat] })
       end
 
-      example 'Get survey results', skip: !CitizenLab.ee? do
+      example 'Get survey results' do
         do_request
         expect(status).to eq 200
 
@@ -736,17 +729,15 @@ resource 'Projects' do
       end
     end
 
-    if CitizenLab.ee?
-      post 'web_api/v1/projects/:id/copy' do
-        let(:source_project) { create(:continuous_project) }
-        let(:id) { source_project.id }
+    post 'web_api/v1/projects/:id/copy' do
+      let(:source_project) { create(:continuous_project) }
+      let(:id) { source_project.id }
 
-        example_request 'Copy a continuous project' do
-          assert_status 201
+      example_request 'Copy a continuous project' do
+        assert_status 201
 
-          copied_project = Project.find(json_response.dig(:data, :id))
-          expect(copied_project.title_multiloc['en']).to include(source_project.title_multiloc['en'])
-        end
+        copied_project = Project.find(json_response.dig(:data, :id))
+        expect(copied_project.title_multiloc['en']).to include(source_project.title_multiloc['en'])
       end
     end
 
@@ -775,7 +766,7 @@ resource 'Projects' do
         create(:idea, project: project, custom_field_values: { multiselect_field.key => %w[dog] })
       end
 
-      example 'Get submission count', skip: !CitizenLab.ee? do
+      example 'Get submission count' do
         do_request
         expect(status).to eq 200
 
@@ -804,7 +795,7 @@ resource 'Projects' do
         end
 
         context 'when there are no inputs in the project' do
-          example 'Download native survey phase inputs in one sheet', skip: !CitizenLab.ee? do
+          example 'Download native survey phase inputs in one sheet' do
             do_request
             expect(status).to eq 200
             expect(xlsx_contents(response_body)).to match_array([
@@ -849,7 +840,7 @@ resource 'Projects' do
             )
           end
 
-          example 'Download native survey phase inputs in one sheet', skip: !CitizenLab.ee? do
+          example 'Download native survey phase inputs in one sheet' do
             do_request
             expect(status).to eq 200
             expect(xlsx_contents(response_body)).to match_array([
@@ -966,7 +957,7 @@ resource 'Projects' do
         end
 
         context 'when there are no inputs in the phases' do
-          example 'Download native survey phase inputs in separate sheets', skip: !CitizenLab.ee? do
+          example 'Download native survey phase inputs in separate sheets' do
             do_request
             expect(status).to eq 200
             expect(xlsx_contents(response_body)).to match_array([
@@ -1036,7 +1027,7 @@ resource 'Projects' do
             )
           end
 
-          example 'Download native survey phase inputs in separate sheets', skip: !CitizenLab.ee? do
+          example 'Download native survey phase inputs in separate sheets' do
             do_request
             expect(status).to eq 200
             expect(xlsx_contents(response_body)).to match_array([
@@ -1173,7 +1164,7 @@ resource 'Projects' do
         expect(json_response[:data].size).to eq 1
       end
 
-      example 'Residents cannot moderate any projects', document: false, skip: !CitizenLab.ee? do
+      example 'Residents cannot moderate any projects', document: false do
         %w[published published draft published archived published archived]
           .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps }) }
         do_request(filter_can_moderate: true, publication_statuses: AdminPublication::PUBLICATION_STATUSES)
@@ -1181,14 +1172,12 @@ resource 'Projects' do
         expect(json_response[:data].size).to eq 0
       end
 
-      if CitizenLab.ee?
-        post 'web_api/v1/projects/:id/copy' do
-          let(:source_project) { create(:continuous_project) }
-          let(:id) { source_project.id }
+      post 'web_api/v1/projects/:id/copy' do
+        let(:source_project) { create(:continuous_project) }
+        let(:id) { source_project.id }
 
-          example_request 'Copy a continuous project' do
-            assert_status 401
-          end
+        example_request 'Copy a continuous project' do
+          assert_status 401
         end
       end
     end
@@ -1199,7 +1188,7 @@ resource 'Projects' do
       let(:project) { create(:continuous_project) }
       let(:id) { project.id }
 
-      example '[error] Try downloading phase inputs', skip: !CitizenLab.ee? do
+      example '[error] Try downloading phase inputs' do
         do_request
         expect(status).to eq 401
       end
@@ -1209,7 +1198,7 @@ resource 'Projects' do
       let(:project) { create(:project_with_active_native_survey_phase) }
       let(:id) { project.id }
 
-      example '[error] Try downloading phase inputs', skip: !CitizenLab.ee? do
+      example '[error] Try downloading phase inputs' do
         do_request
         expect(status).to eq 401
       end
@@ -1416,39 +1405,37 @@ resource 'Projects' do
       end
     end
 
-    if CitizenLab.ee?
-      post 'web_api/v1/projects/:id/copy' do
-        let!(:project_in_folder_user_moderates) { create(:continuous_project, folder: project_folder) }
-        let!(:project_in_other_folder) { create(:continuous_project, folder: create(:project_folder)) }
-        let!(:other_folder_moderators) { create_list(:project_folder_moderator, 3, project_folders: [project_folder]) }
+    post 'web_api/v1/projects/:id/copy' do
+      let!(:project_in_folder_user_moderates) { create(:continuous_project, folder: project_folder) }
+      let!(:project_in_other_folder) { create(:continuous_project, folder: create(:project_folder)) }
+      let!(:other_folder_moderators) { create_list(:project_folder_moderator, 3, project_folders: [project_folder]) }
 
-        context 'when passing the id of project in a folder the user moderates' do
-          let(:id) { project_in_folder_user_moderates.id }
+      context 'when passing the id of project in a folder the user moderates' do
+        let(:id) { project_in_folder_user_moderates.id }
 
-          example_request 'Allows the copying of a project within a folder the user moderates' do
-            expect(response_status).to eq 201
+        example_request 'Allows the copying of a project within a folder the user moderates' do
+          expect(response_status).to eq 201
 
-            copied_project = Project.find(json_response.dig(:data, :id))
-            expect(copied_project.title_multiloc['en']).to include(project_in_folder_user_moderates.title_multiloc['en'])
-          end
-
-          example_request 'Adds all folder moderators as moderators of the project' do
-            expect(response_status).to eq 201
-
-            response_resource_id       = json_response.dig(:data, :id)
-            project_moderators         = User.project_moderator(response_resource_id)
-            folder_moderators          = User.project_folder_moderator(project_folder.id)
-
-            expect(project_moderators.pluck(:id)).to match_array folder_moderators.pluck(:id)
-          end
+          copied_project = Project.find(json_response.dig(:data, :id))
+          expect(copied_project.title_multiloc['en']).to include(project_in_folder_user_moderates.title_multiloc['en'])
         end
 
-        context 'when passing the id of project in a folder the user does not moderate' do
-          let(:id) { project_in_other_folder.id }
+        example_request 'Adds all folder moderators as moderators of the project' do
+          expect(response_status).to eq 201
 
-          example_request 'It does not authorize the folder moderator' do
-            expect(response_status).to eq 401
-          end
+          response_resource_id = json_response.dig(:data, :id)
+          project_moderators = User.project_moderator(response_resource_id)
+          folder_moderators = User.project_folder_moderator(project_folder.id)
+
+          expect(project_moderators.pluck(:id)).to match_array folder_moderators.pluck(:id)
+        end
+      end
+
+      context 'when passing the id of project in a folder the user does not moderate' do
+        let(:id) { project_in_other_folder.id }
+
+        example_request 'It does not authorize the folder moderator' do
+          expect(response_status).to eq 401
         end
       end
     end

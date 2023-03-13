@@ -165,5 +165,5 @@ module EmailCampaigns
   end
 end
 
-EmailCampaigns::DeliveryService.prepend_if_ee('FlagInappropriateContent::Patches::EmailCampaigns::DeliveryService')
-EmailCampaigns::DeliveryService.prepend_if_ee('IdeaAssignment::Patches::EmailCampaigns::DeliveryService')
+EmailCampaigns::DeliveryService.prepend(FlagInappropriateContent::Patches::EmailCampaigns::DeliveryService)
+EmailCampaigns::DeliveryService.prepend(IdeaAssignment::Patches::EmailCampaigns::DeliveryService)

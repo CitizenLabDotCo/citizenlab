@@ -21,4 +21,4 @@ class FaviconUploader < BaseImageUploader
   end
 end
 
-FaviconUploader.prepend_if_ee('MultiTenancy::Patches::FaviconUploader')
+FaviconUploader.prepend(MultiTenancy::Patches::FaviconUploader)
