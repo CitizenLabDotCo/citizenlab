@@ -6,6 +6,7 @@ import {
 import { localeStream } from 'services/locale';
 import { combineLatest } from 'rxjs';
 import { isEmpty, get, forOwn } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
 
 export type UserCustomFieldsSchema =
   | UserCustomFieldsInfos
@@ -21,16 +22,20 @@ export default function useUserCustomFieldsSchema() {
     const locale$ = localeStream().observable;
     const customFieldsSchemaForUsersStream$ =
       customFieldsSchemaForUsersStream().observable;
-
     const subscription = combineLatest([
       locale$,
       customFieldsSchemaForUsersStream$,
     ]).subscribe(([locale, customFields]) => {
+      if (isNilOrError(customFields)) return;
       setCustomFields({
-        schema: customFields['json_schema_multiloc'][locale],
-        uiSchema: customFields['ui_schema_multiloc'][locale],
+        schema: customFields.data.attributes['json_schema_multiloc'][locale],
+        uiSchema: customFields.data.attributes['ui_schema_multiloc'][locale],
         hasRequiredFields: !isEmpty(
-          get(customFields, `json_schema_multiloc.${locale}.required`, null)
+          get(
+            customFields.data.attributes,
+            `json_schema_multiloc.${locale}.required`,
+            null
+          )
         ),
         hasCustomFields: hasCustomFields(customFields, locale),
       });

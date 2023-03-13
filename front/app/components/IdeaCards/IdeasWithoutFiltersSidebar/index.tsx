@@ -169,7 +169,7 @@ const IdeasWithoutFiltersSidebar = ({
     projectId: projectId || null,
   });
 
-  const { data, isFetching, fetchNextPage, hasNextPage } =
+  const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } =
     useInfiniteIdeas(ideaQueryParameters);
   const list = data?.pages.map((page) => page.data).flat();
 
@@ -302,10 +302,10 @@ const IdeasWithoutFiltersSidebar = ({
         </FiltersArea>
         <IdeasView
           list={list}
-          querying={isFetching}
+          querying={isLoading}
           onLoadMore={fetchNextPage}
           hasMore={!!hasNextPage}
-          loadingMore={isFetching}
+          loadingMore={isFetchingNextPage}
           hideImage={smallerThanBigTablet && biggerThanSmallTablet}
           hideImagePlaceholder={smallerThanBigTablet}
           hideIdeaStatus={

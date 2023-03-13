@@ -1,7 +1,8 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { ideaByIdStream } from 'services/ideas';
 import { ImageSizes } from 'typings';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import ideasKeys from 'api/ideas/keys';
 
 export interface IIdeaImageData {
   id: string;
@@ -56,6 +57,6 @@ export async function addIdeaImage(
   };
 
   const ideaImage = await streams.add<IIdeaImage>(apiEndpoint, bodyData);
-  await ideaByIdStream(ideaId).fetch();
+  queryClient.invalidateQueries(ideasKeys.itemId(ideaId));
   return ideaImage;
 }

@@ -4,7 +4,6 @@ import styled, { keyframes } from 'styled-components';
 import { colors, fontSizes, defaultStyles, isRtl } from 'utils/styleUtils';
 import { lighten } from 'polished';
 import messages from './messages';
-import { TVoteMode } from 'services/ideaVotes';
 import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -15,6 +14,7 @@ import { FormattedDate } from 'react-intl';
 import useLocalize from 'hooks/useLocalize';
 import useProject from 'hooks/useProject';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { TVoteMode } from 'api/idea_votes/types';
 
 type TSize = '1' | '2' | '3' | '4';
 type TStyleType = 'border' | 'shadow';
@@ -309,7 +309,6 @@ interface Props {
   styleType: TStyleType;
   ariaHidden?: boolean;
   onClick: (event: React.FormEvent) => void;
-  setRef: (el: HTMLButtonElement) => void;
   iconName: IconNames;
   ideaId: string;
 }
@@ -322,7 +321,6 @@ const VoteButton = ({
   styleType,
   ariaHidden = false,
   onClick,
-  setRef,
   iconName,
   ideaId,
   userVoteMode,
@@ -422,7 +420,6 @@ const VoteButton = ({
           votingEnabled={buttonEnabled}
           onMouseDown={removeFocusAfterMouseClick}
           onClick={onClick}
-          ref={setRef}
           className={[
             className,
             {

@@ -90,16 +90,6 @@ export interface IIdeasFilterCounts {
   };
 }
 
-export function ideaByIdStream(ideaId: string) {
-  return streams.get<IIdea>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}` });
-}
-
-export function ideaBySlugStream(ideaSlug: string) {
-  return streams.get<IIdea>({
-    apiEndpoint: `${API_PATH}/ideas/by_slug/${ideaSlug}`,
-  });
-}
-
 export interface IIdeasQueryParameters {
   'page[number]': number;
   'page[size]': number;
