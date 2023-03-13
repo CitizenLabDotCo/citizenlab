@@ -544,7 +544,7 @@
   "app.containers.Admin.Users.confirmNormalUserQuestion": "Sind Sie sicher, dass Sie {name} als normale/n Benutzer/in einrichten wollen?",
   "app.containers.Admin.Users.deleteUser": "BenutzerIn löschen",
   "app.containers.Admin.Users.email": "E-Mail",
-  "app.containers.Admin.Users.folderManager": "Folder manager",
+  "app.containers.Admin.Users.folderManager": "Ordner-Manager*in",
   "app.containers.Admin.Users.giveAdminRights": "Admin-Zugang gewähren",
   "app.containers.Admin.Users.helmetDescription": "Benutzer:innenliste",
   "app.containers.Admin.Users.helmetTitle": "Admin - BenutzerInnen-Dashboard",
