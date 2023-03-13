@@ -85,7 +85,7 @@ class CommentingInitiativesDisabled extends PureComponent<Props> {
         verification:
           commetingPermissions?.authenticationRequirements ===
           'sign_in_up_and_verify',
-        verificationContext:
+        context:
           commetingPermissions?.authenticationRequirements ===
           'sign_in_up_and_verify'
             ? {

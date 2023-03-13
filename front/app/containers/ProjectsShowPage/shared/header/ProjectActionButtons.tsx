@@ -118,7 +118,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       openSignUpInModal({
         flow: 'signup',
         verification: shouldVerify,
-        verificationContext: undefined,
+        context: undefined,
         onSuccess: () => scrollTo('project-survey')(event),
       });
     }

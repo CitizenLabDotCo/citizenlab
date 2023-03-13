@@ -88,7 +88,7 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
       openSignUpInModal({
         flow: 'signup',
         verification: shouldVerify,
-        verificationContext: undefined,
+        context: undefined,
         onSuccess: () => scrollTo('project-survey')(event),
       });
     }

@@ -141,7 +141,7 @@ const VoteControl = ({
         openSignUpInModal({
           flow: 'signup',
           verification: false,
-          verificationContext: undefined,
+          context: undefined,
           onSuccess: () => vote(),
         });
         break;
@@ -152,7 +152,7 @@ const VoteControl = ({
         openSignUpInModal({
           flow: 'signup',
           verification: true,
-          verificationContext: {
+          context: {
             type: 'initiative',
             action: 'voting_initiative',
           },

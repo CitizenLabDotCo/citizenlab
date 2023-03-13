@@ -278,7 +278,7 @@ const SignUp = ({
     openSignUpInModal({
       ...metaData,
       verification: false,
-      verificationContext: undefined,
+      context: undefined,
     });
     onCompleteActiveStep();
   };

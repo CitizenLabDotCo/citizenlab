@@ -50,7 +50,7 @@ const SignUpInModal = memo<Props>(
 
     const authUser = useAuthUser();
     const participationConditions = useParticipationConditions(
-      metaData?.verificationContext ?? null
+      metaData?.context ?? null
     );
 
     const smallerThanPhone = useBreakpoint('phone');

@@ -140,7 +140,7 @@ const AssignBudgetControl = memo(
           budgetingDisabledReason === 'not_signed_in'
         ) {
           openSignUpInModal({
-            verificationContext: {
+            context: {
               action: 'budgeting',
               id: participationContextId,
               type: participationContextType,

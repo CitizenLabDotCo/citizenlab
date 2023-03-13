@@ -99,7 +99,7 @@ const Survey = ({
       openSignUpInModal({
         flow,
         verification: takingSurveyDisabledReason === 'not_verified',
-        verificationContext:
+        context:
           takingSurveyDisabledReason === 'not_verified' && pcId && pcType
             ? {
                 action: 'taking_survey',

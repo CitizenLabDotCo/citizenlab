@@ -109,7 +109,7 @@ export class Poll extends PureComponent<Props> {
       openSignUpInModal({
         flow,
         verification: takingPollDisabledReason === 'not_verified',
-        verificationContext:
+        context:
           takingPollDisabledReason === 'not_verified' && pcId && pcType
             ? {
                 action: 'taking_poll',

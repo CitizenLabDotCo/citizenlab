@@ -4,7 +4,7 @@ export interface ISignUpInMetaData {
   flow: TSignUpInFlow;
   pathname: string;
   verification?: boolean;
-  verificationContext?: AuthenticationContext;
+  context?: AuthenticationContext;
   error?: ISignUpInError;
   isInvitation?: boolean;
   token?: string;

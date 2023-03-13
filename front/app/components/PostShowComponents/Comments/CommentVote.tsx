@@ -270,7 +270,7 @@ const CommentVote = ({
         openSignUpInModal({
           onSuccess: () => handleVoteClick(),
           verification: true,
-          verificationContext: {
+          context: {
             action: 'commenting_initiative',
             type: 'initiative',
           },

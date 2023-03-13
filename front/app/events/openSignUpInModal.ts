@@ -13,7 +13,7 @@ export interface ISignUpInMetaData {
   flow: TSignUpInFlow;
   pathname: string;
   verification?: boolean;
-  verificationContext?: AuthenticationContext;
+  context?: AuthenticationContext;
   error?: ISignUpInError;
   isInvitation?: boolean;
   token?: string;
@@ -30,7 +30,7 @@ export function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
     flow: metaData?.flow || 'signup',
     pathname: metaData?.pathname || window.location.pathname,
     verification: metaData?.verification,
-    verificationContext: metaData?.verificationContext,
+    context: metaData?.context,
     error: metaData?.error,
     isInvitation: !!metaData?.isInvitation,
     token: metaData?.token,

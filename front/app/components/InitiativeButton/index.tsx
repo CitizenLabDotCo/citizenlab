@@ -49,7 +49,7 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
           openSignUpInModal({
             flow: 'signup',
             verification: false,
-            verificationContext: undefined,
+            context: undefined,
             onSuccess: redirectToInitiativeForm,
           });
           break;
@@ -60,7 +60,7 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
           openSignUpInModal({
             flow: 'signup',
             verification: true,
-            verificationContext: {
+            context: {
               type: 'initiative',
               action: 'posting_initiative',
             },

@@ -147,7 +147,7 @@ const CommentReplyButton = memo<Props>(
             openSignUpInModal({
               onSuccess: () => onReply(),
               verification: true,
-              verificationContext: {
+              context: {
                 action: 'commenting_initiative',
                 type: 'initiative',
               },

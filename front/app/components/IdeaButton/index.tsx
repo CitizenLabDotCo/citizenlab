@@ -242,7 +242,7 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
           openSignUpInModal({
             flow,
             verification: shouldVerify,
-            verificationContext:
+            context:
               shouldVerify && pcId && pcType
                 ? {
                     action: 'posting_idea',

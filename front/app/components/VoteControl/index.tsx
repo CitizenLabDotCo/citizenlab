@@ -462,7 +462,7 @@ class VoteControl extends PureComponent<Props, State> {
       ) {
         openSignUpInModal({
           verification: votingDisabledReason === 'not_verified',
-          verificationContext:
+          context:
             votingDisabledReason === 'not_verified' &&
             participationContextId &&
             participationContextType
