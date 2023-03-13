@@ -532,6 +532,8 @@
   "app.containers.Admin.PagesAndMenu.viewButton": "Visão",
   "app.containers.Admin.Users.GroupsHeader.deleteGroup": "Apagar grupo",
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Editar grupo",
+  "app.containers.Admin.Users.GroupsPanel.adminsAndManagers": "Admins & managers",
+  "app.containers.Admin.Users.GroupsPanel.adminsAndManagersSubtitle": "View who are selected as admins, folder admins, and project managers.",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "Usuários",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Grupos",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Crie grupos e adicione usuários.",
