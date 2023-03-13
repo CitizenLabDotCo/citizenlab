@@ -532,6 +532,8 @@
   "app.containers.Admin.PagesAndMenu.viewButton": "Se",
   "app.containers.Admin.Users.GroupsHeader.deleteGroup": "Slet gruppe",
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Rediger gruppe",
+  "app.containers.Admin.Users.GroupsPanel.adminsAndManagers": "Admins & managers",
+  "app.containers.Admin.Users.GroupsPanel.adminsAndManagersSubtitle": "View who are selected as admins, folder admins, and project managers.",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "Registrerede brugere",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Grupper",
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Få et overblik over alle de deltagere og organisationer, der har registreret sig på platformen. Tilføj et udvalg af brugere til manuelle grupper eller smarte grupper.",
