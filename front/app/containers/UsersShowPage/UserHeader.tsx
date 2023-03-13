@@ -10,6 +10,8 @@ import Avatar from 'components/Avatar';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Button from 'components/UI/Button';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
+import { Badge } from '@citizenlab/cl2-component-library';
+import Tippy from '@tippyjs/react';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -72,16 +74,19 @@ const UserHeader = ({ userSlug }: Props) => {
   });
 
   const isBlocked = user.attributes?.blocked;
+  const isCurrentUserAdmin =
+    !isNilOrError(authUser) && isAdmin({ data: authUser });
   const setShowBlockUserModalFunc = (bool) => () => setShowBlockUserModal(bool);
+
   const actions: IAction[] = [
     isBlocked
       ? {
-          handler: setShowBlockUserModalFunc(true),
+          handler: () => setShowBlockUserModal(true),
           label: formatMessage(blockUserMessages.unblockAction),
           icon: 'user-circle' as const,
         }
       : {
-          handler: setShowBlockUserModalFunc(true),
+          handler: () => setShowBlockUserModal(true),
           label: formatMessage(blockUserMessages.blockAction),
           icon: 'halt' as const,
         },
@@ -105,11 +110,26 @@ const UserHeader = ({ userSlug }: Props) => {
         w="100%"
         mt="0px"
       >
+        {isCurrentUserAdmin && isBlocked && (
+          <Tippy
+            interactive={true}
+            placement={'top'}
+            theme={'dark'}
+            content={formatMessage(blockUserMessages.bocknigInfo, {
+              from: 'March 2, 2023',
+              to: 'June 2, 2023',
+            })}
+          >
+            <Badge color={colors.error}>
+              {formatMessage(blockUserMessages.blocked)}
+            </Badge>
+          </Tippy>
+        )}
         <Box display="flex" alignItems="center" color="tenantText">
           <Title id="e2e-usersshowpage-fullname" color="tenantText" mr="10px">
             {user.attributes.first_name} {user.attributes.last_name}
           </Title>
-          {!isNilOrError(authUser) && isAdmin({ data: authUser }) && (
+          {isCurrentUserAdmin && (
             <MoreActionsMenu showLabel={false} actions={actions} />
           )}
         </Box>
@@ -136,13 +156,15 @@ const UserHeader = ({ userSlug }: Props) => {
             {formatMessage(messages.editProfile)}
           </Button>
         )}
-        {!isNilOrError(authUser) && isAdmin({ data: authUser }) && (
+        {isCurrentUserAdmin && (
           <>
             <BlockUser
+              user={user}
               setClose={setShowBlockUserModalFunc(false)}
               open={showBlockUserModal && !isBlocked}
             />
             <UnblockUser
+              user={user}
               setClose={setShowBlockUserModalFunc(false)}
               open={showBlockUserModal && !!isBlocked}
             />

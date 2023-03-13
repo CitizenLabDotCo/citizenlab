@@ -87,6 +87,10 @@ export interface IBlockedUsersCount {
   };
 }
 
+export interface IUserBlockReason {
+  reason: string;
+}
+
 export function usersStream(streamParams: IStreamParams | null = null) {
   return streams.get<IUsers>({ apiEndpoint, ...streamParams });
 }
@@ -155,4 +159,18 @@ export function blockedUsersCount(streamParams: IStreamParams | null = null) {
     apiEndpoint: `${apiEndpoint}/blocked_count`,
     ...streamParams,
   });
+}
+
+export async function blockUser(userId: string, reason: IUserBlockReason) {
+  return await streams.update<IUser>(`${apiEndpoint}/${userId}/block`, userId, {
+    reason,
+  });
+}
+
+export async function unBlockUser(userId: string) {
+  return await streams.update<IUser>(
+    `${apiEndpoint}/${userId}/unblock`,
+    userId,
+    {}
+  );
 }

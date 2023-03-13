@@ -14,6 +14,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.userBlockModal.reasonLabel',
     defaultMessage: 'Reason',
   },
+  reasonLabelTooltip: {
+    id: 'app.containers.Admin.Users.userBlockModal.reasonLabelTooltip',
+    defaultMessage: 'This will be comunicated to the blocked user.',
+  },
   info: {
     id: 'app.containers.Admin.Users.userBlockModal.reasonLabel',
     defaultMessage:
@@ -35,12 +39,24 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.userBlockModal.confirmUnblock',
     defaultMessage: 'Are you sure you want to unblock the user?',
   },
+  unblockActionConfirmation: {
+    id: 'app.containers.Admin.Users.userBlockModal.unblockActionConfirmation',
+    defaultMessage: 'Yes, I want to unblock this user',
+  },
   unblockAction: {
     id: 'app.containers.Admin.Users.userBlockModal.unblockAction',
-    defaultMessage: 'Yes, I want to unblock this user',
+    defaultMessage: 'Unblock',
   },
   cancel: {
     id: 'app.containers.Admin.Users.userBlockModal.cancel',
     defaultMessage: 'Cancel',
+  },
+  bocknigInfo: {
+    id: 'app.containers.Admin.Users.userBlockModal.bocknigInfo',
+    defaultMessage: 'This user has been blocked since {from}, until {to}.',
+  },
+  blocked: {
+    id: 'app.containers.Admin.Users.userBlockModal.blocked',
+    defaultMessage: 'Blocked',
   },
 });

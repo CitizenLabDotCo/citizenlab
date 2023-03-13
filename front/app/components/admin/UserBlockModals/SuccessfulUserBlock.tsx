@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // components
 import Modal from 'components/UI/Modal';
@@ -16,11 +16,22 @@ const Container = styled.div`
   padding: 30px;
 `;
 
-export default () => {
+type Props = {
+  opened: boolean;
+  resetSuccess: () => void;
+};
+
+export default ({ opened, resetSuccess }: Props) => {
+  const [localOpened, setLocaloOpened] = useState(opened);
   const { formatMessage } = useIntl();
 
+  const onClose = () => {
+    resetSuccess();
+    setLocaloOpened(false);
+  };
+
   return (
-    <Modal width={400} close={() => {}} opened={true}>
+    <Modal width={400} opened={localOpened} close={onClose}>
       <Container>
         <Box display="flex" justifyContent="center">
           <Icon
