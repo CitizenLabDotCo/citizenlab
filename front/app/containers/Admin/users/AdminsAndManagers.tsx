@@ -29,8 +29,12 @@ const AllUsers = () => {
         flexDirection="row"
         justifyContent="space-between"
       >
-        <SeatInfo seatType="admin" width={null} />
-        <SeatInfo seatType="project_manager" width={null} />
+        <Box width="50%" height="100%" pb="20px">
+          <SeatInfo seatType="admin" width={null} />
+        </Box>
+        <Box width="50%" height="100%">
+          <SeatInfo seatType="project_manager" width={null} />
+        </Box>
       </Box>
     </>
   );
