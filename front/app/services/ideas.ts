@@ -37,6 +37,7 @@ export type IdeaBudgetingDisabledReason =
   | 'not_permitted'
   | 'not_verified'
   | 'not_signed_in'
+  | 'not_active'
   | null
   | undefined;
 
