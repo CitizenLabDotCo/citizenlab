@@ -105,7 +105,7 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
         {seatType === 'project_manager' ? (
           <Text my="0px" variant="bodyS">
             <FormattedMessage
-              {...messages.adminInfoMessage}
+              {...messages.projectManagerInfoMessage}
               values={{
                 adminSeatsIncluded: (
                   <Text as="span" fontWeight="bold" variant="bodyS">
@@ -121,7 +121,7 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
         ) : (
           <Text my="0px" variant="bodyS">
             <FormattedMessage
-              {...messages.projectManagerInfoMessage}
+              {...messages.adminInfoMessage}
               values={{
                 adminSeatsIncluded: (
                   <Text as="span" fontWeight="bold" variant="bodyS">
