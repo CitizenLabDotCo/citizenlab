@@ -18,6 +18,7 @@ module ParticipationContext
   POSTING_METHODS       = %w[unlimited limited].freeze
   VOTING_METHODS        = %w[unlimited limited].freeze
   IDEAS_ORDERS          = %w[trending random popular -new new].freeze
+  IDEAS_ORDERS_EXCLUDE  = %w[trending popular].freeze
   INPUT_TERMS           = %w[idea question contribution project issue option].freeze
   DEFAULT_INPUT_TERM    = 'idea'
 
@@ -47,7 +48,6 @@ module ParticipationContext
         validates :upvoting_method, presence: true, inclusion: { in: VOTING_METHODS }
         validates :downvoting_enabled, inclusion: { in: [true, false] }
         validates :downvoting_method, presence: true, inclusion: { in: VOTING_METHODS }
-
         validates :ideas_order, inclusion: { in: IDEAS_ORDERS }, allow_nil: true
         validates :input_term, inclusion: { in: INPUT_TERMS }
 
@@ -73,6 +73,7 @@ module ParticipationContext
       with_options if: :budgeting? do
         validates :min_budget, presence: true
         validates :max_budget, presence: true
+        validates :ideas_order, exclusion: { in: IDEAS_ORDERS_EXCLUDE }, allow_nil: true
       end
       validates :min_budget,
         numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :max_budget,
