@@ -17,12 +17,12 @@ import { IUserData } from 'services/users';
 
 const getInfoText = (
   isUserAdmin: boolean,
-  maximumAdmins: number,
+  maximumAdmins: number | null,
   currentAdminSeats: number
 ): MessageDescriptor => {
   if (isUserAdmin) {
     return messages.confirmNormalUserQuestion;
-  } else if (currentAdminSeats >= maximumAdmins) {
+  } else if (maximumAdmins !== null && currentAdminSeats >= maximumAdmins) {
     return messages.reachedLimitMessage;
   }
 
