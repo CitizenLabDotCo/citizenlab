@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 // events
-import { openSignUpInModal, ISignUpInMetaData } from 'events/openSignUpInModal';
-import { openSignUpInModal$ } from './SignUpInModal/events';
+import {
+  openSignUpInModal,
+  ISignUpInMetaData,
+  openSignUpInModal$,
+} from 'events/openSignUpInModal';
 import openSignUpInModalIfNecessary from '../utils/openSignUpInModalIfNecessary';
 
 // hooks

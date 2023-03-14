@@ -39,3 +39,11 @@ export function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
 
   emitOpenSignUpInModal(emittedMetaData);
 }
+
+export const openSignUpInModal$ = eventEmitter.observeEvent<
+  ISignUpInMetaData | undefined
+>('openSignUpInModal');
+
+export function closeSignUpInModal() {
+  emitOpenSignUpInModal(undefined);
+}

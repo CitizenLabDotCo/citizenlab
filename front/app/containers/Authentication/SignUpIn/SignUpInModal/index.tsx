@@ -19,8 +19,12 @@ import { isNilOrError } from 'utils/helperUtils';
 import { trackEventByName } from 'utils/analytics';
 
 // events
-import { closeSignUpInModal, signUpActiveStepChange$ } from './events';
-import { openSignUpInModal, ISignUpInMetaData } from 'events/openSignUpInModal';
+import { signUpActiveStepChange$ } from './events';
+import {
+  openSignUpInModal,
+  closeSignUpInModal,
+  ISignUpInMetaData,
+} from 'events/openSignUpInModal';
 
 // typings
 import { TSignUpInFlow } from './typings';
