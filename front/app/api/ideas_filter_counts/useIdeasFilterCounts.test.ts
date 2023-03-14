@@ -32,7 +32,7 @@ export const data: IIdeasFilterCounts = {
 };
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath = '*initiatives/filter_counts';
+const apiPath = '*ideas/filter_counts';
 const server = setupServer(
   rest.get(apiPath, (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json({ data }));
