@@ -146,7 +146,7 @@ module ParticipationContext
   end
 
   def set_ideas_order
-    self.ideas_order ||= participation_method == 'budgeting' ? 'random' : 'trending'
+    self.ideas_order ||= budgeting? ? 'random' : 'trending'
   end
 
   def set_input_term
