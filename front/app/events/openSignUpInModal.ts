@@ -21,10 +21,9 @@ export interface ISignUpInMetaData {
   onSuccess?: () => void;
 }
 
-function emitOpenSignUpInModal(metaData: ISignUpInMetaData | undefined) {
-  eventEmitter.emit('openSignUpInModal', metaData);
-}
+const OLD_MODAL_EVENT = 'openOldSignUpInModal';
 
+// Shared flow
 export function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
   const emittedMetaData: ISignUpInMetaData = {
     flow: metaData?.flow || 'signup',
@@ -37,13 +36,25 @@ export function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
     onSuccess: metaData?.onSuccess,
   };
 
-  emitOpenSignUpInModal(emittedMetaData);
+  if (emittedMetaData.context) {
+    // TODO check if we want to fire new flow
+  }
+
+  openOldSignUpInModal(emittedMetaData);
 }
 
-export const openSignUpInModal$ = eventEmitter.observeEvent<
+// Old flow
+export function openOldSignUpInModal(metaData: ISignUpInMetaData | undefined) {
+  eventEmitter.emit(OLD_MODAL_EVENT, metaData);
+}
+
+export const openOldSignUpInModal$ = eventEmitter.observeEvent<
   ISignUpInMetaData | undefined
->('openSignUpInModal');
+>(OLD_MODAL_EVENT);
 
-export function closeSignUpInModal() {
-  emitOpenSignUpInModal(undefined);
+export function closeOldSignUpInModal() {
+  openOldSignUpInModal(undefined);
 }
+
+// New flow
+// TODO

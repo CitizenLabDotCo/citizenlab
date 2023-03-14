@@ -21,8 +21,8 @@ import { trackEventByName } from 'utils/analytics';
 // events
 import { signUpActiveStepChange$ } from './events';
 import {
-  openSignUpInModal,
-  closeSignUpInModal,
+  openOldSignUpInModal,
+  closeOldSignUpInModal,
   ISignUpInMetaData,
   TSignUpInFlow,
 } from 'events/openSignUpInModal';
@@ -101,11 +101,11 @@ const SignUpInModal = memo<Props>(
 
       onClosed();
 
-      closeSignUpInModal();
+      closeOldSignUpInModal();
     };
 
     const onSignUpInCompleted = () => {
-      closeSignUpInModal();
+      closeOldSignUpInModal();
       onClosed();
 
       const requiresVerification = !!metaData?.verification;
@@ -122,7 +122,7 @@ const SignUpInModal = memo<Props>(
       if (!metaData) return;
 
       const flow = getNewFlow(metaData.flow);
-      openSignUpInModal({
+      openOldSignUpInModal({
         ...metaData,
         flow,
       });
