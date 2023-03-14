@@ -5,8 +5,14 @@ import UserManager from './UserManager';
 import UsersHeader from './UsersHeader';
 import SeatInfo from 'components/SeatInfo';
 import { Box } from '@citizenlab/cl2-component-library';
-
 import messages from './messages';
+import styled from 'styled-components';
+
+const StyledBox = styled(Box)`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: 1fr;
+`;
 
 const AllUsers = () => {
   const [search, setSearch] = useState<string | undefined>(undefined);
@@ -23,19 +29,10 @@ const AllUsers = () => {
         subtitle={messages.adminsAndManagersSubtitle}
       />
       <UserManager search={search} canModerate notCitizenlabMember />
-      <Box
-        py="32px"
-        display="flex"
-        flexDirection="row"
-        justifyContent="space-between"
-      >
-        <Box width="50%" height="100%" pb="20px">
-          <SeatInfo seatType="admin" width={null} />
-        </Box>
-        <Box width="50%" height="100%">
-          <SeatInfo seatType="project_manager" width={null} />
-        </Box>
-      </Box>
+      <StyledBox>
+        <SeatInfo seatType="admin" width={null} />
+        <SeatInfo seatType="project_manager" width={null} />
+      </StyledBox>
     </>
   );
 };
