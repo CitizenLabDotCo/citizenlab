@@ -194,8 +194,7 @@ const IdeaContent = ({
 
     if (!isNilOrError(idea)) {
       if (window.confirm(formatMessage(deleteConfirmationMessage))) {
-        deleteIdea(idea.id);
-        closePreview();
+        deleteIdea(idea.id, { onSuccess: closePreview });
       }
     }
   };

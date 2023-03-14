@@ -67,8 +67,7 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
     }[processType];
 
     if (window.confirm(formatMessage(deleteConfirmationMessage))) {
-      deleteIdea(ideaId);
-      clHistory.goBack();
+      deleteIdea(ideaId, { onSuccess: clHistory.goBack });
     }
   };
 
