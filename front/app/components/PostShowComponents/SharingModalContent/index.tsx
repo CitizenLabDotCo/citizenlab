@@ -162,11 +162,6 @@ const SharingModalContent = ({
   const { emailSharingBody, emailSharingSubject, whatsAppMessage } =
     getMessages();
 
-  console.log({ authUser });
-  console.log({ postUrl });
-  console.log({ emailSharingBody });
-  console.log({ emailSharingSubject });
-  console.log({ whatsAppMessage });
   if (
     !isNilOrError(authUser) &&
     postUrl &&
