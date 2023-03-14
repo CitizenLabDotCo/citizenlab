@@ -1,6 +1,7 @@
 import { AuthenticationContext } from 'api/permissions/types';
 import eventEmitter from 'utils/eventEmitter';
 import getAuthenticationRequirements from 'api/permissions/getAuthenticationRequirements';
+import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 export type TSignUpInError = 'general' | 'franceconnect_merging_failed';
 
@@ -26,6 +27,23 @@ const OLD_MODAL_EVENT = 'openOldSignUpInModal';
 
 // Shared flow
 export async function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
+  if (metaData?.context) {
+    const response = await getAuthenticationRequirements(metaData.context);
+    const passwordNotRequired =
+      response.data.attributes.requirements.requirements.special.password ===
+      'dont_ask';
+
+    if (passwordNotRequired) {
+      triggerAuthenticationFlow(metaData.context);
+      return;
+    }
+  }
+
+  openOldSignUpInModal(metaData);
+}
+
+// Old flow
+export function openOldSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
   const emittedMetaData: ISignUpInMetaData = {
     flow: metaData?.flow || 'signup',
     pathname: metaData?.pathname || window.location.pathname,
@@ -37,26 +55,7 @@ export async function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
     onSuccess: metaData?.onSuccess,
   };
 
-  if (emittedMetaData.context) {
-    const response = await getAuthenticationRequirements(
-      emittedMetaData.context
-    );
-    const passwordNotRequired =
-      response.data.attributes.requirements.requirements.special.password ===
-      'dont_ask';
-
-    if (passwordNotRequired) {
-      // TODO fire new flow
-      return;
-    }
-  }
-
-  openOldSignUpInModal(emittedMetaData);
-}
-
-// Old flow
-export function openOldSignUpInModal(metaData: ISignUpInMetaData | undefined) {
-  eventEmitter.emit(OLD_MODAL_EVENT, metaData);
+  eventEmitter.emit(OLD_MODAL_EVENT, emittedMetaData);
 }
 
 export const openOldSignUpInModal$ = eventEmitter.observeEvent<

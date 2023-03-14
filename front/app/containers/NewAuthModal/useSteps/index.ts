@@ -33,6 +33,7 @@ export default function useSteps(
       if (step === 'closed') {
         endAuthenticationFlow();
       }
+      _setCurrentStep(step);
     },
     [endAuthenticationFlow]
   );

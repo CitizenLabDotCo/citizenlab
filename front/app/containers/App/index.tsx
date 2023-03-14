@@ -25,6 +25,7 @@ const ConsentManager = lazy(() => import('components/ConsentManager'));
 import ErrorBoundary from 'components/ErrorBoundary';
 import Navigate from 'utils/cl-router/Navigate';
 import Authentication from 'containers/Authentication';
+import NewAuthModal from 'containers/NewAuthModal';
 import MainHeader from 'containers/MainHeader';
 import MobileNavbar from 'containers/MobileNavbar';
 import Meta from './Meta';
@@ -403,6 +404,7 @@ const App = ({ children }: Props) => {
                   authUser={authUser}
                   onModalOpenedStateChange={handleSignUpInModalOpened}
                 />
+                <NewAuthModal />
               </ErrorBoundary>
               <ErrorBoundary>
                 <div id="modal-portal" />
