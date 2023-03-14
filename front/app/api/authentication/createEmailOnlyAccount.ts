@@ -1,6 +1,8 @@
 import { getAndSetToken } from './signIn';
 import { API_PATH } from 'containers/App/constants';
 import { Locale } from 'typings';
+import streams from 'utils/streams';
+import { authApiEndpoint } from 'services/auth';
 
 const createAccountPath = `${API_PATH}/users`;
 
@@ -35,6 +37,11 @@ export default async function createEmailOnlyAccount({
 
   if (accountCreatedSuccessfully(response)) {
     await getAndSetToken({ email });
+
+    await streams.fetchAllWith({
+      apiEndpoint: [authApiEndpoint],
+    });
+
     return 'account_created_successfully';
   }
 
