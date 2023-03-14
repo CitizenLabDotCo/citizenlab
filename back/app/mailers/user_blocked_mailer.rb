@@ -4,6 +4,10 @@ class UserBlockedMailer < ApplicationMailer
   def send_user_blocked_email
     @user = params[:user]
 
+    puts ' =========== user_block_reason ==========='
+    puts @user.block_reason.inspect
+    puts '=========================================='
+
     I18n.with_locale(locale) do
       mail(default_config, &:mjml).tap do |message|
         message.mailgun_headers = mailgun_headers if self.class.delivery_method == :mailgun
@@ -12,7 +16,15 @@ class UserBlockedMailer < ApplicationMailer
   end
 
   def subject
-    t('.subject', organizationName: organization_name, termsAndConditionsUrl: terms_conditions_url)
+    t('.subject', organizationName: organization_name)
+  end
+
+  def message_user_blocked_with_reason
+    t('.message_user_blocked_with_reason', organizationName: organization_name)
+  end
+
+  def message_user_blocked_without_reason
+    t('.message_user_blocked_with_reason', organizationName: organization_name, termsAndConditionsUrl: terms_conditions_url)
   end
 
   def header_logo_only?

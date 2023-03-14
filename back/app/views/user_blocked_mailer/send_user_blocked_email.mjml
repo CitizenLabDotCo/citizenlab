@@ -2,9 +2,15 @@
   <mj-column>
     <mj-text color="black">
       <h1 style="font-size: 25px; margin-bottom: 40px;"><%= t('.title_user_blocked') %></h1>
+      <% if @user.block_reason %>
       <p style="margin-bottom: 40px;">
-        <%= t('.message_user_blocked', organizationName: organization_name, termsAndConditionsUrl: terms_conditions_url) %>
+        <%= t('.message_user_blocked_with_reason', organizationName: organization_name, reason: @user.block_reason) %>
       </p>
+      <% else %>
+      <p style="margin-bottom: 40px;">
+        <%= t('.message_user_blocked_without_reason', organizationName: organization_name, termsAndConditionsUrl: terms_conditions_url) %>
+      </p>
+      <% end %>
     </mj-text>
   </mj-column>
 </mj-section>
