@@ -128,8 +128,7 @@ export const getStepConfig = (
       CONTINUE: async () => {
         setStatus('pending');
 
-        await streams.reset();
-        await resetQueryCache();
+        await Promise.all([streams.reset(), resetQueryCache()]);
 
         setStatus('ok');
         setCurrentStep('closed');
