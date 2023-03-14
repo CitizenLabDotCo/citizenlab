@@ -7,6 +7,7 @@
 #
 #     include ParticipationContext
 #
+# rubocop:disable Metrics/ModuleLength
 module ParticipationContext
   extend ActiveSupport::Concern
   include Surveys::SurveyParticipationContext
@@ -162,3 +163,4 @@ module ParticipationContext
     errors.add :participation_method, :change_not_permitted, message: 'change is not permitted'
   end
 end
+# rubocop:enable Metrics/ModuleLength
