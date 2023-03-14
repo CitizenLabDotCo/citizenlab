@@ -8,7 +8,7 @@
       </p>
       <% else %>
       <p style="margin-bottom: 40px;">
-        <%= t('.message_user_blocked_without_reason', organizationName: organization_name, theTermAndConditionsPage: '') %>
+        <%= t('.message_user_blocked_without_reason', organizationName: organization_name, termsAndConditionsPage: '') %>
         <mj-text>
           <a style="color: #338f4c;" href="<%= terms_conditions_url %>"><%= t('static_pages.terms_and_conditions_title') %></a>
         </mj-text>
