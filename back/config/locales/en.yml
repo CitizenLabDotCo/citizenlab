@@ -229,6 +229,6 @@ en:
       did_you_receive_this_email_in_error: "Did you receive this email in error? <a href=\"%{link}\">Let us know</a>."
   user_blocked_mailer:
     send_user_blocked_email:
-      subject: '%{organizationName}: Notification of account suspension'
-      title_user_blocked: 'You have been blocked from using the %{organizationName} platform'
-      message_user_blocked: 'Placeholder message (to be developed) from %{organizationName}'
+      subject: 'Your account has been temporarily disabled'
+      title_user_blocked: 'Your account has been temporarily disabled'
+      message_user_blocked: "Your account on %{organizationName} Participation Platform has been temporarily disabled for a violation of the community guidelines. For more information on this, you can consult the <a href=\"%{termsAndConditionsUrl}\">Terms & Conditions</a>."

@@ -12,10 +12,14 @@ class UserBlockedMailer < ApplicationMailer
   end
 
   def subject
-    t('.subject', organizationName: organization_name)
+    t('.subject', organizationName: organization_name, termsAndConditionsUrl: terms_conditions_url)
   end
 
   def header_logo_only?
     true
+  end
+
+  def link_to_terms_and_conditions
+    Frontend::UrlService.new.terms_conditions_url
   end
 end
