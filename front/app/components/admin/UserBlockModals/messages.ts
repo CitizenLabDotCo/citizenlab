@@ -37,7 +37,7 @@ export default defineMessages({
   },
   confirmation: {
     id: 'app.containers.Admin.Users.userBlockModal.confirmation',
-    defaultMessage: '{name} is blocked from platform, until {date}.',
+    defaultMessage: '{name} is blocked until {date}.',
   },
   confirmUnblock: {
     id: 'app.containers.Admin.Users.userBlockModal.confirmUnblock',
