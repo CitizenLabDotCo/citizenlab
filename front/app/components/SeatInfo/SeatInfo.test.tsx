@@ -58,11 +58,9 @@ describe('SeatInfo', () => {
     expect(screen.queryByText('Additional seats')).not.toBeInTheDocument();
   });
 
-  it('shows correct numbers of seat usage for project manager', () => {
+  it('shows correct numbers of seat usage for collaborators', () => {
     render(<SeatInfo seatType="project_manager" />);
-    expect(
-      screen.getByText('Current project manager seats')
-    ).toBeInTheDocument();
+    expect(screen.getByText('Current collaborator seats')).toBeInTheDocument();
     expect(screen.getByText('5/9')).toBeInTheDocument();
     expect(screen.queryByText('Additional seats')).not.toBeInTheDocument();
   });
@@ -70,9 +68,7 @@ describe('SeatInfo', () => {
   it('shows additional seats when user has used more', () => {
     mockUserSeatsData.data.attributes.project_moderators_number = 15;
     render(<SeatInfo seatType="project_manager" />);
-    expect(
-      screen.getByText('Current project manager seats')
-    ).toBeInTheDocument();
+    expect(screen.getByText('Current collaborator seats')).toBeInTheDocument();
     expect(screen.getByText('9/9')).toBeInTheDocument();
     expect(screen.getByText('6')).toBeInTheDocument();
     expect(screen.queryByText('Additional seats')).toBeInTheDocument();
@@ -87,13 +83,13 @@ describe('SeatInfo', () => {
     expect(screen.queryByText('Additional seats')).not.toBeInTheDocument();
   });
 
-  it('shows nothing for project manager seats when maximum_project_moderators_number is null', () => {
+  it('shows nothing for collaborator seats when maximum_project_moderators_number is null', () => {
     mockUserSeatsData.data.attributes.project_moderators_number = 15;
     mockAppConfiguration.data.attributes.settings.core.maximum_project_moderators_number =
       null;
     render(<SeatInfo seatType="project_manager" />);
     expect(
-      screen.queryByText('Current project manager seats')
+      screen.queryByText('Current collaborator seats')
     ).not.toBeInTheDocument();
     expect(screen.queryByText('Additional seats')).not.toBeInTheDocument();
   });
