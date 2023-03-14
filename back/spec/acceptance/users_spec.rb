@@ -329,7 +329,27 @@ resource 'Users' do
           expect(json_response[:data].size).to eq 6
         end
 
-        example_request 'List all users includes user blocking related data' do
+        example 'List all users does not include inactive users', document: false do
+          create(:user, registration_completed_at: nil) # inactive
+          create(:user, invite_status: 'pending')       # inactive
+
+          do_request
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data].size).to eq 6
+        end
+
+        example 'List all users includes blocked users', document: false do
+          create(:user, block_end_at: 5.days.from_now) # blocked
+
+          do_request
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data].size).to eq 7
+        end
+
+        example 'List all users includes user blocking related data', document: false do
+          do_request
           expect(status).to eq 200
           json_response = json_parse(response_body)
           expect(json_response[:data][0][:attributes]).to have_key(:blocked)

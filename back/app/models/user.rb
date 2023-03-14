@@ -236,7 +236,13 @@ class User < ApplicationRecord
     where.not(id: project_folder_moderator(*project_folder_ids))
   }
   scope :not_invited, -> { where.not(invite_status: 'pending').or(where(invite_status: nil)) }
-  scope :active, -> { where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'") }
+  scope :active, lambda {
+    where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'").not_blocked
+  }
+  scope :active_and_blocked, lambda {
+    where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'")
+  }
+  scope :not_blocked, -> { where(block_end_at: nil).or(where('? > block_end_at', Time.zone.now)) }
   scope :blocked, -> { where.not(block_end_at: nil).and(where('? < block_end_at', Time.zone.now)) }
 
   scope :order_role, lambda { |direction = :asc|
