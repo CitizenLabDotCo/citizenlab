@@ -82,9 +82,11 @@ interface IChangePassword {
 }
 
 export interface IBlockedUsersCount {
-  data: {
-    blocked_users_count: number;
-  };
+  data: IBlockedUsersCountData;
+}
+
+export interface IBlockedUsersCountData {
+  blocked_users_count: number;
 }
 
 export interface IUserBlockReason {
