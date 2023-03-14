@@ -22,7 +22,7 @@ resource 'ActionDescriptors' do
       expect(json_attributes.values.pluck(:disabled_reason).none?).to be true
     end
 
-    context 'with granular permissions enabled', document: false, skip: !CitizenLab.ee? do
+    context 'with granular permissions enabled', document: false do
       before(:all) do
         @cached_scope_types = PermissionsService.instance_variable_get(:@scope_spec_hash)
         PermissionsService.clear_scope_types

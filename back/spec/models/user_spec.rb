@@ -40,6 +40,55 @@ RSpec.describe User, type: :model do
     end
   end
 
+  include_context 'when user_blocking duration is 90 days' do
+    describe 'blocked?' do
+      let!(:user1) { create(:user, block_start_at: 89.days.ago) }
+      let!(:user2) { create(:user, block_start_at: 90.days.ago) }
+      let!(:user3) { create(:user, block_start_at: 50.days.ago) }
+
+      it 'Blocked users should be blocked for block duration' do
+        expect(user1.blocked?).to be(true)
+        expect(user2.blocked?).to be(false)
+      end
+
+      it 'Blocked users should be blocked or unblocked according to changes in block duration' do
+        expect(user1.blocked?).to be(true)
+
+        settings = AppConfiguration.instance.settings
+        settings['user_blocking']['duration'] = 60
+        AppConfiguration.instance.update!(settings: settings)
+
+        expect(user1.blocked?).to be(false)
+        expect(user3.blocked?).to be(true)
+      end
+
+      it "Blocked users 'blocked' status should be decoupled from user_blocking feature flag" do
+        settings = AppConfiguration.instance.settings
+        settings['user_blocking']['enabled'] = false
+        AppConfiguration.instance.update!(settings: settings)
+
+        expect(user1.blocked?).to be(true)
+        expect(user2.blocked?).to be(false)
+      end
+
+      it 'Blocked users should be returned in scope :blocked' do
+        blocked_users = described_class.all.blocked
+
+        expect(blocked_users.count).to eq 2
+        expect(blocked_users).to include(user1)
+        expect(blocked_users).not_to include(user2)
+      end
+
+      it 'Should be no blocked users if block duration is zero' do
+        settings = AppConfiguration.instance.settings
+        settings['user_blocking']['duration'] = 0
+        AppConfiguration.instance.update!(settings: settings)
+
+        expect(described_class.all.blocked.count).to eq 0
+      end
+    end
+  end
+
   describe 'user password authentication' do
     it 'should be compatible with meteor encryption' do
       u = build(:user)
@@ -488,6 +537,13 @@ RSpec.describe User, type: :model do
     it 'returns true when the user has completed signup' do
       u = build(:user)
       expect(u.active?).to be true
+    end
+
+    include_context 'when user_blocking duration is 90 days' do
+      it 'returns false when the user is blocked' do
+        u = build(:user, block_start_at: Time.now)
+        expect(u.active?).to be false
+      end
     end
   end
 

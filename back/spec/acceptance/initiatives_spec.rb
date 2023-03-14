@@ -383,7 +383,7 @@ resource 'Initiatives' do
       end
     end
 
-    example_group 'with granular permissions', skip: !CitizenLab.ee? do
+    example_group 'with granular permissions' do
       let(:group) { create(:group) }
 
       before do

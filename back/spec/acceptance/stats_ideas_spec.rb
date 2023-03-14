@@ -90,11 +90,10 @@ resource 'Stats - Ideas' do
         expect(json_response.dig(:data, :attributes, :count)).to eq 6
       end
 
-      if CitizenLab.ee?
-        example 'Count all ideas that need feedback for a specific assignee' do
-          assignee = create(:admin)
-          create(:idea, idea_status: @proposed, assignee: assignee)
-          do_request assignee: assignee.id
+      example 'Count all ideas that need feedback for a specific assignee' do
+        assignee = create(:admin)
+        create(:idea, idea_status: @proposed, assignee: assignee)
+        do_request assignee: assignee.id
 
           assert_status 200
           json_response = json_parse response_body

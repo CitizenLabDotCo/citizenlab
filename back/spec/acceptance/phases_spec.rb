@@ -47,10 +47,8 @@ resource 'Phases' do
         data: { id: @phases.first.project_id, type: 'project' }
       })
 
-      if CitizenLab.ee?
-        expect(json_response.dig(:data, :relationships, :permissions, :data).size)
-          .to eq(PermissionsService.actions(@phases.first).length)
-      end
+      expect(json_response.dig(:data, :relationships, :permissions, :data).size)
+        .to eq(PermissionsService.actions(@phases.first).length)
     end
   end
 
@@ -59,7 +57,7 @@ resource 'Phases' do
       let(:project) { create(:project_with_active_ideation_phase) }
       let(:id) { project.phases.first.id }
 
-      example '[error] Try downloading phase inputs', skip: !CitizenLab.ee? do
+      example '[error] Try downloading phase inputs' do
         do_request
         expect(status).to eq 401
       end
@@ -69,7 +67,7 @@ resource 'Phases' do
       let(:project) { create(:project_with_active_native_survey_phase) }
       let(:id) { project.phases.first.id }
 
-      example '[error] Try downloading phase inputs', skip: !CitizenLab.ee? do
+      example '[error] Try downloading phase inputs' do
         do_request
         expect(status).to eq 401
       end
@@ -489,7 +487,7 @@ resource 'Phases' do
         )
       end
 
-      example 'Get survey results', skip: !CitizenLab.ee? do
+      example 'Get survey results' do
         do_request
         expect(status).to eq 200
 
@@ -562,7 +560,7 @@ resource 'Phases' do
         )
       end
 
-      example 'Get submission count', skip: !CitizenLab.ee? do
+      example 'Get submission count' do
         do_request
         expect(status).to eq 200
 
@@ -586,7 +584,7 @@ resource 'Phases' do
         end
         let(:id) { ideation_phase.id }
 
-        example 'Download an empty sheet', document: false, skip: !CitizenLab.ee? do
+        example 'Download an empty sheet', document: false do
           do_request
 
           assert_status 200
@@ -648,7 +646,7 @@ resource 'Phases' do
         end
 
         context 'when there are no inputs in the phase' do
-          example 'Download an empty sheet', document: false, skip: !CitizenLab.ee? do
+          example 'Download an empty sheet', document: false do
             do_request
             expect(status).to eq 200
             expect(xlsx_contents(response_body)).to eq([
@@ -712,7 +710,7 @@ resource 'Phases' do
           let!(:downvotes) { create_list(:downvote, 1, votable: ideation_response1) }
           let!(:baskets) { [] }
 
-          example 'Download ideation phase inputs in one sheet', skip: !CitizenLab.ee? do
+          example 'Download ideation phase inputs in one sheet' do
             do_request
             assert_status 200
             expect(xlsx_contents(response_body)).to match([
@@ -785,7 +783,7 @@ resource 'Phases' do
         let(:active_phase) { project.phases.first }
         let(:id) { active_phase.id }
 
-        example 'Download an empty sheet', document: false, skip: !CitizenLab.ee? do
+        example 'Download an empty sheet', document: false do
           do_request
           expect(status).to eq 200
           expect(xlsx_contents(response_body)).to match_array([
@@ -829,7 +827,7 @@ resource 'Phases' do
         end
 
         context 'when there are no inputs in the phase' do
-          example 'Download an empty sheet', document: false, skip: !CitizenLab.ee? do
+          example 'Download an empty sheet', document: false do
             do_request
             expect(status).to eq 200
             expect(xlsx_contents(response_body)).to match_array([
@@ -880,7 +878,7 @@ resource 'Phases' do
             )
           end
 
-          example 'Download native survey phase inputs in one sheet', skip: !CitizenLab.ee? do
+          example 'Download native survey phase inputs in one sheet' do
             do_request
             expect(status).to eq 200
             expect(xlsx_contents(response_body)).to match_array([
@@ -959,7 +957,7 @@ resource 'Phases' do
     end
   end
 
-  context 'when authenticated as project moderator', skip: !CitizenLab.ee? do
+  context 'when authenticated as project moderator' do
     get 'web_api/v1/phases/:id/as_xlsx' do
       before do
         user = create(:project_moderator, projects: [project])

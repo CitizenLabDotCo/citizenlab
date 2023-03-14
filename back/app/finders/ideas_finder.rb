@@ -135,4 +135,4 @@ class IdeasFinder < ApplicationFinder
   end
 end
 
-IdeasFinder.include_if_ee('IdeaAssignment::Extensions::IdeasFinder')
+IdeasFinder.include(IdeaAssignment::Extensions::IdeasFinder)
