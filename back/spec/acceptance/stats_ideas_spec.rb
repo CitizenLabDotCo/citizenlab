@@ -95,11 +95,10 @@ resource 'Stats - Ideas' do
         create(:idea, idea_status: @proposed, assignee: assignee)
         do_request assignee: assignee.id
 
-          assert_status 200
-          json_response = json_parse response_body
-          expect(json_response.dig(:data, :type)).to eq 'ideas_count'
-          expect(json_response.dig(:data, :attributes, :count)).to eq 1
-        end
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'ideas_count'
+        expect(json_response.dig(:data, :attributes, :count)).to eq 1
       end
 
       example 'Count is not limited by pagination' do
