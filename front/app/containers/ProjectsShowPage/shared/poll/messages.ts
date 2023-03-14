@@ -29,6 +29,10 @@ export default defineMessages({
     defaultMessage:
       'Only verified users can take this poll. Please {signUpLink} or {logInLink} first.',
   },
+  pollDisabledNotActiveUser: {
+    id: 'app.containers.Projects.PollForm.pollDisabledNotActiveUser',
+    defaultMessage: 'Please {completeRegistrationLink} to take the poll.',
+  },
   pollDisabledNotPossible: {
     id: 'app.containers.Projects.PollForm.pollDisabledNotPossible',
     defaultMessage: 'It is currently impossible to take this poll.',
@@ -45,6 +49,10 @@ export default defineMessages({
   logInLinkText: {
     id: 'app.containers.Projects.PollForm.logInLinkText',
     defaultMessage: 'log in',
+  },
+  completeRegistrationLinkText: {
+    id: 'app.containers.Projects.PollForm.completeRegistrationLinkText',
+    defaultMessage: 'complete registration',
   },
   verificationLinkText: {
     id: 'app.containers.Projects.PollForm.verificationLinkText',

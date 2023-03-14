@@ -300,7 +300,8 @@ export type IPollTakingDisabledReason =
   | 'notActivePhase'
   | 'alreadyResponded'
   | 'notVerified'
-  | 'maybeNotVerified';
+  | 'maybeNotVerified'
+  | 'notActive';
 
 const pollTakingDisabledReason = (
   backendReason: PollDisabledReason | null,
@@ -311,6 +312,8 @@ const pollTakingDisabledReason = (
       return 'projectInactive';
     case 'already_responded':
       return 'alreadyResponded';
+    case 'not_active':
+      return 'notActive';
     case 'not_verified':
       return signedIn ? 'notVerified' : 'maybeNotVerified';
     case 'not_permitted':
