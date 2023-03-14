@@ -1651,7 +1651,7 @@
   "app.utils.FormattedCurrency.multipleCredits": "{numberOfTokens} créditos",
   "app.utils.FormattedCurrency.oneCredit": "1 crédito",
   "app.utils.FormattedCurrency.tokens": "fichas",
-  "app.utils.IdeaCards.mostVoted": "Most voted",
+  "app.utils.IdeaCards.mostVoted": "El más votado",
   "app.utils.IdeaCards.newest": "Más reciente",
   "app.utils.IdeaCards.oldest": "Más antigua",
   "app.utils.IdeaCards.random": "Aleatorio",
