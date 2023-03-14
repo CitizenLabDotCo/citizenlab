@@ -588,39 +588,43 @@ resource 'Users' do
         end
       end
 
-      include_context 'when user_blocking duration is 90 days' do
-        patch 'web_api/v1/users/:id/block' do
-          with_options scope: 'user' do
-            parameter :block_reason, 'Reason for blocking & any additional information', required: false
-          end
-          ValidationErrorHelper.new.error_fields(self, User)
+      patch 'web_api/v1/users/:id/block' do
+        before do
+          settings = AppConfiguration.instance.settings
+          settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
+          AppConfiguration.instance.update!(settings: settings)
+        end
 
-          let!(:user) { create(:user) }
-          let!(:id) { user.id }
+        with_options scope: 'user' do
+          parameter :block_reason, 'Reason for blocking & any additional information', required: false
+        end
+        ValidationErrorHelper.new.error_fields(self, User)
 
-          example 'Block a user using an empty request' do
-            do_request
+        let!(:user) { create(:user) }
+        let!(:id) { user.id }
 
-            expect(status).to eq 200
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data, :attributes, :blocked)).to be true
-          end
+        example 'Block a user using an empty request' do
+          do_request
 
-          example 'Block a user using a null value for block_reason' do
-            do_request user: { block_reason: nil }
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :blocked)).to be true
+        end
 
-            expect(status).to eq 200
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data, :attributes, :blocked)).to be true
-          end
+        example 'Block a user using a null value for block_reason' do
+          do_request user: { block_reason: nil }
 
-          example 'Block a user and provide a reason' do
-            do_request user: { block_reason: 'reason' }
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :blocked)).to be true
+        end
 
-            expect(status).to eq 200
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data, :attributes, :blocked)).to be true
-          end
+        example 'Block a user and provide a reason' do
+          do_request user: { block_reason: 'reason' }
+
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :blocked)).to be true
         end
       end
 
