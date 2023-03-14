@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   # (unfortunate route naming) is captured by /web_api/v1/ideas/<idea-id>.
   # Already tried +Rails.applications.routes.prepend+. That does not work:
   # https://github.com/rails/rails/issues/11663
-  mount GeographicDashboard::Engine => '', as: 'geographic_dashboard' if CitizenLab.ee?
+  mount GeographicDashboard::Engine => '', as: 'geographic_dashboard'
 
   namespace :web_api, defaults: { format: :json } do
     namespace :v1 do
@@ -75,8 +75,9 @@ Rails.application.routes.draw do
 
       resources :users, only: %i[index create update destroy] do
         get :me, on: :collection
-        post :complete_registration, on: :collection
         get :as_xlsx, on: :collection, action: 'index_xlsx'
+        post :complete_registration, on: :collection
+        patch :block, :unblock, on: :member
         post 'reset_password_email' => 'reset_password#reset_password_email', on: :collection
         post 'reset_password' => 'reset_password#reset_password', on: :collection
         post 'update_password', on: :collection

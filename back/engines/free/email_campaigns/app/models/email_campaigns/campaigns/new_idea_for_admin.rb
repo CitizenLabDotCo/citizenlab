@@ -89,6 +89,4 @@ module EmailCampaigns
   end
 end
 
-EmailCampaigns::Campaigns::NewIdeaForAdmin.prepend_if_ee(
-  'IdeaAssignment::Patches::EmailCampaigns::Campaigns::NewIdeaForAdmin'
-)
+EmailCampaigns::Campaigns::NewIdeaForAdmin.prepend(IdeaAssignment::Patches::EmailCampaigns::Campaigns::NewIdeaForAdmin)

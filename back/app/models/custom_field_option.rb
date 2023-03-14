@@ -76,5 +76,5 @@ class CustomFieldOption < ApplicationRecord
   end
 end
 
-CustomFieldOption.include_if_ee('SmartGroups::Extensions::CustomFieldOption')
-CustomFieldOption.include_if_ee('UserCustomFields::Patches::CustomFieldOption')
+CustomFieldOption.include(SmartGroups::Extensions::CustomFieldOption)
+CustomFieldOption.include(UserCustomFields::Patches::CustomFieldOption)

@@ -65,7 +65,7 @@ resource 'Ideas' do
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
 
-    context 'when phase_ids are not given', skip: !CitizenLab.ee? do
+    context 'when phase_ids are not given' do
       let(:phase_ids) { [] }
       let(:project_id) { project.id }
 
@@ -128,7 +128,7 @@ resource 'Ideas' do
       end
     end
 
-    context 'when phase_ids are given', skip: !CitizenLab.ee? do
+    context 'when phase_ids are given' do
       let(:project_id) { project.id }
       let!(:custom_field) do
         create(

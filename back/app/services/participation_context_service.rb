@@ -322,4 +322,4 @@ class ParticipationContextService
   end
 end
 
-ParticipationContextService.prepend_if_ee('GranularPermissions::Patches::ParticipationContextService')
+ParticipationContextService.prepend(GranularPermissions::Patches::ParticipationContextService)
