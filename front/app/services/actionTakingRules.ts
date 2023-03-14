@@ -380,7 +380,8 @@ export type ISurveyTakingDisabledReason =
   | 'maybeNotVerified'
   | 'projectInactive'
   | 'notActivePhase'
-  | 'notVerified';
+  | 'notVerified'
+  | 'notActive';
 
 const surveyTakingDisabledReason = (
   backendReason: SurveyDisabledReason | null,
@@ -391,6 +392,8 @@ const surveyTakingDisabledReason = (
       return 'projectInactive';
     case 'not_signed_in':
       return 'maybeNotPermitted';
+    case 'not_active':
+      return 'notActive';
     case 'not_verified':
       return signedIn ? 'notVerified' : 'maybeNotVerified';
     case 'not_permitted':
