@@ -106,17 +106,16 @@ export class Poll extends PureComponent<Props> {
       const takingPollDisabledReason =
         project.attributes?.action_descriptor?.taking_poll?.disabled_reason;
 
+      if (!pcId || !pcType) return;
+
       openSignUpInModal({
         flow,
         verification: takingPollDisabledReason === 'not_verified',
-        context:
-          takingPollDisabledReason === 'not_verified' && pcId && pcType
-            ? {
-                action: 'taking_poll',
-                id: pcId,
-                type: pcType,
-              }
-            : undefined,
+        context: {
+          action: 'taking_poll',
+          id: pcId,
+          type: pcType,
+        },
       });
     }
   };

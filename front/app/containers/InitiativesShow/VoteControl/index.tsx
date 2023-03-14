@@ -118,6 +118,11 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps, IntiativeInputProps {}
 
+const context = {
+  type: 'initiative',
+  action: 'voting_initiative',
+} as const;
+
 const VoteControl = ({
   initiative,
   initiativeStatus,
@@ -141,7 +146,7 @@ const VoteControl = ({
         openSignUpInModal({
           flow: 'signup',
           verification: false,
-          context: undefined,
+          context,
           onSuccess: () => vote(),
         });
         break;
@@ -152,10 +157,7 @@ const VoteControl = ({
         openSignUpInModal({
           flow: 'signup',
           verification: true,
-          context: {
-            type: 'initiative',
-            action: 'voting_initiative',
-          },
+          context,
           onSuccess: () => vote(),
         });
         break;
@@ -163,12 +165,7 @@ const VoteControl = ({
         trackEventByName(
           'Verification modal opened in response to clicking vote initiative'
         );
-        openVerificationModal({
-          context: {
-            action: 'voting_initiative',
-            type: 'initiative',
-          },
-        });
+        openVerificationModal({ context });
         break;
       default:
         vote();

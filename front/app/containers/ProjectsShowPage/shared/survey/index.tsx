@@ -96,17 +96,16 @@ const Survey = ({
       const takingSurveyDisabledReason =
         project.attributes?.action_descriptor?.taking_survey?.disabled_reason;
 
+      if (!pcId || !pcType) return;
+
       openSignUpInModal({
         flow,
         verification: takingSurveyDisabledReason === 'not_verified',
-        context:
-          takingSurveyDisabledReason === 'not_verified' && pcId && pcType
-            ? {
-                action: 'taking_survey',
-                id: pcId,
-                type: pcType,
-              }
-            : undefined,
+        context: {
+          action: 'taking_survey',
+          id: pcId,
+          type: pcType,
+        },
       });
     }
   };

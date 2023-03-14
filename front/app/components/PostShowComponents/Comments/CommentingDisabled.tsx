@@ -92,17 +92,16 @@ class CommentingDisabled extends PureComponent<Props> {
     const pcId =
       pcType === 'phase' ? phaseId : pcType === 'project' ? projectId : null;
 
+    if (!pcId || !pcType) return;
+
     openSignUpInModal({
       flow,
       verification: commentingDisabledReason === 'not_verified',
-      context:
-        commentingDisabledReason === 'not_verified' && pcId && pcType
-          ? {
-              action: 'commenting_idea',
-              id: pcId,
-              type: pcType,
-            }
-          : undefined,
+      context: {
+        action: 'commenting_idea',
+        id: pcId,
+        type: pcType,
+      },
     });
   };
 
