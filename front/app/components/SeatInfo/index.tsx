@@ -52,7 +52,11 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
   const currentSeatTypeTitle =
     seatType === 'admin'
       ? messages.currentAdminSeatsTitle
-      : messages.currentProjectManagerSeatsTitle;
+      : messages.currentCollaboratorSeatsTitle;
+  const tooltipMessage =
+    seatType === 'admin'
+      ? messages.includedAdminToolTip
+      : messages.includedCollaboratorToolTip;
 
   // Show maximum number of seats if user has used more for this value
   if (currentSeatNumber >= maximumSeatNumber) {
@@ -80,9 +84,7 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
             <Text color="teal700" mr="8px" variant="bodyS" my="0px">
               {formatMessage(messages.includedSeats)}
             </Text>
-            <IconTooltip
-              content={<FormattedMessage {...messages.includedSeatsToolTip} />}
-            />
+            <IconTooltip content={<FormattedMessage {...tooltipMessage} />} />
           </Box>
           <Text fontSize="xl" color="textPrimary" my="0px">
             {`${currentSeatNumber}/${maximumSeatNumber}`}
@@ -111,14 +113,13 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
         {seatType === 'project_manager' ? (
           <Text my="0px" variant="bodyS">
             <FormattedMessage
-              {...messages.adminInfoMessage}
+              {...messages.collaboratorMessage}
               values={{
                 adminSeatsIncluded: (
                   <Text as="span" fontWeight="bold" variant="bodyS">
-                    {formatMessage(
-                      messages.projectManagerSeatsIncludedSubText,
-                      { projectManagerSeats: maximumSeatNumber }
-                    )}
+                    {formatMessage(messages.collaboratorIncludedSubText, {
+                      projectManagerSeats: maximumSeatNumber,
+                    })}
                   </Text>
                 ),
               }}
@@ -127,7 +128,7 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
         ) : (
           <Text my="0px" variant="bodyS">
             <FormattedMessage
-              {...messages.projectManagerInfoMessage}
+              {...messages.adminMessage}
               values={{
                 adminSeatsIncluded: (
                   <Text as="span" fontWeight="bold" variant="bodyS">
