@@ -231,5 +231,5 @@ en:
     send_user_blocked_email:
       subject: 'Your account has been temporarily disabled'
       title_user_blocked: 'Your account has been temporarily disabled'
-      message_user_blocked_without_reason: "Your account on %{organizationName} Participation Platform has been temporarily disabled for a violation of the community guidelines. For more information on this, you can consult the <a href=\"%{termsAndConditionsUrl}\">Terms & Conditions</a>."
+      message_user_blocked_without_reason: "Your account on %{organizationName} Participation Platform has been <br><br><br> temporarily disabled for a violation of the community guidelines. For more information on this, you can consult the %{theTermAndConditionsPage}"
       message_user_blocked_with_reason: "Your account on %{organizationName} Participation Platform has been temporarily disabled for a reason of: %{reason}"
