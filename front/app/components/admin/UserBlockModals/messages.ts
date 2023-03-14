@@ -25,7 +25,7 @@ export default defineMessages({
   blockInfo: {
     id: 'app.containers.Admin.Users.userBlockModal.blockInfo',
     defaultMessage:
-      'The content of this user won’t be removed through this action. Don’t forget to moderate this user’s content if needed.',
+      'The content of this user won’t be removed through this action. Don’t forget to moderate their content if needed.',
   },
   blockAction: {
     id: 'app.containers.Admin.Users.userBlockModal.blockAction',
