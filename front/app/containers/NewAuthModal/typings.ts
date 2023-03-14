@@ -1,5 +1,8 @@
 import { getStepConfig } from './useSteps/stepConfig';
-import { AuthenticationRequirements } from 'api/permissions/types';
+import {
+  AuthenticationRequirements,
+  AuthenticationContext,
+} from 'api/permissions/types';
 
 export type Status = 'pending' | 'error' | 'ok';
 
@@ -20,3 +23,8 @@ export type GetRequirements = () => Promise<
 
 export type StepConfig = ReturnType<typeof getStepConfig>;
 export type Step = keyof StepConfig;
+
+export interface AuthenticationData {
+  context: AuthenticationContext;
+  onSuccess?: () => void;
+}

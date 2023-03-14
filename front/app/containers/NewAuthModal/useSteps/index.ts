@@ -10,11 +10,17 @@ import { getStepConfig } from './stepConfig';
 import { triggerAuthenticationFlow$ } from '../events';
 
 // typings
-import { Status, ErrorCode, State, StepConfig, Step } from '../typings';
-import { AuthenticationContext } from 'api/permissions/types';
+import {
+  Status,
+  ErrorCode,
+  State,
+  StepConfig,
+  Step,
+  AuthenticationData,
+} from '../typings';
 
 export default function useSteps() {
-  const authenticationContextRef = useRef<AuthenticationContext | null>(null);
+  const authenticationDataRef = useRef<AuthenticationData | null>(null);
 
   const [currentStep, setCurrentStep] = useState<Step>('closed');
   const [state, setState] = useState<State>({ email: null });
@@ -22,10 +28,10 @@ export default function useSteps() {
   const [error, setError] = useState<ErrorCode | null>(null);
 
   const getRequirements = useCallback(async () => {
-    const authenticationContext = authenticationContextRef.current;
+    const authenticationContext = authenticationDataRef.current?.context;
 
     // This should never be possible
-    if (authenticationContext === null) {
+    if (!authenticationContext) {
       throw new Error('Authentication context not available.');
     }
 
@@ -44,9 +50,10 @@ export default function useSteps() {
         setCurrentStep,
         setStatus,
         setError,
-        updateState
+        updateState,
+        authenticationDataRef.current?.onSuccess
       ),
-    [getRequirements, setCurrentStep, updateState]
+    [getRequirements, updateState]
   );
 
   const transition = useCallback(
@@ -71,7 +78,7 @@ export default function useSteps() {
     const subscription = triggerAuthenticationFlow$.subscribe((event) => {
       if (currentStep !== 'closed') return;
 
-      authenticationContextRef.current = event.eventValue;
+      authenticationDataRef.current = event.eventValue;
       transition(currentStep, 'TRIGGER_REGISTRATION_FLOW')();
     });
 

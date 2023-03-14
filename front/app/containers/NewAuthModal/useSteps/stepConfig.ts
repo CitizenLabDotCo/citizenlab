@@ -23,7 +23,8 @@ export const getStepConfig = (
   setCurrentStep: (step: Step) => void,
   setStatus: (status: Status) => void,
   setError: (errorCode: ErrorCode) => void,
-  updateState: UpdateState
+  updateState: UpdateState,
+  onSuccess?: () => void
 ) => {
   return {
     closed: {
@@ -86,7 +87,7 @@ export const getStepConfig = (
 
         if (emailConfirmed) {
           setStatus('ok');
-          // setCurrentStep('success');
+          setCurrentStep('success');
         } else {
           setStatus('error');
           setError('wrong_confirmation_code');
@@ -132,6 +133,8 @@ export const getStepConfig = (
 
         setStatus('ok');
         setCurrentStep('closed');
+
+        onSuccess && onSuccess();
       },
     },
   };

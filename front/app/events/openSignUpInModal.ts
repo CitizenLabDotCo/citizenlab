@@ -34,7 +34,11 @@ export async function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
       'dont_ask';
 
     if (passwordNotRequired) {
-      triggerAuthenticationFlow(metaData.context);
+      triggerAuthenticationFlow({
+        context: metaData.context,
+        onSuccess: metaData.onSuccess,
+      });
+
       return;
     }
   }

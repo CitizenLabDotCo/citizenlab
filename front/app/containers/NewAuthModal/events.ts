@@ -1,13 +1,13 @@
 import eventEmitter from 'utils/eventEmitter';
-import { AuthenticationContext } from 'api/permissions/types';
+import { AuthenticationData } from './typings';
 
 const EVENT_NAME = 'triggerAuthenticationFlow';
 
 export function triggerAuthenticationFlow(
-  authenticationContext: AuthenticationContext
+  authenticationData: AuthenticationData
 ) {
-  eventEmitter.emit(EVENT_NAME, authenticationContext);
+  eventEmitter.emit(EVENT_NAME, authenticationData);
 }
 
 export const triggerAuthenticationFlow$ =
-  eventEmitter.observeEvent<AuthenticationContext>(EVENT_NAME);
+  eventEmitter.observeEvent<AuthenticationData>(EVENT_NAME);
