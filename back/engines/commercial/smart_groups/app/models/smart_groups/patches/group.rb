@@ -75,7 +75,7 @@ module SmartGroups
       end
 
       def update_memberships_count!
-        return update(memberships_count: members.active.count) if rules?
+        return update(memberships_count: members.active_and_blocked.count) if rules?
 
         super
       end

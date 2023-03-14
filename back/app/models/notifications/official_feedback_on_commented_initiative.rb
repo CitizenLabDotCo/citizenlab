@@ -66,7 +66,7 @@ module Notifications
       initiator_id = official_feedback.user_id
 
       if official_feedback.post_type == 'Initiative' && initiator_id && !InitiativeStatusChange.exists?(official_feedback: official_feedback)
-        User.active
+        User.active_and_blocked
           .joins(:comments).merge(Comment.published)
           .where(comments: { post: official_feedback.post })
           .distinct

@@ -385,6 +385,10 @@ class User < ApplicationRecord
     block_end_at.present? && block_end_at > Time.zone.now
   end
 
+  def active_or_blocked?
+    active? || blocked?
+  end
+
   def groups
     manual_groups
   end
