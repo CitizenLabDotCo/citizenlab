@@ -13,16 +13,19 @@ import messages from './messages';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useSeats from 'api/seats/useSeats';
 
+// Utils
+import { isNil } from 'utils/helperUtils';
+
 import { IUserData } from 'services/users';
 
 const getInfoText = (
   isUserAdmin: boolean,
-  maximumAdmins: number,
+  maximumAdmins: number | null | undefined,
   currentAdminSeats: number
 ): MessageDescriptor => {
   if (isUserAdmin) {
     return messages.confirmNormalUserQuestion;
-  } else if (currentAdminSeats >= maximumAdmins) {
+  } else if (!isNil(maximumAdmins) && currentAdminSeats >= maximumAdmins) {
     return messages.reachedLimitMessage;
   }
 

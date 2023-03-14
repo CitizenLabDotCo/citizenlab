@@ -3,7 +3,21 @@ import { render, screen } from 'utils/testUtils/rtl';
 
 import SeatInfo from './';
 
-const mockAppConfiguration = {
+type MockAppConfigurationType = {
+  data: {
+    id: string;
+    attributes: {
+      settings: {
+        core: {
+          maximum_admins_number: number | null;
+          maximum_project_moderators_number: number | null;
+        };
+      };
+    };
+  };
+};
+
+const mockAppConfiguration: MockAppConfigurationType = {
   data: {
     id: '1',
     attributes: {
@@ -62,5 +76,25 @@ describe('SeatInfo', () => {
     expect(screen.getByText('9/9')).toBeInTheDocument();
     expect(screen.getByText('6')).toBeInTheDocument();
     expect(screen.queryByText('Additional seats')).toBeInTheDocument();
+  });
+
+  it('shows nothing for admin seats when maximum_admins_number is null', () => {
+    mockUserSeatsData.data.attributes.admins_number = 15;
+    mockAppConfiguration.data.attributes.settings.core.maximum_admins_number =
+      null;
+    render(<SeatInfo seatType="admin" />);
+    expect(screen.queryByText('Current admin seats')).not.toBeInTheDocument();
+    expect(screen.queryByText('Additional seats')).not.toBeInTheDocument();
+  });
+
+  it('shows nothing for project manager seats when maximum_project_moderators_number is null', () => {
+    mockUserSeatsData.data.attributes.project_moderators_number = 15;
+    mockAppConfiguration.data.attributes.settings.core.maximum_project_moderators_number =
+      null;
+    render(<SeatInfo seatType="project_manager" />);
+    expect(
+      screen.queryByText('Current project manager seats')
+    ).not.toBeInTheDocument();
+    expect(screen.queryByText('Additional seats')).not.toBeInTheDocument();
   });
 });
