@@ -1,98 +1,48 @@
-import React, { memo, useCallback } from 'react';
-import { adopt } from 'react-adopt';
-import { isNilOrError, isError } from 'utils/helperUtils';
+import React from 'react';
 
 // components
 import StatusFilter from 'components/FilterBoxes/StatusFilter';
 
-// resources
-import GetIdeaStatuses, {
-  GetIdeaStatusesChildProps,
-} from 'resources/GetIdeaStatuses';
-import GetIdeasFilterCounts, {
-  GetIdeasFilterCountsChildProps,
-} from 'resources/GetIdeasFilterCounts';
-
-// styling
-import styled from 'styled-components';
-
 // typings
 import { IIdeasFilterCountsQueryParameters } from 'services/ideas';
+import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
+import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 
-const Container = styled.div``;
-
-interface InputProps {
+interface Props {
   selectedStatusId: string | null | undefined;
   selectedIdeaFilters: IIdeasFilterCountsQueryParameters;
   onChange: (arg: string | null) => void;
   className?: string;
 }
 
-interface DataProps {
-  ideaStatuses: GetIdeaStatusesChildProps;
-  ideasFilterCounts: GetIdeasFilterCountsChildProps;
-}
+const StatusFilterBox = ({
+  selectedStatusId,
+  onChange,
+  className,
+  selectedIdeaFilters,
+}: Props) => {
+  const { data: ideaStatuses } = useIdeaStatuses();
+  const { data: ideasFilterCounts } = useIdeasFilterCounts(selectedIdeaFilters);
 
-interface Props extends InputProps, DataProps {}
+  const handleOnChange = (nextSelectedStatusId: string | null) => {
+    onChange(nextSelectedStatusId);
+  };
 
-const StatusFilterBox = memo<Props>(
-  ({
-    selectedStatusId,
-    ideaStatuses,
-    ideasFilterCounts,
-    onChange,
-    className,
-  }) => {
-    const handleOnChange = useCallback(
-      (nextSelectedStatusId: string | null) => {
-        onChange(nextSelectedStatusId);
-      },
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      []
-    );
-
-    if (
-      !isNilOrError(ideaStatuses) &&
-      ideaStatuses.length > 0 &&
-      !isError(ideasFilterCounts)
-    ) {
-      return (
-        <Container className={className}>
-          <StatusFilter
-            type="idea"
-            statuses={ideaStatuses}
-            filterCounts={ideasFilterCounts?.data.attributes}
-            selectedStatusId={selectedStatusId}
-            onChange={handleOnChange}
-          />
-        </Container>
-      );
-    }
-
-    return null;
-  }
-);
-
-const Data = adopt<DataProps, InputProps>({
-  ideaStatuses: <GetIdeaStatuses />,
-  ideasFilterCounts: ({ selectedIdeaFilters, render }) => {
-    const queryParameters: IIdeasFilterCountsQueryParameters = {
-      ...selectedIdeaFilters,
-      idea_status: undefined,
-      project_publication_status: 'published',
-      publication_status: 'published',
-    };
-
+  if (ideaStatuses && ideaStatuses.data.length > 0 && ideasFilterCounts) {
     return (
-      <GetIdeasFilterCounts queryParameters={queryParameters}>
-        {render}
-      </GetIdeasFilterCounts>
+      <div className={className}>
+        <StatusFilter
+          type="idea"
+          statuses={ideaStatuses.data}
+          filterCounts={ideasFilterCounts?.data.attributes}
+          selectedStatusId={selectedStatusId}
+          onChange={handleOnChange}
+        />
+      </div>
     );
-  },
-});
+  }
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <StatusFilterBox {...inputProps} {...dataProps} />}
-  </Data>
-);
+  return null;
+};
+
+export default StatusFilterBox;

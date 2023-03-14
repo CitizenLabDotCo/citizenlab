@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
-import useIdeasFilterCounts from 'hooks/useIdeasFilterCounts';
+import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -147,7 +147,7 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
     useInfiniteIdeas(ideaQueryParameters);
 
   const list = data?.pages.map((page) => page.data).flat();
-  const ideasFilterCounts = useIdeasFilterCounts(ideaQueryParameters);
+  const { data: ideasFilterCounts } = useIdeasFilterCounts(ideaQueryParameters);
 
   const [filtersModalOpened, setFiltersModalOpened] = useState(false);
 

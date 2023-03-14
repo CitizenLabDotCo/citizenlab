@@ -6,7 +6,7 @@ import TopBar from 'components/FiltersModal/TopBar';
 import BottomBar from 'components/FiltersModal/BottomBar';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import FiltersSideBar, { Props as FiltersSideBarProps } from './FiltersSideBar';
-import useIdeasFilterCounts from 'hooks/useIdeasFilterCounts';
+import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 
 // styling
 import { colors } from 'utils/styleUtils';
@@ -31,7 +31,7 @@ const FiltersModal = ({
   onClose,
   ...filtersSideBarProps
 }: Props) => {
-  const ideasFilterCounts = useIdeasFilterCounts(selectedIdeaFilters);
+  const { data: ideasFilterCounts } = useIdeasFilterCounts(selectedIdeaFilters);
   const total = isNilOrError(ideasFilterCounts)
     ? null
     : ideasFilterCounts.data.attributes.total;
