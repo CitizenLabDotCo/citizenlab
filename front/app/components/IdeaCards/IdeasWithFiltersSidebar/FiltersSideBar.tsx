@@ -17,7 +17,7 @@ import { IQueryParameters } from 'api/ideas/types';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { IIdeasFilterCounts } from 'services/ideas';
+import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
 
 const FiltersSidebarContainer = styled.div`
   position: relative;

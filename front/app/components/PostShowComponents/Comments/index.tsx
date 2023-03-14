@@ -26,7 +26,7 @@ import { Title } from '@citizenlab/cl2-component-library';
 
 // typings
 import { CommentsSort } from 'services/comments';
-import { IdeaCommentingDisabledReason } from 'services/ideas';
+import { IdeaCommentingDisabledReason } from 'api/ideas/types';
 import CommentingInitiativeDisabled from './CommentingInitiativeDisabled';
 
 // analytics

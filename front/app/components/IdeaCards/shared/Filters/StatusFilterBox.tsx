@@ -4,7 +4,7 @@ import React from 'react';
 import StatusFilter from 'components/FilterBoxes/StatusFilter';
 
 // typings
-import { IIdeasFilterCountsQueryParameters } from 'services/ideas';
+import { IIdeasFilterCountsQueryParameters } from 'api/ideas_filter_counts/types';
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 
