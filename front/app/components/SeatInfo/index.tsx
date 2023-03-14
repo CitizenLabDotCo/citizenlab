@@ -18,6 +18,9 @@ import useSeats from 'api/seats/useSeats';
 import messages from './messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
+// Utils
+import { isNil } from 'utils/helperUtils';
+
 type SeatInfoType = {
   seatType: 'project_manager' | 'admin';
   width?: number | null;
@@ -36,12 +39,7 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
     seatType === 'admin' ? maximumAdmins : maximumProjectManagers;
 
   // Maximum seat number being null means that there are unlimited seats so we don't show the seat info
-  if (
-    maximumSeatNumber === null ||
-    maximumSeatNumber === undefined ||
-    !seats ||
-    !appConfiguration
-  ) {
+  if (isNil(maximumSeatNumber) || !seats || !appConfiguration) {
     return null;
   }
 
