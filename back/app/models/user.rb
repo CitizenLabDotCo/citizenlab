@@ -238,10 +238,9 @@ class User < ApplicationRecord
   scope :not_invited, -> { where.not(invite_status: 'pending').or(where(invite_status: nil)) }
   scope :active, -> { where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'") }
 
-  scope :blocked, lambda {
-    where.not(block_start_at: nil)
-      .and(where(block_start_at: (
-        AppConfiguration.instance.settings('user_blocking', 'duration').days.ago..Time.zone.now)))
+  scope :blocked, lambda { |date = Time.zone.now|
+    where.not(block_start_at: nil).and(where.not(block_start_at: nil))
+      .and(where('? BETWEEN block_start_at AND block_end_at', date))
   }
 
   scope :order_role, lambda { |direction = :asc|
@@ -381,13 +380,7 @@ class User < ApplicationRecord
   end
 
   def blocked?
-    block_start_at.present? && block_start_at.between?(block_duration.days.ago, Time.zone.now)
-  end
-
-  def block_end_at
-    return nil unless blocked?
-
-    block_start_at + block_duration.days
+    block_start_at.present? && Time.zone.now.between?(block_start_at, block_end_at)
   end
 
   def groups
