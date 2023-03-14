@@ -27,6 +27,7 @@ import styled from 'styled-components';
 
 // typings
 import { IIdeaData } from 'api/ideas/types';
+import eventEmitter from 'utils/eventEmitter';
 
 const Container = styled.div``;
 
@@ -67,7 +68,12 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
     }[processType];
 
     if (window.confirm(formatMessage(deleteConfirmationMessage))) {
-      deleteIdea(ideaId, { onSuccess: clHistory.goBack });
+      deleteIdea(ideaId, {
+        onSuccess: () => {
+          clHistory.goBack();
+          eventEmitter.emit('closeIdeaModal');
+        },
+      });
     }
   };
 
