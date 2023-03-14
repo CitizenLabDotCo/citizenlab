@@ -53,7 +53,10 @@ class CommentingInitiativesDisabled extends PureComponent<Props> {
       return messages.commentingInitiativeNotPermitted;
     } else if (commetingPermissions?.action === 'verify') {
       return messages.commentingDisabledUnverified;
-    } else if (authUser && commetingPermissions?.action === 'sign_in_up') {
+    } else if (
+      authUser &&
+      commetingPermissions?.action === 'complete_registration'
+    ) {
       return messages.completeRegistrationToComment;
     } else if (commetingPermissions?.action === 'sign_in_up') {
       return messages.signInToCommentInitiative;

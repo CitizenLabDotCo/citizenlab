@@ -355,7 +355,7 @@ const VoteButton = ({
         : messages.votingDisabledPhaseOver;
     } else if (disabledReason === 'not_permitted') {
       return messages.votingNotPermitted;
-    } else if (authUser && disabledReason === 'not_signed_in') {
+    } else if (authUser && disabledReason === 'not_active') {
       return messages.completeRegistrationToVote;
     } else if (disabledReason === 'not_signed_in') {
       return messages.votingNotSignedIn;

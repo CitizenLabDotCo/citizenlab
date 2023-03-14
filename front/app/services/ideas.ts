@@ -24,7 +24,8 @@ export type IdeaVotingDisabledReason =
   | 'downvoting_limited_max_reached'
   | 'idea_not_in_current_phase'
   | 'not_permitted'
-  | 'not_verified';
+  | 'not_verified'
+  | 'not_active';
 
 export type IdeaCommentingDisabledReason =
   | 'idea_not_in_current_phase'

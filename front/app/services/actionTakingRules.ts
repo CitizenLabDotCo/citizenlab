@@ -61,7 +61,8 @@ export type IIdeaPostingDisabledReason =
 export type IPreliminaryAction =
   | 'sign_in_up'
   | 'verify'
-  | 'sign_in_up_and_verify';
+  | 'sign_in_up_and_verify'
+  | 'complete_registration';
 
 const ideaPostingDisabledReason = (
   backendReason: PostingDisabledReason | null,
@@ -107,6 +108,11 @@ const ideaPostingDisabledReason = (
         disabledReason: signedIn ? 'notPermitted' : 'maybeNotPermitted',
         action: null,
       };
+    case 'not_active':
+      return {
+        disabledReason: null,
+        action: 'complete_registration',
+      };
     default:
       return {
         disabledReason: 'notPermitted',
@@ -134,6 +140,7 @@ export const getIdeaPostingRules = ({
   if (!isNilOrError(project)) {
     const { disabled_reason, future_enabled, enabled } =
       project.attributes.action_descriptor.posting_idea;
+
     if (
       !isNilOrError(authUser) &&
       (isAdmin({ data: authUser }) || isProjectModerator({ data: authUser }))

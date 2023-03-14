@@ -50,7 +50,6 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
   return (
     <Dropdown
       id="e2e-user-menu-dropdown"
-      minWidth="220px"
       mobileWidth="220px"
       top="68px"
       right="-12px"
