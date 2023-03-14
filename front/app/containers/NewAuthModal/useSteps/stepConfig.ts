@@ -86,7 +86,7 @@ export const getStepConfig = (
 
         if (emailConfirmed) {
           setStatus('ok');
-          setCurrentStep('success');
+          // setCurrentStep('success');
         } else {
           setStatus('error');
           setError('wrong_confirmation_code');

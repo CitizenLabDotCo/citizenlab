@@ -14,8 +14,6 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-// utils
-
 const CodeSentMessage = () => {
   const user = useAuthUser();
   if (isNilOrError(user)) return null;
