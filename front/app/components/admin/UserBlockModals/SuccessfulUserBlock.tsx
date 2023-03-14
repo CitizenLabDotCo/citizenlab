@@ -9,12 +9,7 @@ import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // Styling
-import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
-
-const Container = styled.div`
-  padding: 30px;
-`;
 
 type Props = {
   opened: boolean;
@@ -34,7 +29,7 @@ export default ({ opened, resetSuccess, date, name }: Props) => {
 
   return (
     <Modal width={400} opened={localOpened} close={onClose}>
-      <Container>
+      <Box p="30px">
         <Box display="flex" justifyContent="center">
           <Icon
             name="check-circle"
@@ -55,7 +50,7 @@ export default ({ opened, resetSuccess, date, name }: Props) => {
             }}
           />
         </Text>
-      </Container>
+      </Box>
     </Modal>
   );
 };

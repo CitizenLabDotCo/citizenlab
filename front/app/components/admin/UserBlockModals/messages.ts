@@ -8,11 +8,11 @@ export default defineMessages({
   subtitle: {
     id: 'app.containers.Admin.Users.userBlockModal.subtitle',
     defaultMessage:
-      'The selected user won’t be able to login to the platform for {ninetyDays}. If you wish to revert this, you can unblock them from the list of blocked users.',
+      'The selected user won’t be able to login to the platform for {daysBlocked}. If you wish to revert this, you can unblock them from the list of blocked users.',
   },
-  ninetyDays: {
-    id: 'app.containers.Admin.Users.userBlockModal.ninetyDays',
-    defaultMessage: '90 days',
+  daysBlocked: {
+    id: 'app.containers.Admin.Users.userBlockModal.daysBlocked',
+    defaultMessage: '{numberOfDays} days',
   },
   reasonLabel: {
     id: 'app.containers.Admin.Users.userBlockModal.reasonLabel',
@@ -20,7 +20,7 @@ export default defineMessages({
   },
   reasonLabelTooltip: {
     id: 'app.containers.Admin.Users.userBlockModal.reasonLabelTooltip',
-    defaultMessage: 'This will be comunicated to the blocked user.',
+    defaultMessage: 'This will be communicated to the blocked user.',
   },
   blockInfo: {
     id: 'app.containers.Admin.Users.userBlockModal.blockInfo',
@@ -41,7 +41,7 @@ export default defineMessages({
   },
   confirmUnblock: {
     id: 'app.containers.Admin.Users.userBlockModal.confirmUnblock',
-    defaultMessage: 'Are you sure you want to unblock the user?',
+    defaultMessage: 'Are you sure you want to unblock {name}?',
   },
   unblockActionConfirmation: {
     id: 'app.containers.Admin.Users.userBlockModal.unblockActionConfirmation',
@@ -57,7 +57,8 @@ export default defineMessages({
   },
   bocknigInfo: {
     id: 'app.containers.Admin.Users.userBlockModal.bocknigInfo',
-    defaultMessage: 'This user has been blocked since {from}. The ban lasts until {to}.',
+    defaultMessage:
+      'This user has been blocked since {from}. The ban lasts until {to}.',
   },
   blocked: {
     id: 'app.containers.Admin.Users.userBlockModal.blocked',

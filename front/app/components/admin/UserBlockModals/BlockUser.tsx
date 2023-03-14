@@ -23,35 +23,28 @@ import SuccessfulUserBlock from './SuccessfulUserBlock';
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// styling
-import styled from 'styled-components';
-
 // services
 import { IUserData, blockUser } from 'services/users';
+import GetAppConfiguration, {
+  GetAppConfigurationChildProps,
+} from 'resources/GetAppConfiguration';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
-const Container = styled.div`
-  padding: 30px;
-`;
-
-const WarningContainer = styled.div`
-  margin: 30px 0;
-`;
-
 type Props = {
   open: boolean;
   setClose: () => void;
   user: IUserData;
+  tenant: GetAppConfigurationChildProps;
 };
 
 type FormValues = {
   reason: string;
 };
 
-export default ({ open, setClose, user }: Props) => {
+const BlockUserModal = ({ open, setClose, user, tenant }: Props) => {
   const [success, setSuccess] = useState(false);
   const [updatedUser, setUpdatedUser] = useState<IUserData | undefined>();
 
@@ -80,6 +73,11 @@ export default ({ open, setClose, user }: Props) => {
     setClose();
   };
 
+  const blockingDuration =
+    (!isNilOrError(tenant) &&
+      tenant.attributes.settings.user_blocking?.duration) ||
+    90;
+
   if (success && !isNilOrError(updatedUser)) {
     return (
       <SuccessfulUserBlock
@@ -97,14 +95,20 @@ export default ({ open, setClose, user }: Props) => {
       opened={open}
       header={formatMessage(messages.header)}
     >
-      <Container>
+      <Box p="30px">
         <FormProvider {...methods}>
           <form>
             <Text mt="0" color="textSecondary">
               <FormattedMessage
                 {...messages.subtitle}
                 values={{
-                  ninetyDays: <b>{formatMessage(messages.ninetyDays)}</b>,
+                  daysBlocked: (
+                    <b>
+                      {formatMessage(messages.daysBlocked, {
+                        numberOfDays: blockingDuration,
+                      })}
+                    </b>
+                  ),
                 }}
               />
             </Text>
@@ -122,9 +126,9 @@ export default ({ open, setClose, user }: Props) => {
               />
             </FormLabel>
             <TextArea name="reason" />
-            <WarningContainer>
+            <Box m="30px 0">
               <Warning>{formatMessage(messages.blockInfo)}</Warning>
-            </WarningContainer>
+            </Box>
             <Box display="flex">
               <Button
                 onClick={methods.handleSubmit(onFormSubmit)}
@@ -135,7 +139,13 @@ export default ({ open, setClose, user }: Props) => {
             </Box>
           </form>
         </FormProvider>
-      </Container>
+      </Box>
     </Modal>
   );
 };
+
+export default (InputProps) => (
+  <GetAppConfiguration>
+    {(tenant) => <BlockUserModal tenant={tenant} {...InputProps} />}
+  </GetAppConfiguration>
+);

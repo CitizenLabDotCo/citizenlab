@@ -12,7 +12,7 @@ import messages from './messages';
 
 export default () => {
   const { formatMessage } = useIntl();
-  const [search, setSearch] = useState<string | undefined>(undefined);
+  const [search, setSearch] = useState<string>('');
 
   const searchUser = (searchTerm: string) => {
     setSearch(isString(searchTerm) && !isEmpty(searchTerm) ? searchTerm : '');
