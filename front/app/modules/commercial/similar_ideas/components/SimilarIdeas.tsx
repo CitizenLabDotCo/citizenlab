@@ -16,7 +16,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
 
 // hooks
-import useSimilarIdeas from '../hooks/useSimilarIdeas';
+import useSimilarIdeas from '../api/similar_ideas/useSimilarIdeas';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -63,17 +63,17 @@ interface Props {
 
 const SimilarIdeas = memo<Props & WrappedComponentProps>(
   ({ ideaId, compact, className, intl: { formatMessage } }) => {
-    const similarIdeas = useSimilarIdeas({ ideaId, pageSize: 5 });
+    const { data: similarIdeas } = useSimilarIdeas({ ideaId, pageSize: 5 });
     const onClickIdeaLink = (index: number) => () => {
       trackEventByName(tracks.clickSimilarIdeaLink.name, { extra: { index } });
     };
 
-    if (!isNilOrError(similarIdeas) && similarIdeas.length > 0) {
+    if (!isNilOrError(similarIdeas) && similarIdeas.data.length > 0) {
       return (
         <Item className={className || ''} compact={compact}>
           <Header>{formatMessage(messages.similarInputs)}</Header>
           <IdeaList className={className}>
-            {similarIdeas.map((similarIdea, index) => (
+            {similarIdeas.data.map((similarIdea, index) => (
               <IdeaListItem key={similarIdea.id}>
                 <IdeaLink
                   to={`/ideas/${similarIdea.attributes.slug}`}
