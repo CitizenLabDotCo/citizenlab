@@ -63,7 +63,15 @@ class UserPolicy < ApplicationPolicy
     record.id == user&.id || (user&.active? && user&.admin?)
   end
 
-  def blocked_count
+  def block?
+    index?
+  end
+
+  def unblock?
+    index?
+  end
+
+  def blocked_count?
     index?
   end
 
@@ -125,4 +133,4 @@ class UserPolicy < ApplicationPolicy
   end
 end
 
-UserPolicy.prepend_if_ee('Verification::Patches::UserPolicy')
+UserPolicy.prepend(Verification::Patches::UserPolicy)
