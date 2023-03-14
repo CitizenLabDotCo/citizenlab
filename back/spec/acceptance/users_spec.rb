@@ -1102,30 +1102,6 @@ resource 'Users' do
         end
       end
 
-      get 'web_api/v1/users/:id/initiatives_count' do
-        let(:id) { @user.id }
-
-      example_request 'Delete a user' do
-        expect(response_status).to eq 200
-        expect { User.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
-      end
-    end
-
-    get 'web_api/v1/users/:id/ideas_count' do
-      let(:id) { @user.id }
-
-      example 'Get the number of ideas published by one user' do
-        IdeaStatus.create_defaults
-        create(:idea, author: @user)
-        create(:idea)
-        create(:idea, author: @user, publication_status: 'draft')
-        create(:idea, author: @user, project: create(:continuous_native_survey_project))
-        do_request
-        assert_status 200
-        expect(json_parse(response_body)).to eq({ data: { type: 'ideas_count', attributes: { count: 1 } } })
-      end
-    end
-
     get 'web_api/v1/users/:id/initiatives_count' do
       let(:id) { @user.id }
 
@@ -1139,22 +1115,10 @@ resource 'Users' do
         expect(json_response.dig(:data, :type)).to eq 'initiatives_count'
         expect(json_response.dig(:data, :attributes, :count)).to eq 1
       end
-    end
 
-    get 'web_api/v1/users/:id/comments_count' do
-      parameter :post_type, "Count only comments of one post type. Either 'Idea' or 'Initiative'.", required: false
-
-      let(:id) { @user.id }
-
-      example 'Get the number of comments posted by one user' do
-        create(:comment, author: @user, post: create(:initiative))
-        create(:comment)
-        create(:comment, author: @user, post: create(:idea))
-        create(:comment, author: @user, publication_status: 'deleted')
-        do_request
-        expect(status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response[:count]).to eq 2
+      example_request 'Delete a user' do
+        expect(response_status).to eq 200
+        expect { User.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
