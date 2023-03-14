@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::UsersController < ::ApplicationController
-  before_action :set_user, only: %i[show update destroy ideas_count initiatives_count comments_count]
+  before_action :set_user, only: %i[show update destroy ideas_count initiatives_count comments_count block unblock]
   skip_before_action :authenticate_user, only: %i[create show by_slug by_invite ideas_count initiatives_count comments_count]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -14,6 +14,7 @@ class WebApi::V1::UsersController < ::ApplicationController
     @users = @users.search_by_all(params[:search]) if params[:search].present?
 
     @users = @users.active unless params[:include_inactive]
+    @users = @users.blocked if params[:only_blocked]
     @users = @users.in_group(Group.find(params[:group])) if params[:group]
     @users = @users.admin.or(@users.project_moderator(params[:can_moderate_project])) if params[:can_moderate_project].present?
     @users = @users.admin.or(@users.project_moderator) if params[:can_moderate].present?
@@ -172,9 +173,36 @@ class WebApi::V1::UsersController < ::ApplicationController
     head :ok
   end
 
+  def block
+    authorize @user, :block?
+    if @user.update(block_start_at: Time.zone.now, block_reason: params.dig(:user, :block_reason))
+      SideFxUserService.new.after_block(@user, current_user)
+
+      render json: WebApi::V1::UserSerializer.new(@user, params: fastjson_params).serialized_json
+    else
+      render json: { errors: @user.errors.details }, status: :unprocessable_entity
+    end
+  end
+
+  def unblock
+    authorize @user, :unblock?
+    if @user.update(block_start_at: nil, block_reason: nil)
+      SideFxUserService.new.after_unblock(@user, current_user)
+
+      render json: WebApi::V1::UserSerializer.new(@user, params: fastjson_params).serialized_json
+    else
+      render json: { errors: @user.errors.details }, status: :unprocessable_entity
+    end
+  end
+
   def ideas_count
     ideas = policy_scope(IdeasFinder.new({}, scope: @user.ideas.published, current_user: current_user).find_records)
     render json: { count: ideas.count }, status: :ok
+  end
+
+  def blocked_count
+    authorize :user, :blocked_count?
+    render json: { data: { blocked_users_count: User.all.blocked.count } }, status: :ok
   end
 
   def initiatives_count
