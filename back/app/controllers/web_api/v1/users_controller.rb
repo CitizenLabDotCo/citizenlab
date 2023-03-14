@@ -166,8 +166,10 @@ class WebApi::V1::UsersController < ::ApplicationController
   end
 
   def block
+    block_end_at = Time.zone.now + AppConfiguration.instance.settings('user_blocking', 'duration').days
+
     authorize @user, :block?
-    if @user.update(block_start_at: Time.zone.now, block_reason: params.dig(:user, :block_reason))
+    if @user.update(block_start_at: Time.zone.now, block_end_at: block_end_at, block_reason: params.dig(:user, :block_reason))
       SideFxUserService.new.after_block(@user, current_user)
 
       render json: WebApi::V1::UserSerializer.new(@user, params: fastjson_params).serialized_json
