@@ -564,10 +564,6 @@ class User < ApplicationRecord
   def use_fake_code?
     Rails.env.development?
   end
-
-  def block_duration
-    AppConfiguration.instance.settings('user_blocking', 'duration')
-  end
 end
 
 User.include(IdeaAssignment::Extensions::User)
