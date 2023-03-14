@@ -148,7 +148,7 @@ const AssignBudgetControl = memo(
           });
           // if signed up & in
         }
-        if (budgetingDisabledReason === 'not_active') {
+       } else if (budgetingDisabledReason === 'not_active') {
           openSignUpInModal();
         } else if (!isNilOrError(authUser)) {
           if (budgetingDisabledReason === 'not_verified') {
