@@ -1102,25 +1102,25 @@ resource 'Users' do
         end
       end
 
-    get 'web_api/v1/users/:id/initiatives_count' do
-      let(:id) { @user.id }
+      get 'web_api/v1/users/:id/initiatives_count' do
+        let(:id) { @user.id }
 
-      example 'Get the number of initiatives published by one user' do
-        create(:initiative, author: @user)
-        create(:initiative)
-        create(:initiative, author: @user, publication_status: 'draft')
-        do_request
-        assert_status 200
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :type)).to eq 'initiatives_count'
-        expect(json_response.dig(:data, :attributes, :count)).to eq 1
-      end
+        example 'Get the number of initiatives published by one user' do
+          create(:initiative, author: @user)
+          create(:initiative)
+          create(:initiative, author: @user, publication_status: 'draft')
+          do_request
+          assert_status 200
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :type)).to eq 'initiatives_count'
+          expect(json_response.dig(:data, :attributes, :count)).to eq 1
+        end
 
-      example_request 'Delete a user' do
-        expect(response_status).to eq 200
-        expect { User.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+        example_request 'Delete a user' do
+          expect(response_status).to eq 200
+          expect { User.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+        end
       end
-    end
 
       get 'web_api/v1/users/:id/comments_count' do
         parameter :post_type, "Count only comments of one post type. Either 'Idea' or 'Initiative'.", required: false
