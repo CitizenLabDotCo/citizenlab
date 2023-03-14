@@ -20,9 +20,6 @@ import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import { GetIdeaByIdChildProps } from 'resources/GetIdeaById';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 
 // i18n
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
@@ -41,6 +38,8 @@ import rocket from 'assets/img/rocket.png';
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
+import useProject from 'hooks/useProject';
+import usePhases from 'hooks/usePhases';
 
 interface InputProps {
   postType: 'idea' | 'initiative';
@@ -54,9 +53,6 @@ interface DataProps {
   locale: GetLocaleChildProps;
   tenant: GetAppConfigurationChildProps;
   authUser: GetAuthUserChildProps;
-  project: GetProjectChildProps;
-  phases: GetPhasesChildProps;
-  idea: GetIdeaByIdChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -66,8 +62,6 @@ const SharingModalContent = ({
   postType,
   localize,
   locale,
-  project,
-  phases,
   intl: { formatMessage },
   className,
   authUser,
@@ -78,6 +72,10 @@ const SharingModalContent = ({
   const ideaId = postType === 'idea' && postId ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: idea } = useIdeaById(ideaId);
+  const project = useProject({
+    projectId: idea?.data.relationships.project.data.id,
+  });
+  const phases = usePhases(idea?.data.relationships.project.data.id);
 
   useEffect(() => {
     trackEventByName(tracks.sharingModalOpened.name, {
@@ -107,7 +105,7 @@ const SharingModalContent = ({
     let emailSharingSubject: MessageDescriptor | null = null;
     let emailSharingBody: MessageDescriptor | null = null;
     let whatsAppMessage: MessageDescriptor | null = null;
-
+    console.log({ project });
     if (!isNilOrError(project)) {
       const inputTerm = getInputTerm(
         project.attributes.process_type,
@@ -164,6 +162,11 @@ const SharingModalContent = ({
   const { emailSharingBody, emailSharingSubject, whatsAppMessage } =
     getMessages();
 
+  console.log({ authUser });
+  console.log({ postUrl });
+  console.log({ emailSharingBody });
+  console.log({ emailSharingSubject });
+  console.log({ whatsAppMessage });
   if (
     !isNilOrError(authUser) &&
     postUrl &&
@@ -237,24 +240,6 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
-  project: ({ idea, render }) => (
-    <GetProject
-      projectId={
-        !isNilOrError(idea) ? idea.relationships.project.data.id : null
-      }
-    >
-      {render}
-    </GetProject>
-  ),
-  phases: ({ idea, render }) => (
-    <GetPhases
-      projectId={
-        !isNilOrError(idea) ? idea.relationships.project.data.id : null
-      }
-    >
-      {render}
-    </GetPhases>
-  ),
 });
 
 export default (inputProps: InputProps) => (
