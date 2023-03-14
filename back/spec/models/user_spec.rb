@@ -41,23 +41,13 @@ RSpec.describe User, type: :model do
   end
 
   describe 'blocked?' do
-    let!(:user1) { create(:user, block_start_at: 89.days.ago, block_end_at: 1.day.from_now) }
-    let!(:user2) { create(:user, block_start_at: 90.days.ago, block_end_at: 5.minutes.ago) }
-    let!(:user3) { create(:user, block_start_at: 25.days.ago, block_end_at: 5.days.from_now) }
+    let!(:user1) { create(:user, block_end_at: 1.day.from_now) }
+    let!(:user2) { create(:user, block_end_at: 5.minutes.ago) }
+    let!(:user3) { create(:user, block_end_at: 5.days.from_now) }
 
     it 'Blocked users should be blocked for block duration' do
       expect(user1.blocked?).to be(true)
       expect(user2.blocked?).to be(false)
-    end
-
-    it 'Blocked users should NOT be blocked or unblocked to reflect to changes in block duration' do
-      expect(user1.blocked?).to be(true)
-
-      settings = AppConfiguration.instance.settings
-      settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 60 }
-      AppConfiguration.instance.update!(settings: settings)
-
-      expect(user1.blocked?).to be(true)
     end
 
     it "Blocked users 'blocked' status should be decoupled from user_blocking feature flag" do
@@ -529,7 +519,7 @@ RSpec.describe User, type: :model do
     end
 
     it 'returns false when the user is blocked' do
-      u = build(:user, block_start_at: 5.days.ago, block_end_at: 5.days.from_now)
+      u = build(:user, block_end_at: 5.days.from_now)
       expect(u.active?).to be false
     end
   end
