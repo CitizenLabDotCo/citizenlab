@@ -1651,7 +1651,7 @@
   "app.utils.FormattedCurrency.multipleCredits": "{numberOfTokens} kreditter",
   "app.utils.FormattedCurrency.oneCredit": "1 kredit",
   "app.utils.FormattedCurrency.tokens": "tokens",
-  "app.utils.IdeaCards.mostVoted": "Most voted",
+  "app.utils.IdeaCards.mostVoted": "Mest stemte",
   "app.utils.IdeaCards.newest": "Nyeste",
   "app.utils.IdeaCards.oldest": "Ældste",
   "app.utils.IdeaCards.random": "Tilfældige",
