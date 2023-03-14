@@ -21,24 +21,9 @@ interface IUserToken {
 const userTokenPath = `${API_PATH}/user_token`;
 const authUserPath = `${API_PATH}/users/me`;
 
-export default async function signIn({
-  email,
-  password = '',
-  rememberMe = false,
-  tokenLifetime,
-}: Parameters) {
+export default async function signIn(parameters: Parameters) {
   try {
-    const bodyData = { auth: { email, password, remember_me: rememberMe } };
-    const httpMethod: IHttpMethod = { method: 'POST' };
-
-    const { jwt } = await request<IUserToken>(
-      userTokenPath,
-      bodyData,
-      httpMethod,
-      null
-    );
-
-    setJwt(jwt, rememberMe, tokenLifetime);
+    await getAndSetToken(parameters);
 
     const authUser = await getAuthUserAsync();
 
@@ -50,6 +35,25 @@ export default async function signIn({
     signOut();
     throw error;
   }
+}
+
+export async function getAndSetToken({
+  email,
+  password = '',
+  rememberMe = false,
+  tokenLifetime,
+}: Parameters) {
+  const bodyData = { auth: { email, password, remember_me: rememberMe } };
+  const httpMethod: IHttpMethod = { method: 'POST' };
+
+  const { jwt } = await request<IUserToken>(
+    userTokenPath,
+    bodyData,
+    httpMethod,
+    null
+  );
+
+  setJwt(jwt, rememberMe, tokenLifetime);
 }
 
 async function getAuthUserAsync() {

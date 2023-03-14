@@ -10,12 +10,17 @@ import stepMessages from '../messages';
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
+// typings
+import { Status } from '../../typings';
+
 interface Props {
+  status: Status;
   onContinue: () => void;
 }
 
-const Success = ({ onContinue }: Props) => {
+const Success = ({ status, onContinue }: Props) => {
   const { formatMessage } = useIntl();
+  const loading = status === 'pending';
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
@@ -26,7 +31,13 @@ const Success = ({ onContinue }: Props) => {
       <Text mt="8px" mb="24px">
         {formatMessage(messages.nowContinueYourParticipation)}
       </Text>
-      <Button mb="0" width="auto" onClick={onContinue}>
+      <Button
+        mb="0"
+        width="auto"
+        disabled={loading}
+        processing={loading}
+        onClick={onContinue}
+      >
         {formatMessage(stepMessages.continue)}
       </Button>
     </Box>

@@ -3,6 +3,9 @@ import signIn from 'api/authentication/signIn';
 import signOut from 'api/authentication/signOut';
 import confirmEmail from 'api/authentication/confirmEmail';
 
+import streams from 'utils/streams';
+import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
+
 // typings
 import { GetRequirements, Status, ErrorCode, UpdateState } from '../typings';
 import { SSOProvider } from 'services/singleSignOn';
@@ -41,11 +44,13 @@ export const getStepConfig = (
         const result = await createEmailOnlyAccount({ email, locale });
 
         if (result === 'account_created_successfully') {
+          setStatus('ok');
           setCurrentStep('email-confirmation');
         }
 
         if (result === 'email_taken') {
           updateState({ email });
+          setStatus('ok');
           setCurrentStep('enter-password');
         }
 
@@ -108,7 +113,7 @@ export const getStepConfig = (
           if (requirements.special.confirmation === 'require') {
             setCurrentStep('email-confirmation');
           } else {
-            setCurrentStep('success');
+            setCurrentStep('closed');
           }
 
           setStatus('ok');
@@ -120,7 +125,15 @@ export const getStepConfig = (
     },
 
     success: {
-      CONTINUE: () => setCurrentStep('closed'),
+      CONTINUE: async () => {
+        setStatus('pending');
+
+        await streams.reset();
+        await resetQueryCache();
+
+        setStatus('ok');
+        setCurrentStep('closed');
+      },
     },
   };
 };

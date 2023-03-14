@@ -88,7 +88,10 @@ const AuthModal = ({
         )}
 
         {currentStep === 'success' && (
-          <Success onContinue={transition(currentStep, 'CONTINUE')} />
+          <Success
+            status={status}
+            onContinue={transition(currentStep, 'CONTINUE')}
+          />
         )}
       </Box>
     </Modal>

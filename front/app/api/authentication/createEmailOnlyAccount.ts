@@ -1,4 +1,4 @@
-import signIn from './signIn';
+import { getAndSetToken } from './signIn';
 import { API_PATH } from 'containers/App/constants';
 import { Locale } from 'typings';
 
@@ -34,7 +34,7 @@ export default async function createEmailOnlyAccount({
   });
 
   if (accountCreatedSuccessfully(response)) {
-    await signIn({ email });
+    await getAndSetToken({ email });
     return 'account_created_successfully';
   }
 
