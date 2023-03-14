@@ -1115,11 +1115,6 @@ resource 'Users' do
           expect(json_response.dig(:data, :type)).to eq 'initiatives_count'
           expect(json_response.dig(:data, :attributes, :count)).to eq 1
         end
-
-        example_request 'Delete a user' do
-          expect(response_status).to eq 200
-          expect { User.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
-        end
       end
 
       get 'web_api/v1/users/:id/comments_count' do

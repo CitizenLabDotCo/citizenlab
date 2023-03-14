@@ -50,16 +50,6 @@ const mockIdea = {
   data: { relationships: { project: { data: { id: 'project-id2' } } } },
 };
 
-const mockIdeaObservable = new Observable((subscriber) => {
-  subscriber.next(mockIdea);
-}).pipe(delay(1));
-
-jest.mock('services/ideas', () => ({
-  ideaBySlugStream: jest.fn(() => ({
-    observable: mockIdeaObservable,
-  })),
-}));
-
 describe('getProjectId', () => {
   beforeEach(() => {
     queryClient.setQueryData(ideasKeys.itemSlug('some-idea'), mockIdea);
