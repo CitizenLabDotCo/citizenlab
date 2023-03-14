@@ -239,7 +239,7 @@ const FolderPermissions = ({
         </List>
       </Box>
       <Box width="100%" py="32px">
-        <SeatInfo seatType="admin" />
+        <SeatInfo seatType="project_manager" />
       </Box>
     </Box>
   );
