@@ -1098,7 +1098,7 @@ resource 'Users' do
           do_request
           expect(status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response[:count]).to eq 1
+          expect(json_response.dig(:data, :attributes, :count)).to eq 1
         end
       end
 
