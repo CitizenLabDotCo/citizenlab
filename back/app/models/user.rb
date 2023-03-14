@@ -30,6 +30,7 @@
 #  confirmation_required               :boolean          default(TRUE), not null
 #  block_start_at                      :datetime
 #  block_reason                        :string
+#  block_end_at                        :datetime
 #
 # Indexes
 #
