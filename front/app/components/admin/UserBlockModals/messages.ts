@@ -57,7 +57,7 @@ export default defineMessages({
   },
   bocknigInfo: {
     id: 'app.containers.Admin.Users.userBlockModal.bocknigInfo',
-    defaultMessage: 'This user has been blocked since {from}, until {to}.',
+    defaultMessage: 'This user has been blocked since {from}. The ban lasts until {to}.',
   },
   blocked: {
     id: 'app.containers.Admin.Users.userBlockModal.blocked',
