@@ -35,7 +35,7 @@ import tracks from '../tracks';
 import styled from 'styled-components';
 
 // typings
-import { ISignUpInMetaData } from '../typings';
+import { ISignUpInMetaData } from 'events/openSignUpInModal';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 

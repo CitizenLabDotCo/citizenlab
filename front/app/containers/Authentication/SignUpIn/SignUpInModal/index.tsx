@@ -24,10 +24,8 @@ import {
   openSignUpInModal,
   closeSignUpInModal,
   ISignUpInMetaData,
+  TSignUpInFlow,
 } from 'events/openSignUpInModal';
-
-// typings
-import { TSignUpInFlow } from './typings';
 
 interface Props {
   metaData?: ISignUpInMetaData;
