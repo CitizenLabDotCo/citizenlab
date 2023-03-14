@@ -56,7 +56,7 @@ class WebApi::V1::UsersController < ::ApplicationController
     authorize :user, :index_xlsx?
 
     @users = policy_scope User
-    @users = @users.active unless params[:include_inactive]
+    @users = @users.active_and_blocked unless params[:include_inactive]
 
     @users = @users.in_group(Group.find(params[:group])) if params[:group]
     @users = @users.where(id: params[:users]) if params[:users]
