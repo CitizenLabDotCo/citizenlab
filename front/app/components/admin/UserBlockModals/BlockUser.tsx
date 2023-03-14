@@ -113,7 +113,7 @@ export default ({ open, setClose, user }: Props) => {
               alignItems="flex-start"
               labelMessage={messages.reasonLabel}
               htmlFor="reason"
-              optional={true}
+              optional
             >
               <IconTooltip
                 marginLeft="5px"
