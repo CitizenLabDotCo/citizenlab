@@ -50,7 +50,6 @@ const IdeaPageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-
   ${media.tablet`
     padding: 20px;
     background: ${colors.background};
@@ -147,8 +146,7 @@ const AssignBudgetControl = memo(
             },
           });
           // if signed up & in
-        }
-       } else if (budgetingDisabledReason === 'not_active') {
+        } else if (budgetingDisabledReason === 'not_active') {
           openSignUpInModal();
         } else if (!isNilOrError(authUser)) {
           if (budgetingDisabledReason === 'not_verified') {
