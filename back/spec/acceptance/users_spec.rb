@@ -1156,6 +1156,7 @@ resource 'Users' do
         json_response = json_parse(response_body)
         expect(json_response[:count]).to eq 2
       end
+    end
 
       get 'web_api/v1/users/:id/comments_count' do
         parameter :post_type, "Count only comments of one post type. Either 'Idea' or 'Initiative'.", required: false
