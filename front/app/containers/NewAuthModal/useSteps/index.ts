@@ -21,7 +21,7 @@ export default function useSteps(
 
   const getRequirements = useCallback(async () => {
     const response = await getAuthenticationRequirements(authenticationContext);
-    return response.data.requirements.requirements;
+    return response.data.attributes.requirements.requirements;
   }, [authenticationContext]);
 
   const updateState = useCallback((newState: Partial<State>) => {
@@ -46,7 +46,7 @@ export default function useSteps(
         setError,
         updateState
       ),
-    [getRequirements, updateState]
+    [getRequirements, setCurrentStep, updateState]
   );
 
   const transition = <S extends Step, T extends keyof StepConfig[S]>(

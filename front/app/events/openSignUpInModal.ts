@@ -1,5 +1,6 @@
 import { AuthenticationContext } from 'api/permissions/types';
 import eventEmitter from 'utils/eventEmitter';
+import getAuthenticationRequirements from 'api/permissions/getAuthenticationRequirements';
 
 export type TSignUpInError = 'general' | 'franceconnect_merging_failed';
 
@@ -24,7 +25,7 @@ export interface ISignUpInMetaData {
 const OLD_MODAL_EVENT = 'openOldSignUpInModal';
 
 // Shared flow
-export function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
+export async function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
   const emittedMetaData: ISignUpInMetaData = {
     flow: metaData?.flow || 'signup',
     pathname: metaData?.pathname || window.location.pathname,
@@ -37,7 +38,17 @@ export function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
   };
 
   if (emittedMetaData.context) {
-    // TODO check if we want to fire new flow
+    const response = await getAuthenticationRequirements(
+      emittedMetaData.context
+    );
+    const passwordNotRequired =
+      response.data.attributes.requirements.requirements.special.password ===
+      'dont_ask';
+
+    if (passwordNotRequired) {
+      // TODO fire new flow
+      return;
+    }
   }
 
   openOldSignUpInModal(emittedMetaData);

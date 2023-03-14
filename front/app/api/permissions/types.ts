@@ -17,7 +17,9 @@ export type AuthenticationContext = InitiativeContext | ProjectContext;
 export interface AuthenticationRequirementsResponse {
   data: {
     type: 'requirements';
-    requirements: AuthenticationRequirements;
+    attributes: {
+      requirements: AuthenticationRequirements;
+    };
   };
 }
 
