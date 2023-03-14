@@ -84,7 +84,7 @@ export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
         width="100vw"
         position="fixed"
         top="0px"
-        zIndex="1004"
+        zIndex="900"
         background="#fff"
         borderBottom="solid 1px #ddd"
       >
