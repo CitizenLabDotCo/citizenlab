@@ -27,16 +27,24 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
-
-  if (!appConfiguration || !seats) return null;
-
   const maximumAdmins =
-    appConfiguration.data.attributes.settings.core.maximum_admins_number;
+    appConfiguration?.data.attributes.settings.core.maximum_admins_number;
   const maximumProjectManagers =
-    appConfiguration.data.attributes.settings.core
+    appConfiguration?.data.attributes.settings.core
       .maximum_project_moderators_number;
   const maximumSeatNumber =
     seatType === 'admin' ? maximumAdmins : maximumProjectManagers;
+
+  // Maximum seat number being null means that there are unlimited seats so we don't show the seat info
+  if (
+    maximumSeatNumber === null ||
+    maximumSeatNumber === undefined ||
+    !seats ||
+    !appConfiguration
+  ) {
+    return null;
+  }
+
   const currentAdminSeats = seats.data.attributes.admins_number;
   const currentProjectManagerSeats =
     seats.data.attributes.project_moderators_number;
