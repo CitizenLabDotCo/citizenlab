@@ -105,7 +105,7 @@ const SharingModalContent = ({
     let emailSharingSubject: MessageDescriptor | null = null;
     let emailSharingBody: MessageDescriptor | null = null;
     let whatsAppMessage: MessageDescriptor | null = null;
-    console.log({ project });
+
     if (!isNilOrError(project)) {
       const inputTerm = getInputTerm(
         project.attributes.process_type,
