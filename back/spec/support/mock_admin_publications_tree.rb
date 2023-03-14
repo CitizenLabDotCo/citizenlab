@@ -31,7 +31,7 @@ class MockAdminPublicationsTree
 
   def create_empty_parents
     records = statuses.map do |status|
-      publication = CitizenLab.ee? ? create(:project_folder) : create(:project, :that_can_have_children)
+      publication = create(:project_folder)
       create(:admin_publication, publication_status: status, publication: publication)
     end
     @empty_parents = AdminPublication.where(id: records.map(&:id))
@@ -39,7 +39,7 @@ class MockAdminPublicationsTree
 
   def create_admin_only_parents
     records = statuses.map do |status|
-      publication = CitizenLab.ee? ? create(:project_folder) : create(:project, :that_can_have_children, visible_to: 'groups')
+      publication = create(:project_folder)
       create(:admin_publication, publication_status: status, publication: publication)
     end
     @admin_only_parents = AdminPublication.where(id: records.map(&:id))
@@ -47,7 +47,7 @@ class MockAdminPublicationsTree
 
   def create_public_parents
     records = statuses.map do |status|
-      publication = CitizenLab.ee? ? create(:project_folder) : create(:project, :that_can_have_children)
+      publication = create(:project_folder)
       create(:admin_publication, publication_status: status, publication: publication)
     end
     @public_parents = AdminPublication.where(id: records.map(&:id))
@@ -83,7 +83,7 @@ class MockAdminPublicationsTree
   end
 
   def create_published_parent_with_draft_children
-    publication = CitizenLab.ee? ? create(:project_folder) : create(:project, :that_can_have_children)
+    publication = create(:project_folder)
     @published_parent_with_draft_children = create(:admin_publication,
       publication_status: 'published',
       publication: publication)

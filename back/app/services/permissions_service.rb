@@ -175,4 +175,4 @@ class PermissionsService
   end
 end
 
-PermissionsService.prepend_if_ee('Verification::Patches::PermissionsService')
+PermissionsService.prepend(Verification::Patches::PermissionsService)

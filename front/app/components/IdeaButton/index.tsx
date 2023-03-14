@@ -155,10 +155,26 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
         authUser,
       });
 
+    const pcType = participationContextType;
+    const pcId = pcType === 'phase' ? phaseId : projectId;
+
+    const context = pcId
+      ? ({
+          action: 'posting_idea',
+          id: pcId,
+          type: pcType,
+        } as const)
+      : null;
+
     const onClick = (event: React.MouseEvent) => {
       event.preventDefault();
 
       trackEventByName(tracks.postYourIdeaButtonClicked);
+
+      // if logged in but not complete user
+      if (authenticationRequirements === 'complete_registration' && context) {
+        openSignUpInModal({ context });
+      }
 
       // if not logged in
       if (
@@ -205,18 +221,9 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
     const verify = (event?: React.MouseEvent) => {
       event?.preventDefault();
 
-      const pcType = participationContextType;
-      const pcId = pcType === 'phase' ? phaseId : projectId;
-
-      if (pcId && pcType) {
+      if (context) {
         trackEventByName(tracks.verificationModalOpened);
-        openVerificationModal({
-          context: {
-            action: 'posting_idea',
-            id: pcId,
-            type: pcType,
-          },
-        });
+        openVerificationModal({ context });
       }
     };
 
@@ -232,22 +239,16 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
       (flow: 'signup' | 'signin') => (event?: React.MouseEvent) => {
         event?.preventDefault();
 
-        const pcType = participationContextType;
-        const pcId = pcType === 'phase' ? phaseId : projectId;
         const shouldVerify =
           authenticationRequirements === 'sign_in_up_and_verify';
 
-        if (isNilOrError(authUser) && !isNilOrError(project) && pcId) {
+        if (isNilOrError(authUser) && !isNilOrError(project) && context) {
           trackEventByName(tracks.signUpInModalOpened);
 
           openSignUpInModal({
             flow,
             verification: shouldVerify,
-            context: {
-              action: 'posting_idea',
-              id: pcId,
-              type: pcType,
-            },
+            context,
             onSuccess: () => redirectToIdeaForm(),
           });
         }

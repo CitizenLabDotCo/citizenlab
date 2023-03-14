@@ -21,6 +21,10 @@ export default defineMessages({
     defaultMessage:
       'Only verified users can take this survey. Please {signUpLink} or {logInLink} first.',
   },
+  surveyDisabledNotActiveUser: {
+    id: 'app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActiveUser',
+    defaultMessage: 'Please {completeRegistrationLink} to take the survey.',
+  },
   surveyDisabledNotPossible: {
     id: 'app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPossible',
     defaultMessage: 'It is currently impossible to take this survey.',
@@ -33,6 +37,10 @@ export default defineMessages({
   verificationLinkText: {
     id: 'app.containers.ProjectsShowPage.process.survey.verificationLinkText',
     defaultMessage: 'Verify your account now.',
+  },
+  completeRegistrationLinkText: {
+    id: 'app.containers.ProjectsShowPage.process.survey.completeRegistrationLinkText',
+    defaultMessage: 'complete registration',
   },
   surveyDisabledNotVerified: {
     id: 'app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified',

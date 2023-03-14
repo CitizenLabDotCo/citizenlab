@@ -56,6 +56,11 @@ class CommentingInitiativesDisabled extends PureComponent<Props> {
       return messages.commentingInitiativeNotPermitted;
     } else if (authenticationRequirements === 'verify') {
       return messages.commentingDisabledUnverified;
+    } else if (
+      authUser &&
+      authenticationRequirements === 'complete_registration'
+    ) {
+      return messages.completeRegistrationToComment;
     } else if (authenticationRequirements === 'sign_in_up') {
       return messages.signInToCommentInitiative;
     } else if (authenticationRequirements === 'sign_in_up_and_verify') {
@@ -119,6 +124,17 @@ class CommentingInitiativesDisabled extends PureComponent<Props> {
                 signInLink: (
                   <button onClick={this.signIn}>
                     <FormattedMessage {...messages.signInLinkText} />
+                  </button>
+                ),
+                completeRegistrationLink: (
+                  <button
+                    onClick={() => {
+                      openSignUpInModal();
+                    }}
+                  >
+                    <FormattedMessage
+                      {...messages.completeRegistrationLinkText}
+                    />
                   </button>
                 ),
                 verifyIdentityLink: (

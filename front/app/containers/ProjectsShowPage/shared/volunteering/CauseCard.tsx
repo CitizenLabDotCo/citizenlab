@@ -15,7 +15,7 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Warning from 'components/UI/Warning';
 
 // utils
-import { isEmptyMultiloc } from 'utils/helperUtils';
+import { isEmptyMultiloc, isNilOrError } from 'utils/helperUtils';
 import { openSignUpInModal } from 'events/openSignUpInModal';
 import { ScreenReaderOnly } from 'utils/a11y';
 
@@ -176,12 +176,19 @@ const CauseCard = memo<Props>(({ cause, className }) => {
   const { windowWidth } = useWindowSize();
 
   const handleOnVolunteerButtonClick = useCallback(() => {
-    if (cause.relationships?.user_volunteer?.data) {
-      deleteVolunteer(cause.id, cause.relationships.user_volunteer.data.id);
+    if (
+      !isNilOrError(authUser) &&
+      !authUser.attributes.registration_completed_at
+    ) {
+      openSignUpInModal();
     } else {
-      addVolunteer(cause.id);
+      if (cause.relationships?.user_volunteer?.data) {
+        deleteVolunteer(cause.id, cause.relationships.user_volunteer.data.id);
+      } else {
+        addVolunteer(cause.id);
+      }
     }
-  }, [cause]);
+  }, [authUser, cause]);
 
   const signIn = useCallback(() => {
     openSignUpInModal({

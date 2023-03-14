@@ -53,6 +53,14 @@ export default function useInitiativesPermissions(action: IInitiativeAction) {
               authenticationRequirements: 'sign_in_up',
             });
             break;
+          case 'not_active':
+            setActionPermission({
+              show: true,
+              enabled: 'maybe',
+              disabledReason: null,
+              authenticationRequirements: 'complete_registration',
+            });
+            break;
           default:
             setActionPermission({
               show: true,
