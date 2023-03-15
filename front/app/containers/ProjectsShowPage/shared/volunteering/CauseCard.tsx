@@ -33,7 +33,7 @@ import {
   defaultCardStyle,
   isRtl,
 } from 'utils/styleUtils';
-import useAddVolunteer from 'api/causes/useAddVoluteer';
+import useAddVolunteer from 'api/causes/useAddVolunteer';
 import useDeleteVolunteer from 'api/causes/useDeleteVolunteer';
 
 const Container = styled.div`
