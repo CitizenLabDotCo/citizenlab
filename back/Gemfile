@@ -105,7 +105,7 @@ gem 'activerecord-postgis-adapter', '~> 7.1.1'
 gem 'carrierwave', git: 'https://github.com/carrierwaveuploader/carrierwave.git',
   ref: 'a3ffc5381e70a4014b61b27b35540aa3b945910d'
 gem 'carrierwave-base64', '~> 2.10'
-gem 'fog-aws', '~> 3.17'
+gem 'fog-aws', '~> 3.18'
 
 gem 'api-pagination', '~> 5.0.0'
 gem 'kaminari', '~> 1.2'

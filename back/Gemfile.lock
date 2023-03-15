@@ -641,7 +641,7 @@ GEM
     faraday-rack (1.0.0)
     faraday-retry (1.0.3)
     ffi (1.15.5)
-    fog-aws (3.17.0)
+    fog-aws (3.18.0)
       fog-core (~> 2.1)
       fog-json (~> 1.1)
       fog-xml (~> 0.1)
@@ -770,7 +770,7 @@ GEM
     method_source (1.0.0)
     mime-types (3.4.1)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2022.0105)
+    mime-types-data (3.2023.0218.1)
     mimemagic (0.4.3)
       nokogiri (~> 1)
       rake
@@ -1194,7 +1194,7 @@ DEPENDENCIES
   faker
   fast_jsonapi!
   flag_inappropriate_content!
-  fog-aws (~> 3.17)
+  fog-aws (~> 3.18)
   frontend!
   geographic_dashboard!
   google_tag_manager!
