@@ -32,6 +32,22 @@ const getInfoText = (
   return messages.confirmAdminQuestion;
 };
 
+const getButtonText = (
+  isUserAdmin: boolean,
+  maximumAdmins: number | null | undefined,
+  currentAdminSeats: number
+): MessageDescriptor => {
+  let buttonText = messages.confirm;
+
+  if (isUserAdmin) {
+    return buttonText;
+  }
+
+  return !isNil(maximumAdmins) && currentAdminSeats >= maximumAdmins
+    ? messages.buyAditionalSeat
+    : buttonText;
+};
+
 interface Props {
   user: IUserData;
   showModal: boolean;
@@ -64,6 +80,11 @@ const ChangeSeatModal = ({
   const modalTitle = isUserAdmin
     ? messages.setAsNormalUser
     : messages.giveAdminRights;
+  const buttonText = getButtonText(
+    isUserAdmin,
+    maximumAdmins,
+    currentAdminSeats
+  );
 
   return (
     <Modal
@@ -108,7 +129,7 @@ const ChangeSeatModal = ({
               closeModal();
             }}
           >
-            {formatMessage(messages.confirm)}
+            {formatMessage(buttonText)}
           </Button>
         </Box>
       </Box>
