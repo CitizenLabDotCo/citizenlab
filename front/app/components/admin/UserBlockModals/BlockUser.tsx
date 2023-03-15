@@ -24,10 +24,11 @@ import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
-import { IUserData, blockUser } from 'services/users';
+import { IUserData } from 'services/users';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
+import useBlockUser from 'api/blocked_users/useBlockUsers';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -48,6 +49,8 @@ const BlockUserModal = ({ open, setClose, user, tenant }: Props) => {
   const [success, setSuccess] = useState(false);
   const [updatedUser, setUpdatedUser] = useState<IUserData | undefined>();
 
+  const { mutate: blockUser } = useBlockUser();
+
   const schema = object({
     current_password: string(),
   });
@@ -62,14 +65,19 @@ const BlockUserModal = ({ open, setClose, user, tenant }: Props) => {
 
   const { formatMessage } = useIntl();
 
-  const onFormSubmit = async ({ reason }: FormValues) => {
-    try {
-      const response = await blockUser(user.id, { reason });
-      setUpdatedUser(response.data);
-      setSuccess(true);
-    } catch (error) {
-      handleHookFormSubmissionError(error, methods.setError);
-    }
+  const onFormSubmit = ({ reason }: FormValues) => {
+    blockUser(
+      { userId: user.id, reason },
+      {
+        onSuccess: (response) => {
+          setUpdatedUser(response.data);
+          setSuccess(true);
+        },
+        onError: (error) => {
+          handleHookFormSubmissionError(error, methods.setError);
+        },
+      }
+    );
     setClose();
   };
 

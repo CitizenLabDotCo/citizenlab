@@ -9,7 +9,8 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
-import { IUserData, unBlockUser } from 'services/users';
+import { IUserData } from 'services/users';
+import useUnblockUser from 'api/blocked_users/useUnblockUsers';
 
 type Props = {
   open: boolean;
@@ -19,10 +20,14 @@ type Props = {
 
 export default ({ open, setClose, user }: Props) => {
   const { formatMessage } = useIntl();
+  const { mutate: unBlockUser } = useUnblockUser();
 
-  const handleOnClick = async () => {
-    await unBlockUser(user.id);
-    setClose();
+  const handleOnClick = () => {
+    unBlockUser(user.id, {
+      onSuccess: () => {
+        setClose();
+      },
+    });
   };
   return (
     <Modal width={400} close={setClose} opened={open}>

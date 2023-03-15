@@ -11,7 +11,7 @@ import GetUserCount, { GetUserCountChildProps } from 'resources/GetUserCount';
 import { IGroupData } from 'services/groups';
 
 // hooks
-import useBlockedUsercount from 'hooks/useBlockedUsersCount';
+import useBlockedUsercount from 'api/blocked_users/useBlockedUsersCount';
 
 // Events
 import eventEmitter from 'utils/eventEmitter';
@@ -169,13 +169,13 @@ export const GroupsListPanel = ({
   usercount,
   groups: { groupsList },
 }: Props) => {
-  const subs: Subscription[] = [];
   const [highlightedGroups, setHighlightedGroups] = useState(
     new Set<IGroupData['id']>()
   );
-  const blockedUsercount = useBlockedUsercount();
+  const { data: blockedUsercount } = useBlockedUsercount();
 
   useEffect(() => {
+    const subs: Subscription[] = [];
     subs.push(
       eventEmitter
         .observeEvent<MembershipAdd>(events.membershipAdd)
@@ -186,7 +186,7 @@ export const GroupsListPanel = ({
     );
 
     return subs.forEach((sub) => sub.unsubscribe());
-  });
+  }, []);
 
   const removeHighlights = () => {
     setHighlightedGroups(new Set([]));
@@ -211,7 +211,9 @@ export const GroupsListPanel = ({
           <FormattedMessage {...messages.blockedUsers} />
         </GroupName>
         {!isNilOrError(blockedUsercount) && (
-          <MembersCount>{blockedUsercount.blocked_users_count}</MembersCount>
+          <MembersCount>
+            {blockedUsercount.data.attributes.blocked_users_count}
+          </MembersCount>
         )}
       </MenuLink>
       <Separator />

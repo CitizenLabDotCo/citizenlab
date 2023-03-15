@@ -81,18 +81,6 @@ interface IChangePassword {
   new_password: string;
 }
 
-export interface IBlockedUsersCount {
-  data: IBlockedUsersCountData;
-}
-
-export interface IBlockedUsersCountData {
-  blocked_users_count: number;
-}
-
-export interface IUserBlockReason {
-  reason: string;
-}
-
 export function usersStream(streamParams: IStreamParams | null = null) {
   return streams.get<IUsers>({ apiEndpoint, ...streamParams });
 }
@@ -154,41 +142,4 @@ export async function completeRegistration(
   });
 
   return authUser;
-}
-
-export function blockedUsersCount(streamParams: IStreamParams | null = null) {
-  return streams.get<IBlockedUsersCount>({
-    apiEndpoint: `${apiEndpoint}/blocked_count`,
-    ...streamParams,
-  });
-}
-
-export async function blockUser(userId: string, reason: IUserBlockReason) {
-  const response = await streams.update<IUser>(
-    `${apiEndpoint}/${userId}/block`,
-    userId,
-    {
-      reason,
-    }
-  );
-
-  await streams.fetchAllWith({
-    apiEndpoint: [`${apiEndpoint}/blocked_count`],
-  });
-
-  return response;
-}
-
-export async function unBlockUser(userId: string) {
-  const response = await streams.update<IUser>(
-    `${apiEndpoint}/${userId}/unblock`,
-    userId,
-    {}
-  );
-
-  await streams.fetchAllWith({
-    apiEndpoint: [`${apiEndpoint}/blocked_count`],
-  });
-
-  return response;
 }
