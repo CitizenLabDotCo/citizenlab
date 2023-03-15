@@ -94,8 +94,8 @@ const ProfileForm = ({
   }>({});
 
   const schema = object({
-    first_name: string().required(formatMessage(messages.firstNamesEmptyError)),
-    last_name: string().required(formatMessage(messages.lastNameEmptyError)),
+    first_name: string(),
+    last_name: string(),
     email: string()
       .email(formatMessage(messages.emailInvalidError))
       .required(formatMessage(messages.emailEmptyError)),
