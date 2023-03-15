@@ -45,6 +45,7 @@ import {
 } from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
 import { isFieldEnabled } from 'utils/projectUtils';
+import usePhase from 'hooks/usePhase';
 
 const Container = styled.div`
   width: 100%;
@@ -178,6 +179,13 @@ const IdeasWithoutFiltersSidebar = ({
   projectId,
 }: Props) => {
   const [selectedView, setSelectedView] = useState<'card' | 'map'>('card');
+  const {
+    list,
+    hasMore,
+    querying,
+    queryParameters: { phase: phaseId },
+  } = ideas;
+  const phase = usePhase(phaseId ? phaseId : null);
 
   useEffect(() => {
     setSelectedView(defaultView || 'card');
@@ -208,13 +216,6 @@ const IdeasWithoutFiltersSidebar = ({
   const selectView = (selectedView: 'card' | 'map') => {
     setSelectedView(selectedView);
   };
-
-  const {
-    list,
-    hasMore,
-    querying,
-    queryParameters: { phase: phaseId },
-  } = ideas;
 
   const locationEnabled = isFieldEnabled(
     'location_description',
@@ -278,6 +279,8 @@ const IdeasWithoutFiltersSidebar = ({
               }`}
             >
               <SelectSort
+                phase={phase}
+                project={project}
                 onChange={handleSortOnChange}
                 alignment={biggerThanLargeTablet ? 'right' : 'left'}
                 defaultSortingMethod={defaultSortingMethod || null}

@@ -35,8 +35,5 @@ module.exports = {
   testEnvironmentOptions: {
     url: 'https://demo.stg.citizenlab.co/en/',
   },
-  globals: {
-    CITIZENLAB_EE: JSON.stringify(process.env.CITIZENLAB_EE),
-  },
   resolver: `${__dirname}/internals/jest/resolver.js`,
 };

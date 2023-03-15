@@ -79,3 +79,7 @@ export function getInputTerm(
 }
 
 export const ideaDefaultSortMethodFallback = 'trending';
+
+export const getDefaultSortMethodFallback = (isIdeation: boolean) => {
+  return isIdeation ? 'trending' : 'random';
+};
