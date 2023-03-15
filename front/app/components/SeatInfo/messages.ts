@@ -45,4 +45,9 @@ export default defineMessages({
     defaultMessage:
       'This shows the number of available seats for collaborators included in the yearly contract.',
   },
+  additionalSeatsToolTip: {
+    id: 'app.components.SeatInfo.additionalSeatsToolTip',
+    defaultMessage:
+      "This shows the number of additional seats you have purchased on top of 'Included seats'.",
+  },
 });
