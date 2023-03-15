@@ -10,7 +10,7 @@ export interface IBlockedUsersCount {
 export interface IBlockedUsersCountData {
   type: 'blocked_users_count';
   attributes: {
-    blocked_users_count: number;
+    count: number;
   };
 }
 

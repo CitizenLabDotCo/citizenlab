@@ -211,9 +211,7 @@ export const GroupsListPanel = ({
           <FormattedMessage {...messages.blockedUsers} />
         </GroupName>
         {!isNilOrError(blockedUsercount) && (
-          <MembersCount>
-            {blockedUsercount.data.attributes.blocked_users_count}
-          </MembersCount>
+          <MembersCount>{blockedUsercount.data.attributes.count}</MembersCount>
         )}
       </MenuLink>
       <Separator />

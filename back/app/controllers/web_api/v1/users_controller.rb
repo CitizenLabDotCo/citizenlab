@@ -194,7 +194,7 @@ class WebApi::V1::UsersController < ::ApplicationController
 
   def blocked_count
     authorize :user, :blocked_count?
-    render json: raw_json({ blocked_users_count: User.all.blocked.count }, type: 'blocked_users_count'), status: :ok
+    render json: raw_json({ count: User.all.blocked.count }, type: 'blocked_users_count'), status: :ok
   end
 
   def initiatives_count
