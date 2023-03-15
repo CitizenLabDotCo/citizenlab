@@ -163,10 +163,6 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-export interface State {
-  highlightedGroups: Set<IGroupData['id']>;
-}
-
 export const GroupsListPanel = ({
   onCreateGroup,
   className,
@@ -174,7 +170,9 @@ export const GroupsListPanel = ({
   groups: { groupsList },
 }: Props) => {
   const subs: Subscription[] = [];
-  const [highlightedGroups, setHighlightedGroups] = useState(new Set());
+  const [highlightedGroups, setHighlightedGroups] = useState(
+    new Set<IGroupData['id']>()
+  );
   const blockedUsercount = useBlockedUsercount();
 
   useEffect(() => {
