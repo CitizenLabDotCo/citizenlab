@@ -150,6 +150,11 @@ export default ({
       />
 
       <SortingPicker
+        options={[
+          { key: 'random', value: 'random' },
+          { key: 'newest', value: 'new' },
+          { key: 'oldest', value: '-new' },
+        ]}
         ideas_order={ideas_order}
         apiErrors={apiErrors}
         handleIdeaDefaultSortMethodChange={handleIdeaDefaultSortMethodChange}
