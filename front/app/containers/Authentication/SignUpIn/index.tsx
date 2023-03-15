@@ -44,7 +44,6 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
   useEffect(() => {
     const subscription = openOldSignUpInModal$.subscribe(
       ({ eventValue: newMetaData }) => {
-        console.log({ newMetaData });
         setMetaData(newMetaData);
       }
     );
