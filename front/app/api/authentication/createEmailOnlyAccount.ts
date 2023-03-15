@@ -3,6 +3,8 @@ import { API_PATH } from 'containers/App/constants';
 import { Locale } from 'typings';
 import streams from 'utils/streams';
 import { authApiEndpoint } from 'services/auth';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import requirementsKeys from 'api/permissions/keys';
 
 const createAccountPath = `${API_PATH}/users`;
 
@@ -36,6 +38,8 @@ export default async function createEmailOnlyAccount({
 
   if (accountCreatedSuccessfully(response)) {
     await getAndSetToken({ email });
+
+    queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
 
     await streams.fetchAllWith({
       apiEndpoint: [authApiEndpoint],
