@@ -28,7 +28,7 @@ module IdClaveUnica
       options[:nonce] = true
       options[:issuer] = issuer
       options[:send_scope_to_token_endpoint] = false
-      options[:client_signing_alg] = :HS256
+      options[:client_signing_alg] = :RS256
       options[:client_options] = {
         identifier: config[:client_id],
         secret: config[:client_secret],
