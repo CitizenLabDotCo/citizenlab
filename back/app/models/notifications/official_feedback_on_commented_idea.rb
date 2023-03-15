@@ -66,7 +66,7 @@ module Notifications
       initiator_id = official_feedback.user_id
 
       if official_feedback.post_type == 'Idea' && initiator_id
-        User.active_and_blocked
+        User.active
           .joins(:comments).merge(Comment.published)
           .where(comments: { post: official_feedback.post })
           .distinct
