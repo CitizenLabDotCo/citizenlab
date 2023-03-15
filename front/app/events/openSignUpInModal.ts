@@ -67,5 +67,5 @@ export const openOldSignUpInModal$ = eventEmitter.observeEvent<
 >(OLD_MODAL_EVENT);
 
 export function closeOldSignUpInModal() {
-  openOldSignUpInModal(undefined);
+  eventEmitter.emit(OLD_MODAL_EVENT, undefined);
 }
