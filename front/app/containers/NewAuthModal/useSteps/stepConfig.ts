@@ -30,9 +30,16 @@ export const getStepConfig = (
     closed: {
       // When we fire this, we are already sure that we need the new flow.
       // i.e. we have already checked the requirements endpoint and stuff
-      TRIGGER_REGISTRATION_FLOW: () => {
+      TRIGGER_REGISTRATION_FLOW: async () => {
         updateState({ email: null });
-        setCurrentStep('email-registration');
+
+        const requirements = await getRequirements();
+
+        if (requirements.built_in.email === 'satisfied') {
+          setCurrentStep('email-confirmation');
+        } else {
+          setCurrentStep('email-registration');
+        }
       },
     },
 
