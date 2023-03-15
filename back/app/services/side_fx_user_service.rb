@@ -46,7 +46,7 @@ class SideFxUserService
       user.updated_at.to_i,
       payload: { block_reason: user.block_reason }
     )
-    UserBlockedMailer.with(user: user).send_user_blocked_email.deliver_later # Set to deliver_later
+    UserBlockedMailer.with(user: user).send_user_blocked_email.deliver_later
   end
 
   def after_unblock(user, current_user)
