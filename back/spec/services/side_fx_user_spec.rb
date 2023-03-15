@@ -90,6 +90,11 @@ describe SideFxUserService do
           .to have_enqueued_job(LogActivityJob)
           .with(user, 'blocked', current_user, user.updated_at.to_i, payload: { block_reason: user.block_reason })
       end
+
+      it 'sends an email to the blocked user' do
+        expect { service.after_block(user, current_user) }
+          .to have_enqueued_mail(UserBlockedMailer, :send_user_blocked_email)
+      end
     end
 
     describe 'after_unblock' do
