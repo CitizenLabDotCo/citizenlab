@@ -227,3 +227,11 @@ sr-Latn:
       copy_paste_the_link_below: "Kopirajte i zalepite donji kod u obrazac za registraciju na platformi."
       the_link_is_valid_for: "Ovaj link važi naredna 24 sata. Ako istekne, možete <a href=\"%{link}\">zatražiti novi kod</a>."
       did_you_receive_this_email_in_error: "Da li ste ovaj email dobili greškom?<a href=\"%{link}\">Obavestite nas</a>."
+  user_blocked_mailer:
+    send_user_blocked_email:
+      subject: 'Your account has been temporarily disabled'
+      title_user_blocked: 'Your account has been temporarily disabled'
+      paragraph_1_without_reason: "Your account on %{organizationName} Participation Platform has been temporarily disabled for a violation of the community guidelines."
+      paragraph_1_with_reason: "Your account on %{organizationName} Participation Platform has been temporarily disabled for the following reason:"
+      for_more_information: "For more information on this, you can consult the %{termsAndConditionsPage}"
+      you_can_sign_in_again_from: "You can sign in again from %{date}"
