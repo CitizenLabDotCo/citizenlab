@@ -7,7 +7,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import useCauses from 'api/causes/useCauses';
 import { ICauseData } from 'api/causes/types';
-import { reorderCause } from 'services/causes';
 
 import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
@@ -17,6 +16,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import T from 'components/T';
 import useDeleteCause from 'api/causes/useDeleteCause';
+import useReorderCause from 'api/causes/useReorderCause';
 
 const Container = styled.div``;
 
@@ -37,6 +37,7 @@ const AllCauses = ({
   projectId,
 }: Props) => {
   const { mutate: deleteCause } = useDeleteCause();
+  const { mutate: reorderCause } = useReorderCause();
   const { formatMessage } = useIntl();
   const participationContextId =
     participationContextType === 'phase' ? phaseId : projectId;
@@ -75,12 +76,15 @@ const AllCauses = ({
 
       if (cause && cause.attributes.ordering !== toIndex) {
         setIsProcessing(true);
-        reorderCause(causeId, toIndex).finally(() => setIsProcessing(false));
+        reorderCause(
+          { id: causeId, ordering: toIndex },
+          { onSuccess: () => setIsProcessing(false) }
+        );
       } else {
         setItemsWhileDragging(null);
       }
     },
-    [items]
+    [items, reorderCause]
   );
 
   const handleOnClickDelete = (causeId: string) => (event: MouseEvent) => {

@@ -1,15 +1,15 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import ideaStatusKeys from './keys';
+import causeKeys from './keys';
 import { ICause, ICauseAdd } from './types';
 
-type IUpdateIdeaStatusObject = {
+type IUpdateCauseObject = {
   id: string;
   requestBody: Partial<ICauseAdd>;
 };
 
-const updateCause = ({ id, requestBody }: IUpdateIdeaStatusObject) =>
+const updateCause = ({ id, requestBody }: IUpdateCauseObject) =>
   fetcher<ICause>({
     path: `/causes/${id}`,
     action: 'patch',
@@ -18,10 +18,10 @@ const updateCause = ({ id, requestBody }: IUpdateIdeaStatusObject) =>
 
 const useUpdateCause = () => {
   const queryClient = useQueryClient();
-  return useMutation<ICause, CLErrors, IUpdateIdeaStatusObject>({
+  return useMutation<ICause, CLErrors, IUpdateCauseObject>({
     mutationFn: updateCause,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ideaStatusKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: causeKeys.lists() });
     },
   });
 };
