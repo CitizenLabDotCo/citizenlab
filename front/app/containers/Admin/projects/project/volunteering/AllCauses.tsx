@@ -1,12 +1,13 @@
-import React, { useCallback, useState, MouseEvent } from 'react';
+import React, { useCallback, useState, MouseEvent, useMemo } from 'react';
 import styled from 'styled-components';
 import { clone } from 'lodash-es';
 import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
 import { isNilOrError } from 'utils/helperUtils';
 
-import useCauses from 'hooks/useCauses';
-import { ICauseData, reorderCause, deleteCause } from 'services/causes';
+import useCauses from 'api/causes/useCauses';
+import { ICauseData } from 'api/causes/types';
+import { reorderCause, deleteCause } from 'services/causes';
 
 import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
@@ -31,20 +32,25 @@ interface Props {
 
 const AllCauses = ({
   participationContextType,
-  participationContextId,
+  participationContextId: phaseId,
   projectId,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const phaseId =
-    participationContextType === 'phase' ? participationContextId : null;
-  const causes = useCauses({ projectId, phaseId });
+  const participationContextId =
+    participationContextType === 'phase' ? phaseId : projectId;
+  const { data: causes } = useCauses({
+    participationContextType,
+    participationContextId,
+  });
   const [itemsWhileDragging, setItemsWhileDragging] = useState<
     ICauseData[] | null
   >(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const items = itemsWhileDragging || (isNilOrError(causes) ? [] : causes.data);
+  const items = useMemo(
+    () => itemsWhileDragging || (isNilOrError(causes) ? [] : causes.data),
+    [itemsWhileDragging, causes]
+  );
 
   const handleDragRow = useCallback(
     (fromIndex, toIndex) => {

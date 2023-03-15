@@ -2,7 +2,7 @@ import React, { memo, useCallback } from 'react';
 
 // services
 import { addVolunteer, deleteVolunteer } from 'services/volunteers';
-import { ICauseData } from 'services/causes';
+import { ICauseData } from 'api/causes/types';
 
 // resource hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -215,7 +215,7 @@ const CauseCard = memo<Props>(({ cause, className }) => {
   return (
     <Container className={className}>
       <Left>
-        {cause.attributes.image.medium ? (
+        {cause.attributes.image?.medium ? (
           <ImageWrapper>
             <StyledImage src={cause.attributes.image.medium} alt="" />
             <VolunteersCount>

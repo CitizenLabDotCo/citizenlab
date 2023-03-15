@@ -3,7 +3,7 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // resource hooks
-import useCauses from 'hooks/useCauses';
+import useCauses from 'api/causes/useCauses';
 
 // resource components
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -39,12 +39,25 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 const Volunteering = memo<Props>(
-  ({ projectId, phaseId, project, phase, type, className }) => {
-    const causes = useCauses({ projectId, phaseId });
+  ({
+    projectId,
+    phaseId,
+    project,
+    phase,
+    type: participationContextType,
+    className,
+  }) => {
+    const participationContextId =
+      participationContextType === 'project' ? projectId : phaseId;
+    const { data: causes } = useCauses({
+      participationContextType,
+      participationContextId,
+    });
 
     if (
       !isNilOrError(causes) &&
-      (!isNilOrError(project) || (type === 'phase' && !isNilOrError(phase)))
+      (!isNilOrError(project) ||
+        (participationContextType === 'phase' && !isNilOrError(phase)))
     ) {
       return (
         <Container className={className} id="volunteering">
