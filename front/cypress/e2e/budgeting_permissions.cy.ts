@@ -21,14 +21,14 @@ describe('Idea budgeting permissions test with non active users', () => {
     });
   });
 
-  it('sends non-active users to the verification flow', () => {
+  it('sends non-active users to the registration flow', () => {
     cy.visit('projects/verified-participatory-budgeting');
     cy.get('#e2e-ideas-container');
     cy.acceptCookies();
     cy.wait(1000);
     cy.get('.e2e-idea-card').first().as('ideaCard');
     cy.get('@ideaCard').find('.e2e-assign-budget-button').click();
-    // Registration fields should show
+    cy.get('#e2e-sign-up-container').should('exist');
   });
 
   after(() => {
