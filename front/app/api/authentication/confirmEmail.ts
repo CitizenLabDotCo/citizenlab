@@ -1,7 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { queryClient } from 'utils/cl-react-query/queryClient';
-import requirementsKeys from 'api/permissions/keys';
+import requirementsKeys from 'api/authentication_requirements/keys';
 
 const confirmationApiEndpoint = `${API_PATH}/user/confirm`;
 

@@ -29,7 +29,7 @@ import ErrorBoundary from 'components/ErrorBoundary';
 import { useSearchParams } from 'react-router-dom';
 
 // typings
-import { AuthenticationContext } from 'api/permissions/types';
+import { AuthenticationContext } from 'api/authentication_requirements/types';
 
 const Container = styled.div`
   display: flex;

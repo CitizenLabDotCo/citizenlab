@@ -2,7 +2,7 @@ import { getStepConfig } from './useSteps/stepConfig';
 import {
   AuthenticationRequirements,
   AuthenticationContext,
-} from 'api/permissions/types';
+} from 'api/authentication_requirements/types';
 
 export type Status = 'pending' | 'error' | 'ok';
 

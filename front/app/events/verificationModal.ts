@@ -1,4 +1,7 @@
-import { AuthenticationContext, ProjectContext } from 'api/permissions/types';
+import {
+  AuthenticationContext,
+  ProjectContext,
+} from 'api/authentication_requirements/types';
 import eventEmitter from 'utils/eventEmitter';
 
 // search for verification_error in back to find these

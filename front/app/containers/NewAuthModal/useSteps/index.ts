@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 
 // api
-import getAuthenticationRequirements from 'api/permissions/getAuthenticationRequirements';
+import getAuthenticationRequirements from 'api/authentication_requirements/getAuthenticationRequirements';
 
 // utils
 import { getStepConfig } from './stepConfig';

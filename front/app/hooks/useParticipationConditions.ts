@@ -7,7 +7,7 @@ import {
   getPCParticipationConditions,
 } from 'services/participationConditions';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { AuthenticationContext } from 'api/permissions/types';
+import { AuthenticationContext } from 'api/authentication_requirements/types';
 
 // doesn't react to prop changes, which is ok here because components are unmounted btwn uses
 

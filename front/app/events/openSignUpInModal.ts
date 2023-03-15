@@ -1,6 +1,6 @@
-import { AuthenticationContext } from 'api/permissions/types';
+import { AuthenticationContext } from 'api/authentication_requirements/types';
 import eventEmitter from 'utils/eventEmitter';
-import getAuthenticationRequirements from 'api/permissions/getAuthenticationRequirements';
+import getAuthenticationRequirements from 'api/authentication_requirements/getAuthenticationRequirements';
 import { triggerAuthenticationFlow } from 'containers/NewAuthModal/events';
 
 export type TSignUpInError = 'general' | 'franceconnect_merging_failed';

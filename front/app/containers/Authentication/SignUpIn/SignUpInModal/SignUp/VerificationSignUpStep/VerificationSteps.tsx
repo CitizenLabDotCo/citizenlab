@@ -20,7 +20,7 @@ import {
   IVerificationError,
   TVerificationStep,
 } from 'events/verificationModal';
-import { AuthenticationContext } from 'api/permissions/types';
+import { AuthenticationContext } from 'api/authentication_requirements/types';
 
 import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
