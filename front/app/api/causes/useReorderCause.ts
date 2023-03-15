@@ -13,7 +13,7 @@ const reorderCause = ({ id, ordering }: IReorderCause) =>
   fetcher<ICause>({
     path: `/causes/${id}`,
     action: 'patch',
-    body: { ordering },
+    body: { cause: { ordering } },
   });
 
 const useReorderCause = () => {

@@ -33,14 +33,13 @@ interface Props {
 
 const AllCauses = ({
   participationContextType,
-  participationContextId: phaseId,
+  participationContextId,
   projectId,
 }: Props) => {
   const { mutate: deleteCause } = useDeleteCause();
   const { mutate: reorderCause } = useReorderCause();
   const { formatMessage } = useIntl();
-  const participationContextId =
-    participationContextType === 'phase' ? phaseId : projectId;
+
   const { data: causes } = useCauses({
     participationContextType,
     participationContextId,
@@ -100,9 +99,10 @@ const AllCauses = ({
     }
   };
 
-  const newCauseLink = phaseId
-    ? `/admin/projects/${projectId}/volunteering/phases/${phaseId}/causes/new`
-    : `/admin/projects/${projectId}/volunteering/causes/new`;
+  const newCauseLink =
+    participationContextType === 'phase'
+      ? `/admin/projects/${projectId}/volunteering/phases/${participationContextId}/causes/new`
+      : `/admin/projects/${projectId}/volunteering/causes/new`;
 
   if (isNilOrError(causes)) return null;
 

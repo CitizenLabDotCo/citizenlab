@@ -13,7 +13,7 @@ const updateCause = ({ id, requestBody }: IUpdateCauseObject) =>
   fetcher<ICause>({
     path: `/causes/${id}`,
     action: 'patch',
-    body: requestBody,
+    body: { cause: requestBody },
   });
 
 const useUpdateCause = () => {

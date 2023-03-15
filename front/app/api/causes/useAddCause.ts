@@ -8,7 +8,7 @@ const addCause = async (requestBody: ICauseAdd) =>
   fetcher<ICause>({
     path: '/causes',
     action: 'post',
-    body: requestBody,
+    body: { cause: requestBody },
   });
 
 const useAddCause = () => {

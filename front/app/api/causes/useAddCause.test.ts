@@ -34,7 +34,7 @@ describe('useAddCause', () => {
           en: 'test',
         },
         participation_context_id: '1',
-        participation_context_type: 'project',
+        participation_context_type: 'Project',
       });
     });
 
@@ -62,7 +62,7 @@ describe('useAddCause', () => {
           en: 'test',
         },
         participation_context_id: '1',
-        participation_context_type: 'project',
+        participation_context_type: 'Project',
       });
     });
     await waitFor(() => expect(result.current.isError).toBe(true));

@@ -27,16 +27,21 @@ const EditCause = () => {
     const { title_multiloc, description_multiloc, image } = formValues;
 
     if (title_multiloc && description_multiloc) {
-      try {
-        await updateCause({
+      await updateCause(
+        {
           id: causeId,
-          requestBody: { description_multiloc, title_multiloc, image },
-        });
-
-        clHistory.push(`/admin/projects/${projectId}/volunteering`);
-      } catch {
-        // Do nothing
-      }
+          requestBody: {
+            description_multiloc,
+            title_multiloc,
+            image,
+          },
+        },
+        {
+          onSuccess: () => {
+            clHistory.push(`/admin/projects/${projectId}/volunteering`);
+          },
+        }
+      );
     }
   };
 

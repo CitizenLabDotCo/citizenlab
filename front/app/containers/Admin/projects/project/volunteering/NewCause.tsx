@@ -18,12 +18,12 @@ const NewCause = () => {
   const { mutateAsync: addCause } = useAddCause();
 
   const participationContextType = phaseId ? 'phase' : 'project';
-  const participationContextId = phaseId || projectId;
-
+  const participationContextId =
+    participationContextType === 'phase' ? phaseId : projectId;
   const handleOnSubmit = async (formValues: SubmitValues) => {
     const { title_multiloc, description_multiloc, image } = formValues;
     if (title_multiloc && description_multiloc && participationContextId) {
-      let PCType;
+      let PCType: 'Project' | 'Phase';
       switch (participationContextType) {
         case 'project':
           PCType = 'Project';
@@ -32,18 +32,20 @@ const NewCause = () => {
           PCType = 'Phase';
           break;
       }
-      try {
-        await addCause({
+      await addCause(
+        {
           description_multiloc,
           title_multiloc,
           participation_context_type: PCType,
           participation_context_id: participationContextId,
           image,
-        });
-        clHistory.push(`/admin/projects/${projectId}/volunteering`);
-      } catch {
-        // Do nothing
-      }
+        },
+        {
+          onSuccess: () => {
+            clHistory.push(`/admin/projects/${projectId}/volunteering`);
+          },
+        }
+      );
     }
   };
 
