@@ -254,37 +254,35 @@ const CommentVote = ({
           verification: commentingDisabledReason === 'not_verified',
           onSuccess: () => handleVoteClick(),
         });
+      } else if (commentingDisabledReason === 'not_active') {
+        openSignUpInModal();
       }
     } else {
-      if (
-        commentVotingPermissionInitiative?.authenticationRequirements ===
-        'sign_in_up'
-      ) {
+      const authenticationRequirements =
+        commentVotingPermissionInitiative?.authenticationRequirements;
+      const context = {
+        action: 'commenting_initiative',
+        type: 'initiative',
+      } as const;
+
+      if (authenticationRequirements === 'sign_in_up') {
         openSignUpInModal({
+          context,
           onSuccess: () => handleVoteClick(),
         });
-      } else if (
-        commentVotingPermissionInitiative?.authenticationRequirements ===
-        'sign_in_up_and_verify'
-      ) {
+      } else if (authenticationRequirements === 'complete_registration') {
         openSignUpInModal({
+          context,
           onSuccess: () => handleVoteClick(),
+        });
+      } else if (authenticationRequirements === 'sign_in_up_and_verify') {
+        openSignUpInModal({
           verification: true,
-          context: {
-            action: 'commenting_initiative',
-            type: 'initiative',
-          },
+          context,
+          onSuccess: () => handleVoteClick(),
         });
-      } else if (
-        commentVotingPermissionInitiative?.authenticationRequirements ===
-        'verify'
-      ) {
-        openVerificationModal({
-          context: {
-            action: 'commenting_initiative',
-            type: 'initiative',
-          },
-        });
+      } else if (authenticationRequirements === 'verify') {
+        openVerificationModal({ context });
       } else if (commentVotingPermissionInitiative?.enabled === true) {
         vote();
       }

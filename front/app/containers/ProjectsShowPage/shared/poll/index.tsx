@@ -177,6 +177,7 @@ export class Poll extends PureComponent<Props> {
                       ),
                       completeRegistrationLink: (
                         <button
+                          id="e2e-complete-registration-link"
                           onClick={() => {
                             openSignUpInModal();
                           }}
