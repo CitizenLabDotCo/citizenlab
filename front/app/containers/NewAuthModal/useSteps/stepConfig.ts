@@ -115,6 +115,7 @@ export const getStepConfig = (
             setCurrentStep('email-confirmation');
           } else {
             setCurrentStep('closed');
+            onSuccess && onSuccess();
           }
 
           setStatus('ok');
