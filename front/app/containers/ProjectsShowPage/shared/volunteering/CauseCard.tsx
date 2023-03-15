@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react';
 
 // services
-import { addVolunteer, deleteVolunteer } from 'services/volunteers';
 import { ICauseData } from 'api/causes/types';
 
 // resource hooks
@@ -34,6 +33,8 @@ import {
   defaultCardStyle,
   isRtl,
 } from 'utils/styleUtils';
+import useAddVolunteer from 'api/causes/useAddVoluteer';
+import useDeleteVolunteer from 'api/causes/useDeleteVolunteer';
 
 const Container = styled.div`
   padding: 20px;
@@ -172,17 +173,22 @@ interface Props {
 }
 
 const CauseCard = ({ cause, className, disabled }: Props) => {
+  const { mutate: addVolunteer } = useAddVolunteer();
+  const { mutate: deleteVolunteer } = useDeleteVolunteer();
   const theme = useTheme();
   const authUser = useAuthUser();
   const { windowWidth } = useWindowSize();
 
   const handleOnVolunteerButtonClick = useCallback(() => {
     if (cause.relationships?.user_volunteer?.data) {
-      deleteVolunteer(cause.id, cause.relationships.user_volunteer.data.id);
+      deleteVolunteer({
+        causeId: cause.id,
+        volunteerId: cause.relationships.user_volunteer.data.id,
+      });
     } else {
       addVolunteer(cause.id);
     }
-  }, [cause]);
+  }, [cause, addVolunteer, deleteVolunteer]);
 
   const signIn = () =>
     openSignUpInModal({

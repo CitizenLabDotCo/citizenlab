@@ -63,3 +63,29 @@ export interface ICauseAdd {
   participation_context_type: 'Project' | 'Phase';
   participation_context_id: string;
 }
+
+export interface IVolunteer {
+  data: {
+    id: string;
+    type: 'volunteer';
+    attributes: {
+      created_at: string;
+      updated_at: string;
+    };
+    relationships: {
+      user: {
+        data: {
+          id: string;
+          type: 'user';
+        };
+
+        cause: {
+          data: {
+            id: string;
+            type: 'cause';
+          };
+        };
+      };
+    };
+  };
+}
