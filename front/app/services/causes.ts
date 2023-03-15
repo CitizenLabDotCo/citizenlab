@@ -50,14 +50,6 @@ export interface ICause {
   data: ICauseData;
 }
 
-export async function updateCause(causeId: string, object) {
-  const stream = streams.update<ICause>(`${apiEndpoint}/${causeId}`, causeId, {
-    cause: object,
-  });
-  await streams.fetchAllWith({ dataId: [causeId] });
-  return stream;
-}
-
 export function reorderCause(causeId: string, ordering: number) {
   return streams.update<ICause>(`${apiEndpoint}/${causeId}/reorder`, causeId, {
     cause: { ordering },

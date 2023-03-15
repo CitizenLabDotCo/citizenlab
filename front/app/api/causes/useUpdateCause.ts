@@ -2,28 +2,28 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import ideaStatusKeys from './keys';
-import { IIdeaStatus, IIdeaStatusUpdate } from './types';
+import { ICause, ICauseAdd } from './types';
 
 type IUpdateIdeaStatusObject = {
   id: string;
-  requestBody: IIdeaStatusUpdate;
+  requestBody: Partial<ICauseAdd>;
 };
 
-const updateIdeaStatus = ({ id, requestBody }: IUpdateIdeaStatusObject) =>
-  fetcher<IIdeaStatus>({
-    path: `/idea_statuses/${id}`,
+const updateCause = ({ id, requestBody }: IUpdateIdeaStatusObject) =>
+  fetcher<ICause>({
+    path: `/causes/${id}`,
     action: 'patch',
     body: requestBody,
   });
 
-const useUpdateIdeaStatus = () => {
+const useUpdateCause = () => {
   const queryClient = useQueryClient();
-  return useMutation<IIdeaStatus, CLErrors, IUpdateIdeaStatusObject>({
-    mutationFn: updateIdeaStatus,
+  return useMutation<ICause, CLErrors, IUpdateIdeaStatusObject>({
+    mutationFn: updateCause,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ideaStatusKeys.lists() });
     },
   });
 };
 
-export default useUpdateIdeaStatus;
+export default useUpdateCause;

@@ -1,38 +1,38 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
-import useUpdateIdeaStatus from './useUpdateIdeaStatus';
-import { ideaStatusesData } from './__mocks__/useIdeaStatuses';
+import useUpdateCause from './useUpdateCause';
+import { causesData } from './__mocks__/useCauses';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath = '*idea_statuses/:id';
+const apiPath = '*causes/:id';
 const server = setupServer(
   rest.patch(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: ideaStatusesData[0] }));
+    return res(ctx.status(200), ctx.json({ data: causesData[0] }));
   })
 );
 
-describe('useUpdateIdeaStatus', () => {
+describe('useUpdateCause', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useUpdateIdeaStatus(), {
+    const { result, waitFor } = renderHook(() => useUpdateCause(), {
       wrapper: createQueryClientWrapper(),
     });
 
     act(() => {
       result.current.mutate({
         id: 'id',
-        requestBody: { title_multiloc: { en: 'name' }, color: '#000000' },
+        requestBody: { title_multiloc: { en: 'name' } },
       });
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data?.data).toEqual(ideaStatusesData[0]);
+    expect(result.current.data?.data).toEqual(causesData[0]);
   });
 
   it('returns error correctly', async () => {
@@ -42,13 +42,13 @@ describe('useUpdateIdeaStatus', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useUpdateIdeaStatus(), {
+    const { result, waitFor } = renderHook(() => useUpdateCause(), {
       wrapper: createQueryClientWrapper(),
     });
     act(() => {
       result.current.mutate({
         id: 'id',
-        requestBody: { title_multiloc: { en: 'name' }, color: '#000000' },
+        requestBody: { title_multiloc: { en: 'name' } },
       });
     });
     await waitFor(() => expect(result.current.isError).toBe(true));

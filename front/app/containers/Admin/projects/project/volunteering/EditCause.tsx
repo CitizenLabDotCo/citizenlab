@@ -1,9 +1,7 @@
 import React from 'react';
 import clHistory from 'utils/cl-router/history';
-import { isNilOrError } from 'utils/helperUtils';
 
 // Services
-import { updateCause } from 'services/causes';
 import useCause from 'api/causes/useCause';
 
 // Components
@@ -15,13 +13,14 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 import { useParams } from 'react-router-dom';
+import useUpdateCause from 'api/causes/useUpdateCause';
 
 const EditCause = () => {
+  const { mutateAsync: updateCause } = useUpdateCause();
   const { projectId, causeId } = useParams() as {
     projectId: string;
     causeId: string;
   };
-
   const { data: cause } = useCause(causeId);
 
   const handleOnSubmit = async (formValues: SubmitValues) => {
@@ -29,10 +28,9 @@ const EditCause = () => {
 
     if (title_multiloc && description_multiloc) {
       try {
-        await updateCause(causeId, {
-          description_multiloc,
-          title_multiloc,
-          image,
+        await updateCause({
+          id: causeId,
+          requestBody: { description_multiloc, title_multiloc, image },
         });
 
         clHistory.push(`/admin/projects/${projectId}/volunteering`);
@@ -42,7 +40,7 @@ const EditCause = () => {
     }
   };
 
-  if (isNilOrError(cause)) {
+  if (!cause) {
     return null;
   }
 
