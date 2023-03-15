@@ -69,7 +69,7 @@ describe('Comment voting permissions for non-active users', () => {
   let customFieldId: string;
 
   before(() => {
-    // create users
+    // create user
     cy.apiCreateCustomField(randomFieldName, true, false).then((response) => {
       customFieldId = response.body.data.id;
       cy.apiSignup(firstName, lastName, email, password, {
@@ -78,10 +78,6 @@ describe('Comment voting permissions for non-active users', () => {
         userId = response.body.data.id;
       });
       cy.setLoginCookie(email, password);
-    });
-    // verify the verified user
-    cy.apiLogin(email, password).then((response) => {
-      cy.apiVerifyBogus(response.body.jwt);
     });
   });
 
