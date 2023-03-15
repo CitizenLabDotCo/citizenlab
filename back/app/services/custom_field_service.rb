@@ -22,7 +22,7 @@ class CustomFieldService
     end
   end
 
-  def fields_to_json_schema(fields, locale = 'en', ignore_required = false)
+  def fields_to_json_schema(fields, locale = 'en')
     {
       type: 'object',
       additionalProperties: false,
@@ -40,13 +40,17 @@ class CustomFieldService
       end
     }.tap do |output|
       required = fields.select(&:enabled?).select(&:required?).map(&:key)
-      output[:required] = required unless required.empty? || ignore_required
+      output[:required] = required unless required.empty?
     end
   end
 
-  # To allow schema validation whilst ignoring 'required' requirements
+  # To allow schema validation whilst ignoring 'required' requirements by setting all required attributes to false
   def fields_to_json_schema_ignore_required(fields)
-    fields_to_json_schema(fields, locale = 'en', true)
+    optional_fields = fields.map do |field|
+      field[:required] = false
+      field
+    end
+    fields_to_json_schema(optional_fields)
   end
 
   # @param [AppConfiguration] configuration

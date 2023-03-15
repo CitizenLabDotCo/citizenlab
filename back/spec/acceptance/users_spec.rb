@@ -936,14 +936,13 @@ resource 'Users' do
             cf = create(:custom_field)
             cf_req = create(:custom_field, required: true)
 
-            do_request( user: { custom_field_values: { cf.key => 'some_value' } })
+            do_request(user: { custom_field_values: { cf.key => 'some_value' } })
             json_response = json_parse(response_body)
 
             assert_status 200
             expect(json_response.dig(:data, :attributes, :custom_field_values, cf.key.to_sym)).to eq 'some_value'
             expect(json_response.dig(:data, :attributes, :custom_field_values, cf_req.key.to_sym)).to be_nil
           end
-
         end
 
         describe do
