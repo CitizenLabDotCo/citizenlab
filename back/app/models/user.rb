@@ -313,7 +313,7 @@ class User < ApplicationRecord
 
   # Anonymous names to use if no first name and last name
   def anon_first_name
-    'User'
+    I18n.t 'user.anon_first_name'
   end
 
   def anon_last_name
