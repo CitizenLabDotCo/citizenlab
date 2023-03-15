@@ -7,7 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import useCauses from 'api/causes/useCauses';
 import { ICauseData } from 'api/causes/types';
-import { reorderCause, deleteCause } from 'services/causes';
+import { reorderCause } from 'services/causes';
 
 import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
@@ -16,6 +16,7 @@ import Button from 'components/UI/Button';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import T from 'components/T';
+import useDeleteCause from 'api/causes/useDeleteCause';
 
 const Container = styled.div``;
 
@@ -35,6 +36,7 @@ const AllCauses = ({
   participationContextId: phaseId,
   projectId,
 }: Props) => {
+  const { mutate: deleteCause } = useDeleteCause();
   const { formatMessage } = useIntl();
   const participationContextId =
     participationContextType === 'phase' ? phaseId : projectId;
@@ -78,8 +80,7 @@ const AllCauses = ({
         setItemsWhileDragging(null);
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [isProcessing, items]
+    [items]
   );
 
   const handleOnClickDelete = (causeId: string) => (event: MouseEvent) => {
@@ -90,9 +91,7 @@ const AllCauses = ({
       if (window.confirm(deleteMessage)) {
         setItemsWhileDragging(null);
         setIsProcessing(true);
-        deleteCause(causeId).finally(() => {
-          setIsProcessing(false);
-        });
+        deleteCause(causeId, { onSuccess: () => setIsProcessing(false) });
       }
     }
   };

@@ -58,10 +58,6 @@ export async function updateCause(causeId: string, object) {
   return stream;
 }
 
-export function deleteCause(causeId: string) {
-  return streams.delete(`${apiEndpoint}/${causeId}`, causeId);
-}
-
 export function reorderCause(causeId: string, ordering: number) {
   return streams.update<ICause>(`${apiEndpoint}/${causeId}/reorder`, causeId, {
     cause: { ordering },

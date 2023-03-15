@@ -1,12 +1,12 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
-import useDeleteIdeaStatus from './useDeleteIdeaStatus';
+import useDeleteCause from './useDeleteCause';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-const apiPath = '*idea_statuses/:id';
+const apiPath = '*causes/:id';
 
 const server = setupServer(
   rest.delete(apiPath, (_req, res, ctx) => {
@@ -14,12 +14,12 @@ const server = setupServer(
   })
 );
 
-describe('useDeleteIdeaStatus', () => {
+describe('useDeleteCause', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useDeleteIdeaStatus(), {
+    const { result, waitFor } = renderHook(() => useDeleteCause(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -37,7 +37,7 @@ describe('useDeleteIdeaStatus', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useDeleteIdeaStatus(), {
+    const { result, waitFor } = renderHook(() => useDeleteCause(), {
       wrapper: createQueryClientWrapper(),
     });
 

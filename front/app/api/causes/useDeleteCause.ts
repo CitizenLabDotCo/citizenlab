@@ -1,24 +1,24 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import fetcher from 'utils/cl-react-query/fetcher';
-import ideaStatusesKeys from './keys';
+import causesKeys from './keys';
 
-const deleteIdeaStatus = (id: string) =>
+const deleteCause = (id: string) =>
   fetcher({
-    path: `/idea_statuses/${id}`,
+    path: `/causes/${id}`,
     action: 'delete',
   });
 
-const useDeleteIdeaStatus = () => {
+const useDeleteCause = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: deleteIdeaStatus,
+    mutationFn: deleteCause,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ideaStatusesKeys.lists(),
+        queryKey: causesKeys.lists(),
       });
     },
   });
 };
 
-export default useDeleteIdeaStatus;
+export default useDeleteCause;
