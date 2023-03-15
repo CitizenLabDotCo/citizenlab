@@ -69,6 +69,3 @@ export const openOldSignUpInModal$ = eventEmitter.observeEvent<
 export function closeOldSignUpInModal() {
   openOldSignUpInModal(undefined);
 }
-
-// New flow
-// TODO
