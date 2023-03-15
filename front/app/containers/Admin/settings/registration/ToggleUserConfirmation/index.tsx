@@ -45,39 +45,32 @@ const ToggleUserConfirmation = ({ isEnabled, onChange }: Props) => {
   };
 
   return (
-    <Box mb="35px">
-      <SubSectionTitle>
-        <FormattedMessage {...messages.accountConfirmation} />
-        <IconTooltip
-          content={
-            <FormattedMessage
-              {...messages.whenTurnedOnUsersWillHaveToConfirm}
-            />
-          }
-        />
-      </SubSectionTitle>
-      <ToggleLabel>
-        <StyledToggle
-          checked={isEnabled}
-          onChange={handleChange}
-          labelTextColor={colors.primary}
-          disabled={includeEmailConfirmedOption}
-        />
-        {isEnabled ? (
-          <FormattedMessage {...messages.enabled} />
-        ) : (
-          <FormattedMessage {...messages.disabled} />
-        )}
-        {includeEmailConfirmedOption && (
+    !includeEmailConfirmedOption && (
+      <Box mb="35px">
+        <SubSectionTitle>
+          <FormattedMessage {...messages.accountConfirmation} />
           <IconTooltip
-            icon="info-outline"
-            content={'Cannot disable this due to tenant settings.'}
-            ml="8px"
-            mb="4px"
+            content={
+              <FormattedMessage
+                {...messages.whenTurnedOnUsersWillHaveToConfirm}
+              />
+            }
           />
-        )}
-      </ToggleLabel>
-    </Box>
+        </SubSectionTitle>
+        <ToggleLabel>
+          <StyledToggle
+            checked={isEnabled}
+            onChange={handleChange}
+            labelTextColor={colors.primary}
+          />
+          {isEnabled ? (
+            <FormattedMessage {...messages.enabled} />
+          ) : (
+            <FormattedMessage {...messages.disabled} />
+          )}
+        </ToggleLabel>
+      </Box>
+    )
   );
 };
 
