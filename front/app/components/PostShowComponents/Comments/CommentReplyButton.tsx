@@ -167,7 +167,8 @@ const CommentReplyButton = memo<Props>(
               },
             });
           } else if (
-            commentingPermissionInitiative?.action === 'complete_registration'
+            commentingPermissionInitiative?.authenticationRequirements ===
+            'complete_registration'
           ) {
             openSignUpInModal();
           } else if (commentingPermissionInitiative?.enabled === true) {
