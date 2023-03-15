@@ -43,6 +43,8 @@ export default function useSteps() {
     setState((state) => ({ ...state, ...newState }));
   }, []);
 
+  const onSuccess = authenticationDataRef.current?.onSuccess;
+
   const stepConfig = useMemo(
     () =>
       getStepConfig(
@@ -51,9 +53,9 @@ export default function useSteps() {
         setStatus,
         setError,
         updateState,
-        authenticationDataRef.current?.onSuccess
+        onSuccess
       ),
-    [getRequirements, updateState]
+    [getRequirements, updateState, onSuccess]
   );
 
   const transition = useCallback(

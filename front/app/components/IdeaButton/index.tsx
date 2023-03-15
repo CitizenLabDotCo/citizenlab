@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
@@ -120,6 +120,11 @@ interface InputProps extends Omit<ButtonProps, 'onClick'> {
 
 interface Props extends InputProps, DataProps {}
 
+const redirectToIdeaForm = (location: Partial<Location>) => () => {
+  trackEventByName(tracks.redirectedToIdeaFrom);
+  clHistory.push(location);
+};
+
 const IdeaButton = memo<Props & WrappedComponentProps>(
   ({
     id,
@@ -166,6 +171,29 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
         } as const)
       : null;
 
+    const getRedirectLocation = useCallback(() => {
+      if (isNilOrError(project)) return null;
+
+      const isUserModerator =
+        !isNilOrError(authUser) &&
+        canModerateProject(projectId, { data: authUser });
+
+      const parameters =
+        phaseId && isUserModerator ? `&phase_id=${phaseId}` : '';
+
+      const redirectLocation = {
+        pathname: `/projects/${project.attributes.slug}/ideas/new`,
+        search: latLng
+          ? stringify(
+              { lat: latLng.lat, lng: latLng.lng },
+              { addQueryPrefix: true }
+            ).concat(parameters)
+          : undefined,
+      };
+
+      return redirectLocation;
+    }, [authUser, latLng, phaseId, project, projectId]);
+
     const onClick = (event: React.MouseEvent) => {
       event.preventDefault();
 
@@ -191,30 +219,11 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
 
       // if logegd in and posting allowed
       if (enabled === true) {
-        redirectToIdeaForm();
-      }
-    };
+        const redirectLocation = getRedirectLocation();
 
-    const redirectToIdeaForm = () => {
-      if (!isNilOrError(project)) {
-        trackEventByName(tracks.redirectedToIdeaFrom);
-
-        const isUserModerator =
-          !isNilOrError(authUser) &&
-          canModerateProject(projectId, { data: authUser });
-
-        const parameters =
-          phaseId && isUserModerator ? `&phase_id=${phaseId}` : '';
-
-        clHistory.push({
-          pathname: `/projects/${project.attributes.slug}/ideas/new`,
-          search: latLng
-            ? stringify(
-                { lat: latLng.lat, lng: latLng.lng },
-                { addQueryPrefix: true }
-              ).concat(parameters)
-            : undefined,
-        });
+        if (redirectLocation) {
+          redirectToIdeaForm(redirectLocation);
+        }
       }
     };
 
@@ -242,14 +251,16 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
         const shouldVerify =
           authenticationRequirements === 'sign_in_up_and_verify';
 
-        if (isNilOrError(authUser) && !isNilOrError(project) && context) {
+        const redirectLocation = getRedirectLocation();
+
+        if (isNilOrError(authUser) && context && redirectLocation) {
           trackEventByName(tracks.signUpInModalOpened);
 
           openSignUpInModal({
             flow,
             verification: shouldVerify,
             context,
-            onSuccess: () => redirectToIdeaForm(),
+            onSuccess: redirectToIdeaForm(redirectLocation),
           });
         }
       };
