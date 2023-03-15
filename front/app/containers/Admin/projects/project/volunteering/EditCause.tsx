@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // Services
 import { updateCause } from 'services/causes';
-import useCause from 'hooks/useCause';
+import useCause from 'api/causes/useCause';
 
 // Components
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
@@ -22,7 +22,7 @@ const EditCause = () => {
     causeId: string;
   };
 
-  const cause = useCause({ causeId });
+  const { data: cause } = useCause(causeId);
 
   const handleOnSubmit = async (formValues: SubmitValues) => {
     const { title_multiloc, description_multiloc, image } = formValues;
@@ -57,10 +57,10 @@ const EditCause = () => {
       <CauseForm
         onSubmit={handleOnSubmit}
         defaultValues={{
-          title_multiloc: cause.attributes.title_multiloc,
-          description_multiloc: cause.attributes.description_multiloc,
+          title_multiloc: cause.data.attributes.title_multiloc,
+          description_multiloc: cause.data.attributes.description_multiloc,
         }}
-        imageUrl={cause.attributes.image?.medium}
+        imageUrl={cause.data.attributes.image?.medium}
       />
     </div>
   );

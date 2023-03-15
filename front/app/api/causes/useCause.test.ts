@@ -1,27 +1,27 @@
 import { renderHook } from '@testing-library/react-hooks';
 
-import useIdeaStatus from './useIdeaStatus';
-import { ideaStatusesData } from './__mocks__/useIdeaStatuses';
+import useCause from './useCause';
+import { causesData } from './__mocks__/useCauses';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath = '*idea_statuses/:id';
+const apiPath = '*causes/:id';
 
 const server = setupServer(
   rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: ideaStatusesData[0] }));
+    return res(ctx.status(200), ctx.json({ data: causesData[0] }));
   })
 );
 
-describe('useIdeaStatus', () => {
+describe('useCause', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useIdeaStatus('id'), {
+    const { result, waitFor } = renderHook(() => useCause('id'), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -30,7 +30,7 @@ describe('useIdeaStatus', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.data).toEqual(ideaStatusesData[0]);
+    expect(result.current.data?.data).toEqual(causesData[0]);
   });
 
   it('returns error correctly', async () => {
@@ -40,7 +40,7 @@ describe('useIdeaStatus', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useIdeaStatus('id'), {
+    const { result, waitFor } = renderHook(() => useCause('id'), {
       wrapper: createQueryClientWrapper(),
     });
 

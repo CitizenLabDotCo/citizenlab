@@ -1,5 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
+import streams from 'utils/streams';
 import { Multiloc } from 'typings';
 
 const apiEndpoint = `${API_PATH}/causes`;
@@ -48,27 +48,6 @@ export interface ICauses {
 
 export interface ICause {
   data: ICauseData;
-}
-
-export function causeByIdStream(causeId: string) {
-  return streams.get<ICause>({ apiEndpoint: `${apiEndpoint}/${causeId}` });
-}
-
-export function causesStream(
-  participationContextType: 'project' | 'phase',
-  participationContextId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<ICauses>({
-    apiEndpoint: `${API_PATH}/${participationContextType}s/${participationContextId}/causes`,
-    ...streamParams,
-  });
-}
-
-export async function addCause(object) {
-  const stream = await streams.add<ICause>(apiEndpoint, { cause: object });
-  await streams.fetchAllWith({ regexApiEndpoint: [/^.*causes$/] });
-  return stream;
 }
 
 export async function updateCause(causeId: string, object) {
