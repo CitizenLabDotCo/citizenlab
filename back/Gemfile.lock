@@ -1036,7 +1036,7 @@ GEM
       nokogiri (>= 1.10.8)
       rubyzip (>= 1.3.0)
     rubyzip (1.3.0)
-    saharspec (0.0.9)
+    saharspec (0.0.10)
       ruby2_keywords
     savon (2.12.1)
       akami (~> 1.2)
