@@ -4,10 +4,6 @@ import streams from 'utils/streams';
 
 export const authApiEndpoint = `${API_PATH}/users/me`;
 
-export interface IUserToken {
-  jwt: string;
-}
-
 export function authUserStream() {
   return streams.get<IUser | null>({ apiEndpoint: authApiEndpoint });
 }
