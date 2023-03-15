@@ -940,7 +940,7 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     rbtree (0.4.5)
-    redcarpet (3.5.1)
+    redcarpet (3.6.0)
     regexp_parser (2.5.0)
     representable (3.1.1)
       declarative (< 0.1.0)
