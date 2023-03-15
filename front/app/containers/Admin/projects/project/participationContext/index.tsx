@@ -17,7 +17,7 @@ import {
   ParticipationMethod,
   TSurveyService,
   IdeaDefaultSortMethod,
-  ideaDefaultSortMethodFallback,
+  getDefaultSortMethodFallback,
   InputTerm,
   INPUT_TERMS,
 } from 'services/participationContexts';
@@ -129,7 +129,7 @@ class ParticipationContext extends PureComponent<
       minBudgetError: null,
       maxBudgetError: null,
       poll_anonymous: false,
-      ideas_order: ideaDefaultSortMethodFallback,
+      ideas_order: 'trending',
       input_term: 'idea',
     };
     this.subscriptions = [];
@@ -231,7 +231,9 @@ class ParticipationContext extends PureComponent<
       survey_service: survey ? 'typeform' : null,
       min_budget: budgeting ? 0 : null,
       max_budget: budgeting ? 1000 : null,
-      ideas_order: ideationOrBudgeting ? ideaDefaultSortMethodFallback : null,
+      ideas_order: ideationOrBudgeting
+        ? getDefaultSortMethodFallback(ideation)
+        : null,
     });
   };
 
