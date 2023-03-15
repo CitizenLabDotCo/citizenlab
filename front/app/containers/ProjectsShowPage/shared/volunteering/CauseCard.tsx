@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { useCallback } from 'react';
 
 // services
 import { addVolunteer, deleteVolunteer } from 'services/volunteers';
@@ -168,9 +168,10 @@ const ActionWrapper = styled.div`
 interface Props {
   cause: ICauseData;
   className?: string;
+  disabled?: boolean;
 }
 
-const CauseCard = memo<Props>(({ cause, className }) => {
+const CauseCard = ({ cause, className, disabled }: Props) => {
   const theme = useTheme();
   const authUser = useAuthUser();
   const { windowWidth } = useWindowSize();
@@ -183,21 +184,17 @@ const CauseCard = memo<Props>(({ cause, className }) => {
     }
   }, [cause]);
 
-  const signIn = useCallback(() => {
+  const signIn = () =>
     openSignUpInModal({
       flow: 'signin',
       action: () => handleOnVolunteerButtonClick(),
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
-  const signUp = useCallback(() => {
+  const signUp = () =>
     openSignUpInModal({
       flow: 'signup',
       action: () => handleOnVolunteerButtonClick(),
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const isVolunteer = !!cause.relationships?.user_volunteer?.data;
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
@@ -276,7 +273,7 @@ const CauseCard = memo<Props>(({ cause, className }) => {
             <Button
               onClick={handleOnVolunteerButtonClick}
               icon={!isVolunteer ? 'volunteer' : 'volunteer-off'}
-              disabled={!authUser}
+              disabled={!authUser || disabled}
               buttonStyle={!isVolunteer ? 'primary' : 'secondary'}
               fullWidth={smallerThanSmallTablet}
             >
@@ -291,6 +288,6 @@ const CauseCard = memo<Props>(({ cause, className }) => {
       </Right>
     </Container>
   );
-});
+};
 
 export default CauseCard;
