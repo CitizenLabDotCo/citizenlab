@@ -28,7 +28,7 @@ import { IUserData } from 'services/users';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
-import useBlockUser from 'api/blocked_users/useBlockUsers';
+import useBlockUser from 'api/blocked_users/useBlockUser';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

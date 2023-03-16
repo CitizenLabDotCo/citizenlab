@@ -10,7 +10,7 @@ import messages from './messages';
 
 // services
 import { IUserData } from 'services/users';
-import useUnblockUser from 'api/blocked_users/useUnblockUsers';
+import useUnblockUser from 'api/blocked_users/useUnblockUser';
 
 type Props = {
   open: boolean;

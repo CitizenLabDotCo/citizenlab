@@ -7,12 +7,13 @@ import { IUser } from 'services/users';
 import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
 
-const blockUser = async ({ userId, reason }: IBlockUser) =>
-  fetcher<IUser>({
+const blockUser = async ({ userId, reason }: IBlockUser) => {
+  return fetcher<IUser>({
     path: `/users/${userId}/block`,
     action: 'patch',
     body: { reason },
   });
+};
 
 const useBlockUser = () => {
   const queryClient = useQueryClient();
