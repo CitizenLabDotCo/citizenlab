@@ -211,7 +211,11 @@ export const GroupsListPanel = ({
         {!isNilOrError(usercount) && <MembersCount>{usercount}</MembersCount>}
       </MenuLink>
       {isUserBlockingEnabled && (
-        <MenuLink to="/admin/users/blocked" onlyActiveOnIndex>
+        <MenuLink
+          to="/admin/users/blocked"
+          data-testid="blocked-users-link"
+          onlyActiveOnIndex
+        >
           <GroupName>
             <FormattedMessage {...messages.blockedUsers} />
           </GroupName>
