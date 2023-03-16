@@ -5,7 +5,7 @@ nl:
     proposed: voorgesteld
     proposed_description: Dit idee is voorgesteld
     viewed: gezien
-    viewed_description: Dit idee werd gezien door een beheerder
+    viewed_description: Dit idee is gezien door iemand van de gemeente
     under_consideration: in overweging
     under_consideration_description: Dit idee is in overweging genomen
     accepted: aangenomen
@@ -222,8 +222,12 @@ nl:
       subject: "Bevestig je e-mailadres voor het participatieplatform van %{organizationName}"
       header: "Je bevestigingscode"
       header_message: "Hallo %{firstName}!"
+      confirm_email_address: "Bevestig je e-mailadres"
       thanks_for_signing_up: "Bedankt voor je registratie op het participatieplatform van %{organizationName}."
-      please_confirm_your_email_address: "Verifieer je email om je registratie te voltooien."
+      best_regards: "Vriendelijke groeten,"
+      ignore_email: "Als u geen code heeft aangevraagd, kunt u deze e-mail gerust negeren."
+      expire_code: "Deze code zal vervallen in "
+      24_hours: "24 uur."
       copy_paste_the_link_below: "Kopieer en plak de onderstaande code in je registratieformulier op het platform."
       the_link_is_valid_for: "Deze link is 24 uur geldig. Als de link is verlopen, kan je <a href=\"%{link}\">een nieuwe code aanvragen</a>."
       did_you_receive_this_email_in_error: "Heb je deze e-mail per vergissing ontvangen? <a href=\"%{link}\">Laat het ons weten</a>."
