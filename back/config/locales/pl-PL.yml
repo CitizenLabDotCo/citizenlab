@@ -135,10 +135,10 @@ pl:
       section1:
         description:
       section2:
-        title: Images and attachments
+        title: Obrazy i załączniki
         description:
       section3:
-        title: Details
+        title: Szczegóły
         description:
   custom_forms:
     categories:
@@ -195,7 +195,7 @@ pl:
       author_fullname: 'Nazwa autora'
       author_email: 'E-mail autora'
       author_id: 'ID autora'
-      budget: 'Budget'
+      budget: 'Budżet'
       created_at: 'Zgłoszone'
       published_at: 'Opublikowane'
       comments_count: 'Komentarze'
@@ -227,3 +227,11 @@ pl:
       copy_paste_the_link_below: "Skopiuj i wklej poniższy kod do swojego formularza rejestracyjnego."
       the_link_is_valid_for: "Ten link jest ważny przez 24 godziny. Jeśli link wygasł, możesz <a href=\"%{link}\">poprosić o nowy kod</a>."
       did_you_receive_this_email_in_error: "Otrzymałaś(eś) tego maila przez pomyłkę? <a href=\"%{link}\">Daj nam znać</a>."
+  user_blocked_mailer:
+    send_user_blocked_email:
+      subject: 'Twoje konto zostało tymczasowo wyłączone'
+      title_user_blocked: 'Twoje konto zostało tymczasowo wyłączone'
+      paragraph_1_without_reason: "Twoje konto na platformie %{organizationName} Participation Platform zostało tymczasowo zablokowane z powodu naruszenia wytycznych dotyczących społeczności."
+      paragraph_1_with_reason: "Twoje konto na Platformie Uczestnictwa %{organizationName} zostało tymczasowo wyłączone z następującego powodu:"
+      for_more_information: "Więcej informacji na ten temat można znaleźć na stronie %{termsAndConditionsPage}."
+      you_can_sign_in_again_from: "Możesz zalogować się ponownie z %{date}."
