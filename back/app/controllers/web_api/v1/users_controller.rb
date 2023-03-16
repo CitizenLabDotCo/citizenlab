@@ -148,13 +148,6 @@ class WebApi::V1::UsersController < ::ApplicationController
     end
   end
 
-  def email_changed?
-    return false unless @user.email_changed?
-
-    @user.reset_confirmation_and_counts
-    true
-  end
-
   def complete_registration
     # NOTE: Authorize fails if registration is already flagged as complete
     @user = current_user
