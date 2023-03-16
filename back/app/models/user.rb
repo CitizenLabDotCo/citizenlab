@@ -235,15 +235,12 @@ class User < ApplicationRecord
   scope :not_project_folder_moderator, lambda { |*project_folder_ids|
     where.not(id: project_folder_moderator(*project_folder_ids))
   }
+
   scope :not_invited, -> { where.not(invite_status: 'pending').or(where(invite_status: nil)) }
-  scope :active, lambda {
-    where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'").not_blocked
-  }
-  scope :active_and_blocked, lambda {
-    where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'")
-  }
+  scope :registered, -> { where.not(registration_completed_at: nil) }
+  scope :blocked, -> { where('? < block_end_at', Time.zone.now) }
   scope :not_blocked, -> { where(block_end_at: nil).or(where('? > block_end_at', Time.zone.now)) }
-  scope :blocked, -> { where.not(block_end_at: nil).and(where('? < block_end_at', Time.zone.now)) }
+  scope :active, -> { where.registered.not_blocked }
 
   scope :order_role, lambda { |direction = :asc|
     joins('LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id')
@@ -377,16 +374,16 @@ class User < ApplicationRecord
     !memberships.select { |m| m.group_id == group_id }.empty?
   end
 
-  def active?
-    registration_completed_at.present? && !invite_pending? && !blocked?
-  end
-
   def blocked?
     block_end_at.present? && block_end_at > Time.zone.now
   end
 
-  def active_or_blocked?
-    active? || blocked?
+  def registered?
+    registration_completed_at.present?
+  end
+
+  def active?
+    registered? && !blocked?
   end
 
   def groups
