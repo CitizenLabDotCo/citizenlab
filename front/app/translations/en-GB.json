@@ -694,7 +694,7 @@
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "Verification is disabled for your platform, remove the verification rule or contact support.",
   "app.containers.App.appMetaDescription": "Welcome to the online participation platform of {orgName}. \nExplore local projects and engage in the discussion!",
   "app.containers.App.loading": "Loading...",
-  "app.containers.App.metaTitle": "Public participation platform of {orgName} | CitizenLab",
+  "app.containers.App.metaTitle": "Public participation platform of {orgName} | CitizenLab",
   "app.containers.CampaignsConsentForm.adminCategory": "Admin",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "Emails in this category",
   "app.containers.CampaignsConsentForm.buttonSuccessLabel": "Success",
