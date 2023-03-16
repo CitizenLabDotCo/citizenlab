@@ -1130,7 +1130,7 @@ resource 'Users' do
           do_request
           expect(status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response[:count]).to eq 2
+          expect(json_response.dig(:data, :attributes, :count)).to eq 2
         end
 
         example 'Get the number of comments on ideas posted by one user' do
@@ -1142,7 +1142,7 @@ resource 'Users' do
           do_request post_type: 'Idea'
           expect(status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response[:count]).to eq 2
+          expect(json_response.dig(:data, :attributes, :count)).to eq 2
         end
 
         example 'Get the number of comments on initiatives posted by one user' do
@@ -1154,7 +1154,7 @@ resource 'Users' do
           do_request post_type: 'Initiative'
           expect(status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response[:count]).to eq 2
+          expect(json_response.dig(:data, :attributes, :count)).to eq 2
         end
       end
     end
