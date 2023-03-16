@@ -10,6 +10,7 @@ export type ErrorCode =
   | 'account_creation_failed'
   | 'wrong_confirmation_code'
   | 'wrong_password'
+  | 'requirements_fetching_failed'
   | 'unknown';
 
 export interface State {

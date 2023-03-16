@@ -35,9 +35,17 @@ export default function useSteps() {
       throw new Error('Authentication context not available.');
     }
 
-    const response = await getAuthenticationRequirements(authenticationContext);
+    try {
+      const response = await getAuthenticationRequirements(
+        authenticationContext
+      );
+      return response.data.attributes.requirements.requirements;
+    } catch (e) {
+      setStatus('error');
+      setError('requirements_fetching_failed');
 
-    return response.data.attributes.requirements.requirements;
+      throw e;
+    }
   }, []);
 
   const updateState = useCallback((newState: Partial<State>) => {
