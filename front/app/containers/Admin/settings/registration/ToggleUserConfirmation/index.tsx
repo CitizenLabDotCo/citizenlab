@@ -45,33 +45,35 @@ const ToggleUserConfirmation = ({ isEnabled, onChange }: Props) => {
     onChange(!isEnabled);
   };
 
+  if (!showEmailConfirmationToggle) {
+    return null;
+  }
+
   return (
-    showEmailConfirmationToggle && (
-      <Box mb="35px">
-        <SubSectionTitle>
-          <FormattedMessage {...messages.accountConfirmation} />
-          <IconTooltip
-            content={
-              <FormattedMessage
-                {...messages.whenTurnedOnUsersWillHaveToConfirm}
-              />
-            }
-          />
-        </SubSectionTitle>
-        <ToggleLabel>
-          <StyledToggle
-            checked={isEnabled}
-            onChange={handleChange}
-            labelTextColor={colors.primary}
-          />
-          {isEnabled ? (
-            <FormattedMessage {...messages.enabled} />
-          ) : (
-            <FormattedMessage {...messages.disabled} />
-          )}
-        </ToggleLabel>
-      </Box>
-    )
+    <Box mb="35px">
+      <SubSectionTitle>
+        <FormattedMessage {...messages.accountConfirmation} />
+        <IconTooltip
+          content={
+            <FormattedMessage
+              {...messages.whenTurnedOnUsersWillHaveToConfirm}
+            />
+          }
+        />
+      </SubSectionTitle>
+      <ToggleLabel>
+        <StyledToggle
+          checked={isEnabled}
+          onChange={handleChange}
+          labelTextColor={colors.primary}
+        />
+        {isEnabled ? (
+          <FormattedMessage {...messages.enabled} />
+        ) : (
+          <FormattedMessage {...messages.disabled} />
+        )}
+      </ToggleLabel>
+    </Box>
   );
 };
 
