@@ -26,6 +26,7 @@ interface InputProps {
   groupId?: string;
   groupType?: MembershipType;
   deleteUsersFromGroup?: (userIds: string[]) => void;
+  // These are used in the inputProps for GetUsers
   canModerate?: boolean;
   notCitizenlabMember?: boolean;
 }
