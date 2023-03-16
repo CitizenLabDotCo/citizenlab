@@ -240,7 +240,7 @@ class User < ApplicationRecord
   scope :registered, -> { where.not(registration_completed_at: nil) }
   scope :blocked, -> { where('? < block_end_at', Time.zone.now) }
   scope :not_blocked, -> { where(block_end_at: nil).or(where('? > block_end_at', Time.zone.now)) }
-  scope :active, -> { where.registered.not_blocked }
+  scope :active, -> { registered.not_blocked }
 
   scope :order_role, lambda { |direction = :asc|
     joins('LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id')
