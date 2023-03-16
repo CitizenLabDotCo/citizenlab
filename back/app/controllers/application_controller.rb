@@ -120,6 +120,6 @@ class ApplicationController < ActionController::API
   end
 
   def error_if_blocked_user
-    render json: { errors: 'User blocked' }, status: :unauthorized if current_user&.blocked?
+    render json: { errors: 'User is blocked' }, status: :unauthorized if current_user&.blocked?
   end
 end
