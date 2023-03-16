@@ -36,16 +36,17 @@ type Props = {
 };
 
 const ToggleUserConfirmation = ({ isEnabled, onChange }: Props) => {
-  const includeEmailConfirmedOption = useFeatureFlag({
+  const emailConfirmPermissionEnabled = useFeatureFlag({
     name: 'permission_option_email_confirmation',
   });
+  const showEmailConfirmationToggle = !emailConfirmPermissionEnabled;
 
   const handleChange = () => {
     onChange(!isEnabled);
   };
 
   return (
-    !includeEmailConfirmedOption && (
+    showEmailConfirmationToggle && (
       <Box mb="35px">
         <SubSectionTitle>
           <FormattedMessage {...messages.accountConfirmation} />

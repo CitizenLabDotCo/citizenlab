@@ -52,7 +52,6 @@ const ActionForm = ({
   const emailConfirmPermissionEnabled = useFeatureFlag({
     name: 'permission_option_email_confirmation',
   });
-  const hideEmailConfirmationToggle = emailConfirmPermissionEnabled;
 
   const groupsOptions = () => {
     if (isNilOrError(groupsList)) {
@@ -100,7 +99,7 @@ const ActionForm = ({
             id={`participation-permission-everyone-${permissionId}`}
           />
         )}
-        {hideEmailConfirmationToggle && (
+        {emailConfirmPermissionEnabled && (
           <Radio
             name={`permittedBy-${permissionId}`}
             value="everyone_confirmed_email"
