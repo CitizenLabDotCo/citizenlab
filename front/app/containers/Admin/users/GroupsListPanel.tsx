@@ -12,6 +12,7 @@ import { IGroupData } from 'services/groups';
 
 // hooks
 import useBlockedUsercount from 'api/blocked_users/useBlockedUsersCount';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // Events
 import eventEmitter from 'utils/eventEmitter';
@@ -173,6 +174,9 @@ export const GroupsListPanel = ({
     new Set<IGroupData['id']>()
   );
   const { data: blockedUsercount } = useBlockedUsercount();
+  const isUserBlockingEnabled = useFeatureFlag({
+    name: 'user_blocking',
+  });
 
   useEffect(() => {
     const subs: Subscription[] = [];
@@ -206,14 +210,18 @@ export const GroupsListPanel = ({
         </GroupName>
         {!isNilOrError(usercount) && <MembersCount>{usercount}</MembersCount>}
       </MenuLink>
-      <MenuLink to="/admin/users/blocked" onlyActiveOnIndex>
-        <GroupName>
-          <FormattedMessage {...messages.blockedUsers} />
-        </GroupName>
-        {!isNilOrError(blockedUsercount) && (
-          <MembersCount>{blockedUsercount.data.attributes.count}</MembersCount>
-        )}
-      </MenuLink>
+      {isUserBlockingEnabled && (
+        <MenuLink to="/admin/users/blocked" onlyActiveOnIndex>
+          <GroupName>
+            <FormattedMessage {...messages.blockedUsers} />
+          </GroupName>
+          {!isNilOrError(blockedUsercount) && (
+            <MembersCount>
+              {blockedUsercount.data.attributes.count}
+            </MembersCount>
+          )}
+        </MenuLink>
+      )}
       <Separator />
       <MenuTitle>
         <FormattedMessage tagName="h2" {...messages.groupsTitle} />
