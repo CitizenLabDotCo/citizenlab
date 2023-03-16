@@ -51,6 +51,11 @@ const SettingsRegistrationTab = () => {
     isSuccess: isFormSaved,
   } = useUpdateAppConfiguration();
 
+  const userConfirmationIsAllowed = useFeatureFlag({
+    name: 'user_confirmation',
+    onlyCheckAllowed: true,
+  });
+
   const [attributesDiff, setAttributesDiff] =
     useState<IUpdatedAppConfigurationProperties>({});
   const [latestAppConfigSettings, setLatestAppConfigSettings] =
@@ -152,10 +157,12 @@ const SettingsRegistrationTab = () => {
                 }
               />
             </SectionField>
-            <ToggleUserConfirmation
-              onChange={handleUserConfirmationToggleChange}
-              isEnabled={userConfirmationToggleIsEnabled}
-            />
+            {userConfirmationIsAllowed && (
+              <ToggleUserConfirmation
+                onChange={handleUserConfirmationToggleChange}
+                isEnabled={userConfirmationToggleIsEnabled}
+              />
+            )}
             <CustomFieldsSignupText
               onCoreSettingWithMultilocChange={
                 handleCoreSettingWithMultilocOnChange
