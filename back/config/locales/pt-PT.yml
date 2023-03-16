@@ -229,9 +229,9 @@ pt:
       did_you_receive_this_email_in_error: "Recebeu este e-mail por engano? <a href=\"%{link}\">Diga-nos</a>."
   user_blocked_mailer:
     send_user_blocked_email:
-      subject: 'Your account has been temporarily disabled'
-      title_user_blocked: 'Your account has been temporarily disabled'
-      paragraph_1_without_reason: "Your account on %{organizationName} Participation Platform has been temporarily disabled for a violation of the community guidelines."
-      paragraph_1_with_reason: "Your account on %{organizationName} Participation Platform has been temporarily disabled for the following reason:"
-      for_more_information: "For more information on this, you can consult the %{termsAndConditionsPage}"
-      you_can_sign_in_again_from: "You can sign in again from %{date}"
+      subject: 'A sua conta foi temporariamente desactivada'
+      title_user_blocked: 'A sua conta foi temporariamente desactivada'
+      paragraph_1_without_reason: "A sua conta em %{organizationName} Plataforma de participação foi temporariamente desactivada por uma violação das directrizes da comunidade."
+      paragraph_1_with_reason: "A sua conta em %{organizationName} Plataforma de participação foi temporariamente desactivada pela seguinte razão:"
+      for_more_information: "Para mais informações sobre este assunto, pode consultar o %{termsAndConditionsPage}"
+      you_can_sign_in_again_from: "Pode voltar a assinar a partir de %{date}"
