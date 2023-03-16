@@ -50,7 +50,7 @@ const getButtonText = (
 };
 
 interface Props {
-  user: IUserData;
+  userToChangeSeat: IUserData;
   showModal: boolean;
   closeModal: () => void;
   toggleAdmin: () => void;
@@ -59,10 +59,10 @@ interface Props {
 const ChangeSeatModal = ({
   showModal,
   closeModal,
-  user,
+  userToChangeSeat,
   toggleAdmin,
 }: Props) => {
-  const isUserAdmin = isAdmin({ data: user });
+  const isUserAdmin = isAdmin({ data: userToChangeSeat });
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
@@ -106,7 +106,7 @@ const ChangeSeatModal = ({
               values={{
                 name: (
                   <Text as="span" fontWeight="bold" fontSize="m">
-                    {`${user.attributes.first_name} ${user.attributes.last_name}`}
+                    {`${userToChangeSeat.attributes.first_name} ${userToChangeSeat.attributes.last_name}`}
                   </Text>
                 ),
               }}

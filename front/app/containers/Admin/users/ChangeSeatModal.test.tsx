@@ -59,7 +59,7 @@ describe('ChangeSeatModal', () => {
     render(
       <ChangeSeatModal
         showModal
-        user={mockUser.data}
+        userToChangeSeat={mockUser.data}
         toggleAdmin={toggleAdmin}
         closeModal={closeModal}
       />
@@ -81,7 +81,7 @@ describe('ChangeSeatModal', () => {
     render(
       <ChangeSeatModal
         showModal
-        user={mockUser.data}
+        userToChangeSeat={mockUser.data}
         toggleAdmin={toggleAdmin}
         closeModal={closeModal}
       />
@@ -102,7 +102,7 @@ describe('ChangeSeatModal', () => {
     render(
       <ChangeSeatModal
         showModal
-        user={mockUser.data}
+        userToChangeSeat={mockUser.data}
         toggleAdmin={toggleAdmin}
         closeModal={closeModal}
       />

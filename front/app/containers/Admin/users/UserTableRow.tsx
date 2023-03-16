@@ -172,7 +172,7 @@ const UserTableRow = ({
       </Td>
 
       <ChangeSeatModal
-        user={user}
+        userToChangeSeat={user}
         toggleAdmin={toggleAdmin}
         showModal={showModal}
         closeModal={closeModal}
