@@ -175,7 +175,7 @@ resource 'Permissions' do
 
     get 'web_api/v1/projects/:project_id/permissions/:action/requirements' do
       before do
-        @permission = @phase.permissions.first
+        @permission = @project.permissions.first
         @permission.update!(permitted_by: 'everyone')
       end
 
@@ -273,6 +273,37 @@ resource 'Permissions' do
       let(:action) { @permission.action }
 
       example_request 'Get the participation requirements of a user in the global scope' do
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response).to eq({
+          permitted: true,
+          requirements: {
+            built_in: {
+              first_name: 'satisfied',
+              last_name: 'satisfied',
+              email: 'satisfied'
+            },
+            custom_fields: {},
+            special: {
+              password: 'satisfied',
+              confirmation: 'satisfied'
+            }
+          }
+        })
+      end
+    end
+
+    get 'web_api/v1/ideas/:idea_id/permissions/:action/requirements' do
+      before do
+        @permission = @project.permissions.first
+        @permission.update!(permitted_by: 'users')
+      end
+
+      let(:action) { @permission.action }
+      let(:idea) { create :idea, project: @project }
+      let(:idea_id) { idea.id }
+
+      example_request 'Get the participation requirements of a user in an idea' do
         assert_status 200
         json_response = json_parse response_body
         expect(json_response).to eq({
