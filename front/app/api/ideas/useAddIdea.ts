@@ -10,7 +10,7 @@ const addIdea = async (requestBody: IIdeaAdd) =>
   fetcher<IIdea>({
     path: `/ideas`,
     action: 'post',
-    body: requestBody,
+    body: { idea: requestBody },
   });
 
 const useAddIdea = () => {

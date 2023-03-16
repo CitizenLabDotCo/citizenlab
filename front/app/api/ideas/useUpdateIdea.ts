@@ -15,7 +15,7 @@ const updateIdea = ({ id, requestBody }: IUpdateIdeaObject) =>
   fetcher<IIdea>({
     path: `/ideas/${id}`,
     action: 'patch',
-    body: requestBody,
+    body: { idea: requestBody },
   });
 
 const useUpdateIdea = () => {
