@@ -293,6 +293,48 @@ resource 'Permissions' do
       end
     end
 
+    get 'web_api/v1/permissions/:action/requirements' do
+      before do
+        create :custom_field_birthyear, required: true
+        create :custom_field_gender, required: false
+        create :custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field'
+
+        @user.update!(
+          email: 'my@email.com',
+          first_name: 'Jack',
+          last_name: nil,
+          password_digest: nil,
+          custom_field_values: { 'gender' => 'male' }
+        )
+      end
+
+      let(:action) { 'visiting' }
+
+      example_request 'Get the global registration requirements' do
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response).to eq({
+          permitted: false,
+          requirements: {
+            built_in: {
+              first_name: 'satisfied',
+              last_name: 'require',
+              email: 'satisfied'
+            },
+            custom_fields: {
+              birthyear: 'require',
+              gender: 'satisfied',
+              extra_field: 'require'
+            },
+            special: {
+              password: 'require',
+              confirmation: 'satisfied'
+            }
+          }
+        })
+      end
+    end
+
     get 'web_api/v1/ideas/:idea_id/permissions/:action/requirements' do
       before do
         @permission = @project.permissions.first

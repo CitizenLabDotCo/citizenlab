@@ -144,7 +144,7 @@ class PermissionsService
         users[:built_in][:email] = 'require'
         required_field_keys = CustomField.registration.required.map(&:key)
         users[:custom_fields].each_key do |key|
-          users[:custom_fields][key] = required_field_keys.include? key ? 'require' : 'ask'
+          users[:custom_fields][key] = (required_field_keys.include?(key) ? 'require' : 'ask')
         end
         users[:special][:password] = 'require'
         users[:special][:confirmation] = 'require' if AppConfiguration.instance.feature_activated?('user_confirmation')
