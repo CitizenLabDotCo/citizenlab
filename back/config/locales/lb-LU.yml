@@ -227,3 +227,11 @@ lb:
       copy_paste_the_link_below: "Kopéiert de Code hei ënnendrënner a füügt en an den Aschreiwungsformular op der Plattform an fir Är Aschreiwung ofzeschléissen."
       the_link_is_valid_for: "De Link ass 24 Stonne gëlteg. Wann de Link ofgelaf ass, kënnt Dir <a href=\"%{link}\">en neie Code ufroen</a>."
       did_you_receive_this_email_in_error: "Hutt Dir dës E-Mail iertemlech kritt? <a href=\"%{link}\">Gitt eis Bescheed</a>."
+  user_blocked_mailer:
+    send_user_blocked_email:
+      subject: 'Äre Kont gouf temporär deaktivéiert'
+      title_user_blocked: 'Äre Kont gouf temporär deaktivéiert'
+      paragraph_1_without_reason: "Äre Kont op %{organizationName} Participatioun Plattform gouf temporär deaktivéiert fir eng Violatioun vun de Gemeinschaftsrichtlinnen."
+      paragraph_1_with_reason: "Äre Kont op %{organizationName} Participatiounsplattform gouf aus dem folgenden Grond temporär ausgeschalt:"
+      for_more_information: "Fir méi Informatioun doriwwer, kënnt Dir den %{termsAndConditionsPage}konsultéieren"
+      you_can_sign_in_again_from: "Dir kënnt erëm ab %{date}umellen"
