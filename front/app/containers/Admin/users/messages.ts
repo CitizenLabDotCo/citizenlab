@@ -70,6 +70,10 @@ export default defineMessages({
     defaultMessage:
       'Are you sure you want to give {name} platform admin rights?',
   },
+  buyOneAditionalSeat: {
+    id: 'app.containers.Admin.Users.buyOneAditionalSeat',
+    defaultMessage: 'Buy one additional seat',
+  },
   permissionToBuy: {
     id: 'app.containers.Admin.Users.permissionToBuy',
     defaultMessage:

@@ -539,6 +539,7 @@
   "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Get an overview of all the people and organisations that registered on the platform. Add a selection of users to Manual groups or Smart groups.",
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": "Invitation pending",
   "app.containers.Admin.Users.admin": "Admin",
+  "app.containers.Admin.Users.buyOneAditionalSeat": "Buy one additional seat",
   "app.containers.Admin.Users.confirm": "Confirm",
   "app.containers.Admin.Users.confirmAdminQuestion": "Are you sure you want to give {name} platform admin rights?",
   "app.containers.Admin.Users.confirmNormalUserQuestion": "Are you sure you want to set {name} as a normal user?",

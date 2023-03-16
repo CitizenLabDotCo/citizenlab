@@ -17,6 +17,7 @@ import useSeats from 'api/seats/useSeats';
 import { isNil } from 'utils/helperUtils';
 
 import { IUserData } from 'services/users';
+import { isAdmin } from 'services/permissions/roles';
 
 const getInfoText = (
   isUserAdmin: boolean,
@@ -32,10 +33,25 @@ const getInfoText = (
   return messages.confirmAdminQuestion;
 };
 
+const getButtonText = (
+  isUserAdmin: boolean,
+  maximumAdmins: number | null | undefined,
+  currentAdminSeats: number
+): MessageDescriptor => {
+  let buttonText = messages.confirm;
+
+  if (isUserAdmin) {
+    return buttonText;
+  }
+
+  return !isNil(maximumAdmins) && currentAdminSeats >= maximumAdmins
+    ? messages.buyOneAditionalSeat
+    : buttonText;
+};
+
 interface Props {
-  user: IUserData;
+  userToChangeSeat: IUserData;
   showModal: boolean;
-  isUserAdmin: boolean;
   closeModal: () => void;
   toggleAdmin: () => void;
 }
@@ -43,10 +59,10 @@ interface Props {
 const ChangeSeatModal = ({
   showModal,
   closeModal,
-  user,
+  userToChangeSeat,
   toggleAdmin,
-  isUserAdmin,
 }: Props) => {
+  const isUserAdmin = isAdmin({ data: userToChangeSeat });
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
@@ -64,6 +80,11 @@ const ChangeSeatModal = ({
   const modalTitle = isUserAdmin
     ? messages.setAsNormalUser
     : messages.giveAdminRights;
+  const buttonText = getButtonText(
+    isUserAdmin,
+    maximumAdmins,
+    currentAdminSeats
+  );
 
   return (
     <Modal
@@ -85,7 +106,7 @@ const ChangeSeatModal = ({
               values={{
                 name: (
                   <Text as="span" fontWeight="bold" fontSize="m">
-                    {`${user.attributes.first_name} ${user.attributes.last_name}`}
+                    {`${userToChangeSeat.attributes.first_name} ${userToChangeSeat.attributes.last_name}`}
                   </Text>
                 ),
               }}
@@ -108,7 +129,7 @@ const ChangeSeatModal = ({
               closeModal();
             }}
           >
-            {formatMessage(messages.confirm)}
+            {formatMessage(buttonText)}
           </Button>
         </Box>
       </Box>
