@@ -62,7 +62,7 @@ const SortFilterDropdown = ({
         ? phase.attributes.participation_method
         : project.attributes.participation_method
     );
-    if (config.postSortingOptions) {
+    if (config?.postSortingOptions) {
       options = config.postSortingOptions;
     }
   }
