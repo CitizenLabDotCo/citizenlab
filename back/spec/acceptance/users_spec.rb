@@ -262,7 +262,8 @@ resource 'Users' do
         describe 'Reusing an existing user with no password' do
           context 'when there is an existing user that has no password' do
             before do
-              create(:user, email: email, password: nil)
+              light_user = create(:user_no_password, email: email)
+              light_user.confirm!
             end
 
             example_request 'existing user is successfully returned and confirmation requirement is reset and email resent' do
@@ -992,63 +993,6 @@ resource 'Users' do
           example "Can't change gender of a user verified with Bogus", document: false do
             create(:verification, method_name: 'bogus', user: @user)
             @user.update!(custom_field_values: { cf.key => 'original value', gender_cf.key => 'male' })
-            do_request
-            expect(response_status).to eq 200
-            @user.reload
-            expect(@user.custom_field_values[cf.key]).to eq 'new value'
-            expect(@user.custom_field_values[gender_cf.key]).to eq 'male'
-          end
-        end
-      end
-
-      post 'web_api/v1/users/complete_registration' do
-        with_options scope: :user do
-          parameter :custom_field_values, 'An object that can only contain keys for custom fields for users', required: true
-        end
-
-        let(:cf1) { create(:custom_field) }
-        let(:cf2) { create(:custom_field_multiselect, required: true) }
-        let(:cf2_options) { create_list(:custom_field_option, 2, custom_field: cf2) }
-        let(:custom_field_values) { { cf1.key => 'somevalue', cf2.key => [cf2_options.first.key] } }
-
-        example 'Complete the registration of a user' do
-          @user.update! registration_completed_at: nil
-          do_request
-          expect(response_status).to eq 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :attributes, :registration_completed_at)).to be_present
-          expect(json_response.dig(:data, :attributes, :custom_field_values, cf1.key.to_sym)).to eq 'somevalue'
-          expect(json_response.dig(:data, :attributes, :custom_field_values, cf2.key.to_sym)).to eq [cf2_options.first.key]
-        end
-
-        # TODO: Allow light users without required fields
-        # example '[error] Complete the registration of a user fails if not all required fields are provided' do
-        #   @user.update! registration_completed_at: nil
-        #   do_request(user: { custom_field_values: { cf2.key => nil } })
-        #   assert_status 422
-        # end
-
-        example '[error] Complete the registration of a user fails if the user has already completed signup' do
-          do_request
-          expect(response_status).to eq 401
-        end
-
-        describe do
-          let(:cf) { create(:custom_field) }
-          let(:gender_cf) { create(:custom_field_gender) }
-          let(:custom_field_values) do
-            {
-              cf.key => 'new value',
-              gender_cf.key => 'female'
-            }
-          end
-
-          example "Can't change some custom_field_values of a user verified with Bogus", document: false do
-            @user.update!(
-              registration_completed_at: nil,
-              custom_field_values: { cf.key => 'original value', gender_cf.key => 'male' }
-            )
-            create(:verification, method_name: 'bogus', user: @user)
             do_request
             expect(response_status).to eq 200
             @user.reload

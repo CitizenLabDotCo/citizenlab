@@ -42,10 +42,17 @@ RSpec.describe User, type: :model do
 
   describe 'creating a light user - email & locale only' do
     it 'is valid and generates a slug' do
+      SettingsService.new.activate_feature! 'user_confirmation'
       u = described_class.new(email: 'test@test.com', locale: 'en')
       u.save
       expect(u).to be_valid
       expect(u.slug).not_to be_nil
+    end
+
+    it 'is not valid if user confirmation is not turned on' do
+      u = described_class.new(email: 'test@test.com', locale: 'en')
+      u.save
+      expect(u).not_to be_valid
     end
   end
 
@@ -192,16 +199,30 @@ RSpec.describe User, type: :model do
   end
 
   describe 'password' do
-    it 'is valid when set to empty string' do
-      # This is allowed to allow accounts without a password
-      u = build(:user, password: '')
-      expect(u).to be_valid
+    context 'user confirmation is turned on' do
+      it 'is valid when not supplied at all' do
+        # This is allowed to allow accounts without a password
+        SettingsService.new.activate_feature! 'user_confirmation'
+        u = build(:user_no_password)
+        expect(u).to be_valid
+      end
     end
 
-    it 'is valid when nil' do
-      # This is allowed to allow accounts without a password
+    context 'user confirmation is turned off' do
+      it 'is not valid when not supplied' do
+        u = build(:user_no_password)
+        expect(u).not_to be_valid
+      end
+    end
+
+    it 'is not valid when set to empty string' do
+      u = build(:user, password: '')
+      expect(u).not_to be_valid
+    end
+
+    it 'is not valid when nil' do
       u = build(:user, password: nil)
-      expect(u).to be_valid
+      expect(u).not_to be_valid
     end
 
     it 'does not create a password digest if the password is empty' do
@@ -823,7 +844,7 @@ RSpec.describe User, type: :model do
       it 'does not perform a commit to the db' do
         user.confirm!
         user.reset_confirmed_at
-        expect(user.saved_change_to_confirmation_required?).to be false
+        expect(user.saved_change_to_email_confirmed_at?).to be false
       end
     end
 

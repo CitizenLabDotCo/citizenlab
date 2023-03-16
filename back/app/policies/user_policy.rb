@@ -55,10 +55,6 @@ class UserPolicy < ApplicationPolicy
     user&.active? && (record.id == user.id || user&.admin?)
   end
 
-  def complete_registration?
-    user && !user.active? && (record.id == user.id)
-  end
-
   def destroy?
     record.id == user&.id || (user&.active? && user&.admin?)
   end
@@ -110,10 +106,6 @@ class UserPolicy < ApplicationPolicy
 
   def role_permitted_params
     [roles: %i[type project_id project_folder_id]]
-  end
-
-  def permitted_attributes_for_complete_registration
-    [custom_field_values: allowed_custom_field_keys]
   end
 
   private

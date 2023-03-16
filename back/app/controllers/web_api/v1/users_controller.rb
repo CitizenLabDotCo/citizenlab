@@ -146,28 +146,6 @@ class WebApi::V1::UsersController < ::ApplicationController
     end
   end
 
-  def complete_registration
-    # NOTE: Authorize fails if registration is already flagged as complete
-    @user = current_user
-    authorize @user
-
-    user_params = permitted_attributes @user
-    user_params[:custom_field_values] = @user.custom_field_values.merge(user_params[:custom_field_values] || {})
-
-    @user.assign_attributes(user_params)
-    @user.complete_registration
-
-    if @user.save
-      SideFxUserService.new.after_update(@user, current_user)
-      render json: WebApi::V1::UserSerializer.new(
-        @user,
-        params: fastjson_params
-      ).serialized_json, status: :ok
-    else
-      render json: { errors: @user.errors.details }, status: :unprocessable_entity
-    end
-  end
-
   def destroy
     DeleteUserJob.perform_now(@user.id, current_user)
     head :ok

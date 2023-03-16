@@ -149,7 +149,7 @@ class User < ApplicationRecord
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
 
   validates :email, :locale, presence: true, unless: :invite_pending?
-  validates :password, :locale, presence: true, on: :create, unless: :confirmation_required?
+  validates :password, presence: true, on: :create, unless: :confirmation_required?
 
   validates :email, uniqueness: true, allow_nil: true
   validates :slug, uniqueness: true, presence: true, unless: :invite_pending?
