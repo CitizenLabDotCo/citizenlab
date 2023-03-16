@@ -135,10 +135,10 @@ pl:
       section1:
         description:
       section2:
-        title: Images and attachments
+        title: Obrazy i załączniki
         description:
       section3:
-        title: Details
+        title: Szczegóły
         description:
   custom_forms:
     categories:
@@ -195,7 +195,7 @@ pl:
       author_fullname: 'Nazwa autora'
       author_email: 'E-mail autora'
       author_id: 'ID autora'
-      budget: 'Budget'
+      budget: 'Budżet'
       created_at: 'Zgłoszone'
       published_at: 'Opublikowane'
       comments_count: 'Komentarze'
