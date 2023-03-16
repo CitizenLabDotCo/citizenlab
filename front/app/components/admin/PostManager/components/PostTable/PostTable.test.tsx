@@ -2,7 +2,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { getIdea } from 'services/ideas';
+import { getIdea } from 'api/ideas/__mocks__/useIdeaById';
 
 // mocking dependencies
 jest.mock('services/globalState');

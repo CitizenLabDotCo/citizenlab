@@ -2,7 +2,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { getIdea } from 'services/ideas';
+import { getIdea } from 'api/ideas/__mocks__/useIdeaById';
 import { mockTopicData } from 'services/__mocks__/topics';
 import { mockIdeaStatusData } from 'services/__mocks__/ideaStatuses';
 import { mockProposalStatusData } from 'services/__mocks__/proposalStatuses';

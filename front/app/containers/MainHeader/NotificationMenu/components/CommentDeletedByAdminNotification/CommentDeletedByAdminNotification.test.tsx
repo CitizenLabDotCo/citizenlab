@@ -7,7 +7,7 @@ import { shallow } from 'enzyme';
 import { CommentDeletedByAdminNotification } from './';
 
 // mock utilities
-import { getIdea } from 'services/__mocks__/ideas';
+import { getIdea } from 'api/ideas/__mocks__/useIdeaById';
 
 jest.mock('utils/analytics', () => ({ trackEventByName: () => {} }));
 
