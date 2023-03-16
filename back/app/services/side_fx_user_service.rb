@@ -3,7 +3,9 @@
 class SideFxUserService
   include SideFxHelper
 
-  def before_create(user, current_user); end
+  def before_create(user, _current_user)
+    user.complete_registration if !user.confirmation_required?
+  end
 
   def after_create(user, current_user)
     TrackUserJob.perform_later(user)
