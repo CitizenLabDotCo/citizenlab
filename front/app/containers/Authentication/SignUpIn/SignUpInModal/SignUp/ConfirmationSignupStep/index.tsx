@@ -4,6 +4,9 @@ import React, { useState, FormEvent } from 'react';
 import confirmEmail, { IConfirmation } from 'api/authentication/confirmEmail';
 import resendEmailConfirmationCode from 'api/authentication/resendEmailConfirmationCode';
 
+// hooks
+import useAuthUser from 'hooks/useAuthUser';
+
 // components
 import Error from 'components/UI/Error';
 import { Input, Label, Text } from '@citizenlab/cl2-component-library';
@@ -23,6 +26,7 @@ import messages from './messages';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 import { CLErrors, CLError } from 'typings';
+import { isNilOrError } from 'utils/helperUtils';
 
 const FormContainer = styled.div<{ inModal: boolean }>`
   display: flex;
@@ -73,6 +77,9 @@ const ConfirmationSignupStep = ({ onCompleted }: Props) => {
   const [processing, setProcessing] = useState(false);
   const [changingEmail, setChangingEmail] = useState(false);
   const [codeResent, setCodeResent] = useState(false);
+
+  const user = useAuthUser();
+  if (isNilOrError(user)) return null;
 
   function handleCodeChange(code: string) {
     setApiErrors({});
@@ -179,7 +186,7 @@ const ConfirmationSignupStep = ({ onCompleted }: Props) => {
           <Text margin="18px 0 0" textAlign="center">
             <FooterNote>
               <FormattedMessage {...messages.foundYourCode} />
-              <FooterNoteLink onClick={handleBackToCode} to="#">
+              <FooterNoteLink onClick={handleBackToCode}>
                 <FormattedMessage {...messages.goBack} />
               </FooterNoteLink>
             </FooterNote>
@@ -188,7 +195,7 @@ const ConfirmationSignupStep = ({ onCompleted }: Props) => {
       ) : (
         <Form inModal={inModal} onSubmit={handleSubmitConfirmation}>
           <FormField>
-            <CodeSentMessage />
+            <CodeSentMessage email={user.attributes.email} />
             <StyledLabel htmlFor="e2e-confirmation-code-input">
               <FormattedMessage {...messages.codeInput} />
             </StyledLabel>

@@ -2,7 +2,6 @@ import React, { FormEvent } from 'react';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
-import Link from 'utils/cl-router/Link';
 
 // styling
 import styled from 'styled-components';
@@ -23,7 +22,7 @@ export const FooterNote = styled.p`
   }
 `;
 
-export const FooterNoteLink = styled(Link)`
+export const FooterNoteLink = styled.button`
   font-size: ${fontSizes.s}px;
   padding-left: 4px;
   color: ${({ theme }) => theme.colors.tenantText};
@@ -33,6 +32,8 @@ export const FooterNoteLink = styled(Link)`
     color: ${({ theme }) => darken(0.2, theme.colors.tenantText)};
     text-decoration: underline;
   }
+
+  cursor: pointer;
 `;
 
 const FooterNoteSuccessMessage = styled.span`
@@ -61,14 +62,14 @@ const FooterNotes = ({ codeResent, onResendCode, onChangeEmail }: Props) => (
           <FormattedMessage {...messages.confirmationCodeSent} />
         </FooterNoteSuccessMessage>
       ) : (
-        <FooterNoteLink onClick={onResendCode} to="#">
+        <FooterNoteLink onClick={onResendCode}>
           <FormattedMessage {...messages.sendNewCode} />
         </FooterNoteLink>
       )}
     </FooterNote>
     <FooterNote>
       <FormattedMessage {...messages.wrongEmail} />
-      <FooterNoteLink onClick={onChangeEmail} to="#">
+      <FooterNoteLink onClick={onChangeEmail}>
         <FormattedMessage {...messages.changeYourEmail} />
       </FooterNoteLink>
     </FooterNote>

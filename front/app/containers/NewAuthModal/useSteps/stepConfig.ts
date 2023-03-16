@@ -48,6 +48,7 @@ export const getStepConfig = (
 
       SUBMIT_EMAIL: async (email: string, locale: Locale) => {
         setStatus('pending');
+        updateState({ email });
 
         const result = await createEmailOnlyAccount({ email, locale });
 
@@ -57,7 +58,6 @@ export const getStepConfig = (
         }
 
         if (result === 'email_taken') {
-          updateState({ email });
           setStatus('ok');
           setCurrentStep('enter-password');
         }
@@ -78,9 +78,14 @@ export const getStepConfig = (
       CLOSE: () => setCurrentStep('closed'),
 
       CHANGE_EMAIL: async () => {
+        setStatus('pending');
+
         await signOut();
+
         updateState({ email: null });
+
         setCurrentStep('email-registration');
+        setStatus('ok');
       },
 
       SUBMIT_CODE: async (code: string) => {

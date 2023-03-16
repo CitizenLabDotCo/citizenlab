@@ -74,6 +74,7 @@ const AuthModal = ({
 
         {currentStep === 'email-confirmation' && (
           <EmailConfirmation
+            state={state}
             status={status}
             error={error}
             onConfirm={transition(currentStep, 'SUBMIT_CODE')}

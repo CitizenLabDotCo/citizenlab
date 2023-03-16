@@ -21,9 +21,10 @@ import { string, object } from 'yup';
 import Input from 'components/HookForm/Input';
 
 // typings
-import { Status, ErrorCode } from '../../typings';
+import { State, Status, ErrorCode } from '../../typings';
 
 interface Props {
+  state: State;
   status: Status;
   error: ErrorCode | null;
   onConfirm: (code: string) => void;
@@ -38,7 +39,12 @@ const DEFAULT_VALUES: Partial<FormValues> = {
   code: undefined,
 };
 
-const EmailConfirmation = ({ status, onConfirm, onChangeEmail }: Props) => {
+const EmailConfirmation = ({
+  state,
+  status,
+  onConfirm,
+  onChangeEmail,
+}: Props) => {
   const [codeResent, setCodeResent] = useState(false);
   const [resendingCode, setResendingCode] = useState(false);
 
@@ -75,18 +81,21 @@ const EmailConfirmation = ({ status, onConfirm, onChangeEmail }: Props) => {
       .then(() => {
         setResendingCode(false);
         setCodeResent(true);
-        // setApiErrors({});
       })
       .catch((_errors) => {
-        // setApiErrors(errors);
         setResendingCode(false);
       });
+  };
+
+  const handleChangeEmail = (e: FormEvent) => {
+    e.preventDefault();
+    onChangeEmail();
   };
 
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(handleConfirm)}>
-        <CodeSentMessage />
+        <CodeSentMessage email={state.email ?? undefined} />
         <Box>
           <Input
             name="code"
@@ -108,7 +117,7 @@ const EmailConfirmation = ({ status, onConfirm, onChangeEmail }: Props) => {
           <FooterNotes
             codeResent={codeResent}
             onResendCode={handleResendCode}
-            onChangeEmail={onChangeEmail}
+            onChangeEmail={handleChangeEmail}
           />
         </Box>
       </form>
