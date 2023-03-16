@@ -1,5 +1,5 @@
 // Libraries
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { isAdmin } from 'services/permissions/roles';
 import moment from 'moment';
 
@@ -64,9 +64,10 @@ const UserTableRow = ({
   authUser,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const [isUserAdmin, setUserIsAdmin] = useState(isAdmin({ data: user }));
-  const [registeredAt, setRegisteredAt] = useState(
-    moment(user.attributes.registration_completed_at).format('LL')
+
+  const isUserAdmin = isAdmin({ data: user });
+  const registeredAt = moment(user.attributes.registration_completed_at).format(
+    'LL'
   );
   const [showModal, setShowModal] = useState(false);
   const closeModal = () => {
@@ -75,13 +76,6 @@ const UserTableRow = ({
   const openModal = () => {
     setShowModal(true);
   };
-
-  useEffect(() => {
-    setUserIsAdmin(isAdmin({ data: user }));
-    setRegisteredAt(
-      moment(user.attributes.registration_completed_at).format('LL')
-    );
-  }, [user]);
 
   const handleDeleteClick = () => {
     const deleteMessage = formatMessage(messages.userDeletionConfirmation);
