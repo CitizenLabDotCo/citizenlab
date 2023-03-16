@@ -5,7 +5,7 @@ class ApplicationController < ActionController::API
   include Pundit
 
   before_action :authenticate_user
-  before_action :error_if_blocked
+  before_action :error_if_blocked_user
 
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
@@ -119,7 +119,7 @@ class ApplicationController < ActionController::API
     resource.public_send("remove_#{image_field_name}!")
   end
 
-  def error_if_blocked
+  def error_if_blocked_user
     render json: { errors: 'User blocked' }, status: :unauthorized if current_user&.blocked?
   end
 end
