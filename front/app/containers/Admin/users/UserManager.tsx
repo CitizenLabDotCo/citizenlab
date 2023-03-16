@@ -15,7 +15,6 @@ import events from './events';
 
 // Resources
 import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
-import GetAuthUser from 'resources/GetAuthUser';
 
 // Services
 import { MembershipType } from 'services/groups';
@@ -181,16 +180,11 @@ export class UserManager extends PureComponent<Props, State> {
               <Error text={err.errorElement} key={err.errorName} />
             ))}
 
-          <GetAuthUser>
-            {(authUser) => (
-              <UserTable
-                selectedUsers={selectedUsers}
-                handleSelect={this.handleUserSelectedOnChange(allUsersIds)}
-                authUser={authUser}
-                {...users}
-              />
-            )}
-          </GetAuthUser>
+          <UserTable
+            selectedUsers={selectedUsers}
+            handleSelect={this.handleUserSelectedOnChange(allUsersIds)}
+            {...users}
+          />
         </>
       );
     }
