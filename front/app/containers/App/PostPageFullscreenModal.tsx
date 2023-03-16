@@ -42,7 +42,7 @@ const StyledIdeasShow = styled(IdeasShow)`
 
 interface Props {
   type: 'idea' | 'initiative' | null;
-  postId: string;
+  postId: string | null;
   slug: string | null;
   navbarRef?: HTMLElement | null;
   mobileNavbarRef?: HTMLElement | null;
@@ -66,7 +66,7 @@ const PostPageFullscreenModal = memo<Props>(
     // Far from ideal to always try to load the idea, but
     // has to happen for hooks to work.
     // It shows that we're putting 2 components in 1
-    const { data: idea } = useIdea(postId);
+    const { data: idea } = useIdea(postId ?? undefined);
 
     const topBar = useMemo(() => {
       if (postId && type === 'idea' && tablet && !isNilOrError(idea)) {
