@@ -68,10 +68,14 @@ class WebApi::V1::UsersController < ::ApplicationController
   end
 
   def me
+    # binding.pry
+
     @user = current_user
     skip_authorization
 
-    if @user
+    if @user&.blocked?
+      render json: { errors: 'User is blocked' }, status: :unauthorized
+    elsif @user
       params = fastjson_params unread_notifications: @user.notifications.unread.size
       render json: WebApi::V1::UserSerializer.new(@user, params: params).serialized_json
     else
