@@ -60,7 +60,6 @@ describe('New timeline project', () => {
 
   let projectId: string;
   let projectSlug: string;
-  let eventId: string;
 
   const twoMonthsAgo = moment().subtract(2, 'month').format('DD/MM/YYYY');
   const twoDaysAgo = moment().subtract(2, 'days').format('DD/MM/YYYY');
@@ -126,6 +125,7 @@ describe('New timeline project', () => {
 
   beforeEach(() => {
     // navigate to project
+    cy.setAdminLoginCookie();
     const path = `/projects/${projectSlug}`;
     cy.visit(path);
     cy.wait(1000);
