@@ -36,6 +36,7 @@ import {
 import { IParticipationContextType } from 'typings';
 import { isFieldEnabled } from 'utils/projectUtils';
 import { IQueryParameters, Sort } from 'api/ideas/types';
+import usePhase from 'hooks/usePhase';
 
 const Container = styled.div`
   width: 100%;
@@ -136,6 +137,7 @@ export interface Props {
 
   // other
   projectId?: string;
+  phaseId?: string;
   showViewToggle?: boolean | undefined;
   defaultSortingMethod?: IdeaDefaultSortMethod;
   defaultView?: 'card' | 'map' | null | undefined;
@@ -150,6 +152,7 @@ const IdeasWithoutFiltersSidebar = ({
   ideaQueryParameters,
   onUpdateQuery,
   projectId,
+  phaseId,
   showViewToggle = false,
   defaultView,
   defaultSortingMethod,
@@ -172,6 +175,7 @@ const IdeasWithoutFiltersSidebar = ({
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } =
     useInfiniteIdeas(ideaQueryParameters);
   const list = data?.pages.map((page) => page.data).flat();
+  const phase = usePhase(phaseId ? phaseId : null);
 
   useEffect(() => {
     setSelectedView(defaultView || 'card');
@@ -207,8 +211,6 @@ const IdeasWithoutFiltersSidebar = ({
   const selectView = (selectedView: 'card' | 'map') => {
     setSelectedView(selectedView);
   };
-
-  const phaseId = ideaQueryParameters.phase;
 
   const locationEnabled = !isNilOrError(ideaCustomFieldsSchemas)
     ? isFieldEnabled(
@@ -279,6 +281,8 @@ const IdeasWithoutFiltersSidebar = ({
               }`}
             >
               <SelectSort
+                phase={phase}
+                project={project}
                 onChange={handleSortOnChange}
                 alignment={biggerThanLargeTablet ? 'right' : 'left'}
                 defaultSortingMethod={defaultSortingMethod || null}
