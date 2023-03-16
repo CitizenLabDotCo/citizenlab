@@ -171,6 +171,7 @@ const Form = memo(
     const handleSubmit = async (formData?: any) => {
       // Any specified formData has priority over data attribute
       const submissionData = formData && formData.data ? formData.data : data;
+
       const sanitizedFormData = {};
       forOwn(submissionData, (value, key) => {
         sanitizedFormData[key] =
@@ -179,13 +180,19 @@ const Form = memo(
       setData(sanitizedFormData);
       onChange?.(sanitizedFormData);
       setShowAllErrors(true);
+
       const [schemaToUse, dataWithoutHiddenFields] = getFormSchemaAndData(
         schema,
         uiSchema,
         submissionData,
         customAjv
       );
-      if (customAjv.validate(schemaToUse, dataWithoutHiddenFields)) {
+      if (
+        customAjv.validate(
+          schemaToUse,
+          config === 'survey' ? dataWithoutHiddenFields : submissionData
+        )
+      ) {
         setLoading(true);
         try {
           await onSubmit(submissionData as FormData);

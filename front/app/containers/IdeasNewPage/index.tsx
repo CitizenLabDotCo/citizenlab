@@ -234,47 +234,44 @@ const IdeasNewPage = ({ locale, appConfiguration, authUser }: Props) => {
             location_description: locationDescription,
             ...(phase_id && { phase_ids: [phase_id] }),
           };
+          if (title && description) {
+            const idea = await addIdea(ideaObject);
+            const ideaId = idea.data.id;
+            try {
+              const imageToAddPromise =
+                imageFile && imageFile[0]
+                  ? addIdeaImage(ideaId, imageFile[0].base64, 0)
+                  : Promise.resolve(null);
+              const filesToAddPromises = ideaFiles.map((file) =>
+                addIdeaFile(ideaId, file.base64, file.name)
+              );
 
-          const idea = await addIdea(ideaObject);
-          const ideaId = idea.data.id;
+              await Promise.all([
+                imageToAddPromise,
+                ...filesToAddPromises,
+              ] as Promise<any>[]);
+            } catch (error) {
+              const apiErrors = get(error, 'json.errors');
+              // eslint-disable-next-line no-console
+              if (process.env.NODE_ENV === 'development') console.log(error);
 
-          try {
-            const imageToAddPromise =
-              imageFile && imageFile[0]
-                ? addIdeaImage(ideaId, imageFile[0].base64, 0)
-                : Promise.resolve(null);
-            const filesToAddPromises = ideaFiles.map((file) =>
-              addIdeaFile(ideaId, file.base64, file.name)
-            );
-
-            await Promise.all([
-              imageToAddPromise,
-              ...filesToAddPromises,
-            ] as Promise<any>[]);
-          } catch (error) {
-            const apiErrors = get(error, 'json.errors');
-            // eslint-disable-next-line no-console
-            if (process.env.NODE_ENV === 'development') console.log(error);
-
-            if (apiErrors && apiErrors.image) {
-              globalState.current.set({
-                fileOrImageError: true,
-              });
+              if (apiErrors && apiErrors.image) {
+                globalState.current.set({
+                  fileOrImageError: true,
+                });
+              }
+            }
+            const { fileOrImageError } = await globalState.current.get();
+            const newUrl = `/ideas/${idea.data.attributes.slug}?new_idea_id=${ideaId}`;
+            if (fileOrImageError) {
+              setTimeout(() => {
+                clHistory.push(newUrl);
+              }, 4000);
+            } else {
+              clHistory.push(newUrl);
             }
           }
-
-          const { fileOrImageError } = await globalState.current.get();
-          const newUrl = `/ideas/${idea.data.attributes.slug}?new_idea_id=${ideaId}`;
-          if (fileOrImageError) {
-            setTimeout(() => {
-              clHistory.push(newUrl);
-            }, 4000);
-          } else {
-            clHistory.push(newUrl);
-          }
         } catch (error) {
-          // eslint-disable-next-line no-console
-          if (process.env.NODE_ENV === 'development') console.log(error);
           const apiErrors = get(error, 'json.errors');
           const profanityApiError = apiErrors.base.find(
             (apiError) => apiError.error === 'includes_banned_words'
