@@ -32,6 +32,7 @@ export interface InputProps {
   canModerateProject?: string;
   canModerate?: boolean;
   canAdmin?: boolean;
+  onlyBlocked?: boolean;
 }
 
 interface IQueryParameters {
@@ -43,6 +44,7 @@ interface IQueryParameters {
   can_moderate_project?: string;
   can_moderate?: boolean;
   can_admin?: boolean;
+  only_blocked?: boolean;
 }
 
 type children = (obj: GetUsersChildProps) => JSX.Element | null;
@@ -87,6 +89,7 @@ export default class GetUsers extends React.Component<Props, State> {
         can_moderate_project: undefined,
         can_moderate: undefined,
         can_admin: undefined,
+        only_blocked: undefined,
       },
       usersList: undefined,
       sortAttribute: getSortAttribute<Sort, SortAttribute>(initialSort),
@@ -165,6 +168,7 @@ export default class GetUsers extends React.Component<Props, State> {
           can_moderate_project: props.canModerateProject,
           can_moderate: props.canModerate,
           can_admin: props.canAdmin,
+          only_blocked: props.onlyBlocked,
         },
         isNil
       ),
