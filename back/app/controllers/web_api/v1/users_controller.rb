@@ -132,8 +132,11 @@ class WebApi::V1::UsersController < ::ApplicationController
 
     remove_image_if_requested!(@user, user_params, :avatar)
 
+    @user.reset_confirmation_and_counts if @user.email_changed?
+
     authorize @user
     if @user.save
+      SendConfirmationCode.call(user: @user)
       SideFxUserService.new.after_update(@user, current_user)
       permissions = Permission.for_user(@user).where.not(id: permissions_before.ids)
       render json: WebApi::V1::UserSerializer.new(
@@ -144,6 +147,13 @@ class WebApi::V1::UsersController < ::ApplicationController
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
     end
+  end
+
+  def email_changed?
+    return false unless @user.email_changed?
+
+    @user.reset_confirmation_and_counts
+    true
   end
 
   def complete_registration
@@ -268,10 +278,9 @@ class WebApi::V1::UsersController < ::ApplicationController
     return false if existing_user.changed?
 
     @user = existing_user
-    @user.reset_confirmation_with_no_password
+    @user.reset_confirmation_and_counts
     return false unless @user.save
 
-    SendConfirmationCode.call(user: @user)
     true
   end
 

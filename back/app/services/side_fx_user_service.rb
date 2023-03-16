@@ -28,6 +28,7 @@ class SideFxUserService
     after_roles_changed current_user, user if user.roles_previously_changed?
 
     UpdateMemberCountJob.perform_later
+    SendConfirmationCode.call(user: user) if user.confirmation_required? && user.email_confirmation_code_sent_at.nil?
   end
 
   def after_destroy(frozen_user, current_user)
