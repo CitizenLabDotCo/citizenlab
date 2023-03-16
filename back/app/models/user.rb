@@ -149,6 +149,7 @@ class User < ApplicationRecord
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
 
   validates :email, :locale, presence: true, unless: :invite_pending?
+  validates :password, :locale, presence: true, unless: :confirmation_required?
 
   validates :email, uniqueness: true, allow_nil: true
   validates :slug, uniqueness: true, presence: true, unless: :invite_pending?
@@ -466,7 +467,7 @@ class User < ApplicationRecord
   def confirm
     self.email_confirmed_at    = Time.zone.now
     self.confirmation_required = false
-    complete_registration if no_password? # temp change for flexible_registration_i1
+    complete_registration
   end
 
   def confirm!
