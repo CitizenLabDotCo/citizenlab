@@ -135,10 +135,10 @@ pt:
       section1:
         description:
       section2:
-        title: Images and attachments
+        title: Imagens e anexos
         description:
       section3:
-        title: Details
+        title: Detalhes
         description:
   custom_forms:
     categories:
@@ -195,7 +195,7 @@ pt:
       author_fullname: 'Nome do autor'
       author_email: 'E-mail do autor'
       author_id: 'Identificação do autor'
-      budget: 'Budget'
+      budget: 'Orçamento'
       created_at: 'Submetido em'
       published_at: 'Publicado em'
       comments_count: 'Comentários'
@@ -204,7 +204,7 @@ pt:
       baskets_count: 'Cestas'
       input_url: 'URL'
       project: 'Projeto'
-      status: 'Status'
+      status: 'Estado'
       assignee_fullname: 'Atribuído'
       assignee_email: 'E-mail do assinante'
   form_builder:
@@ -213,8 +213,8 @@ pt:
       option1: 'Opção 1'
       option2: 'Opção 2'
     survey_end_page:
-      title: 'Survey end'
-      description: "Please submit your answers by selecting 'Submit survey' below."
+      title: 'Fim do inquérito'
+      description: "Por favor, submeta as suas respostas, seleccionando abaixo 'Submeter inquérito'."
   project_copy:
     title_suffix: 'Cópia'
   confirmations_mailer:
@@ -227,3 +227,11 @@ pt:
       copy_paste_the_link_below: "Copie e cole o código abaixo no seu formulário de inscrição."
       the_link_is_valid_for: "Este link é válido por 24 horas. Se o link tiver expirado, você pode <a href=\"%{link}\">solicitar um novo código</a>."
       did_you_receive_this_email_in_error: "Você recebeu este e-mail por engano? <a href=\"%{link}\">Deixe-nos saber</a>."
+  user_blocked_mailer:
+    send_user_blocked_email:
+      subject: 'A sua conta foi temporariamente desactivada'
+      title_user_blocked: 'A sua conta foi temporariamente desactivada'
+      paragraph_1_without_reason: "A sua conta em %{organizationName} Plataforma de participação foi temporariamente desactivada por uma violação das directrizes da comunidade."
+      paragraph_1_with_reason: "A sua conta em %{organizationName} Plataforma de participação foi temporariamente desactivada pela seguinte razão:"
+      for_more_information: "Para mais informações sobre este assunto, pode consultar o %{termsAndConditionsPage}"
+      you_can_sign_in_again_from: "Pode voltar a assinar a partir de %{date}"
