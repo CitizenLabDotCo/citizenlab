@@ -33,6 +33,9 @@ import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
+// Hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 const RegisteredAt = styled(Td)`
   white-space: nowrap;
 `;
@@ -59,6 +62,9 @@ const UserTableRow = ({
   );
   const [showBlockUserModal, setShowBlockUserModal] = useState(false);
   const [showUnblockUserModal, setShowUnblockUserModal] = useState(false);
+  const isUserBlockingEnabled = useFeatureFlag({
+    name: 'user_blocking',
+  });
 
   useEffect(() => {
     setUserIsAdmin(isAdmin({ data: user }));
@@ -89,6 +95,22 @@ const UserTableRow = ({
     }
   };
 
+  const userBlockingRelatedActions: IAction[] = isUserBlockingEnabled
+    ? [
+        isBlocked
+          ? {
+              handler: () => setShowUnblockUserModal(true),
+              label: formatMessage(blockUserMessages.unblockAction),
+              icon: 'user-circle' as const,
+            }
+          : {
+              handler: () => setShowBlockUserModal(true),
+              label: formatMessage(blockUserMessages.blockAction),
+              icon: 'halt' as const,
+            },
+      ]
+    : [];
+
   const actions: IAction[] = [
     {
       handler: () => {
@@ -104,17 +126,7 @@ const UserTableRow = ({
       label: formatMessage(messages.deleteUser),
       icon: 'delete' as const,
     },
-    isBlocked
-      ? {
-          handler: () => setShowUnblockUserModal(true),
-          label: formatMessage(blockUserMessages.unblockAction),
-          icon: 'user-circle' as const,
-        }
-      : {
-          handler: () => setShowBlockUserModal(true),
-          label: formatMessage(blockUserMessages.blockAction),
-          icon: 'halt' as const,
-        },
+    ...userBlockingRelatedActions,
   ];
 
   return (

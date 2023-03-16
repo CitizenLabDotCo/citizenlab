@@ -28,6 +28,8 @@ import blockUserMessages from 'components/admin/UserBlockModals/messages';
 // style
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
+
+// hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAuthUser from 'hooks/useAuthUser';
 import useUser from 'hooks/useUser';
@@ -58,6 +60,9 @@ const UserHeader = ({ userSlug }: Props) => {
   const user = useUser({ slug: userSlug });
   const isTablet = useBreakpoint('tablet');
   const hideBio = useFeatureFlag({ name: 'disable_user_bios' });
+  const isUserBlockingEnabled = useFeatureFlag({
+    name: 'user_blocking',
+  });
   const { formatMessage } = useIntl();
   const [showBlockUserModal, setShowBlockUserModal] = useState(false);
   const [showUnblockUserModal, setShowUnblockUserModal] = useState(false);
@@ -78,19 +83,21 @@ const UserHeader = ({ userSlug }: Props) => {
   const isCurrentUserAdmin =
     !isNilOrError(authUser) && isAdmin({ data: authUser });
 
-  const actions: IAction[] = [
-    isBlocked
-      ? {
-          handler: () => setShowUnblockUserModal(true),
-          label: formatMessage(blockUserMessages.unblockAction),
-          icon: 'user-circle' as const,
-        }
-      : {
-          handler: () => setShowBlockUserModal(true),
-          label: formatMessage(blockUserMessages.blockAction),
-          icon: 'halt' as const,
-        },
-  ];
+  const userBlockingRelatedActions: IAction[] = isUserBlockingEnabled
+    ? [
+        isBlocked
+          ? {
+              handler: () => setShowUnblockUserModal(true),
+              label: formatMessage(blockUserMessages.unblockAction),
+              icon: 'user-circle' as const,
+            }
+          : {
+              handler: () => setShowBlockUserModal(true),
+              label: formatMessage(blockUserMessages.blockAction),
+              icon: 'halt' as const,
+            },
+      ]
+    : [];
 
   return (
     <Box
@@ -130,7 +137,10 @@ const UserHeader = ({ userSlug }: Props) => {
             {user.attributes.first_name} {user.attributes.last_name}
           </Title>
           {isCurrentUserAdmin && (
-            <MoreActionsMenu showLabel={false} actions={actions} />
+            <MoreActionsMenu
+              showLabel={false}
+              actions={userBlockingRelatedActions}
+            />
           )}
         </Box>
         <Text color="tenantText">
