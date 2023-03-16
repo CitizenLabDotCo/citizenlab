@@ -184,11 +184,8 @@ const ParentCommentForm = ({
   };
 
   const onSubmit = async () => {
-    const projectId: string | null = get(
-      post,
-      'relationships.project.data.id',
-      null
-    );
+    const projectId: string | null =
+      idea?.data.relationships.project.data.id || null;
 
     setFocused(false);
     setProcessing(true);
