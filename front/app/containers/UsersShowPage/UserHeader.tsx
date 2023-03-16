@@ -83,7 +83,7 @@ const UserHeader = ({ userSlug }: Props) => {
   const isCurrentUserAdmin =
     !isNilOrError(authUser) && isAdmin({ data: authUser });
 
-  const blockingRelatedActions: IAction[] = isUserBlockingEnabled
+  const userBlockingRelatedActions: IAction[] = isUserBlockingEnabled
     ? [
         isBlocked
           ? {
@@ -139,7 +139,7 @@ const UserHeader = ({ userSlug }: Props) => {
           {isCurrentUserAdmin && (
             <MoreActionsMenu
               showLabel={false}
-              actions={blockingRelatedActions}
+              actions={userBlockingRelatedActions}
             />
           )}
         </Box>

@@ -95,7 +95,7 @@ const UserTableRow = ({
     }
   };
 
-  const userBlockingActions: IAction[] = isUserBlockingEnabled
+  const userBlockingRelatedActions: IAction[] = isUserBlockingEnabled
     ? [
         isBlocked
           ? {
@@ -126,7 +126,7 @@ const UserTableRow = ({
       label: formatMessage(messages.deleteUser),
       icon: 'delete' as const,
     },
-    ...userBlockingActions,
+    ...userBlockingRelatedActions,
   ];
 
   return (
