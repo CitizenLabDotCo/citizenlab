@@ -1,229 +1,229 @@
 pt:
   symbols:
-    outside: somewhere else
+    outside: em outro lugar
   idea_statuses:
-    proposed: proposed
-    proposed_description: This idea has been proposed to the city
-    viewed: viewed
-    viewed_description: This idea has been seen by someone from the city
-    under_consideration: under consideration
-    under_consideration_description: This idea has been taken into consideration by the city
-    accepted: accepted
-    accepted_description: This idea has been accepted and will be implemented by the city
-    implemented: implemented
-    implemented_description: This idea has been implemented by the city
-    rejected: rejected
-    rejected_description: This idea has been rejected
+    proposed: proposto
+    proposed_description: Esta ideia foi proposta à cidade
+    viewed: visto
+    viewed_description: Esta ideia tem sido vista por alguém da cidade
+    under_consideration: em consideração
+    under_consideration_description: Esta ideia foi tida em consideração pela cidade
+    accepted: aceite
+    accepted_description: Esta ideia foi aceite e será implementada pela cidade
+    implemented: implementado
+    implemented_description: Esta ideia foi implementada pela cidade
+    rejected: rejeitado
+    rejected_description: Esta ideia foi rejeitada
   initiative_statuses:
-    proposed: proposed
-    proposed_description: proposed
-    expired: expired
-    expired_description: expired
-    threshold_reached: threshold reached
-    threshold_reached_description: threshold reached
-    answered: answered
-    answered_description: answered
-    ineligible: ineligible
-    ineligible_description: ineligible
+    proposed: proposto
+    proposed_description: proposto
+    expired: expirado
+    expired_description: expirado
+    threshold_reached: limiar atingido
+    threshold_reached_description: limiar atingido
+    answered: respondeu
+    answered_description: respondeu
+    ineligible: inelegível
+    ineligible_description: inelegível
   topics:
-    nature: Nature and biodiversity
-    nature_description: Nature and biodiversity
-    waste: Cleanliness and waste
-    waste_description: Cleanliness and waste
-    sustainability: Sustainable development
-    sustainability_description: Sustainable development
-    mobility: Mobility
-    mobility_description: Mobility
-    technology: Energy and technology
-    technology_description: Energy and technology
-    economy: Work, economy and tourism
-    economy_description: Work, economy and tourism
-    housing: Housing
-    housing_description: Housing
-    public_space: Public spaces and buildings
-    public_space_description: Public spaces and buildings
-    safety: Safety
-    safety_description: Safety
-    education: Education and youth
-    education_description: Education and youth
-    culture: Culture, sports and events
-    culture_description: Culture, sports and events
-    health: Health and welfare
-    health_description: Health and welfare
-    inclusion: Social inclusion
-    inclusion_description: Social inclusion
-    community: Community development
-    community_description: Community development
-    services: Public services
-    services_description: Public services
-    other: Other
-    other_description: Other
+    nature: Natureza e biodiversidade
+    nature_description: Natureza e biodiversidade
+    waste: Limpeza e desperdício
+    waste_description: Limpeza e desperdício
+    sustainability: Desenvolvimento sustentável
+    sustainability_description: Desenvolvimento sustentável
+    mobility: Mobilidade
+    mobility_description: Mobilidade
+    technology: Energia e tecnologia
+    technology_description: Energia e tecnologia
+    economy: Trabalho, economia e turismo
+    economy_description: Trabalho, economia e turismo
+    housing: Habitação
+    housing_description: Habitação
+    public_space: Espaços e edifícios públicos
+    public_space_description: Espaços e edifícios públicos
+    safety: Segurança
+    safety_description: Segurança
+    education: Educação e juventude
+    education_description: Educação e juventude
+    culture: Cultura, desporto e eventos
+    culture_description: Cultura, desporto e eventos
+    health: Saúde e bem-estar
+    health_description: Saúde e bem-estar
+    inclusion: Inclusão social
+    inclusion_description: Inclusão social
+    community: Desenvolvimento comunitário
+    community_description: Desenvolvimento comunitário
+    services: Serviços públicos
+    services_description: Serviços públicos
+    other: Outros
+    other_description: Outros
   static_pages:
-    terms_and_conditions_title: Terms & conditions
+    terms_and_conditions_title: Termos e condições
     terms_and_conditions_body: >
-      <p>These terms & conditions outline the rules and guidelines of contributing to the platform and are meant to help ensure a constructive dialogue.</p> <p>Your ideas to further improve the platform are welcome and can be sent to support@citizenlab.co.</p> <h2>Who can participate?</h2> <p>Anyone is able to view public projects via the platform. If you’d like to contribute content (e.g., submit input or vote), you will need to register and create an account. You can register using your e-mail address; for some platforms, it may also be possible to sign in using an existing Facebook or Google account. If you use either of these services, your name, email address and profile photo will be shared with and added to your platform account.</p> <p>Please note that the creation of your account does not give you ownership. Platform administrators can refuse, suspend or delete accounts for reasons such as not adhering to the terms and conditions outlined on this page.</p> <p>The general conditions for your account are the following: </p> <ul> <li> <strong>You may create one account</strong> <p>An individual may not create and maintain multiple accounts. The account details you provide must be accurate and this account cannot be transferred to someone else without permission from a platform administrator. </p> </li> <li> <strong>Your account cannot be used for commercial promotion</strong> <p>An account may not be used for the sole purpose of advertising, marketing a product or service, etc.</p> </li> <li> <strong>You are responsible for keeping your account information secure and confidential</strong> <p>You are the only person who should use your account and have access to your account’s password and login details. To improve your account security, we advise using a password with a combination of numbers, lowercase letters and uppercase letters. We are not responsible for any loss or damage incurred to your account and cannot be held responsible for its theft (e.g., via phishing). Note that we will never ask you for your log-in details such as your password. </p>  <h2>Your activity on the platform</h2> <p>To ensure safe and productive participation, there are some restrictions on the type of content that may be published on this platform. Any content you post on the platform must be free of:</p> <ul> <li> <strong>Private data</strong> <p>Confidential data and personal information about others, such as telephone numbers and addresses may not be posted without their express authorization and consent.  </p> <li><strong>Spam / malware / phishing / viruses / worms / Trojans</strong> <p>Malicious content or links that are meant violate others’ privacy or to damage or disrupt others’ browsers or computers.</p> </li> <li> <strong>Threats, insults and other inappropriate content </strong> <p>Personal attacks and insults, threatening behavior or language, discriminatory comments, profanity and other offensive language.</p> </li> <li><strong>Advertising and commercial activity</strong> <p>Content posted with the sole purpose of advertising a commercial service or product.</p> </li> <li> <strong>Copyrighted material</strong> <p>Content that infringes upon intellectual property rights (e.g., copyrighted images).</p> </li> <li> <strong>Illegal activities</strong> <p>Content that in any way promotes illegal activities.</li></p> </ul> <p>Submissions and other content that includes any of the above may be edited, deleted or otherwise prevented from being posted, and the account may be temporarily blocked or permanently deleted. New or additional accounts created to avoid temporary or permanent suspension may also be monitored and deleted.</p> <h2>Applicable laws</h2> <p>The use of an account may not infringe upon applicable laws. This includes any violation of privacy legislation, intellectual property rights, the criminal code, etc.</p> <p>We cannot be held liable in any way for content posted on the platform that does not adhere to the above rules and laws. Violations can be reported to support@citizenlab.co and may result in the relevant messages being deleted and/or the underlying account being suspended or permanently revoked.</p> <p>It is possible that content posted on the platform can contain harmful files or links. By downloading files or accessing hyperlinks via the platform, you assume the risk and responsibility for any damage that may incur.</p> <h2>Property rights</h2> <p>This platform is protected by intellectual property rights related to its content, source code, databases, etc. Any original content that you post on the platform may be visible to the public and falls under the Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) Public License, which allows your content to be shared or adapted with attribution. You may not otherwise reproduce, distribute, modify or transmit the platform and any of its contents that do not fall under the public domain without permission.</p>
-    privacy_policy_title: Privacy Policy
+      <p>Estes termos e condições descrevem as regras e orientações de contribuição para a plataforma e destinam-se a ajudar a assegurar um diálogo construtivo.</p> <p>As suas ideias para melhorar ainda mais a plataforma são bem-vindas e podem ser enviadas para support@citizenlab.co.</p> <h2>Quem pode participar?</h2> <p>Qualquer pessoa pode ver projectos públicos através da plataforma. Se desejar contribuir com conteúdos (por exemplo, submeter contributos ou votar), terá de se registar e criar uma conta. Pode registar-se usando o seu endereço de correio electrónico; para algumas plataformas, também pode ser possível iniciar sessão usando uma conta existente no Facebook ou no Google. Se utilizar qualquer um destes serviços, o seu nome, endereço de e-mail e foto de perfil serão partilhados e adicionados à sua conta da plataforma.</p> <p>Note que a criação da sua conta não lhe dá a propriedade. Os administradores da plataforma podem recusar, suspender ou apagar contas por razões tais como o não cumprimento dos termos e condições delineados nesta página.</p> <p>As condições gerais para a sua conta são as seguintes: </p> <ul> <li> <strong>Pode criar uma conta</strong> <p>. Um indivíduo não pode criar e manter várias contas. Os detalhes da conta que fornecer devem ser exactos e esta conta não pode ser transferida para outra pessoa sem autorização de um administrador da plataforma. </p> </li> <li> <strong>A sua conta não pode ser utilizada para promoção comercial</strong> <p>Uma conta não pode ser utilizada apenas para fins de publicidade, marketing de um produto ou serviço, etc.</p> </li> <li> <strong>É responsável por manter as informações da sua conta seguras e confidenciais</strong> <p>É a única pessoa que deve utilizar a sua conta e ter acesso à palavra-passe e aos dados de login da sua conta. Para melhorar a segurança da sua conta, aconselhamos a utilização de uma palavra-passe com uma combinação de números, letras minúsculas e letras maiúsculas. Não somos responsáveis por qualquer perda ou dano incorrido na sua conta e não podemos ser responsabilizados pelo seu roubo (por exemplo, através de phishing). Note que nunca lhe pediremos os seus dados de login, tais como a sua palavra-passe. </p>  <h2>A sua actividade na plataforma</h2> <p>Para garantir uma participação segura e produtiva, existem algumas restrições quanto ao tipo de conteúdo que pode ser publicado nesta plataforma. Qualquer conteúdo que publique na plataforma deve ser livre de:</p> <ul> <li> <strong>Dados privados</strong> <p>Dados confidenciais e informações pessoais sobre outros, tais como números de telefone e endereços não podem ser publicados sem a sua autorização e consentimento expresso.  </p> <li><strong>Spam / malware / phishing / vírus / worms / Trojans</strong> <p>Conteúdo malicioso ou links que se destinem a violar a privacidade de terceiros ou a danificar ou perturbar os navegadores ou computadores de outros.</p> </li> <li> <strong>Ameaças, insultos e outros conteúdos impróprios </strong> <p>Ataques e insultos pessoais, comportamento ou linguagem ameaçadora, comentários discriminatórios, profanação e outra linguagem ofensiva.</p> </li> <li><strong>Publicidade e actividade comercial</strong> <p>Conteúdo publicado com o único objectivo de fazer publicidade a um serviço ou produto comercial.</p> </li> <li> <strong>Material com direitos de autor</strong> <p>Conteúdo que infringe os direitos de propriedade intelectual (por exemplo, imagens com direitos de autor).</p> </li> <li> <strong>Actividades ilegais</strong> <p>Conteúdo que, de qualquer forma, promova actividades ilegais.</li></p> </ul> <p>Submissões e outros conteúdos que incluam qualquer um dos acima referidos podem ser editados, apagados ou impedidos de serem publicados, e a conta pode ser temporariamente bloqueada ou permanentemente apagada. Contas novas ou adicionais criadas para evitar a suspensão temporária ou permanente podem também ser monitorizadas e apagadas.</p> <h2>Leis aplicáveis</h2> <p>A utilização de uma conta não pode infringir as leis aplicáveis. Isto inclui qualquer violação da legislação sobre privacidade, direitos de propriedade intelectual, do código penal, etc.</p> <p>Não podemos ser responsabilizados de forma alguma pelo conteúdo publicado na plataforma que não cumpra as regras e leis acima referidas. As violações podem ser comunicadas a support@citizenlab.co e podem resultar na eliminação das mensagens relevantes e/ou na suspensão ou revogação permanente da conta subjacente.</p> <p>É possível que o conteúdo publicado na plataforma possa conter ficheiros ou ligações prejudiciais. Ao descarregar ficheiros ou aceder a hiperligações através da plataforma, o utilizador assume o risco e a responsabilidade por quaisquer danos que possam ocorrer.</p> <h2>Direitos de propriedade</h2> <p>Esta plataforma é protegida por direitos de propriedade intelectual relacionados com o seu conteúdo, código fonte, bases de dados, etc. Qualquer conteúdo original que publicar na plataforma pode ser visível ao público e recai sob a Licença Pública Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0), que permite que o seu conteúdo seja partilhado ou adaptado com atribuição. Não poderá reproduzir, distribuir, modificar ou transmitir a plataforma e qualquer dos seus conteúdos que não sejam do domínio público sem autorização.</p>
+    privacy_policy_title: Política de Privacidade
     privacy_policy_body: >
-      <p>Responsible for the processing of the Data:</p> <p>CitizenLab NV - Anspachlaan 65 - 1000 Brussels - Belgium</p> <p>Contact e-mail address: support@citizenlab.co</p> <p>Organization: //insert client contacts</p> <h2>1. PRIVACY POLICY</h2> <p>This ‘Privacy Policy’ applies to the ‘Personal Data’ collected by CitizenLab on behalf of the organization through this website.</p> <h2>2. WHAT ARE PERSONAL DATA?</h2> <p>In this Privacy Policy, Personal Data refers to information that makes it possible to identify you. An identifiable person is someone who can be identified, either directly or indirectly, in particular by referring to an identification number or to one or more factors that are linked to physical, physiological, mental, economic, cultural or social identity. A typical example of personal information is your name and email address.</p> <h2>3. WHAT PERSONAL DATA DO WE COLLECT?</h2> <p>We might collect your Personal Data from the following three sources:</p> <h3>3.1 Personal Data that you provide during the registration process on the Platform, some of which are optional.</h3> <p>The personal data that we might collect from you are:</p> <ul> <li>First and last name</li> <li>E-mail address</li> <li>Year of birth</li> <li>Gender</li> <li>Area of residence</li> <li>Preferred language</li> </ul> <p>This list can be extended on request of the organization. If you choose to sign-in via a 3rd party authentication provider as Google Accounts, Facebook or FranceConnect, we will get this data from them. If you choose to verify your identity with a 3rd party identity provider as COW, FranceConnect or CSAM, we will get this information from them.</p> <h3>3.2 Personal data that you provide when taking participative action on our platform.</h3> <p>Every action you take on the platform (voting, posting an idea, writing a comment, answering a poll,…) is registered and stored. This data is also linked to your registration data (3.1), implying that the organization can link your platform profile to this participation data.</p> <h3>3.3 Personal Data that we collect when you visit our platform.</h3> <p>We (and third party processors acting on our behalf) collect information about usage of our platform for assessing the good functioning and security of the platform. To this end, we collect technical information that can identify you, such as your IP address and browser details. By using our services you agree to this data being collected.</p> <p>We also gather usage data to improve our services, you can opt-out of this collection at all time from the consent manager.</p> <h2>4. HOW DO WE USE PERSONAL DATA?</h2> <p>We might use your personal data for the following purposes:</p> <ul> <li>First and foremost, to communicate your input to the organization with relevant context, and to draw aggregated reports of all the data collected on this platform to assist their decision-making.</li> <li>To create and maintain your user profile on this website.</li> <li>To manage the identification and authentication of users.</li> <li>To provide information about your community and/or alert you when activities on the platform may interest you. You can opt-out of user emails from your user profile at any time.</li> <li>To improve our services and monitor their functionalities.</li> </ul> <p>The personal data is only stored and processed for the period required for the purpose of the processing. After that, the data will be deleted or anonymized.</p> <h2>5. WITH WHOM DO WE SHARE YOUR PERSONAL DATA?</h2> <p>We share your personal data with the organization on behalf of which we gather this data. We share your data to the sub-processors working on our behalf. We will never sell or rent your personal data to other service providers, nor will we share your Personal Data with any service providers who are not compliant with the GDPR.</p> <h2>6. WHERE DO WE TRANSFER YOUR PERSONAL DATA TO?</h2> <p>We only transfer your Personal Data to service providers established outside the European Economic Area if they comply to art 44 GDPR.</p> <h2>7. WHAT RIGHTS DO YOU HAVE?</h2> <p>You have the right to view your personal data at any time, as well as the right to be informed of the use that Citizenlab makes of your personal data.</p> <h3>7.1 Right to rectification, erasure and restriction of processing</h3> <p>You are free to decide whether or not to provide your personal data to Citizenlab. In addition, you always have the right to request Citizenlab to correct, supplement or remove your personal data. You acknowledge that a refusal to provide or a request for the erasure of personal data means that certain services can no longer be delivered. You may also request that the processing of your personal data is limited. If you choose to remove your account from the platform, the personal data that was collected about you will be removed from our servers. Some personal information about you might remain in the logging data we keep for security and legal reasons for up to 30 days.</p> <h3>7.2 Right to object</h3> <p>You have the right to object to the processing of your personal data for serious and legitimate reasons. In addition, you always have the right to object to the use of your personal data for direct marketing purposes; in such cases, you do not have to state reasons.</p> <h3>7.3 Right to data portability</h3> <p>You have the right to obtain the personal data you have provided to Citizenlab in a structured, typical and machine-readable form and/or have such transferred to different controllers.</p> <h3>7.4 Right to withdraw consent</h3> <p>Insofar as the processing is based on your prior consent, you have the right to withdraw this approval.</p> <h3>7.5 Exercising your rights</h3> <p>You can exercise your rights by contacting Citizenlab to this end, either by email to support@citizenlab.co, by post to Anspachlaan 65, 1000 Brussels, Belgium or by using the “Contact us” form on our Website, provided you enclose a copy of the front of your identity card.</p> <h3>7.6 Automated decision-making and profiling</h3> <p>The processing of your personal data does not include profiling and shall also not be subjected by Citizenlab to automated decision-making.</p> <h3>7.7 Right to lodge a complaint</h3> <p>You have the right to lodge a complaint to the Privacy authority of your country, or the Belgian Privacy Authority under which authority CitizenLab falls: Drukpersstraat 35, 1000 Brussels, Belgium, Tel +32 (0)2 274 48 00, Fax +32 (0)2 274 48 35, e-mail: contact@adp-gba.be. This does not affect relief before a civil court.</p> <h2>8. ADDITIONAL INFORMATION ON DATA COLLECTION AND PROCESSING</h2> <h3>Legal procedures</h3> <p>CitizenLab and the Organization we process this data for might use the Personal Data of the User for legal purposes, for the court or legal proceedings preceding phases in the event of unlawful use of this Application or the related services. The User is aware that CitizenLab and the Organization we work with might be obliged to disclose the personal data at the request of competent government institutions for the processing of the Data. The legal basis for this processing is the acceptance of the terms and conditions (contractual basis) and given consent.</p> <h3>Security Measures</h3> <p>Citizenlab has developed security measures which have been adjusted at the technological and organisational level to prevent the destruction, loss, falsification, changing, prohibited access or the erroneous disclosure to third parties of personal data as well as any other prohibited processing of this data. Under no circumstances can Citizenlab be held liable for any direct or indirect loss resulting from the incorrect or unlawful use of your personal data by a third party. You must at all times comply with the security instructions, including by preventing all prohibited access to your login details and password. You are solely responsible for the use made from the website on your computer, IP-address and your identification details, as well as for the confidentiality of such.</p> <h3>Changes to this privacy policy</h3> <p>CitizenLab reserves the right to change this privacy policy at any time by notifying Users on this page. We encourage you to check this page for possible changes. The date of the last change is indicated at the bottom of the page. If a User objects to any change in the policy, the User must not continue to use this Application. Unless otherwise indicated, the valid Privacy Policy applicable at that time applies to all Personal Data that we have collected.</p> <p><em>Most recent update: 17/12/2019</em></p>
-    infopage_title: Information Page
-    infopage_body: "<p>This <strong>all-in-one participation platform</strong> is an initiative of your municipality or organisation and can be used for different public consultation processes: collecting ideas, voting, discussing, surveys, polls, participatory budgeting, online mapping, scenario planning, support for advisory boards and committees, ...</p>\n<p>On the home page, you'll see which <strong>processes are active </strong>and in which <strong>phase </strong>they currently are.</p>\n<p><img data-cl2-text-image-text-reference=\"e2c7bc7a-017d-4887-a3cb-b94185617a59\" alt=\"Horizontal separation rule\" data-align=\"center\" style=\"display: block; margin: auto;\"></p>\n<h2>How do I sign in on the platform?</h2>\n<p>Signing in is done easily by giving your first and last name and your e-mail address. You could also use your Google or Facebook account. Only your first and last name will be visible to others.</p>\n<h2>Can I use the platform myself, e.g. to organise a public consultation?</h2>\n<p>Absolutely. Ask the responsible within your municipality or organisation to give you the needed permission rights to become a project moderator. Once granted these permissions, you can set up your own project and timeline and share the information you want (video, documents, images, ...). This will also allow you to invite others to the platform, enabling them to post ideas within your project, vote or comment.</p>\n<h2>Can I participate as an association/organisation/committee? </h2>\n<p>Yes, that's possible. Given that only your first and last name are visible to others on the platform, you can simply use your organisation's name while setting up your profile.</p>\n<h2>Why would I use this platform and not create a website myself?</h2>\n<p>A team of dedicated developers and specialists in online participation (<a href=\"https://www.citizenlab.co/en\" target=\"_blank\">CitizenLab,</a> commissioned by your municipality or organisation) is improving and updating this platform on a daily basis. Even the smallest bug gets tackled immediately and if you have creative proposals, they can help you pointing out which features of the platform can be used for this or which ones are in the pipeline.</p>\n<p><img data-cl2-text-image-text-reference=\"392d0e47-e5f9-41ab-9ceb-affac617b8b1\" alt=\"Horizontal separation rule\" data-align=\"center\" style=\"display: block; margin: auto;\"></p>\n<p><strong><em>Need more information?</em></strong><em> Do you want to use the platform? Questions or feedback? Contact the responsible within your municipality or organisation. Or contact CitizenLab through support@citizenlab.co.</em></p><strong>"
+      <p>Responsável pelo processamento dos Dados:</p> <p>CitizenLab NV - Anspachlaan 65 - 1000 Bruxelas - Bélgica</p> <p>Endereço electrónico de contacto: support@citizenlab.co</p> <p>Organização: //inserir contactos de clientes:</p> <h2>1. POLÍTICA DE PRIVACIDADE</h2> <p>Esta 'Política de Privacidade' aplica-se aos 'Dados Pessoais' recolhidos pela CitizenLab em nome da organização através deste website.</p> <h2>2. O QUE SÃO OS DADOS PESSOAIS?</h2> <p>Nesta Política de Privacidade, os Dados Pessoais referem-se a informações que tornam possível a sua identificação. Uma pessoa identificável é alguém que pode ser identificada, directa ou indirectamente, em particular através da referência a um número de identificação ou a um ou mais factores ligados à identidade física, fisiológica, mental, económica, cultural ou social. Um exemplo típico de informação pessoal é o seu nome e endereço de correio electrónico.</p> <h2>3. QUAIS SÃO OS DADOS PESSOAIS QUE RECOLHEMOS?</h2> <p>Podemos recolher os seus dados pessoais a partir das três fontes seguintes:</p> <h3>3.1 Dados Pessoais que nos fornece durante o processo de registo na Plataforma, alguns dos quais são opcionais.</h3> <p>Os dados pessoais que podemos recolher de si são:</p> <ul> <li>Nome e apelido</li> <li>Endereço de e-mail</li> <li>Ano de nascimento</li> <li>Género</li> <li>Área de residência</li> <li>Língua preferida</li> </ul> <p>Esta lista pode ser alargada a pedido da organização. Se optar por entrar através de um fornecedor de autenticação de terceiros como Google Accounts, Facebook ou FranceConnect, obteremos estes dados a partir deles. Se optar por verificar a sua identidade com um fornecedor de identidade de terceiros como COW, FranceConnect ou CSAM, obteremos esta informação a partir deles.</p> <h3>3.2 Dados pessoais que nos fornecer ao tomar medidas participativas na nossa plataforma.</h3> <p>Todas as acções que tomar na plataforma (votar, publicar uma ideia, escrever um comentário, responder a uma sondagem,…) são registadas e armazenadas. Estes dados estão também ligados aos seus dados de registo (3.1), o que implica que a organização pode ligar o perfil da sua plataforma a estes dados de participação.</p> <h3>3.3 Dados pessoais que recolhemos quando visita a nossa plataforma.</h3> <p>Nós (e processadores terceiros agindo em nosso nome) recolhemos informações sobre a utilização da nossa plataforma para avaliar o bom funcionamento e segurança da plataforma. Para este fim, recolhemos informações técnicas que podem identificá-lo, tais como o seu endereço IP e detalhes do seu navegador. Ao utilizar os nossos serviços, o utilizador concorda com a recolha destes dados.</p> <p>Também recolhemos dados de utilização para melhorar os nossos serviços, pode optar por não participar nesta recolha a qualquer momento junto do gestor de consentimento.</p> <h2>4. COMO UTILIZAMOS OS DADOS PESSOAIS?</h2> <p>Poderemos utilizar os seus dados pessoais para os seguintes fins:</p> <ul> <li>Em primeiro lugar e acima de tudo, para comunicar os seus dados à organização com o contexto relevante, e para elaborar relatórios agregados de todos os dados recolhidos nesta plataforma para ajudar a sua tomada de decisão.</li> <li>Para criar e manter o seu perfil de utilizador neste website.</li> <li>Para gerir a identificação e autenticação dos utilizadores.</li> <li>Para fornecer informações sobre a sua comunidade e/ou alertá-lo quando as actividades na plataforma possam interessar-lhe. Pode optar por não receber e-mails de utilizadores a partir do seu perfil de utilizador em qualquer altura.</li> <li>Para melhorar os nossos serviços e monitorizar as suas funcionalidades.</li> </ul> <p>Os dados pessoais só são armazenados e processados durante o período necessário para efeitos de processamento. Depois disso, os dados serão apagados ou tornados anónimos.</p> <h2>5. COM QUEM PARTILHAMOS OS SEUS DADOS PESSOAIS?</h2> <p>Partilhamos os seus dados pessoais com a organização em nome da qual recolhemos esses dados. Partilhamos os seus dados com os sub-processadores que trabalham em nosso nome. Nunca venderemos ou alugaremos os seus dados pessoais a outros prestadores de serviços, nem partilharemos os seus dados pessoais com quaisquer prestadores de serviços que não estejam em conformidade com a GDPR.</p> <h2>6. PARA ONDE TRANSFERIMOS OS SEUS DADOS PESSOAIS?</h2> <p>Só transferimos os seus dados pessoais para prestadores de serviços estabelecidos fora do Espaço Económico Europeu se estes estiverem em conformidade com o artigo 44 da GDPR.</p> <h2>7. QUAIS SÃO OS SEUS DIREITOS?</h2> <p>Tem o direito de visualizar os seus dados pessoais em qualquer altura, bem como o direito de ser informado sobre a utilização que a Citizenlab faz dos seus dados pessoais.</p> <h3>7.1 Direito de rectificação, apagamento e restrição do processamento</h3> <p>É livre de decidir se fornece ou não os seus dados pessoais à Citizenlab. Além disso, tem sempre o direito de solicitar à Citizenlab que corrija, complete ou remova os seus dados pessoais. Reconhece que a recusa em fornecer ou um pedido de apagamento de dados pessoais significa que determinados serviços já não podem ser fornecidos. Pode também solicitar que o processamento dos seus dados pessoais seja limitado. Se optar por remover a sua conta da plataforma, os dados pessoais que foram recolhidos sobre si serão removidos dos nossos servidores. Algumas informações pessoais sobre o cliente poderão permanecer nos dados de registo que guardamos por razões de segurança e legais por um período máximo de 30 dias.</p> <h3>7.2 Direito de objeção</h3> <p>Tem o direito de objeção ao processamento dos seus dados pessoais por razões sérias e legítimas. Além disso, tem sempre o direito de se opor à utilização dos seus dados pessoais para fins de marketing directo; em tais casos, não tem de declarar razões.</p> <h3>7.3 Direito à portabilidade dos dados</h3> <p>Tem o direito de obter os dados pessoais que forneceu ao Citizenlab de forma estruturada, típica e legível por máquina e/ou de os transferir para diferentes responsáveis pelo tratamento.</p> <h3>7.4 Direito de retirar o consentimento</h3> <p>Na medida em que o processamento se baseia no seu consentimento prévio, tem o direito de retirar esta aprovação.</p> <h3>7.5 Exercício dos seus direitos</h3> <p>Pode exercer os seus direitos contactando a Citizenlab para o efeito, quer por e-mail para , por correio para Anspachlaan 65, 1000 Bruxelas, Bélgica ou utilizando o formulário "Contacte-nos" no nosso Website, desde que anexe uma cópia da frente do seu bilhete de identidade.</p> <h3>7.6 Tomada de decisões automatizada e criação de perfis</h3> <p>O tratamento dos seus dados pessoais não inclui a criação de perfis e também não será sujeito pelo Citizenlab à tomada de decisões automatizada.</p> <h3>7.7 Direito de apresentar uma queixa</h3> <p>Tem o direito de apresentar uma queixa à Autoridade de Privacidade do seu país, ou à Autoridade de Privacidade belga sob cuja autoridade CitizenLab recai: Drukpersstraat 35, 1000 Bruxelas, Bélgica, Tel +32 (0)2 274 48 00, Fax +32 (0)2 274 48 35, e-mail: contact@adp-gba.be. Isto não afecta a assistência perante um tribunal civil.</p> <h2>8. INFORMAÇÕES ADICIONAIS SOBRE A COLECÇÃO E PROCESSAMENTO DE DADOS</h2> <h3>Procedimentos legais</h3> <p>CitizenLab e a Organização para a qual processamos estes dados poderá utilizar os Dados Pessoais do Utilizador para fins legais, para o tribunal ou procedimentos legais anteriores às fases anteriores à utilização ilegal desta Aplicação ou dos serviços relacionados. O Utilizador está ciente de que a CitizenLab e a Organização com quem trabalhamos poderá ser obrigada a revelar os dados pessoais a pedido das instituições governamentais competentes para o tratamento dos Dados. A base legal para este tratamento é a aceitação dos termos e condições (base contratual) e o consentimento dado.</p> <h3>Medidas de segurança</h3> <p>Citizenlab desenvolveu medidas de segurança que foram ajustadas a nível tecnológico e organizacional para evitar a destruição, perda, falsificação, alteração, acesso proibido ou a divulgação errónea a terceiros de dados pessoais, bem como qualquer outro tratamento proibido destes dados. Em circunstância alguma poderá a Citizenlab ser responsabilizada por qualquer perda directa ou indirecta resultante da utilização incorrecta ou ilegal dos seus dados pessoais por terceiros. Deve cumprir sempre as instruções de segurança, inclusive impedindo todo o acesso proibido aos seus dados de login e palavra-passe. O utilizador é o único responsável pela utilização feita a partir do website no seu computador, endereço IP e seus dados de identificação, bem como pela confidencialidade dos mesmos.</p> <h3>Alterações a esta política de privacidade</h3> <p>CitizenLab reserva-se o direito de alterar esta política de privacidade em qualquer altura, notificando os Utilizadores nesta página. Encorajamo-lo a verificar esta página para possíveis alterações. A data da última alteração é indicada no final da página. Se um Utilizador se opuser a qualquer alteração na política, o Utilizador não deverá continuar a utilizar esta Aplicação. Salvo indicação em contrário, a Política de Privacidade válida aplicável nessa altura aplica-se a todos os Dados Pessoais que tenhamos recolhido.</p> <p><em>Actualização mais recente: 17/12/2019</em></p>
+    infopage_title: Página de informação
+    infopage_body: "<p>Esta <strong>plataforma de participação tudo-em-um</strong> é uma iniciativa do seu município ou organização e pode ser utilizada para diferentes processos de consulta pública: recolha de ideias, votação, discussão, inquéritos, sondagens, orçamento participativo, mapeamento online, planeamento de cenários, apoio a conselhos e comités consultivos, ...</p>\n<p>Na página inicial, verá quais os processos <strong>activos </strong>e em que fase <strong> </strong>se encontram actualmente.</p>\n<p><img data-cl2-text-image-text-reference=\"e2c7bc7a-017d-4887-a3cb-b94185617a59\" alt=\"Horizontal separation rule\" data-align=\"center\" style=\"display: block; margin: auto;\"></p>\n<h2>Como é que me inscrevo na plataforma?</h2>\n<p>A entrada é feita facilmente, dando o seu primeiro e último nome e o seu endereço de correio electrónico. Pode também usar a sua conta Google ou Facebook. Apenas o seu primeiro e último nome será visível para os outros.</p>\n<h2>Posso utilizar a plataforma pessoalmente, por exemplo, para organizar uma consulta pública?</h2>\n<p>Absolutamente. Peça ao responsável dentro do seu município ou organização que lhe dê os direitos de permissão necessários para se tornar um moderador de projecto. Uma vez concedidas estas permissões, pode criar o seu próprio projecto e cronograma e partilhar a informação que desejar (vídeo, documentos, imagens, ...). Isto também lhe permitirá convidar outros para a plataforma, permitindo-lhes afixar ideias dentro do seu projecto, votar ou comentar.</p>\n<h2>Posso participar como associação/organização/ comité? </h2>\n<p>Sim, isso é possível. Dado que apenas o seu primeiro e último nome são visíveis para outras pessoas na plataforma, pode simplesmente usar o nome da sua organização durante a criação do seu perfil.</p>\n<h2>Por que razão utilizaria esta plataforma e não criaria eu próprio um website?</h2>\n<p>Uma equipa de programadores dedicados e especialistas em participação online (<a href=\"https://www.citizenlab.co/en\" target=\"_blank\">CitizenLab,</a> encomendado pelo seu município ou organização) está a melhorar e actualizar diariamente esta plataforma. Mesmo o mais pequeno bug é tratado imediatamente e se tiver propostas criativas, elas podem ajudá-lo a apontar quais as características da plataforma que podem ser utilizadas para isso ou quais as que estão em preparação.</p>\n<p><img data-cl2-text-image-text-reference=\"392d0e47-e5f9-41ab-9ceb-affac617b8b1\" alt=\"Horizontal separation rule\" data-align=\"center\" style=\"display: block; margin: auto;\"></p>\n<p><strong><em>Precisa de mais informações?</em></strong><em> Quer utilizar a plataforma? Perguntas ou feedback? Contacte o responsável dentro do seu município ou organização. Ou contacte o CitizenLab através de</em></p><strong>."
     faq_title: FAQ
-    faq_body: "<h2 class=\"ql-align-justify\">What is this platform for?</h2><p class=\"ql-align-justify\">This platform is designed as a central hub to share information and get input and feedback. Participation projects that are currently active are shown on the homepage - each participation project may have a different mode of engagement, whether it’s adding an idea, commenting on a proposal, voting on and prioritising projects, or taking a survey. </p><h2 class=\"ql-align-justify\">How do I participate? </h2><p class=\"ql-align-justify\">You can always browse public projects, but you’ll need to sign up in order to take an action. This helps to maintain a community feel and ensure the legitimacy of the input. </p><h2 class=\"ql-align-justify\">What information can people see about me?</h2><p class=\"ql-align-justify\">Your name, photo and bio, if you’ve added one, are visible. You can always change these in your Settings.</p><h2 class=\"ql-align-justify\">Why can’t I post my input or submit a comment?</h2><p class=\"ql-align-justify\">Posting, commenting and voting may be enabled only during certain times or phases of a project. In some instances, a project may only be open to contributions from a certain stakeholder group.</p><p class=\"ql-align-justify\">If posting is currently enabled for a project, you’ll see a button that prompts you to submit a post. Alternatively, you can browse other active projects for additional engagement opportunities.</p><h2 class=\"ql-align-justify\">How do I edit or delete my input?</h2><p class=\"ql-align-justify\">If you’ve posted your input but want to make edits or delete it, you can find this option by clicking on the three small dots on the top right of the post. </p><h2 class=\"ql-align-justify\">What are the community guidelines and moderation policies?</h2><p class=\"ql-align-justify\">Our community guidelines are here to help ensure that the platform is a safe space for everyone to participate. Please ensure your posts are free of:</p><ul>\n  <li class=\"ql-align-justify\">Personal attacks, insults, abusive or discriminatory comments</li>\n  <li class=\"ql-align-justify\">Offensive language including profanity</li>\n  <li class=\"ql-align-justify\">Marketing or advertising material</li>\n  <li class=\"ql-align-justify\">Personal information about other individuals</li>\n  <li class=\"ql-align-justify\">Copyrighted material such as images</li>\n  </ul><p class=\"ql-align-justify\">Any posts or comments that do not adhere to these guidelines may be edited or deleted, or in extreme instances, prevented from being posted. Please review our Terms &amp; Conditions for more information. </p><h2 class=\"ql-align-justify\">How do I report an offensive post?</h2><p class=\"ql-align-justify\">Click on the three small dots on the top right corner of the post to report it. Please indicate the reason you are reporting the content - this will send a notification for the post to be reviewed.</p><h2 class=\"ql-align-justify\">Why am I having difficulty signing up or logging in?</h2><p class=\"ql-align-justify\">If you’re unable to sign up, it may be because you’ve already registered with the same email address or previously received an invitation to join the platform. If you see a message that your email address is taken by a pending invite, please check your email and follow the link in the invitation to register your account. If you can’t find the invite, try looking in your spam box or request a new invitation. </p><h2 class=\"ql-align-justify\">How do I reset my password?</h2><p class=\"ql-align-justify\">You can always request to reset your password from the log in page. If you reset your password, a link will be sent to your email address - follow the instructions to change your password. For security reasons, the link is valid for one hour. If the link has expired, you can simply click on ‘Forgot password?’ in the log in page again to generate a new reset link.</p><p class=\"ql-align-justify\">If you didn’t receive the email, check to make sure that it’s not in your spam and that you’re sending the link to the same email address that you signed up with.</p><h2 class=\"ql-align-justify\">What will you do with my data?</h2><p class=\"ql-align-justify\">Review our privacy policy for more information on data collection and usage. In short, we will never use your data for advertising, marketing or other types of spam.</p><h2 class=\"ql-align-justify\">What emails will I receive?</h2><p class=\"ql-align-justify\">You may receive emails related to your account and your activity on the platform, for instance, when someone responds to one of your posts. You can control which emails you receive in your Settings. There is a section called “Notifications” where you can turn email notifications on and off.</p><h2 class=\"ql-align-justify\">How do I delete my account?</h2><p class=\"ql-align-justify\">In your Settings there is the option to delete your account. Input that you’ve posted will remain published, but your name will be removed from the post and replaced with ‘unknown author.’ If you’d like to delete all of your input, please do so before deleting your account. </p>"
-    initiatives_title: Proposals
+    faq_body: "<h2 class=\"ql-align-justify\">Para que serve esta plataforma?</h2><p class=\"ql-align-justify\">Esta plataforma foi concebida como um núcleo central para partilhar informação e obter contributos e feedback. Os projectos de participação que estão actualmente activos são apresentados na página inicial - cada projecto de participação pode ter um modo diferente de envolvimento, quer seja acrescentar uma ideia, comentar uma proposta, votar e dar prioridade a projectos, ou fazer um inquérito.</p><h2 class=\"ql-align-justify\">Como posso participar?</h2><p class=\"ql-align-justify\">Pode sempre navegar em projectos públicos, mas terá de se inscrever para poder tomar uma acção. Isto ajuda a manter um sentimento de comunidade e a assegurar a legitimidade do contributo.</p><h2 class=\"ql-align-justify\">Que informações podem as pessoas ver sobre mim?</h2><p class=\"ql-align-justify\">O seu nome, fotografia e biografia, caso tenha adicionado uma, são visíveis. Pode sempre alterá-las nas suas Definições.</p><h2 class=\"ql-align-justify\">Porque não posso publicar os meus dados ou enviar um comentário?</h2><p class=\"ql-align-justify\">A publicação, comentários e votação podem ser permitidos apenas durante determinados momentos ou fases de um projecto. Em alguns casos, um projecto pode estar aberto apenas a contribuições de um determinado grupo de interessados.</p><p class=\"ql-align-justify\">Se a postagem estiver actualmente activada para um projecto, verá um botão que o leva a submeter uma postagem. Em alternativa, pode procurar outros projectos activos para oportunidades de envolvimento adicionais.</p><h2 class=\"ql-align-justify\">Como posso editar ou apagar a minha contribuição?</h2><p class=\"ql-align-justify\">Se publicou o seu contributo mas pretende editar ou apagar, pode encontrar esta opção clicando nos três pequenos pontos na parte superior direita do post.</p><h2 class=\"ql-align-justify\">Quais são as orientações da comunidade e as políticas de moderação?</h2><p class=\"ql-align-justify\">As nossas directrizes comunitárias estão aqui para ajudar a garantir que a plataforma é um espaço seguro para que todos possam participar. Por favor, assegurem-se de que os vossos posts estão livres de:</p><ul>\n  <li class=\"ql-align-justify\">Ataques pessoais, insultos, comentários abusivos ou discriminatórios</li>\n  <li class=\"ql-align-justify\">Linguagem ofensiva incluindo profanidade</li>\n  <li class=\"ql-align-justify\">Material de marketing ou publicidade</li>\n  <li class=\"ql-align-justify\">Informação pessoal sobre outros indivíduos</li>\n  <li class=\"ql-align-justify\">Material com direitos de autor, como imagens</li>\n  </ul><p class=\"ql-align-justify\">Quaisquer mensagens ou comentários que não cumpram estas directrizes podem ser editados ou apagados, ou em casos extremos, impedidos de serem publicados. Por favor, reveja os nossos Termos &amp; Condições para mais informações.</p><h2 class=\"ql-align-justify\">Como posso denunciar um post ofensivo?</h2><p class=\"ql-align-justify\">Clique nos três pequenos pontos no canto superior direito do post para o denunciar. Por favor, indique a razão pela qual está a denunciar o conteúdo - isto enviará uma notificação para que o post seja revisto.</p><h2 class=\"ql-align-justify\">Porque é que tenho dificuldade em inscrever-me ou em iniciar sessão?</h2><p class=\"ql-align-justify\">Se não conseguir registar-se, pode ser porque já se registou com o mesmo endereço de correio electrónico ou porque recebeu previamente um convite para aderir à plataforma. Se vir uma mensagem de que o seu endereço de correio electrónico foi tomado por um convite pendente, verifique o seu correio electrónico e siga o link no convite para registar a sua conta. Se não conseguir encontrar o convite, tente procurar na sua caixa de spam ou solicite um novo convite.</p><h2 class=\"ql-align-justify\">Como posso redefinir a minha palavra-passe?</h2><p class=\"ql-align-justify\">Pode sempre pedir para redefinir a sua palavra-passe a partir da página de início de sessão. Se redefinir a sua palavra-passe, será enviado um link para o seu endereço electrónico - siga as instruções para alterar a sua palavra-passe. Por razões de segurança, a ligação é válida por uma hora. Se a ligação tiver expirado, pode simplesmente clicar em 'Esqueceu-se da palavra-passe?' na página de início de sessão novamente para gerar uma nova ligação de redefinição.</p><p class=\"ql-align-justify\">Se não recebeu o e-mail, verifique se não está no seu spam e se está a enviar o link para o mesmo endereço de e-mail com que se inscreveu.</p><h2 class=\"ql-align-justify\">O que fará com os meus dados?</h2><p class=\"ql-align-justify\">Consulte a nossa política de privacidade para mais informações sobre a recolha e utilização dos dados. Em suma, nunca utilizaremos os seus dados para publicidade, marketing ou outros tipos de spam.</p><h2 class=\"ql-align-justify\">Que mensagens de correio electrónico vou receber?</h2><p class=\"ql-align-justify\">Poderá receber e-mails relacionados com a sua conta e a sua actividade na plataforma, por exemplo, quando alguém responde a uma das suas mensagens. Pode controlar quais as mensagens de correio electrónico que recebe nas suas definições. Existe uma secção chamada \"Notificações\" onde pode ligar e desligar as notificações por correio electrónico.</p><h2 class=\"ql-align-justify\">Como posso apagar a minha conta?</h2><p class=\"ql-align-justify\">Nas suas Configurações existe a opção de apagar a sua conta. As entradas que tiver publicado continuarão publicadas, mas o seu nome será removido do correio e substituído por \"autor desconhecido\". Se desejar apagar todas as suas entradas, faça-o antes de apagar a sua conta.</p>"
+    initiatives_title: Propostas
     initiatives_body: >
-      <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="b4e659ab-2830-48fd-b3ce-96e16856262f" height="374.3745928338762" width="819" alt=""> <h2>What's a citizen's proposal?</h2> <p>As a resident of $|orgName| you can place your proposal on the agenda via this platform. These proposals are preferably concrete ideas that are linked to local policy and arise from a need, desire or dream. It can be your own proposal or a collaborative one. Maybe you'd like to change or improve an existing situation or start a new project.</p> <p>The involvement of $|orgName| in the implementation of your proposal must be both necessary and possible. In an ideal scenario, you're also available for further reflection or cooperation, but that is not an obligation. "Reducing the speed limit on the highway to 80 km/h" is therefore not a strong proposal, while "Turning the main street into a pedestrian area" is. So bring on your proposals! If more information is needed, you'll receive an update or reaction.</p><h2>Why post a proposal on this platform?</h2> <p>This is the official participation platform of $|orgName|, which offers the following benefits:</p> <ul> <li>$|orgName| is officially involved as this platform's owner, and actively monitors what happens here. When you post a proposal, the person in charge automatically receives a message. You don't have to contact them to make sure your proposal is taken into account.</li> <li>This platform has been developed specifically for official participatory actions, like citizens' proposals. Every element, from the user experience to the step-by-step approach, is built precisely for this purpose. When using traditional social media, your proposal could disappear into the overload of stimuli, and an ordinary e-mail quickly disappears into a full inbox.</li> <li>Your fellow citizens are also present on this platform. They can support and refine your proposal. The more creative your proposal is and the more support it manages to gather, the more chance it will be implemented!</li> </ul> <h2>How do you get started?</h2> <p>First, check whether your proposal meets the following criteria:</p> <p>$|initiativesEligibilityCriteria|</p> <h2>What can you expect when your proposal reaches $|initiativesVotingThreshold| votes within $|initiativesDaysLimit| days?</h2> <p>$|initiativesThresholdReachedMessage|</p> <h2>What happens to the proposals that do not receive $|initiativesVotingThreshold| votes on time? </h2> <p>That happens, but don't worry. Your proposal will remain on the platform. The status of your proposal will automatically change to 'Expired'. As a result, voting will no longer be possible. If you wish, you can choose to delete your own proposal at any time.</p>
+      <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="b4e659ab-2830-48fd-b3ce-96e16856262f" height="374.3745928338762" width="819" alt=""> <h2>O que é a proposta de um cidadão?</h2> <p>Como um residente de $|orgName| pode colocar a sua proposta na agenda através desta plataforma. Estas propostas são de preferência ideias concretas que estão ligadas à política local e resultam de uma necessidade, desejo ou sonho. Pode ser a sua própria proposta ou uma proposta de colaboração. Talvez queira alterar ou melhorar uma situação existente ou iniciar um novo projecto.</p> <p>O envolvimento de $|orgName| na implementação da sua proposta deve ser simultaneamente necessário e possível. Num cenário ideal, também está disponível para uma maior reflexão ou cooperação, mas isso não é uma obrigação. "Reduzir o limite de velocidade na auto-estrada para 80 km/h" não é, portanto, uma proposta forte, enquanto "Transformar a rua principal numa zona pedonal" é. Portanto, tragam as vossas propostas! Se for necessária mais informação, receberá uma actualização ou reacção.</p><h2>Porquê colocar uma proposta nesta plataforma?</h2> <p>Esta é a plataforma de participação oficial de $|orgName|, que oferece os seguintes benefícios:</p> <ul> <li>$|orgName| está oficialmente envolvida como proprietária desta plataforma, e monitoriza activamente o que acontece aqui. Quando se publica uma proposta, a pessoa responsável recebe automaticamente uma mensagem. Não tem de os contactar para garantir que a sua proposta é tida em conta.</li> <li>Esta plataforma foi desenvolvida especificamente para acções participativas oficiais, como as propostas dos cidadãos. Cada elemento, desde a experiência do utilizador até à abordagem passo-a-passo, é construído precisamente para este fim. Ao utilizar os meios de comunicação social tradicionais, a sua proposta pode desaparecer na sobrecarga de estímulos, e um correio electrónico comum desaparece rapidamente numa caixa de entrada cheia.</li> <li>Os seus concidadãos também estão presentes nesta plataforma. Eles podem apoiar e refinar a sua proposta. Quanto mais criativa for a sua proposta e quanto mais apoio conseguir reunir, mais hipóteses terá de ser implementada!</li> </ul> <h2>Como é que começa?</h2> <p>Em primeiro lugar, verifique se a sua proposta cumpre os seguintes critérios:</p> <p>$|iniciativasElegibilidadeCritérios|</p> <h2>O que pode esperar quando a sua proposta atingir $|iniciativasVotoThreshold| vota dentro de $|iniciativasDiasLimite| dias?</h2> <p>$|iniciativasThresholdReachedMessage|</p> <h2>O que acontece às propostas que não recebem $|iniciativasVotarThreshold| votos dentro do prazo? </h2> <p>Isso acontece, mas não se preocupe. A sua proposta permanecerá na plataforma. O estatuto da sua proposta mudará automaticamente para 'Expirado'. Como resultado, a votação deixará de ser possível. Se desejar, pode optar por eliminar a sua própria proposta em qualquer altura.</p>
   nav_bar_items:
     home:
-      title: Home
+      title: Início
     projects:
-      title: All projects
+      title: Todos os projectos
     all_input:
-      title: All input
+      title: Todas as entradas
     proposals:
-      title: Proposals
+      title: Propostas
     events:
-      title: Events
+      title: Eventos
     about:
-      title: About
+      title: Sobre
     faq:
       title: FAQ
   projects:
-    open_idea_project_title: An idea? Bring it to your council!
-    open_idea_project_description_preview: Maybe you have an idea that doesn't fit with one of the existing projects? Than post it here, gather support and get it on the political agenda!
+    open_idea_project_title: Uma ideia? Tragam-na ao vosso conselho!
+    open_idea_project_description_preview: Talvez tenha uma ideia que não se ajuste a um dos projectos existentes? Do que publicá-la aqui, reunir apoio e colocá-la na agenda política!
     open_idea_project_description: >
-      <p>Here, you can start your own idea if it doesn't fit within one of the existing projects.</p><p><strong>The objective?</strong> To get your idea on the political agenda.</p><p><strong>How?</strong> By gathering support, namely at least 100 votes in 3 months. You can do that by first making your idea 'attractive'. Write it in a clear and engaging way, add images, give strong arguments based on facts, add attachments with further details or background information, ... After you've done that, start sharing your idea on social media or through email. Invite people to join the discussion on your idea, or simply convince them to support it by voting in favour.</p><p><strong>About what?</strong> Your idea can be about a lot of things, as long as it is related to your city and its policy. It can be a problem you experience, a solution you envision or even a combination of both. It can be wild and on the long term, or very tangible and a quick win.</p><p><strong>And then? </strong>Did you reach 100 votes in 3 months? Congratulations! The city will now take your idea in consideration. If your idea is considered to be feasible and does not harm specific groups or individuals, you will get the chance to present your proposal during the council meeting. During that same meeting, the council members will give you direct feedback on what they will or won't do with your idea and why. If you don't gather 100 votes in 3 months, your proposal won't be considered.</p><p>We're curious to learn about your ideas!</p>
+      <p>Aqui, pode começar a sua própria ideia se esta não se enquadrar num dos projectos existentes.</p><p><strong>O objectivo?</strong> Para ter a sua ideia na agenda política.</p><p><strong>Como?</strong> Reunindo apoio, nomeadamente pelo menos 100 votos em 3 meses. Pode fazê-lo, primeiro, tornando a sua ideia 'atractiva'. Escreva-a de forma clara e envolvente, adicione imagens, dê argumentos fortes baseados em factos, adicione anexos com mais detalhes ou informação de fundo, ... Depois de o ter feito, comece a partilhar a sua ideia nas redes sociais ou através de correio electrónico. Convide as pessoas a juntarem-se à discussão da sua ideia, ou simplesmente convença-as a apoiá-la, votando a favor.</p><p><strong>Sobre o quê?</strong> A sua ideia pode ser sobre muitas coisas, desde que esteja relacionada com a sua cidade e a sua política. Pode ser um problema que experimenta, uma solução que imagina ou mesmo uma combinação de ambas. Pode ser selvagem e a longo prazo, ou muito tangível e uma vitória rápida.</p><p><strong>E depois? </strong>Conseguiu 100 votos em 3 meses? Parabéns! A cidade vai agora levar a sua ideia em consideração. Se a sua ideia for considerada viável e não prejudicar grupos ou indivíduos específicos, terá a oportunidade de apresentar a sua proposta durante a reunião do conselho. Durante essa mesma reunião, os membros do conselho dar-lhe-ão um feedback directo sobre o que farão ou não com a sua ideia e porquê. Se não reunir 100 votos em 3 meses, a sua proposta não será considerada.</p><p>Estamos curiosos em conhecer as suas ideias!</p>
   events:
-    council_meeting_title: Council Meeting
+    council_meeting_title: Reunião do Conselho
     council_meeting_description: >
-      <p>During this council meeting, those citizen initiatives that gained 100 votes in less than 3 months, will be presented.</p><p>The council will then share their view on each idea.</p>
+      <p>Durante esta reunião do conselho, serão apresentadas as iniciativas de cidadãos que obtiveram 100 votos em menos de 3 meses.</p><p>O conselho irá então partilhar a sua opinião sobre cada ideia.</p>
   custom_fields:
     users:
       gender:
-        title: Gender
+        title: Género
       birthyear:
-        title: Year of birth
+        title: Ano de nascimento
       domicile:
-        title: Place of residence
+        title: Local de residência
       education:
-        title: Education
+        title: Educação
     ideas:
       title:
-        title: Title
+        title: Título
         description:
       body:
-        title: Description
+        title: Descrição
         description:
       author_id:
-        title: Author
+        title: Autor
       topic_ids:
-        title: Tags
+        title: Etiquetas
         description:
       location:
-        title: Location
+        title: Localização
         description:
       proposed_budget:
-        title: Proposed Budget
+        title: Orçamento proposto
         description:
       budget:
-        title: Budget
+        title: Orçamento
       images:
-        title: Images
+        title: Imagens
         description:
       attachments:
-        title: Attachments
+        title: Anexos
         description:
       section1:
         description:
       section2:
-        title: Images and attachments
+        title: Imagens e anexos
         description:
       section3:
-        title: Details
+        title: Detalhes
         description:
   custom_forms:
     categories:
       main_content:
         idea:
-          title: What is your idea?
+          title: Qual é a sua ideia?
         question:
-          title: What is your question?
+          title: Qual é a sua pergunta?
         contribution:
-          title: What is your contribution?
+          title: Qual é a sua contribuição?
         project:
-          title: What is your project?
+          title: Qual é o seu projecto?
         issue:
-          title: What is your comment?
+          title: Qual é o seu comentário?
         option:
-          title: What is your option?
+          title: Qual é a sua opção?
       details:
-        title: Details
+        title: Detalhes
       attachements:
-        title: Images and attachments
+        title: Imagens e anexos
       extra:
-        title: Additional information
+        title: Informação adicional
   custom_field_options:
     gender:
-      male: Male
-      female: Female
-      unspecified: Other
+      male: Sexo masculino
+      female: Feminino
+      unspecified: Outros
     domicile:
-      outside: Somewhere else
+      outside: Em algum outro lugar
     education:
-      ISCED2: Lower secondary education
-      ISCED3: Upper secondary education
-      ISCED4: Post-secondary non-tertiary education
-      ISCED5: Short-cycle tertiary education
-      ISCED6: Bachelor or equivalent
-      ISCED7: Master or equivalent
-      ISCED8: Doctoral or equivalent
+      ISCED2: Ensino secundário inferior
+      ISCED3: Ensino secundário superior
+      ISCED4: Ensino pós-secundário não terciário
+      ISCED5: Educação terciária de ciclo curto
+      ISCED6: Solteiro ou equivalente
+      ISCED7: Mestre ou equivalente
+      ISCED8: Doutoramento ou equivalente
   initiatives:
     default_threshold_reached_message: >
-      <p>The initiators are invited to present their proposal at the next council meeting. We will provide an official update.</p>
+      <p>Os iniciadores são convidados a apresentar a sua proposta na próxima reunião do conselho. Forneceremos uma actualização oficial.</p>
     default_eligibility_criteria: >
-      <ul> <li>It must fall within the policy areas and competencies of local policy</li> <li>It serves the public interest rather than your individual interest</li> <li>It does not discriminate based on gender, race, age, or background</li> <li>It does not harm others</li> </ul>
+      <ul> <li>Deve ser abrangido pelas áreas políticas e competências da política local</li> <li>Serve o interesse público e não o seu interesse individual</li> <li>Não discrimina com base no sexo, raça, idade ou origem</li> <li>Não prejudica os outros</li> </ul>
   reset_password_mailer:
     send_reset_password:
-      cta_reset_password: 'Reset your password'
-      message_you_reset_your_password: 'You requested a password reset for the participation platform of %{organizationName}. Click the button below to choose a new, safe password. The link expires in 1 hour.'
-      subject: '%{organizationName}: Reset your password'
-      title_reset_your_password: 'Choose a new password'
+      cta_reset_password: 'Redefinir a sua palavra-passe'
+      message_you_reset_your_password: 'Solicitou uma redefinição de senha para a plataforma de participação de %{organizationName}. Clique no botão abaixo para escolher uma nova palavra-passe segura. A ligação expira dentro de 1 hora.'
+      subject: '%{organizationName}: Redefinir a sua palavra-passe'
+      title_reset_your_password: 'Escolha uma nova senha'
   xlsx_export:
     column_headers:
       input_id: 'ID'
       latitude: 'Latitude'
       longitude: 'Longitude'
-      author_fullname: 'Author name'
-      author_email: 'Author email'
-      author_id: 'Author ID'
-      budget: 'Budget'
-      created_at: 'Submitted at'
-      published_at: 'Published at'
-      comments_count: 'Comments'
+      author_fullname: 'Nome do autor'
+      author_email: 'E-mail do autor'
+      author_id: 'Identificação do autor'
+      budget: 'Orçamento'
+      created_at: 'Submetido em'
+      published_at: 'Publicado em'
+      comments_count: 'Comentários'
       upvotes_count: 'Upvotes'
       downvotes_count: 'Downvotes'
-      baskets_count: 'Baskets'
+      baskets_count: 'Cestas'
       input_url: 'URL'
-      project: 'Project'
-      status: 'Status'
-      assignee_fullname: 'Assignee'
-      assignee_email: 'Assignee email'
+      project: 'Projecto'
+      status: 'Estado'
+      assignee_fullname: 'Cessionário'
+      assignee_email: 'Cessionário e-mail'
   form_builder:
     default_select_field:
-      title: 'Your question'
-      option1: 'Option 1'
-      option2: 'Option 2'
+      title: 'A sua pergunta'
+      option1: 'Opção 1'
+      option2: 'Opção 2'
     survey_end_page:
-      title: 'Survey end'
-      description: "Please submit your answers by selecting 'Submit survey' below."
+      title: 'Fim do inquérito'
+      description: "Por favor, submeta as suas respostas, seleccionando abaixo 'Submeter inquérito'."
   project_copy:
-    title_suffix: 'Copy'
+    title_suffix: 'Cópia'
   confirmations_mailer:
     send_confirmation_code:
-      subject: "Confirm your email address for %{organizationName}'s participation platform"
-      header: "Your Confirmation Code"
-      header_message: "Hi %{firstName}!"
-      thanks_for_signing_up: "Thanks for signing up for %{organizationName}'s participation platform."
-      please_confirm_your_email_address: "To complete your registration, please verify your email address."
-      copy_paste_the_link_below: "Copy and paste the code below into the registration form on the platform."
-      the_link_is_valid_for: "This link is valid for 24 hours. If the link has expired, you may <a href=\"%{link}\">request a new code</a>."
-      did_you_receive_this_email_in_error: "Did you receive this email in error? <a href=\"%{link}\">Let us know</a>."
+      subject: "Confirme o seu endereço electrónico para %{organizationName}'s plataforma de participação"
+      header: "O seu Código de Confirmação"
+      header_message: "Olá %{firstName}!"
+      thanks_for_signing_up: "Obrigado por se inscrever na plataforma de participação %{organizationName}."
+      please_confirm_your_email_address: "Para completar o seu registo, por favor verifique o seu endereço de correio electrónico."
+      copy_paste_the_link_below: "Copiar e colar o código abaixo no formulário de registo na plataforma."
+      the_link_is_valid_for: "Esta ligação é válida por 24 horas. Se a ligação tiver expirado, pode <a href=\"%{link}\">solicitar um novo código</a>."
+      did_you_receive_this_email_in_error: "Recebeu este e-mail por engano? <a href=\"%{link}\">Diga-nos</a>."
