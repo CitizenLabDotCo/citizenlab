@@ -3,14 +3,8 @@ import styled from 'styled-components';
 
 import ActionsForm from './ActionsForm';
 
-import GetProjectPermissions, {
-  GetProjectPermissionsChildProps,
-} from 'resources/GetProjectPermissions';
 import { isNilOrError } from 'utils/helperUtils';
-import {
-  IPermissionData,
-  updateProjectPermission,
-} from 'services/actionPermissions';
+import { IPermissionData } from 'services/actionPermissions';
 
 import { fontSizes } from 'utils/styleUtils';
 import useProject from 'hooks/useProject';
@@ -18,6 +12,8 @@ import {
   getMethodConfig,
   ParticipationMethodConfig,
 } from 'utils/participationMethodUtils';
+import useProjectPermissions from 'api/project_permissions/useProjectPermissions';
+import useUpdateProjectPermission from 'api/project_permissions/useUpdateProjectPermission';
 
 const Container = styled.div`
   display: flex;
@@ -35,37 +31,39 @@ interface InputProps {
   projectId: string;
 }
 
-interface DataProps {
-  permissions: GetProjectPermissionsChildProps;
-}
+interface Props extends InputProps {}
 
-interface Props extends InputProps, DataProps {}
-
-const Continuous = ({ permissions, projectId }: Props) => {
+const Continuous = ({ projectId }: Props) => {
   const project = useProject({ projectId });
+  const permissions = useProjectPermissions({
+    projectId: !isNilOrError(project) ? project.id : undefined,
+  });
+  const { mutate: updateProjectPermission } = useUpdateProjectPermission(
+    project?.id
+  );
 
   const handlePermissionChange = (
     permission: IPermissionData,
     permittedBy: IPermissionData['attributes']['permitted_by'],
     groupIds: string[]
   ) => {
-    updateProjectPermission(
-      permission.id,
+    updateProjectPermission({
+      permissionId: permission.id,
       projectId,
-      permission.attributes.action,
-      { permitted_by: permittedBy, group_ids: groupIds }
-    );
+      action: permission.attributes.action,
+      permission: { permitted_by: permittedBy, group_ids: groupIds },
+    });
   };
 
   const config: ParticipationMethodConfig | null = !isNilOrError(project)
     ? getMethodConfig(project.attributes.participation_method)
     : null;
 
-  if (!isNilOrError(permissions) && !isNilOrError(config)) {
+  if (!isNilOrError(permissions.data) && !isNilOrError(config)) {
     return (
       <Container>
         <ActionsForm
-          permissions={permissions}
+          permissions={permissions.data.data}
           onChange={handlePermissionChange}
           postType={config.postType}
           projectId={projectId}
@@ -77,8 +75,4 @@ const Continuous = ({ permissions, projectId }: Props) => {
   return null;
 };
 
-export default (inputProps: InputProps) => (
-  <GetProjectPermissions projectId={inputProps.projectId}>
-    {(permissions) => <Continuous {...inputProps} permissions={permissions} />}
-  </GetProjectPermissions>
-);
+export default (inputProps: InputProps) => <Continuous {...inputProps} />;
