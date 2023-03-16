@@ -222,7 +222,7 @@ nl-BE:
       subject: "Bevestig je e-mailadres voor het participatieplatform van %{organizationName}"
       header: "Je bevestigingscode "
       header_message: "Hallo %{firstName}!"
-      confirm_email_address: "Bevestig je e-mailadres"
+      confirm_email_address: "Bevestig uw e-mailadres"
       thanks_for_signing_up: "Bedankt voor je inschrijving op het participatieplatform van %{organizationName}."
       best_regards: "Vriendelijke groeten,"
       ignore_email: "Als u geen code heeft aangevraagd, kunt u deze e-mail gerust negeren."
