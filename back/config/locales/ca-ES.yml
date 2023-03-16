@@ -127,7 +127,7 @@ ca:
       budget:
         title: Pressupost
       images:
-        title: Images
+        title: Imatges
         description:
       attachments:
         title: Adjunts
@@ -135,10 +135,10 @@ ca:
       section1:
         description:
       section2:
-        title: Images and attachments
+        title: Imatges i fitxers adjunts
         description:
       section3:
-        title: Details
+        title: Detalls
         description:
   custom_forms:
     categories:
@@ -160,78 +160,78 @@ ca:
       attachements:
         title: Imatges i fitxers adjunts
       extra:
-        title: Additional information
+        title: Informació adicional
   custom_field_options:
     gender:
-      male: Male
-      female: Female
-      unspecified: Other
+      male: Mascle
+      female: Dona
+      unspecified: Altres
     domicile:
-      outside: Somewhere else
+      outside: Algun altre lloc
     education:
-      ISCED2: Lower secondary education
-      ISCED3: Upper secondary education
-      ISCED4: Post-secondary non-tertiary education
-      ISCED5: Short-cycle tertiary education
-      ISCED6: Bachelor or equivalent
-      ISCED7: Master or equivalent
-      ISCED8: Doctoral or equivalent
+      ISCED2: Educació secundària inferior
+      ISCED3: Educació secundària superior
+      ISCED4: Educació postsecundària no terciària
+      ISCED5: Educació terciària de cicle curt
+      ISCED6: Batxillerat o equivalent
+      ISCED7: Màster o equivalent
+      ISCED8: Doctorat o equivalent
   initiatives:
     default_threshold_reached_message: >
-      <p>The initiators are invited to present their proposal at the next council meeting. We will provide an official update.</p>
+      <p>Es convida els iniciadors a presentar la seva proposta a la propera reunió del consell. Us proporcionarem una actualització oficial.</p>
     default_eligibility_criteria: >
-      <ul> <li>It must fall within the policy areas and competencies of local policy</li> <li>It serves the public interest rather than your individual interest</li> <li>It does not discriminate based on gender, race, age, or background</li> <li>It does not harm others</li> </ul>
+      <ul> <li>Ha d'estar dins de les àrees polítiques i competències de la política local</li> <li>Serveix l'interès públic més que el vostre interès individual</li> <li>No discrimina per sexe, raça, edat o antecedents</li> <li>No perjudica els altres</li> </ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Restablir la contrasenya'
-      message_you_reset_your_password: 'You requested a password reset for the participation platform of %{organizationName}. Click the button below to choose a new, safe password. The link expires in 1 hour.'
-      subject: '%{organizationName}: Reset your password'
+      message_you_reset_your_password: 'Heu sol·licitat un restabliment de la contrasenya per a la plataforma de participació de %{organizationName}. Feu clic al botó següent per triar una contrasenya nova i segura. L''enllaç caduca en 1 hora.'
+      subject: '%{organizationName}: Restableix la teva contrasenya'
       title_reset_your_password: 'Trieu una contrasenya nova'
   xlsx_export:
     column_headers:
       input_id: 'ID'
-      latitude: 'Latitude'
-      longitude: 'Longitude'
-      author_fullname: 'Author name'
-      author_email: 'Author email'
-      author_id: 'Author ID'
-      budget: 'Budget'
-      created_at: 'Submitted at'
-      published_at: 'Published at'
+      latitude: 'Latitud'
+      longitude: 'Longitud'
+      author_fullname: 'Nom de l''autor'
+      author_email: 'Correu electrònic de l''autor'
+      author_id: 'ID de l''autor'
+      budget: 'Pressupost'
+      created_at: 'Presentat a'
+      published_at: 'Publicat a'
       comments_count: 'Comentaris'
       upvotes_count: 'Vots a favor'
       downvotes_count: 'Vots en contra'
-      baskets_count: 'Baskets'
+      baskets_count: 'Cistelles'
       input_url: 'URL'
       project: 'Projecte'
       status: 'Estat'
       assignee_fullname: 'Cesionari'
-      assignee_email: 'Assignee email'
+      assignee_email: 'Correu electrònic del cessionari'
   form_builder:
     default_select_field:
-      title: 'Your question'
-      option1: 'Option 1'
-      option2: 'Option 2'
+      title: 'La teva pregunta'
+      option1: 'opció 1'
+      option2: 'Opció 2'
     survey_end_page:
-      title: 'Survey end'
-      description: "Please submit your answers by selecting 'Submit survey' below."
+      title: 'Final de l''enquesta'
+      description: "Envieu les vostres respostes seleccionant \"Envia l'enquesta\" a continuació."
   project_copy:
     title_suffix: 'Còpia'
   confirmations_mailer:
     send_confirmation_code:
-      subject: "Confirm your email address for %{organizationName}'s participation platform"
-      header: "Your Confirmation Code"
-      header_message: "Hi %{firstName}!"
-      thanks_for_signing_up: "Thanks for signing up for %{organizationName}'s participation platform."
-      please_confirm_your_email_address: "To complete your registration, please verify your email address."
-      copy_paste_the_link_below: "Copy and paste the code below into the registration form on the platform."
-      the_link_is_valid_for: "This link is valid for 24 hours. If the link has expired, you may <a href=\"%{link}\">request a new code</a>."
-      did_you_receive_this_email_in_error: "Did you receive this email in error? <a href=\"%{link}\">Let us know</a>."
+      subject: "Confirmeu la vostra adreça de correu electrònic per a la plataforma de participació de %{organizationName}"
+      header: "El teu codi de confirmació"
+      header_message: "hola %{firstName}!"
+      thanks_for_signing_up: "Gràcies per registrar-te a la plataforma de participació de %{organizationName}."
+      please_confirm_your_email_address: "Per completar el registre, verifiqueu la vostra adreça de correu electrònic."
+      copy_paste_the_link_below: "Copieu i enganxeu el codi següent al formulari de registre de la plataforma."
+      the_link_is_valid_for: "Aquest enllaç és vàlid durant 24 hores. Si l'enllaç ha caducat, podeu <a href=\"%{link}\">sol·licitar un codi nou</a>."
+      did_you_receive_this_email_in_error: "Heu rebut aquest correu electrònic per error? <a href=\"%{link}\">Fes-nos-ho saber</a>."
   user_blocked_mailer:
     send_user_blocked_email:
-      subject: 'Your account has been temporarily disabled'
-      title_user_blocked: 'Your account has been temporarily disabled'
-      paragraph_1_without_reason: "Your account on %{organizationName} Participation Platform has been temporarily disabled for a violation of the community guidelines."
-      paragraph_1_with_reason: "Your account on %{organizationName} Participation Platform has been temporarily disabled for the following reason:"
-      for_more_information: "For more information on this, you can consult the %{termsAndConditionsPage}"
-      you_can_sign_in_again_from: "You can sign in again from %{date}"
+      subject: 'El teu compte s''ha desactivat temporalment'
+      title_user_blocked: 'El teu compte s''ha desactivat temporalment'
+      paragraph_1_without_reason: "El vostre compte a %{organizationName} Participation Platform s'ha desactivat temporalment per una infracció de les directrius de la comunitat."
+      paragraph_1_with_reason: "El vostre compte a %{organizationName} Participation Platform s'ha desactivat temporalment pel motiu següent:"
+      for_more_information: "Per a més informació sobre això, podeu consultar el %{termsAndConditionsPage}"
+      you_can_sign_in_again_from: "Podeu tornar a iniciar la sessió des %{date}"
