@@ -49,9 +49,11 @@ const ActionForm = ({
   localize,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const includeEmailConfirmedOption = useFeatureFlag({
+  const emailConfirmPermissionEnabled = useFeatureFlag({
     name: 'permission_option_email_confirmation',
   });
+  const hideEmailConfirmationToggle = emailConfirmPermissionEnabled;
+
   const groupsOptions = () => {
     if (isNilOrError(groupsList)) {
       return [];
@@ -98,7 +100,7 @@ const ActionForm = ({
             id={`participation-permission-everyone-${permissionId}`}
           />
         )}
-        {includeEmailConfirmedOption && (
+        {hideEmailConfirmationToggle && (
           <Radio
             name={`permittedBy-${permissionId}`}
             value="everyone_confirmed_email"
