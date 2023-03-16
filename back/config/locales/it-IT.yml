@@ -135,10 +135,10 @@ it:
       section1:
         description:
       section2:
-        title: Images and attachments
+        title: Immagini e allegati
         description:
       section3:
-        title: Details
+        title: Dettagli
         description:
   custom_forms:
     categories:
@@ -160,7 +160,7 @@ it:
       attachements:
         title: Immagini e allegati
       extra:
-        title: Additional information
+        title: Informazioni aggiuntive
   custom_field_options:
     gender:
       male: Maschio
@@ -190,31 +190,31 @@ it:
   xlsx_export:
     column_headers:
       input_id: 'ID'
-      latitude: 'Latitude'
-      longitude: 'Longitude'
-      author_fullname: 'Author name'
-      author_email: 'Author email'
-      author_id: 'Author ID'
-      budget: 'Budget'
-      created_at: 'Submitted at'
-      published_at: 'Published at'
+      latitude: 'Latitudine'
+      longitude: 'Longitudine'
+      author_fullname: 'Nome dell''autore'
+      author_email: 'Email dell''autore'
+      author_id: 'ID autore'
+      budget: 'Bilancio'
+      created_at: 'Presentato a'
+      published_at: 'Pubblicato presso'
       comments_count: 'Commenti'
       upvotes_count: 'Voto positivo'
       downvotes_count: 'Voto negativo'
-      baskets_count: 'Baskets'
+      baskets_count: 'Cestini'
       input_url: 'URL'
       project: 'Progetto'
       status: 'Stato'
       assignee_fullname: 'Assegnatario'
-      assignee_email: 'Assignee email'
+      assignee_email: 'Email del destinatario'
   form_builder:
     default_select_field:
-      title: 'Your question'
-      option1: 'Option 1'
-      option2: 'Option 2'
+      title: 'La vostra domanda'
+      option1: 'Opzione 1'
+      option2: 'Opzione 2'
     survey_end_page:
-      title: 'Survey end'
-      description: "Please submit your answers by selecting 'Submit survey' below."
+      title: 'Fine del sondaggio'
+      description: "Inviate le vostre risposte selezionando \"Invia sondaggio\" qui sotto."
   project_copy:
     title_suffix: 'Copia'
   confirmations_mailer:
@@ -227,3 +227,11 @@ it:
       copy_paste_the_link_below: "Copia e incolla il codice qui sotto nel tuo modulo di registrazione."
       the_link_is_valid_for: "Questo link è valido per 24 ore. Se il link è scaduto, puoi <a href=\"%{link}\">richiedere un nuovo codice</a>."
       did_you_receive_this_email_in_error: "Hai ricevuto questa e-mail per errore? <a href=\"%{link}\">Facci sapere</a>."
+  user_blocked_mailer:
+    send_user_blocked_email:
+      subject: 'Il suo account è stato temporaneamente disabilitato'
+      title_user_blocked: 'Il suo account è stato temporaneamente disabilitato'
+      paragraph_1_without_reason: "Il tuo account su %{organizationName} Participation Platform è stato temporaneamente disabilitato per una violazione delle linee guida della comunità."
+      paragraph_1_with_reason: "Il vostro account sulla piattaforma di partecipazione %{organizationName} è stato temporaneamente disabilitato per il seguente motivo:"
+      for_more_information: "Per ulteriori informazioni, è possibile consultare il sito %{termsAndConditionsPage}."
+      you_can_sign_in_again_from: "È possibile accedere nuovamente a %{date}"
