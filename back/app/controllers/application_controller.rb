@@ -5,6 +5,7 @@ class ApplicationController < ActionController::API
   include Pundit
 
   before_action :authenticate_user
+  before_action :error_if_blocked
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
 
@@ -18,6 +19,10 @@ class ApplicationController < ActionController::API
   rescue_from ClErrors::TransactionError, with: :transaction_error
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
+  def error_if_blocked
+    render json: { errors: 'User blocked' }, status: :unauthorized if current_user.blocked?
+  end
 
   def send_error(error = nil, status = 400)
     render json: error, status: status
