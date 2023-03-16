@@ -216,7 +216,7 @@ class WebApi::V1::UsersController < ::ApplicationController
         policy_scope_class: InitiativeCommentPolicy::Scope
       ).count
     end
-    render json: { count: count }, status: :ok
+    render json: raw_json({ count: count }), status: :ok
   end
 
   def update_password

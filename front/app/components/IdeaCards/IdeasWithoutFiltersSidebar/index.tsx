@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
@@ -177,9 +177,12 @@ const IdeasWithoutFiltersSidebar = ({
     setSelectedView(defaultView || 'card');
   }, [defaultView]);
 
-  const handleSearchOnChange = (search: string) => {
-    onUpdateQuery({ search });
-  };
+  const handleSearchOnChange = useCallback(
+    (search: string) => {
+      onUpdateQuery({ search });
+    },
+    [onUpdateQuery]
+  );
 
   const handleProjectsOnChange = (projects: string[]) => {
     onUpdateQuery({ projects });
@@ -207,18 +210,21 @@ const IdeasWithoutFiltersSidebar = ({
 
   const phaseId = ideaQueryParameters.phase;
 
-  if (isNilOrError(ideaCustomFieldsSchemas)) return null;
+  const locationEnabled = !isNilOrError(ideaCustomFieldsSchemas)
+    ? isFieldEnabled(
+        'location_description',
+        ideaCustomFieldsSchemas.data.attributes,
+        locale
+      )
+    : false;
 
-  const locationEnabled = isFieldEnabled(
-    'location_description',
-    ideaCustomFieldsSchemas.data.attributes,
-    locale
-  );
-  const topicsEnabled = isFieldEnabled(
-    'topic_ids',
-    ideaCustomFieldsSchemas.data.attributes,
-    locale
-  );
+  const topicsEnabled = !isNilOrError(ideaCustomFieldsSchemas)
+    ? isFieldEnabled(
+        'topic_ids',
+        ideaCustomFieldsSchemas.data.attributes,
+        locale
+      )
+    : false;
   const showViewButtons = !!(locationEnabled && showViewToggle);
   const showListView =
     !locationEnabled || (locationEnabled && selectedView === 'card');
