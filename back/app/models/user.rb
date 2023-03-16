@@ -397,7 +397,7 @@ class User < ApplicationRecord
   end
 
   def active?
-    registration_completed_at.present? && !invite_pending? && !blocked?
+    registration_completed_at.present? && !invite_pending? && !blocked? && !confirmation_required?
   end
 
   def blocked?
