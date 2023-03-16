@@ -6,7 +6,7 @@ class ApplicationController < ActionController::API
 
   before_action :authenticate_user
   before_action :error_if_blocked
-  
+
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
 
@@ -120,6 +120,6 @@ class ApplicationController < ActionController::API
   end
 
   def error_if_blocked
-    render json: { errors: 'User blocked' }, status: :unauthorized if current_user.blocked?
+    render json: { errors: 'User blocked' }, status: :unauthorized if current_user&.blocked?
   end
 end
