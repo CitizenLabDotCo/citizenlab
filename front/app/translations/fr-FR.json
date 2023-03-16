@@ -282,7 +282,7 @@
   "app.components.ParticipationCTABars.takeTheSurvey": "Répondre à l'enquête",
   "app.components.ParticipationCTABars.userHasParticipated": "Vous avez participé à ce projet.",
   "app.components.ParticipationCTABars.volunteer": "Bénévole",
-  "app.components.ParticipationCTABars.xDayLeft": "{timeLeft, plural, =0 {Moins d'un jour} one {# jour restant} other {# jours}} restant",
+  "app.components.ParticipationCTABars.xDayLeft": "{timeLeft, plural, =0 {Moins d'un jour} one {# jour} other {# jours}} gauche",
   "app.components.ParticipationCTABars.xWeeksLeft": "{timeLeft} semaines restantes",
   "app.components.PasswordInput.a11y_passwordHidden": "Mot de passe masqué",
   "app.components.PasswordInput.a11y_passwordVisible": "Mot de passe visible",
