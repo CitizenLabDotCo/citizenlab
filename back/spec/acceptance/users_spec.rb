@@ -894,7 +894,7 @@ resource 'Users' do
 
             example_request 'Does not send a confirmation email' do
               last_email = ActionMailer::Base.deliveries.last
-              expect(last_email.to).not_to include user.email
+              expect(last_email).to be_nil
             end
           end
 
