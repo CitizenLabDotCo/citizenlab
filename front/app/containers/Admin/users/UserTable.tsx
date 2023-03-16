@@ -29,6 +29,7 @@ import messages from './messages';
 // Styles
 import styled from 'styled-components';
 import useAuthUser from 'hooks/useAuthUser';
+import Warning from 'components/UI/Warning';
 
 const Container = styled.div`
   flex: 1;
@@ -60,6 +61,7 @@ const SortableTh = ({ sortDirection, onClick, children }: SortableThProps) => (
 interface InputProps {
   selectedUsers: string[] | 'none' | 'all';
   handleSelect: (userId: string) => void;
+  notCitizenlabMember: boolean;
 }
 
 interface Props extends InputProps, GetUsersChildProps {}
@@ -74,6 +76,7 @@ const UsersTable = ({
   handleSelect,
   onChangePage,
   onChangeSorting,
+  notCitizenlabMember,
 }: Props) => {
   const authUser = useAuthUser();
 
@@ -128,6 +131,14 @@ const UsersTable = ({
   if (isArray(usersList) && usersCount && usersCount > 0) {
     return (
       <Container className="e2e-user-table">
+        {process.env.NODE_ENV === 'development' && notCitizenlabMember && (
+          <Warning>
+            <span>
+              <b>@citizenlab.co</b> email addresses are not included as admins &
+              managers.
+            </span>
+          </Warning>
+        )}
         <Table mt="20px">
           <Thead>
             <Tr>

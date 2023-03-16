@@ -148,7 +148,13 @@ export class UserManager extends PureComponent<Props, State> {
   };
 
   render() {
-    const { users, groupType, groupId, search } = this.props;
+    const {
+      users,
+      groupType,
+      groupId,
+      search,
+      notCitizenlabMember = false,
+    } = this.props;
     const { selectedUsers, errors } = this.state;
 
     if (isArray(users.usersList) && users.usersList.length === 0) {
@@ -183,6 +189,7 @@ export class UserManager extends PureComponent<Props, State> {
           <UserTable
             selectedUsers={selectedUsers}
             handleSelect={this.handleUserSelectedOnChange(allUsersIds)}
+            notCitizenlabMember={notCitizenlabMember}
             {...users}
           />
         </>
