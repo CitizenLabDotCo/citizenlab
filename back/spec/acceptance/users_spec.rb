@@ -803,6 +803,17 @@ resource 'Users' do
           expect(json_response.dig(:data, :id)).to eq(@user.id)
           expect(json_response.dig(:data, :attributes, :verified)).to be false
         end
+
+        include_context 'when user_blocking duration is 90 days' do
+          example '[error] When user is blocked' do
+            @user.update(block_start_at: 5.days.ago)
+
+            do_request
+            assert_status 401
+            json_response = json_parse(response_body)
+            expect(json_response[:errors]).to eq('User is blocked')
+          end
+        end
       end
 
       get 'web_api/v1/users/blocked_count' do
