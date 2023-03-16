@@ -149,11 +149,8 @@ const ParentComment = ({
   };
 
   if (!isNilOrError(comment) && !isNilOrError(post)) {
-    const projectId: string | null = get(
-      post,
-      'relationships.project.data.id',
-      null
-    );
+    const projectId: string | null =
+      idea?.data.relationships.project.data.id || null;
     const commentDeleted = comment.attributes.publication_status === 'deleted';
     const commentingEnabled =
       postType === 'initiative'
