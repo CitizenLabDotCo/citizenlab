@@ -282,7 +282,7 @@
   "app.components.ParticipationCTABars.takeTheSurvey": "Besvar spørgeskemaet ",
   "app.components.ParticipationCTABars.userHasParticipated": "Du har deltaget i dette projekt.",
   "app.components.ParticipationCTABars.volunteer": "Frivillig",
-  "app.components.ParticipationCTABars.xDayLeft": "{timeLeft, flertal, =0 {Mindre end en dag} en {# dag} andre {# dage}} tilbage",
+  "app.components.ParticipationCTABars.xDayLeft": "{timeLeft, plural, =0 {Mindre end en dag} one {# dag} other {# dage}} venstre",
   "app.components.ParticipationCTABars.xWeeksLeft": "{timeLeft} uger tilbage",
   "app.components.PasswordInput.a11y_passwordHidden": "Password er skjult",
   "app.components.PasswordInput.a11y_passwordVisible": "Password er synligt",
