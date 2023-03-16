@@ -190,3 +190,39 @@ describe('Timeline project with poll phase', () => {
     cy.apiRemoveProject(projectId);
   });
 });
+
+describe('poll submission for non-active users', () => {
+  const firstName = randomString();
+  const lastName = randomString();
+  const email = randomEmail();
+  const password = randomString();
+  const randomFieldName = randomString();
+  let userId: string;
+  let customFieldId: string;
+
+  before(() => {
+    // create user
+    cy.apiCreateCustomField(randomFieldName, true, false).then((response) => {
+      customFieldId = response.body.data.id;
+      cy.apiSignup(firstName, lastName, email, password, {
+        skipCustomFields: true,
+      }).then((response) => {
+        userId = response.body.data.id;
+      });
+      cy.setLoginCookie(email, password);
+    });
+  });
+
+  it("doesn't let non-active users submit a poll response", () => {
+    cy.setLoginCookie(email, password);
+    cy.visit('/projects/the-big-poll');
+    cy.get('#e2e-complete-registration-link').should('exist');
+    cy.get('#e2e-complete-registration-link').click();
+    cy.get('#e2e-sign-up-container').should('exist');
+  });
+
+  after(() => {
+    cy.apiRemoveUser(userId);
+    cy.apiRemoveCustomField(customFieldId);
+  });
+});

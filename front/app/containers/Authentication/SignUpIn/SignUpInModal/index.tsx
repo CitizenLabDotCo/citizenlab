@@ -1,5 +1,4 @@
 import React, { memo, useState, useEffect, useCallback } from 'react';
-import { signOut } from 'services/auth';
 import tracks from './tracks';
 
 // components
@@ -86,12 +85,7 @@ const SignUpInModal = memo<Props>(
         !authUser.attributes.registration_completed_at;
 
       if (signedUpButNotCompleted) {
-        // We need to await signOut. If authUser would be there
-        // when we call closeSignUpModal,
-        // it would cause openSignUpInModalIfNecessary in App/index.tsx to open the modal again.
-        // This happens because the user is indeed not completely registered/verified
-        // (see openSignUpInModalIfNecessary).
-        await signOut();
+        // We still want to track users who exit at email verification, but we do not sign them out.
         trackEventByName(tracks.signUpFlowExitedAtEmailVerificationStep);
       }
 

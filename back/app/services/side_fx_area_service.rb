@@ -28,4 +28,4 @@ class SideFxAreaService
   end
 end
 
-SideFxAreaService.prepend_if_ee('SmartGroups::Patches::SideFxAreaService')
+SideFxAreaService.prepend(SmartGroups::Patches::SideFxAreaService)

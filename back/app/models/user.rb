@@ -396,17 +396,17 @@ class User < ApplicationRecord
   end
 
   def active?
-    registration_completed_at.present? && !invite_pending?
+    registration_completed_at.present? && !invite_pending? && !blocked?
   end
 
   def blocked?
-    if block_start_at.present?
-      duration = AppConfiguration.instance.settings('user_blocking', 'duration')
+    block_start_at.present? && block_start_at.between?(block_duration.days.ago, Time.zone.now)
+  end
 
-      return true if block_start_at.between?(duration.days.ago, Time.zone.now)
-    end
+  def block_end_at
+    return nil unless blocked?
 
-    false
+    block_start_at + block_duration.days
   end
 
   def groups
@@ -606,11 +606,15 @@ class User < ApplicationRecord
   def use_fake_code?
     Rails.env.development?
   end
+
+  def block_duration
+    AppConfiguration.instance.settings('user_blocking', 'duration')
+  end
 end
 
-User.include_if_ee('IdeaAssignment::Extensions::User')
-User.include_if_ee('Verification::Patches::User')
+User.include(IdeaAssignment::Extensions::User)
+User.include(Verification::Patches::User)
 
-User.prepend_if_ee('MultiTenancy::Patches::User')
-User.prepend_if_ee('MultiTenancy::Patches::UserConfirmation::User')
-User.prepend_if_ee('SmartGroups::Patches::User')
+User.prepend(MultiTenancy::Patches::User)
+User.prepend(MultiTenancy::Patches::UserConfirmation::User)
+User.prepend(SmartGroups::Patches::User)

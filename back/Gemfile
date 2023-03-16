@@ -8,11 +8,11 @@ git_source(:github) do |repo_name|
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.1.7.1'
+gem 'rails', '~> 6.1.7.3'
 # Use postgresql as the database for Active Record
 gem 'pg' # , '~> 0.18'
 # Use Puma as the app server
-gem 'puma', '~> 5.6.2'
+gem 'puma', '~> 6.1.1'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
@@ -46,7 +46,7 @@ group :development, :test do
   gem 'rack-mini-profiler', require: %w[prepend_net_http_patch rack-mini-profiler]
   gem 'rspec_api_documentation'
   gem 'rspec_junit_formatter'
-  gem 'rspec-rails', '~> 5.1.0'
+  gem 'rspec-rails', '~> 6.0.1'
   gem 'rspec-parameterized'
   gem 'rspec-sqlimit'
   gem 'rspec-its'
@@ -92,7 +92,7 @@ gem 'active_model_serializers', '~> 0.10.12'
 # Installs v2.2 which is not available on rubygems.org
 gem 'knock', git: 'https://github.com/nsarno/knock', branch: 'master', ref: '9214cd027422df8dc31eb67c60032fbbf8fc100b'
 gem 'que', git: 'https://github.com/que-rb/que', branch: 'master', ref: '77c6b92952b821898c393239ce0e4047b17d7dae'
-gem 'sinatra', '~> 2.2.3' # Fixes CVE-2022-45442. Sinatra is a dependency of que-web, but que-web depends on sinatra >= 0.
+gem 'sinatra', '~> 3.0.5' # Fixes CVE-2022-45442. Sinatra is a dependency of que-web, but que-web depends on sinatra >= 0.
 gem 'que-web'
 
 gem 'activerecord-import', '~> 1.4'

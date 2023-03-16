@@ -36,41 +36,44 @@ type Props = {
 };
 
 const ToggleUserConfirmation = ({ isEnabled, onChange }: Props) => {
-  const includeEmailConfirmedOption = useFeatureFlag({
+  const emailConfirmPermissionEnabled = useFeatureFlag({
     name: 'permission_option_email_confirmation',
   });
+  const showEmailConfirmationToggle = !emailConfirmPermissionEnabled;
 
   const handleChange = () => {
     onChange(!isEnabled);
   };
 
+  if (!showEmailConfirmationToggle) {
+    return null;
+  }
+
   return (
-    !includeEmailConfirmedOption && (
-      <Box mb="35px">
-        <SubSectionTitle>
-          <FormattedMessage {...messages.accountConfirmation} />
-          <IconTooltip
-            content={
-              <FormattedMessage
-                {...messages.whenTurnedOnUsersWillHaveToConfirm}
-              />
-            }
-          />
-        </SubSectionTitle>
-        <ToggleLabel>
-          <StyledToggle
-            checked={isEnabled}
-            onChange={handleChange}
-            labelTextColor={colors.primary}
-          />
-          {isEnabled ? (
-            <FormattedMessage {...messages.enabled} />
-          ) : (
-            <FormattedMessage {...messages.disabled} />
-          )}
-        </ToggleLabel>
-      </Box>
-    )
+    <Box mb="35px">
+      <SubSectionTitle>
+        <FormattedMessage {...messages.accountConfirmation} />
+        <IconTooltip
+          content={
+            <FormattedMessage
+              {...messages.whenTurnedOnUsersWillHaveToConfirm}
+            />
+          }
+        />
+      </SubSectionTitle>
+      <ToggleLabel>
+        <StyledToggle
+          checked={isEnabled}
+          onChange={handleChange}
+          labelTextColor={colors.primary}
+        />
+        {isEnabled ? (
+          <FormattedMessage {...messages.enabled} />
+        ) : (
+          <FormattedMessage {...messages.disabled} />
+        )}
+      </ToggleLabel>
+    </Box>
   );
 };
 

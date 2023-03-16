@@ -61,7 +61,8 @@ export type IIdeaPostingDisabledReason =
 export type IPreliminaryAction =
   | 'sign_in_up'
   | 'verify'
-  | 'sign_in_up_and_verify';
+  | 'sign_in_up_and_verify'
+  | 'complete_registration';
 
 const ideaPostingDisabledReason = (
   backendReason: PostingDisabledReason | null,
@@ -107,6 +108,11 @@ const ideaPostingDisabledReason = (
         disabledReason: signedIn ? 'notPermitted' : 'maybeNotPermitted',
         action: null,
       };
+    case 'not_active':
+      return {
+        disabledReason: null,
+        action: 'complete_registration',
+      };
     default:
       return {
         disabledReason: 'notPermitted',
@@ -134,6 +140,7 @@ export const getIdeaPostingRules = ({
   if (!isNilOrError(project)) {
     const { disabled_reason, future_enabled, enabled } =
       project.attributes.action_descriptor.posting_idea;
+
     if (
       !isNilOrError(authUser) &&
       (isAdmin({ data: authUser }) || isProjectModerator({ data: authUser }))
@@ -293,7 +300,8 @@ export type IPollTakingDisabledReason =
   | 'notActivePhase'
   | 'alreadyResponded'
   | 'notVerified'
-  | 'maybeNotVerified';
+  | 'maybeNotVerified'
+  | 'notActive';
 
 const pollTakingDisabledReason = (
   backendReason: PollDisabledReason | null,
@@ -304,6 +312,8 @@ const pollTakingDisabledReason = (
       return 'projectInactive';
     case 'already_responded':
       return 'alreadyResponded';
+    case 'not_active':
+      return 'notActive';
     case 'not_verified':
       return signedIn ? 'notVerified' : 'maybeNotVerified';
     case 'not_permitted':
@@ -373,7 +383,8 @@ export type ISurveyTakingDisabledReason =
   | 'maybeNotVerified'
   | 'projectInactive'
   | 'notActivePhase'
-  | 'notVerified';
+  | 'notVerified'
+  | 'notActive';
 
 const surveyTakingDisabledReason = (
   backendReason: SurveyDisabledReason | null,
@@ -384,6 +395,8 @@ const surveyTakingDisabledReason = (
       return 'projectInactive';
     case 'not_signed_in':
       return 'maybeNotPermitted';
+    case 'not_active':
+      return 'notActive';
     case 'not_verified':
       return signedIn ? 'notVerified' : 'maybeNotVerified';
     case 'not_permitted':
