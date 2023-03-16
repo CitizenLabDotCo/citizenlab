@@ -44,7 +44,7 @@ const getButtonText = (
   }
 
   return !isNil(maximumAdmins) && currentAdminSeats >= maximumAdmins
-    ? messages.buyAditionalSeat
+    ? messages.buyOneAditionalSeat
     : buttonText;
 };
 
