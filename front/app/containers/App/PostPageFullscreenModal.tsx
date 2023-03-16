@@ -9,7 +9,7 @@ import InitiativeShowPageTopBar from 'containers/InitiativesShowPage/InitiativeS
 import PlatformFooter from 'containers/PlatformFooter';
 
 // hooks
-import useIdeaById from 'api/ideas/useIdeaById';
+import useIdea from 'api/ideas/useIdeaById';
 import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // utils
@@ -66,10 +66,10 @@ const PostPageFullscreenModal = memo<Props>(
     // Far from ideal to always try to load the idea, but
     // has to happen for hooks to work.
     // It shows that we're putting 2 components in 1
-    const { data: idea } = useIdeaById(postId);
+    const { data: idea } = useIdea(postId);
 
     const topBar = useMemo(() => {
-      if (type === 'idea' && tablet && !isNilOrError(idea)) {
+      if (postId && type === 'idea' && tablet && !isNilOrError(idea)) {
         const projectId = idea.data.relationships.project.data.id;
 
         return (
@@ -81,7 +81,7 @@ const PostPageFullscreenModal = memo<Props>(
         );
       }
 
-      if (type === 'initiative') {
+      if (postId && type === 'initiative') {
         return <InitiativeShowPageTopBar initiativeId={postId} insideModal />;
       }
 
@@ -89,32 +89,34 @@ const PostPageFullscreenModal = memo<Props>(
     }, [postId, type, tablet, idea]);
 
     const content = useMemo(() => {
-      if (type === 'idea' && !isNilOrError(idea)) {
-        const projectId = idea.data.relationships.project.data.id;
+      if (postId) {
+        if (type === 'idea' && !isNilOrError(idea)) {
+          const projectId = idea.data.relationships.project.data.id;
 
-        return (
-          <>
-            <StyledIdeasShow
-              ideaId={postId}
-              projectId={projectId}
-              insideModal={true}
-            />
-            <PlatformFooter insideModal />
-          </>
-        );
-      }
+          return (
+            <>
+              <StyledIdeasShow
+                ideaId={postId}
+                projectId={projectId}
+                insideModal={true}
+              />
+              <PlatformFooter insideModal />
+            </>
+          );
+        }
 
-      if (type === 'initiative') {
-        return (
-          <>
-            <InitiativesShow initiativeId={postId} />
-            <PlatformFooter insideModal />
-          </>
-        );
+        if (type === 'initiative') {
+          return (
+            <>
+              <InitiativesShow initiativeId={postId} />
+              <PlatformFooter insideModal />
+            </>
+          );
+        }
       }
 
       return null;
-    }, [idea, type, postId]);
+    }, [postId, type, idea]);
 
     const onClose = useCallback(() => {
       close();
@@ -123,7 +125,7 @@ const PostPageFullscreenModal = memo<Props>(
     return (
       <FullscreenModal
         disableFocusOn={signUpInModalOpened}
-        opened={!!(slug && type)}
+        opened={!!(postId && slug && type)}
         close={onClose}
         url={slug ? `/${type}s/${slug}` : null}
         topBar={topBar}
