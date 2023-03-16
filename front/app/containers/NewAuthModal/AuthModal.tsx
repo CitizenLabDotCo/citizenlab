@@ -10,6 +10,7 @@ import EmailSignUp from './steps/EmailSignUp';
 import EmailConfirmation from './steps/EmailConfirmation';
 import Password from './steps/Password';
 import Success from './steps/Success';
+import Error from 'components/UI/Error';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -60,6 +61,7 @@ const AuthModal = ({
       }
       niceHeader
     >
+      {error && <Error text={error} />}
       <Box p="32px" w="100%">
         {currentStep === 'email-registration' && (
           <EmailSignUp

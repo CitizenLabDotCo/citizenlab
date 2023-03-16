@@ -195,8 +195,8 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
       trackEventByName(tracks.postYourIdeaButtonClicked);
 
       // if logged in but not complete user
-      if (authenticationRequirements === 'complete_registration' && context) {
-        openSignUpInModal({ context });
+      if (authenticationRequirements === 'complete_registration') {
+        signUp();
       }
 
       // if not logged in
@@ -242,7 +242,7 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
         const shouldVerify =
           authenticationRequirements === 'sign_in_up_and_verify';
 
-        if (isNilOrError(authUser) && context) {
+        if (context) {
           trackEventByName(tracks.signUpInModalOpened);
 
           openSignUpInModal({

@@ -9,7 +9,8 @@ export type Status = 'pending' | 'error' | 'ok';
 export type ErrorCode =
   | 'account_creation_failed'
   | 'wrong_confirmation_code'
-  | 'wrong_password';
+  | 'wrong_password'
+  | 'unknown';
 
 export interface State {
   email: string | null;

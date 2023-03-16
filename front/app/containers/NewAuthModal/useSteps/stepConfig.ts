@@ -86,18 +86,18 @@ export const getStepConfig = (
       SUBMIT_CODE: async (code: string) => {
         setStatus('pending');
 
-        await confirmEmail({ code });
-
-        const requirements = await getRequirements();
-        const emailConfirmed =
-          requirements.special.confirmation === 'satisfied';
-
-        if (emailConfirmed) {
+        try {
+          await confirmEmail({ code });
           setStatus('ok');
           setCurrentStep('success');
-        } else {
+        } catch (e) {
           setStatus('error');
-          setError('wrong_confirmation_code');
+
+          if (e?.code?.[0]?.error === 'invalid') {
+            setError('wrong_confirmation_code');
+          } else {
+            setError('unknown');
+          }
         }
       },
     },

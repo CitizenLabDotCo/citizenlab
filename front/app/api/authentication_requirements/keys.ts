@@ -1,10 +1,10 @@
 import { AuthenticationContext } from './types';
 
-const requirementsKeys = {
+const requirementKeys = {
   all: () => [{ type: 'requirements' }],
   item: (authenticationContext: AuthenticationContext) => [
-    { ...requirementsKeys.all()[0], ...authenticationContext },
+    { ...requirementKeys.all()[0], authenticationContext },
   ],
-};
+} as const;
 
-export default requirementsKeys;
+export default requirementKeys;

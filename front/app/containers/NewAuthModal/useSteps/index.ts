@@ -36,6 +36,7 @@ export default function useSteps() {
     }
 
     const response = await getAuthenticationRequirements(authenticationContext);
+
     return response.data.attributes.requirements.requirements;
   }, []);
 

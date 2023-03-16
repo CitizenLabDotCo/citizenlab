@@ -27,6 +27,8 @@ const OLD_MODAL_EVENT = 'openOldSignUpInModal';
 
 // Shared flow
 export async function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
+  console.log({ metaData });
+
   if (metaData?.context) {
     const response = await getAuthenticationRequirements(metaData.context);
     const passwordNotRequired =
