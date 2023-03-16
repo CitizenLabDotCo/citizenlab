@@ -173,7 +173,6 @@ const UserTableRow = ({
 
       <ChangeSeatModal
         user={user}
-        isUserAdmin={isUserAdmin}
         toggleAdmin={toggleAdmin}
         showModal={showModal}
         closeModal={closeModal}

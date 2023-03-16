@@ -17,6 +17,7 @@ import useSeats from 'api/seats/useSeats';
 import { isNil } from 'utils/helperUtils';
 
 import { IUserData } from 'services/users';
+import { isAdmin } from 'services/permissions/roles';
 
 const getInfoText = (
   isUserAdmin: boolean,
@@ -51,7 +52,6 @@ const getButtonText = (
 interface Props {
   user: IUserData;
   showModal: boolean;
-  isUserAdmin: boolean;
   closeModal: () => void;
   toggleAdmin: () => void;
 }
@@ -61,8 +61,8 @@ const ChangeSeatModal = ({
   closeModal,
   user,
   toggleAdmin,
-  isUserAdmin,
 }: Props) => {
+  const isUserAdmin = isAdmin({ data: user });
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();

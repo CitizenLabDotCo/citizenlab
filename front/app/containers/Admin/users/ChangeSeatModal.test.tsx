@@ -62,7 +62,6 @@ describe('ChangeSeatModal', () => {
         user={mockUser.data}
         toggleAdmin={toggleAdmin}
         closeModal={closeModal}
-        isUserAdmin={false}
       />
     );
 
@@ -85,7 +84,6 @@ describe('ChangeSeatModal', () => {
         user={mockUser.data}
         toggleAdmin={toggleAdmin}
         closeModal={closeModal}
-        isUserAdmin={false}
       />
     );
 
@@ -107,7 +105,6 @@ describe('ChangeSeatModal', () => {
         user={mockUser.data}
         toggleAdmin={toggleAdmin}
         closeModal={closeModal}
-        isUserAdmin
       />
     );
 
