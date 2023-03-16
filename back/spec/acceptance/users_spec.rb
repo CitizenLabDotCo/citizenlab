@@ -897,7 +897,6 @@ resource 'Users' do
               expect(last_email).to be_nil
             end
           end
-
         end
 
         describe do
