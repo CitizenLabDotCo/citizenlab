@@ -223,7 +223,7 @@ kl:
       header: "Uppernarsaaninnut isissutissat"
       header_message: "Aluu %{firstName}!"
       confirm_email_address: "Confirm your email address"
-      thanks_for_signing_up: "Thank you for your participation. Please enter this confirmation code in the window on %{organizationName}'s participation platform:"
+      thanks_for_signing_up: "Qujanaq, %{organizationName} peqataatitsinikkut nittartagaanut ilaasortanngoravit."
       best_regards: "Best regards,"
       ignore_email: "If you didn't request a code, you can safely ignore this email."
       expire_code: "This code will be expired in "
