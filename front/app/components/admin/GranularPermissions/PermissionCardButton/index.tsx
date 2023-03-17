@@ -6,9 +6,10 @@ import {
   IconNames,
   colors,
 } from '@citizenlab/cl2-component-library';
-import React from 'react';
+import React, { useState } from 'react';
 import { MessageDescriptor } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
+import { lighten } from 'polished';
 
 type PermissionCardButtonProps = {
   onClick: () => void;
@@ -24,11 +25,22 @@ export const PermissionCardButton = ({
   title,
   subtitle,
 }: PermissionCardButtonProps) => {
+  const [isHover, setIsHover] = useState(false);
+
+  // Temporary colour until new tealLight variations added to component library
+  const backgroundColor = lighten(0.1, colors.tealLight);
+
   return (
     <Box
       width="240px"
       minHeight="210px"
-      background={selected ? colors.tealLight : colors.white}
+      background={selected || isHover ? backgroundColor : colors.white}
+      onMouseEnter={() => {
+        setIsHover(true);
+      }}
+      onMouseLeave={() => {
+        setIsHover(false);
+      }}
       onClick={onClick}
       padding="16px"
       border={
