@@ -183,7 +183,7 @@ da:
       <ul> <li>Det skal falde inden for kommunens politikområder og kompetencer</li> <li>Det tjener den offentlige interesse snarere end din individuelle interesse</li> <li>Det diskriminerer ikke andre borgere i forhold til køn, race, alder eller baggrund</li> <li>Det skader ikke andre</li></ul>
   reset_password_mailer:
     send_reset_password:
-      cta_reset_password: 'Nulstil din adgangskode'
+      cta_reset_password: 'Reset your password'
       message_you_reset_your_password: 'Du anmodede om en nulstilling af din adgangskode på %{organizationName}''s borgerinddragelsesplatform. Klik på nedenstående knap, for at vælge en ny og sikker adgangskode. Linket udløber om 1 time.'
       subject: '%{organizationName}: Nulstil din adgangskode'
       title_reset_your_password: 'Vælg en ny adgangskode'
