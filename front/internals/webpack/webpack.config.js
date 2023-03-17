@@ -154,6 +154,7 @@ const config = {
         GOOGLE_MAPS_API_KEY: JSON.stringify(process.env.GOOGLE_MAPS_API_KEY),
         MATOMO_HOST: JSON.stringify(process.env.MATOMO_HOST),
         POSTHOG_API_KEY: JSON.stringify(process.env.POSTHOG_API_KEY),
+        WEGLOT_API_KEY: JSON.stringify(process.env.WEGLOT_API_KEY)
       },
     }),
 
