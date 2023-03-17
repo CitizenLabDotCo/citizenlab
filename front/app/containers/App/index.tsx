@@ -151,11 +151,7 @@ const App = ({ children }: Props) => {
           .map((locale) => appLocalesMomentPairs[locale])
       ).forEach((locale) => require(`moment/locale/${locale}.js`));
 
-      // TODO remove
-      const weglotKey = process.env.WEGLOT_API_KEY;
-
-      // if (appConfiguration.data.attributes.settings.core.weglot_api_key) {
-      if (weglotKey) {
+      if (appConfiguration.data.attributes.settings.core.weglot_api_key) {
         const script = document.createElement('script');
         script.async = false;
         script.defer = false;
@@ -164,8 +160,7 @@ const App = ({ children }: Props) => {
         script.onload = function () {
           window.Weglot.initialize({
             api_key:
-              // appConfiguration.data.attributes.settings.core.weglot_api_key,
-              weglotKey,
+              appConfiguration.data.attributes.settings.core.weglot_api_key,
           });
         };
 
