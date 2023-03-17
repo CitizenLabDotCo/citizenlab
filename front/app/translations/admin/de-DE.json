@@ -1642,7 +1642,7 @@
   "app.containers.IdeasShow.bodyTitle": "Beschreibung",
   "app.containers.IdeasShow.postedIn": "Veröffentlicht in {projectLink}",
   "app.containers.IdeasShow.proposedBudgetTitle": "Vorgeschlagenes Budget",
-  "app.containers.IdeasShow.xDaysLeft": "{x, plural, =0 {Weniger als ein Tag} one {Ein Tag} other {# Tage}} übrig",
+  "app.containers.IdeasShow.xDaysLeft": "{x, plural, =0 {Weniger als ein Tag} one {Ein Tag} other {# Tage}} noch",
   "app.containers.admin.ContentBuilder.aboutBox": "\"Über\"-Fenster",
   "app.containers.admin.ContentBuilder.accordion": "Akkordeon",
   "app.containers.admin.ContentBuilder.accordionDefaultOpenLabel": "Standardmäßig geöffnet",
