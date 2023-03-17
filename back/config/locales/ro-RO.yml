@@ -86,7 +86,7 @@ ro:
     about:
       title: Despre
     faq:
-      title: FAQ
+      title: ÎNTREBĂRI FRECVENTE
   projects:
     open_idea_project_title: Ai o idee? Propune-o consiliului local!
     open_idea_project_description_preview: Aveți o idee care nu se potrivește cu niciunul dintre proiectele existente? Atunci postați-o aici, adunați sprijin și puneți-o pe agenda consiliului local!
@@ -135,10 +135,10 @@ ro:
       section1:
         description:
       section2:
-        title: Images and attachments
+        title: Imagini și atașamente
         description:
       section3:
-        title: Details
+        title: Detalii
         description:
   custom_forms:
     categories:
@@ -160,7 +160,7 @@ ro:
       attachements:
         title: Imagini și atașamente
       extra:
-        title: Additional information
+        title: Informații suplimentare
   custom_field_options:
     gender:
       male: Masculin
@@ -190,40 +190,40 @@ ro:
   xlsx_export:
     column_headers:
       input_id: 'ID'
-      latitude: 'Latitude'
-      longitude: 'Longitude'
-      author_fullname: 'Author name'
-      author_email: 'Author email'
-      author_id: 'Author ID'
-      budget: 'Budget'
-      created_at: 'Submitted at'
-      published_at: 'Published at'
+      latitude: 'Latitudine'
+      longitude: 'Longitudine'
+      author_fullname: 'Numele autorului'
+      author_email: 'E-mail de autor'
+      author_id: 'Autor ID'
+      budget: 'Buget'
+      created_at: 'Prezentat la'
+      published_at: 'Publicat la'
       comments_count: 'Comentarii'
       upvotes_count: 'Upvotes'
       downvotes_count: 'Downvotes'
-      baskets_count: 'Baskets'
+      baskets_count: 'Coșuri'
       input_url: 'URL'
       project: 'Proiect'
-      status: 'Status'
+      status: 'Stare'
       assignee_fullname: 'Responsabil'
-      assignee_email: 'Assignee email'
+      assignee_email: 'E-mailul destinatarului'
   form_builder:
     default_select_field:
-      title: 'Your question'
-      option1: 'Option 1'
-      option2: 'Option 2'
+      title: 'Întrebarea dumneavoastră'
+      option1: 'Opțiunea 1'
+      option2: 'Opțiunea 2'
     survey_end_page:
-      title: 'Survey end'
-      description: "Please submit your answers by selecting 'Submit survey' below."
+      title: 'Sfârșitul sondajului'
+      description: "Vă rugăm să vă trimiteți răspunsurile prin selectarea \"Trimiteți sondajul\" de mai jos."
   project_copy:
     title_suffix: 'Copie'
   confirmations_mailer:
     send_confirmation_code:
-      subject: "Confirm your email address for %{organizationName}'s participation platform"
-      header: "Your Confirmation Code"
-      header_message: "Hi %{firstName}!"
-      thanks_for_signing_up: "Thanks for signing up for %{organizationName}'s participation platform."
-      please_confirm_your_email_address: "To complete your registration, please verify your email address."
-      copy_paste_the_link_below: "Copy and paste the code below into the registration form on the platform."
-      the_link_is_valid_for: "This link is valid for 24 hours. If the link has expired, you may <a href=\"%{link}\">request a new code</a>."
-      did_you_receive_this_email_in_error: "Did you receive this email in error? <a href=\"%{link}\">Let us know</a>."
+      subject: "Confirmați-vă adresa de e-mail pentru %{organizationName}'s platforma de participare"
+      header: "Codul dumneavoastră de confirmare"
+      header_message: "Bună %{firstName}!"
+      thanks_for_signing_up: "Vă mulțumim că v-ați înscris pe platforma de participare %{organizationName}."
+      please_confirm_your_email_address: "Pentru a finaliza înregistrarea, vă rugăm să vă verificați adresa de e-mail."
+      copy_paste_the_link_below: "Copiați și lipiți codul de mai jos în formularul de înregistrare de pe platformă."
+      the_link_is_valid_for: "Acest link este valabil timp de 24 de ore. În cazul în care link-ul a expirat, puteți <a href=\"%{link}\">solicita un nou cod</a>."
+      did_you_receive_this_email_in_error: "Ați primit acest e-mail din greșeală? <a href=\"%{link}\">Anunțați-ne</a>."
