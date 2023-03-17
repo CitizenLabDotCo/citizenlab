@@ -229,9 +229,9 @@ el:
       did_you_receive_this_email_in_error: "Λάβατε αυτό το email κατά λάθος; <a href=\"%{link}\">Ενημερώστε μας</a>."
   user_blocked_mailer:
     send_user_blocked_email:
-      subject: 'Ο λογαριασμός σας έχει απενεργοποιηθεί προσωρινά'
-      title_user_blocked: 'Ο λογαριασμός σας έχει απενεργοποιηθεί προσωρινά'
-      paragraph_1_without_reason: "Ο λογαριασμός σας στο %{organizationName} Participation Platform έχει προσωρινά απενεργοποιηθεί για παραβίαση των κοινοτικών οδηγιών."
-      paragraph_1_with_reason: "Ο λογαριασμός σας στην Πλατφόρμα Συμμετοχής %{organizationName} έχει απενεργοποιηθεί προσωρινά για τον ακόλουθο λόγο:"
-      for_more_information: "Για περισσότερες πληροφορίες σχετικά με αυτό, μπορείτε να συμβουλευτείτε το %{termsAndConditionsPage}."
-      you_can_sign_in_again_from: "Μπορείτε να συνδεθείτε ξανά από το %{date}"
+      subject: 'Your account has been temporarily disabled'
+      title_user_blocked: 'Your account has been temporarily disabled'
+      paragraph_1_without_reason: "Your account on %{organizationName} Participation Platform has been temporarily disabled for a violation of the community guidelines."
+      paragraph_1_with_reason: "Your account on %{organizationName} Participation Platform has been temporarily disabled for the following reason:"
+      for_more_information: "For more information on this, you can consult the %{termsAndConditionsPage}"
+      you_can_sign_in_again_from: "You can sign in again from %{date}"
