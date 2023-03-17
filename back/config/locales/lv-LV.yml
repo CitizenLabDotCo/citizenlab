@@ -135,10 +135,10 @@ lv:
       section1:
         description:
       section2:
-        title: Attēli un pielikumi
+        title: Images and attachments
         description:
       section3:
-        title: Sīkāka informācija
+        title: Details
         description:
   custom_forms:
     categories:
@@ -195,7 +195,7 @@ lv:
       author_fullname: 'Autora vārds'
       author_email: 'Autora e-pasts'
       author_id: 'Autora ID'
-      budget: 'Budžets'
+      budget: 'Budget'
       created_at: 'Iesniegts'
       published_at: 'Publicēts'
       comments_count: 'Komentāri'
@@ -214,7 +214,7 @@ lv:
       option2: '2. variants'
     survey_end_page:
       title: 'Aptaujas beigas'
-      description: "Lūdzu, iesniedziet savas atbildes, izvēloties \"Iesniegt aptauju\"."
+      description: "Please submit your answers by selecting 'Submit survey' below."
   project_copy:
     title_suffix: 'Kopija'
   confirmations_mailer:
