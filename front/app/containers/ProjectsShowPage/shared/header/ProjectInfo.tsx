@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -70,7 +70,7 @@ interface Props {
   className?: string;
 }
 
-const ProjectInfo = memo<Props>(({ projectId, className }) => {
+const ProjectInfo = ({ projectId, className }: Props) => {
   const project = useProject({ projectId });
   const projectFiles = useProjectFiles(projectId);
   const { windowWidth } = useWindowSize();
@@ -90,16 +90,18 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
               <StyledProjectArchivedIndicator projectId={projectId} />
             )}
 
-            <ReadMoreWrapper
-              fontSize="m"
-              contentId="description"
-              value={project.attributes.description_multiloc}
-            />
+            <Box mb="24px">
+              <ReadMoreWrapper
+                fontSize="m"
+                contentId="description"
+                value={project.attributes.description_multiloc}
+              />
+            </Box>
 
             {!isNilOrError(projectFiles) &&
               projectFiles &&
               projectFiles.data.length > 0 && (
-                <Box mb="25px">
+                <Box mb="24px">
                   <FileAttachments files={projectFiles.data} />
                 </Box>
               )}
@@ -113,6 +115,6 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
   }
 
   return null;
-});
+};
 
 export default ProjectInfo;

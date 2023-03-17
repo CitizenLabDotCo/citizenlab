@@ -99,7 +99,9 @@ const StyledIcon = styled(Icon)`
   `}
 `;
 
-const EventDescription = styled.div``;
+const EventDescription = styled.div`
+  margin-bottom: 24px;
+`;
 
 const SMALL_LINE_HEIGHT = fontSizes.s + 2.45;
 
@@ -310,7 +312,7 @@ const EventInformation = ({
       {!isNilOrError(eventFiles) &&
         eventFiles.data.length > 0 &&
         showAttachments && (
-          <Box mb="25px">
+          <Box mb="24px">
             <FileAttachments files={eventFiles.data} />
           </Box>
         )}
