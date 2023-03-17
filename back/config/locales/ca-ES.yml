@@ -229,9 +229,9 @@ ca:
       did_you_receive_this_email_in_error: "Heu rebut aquest correu electrònic per error? <a href=\"%{link}\">Fes-nos-ho saber</a>."
   user_blocked_mailer:
     send_user_blocked_email:
-      subject: 'El teu compte s''ha desactivat temporalment'
-      title_user_blocked: 'El teu compte s''ha desactivat temporalment'
-      paragraph_1_without_reason: "El vostre compte a %{organizationName} Participation Platform s'ha desactivat temporalment per una infracció de les directrius de la comunitat."
-      paragraph_1_with_reason: "El vostre compte a %{organizationName} Participation Platform s'ha desactivat temporalment pel motiu següent:"
-      for_more_information: "Per a més informació sobre això, podeu consultar el %{termsAndConditionsPage}"
-      you_can_sign_in_again_from: "Podeu tornar a iniciar la sessió des %{date}"
+      subject: 'Your account has been temporarily disabled'
+      title_user_blocked: 'Your account has been temporarily disabled'
+      paragraph_1_without_reason: "Your account on %{organizationName} Participation Platform has been temporarily disabled for a violation of the community guidelines."
+      paragraph_1_with_reason: "Your account on %{organizationName} Participation Platform has been temporarily disabled for the following reason:"
+      for_more_information: "For more information on this, you can consult the %{termsAndConditionsPage}"
+      you_can_sign_in_again_from: "You can sign in again from %{date}"
