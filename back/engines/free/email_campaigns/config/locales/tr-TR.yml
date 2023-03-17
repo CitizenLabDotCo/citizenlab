@@ -2,28 +2,28 @@ tr:
   email_campaigns:
     campaign_type_description:
       "manual": Resmi mesajlar
-      "admin_rights_received": Admin rights received
-      "comment_deleted_by_admin": Deletion of my comment
+      "admin_rights_received": Yönetici hakları alındı
+      "comment_deleted_by_admin": Yorumumun silinmesi
       "comment_marked_as_spam": Yorumun spam olarak bildirilmesi
       "comment_on_your_comment": Yorumuma bir yanıt
-      "comment_on_your_idea": A comment on my idea
-      "comment_on_your_initiative": A comment on my proposal
+      "comment_on_your_idea": Fikrim hakkında bir yorum
+      "comment_on_your_initiative": Önerim hakkında bir yorum
       "first_idea_published": İlk fikrimin yayımlanması
       "idea_marked_as_spam": Fikrin spam olarak bildirilmesi
       "idea_published": Fikrimin yayımlanması
       "initiative_assigned_to_you": Bana öneri atanması
       "initiative_marked_as_spam": Önerinin spam olarak bildirilmesi
       "initiative_published": Önerimin yayımlanması
-      "invite_received": Invitation
+      "invite_received": Davetiye
       "invite_reminder": Davetiye anımsatıcısı
       "mention_in_official_feedback": Bir bildirimde bahis
-      "new_comment_for_admin": New comment in a project I moderate
-      "new_comment_on_commented_idea": New comment on an idea I commented on
-      "new_comment_on_commented_initiative": New comment on a proposal I commented on
-      "new_comment_on_voted_idea": New comment on an idea I voted for
-      "new_comment_on_voted_initiative": New comment on a proposal I voted for
-      "new_idea_for_admin": New idea in a project I moderate
-      "new_initiative_for_admin": New proposal
+      "new_comment_for_admin": Yönettiğim bir projede yeni yorum
+      "new_comment_on_commented_idea": Yorum yaptığım bir fikir hakkında yeni yorum
+      "new_comment_on_commented_initiative": Yorum yaptığım bir öneri hakkında yeni yorum
+      "new_comment_on_voted_idea": Oy verdiğim bir fikir hakkında yeni yorum
+      "new_comment_on_voted_initiative": Oy verdiğim bir öneri hakkında yeni yorum
+      "new_idea_for_admin": Yönettiğim bir projede yeni fikir
+      "new_initiative_for_admin": Yeni öneri
       "official_feedback_on_commented_idea": Yorum yaptığım bir fikir hakkında bilgilendirme
       "official_feedback_on_commented_initiative": Yorum yaptığım bir öneri hakkında bilgilendirme
       "official_feedback_on_voted_idea": Oy verdiğim bir fikir hakkında bilgilendirme
@@ -32,26 +32,26 @@ tr:
       "official_feedback_on_your_initiative": Önerim hakkında bilgilendirme
       "password_reset": Parola sıfırla
       "project_moderation_rights_received": Proje moderasyon hakları alındı
-      "project_folder_moderation_rights_received": Folder manager rights received
-      "project_phase_started": New project phase
-      "project_phase_upcoming": Upcoming new project phase
-      "status_change_of_commented_idea": Status change of an idea I commented on
-      "status_change_of_commented_initiative": Status change of a proposal I commented on
-      "status_change_of_voted_idea": Status change of an idea I voted for
-      "status_change_of_voted_initiative": Status change of a proposal I voted for
-      "status_change_of_your_idea": Status change of my idea
-      "status_change_of_your_initiative": Status change of my proposal
-      "threshold_reached_for_admin": Proposal reached the voting threshold
-      "welcome": After registration
-      "admin_digest": Weekly overview for admins
-      "moderator_digest": Weekly overview for project managers
-      "assignee_digest": Weekly overview of assigned ideas
-      "user_digest": Weekly overview
-      "your_proposed_initiatives_digest": Weekly overview of your proposals
+      "project_folder_moderation_rights_received": Klasör yöneticisi hakları alındı
+      "project_phase_started": Yeni proje aşaması
+      "project_phase_upcoming": Yaklaşan yeni proje aşaması
+      "status_change_of_commented_idea": Yorum yaptığım bir fikrin durum değişikliği
+      "status_change_of_commented_initiative": Yorum yaptığım bir önerinin durum değişikliği
+      "status_change_of_voted_idea": Oy verdiğim bir fikrin durum değişikliği
+      "status_change_of_voted_initiative": Oy verdiğim bir önerinin durum değişikliği
+      "status_change_of_your_idea": Fikrimin durum değişikliği
+      "status_change_of_your_initiative": Önerimin durum değişikliği
+      "threshold_reached_for_admin": Öneri oylama eşiğine ulaştı
+      "welcome": Kayıttan sonra
+      "admin_digest": Yöneticiler için haftalık genel bakış
+      "moderator_digest": Proje yöneticileri için haftalık genel bakış
+      "assignee_digest": Atanmış fikirlere haftalık genel bakış
+      "user_digest": Haftalık genel bakış
+      "your_proposed_initiatives_digest": Önerilerinize haftalık genel bakış
     admin_campaign_type_description:
-      "manual": Official message - all users
+      "manual": Resmi mesaj - tüm kullanıcılar
       "admin_rights_received": Yönetici hakları alındı - yöneticiler
-      "comment_deleted_by_admin": Deletion of your comment - all users
+      "comment_deleted_by_admin": Yorumunuzun silinmesi - tüm kullanıcılar
       "comment_marked_as_spam": Yorumun spam olarak bildirilmesi - yöneticiler ve proje yöneticileri
       "comment_on_your_comment": Yorumunuza yanıt - tüm kullanıcılar
       "comment_on_your_idea": Fikriniz hakkında yorum - tüm kullanıcılar
@@ -59,35 +59,35 @@ tr:
       "first_idea_published": İlk fikrinizin yayımlanması - tüm kullanıcılar
       "idea_marked_as_spam": Fikrin spam olarak bildirilmesi - yöneticiler ve proje yöneticileri
       "idea_published": Fikrinizin yayımlanması - tüm kullanıcılar
-      "initiative_assigned_to_you": Assignment of a proposal - admins
+      "initiative_assigned_to_you": Bir önerinin atanması - yöneticiler
       "initiative_marked_as_spam": Önerinin spam olarak bildirilmesi - yöneticiler
       "initiative_published": Önerinizin yayımlanması - tüm kullanıcılar
-      "invite_received": Invitation - all users
+      "invite_received": Davetiye - tüm kullanıcılar
       "invite_reminder": Davetiye anımsatıcısı - tüm kullanıcılar
       "mention_in_comment": Bir yorumda bahis - tüm kullanıcılar
       "mention_in_official_feedback": Bir bildirimde bahis - tüm kullanıcılar
-      "new_comment_for_admin": New comment - admins and project managers
-      "new_comment_on_commented_idea": New comment on an idea you commented on - all users
-      "new_comment_on_commented_initiative": New comment on a proposal you commented on - all users
-      "new_comment_on_voted_idea": New comment on an idea you voted for - all users
-      "new_comment_on_voted_initiative": New comment on a proposal you voted for - all users
-      "new_idea_for_admin": New idea - admins and project managers
-      "new_initiative_for_admin": New proposal - admins
+      "new_comment_for_admin": Yeni yorum - yöneticiler ve proje yöneticileri
+      "new_comment_on_commented_idea": Yorum yaptığınız bir fikir hakkında yeni yorum - tüm kullanıcılar
+      "new_comment_on_commented_initiative": Yorum yaptığınız bir öneri hakkında yeni yorum - tüm kullanıcılar
+      "new_comment_on_voted_idea": Oy verdiğiniz bir fikir hakkında yeni yorum - tüm kullanıcılar
+      "new_comment_on_voted_initiative": Oy verdiğiniz bir öneri hakkında yeni yorum - tüm kullanıcılar
+      "new_idea_for_admin": Yeni fikir - yöneticiler ve proje yöneticileri
+      "new_initiative_for_admin": Yeni öneri - yöneticiler
       "official_feedback_on_commented_idea": Yorum yaptığınız bir fikir hakkında bilgilendirme - tüm kullanıcılar
       "official_feedback_on_commented_initiative": Yorum yaptığınız bir öneri hakkında bilgilendirme - tüm kullanıcılar
       "official_feedback_on_voted_idea": Oy verdiğiniz bir fikir hakkında bilgilendirme - tüm kullanıcılar
       "official_feedback_on_voted_initiative": Oy verdiğiniz bir öneri hakkında bilgilendirme - tüm kullanıcılar
       "official_feedback_on_your_idea": Fikriniz hakkında bilgilendirme - tüm kullanıcılar
       "official_feedback_on_your_initiative": Öneriniz hakkında bilgilendirme - tüm kullanıcılar
-      "password_reset": Password reset - all users
-      "project_moderation_rights_received": Project moderation rights received - project managers
+      "password_reset": Parola sıfırlama - tüm kullanıcılar
+      "project_moderation_rights_received": Proje moderasyon hakları alındı - proje yöneticileri
       "project_folder_moderation_rights_received": Klasör yöneticisi hakları alındı
-      "project_phase_started": New project phase - project participants
-      "project_phase_upcoming": Upcoming new project phase - admins and project managers
-      "status_change_of_commented_idea": Status change of an idea you commented on - all users
-      "status_change_of_commented_initiative": Status change of a proposal you commented on - all users
-      "status_change_of_voted_idea": Status change of an idea you voted on - all users
-      "status_change_of_voted_initiative": Status change of a proposal you voted on - all users
+      "project_phase_started": Yeni proje aşaması - proje katılımcıları
+      "project_phase_upcoming": Yaklaşan yeni proje aşaması - yöneticiler ve proje yöneticileri
+      "status_change_of_commented_idea": Yorum yaptığınız bir fikrin durum değişikliği - tüm kullanıcılar
+      "status_change_of_commented_initiative": Yorum yaptığınız bir önerinin durum değişikliği - tüm kullanıcılar
+      "status_change_of_voted_idea": Oy verdiğiniz bir fikrin durum değişikliği - tüm kullanıcılar
+      "status_change_of_voted_initiative": Oy verdiğiniz bir önerinin durum değişikliği - tüm kullanıcılar
       "status_change_of_your_idea": Fikrinizin durum değişikliği - tüm kullanıcılar
       "status_change_of_your_initiative": Önerinizin durum değişikliği - tüm kullanıcılar
       "threshold_reached_for_admin": Öneri oylama eşiğine ulaştı - yöneticiler
@@ -207,11 +207,11 @@ tr:
       preheader_initiative: '%{authorName} adlı kişinin önerisi size atandı'
     invite_reminder:
       cta_accept_invitation: 'Davetiyenizi kabul edin'
-      invitation_header: 'Your invitation is pending'
-      preheader: '%{organizationName} sent you an invite to join their participation platform some days ago.'
+      invitation_header: 'Davetiyeniz beklemede'
+      preheader: '%{organizationName} birkaç gün önce katılım platformlarına katılmanız için size bir davet gönderdi.'
       subject: '%{organizationName} katılım platformu için bekleyen davetiye'
     invite_received:
-      added_a_message: '%{organizationName} wrote the following message:'
+      added_a_message: '%{organizationName} aşağıdaki mesajı yazdı:'
       cta_accept_invitation: 'Davetiyenizi kabul edin'
       invitation_header: 'Davet edildiniz!'
       invitation_header_message: '%{organizationName} sizi katılım platformlarına davet etti.'
@@ -284,7 +284,7 @@ tr:
       event_description: '%{authorName} platformunuza yeni bir yorum ekledi.'
       main_header: '%{firstName}, platformunuzda yeni bir yorum yayınlandı'
       subject: '%{organizationName} platformunda yeni bir yorum yayınlandı'
-      preheader: '%{authorName} left a comment'
+      preheader: '%{authorName} bir yorum bıraktı'
       today: Bugün
       yesterday: Dün
     comment_on_your_idea:
@@ -386,7 +386,7 @@ tr:
       subject: '%{organizationName} platformunda resmi bir bilgilendirme aldınız'
       preheader: '%{officialName} öneriniz hakkında resmi bir bilgilendirme sundu'
     project_moderation_rights_received:
-      cta_moderate_project: 'Moderate this project'
+      cta_moderate_project: 'Bu projeyi yönetin'
       message_you_became_moderator: '%{organizationName} katılım platformundaki bir yönetici sizi şu projenin proje yöneticisi yaptı:'
       no_ideas: 'Henüz fikir yok'
       preheader: '%{organizationName} katılım platformundaki bir yönetici sizi aşağıdaki projenin proje yöneticisi yaptı'
@@ -419,7 +419,7 @@ tr:
       cta_view_phase: 'Bu yeni aşamayı inceleyin'
       event_description: 'Bu proje, %{organizationName} platformunda yeni bir aşamaya geçti. Daha fazla bilgi için aşağıdaki bağlantıyı tıklayın.'
       main_header: '''%{projectName}'' adlı proje için yeni bir aşama başladı'
-      subtitle: 'About ''%{projectName}'''
+      subtitle: 'Hakkında ''%{projectName}'''
       new_phase: 'Bu proje ''%{phaseTitle}'' aşamasına geçti'
       subject: '%{projectName} yeni bir aşamaya girdi'
       preheader: '%{projectName} adlı proje için yeni bir aşama başladı'
@@ -427,7 +427,7 @@ tr:
       cta_view_phase: 'Bu yeni aşamayı ayarlayın'
       event_description: '''%{projectName}'' adlı proje yakında yeni bir aşamaya geçiyor. Bu aşama için her şeyin hazır olduğundan emin olun: Uygun bir açıklama var mı? Seçilen fikirler bu aşamaya aktarıldı mı? Özel bir e-posta kampanyası ile vatandaşlarınızı bu aşamanın özellikleri hakkında bilgilendirmek istiyor musunuz?'
       main_header: '%{firstName}, bir proje yakında yeni bir aşamaya geçiyor'
-      subtitle: 'About ''%{projectName}'''
+      subtitle: 'Hakkında ''%{projectName}'''
       new_phase: 'Proje ''%{phaseTitle}'' aşamasına geçecek'
       subject: '%{projectName} için yeni aşama ile ilgili her şeyi ayarlayın'
       preheader: '%{projectName} için yakında yeni bir aşama başlıyor'
@@ -451,7 +451,7 @@ tr:
       event_description: '%{organizationName} dijital katılım platformunda ''%{ideaTitle}'' fikrinin durumunu güncelledi.'
       main_header: 'Oy verdiğiniz bir fikir yeni bir duruma sahip'
       subject: 'Oy verdiğiniz bir fikrin durumu değişti'
-      preheader: '%{organizationName} changed the status of an idea you voted on'
+      preheader: '%{organizationName} oy verdiğiniz bir fikrin durumunu değiştirdi'
     status_change_of_voted_initiative:
       status_change: 'Bu önerinin yeni durumu ''%{initiativeStatus}'''
       cta_view_initiative: 'Bu öneriye gidin'
@@ -546,7 +546,7 @@ tr:
       message_next_steps: ""
     your_proposed_initiatives_digest:
       subject: 'Önerilerinizle ilgili haftalık bildirim'
-      preheader: 'What happened with your proposals in the past week?'
+      preheader: 'Geçtiğimiz hafta önerilerinizle ilgili ne oldu?'
       title_your_weekly_report: 'Önerileriniz ne durumdaydı?'
       text_introduction: 'Aşağıda verilen performansla ilgili değerlere bakın, platforma gidin ve yeterli desteği zamanında toplamak için yapmanız gerekenleri yapın.'
       cta_see_your_initiative: 'Önerilerinize gidin'
