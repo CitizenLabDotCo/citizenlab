@@ -11,10 +11,13 @@ import { Tr, Td, Toggle, Box } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
 import Checkbox from 'components/UI/Checkbox';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
+import BlockUser from 'components/admin/UserBlockModals/BlockUser';
+import UnblockUser from 'components/admin/UserBlockModals/UnblockUser';
 
 // Translation
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
+import blockUserMessages from 'components/admin/UserBlockModals/messages';
 
 // Events --- For error handling
 import eventEmitter from 'utils/eventEmitter';
@@ -29,6 +32,9 @@ import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // Styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
+
+// Hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const RegisteredAt = styled(Td)`
   white-space: nowrap;
@@ -54,6 +60,11 @@ const UserTableRow = ({
   const [registeredAt, setRegisteredAt] = useState(
     moment(user.attributes.registration_completed_at).format('LL')
   );
+  const [showBlockUserModal, setShowBlockUserModal] = useState(false);
+  const [showUnblockUserModal, setShowUnblockUserModal] = useState(false);
+  const isUserBlockingEnabled = useFeatureFlag({
+    name: 'user_blocking',
+  });
 
   useEffect(() => {
     setUserIsAdmin(isAdmin({ data: user }));
@@ -61,6 +72,8 @@ const UserTableRow = ({
       moment(user.attributes.registration_completed_at).format('LL')
     );
   }, [user]);
+
+  const isBlocked = user.attributes?.blocked;
 
   const handleDeleteClick = () => {
     const deleteMessage = formatMessage(messages.userDeletionConfirmation);
@@ -82,6 +95,22 @@ const UserTableRow = ({
     }
   };
 
+  const userBlockingRelatedActions: IAction[] = isUserBlockingEnabled
+    ? [
+        isBlocked
+          ? {
+              handler: () => setShowUnblockUserModal(true),
+              label: formatMessage(blockUserMessages.unblockAction),
+              icon: 'user-circle' as const,
+            }
+          : {
+              handler: () => setShowBlockUserModal(true),
+              label: formatMessage(blockUserMessages.blockAction),
+              icon: 'halt' as const,
+            },
+      ]
+    : [];
+
   const actions: IAction[] = [
     {
       handler: () => {
@@ -97,6 +126,7 @@ const UserTableRow = ({
       label: formatMessage(messages.deleteUser),
       icon: 'delete' as const,
     },
+    ...userBlockingRelatedActions,
   ];
 
   return (
@@ -140,6 +170,16 @@ const UserTableRow = ({
       <Td>
         <MoreActionsMenu showLabel={false} actions={actions} />
       </Td>
+      <BlockUser
+        user={user}
+        setClose={() => setShowBlockUserModal(false)}
+        open={showBlockUserModal}
+      />
+      <UnblockUser
+        user={user}
+        setClose={() => setShowUnblockUserModal(false)}
+        open={showUnblockUserModal}
+      />
     </Tr>
   );
 };

@@ -209,6 +209,9 @@ export interface IAppConfigurationSettings {
   input_form_custom_fields?: AppConfigurationFeature;
   report_builder?: AppConfigurationFeature;
   posthog_integration?: AppConfigurationFeature;
+  user_blocking?: AppConfigurationFeature & {
+    duration: boolean;
+  };
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
