@@ -3,9 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { isAdmin } from 'services/permissions/roles';
 import moment from 'moment';
 
-// Utils
-import clHistory from 'utils/cl-router/history';
-
 // Components
 import { Tr, Td, Toggle, Box } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
@@ -13,6 +10,7 @@ import Checkbox from 'components/UI/Checkbox';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import BlockUser from 'components/admin/UserBlockModals/BlockUser';
 import UnblockUser from 'components/admin/UserBlockModals/UnblockUser';
+import Link from 'utils/cl-router/Link';
 
 // Translation
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -38,6 +36,16 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const RegisteredAt = styled(Td)`
   white-space: nowrap;
+`;
+
+const StyledLink = styled(Link)`
+  cursor: pointer;
+  color: inherit;
+
+  &:hover {
+    color: inherit;
+    text-decoration: underline;
+  }
 `;
 
 interface Props {
@@ -114,13 +122,6 @@ const UserTableRow = ({
   const actions: IAction[] = [
     {
       handler: () => {
-        clHistory.push(`/profile/${user.attributes.slug}`);
-      },
-      label: formatMessage(messages.seeProfile),
-      icon: 'eye' as const,
-    },
-    {
-      handler: () => {
         handleDeleteClick();
       },
       label: formatMessage(messages.deleteUser),
@@ -144,7 +145,9 @@ const UserTableRow = ({
         <Avatar userId={user.id} size={30} />
       </Td>
       <Td>
-        {user.attributes.first_name} {user.attributes.last_name}
+        <StyledLink to={`/profile/${user.attributes.slug}`}>
+          {user.attributes.first_name} {user.attributes.last_name}
+        </StyledLink>
       </Td>
       <Td>{user.attributes.email}</Td>
       <RegisteredAt>
