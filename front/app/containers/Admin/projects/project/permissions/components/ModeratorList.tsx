@@ -22,6 +22,10 @@ const UnknownName = styled.span`
   font-style: italic;
 `;
 
+const Container = styled(List)`
+  margin-bottom: 20px;
+`;
+
 interface Props {
   projectId: string;
 }
@@ -49,7 +53,7 @@ const ModeratorList = memo(({ projectId }: Props) => {
 
   if (!isNilOrError(authUser) && !isNilOrError(moderators)) {
     return (
-      <List>
+      <Container>
         <>
           {moderators.map((moderator, index) => {
             const firstName = moderator.attributes.first_name;
@@ -78,23 +82,20 @@ const ModeratorList = memo(({ projectId }: Props) => {
                   <Text as="span" m={'0'}>
                     {displayName}
                   </Text>
+                  <Button
+                    onClick={handleDeleteClick(projectId, moderator.id)}
+                    buttonStyle="text"
+                    icon="delete"
+                    disabled={authUser.id === moderator.id}
+                  >
+                    <FormattedMessage {...messages.deleteModeratorLabel} />
+                  </Button>
                 </Box>
-                <Text as="span" m={'0'}>
-                  {moderator.attributes.email}
-                </Text>
-                <Button
-                  onClick={handleDeleteClick(projectId, moderator.id)}
-                  buttonStyle="text"
-                  icon="delete"
-                  disabled={authUser.id === moderator.id}
-                >
-                  <FormattedMessage {...messages.deleteModeratorLabel} />
-                </Button>
               </Row>
             );
           })}
         </>
-      </List>
+      </Container>
     );
   }
 

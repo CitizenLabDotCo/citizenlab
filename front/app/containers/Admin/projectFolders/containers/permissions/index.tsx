@@ -33,11 +33,7 @@ import Avatar from 'components/Avatar';
 import selectStyles from 'components/UI/MultipleSelect/styles';
 import { isAdmin } from 'services/permissions/roles';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
-const Container = styled.div`
-  width: 100%;
-  margin-bottom: 25px;
-`;
+import SeatInfo from 'components/SeatInfo';
 
 const StyledA = styled.a`
   &:hover {
@@ -149,97 +145,110 @@ const FolderPermissions = ({
   };
 
   return (
-    <Container>
-      <SubSectionTitle>
-        <FormattedMessage {...messages.folderManagerSectionTitle} />
-        <IconTooltip
-          content={
-            <FormattedMessage
-              {...messages.folderManagerTooltip}
-              values={{
-                projectManagementInfoCenterLink: (
-                  <StyledA
-                    href={formatMessage(messages.moreInfoFolderManagerLink)}
-                    target="_blank"
-                  >
-                    <FormattedMessage
-                      {...messages.projectManagementInfoCenterLinkText}
-                    />
-                  </StyledA>
-                ),
-              }}
-            />
-          }
-        />
-      </SubSectionTitle>
+    <Box
+      width="100%"
+      mb="25px"
+      display="flex"
+      flexDirection="column"
+      justifyContent="space-between"
+    >
+      <Box width="100%">
+        <SubSectionTitle>
+          <FormattedMessage {...messages.folderManagerSectionTitle} />
+          <IconTooltip
+            content={
+              <FormattedMessage
+                {...messages.folderManagerTooltip}
+                values={{
+                  projectManagementInfoCenterLink: (
+                    <StyledA
+                      href={formatMessage(messages.moreInfoFolderManagerLink)}
+                      target="_blank"
+                    >
+                      <FormattedMessage
+                        {...messages.projectManagementInfoCenterLinkText}
+                      />
+                    </StyledA>
+                  ),
+                }}
+              />
+            }
+          />
+        </SubSectionTitle>
 
-      <UserSelectSection>
-        <UserSelectSelect
-          name="search-user"
-          isMulti={true}
-          cacheOptions={false}
-          defaultOptions={false}
-          loadOptions={loadUsers}
-          isLoading={loading}
-          isDisabled={processing}
-          value={selectedUserOptions}
-          onChange={handleFolderModeratorsChange}
-          placeholder={formatMessage(messages.searchFolderManager)}
-          styles={selectStyles}
-          noOptionsMessage={noOptionsMessage}
-          onInputChange={handleFolderModeratorInputChange}
-          components={isDropdownIconHidden && { DropdownIndicator: () => null }}
-        />
-        <UserSelectButton
-          text={formatMessage(messages.addFolderManager)}
-          buttonStyle="cl-blue"
-          icon="plus-circle"
-          padding="13px 16px"
-          onClick={handleOnAddFolderModeratorsClick}
-          disabled={!selectedUserOptions || selectedUserOptions.length === 0}
-          processing={processing}
-        />
-      </UserSelectSection>
+        <UserSelectSection>
+          <UserSelectSelect
+            name="search-user"
+            isMulti={true}
+            cacheOptions={false}
+            defaultOptions={false}
+            loadOptions={loadUsers}
+            isLoading={loading}
+            isDisabled={processing}
+            value={selectedUserOptions}
+            onChange={handleFolderModeratorsChange}
+            placeholder={formatMessage(messages.searchFolderManager)}
+            styles={selectStyles}
+            noOptionsMessage={noOptionsMessage}
+            onInputChange={handleFolderModeratorInputChange}
+            components={
+              isDropdownIconHidden && { DropdownIndicator: () => null }
+            }
+          />
+          <UserSelectButton
+            text={formatMessage(messages.addFolderManager)}
+            buttonStyle="cl-blue"
+            icon="plus-circle"
+            padding="13px 16px"
+            onClick={handleOnAddFolderModeratorsClick}
+            disabled={!selectedUserOptions || selectedUserOptions.length === 0}
+            processing={processing}
+          />
+        </UserSelectSection>
 
-      <List>
-        <>
-          {!isNilOrError(folderModerators) &&
-            !isNilOrError(authUser) &&
-            folderModerators.map((folderModerator, index) => (
-              <Row
-                key={folderModerator.id}
-                isLastItem={index === folderModerators.length - 1}
-              >
-                <Box display="flex" alignItems="center">
-                  <Box mr="8px">
-                    <Avatar userId={folderModerator.id} size={30} />
+        <List>
+          <>
+            {!isNilOrError(folderModerators) &&
+              !isNilOrError(authUser) &&
+              folderModerators.map((folderModerator, index) => (
+                <Row
+                  key={folderModerator.id}
+                  isLastItem={index === folderModerators.length - 1}
+                >
+                  <Box display="flex" alignItems="center">
+                    <Box mr="8px">
+                      <Avatar userId={folderModerator.id} size={30} />
+                    </Box>
+                    <Text as="span" m={'0'}>
+                      {userName(folderModerator)}
+                    </Text>
                   </Box>
                   <Text as="span" m={'0'}>
-                    {userName(folderModerator)}
+                    {folderModerator.attributes.email}
                   </Text>
-                </Box>
-                <Text as="span" m={'0'}>
-                  {folderModerator.attributes.email}
-                </Text>
-                <Button
-                  onClick={handleDeleteFolderModeratorClick(
-                    projectFolderId,
-                    folderModerator.id
-                  )}
-                  buttonStyle="text"
-                  icon="delete"
-                  disabled={
-                    !isNilOrError(authUser) &&
-                    authUser.id === folderModerator.id
-                  }
-                >
-                  <FormattedMessage {...messages.deleteFolderManagerLabel} />
-                </Button>
-              </Row>
-            ))}
-        </>
-      </List>
-    </Container>
+                  <Button
+                    onClick={handleDeleteFolderModeratorClick(
+                      projectFolderId,
+                      folderModerator.id
+                    )}
+                    buttonStyle="text"
+                    icon="delete"
+                    disabled={
+                      !isNilOrError(authUser) &&
+                      authUser.id === folderModerator.id
+                    }
+                  >
+                    <FormattedMessage {...messages.deleteFolderManagerLabel} />
+                  </Button>
+                </Row>
+              ))}
+          </>
+        </List>
+      </Box>
+      <Box width="100%" py="32px">
+        <SeatInfo seatType="project_manager" />
+      </Box>
+    </Box>
   );
 };
 

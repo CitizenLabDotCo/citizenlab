@@ -15,7 +15,6 @@ import events from './events';
 
 // Resources
 import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
-import GetAuthUser from 'resources/GetAuthUser';
 
 // Services
 import { MembershipType } from 'services/groups';
@@ -26,6 +25,9 @@ interface InputProps {
   groupId?: string;
   groupType?: MembershipType;
   deleteUsersFromGroup?: (userIds: string[]) => void;
+  // These are used in the inputProps for GetUsers
+  canModerate?: boolean;
+  notCitizenlabMember?: boolean;
 }
 
 interface DataProps {
@@ -146,7 +148,13 @@ export class UserManager extends PureComponent<Props, State> {
   };
 
   render() {
-    const { users, groupType, groupId, search } = this.props;
+    const {
+      users,
+      groupType,
+      groupId,
+      search,
+      notCitizenlabMember = false,
+    } = this.props;
     const { selectedUsers, errors } = this.state;
 
     if (isArray(users.usersList) && users.usersList.length === 0) {
@@ -178,16 +186,12 @@ export class UserManager extends PureComponent<Props, State> {
               <Error text={err.errorElement} key={err.errorName} />
             ))}
 
-          <GetAuthUser>
-            {(authUser) => (
-              <UserTable
-                selectedUsers={selectedUsers}
-                handleSelect={this.handleUserSelectedOnChange(allUsersIds)}
-                authUser={authUser}
-                {...users}
-              />
-            )}
-          </GetAuthUser>
+          <UserTable
+            selectedUsers={selectedUsers}
+            handleSelect={this.handleUserSelectedOnChange(allUsersIds)}
+            notCitizenlabMember={notCitizenlabMember}
+            {...users}
+          />
         </>
       );
     }
