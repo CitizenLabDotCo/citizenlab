@@ -200,8 +200,6 @@
   "app.components.IdeasShow.reportAsSpam": "Signaler comme spam",
   "app.components.IdeasShow.send": "Envoyer",
   "app.components.IdeasShow.skipSharing": "Ignorer, je le ferai plus tard",
-  "app.components.IdeasShowPage.signIn": "Connectez-vous si vous avez déjà un compte",
-  "app.components.IdeasShowPage.signUp": "S'inscrire",
   "app.components.IdeasShowPage.sorryNoAccess": "Désolé, vous ne pouvez pas accéder à cette page. Vous devez vous connecter ou vous inscrire pour y accéder.",
   "app.components.InitiativeCard.xComments": "{commentsCount, plural, =0 {aucun commentaire} one {1 commentaire} other {# commentaires}}",
   "app.components.InitiativeCard.xVotesOfY": "{xVotes} sur {votingThreshold}",

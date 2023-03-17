@@ -200,8 +200,6 @@
   "app.components.IdeasShow.reportAsSpam": "Αναφορά ως spam",
   "app.components.IdeasShow.send": "Αποστολή",
   "app.components.IdeasShow.skipSharing": "Παραλείψτε το, θα το κάνω αργότερα",
-  "app.components.IdeasShowPage.signIn": "Συνδεθείτε αν έχετε ήδη λογαριασμό",
-  "app.components.IdeasShowPage.signUp": "Εγγραφείτε",
   "app.components.IdeasShowPage.sorryNoAccess": "Λυπάμαι, δεν μπορείτε να έχετε πρόσβαση σε αυτή τη σελίδα. Ίσως χρειαστεί να συνδεθείτε ή να εγγραφείτε για να αποκτήσετε πρόσβαση.",
   "app.components.InitiativeCard.xComments": "{commentsCount, plural, =0 {δεν υπάρχουν σχόλια} one {1 σχόλιο} other {# σχόλια}}",
   "app.components.InitiativeCard.xVotesOfY": "{xVotes} από {votingThreshold}",

@@ -200,8 +200,6 @@
   "app.components.IdeasShow.reportAsSpam": "Raportează ca spam",
   "app.components.IdeasShow.send": "Trimite",
   "app.components.IdeasShow.skipSharing": "Trec peste, o voi face mai târziu",
-  "app.components.IdeasShowPage.signIn": "Conectați-vă dacă aveți deja un cont",
-  "app.components.IdeasShowPage.signUp": "Înscrieți-vă",
   "app.components.IdeasShowPage.sorryNoAccess": "Ne pare rău, nu puteți accesa această pagină. Este posibil să trebuiască să vă conectați sau să vă înregistrați pentru a o accesa.",
   "app.components.InitiativeCard.xComments": "{commentsCount, plural, =0 {no comments} one {1 comment} other {# comments}}",
   "app.components.InitiativeCard.xVotesOfY": "{xVotes} din {votingThreshold}",
