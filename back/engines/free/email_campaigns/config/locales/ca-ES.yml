@@ -2,555 +2,555 @@ ca:
   email_campaigns:
     campaign_type_description:
       "manual": Missatges oficials
-      "admin_rights_received": S'han rebut els drets d'administrador
-      "comment_deleted_by_admin": Eliminació del meu comentari
-      "comment_marked_as_spam": Comenteu l'informe de correu brossa
-      "comment_on_your_comment": Una resposta al meu comentari
-      "comment_on_your_idea": Un comentari sobre la meva idea
-      "comment_on_your_initiative": Un comentari a la meva proposta
-      "first_idea_published": Publicació de la meva primera idea
-      "idea_marked_as_spam": Informe de correu brossa d'idees
-      "idea_published": Publicació de la meva idea
-      "initiative_assigned_to_you": Encàrrec d'una proposta a mi
-      "initiative_marked_as_spam": Informe de correu brossa de la proposta
-      "initiative_published": Publicació de la meva proposta
-      "invite_received": Invitació
-      "invite_reminder": Recordatori d'invitació
-      "mention_in_official_feedback": Esmenta en una actualització
-      "new_comment_for_admin": Nou comentari en un projecte que modero
-      "new_comment_on_commented_idea": Nou comentari sobre una idea que vaig comentar
-      "new_comment_on_commented_initiative": Nou comentari a una proposta que vaig comentar
-      "new_comment_on_voted_idea": Nou comentari sobre una idea que vaig votar
-      "new_comment_on_voted_initiative": Nou comentari sobre una proposta que he votat
-      "new_idea_for_admin": Nova idea en un projecte que modero
-      "new_initiative_for_admin": Nova proposta
-      "official_feedback_on_commented_idea": Actualització d'una idea que vaig comentar
-      "official_feedback_on_commented_initiative": Actualització d'una proposta que vaig comentar
-      "official_feedback_on_voted_idea": Actualització d'una idea que vaig votar
-      "official_feedback_on_voted_initiative": Actualització d'una proposta que vaig votar
-      "official_feedback_on_your_idea": Actualització de la meva idea
-      "official_feedback_on_your_initiative": Actualització de la meva proposta
+      "admin_rights_received": Admin rights received
+      "comment_deleted_by_admin": Deletion of my comment
+      "comment_marked_as_spam": Comment spam report
+      "comment_on_your_comment": A reply on my comment
+      "comment_on_your_idea": A comment on my idea
+      "comment_on_your_initiative": A comment on my proposal
+      "first_idea_published": Publication of my first idea
+      "idea_marked_as_spam": Idea spam report
+      "idea_published": Publication of my idea
+      "initiative_assigned_to_you": Assignment of a proposal to me
+      "initiative_marked_as_spam": Proposal spam report
+      "initiative_published": Publication of my proposal
+      "invite_received": Invitation
+      "invite_reminder": Invitation reminder
+      "mention_in_official_feedback": Mention in an update
+      "new_comment_for_admin": New comment in a project I moderate
+      "new_comment_on_commented_idea": New comment on an idea I commented on
+      "new_comment_on_commented_initiative": New comment on a proposal I commented on
+      "new_comment_on_voted_idea": New comment on an idea I voted for
+      "new_comment_on_voted_initiative": New comment on a proposal I voted for
+      "new_idea_for_admin": New idea in a project I moderate
+      "new_initiative_for_admin": New proposal
+      "official_feedback_on_commented_idea": Update on an idea I commented on
+      "official_feedback_on_commented_initiative": Update on a proposal I commented on
+      "official_feedback_on_voted_idea": Update on an idea I voted on
+      "official_feedback_on_voted_initiative": Update on a proposal I voted on
+      "official_feedback_on_your_idea": Update on my idea
+      "official_feedback_on_your_initiative": Update on my proposal
       "password_reset": Restabliu la contrasenya
-      "project_moderation_rights_received": S'han rebut els drets de moderació del projecte
-      "project_folder_moderation_rights_received": S'han rebut els drets del gestor de carpetes
-      "project_phase_started": Nova fase del projecte
-      "project_phase_upcoming": Pròxima nova fase del projecte
-      "status_change_of_commented_idea": Canvi d'estat d'una idea que vaig comentar
-      "status_change_of_commented_initiative": Canvi d'estat d'una proposta que vaig comentar
-      "status_change_of_voted_idea": Canvi d'estat d'una idea que vaig votar
-      "status_change_of_voted_initiative": Canvi d'estat d'una proposta que he votat
-      "status_change_of_your_idea": Canvi d'estat de la meva idea
-      "status_change_of_your_initiative": Canvi d'estat de la meva proposta
-      "threshold_reached_for_admin": La proposta ha arribat al llindar de votació
-      "welcome": Després de la inscripció
-      "admin_digest": Visió general setmanal per als administradors
-      "moderator_digest": Visió general setmanal per a gestors de projectes
-      "assignee_digest": Visió general setmanal de les idees assignades
-      "user_digest": Resum setmanal
-      "your_proposed_initiatives_digest": Resum setmanal de les vostres propostes
+      "project_moderation_rights_received": Project moderation rights received
+      "project_folder_moderation_rights_received": Folder manager rights received
+      "project_phase_started": New project phase
+      "project_phase_upcoming": Upcoming new project phase
+      "status_change_of_commented_idea": Status change of an idea I commented on
+      "status_change_of_commented_initiative": Status change of a proposal I commented on
+      "status_change_of_voted_idea": Status change of an idea I voted for
+      "status_change_of_voted_initiative": Status change of a proposal I voted for
+      "status_change_of_your_idea": Status change of my idea
+      "status_change_of_your_initiative": Status change of my proposal
+      "threshold_reached_for_admin": Proposal reached the voting threshold
+      "welcome": After registration
+      "admin_digest": Weekly overview for admins
+      "moderator_digest": Weekly overview for project managers
+      "assignee_digest": Weekly overview of assigned ideas
+      "user_digest": Weekly overview
+      "your_proposed_initiatives_digest": Weekly overview of your proposals
     admin_campaign_type_description:
-      "manual": 'Missatge oficial: tots els usuaris'
-      "admin_rights_received": 'Drets d''administrador rebuts: administradors'
-      "comment_deleted_by_admin": 'Supressió del teu comentari: tots els usuaris'
-      "comment_marked_as_spam": 'Informe de correu brossa de comentaris: administradors i gestors de projectes'
-      "comment_on_your_comment": 'Respon al teu comentari: tots els usuaris'
-      "comment_on_your_idea": 'Comenta la teva idea: tots els usuaris'
-      "comment_on_your_initiative": 'Comenta la teva proposta: tots els usuaris'
-      "first_idea_published": 'Publicació de la teva primera idea: tots els usuaris'
-      "idea_marked_as_spam": 'Informe de correu brossa d''idees: administradors i gestors de projectes'
-      "idea_published": 'Publicació de la teva idea: tots els usuaris'
-      "initiative_assigned_to_you": Assignació d'una proposta - administradors
-      "initiative_marked_as_spam": Informe de correu brossa de propostes - administradors
-      "initiative_published": 'Publicació de la vostra proposta: tots els usuaris'
-      "invite_received": 'Invitació: tots els usuaris'
-      "invite_reminder": 'Recordatori d''invitació: tots els usuaris'
-      "mention_in_comment": 'Esmenta en un comentari: tots els usuaris'
-      "mention_in_official_feedback": 'Esmenta en una actualització: tots els usuaris'
-      "new_comment_for_admin": 'Comentari nou: administradors i gestors de projectes'
-      "new_comment_on_commented_idea": 'Comentari nou sobre una idea que heu comentat: tots els usuaris'
-      "new_comment_on_commented_initiative": 'Comentari nou sobre una proposta que heu comentat: tots els usuaris'
-      "new_comment_on_voted_idea": 'Comentari nou sobre una idea per la qual heu votat: tots els usuaris'
-      "new_comment_on_voted_initiative": 'Comentari nou sobre una proposta per la qual heu votat: tots els usuaris'
-      "new_idea_for_admin": 'Nova idea: administradors i gestors de projectes'
-      "new_initiative_for_admin": Nova proposta - administradors
-      "official_feedback_on_commented_idea": 'Actualitzeu una idea que heu comentat: tots els usuaris'
-      "official_feedback_on_commented_initiative": 'Actualitzeu una proposta que heu comentat: tots els usuaris'
-      "official_feedback_on_voted_idea": 'Actualitzeu una idea que heu votat: tots els usuaris'
-      "official_feedback_on_voted_initiative": 'Actualitzeu una proposta que heu votat: tots els usuaris'
-      "official_feedback_on_your_idea": 'Actualitzeu la vostra idea: tots els usuaris'
-      "official_feedback_on_your_initiative": 'Actualitzeu la vostra proposta: tots els usuaris'
-      "password_reset": 'Restabliment de la contrasenya: tots els usuaris'
-      "project_moderation_rights_received": 'Drets de moderació de projectes rebuts: gestors de projectes'
-      "project_folder_moderation_rights_received": S'han rebut els drets del gestor de carpetes
-      "project_phase_started": Nova fase del projecte - participants del projecte
-      "project_phase_upcoming": 'Pròxima nova fase del projecte: administradors i gestors de projectes'
-      "status_change_of_commented_idea": 'Canvi d''estat d''una idea que has comentat: tots els usuaris'
-      "status_change_of_commented_initiative": 'Canvi d''estat d''una proposta que has comentat: tots els usuaris'
-      "status_change_of_voted_idea": 'Canvi d''estat d''una idea que heu votat: tots els usuaris'
-      "status_change_of_voted_initiative": 'Canvi d''estat d''una proposta que heu votat: tots els usuaris'
-      "status_change_of_your_idea": 'Canvi d''estat de la teva idea: tots els usuaris'
-      "status_change_of_your_initiative": 'Canvi d''estat de la vostra proposta: tots els usuaris'
-      "threshold_reached_for_admin": 'La proposta ha arribat al llindar de votació: administradors'
-      "welcome": 'Correu electrònic de benvinguda als nous usuaris: tots els usuaris'
-      "admin_digest": 'Visió general setmanal: administradors'
-      "moderator_digest": 'Visió general setmanal: gestors de projectes'
-      "assignee_digest": 'Visió general setmanal de les idees assignades: administradors i gestors de projectes'
-      "user_digest": 'Visió general setmanal: tots els usuaris'
-      "your_proposed_initiatives_digest": 'Visió general setmanal de les vostres pròpies propostes: tots els usuaris'
+      "manual": Official message - all users
+      "admin_rights_received": Admin rights received - admins
+      "comment_deleted_by_admin": Deletion of your comment - all users
+      "comment_marked_as_spam": Comment spam report - admins and project managers
+      "comment_on_your_comment": Reply on your comment - all users
+      "comment_on_your_idea": Comment on your idea - all users
+      "comment_on_your_initiative": Comment on your proposal - all users
+      "first_idea_published": Publication of your first idea - all users
+      "idea_marked_as_spam": Idea spam report - admins and project managers
+      "idea_published": Publication of your idea - all users
+      "initiative_assigned_to_you": Assignment of a proposal - admins
+      "initiative_marked_as_spam": Proposal spam report - admins
+      "initiative_published": Publication of your proposal - all users
+      "invite_received": Invitation - all users
+      "invite_reminder": Invitation reminder - all users
+      "mention_in_comment": Mention in a comment - all users
+      "mention_in_official_feedback": Mention in an update - all users
+      "new_comment_for_admin": New comment - admins and project managers
+      "new_comment_on_commented_idea": New comment on an idea you commented on - all users
+      "new_comment_on_commented_initiative": New comment on a proposal you commented on - all users
+      "new_comment_on_voted_idea": New comment on an idea you voted for - all users
+      "new_comment_on_voted_initiative": New comment on a proposal you voted for - all users
+      "new_idea_for_admin": New idea - admins and project managers
+      "new_initiative_for_admin": New proposal - admins
+      "official_feedback_on_commented_idea": Update on an idea you commented on - all users
+      "official_feedback_on_commented_initiative": Update on a proposal you commented on - all users
+      "official_feedback_on_voted_idea": Update on an idea you voted on - all users
+      "official_feedback_on_voted_initiative": Update on a proposal you voted on - all users
+      "official_feedback_on_your_idea": Update on your idea - all users
+      "official_feedback_on_your_initiative": Update on your proposal - all users
+      "password_reset": Password reset - all users
+      "project_moderation_rights_received": Project moderation rights received - project managers
+      "project_folder_moderation_rights_received": Folder manager rights received
+      "project_phase_started": New project phase - project participants
+      "project_phase_upcoming": Upcoming new project phase - admins and project managers
+      "status_change_of_commented_idea": Status change of an idea you commented on - all users
+      "status_change_of_commented_initiative": Status change of a proposal you commented on - all users
+      "status_change_of_voted_idea": Status change of an idea you voted on - all users
+      "status_change_of_voted_initiative": Status change of a proposal you voted on - all users
+      "status_change_of_your_idea": Status change of your idea - all users
+      "status_change_of_your_initiative": Status change of your proposal - all users
+      "threshold_reached_for_admin": Proposal reached the voting threshold - admins
+      "welcome": Welcome email to new users - all users
+      "admin_digest": Weekly overview - admins
+      "moderator_digest": Weekly overview - project managers
+      "assignee_digest": Weekly overview of assigned ideas - admins and project managers
+      "user_digest": Weekly overview - all users
+      "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
     footer:
-      "link_privacy_policy": "Política de privacitat"
-      "link_terms_conditions": "Termes i Condicions"
-      "link_unsubscribe": "Cancel·la la subscripció"
+      "link_privacy_policy": "Privacy Policy"
+      "link_terms_conditions": "Terms & Conditions"
+      "link_unsubscribe": "Unsubscribe"
       "powered_by": "Impulsat per"
-      "statement": "CitizenLab us ha enviat aquest correu electrònic en nom de %{organizationName}, perquè sou un usuari registrat de %{organizationLink}. Podeu %{unsubscribeLink} si no voleu rebre aquests correus electrònics en el futur."
-      "unsubscribe_text": "donar-se de baixa"
+      "statement": "This e-mail was sent to you by CitizenLab on behalf of %{organizationName}, because you are a registered user of %{organizationLink}. You can %{unsubscribeLink} if you do not want to receive these e-mails in the future."
+      "unsubscribe_text": "unsubscribe"
     comment_deleted_by_admin:
-      reason: 'El motiu pel qual s''ha suprimit el teu comentari:'
-      cta_view: 'Mira aquesta idea'
-      event_description: '%{organizationName} ha suprimit el comentari que vas escriure sobre una idea.'
-      main_header: '%{organizationName} ha suprimit el teu comentari'
+      reason: 'The reason why your comment was deleted:'
+      cta_view: 'View this idea'
+      event_description: '%{organizationName} deleted the comment you wrote on an idea.'
+      main_header: '%{organizationName} deleted your comment'
       other_reason: '%{otherReason}'
-      inappropriate_reason: 'El teu comentari s''ha considerat inadequat'
-      irrelevant_reason: 'El teu comentari es va considerar irrellevant per a aquest context'
-      no_reason: 'No s''ha especificat cap motiu'
-      subject: 'El teu comentari s''ha eliminat de la plataforma de %{organizationName}'
-      preheader: 'El teu comentari s''ha suprimit'
+      inappropriate_reason: 'Your comment was considered to be inappropriate'
+      irrelevant_reason: 'Your comment was considered to be irrelevant for that context'
+      no_reason: 'No reason was specified'
+      subject: 'Your comment has been deleted from the platform of %{organizationName}'
+      preheader: 'Your comment has been deleted'
     admin_digest:
-      subject: 'El vostre informe d''administració setmanal de %{time}'
-      preheader: 'Resum d''administració de %{organizationName}'
-      title_your_weekly_report: '%{firstName}, el teu informe setmanal'
-      text_introduction: 'Hem seleccionat per a tu l''entrada que ha generat més activitat durant la setmana passada. Descobreix què passa a la teva plataforma!'
-      cta_visit_the_platform: 'Visiteu la vostra plataforma'
-      new_users: 'Usuaris nous'
-      new_ideas: 'Noves idees'
-      new_comments: 'Nous comentaris'
-      title_activity_past_week: 'Activitat de la setmana passada'
-      title_no_activity_past_week: 'No hi ha hagut cap activitat durant la setmana passada'
-      title_initiatives_past_week: 'Noves propostes de la setmana passada'
-      title_successful_initiatives_past_week: 'Propostes que van assolir el llindar la setmana passada'
-      yesterday_by_author: 'Ahir a les %{author}'
-      today_by_author: 'Avui a les %{author}'
-      x_days_ago_by_author: 'fa %{x} dies per %{author}'
+      subject: 'Your weekly admin report of %{time}'
+      preheader: 'Admin digest of %{organizationName}'
+      title_your_weekly_report: '%{firstName}, your weekly report'
+      text_introduction: 'We''ve curated for you the input that has generated the most activity over the past week. Find out what''s happening on your platform!'
+      cta_visit_the_platform: 'Visit your platform'
+      new_users: 'New users'
+      new_ideas: 'New ideas'
+      new_comments: 'New comments'
+      title_activity_past_week: 'Activity of the past week'
+      title_no_activity_past_week: 'There was no activity in the past week'
+      title_initiatives_past_week: 'New proposals of the past week'
+      title_successful_initiatives_past_week: 'Proposals that reached the threshold in the past week'
+      yesterday_by_author: 'Yesterday by %{author}'
+      today_by_author: 'Today by %{author}'
+      x_days_ago_by_author: '%{x} days ago by %{author}'
     admin_rights_received:
-      cta_moderate_platform: 'Modera la teva plataforma'
-      message_you_became_administrator: 'Se t''han concedit drets d''administrador per a la plataforma de participació de %{organizationName}.'
-      preheader: 'Se''t van concedir drets d''administrador per a la plataforma de participació de %{organizationName}'
-      subject: 'T''has convertit en administrador a la plataforma de %{organizationName}'
-      text_create_participatory_process: 'Com a administrador, podeu crear i configurar nous projectes de participació. Podeu afegir noves fases mitjançant la línia de temps. Cadascuna d''aquestes fases pot tenir el seu propi comportament pel que fa a la publicació d''idees, comentaris i votacions.'
-      text_moderate_analyse_input: 'Un cop engegats els projectes, apareixeran les primeres idees. Rebreu informes setmanals amb totes les activitats clau per estar al corrent de les coses. La visió general d''idees us ajudarà a moderar l''entrada i col·laborar en el seu processament.'
-      text_platform_setup: 'Com a administrador, podeu configurar la vostra plataforma de participació. Tria un logotip, imatges i colors, escriu un missatge personal a la teva pàgina d''inici, envia invitacions, defineix què vols saber dels teus usuaris,...'
-      title_create_participatory_process: 'Dissenyar el procés participatiu'
-      title_moderate_analyse_input: 'Moderar i analitzar l''entrada'
-      title_platform_setup: 'Configura la teva plataforma'
-      title_what_can_you_do_administrator: 'Què pots fer com a administrador?'
-      title_you_became_administrator: 'T''has convertit en administrador'
+      cta_moderate_platform: 'Moderate your platform'
+      message_you_became_administrator: 'You have been granted administrator rights for the participation platform of %{organizationName}.'
+      preheader: 'You were granted administrator rights for the participation platform of %{organizationName}'
+      subject: 'You became an administrator on the platform of %{organizationName}'
+      text_create_participatory_process: 'As an administrator, you can create and configure new participation projects. You can add new phases using the timeline. Each of these phases can have its own behaviour with regards to idea posting, commenting, and voting.'
+      text_moderate_analyse_input: 'Once projects are launched, the first ideas will come in. You will receive weekly reports with all key activities so that you stay on top of things. The ideas overview will help you moderate the input and collaborate on processing it.'
+      text_platform_setup: 'As an administrator you can set up your participation platform. Choose a logo, images and colors, write a personal message on your home page, send out invitations, define what you want to know of your users, ...'
+      title_create_participatory_process: 'Design the participatory process'
+      title_moderate_analyse_input: 'Moderate and analyse the input'
+      title_platform_setup: 'Set your platform up'
+      title_what_can_you_do_administrator: 'What can you do as an administrator?'
+      title_you_became_administrator: 'You became an administrator'
     comment_marked_as_spam:
-      by_author: 'per %{authorName}'
-      commented: '%{authorName} ha comentat:'
-      cta_review_comment: 'Revisa el comentari'
-      days_ago: 'fa %{numberOfDays} dies'
-      event_description: 'S''ha informat del següent comentari publicat el <strong>''%{post}''</strong>:'
-      inappropriate_content: 'El comentari és inadequat o ofensiu.'
-      preheader: 'Actueu en funció d''aquest comentari informat com a correu brossa'
-      reported_this_because: '%{reporterFirstName} ho han informat perquè:'
-      subject: '%{organizationName}: %{firstName} %{lastName} ha informat aquest comentari com a correu brossa'
-      title_comment_spam_report: '%{firstName} %{lastName} ha informat aquest comentari com a correu brossa'
-      today: Avui
-      wrong_content: 'El comentari no és rellevant.'
-      yesterday: Ahir
+      by_author: 'by %{authorName}'
+      commented: '%{authorName} commented:'
+      cta_review_comment: 'Review comment'
+      days_ago: '%{numberOfDays} days ago'
+      event_description: 'The following comment posted on <strong>''%{post}''</strong> was reported:'
+      inappropriate_content: 'The comment is inappropriate or offensive.'
+      preheader: 'Act upon this comment reported as spam'
+      reported_this_because: '%{reporterFirstName} reported this because:'
+      subject: '%{organizationName}: %{firstName} %{lastName} reported this comment as spam'
+      title_comment_spam_report: '%{firstName} %{lastName} reported this comment as spam'
+      today: Today
+      wrong_content: 'The comment is not relevant.'
+      yesterday: Yesterday
     comment_on_your_initiative:
-      commented: '%{authorFirstName} va escriure:'
-      cta_reply_to: 'Respon a %{commentAuthor}'
-      event_description: '%{authorNameFull} ha fet una reacció a la teva iniciativa "%{initiativeTitle}". Feu clic al botó següent per continuar la conversa amb %{authorName}.'
-      main_header: '%{commentAuthor} han comentat la teva iniciativa'
-      subject: 'Has rebut un comentari a la plataforma de %{organizationName}'
-      preheader: '%{authorName} ha deixat un comentari sobre la teva iniciativa per a %{organizationName}'
+      commented: '%{authorFirstName} wrote:'
+      cta_reply_to: 'Reply to %{commentAuthor}'
+      event_description: '%{authorNameFull} placed a reaction on your initiative ''%{initiativeTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      main_header: '%{commentAuthor} commented on your initiative'
+      subject: 'You''ve received a comment on %{organizationName}''s platform'
+      preheader: '%{authorName} left a comment on your initiative for %{organizationName}'
     assignee_digest:
-      subject: 'Idees que requereixen la vostra opinió: %{numberIdeas}'
-      preheader: 'Resum del cessionari de %{organizationName}'
-      title_your_weekly_report: '%{firstName}, l''aportació del ciutadà està esperant els vostres comentaris'
-      cta_manage_your_input: 'Gestiona la teva entrada'
-      assigned_ideas: 'Les idees necessiten els vostres comentaris'
-      title_assignment_past_week: 'Últimes idees que t''han assignat'
-      title_no_assignment_past_week: 'La setmana passada no us van assignar idees noves'
-      yesterday_by_author: 'Ahir a les %{author}'
-      today_by_author: 'Avui a les %{author}'
-      x_days_ago_by_author: 'fa %{x} dies per %{author}'
+      subject: 'Ideas requiring your feedback: %{numberIdeas}'
+      preheader: 'Assignee digest of %{organizationName}'
+      title_your_weekly_report: '%{firstName}, citizen input is awaiting your feedback'
+      cta_manage_your_input: 'Manage your input'
+      assigned_ideas: 'Ideas need your feedback'
+      title_assignment_past_week: 'Latest ideas assigned to you'
+      title_no_assignment_past_week: 'No new ideas assigned to you last week'
+      yesterday_by_author: 'Yesterday by %{author}'
+      today_by_author: 'Today by %{author}'
+      x_days_ago_by_author: '%{x} days ago by %{author}'
       idea_section: Idees
       initiative_section: Propostes
-      title_initiatives_past_week: 'Noves propostes assignades'
-      title_successful_initiatives_past_week: 'Propostes que t''han assignat que han arribat al llindar'
+      title_initiatives_past_week: 'New proposals assigned to you'
+      title_successful_initiatives_past_week: 'Proposals assigned to you that reached the threshold'
     idea_marked_as_spam:
-      by_author: 'per %{authorName}'
-      cta_review_idea: 'Revisió de la idea'
-      report_inappropriate_offensive_content: 'Trobo que aquest contingut és inadequat o ofensiu.'
-      report_not_an_idea: 'Aquest contingut no és una idea i no pertany aquí.'
-      subject: 'Tens un informe de correu brossa a la plataforma de %{organizationName}'
-      preheader: 'Actueu sobre aquest informe de correu brossa'
-      reported_this_because: '%{reporterFirstName} ho han informat perquè:'
-      title_spam_report: '%{firstName} %{lastName} informat de correu brossa'
+      by_author: 'by %{authorName}'
+      cta_review_idea: 'Review idea'
+      report_inappropriate_offensive_content: 'I find this content inappropriate or offensive.'
+      report_not_an_idea: 'This content is not an idea and does not belong here.'
+      subject: 'You have a spam report on the platform of %{organizationName}'
+      preheader: 'Act upon this spam report'
+      reported_this_because: '%{reporterFirstName} reported this because:'
+      title_spam_report: '%{firstName} %{lastName} reported spam'
     initiative_marked_as_spam:
-      by_author: 'per %{authorName}'
-      cta_review_initiative: 'Revisió de la proposta'
-      report_inappropriate_offensive_content: 'Trobo que aquest contingut és inadequat o ofensiu.'
-      report_not_an_initiative: 'Aquest contingut no és una proposta i no pertany aquí.'
-      subject: 'Tens un informe de correu brossa a la plataforma de %{organizationName}'
-      preheader: 'Actueu sobre aquest informe de correu brossa'
-      reported_this_because: '%{reporterFirstName} ho han informat perquè:'
-      title_spam_report: '%{firstName} %{lastName} informat de correu brossa'
+      by_author: 'by %{authorName}'
+      cta_review_initiative: 'Review proposal'
+      report_inappropriate_offensive_content: 'I find this content inappropriate or offensive.'
+      report_not_an_initiative: 'This content is not a proposal and does not belong here.'
+      subject: 'You have a spam report on the platform of %{organizationName}'
+      preheader: 'Act upon this spam report'
+      reported_this_because: '%{reporterFirstName} reported this because:'
+      title_spam_report: '%{firstName} %{lastName} reported spam'
     initiative_assigned_to_you:
-      by_author: 'per %{authorName}'
-      cta_reply_to: 'Doneu comentaris a %{authorName}'
-      event_description_initiative: 'Se t''ha assignat una proposta. Doneu comentaris escrivint una actualització oficial o canviant-ne l''estat.'
-      main_header: '%{firstName}, tens una tasca nova'
-      subject: 'Tens una tasca a la plataforma de %{organizationName}'
-      preheader_initiative: 'Se t''ha assignat la proposta de %{authorName}'
+      by_author: 'by %{authorName}'
+      cta_reply_to: 'Give feedback to %{authorName}'
+      event_description_initiative: 'An proposal has been assigned to you. Give feedback by writing an official update or by changing its status.'
+      main_header: '%{firstName}, you have a new assignment'
+      subject: 'You have an assignment on the platform of %{organizationName}'
+      preheader_initiative: 'The proposal of %{authorName} has been assigned to you'
     invite_reminder:
-      cta_accept_invitation: 'Accepta la teva invitació'
-      invitation_header: 'La teva invitació està pendent'
-      preheader: '%{organizationName} us va enviar una invitació per unir-vos a la seva plataforma de participació fa uns dies.'
-      subject: 'Pendent invitació per a la plataforma de participació de %{organizationName}'
+      cta_accept_invitation: 'Accept your invitation'
+      invitation_header: 'Your invitation is pending'
+      preheader: '%{organizationName} sent you an invite to join their participation platform some days ago.'
+      subject: 'Pending invitation for the participation platform of %{organizationName}'
     invite_received:
-      added_a_message: '%{organizationName} ha escrit el missatge següent:'
-      cta_accept_invitation: 'Accepta la teva invitació'
-      invitation_header: 'Vostè està convidat!'
-      invitation_header_message: '%{organizationName} t''ha convidat a la seva plataforma de participació.'
-      preheader: '%{organizationName} t''ha enviat una invitació per unir-te a la seva plataforma de participació.'
-      subject: 'Esteu convidats a unir-vos a la plataforma de %{organizationName}'
+      added_a_message: '%{organizationName} wrote the following message:'
+      cta_accept_invitation: 'Accept your invitation'
+      invitation_header: 'You are invited!'
+      invitation_header_message: '%{organizationName} invited you to their participation platform.'
+      preheader: '%{organizationName} sent you an invite to join their participation platform.'
+      subject: 'You are invited to join the platform of %{organizationName}'
     initiative_published:
-      action_add_image: '%{addImageLink} per augmentar la visibilitat'
-      action_published_initiative: 'Proposta publicada'
-      action_send_email: 'Envia un %{sendEmailLink}als teus contactes'
-      action_share_fb: 'Avisa als teus amics al %{fbLink}'
-      action_share_link: 'Comparteix-lo a través de qualsevol canal copiant el %{link}'
-      action_share_twitter: 'Informa als teus seguidors al %{twitterLink}'
-      cta_view_initiative: 'Aneu a la vostra proposta'
-      link: enllaç
-      main_header: 'Has publicat una proposta! Recollim suport per a això.'
-      message_next_steps: '%{userFirstName}, la teva proposta s''ha publicat amb èxit a la plataforma de participació de %{organizationName}. Se us notificarà quan la gent interaccioni amb la vostra proposta. Descobriu quins passos podeu seguir a continuació.'
-      message_get_votes: 'Assolir el llindar de votació:'
-      preheader: 'Gràcies per compartir la teva proposta %{initiativeTitle} per %{organizationName}. El següent pas és obtenir suport per a la vostra proposta compartint-la a través de la vostra xarxa.'
-      send_email: correu electrònic
-      subject: 'La teva proposta s''ha publicat a la plataforma de %{organizationName}'
+      action_add_image: '%{addImageLink} to increase visibility'
+      action_published_initiative: 'Published proposal'
+      action_send_email: 'Send your contacts an %{sendEmailLink}'
+      action_share_fb: 'Let your friends know on %{fbLink}'
+      action_share_link: 'Share it via any channel by copying the %{link}'
+      action_share_twitter: 'Inform your followers on %{twitterLink}'
+      cta_view_initiative: 'Go to your proposal'
+      link: link
+      main_header: 'You posted a proposal! Let''s gather support for it.'
+      message_next_steps: '%{userFirstName}, your proposal has successfully been published on the participation platform of %{organizationName}. You will be notified when people interact with your proposal. Find out what next steps you can take below.'
+      message_get_votes: 'Reach the voting threshold:'
+      preheader: 'Thank you for sharing your proposal %{initiativeTitle} for %{organizationName}. The next step is to get support for your proposal by sharing it across your network.'
+      send_email: email
+      subject: 'Your proposal was published on the platform of %{organizationName}'
     mention_in_official_feedback:
-      by_author: 'per %{authorName}'
-      commented: '%{organizationName} va escriure:'
-      cta_reply_to: 'Respon a %{organizationName}'
-      event_description: '%{organizationName} t''ha mencionat en els seus comentaris sobre la idea "%{post}". Feu clic a l''enllaç següent per entrar a la conversa amb %{organizationName}'
-      main_header: 'Has estat esmentat'
-      subject: '%{organizationName} t''han mencionat als seus comentaris'
-      preheader: '%{commentAuthor} t''han mencionat als comentaris'
+      by_author: 'by %{authorName}'
+      commented: '%{organizationName} wrote:'
+      cta_reply_to: 'Reply to %{organizationName}'
+      event_description: '%{organizationName} mentioned you in their feedback on the idea ''%{post}‘. Click the link below to enter the conversation with %{organizationName}'
+      main_header: 'You have been mentioned'
+      subject: '%{organizationName} mentioned you in their feedback'
+      preheader: '%{commentAuthor} mentioned you in feedback'
     new_comment_on_commented_idea:
-      commented: '%{commentAuthor} va escriure:'
-      cta_reply_to: 'Respon a %{commentAuthor}'
-      event_description: '%{commentAuthorFull} també va escriure un comentari sobre la idea ''%{ideaTitle}'' a la plataforma de participació de %{organizationName}. Feu clic al botó següent per iniciar la conversa amb %{commentAuthor}.'
-      main_header: '%{commentAuthor} va escriure un comentari sobre la mateixa idea'
-      subject: 'Hi ha un altre comentari sobre la idea que vas comentar'
-      preheader: '%{commentAuthor} també va deixar un comentari sobre una idea per a %{organizationName}'
+      commented: '%{commentAuthor} wrote:'
+      cta_reply_to: 'Reply to %{commentAuthor}'
+      event_description: '%{commentAuthorFull} also wrote a comment on the idea ''%{ideaTitle}'' on the participation platform of %{organizationName}. Click the button below to start the conversation with %{commentAuthor}.'
+      main_header: '%{commentAuthor} wrote a comment on the same idea'
+      subject: 'There''s another comment on the idea you commented on'
+      preheader: '%{commentAuthor} also left a comment on an idea for %{organizationName}'
     mention_in_comment:
-      by_author: 'per %{authorName}'
-      commented: '%{commentAuthor} va escriure:'
-      cta_reply_to: 'Respon a %{commentAuthor}'
-      event_description: '%{commentAuthorFull} t''ha esmentat en el seu comentari sobre la idea ''%{post}''. Feu clic a l''enllaç següent per entrar a la conversa amb %{commentAuthor}'
-      main_header: 'La gent parla de tu'
-      subject: 'Algú t''ha mencionat a la plataforma de %{organizationName}'
-      preheader: '%{commentAuthor} t''ha mencionat en un comentari'
+      by_author: 'by %{authorName}'
+      commented: '%{commentAuthor} wrote:'
+      cta_reply_to: 'Reply to %{commentAuthor}'
+      event_description: '%{commentAuthorFull} has mentioned you in his comment on the idea ''%{post}‘. Click the link below to enter the conversation with %{commentAuthor}'
+      main_header: 'People are talking about you'
+      subject: 'Someone mentioned you on the platform of %{organizationName}'
+      preheader: '%{commentAuthor} mentioned you in a comment'
     moderator_digest:
-      subject: 'El vostre informe setmanal del gestor de projectes de %{time}'
-      preheader: 'Resum del gestor de projectes de %{organizationName}'
-      title_your_weekly_report: '%{firstName}, el teu informe setmanal'
-      text_introduction: 'Hem seleccionat per a tu l''entrada que ha generat més activitat durant la setmana passada. Descobreix què està passant amb el teu projecte!'
-      cta_moderate: 'Modera el teu projecte'
-      new_users: 'Usuaris nous'
-      new_ideas: 'Noves idees'
-      new_comments: 'Nous comentaris'
-      title_activity_past_week: 'Activitat de la setmana passada'
-      title_no_activity_past_week: 'No hi ha activitat durant la darrera setmana'
-      yesterday_by_author: 'Ahir a les %{author}'
-      today_by_author: 'Avui a les %{author}'
-      x_days_ago_by_author: 'fa %{x} dies per %{author}'
+      subject: 'Your weekly project manager report of %{time}'
+      preheader: 'Project manager digest of %{organizationName}'
+      title_your_weekly_report: '%{firstName}, your weekly report'
+      text_introduction: 'We''ve curated for you the input that has generated the most activity over the past week. Find out what''s happening with your project!'
+      cta_moderate: 'Moderate your project'
+      new_users: 'New users'
+      new_ideas: 'New ideas'
+      new_comments: 'New comments'
+      title_activity_past_week: 'Activity of the past week'
+      title_no_activity_past_week: 'No activity in the past week'
+      yesterday_by_author: 'Yesterday by %{author}'
+      today_by_author: 'Today by %{author}'
+      x_days_ago_by_author: '%{x} days ago by %{author}'
     new_comment_on_commented_initiative:
-      commented: '%{commentAuthor} va escriure:'
-      cta_reply_to: 'Respon a %{commentAuthor}'
-      event_description: '%{commentAuthorFull} també va escriure un comentari sobre la proposta ''%{initiativeTitle}'' a la plataforma de participació de %{organizationName}. Feu clic al botó següent per iniciar la conversa amb %{commentAuthor}.'
-      main_header: '%{commentAuthor} va escriure un comentari sobre la mateixa proposta'
-      subject: 'Hi ha un altre comentari sobre la proposta que has comentat'
-      preheader: '%{commentAuthor} també va deixar un comentari sobre una proposta per a %{organizationName}'
+      commented: '%{commentAuthor} wrote:'
+      cta_reply_to: 'Reply to %{commentAuthor}'
+      event_description: '%{commentAuthorFull} also wrote a comment on the proposal ''%{initiativeTitle}'' on the participation platform of %{organizationName}. Click the button below to start the conversation with %{commentAuthor}.'
+      main_header: '%{commentAuthor} wrote a comment on the same proposal'
+      subject: 'There''s another comment on the proposal you commented on'
+      preheader: '%{commentAuthor} also left a comment on an proposal for %{organizationName}'
     new_comment_for_admin:
-      by_author: 'per %{authorName}'
-      commented: '%{authorFirstName} ha comentat:'
-      cta_reply_to: 'Veure el comentari de %{commentAuthor}'
-      days_ago: 'fa %{numberOfDays} dies'
-      event_description: '%{authorName} ha afegit un comentari nou a la teva plataforma.'
-      main_header: '%{firstName}, s''ha publicat un nou comentari a la teva plataforma'
-      subject: 'S''ha publicat un nou comentari a la plataforma de %{organizationName}'
-      preheader: '%{authorName} ha deixat un comentari'
-      today: Avui
-      yesterday: Ahir
+      by_author: 'by %{authorName}'
+      commented: '%{authorFirstName} commented:'
+      cta_reply_to: 'View %{commentAuthor}''s comment'
+      days_ago: '%{numberOfDays} days ago'
+      event_description: '%{authorName} added a new comment on your platform.'
+      main_header: '%{firstName}, a new comment has been posted on your platform'
+      subject: 'A new comment has been posted on %{organizationName}''s platform'
+      preheader: '%{authorName} left a comment'
+      today: Today
+      yesterday: Yesterday
     comment_on_your_idea:
-      by_author: 'per %{authorName}'
-      commented: '%{authorFirstName} va escriure:'
-      cta_reply_to: 'Respon a %{commentAuthor}'
-      event_description: '%{authorNameFull} va fer una reacció a la teva idea "%{ideaTitle}". Feu clic al botó següent per continuar la conversa amb %{authorName}.'
-      main_header: '%{authorName} han comentat la teva idea'
-      subject: 'Has rebut un comentari a la plataforma de %{organizationName}'
-      preheader: '%{authorName} ha deixat un comentari sobre la teva idea per a %{organizationName}'
+      by_author: 'by %{authorName}'
+      commented: '%{authorFirstName} wrote:'
+      cta_reply_to: 'Reply to %{commentAuthor}'
+      event_description: '%{authorNameFull} placed a reaction on your idea ''%{ideaTitle}''. Click the button below to continu the conversation with %{authorName}.'
+      main_header: '%{authorName} commented on your idea'
+      subject: 'You''ve received a comment on %{organizationName}''s platform'
+      preheader: '%{authorName} left a comment on your idea for %{organizationName}'
     new_comment_on_voted_initiative:
-      commented: '%{commentAuthor} va escriure:'
-      cta_reply_to: 'Consulta aquesta proposta'
-      event_description: '%{commentAuthor} ha comentat la proposta ''%{initiativeTitle}'' sobre la qual heu votat. Uneix-te a la discussió a la plataforma de %{organizationName}!'
-      main_header: '%{firstName}, hi ha un nou comentari sobre la proposta que has votat'
-      subject: 'Hi ha un nou comentari sobre la proposta que heu votat'
-      preheader: '%{commentAuthor} ha deixat un comentari sobre la proposta que has votat a la plataforma de %{organizationName}'
+      commented: '%{commentAuthor} wrote:'
+      cta_reply_to: 'View this proposal'
+      event_description: '%{commentAuthor} has commented on the proposal ''%{initiativeTitle}'' on which you''ve voted. Join the discussion on the platform of %{organizationName}!'
+      main_header: '%{firstName}, there''s a new comment on the proposal you''ve voted on'
+      subject: 'There''s a new comment on the proposal you''ve voted on'
+      preheader: '%{commentAuthor} left a comment on the proposal you''ve voted on on the platform of %{organizationName}'
     new_comment_on_voted_idea:
-      commented: '%{commentAuthor} ha comentat:'
-      cta_reply_to: 'Respon a %{commentAuthor}'
-      days_ago: 'fa %{numberOfDays} dies'
-      event_description: '%{commentAuthor} ha comentat la idea ''%{ideaTitle}'' sobre la qual has votat. Uneix-te a la discussió a la plataforma de %{organizationName}!'
-      main_header: '%{firstName}, hi ha un nou comentari sobre la idea que has votat'
-      subject: 'Hi ha un nou comentari sobre la idea que has votat'
-      preheader: '%{commentAuthor} ha deixat un comentari sobre la idea que has votat a la plataforma de %{organizationName}'
-      today: Avui
-      yesterday: Ahir
+      commented: '%{commentAuthor} commented:'
+      cta_reply_to: 'Reply to %{commentAuthor}'
+      days_ago: '%{numberOfDays} days ago'
+      event_description: '%{commentAuthor} has commented on the idea ''%{ideaTitle}'' on which you''ve voted. Join the discussion on the platform of %{organizationName}!'
+      main_header: '%{firstName}, there''s a new comment on the idea you''ve voted on'
+      subject: 'There''s a new comment on the idea you''ve voted on'
+      preheader: '%{commentAuthor} left a comment on the idea you''ve voted on on the platform of %{organizationName}'
+      today: Today
+      yesterday: Yesterday
     new_initiative_for_admin:
-      by_author: 'per %{authorName}'
-      commented: '%{authorFirstName} va escriure:'
-      cta_reply_to: 'Doneu comentaris a %{authorName}'
-      event_description: '%{authorName} ha publicat una nova proposta a la teva plataforma. Descobriu-lo ara, feu-ne un comentari o canvieu-ne l''estat!'
-      main_header: '%{firstName}, s''ha publicat una nova proposta a la teva plataforma'
-      subject: 'Algú va publicar una nova proposta a la plataforma de %{organizationName}'
-      preheader: '%{authorName} ha publicat una nova proposta a la teva plataforma'
+      by_author: 'by %{authorName}'
+      commented: '%{authorFirstName} wrote:'
+      cta_reply_to: 'Give feedback to %{authorName}'
+      event_description: '%{authorName} has published a new proposal on your platform. Discover it now, give some feedback or change its status!'
+      main_header: '%{firstName}, a new proposal has been published on your platform'
+      subject: 'Someone published a new proposal on the platform of %{organizationName}'
+      preheader: '%{authorName} published a new proposal on your platform'
     new_idea_for_admin:
-      by_author: 'per %{authorName}'
-      commented: '%{authorFirstName} ha comentat:'
-      cta_reply_to: 'Doneu comentaris a %{authorName}'
-      days_ago: 'fa %{numberOfDays} dies'
-      event_description: '%{authorName} ha publicat una nova idea a la teva plataforma. Descobriu-lo ara, feu-ne un comentari o canvieu-ne l''estat!'
-      main_header: '%{firstName}, s''ha publicat una nova idea a la teva plataforma'
-      subject: 'S''ha publicat una nova publicació a la plataforma de %{organizationName}'
-      preheader: '%{authorName} ha publicat una nova idea a la teva plataforma'
-      today: Avui
-      yesterday: Ahir
+      by_author: 'by %{authorName}'
+      commented: '%{authorFirstName} commented:'
+      cta_reply_to: 'Give feedback to %{authorName}'
+      days_ago: '%{numberOfDays} days ago'
+      event_description: '%{authorName} has published a new idea on your platform. Discover it now, give some feedback or change its status!'
+      main_header: '%{firstName}, a new idea has been published on your platform'
+      subject: 'A new post has been published on %{organizationName}''s platform'
+      preheader: '%{authorName} published a new idea on your platform'
+      today: Today
+      yesterday: Yesterday
     comment_on_your_comment:
-      cta_reply_to: 'Respon a %{firstName}'
-      event_description: '%{authorNameFull} ha escrit una resposta al teu comentari a "%{post}" a la plataforma de participació. Feu clic al botó següent per continuar la conversa amb %{authorName}.'
-      subject: 'Heu rebut una resposta al vostre comentari a la plataforma de %{organizationName}'
-      main_header: '%{authorName} han respost al teu comentari'
-      preheader: '%{authorName} ha respost al teu comentari a la plataforma de %{organizationName}'
-      replied: '%{authorFirstName} va respondre:'
+      cta_reply_to: 'Reply to %{firstName}'
+      event_description: '%{authorNameFull} wrote a reply to your comment on ''%{post}'' on the participation platform. Click the button below to continue the conversation with %{authorName}.'
+      subject: 'You have received a reply on your comment on the platform of %{organizationName}'
+      main_header: '%{authorName} replied to your comment'
+      preheader: '%{authorName} replied to your comment on %{organizationName}''s platform'
+      replied: '%{authorFirstName} replied:'
     official_feedback_on_commented_initiative:
-      by_author: 'per %{authorName}'
-      updated: '%{officialName} va escriure:'
-      cta_view: 'Aneu a aquesta proposta'
-      event_description: '%{officialName} va actualitzar la proposta "%{initiativeTitle}". Feu clic al botó següent per entrar a la conversa amb %{organizationName}.'
-      main_header: 'Hi ha una actualització sobre una proposta que has comentat'
-      subject: 'Una proposta que vau comentar ha rebut una actualització oficial a la plataforma de %{organizationName}'
-      preheader: '%{officialName} va deixar una actualització oficial sobre una proposta que vau comentar'
+      by_author: 'by %{authorName}'
+      updated: '%{officialName} wrote:'
+      cta_view: 'Go to this proposal'
+      event_description: '%{officialName} gave an update on the proposal ''%{initiativeTitle}''. Click the button below to enter the conversation with %{organizationName}.'
+      main_header: 'There''s an update on an proposal you commented on'
+      subject: 'A proposal you commented on has received an official update on the platform of %{organizationName}'
+      preheader: '%{officialName} left an official update on an proposal you commented on'
     official_feedback_on_voted_idea:
-      by_author: 'per %{authorName}'
-      updated: '%{officialName} va escriure:'
-      cta_view: 'Aneu a aquesta idea'
-      event_description: '%{officialName} va actualitzar la idea "%{ideaTitle}". Feu clic al botó següent per entrar a la conversa amb %{officialName}.'
-      subject: 'Una idea que heu votat ha rebut una actualització a la plataforma de %{organizationName}'
-      preheader: '%{officialName} ha deixat una actualització sobre una idea que has votat'
+      by_author: 'by %{authorName}'
+      updated: '%{officialName} wrote:'
+      cta_view: 'Go to this idea'
+      event_description: '%{officialName} gave an update on the idea ''%{ideaTitle}''. Click the button below to enter the conversation with %{officialName}.'
+      subject: 'An idea you voted on has received an update on the platform of %{organizationName}'
+      preheader: '%{officialName} left an update on an idea you voted on'
       main_header: ""
     official_feedback_on_commented_idea:
-      by_author: 'per %{authorName}'
-      updated: '%{officialName} va escriure:'
-      cta_view: 'Aneu a aquesta idea'
-      event_description: '%{officialName} va actualitzar la idea "%{ideaTitle}". Feu clic al botó següent per entrar a la conversa amb %{officialName}.'
-      main_header: 'Hi ha una actualització d''una idea que has comentat'
-      subject: 'Una idea que vau comentar ha rebut una actualització oficial a la plataforma de %{organizationName}'
-      preheader: '%{officialName} va deixar una actualització oficial sobre una idea que vau comentar'
+      by_author: 'by %{authorName}'
+      updated: '%{officialName} wrote:'
+      cta_view: 'Go to this idea'
+      event_description: '%{officialName} gave an update on the idea ''%{ideaTitle}''. Click the button below to enter the conversation with %{officialName}.'
+      main_header: 'There''s an update on an idea you commented on'
+      subject: 'An idea you commented on has received an official update on the platform of %{organizationName}'
+      preheader: '%{officialName} left an official update on an idea you commented on'
     official_feedback_on_your_idea:
-      by_author: 'per %{authorName}'
-      updated: '%{officialName} va escriure:'
-      cta_view: 'Ves a la teva idea'
-      event_description: '%{officialName} va actualitzar la teva idea "%{ideaTitle}". Feu clic al botó següent per entrar a la conversa amb %{officialName}.'
-      main_header: 'Heu rebut una actualització de %{organizationName}'
-      subject: 'Heu rebut una actualització de %{organizationName}'
-      preheader: '%{officialName} va deixar una actualització oficial de la teva idea'
+      by_author: 'by %{authorName}'
+      updated: '%{officialName} wrote:'
+      cta_view: 'Go to your idea'
+      event_description: '%{officialName} gave an update on your idea ''%{ideaTitle}''. Click the button below to enter the conversation with %{officialName}.'
+      main_header: 'You received an update from %{organizationName}'
+      subject: 'You received an update from %{organizationName}'
+      preheader: '%{officialName} left an official update on your idea'
     official_feedback_on_voted_initiative:
-      by_author: 'per %{authorName}'
-      updated: '%{officialName} va escriure:'
-      cta_view: 'Aneu a aquesta proposta'
-      event_description: '%{officialName} va actualitzar la proposta "%{initiativeTitle}". Feu clic al botó següent per entrar a la conversa amb %{organizationName}.'
-      main_header: 'Hi ha una actualització sobre una proposta que heu votat'
-      subject: 'Una proposta que heu votat ha rebut una actualització oficial a la plataforma de %{organizationName}'
-      preheader: '%{officialName} va deixar una actualització oficial sobre una proposta que vau votar'
+      by_author: 'by %{authorName}'
+      updated: '%{officialName} wrote:'
+      cta_view: 'Go to this proposal'
+      event_description: '%{officialName} gave an update on the proposal ''%{initiativeTitle}''. Click the button below to enter the conversation with %{organizationName}.'
+      main_header: 'There''s an update on an proposal you voted on'
+      subject: 'A proposal you voted on has received an official update on the platform of %{organizationName}'
+      preheader: '%{officialName} left an official update on a proposal you voted on'
     official_feedback_on_your_initiative:
-      updated: '%{officialName} va escriure:'
-      cta_view: 'Aneu a la vostra proposta'
-      event_description: '%{officialName} ha actualitzat la vostra proposta "%{initiativeTitle}". Feu clic al botó següent per entrar a la conversa amb %{organizationName}.'
-      main_header: 'Heu rebut una actualització de %{officialName}'
-      subject: 'Heu rebut una actualització oficial a la plataforma de %{organizationName}'
-      preheader: '%{officialName} ha deixat una actualització oficial de la teva proposta'
+      updated: '%{officialName} wrote:'
+      cta_view: 'Go to your proposal'
+      event_description: '%{officialName} gave an update on your proposal ''%{initiativeTitle}''. Click the button below to enter the conversation with %{organizationName}.'
+      main_header: 'You received an update from %{officialName}'
+      subject: 'You''ve received an official update on the platform of %{organizationName}'
+      preheader: '%{officialName} left an official update on your proposal'
     project_moderation_rights_received:
-      cta_moderate_project: 'Modera aquest projecte'
-      message_you_became_moderator: 'Un administrador de la plataforma de participació de %{organizationName} us acaba de fer cap de projecte del següent projecte:'
-      no_ideas: 'Encara no hi ha idees'
-      preheader: 'Un administrador de la plataforma de participació de %{organizationName} us acaba de convertir en cap de projecte del següent projecte'
-      subject: 'Et vas convertir en gestor de projectes a la plataforma de %{organizationName}'
-      text_design_participatory_process: 'Com a gestor de projectes, podeu configurar com interactuen els usuaris dins del vostre projecte. Podeu afegir noves fases mitjançant la línia de temps. Cadascuna d''aquestes fases pot tenir el seu propi comportament pel que fa a la publicació d''idees, comentaris i votacions.'
-      text_moderate_analyse_input: 'Un cop engegat el projecte, apareixeran les primeres idees. Rebreu informes setmanals amb totes les activitats clau per estar al corrent de les coses. La visió general d''idees a la vista del vostre gestor de projectes us ajudarà a entendre quines idees han obtingut més vots a favor i en contra.'
-      text_share_project_information: 'Per augmentar la qualitat de les idees que rebeu, és clau compartir informació suficient: afegir una descripció del projecte, adjuntar imatges (inclosos esbossos i plànols) i comunicar tots els esdeveniments relacionats que estan passant. Recordeu: una bona informació precedeix a una bona participació!'
-      title_design_participatory_process: 'Dissenyar el procés participatiu'
-      title_moderate_analyse_input: 'Moderar i analitzar l''entrada'
-      title_share_project_information: 'Proporcionar informació del projecte'
-      title_what_can_you_do_moderator: 'Què pots fer com a gestor de projectes?'
-      title_you_became_moderator: 'Et vas convertir en gestor de projectes'
-      x_ideas: '%{numberOfIdeas} idees'
+      cta_moderate_project: 'Moderate this project'
+      message_you_became_moderator: 'An adminstrator of the participation platform of %{organizationName} just made you project manager of the following project:'
+      no_ideas: 'No ideas yet'
+      preheader: 'An adminstrator of the participation platform of %{organizationName} just made you a project manager of the following project'
+      subject: 'You became a project manager on the platform of %{organizationName}'
+      text_design_participatory_process: 'As a project manager, you can configure how users interact within your project. You can add new phases using the timeline. Each of these phases can have its own behaviour with regards to idea posting, commenting, and voting.'
+      text_moderate_analyse_input: 'Once the project is launched, the first ideas will come in. You will receive weekly reports with all key activities so that you stay on top of things. The ideas overview in your project manager view will help you understand which ideas got the most upvotes and downvotes.'
+      text_share_project_information: 'In order to increase the quality of the ideas you''re getting, it is key to share sufficient information: add a project description, attach images (incl. sketches and plans), and communicate all related events going on. Remember: good information precedes good participation!'
+      title_design_participatory_process: 'Design the participatory process'
+      title_moderate_analyse_input: 'Moderate and analyse the input'
+      title_share_project_information: 'Provide project information'
+      title_what_can_you_do_moderator: 'What can you do as a project manager?'
+      title_you_became_moderator: 'You became a project manager'
+      x_ideas: '%{numberOfIdeas} ideas'
     project_folder_moderation_rights_received:
-      cta_view_folder_button: 'Visualitza aquesta carpeta'
-      message_added_as_folderadmin: 'T''han concedit drets de gestor de carpetes a la plataforma de participació de %{organizationName}per a la carpeta següent:'
-      no_projects: 'Encara no hi ha projectes'
-      preheader: 'Un administrador de la plataforma de participació de %{organizationName} us acaba de convertir en gestor de la següent carpeta'
-      subject: 'T''has convertit en gestor de carpetes de projectes a la plataforma de participació de %{organizationName}'
-      text_manage_folder: 'Una carpeta és una manera d''organitzar diversos projectes de participació junts. Com a gestor de carpetes, podeu editar la carpeta i la descripció de la carpeta i crear nous projectes (per suprimir projectes, poseu-vos en contacte amb l''administrador de la vostra plataforma). També tindreu drets de gestió de projectes sobre tots els projectes dins de la carpeta, cosa que us permetrà editar els projectes, gestionar les entrades i enviar correus electrònics als participants.'
-      text_moderate_analyse_input: 'Un cop engegats els projectes, començaran a arribar els primers inputs. Rebràs informes setmanals amb les activitats clau perquè puguis estar al corrent del que està passant. El Gestor d''entrada al tauler "Gestiona la plataforma" us permet veure i gestionar l''entrada, inclosa l''assignació d''estats i la resposta a publicacions i comentaris.'
-      text_design_participatory_process: 'Podeu gestionar els diferents projectes de participació dins de la vostra carpeta: configureu el mètode de participació, afegiu una descripció del projecte, adjunteu imatges i comuniqueu esdeveniments relacionats. També podeu gestionar com els participants interactuen amb els vostres projectes, inclòs la configuració dels drets d''accés i la configuració de publicacions, votacions i comentaris.'
-      title_design_participatory_process: 'Dissenyar el procés participatiu'
-      title_moderate_analyse_input: 'Moderar i analitzar l''entrada'
-      title_manage_folder: 'Gestioneu la configuració de la carpeta i creeu nous projectes.'
-      title_what_can_you_do_folderadmin: 'Què pots fer com a gestor de carpetes?'
-      title_added_as_folderadmin: 'T''han afegit com a gestor de carpetes'
-      x_projects: '%{numberOfProjects} projectes'
+      cta_view_folder_button: 'View this folder'
+      message_added_as_folderadmin: 'You''ve been given folder manager rights on %{organizationName}''s participation platform for the following folder:'
+      no_projects: 'No projects yet'
+      preheader: 'An administrator of the participation platform of %{organizationName} just made you a manager of the following folder'
+      subject: 'You became a project folder manager on the participation platform of %{organizationName}'
+      text_manage_folder: 'A folder is way to organize several participation projects together. As a folder manager, you can edit the folder and folder description and create new projects (to delete projects, contact your platform administrator). You will also have project management rights over all projects within the folder, allowing you to edit the projects, manage the inputs and email participants.'
+      text_moderate_analyse_input: 'Once the projects are launched, the first inputs will start coming in. You''ll receive weekly reports with the key activities so that you can stay on top of what’s happening. The Input Manager in your ''Manage Platform'' panel allows you to see and manage the input, including assigning statuses and responding to posts and comments.'
+      text_design_participatory_process: 'You can manage the different participation projects within your folder - configure the participation method, add a project description, attach images, and communicate related events. You can also manage how participants interact with your projects, including setting access rights and configuring the posting, voting and commenting settings.'
+      title_design_participatory_process: 'Design the participatory process'
+      title_moderate_analyse_input: 'Moderate and analyse the input'
+      title_manage_folder: 'Manage the folder settings and create new projects.'
+      title_what_can_you_do_folderadmin: 'What can you do as a folder manager?'
+      title_added_as_folderadmin: 'You''ve been added as a folder manager'
+      x_projects: '%{numberOfProjects} projects'
     project_phase_started:
-      cta_view_phase: 'Descobreix aquesta nova etapa'
-      event_description: 'Aquest projecte va entrar en una nova fase a la plataforma de %{organizationName}. Feu clic a l''enllaç següent per obtenir més informació!'
-      main_header: 'Comença una nova fase per al projecte ''%{projectName}'''
-      subtitle: 'Sobre ''%{projectName}'''
-      new_phase: 'Aquest projecte va entrar a la fase ''%{phaseTitle}'''
-      subject: '%{projectName} va entrar en una nova fase'
-      preheader: 'S''ha iniciat una nova fase per a %{projectName}'
+      cta_view_phase: 'Discover this new phase'
+      event_description: 'This project entered a new phase on the platform of %{organizationName}. Click on the link below to learn more!'
+      main_header: 'A new phase started for project ''%{projectName}'''
+      subtitle: 'About ''%{projectName}'''
+      new_phase: 'This project entered the phase ''%{phaseTitle}'''
+      subject: '%{projectName} entered a new phase'
+      preheader: 'A new phase has been started for %{projectName}'
     project_phase_upcoming:
-      cta_view_phase: 'Estableix aquesta nova fase'
-      event_description: 'El projecte ''%{projectName}'' entrarà aviat en una nova fase. Assegureu-vos que tot estigui configurat per a aquesta fase: hi ha una descripció adequada? Les idees seleccionades es traslladen a aquesta fase? Vols informar els teus ciutadans sobre les especificitats d''aquesta fase mitjançant una campanya de correu electrònic personalitzada?'
-      main_header: '%{firstName}, un projecte entrarà en una nova fase aviat'
-      subtitle: 'Sobre ''%{projectName}'''
-      new_phase: 'El projecte entrarà a la fase ''%{phaseTitle}'''
-      subject: 'Configureu-ho tot per a la nova fase de %{projectName}'
-      preheader: 'Aviat començarà una nova fase per al %{projectName}'
+      cta_view_phase: 'Set this new phase up'
+      event_description: 'The project ''%{projectName}'' will be entering a new phase soon. Make sure everything is set up for this phase: Is there an adequate description? Are selected ideas transferred to this phase? Do you want to inform your citizens on the specifics of this phase through a custom email campaign?'
+      main_header: '%{firstName}, a project will enter a new phase soon'
+      subtitle: 'About ''%{projectName}'''
+      new_phase: 'The project will enter the phase ''%{phaseTitle}'''
+      subject: 'Get everything set up for the new phase of %{projectName}'
+      preheader: 'A new phase will start soon for %{projectName}'
     status_change_of_commented_idea:
-      status_change: 'El nou estat d''aquesta idea és "%{ideaStatus}"'
-      cta_view_idea: 'Aneu a aquesta idea'
-      event_description: '%{organizationName} ha actualitzat l''estat de la idea ''%{ideaTitle}'' a la seva plataforma de participació digital.'
-      main_header: 'Una idea que has comentat té un nou estat'
-      subject: 'S''ha canviat l''estat d''una idea que has comentat'
-      preheader: '%{organizationName} ha canviat l''estat d''una idea que has comentat'
+      status_change: 'The new status of this idea is ''%{ideaStatus}'''
+      cta_view_idea: 'Go to this idea'
+      event_description: '%{organizationName} updated the status of the idea ''%{ideaTitle}'' on their digital participation platform.'
+      main_header: 'An idea you commented on has a new status'
+      subject: 'The status of an idea you commented on has been changed'
+      preheader: '%{organizationName} changed the status of an idea you commented on'
     status_change_of_your_idea:
-      status_change: 'El nou estat de la teva idea és "%{ideaStatus}"'
-      cta_view_idea: 'Ves a la teva idea'
-      event_description: '%{organizationName} ha actualitzat l''estat de la teva idea ''%{ideaTitle}'' a la seva plataforma de participació digital.'
-      main_header: 'La teva idea té un nou estatus'
-      subject: 'S''ha canviat l''estat de la teva idea'
-      preheader: '%{organizationName} ha canviat l''estat de la teva idea'
+      status_change: 'The new status of your idea is ''%{ideaStatus}'''
+      cta_view_idea: 'Go to your idea'
+      event_description: '%{organizationName} updated the status of your idea ''%{ideaTitle}'' on their digital participation platform.'
+      main_header: 'Your idea has a new status'
+      subject: 'The status of your idea has been changed'
+      preheader: '%{organizationName} changed the status of your idea'
     status_change_of_voted_idea:
-      status_change: 'El nou estat d''aquesta idea és "%{ideaStatus}"'
-      cta_view_idea: 'Aneu a aquesta idea'
-      event_description: '%{organizationName} ha actualitzat l''estat de la idea ''%{ideaTitle}'' a la seva plataforma de participació digital.'
-      main_header: 'Una idea que heu votat té un nou estatus'
-      subject: 'S''ha canviat l''estat d''una idea que heu votat'
-      preheader: '%{organizationName} ha canviat l''estat d''una idea que has votat'
+      status_change: 'The new status of this idea is ''%{ideaStatus}'''
+      cta_view_idea: 'Go to this idea'
+      event_description: '%{organizationName} updated the status of the idea ''%{ideaTitle}'' on their digital participation platform.'
+      main_header: 'An idea you voted on has a new status'
+      subject: 'The status of an idea you voted on has been changed'
+      preheader: '%{organizationName} changed the status of an idea you voted on'
     status_change_of_voted_initiative:
-      status_change: 'El nou estat d''aquesta proposta és "%{initiativeStatus}"'
-      cta_view_initiative: 'Aneu a aquesta proposta'
-      event_description: 'S''ha actualitzat l''estat de la proposta ''%{initiativeTitle}'' a la plataforma de participació digital de l'' %{organizationName}.'
-      main_header: 'Una proposta que heu votat té un nou estat'
-      subject: 'L''estat d''una proposta que heu votat ha canviat'
-      preheader: 'L''estat d''una proposta que heu votat ha canviat'
+      status_change: 'The new status of this proposal is ''%{initiativeStatus}'''
+      cta_view_initiative: 'Go to this proposal'
+      event_description: 'The status of the proposal ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
+      main_header: 'A proposal you voted on has a new status'
+      subject: 'The status of a proposal you voted on has changed'
+      preheader: 'The status of a proposal you voted on changed'
     status_change_of_commented_initiative:
-      status_change: 'El nou estat d''aquesta proposta és "%{initiativeStatus}"'
-      cta_view_initiative: 'Aneu a aquesta proposta'
-      event_description: 'S''ha actualitzat l''estat de la proposta ''%{initiativeTitle}'' a la plataforma de participació digital de l'' %{organizationName}.'
-      main_header: 'Una proposta que has comentat té un nou estat'
-      subject: 'L''estat d''una proposta que has comentat ha canviat'
-      preheader: 'L''estat d''una proposta que has comentat ha canviat'
+      status_change: 'The new status of this proposal is ''%{initiativeStatus}'''
+      cta_view_initiative: 'Go to this proposal'
+      event_description: 'The status of the proposal ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
+      main_header: 'A proposal you commented on has a new status'
+      subject: 'The status of a proposal you commented on has changed'
+      preheader: 'The status of a proposal you commented on has changed'
     status_change_of_your_initiative:
-      status_change: 'El nou estat de la vostra proposta és "%{initiativeStatus}"'
-      cta_view_initiative: 'Aneu a la vostra proposta'
-      event_description: 'S''ha actualitzat l''estat de la proposta ''%{initiativeTitle}'' a la plataforma de participació digital de l'' %{organizationName}.'
-      main_header: 'La teva proposta té un nou estat'
-      subject: 'L''estat de la vostra proposta ha canviat'
-      preheader: 'L''estat de la vostra proposta ha canviat'
+      status_change: 'The new status of your proposal is ''%{initiativeStatus}'''
+      cta_view_initiative: 'Go to your proposal'
+      event_description: 'The status of the proposal ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
+      main_header: 'Your proposal has a new status'
+      subject: 'The status of your proposal has changed'
+      preheader: 'The status of your proposal has changed'
     user_digest:
-      subject: "La teva activitat a la plataforma de participació de %{organizationName}"
-      commented: "%{authorFirstName} ha comentat:"
-      preheader: "Vista general setmanal de %{organizationName}"
-      title_your_weekly_report: "Descobreix què va passar la setmana passada"
-      intro_text: "Aquí teniu un resum del que va passar a la plataforma de participació de %{organizationName}."
-      cta_go_to_the_platform: "Aneu a la plataforma"
-      title_no_activity_past_week: "No hi ha activitat durant la darrera setmana"
-      title_proposals: "Les propostes van començar"
-      proposals_started_text: "Les propostes són idees que necessiten guanyar impuls i suport dels altres (persones com tu!) per tirar endavant. A continuació es mostra una llista de les propostes que s'han presentat durant la darrera setmana. Feu clic a qualsevol d'ells per donar-hi una ullada i oferir el vostre suport i comentaris!"
-      title_successful_proposals: "Propostes que han arribat al llindar"
-      successful_proposals_text: "Aquestes propostes han rebut prou suport per passar a la següent etapa! Feu clic a la proposta per saber més sobre què passarà a continuació."
-      today_by_author: "Avui a les %{author}"
-      yesterday_by_author: "Ahir a les %{author}"
-      x_days_ago_by_author: "fa %{x} dies per %{author}"
-      trending_ideas: "Idees tendències"
-      trending_ideas_text: "T'interessa què està passant a la plataforma? Aquí teniu les tres idees més tendències i què diu la gent sobre elles."
-      no_notifications: "No hi ha notificacions"
-      one_notification: "1 notificació"
-      multiple_notifications: "%{notifCount} notificacions"
-      no_unread_notifications: "No teniu cap notificació no llegida. Visiteu la plataforma per aportar les vostres aportacions i generar noves notificacions!"
-      unread_notifications: "Tens notificacions no llegides. Visita la plataforma per descobrir què està passant!"
+      subject: "Your activity on the participation platform of %{organizationName}"
+      commented: "%{authorFirstName} commented:"
+      preheader: "Weekly overview of %{organizationName}"
+      title_your_weekly_report: "Discover what happened last week"
+      intro_text: "Here's a summary of what happened on the participation platform of %{organizationName}."
+      cta_go_to_the_platform: "Go to the platform"
+      title_no_activity_past_week: "No activity in the past week"
+      title_proposals: "Proposals started"
+      proposals_started_text: "Proposals are ideas that need to gain traction and support from others (people like you!) in order to move forward. Below is a list of proposals that have been put forward in the last week. Click on any of them to take a look and offer your support and feedback!"
+      title_successful_proposals: "Proposals that reached the threshold"
+      successful_proposals_text: "These proposals have gotten enough support to move to the next stage! Click on the proposal to learn more about what happens next."
+      today_by_author: "Today by %{author}"
+      yesterday_by_author: "Yesterday by %{author}"
+      x_days_ago_by_author: "%{x} days ago by %{author}"
+      trending_ideas: "Trending ideas"
+      trending_ideas_text: "Interested in what’s been happening on the platform? Here are the three most trending ideas and what people are saying about them."
+      no_notifications: "No notifications"
+      one_notification: "1 notification"
+      multiple_notifications: "%{notifCount} notifications"
+      no_unread_notifications: "You don't have any unread notifications. Visit the platform to contribute your input and generate new notifications!"
+      unread_notifications: "You have unread notifications. Visit the platform to discover what's happening!"
     threshold_reached_for_admin:
-      by_author: 'per %{authorName}'
-      cta_process_initiative: 'Porta aquesta iniciativa als passos següents'
-      event_description: 'Una iniciativa ha arribat al llindar de votació a la vostra plataforma. Feu clic al botó següent per passar als passos següents!'
-      main_header: 'Una iniciativa ha arribat al llindar de votació!'
-      subject: 'Una iniciativa ha arribat al llindar de votació a la vostra plataforma'
-      preheader: 'Assegureu-vos de fer els següents passos'
+      by_author: 'by %{authorName}'
+      cta_process_initiative: 'Take this initiative to the next steps'
+      event_description: 'An initiative reached the voting threshold on your platform. Click the button below to take it to the next steps!'
+      main_header: 'An initiative reached the voting threshold!'
+      subject: 'An initiative reached the voting threshold on your platform'
+      preheader: 'Make sure to take the next steps'
     first_idea_published:
-      action_add_image: '%{addImageLink} per augmentar la visibilitat'
-      action_comment: '%{textComment} en idees existents'
-      action_published_idea: 'Idea publicada'
-      action_send_email: 'Envia un %{sendEmailLink}als teus contactes'
-      action_share_fb: 'Avisa als teus amics al %{fbLink}'
-      action_share_link: 'Comparteix-lo a través de qualsevol canal copiant el %{link}'
-      action_share_twitter: 'Informa als teus seguidors al %{twitterLink}'
-      add_image: 'Afegeix una imatge'
-      cta_view_idea: 'Ves a la teva idea'
-      event_description: '%{firstName}, felicitats per la teva primera idea a la plataforma de participació de %{organizationName}. Se us notificarà quan la gent interacciona amb la vostra idea. Descobriu quins passos podeu seguir a continuació.'
-      link: enllaç
-      main_header: '%{firstName}, has publicat la teva primera idea!'
-      message_get_votes: 'Arribeu a més persones amb la vostra idea:'
-      preheader: '%{firstName}, felicitats per publicar la teva primera idea a la plataforma de %{organizationName}. Ara recolliu suport per a la vostra idea'
-      see_you: 'Ens veiem aviat a la plataforma!'
-      send_email: correu electrònic
-      subject: 'La teva primera idea a la plataforma de %{organizationName}'
+      action_add_image: '%{addImageLink} to increase visibility'
+      action_comment: '%{textComment} on existing ideas'
+      action_published_idea: 'Published idea'
+      action_send_email: 'Send your contacts an %{sendEmailLink}'
+      action_share_fb: 'Let your friends know on %{fbLink}'
+      action_share_link: 'Share it via any channel by copying the %{link}'
+      action_share_twitter: 'Inform your followers on %{twitterLink}'
+      add_image: 'Add an image'
+      cta_view_idea: 'Go to your idea'
+      event_description: '%{firstName}, congratulations with your first idea on the participation platform of %{organizationName}. You will be notified when people interact with your idea. Find out what next steps you can take below.'
+      link: link
+      main_header: '%{firstName}, you posted your first idea!'
+      message_get_votes: 'Reach more people with your idea:'
+      preheader: '%{firstName}, congratulations on posting your first idea on the platform of %{organizationName}. Now gather support for your idea'
+      see_you: 'See you soon at the platform!'
+      send_email: email
+      subject: 'Your first idea on the platform of %{organizationName}'
     welcome:
-      cta_join_platform: 'Descobreix la plataforma'
-      subject: 'Benvinguts a la plataforma de %{organizationName}'
-      main_header: Benvingut!
-      message_welcome: 'Enhorabona, t''has registrat amb èxit a la plataforma de participació de %{organizationName}. Ara pots descobrir la plataforma i fer sentir la teva veu. També pots afegir una foto de perfil i una breu descripció per dir als altres qui ets.'
-      preheader: 'Aquí teniu el que podeu fer a la plataforma de %{organizationName}'
+      cta_join_platform: 'Discover the platform'
+      subject: 'Welcome to the platform of %{organizationName}'
+      main_header: Welcome!
+      message_welcome: 'Congratulations, you successfully signed up on the participation platform of %{organizationName}. You can now discover the platform and make your voice heard. You can also add a profile picture and a short description to tell others who you are.'
+      preheader: 'Here''s what you can do on the platform of %{organizationName}'
     idea_published:
-      action_add_image: '%{addImageLink} per augmentar la visibilitat'
-      action_published_idea: 'Idea publicada'
-      action_send_email: 'Envia un %{sendEmailLink}als teus contactes'
-      action_share_fb: 'Avisa als teus amics al %{fbLink}'
-      action_share_link: 'Comparteix-lo a través de qualsevol canal copiant el %{link}'
-      action_share_twitter: 'Informa als teus seguidors al %{twitterLink}'
-      add_image: 'Afegeix una imatge'
-      cta_view_idea: 'Ves a la teva idea'
-      event_description: '%{firstName}, la teva idea s''ha publicat amb èxit a la plataforma de participació de %{organizationName}. Rebràs una notificació quan la gent interacciona amb la teva idea. Descobriu quins passos podeu seguir a continuació.'
-      link: enllaç
-      main_header: 'Has publicat una idea! Assegurem-nos que es llegeix.'
-      message_get_votes: 'Arribeu a més persones amb la vostra idea:'
-      preheader: '%{firstName}, enhorabona per publicar la teva idea a la plataforma de %{organizationName}. Ara recollir suport.'
-      see_you: 'Ens veiem aviat a la plataforma!'
-      send_email: correu electrònic
-      subject: 'La teva idea a la plataforma de %{organizationName}'
+      action_add_image: '%{addImageLink} to increase visibility'
+      action_published_idea: 'Published idea'
+      action_send_email: 'Send your contacts an %{sendEmailLink}'
+      action_share_fb: 'Let your friends know on %{fbLink}'
+      action_share_link: 'Share it via any channel by copying the %{link}'
+      action_share_twitter: 'Inform your followers on %{twitterLink}'
+      add_image: 'Add an image'
+      cta_view_idea: 'Go to your idea'
+      event_description: '%{firstName}, your idea has successfully been published on the participation platform of %{organizationName}. You will be notified when people interact with your idea. Find out what next steps you can take below.'
+      link: link
+      main_header: 'You posted an idea! Let''s make sure it gets read.'
+      message_get_votes: 'Reach more people with your idea:'
+      preheader: '%{firstName}, congratulations on posting your idea on the platform of %{organizationName}. Now gather support.'
+      see_you: 'See you soon at the platform!'
+      send_email: email
+      subject: 'Your idea on the platform of %{organizationName}'
       message_next_steps: ""
     your_proposed_initiatives_digest:
-      subject: 'Actualització setmanal de les vostres propostes'
-      preheader: 'Què ha passat amb les vostres propostes la setmana passada?'
-      title_your_weekly_report: 'Com han anat les vostres propostes?'
-      text_introduction: 'Trobeu els números clau a continuació i aneu a la plataforma per prendre mesures i reunir prou suport a temps.'
-      cta_see_your_initiative: 'Aneu a les vostres propostes'
-      total_votes: 'Total de vots'
-      new_votes: 'Nous vots'
-      remaining_votes: 'Vots restants'
-      remaining_days: 'Dies restants'
+      subject: 'Weekly update of your proposals'
+      preheader: 'What happened with your proposals in the past week?'
+      title_your_weekly_report: 'How have your proposals been doing?'
+      text_introduction: 'Find the key numbers below and go to the platform to take action and gather enough support in time.'
+      cta_see_your_initiative: 'Go to your proposals'
+      total_votes: 'Total votes'
+      new_votes: 'New votes'
+      remaining_votes: 'Votes remaining'
+      remaining_days: 'Days remaining'
