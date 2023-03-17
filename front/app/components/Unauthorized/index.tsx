@@ -33,12 +33,6 @@ const Unauthorized = () => {
     );
   }
 
-  const signUp = () => {
-    openSignUpInModal({
-      flow: 'signup',
-    });
-  };
-
   const signIn = () => {
     openSignUpInModal({
       flow: 'signin',
@@ -62,11 +56,7 @@ const Unauthorized = () => {
             {formatMessage(messages.sorryNoAccess)}
           </Text>
           <Box mb="16px">
-            <Button
-              onClick={signIn}
-              text={formatMessage(messages.signIn)}
-              icon="arrow-right"
-            />
+            <Button onClick={signIn} text={formatMessage(messages.signIn)} />
           </Box>
         </>
       ) : (
