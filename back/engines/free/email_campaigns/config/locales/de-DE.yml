@@ -419,7 +419,7 @@ de:
       cta_view_phase: 'Zur neuen Phase'
       event_description: 'Das Projekt auf der Plattform von %{organizationName} befindet sich nun in einer neuen Phase. Klicke auf den Link unten, um mehr zu erfahren!'
       main_header: 'Eine neue Phase für das Projekt ''%{projectName}'' gestartet'
-      subtitle: 'Über ''%{projectName}'''
+      subtitle: 'About ''%{projectName}'''
       new_phase: 'Dieses Projekt ist nun in der Phase ''%{phaseTitle}'''
       subject: '%{projectName} ist in einer neuen Phase'
       preheader: 'Für %{projectName} hat eine neue Phase begonnen'
