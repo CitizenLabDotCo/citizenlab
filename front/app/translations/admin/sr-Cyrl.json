@@ -344,7 +344,7 @@
   "app.containers.Admin.Insights.supportLinkUrl": "хттпс://суппорт.цитизенлаб.цо/артицлес/5525933",
   "app.containers.Admin.Insights.title": "Инсигхтс",
   "app.containers.Admin.Invitations.addToGroupLabel": "Додајте ове људе одређеним ручним корисничким групама",
-  "app.containers.Admin.Invitations.adminLabel": "Give these people admin rights",
+  "app.containers.Admin.Invitations.adminLabel": "Дајте овим људима администраторска права",
   "app.containers.Admin.Invitations.adminLabelTooltip": "Када изаберете ову опцију, људи које позивате имаће приступ свим подешавањима ваше платформе.",
   "app.containers.Admin.Invitations.configureInvitations": "3. Конфигуришите позивнице",
   "app.containers.Admin.Invitations.confirmDelete": "Да сигуран сам",
