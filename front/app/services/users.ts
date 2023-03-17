@@ -16,6 +16,10 @@ export interface IUserAttributes {
   locale: Locale;
   highest_role: 'super_admin' | 'admin' | 'project_moderator' | 'user';
   bio_multiloc: Multiloc;
+  block_end_at?: string;
+  block_reason?: string;
+  block_start_at?: string;
+  blocked?: boolean;
   registration_completed_at: string | null;
   created_at: string;
   updated_at: string;

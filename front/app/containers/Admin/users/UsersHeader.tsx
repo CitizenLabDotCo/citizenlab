@@ -6,6 +6,7 @@ import { Multiloc } from 'typings';
 import Button from 'components/UI/Button';
 import T from 'components/T';
 import SearchInput from 'components/UI/SearchInput';
+import { Title } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -75,7 +76,9 @@ const EditGroupButton = styled(Button)``;
 const DeleteGroupButton = styled(Button)``;
 
 interface Props {
-  title?: Multiloc;
+  title?: string;
+  subtitle?: string;
+  groupTitle?: Multiloc;
   groupType?: MembershipType;
   onEdit?: () => void;
   onDelete?: () => void;
@@ -83,12 +86,20 @@ interface Props {
 }
 
 const UsersHeader = memo(
-  ({ title, groupType, onEdit, onDelete, onSearch }: Props) => {
+  ({
+    title,
+    subtitle,
+    groupTitle,
+    groupType,
+    onEdit,
+    onDelete,
+    onSearch,
+  }: Props) => {
     const handleSearchChange = (newValue: string) => {
       onSearch(newValue);
     };
 
-    if (title) {
+    if (groupTitle) {
       return (
         <OnlyRow>
           {groupType && (
@@ -98,7 +109,7 @@ const UsersHeader = memo(
             />
           )}
           <TextAndButtons>
-            <T as="h1" value={title} />
+            <T as="h1" value={groupTitle} />
             <Buttons>
               <EditGroupButton
                 hiddenText={<FormattedMessage {...messages.editGroup} />}
@@ -135,7 +146,7 @@ const UsersHeader = memo(
       <TitleWrapper>
         <FirstRow>
           <TextAndButtons>
-            <FormattedMessage tagName="h1" {...messages.allUsers} />
+            <Title variant="h1">{title}</Title>
           </TextAndButtons>
           <Spacer />
           <StyledSearchInput
@@ -148,7 +159,7 @@ const UsersHeader = memo(
             a11y_numberOfSearchResults={0}
           />
         </FirstRow>
-        <FormattedMessage tagName="h2" {...messages.usersSubtitle} />
+        <Title variant="h2">{subtitle}</Title>
       </TitleWrapper>
     );
   }

@@ -1,32 +1,39 @@
 // Libraries
 import React, { useState } from 'react';
 import { isString, isEmpty } from 'lodash-es';
+import { useIntl } from 'utils/cl-intl';
+
 // Components
 import UserManager from './UserManager';
 import UsersHeader from './UsersHeader';
 
 // i18n
-import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-const AllUsers = () => {
+// Hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+export default () => {
   const { formatMessage } = useIntl();
-  const [search, setSearch] = useState<string | undefined>(undefined);
+  const [search, setSearch] = useState<string>('');
+  const isUserBlockingEnabled = useFeatureFlag({
+    name: 'user_blocking',
+  });
 
   const searchUser = (searchTerm: string) => {
     setSearch(isString(searchTerm) && !isEmpty(searchTerm) ? searchTerm : '');
   };
 
+  if (!isUserBlockingEnabled) return null;
+
   return (
     <>
       <UsersHeader
-        title={formatMessage(messages.allUsers)}
-        subtitle={formatMessage(messages.usersSubtitle)}
+        title={formatMessage(messages.blockedUsers)}
+        subtitle={formatMessage(messages.blockedUsersSubtitle)}
         onSearch={searchUser}
       />
-      <UserManager search={search} />
+      <UserManager onlyBlocked={true} search={search} />
     </>
   );
 };
-
-export default AllUsers;

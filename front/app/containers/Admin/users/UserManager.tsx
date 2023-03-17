@@ -25,6 +25,7 @@ interface InputProps {
   search: string | undefined;
   groupId?: string;
   groupType?: MembershipType;
+  onlyBlocked?: boolean;
   deleteUsersFromGroup?: (userIds: string[]) => void;
 }
 
