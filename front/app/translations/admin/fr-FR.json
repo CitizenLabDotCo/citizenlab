@@ -1134,7 +1134,6 @@
   "app.containers.AdminPage.ProjectEdit.onlyAdminsCanView": "Seulement visible aux administrateurs",
   "app.containers.AdminPage.ProjectEdit.optionNo": "Non",
   "app.containers.AdminPage.ProjectEdit.optionYes": "Oui (sélectionner le dossier)",
-  "app.containers.AdminPage.ProjectEdit.participationAccessRightsTitle": "Droits d'accès",
   "app.containers.AdminPage.ProjectEdit.participationLevels": "Niveaux de participation",
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "Qu'est-ce que vous souhaitez faire ?",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Choisissez comment les citoyens peuvent participer .",

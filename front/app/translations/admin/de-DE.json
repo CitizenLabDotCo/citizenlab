@@ -1134,7 +1134,6 @@
   "app.containers.AdminPage.ProjectEdit.onlyAdminsCanView": "Nur intern sichtbar",
   "app.containers.AdminPage.ProjectEdit.optionNo": "Nein",
   "app.containers.AdminPage.ProjectEdit.optionYes": "Ja (Ordner auswählen)",
-  "app.containers.AdminPage.ProjectEdit.participationAccessRightsTitle": "Teilnahme",
   "app.containers.AdminPage.ProjectEdit.participationLevels": "Höhe der Beteiligung",
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "Beteiligungsmethoden",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Wählen Sie, wie BenutzerInnen teilnehmen können.",

@@ -1123,7 +1123,6 @@
   "app.containers.AdminPage.ProjectEdit.onlyAdminsCanView": "Ορατό μόνο από τον διαχειριστή",
   "app.containers.AdminPage.ProjectEdit.optionNo": "Δεν υπάρχει",
   "app.containers.AdminPage.ProjectEdit.optionYes": "Ναι (επιλέξτε φάκελο)",
-  "app.containers.AdminPage.ProjectEdit.participationAccessRightsTitle": "Συμμετοχή",
   "app.containers.AdminPage.ProjectEdit.participationLevels": "Επίπεδα συμμετοχής",
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "Τι θέλετε να κάνετε;",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Επιλέξτε τον τρόπο με τον οποίο μπορούν να συμμετέχουν οι χρήστες.",

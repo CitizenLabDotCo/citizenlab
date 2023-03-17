@@ -1134,7 +1134,6 @@
   "app.containers.AdminPage.ProjectEdit.onlyAdminsCanView": "يستطيع المسؤول عرضه فقط",
   "app.containers.AdminPage.ProjectEdit.optionNo": "لا",
   "app.containers.AdminPage.ProjectEdit.optionYes": "نعم (تحديد مجلد)",
-  "app.containers.AdminPage.ProjectEdit.participationAccessRightsTitle": "أذونات الوصول",
   "app.containers.AdminPage.ProjectEdit.participationLevels": "مستويات المشاركة",
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "ماذا تريد أن تفعل؟",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "اختر كيف يمكن للمستخدمين المشاركة.",

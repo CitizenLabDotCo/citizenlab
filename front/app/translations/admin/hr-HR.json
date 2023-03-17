@@ -1134,7 +1134,6 @@
   "app.containers.AdminPage.ProjectEdit.onlyAdminsCanView": "Samo administratori mogu vidjeti",
   "app.containers.AdminPage.ProjectEdit.optionNo": "Ne",
   "app.containers.AdminPage.ProjectEdit.optionYes": "Da (odaberite mapu)",
-  "app.containers.AdminPage.ProjectEdit.participationAccessRightsTitle": "Sudjelovanje",
   "app.containers.AdminPage.ProjectEdit.participationLevels": "Razine sudjelovanja",
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "Što želite učiniti?",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Odaberite kako korisnici sudjeluju.",

@@ -1134,7 +1134,6 @@
   "app.containers.AdminPage.ProjectEdit.onlyAdminsCanView": "Somente os administradores podem ver",
   "app.containers.AdminPage.ProjectEdit.optionNo": "Não",
   "app.containers.AdminPage.ProjectEdit.optionYes": "Sim (selecionar pasta)",
-  "app.containers.AdminPage.ProjectEdit.participationAccessRightsTitle": "Permissão de acesso",
   "app.containers.AdminPage.ProjectEdit.participationLevels": "Níveis de participação",
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "O que você quer fazer?",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Escolha como os usuários podem participar.",

@@ -1123,7 +1123,6 @@
   "app.containers.AdminPage.ProjectEdit.onlyAdminsCanView": "Aqutsisunuinnaq ersippoq",
   "app.containers.AdminPage.ProjectEdit.optionNo": "Naamik",
   "app.containers.AdminPage.ProjectEdit.optionYes": "Aappi (mappemik toqqaagit)",
-  "app.containers.AdminPage.ProjectEdit.participationAccessRightsTitle": "Peqataaneq",
   "app.containers.AdminPage.ProjectEdit.participationLevels": "Peqataanerup annertussusii",
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "Sulererusuppit?",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Atuisut qanoq peqataasinnaanersut toqqaruk.",
