@@ -7,7 +7,7 @@ class WebApi::V1::PermissionsController < ApplicationController
   def index
     @permissions = policy_scope(Permission)
       .includes(:permission_scope)
-      .where(permission_scope_id: permission_scope_id)
+      .where(permission_scope: permission_scope)
       .order(created_at: :desc)
     @permissions = paginate @permissions
 
@@ -45,9 +45,13 @@ class WebApi::V1::PermissionsController < ApplicationController
   end
 
   def set_permission
+    @permission = authorize Permission.find_by!(action: permission_action, permission_scope: permission_scope)
+  end
+
+  def permission_scope
     parent_param = params[:parent_param]
     scope_id = params[parent_param]
-    scope = case parent_param
+    case parent_param
     when nil
       nil
     when :project_id
@@ -58,11 +62,6 @@ class WebApi::V1::PermissionsController < ApplicationController
       idea = Idea.find(scope_id)
       ParticipationContextService.new.get_participation_context idea.project
     end
-    @permission = authorize Permission.find_by!(action: permission_action, permission_scope: scope)
-  end
-
-  def permission_scope_id
-    params[params[:parent_param]]
   end
 
   def permission_action
