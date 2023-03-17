@@ -34,11 +34,6 @@ const NoCampaignsHeader = styled.h2`
   margin-bottom: 20px;
 `;
 
-const IconWrapper = styled.div`
-  width: 40px;
-  height: 40px;
-`;
-
 const Table = styled.table`
   table-layout: auto;
   width: 100%;
@@ -63,9 +58,7 @@ const TextingCampaignsList = () => {
   if (textingCampaigns.length === 0) {
     return (
       <NoCampaignsWrapper>
-        <IconWrapper>
-          <Icon name="message" />
-        </IconWrapper>
+        <Icon name="message" width="40px" height="40px" />
         <NoCampaignsHeader>
           <FormattedMessage {...messages.noTextingCampaignsHeader} />
         </NoCampaignsHeader>
