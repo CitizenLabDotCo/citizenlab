@@ -332,7 +332,6 @@ export type ModuleConfiguration =
 
 type Modules = {
   configuration: ModuleConfiguration;
-  isEnabled: boolean;
 }[];
 
 export const RouteTypes = {
@@ -370,26 +369,24 @@ const parseModuleRoutes = (
 type LifecycleMethod = 'beforeMountApplication' | 'afterMountApplication';
 
 export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
-  const enabledModuleConfigurations = modules
-    .filter((module) => module.isEnabled)
-    .map((module) => module.configuration);
+  const moduleConfigurations = modules.map((module) => module.configuration);
 
   const mergedRoutes: Routes = mergeWith(
     {},
-    ...enabledModuleConfigurations.map(({ routes }) => routes),
+    ...moduleConfigurations.map(({ routes }) => routes),
     (objValue = [], srcValue = []) =>
       castArray(objValue).concat(castArray(srcValue))
   );
 
   const mergedOutlets: Outlets = mergeWith(
     {},
-    ...enabledModuleConfigurations.map(({ outlets }) => outlets),
+    ...moduleConfigurations.map(({ outlets }) => outlets),
     (objValue = [], srcValue = []) =>
       castArray(objValue).concat(castArray(srcValue))
   );
 
   const callLifecycleMethods = (lifecycleMethod: LifecycleMethod) => () => {
-    enabledModuleConfigurations.forEach((module: ModuleConfiguration) =>
+    moduleConfigurations.forEach((module: ModuleConfiguration) =>
       module?.[lifecycleMethod]?.()
     );
   };
@@ -441,7 +438,7 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
     },
     beforeMountApplication: callLifecycleMethods('beforeMountApplication'),
     afterMountApplication: callLifecycleMethods('afterMountApplication'),
-    streamsToReset: enabledModuleConfigurations.reduce(
+    streamsToReset: moduleConfigurations.reduce(
       (acc: string[], module: ModuleConfiguration) => {
         return [...acc, ...(module?.streamsToReset ?? [])];
       },

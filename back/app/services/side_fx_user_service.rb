@@ -37,6 +37,22 @@ class SideFxUserService
     RemoveUsersFromSegmentJob.perform_later([frozen_user.id])
   end
 
+  def after_block(user, current_user)
+    TrackUserJob.perform_later(user)
+    LogActivityJob.perform_later(
+      user,
+      'blocked',
+      current_user,
+      user.updated_at.to_i,
+      payload: { block_reason: user.block_reason }
+    )
+  end
+
+  def after_unblock(user, current_user)
+    TrackUserJob.perform_later(user)
+    LogActivityJob.perform_later(user, 'unblocked', current_user, user.updated_at.to_i)
+  end
+
   private
 
   def after_roles_changed(current_user, user)
