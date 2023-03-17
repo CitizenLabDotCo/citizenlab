@@ -22,12 +22,26 @@ import { getInputTermMessage } from 'utils/i18n';
 // hooks
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
+import { colors, Title } from '@citizenlab/cl2-component-library';
 
 const ActionPermissionWrapper = styled.div`
   margin-bottom: 30px;
 
   &.last {
     margin-bottom: 0;
+  }
+`;
+
+const StyledTitle = styled(Title)`
+  display: flex;
+  align-items: center;
+
+  ::after {
+    content: '';
+    flex: 1;
+    margin-left: 1rem;
+    height: 1px;
+    background-color: ${colors.grey400};
   }
 `;
 
@@ -142,11 +156,15 @@ const ActionsForm = memo(
                   index === permissions.length - 1 ? 'last' : ''
                 }`}
               >
-                <h4>
+                <StyledTitle
+                  className="title-with-line"
+                  variant="h5"
+                  color="coolGrey600"
+                >
                   <FormattedMessage
                     {...getPermissionActionMessage(permissionAction)}
                   />
-                </h4>
+                </StyledTitle>
                 <ActionForm
                   permissionData={permission}
                   groupIds={permission.relationships.groups.data.map(

@@ -10,6 +10,7 @@ import messages from './messages';
 import { Section, SectionTitle } from 'components/admin/Section';
 import ProjectManagement from './containers/ProjectManagement';
 import ProjectVisibility from './containers/ProjectVisibility';
+import { Title, Text } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -41,6 +42,17 @@ const ProjectPermissions = memo(
     if (!isNilOrError(project)) {
       return (
         <>
+          {isProjectVisibilityEnabled && (
+            <>
+              <Title variant="h2" color="primary">
+                <FormattedMessage {...messages.projectVisibilityTitle} />
+              </Title>
+              <Text color="coolGrey600">
+                <FormattedMessage {...messages.projectVisibilitySubtitle} />
+              </Text>
+              <ProjectVisibility projectId={projectId} />
+            </>
+          )}
           <Outlet
             id="app.containers.Admin.project.edit.permissions.participationRights"
             projectId={projectId}
@@ -49,19 +61,21 @@ const ProjectPermissions = memo(
             {(outletComponents) =>
               outletComponents.length > 0 || isProjectVisibilityEnabled ? (
                 <StyledSection>
-                  <StyledSectionTitle>
+                  <Title variant="h2" color="primary">
                     <FormattedMessage
-                      {...messages.participationAccessRightsTitle}
+                      {...messages.participationRequirementsTitle}
                     />
-                  </StyledSectionTitle>
+                  </Title>
+                  <Text color="coolGrey600">
+                    <FormattedMessage
+                      {...messages.participationRequirementsSubtitle}
+                    />
+                  </Text>
                   {outletComponents}
                 </StyledSection>
               ) : null
             }
           </Outlet>
-          {isProjectVisibilityEnabled && (
-            <ProjectVisibility projectId={projectId} />
-          )}
           <Outlet
             id="app.containers.Admin.project.edit.permissions.moderatorRights"
             projectId={projectId}
