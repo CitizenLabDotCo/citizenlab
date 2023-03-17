@@ -229,9 +229,9 @@ tr:
       did_you_receive_this_email_in_error: "Bu e-postayı yanlışlıkla aldığınızı mı düşünüyorsunuz? <a href=\"%{link}\">Bize haber verin</a>."
   user_blocked_mailer:
     send_user_blocked_email:
-      subject: 'Hesabınız geçici olarak devre dışı bırakıldı'
-      title_user_blocked: 'Hesabınız geçici olarak devre dışı bırakıldı'
-      paragraph_1_without_reason: "%{organizationName} Katılım Platformundaki hesabınız, topluluk kurallarını ihlal ettiğiniz için geçici olarak devre dışı bırakılmıştır."
-      paragraph_1_with_reason: "%{organizationName} Katılım Platformundaki hesabınız aşağıdaki nedenden dolayı geçici olarak devre dışı bırakılmıştır:"
-      for_more_information: "Bu konuda daha fazla bilgi için %{termsAndConditionsPage}adresine başvurabilirsiniz."
-      you_can_sign_in_again_from: "%{date}adresinden tekrar oturum açabilirsiniz."
+      subject: 'Your account has been temporarily disabled'
+      title_user_blocked: 'Your account has been temporarily disabled'
+      paragraph_1_without_reason: "Your account on %{organizationName} Participation Platform has been temporarily disabled for a violation of the community guidelines."
+      paragraph_1_with_reason: "Your account on %{organizationName} Participation Platform has been temporarily disabled for the following reason:"
+      for_more_information: "For more information on this, you can consult the %{termsAndConditionsPage}"
+      you_can_sign_in_again_from: "You can sign in again from %{date}"
