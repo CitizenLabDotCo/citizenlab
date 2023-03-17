@@ -229,9 +229,9 @@ lb:
       did_you_receive_this_email_in_error: "Hutt Dir dës E-Mail iertemlech kritt? <a href=\"%{link}\">Gitt eis Bescheed</a>."
   user_blocked_mailer:
     send_user_blocked_email:
-      subject: 'Your account has been temporarily disabled'
-      title_user_blocked: 'Your account has been temporarily disabled'
-      paragraph_1_without_reason: "Your account on %{organizationName} Participation Platform has been temporarily disabled for a violation of the community guidelines."
-      paragraph_1_with_reason: "Your account on %{organizationName} Participation Platform has been temporarily disabled for the following reason:"
-      for_more_information: "For more information on this, you can consult the %{termsAndConditionsPage}"
-      you_can_sign_in_again_from: "You can sign in again from %{date}"
+      subject: 'Äre Kont gouf temporär deaktivéiert'
+      title_user_blocked: 'Äre Kont gouf temporär deaktivéiert'
+      paragraph_1_without_reason: "Äre Kont op %{organizationName} Participatioun Plattform gouf temporär deaktivéiert fir eng Violatioun vun de Gemeinschaftsrichtlinnen."
+      paragraph_1_with_reason: "Äre Kont op %{organizationName} Participatiounsplattform gouf aus dem folgenden Grond temporär ausgeschalt:"
+      for_more_information: "Fir méi Informatioun doriwwer, kënnt Dir den %{termsAndConditionsPage}konsultéieren"
+      you_can_sign_in_again_from: "Dir kënnt erëm ab %{date}umellen"
