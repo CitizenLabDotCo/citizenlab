@@ -28,6 +28,7 @@ interface InputProps {
   deleteUsersFromGroup?: (userIds: string[]) => void;
   canModerate?: boolean;
   notCitizenlabMember?: boolean;
+  includeInactive?: boolean;
 }
 
 interface DataProps {
