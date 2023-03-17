@@ -502,6 +502,18 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe 'registered?' do
+    it 'returns false when the user has not completed registration' do
+      u = build(:user, registration_completed_at: nil)
+      expect(u.registered?).to be false
+    end
+
+    it 'returns true when the user has completed registration' do
+      u = build(:user)
+      expect(u.registered?).to be true
+    end
+  end
+
   describe 'active?' do
     it 'returns false when the user has not completed signup' do
       u = build(:user, registration_completed_at: nil)
