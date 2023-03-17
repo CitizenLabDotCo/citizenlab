@@ -237,7 +237,7 @@ class User < ApplicationRecord
   }
 
   scope :not_invited, -> { where.not(invite_status: 'pending').or(where(invite_status: nil)) }
-  scope :registered, -> { where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'") }
+  scope :registered, -> { where.not(registration_completed_at: nil) }
   scope :blocked, -> { where('? < block_end_at', Time.zone.now) }
   scope :not_blocked, -> { where(block_end_at: nil).or(where('? > block_end_at', Time.zone.now)) }
   scope :active, -> { registered.not_blocked }
@@ -379,7 +379,7 @@ class User < ApplicationRecord
   end
 
   def registered?
-    registration_completed_at.present? && !invite_pending?
+    registration_completed_at.present?
   end
 
   def active?

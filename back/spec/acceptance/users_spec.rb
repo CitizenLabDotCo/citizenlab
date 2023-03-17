@@ -331,11 +331,12 @@ resource 'Users' do
 
         example 'List all users does not include inactive users', document: false do
           create(:user, registration_completed_at: nil) # inactive
-          create(:user, invite_status: 'pending')       # inactive
+          create(:user, registration_completed_at: nil, invite_status: 'pending') # inactive
 
           do_request
           expect(status).to eq 200
           json_response = json_parse(response_body)
+
           expect(json_response[:data].size).to eq 6
         end
 

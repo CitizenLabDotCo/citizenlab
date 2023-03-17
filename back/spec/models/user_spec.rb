@@ -509,7 +509,7 @@ RSpec.describe User, type: :model do
     end
 
     it 'return false when the user has a pending invitation' do
-      u = build(:user, invite_status: 'pending')
+      u = build(:invited_user)
       expect(u.active?).to be false
     end
 
