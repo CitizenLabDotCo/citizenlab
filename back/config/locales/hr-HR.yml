@@ -229,9 +229,9 @@ hr:
       did_you_receive_this_email_in_error: "Jeste li greškom primili ovu e-poruku?<a href=\"%{link}\">Obavijeste nas</a>."
   user_blocked_mailer:
     send_user_blocked_email:
-      subject: 'Vaš račun je privremeno onemogućen'
-      title_user_blocked: 'Vaš račun je privremeno onemogućen'
-      paragraph_1_without_reason: "Vaš račun na %{organizationName} Platformi za sudjelovanje privremeno je onemogućen zbog kršenja smjernica zajednice."
-      paragraph_1_with_reason: "Vaš račun na %{organizationName} Platformi za sudjelovanje privremeno je onemogućen iz sljedećeg razloga:"
-      for_more_information: "Za više informacija o tome, možete konzultirati %{termsAndConditionsPage}"
-      you_can_sign_in_again_from: "Možete se ponovno prijaviti od %{date}"
+      subject: 'Your account has been temporarily disabled'
+      title_user_blocked: 'Your account has been temporarily disabled'
+      paragraph_1_without_reason: "Your account on %{organizationName} Participation Platform has been temporarily disabled for a violation of the community guidelines."
+      paragraph_1_with_reason: "Your account on %{organizationName} Participation Platform has been temporarily disabled for the following reason:"
+      for_more_information: "For more information on this, you can consult the %{termsAndConditionsPage}"
+      you_can_sign_in_again_from: "You can sign in again from %{date}"
