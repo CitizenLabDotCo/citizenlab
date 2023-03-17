@@ -604,7 +604,7 @@ resource 'Users' do
 
           expect(status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :blocked_users_count)).to eq 2
+          expect(json_response.dig(:data, :attributes, :count)).to eq 2
         end
       end
 
