@@ -219,4 +219,9 @@ export default defineMessages({
     id: 'app.containers.Projects.noPastEvents',
     defaultMessage: 'No past events to display',
   },
+  testCrowdinEnterprise: {
+    id: 'app.utils.IdeaCards.trending.testCrowdinEnterprise',
+    defaultMessage:
+      'This is just a test message to make sure Crowdin Enterprise is behaving as it should!',
+  },
 });
