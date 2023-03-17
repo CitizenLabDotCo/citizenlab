@@ -1134,7 +1134,6 @@
   "app.containers.AdminPage.ProjectEdit.onlyAdminsCanView": "Redzams tikai administratoram",
   "app.containers.AdminPage.ProjectEdit.optionNo": "Nē",
   "app.containers.AdminPage.ProjectEdit.optionYes": "Jā (izvēlieties mapi)",
-  "app.containers.AdminPage.ProjectEdit.participationAccessRightsTitle": "Dalība",
   "app.containers.AdminPage.ProjectEdit.participationLevels": "Līdzdalības līmeņi",
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "Ko jūs vēlaties darīt?",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Izvēlieties, kā lietotāji var piedalīties.",

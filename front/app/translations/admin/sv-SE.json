@@ -1134,7 +1134,6 @@
   "app.containers.AdminPage.ProjectEdit.onlyAdminsCanView": "Visas endast för administratörer",
   "app.containers.AdminPage.ProjectEdit.optionNo": "Nej",
   "app.containers.AdminPage.ProjectEdit.optionYes": "Ja (välj mapp)",
-  "app.containers.AdminPage.ProjectEdit.participationAccessRightsTitle": "Deltagande",
   "app.containers.AdminPage.ProjectEdit.participationLevels": "Deltagandenivåer",
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "Vad vill du göra?",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Välj hur användare kan delta.",

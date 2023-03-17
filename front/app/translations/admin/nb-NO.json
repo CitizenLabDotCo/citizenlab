@@ -1134,7 +1134,6 @@
   "app.containers.AdminPage.ProjectEdit.onlyAdminsCanView": "Bare synlig for administrator",
   "app.containers.AdminPage.ProjectEdit.optionNo": "Nei",
   "app.containers.AdminPage.ProjectEdit.optionYes": "Ja (velg mappe)",
-  "app.containers.AdminPage.ProjectEdit.participationAccessRightsTitle": "Deltakelse",
   "app.containers.AdminPage.ProjectEdit.participationLevels": "Deltakelsesnivåer",
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "Hva ønsker du å gjøre?",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Velg hvordan brukerne kan delta.",

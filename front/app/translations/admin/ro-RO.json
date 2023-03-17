@@ -1123,7 +1123,6 @@
   "app.containers.AdminPage.ProjectEdit.onlyAdminsCanView": "Only visible to admin",
   "app.containers.AdminPage.ProjectEdit.optionNo": "Nu",
   "app.containers.AdminPage.ProjectEdit.optionYes": "Yes (select folder)",
-  "app.containers.AdminPage.ProjectEdit.participationAccessRightsTitle": "Participation",
   "app.containers.AdminPage.ProjectEdit.participationLevels": "Participation levels",
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "What do you want to do?",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Choose how users can participate.",

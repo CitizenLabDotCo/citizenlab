@@ -1134,7 +1134,6 @@
   "app.containers.AdminPage.ProjectEdit.onlyAdminsCanView": "Alleen zichtbaar voor beheerders",
   "app.containers.AdminPage.ProjectEdit.optionNo": "Nee",
   "app.containers.AdminPage.ProjectEdit.optionYes": "Ja (selecteer map)",
-  "app.containers.AdminPage.ProjectEdit.participationAccessRightsTitle": "Toegangsrechten",
   "app.containers.AdminPage.ProjectEdit.participationLevels": "Participatieniveaus",
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "Wat wil je doen?",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Bepaal hoe gebruikers kunnen deelnemen.",

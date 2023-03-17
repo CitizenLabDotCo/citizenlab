@@ -1134,7 +1134,6 @@
   "app.containers.AdminPage.ProjectEdit.onlyAdminsCanView": "Sadece yönetici tarafından görülebilir",
   "app.containers.AdminPage.ProjectEdit.optionNo": "Hayır",
   "app.containers.AdminPage.ProjectEdit.optionYes": "Evet (klasör seçin)",
-  "app.containers.AdminPage.ProjectEdit.participationAccessRightsTitle": "Katılım",
   "app.containers.AdminPage.ProjectEdit.participationLevels": "Katılım seviyeleri",
   "app.containers.AdminPage.ProjectEdit.participationMethodTitleText": "Ne yapmak istiyorsunuz?",
   "app.containers.AdminPage.ProjectEdit.participationMethodTooltip": "Kullanıcıların katılma biçimini seçin.",
