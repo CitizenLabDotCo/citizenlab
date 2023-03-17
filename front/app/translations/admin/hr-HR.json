@@ -1474,7 +1474,7 @@
   "app.containers.AdminPage.SettingsPage.twoRowBannerTooltipLink": "baza znanja",
   "app.containers.AdminPage.SettingsPage.twoRowLayout": "Dva reda",
   "app.containers.AdminPage.SettingsPage.urlError": "URL nije valjan",
-  "app.containers.AdminPage.SettingsPage.urlPatternError": "Unesite valjani URL.",
+  "app.containers.AdminPage.SettingsPage.urlPatternError": "Unesite važeći URL.",
   "app.containers.AdminPage.SettingsPage.urlTitle": "Web-mjesto",
   "app.containers.AdminPage.SettingsPage.urlTitleTooltip": "Možete dodati vez na svoje web-mjesto. Ta veza koristit će se na dnu početne stranice.",
   "app.containers.AdminPage.SideBar.academy": "Akademija",
