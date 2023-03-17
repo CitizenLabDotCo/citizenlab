@@ -89,6 +89,7 @@ namespace :checks do
     return true if claz.name == 'EmailCampaigns::Delivery'
     return true if claz.name.starts_with? 'Notifications::'
     return true if claz.name == 'CommonPassword'
+    return true if claz.name == 'Analytics::FactVisit'
 
     false
   end

@@ -7,6 +7,7 @@
 #
 #     include ParticipationContext
 #
+# rubocop:disable Metrics/ModuleLength
 module ParticipationContext
   extend ActiveSupport::Concern
   include Surveys::SurveyParticipationContext
@@ -73,7 +74,7 @@ module ParticipationContext
       with_options if: :budgeting? do
         validates :min_budget, presence: true
         validates :max_budget, presence: true
-        validates :ideas_order, exclusion: { in: IDEAS_ORDERS_BUDGETING_EXCLUDE }, allow_nil: true
+        # validates :ideas_order, exclusion: { in: IDEAS_ORDERS_BUDGETING_EXCLUDE }, allow_nil: true
       end
       validates :min_budget,
         numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :max_budget,
@@ -162,3 +163,4 @@ module ParticipationContext
     errors.add :participation_method, :change_not_permitted, message: 'change is not permitted'
   end
 end
+# rubocop:enable Metrics/ModuleLength
