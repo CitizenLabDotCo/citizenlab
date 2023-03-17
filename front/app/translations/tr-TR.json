@@ -200,8 +200,6 @@
   "app.components.IdeasShow.reportAsSpam": "Spam bildir",
   "app.components.IdeasShow.send": "Gönder",
   "app.components.IdeasShow.skipSharing": "Bunu atla, daha sonra yapacağım",
-  "app.components.IdeasShowPage.signIn": "Hesabınız varsa oturum açın",
-  "app.components.IdeasShowPage.signUp": "Kaydolun",
   "app.components.IdeasShowPage.sorryNoAccess": "Üzgünüz, bu sayfaya erişemezsiniz. Sayfaya erişmek için oturum açmanız veya kaydolmanız gerekiyor.",
   "app.components.InitiativeCard.xComments": "{commentsCount, plural, =0 {yorum yok} one {1 yorum} other {# yorum}}",
   "app.components.InitiativeCard.xVotesOfY": "{xVotes}/{votingThreshold}",

@@ -200,8 +200,6 @@
   "app.components.IdeasShow.reportAsSpam": "الإبلاغ كإزعاج",
   "app.components.IdeasShow.send": "إرسال",
   "app.components.IdeasShow.skipSharing": "تخطي، سأقوم بهذا لاحقًا",
-  "app.components.IdeasShowPage.signIn": "سجِّل الدخول إذا كان لديك حساب فعلاً",
-  "app.components.IdeasShowPage.signUp": "تسجيل الاشتراك",
   "app.components.IdeasShowPage.sorryNoAccess": "عذرًا، لا يمكنك الوصول إلى هذه الصفحة. قد تحتاج إلى تسجيل الدخول أو تسجيل الاشتراك للوصول إليها.",
   "app.components.InitiativeCard.xComments": "{commentsCount, plural, =0 {لا يوجد تعليقات} one {تعليق واحد} other {# من التعليقات}}",
   "app.components.InitiativeCard.xVotesOfY": "{xVotes} من أصل {votingThreshold}",
