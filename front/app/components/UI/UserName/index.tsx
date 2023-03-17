@@ -158,6 +158,3 @@ const UserName = (props: Props & WrappedComponentProps) => {
 };
 
 export default injectIntl(UserName);
-
-// import React from 'react';
-// export default (_props: any) => <></>;
