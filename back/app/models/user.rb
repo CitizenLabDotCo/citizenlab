@@ -509,10 +509,14 @@ class User < ApplicationRecord
   end
 
   def reset_email!(email)
-    update!(
-      email: email,
-      email_confirmation_code_reset_count: 0
-    )
+    if no_password?
+      errors.add(:email, :no_password, value: email)
+    else
+      update!(
+        email: email,
+        email_confirmation_code_reset_count: 0
+      )
+    end
   end
 
   def reset_confirmed_at
