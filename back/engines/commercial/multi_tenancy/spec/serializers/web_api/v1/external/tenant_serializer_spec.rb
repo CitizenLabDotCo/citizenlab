@@ -24,7 +24,7 @@ describe 'WebApi::V1::External::TenantSerializer' do
             'organization_type' => 'medium_city',
             'authentication_token_lifetime_in_days' => 30,
             'maximum_admins_number' => 10,
-            'maximum_project_moderators_number' => 10
+            'maximum_moderators_number' => 10
           },
         'initiatives' =>
           { 'allowed' => true,
