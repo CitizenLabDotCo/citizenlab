@@ -135,16 +135,16 @@ pl:
       section1:
         description:
       section2:
-        title: Images and attachments
+        title: Obrazy i załączniki
         description:
       section3:
-        title: Details
+        title: Szczegóły
         description:
   custom_forms:
     categories:
       main_content:
         idea:
-          title: What is your idea?
+          title: Jaki jest Twój pomysł?
         question:
           title: Jakie jest twoje pytanie?
         contribution:
@@ -190,12 +190,12 @@ pl:
   xlsx_export:
     column_headers:
       input_id: 'ID'
-      latitude: 'Latitude'
-      longitude: 'Longitude'
-      author_fullname: 'Author name'
-      author_email: 'Author email'
+      latitude: 'Szerokość geograficzna'
+      longitude: 'Długość geograficzna'
+      author_fullname: 'Nazwa autora'
+      author_email: 'E-mail autora'
       author_id: 'ID autora'
-      budget: 'Budget'
+      budget: 'Budżet'
       created_at: 'Zgłoszone'
       published_at: 'Opublikowane'
       comments_count: 'Komentarze'
@@ -209,12 +209,12 @@ pl:
       assignee_email: 'E-mail osoby przypisanej'
   form_builder:
     default_select_field:
-      title: 'Your question'
-      option1: 'Option 1'
-      option2: 'Option 2'
+      title: 'Twoje pytanie'
+      option1: 'Opcja 1'
+      option2: 'Opcja 2'
     survey_end_page:
       title: 'Koniec ankiety'
-      description: "Please submit your answers by selecting 'Submit survey' below."
+      description: "Odpowiedzi prosimy przesyłać wybierając poniżej opcję \"Prześlij ankietę\"."
   project_copy:
     title_suffix: 'Kopia'
   confirmations_mailer:
