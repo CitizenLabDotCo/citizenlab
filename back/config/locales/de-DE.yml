@@ -125,7 +125,7 @@ de:
         title: Vorgeschlagenes Budget
         description:
       budget:
-        title: Haushalt
+        title: Budget
       images:
         title: Bilder
         description:
@@ -183,25 +183,25 @@ de:
       <ul> <li>Es muss in die Politikbereiche und Kompetenzen des lokalen Politiks fallen.</li> <li>Es dient eher dem öffentlichen als dem individuellen Interesse</li> <li>Es diskriminiert nicht aufgrund von Geschlecht, Rasse, Alter oder Hintergrund.</li> <li>Es schadet anderen nicht</li></ul>
   reset_password_mailer:
     send_reset_password:
-      cta_reset_password: 'Ihr Passwort zurücksetzen'
+      cta_reset_password: 'Reset your password'
       message_you_reset_your_password: 'Sie haben ein neues Passwort für die Beteiligungsplattform %{organizationName} beantragt. Klicken Sie auf den Button unten, um ein neues, sicheres Passwort zu wählen. Der Link läuft in einer Stunde ab.'
       subject: '%{organizationName}: Ihr Passwort zurücksetzen'
-      title_reset_your_password: 'Wählen Sie ein neues Passwort'
+      title_reset_your_password: 'Choose a new password'
   xlsx_export:
     column_headers:
       input_id: 'ID'
-      latitude: 'Breitengrad'
-      longitude: 'Längengrad'
+      latitude: 'Latitude'
+      longitude: 'Longitude'
       author_fullname: 'Name des Autors / der Autorin'
       author_email: 'E-Mail-Adresse des Autors / der Autorin'
       author_id: 'ID des Autors / der Autorin'
       budget: 'Budget'
-      created_at: 'Eingereicht am'
-      published_at: 'Veröffentlicht am'
+      created_at: 'Submitted at'
+      published_at: 'Published at'
       comments_count: 'Kommentare'
       upvotes_count: 'Zustimmungen'
       downvotes_count: 'Ablehnung'
-      baskets_count: 'Körbe'
+      baskets_count: 'Baskets'
       input_url: 'URL'
       project: '{orgName, select, München {Bezirke} other {Projekte}}'
       status: 'Status'
@@ -214,7 +214,7 @@ de:
       option2: 'Option 2'
     survey_end_page:
       title: 'Ende der Umfrage'
-      description: "Bitte übermitteln Sie Ihre Antworten, indem Sie unten auf \"Umfrage abschicken\" klicken."
+      description: "Please submit your answers by selecting 'Submit survey' below."
   project_copy:
     title_suffix: 'Kopie'
   confirmations_mailer:
