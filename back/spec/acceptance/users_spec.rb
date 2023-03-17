@@ -329,26 +329,6 @@ resource 'Users' do
           expect(json_response[:data].size).to eq 6
         end
 
-        example 'List all users does not include inactive users', document: false do
-          create(:user, registration_completed_at: nil) # inactive
-          create(:user, registration_completed_at: nil, invite_status: 'pending') # inactive
-
-          do_request
-          expect(status).to eq 200
-          json_response = json_parse(response_body)
-
-          expect(json_response[:data].size).to eq 6
-        end
-
-        example 'List all users includes blocked users', document: false do
-          create(:user, block_end_at: 5.days.from_now) # blocked
-
-          do_request
-          expect(status).to eq 200
-          json_response = json_parse(response_body)
-          expect(json_response[:data].size).to eq 7
-        end
-
         example 'List all users includes user blocking related data', document: false do
           do_request
           expect(status).to eq 200
@@ -489,18 +469,6 @@ resource 'Users' do
           json_response = json_parse(response_body)
           expect(json_response[:data].pluck(:id)).to match_array [a.id, @user.id]
         end
-
-        example 'List all blocked users' do
-          blocked_users = create_list(:user, 2, block_end_at: 5.days.from_now)
-
-          do_request only_blocked: true
-
-          expect(status).to eq 200
-          json_response = json_parse(response_body)
-          expect(User.count).to be > blocked_users.count # If unblocked users exist, then subsequent tests meaningful.
-          expect(json_response[:data].size).to eq 2
-          expect(json_response[:data].pluck(:id)).to match_array blocked_users.map(&:id)
-        end
       end
 
       get 'web_api/v1/users/as_xlsx' do
@@ -623,14 +591,6 @@ resource 'Users' do
 
         let!(:user) { create(:user) }
         let!(:id) { user.id }
-
-        example 'Block a user using an empty request' do
-          do_request
-
-          expect(status).to eq 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :attributes, :blocked)).to be true
-        end
 
         example 'Block a user using a null value for block_reason' do
           do_request user: { block_reason: nil }

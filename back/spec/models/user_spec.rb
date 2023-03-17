@@ -59,7 +59,7 @@ RSpec.describe User, type: :model do
       expect(user2.blocked?).to be(false)
     end
 
-    it 'Blocked users should be returned in scope :blocked' do
+    it 'Only blocked users should be returned in scope :blocked' do
       blocked_users = described_class.all.blocked
 
       expect(blocked_users.count).to eq 2
