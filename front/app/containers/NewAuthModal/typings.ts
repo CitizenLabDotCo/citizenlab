@@ -7,11 +7,11 @@ import {
 export type Status = 'pending' | 'error' | 'ok';
 
 export type ErrorCode =
-  | 'account_creation_failed'
-  | 'wrong_confirmation_code'
-  | 'wrong_password'
-  | 'requirements_fetching_failed'
-  | 'unknown';
+  | 'account_creation_failed' // use existing 'something went wrong'
+  | 'wrong_confirmation_code' // use existing
+  | 'wrong_password' // use existing
+  | 'requirements_fetching_failed' // use existing 'something went wrong'
+  | 'unknown'; // use existing 'something went wrong'
 
 export interface State {
   email: string | null;

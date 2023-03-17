@@ -61,8 +61,13 @@ const AuthModal = ({
       }
       niceHeader
     >
-      {error && <Error text={error} />}
       <Box p="32px" w="100%">
+        {error && (
+          <Box mb="20px">
+            <Error text={error} />
+          </Box>
+        )}
+
         {currentStep === 'email-registration' && (
           <EmailSignUp
             status={status}

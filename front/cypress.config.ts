@@ -1,4 +1,5 @@
 import { defineConfig } from 'cypress';
+import webpackConfig from './internals/webpack/webpack.config';
 
 export default defineConfig({
   viewportWidth: 1400,
@@ -17,5 +18,12 @@ export default defineConfig({
       return require('./cypress/plugins/index.js')(on, config);
     },
     baseUrl: 'http://localhost:3000',
+  },
+  component: {
+    devServer: {
+      framework: 'react',
+      bundler: 'webpack',
+      webpackConfig,
+    },
   },
 });
