@@ -20,7 +20,12 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       .where(registration_completed_at: @start_at..@end_at)
       .active
       .count
-    render json: { count: count }
+
+    render json: {
+      count: count,
+      administrators_count: User.billed_admins.count,
+      managers_count: User.billed_moderators.count
+    }
   end
 
   def users_by_time_serie

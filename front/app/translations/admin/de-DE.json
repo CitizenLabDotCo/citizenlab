@@ -344,7 +344,6 @@
   "app.containers.Admin.Insights.supportLinkUrl": "https://support.citizenlab.co/articles/5525933",
   "app.containers.Admin.Insights.title": "Einblicke",
   "app.containers.Admin.Invitations.addToGroupLabel": "Diese Personen zu bestimmten BenutzerInnengruppen hinzufügen",
-  "app.containers.Admin.Invitations.adminLabel": "Geben Sie diesen Personen einen Admin-Zugang",
   "app.containers.Admin.Invitations.adminLabelTooltip": "Wenn Sie diese Option auswählen, haben die Personen, die Sie einladen, Zugriff auf alle Ihre Plattformeinstellungen.",
   "app.containers.Admin.Invitations.configureInvitations": "3. Konfigurieren Sie die Einladungen",
   "app.containers.Admin.Invitations.confirmDelete": "Ja, ich bin mir sicher.",

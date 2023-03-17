@@ -344,7 +344,6 @@
   "app.containers.Admin.Insights.supportLinkUrl": "https://support.citizenlab.co/articles/5525933",
   "app.containers.Admin.Insights.title": "Percepções",
   "app.containers.Admin.Invitations.addToGroupLabel": "Adicione essas pessoas a grupos manuais específicos",
-  "app.containers.Admin.Invitations.adminLabel": "Dê a essas pessoas direitos de administrador",
   "app.containers.Admin.Invitations.adminLabelTooltip": "Quando você seleciona esta opção, as pessoas que você está convidando terão acesso a todas as configurações da sua plataforma.",
   "app.containers.Admin.Invitations.configureInvitations": "3. Configure os convites",
   "app.containers.Admin.Invitations.confirmDelete": "Sim, tenho certeza",

@@ -344,7 +344,6 @@
   "app.containers.Admin.Insights.supportLinkUrl": "https://support.citizenlab.co/articles/5525933",
   "app.containers.Admin.Insights.title": "Wgląd",
   "app.containers.Admin.Invitations.addToGroupLabel": "Dodaj te osoby do określonych samodzielnie zdefiniowanych grup użytkowników",
-  "app.containers.Admin.Invitations.adminLabel": "Udziel tym osobom uprawnień administracyjnych",
   "app.containers.Admin.Invitations.adminLabelTooltip": "Po wybraniu tej opcji zaproszone osoby będą miały dostęp do wszystkich ustawień Twojej platformy.",
   "app.containers.Admin.Invitations.configureInvitations": "3. Skonfiguruj zaproszenia",
   "app.containers.Admin.Invitations.confirmDelete": "Tak, potwierdzam",

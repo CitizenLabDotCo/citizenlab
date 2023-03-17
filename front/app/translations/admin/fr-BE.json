@@ -344,7 +344,6 @@
   "app.containers.Admin.Insights.supportLinkUrl": "http://support.citizenlab.co/fr/articles/5525933-utilisez-notre-outil-d-analyse-pour-comprendre-les-opinions-des-utilisateurs",
   "app.containers.Admin.Insights.title": "Tendances",
   "app.containers.Admin.Invitations.addToGroupLabel": "Ajouter ces personnes à des groupes d'utilisateurs manuels spécifiques",
-  "app.containers.Admin.Invitations.adminLabel": "Donnez à ces personnes le statut d'administrateur",
   "app.containers.Admin.Invitations.adminLabelTooltip": "Une fois activée, les personnes qui reçoivent et qui acceptent vos invitations auront également accès aux paramètres de la plateforme.",
   "app.containers.Admin.Invitations.configureInvitations": "3. Configurer les invitations",
   "app.containers.Admin.Invitations.confirmDelete": "Oui, je suis sûr(e)",

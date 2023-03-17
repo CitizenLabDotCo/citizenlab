@@ -344,7 +344,6 @@
   "app.containers.Admin.Insights.supportLinkUrl": "https://support.citizenlab.co/articles/5525933",
   "app.containers.Admin.Insights.title": "Innsikt",
   "app.containers.Admin.Invitations.addToGroupLabel": "Legg til disse personene i bestemte manuelle brukergrupper",
-  "app.containers.Admin.Invitations.adminLabel": "Gi disse personene administratorrettigheter",
   "app.containers.Admin.Invitations.adminLabelTooltip": "Når du velger dette alternativet vil personene du inviterer ha tilgang til plattforminnstillingene.",
   "app.containers.Admin.Invitations.configureInvitations": "3. Konfigurer invitasjonene",
   "app.containers.Admin.Invitations.confirmDelete": "Ja, jeg er sikker",
