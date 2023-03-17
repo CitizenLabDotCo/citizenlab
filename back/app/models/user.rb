@@ -237,10 +237,10 @@ class User < ApplicationRecord
   }
 
   scope :not_invited, -> { where.not(invite_status: 'pending').or(where(invite_status: nil)) }
-  scope :fully_registered, -> { where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'") }
+  scope :registered, -> { where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'") }
   scope :blocked, -> { where('? < block_end_at', Time.zone.now) }
   scope :not_blocked, -> { where(block_end_at: nil).or(where('? > block_end_at', Time.zone.now)) }
-  scope :active, -> { fully_registered.not_blocked }
+  scope :active, -> { registered.not_blocked }
 
   scope :order_role, lambda { |direction = :asc|
     joins('LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id')
@@ -378,12 +378,12 @@ class User < ApplicationRecord
     block_end_at.present? && block_end_at > Time.zone.now
   end
 
-  def fully_registered?
+  def registered?
     registration_completed_at.present? && !invite_pending?
   end
 
   def active?
-    fully_registered? && !blocked?
+    registered? && !blocked?
   end
 
   def groups

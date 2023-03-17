@@ -75,7 +75,7 @@ class Group < ApplicationRecord
   end
 
   def update_memberships_count!
-    update!(memberships_count: memberships.where(user: User.fully_registered).count)
+    update!(memberships_count: memberships.where(user: User.registered).count)
   end
 
   def self.membership_types
