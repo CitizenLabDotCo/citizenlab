@@ -476,7 +476,7 @@ nl:
     user_digest:
       subject: "Wekelijkse update van het participatieplatform van %{organizationName}"
       commented: "%{authorFirstName} schreef:"
-      preheader: "Dit gebeurde er vorige week op het platform"
+      preheader: "Weekly overview of %{organizationName}"
       title_your_weekly_report: "Ontdek wat er vorige week is gebeurd"
       intro_text: "Hier is een overzicht van wat er is gebeurd op het participatieplatform van %{organizationName}."
       cta_go_to_the_platform: "Ga naar het platform"
