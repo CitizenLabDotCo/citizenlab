@@ -1,4 +1,4 @@
-import React, { memo, useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { isEmpty, every } from 'lodash-es';
 import moment from 'moment';
 
@@ -16,8 +16,7 @@ import { IEventData } from 'api/events/types';
 
 // i18n
 import T from 'components/T';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // styling
@@ -167,20 +166,19 @@ interface Props {
   onClickTitleGoToProjectAndScrollToEvent?: boolean;
 }
 
-const EventInformation = memo<Props & WrappedComponentProps>((props) => {
-  const {
-    event,
-    isMultiDayEvent,
-    startAtMoment,
-    endAtMoment,
-    showProjectTitle,
-    showLocation,
-    showDescription,
-    showAttachments,
-    titleFontSize,
-    onClickTitleGoToProjectAndScrollToEvent,
-    intl,
-  } = props;
+const EventInformation = ({
+  event,
+  isMultiDayEvent,
+  startAtMoment,
+  endAtMoment,
+  showProjectTitle,
+  showLocation,
+  showDescription,
+  showAttachments,
+  titleFontSize,
+  onClickTitleGoToProjectAndScrollToEvent,
+}: Props) => {
+  const { formatMessage } = useIntl();
 
   const theme = useTheme();
 
@@ -208,12 +206,12 @@ const EventInformation = memo<Props & WrappedComponentProps>((props) => {
     if (hideTextOverflow) {
       setHideTextOverflow(false);
       setA11y_showMoreHelperText(
-        intl.formatMessage(messages.a11y_moreContentVisible)
+        formatMessage(messages.a11y_moreContentVisible)
       );
     } else {
       setHideTextOverflow(true);
       setA11y_showMoreHelperText(
-        intl.formatMessage(messages.a11y_lessContentVisible)
+        formatMessage(messages.a11y_lessContentVisible)
       );
     }
   };
@@ -297,7 +295,7 @@ const EventInformation = memo<Props & WrappedComponentProps>((props) => {
           {((textOverflow && hideTextOverflow) || !hideTextOverflow) && (
             <>
               <ShowMoreOrLessButton onClick={toggleHiddenText}>
-                {intl.formatMessage(
+                {formatMessage(
                   hideTextOverflow ? messages.showMore : messages.showLess
                 )}
               </ShowMoreOrLessButton>
@@ -318,6 +316,6 @@ const EventInformation = memo<Props & WrappedComponentProps>((props) => {
         )}
     </EventInformationContainer>
   );
-});
+};
 
-export default injectIntl(EventInformation);
+export default EventInformation;
