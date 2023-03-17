@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# to persist changes run: fix_existing_tenants:migrate_flexible_input_forms[true]
+# to persist changes run: fix_existing_tenants:remove_budgeting_sort_options[true]
 # to persist changes for one host run: fix_existing_tenants:remove_budgeting_sort_options[true,localhost]
 namespace :fix_existing_tenants do
   desc 'Migrate ideation form custom fields to the new codes and types'
@@ -21,7 +21,7 @@ namespace :fix_existing_tenants do
     end
 
     stats.each do |host, stat|
-      Rails.logger.info "STATS: #{host} - projects: #{stat[:projects]}, phases: #{stat[:projects]}, updated: #{stat[:updates]}"
+      Rails.logger.info "STATS: #{host} - projects: #{stat[:projects]}, phases: #{stat[:phases]}, updated: #{stat[:updates]}"
       stat[:errors]&.each do |error|
         Rails.logger.info "ERROR: #{error}"
       end
@@ -38,21 +38,18 @@ class OrderUpdater
   attr_reader :stats
 
   def update(persist_changes)
-    update_contexts(:projects, Project.where(participation_method: 'budgeting'), persist_changes)
-    update_contexts(:phases, Phase.where(participation_method: 'budgeting'), persist_changes)
+    update_contexts(:projects, Project.where(participation_method: 'budgeting', ideas_order: %w[popular trending]), persist_changes)
+    update_contexts(:phases, Phase.where(participation_method: 'budgeting', ideas_order: %w[popular trending]), persist_changes)
   end
 
   def update_contexts(type, contexts, persist_changes)
     contexts&.each do |context|
+      Rails.logger.info "UPDATING VALUE FROM #{context.ideas_order} TO 'random'"
       @stats[type] += 1
-      if %w[popular trending].include? context.ideas_order
-        Rails.logger.info "UPDATING VALUE FROM #{context.ideas_order} TO 'random'"
+      if persist_changes
         @stats[:updates] += 1
-        if persist_changes
-          context.update(ideas_order: 'random')
-          if !context.save
-            error_handler "Cannot update ideas_order: #{field.errors.errors}"
-          end
+        if !context.update(ideas_order: 'random') && !context.save
+          error_handler "Cannot update ideas_order: #{context.errors.errors}"
         end
       end
     end

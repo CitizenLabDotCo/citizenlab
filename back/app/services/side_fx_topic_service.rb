@@ -24,4 +24,4 @@ class SideFxTopicService
   end
 end
 
-SideFxTopicService.prepend_if_ee('SmartGroups::Patches::SideFxTopicService')
+SideFxTopicService.prepend(SmartGroups::Patches::SideFxTopicService)

@@ -72,4 +72,4 @@ module Moderation
   end
 end
 
-Moderation::Moderation.include_if_ee 'FlagInappropriateContent::Extensions::Moderation'
+Moderation::Moderation.include(FlagInappropriateContent::Extensions::Moderation)
