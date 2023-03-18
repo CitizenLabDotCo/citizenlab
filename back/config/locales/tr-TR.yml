@@ -233,5 +233,5 @@ tr:
       title_user_blocked: 'Hesabınız geçici olarak devre dışı bırakıldı'
       paragraph_1_without_reason: "%{organizationName} Katılım Platformundaki hesabınız, topluluk kurallarını ihlal ettiğiniz için geçici olarak devre dışı bırakılmıştır."
       paragraph_1_with_reason: "%{organizationName} Katılım Platformundaki hesabınız aşağıdaki nedenden dolayı geçici olarak devre dışı bırakılmıştır:"
-      for_more_information: "Bu konuda daha fazla bilgi için %{termsAndConditionsPage}adresine başvurabilirsiniz."
+      for_more_information: "Bu konuda daha fazla bilgi için bu sayfaya başvurabilirsiniz: %{termsAndConditionsPage}"
       you_can_sign_in_again_from: "%{date}adresinden tekrar oturum açabilirsiniz."
