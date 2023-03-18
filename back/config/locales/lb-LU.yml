@@ -227,3 +227,5 @@ lb:
       copy_paste_the_link_below: "Kopéiert de Code hei ënnendrënner a füügt en an den Aschreiwungsformular op der Plattform an fir Är Aschreiwung ofzeschléissen."
       the_link_is_valid_for: "De Link ass 24 Stonne gëlteg. Wann de Link ofgelaf ass, kënnt Dir <a href=\"%{link}\">en neie Code ufroen</a>."
       did_you_receive_this_email_in_error: "Hutt Dir dës E-Mail iertemlech kritt? <a href=\"%{link}\">Gitt eis Bescheed</a>."
+  simon_test:
+    test: 'Dëst ass en Test'
