@@ -227,3 +227,5 @@ it:
       copy_paste_the_link_below: "Copia e incolla il codice qui sotto nel tuo modulo di registrazione."
       the_link_is_valid_for: "Questo link è valido per 24 ore. Se il link è scaduto, puoi <a href=\"%{link}\">richiedere un nuovo codice</a>."
       did_you_receive_this_email_in_error: "Hai ricevuto questa e-mail per errore? <a href=\"%{link}\">Facci sapere</a>."
+  simon_test:
+    test: 'Questo è un test'
