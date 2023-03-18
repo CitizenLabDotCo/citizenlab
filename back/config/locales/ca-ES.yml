@@ -227,5 +227,3 @@ ca:
       copy_paste_the_link_below: "Copieu i enganxeu el codi següent al formulari de registre de la plataforma."
       the_link_is_valid_for: "Aquest enllaç és vàlid durant 24 hores. Si l'enllaç ha caducat, podeu <a href=\"%{link}\">sol·licitar un codi nou</a>."
       did_you_receive_this_email_in_error: "Heu rebut aquest correu electrònic per error? <a href=\"%{link}\">Fes-nos-ho saber</a>."
-  simon_test:
-    test: 'Això és un test'
