@@ -35,5 +35,3 @@ You can also contribute [translations](https://developers.citizenlab.co/guide-co
 ## License
 
 Source code in this repository is covered by the "CitizenLab Commercial License v2". The license does not permit self-hosting or production usage, outside of development and testing purposes.
-
-This is a test
