@@ -233,5 +233,5 @@ lb:
       title_user_blocked: 'Äre Kont gouf temporär deaktivéiert'
       paragraph_1_without_reason: "Äre Kont op %{organizationName} Participatioun Plattform gouf temporär deaktivéiert fir eng Violatioun vun de Gemeinschaftsrichtlinnen."
       paragraph_1_with_reason: "Äre Kont op %{organizationName} Participatiounsplattform gouf aus dem folgenden Grond temporär ausgeschalt:"
-      for_more_information: "Fir méi Informatioun doriwwer, kënnt Dir den %{termsAndConditionsPage}konsultéieren"
+      for_more_information: "Fir méi Informatioun doriwwer, Dir kënnt dës Säit consultéieren: %{termsAndConditionsPage}"
       you_can_sign_in_again_from: "Dir kënnt erëm ab %{date}umellen"
