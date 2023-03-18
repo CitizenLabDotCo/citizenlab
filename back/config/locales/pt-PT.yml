@@ -227,3 +227,5 @@ pt:
       copy_paste_the_link_below: "Copiar e colar o código abaixo no formulário de registo na plataforma."
       the_link_is_valid_for: "Esta ligação é válida por 24 horas. Se a ligação tiver expirado, pode <a href=\"%{link}\">solicitar um novo código</a>."
       did_you_receive_this_email_in_error: "Recebeu este e-mail por engano? <a href=\"%{link}\">Diga-nos</a>."
+  simon_test:
+    test: 'Este é um teste'
