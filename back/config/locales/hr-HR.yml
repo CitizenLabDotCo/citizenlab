@@ -227,3 +227,5 @@ hr:
       copy_paste_the_link_below: "Kopirajte i zalijepite donji kod u obrazac za registraciju na platformi."
       the_link_is_valid_for: "Ovaj poveznica vrijedi 24 sata. Ako istekne, možete <a href=\"%{link}\">zatražiti novi kod</a>."
       did_you_receive_this_email_in_error: "Jeste li greškom primili ovu e-poruku?<a href=\"%{link}\">Obavijeste nas</a>."
+  simon_test:
+    test: 'Ovo je test'
