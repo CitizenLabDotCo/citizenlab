@@ -30,6 +30,7 @@
 #  confirmation_required               :boolean          default(TRUE), not null
 #  block_start_at                      :datetime
 #  block_reason                        :string
+#  block_end_at                        :datetime
 #
 # Indexes
 #
@@ -234,14 +235,12 @@ class User < ApplicationRecord
   scope :not_project_folder_moderator, lambda { |*project_folder_ids|
     where.not(id: project_folder_moderator(*project_folder_ids))
   }
-  scope :not_invited, -> { where.not(invite_status: 'pending').or(where(invite_status: nil)) }
-  scope :active, -> { where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'") }
 
-  scope :blocked, lambda {
-    where.not(block_start_at: nil)
-      .and(where(block_start_at: (
-        AppConfiguration.instance.settings('user_blocking', 'duration').days.ago..Time.zone.now)))
-  }
+  scope :not_invited, -> { where.not(invite_status: 'pending').or(where(invite_status: nil)) }
+  scope :registered, -> { where.not(registration_completed_at: nil) }
+  scope :blocked, -> { where('? < block_end_at', Time.zone.now) }
+  scope :not_blocked, -> { where(block_end_at: nil).or(where('? > block_end_at', Time.zone.now)) }
+  scope :active, -> { registered.not_blocked }
 
   scope :order_role, lambda { |direction = :asc|
     joins('LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id')
@@ -375,18 +374,16 @@ class User < ApplicationRecord
     !memberships.select { |m| m.group_id == group_id }.empty?
   end
 
-  def active?
-    registration_completed_at.present? && !invite_pending? && !blocked?
-  end
-
   def blocked?
-    block_start_at.present? && block_start_at.between?(block_duration.days.ago, Time.zone.now)
+    block_end_at.present? && block_end_at > Time.zone.now
   end
 
-  def block_end_at
-    return nil unless blocked?
+  def registered?
+    registration_completed_at.present?
+  end
 
-    block_start_at + block_duration.days
+  def active?
+    registered? && !blocked?
   end
 
   def groups
@@ -569,10 +566,6 @@ class User < ApplicationRecord
 
   def use_fake_code?
     Rails.env.development?
-  end
-
-  def block_duration
-    AppConfiguration.instance.settings('user_blocking', 'duration')
   end
 end
 

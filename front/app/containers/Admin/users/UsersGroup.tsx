@@ -167,7 +167,7 @@ export class UsersGroup extends React.PureComponent<
       return (
         <>
           <UsersHeader
-            title={group.attributes.title_multiloc}
+            groupTitle={group.attributes.title_multiloc}
             groupType={group.attributes.membership_type}
             onEdit={this.openGroupEditionModal}
             onDelete={this.deleteGroup(group.id)}

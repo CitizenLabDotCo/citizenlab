@@ -197,9 +197,9 @@
           "enabled": { "type": "boolean", "default": false },
           "duration": {
             "title": "Duration of block (in days)",
-            "description": "How many days a user will be blocked for. The user will remain blocked until this period expires, or an admin manually removes the block on the user. Setting this value to zero effectively unblocks all blocked users.",
+            "description": "How many days a user will be blocked for. The user will remain blocked until this period expires, or an admin manually removes the block on the user. Changing this value changes the duration of subsequent blocks only.",
             "type": "integer",
-            "minimum": 0,
+            "minimum": 1,
             "default": 90
           }
         }
