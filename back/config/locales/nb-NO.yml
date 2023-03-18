@@ -227,5 +227,3 @@
       copy_paste_the_link_below: "Kopier koden nedenfor og lim den inn i ditt registreringsskjema."
       the_link_is_valid_for: "Denne lenken er gyldig i 24 timer. Hvis lenken er utløpt, kan du <a href=\"%{link}\">be om en ny kode</a>."
       did_you_receive_this_email_in_error: "Mottok du denne e-posten ved en feil? <a href=\"%{link}\">La oss få vite det</a>."
-  simon_test:
-    test: 'Dette er en test'
