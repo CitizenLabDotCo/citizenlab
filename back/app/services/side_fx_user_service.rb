@@ -50,6 +50,7 @@ class SideFxUserService
         block_end_at: user.block_end_at
       }
     )
+    UserBlockedMailer.with(user: user).send_user_blocked_email.deliver_later
   end
 
   def after_unblock(user, current_user)

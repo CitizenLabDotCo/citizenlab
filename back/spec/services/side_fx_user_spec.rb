@@ -98,6 +98,11 @@ describe SideFxUserService do
           }
         )
     end
+
+    it 'schedules a UserBlockedMailer job' do
+      expect { service.after_block(user, current_user) }
+        .to have_enqueued_mail(UserBlockedMailer, :send_user_blocked_email)
+    end
   end
 
   describe 'after_unblock' do
