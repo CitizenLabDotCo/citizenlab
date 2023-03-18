@@ -99,4 +99,11 @@ describe SideFxUserService do
         )
     end
   end
+
+  describe 'after_unblock' do
+    it "logs an 'unblocked' action job when a user is unblocked" do
+      expect { service.after_unblock(user, current_user) }
+        .to have_enqueued_job(LogActivityJob).with(user, 'unblocked', current_user, user.updated_at.to_i)
+    end
+  end
 end
