@@ -29,7 +29,7 @@ const useInfitineInitiatives = (queryParams: IQueryParameters) => {
     IInitiatives,
     InitiativesKeys
   >({
-    queryKey: inputsKeys.infiniteList(queryParams),
+    queryKey: inputsKeys.list(queryParams),
     queryFn: ({ pageParam }) =>
       fetchInfiniteInputs({ ...queryParams, pageNumber: pageParam }),
     getNextPageParam: (lastPage) => {

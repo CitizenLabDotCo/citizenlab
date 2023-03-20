@@ -207,7 +207,7 @@ export interface IQueryParameters {
   projects?: string[] | null;
   phase?: string | null;
   author?: string | null;
-  search?: string | null;
+  search?: string;
   topics?: string[] | null;
   idea_status?: string | null;
   publication_status?: IdeaPublicationStatus | null;

@@ -29,7 +29,7 @@ const mockIdea = {
 
 describe('trackPageChange', () => {
   beforeEach(() => {
-    queryClient.setQueryData(ideasKeys.itemSlug('some-idea'), mockIdea);
+    queryClient.setQueryData(ideasKeys.item('some-idea'), mockIdea);
     window._paq = [];
     mockProject = {
       data: { id: 'project-id' },

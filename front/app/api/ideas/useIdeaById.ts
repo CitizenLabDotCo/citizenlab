@@ -9,7 +9,7 @@ const fetchIdea = (id?: string) =>
 
 const useIdeaById = (id?: string) => {
   return useQuery<IIdea, CLErrors, IIdea, IdeasKeys>({
-    queryKey: ideasKeys.itemId(id),
+    queryKey: ideasKeys.item(id),
     queryFn: () => fetchIdea(id),
     enabled: !!id,
   });

@@ -6,9 +6,6 @@ const initiativesKeys = {
   list: (filters: IQueryParameters) => [
     { ...initiativesKeys.lists()[0], ...filters },
   ],
-  infiniteList: (filters: IQueryParameters) => [
-    { ...initiativesKeys.lists()[0], queryType: 'infitite', ...filters },
-  ],
   items: () => [{ ...initiativesKeys.all()[0], operation: 'item' }],
   item: (id?: string) => [
     {

@@ -21,7 +21,7 @@ const useAddIdeaVote = () => {
     mutationFn: addIdeaVote,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: ideasKeys.itemId(variables.ideaId),
+        queryKey: ideasKeys.item(variables.ideaId),
       });
     },
   });

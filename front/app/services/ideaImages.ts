@@ -57,6 +57,6 @@ export async function addIdeaImage(
   };
 
   const ideaImage = await streams.add<IIdeaImage>(apiEndpoint, bodyData);
-  queryClient.invalidateQueries(ideasKeys.itemId(ideaId));
+  queryClient.invalidateQueries(ideasKeys.item(ideaId));
   return ideaImage;
 }

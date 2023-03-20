@@ -80,6 +80,7 @@ export default memo(() => {
       'page[size]': 12,
       sort: ideaDefaultSortMethodFallback,
       project_publication_status: 'published',
+      publication_status: 'published',
     });
 
   const updateQuery = useCallback((newParams: Partial<IQueryParameters>) => {

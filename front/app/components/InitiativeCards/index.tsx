@@ -242,7 +242,7 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
   const handleSearchOnChange = useCallback((search: string) => {
     setSelectedInitiativeFilters((selectedInitiativeFilters) => ({
       ...selectedInitiativeFilters,
-      search,
+      search: search || undefined,
     }));
   }, []);
 

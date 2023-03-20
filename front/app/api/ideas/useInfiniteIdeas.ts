@@ -20,7 +20,7 @@ const fetchInfiniteIdeas = (queryParameters: IQueryParameters) =>
 
 const useInfiniteIdeas = (queryParams: IQueryParameters) => {
   return useInfiniteQuery<IIdeas, CLErrors, IIdeas, IdeasKeys>({
-    queryKey: ideasKeys.infiniteList(queryParams),
+    queryKey: ideasKeys.list(queryParams),
     queryFn: ({ pageParam }) =>
       fetchInfiniteIdeas({ ...queryParams, 'page[number]': pageParam }),
     getNextPageParam: (lastPage) => {

@@ -183,7 +183,7 @@ const IdeasWithoutFiltersSidebar = ({
 
   const handleSearchOnChange = useCallback(
     (search: string) => {
-      onUpdateQuery({ search });
+      onUpdateQuery({ search: search ?? undefined });
     },
     [onUpdateQuery]
   );

@@ -157,7 +157,7 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
 
   const handleSearchOnChange = useCallback(
     (search: string) => {
-      onUpdateQuery({ search });
+      onUpdateQuery({ search: search ?? undefined });
     },
     [onUpdateQuery]
   );

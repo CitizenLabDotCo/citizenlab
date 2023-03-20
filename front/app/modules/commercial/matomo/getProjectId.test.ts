@@ -52,7 +52,7 @@ const mockIdea = {
 
 describe('getProjectId', () => {
   beforeEach(() => {
-    queryClient.setQueryData(ideasKeys.itemSlug('some-idea'), mockIdea);
+    queryClient.setQueryData(ideasKeys.item('some-idea'), mockIdea);
   });
   it('returns the project id directly when the project link is an admin link', async () => {
     const projectId = await getProjectId(
