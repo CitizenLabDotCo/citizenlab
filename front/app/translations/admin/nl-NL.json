@@ -1631,6 +1631,8 @@
   "app.containers.AdminPage.widgets.sortPopular": "Meeste stemmen",
   "app.containers.AdminPage.widgets.sortTrending": "Populair",
   "app.containers.AdminPage.widgets.subtitleWidgets": "Maak zoveel widgets als je wilt en voeg de html-code toe aan je homepagina of ergens anders op je website.",
+  "app.containers.AdminPage.widgets.testAdminStringCrowdin": "Vogels kunnen ook zingen. Nog een crowdin test, deze keer op een admin-only bericht!",
+  "app.containers.AdminPage.widgets.testExcludedString": "This is a teststring to check whether crowdin makes it unavailable in Italian and Hungarian",
   "app.containers.AdminPage.widgets.title": "Widget",
   "app.containers.AdminPage.widgets.titleDimensions": "Afmetingen",
   "app.containers.AdminPage.widgets.titleHeaderAndFooter": "Hoofding en footer",
