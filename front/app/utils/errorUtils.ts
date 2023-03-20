@@ -173,3 +173,16 @@ export const handleHookFormSubmissionError = (
     });
   }
 };
+
+export const handleBlockedUserError = (status, data) => {
+  if (
+    status == 401 &&
+    'base' in data.errors &&
+    data.errors.base.length >= 0 &&
+    'error' in data.errors.base[0] &&
+    data.errors.base[0].error == 'user is blocked'
+  ) {
+    // logout user and redirect to "Your account is temporarily disabled." page
+    console.log('user is blocked');
+  }
+};

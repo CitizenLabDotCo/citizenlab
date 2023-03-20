@@ -4,6 +4,7 @@ import { stringify } from 'qs';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import { isArray, isNil, omitBy } from 'lodash-es';
 import { reportError } from 'utils/loggingUtils';
+import { handleBlockedUserError } from 'utils/errorUtils';
 import { CLErrors } from 'typings';
 
 // FETCHER
@@ -102,6 +103,7 @@ async function fetcher({ path, action, body, queryParams }) {
     if (!error.errors) {
       reportError(data);
     }
+    handleBlockedUserError(response.status, error);
     throw error;
   } else {
     if (data) {
