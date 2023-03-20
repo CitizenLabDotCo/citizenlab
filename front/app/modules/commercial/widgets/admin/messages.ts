@@ -172,4 +172,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.widgets.copied',
     defaultMessage: 'Copied to clipboard',
   },
+  testAdminStringCrowdin: {
+    id: 'app.containers.AdminPage.widgets.testAdminStringCrowdin',
+    defaultMessage:
+      'Birds can sing too. Another crowdin test, this time on an admin-only message!',
+  },
 });
