@@ -40,6 +40,7 @@ describe('Idea new page', () => {
   it('shows an error when the title is less than 10 characters long', () => {
     cy.get('#idea-form');
     cy.get('#e2e-idea-title-input input').type(randomString(9));
+    cy.wait(1000);
     cy.get('.e2e-submit-idea-form').click();
     cy.get('#e2e-idea-title-input .e2e-error-message');
   });
@@ -48,7 +49,7 @@ describe('Idea new page', () => {
     cy.get('#idea-form');
     cy.get('#e2e-idea-description-input .ql-editor').type(randomString(20));
     cy.get('#e2e-idea-description-input .ql-editor').blur();
-    cy.wait(200);
+    cy.wait(1000);
     cy.get('.e2e-submit-idea-form').click();
     cy.get('#e2e-idea-description-input .e2e-error-message');
   });
