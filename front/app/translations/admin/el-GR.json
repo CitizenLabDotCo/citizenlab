@@ -1631,6 +1631,7 @@
   "app.containers.AdminPage.widgets.sortPopular": "Popular",
   "app.containers.AdminPage.widgets.sortTrending": "Trending",
   "app.containers.AdminPage.widgets.subtitleWidgets": "Μπορείτε να δημιουργήσετε ένα widget, να το προσαρμόσετε και να το προσθέσετε στον δικό σας ιστότοπο για να προσελκύσετε κόσμο σε αυτή την πλατφόρμα.",
+  "app.containers.AdminPage.widgets.testAdminStringCrowdin": "Και τα πουλιά μπορούν να τραγουδήσουν. Άλλη μια δοκιμή crowdin, αυτή τη φορά σε ένα μήνυμα μόνο για διαχειριστές!",
   "app.containers.AdminPage.widgets.title": "Widget",
   "app.containers.AdminPage.widgets.titleDimensions": "Διαστάσεις",
   "app.containers.AdminPage.widgets.titleHeaderAndFooter": "Κεφαλίδα και υποσέλιδο",
