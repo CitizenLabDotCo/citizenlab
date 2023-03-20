@@ -96,7 +96,13 @@ const ActionForm = ({
                 />
               </span>
 
-              <IconTooltip ml="4px" icon="info-solid" content="" />
+              <IconTooltip
+                ml="4px"
+                icon="info-solid"
+                content={formatMessage(
+                  permissionsMessages.permissionsAdminsAndCollaboratorsTooltip
+                )}
+              />
             </Box>
           }
           onChange={handlePermittedByUpdate('admins_moderators')}

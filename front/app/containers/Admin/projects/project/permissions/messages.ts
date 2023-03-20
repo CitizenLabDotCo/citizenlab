@@ -22,6 +22,11 @@ export default defineMessages({
     id: 'app.containers.admin.project.permissions.permissionsAdminsAndCollaborators',
     defaultMessage: 'Admins and collaborators only',
   },
+  permissionsAdminsAndCollaboratorsTooltip: {
+    id: 'app.containers.admin.project.permissions.permissionsAdminsAndCollaboratorsTooltip',
+    defaultMessage:
+      'Only platform admins, folder managers and project managers can take the action',
+  },
   permissionsSelectionLabel: {
     id: 'app.containers.admin.project.permissions.permissionsSelectionLabel',
     defaultMessage: 'Selection',
