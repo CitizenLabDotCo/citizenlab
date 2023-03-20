@@ -19,6 +19,7 @@ import messages from './messages';
 // Components
 import Button from 'components/UI/Button';
 import AsyncSelect from 'react-select/async';
+import AddCollaboratorsModal from './AddCollaboratorsModal';
 
 // Style
 import styled from 'styled-components';
@@ -66,6 +67,13 @@ const UserSearch = memo(
     const [processing, setProcessing] = useState(false);
     const [searchInput, setSearchInput] = useState('');
     const moderators = useProjectModerators(projectId);
+    const [showModal, setShowModal] = useState(false);
+    const closeModal = () => {
+      setShowModal(false);
+    };
+    const openModal = () => {
+      setShowModal(true);
+    };
 
     const getOptions = (users: IGroupMembershipsFoundUserData[]) => {
       return users
@@ -176,11 +184,17 @@ const UserSearch = memo(
             buttonStyle="cl-blue"
             icon="plus-circle"
             padding="13px 16px"
-            onClick={handleOnAddModeratorsClick}
+            onClick={openModal}
             disabled={!selection || selection.length === 0}
             processing={processing}
           />
         </SelectGroupsContainer>
+        <AddCollaboratorsModal
+          addModerators={handleOnAddModeratorsClick}
+          showModal={showModal}
+          closeModal={closeModal}
+          selectedCollaborators={selection.length}
+        />
       </Container>
     );
   }
