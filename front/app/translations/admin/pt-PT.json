@@ -1631,6 +1631,7 @@
   "app.containers.AdminPage.widgets.sortPopular": "Popular",
   "app.containers.AdminPage.widgets.sortTrending": "Tendência",
   "app.containers.AdminPage.widgets.subtitleWidgets": "Pode criar um widget, personalizá-lo e adicioná-lo ao seu próprio website para atrair pessoas para esta plataforma.",
+  "app.containers.AdminPage.widgets.testAdminStringCrowdin": "As aves também podem cantar. Outro teste de multidão, desta vez numa mensagem só para administração!",
   "app.containers.AdminPage.widgets.title": "Widget",
   "app.containers.AdminPage.widgets.titleDimensions": "Dimensões",
   "app.containers.AdminPage.widgets.titleHeaderAndFooter": "Cabeçalho e Rodapé",
