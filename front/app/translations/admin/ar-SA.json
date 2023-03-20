@@ -1631,6 +1631,8 @@
   "app.containers.AdminPage.widgets.sortPopular": "الأكثر تصويتًا",
   "app.containers.AdminPage.widgets.sortTrending": "الرائج",
   "app.containers.AdminPage.widgets.subtitleWidgets": "يمكنك إنشاء عنصر واجهة وتخصيصه وإضافته إلى موقعك الإلكتروني لجذب الناس إلى هذه المنصة.",
+  "app.containers.AdminPage.widgets.testAdminStringCrowdin": "يمكن للطيور الغناء أيضًا. اختبار جماعي آخر ، هذه المرة على رسالة للمشرف فقط!",
+  "app.containers.AdminPage.widgets.testExcludedString": "هذا اختبار للتحقق مما إذا كان Crowdin يجعله غير متوفر باللغتين الإيطالية والهنغارية",
   "app.containers.AdminPage.widgets.title": "عنصر الواجهة",
   "app.containers.AdminPage.widgets.titleDimensions": "الأبعاد",
   "app.containers.AdminPage.widgets.titleHeaderAndFooter": "الترويسة والتذييل",
