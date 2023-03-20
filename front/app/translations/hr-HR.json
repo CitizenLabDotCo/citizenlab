@@ -703,6 +703,7 @@
   "app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError": "Navedite naziv grupe",
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "Potvrđivanje je onemogućeno na vašoj platformi, promijenite način potvrđivanja ili kontaktirajte podršku.",
   "app.containers.App.appMetaDescription": "Dobrodošli na platformu za sudjelovanje {orgName}.\nOtkrijte lokalne projekte i priključite se raspravi!",
+  "app.containers.App.fakeMessageToTestCrowdinEnterprise": "Znaju li majmuni pjevati? Ovo je lažni prijevod za testiranje Crowdin poduzeća.",
   "app.containers.App.loading": "Učitavanje...",
   "app.containers.App.metaTitle": "Javna platforma za sudjelovanje {orgName} | CitizenLab",
   "app.containers.CampaignsConsentForm.adminCategory": "Administrator",
