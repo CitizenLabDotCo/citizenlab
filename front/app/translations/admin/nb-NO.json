@@ -1631,6 +1631,7 @@
   "app.containers.AdminPage.widgets.sortPopular": "Populært",
   "app.containers.AdminPage.widgets.sortTrending": "Trender",
   "app.containers.AdminPage.widgets.subtitleWidgets": "Du kan opprette et kontrollprogram, tilpasse det og legge det til på ditt eget nettsted for å trekke folk til plattformen.",
+  "app.containers.AdminPage.widgets.testAdminStringCrowdin": "Fugler kan også synge. Nok en crowdin-test, denne gangen på en administratormelding!",
   "app.containers.AdminPage.widgets.title": "Kontrollprogram",
   "app.containers.AdminPage.widgets.titleDimensions": "Størrelser",
   "app.containers.AdminPage.widgets.titleHeaderAndFooter": "Topptekst og bunntekst",
