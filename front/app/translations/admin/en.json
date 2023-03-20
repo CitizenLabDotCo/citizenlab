@@ -1880,6 +1880,7 @@
   "app.modules.navbar.admin.containers.pageHeader": "Pages & menu",
   "app.modules.navbar.admin.containers.pageSubtitle": "Your navigation bar can display up to five pages in addition to the Home and projects pages. You can rename menu items, re-order and add new pages  with your own content.",
   "app.modules.project_management.admin.components.buyAdditionalSeats": "Buy {noOfSeats} additional {noOfSeats, plural, one {seat} other {seats}}",
+  "app.modules.project_management.admin.components.confirmButtonText": "Confirm",
   "app.modules.project_management.admin.components.confirmMessage": "Are you sure you want to give {noOfPeople} {noOfPeople, plural, one {person} other {people}} collaborator rights?",
   "app.modules.project_management.admin.components.giveCollaboratorRights": "Give collaborator rights",
   "app.modules.project_management.admin.components.permissionsTab": "Access rights",
