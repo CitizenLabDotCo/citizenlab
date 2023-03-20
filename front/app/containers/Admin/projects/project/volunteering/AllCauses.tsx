@@ -1,12 +1,12 @@
-import React, { useCallback, useState, MouseEvent } from 'react';
+import React, { useCallback, useState, MouseEvent, useMemo } from 'react';
 import styled from 'styled-components';
 import { clone } from 'lodash-es';
 import { DndProvider } from 'react-dnd-cjs';
 import HTML5Backend from 'react-dnd-html5-backend-cjs';
 import { isNilOrError } from 'utils/helperUtils';
 
-import useCauses from 'hooks/useCauses';
-import { ICauseData, reorderCause, deleteCause } from 'services/causes';
+import useCauses from 'api/causes/useCauses';
+import { ICauseData } from 'api/causes/types';
 
 import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
@@ -15,6 +15,8 @@ import Button from 'components/UI/Button';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import T from 'components/T';
+import useDeleteCause from 'api/causes/useDeleteCause';
+import useReorderCause from 'api/causes/useReorderCause';
 
 const Container = styled.div``;
 
@@ -34,17 +36,23 @@ const AllCauses = ({
   participationContextId,
   projectId,
 }: Props) => {
+  const { mutate: deleteCause } = useDeleteCause();
+  const { mutate: reorderCause } = useReorderCause();
   const { formatMessage } = useIntl();
-  const phaseId =
-    participationContextType === 'phase' ? participationContextId : null;
-  const causes = useCauses({ projectId, phaseId });
+
+  const { data: causes } = useCauses({
+    participationContextType,
+    participationContextId,
+  });
   const [itemsWhileDragging, setItemsWhileDragging] = useState<
     ICauseData[] | null
   >(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const items = itemsWhileDragging || (isNilOrError(causes) ? [] : causes.data);
+  const items = useMemo(
+    () => itemsWhileDragging || (isNilOrError(causes) ? [] : causes.data),
+    [itemsWhileDragging, causes]
+  );
 
   const handleDragRow = useCallback(
     (fromIndex, toIndex) => {
@@ -67,13 +75,15 @@ const AllCauses = ({
 
       if (cause && cause.attributes.ordering !== toIndex) {
         setIsProcessing(true);
-        reorderCause(causeId, toIndex).finally(() => setIsProcessing(false));
+        reorderCause(
+          { id: causeId, ordering: toIndex },
+          { onSuccess: () => setIsProcessing(false) }
+        );
       } else {
         setItemsWhileDragging(null);
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [isProcessing, items]
+    [items, reorderCause]
   );
 
   const handleOnClickDelete = (causeId: string) => (event: MouseEvent) => {
@@ -84,16 +94,15 @@ const AllCauses = ({
       if (window.confirm(deleteMessage)) {
         setItemsWhileDragging(null);
         setIsProcessing(true);
-        deleteCause(causeId).finally(() => {
-          setIsProcessing(false);
-        });
+        deleteCause(causeId, { onSuccess: () => setIsProcessing(false) });
       }
     }
   };
 
-  const newCauseLink = phaseId
-    ? `/admin/projects/${projectId}/volunteering/phases/${phaseId}/causes/new`
-    : `/admin/projects/${projectId}/volunteering/causes/new`;
+  const newCauseLink =
+    participationContextType === 'phase'
+      ? `/admin/projects/${projectId}/volunteering/phases/${participationContextId}/causes/new`
+      : `/admin/projects/${projectId}/volunteering/causes/new`;
 
   if (isNilOrError(causes)) return null;
 
