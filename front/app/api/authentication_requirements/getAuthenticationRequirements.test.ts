@@ -7,7 +7,7 @@ import {
   initiativeResponse,
   projectResponse,
   phaseResponse,
-} from './__mocks__/useGetAuthenticationRequirements';
+} from './__mocks__/getAuthenticationRequirements';
 
 const initiativesPath = '*permissions/posting_initiative/requirements';
 const projectPath = '*projects/123/permissions/posting_idea/requirements';
