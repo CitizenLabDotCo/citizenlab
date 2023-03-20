@@ -703,6 +703,7 @@
   "app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError": "إدخال اسم مجموعة",
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "تم تعطيل التحقق في منصتك، قم بإزالة قاعدة التحقق أو اتصل بالدعم.",
   "app.containers.App.appMetaDescription": "مرحباً في منصة {orgName} للمُشاركة عبر الإنترنت. \nاستكشف مشروعات محلية وشارك في نقاشات! ",
+  "app.containers.App.fakeMessageToTestCrowdinEnterprise": "هل تستطيع القرود الغناء؟ هذه ترجمة مزيفة لاختبار مشروع Crowdin.",
   "app.containers.App.loading": "التحميل جارٍ...",
   "app.containers.App.metaTitle": "منصة إشراك المواطن الخاصة بـ {orgName} | CitizenLab",
   "app.containers.CampaignsConsentForm.adminCategory": "المسؤول",
