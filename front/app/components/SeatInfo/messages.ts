@@ -31,9 +31,9 @@ export default defineMessages({
     defaultMessage:
       "Your plan has {adminSeatsIncluded}, eligible for folder managers and project managers. Once you’ve used all the seats, extra seats will be added under 'Additional seats'.",
   },
-  collaboratorIncludedSubText: {
-    id: 'app.components.SeatInfo.collaboratorIncludedSubText',
-    defaultMessage: '{projectManagerSeats} manager seats included',
+  collaboratorsIncludedSubText: {
+    id: 'app.components.SeatInfo.collaboratorsIncludedSubText',
+    defaultMessage: '{managerSeats} manager seats included',
   },
   includedAdminToolTip: {
     id: 'app.components.SeatInfo.includedAdminToolTip',

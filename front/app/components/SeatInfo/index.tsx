@@ -32,10 +32,10 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
   const { data: seats } = useSeats();
   const maximumAdmins =
     appConfiguration?.data.attributes.settings.core.maximum_admins_number;
-  const maximumProjectManagers =
+  const maximumProjectCollaborators =
     appConfiguration?.data.attributes.settings.core.maximum_moderators_number;
   const maximumSeatNumber =
-    seatType === 'admin' ? maximumAdmins : maximumProjectManagers;
+    seatType === 'admin' ? maximumAdmins : maximumProjectCollaborators;
 
   // Maximum seat number being null means that there are unlimited seats so we don't show the seat info
   if (isNil(maximumSeatNumber) || !seats || !appConfiguration) {
@@ -43,10 +43,10 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
   }
 
   const currentAdminSeats = seats.data.attributes.admins_number;
-  const currentProjectManagerSeats =
+  const currentCollaboratorSeats =
     seats.data.attributes.project_moderators_number;
   let currentSeatNumber =
-    seatType === 'admin' ? currentAdminSeats : currentProjectManagerSeats;
+    seatType === 'admin' ? currentAdminSeats : currentCollaboratorSeats;
   const additionalSeats = currentSeatNumber - maximumSeatNumber;
   const currentSeatTypeTitle =
     seatType === 'admin'
@@ -121,8 +121,8 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
               values={{
                 adminSeatsIncluded: (
                   <Text as="span" fontWeight="bold" variant="bodyS">
-                    {formatMessage(messages.collaboratorIncludedSubText, {
-                      projectManagerSeats: maximumSeatNumber,
+                    {formatMessage(messages.collaboratorsIncludedSubText, {
+                      managerSeats: maximumSeatNumber,
                     })}
                   </Text>
                 ),
