@@ -1631,6 +1631,7 @@
   "app.containers.AdminPage.widgets.sortPopular": "Populär",
   "app.containers.AdminPage.widgets.sortTrending": "Trender",
   "app.containers.AdminPage.widgets.subtitleWidgets": "Du kan skapa en widget, anpassa den och lägga till den på din egen webbplats för att locka personer till den här plattformen.",
+  "app.containers.AdminPage.widgets.testAdminStringCrowdin": "Fåglar kan också sjunga. Ännu ett crowdin-test, den här gången på ett meddelande som endast är avsett för administratörer!",
   "app.containers.AdminPage.widgets.title": "Widget",
   "app.containers.AdminPage.widgets.titleDimensions": "Mått",
   "app.containers.AdminPage.widgets.titleHeaderAndFooter": "Rubrik och sidfot",
