@@ -58,6 +58,7 @@ interface Props {
 }
 
 const getStatusMessage = (user: IUserData): MessageDescriptor => {
+  if (user.attributes.blocked) return blockUserMessages.blocked;
   const highestRole = user.attributes.highest_role;
   const roleMessage = {
     admin: messages.platformAdmin,
@@ -140,8 +141,8 @@ const UserTableRow = ({
             },
       ]
     : [];
-  
-    const setAsAdminAction: IAction = {
+
+  const setAsAdminAction: IAction = {
     handler: openChangeSeatModal,
     label: formatMessage(messages.setAsAdmin),
     icon: 'shield-checkered' as const,
@@ -226,7 +227,6 @@ const UserTableRow = ({
         toggleAdmin={toggleAdmin}
         showModal={showChangeSeatModal}
         closeModal={closeChangeSeatModal}
-
       />
     </Tr>
   );
