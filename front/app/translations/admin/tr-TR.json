@@ -1631,6 +1631,8 @@
   "app.containers.AdminPage.widgets.sortPopular": "Popüler",
   "app.containers.AdminPage.widgets.sortTrending": "Popüler",
   "app.containers.AdminPage.widgets.subtitleWidgets": "Bir widget oluşturabilir, özelleştirebilir ve insanları bu platforma çekmek için kendi web sitenize ekleyebilirsiniz.",
+  "app.containers.AdminPage.widgets.testAdminStringCrowdin": "Kuşlar da şarkı söyleyebilir. Başka bir crowdin testi, bu sefer sadece yöneticilere özel bir mesaj üzerinde!",
+  "app.containers.AdminPage.widgets.testExcludedString": "Bu, crowdin'in İtalyanca ve Macarca'da kullanılamaz hale getirip getirmediğini kontrol etmek için bir test dizesidir",
   "app.containers.AdminPage.widgets.title": "Widget",
   "app.containers.AdminPage.widgets.titleDimensions": "Boyutlar",
   "app.containers.AdminPage.widgets.titleHeaderAndFooter": "Üst Bilgi ve Alt Bilgi",
