@@ -1631,6 +1631,7 @@
   "app.containers.AdminPage.widgets.sortPopular": "Popular",
   "app.containers.AdminPage.widgets.sortTrending": "Trending",
   "app.containers.AdminPage.widgets.subtitleWidgets": "Podeu crear un giny, personalitzar-lo i afegir-lo al vostre propi lloc web per atraure gent a aquesta plataforma.",
+  "app.containers.AdminPage.widgets.testAdminStringCrowdin": "Els ocells també poden cantar. Una altra prova de crowdin, aquesta vegada amb un missatge només d'administrador!",
   "app.containers.AdminPage.widgets.title": "Widget",
   "app.containers.AdminPage.widgets.titleDimensions": "Dimensions",
   "app.containers.AdminPage.widgets.titleHeaderAndFooter": "Capçalera i peu de pàgina",
