@@ -310,7 +310,7 @@ resource 'Permissions' do
 
       let(:action) { 'visiting' }
 
-      example_request 'Get the global registration requirements' do
+      example_request 'Get the global registration requirements when custom fields are asked' do
         assert_status 200
         json_response = json_parse response_body
         expect(json_response).to eq({
