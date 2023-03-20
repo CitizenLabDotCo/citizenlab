@@ -306,7 +306,8 @@ const ParentCommentForm = ({
   const commentingEnabled =
     postType === 'initiative'
       ? commentingPermissionInitiative?.enabled === true
-      : get(post, 'attributes.action_descriptor.commenting_idea.enabled', true);
+      : idea?.data.attributes?.action_descriptor.commenting_idea.enabled ===
+        true;
   const projectId: string | null = get(
     post,
     'relationships.project.data.id',

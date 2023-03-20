@@ -82,7 +82,7 @@ describe('Idea new page', () => {
       'contain.value',
       geocodedLocation
     );
-
+    cy.wait(1000);
     // save the idea
     cy.get('.e2e-submit-idea-form').click();
 
