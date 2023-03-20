@@ -703,6 +703,7 @@
   "app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError": "Grup adı girin",
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "Platformunuz için doğrulama etkin değil. Doğrulama kuralını kaldırın veya destek ekibiyle iletişime geçin.",
   "app.containers.App.appMetaDescription": "{orgName} çevrimiçi katılım platformuna hoş geldiniz. \nYerel projeleri inceleyin ve tartışmaya katılın.",
+  "app.containers.App.fakeMessageToTestCrowdinEnterprise": "Maymunlar şarkı söyleyebilir mi? Bu, Crowdin girişimini test etmek için yapılmış sahte bir çeviridir.",
   "app.containers.App.loading": "Yükleniyor...",
   "app.containers.App.metaTitle": "{orgName} herkese açık katılım platformu | CitizenLab",
   "app.containers.CampaignsConsentForm.adminCategory": "Yönetici",
