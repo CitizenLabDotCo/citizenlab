@@ -33,6 +33,7 @@ describe('Idea new page', () => {
 
   it('shows an error when no description is provided', () => {
     cy.get('#idea-form');
+    cy.wait(1000);
     cy.get('.e2e-submit-idea-form').click();
     cy.get('#e2e-idea-description-input .e2e-error-message');
   });
