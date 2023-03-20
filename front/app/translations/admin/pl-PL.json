@@ -1631,6 +1631,8 @@
   "app.containers.AdminPage.widgets.sortPopular": "Najwięcej głosów",
   "app.containers.AdminPage.widgets.sortTrending": "Na czasie",
   "app.containers.AdminPage.widgets.subtitleWidgets": "Możesz utworzyć widget, dostosować go i dodać do swojej własnej strony internetowej, aby zainteresować odwiedzających platformą.",
+  "app.containers.AdminPage.widgets.testAdminStringCrowdin": "Ptaki też potrafią śpiewać. Kolejny test crowdina, tym razem na wiadomości tylko dla administratorów!",
+  "app.containers.AdminPage.widgets.testExcludedString": "To jest teststring, aby sprawdzić, czy crowdin czyni go niedostępnym w języku włoskim i węgierskim",
   "app.containers.AdminPage.widgets.title": "Widget",
   "app.containers.AdminPage.widgets.titleDimensions": "Rozmiar",
   "app.containers.AdminPage.widgets.titleHeaderAndFooter": "Nagłówek i stopka",
