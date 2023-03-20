@@ -14,4 +14,9 @@ export default defineMessages({
     defaultMessage:
       'Welcome to the online participation platform of {orgName}. \nExplore local projects and engage in the discussion!',
   },
+  fakeMessageToTestCrowdinEnterprise: {
+    id: 'app.containers.App.fakeMessageToTestCrowdinEnterprise',
+    defaultMessage:
+      'Can monkeys sing? This is a fake translation to test Crowdin enterprise.',
+  },
 });
