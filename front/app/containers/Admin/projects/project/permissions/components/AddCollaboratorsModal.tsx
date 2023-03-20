@@ -17,7 +17,6 @@ import useSeats from 'api/seats/useSeats';
 import { isNil } from 'utils/helperUtils';
 
 interface Props {
-  // userToChangeSeat: IUserData;
   showModal: boolean;
   closeModal: () => void;
   addModerators: () => void;
@@ -37,8 +36,7 @@ const AddCollaboratorsModal = ({
   if (!appConfiguration || !seats) return null;
 
   const maximumCollaborators =
-    appConfiguration.data.attributes.settings.core
-      .maximum_project_moderators_number;
+    appConfiguration.data.attributes.settings.core.maximum_moderators_number;
   const currentCollaboratorSeats =
     seats.data.attributes.project_moderators_number;
 
