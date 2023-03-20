@@ -703,6 +703,7 @@
   "app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError": "Fornecer um nome de grupo",
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "A verificação está desactivada para a sua plataforma, remova a regra de verificação ou o apoio de contacto.",
   "app.containers.App.appMetaDescription": "Bem-vindo à plataforma de participação em linha de {orgName}. \nExplore projectos locais e participe na discussão!",
+  "app.containers.App.fakeMessageToTestCrowdinEnterprise": "Os macacos sabem cantar? Esta é uma tradução falsa para testar a empresa Crowdin.",
   "app.containers.App.loading": "Carregamento...",
   "app.containers.App.metaTitle": "Plataforma de participação pública de {orgName} | CitizenLab",
   "app.containers.CampaignsConsentForm.adminCategory": "Admin",
