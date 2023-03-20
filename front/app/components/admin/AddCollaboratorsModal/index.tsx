@@ -23,7 +23,7 @@ interface Props {
   // Total number of seats to add, including admin seats
   noOfSeatsToAdd: number;
   // These don't include admin seats
-  noOfSeatsToBuy: number;
+  noOfSeatsToBuy?: number;
 }
 
 const AddCollaboratorsModal = ({
@@ -31,7 +31,7 @@ const AddCollaboratorsModal = ({
   closeModal,
   addModerators,
   noOfSeatsToAdd,
-  noOfSeatsToBuy,
+  noOfSeatsToBuy = noOfSeatsToAdd,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
