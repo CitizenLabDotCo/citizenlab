@@ -1631,6 +1631,7 @@
   "app.containers.AdminPage.widgets.sortPopular": "{orgName, select, München {Meiste Bewertungen} other {Meiste Stimmen}}",
   "app.containers.AdminPage.widgets.sortTrending": "Beliebt",
   "app.containers.AdminPage.widgets.subtitleWidgets": "Sie können ein Widget erstellen, es anpassen und auf Ihrer eigenen Webseite einfügen, um Leute auf diese Plattform zu locken.",
+  "app.containers.AdminPage.widgets.testAdminStringCrowdin": "Birds can sing too. Another crowdin test, this time on an admin-only message!",
   "app.containers.AdminPage.widgets.title": "Widget",
   "app.containers.AdminPage.widgets.titleDimensions": "Abmessungen",
   "app.containers.AdminPage.widgets.titleHeaderAndFooter": "Kopfzeile & Fußzeile",
