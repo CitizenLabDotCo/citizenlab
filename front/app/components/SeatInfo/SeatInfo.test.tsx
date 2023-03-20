@@ -69,7 +69,7 @@ describe('SeatInfo', () => {
     expect(screen.queryByText('Additional seats')).not.toBeInTheDocument();
   });
 
-  it('shows additional seats for collaborators when user has used more', () => {
+  it('shows collaborators additional seats when user has used more', () => {
     mockUserSeatsData.data.attributes.project_moderators_number = 15;
     mockAppConfiguration.data.attributes.settings.core.additional_moderators_number = 7;
     render(<SeatInfo seatType="project_manager" />);
@@ -79,7 +79,7 @@ describe('SeatInfo', () => {
     expect(screen.queryByText('Additional seats')).toBeInTheDocument();
   });
 
-  it('shows additional seats for collaborators when user has used more', () => {
+  it('shows admin additional seats when user has used more', () => {
     mockUserSeatsData.data.attributes.admins_number = 10;
     mockAppConfiguration.data.attributes.settings.core.additional_admins_number = 7;
     render(<SeatInfo seatType="admin" />);
