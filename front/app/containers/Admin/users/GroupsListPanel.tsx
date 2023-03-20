@@ -208,7 +208,7 @@ export const GroupsListPanel = ({
         <GroupName>
           <FormattedMessage {...messages.allUsers} />
         </GroupName>
-        {!isNilOrError(usercount) && <MembersCount>{usercount}</MembersCount>}
+        <MembersCount>{usercount.count}</MembersCount>
       </MenuLink>
       <MenuLink to="/admin/users/admins-managers">
         <GroupName>
