@@ -703,6 +703,7 @@
   "app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError": "Stellt e Gruppennumm zur Verfügung",
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "D’Verifikatioun ass op Ärer Plattform gespaart, huelt d’Verificatiounsroll ewech oder kontaktéiert de Support",
   "app.containers.App.appMetaDescription": "Wëllkomm op der participativer Plattform vum {Zesumme Vereinfachen}. Kuckt d'Projeten an diskutéiert mat!",
+  "app.containers.App.fakeMessageToTestCrowdinEnterprise": "Kann Aaffen sangen? Dëst ass eng gefälscht Iwwersetzung fir Crowdin Enterprise ze testen.",
   "app.containers.App.loading": "Um Lueden ... ",
   "app.containers.App.metaTitle": "Bedeelegungsplattform {orgName} | CitizenLab",
   "app.containers.CampaignsConsentForm.adminCategory": "Admin",
