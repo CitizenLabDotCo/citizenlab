@@ -60,9 +60,14 @@ function isModerator(user: IGroupMembershipsFoundUserData) {
   return get(user.attributes, 'is_moderator') !== undefined;
 }
 
+interface UserOption extends IOption {
+  email: string;
+  isAdmin: boolean;
+}
+
 const UserSearch = memo(
   ({ projectId, intl: { formatMessage } }: Props & WrappedComponentProps) => {
-    const [selection, setSelection] = useState<IOption[]>([]);
+    const [selection, setSelection] = useState<UserOption[]>([]);
     const [loading, setLoading] = useState(false);
     const [processing, setProcessing] = useState(false);
     const [searchInput, setSearchInput] = useState('');
@@ -74,6 +79,8 @@ const UserSearch = memo(
     const openModal = () => {
       setShowModal(true);
     };
+    // If it is an admin, that isn't counted as a new seat to buy
+    const noOfSeatsToBuy = selection.filter((s) => !s.isAdmin).length;
 
     const getOptions = (users: IGroupMembershipsFoundUserData[]) => {
       return users
@@ -98,6 +105,7 @@ const UserSearch = memo(
             disabled: isModerator(user)
               ? get(user.attributes, 'is_moderator')
               : get(user.attributes, 'is_member'),
+            isAdmin: user.attributes.roles?.find((r) => r.type === 'admin'),
           };
         });
     };
@@ -120,7 +128,7 @@ const UserSearch = memo(
       }
     };
 
-    const handleOnChange = async (selection: IOption[]) => {
+    const handleOnChange = async (selection: UserOption[]) => {
       setSelection(selection);
     };
 
@@ -193,7 +201,8 @@ const UserSearch = memo(
           addModerators={handleOnAddModeratorsClick}
           showModal={showModal}
           closeModal={closeModal}
-          selectedCollaborators={selection.length}
+          noOfSeatsToAdd={selection.length}
+          noOfSeatsToBuy={noOfSeatsToBuy}
         />
       </Container>
     );

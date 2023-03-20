@@ -60,7 +60,8 @@ describe('AddCollaboratorsModal', () => {
         addModerators={handleOnAddModeratorsClick}
         showModal
         closeModal={closeModal}
-        selectedCollaborators={1}
+        noOfSeatsToAdd={1}
+        noOfSeatsToBuy={1}
       />
     );
 
@@ -85,7 +86,8 @@ describe('AddCollaboratorsModal', () => {
         addModerators={handleOnAddModeratorsClick}
         showModal
         closeModal={closeModal}
-        selectedCollaborators={1}
+        noOfSeatsToAdd={1}
+        noOfSeatsToBuy={1}
       />
     );
 
@@ -100,5 +102,31 @@ describe('AddCollaboratorsModal', () => {
       )
     ).toBeInTheDocument();
     expect(buyAdditionalSeatButton).toBeInTheDocument();
+  });
+
+  it('shows confirm button when noOfSeatsToBuy is 0 and maximum seats were exceeded', () => {
+    mockUserSeatsData.data.attributes.project_moderators_number = 10;
+
+    render(
+      <AddCollaboratorsModal
+        addModerators={handleOnAddModeratorsClick}
+        showModal
+        closeModal={closeModal}
+        noOfSeatsToAdd={2}
+        noOfSeatsToBuy={0}
+      />
+    );
+
+    const confirmButton = screen.queryByRole('button', {
+      name: 'Confirm',
+    });
+
+    expect(screen.queryByText('Give collaborator rights')).toBeInTheDocument();
+    expect(
+      screen.queryByText(
+        'Are you sure you want to give 2 people collaborator rights?'
+      )
+    ).toBeInTheDocument();
+    expect(confirmButton).toBeInTheDocument();
   });
 });

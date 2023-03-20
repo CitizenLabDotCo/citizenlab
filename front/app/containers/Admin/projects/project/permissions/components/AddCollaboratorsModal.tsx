@@ -20,14 +20,18 @@ interface Props {
   showModal: boolean;
   closeModal: () => void;
   addModerators: () => void;
-  selectedCollaborators: number;
+  // Total number of seats to add, including admin seats
+  noOfSeatsToAdd: number;
+  // These don't include admin seats
+  noOfSeatsToBuy: number;
 }
 
 const AddCollaboratorsModal = ({
   showModal,
   closeModal,
   addModerators,
-  selectedCollaborators,
+  noOfSeatsToAdd,
+  noOfSeatsToBuy,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
@@ -41,10 +45,11 @@ const AddCollaboratorsModal = ({
     seats.data.attributes.project_moderators_number;
   const hasReachedLimit =
     !isNil(maximumCollaborators) &&
-    currentCollaboratorSeats >= maximumCollaborators;
+    currentCollaboratorSeats >= maximumCollaborators &&
+    noOfSeatsToBuy > 0;
   const buttonText = hasReachedLimit
     ? formatMessage(messages.buyAdditionalSeats, {
-        noOfSeats: selectedCollaborators,
+        noOfSeats: noOfSeatsToBuy,
       })
     : formatMessage(messages.confirmButtonText);
 
@@ -67,14 +72,14 @@ const AddCollaboratorsModal = ({
               <FormattedMessage
                 {...messages.reachedLimitText}
                 values={{
-                  noOfSeats: selectedCollaborators,
+                  noOfSeats: noOfSeatsToBuy,
                 }}
               />
             ) : (
               <FormattedMessage
                 {...messages.confirmMessage}
                 values={{
-                  noOfPeople: selectedCollaborators,
+                  noOfPeople: noOfSeatsToAdd,
                 }}
               />
             )}
