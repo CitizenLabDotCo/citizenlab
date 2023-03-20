@@ -1631,7 +1631,7 @@
   "app.containers.AdminPage.widgets.sortPopular": "Populære",
   "app.containers.AdminPage.widgets.sortTrending": "Populære",
   "app.containers.AdminPage.widgets.subtitleWidgets": "Du kan oprette en widget, tilpasse den og tilføje den til din eget websted for at tiltrække deltagere til denne platform.",
-  "app.containers.AdminPage.widgets.testAdminStringCrowdin": "Birds can sing too. Another crowdin test, this time on an admin-only message!",
+  "app.containers.AdminPage.widgets.testAdminStringCrowdin": "Fugle kan også synge. Endnu en crowdin-test, denne gang på en besked, der kun er til administratorer!",
   "app.containers.AdminPage.widgets.title": "Widget",
   "app.containers.AdminPage.widgets.titleDimensions": "Dimensioner",
   "app.containers.AdminPage.widgets.titleHeaderAndFooter": "Overskrift og sidefod",
