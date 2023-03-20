@@ -11,5 +11,5 @@ de:
       idea_author: '%{authorName} submitted a post:'
       initiative_author: '%{authorName} submitted a proposal:'
       this_post_was_flagged: >
-        <p>This post was automatically detected as potentially containing inappropriate content. We’re sending you this notification so that you can review the post in accordance with your own moderation guidelines.</p><p>If the post does not contain inappropriate content, you can remove the warning via your platform in the Activity tab in the admin panel.</p>
+        <p>Dieser Beitrag wurde automatisch als potenziell unangemessener Inhalt erkannt. Wir senden Ihnen diese Benachrichtigung, damit Sie den Beitrag in Übereinstimmung mit Ihren eigenen Moderationsrichtlinien überprüfen können.</p><p>Wenn der Beitrag keinen unangemessenen Inhalt enthält, können Sie die Warnung über Ihre Plattform im Reiter Aktivität im Adminbereich entfernen.</p>
       cta_review_post: 'Review post'
