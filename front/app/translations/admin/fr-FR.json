@@ -1631,6 +1631,8 @@
   "app.containers.AdminPage.widgets.sortPopular": "Plus votés",
   "app.containers.AdminPage.widgets.sortTrending": "Tendance",
   "app.containers.AdminPage.widgets.subtitleWidgets": "Générez autant de widgets que vous le désirez et ajouttez des codes HTML à votre site internet.",
+  "app.containers.AdminPage.widgets.testAdminStringCrowdin": "Les oiseaux aussi peuvent chanter. Un autre test de crowdin, cette fois sur un message réservé aux administrateurs !",
+  "app.containers.AdminPage.widgets.testExcludedString": "This is a teststring to check whether crowdin makes it unavailable in Italian and Hungarian",
   "app.containers.AdminPage.widgets.title": "Widget",
   "app.containers.AdminPage.widgets.titleDimensions": "Dimensions",
   "app.containers.AdminPage.widgets.titleHeaderAndFooter": "En-tête et pied",
