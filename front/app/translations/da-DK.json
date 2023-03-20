@@ -1457,7 +1457,7 @@
   "app.containers.app.navbar.admin": "Administrator",
   "app.containers.app.navbar.allProjects": "{tenantName, select, DeloitteDK {Alle verdensmål} other {Alle projekter}}",
   "app.containers.app.navbar.ariaLabel": "Primært",
-  "app.containers.app.navbar.closeMobileNavMenu": "Close mobile navigation menu",
+  "app.containers.app.navbar.closeMobileNavMenu": "Luk mobilnavigationsmenuen",
   "app.containers.app.navbar.compactMobileMenu": "Compact mobile",
   "app.containers.app.navbar.editProfile": "Mine indstillinger",
   "app.containers.app.navbar.fullMobileNavigation": "Full mobile",
