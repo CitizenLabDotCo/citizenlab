@@ -138,7 +138,7 @@ gem 'simple_segment', '~>1.5'
 # This fork was made to update the version of jws which is
 # required for the google omniauth gem.
 gem 'omniauth-azure-activedirectory', github: 'CitizenLabDotCo/omniauth-azure-activedirectory'
-gem 'omniauth_openid_connect', '~> 0.4.0'
+gem 'omniauth_openid_connect'
 gem 'acts_as_list', '~> 1.0'
 gem 'bunny', '>= 2.7.2'
 gem 'faker'

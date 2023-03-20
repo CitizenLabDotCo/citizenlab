@@ -192,7 +192,7 @@ PATH
   remote: engines/commercial/id_clave_unica
   specs:
     id_clave_unica (0.1.0)
-      omniauth_openid_connect (~> 0.4.0)
+      omniauth_openid_connect
       rails (~> 6.1)
       verification
 
@@ -834,8 +834,7 @@ GEM
     omniauth-saml (1.10.3)
       omniauth (~> 1.3, >= 1.3.2)
       ruby-saml (~> 1.9)
-    omniauth_openid_connect (0.4.0)
-      addressable (~> 2.5)
+    omniauth_openid_connect (0.6.1)
       omniauth (>= 1.9, < 3)
       openid_connect (~> 1.1)
     order_as_specified (1.7)
@@ -1239,7 +1238,7 @@ DEPENDENCIES
   omniauth-google-oauth2
   omniauth-rails_csrf_protection
   omniauth-saml (~> 1.10.3)
-  omniauth_openid_connect (~> 0.4.0)
+  omniauth_openid_connect
   onboarding!
   openid_connect!
   order_as_specified
