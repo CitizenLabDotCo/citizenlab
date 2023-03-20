@@ -9,8 +9,10 @@ type MockAppConfigurationType = {
     attributes: {
       settings: {
         core: {
-          maximum_admins_number: number | null;
-          maximum_moderators_number: number | null;
+          maximum_admins_number: number | null | undefined;
+          maximum_moderators_number: number | null | undefined;
+          additional_admins_number: number | null | undefined;
+          additional_moderators_number: number | null | undefined;
         };
       };
     };
@@ -25,6 +27,8 @@ const mockAppConfiguration: MockAppConfigurationType = {
         core: {
           maximum_admins_number: 6,
           maximum_moderators_number: 9,
+          additional_admins_number: 0,
+          additional_moderators_number: 0,
         },
       },
     },
@@ -65,12 +69,23 @@ describe('SeatInfo', () => {
     expect(screen.queryByText('Additional seats')).not.toBeInTheDocument();
   });
 
-  it('shows additional seats when user has used more', () => {
+  it('shows additional seats for collaborators when user has used more', () => {
     mockUserSeatsData.data.attributes.project_moderators_number = 15;
+    mockAppConfiguration.data.attributes.settings.core.additional_moderators_number = 7;
     render(<SeatInfo seatType="project_manager" />);
     expect(screen.getByText('Current collaborator seats')).toBeInTheDocument();
     expect(screen.getByText('9/9')).toBeInTheDocument();
-    expect(screen.getByText('6')).toBeInTheDocument();
+    expect(screen.getByText('6/7')).toBeInTheDocument();
+    expect(screen.queryByText('Additional seats')).toBeInTheDocument();
+  });
+
+  it('shows additional seats for collaborators when user has used more', () => {
+    mockUserSeatsData.data.attributes.admins_number = 10;
+    mockAppConfiguration.data.attributes.settings.core.additional_admins_number = 7;
+    render(<SeatInfo seatType="admin" />);
+    expect(screen.getByText('Current admin seats')).toBeInTheDocument();
+    expect(screen.getByText('6/6')).toBeInTheDocument();
+    expect(screen.getByText('4/7')).toBeInTheDocument();
     expect(screen.queryByText('Additional seats')).toBeInTheDocument();
   });
 
