@@ -56,4 +56,8 @@ export default defineMessages({
     defaultMessage:
       'Are you sure you want to give {noOfPeople} {noOfPeople, plural, one {person} other {people}} collaborator rights?',
   },
+  confirmButtonText: {
+    id: 'app.modules.project_management.admin.components.confirmButtonText',
+    defaultMessage: 'Confirm',
+  },
 });
