@@ -1631,6 +1631,7 @@
   "app.containers.AdminPage.widgets.sortPopular": "Most voted",
   "app.containers.AdminPage.widgets.sortTrending": "Trending",
   "app.containers.AdminPage.widgets.subtitleWidgets": "Widgetiliorsinnaavutit, naleqqussariarlugulu quppernermi inunnut ikiuutissatut nittartakkannut ilanngullugu.",
+  "app.containers.AdminPage.widgets.testAdminStringCrowdin": "Birds can sing too. Another crowdin test, this time on an admin-only message!",
   "app.containers.AdminPage.widgets.title": "Widget",
   "app.containers.AdminPage.widgets.titleDimensions": "Angissutsit",
   "app.containers.AdminPage.widgets.titleHeaderAndFooter": "Header & Footer",
