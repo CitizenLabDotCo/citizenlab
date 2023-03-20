@@ -43,7 +43,7 @@ class ApplicationController < ActionController::API
   # @param [Pundit::NotAuthorized] exception
   def user_not_authorized(exception)
     reason = exception.reason || 'Unauthorized!'
-    reason = 'user is blocked' if current_user.blocked?
+    reason = 'user is blocked' if current_user&.blocked?
     render json: { errors: { base: [{ error: reason }] } }, status: :unauthorized
   end
 
