@@ -10,7 +10,7 @@ type MockAppConfigurationType = {
       settings: {
         core: {
           maximum_admins_number: number | null;
-          maximum_project_moderators_number: number | null;
+          maximum_moderators_number: number | null;
         };
       };
     };
@@ -24,7 +24,7 @@ const mockAppConfiguration: MockAppConfigurationType = {
       settings: {
         core: {
           maximum_admins_number: 6,
-          maximum_project_moderators_number: 9,
+          maximum_moderators_number: 9,
         },
       },
     },
@@ -83,9 +83,9 @@ describe('SeatInfo', () => {
     expect(screen.queryByText('Additional seats')).not.toBeInTheDocument();
   });
 
-  it('shows nothing for collaborator seats when maximum_project_moderators_number is null', () => {
+  it('shows nothing for collaborator seats when maximum_moderators_number is null', () => {
     mockUserSeatsData.data.attributes.project_moderators_number = 15;
-    mockAppConfiguration.data.attributes.settings.core.maximum_project_moderators_number =
+    mockAppConfiguration.data.attributes.settings.core.maximum_moderators_number =
       null;
     render(<SeatInfo seatType="project_manager" />);
     expect(
