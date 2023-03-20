@@ -22,7 +22,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNil } from 'utils/helperUtils';
 
 type SeatInfoType = {
-  seatType: 'project_manager' | 'admin';
+  seatType: 'collaborator' | 'admin';
   width?: number | null;
 };
 
@@ -114,7 +114,7 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
       </Box>
 
       <Box mt="20px">
-        {seatType === 'project_manager' ? (
+        {seatType === 'collaborator' ? (
           <Text my="0px" variant="bodyS">
             <FormattedMessage
               {...messages.collaboratorMessage}

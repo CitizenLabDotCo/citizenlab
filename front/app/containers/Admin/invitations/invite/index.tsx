@@ -620,7 +620,7 @@ class Invitations extends React.PureComponent<
                   </StyledWarning>
                 )}
                 <Box marginTop="20px">
-                  <SeatInfo seatType="project_manager" width={null} />
+                  <SeatInfo seatType="collaborator" width={null} />
                 </Box>
               </>
             )}

@@ -36,7 +36,7 @@ const AllUsers = () => {
       />
       <StyledBox>
         <SeatInfo seatType="admin" width={null} />
-        <SeatInfo seatType="project_manager" width={null} />
+        <SeatInfo seatType="collaborator" width={null} />
       </StyledBox>
     </>
   );
