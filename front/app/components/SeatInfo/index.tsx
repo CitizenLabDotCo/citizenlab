@@ -65,7 +65,9 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
     seatType === 'admin'
       ? messages.includedAdminToolTip
       : messages.includedCollaboratorToolTip;
-  const showAdditional = Boolean(additionalSeats > 0 && maximumAdditionalSeats);
+  const showAdditionalSeats = Boolean(
+    additionalSeats > 0 && maximumAdditionalSeats
+  );
 
   // Show maximum number of seats if user has used more for this value
   if (currentSeatNumber >= maximumSeatNumber) {
@@ -100,7 +102,7 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
           </Text>
         </Box>
 
-        {showAdditional && (
+        {showAdditionalSeats && (
           <>
             <Box mr="24px" border={`1px solid ${colors.divider}`} />
 
