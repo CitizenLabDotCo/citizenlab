@@ -41,10 +41,10 @@ export default defineMessages({
     id: 'app.modules.project_management.admin.components.giveCollaboratorRights',
     defaultMessage: 'Give collaborator rights',
   },
-  reachedLimitMessage: {
-    id: 'app.modules.project_management.admin.components.reachedLimitMessage',
+  reachedLimitText: {
+    id: 'app.modules.project_management.admin.components.reachedLimitText',
     defaultMessage:
-      'You have reached the limit of included seats within your plan, {noOfSeats} additional seats will be added.',
+      'You have reached the limit of included seats within your plan, {noOfSeats} additional {noOfSeats, plural, one {seat} other {seats}} will be added.',
   },
   buyAdditionalSeats: {
     id: 'app.modules.project_management.admin.components.buyAdditionalSeats',

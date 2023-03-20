@@ -65,7 +65,7 @@ const AddCollaboratorsModal = ({
           <Text color="textPrimary" fontSize="m" my="0px">
             {hasReachedLimit ? (
               <FormattedMessage
-                {...messages.reachedLimitMessage}
+                {...messages.reachedLimitText}
                 values={{
                   noOfSeats: selectedCollaborators,
                 }}
