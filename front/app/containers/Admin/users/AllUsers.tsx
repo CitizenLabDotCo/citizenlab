@@ -5,12 +5,9 @@ import { isString, isEmpty } from 'lodash-es';
 import UserManager from './UserManager';
 import UsersHeader from './UsersHeader';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 const AllUsers = () => {
-  const { formatMessage } = useIntl();
   const [search, setSearch] = useState<string | undefined>(undefined);
 
   const searchUser = (searchTerm: string) => {
@@ -20,9 +17,9 @@ const AllUsers = () => {
   return (
     <>
       <UsersHeader
-        title={formatMessage(messages.allUsers)}
-        subtitle={formatMessage(messages.usersSubtitle)}
         onSearch={searchUser}
+        title={messages.allUsers}
+        subtitle={messages.usersSubtitle}
       />
       <UserManager search={search} />
     </>

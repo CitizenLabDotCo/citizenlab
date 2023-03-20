@@ -3,7 +3,7 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // resource hooks
-import useCauses from 'hooks/useCauses';
+import useCauses from 'api/causes/useCauses';
 
 // resource components
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -18,6 +18,7 @@ import styled from 'styled-components';
 
 // typings
 import { IParticipationContextType } from 'typings';
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 const Container = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -39,17 +40,45 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 const Volunteering = memo<Props>(
-  ({ projectId, phaseId, project, phase, type, className }) => {
-    const causes = useCauses({ projectId, phaseId });
+  ({
+    projectId,
+    phaseId,
+    project,
+    phase,
+    type: participationContextType,
+    className,
+  }) => {
+    const participationContextId =
+      participationContextType === 'project' ? projectId : phaseId;
+    const { data: causes } = useCauses({
+      participationContextType,
+      participationContextId,
+    });
 
     if (
       !isNilOrError(causes) &&
-      (!isNilOrError(project) || (type === 'phase' && !isNilOrError(phase)))
+      (!isNilOrError(project) ||
+        (participationContextType === 'phase' && !isNilOrError(phase)))
     ) {
+      const disabledPhase =
+        phase &&
+        pastPresentOrFuture([
+          phase.attributes.start_at,
+          phase.attributes.end_at,
+        ]) !== 'present';
+
+      const disabledProject =
+        !isNilOrError(project) &&
+        project.attributes.publication_status !== 'published';
+
       return (
         <Container className={className} id="volunteering">
           {causes.data.map((cause) => (
-            <CauseCard key={cause.id} cause={cause} />
+            <CauseCard
+              key={cause.id}
+              cause={cause}
+              disabled={disabledPhase || disabledProject}
+            />
           ))}
         </Container>
       );

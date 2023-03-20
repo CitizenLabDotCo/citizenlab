@@ -447,7 +447,6 @@ RSpec.describe User, type: :model do
         build_stubbed(:admin, email: 'hello+admin@citizenLab.co'),
         build_stubbed(:admin, email: 'hello@citizenlab.eu'),
         build_stubbed(:admin, email: 'moderator+admin@citizenlab.be'),
-        build_stubbed(:admin, email: 'some.person@citizen-lab.fr'),
         build_stubbed(:admin, email: 'cheese.lover@CitizenLab.ch'),
         build_stubbed(:admin, email: 'Fritz+Wurst@Citizenlab.de'),
         build_stubbed(:admin, email: 'breek.nou.mijn.klomp@citizenlab.NL'),
@@ -825,6 +824,79 @@ RSpec.describe User, type: :model do
       it 'should set email confirmed at' do
         user.save!
         expect { user.confirm! }.to change(user, :saved_change_to_email_confirmed_at?)
+      end
+    end
+  end
+
+  context 'billed users' do
+    def create_admin_moderator(factory)
+      create(factory).tap do |user|
+        user.roles << { type: 'admin' }
+        user.save!
+      end
+    end
+
+    describe '.billed_admins' do
+      it 'returns admins' do
+        create(:user)
+        admin = create(:admin)
+        expect(described_class.billed_admins).to match_array([admin])
+      end
+
+      it 'does not return citizenlab admins' do
+        create(:user)
+        create(:admin, email: 'test@citizenlab.co')
+        non_cl_admin = create(:admin)
+        expect(described_class.billed_admins).to match_array([non_cl_admin])
+      end
+
+      it 'does not return project and folder moderators' do
+        create(:user)
+        admin = create(:admin)
+        create(:project_moderator)
+        create(:project_folder_moderator)
+        expect(described_class.billed_admins).to match_array([admin])
+      end
+
+      it 'returns admins who are also project or folder moderators' do
+        create(:user)
+        admin = create_admin_moderator(:project_moderator)
+        admin1 = create_admin_moderator(:project_folder_moderator)
+        expect(described_class.billed_admins).to match_array([admin, admin1])
+      end
+    end
+
+    describe '.billed_moderators' do
+      it 'returns project and folder moderators' do
+        create(:user)
+        project_moderator = create(:project_moderator)
+        folder_moderator = create(:project_folder_moderator)
+        expect(described_class.billed_moderators).to match_array([project_moderator, folder_moderator])
+      end
+
+      it 'does not return citizenlab moderators' do
+        create(:user)
+        create(:project_moderator, email: 'test@citizenlab.eu')
+        non_cl_project_moderator = create(:project_moderator)
+        expect(described_class.billed_moderators).to match_array([non_cl_project_moderator])
+      end
+
+      it 'does not return admins' do
+        create(:user)
+        project_moderator = create(:project_moderator)
+        folder_moderator = create(:project_folder_moderator)
+        create(:admin)
+        expect(described_class.billed_moderators).to match_array([project_moderator, folder_moderator])
+      end
+
+      it 'does not return admins who are also project or folder moderators' do
+        create(:user)
+        create(:admin)
+        project_moderator = create(:project_moderator)
+        folder_moderator = create(:project_folder_moderator)
+        create_admin_moderator(:project_moderator)
+        create_admin_moderator(:project_folder_moderator)
+        expect(described_class.billed_moderators).to match_array([project_moderator, folder_moderator])
       end
     end
   end

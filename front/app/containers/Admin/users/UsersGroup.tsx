@@ -10,7 +10,7 @@ import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 
 // Components
-import UsersHeader from './UsersHeader';
+import UsersGroupHeader from './UsersGroupHeader';
 import Modal from 'components/UI/Modal';
 import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
 import UserManager from './UserManager';
@@ -166,8 +166,8 @@ export class UsersGroup extends React.PureComponent<
     if (!isNilOrError(group)) {
       return (
         <>
-          <UsersHeader
-            groupTitle={group.attributes.title_multiloc}
+          <UsersGroupHeader
+            title={group.attributes.title_multiloc}
             groupType={group.attributes.membership_type}
             onEdit={this.openGroupEditionModal}
             onDelete={this.deleteGroup(group.id)}

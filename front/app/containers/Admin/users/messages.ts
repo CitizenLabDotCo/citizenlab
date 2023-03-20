@@ -25,6 +25,61 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.admin',
     defaultMessage: 'Admin',
   },
+  setAsAdmin: {
+    id: 'app.containers.Admin.Users.setAsAdmin',
+    defaultMessage: 'Set as admin',
+  },
+  setAsNormalUser: {
+    id: 'app.containers.Admin.Users.setAsNormalUser',
+    defaultMessage: 'Set as normal user',
+  },
+  registeredUser: {
+    id: 'app.containers.Admin.Users.registeredUser',
+    defaultMessage: 'Registered user',
+  },
+  platformAdmin: {
+    id: 'app.containers.Admin.Users.platformAdmin',
+    defaultMessage: 'Platform admin',
+  },
+  folderManager: {
+    id: 'app.containers.Admin.Users.folderManager',
+    defaultMessage: 'Folder manager',
+  },
+  projectManager: {
+    id: 'app.containers.Admin.Users.projectManager',
+    defaultMessage: 'Project manager',
+  },
+  status: {
+    id: 'app.containers.Admin.Users.status',
+    defaultMessage: 'Status',
+  },
+  confirm: {
+    id: 'app.containers.Admin.Users.confirm',
+    defaultMessage: 'Confirm',
+  },
+  giveAdminRights: {
+    id: 'app.containers.Admin.Users.giveAdminRights',
+    defaultMessage: 'Give admin rights',
+  },
+  confirmNormalUserQuestion: {
+    id: 'app.containers.Admin.Users.confirmNormalUserQuestion',
+    defaultMessage: 'Are you sure you want to set {name} as a normal user?',
+  },
+  confirmAdminQuestion: {
+    id: 'app.containers.Admin.Users.confirmAdminQuestion',
+    defaultMessage:
+      'Are you sure you want to give {name} platform admin rights?',
+  },
+  permissionToBuy: {
+    id: 'app.containers.Admin.Users.permissionToBuy',
+    defaultMessage:
+      'To give {name} admin rights, you need to buy 1 additional seat.',
+  },
+  reachedLimitMessage: {
+    id: 'app.containers.Admin.Users.reachedLimitMessage',
+    defaultMessage:
+      'You have reached the limit of seats within your plan, 1 additional seat for {name} will be added.',
+  },
   options: {
     id: 'app.containers.Admin.Users.options',
     defaultMessage: 'Options',
@@ -75,6 +130,15 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.GroupsPanel.usersSubtitle',
     defaultMessage:
       'Get an overview of all the people and organisations that registered on the platform. Add a selection of users to Manual groups or Smart groups.',
+  },
+  adminsAndManagers: {
+    id: 'app.containers.Admin.Users.GroupsPanel.adminsAndManagers',
+    defaultMessage: 'Admins & managers',
+  },
+  adminsAndManagersSubtitle: {
+    id: 'app.containers.Admin.Users.GroupsPanel.adminsAndManagersSubtitle',
+    defaultMessage:
+      'View who are selected as admins, folder admins, and project managers.',
   },
   groupsTitle: {
     id: 'app.containers.Admin.Users.GroupsPanel.groupsTitle',

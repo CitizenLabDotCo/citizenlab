@@ -75,6 +75,7 @@ Rails.application.routes.draw do
 
       resources :users, only: %i[index create update destroy] do
         get :me, on: :collection
+        get :seats, on: :collection
         get :as_xlsx, on: :collection, action: 'index_xlsx'
         post :complete_registration, on: :collection
         patch :block, :unblock, on: :member

@@ -210,6 +210,17 @@ export const GroupsListPanel = ({
         </GroupName>
         {!isNilOrError(usercount) && <MembersCount>{usercount}</MembersCount>}
       </MenuLink>
+      <MenuLink to="/admin/users/admins-managers">
+        <GroupName>
+          <FormattedMessage {...messages.adminsAndManagers} />
+        </GroupName>
+        {usercount.administrators_count !== null &&
+          usercount.managers_count !== null && (
+            <MembersCount>
+              {usercount.administrators_count + usercount.managers_count}
+            </MembersCount>
+          )}
+      </MenuLink>
       {isUserBlockingEnabled && (
         <MenuLink
           to="/admin/users/blocked"

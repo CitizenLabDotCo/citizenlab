@@ -4,6 +4,8 @@ import { ImageSizes, Multiloc, Locale } from 'typings';
 import { authApiEndpoint } from './auth';
 import { TRole } from 'services/permissions/roles';
 import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import seatsKeys from 'api/seats/keys';
 
 const apiEndpoint = `${API_PATH}/users`;
 
@@ -14,7 +16,12 @@ export interface IUserAttributes {
   last_name: string | null;
   slug: string;
   locale: Locale;
-  highest_role: 'super_admin' | 'admin' | 'project_moderator' | 'user';
+  highest_role:
+    | 'super_admin'
+    | 'admin'
+    | 'project_folder_moderator'
+    | 'project_moderator'
+    | 'user';
   bio_multiloc: Multiloc;
   block_end_at?: string;
   block_reason?: string;
@@ -106,6 +113,12 @@ export async function updateUser(userId: string, object: IUserUpdate) {
     dataId: [userId],
     apiEndpoint: [`${API_PATH}/groups`, `${API_PATH}/users`],
   });
+
+  // Invalidate seats if the user's roles have changed
+  if (object.roles) {
+    queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
+  }
+
   return response;
 }
 
@@ -125,6 +138,9 @@ export async function deleteUser(userId: string) {
       `${API_PATH}/stats/users_count`,
     ],
   });
+
+  queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
+
   return response;
 }
 

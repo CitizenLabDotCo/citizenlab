@@ -4,16 +4,17 @@ import { isAdmin } from 'services/permissions/roles';
 import moment from 'moment';
 
 // Components
-import { Tr, Td, Toggle, Box } from '@citizenlab/cl2-component-library';
+import { Tr, Td, Box } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
 import Checkbox from 'components/UI/Checkbox';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import BlockUser from 'components/admin/UserBlockModals/BlockUser';
 import UnblockUser from 'components/admin/UserBlockModals/UnblockUser';
 import Link from 'utils/cl-router/Link';
+import ChangeSeatModal from './ChangeSeatModal';
 
 // Translation
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import blockUserMessages from 'components/admin/UserBlockModals/messages';
 
@@ -56,6 +57,19 @@ interface Props {
   authUser: GetAuthUserChildProps;
 }
 
+const getStatusMessage = (user: IUserData): MessageDescriptor => {
+  const highestRole = user.attributes.highest_role;
+  const roleMessage = {
+    admin: messages.platformAdmin,
+    super_admin: messages.platformAdmin,
+    project_folder_moderator: messages.folderManager,
+    project_moderator: messages.projectManager,
+    user: messages.registeredUser,
+  };
+
+  return roleMessage[highestRole];
+};
+
 const UserTableRow = ({
   user,
   selected,
@@ -73,6 +87,14 @@ const UserTableRow = ({
   const isUserBlockingEnabled = useFeatureFlag({
     name: 'user_blocking',
   });
+
+  const [showChangeSeatModal, setShowChangeSeatModal] = useState(false);
+  const closeChangeSeatModal = () => {
+    setShowChangeSeatModal(false);
+  };
+  const openChangeSeatModal = () => {
+    setShowChangeSeatModal(true);
+  };
 
   useEffect(() => {
     setUserIsAdmin(isAdmin({ data: user }));
@@ -118,8 +140,21 @@ const UserTableRow = ({
             },
       ]
     : [];
+  
+    const setAsAdminAction: IAction = {
+    handler: openChangeSeatModal,
+    label: formatMessage(messages.setAsAdmin),
+    icon: 'shield-checkered' as const,
+  };
+
+  const setAsNormalUserAction: IAction = {
+    handler: openChangeSeatModal,
+    label: formatMessage(messages.setAsNormalUser),
+    icon: 'user-circle' as const,
+  };
 
   const actions: IAction[] = [
+    ...(isUserAdmin ? [setAsNormalUserAction] : [setAsAdminAction]),
     {
       handler: () => {
         handleDeleteClick();
@@ -129,6 +164,8 @@ const UserTableRow = ({
     },
     ...userBlockingRelatedActions,
   ];
+
+  const statusMessage = getStatusMessage(user);
 
   return (
     <Tr
@@ -168,7 +205,7 @@ const UserTableRow = ({
         )}
       </RegisteredAt>
       <Td>
-        <Toggle checked={isUserAdmin} onChange={toggleAdmin} />
+        <FormattedMessage {...statusMessage} />
       </Td>
       <Td>
         <MoreActionsMenu showLabel={false} actions={actions} />
@@ -182,6 +219,14 @@ const UserTableRow = ({
         user={user}
         setClose={() => setShowUnblockUserModal(false)}
         open={showUnblockUserModal}
+      />
+      <ChangeSeatModal
+        user={user}
+        isUserAdmin={isUserAdmin}
+        toggleAdmin={toggleAdmin}
+        showModal={showChangeSeatModal}
+        closeModal={closeChangeSeatModal}
+
       />
     </Tr>
   );

@@ -1,6 +1,7 @@
 import React, { lazy } from 'react';
 const AdminUsersIndex = lazy(() => import('.'));
 const AdminAllUsers = lazy(() => import('./AllUsers'));
+const AdminAdminsAndManagers = lazy(() => import('./AdminsAndManagers'));
 const AdminUsersGroup = lazy(() => import('./UsersGroup'));
 const AdminBlockedUsers = lazy(() => import('./BlockedUsers'));
 import PageLoading from 'components/UI/PageLoading';
@@ -18,6 +19,14 @@ const createAdminUsersRoutes = () => ({
       element: (
         <PageLoading>
           <AdminAllUsers />
+        </PageLoading>
+      ),
+    },
+    {
+      path: 'admins-managers',
+      element: (
+        <PageLoading>
+          <AdminAdminsAndManagers />
         </PageLoading>
       ),
     },

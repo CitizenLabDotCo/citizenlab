@@ -24,13 +24,13 @@ interface Patch {
 interface Post {
   path: Path;
   action: 'post';
-  body: Record<string, any>;
+  body: Record<string, any> | null;
   queryParams?: never;
 }
 interface Delete {
   path: Path;
   action: 'delete';
-  body?: Record<string, any>;
+  body?: Record<string, any> | null;
   queryParams?: never;
 }
 
