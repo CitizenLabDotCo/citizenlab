@@ -16,6 +16,8 @@ const fetchIdeaFilterCounts = ({
     action: 'get',
     queryParams: {
       ...queryParams,
+      'page[size]': undefined,
+      'page[number]': undefined,
     },
   });
 

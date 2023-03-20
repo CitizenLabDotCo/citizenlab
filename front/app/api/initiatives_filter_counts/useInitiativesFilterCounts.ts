@@ -10,18 +10,14 @@ import {
 
 export const defaultPageSize = 12;
 
-const fetchInitiativeFilterCounts = ({
-  pageNumber,
-  pageSize,
-  ...queryParams
-}: IQueryParameters) =>
+const fetchInitiativeFilterCounts = ({ ...queryParams }: IQueryParameters) =>
   fetcher<IInitiativesFilterCounts>({
     path: `/initiatives/filter_counts`,
     action: 'get',
     queryParams: {
-      'page[number]': pageNumber || 1,
-      'page[size]': pageSize || defaultPageSize,
       ...queryParams,
+      'page[number]': undefined,
+      'page[size]': undefined,
     },
   });
 
