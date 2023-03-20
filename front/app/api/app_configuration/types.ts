@@ -49,6 +49,8 @@ export type IAppConfigurationSettingsCore = {
   authentication_token_lifetime_in_days: number;
   maximum_admins_number: number | null | undefined;
   maximum_moderators_number: number | null | undefined;
+  additional_admins_number: number | null | undefined;
+  additional_moderators_number: number | null | undefined;
 };
 
 export type ProposalsSettings = {
