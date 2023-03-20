@@ -103,7 +103,7 @@ class SettingsService
         lifecycle_stage: lifecycle_stage,
         authentication_token_lifetime_in_days: 30,
         maximum_admins_number: 10,
-        maximum_project_moderators_number: 10
+        maximum_moderators_number: 10
       }
     }
   end

@@ -13,7 +13,7 @@ const seatsData = {
     type: 'seats',
     attributes: {
       maximum_admins_number: 5,
-      maximum_project_moderators_number: 4,
+      maximum_moderators_number: 4,
     },
   },
 };

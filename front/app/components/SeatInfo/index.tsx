@@ -33,8 +33,7 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
   const maximumAdmins =
     appConfiguration?.data.attributes.settings.core.maximum_admins_number;
   const maximumProjectManagers =
-    appConfiguration?.data.attributes.settings.core
-      .maximum_project_moderators_number;
+    appConfiguration?.data.attributes.settings.core.maximum_moderators_number;
   const maximumSeatNumber =
     seatType === 'admin' ? maximumAdmins : maximumProjectManagers;
 

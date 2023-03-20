@@ -75,28 +75,28 @@ el:
       "new_initiative_for_admin": Νέα πρόταση - admins
       "official_feedback_on_commented_idea": Ενημέρωση σχετικά με μια ιδέα που σχολιάσατε - όλοι οι χρήστες
       "official_feedback_on_commented_initiative": Ενημέρωση σχετικά με μια πρόταση που σχολιάσατε - όλοι οι χρήστες
-      "official_feedback_on_voted_idea": Update on an idea you voted on - all users
-      "official_feedback_on_voted_initiative": Update on a proposal you voted on - all users
-      "official_feedback_on_your_idea": Update on your idea - all users
-      "official_feedback_on_your_initiative": Update on your proposal - all users
-      "password_reset": Password reset - all users
-      "project_moderation_rights_received": Project moderation rights received - project managers
+      "official_feedback_on_voted_idea": Ενημέρωση σχετικά με μια ιδέα που ψηφίσατε - όλοι οι χρήστες
+      "official_feedback_on_voted_initiative": Ενημέρωση σχετικά με μια πρόταση που ψηφίσατε - όλοι οι χρήστες
+      "official_feedback_on_your_idea": Ενημέρωση σχετικά με την ιδέα σας - όλοι οι χρήστες
+      "official_feedback_on_your_initiative": Ενημέρωση σχετικά με την πρότασή σας - όλοι οι χρήστες
+      "password_reset": Επαναφορά κωδικού πρόσβασης - όλοι οι χρήστες
+      "project_moderation_rights_received": Δικαιώματα συντονισμού έργου - διαχειριστές έργων
       "project_folder_moderation_rights_received": Δικαιώματα διαχειριστή φακέλων
-      "project_phase_started": New project phase - project participants
-      "project_phase_upcoming": Upcoming new project phase - admins and project managers
-      "status_change_of_commented_idea": Status change of an idea you commented on - all users
-      "status_change_of_commented_initiative": Status change of a proposal you commented on - all users
-      "status_change_of_voted_idea": Status change of an idea you voted on - all users
-      "status_change_of_voted_initiative": Status change of a proposal you voted on - all users
-      "status_change_of_your_idea": Status change of your idea - all users
-      "status_change_of_your_initiative": Status change of your proposal - all users
-      "threshold_reached_for_admin": Proposal reached the voting threshold - admins
-      "welcome": Welcome email to new users - all users
-      "admin_digest": Weekly overview - admins
-      "moderator_digest": Weekly overview - project managers
-      "assignee_digest": Weekly overview of assigned ideas - admins and project managers
-      "user_digest": Weekly overview - all users
-      "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
+      "project_phase_started": Νέα φάση του έργου - συμμετέχοντες στο έργο
+      "project_phase_upcoming": Επόμενη νέα φάση έργου - διαχειριστές και διαχειριστές έργου
+      "status_change_of_commented_idea": Αλλαγή κατάστασης μιας ιδέας που σχολιάσατε - όλοι οι χρήστες
+      "status_change_of_commented_initiative": Αλλαγή κατάστασης μιας πρότασης που σχολιάσατε - όλοι οι χρήστες
+      "status_change_of_voted_idea": Αλλαγή κατάστασης μιας ιδέας που ψηφίσατε - όλοι οι χρήστες
+      "status_change_of_voted_initiative": Αλλαγή της κατάστασης μιας πρότασης για την οποία ψηφίσατε - όλοι οι χρήστες
+      "status_change_of_your_idea": Αλλαγή κατάστασης της ιδέας σας - όλοι οι χρήστες
+      "status_change_of_your_initiative": Αλλαγή κατάστασης της πρότασής σας - όλοι οι χρήστες
+      "threshold_reached_for_admin": Η πρόταση έφτασε το κατώφλι ψηφοφορίας - admins
+      "welcome": Ηλεκτρονικό μήνυμα καλωσορίσματος σε νέους χρήστες - όλοι οι χρήστες
+      "admin_digest": Εβδομαδιαία επισκόπηση - admins
+      "moderator_digest": Εβδομαδιαία επισκόπηση - διαχειριστές έργων
+      "assignee_digest": Εβδομαδιαία επισκόπηση των ανατεθειμένων ιδεών - διαχειριστές και διαχειριστές έργων
+      "user_digest": Εβδομαδιαία επισκόπηση - όλοι οι χρήστες
+      "your_proposed_initiatives_digest": Εβδομαδιαία επισκόπηση των δικών σας προτάσεων - όλοι οι χρήστες
     footer:
       "link_privacy_policy": "Πολιτική απορρήτου"
       "link_terms_conditions": "Όροι & Προϋποθέσεις"
@@ -227,45 +227,45 @@ el:
       cta_view_initiative: 'Μεταβείτε στην πρότασή σας'
       link: σύνδεσμος
       main_header: 'Δημοσιεύσατε μια πρόταση! Ας την υποστηρίξουμε.'
-      message_next_steps: '%{userFirstName}, your proposal has successfully been published on the participation platform of %{organizationName}. You will be notified when people interact with your proposal. Find out what next steps you can take below.'
-      message_get_votes: 'Reach the voting threshold:'
-      preheader: 'Thank you for sharing your proposal %{initiativeTitle} for %{organizationName}. The next step is to get support for your proposal by sharing it across your network.'
+      message_next_steps: '%{userFirstName}, η πρότασή σας δημοσιεύθηκε επιτυχώς στην πλατφόρμα συμμετοχής του %{organizationName}. Θα ειδοποιηθείτε όταν κάποιοι αλληλεπιδρούν με την πρότασή σας. Μάθετε ποια είναι τα επόμενα βήματα που μπορείτε να ακολουθήσετε παρακάτω.'
+      message_get_votes: 'Επίτευξη του κατώτατου ορίου ψηφοφορίας:'
+      preheader: 'Σας ευχαριστούμε που μοιραστήκατε την πρότασή σας %{initiativeTitle} για το %{organizationName}. Το επόμενο βήμα είναι να λάβετε υποστήριξη για την πρότασή σας, κοινοποιώντας την στο δίκτυό σας.'
       send_email: email
-      subject: 'Your proposal was published on the platform of %{organizationName}'
+      subject: 'Η πρότασή σας δημοσιεύθηκε στην πλατφόρμα %{organizationName}.'
     mention_in_official_feedback:
       by_author: 'από %{authorName}'
-      commented: '%{organizationName} wrote:'
-      cta_reply_to: 'Reply to %{organizationName}'
-      event_description: '%{organizationName} mentioned you in their feedback on the idea ''%{post}‘. Click the link below to enter the conversation with %{organizationName}'
-      main_header: 'You have been mentioned'
-      subject: '%{organizationName} mentioned you in their feedback'
-      preheader: '%{commentAuthor} mentioned you in feedback'
+      commented: '%{organizationName} έγραψε:'
+      cta_reply_to: 'Απάντηση στο %{organizationName}'
+      event_description: '%{organizationName} σας ανέφεραν στα σχόλιά τους για την ιδέα ''%{post}''. Κάντε κλικ στον παρακάτω σύνδεσμο για να μπείτε στη συζήτηση με το %{organizationName}.'
+      main_header: 'Έχετε αναφερθεί'
+      subject: '%{organizationName} σας ανέφεραν στα σχόλιά τους'
+      preheader: '%{commentAuthor} σας ανέφερα στα σχόλια'
     new_comment_on_commented_idea:
-      commented: '%{commentAuthor} wrote:'
+      commented: '%{commentAuthor} έγραψε:'
       cta_reply_to: 'Απάντηση στο %{commentAuthor}'
-      event_description: '%{commentAuthorFull} also wrote a comment on the idea ''%{ideaTitle}'' on the participation platform of %{organizationName}. Click the button below to start the conversation with %{commentAuthor}.'
-      main_header: '%{commentAuthor} wrote a comment on the same idea'
-      subject: 'There''s another comment on the idea you commented on'
-      preheader: '%{commentAuthor} also left a comment on an idea for %{organizationName}'
+      event_description: '%{commentAuthorFull} έγραψε επίσης ένα σχόλιο σχετικά με την ιδέα ''%{ideaTitle}'' στην πλατφόρμα συμμετοχής του %{organizationName}. Κάντε κλικ στο παρακάτω κουμπί για να ξεκινήσετε τη συζήτηση με το %{commentAuthor}.'
+      main_header: '%{commentAuthor} έγραψε ένα σχόλιο για την ίδια ιδέα'
+      subject: 'Υπάρχει ένα άλλο σχόλιο σχετικά με την ιδέα που σχολιάσατε'
+      preheader: '%{commentAuthor} άφησε επίσης ένα σχόλιο σχετικά με μια ιδέα για το %{organizationName}'
     mention_in_comment:
       by_author: 'από %{authorName}'
-      commented: '%{commentAuthor} wrote:'
+      commented: '%{commentAuthor} έγραψε:'
       cta_reply_to: 'Απάντηση στο %{commentAuthor}'
-      event_description: '%{commentAuthorFull} has mentioned you in his comment on the idea ''%{post}‘. Click the link below to enter the conversation with %{commentAuthor}'
-      main_header: 'People are talking about you'
-      subject: 'Someone mentioned you on the platform of %{organizationName}'
-      preheader: '%{commentAuthor} mentioned you in a comment'
+      event_description: '%{commentAuthorFull} σας ανέφερε στο σχόλιό του σχετικά με την ιδέα ''%{post}''. Κάντε κλικ στον παρακάτω σύνδεσμο για να μπείτε στη συζήτηση με το %{commentAuthor}.'
+      main_header: 'Ο κόσμος μιλάει για σένα'
+      subject: 'Κάποιος σας ανέφερε στην πλατφόρμα του %{organizationName}'
+      preheader: '%{commentAuthor} σας ανέφερε σε ένα σχόλιο'
     moderator_digest:
-      subject: 'Your weekly project manager report of %{time}'
-      preheader: 'Project manager digest of %{organizationName}'
+      subject: 'Η εβδομαδιαία έκθεση του διαχειριστή του έργου σας %{time}'
+      preheader: 'Ανακεφαλαίωση του διαχειριστή έργου στο %{organizationName}'
       title_your_weekly_report: '%{firstName}, η εβδομαδιαία έκθεσή σας'
-      text_introduction: 'We''ve curated for you the input that has generated the most activity over the past week. Find out what''s happening with your project!'
-      cta_moderate: 'Moderate your project'
+      text_introduction: 'Επιμεληθήκαμε για εσάς τις πληροφορίες που προκάλεσαν τη μεγαλύτερη δραστηριότητα την τελευταία εβδομάδα. Μάθετε τι συμβαίνει με το έργο σας!'
+      cta_moderate: 'Μετριάστε το έργο σας'
       new_users: 'Νέοι χρήστες'
       new_ideas: 'Νέες ιδέες'
       new_comments: 'Νέα σχόλια'
       title_activity_past_week: 'Δραστηριότητα της προηγούμενης εβδομάδας'
-      title_no_activity_past_week: 'No activity in the past week'
+      title_no_activity_past_week: 'Καμία δραστηριότητα την τελευταία εβδομάδα'
       yesterday_by_author: 'Χθες από %{author}'
       today_by_author: 'Σήμερα από %{author}'
       x_days_ago_by_author: '%{x} πριν από μέρες από %{author}'
@@ -405,15 +405,15 @@ el:
       message_added_as_folderadmin: 'Σας έχουν δοθεί δικαιώματα διαχειριστή φακέλων στην πλατφόρμα συμμετοχής %{organizationName}για τον ακόλουθο φάκελο:'
       no_projects: 'Δεν υπάρχουν ακόμη έργα'
       preheader: 'Ένας διαχειριστής της πλατφόρμας συμμετοχής του %{organizationName} μόλις σας έκανε διαχειριστή του ακόλουθου φακέλου'
-      subject: 'You became a project folder manager on the participation platform of %{organizationName}'
-      text_manage_folder: 'A folder is way to organize several participation projects together. As a folder manager, you can edit the folder and folder description and create new projects (to delete projects, contact your platform administrator). You will also have project management rights over all projects within the folder, allowing you to edit the projects, manage the inputs and email participants.'
-      text_moderate_analyse_input: 'Once the projects are launched, the first inputs will start coming in. You''ll receive weekly reports with the key activities so that you can stay on top of what’s happening. The Input Manager in your ''Manage Platform'' panel allows you to see and manage the input, including assigning statuses and responding to posts and comments.'
-      text_design_participatory_process: 'You can manage the different participation projects within your folder - configure the participation method, add a project description, attach images, and communicate related events. You can also manage how participants interact with your projects, including setting access rights and configuring the posting, voting and commenting settings.'
+      subject: 'Έγινες διαχειριστής φακέλου έργου στην πλατφόρμα συμμετοχής του %{organizationName}.'
+      text_manage_folder: 'Ένας φάκελος είναι ένας τρόπος οργάνωσης πολλών έργων συμμετοχής μαζί. Ως διαχειριστής φακέλου, μπορείτε να επεξεργαστείτε τον φάκελο και την περιγραφή του φακέλου και να δημιουργήσετε νέα έργα (για να διαγράψετε έργα, επικοινωνήστε με τον διαχειριστή της πλατφόρμας σας). Θα έχετε επίσης δικαιώματα διαχείρισης έργων σε όλα τα έργα εντός του φακέλου, επιτρέποντάς σας να επεξεργάζεστε τα έργα, να διαχειρίζεστε τις εισροές και να στέλνετε email στους συμμετέχοντες.'
+      text_moderate_analyse_input: 'Μόλις δρομολογηθούν τα έργα, θα αρχίσουν να έρχονται οι πρώτες εισροές. Θα λαμβάνετε εβδομαδιαίες αναφορές με τις βασικές δραστηριότητες, ώστε να μπορείτε να παρακολουθείτε τι συμβαίνει. Ο Διαχειριστής εισροών στον πίνακα "Διαχείριση πλατφόρμας" σας επιτρέπει να βλέπετε και να διαχειρίζεστε τις εισροές, συμπεριλαμβανομένης της ανάθεσης καταστάσεων και της απάντησης σε αναρτήσεις και σχόλια.'
+      text_design_participatory_process: 'Μπορείτε να διαχειρίζεστε τα διάφορα έργα συμμετοχής μέσα στο φάκελό σας - να ρυθμίζετε τη μέθοδο συμμετοχής, να προσθέτετε μια περιγραφή του έργου, να επισυνάπτετε εικόνες και να κοινοποιείτε σχετικές εκδηλώσεις. Μπορείτε επίσης να διαχειριστείτε τον τρόπο με τον οποίο οι συμμετέχοντες αλληλεπιδρούν με τα έργα σας, συμπεριλαμβανομένου του καθορισμού δικαιωμάτων πρόσβασης και της διαμόρφωσης των ρυθμίσεων για την ανάρτηση, την ψηφοφορία και τον σχολιασμό.'
       title_design_participatory_process: 'Σχεδιασμός της συμμετοχικής διαδικασίας'
       title_moderate_analyse_input: 'Μετριοποίηση και ανάλυση των εισροών'
-      title_manage_folder: 'Manage the folder settings and create new projects.'
-      title_what_can_you_do_folderadmin: 'What can you do as a folder manager?'
-      title_added_as_folderadmin: 'You''ve been added as a folder manager'
+      title_manage_folder: 'Διαχειριστείτε τις ρυθμίσεις των φακέλων και δημιουργήστε νέα έργα.'
+      title_what_can_you_do_folderadmin: 'Τι μπορείτε να κάνετε ως διαχειριστής φακέλων;'
+      title_added_as_folderadmin: 'Έχετε προστεθεί ως διαχειριστής φακέλων'
       x_projects: '%{numberOfProjects} έργα'
     project_phase_started:
       cta_view_phase: 'Ανακαλύψτε αυτή τη νέα φάση'
@@ -424,63 +424,63 @@ el:
       subject: '%{projectName} εισήλθε σε νέα φάση'
       preheader: 'Μια νέα φάση έχει ξεκινήσει για το %{projectName}'
     project_phase_upcoming:
-      cta_view_phase: 'Set this new phase up'
+      cta_view_phase: 'Ορίστε αυτή τη νέα φάση'
       event_description: 'Το έργο ''%{projectName}'' θα εισέλθει σύντομα σε μια νέα φάση. Βεβαιωθείτε ότι όλα είναι έτοιμα για αυτή τη φάση: Υπάρχει επαρκής περιγραφή; Μεταφέρονται επιλεγμένες ιδέες σε αυτή τη φάση; Θέλετε να ενημερώσετε τους πολίτες σας για τις ιδιαιτερότητες αυτής της φάσης μέσω μιας προσαρμοσμένης εκστρατείας ηλεκτρονικού ταχυδρομείου;'
       main_header: '%{firstName}, ένα έργο θα εισέλθει σύντομα σε νέα φάση'
       subtitle: 'Σχετικά με ''%{projectName}'''
-      new_phase: 'The project will enter the phase ''%{phaseTitle}'''
-      subject: 'Get everything set up for the new phase of %{projectName}'
-      preheader: 'A new phase will start soon for %{projectName}'
+      new_phase: 'Το έργο θα εισέλθει στη φάση "%{phaseTitle}".'
+      subject: 'Ετοιμάστε τα πάντα για τη νέα φάση του %{projectName}'
+      preheader: 'Μια νέα φάση θα ξεκινήσει σύντομα για το %{projectName}'
     status_change_of_commented_idea:
-      status_change: 'The new status of this idea is ''%{ideaStatus}'''
+      status_change: 'Η νέα κατάσταση αυτής της ιδέας είναι ''%{ideaStatus}'''
       cta_view_idea: 'Πηγαίνετε σε αυτή την ιδέα'
-      event_description: '%{organizationName} updated the status of the idea ''%{ideaTitle}'' on their digital participation platform.'
-      main_header: 'An idea you commented on has a new status'
-      subject: 'The status of an idea you commented on has been changed'
-      preheader: '%{organizationName} changed the status of an idea you commented on'
+      event_description: '%{organizationName} ενημέρωσε την κατάσταση της ιδέας "%{ideaTitle}" στην ψηφιακή πλατφόρμα συμμετοχής τους.'
+      main_header: 'Μια ιδέα που σχολιάσατε έχει μια νέα κατάσταση'
+      subject: 'Η κατάσταση μιας ιδέας που σχολιάσατε έχει αλλάξει'
+      preheader: '%{organizationName} αλλάξατε την κατάσταση μιας ιδέας που σχολιάσατε'
     status_change_of_your_idea:
-      status_change: 'The new status of your idea is ''%{ideaStatus}'''
+      status_change: 'Η νέα κατάσταση της ιδέας σας είναι ''%{ideaStatus}'''
       cta_view_idea: 'Πηγαίνετε στην ιδέα σας'
-      event_description: '%{organizationName} updated the status of your idea ''%{ideaTitle}'' on their digital participation platform.'
+      event_description: '%{organizationName} ενημέρωσε την κατάσταση της ιδέας σας ''%{ideaTitle}'' στην ψηφιακή πλατφόρμα συμμετοχής τους.'
       main_header: 'Η ιδέα σας έχει μια νέα κατάσταση'
-      subject: 'The status of your idea has been changed'
-      preheader: '%{organizationName} changed the status of your idea'
+      subject: 'Η κατάσταση της ιδέας σας έχει αλλάξει'
+      preheader: '%{organizationName} άλλαξε την κατάσταση της ιδέας σας'
     status_change_of_voted_idea:
-      status_change: 'The new status of this idea is ''%{ideaStatus}'''
+      status_change: 'Η νέα κατάσταση αυτής της ιδέας είναι ''%{ideaStatus}'''
       cta_view_idea: 'Πηγαίνετε σε αυτή την ιδέα'
-      event_description: '%{organizationName} updated the status of the idea ''%{ideaTitle}'' on their digital participation platform.'
-      main_header: 'An idea you voted on has a new status'
-      subject: 'The status of an idea you voted on has been changed'
-      preheader: '%{organizationName} changed the status of an idea you voted on'
+      event_description: '%{organizationName} ενημέρωσε την κατάσταση της ιδέας "%{ideaTitle}" στην ψηφιακή πλατφόρμα συμμετοχής τους.'
+      main_header: 'Μια ιδέα που ψηφίσατε έχει νέα κατάσταση'
+      subject: 'Η κατάσταση μιας ιδέας για την οποία ψηφίσατε έχει αλλάξει'
+      preheader: '%{organizationName} άλλαξε την κατάσταση μιας ιδέας που ψηφίσατε'
     status_change_of_voted_initiative:
-      status_change: 'The new status of this proposal is ''%{initiativeStatus}'''
+      status_change: 'Η νέα κατάσταση της πρότασης αυτής είναι "%{initiativeStatus}".'
       cta_view_initiative: 'Μεταβείτε στην παρούσα πρόταση'
-      event_description: 'The status of the proposal ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
-      main_header: 'A proposal you voted on has a new status'
-      subject: 'The status of a proposal you voted on has changed'
-      preheader: 'The status of a proposal you voted on changed'
+      event_description: 'Η κατάσταση της πρότασης "%{initiativeTitle}" ενημερώθηκε στην ψηφιακή πλατφόρμα συμμετοχής της %{organizationName}.'
+      main_header: 'Μια πρόταση για την οποία ψηφίσατε έχει νέα κατάσταση'
+      subject: 'Η κατάσταση μιας πρότασης για την οποία ψηφίσατε έχει αλλάξει'
+      preheader: 'Η κατάσταση μιας πρότασης για την οποία ψηφίσατε άλλαξε'
     status_change_of_commented_initiative:
-      status_change: 'The new status of this proposal is ''%{initiativeStatus}'''
+      status_change: 'Η νέα κατάσταση της πρότασης αυτής είναι "%{initiativeStatus}".'
       cta_view_initiative: 'Μεταβείτε στην παρούσα πρόταση'
-      event_description: 'The status of the proposal ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
-      main_header: 'A proposal you commented on has a new status'
-      subject: 'The status of a proposal you commented on has changed'
-      preheader: 'The status of a proposal you commented on has changed'
+      event_description: 'Η κατάσταση της πρότασης "%{initiativeTitle}" ενημερώθηκε στην ψηφιακή πλατφόρμα συμμετοχής της %{organizationName}.'
+      main_header: 'Μια πρόταση που σχολιάσατε έχει νέα κατάσταση'
+      subject: 'Η κατάσταση μιας πρότασης που σχολιάσατε έχει αλλάξει'
+      preheader: 'Η κατάσταση μιας πρότασης που σχολιάσατε έχει αλλάξει'
     status_change_of_your_initiative:
-      status_change: 'The new status of your proposal is ''%{initiativeStatus}'''
-      cta_view_initiative: 'Go to your proposal'
-      event_description: 'The status of the proposal ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
-      main_header: 'Your proposal has a new status'
-      subject: 'The status of your proposal has changed'
-      preheader: 'The status of your proposal has changed'
+      status_change: 'Η νέα κατάσταση της πρότασής σας είναι ''%{initiativeStatus}'''
+      cta_view_initiative: 'Μεταβείτε στην πρότασή σας'
+      event_description: 'Η κατάσταση της πρότασης "%{initiativeTitle}" ενημερώθηκε στην ψηφιακή πλατφόρμα συμμετοχής της %{organizationName}.'
+      main_header: 'Η πρότασή σας έχει νέα κατάσταση'
+      subject: 'Η κατάσταση της πρότασής σας έχει αλλάξει'
+      preheader: 'Η κατάσταση της πρότασής σας έχει αλλάξει'
     user_digest:
       subject: "Η δραστηριότητά σας στην πλατφόρμα συμμετοχής του %{organizationName}"
-      commented: "%{authorFirstName} commented:"
+      commented: "%{authorFirstName} σχολίασε:"
       preheader: "Εβδομαδιαία επισκόπηση του %{organizationName}"
       title_your_weekly_report: "Ανακαλύψτε τι συνέβη την περασμένη εβδομάδα"
       intro_text: "Ακολουθεί μια περίληψη των όσων συνέβησαν στην πλατφόρμα συμμετοχής του %{organizationName}."
       cta_go_to_the_platform: "Μεταβείτε στην πλατφόρμα"
-      title_no_activity_past_week: "No activity in the past week"
+      title_no_activity_past_week: "Καμία δραστηριότητα την τελευταία εβδομάδα"
       title_proposals: "Προτάσεις που ξεκίνησαν"
       proposals_started_text: "Οι προτάσεις είναι ιδέες που πρέπει να κερδίσουν την έλξη και την υποστήριξη άλλων (ανθρώπων όπως εσείς!) προκειμένου να προχωρήσουν. Ακολουθεί ένας κατάλογος προτάσεων που έχουν υποβληθεί την τελευταία εβδομάδα. Κάντε κλικ σε κάποια από αυτές για να ρίξετε μια ματιά και να προσφέρετε την υποστήριξή σας και τα σχόλιά σας!"
       title_successful_proposals: "Προτάσεις που έφτασαν το όριο"
@@ -513,7 +513,7 @@ el:
       add_image: 'Προσθήκη εικόνας'
       cta_view_idea: 'Πηγαίνετε στην ιδέα σας'
       event_description: '%{firstName}, συγχαρητήρια για την πρώτη σας ιδέα στην πλατφόρμα συμμετοχής του %{organizationName}. Θα ειδοποιηθείτε όταν οι άνθρωποι αλληλεπιδρούν με την ιδέα σας. Μάθετε ποια είναι τα επόμενα βήματα που μπορείτε να κάνετε παρακάτω.'
-      link: link
+      link: σύνδεσμος
       main_header: '%{firstName}, δημοσιεύσατε την πρώτη σας ιδέα!'
       message_get_votes: 'Προσεγγίστε περισσότερους ανθρώπους με την ιδέα σας:'
       preheader: '%{firstName}, συγχαρητήρια για την ανάρτηση της πρώτης σας ιδέας στην πλατφόρμα του %{organizationName}. Τώρα συγκεντρώστε υποστήριξη για την ιδέα σας'
@@ -536,7 +536,7 @@ el:
       add_image: 'Προσθήκη εικόνας'
       cta_view_idea: 'Πηγαίνετε στην ιδέα σας'
       event_description: '%{firstName}, η ιδέα σας έχει δημοσιευθεί με επιτυχία στην πλατφόρμα συμμετοχής του %{organizationName}. Θα ειδοποιηθείτε όταν οι άνθρωποι αλληλεπιδρούν με την ιδέα σας. Μάθετε ποια είναι τα επόμενα βήματα που μπορείτε να κάνετε παρακάτω.'
-      link: link
+      link: σύνδεσμος
       main_header: 'Δημοσιεύσατε μια ιδέα! Ας φροντίσουμε να διαβαστεί.'
       message_get_votes: 'Προσεγγίστε περισσότερους ανθρώπους με την ιδέα σας:'
       preheader: '%{firstName}, συγχαρητήρια για την ανάρτηση της ιδέας σας στην πλατφόρμα του %{organizationName}. Τώρα συγκεντρώστε υποστήριξη.'
