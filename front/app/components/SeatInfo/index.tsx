@@ -30,12 +30,21 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
+
   const maximumAdmins =
     appConfiguration?.data.attributes.settings.core.maximum_admins_number;
   const maximumProjectManagers =
     appConfiguration?.data.attributes.settings.core.maximum_moderators_number;
   const maximumSeatNumber =
     seatType === 'admin' ? maximumAdmins : maximumProjectManagers;
+
+  const additionalAdmins =
+    appConfiguration?.data.attributes.settings.core.additional_admins_number;
+  const additionalCollaborators =
+    appConfiguration?.data.attributes.settings.core
+      .additional_moderators_number;
+  const maximumAdditionalSeats =
+    seatType === 'admin' ? additionalAdmins : additionalCollaborators;
 
   // Maximum seat number being null means that there are unlimited seats so we don't show the seat info
   if (isNil(maximumSeatNumber) || !seats || !appConfiguration) {
@@ -56,6 +65,7 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
     seatType === 'admin'
       ? messages.includedAdminToolTip
       : messages.includedCollaboratorToolTip;
+  const showAdditional = Boolean(additionalSeats > 0 && maximumAdditionalSeats);
 
   // Show maximum number of seats if user has used more for this value
   if (currentSeatNumber >= maximumSeatNumber) {
@@ -90,7 +100,7 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
           </Text>
         </Box>
 
-        {additionalSeats > 0 && (
+        {showAdditional && (
           <>
             <Box mr="24px" border={`1px solid ${colors.divider}`} />
 
@@ -106,7 +116,7 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
                 />
               </Box>
               <Text fontSize="xl" color="textPrimary" my="0px">
-                {additionalSeats}
+                {`${additionalSeats}/${maximumAdditionalSeats}`}
               </Text>
             </Box>
           </>
