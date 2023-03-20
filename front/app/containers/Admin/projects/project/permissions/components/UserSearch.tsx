@@ -80,7 +80,9 @@ const UserSearch = memo(
       setShowModal(true);
     };
     // If it is an admin, that isn't counted as a new seat to buy
-    const noOfSeatsToBuy = selection.filter((s) => !s.isAdmin).length;
+    const noOfSeatsToBuy = selection.filter(
+      (selectedUser) => !selectedUser.isAdmin
+    ).length;
 
     const getOptions = (users: IGroupMembershipsFoundUserData[]) => {
       return users
