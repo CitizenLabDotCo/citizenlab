@@ -13,14 +13,28 @@ import Success from './steps/Success';
 import Error from 'components/UI/Error';
 
 // i18n
-import { useIntl } from 'utils/cl-intl';
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from './messages';
+import oldSignUpMessages from 'containers/Authentication/SignUpIn/SignUpInModal/SignUp/messages';
+import oldSignInMessages from 'containers/Authentication/SignUpIn/SignUpInModal/SignIn/messages';
+import errorMessages from 'components/UI/Error/messages';
+
+// typings
+import { ErrorCode } from './typings';
 
 const getHeaderMessage = (step: ReturnType<typeof useSteps>['currentStep']) => {
   if (step === 'email-registration') return messages.beforeYouParticipate;
   if (step === 'email-confirmation') return messages.confirmYourEmail;
   if (step === 'enter-password') return messages.logIn;
   return null;
+};
+
+const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
+  account_creation_failed: oldSignUpMessages.unknownError,
+  wrong_confirmation_code: errorMessages.confirmation_code_invalid,
+  wrong_password: oldSignInMessages.signInError,
+  requirements_fetching_failed: oldSignUpMessages.unknownError,
+  unknown: oldSignUpMessages.unknownError,
 };
 
 const AuthModal = () => {
@@ -58,7 +72,7 @@ const AuthModal = () => {
       <Box px={smallerThanPhone ? '16px' : '32px'} py="16px" w="100%">
         {error && (
           <Box mb="8px">
-            <Error text={error} />
+            <Error text={formatMessage(ERROR_CODE_MESSAGES[error])} />
           </Box>
         )}
 
