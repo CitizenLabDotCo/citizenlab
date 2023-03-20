@@ -1469,7 +1469,7 @@
   "app.containers.app.navbar.signOut": "Se déconnecter",
   "app.containers.app.navbar.signUp": "S'inscrire",
   "app.containers.eventspage.errorWhenFetchingEvents": "An error occurred while loading events. Please try reloading the page.",
-  "app.containers.eventspage.eventsPageDescription": "Show all events posted on {orgName}'s platform.",
+  "app.containers.eventspage.eventsPageDescription": "Afficher tous les événements publiés sur la plateforme de participation de {orgName}.",
   "app.containers.eventspage.eventsPageTitle": "Événements",
   "app.containers.eventspage.filterDropdownTitle": "Projets",
   "app.containers.eventspage.noPastEvents": "No past events to display",
