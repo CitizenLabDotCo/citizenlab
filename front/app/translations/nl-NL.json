@@ -703,6 +703,7 @@
   "app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError": "Voer een groepnaam in",
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "Verificatie is niet ingeschakeld op je platform. Verwijder de verificatievoorwaarde of neem contact op met support.",
   "app.containers.App.appMetaDescription": "Welkom bij het online participatieplatform van {orgName}.\nOntdek de projecten en neem deel aan de discussie!",
+  "app.containers.App.fakeMessageToTestCrowdinEnterprise": "Can monkeys sing? This is a fake translation to test Crowdin enterprise.",
   "app.containers.App.loading": "Bezig met laden...",
   "app.containers.App.metaTitle": "Participatieplatform van {orgName} | CitizenLab",
   "app.containers.CampaignsConsentForm.adminCategory": "Admin",
