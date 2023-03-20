@@ -5,7 +5,7 @@ import {
 } from 'services/userCustomFields';
 import { localeStream } from 'services/locale';
 import { combineLatest } from 'rxjs';
-import { isEmpty, get, forOwn } from 'lodash-es';
+import { isEmpty, forOwn } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 export type UserCustomFieldsSchema =
@@ -31,11 +31,7 @@ export default function useUserCustomFieldsSchema() {
         schema: customFields.data.attributes['json_schema_multiloc'][locale],
         uiSchema: customFields.data.attributes['ui_schema_multiloc'][locale],
         hasRequiredFields: !isEmpty(
-          get(
-            customFields.data.attributes,
-            `json_schema_multiloc.${locale}.required`,
-            null
-          )
+          customFields.data.attributes['json_schema_multiloc'][locale].required
         ),
         hasCustomFields: hasCustomFields(customFields, locale),
       });
@@ -50,19 +46,16 @@ export default function useUserCustomFieldsSchema() {
 function hasCustomFields(customFieldsSchemas, locale) {
   // TODO
   let hasCustomFields = false;
-  const customFieldNames = get(
-    customFieldsSchemas,
-    `json_schema_multiloc.${locale}.properties`,
-    null
-  );
+  const customFieldNames =
+    customFieldsSchemas.data.attributes['json_schema_multiloc'][locale]
+      .properties;
 
   if (!isEmpty(customFieldNames)) {
     forOwn(customFieldNames, (_value, fieldName) => {
-      const uiWidget = get(
-        customFieldsSchemas,
-        `ui_schema_multiloc.${locale}.${fieldName}.${'ui:widget'}`,
-        null
-      );
+      const uiWidget =
+        customFieldsSchemas.data.attributes['ui_schema_multiloc'][locale][
+          fieldName
+        ]['ui:widget'];
 
       if (uiWidget !== 'hidden') {
         hasCustomFields = true;
