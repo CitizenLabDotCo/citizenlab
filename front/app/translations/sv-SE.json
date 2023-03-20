@@ -703,6 +703,7 @@
   "app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError": "Ange ett gruppnamn",
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "Verifiering har inaktiverats för din plattform – ta bort verifieringsregeln eller kontakta supporten.",
   "app.containers.App.appMetaDescription": "Välkommen till onlineplattformen för deltagande för {orgName}. \nUpptäck lokala projekt och delta i diskussionen!",
+  "app.containers.App.fakeMessageToTestCrowdinEnterprise": "Kan apor sjunga? Detta är en falsk översättning för att testa Crowdin Enterprise.",
   "app.containers.App.loading": "Läser in...",
   "app.containers.App.metaTitle": "Offentlig plattform för deltagande för {orgName} | CitizenLab",
   "app.containers.CampaignsConsentForm.adminCategory": "Admin",
