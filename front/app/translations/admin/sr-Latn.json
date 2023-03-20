@@ -1631,6 +1631,8 @@
   "app.containers.AdminPage.widgets.sortPopular": "Najviše glasano",
   "app.containers.AdminPage.widgets.sortTrending": "U trendu",
   "app.containers.AdminPage.widgets.subtitleWidgets": "Možete kreirati prilagođen vidžet i dodati ga na vaš sajt kako biste doveli korisnike na platformu.",
+  "app.containers.AdminPage.widgets.testAdminStringCrowdin": "Птице такође могу да певају. Још један цровдин тест, овог пута на поруци само за администратора!",
+  "app.containers.AdminPage.widgets.testExcludedString": "Ово је тест стринг за проверу да ли га цровдин чини недоступним на италијанском и мађарском језику",
   "app.containers.AdminPage.widgets.title": "Vidžet",
   "app.containers.AdminPage.widgets.titleDimensions": "Dimenzije",
   "app.containers.AdminPage.widgets.titleHeaderAndFooter": "Header i footer",
