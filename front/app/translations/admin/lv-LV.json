@@ -1631,6 +1631,8 @@
   "app.containers.AdminPage.widgets.sortPopular": "Populārs",
   "app.containers.AdminPage.widgets.sortTrending": "Tendences",
   "app.containers.AdminPage.widgets.subtitleWidgets": "Jūs varat izveidot logrīku, pielāgot to un pievienot savai vietnei, lai piesaistītu cilvēkus šai platformai.",
+  "app.containers.AdminPage.widgets.testAdminStringCrowdin": "Arī putni var dziedāt. Vēl viens pūļa tests, šoreiz tikai administratoram paredzētajā ziņojumā!",
+  "app.containers.AdminPage.widgets.testExcludedString": "Šī ir testa virkne, lai pārbaudītu, vai crowdin nav pieejams itāļu un ungāru valodā.",
   "app.containers.AdminPage.widgets.title": "Logrīks",
   "app.containers.AdminPage.widgets.titleDimensions": "Izmēri",
   "app.containers.AdminPage.widgets.titleHeaderAndFooter": "Galvene un kājene",
