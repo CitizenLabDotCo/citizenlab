@@ -8,8 +8,6 @@
 # and imageable_field: ‘homepage_info_multiloc’,
 # and updates those that have imageable_type: ‘HomePage’ and imagebale_field: ‘homepage_info_multiloc’
 # to have imageable_field: ‘bottom_info_section_multiloc’
-#
-# For one-time use. Can be deleted after use on all clusters.
 
 namespace :cl2back do
   desc 'Remove or update text image records using nonexistent image field'
