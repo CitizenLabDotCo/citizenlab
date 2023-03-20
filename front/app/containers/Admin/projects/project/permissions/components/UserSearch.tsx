@@ -19,7 +19,7 @@ import messages from './messages';
 // Components
 import Button from 'components/UI/Button';
 import AsyncSelect from 'react-select/async';
-import AddCollaboratorsModal from './AddCollaboratorsModal';
+import AddCollaboratorsModal from 'components/admin/AddCollaboratorsModal';
 
 // Style
 import styled from 'styled-components';

@@ -3,10 +3,10 @@ import React from 'react';
 // Components
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
+import SeatInfo from 'components/SeatInfo';
 
 // Translation
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import SeatInfo from 'components/SeatInfo';
 import messages from './messages';
 
 // hooks
