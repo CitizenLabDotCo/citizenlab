@@ -932,7 +932,7 @@ resource 'Users' do
           end
 
           # To allow for custom fields to be required or not depending on the action
-          example 'Allow update if custom fields are changed but required fields are not present' do
+          example 'Allow update if custom fields are changed but required fields are not present', document: false do
             cf = create(:custom_field)
             cf_req = create(:custom_field, required: true)
 
