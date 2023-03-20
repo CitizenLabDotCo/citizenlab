@@ -703,6 +703,7 @@
   "app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError": "Podaj nazwę grupy",
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "Weryfikacja jest wyłączona dla Twojej platformy, usuń regułę weryfikacji lub skontaktuj się z obsługą klienta.",
   "app.containers.App.appMetaDescription": "Witamy na internetowej platformie uczestnictwa {orgName}. \nPoznaj lokalne projekty i zaangażuj się w dyskusję!",
+  "app.containers.App.fakeMessageToTestCrowdinEnterprise": "Czy małpy mogą śpiewać? To jest fałszywe tłumaczenie, aby przetestować Crowdin enterprise.",
   "app.containers.App.loading": "Ładowanie...",
   "app.containers.App.metaTitle": "Platforma obywatelskiego zaangażowania {orgName} | CitizenLab",
   "app.containers.CampaignsConsentForm.adminCategory": "Admin",
