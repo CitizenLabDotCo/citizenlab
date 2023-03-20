@@ -28,7 +28,7 @@ module IdClaveUnica
       options[:nonce] = true
       options[:issuer] = issuer
       options[:send_scope_to_token_endpoint] = false
-      options[:client_signing_alg] = :RS256
+      options[:client_signing_alg] = :RS256 # can be autodetected, but specified for clarity
       options[:client_options] = {
         identifier: config[:client_id],
         secret: config[:client_secret],
@@ -38,7 +38,8 @@ module IdClaveUnica
         authorization_endpoint: '/openid/authorize',
         token_endpoint: '/openid/token',
         userinfo_endpoint: '/openid/userinfo',
-        redirect_uri: "#{configuration.base_backend_uri}/auth/clave_unica/callback"
+        redirect_uri: "#{configuration.base_backend_uri}/auth/clave_unica/callback",
+        jwks_uri: 'https://accounts.claveunica.gob.cl/openid/jwks'
       }
     end
 
@@ -47,7 +48,7 @@ module IdClaveUnica
     end
 
     def issuer
-      "https://#{host}"
+      "https://#{host}/openid"
     end
 
     def updateable_user_attrs
