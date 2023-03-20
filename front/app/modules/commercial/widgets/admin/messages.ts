@@ -177,4 +177,9 @@ export default defineMessages({
     defaultMessage:
       'Birds can sing too. Another crowdin test, this time on an admin-only message!',
   },
+  testExcludedString: {
+    id: 'app.containers.AdminPage.widgets.testExcludedString',
+    defaultMessage:
+      'This is a teststring to check whether crowdin makes it unavailable in Italian and Hungarian',
+  },
 });
