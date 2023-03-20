@@ -703,6 +703,7 @@
   "app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError": "Provide a group name",
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "Verification is disabled for your platform, remove the verification rule or contact support.",
   "app.containers.App.appMetaDescription": "Welcome to the online participation platform of {orgName}. \nExplore local projects and engage in the discussion!",
+  "app.containers.App.fakeMessageToTestCrowdinEnterprise": "Can monkeys sing? This is a fake translation to test Crowdin enterprise.",
   "app.containers.App.loading": "Loading...",
   "app.containers.App.metaTitle": "Public participation platform of {orgName} | CitizenLab",
   "app.containers.CampaignsConsentForm.adminCategory": "Admin",
