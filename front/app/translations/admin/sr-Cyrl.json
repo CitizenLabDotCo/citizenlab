@@ -1631,6 +1631,8 @@
   "app.containers.AdminPage.widgets.sortPopular": "Популарно",
   "app.containers.AdminPage.widgets.sortTrending": "У тренду",
   "app.containers.AdminPage.widgets.subtitleWidgets": "Можете да направите виџет, прилагодите га и додате на своју веб локацију да бисте привукли људе на ову платформу.",
+  "app.containers.AdminPage.widgets.testAdminStringCrowdin": "Birds can sing too. Another crowdin test, this time on an admin-only message!",
+  "app.containers.AdminPage.widgets.testExcludedString": "This is a teststring to check whether crowdin makes it unavailable in Italian and Hungarian",
   "app.containers.AdminPage.widgets.title": "Видгет",
   "app.containers.AdminPage.widgets.titleDimensions": "Димензије",
   "app.containers.AdminPage.widgets.titleHeaderAndFooter": "Заглавље и подножје",
