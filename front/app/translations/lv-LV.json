@@ -703,6 +703,7 @@
   "app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError": "Norādīt grupas nosaukumu",
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "Jūsu platformai verifikācija ir atspējota, noņemiet verifikācijas noteikumu vai sazinieties ar atbalsta dienestu.",
   "app.containers.App.appMetaDescription": "Laipni lūgti {orgName} tiešsaistes līdzdalības platformā. \nIepazīstieties ar vietējiem projektiem un iesaistieties diskusijā!",
+  "app.containers.App.fakeMessageToTestCrowdinEnterprise": "Vai pērtiķi var dziedāt? Šis ir viltots tulkojums, lai pārbaudītu Crowdin uzņēmumu.",
   "app.containers.App.loading": "Notiek ielāde...",
   "app.containers.App.metaTitle": "{orgName} sabiedrības līdzdalības platforma | CitizenLab",
   "app.containers.CampaignsConsentForm.adminCategory": "Administrators",
