@@ -37,27 +37,4 @@ export default defineMessages({
     id: 'app.modules.project_management.admin.components.permissionsTab',
     defaultMessage: 'Access rights',
   },
-  giveCollaboratorRights: {
-    id: 'app.modules.project_management.admin.components.giveCollaboratorRights',
-    defaultMessage: 'Give collaborator rights',
-  },
-  reachedLimitText: {
-    id: 'app.modules.project_management.admin.components.reachedLimitText',
-    defaultMessage:
-      'You have reached the limit of included seats within your plan, {noOfSeats} additional {noOfSeats, plural, one {seat} other {seats}} will be added.',
-  },
-  buyAdditionalSeats: {
-    id: 'app.modules.project_management.admin.components.buyAdditionalSeats',
-    defaultMessage:
-      'Buy {noOfSeats} additional {noOfSeats, plural, one {seat} other {seats}}',
-  },
-  confirmMessage: {
-    id: 'app.modules.project_management.admin.components.confirmMessage',
-    defaultMessage:
-      'Are you sure you want to give {noOfPeople} {noOfPeople, plural, one {person} other {people}} collaborator rights?',
-  },
-  confirmButtonText: {
-    id: 'app.modules.project_management.admin.components.confirmButtonText',
-    defaultMessage: 'Confirm',
-  },
 });

@@ -34,7 +34,7 @@ import Avatar from 'components/Avatar';
 import selectStyles from 'components/UI/MultipleSelect/styles';
 import { isAdmin } from 'services/permissions/roles';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import SeatInfo from 'components/SeatInfo';
+import AddCollaboratorsModal from 'components/admin/AddCollaboratorsModal';
 
 const StyledA = styled.a`
   &:hover {
@@ -66,6 +66,13 @@ const FolderPermissions = ({
   const [searchInput, setSearchInput] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [processing, setProcessing] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState(false);
+  const closeModal = () => {
+    setShowModal(false);
+  };
+  const openModal = () => {
+    setShowModal(true);
+  };
 
   const handleFolderModeratorInputChange = (value: string) => {
     setSearchInput(value);
@@ -201,9 +208,15 @@ const FolderPermissions = ({
             buttonStyle="cl-blue"
             icon="plus-circle"
             padding="13px 16px"
-            onClick={handleOnAddFolderModeratorsClick}
+            onClick={openModal}
             disabled={!selectedUserOptions || selectedUserOptions.length === 0}
             processing={processing}
+          />
+          <AddCollaboratorsModal
+            addModerators={handleOnAddFolderModeratorsClick}
+            showModal={showModal}
+            closeModal={closeModal}
+            noOfSeatsToAdd={selectedUserOptions.length}
           />
         </UserSelectSection>
 
@@ -237,9 +250,6 @@ const FolderPermissions = ({
               ))}
           </>
         </List>
-      </Box>
-      <Box width="100%" py="32px">
-        <SeatInfo seatType="collaborator" />
       </Box>
     </Box>
   );
