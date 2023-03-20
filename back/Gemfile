@@ -59,7 +59,7 @@ group :development, :test do
   gem 'saharspec'
   gem 'simplecov'
   gem 'simplecov-rcov'
-  gem 'test-prof', '~> 1.1'
+  gem 'test-prof', '~> 1.2'
   gem 'vcr', '~> 6.1'
 end
 
