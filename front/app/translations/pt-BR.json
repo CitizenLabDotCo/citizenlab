@@ -424,7 +424,6 @@
   "app.components.SeatInfo.additionalSeats": "Lugares adicionais",
   "app.components.SeatInfo.adminMessage": "O seu plano tem {adminSeatsIncluded}. Uma vez utilizados todos os lugares, serão acrescentados lugares extra em \"lugares adicionais\".",
   "app.components.SeatInfo.adminSeatsIncludedSubText": "{adminSeats} assentos administrativos incluídos",
-  "app.components.SeatInfo.collaboratorIncludedSubText": "{projectManagerSeats} lugares de gerente incluídos",
   "app.components.SeatInfo.collaboratorMessage": "O seu plano tem {adminSeatsIncluded}, elegível para gestores de pastas e gestores de projectos. Uma vez utilizados todos os lugares, serão acrescentados lugares extra em \"lugares adicionais\".",
   "app.components.SeatInfo.currentAdminSeatsTitle": "Sedes administrativas actuais",
   "app.components.SeatInfo.currentCollaboratorSeatsTitle": "Lugares dos actuais colaboradores",

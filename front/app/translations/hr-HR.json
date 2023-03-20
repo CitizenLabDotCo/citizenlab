@@ -424,7 +424,6 @@
   "app.components.SeatInfo.additionalSeats": "Dodatna mjesta",
   "app.components.SeatInfo.adminMessage": "Vaš plan ima {adminSeatsIncluded}. Nakon što iskoristite sva mjesta, dodatna mjesta bit će dodana pod „Dodatna mjesta“.",
   "app.components.SeatInfo.adminSeatsIncludedSubText": "Uključeno je {adminSeats} mjesta za administratore",
-  "app.components.SeatInfo.collaboratorIncludedSubText": "Uključeno je {projectManagerSeats} mjesta za upravitelje",
   "app.components.SeatInfo.collaboratorMessage": "Vaš plan ima {adminSeatsIncluded}, prihvatljivo za upravitelje mapa i upravitelje projekata. Nakon što iskoristite sva mjesta, dodatna mjesta bit će dodana pod „Dodatna mjesta“.",
   "app.components.SeatInfo.currentAdminSeatsTitle": "Trenutna mjesta za administratore",
   "app.components.SeatInfo.currentCollaboratorSeatsTitle": "Trenutna mjesta za suradnike",

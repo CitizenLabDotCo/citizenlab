@@ -1884,7 +1884,7 @@
   "app.modules.project_management.admin.components.confirmMessage": "Are you sure you want to give {noOfPeople} {noOfPeople, plural, one {person} other {people}} collaborator rights?",
   "app.modules.project_management.admin.components.giveCollaboratorRights": "Give collaborator rights",
   "app.modules.project_management.admin.components.permissionsTab": "Access rights",
-  "app.modules.project_management.admin.components.reachedLimitMessage": "You have reached the limit of included seats within your plan, {noOfSeats} additional seats will be added.",
+  "app.modules.project_management.admin.components.reachedLimitText": "You have reached the limit of included seats within your plan, {noOfSeats} additional {noOfSeats, plural, one {seat} other {seats}} will be added.",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."

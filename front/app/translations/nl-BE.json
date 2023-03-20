@@ -424,7 +424,6 @@
   "app.components.SeatInfo.additionalSeats": "Extra stoelen",
   "app.components.SeatInfo.adminMessage": "Uw plan heeft {adminSeatsIncluded}. Zodra je alle stoelen hebt gebruikt, worden extra stoelen toegevoegd onder 'Extra stoelen'.",
   "app.components.SeatInfo.adminSeatsIncludedSubText": "{adminSeats} admin zetels inbegrepen",
-  "app.components.SeatInfo.collaboratorIncludedSubText": "{projectManagerSeats} managerszetels inbegrepen",
   "app.components.SeatInfo.collaboratorMessage": "Uw plan heeft {adminSeatsIncluded}, die in aanmerking komen voor mapmanagers en projectmanagers. Zodra je alle seats hebt gebruikt, worden extra seats toegevoegd onder 'Extra seats'.",
   "app.components.SeatInfo.currentAdminSeatsTitle": "Huidige administratieve zetels",
   "app.components.SeatInfo.currentCollaboratorSeatsTitle": "Huidige zetels van medewerkers",

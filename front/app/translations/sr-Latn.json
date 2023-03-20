@@ -424,7 +424,6 @@
   "app.components.SeatInfo.additionalSeats": "Dodatna sedišta",
   "app.components.SeatInfo.adminMessage": "Vaš plan je {adminSeatsIncluded}. Kada iskoristite sva sedišta, sedišta će biti dodata pod 'Dodatna sedišta'.",
   "app.components.SeatInfo.adminSeatsIncludedSubText": "Uključeno {adminSeats} administratorskih sedišta",
-  "app.components.SeatInfo.collaboratorIncludedSubText": "Uključeno {projectManagerSeats} sedišta menadžera",
   "app.components.SeatInfo.collaboratorMessage": "Vaš plan je {adminSeatsIncluded}, na koji imaju pravo menadžeri fascikli i menadžeri projekta. Kada iskoristite sva sedišta, dodatna sedišta će biti dodata pod 'Dodatna sedišta'.",
   "app.components.SeatInfo.currentAdminSeatsTitle": "Trenutna sedišta administratora",
   "app.components.SeatInfo.currentCollaboratorSeatsTitle": "Trenutna sedišta saradnika",
