@@ -2,8 +2,6 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { ImageSizes } from 'typings';
 import { TRole } from './permissions/roles';
-// import { getGroups, getGroup } from 'services/groups';
-// import { usersStream } from 'services/users';
 
 export interface IGroupMembership {
   id: string;
