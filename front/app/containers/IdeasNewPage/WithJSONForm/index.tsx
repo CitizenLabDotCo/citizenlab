@@ -72,6 +72,7 @@ const IdeasNewPageWithJSONForm = () => {
     // Click on map flow :
     // clicked location is passed in url params
     // reverse goecode them and use them as initial data
+
     const { lat, lng } = parse(search, {
       ignoreQueryPrefix: true,
       decoder: (str, _defaultEncoder, _charset, type) => {
@@ -79,22 +80,16 @@ const IdeasNewPageWithJSONForm = () => {
       },
     }) as { [key: string]: string | number };
 
-    if (lat && lng) {
-      setInitialFormData((initialFormData) => ({
-        ...initialFormData,
-        location_point_geojson: {
-          type: 'Point',
-          coordinates: [lng, lat],
-        },
-      }));
-    }
-
     if (typeof lat === 'number' && typeof lng === 'number') {
       setProcessingLocation(true);
       reverseGeocode(lat, lng).then((address) => {
         setInitialFormData((initialFormData) => ({
           ...initialFormData,
           location_description: address,
+          location_point_geojson: {
+            type: 'Point',
+            coordinates: [lng, lat],
+          },
         }));
         setProcessingLocation(false);
       });

@@ -224,7 +224,6 @@ const IdeasMap = memo<Props>((props) => {
   const authUser = useAuthUser();
   const project = useProject({ projectId });
   const phase = usePhase(phaseId || null);
-  console.log(phaseId);
   const { windowWidth } = useWindowSize();
   const tablet = windowWidth <= viewportWidths.tablet;
 
