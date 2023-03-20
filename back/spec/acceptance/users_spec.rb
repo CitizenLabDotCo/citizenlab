@@ -930,6 +930,19 @@ resource 'Users' do
             expect(json_response.dig(:data, :attributes, :custom_field_values)).not_to include(cf.key.to_sym)
             expect(@user.custom_field_values[cf.key]).to eq(some_value)
           end
+
+          # To allow for custom fields to be required or not depending on the action
+          example 'Allow update if custom fields are changed but required fields are not present', document: false do
+            cf = create(:custom_field)
+            cf_req = create(:custom_field, required: true)
+
+            do_request(user: { custom_field_values: { cf.key => 'some_value' } })
+            json_response = json_parse(response_body)
+
+            assert_status 200
+            expect(json_response.dig(:data, :attributes, :custom_field_values, cf.key.to_sym)).to eq 'some_value'
+            expect(json_response.dig(:data, :attributes, :custom_field_values, cf_req.key.to_sym)).to be_nil
+          end
         end
 
         describe do
