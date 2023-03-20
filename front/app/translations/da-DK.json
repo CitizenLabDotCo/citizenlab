@@ -703,6 +703,7 @@
   "app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError": "Angiv et gruppenavn",
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "Bekræftelse er deaktiveret for din platform, fjern verificeringsreglen eller kontakt support.",
   "app.containers.App.appMetaDescription": "Velkommen til borgerinddragelsesplatformen for {orgName}.\nUdforsk lokale projekter og deltag i diskussionen!",
+  "app.containers.App.fakeMessageToTestCrowdinEnterprise": "Can monkeys sing? This is a fake translation to test Crowdin enterprise.",
   "app.containers.App.loading": "Indlæser...",
   "app.containers.App.metaTitle": "{tenantName, select, DeloitteDK {Vores Mål | Giv dit input} other {Citizen engagement platform af {orgName} | CitizenLab}}",
   "app.containers.CampaignsConsentForm.adminCategory": "Administrator",
