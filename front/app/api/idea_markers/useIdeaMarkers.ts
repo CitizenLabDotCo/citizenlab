@@ -12,6 +12,8 @@ const fetchIdeaMarkers = (queryParameters: QueryParameters) =>
     action: 'get',
     queryParams: {
       ...queryParameters,
+      projects: queryParameters.projectIds,
+      phase: queryParameters.phaseId,
       'page[number]': queryParameters['page[number]'] || 1,
       'page[size]': queryParameters['page[size]'] || defaultPageSize,
     },

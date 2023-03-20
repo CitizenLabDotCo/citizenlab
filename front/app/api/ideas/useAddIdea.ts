@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import ideaMarkersKeys from 'api/idea_markers/keys';
 import { API_PATH } from 'containers/App/constants';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -19,6 +20,7 @@ const useAddIdea = () => {
     mutationFn: addIdea,
     onSuccess: (idea) => {
       queryClient.invalidateQueries({ queryKey: ideasKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: ideaMarkersKeys.lists() });
       streams.fetchAllWith({
         dataId: [idea.data.relationships?.project.data.id],
         apiEndpoint: [`${API_PATH}/stats/ideas_count`, `${API_PATH}/analytics`],
