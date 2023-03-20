@@ -120,8 +120,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
           locale
         );
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedPhase, phases, project, locale]);
+    }, [selectedPhase, phases, project, locale, currentPhase]);
 
     useEffect(() => {
       if (!isNilOrError(phases) && phases.length > 0) {
@@ -138,8 +137,7 @@ const ProjectTimelineContainer = memo<Props & WithRouterProps>(
           selectPhase(null);
         }
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [phases]);
+    }, [phaseNumber, phases]);
 
     const handleSetSelectedPhase = (phase: IPhaseData) => {
       setSelectedPhase(phase);

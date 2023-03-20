@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
@@ -44,6 +44,14 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
       'page[number]': 1,
       'page[size]': 24,
     });
+
+  useEffect(() => {
+    setIdeaQueryParameters((current) => ({
+      ...current,
+      phase: phase.id,
+      sort: phase.attributes.ideas_order ?? ideaDefaultSortMethodFallback,
+    }));
+  }, [phase]);
 
   const updateQuery = useCallback((newParams: Partial<IQueryParameters>) => {
     setIdeaQueryParameters((current) => ({ ...current, ...newParams }));
