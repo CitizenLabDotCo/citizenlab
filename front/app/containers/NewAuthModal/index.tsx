@@ -4,7 +4,7 @@ import React from 'react';
 import useSteps from './useSteps';
 
 // components
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 import EmailSignUp from './steps/EmailSignUp';
 import EmailConfirmation from './steps/EmailConfirmation';
@@ -25,6 +25,7 @@ const getHeaderMessage = (step: ReturnType<typeof useSteps>['currentStep']) => {
 
 const AuthModal = () => {
   const { currentStep, transition, error, status, state } = useSteps();
+  const smallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
 
   const closable =
@@ -54,9 +55,9 @@ const AuthModal = () => {
       }
       niceHeader
     >
-      <Box p="32px" w="100%">
+      <Box px={smallerThanPhone ? '16px' : '32px'} py="16px" w="100%">
         {error && (
-          <Box mb="20px">
+          <Box mb="8px">
             <Error text={error} />
           </Box>
         )}
