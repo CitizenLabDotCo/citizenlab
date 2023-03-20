@@ -703,6 +703,7 @@
   "app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError": "Δώστε ένα όνομα ομάδας",
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "Η επαλήθευση είναι απενεργοποιημένη για την πλατφόρμα σας, καταργήστε τον κανόνα επαλήθευσης ή επικοινωνήστε με την υποστήριξη.",
   "app.containers.App.appMetaDescription": "Καλώς ήρθατε στην διαδικτυακή πλατφόρμα συμμετοχής του {orgName}. Εξερευνήστε τοπικά έργα και συμμετέχετε στη συζήτηση!",
+  "app.containers.App.fakeMessageToTestCrowdinEnterprise": "Μπορούν οι πίθηκοι να τραγουδήσουν; Αυτή είναι μια ψεύτικη μετάφραση για τη δοκιμή της επιχείρησης Crowdin.",
   "app.containers.App.loading": "Φόρτωση...",
   "app.containers.App.metaTitle": "Δημόσια πλατφόρμα συμμετοχής του {orgName} | CitizenLab",
   "app.containers.CampaignsConsentForm.adminCategory": "Διαχειριστής",
