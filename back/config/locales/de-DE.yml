@@ -222,7 +222,7 @@ de:
       subject: "Bestätigen Sie Ihre E-Mail-Adresse für die Beteiligungsplattform %{organizationName}"
       header: "Ihr Bestätigungscode"
       header_message: "Hallo %{firstName}!"
-      confirm_email_address: "Confirm your email address"
+      confirm_email_address: "Bestätigen Sie Ihre E-Mail Adresse"
       thanks_for_signing_up: "Vielen Dank, dass Sie sich für die Beteiligungsplattform %{organizationName} registriert haben."
       best_regards: "Herzliche Grüße"
       ignore_email: "If you didn't request a code, you can safely ignore this email."
