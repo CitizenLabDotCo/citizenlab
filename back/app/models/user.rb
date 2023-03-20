@@ -48,6 +48,7 @@ class User < ApplicationRecord
   GENDERS = %w[male female unspecified].freeze
   INVITE_STATUSES = %w[pending accepted].freeze
   ROLES = %w[admin project_moderator project_folder_moderator].freeze
+  CITIZENLAB_MEMBER_REGEX_CONTENT = 'citizenlab.(eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'
 
   class << self
     # Deletes all users asynchronously (with side effects).
@@ -257,6 +258,14 @@ class User < ApplicationRecord
     where(id: user_ids)
   }
 
+  # https://www.postgresql.org/docs/12/functions-matching.html#FUNCTIONS-POSIX-REGEXP
+  scope :not_citizenlab_member, -> { where.not('email ~* ?', CITIZENLAB_MEMBER_REGEX_CONTENT) }
+  scope :billed_admins, -> { admin.not_citizenlab_member }
+  scope :billed_moderators, lambda {
+    # use any conditions before `or` very carefully (inspect the generated SQL)
+    project_moderator.or(User.project_folder_moderator).where.not(id: admin).not_citizenlab_member
+  }
+
   def self.oldest_admin
     active.admin.order(:created_at).reject(&:super_admin?).first
   end
@@ -336,7 +345,7 @@ class User < ApplicationRecord
   end
 
   def super_admin?
-    admin? && !!(email =~ /citizen-?lab\.(eu|be|fr|ch|de|nl|co|uk|us|cl|dk|pl)$/i)
+    admin? && !!(email =~ Regexp.new(CITIZENLAB_MEMBER_REGEX_CONTENT, 'i'))
   end
 
   def admin?

@@ -118,31 +118,39 @@ const UserName = (props: Props & WrappedComponentProps) => {
     const name = getName(user);
     const profileLink = `/profile/${user.attributes.slug}`;
 
-    const NameComponent = (
-      <Name
-        fontWeight={fontWeight}
-        fontSize={fontSize}
-        underline={underline}
-        className={`
-          ${className || ''}
-          ${canModerate ? 'canModerate' : ''}
-          ${isLinkToProfile ? 'isLinkToProfile' : ''}
-          e2e-username
-        `}
-        color={color}
-      >
-        {name}
-      </Name>
-    );
+    const classNames = `
+      ${className || ''}
+      ${canModerate ? 'canModerate' : ''}
+      ${isLinkToProfile ? 'isLinkToProfile' : ''}
+      e2e-username
+    `;
 
     if (isLinkToProfile) {
       return (
         <Link to={profileLink} className={`e2e-author-link ${className || ''}`}>
-          {NameComponent}
+          <Name
+            fontWeight={fontWeight}
+            fontSize={fontSize}
+            underline={underline}
+            className={classNames}
+            color={color}
+          >
+            {name}
+          </Name>
         </Link>
       );
     } else {
-      return NameComponent;
+      return (
+        <Name
+          fontWeight={fontWeight}
+          fontSize={fontSize}
+          underline={underline}
+          className={classNames}
+          color={color}
+        >
+          {name}
+        </Name>
+      );
     }
   }
 
