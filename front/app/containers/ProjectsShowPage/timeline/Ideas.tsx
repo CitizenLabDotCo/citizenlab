@@ -87,6 +87,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
         participationContextId={phase.id}
         participationContextType="phase"
         invisibleTitleMessage={messages.a11y_titleInputsPhase}
+        phaseId={phase.id}
       />
     </Container>
   );

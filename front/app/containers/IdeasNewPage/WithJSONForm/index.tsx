@@ -64,13 +64,14 @@ const IdeasNewPageWithJSONForm = () => {
   }, [authUser, project, previousPathName]);
 
   const search = location.search;
-  // Click on map flow :
-  // clicked location is passed in url params
-  // reverse goecode them and use them as initial data
+
   const [processingLocation, setProcessingLocation] = useState(false);
   const [initialFormData, setInitialFormData] = useState({});
 
   useEffect(() => {
+    // Click on map flow :
+    // clicked location is passed in url params
+    // reverse goecode them and use them as initial data
     const { lat, lng } = parse(search, {
       ignoreQueryPrefix: true,
       decoder: (str, _defaultEncoder, _charset, type) => {
@@ -127,9 +128,8 @@ const IdeasNewPageWithJSONForm = () => {
             !isNilOrError(phases)
           ) {
             // Check if URL contains specific phase_id
-            const phaseIdFromUrl = queryParams.get('phase_id');
             const phaseUsed =
-              phases.find((phase) => phase.id === phaseIdFromUrl) ||
+              phases.find((phase) => phase.id === phaseId) ||
               getCurrentPhase(phases);
             if (!isNilOrError(phaseUsed)) {
               getMethodConfig(

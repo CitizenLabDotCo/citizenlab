@@ -51,7 +51,6 @@ export const NativeSurveyCTABar = ({ project }: CTABarProps) => {
       data-testid="e2e-project-survey-button"
       projectId={project.id}
       participationContextType={isPhaseNativeSurvey ? 'phase' : 'project'}
-      phaseId={isPhaseNativeSurvey ? currentPhase.id : ''}
       fontWeight="500"
       bgColor={theme.colors.white}
       textColor={theme.colors.tenantText}
