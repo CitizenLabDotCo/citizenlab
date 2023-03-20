@@ -36,7 +36,7 @@ export default ({ open, setClose, user }: Props) => {
           name: `${user.attributes.first_name} ${user.attributes.last_name}`,
         })}
       </Title>
-      <Button mb="20px" onClick={handleOnClick}>
+      <Button mb="20px" data-testid="unblockBtn" onClick={handleOnClick}>
         {formatMessage(messages.unblockActionConfirmation)}
       </Button>
       <Button buttonStyle="secondary" onClick={setClose}>

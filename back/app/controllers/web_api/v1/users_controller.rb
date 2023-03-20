@@ -13,7 +13,7 @@ class WebApi::V1::UsersController < ::ApplicationController
 
     @users = @users.search_by_all(params[:search]) if params[:search].present?
 
-    @users = @users.active unless params[:include_inactive]
+    @users = @users.registered unless params[:include_inactive]
     @users = @users.blocked if params[:only_blocked]
     @users = @users.in_group(Group.find(params[:group])) if params[:group]
     @users = @users.admin.or(@users.project_moderator(params[:can_moderate_project])) if params[:can_moderate_project].present?
@@ -56,7 +56,7 @@ class WebApi::V1::UsersController < ::ApplicationController
     authorize :user, :index_xlsx?
 
     @users = policy_scope User
-    @users = @users.active unless params[:include_inactive]
+    @users = @users.registered unless params[:include_inactive]
 
     @users = @users.in_group(Group.find(params[:group])) if params[:group]
     @users = @users.where(id: params[:users]) if params[:users]
@@ -166,8 +166,14 @@ class WebApi::V1::UsersController < ::ApplicationController
   end
 
   def block
+    block_end_at = Time.zone.now + AppConfiguration.instance.settings('user_blocking', 'duration').days
+
     authorize @user, :block?
-    if @user.update(block_start_at: Time.zone.now, block_reason: params.dig(:user, :block_reason))
+    if @user.update(
+      block_start_at: Time.zone.now,
+      block_end_at: block_end_at,
+      block_reason: params.dig(:user, :block_reason)
+    )
       SideFxUserService.new.after_block(@user, current_user)
 
       render json: WebApi::V1::UserSerializer.new(@user, params: fastjson_params).serialized_json
@@ -178,7 +184,7 @@ class WebApi::V1::UsersController < ::ApplicationController
 
   def unblock
     authorize @user, :unblock?
-    if @user.update(block_start_at: nil, block_reason: nil)
+    if @user.update(block_start_at: nil, block_end_at: nil, block_reason: nil)
       SideFxUserService.new.after_unblock(@user, current_user)
 
       render json: WebApi::V1::UserSerializer.new(@user, params: fastjson_params).serialized_json
