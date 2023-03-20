@@ -160,6 +160,7 @@ const ProjectsShowPage = ({ project }: Props) => {
             fallbackMessage={messages.noUpcomingOrOngoingEvents}
             onClickTitleGoToProjectAndScrollToEvent={false}
             hideSectionIfNoEvents={true}
+            projectPublicationStatuses={['published', 'draft', 'archived']}
           />
           <EventsViewer
             showProjectFilter={false}
@@ -169,6 +170,7 @@ const ProjectsShowPage = ({ project }: Props) => {
             fallbackMessage={messages.noPastEvents}
             onClickTitleGoToProjectAndScrollToEvent={false}
             hideSectionIfNoEvents={true}
+            projectPublicationStatuses={['published', 'draft', 'archived']}
           />
         </Box>
         <SuccessModal projectId={projectId} />
