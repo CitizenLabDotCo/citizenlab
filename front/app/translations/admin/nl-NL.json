@@ -1631,6 +1631,7 @@
   "app.containers.AdminPage.widgets.sortPopular": "Meeste stemmen",
   "app.containers.AdminPage.widgets.sortTrending": "Populair",
   "app.containers.AdminPage.widgets.subtitleWidgets": "Maak zoveel widgets als je wilt en voeg de html-code toe aan je homepagina of ergens anders op je website.",
+  "app.containers.AdminPage.widgets.testAdminStringCrowdin": "Birds can sing too. Another crowdin test, this time on an admin-only message!",
   "app.containers.AdminPage.widgets.title": "Widget",
   "app.containers.AdminPage.widgets.titleDimensions": "Afmetingen",
   "app.containers.AdminPage.widgets.titleHeaderAndFooter": "Hoofding en footer",
