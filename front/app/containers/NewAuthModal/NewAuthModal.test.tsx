@@ -138,8 +138,39 @@ describe('<NewAuthModal />', () => {
       });
     });
 
-    // it('shows correct error message when entering wrong code', () => {
-    //   // TODO
-    // })
+    it('shows correct error message when entering wrong code', async () => {
+      projectRequirementsResponse = projectRequirementsResponseEmailSatisfied;
+
+      render(<NewAuthModal />);
+      act(() => {
+        triggerAuthenticationFlow({
+          context: {
+            type: 'project',
+            id: '123',
+            action: 'posting_idea',
+          },
+        });
+      });
+
+      await waitFor(() => {
+        expect(screen.getByLabelText('Code')).toBeInTheDocument();
+      });
+
+      act(() => {
+        fireEvent.input(screen.getByLabelText('Code'), {
+          target: {
+            value: '0000',
+          },
+        });
+      });
+
+      act(() => {
+        fireEvent.click(screen.getByText(/Verify and Continue/));
+      });
+
+      await waitFor(() => {
+        expect(screen.getByText(/Please check your email/)).toBeInTheDocument();
+      });
+    });
   });
 });
