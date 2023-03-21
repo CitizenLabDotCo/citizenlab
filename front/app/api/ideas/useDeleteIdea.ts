@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import ideaFilterCountsKeys from 'api/ideas_filter_counts/keys';
 import ideaMarkersKeys from 'api/idea_markers/keys';
 import { API_PATH } from 'containers/App/constants';
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -21,6 +22,7 @@ const useDeleteIdea = () => {
         queryKey: ideasKeys.lists(),
       });
       queryClient.invalidateQueries({ queryKey: ideaMarkersKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: ideaFilterCountsKeys.all() });
       streams.fetchAllWith({
         apiEndpoint: [
           `${API_PATH}/projects`,
