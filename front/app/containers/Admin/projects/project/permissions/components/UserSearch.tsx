@@ -77,10 +77,6 @@ const UserSearch = memo(({ projectId }: Props) => {
   const openModal = () => {
     setShowModal(true);
   };
-  // If it is an admin, that isn't counted as a new seat to buy
-  const noOfSeatsToBuy = selection.filter(
-    (selectedUser) => !selectedUser.isAdmin
-  ).length;
 
   const getOptions = (users: IGroupMembershipsFoundUserData[]) => {
     return users
@@ -201,8 +197,7 @@ const UserSearch = memo(({ projectId }: Props) => {
         addModerators={handleOnAddModeratorsClick}
         showModal={showModal}
         closeModal={closeModal}
-        noOfSeatsToAdd={selection.length}
-        noOfSeatsToBuy={noOfSeatsToBuy}
+        noOfCollaboratorSeatsToAdd={selection.length}
       />
     </Container>
   );
