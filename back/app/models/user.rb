@@ -149,7 +149,7 @@ class User < ApplicationRecord
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
 
   validates :email, :locale, presence: true, unless: :invite_pending?
-  validates :password, presence: true, on: :create, unless: :confirmation_required?
+  validates :password, presence: true, on: :create, if: :requires_password?
 
   validates :email, uniqueness: true, allow_nil: true
   validates :slug, uniqueness: true, presence: true, unless: :invite_pending?
@@ -390,6 +390,15 @@ class User < ApplicationRecord
 
   def no_password?
     !password_digest && !invite_pending?
+  end
+
+  # Do we require a password to create this user
+  def requires_password?
+    !confirmation_required? && !sso?
+  end
+
+  def sso?
+    identities.any?
   end
 
   def member_of?(group_id)

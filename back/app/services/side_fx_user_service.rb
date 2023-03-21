@@ -4,7 +4,7 @@ class SideFxUserService
   include SideFxHelper
 
   def before_create(user, _current_user)
-    user.complete_registration if !user.confirmation_required?
+    user.complete_registration if !user.confirmation_required? || user.sso?
   end
 
   def after_create(user, current_user)
