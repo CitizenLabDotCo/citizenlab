@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
+import { IAppConfigurationSettingsCore } from 'api/app_configuration/types';
 
 import AddCollaboratorsModal from './';
 
@@ -9,8 +10,8 @@ type MockAppConfigurationType = {
     attributes: {
       settings: {
         core: {
-          maximum_admins_number: number | null;
-          maximum_moderators_number: number | null;
+          maximum_admins_number: IAppConfigurationSettingsCore['maximum_admins_number'];
+          maximum_moderators_number: IAppConfigurationSettingsCore['maximum_admins_number'];
         };
       };
     };
