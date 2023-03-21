@@ -224,7 +224,7 @@ nl:
       header_message: "Hallo %{firstName}!"
       confirm_email_address: "Bevestig je e-mailadres"
       thanks_for_signing_up: "Bedankt voor je registratie op het participatieplatform van %{organizationName}."
-      best_regards: "Best regards,"
+      best_regards: "Vriendelijke groeten,"
       ignore_email: "If you didn't request a code, you can safely ignore this email."
       expire_code: "This code will be expired in "
       24_hours: "24 hours."
