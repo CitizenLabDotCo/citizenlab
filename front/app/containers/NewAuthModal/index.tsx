@@ -69,7 +69,7 @@ const AuthModal = () => {
       }
       niceHeader
     >
-      <Box px={smallerThanPhone ? '16px' : '32px'} py="16px" w="100%">
+      <Box px={smallerThanPhone ? '16px' : '32px'} py="32px" w="100%">
         {error && (
           <Box mb="8px">
             <Error text={formatMessage(ERROR_CODE_MESSAGES[error])} />

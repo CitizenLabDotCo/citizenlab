@@ -95,7 +95,9 @@ const EmailConfirmation = ({
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(handleConfirm)}>
-        <CodeSentMessage email={state.email ?? undefined} />
+        <Box mt="-8px">
+          <CodeSentMessage email={state.email ?? undefined} />
+        </Box>
         <Box>
           <Input
             name="code"

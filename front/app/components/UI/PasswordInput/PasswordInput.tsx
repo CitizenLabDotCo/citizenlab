@@ -54,6 +54,7 @@ const PasswordInputComponent = ({
   isLoginPasswordInput,
   setRef,
   errors = {},
+  label,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
   const locale = useLocale();
@@ -111,6 +112,7 @@ const PasswordInputComponent = ({
             autocomplete={autocomplete}
             placeholder={placeholder}
             setRef={setInputRef}
+            label={label}
           />
           <ShowPasswordIconButton
             showPassword={showPassword}
