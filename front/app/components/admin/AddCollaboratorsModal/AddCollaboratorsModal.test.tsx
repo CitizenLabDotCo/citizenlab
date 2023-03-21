@@ -11,7 +11,7 @@ type MockAppConfigurationType = {
       settings: {
         core: {
           maximum_admins_number: IAppConfigurationSettingsCore['maximum_admins_number'];
-          maximum_moderators_number: IAppConfigurationSettingsCore['maximum_admins_number'];
+          maximum_moderators_number: IAppConfigurationSettingsCore['maximum_moderators_number'];
         };
       };
     };
