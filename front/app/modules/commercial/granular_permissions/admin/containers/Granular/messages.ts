@@ -245,4 +245,16 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.userQuestionTitle',
     defaultMessage: 'Ask questions to participants',
   },
+  select: {
+    id: 'app.containers.AdminPage.groups.permissions.select',
+    defaultMessage: 'Select',
+  },
+  defaultField: {
+    id: 'app.containers.AdminPage.groups.permissions.defaultField',
+    defaultMessage: 'Default field',
+  },
+  createNewQuestion: {
+    id: 'app.containers.AdminPage.groups.permissions.createNewQuestion',
+    defaultMessage: 'Create a new question',
+  },
 });
