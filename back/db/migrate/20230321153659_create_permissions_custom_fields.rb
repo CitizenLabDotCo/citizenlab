@@ -1,0 +1,13 @@
+# frozen_string_literal: true
+
+class CreatePermissionsCustomFields < ActiveRecord::Migration[6.1]
+  def change
+    create_table :permissions_custom_fields, id: :uuid do |t|
+      t.references :permission, foreign_key: true, type: :uuid, null: false
+      t.references :custom_field, foreign_key: true, type: :uuid, null: false
+      t.boolean :required, null: false, default: false
+
+      t.timestamps
+    end
+  end
+end

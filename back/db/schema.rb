@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_07_101320) do
+ActiveRecord::Schema.define(version: 2023_03_21_153659) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -891,6 +891,16 @@ ActiveRecord::Schema.define(version: 2023_03_07_101320) do
     t.index ["permission_scope_id"], name: "index_permissions_on_permission_scope_id"
   end
 
+  create_table "permissions_custom_fields", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "permission_id", null: false
+    t.uuid "custom_field_id", null: false
+    t.boolean "required", default: false, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["custom_field_id"], name: "index_permissions_custom_fields_on_custom_field_id"
+    t.index ["permission_id"], name: "index_permissions_custom_fields_on_permission_id"
+  end
+
   create_table "phase_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "phase_id"
     t.string "file"
@@ -1420,6 +1430,8 @@ ActiveRecord::Schema.define(version: 2023_03_07_101320) do
   add_foreign_key "notifications", "users", column: "initiating_user_id"
   add_foreign_key "notifications", "users", column: "recipient_id"
   add_foreign_key "official_feedbacks", "users"
+  add_foreign_key "permissions_custom_fields", "custom_fields"
+  add_foreign_key "permissions_custom_fields", "permissions"
   add_foreign_key "phase_files", "phases"
   add_foreign_key "phases", "projects"
   add_foreign_key "pins", "admin_publications"
