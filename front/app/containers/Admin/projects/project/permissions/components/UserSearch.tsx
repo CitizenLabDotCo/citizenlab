@@ -18,6 +18,7 @@ import messages from './messages';
 import Button from 'components/UI/Button';
 import AsyncSelect from 'react-select/async';
 import AddCollaboratorsModal from 'components/admin/AddCollaboratorsModal';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // Style
 import styled from 'styled-components';
@@ -25,20 +26,6 @@ import selectStyles from 'components/UI/MultipleSelect/styles';
 
 // Typings
 import { IOption } from 'typings';
-
-const Container = styled.div`
-  width: 100%;
-  margin-bottom: 20px;
-`;
-
-const SelectGroupsContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  align-items: center;
-  margin-bottom: 30px;
-`;
 
 const StyledAsyncSelect = styled(AsyncSelect)`
   min-width: 300px;
@@ -160,8 +147,14 @@ const UserSearch = memo(({ projectId }: Props) => {
   const isDropdownIconHidden = !isNonEmptyString(searchInput);
 
   return (
-    <Container>
-      <SelectGroupsContainer>
+    <Box width="100%" mb="20px">
+      <Box
+        width="100%"
+        display="flex"
+        flexDirection="row"
+        alignItems="center"
+        mb="30px"
+      >
         <StyledAsyncSelect
           name="search-user"
           isMulti={true}
@@ -192,14 +185,14 @@ const UserSearch = memo(({ projectId }: Props) => {
           disabled={!selection || selection.length === 0}
           processing={processing}
         />
-      </SelectGroupsContainer>
+      </Box>
       <AddCollaboratorsModal
         addModerators={handleOnAddModeratorsClick}
         showModal={showModal}
         closeModal={closeModal}
         noOfCollaboratorSeatsToAdd={selection.length}
       />
-    </Container>
+    </Box>
   );
 });
 
