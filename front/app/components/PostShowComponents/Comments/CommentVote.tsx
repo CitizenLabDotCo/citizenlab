@@ -232,36 +232,45 @@ const CommentVote = ({
   const handleVoteClick = async (event?: MouseEvent) => {
     event?.preventDefault();
 
-    const commentingDisabledReason = get(
-      post,
-      'attributes.action_descriptor.commenting_idea.disabled_reason'
-    );
-
-    const authUserIsVerified =
-      !isNilOrError(authUser) && authUser.attributes.verified;
-
     if (postType === 'idea') {
-      if (!isNilOrError(authUser) && !commentingDisabledReason) {
+      const commentVotingDisabledReason = get(
+        post,
+        'attributes.action_descriptor.comment_voting_idea.disabled_reason'
+      );
+
+      const authUserIsVerified =
+        !isNilOrError(authUser) && authUser.attributes.verified;
+
+      const context = {
+        type: 'idea',
+        action: 'comment_voting_idea',
+        id: postId,
+      } as const;
+
+      if (!isNilOrError(authUser) && !commentVotingDisabledReason) {
         vote();
       } else if (
         !isNilOrError(authUser) &&
         !authUserIsVerified &&
-        commentingDisabledReason === 'not_verified'
+        commentVotingDisabledReason === 'not_verified'
       ) {
-        openVerificationModal();
+        openVerificationModal({ context });
       } else if (!authUser) {
         openSignUpInModal({
-          verification: commentingDisabledReason === 'not_verified',
+          verification: commentVotingDisabledReason === 'not_verified',
+          context,
           onSuccess: () => handleVoteClick(),
         });
-      } else if (commentingDisabledReason === 'not_active') {
-        openSignUpInModal();
+      } else if (commentVotingDisabledReason === 'not_active') {
+        openSignUpInModal({ context });
       }
-    } else {
+    }
+
+    if (postType === 'initiative') {
       const authenticationRequirements =
         commentVotingPermissionInitiative?.authenticationRequirements;
       const context = {
-        action: 'commenting_initiative',
+        action: 'comment_voting_initiative',
         type: 'initiative',
       } as const;
 

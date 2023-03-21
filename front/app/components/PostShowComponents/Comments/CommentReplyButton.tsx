@@ -77,10 +77,9 @@ const CommentReplyButton = memo<Props>(
   }) => {
     const onReply = useCallback(() => {
       if (!isNilOrError(post) && !isNilOrError(comment)) {
-        const commentId = !isNilOrError(comment) ? comment.id : null;
-        const parentCommentId = !isNilOrError(comment)
-          ? comment.relationships.parent.data?.id || null
-          : null;
+        const commentId = comment.id;
+        const parentCommentId = comment.relationships.parent.data?.id ?? null;
+
         const authorFirstName = !isNilOrError(author)
           ? author.attributes.first_name
           : null;
@@ -112,6 +111,12 @@ const CommentReplyButton = memo<Props>(
             }
           );
 
+          const context = {
+            type: 'idea',
+            action: 'commenting_idea',
+            id: post.id,
+          } as const;
+
           if (!isNilOrError(authUser) && !commentingDisabledReason) {
             commentReplyButtonClicked({
               commentId,
@@ -125,52 +130,41 @@ const CommentReplyButton = memo<Props>(
             !authUserIsVerified &&
             commentingDisabledReason === 'not_verified'
           ) {
-            openVerificationModal();
+            openVerificationModal({ context });
           } else if (!authUser) {
             openSignUpInModal({
               verification: commentingDisabledReason === 'not_verified',
+              context,
               onSuccess: () => onReply(),
             });
           } else if (commentingDisabledReason === 'not_active') {
-            openSignUpInModal();
+            openSignUpInModal({ context, onSuccess: () => onReply() });
           }
         }
 
         if (post.type === 'initiative') {
-          if (
-            commentingPermissionInitiative?.authenticationRequirements ===
-            'sign_in_up'
-          ) {
+          const authenticationRequirements =
+            commentingPermissionInitiative?.authenticationRequirements;
+          const context = {
+            type: 'initiative',
+            action: 'commenting_initiative',
+          } as const;
+
+          if (authenticationRequirements === 'sign_in_up') {
             openSignUpInModal({
+              context,
               onSuccess: () => onReply(),
             });
-          } else if (
-            commentingPermissionInitiative?.authenticationRequirements ===
-            'sign_in_up_and_verify'
-          ) {
+          } else if (authenticationRequirements === 'sign_in_up_and_verify') {
             openSignUpInModal({
               onSuccess: () => onReply(),
               verification: true,
-              context: {
-                action: 'commenting_initiative',
-                type: 'initiative',
-              },
+              context,
             });
-          } else if (
-            commentingPermissionInitiative?.authenticationRequirements ===
-            'verify'
-          ) {
-            openVerificationModal({
-              context: {
-                action: 'commenting_initiative',
-                type: 'initiative',
-              },
-            });
-          } else if (
-            commentingPermissionInitiative?.authenticationRequirements ===
-            'complete_registration'
-          ) {
-            openSignUpInModal();
+          } else if (authenticationRequirements === 'verify') {
+            openVerificationModal({ context });
+          } else if (authenticationRequirements === 'complete_registration') {
+            openSignUpInModal({ context, onSuccess: () => onReply() });
           } else if (commentingPermissionInitiative?.enabled === true) {
             commentReplyButtonClicked({
               commentId,
