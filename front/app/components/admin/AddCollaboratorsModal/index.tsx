@@ -85,7 +85,7 @@ const AddCollaboratorsModal = ({
             )}
           </Text>
           <Box py="32px">
-            <SeatInfo seatType="collaborator" width={null} />
+            <SeatInfo seatType="collaborator" />
           </Box>
         </Box>
         <Box

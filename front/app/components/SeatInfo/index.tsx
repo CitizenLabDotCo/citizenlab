@@ -23,10 +23,9 @@ import { isNil } from 'utils/helperUtils';
 
 type SeatInfoType = {
   seatType: 'collaborator' | 'admin';
-  width?: number | null;
 };
 
-const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
+const SeatInfo = ({ seatType }: SeatInfoType) => {
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
@@ -68,7 +67,6 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
 
   return (
     <Box
-      width={(width && `${width}px`) || undefined}
       display="flex"
       flexDirection="column"
       padding="20px"

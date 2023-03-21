@@ -113,7 +113,7 @@ const ChangeSeatModal = ({
             />
           </Text>
           <Box py="32px">
-            <SeatInfo seatType="admin" width={null} />
+            <SeatInfo seatType="admin" />
           </Box>
         </Box>
         <Box

@@ -564,7 +564,7 @@ class Invitations extends React.PureComponent<
             </FlexWrapper>
             {hasAdminRights && (
               <Box marginTop="20px">
-                <SeatInfo seatType="admin" width={null} />
+                <SeatInfo seatType="admin" />
               </Box>
             )}
           </SectionField>
@@ -620,7 +620,7 @@ class Invitations extends React.PureComponent<
                   </StyledWarning>
                 )}
                 <Box marginTop="20px">
-                  <SeatInfo seatType="collaborator" width={null} />
+                  <SeatInfo seatType="collaborator" />
                 </Box>
               </>
             )}
