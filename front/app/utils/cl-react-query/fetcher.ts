@@ -100,10 +100,11 @@ async function fetcher({ path, action, body, queryParams }) {
 
   if (!response.ok) {
     const error = data as unknown as CLErrors;
+    console.log('check error fetcher');
+    handleBlockedUserError(response.status, error);
     if (!error.errors) {
       reportError(data);
     }
-    handleBlockedUserError(response.status, error);
     throw error;
   } else {
     if (data) {

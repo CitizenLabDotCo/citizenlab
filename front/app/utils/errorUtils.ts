@@ -1,5 +1,6 @@
 import { CLErrorsJSON } from 'typings';
 import messages from './messages';
+import { isArray } from 'lodash-es';
 
 export function isCLErrorJSON(value: unknown): value is CLErrorsJSON {
   let objectToCheck = value;
@@ -178,11 +179,13 @@ export const handleBlockedUserError = (status, data) => {
   if (
     status == 401 &&
     'base' in data.errors &&
+    isArray(data.errors.base) &&
     data.errors.base.length >= 0 &&
     'error' in data.errors.base[0] &&
-    data.errors.base[0].error == 'user is blocked'
+    data.errors.base[0].error == 'blocked' &&
+    window.location.href.indexOf('disabled-account') === -1
   ) {
-    // logout user and redirect to "Your account is temporarily disabled." page
-    console.log('user is blocked');
+    console.log('user is blocked ', data.errors.base[0]);
+    window.location.href = `/disabled-account?date=${data.errors.base[0].details.block_end_at}`;
   }
 };
