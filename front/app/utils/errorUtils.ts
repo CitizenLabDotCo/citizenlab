@@ -178,12 +178,12 @@ export const handleHookFormSubmissionError = (
 
 export const handleBlockedUserError = (status, data) => {
   if (
-    status == 401 &&
+    status === 401 &&
     'base' in data.errors &&
     isArray(data.errors.base) &&
     data.errors.base.length >= 0 &&
     'error' in data.errors.base[0] &&
-    data.errors.base[0].error == 'blocked' &&
+    data.errors.base[0].error === 'blocked' &&
     window.location.href.indexOf('disabled-account') === -1
   ) {
     clHistory.push(

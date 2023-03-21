@@ -11,7 +11,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 export default () => {
-  let [searchParams, _] = useSearchParams();
+  const [searchParams, _] = useSearchParams();
   const parsedDate = moment(searchParams.get('date')).format('LL');
 
   return (
