@@ -37,7 +37,6 @@ import GetAppConfiguration, {
 import { projectByIdStream, IProject, IProjectData } from 'services/projects';
 import { phasesStream, IPhaseData } from 'services/phases';
 import {
-  ideaFormSchemaStream,
   IIdeaFormSchemas,
   CustomFieldCodes,
 } from 'services/ideaCustomFieldsSchemas';
@@ -149,8 +148,6 @@ interface InputProps {
 interface DataProps {
   pbEnabled: GetFeatureFlagChildProps;
   ideaAuthorChangeEnabled: GetFeatureFlagChildProps;
-  isIdeaCustomFieldsEnabled: GetFeatureFlagChildProps;
-  isDynamicIdeaFormEnabled: GetFeatureFlagChildProps;
   allowedTopics: GetTopicsChildProps;
   project: GetProjectChildProps;
   phases: GetPhasesChildProps;
@@ -230,13 +227,7 @@ class IdeaForm extends PureComponent<
   }
 
   componentDidMount() {
-    const {
-      projectId,
-      ideaId,
-      phaseId,
-      isIdeaCustomFieldsEnabled,
-      isDynamicIdeaFormEnabled,
-    } = this.props;
+    const { projectId, ideaId, phaseId } = this.props;
     const locale$ = localeStream().observable;
     const project$: Observable<IProject | null> =
       projectByIdStream(projectId).observable;
@@ -245,19 +236,11 @@ class IdeaForm extends PureComponent<
       IIdeaFormSchemas | IIdeaJsonFormSchemas | Error | null
     > = of(null);
 
-    if (isIdeaCustomFieldsEnabled && isDynamicIdeaFormEnabled) {
-      ideaCustomFieldsSchemas$ = ideaJsonFormsSchemaStream(
-        projectId as string,
-        phaseId,
-        ideaId
-      ).observable;
-    } else {
-      ideaCustomFieldsSchemas$ = ideaFormSchemaStream(
-        projectId,
-        phaseId,
-        ideaId
-      ).observable;
-    }
+    ideaCustomFieldsSchemas$ = ideaJsonFormsSchemaStream(
+      projectId as string,
+      phaseId,
+      ideaId
+    ).observable;
 
     const pbContext$: Observable<IProjectData | IPhaseData | null> =
       project$.pipe(
@@ -1128,8 +1111,6 @@ class IdeaForm extends PureComponent<
 const Data = adopt<DataProps, InputProps>({
   pbEnabled: <GetFeatureFlag name="participatory_budgeting" />,
   ideaAuthorChangeEnabled: <GetFeatureFlag name="idea_author_change" />,
-  isIdeaCustomFieldsEnabled: <GetFeatureFlag name="idea_custom_fields" />,
-  isDynamicIdeaFormEnabled: <GetFeatureFlag name="dynamic_idea_form" />,
   project: ({ projectId, render }) => (
     <GetProject projectId={projectId}>{render}</GetProject>
   ),
