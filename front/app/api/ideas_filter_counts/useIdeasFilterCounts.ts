@@ -18,6 +18,7 @@ const fetchIdeaFilterCounts = ({
       ...queryParams,
       'page[size]': undefined,
       'page[number]': undefined,
+      idea_status: undefined,
     },
   });
 
