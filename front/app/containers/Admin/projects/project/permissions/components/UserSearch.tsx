@@ -11,8 +11,7 @@ import { IGroupMembershipsFoundUserData } from 'services/groupMemberships';
 import useProjectModerators from 'hooks/useProjectModerators';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // Components
@@ -64,150 +63,149 @@ interface UserOption extends IOption {
   isAdmin: boolean;
 }
 
-const UserSearch = memo(
-  ({ projectId, intl: { formatMessage } }: Props & WrappedComponentProps) => {
-    const [selection, setSelection] = useState<UserOption[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [processing, setProcessing] = useState(false);
-    const [searchInput, setSearchInput] = useState('');
-    const moderators = useProjectModerators(projectId);
-    const [showModal, setShowModal] = useState(false);
-    const closeModal = () => {
-      setShowModal(false);
-    };
-    const openModal = () => {
-      setShowModal(true);
-    };
-    // If it is an admin, that isn't counted as a new seat to buy
-    const noOfSeatsToBuy = selection.filter(
-      (selectedUser) => !selectedUser.isAdmin
-    ).length;
+const UserSearch = memo(({ projectId }: Props) => {
+  const { formatMessage } = useIntl();
+  const [selection, setSelection] = useState<UserOption[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [processing, setProcessing] = useState(false);
+  const [searchInput, setSearchInput] = useState('');
+  const moderators = useProjectModerators(projectId);
+  const [showModal, setShowModal] = useState(false);
+  const closeModal = () => {
+    setShowModal(false);
+  };
+  const openModal = () => {
+    setShowModal(true);
+  };
+  // If it is an admin, that isn't counted as a new seat to buy
+  const noOfSeatsToBuy = selection.filter(
+    (selectedUser) => !selectedUser.isAdmin
+  ).length;
 
-    const getOptions = (users: IGroupMembershipsFoundUserData[]) => {
-      return users
-        .filter((user) => {
-          let userIsNotYetModerator = true;
+  const getOptions = (users: IGroupMembershipsFoundUserData[]) => {
+    return users
+      .filter((user) => {
+        let userIsNotYetModerator = true;
 
-          if (!isNilOrError(moderators)) {
-            moderators.forEach((moderator) => {
-              if (moderator.id === user.id) {
-                userIsNotYetModerator = false;
-              }
-            });
-          }
-
-          return userIsNotYetModerator;
-        })
-        .map((user) => {
-          return {
-            value: user.id,
-            label: `${user.attributes.first_name} ${user.attributes.last_name}`,
-            email: `${user.attributes.email}`,
-            disabled: isModerator(user)
-              ? user.attributes['is_moderator']
-              : user.attributes['is_member'],
-            isAdmin: user.attributes.roles?.find((r) => r.type === 'admin'),
-          };
-        });
-    };
-
-    const loadOptions = (inputValue: string, callback) => {
-      if (inputValue) {
-        setLoading(true);
-
-        findMembership(projectId, {
-          queryParameters: {
-            search: inputValue,
-          },
-        })
-          .observable.pipe(first())
-          .subscribe((response) => {
-            const options = getOptions(response.data);
-            setLoading(false);
-            callback(options);
-          });
-      }
-    };
-
-    const handleOnChange = async (selection: UserOption[]) => {
-      setSelection(selection);
-    };
-
-    const handleOnAddModeratorsClick = async () => {
-      if (selection && selection.length > 0) {
-        setProcessing(true);
-        const promises = selection.map((item) =>
-          addMembership(projectId, item.value)
-        );
-
-        try {
-          await Promise.all(promises);
-          setSelection([]);
-          setProcessing(false);
-        } catch {
-          setSelection([]);
-          setProcessing(false);
-        }
-      }
-    };
-
-    const handleSearchInputOnChange = (inputValue: string) => {
-      setSearchInput(inputValue);
-    };
-
-    const noOptionsMessage = (inputValue: string) => {
-      if (!isNonEmptyString(inputValue)) {
-        return null;
-      }
-      return formatMessage(messages.noOptions);
-    };
-
-    const isDropdownIconHidden = !isNonEmptyString(searchInput);
-
-    return (
-      <Container>
-        <SelectGroupsContainer>
-          <StyledAsyncSelect
-            name="search-user"
-            isMulti={true}
-            cacheOptions={false}
-            defaultOptions={false}
-            loadOptions={loadOptions}
-            isLoading={loading}
-            isDisabled={processing}
-            value={selection}
-            onChange={handleOnChange}
-            placeholder={formatMessage(messages.searchUsers)}
-            styles={selectStyles}
-            noOptionsMessage={noOptionsMessage}
-            onInputChange={handleSearchInputOnChange}
-            components={
-              isDropdownIconHidden && {
-                DropdownIndicator: () => null,
-              }
+        if (!isNilOrError(moderators)) {
+          moderators.forEach((moderator) => {
+            if (moderator.id === user.id) {
+              userIsNotYetModerator = false;
             }
-          />
+          });
+        }
 
-          <AddGroupButton
-            text={formatMessage(messages.addModerators)}
-            buttonStyle="cl-blue"
-            icon="plus-circle"
-            padding="13px 16px"
-            onClick={openModal}
-            disabled={!selection || selection.length === 0}
-            processing={processing}
-          />
-        </SelectGroupsContainer>
-        <AddCollaboratorsModal
-          addModerators={handleOnAddModeratorsClick}
-          showModal={showModal}
-          closeModal={closeModal}
-          noOfSeatsToAdd={selection.length}
-          noOfSeatsToBuy={noOfSeatsToBuy}
+        return userIsNotYetModerator;
+      })
+      .map((user) => {
+        return {
+          value: user.id,
+          label: `${user.attributes.first_name} ${user.attributes.last_name}`,
+          email: `${user.attributes.email}`,
+          disabled: isModerator(user)
+            ? user.attributes['is_moderator']
+            : user.attributes['is_member'],
+          isAdmin: user.attributes.roles?.find((r) => r.type === 'admin'),
+        };
+      });
+  };
+
+  const loadOptions = (inputValue: string, callback) => {
+    if (inputValue) {
+      setLoading(true);
+
+      findMembership(projectId, {
+        queryParameters: {
+          search: inputValue,
+        },
+      })
+        .observable.pipe(first())
+        .subscribe((response) => {
+          const options = getOptions(response.data);
+          setLoading(false);
+          callback(options);
+        });
+    }
+  };
+
+  const handleOnChange = async (selection: UserOption[]) => {
+    setSelection(selection);
+  };
+
+  const handleOnAddModeratorsClick = async () => {
+    if (selection && selection.length > 0) {
+      setProcessing(true);
+      const promises = selection.map((item) =>
+        addMembership(projectId, item.value)
+      );
+
+      try {
+        await Promise.all(promises);
+        setSelection([]);
+        setProcessing(false);
+      } catch {
+        setSelection([]);
+        setProcessing(false);
+      }
+    }
+  };
+
+  const handleSearchInputOnChange = (inputValue: string) => {
+    setSearchInput(inputValue);
+  };
+
+  const noOptionsMessage = (inputValue: string) => {
+    if (!isNonEmptyString(inputValue)) {
+      return null;
+    }
+    return formatMessage(messages.noOptions);
+  };
+
+  const isDropdownIconHidden = !isNonEmptyString(searchInput);
+
+  return (
+    <Container>
+      <SelectGroupsContainer>
+        <StyledAsyncSelect
+          name="search-user"
+          isMulti={true}
+          cacheOptions={false}
+          defaultOptions={false}
+          loadOptions={loadOptions}
+          isLoading={loading}
+          isDisabled={processing}
+          value={selection}
+          onChange={handleOnChange}
+          placeholder={formatMessage(messages.searchUsers)}
+          styles={selectStyles}
+          noOptionsMessage={noOptionsMessage}
+          onInputChange={handleSearchInputOnChange}
+          components={
+            isDropdownIconHidden && {
+              DropdownIndicator: () => null,
+            }
+          }
         />
-      </Container>
-    );
-  }
-);
 
-export default injectIntl(UserSearch);
+        <AddGroupButton
+          text={formatMessage(messages.addModerators)}
+          buttonStyle="cl-blue"
+          icon="plus-circle"
+          padding="13px 16px"
+          onClick={openModal}
+          disabled={!selection || selection.length === 0}
+          processing={processing}
+        />
+      </SelectGroupsContainer>
+      <AddCollaboratorsModal
+        addModerators={handleOnAddModeratorsClick}
+        showModal={showModal}
+        closeModal={closeModal}
+        noOfSeatsToAdd={selection.length}
+        noOfSeatsToBuy={noOfSeatsToBuy}
+      />
+    </Container>
+  );
+});
+
+export default UserSearch;
