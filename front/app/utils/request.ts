@@ -51,7 +51,6 @@ export default function request<T>(
       if (response.ok || response.status === 200) {
         return json;
       }
-      console.log('check error requests');
       handleBlockedUserError(response.status, json);
       const errorMessage = isString(json?.error)
         ? json.error

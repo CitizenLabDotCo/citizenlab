@@ -1,6 +1,7 @@
 import { CLErrorsJSON } from 'typings';
 import messages from './messages';
 import { isArray } from 'lodash-es';
+import clHistory from 'utils/cl-router/history';
 
 export function isCLErrorJSON(value: unknown): value is CLErrorsJSON {
   let objectToCheck = value;
@@ -185,7 +186,8 @@ export const handleBlockedUserError = (status, data) => {
     data.errors.base[0].error == 'blocked' &&
     window.location.href.indexOf('disabled-account') === -1
   ) {
-    console.log('user is blocked ', data.errors.base[0]);
-    window.location.href = `/disabled-account?date=${data.errors.base[0].details.block_end_at}`;
+    clHistory.push(
+      `/disabled-account?date=${data.errors.base[0].details.block_end_at}`
+    );
   }
 };

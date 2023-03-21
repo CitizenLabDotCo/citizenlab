@@ -4,15 +4,15 @@ import moment from 'moment';
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import { Title } from 'components/smallForm';
-import { useParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 export default () => {
-  const { date } = useParams();
-  const parsedDate = moment(date).format('LL');
+  let [searchParams, _] = useSearchParams();
+  const parsedDate = moment(searchParams.get('date')).format('LL');
 
   return (
     <Box
@@ -29,6 +29,7 @@ export default () => {
         <FormattedMessage {...messages.title} />
       </Title>
       <FormattedMessage {...messages.text} />
+      <br />
       <FormattedMessage
         {...messages.bottomText}
         values={{ date: parsedDate }}
