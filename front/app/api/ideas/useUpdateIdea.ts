@@ -28,7 +28,11 @@ const useUpdateIdea = () => {
       queryClient.invalidateQueries({ queryKey: ideaMarkersKeys.lists() });
       streams.fetchAllWith({
         dataId: [idea.data.relationships.project.data.id],
-        apiEndpoint: [`${API_PATH}/stats/ideas_count`, `${API_PATH}/analytics`],
+        apiEndpoint: [
+          `${API_PATH}/stats/ideas_count`,
+          `${API_PATH}/analytics`,
+          `${API_PATH}/topics`,
+        ],
         partialApiEndpoint: [`${API_PATH}/ideas/${idea.data.id}/images`],
       });
     },
