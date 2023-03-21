@@ -11,7 +11,7 @@ import IdeasEditMeta from '../IdeasEditMeta';
 
 // services
 import { deleteIdeaImage } from 'services/ideaImages';
-import { hasPermission } from 'services/permissions';
+import { hasPermission, usePermission } from 'services/permissions';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';
@@ -38,6 +38,11 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
   const authUser = useAuthUser();
   const { data: idea } = useIdeaById(ideaId);
+  const granted = usePermission({
+    item: idea?.data || null,
+    action: 'edit',
+    context: idea?.data,
+  });
   const { mutate: updateIdea } = useUpdateIdea();
   const project = useProject({
     projectId: isNilOrError(idea)
@@ -54,6 +59,12 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
     projectId: project?.id,
     inputId: ideaId,
   });
+
+  useEffect(() => {
+    if (idea && !granted) {
+      clHistory.push('/');
+    }
+  }, [idea, granted]);
 
   useEffect(() => {
     if (!isNilOrError(idea)) {
