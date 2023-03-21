@@ -8,8 +8,6 @@ import {
   InitiativeFilterCountsKeys,
 } from './types';
 
-export const defaultPageSize = 12;
-
 const fetchInitiativeFilterCounts = ({ ...queryParams }: IQueryParameters) =>
   fetcher<IInitiativesFilterCounts>({
     path: `/initiatives/filter_counts`,
