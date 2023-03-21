@@ -71,7 +71,7 @@ const AuthModal = () => {
     >
       <Box px={smallerThanPhone ? '16px' : '32px'} py="32px" w="100%">
         {error && (
-          <Box mb="8px">
+          <Box mb="16px">
             <Error text={formatMessage(ERROR_CODE_MESSAGES[error])} />
           </Box>
         )}
