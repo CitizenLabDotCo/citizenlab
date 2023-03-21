@@ -34,8 +34,10 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
     appConfiguration?.data.attributes.settings.core.maximum_admins_number;
   const maximumProjectCollaborators =
     appConfiguration?.data.attributes.settings.core.maximum_moderators_number;
-  const maximumSeatNumber =
-    seatType === 'admin' ? maximumAdmins : maximumProjectCollaborators;
+  const maximumSeatNumber = {
+    admin: maximumAdmins,
+    collaborator: maximumProjectCollaborators,
+  }[seatType];
 
   // Maximum seat number being null means that there are unlimited seats so we don't show the seat info
   if (isNil(maximumSeatNumber) || !seats || !appConfiguration) {
@@ -45,17 +47,19 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
   const currentAdminSeats = seats.data.attributes.admins_number;
   const currentCollaboratorSeats =
     seats.data.attributes.project_moderators_number;
-  let currentSeatNumber =
-    seatType === 'admin' ? currentAdminSeats : currentCollaboratorSeats;
+  let currentSeatNumber = {
+    admin: currentAdminSeats,
+    collaborator: currentCollaboratorSeats,
+  }[seatType];
   const additionalSeats = currentSeatNumber - maximumSeatNumber;
-  const currentSeatTypeTitle =
-    seatType === 'admin'
-      ? messages.currentAdminSeatsTitle
-      : messages.currentCollaboratorSeatsTitle;
-  const tooltipMessage =
-    seatType === 'admin'
-      ? messages.includedAdminToolTip
-      : messages.includedCollaboratorToolTip;
+  const currentSeatTypeTitle = {
+    admin: messages.currentAdminSeatsTitle,
+    collaborator: messages.currentCollaboratorSeatsTitle,
+  }[seatType];
+  const tooltipMessage = {
+    admin: messages.includedAdminToolTip,
+    collaborator: messages.includedCollaboratorToolTip,
+  }[seatType];
 
   // Show maximum number of seats if user has used more for this value
   if (currentSeatNumber >= maximumSeatNumber) {
