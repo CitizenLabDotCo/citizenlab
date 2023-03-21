@@ -5,7 +5,6 @@ class ApplicationController < ActionController::API
   include Pundit
 
   before_action :authenticate_user
-  before_action :error_if_blocked_user
 
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
@@ -43,8 +42,13 @@ class ApplicationController < ActionController::API
 
   # @param [Pundit::NotAuthorized] exception
   def user_not_authorized(exception)
-    reason = exception.reason || 'Unauthorized!'
-    render json: { errors: { base: [{ error: reason }] } }, status: :unauthorized
+    if current_user&.blocked?
+      render json: { errors: { base: [{ error: 'blocked', details: { block_end_at: current_user.block_end_at } }] } },
+        status: :unauthorized
+    else
+      reason = exception.reason || 'Unauthorized!'
+      render json: { errors: { base: [{ error: reason }] } }, status: :unauthorized
+    end
   end
 
   # Used by semantic logger to include in every log line
@@ -117,14 +121,5 @@ class ApplicationController < ActionController::API
 
     # setting the image attribute to nil will not remove the image
     resource.public_send("remove_#{image_field_name}!")
-  end
-
-  def error_if_blocked_user
-    return true unless current_user&.blocked?
-
-    render json: { errors: { base: [{ error: 'blocked', details: { block_end_at: current_user.block_end_at } }] } },
-      status: :unauthorized
-
-    false
   end
 end
