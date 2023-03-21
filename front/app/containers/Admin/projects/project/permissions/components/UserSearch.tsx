@@ -47,7 +47,6 @@ function isModerator(user: IGroupMembershipsFoundUserData) {
 
 interface UserOption extends IOption {
   email: string;
-  isAdmin: boolean;
 }
 
 const UserSearch = memo(({ projectId }: Props) => {
@@ -88,7 +87,6 @@ const UserSearch = memo(({ projectId }: Props) => {
           disabled: isModerator(user)
             ? user.attributes['is_moderator']
             : user.attributes['is_member'],
-          isAdmin: user.attributes.roles?.find((r) => r.type === 'admin'),
         };
       });
   };
