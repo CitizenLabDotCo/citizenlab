@@ -1754,6 +1754,7 @@
   "app.containers.admin.project.permissions.permissionEveryoneEmailWarning": "In addition to registered users, unregistered users who provide an email and confirm it will be able to take the action. Select this option to lower the barrier for participation.",
   "app.containers.admin.project.permissions.permissionsAdministrators": "Administrators",
   "app.containers.admin.project.permissions.permissionsAdminsAndCollaborators": "Admins and collaborators only",
+  "app.containers.admin.project.permissions.permissionsAdminsAndCollaboratorsTooltip": "Only platform admins, folder managers and project managers can take the action",
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Anyone",
   "app.containers.admin.project.permissions.permissionsEmailConfirmLabel": "Users with confirmed email",
   "app.containers.admin.project.permissions.permissionsEmailConfirmLabelDescription": "Anyone can participate after submitting and confirming their email address.",
