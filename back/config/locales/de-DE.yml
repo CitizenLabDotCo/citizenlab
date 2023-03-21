@@ -225,7 +225,7 @@ de:
       confirm_email_address: "Bestätigen Sie Ihre E-Mail Adresse"
       thanks_for_signing_up: "Vielen Dank, dass Sie sich für die Beteiligungsplattform %{organizationName} registriert haben."
       best_regards: "Herzliche Grüße"
-      ignore_email: "Wenn Sie keinen Code angefordert haben, können Sie diese E-Mail getrost ignorieren."
+      ignore_email: "Wenn Sie keinen Code angefordert haben, können Sie diese E-Mail einfach ignorieren."
       expire_code: "Dieser Code läuft ab in "
       24_hours: "24 Stunden."
       copy_paste_the_link_below: "Kopieren Sie den unten stehenden Code und fügen Sie ihn in das Registrierungsformular auf der Plattform ein."
