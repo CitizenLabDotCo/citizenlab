@@ -6,7 +6,7 @@ import { get } from 'lodash-es';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import { WrappedComponentProps } from 'react-intl';
 
@@ -20,10 +20,10 @@ import Modal from 'components/UI/Modal';
 import SpamReportForm from 'containers/SpamReport';
 import Button from 'components/UI/Button';
 import HasPermission from 'components/HasPermission';
-import CommentsAdminDeletionModal from './CommentsAdminDeletionModal';
+import CommentsAdminDeletionModal from '../CommentsAdminDeletionModal';
 
 // events
-import { deleteCommentModalClosed, commentDeleted } from './events';
+import { deleteCommentModalClosed, commentDeleted } from '../events';
 
 // Styling
 import styled from 'styled-components';

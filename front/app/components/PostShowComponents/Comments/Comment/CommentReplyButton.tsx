@@ -4,16 +4,16 @@ import { get } from 'lodash-es';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // events
-import { commentReplyButtonClicked } from './events';
+import { commentReplyButtonClicked } from '../events';
 import { openSignUpInModal } from 'events/openSignUpInModal';
 import { openVerificationModal } from 'events/verificationModal';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+import tracks from '../tracks';
 
 // style
 import styled from 'styled-components';

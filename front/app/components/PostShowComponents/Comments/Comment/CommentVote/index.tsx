@@ -4,7 +4,7 @@ import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
+import UpvoteButton from './UpvoteButton';
 
 // services
 import { addCommentVote, deleteCommentVote } from 'services/commentVotes';
@@ -22,101 +22,14 @@ import GetInitiativesPermissions, {
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+import tracks from '../../tracks';
 
 // events
 import { openSignUpInModal } from 'events/openSignUpInModal';
 import { openVerificationModal } from 'events/verificationModal';
 
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-
-// style
-import styled from 'styled-components';
-import { colors, fontSizes, isRtl } from 'utils/styleUtils';
-import { lighten } from 'polished';
-
-// a11y
-import { ScreenReaderOnly } from 'utils/a11y';
-
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
-
-const Container = styled.li`
-  display: flex;
-  align-items: center;
-  list-style: none;
-  margin: 0;
-  margin-left: 1px;
-  padding: 0;
-`;
-
-const UpvoteIcon = styled(Icon)`
-  fill: ${colors.textSecondary};
-  flex: 0 0 20px;
-  width: 20px;
-  height: 20px;
-`;
-
-const UpvoteButton = styled.button`
-  color: ${colors.textSecondary};
-  font-size: ${fontSizes.s}px;
-  font-weight: 400;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-  margin: 0;
-  padding: 0;
-  border: none;
-  cursor: pointer;
-
-  &.disabled {
-    cursor: auto;
-  }
-
-  &.enabled:not(.voted):hover {
-    color: #000;
-
-    ${UpvoteIcon} {
-      fill: #000;
-    }
-  }
-
-  &.enabled.voted {
-    color: ${colors.success};
-
-    ${UpvoteIcon} {
-      fill: ${colors.success};
-    }
-  }
-
-  &.disabled:not(.voted) {
-    color: ${lighten(0.25, colors.textSecondary)};
-
-    ${UpvoteIcon} {
-      fill: ${lighten(0.25, colors.textSecondary)};
-    }
-  }
-
-  &.disabled.voted {
-    color: ${lighten(0.25, colors.success)};
-
-    ${UpvoteIcon} {
-      fill: ${lighten(0.25, colors.success)};
-    }
-  }
-`;
-
-const UpvoteCount = styled.div`
-  margin-left: 6px;
-  ${isRtl`
-    margin-right: 6px;
-    margin-left: auto;
-  `}
-`;
 
 interface InputProps {
   postId: string;
@@ -147,8 +60,7 @@ const CommentVote = ({
   idea,
   commentVotingPermissionInitiative,
   className,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+}: Props) => {
   const [voted, setVoted] = useState(false);
   const [upvoteCount, setUpvoteCount] = useState(0);
   const initiativeId = postType === 'initiative' ? postId : null;
@@ -235,7 +147,7 @@ const CommentVote = ({
     if (postType === 'idea') {
       const commentVotingDisabledReason = get(
         post,
-        'attributes.action_descriptor.comment_voting_idea.disabled_reason'
+        'attributes.action_descriptor.commenting_idea.disabled_reason'
       );
 
       const authUserIsVerified =
@@ -243,7 +155,7 @@ const CommentVote = ({
 
       const context = {
         type: 'idea',
-        action: 'comment_voting_idea',
+        action: 'commenting_idea',
         id: postId,
       } as const;
 
@@ -259,7 +171,7 @@ const CommentVote = ({
         openSignUpInModal({
           verification: commentVotingDisabledReason === 'not_verified',
           context,
-          onSuccess: () => handleVoteClick(),
+          onSuccess: () => vote(),
         });
       } else if (commentVotingDisabledReason === 'not_active') {
         openSignUpInModal({ context });
@@ -270,25 +182,25 @@ const CommentVote = ({
       const authenticationRequirements =
         commentVotingPermissionInitiative?.authenticationRequirements;
       const context = {
-        action: 'comment_voting_initiative',
+        action: 'commenting_initiative',
         type: 'initiative',
       } as const;
 
       if (authenticationRequirements === 'sign_in_up') {
         openSignUpInModal({
           context,
-          onSuccess: () => handleVoteClick(),
+          onSuccess: () => vote(),
         });
       } else if (authenticationRequirements === 'complete_registration') {
         openSignUpInModal({
           context,
-          onSuccess: () => handleVoteClick(),
+          onSuccess: () => vote(),
         });
       } else if (authenticationRequirements === 'sign_in_up_and_verify') {
         openSignUpInModal({
           verification: true,
           context,
-          onSuccess: () => handleVoteClick(),
+          onSuccess: () => vote(),
         });
       } else if (authenticationRequirements === 'verify') {
         openVerificationModal({ context });
@@ -301,7 +213,7 @@ const CommentVote = ({
   if (!isNilOrError(comment)) {
     const commentingVotingDisabledReason = get(
       post,
-      'attributes.action_descriptor.comment_voting_idea.disabled_reason'
+      'attributes.action_descriptor.commenting_idea.disabled_reason'
     );
     const isSignedIn = !isNilOrError(authUser);
     const disabled =
@@ -311,55 +223,19 @@ const CommentVote = ({
 
     if (!disabled || upvoteCount > 0) {
       return (
-        <Container className={`vote ${className || ''}`}>
-          <UpvoteButton
-            onClick={handleVoteClick}
-            disabled={disabled}
-            className={`
-              e2e-comment-vote
-              ${voted ? 'voted' : 'notVoted'}
-              ${disabled ? 'disabled' : 'enabled'}
-            `}
-          >
-            <>
-              <UpvoteIcon
-                name="vote-up"
-                className={`
-                ${voted ? 'voted' : 'notVoted'}
-                ${disabled ? 'disabled' : 'enabled'}
-              `}
-              />
-              <ScreenReaderOnly>
-                {!voted
-                  ? formatMessage(messages.upvoteComment)
-                  : formatMessage(messages.a11y_undoUpvote)}
-              </ScreenReaderOnly>
-            </>
-            {upvoteCount > 0 && (
-              <UpvoteCount
-                className={`
-              ${voted ? 'voted' : 'notVoted'}
-              ${disabled ? 'disabled' : 'enabled'}
-            `}
-              >
-                {upvoteCount}
-              </UpvoteCount>
-            )}
-          </UpvoteButton>
-          <ScreenReaderOnly aria-live="polite">
-            {formatMessage(messages.a11y_upvoteCount, {
-              upvoteCount,
-            })}
-          </ScreenReaderOnly>
-        </Container>
+        <UpvoteButton
+          className={className}
+          disabled={disabled}
+          voted={voted}
+          upvoteCount={upvoteCount}
+          onClick={handleVoteClick}
+        />
       );
     }
   }
 
   return null;
 };
-
-const CommentVoteWithHOCs = injectIntl(CommentVote);
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
@@ -389,6 +265,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <CommentVoteWithHOCs {...inputProps} {...dataProps} />}
+    {(dataProps) => <CommentVote {...inputProps} {...dataProps} />}
   </Data>
 );
