@@ -120,6 +120,11 @@ class ApplicationController < ActionController::API
   end
 
   def error_if_blocked_user
-    raise Pundit::NotAuthorizedError, reason: 'user is blocked' if current_user&.blocked?
+    return true unless current_user&.blocked?
+
+    render json: { errors: { base: [{ error: 'blocked', details: { block_end_at: current_user.block_end_at } }] } },
+      status: :unauthorized
+
+    false
   end
 end
