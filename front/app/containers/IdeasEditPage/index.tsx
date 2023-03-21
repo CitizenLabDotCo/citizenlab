@@ -190,10 +190,6 @@ const IdeaEditPage = ({
     }
   }, [ideaImage]);
 
-  if (isNilOrError(locale) || isNilOrError(idea)) {
-    return null;
-  }
-
   if (isNilOrError(locale) || isNilOrError(idea) || isNilOrError(project)) {
     return null;
   }
