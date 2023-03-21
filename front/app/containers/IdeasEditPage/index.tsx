@@ -367,7 +367,7 @@ const IdeaEditPage = ({
     project,
     phases
   );
-  console.log(address);
+
   return (
     <Container id="e2e-idea-edit-page">
       <IdeasEditMeta ideaId={ideaId} projectId={projectId} />
