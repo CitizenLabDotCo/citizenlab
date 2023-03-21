@@ -54,16 +54,16 @@ const SeatInfo = ({ seatType }: Props) => {
   const additionalSeats = currentSeatNumber - maximumSeatNumber;
 
   // Messages
-  const seatTypeMessage: {
+  type SeatTypeMessageDescriptor = {
     [key in TSeatType]: MessageDescriptor;
-  } = {
+  };
+
+  const seatTypeMessage: SeatTypeMessageDescriptor = {
     admin: messages.currentAdminSeatsTitle,
     collaborator: messages.currentCollaboratorSeatsTitle,
   };
   const currentSeatTypeTitle = seatTypeMessage[seatType];
-  const tooltipMessages: {
-    [key in TSeatType]: MessageDescriptor;
-  } = {
+  const tooltipMessages: SeatTypeMessageDescriptor = {
     admin: messages.includedAdminToolTip,
     collaborator: messages.includedCollaboratorToolTip,
   };
