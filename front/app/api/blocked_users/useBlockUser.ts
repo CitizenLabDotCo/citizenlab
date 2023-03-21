@@ -11,7 +11,7 @@ const blockUser = async ({ userId, reason }: IBlockUser) => {
   return fetcher<IUser>({
     path: `/users/${userId}/block`,
     action: 'patch',
-    body: { reason },
+    body: { block_reason: reason },
   });
 };
 
