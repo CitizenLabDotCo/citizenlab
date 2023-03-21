@@ -26,7 +26,6 @@ import { canModerateProject } from 'services/permissions/rules/projectPermission
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetPost, { GetPostChildProps } from 'resources/GetPost';
 import GetWindowSize, {
   GetWindowSizeChildProps,
 } from 'resources/GetWindowSize';
@@ -45,6 +44,7 @@ import { GetAppConfigurationChildProps } from 'resources/GetAppConfiguration';
 
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useIdeaById from 'api/ideas/useIdeaById';
 
 const Container = styled.div`
   display: flex;
@@ -119,7 +119,6 @@ interface DataProps {
   commentingPermissionInitiative: GetInitiativesPermissionsChildProps;
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
-  idea: GetPostChildProps;
   windowSize: GetWindowSizeChildProps;
   appConfiguration: GetAppConfigurationChildProps;
 }
@@ -137,7 +136,6 @@ const ParentCommentForm = ({
   commentingPermissionInitiative,
   className,
   postingComment,
-  idea,
 }: Props & WrappedComponentProps) => {
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
   const [inputValue, setInputValue] = useState('');
@@ -146,9 +144,12 @@ const ParentCommentForm = ({
   const [hasApiError, setHasApiError] = useState(false);
   const [profanityApiError, setProfanityApiError] = useState(false);
   const [hasEmptyError, setHasEmptyError] = useState(true);
-  const initiativeId = postType === 'initiative' ? postId : null;
+
+  const initiativeId = postType === 'initiative' ? postId : undefined;
+  const ideaId = postType === 'idea' ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
-  const post = postType === 'idea' ? idea : initiative?.data;
+  const { data: idea } = useIdeaById(ideaId);
+  const post = initiative || idea;
 
   useEffect(() => {
     postingComment(processing);
@@ -183,11 +184,8 @@ const ParentCommentForm = ({
   };
 
   const onSubmit = async () => {
-    const projectId: string | null = get(
-      post,
-      'relationships.project.data.id',
-      null
-    );
+    const projectId: string | null =
+      idea?.data.relationships.project.data.id || null;
 
     setFocused(false);
     setProcessing(true);
@@ -308,7 +306,8 @@ const ParentCommentForm = ({
   const commentingEnabled =
     postType === 'initiative'
       ? commentingPermissionInitiative?.enabled === true
-      : get(post, 'attributes.action_descriptor.commenting_idea.enabled', true);
+      : idea?.data.attributes?.action_descriptor.commenting_idea.enabled ===
+        true;
   const projectId: string | null = get(
     post,
     'relationships.project.data.id',
@@ -396,11 +395,6 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
   windowSize: <GetWindowSize />,
-  idea: ({ postId, render }) => (
-    <GetPost id={postId} type="idea">
-      {render}
-    </GetPost>
-  ),
   commentingPermissionInitiative: (
     <GetInitiativesPermissions action="commenting_initiative" />
   ),

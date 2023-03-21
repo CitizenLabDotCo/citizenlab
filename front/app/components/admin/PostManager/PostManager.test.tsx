@@ -2,14 +2,13 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { getIdea } from 'services/ideas';
+import { getIdea } from 'api/ideas/__mocks__/useIdeaById';
 import { mockTopicData } from 'services/__mocks__/topics';
 import { mockIdeaStatusData } from 'services/__mocks__/ideaStatuses';
 import { mockProposalStatusData } from 'services/__mocks__/proposalStatuses';
 
 // mocking dependencies
 jest.mock('services/globalState');
-jest.mock('services/ideas');
 jest.mock('resources/GetIdeaStatuses', () => 'GetIdeaStatuses');
 jest.mock('resources/GetInitiativeStatuses', () => 'GetInitiativeStatuses');
 jest.mock('resources/GetIdeas', () => 'GetIdeas');

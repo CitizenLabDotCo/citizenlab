@@ -13,7 +13,6 @@ import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
-import GetPost, { GetPostChildProps } from 'resources/GetPost';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -28,6 +27,7 @@ import Outlet from 'components/Outlet';
 
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useIdeaById from 'api/ideas/useIdeaById';
 
 const footerHeight = '30px';
 const footerTopMargin = '6px';
@@ -115,7 +115,6 @@ interface DataProps {
   tenantLocales: GetAppConfigurationLocalesChildProps;
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
-  idea: GetPostChildProps;
   comment: GetCommentChildProps;
   author: GetUserChildProps;
   commentingPermissionInitiative: GetInitiativesPermissionsChildProps;
@@ -136,12 +135,13 @@ const CommentFooter = ({
   comment,
   tenantLocales,
   locale,
-  idea,
   commentingPermissionInitiative,
 }: Props) => {
-  const initiativeId = postType === 'initiative' ? postId : null;
+  const initiativeId = postType === 'initiative' ? postId : undefined;
+  const ideaId = postType === 'idea' ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
-  const post = postType === 'idea' ? idea : initiative?.data;
+  const { data: idea } = useIdeaById(ideaId);
+  const post = postType === 'idea' ? idea?.data : initiative?.data;
 
   if (
     isNilOrError(post) ||
@@ -194,11 +194,6 @@ const Data = adopt<DataProps, InputProps>({
   tenantLocales: <GetAppConfigurationLocales />,
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
-  idea: ({ postId, render }) => (
-    <GetPost id={postId} type="idea">
-      {render}
-    </GetPost>
-  ),
   comment: ({ commentId, render }) => (
     <GetComment id={commentId}>{render}</GetComment>
   ),

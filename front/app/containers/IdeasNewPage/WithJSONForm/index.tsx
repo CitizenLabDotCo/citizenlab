@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState, useCallback } from 'react';
 import { PreviousPathnameContext } from 'context';
 
-import { WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 
 import { isAdmin, isModerator, isSuperAdmin } from 'services/permissions/roles';
@@ -13,7 +12,7 @@ import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import usePhase from 'hooks/usePhase';
 import useInputSchema from 'hooks/useInputSchema';
-import { useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 import messages from '../messages';
 
@@ -23,7 +22,7 @@ import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
 import PageContainer from 'components/UI/PageContainer';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 import { Heading } from 'containers/IdeasNewPage/WithJSONForm/Heading';
-import { addIdea } from 'services/ideas';
+import useAddIdea from 'api/ideas/useAddIdea';
 import { geocode, reverseGeocode } from 'utils/locationTools';
 
 // for getting inital state from previous page
@@ -33,7 +32,9 @@ import { getCurrentPhase } from 'services/phases';
 import { getMethodConfig } from 'utils/participationMethodUtils';
 import { getLocationGeojson } from '../utils';
 
-const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
+const IdeasNewPageWithJSONForm = () => {
+  const { mutate: addIdea } = useAddIdea();
+  const params = useParams<{ slug: string }>();
   const previousPathName = useContext(PreviousPathnameContext);
   const authUser = useAuthUser();
   const project = useProject({ projectSlug: params.slug });
@@ -63,13 +64,15 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   }, [authUser, project, previousPathName]);
 
   const search = location.search;
-  // Click on map flow :
-  // clicked location is passed in url params
-  // reverse goecode them and use them as initial data
+
   const [processingLocation, setProcessingLocation] = useState(false);
   const [initialFormData, setInitialFormData] = useState({});
 
   useEffect(() => {
+    // Click on map flow :
+    // clicked location is passed in url params
+    // reverse goecode them and use them as initial data
+
     const { lat, lng } = parse(search, {
       ignoreQueryPrefix: true,
       decoder: (str, _defaultEncoder, _charset, type) => {
@@ -77,22 +80,16 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
       },
     }) as { [key: string]: string | number };
 
-    if (lat && lng) {
-      setInitialFormData((initialFormData) => ({
-        ...initialFormData,
-        location_point_geojson: {
-          type: 'Point',
-          coordinates: [lng, lat],
-        },
-      }));
-    }
-
     if (typeof lat === 'number' && typeof lng === 'number') {
       setProcessingLocation(true);
       reverseGeocode(lat, lng).then((address) => {
         setInitialFormData((initialFormData) => ({
           ...initialFormData,
           location_description: address,
+          location_point_geojson: {
+            type: 'Point',
+            coordinates: [lng, lat],
+          },
         }));
         setProcessingLocation(false);
       });
@@ -108,35 +105,45 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
 
     location_point_geojson = await getLocationGeojson(initialFormData, data);
 
-    const idea = await addIdea({
-      ...data,
-      location_point_geojson,
-      project_id: project?.id,
-      publication_status: 'published',
-      phase_ids: phaseId ? [phaseId] : null,
-    });
-    const ideaId = idea.data.id;
+    addIdea(
+      {
+        ...data,
+        location_point_geojson,
+        project_id: project?.id,
+        publication_status: 'published',
+        phase_ids: phaseId ? [phaseId] : null,
+      },
+      {
+        onSuccess: (idea) => {
+          const ideaId = idea.data.id;
 
-    // Check ParticipationMethodConfig for form submission action
-    if (
-      project?.attributes.process_type === 'timeline' &&
-      !isNilOrError(phases)
-    ) {
-      // Check if URL contains specific phase_id
-      const phaseIdFromUrl = queryParams.get('phase_id');
-      const phaseUsed =
-        phases.find((phase) => phase.id === phaseIdFromUrl) ||
-        getCurrentPhase(phases);
-      if (!isNilOrError(phaseUsed)) {
-        getMethodConfig(
-          phaseUsed?.attributes?.participation_method
-        ).onFormSubmission({ project, ideaId, idea, phaseId: phaseUsed.id });
+          // Check ParticipationMethodConfig for form submission action
+          if (
+            project?.attributes.process_type === 'timeline' &&
+            !isNilOrError(phases)
+          ) {
+            // Check if URL contains specific phase_id
+            const phaseUsed =
+              phases.find((phase) => phase.id === phaseId) ||
+              getCurrentPhase(phases);
+            if (!isNilOrError(phaseUsed)) {
+              getMethodConfig(
+                phaseUsed?.attributes?.participation_method
+              ).onFormSubmission({
+                project,
+                ideaId,
+                idea,
+                phaseId: phaseUsed.id,
+              });
+            }
+          } else if (!isNilOrError(project)) {
+            getMethodConfig(
+              project?.attributes.participation_method
+            ).onFormSubmission({ project, ideaId, idea });
+          }
+        },
       }
-    } else if (!isNilOrError(project)) {
-      getMethodConfig(
-        project?.attributes.participation_method
-      ).onFormSubmission({ project, ideaId, idea });
-    }
+    );
   };
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(

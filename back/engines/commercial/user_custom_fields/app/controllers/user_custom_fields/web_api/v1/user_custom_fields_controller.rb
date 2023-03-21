@@ -22,14 +22,14 @@ module UserCustomFields
       json_schema_multiloc = custom_field_service.fields_to_json_schema_multiloc(AppConfiguration.instance, fields)
       ui_schema_multiloc = get_ui_schema_multiloc(fields)
 
-      render json: { json_schema_multiloc: json_schema_multiloc, ui_schema_multiloc: ui_schema_multiloc }
+      render json: raw_json({ json_schema_multiloc: json_schema_multiloc, ui_schema_multiloc: ui_schema_multiloc })
     end
 
     def json_forms_schema
       authorize :custom_field, policy_class: UserCustomFieldPolicy
       fields = CustomField.with_resource_type(@resource_type)
 
-      render json: user_ui_and_json_multiloc_schemas(fields)
+      render json: raw_json(user_ui_and_json_multiloc_schemas(fields))
     end
 
     def show

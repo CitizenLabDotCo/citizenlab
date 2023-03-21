@@ -11,7 +11,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // services
-import { IdeaCommentingDisabledReason } from 'services/ideas';
+import { IdeaCommentingDisabledReason } from 'api/ideas/types';
 
 // i18n
 import messages from './messages';
