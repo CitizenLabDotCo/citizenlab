@@ -13,19 +13,20 @@ import {
 // Hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useSeats from 'api/seats/useSeats';
+import { TSeatType } from 'api/seats/types';
 
 // Intl
 import messages from './messages';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 // Utils
 import { isNil } from 'utils/helperUtils';
 
-type SeatInfoType = {
-  seatType: 'collaborator' | 'admin';
+type Props = {
+  seatType: TSeatType;
 };
 
-const SeatInfo = ({ seatType }: SeatInfoType) => {
+const SeatInfo = ({ seatType }: Props) => {
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
@@ -51,14 +52,20 @@ const SeatInfo = ({ seatType }: SeatInfoType) => {
     collaborator: currentCollaboratorSeats,
   }[seatType];
   const additionalSeats = currentSeatNumber - maximumSeatNumber;
-  const currentSeatTypeTitle = {
+  const seatTypeMessage: {
+    [key in TSeatType]: MessageDescriptor;
+  } = {
     admin: messages.currentAdminSeatsTitle,
     collaborator: messages.currentCollaboratorSeatsTitle,
-  }[seatType];
-  const tooltipMessage = {
+  };
+  const currentSeatTypeTitle = seatTypeMessage[seatType];
+  const tooltipMessages: {
+    [key in TSeatType]: MessageDescriptor;
+  } = {
     admin: messages.includedAdminToolTip,
     collaborator: messages.includedCollaboratorToolTip,
-  }[seatType];
+  };
+  const tooltipMessage = tooltipMessages[seatType];
 
   // Show maximum number of seats if user has used more for this value
   if (currentSeatNumber >= maximumSeatNumber) {
