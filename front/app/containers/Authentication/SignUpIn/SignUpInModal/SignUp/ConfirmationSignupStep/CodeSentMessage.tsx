@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -19,9 +19,17 @@ interface Props {
 }
 
 const CodeSentMessage = ({ email }: Props) => {
+  const [storedEmail, setStoredEmail] = useState<string | undefined>();
+
   const authUser = useAuthUser();
   const userEmail =
     email ?? (isNilOrError(authUser) ? undefined : authUser.attributes.email);
+
+  useEffect(() => {
+    if (userEmail) {
+      setStoredEmail(userEmail);
+    }
+  }, [userEmail]);
 
   return (
     <Box display="flex" alignItems="center" mb="20px">
@@ -36,7 +44,7 @@ const CodeSentMessage = ({ email }: Props) => {
           <FormattedMessage
             {...messages.anExampleCodeHasBeenSent}
             values={{
-              userEmail: <strong>{userEmail}</strong>,
+              userEmail: <strong>{storedEmail ?? userEmail}</strong>,
             }}
           />
         }
