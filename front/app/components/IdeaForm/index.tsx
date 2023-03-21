@@ -37,10 +37,7 @@ import GetAppConfiguration, {
 import { projectByIdStream, IProject, IProjectData } from 'services/projects';
 import { phasesStream, IPhaseData } from 'services/phases';
 import {
-  IIdeaFormSchemas,
   CustomFieldCodes,
-} from 'services/ideaCustomFieldsSchemas';
-import {
   ideaJsonFormsSchemaStream,
   IIdeaJsonFormSchemas,
 } from 'services/ideaJsonFormsSchema';
@@ -179,10 +176,7 @@ interface State {
   ideaFiles: UploadFile[];
   ideaFilesToRemove: UploadFile[];
   ideaFilesChanged: boolean;
-  ideaCustomFieldsSchemas:
-    | IIdeaFormSchemas['data']['attributes']
-    | IIdeaJsonFormSchemas['data']['attributes']
-    | null;
+  ideaCustomFieldsSchemas: IIdeaJsonFormSchemas['data']['attributes'] | null;
   authorId: string | null;
 }
 
@@ -233,7 +227,7 @@ class IdeaForm extends PureComponent<
       projectByIdStream(projectId).observable;
 
     let ideaCustomFieldsSchemas$: Observable<
-      IIdeaFormSchemas | IIdeaJsonFormSchemas | Error | null
+      IIdeaJsonFormSchemas | Error | null
     > = of(null);
 
     ideaCustomFieldsSchemas$ = ideaJsonFormsSchemaStream(
@@ -664,9 +658,7 @@ class IdeaForm extends PureComponent<
 
   isFieldRequired = (
     fieldCode: CustomFieldCodes,
-    ideaCustomFieldsSchemas:
-      | IIdeaFormSchemas['data']['attributes']
-      | IIdeaJsonFormSchemas['data']['attributes'],
+    ideaCustomFieldsSchemas: IIdeaJsonFormSchemas['data']['attributes'],
     locale: Locale
   ) => {
     return (

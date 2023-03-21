@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { IIdeaFormSchemas } from 'services/ideaCustomFieldsSchemas';
 import { Observable, of } from 'rxjs';
 import {
   ideaJsonFormsSchemaStream,
@@ -18,13 +17,11 @@ export default function useIdeaCustomFieldsSchemas({
   inputId,
 }: Props) {
   const [ideaCustomFieldsSchemas, setIdeaCustomFieldsSchemas] = useState<
-    IIdeaFormSchemas | undefined | null | Error | IIdeaJsonFormSchemas
+    undefined | null | Error | IIdeaJsonFormSchemas
   >(undefined);
 
   useEffect(() => {
-    let observable: Observable<
-      IIdeaFormSchemas | IIdeaJsonFormSchemas | Error | null
-    > = of(null);
+    let observable: Observable<IIdeaJsonFormSchemas | Error | null> = of(null);
 
     if (!projectId) {
       return;
