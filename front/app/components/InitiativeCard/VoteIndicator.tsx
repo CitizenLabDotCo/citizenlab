@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
@@ -25,7 +25,6 @@ import { get } from 'lodash-es';
 
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
-import { useTheme } from 'styled-components';
 
 // Types
 import { IInitiativeData } from 'api/initiatives/types';
