@@ -35,7 +35,7 @@ export default function useIdeasCount({
     const topics = JSON.parse(topicsStr);
 
     const queryParameters = {
-      projects: projectIds,
+      projects: projectIds.length > 0 ? projectIds : undefined,
       phase: phaseId,
       topics,
       idea_status: ideaStatusId,
