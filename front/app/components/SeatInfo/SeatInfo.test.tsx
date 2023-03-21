@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
+import { IAppConfigurationSettingsCore } from 'api/app_configuration/types';
 
 import SeatInfo from './';
 
@@ -9,10 +10,10 @@ type MockAppConfigurationType = {
     attributes: {
       settings: {
         core: {
-          maximum_admins_number: number | null | undefined;
-          maximum_moderators_number: number | null | undefined;
-          additional_admins_number: number | null | undefined;
-          additional_moderators_number: number | null | undefined;
+          maximum_admins_number: IAppConfigurationSettingsCore['maximum_admins_number'];
+          maximum_moderators_number: IAppConfigurationSettingsCore['maximum_moderators_number'];
+          additional_admins_number: IAppConfigurationSettingsCore['additional_admins_number'];
+          additional_moderators_number: IAppConfigurationSettingsCore['additional_moderators_number'];
         };
       };
     };
