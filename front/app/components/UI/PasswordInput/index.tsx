@@ -22,7 +22,6 @@ export interface Props {
   placeholder?: string;
   isLoginPasswordInput?: boolean;
   errors?: PasswordErrors;
-  label?: string | JSX.Element | null;
 }
 
 const DEFAULT_MINIMUM_PASSWORD_LENGTH = 8;
@@ -45,7 +44,6 @@ const PasswordInput = ({
   autocomplete,
   placeholder,
   isLoginPasswordInput,
-  label,
   errors,
 }: Props) => {
   const { data: appConfig } = useAppConfiguration();
@@ -67,7 +65,6 @@ const PasswordInput = ({
         placeholder={placeholder}
         isLoginPasswordInput={isLoginPasswordInput}
         errors={errors}
-        label={label}
       />
     );
   }
