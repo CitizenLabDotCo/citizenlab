@@ -62,7 +62,7 @@ const EmailConfirmation = ({
   );
 
   const methods = useForm({
-    mode: 'onBlur',
+    mode: 'onSubmit',
     defaultValues: DEFAULT_VALUES,
     resolver: yupResolver(schema),
   });
