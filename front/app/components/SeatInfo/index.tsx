@@ -13,7 +13,6 @@ import {
 // Hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useSeats from 'api/seats/useSeats';
-import { TSeatType } from 'api/seats/types';
 import { TSeatNumber } from 'api/app_configuration/types';
 
 // Intl
@@ -23,6 +22,7 @@ import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 // Utils
 import { isNil } from 'utils/helperUtils';
 
+type TSeatType = 'collaborator' | 'admin';
 type Props = {
   seatType: TSeatType;
 };
