@@ -173,6 +173,35 @@ resource 'Permissions' do
       end
     end
 
+    get 'web_api/v1/projects/:project_id/permissions/:action/requirements' do
+      before do
+        @permission = @project.permissions.first
+        @permission.update!(permitted_by: 'everyone')
+      end
+
+      let(:action) { @permission.action }
+
+      example_request 'Get the participation requirements of a user in a continuous project' do
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response).to eq({
+          permitted: true,
+          requirements: {
+            built_in: {
+              first_name: 'satisfied',
+              last_name: 'satisfied',
+              email: 'satisfied'
+            },
+            custom_fields: {},
+            special: {
+              password: 'satisfied',
+              confirmation: 'satisfied'
+            }
+          }
+        })
+      end
+    end
+
     get 'web_api/v1/phases/:phase_id/permissions/:action/participation_conditions' do
       before do
         @rule = { 'ruleType' => 'email', 'predicate' => 'ends_on', 'value' => 'test.com' }
@@ -210,7 +239,7 @@ resource 'Permissions' do
 
       let(:action) { @permission.action }
 
-      example_request 'Get the participation requirements of a user' do
+      example_request 'Get the participation requirements of a user in a timeline phase' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :requirements)).to eq({
@@ -229,6 +258,108 @@ resource 'Permissions' do
             special: {
               password: 'dont_ask',
               confirmation: 'require'
+            }
+          }
+        })
+      end
+    end
+
+    get 'web_api/v1/permissions/:action/requirements' do
+      before do
+        @permission = Permission.where(permission_scope_type: nil).first
+        @permission.update!(permitted_by: 'everyone')
+      end
+
+      let(:action) { @permission.action }
+
+      example_request 'Get the participation requirements of a user in the global scope' do
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response).to eq({
+          permitted: true,
+          requirements: {
+            built_in: {
+              first_name: 'satisfied',
+              last_name: 'satisfied',
+              email: 'satisfied'
+            },
+            custom_fields: {},
+            special: {
+              password: 'satisfied',
+              confirmation: 'satisfied'
+            }
+          }
+        })
+      end
+    end
+
+    get 'web_api/v1/permissions/:action/requirements' do
+      before do
+        create :custom_field_birthyear, required: true
+        create :custom_field_gender, required: false
+        create :custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field'
+
+        @user.update!(
+          email: 'my@email.com',
+          first_name: 'Jack',
+          last_name: nil,
+          password_digest: nil,
+          custom_field_values: { 'gender' => 'male' }
+        )
+      end
+
+      let(:action) { 'visiting' }
+
+      example_request 'Get the global registration requirements when custom fields are asked' do
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response).to eq({
+          permitted: false,
+          requirements: {
+            built_in: {
+              first_name: 'satisfied',
+              last_name: 'require',
+              email: 'satisfied'
+            },
+            custom_fields: {
+              birthyear: 'require',
+              gender: 'satisfied',
+              extra_field: 'require'
+            },
+            special: {
+              password: 'require',
+              confirmation: 'satisfied'
+            }
+          }
+        })
+      end
+    end
+
+    get 'web_api/v1/ideas/:idea_id/permissions/:action/requirements' do
+      before do
+        @permission = @project.permissions.first
+        @permission.update!(permitted_by: 'users')
+      end
+
+      let(:action) { @permission.action }
+      let(:idea) { create :idea, project: @project }
+      let(:idea_id) { idea.id }
+
+      example_request 'Get the participation requirements of a user in an idea' do
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response).to eq({
+          permitted: true,
+          requirements: {
+            built_in: {
+              first_name: 'satisfied',
+              last_name: 'satisfied',
+              email: 'satisfied'
+            },
+            custom_fields: {},
+            special: {
+              password: 'satisfied',
+              confirmation: 'satisfied'
             }
           }
         })
