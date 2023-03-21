@@ -1,6 +1,5 @@
 // Libraries
 import React, { memo, useState } from 'react';
-import { get } from 'lodash-es';
 import { first } from 'rxjs/operators';
 import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
 
@@ -57,7 +56,7 @@ interface Props {
 }
 
 function isModerator(user: IGroupMembershipsFoundUserData) {
-  return get(user.attributes, 'is_moderator') !== undefined;
+  return user.attributes['is_moderator'] !== undefined;
 }
 
 interface UserOption extends IOption {
@@ -105,8 +104,8 @@ const UserSearch = memo(
             label: `${user.attributes.first_name} ${user.attributes.last_name}`,
             email: `${user.attributes.email}`,
             disabled: isModerator(user)
-              ? get(user.attributes, 'is_moderator')
-              : get(user.attributes, 'is_member'),
+              ? user.attributes['is_moderator']
+              : user.attributes['is_member'],
             isAdmin: user.attributes.roles?.find((r) => r.type === 'admin'),
           };
         });
