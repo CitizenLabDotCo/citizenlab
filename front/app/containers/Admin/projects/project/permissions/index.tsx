@@ -66,7 +66,7 @@ const ProjectPermissions = memo(
                       {...messages.participationRequirementsTitle}
                     />
                   </Title>
-                  <Text color="coolGrey600">
+                  <Text color="coolGrey600" pb="8px">
                     <FormattedMessage
                       {...messages.participationRequirementsSubtitle}
                     />

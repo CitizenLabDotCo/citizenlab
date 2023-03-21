@@ -58,7 +58,7 @@ export const PermissionCardButton = ({
       <Title variant="h5" color={selected ? 'primary' : 'coolGrey500'}>
         <FormattedMessage {...title} />
       </Title>
-      <Text fontSize="xs" color={selected ? 'primary' : 'coolGrey500'}>
+      <Text fontSize="s" color={selected ? 'primary' : 'coolGrey500'}>
         <FormattedMessage {...subtitle} />
       </Text>
     </Box>

@@ -128,4 +128,121 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.granularPermissionsTitle',
     defaultMessage: 'What can different users do?',
   },
+  permissionAction_submit_idea_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_submit_idea_subtitle',
+    defaultMessage: 'Who can submit ideas?',
+  },
+  permissionAction_submit_project_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_submit_project_subtitle',
+    defaultMessage: 'Who can submit projects?',
+  },
+  permissionAction_submit_contribution_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_submit_contribution_subtitle',
+    defaultMessage: 'Who can submit contributions?',
+  },
+  permissionAction_submit_option_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_submit_option_subtitle',
+    defaultMessage: 'Who can submit options?',
+  },
+  permissionAction_submit_question_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_submit_question_subtitle',
+    defaultMessage: 'Who can submit questions?',
+  },
+  permissionAction_submit_issue_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_submit_issue_subtitle',
+    defaultMessage: 'Who can submit issues?',
+  },
+  permissionAction_vote_ideas_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_vote_ideas_subtitle',
+    defaultMessage: 'Who can vote on ideas?',
+  },
+  permissionAction_vote_projects_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_vote_projects_subtitle',
+    defaultMessage: 'Who can vote on projects?',
+  },
+  permissionAction_vote_contributions_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_vote_contributions_subtitle',
+    defaultMessage: 'Who can vote on contributions?',
+  },
+  permissionAction_vote_options_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_vote_options_subtitle',
+    defaultMessage: 'Who can vote on options?',
+  },
+  permissionAction_vote_questions_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_vote_questions_subtitle',
+    defaultMessage: 'Who can vote on questions?',
+  },
+  permissionAction_vote_issues_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_vote_issues_subtitle',
+    defaultMessage: 'Who can vote on issues?',
+  },
+  permissionAction_comment_ideas_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_comment_ideas_subtitle',
+    defaultMessage: 'Who can comment on ideas?',
+  },
+  permissionAction_comment_projects_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_comment_projects_subtitle',
+    defaultMessage: 'Who can comment on projects?',
+  },
+  permissionAction_comment_contributions_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_comment_contributions_subtitle',
+    defaultMessage: 'Who can comment on contributions?',
+  },
+  permissionAction_comment_options_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_comment_options_subtitle',
+    defaultMessage: 'Who can comment on options?',
+  },
+  permissionAction_comment_questions_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_comment_questions_subtitle',
+    defaultMessage: 'Who can comment on questions?',
+  },
+  permissionAction_comment_issues_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_comment_issues_subtitle',
+    defaultMessage: 'Who can comment on issues?',
+  },
+  permissionAction_comment_proposals_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_comment_proposals_subtitle',
+    defaultMessage: 'Who can comment on proposals?',
+  },
+  permissionAction_vote_proposals_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_vote_proposals_subtitle',
+    defaultMessage: 'Who can vote on proposals?',
+  },
+  permissionAction_post_proposal_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_post_proposal_subtitle',
+    defaultMessage: 'Who can post a proposal?',
+  },
+  permissionAction_take_survey_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_take_survey_subtitle',
+    defaultMessage: 'Who can take the survey?',
+  },
+  permissionAction_take_poll_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_take_poll_subtitle',
+    defaultMessage: 'Who can take the poll?',
+  },
+  permissionAction_budgeting_subtitle: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_budgeting_subtitle',
+    defaultMessage: 'Who can spend the budget?',
+  },
+  phase: {
+    id: 'app.containers.AdminPage.groups.permissions.phase',
+    defaultMessage: 'Phase ',
+  },
+  userFieldsSelectionDescription: {
+    id: 'app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription',
+    defaultMessage:
+      'You can ask the existing registration question(s) or create a new one. If a user hasn’t answered to the question(s), they will be asked to answer it before taking the action. Answers to these questions will be stored in user profiles, and will be only accessible to admins.',
+  },
+  selectUserGroups: {
+    id: 'app.containers.AdminPage.groups.permissions.selectUserGroups',
+    defaultMessage: 'Select user groups',
+  },
+  addQuestion: {
+    id: 'app.containers.AdminPage.groups.permissions.addQuestion',
+    defaultMessage: 'Add a question',
+  },
+  userQuestionTitle: {
+    id: 'app.containers.AdminPage.groups.permissions.userQuestionTitle',
+    defaultMessage: 'Ask questions to participants',
+  },
 });

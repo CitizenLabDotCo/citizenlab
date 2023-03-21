@@ -1,15 +1,9 @@
 import React, { memo } from 'react';
 import styled from 'styled-components';
 import { isEmpty } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import {
-  IPermissionData,
-  IGlobalPermissionAction,
-  IPCPermissionAction,
-} from 'services/actionPermissions';
-import { getInputTerm } from 'services/participationContexts';
+import { IPermissionData } from 'services/actionPermissions';
 
 // components
 import ActionForm from './ActionForm';
@@ -17,12 +11,18 @@ import ActionForm from './ActionForm';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { getInputTermMessage } from 'utils/i18n';
 
 // hooks
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
-import { colors, Title } from '@citizenlab/cl2-component-library';
+import { Box, colors, Title } from '@citizenlab/cl2-component-library';
+
+// utils
+import {
+  getPermissionActionMessage,
+  getPermissionActionSectionSubtitle,
+} from './utils';
+import UserFieldSelection from './UserFieldSelection';
 
 const ActionPermissionWrapper = styled.div`
   margin-bottom: 30px;
@@ -83,61 +83,6 @@ const ActionsForm = memo(
         onChange(permission, permittedBy, groupIds);
       };
 
-    const getPermissionActionMessage = (
-      permissionAction: IPCPermissionAction | IGlobalPermissionAction
-    ) => {
-      if (postType !== 'initiative' && !isNilOrError(project)) {
-        const inputTerm = getInputTerm(
-          project.attributes.process_type,
-          project,
-          phases
-        );
-
-        // TODO: Either refactor getInputTerm/getInputTermMessage in entire app and add new
-        // "survey" input term + messages, or abstract in some other way.
-        return {
-          posting_idea:
-            postType === 'nativeSurvey'
-              ? messages.permissionAction_take_survey
-              : getInputTermMessage(inputTerm, {
-                  idea: messages.permissionAction_submit_idea,
-                  project: messages.permissionAction_submit_project,
-                  contribution: messages.permissionAction_submit_contribution,
-                  issue: messages.permissionAction_submit_issue,
-                  question: messages.permissionAction_submit_question,
-                  option: messages.permissionAction_submit_option,
-                }),
-          voting_idea: getInputTermMessage(inputTerm, {
-            idea: messages.permissionAction_vote_ideas,
-            project: messages.permissionAction_vote_projects,
-            contribution: messages.permissionAction_vote_contributions,
-            issue: messages.permissionAction_vote_issues,
-            question: messages.permissionAction_vote_questions,
-            option: messages.permissionAction_vote_options,
-          }),
-          commenting_idea: getInputTermMessage(inputTerm, {
-            idea: messages.permissionAction_comment_ideas,
-            project: messages.permissionAction_comment_projects,
-            contribution: messages.permissionAction_comment_contributions,
-            issue: messages.permissionAction_comment_issues,
-            question: messages.permissionAction_comment_questions,
-            option: messages.permissionAction_comment_options,
-          }),
-          taking_survey: messages.permissionAction_take_survey,
-          taking_poll: messages.permissionAction_take_poll,
-          budgeting: messages.permissionAction_budgeting,
-        }[permissionAction];
-      }
-
-      if (postType === 'initiative') {
-        return {
-          voting_initiative: messages.permissionAction_vote_proposals,
-          commenting_initiative: messages.permissionAction_comment_proposals,
-          posting_initiative: messages.permissionAction_post_proposal,
-        }[permissionAction];
-      }
-    };
-
     if (isEmpty(permissions)) {
       return (
         <p>
@@ -162,9 +107,24 @@ const ActionsForm = memo(
                   color="coolGrey600"
                 >
                   <FormattedMessage
-                    {...getPermissionActionMessage(permissionAction)}
+                    {...getPermissionActionMessage({
+                      permissionAction,
+                      project,
+                      phases,
+                      postType,
+                    })}
                   />
                 </StyledTitle>
+                <Title variant="h4" color="primary">
+                  <FormattedMessage
+                    {...getPermissionActionSectionSubtitle({
+                      permissionAction,
+                      project,
+                      phases,
+                      postType,
+                    })}
+                  />
+                </Title>
                 <ActionForm
                   permissionData={permission}
                   groupIds={permission.relationships.groups.data.map(
@@ -173,6 +133,9 @@ const ActionsForm = memo(
                   projectType={postType}
                   onChange={handlePermissionChange(permission)}
                 />
+                <Box mt="42px" mb="20px">
+                  <UserFieldSelection permission={permission} />
+                </Box>
               </ActionPermissionWrapper>
             );
           })}

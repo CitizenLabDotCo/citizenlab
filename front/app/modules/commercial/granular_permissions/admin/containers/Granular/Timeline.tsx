@@ -1,20 +1,5 @@
 import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { fontSizes } from 'utils/styleUtils';
-
-// components
-import Collapse from 'components/UI/Collapse';
-import ActionsForm from './ActionsForm';
-
-// services
-import {
-  updatePhasePermission,
-  IPCPermissionData,
-} from 'services/actionPermissions';
-
-// resources
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import GetPhasePermissions from 'resources/GetPhasePermissions';
 
 // i18n
 import T from 'components/T';
@@ -24,38 +9,31 @@ import messages from './messages';
 // styling
 import styled from 'styled-components';
 import { getMethodConfig } from 'utils/participationMethodUtils';
+import {
+  Accordion,
+  Box,
+  colors,
+  Title,
+} from '@citizenlab/cl2-component-library';
+import usePhases from 'hooks/usePhases';
+import { PhaseActionForm } from '../../components/PhaseActionForm';
+import useUpdatePhasePermission from 'api/phase_permissions/useUpdatePhasePermission';
+import { IPCPermissionData } from 'api/phase_permissions/types';
 
 const Container = styled.div`
   margin-bottom: 20px;
-
-  p {
-    font-size: ${fontSizes.base}px;
-    font-style: italic;
-  }
-`;
-
-const Permissions = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  padding: 25px;
-  border-radius: ${(props) => props.theme.borderRadius};
-  border: solid 1px #ddd;
-  background: #fff;
 `;
 
 interface InputProps {
   projectId: string;
 }
 
-interface DataProps {
-  phases: GetPhasesChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-const Timeline = ({ projectId, phases }: Props) => {
+const Timeline = ({ projectId }: InputProps) => {
   const [openedPhaseId, setOpenedPhaseId] = useState<string | null>(null);
+  const { mutate: updatePhasePermission } =
+    useUpdatePhasePermission(openedPhaseId);
+  const phases = usePhases(projectId);
+
   const handleCollapseToggle = (phaseId: string) => () => {
     setOpenedPhaseId(openedPhaseId === phaseId ? null : phaseId);
   };
@@ -64,13 +42,17 @@ const Timeline = ({ projectId, phases }: Props) => {
     permittedBy: IPCPermissionData['attributes']['permitted_by'],
     groupIds: string[]
   ) => {
-    updatePhasePermission(
-      permission.id,
-      permission.relationships.permission_scope.data.id,
-      permission.attributes.action,
-      { permitted_by: permittedBy, group_ids: groupIds }
-    );
+    updatePhasePermission({
+      permissionId: permission.id,
+      phaseId: permission.relationships.permission_scope.data.id,
+      action: permission.attributes.action,
+      permission: { permitted_by: permittedBy, group_ids: groupIds },
+    });
   };
+
+  if (isNilOrError(phases)) {
+    return null;
+  }
 
   const openedPhase = phases?.filter((phase) => phase.id === openedPhaseId)[0];
   const config = getMethodConfig(
@@ -82,29 +64,41 @@ const Timeline = ({ projectId, phases }: Props) => {
       <Container>
         {phases &&
           phases.length > 0 &&
-          phases.map((phase) => (
-            <div style={{ marginBottom: '20px' }} key={phase.id}>
-              <Collapse
-                opened={openedPhaseId === phase.id}
-                onToggle={handleCollapseToggle(phase.id)}
-                label={<T value={phase.attributes.title_multiloc} />}
+          phases.map((phase, i) => (
+            <Accordion
+              isOpenByDefault={false}
+              title={
+                <Title
+                  variant="h3"
+                  color="primary"
+                  my="16px"
+                  style={{ fontWeight: 500 }}
+                >
+                  <FormattedMessage {...messages.phase} />
+                  {i + 1}
+                  {' : '}
+                  <T value={phase.attributes.title_multiloc} />
+                </Title>
+              }
+              key={phase.id}
+              onChange={() => {
+                handleCollapseToggle(phase.id);
+              }}
+            >
+              <Box
+                display="flex"
+                flex={'1'}
+                flexDirection="column"
+                background={colors.white}
               >
-                <Permissions>
-                  <GetPhasePermissions phaseId={phase.id}>
-                    {(permissions) => {
-                      return isNilOrError(permissions) ? null : (
-                        <ActionsForm
-                          permissions={permissions}
-                          onChange={handlePermissionChange}
-                          postType={config.postType}
-                          projectId={projectId}
-                        />
-                      );
-                    }}
-                  </GetPhasePermissions>
-                </Permissions>
-              </Collapse>
-            </div>
+                <PhaseActionForm
+                  phase={phase}
+                  onChange={handlePermissionChange}
+                  postType={config.postType}
+                  projectId={projectId}
+                />
+              </Box>
+            </Accordion>
           ))}
         {!phases ||
           (phases.length < 1 && (
@@ -120,8 +114,4 @@ const Timeline = ({ projectId, phases }: Props) => {
   return null;
 };
 
-export default (inputProps: InputProps) => (
-  <GetPhases projectId={inputProps.projectId}>
-    {(phases) => <Timeline {...inputProps} phases={phases} />}
-  </GetPhases>
-);
+export default (inputProps: InputProps) => <Timeline {...inputProps} />;

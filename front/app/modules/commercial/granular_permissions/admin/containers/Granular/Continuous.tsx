@@ -1,30 +1,27 @@
 import React from 'react';
 import styled from 'styled-components';
 
+// components
 import ActionsForm from './ActionsForm';
 
-import { isNilOrError } from 'utils/helperUtils';
-import { IPermissionData } from 'services/actionPermissions';
-
-import { fontSizes } from 'utils/styleUtils';
+// hooks
 import useProject from 'hooks/useProject';
+import useProjectPermissions from 'api/project_permissions/useProjectPermissions';
+import useUpdateProjectPermission from 'api/project_permissions/useUpdateProjectPermission';
+import { IPCPermissionData } from 'api/phase_permissions/types';
+
+// utils
 import {
   getMethodConfig,
   ParticipationMethodConfig,
 } from 'utils/participationMethodUtils';
-import useProjectPermissions from 'api/project_permissions/useProjectPermissions';
-import useUpdateProjectPermission from 'api/project_permissions/useUpdateProjectPermission';
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   padding-bottom: 20px;
-
-  p {
-    font-size: ${fontSizes.base}px;
-    font-style: italic;
-  }
 `;
 
 interface InputProps {
@@ -43,8 +40,8 @@ const Continuous = ({ projectId }: Props) => {
   );
 
   const handlePermissionChange = (
-    permission: IPermissionData,
-    permittedBy: IPermissionData['attributes']['permitted_by'],
+    permission: IPCPermissionData,
+    permittedBy: IPCPermissionData['attributes']['permitted_by'],
     groupIds: string[]
   ) => {
     updateProjectPermission({

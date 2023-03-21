@@ -155,7 +155,7 @@ const ActionForm = ({
       {permittedBy === 'groups' && (
         <Box mt="24px">
           <Title variant="h5" fontWeight={'normal'} color={'coolGrey600'}>
-            Select user groups
+            <FormattedMessage {...messages.selectUserGroups} />
           </Title>
           <StyledMultipleSelect
             value={groupIds || []}
