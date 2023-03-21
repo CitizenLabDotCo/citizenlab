@@ -7,11 +7,13 @@ import {
   initiativeResponse,
   projectResponse,
   phaseResponse,
+  ideaResponse,
 } from './__mocks__/getAuthenticationRequirements';
 
 const initiativesPath = '*permissions/posting_initiative/requirements';
 const projectPath = '*projects/123/permissions/posting_idea/requirements';
 const phasePath = '*phases/456/permissions/posting_idea/requirements';
+const ideaPath = '*ideas/789/permissions/commenting_idea/requirements';
 
 const server = setupServer(
   rest.get(initiativesPath, (_req, res, ctx) => {
@@ -22,6 +24,9 @@ const server = setupServer(
   }),
   rest.get(phasePath, (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json(phaseResponse));
+  }),
+  rest.get(ideaPath, (_req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(ideaResponse));
   })
 );
 
@@ -56,5 +61,15 @@ describe('useGetAuthenticationRequirements', () => {
     });
 
     expect(result).toEqual(phaseResponse);
+  });
+
+  it('returns idea data correctly', async () => {
+    const result = await getAuthenticationRequirements({
+      type: 'idea',
+      action: 'commenting_idea',
+      id: '789',
+    });
+
+    expect(result).toEqual(ideaResponse);
   });
 });

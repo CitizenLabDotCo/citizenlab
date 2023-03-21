@@ -68,3 +68,26 @@ export const phaseResponse: AuthenticationRequirementsResponse = {
     },
   },
 };
+
+export const ideaResponse: AuthenticationRequirementsResponse = {
+  data: {
+    type: 'requirements',
+    attributes: {
+      requirements: {
+        permitted: true,
+        requirements: {
+          built_in: {
+            first_name: 'satisfied',
+            last_name: 'satisfied',
+            email: 'satisfied',
+          },
+          custom_fields: {},
+          special: {
+            password: 'satisfied',
+            confirmation: 'satisfied',
+          },
+        },
+      },
+    },
+  },
+};

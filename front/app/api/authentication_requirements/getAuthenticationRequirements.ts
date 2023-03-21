@@ -29,6 +29,13 @@ const fetchAuthenticationRequirements = (
 
   const { id } = authenticationContext;
 
+  if (type === 'idea') {
+    return fetcher<AuthenticationRequirementsResponse>({
+      path: `/ideas/${id}/permissions/${action}/requirements`,
+      action: 'get',
+    });
+  }
+
   return fetcher<AuthenticationRequirementsResponse>({
     path: `/${type}s/${id}/permissions/${action}/requirements`,
     action: 'get',

@@ -1,5 +1,6 @@
 import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
-import { IPCAction } from 'typings';
+import { IProjectAction } from 'services/projects';
+import { IIdeaAction } from 'services/ideas';
 
 interface InitiativeContext {
   type: 'initiative';
@@ -8,11 +9,20 @@ interface InitiativeContext {
 
 export interface ProjectContext {
   type: 'project' | 'phase';
-  action: IPCAction;
+  action: IProjectAction;
   id: string /* project or phase id, depending on type attribute */;
 }
 
-export type AuthenticationContext = InitiativeContext | ProjectContext;
+interface IdeaContext {
+  type: 'idea';
+  action: IIdeaAction;
+  id: string /* idea id */;
+}
+
+export type AuthenticationContext =
+  | InitiativeContext
+  | ProjectContext
+  | IdeaContext;
 
 export interface AuthenticationRequirementsResponse {
   data: {
