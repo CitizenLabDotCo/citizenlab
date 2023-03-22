@@ -176,7 +176,7 @@ export const handleHookFormSubmissionError = (
   }
 };
 
-export const handleBlockedUserError = (status, data) => {
+export const handleBlockedUserError = (status: number, data: any) => {
   if (
     status === 401 &&
     'base' in data.errors &&
