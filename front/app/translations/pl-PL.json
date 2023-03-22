@@ -424,7 +424,6 @@
   "app.components.SeatInfo.additionalSeats": "Dodatkowe miejsca",
   "app.components.SeatInfo.adminMessage": "Twój plan ma {adminSeatsIncluded}. Gdy wykorzystasz wszystkie miejsca, dodatkowe miejsca zostaną dodane w zakładce \"Dodatkowe miejsca\".",
   "app.components.SeatInfo.adminSeatsIncludedSubText": "{adminSeats} w zestawie fotele administratora",
-  "app.components.SeatInfo.collaboratorIncludedSubText": "{projectManagerSeats} w zestawie fotele menedżerskie",
   "app.components.SeatInfo.collaboratorMessage": "Twój plan ma {adminSeatsIncluded}, kwalifikuje się do kierowników folderów i kierowników projektów. Gdy wykorzystasz wszystkie miejsca, dodatkowe miejsca zostaną dodane w sekcji \"Dodatkowe miejsca\".",
   "app.components.SeatInfo.currentAdminSeatsTitle": "Aktualne miejsca dla administratorów",
   "app.components.SeatInfo.currentCollaboratorSeatsTitle": "Aktualne miejsca dla współpracowników",

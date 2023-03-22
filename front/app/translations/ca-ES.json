@@ -424,7 +424,6 @@
   "app.components.SeatInfo.additionalSeats": "Seients addicionals",
   "app.components.SeatInfo.adminMessage": "El teu pla té {adminSeatsIncluded}. Un cop hàgiu utilitzat tots els seients, s'afegiran seients addicionals a \"Seients addicionals\".",
   "app.components.SeatInfo.adminSeatsIncludedSubText": "{adminSeats} seients d'administrador inclosos",
-  "app.components.SeatInfo.collaboratorIncludedSubText": "{projectManagerSeats} seients de gestor inclosos",
   "app.components.SeatInfo.collaboratorMessage": "El vostre pla té {adminSeatsIncluded}, apte per a gestors de carpetes i gestors de projectes. Un cop hàgiu utilitzat tots els seients, s'afegiran seients addicionals a \"Seients addicionals\".",
   "app.components.SeatInfo.currentAdminSeatsTitle": "Seients d'administrador actuals",
   "app.components.SeatInfo.currentCollaboratorSeatsTitle": "Seients de col·laboradors actuals",

@@ -424,7 +424,6 @@
   "app.components.SeatInfo.additionalSeats": "Πρόσθετες θέσεις",
   "app.components.SeatInfo.adminMessage": "Το σχέδιό σας έχει {adminSeatsIncluded}. Μόλις χρησιμοποιήσετε όλες τις θέσεις, θα προστεθούν επιπλέον θέσεις στο πεδίο \"Πρόσθετες θέσεις\".",
   "app.components.SeatInfo.adminSeatsIncludedSubText": "{adminSeats} συμπεριλαμβάνονται θέσεις διαχειριστή",
-  "app.components.SeatInfo.collaboratorIncludedSubText": "{projectManagerSeats} συμπεριλαμβάνονται οι θέσεις διευθυντών",
   "app.components.SeatInfo.collaboratorMessage": "Το σχέδιό σας έχει {adminSeatsIncluded}, που είναι επιλέξιμες για τους διαχειριστές φακέλων και τους διαχειριστές έργων. Μόλις χρησιμοποιήσετε όλες τις θέσεις, θα προστεθούν επιπλέον θέσεις στην ενότητα \"Πρόσθετες θέσεις\".",
   "app.components.SeatInfo.currentAdminSeatsTitle": "Τρέχουσες θέσεις διαχειριστή",
   "app.components.SeatInfo.currentCollaboratorSeatsTitle": "Τρέχουσες θέσεις συνεργατών",

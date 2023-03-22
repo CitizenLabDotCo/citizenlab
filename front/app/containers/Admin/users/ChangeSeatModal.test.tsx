@@ -11,7 +11,7 @@ type MockAppConfigurationType = {
       settings: {
         core: {
           maximum_admins_number: number | null;
-          maximum_project_moderators_number: number | null;
+          maximum_moderators_number: number | null;
         };
       };
     };
@@ -25,7 +25,7 @@ const mockAppConfiguration: MockAppConfigurationType = {
       settings: {
         core: {
           maximum_admins_number: 6,
-          maximum_project_moderators_number: 9,
+          maximum_moderators_number: 9,
         },
       },
     },

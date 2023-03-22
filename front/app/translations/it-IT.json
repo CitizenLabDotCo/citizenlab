@@ -424,7 +424,6 @@
   "app.components.SeatInfo.additionalSeats": "Posti aggiuntivi",
   "app.components.SeatInfo.adminMessage": "Il vostro piano ha {adminSeatsIncluded}. Una volta utilizzati tutti i posti, verranno aggiunti altri posti alla voce \"Posti aggiuntivi\".",
   "app.components.SeatInfo.adminSeatsIncludedSubText": "{adminSeats} posti di amministratore inclusi",
-  "app.components.SeatInfo.collaboratorIncludedSubText": "{projectManagerSeats} sedili per manager inclusi",
   "app.components.SeatInfo.collaboratorMessage": "Il vostro piano ha {adminSeatsIncluded}, idoneo per i gestori di cartelle e i project manager. Una volta utilizzati tutti i posti, verranno aggiunti altri posti alla voce \"Posti aggiuntivi\".",
   "app.components.SeatInfo.currentAdminSeatsTitle": "Posti di amministratore attuali",
   "app.components.SeatInfo.currentCollaboratorSeatsTitle": "Posti di collaboratore attuali",

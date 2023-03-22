@@ -2,16 +2,16 @@ import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import seatsKeys from './keys';
-import { SeatsType, SeatsKeys } from './types';
+import { ISeats, SeatsKeys } from './types';
 
 const fetchSeats = () =>
-  fetcher<SeatsType>({
+  fetcher<ISeats>({
     path: '/users/seats',
     action: 'get',
   });
 
 const useSeats = () => {
-  return useQuery<SeatsType, CLErrors, SeatsType, SeatsKeys>({
+  return useQuery<ISeats, CLErrors, ISeats, SeatsKeys>({
     queryKey: seatsKeys.items(),
     queryFn: fetchSeats,
   });

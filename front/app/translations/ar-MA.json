@@ -424,7 +424,6 @@
   "app.components.SeatInfo.additionalSeats": "مقاعد إضافية",
   "app.components.SeatInfo.adminMessage": "خطتك بها {adminSeatsIncluded}. بمجرد استخدامك لجميع المقاعد ، ستتم إضافة مقاعد إضافية ضمن \"المقاعد الإضافية\".",
   "app.components.SeatInfo.adminSeatsIncludedSubText": "{adminSeats} مقاعد مشرف متضمنة",
-  "app.components.SeatInfo.collaboratorIncludedSubText": "{projectManagerSeats} مقاعد مدير متضمنة",
   "app.components.SeatInfo.collaboratorMessage": "خطتك بها {adminSeatsIncluded}، مؤهلة لمديري المجلدات ومديري المشاريع. بمجرد استخدامك لجميع المقاعد ، ستتم إضافة مقاعد إضافية ضمن \"المقاعد الإضافية\".",
   "app.components.SeatInfo.currentAdminSeatsTitle": "مقاعد المشرف الحالية",
   "app.components.SeatInfo.currentCollaboratorSeatsTitle": "مقاعد المتعاونين الحالية",

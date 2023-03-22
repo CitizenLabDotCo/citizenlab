@@ -59,7 +59,7 @@ describe('SeatInfo', () => {
   });
 
   it('shows correct numbers of seat usage for collaborators', () => {
-    render(<SeatInfo seatType="project_manager" />);
+    render(<SeatInfo seatType="collaborator" />);
     expect(screen.getByText('Current collaborator seats')).toBeInTheDocument();
     expect(screen.getByText('5/9')).toBeInTheDocument();
     expect(screen.queryByText('Additional seats')).not.toBeInTheDocument();
@@ -67,7 +67,7 @@ describe('SeatInfo', () => {
 
   it('shows additional seats when user has used more', () => {
     mockUserSeatsData.data.attributes.project_moderators_number = 15;
-    render(<SeatInfo seatType="project_manager" />);
+    render(<SeatInfo seatType="collaborator" />);
     expect(screen.getByText('Current collaborator seats')).toBeInTheDocument();
     expect(screen.getByText('9/9')).toBeInTheDocument();
     expect(screen.getByText('6')).toBeInTheDocument();
@@ -87,7 +87,7 @@ describe('SeatInfo', () => {
     mockUserSeatsData.data.attributes.project_moderators_number = 15;
     mockAppConfiguration.data.attributes.settings.core.maximum_moderators_number =
       null;
-    render(<SeatInfo seatType="project_manager" />);
+    render(<SeatInfo seatType="collaborator" />);
     expect(
       screen.queryByText('Current collaborator seats')
     ).not.toBeInTheDocument();

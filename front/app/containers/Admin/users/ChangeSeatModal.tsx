@@ -38,7 +38,7 @@ const getButtonText = (
   maximumAdmins: number | null | undefined,
   currentAdminSeats: number
 ): MessageDescriptor => {
-  let buttonText = messages.confirm;
+  const buttonText = messages.confirm;
 
   if (isUserAdmin) {
     return buttonText;
@@ -113,7 +113,7 @@ const ChangeSeatModal = ({
             />
           </Text>
           <Box py="32px">
-            <SeatInfo seatType="admin" width={null} />
+            <SeatInfo seatType="admin" />
           </Box>
         </Box>
         <Box
