@@ -66,7 +66,6 @@ export const IdeationCTABar = ({ phases, project }: CTABarProps) => {
           id="e2e-ideation-cta-button"
           projectId={project.id}
           participationContextType={isPhaseIdeation ? 'phase' : 'project'}
-          phaseId={isPhaseIdeation ? currentPhase.id : ''}
           fontWeight="500"
           bgColor={theme.colors.white}
           textColor={theme.colors.tenantText}

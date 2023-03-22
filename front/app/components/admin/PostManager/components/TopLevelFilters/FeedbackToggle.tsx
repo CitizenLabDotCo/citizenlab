@@ -153,7 +153,7 @@ const Data = adopt({
     render,
     type,
   }) => {
-    const projectIds = [project];
+    const projectIds = project ? [project] : undefined;
 
     return type === 'Initiatives' ? (
       <GetInitiativesCount

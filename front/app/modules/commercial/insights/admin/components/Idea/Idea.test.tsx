@@ -1,23 +1,14 @@
 import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
-import useIdea from 'hooks/useIdea';
-
+import useIdeaById from 'api/ideas/useIdeaById';
+import { ideaData as mockIdeaData } from 'api/ideas/__mocks__/useIdeaById';
 import Idea from './';
-
-const mockIdeaData = {
-  id: '2',
-  type: 'idea',
-  attributes: {
-    title_multiloc: { en: 'Test Idea' },
-    body_multiploc: { en: 'Test idea body' },
-  },
-};
 
 const viewId = '1';
 const ideaId = '5';
 
-jest.mock('hooks/useIdea', () => {
-  return jest.fn(() => mockIdeaData);
+jest.mock('api/ideas/useIdeaById', () => {
+  return jest.fn(() => ({ data: { data: mockIdeaData[0] } }));
 });
 
 jest.mock('utils/cl-router/withRouter', () => {
@@ -39,6 +30,6 @@ describe('Insights Idea', () => {
   });
   it('calls useIdea with correct idea id', () => {
     render(<Idea ideaId={ideaId} />);
-    expect(useIdea).toHaveBeenCalledWith({ ideaId });
+    expect(useIdeaById).toHaveBeenCalledWith(ideaId);
   });
 });

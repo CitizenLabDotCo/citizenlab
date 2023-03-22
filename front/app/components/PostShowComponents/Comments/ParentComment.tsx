@@ -17,7 +17,6 @@ import { childCommentsStream, IComments } from 'services/comments';
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
-import GetPost, { GetPostChildProps } from 'resources/GetPost';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -36,6 +35,7 @@ import GetInitiativesPermissions, {
 
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useIdeaById from 'api/ideas/useIdeaById';
 
 const Container = styled.div`
   position: relative;
@@ -67,7 +67,6 @@ interface InputProps {
 interface DataProps {
   authUser: GetAuthUserChildProps;
   comment: GetCommentChildProps;
-  idea: GetPostChildProps;
   commentingPermissionInitiative: GetInitiativesPermissionsChildProps;
 }
 
@@ -81,15 +80,17 @@ const ParentComment = ({
   postId,
   postType,
   authUser,
-  idea,
   className,
   commentingPermissionInitiative,
   theme,
   childCommentIds,
 }: Props) => {
-  const initiativeId = postType === 'initiative' ? postId : null;
+  const initiativeId = postType === 'initiative' ? postId : undefined;
+  const ideaId = postType === 'idea' ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
-  const post = postType === 'idea' ? idea : initiative?.data;
+  const { data: idea } = useIdeaById(ideaId);
+  const post = initiative || idea;
+
   const loadMore$ = useRef(new BehaviorSubject(false));
   const subscriptions = useRef<Subscription[]>([]);
   const [canLoadMore, setCanLoadMore] = useState(false);
@@ -148,11 +149,8 @@ const ParentComment = ({
   };
 
   if (!isNilOrError(comment) && !isNilOrError(post)) {
-    const projectId: string | null = get(
-      post,
-      'relationships.project.data.id',
-      null
-    );
+    const projectId: string | null =
+      idea?.data.relationships.project.data.id || null;
     const commentDeleted = comment.attributes.publication_status === 'deleted';
     const commentingEnabled =
       postType === 'initiative'
@@ -251,11 +249,6 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   comment: ({ commentId, render }) => (
     <GetComment id={commentId}>{render}</GetComment>
-  ),
-  idea: ({ comment, render }) => (
-    <GetPost id={get(comment, 'relationships.post.data.id')} type="idea">
-      {render}
-    </GetPost>
   ),
   commentingPermissionInitiative: (
     <GetInitiativesPermissions action="commenting_initiative" />

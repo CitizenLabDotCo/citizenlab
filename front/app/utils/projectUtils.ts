@@ -9,8 +9,8 @@ import { isNilOrError } from './helperUtils';
 export function isFieldEnabled(
   fieldCode: CustomFieldCodes,
   ideaCustomFieldsSchemas:
-    | IIdeaFormSchemas
-    | IIdeaJsonFormSchemas
+    | IIdeaFormSchemas['data']['attributes']
+    | IIdeaJsonFormSchemas['data']['attributes']
     | undefined
     | null
     | Error,

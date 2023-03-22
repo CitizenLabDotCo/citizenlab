@@ -15,7 +15,7 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // hooks
-import useIdea from 'hooks/useIdea';
+import useIdeaById from 'api/ideas/useIdeaById';
 
 const Container = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -40,10 +40,10 @@ const IdeaPostedBy = memo<Props>(({ authorId, ideaId, className }) => {
   const userName = (
     <UserName userId={authorId} isLinkToProfile fontWeight={500} />
   );
-  const idea = useIdea({ ideaId });
+  const { data: idea } = useIdeaById(ideaId);
 
   if (!isNilOrError(idea)) {
-    const ideaPublishedAtDate = idea.attributes.published_at;
+    const ideaPublishedAtDate = idea.data.attributes.published_at;
     const date = (
       <FormattedDate
         value={ideaPublishedAtDate}
