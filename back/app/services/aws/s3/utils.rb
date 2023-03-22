@@ -1,0 +1,52 @@
+# frozen_string_literal: true
+
+require 'parallel'
+
+module Aws
+  module S3
+    class Utils
+      # @param [Aws::S3::Client] s3_client
+      def initialize(s3_client)
+        @s3_client = s3_client
+      end
+
+
+      # Returns an Enumerator that iterates over all the objects in an Amazon S3 bucket.
+      # This method can handle any number of objects in the S3 bucket by automatically
+      # paginating through results.
+      #
+      # @param [Hash] list_objects_v2_params Same parameters as Aws::S3::Client#copy_object.
+      def objects(list_objects_v2_params)
+        Enumerator.new do |yielder|
+          list_objects_request = list_objects_v2_params.dup
+
+          loop do
+            response = @s3_client.list_objects_v2(list_objects_request)
+            response.contents.each { |object| yielder.yield(object) }
+
+            break unless response.is_truncated
+
+            list_objects_request[:continuation_token] = response.next_continuation_token
+          end
+        end
+      end
+
+      # @param [String] from_bucket
+      # @param [String] to_bucket
+      # @param [String] prefix
+      # @param [Integer] num_threads
+      # @return [Hash{String => String}] Mapping of original keys to new keys
+      def copy_objects(from_bucket, to_bucket, prefix, num_threads: 4)
+        Parallel.map(objects(bucket: from_bucket, prefix: prefix), in_threads: num_threads) do |object|
+          key = object.key
+          destination_key = yield key
+          copy_source = "#{from_bucket}/#{key}"
+          if destination_key
+            @s3_client.copy_object(bucket: to_bucket, copy_source: copy_source, key: destination_key)
+            [key, destination_key]
+          end
+        end.compact.to_h
+      end
+    end
+  end
+end
