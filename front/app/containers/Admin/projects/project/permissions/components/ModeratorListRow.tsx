@@ -56,6 +56,9 @@ const ModeratorListRow = ({ isLastItem, moderator, projectId }: Props) => {
           {displayName}
         </Text>
       </Box>
+      <Text as="span" m="0">
+        {moderator.attributes.email}
+      </Text>
       <Button
         onClick={handleDeleteClick}
         buttonStyle="text"

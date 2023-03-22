@@ -87,10 +87,9 @@ const FolderPermissions = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedUserOptions]);
 
-  const handleDeleteFolderModeratorClick =
-    (projectFolderId: string, moderatorId: string) => () => {
-      deleteFolderModerator(projectFolderId, moderatorId);
-    };
+  const handleDeleteFolderModeratorClick = (moderatorId: string) => () => {
+    deleteFolderModerator(projectFolderId, moderatorId);
+  };
 
   const loadUsers = (inputValue: string, callback) => {
     if (inputValue) {
@@ -219,12 +218,14 @@ const FolderPermissions = () => {
           <>
             {!isNilOrError(folderModerators) &&
               folderModerators.map((folderModerator, index) => (
+                // This row is a near copy of ModeratorListRow. With some moderations
+                // That component could be used here too.
                 <Row
                   key={folderModerator.id}
                   isLastItem={index === folderModerators.length - 1}
                 >
                   <Box display="flex" alignItems="center">
-                    <Box mr="8px">
+                    <Box mr="12px">
                       <Avatar userId={folderModerator.id} size={30} />
                     </Box>
                     <Text as="span" m="0">
@@ -236,7 +237,6 @@ const FolderPermissions = () => {
                   </Text>
                   <Button
                     onClick={handleDeleteFolderModeratorClick(
-                      projectFolderId,
                       folderModerator.id
                     )}
                     buttonStyle="text"
