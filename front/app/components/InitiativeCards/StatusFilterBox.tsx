@@ -43,7 +43,6 @@ const StatusFilterBox = memo<Props>(
     const queryParameters = {
       ...selectedInitiativeFilters,
       initiative_status: undefined,
-      project_publication_status: 'published',
       publication_status: 'published',
     } as IQueryParameters;
 

@@ -2,15 +2,15 @@ import React, { memo, useState, useEffect } from 'react';
 
 // components
 import { Icon, Spinner } from '@citizenlab/cl2-component-library';
-import TopicFilterDropdown from 'components/IdeaCards/TopicFilterDropdown';
-import SelectSort from 'components/IdeaCards/SortFilterDropdown';
+import TopicFilterDropdown from 'components/IdeaCards/shared/Filters/TopicFilterDropdown';
+import SelectSort from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
 import IdeaMapCard from '../IdeaMapCard';
 import Centerer from 'components/UI/Centerer';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-import useIdeaMarkers from 'hooks/useIdeaMarkers';
+import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
 import useProject from 'hooks/useProject';
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
 
@@ -35,11 +35,12 @@ import { FormattedMessage } from 'utils/cl-intl';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
-// typings
-import { Sort } from 'resources/GetIdeas';
-
 // utils
 import { isFieldEnabled } from 'utils/projectUtils';
+import { isNilOrError } from 'utils/helperUtils';
+
+// typings
+import { Sort } from 'api/ideas/types';
 
 const Container = styled.div`
   width: 100%;
@@ -134,7 +135,7 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
   const [sort, setSort] = useState<Sort>(
     project?.attributes.ideas_order || ideaDefaultSortMethodFallback
   );
-  const ideaMarkers = useIdeaMarkers({
+  const { data: ideaMarkers } = useIdeaMarkers({
     projectIds: [projectId],
     phaseId,
     sort,
@@ -143,12 +144,6 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
   });
 
   const isFiltered = (search && search.length > 0) || topics.length > 0;
-
-  const topicsEnabled = isFieldEnabled(
-    'topic_ids',
-    ideaCustomFieldsSchemas,
-    locale
-  );
 
   useEffect(() => {
     const subscriptions = [
@@ -167,6 +162,14 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
       subscriptions.forEach((subscription) => subscription.unsubscribe());
     };
   }, []);
+
+  if (isNilOrError(ideaCustomFieldsSchemas)) return null;
+
+  const topicsEnabled = isFieldEnabled(
+    'topic_ids',
+    ideaCustomFieldsSchemas.data.attributes,
+    locale
+  );
 
   const handleSearchOnChange = (newSearchValue: string) => {
     setIdeasSearch(newSearchValue || null);
@@ -203,7 +206,9 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
         <StyledSearchInput
           onChange={handleSearchOnChange}
           a11y_numberOfSearchResults={
-            ideaMarkers && ideaMarkers.length > 0 ? ideaMarkers.length : 0
+            ideaMarkers && ideaMarkers.data.length > 0
+              ? ideaMarkers.data.length
+              : 0
           }
         />
       </Header>
@@ -216,8 +221,8 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
         )}
 
         {ideaMarkers &&
-          ideaMarkers.length > 0 &&
-          ideaMarkers.map((ideaMarker) => (
+          ideaMarkers.data.length > 0 &&
+          ideaMarkers.data.map((ideaMarker) => (
             <StyledIdeaMapCard
               projectId={projectId}
               ideaMarker={ideaMarker}
@@ -226,7 +231,7 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
             />
           ))}
 
-        {(ideaMarkers === null || ideaMarkers?.length === 0) && (
+        {(ideaMarkers === null || ideaMarkers?.data.length === 0) && (
           <EmptyContainer>
             <IdeaIcon ariaHidden name="idea" />
             <EmptyMessage>

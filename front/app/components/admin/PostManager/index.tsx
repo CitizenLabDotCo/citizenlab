@@ -360,13 +360,15 @@ export class PostManager extends React.PureComponent<Props, State> {
                 />
               ) : type === 'AllIdeas' || type === 'ProjectIdeas' ? (
                 <IdeasCount
-                  feedbackNeeded={feedbackNeeded}
+                  feedbackNeeded={
+                    feedbackNeeded === true ? feedbackNeeded : undefined
+                  }
                   project={selectedProject}
-                  phase={selectedPhase}
-                  topics={selectedTopics}
-                  ideaStatus={selectedStatus}
-                  searchTerm={searchTerm}
-                  assignee={selectedAssignee}
+                  phaseId={selectedPhase ?? undefined}
+                  topics={selectedTopics ?? undefined}
+                  ideaStatusId={selectedStatus ?? undefined}
+                  search={searchTerm}
+                  assignee={selectedAssignee ?? undefined}
                 />
               ) : null}
               <StyledInput icon="search" onChange={this.handleSearchChange} />
@@ -450,14 +452,14 @@ const Data = adopt<DataProps, InputProps>({
       );
     }
 
+    const props = {
+      'page[size]': 10,
+      sort: 'new',
+    } as const;
+
     if (type === 'ProjectIdeas') {
       return (
-        <GetIdeas
-          type="paginated"
-          pageSize={10}
-          sort="new"
-          projectIds={projectId ? [projectId] : undefined}
-        >
+        <GetIdeas {...props} projects={projectId ? [projectId] : undefined}>
           {render}
         </GetIdeas>
       );
@@ -465,12 +467,7 @@ const Data = adopt<DataProps, InputProps>({
 
     if (type === 'AllIdeas') {
       return (
-        <GetIdeas
-          type="paginated"
-          pageSize={10}
-          sort="new"
-          filterCanModerate={true}
-        >
+        <GetIdeas {...props} filter_can_moderate={true}>
           {render}
         </GetIdeas>
       );
