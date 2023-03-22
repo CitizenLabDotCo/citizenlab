@@ -257,4 +257,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.createNewQuestion',
     defaultMessage: 'Create a new question',
   },
+  delete: {
+    id: 'app.containers.AdminPage.groups.permissions.delete',
+    defaultMessage: 'Delete',
+  },
+  required: {
+    id: 'app.containers.AdminPage.groups.permissions.required',
+    defaultMessage: 'Required',
+  },
 });
