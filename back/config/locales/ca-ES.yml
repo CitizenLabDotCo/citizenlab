@@ -223,7 +223,7 @@ ca:
       header: "El teu codi de confirmació"
       header_message: "hola %{firstName}!"
       confirm_email_address: "Confirma la teva adreça electrònica"
-      thanks_for_signing_up: "Thanks for signing up for %{organizationName}'s participation platform."
+      thanks_for_signing_up: "Gràcies per registrar-te a la plataforma de participació de %{organizationName}."
       best_regards: "Salutacions cordials,"
       ignore_email: "Si no heu sol·licitat cap codi, podeu ignorar aquest correu electrònic amb seguretat."
       expire_code: "Aquest codi caducarà en "
