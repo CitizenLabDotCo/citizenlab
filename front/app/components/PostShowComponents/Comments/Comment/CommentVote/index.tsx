@@ -6,9 +6,6 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import UpvoteButton from './UpvoteButton';
 
-// services
-import { addCommentVote, deleteCommentVote } from 'services/commentVotes';
-
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
@@ -19,10 +16,6 @@ import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
 
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../../tracks';
-
 // events
 import { openSignUpInModal } from 'events/openSignUpInModal';
 import { openVerificationModal } from 'events/verificationModal';
@@ -30,6 +23,9 @@ import { openVerificationModal } from 'events/verificationModal';
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
+
+// utils
+import { upvote, removeVote } from './vote';
 
 interface InputProps {
   postId: string;
@@ -92,52 +88,40 @@ const CommentVote = ({
 
   const vote = async () => {
     const oldVotedValue = voted;
-    const oldUpvoteCount = upvoteCount;
-    if (!isNilOrError(authUser)) {
-      if (!oldVotedValue) {
-        try {
-          setVoted(true);
-          setUpvoteCount(upvoteCount + 1);
 
-          await addCommentVote(postId, postType, commentId, {
-            user_id: authUser.id,
-            mode: 'up',
-          });
+    if (isNilOrError(authUser)) return;
 
-          if (commentType === 'parent') {
-            trackEventByName(tracks.clickParentCommentUpvoteButton);
-          } else if (commentType === 'child') {
-            trackEventByName(tracks.clickChildCommentUpvoteButton);
-          } else {
-            trackEventByName(tracks.clickCommentUpvoteButton);
-          }
-        } catch (error) {
-          setVoted(oldVotedValue);
-          setUpvoteCount(oldUpvoteCount);
-        }
+    if (!oldVotedValue) {
+      try {
+        setVoted(true);
+        setUpvoteCount((n) => n + 1);
+
+        await upvote({
+          postId,
+          postType,
+          commentId,
+          userId: authUser.id,
+          commentType,
+        });
+      } catch (error) {
+        setVoted(false);
+        setUpvoteCount((n) => n - 1);
       }
+    }
 
-      if (
-        oldVotedValue &&
-        !isNilOrError(comment) &&
-        !isNilOrError(commentVote)
-      ) {
-        try {
-          setVoted(false);
-          setUpvoteCount(upvoteCount - 1);
-          await deleteCommentVote(comment.id, commentVote.id);
+    if (oldVotedValue && !isNilOrError(commentVote)) {
+      try {
+        setVoted(false);
+        setUpvoteCount((n) => n - 1);
 
-          if (commentType === 'parent') {
-            trackEventByName(tracks.clickParentCommentCancelUpvoteButton);
-          } else if (commentType === 'child') {
-            trackEventByName(tracks.clickChildCommentCancelUpvoteButton);
-          } else {
-            trackEventByName(tracks.clickCommentCancelUpvoteButton);
-          }
-        } catch (error) {
-          setVoted(oldVotedValue);
-          setUpvoteCount(oldUpvoteCount);
-        }
+        await removeVote({
+          commentId,
+          commentVoteId: commentVote.id,
+          commentType,
+        });
+      } catch (error) {
+        setVoted(true);
+        setUpvoteCount((n) => n + 1);
       }
     }
   };
