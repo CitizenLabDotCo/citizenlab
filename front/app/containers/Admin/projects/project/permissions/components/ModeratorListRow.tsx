@@ -47,7 +47,7 @@ const ModeratorListRow = ({ isLastItem, moderator, projectId }: Props) => {
   };
 
   return (
-    <Row key={moderatorId} isLastItem={isLastItem}>
+    <Row isLastItem={isLastItem}>
       <Box display="flex" alignItems="center">
         <Box mr="12px">
           <Avatar userId={moderatorId} size={30} />

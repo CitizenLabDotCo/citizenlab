@@ -29,6 +29,7 @@ const ModeratorList = memo(({ projectId }: Props) => {
             {moderators.map((moderator, index) => {
               return (
                 <ModeratorListRow
+                  key={moderator.id}
                   isLastItem={index === moderators.length - 1}
                   moderator={moderator}
                   projectId={projectId}
