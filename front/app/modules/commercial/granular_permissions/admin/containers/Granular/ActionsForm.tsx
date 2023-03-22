@@ -22,7 +22,7 @@ import {
   getPermissionActionMessage,
   getPermissionActionSectionSubtitle,
 } from './utils';
-import UserFieldSelection from './UserFieldSelection';
+import UserFieldSelection from '../../components/UserFieldSelection/UserFieldSelection';
 
 const ActionPermissionWrapper = styled.div`
   margin-bottom: 30px;
