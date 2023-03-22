@@ -149,8 +149,6 @@ class User < ApplicationRecord
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
 
   validates :email, :locale, presence: true, unless: :invite_pending?
-  validates :password, presence: true, on: :create, if: :should_require_password?
-
   validates :email, uniqueness: true, allow_nil: true
   validates :slug, uniqueness: true, presence: true, unless: :invite_pending?
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }, allow_nil: true
@@ -170,6 +168,7 @@ class User < ApplicationRecord
     message: ->(errors) { errors }
   }, if: %i[custom_field_values_changed? active?]
 
+  validates :password, presence: true, on: :create, if: :should_require_password?
   validates :password, length: { maximum: 72 }, allow_nil: true
   # Custom validation is required to deal with the
   # dynamic nature of the minimum password length.
