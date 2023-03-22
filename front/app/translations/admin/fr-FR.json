@@ -1644,7 +1644,7 @@
   "app.containers.IdeasShow.bodyTitle": "Description",
   "app.containers.IdeasShow.postedIn": "Posté dans {projectLink}",
   "app.containers.IdeasShow.proposedBudgetTitle": "Budget proposé",
-  "app.containers.IdeasShow.xDaysLeft": "{x, plural, =0 {jours} one {un jour} other {# jours}}",
+  "app.containers.IdeasShow.xDaysLeft": "{x, plural, =0 {Moins d'un jour restant} one {Un jour restant} other {# jours restants}}",
   "app.containers.admin.ContentBuilder.aboutBox": "À propos de Box",
   "app.containers.admin.ContentBuilder.accordion": "Accordion",
   "app.containers.admin.ContentBuilder.accordionDefaultOpenLabel": "Ouvrir par défaut",
