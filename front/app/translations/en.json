@@ -798,7 +798,7 @@
   "app.containers.CustomPageShow.notFound": "Page not found",
   "app.containers.DisabledAccount.bottomText": "You can sign in again from {date}.",
   "app.containers.DisabledAccount.termsAndConditions": "terms & conditions",
-  "app.containers.DisabledAccount.text1": "Your account on {organizationName} Platform has been temporarily disabled for a violation of the community guideline. For more information on this, you can consult the {TermsAndConditions}.",
+  "app.containers.DisabledAccount.text2": "Your account on {orgName} Platform has been temporarily disabled for a violation of community guidelines. For more information on this, you can consult the {TermsAndConditions}.",
   "app.containers.DisabledAccount.title": "Your account has been temporarily disabled",
   "app.containers.IdeaButton.addAContribution": "Add a contribution",
   "app.containers.IdeaButton.addAProject": "Add a project",
