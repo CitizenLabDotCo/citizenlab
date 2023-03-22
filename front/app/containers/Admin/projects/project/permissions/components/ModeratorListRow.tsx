@@ -60,6 +60,7 @@ const ModeratorListRow = ({ isLastItem, moderator, projectId }: Props) => {
         onClick={handleDeleteClick}
         buttonStyle="text"
         icon="delete"
+        // Component is accessible for both project moderators and admins
         disabled={!isAdmin({ data: moderator })}
       >
         {formatMessage(messages.deleteModeratorLabel)}
