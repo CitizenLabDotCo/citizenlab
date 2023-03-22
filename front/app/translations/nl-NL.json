@@ -424,7 +424,6 @@
   "app.components.SeatInfo.additionalSeats": "Extra plaatsen",
   "app.components.SeatInfo.adminMessage": "Uw abonnement heeft {adminSeatsIncluded}. Zodra je alle plaatsen hebt gebruikt, worden extra plaatsen toegevoegd onder 'Extra plaatsen'.",
   "app.components.SeatInfo.adminSeatsIncludedSubText": "{adminSeats} admin zetels inbegrepen",
-  "app.components.SeatInfo.collaboratorIncludedSubText": "{projectManagerSeats} plaatsen voor managers inbegrepen",
   "app.components.SeatInfo.collaboratorMessage": "Je abonnement heeft {adminSeatsIncluded} voor folder- en projectmanagers. Zodra je alle plaatsen hebt gebruikt, worden extra plaatsen toegevoegd onder 'Extra plaatsen'.",
   "app.components.SeatInfo.currentAdminSeatsTitle": "Huidige administratieve zetels",
   "app.components.SeatInfo.currentCollaboratorSeatsTitle": "Huidig aantal medewerkers",

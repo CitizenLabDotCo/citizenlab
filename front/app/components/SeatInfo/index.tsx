@@ -13,30 +13,34 @@ import {
 // Hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useSeats from 'api/seats/useSeats';
+import { TSeatNumber } from 'api/app_configuration/types';
 
 // Intl
 import messages from './messages';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 // Utils
 import { isNil } from 'utils/helperUtils';
 
-type SeatInfoType = {
-  seatType: 'project_manager' | 'admin';
-  width?: number | null;
+type TSeatType = 'collaborator' | 'admin';
+type Props = {
+  seatType: TSeatType;
 };
 
-const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
+const SeatInfo = ({ seatType }: Props) => {
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
 
-  const maximumAdmins =
-    appConfiguration?.data.attributes.settings.core.maximum_admins_number;
-  const maximumProjectManagers =
-    appConfiguration?.data.attributes.settings.core.maximum_moderators_number;
-  const maximumSeatNumber =
-    seatType === 'admin' ? maximumAdmins : maximumProjectManagers;
+  const maximumSeatNumbers: {
+    [key in TSeatType]: TSeatNumber;
+  } = {
+    admin:
+      appConfiguration?.data.attributes.settings.core.maximum_admins_number,
+    collaborator:
+      appConfiguration?.data.attributes.settings.core.maximum_moderators_number,
+  };
+  const maximumSeatNumber = maximumSeatNumbers[seatType];
 
   const additionalAdmins =
     appConfiguration?.data.attributes.settings.core.additional_admins_number;
@@ -47,27 +51,34 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
     seatType === 'admin' ? additionalAdmins : additionalCollaborators;
 
   // Maximum seat number being null means that there are unlimited seats so we don't show the seat info
-  if (isNil(maximumSeatNumber) || !seats || !appConfiguration) {
+  if (isNil(maximumSeatNumber) || !seats) {
     return null;
   }
 
-  const currentAdminSeats = seats.data.attributes.admins_number;
-  const currentProjectManagerSeats =
-    seats.data.attributes.project_moderators_number;
-  let currentSeatNumber =
-    seatType === 'admin' ? currentAdminSeats : currentProjectManagerSeats;
+  let currentSeatNumber = {
+    admin: seats.data.attributes.admins_number,
+    collaborator: seats.data.attributes.project_moderators_number,
+  }[seatType];
   const additionalSeats = currentSeatNumber - maximumSeatNumber;
-  const currentSeatTypeTitle =
-    seatType === 'admin'
-      ? messages.currentAdminSeatsTitle
-      : messages.currentCollaboratorSeatsTitle;
-  const tooltipMessage =
-    seatType === 'admin'
-      ? messages.includedAdminToolTip
-      : messages.includedCollaboratorToolTip;
   const showAdditionalSeats = Boolean(
     additionalSeats > 0 && maximumAdditionalSeats
   );
+
+  // Messages
+  type SeatTypeMessageDescriptor = {
+    [key in TSeatType]: MessageDescriptor;
+  };
+
+  const seatTypeMessage: SeatTypeMessageDescriptor = {
+    admin: messages.currentAdminSeatsTitle,
+    collaborator: messages.currentCollaboratorSeatsTitle,
+  };
+  const currentSeatTypeTitle = seatTypeMessage[seatType];
+  const tooltipMessages: SeatTypeMessageDescriptor = {
+    admin: messages.includedAdminToolTip,
+    collaborator: messages.includedCollaboratorToolTip,
+  };
+  const tooltipMessage = tooltipMessages[seatType];
 
   // Show maximum number of seats if user has used more for this value
   if (currentSeatNumber >= maximumSeatNumber) {
@@ -76,7 +87,6 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
 
   return (
     <Box
-      width={(width && `${width}px`) || undefined}
       display="flex"
       flexDirection="column"
       padding="20px"
@@ -126,15 +136,15 @@ const SeatInfo = ({ seatType, width = 516 }: SeatInfoType) => {
       </Box>
 
       <Box mt="20px">
-        {seatType === 'project_manager' ? (
+        {seatType === 'collaborator' ? (
           <Text my="0px" variant="bodyS">
             <FormattedMessage
               {...messages.collaboratorMessage}
               values={{
                 adminSeatsIncluded: (
                   <Text as="span" fontWeight="bold" variant="bodyS">
-                    {formatMessage(messages.collaboratorIncludedSubText, {
-                      projectManagerSeats: maximumSeatNumber,
+                    {formatMessage(messages.collaboratorsIncludedSubText, {
+                      managerSeats: maximumSeatNumber,
                     })}
                   </Text>
                 ),

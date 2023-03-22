@@ -1,10 +1,9 @@
 import React from 'react';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { deleteIdea } from 'services/ideas';
 import { Button, Icon } from 'semantic-ui-react';
 import messages from '../../messages';
 import { ManagerType } from '../..';
-import { useIntl } from 'utils/cl-intl';
 import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
 
 interface Props {

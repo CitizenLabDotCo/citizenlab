@@ -424,7 +424,6 @@
   "app.components.SeatInfo.additionalSeats": "Ytterligere plasser",
   "app.components.SeatInfo.adminMessage": "Abonnementet har {adminSeatsIncluded}. Når du har brukt alle plasser, kan du legge til ekstra plasser under «Ytterligere plasser».",
   "app.components.SeatInfo.adminSeatsIncludedSubText": "{adminSeats} administratorplasser er inkludert",
-  "app.components.SeatInfo.collaboratorIncludedSubText": "{projectManagerSeats} lederplasser inkludert",
   "app.components.SeatInfo.collaboratorMessage": "Abonnementet har {adminSeatsIncluded}, tilgjengelig for mappeledere og prosjektledere. Når du har brukt alle plasser, kan du legge til ekstra plasser under «Ytterligere plasser».",
   "app.components.SeatInfo.currentAdminSeatsTitle": "Gjeldende antall administratorplasser",
   "app.components.SeatInfo.currentCollaboratorSeatsTitle": "Gjeldende antall samarbeidspartnerplasser",

@@ -424,7 +424,6 @@
   "app.components.SeatInfo.additionalSeats": "Ek koltuklar",
   "app.components.SeatInfo.adminMessage": "Planınızda {adminSeatsIncluded}var. Tüm koltukları kullandıktan sonra, 'Ek koltuklar' altında ekstra koltuklar eklenecektir.",
   "app.components.SeatInfo.adminSeatsIncludedSubText": "{adminSeats} yönetici koltukları dahil",
-  "app.components.SeatInfo.collaboratorIncludedSubText": "{projectManagerSeats} yönetici koltukları dahil",
   "app.components.SeatInfo.collaboratorMessage": "Planınızda {adminSeatsIncluded}, klasör yöneticileri ve proje yöneticileri için uygundur. Tüm koltukları kullandıktan sonra, 'Ek koltuklar' altında ekstra koltuklar eklenecektir.",
   "app.components.SeatInfo.currentAdminSeatsTitle": "Mevcut yönetici koltukları",
   "app.components.SeatInfo.currentCollaboratorSeatsTitle": "Mevcut işbirlikçi koltukları",
