@@ -245,6 +245,7 @@ class User < ApplicationRecord
   }
 
   scope :has_unread_notifications, -> { joins(unread_notifications: :recipient) }
+  scope :has_no_unread_notifications, -> { where.not(id: has_unread_notifications) }
 
   scope :order_role, lambda { |direction = :asc|
     joins('LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id')
