@@ -104,7 +104,7 @@ const CommentVote = ({
 
   const openAuthModal = useOpenAuthModal({
     onSuccess: vote,
-    waitIf: !authUser,
+    waitIf: isNilOrError(authUser),
   });
 
   const post = postType === 'idea' ? idea?.data : initiative?.data;

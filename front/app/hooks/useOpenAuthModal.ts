@@ -22,7 +22,7 @@ export default function useOpenAuthModal({ onSuccess, waitIf }: Params) {
     if (!onSuccess || waitIf || !executeSuccess) return;
     onSuccess();
     setExecuteSuccess(false);
-  }, [executeSuccess, onSuccess]);
+  }, [executeSuccess, waitIf, onSuccess]);
 
   return openAuthModal;
 }
