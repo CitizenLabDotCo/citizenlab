@@ -1,7 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
+import streams from 'utils/streams';
 import { IUsers } from 'services/users';
-import { IGroupMembershipsFoundUserData } from 'services/groupMemberships';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import seatsKeys from 'api/seats/keys';
 
@@ -28,17 +27,6 @@ export async function deleteProjectModerator(
     apiEndpoint: [`${API_PATH}/projects/${projectId}/moderators`],
   });
   return response;
-}
-
-export function findMembership(
-  projectId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<{ data: IGroupMembershipsFoundUserData[] }>({
-    apiEndpoint: `${API_PATH}/projects/${projectId}/moderators/users_search`,
-    ...streamParams,
-    cacheStream: false,
-  });
 }
 
 export async function addMembership(projectId: string, user_id: string) {
