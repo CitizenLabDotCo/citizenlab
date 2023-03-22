@@ -5,9 +5,8 @@ import styled from 'styled-components';
 import { Section, SubSectionTitle } from 'components/admin/Section';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
 
 // components
 import { IconTooltip } from '@citizenlab/cl2-component-library';
@@ -28,10 +27,9 @@ interface Props {
   projectId: string;
 }
 
-const ProjectManagement = ({
-  projectId,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+const ProjectManagement = ({ projectId }: Props) => {
+  const { formatMessage } = useIntl();
+
   return (
     <ModeratorSubSection>
       <SubSectionTitle>
@@ -62,4 +60,4 @@ const ProjectManagement = ({
   );
 };
 
-export default injectIntl(ProjectManagement);
+export default ProjectManagement;
