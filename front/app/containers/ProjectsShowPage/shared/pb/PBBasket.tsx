@@ -145,6 +145,12 @@ const PBBasket = ({
     basket_id: basket.id,
     'page[size]': basket.relationships.ideas.data.length,
     sort: 'random',
+    phase:
+      participationContextType === 'phase' ? participationContextId : undefined,
+    projects:
+      participationContextType === 'project' && participationContextId
+        ? [participationContextId]
+        : undefined,
   });
 
   const ideaList = ideas?.data;
