@@ -223,7 +223,7 @@ pt:
       header: "O seu Código de Confirmação"
       header_message: "Olá %{firstName}!"
       confirm_email_address: "Confirme o seu endereço de correio electrónico"
-      thanks_for_signing_up: "Obrigado pela vossa participação. Por favor introduza este código de confirmação na janela %{organizationName}'s plataforma de participação:"
+      thanks_for_signing_up: "Obrigado por se inscrever na plataforma de participação %{organizationName}."
       best_regards: "Com os melhores cumprimentos,"
       ignore_email: "Se não solicitou um código, pode ignorar este e-mail em segurança."
       expire_code: "Este código expirará em "
