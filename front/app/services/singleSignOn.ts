@@ -8,6 +8,7 @@ export interface SSOProviderMap {
   facebook: 'facebook';
   franceconnect: 'franceconnect';
   google: 'google';
+  cas: 'cas';
 }
 
 export type SSOProvider = SSOProviderMap[keyof SSOProviderMap];

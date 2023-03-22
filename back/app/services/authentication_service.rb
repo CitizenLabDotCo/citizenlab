@@ -20,7 +20,7 @@ class AuthenticationService
   end
 
   def method_by_provider(provider)
-    all_methods[provider]
+    all_methods.with_indifferent_access[provider]
   end
 
   def logout_url(provider, user)

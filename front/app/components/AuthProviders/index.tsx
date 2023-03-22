@@ -116,7 +116,7 @@ const AuthProviders = memo<Props & WrappedComponentProps>(
     const handleOnFranceConnectSelected = useCallback(
       (event: React.FormEvent) => {
         event.preventDefault();
-        onAuthProviderSelected('franceconnect');
+        onAuthProviderSelected('cas');
       },
       [onAuthProviderSelected]
     );

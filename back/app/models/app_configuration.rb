@@ -149,11 +149,11 @@ class AppConfiguration < ApplicationRecord
   end
 
   def base_frontend_uri
-    base_uri('http://localhost:3000')
+    base_uri('https://ksldjf38998wwefjskdfa.loca.lt')
   end
 
   def base_backend_uri
-    base_uri('http://localhost:4000')
+    base_uri('https://ksldjf38998wwefjskdfa.loca.lt')
   end
 
   def base_asset_host_uri

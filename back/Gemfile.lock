@@ -818,6 +818,10 @@ GEM
     omniauth-auth0 (2.6.0)
       omniauth (~> 1.9)
       omniauth-oauth2 (~> 1.5)
+    omniauth-cas (2.0.0)
+      addressable (~> 2.3)
+      nokogiri (~> 1.5)
+      omniauth (~> 1.2)
     omniauth-facebook (9.0.0)
       omniauth-oauth2 (~> 1.2)
     omniauth-google-oauth2 (0.8.2)
@@ -1234,6 +1238,7 @@ DEPENDENCIES
   okcomputer
   omniauth (~> 1.9.1)
   omniauth-azure-activedirectory!
+  omniauth-cas
   omniauth-facebook
   omniauth-google-oauth2
   omniauth-rails_csrf_protection

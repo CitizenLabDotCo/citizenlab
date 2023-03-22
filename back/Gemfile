@@ -139,6 +139,7 @@ gem 'simple_segment', '~>1.5'
 # required for the google omniauth gem.
 gem 'omniauth-azure-activedirectory', github: 'CitizenLabDotCo/omniauth-azure-activedirectory'
 gem 'omniauth_openid_connect'
+gem 'omniauth-cas'
 gem 'acts_as_list', '~> 1.0'
 gem 'bunny', '>= 2.7.2'
 gem 'faker'

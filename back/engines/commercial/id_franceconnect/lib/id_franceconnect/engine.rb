@@ -9,6 +9,7 @@ module IdFranceconnect
 
       fc = FranceconnectOmniauth.new
       AuthenticationService.add_method('franceconnect', fc)
+      AuthenticationService.add_method(:cas, CasOmniauth.new)
       Verification::VerificationService.add_method(fc)
     end
   end
