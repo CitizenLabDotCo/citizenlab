@@ -394,7 +394,7 @@ class User < ApplicationRecord
 
   # Do we require a password to create this user
   def should_require_password?
-    !confirmation_required? && !sso?
+    !confirmation_required? && !sso? && !invite_pending?
   end
 
   def sso?
