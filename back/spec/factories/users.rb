@@ -57,6 +57,6 @@ FactoryBot.define do
       name, domain = Faker::Internet.email.split('@')
       "#{name}#{n}@#{domain}"
     end
-    locale { 'en'}
+    locale { 'en' }
   end
 end
