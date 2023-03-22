@@ -23,6 +23,16 @@ import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { isNil } from 'utils/helperUtils';
 
 type TSeatType = 'collaborator' | 'admin';
+
+// Messages
+type SeatTypeMessageDescriptor = {
+  [key in TSeatType]: MessageDescriptor;
+};
+
+type SeatNumbersType = {
+  [key in TSeatType]: TSeatNumber;
+};
+
 type Props = {
   seatType: TSeatType;
 };
@@ -32,9 +42,7 @@ const SeatInfo = ({ seatType }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
 
-  const maximumSeatNumbers: {
-    [key in TSeatType]: TSeatNumber;
-  } = {
+  const maximumSeatNumbers: SeatNumbersType = {
     admin:
       appConfiguration?.data.attributes.settings.core.maximum_admins_number,
     collaborator:
@@ -42,13 +50,14 @@ const SeatInfo = ({ seatType }: Props) => {
   };
   const maximumSeatNumber = maximumSeatNumbers[seatType];
 
-  const additionalAdmins =
-    appConfiguration?.data.attributes.settings.core.additional_admins_number;
-  const additionalCollaborators =
-    appConfiguration?.data.attributes.settings.core
-      .additional_moderators_number;
-  const maximumAdditionalSeats =
-    seatType === 'admin' ? additionalAdmins : additionalCollaborators;
+  const additionalSeatNumbers: SeatNumbersType = {
+    admin:
+      appConfiguration?.data.attributes.settings.core.additional_admins_number,
+    collaborator:
+      appConfiguration?.data.attributes.settings.core
+        .additional_moderators_number,
+  };
+  const maximumAdditionalSeats = additionalSeatNumbers[seatType];
 
   // Maximum seat number being null means that there are unlimited seats so we don't show the seat info
   if (isNil(maximumSeatNumber) || !seats) {
@@ -63,11 +72,6 @@ const SeatInfo = ({ seatType }: Props) => {
   const showAdditionalSeats = Boolean(
     additionalSeats > 0 && maximumAdditionalSeats
   );
-
-  // Messages
-  type SeatTypeMessageDescriptor = {
-    [key in TSeatType]: MessageDescriptor;
-  };
 
   const seatTypeMessage: SeatTypeMessageDescriptor = {
     admin: messages.currentAdminSeatsTitle,
