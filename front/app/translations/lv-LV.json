@@ -730,7 +730,6 @@
   "app.containers.ChangePassword.passwordChangeSuccessMessage": "Jūsu parole ir veiksmīgi atjaunināta",
   "app.containers.ChangePassword.passwordEmptyError": "Ievadiet savu paroli",
   "app.containers.ChangePassword.passwordsDontMatch": "Jaunās paroles apstiprināšana",
-  "app.containers.ChangePassword.title": "Mainīt paroli",
   "app.containers.Comments.a11y_commentDeleted": "Komentārs dzēsts",
   "app.containers.Comments.a11y_commentPosted": "Komentārs publicēts",
   "app.containers.Comments.a11y_undoUpvote": "Atcelt augšupvērsto balsojumu",

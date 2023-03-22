@@ -730,7 +730,6 @@
   "app.containers.ChangePassword.passwordChangeSuccessMessage": "Ο κωδικός πρόσβασής σας ενημερώθηκε επιτυχώς",
   "app.containers.ChangePassword.passwordEmptyError": "Εισάγετε τον κωδικό πρόσβασής σας",
   "app.containers.ChangePassword.passwordsDontMatch": "Επιβεβαίωση νέου κωδικού πρόσβασης",
-  "app.containers.ChangePassword.title": "Αλλάξτε τον κωδικό πρόσβασής σας",
   "app.containers.Comments.a11y_commentDeleted": "Το σχόλιο διαγράφηκε",
   "app.containers.Comments.a11y_commentPosted": "Το σχόλιο δημοσιεύτηκε",
   "app.containers.Comments.a11y_undoUpvote": "Αναίρεση επιδοκιμασίας",
