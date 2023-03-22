@@ -121,7 +121,7 @@ const CommentVote = ({
         setUpvoteCount(backendUpvoteCount);
       }
     }
-  }, [comment]);
+  }, [comment, upvoteCount]);
 
   const handleVoteClick = async (event?: MouseEvent) => {
     event?.preventDefault();
