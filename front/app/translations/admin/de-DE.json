@@ -688,7 +688,7 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.shareAsWebLink": "Als Weblink teilen",
   "app.containers.Admin.reporting.components.ReportBuilderPage.shareAsWebLinkDesc": "Dieser Weblink ist nur für Admins zugänglich.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.shareReportTitle": "Teilen",
-  "app.containers.Admin.reporting.containers.ReportBuilderPage.createAReport": "Einen Bericht erstellen",
+  "app.containers.Admin.reporting.containers.ReportBuilderPage.createAReport": "Bericht erstellen",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createReportDescription": "Passen Sie Ihren Bericht an und geben Sie ihn über einen Weblink an interne Stakeholder oder Ihre Bevölkerung weiter.",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.viewReports": "Berichte ansehen",
   "app.containers.Admin.reporting.helmetDescription": "Berichtseite für Admins",
