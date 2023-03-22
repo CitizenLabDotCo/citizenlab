@@ -1,11 +1,9 @@
 // libraries
 import React, { memo, useState, useCallback } from 'react';
-import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import Observer from '@researchgate/react-intersection-observer';
 
 // resources
-import GetPost, { GetPostChildProps } from 'resources/GetPost';
 import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 
 // utils
@@ -28,7 +26,7 @@ import { Title } from '@citizenlab/cl2-component-library';
 
 // typings
 import { CommentsSort } from 'services/comments';
-import { IdeaCommentingDisabledReason } from 'services/ideas';
+import { IdeaCommentingDisabledReason } from 'api/ideas/types';
 import CommentingInitiativeDisabled from './CommentingInitiativeDisabled';
 
 // analytics
@@ -38,6 +36,7 @@ import tracks from './tracks';
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useProject from 'hooks/useProject';
+import useIdeaById from 'api/ideas/useIdeaById';
 
 const Container = styled.div``;
 
@@ -95,18 +94,20 @@ export interface InputProps {
 }
 
 interface DataProps {
-  idea: GetPostChildProps;
   comments: GetCommentsChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
 const CommentsSection = memo<Props>(
-  ({ postId, postType, idea, comments, className }) => {
-    const initiativeId = postType === 'initiative' ? postId : null;
+  ({ postId, postType, comments, className }) => {
+    const initiativeId = postType === 'initiative' ? postId : undefined;
+    const ideaId = postType === 'idea' ? postId : undefined;
     const { data: initiative } = useInitiativeById(initiativeId);
-    const post = postType === 'idea' ? idea : initiative?.data;
-    const projectId = get(post, 'relationships.project.data.id');
+    const { data: idea } = useIdeaById(ideaId);
+
+    const post = initiative || idea;
+    const projectId = idea?.data.relationships?.project.data.id;
     const project = useProject({ projectId });
     const [sortOrder, setSortOrder] = useState<CommentsSort>('-new');
     const [posting, setPosting] = useState(false);
@@ -143,20 +144,16 @@ const CommentsSection = memo<Props>(
     }, []);
 
     if (!isNilOrError(post) && !isNilOrError(commentsList)) {
-      const commentingEnabled = get(
-        post,
-        'attributes.action_descriptor.commenting_idea.enabled',
-        true
-      ) as boolean;
-      const commentingDisabledReason = get(
-        post,
-        'attributes.action_descriptor.commenting_idea.disabled_reason',
-        null
-      ) as IdeaCommentingDisabledReason | null;
+      const commentingEnabled =
+        idea?.data.attributes.action_descriptor.commenting_idea.enabled;
+
+      const commentingDisabledReason =
+        idea?.data.attributes.action_descriptor.commenting_idea
+          .disabled_reason || (null as IdeaCommentingDisabledReason | null);
       const phaseId = isNilOrError(project)
         ? undefined
         : project.relationships?.current_phase?.data?.id;
-      const commentCount = post.attributes.comments_count;
+      const commentCount = post.data.attributes.comments_count;
 
       return (
         <Container className={className || ''}>
@@ -175,9 +172,9 @@ const CommentsSection = memo<Props>(
 
           {postType === 'idea' ? (
             <CommentingDisabled
-              commentingEnabled={commentingEnabled}
+              commentingEnabled={!!commentingEnabled}
               commentingDisabledReason={commentingDisabledReason}
-              projectId={get(post, 'relationships.project.data.id')}
+              projectId={idea?.data.relationships.project.data.id || null}
               phaseId={phaseId}
               postId={postId}
               postType={postType}
@@ -221,11 +218,6 @@ const CommentsSection = memo<Props>(
 );
 
 const Data = adopt<DataProps, InputProps>({
-  idea: ({ postId, render }) => (
-    <GetPost id={postId} type="idea">
-      {render}
-    </GetPost>
-  ),
   comments: ({ postId, postType, render }) => (
     <GetComments postId={postId} postType={postType}>
       {render}

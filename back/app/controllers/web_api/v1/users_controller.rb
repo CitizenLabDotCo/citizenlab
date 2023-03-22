@@ -204,7 +204,7 @@ class WebApi::V1::UsersController < ::ApplicationController
 
   def ideas_count
     ideas = policy_scope(IdeasFinder.new({}, scope: @user.ideas.published, current_user: current_user).find_records)
-    render json: { count: ideas.count }, status: :ok
+    render json: raw_json({ count: ideas.count }), status: :ok
   end
 
   def blocked_count
@@ -231,7 +231,7 @@ class WebApi::V1::UsersController < ::ApplicationController
         policy_scope_class: InitiativeCommentPolicy::Scope
       ).count
     end
-    render json: { count: count }, status: :ok
+    render json: raw_json({ count: count }), status: :ok
   end
 
   def update_password

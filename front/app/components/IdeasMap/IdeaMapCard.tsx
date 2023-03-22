@@ -37,7 +37,7 @@ import {
 import { darken } from 'polished';
 
 // typings
-import { IIdeaMarkerData } from 'services/ideas';
+import { IIdeaMarkerData } from 'api/idea_markers/types';
 
 const Container = styled.div`
   text-align: left;
