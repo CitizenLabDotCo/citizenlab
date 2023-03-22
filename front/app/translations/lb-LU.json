@@ -1112,6 +1112,7 @@
   "app.containers.NotificationMenu.statusChangeOnVotedOption": "De Status vun enger Optioun, iwwer déi Dir ofgestëmmt hutt, huet sech zu {status} geännert",
   "app.containers.NotificationMenu.statusChangeOnVotedProject": "De Status vun engem Projet, iwwer deen Dir ofgestëmmt hutt, huet sech zu {status} geännert",
   "app.containers.NotificationMenu.statusChangeOnVotedQuestion": "De Status vun enger Fro, iwwer déi Dir ofgestëmmt hutt, huet sech zu {status} geännert",
+  "app.containers.NotificationMenu.statusChangedOfIdea": "{ideaTitle} Status ass op {status}geännert",
   "app.containers.NotificationMenu.statusChangedOfYourInitiative": "De Status vu(n) '{initiativeTitle}' huet sech zu {status} geännert",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} huet di néideg Unzuel u Stëmmen erreecht",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} huet Är Invitatioun ugeholl",
