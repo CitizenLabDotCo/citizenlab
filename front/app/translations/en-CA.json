@@ -200,8 +200,6 @@
   "app.components.IdeasShow.reportAsSpam": "Report as spam",
   "app.components.IdeasShow.send": "Send",
   "app.components.IdeasShow.skipSharing": "Skip it, I'll do it later",
-  "app.components.IdeasShowPage.signIn": "Log in if you already have an account",
-  "app.components.IdeasShowPage.signUp": "Sign Up",
   "app.components.IdeasShowPage.sorryNoAccess": "Sorry, you can't access this page. You may need to log in or sign up to access it.",
   "app.components.InitiativeCard.xComments": "{commentsCount, plural, =0 {no comments} one {1 comment} other {# comments}}",
   "app.components.InitiativeCard.xVotesOfY": "{xVotes} out of {votingThreshold}",

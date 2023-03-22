@@ -200,8 +200,6 @@
   "app.components.IdeasShow.reportAsSpam": "Rapporteer als spam",
   "app.components.IdeasShow.send": "Verzenden",
   "app.components.IdeasShow.skipSharing": "Sla deze stap over, en deel het later",
-  "app.components.IdeasShowPage.signIn": "Log in als je al een account hebt",
-  "app.components.IdeasShowPage.signUp": "Registreren",
   "app.components.IdeasShowPage.sorryNoAccess": "Je hebt geen toegang tot deze pagina. Je moet mogelijk opnieuw inloggen of je registreren om toegang te krijgen.",
   "app.components.InitiativeCard.xComments": "{commentsCount, plural, =0 {geen reacties} one {1 reactie} other {# reacties}}",
   "app.components.InitiativeCard.xVotesOfY": "{xVotes} van de {votingThreshold}",

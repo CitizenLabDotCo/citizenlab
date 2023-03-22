@@ -200,8 +200,6 @@
   "app.components.IdeasShow.reportAsSpam": "Rapporter som spam",
   "app.components.IdeasShow.send": "Sende",
   "app.components.IdeasShow.skipSharing": "Hopp over, jeg gjør det senere",
-  "app.components.IdeasShowPage.signIn": "Logg inn om du allerede har konto",
-  "app.components.IdeasShowPage.signUp": "Opprett en konto",
   "app.components.IdeasShowPage.sorryNoAccess": "Beklager. Du har ikke tilgang til denne siden. Du må enten logge inn eller registrere deg for å få tilgang.",
   "app.components.InitiativeCard.xComments": "{commentsCount, plural, =0 {ingen kommentarer} one {1 kommentar} other {# kommentarer}}",
   "app.components.InitiativeCard.xVotesOfY": "{xVotes} av {votingThreshold}",

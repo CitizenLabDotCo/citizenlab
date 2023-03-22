@@ -200,8 +200,6 @@
   "app.components.IdeasShow.reportAsSpam": "Rapportera som spam",
   "app.components.IdeasShow.send": "Skicka",
   "app.components.IdeasShow.skipSharing": "Hoppa över det, jag gör det senare",
-  "app.components.IdeasShowPage.signIn": "Logga in om du redan har ett konto",
-  "app.components.IdeasShowPage.signUp": "Registrera dig",
   "app.components.IdeasShowPage.sorryNoAccess": "Du kan tyvärr inte komma åt den här sidan. Du kan behöva logga in eller registrera dig för att komma åt den.",
   "app.components.InitiativeCard.xComments": "{commentsCount, plural, =0 {inga kommentarer} one {1 kommentar} other {# kommentarer}}",
   "app.components.InitiativeCard.xVotesOfY": "{xVotes} av {votingThreshold}",
