@@ -80,7 +80,7 @@ export const createAgeFieldSubscription = (
         return;
       }
 
-      if (!usersByAge.series.reference_population) {
+      if (!usersByAge.data.attributes.series.reference_population) {
         setReferenceDataUploaded(false);
         return;
       }
@@ -120,7 +120,7 @@ const handleRegFieldResponse =
       return;
     }
 
-    if (!usersByRegField.series.reference_population) {
+    if (!usersByRegField.data.attributes.series.reference_population) {
       setReferenceDataUploaded(false);
       return;
     }
@@ -133,12 +133,12 @@ const handleRegFieldResponse =
 export const regFieldToReferenceData = (
   usersByField: IUsersByRegistrationField
 ): RepresentativenessRowMultiloc[] => {
-  const { users, reference_population } = usersByField.series;
+  const { users, reference_population } = usersByField.data.attributes.series;
 
   const optionIds = Object.keys(reference_population);
   const includedUsers = syncKeys(users, optionIds);
 
-  const options = usersByField.options;
+  const options = usersByField.data.attributes.options;
 
   const actualPercentages = roundPercentages(Object.values(includedUsers), 1);
   const referencePercentages = roundPercentages(
@@ -178,7 +178,7 @@ const syncKeys = (users: Record<string, number>, keys: string[]) => {
 export const regFieldToIncludedUsers = (
   usersByField: IUsersByRegistrationField
 ): IncludedUsers => {
-  const { users, reference_population } = usersByField.series;
+  const { users, reference_population } = usersByField.data.attributes.series;
   const includedUsers = syncKeys(users, [
     ...Object.keys(reference_population),
     '_blank',
@@ -199,9 +199,13 @@ export const regFieldToIncludedUsers = (
 };
 
 export const ageFieldToReferenceData = (
-  { series: { user_counts, reference_population, bins } }: IUsersByAge,
+  data: IUsersByAge,
   locale: Locale
 ): RepresentativenessRowMultiloc[] => {
+  const {
+    series: { user_counts, reference_population, bins },
+  } = data.data.attributes;
+
   const actualPercentages = roundPercentages(user_counts, 1);
   const referencePercentages = roundPercentages(reference_population, 1);
 
@@ -214,10 +218,10 @@ export const ageFieldToReferenceData = (
   }));
 };
 
-export const ageFieldToIncludedUsers = ({
-  total_user_count: total,
-  unknown_age_count: unknown,
-}: IUsersByAge): IncludedUsers => {
+export const ageFieldToIncludedUsers = (data: IUsersByAge): IncludedUsers => {
+  const { total_user_count: total, unknown_age_count: unknown } =
+    data.data.attributes;
+
   const known = total - unknown;
   const percentage = roundPercentage(known, total);
 

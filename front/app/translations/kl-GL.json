@@ -200,8 +200,6 @@
   "app.components.IdeasShow.reportAsSpam": "Spam-imik nalunaarutiginnigit",
   "app.components.IdeasShow.send": "Nassiutiguk",
   "app.components.IdeasShow.skipSharing": "Kingusinnerusukkut siammarumaarpara",
-  "app.components.IdeasShowPage.signIn": "Atuisooreeruit iserit",
-  "app.components.IdeasShowPage.signUp": "Atuisoq pilersiguk",
   "app.components.IdeasShowPage.sorryNoAccess": "Ajuusaarpugut, quppernermut uunga isersinnaanngilatit. Iserniaruit iseriarlutit misilissinnaavat imaluunniit atuisumik pilersitsillutit.",
   "app.components.InitiativeCard.xComments": "{commentsCount, plural, =0 {no oqaaseqaatit} one {1 oqaaseqaatit} other {# oqaaseqaatit}}",
   "app.components.InitiativeCard.xVotesOfY": "{xVotes} uuminnga {votingThreshold}",

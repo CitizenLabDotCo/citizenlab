@@ -3,11 +3,11 @@ import React from 'react';
 // components
 import StatusBadge from 'components/StatusBadge';
 import VoteControl from 'components/VoteControl';
-import { IIdeaData } from 'services/ideas';
 import CommentCount from './CommentCount';
 
 // styles
 import styled from 'styled-components';
+import { IIdea } from 'api/ideas/types';
 
 const Container = styled.footer`
   display: flex;
@@ -35,7 +35,7 @@ const StyledVoteControl = styled(VoteControl)`
 `;
 
 interface Props {
-  idea: IIdeaData;
+  idea: IIdea;
   hideIdeaStatus?: boolean;
   className?: string;
   showCommentCount: boolean;
@@ -47,20 +47,20 @@ const FooterWithVoteControl = ({
   className,
   showCommentCount,
 }: Props) => {
-  const ideaStatusId = idea.relationships.idea_status.data.id;
+  const ideaStatusId = idea.data.relationships.idea_status.data.id;
 
   return (
     <Container className={className || ''}>
       <Left>
         <StyledVoteControl
           styleType="border"
-          ideaId={idea.id}
+          ideaId={idea.data.id}
           size="1"
           ariaHidden
         />
 
         {showCommentCount && (
-          <CommentCount commentCount={idea.attributes.comments_count} />
+          <CommentCount commentCount={idea.data.attributes.comments_count} />
         )}
       </Left>
       {!hideIdeaStatus && (

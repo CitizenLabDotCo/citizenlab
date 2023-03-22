@@ -261,7 +261,7 @@ de:
       title_your_weekly_report: '%{firstName}, Ihr wöchentlicher Bericht'
       text_introduction: 'Wir haben für Sie die Beiträge zusammengestellt, die in der vergangenen Woche die meiste Aktivität hatten. Finden Sie heraus, was auf Ihrer Plattform passiert ist!'
       cta_moderate: 'Projekt(e) moderieren'
-      new_users: 'Neue BenutzerInnen'
+      new_users: 'Neue Nutzer*innen'
       new_ideas: 'Neue Ideen'
       new_comments: 'Neue Kommentare'
       title_activity_past_week: 'Aktivitäten der letzten Woche'

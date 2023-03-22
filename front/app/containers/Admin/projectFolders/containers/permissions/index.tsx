@@ -21,13 +21,12 @@ import {
 } from 'services/projectFolderModerators';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // components
 import { SubSectionTitle } from 'components/admin/Section';
-import { IconTooltip, Box } from '@citizenlab/cl2-component-library';
+import { IconTooltip, Box, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import { List, Row } from 'components/admin/ResourceList';
 import Avatar from 'components/Avatar';
@@ -56,9 +55,9 @@ const UserSelectButton = styled(Button)`
 `;
 
 const FolderPermissions = ({
-  intl: { formatMessage },
   params: { projectFolderId },
-}: WrappedComponentProps & WithRouterProps) => {
+}: WithRouterProps) => {
+  const { formatMessage } = useIntl();
   const authUser = useAuthUser();
   const folderModerators = useProjectFolderModerators(projectFolderId);
 
@@ -229,9 +228,17 @@ const FolderPermissions = ({
                   key={folderModerator.id}
                   isLastItem={index === folderModerators.length - 1}
                 >
-                  <Avatar userId={folderModerator.id} size={30} />
-                  <p className="expand">{userName(folderModerator)}</p>
-                  <p className="expand">{folderModerator.attributes.email}</p>
+                  <Box display="flex" alignItems="center">
+                    <Box mr="8px">
+                      <Avatar userId={folderModerator.id} size={30} />
+                    </Box>
+                    <Text as="span" m={'0'}>
+                      {userName(folderModerator)}
+                    </Text>
+                  </Box>
+                  <Text as="span" m={'0'}>
+                    {folderModerator.attributes.email}
+                  </Text>
                   <Button
                     onClick={handleDeleteFolderModeratorClick(
                       projectFolderId,
@@ -255,4 +262,4 @@ const FolderPermissions = ({
   );
 };
 
-export default withRouter(injectIntl(FolderPermissions));
+export default withRouter(FolderPermissions);
