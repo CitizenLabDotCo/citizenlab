@@ -24,15 +24,19 @@ export type Sort =
   | '-role';
 
 export interface InputProps {
+  // Not used
   pageNumber?: number;
   pageSize?: number;
   sort?: Sort;
   search?: string;
+  // Not used
   groupId?: string;
+  // 1 instead of 2?
   canModerateProject?: string;
   canModerate?: boolean;
   canAdmin?: boolean;
   notCitizenlabMember?: boolean;
+  // Not used
   includeInactive?: boolean;
 }
 

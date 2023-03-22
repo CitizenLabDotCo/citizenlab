@@ -67,6 +67,8 @@ const UserSearch = memo(({ projectId }: Props) => {
   const getOptions = (users: IGroupMembershipsFoundUserData[]) => {
     return users
       .filter((user) => {
+        // Only if user is not an admin
+        // And if user is not already a project moderator
         let userIsNotYetModerator = true;
 
         if (!isNilOrError(moderators)) {
