@@ -60,7 +60,7 @@ const ModeratorListRow = ({ isLastItem, moderator, projectId }: Props) => {
         onClick={handleDeleteClick}
         buttonStyle="text"
         icon="delete"
-        disabled={isAdmin({ data: moderator })}
+        disabled={!isAdmin({ data: moderator })}
       >
         {formatMessage(messages.deleteModeratorLabel)}
       </Button>
