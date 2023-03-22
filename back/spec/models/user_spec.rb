@@ -915,5 +915,21 @@ RSpec.describe User, type: :model do
         expect(described_class.billed_moderators).to match_array([project_moderator, folder_moderator])
       end
     end
+
+    describe '.has_unread_notifications' do
+      it 'returns only users with unread notifications' do
+        _user_no_notifs = create(:user)
+        user_unread_notif = create(:user)
+        user_read_notif = create(:user)
+        user_read_and_unread_notif = create(:user)
+
+        create(:notification, read_at: nil, recipient_id: user_unread_notif.id)
+        create(:notification, read_at: 1.day.ago, recipient_id: user_read_notif.id)
+        create(:notification, read_at: nil, recipient_id: user_read_and_unread_notif.id)
+        create(:notification, read_at: 1.day.ago, recipient_id: user_read_and_unread_notif.id)
+
+        expect(described_class.has_unread_notifications).to match_array([user_unread_notif, user_read_and_unread_notif])
+      end
+    end
   end
 end
