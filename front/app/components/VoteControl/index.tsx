@@ -453,6 +453,8 @@ class VoteControl extends PureComponent<Props, State> {
         votingDisabledReason === 'not_verified'
       ) {
         openVerificationModal();
+      } else if (isSignedIn && votingDisabledReason === 'not_active') {
+        openSignUpInModal();
       } else if (
         !isSignedIn &&
         (votingEnabled ||

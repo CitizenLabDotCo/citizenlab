@@ -52,6 +52,9 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
             action: redirectToInitiativeForm,
           });
           break;
+        case 'complete_registration':
+          openSignUpInModal();
+          break;
         case 'sign_in_up_and_verify':
           trackEventByName(
             'Sign up/in modal opened in response to clicking new initiative'

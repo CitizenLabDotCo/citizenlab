@@ -52,6 +52,7 @@ const UserMenu = () => {
           onClick={toggleDropdown}
           aria-expanded={opened}
           className="intercom-user-menu-button"
+          id="e2e-user-menu-dropdown-button"
         >
           <User userId={userId} />
         </DropdownButton>

@@ -50,6 +50,7 @@ const SettingsRegistrationTab = () => {
     isLoading: isFormSubmitting,
     isSuccess: isFormSaved,
   } = useUpdateAppConfiguration();
+
   const userConfirmationIsAllowed = useFeatureFlag({
     name: 'user_confirmation',
     onlyCheckAllowed: true,

@@ -59,3 +59,5 @@ en:
           title: What is your issue?
         option:
           title: What is your option?
+  user:
+    anon_first_name: "User"

@@ -131,6 +131,8 @@ const CommentReplyButton = memo<Props>(
               verification: commentingDisabledReason === 'not_verified',
               action: () => onReply(),
             });
+          } else if (commentingDisabledReason === 'not_active') {
+            openSignUpInModal();
           }
         } else {
           if (commentingPermissionInitiative?.action === 'sign_in_up') {
@@ -155,6 +157,10 @@ const CommentReplyButton = memo<Props>(
                 type: 'initiative',
               },
             });
+          } else if (
+            commentingPermissionInitiative?.action === 'complete_registration'
+          ) {
+            openSignUpInModal();
           } else if (commentingPermissionInitiative?.enabled === true) {
             commentReplyButtonClicked({
               commentId,

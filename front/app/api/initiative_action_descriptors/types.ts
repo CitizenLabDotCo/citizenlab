@@ -14,7 +14,8 @@ export type IInitiativeAction =
 export type InitiativeDisabledReason =
   | 'not_permitted'
   | 'not_verified'
-  | 'not_signed_in';
+  | 'not_signed_in'
+  | 'not_active';
 
 export type IInitiativeActionDescriptors = {
   data: {

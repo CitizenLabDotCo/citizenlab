@@ -55,6 +55,7 @@ const Unauthorized = () => {
       flexDirection="column"
       alignItems="center"
       padding="4rem"
+      id="e2e-not-authorized"
     >
       <Title mb="0">{formatMessage(messages.noPermission)}</Title>
       {userIsNotLoggedIn ? (

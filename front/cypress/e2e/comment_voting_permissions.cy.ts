@@ -1,6 +1,6 @@
 import { randomString, randomEmail } from '../support/commands';
 
-describe('Comment voting permissions', () => {
+describe('Comment voting permissions for active users', () => {
   const unverifiedFirstName = randomString();
   const unverifiedLastName = randomString();
   const unverifiedEmail = randomEmail();
@@ -56,5 +56,40 @@ describe('Comment voting permissions', () => {
   after(() => {
     cy.apiRemoveUser(verifiedId);
     cy.apiRemoveUser(unverifiedId);
+  });
+});
+
+describe('Comment voting permissions for non-active users', () => {
+  const firstName = randomString();
+  const lastName = randomString();
+  const email = randomEmail();
+  const password = randomString();
+  const randomFieldName = randomString();
+  let userId: string;
+  let customFieldId: string;
+
+  before(() => {
+    // create user
+    cy.apiCreateCustomField(randomFieldName, true, false).then((response) => {
+      customFieldId = response.body.data.id;
+      cy.apiSignup(firstName, lastName, email, password, {
+        skipCustomFields: true,
+      }).then((response) => {
+        userId = response.body.data.id;
+      });
+      cy.setLoginCookie(email, password);
+    });
+  });
+
+  it("doesn't let non-active users vote", () => {
+    cy.setLoginCookie(email, password);
+    cy.visit('ideas/verified-idea');
+    cy.get('.e2e-comment-vote').click();
+    cy.get('#e2e-sign-up-container').should('exist');
+  });
+
+  after(() => {
+    cy.apiRemoveUser(userId);
+    cy.apiRemoveCustomField(customFieldId);
   });
 });

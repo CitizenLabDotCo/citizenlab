@@ -38,6 +38,7 @@ interface Props extends GetIdeasInputProps {
   className?: string;
   invisibleTitleMessage?: MessageDescriptor;
   projectId?: string;
+  phaseId?: string;
 }
 
 const IdeaCards = memo<Props>(

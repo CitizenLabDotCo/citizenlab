@@ -73,6 +73,7 @@ const disabledMessages: {
 } = {
   projectInactive: messages.pollDisabledProjectInactive,
   maybeNotPermitted: messages.pollDisabledMaybeNotPermitted,
+  notActive: messages.pollDisabledNotActiveUser,
   maybeNotVerified: messages.pollDisabledMaybeNotVerified,
   notPermitted: messages.pollDisabledNotPermitted,
   notActivePhase: messages.pollDisabledNotActivePhase,
@@ -172,6 +173,18 @@ export class Poll extends PureComponent<Props> {
                         <button onClick={this.onVerify}>
                           <FormattedMessage
                             {...messages.verificationLinkText}
+                          />
+                        </button>
+                      ),
+                      completeRegistrationLink: (
+                        <button
+                          id="e2e-complete-registration-link"
+                          onClick={() => {
+                            openSignUpInModal();
+                          }}
+                        >
+                          <FormattedMessage
+                            {...messages.completeRegistrationLinkText}
                           />
                         </button>
                       ),

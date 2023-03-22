@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // components
 import FilterSelector from 'components/FilterSelector';
@@ -10,63 +10,79 @@ import {
   IdeaDefaultSortMethod,
   ideaDefaultSortMethodFallback,
 } from 'services/participationContexts';
+import { IProjectData } from 'services/projects';
+import { TPhase } from 'hooks/usePhase';
+import { getMethodConfig } from 'utils/participationMethodUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 type Props = {
   id?: string | undefined;
   alignment: 'left' | 'right';
   onChange: (value: string) => void;
   defaultSortingMethod?: IdeaDefaultSortMethod;
+  phase?: TPhase | null;
+  project?: Error | IProjectData | null;
 };
 
-type State = {
-  selectedValue: string[];
-};
+const SortFilterDropdown = ({
+  alignment,
+  onChange,
+  defaultSortingMethod,
+  phase,
+  project,
+}: Props) => {
+  const [selectedValue, setSelectedValue] = useState<string[]>([
+    defaultSortingMethod || ideaDefaultSortMethodFallback,
+  ]);
 
-class SortFilterDropdown extends PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      selectedValue: [
-        props.defaultSortingMethod || ideaDefaultSortMethodFallback,
-      ],
-    };
-  }
+  useEffect(() => {
+    if (defaultSortingMethod) {
+      setSelectedValue([defaultSortingMethod]);
+    }
+  }, [defaultSortingMethod]);
 
-  handleOnChange = (selectedValue: string[]) => {
-    this.setState({ selectedValue });
-    this.props.onChange(selectedValue[0]);
+  const handleOnChange = (selectedValue: string[]) => {
+    setSelectedValue([selectedValue[0]]);
+    onChange(selectedValue[0]);
   };
 
-  sortTitle = (<FormattedMessage {...messages.sortTitle} />);
+  const sortTitle = <FormattedMessage {...messages.sortTitle} />;
 
-  render() {
-    const { alignment } = this.props;
-    const { selectedValue } = this.state;
-    const options = [
-      { text: <FormattedMessage {...messages.trending} />, value: 'trending' },
-      { text: <FormattedMessage {...messages.random} />, value: 'random' },
-      { text: <FormattedMessage {...messages.popular} />, value: 'popular' },
-      { text: <FormattedMessage {...messages.newest} />, value: 'new' },
-      { text: <FormattedMessage {...messages.oldest} />, value: '-new' },
-    ];
+  let options = [
+    { text: <FormattedMessage {...messages.trending} />, value: 'trending' },
+    { text: <FormattedMessage {...messages.random} />, value: 'random' },
+    { text: <FormattedMessage {...messages.popular} />, value: 'popular' },
+    { text: <FormattedMessage {...messages.newest} />, value: 'new' },
+    { text: <FormattedMessage {...messages.oldest} />, value: '-new' },
+  ];
 
-    return (
-      <FilterSelector
-        id="e2e-ideas-sort-dropdown"
-        title={this.sortTitle}
-        name="sort"
-        selected={selectedValue}
-        values={options}
-        onChange={this.handleOnChange}
-        multipleSelectionAllowed={false}
-        width="180px"
-        left={alignment === 'left' ? '-5px' : undefined}
-        mobileLeft={alignment === 'left' ? '-5px' : undefined}
-        right={alignment === 'right' ? '-5px' : undefined}
-        mobileRight={alignment === 'right' ? '-5px' : undefined}
-      />
+  if (!isNilOrError(project)) {
+    const config = getMethodConfig(
+      !isNilOrError(phase)
+        ? phase.attributes.participation_method
+        : project.attributes.participation_method
     );
+    if (config.postSortingOptions) {
+      options = config.postSortingOptions;
+    }
   }
-}
+
+  return (
+    <FilterSelector
+      id="e2e-ideas-sort-dropdown"
+      title={sortTitle}
+      name="sort"
+      selected={selectedValue}
+      values={options}
+      onChange={handleOnChange}
+      multipleSelectionAllowed={false}
+      width="180px"
+      left={alignment === 'left' ? '-5px' : undefined}
+      mobileLeft={alignment === 'left' ? '-5px' : undefined}
+      right={alignment === 'right' ? '-5px' : undefined}
+      mobileRight={alignment === 'right' ? '-5px' : undefined}
+    />
+  );
+};
 
 export default SortFilterDropdown;

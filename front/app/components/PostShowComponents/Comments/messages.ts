@@ -67,6 +67,10 @@ export default defineMessages({
     id: 'app.containers.Comments.signInToComment',
     defaultMessage: 'Please {signUpLink} or {signInLink} to comment.',
   },
+  completeRegistrationToComment: {
+    id: 'app.containers.Comments.completeRegistrationToComment',
+    defaultMessage: 'Please {completeRegistrationLink} to comment.',
+  },
   commentingInitiativeNotPermitted: {
     id: 'app.components.Comments.commentingInitiativeNotPermitted',
     defaultMessage: "You don't have the rights to comment.",
@@ -92,6 +96,10 @@ export default defineMessages({
   signUpLinkText: {
     id: 'app.containers.Comments.signUpLinkText',
     defaultMessage: 'sign up',
+  },
+  completeRegistrationLinkText: {
+    id: 'app.containers.Comments.completeRegistrationLinkText',
+    defaultMessage: 'complete registration',
   },
   verifyIdentityLinkText: {
     id: 'app.containers.Comments.verifyIdentityLinkText',

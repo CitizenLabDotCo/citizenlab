@@ -68,16 +68,6 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
     setInitiated(true);
   }, [pathname, search, authUser, signUpInModalClosed, initiated]);
 
-  // In case the user signs in
-  useEffect(() => {
-    if (isNilOrError(authUser)) return;
-    if (metaData) return;
-
-    if (!authUser.attributes.registration_completed_at) {
-      openSignUpInModal({ flow: 'signup' });
-    }
-  }, [authUser, metaData]);
-
   // In case of a sign up / in route, open modal and redirect to homepage
   useEffect(() => {
     let timeout: NodeJS.Timeout;

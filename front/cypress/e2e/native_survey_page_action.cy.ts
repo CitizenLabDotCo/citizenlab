@@ -14,6 +14,8 @@ describe('Native survey project page actions', () => {
   const phaseFutureTitle = 'Future survey phase';
   let projectIdContinuous: string;
   let projectSlugContinous: string;
+  let projectIdContinuousNonActive: string;
+  let projectSlugContinousNonActive: string;
   let projectIdArchived: string;
   let projectSlugArchived: string;
   let projectIdTimeline: string;
@@ -21,7 +23,7 @@ describe('Native survey project page actions', () => {
   let userId: string;
 
   before(() => {
-    // Create active continuous project
+    // Create active continuous project for anyone permission
     cy.apiCreateProject({
       type: 'continuous',
       title: projectTitle,
@@ -32,6 +34,19 @@ describe('Native survey project page actions', () => {
     }).then((project) => {
       projectIdContinuous = project.body.data.id;
       projectSlugContinous = project.body.data.attributes.slug;
+    });
+
+    // Create active continuous project
+    cy.apiCreateProject({
+      type: 'continuous',
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: projectDescription,
+      publicationStatus: 'published',
+      participationMethod: 'native_survey',
+    }).then((project) => {
+      projectIdContinuousNonActive = project.body.data.id;
+      projectSlugContinousNonActive = project.body.data.attributes.slug;
     });
 
     // Create archived continuous project
@@ -76,6 +91,13 @@ describe('Native survey project page actions', () => {
         userId = response.body.data.id;
       }
     );
+  });
+
+  after(() => {
+    cy.apiRemoveProject(projectIdContinuous);
+    cy.apiRemoveProject(projectIdContinuousNonActive);
+    cy.apiRemoveProject(projectIdArchived);
+    cy.apiRemoveUser(userId);
   });
 
   it('tests actions when continuous survey project is active and accepting submissions', () => {
@@ -160,9 +182,38 @@ describe('Native survey project page actions', () => {
     cy.url().should('include', `/projects/${projectSlugContinous}/ideas/new`);
   });
 
-  after(() => {
-    cy.apiRemoveProject(projectIdContinuous);
-    cy.apiRemoveProject(projectIdArchived);
-    cy.apiRemoveUser(userId);
+  describe('Survey actions for non-active users', () => {
+    const firstName = randomString();
+    const lastName = randomString();
+    const email = randomEmail();
+    const password = randomString();
+    const randomFieldName = randomString();
+    let userId: string;
+    let customFieldId: string;
+
+    before(() => {
+      // create user
+      cy.apiCreateCustomField(randomFieldName, true, false).then((response) => {
+        customFieldId = response.body.data.id;
+        cy.apiSignup(firstName, lastName, email, password, {
+          skipCustomFields: true,
+        }).then((response) => {
+          userId = response.body.data.id;
+        });
+        cy.setLoginCookie(email, password);
+      });
+    });
+
+    it("doesn't let non-active users vote", () => {
+      cy.setLoginCookie(email, password);
+      cy.visit(`/projects/${projectSlugContinousNonActive}`);
+      cy.get('#e2e-cta-button').find('button').click({ force: true });
+      cy.get('#e2e-sign-up-in-modal').should('exist');
+    });
+
+    after(() => {
+      cy.apiRemoveUser(userId);
+      cy.apiRemoveCustomField(customFieldId);
+    });
   });
 });

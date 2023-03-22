@@ -254,9 +254,15 @@ const CommentVote = ({
           verification: commentingDisabledReason === 'not_verified',
           action: () => handleVoteClick(),
         });
+      } else if (commentingDisabledReason === 'not_active') {
+        openSignUpInModal();
       }
     } else {
-      if (commentVotingPermissionInitiative?.action === 'sign_in_up') {
+      if (
+        commentVotingPermissionInitiative?.action === 'complete_registration'
+      ) {
+        openSignUpInModal();
+      } else if (commentVotingPermissionInitiative?.action === 'sign_in_up') {
         openSignUpInModal({
           action: () => handleVoteClick(),
         });

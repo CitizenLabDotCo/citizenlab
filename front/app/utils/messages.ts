@@ -182,6 +182,26 @@ export default defineMessages({
     id: 'app.utils.AdminPage.ProjectEdit.shareInformation',
     defaultMessage: 'Share information',
   },
+  trending: {
+    id: 'app.utils.IdeaCards.trending',
+    defaultMessage: 'Trending',
+  },
+  random: {
+    id: 'app.utils.IdeaCards.random',
+    defaultMessage: 'Random',
+  },
+  mostVoted: {
+    id: 'app.utils.IdeaCards.mostVoted',
+    defaultMessage: 'Most voted',
+  },
+  newest: {
+    id: 'app.utils.IdeaCards.newest',
+    defaultMessage: 'Newest',
+  },
+  oldest: {
+    id: 'app.utils.IdeaCards.oldest',
+    defaultMessage: 'Oldest',
+  },
   // Project page utils
   upcomingAndOngoingEvents: {
     id: 'app.containers.Projects.upcomingAndOngoingEvents',

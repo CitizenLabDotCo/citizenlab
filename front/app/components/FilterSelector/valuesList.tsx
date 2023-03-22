@@ -253,7 +253,9 @@ export default class ValuesList extends PureComponent<Props, State> {
                     onKeyDown={this.handleOnSelectSingleValue(entry)}
                     tabIndex={0}
                   >
-                    <ListItemText>{entry.text}</ListItemText>
+                    <ListItemText id={`e2e-item-${entry.value}`}>
+                      {entry.text}
+                    </ListItemText>
                   </ListItem>
                 );
               })}
