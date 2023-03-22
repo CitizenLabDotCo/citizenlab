@@ -1,21 +1,17 @@
 import React, { useState } from 'react';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
-import { Button, Box } from '@citizenlab/cl2-component-library';
+import { Button, Box, fontSizes } from '@citizenlab/cl2-component-library';
 
 // style
-import { colors } from 'utils/styleUtils';
 interface Props {
   copyLink: string;
 }
 
-const CopyLink = ({
-  copyLink,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+const CopyLink = ({ copyLink }: Props) => {
+  const { formatMessage } = useIntl();
   const [linkIsCopied, setLinkCopied] = useState(false);
 
   const handleClick = () => () => {
@@ -37,13 +33,12 @@ const CopyLink = ({
       <Button
         buttonStyle="secondary"
         minWidth="154px"
-        width="100%"
+        height="40px"
         onClick={handleClick()}
         aria-label={formatMessage(messages.shareByLink)}
         icon="link"
-        iconColor={colors.grey700}
         iconSize="20px"
-        fontSize="14px"
+        fontSize={`${fontSizes.s}px`}
         text={
           linkIsCopied
             ? formatMessage(messages.linkCopied)
@@ -55,4 +50,4 @@ const CopyLink = ({
   );
 };
 
-export default injectIntl(CopyLink);
+export default CopyLink;

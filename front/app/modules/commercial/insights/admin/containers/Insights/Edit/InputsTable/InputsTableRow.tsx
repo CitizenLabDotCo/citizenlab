@@ -5,7 +5,7 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
-import useIdea from 'hooks/useIdea';
+import useIdeaById from 'api/ideas/useIdeaById';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // styles
@@ -57,7 +57,7 @@ const InputsTableRow = ({
   location: { query },
 }: InputsTableRowProps & WithRouterProps) => {
   const nlpFeatureFlag = useFeatureFlag({ name: 'insights_nlp_flow' });
-  const idea = useIdea({ ideaId: input.relationships?.source.data.id });
+  const { data: idea } = useIdeaById(input.relationships.source.data.id);
 
   if (isNilOrError(idea)) {
     return null;
@@ -92,7 +92,7 @@ const InputsTableRow = ({
       </Td>
       <Td>
         <T
-          value={idea.attributes.title_multiloc}
+          value={idea.data.attributes.title_multiloc}
           maxLength={30}
           className="inputTitle"
         />

@@ -10,7 +10,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 // Hooks
 import useLocalize from 'hooks/useLocalize';
 
-import { IIdeaData } from 'services/ideas';
+import { IIdeaData } from 'api/ideas/types';
 
 interface Props {
   idea: IIdeaData;

@@ -31,8 +31,7 @@ import useObserveEvent from 'hooks/useObserveEvent';
 
 import { CLErrors, Message } from 'typings';
 import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
-import { injectIntl, MessageDescriptor } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl, MessageDescriptor } from 'utils/cl-intl';
 import { ErrorObject } from 'ajv';
 import { forOwn } from 'lodash-es';
 import { APIErrorsContext, FormContext } from './contexts';
@@ -113,8 +112,8 @@ const Form = memo(
     getAjvErrorMessage,
     getApiErrorMessage,
     config,
-    intl: { formatMessage },
-  }: Props & WrappedComponentProps) => {
+  }: Props) => {
+    const { formatMessage } = useIntl();
     const [data, setData] = useState<FormData>(initialFormData);
     const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
     const [loading, setLoading] = useState(false);
@@ -172,6 +171,7 @@ const Form = memo(
     const handleSubmit = async (formData?: any) => {
       // Any specified formData has priority over data attribute
       const submissionData = formData && formData.data ? formData.data : data;
+
       const sanitizedFormData = {};
       forOwn(submissionData, (value, key) => {
         sanitizedFormData[key] =
@@ -180,13 +180,19 @@ const Form = memo(
       setData(sanitizedFormData);
       onChange?.(sanitizedFormData);
       setShowAllErrors(true);
+
       const [schemaToUse, dataWithoutHiddenFields] = getFormSchemaAndData(
         schema,
         uiSchema,
         submissionData,
         customAjv
       );
-      if (customAjv.validate(schemaToUse, dataWithoutHiddenFields)) {
+      if (
+        customAjv.validate(
+          schemaToUse,
+          config === 'survey' ? dataWithoutHiddenFields : submissionData
+        )
+      ) {
         setLoading(true);
         try {
           await onSubmit(submissionData as FormData);
@@ -308,4 +314,4 @@ const Form = memo(
   }
 );
 
-export default injectIntl(Form);
+export default Form;

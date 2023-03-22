@@ -403,6 +403,21 @@ resource 'Users' do
           expect(json_response[:data].pluck(:id)).to match_array group_users.map(&:id)
         end
 
+        example 'Search for users in group' do
+          group = create(:group)
+
+          group_users = [
+            create(:user, first_name: 'Joskelala', manual_groups: [group]),
+            create(:user, last_name: 'Rudolf', manual_groups: [group])
+          ]
+
+          do_request(group: group.id, search: 'joskela')
+          json_response = json_parse(response_body)
+
+          expect(json_response[:data].size).to eq 1
+          expect(json_response[:data][0][:id]).to eq group_users[0].id
+        end
+
         example 'List all users in group, ordered by role' do
           group = create(:group)
 
@@ -494,6 +509,26 @@ resource 'Users' do
             expect(json_response[:data].size).to eq 2
             expect(json_response[:data].pluck(:id)).to match_array blocked_users.map(&:id)
           end
+        end
+      end
+
+      get 'web_api/v1/users/seats' do
+        before do
+          create(:super_admin) # super admin are not included in admins
+
+          @admins = [@user, *create_list(:admin, 3)]
+
+          folder_moderators = create_list(:project_folder_moderator, 2, project_folders: [create(:project_folder)])
+          project_moderators = create_list(:project_moderator, 4, projects: [create(:project)])
+          @moderators = [*folder_moderators, *project_moderators]
+        end
+
+        example_request 'Get number of admin and manager (moderator) seats' do
+          expect(status).to eq 200
+          expect(response_data[:type]).to eq 'seats'
+          attributes = response_data[:attributes]
+          expect(attributes[:admins_number]).to eq @admins.size
+          expect(attributes[:project_moderators_number]).to eq @moderators.size
         end
       end
 
@@ -726,6 +761,12 @@ resource 'Users' do
         example 'Get all users as non-admin', document: false do
           do_request
           assert_status 401
+        end
+      end
+
+      get 'web_api/v1/users/seats' do
+        example_request '[error] Get number of admin seats when current user is not admin' do
+          expect(status).to eq 401
         end
       end
 
@@ -1125,7 +1166,7 @@ resource 'Users' do
           do_request
           expect(status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response[:count]).to eq 1
+          expect(json_response.dig(:data, :attributes, :count)).to eq 1
         end
       end
 
@@ -1157,7 +1198,7 @@ resource 'Users' do
           do_request
           expect(status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response[:count]).to eq 2
+          expect(json_response.dig(:data, :attributes, :count)).to eq 2
         end
 
         example 'Get the number of comments on ideas posted by one user' do
@@ -1169,7 +1210,7 @@ resource 'Users' do
           do_request post_type: 'Idea'
           expect(status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response[:count]).to eq 2
+          expect(json_response.dig(:data, :attributes, :count)).to eq 2
         end
 
         example 'Get the number of comments on initiatives posted by one user' do
@@ -1181,7 +1222,7 @@ resource 'Users' do
           do_request post_type: 'Initiative'
           expect(status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response[:count]).to eq 2
+          expect(json_response.dig(:data, :attributes, :count)).to eq 2
         end
       end
     end

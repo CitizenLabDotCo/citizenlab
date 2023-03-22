@@ -60,11 +60,11 @@ const convertToGraphFormat = (
   data: IUsersByRegistrationField,
   formatMessage: FormatMessage
 ): GenderSerie | null => {
-  const percentages = roundPercentages(
-    options.map((gender) => data.series.users[gender])
-  );
+  const { users } = data.data.attributes.series;
+
+  const percentages = roundPercentages(options.map((gender) => users[gender]));
   const res = options.map((gender, i) => ({
-    value: data.series.users[gender] || 0,
+    value: users[gender] || 0,
     name: formatMessage(messages[gender]),
     code: gender,
     percentage: percentages[i],

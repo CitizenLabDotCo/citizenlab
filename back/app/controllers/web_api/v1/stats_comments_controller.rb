@@ -12,7 +12,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
       .published
       .count
 
-    render json: { count: count }
+    render json: raw_json({ count: count })
   end
 
   def comments_by_time_serie
@@ -85,7 +85,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
     topics = Topic.pluck(:id, :title_multiloc).map do |id, title_multiloc|
       [id, { title_multiloc: title_multiloc }]
     end
-    render json: { series: { comments: serie }, topics: topics.to_h }
+    render json: raw_json({ series: { comments: serie }, topics: topics.to_h })
   end
 
   def comments_by_topic_as_xlsx
@@ -121,7 +121,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
   def comments_by_project
     serie = comments_by_project_serie
     projects = Project.where(id: serie.keys).select(:id, :title_multiloc)
-    render json: { series: { comments: serie }, projects: projects.to_h { |p| [p.id, p.attributes.except('id')] } }
+    render json: raw_json({ series: { comments: serie }, projects: projects.to_h { |p| [p.id, p.attributes.except('id')] } })
   end
 
   def comments_by_project_as_xlsx

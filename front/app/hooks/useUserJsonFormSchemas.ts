@@ -22,11 +22,14 @@ export default function useUserJsonFormsSchemas() {
   useEffect(() => {
     const subscription = userJsonFormSchemasStream().observable.subscribe(
       (customFields) => {
+        const { json_schema_multiloc, ui_schema_multiloc } =
+          customFields.data.attributes;
+
         setCustomFields(
           !isNilOrError(locale)
             ? {
-                schema: customFields.json_schema_multiloc[locale],
-                uiSchema: customFields.ui_schema_multiloc[locale],
+                schema: json_schema_multiloc[locale],
+                uiSchema: ui_schema_multiloc[locale],
                 hasRequiredFields:
                   !isNilOrError(locale) &&
                   !isEmpty(
@@ -38,10 +41,7 @@ export default function useUserJsonFormsSchemas() {
                   ),
                 hasCustomFields:
                   !isNilOrError(locale) &&
-                  !(
-                    customFields?.ui_schema_multiloc?.[locale]?.elements
-                      ?.length === 0
-                  ),
+                  !(ui_schema_multiloc?.[locale]?.elements?.length === 0),
               }
             : null
         );

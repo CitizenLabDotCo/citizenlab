@@ -5,17 +5,9 @@ import { render, fireEvent, screen } from 'utils/testUtils/rtl';
 import inputs from 'modules/commercial/insights/fixtures/inputs';
 import clHistory from 'utils/cl-router/history';
 import useInfiniteInputs from 'modules/commercial/insights/api/inputs/useInfiniteInputs';
+import { ideaData as mockIdeaData } from 'api/ideas/__mocks__/useIdeaById';
 
 const viewId = '1';
-
-const mockIdeaData = {
-  id: '2',
-  type: 'idea',
-  attributes: {
-    title_multiloc: { en: 'Test Idea' },
-  },
-};
-
 let mockLocationData = { pathname: '', query: {} };
 
 jest.mock('modules/commercial/insights/api/categories/useCategories');
@@ -36,8 +28,8 @@ jest.mock('utils/cl-router/withRouter', () => {
   };
 });
 
-jest.mock('hooks/useIdea', () => {
-  return jest.fn(() => mockIdeaData);
+jest.mock('api/ideas/useIdeaById', () => {
+  return jest.fn(() => ({ data: { data: mockIdeaData[0] } }));
 });
 
 jest.mock('./Network', () => {

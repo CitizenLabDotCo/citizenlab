@@ -515,6 +515,8 @@ jobs:
           path: ./citizenlab/front/reports/
       - store_artifacts:
           path: ./citizenlab/front/reports/
+      - store_artifacts:
+          path: /root/.npm/_logs/
 
   front-trigger-deploy:
     resource_class: small
