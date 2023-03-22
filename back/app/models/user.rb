@@ -437,7 +437,7 @@ class User < ApplicationRecord
   # @return [<Boolean>] <True if the user requires confirmation>
   #
   def should_require_confirmation?
-    !(registered_with_phone? || highest_role != :user || identities.any? || invited? || active?)
+    !(registered_with_phone? || highest_role != :user || sso? || invited? || active?)
   end
 
   #
@@ -474,9 +474,7 @@ class User < ApplicationRecord
   end
 
   def confirm
-    return unless confirmation_required?
-
-    self.email_confirmed_at    = Time.zone.now
+    self.email_confirmed_at = Time.zone.now if email_confirmed_at.nil?
     self.confirmation_required = false
     complete_registration
   end
