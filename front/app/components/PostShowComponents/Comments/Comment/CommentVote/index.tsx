@@ -7,14 +7,10 @@ import { isNilOrError } from 'utils/helperUtils';
 import UpvoteButton from './UpvoteButton';
 
 // resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetCommentVote, {
   GetCommentVoteChildProps,
 } from 'resources/GetCommentVote';
-import GetInitiativesPermissions, {
-  GetInitiativesPermissionsChildProps,
-} from 'resources/GetInitiativesPermissions';
 
 // events
 import { openSignUpInModal } from 'events/openSignUpInModal';
@@ -23,6 +19,8 @@ import { openVerificationModal } from 'events/verificationModal';
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
+import useAuthUser from 'hooks/useAuthUser';
+import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 // utils
 import { upvote, removeVote } from './vote';
@@ -36,8 +34,6 @@ interface InputProps {
 }
 
 interface DataProps {
-  commentVotingPermissionInitiative: GetInitiativesPermissionsChildProps;
-  authUser: GetAuthUserChildProps;
   comment: GetCommentChildProps;
   commentVote: GetCommentVoteChildProps;
 }
@@ -51,16 +47,20 @@ const CommentVote = ({
   postType,
   commentId,
   commentType,
-  authUser,
-  commentVotingPermissionInitiative,
   className,
 }: Props) => {
   const [voted, setVoted] = useState(false);
   const [upvoteCount, setUpvoteCount] = useState(0);
+
   const initiativeId = postType === 'initiative' ? postId : undefined;
   const ideaId = postType === 'idea' ? postId : undefined;
+
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: idea } = useIdeaById(ideaId);
+  const authUser = useAuthUser();
+  const commentVotingPermissionInitiative = useInitiativesPermissions(
+    'comment_voting_initiative'
+  );
 
   const post = postType === 'idea' ? idea?.data : initiative?.data;
 
@@ -215,7 +215,6 @@ const CommentVote = ({
 };
 
 const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />,
   comment: ({ commentId, render }) => (
     <GetComment id={commentId}>{render}</GetComment>
   ),
@@ -229,9 +228,6 @@ const Data = adopt<DataProps, InputProps>({
     >
       {render}
     </GetCommentVote>
-  ),
-  commentVotingPermissionInitiative: (
-    <GetInitiativesPermissions action="comment_voting_initiative" />
   ),
 });
 
