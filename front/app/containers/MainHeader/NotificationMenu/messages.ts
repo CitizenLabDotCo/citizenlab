@@ -68,7 +68,7 @@ export default defineMessages({
   },
   statusChangedOfYourIdea: {
     id: 'app.containers.NotificationMenu.statusChangedOfYourIdea',
-    defaultMessage: "'{ideaTitle}' status has changed to {status}",
+    defaultMessage: '{ideaTitle} status has changed to {status}',
   },
   statusChangeOnVotedIdea: {
     id: 'app.containers.NotificationMenu.statusChangeOnVotedIdea',
