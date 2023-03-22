@@ -200,8 +200,6 @@
   "app.components.IdeasShow.reportAsSpam": "Ziņot kā par surogātpastu",
   "app.components.IdeasShow.send": "Sūtīt",
   "app.components.IdeasShow.skipSharing": "Izlaist, es to izdarīšu vēlāk",
-  "app.components.IdeasShowPage.signIn": "Pierakstīties, ja jums jau ir konts",
-  "app.components.IdeasShowPage.signUp": "Reģistrēties",
   "app.components.IdeasShowPage.sorryNoAccess": "Atvainojiet, šī lapa jums nav pieejama. Lai tai piekļūtu, jums var būt nepieciešams pierakstīties vai reģistrēties.",
   "app.components.InitiativeCard.xComments": "{commentsCount, plural, =0 {nav komentāru} one {1 komentārs} other {# komentāri}}",
   "app.components.InitiativeCard.xVotesOfY": "{xVotes} no {votingThreshold}",

@@ -200,8 +200,6 @@
   "app.components.IdeasShow.reportAsSpam": "Prijavite spam",
   "app.components.IdeasShow.send": "Pošalji",
   "app.components.IdeasShow.skipSharing": "Preskačem korak, učiniću ovo kasnije",
-  "app.components.IdeasShowPage.signIn": "Prijavite se ako već imate nalog",
-  "app.components.IdeasShowPage.signUp": "Registrujte se",
   "app.components.IdeasShowPage.sorryNoAccess": "Nažalost, nemate pristup ovoj stranici. Možda će biti potrebno da se prijavite ili registrujete za pristup.",
   "app.components.InitiativeCard.xComments": "{commentsCount, plural, =0 {nema komentara} one {1 komentar} other {# komentara}}",
   "app.components.InitiativeCard.xVotesOfY": "{xVotes} od {votingThreshold}",

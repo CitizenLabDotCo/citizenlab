@@ -200,8 +200,6 @@
   "app.components.IdeasShow.reportAsSpam": "Informar com a correu brossa",
   "app.components.IdeasShow.send": "Enviar",
   "app.components.IdeasShow.skipSharing": "Ometre-ho, ho faré més tard",
-  "app.components.IdeasShowPage.signIn": "Inicieu sessió si ja teniu un compte",
-  "app.components.IdeasShowPage.signUp": "Registreu-vos",
   "app.components.IdeasShowPage.sorryNoAccess": "Ho sentim, no podeu accedir a aquesta pàgina. És possible que hàgiu d'iniciar sessió o registrar-vos per accedir-hi.",
   "app.components.InitiativeCard.xComments": "{commentsCount, plural, =0 {sense comentaris} one {1 comentari} other {# comentaris}}",
   "app.components.InitiativeCard.xVotesOfY": "{xVotes} de {votingThreshold}",

@@ -200,8 +200,6 @@
   "app.components.IdeasShow.reportAsSpam": "Als Spam mellen",
   "app.components.IdeasShow.send": "Schécken",
   "app.components.IdeasShow.skipSharing": "Iwwersprangen, ech maachen et méi spéit",
-  "app.components.IdeasShowPage.signIn": "Loggt Iech an, wann Dir schonn e Kont hutt",
-  "app.components.IdeasShowPage.signUp": "Umellen",
   "app.components.IdeasShowPage.sorryNoAccess": "Sorry, Dir hutt keen Zougrëff op dës Säit. Dir musst Iech méiglecherweis aloggen oder umellen, fir op si zouzegräifen.",
   "app.components.InitiativeCard.xComments": "{commentsCount, plural, =0 {keng Kommentaren} one {1 Kommentar} other {# Kommentaren}}",
   "app.components.InitiativeCard.xVotesOfY": "{xVotes} vun {votingThreshold}",
