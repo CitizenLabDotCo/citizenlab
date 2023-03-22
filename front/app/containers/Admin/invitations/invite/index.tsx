@@ -12,6 +12,7 @@ import {
   Toggle,
   Label,
   Box,
+  Text,
 } from '@citizenlab/cl2-component-library';
 import Tabs from 'components/UI/Tabs';
 import Collapse from 'components/UI/Collapse';
@@ -53,52 +54,24 @@ import { requestBlob } from 'utils/request';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, stylingConsts } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // typings
 import { Locale, IOption } from 'typings';
 
-const InvitationOptions = styled.div`
-  width: 497px;
-  padding: 20px;
-  border-radius: ${(props) => props.theme.borderRadius};
-  border: solid 1px #ddd;
-  background: #fff;
-`;
-
 const StyledTabs = styled(Tabs)`
   margin-bottom: 35px;
-`;
-
-const FileInputWrapper = styled.div`
-  margin-top: 15px;
-  margin-bottom: 20px;
 `;
 
 const StyledToggle = styled(Toggle)`
   margin-bottom: 10px;
 `;
 
-const ButtonWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  padding-top: 30px;
-`;
-
-const Processing = styled.div`
-  color: ${(props) => props.theme.colors.textSecondary};
-  margin-left: 15px;
-`;
-
 const StyledSectionTitle = styled(SectionTitle)`
   margin-bottom: 15px;
   font-size: ${fontSizes.l}px;
   font-weight: bold;
-`;
-
-const SectionDescription = styled.div`
-  font-size: ${fontSizes.base}px;
 `;
 
 const SectionParagraph = styled.p`
@@ -111,11 +84,6 @@ const SectionParagraph = styled.p`
       text-decoration: underline;
     }
   }
-`;
-
-const FlexWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
 `;
 
 const DownloadButton = styled(Button)`
@@ -463,9 +431,15 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
         ) : null
       }
     >
-      <InvitationOptions>
+      <Box
+        width="497px"
+        padding="20px"
+        borderRadius={stylingConsts.borderRadius}
+        border="solid 1px #ddd"
+        background={colors.white}
+      >
         <SectionField>
-          <FlexWrapper>
+          <Box display="flex" justifyContent="space-between">
             <Label>
               <FormattedMessage {...messages.adminLabel} />
               <IconTooltip
@@ -476,7 +450,7 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
               checked={hasAdminRights}
               onChange={handleAdminRightsOnToggle}
             />
-          </FlexWrapper>
+          </Box>
           {hasAdminRights && (
             <Box marginTop="20px">
               <SeatInfo seatType="admin" />
@@ -485,7 +459,7 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
         </SectionField>
 
         <SectionField>
-          <FlexWrapper>
+          <Box display="flex" justifyContent="space-between">
             <Label>
               <FormattedMessage {...messages.moderatorLabel} />
               <IconTooltip
@@ -515,7 +489,7 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
               checked={hasModeratorRights}
               onChange={handleModeratorRightsOnToggle}
             />
-          </FlexWrapper>
+          </Box>
 
           {hasModeratorRights && (
             <>
@@ -585,7 +559,7 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
             withCTAButton
           />
         </SectionField>
-      </InvitationOptions>
+      </Box>
     </Collapse>
   );
 
@@ -609,8 +583,8 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
                 <StyledSectionTitle>
                   <FormattedMessage {...messages.downloadFillOutTemplate} />
                 </StyledSectionTitle>
-                <SectionDescription>
-                  <FlexWrapper>
+                <Text fontSize="base">
+                  <Box display="flex" justifyContent="space-between">
                     <DownloadButton
                       buttonStyle="secondary"
                       icon="download"
@@ -618,7 +592,7 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
                     >
                       <FormattedMessage {...messages.downloadTemplate} />
                     </DownloadButton>
-                  </FlexWrapper>
+                  </Box>
                   <SectionParagraph>
                     <FormattedMessage
                       {...messages.visitSupportPage}
@@ -640,21 +614,20 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
                   <SectionParagraph>
                     <FormattedMessage {...messages.fileRequirements} />
                   </SectionParagraph>
-                </SectionDescription>
+                </Text>
 
                 <StyledSectionTitle>
                   <FormattedMessage {...messages.uploadCompletedFile} />
                 </StyledSectionTitle>
 
-                <FileInputWrapper>
+                <Box marginBottom="20px" marginTop="15px">
                   <input
                     type="file"
                     accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                     onChange={handleFileInputOnChange}
                     ref={fileInputElement}
-                    // ref={this.setFileInputRef}
                   />
-                </FileInputWrapper>
+                </Box>
                 <Error text={filetypeError} />
               </SectionField>
 
@@ -683,7 +656,7 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
           )}
 
           <SectionField>
-            <ButtonWrapper>
+            <Box display="flex" alignItems="center" paddingTop="30px">
               <SubmitWrapper
                 loading={processing}
                 status={getSubmitState(apiErrors, processed)}
@@ -696,11 +669,11 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
               />
 
               {processing && (
-                <Processing>
+                <Box color={colors.textSecondary} marginLeft="15px">
                   <FormattedMessage {...messages.processing} />
-                </Processing>
+                </Box>
               )}
-            </ButtonWrapper>
+            </Box>
 
             <Error
               apiErrors={apiErrors}
