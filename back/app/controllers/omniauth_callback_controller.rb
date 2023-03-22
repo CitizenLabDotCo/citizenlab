@@ -89,7 +89,6 @@ class OmniauthCallbackController < ApplicationController
 
       else # !@user.invite_pending?
         begin
-          binding.pry
           update_user!(auth, @user, authver_method)
         rescue ActiveRecord::RecordInvalid => e
           ErrorReporter.report(e)
