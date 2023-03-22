@@ -144,7 +144,6 @@ const ProjectsShowPage = ({ project }: Props) => {
           )}
         </div>
         <Box
-          id="project-events"
           display="flex"
           flexDirection="column"
           gap="48px"
