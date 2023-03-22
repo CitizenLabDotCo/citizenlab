@@ -48,7 +48,7 @@ resource 'Votes' do
     end
     ValidationErrorHelper.new.error_fields(self, Vote)
 
-    disabled_reasons = ParticipationContextService::VOTING_DISABLED_REASONS.values + Permission.denied_reasons.values
+    disabled_reasons = ParticipationContextService::VOTING_DISABLED_REASONS.values + PermissionsService::DENIED_REASONS.values
     response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
 
     let(:idea_id) { @idea.id }
@@ -82,7 +82,7 @@ resource 'Votes' do
   post 'web_api/v1/ideas/:idea_id/votes/up' do
     ValidationErrorHelper.new.error_fields(self, Vote)
 
-    disabled_reasons = ParticipationContextService::VOTING_DISABLED_REASONS.values + Permission.denied_reasons.values
+    disabled_reasons = ParticipationContextService::VOTING_DISABLED_REASONS.values + PermissionsService::DENIED_REASONS.values
     response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
 
     let(:idea_id) { @idea.id }
@@ -128,6 +128,7 @@ resource 'Votes' do
 
     describe 'when voting idea is allowed by moderators/admins' do
       before do
+        PermissionsService.new.update_all_permissions
         project = @idea.project
         project.permissions.find_by(action: 'voting_idea').update!(permitted_by: 'admins_moderators')
         @user.update!(roles: [])
@@ -162,7 +163,7 @@ resource 'Votes' do
   post 'web_api/v1/ideas/:idea_id/votes/down' do
     ValidationErrorHelper.new.error_fields(self, Vote)
 
-    disabled_reasons = ParticipationContextService::VOTING_DISABLED_REASONS.values + Permission.denied_reasons.values
+    disabled_reasons = ParticipationContextService::VOTING_DISABLED_REASONS.values + PermissionsService::DENIED_REASONS.values
     response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
 
     let(:idea_id) { @idea.id }
