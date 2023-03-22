@@ -7,11 +7,11 @@ import { Box } from '@citizenlab/cl2-component-library';
 import ideaFormMessages from 'containers/IdeasNewPage/messages';
 import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
 import GoBackToIdeaPage from 'containers/IdeasEditPage/GoBackToIdeaPage';
-import IdeasEditMeta from '../IdeasEditMeta';
+import IdeasEditMeta from './IdeasEditMeta';
 
 // services
 import { deleteIdeaImage } from 'services/ideaImages';
-import { hasPermission, usePermission } from 'services/permissions';
+import { usePermission } from 'services/permissions';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';
@@ -23,10 +23,10 @@ import useResourceFiles from 'hooks/useResourceFiles';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from './messages';
 
 // utils
-import { getLocationGeojson } from '../utils';
+import { getLocationGeojson } from './utils';
 import { omit } from 'lodash-es';
 import { isError, isNilOrError } from 'utils/helperUtils';
 import { WithRouterProps } from 'utils/cl-router/withRouter';
@@ -41,8 +41,9 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   const granted = usePermission({
     item: idea?.data || null,
     action: 'edit',
-    context: idea?.data,
+    context: idea?.data || null,
   });
+
   const { mutate: updateIdea } = useUpdateIdea();
   const project = useProject({
     projectId: isNilOrError(idea)
@@ -61,24 +62,10 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   });
 
   useEffect(() => {
-    if (idea && !granted) {
-      clHistory.push('/');
+    if (idea && authUser !== undefined && !granted) {
+      clHistory.replace(previousPathName || (!authUser ? '/sign-up' : '/'));
     }
-  }, [idea, granted]);
-
-  useEffect(() => {
-    if (!isNilOrError(idea)) {
-      const granted = hasPermission({
-        item: idea.data,
-        action: 'edit',
-        context: idea.data,
-      });
-
-      if (!granted) {
-        clHistory.replace(previousPathName || (!authUser ? '/sign-up' : '/'));
-      }
-    }
-  }, [idea, previousPathName, authUser]);
+  }, [idea, granted, previousPathName, authUser]);
 
   const initialFormData =
     isNilOrError(idea) || !schema

@@ -7,8 +7,7 @@ import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Unauthorized from 'components/Unauthorized';
 import PageNotFound from 'components/PageNotFound';
 
-// feature flag variant
-import IdeasNewPageWithJSONForm from './WithJSONForm';
+import IdeasNewForm from './IdeasNewForm';
 
 // style
 import { colors } from 'utils/styleUtils';
@@ -59,11 +58,11 @@ const NewIdeaPage = (inputProps: InputProps) => {
         h="100vh"
         overflowY="scroll"
       >
-        <IdeasNewPageWithJSONForm {...inputProps} />
+        <IdeasNewForm {...inputProps} />
       </Box>,
       portalElement
     );
-  } else return <IdeasNewPageWithJSONForm {...inputProps} />;
+  } else return <IdeasNewForm {...inputProps} />;
 };
 
 export default NewIdeaPage;

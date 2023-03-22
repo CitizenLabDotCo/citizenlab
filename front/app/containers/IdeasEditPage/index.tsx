@@ -9,8 +9,7 @@ import useProject from 'hooks/useProject';
 import Unauthorized from 'components/Unauthorized';
 import PageNotFound from 'components/PageNotFound';
 
-// feature flag variant
-import IdeasEditPageWithJSONForm from './WithJSONForm';
+import IdeasEditForm from './IdeasEditForm';
 
 // tracks
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
@@ -32,7 +31,7 @@ const IdeasEditPage = withRouter((props: Props & WithRouterProps) => {
     return <PageNotFound />;
   }
 
-  return <IdeasEditPageWithJSONForm {...props} />;
+  return <IdeasEditForm {...props} />;
 });
 
 export default IdeasEditPage;
