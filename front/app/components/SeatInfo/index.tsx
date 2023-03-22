@@ -13,52 +13,61 @@ import {
 // Hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useSeats from 'api/seats/useSeats';
+import { TSeatNumber } from 'api/app_configuration/types';
 
 // Intl
 import messages from './messages';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 // Utils
 import { isNil } from 'utils/helperUtils';
 
-type SeatInfoType = {
-  seatType: 'collaborator' | 'admin';
+type TSeatType = 'collaborator' | 'admin';
+type Props = {
+  seatType: TSeatType;
 };
 
-const SeatInfo = ({ seatType }: SeatInfoType) => {
+const SeatInfo = ({ seatType }: Props) => {
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
-  const maximumAdmins =
-    appConfiguration?.data.attributes.settings.core.maximum_admins_number;
-  const maximumProjectCollaborators =
-    appConfiguration?.data.attributes.settings.core.maximum_moderators_number;
-  const maximumSeatNumber = {
-    admin: maximumAdmins,
-    collaborator: maximumProjectCollaborators,
-  }[seatType];
+
+  const maximumSeatNumbers: {
+    [key in TSeatType]: TSeatNumber;
+  } = {
+    admin:
+      appConfiguration?.data.attributes.settings.core.maximum_admins_number,
+    collaborator:
+      appConfiguration?.data.attributes.settings.core.maximum_moderators_number,
+  };
+  const maximumSeatNumber = maximumSeatNumbers[seatType];
 
   // Maximum seat number being null means that there are unlimited seats so we don't show the seat info
-  if (isNil(maximumSeatNumber) || !seats || !appConfiguration) {
+  if (isNil(maximumSeatNumber) || !seats) {
     return null;
   }
 
-  const currentAdminSeats = seats.data.attributes.admins_number;
-  const currentCollaboratorSeats =
-    seats.data.attributes.project_moderators_number;
   let currentSeatNumber = {
-    admin: currentAdminSeats,
-    collaborator: currentCollaboratorSeats,
+    admin: seats.data.attributes.admins_number,
+    collaborator: seats.data.attributes.project_moderators_number,
   }[seatType];
   const additionalSeats = currentSeatNumber - maximumSeatNumber;
-  const currentSeatTypeTitle = {
+
+  // Messages
+  type SeatTypeMessageDescriptor = {
+    [key in TSeatType]: MessageDescriptor;
+  };
+
+  const seatTypeMessage: SeatTypeMessageDescriptor = {
     admin: messages.currentAdminSeatsTitle,
     collaborator: messages.currentCollaboratorSeatsTitle,
-  }[seatType];
-  const tooltipMessage = {
+  };
+  const currentSeatTypeTitle = seatTypeMessage[seatType];
+  const tooltipMessages: SeatTypeMessageDescriptor = {
     admin: messages.includedAdminToolTip,
     collaborator: messages.includedCollaboratorToolTip,
-  }[seatType];
+  };
+  const tooltipMessage = tooltipMessages[seatType];
 
   // Show maximum number of seats if user has used more for this value
   if (currentSeatNumber >= maximumSeatNumber) {

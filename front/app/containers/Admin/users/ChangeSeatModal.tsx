@@ -38,7 +38,7 @@ const getButtonText = (
   maximumAdmins: number | null | undefined,
   currentAdminSeats: number
 ): MessageDescriptor => {
-  let buttonText = messages.confirm;
+  const buttonText = messages.confirm;
 
   if (isUserAdmin) {
     return buttonText;
