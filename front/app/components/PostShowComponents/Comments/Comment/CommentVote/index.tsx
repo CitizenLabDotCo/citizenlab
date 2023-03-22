@@ -13,7 +13,6 @@ import GetCommentVote, {
 } from 'resources/GetCommentVote';
 
 // events
-import { openSignUpInModal } from 'events/openSignUpInModal';
 import { openVerificationModal } from 'events/verificationModal';
 
 // hooks
@@ -21,6 +20,7 @@ import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'hooks/useAuthUser';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+import useOpenAuthModal from 'hooks/useOpenAuthModal';
 
 // utils
 import { upvote, removeVote } from './vote';
@@ -62,22 +62,6 @@ const CommentVote = ({
     'comment_voting_initiative'
   );
 
-  const post = postType === 'idea' ? idea?.data : initiative?.data;
-
-  useEffect(() => {
-    setVoted(!isNilOrError(commentVote));
-  }, [commentVote]);
-
-  useEffect(() => {
-    if (!isNilOrError(comment)) {
-      const backendUpvoteCount = comment.attributes.upvotes_count;
-
-      if (backendUpvoteCount !== upvoteCount) {
-        setUpvoteCount(backendUpvoteCount);
-      }
-    }
-  }, [comment]);
-
   const vote = async () => {
     const oldVotedValue = voted;
 
@@ -118,6 +102,27 @@ const CommentVote = ({
     }
   };
 
+  const openAuthModal = useOpenAuthModal({
+    onSuccess: vote,
+    waitIf: !authUser,
+  });
+
+  const post = postType === 'idea' ? idea?.data : initiative?.data;
+
+  useEffect(() => {
+    setVoted(!isNilOrError(commentVote));
+  }, [commentVote]);
+
+  useEffect(() => {
+    if (!isNilOrError(comment)) {
+      const backendUpvoteCount = comment.attributes.upvotes_count;
+
+      if (backendUpvoteCount !== upvoteCount) {
+        setUpvoteCount(backendUpvoteCount);
+      }
+    }
+  }, [comment]);
+
   const handleVoteClick = async (event?: MouseEvent) => {
     event?.preventDefault();
 
@@ -144,14 +149,13 @@ const CommentVote = ({
         commentVotingDisabledReason === 'not_verified'
       ) {
         openVerificationModal({ context });
-      } else if (!authUser) {
-        openSignUpInModal({
+      } else if (authUser === null) {
+        openAuthModal({
           verification: commentVotingDisabledReason === 'not_verified',
           context,
-          onSuccess: () => vote(),
         });
       } else if (commentVotingDisabledReason === 'not_active') {
-        openSignUpInModal({ context });
+        openAuthModal({ context });
       }
     }
 
@@ -164,21 +168,11 @@ const CommentVote = ({
       } as const;
 
       if (authenticationRequirements === 'sign_in_up') {
-        openSignUpInModal({
-          context,
-          onSuccess: () => vote(),
-        });
+        openAuthModal({ context });
       } else if (authenticationRequirements === 'complete_registration') {
-        openSignUpInModal({
-          context,
-          onSuccess: () => vote(),
-        });
+        openAuthModal({ context });
       } else if (authenticationRequirements === 'sign_in_up_and_verify') {
-        openSignUpInModal({
-          verification: true,
-          context,
-          onSuccess: () => vote(),
-        });
+        openAuthModal({ verification: true, context });
       } else if (authenticationRequirements === 'verify') {
         openVerificationModal({ context });
       } else if (commentVotingPermissionInitiative?.enabled === true) {
