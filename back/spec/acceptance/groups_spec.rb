@@ -9,7 +9,7 @@ resource 'Groups' do
   before do
     header 'Content-Type', 'application/json'
     @groups = create_list(:group, 3)
-    create(:smart_group) if CitizenLab.ee?
+    create(:smart_group)
   end
 
   context 'when authenticated' do
@@ -32,21 +32,15 @@ resource 'Groups' do
         do_request
         expect(status).to eq(200)
         json_response = json_parse(response_body)
-        if CitizenLab.ee?
-          expect(json_response[:data].size).to eq 5
-        else
-          expect(json_response[:data].size).to eq 4
-        end
+        expect(json_response[:data].size).to eq 5
         expect(json_response[:data][0][:id]).to eq g1.id
       end
 
-      if CitizenLab.ee?
-        example "List all groups with membership_type 'rules'" do
-          do_request(membership_type: 'rules')
-          expect(status).to eq(200)
-          json_response = json_parse(response_body)
-          expect(json_response[:data].size).to eq 1
-        end
+      example "List all groups with membership_type 'rules'" do
+        do_request(membership_type: 'rules')
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 1
       end
     end
 
@@ -65,10 +59,8 @@ resource 'Groups' do
         parameter :title_multiloc, 'The title of the group in multiple locales', required: true
         parameter :membership_type,
           "Whether members are manually or automatically added. Either #{Group.membership_types.join(', ')}. Defaults to 'manual'"
-        if CitizenLab.ee?
-          parameter :rules,
-            "In case of 'rules' membership type, the user criteria to be a member. Conforms to this json schema: #{JSON.pretty_generate(SmartGroups::RulesService.new.generate_rules_json_schema)}"
-        end
+        parameter :rules,
+          "In case of 'rules' membership type, the user criteria to be a member. Conforms to this json schema: #{JSON.pretty_generate(SmartGroups::RulesService.new.generate_rules_json_schema)}"
       end
       ValidationErrorHelper.new.error_fields(self, Group)
 
@@ -85,39 +77,37 @@ resource 'Groups' do
         end
       end
 
-      if CitizenLab.ee?
-        describe do
-          let(:group) { build(:group) }
-          let(:title_multiloc) { group.title_multiloc }
-          let(:membership_type) { 'rules' }
-          let(:rules) { [{ ruleType: 'role', predicate: 'is_admin' }] }
+      describe do
+        let(:group) { build(:group) }
+        let(:title_multiloc) { group.title_multiloc }
+        let(:membership_type) { 'rules' }
+        let(:rules) { [{ ruleType: 'role', predicate: 'is_admin' }] }
 
-          example_request "Create a group with 'rules' membership_type" do
-            expect(response_status).to eq 201
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
-            expect(json_response.dig(:data, :attributes, :membership_type)).to eq 'rules'
-            expect(json_response.dig(:data, :attributes, :rules)).to match rules
-          end
+        example_request "Create a group with 'rules' membership_type" do
+          expect(response_status).to eq 201
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
+          expect(json_response.dig(:data, :attributes, :membership_type)).to eq 'rules'
+          expect(json_response.dig(:data, :attributes, :rules)).to match rules
+        end
+      end
+
+      describe do
+        before do
+          create(:user, email: 'k@k.com', registration_completed_at: Time.now)
+          create(:user, email: 'kk@kk.com', registration_completed_at: nil)
         end
 
-        describe do
-          before do
-            create(:user, email: 'k@k.com', registration_completed_at: Time.now)
-            create(:user, email: 'kk@kk.com', registration_completed_at: nil)
-          end
+        let(:title_multiloc) { build(:group).title_multiloc }
+        let(:membership_type) { 'rules' }
+        let(:rules) { [{ ruleType: 'email', predicate: 'contains', value: 'k' }] }
 
-          let(:title_multiloc) { build(:group).title_multiloc }
-          let(:membership_type) { 'rules' }
-          let(:rules) { [{ ruleType: 'email', predicate: 'contains', value: 'k' }] }
-
-          example 'Membership count should only count active users', document: false do
-            do_request
-            expect(response_status).to eq 201
-            json_response = json_parse(response_body)
-            group = Group.find json_response.dig(:data, :id)
-            expect(group.memberships_count).to eq 1
-          end
+        example 'Membership count should only count active users', document: false do
+          do_request
+          expect(response_status).to eq 201
+          json_response = json_parse(response_body)
+          group = Group.find json_response.dig(:data, :id)
+          expect(group.memberships_count).to eq 1
         end
       end
     end
@@ -127,10 +117,8 @@ resource 'Groups' do
         parameter :title_multiloc, 'The title of the group in multiple locales'
         parameter :membership_type,
           "Whether members are manually or automatically added. Either #{Group.membership_types.join(', ')}"
-        if CitizenLab.ee?
-          parameter :rules,
-            "In case of 'rules' membership type, the user criteria to be a member. Conforms to this json schema: #{JSON.pretty_generate(SmartGroups::RulesService.new.generate_rules_json_schema)}"
-        end
+        parameter :rules,
+          "In case of 'rules' membership type, the user criteria to be a member. Conforms to this json schema: #{JSON.pretty_generate(SmartGroups::RulesService.new.generate_rules_json_schema)}"
       end
       ValidationErrorHelper.new.error_fields(self, Group)
 

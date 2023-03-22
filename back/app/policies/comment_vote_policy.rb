@@ -58,4 +58,4 @@ class CommentVotePolicy < ApplicationPolicy
   end
 end
 
-CommentVotePolicy.prepend_if_ee('GranularPermissions::Patches::CommentVotePolicy')
+CommentVotePolicy.prepend(GranularPermissions::Patches::CommentVotePolicy)

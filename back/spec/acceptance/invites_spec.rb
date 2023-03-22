@@ -137,8 +137,8 @@ resource 'Invites' do
         let(:roles) do
           [
             { 'type' => 'admin' },
-            ({ 'type' => 'project_moderator', 'project_id' => project.id } if CitizenLab.ee?)
-          ].compact
+            { 'type' => 'project_moderator', 'project_id' => project.id }
+          ]
         end
 
         example_request 'Bulk invite multiple users' do
@@ -149,8 +149,7 @@ resource 'Invites' do
             expect(Invite.all.map { |i| i.invitee.groups.map(&:id) }.uniq).to match_array [group_ids]
             expect(Invite.all.map { |i| i.invitee.admin? }.uniq).to eq [true]
             expect(Invite.all.map { |i| i.invitee.locale }.uniq).to eq [locale]
-
-            expect(Invite.all.map { |i| i.invitee.project_moderator?(project.id) }.all?).to be true if CitizenLab.ee?
+            expect(Invite.all.map { |i| i.invitee.project_moderator?(project.id) }.all?).to be true
           end
         end
       end

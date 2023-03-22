@@ -18,7 +18,11 @@ describe('Idea new page', () => {
   });
 
   it('shows an error when no title is provided', () => {
+    const value = randomString(9);
     cy.get('#idea-form');
+    cy.get('#e2e-idea-description-input .ql-editor').type(value);
+    cy.get('#e2e-idea-description-input .ql-editor').contains(value);
+    cy.wait(1000);
     cy.get('.e2e-submit-idea-form').click();
     cy.get('#e2e-idea-title-input .e2e-error-message');
   });
@@ -32,7 +36,11 @@ describe('Idea new page', () => {
   });
 
   it('shows an error when no description is provided', () => {
+    const value = randomString(9);
     cy.get('#idea-form');
+    cy.get('#e2e-idea-title-input input').type(value);
+    cy.get('#e2e-idea-title-input input').should('contain.value', value);
+    cy.wait(1000);
     cy.get('.e2e-submit-idea-form').click();
     cy.get('#e2e-idea-description-input .e2e-error-message');
   });
@@ -48,7 +56,7 @@ describe('Idea new page', () => {
     cy.get('#idea-form');
     cy.get('#e2e-idea-description-input .ql-editor').type(randomString(20));
     cy.get('#e2e-idea-description-input .ql-editor').blur();
-    cy.wait(200);
+    cy.wait(1000);
     cy.get('.e2e-submit-idea-form').click();
     cy.get('#e2e-idea-description-input .e2e-error-message');
   });
@@ -82,7 +90,7 @@ describe('Idea new page', () => {
       'contain.value',
       geocodedLocation
     );
-
+    cy.wait(1000);
     // save the idea
     cy.get('.e2e-submit-idea-form').click();
 

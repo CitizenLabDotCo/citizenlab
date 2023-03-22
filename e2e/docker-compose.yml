@@ -17,8 +17,6 @@ services:
     build:
       context: ..
       dockerfile: back/Dockerfile
-      args:
-        CITIZENLAB_EE: "true"
     # To easily test locally. For unknow reason it doesn't work on CI
     # volumes:
     #   - "../back:/cl2_back"

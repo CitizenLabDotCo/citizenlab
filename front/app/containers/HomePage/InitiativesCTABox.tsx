@@ -139,7 +139,11 @@ const InitiativesCTABox = memo<Props>(({ theme, className }) => {
   const signUp = useCallback(() => {
     openSignUpInModal({
       flow: 'signup',
-      action: () => clHistory.push('/initiatives/new'),
+      context: {
+        type: 'initiative',
+        action: 'posting_initiative',
+      },
+      onSuccess: () => clHistory.push('/initiatives/new'),
     });
   }, []);
 

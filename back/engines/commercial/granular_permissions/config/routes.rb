@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       concerns :permissionable  # for the global permission scope (with parent_param = nil)
       resources :phases, only: [], concerns: :permissionable, defaults: { parent_param: :phase_id }
       resources :projects, only: [], concerns: :permissionable, defaults: { parent_param: :project_id }
+      resources :ideas, only: [], concerns: :permissionable, defaults: { parent_param: :idea_id }
     end
   end
 end

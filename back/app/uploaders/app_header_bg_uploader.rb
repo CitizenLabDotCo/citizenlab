@@ -19,4 +19,4 @@ class AppHeaderBgUploader < BaseImageUploader
   end
 end
 
-AppHeaderBgUploader.prepend_if_ee('MultiTenancy::Patches::AppHeaderBgUploader')
+AppHeaderBgUploader.prepend(MultiTenancy::Patches::AppHeaderBgUploader)

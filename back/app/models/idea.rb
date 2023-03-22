@@ -277,9 +277,9 @@ class Idea < ApplicationRecord
   end
 end
 
-Idea.include_if_ee 'FlagInappropriateContent::Concerns::Flaggable'
-Idea.include_if_ee 'Insights::Concerns::Input'
-Idea.include_if_ee 'Moderation::Concerns::Moderatable'
-Idea.include_if_ee 'MachineTranslations::Concerns::Translatable'
-Idea.include_if_ee 'IdeaAssignment::Extensions::Idea'
-Idea.include_if_ee 'IdeaCustomFields::Extensions::Idea'
+Idea.include(FlagInappropriateContent::Concerns::Flaggable)
+Idea.include(Insights::Concerns::Input)
+Idea.include(Moderation::Concerns::Moderatable)
+Idea.include(MachineTranslations::Concerns::Translatable)
+Idea.include(IdeaAssignment::Extensions::Idea)
+Idea.include(IdeaCustomFields::Extensions::Idea)

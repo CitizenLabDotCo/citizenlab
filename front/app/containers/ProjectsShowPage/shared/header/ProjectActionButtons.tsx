@@ -118,8 +118,12 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       openSignUpInModal({
         flow: 'signup',
         verification: shouldVerify,
-        verificationContext: undefined,
-        action: () => scrollTo('project-survey')(event),
+        context: {
+          type: currentPhase ? 'phase' : 'project',
+          id: currentPhase?.id ?? project.id,
+          action: 'taking_survey',
+        },
+        onSuccess: () => scrollTo('project-survey')(event),
       });
     }
 
@@ -211,7 +215,6 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           id="project-ideabutton"
           projectId={project.id}
           participationContextType={isPhaseIdeation ? 'phase' : 'project'}
-          phaseId={isPhaseIdeation ? currentPhase.id : ''}
           fontWeight="500"
           phase={currentPhase}
         />
@@ -222,7 +225,6 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           data-testid="e2e-project-survey-button"
           projectId={project.id}
           participationContextType={isPhaseNativeSurvey ? 'phase' : 'project'}
-          phaseId={isPhaseNativeSurvey ? currentPhase.id : ''}
           fontWeight="500"
           phase={currentPhase}
         />

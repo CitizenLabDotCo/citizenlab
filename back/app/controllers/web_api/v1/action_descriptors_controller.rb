@@ -16,4 +16,4 @@ class WebApi::V1::ActionDescriptorsController < ApplicationController
   end
 end
 
-WebApi::V1::ActionDescriptorsController.prepend_if_ee('GranularPermissions::Patches::WebApi::V1::ActionDescriptorsController')
+WebApi::V1::ActionDescriptorsController.prepend(GranularPermissions::Patches::WebApi::V1::ActionDescriptorsController)

@@ -19,6 +19,7 @@ interface Props {
 
 const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
   const initiativePermissions = useInitiativesPermissions('posting_initiative');
+
   const redirectToInitiativeForm = () => {
     trackEventByName('redirected to initiatives form');
     clHistory.push({
@@ -40,7 +41,12 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
     });
 
     if (initiativePermissions?.enabled) {
-      switch (initiativePermissions?.action) {
+      const context = {
+        type: 'initiative',
+        action: 'posting_initiative',
+      } as const;
+
+      switch (initiativePermissions?.authenticationRequirements) {
         case 'sign_in_up':
           trackEventByName(
             'Sign up/in modal opened in response to clicking new initiative'
@@ -48,9 +54,12 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
           openSignUpInModal({
             flow: 'signup',
             verification: false,
-            verificationContext: undefined,
-            action: redirectToInitiativeForm,
+            context,
+            onSuccess: redirectToInitiativeForm,
           });
+          break;
+        case 'complete_registration':
+          openSignUpInModal();
           break;
         case 'sign_in_up_and_verify':
           trackEventByName(
@@ -59,23 +68,15 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
           openSignUpInModal({
             flow: 'signup',
             verification: true,
-            verificationContext: {
-              type: 'initiative',
-              action: 'posting_initiative',
-            },
-            action: redirectToInitiativeForm,
+            context,
+            onSuccess: redirectToInitiativeForm,
           });
           break;
         case 'verify':
           trackEventByName(
             'Verification modal opened in response to clicking new initiative'
           );
-          openVerificationModal({
-            context: {
-              action: 'posting_initiative',
-              type: 'initiative',
-            },
-          });
+          openVerificationModal({ context });
           break;
         default:
           redirectToInitiativeForm();

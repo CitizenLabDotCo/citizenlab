@@ -11,7 +11,7 @@ require 'rails_helper'
 #   * Results for one field are ordered in descending order.
 #   * Result generation is supported for projects and phases.
 
-RSpec.describe SurveyResultsGeneratorService, skip: !CitizenLab.ee? do
+RSpec.describe SurveyResultsGeneratorService do
   subject(:generator) { described_class.new participation_context }
 
   # Create a page to describe that it is not included in the survey results.

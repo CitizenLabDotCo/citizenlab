@@ -17,7 +17,7 @@ import { FormLabel } from 'components/UI/FormComponents';
 import { Options, Option } from '../styles';
 
 // services
-import { signIn } from 'services/auth';
+import signIn from 'api/authentication/signIn';
 
 // i18n
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
@@ -35,7 +35,7 @@ import tracks from '../tracks';
 import styled from 'styled-components';
 
 // typings
-import { ISignUpInMetaData } from '../typings';
+import { ISignUpInMetaData } from 'events/openSignUpInModal';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
@@ -189,7 +189,13 @@ const PasswordSignin = ({
       if (validate(phoneLoginEnabled, email, password) && email && password) {
         try {
           setProcessing(true);
-          const user = await signIn(email, password, rememberMe, tokenLifetime);
+          const user = await signIn({
+            email,
+            password,
+            rememberMe,
+            tokenLifetime,
+          });
+
           trackEventByName(tracks.signInEmailPasswordCompleted);
           onSignInCompleted(user.data.id);
         } catch (error) {

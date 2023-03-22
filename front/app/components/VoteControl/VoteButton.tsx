@@ -4,17 +4,17 @@ import styled, { keyframes } from 'styled-components';
 import { colors, fontSizes, defaultStyles, isRtl } from 'utils/styleUtils';
 import { lighten } from 'polished';
 import messages from './messages';
-import { TVoteMode } from 'services/ideaVotes';
 import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import { FormattedMessage } from 'utils/cl-intl';
-import { IdeaVotingDisabledReason } from 'services/ideas';
+import { IdeaVotingDisabledReason } from 'api/ideas/types';
 import useAuthUser from 'hooks/useAuthUser';
-import useIdea from 'hooks/useIdea';
+import useIdeaById from 'api/ideas/useIdeaById';
 import { FormattedDate } from 'react-intl';
 import useLocalize from 'hooks/useLocalize';
 import useProject from 'hooks/useProject';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { TVoteMode } from 'api/idea_votes/types';
 
 type TSize = '1' | '2' | '3' | '4';
 type TStyleType = 'border' | 'shadow';
@@ -309,7 +309,6 @@ interface Props {
   styleType: TStyleType;
   ariaHidden?: boolean;
   onClick: (event: React.FormEvent) => void;
-  setRef: (el: HTMLButtonElement) => void;
   iconName: IconNames;
   ideaId: string;
 }
@@ -322,15 +321,14 @@ const VoteButton = ({
   styleType,
   ariaHidden = false,
   onClick,
-  setRef,
   iconName,
   ideaId,
   userVoteMode,
 }: Props) => {
   const authUser = useAuthUser();
-  const idea = useIdea({ ideaId });
+  const { data: idea } = useIdeaById(ideaId);
   const projectId = !isNilOrError(idea)
-    ? idea.relationships.project.data.id
+    ? idea.data.relationships.project.data.id
     : null;
   const project = useProject({ projectId });
   const localize = useLocalize();
@@ -355,6 +353,8 @@ const VoteButton = ({
         : messages.votingDisabledPhaseOver;
     } else if (disabledReason === 'not_permitted') {
       return messages.votingNotPermitted;
+    } else if (authUser && disabledReason === 'not_active') {
+      return messages.completeRegistrationToVote;
     } else if (disabledReason === 'not_signed_in') {
       return messages.votingNotSignedIn;
     } else if (authUser && disabledReason === 'not_verified') {
@@ -365,13 +365,13 @@ const VoteButton = ({
   };
 
   if (!isNilOrError(idea) && !isNilOrError(project)) {
-    const votingDescriptor = idea.attributes.action_descriptor.voting_idea;
+    const votingDescriptor = idea.data.attributes.action_descriptor.voting_idea;
     const buttonVoteModeEnabled = votingDescriptor[buttonVoteMode].enabled;
     const disabledReason =
-      idea.attributes.action_descriptor.voting_idea[buttonVoteMode]
+      idea.data.attributes.action_descriptor.voting_idea[buttonVoteMode]
         .disabled_reason;
     const futureEnabled =
-      idea.attributes.action_descriptor.voting_idea[buttonVoteMode]
+      idea.data.attributes.action_descriptor.voting_idea[buttonVoteMode]
         .future_enabled;
     const cancellingEnabled = votingDescriptor.cancelling_enabled;
     const isSignedIn = !isNilOrError(authUser);
@@ -422,7 +422,6 @@ const VoteButton = ({
           votingEnabled={buttonEnabled}
           onMouseDown={removeFocusAfterMouseClick}
           onClick={onClick}
-          ref={setRef}
           className={[
             className,
             {

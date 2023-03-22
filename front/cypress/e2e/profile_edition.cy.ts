@@ -20,7 +20,7 @@ describe('profile edition', () => {
   it('lets user edit their profile', () => {
     cy.intercept(`**/users/${userId}`).as('saveUser');
     cy.get('input[type="file"]').attachFile('icon.png');
-    cy.get('#first_name').clear().type('Jane');
+    cy.get('#first_name').clear();
     cy.get('#last_name').clear().type('Doe');
     const newEmail = randomEmail();
     email = newEmail;
@@ -30,12 +30,10 @@ describe('profile edition', () => {
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
   });
   it('shows errors when fields have invalid values', () => {
-    cy.get('#first_name').clear();
-    cy.get('#last_name').clear();
     cy.get('#email').clear();
     cy.get('button[type="submit"]').contains('Save changes').click();
     cy.get('[data-testid="feedbackErrorMessage"]').should('exist');
-    cy.get('.e2e-error-message').should('have.length', 4);
+    cy.get('.e2e-error-message').should('have.length', 2);
   });
   after(() => {
     cy.apiRemoveUser(userId);

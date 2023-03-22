@@ -1,4 +1,4 @@
-import { randomString, randomEmail } from '../support/commands';
+import { randomString, randomEmail, logout } from '../support/commands';
 
 describe('Sign up - custom fields step', () => {
   describe('No custom fields', () => {
@@ -10,6 +10,10 @@ describe('Sign up - custom fields step', () => {
       cy.apiSignup(firstName, lastName, email, password);
       cy.setLoginCookie(email, password);
       cy.goToLandingPage();
+    });
+
+    after(() => {
+      logout();
     });
 
     it('does not show it when no custom fields are enabled', () => {
@@ -33,11 +37,13 @@ describe('Sign up - custom fields step', () => {
         });
         cy.setLoginCookie(email, password);
         cy.goToLandingPage();
+        cy.get('#e2e-user-menu-dropdown-button').click({ force: true });
+        cy.get('#e2e-complete-registration-link').click({ force: true });
       });
     });
 
     it('shows the custom field step and can skip it', () => {
-      cy.get('#e2e-sign-up-in-modal');
+      cy.get('#e2e-sign-up-in-modal').should('exist');
       cy.get('#e2e-signup-custom-fields-container');
       cy.get('#e2e-signup-custom-fields-skip-btn').click();
       cy.get('#e2e-signup-success-container', { timeout: 20000 });
@@ -66,6 +72,8 @@ describe('Sign up - custom fields step', () => {
         });
         cy.setLoginCookie(email, password);
         cy.goToLandingPage();
+        cy.get('#e2e-user-menu-dropdown-button').click({ force: true });
+        cy.get('#e2e-complete-registration-link').click({ force: true });
       });
     });
 
@@ -100,6 +108,8 @@ describe('Sign up - custom fields step', () => {
         });
         cy.setLoginCookie(email, password);
         cy.goToLandingPage();
+        cy.get('#e2e-user-menu-dropdown-button').click({ force: true });
+        cy.get('#e2e-complete-registration-link').click({ force: true });
       });
     });
 

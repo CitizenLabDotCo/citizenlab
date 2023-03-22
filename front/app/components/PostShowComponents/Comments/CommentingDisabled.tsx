@@ -11,7 +11,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // services
-import { IdeaCommentingDisabledReason } from 'services/ideas';
+import { IdeaCommentingDisabledReason } from 'api/ideas/types';
 
 // i18n
 import messages from './messages';
@@ -62,10 +62,11 @@ class CommentingDisabled extends PureComponent<Props> {
       return messages.commentingDisabledUnverified;
     } else if (isLoggedIn && commentingDisabledReason === 'not_permitted') {
       return messages.commentingDisabledProject;
+    } else if (isLoggedIn && commentingDisabledReason === 'not_active') {
+      return messages.completeRegistrationToComment;
     } else if (!isLoggedIn) {
       return messages.commentingMaybeNotPermitted;
     }
-
     return messages.signInToComment;
   };
 
@@ -92,17 +93,16 @@ class CommentingDisabled extends PureComponent<Props> {
     const pcId =
       pcType === 'phase' ? phaseId : pcType === 'project' ? projectId : null;
 
+    if (!pcId || !pcType) return;
+
     openSignUpInModal({
       flow,
       verification: commentingDisabledReason === 'not_verified',
-      verificationContext:
-        commentingDisabledReason === 'not_verified' && pcId && pcType
-          ? {
-              action: 'commenting_idea',
-              id: pcId,
-              type: pcType,
-            }
-          : undefined,
+      context: {
+        action: 'commenting_idea',
+        id: pcId,
+        type: pcType,
+      },
     });
   };
 
@@ -136,6 +136,17 @@ class CommentingDisabled extends PureComponent<Props> {
                 signInLink: (
                   <button onClick={this.signIn}>
                     <FormattedMessage {...messages.signInLinkText} />
+                  </button>
+                ),
+                completeRegistrationLink: (
+                  <button
+                    onClick={() => {
+                      openSignUpInModal();
+                    }}
+                  >
+                    <FormattedMessage
+                      {...messages.completeRegistrationLinkText}
+                    />
                   </button>
                 ),
                 verifyIdentityLink: (

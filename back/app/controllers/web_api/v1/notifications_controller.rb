@@ -74,4 +74,4 @@ class WebApi::V1::NotificationsController < ApplicationController
   end
 end
 
-WebApi::V1::NotificationsController.prepend_if_ee('FlagInappropriateContent::Patches::WebApi::V1::NotificationsController')
+WebApi::V1::NotificationsController.prepend(FlagInappropriateContent::Patches::WebApi::V1::NotificationsController)

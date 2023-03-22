@@ -17,9 +17,6 @@ RUN find engines -type f -not -name "*.gemspec" -not -name "version.rb" -print0 
 FROM ruby:2.7.6-slim
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-ARG CITIZENLAB_EE=false
-ENV CITIZENLAB_EE=$CITIZENLAB_EE
-
 RUN apt-get update                                           \
  && apt-get install -qq -y --no-install-recommends           \
       build-essential                                        \

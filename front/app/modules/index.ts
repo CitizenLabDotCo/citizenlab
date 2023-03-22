@@ -41,150 +41,110 @@ import representativenessConfiguration from './commercial/representativeness';
 
 import idViennaSamlConfiguration from './commercial/id_vienna_saml';
 
-// eslint-disable-next-line no-var
-declare var CITIZENLAB_EE: string;
-
-const isEnabled = CITIZENLAB_EE === 'true';
-
 export default loadModules([
   {
     configuration: smartGroupsConfiguration,
-    isEnabled,
   },
   {
     configuration: googleTagManagerConfiguration,
-    isEnabled,
   },
   {
     configuration: matomoConfiguration,
-    isEnabled,
   },
   {
     configuration: posthogConfiguration,
-    isEnabled,
   },
   {
     configuration: googleAnalyticsConfiguration,
-    isEnabled,
   },
   {
     configuration: intercomConfiguration,
-    isEnabled,
   },
   {
     configuration: satismeterConfiguration,
-    isEnabled,
   },
   {
     configuration: segmentConfiguration,
-    isEnabled,
   },
   {
     configuration: granularPermissionsConfiguration,
-    isEnabled,
   },
   {
     configuration: moderationConfiguration,
-    isEnabled,
   },
   {
     configuration: flagInappropriateContentConfiguration,
-    isEnabled,
   },
   {
     configuration: ideaAssignmentConfiguration,
-    isEnabled,
   },
   {
     configuration: projectDescriptionBuilderConfiguration,
-    isEnabled,
   },
   {
     configuration: customIdeaStatusesConfiguration,
-    isEnabled,
   },
   {
     configuration: bulkIdeaImportConfiguration,
-    isEnabled,
   },
   {
     configuration: adminProjectTemplatesConfiguration,
-    isEnabled,
   },
   {
     configuration: similarIdeaConfiguration,
-    isEnabled,
   },
   {
     configuration: customMapsConfiguration,
-    isEnabled,
   },
   {
     configuration: idAuth0Configuration,
-    isEnabled,
   },
   {
     configuration: idBosaFasConfiguration,
-    isEnabled,
   },
   {
     configuration: idCowConfiguration,
-    isEnabled,
   },
   {
     configuration: idBogusConfiguration,
-    isEnabled,
   },
   {
     configuration: idIdCardLookupConfiguration,
-    isEnabled,
   },
   {
     configuration: IdFranceConnectConfiguration,
-    isEnabled,
   },
   {
     configuration: IdGentRrnConfiguration,
-    isEnabled,
   },
   {
     configuration: IdOostendeRrnConfiguration,
-    isEnabled,
   },
   {
     configuration: IdClaveUnicaConfiguration,
-    isEnabled,
   },
   {
     configuration: machineTranslationsConfiguration,
-    isEnabled,
   },
   {
     configuration: widgetsConfiguration,
-    isEnabled,
   },
   {
     configuration: eventsWidgetConfiguration,
-    isEnabled,
   },
   {
     configuration: insightsConfiguration,
-    isEnabled,
   },
   {
     configuration: analyticsConfiguration,
-    isEnabled,
   },
   {
     configuration: idViennaSamlConfiguration,
-    isEnabled,
   },
   {
     configuration: representativenessConfiguration,
-    isEnabled,
   },
   {
     configuration: impactTrackingConfiguration,
-    isEnabled,
   },
 ]);

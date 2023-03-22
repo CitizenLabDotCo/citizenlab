@@ -55,6 +55,13 @@ describe CommentVotePolicy do
     end
   end
 
+  context 'for blocked vote owner' do
+    let(:user) { create(:user, block_start_at: Time.now) }
+    let(:vote) { create(:vote, user: user, votable: comment) }
+
+    it_behaves_like 'policy for blocked user vote'
+  end
+
   context 'for an admin on a vote of another user' do
     let!(:vote) { create(:vote, votable: comment) }
     let(:user) { create(:admin) }

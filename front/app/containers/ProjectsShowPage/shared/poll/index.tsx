@@ -73,6 +73,7 @@ const disabledMessages: {
 } = {
   projectInactive: messages.pollDisabledProjectInactive,
   maybeNotPermitted: messages.pollDisabledMaybeNotPermitted,
+  notActive: messages.pollDisabledNotActiveUser,
   maybeNotVerified: messages.pollDisabledMaybeNotVerified,
   notPermitted: messages.pollDisabledNotPermitted,
   notActivePhase: messages.pollDisabledNotActivePhase,
@@ -106,17 +107,16 @@ export class Poll extends PureComponent<Props> {
       const takingPollDisabledReason =
         project.attributes?.action_descriptor?.taking_poll?.disabled_reason;
 
+      if (!pcId || !pcType) return;
+
       openSignUpInModal({
         flow,
         verification: takingPollDisabledReason === 'not_verified',
-        verificationContext:
-          takingPollDisabledReason === 'not_verified' && pcId && pcType
-            ? {
-                action: 'taking_poll',
-                id: pcId,
-                type: pcType,
-              }
-            : undefined,
+        context: {
+          action: 'taking_poll',
+          id: pcId,
+          type: pcType,
+        },
       });
     }
   };
@@ -172,6 +172,18 @@ export class Poll extends PureComponent<Props> {
                         <button onClick={this.onVerify}>
                           <FormattedMessage
                             {...messages.verificationLinkText}
+                          />
+                        </button>
+                      ),
+                      completeRegistrationLink: (
+                        <button
+                          id="e2e-complete-registration-link"
+                          onClick={() => {
+                            openSignUpInModal();
+                          }}
+                        >
+                          <FormattedMessage
+                            {...messages.completeRegistrationLinkText}
                           />
                         </button>
                       ),

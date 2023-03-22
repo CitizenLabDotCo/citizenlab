@@ -52,6 +52,13 @@ describe IdeaVotePolicy do
     end
   end
 
+  context 'for blocked vote owner' do
+    let(:user) { create(:user, block_start_at: Time.now) }
+    let(:vote) { create(:vote, user: user, votable: votable) }
+
+    it_behaves_like 'policy for blocked user vote'
+  end
+
   context 'for an admin' do
     let(:user) { create(:admin) }
 

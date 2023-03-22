@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 // events
-import { openSignUpInModal, ISignUpInMetaData } from 'events/openSignUpInModal';
-import { openSignUpInModal$ } from './SignUpInModal/events';
+import {
+  openSignUpInModal,
+  ISignUpInMetaData,
+  openOldSignUpInModal$,
+} from 'events/openSignUpInModal';
 import openSignUpInModalIfNecessary from '../utils/openSignUpInModalIfNecessary';
 
 // hooks
@@ -39,7 +42,7 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
   const { pathname, search } = useLocation();
 
   useEffect(() => {
-    const subscription = openSignUpInModal$.subscribe(
+    const subscription = openOldSignUpInModal$.subscribe(
       ({ eventValue: newMetaData }) => {
         setMetaData(newMetaData);
       }
@@ -67,16 +70,6 @@ const SignUpInContainer = ({ authUser, onModalOpenedStateChange }: Props) => {
 
     setInitiated(true);
   }, [pathname, search, authUser, signUpInModalClosed, initiated]);
-
-  // In case the user signs in
-  useEffect(() => {
-    if (isNilOrError(authUser)) return;
-    if (metaData) return;
-
-    if (!authUser.attributes.registration_completed_at) {
-      openSignUpInModal({ flow: 'signup' });
-    }
-  }, [authUser, metaData]);
 
   // In case of a sign up / in route, open modal and redirect to homepage
   useEffect(() => {

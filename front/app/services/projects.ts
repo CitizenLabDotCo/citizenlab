@@ -34,7 +34,8 @@ export type IProjectAction =
   | 'comment_voting_idea'
   | 'posting_idea'
   | 'taking_survey'
-  | 'taking_poll';
+  | 'taking_poll'
+  | 'not_active';
 
 export type PostingDisabledReason =
   | 'project_inactive'
@@ -43,7 +44,8 @@ export type PostingDisabledReason =
   | 'posting_limited_max_reached'
   | 'not_permitted'
   | 'not_verified'
-  | 'not_signed_in';
+  | 'not_signed_in'
+  | 'not_active';
 
 export type CommentingDisabledReason =
   | 'not_verified'
@@ -51,7 +53,8 @@ export type CommentingDisabledReason =
   | 'not_supported'
   | 'commenting_disabled'
   | 'not_permitted'
-  | 'not_signed_in';
+  | 'not_signed_in'
+  | 'not_active';
 
 export type ProjectVotingDisabledReason =
   | 'project_inactive'
@@ -62,14 +65,16 @@ export type ProjectVotingDisabledReason =
   | 'upvoting_limited_max_reached'
   | 'downvoting_limited_max_reached'
   | 'not_permitted'
-  | 'not_verified';
+  | 'not_verified'
+  | 'not_active';
 
 export type SurveyDisabledReason =
   | 'project_inactive'
   | 'not_survey'
   | 'not_permitted'
   | 'not_verified'
-  | 'not_signed_in';
+  | 'not_signed_in'
+  | 'not_active';
 
 export type PollDisabledReason =
   | 'project_inactive'
@@ -77,7 +82,8 @@ export type PollDisabledReason =
   | 'not_permitted'
   | 'already_responded'
   | 'not_verified'
-  | 'not_signed_in';
+  | 'not_signed_in'
+  | 'not_active';
 
 interface ProjectHeaderBgImageSizes {
   large: string | null;

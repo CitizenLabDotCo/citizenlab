@@ -30,6 +30,10 @@ class UserPolicy < ApplicationPolicy
     user&.active? && !user.normal_user?
   end
 
+  def seats?
+    user&.active? && !user.normal_user?
+  end
+
   def index_xlsx?
     user&.active? && user&.admin?
   end
@@ -61,6 +65,18 @@ class UserPolicy < ApplicationPolicy
 
   def destroy?
     record.id == user&.id || (user&.active? && user&.admin?)
+  end
+
+  def block?
+    index?
+  end
+
+  def unblock?
+    index?
+  end
+
+  def blocked_count?
+    index?
   end
 
   def ideas_count?
@@ -121,4 +137,4 @@ class UserPolicy < ApplicationPolicy
   end
 end
 
-UserPolicy.prepend_if_ee('Verification::Patches::UserPolicy')
+UserPolicy.prepend(Verification::Patches::UserPolicy)

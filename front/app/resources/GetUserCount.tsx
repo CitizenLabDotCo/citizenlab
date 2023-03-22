@@ -13,10 +13,12 @@ interface Props extends InputProps {
 }
 
 interface State {
-  count: number | undefined | null | Error;
+  count: number | null;
+  administrators_count: number | null;
+  managers_count: number | null;
 }
 
-export type GetUserCountChildProps = number | undefined | null | Error;
+export type GetUserCountChildProps = State;
 
 export default class GetUserCount extends React.PureComponent<Props, State> {
   private subscription: Subscription;
@@ -25,14 +27,20 @@ export default class GetUserCount extends React.PureComponent<Props, State> {
     super(props);
     this.state = {
       count: null,
+      administrators_count: null,
+      managers_count: null,
     };
   }
 
   componentDidMount() {
     this.subscription = usersCount().observable.subscribe((response) => {
-      this.setState({
-        count: !isNilOrError(response) ? response.count : response,
-      });
+      if (!isNilOrError(response)) {
+        this.setState({
+          count: response.count,
+          administrators_count: response.administrators_count,
+          managers_count: response.managers_count,
+        });
+      }
     });
   }
 
@@ -42,7 +50,11 @@ export default class GetUserCount extends React.PureComponent<Props, State> {
 
   render() {
     const { children } = this.props;
-    const { count } = this.state;
-    return (children as children)(count);
+    const { count, administrators_count, managers_count } = this.state;
+    return (children as children)({
+      count,
+      administrators_count,
+      managers_count,
+    });
   }
 }

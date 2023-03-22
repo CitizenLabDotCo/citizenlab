@@ -1,27 +1,28 @@
 import React, { useState, FormEvent } from 'react';
-import { FormattedMessage } from 'utils/cl-intl';
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-import messages from './messages';
-import Error from 'components/UI/Error';
-import { confirm, resendCode, IConfirmation } from 'services/confirmation';
-import useAuthUser from 'hooks/useAuthUser';
-import { isNilOrError } from 'utils/helperUtils';
-import { CLErrors, CLError } from 'typings';
-import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
 
-import {
-  Box,
-  Icon,
-  Input,
-  Label,
-  Success,
-} from '@citizenlab/cl2-component-library';
-import Link from 'utils/cl-router/Link';
+// services
+import confirmEmail, { IConfirmation } from 'api/authentication/confirmEmail';
+import resendEmailConfirmationCode from 'api/authentication/resendEmailConfirmationCode';
+
+// components
+import Error from 'components/UI/Error';
+import { Input, Label, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import { FormLabel } from 'components/UI/FormComponents';
+import CodeSentMessage from './CodeSentMessage';
+import FooterNotes, { FooterNote, FooterNoteLink } from './FooterNotes';
+
+// styling
+import styled from 'styled-components';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
+
+// tracks
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
+import { CLErrors, CLError } from 'typings';
 
 const FormContainer = styled.div<{ inModal: boolean }>`
   display: flex;
@@ -61,46 +62,9 @@ const SubmitButton = styled(Button)`
   margin: 0.75rem 0;
 `;
 
-const FooterNotes = styled.div`
-  margin: 18px 0 0;
-  text-align: center;
-`;
-
-const FooterNote = styled.p`
-  color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.s}px;
-  line-height: normal;
-
-  &:not(:last-child) {
-    margin: 0 0 1rem;
-  }
-`;
-
-const FooterNoteLink = styled(Link)`
-  font-size: ${fontSizes.s}px;
-  padding-left: 4px;
-  color: ${({ theme }) => theme.colors.tenantText};
-  text-decoration: underline;
-
-  &:hover {
-    color: ${({ theme }) => darken(0.2, theme.colors.tenantText)};
-    text-decoration: underline;
-  }
-`;
-
-const FooterNoteSuccessMessage = styled.span`
-  color: ${colors.success};
-  padding-left: 6px;
-`;
-
-const FooterNoteSuccessMessageIcon = styled(Icon)`
-  margin-right: 4px;
-`;
-
 type Props = { onCompleted: () => void };
 
 const ConfirmationSignupStep = ({ onCompleted }: Props) => {
-  const user = useAuthUser();
   const [confirmation, setConfirmation] = useState<IConfirmation>({
     code: null,
   });
@@ -109,10 +73,6 @@ const ConfirmationSignupStep = ({ onCompleted }: Props) => {
   const [processing, setProcessing] = useState(false);
   const [changingEmail, setChangingEmail] = useState(false);
   const [codeResent, setCodeResent] = useState(false);
-
-  if (isNilOrError(user)) {
-    return null;
-  }
 
   function handleCodeChange(code: string) {
     setApiErrors({});
@@ -125,7 +85,7 @@ const ConfirmationSignupStep = ({ onCompleted }: Props) => {
   function handleSubmitConfirmation() {
     setProcessing(true);
 
-    confirm(confirmation)
+    confirmEmail(confirmation)
       .then(() => {
         setApiErrors({});
         setProcessing(false);
@@ -143,7 +103,7 @@ const ConfirmationSignupStep = ({ onCompleted }: Props) => {
     e.preventDefault();
     setProcessing(true);
 
-    resendCode()
+    resendEmailConfirmationCode()
       .then(() => {
         setProcessing(false);
         setCodeResent(true);
@@ -158,7 +118,7 @@ const ConfirmationSignupStep = ({ onCompleted }: Props) => {
   function handleEmailSubmit() {
     setProcessing(true);
 
-    resendCode(newEmail)
+    resendEmailConfirmationCode(newEmail ?? undefined)
       .then(() => {
         setProcessing(false);
         setChangingEmail(false);
@@ -216,36 +176,19 @@ const ConfirmationSignupStep = ({ onCompleted }: Props) => {
               <FormattedMessage {...messages.sendEmailWithCode} />
             </SubmitButton>
           </Footer>
-          <FooterNotes>
+          <Text margin="18px 0 0" textAlign="center">
             <FooterNote>
               <FormattedMessage {...messages.foundYourCode} />
-              <FooterNoteLink onClick={handleBackToCode} to="#">
+              <FooterNoteLink onClick={handleBackToCode}>
                 <FormattedMessage {...messages.goBack} />
               </FooterNoteLink>
             </FooterNote>
-          </FooterNotes>
+          </Text>
         </Form>
       ) : (
         <Form inModal={inModal} onSubmit={handleSubmitConfirmation}>
           <FormField>
-            <Box display="flex" alignItems="center" mb="20px">
-              <Icon
-                width="30px"
-                height="30px"
-                name="check-circle"
-                fill={colors.success}
-              />
-              <Success
-                text={
-                  <FormattedMessage
-                    {...messages.anExampleCodeHasBeenSent}
-                    values={{
-                      userEmail: <strong>{user.attributes.email}</strong>,
-                    }}
-                  />
-                }
-              />
-            </Box>
+            <CodeSentMessage />
             <StyledLabel htmlFor="e2e-confirmation-code-input">
               <FormattedMessage {...messages.codeInput} />
             </StyledLabel>
@@ -272,28 +215,13 @@ const ConfirmationSignupStep = ({ onCompleted }: Props) => {
               <FormattedMessage {...messages.verifyAndContinue} />
             </SubmitButton>
           </Footer>
-          <FooterNotes>
-            <FooterNote>
-              <FormattedMessage {...messages.didntGetAnEmail} />
-
-              {codeResent ? (
-                <FooterNoteSuccessMessage>
-                  <FooterNoteSuccessMessageIcon name="check-circle" />
-                  <FormattedMessage {...messages.confirmationCodeSent} />
-                </FooterNoteSuccessMessage>
-              ) : (
-                <FooterNoteLink onClick={handleResendCode} to="#">
-                  <FormattedMessage {...messages.sendNewCode} />
-                </FooterNoteLink>
-              )}
-            </FooterNote>
-            <FooterNote>
-              <FormattedMessage {...messages.wrongEmail} />
-              <FooterNoteLink onClick={handleShowEmailInput} to="#">
-                <FormattedMessage {...messages.changeYourEmail} />
-              </FooterNoteLink>
-            </FooterNote>
-          </FooterNotes>
+          <Text margin="18px 0 0" textAlign="center">
+            <FooterNotes
+              codeResent={codeResent}
+              onResendCode={handleResendCode}
+              onChangeEmail={handleShowEmailInput}
+            />
+          </Text>
         </Form>
       )}
     </FormContainer>

@@ -7,7 +7,7 @@ class WebApi::V1::PermissionsController < ApplicationController
   def index
     @permissions = policy_scope(Permission)
       .includes(:permission_scope)
-      .where(permission_scope_id: permission_scope_id)
+      .where(permission_scope: permission_scope)
       .order(created_at: :desc)
     @permissions = paginate @permissions
 
@@ -29,13 +29,13 @@ class WebApi::V1::PermissionsController < ApplicationController
   end
 
   def participation_conditions
-    render json: @permission.participation_conditions, status: :ok
+    render json: raw_json({ participation_conditions: @permission.participation_conditions }), status: :ok
   end
 
   def requirements
     authorize @permission
     json_requirements = PermissionsService.new.requirements @permission, current_user
-    render json: json_requirements, status: :ok # TODO: use raw_json
+    render json: raw_json({ requirements: json_requirements }), status: :ok
   end
 
   private
@@ -45,11 +45,23 @@ class WebApi::V1::PermissionsController < ApplicationController
   end
 
   def set_permission
-    @permission = authorize Permission.find_by!(action: permission_action, permission_scope_id: permission_scope_id)
+    @permission = authorize Permission.find_by!(action: permission_action, permission_scope: permission_scope)
   end
 
-  def permission_scope_id
-    params[params[:parent_param]]
+  def permission_scope
+    parent_param = params[:parent_param]
+    scope_id = params[parent_param]
+    case parent_param
+    when nil
+      nil
+    when :project_id
+      Project.find(scope_id)
+    when :phase_id
+      Phase.find(scope_id)
+    when :idea_id
+      idea = Idea.find(scope_id)
+      ParticipationContextService.new.get_participation_context idea.project
+    end
   end
 
   def permission_action

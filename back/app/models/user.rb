@@ -48,6 +48,7 @@ class User < ApplicationRecord
   GENDERS = %w[male female unspecified].freeze
   INVITE_STATUSES = %w[pending accepted].freeze
   ROLES = %w[admin project_moderator project_folder_moderator].freeze
+  CITIZENLAB_MEMBER_REGEX_CONTENT = 'citizenlab.(eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'
 
   class << self
     # Deletes all users asynchronously (with side effects).
@@ -163,11 +164,11 @@ class User < ApplicationRecord
 
   validates :invite_status, inclusion: { in: INVITE_STATUSES }, allow_nil: true
 
-  # TODO: Allow light users without required fields
-  # validates :custom_field_values, json: {
-  #   schema: -> { CustomFieldService.new.fields_to_json_schema(CustomField.with_resource_type('User')) },
-  #   message: ->(errors) { errors }
-  # }, if: %i[custom_field_values_changed? active?]
+  # NOTE: All validation except for required
+  validates :custom_field_values, json: {
+    schema: -> { CustomFieldService.new.fields_to_json_schema_ignore_required(CustomField.with_resource_type('User')) },
+    message: ->(errors) { errors }
+  }, if: %i[custom_field_values_changed? active?]
 
   validates :password, length: { maximum: 72 }, allow_nil: true
   # Custom validation is required to deal with the
@@ -257,6 +258,14 @@ class User < ApplicationRecord
     where(id: user_ids)
   }
 
+  # https://www.postgresql.org/docs/12/functions-matching.html#FUNCTIONS-POSIX-REGEXP
+  scope :not_citizenlab_member, -> { where.not('email ~* ?', CITIZENLAB_MEMBER_REGEX_CONTENT) }
+  scope :billed_admins, -> { admin.not_citizenlab_member }
+  scope :billed_moderators, lambda {
+    # use any conditions before `or` very carefully (inspect the generated SQL)
+    project_moderator.or(User.project_folder_moderator).where.not(id: admin).not_citizenlab_member
+  }
+
   def self.oldest_admin
     active.admin.order(:created_at).reject(&:super_admin?).first
   end
@@ -313,7 +322,7 @@ class User < ApplicationRecord
 
   # Anonymous names to use if no first name and last name
   def anon_first_name
-    'User'
+    I18n.t 'user.anon_first_name'
   end
 
   def anon_last_name
@@ -336,7 +345,7 @@ class User < ApplicationRecord
   end
 
   def super_admin?
-    admin? && !!(email =~ /citizen-?lab\.(eu|be|fr|ch|de|nl|co|uk|us|cl|dk|pl)$/i)
+    admin? && !!(email =~ Regexp.new(CITIZENLAB_MEMBER_REGEX_CONTENT, 'i'))
   end
 
   def admin?
@@ -396,17 +405,17 @@ class User < ApplicationRecord
   end
 
   def active?
-    registration_completed_at.present? && !invite_pending?
+    registration_completed_at.present? && !invite_pending? && !blocked?
   end
 
   def blocked?
-    if block_start_at.present?
-      duration = AppConfiguration.instance.settings('user_blocking', 'duration')
+    block_start_at.present? && block_start_at.between?(block_duration.days.ago, Time.zone.now)
+  end
 
-      return true if block_start_at.between?(duration.days.ago, Time.zone.now)
-    end
+  def block_end_at
+    return nil unless blocked?
 
-    false
+    block_start_at + block_duration.days
   end
 
   def groups
@@ -606,11 +615,15 @@ class User < ApplicationRecord
   def use_fake_code?
     Rails.env.development?
   end
+
+  def block_duration
+    AppConfiguration.instance.settings('user_blocking', 'duration')
+  end
 end
 
-User.include_if_ee('IdeaAssignment::Extensions::User')
-User.include_if_ee('Verification::Patches::User')
+User.include(IdeaAssignment::Extensions::User)
+User.include(Verification::Patches::User)
 
-User.prepend_if_ee('MultiTenancy::Patches::User')
-User.prepend_if_ee('MultiTenancy::Patches::UserConfirmation::User')
-User.prepend_if_ee('SmartGroups::Patches::User')
+User.prepend(MultiTenancy::Patches::User)
+User.prepend(MultiTenancy::Patches::UserConfirmation::User)
+User.prepend(SmartGroups::Patches::User)

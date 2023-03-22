@@ -4,7 +4,6 @@ import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
 
 // resources & typings
-import GetPost, { GetPostChildProps } from 'resources/GetPost';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // permissions
@@ -26,8 +25,8 @@ import { darken } from 'polished';
 // Components
 import { Icon } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
-import CommentHeader from 'components/PostShowComponents/Comments/CommentHeader';
-import CommentBody from 'components/PostShowComponents/Comments/CommentBody';
+import CommentHeader from 'components/PostShowComponents/Comments/Comment/CommentHeader';
+import CommentBody from 'components/PostShowComponents/Comments/Comment/CommentBody';
 
 // intl
 import messages from './messages';
@@ -36,6 +35,7 @@ import T from 'components/T';
 
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useIdeaById from 'api/ideas/useIdeaById';
 
 const Container = styled.div`
   width: 100%;
@@ -133,7 +133,6 @@ interface InputProps {
 }
 
 interface DataProps {
-  idea: GetPostChildProps;
   user: GetUserChildProps;
 }
 
@@ -142,24 +141,25 @@ const nothingHappens = () => {};
 interface Props extends InputProps, DataProps {}
 
 const PostCommentGroup = ({
-  idea,
   postType,
   comments,
   userId,
   user,
   postId,
 }: Props) => {
-  const initiativeId = postType === 'initiative' ? postId : null;
+  const initiativeId = postType === 'initiative' ? postId : undefined;
+  const ideaId = postType === 'idea' ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
-  const post = postType === 'idea' ? idea : initiative?.data;
+  const { data: idea } = useIdeaById(ideaId);
+  const post = initiative || idea;
 
   const onIdeaLinkClick = (event: FormEvent<any>) => {
     event.preventDefault();
 
     if (!isNilOrError(post)) {
       eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
-        id: post.id,
-        slug: post.attributes.slug,
+        id: post.data.id,
+        slug: post.data.attributes.slug,
         type: postType,
       });
     }
@@ -169,7 +169,7 @@ const PostCommentGroup = ({
     return null;
   }
 
-  const { slug, title_multiloc } = post.attributes;
+  const { slug, title_multiloc } = post.data.attributes;
   const projectId: string | null = get(
     post,
     'relationships.project.data.id',
@@ -242,11 +242,6 @@ const PostCommentGroup = ({
 };
 
 const Data = adopt<DataProps, InputProps>({
-  idea: ({ postId, render }) => (
-    <GetPost id={postId} type="idea">
-      {render}
-    </GetPost>
-  ),
   user: ({ userId, render }) => <GetUser id={userId}>{render}</GetUser>,
 });
 

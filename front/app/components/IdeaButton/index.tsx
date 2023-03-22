@@ -109,7 +109,6 @@ interface DataProps {
 interface InputProps extends Omit<ButtonProps, 'onClick'> {
   id?: string;
   projectId: string;
-  phaseId?: string | undefined | null;
   latLng?: LatLng | null;
   inMap?: boolean;
   className?: string;
@@ -124,16 +123,15 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
   ({
     id,
     project,
-    phase,
     phases,
     authUser,
     participationContextType,
-    phaseId,
     projectId,
     inMap,
     className,
     latLng,
     buttonText,
+    phase,
     intl: { formatMessage },
     ...buttonContainerProps
   }) => {
@@ -148,32 +146,23 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
       notActivePhase: messages.postingInNonActivePhases,
       maybeNotPermitted: messages.postingMayNotBePermitted,
     };
-    const { enabled, show, disabledReason, action } = getIdeaPostingRules({
-      project,
-      phase,
-      authUser,
-    });
+    const { enabled, show, disabledReason, authenticationRequirements } =
+      getIdeaPostingRules({
+        project,
+        phase,
+        authUser,
+      });
 
-    const onClick = (event: React.MouseEvent) => {
-      event.preventDefault();
+    const pcType = participationContextType;
+    const pcId = pcType === 'phase' ? phase?.id : projectId;
 
-      trackEventByName(tracks.postYourIdeaButtonClicked);
-
-      // if not logged in
-      if (action === 'sign_in_up' || action === 'sign_in_up_and_verify') {
-        signUp();
-      }
-
-      // if logged in but not verified and verification required
-      if (action === 'verify') {
-        verify();
-      }
-
-      // if logegd in and posting allowed
-      if (enabled === true) {
-        redirectToIdeaForm();
-      }
-    };
+    const context = pcId
+      ? ({
+          action: 'posting_idea',
+          id: pcId,
+          type: pcType,
+        } as const)
+      : null;
 
     const redirectToIdeaForm = () => {
       if (!isNilOrError(project)) {
@@ -184,7 +173,7 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
           canModerateProject(projectId, { data: authUser });
 
         const parameters =
-          phaseId && isUserModerator ? `&phase_id=${phaseId}` : '';
+          phase?.id && isUserModerator ? `&phase_id=${phase.id}` : '';
 
         clHistory.push({
           pathname: `/projects/${project.attributes.slug}/ideas/new`,
@@ -198,21 +187,41 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
       }
     };
 
+    const onClick = (event: React.MouseEvent) => {
+      event.preventDefault();
+
+      trackEventByName(tracks.postYourIdeaButtonClicked);
+
+      // if logged in but not complete user
+      if (authenticationRequirements === 'complete_registration') {
+        signUp();
+      }
+
+      // if not logged in
+      if (
+        authenticationRequirements === 'sign_in_up' ||
+        authenticationRequirements === 'sign_in_up_and_verify'
+      ) {
+        signUp();
+      }
+
+      // if logged in but not verified and verification required
+      if (authenticationRequirements === 'verify') {
+        verify();
+      }
+
+      // if logegd in and posting allowed
+      if (enabled === true) {
+        redirectToIdeaForm();
+      }
+    };
+
     const verify = (event?: React.MouseEvent) => {
       event?.preventDefault();
 
-      const pcType = participationContextType;
-      const pcId = pcType === 'phase' ? phaseId : projectId;
-
-      if (pcId && pcType) {
+      if (context) {
         trackEventByName(tracks.verificationModalOpened);
-        openVerificationModal({
-          context: {
-            action: 'posting_idea',
-            id: pcId,
-            type: pcType,
-          },
-        });
+        openVerificationModal({ context });
       }
     };
 
@@ -228,24 +237,17 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
       (flow: 'signup' | 'signin') => (event?: React.MouseEvent) => {
         event?.preventDefault();
 
-        const pcType = participationContextType;
-        const pcId = pcType === 'phase' ? phaseId : projectId;
-        const shouldVerify = action === 'sign_in_up_and_verify';
+        const shouldVerify =
+          authenticationRequirements === 'sign_in_up_and_verify';
 
-        if (isNilOrError(authUser) && !isNilOrError(project)) {
+        if (context) {
           trackEventByName(tracks.signUpInModalOpened);
+
           openSignUpInModal({
             flow,
             verification: shouldVerify,
-            verificationContext:
-              shouldVerify && pcId && pcType
-                ? {
-                    action: 'posting_idea',
-                    id: pcId,
-                    type: pcType,
-                  }
-                : undefined,
-            action: () => redirectToIdeaForm(),
+            context,
+            onSuccess: () => redirectToIdeaForm(),
           });
         }
       };
@@ -359,9 +361,6 @@ const Data = adopt<DataProps, InputProps>({
   phases: ({ projectId, render }) => (
     <GetPhases projectId={projectId}>{render}</GetPhases>
   ),
-  // phase: ({ phaseId, render }) => {
-  //   return <GetPhase id={phaseId}>{render}</GetPhase>
-  // },
 });
 
 const IdeaButtonWithHoC = injectIntl(IdeaButton);

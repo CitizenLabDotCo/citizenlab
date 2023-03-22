@@ -22,7 +22,7 @@ resource 'ActionDescriptors' do
       expect(json_attributes.values.pluck(:disabled_reason).none?).to be true
     end
 
-    context 'with granular permissions enabled', document: false, skip: !CitizenLab.ee? do
+    context 'with granular permissions enabled', document: false do
       before do
         PermissionsService.new.update_all_permissions
         Permission.find_by(permission_scope: nil, action: 'commenting_initiative')

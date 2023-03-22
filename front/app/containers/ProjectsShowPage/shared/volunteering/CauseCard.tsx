@@ -1,8 +1,7 @@
-import React, { memo, useCallback } from 'react';
+import React, { useCallback } from 'react';
 
 // services
-import { addVolunteer, deleteVolunteer } from 'services/volunteers';
-import { ICauseData } from 'services/causes';
+import { ICauseData } from 'api/causes/types';
 
 // resource hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -15,7 +14,7 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Warning from 'components/UI/Warning';
 
 // utils
-import { isEmptyMultiloc } from 'utils/helperUtils';
+import { isEmptyMultiloc, isNilOrError } from 'utils/helperUtils';
 import { openSignUpInModal } from 'events/openSignUpInModal';
 import { ScreenReaderOnly } from 'utils/a11y';
 
@@ -34,6 +33,8 @@ import {
   defaultCardStyle,
   isRtl,
 } from 'utils/styleUtils';
+import useAddVolunteer from 'api/causes/useAddVolunteer';
+import useDeleteVolunteer from 'api/causes/useDeleteVolunteer';
 
 const Container = styled.div`
   padding: 20px;
@@ -168,36 +169,45 @@ const ActionWrapper = styled.div`
 interface Props {
   cause: ICauseData;
   className?: string;
+  disabled?: boolean;
 }
 
-const CauseCard = memo<Props>(({ cause, className }) => {
+const CauseCard = ({ cause, className, disabled }: Props) => {
+  const { mutate: addVolunteer } = useAddVolunteer();
+  const { mutate: deleteVolunteer } = useDeleteVolunteer();
   const theme = useTheme();
   const authUser = useAuthUser();
   const { windowWidth } = useWindowSize();
 
   const handleOnVolunteerButtonClick = useCallback(() => {
-    if (cause.relationships?.user_volunteer?.data) {
-      deleteVolunteer(cause.id, cause.relationships.user_volunteer.data.id);
+    if (
+      !isNilOrError(authUser) &&
+      !authUser.attributes.registration_completed_at
+    ) {
+      openSignUpInModal();
     } else {
-      addVolunteer(cause.id);
+      if (cause.relationships?.user_volunteer?.data) {
+        deleteVolunteer({
+          causeId: cause.id,
+          volunteerId: cause.relationships.user_volunteer.data.id,
+        });
+      } else {
+        addVolunteer(cause.id);
+      }
     }
-  }, [cause]);
+  }, [authUser, cause, addVolunteer, deleteVolunteer]);
 
-  const signIn = useCallback(() => {
+  const signIn = () =>
     openSignUpInModal({
       flow: 'signin',
-      action: () => handleOnVolunteerButtonClick(),
+      onSuccess: () => handleOnVolunteerButtonClick(),
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
-  const signUp = useCallback(() => {
+  const signUp = () =>
     openSignUpInModal({
       flow: 'signup',
-      action: () => handleOnVolunteerButtonClick(),
+      onSuccess: () => handleOnVolunteerButtonClick(),
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const isVolunteer = !!cause.relationships?.user_volunteer?.data;
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
@@ -215,7 +225,7 @@ const CauseCard = memo<Props>(({ cause, className }) => {
   return (
     <Container className={className}>
       <Left>
-        {cause.attributes.image.medium ? (
+        {cause.attributes.image?.medium ? (
           <ImageWrapper>
             <StyledImage src={cause.attributes.image.medium} alt="" />
             <VolunteersCount>
@@ -276,7 +286,7 @@ const CauseCard = memo<Props>(({ cause, className }) => {
             <Button
               onClick={handleOnVolunteerButtonClick}
               icon={!isVolunteer ? 'volunteer' : 'volunteer-off'}
-              disabled={!authUser}
+              disabled={!authUser || disabled}
               buttonStyle={!isVolunteer ? 'primary' : 'secondary'}
               fullWidth={smallerThanSmallTablet}
             >
@@ -291,6 +301,6 @@ const CauseCard = memo<Props>(({ cause, className }) => {
       </Right>
     </Container>
   );
-});
+};
 
 export default CauseCard;

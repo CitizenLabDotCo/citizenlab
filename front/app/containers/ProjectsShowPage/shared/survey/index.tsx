@@ -61,6 +61,7 @@ const disabledMessage: {
   notPermitted: messages.surveyDisabledNotPermitted,
   notActivePhase: messages.surveyDisabledNotActivePhase,
   notVerified: messages.surveyDisabledNotVerified,
+  notActive: messages.surveyDisabledNotActiveUser,
 };
 
 const Survey = ({
@@ -91,22 +92,21 @@ const Survey = ({
 
   const signUpIn = (flow: 'signin' | 'signup') => {
     if (!isNilOrError(project)) {
-      const pcId = phaseId || projectId;
       const pcType = phaseId ? 'phase' : 'project';
+      const pcId = phaseId ?? projectId;
       const takingSurveyDisabledReason =
         project.attributes?.action_descriptor?.taking_survey?.disabled_reason;
+
+      if (!pcId || !pcType) return;
 
       openSignUpInModal({
         flow,
         verification: takingSurveyDisabledReason === 'not_verified',
-        verificationContext:
-          takingSurveyDisabledReason === 'not_verified' && pcId && pcType
-            ? {
-                action: 'taking_survey',
-                id: pcId,
-                type: pcType,
-              }
-            : undefined,
+        context: {
+          action: 'taking_survey',
+          id: pcId,
+          type: pcType,
+        },
       });
     }
   };
@@ -206,6 +206,17 @@ const Survey = ({
               signUpLink: (
                 <button onClick={signUp}>
                   <FormattedMessage {...messages.signUpLinkText} />
+                </button>
+              ),
+              completeRegistrationLink: (
+                <button
+                  onClick={() => {
+                    openSignUpInModal();
+                  }}
+                >
+                  <FormattedMessage
+                    {...messages.completeRegistrationLinkText}
+                  />
                 </button>
               ),
               logInLink: (
