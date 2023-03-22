@@ -769,7 +769,7 @@
   "app.containers.CookiePolicy.manageCookiesPreferencesButtonText": "Cookie-Einstellungen",
   "app.containers.CookiePolicy.manageCookiesTitle": "Ihre Cookies verwalten",
   "app.containers.CookiePolicy.viewPreferencesButtonText": "Cookie-Einstellungen",
-  "app.containers.CookiePolicy.viewPreferencesText": "Die unten stehenden Cookie-Kategorien müssen nicht für alle Besucher:innen oder Plattformen gelten; sehen Sie sich Ihre {viewPreferencesButton} für eine vollständige Liste, der für Sie geltenden Drittpartei-Integrationen an.",
+  "app.containers.CookiePolicy.viewPreferencesText": "Die unten stehenden Cookie-Kategorien müssen nicht für alle Besucher*innen oder Plattformen gelten; sehen Sie sich Ihre {viewPreferencesButton} für eine vollständige Liste, der für Sie geltenden Drittpartei-Integrationen an.",
   "app.containers.CookiePolicy.whatDoWeUseCookiesFor": "Welche Cookies kommen zum Einsatz?",
   "app.containers.CustomPageShow.editPage": "Seite bearbeiten",
   "app.containers.CustomPageShow.goBack": "Zurück",
