@@ -7,14 +7,13 @@ import {
   isProjectFolderModerator,
   userModeratesFolder,
 } from 'services/permissions/rules/projectFolderPermissions';
-
+import { useParams } from 'react-router-dom';
 // utils
 import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
 
 // services
 import useProjectFolderModerators from 'hooks/useProjectFolderModerators';
 import { IUsers, IUserData, usersStream } from 'services/users';
-import useAuthUser from 'hooks/useAuthUser';
 import {
   addFolderModerator,
   deleteFolderModerator,
@@ -32,7 +31,6 @@ import { List, Row } from 'components/admin/ResourceList';
 import Avatar from 'components/Avatar';
 import selectStyles from 'components/UI/MultipleSelect/styles';
 import { isAdmin } from 'services/permissions/roles';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import AddCollaboratorsModal from 'components/admin/AddCollaboratorsModal';
 
 const StyledA = styled.a`
@@ -54,11 +52,9 @@ const UserSelectButton = styled(Button)`
   margin-left: 12px;
 `;
 
-const FolderPermissions = ({
-  params: { projectFolderId },
-}: WithRouterProps) => {
+const FolderPermissions = () => {
+  const { projectFolderId } = useParams() as { projectFolderId: string };
   const { formatMessage } = useIntl();
-  const authUser = useAuthUser();
   const folderModerators = useProjectFolderModerators(projectFolderId);
 
   const [selectedUserOptions, setSelectedUserOptions] = useState<IOption[]>([]);
@@ -222,7 +218,6 @@ const FolderPermissions = ({
         <List>
           <>
             {!isNilOrError(folderModerators) &&
-              !isNilOrError(authUser) &&
               folderModerators.map((folderModerator, index) => (
                 <Row
                   key={folderModerator.id}
@@ -232,11 +227,11 @@ const FolderPermissions = ({
                     <Box mr="8px">
                       <Avatar userId={folderModerator.id} size={30} />
                     </Box>
-                    <Text as="span" m={'0'}>
+                    <Text as="span" m="0">
                       {userName(folderModerator)}
                     </Text>
                   </Box>
-                  <Text as="span" m={'0'}>
+                  <Text as="span" m="0">
                     {folderModerator.attributes.email}
                   </Text>
                   <Button
@@ -246,10 +241,6 @@ const FolderPermissions = ({
                     )}
                     buttonStyle="text"
                     icon="delete"
-                    disabled={
-                      !isNilOrError(authUser) &&
-                      authUser.id === folderModerator.id
-                    }
                   >
                     <FormattedMessage {...messages.deleteFolderManagerLabel} />
                   </Button>
@@ -262,4 +253,4 @@ const FolderPermissions = ({
   );
 };
 
-export default withRouter(FolderPermissions);
+export default FolderPermissions;
