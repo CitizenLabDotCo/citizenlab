@@ -23,7 +23,7 @@ import QuillEditor from 'components/UI/QuillEditor';
 import HelmetIntl from 'components/HelmetIntl';
 import Button from 'components/UI/Button';
 import Warning from 'components/UI/Warning';
-import SeatInfo from 'components/SeatInfo';
+import InviteUsersWithSeatsModal from 'components/admin/InviteUsersWithSeatsModal';
 
 // services
 import {
@@ -130,14 +130,18 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
   const [apiErrors, setApiErrors] = useState<IInviteError[] | null>(null);
   const [filetypeError, setFiletypeError] = useState<JSX.Element | null>(null);
   const [unknownError, setUnknownError] = useState<JSX.Element | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const closeModal = () => {
+    setShowModal(false);
+  };
 
   const fileInputElement = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
-    if (!isNilOrError(tenantLocales)) {
+    if (tenantLocales && !selectedLocale) {
       setSelectedLocale(tenantLocales[0]);
     }
-  }, [tenantLocales]);
+  }, [tenantLocales, selectedLocale]);
 
   const getProjectOptions = (
     projects: GetProjectsChildProps,
@@ -319,8 +323,7 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
     return roles;
   };
 
-  const handleOnSubmit = async (event) => {
-    event.preventDefault();
+  const onSubmit = async () => {
     const hasCorrectSelection =
       (selectedView === 'import' &&
         isString(selectedFileBase64) &&
@@ -393,6 +396,16 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
     return (isValidEmails || isValidInvitationTemplate) && hasValidRights;
   };
 
+  const handleSubmitAction = (event: React.FormEvent) => {
+    event.preventDefault();
+
+    if (hasAdminRights || hasModeratorRights) {
+      setShowModal(true);
+    } else {
+      onSubmit();
+    }
+  };
+
   const projectOptions = getProjectOptions(projects, locale, tenantLocales);
   const groupOptions = getGroupOptions(groups, locale, tenantLocales);
 
@@ -451,11 +464,6 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
               onChange={handleAdminRightsOnToggle}
             />
           </Box>
-          {hasAdminRights && (
-            <Box marginTop="20px">
-              <SeatInfo seatType="admin" />
-            </Box>
-          )}
         </SectionField>
 
         <SectionField>
@@ -506,9 +514,6 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
                   <FormattedMessage {...messages.required} />
                 </StyledWarning>
               )}
-              <Box marginTop="20px">
-                <SeatInfo seatType="collaborator" />
-              </Box>
             </>
           )}
         </SectionField>
@@ -569,7 +574,7 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
         title={messages.helmetTitle}
         description={messages.helmetDescription}
       />
-      <form onSubmit={handleOnSubmit} id="e2e-invitations">
+      <form onSubmit={handleSubmitAction} id="e2e-invitations">
         <Section>
           <StyledTabs
             items={invitationTabs}
@@ -686,6 +691,14 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
           </SectionField>
         </Section>
       </form>
+      <InviteUsersWithSeatsModal
+        inviteUsers={onSubmit}
+        showModal={showModal}
+        closeModal={closeModal}
+        //TODO: At the moment this number only includes manually added emails. We need to handle emails from the uploaded file as well when that ticket is completed.
+        noOfSeatsToAdd={selectedEmails?.split(',').length || 0}
+        seatType={hasAdminRights ? 'admin' : 'collaborator'}
+      />
     </>
   );
 };
