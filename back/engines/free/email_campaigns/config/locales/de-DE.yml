@@ -53,24 +53,24 @@ de:
       "admin_rights_received": Admin-Zugang erhalten - Admins
       "comment_deleted_by_admin": Löschung eines Kommentars - alle BenutzerInnen
       "comment_marked_as_spam": Kommentar als Spam markiert - Admins und ProjektmanagerInnen
-      "comment_on_your_comment": Antworten auf einen Kommentar - alle BenutzerInnen
-      "comment_on_your_idea": Kommentierte Idee - alle BenutzerInnen
-      "comment_on_your_initiative": Kommentierter Vorschlag - alle BenutzerInnen
-      "first_idea_published": Veröffentlichung der ersten Idee - alle BenutzerInnen
+      "comment_on_your_comment": Antworten auf einen Kommentar - alle Nutzer*innen
+      "comment_on_your_idea": Kommentierte Idee - alle Nutzer*innen
+      "comment_on_your_initiative": Kommentierter Vorschlag - alle Nutzer*innen
+      "first_idea_published": Veröffentlichung der ersten Idee - alle Nutzer*innen
       "idea_marked_as_spam": Spambericht Ideen - Admins und ProjektmanagerInnen
-      "idea_published": Veröffentlichung einer Idee - alle BenutzerInnen
+      "idea_published": Veröffentlichung einer Idee - alle Nutzer*innen
       "initiative_assigned_to_you": Zuweisung eines Vorschlags - Admins
       "initiative_marked_as_spam": Vorschlag Spam-Bericht - Admins
-      "initiative_published": Veröffentlichung des Vorschlags - alle BenutzerInnen
-      "invite_received": Einladung - alle BenutzerInnen
-      "invite_reminder": Einladungserinnerung - alle BenutzerInnen
+      "initiative_published": Veröffentlichung des Vorschlags - alle Nutzer*innen
+      "invite_received": Einladung - alle Nutzer*innen
+      "invite_reminder": Einladungserinnerung - alle Nutzer*innen
       "mention_in_comment": Erwähnung in einem Kommentar - alle NutzerInnen
-      "mention_in_official_feedback": Erwähnung in einem Update - alle BenutzerInnen
+      "mention_in_official_feedback": Erwähnung in einem Update - alle Nutzer*innen
       "new_comment_for_admin": Neuer Kommentar - Admins und ProjektmanagerInnen
-      "new_comment_on_commented_idea": Neuer Kommentar zu einer Idee, die Sie kommentiert haben - alle NutzerInnen
-      "new_comment_on_commented_initiative": Neuer Kommentar zu einem kommentierten Vorschlag - alle BenutzerInnen
-      "new_comment_on_voted_idea": Neuer Kommentar zu einer Idee, für die gestimmt wurde - alle BenutzerInnen
-      "new_comment_on_voted_initiative": Neuer Kommentar zu einem Vorschlag, für den gestimmt wurde - alle BenutzerInnen
+      "new_comment_on_commented_idea": Neuer Kommentar zu einer Idee, die Sie kommentiert haben - alle Nutzer*innen
+      "new_comment_on_commented_initiative": Neuer Kommentar zu einem kommentierten Vorschlag - alle Nutzer*innen
+      "new_comment_on_voted_idea": Neuer Kommentar zu einer Idee, für die gestimmt wurde - alle Nutzer*innen
+      "new_comment_on_voted_initiative": Neuer Kommentar zu einem Vorschlag, für den Sie gestimmt haben - alle Nutzer*innen
       "new_idea_for_admin": Neue Idee - Admins und ProjektmanagerInnen
       "new_initiative_for_admin": Neuer Vorschlag - Admins
       "official_feedback_on_commented_idea": Update zu einer kommentierten Idee - alle BenutzerInnen
@@ -261,7 +261,7 @@ de:
       title_your_weekly_report: '%{firstName}, Ihr wöchentlicher Bericht'
       text_introduction: 'Wir haben für Sie die Beiträge zusammengestellt, die in der vergangenen Woche die meiste Aktivität hatten. Finden Sie heraus, was auf Ihrer Plattform passiert ist!'
       cta_moderate: 'Projekt(e) moderieren'
-      new_users: 'Neue BenutzerInnen'
+      new_users: 'Neue Nutzer*innen'
       new_ideas: 'Neue Ideen'
       new_comments: 'Neue Kommentare'
       title_activity_past_week: 'Aktivitäten der letzten Woche'
