@@ -1086,7 +1086,6 @@
   "app.containers.NotificationMenu.statusChangeOnVotedOption": "Qinigassaq qinernikuusat {status}-imut allanngortinneqarpoq",
   "app.containers.NotificationMenu.statusChangeOnVotedProject": "Suliaq qinernikuusat {status}-imut allanngortinneqarpoq",
   "app.containers.NotificationMenu.statusChangeOnVotedQuestion": "Apeqqut qinernikuusat {status}-imut allanngortinneqarpoq",
-  "app.containers.NotificationMenu.statusChangedOfYourIdea": "{ideaTitle}' ima killiffeqalersimavoq {status}",
   "app.containers.NotificationMenu.statusChangedOfYourInitiative": "{initiativeTitle}' ima killiffeqalersimavoq {status}",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} taasisinnaasut amerlassuserisinaasaat anguneqarsimavoq",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} qaaqqusinerit akuerisimavaa",

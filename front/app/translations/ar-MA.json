@@ -1111,7 +1111,6 @@
   "app.containers.NotificationMenu.statusChangeOnVotedOption": "تمّ تغيير حالة خيار قمت بالتصويت لصالحه إلى {status}",
   "app.containers.NotificationMenu.statusChangeOnVotedProject": "تمّ تغيير حالة مشروع قمت بالتصويت لصالحه إلى {status}",
   "app.containers.NotificationMenu.statusChangeOnVotedQuestion": "تمّ تغيير حالة سؤال قمت بالتصويت لصالحه إلى {status}",
-  "app.containers.NotificationMenu.statusChangedOfYourIdea": "تعيرت حالة '{ideaTitle}' إلى {status}",
   "app.containers.NotificationMenu.statusChangedOfYourInitiative": "تغيرت حالة '{initiativeTitle}' إلى {status}",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "بلغ {post} حد التصويت المطلوب",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "قبِول {name} دعوتك",
