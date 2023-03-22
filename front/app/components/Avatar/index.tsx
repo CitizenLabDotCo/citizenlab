@@ -14,10 +14,6 @@ import Link from 'utils/cl-router/Link';
 // hooks
 import useUser from 'hooks/useUser';
 
-// i18n
-import injectIntl from 'utils/cl-intl/injectIntl';
-import { WrappedComponentProps } from 'react-intl';
-
 // styles
 import styled from 'styled-components';
 import { lighten } from 'polished';
@@ -124,104 +120,108 @@ export interface Props {
   hideIfNoAvatar?: boolean;
 }
 
-const Avatar = memo(
-  ({
-    isLinkToProfile,
-    moderator,
-    className,
-    addVerificationBadge,
-    userId,
-    hideIfNoAvatar,
-    ...props
-  }: Props & WrappedComponentProps) => {
-    const user = useUser({ userId });
+const Avatar = memo(({ isLinkToProfile, userId, ...props }: Props) => {
+  const user = useUser({ userId });
+  if (isNilOrError(user)) return null;
 
-    if (!isNilOrError(user)) {
-      const { slug, avatar, verified } = user.attributes;
-      const profileLink = `/profile/${slug}`;
-      // In dev mode, slug is sometimes undefined,
-      // while !isNilOrError(user) passes... To be solved properly
-      const hasValidProfileLink = profileLink !== '/profile/undefined';
-      const avatarSize = props.size;
-      const paddingValue = props.padding || 3;
-      const borderThickness = props.borderThickness || 1;
-      const hasHoverEffect = (isLinkToProfile && hasValidProfileLink) || false;
-      const imageSizeLabel = avatarSize > 160 ? 'large' : 'medium';
-      const avatarSrc = avatar ? avatar[imageSizeLabel] : null;
-      const containerSize = avatarSize + paddingValue * 2 + borderThickness * 2;
-      const badgeSize = avatarSize / (avatarSize < 40 ? 1.8 : 2.3);
-      const fillColor = props.fillColor || lighten(0.2, colors.textSecondary);
-      const fillHoverColor = colors.textSecondary;
-      const borderHoverColor = colors.textSecondary;
-      const borderColor = props.borderColor || 'transparent';
-      const bgColor = props.bgColor || 'transparent';
+  const { slug } = user.attributes;
+  const profileLink = `/profile/${slug}`;
+  const hasValidProfileLink = profileLink !== '/profile/undefined';
 
-      if (!avatarSrc && hideIfNoAvatar) {
-        return null;
-      }
-
-      const AvatarComponent = (
-        <Container aria-hidden className={className} size={containerSize}>
-          {avatarSrc && (
-            <AvatarImage
-              className={`avatarImage ${
-                hasHoverEffect ? 'hasHoverEffect' : ''
-              }`}
-              src={avatarSrc}
-              alt=""
-              size={containerSize}
-              borderThickness={borderThickness}
-              borderColor={borderColor}
-              borderHoverColor={moderator ? colors.red600 : borderHoverColor}
-              bgColor={bgColor}
-              padding={paddingValue}
-            />
-          )}
-
-          {!avatarSrc && !hideIfNoAvatar && (
-            <AvatarIcon
-              className={`avatarIcon ${hasHoverEffect ? 'hasHoverEffect' : ''}`}
-              name="user-circle"
-              size={containerSize}
-              fillColor={fillColor}
-              fillHoverColor={fillHoverColor}
-              borderThickness={borderThickness}
-              borderColor={borderColor}
-              borderHoverColor={moderator ? colors.red600 : borderHoverColor}
-              bgColor={bgColor}
-              paddingValue={paddingValue}
-            />
-          )}
-
-          {moderator && (
-            <BadgeIcon
-              name="cl-favicon"
-              size={badgeSize}
-              fill={colors.red600}
-            />
-          )}
-
-          {verified && addVerificationBadge && (
-            <FeatureFlag name="verification">
-              <BadgeIcon
-                name="check-circle"
-                size={badgeSize}
-                fill={colors.success}
-              />
-            </FeatureFlag>
-          )}
-        </Container>
-      );
-
-      if (isLinkToProfile && hasValidProfileLink) {
-        return <Link to={profileLink}>{AvatarComponent}</Link>;
-      }
-
-      return AvatarComponent;
-    }
-
-    return null;
+  if (isLinkToProfile && hasValidProfileLink) {
+    return (
+      <Link to={profileLink}>
+        <AvatarInner
+          userId={userId}
+          isLinkToProfile={isLinkToProfile}
+          {...props}
+        />
+      </Link>
+    );
   }
-);
 
-export default injectIntl(Avatar);
+  return (
+    <AvatarInner userId={userId} isLinkToProfile={isLinkToProfile} {...props} />
+  );
+});
+
+const AvatarInner = ({
+  isLinkToProfile,
+  moderator,
+  className,
+  addVerificationBadge,
+  userId,
+  hideIfNoAvatar,
+  ...props
+}: Props) => {
+  const user = useUser({ userId });
+  if (isNilOrError(user)) return null;
+
+  const { slug, avatar, verified } = user.attributes;
+  const profileLink = `/profile/${slug}`;
+  // In dev mode, slug is sometimes undefined,
+  // while !isNilOrError(user) passes... To be solved properly
+  const hasValidProfileLink = profileLink !== '/profile/undefined';
+  const avatarSize = props.size;
+  const paddingValue = props.padding || 3;
+  const borderThickness = props.borderThickness || 1;
+  const hasHoverEffect = (isLinkToProfile && hasValidProfileLink) || false;
+  const imageSizeLabel = avatarSize > 160 ? 'large' : 'medium';
+  const avatarSrc = avatar ? avatar[imageSizeLabel] : null;
+  const containerSize = avatarSize + paddingValue * 2 + borderThickness * 2;
+  const badgeSize = avatarSize / (avatarSize < 40 ? 1.8 : 2.3);
+  const fillColor = props.fillColor || lighten(0.2, colors.textSecondary);
+  const fillHoverColor = colors.textSecondary;
+  const borderHoverColor = colors.textSecondary;
+  const borderColor = props.borderColor || 'transparent';
+  const bgColor = props.bgColor || 'transparent';
+
+  return (
+    <Container aria-hidden className={className} size={containerSize}>
+      {avatarSrc && (
+        <AvatarImage
+          className={`avatarImage ${hasHoverEffect ? 'hasHoverEffect' : ''}`}
+          src={avatarSrc}
+          alt=""
+          size={containerSize}
+          borderThickness={borderThickness}
+          borderColor={borderColor}
+          borderHoverColor={moderator ? colors.red600 : borderHoverColor}
+          bgColor={bgColor}
+          padding={paddingValue}
+        />
+      )}
+
+      {!avatarSrc && !hideIfNoAvatar && (
+        <AvatarIcon
+          className={`avatarIcon ${hasHoverEffect ? 'hasHoverEffect' : ''}`}
+          name="user-circle"
+          size={containerSize}
+          fillColor={fillColor}
+          fillHoverColor={fillHoverColor}
+          borderThickness={borderThickness}
+          borderColor={borderColor}
+          borderHoverColor={moderator ? colors.red600 : borderHoverColor}
+          bgColor={bgColor}
+          paddingValue={paddingValue}
+        />
+      )}
+
+      {moderator && (
+        <BadgeIcon name="cl-favicon" size={badgeSize} fill={colors.red600} />
+      )}
+
+      {verified && addVerificationBadge && (
+        <FeatureFlag name="verification">
+          <BadgeIcon
+            name="check-circle"
+            size={badgeSize}
+            fill={colors.success}
+          />
+        </FeatureFlag>
+      )}
+    </Container>
+  );
+};
+
+export default Avatar;

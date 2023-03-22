@@ -215,7 +215,6 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           id="project-ideabutton"
           projectId={project.id}
           participationContextType={isPhaseIdeation ? 'phase' : 'project'}
-          phaseId={isPhaseIdeation ? currentPhase.id : ''}
           fontWeight="500"
           phase={currentPhase}
         />
@@ -226,7 +225,6 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           data-testid="e2e-project-survey-button"
           projectId={project.id}
           participationContextType={isPhaseNativeSurvey ? 'phase' : 'project'}
-          phaseId={isPhaseNativeSurvey ? currentPhase.id : ''}
           fontWeight="500"
           phase={currentPhase}
         />

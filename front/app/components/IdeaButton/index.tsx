@@ -109,7 +109,6 @@ interface DataProps {
 interface InputProps extends Omit<ButtonProps, 'onClick'> {
   id?: string;
   projectId: string;
-  phaseId?: string | undefined | null;
   latLng?: LatLng | null;
   inMap?: boolean;
   className?: string;
@@ -124,16 +123,15 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
   ({
     id,
     project,
-    phase,
     phases,
     authUser,
     participationContextType,
-    phaseId,
     projectId,
     inMap,
     className,
     latLng,
     buttonText,
+    phase,
     intl: { formatMessage },
     ...buttonContainerProps
   }) => {
@@ -156,7 +154,7 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
       });
 
     const pcType = participationContextType;
-    const pcId = pcType === 'phase' ? phaseId : projectId;
+    const pcId = pcType === 'phase' ? phase?.id : projectId;
 
     const context = pcId
       ? ({
@@ -175,7 +173,7 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
           canModerateProject(projectId, { data: authUser });
 
         const parameters =
-          phaseId && isUserModerator ? `&phase_id=${phaseId}` : '';
+          phase?.id && isUserModerator ? `&phase_id=${phase.id}` : '';
 
         clHistory.push({
           pathname: `/projects/${project.attributes.slug}/ideas/new`,
@@ -363,9 +361,6 @@ const Data = adopt<DataProps, InputProps>({
   phases: ({ projectId, render }) => (
     <GetPhases projectId={projectId}>{render}</GetPhases>
   ),
-  // phase: ({ phaseId, render }) => {
-  //   return <GetPhase id={phaseId}>{render}</GetPhase>
-  // },
 });
 
 const IdeaButtonWithHoC = injectIntl(IdeaButton);

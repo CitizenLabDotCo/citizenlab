@@ -13,7 +13,7 @@ import T from 'components/T';
 import Button from 'components/UI/Button';
 
 // hooks
-import useIdea from 'hooks/useIdea';
+import useIdeaById from 'api/ideas/useIdeaById';
 import { IInsightsInputData } from 'modules/commercial/insights/api/inputs/types';
 
 const InputTitle = styled.h2`
@@ -52,7 +52,7 @@ const InputCard = ({
   location: { query },
   onPreview,
 }: InputCardProps) => {
-  const idea = useIdea({ ideaId: input.relationships?.source.data.id });
+  const { data: idea } = useIdeaById(input.relationships.source.data.id);
 
   if (isNilOrError(idea)) {
     return null;
@@ -67,7 +67,7 @@ const InputCard = ({
       data-testid="insightsInputCard"
       onClick={handleReadMoreClick}
       buttonStyle={
-        query.previewedInputId === idea.id ? 'secondary-outlined' : 'white'
+        query.previewedInputId === idea.data.id ? 'secondary-outlined' : 'white'
       }
       mb="8px"
       p="12px 28px"
@@ -76,10 +76,14 @@ const InputCard = ({
       bgHoverColor="white"
     >
       <InputTitle>
-        <T value={idea.attributes.title_multiloc} />
+        <T value={idea.data.attributes.title_multiloc} />
       </InputTitle>
       <InputBody>
-        <T value={idea.attributes.body_multiloc} supportHtml maxLength={200} />
+        <T
+          value={idea.data.attributes.body_multiloc}
+          supportHtml
+          maxLength={200}
+        />
       </InputBody>
     </Button>
   );

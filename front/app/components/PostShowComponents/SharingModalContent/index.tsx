@@ -20,9 +20,6 @@ import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 
 // i18n
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
@@ -40,6 +37,9 @@ import rocket from 'assets/img/rocket.png';
 
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useIdeaById from 'api/ideas/useIdeaById';
+import useProject from 'hooks/useProject';
+import usePhases from 'hooks/usePhases';
 
 interface InputProps {
   postType: 'idea' | 'initiative';
@@ -53,9 +53,6 @@ interface DataProps {
   locale: GetLocaleChildProps;
   tenant: GetAppConfigurationChildProps;
   authUser: GetAuthUserChildProps;
-  idea: GetIdeaChildProps;
-  project: GetProjectChildProps;
-  phases: GetPhasesChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -65,17 +62,20 @@ const SharingModalContent = ({
   postType,
   localize,
   locale,
-  idea,
-  project,
-  phases,
   intl: { formatMessage },
   className,
   authUser,
   title,
   subtitle,
 }: Props & WrappedComponentProps & InjectedLocalized) => {
-  const initiativeId = postType === 'initiative' ? postId : null;
+  const initiativeId = postType === 'initiative' && postId ? postId : undefined;
+  const ideaId = postType === 'idea' && postId ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
+  const { data: idea } = useIdeaById(ideaId);
+  const project = useProject({
+    projectId: idea?.data.relationships.project.data.id,
+  });
+  const phases = usePhases(idea?.data.relationships.project.data.id);
 
   useEffect(() => {
     trackEventByName(tracks.sharingModalOpened.name, {
@@ -89,8 +89,8 @@ const SharingModalContent = ({
     let postUrl: string | null = null;
 
     if (postType === 'idea' && !isNilOrError(idea)) {
-      postTitle = localize(idea.attributes.title_multiloc);
-      postUrl = `${location.origin}/${locale}/${postType}s/${idea.attributes.slug}`;
+      postTitle = localize(idea.data.attributes.title_multiloc);
+      postUrl = `${location.origin}/${locale}/${postType}s/${idea.data.attributes.slug}`;
     }
 
     if (postType === 'initiative' && !isNilOrError(initiative)) {
@@ -235,29 +235,6 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetAppConfiguration />,
   authUser: <GetAuthUser />,
-  idea: ({ postId, postType, render }) => (
-    <GetIdea ideaId={postId && postType === 'idea' ? postId : null}>
-      {render}
-    </GetIdea>
-  ),
-  project: ({ idea, render }) => (
-    <GetProject
-      projectId={
-        !isNilOrError(idea) ? idea.relationships.project.data.id : null
-      }
-    >
-      {render}
-    </GetProject>
-  ),
-  phases: ({ idea, render }) => (
-    <GetPhases
-      projectId={
-        !isNilOrError(idea) ? idea.relationships.project.data.id : null
-      }
-    >
-      {render}
-    </GetPhases>
-  ),
 });
 
 export default (inputProps: InputProps) => (

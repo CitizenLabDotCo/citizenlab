@@ -1,11 +1,10 @@
 import React from 'react';
-import { deleteIdea } from 'services/ideas';
+import useDeleteIdea from 'api/ideas/useDeleteIdea';
 import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
 import { Icon, Button } from 'semantic-ui-react';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 import { ManagerType } from '../..';
-import { useIntl } from 'utils/cl-intl';
 
 interface Props {
   type: ManagerType;
@@ -21,6 +20,7 @@ const ActionBarSingle = ({
   resetSelection,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const { mutate: deleteIdea } = useDeleteIdea();
   const { mutate: deleteInitiative } = useDeleteInitiative();
 
   const handleClickDeleteIdea = () => {

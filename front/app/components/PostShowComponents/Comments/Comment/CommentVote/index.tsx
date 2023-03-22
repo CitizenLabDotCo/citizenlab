@@ -11,7 +11,6 @@ import { addCommentVote, deleteCommentVote } from 'services/commentVotes';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetPost, { GetPostChildProps } from 'resources/GetPost';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetCommentVote, {
   GetCommentVoteChildProps,
@@ -30,6 +29,7 @@ import { openVerificationModal } from 'events/verificationModal';
 
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useIdeaById from 'api/ideas/useIdeaById';
 
 interface InputProps {
   postId: string;
@@ -42,7 +42,6 @@ interface InputProps {
 interface DataProps {
   commentVotingPermissionInitiative: GetInitiativesPermissionsChildProps;
   authUser: GetAuthUserChildProps;
-  idea: GetPostChildProps;
   comment: GetCommentChildProps;
   commentVote: GetCommentVoteChildProps;
 }
@@ -57,15 +56,17 @@ const CommentVote = ({
   commentId,
   commentType,
   authUser,
-  idea,
   commentVotingPermissionInitiative,
   className,
 }: Props) => {
   const [voted, setVoted] = useState(false);
   const [upvoteCount, setUpvoteCount] = useState(0);
-  const initiativeId = postType === 'initiative' ? postId : null;
+  const initiativeId = postType === 'initiative' ? postId : undefined;
+  const ideaId = postType === 'idea' ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
-  const post = postType === 'idea' ? idea : initiative?.data;
+  const { data: idea } = useIdeaById(ideaId);
+
+  const post = postType === 'idea' ? idea?.data : initiative?.data;
 
   useEffect(() => {
     setVoted(!isNilOrError(commentVote));
@@ -239,11 +240,6 @@ const CommentVote = ({
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  idea: ({ postId, render }) => (
-    <GetPost id={postId} type="idea">
-      {render}
-    </GetPost>
-  ),
   comment: ({ commentId, render }) => (
     <GetComment id={commentId}>{render}</GetComment>
   ),

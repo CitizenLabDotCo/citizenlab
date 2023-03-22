@@ -1,10 +1,5 @@
-import { useState, useEffect } from 'react';
-
-// utils
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
-
-// typings
-import { ideasStream, IIdeaData, IIdeas } from 'services/ideas';
+// hooks
+import useIdeas from 'api/ideas/useIdeas';
 
 interface Props {
   projectId: string;
@@ -13,29 +8,15 @@ interface Props {
 }
 
 function useMostVotedIdeas({ projectId, phaseId, numberOfIdeas }: Props) {
-  const [ideas, setIdeas] = useState<IIdeaData[] | NilOrError>();
+  const { data } = useIdeas({
+    'page[number]': 1,
+    'page[size]': numberOfIdeas,
+    projects: [projectId],
+    phase: phaseId,
+    sort: '-upvotes_count',
+  });
 
-  useEffect(() => {
-    const queryParameters = {
-      'page[number]': 1,
-      'page[size]': numberOfIdeas,
-      projects: [projectId],
-      phase: phaseId,
-      sort: '-upvotes_count',
-    };
-
-    const { observable } = ideasStream({ queryParameters });
-
-    const subscription = observable.subscribe(
-      (response: IIdeas | NilOrError) => {
-        setIdeas(isNilOrError(response) ? response : response.data);
-      }
-    );
-
-    return () => subscription.unsubscribe();
-  }, [projectId, phaseId, numberOfIdeas]);
-
-  return ideas;
+  return data?.data;
 }
 
 export default useMostVotedIdeas;

@@ -1,19 +1,18 @@
-import React, { useState, useContext, memo } from 'react';
+import React, { useState, useContext, memo, useCallback } from 'react';
 import { Helmet } from 'react-helmet';
 import { PreviousPathnameContext } from 'context';
-import { isNilOrError } from 'utils/helperUtils';
-import { isError } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+
+// router
+import { useParams } from 'react-router-dom';
 
 // components
-import IdeaCards from 'components/IdeaCards';
+import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
 import ContentContainer from 'components/ContentContainer';
 import UsersShowPageMeta from './UsersShowPageMeta';
 import Button from 'components/UI/Button';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // hooks
@@ -27,6 +26,14 @@ import UserNavbar from './UserNavbar';
 import UserComments from './UserComments';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import Unauthorized from 'components/Unauthorized';
+
+// utils
+import { isNil, isError } from 'utils/helperUtils';
+import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
+
+// typings
+import { IUserData } from 'services/users';
+import { IQueryParameters } from 'api/ideas/types';
 
 const NotFoundContainer = styled.main`
   min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px - 4rem);
@@ -74,21 +81,28 @@ const UserIdeas = styled.div`
   justify-content: center;
 `;
 
-interface Props {
-  className?: string;
-}
-
 export type UserTab = 'ideas' | 'comments';
 
-export const UsersShowPage = memo<
-  Props & WithRouterProps & WrappedComponentProps
->(({ className, params, intl: { formatMessage } }) => {
+interface InnerProps {
+  className?: string;
+  user: IUserData;
+}
+
+export const UsersShowPage = memo<InnerProps>(({ className, user }) => {
   const [currentTab, setCurrentTab] = useState<UserTab>('ideas');
   const [savedScrollIndex, setSavedScrollIndex] = useState<number>(0);
 
-  const previousPathName = useContext(PreviousPathnameContext);
+  const [ideaQueryParameters, setIdeaQueryParameters] =
+    useState<IQueryParameters>({
+      author: user.id,
+      sort: ideaDefaultSortMethodFallback,
+      'page[number]': 1,
+      'page[size]': 24,
+    });
 
-  const user = useUser({ slug: params.userSlug });
+  const updateQuery = useCallback((newParams: Partial<IQueryParameters>) => {
+    setIdeaQueryParameters((current) => ({ ...current, ...newParams }));
+  }, []);
 
   const changeTab = (toTab: UserTab) => () => {
     const oldScroll = savedScrollIndex;
@@ -96,6 +110,48 @@ export const UsersShowPage = memo<
     setSavedScrollIndex(window.pageYOffset);
     window.scrollTo(0, oldScroll);
   };
+
+  return (
+    <>
+      <UsersShowPageMeta user={user} />
+      <Container id="e2e-usersshowpage" className={className}>
+        <UserHeader userSlug={user.attributes.slug} />
+
+        <UserNavbar
+          currentTab={currentTab}
+          selectTab={changeTab}
+          userId={user.id}
+        />
+
+        <StyledContentContainer maxWidth={maxPageWidth}>
+          {currentTab === 'ideas' && (
+            <UserIdeas>
+              <IdeaCardsWithoutFiltersSidebar
+                ideaQueryParameters={ideaQueryParameters}
+                onUpdateQuery={updateQuery}
+                invisibleTitleMessage={messages.invisibleTitlePostsList}
+              />
+            </UserIdeas>
+          )}
+
+          {currentTab === 'comments' && <UserComments userId={user.id} />}
+        </StyledContentContainer>
+      </Container>
+    </>
+  );
+});
+
+interface Props {
+  className?: string;
+}
+
+const UsersShowPageOuter = ({ className }: Props) => {
+  const params = useParams();
+  const { formatMessage } = useIntl();
+  const user = useUser({ slug: params.userSlug });
+  const previousPathName = useContext(PreviousPathnameContext);
+
+  if (isNil(user)) return null;
 
   if (isError(user)) {
     return (
@@ -113,41 +169,11 @@ export const UsersShowPage = memo<
     );
   }
 
-  if (!isNilOrError(user) && !user.attributes.registration_completed_at) {
+  if (!user.attributes.registration_completed_at) {
     return <Unauthorized />;
   }
 
-  if (!isNilOrError(user)) {
-    return (
-      <>
-        <UsersShowPageMeta user={user} />
-        <Container id="e2e-usersshowpage" className={className}>
-          <UserHeader userSlug={user.attributes.slug} />
+  return <UsersShowPage className={className} user={user} />;
+};
 
-          <UserNavbar
-            currentTab={currentTab}
-            selectTab={changeTab}
-            userId={user.id}
-          />
-
-          <StyledContentContainer maxWidth={maxPageWidth}>
-            {currentTab === 'ideas' && (
-              <UserIdeas>
-                <IdeaCards
-                  type="load-more"
-                  authorId={user.id}
-                  invisibleTitleMessage={messages.invisibleTitlePostsList}
-                />
-              </UserIdeas>
-            )}
-
-            {currentTab === 'comments' && <UserComments userId={user.id} />}
-          </StyledContentContainer>
-        </Container>
-      </>
-    );
-  }
-  return null;
-});
-
-export default withRouter(injectIntl(UsersShowPage));
+export default UsersShowPageOuter;

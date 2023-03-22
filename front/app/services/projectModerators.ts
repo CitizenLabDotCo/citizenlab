@@ -2,6 +2,12 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IUsers } from 'services/users';
 import { IGroupMembershipsFoundUserData } from 'services/groupMemberships';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import seatsKeys from 'api/seats/keys';
+
+const ivalidateSeatsCache = () => {
+  queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
+};
 
 export function projectModeratorsStream(projectId: string) {
   return streams.get<IUsers>({
@@ -17,6 +23,7 @@ export async function deleteProjectModerator(
     `${API_PATH}/projects/${projectId}/moderators/${moderatorId}`,
     moderatorId
   );
+  ivalidateSeatsCache();
   await streams.fetchAllWith({
     apiEndpoint: [`${API_PATH}/projects/${projectId}/moderators`],
   });
@@ -34,8 +41,13 @@ export function findMembership(
   });
 }
 
-export function addMembership(projectId: string, user_id: string) {
-  return streams.add(`${API_PATH}/projects/${projectId}/moderators`, {
-    moderator: { user_id },
-  });
+export async function addMembership(projectId: string, user_id: string) {
+  const response = await streams.add(
+    `${API_PATH}/projects/${projectId}/moderators`,
+    {
+      moderator: { user_id },
+    }
+  );
+  ivalidateSeatsCache();
+  return response;
 }
