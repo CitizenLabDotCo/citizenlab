@@ -25,6 +25,6 @@ class PermissionsCustomField < ApplicationRecord
   belongs_to :permission
   belongs_to :custom_field
 
-  validates :idea, :phase, presence: true
+  validates :permission, :custom_field, presence: true
   validates :permission_id, uniqueness: { scope: :custom_field_id }
 end

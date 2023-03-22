@@ -6,12 +6,12 @@ class WebApi::V1::PermissionsController < ApplicationController
 
   def index
     @permissions = policy_scope(Permission)
-      .includes(:permission_scope)
+      .includes(:permission_scope, :custom_fields, permissions_custom_fields: [:custom_field])
       .where(permission_scope: permission_scope)
       .order(created_at: :desc)
     @permissions = paginate @permissions
 
-    render json: linked_json(@permissions, WebApi::V1::PermissionSerializer, params: fastjson_params)
+    render json: linked_json(@permissions, WebApi::V1::PermissionSerializer, params: fastjson_params, include: %i[permissions_custom_fields custom_fields])
   end
 
   def show
@@ -41,7 +41,11 @@ class WebApi::V1::PermissionsController < ApplicationController
   private
 
   def serialize(permission)
-    WebApi::V1::PermissionSerializer.new(permission, params: fastjson_params).serialized_json
+    WebApi::V1::PermissionSerializer.new(
+      permission,
+      params: fastjson_params,
+      include: %i[permissions_custom_fields custom_fields]
+    ).serialized_json
   end
 
   def set_permission
