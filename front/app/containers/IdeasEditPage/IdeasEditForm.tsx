@@ -34,7 +34,7 @@ import clHistory from 'utils/cl-router/history';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { PreviousPathnameContext } from 'context';
 
-const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
+const IdeasEditForm = ({ params: { ideaId } }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
   const authUser = useAuthUser();
   const { data: idea } = useIdeaById(ideaId);
@@ -246,4 +246,4 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   );
 };
 
-export default IdeasEditPageWithJSONForm;
+export default IdeasEditForm;
