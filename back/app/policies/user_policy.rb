@@ -30,6 +30,10 @@ class UserPolicy < ApplicationPolicy
     user&.active? && !user.normal_user?
   end
 
+  def seats?
+    user&.active? && !user.normal_user?
+  end
+
   def index_xlsx?
     user&.active? && user&.admin?
   end

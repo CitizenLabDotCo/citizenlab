@@ -340,7 +340,6 @@
   "app.containers.Admin.Insights.supportLinkUrl": "https://support.citizenlab.co/articles/5525933",
   "app.containers.Admin.Insights.title": "Insights",
   "app.containers.Admin.Invitations.addToGroupLabel": "Afegiu aquestes persones a grups d'usuaris manuals específics",
-  "app.containers.Admin.Invitations.adminLabel": "Doneu a aquestes persones drets d'administrador",
   "app.containers.Admin.Invitations.adminLabelTooltip": "Quan seleccioneu aquesta opció, les persones que convideu tindran accés a tota la configuració de la vostra plataforma.",
   "app.containers.Admin.Invitations.configureInvitations": "3. Configurar les invitacions",
   "app.containers.Admin.Invitations.confirmDelete": "Sí, n'estic segur",

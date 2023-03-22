@@ -340,7 +340,6 @@
   "app.containers.Admin.Insights.supportLinkUrl": "https://support.citizenlab.co/articles/5525933",
   "app.containers.Admin.Insights.title": "رؤى",
   "app.containers.Admin.Invitations.addToGroupLabel": "أضِف هؤلاء الأشخاص إلى مجموعات مستخدمين يدوية محددة",
-  "app.containers.Admin.Invitations.adminLabel": "امنح هؤلاء الأشخاص حقوق المسؤول",
   "app.containers.Admin.Invitations.adminLabelTooltip": "عند تحديد هذا الخيار، سيتمكن الأشخاص الذين تدعوهم من الوصول إلى جميع إعدادات منصتك.",
   "app.containers.Admin.Invitations.configureInvitations": "3. تهيئة الدعوات",
   "app.containers.Admin.Invitations.confirmDelete": "نعم، أنا متأكد",

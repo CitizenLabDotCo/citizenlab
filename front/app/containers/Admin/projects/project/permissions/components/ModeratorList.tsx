@@ -23,6 +23,10 @@ const UnknownName = styled.span`
   font-style: italic;
 `;
 
+const Container = styled(List)`
+  margin-bottom: 20px;
+`;
+
 interface Props {
   projectId: string;
 }
@@ -50,7 +54,7 @@ const ModeratorList = memo(
 
     if (!isNilOrError(authUser) && !isNilOrError(moderators)) {
       return (
-        <List>
+        <Container>
           <>
             {moderators.map((moderator, index) => {
               const firstName = moderator.attributes.first_name;
@@ -95,7 +99,7 @@ const ModeratorList = memo(
               );
             })}
           </>
-        </List>
+        </Container>
       );
     }
 

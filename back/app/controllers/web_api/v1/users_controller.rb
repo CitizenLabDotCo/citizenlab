@@ -17,7 +17,8 @@ class WebApi::V1::UsersController < ::ApplicationController
     @users = @users.blocked if params[:only_blocked]
     @users = @users.in_group(Group.find(params[:group])) if params[:group]
     @users = @users.admin.or(@users.project_moderator(params[:can_moderate_project])) if params[:can_moderate_project].present?
-    @users = @users.admin.or(@users.project_moderator) if params[:can_moderate].present?
+    @users = @users.admin.or(@users.project_moderator).or(@users.project_folder_moderator) if params[:can_moderate].present?
+    @users = @users.not_citizenlab_member if params[:not_citizenlab_member].present?
     @users = @users.admin if params[:can_admin].present?
 
     if params[:search].blank?
@@ -50,6 +51,20 @@ class WebApi::V1::UsersController < ::ApplicationController
     LogActivityJob.perform_later(current_user, 'searched_users', current_user, Time.now.to_i, payload: { search_query: params[:search] }) if params[:search].present?
 
     render json: linked_json(@users, WebApi::V1::UserSerializer, params: fastjson_params)
+  end
+
+  def seats
+    authorize :user, :seats?
+
+    render json: {
+      data: {
+        type: 'seats',
+        attributes: {
+          admins_number: User.billed_admins.count,
+          project_moderators_number: User.billed_moderators.count
+        }
+      }
+    }
   end
 
   def index_xlsx

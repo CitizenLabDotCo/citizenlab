@@ -112,6 +112,8 @@ export function ideasCountForUser(userId: string) {
 
 export interface IUsersCount {
   count: number;
+  administrators_count: number;
+  managers_count: number;
 }
 
 export interface IUsersByTime {
