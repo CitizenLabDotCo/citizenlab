@@ -1112,6 +1112,7 @@
   "app.containers.NotificationMenu.statusChangeOnVotedOption": "Oy verdiğiniz bir seçeneğin durumu {status} olarak değişti",
   "app.containers.NotificationMenu.statusChangeOnVotedProject": "Oy verdiğiniz bir projenin durumu {status} olarak değişti",
   "app.containers.NotificationMenu.statusChangeOnVotedQuestion": "Oy verdiğiniz bir sorunun durumu {status} olarak değişti",
+  "app.containers.NotificationMenu.statusChangedOfIdea": "{ideaTitle} durumu {status}olarak değişti",
   "app.containers.NotificationMenu.statusChangedOfYourInitiative": "'{initiativeTitle}' durumu {status} olarak değişti",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} oylama eşiğine ulaştı",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} davetinizi kabul etti",
