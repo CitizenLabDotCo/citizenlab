@@ -8,6 +8,7 @@ class CreatePermissionsCustomFields < ActiveRecord::Migration[6.1]
       t.boolean :required, null: false, default: false
 
       t.timestamps
+      t.index %i[permission_id custom_field_id], unique: true
     end
   end
 end
