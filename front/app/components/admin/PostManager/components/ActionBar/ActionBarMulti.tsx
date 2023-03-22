@@ -1,11 +1,10 @@
 import React from 'react';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { deleteIdea } from 'services/ideas';
 import { Button, Icon } from 'semantic-ui-react';
 import messages from '../../messages';
 import { ManagerType } from '../..';
 import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
-
+import useDeleteIdea from 'api/ideas/useDeleteIdea';
 interface Props {
   type: ManagerType;
   /** A set of ids of ideas/initiatives that are currently selected */
@@ -15,6 +14,8 @@ interface Props {
 
 const ActionBarMulti = ({ selection, resetSelection, type }: Props) => {
   const { formatMessage } = useIntl();
+  // const { mutate: deleteInitiative } = useDeleteInitiative();
+  const { mutate: deleteIdea } = useDeleteIdea();
   const { mutate: deleteInitiative } = useDeleteInitiative();
 
   const handleClickDeleteIdeas = () => {

@@ -21,7 +21,7 @@ import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
 import usePhase from 'hooks/usePhase';
-import useIdeaMarkers from 'hooks/useIdeaMarkers';
+import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
 
 // services
 import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
@@ -55,8 +55,8 @@ import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import { media, viewportWidths, colors, fontSizes } from 'utils/styleUtils';
 
 // typings
-import { Sort } from 'resources/GetIdeas';
-import { IIdeaMarkerData } from 'services/ideas';
+import { Sort } from 'api/ideas/types';
+import { IIdeaMarkerData } from 'api/idea_markers/types';
 
 const mapMarginDesktop = 70;
 const mapHeightDesktop = '83vh';
@@ -251,7 +251,7 @@ const IdeasMap = memo<Props>((props) => {
   const defaultIdeasTopics: string[] = [];
   const [search, setSearch] = useState<string | null>(defaultIdeasSearch);
   const [topics, setTopics] = useState<string[]>(defaultIdeasTopics);
-  const ideaMarkers = useIdeaMarkers({
+  const { data: ideaMarkers } = useIdeaMarkers({
     projectIds: [projectId],
     phaseId,
     search,
@@ -342,8 +342,8 @@ const IdeasMap = memo<Props>((props) => {
   useEffect(() => {
     const ideaPoints: Point[] = [];
 
-    if (!isNilOrError(ideaMarkers) && ideaMarkers.length > 0) {
-      ideaMarkers.forEach((ideaMarker) => {
+    if (!isNilOrError(ideaMarkers) && ideaMarkers.data.length > 0) {
+      ideaMarkers.data.forEach((ideaMarker) => {
         if (
           ideaMarker.attributes &&
           ideaMarker.attributes.location_point_geojson
@@ -370,7 +370,7 @@ const IdeasMap = memo<Props>((props) => {
   };
 
   const selectedIdeaMarker = useMemo(() => {
-    return ideaMarkers?.find(({ id }) => id === selectedIdeaMarkerId);
+    return ideaMarkers?.data.find(({ id }) => id === selectedIdeaMarkerId);
   }, [ideaMarkers, selectedIdeaMarkerId]);
 
   return (
@@ -438,7 +438,6 @@ const IdeasMap = memo<Props>((props) => {
         >
           <IdeaButton
             projectId={projectId}
-            phaseId={phaseId}
             participationContextType={phaseId ? 'phase' : 'project'}
             latLng={selectedLatLng}
             inMap={true}

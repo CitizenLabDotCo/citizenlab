@@ -59,7 +59,7 @@ const SelectableResourceByTopicChart = ({
   const convertToGraphFormat = (
     data: IIdeasByTopic | IVotesByTopic | ICommentsByTopic
   ) => {
-    const { series, topics } = data;
+    const { series, topics } = data.data.attributes;
     const dataKey =
       currentResourceByTopic === 'votes' ? 'total' : currentResourceByTopic;
 

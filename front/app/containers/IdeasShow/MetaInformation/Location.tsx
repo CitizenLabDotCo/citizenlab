@@ -1,7 +1,7 @@
 import React, { memo, useState, useMemo } from 'react';
 import styled from 'styled-components';
 import { darken } from 'polished';
-import useIdea from 'hooks/useIdea';
+import useIdeaById from 'api/ideas/useIdeaById';
 import { isNilOrError } from 'utils/helperUtils';
 import { isNil } from 'lodash-es';
 
@@ -15,8 +15,7 @@ import { Header, Item } from 'components/IdeasShowComponents/MetaInfoStyles';
 import { getAddressOrFallbackDMS } from 'utils/map';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // styling
@@ -84,72 +83,72 @@ export interface Props {
   className?: string;
 }
 
-const Location = memo<Props & WrappedComponentProps>(
-  ({ intl: { formatMessage }, projectId, ideaId, compact, className }) => {
-    const [isOpened, setIsOpened] = useState(false);
-    const idea = useIdea({ ideaId });
+const Location = memo<Props>(({ projectId, ideaId, compact, className }) => {
+  const { formatMessage } = useIntl();
+  const [isOpened, setIsOpened] = useState(false);
+  const { data: idea } = useIdeaById(ideaId);
 
-    const point =
-      (!isNilOrError(idea) && idea.attributes?.location_point_geojson) || null;
-    const lat = point?.coordinates?.[1] || null;
-    const lng = point?.coordinates?.[0] || null;
-    const address = !isNilOrError(idea)
-      ? getAddressOrFallbackDMS(
-          idea.attributes.location_description,
-          idea.attributes.location_point_geojson
-        )
-      : null;
+  const point =
+    (!isNilOrError(idea) && idea.data.attributes?.location_point_geojson) ||
+    null;
+  const lat = point?.coordinates?.[1] || null;
+  const lng = point?.coordinates?.[0] || null;
+  const address = !isNilOrError(idea)
+    ? getAddressOrFallbackDMS(
+        idea.data.attributes.location_description,
+        idea.data.attributes.location_point_geojson
+      )
+    : null;
 
-    const points = useMemo(() => {
-      return point ? ([point] as Point[]) : undefined;
-    }, [point]);
+  const points = useMemo(() => {
+    return point ? ([point] as Point[]) : undefined;
+  }, [point]);
 
-    const centerLatLng = useMemo(() => {
-      if (!isNil(lat) && !isNil(lng)) {
-        return [lat, lng] as LatLngTuple;
-      }
-      return;
-    }, [lat, lng]);
-
-    const closeModal = () => {
-      setIsOpened(false);
-    };
-
-    const openModal = () => {
-      setIsOpened(true);
-    };
-
-    if (address && points) {
-      return (
-        <Item className={className || ''} compact={compact}>
-          <Header>{formatMessage(messages.location)}</Header>
-          <Container>
-            <StyledIcon name="position" ariaHidden />
-            <OpenMapModalButton id="e2e-map-popup" onClick={openModal}>
-              {address}
-            </OpenMapModalButton>
-          </Container>
-          <Modal
-            opened={isOpened}
-            close={closeModal}
-            header={<Address>{address}</Address>}
-            width={1150}
-          >
-            <MapContainer>
-              <Map
-                projectId={projectId}
-                points={points}
-                centerLatLng={centerLatLng}
-                zoomLevel={15}
-              />
-            </MapContainer>
-          </Modal>
-        </Item>
-      );
+  const centerLatLng = useMemo(() => {
+    if (!isNil(lat) && !isNil(lng)) {
+      return [lat, lng] as LatLngTuple;
     }
+    return;
+  }, [lat, lng]);
 
-    return null;
+  const closeModal = () => {
+    setIsOpened(false);
+  };
+
+  const openModal = () => {
+    setIsOpened(true);
+  };
+
+  if (address && points) {
+    return (
+      <Item className={className || ''} compact={compact}>
+        <Header>{formatMessage(messages.location)}</Header>
+        <Container>
+          <StyledIcon name="position" ariaHidden />
+          <OpenMapModalButton id="e2e-map-popup" onClick={openModal}>
+            {address}
+          </OpenMapModalButton>
+        </Container>
+        <Modal
+          opened={isOpened}
+          close={closeModal}
+          header={<Address>{address}</Address>}
+          width={1150}
+        >
+          <MapContainer>
+            <Map
+              projectId={projectId}
+              points={points}
+              centerLatLng={centerLatLng}
+              zoomLevel={15}
+            />
+          </MapContainer>
+        </Modal>
+      </Item>
+    );
   }
-);
 
-export default injectIntl(Location);
+  return null;
+});
+
+export default Location;

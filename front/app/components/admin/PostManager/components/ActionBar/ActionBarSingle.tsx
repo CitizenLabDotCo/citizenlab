@@ -1,5 +1,5 @@
 import React from 'react';
-import { deleteIdea } from 'services/ideas';
+import useDeleteIdea from 'api/ideas/useDeleteIdea';
 import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
 import { Icon, Button } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -20,6 +20,7 @@ const ActionBarSingle = ({
   resetSelection,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const { mutate: deleteIdea } = useDeleteIdea();
   const { mutate: deleteInitiative } = useDeleteInitiative();
 
   const handleClickDeleteIdea = () => {
