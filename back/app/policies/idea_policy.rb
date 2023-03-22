@@ -36,6 +36,7 @@ class IdeaPolicy < ApplicationPolicy
   def create?
     return true if record.draft?
     return true if active? && UserRoleService.new.can_moderate_project?(record.project, user)
+    return false if user&.blocked?
     return false if !active? && record.participation_method_on_creation.sign_in_required_for_posting?
 
     reason = ParticipationContextService.new.posting_idea_disabled_reason_for_project(record.project, user)
