@@ -13,6 +13,7 @@
 #
 # Indexes
 #
+#  index_permission_field                              (permission_id,custom_field_id) UNIQUE
 #  index_permissions_custom_fields_on_custom_field_id  (custom_field_id)
 #  index_permissions_custom_fields_on_permission_id    (permission_id)
 #

@@ -898,6 +898,7 @@ ActiveRecord::Schema.define(version: 2023_03_21_153659) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["custom_field_id"], name: "index_permissions_custom_fields_on_custom_field_id"
+    t.index ["permission_id", "custom_field_id"], name: "index_permission_field", unique: true
     t.index ["permission_id"], name: "index_permissions_custom_fields_on_permission_id"
   end
 
