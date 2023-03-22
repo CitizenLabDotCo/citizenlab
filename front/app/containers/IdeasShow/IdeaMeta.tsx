@@ -1,7 +1,6 @@
 // libraries
 import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
-import { get } from 'lodash-es';
 import { Helmet } from 'react-helmet';
 
 // resources
@@ -10,12 +9,13 @@ import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetIdeaById, { GetIdeaByIdChildProps } from 'resources/GetIdeaById';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
-import GetIdeaImages, {
-  GetIdeaImagesChildProps,
-} from 'resources/GetIdeaImages';
+import useIdeaImages from 'hooks/useIdeaImages';
+
+// i18n
+import useLocalize from 'hooks/useLocalize';
 
 // utils
 import { stripHtml } from 'utils/textUtils';
@@ -23,27 +23,27 @@ import { isNilOrError } from 'utils/helperUtils';
 import { imageSizes } from 'utils/fileUtils';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
-import useLocalize from 'hooks/useLocalize';
 
 interface InputProps {
   ideaId: string;
 }
 
 interface DataProps {
-  idea: GetIdeaChildProps;
+  idea: GetIdeaByIdChildProps;
   project: GetProjectChildProps;
   author: GetUserChildProps;
   locale: GetLocaleChildProps;
   tenant: GetAppConfigurationChildProps;
   authUser: GetAuthUserChildProps;
-  ideaImages: GetIdeaImagesChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
-const IdeaMeta = memo(
-  ({ idea, locale, tenant, authUser, ideaImages, author, project }: Props) => {
+const IdeaMeta = memo<Props>(
+  ({ idea, locale, tenant, authUser, author, project, ideaId }) => {
+    const ideaImages = useIdeaImages(ideaId);
     const localize = useLocalize();
+
     if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(idea)) {
       const { title_multiloc, body_multiloc } = idea.attributes;
       const tenantLocales = tenant.attributes.settings.core.locales;
@@ -168,9 +168,8 @@ const IdeaMeta = memo(
 );
 
 const Data = adopt<DataProps, InputProps>({
-  idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
-  ideaImages: ({ ideaId, render }) => (
-    <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>
+  idea: ({ ideaId, render }) => (
+    <GetIdeaById ideaId={ideaId}>{render}</GetIdeaById>
   ),
   project: ({ idea, render }) =>
     !isNilOrError(idea) ? (
@@ -179,7 +178,9 @@ const Data = adopt<DataProps, InputProps>({
       </GetProject>
     ) : null,
   author: ({ idea, render }) => (
-    <GetUser id={get(idea, 'relationships.author.data.id', null)}>
+    <GetUser
+      id={!isNilOrError(idea) ? idea.relationships.author.data?.id : null}
+    >
       {render}
     </GetUser>
   ),

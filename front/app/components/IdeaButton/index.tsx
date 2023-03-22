@@ -46,7 +46,6 @@ import { darken } from 'polished';
 
 // typings
 import { LatLng } from 'leaflet';
-import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 import { getButtonMessage } from './utils';
 import { IPhaseData } from 'services/phases';
 
@@ -109,7 +108,6 @@ interface DataProps {
 interface InputProps extends Omit<ButtonProps, 'onClick'> {
   id?: string;
   projectId: string;
-  phaseId?: string | undefined | null;
   latLng?: LatLng | null;
   inMap?: boolean;
   className?: string;
@@ -124,16 +122,15 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
   ({
     id,
     project,
-    phase,
     phases,
     authUser,
     participationContextType,
-    phaseId,
     projectId,
     inMap,
     className,
     latLng,
     buttonText,
+    phase,
     intl: { formatMessage },
     ...buttonContainerProps
   }) => {
@@ -169,7 +166,7 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
         verify();
       }
 
-      // if logegd in and posting allowed
+      // if logged in and posting allowed
       if (enabled === true) {
         redirectToIdeaForm();
       }
@@ -179,21 +176,19 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
       if (!isNilOrError(project)) {
         trackEventByName(tracks.redirectedToIdeaFrom);
 
-        const isUserModerator =
-          !isNilOrError(authUser) &&
-          canModerateProject(projectId, { data: authUser });
-
-        const parameters =
-          phaseId && isUserModerator ? `&phase_id=${phaseId}` : '';
+        const positionParams = latLng
+          ? { lat: latLng.lat, lng: latLng.lng }
+          : {};
 
         clHistory.push({
           pathname: `/projects/${project.attributes.slug}/ideas/new`,
-          search: latLng
-            ? stringify(
-                { lat: latLng.lat, lng: latLng.lng },
-                { addQueryPrefix: true }
-              ).concat(parameters)
-            : undefined,
+          search: stringify(
+            {
+              ...positionParams,
+              phase_id: phase?.id,
+            },
+            { addQueryPrefix: true }
+          ),
         });
       }
     };
@@ -202,7 +197,7 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
       event?.preventDefault();
 
       const pcType = participationContextType;
-      const pcId = pcType === 'phase' ? phaseId : projectId;
+      const pcId = pcType === 'phase' ? phase?.id : projectId;
 
       if (pcId && pcType) {
         trackEventByName(tracks.verificationModalOpened);
@@ -229,7 +224,7 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
         event?.preventDefault();
 
         const pcType = participationContextType;
-        const pcId = pcType === 'phase' ? phaseId : projectId;
+        const pcId = pcType === 'phase' ? phase?.id : projectId;
         const shouldVerify = action === 'sign_in_up_and_verify';
 
         if (isNilOrError(authUser) && !isNilOrError(project)) {
@@ -359,9 +354,6 @@ const Data = adopt<DataProps, InputProps>({
   phases: ({ projectId, render }) => (
     <GetPhases projectId={projectId}>{render}</GetPhases>
   ),
-  // phase: ({ phaseId, render }) => {
-  //   return <GetPhase id={phaseId}>{render}</GetPhase>
-  // },
 });
 
 const IdeaButtonWithHoC = injectIntl(IdeaButton);

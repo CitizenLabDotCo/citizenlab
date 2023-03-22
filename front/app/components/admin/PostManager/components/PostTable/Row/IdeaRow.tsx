@@ -3,10 +3,9 @@ import { uniq, isEmpty } from 'lodash-es';
 import { useDrag } from 'react-dnd';
 import streams from 'utils/streams';
 import { getListEndpoint } from 'services/projectAllowedInputTopics';
-
 // services
 import { IPhaseData } from 'services/phases';
-import { IIdeaData, updateIdea } from 'services/ideas';
+import { IIdeaData } from 'api/ideas/types';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 
 // components
@@ -42,6 +41,7 @@ import { insertConfiguration } from 'utils/moduleUtils';
 
 // hooks
 import { API_PATH } from 'containers/App/constants';
+import useUpdateIdea from 'api/ideas/useUpdateIdea';
 
 type Props = {
   type: ManagerType;
@@ -159,13 +159,14 @@ const IdeaRow = ({
     },
   ]);
 
+  const { mutate: updateIdea } = useUpdateIdea();
   const [_collected, drag] = useDrag({
     type: 'IDEA',
     item: {
       type: 'idea',
       id: idea.id,
     },
-    end: async (item, monitor) => {
+    end: (item, monitor) => {
       const dropResult = monitor.getDropResult<{
         type: 'status' | 'project' | 'phase' | 'topic';
         id: string;
@@ -175,14 +176,20 @@ const IdeaRow = ({
       if (dropResult && dropResult.type === 'status') {
         selection.has(itemIdeaId) &&
           selection.forEach((ideaId) => {
-            updateIdea(ideaId, {
-              idea_status_id: dropResult.id,
+            updateIdea({
+              id: ideaId,
+              requestBody: {
+                idea_status_id: dropResult.id,
+              },
             });
           });
 
         !selection.has(itemIdeaId) &&
-          updateIdea(itemIdeaId, {
-            idea_status_id: dropResult.id,
+          updateIdea({
+            id: itemIdeaId,
+            requestBody: {
+              idea_status_id: dropResult.id,
+            },
           });
 
         trackEventByName(tracks.ideaStatusChange, {
@@ -200,24 +207,27 @@ const IdeaRow = ({
           );
           const newTopics = uniq(currentTopics?.concat(dropResult.id));
 
-          ideaIds.forEach(async (ideaId) => {
-            try {
-              await updateIdea(
-                ideaId,
-
-                { topic_ids: newTopics }
-              );
-            } catch {
-              // Do nothing
-            }
-            streams.fetchAllWith({
-              apiEndpoint: [
-                // If in /admin/ideas
-                getListEndpoint(projectId),
-                // If in /admin/projects/:projectId/manage/ideas
-                `${API_PATH}/topics`,
-              ],
-            });
+          ideaIds.forEach((ideaId) => {
+            updateIdea(
+              {
+                id: ideaId,
+                requestBody: {
+                  topic_ids: newTopics,
+                },
+              },
+              {
+                onSuccess: () => {
+                  streams.fetchAllWith({
+                    apiEndpoint: [
+                      // If in /admin/ideas
+                      getListEndpoint(projectId),
+                      // If in /admin/projects/:projectId/manage/ideas
+                      `${API_PATH}/topics`,
+                    ],
+                  });
+                },
+              }
+            );
           });
         }
 
@@ -226,8 +236,11 @@ const IdeaRow = ({
           const newPhases = uniq(currentPhases.concat(dropResult.id));
 
           ideaIds.forEach((ideaId) => {
-            updateIdea(ideaId, {
-              phase_ids: newPhases,
+            updateIdea({
+              id: ideaId,
+              requestBody: {
+                phase_ids: newPhases,
+              },
             });
           });
         }
@@ -244,9 +257,12 @@ const IdeaRow = ({
                   formatMessage(messages.loseIdeaPhaseInfoConfirmation)
                 ))
             ) {
-              updateIdea(ideaId, {
-                project_id: newProject,
-                phase_ids: [],
+              updateIdea({
+                id: ideaId,
+                requestBody: {
+                  project_id: newProject,
+                  phase_ids: [],
+                },
               });
             }
           });
@@ -305,17 +321,17 @@ const IdeaRow = ({
   };
 
   const onUpdateIdeaPhases = (selectedPhases: string[]) => {
-    updateIdea(idea.id, { phase_ids: selectedPhases });
+    updateIdea({ id: idea.id, requestBody: { phase_ids: selectedPhases } });
   };
 
   const onUpdateIdeaTopics = (selectedTopics: string[]) => {
-    updateIdea(idea.id, { topic_ids: selectedTopics });
+    updateIdea({ id: idea.id, requestBody: { topic_ids: selectedTopics } });
   };
 
   const onUpdateIdeaStatus = (statusId: string) => {
     const ideaId = idea.id;
 
-    updateIdea(ideaId, { idea_status_id: statusId });
+    updateIdea({ id: ideaId, requestBody: { idea_status_id: statusId } });
 
     trackEventByName(tracks.ideaStatusChange, {
       location: 'Idea overview',

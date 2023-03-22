@@ -9,7 +9,7 @@ import { WrappedComponentProps } from 'react-intl';
 
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
-import { IResourceByTime, IUsersByTime } from 'services/stats';
+import { IUsersByTime } from 'services/stats';
 import { IGraphFormat } from 'typings';
 
 // components
@@ -129,7 +129,7 @@ class BarChartActiveUsersByTime extends React.PureComponent<
     this.subscription.unsubscribe();
   }
 
-  convertToGraphFormat = (data: IResourceByTime) => {
+  convertToGraphFormat = (data: IUsersByTime) => {
     const { graphUnit } = this.props;
 
     if (!isEmpty(data.series[graphUnit])) {
