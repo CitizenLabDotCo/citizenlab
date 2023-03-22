@@ -9,8 +9,12 @@ import { JsonFormsDispatch, withJsonFormsLayoutProps } from '@jsonforms/react';
 import { Box, fontSizes, media } from '@citizenlab/cl2-component-library';
 import { FormSection } from 'components/UI/FormComponents';
 import styled, { useTheme } from 'styled-components';
-import { FormElement } from 'components/IdeaForm';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
+
+export const FormElement = styled.div`
+  width: 100%;
+  margin-bottom: 40px;
+`;
 
 const StyledFormSection = styled(FormSection)`
   max-width: 100%;
