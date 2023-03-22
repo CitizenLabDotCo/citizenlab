@@ -3,6 +3,11 @@ import ModeratorListRow from './ModeratorListRow';
 import { render, screen } from 'utils/testUtils/rtl';
 import { IUserData } from 'services/users';
 
+const projectId = 'projectId';
+const projectModeratorRole = {
+  type: 'project_moderator' as const,
+  project_id: projectId,
+};
 const moderator: IUserData = {
   id: 'moderatorId',
   type: 'user' as const,
@@ -13,6 +18,7 @@ const moderator: IUserData = {
     slug: 'test-citizenlab',
     locale: 'en',
     highest_role: 'project_moderator',
+    roles: [projectModeratorRole],
     bio_multiloc: {},
     registration_completed_at: '2018-11-26T15:40:54.355Z',
     created_at: '2018-11-26T15:41:19.782Z',
@@ -28,7 +34,7 @@ describe('<ModeratorListRow />', () => {
     render(
       <ModeratorListRow
         isLastItem={false}
-        projectId="projectId"
+        projectId={projectId}
         moderator={moderator}
       />
     );
@@ -38,17 +44,17 @@ describe('<ModeratorListRow />', () => {
   });
 
   it('shows an enabled delete button when user is an admin', () => {
-    moderator.attributes.highest_role = 'admin';
+    moderator.attributes.roles = [{ type: 'admin' }];
 
     render(
       <ModeratorListRow
         isLastItem={false}
-        projectId="projectId"
+        projectId={projectId}
         moderator={moderator}
       />
     );
 
     const deleteButton = screen.getByRole('button', { name: /delete/i });
-    expect(deleteButton).toBeInTheDocument();
+    expect(deleteButton).toBeEnabled();
   });
 });
