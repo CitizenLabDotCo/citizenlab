@@ -49,6 +49,8 @@ export type IAppConfigurationSettingsCore = {
   authentication_token_lifetime_in_days: number;
   maximum_admins_number: TSeatNumber;
   maximum_moderators_number: TSeatNumber;
+  additional_admins_number: TSeatNumber;
+  additional_moderators_number: TSeatNumber;
 };
 
 export type TSeatNumber = number | null | undefined;

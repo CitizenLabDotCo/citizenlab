@@ -23,6 +23,16 @@ import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { isNil } from 'utils/helperUtils';
 
 type TSeatType = 'collaborator' | 'admin';
+
+// Messages
+type SeatTypeMessageDescriptor = {
+  [key in TSeatType]: MessageDescriptor;
+};
+
+type SeatNumbersType = {
+  [key in TSeatType]: TSeatNumber;
+};
+
 type Props = {
   seatType: TSeatType;
 };
@@ -32,15 +42,22 @@ const SeatInfo = ({ seatType }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
 
-  const maximumSeatNumbers: {
-    [key in TSeatType]: TSeatNumber;
-  } = {
+  const maximumSeatNumbers: SeatNumbersType = {
     admin:
       appConfiguration?.data.attributes.settings.core.maximum_admins_number,
     collaborator:
       appConfiguration?.data.attributes.settings.core.maximum_moderators_number,
   };
   const maximumSeatNumber = maximumSeatNumbers[seatType];
+
+  const additionalSeatNumbers: SeatNumbersType = {
+    admin:
+      appConfiguration?.data.attributes.settings.core.additional_admins_number,
+    collaborator:
+      appConfiguration?.data.attributes.settings.core
+        .additional_moderators_number,
+  };
+  const maximumAdditionalSeats = additionalSeatNumbers[seatType];
 
   // Maximum seat number being null means that there are unlimited seats so we don't show the seat info
   if (isNil(maximumSeatNumber) || !seats) {
@@ -52,11 +69,9 @@ const SeatInfo = ({ seatType }: Props) => {
     collaborator: seats.data.attributes.project_moderators_number,
   }[seatType];
   const additionalSeats = currentSeatNumber - maximumSeatNumber;
-
-  // Messages
-  type SeatTypeMessageDescriptor = {
-    [key in TSeatType]: MessageDescriptor;
-  };
+  const showAdditionalSeats = Boolean(
+    additionalSeats > 0 && maximumAdditionalSeats
+  );
 
   const seatTypeMessage: SeatTypeMessageDescriptor = {
     admin: messages.currentAdminSeatsTitle,
@@ -101,7 +116,7 @@ const SeatInfo = ({ seatType }: Props) => {
           </Text>
         </Box>
 
-        {additionalSeats > 0 && (
+        {showAdditionalSeats && (
           <>
             <Box mr="24px" border={`1px solid ${colors.divider}`} />
 
@@ -117,7 +132,7 @@ const SeatInfo = ({ seatType }: Props) => {
                 />
               </Box>
               <Text fontSize="xl" color="textPrimary" my="0px">
-                {additionalSeats}
+                {`${additionalSeats}/${maximumAdditionalSeats}`}
               </Text>
             </Box>
           </>
