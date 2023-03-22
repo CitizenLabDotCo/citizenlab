@@ -19,6 +19,9 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
+// hooks
+import useOpenAuthModal from 'hooks/useOpenAuthModal';
+
 // components
 import Button, { Props as ButtonProps } from 'components/UI/Button';
 import Tippy from '@tippyjs/react';
@@ -28,9 +31,6 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 import messages from './messages';
-
-// utils
-import { openSignUpInModal } from 'events/openSignUpInModal';
 
 // events
 import { openVerificationModal } from 'events/verificationModal';
@@ -187,6 +187,11 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
       }
     };
 
+    const openAuthModal = useOpenAuthModal({
+      onSuccess: redirectToIdeaForm,
+      waitIf: isNilOrError(project),
+    });
+
     const onClick = (event: React.MouseEvent) => {
       event.preventDefault();
 
@@ -243,11 +248,10 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
         if (context) {
           trackEventByName(tracks.signUpInModalOpened);
 
-          openSignUpInModal({
+          openAuthModal({
             flow,
             verification: shouldVerify,
             context,
-            onSuccess: () => redirectToIdeaForm(),
           });
         }
       };

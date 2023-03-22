@@ -1,12 +1,15 @@
 import React from 'react';
+
+// hooks
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+import useOpenAuthModal from 'hooks/useOpenAuthModal';
+
 import { trackEventByName } from 'utils/analytics';
 import clHistory from 'utils/cl-router/history';
 import { openVerificationModal } from 'events/verificationModal';
 import { FormattedMessage } from 'utils/cl-intl';
 import Button from 'components/UI/Button';
 import messages from './messages';
-import { openSignUpInModal } from 'events/openSignUpInModal';
 import { ButtonStyles } from '@citizenlab/cl2-component-library';
 import { stringify } from 'qs';
 
@@ -31,6 +34,10 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
     });
   };
 
+  const openAuthModal = useOpenAuthModal({
+    onSuccess: redirectToInitiativeForm,
+  });
+
   const onNewInitiativeButtonClick = (event?: React.FormEvent) => {
     event?.preventDefault();
     trackEventByName('New initiative button clicked', {
@@ -51,25 +58,23 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
           trackEventByName(
             'Sign up/in modal opened in response to clicking new initiative'
           );
-          openSignUpInModal({
+          openAuthModal({
             flow: 'signup',
             verification: false,
             context,
-            onSuccess: redirectToInitiativeForm,
           });
           break;
         case 'complete_registration':
-          openSignUpInModal();
+          openAuthModal({ context });
           break;
         case 'sign_in_up_and_verify':
           trackEventByName(
             'Sign up/in modal opened in response to clicking new initiative'
           );
-          openSignUpInModal({
+          openAuthModal({
             flow: 'signup',
             verification: true,
             context,
-            onSuccess: redirectToInitiativeForm,
           });
           break;
         case 'verify':
