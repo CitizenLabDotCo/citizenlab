@@ -66,8 +66,8 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.userMarkedPostAsSpam',
     defaultMessage: "{name} reported '{postTitle}' as spam",
   },
-  statusChangedOfYourIdea: {
-    id: 'app.containers.NotificationMenu.statusChangedOfYourIdea',
+  statusChangedOfIdea: {
+    id: 'app.containers.NotificationMenu.statusChangedOfIdea',
     defaultMessage: '{ideaTitle} status has changed to {status}',
   },
   statusChangeOnVotedIdea: {
