@@ -5,23 +5,46 @@ import Button from 'components/UI/Button';
 import { Row } from 'components/admin/ResourceList';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
+import { isAdmin } from 'services/permissions/roles';
+import { IUserData } from 'services/users';
+import styled from 'styled-components';
+import { deleteProjectModerator } from 'services/projectModerators';
 
 interface Props {
   isLastItem: boolean;
-  moderatorId: string;
-  deleteButtonDisabled: boolean;
-  displayName: string | JSX.Element;
-  onDelete: () => void;
+  moderator: IUserData;
+  projectId: string;
 }
 
-const ModeratorListRow = ({
-  isLastItem,
-  moderatorId,
-  deleteButtonDisabled,
-  displayName,
-  onDelete,
-}: Props) => {
+const PendingInvitation = styled.span`
+  font-style: italic;
+`;
+
+const UnknownName = styled.span`
+  font-style: italic;
+`;
+
+const ModeratorListRow = ({ isLastItem, moderator, projectId }: Props) => {
   const { formatMessage } = useIntl();
+  const moderatorId = moderator.id;
+  const firstName = moderator.attributes.first_name;
+  const lastName = moderator.attributes.last_name;
+  const invitationPending = moderator.attributes.invite_status === 'pending';
+  const displayName = invitationPending ? (
+    <PendingInvitation>
+      {formatMessage(messages.pendingInvitation)}
+    </PendingInvitation>
+  ) : firstName && lastName ? (
+    `${firstName} ${lastName}`
+  ) : (
+    <UnknownName>{formatMessage(messages.unknownName)}</UnknownName>
+  );
+
+  const handleDeleteClick = () => {
+    if (window.confirm(formatMessage(messages.moderatorDeletionConfirmation))) {
+      deleteProjectModerator(projectId, moderatorId);
+    }
+  };
 
   return (
     <Row key={moderatorId} isLastItem={isLastItem}>
@@ -34,10 +57,10 @@ const ModeratorListRow = ({
         </Text>
       </Box>
       <Button
-        onClick={onDelete}
+        onClick={handleDeleteClick}
         buttonStyle="text"
         icon="delete"
-        disabled={deleteButtonDisabled}
+        disabled={isAdmin({ data: moderator })}
       >
         {formatMessage(messages.deleteModeratorLabel)}
       </Button>
