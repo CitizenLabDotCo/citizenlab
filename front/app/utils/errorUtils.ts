@@ -1,4 +1,4 @@
-import { CLErrorsJSON } from 'typings';
+import { CLErrorsJSON, CLErrors } from 'typings';
 import messages from './messages';
 import { isArray } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
@@ -176,7 +176,7 @@ export const handleHookFormSubmissionError = (
   }
 };
 
-export const handleBlockedUserError = (status: number, data: any) => {
+export const handleBlockedUserError = (status: number, data: CLErrors) => {
   if (
     status === 401 &&
     'base' in data.errors &&
