@@ -1112,7 +1112,7 @@
   "app.containers.NotificationMenu.statusChangeOnVotedOption": "Status for en mulighed du har stemt på, blev ændret til {status}",
   "app.containers.NotificationMenu.statusChangeOnVotedProject": "Status for et projekt du har stemt på, blev ændret til {status}",
   "app.containers.NotificationMenu.statusChangeOnVotedQuestion": "Status for et spørgsmål du har stemt på, blev ændret til {status}",
-  "app.containers.NotificationMenu.statusChangedOfIdea": "{ideaTitle} status has changed to {status}",
+  "app.containers.NotificationMenu.statusChangedOfIdea": "{ideaTitle} status er ændret til {status}",
   "app.containers.NotificationMenu.statusChangedOfYourInitiative": "'{initiativeTitle}' har skiftet status til {status}",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} nåede afstemningstærsklen\n",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} accepterede din invitation",
