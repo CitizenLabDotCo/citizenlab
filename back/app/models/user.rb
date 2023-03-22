@@ -621,6 +621,7 @@ class User < ApplicationRecord
     AppConfiguration.instance.settings('user_blocking', 'duration')
   end
 end
+# rubocop:enable Metrics/ClassLength
 
 User.include(IdeaAssignment::Extensions::User)
 User.include(Verification::Patches::User)
