@@ -66,25 +66,17 @@ const CommentVote = ({
 
   useEffect(() => {
     setVoted(!isNilOrError(commentVote));
-    setUpvoteCount(
-      !isNilOrError(comment) ? comment.attributes.upvotes_count : 0
-    );
-  }, [commentVote, comment]);
+  }, [commentVote]);
 
   useEffect(() => {
     if (!isNilOrError(comment)) {
-      const upvoteCount = comment.attributes.upvotes_count;
-      setUpvoteCount(upvoteCount);
-    }
+      const backendUpvoteCount = comment.attributes.upvotes_count;
 
-    if (!voted && !isNilOrError(commentVote)) {
-      setVoted(true);
+      if (backendUpvoteCount !== upvoteCount) {
+        setUpvoteCount(backendUpvoteCount);
+      }
     }
-
-    if (voted && isNilOrError(commentVote)) {
-      setVoted(false);
-    }
-  }, [comment, commentVote, voted]);
+  }, [comment]);
 
   const vote = async () => {
     const oldVotedValue = voted;
