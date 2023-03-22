@@ -1,6 +1,6 @@
 import React from 'react';
 import ModeratorListRow from './ModeratorListRow';
-import { render } from 'utils/testUtils/rtl';
+import { render, screen } from 'utils/testUtils/rtl';
 import { IUserData } from 'services/users';
 
 const moderator: IUserData = {
@@ -24,7 +24,7 @@ const moderator: IUserData = {
 };
 
 describe('<ModeratorListRow />', () => {
-  it('renders', () => {
+  it('disables the delete button if the user is not an admin', () => {
     render(
       <ModeratorListRow
         isLastItem={false}
@@ -32,5 +32,23 @@ describe('<ModeratorListRow />', () => {
         moderator={moderator}
       />
     );
+
+    const deleteButton = screen.getByRole('button', { name: /delete/i });
+    expect(deleteButton).toBeDisabled();
+  });
+
+  it('shows an enabled delete button when user is an admin', () => {
+    moderator.attributes.highest_role = 'admin';
+
+    render(
+      <ModeratorListRow
+        isLastItem={false}
+        projectId="projectId"
+        moderator={moderator}
+      />
+    );
+
+    const deleteButton = screen.getByRole('button', { name: /delete/i });
+    expect(deleteButton).toBeInTheDocument();
   });
 });
