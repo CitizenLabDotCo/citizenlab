@@ -61,14 +61,8 @@ const UserSearch = memo(({ projectId }: Props) => {
   };
 
   return (
-    <Box width="100%" mb="20px">
-      <Box
-        width="100%"
-        display="flex"
-        flexDirection="row"
-        alignItems="center"
-        mb="30px"
-      >
+    <Box width="100%">
+      <Box display="flex" alignItems="center" mb="24px">
         <Box width="500px">
           <UserSelect
             id="projectModeratorUserSearch"
@@ -83,7 +77,7 @@ const UserSearch = memo(({ projectId }: Props) => {
           text={formatMessage(messages.addModerators)}
           buttonStyle="cl-blue"
           icon="plus-circle"
-          padding="13px 16px"
+          padding="10px 16px"
           onClick={openModal}
           disabled={!moderatorToAdd}
           processing={processing}
