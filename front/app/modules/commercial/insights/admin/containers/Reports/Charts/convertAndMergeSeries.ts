@@ -70,22 +70,22 @@ const createConvertAndMergeSeries =
     participantSerie: ISupportedDataType,
     code: TCustomFieldCode
   ) => {
+    const totalUsers = totalSerie.data.attributes.series.users;
+    const participantUsers = participantSerie.data.attributes.series.users;
+
     if (code === 'birthyear') {
       const options = { missingBin: formatMessage(messages._blank) };
 
-      const binnedTotal = binBirthyear(totalSerie.series.users, options);
-      const binnedParticipants = binBirthyear(
-        participantSerie.series.users,
-        options
-      );
+      const binnedTotal = binBirthyear(totalUsers, options);
+      const binnedParticipants = binBirthyear(participantUsers, options);
 
       return joinTotalAndParticipants(binnedTotal, binnedParticipants);
     }
 
     if (code === 'gender') {
       return GENDER_COLUMNS.map((gender) => ({
-        total: totalSerie.series.users[gender] || 0,
-        participants: participantSerie.series.users[gender] || 0,
+        total: totalUsers[gender] || 0,
+        participants: participantUsers[gender] || 0,
         name: formatMessage(GENDER_MESSAGES[gender]),
       }));
     }
@@ -96,16 +96,12 @@ const createConvertAndMergeSeries =
           ? formatMessage(fallbackMessages[key])
           : localize(value.title_multiloc);
 
-      const areas = (totalSerie as IUsersByDomicile).areas;
-      const resTotal = convertDomicileData(
-        areas,
-        totalSerie.series.users,
-        parseName
-      );
+      const areas = (totalSerie as IUsersByDomicile).data.attributes.areas;
+      const resTotal = convertDomicileData(areas, totalUsers, parseName);
 
       const resParticipants = convertDomicileData(
         areas,
-        participantSerie.series.users,
+        participantUsers,
         parseName
       );
 
@@ -115,10 +111,10 @@ const createConvertAndMergeSeries =
     }
 
     const res = map(
-      (totalSerie as IUsersByRegistrationField).options,
+      (totalSerie as IUsersByRegistrationField).data.attributes.options,
       (value, key) => ({
-        total: totalSerie.series.users[key] || 0,
-        participants: participantSerie.series.users[key] || 0,
+        total: totalUsers[key] || 0,
+        participants: participantUsers[key] || 0,
         name: localize(value.title_multiloc),
       })
     );

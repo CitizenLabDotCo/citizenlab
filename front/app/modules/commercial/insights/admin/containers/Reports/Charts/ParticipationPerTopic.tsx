@@ -199,7 +199,7 @@ const maxParticipationValue = {};
 const convertToGraphFormat =
   (dataKey: string) =>
   (data: IIdeasByTopic | IVotesByTopic | ICommentsByTopic) => {
-    const { series, topics } = data;
+    const { series, topics } = data.data.attributes;
     maxParticipationValue[dataKey] = 0;
     const mapped = map(topics, ({ title_multiloc }, topicId: string) => {
       if (series[dataKey][topicId] > maxParticipationValue[dataKey]) {

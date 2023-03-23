@@ -182,7 +182,10 @@ interface State {
   ideaFiles: UploadFile[];
   ideaFilesToRemove: UploadFile[];
   ideaFilesChanged: boolean;
-  ideaCustomFieldsSchemas: IIdeaFormSchemas | IIdeaJsonFormSchemas | null;
+  ideaCustomFieldsSchemas:
+    | IIdeaFormSchemas['data']['attributes']
+    | IIdeaJsonFormSchemas['data']['attributes']
+    | null;
   authorId: string | null;
 }
 
@@ -292,8 +295,9 @@ class IdeaForm extends PureComponent<
 
       pbContext$.subscribe((pbContext) => this.setState({ pbContext })),
 
-      ideaCustomFieldsSchemas$.subscribe((ideaCustomFieldsSchemas) => {
-        if (!isNilOrError(ideaCustomFieldsSchemas)) {
+      ideaCustomFieldsSchemas$.subscribe((response) => {
+        if (!isNilOrError(response)) {
+          const ideaCustomFieldsSchemas = response.data.attributes;
           this.setState({ ideaCustomFieldsSchemas });
         }
       }),
@@ -677,7 +681,9 @@ class IdeaForm extends PureComponent<
 
   isFieldRequired = (
     fieldCode: CustomFieldCodes,
-    ideaCustomFieldsSchemas: IIdeaFormSchemas | IIdeaJsonFormSchemas,
+    ideaCustomFieldsSchemas:
+      | IIdeaFormSchemas['data']['attributes']
+      | IIdeaJsonFormSchemas['data']['attributes'],
     locale: Locale
   ) => {
     return (

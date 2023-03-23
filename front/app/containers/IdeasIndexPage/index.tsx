@@ -1,8 +1,11 @@
-import React, { memo } from 'react';
+import React, { memo, useState, useCallback } from 'react';
+
+// services
+import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
 
 // components
 import ContentContainer from 'components/ContentContainer';
-import IdeaCards from 'components/IdeaCards';
+import { IdeaCardsWithFiltersSidebar } from 'components/IdeaCards';
 import CityLogoSection from 'components/CityLogoSection';
 import IdeasIndexMeta from './IdeaIndexMeta';
 
@@ -13,6 +16,9 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
+
+// typings
+import { IQueryParameters } from 'api/ideas/types';
 
 const Container = styled.main`
   min-height: calc(
@@ -67,24 +73,36 @@ const PageTitle = styled.h1`
  `}
 `;
 
-export default memo(() => (
-  <>
-    <IdeasIndexMeta />
-    <Container>
-      <StyledContentContainer maxWidth="100%">
-        <PageTitle>
-          <FormattedMessage {...messages.inputsPageTitle} />
-        </PageTitle>
-        <IdeaCards
-          type="load-more"
-          allowProjectsFilter={true}
-          projectPublicationStatus="published"
-          showViewToggle={false}
-          showFiltersSidebar={true}
-          invisibleTitleMessage={messages.a11y_IdeasListTitle}
-        />
-      </StyledContentContainer>
-      <CityLogoSection />
-    </Container>
-  </>
-));
+export default memo(() => {
+  const [ideasQueryParameters, setIdeasQueryParameters] =
+    useState<IQueryParameters>({
+      'page[number]': 1,
+      'page[size]': 12,
+      sort: ideaDefaultSortMethodFallback,
+      project_publication_status: 'published',
+      publication_status: 'published',
+    });
+
+  const updateQuery = useCallback((newParams: Partial<IQueryParameters>) => {
+    setIdeasQueryParameters((current) => ({ ...current, ...newParams }));
+  }, []);
+
+  return (
+    <>
+      <IdeasIndexMeta />
+      <Container>
+        <StyledContentContainer maxWidth="100%">
+          <PageTitle>
+            <FormattedMessage {...messages.inputsPageTitle} />
+          </PageTitle>
+          <IdeaCardsWithFiltersSidebar
+            invisibleTitleMessage={messages.a11y_IdeasListTitle}
+            ideaQueryParameters={ideasQueryParameters}
+            onUpdateQuery={updateQuery}
+          />
+        </StyledContentContainer>
+        <CityLogoSection />
+      </Container>
+    </>
+  );
+});

@@ -4,6 +4,8 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import initiativesKeys from './keys';
 import initiativesCountKeys from 'api/initiative_counts/keys';
 import { IInitiative, IUpdateInitiativeObject } from './types';
+import initiativeMarkersKeys from 'api/initiative_markers/keys';
+import initiativeFilterCountsKeys from 'api/initiatives_filter_counts/keys';
 
 const updateInitiative = ({
   initiativeId,
@@ -22,6 +24,12 @@ const useUpdateInitiative = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: initiativesKeys.lists(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: initiativeMarkersKeys.lists(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: initiativeFilterCountsKeys.all(),
       });
       queryClient.invalidateQueries({ queryKey: initiativesCountKeys.all() });
     },
