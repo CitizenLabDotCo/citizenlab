@@ -623,6 +623,11 @@ RSpec.describe User, type: :model do
   end
 
   describe 'active?' do
+    it 'returns true when the user has completed signup' do
+      u = build(:user)
+      expect(u.active?).to be true
+    end
+
     it 'returns false when the user has not completed signup' do
       u = build(:user, registration_completed_at: nil)
       expect(u.active?).to be false
@@ -633,9 +638,10 @@ RSpec.describe User, type: :model do
       expect(u.active?).to be false
     end
 
-    it 'returns true when the user has completed signup' do
+    it 'returns false when the user requires confirmation' do
+      SettingsService.new.activate_feature! 'user_confirmation'
       u = build(:user)
-      expect(u.active?).to be true
+      expect(u.active?).to be false
     end
 
     include_context 'when user_blocking duration is 90 days' do
@@ -645,6 +651,46 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe 'registration_completed_at' do
+    context 'without user confirmation turned on' do
+      it 'is set when user is created' do
+        u = create(:user)
+        expect(u.registration_completed_at).not_to be_nil
+      end
+
+      it 'is not set when an invited user is created' do
+        u = create(:invited_user)
+        expect(u.registration_completed_at).to be_nil
+      end
+
+      it 'is set to the value provided if a value is provided in update' do
+        reg_date = Time.now
+        u = create(:user)
+        u.update!(registration_completed_at: reg_date)
+        expect(u.registration_completed_at).to eq reg_date
+      end
+    end
+
+    context 'with user confirmation turned on' do
+      before do
+        SettingsService.new.activate_feature! 'user_confirmation'
+      end
+
+      it 'is not set when a user is created' do
+        u = create(:user_with_confirmation)
+        expect(u.registration_completed_at).to be_nil
+      end
+
+      it 'is set when a user is confirmed' do
+        u = create(:user_with_confirmation)
+        u.confirm!
+        expect(u.registration_completed_at).not_to be_nil
+      end
+    end
+  end
+
+
 
   describe 'groups and group_ids' do
     let!(:manual_group) { create(:group) }
