@@ -7,7 +7,7 @@ import {
   TAlign,
 } from 'components/LandingPages/citizen/HeaderContent';
 import { WrappedComponentProps } from 'react-intl';
-import { openSignUpInModal } from 'events/openSignUpInModal';
+import useOpenAuthModal from 'hooks/useOpenAuthModal';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import useLocalize from 'hooks/useLocalize';
 import React from 'react';
@@ -52,13 +52,14 @@ const HeaderContent = ({
   const homepageSettings = useHomepageSettings();
   const localize = useLocalize();
   const isTablet = useBreakpoint('tablet');
+  const openAuthModal = useOpenAuthModal();
 
   const signUpIn = (event: React.FormEvent) => {
     event.preventDefault();
     trackEventByName(tracks.clickCreateAccountCTA, {
       extra: { location: 'signed-out header' },
     });
-    openSignUpInModal();
+    openAuthModal();
   };
   const buttonStyle = getButtonStyle(fontColors);
 
