@@ -856,12 +856,15 @@ RSpec.describe User, type: :model do
         user.save!
         user.reset_confirmation_required
         expect(user.confirmation_required?).to be true
+        expect(user.email_confirmed_at).to be_nil
+        expect(user.email_confirmation_code_changed?).to be true
       end
 
       it 'does not perform a commit to the db' do
         user.save!
         user.reset_confirmation_required
         expect(user.saved_change_to_confirmation_required?).to be false
+        expect(user.saved_change_to_email_confirmed_at?).to be false
       end
     end
 
@@ -876,20 +879,6 @@ RSpec.describe User, type: :model do
         user.save!
         user.confirm
         expect(user.reload.confirmed?).to be false
-      end
-    end
-
-    describe '#reset_confirmed_at' do
-      it 'resets the confirmed_at field' do
-        user.confirm!
-        user.reset_confirmed_at
-        expect(user.confirmed?).to be false
-      end
-
-      it 'does not perform a commit to the db' do
-        user.confirm!
-        user.reset_confirmed_at
-        expect(user.saved_change_to_email_confirmed_at?).to be false
       end
     end
 

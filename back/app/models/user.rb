@@ -203,8 +203,6 @@ class User < ApplicationRecord
     validates :email_confirmation_code_reset_count, numericality: { less_than_or_equal_to: ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5) }
 
     with_options if: :email_changed?, on: :create do
-      before_validation :reset_confirmation_code
-      before_validation :reset_confirmed_at
       before_validation :reset_confirmation_required
     end
 
@@ -441,46 +439,20 @@ class User < ApplicationRecord
     manual_groups.merge(groups).exists?
   end
 
-  #
-  # <Used to check upon update or create, if a user should have to confirm their account>
-  #
-  # @return [<Boolean>] <True if the user requires confirmation>
-  #
+  # Used to check upon update or create, if a user should have to confirm their account
   def should_require_confirmation?
     !(registered_with_phone? || highest_role != :user || sso? || invited? || active?)
   end
 
-  #
-  # <The reader for the private `#confirmation_required` attribute.>
-  #
-  # @return [<Boolean>] <True if the user has not yet confirmed their account after creation or an update to it's details.>
-  #
+  # true if the user has not yet confirmed their email address
   def confirmation_required?
     AppConfiguration.instance.feature_activated?('user_confirmation') && confirmation_required
   end
 
-  #
-  # <Returns true if the user has performed confirmation of it's account.>
-  #
-  # @return [<Boolean>] <True has confirmed it's account.>
-  #
+  # true if the user has performed confirmation of it's account.>
+  # TODO: this logic is different to !confirmation_required and we also have active? too
   def confirmed?
     email_confirmed_at.present?
-  end
-
-  def reset_confirmation_required
-    self.confirmation_required = should_require_confirmation?
-  end
-
-  def reset_confirmation_with_no_password
-    if !confirmation_required?
-      # Only reset code and retry/reset counts if account has already been confirmed
-      # To keep limits in place for non-legit requests
-      self.email_confirmation_code = nil
-      self.email_confirmation_retry_count = 0
-      self.email_confirmation_code_reset_count = 0
-    end
-    self.confirmation_required = true
   end
 
   def confirm
@@ -495,8 +467,29 @@ class User < ApplicationRecord
     save!
   end
 
+  def reset_confirmation_required
+    self.confirmation_required = should_require_confirmation?
+    self.email_confirmed_at = nil
+    reset_confirmation_code
+  end
+
+  def reset_confirmation_with_no_password
+    if !confirmation_required?
+      # Only reset code and retry/reset counts if account has already been confirmed
+      # To keep limits in place for non-legit requests
+      self.email_confirmation_code = nil
+      self.email_confirmation_retry_count = 0
+      self.email_confirmation_code_reset_count = 0
+    end
+    self.confirmation_required = true
+  end
+
   def email_confirmation_code_expiration_at
     email_confirmation_code_sent_at + 1.day
+  end
+
+  def reset_confirmation_code
+    self.email_confirmation_code = use_fake_code? ? '1234' : rand.to_s[2..5]
   end
 
   def reset_confirmation_code!
@@ -505,9 +498,9 @@ class User < ApplicationRecord
     save!
   end
 
-  def increment_confirmation_retry_count!
-    increment_confirmation_retry_count
-    save!
+  # Only really used in the bang version apart from above
+  def increment_confirmation_code_reset_count
+    self.email_confirmation_code_reset_count += 1
   end
 
   def increment_confirmation_code_reset_count!
@@ -515,16 +508,14 @@ class User < ApplicationRecord
     save!
   end
 
-  def reset_confirmation_code
-    self.email_confirmation_code = use_fake_code? ? '1234' : rand.to_s[2..5]
-  end
-
-  def increment_confirmation_code_reset_count
-    self.email_confirmation_code_reset_count += 1
-  end
-
+  # TODO: Not used apart from within the bang version
   def increment_confirmation_retry_count
     self.email_confirmation_retry_count += 1
+  end
+
+  def increment_confirmation_retry_count!
+    increment_confirmation_retry_count
+    save!
   end
 
   def reset_email!(email)
@@ -532,10 +523,6 @@ class User < ApplicationRecord
       email: email,
       email_confirmation_code_reset_count: 0
     )
-  end
-
-  def reset_confirmed_at
-    self.email_confirmed_at = nil
   end
 
   private
