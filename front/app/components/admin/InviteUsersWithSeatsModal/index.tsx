@@ -50,6 +50,15 @@ const InviteUsersWithSeatsModal = ({
     setHasAcknowledged(!hasAcknowledged);
   };
 
+  const handleConfrimClick = () => {
+    if (!hasAcknowledged) {
+      setShowWarning(true);
+      return;
+    }
+    closeModal();
+    inviteUsers();
+  };
+
   return (
     <Modal
       opened={showModal}
@@ -105,15 +114,10 @@ const InviteUsersWithSeatsModal = ({
           alignItems="center"
           mt="32px"
         >
-          <Button
-            width="auto"
-            onClick={() => {
-              closeModal();
-              inviteUsers();
-            }}
-            disabled={!hasAcknowledged}
-          >
-            {formatMessage(messages.confirmButtonText)}
+          <Button width="auto" disabled={!hasAcknowledged}>
+            <Box onClick={handleConfrimClick}>
+              {formatMessage(messages.confirmButtonText)}
+            </Box>
           </Button>
         </Box>
       </Box>
