@@ -425,7 +425,7 @@ class TimezoneService
   def display_timezone(tz)
     tzinfo = TZInfo::Timezone.get tz
     utc_part = "UTC#{ActiveSupport::TimeZone.seconds_to_utc_offset(tzinfo.utc_offset, false)}"
-    "#{utc_part}#{dst?(tzinfo) ? ' (DST)' : ''} - #{tz.name}"
+    "#{utc_part}#{dst?(tzinfo) ? ' (DST)' : ''} - #{tz}"
   end
 
   private
