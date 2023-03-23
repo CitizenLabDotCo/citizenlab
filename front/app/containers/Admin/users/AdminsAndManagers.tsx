@@ -34,7 +34,7 @@ const AllUsers = () => {
         notCitizenlabMember
         includeInactive
       />
-      <StyledBox>
+      <StyledBox mt="20px">
         <SeatInfo seatType="admin" />
         <SeatInfo seatType="collaborator" />
       </StyledBox>
