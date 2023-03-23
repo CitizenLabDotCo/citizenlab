@@ -64,42 +64,36 @@ const InviteUsersWithSeatsModal = ({
       opened={showModal}
       close={closeModal}
       header={
-        <Box px="2px">
-          <Text color="primary" my="8px" fontSize="l" fontWeight="bold">
-            {formatMessage(seatTypeModalTitles[seatType])}
-          </Text>
-        </Box>
+        <Text color="primary" my="8px" fontSize="l" fontWeight="bold" px="2px">
+          {formatMessage(seatTypeModalTitles[seatType])}
+        </Text>
       }
     >
       <Box display="flex" flexDirection="column" width="100%" p="32px">
-        <Box>
-          <Text color="textPrimary" fontSize="m" my="0px">
-            <FormattedMessage
-              {...messages.descriptionMessage}
-              values={{
-                noOfUsers: noOfSeatsToAdd,
-                seatType: formatMessage(seatTypeMessages[seatType]),
-              }}
-            />
-          </Text>
-          <Box py="32px">
-            <SeatInfo seatType={seatType} />
-          </Box>
+        <Text color="textPrimary" fontSize="m" my="0px">
+          <FormattedMessage
+            {...messages.descriptionMessage}
+            values={{
+              noOfUsers: noOfSeatsToAdd,
+              seatType: formatMessage(seatTypeMessages[seatType]),
+            }}
+          />
+        </Text>
+        <Box py="32px">
+          <SeatInfo seatType={seatType} />
         </Box>
 
-        <Box>
-          <Checkbox
-            checked={hasAcknowledged}
-            onChange={onChange}
-            label={
-              <Text color="blue500" my="0px">
-                {formatMessage(messages.acknowledgement, {
-                  seatTypes: formatMessage(seatTypesMessages[seatType]),
-                })}
-              </Text>
-            }
-          />
-        </Box>
+        <Checkbox
+          checked={hasAcknowledged}
+          onChange={onChange}
+          label={
+            <Text color="blue500" my="0px">
+              {formatMessage(messages.acknowledgement, {
+                seatTypes: formatMessage(seatTypesMessages[seatType]),
+              })}
+            </Text>
+          }
+        />
 
         {showWarning && (
           <Box mt="12px">
@@ -107,14 +101,8 @@ const InviteUsersWithSeatsModal = ({
           </Box>
         )}
 
-        <Box
-          display="flex"
-          flexDirection="row"
-          width="100%"
-          alignItems="center"
-          mt="32px"
-        >
-          <Button width="auto" disabled={!hasAcknowledged}>
+        <Box display="flex" mt="32px">
+          <Button disabled={!hasAcknowledged}>
             <Box onClick={handleConfrimClick} data-testid="confirm-button-text">
               {formatMessage(messages.confirmButtonText)}
             </Box>
