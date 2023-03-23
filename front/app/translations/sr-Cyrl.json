@@ -1071,6 +1071,7 @@
   "app.containers.NewAuthModal.confirmYourEmail": "Потврди свој емаил",
   "app.containers.NewAuthModal.logIn": "Пријавите се",
   "app.containers.NewAuthModal.steps.EmailConfirmation.codeMustHaveFourDigits": "Код мора имати 4 цифре.",
+  "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.continueWithFranceConnect": "Continue with FranceConnect",
   "app.containers.NewAuthModal.steps.EmailSignUp.email": "Емаил",
   "app.containers.NewAuthModal.steps.EmailSignUp.emailFormatError": "Наведите адресу е-поште у исправном формату, на пример име@провидер.цом",
   "app.containers.NewAuthModal.steps.EmailSignUp.emailMissingError": "Наведите адресу е-поште",
