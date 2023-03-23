@@ -541,6 +541,8 @@ class User < ApplicationRecord
   private
 
   def complete_registration
+    return if registration_completed_at_changed? # To allow it to be set manually (in tests mainly)
+
     self.registration_completed_at = Time.now if registration_completed_at.nil? && !confirmation_required?
   end
 
