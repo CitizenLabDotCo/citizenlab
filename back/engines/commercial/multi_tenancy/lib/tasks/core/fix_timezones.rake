@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 namespace :fix_existing_tenants do
+  # ActiveSupport::TimeZone::MAPPING
   timezone_mapping = {
     'Africa/Dakar' => 'UTC',
     'Africa/Johannesburg' => 'Cairo',
