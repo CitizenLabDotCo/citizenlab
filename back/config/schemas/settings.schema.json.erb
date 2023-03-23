@@ -55,7 +55,7 @@
             "type": "string",
             "default": "Europe/Brussels",
             "enum": [<%= TimezoneService::SUPPORTED_TIMEZONES.map{|l| "\"#{l}\""}.join(",") %>],
-            "enumNames": [<%= TimezoneService::SUPPORTED_TIMEZONES.map{|tz| TimezoneService.new.display_timezone(tz)}.sort.map{|l| "\"#{l}\""}.join(",") %>]
+            "enumNames": [<%= TimezoneService::SUPPORTED_TIMEZONES.map{|tz| TimezoneService.new.display_timezone(tz)}.map{|l| "\"#{l}\""}.join(",") %>]
           },
           "currency": {
             "title": "Currency",
