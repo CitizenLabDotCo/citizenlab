@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from 'utils/testUtils/rtl';
+import { render, screen, userEvent } from 'utils/testUtils/rtl';
 
 import InviteUsersWithSeatsModal from './';
 
@@ -57,7 +57,8 @@ describe('InviteUsersWithSeatsModal', () => {
     expect(confirmButton).toBeInTheDocument();
   });
 
-  it('shows an error when user clicks the button', () => {
+  it('shows an error when user clicks the button without checking the condition checkbox', async () => {
+    const user = userEvent.setup();
     render(
       <InviteUsersWithSeatsModal
         inviteUsers={inviteUsers}
@@ -76,7 +77,7 @@ describe('InviteUsersWithSeatsModal', () => {
       screen.queryByText('Accept the condition to proceed')
     ).not.toBeInTheDocument();
 
-    confirmButton.click();
+    await user.click(confirmButton);
 
     expect(
       screen.queryByText('Accept the condition to proceed')
