@@ -2,7 +2,7 @@
   <mj-column>
     <mj-text color="black">
       <h1 style="font-size: 25px; margin-bottom: 40px;"><%= t('.title_user_blocked') %></h1>
-      <% if @user.block_reason %>
+      <% unless @user.block_reason.blank? %>
         <p style="margin-bottom: 40px;">
           <%= t('.paragraph_1_with_reason', organizationName: organization_name) %>
         </p>
