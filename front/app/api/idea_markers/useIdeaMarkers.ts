@@ -16,7 +16,6 @@ const fetchIdeaMarkers = ({
       ...queryParameters,
       projects: projectIds,
       phase: phaseId,
-      sort: undefined,
       'page[number]': 1,
       'page[size]': 5000,
     },
