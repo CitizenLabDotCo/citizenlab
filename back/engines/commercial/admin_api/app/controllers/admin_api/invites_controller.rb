@@ -3,8 +3,8 @@
 module AdminApi
   class InvitesController < AdminApiController
     def create
-      invites = Invites::Service.new.bulk_create([invite_params])
-      render json: invites.first, status: :created
+      invitees = Invites::Service.new.bulk_create([invite_params])
+      render json: invitees.first&.invitee_invite, status: :created
     rescue Invites::FailedError => e
       render json: { errors: e.to_h }, status: :unprocessable_entity
     end

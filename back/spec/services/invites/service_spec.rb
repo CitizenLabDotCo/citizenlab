@@ -280,6 +280,31 @@ describe Invites::Service do
       end
     end
 
+    context 'with an email that is already used by a user with roles and groups' do
+      let!(:user) do
+        create(:user, email: 'someUser@somedomain.com', roles: [old_role], manual_groups: [old_group])
+      end
+      let(:old_role) { { 'type' => 'project_moderator', 'project_id' => create(:project).id } }
+      let(:old_group) { create(:group) }
+      let(:new_group) { create(:group) }
+
+      let(:hash_array) do
+        [
+          { email: 'john@john.son' },
+          { email: 'Someuser@somedomain.com', admin: 'true', groups: new_group.title_multiloc.values.first }
+        ]
+      end
+
+      it 'adds roles and groups to user' do
+        expect { service.bulk_create_xlsx(xlsx) }.to change(Invite, :count).from(0).to(1)
+
+        service.bulk_create_xlsx(xlsx)
+        user.reload
+        expect(user.roles).to match_array([{ 'type' => 'admin' }, old_role])
+        expect(user.manual_groups).to match_array([old_group, new_group])
+      end
+    end
+
     context 'with an email that is already invited' do
       let!(:invite) { create(:invite) }
       let(:hash_array) do
