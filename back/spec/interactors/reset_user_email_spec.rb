@@ -50,4 +50,19 @@ RSpec.describe ResetUserEmail do
       expect(result.errors[:email]).not_to be_empty
     end
   end
+
+  context 'when passing a new email and the account has no password' do
+    before do
+      context[:user] = create(:user_no_password)
+      context[:new_email] = 'new@email.com'
+    end
+
+    it 'does not change the user email' do
+      expect(context[:user].reload.email).not_to eq(context[:new_email])
+    end
+
+    it 'returns an error' do
+      expect(result.errors[:email]).not_to be_empty
+    end
+  end
 end
