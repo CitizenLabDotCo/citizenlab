@@ -253,9 +253,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.defaultField',
     defaultMessage: 'Default field',
   },
-  createNewQuestion: {
-    id: 'app.containers.AdminPage.groups.permissions.createNewQuestion',
+  createANewQuestion: {
+    id: 'app.containers.AdminPage.groups.permissions.createANewQuestion',
     defaultMessage: 'Create a new question',
+  },
+  createAQuestion: {
+    id: 'app.containers.AdminPage.groups.permissions.createAQuestion',
+    defaultMessage: 'Create a question',
   },
   delete: {
     id: 'app.containers.AdminPage.groups.permissions.delete',
