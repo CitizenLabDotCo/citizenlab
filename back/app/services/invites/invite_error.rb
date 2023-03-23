@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 class Invites::InviteError < RuntimeError
   attr_accessor :error_key, :row, :rows, :value, :raw_error, :ignore
 
   def initialize(error_key, options)
+    super()
     @error_key = error_key
     @row = options[:row]
     @rows = options[:rows]

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Invites::XlsxProcessor
   def initialize(error_storage)
     @error_storage = error_storage

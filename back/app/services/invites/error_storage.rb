@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Invites::ErrorStorage
   INVITE_ERRORS = {
     unparseable_excel: 'unparseable_excel',

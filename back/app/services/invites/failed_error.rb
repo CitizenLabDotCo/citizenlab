@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 class Invites::FailedError < RuntimeError
   attr_accessor :errors
 
   def initialize(options)
+    super()
     @errors = options[:errors]
   end
 
