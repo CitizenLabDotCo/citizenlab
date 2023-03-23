@@ -27,15 +27,19 @@ const SSOButton = ({ ssoProvider }: Props) => {
   const { formatMessage } = useIntl();
 
   const getText = () => {
-    if (ssoProvider === 'google')
+    if (ssoProvider === 'google') {
       return formatMessage(oldMessages.continueWithGoogle);
-    if (ssoProvider === 'facebook')
+    }
+
+    if (ssoProvider === 'facebook') {
       return formatMessage(oldMessages.continueWithFacebook);
+    }
 
     if (ssoProvider === 'azureAd') {
       const azureProviderName =
         appConfiguration?.data.attributes.settings.azure_ad_login
           ?.login_mechanism_name ?? 'Azure Active Directory';
+
       return formatMessage(oldMessages.continueWithAzure, {
         azureProviderName,
       });
