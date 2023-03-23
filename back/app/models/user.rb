@@ -541,9 +541,9 @@ class User < ApplicationRecord
   private
 
   def complete_registration
-    return if registration_completed_at_changed? # To allow it to be set manually (in tests mainly)
+    return if confirmation_required? || invited? || registration_completed_at_changed?
 
-    self.registration_completed_at = Time.now if registration_completed_at.nil? && !confirmation_required?
+    self.registration_completed_at = Time.now if registration_completed_at.nil?
   end
 
   def generate_slug

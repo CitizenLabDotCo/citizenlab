@@ -265,7 +265,7 @@ resource 'Invites' do
   context 'When not authenticated' do
     post 'web_api/v1/invites/by_token/:token/accept' do
       with_options scope: :invite do
-        parameter :email, 'The email of the user. Required if not sepcified at creation of the invite', required: false
+        parameter :email, 'The email of the user. Required if not specified at creation of the invite', required: false
         parameter :first_name, 'The first name of the invitee. Required if not specified at creation of the invite.', required: false
         parameter :last_name, 'The last name of the invitee. Required if not specified at creation of the invite.', required: false
         parameter :password, 'The password of the invitee.', required: true
