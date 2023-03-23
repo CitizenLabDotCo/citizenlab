@@ -218,8 +218,8 @@ const FolderPermissions = () => {
           <>
             {!isNilOrError(folderModerators) &&
               folderModerators.map((folderModerator, index) => (
-                // This row is a near copy of ModeratorListRow. With some moderations
-                // That component could be used here too.
+                // This row is a near copy of ModeratorListRow. They could be
+                // extracted in 1 component.
                 <Row
                   key={folderModerator.id}
                   isLastItem={index === folderModerators.length - 1}
