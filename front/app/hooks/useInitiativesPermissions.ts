@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
+import { IInitiativeActionDescriptorName } from 'api/initiative_action_descriptors/types';
 import useInitativeActionDescriptors from 'api/initiative_action_descriptors/useInitiativeActionDescriptors';
 import { isNilOrError } from 'utils/helperUtils';
 import { ActionPermission } from 'services/actionTakingRules';
@@ -8,14 +8,17 @@ import useAuthUser from './useAuthUser';
 
 export type IInitiativeDisabledReason = 'notPermitted';
 
-export default function useInitiativesPermissions(action: IInitiativeAction) {
+export default function useInitiativesPermissions(
+  actionDescriptorName: IInitiativeActionDescriptorName
+) {
   const [actionPermission, setActionPermission] = useState<
     ActionPermission<IInitiativeDisabledReason> | null | undefined
   >(undefined);
   const { data: appConfiguration } = useAppConfiguration();
   const { data: actionDescriptors } = useInitativeActionDescriptors();
   const authUser = useAuthUser();
-  const actionDescriptor = actionDescriptors?.data.attributes[action];
+  const actionDescriptor =
+    actionDescriptors?.data.attributes[actionDescriptorName];
 
   useEffect(() => {
     if (appConfiguration && actionDescriptor) {

@@ -31,7 +31,6 @@ export type PublicationStatus = 'draft' | 'published' | 'archived';
 export type IProjectAction =
   | 'commenting_idea'
   | 'voting_idea'
-  | 'comment_voting_idea'
   | 'posting_idea'
   | 'taking_survey'
   | 'taking_poll'

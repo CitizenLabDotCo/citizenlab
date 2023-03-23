@@ -58,6 +58,9 @@ const CommentVote = ({
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: idea } = useIdeaById(ideaId);
   const authUser = useAuthUser();
+
+  // Wondering why 'comment_voting_initiative' and not 'commenting_initiative'?
+  // See app/api/initiative_action_descriptors/types.ts
   const commentVotingPermissionInitiative = useInitiativesPermissions(
     'comment_voting_initiative'
   );
@@ -127,14 +130,18 @@ const CommentVote = ({
     event?.preventDefault();
 
     if (postType === 'idea') {
+      // Wondering why 'comment_voting_idea' and not 'commenting_idea'?
+      // See /Users/work/Projects/citizenlab/front/app/api/ideas/types.ts
       const commentVotingDisabledReason = get(
         post,
-        'attributes.action_descriptor.commenting_idea.disabled_reason'
+        'attributes.action_descriptor.comment_voting_idea.disabled_reason'
       );
 
       const authUserIsVerified =
         !isNilOrError(authUser) && authUser.attributes.verified;
 
+      // Wondering why 'commenting_idea' and not 'comment_voting_idea'?
+      // See /Users/work/Projects/citizenlab/front/app/api/ideas/types.ts
       const context = {
         type: 'idea',
         action: 'commenting_idea',
@@ -162,6 +169,9 @@ const CommentVote = ({
     if (postType === 'initiative') {
       const authenticationRequirements =
         commentVotingPermissionInitiative?.authenticationRequirements;
+
+      // Wondering why 'commenting_initiative' and not 'comment_voting_initiative'?
+      // See app/api/initiative_action_descriptors/types.ts
       const context = {
         action: 'commenting_initiative',
         type: 'initiative',
@@ -182,15 +192,18 @@ const CommentVote = ({
   };
 
   if (!isNilOrError(comment)) {
-    const commentingVotingDisabledReason = get(
+    // Wondering why 'comment_voting_idea' and not 'commenting_idea'?
+    // See /Users/work/Projects/citizenlab/front/app/api/ideas/types.ts
+    const commentingVotingIdeaDisabledReason = get(
       post,
-      'attributes.action_descriptor.commenting_idea.disabled_reason'
+      'attributes.action_descriptor.comment_voting_idea.disabled_reason'
     );
+
     const isSignedIn = !isNilOrError(authUser);
     const disabled =
       postType === 'initiative'
         ? !commentVotingPermissionInitiative?.enabled
-        : isSignedIn && commentingVotingDisabledReason === 'not_permitted';
+        : isSignedIn && commentingVotingIdeaDisabledReason === 'not_permitted';
 
     if (!disabled || upvoteCount > 0) {
       return (

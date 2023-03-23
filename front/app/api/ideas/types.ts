@@ -11,11 +11,7 @@ export type IdeasKeys = Keys<typeof ideasKeys>;
 export type IdeaPublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
 
 // keys in ideas.attributes.action_descriptor
-export type IIdeaAction =
-  | 'voting_idea'
-  | 'commenting_idea'
-  | 'comment_voting_idea'
-  | 'budgeting';
+export type IIdeaAction = 'voting_idea' | 'commenting_idea' | 'budgeting';
 
 // export type IIdeaAction = keyof IIdeaData['attributes']['action_descriptor'];
 
@@ -115,9 +111,17 @@ export interface IIdeaData {
       };
       commenting_idea: {
         enabled: boolean;
-        future_enabled: string | null;
         disabled_reason: IdeaCommentingDisabledReason | null;
+        future_enabled: string | null;
       };
+      // Confusingly, 'comment_voting_idea' is an action descriptor, but
+      // not an action, and it doesn't have its own granular permissions.
+      // In other words, you can't specifically say that you don't want
+      // people to be able to vote on comments. This is instead derived from 'commenting_idea'.
+      // Why is it an action descriptor then, and why don't we just use 'commenting_idea'?
+      // Because of legacy reasons. Should be fixed in the future.
+      // For now, just know that 'comment_voting_idea' is just an action descriptor,
+      // but not an action (so e.g. it can't be used in the authentication_requirements API).
       comment_voting_idea: {
         enabled: boolean;
         disabled_reason: null;
@@ -125,8 +129,8 @@ export interface IIdeaData {
       };
       budgeting?: {
         enabled: boolean;
-        future_enabled: string | null;
         disabled_reason: IdeaBudgetingDisabledReason;
+        future_enabled: string | null;
       };
     };
   };
