@@ -7,6 +7,10 @@ import { Box, Icon, Image } from '@citizenlab/cl2-component-library';
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
+// styling
+import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
+
 // i18n
 import oldMessages from 'components/AuthProviders/messages';
 import messages from './messages';
@@ -21,6 +25,16 @@ const ICON_NAME_MAP = {
   facebook: 'facebook',
   azureAd: 'microsoft-windows',
 } as const;
+
+const Button = styled.button`
+  color: ${colors.coolGrey600};
+  &:hover {
+    color: ${colors.grey800};
+  }
+
+  text-decoration: underline;
+  cursor: pointer;
+`;
 
 const SSOButton = ({ ssoProvider }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
@@ -49,26 +63,29 @@ const SSOButton = ({ ssoProvider }: Props) => {
   };
 
   return (
-    <Box
-      display="flex"
-      flexDirection="row"
-      justifyContent="flex-start"
-      alignItems="center"
-      mt="12px"
-    >
-      {ssoProvider === 'google' ||
-      ssoProvider === 'facebook' ||
-      ssoProvider === 'azureAd' ? (
-        <Icon
-          name={ICON_NAME_MAP[ssoProvider]}
-          width="18px"
-          height="18px"
-          mr="4px"
-        />
-      ) : (
-        <Image src={franceConnectImage} alt="" width="18px" mr="4px" />
-      )}
-      <button>{getText()}</button>
+    <Box mt="12px">
+      <Button>
+        <Box
+          display="flex"
+          flexDirection="row"
+          justifyContent="flex-start"
+          alignItems="center"
+        >
+          {ssoProvider === 'google' ||
+          ssoProvider === 'facebook' ||
+          ssoProvider === 'azureAd' ? (
+            <Icon
+              name={ICON_NAME_MAP[ssoProvider]}
+              width="18px"
+              height="18px"
+              mr="8px"
+            />
+          ) : (
+            <Image src={franceConnectImage} alt="" width="18px" mr="8px" />
+          )}
+          <Box>{getText()}</Box>
+        </Box>
+      </Button>
     </Box>
   );
 };
