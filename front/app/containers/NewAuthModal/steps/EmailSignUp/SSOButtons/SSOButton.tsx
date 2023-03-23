@@ -62,6 +62,12 @@ const SSOButton = ({ ssoProvider }: Props) => {
     return formatMessage(messages.continueWithFranceConnect);
   };
 
+  const getIconColor = () => {
+    if (ssoProvider === 'facebook') return colors.facebook;
+    if (ssoProvider === 'azureAd') return colors.teal300;
+    return;
+  };
+
   return (
     <Box mt="12px">
       <Button>
@@ -76,6 +82,7 @@ const SSOButton = ({ ssoProvider }: Props) => {
           ssoProvider === 'azureAd' ? (
             <Icon
               name={ICON_NAME_MAP[ssoProvider]}
+              fill={getIconColor()}
               width="18px"
               height="18px"
               mr="8px"
