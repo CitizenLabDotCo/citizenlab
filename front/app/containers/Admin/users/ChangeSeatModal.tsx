@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // Components
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
+import SeatChangeSuccessModal from 'components/admin/SeatChangeSuccessModal';
 
 // Translation
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
@@ -62,6 +63,7 @@ const ChangeSeatModal = ({
   userToChangeSeat,
   toggleAdmin,
 }: Props) => {
+  const [showSuccess, setShowSuccess] = useState(false);
   const isUserAdmin = isAdmin({ data: userToChangeSeat });
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
@@ -87,53 +89,60 @@ const ChangeSeatModal = ({
   );
 
   return (
-    <Modal
-      opened={showModal}
-      close={closeModal}
-      header={
-        <Box px="2px">
-          <Text color="primary" my="8px" fontSize="l" fontWeight="bold">
-            {formatMessage(modalTitle)}
-          </Text>
-        </Box>
-      }
-    >
-      <Box display="flex" flexDirection="column" width="100%" p="32px">
-        <Box>
-          <Text color="textPrimary" fontSize="m" my="0px">
-            <FormattedMessage
-              {...confirmChangeQuestion}
-              values={{
-                name: (
-                  <Text as="span" fontWeight="bold" fontSize="m">
-                    {`${userToChangeSeat.attributes.first_name} ${userToChangeSeat.attributes.last_name}`}
-                  </Text>
-                ),
+    <>
+      <Modal
+        opened={showModal}
+        close={closeModal}
+        header={
+          <Box px="2px">
+            <Text color="primary" my="8px" fontSize="l" fontWeight="bold">
+              {formatMessage(modalTitle)}
+            </Text>
+          </Box>
+        }
+      >
+        <Box display="flex" flexDirection="column" width="100%" p="32px">
+          <Box>
+            <Text color="textPrimary" fontSize="m" my="0px">
+              <FormattedMessage
+                {...confirmChangeQuestion}
+                values={{
+                  name: (
+                    <Text as="span" fontWeight="bold" fontSize="m">
+                      {`${userToChangeSeat.attributes.first_name} ${userToChangeSeat.attributes.last_name}`}
+                    </Text>
+                  ),
+                }}
+              />
+            </Text>
+            <Box py="32px">
+              <SeatInfo seatType="admin" />
+            </Box>
+          </Box>
+          <Box
+            display="flex"
+            flexDirection="row"
+            width="100%"
+            alignItems="center"
+          >
+            <Button
+              width="auto"
+              onClick={() => {
+                toggleAdmin();
+                closeModal();
+                setShowSuccess(true);
               }}
-            />
-          </Text>
-          <Box py="32px">
-            <SeatInfo seatType="admin" />
+            >
+              {formatMessage(buttonText)}
+            </Button>
           </Box>
         </Box>
-        <Box
-          display="flex"
-          flexDirection="row"
-          width="100%"
-          alignItems="center"
-        >
-          <Button
-            width="auto"
-            onClick={() => {
-              toggleAdmin();
-              closeModal();
-            }}
-          >
-            {formatMessage(buttonText)}
-          </Button>
-        </Box>
-      </Box>
-    </Modal>
+      </Modal>
+      <SeatChangeSuccessModal
+        showModal={showSuccess}
+        closeModal={() => setShowSuccess(false)}
+      />
+    </>
   );
 };
 
