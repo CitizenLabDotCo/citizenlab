@@ -1138,6 +1138,32 @@ resource 'Users' do
             expect(BCrypt::Password.new(@user.password_digest)).to be_is_password('test_new_password')
           end
         end
+
+        describe do
+          let(:current_password) { '' }
+          let(:new_password) { 'test_new_password' }
+
+          example_request 'update password when not providing existing password' do
+            expect(response_status).to eq 422
+            json_response = json_parse(response_body)
+            expect(json_response[:errors][:current_password][0][:error]).to eq 'invalid'
+          end
+        end
+
+        describe do
+          let(:current_password) { '' }
+          let(:new_password) { 'test_new_password' }
+
+          before do
+            @user.update!(password: nil)
+          end
+
+          example_request 'update password when no existing password (passwordless or sso user)' do
+            @user.reload
+            expect(response_status).to eq 200
+            expect(BCrypt::Password.new(@user.password_digest)).to be_is_password('test_new_password')
+          end
+        end
       end
 
       delete 'web_api/v1/users/:id' do
