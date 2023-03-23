@@ -534,7 +534,7 @@
   "app.components.form.ErrorDisplay.guidelinesLinkText": "nuestras directrices",
   "app.components.form.ErrorDisplay.next": "Siguiente",
   "app.components.form.ErrorDisplay.previous": "Anterior",
-  "app.components.form.ErrorDisplay.save": "Save",
+  "app.components.form.ErrorDisplay.save": "Guardar",
   "app.components.form.ErrorDisplay.submitSurvey": "Enviar encuesta",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Empieza a escribir para buscar por correo electrónico o nombre de usuario...",
   "app.components.form.blockedVerified": "No puede editar este campo porque contiene información verificada",
