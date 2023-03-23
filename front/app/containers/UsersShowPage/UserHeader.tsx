@@ -82,6 +82,7 @@ const UserHeader = ({ userSlug }: Props) => {
   const isBlocked = user.attributes?.blocked;
   const isCurrentUserAdmin =
     !isNilOrError(authUser) && isAdmin({ data: authUser });
+  const canBlock = isCurrentUserAdmin && user.id !== authUser?.id;
 
   const userBlockingRelatedActions: IAction[] = isUserBlockingEnabled
     ? [
@@ -136,7 +137,7 @@ const UserHeader = ({ userSlug }: Props) => {
           <Title id="e2e-usersshowpage-fullname" color="tenantText" mr="10px">
             {user.attributes.first_name} {user.attributes.last_name}
           </Title>
-          {isCurrentUserAdmin && (
+          {isCurrentUserAdmin && canBlock && (
             <MoreActionsMenu
               showLabel={false}
               actions={userBlockingRelatedActions}

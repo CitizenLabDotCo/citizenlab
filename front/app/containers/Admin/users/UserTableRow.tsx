@@ -125,22 +125,23 @@ const UserTableRow = ({
       }
     }
   };
-
-  const userBlockingRelatedActions: IAction[] = isUserBlockingEnabled
-    ? [
-        isBlocked
-          ? {
-              handler: () => setShowUnblockUserModal(true),
-              label: formatMessage(blockUserMessages.unblockAction),
-              icon: 'user-circle' as const,
-            }
-          : {
-              handler: () => setShowBlockUserModal(true),
-              label: formatMessage(blockUserMessages.blockAction),
-              icon: 'halt' as const,
-            },
-      ]
-    : [];
+  const isCurrentUser = user.id === authUser?.id;
+  const userBlockingRelatedActions: IAction[] =
+    isUserBlockingEnabled && !isCurrentUser
+      ? [
+          isBlocked
+            ? {
+                handler: () => setShowUnblockUserModal(true),
+                label: formatMessage(blockUserMessages.unblockAction),
+                icon: 'user-circle' as const,
+              }
+            : {
+                handler: () => setShowBlockUserModal(true),
+                label: formatMessage(blockUserMessages.blockAction),
+                icon: 'halt' as const,
+              },
+        ]
+      : [];
 
   const setAsAdminAction: IAction = {
     handler: openChangeSeatModal,
