@@ -1071,6 +1071,7 @@
   "app.containers.NewAuthModal.confirmYourEmail": "أكِّد عنوان بريدك الإلكتروني",
   "app.containers.NewAuthModal.logIn": "تسجيل الدخول",
   "app.containers.NewAuthModal.steps.EmailConfirmation.codeMustHaveFourDigits": "يجب أن يتكون الرمز من 4 أرقام.",
+  "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.continueWithFranceConnect": "تواصل مع FranceConnect",
   "app.containers.NewAuthModal.steps.EmailSignUp.email": "البريد الإلكتروني",
   "app.containers.NewAuthModal.steps.EmailSignUp.emailFormatError": "إدخال عنوان بريد إلكتروني بالصيغة الصحيحة، مثل: name@provider.com",
   "app.containers.NewAuthModal.steps.EmailSignUp.emailMissingError": "إدخال عنوان بريد إلكتروني",
