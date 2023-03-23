@@ -95,7 +95,7 @@ resource 'Groups' do
       describe do
         before do
           create(:user, email: 'k@k.com')
-          create(:user_with_confirmation, email: 'kk@kk.com')
+          create(:user, email: 'kk@kk.com').update!(registration_completed_at: nil)
         end
 
         let(:title_multiloc) { build(:group).title_multiloc }
