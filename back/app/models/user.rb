@@ -130,6 +130,7 @@ class User < ApplicationRecord
 
   before_validation :set_cl1_migrated, on: :create
   before_validation :generate_slug
+  before_validation :complete_registration
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
   before_validation :assign_email_or_phone, if: :email_changed?
   before_destroy :remove_initiated_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
@@ -485,7 +486,6 @@ class User < ApplicationRecord
   def confirm
     self.email_confirmed_at = Time.zone.now if email_confirmed_at.nil?
     self.confirmation_required = false
-    complete_registration
   end
 
   def confirm!
@@ -538,11 +538,11 @@ class User < ApplicationRecord
     self.email_confirmed_at = nil
   end
 
-  def complete_registration
-    self.registration_completed_at = Time.now if registration_completed_at.nil?
-  end
-
   private
+
+  def complete_registration
+    self.registration_completed_at = Time.now if registration_completed_at.nil? && !confirmation_required?
+  end
 
   def generate_slug
     return if slug.present?

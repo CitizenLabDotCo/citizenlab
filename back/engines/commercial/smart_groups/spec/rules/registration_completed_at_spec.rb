@@ -21,14 +21,15 @@ describe SmartGroups::Rules::RegistrationCompletedAt do
 
   describe 'filter' do
     context 'on registration completion date' do
-      let!(:users) do
-        users = build_list(:user, 5)
+      before do
+        SettingsService.new.activate_feature! 'user_confirmation'
+        users = build_list(:user, 4)
         users[0].registration_completed_at = Time.now
         users[1].registration_completed_at = (Time.now - 25.hours)
         users[2].registration_completed_at = (Time.now + 25.hours)
         users[3].registration_completed_at = (Time.now - 1.year)
-        users[4].registration_completed_at = nil
         users.each(&:save!)
+        create(:user_with_confirmation) # registration_completed_at = nil
       end
 
       it "correctly filters on 'is_before' predicate" do
