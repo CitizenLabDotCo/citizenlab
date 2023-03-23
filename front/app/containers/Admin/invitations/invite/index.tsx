@@ -112,8 +112,10 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
   const [selectedFileBase64, setSelectedFileBase64] = useState<string | null>(
     null
   );
-  const [hasAdminRights, setHasAdminRights] = useState<boolean>(false);
-  const [hasModeratorRights, setHasModeratorRights] = useState<boolean>(false);
+  const [inviteesWillHaveAdminRights, setInviteesWillHaveAdminRights] =
+    useState<boolean>(false);
+  const [inviteesWillHaveModeratorRights, setInviteesWillHaveModeratorRights] =
+    useState<boolean>(false);
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
   const [selectedProjects, setSelectedProjects] = useState<IOption[] | null>(
     null
@@ -234,12 +236,12 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
 
   const handleAdminRightsOnToggle = () => {
     resetErrorAndSuccessState();
-    setHasAdminRights(!hasAdminRights);
+    setInviteesWillHaveAdminRights(!inviteesWillHaveAdminRights);
   };
 
   const handleModeratorRightsOnToggle = () => {
     resetErrorAndSuccessState();
-    setHasModeratorRights(!hasModeratorRights);
+    setInviteesWillHaveModeratorRights(!inviteesWillHaveModeratorRights);
   };
 
   const handleLocaleOnChange = (selectedLocale: Locale) => {
@@ -285,8 +287,8 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
     setSelectedView(selectedView);
     setSelectedEmails(null);
     setSelectedFileBase64(null);
-    setHasAdminRights(false);
-    setHasModeratorRights(false);
+    setInviteesWillHaveAdminRights(false);
+    setInviteesWillHaveModeratorRights(false);
     setSelectedLocale(tenantLocales ? tenantLocales[0] : null);
     setSelectedProjects(null);
     setSelectedGroups(null);
@@ -310,11 +312,15 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
   const getRoles = () => {
     const roles: INewBulkInvite['roles'] = [];
 
-    if (hasAdminRights) {
+    if (inviteesWillHaveAdminRights) {
       roles.push({ type: 'admin' });
     }
 
-    if (hasModeratorRights && selectedProjects && selectedProjects.length > 0) {
+    if (
+      inviteesWillHaveModeratorRights &&
+      selectedProjects &&
+      selectedProjects.length > 0
+    ) {
       selectedProjects.forEach((project) => {
         roles.push({ type: 'project_moderator', project_id: project.value });
       });
@@ -388,7 +394,7 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
 
   const validateInvitation = () => {
     const isValidEmails = isString(selectedEmails) && !isEmpty(selectedEmails);
-    const hasValidRights = hasModeratorRights
+    const hasValidRights = inviteesWillHaveModeratorRights
       ? !isEmpty(selectedProjects)
       : true;
     const isValidInvitationTemplate =
@@ -399,7 +405,7 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
   const handleSubmitAction = (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (hasAdminRights || hasModeratorRights) {
+    if (inviteesWillHaveAdminRights || inviteesWillHaveModeratorRights) {
       setShowModal(true);
     } else {
       onSubmit();
@@ -460,7 +466,7 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
               />
             </Label>
             <Toggle
-              checked={hasAdminRights}
+              checked={inviteesWillHaveAdminRights}
               onChange={handleAdminRightsOnToggle}
             />
           </Box>
@@ -494,12 +500,12 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
               />
             </Label>
             <StyledToggle
-              checked={hasModeratorRights}
+              checked={inviteesWillHaveModeratorRights}
               onChange={handleModeratorRightsOnToggle}
             />
           </Box>
 
-          {hasModeratorRights && (
+          {inviteesWillHaveModeratorRights && (
             <>
               <MultipleSelect
                 value={selectedProjects}
@@ -697,7 +703,7 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
         closeModal={closeModal}
         //TODO: At the moment this number only includes manually added emails. We need to handle emails from the uploaded file as well when that ticket is completed.
         noOfSeatsToAdd={selectedEmails?.split(',').length || 0}
-        seatType={hasAdminRights ? 'admin' : 'collaborator'}
+        seatType={inviteesWillHaveAdminRights ? 'admin' : 'collaborator'}
       />
     </>
   );
