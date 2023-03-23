@@ -882,20 +882,6 @@ RSpec.describe User, type: :model do
       end
     end
 
-    describe '#reset_confirmation_code!' do
-      it 'changes the code' do
-        expect { user.reset_confirmation_code! }.to change(user, :email_confirmation_code)
-      end
-
-      it 'increments the reset count' do
-        expect { user.reset_confirmation_code! }.to change(user, :email_confirmation_code_reset_count).from(0).to(1)
-      end
-
-      it 'should save a change to the email confirmation code' do
-        expect { user.reset_confirmation_code! }.to change(user, :saved_change_to_email_confirmation_code?)
-      end
-    end
-
     describe '#increment_confirmation_retry_count!' do
       it 'increments the retry count' do
         expect { user.increment_confirmation_retry_count! }.to change(user, :email_confirmation_retry_count).from(0).to(1)
@@ -908,11 +894,11 @@ RSpec.describe User, type: :model do
 
     describe '#increment_confirmation_code_reset_count!' do
       it 'increments the reset count' do
-        expect { user.reset_confirmation_code! }.to change(user, :email_confirmation_code_reset_count).from(0).to(1)
+        expect { user.increment_confirmation_code_reset_count! }.to change(user, :email_confirmation_code_reset_count).from(0).to(1)
       end
 
       it 'saved the change to the reset count' do
-        expect { user.reset_confirmation_code! }.to change(user, :saved_change_to_email_confirmation_code_reset_count?)
+        expect { user.increment_confirmation_code_reset_count! }.to change(user, :saved_change_to_email_confirmation_code_reset_count?)
       end
     end
 
@@ -924,26 +910,6 @@ RSpec.describe User, type: :model do
 
       it 'should not save a change to the email confirmation code' do
         expect { user.reset_confirmation_code }.not_to change(user, :saved_change_to_email_confirmation_code?)
-      end
-    end
-
-    describe '#increment_confirmation_code_reset_count' do
-      it 'increments the reset count' do
-        expect { user.increment_confirmation_code_reset_count }.to change(user, :email_confirmation_code_reset_count).from(0).to(1)
-      end
-
-      it 'should not save the change to the reset count' do
-        expect { user.increment_confirmation_code_reset_count }.not_to change(user, :saved_change_to_email_confirmation_code_reset_count?)
-      end
-    end
-
-    describe '#increment_confirmation_retry_count' do
-      it 'increments the retry count' do
-        expect { user.increment_confirmation_retry_count }.to change(user, :email_confirmation_retry_count).from(0).to(1)
-      end
-
-      it 'should not save the change to the retry count' do
-        expect { user.increment_confirmation_retry_count }.not_to change(user, :saved_change_to_email_confirmation_retry_count?)
       end
     end
 

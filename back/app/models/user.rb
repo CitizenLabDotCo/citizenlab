@@ -492,29 +492,13 @@ class User < ApplicationRecord
     self.email_confirmation_code = use_fake_code? ? '1234' : rand.to_s[2..5]
   end
 
-  def reset_confirmation_code!
-    reset_confirmation_code
-    increment_confirmation_code_reset_count
-    save!
-  end
-
-  # Only really used in the bang version apart from above
-  def increment_confirmation_code_reset_count
-    self.email_confirmation_code_reset_count += 1
-  end
-
   def increment_confirmation_code_reset_count!
-    increment_confirmation_code_reset_count
+    self.email_confirmation_code_reset_count += 1
     save!
-  end
-
-  # TODO: Not used apart from within the bang version
-  def increment_confirmation_retry_count
-    self.email_confirmation_retry_count += 1
   end
 
   def increment_confirmation_retry_count!
-    increment_confirmation_retry_count
+    self.email_confirmation_retry_count += 1
     save!
   end
 
