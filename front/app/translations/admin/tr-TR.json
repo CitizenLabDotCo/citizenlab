@@ -1592,7 +1592,6 @@
   "app.containers.AdminPage.groups.permissions.saveErrorMessage": "Bir sorun oluştu, lütfen daha sonra tekrar deneyin.",
   "app.containers.AdminPage.groups.permissions.saveSuccess": "Başarılı!",
   "app.containers.AdminPage.groups.permissions.saveSuccessMessage": "Yaptığınız değişiklikler kaydedildi.",
-  "app.containers.AdminPage.groups.permissions.unknownName": "Bilinmeyen ad",
   "app.containers.AdminPage.projects.all.existingProjects": "Mevcut projeler",
   "app.containers.AdminPage.projects.all.newProjectFolder": "Bir proje klasörü oluşturun",
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projeler ve klasörler",
