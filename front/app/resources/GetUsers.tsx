@@ -31,9 +31,10 @@ export interface InputProps {
   search?: string;
   // Not used
   groupId?: string;
-  // 1 instead of 2?
+  // 1 instead of 2? Do these work if canAdmin doesn't?
   canModerateProject?: string;
   canModerate?: boolean;
+  // Doesn't work with false
   canAdmin?: boolean;
   notCitizenlabMember?: boolean;
   // Not used
