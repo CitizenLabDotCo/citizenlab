@@ -15,23 +15,9 @@ module GranularPermissions
     factories_path = File.expand_path('../../spec/factories', __dir__)
     config.factory_bot.definition_file_paths += [factories_path] if defined?(FactoryBotRails)
 
-    def self.register_feature
+    config.to_prepare do
       require 'granular_permissions/feature_specification'
       AppConfiguration::Settings.add_feature(GranularPermissions::FeatureSpecification)
-    end
-
-    def self.register_permission_scopes
-      require 'citizen_lab/permissions/scope_types/project'
-      require 'citizen_lab/permissions/scope_types/phase'
-      require 'citizen_lab/permissions/scope_types/global'
-      PermissionsService.register_scope_type(CitizenLab::Permissions::ScopeTypes::Project)
-      PermissionsService.register_scope_type(CitizenLab::Permissions::ScopeTypes::Phase)
-      PermissionsService.register_scope_type(CitizenLab::Permissions::ScopeTypes::Global)
-    end
-
-    config.to_prepare do
-      GranularPermissions::Engine.register_feature
-      GranularPermissions::Engine.register_permission_scopes
     end
   end
 end
