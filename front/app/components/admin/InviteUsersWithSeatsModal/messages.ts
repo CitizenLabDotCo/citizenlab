@@ -9,10 +9,10 @@ export default defineMessages({
     id: 'app.containers.admin.inviteUsersWithSeatsModal.giveAdminRights',
     defaultMessage: 'Give admin rights',
   },
-  descriptionMessage: {
-    id: 'app.containers.admin.inviteUsersWithSeatsModal.descriptionMessage',
+  infoMessage: {
+    id: 'app.containers.admin.inviteUsersWithSeatsModal.infoMessage',
     defaultMessage:
-      'You are inviting {noOfUsers} {noOfUsers, plural, one {user} other {users}} with {seatType} rights. Based on how many users are included in the invitation, you may need to buy additional seats.',
+      'You are inviting {noOfUsers, plural, one {1 user} other {# users}} with {seatType} rights. Based on how many users are included in the invitation, you may need to buy additional seats.',
   },
   admin: {
     id: 'app.containers.admin.inviteUsersWithSeatsModal.admin',
@@ -22,10 +22,10 @@ export default defineMessages({
     id: 'app.containers.admin.inviteUsersWithSeatsModal.collaborator',
     defaultMessage: 'collaborator',
   },
-  acknowledgement: {
-    id: 'app.containers.admin.inviteUsersWithSeatsModal.acknowledgement',
+  billingAcknowledgement: {
+    id: 'app.containers.admin.inviteUsersWithSeatsModal.billingAcknowledgement',
     defaultMessage:
-      'I acknowledge that the billing could be updated if the total number of {seatTypes} exceeds the allowed number of seats',
+      'I acknowledge that the billing could be updated if the total number of {seatTypes} exceeds the allowed number of seats.',
   },
   admins: {
     id: 'app.containers.admin.inviteUsersWithSeatsModal.admins',

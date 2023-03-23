@@ -50,7 +50,7 @@ const InviteUsersWithSeatsModal = ({
     setHasAcknowledged(!hasAcknowledged);
   };
 
-  const handleConfrimClick = () => {
+  const handleConfirmClick = () => {
     if (!hasAcknowledged) {
       setShowWarning(true);
       return;
@@ -72,7 +72,7 @@ const InviteUsersWithSeatsModal = ({
       <Box display="flex" flexDirection="column" width="100%" p="32px">
         <Text color="textPrimary" fontSize="m" my="0px">
           <FormattedMessage
-            {...messages.descriptionMessage}
+            {...messages.infoMessage}
             values={{
               noOfUsers: noOfSeatsToAdd,
               seatType: formatMessage(seatTypeMessages[seatType]),
@@ -88,7 +88,7 @@ const InviteUsersWithSeatsModal = ({
           onChange={onChange}
           label={
             <Text color="blue500" my="0px">
-              {formatMessage(messages.acknowledgement, {
+              {formatMessage(messages.billingAcknowledgement, {
                 seatTypes: formatMessage(seatTypesMessages[seatType]),
               })}
             </Text>
@@ -102,10 +102,11 @@ const InviteUsersWithSeatsModal = ({
         )}
 
         <Box display="flex" mt="32px">
-          <Button disabled={!hasAcknowledged}>
-            <Box onClick={handleConfrimClick} data-testid="confirm-button-text">
-              {formatMessage(messages.confirmButtonText)}
-            </Box>
+          <Button
+            onClick={handleConfirmClick}
+            data-testid="confirm-button-text"
+          >
+            {formatMessage(messages.confirmButtonText)}
           </Button>
         </Box>
       </Box>
