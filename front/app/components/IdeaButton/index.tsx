@@ -46,7 +46,6 @@ import { darken } from 'polished';
 
 // typings
 import { LatLng } from 'leaflet';
-import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 import { getButtonMessage } from './utils';
 import { IPhaseData } from 'services/phases';
 
@@ -168,21 +167,19 @@ const IdeaButton = memo<Props & WrappedComponentProps>(
       if (!isNilOrError(project)) {
         trackEventByName(tracks.redirectedToIdeaFrom);
 
-        const isUserModerator =
-          !isNilOrError(authUser) &&
-          canModerateProject(projectId, { data: authUser });
-
-        const parameters =
-          phase?.id && isUserModerator ? `&phase_id=${phase.id}` : '';
+        const positionParams = latLng
+          ? { lat: latLng.lat, lng: latLng.lng }
+          : {};
 
         clHistory.push({
           pathname: `/projects/${project.attributes.slug}/ideas/new`,
-          search: latLng
-            ? stringify(
-                { lat: latLng.lat, lng: latLng.lng },
-                { addQueryPrefix: true }
-              ).concat(parameters)
-            : undefined,
+          search: stringify(
+            {
+              ...positionParams,
+              phase_id: phase?.id,
+            },
+            { addQueryPrefix: true }
+          ),
         });
       }
     };
