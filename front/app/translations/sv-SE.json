@@ -1071,6 +1071,7 @@
   "app.containers.NewAuthModal.confirmYourEmail": "Bekräfta din e-postadress",
   "app.containers.NewAuthModal.logIn": "Logga in",
   "app.containers.NewAuthModal.steps.EmailConfirmation.codeMustHaveFourDigits": "Koden måste ha 4 siffror.",
+  "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.continueWithFranceConnect": "Fortsätt med FranceConnect",
   "app.containers.NewAuthModal.steps.EmailSignUp.email": "E-post",
   "app.containers.NewAuthModal.steps.EmailSignUp.emailFormatError": "Ange en e-postadress i rätt format, t.ex. name@provider.com",
   "app.containers.NewAuthModal.steps.EmailSignUp.emailMissingError": "Ange en e-postadress",
