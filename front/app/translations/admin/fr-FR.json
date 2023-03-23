@@ -157,7 +157,7 @@
   "app.components.admin.PostManager.topicsTabTooltipText": "Ajoutez des étiquettes à une contribution en les glissant vers l'étiquette de votre choix.",
   "app.components.admin.PostManager.up": "Pour",
   "app.components.admin.PostManager.votes": "Votes",
-  "app.components.admin.PostManager.xDaysLeft": "{x, plural, =0 {Less than a day} one {One day} other {# days}} left",
+  "app.components.admin.PostManager.xDaysLeft": "{x, plural, =0 {Moins d'un jour restant} one {Un jour restant} other {# jours restants}}",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "de ",
   "app.components.admin.ReportExportMenu.FileName.groupFilter": "groupe",
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "projet",
