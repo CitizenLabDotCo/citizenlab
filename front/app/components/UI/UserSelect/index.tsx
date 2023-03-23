@@ -140,7 +140,7 @@ const UserSelect = ({
     : usersList;
 
   return (
-    <Box id="e2e-user-select" width="100%">
+    <Box id="e2e-user-select">
       <ReactSelect
         id={id}
         inputId={inputId}
