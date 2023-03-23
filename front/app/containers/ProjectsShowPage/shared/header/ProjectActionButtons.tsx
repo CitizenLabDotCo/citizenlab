@@ -71,24 +71,21 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   }, [divId]);
 
   const scrollTo = useCallback(
-    (id: string, shouldSelectCurrentPhase = true) =>
-      (event: FormEvent) => {
-        event.preventDefault();
+    (id: string) => {
+      if (!isNilOrError(project)) {
+        const isOnProjectPage = pathname.endsWith(
+          `/projects/${project.attributes.slug}`
+        );
 
-        if (!isNilOrError(project)) {
-          const isOnProjectPage = pathname.endsWith(
-            `/projects/${project.attributes.slug}`
-          );
+        currentPhase && selectPhase(currentPhase);
 
-          currentPhase && shouldSelectCurrentPhase && selectPhase(currentPhase);
-
-          if (isOnProjectPage) {
-            scrollToElement({ id, shouldFocus: true });
-          } else {
-            clHistory.push(`/projects/${project.attributes.slug}#${id}`);
-          }
+        if (isOnProjectPage) {
+          scrollToElement({ id, shouldFocus: true });
+        } else {
+          clHistory.push(`/projects/${project.attributes.slug}#${id}`);
         }
-      },
+      }
+    },
     [currentPhase, project, pathname]
   );
 
@@ -114,6 +111,8 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     registrationNotCompleted;
 
   const handleTakeSurveyClick = (event: FormEvent) => {
+    event.preventDefault();
+
     if (showSignIn) {
       openSignUpInModal({
         flow: 'signup',
@@ -123,12 +122,12 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           id: currentPhase?.id ?? project.id,
           action: 'taking_survey',
         },
-        onSuccess: () => scrollTo('project-survey')(event),
+        onSuccess: () => scrollTo('project-survey'),
       });
     }
 
     if (enabled === true) {
-      scrollTo('project-survey')(event);
+      scrollTo('project-survey');
     }
   };
 
@@ -195,7 +194,10 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
         <SeeIdeasButton
           id="e2e-project-see-ideas-button"
           buttonStyle="secondary"
-          onClick={scrollTo('project-ideas')}
+          onClick={(e) => {
+            e.preventDefault();
+            scrollTo('project-ideas');
+          }}
           fontWeight="500"
         >
           <FormattedMessage
@@ -242,7 +244,10 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       {showPoll && (
         <Button
           buttonStyle="primary"
-          onClick={scrollTo('project-poll')}
+          onClick={(e) => {
+            e.preventDefault();
+            scrollTo('project-poll');
+          }}
           fontWeight="500"
         >
           <FormattedMessage {...messages.takeThePoll} />
