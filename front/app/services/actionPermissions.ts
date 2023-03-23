@@ -38,7 +38,12 @@ export interface IPCPermissionData {
   type: string;
   attributes: {
     action: IPCPermissionAction;
-    permitted_by: 'everyone' | 'users' | 'groups' | 'admins_moderators';
+    permitted_by:
+      | 'everyone'
+      | 'users'
+      | 'groups'
+      | 'admins_moderators'
+      | 'everyone_confirmed_email';
     created_at: string;
     updated_at: string;
   };

@@ -7,7 +7,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import useProjectFolderModerators from 'hooks/useProjectFolderModerators';
-import useAuthUser from 'hooks/useAuthUser';
 import {
   addFolderModerator,
   deleteFolderModerator,
@@ -44,7 +43,6 @@ const AddButton = styled(Button)`
 const FolderPermissions = () => {
   const { projectFolderId } = useParams() as { projectFolderId: string };
   const { formatMessage } = useIntl();
-  const authUser = useAuthUser();
   const folderModerators = useProjectFolderModerators(projectFolderId);
 
   const [selectedUserOptions, setSelectedUserOptions] = useState<IOption[]>([]);
@@ -73,10 +71,9 @@ const FolderPermissions = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedUserOptions]);
 
-  const handleDeleteFolderModeratorClick =
-    (projectFolderId: string, moderatorId: string) => () => {
-      deleteFolderModerator(projectFolderId, moderatorId);
-    };
+  const handleDeleteFolderModeratorClick = (moderatorId: string) => () => {
+    deleteFolderModerator(projectFolderId, moderatorId);
+  };
 
   return (
     <Box
@@ -142,34 +139,30 @@ const FolderPermissions = () => {
         <List>
           <>
             {!isNilOrError(folderModerators) &&
-              !isNilOrError(authUser) &&
               folderModerators.map((folderModerator, index) => (
+                // This row is a near copy of ModeratorListRow. They could be
+                // extracted in 1 component.
                 <Row
                   key={folderModerator.id}
                   isLastItem={index === folderModerators.length - 1}
                 >
                   <Box display="flex" alignItems="center">
-                    <Box mr="8px">
+                    <Box mr="12px">
                       <Avatar userId={folderModerator.id} size={30} />
                     </Box>
-                    <Text as="span" m={'0'}>
+                    <Text as="span" m="0">
                       {`${folderModerator.attributes.first_name} ${folderModerator.attributes.last_name}`}
                     </Text>
                   </Box>
-                  <Text as="span" m={'0'}>
+                  <Text as="span" m="0">
                     {folderModerator.attributes.email}
                   </Text>
                   <Button
                     onClick={handleDeleteFolderModeratorClick(
-                      projectFolderId,
                       folderModerator.id
                     )}
                     buttonStyle="text"
                     icon="delete"
-                    disabled={
-                      !isNilOrError(authUser) &&
-                      authUser.id === folderModerator.id
-                    }
                   >
                     <FormattedMessage {...messages.deleteFolderManagerLabel} />
                   </Button>

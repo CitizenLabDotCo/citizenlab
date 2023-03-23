@@ -25,4 +25,8 @@ class PermissionPolicy < ApplicationPolicy
   def participation_conditions?
     true
   end
+
+  def requirements?
+    true
+  end
 end

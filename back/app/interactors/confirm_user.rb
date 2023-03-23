@@ -6,8 +6,8 @@ class ConfirmUser < ApplicationInteractor
   def call
     validate_user
     validate_code_expiration
-    validate_code_value
     validate_retry_count
+    validate_code_value
     confirm_user
   end
 
@@ -24,6 +24,8 @@ class ConfirmUser < ApplicationInteractor
   end
 
   def validate_retry_count
+    return if user.email_confirmation_code == code # don't increment unless code is valid
+
     return if user.increment_confirmation_retry_count!
 
     fail_with_error! :code, :too_many_retries
