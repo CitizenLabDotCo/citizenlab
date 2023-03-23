@@ -1071,6 +1071,7 @@
   "app.containers.NewAuthModal.confirmYourEmail": "E-postanızı onaylayın",
   "app.containers.NewAuthModal.logIn": "Giriş yap",
   "app.containers.NewAuthModal.steps.EmailConfirmation.codeMustHaveFourDigits": "Kod 4 haneli olmalıdır.",
+  "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.continueWithFranceConnect": "FranceConnect ile devam edin",
   "app.containers.NewAuthModal.steps.EmailSignUp.email": "E-posta",
   "app.containers.NewAuthModal.steps.EmailSignUp.emailFormatError": "Doğru formatta bir e-posta adresi girin, örneğin name@provider.com",
   "app.containers.NewAuthModal.steps.EmailSignUp.emailMissingError": "Bir e-posta adresi sağlayın",
