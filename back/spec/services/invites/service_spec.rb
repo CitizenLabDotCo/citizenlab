@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe InvitesService do
+describe Invites::Service do
   let(:service) { described_class.new }
   let(:service_errors) { service.instance_variable_get(:@error_storage).instance_variable_get(:@errors) }
 
@@ -165,7 +165,7 @@ describe InvitesService do
     end
 
     context 'with file that exceeds maximum supported number of invites' do
-      let(:hash_array) { (InvitesService::MAX_INVITES + 1).times.each.map { { first_name: 'Jezus' } } }
+      let(:hash_array) { (Invites::Service::MAX_INVITES + 1).times.each.map { { first_name: 'Jezus' } } }
 
       it 'fails with max_invites_limit_exceeded error' do
         expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(Invites::FailedError)

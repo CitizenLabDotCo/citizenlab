@@ -67,7 +67,7 @@ class WebApi::V1::InvitesController < ApplicationController
 
   def bulk_create
     authorize :invite
-    InvitesService.new.bulk_create(
+    Invites::Service.new.bulk_create(
       bulk_create_params[:emails].map { |e| { 'email' => e } },
       bulk_create_params.except(:emails).stringify_keys,
       current_user
@@ -80,7 +80,7 @@ class WebApi::V1::InvitesController < ApplicationController
   def bulk_create_xlsx
     authorize :invite
 
-    InvitesService.new.bulk_create_xlsx(
+    Invites::Service.new.bulk_create_xlsx(
       bulk_create_xlsx_params[:xlsx],
       bulk_create_params.except(:xlsx).stringify_keys,
       current_user
@@ -92,7 +92,7 @@ class WebApi::V1::InvitesController < ApplicationController
 
   def example_xlsx
     authorize :invite
-    xlsx = InvitesService.new.generate_example_xlsx
+    xlsx = Invites::Service.new.generate_example_xlsx
     send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'invites.xlsx'
   end
 

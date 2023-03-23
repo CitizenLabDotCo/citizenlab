@@ -2,7 +2,7 @@
 
 require 'rubyXL'
 
-class InvitesService
+class Invites::Service
   MAX_INVITES = 1000
 
   delegate :add_error, :fail_now, to: :@error_storage
