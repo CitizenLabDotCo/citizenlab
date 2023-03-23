@@ -8,19 +8,24 @@ interface Params {
 
 type OpenAuthModalParams = Partial<Omit<ISignUpInMetaData, 'onSuccess'>>;
 
-export default function useOpenAuthModal({ onSuccess, waitIf }: Params) {
+export default function useOpenAuthModal({ onSuccess, waitIf }: Params = {}) {
   const [executeSuccess, setExecuteSuccess] = useState(false);
 
-  const openAuthModal = useCallback((metaData: OpenAuthModalParams) => {
-    return openSignUpInModal({
-      ...metaData,
-      onSuccess: () => setExecuteSuccess(true),
-    });
-  }, []);
+  const openAuthModal = useCallback(
+    (metaData?: OpenAuthModalParams) => {
+      setExecuteSuccess(false);
+
+      return openSignUpInModal({
+        ...metaData,
+        onSuccess: onSuccess ? () => setExecuteSuccess(true) : undefined,
+      });
+    },
+    [onSuccess]
+  );
 
   useEffect(() => {
-    if (!onSuccess || waitIf || !executeSuccess) return;
-    onSuccess();
+    if (waitIf || !executeSuccess) return;
+    onSuccess?.();
     setExecuteSuccess(false);
   }, [executeSuccess, waitIf, onSuccess]);
 
