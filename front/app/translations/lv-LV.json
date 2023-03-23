@@ -1071,6 +1071,7 @@
   "app.containers.NewAuthModal.confirmYourEmail": "Apstipriniet savu e-pasta adresi",
   "app.containers.NewAuthModal.logIn": "Piesakieties",
   "app.containers.NewAuthModal.steps.EmailConfirmation.codeMustHaveFourDigits": "Kodam jābūt 4 cipariem.",
+  "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.continueWithFranceConnect": "Turpināt ar FranceConnect",
   "app.containers.NewAuthModal.steps.EmailSignUp.email": "E-pasts",
   "app.containers.NewAuthModal.steps.EmailSignUp.emailFormatError": "Norādiet e-pasta adresi pareizā formātā, piemēram, name@provider.com.",
   "app.containers.NewAuthModal.steps.EmailSignUp.emailMissingError": "Sniedziet e-pasta adresi",
