@@ -111,6 +111,96 @@ resource 'Invites' do
       end
     end
 
+    post 'web_api/v1/invites/count_new_seats' do
+      with_options scope: :invites do
+        parameter :emails, 'Array of e-mail addresses of invitees. E-mails can be null for anonymous invites', required: true
+        parameter :roles, 'Roles for all invitees, defaults to normal user', required: false
+      end
+
+      describe do
+        let(:emails) { Array.new(5) { Faker::Internet.email }.concat([nil]) }
+        let(:project) { create(:project) }
+
+        let(:roles) do
+          [
+            { 'type' => 'admin' },
+            { 'type' => 'project_moderator', 'project_id' => project.id }
+          ]
+        end
+
+        before do
+          create(:project_moderator, projects: [project])
+          create(:admin)
+          create(:project_moderator, email: emails[0], projects: [project])
+          create(:admin, email: emails[1])
+        end
+
+        example 'Returns newly added admin and moderator counts' do
+          expect(User.billed_admins.count).to eq 3
+          expect(User.billed_moderators.count).to eq 2
+          do_request
+          assert_status 200
+          expect(Invite.count).to eq 0
+          expect(response_data[:attributes]).to eq(
+            newly_added_admins_number: 4,
+            newly_added_project_moderators_number: -1
+          )
+          expect(User.billed_admins.count).to eq 3
+          expect(User.billed_moderators.count).to eq 2
+        end
+      end
+    end
+
+    post 'web_api/v1/invites/count_new_seats_xlsx' do
+      with_options scope: :invites do
+        parameter :xlsx, 'Base64 encoded xlsx file with invite details. See web_api/v1/invites/example_xlsx for the format', required: true
+        parameter :roles, 'Roles for invitees without a specified admin column in xlsx, default to no roles', required: false
+      end
+
+      let(:xlsx_stringio) { XlsxService.new.hash_array_to_xlsx(hash_array) }
+      let(:xlsx) { "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{Base64.encode64(xlsx_stringio.read)}" }
+
+      describe do
+        let(:emails) { Array.new(5) { Faker::Internet.email }.concat([nil]) }
+        let(:project) { create(:project) }
+        let(:hash_array) do
+          emails.map do |email|
+            {
+              email: email,
+              admin: true
+            }
+          end
+        end
+        let(:roles) do
+          [
+            { 'type' => 'admin' },
+            { 'type' => 'project_moderator', 'project_id' => project.id }
+          ]
+        end
+
+        before do
+          create(:project_moderator, projects: [project])
+          create(:admin)
+          create(:project_moderator, email: emails[0], projects: [project])
+          create(:admin, email: emails[1])
+        end
+
+        example 'Returns newly added admin and moderator counts' do
+          expect(User.billed_admins.count).to eq 3
+          expect(User.billed_moderators.count).to eq 2
+          do_request
+          assert_status 200
+          expect(Invite.count).to eq 0
+          expect(response_data[:attributes]).to eq(
+            newly_added_admins_number: 4,
+            newly_added_project_moderators_number: -1
+          )
+          expect(User.billed_admins.count).to eq 3
+          expect(User.billed_moderators.count).to eq 2
+        end
+      end
+    end
+
     post 'web_api/v1/invites/bulk_create' do
       with_options scope: :invites do
         parameter :emails, 'Array of e-mail addresses of invitees. E-mails can be null for anonymous invites', required: true

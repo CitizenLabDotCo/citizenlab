@@ -65,13 +65,36 @@ class WebApi::V1::InvitesController < ApplicationController
     end
   end
 
+  def count_new_seats
+    authorize :invite
+    seat_numbers = Invites::SeatsCounter.new.count_new_seats { _bulk_create }
+    render json: {
+      data: {
+        type: 'count_new_seats',
+        attributes: seat_numbers
+      }
+    }
+  rescue Invites::FailedError => e
+    render json: { errors: e.to_h }, status: :unprocessable_entity
+  end
+
+  def count_new_seats_xlsx
+    authorize :invite
+
+    seat_numbers = Invites::SeatsCounter.new.count_new_seats { _bulk_create_xlsx }
+    render json: {
+      data: {
+        type: 'count_new_seats_xlsx',
+        attributes: seat_numbers
+      }
+    }
+  rescue Invites::FailedError => e
+    render json: { errors: e.to_h }, status: :unprocessable_entity
+  end
+
   def bulk_create
     authorize :invite
-    Invites::Service.new.bulk_create(
-      bulk_create_params[:emails].map { |e| { 'email' => e } },
-      bulk_create_params.except(:emails).stringify_keys,
-      current_user
-    )
+    _bulk_create
     head :ok
   rescue Invites::FailedError => e
     render json: { errors: e.to_h }, status: :unprocessable_entity
@@ -79,12 +102,7 @@ class WebApi::V1::InvitesController < ApplicationController
 
   def bulk_create_xlsx
     authorize :invite
-
-    Invites::Service.new.bulk_create_xlsx(
-      bulk_create_xlsx_params[:xlsx],
-      bulk_create_params.except(:xlsx).stringify_keys,
-      current_user
-    )
+    _bulk_create_xlsx
     head :ok
   rescue Invites::FailedError => e
     render json: { errors: e.to_h }, status: :unprocessable_entity
@@ -148,6 +166,24 @@ class WebApi::V1::InvitesController < ApplicationController
     else
       head :internal_server_error
     end
+  end
+
+  private
+
+  def _bulk_create
+    Invites::Service.new.bulk_create(
+      bulk_create_params[:emails].map { |e| { 'email' => e } },
+      bulk_create_params.except(:emails).stringify_keys,
+      current_user
+    )
+  end
+
+  def _bulk_create_xlsx
+    Invites::Service.new.bulk_create_xlsx(
+      bulk_create_xlsx_params[:xlsx],
+      bulk_create_params.except(:xlsx).stringify_keys,
+      current_user
+    )
   end
 
   def create_params
