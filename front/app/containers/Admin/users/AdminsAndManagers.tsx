@@ -29,7 +29,7 @@ const AllUsers = () => {
         subtitle={messages.adminsAndManagersSubtitle}
       />
       <UserManager search={search} canModerate notCitizenlabMember />
-      <StyledBox>
+      <StyledBox mt="20px">
         <SeatInfo seatType="admin" width={null} />
         <SeatInfo seatType="project_manager" width={null} />
       </StyledBox>
