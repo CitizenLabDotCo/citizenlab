@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe InvitesService do
   let(:service) { described_class.new }
+  let(:service_errors) { service.instance_variable_get(:@error_storage).instance_variable_get(:@errors) }
 
   before do
     settings = AppConfiguration.instance.settings
@@ -12,7 +13,7 @@ describe InvitesService do
   end
 
   describe 'bulk_create_xlsx' do
-    let(:xlsx) { XlsxService.new.hash_array_to_xlsx(hash_array) }
+    let(:xlsx) { Base64.encode64(XlsxService.new.hash_array_to_xlsx(hash_array).read) }
 
     context do
       let!(:groups) { create_list(:group, 3) }
@@ -145,18 +146,18 @@ describe InvitesService do
         ]
       end
 
-      it "raises 'InviteError' errors" do
+      it "raises 'Invites::InviteError' errors" do
         expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error do |e|
-          expect(e).to be_a(InvitesService::InvitesFailedError)
-          expect(e.errors.length).to be(2)
+          expect(e).to be_a(Invites::FailedError)
+          expect(e.errors.length).to eq(2)
 
           error = e.errors[0]
-          expect(error).to be_a(InvitesService::InviteError)
+          expect(error).to be_a(Invites::InviteError)
           expect(error.error_key).to eq('malformed_custom_field_value')
           expect(error.value).to eq('nan')
 
           error = e.errors[1]
-          expect(error).to be_a(InvitesService::InviteError)
+          expect(error).to be_a(Invites::InviteError)
           expect(error.error_key).to eq('malformed_custom_field_value')
           expect(error.value).to eq('non-truthy')
         end
@@ -167,9 +168,9 @@ describe InvitesService do
       let(:hash_array) { (InvitesService::MAX_INVITES + 1).times.each.map { { first_name: 'Jezus' } } }
 
       it 'fails with max_invites_limit_exceeded error' do
-        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(InvitesService::InvitesFailedError)
-        expect(service.errors.size).to eq 1
-        expect(service.errors.first.error_key).to eq InvitesService::INVITE_ERRORS[:max_invites_limit_exceeded]
+        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(Invites::FailedError)
+        expect(service_errors.size).to eq 1
+        expect(service_errors.first.error_key).to eq Invites::ErrorStorage::INVITE_ERRORS[:max_invites_limit_exceeded]
       end
     end
 
@@ -177,9 +178,9 @@ describe InvitesService do
       let(:hash_array) { [] }
 
       it 'fails with no_invites_specified error' do
-        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(InvitesService::InvitesFailedError)
-        expect(service.errors.size).to eq 1
-        expect(service.errors.first.error_key).to eq InvitesService::INVITE_ERRORS[:no_invites_specified]
+        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(Invites::FailedError)
+        expect(service_errors.size).to eq 1
+        expect(service_errors.first.error_key).to eq Invites::ErrorStorage::INVITE_ERRORS[:no_invites_specified]
       end
     end
 
@@ -191,11 +192,11 @@ describe InvitesService do
       end
 
       it 'fails with unknown_group error' do
-        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(InvitesService::InvitesFailedError)
-        expect(service.errors.size).to eq 1
-        expect(service.errors.first.error_key).to eq InvitesService::INVITE_ERRORS[:unknown_group]
-        expect(service.errors.first.row).to eq 2
-        expect(service.errors.first.value).to eq 'The Jackson 5'
+        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(Invites::FailedError)
+        expect(service_errors.size).to eq 1
+        expect(service_errors.first.error_key).to eq Invites::ErrorStorage::INVITE_ERRORS[:unknown_group]
+        expect(service_errors.first.row).to eq 2
+        expect(service_errors.first.value).to eq 'The Jackson 5'
       end
     end
 
@@ -208,11 +209,11 @@ describe InvitesService do
       end
 
       it 'fails with malformed_groups_value error' do
-        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(InvitesService::InvitesFailedError)
-        expect(service.errors.size).to eq 1
-        expect(service.errors.first.error_key).to eq InvitesService::INVITE_ERRORS[:malformed_groups_value]
-        expect(service.errors.first.row).to eq 3
-        expect(service.errors.first.value).to eq 24
+        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(Invites::FailedError)
+        expect(service_errors.size).to eq 1
+        expect(service_errors.first.error_key).to eq Invites::ErrorStorage::INVITE_ERRORS[:malformed_groups_value]
+        expect(service_errors.first.row).to eq 3
+        expect(service_errors.first.value).to eq 24
       end
     end
 
@@ -224,11 +225,11 @@ describe InvitesService do
       end
 
       it 'fails with malformed_admin_value error' do
-        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(InvitesService::InvitesFailedError)
-        expect(service.errors.size).to eq 1
-        expect(service.errors.first.error_key).to eq InvitesService::INVITE_ERRORS[:malformed_admin_value]
-        expect(service.errors.first.row).to eq 2
-        expect(service.errors.first.value).to eq 'yup'
+        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(Invites::FailedError)
+        expect(service_errors.size).to eq 1
+        expect(service_errors.first.error_key).to eq Invites::ErrorStorage::INVITE_ERRORS[:malformed_admin_value]
+        expect(service_errors.first.row).to eq 2
+        expect(service_errors.first.value).to eq 'yup'
       end
     end
 
@@ -240,11 +241,11 @@ describe InvitesService do
       end
 
       it 'fails with unknown_locale error' do
-        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(InvitesService::InvitesFailedError)
-        expect(service.errors.size).to eq 1
-        expect(service.errors.first.error_key).to eq InvitesService::INVITE_ERRORS[:unknown_locale]
-        expect(service.errors.first.row).to eq 2
-        expect(service.errors.first.value).to eq 'qq'
+        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(Invites::FailedError)
+        expect(service_errors.size).to eq 1
+        expect(service_errors.first.error_key).to eq Invites::ErrorStorage::INVITE_ERRORS[:unknown_locale]
+        expect(service_errors.first.row).to eq 2
+        expect(service_errors.first.value).to eq 'qq'
       end
     end
 
@@ -256,11 +257,11 @@ describe InvitesService do
       end
 
       it 'fails with invalid_email error' do
-        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(InvitesService::InvitesFailedError)
-        expect(service.errors.size).to eq 1
-        expect(service.errors.first.error_key).to eq InvitesService::INVITE_ERRORS[:invalid_email]
-        expect(service.errors.first.row).to eq 2
-        expect(service.errors.first.value).to eq 'this.can\'t be an email'
+        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(Invites::FailedError)
+        expect(service_errors.size).to eq 1
+        expect(service_errors.first.error_key).to eq Invites::ErrorStorage::INVITE_ERRORS[:invalid_email]
+        expect(service_errors.first.row).to eq 2
+        expect(service_errors.first.value).to eq 'this.can\'t be an email'
       end
     end
 
@@ -304,11 +305,11 @@ describe InvitesService do
       end
 
       it 'fails with email_duplicate error' do
-        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(InvitesService::InvitesFailedError)
-        expect(service.errors.size).to eq 1
-        expect(service.errors.first.error_key).to eq InvitesService::INVITE_ERRORS[:emails_duplicate]
-        expect(service.errors.first.rows).to eq [2, 3, 5]
-        expect(service.errors.first.value).to eq 'someuser@somedomain.com'
+        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(Invites::FailedError)
+        expect(service_errors.size).to eq 1
+        expect(service_errors.first.error_key).to eq Invites::ErrorStorage::INVITE_ERRORS[:emails_duplicate]
+        expect(service_errors.first.rows).to eq [2, 3, 5]
+        expect(service_errors.first.value).to eq 'someuser@somedomain.com'
       end
     end
 

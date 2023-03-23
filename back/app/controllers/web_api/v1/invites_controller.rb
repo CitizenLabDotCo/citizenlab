@@ -73,7 +73,7 @@ class WebApi::V1::InvitesController < ApplicationController
       current_user
     )
     head :ok
-  rescue InvitesService::InvitesFailedError => e
+  rescue Invites::FailedError => e
     render json: { errors: e.to_h }, status: :unprocessable_entity
   end
 
@@ -86,7 +86,7 @@ class WebApi::V1::InvitesController < ApplicationController
       current_user
     )
     head :ok
-  rescue InvitesService::InvitesFailedError => e
+  rescue Invites::FailedError => e
     render json: { errors: e.to_h }, status: :unprocessable_entity
   end
 

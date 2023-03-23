@@ -3,79 +3,12 @@
 require 'rubyXL'
 
 class InvitesService
-  attr_accessor :errors
-
   MAX_INVITES = 1000
 
-  class InvitesFailedError < RuntimeError
-    attr_accessor :errors
-
-    def initialize(options)
-      @errors = options[:errors]
-    end
-
-    def to_h
-      errors.reject(&:ignore).map(&:to_h)
-    end
-
-    def to_s
-      inspect
-    end
-
-    def inspect
-      "#<InvitesService::InvitesFailedError: #{to_h}>"
-    end
-  end
-
-  class InviteError < RuntimeError
-    attr_accessor :error_key, :row, :rows, :value, :raw_error, :ignore
-
-    def initialize(error_key, options)
-      @error_key = error_key
-      @row = options[:row]
-      @rows = options[:rows]
-      @value = options[:value]
-      @raw_error = options[:raw_error]
-      @ignore = options[:ignore] || false
-    end
-
-    def to_h
-      h = { error: error_key }
-      h[:row] = row if row
-      h[:rows] = rows if rows
-      h[:value] = value if value
-      h[:raw_error] = raw_error if raw_error
-      h[:ignore] = ignore
-      h
-    end
-
-    def to_s
-      "#<InvitesService::InviteError: #{error_key}>"
-    end
-
-    def inspect
-      "#<InvitesService::InviteError: #{to_h}>"
-    end
-  end
-
-  INVITE_ERRORS = {
-    unparseable_excel: 'unparseable_excel',
-    max_invites_limit_exceeded: 'max_invites_limit_exceeded',
-    no_invites_specified: 'no_invites_specified',
-    unknown_group: 'unknown_group',
-    malformed_admin_value: 'malformed_admin_value',
-    malformed_groups_value: 'malformed_groups_value',
-    malformed_custom_field_value: 'malformed_custom_field_value',
-    unknown_locale: 'unknown_locale',
-    invalid_email: 'invalid_email',
-    invalid_row: 'invalid_row',
-    email_already_invited: 'email_already_invited',
-    email_already_active: 'email_already_active',
-    emails_duplicate: 'emails_duplicate'
-  }
+  delegate :add_error, :fail_now, to: :@error_storage
 
   def initialize
-    @errors = []
+    @error_storage = Invites::ErrorStorage.new
   end
 
   def generate_token
@@ -83,26 +16,10 @@ class InvitesService
   end
 
   def bulk_create_xlsx(xlsx_param, default_params = {}, inviter = nil)
-    # Strip out data;...base64 prefix if it's there
-    start = xlsx_param.index(';base64,')
-    pure_base64 = start ? xlsx_param[(start + 8)..] : xlsx_param
-
-    xlsx_file = StringIO.new(Base64.decode64(pure_base64))
-
-    map_rows = []
-    old_row = 0
-    hash_array = XlsxService.new.xlsx_to_hash_array(xlsx_file).select do |invite_params|
-      if invite_params.present?
-        map_rows += [old_row]
-      end
-      old_row += 1
-      invite_params.present?
-    end
-
-    postprocess_xlsx_hash_array(hash_array)
+    hash_array, map_rows = Invites::XlsxProcessor.new(@error_storage).param_to_hash_array(xlsx_param)
 
     bulk_create(hash_array, default_params, inviter)
-  rescue InvitesFailedError => e
+  rescue Invites::FailedError => e
     e.errors.each do |error|
       error.row && (error.row = (map_rows[error.row] + 2))
       error.rows&.map! { |r| map_rows[r] + 2 }
@@ -113,7 +30,7 @@ class InvitesService
   def bulk_create(hash_array, default_params = {}, inviter = nil)
     invites = build_invites(hash_array, default_params, inviter)
     check_invites(invites)
-    if @errors.reject(&:ignore).empty?
+    if @error_storage.no_critical_errors?
       save_invites(invites - ignored_invites(invites))
     else
       fail_now
@@ -139,115 +56,9 @@ class InvitesService
     @custom_field_schema ||= CustomFieldService.new.fields_to_json_schema(CustomField.with_resource_type('User'))
   end
 
-  # Returns type information of custom fields.
-  #
-  # @return [Hash<String, String>] Mapping from field key to field type
-  def custom_field_types
-    custom_field_schema[:properties].transform_values { |field_schema| field_schema[:type] }
-  end
-
   # @return [Array<String>]
   def custom_field_keys
     custom_field_schema[:properties].keys
-  end
-
-  def postprocess_xlsx_hash_array(hash_array)
-    hash_array.each.with_index do |hash, row_index|
-      @current_row = row_index
-      if hash['groups']
-        hash['group_ids'] = xlsx_groups_to_group_ids(hash['groups'])
-      end
-      hash.delete('groups')
-
-      if hash['admin'].present?
-        hash['roles'] = xlsx_admin_to_roles(hash['admin'])
-      end
-      hash.delete('admin')
-
-      if hash['language'].present?
-        hash['locale'] = hash['language']
-      end
-      hash.delete('language')
-
-      if hash['send_invite_email'].present?
-        hash['send_invite_email'] = to_boolean(hash['send_invite_email'])
-      end
-
-      coerce_custom_field_types(hash)
-    end
-  rescue StandardError => e
-    add_error(:unparseable_excel, raw_error: e.to_s)
-    fail_now
-  ensure
-    @current_row = nil
-  end
-
-  # @param [Hash]
-  # @return [Hash]
-  def coerce_custom_field_types(hash)
-    hash.each do |field, value|
-      if (type = custom_field_types[field]) # only runs for custom fields
-        hash[field] = coerce_value(value, type)
-      end
-    rescue ArgumentError => e
-      add_error(:malformed_custom_field_value, row: @current_row, value: value, raw_error: e)
-    end
-  end
-
-  # Converts a value to a given type.
-  #
-  # @param [Object] value any kind of value
-  # @param [String] type destination type ('number', 'boolean' or 'string')
-  # @return [String, Float, Integer, Boolean]
-  def coerce_value(value, type)
-    case type
-    when 'number' then to_number(value)
-    when 'boolean' then to_boolean(value)
-    when 'string' then String(value)
-    end
-  end
-
-  def to_number(value)
-    if value.is_a? Numeric
-      value
-    else
-      Integer(value)
-    end
-  rescue ArgumentError
-    Float(value)
-  end
-
-  # @return [Boolean]
-  def to_boolean(value)
-    if [true, 'TRUE', 'true', '1', 1].include?(value)
-      true
-    elsif [false, 'FALSE', 'false', '0', 0].include?(value)
-      false
-    else
-      raise ArgumentError
-    end
-  end
-
-  def xlsx_groups_to_group_ids(groups)
-    groups.split(',').filter_map do |group_title|
-      stripped_group_title = group_title.strip
-      group = Group.all.find { |g| g.title_multiloc.values.map(&:strip).include? stripped_group_title }&.id
-      group || (add_error(:unknown_group, row: @current_row, value: stripped_group_title) && nil)
-    end
-  rescue StandardError => e
-    add_error(:malformed_groups_value, row: @current_row, value: groups, raw_error: e.to_s)
-    []
-  end
-
-  def xlsx_admin_to_roles(admin)
-    if [true, 'TRUE', 'true', '1', 1].include? admin
-      [{ 'type' => 'admin' }]
-    elsif [false, 'FALSE', 'false', '0', 0].include? admin
-      []
-    else
-      add_error(:malformed_admin_value, row: @current_row, value: admin)
-      []
-    end
   end
 
   def build_invites(hash_array, default_params = {}, inviter = nil)
@@ -289,21 +100,24 @@ class InvitesService
   end
 
   def check_invites(invites)
-    # check duplicate emails
-    invites.each_with_object(Hash.new { [] }).with_index do |(invite, object), index|
-      object[invite.invitee.email] += [index]
-    end
-      .select { |email, row_indexes| email && row_indexes.size > 1 }
-      .each do |email, row_indexes|
-      add_error(:emails_duplicate, rows: row_indexes, value: email)
-    end
-    # run validations
+    check_duplicate_emails(invites)
+
     invites.each_with_index do |invite, row_nb|
       @current_row = row_nb
       validate_invite(invite)
     end
   ensure
     @current_row = nil
+  end
+
+  def check_duplicate_emails(invites)
+    emails_indexes = invites.each_with_object(Hash.new { [] }).with_index do |(invite, object), index|
+      object[invite.invitee.email] += [index]
+    end
+    duplicated_emails_indexes = emails_indexes.select { |email, row_indexes| email && row_indexes.size > 1 }
+    duplicated_emails_indexes.each do |email, row_indexes|
+      add_error(:emails_duplicate, rows: row_indexes, value: email)
+    end
   end
 
   def validate_invite(invite)
@@ -341,15 +155,7 @@ class InvitesService
     end
   end
 
-  def add_error(key, options = {})
-    @errors << InviteError.new(INVITE_ERRORS[key], options)
-  end
-
-  def fail_now
-    raise InvitesFailedError.new(errors: @errors)
-  end
-
   def ignored_invites(invites)
-    @errors.select(&:ignore).map { |e| invites[e.row] }
+    @error_storage.ignored_errors.map { |e| invites[e.row] }
   end
 end

@@ -5,7 +5,7 @@ module AdminApi
     def create
       invites = InvitesService.new.bulk_create([invite_params])
       render json: invites.first, status: :created
-    rescue InvitesService::InvitesFailedError => e
+    rescue Invites::FailedError => e
       render json: { errors: e.to_h }, status: :unprocessable_entity
     end
 
