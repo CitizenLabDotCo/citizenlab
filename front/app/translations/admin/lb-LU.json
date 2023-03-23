@@ -157,7 +157,7 @@
   "app.components.admin.PostManager.topicsTabTooltipText": "Add tags to an input using drag and drop.",
   "app.components.admin.PostManager.up": "Up",
   "app.components.admin.PostManager.votes": "Votes",
-  "app.components.admin.PostManager.xDaysLeft": "{x, plural, =0 {Manner wéi engem Dag} one {Een Dag} other {# Deeg}} lénks",
+  "app.components.admin.PostManager.xDaysLeft": "{x, plural, =0 {Manner wéi engem Dag} one {Een Dag} other {# Deeg}} verbleiwend",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "from",
   "app.components.admin.ReportExportMenu.FileName.groupFilter": "group",
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "project",
