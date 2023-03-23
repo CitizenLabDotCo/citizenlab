@@ -1071,6 +1071,7 @@
   "app.containers.NewAuthModal.confirmYourEmail": "Confirme su correo electrónico",
   "app.containers.NewAuthModal.logIn": "Iniciar sesión",
   "app.containers.NewAuthModal.steps.EmailConfirmation.codeMustHaveFourDigits": "El código debe tener 4 dígitos.",
+  "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.continueWithFranceConnect": "Continue with FranceConnect",
   "app.containers.NewAuthModal.steps.EmailSignUp.email": "Correo electrónico",
   "app.containers.NewAuthModal.steps.EmailSignUp.emailFormatError": "Proporcione una dirección de correo electrónico en el formato correcto, por ejemplo name@provider.com",
   "app.containers.NewAuthModal.steps.EmailSignUp.emailMissingError": "Proporcione una dirección de correo electrónico",
