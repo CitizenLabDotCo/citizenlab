@@ -115,7 +115,7 @@ const InviteUsersWithSeatsModal = ({
           mt="32px"
         >
           <Button width="auto" disabled={!hasAcknowledged}>
-            <Box onClick={handleConfrimClick}>
+            <Box onClick={handleConfrimClick} data-testid="confirm-button-text">
               {formatMessage(messages.confirmButtonText)}
             </Box>
           </Button>

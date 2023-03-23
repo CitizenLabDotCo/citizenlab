@@ -82,4 +82,32 @@ describe('InviteUsersWithSeatsModal', () => {
 
     expect(confirmButton).toBeEnabled();
   });
+
+  it('shows an error when user clicks a disabled button', () => {
+    render(
+      <InviteUsersWithSeatsModal
+        inviteUsers={inviteUsers}
+        showModal
+        closeModal={closeModal}
+        noOfSeatsToAdd={2}
+        seatType="collaborator"
+      />
+    );
+
+    const confirmButton = screen.getByRole('button', {
+      name: 'Confirm and send out invitations',
+    });
+
+    expect(
+      screen.queryByText('Accept the condition to proceed')
+    ).not.toBeInTheDocument();
+    expect(confirmButton).toBeInTheDocument();
+    expect(confirmButton).toBeDisabled();
+
+    screen.getByTestId('confirm-button-text').click();
+
+    expect(
+      screen.queryByText('Accept the condition to proceed')
+    ).toBeInTheDocument();
+  });
 });
