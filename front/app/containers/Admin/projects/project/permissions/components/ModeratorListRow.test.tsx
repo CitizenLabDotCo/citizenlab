@@ -29,23 +29,32 @@ const moderator: IUserData = {
   },
 };
 
+const mockAuthUserData: IUserData = {
+  id: 'userId',
+  type: 'user',
+  attributes: {
+    first_name: 'Stewie',
+    last_name: 'McKenzie',
+    locale: 'en',
+    slug: 'stewie-mckenzie',
+    highest_role: 'admin',
+    bio_multiloc: {},
+    roles: [{ type: 'admin' }],
+    registration_completed_at: '',
+    created_at: '',
+    updated_at: '',
+    unread_notifications: 0,
+    invite_status: null,
+    confirmation_required: false,
+  },
+};
+
+jest.mock('hooks/useAuthUser', () => {
+  return () => mockAuthUserData;
+});
+
 describe('<ModeratorListRow />', () => {
-  it('disables the delete button if the user is not an admin', () => {
-    render(
-      <ModeratorListRow
-        isLastItem={false}
-        projectId={projectId}
-        moderator={moderator}
-      />
-    );
-
-    const deleteButton = screen.getByRole('button', { name: /delete/i });
-    expect(deleteButton).toBeDisabled();
-  });
-
   it('shows an enabled delete button when user is an admin', () => {
-    moderator.attributes.roles = [{ type: 'admin' }];
-
     render(
       <ModeratorListRow
         isLastItem={false}
@@ -56,5 +65,23 @@ describe('<ModeratorListRow />', () => {
 
     const deleteButton = screen.getByRole('button', { name: /delete/i });
     expect(deleteButton).toBeEnabled();
+  });
+
+  it('disables the delete button if the user is not an admin', () => {
+    mockAuthUserData.attributes.roles = [projectModeratorRole];
+    // Changing highest_role is not necessary. isAdmin doesn't check highest_role
+    // at the time of writing this test. But adding it for "data correctness".
+    mockAuthUserData.attributes.highest_role = 'project_moderator';
+
+    render(
+      <ModeratorListRow
+        isLastItem={false}
+        projectId={projectId}
+        moderator={moderator}
+      />
+    );
+
+    const deleteButton = screen.getByRole('button', { name: /delete/i });
+    expect(deleteButton).toBeDisabled();
   });
 });

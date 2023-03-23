@@ -9,6 +9,8 @@ import { isAdmin } from 'services/permissions/roles';
 import { IUserData } from 'services/users';
 import styled from 'styled-components';
 import { deleteProjectModerator } from 'services/projectModerators';
+import useAuthUser from 'hooks/useAuthUser';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   isLastItem: boolean;
@@ -26,6 +28,12 @@ const UnknownName = styled.span`
 
 const ModeratorListRow = ({ isLastItem, moderator, projectId }: Props) => {
   const { formatMessage } = useIntl();
+  const authUser = useAuthUser();
+
+  if (isNilOrError(authUser)) {
+    return null;
+  }
+
   const moderatorId = moderator.id;
   const firstName = moderator.attributes.first_name;
   const lastName = moderator.attributes.last_name;
@@ -63,8 +71,9 @@ const ModeratorListRow = ({ isLastItem, moderator, projectId }: Props) => {
         onClick={handleDeleteClick}
         buttonStyle="text"
         icon="delete"
-        // Component is accessible for both project moderators and admins
-        disabled={!isAdmin({ data: moderator })}
+        // Component is on a page that is accessible
+        // for both project moderators and admins
+        disabled={!isAdmin({ data: authUser })}
       >
         {formatMessage(messages.deleteModeratorLabel)}
       </Button>
