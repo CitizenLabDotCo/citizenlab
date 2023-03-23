@@ -1071,6 +1071,7 @@
   "app.containers.NewAuthModal.confirmYourEmail": "Potvrdite svoju e-poštu",
   "app.containers.NewAuthModal.logIn": "Prijava",
   "app.containers.NewAuthModal.steps.EmailConfirmation.codeMustHaveFourDigits": "Kod mora sadržavati 4 znamenke.",
+  "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.continueWithFranceConnect": "Nastavite s FranceConnectom",
   "app.containers.NewAuthModal.steps.EmailSignUp.email": "E-pošta",
   "app.containers.NewAuthModal.steps.EmailSignUp.emailFormatError": "Navedite adresu e-pošte u pravilnom formatu, na primjer name@provider.com",
   "app.containers.NewAuthModal.steps.EmailSignUp.emailMissingError": "Navedite adresu e-pošte",
