@@ -300,7 +300,9 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
     setUnknownError(null);
   };
 
-  const downloadExampleFile = async (event) => {
+  const downloadExampleFile = async (
+    event: React.MouseEvent<Element, MouseEvent>
+  ) => {
     event.preventDefault();
     const blob = await requestBlob(
       `${API_PATH}/invites/example_xlsx`,
@@ -720,6 +722,6 @@ const Data = adopt<DataProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <Invitations {...inputProps} {...dataProps} />}
+    {(dataProps: DataProps) => <Invitations {...inputProps} {...dataProps} />}
   </Data>
 );
