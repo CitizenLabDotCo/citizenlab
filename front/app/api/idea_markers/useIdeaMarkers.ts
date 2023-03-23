@@ -4,18 +4,21 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import ideaMarkerKeys from './keys';
 
-export const defaultPageSize = 24;
-
-const fetchIdeaMarkers = (queryParameters: QueryParameters) =>
+const fetchIdeaMarkers = ({
+  projectIds,
+  phaseId,
+  ...queryParameters
+}: QueryParameters) =>
   fetcher<IIdeaMarkers>({
     path: `/ideas/as_markers`,
     action: 'get',
     queryParams: {
       ...queryParameters,
-      projects: queryParameters.projectIds,
-      phase: queryParameters.phaseId,
-      'page[number]': queryParameters['page[number]'] || 1,
-      'page[size]': queryParameters['page[size]'] || defaultPageSize,
+      projects: projectIds,
+      phase: phaseId,
+      sort: undefined,
+      'page[number]': 1,
+      'page[size]': 5000,
     },
   });
 
