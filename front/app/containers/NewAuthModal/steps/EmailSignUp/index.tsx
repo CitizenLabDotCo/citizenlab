@@ -3,6 +3,7 @@ import React, { useMemo } from 'react';
 // components
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
+import SSOButtons from './SSOButtons';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -70,30 +71,33 @@ const EmailSignUp = ({ status, onSubmit }: Props) => {
   };
 
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(handleSubmit)}>
-        <Text mt="0px" mb="32px">
-          {formatMessage(messages.enterYourEmailAddress)}
-        </Text>
-        <Box>
-          <Input
-            name="email"
-            type="email"
-            label={formatMessage(messages.email)}
-          />
-        </Box>
-        <Box w="100%" display="flex" mt="32px">
-          <Button
-            type="submit"
-            width="auto"
-            disabled={loading}
-            processing={loading}
-          >
-            {formatMessage(sharedMessages.continue)}
-          </Button>
-        </Box>
-      </form>
-    </FormProvider>
+    <>
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(handleSubmit)}>
+          <Text mt="0px" mb="32px">
+            {formatMessage(messages.enterYourEmailAddress)}
+          </Text>
+          <Box>
+            <Input
+              name="email"
+              type="email"
+              label={formatMessage(messages.email)}
+            />
+          </Box>
+          <Box w="100%" display="flex" mt="32px">
+            <Button
+              type="submit"
+              width="auto"
+              disabled={loading}
+              processing={loading}
+            >
+              {formatMessage(sharedMessages.continue)}
+            </Button>
+          </Box>
+        </form>
+      </FormProvider>
+      <SSOButtons />
+    </>
   );
 };
 
