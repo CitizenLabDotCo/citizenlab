@@ -22,10 +22,6 @@ const PendingInvitation = styled.span`
   font-style: italic;
 `;
 
-const UnknownName = styled.span`
-  font-style: italic;
-`;
-
 const ModeratorListRow = ({ isLastItem, moderator, projectId }: Props) => {
   const { formatMessage } = useIntl();
   const authUser = useAuthUser();
@@ -37,17 +33,15 @@ const ModeratorListRow = ({ isLastItem, moderator, projectId }: Props) => {
   const moderatorId = moderator.id;
   const firstName = moderator.attributes.first_name;
   const lastName = moderator.attributes.last_name;
+  const name = lastName ? `${firstName} ${lastName}` : firstName;
   const invitationPending = moderator.attributes.invite_status === 'pending';
   const displayName = invitationPending ? (
     <PendingInvitation>
       {formatMessage(messages.pendingInvitation)}
     </PendingInvitation>
-  ) : firstName && lastName ? (
-    `${firstName} ${lastName}`
   ) : (
-    <UnknownName>{formatMessage(messages.unknownName)}</UnknownName>
+    name
   );
-
   const handleDeleteClick = () => {
     if (window.confirm(formatMessage(messages.moderatorDeletionConfirmation))) {
       deleteProjectModerator(projectId, moderatorId);
