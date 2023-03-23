@@ -1531,7 +1531,6 @@
   "app.containers.AdminPage.groups.permissions.saveErrorMessage": "Something went wrong, please try again later.",
   "app.containers.AdminPage.groups.permissions.saveSuccess": "Success!",
   "app.containers.AdminPage.groups.permissions.saveSuccessMessage": "Your changes have been saved.",
-  "app.containers.AdminPage.groups.permissions.unknownName": "Ateq ilisimaneqanngilaq",
   "app.containers.AdminPage.projects.all.existingProjects": "Suliniutit pioreersut",
   "app.containers.AdminPage.projects.all.newProjectFolder": "Suliniummut mappimik pilersitsigit",
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Suliniutit mappillu",

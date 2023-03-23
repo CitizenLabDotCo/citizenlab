@@ -1592,7 +1592,6 @@
   "app.containers.AdminPage.groups.permissions.saveErrorMessage": "Algo deu errado, por favor, tente novamente mais tarde.",
   "app.containers.AdminPage.groups.permissions.saveSuccess": "Sucesso!",
   "app.containers.AdminPage.groups.permissions.saveSuccessMessage": "As suas alterações foram salvas.",
-  "app.containers.AdminPage.groups.permissions.unknownName": "Nome desconhecido",
   "app.containers.AdminPage.projects.all.existingProjects": "Projetos existentes",
   "app.containers.AdminPage.projects.all.newProjectFolder": "Crie uma pasta de projeto",
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projetos e pastas",
