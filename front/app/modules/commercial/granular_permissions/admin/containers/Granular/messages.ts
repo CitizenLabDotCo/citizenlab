@@ -269,4 +269,44 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.required',
     defaultMessage: 'Required',
   },
+  missingTitleLocaleError: {
+    id: 'app.containers.AdminPage.groups.permissions.missingTitleLocaleError',
+    defaultMessage: 'Please fill in the title in all languages',
+  },
+  answerFormat: {
+    id: 'app.containers.AdminPage.groups.permissions.answerFormat',
+    defaultMessage: 'Answer format',
+  },
+  fieldType_text: {
+    id: 'app.containers.AdminPage.groups.permissions.fieldType_text',
+    defaultMessage: 'Short answer',
+  },
+  fieldType_number: {
+    id: 'app.containers.AdminPage.groups.permissions.fieldType_number',
+    defaultMessage: 'Numeric value',
+  },
+  fieldType_multiline_text: {
+    id: 'app.containers.AdminPage.groups.permissions.fieldType_multiline_text',
+    defaultMessage: 'Long answer',
+  },
+  fieldType_select: {
+    id: 'app.containers.AdminPage.groups.permissions.fieldType_select',
+    defaultMessage: 'Multiple choice (select one)',
+  },
+  fieldType_multiselect: {
+    id: 'app.containers.AdminPage.groups.permissions.fieldType_multiselect',
+    defaultMessage: 'Multiple choice (select multiple)',
+  },
+  fieldType_checkbox: {
+    id: 'app.containers.AdminPage.groups.permissions.fieldType_checkbox',
+    defaultMessage: 'Yes-no (checkbox)',
+  },
+  fieldType_date: {
+    id: 'app.containers.AdminPage.groups.permissions.fieldType_date',
+    defaultMessage: 'Date',
+  },
+  selectValueError: {
+    id: 'app.containers.AdminPage.groups.permissions.selectValueError',
+    defaultMessage: 'Please select an answer type',
+  },
 });
