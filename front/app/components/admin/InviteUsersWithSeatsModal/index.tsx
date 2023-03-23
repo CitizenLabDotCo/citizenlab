@@ -66,7 +66,7 @@ const InviteUsersWithSeatsModal = ({
         <Box>
           <Text color="textPrimary" fontSize="m" my="0px">
             <FormattedMessage
-              {...messages.infoMessage}
+              {...messages.descriptionMessage}
               values={{
                 noOfUsers: noOfSeatsToAdd,
                 seatType: formatMessage(seatTypeMessages[seatType]),
@@ -111,6 +111,7 @@ const InviteUsersWithSeatsModal = ({
               closeModal();
               inviteUsers();
             }}
+            disabled={!hasAcknowledged}
           >
             {formatMessage(messages.confirmButtonText)}
           </Button>

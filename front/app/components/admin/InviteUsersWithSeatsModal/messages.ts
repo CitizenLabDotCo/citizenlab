@@ -9,10 +9,10 @@ export default defineMessages({
     id: 'app.containers.admin.inviteUsersWithSeatsModal.giveAdminRights',
     defaultMessage: 'Give admin rights',
   },
-  infoMessage: {
-    id: 'app.containers.admin.inviteUsersWithSeatsModal.infoMessage',
+  descriptionMessage: {
+    id: 'app.containers.admin.inviteUsersWithSeatsModal.descriptionMessage',
     defaultMessage:
-      'You are inviting {noOfUsers} {noOfUsers, plural, one {user} other {users}} with {seatType} rights. Based on how many users are included in the invitation, you may need to buy additional setas.',
+      'You are inviting {noOfUsers} {noOfUsers, plural, one {user} other {users}} with {seatType} rights. Based on how many users are included in the invitation, you may need to buy additional seats.',
   },
   admin: {
     id: 'app.containers.admin.inviteUsersWithSeatsModal.admin',
