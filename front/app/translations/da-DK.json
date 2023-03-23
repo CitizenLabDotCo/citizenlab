@@ -1071,6 +1071,7 @@
   "app.containers.NewAuthModal.confirmYourEmail": "Bekræft din e-mailadresse",
   "app.containers.NewAuthModal.logIn": "Log ind",
   "app.containers.NewAuthModal.steps.EmailConfirmation.codeMustHaveFourDigits": "Koden skal have 4 cifre.",
+  "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.continueWithFranceConnect": "Continue with FranceConnect",
   "app.containers.NewAuthModal.steps.EmailSignUp.email": "E-mail",
   "app.containers.NewAuthModal.steps.EmailSignUp.emailFormatError": "Angiv en e-mail-adresse i det korrekte format, f.eks. name@provider.com",
   "app.containers.NewAuthModal.steps.EmailSignUp.emailMissingError": "Angiv en e-mail-adresse",
