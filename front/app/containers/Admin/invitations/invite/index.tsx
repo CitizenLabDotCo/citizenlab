@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { isString, isEmpty, get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
@@ -12,6 +12,7 @@ import {
   Toggle,
   Label,
   Box,
+  Text,
 } from '@citizenlab/cl2-component-library';
 import Tabs from 'components/UI/Tabs';
 import Collapse from 'components/UI/Collapse';
@@ -22,7 +23,7 @@ import QuillEditor from 'components/UI/QuillEditor';
 import HelmetIntl from 'components/HelmetIntl';
 import Button from 'components/UI/Button';
 import Warning from 'components/UI/Warning';
-import SeatInfo from 'components/SeatInfo';
+import InviteUsersWithSeatsModal from 'components/admin/InviteUsersWithSeatsModal';
 
 // services
 import {
@@ -41,8 +42,7 @@ import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import { API_PATH, appLocalePairs } from 'containers/App/constants';
 import { getLocalized } from 'utils/i18n';
@@ -54,52 +54,24 @@ import { requestBlob } from 'utils/request';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, stylingConsts } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // typings
 import { Locale, IOption } from 'typings';
 
-const InvitationOptions = styled.div`
-  width: 497px;
-  padding: 20px;
-  border-radius: ${(props) => props.theme.borderRadius};
-  border: solid 1px #ddd;
-  background: #fff;
-`;
-
 const StyledTabs = styled(Tabs)`
   margin-bottom: 35px;
-`;
-
-const FileInputWrapper = styled.div`
-  margin-top: 15px;
-  margin-bottom: 20px;
 `;
 
 const StyledToggle = styled(Toggle)`
   margin-bottom: 10px;
 `;
 
-const ButtonWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  padding-top: 30px;
-`;
-
-const Processing = styled.div`
-  color: ${(props) => props.theme.colors.textSecondary};
-  margin-left: 15px;
-`;
-
 const StyledSectionTitle = styled(SectionTitle)`
   margin-bottom: 15px;
   font-size: ${fontSizes.l}px;
   font-weight: bold;
-`;
-
-const SectionDescription = styled.div`
-  font-size: ${fontSizes.base}px;
 `;
 
 const SectionParagraph = styled.p`
@@ -112,11 +84,6 @@ const SectionParagraph = styled.p`
       text-decoration: underline;
     }
   }
-`;
-
-const FlexWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
 `;
 
 const DownloadButton = styled(Button)`
@@ -138,63 +105,47 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-type State = {
-  selectedEmails: string | null;
-  selectedFileBase64: string | null;
-  hasAdminRights: boolean;
-  hasModeratorRights: boolean;
-  selectedLocale: Locale | null;
-  selectedProjects: IOption[] | null;
-  selectedGroups: IOption[] | null;
-  selectedInviteText: string | null;
-  invitationOptionsOpened: boolean;
-  selectedView: 'import' | 'text';
-  processing: boolean;
-  processed: boolean;
-  apiErrors: IInviteError[] | null;
-  filetypeError: JSX.Element | null;
-  unknownError: JSX.Element | null;
-};
+const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
+  const { formatMessage } = useIntl();
 
-class Invitations extends React.PureComponent<
-  Props & WrappedComponentProps,
-  State
-> {
-  fileInputElement: HTMLInputElement | null;
+  const [selectedEmails, setSelectedEmails] = useState<string | null>(null);
+  const [selectedFileBase64, setSelectedFileBase64] = useState<string | null>(
+    null
+  );
+  const [inviteesWillHaveAdminRights, setInviteesWillHaveAdminRights] =
+    useState<boolean>(false);
+  const [inviteesWillHaveModeratorRights, setInviteesWillHaveModeratorRights] =
+    useState<boolean>(false);
+  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
+  const [selectedProjects, setSelectedProjects] = useState<IOption[] | null>(
+    null
+  );
+  const [selectedGroups, setSelectedGroups] = useState<IOption[] | null>(null);
+  const [selectedInviteText, setSelectedInviteText] = useState<string | null>(
+    null
+  );
+  const [invitationOptionsOpened, setInvitationOptionsOpened] =
+    useState<boolean>(false);
+  const [selectedView, setSelectedView] = useState<'import' | 'text'>('import');
+  const [processing, setProcessing] = useState<boolean>(false);
+  const [processed, setProcessed] = useState<boolean>(false);
+  const [apiErrors, setApiErrors] = useState<IInviteError[] | null>(null);
+  const [filetypeError, setFiletypeError] = useState<JSX.Element | null>(null);
+  const [unknownError, setUnknownError] = useState<JSX.Element | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const closeModal = () => {
+    setShowModal(false);
+  };
 
-  constructor(props: Props & WrappedComponentProps) {
-    super(props);
-    this.state = {
-      selectedEmails: null,
-      selectedFileBase64: null,
-      hasAdminRights: false,
-      hasModeratorRights: false,
-      selectedLocale: null,
-      selectedProjects: null,
-      selectedGroups: null,
-      selectedInviteText: null,
-      invitationOptionsOpened: false,
-      selectedView: 'import',
-      processing: false,
-      processed: false,
-      apiErrors: null,
-      filetypeError: null,
-      unknownError: null,
-    };
-    this.fileInputElement = null;
-  }
+  const fileInputElement = useRef<HTMLInputElement | null>(null);
 
-  static getDerivedStateFromProps(nextProps: Props, prevState: State) {
-    if (nextProps.tenantLocales && !prevState.selectedLocale) {
-      return {
-        selectedLocale: nextProps.tenantLocales[0],
-      };
+  useEffect(() => {
+    if (tenantLocales && !selectedLocale) {
+      setSelectedLocale(tenantLocales[0]);
     }
+  }, [tenantLocales, selectedLocale]);
 
-    return null;
-  }
-
-  getProjectOptions = (
+  const getProjectOptions = (
     projects: GetProjectsChildProps,
     locale: GetLocaleChildProps,
     tenantLocales: GetAppConfigurationLocalesChildProps
@@ -220,7 +171,7 @@ class Invitations extends React.PureComponent<
     return null;
   };
 
-  getGroupOptions = (
+  const getGroupOptions = (
     groups: GetGroupsChildProps,
     locale: GetLocaleChildProps,
     tenantLocales: GetAppConfigurationLocalesChildProps
@@ -244,16 +195,18 @@ class Invitations extends React.PureComponent<
     return null;
   };
 
-  resetErrorAndSuccessState() {
-    this.setState({ processed: false, apiErrors: null, unknownError: null });
-  }
-
-  handleEmailListOnChange = (selectedEmails: string) => {
-    this.resetErrorAndSuccessState();
-    this.setState({ selectedEmails });
+  const resetErrorAndSuccessState = () => {
+    setProcessed(false);
+    setApiErrors(null);
+    setUnknownError(null);
   };
 
-  handleFileInputOnChange = async (event) => {
+  const handleEmailListOnChange = (selectedEmails: string) => {
+    resetErrorAndSuccessState();
+    setSelectedEmails(selectedEmails);
+  };
+
+  const handleFileInputOnChange = async (event) => {
     let selectedFile: File | null =
       event.target.files && event.target.files.length === 1
         ? event.target.files['0']
@@ -268,56 +221,54 @@ class Invitations extends React.PureComponent<
       filetypeError = <FormattedMessage {...messages.filetypeError} />;
       selectedFile = null;
 
-      if (this.fileInputElement) {
-        this.fileInputElement.value = '';
+      if (fileInputElement.current) {
+        fileInputElement.current.value = '';
       }
     }
 
     const selectedFileBase64 = selectedFile
       ? await getBase64FromFile(selectedFile)
       : null;
-    this.resetErrorAndSuccessState();
-    this.setState({ selectedFileBase64, filetypeError });
+    resetErrorAndSuccessState();
+    setSelectedFileBase64(selectedFileBase64);
+    setFiletypeError(filetypeError);
   };
 
-  handleAdminRightsOnToggle = () => {
-    this.resetErrorAndSuccessState();
-    this.setState((state) => ({ hasAdminRights: !state.hasAdminRights }));
+  const handleAdminRightsOnToggle = () => {
+    resetErrorAndSuccessState();
+    setInviteesWillHaveAdminRights(!inviteesWillHaveAdminRights);
   };
 
-  handleModeratorRightsOnToggle = () => {
-    this.resetErrorAndSuccessState();
-    this.setState((state) => ({
-      hasModeratorRights: !state.hasModeratorRights,
-    }));
+  const handleModeratorRightsOnToggle = () => {
+    resetErrorAndSuccessState();
+    setInviteesWillHaveModeratorRights(!inviteesWillHaveModeratorRights);
   };
 
-  handleLocaleOnChange = (selectedLocale: Locale) => {
-    this.resetErrorAndSuccessState();
-    this.setState({ selectedLocale });
+  const handleLocaleOnChange = (selectedLocale: Locale) => {
+    resetErrorAndSuccessState();
+    setSelectedLocale(selectedLocale);
   };
 
-  handleSelectedProjectsOnChange = (selectedProjects: IOption[]) => {
-    this.resetErrorAndSuccessState();
-    this.setState({
-      selectedProjects: selectedProjects.length > 0 ? selectedProjects : null,
-    });
+  const handleSelectedProjectsOnChange = (selectedProjects: IOption[]) => {
+    resetErrorAndSuccessState();
+    setSelectedProjects(selectedProjects.length > 0 ? selectedProjects : null);
   };
 
-  handleSelectedGroupsOnChange = (selectedGroups: IOption[]) => {
-    this.resetErrorAndSuccessState();
-    this.setState({
-      selectedGroups: selectedGroups.length > 0 ? selectedGroups : null,
-    });
+  const handleSelectedGroupsOnChange = (selectedGroups: IOption[]) => {
+    resetErrorAndSuccessState();
+    setSelectedGroups(selectedGroups.length > 0 ? selectedGroups : null);
   };
 
-  handleInviteTextOnChange = (selectedInviteText: string) => {
-    this.resetErrorAndSuccessState();
-    this.setState({ selectedInviteText });
+  const handleInviteTextOnChange = (selectedInviteText: string) => {
+    resetErrorAndSuccessState();
+    setSelectedInviteText(selectedInviteText);
   };
 
-  getSubmitState = (errors: IInviteError[] | null, processed: boolean) => {
-    const isInvitationValid = this.validateInvitation();
+  const getSubmitState = (
+    errors: IInviteError[] | null,
+    processed: boolean
+  ) => {
+    const isInvitationValid = validateInvitation();
     if (errors && errors.length > 0) {
       return 'error';
     } else if (processed && !isInvitationValid) {
@@ -328,34 +279,30 @@ class Invitations extends React.PureComponent<
     return 'enabled';
   };
 
-  toggleOptions = () => {
-    this.setState((state) => ({
-      invitationOptionsOpened: !state.invitationOptionsOpened,
-    }));
+  const toggleOptions = () => {
+    setInvitationOptionsOpened(!invitationOptionsOpened);
   };
 
-  resetWithView = (selectedView: 'import' | 'text') => {
-    this.setState({
-      selectedView,
-      selectedEmails: null,
-      selectedFileBase64: null,
-      hasAdminRights: false,
-      hasModeratorRights: false,
-      selectedLocale: this.props.tenantLocales
-        ? this.props.tenantLocales[0]
-        : null,
-      selectedProjects: null,
-      selectedGroups: null,
-      selectedInviteText: null,
-      invitationOptionsOpened: false,
-      processed: false,
-      apiErrors: null,
-      filetypeError: null,
-      unknownError: null,
-    });
+  const resetWithView = (selectedView: 'import' | 'text') => {
+    setSelectedView(selectedView);
+    setSelectedEmails(null);
+    setSelectedFileBase64(null);
+    setInviteesWillHaveAdminRights(false);
+    setInviteesWillHaveModeratorRights(false);
+    setSelectedLocale(tenantLocales ? tenantLocales[0] : null);
+    setSelectedProjects(null);
+    setSelectedGroups(null);
+    setSelectedInviteText(null);
+    setInvitationOptionsOpened(false);
+    setProcessed(false);
+    setApiErrors(null);
+    setFiletypeError(null);
+    setUnknownError(null);
   };
 
-  downloadExampleFile = async (event) => {
+  const downloadExampleFile = async (
+    event: React.MouseEvent<Element, MouseEvent>
+  ) => {
     event.preventDefault();
     const blob = await requestBlob(
       `${API_PATH}/invites/example_xlsx`,
@@ -364,20 +311,18 @@ class Invitations extends React.PureComponent<
     saveAs(blob, 'example.xlsx');
   };
 
-  setFileInputRef = (ref: HTMLInputElement) => {
-    this.fileInputElement = ref;
-  };
-
-  getRoles = () => {
-    const { hasAdminRights, hasModeratorRights, selectedProjects } = this.state;
-
+  const getRoles = () => {
     const roles: INewBulkInvite['roles'] = [];
 
-    if (hasAdminRights) {
+    if (inviteesWillHaveAdminRights) {
       roles.push({ type: 'admin' });
     }
 
-    if (hasModeratorRights && selectedProjects && selectedProjects.length > 0) {
+    if (
+      inviteesWillHaveModeratorRights &&
+      selectedProjects &&
+      selectedProjects.length > 0
+    ) {
       selectedProjects.forEach((project) => {
         roles.push({ type: 'project_moderator', project_id: project.value });
       });
@@ -386,16 +331,7 @@ class Invitations extends React.PureComponent<
     return roles;
   };
 
-  handleOnSubmit = async (event) => {
-    event.preventDefault();
-    const {
-      selectedLocale,
-      selectedView,
-      selectedEmails,
-      selectedFileBase64,
-      selectedGroups,
-      selectedInviteText,
-    } = this.state;
+  const onSubmit = async () => {
     const hasCorrectSelection =
       (selectedView === 'import' &&
         isString(selectedFileBase64) &&
@@ -406,17 +342,15 @@ class Invitations extends React.PureComponent<
 
     if (selectedLocale && hasCorrectSelection) {
       try {
-        this.setState({
-          processing: true,
-          processed: false,
-          apiErrors: null,
-          filetypeError: null,
-          unknownError: null,
-        });
+        setProcessing(true);
+        setProcessed(false);
+        setApiErrors(null);
+        setFiletypeError(null);
+        setUnknownError(null);
 
         const bulkInvite: INewBulkInvite = {
           locale: selectedLocale,
-          roles: this.getRoles(),
+          roles: getRoles(),
           group_ids:
             selectedGroups && selectedGroups.length > 0
               ? selectedGroups.map((group) => group.value)
@@ -439,40 +373,30 @@ class Invitations extends React.PureComponent<
         }
 
         // reset file input
-        if (this.fileInputElement) {
-          this.fileInputElement.value = '';
+        if (fileInputElement.current) {
+          fileInputElement.current.value = '';
         }
 
         // reset state
-        this.setState({
-          processing: false,
-          processed: true,
-          selectedEmails: null,
-          selectedFileBase64: null,
-        });
+        setProcessing(false);
+        setProcessed(true);
+        setSelectedEmails(null);
+        setSelectedFileBase64(null);
       } catch (errors) {
         const apiErrors = get(errors, 'json.errors', null);
 
-        this.setState({
-          apiErrors,
-          unknownError: !apiErrors ? (
-            <FormattedMessage {...messages.unknownError} />
-          ) : null,
-          processing: false,
-        });
+        setApiErrors(apiErrors);
+        setUnknownError(
+          !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null
+        );
+        setProcessing(false);
       }
     }
   };
 
-  validateInvitation = () => {
-    const {
-      selectedEmails,
-      selectedProjects,
-      hasModeratorRights,
-      selectedFileBase64,
-    } = this.state;
+  const validateInvitation = () => {
     const isValidEmails = isString(selectedEmails) && !isEmpty(selectedEmails);
-    const hasValidRights = hasModeratorRights
+    const hasValidRights = inviteesWillHaveModeratorRights
       ? !isEmpty(selectedProjects)
       : true;
     const isValidInvitationTemplate =
@@ -480,333 +404,312 @@ class Invitations extends React.PureComponent<
     return (isValidEmails || isValidInvitationTemplate) && hasValidRights;
   };
 
-  render() {
-    const {
-      projects,
-      locale,
-      tenantLocales,
-      groups,
-      intl: { formatMessage },
-    } = this.props;
-    const {
-      selectedEmails,
-      hasAdminRights,
-      hasModeratorRights,
-      selectedLocale,
-      selectedProjects,
-      selectedGroups,
-      selectedInviteText,
-      invitationOptionsOpened,
-      selectedView,
-      processing,
-      processed,
-      apiErrors,
-      filetypeError,
-      unknownError,
-    } = this.state;
-    const projectOptions = this.getProjectOptions(
-      projects,
-      locale,
-      tenantLocales
-    );
-    const groupOptions = this.getGroupOptions(groups, locale, tenantLocales);
+  const handleSubmitAction = (event: React.FormEvent) => {
+    event.preventDefault();
 
-    const invitationTabs = [
-      {
-        name: 'import',
-        label: this.props.intl.formatMessage(messages.importTab),
-      },
-      {
-        name: 'text',
-        label: this.props.intl.formatMessage(messages.textTab),
-      },
-    ];
+    if (inviteesWillHaveAdminRights || inviteesWillHaveModeratorRights) {
+      setShowModal(true);
+    } else {
+      onSubmit();
+    }
+  };
 
-    const invitationOptions = (
-      <Collapse
-        opened={invitationOptionsOpened}
-        onToggle={this.toggleOptions}
-        label={<FormattedMessage {...messages.invitationOptions} />}
-        labelTooltipText={
-          selectedView === 'import' ? (
-            <FormattedMessage
-              {...messages.importOptionsInfo}
-              values={{
-                supportPageLink: (
-                  <a
-                    href={this.props.intl.formatMessage(
-                      messages.invitesSupportPageURL
-                    )}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <FormattedMessage {...messages.supportPage} />
-                  </a>
-                ),
-              }}
-            />
-          ) : null
-        }
+  const projectOptions = getProjectOptions(projects, locale, tenantLocales);
+  const groupOptions = getGroupOptions(groups, locale, tenantLocales);
+
+  const invitationTabs = [
+    {
+      name: 'import',
+      label: formatMessage(messages.importTab),
+    },
+    {
+      name: 'text',
+      label: formatMessage(messages.textTab),
+    },
+  ];
+
+  const invitationOptions = (
+    <Collapse
+      opened={invitationOptionsOpened}
+      onToggle={toggleOptions}
+      label={<FormattedMessage {...messages.invitationOptions} />}
+      labelTooltipText={
+        selectedView === 'import' ? (
+          <FormattedMessage
+            {...messages.importOptionsInfo}
+            values={{
+              supportPageLink: (
+                <a
+                  href={formatMessage(messages.invitesSupportPageURL)}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <FormattedMessage {...messages.supportPage} />
+                </a>
+              ),
+            }}
+          />
+        ) : null
+      }
+    >
+      <Box
+        width="497px"
+        padding="20px"
+        borderRadius={stylingConsts.borderRadius}
+        border="solid 1px #ddd"
+        background={colors.white}
       >
-        <InvitationOptions>
-          <SectionField>
-            <FlexWrapper>
-              <Label>
-                <FormattedMessage {...messages.adminLabel} />
-                <IconTooltip
-                  content={<FormattedMessage {...messages.adminLabelTooltip} />}
-                />
-              </Label>
-              <Toggle
-                checked={hasAdminRights}
-                onChange={this.handleAdminRightsOnToggle}
+        <SectionField>
+          <Box display="flex" justifyContent="space-between">
+            <Label>
+              <FormattedMessage {...messages.adminLabel} />
+              <IconTooltip
+                content={<FormattedMessage {...messages.adminLabelTooltip} />}
               />
-            </FlexWrapper>
-            {hasAdminRights && (
-              <Box marginTop="20px">
-                <SeatInfo seatType="admin" />
-              </Box>
-            )}
-          </SectionField>
+            </Label>
+            <Toggle
+              checked={inviteesWillHaveAdminRights}
+              onChange={handleAdminRightsOnToggle}
+            />
+          </Box>
+        </SectionField>
 
+        <SectionField>
+          <Box display="flex" justifyContent="space-between">
+            <Label>
+              <FormattedMessage {...messages.moderatorLabel} />
+              <IconTooltip
+                content={
+                  <FormattedMessage
+                    {...messages.moderatorLabelTooltip}
+                    values={{
+                      moderatorLabelTooltipLink: (
+                        <a
+                          href={formatMessage(
+                            messages.moderatorLabelTooltipLink
+                          )}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <FormattedMessage
+                            {...messages.moderatorLabelTooltipLinkText}
+                          />
+                        </a>
+                      ),
+                    }}
+                  />
+                }
+              />
+            </Label>
+            <StyledToggle
+              checked={inviteesWillHaveModeratorRights}
+              onChange={handleModeratorRightsOnToggle}
+            />
+          </Box>
+
+          {inviteesWillHaveModeratorRights && (
+            <>
+              <MultipleSelect
+                value={selectedProjects}
+                options={projectOptions}
+                onChange={handleSelectedProjectsOnChange}
+                placeholder={
+                  <FormattedMessage {...messages.projectSelectorPlaceholder} />
+                }
+              />
+              {isNilOrError(selectedProjects) && (
+                <StyledWarning>
+                  <FormattedMessage {...messages.required} />
+                </StyledWarning>
+              )}
+            </>
+          )}
+        </SectionField>
+
+        {!isNilOrError(tenantLocales) && tenantLocales.length > 1 && (
           <SectionField>
-            <FlexWrapper>
-              <Label>
-                <FormattedMessage {...messages.moderatorLabel} />
-                <IconTooltip
-                  content={
+            <Label>
+              <FormattedMessage {...messages.localeLabel} />
+            </Label>
+
+            {tenantLocales.map((currentTenantLocale) => (
+              <Radio
+                key={currentTenantLocale}
+                onChange={handleLocaleOnChange}
+                currentValue={selectedLocale}
+                value={currentTenantLocale}
+                label={appLocalePairs[currentTenantLocale]}
+                name="locales"
+                id={`locale-${currentTenantLocale}`}
+              />
+            ))}
+          </SectionField>
+        )}
+
+        <SectionField>
+          <Label>
+            <FormattedMessage {...messages.addToGroupLabel} />
+          </Label>
+          <MultipleSelect
+            value={selectedGroups}
+            options={groupOptions}
+            onChange={handleSelectedGroupsOnChange}
+            placeholder={<FormattedMessage {...messages.groupsPlaceholder} />}
+          />
+        </SectionField>
+
+        <SectionField>
+          <Label>
+            <FormattedMessage {...messages.inviteTextLabel} />
+          </Label>
+          <QuillEditor
+            id="invite-text"
+            value={selectedInviteText || ''}
+            onChange={handleInviteTextOnChange}
+            limitedTextFormatting
+            noImages
+            noVideos
+            withCTAButton
+          />
+        </SectionField>
+      </Box>
+    </Collapse>
+  );
+
+  return (
+    <>
+      <HelmetIntl
+        title={messages.helmetTitle}
+        description={messages.helmetDescription}
+      />
+      <form onSubmit={handleSubmitAction} id="e2e-invitations">
+        <Section>
+          <StyledTabs
+            items={invitationTabs}
+            selectedValue={selectedView || 'import'}
+            onClick={resetWithView}
+          />
+
+          {selectedView === 'import' && (
+            <>
+              <SectionField>
+                <StyledSectionTitle>
+                  <FormattedMessage {...messages.downloadFillOutTemplate} />
+                </StyledSectionTitle>
+                <Text fontSize="base">
+                  <Box display="flex" justifyContent="space-between">
+                    <DownloadButton
+                      buttonStyle="secondary"
+                      icon="download"
+                      onClick={downloadExampleFile}
+                    >
+                      <FormattedMessage {...messages.downloadTemplate} />
+                    </DownloadButton>
+                  </Box>
+                  <SectionParagraph>
                     <FormattedMessage
-                      {...messages.moderatorLabelTooltip}
+                      {...messages.visitSupportPage}
                       values={{
-                        moderatorLabelTooltipLink: (
+                        supportPageLink: (
                           <a
-                            href={formatMessage(
-                              messages.moderatorLabelTooltipLink
-                            )}
+                            href={formatMessage(messages.invitesSupportPageURL)}
                             target="_blank"
                             rel="noreferrer"
                           >
                             <FormattedMessage
-                              {...messages.moderatorLabelTooltipLinkText}
+                              {...messages.supportPageLinkText}
                             />
                           </a>
                         ),
                       }}
                     />
-                  }
-                />
-              </Label>
-              <StyledToggle
-                checked={hasModeratorRights}
-                onChange={this.handleModeratorRightsOnToggle}
-              />
-            </FlexWrapper>
+                  </SectionParagraph>
+                  <SectionParagraph>
+                    <FormattedMessage {...messages.fileRequirements} />
+                  </SectionParagraph>
+                </Text>
 
-            {hasModeratorRights && (
-              <>
-                <MultipleSelect
-                  value={selectedProjects}
-                  options={projectOptions}
-                  onChange={this.handleSelectedProjectsOnChange}
-                  placeholder={
-                    <FormattedMessage
-                      {...messages.projectSelectorPlaceholder}
-                    />
-                  }
-                />
-                {isNilOrError(selectedProjects) && (
-                  <StyledWarning>
-                    <FormattedMessage {...messages.required} />
-                  </StyledWarning>
-                )}
-                <Box marginTop="20px">
-                  <SeatInfo seatType="collaborator" />
+                <StyledSectionTitle>
+                  <FormattedMessage {...messages.uploadCompletedFile} />
+                </StyledSectionTitle>
+
+                <Box marginBottom="20px" marginTop="15px">
+                  <input
+                    type="file"
+                    accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    onChange={handleFileInputOnChange}
+                    ref={fileInputElement}
+                  />
                 </Box>
-              </>
-            )}
-          </SectionField>
+                <Error text={filetypeError} />
+              </SectionField>
 
-          {!isNilOrError(tenantLocales) && tenantLocales.length > 1 && (
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.localeLabel} />
-              </Label>
+              <StyledSectionTitle>
+                <FormattedMessage {...messages.configureInvitations} />
+              </StyledSectionTitle>
+              {invitationOptions}
+            </>
+          )}
 
-              {tenantLocales.map((currentTenantLocale) => (
-                <Radio
-                  key={currentTenantLocale}
-                  onChange={this.handleLocaleOnChange}
-                  currentValue={selectedLocale}
-                  value={currentTenantLocale}
-                  label={appLocalePairs[currentTenantLocale]}
-                  name="locales"
-                  id={`locale-${currentTenantLocale}`}
+          {selectedView === 'text' && (
+            <>
+              <SectionField>
+                <Label htmlFor="e2e-emails">
+                  <FormattedMessage {...messages.emailListLabel} />
+                </Label>
+                <TextArea
+                  value={selectedEmails || ''}
+                  onChange={handleEmailListOnChange}
+                  id="e2e-emails"
                 />
-              ))}
-            </SectionField>
+              </SectionField>
+
+              {invitationOptions}
+            </>
           )}
 
           <SectionField>
-            <Label>
-              <FormattedMessage {...messages.addToGroupLabel} />
-            </Label>
-            <MultipleSelect
-              value={selectedGroups}
-              options={groupOptions}
-              onChange={this.handleSelectedGroupsOnChange}
-              placeholder={<FormattedMessage {...messages.groupsPlaceholder} />}
-            />
-          </SectionField>
-
-          <SectionField>
-            <Label>
-              <FormattedMessage {...messages.inviteTextLabel} />
-            </Label>
-            <QuillEditor
-              id="invite-text"
-              value={selectedInviteText || ''}
-              onChange={this.handleInviteTextOnChange}
-              limitedTextFormatting
-              noImages
-              noVideos
-              withCTAButton
-            />
-          </SectionField>
-        </InvitationOptions>
-      </Collapse>
-    );
-
-    return (
-      <>
-        <HelmetIntl
-          title={messages.helmetTitle}
-          description={messages.helmetDescription}
-        />
-        <form onSubmit={this.handleOnSubmit} id="e2e-invitations">
-          <Section>
-            <StyledTabs
-              items={invitationTabs}
-              selectedValue={selectedView || 'import'}
-              onClick={this.resetWithView}
-            />
-
-            {selectedView === 'import' && (
-              <>
-                <SectionField>
-                  <StyledSectionTitle>
-                    <FormattedMessage {...messages.downloadFillOutTemplate} />
-                  </StyledSectionTitle>
-                  <SectionDescription>
-                    <FlexWrapper>
-                      <DownloadButton
-                        buttonStyle="secondary"
-                        icon="download"
-                        onClick={this.downloadExampleFile}
-                      >
-                        <FormattedMessage {...messages.downloadTemplate} />
-                      </DownloadButton>
-                    </FlexWrapper>
-                    <SectionParagraph>
-                      <FormattedMessage
-                        {...messages.visitSupportPage}
-                        values={{
-                          supportPageLink: (
-                            <a
-                              href={this.props.intl.formatMessage(
-                                messages.invitesSupportPageURL
-                              )}
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              <FormattedMessage
-                                {...messages.supportPageLinkText}
-                              />
-                            </a>
-                          ),
-                        }}
-                      />
-                    </SectionParagraph>
-                    <SectionParagraph>
-                      <FormattedMessage {...messages.fileRequirements} />
-                    </SectionParagraph>
-                  </SectionDescription>
-
-                  <StyledSectionTitle>
-                    <FormattedMessage {...messages.uploadCompletedFile} />
-                  </StyledSectionTitle>
-
-                  <FileInputWrapper>
-                    <input
-                      type="file"
-                      accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                      onChange={this.handleFileInputOnChange}
-                      ref={this.setFileInputRef}
-                    />
-                  </FileInputWrapper>
-                  <Error text={filetypeError} />
-                </SectionField>
-
-                <StyledSectionTitle>
-                  <FormattedMessage {...messages.configureInvitations} />
-                </StyledSectionTitle>
-                {invitationOptions}
-              </>
-            )}
-
-            {selectedView === 'text' && (
-              <>
-                <SectionField>
-                  <Label htmlFor="e2e-emails">
-                    <FormattedMessage {...messages.emailListLabel} />
-                  </Label>
-                  <TextArea
-                    value={selectedEmails || ''}
-                    onChange={this.handleEmailListOnChange}
-                    id="e2e-emails"
-                  />
-                </SectionField>
-
-                {invitationOptions}
-              </>
-            )}
-
-            <SectionField>
-              <ButtonWrapper>
-                <SubmitWrapper
-                  loading={processing}
-                  status={this.getSubmitState(apiErrors, processed)}
-                  messages={{
-                    buttonSave: messages.save,
-                    buttonSuccess: messages.saveSuccess,
-                    messageError: messages.saveErrorMessage,
-                    messageSuccess: messages.saveSuccessMessage,
-                  }}
-                />
-
-                {processing && (
-                  <Processing>
-                    <FormattedMessage {...messages.processing} />
-                  </Processing>
-                )}
-              </ButtonWrapper>
-
-              <Error
-                apiErrors={apiErrors}
-                showIcon={true}
-                marginTop="15px"
-                animate={false}
+            <Box display="flex" alignItems="center" paddingTop="30px">
+              <SubmitWrapper
+                loading={processing}
+                status={getSubmitState(apiErrors, processed)}
+                messages={{
+                  buttonSave: messages.save,
+                  buttonSuccess: messages.saveSuccess,
+                  messageError: messages.saveErrorMessage,
+                  messageSuccess: messages.saveSuccessMessage,
+                }}
               />
 
-              <Error text={unknownError} />
-            </SectionField>
-          </Section>
-        </form>
-      </>
-    );
-  }
-}
+              {processing && (
+                <Box color={colors.textSecondary} marginLeft="15px">
+                  <FormattedMessage {...messages.processing} />
+                </Box>
+              )}
+            </Box>
 
-const InvitationsWithIntl = injectIntl(Invitations);
+            <Error
+              apiErrors={apiErrors}
+              showIcon={true}
+              marginTop="15px"
+              animate={false}
+            />
+
+            <Error text={unknownError} />
+          </SectionField>
+        </Section>
+      </form>
+      <InviteUsersWithSeatsModal
+        inviteUsers={onSubmit}
+        showModal={showModal}
+        closeModal={closeModal}
+        //TODO: At the moment this number only includes manually added emails. We need to handle emails from the uploaded file as well when that ticket is completed.
+        noOfSeatsToAdd={selectedEmails?.split(',').length || 0}
+        seatType={inviteesWillHaveAdminRights ? 'admin' : 'collaborator'}
+      />
+    </>
+  );
+};
 
 const Data = adopt<DataProps>({
   projects: (
@@ -819,6 +722,6 @@ const Data = adopt<DataProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <InvitationsWithIntl {...inputProps} {...dataProps} />}
+    {(dataProps: DataProps) => <Invitations {...inputProps} {...dataProps} />}
   </Data>
 );

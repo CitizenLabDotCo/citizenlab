@@ -22,10 +22,10 @@ import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 // Utils
 import { isNil } from 'utils/helperUtils';
 
-type TSeatType = 'collaborator' | 'admin';
+export type TSeatType = 'collaborator' | 'admin';
 
 // Messages
-type SeatTypeMessageDescriptor = {
+export type SeatTypeMessageDescriptor = {
   [key in TSeatType]: MessageDescriptor;
 };
 
