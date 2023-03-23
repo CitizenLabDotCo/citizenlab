@@ -62,4 +62,8 @@ class ApplicationPolicy
   def active?
     user&.active?
   end
+
+  def blocked?
+    user&.blocked?
+  end
 end
