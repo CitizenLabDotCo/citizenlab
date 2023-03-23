@@ -82,10 +82,16 @@ class InvitesService
     [*('a'..'z'), *('0'..'9')].sample(9).join
   end
 
-  def bulk_create_xlsx(file, default_params = {}, inviter = nil)
+  def bulk_create_xlsx(xlsx_param, default_params = {}, inviter = nil)
+    # Strip out data;...base64 prefix if it's there
+    start = xlsx_param.index(';base64,')
+    pure_base64 = start ? xlsx_param[(start + 8)..] : xlsx_param
+
+    xlsx_file = StringIO.new(Base64.decode64(pure_base64))
+
     map_rows = []
     old_row = 0
-    hash_array = XlsxService.new.xlsx_to_hash_array(file).select do |invite_params|
+    hash_array = XlsxService.new.xlsx_to_hash_array(xlsx_file).select do |invite_params|
       if invite_params.present?
         map_rows += [old_row]
       end
@@ -94,14 +100,8 @@ class InvitesService
     end
 
     postprocess_xlsx_hash_array(hash_array)
-    invites = build_invites(hash_array, default_params, inviter)
-    check_invites(invites)
 
-    if @errors.reject(&:ignore).empty?
-      save_invites(invites - ignored_invites(invites))
-    else
-      fail_now
-    end
+    bulk_create(hash_array, default_params, inviter)
   rescue InvitesFailedError => e
     e.errors.each do |error|
       error.row && (error.row = (map_rows[error.row] + 2))

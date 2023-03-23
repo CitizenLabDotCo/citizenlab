@@ -80,17 +80,8 @@ class WebApi::V1::InvitesController < ApplicationController
   def bulk_create_xlsx
     authorize :invite
 
-    # Strip out data;...base64 prefix if it's there
-    start = bulk_create_xlsx_params[:xlsx].index(';base64,')
-    pure_base64 = if start
-      bulk_create_xlsx_params[:xlsx][(start + 8)..]
-    else
-      bulk_create_xlsx_params[:xlsx]
-    end
-
-    xlsx = StringIO.new(Base64.decode64(pure_base64))
     InvitesService.new.bulk_create_xlsx(
-      xlsx,
+      bulk_create_xlsx_params[:xlsx],
       bulk_create_params.except(:xlsx).stringify_keys,
       current_user
     )
