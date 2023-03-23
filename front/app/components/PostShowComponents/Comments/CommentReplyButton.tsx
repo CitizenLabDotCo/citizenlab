@@ -23,9 +23,9 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { GetUserChildProps } from 'resources/GetUser';
 import { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { GetCommentChildProps } from 'resources/GetComment';
-import { GetPostChildProps } from 'resources/GetPost';
 import { GetInitiativesPermissionsChildProps } from 'resources/GetInitiativesPermissions';
 import { IInitiativeData } from 'api/initiatives/types';
+import { IIdeaData } from 'api/ideas/types';
 
 const Container = styled.li`
   display: flex;
@@ -58,7 +58,7 @@ interface Props {
   commentType: 'parent' | 'child' | undefined;
   authUser: GetAuthUserChildProps;
   author: GetUserChildProps;
-  post: GetPostChildProps | IInitiativeData;
+  post: IIdeaData | IInitiativeData;
   comment: GetCommentChildProps;
   commentingPermissionInitiative: GetInitiativesPermissionsChildProps;
   className?: string;

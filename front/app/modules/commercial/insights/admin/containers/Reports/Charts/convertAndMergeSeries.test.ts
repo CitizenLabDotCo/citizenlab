@@ -7,11 +7,19 @@ const convertAndMergeSeries = createConvertAndMergeSeries({
   localize: (multiloc) => (multiloc ? multiloc.en || '' : ''),
 });
 
+const wrap = (attributes) =>
+  ({
+    data: {
+      type: 'users_by_registration_field',
+      attributes,
+    },
+  } as any);
+
 describe('createConvertAndMergeSeries', () => {
   it('works with birthyear', () => {
     const output = convertAndMergeSeries(
-      { series: { users: { 1999: 6, 2004: 6 } } },
-      { series: { users: { 1999: 2, 2004: 3 } } },
+      wrap({ series: { users: { 1999: 6, 2004: 6 } } }),
+      wrap({ series: { users: { 1999: 2, 2004: 3 } } }),
       'birthyear'
     );
 
@@ -26,10 +34,12 @@ describe('createConvertAndMergeSeries', () => {
 
   it('works with gender', () => {
     const output = convertAndMergeSeries(
-      {
+      wrap({
         series: { users: { male: 10, female: 12, unspecified: 3, _blank: 2 } },
-      },
-      { series: { users: { male: 3, female: 5, unspecified: 2, _blank: 0 } } },
+      }),
+      wrap({
+        series: { users: { male: 3, female: 5, unspecified: 2, _blank: 0 } },
+      }),
       'gender'
     );
 
@@ -73,8 +83,8 @@ describe('createConvertAndMergeSeries', () => {
     };
 
     const output = convertAndMergeSeries(
-      totalSerie,
-      participantSerie,
+      wrap(totalSerie),
+      wrap(participantSerie),
       'domicile'
     );
 
@@ -114,8 +124,8 @@ describe('createConvertAndMergeSeries', () => {
     };
 
     const output = convertAndMergeSeries(
-      totalSerie,
-      participantSerie,
+      wrap(totalSerie),
+      wrap(participantSerie),
       'education'
     );
 

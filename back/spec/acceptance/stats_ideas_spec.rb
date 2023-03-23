@@ -75,8 +75,9 @@ resource 'Stats - Ideas' do
 
     example_request 'Count all ideas' do
       assert_status 200
-      json_response = json_parse(response_body)
-      expect(json_response[:count]).to eq 7
+      json_response = json_parse response_body
+      expect(json_response.dig(:data, :type)).to eq 'ideas_count'
+      expect(json_response.dig(:data, :attributes, :count)).to eq 7
     end
 
     describe 'with feedback_needed filter' do
@@ -84,8 +85,9 @@ resource 'Stats - Ideas' do
 
       example_request 'Count all ideas that need feedback' do
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:count]).to eq 6
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'ideas_count'
+        expect(json_response.dig(:data, :attributes, :count)).to eq 6
       end
 
       example 'Count all ideas that need feedback for a specific assignee' do
@@ -94,15 +96,18 @@ resource 'Stats - Ideas' do
         do_request assignee: assignee.id
 
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:count]).to eq 1
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'ideas_count'
+        expect(json_response.dig(:data, :attributes, :count)).to eq 1
       end
 
       example 'Count is not limited by pagination' do
         do_request(page: { size: 2, number: 1 })
 
         assert_status 200
-        expect(json_parse(response_body)[:count]).to eq 6
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'ideas_count'
+        expect(json_response.dig(:data, :attributes, :count)).to eq 6
       end
     end
   end
@@ -119,10 +124,12 @@ resource 'Stats - Ideas' do
 
       example_request 'Ideas by topic' do
         assert_status 200
-        json_response = json_parse(response_body)
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'ideas_by_topic'
+        json_attributes = json_response.dig(:data, :attributes)
         expected_topics = @ideas_with_topics.flat_map { |i| i.ideas_topics.map(&:topic_id) }.uniq
-        expect(json_response[:series][:ideas].keys.map(&:to_s).uniq - expected_topics).to eq []
-        expect(json_response[:series][:ideas].values.map(&:class).uniq).to eq [Integer]
+        expect(json_attributes[:series][:ideas].keys.map(&:to_s).uniq - expected_topics).to eq []
+        expect(json_attributes[:series][:ideas].values.map(&:class).uniq).to eq [Integer]
       end
     end
 
@@ -142,8 +149,9 @@ resource 'Stats - Ideas' do
 
       example_request 'Ideas by topic filtered by project' do
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:series][:ideas].values.sum).to eq 1
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'ideas_by_topic'
+        expect(json_response.dig(:data, :attributes, :series, :ideas).values.sum).to eq 1
       end
     end
 
@@ -161,8 +169,9 @@ resource 'Stats - Ideas' do
 
       example_request 'Ideas by topic filtered by group' do
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:series][:ideas].values.sum).to eq 2
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'ideas_by_topic'
+        expect(json_response.dig(:data, :attributes, :series, :ideas).values.sum).to eq 2
       end
     end
   end
@@ -232,9 +241,11 @@ resource 'Stats - Ideas' do
 
       example_request 'Ideas by status' do
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:series][:ideas].keys.map(&:to_s)).to match_array [@proposed.id]
-        expect(json_response[:series][:ideas].values.map(&:class).uniq).to eq [Integer]
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'ideas_by_status'
+        json_attributes = json_response.dig(:data, :attributes)
+        expect(json_attributes[:series][:ideas].keys.map(&:to_s)).to match_array [@proposed.id]
+        expect(json_attributes[:series][:ideas].values.map(&:class).uniq).to eq [Integer]
       end
     end
 
@@ -252,8 +263,9 @@ resource 'Stats - Ideas' do
 
       example_request 'Ideas by status filtered by project' do
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:series][:ideas].values.sum).to eq 1
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'ideas_by_status'
+        expect(json_response.dig(:data, :attributes, :series, :ideas).values.sum).to eq 1
       end
     end
 
@@ -271,8 +283,9 @@ resource 'Stats - Ideas' do
 
       example_request 'Ideas by status filtered by group' do
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:series][:ideas].values.sum).to eq 1
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'ideas_by_status'
+        expect(json_response.dig(:data, :attributes, :series, :ideas).values.sum).to eq 1
       end
     end
   end
@@ -342,12 +355,14 @@ resource 'Stats - Ideas' do
 
       example_request 'Ideas by project' do
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:series][:ideas].stringify_keys).to match({
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'ideas_by_project'
+        json_attributes = json_response.dig(:data, :attributes)
+        expect(json_attributes[:series][:ideas].stringify_keys).to match({
           @project1.id => 5,
           @project2.id => 1
         })
-        expect(json_response[:projects].keys.map(&:to_s)).to match_array [@project1.id, @project2.id]
+        expect(json_attributes[:projects].keys.map(&:to_s)).to match_array [@project1.id, @project2.id]
       end
     end
 
@@ -366,8 +381,9 @@ resource 'Stats - Ideas' do
 
       example_request 'Ideas by project filtered by topic' do
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:series][:ideas].values.sum).to eq 1
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'ideas_by_project'
+        expect(json_response.dig(:data, :attributes, :series, :ideas).values.sum).to eq 1
       end
     end
 
@@ -387,8 +403,9 @@ resource 'Stats - Ideas' do
 
       example_request 'Ideas by project filtered by group' do
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:series][:ideas].values.sum).to eq 1
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'ideas_by_project'
+        expect(json_response.dig(:data, :attributes, :series, :ideas).values.sum).to eq 1
       end
     end
   end
@@ -481,20 +498,22 @@ resource 'Stats - Ideas' do
 
     example_request 'Ideas by time (published_at)' do
       assert_status 200
-      json_response = json_parse(response_body)
-      expect(json_response[:series][:ideas].size).to eq end_at.yday
-      expect(json_response[:series][:ideas].values.sum).to eq 6
+      json_response = json_parse response_body
+      expect(json_response.dig(:data, :type)).to eq 'ideas_by_time'
+      json_attributes = json_response.dig(:data, :attributes)
+      expect(json_attributes[:series][:ideas].size).to eq end_at.yday
+      expect(json_attributes[:series][:ideas].values.sum).to eq 6
     end
 
     describe 'with time filter outside of platform lifetime' do
       let(:start_at) { now - 10.years }
       let(:end_at) { now - 10.years + 1.day }
 
-      it 'returns no entries' do
-        do_request
+      example_request 'returns no entries' do
         assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response).to eq({ series: { ideas: {} } })
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'ideas_by_time'
+        expect(json_response.dig(:data, :attributes)).to eq({ series: { ideas: {} } })
       end
     end
   end
@@ -523,11 +542,13 @@ resource 'Stats - Ideas' do
 
         example_request 'Ideas by time (published_at) cumulative' do
           assert_status 200
-          json_response = json_parse(response_body)
-          expect(json_response[:series][:ideas].size).to eq end_at.yday
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :type)).to eq 'ideas_by_time_cumulative'
+          json_attributes = json_response.dig(:data, :attributes)
+          expect(json_attributes[:series][:ideas].size).to eq end_at.yday
           # monotonically increasing
-          expect(json_response[:series][:ideas].values.uniq).to eq json_response[:series][:ideas].values.uniq.sort
-          expect(json_response[:series][:ideas].values.last).to eq 7
+          expect(json_attributes[:series][:ideas].values.uniq).to eq json_attributes[:series][:ideas].values.uniq.sort
+          expect(json_attributes[:series][:ideas].values.last).to eq 7
         end
       end
 
@@ -537,10 +558,12 @@ resource 'Stats - Ideas' do
 
         example_request 'Ideas by time (published_at) cumulative' do
           assert_status 200
-          json_response = json_parse(response_body)
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :type)).to eq 'ideas_by_time_cumulative'
+          json_attributes = json_response.dig(:data, :attributes)
           # monotonically increasing
-          expect(json_response[:series][:ideas].values.uniq).to eq json_response[:series][:ideas].values.uniq.sort
-          expect(json_response[:series][:ideas].values.last).to eq 7
+          expect(json_attributes[:series][:ideas].values.uniq).to eq json_attributes[:series][:ideas].values.uniq.sort
+          expect(json_attributes[:series][:ideas].values.last).to eq 7
         end
       end
 
@@ -551,10 +574,12 @@ resource 'Stats - Ideas' do
 
         example_request 'Ideas by time (published_at) cumulative' do
           assert_status 200
-          json_response = json_parse(response_body)
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :type)).to eq 'ideas_by_time_cumulative'
+          json_attributes = json_response.dig(:data, :attributes)
           # monotonically increasing
-          expect(json_response[:series][:ideas].values.uniq).to eq json_response[:series][:ideas].values.uniq.sort
-          expect(json_response[:series][:ideas].values.last).to eq 7
+          expect(json_attributes[:series][:ideas].values.uniq).to eq json_attributes[:series][:ideas].values.uniq.sort
+          expect(json_attributes[:series][:ideas].values.last).to eq 7
         end
       end
 
@@ -564,10 +589,12 @@ resource 'Stats - Ideas' do
 
         example_request 'Ideas by time (published_at) cumulative' do
           assert_status 200
-          json_response = json_parse(response_body)
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :type)).to eq 'ideas_by_time_cumulative'
+          json_attributes = json_response.dig(:data, :attributes)
           # monotonically increasing
-          expect(json_response[:series][:ideas].values.uniq).to eq json_response[:series][:ideas].values.uniq.sort
-          expect(json_response[:series][:ideas].values.last).to eq 7
+          expect(json_attributes[:series][:ideas].values.uniq).to eq json_attributes[:series][:ideas].values.uniq.sort
+          expect(json_attributes[:series][:ideas].values.last).to eq 7
         end
       end
     end

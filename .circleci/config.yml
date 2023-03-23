@@ -378,14 +378,12 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v1-npm-cache-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-npm-cache-
+            - v2-npm-cache-{{ checksum "package-lock.json" }}
       - run: npm ci
       - save_cache:
           paths:
             - /root/.npm
-          key: v1-npm-cache-{{ checksum "package.json" }}
+          key: v2-npm-cache-{{ checksum "package-lock.json" }}
       - run: npm run detect-deadcode
 
   front-lint:
@@ -397,14 +395,12 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v1-npm-cache-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-npm-cache-
+            - v2-npm-cache-{{ checksum "package-lock.json" }}
       - run: npm ci
       - save_cache:
           paths:
             - /root/.npm
-          key: v1-npm-cache-{{ checksum "package.json" }}
+          key: v2-npm-cache-{{ checksum "package-lock.json" }}
       - run: npm run lint
 
   front-license-check:
@@ -416,9 +412,7 @@ jobs:
       - shallow-clone
       - restore_cache:
           keys:
-            - v1-npm-cache-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-npm-cache-
+            - v2-npm-cache-{{ checksum "package-lock.json" }}
       - run: npm ci
       - run: /bin/bash -lc "cd ~/citizenlab/front && license_finder"
 
@@ -432,14 +426,12 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v1-npm-cache-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-npm-cache-
+            - v2-npm-cache-{{ checksum "package-lock.json" }}
       - run: npm ci
       - save_cache:
           paths:
             - /root/.npm
-          key: v1-npm-cache-{{ checksum "package.json" }}
+          key: v2-npm-cache-{{ checksum "package-lock.json" }}
       - run:
           command: TEST_BUILD="true" npm run build
           no_output_timeout: "30m"
@@ -453,14 +445,12 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v1-npm-cache-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-npm-cache-
+            - v2-npm-cache-{{ checksum "package-lock.json" }}
       - run: npm ci
       - save_cache:
           paths:
             - /root/.npm
-          key: v1-npm-cache-{{ checksum "package.json" }}
+          key: v2-npm-cache-{{ checksum "package-lock.json" }}
       - run: npm run extract-intl
       - run: git add app/translations/*.json
       - run: git add app/translations/admin/*.json
@@ -494,14 +484,12 @@ jobs:
       - shallow-clone
       - restore_cache:
           keys:
-            - v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-npm-cache-
+            - v2-npm-cache-{{ checksum "citizenlab/front/package-lock.json" }}
       - run: cd citizenlab/front && npm ci
       - save_cache:
           paths:
             - /root/.npm
-          key: v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
+          key: v2-npm-cache-{{ checksum "citizenlab/front/package-lock.json" }}
       - run:
           name: Run tests with JUnit as reporter
           command: |
@@ -515,6 +503,8 @@ jobs:
           path: ./citizenlab/front/reports/
       - store_artifacts:
           path: ./citizenlab/front/reports/
+      - store_artifacts:
+          path: /root/.npm/_logs/
 
   front-trigger-deploy:
     resource_class: small
@@ -545,14 +535,12 @@ jobs:
       - shallow-clone
       - restore_cache:
           keys:
-            - v1-npm-cache-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-npm-cache-
+            - v2-npm-cache-{{ checksum "package-lock.json" }}
       - run: npm ci
       - save_cache:
           paths:
             - /root/.npm
-          key: v1-npm-cache-{{ checksum "package.json" }}
+          key: v2-npm-cache-{{ checksum "package-lock.json" }}
       - run:
           command: SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_DSN=$SENTRY_DSN SENTRY_ENV=$SENTRY_ENV_STAGING POSTHOG_API_KEY=$POSTHOG_API_KEY_STAGING npm run build
           no_output_timeout: "30m"
@@ -573,14 +561,12 @@ jobs:
       - shallow-clone
       - restore_cache:
           keys:
-            - v1-npm-cache-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-npm-cache-
+            - v2-npm-cache-{{ checksum "package-lock.json" }}
       - run: npm ci
       - save_cache:
           paths:
             - /root/.npm
-          key: v1-npm-cache-{{ checksum "package.json" }}
+          key: v2-npm-cache-{{ checksum "package-lock.json" }}
       - run:
           command: SEGMENT_API_KEY=$SEGMENT_API_KEY_PRODUCTION SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_DSN=$SENTRY_DSN POSTHOG_API_KEY=$POSTHOG_API_KEY_PRODUCTION npm run build
           no_output_timeout: "30m"
