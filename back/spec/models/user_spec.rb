@@ -690,8 +690,6 @@ RSpec.describe User, type: :model do
     end
   end
 
-
-
   describe 'groups and group_ids' do
     let!(:manual_group) { create(:group) }
     let!(:group) { create(:group) }
@@ -839,7 +837,6 @@ RSpec.describe User, type: :model do
         user.reset_confirmation_required
         expect(user.confirmation_required?).to be true
         expect(user.email_confirmed_at).to be_nil
-        expect(user.email_confirmation_code_changed?).to be true
       end
 
       it 'does not perform a commit to the db' do
@@ -847,6 +844,37 @@ RSpec.describe User, type: :model do
         user.reset_confirmation_required
         expect(user.saved_change_to_confirmation_required?).to be false
         expect(user.saved_change_to_email_confirmed_at?).to be false
+      end
+    end
+
+    describe '#reset_confirmation_and_counts' do
+      before do
+        user.update!(
+          email_confirmation_code: '1234',
+          email_confirmation_retry_count: 2,
+          email_confirmation_code_reset_count: 2
+        )
+      end
+
+      it 'resets counts and required if already confirmed' do
+        user.confirm
+        user.reset_confirmation_and_counts
+
+        expect(user.confirmation_required?).to be true
+        expect(user.email_confirmed_at).to be_nil
+        expect(user.email_confirmation_code).to be_nil
+        expect(user.email_confirmation_retry_count).to eq 0
+        expect(user.email_confirmation_code_reset_count).to eq 0
+      end
+
+      it 'only resets confirmation_required if not confirmed' do
+        user.reset_confirmation_and_counts
+
+        expect(user.confirmation_required?).to be true
+        expect(user.email_confirmed_at).to be_nil
+        expect(user.email_confirmation_code_changed?).to be false
+        expect(user.email_confirmation_retry_count_changed?).to be false
+        expect(user.email_confirmation_code_reset_count_changed?).to be false
       end
     end
 
