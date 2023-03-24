@@ -126,9 +126,9 @@ export default defineMessages({
     defaultMessage:
       'The status of a contribution you commented on changed to {status}',
   },
-  statusChangedOfYourInitiative: {
-    id: 'app.containers.NotificationMenu.statusChangedOfYourInitiative',
-    defaultMessage: "'{initiativeTitle}' status has changed to {status}",
+  statusChangedOfInitiative: {
+    id: 'app.containers.NotificationMenu.statusChangedOfInitiative',
+    defaultMessage: '{initiativeTitle} status has changed to {status}',
   },
   statusChangeOnVotedInitiative: {
     id: 'app.containers.NotificationMenu.statusChangeOnVotedInitiative',
