@@ -35,7 +35,7 @@ resource 'Permissions' do
         expect(json_response[:data].size).to eq Permission.available_actions(@project).size
       end
 
-      example_request 'List all permissions efficiently include custom fields', document: false do
+      example_request 'List all permissions efficiently include custom fields', document: true do
         permission = @project.permissions.first
         field2 = create :custom_field
         field1 = create :custom_field
