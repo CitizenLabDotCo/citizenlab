@@ -12,9 +12,10 @@ import { SSOProviderWithoutVienna } from 'containers/NewAuthModal/typings';
 
 interface Props {
   onClickSSO: (ssoProvider: SSOProviderWithoutVienna) => void;
+  disabled: boolean;
 }
 
-const SSOButtons = ({ onClickSSO }: Props) => {
+const SSOButtons = (props: Props) => {
   const googleLoginEnabled = useFeatureFlag({ name: 'google_login' });
   const facebookLoginEnabled = useFeatureFlag({ name: 'facebook_login' });
   const franceconnectLoginEnabled = useFeatureFlag({
@@ -33,17 +34,13 @@ const SSOButtons = ({ onClickSSO }: Props) => {
 
   return (
     <Box mt="32px">
-      {googleLoginEnabled && (
-        <SSOButton ssoProvider="google" onClickSSO={onClickSSO} />
-      )}
-      {facebookLoginEnabled && (
-        <SSOButton ssoProvider="facebook" onClickSSO={onClickSSO} />
-      )}
+      {googleLoginEnabled && <SSOButton ssoProvider="google" {...props} />}
+      {facebookLoginEnabled && <SSOButton ssoProvider="facebook" {...props} />}
       {franceconnectLoginEnabled && (
-        <SSOButton ssoProvider="franceconnect" onClickSSO={onClickSSO} />
+        <SSOButton ssoProvider="franceconnect" {...props} />
       )}
       {azureAdLoginEnabled && (
-        <SSOButton ssoProvider="azureactivedirectory" onClickSSO={onClickSSO} />
+        <SSOButton ssoProvider="azureactivedirectory" {...props} />
       )}
     </Box>
   );

@@ -21,6 +21,7 @@ import { SSOProviderWithoutVienna } from '../../../typings';
 
 interface Props {
   ssoProvider: SSOProviderWithoutVienna;
+  disabled: boolean;
   onClickSSO: (ssoProvider: SSOProviderWithoutVienna) => void;
 }
 
@@ -40,7 +41,7 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const SSOButton = ({ ssoProvider, onClickSSO }: Props) => {
+const SSOButton = ({ ssoProvider, disabled, onClickSSO }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
   const { formatMessage } = useIntl();
 
@@ -79,7 +80,7 @@ const SSOButton = ({ ssoProvider, onClickSSO }: Props) => {
 
   return (
     <Box mt="12px">
-      <Button onClick={handleClickSSO}>
+      <Button onClick={handleClickSSO} disabled={disabled}>
         <Box
           display="flex"
           flexDirection="row"

@@ -228,7 +228,7 @@ const AuthProviderButton = memo<Props>(
                   privacyPolicyError={privacyError}
                   onTacAcceptedChange={handleTacAcceptedChange}
                   onPrivacyAcceptedChange={handlePrivacyAcceptedChange}
-                  authProvider={authProvider}
+                  isViennaAuth={authProvider === 'id_vienna_saml'}
                 />
                 <ButtonWrapper>
                   <ContinueButton

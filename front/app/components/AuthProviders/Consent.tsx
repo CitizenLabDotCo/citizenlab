@@ -4,12 +4,10 @@ import React, { memo } from 'react';
 import Link from 'utils/cl-router/Link';
 import Checkbox from 'components/UI/Checkbox';
 import Error from 'components/UI/Error';
-import { AuthProvider } from 'components/AuthProviders';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
@@ -53,26 +51,27 @@ const BoldConsentText = styled(ConsentText)`
 interface Props {
   termsAndConditionsAccepted: boolean;
   privacyPolicyAccepted: boolean;
-  termsAndConditionsError: boolean;
-  privacyPolicyError: boolean;
+  termsAndConditionsError?: boolean;
+  privacyPolicyError?: boolean;
   onTacAcceptedChange: (tacAccepted: boolean) => void;
   onPrivacyAcceptedChange: (privacyAccepted: boolean) => void;
-  authProvider: AuthProvider;
+  isViennaAuth?: boolean;
   className?: string;
 }
 
 const Consent = memo(
   ({
     className,
-    intl: { formatMessage },
     privacyPolicyError,
     termsAndConditionsError,
     termsAndConditionsAccepted,
     privacyPolicyAccepted,
     onTacAcceptedChange,
     onPrivacyAcceptedChange,
-    authProvider,
-  }: Props & WrappedComponentProps) => {
+    isViennaAuth,
+  }: Props) => {
+    const { formatMessage } = useIntl();
+
     const handleTermsAndConditionsOnChange = () => {
       onTacAcceptedChange(!termsAndConditionsAccepted);
     };
@@ -81,7 +80,7 @@ const Consent = memo(
       onPrivacyAcceptedChange(!privacyPolicyAccepted);
     };
 
-    if (authProvider === 'id_vienna_saml') {
+    if (isViennaAuth) {
       return (
         <Container className={className}>
           <ConsentText>
@@ -186,4 +185,4 @@ const Consent = memo(
   }
 );
 
-export default injectIntl(Consent);
+export default Consent;

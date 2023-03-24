@@ -1,8 +1,9 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
 // components
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
+import Consent from 'components/AuthProviders/Consent';
 import SSOButtons from './SSOButtons';
 
 // hooks
@@ -43,6 +44,14 @@ const DEFAULT_VALUES: Partial<FormValues> = {
 };
 
 const EmailSignUp = ({ status, onSubmit, onSwitchToSSO }: Props) => {
+  const [termsAndConditionsAccepted, setTermsAndConditionsAccepted] =
+    useState(false);
+  const [privacyPolicyAccepted, setPrivacyPolicyAccepted] = useState(false);
+
+  const toggleTermsAndConditions = () =>
+    setTermsAndConditionsAccepted((value) => !value);
+  const togglePrivacyPolicy = () => setPrivacyPolicyAccepted((value) => !value);
+
   const { formatMessage } = useIntl();
   const locale = useLocale();
 
@@ -59,7 +68,7 @@ const EmailSignUp = ({ status, onSubmit, onSwitchToSSO }: Props) => {
   );
 
   const methods = useForm({
-    mode: 'onSubmit',
+    mode: 'onBlur',
     defaultValues: DEFAULT_VALUES,
     resolver: yupResolver(schema),
   });
@@ -69,6 +78,9 @@ const EmailSignUp = ({ status, onSubmit, onSwitchToSSO }: Props) => {
   const handleSubmit = ({ email }: FormValues) => {
     onSubmit(email, locale);
   };
+
+  const conditionsAccepted =
+    termsAndConditionsAccepted && privacyPolicyAccepted;
 
   return (
     <>
@@ -84,11 +96,19 @@ const EmailSignUp = ({ status, onSubmit, onSwitchToSSO }: Props) => {
               label={formatMessage(messages.email)}
             />
           </Box>
+          <Box mt="24px">
+            <Consent
+              termsAndConditionsAccepted={termsAndConditionsAccepted}
+              privacyPolicyAccepted={privacyPolicyAccepted}
+              onTacAcceptedChange={toggleTermsAndConditions}
+              onPrivacyAcceptedChange={togglePrivacyPolicy}
+            />
+          </Box>
           <Box w="100%" display="flex" mt="32px">
             <Button
               type="submit"
               width="auto"
-              disabled={loading}
+              disabled={loading || !conditionsAccepted}
               processing={loading}
             >
               {formatMessage(sharedMessages.continue)}
@@ -96,7 +116,7 @@ const EmailSignUp = ({ status, onSubmit, onSwitchToSSO }: Props) => {
           </Box>
         </form>
       </FormProvider>
-      <SSOButtons onClickSSO={onSwitchToSSO} />
+      <SSOButtons onClickSSO={onSwitchToSSO} disabled={!conditionsAccepted} />
     </>
   );
 };
