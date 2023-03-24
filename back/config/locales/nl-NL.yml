@@ -232,4 +232,4 @@ nl:
       the_link_is_valid_for: "Deze link is 24 uur geldig. Als de link is verlopen, kan je <a href=\"%{link}\">een nieuwe code aanvragen</a>."
       did_you_receive_this_email_in_error: "Heb je deze e-mail per vergissing ontvangen? <a href=\"%{link}\">Laat het ons weten</a>."
   user:
-    anon_first_name: "User"
+    anon_first_name: "Gebruiker"
