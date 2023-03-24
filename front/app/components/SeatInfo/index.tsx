@@ -96,16 +96,16 @@ const SeatInfo = ({ seatType }: Props) => {
       padding="20px"
       bgColor={rgba(colors.teal400, 0.07)}
     >
-      <Box display="flex" flexDirection="row" alignItems="center">
+      <Box display="flex" alignItems="center">
         <Icon name="shield-checkered" fill={colors.teal300} />
         <Text color="teal700" ml="8px" variant="bodyM" fontWeight="bold">
           {formatMessage(currentSeatTypeTitle)}
         </Text>
       </Box>
 
-      <Box display="flex" flexDirection="row">
+      <Box display="flex">
         <Box display="flex" flexDirection="column" mr="24px">
-          <Box display="flex" flexDirection="row" alignItems="center">
+          <Box display="flex" alignItems="center">
             <Text color="teal700" mr="8px" variant="bodyS" my="0px">
               {formatMessage(messages.includedSeats)}
             </Text>
@@ -121,7 +121,7 @@ const SeatInfo = ({ seatType }: Props) => {
             <Box mr="24px" border={`1px solid ${colors.divider}`} />
 
             <Box display="flex" flexDirection="column">
-              <Box display="flex" flexDirection="row" alignItems="center">
+              <Box display="flex" alignItems="center">
                 <Text color="teal700" mr="8px" variant="bodyS" my="0px">
                   {formatMessage(messages.additionalSeats)}
                 </Text>
