@@ -7,7 +7,14 @@ import SSOButton from './SSOButton';
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-const SSOButtons = () => {
+// typings
+import { SSOProviderWithoutVienna } from 'containers/NewAuthModal/typings';
+
+interface Props {
+  onClickSSO: (ssoProvider: SSOProviderWithoutVienna) => void;
+}
+
+const SSOButtons = ({ onClickSSO }: Props) => {
   const googleLoginEnabled = useFeatureFlag({ name: 'google_login' });
   const facebookLoginEnabled = useFeatureFlag({ name: 'facebook_login' });
   const franceconnectLoginEnabled = useFeatureFlag({
@@ -26,10 +33,18 @@ const SSOButtons = () => {
 
   return (
     <Box mt="32px">
-      {googleLoginEnabled && <SSOButton ssoProvider="google" />}
-      {facebookLoginEnabled && <SSOButton ssoProvider="facebook" />}
-      {franceconnectLoginEnabled && <SSOButton ssoProvider="franceconnect" />}
-      {azureAdLoginEnabled && <SSOButton ssoProvider="azureactivedirectory" />}
+      {googleLoginEnabled && (
+        <SSOButton ssoProvider="google" onClickSSO={onClickSSO} />
+      )}
+      {facebookLoginEnabled && (
+        <SSOButton ssoProvider="facebook" onClickSSO={onClickSSO} />
+      )}
+      {franceconnectLoginEnabled && (
+        <SSOButton ssoProvider="franceconnect" onClickSSO={onClickSSO} />
+      )}
+      {azureAdLoginEnabled && (
+        <SSOButton ssoProvider="azureactivedirectory" onClickSSO={onClickSSO} />
+      )}
     </Box>
   );
 };

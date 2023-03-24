@@ -17,12 +17,11 @@ import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
 // typings
-import { SSOProvider } from 'services/singleSignOn';
-
-type SSOProviderWithoutVienna = Exclude<SSOProvider, 'id_vienna_saml'>;
+import { SSOProviderWithoutVienna } from '../../../typings';
 
 interface Props {
   ssoProvider: SSOProviderWithoutVienna;
+  onClickSSO: (ssoProvider: SSOProviderWithoutVienna) => void;
 }
 
 const ICON_NAME_MAP = {
@@ -41,7 +40,7 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const SSOButton = ({ ssoProvider }: Props) => {
+const SSOButton = ({ ssoProvider, onClickSSO }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
   const { formatMessage } = useIntl();
 
@@ -73,9 +72,14 @@ const SSOButton = ({ ssoProvider }: Props) => {
     return;
   };
 
+  const handleClickSSO = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    onClickSSO(ssoProvider);
+  };
+
   return (
     <Box mt="12px">
-      <Button>
+      <Button onClick={handleClickSSO}>
         <Box
           display="flex"
           flexDirection="row"

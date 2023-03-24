@@ -57,6 +57,7 @@ export default function useSteps() {
   const stepConfig = useMemo(
     () =>
       getStepConfig(
+        authenticationDataRef.current,
         getRequirements,
         setCurrentStep,
         setStatus,

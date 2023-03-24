@@ -42,7 +42,7 @@ const DEFAULT_VALUES: Partial<FormValues> = {
   email: undefined,
 };
 
-const EmailSignUp = ({ status, onSubmit }: Props) => {
+const EmailSignUp = ({ status, onSubmit, onSwitchToSSO }: Props) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
 
@@ -96,7 +96,7 @@ const EmailSignUp = ({ status, onSubmit }: Props) => {
           </Box>
         </form>
       </FormProvider>
-      <SSOButtons />
+      <SSOButtons onClickSSO={onSwitchToSSO} />
     </>
   );
 };

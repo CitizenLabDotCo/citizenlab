@@ -1,14 +1,23 @@
+// authentication
 import createEmailOnlyAccount from 'api/authentication/createEmailOnlyAccount';
 import signIn from 'api/authentication/signIn';
 import signOut from 'api/authentication/signOut';
 import confirmEmail from 'api/authentication/confirmEmail';
+import { handleOnSSOClick } from 'services/singleSignOn';
 
+// cache
 import streams from 'utils/streams';
 import { resetQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
 // typings
-import { GetRequirements, Status, ErrorCode, UpdateState } from '../typings';
-import { SSOProvider } from 'services/singleSignOn';
+import {
+  GetRequirements,
+  Status,
+  ErrorCode,
+  UpdateState,
+  SSOProviderWithoutVienna,
+  AuthenticationData,
+} from '../typings';
 import { Locale } from 'typings';
 
 type Step =
@@ -19,6 +28,7 @@ type Step =
   | 'success';
 
 export const getStepConfig = (
+  authenticationData: AuthenticationData | null,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   setStatus: (status: Status) => void,
@@ -68,9 +78,13 @@ export const getStepConfig = (
         }
       },
 
-      CONTINUE_WITH_SSO: (_ssoProvider: SSOProvider) => {
-        // TODO
-        // Do what happens in normal flow when you select SSO
+      CONTINUE_WITH_SSO: (ssoProvider: SSOProviderWithoutVienna) => {
+        // this should never be possible
+        if (!authenticationData) {
+          throw new Error('Authentication context not available for SSO.');
+        }
+
+        handleOnSSOClick(ssoProvider, authenticationData);
       },
     },
 

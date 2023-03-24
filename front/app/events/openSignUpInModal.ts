@@ -35,6 +35,8 @@ export async function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
 
     if (passwordNotRequired) {
       triggerAuthenticationFlow({
+        flow: metaData.flow ?? 'signup',
+        pathname: metaData?.pathname || window.location.pathname,
         context: metaData.context,
         onSuccess: metaData.onSuccess,
       });
