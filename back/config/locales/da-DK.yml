@@ -232,4 +232,4 @@ da:
       the_link_is_valid_for: "Linket er gyldigt i 24 timer. Hvis linket er udløbet, kan du <a href=\"%{link}\">bede om en ny kode</a>."
       did_you_receive_this_email_in_error: "Modtog du denne email ved en fejl? <a href=\"%{link}\">Giv os besked</a>."
   user:
-    anon_first_name: "User"
+    anon_first_name: "Bruger"
