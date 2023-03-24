@@ -68,6 +68,8 @@ describe('<NewAuthModal />', () => {
 
       act(() => {
         triggerAuthenticationFlow({
+          flow: 'signup',
+          pathname: '',
           context: {
             type: 'project',
             id: '123',
@@ -122,6 +124,8 @@ describe('<NewAuthModal />', () => {
       render(<NewAuthModal />);
       act(() => {
         triggerAuthenticationFlow({
+          flow: 'signup',
+          pathname: '',
           context: {
             type: 'project',
             id: '123',
@@ -144,6 +148,8 @@ describe('<NewAuthModal />', () => {
       render(<NewAuthModal />);
       act(() => {
         triggerAuthenticationFlow({
+          flow: 'signup',
+          pathname: '',
           context: {
             type: 'project',
             id: '123',
