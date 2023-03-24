@@ -1113,7 +1113,7 @@
   "app.containers.NotificationMenu.statusChangeOnVotedProject": "L'estat d'un projecte que heu votat ha canviat a {status}",
   "app.containers.NotificationMenu.statusChangeOnVotedQuestion": "L'estat d'una pregunta sobre la qual heu votat ha canviat a {status}",
   "app.containers.NotificationMenu.statusChangedOfIdea": "L'estat {ideaTitle} ha canviat a {status}",
-  "app.containers.NotificationMenu.statusChangedOfYourInitiative": "L'estat de \"{initiativeTitle}\" ha canviat a {status}",
+  "app.containers.NotificationMenu.statusChangedOfInitiative": "L'estat {initiativeTitle} ha canviat a {status}",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} ha arribat al llindar de votació",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} ha acceptat la vostra invitació",
   "app.containers.NotificationMenu.userCommentedOnYourContribution": "{name} ha comentat la vostra contribució",
