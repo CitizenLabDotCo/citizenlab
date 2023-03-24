@@ -1113,7 +1113,7 @@
   "app.containers.NotificationMenu.statusChangeOnVotedProject": "Status projekta za koji ste glasali promijenjen je u {status}",
   "app.containers.NotificationMenu.statusChangeOnVotedQuestion": "Status pitanja za koje ste glasali promijenjen je u {status}",
   "app.containers.NotificationMenu.statusChangedOfIdea": "Status {ideaTitle} promijenjen je u {status}",
-  "app.containers.NotificationMenu.statusChangedOfYourInitiative": "Status „{initiativeTitle}“ promijenjen je u {status}",
+  "app.containers.NotificationMenu.statusChangedOfInitiative": "Status {initiativeTitle} promijenjen je u {status}",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} je dosegao prag broj glasova",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} je prihvatio vašu pozivnicu",
   "app.containers.NotificationMenu.userCommentedOnYourContribution": "{name} je komentirao/la vaš doprinos",
