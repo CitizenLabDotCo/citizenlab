@@ -17,7 +17,7 @@ export default function useOpenAuthModal({ onSuccess, waitIf }: Params = {}) {
 
       return openSignUpInModal({
         ...metaData,
-        onSuccess: onSuccess ? () => setExecuteSuccess(true) : undefined,
+        onSuccess: () => setExecuteSuccess(true),
       });
     },
     [onSuccess]
