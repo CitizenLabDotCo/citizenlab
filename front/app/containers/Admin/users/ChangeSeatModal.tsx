@@ -130,12 +130,14 @@ const ChangeSeatModal = ({
           </Box>
         </Box>
       </Modal>
-      <SeatChangeSuccessModal
-        showModal={showSuccessModal}
-        closeModal={() => setShowSuccessModal(false)}
-        hasPurchasedMoreSeats={hasExceededSetAdmins}
-        seatType="admin"
-      />
+      {!isUserAdmin && (
+        <SeatChangeSuccessModal
+          showModal={showSuccessModal}
+          closeModal={() => setShowSuccessModal(false)}
+          hasPurchasedMoreSeats={hasExceededSetAdmins}
+          seatType="admin"
+        />
+      )}
     </>
   );
 };
