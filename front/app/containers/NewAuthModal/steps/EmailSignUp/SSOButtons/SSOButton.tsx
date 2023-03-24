@@ -16,8 +16,13 @@ import oldMessages from 'components/AuthProviders/messages';
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
+// typings
+import { SSOProvider } from 'services/singleSignOn';
+
+type SSOProviderWithoutVienna = Exclude<SSOProvider, 'id_vienna_saml'>;
+
 interface Props {
-  ssoProvider: 'google' | 'facebook' | 'franceconnect' | 'azureAd';
+  ssoProvider: SSOProviderWithoutVienna;
 }
 
 const ICON_NAME_MAP = {
@@ -49,7 +54,7 @@ const SSOButton = ({ ssoProvider }: Props) => {
       return formatMessage(oldMessages.continueWithFacebook);
     }
 
-    if (ssoProvider === 'azureAd') {
+    if (ssoProvider === 'azureactivedirectory') {
       const azureProviderName =
         appConfiguration?.data.attributes.settings.azure_ad_login
           ?.login_mechanism_name ?? 'Azure Active Directory';
@@ -64,7 +69,7 @@ const SSOButton = ({ ssoProvider }: Props) => {
 
   const getIconColor = () => {
     if (ssoProvider === 'facebook') return colors.facebook;
-    if (ssoProvider === 'azureAd') return colors.teal300;
+    if (ssoProvider === 'azureactivedirectory') return colors.teal300;
     return;
   };
 
@@ -79,7 +84,7 @@ const SSOButton = ({ ssoProvider }: Props) => {
         >
           {ssoProvider === 'google' ||
           ssoProvider === 'facebook' ||
-          ssoProvider === 'azureAd' ? (
+          ssoProvider === 'azureactivedirectory' ? (
             <Icon
               name={ICON_NAME_MAP[ssoProvider]}
               fill={getIconColor()}

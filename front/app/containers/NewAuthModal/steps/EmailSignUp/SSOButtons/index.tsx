@@ -29,7 +29,7 @@ const SSOButtons = () => {
       {googleLoginEnabled && <SSOButton ssoProvider="google" />}
       {facebookLoginEnabled && <SSOButton ssoProvider="facebook" />}
       {franceconnectLoginEnabled && <SSOButton ssoProvider="franceconnect" />}
-      {azureAdLoginEnabled && <SSOButton ssoProvider="azureAd" />}
+      {azureAdLoginEnabled && <SSOButton ssoProvider="azureactivedirectory" />}
     </Box>
   );
 };
