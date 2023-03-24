@@ -778,24 +778,6 @@ RSpec.describe User, type: :model do
       expect(user.email_confirmation_code).to be_nil
     end
 
-    describe '#confirmed?' do
-      it 'returns false when the user has not yet confirmed their account' do
-        user.save!
-        expect(user.confirmed?).to be false
-      end
-
-      it 'returns true after the user has confirmed their account' do
-        user.save!
-        user.confirm!
-        expect(user.reload.confirmed?).to be true
-      end
-
-      it 'returns true if the user accepted an invitation' do
-        user.update(invite_status: 'accepted')
-        expect(user.confirmed?).to be true
-      end
-    end
-
     describe '#should_require_confirmation?' do
       it 'returns false if the user is an admin' do
         user.add_role('admin')
@@ -872,13 +854,13 @@ RSpec.describe User, type: :model do
       it 'sets the email_confirmed_at field' do
         user.save!
         user.confirm
-        expect(user.confirmed?).to be true
+        expect(user.email_confirmed_at).not_to be_nil
       end
 
-      it 'does not perform a commit to the db' do
+      it 'sets confirmation_required? to false' do
         user.save!
         user.confirm
-        expect(user.reload.confirmed?).to be false
+        expect(user.confirmation_required?).to be false
       end
     end
 

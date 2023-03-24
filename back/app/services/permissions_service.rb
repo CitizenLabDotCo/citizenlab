@@ -168,7 +168,7 @@ class PermissionsService
       when :password
         !user.no_password?
       when :confirmation
-        user.confirmed?
+        !user.confirmation_required? # This is based on the date which doesn't get reset
       end
       requirements[:special][special_key] = 'satisfied' if is_satisfied
     end

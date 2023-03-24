@@ -444,19 +444,13 @@ class User < ApplicationRecord
     !(registered_with_phone? || highest_role != :user || sso? || invited? || active?)
   end
 
-  # true if the user has not yet confirmed their email address
+  # true if the user has not yet confirmed their email address and the platform requires it
   def confirmation_required?
     AppConfiguration.instance.feature_activated?('user_confirmation') && confirmation_required
   end
 
-  # true if the user has performed confirmation of it's account.>
-  # TODO: this logic is different to !confirmation_required and we also have active? too
-  def confirmed?
-    email_confirmed_at.present?
-  end
-
   def confirm
-    self.email_confirmed_at = Time.zone.now if email_confirmed_at.nil?
+    self.email_confirmed_at = Time.zone.now
     self.confirmation_required = false
   end
 
@@ -476,12 +470,13 @@ class User < ApplicationRecord
   def reset_confirmation_with_no_password
     if !confirmation_required?
       # Only reset code and retry/reset counts if account has already been confirmed
-      # To keep limits in place for non-legit requests
+      # To keep limits in place for retries when not confirmed
       self.email_confirmation_code = nil
       self.email_confirmation_retry_count = 0
       self.email_confirmation_code_reset_count = 0
     end
     self.confirmation_required = true
+    self.email_confirmed_at = nil
   end
 
   def email_confirmation_code_expiration_at
