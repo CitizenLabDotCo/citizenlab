@@ -159,7 +159,7 @@ gem 'ice_cube', github: 'CitizenLabDotCo/ice_cube'
 gem 'aws-sdk-s3', '~> 1'
 gem 'bootsnap', '~> 1', require: false
 gem 'dalli', '~> 3.2.4'
-gem 'mailgun-ruby', '~>1.2.0'
+gem 'mailgun-ruby', '~>1.2.8'
 gem 'rails_semantic_logger'
 gem 'rinku', '~> 2'
 # For serialization of heterogeneous collections (i.e. notifications), see
