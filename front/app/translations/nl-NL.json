@@ -1113,7 +1113,7 @@
   "app.containers.NotificationMenu.statusChangeOnVotedProject": "De status van een project waarop je hebt gestemd, is gewijzigd in {status}",
   "app.containers.NotificationMenu.statusChangeOnVotedQuestion": "De status van een vraag waarop je hebt gestemd, is gewijzigd in {status}",
   "app.containers.NotificationMenu.statusChangedOfIdea": "De status van {ideaTitle} is veranderd naar {status}",
-  "app.containers.NotificationMenu.statusChangedOfInitiative": "{initiativeTitle} status has changed to {status}",
+  "app.containers.NotificationMenu.statusChangedOfInitiative": "{initiativeTitle} status is veranderd in {status}",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} bereikte het benodigd aantal stemmen",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} aanvaardde de uitnodiging",
   "app.containers.NotificationMenu.userCommentedOnYourContribution": "{name} heeft gereageerd op je onderwerp",
