@@ -464,7 +464,6 @@ class User < ApplicationRecord
   def reset_confirmation_required
     self.confirmation_required = should_require_confirmation?
     self.email_confirmed_at = nil
-    reset_confirmation_code
   end
 
   def reset_confirmation_with_no_password
