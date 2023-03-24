@@ -914,7 +914,6 @@
   "app.containers.NotificationMenu.statusChangeOnVotedOption": "The status of an option you voted on changed to {status}",
   "app.containers.NotificationMenu.statusChangeOnVotedProject": "The status of a project you voted on changed to {status}",
   "app.containers.NotificationMenu.statusChangeOnVotedQuestion": "The status of a question you voted on changed to {status}",
-  "app.containers.NotificationMenu.statusChangedOfYourIdea": "'{ideaTitle}' status has changed to {status}",
   "app.containers.NotificationMenu.statusChangedOfYourInitiative": "The status of '{initiativeTitle}' has changed to {status}",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} reached the voting threshold",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} accepted your invitation",
