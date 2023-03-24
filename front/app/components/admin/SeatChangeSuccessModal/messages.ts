@@ -5,9 +5,18 @@ export default defineMessages({
     id: 'app.components.admin.seatChangeSuccessModal.allDone',
     defaultMessage: 'All done',
   },
-  adminRightsGranted: {
-    id: 'app.components.admin.seatChangeSuccessModal.adminRightsGranted',
-    defaultMessage: 'Admin rights have been granted to the selected user(s).',
+  rightsGranted: {
+    id: 'app.components.admin.seatChangeSuccessModal.rightsGranted',
+    defaultMessage:
+      '{seatType} rights have been granted to the selected user(s).',
+  },
+  admin: {
+    id: 'app.components.admin.seatChangeSuccessModal.admin',
+    defaultMessage: 'Admin',
+  },
+  collaborator: {
+    id: 'app.components.admin.seatChangeSuccessModal.collaborator',
+    defaultMessage: 'Collaborator',
   },
   close: {
     id: 'app.components.admin.seatChangeSuccessModal.close',
@@ -20,6 +29,6 @@ export default defineMessages({
   reflectedMessage: {
     id: 'app.components.admin.seatChangeSuccessModal.reflectedMessage',
     defaultMessage:
-      'The chnages on your plan will be reflected on your next billing cycle.',
+      'The changes on your plan will be reflected on your next billing cycle.',
   },
 });

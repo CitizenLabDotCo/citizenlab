@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 // components
 import Modal from 'components/UI/Modal';
@@ -9,6 +9,7 @@ import {
   Icon,
   Button,
 } from '@citizenlab/cl2-component-library';
+import { TSeatType } from 'components/SeatInfo';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -20,13 +21,22 @@ import { colors } from 'utils/styleUtils';
 type SeatChangeSuccessModalProps = {
   showModal: boolean;
   closeModal: () => void;
+  seatType: TSeatType;
+  hasPurchasedMoreSeats: boolean;
 };
 
 const SeatChangeSuccessModal = ({
   showModal,
   closeModal,
+  seatType,
+  hasPurchasedMoreSeats,
 }: SeatChangeSuccessModalProps) => {
   const { formatMessage } = useIntl();
+  const descriptionMessage = hasPurchasedMoreSeats
+    ? formatMessage(messages.reflectedMessage)
+    : formatMessage(messages.rightsGranted, {
+        seatType: formatMessage(messages[seatType]),
+      });
 
   return (
     <Modal width={400} opened={showModal} close={closeModal}>
@@ -43,7 +53,7 @@ const SeatChangeSuccessModal = ({
           {formatMessage(messages.allDone)}
         </Title>
         <Text textAlign="center" fontSize="l">
-          {formatMessage(messages.adminRightsGranted)}
+          {descriptionMessage}
         </Text>
         <Box
           display="flex"

@@ -22,12 +22,11 @@ import { isAdmin } from 'services/permissions/roles';
 
 const getInfoText = (
   isUserAdmin: boolean,
-  maximumAdmins: number | null | undefined,
-  currentAdminSeats: number
+  hasExceededSetAdmins: boolean
 ): MessageDescriptor => {
   if (isUserAdmin) {
     return messages.confirmNormalUserQuestion;
-  } else if (!isNil(maximumAdmins) && currentAdminSeats >= maximumAdmins) {
+  } else if (hasExceededSetAdmins) {
     return messages.reachedLimitMessage;
   }
 
@@ -36,8 +35,7 @@ const getInfoText = (
 
 const getButtonText = (
   isUserAdmin: boolean,
-  maximumAdmins: number | null | undefined,
-  currentAdminSeats: number
+  hasExceededSetAdmins: boolean
 ): MessageDescriptor => {
   const buttonText = messages.confirm;
 
@@ -45,9 +43,7 @@ const getButtonText = (
     return buttonText;
   }
 
-  return !isNil(maximumAdmins) && currentAdminSeats >= maximumAdmins
-    ? messages.buyOneAditionalSeat
-    : buttonText;
+  return hasExceededSetAdmins ? messages.buyOneAditionalSeat : buttonText;
 };
 
 interface Props {
@@ -63,7 +59,7 @@ const ChangeSeatModal = ({
   userToChangeSeat,
   toggleAdmin,
 }: Props) => {
-  const [showSuccess, setShowSuccess] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const isUserAdmin = isAdmin({ data: userToChangeSeat });
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
@@ -74,19 +70,13 @@ const ChangeSeatModal = ({
     appConfiguration.data.attributes.settings.core.maximum_admins_number;
   const currentAdminSeats = seats.data.attributes.admins_number;
 
-  const confirmChangeQuestion = getInfoText(
-    isUserAdmin,
-    maximumAdmins,
-    currentAdminSeats
-  );
+  const hasExceededSetAdmins =
+    !isNil(maximumAdmins) && currentAdminSeats >= maximumAdmins;
+  const confirmChangeQuestion = getInfoText(isUserAdmin, hasExceededSetAdmins);
   const modalTitle = isUserAdmin
     ? messages.setAsNormalUser
     : messages.giveAdminRights;
-  const buttonText = getButtonText(
-    isUserAdmin,
-    maximumAdmins,
-    currentAdminSeats
-  );
+  const buttonText = getButtonText(isUserAdmin, hasExceededSetAdmins);
 
   return (
     <>
@@ -130,7 +120,9 @@ const ChangeSeatModal = ({
               onClick={() => {
                 toggleAdmin();
                 closeModal();
-                setShowSuccess(true);
+                if (!isUserAdmin) {
+                  setShowSuccessModal(true);
+                }
               }}
             >
               {formatMessage(buttonText)}
@@ -139,8 +131,10 @@ const ChangeSeatModal = ({
         </Box>
       </Modal>
       <SeatChangeSuccessModal
-        showModal={showSuccess}
-        closeModal={() => setShowSuccess(false)}
+        showModal={showSuccessModal}
+        closeModal={() => setShowSuccessModal(false)}
+        hasPurchasedMoreSeats={hasExceededSetAdmins}
+        seatType="admin"
       />
     </>
   );
