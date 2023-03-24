@@ -398,7 +398,7 @@ class User < ApplicationRecord
   end
 
   def no_password?
-    !password_digest && !invite_pending? && identity_ids.empty?
+    !password_digest && !invite_pending?
   end
 
   def member_of?(group_id)
