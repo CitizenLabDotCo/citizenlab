@@ -1113,7 +1113,7 @@
   "app.containers.NotificationMenu.statusChangeOnVotedProject": "Der Status eines Projekts, für das Sie gestimmt haben, hat sich verändert zu {status}\n",
   "app.containers.NotificationMenu.statusChangeOnVotedQuestion": "Der Status einer Frage, für die Sie gestimmt haben, hat sich verändert zu {status}\n",
   "app.containers.NotificationMenu.statusChangedOfIdea": "Der Status von {ideaTitle} hat sich zu {status} geändert",
-  "app.containers.NotificationMenu.statusChangedOfYourInitiative": "Der Status von '{initiativeTitle}' wurde auf {status} geändert",
+  "app.containers.NotificationMenu.statusChangedOfInitiative": "{initiativeTitle} status has changed to {status}",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} hat die gewünschte Anzahl an Stimmen erreicht",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} hat Ihre Einladung angenommen",
   "app.containers.NotificationMenu.userCommentedOnYourContribution": "{Name} hat Ihren Beitrag kommentiert\n",
