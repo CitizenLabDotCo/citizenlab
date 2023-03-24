@@ -32,6 +32,8 @@ interface Props {
   locales: Locale[];
   allowDeletingAllOptions?: boolean;
   platformLocale: Locale;
+  fieldLabel: string | JSX.Element | null;
+  addButtonLabel: string | JSX.Element | undefined;
 }
 
 const SelectionChoiceSetup = ({
@@ -40,6 +42,8 @@ const SelectionChoiceSetup = ({
   locales,
   allowDeletingAllOptions = false,
   platformLocale,
+  fieldLabel,
+  addButtonLabel,
 }: Props) => {
   const {
     control,
@@ -86,7 +90,7 @@ const SelectionChoiceSetup = ({
     setValue(name, newValues);
   };
 
-  const defaultOptionValues = [{}];
+  const defaultOptionValues = [];
   const errors = get(formContextErrors, name) as RHFErrors;
   const apiError = errors?.error && ([errors] as CLError[]);
   const validationError = errors?.message;
@@ -128,7 +132,7 @@ const SelectionChoiceSetup = ({
                     marginBottom="12px"
                   >
                     <Box marginTop="4px" marginRight="8px">
-                      <Label>TODO ADD LABEL</Label>
+                      <Label>{fieldLabel}</Label>
                     </Box>
                     <Box>
                       <LocaleSwitcher
@@ -182,7 +186,6 @@ const SelectionChoiceSetup = ({
                                   margin="0px"
                                   padding="0px"
                                   buttonStyle="text"
-                                  aria-label={'TODO ADD LABEL'}
                                   onClick={() => {
                                     removeOption(choices, name, index);
                                     trigger();
@@ -206,7 +209,7 @@ const SelectionChoiceSetup = ({
                     buttonStyle="secondary"
                     data-cy="e2e-add-answer"
                     onClick={() => addOption(choices, name)}
-                    text={'TODO ADD LABEL'}
+                    text={addButtonLabel}
                   />
                   {validationError && (
                     <Error

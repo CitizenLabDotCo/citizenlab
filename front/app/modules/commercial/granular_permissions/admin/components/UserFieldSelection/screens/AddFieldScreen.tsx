@@ -4,7 +4,6 @@ import React from 'react';
 import { Box, Title, Button, Text } from '@citizenlab/cl2-component-library';
 import GoBackButton from 'components/UI/GoBackButton';
 import { SectionField } from 'components/admin/Section';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 
 // hook form
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -13,48 +12,61 @@ import { object, string } from 'yup';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import Feedback from 'components/HookForm/Feedback';
 import validateMultiloc from 'utils/yup/validateMultilocForEveryLocale';
+import Select from 'components/HookForm/Select';
+import { fieldTypes } from 'containers/Admin/settings/registration/CustomFieldRoutes/RegistrationCustomFieldForm';
+import SelectionChoiceSetup from 'components/HookForm/SelectionChoiceSetup';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+
+// hooks
+import useLocale from 'hooks/useLocale';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // intls
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../../containers/Granular/messages';
 import { Multiloc } from 'typings';
-import Select from 'components/HookForm/Select';
-import { fieldTypes } from 'containers/Admin/settings/registration/CustomFieldRoutes/RegistrationCustomFieldForm';
-import SelectionChoiceSetup from 'components/HookForm/SelectionChoiceSetup';
-import useAppConfiguration from 'api/app_configuration/__mocks__/useAppConfiguration';
-import useLocale from 'hooks/useLocale';
+
+// utils
 import { isNilOrError } from 'utils/helperUtils';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
+import { addCustomFieldForUsers } from 'services/userCustomFields';
 
 type AddFieldScreenProps = {
   setShowAddFieldPage: (show: boolean) => void;
+  defaultValues?: Partial<FormValues>;
 };
 
 export interface FormValues {
-  question_type: string;
-  question_title_multiloc: Multiloc;
-  question_description_multiloc: Multiloc;
+  input_type?: string;
+  title_multiloc: Multiloc;
+  description_multiloc: Multiloc;
 }
 
 export const AddFieldScreen = ({
   setShowAddFieldPage,
+  defaultValues,
 }: AddFieldScreenProps) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
   const locales = useAppConfigurationLocales();
 
   const schema = object({
-    question_type: string().required(formatMessage(messages.selectValueError)),
-    question_title_multiloc: validateMultiloc(
+    question_choices: validateOneOptionForMultiSelect(
+      formatMessage(messages.atLeastOneOptionError)
+    ),
+    input_type: string().required(formatMessage(messages.selectValueError)),
+    title_multiloc: validateMultiloc(
       formatMessage(messages.missingTitleLocaleError)
     ),
   });
 
   const methods = useForm({
     mode: 'onBlur',
-    defaultValues: {},
+    defaultValues,
     resolver: yupResolver(schema),
   });
+
+  const inputType = methods.watch('input_type');
 
   const inputTypeOptions = () => {
     return fieldTypes.map((inputType) => ({
@@ -65,8 +77,12 @@ export const AddFieldScreen = ({
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {
-      console.log({ formValues });
-      //   await onSubmit(formValues);
+      const result = await addCustomFieldForUsers({
+        ...formValues,
+      });
+      // if (result) {
+      //   setShowAddFieldPage(false);
+      // }
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }
@@ -93,7 +109,7 @@ export const AddFieldScreen = ({
               <Feedback successMessage={'Success Message'} />
               <SectionField>
                 <Select
-                  name="question_type"
+                  name="input_type"
                   options={inputTypeOptions()}
                   label={
                     <>
@@ -106,7 +122,7 @@ export const AddFieldScreen = ({
               </SectionField>
               <SectionField>
                 <InputMultilocWithLocaleSwitcher
-                  name="question_title_multiloc"
+                  name="title_multiloc"
                   label={
                     <>
                       <Text my="0px" color="primary" fontWeight="bold">
@@ -119,7 +135,7 @@ export const AddFieldScreen = ({
               </SectionField>
               <SectionField>
                 <InputMultilocWithLocaleSwitcher
-                  name="question_description_multiloc"
+                  name="description_multiloc"
                   label={
                     <>
                       <Text my="0px" color="primary" fontWeight="bold">
@@ -130,13 +146,25 @@ export const AddFieldScreen = ({
                   type="text"
                 />
               </SectionField>
-              <SectionField>
-                <SelectionChoiceSetup
-                  name={'question_choices'}
-                  locales={locales}
-                  platformLocale={locale}
-                />
-              </SectionField>
+              {(inputType === 'select' || inputType === 'multiselect') && (
+                <SectionField>
+                  <SelectionChoiceSetup
+                    name={'question_choices'}
+                    locales={locales}
+                    platformLocale={locale}
+                    fieldLabel={
+                      <Text my="0px" color="primary" fontWeight="bold">
+                        {formatMessage(messages.answerChoices)}
+                      </Text>
+                    }
+                    addButtonLabel={
+                      <Text my="0px" color="primary" fontWeight="bold">
+                        {formatMessage(messages.addAnswer)}
+                      </Text>
+                    }
+                  />
+                </SectionField>
+              )}
               <Box display="flex">
                 <Button
                   type="submit"
