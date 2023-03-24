@@ -9,16 +9,27 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const SSOButtons = () => {
   const googleLoginEnabled = useFeatureFlag({ name: 'google_login' });
-  // azureAdLoginEnabled: <GetFeatureFlag name="azure_ad_login" />,
-  // facebookLoginEnabled: <GetFeatureFlag name="facebook_login" />,
-  // franceconnectLoginEnabled: <GetFeatureFlag name="franceconnect_login" />,
+  const facebookLoginEnabled = useFeatureFlag({ name: 'facebook_login' });
+  const franceconnectLoginEnabled = useFeatureFlag({
+    name: 'franceconnect_login',
+  });
+  const azureAdLoginEnabled = useFeatureFlag({ name: 'azure_ad_login' });
+
+  if (
+    !googleLoginEnabled &&
+    !facebookLoginEnabled &&
+    !franceconnectLoginEnabled &&
+    !azureAdLoginEnabled
+  ) {
+    return null;
+  }
 
   return (
     <Box mt="32px">
-      <SSOButton ssoProvider="google" />
-      <SSOButton ssoProvider="facebook" />
-      <SSOButton ssoProvider="franceconnect" />
-      <SSOButton ssoProvider="azureAd" />
+      {googleLoginEnabled && <SSOButton ssoProvider="google" />}
+      {facebookLoginEnabled && <SSOButton ssoProvider="facebook" />}
+      {franceconnectLoginEnabled && <SSOButton ssoProvider="franceconnect" />}
+      {azureAdLoginEnabled && <SSOButton ssoProvider="azureAd" />}
     </Box>
   );
 };
