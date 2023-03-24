@@ -1112,7 +1112,6 @@
   "app.containers.NotificationMenu.statusChangeOnVotedOption": "Statusen for et alternativ du stemte på er endret til {status}",
   "app.containers.NotificationMenu.statusChangeOnVotedProject": "Statusen for et prosjekt du stemte på er endret til {status}",
   "app.containers.NotificationMenu.statusChangeOnVotedQuestion": "Statusen for et spørsmål du stemte på er endret til {status}",
-  "app.containers.NotificationMenu.statusChangedOfYourInitiative": "Status for '{initiativeTitle}' har endret seg til {status}",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} har nådd stemmegrensen",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} aksepterte invitasjonen din",
   "app.containers.NotificationMenu.userCommentedOnYourContribution": "{name} kommenterte bidraget ditt",

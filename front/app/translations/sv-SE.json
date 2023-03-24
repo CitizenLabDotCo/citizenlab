@@ -1112,7 +1112,6 @@
   "app.containers.NotificationMenu.statusChangeOnVotedOption": "Statusen för ett alternativ du röstade på ändrades till {status}",
   "app.containers.NotificationMenu.statusChangeOnVotedProject": "Statusen för ett projekt du röstade på ändrades till {status}",
   "app.containers.NotificationMenu.statusChangeOnVotedQuestion": "Statusen för en fråga du röstade på ändrades till {status}",
-  "app.containers.NotificationMenu.statusChangedOfYourInitiative": "Statusen för {initiativeTitle} har ändrats till {status}",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} nådde rösttröskeln",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} tackade ja till din inbjudan",
   "app.containers.NotificationMenu.userCommentedOnYourContribution": "{name} kommenterade ditt bidrag",
