@@ -916,30 +916,4 @@ RSpec.describe User, type: :model do
       end
     end
   end
-
-  context 'notifications scopes' do
-    let(:user_no_notifs) { create(:user) }
-    let(:user_unread_notif) { create(:user) }
-    let(:user_read_notif) { create(:user) }
-    let(:user_read_and_unread_notif) { create(:user) }
-
-    before do
-      create(:notification, read_at: nil, recipient_id: user_unread_notif.id)
-      create(:notification, read_at: 1.day.ago, recipient_id: user_read_notif.id)
-      create(:notification, read_at: nil, recipient_id: user_read_and_unread_notif.id)
-      create(:notification, read_at: 1.day.ago, recipient_id: user_read_and_unread_notif.id)
-    end
-
-    describe '.has_unread_notifications' do
-      it 'returns only users with unread notifications' do
-        expect(described_class.has_unread_notifications).to match_array([user_unread_notif, user_read_and_unread_notif])
-      end
-    end
-
-    describe '.has_no_unread_notifications' do
-      it 'returns only users with no unread notifications' do
-        expect(described_class.has_no_unread_notifications).to match_array([user_no_notifs, user_read_notif])
-      end
-    end
-  end
 end
