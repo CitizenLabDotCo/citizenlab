@@ -1,5 +1,5 @@
 const initiativeImagesKeys = {
-  all: () => [{ type: 'initiative_images' }] as const,
+  all: () => [{ type: 'image', variant: 'initiative' }] as const,
   lists: () =>
     [{ ...initiativeImagesKeys.all()[0], operation: 'list' }] as const,
   list: (initiativeId: string) =>

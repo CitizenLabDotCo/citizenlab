@@ -1,7 +1,7 @@
 import { IDeleteEventFileProperties } from './types';
 
 const eventFilesKeys = {
-  all: () => [{ type: 'file' }],
+  all: () => [{ type: 'file', variant: 'event' }],
   lists: () => [{ ...eventFilesKeys.all()[0], operation: 'list' }],
   list: (eventId?: string) => [{ ...eventFilesKeys.lists()[0], eventId }],
   items: () => [{ ...eventFilesKeys.all()[0], operation: 'item' }],
