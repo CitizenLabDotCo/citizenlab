@@ -534,7 +534,7 @@
   "app.components.form.ErrorDisplay.guidelinesLinkText": "nos directives",
   "app.components.form.ErrorDisplay.next": "Suivant",
   "app.components.form.ErrorDisplay.previous": "Précédent",
-  "app.components.form.ErrorDisplay.save": "Save",
+  "app.components.form.ErrorDisplay.save": "Enregistrer",
   "app.components.form.ErrorDisplay.submitSurvey": "Envoyer l'enquête",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Commencez à taper pour rechercher par email ou nom d'utilisateur...",
   "app.components.form.blockedVerified": "Vous ne pouvez pas modifier ce champ car il contient des informations vérifiées",
