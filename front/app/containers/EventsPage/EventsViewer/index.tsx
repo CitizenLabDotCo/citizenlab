@@ -94,7 +94,7 @@ const EventsViewer = ({
   };
 
   return (
-    <div className={className}>
+    <div className={className} id="project-events">
       <TopBar
         showProjectFilter={showProjectFilter}
         title={title}

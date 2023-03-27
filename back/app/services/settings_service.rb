@@ -101,9 +101,7 @@ class SettingsService
         color_secondary: '#008292',
         color_text: '#333',
         lifecycle_stage: lifecycle_stage,
-        authentication_token_lifetime_in_days: 30,
-        maximum_admins_number: 10,
-        maximum_moderators_number: 10
+        authentication_token_lifetime_in_days: 30
       }
     }
   end
