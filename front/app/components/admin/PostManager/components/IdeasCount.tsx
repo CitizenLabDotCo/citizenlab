@@ -25,7 +25,7 @@ interface Props extends Omit<IQueryParameters, 'projectIds'> {
 const IdeasCount = ({ project, ...otherProps }: Props) => {
   const { data: ideasCount } = useIdeasCount({
     ...otherProps,
-    projectIds: project ? [project] : undefined,
+    projects: project ? [project] : undefined,
   });
 
   return (
