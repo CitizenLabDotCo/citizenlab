@@ -28,14 +28,15 @@ type Step =
   | 'success';
 
 export const getStepConfig = (
-  authenticationData: AuthenticationData | null,
+  authenticationData: AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   setStatus: (status: Status) => void,
   setError: (errorCode: ErrorCode) => void,
-  updateState: UpdateState,
-  onSuccess?: () => void
+  updateState: UpdateState
 ) => {
+  const { onSuccess } = authenticationData;
+
   return {
     closed: {
       // When we fire this, we are already sure that we need the new flow.
@@ -79,11 +80,6 @@ export const getStepConfig = (
       },
 
       CONTINUE_WITH_SSO: (ssoProvider: SSOProviderWithoutVienna) => {
-        // this should never be possible
-        if (!authenticationData) {
-          throw new Error('Authentication context not available for SSO.');
-        }
-
         handleOnSSOClick(ssoProvider, authenticationData);
       },
     },
