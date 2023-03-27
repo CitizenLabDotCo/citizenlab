@@ -162,6 +162,7 @@ const UserSelect = ({
         styles={selectStyles}
         onMenuScrollToBottom={handleMenuScrollToBottom}
         onMenuOpen={handleClear}
+        // isMulti
       />
     </Box>
   );
