@@ -1072,6 +1072,7 @@
   "app.containers.NewAuthModal.logIn": "Συνδεθείτε",
   "app.containers.NewAuthModal.steps.EmailConfirmation.codeMustHaveFourDigits": "Ο κωδικός πρέπει να έχει 4 ψηφία.",
   "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.continueWithFranceConnect": "Συνεχίστε με το FranceConnect",
+  "app.containers.NewAuthModal.steps.EmailSignUp.byContinuing": "Συνεχίζοντας, συμφωνείτε να λαμβάνετε μηνύματα ηλεκτρονικού ταχυδρομείου από αυτή την πλατφόρμα. Μπορείτε να επιλέξετε τα email που επιθυμείτε να λαμβάνετε στη σελίδα \"Οι ρυθμίσεις μου\".",
   "app.containers.NewAuthModal.steps.EmailSignUp.email": "Ηλεκτρονικό ταχυδρομείο",
   "app.containers.NewAuthModal.steps.EmailSignUp.emailFormatError": "Δώστε μια διεύθυνση ηλεκτρονικού ταχυδρομείου στη σωστή μορφή, για παράδειγμα name@provider.com.",
   "app.containers.NewAuthModal.steps.EmailSignUp.emailMissingError": "Δώστε μια διεύθυνση ηλεκτρονικού ταχυδρομείου",
