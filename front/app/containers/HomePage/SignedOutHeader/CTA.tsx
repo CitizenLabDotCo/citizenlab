@@ -10,25 +10,20 @@ import { isNilOrError } from 'utils/helperUtils';
 interface Props {
   buttonStyle: BannerButtonStyle;
   signUpIn?: (event: MouseEvent | KeyboardEvent) => void;
-  signedIn: boolean;
 }
 
-const CTA = ({ buttonStyle, signUpIn, signedIn }: Props) => {
+const CTA = ({ buttonStyle, signUpIn }: Props) => {
   const localize = useLocalize();
   const homepageSettings = useHomepageSettings();
 
   if (!isNilOrError(homepageSettings)) {
-    const ctaType = signedIn
-      ? homepageSettings.attributes.banner_cta_signed_in_type
-      : homepageSettings.attributes.banner_cta_signed_out_type;
+    const ctaType = homepageSettings.attributes.banner_cta_signed_out_type;
 
-    const customButtonText = signedIn
-      ? homepageSettings.attributes.banner_cta_signed_in_text_multiloc
-      : homepageSettings.attributes.banner_cta_signed_out_text_multiloc;
+    const customButtonText =
+      homepageSettings.attributes.banner_cta_signed_out_text_multiloc;
 
-    const customButtonUrl = signedIn
-      ? homepageSettings.attributes.banner_cta_signed_in_url
-      : homepageSettings.attributes.banner_cta_signed_out_url;
+    const customButtonUrl =
+      homepageSettings.attributes.banner_cta_signed_out_url;
 
     switch (ctaType) {
       case 'sign_up_button':

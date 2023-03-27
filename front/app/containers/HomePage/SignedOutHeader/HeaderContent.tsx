@@ -109,7 +109,7 @@ const HeaderContent = ({
 
         {displayHeaderAvatars && <StyledAvatarBubbles />}
 
-        <CTA signedIn={false} buttonStyle={buttonStyle} signUpIn={signUpIn} />
+        <CTA buttonStyle={buttonStyle} signUpIn={signUpIn} />
       </Container>
     );
   }
