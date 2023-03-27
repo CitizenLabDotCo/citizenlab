@@ -56,35 +56,37 @@ const AddCollaboratorsModal = ({
         opened={showModal}
         close={closeModal}
         header={
-          <Box px="2px">
-            <Text color="primary" my="8px" fontSize="l" fontWeight="bold">
-              {formatMessage(messages.giveCollaboratorRights)}
-            </Text>
-          </Box>
+          <Text
+            color="primary"
+            my="8px"
+            fontSize="l"
+            fontWeight="bold"
+            px="2px"
+          >
+            {formatMessage(messages.giveCollaboratorRights)}
+          </Text>
         }
       >
         <Box display="flex" flexDirection="column" width="100%" p="32px">
-          <Box>
-            <Text color="textPrimary" fontSize="m" my="0px">
-              {hasReachedLimit ? (
-                <FormattedMessage
-                  {...messages.reachedLimitText}
-                  values={{
-                    noOfSeats: noOfCollaboratorSeatsToAdd,
-                  }}
-                />
-              ) : (
-                <FormattedMessage
-                  {...messages.confirmMessage}
-                  values={{
-                    noOfPeople: noOfCollaboratorSeatsToAdd,
-                  }}
-                />
-              )}
-            </Text>
-            <Box py="32px">
-              <SeatInfo seatType="collaborator" />
-            </Box>
+          <Text color="textPrimary" fontSize="m" my="0px">
+            {hasReachedLimit ? (
+              <FormattedMessage
+                {...messages.reachedLimitText}
+                values={{
+                  noOfSeats: noOfCollaboratorSeatsToAdd,
+                }}
+              />
+            ) : (
+              <FormattedMessage
+                {...messages.confirmMessage}
+                values={{
+                  noOfPeople: noOfCollaboratorSeatsToAdd,
+                }}
+              />
+            )}
+          </Text>
+          <Box py="32px">
+            <SeatInfo seatType="collaborator" />
           </Box>
           <Box
             display="flex"
