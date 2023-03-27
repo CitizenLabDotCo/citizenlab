@@ -144,10 +144,13 @@ const EmailSignUp = ({ status, onSubmit, onSwitchToSSO }: Props) => {
               />
             </Box>
           </Box>
+          <Text mt="24px" mb="0px" fontSize="s">
+            {formatMessage(messages.byContinuing)}
+          </Text>
           <Box w="100%" display="flex" mt="32px">
             <Button
               type="submit"
-              width="auto"
+              width="100%"
               disabled={loading}
               processing={loading}
             >
