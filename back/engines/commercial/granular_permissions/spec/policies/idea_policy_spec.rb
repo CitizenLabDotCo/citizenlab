@@ -16,7 +16,7 @@ describe IdeaPolicy do
   let(:participation_method) { 'ideation' }
   let(:posting_enabled) { true }
   let(:project) do
-    create(:continuous_project, posting_enabled: posting_enabled, participation_method: participation_method).tap do |project|
+    create(:continuous_project, with_permissions: true, posting_enabled: posting_enabled, participation_method: participation_method).tap do |project|
       project.permissions.find_by(action: 'posting_idea')
         .update!(permitted_by: permitted_by)
     end

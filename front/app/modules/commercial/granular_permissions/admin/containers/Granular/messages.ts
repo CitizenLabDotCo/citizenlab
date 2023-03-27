@@ -5,6 +5,15 @@ export default defineMessages({
     id: 'app.containers.admin.project.permissions.permissionsUsersLabel',
     defaultMessage: 'All users',
   },
+  permissionsEveryoneEmailLabel: {
+    id: 'app.containers.admin.project.permissions.permissionsEveryoneEmailLabel',
+    defaultMessage: 'Anyone with a confirmed email address',
+  },
+  permissionEveryoneEmailWarning: {
+    id: 'app.containers.admin.project.permissions.permissionEveryoneEmailWarning',
+    defaultMessage:
+      'In addition to registered users, unregistered users who provide an email and confirm it will be able to take the action. Select this option to lower the barrier for participation.',
+  },
   selectGroups: {
     id: 'app.containers.AdminPage.ProjectEdit.selectGroups',
     defaultMessage: 'Select group(s)',
