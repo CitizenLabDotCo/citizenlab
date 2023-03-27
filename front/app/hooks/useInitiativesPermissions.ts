@@ -22,7 +22,7 @@ export default function useInitiativesPermissions(action: IInitiativeAction) {
     if (appConfiguration && actionDescriptors) {
       const actionDescriptor = actionDescriptors.data.attributes[action];
 
-      if (actionDescriptor.enabled) {
+      if (actionDescriptor?.enabled) {
         setActionPermission({
           show: true,
           enabled: true,
@@ -30,7 +30,7 @@ export default function useInitiativesPermissions(action: IInitiativeAction) {
           action: null,
         });
       } else {
-        switch (actionDescriptor.disabled_reason) {
+        switch (actionDescriptor?.disabled_reason) {
           case 'not_verified':
             if (isNilOrError(authUser)) {
               setActionPermission({
