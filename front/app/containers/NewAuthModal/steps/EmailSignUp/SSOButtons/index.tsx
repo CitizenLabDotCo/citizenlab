@@ -12,7 +12,6 @@ import { SSOProviderWithoutVienna } from 'containers/NewAuthModal/typings';
 
 interface Props {
   onClickSSO: (ssoProvider: SSOProviderWithoutVienna) => void;
-  disabled: boolean;
 }
 
 const SSOButtons = (props: Props) => {

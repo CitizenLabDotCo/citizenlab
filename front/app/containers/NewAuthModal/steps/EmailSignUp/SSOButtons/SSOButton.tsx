@@ -21,7 +21,6 @@ import { SSOProviderWithoutVienna } from '../../../typings';
 
 interface Props {
   ssoProvider: SSOProviderWithoutVienna;
-  disabled: boolean;
   onClickSSO: (ssoProvider: SSOProviderWithoutVienna) => void;
 }
 
@@ -41,7 +40,7 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const SSOButton = ({ ssoProvider, disabled, onClickSSO }: Props) => {
+const SSOButton = ({ ssoProvider, onClickSSO }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
   const { formatMessage } = useIntl();
 
@@ -80,16 +79,16 @@ const SSOButton = ({ ssoProvider, disabled, onClickSSO }: Props) => {
 
   return (
     <Box mt="12px">
-      <Button onClick={handleClickSSO} disabled={disabled}>
+      <Button onClick={handleClickSSO}>
         <Box
           display="flex"
           flexDirection="row"
           justifyContent="flex-start"
           alignItems="center"
         >
-          {ssoProvider === 'google' ||
-          ssoProvider === 'facebook' ||
-          ssoProvider === 'azureactivedirectory' ? (
+          {ssoProvider === 'franceconnect' ? (
+            <Image src={franceConnectImage} alt="" width="18px" mr="8px" />
+          ) : (
             <Icon
               name={ICON_NAME_MAP[ssoProvider]}
               fill={getIconColor()}
@@ -97,8 +96,6 @@ const SSOButton = ({ ssoProvider, disabled, onClickSSO }: Props) => {
               height="18px"
               mr="8px"
             />
-          ) : (
-            <Image src={franceConnectImage} alt="" width="18px" mr="8px" />
           )}
           <Box>{getText()}</Box>
         </Box>

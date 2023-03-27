@@ -1,9 +1,8 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 
 // components
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import Consent from 'components/AuthProviders/Consent';
 import SSOButtons from './SSOButtons';
 
 // hooks
@@ -19,6 +18,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { string, object } from 'yup';
 import Input from 'components/HookForm/Input';
+import Checkbox from 'components/HookForm/Checkbox';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -44,14 +44,6 @@ const DEFAULT_VALUES: Partial<FormValues> = {
 };
 
 const EmailSignUp = ({ status, onSubmit, onSwitchToSSO }: Props) => {
-  const [termsAndConditionsAccepted, setTermsAndConditionsAccepted] =
-    useState(false);
-  const [privacyPolicyAccepted, setPrivacyPolicyAccepted] = useState(false);
-
-  const toggleTermsAndConditions = () =>
-    setTermsAndConditionsAccepted((value) => !value);
-  const togglePrivacyPolicy = () => setPrivacyPolicyAccepted((value) => !value);
-
   const { formatMessage } = useIntl();
   const locale = useLocale();
 
@@ -79,9 +71,6 @@ const EmailSignUp = ({ status, onSubmit, onSwitchToSSO }: Props) => {
     onSubmit(email, locale);
   };
 
-  const conditionsAccepted =
-    termsAndConditionsAccepted && privacyPolicyAccepted;
-
   return (
     <>
       <FormProvider {...methods}>
@@ -97,26 +86,22 @@ const EmailSignUp = ({ status, onSubmit, onSwitchToSSO }: Props) => {
             />
           </Box>
           <Box mt="24px">
-            <Consent
-              termsAndConditionsAccepted={termsAndConditionsAccepted}
-              privacyPolicyAccepted={privacyPolicyAccepted}
-              onTacAcceptedChange={toggleTermsAndConditions}
-              onPrivacyAcceptedChange={togglePrivacyPolicy}
-            />
+            <Checkbox name="termsAndConditionsAccepted" />
+            <Checkbox name="privacyPolicyAccepted" />
           </Box>
           <Box w="100%" display="flex" mt="32px">
             <Button
               type="submit"
               width="auto"
-              disabled={loading || !conditionsAccepted}
+              disabled={loading}
               processing={loading}
             >
               {formatMessage(sharedMessages.continue)}
             </Button>
           </Box>
+          <SSOButtons onClickSSO={onSwitchToSSO} />
         </form>
       </FormProvider>
-      <SSOButtons onClickSSO={onSwitchToSSO} disabled={!conditionsAccepted} />
     </>
   );
 };
