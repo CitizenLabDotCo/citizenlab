@@ -1101,7 +1101,7 @@ GEM
       activesupport (>= 3)
       attr_required (>= 0.0.5)
       httpclient (>= 2.4)
-    test-prof (1.2.0)
+    test-prof (1.2.1)
     thor (1.2.1)
     thread (0.2.2)
     thread_safe (0.3.6)
