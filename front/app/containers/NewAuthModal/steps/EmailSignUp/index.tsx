@@ -4,13 +4,16 @@ import React, { useMemo } from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import SSOButtons from './SSOButtons';
+import Link from 'utils/cl-router/Link';
+import { ConsentText } from 'components/AuthProviders/Consent';
 
 // hooks
 import useLocale from 'hooks/useLocale';
 
 // i18n
-import { useIntl } from 'utils/cl-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import sharedMessages from '../messages';
+import oldMessages from 'components/AuthProviders/messages';
 import messages from './messages';
 
 // form
@@ -60,11 +63,13 @@ const EmailSignUp = ({ status, onSubmit, onSwitchToSSO }: Props) => {
           .email(formatMessage(messages.emailFormatError))
           .required(formatMessage(messages.emailMissingError)),
         termsAndConditionsAccepted: boolean().test(
-          'Terms and conditions should be accepted',
+          '',
+          formatMessage(oldMessages.tacError),
           (value) => !!value
         ),
         privacyPolicyAccepted: boolean().test(
-          'Privacy policy should be accepted',
+          '',
+          formatMessage(oldMessages.privacyPolicyNotAcceptedError),
           (value) => !!value
         ),
       }),
@@ -72,7 +77,7 @@ const EmailSignUp = ({ status, onSubmit, onSwitchToSSO }: Props) => {
   );
 
   const methods = useForm({
-    mode: 'onBlur',
+    mode: 'onSubmit',
     defaultValues: DEFAULT_VALUES,
     resolver: yupResolver(schema),
   });
@@ -100,12 +105,44 @@ const EmailSignUp = ({ status, onSubmit, onSwitchToSSO }: Props) => {
           <Box mt="24px">
             <Checkbox
               name="termsAndConditionsAccepted"
-              label="I agree to the terms and conditions"
+              label={
+                <ConsentText>
+                  <FormattedMessage
+                    {...oldMessages.iHaveReadAndAgreeTo}
+                    values={{
+                      link: (
+                        <Link target="_blank" to="/pages/terms-and-conditions">
+                          <FormattedMessage
+                            {...oldMessages.theTermsAndConditions}
+                          />
+                        </Link>
+                      ),
+                    }}
+                  />
+                </ConsentText>
+              }
             />
-            <Checkbox
-              name="privacyPolicyAccepted"
-              label="I agree to the privacy policy"
-            />
+            <Box mt="8px">
+              <Checkbox
+                name="privacyPolicyAccepted"
+                label={
+                  <ConsentText>
+                    <FormattedMessage
+                      {...oldMessages.iHaveReadAndAgreeTo}
+                      values={{
+                        link: (
+                          <Link target="_blank" to="/pages/privacy-policy">
+                            <FormattedMessage
+                              {...oldMessages.thePrivacyPolicy}
+                            />
+                          </Link>
+                        ),
+                      }}
+                    />
+                  </ConsentText>
+                }
+              />
+            </Box>
           </Box>
           <Box w="100%" display="flex" mt="32px">
             <Button

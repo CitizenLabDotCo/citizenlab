@@ -21,7 +21,7 @@ const Container = styled.div`
   align-items: stretch;
 `;
 
-const ConsentText = styled.div`
+export const ConsentText = styled.div`
   color: ${(props) => props.theme.colors.tenantText};
   font-size: ${fontSizes.s}px;
   line-height: 21px;

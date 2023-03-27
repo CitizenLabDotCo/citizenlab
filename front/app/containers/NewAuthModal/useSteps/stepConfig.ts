@@ -28,15 +28,13 @@ type Step =
   | 'success';
 
 export const getStepConfig = (
-  authenticationData: AuthenticationData,
+  getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   setStatus: (status: Status) => void,
   setError: (errorCode: ErrorCode) => void,
   updateState: UpdateState
 ) => {
-  const { onSuccess } = authenticationData;
-
   return {
     closed: {
       // When we fire this, we are already sure that we need the new flow.
@@ -80,6 +78,7 @@ export const getStepConfig = (
       },
 
       CONTINUE_WITH_SSO: (ssoProvider: SSOProviderWithoutVienna) => {
+        const authenticationData = getAuthenticationData();
         handleOnSSOClick(ssoProvider, authenticationData);
       },
     },
@@ -137,6 +136,8 @@ export const getStepConfig = (
             setCurrentStep('email-confirmation');
           } else {
             setCurrentStep('closed');
+
+            const { onSuccess } = getAuthenticationData();
             onSuccess && onSuccess();
           }
 
@@ -157,6 +158,7 @@ export const getStepConfig = (
         setStatus('ok');
         setCurrentStep('closed');
 
+        const { onSuccess } = getAuthenticationData();
         onSuccess && onSuccess();
       },
     },

@@ -27,12 +27,23 @@ export default function useSteps() {
   const [status, setStatus] = useState<Status>('ok');
   const [error, setError] = useState<ErrorCode | null>(null);
 
+  const getAuthenticationData = useCallback(() => {
+    const authenticationData = authenticationDataRef.current;
+
+    // This should never be possible
+    if (!authenticationData) {
+      throw new Error('Authentication data not available.');
+    }
+
+    return authenticationData;
+  }, []);
+
   const getRequirements = useCallback(async () => {
     const authenticationContext = authenticationDataRef.current?.context;
 
     // This should never be possible
     if (!authenticationContext) {
-      throw new Error('Authentication data not available.');
+      throw new Error('Authentication context not available.');
     }
 
     try {
@@ -53,22 +64,15 @@ export default function useSteps() {
   }, []);
 
   const stepConfig = useMemo(() => {
-    const authenticationData = authenticationDataRef.current;
-
-    // This should never be possible
-    if (!authenticationData) {
-      throw new Error('Authentication data not available.');
-    }
-
     return getStepConfig(
-      authenticationData,
+      getAuthenticationData,
       getRequirements,
       setCurrentStep,
       setStatus,
       setError,
       updateState
     );
-  }, [getRequirements, updateState]);
+  }, [getAuthenticationData, getRequirements, updateState]);
 
   const transition = useCallback(
     <S extends Step, T extends keyof StepConfig[S]>(
