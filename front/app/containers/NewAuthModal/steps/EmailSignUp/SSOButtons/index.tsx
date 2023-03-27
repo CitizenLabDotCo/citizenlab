@@ -3,6 +3,7 @@ import React from 'react';
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import SSOButton from './SSOButton';
+import Or from 'components/UI/Or';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -32,16 +33,23 @@ const SSOButtons = (props: Props) => {
   }
 
   return (
-    <Box mt="32px">
-      {googleLoginEnabled && <SSOButton ssoProvider="google" {...props} />}
-      {facebookLoginEnabled && <SSOButton ssoProvider="facebook" {...props} />}
-      {franceconnectLoginEnabled && (
-        <SSOButton ssoProvider="franceconnect" {...props} />
-      )}
-      {azureAdLoginEnabled && (
-        <SSOButton ssoProvider="azureactivedirectory" {...props} />
-      )}
-    </Box>
+    <>
+      <Box mt="32px">
+        <Or />
+      </Box>
+      <Box mt="32px">
+        {googleLoginEnabled && <SSOButton ssoProvider="google" {...props} />}
+        {facebookLoginEnabled && (
+          <SSOButton ssoProvider="facebook" {...props} />
+        )}
+        {franceconnectLoginEnabled && (
+          <SSOButton ssoProvider="franceconnect" {...props} />
+        )}
+        {azureAdLoginEnabled && (
+          <SSOButton ssoProvider="azureactivedirectory" {...props} />
+        )}
+      </Box>
+    </>
   );
 };
 

@@ -157,9 +157,9 @@ const EmailSignUp = ({ status, onSubmit, onSwitchToSSO }: Props) => {
               {formatMessage(sharedMessages.continue)}
             </Button>
           </Box>
-          <SSOButtons onClickSSO={onSwitchToSSO} />
         </form>
       </FormProvider>
+      <SSOButtons onClickSSO={onSwitchToSSO} />
     </>
   );
 };
