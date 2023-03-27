@@ -10,7 +10,6 @@ import messages from '../messages';
 import styled from 'styled-components';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
   height: 100%;
@@ -24,7 +23,7 @@ interface Props extends Omit<IQueryParameters, 'projectIds'> {
 }
 
 const IdeasCount = ({ project, ...otherProps }: Props) => {
-  const { data: count } = useIdeasCount({
+  const { data: ideasCount } = useIdeasCount({
     ...otherProps,
     projectIds: project ? [project] : undefined,
   });
@@ -35,14 +34,14 @@ const IdeasCount = ({ project, ...otherProps }: Props) => {
           If there are no ideas, we have an 'empty container' to indicate there are no ideas matching the filters.
           Hence we only show this count when there's at least 1 idea.
         */}
-      {!isNilOrError(count) &&
-        count.data.attributes.count > 0 &&
-        (count.data.attributes.count === 1 ? (
+      {ideasCount &&
+        ideasCount.data.attributes.count > 0 &&
+        (ideasCount.data.attributes.count === 1 ? (
           <FormattedMessage {...messages.oneInput} />
         ) : (
           <FormattedMessage
             {...messages.multipleInputs}
-            values={{ ideaCount: count }}
+            values={{ ideaCount: ideasCount.data.attributes.count }}
           />
         ))}
     </Container>
