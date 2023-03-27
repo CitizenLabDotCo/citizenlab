@@ -21,8 +21,7 @@ const SSOButtons = (props: Props) => {
   const franceconnectLoginEnabled = useFeatureFlag({
     name: 'franceconnect_login',
   });
-  // const azureAdLoginEnabled = useFeatureFlag({ name: 'azure_ad_login' });
-  const azureAdLoginEnabled = true;
+  const azureAdLoginEnabled = useFeatureFlag({ name: 'azure_ad_login' });
 
   if (
     !googleLoginEnabled &&
