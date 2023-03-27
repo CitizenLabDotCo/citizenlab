@@ -1072,6 +1072,7 @@
   "app.containers.NewAuthModal.logIn": "Logg på",
   "app.containers.NewAuthModal.steps.EmailConfirmation.codeMustHaveFourDigits": "Koden må inneholde fire siffer.",
   "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.continueWithFranceConnect": "Fortsett med FranceConnect",
+  "app.containers.NewAuthModal.steps.EmailSignUp.byContinuing": "Ved å fortsette godtar du å motta e-post fra denne plattformen. Du kan velge hvilke e-poster du ønsker å motta på 'Mine innstillinger'-siden.",
   "app.containers.NewAuthModal.steps.EmailSignUp.email": "E-postadresse",
   "app.containers.NewAuthModal.steps.EmailSignUp.emailFormatError": "Oppgi en e-postadresse i riktig format, for eksempel name@provider.com",
   "app.containers.NewAuthModal.steps.EmailSignUp.emailMissingError": "Oppgi en e-postadresse",
