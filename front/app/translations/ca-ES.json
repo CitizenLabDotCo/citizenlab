@@ -1072,6 +1072,7 @@
   "app.containers.NewAuthModal.logIn": "Iniciar Sessió",
   "app.containers.NewAuthModal.steps.EmailConfirmation.codeMustHaveFourDigits": "El codi ha de tenir 4 dígits.",
   "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.continueWithFranceConnect": "Continueu amb FranceConnect",
+  "app.containers.NewAuthModal.steps.EmailSignUp.byContinuing": "En continuar, acceptes rebre correus electrònics d'aquesta plataforma. Podeu seleccionar quins correus electrònics voleu rebre a la pàgina \"La meva configuració\".",
   "app.containers.NewAuthModal.steps.EmailSignUp.email": "Correu electrònic",
   "app.containers.NewAuthModal.steps.EmailSignUp.emailFormatError": "Proporcioneu una adreça de correu electrònic en el format correcte, per exemple, nom@proveïdor.com",
   "app.containers.NewAuthModal.steps.EmailSignUp.emailMissingError": "Proporcioneu una adreça de correu electrònic",
