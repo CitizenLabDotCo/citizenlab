@@ -21,7 +21,8 @@ const SSOButtons = (props: Props) => {
   const franceconnectLoginEnabled = useFeatureFlag({
     name: 'franceconnect_login',
   });
-  const azureAdLoginEnabled = useFeatureFlag({ name: 'azure_ad_login' });
+  // const azureAdLoginEnabled = useFeatureFlag({ name: 'azure_ad_login' });
+  const azureAdLoginEnabled = true;
 
   if (
     !googleLoginEnabled &&
@@ -37,7 +38,7 @@ const SSOButtons = (props: Props) => {
       <Box mt="32px">
         <Or />
       </Box>
-      <Box mt="32px">
+      <Box mt="20px">
         {googleLoginEnabled && <SSOButton ssoProvider="google" {...props} />}
         {facebookLoginEnabled && (
           <SSOButton ssoProvider="facebook" {...props} />
