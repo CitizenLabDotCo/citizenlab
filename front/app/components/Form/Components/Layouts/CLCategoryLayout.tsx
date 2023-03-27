@@ -11,11 +11,6 @@ import { FormSection } from 'components/UI/FormComponents';
 import styled, { useTheme } from 'styled-components';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-export const FormElement = styled.div`
-  width: 100%;
-  margin-bottom: 40px;
-`;
-
 const StyledFormSection = styled(FormSection)`
   max-width: 100%;
   width: 100%;
@@ -69,7 +64,7 @@ const CLCategoryLayout = memo(
               </Box>
             )}
             {e.elements.map((e, index) => (
-              <FormElement key={index}>
+              <Box w="100%" mb="40px" key={index}>
                 <JsonFormsDispatch
                   renderers={renderers}
                   cells={cells}
@@ -78,7 +73,7 @@ const CLCategoryLayout = memo(
                   path={path}
                   enabled={enabled}
                 />
-              </FormElement>
+              </Box>
             ))}
           </StyledFormSection>
         ))}
