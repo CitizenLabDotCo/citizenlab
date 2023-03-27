@@ -16,7 +16,7 @@ import messages from './messages';
 // form
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { string, object } from 'yup';
+import { string, object, boolean } from 'yup';
 import Input from 'components/HookForm/Input';
 import Checkbox from 'components/HookForm/Checkbox';
 
@@ -37,10 +37,14 @@ interface Props {
 
 interface FormValues {
   email: string;
+  termsAndConditionsAccepted: boolean;
+  privacyPolicyAccepted: boolean;
 }
 
 const DEFAULT_VALUES: Partial<FormValues> = {
   email: undefined,
+  termsAndConditionsAccepted: false,
+  privacyPolicyAccepted: false,
 };
 
 const EmailSignUp = ({ status, onSubmit, onSwitchToSSO }: Props) => {
@@ -55,6 +59,14 @@ const EmailSignUp = ({ status, onSubmit, onSwitchToSSO }: Props) => {
         email: string()
           .email(formatMessage(messages.emailFormatError))
           .required(formatMessage(messages.emailMissingError)),
+        termsAndConditionsAccepted: boolean().test(
+          'Terms and conditions should be accepted',
+          (value) => !!value
+        ),
+        privacyPolicyAccepted: boolean().test(
+          'Privacy policy should be accepted',
+          (value) => !!value
+        ),
       }),
     [formatMessage]
   );
@@ -86,8 +98,14 @@ const EmailSignUp = ({ status, onSubmit, onSwitchToSSO }: Props) => {
             />
           </Box>
           <Box mt="24px">
-            <Checkbox name="termsAndConditionsAccepted" />
-            <Checkbox name="privacyPolicyAccepted" />
+            <Checkbox
+              name="termsAndConditionsAccepted"
+              label="I agree to the terms and conditions"
+            />
+            <Checkbox
+              name="privacyPolicyAccepted"
+              label="I agree to the privacy policy"
+            />
           </Box>
           <Box w="100%" display="flex" mt="32px">
             <Button
