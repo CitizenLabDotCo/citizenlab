@@ -1112,6 +1112,8 @@
   "app.containers.NotificationMenu.statusChangeOnVotedOption": "El estado de una opción por la que votaste cambió a {status}",
   "app.containers.NotificationMenu.statusChangeOnVotedProject": "El estado de un proyecto por el que votaste cambió a {status}",
   "app.containers.NotificationMenu.statusChangeOnVotedQuestion": "El estado de una pregunta por la que votaste cambió a {status}",
+  "app.containers.NotificationMenu.statusChangedOfIdea": "El estado de {ideaTitle} ha cambiado a {status}",
+  "app.containers.NotificationMenu.statusChangedOfInitiative": "El estado de {initiativeTitle} ha cambiado a {status}",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} alcanzó el número requerido de votos",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} aceptó tu invitación",
   "app.containers.NotificationMenu.userCommentedOnYourContribution": "{name} comentó tu contribución",
