@@ -39,7 +39,7 @@ const SSOButton = ({ ssoProvider, onClickSSO }: Props) => {
   // const handleClickFranceConnect = () => onClickSSO('franceconnect');
 
   if (ssoProvider === 'franceconnect') {
-    return <Box mt="12px">{/* TODO */}</Box>;
+    return <Box mt="12px">{}</Box>;
   }
 
   const azureProviderName =
