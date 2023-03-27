@@ -1112,6 +1112,8 @@
   "app.containers.NotificationMenu.statusChangeOnVotedOption": "Η κατάσταση μιας επιλογής για την οποία ψηφίσατε άλλαξε σε {status}",
   "app.containers.NotificationMenu.statusChangeOnVotedProject": "Η κατάσταση ενός έργου για το οποίο ψηφίσατε άλλαξε σε {status}",
   "app.containers.NotificationMenu.statusChangeOnVotedQuestion": "Η κατάσταση μιας ερώτησης για την οποία ψηφίσατε άλλαξε σε {status}",
+  "app.containers.NotificationMenu.statusChangedOfIdea": "{ideaTitle} Η κατάσταση έχει αλλάξει σε {status}",
+  "app.containers.NotificationMenu.statusChangedOfInitiative": "{initiativeTitle} Η κατάσταση έχει αλλάξει σε {status}",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "Η δημοσίευση {post} έφθασε το όριο ψηφοφορίας",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "Ο/η {name} αποδέχτηκε την πρόσκλησή σας",
   "app.containers.NotificationMenu.userCommentedOnYourContribution": "Ο/η {name} σχολίασε τη συνεισφορά σας",
