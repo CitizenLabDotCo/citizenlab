@@ -71,10 +71,10 @@ const CommentVote = ({
     if (isNilOrError(authUser)) return;
 
     if (!oldVotedValue) {
-      try {
-        setVoted(true);
-        setUpvoteCount((n) => n + 1);
+      setVoted(true);
+      setUpvoteCount((n) => n + 1);
 
+      try {
         await upvote({
           postId,
           postType,
@@ -89,10 +89,10 @@ const CommentVote = ({
     }
 
     if (oldVotedValue && !isNilOrError(commentVote)) {
-      try {
-        setVoted(false);
-        setUpvoteCount((n) => n - 1);
+      setVoted(false);
+      setUpvoteCount((n) => n - 1);
 
+      try {
         await removeVote({
           commentId,
           commentVoteId: commentVote.id,
