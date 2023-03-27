@@ -2,14 +2,15 @@ import { useState, useMemo } from 'react';
 import { debounce } from 'lodash-es';
 
 // hooks
-import useIdeasCount, { Props as InputProps } from 'hooks/useIdeasCount';
+import useIdeasCount from 'api/idea_count/useIdeasCount';
+import { IQueryParameters } from 'api/idea_count/types';
 
 // typings
 import { NilOrError } from 'utils/helperUtils';
 
 type children = (renderProps: GetIdeasCountChildProps) => JSX.Element | null;
 
-interface Props extends InputProps {
+interface Props extends IQueryParameters {
   children?: (obj: GetIdeasCountChildProps) => JSX.Element | null;
 }
 
@@ -20,7 +21,7 @@ export interface GetIdeasCountChildProps {
 
 const GetIdeasCount = ({ children, search, ...otherProps }: Props) => {
   const [currentSearch, setCurrentSearch] = useState(search);
-  const count = useIdeasCount({
+  const { data: count } = useIdeasCount({
     search: currentSearch,
     ...otherProps,
   });
@@ -34,7 +35,7 @@ const GetIdeasCount = ({ children, search, ...otherProps }: Props) => {
   );
 
   return (children as children)({
-    count,
+    count: count?.data.attributes.count,
     onChangeSearchTerm,
   });
 };

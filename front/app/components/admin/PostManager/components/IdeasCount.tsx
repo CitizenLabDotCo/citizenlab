@@ -1,10 +1,7 @@
 import React from 'react';
 
-// hooks
-import useIdeasCount, {
-  Props as UseIdeasCountProps,
-} from 'hooks/useIdeasCount';
-
+import useIdeasCount from 'api/idea_count/useIdeasCount';
+import { IQueryParameters } from 'api/idea_count/types';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
@@ -22,12 +19,12 @@ const Container = styled.div`
   font-weight: 500;
 `;
 
-interface Props extends Omit<UseIdeasCountProps, 'projectIds'> {
+interface Props extends Omit<IQueryParameters, 'projectIds'> {
   project?: string | null;
 }
 
 const IdeasCount = ({ project, ...otherProps }: Props) => {
-  const count = useIdeasCount({
+  const { data: count } = useIdeasCount({
     ...otherProps,
     projectIds: project ? [project] : undefined,
   });
@@ -39,8 +36,8 @@ const IdeasCount = ({ project, ...otherProps }: Props) => {
           Hence we only show this count when there's at least 1 idea.
         */}
       {!isNilOrError(count) &&
-        count > 0 &&
-        (count === 1 ? (
+        count.data.attributes.count > 0 &&
+        (count.data.attributes.count === 1 ? (
           <FormattedMessage {...messages.oneInput} />
         ) : (
           <FormattedMessage
