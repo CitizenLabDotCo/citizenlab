@@ -4,8 +4,11 @@ import React from 'react';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
-import AuthProviderButton from 'components/AuthProviders/AuthProviderButton';
+import Button from 'components/UI/Button';
+
+// styling
+import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -13,6 +16,22 @@ import oldMessages from 'components/AuthProviders/messages';
 
 // typings
 import { SSOProviderWithoutVienna } from 'containers/NewAuthModal/typings';
+
+const Container = styled.div`
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: ${(props) => props.theme.borderRadius};
+  border: solid 1px #ccc;
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.05);
+  transition: all 100ms ease-out;
+
+  &:hover {
+    border-color: ${colors.grey800};
+    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.1);
+  }
+`;
 
 interface Props {
   ssoProvider: SSOProviderWithoutVienna;
@@ -36,10 +55,10 @@ const SSOButton = ({ ssoProvider, onClickSSO }: Props) => {
 
   if (!appConfiguration) return null;
 
-  // const handleClickFranceConnect = () => onClickSSO('franceconnect');
+  const handleClickSSO = () => onClickSSO(ssoProvider);
 
   if (ssoProvider === 'franceconnect') {
-    return <Box mt="12px">{}</Box>;
+    return <Container>TODO</Container>;
   }
 
   const azureProviderName =
@@ -47,18 +66,26 @@ const SSOButton = ({ ssoProvider, onClickSSO }: Props) => {
       ?.login_mechanism_name ?? 'Azure Active Directory';
 
   return (
-    <Box mt="12px">
-      <AuthProviderButton
-        flow="signup"
+    <Container>
+      <Button
         icon={ICON_MAP[ssoProvider]}
-        authProvider={ssoProvider}
-        onContinue={onClickSSO}
+        iconColor={ssoProvider === 'facebook' ? colors.facebook : undefined}
+        iconHoverColor={
+          ssoProvider === 'facebook' ? colors.facebook : undefined
+        }
+        buttonStyle="white"
+        iconSize="22px"
+        fullWidth={true}
+        justify="left"
+        whiteSpace="wrap"
+        padding="10px 18px"
+        onClick={handleClickSSO}
       >
         {ssoProvider === 'azureactivedirectory'
           ? formatMessage(oldMessages.continueWithAzure, { azureProviderName })
           : formatMessage(MESSAGE_MAP[ssoProvider])}
-      </AuthProviderButton>
-    </Box>
+      </Button>
+    </Container>
   );
 };
 
