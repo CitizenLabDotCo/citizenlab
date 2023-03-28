@@ -44,7 +44,7 @@ resource 'Permissions' do
         field2.reload
         field3.reload
         permission.permissions_custom_fields.create!(custom_field: field2, required: true)
-        permission.permissions_custom_fields.create!(custom_field: field1, required: true)
+        permission.permissions_custom_fields.create!(custom_field: field1, required: false)
         permission.permissions_custom_fields.create!(custom_field: field3, required: true)
 
         expect do
