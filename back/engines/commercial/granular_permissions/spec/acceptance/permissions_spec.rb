@@ -139,21 +139,18 @@ resource 'Permissions' do
       with_options scope: :permission do
         parameter :permitted_by, "Defines who is granted permission, either #{Permission::PERMITTED_BIES.join(',')}.", required: false
         parameter :group_ids, "An array of group id's associated to this permission", required: false
-        parameter :custom_field_ids, "An array of custom field id's associated to this permission", required: false
       end
       ValidationErrorHelper.new.error_fields(self, Permission)
 
       let(:action) { @project.permissions.first.action }
       let(:permitted_by) { 'groups' }
       let(:group_ids) { create_list(:group, 3, projects: [@project]).map(&:id) }
-      let(:custom_field_ids) { create_list(:custom_field, 2).map(&:id) }
 
       example_request 'Update a permission' do
         assert_status 200
         json_response = json_parse response_body
         expect(json_response.dig(:data, :attributes, :permitted_by)).to eq permitted_by
         expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to match_array group_ids
-        expect(json_response.dig(:data, :relationships, :custom_fields, :data).pluck(:id)).to match_array custom_field_ids
       end
     end
 

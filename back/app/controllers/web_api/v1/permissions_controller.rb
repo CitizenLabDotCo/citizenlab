@@ -73,6 +73,6 @@ class WebApi::V1::PermissionsController < ApplicationController
   end
 
   def permission_params
-    params.require(:permission).permit(:permitted_by, group_ids: [], custom_field_ids: [])
+    params.require(:permission).permit(:permitted_by, group_ids: [])
   end
 end
