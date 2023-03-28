@@ -7,8 +7,8 @@ export interface IQueryParameters {
   projects?: string[] | null;
   phase?: string | null;
   topics?: string[];
-  ideaStatusId?: string;
-  feedbackNeeded?: boolean;
+  idea_status_id?: string;
+  feedback_needed?: boolean;
   assignee?: string;
   search?: string;
 }
