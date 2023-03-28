@@ -18,9 +18,10 @@ interface Props {
 const SSOButtons = (props: Props) => {
   const googleLoginEnabled = useFeatureFlag({ name: 'google_login' });
   const facebookLoginEnabled = useFeatureFlag({ name: 'facebook_login' });
-  const franceconnectLoginEnabled = useFeatureFlag({
-    name: 'franceconnect_login',
-  });
+  // const franceconnectLoginEnabled = useFeatureFlag({
+  //   name: 'franceconnect_login',
+  // });
+  const franceconnectLoginEnabled = true;
   const azureAdLoginEnabled = useFeatureFlag({ name: 'azure_ad_login' });
 
   if (

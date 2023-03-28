@@ -1,9 +1,11 @@
 import React from 'react';
+import FranceConnectImage from './franceconnect.png';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // components
+import { Image } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
 // styling
@@ -12,6 +14,7 @@ import { colors } from 'utils/styleUtils';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
 import oldMessages from 'components/AuthProviders/messages';
 
 // typings
@@ -63,7 +66,22 @@ const SSOButton = ({ ssoProvider, onClickSSO }: Props) => {
   const handleClickSSO = () => onClickSSO(ssoProvider);
 
   if (ssoProvider === 'franceconnect') {
-    return <Container>TODO</Container>;
+    return (
+      <Container>
+        <Button
+          buttonStyle="white"
+          iconSize="22px"
+          fullWidth={true}
+          justify="left"
+          whiteSpace="wrap"
+          padding="10px 18px"
+          onClick={handleClickSSO}
+        >
+          <Image src={FranceConnectImage} alt="" height="28px" mr="8px" />
+          {formatMessage(messages.continueWithFranceConnect)}
+        </Button>
+      </Container>
+    );
   }
 
   const azureProviderName =

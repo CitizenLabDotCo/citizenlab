@@ -11,6 +11,7 @@ import EmailPolicies from './steps/AcceptPolicies/EmailPolicies';
 import GooglePolicies from './steps/AcceptPolicies/GooglePolicies';
 import FacebookPolicies from './steps/AcceptPolicies/FacebookPolicies';
 import AzureAdPolicies from './steps/AcceptPolicies/AzureAdPolicies';
+import FranceConnectLogin from './steps/AcceptPolicies/FranceConnectLogin';
 import EmailConfirmation from './steps/EmailConfirmation';
 import Password from './steps/Password';
 import Success from './steps/Success';
@@ -29,6 +30,7 @@ import { ErrorCode } from './typings';
 const getHeaderMessage = (step: ReturnType<typeof useSteps>['currentStep']) => {
   if (step === 'email-registration') return messages.beforeYouParticipate;
   if (step.endsWith('policies')) return messages.beforeYouParticipate;
+  if (step === 'france-connect-login') return messages.beforeYouParticipate;
   if (step === 'email-confirmation') return messages.confirmYourEmail;
   if (step === 'enter-password') return messages.logIn;
   return null;
@@ -112,6 +114,10 @@ const AuthModal = () => {
             status={status}
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
+        )}
+
+        {currentStep === 'france-connect-login' && (
+          <FranceConnectLogin onLogin={transition(currentStep, 'LOGIN')} />
         )}
 
         {currentStep === 'email-confirmation' && (

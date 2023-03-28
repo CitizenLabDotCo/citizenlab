@@ -27,6 +27,7 @@ type Step =
   | 'google-policies'
   | 'facebook-policies'
   | 'azure-ad-policies'
+  | 'france-connect-login'
   | 'email-confirmation'
   | 'enter-password'
   | 'success';
@@ -72,6 +73,9 @@ export const getStepConfig = (
             break;
           case 'azureactivedirectory':
             setCurrentStep('azure-ad-policies');
+            break;
+          case 'franceconnect':
+            setCurrentStep('france-connect-login');
             break;
           default:
             break;
@@ -125,6 +129,14 @@ export const getStepConfig = (
       ACCEPT_POLICIES: () => {
         const authenticationData = getAuthenticationData();
         handleOnSSOClick('azureactivedirectory', authenticationData);
+      },
+    },
+
+    'france-connect-login': {
+      CLOSE: () => setCurrentStep('closed'),
+      LOGIN: () => {
+        const authenticationData = getAuthenticationData();
+        handleOnSSOClick('franceconnect', authenticationData);
       },
     },
 
