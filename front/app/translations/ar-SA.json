@@ -421,7 +421,6 @@
   "app.components.QuillEditor.videoPrompt": "أدخل فيديو:",
   "app.components.QuillEditor.visitPrompt": "زُر الرابط:",
   "app.components.SeatInfo.additionalSeats": "مقاعد إضافية",
-  "app.components.SeatInfo.adminSeatsIncludedSubText": "تمت إضافة {adminSeats} مقاعد مسؤولين",
   "app.components.SeatInfo.currentAdminSeatsTitle": "مقاعد المسؤولين الحالية",
   "app.components.SeatInfo.currentCollaboratorSeatsTitle": "مقاعد المتعاونين الحالية",
   "app.components.SeatInfo.includedAdminToolTip": "يعرض هذا الخيار عدد المقاعد المتوفرة للمسؤولين التي تمت إضافتها في العقد السنوي.",

@@ -420,7 +420,6 @@
   "app.components.QuillEditor.videoPrompt": "Adaugă videoclipul:",
   "app.components.QuillEditor.visitPrompt": "Vizitați linkul",
   "app.components.SeatInfo.additionalSeats": "Locuri suplimentare",
-  "app.components.SeatInfo.adminSeatsIncludedSubText": "{adminSeats} locuri de administrator incluse",
   "app.components.SeatInfo.currentAdminSeatsTitle": "Locuri curente de administrator",
   "app.components.SeatInfo.currentCollaboratorSeatsTitle": "Locuri actuale de colaborator",
   "app.components.SeatInfo.includedAdminToolTip": "Aceasta arată numărul de locuri disponibile pentru administratori incluse în contractul anual.",

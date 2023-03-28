@@ -421,7 +421,6 @@
   "app.components.QuillEditor.videoPrompt": "Ievadīt video:",
   "app.components.QuillEditor.visitPrompt": "Apmeklēt saiti:",
   "app.components.SeatInfo.additionalSeats": "Papildu sēdvietas",
-  "app.components.SeatInfo.adminSeatsIncludedSubText": "{adminSeats} iekļauti administratora sēdekļi",
   "app.components.SeatInfo.currentAdminSeatsTitle": "Pašreizējās administratora vietas",
   "app.components.SeatInfo.currentCollaboratorSeatsTitle": "Pašreizējo sadarbības partneru vietas",
   "app.components.SeatInfo.includedAdminToolTip": "Tas parāda gada līgumā iekļauto pieejamo vietu skaitu administratoriem.",

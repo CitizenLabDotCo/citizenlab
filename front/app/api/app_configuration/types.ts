@@ -216,6 +216,7 @@ export interface IAppConfigurationSettings {
   input_form_custom_fields?: AppConfigurationFeature;
   report_builder?: AppConfigurationFeature;
   posthog_integration?: AppConfigurationFeature;
+  seat_based_billing?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

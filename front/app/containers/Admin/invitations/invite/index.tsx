@@ -24,6 +24,8 @@ import HelmetIntl from 'components/HelmetIntl';
 import Button from 'components/UI/Button';
 import Warning from 'components/UI/Warning';
 import InviteUsersWithSeatsModal from 'components/admin/InviteUsersWithSeatsModal';
+import SeatInfo from 'components/SeatInfo';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // services
 import {
@@ -107,6 +109,9 @@ interface Props extends InputProps, DataProps {}
 
 const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
   const { formatMessage } = useIntl();
+  const hasSeatBasedBillingEnabled = useFeatureFlag({
+    name: 'seat_based_billing',
+  });
 
   const [selectedEmails, setSelectedEmails] = useState<string | null>(null);
   const [selectedFileBase64, setSelectedFileBase64] = useState<string | null>(
@@ -406,8 +411,11 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
 
   const handleSubmitAction = (event: React.FormEvent) => {
     event.preventDefault();
+    const showConfirmationModal =
+      hasSeatBasedBillingEnabled &&
+      (inviteesWillHaveAdminRights || inviteesWillHaveModeratorRights);
 
-    if (inviteesWillHaveAdminRights || inviteesWillHaveModeratorRights) {
+    if (showConfirmationModal) {
       setShowModal(true);
     } else {
       onSubmit();
@@ -472,6 +480,11 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
               onChange={handleAdminRightsOnToggle}
             />
           </Box>
+          {!hasSeatBasedBillingEnabled && inviteesWillHaveAdminRights && (
+            <Box marginTop="20px">
+              <SeatInfo seatType="admin" />
+            </Box>
+          )}
         </SectionField>
 
         <SectionField>
@@ -521,6 +534,11 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
                 <StyledWarning>
                   <FormattedMessage {...messages.required} />
                 </StyledWarning>
+              )}
+              {!hasSeatBasedBillingEnabled && (
+                <Box marginTop="20px">
+                  <SeatInfo seatType="collaborator" />
+                </Box>
               )}
             </>
           )}

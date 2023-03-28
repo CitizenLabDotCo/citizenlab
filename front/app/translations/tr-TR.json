@@ -421,7 +421,6 @@
   "app.components.QuillEditor.videoPrompt": "Videoyu girin:",
   "app.components.QuillEditor.visitPrompt": "Bağlantıyı ziyaret edin:",
   "app.components.SeatInfo.additionalSeats": "Ek koltuklar",
-  "app.components.SeatInfo.adminSeatsIncludedSubText": "{adminSeats} yönetici koltukları dahil",
   "app.components.SeatInfo.currentAdminSeatsTitle": "Mevcut yönetici koltukları",
   "app.components.SeatInfo.currentCollaboratorSeatsTitle": "Mevcut işbirlikçi koltukları",
   "app.components.SeatInfo.includedAdminToolTip": "Bu, yıllık sözleşmeye dahil olan yöneticiler için mevcut koltuk sayısını gösterir.",
