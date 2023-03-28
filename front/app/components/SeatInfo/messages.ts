@@ -23,7 +23,7 @@ export default defineMessages({
       "Your plan has {adminSeatsIncluded}. Once you've used all the seats, you agree on us billing the additional seats according to your license.",
   },
   adminInfoTextWithoutBilling: {
-    id: 'app.components.SeatTrackerInfo.adminInfoTextWithoutBilling2',
+    id: 'app.components.SeatTrackerInfo.adminInfoTextWithoutBilling',
     defaultMessage:
       "Your plan has {adminSeatsIncluded}. Once you've used all the seats, extra seats will be added under 'Additional seats'.",
   },
@@ -37,7 +37,7 @@ export default defineMessages({
       "Your plan has {collaboratorSeatsIncluded}, eligible for folder managers and project managers. Once you've used all the seats, you agree on us billing the additional seats according to your license.",
   },
   collaboratorInfoTextWithoutBilling: {
-    id: 'app.components.SeatTrackerInfo.collaboratorInfoTextWithoutBilling2',
+    id: 'app.components.SeatTrackerInfo.collaboratorInfoTextWithoutBilling',
     defaultMessage:
       "Your plan has {collaboratorSeatsIncluded}, eligible for folder managers and project managers. Once you've used all the seats, extra seats will be added under 'Additional seats'.",
   },
