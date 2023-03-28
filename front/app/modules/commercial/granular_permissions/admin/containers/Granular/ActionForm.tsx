@@ -9,7 +9,6 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 import {
   Box,
   IconTooltip,
-  Radio,
   Toggle,
   colors,
   Title,
@@ -114,7 +113,6 @@ const ActionForm = ({
         If separate, we will need to update code where we check for attributes.posting_idea */}
         {(action === 'taking_survey' || projectType === 'nativeSurvey') && (
           <PermissionCardButton
-            iconName="user"
             title={permissionsMessages.permissionsAnyoneLabel}
             subtitle={permissionsMessages.permissionsAnyoneLabelDescription}
             onClick={handlePermittedByUpdate('everyone')}

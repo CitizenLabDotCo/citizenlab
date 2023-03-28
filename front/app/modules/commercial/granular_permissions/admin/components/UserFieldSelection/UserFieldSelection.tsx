@@ -37,8 +37,6 @@ const UserFieldSelection = ({ permission }: UserFieldSelectionProps) => {
     Array<IUserCustomFieldData>
   >([]);
 
-  console.log('PERMISSION', permission);
-
   useEffect(() => {
     if (permission.attributes.permitted_by === 'users') {
       // For each registration field, add it if it's required
@@ -47,7 +45,6 @@ const UserFieldSelection = ({ permission }: UserFieldSelectionProps) => {
 
   useEffect(() => {
     // TODO: Update the actual permission once the BE is in place
-    console.log('SELECTED FIELDS', selectedFields);
   }, [selectedFields]);
 
   if (isNilOrError(locale)) {

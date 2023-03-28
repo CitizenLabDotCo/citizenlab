@@ -34,9 +34,6 @@ const Timeline = ({ projectId }: InputProps) => {
     useUpdatePhasePermission(openedPhaseId);
   const phases = usePhases(projectId);
 
-  const handleCollapseToggle = (phaseId: string) => () => {
-    setOpenedPhaseId(openedPhaseId === phaseId ? null : phaseId);
-  };
   const handlePermissionChange = (
     permission: IPCPermissionData,
     permittedBy: IPCPermissionData['attributes']['permitted_by'],
@@ -55,6 +52,7 @@ const Timeline = ({ projectId }: InputProps) => {
   }
 
   const openedPhase = phases?.filter((phase) => phase.id === openedPhaseId)[0];
+
   const config = getMethodConfig(
     openedPhase ? openedPhase.attributes.participation_method : 'ideation'
   );
@@ -82,7 +80,7 @@ const Timeline = ({ projectId }: InputProps) => {
               }
               key={phase.id}
               onChange={() => {
-                handleCollapseToggle(phase.id);
+                setOpenedPhaseId(openedPhaseId === phase.id ? null : phase.id);
               }}
             >
               <Box

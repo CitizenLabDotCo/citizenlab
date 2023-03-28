@@ -14,7 +14,7 @@ import { lighten } from 'polished';
 type PermissionCardButtonProps = {
   onClick: () => void;
   selected: boolean;
-  iconName: IconNames;
+  iconName?: IconNames;
   title: MessageDescriptor;
   subtitle: MessageDescriptor;
 };
@@ -48,13 +48,14 @@ export const PermissionCardButton = ({
       }
       style={{ cursor: 'pointer' }}
     >
-      {' '}
-      <Icon
-        width="28px"
-        height="28px"
-        name={iconName}
-        fill={selected ? colors.teal200 : colors.grey300}
-      />
+      {iconName && (
+        <Icon
+          width="28px"
+          height="28px"
+          name={iconName}
+          fill={selected ? colors.teal200 : colors.grey300}
+        />
+      )}
       <Title variant="h5" color={selected ? 'primary' : 'coolGrey500'}>
         <FormattedMessage {...title} />
       </Title>
