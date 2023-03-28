@@ -1072,7 +1072,7 @@
   "app.containers.NewAuthModal.logIn": "Inloggen",
   "app.containers.NewAuthModal.steps.EmailConfirmation.codeMustHaveFourDigits": "De code moet uit 4 cijfers bestaan.",
   "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.continueWithFranceConnect": "Doorgaan met FranceConnect",
-  "app.containers.NewAuthModal.steps.EmailSignUp.byContinuing": "By continuing, you agree to receive emails from this platform. You can select which emails you wish to receive in the 'My Settings' page.",
+  "app.containers.NewAuthModal.steps.EmailSignUp.byContinuing": "Door verder te gaan, ga je akkoord met het ontvangen van e-mails van dit platform. Je kunt in de pagina 'Mijn instellingen' selecteren welke e-mails je wilt ontvangen.",
   "app.containers.NewAuthModal.steps.EmailSignUp.email": "E-mail",
   "app.containers.NewAuthModal.steps.EmailSignUp.emailFormatError": "Geef een e-mailadres in het juiste formaat, bijvoorbeeld name@provider.com",
   "app.containers.NewAuthModal.steps.EmailSignUp.emailMissingError": "Geef een e-mailadres",
