@@ -43,7 +43,9 @@ const UserSelect = ({
   const usersList: IUserData[] = Array.isArray(users.usersList)
     ? users.usersList
     : [];
-  const selectedUser = usersList.find((user) => user.id === selectedUserId);
+  const selectedUser = selectedUserId
+    ? usersList.find((user) => user.id === selectedUserId)
+    : null;
 
   const handleChange = (option: OptionTypeBase, { action }) => {
     if (action === 'clear') {

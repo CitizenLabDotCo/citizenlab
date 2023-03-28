@@ -16,18 +16,11 @@ import UserSelect from 'components/UI/UserSelect';
 // Style
 import styled from 'styled-components';
 
-// Typings
-import { IOption } from 'typings';
-
-const AddGroupButton = styled(Button)`
+const AddButton = styled(Button)`
   flex-grow: 0;
   flex-shrink: 0;
   margin-left: 20px;
 `;
-
-interface UserOption extends IOption {
-  email: string;
-}
 
 interface Props {
   projectId: string;
@@ -35,7 +28,6 @@ interface Props {
 
 const UserSearch = memo(({ projectId }: Props) => {
   const { formatMessage } = useIntl();
-  const [selection, setSelection] = useState<UserOption[]>([]);
   const [processing, setProcessing] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [moderatorToAdd, setModeratorToAdd] = useState<string | null>(null);
@@ -43,8 +35,13 @@ const UserSearch = memo(({ projectId }: Props) => {
   const closeModal = () => {
     setShowModal(false);
   };
+
   const openModal = () => {
     setShowModal(true);
+  };
+
+  const onClickAddButton = () => {
+    openModal();
   };
 
   const handleOnChange = (userId: string) => {
@@ -55,8 +52,8 @@ const UserSearch = memo(({ projectId }: Props) => {
     if (moderatorToAdd) {
       setProcessing(true);
       await addMembership(projectId, moderatorToAdd);
-      setSelection([]);
       setProcessing(false);
+      setModeratorToAdd(null);
     }
   };
 
@@ -73,12 +70,12 @@ const UserSearch = memo(({ projectId }: Props) => {
           />
         </Box>
 
-        <AddGroupButton
+        <AddButton
           text={formatMessage(messages.addModerators)}
           buttonStyle="cl-blue"
           icon="plus-circle"
           padding="10px 16px"
-          onClick={openModal}
+          onClick={onClickAddButton}
           disabled={!moderatorToAdd}
           processing={processing}
         />
@@ -87,7 +84,7 @@ const UserSearch = memo(({ projectId }: Props) => {
         addModerators={handleOnAddModeratorsClick}
         showModal={showModal}
         closeModal={closeModal}
-        noOfCollaboratorSeatsToAdd={selection.length}
+        noOfCollaboratorSeatsToAdd={1}
       />
     </Box>
   );
