@@ -7,6 +7,7 @@ import {
   IInsightsNetwork,
   IInsightsTextNetworkAnalysisTasks,
   NetworkKeys,
+  NetworkTaskKeys,
 } from './types';
 
 const fetchTasks = (viewId: string) =>
@@ -30,7 +31,7 @@ const useNetwork = (viewId: string) => {
     IInsightsTextNetworkAnalysisTasks,
     CLErrors,
     IInsightsTextNetworkAnalysisTasks,
-    NetworkKeys
+    NetworkTaskKeys
   >({
     queryKey: networkTaskKeys.list({ viewId }),
     queryFn: async () => {
