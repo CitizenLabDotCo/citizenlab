@@ -1,6 +1,5 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { IOption } from 'typings';
 import { useParams } from 'react-router-dom';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -44,9 +43,7 @@ const FolderPermissions = () => {
   const { projectFolderId } = useParams() as { projectFolderId: string };
   const { formatMessage } = useIntl();
   const folderModerators = useProjectFolderModerators(projectFolderId);
-
-  const [selectedUserOptions, setSelectedUserOptions] = useState<IOption[]>([]);
-  const [processing, setProcessing] = useState<boolean>(false);
+  const [processing, setProcessing] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [moderatorToAdd, setModeratorToAdd] = useState<string | null>(null);
 
@@ -61,15 +58,14 @@ const FolderPermissions = () => {
     setModeratorToAdd(userId);
   };
 
-  const handleOnAddFolderModeratorsClick = useCallback(() => {
+  const handleOnAddFolderModeratorsClick = async () => {
     if (moderatorToAdd) {
       setProcessing(true);
-      addFolderModerator(projectFolderId, moderatorToAdd);
+      await addFolderModerator(projectFolderId, moderatorToAdd);
       setProcessing(false);
-      setSelectedUserOptions([]);
+      setModeratorToAdd(null);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedUserOptions]);
+  };
 
   const handleDeleteFolderModeratorClick = (moderatorId: string) => () => {
     deleteFolderModerator(projectFolderId, moderatorId);
@@ -134,7 +130,7 @@ const FolderPermissions = () => {
             addModerators={handleOnAddFolderModeratorsClick}
             showModal={showModal}
             closeModal={closeModal}
-            noOfCollaboratorSeatsToAdd={selectedUserOptions.length}
+            noOfCollaboratorSeatsToAdd={1}
           />
         </UserSelectSection>
 

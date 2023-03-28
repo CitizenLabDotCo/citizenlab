@@ -4,7 +4,7 @@ import { IUsers } from 'services/users';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import seatsKeys from 'api/seats/keys';
 
-const ivalidateSeatsCache = () => {
+const invalidateSeatsCache = () => {
   queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
 };
 
@@ -22,7 +22,7 @@ export async function deleteProjectModerator(
     `${API_PATH}/projects/${projectId}/moderators/${moderatorId}`,
     moderatorId
   );
-  ivalidateSeatsCache();
+  invalidateSeatsCache();
   await streams.fetchAllWith({
     apiEndpoint: [`${API_PATH}/projects/${projectId}/moderators`],
   });
@@ -36,6 +36,6 @@ export async function addMembership(projectId: string, user_id: string) {
       moderator: { user_id },
     }
   );
-  ivalidateSeatsCache();
+  invalidateSeatsCache();
   return response;
 }

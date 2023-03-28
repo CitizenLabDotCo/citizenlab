@@ -10,6 +10,10 @@ const indexPath = (projectFolderId: string) =>
 const showPath = (projectFolderId: string, moderatorId: string) =>
   `${indexPath(projectFolderId)}/${moderatorId}`;
 
+const invalidateSeatsCache = () => {
+  queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
+};
+
 export function folderModeratorsStream(projectFolderId: string) {
   return streams.get<IUsers>({
     apiEndpoint: indexPath(projectFolderId),
@@ -27,7 +31,7 @@ export async function deleteFolderModerator(
     true
   );
 
-  queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
+  invalidateSeatsCache();
 
   await streams.fetchAllWith({
     apiEndpoint: [indexPath(projectFolderId)],
@@ -45,10 +49,10 @@ export async function addFolderModerator(
     },
   });
 
-  queryClient.invalidateQueries({ queryKey: seatsKeys.items() });
+  invalidateSeatsCache();
 
-  await streams.fetchAllWith({
-    apiEndpoint: [indexPath(projectFolderId)],
-  });
+  // await streams.fetchAllWith({
+  //   apiEndpoint: [indexPath(projectFolderId)],
+  // });
   return response;
 }
