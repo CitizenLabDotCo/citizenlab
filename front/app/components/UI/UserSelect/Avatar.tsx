@@ -1,10 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Icon } from '@citizenlab/cl2-component-library';
-import useUser from 'hooks/useUser';
-import { isNilOrError } from 'utils/helperUtils';
+import { IUserData } from 'services/users';
 
-export const AvatarImage = styled.img`
+const AvatarImage = styled.img`
   flex: 0 0 30px;
   width: 30px;
   height: 30px;
@@ -25,24 +24,23 @@ const AvatarIcon = styled(Icon)`
   margin-right: 0.5rem;
 `;
 
-const Avatar = ({ userId }: { userId: string }) => {
-  const user = useUser({ userId });
+interface Props {
+  user: IUserData;
+}
 
-  if (!isNilOrError(user)) {
-    const avatarSrc =
-      user?.attributes?.avatar?.medium || user?.attributes?.avatar?.small;
-    return (
-      <>
-        {avatarSrc ? (
-          <AvatarImage className="avatarImage" src={avatarSrc} alt="" />
-        ) : (
-          <AvatarIcon className="avatarIcon" name="user-circle" />
-        )}
-      </>
-    );
-  }
+const Avatar = ({ user }: Props) => {
+  const avatarSrc =
+    user.attributes.avatar?.medium || user.attributes.avatar?.small;
 
-  return null;
+  return (
+    <>
+      {avatarSrc ? (
+        <AvatarImage className="avatarImage" src={avatarSrc} alt="" />
+      ) : (
+        <AvatarIcon className="avatarIcon" name="user-circle" />
+      )}
+    </>
+  );
 };
 
 export default Avatar;

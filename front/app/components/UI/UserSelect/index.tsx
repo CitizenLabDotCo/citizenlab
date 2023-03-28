@@ -83,7 +83,7 @@ const UserSelect = ({
     } else if (option.attributes) {
       return (
         <UserOption>
-          <Avatar userId={option.value} />
+          <Avatar user={option} />
           {option.attributes.last_name}, {option.attributes.first_name} (
           {option.attributes.email})
         </UserOption>
