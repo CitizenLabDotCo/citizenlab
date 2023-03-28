@@ -70,9 +70,6 @@ const FolderPermissions = () => {
   const closeModal = () => {
     setShowModal(false);
   };
-  const openModal = () => {
-    setShowModal(true);
-  };
 
   const handleFolderModeratorInputChange = (value: string) => {
     setSearchInput(value);
@@ -151,6 +148,14 @@ const FolderPermissions = () => {
     return `${user.attributes.first_name} ${user.attributes.last_name}`;
   };
 
+  const handleAddClick = () => {
+    if (hasSeatBasedBillingEnabled) {
+      setShowModal(true);
+    } else {
+      handleOnAddFolderModeratorsClick();
+    }
+  };
+
   return (
     <Box
       width="100%"
@@ -207,16 +212,18 @@ const FolderPermissions = () => {
             buttonStyle="cl-blue"
             icon="plus-circle"
             padding="13px 16px"
-            onClick={openModal}
+            onClick={handleAddClick}
             disabled={!selectedUserOptions || selectedUserOptions.length === 0}
             processing={processing}
           />
-          <AddCollaboratorsModal
-            addModerators={handleOnAddFolderModeratorsClick}
-            showModal={showModal}
-            closeModal={closeModal}
-            noOfCollaboratorSeatsToAdd={selectedUserOptions.length}
-          />
+          {hasSeatBasedBillingEnabled && (
+            <AddCollaboratorsModal
+              addModerators={handleOnAddFolderModeratorsClick}
+              showModal={showModal}
+              closeModal={closeModal}
+              noOfCollaboratorSeatsToAdd={selectedUserOptions.length}
+            />
+          )}
         </UserSelectSection>
 
         <List>
