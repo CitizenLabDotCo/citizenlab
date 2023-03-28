@@ -1120,7 +1120,6 @@
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Wymagaj od uczestników spełnienia minimalnego budżetu, aby wysłać swój koszyk (wpisz '0' jeśli nie chcesz ustalać minimum).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "odwiedź nasze Centrum Pomocy",
   "app.containers.AdminPage.ProjectEdit.moderationRightsTitle": "Zarządzanie",
-  "app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle": "Prawa do zarządzania projektem",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Więcej szczegółów",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink": "https://support.citizenlab.co/en/articles/2672884-what-are-the-different-roles-on-the-platform",
   "app.containers.AdminPage.ProjectEdit.newProject": "Nowy projekt",

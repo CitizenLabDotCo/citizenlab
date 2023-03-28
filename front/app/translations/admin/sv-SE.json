@@ -1120,7 +1120,6 @@
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Kräv att deltagare uppfyller en minimibudget för att skicka sin korg (ange 0 om du inte vill sätta ett minimum).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "besök vårt hjälpcenter",
   "app.containers.AdminPage.ProjectEdit.moderationRightsTitle": "Aktivitet",
-  "app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle": "Vilka är projektledarna?",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Mer detaljer",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink": "https://support.citizenlab.co/articles/2672884",
   "app.containers.AdminPage.ProjectEdit.newProject": "Nytt projekt",

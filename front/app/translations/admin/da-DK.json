@@ -1120,7 +1120,6 @@
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Kræv, at deltagerne skal opfylde et minimumsbudget for at indsende deres valg (angiv \"0\", hvis du ikke ønsker at fastsætte et minimum).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "besøg vores Hjælp-center",
   "app.containers.AdminPage.ProjectEdit.moderationRightsTitle": "Aktivitet",
-  "app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle": "Hvem kan moderere dette projekt?",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Flere detaljer",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink": "https://support.citizenlab.co/en/articles/2672884-what-are-the-different-roles-on-the-platform",
   "app.containers.AdminPage.ProjectEdit.newProject": "Nyt projekt",

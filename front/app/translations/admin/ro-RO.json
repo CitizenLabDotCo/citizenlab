@@ -1109,7 +1109,6 @@
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Require participants to meet a minimum budget to submit their basket (enter '0' if you would not like to set a minimum).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "visit our Help Center",
   "app.containers.AdminPage.ProjectEdit.moderationRightsTitle": "Activity",
-  "app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle": "Who are the project managers?",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Mai multe detalii",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink": "http://support.citizenlab.co/articles/1948422-appoint-the-right-project-moderators",
   "app.containers.AdminPage.ProjectEdit.newProject": "New Project",

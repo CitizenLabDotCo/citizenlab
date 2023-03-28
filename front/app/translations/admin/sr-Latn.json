@@ -1120,7 +1120,6 @@
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Zahtevajte od učesnika da ispune minimalni budžet prilikom slanja odabranih predloga (unesite '0' ako ne želite da postavite minimum).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "posetite naš Centar za podršku",
   "app.containers.AdminPage.ProjectEdit.moderationRightsTitle": "Dozvole projektnog menadžera",
-  "app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle": "Ko su projektni menadžeri?",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Više detalja",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink": "https://support.citizenlab.co/articles/2672884",
   "app.containers.AdminPage.ProjectEdit.newProject": "Novi projekat",

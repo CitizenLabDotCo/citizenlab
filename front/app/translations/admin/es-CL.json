@@ -1120,7 +1120,6 @@
   "app.containers.AdminPage.ProjectEdit.minimumTooltip": "Exije a los participantes un presupuesto mínimo para presentar su bolsa (introduzca \"0\" si no desea establecer un mínimo).",
   "app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText": "visitar nuestro Centro de Ayuda",
   "app.containers.AdminPage.ProjectEdit.moderationRightsTitle": "Permisos del administrador del proyecto",
-  "app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle": "¿Quiénes son los administradores de proyecto?",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Más detalles",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink": "https://support.citizenlab.co/articles/2672884",
   "app.containers.AdminPage.ProjectEdit.newProject": "Nuevo proyecto",
