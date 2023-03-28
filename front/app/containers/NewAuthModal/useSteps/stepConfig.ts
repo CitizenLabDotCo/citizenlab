@@ -77,8 +77,6 @@ export const getStepConfig = (
           case 'franceconnect':
             setCurrentStep('france-connect-login');
             break;
-          default:
-            break;
         }
       },
     },
