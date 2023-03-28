@@ -18,7 +18,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import QuillEditor from 'components/UI/QuillEditor';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import UserSelect from 'components/UI/UserSelect/UserSingleSelect';
+import UserSelect from 'components/UI/UserSelect';
 import Error from 'components/UI/Error';
 import HasPermission from 'components/HasPermission';
 import FileUploader from 'components/UI/FileUploader';

@@ -12,7 +12,7 @@ import messages from './messages';
 import Button from 'components/UI/Button';
 import AddCollaboratorsModal from 'components/admin/AddCollaboratorsModal';
 import { Box } from '@citizenlab/cl2-component-library';
-import UserSelect from 'components/UI/UserSelect/UserSingleSelect';
+import UserSelect from 'components/UI/UserSelect';
 // Style
 import styled from 'styled-components';
 
