@@ -22,7 +22,11 @@ interface InputProps {
   id: string;
   inputId: string;
   hideAvatar?: boolean;
+  // Exclude users that can moderate the project from selectable users.
+  // We pass the projectId here.
   isNotProjectModerator?: string;
+  // Exclude users that can moderate the folder  from selectable users.
+  // We pass the folderId here.
   isNotFolderModerator?: string;
 }
 
