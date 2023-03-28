@@ -23,7 +23,7 @@ import Button from 'components/UI/Button';
 import { List, Row } from 'components/admin/ResourceList';
 import Avatar from 'components/Avatar';
 import AddCollaboratorsModal from 'components/admin/AddCollaboratorsModal';
-import UserSelect from 'components/UI/UserSelect';
+import UserSelect from 'components/UI/UserSelect/UserSingleSelect';
 
 const StyledA = styled.a`
   &:hover {

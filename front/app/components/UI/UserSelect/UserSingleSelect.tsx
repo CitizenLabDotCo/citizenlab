@@ -31,7 +31,7 @@ const UserOption = styled.div`
   align-items: center;
 `;
 
-const UserSelect = ({
+const UserSingleSelect = ({
   users,
   onChange,
   value,
@@ -138,6 +138,6 @@ const Data = adopt<DataProps>({
 
 export default (props: InputProps) => (
   <Data>
-    {(dataProps: DataProps) => <UserSelect {...dataProps} {...props} />}
+    {(dataProps: DataProps) => <UserSingleSelect {...dataProps} {...props} />}
   </Data>
 );

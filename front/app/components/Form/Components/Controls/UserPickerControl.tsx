@@ -8,7 +8,7 @@ import {
 import React from 'react';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import ErrorDisplay from '../ErrorDisplay';
-import UserSelect from 'components/UI/UserSelect';
+import UserSelect from 'components/UI/UserSelect/UserSingleSelect';
 import messages from '../../messages';
 import controlMessages from './messages';
 import { FormLabel } from 'components/UI/FormComponents';
