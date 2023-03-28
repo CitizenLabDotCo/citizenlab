@@ -324,7 +324,7 @@ namespace :cl2_back do
           enabled: false,
           allowed: false,
           duration: 90
-        }
+        },
         seat_based_billing: {
           enabled: true,
           allowed: true,
