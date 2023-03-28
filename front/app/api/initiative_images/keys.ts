@@ -1,19 +1,27 @@
+import { QueryKeys } from 'utils/cl-react-query/types';
+
+const baseKey = { type: 'image', variant: 'initiative' };
+
 const initiativeImagesKeys = {
-  all: () => [{ type: 'image', variant: 'initiative' }] as const,
-  lists: () =>
-    [{ ...initiativeImagesKeys.all()[0], operation: 'list' }] as const,
-  list: (initiativeId: string) =>
-    [{ ...initiativeImagesKeys.lists()[0], initiativeId }] as const,
-  items: () =>
-    [{ ...initiativeImagesKeys.all()[0], operation: 'item' }] as const,
-  item: (initiativeId: string, imageId: string) =>
-    [
-      {
-        ...initiativeImagesKeys.items()[0],
-        initiativeId,
-        imageId,
-      },
-    ] as const,
-};
+  all: () => [baseKey],
+  lists: () => [{ ...baseKey, operation: 'list' }],
+  list: ({ initiativeId }: { initiativeId: string }) => [
+    { ...baseKey, operation: 'list', parameters: { initiativeId } },
+  ],
+  items: () => [{ ...baseKey, operation: 'item' }],
+  item: ({
+    initiativeId,
+    imageId,
+  }: {
+    initiativeId: string;
+    imageId: string;
+  }) => [
+    {
+      ...baseKey,
+      operation: 'item',
+      parameters: { initiativeId, imageId },
+    },
+  ],
+} satisfies QueryKeys;
 
 export default initiativeImagesKeys;

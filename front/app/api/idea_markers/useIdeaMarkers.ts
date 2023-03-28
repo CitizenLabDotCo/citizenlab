@@ -23,7 +23,7 @@ const fetchIdeaMarkers = ({
 
 const useIdeaMarkers = (queryParameters: QueryParameters) => {
   return useQuery<IIdeaMarkers, CLErrors, IIdeaMarkers, IdeaMarkersKeys>({
-    queryKey: ideaMarkerKeys.list(queryParameters), // TODO
+    queryKey: ideaMarkerKeys.list(queryParameters),
     queryFn: () => fetchIdeaMarkers(queryParameters),
   });
 };

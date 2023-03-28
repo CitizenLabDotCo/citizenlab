@@ -1,7 +1,13 @@
-const initiativeMarkersKeys = {
-  all: () => [{ type: 'post_marker', variant: 'initiative' }] as const,
-  lists: () =>
-    [{ ...initiativeMarkersKeys.all()[0], operation: 'list' }] as const,
+import { QueryKeys } from 'utils/cl-react-query/types';
+
+const baseKey = {
+  type: 'post_marker',
+  variant: 'initiative',
 };
+
+const initiativeMarkersKeys = {
+  all: () => [baseKey],
+  lists: () => [{ ...baseKey, operation: 'list' }],
+} satisfies QueryKeys;
 
 export default initiativeMarkersKeys;
