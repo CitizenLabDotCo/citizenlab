@@ -894,7 +894,7 @@ ActiveRecord::Schema.define(version: 2023_03_21_153659) do
   create_table "permissions_custom_fields", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "permission_id", null: false
     t.uuid "custom_field_id", null: false
-    t.boolean "required", default: false, null: false
+    t.boolean "required", default: true, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["custom_field_id"], name: "index_permissions_custom_fields_on_custom_field_id"

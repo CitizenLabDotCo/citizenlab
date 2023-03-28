@@ -7,7 +7,7 @@
 #  id              :uuid             not null, primary key
 #  permission_id   :uuid             not null
 #  custom_field_id :uuid             not null
-#  required        :boolean          default(FALSE), not null
+#  required        :boolean          default(TRUE), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #
