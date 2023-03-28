@@ -6,13 +6,26 @@ import SeatTrackerInfo from './SeatTrackerInfo';
 // Hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+// Types
+import { TSeatNumber } from 'api/app_configuration/types';
+import { MessageDescriptor } from 'utils/cl-intl';
+
 export type TSeatType = 'collaborator' | 'admin';
 
-type Props = {
+// Messages
+export type SeatTypeMessageDescriptor = {
+  [key in TSeatType]: MessageDescriptor;
+};
+
+export type SeatNumbersType = {
+  [key in TSeatType]: TSeatNumber;
+};
+
+export type SeatInfoProps = {
   seatType: TSeatType;
 };
 
-const SeatInfo = ({ seatType }: Props) => {
+const SeatInfo = ({ seatType }: SeatInfoProps) => {
   const hasSeatBasedBillingEnabled = useFeatureFlag({
     name: 'seat_based_billing',
   });

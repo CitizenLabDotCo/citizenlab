@@ -13,31 +13,17 @@ import {
 // Hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useSeats from 'api/seats/useSeats';
-import { TSeatNumber } from 'api/app_configuration/types';
 
 // Intl
 import messages from './messages';
-import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // Utils
 import { isNil } from 'utils/helperUtils';
 
-import { TSeatType } from '..';
+import { SeatInfoProps, SeatNumbersType, SeatTypeMessageDescriptor } from '..';
 
-// Messages
-export type SeatTypeMessageDescriptor = {
-  [key in TSeatType]: MessageDescriptor;
-};
-
-type SeatNumbersType = {
-  [key in TSeatType]: TSeatNumber;
-};
-
-type Props = {
-  seatType: TSeatType;
-};
-
-const SeatBillingInfo = ({ seatType }: Props) => {
+const SeatBillingInfo = ({ seatType }: SeatInfoProps) => {
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
