@@ -1,8 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { ImageSizes } from 'typings';
-import { queryClient } from 'utils/cl-react-query/queryClient';
-import ideasKeys from 'api/ideas/keys';
 
 export interface IIdeaImageData {
   id: string;
@@ -41,22 +39,4 @@ export function deleteIdeaImage(ideaId: string, imageId: string) {
     `${API_PATH}/ideas/${ideaId}/images/${imageId}`,
     imageId
   );
-}
-
-export async function addIdeaImage(
-  ideaId: string,
-  base64: string,
-  ordering: number | null = null
-) {
-  const apiEndpoint = `${API_PATH}/ideas/${ideaId}/images`;
-  const bodyData = {
-    image: {
-      ordering,
-      image: base64,
-    },
-  };
-
-  const ideaImage = await streams.add<IIdeaImage>(apiEndpoint, bodyData);
-  queryClient.invalidateQueries(ideasKeys.item({ id: ideaId }));
-  return ideaImage;
 }
