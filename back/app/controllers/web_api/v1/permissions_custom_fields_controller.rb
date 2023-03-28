@@ -25,7 +25,8 @@ class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
   end
 
   def create
-    permissions_custom_field = authorize PermissionsCustomField.new(permission_params_for_create)
+    permissions_custom_field = PermissionsCustomField.new({ permission: permission }.merge(permission_params_for_create))
+    authorize permissions_custom_field
     SideFxPermissionsCustomFieldService.new.before_create permissions_custom_field, current_user
     if permissions_custom_field.save
       SideFxPermissionsCustomFieldService.new.after_create permissions_custom_field, current_user
@@ -39,7 +40,8 @@ class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
   end
 
   def update
-    authorize permissions_custom_field.assign_attributes(permission_params_for_update)
+    permissions_custom_field.assign_attributes permission_params_for_update
+    authorize permissions_custom_field
     SideFxPermissionsCustomFieldService.new.before_update permissions_custom_field, current_user
     if permissions_custom_field.save
       SideFxPermissionsCustomFieldService.new.before_update permissions_custom_field, current_user
@@ -52,7 +54,7 @@ class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
     end
   end
 
-  def delete
+  def destroy
     SideFxPermissionsCustomFieldService.new.before_destroy permissions_custom_field, current_user
     permissions_custom_field = permissions_custom_field.destroy
     if permissions_custom_field.destroyed?

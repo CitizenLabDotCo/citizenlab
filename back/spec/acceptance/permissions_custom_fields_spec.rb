@@ -11,8 +11,9 @@ resource 'PermissionsCustomField' do
     admin_header_token
   end
 
-  let(:permission) { create :permission, permission_scope: permission_scope }
-  let(:action) { permission.action }
+  let(:permission_scope) { nil }
+  let(:action) { 'visiting' }
+  let(:permission) { create :permission, permission_scope: permission_scope, action: action }
 
   get 'web_api/v1/ideas/:idea_id/permissions/:action/permissions_custom_fields' do
     with_options scope: :page do
@@ -21,9 +22,10 @@ resource 'PermissionsCustomField' do
     end
 
     let(:permission_scope) { create :continuous_project }
+    let(:action) { 'commenting_idea' }
     let(:idea_id) { create(:idea, project: permission_scope).id }
 
-    example 'List all permission custom fields of a permission' do
+    example 'List all permissions custom fields of a permission' do
       field1, field2 = create_list :custom_field, 2
       [{ required: true, custom_field: field1 }, { required: false, custom_field: field2 }].each do |attributes|
         create :permissions_custom_field, attributes.merge(permission: permission)
@@ -42,107 +44,63 @@ resource 'PermissionsCustomField' do
     end
   end
 
-  # get 'web_api/v1/official_feedback/:id' do
-  #   let(:id) { @feedbacks.first.id }
+  get 'web_api/v1/permissions_custom_fields/:id' do
+    let(:id) { create(:permissions_custom_field).id }
 
-  #   example_request 'Get one official feedback on an idea by id' do
-  #     expect(status).to eq 200
+    example_request 'Get one permissions custom fields by id' do
+      assert_status 200
+      json_response = json_parse response_body
 
-  #     expect(json_response.dig(:data, :id)).to eq @feedbacks.first.id
-  #     expect(json_response.dig(:data, :type)).to eq 'official_feedback'
-  #     expect(json_response.dig(:data, :attributes, :created_at)).to be_present
-  #     expect(json_response.dig(:data, :relationships)).to include(
-  #       post: {
-  #         data: { id: @feedbacks.first.post_id, type: 'idea' }
-  #       },
-  #       user: {
-  #         data: { id: @feedbacks.first.user_id, type: 'user' }
-  #       }
-  #     )
-  #   end
-  # end
+      expect(json_response.dig(:data, :id)).to eq id
+      expect(json_response.dig(:data, :attributes, :created_at)).to be_present
+    end
+  end
 
-  # context 'when authenticated as normal user' do
-  #   before do
-  #     @user = create(:user)
-  #     token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-  #     header 'Authorization', "Bearer #{token}"
-  #   end
+  post 'web_api/v1/permissions/:action/permissions_custom_fields' do
+    with_options scope: :permissions_custom_field do
+      parameter :required, 'Whether filling out the field is mandatory. Defaults to true'
+      parameter :custom_field_id, 'The associated registration field', required: true
+    end
+    ValidationErrorHelper.new.error_fields self, PermissionsCustomField
 
-  #   post 'web_api/v1/ideas/:idea_id/official_feedback' do
-  #     with_options scope: :official_feedback do
-  #       parameter :body_multiloc, 'Multi-locale field with the feedback body', required: true
-  #       parameter :author_multiloc, 'Multi-locale field with describing the author', required: true
-  #     end
-  #     ValidationErrorHelper.new.error_fields(self, OfficialFeedback)
+    let(:required) { false }
+    let(:custom_field_id) { create(:custom_field).id }
 
-  #     let(:idea_id) { @idea.id }
-  #     let(:feedback) { build(:official_feedback) }
-  #     let(:body_multiloc) { feedback.body_multiloc }
-  #     let(:author_multiloc) { feedback.author_multiloc }
+    before { permission } # Create permission
 
-  #     example_request '[error] Create an official feedback on an idea' do
-  #       expect(response_status).to eq 401
-  #     end
-  #   end
-  # end
+    example_request 'Create a permission - custom field association' do
+      assert_status 201
 
-  # post 'web_api/v1/ideas/:idea_id/official_feedback' do
-  #   with_options scope: :official_feedback do
-  #     parameter :body_multiloc, 'Multi-locale field with the feedback body', required: true
-  #     parameter :author_multiloc, 'Multi-locale field with describing the author', required: true
-  #   end
-  #   ValidationErrorHelper.new.error_fields(self, OfficialFeedback)
+      json_response = json_parse response_body
+      expect(json_response.dig(:data, :relationships, :custom_field, :data, :id)).to eq custom_field_id
+      expect(json_response.dig(:data, :attributes, :required)).to eq required
+    end
+  end
 
-  #   let(:idea_id) { @idea.id }
-  #   let(:feedback) { build(:official_feedback) }
-  #   let(:body_multiloc) { feedback.body_multiloc }
-  #   let(:author_multiloc) { feedback.author_multiloc }
+  patch 'web_api/v1/permissions_custom_fields/:id' do
+    with_options scope: :permissions_custom_field do
+      parameter :required, 'Whether filling out the field is mandatory'
+    end
+    ValidationErrorHelper.new.error_fields self, PermissionsCustomField
 
-  #   example_request 'Create an official feedback on an idea' do
-  #     assert_status 201
-  #     expect(json_response.dig(:data, :relationships, :user, :data, :id)).to eq @user.id
-  #     expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
-  #     expect(json_response.dig(:data, :attributes, :author_multiloc).stringify_keys).to match author_multiloc
-  #     expect(json_response.dig(:data, :relationships, :post, :data, :id)).to eq idea_id
-  #     expect(@idea.reload.official_feedbacks_count).to eq 3
-  #   end
+    let(:permissions_custom_field) { create :permissions_custom_field, required: false }
+    let(:id) { permissions_custom_field.id }
+    let(:required) { true }
 
-  #   describe do
-  #     let(:body_multiloc) { { 'en' => '' } }
+    example_request 'Update a permissions custom field' do
+      assert_status 200
 
-  #     example_request '[error] Create an invalid official feedback on an idea' do
-  #       assert_status 422
-  #       expect(json_response).to include_response_error(:body_multiloc, 'blank')
-  #     end
-  #   end
+      json_response = json_parse response_body
+      expect(json_response.dig(:data, :attributes, :required)).to be true
+    end
+  end
 
-  #   patch 'web_api/v1/official_feedback/:id' do
-  #     with_options scope: :official_feedback do
-  #       parameter :body_multiloc, 'Multi-locale field with the feedback body', required: true
-  #       parameter :author_multiloc, 'Multi-locale field with describing the author', required: true
-  #     end
-  #     ValidationErrorHelper.new.error_fields(self, OfficialFeedback)
-
-  #     let(:official_feedback) { create(:official_feedback, user: @user, post: @idea) }
-  #     let(:id) { official_feedback.id }
-  #     let(:body_multiloc) { { 'en' => "His hair is not blond, it's orange. Get your facts straight!" } }
-
-  #     example_request 'Update an official feedback for an idea' do
-  #       assert_status 200
-  #       expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
-  #       expect(@idea.reload.official_feedbacks_count).to eq 3
-  #     end
-  #   end
-
-  #   delete 'web_api/v1/official_feedback/:id' do
-  #     let(:official_feedback) { create(:official_feedback, user: @user, post: @idea) }
-  #     let(:id) { official_feedback.id }
-  #     example_request 'Delete an official feedback from an idea' do
-  #       assert_status 200
-  #       expect { OfficialFeedback.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
-  #       expect(@idea.reload.official_feedbacks_count).to eq 2
-  #     end
-  #   end
-  # end
+  delete 'web_api/v1/permissions_custom_fields/:id' do
+    let(:permissions_custom_field) { create :permissions_custom_field }
+    let(:id) { permissions_custom_field.id }
+    example_request 'Delete a permissions custom field' do
+      assert_status 200
+      expect { PermissionsCustomField.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
 end
