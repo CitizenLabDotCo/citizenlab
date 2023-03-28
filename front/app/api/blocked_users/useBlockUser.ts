@@ -23,7 +23,10 @@ const useBlockUser = () => {
       queryClient.invalidateQueries({
         queryKey: blockedUsersCountKeys.items(),
       });
-      streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/users`] });
+      streams.fetchAllWith({
+        apiEndpoint: [`${API_PATH}/users`],
+        partialApiEndpoint: ['users/by_slug'],
+      });
     },
   });
 };
