@@ -1072,7 +1072,7 @@
   "app.containers.NewAuthModal.logIn": "Anmelden",
   "app.containers.NewAuthModal.steps.EmailConfirmation.codeMustHaveFourDigits": "Der Code muss 4-stellig sein.",
   "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.continueWithFranceConnect": "Continue with FranceConnect",
-  "app.containers.NewAuthModal.steps.EmailSignUp.byContinuing": "By continuing, you agree to receive emails from this platform. You can select which emails you wish to receive in the 'My Settings' page.",
+  "app.containers.NewAuthModal.steps.EmailSignUp.byContinuing": "Wenn Sie fortfahren, erklären Sie sich damit einverstanden, E-Mails von dieser Plattform zu erhalten. Sie können auf der Seite \"Einstellungen\" auswählen, welche E-Mails Sie erhalten möchten.",
   "app.containers.NewAuthModal.steps.EmailSignUp.email": "E-Mail-Adresse",
   "app.containers.NewAuthModal.steps.EmailSignUp.emailFormatError": "Geben Sie eine E-Mail-Adresse im richtigen Format an, zum Beispiel name@provider.com",
   "app.containers.NewAuthModal.steps.EmailSignUp.emailMissingError": "Geben Sie eine E-Mail-Adresse an",
