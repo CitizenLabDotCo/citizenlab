@@ -67,7 +67,7 @@ const UserSearch = memo(({ projectId }: Props) => {
           <UserSelect
             id="projectModeratorUserSearch"
             inputId="projectModeratorUserSearchInputId"
-            value={moderatorToAdd}
+            selectedUserId={moderatorToAdd}
             onChange={handleOnChange}
             placeholder={formatMessage(messages.searchUsers)}
           />

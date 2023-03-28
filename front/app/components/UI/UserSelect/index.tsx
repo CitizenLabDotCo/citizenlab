@@ -16,7 +16,7 @@ interface DataProps {
 
 interface InputProps {
   onChange: (id?: string) => void;
-  value: string | null;
+  selectedUserId: string | null;
   placeholder: string;
   className?: string;
   id: string;
@@ -33,7 +33,7 @@ const UserOption = styled.div`
 const UserSelect = ({
   users,
   onChange,
-  value,
+  selectedUserId,
   placeholder,
   className,
   id,
@@ -43,6 +43,7 @@ const UserSelect = ({
   const usersList: IUserData[] = Array.isArray(users.usersList)
     ? users.usersList
     : [];
+  const selectedUser = usersList.find((user) => user.id === selectedUserId);
 
   const handleChange = (option: OptionTypeBase, { action }) => {
     if (action === 'clear') {
@@ -108,7 +109,7 @@ const UserSelect = ({
         menuShouldScrollIntoView={false}
         isClearable
         filterOption={() => true}
-        value={value}
+        value={selectedUser}
         placeholder={placeholder}
         options={
           canLoadMore ? [...usersList, { value: 'loadMore' }] : usersList

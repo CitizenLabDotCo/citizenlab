@@ -113,7 +113,7 @@ const FolderPermissions = () => {
               <UserSelect
                 id="folderModeratorUserSearch"
                 inputId="folderModeratorUserSearchInputId"
-                value={moderatorToAdd}
+                selectedUserId={moderatorToAdd}
                 onChange={handleOnChange}
                 placeholder={formatMessage(messages.searchFolderManager)}
               />

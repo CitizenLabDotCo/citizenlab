@@ -873,7 +873,7 @@ class IdeaForm extends PureComponent<
                   <UserSelect
                     id="author"
                     inputId="author-select"
-                    value={this.state.authorId}
+                    selectedUserId={this.state.authorId}
                     onChange={this.handleAuthorChange}
                     placeholder={formatMessage(messages.authorPlaceholder)}
                   />
