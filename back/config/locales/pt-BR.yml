@@ -232,4 +232,4 @@ pt:
       the_link_is_valid_for: "Este link é válido por 24 horas. Se o link tiver expirado, você pode <a href=\"%{link}\">solicitar um novo código</a>."
       did_you_receive_this_email_in_error: "Você recebeu este e-mail por engano? <a href=\"%{link}\">Deixe-nos saber</a>."
   user:
-    anon_first_name: "User"
+    anon_first_name: "Utilizador"
