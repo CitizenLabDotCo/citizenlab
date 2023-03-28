@@ -20,6 +20,7 @@ import styled from 'styled-components';
 // other
 import { isNilOrError } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
+import { PublicationStatus } from 'services/projects';
 
 interface IStyledEventCard {
   last: boolean;
@@ -43,6 +44,7 @@ interface Props {
   onClickTitleGoToProjectAndScrollToEvent?: boolean;
   hideSectionIfNoEvents?: boolean;
   showProjectFilter: boolean;
+  projectPublicationStatuses: PublicationStatus[];
 }
 
 const EventsViewer = ({
@@ -54,6 +56,7 @@ const EventsViewer = ({
   onClickTitleGoToProjectAndScrollToEvent,
   hideSectionIfNoEvents,
   showProjectFilter,
+  projectPublicationStatuses,
 }: Props) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [projectIdList, setProjectIdList] = useState<string[] | undefined>(
@@ -72,7 +75,7 @@ const EventsViewer = ({
     isError,
   } = useEvents({
     projectIds: projectIdList,
-    projectPublicationStatuses: ['published'],
+    projectPublicationStatuses,
     currentAndFutureOnly: eventsTime === 'currentAndFuture',
     pastOnly: eventsTime === 'past',
     sort: eventsTime === 'past' ? 'start_at' : '-start_at',

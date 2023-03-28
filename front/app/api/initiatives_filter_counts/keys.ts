@@ -1,7 +1,7 @@
 import { IQueryParameters } from './types';
 
 const initiativeFilterCountsKeys = {
-  all: () => [{ type: 'initiatives_filter_counts' }],
+  all: () => [{ type: 'filter_counts', variant: 'initiative' }],
   items: () => [{ ...initiativeFilterCountsKeys.all()[0], operation: 'item' }],
   item: (filters: IQueryParameters) => [
     { ...initiativeFilterCountsKeys.items()[0], ...filters },
