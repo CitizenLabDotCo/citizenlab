@@ -7,6 +7,7 @@ describe('/admin/users/ page', () => {
   it('Block from User Manager', () => {
     cy.get('.e2e-user-table')
       .find('.e2e-user-table-row')
+      .not(':contains("admin@citizenlab.co")')
       .first()
       .find('.e2e-more-actions')
       .click()
@@ -42,6 +43,7 @@ describe('/admin/users/ page', () => {
   it('Unblock from User Manager', () => {
     cy.get('.e2e-user-table')
       .find('.e2e-user-table-row')
+      .not(':contains("admin@citizenlab.co")')
       .first()
       .find('.e2e-more-actions')
       .click()
@@ -65,6 +67,7 @@ describe('/admin/users/ page', () => {
   it('Block from User Profile', () => {
     cy.get('.e2e-user-table')
       .find('.e2e-user-table-row')
+      .not(':contains("admin@citizenlab.co")')
       .first()
       .find('td')
       .eq(2)
@@ -95,6 +98,7 @@ describe('/admin/users/ page', () => {
   it('Unblock from User Profile', () => {
     cy.get('.e2e-user-table')
       .find('.e2e-user-table-row')
+      .not(':contains("admin@citizenlab.co")')
       .first()
       .find('td')
       .eq(2)
@@ -108,5 +112,15 @@ describe('/admin/users/ page', () => {
     cy.wait(500);
 
     cy.get('.e2e-more-actions').click().parent().contains('Block');
+  });
+
+  it('Should not allow for current user to block itself', () => {
+    cy.get('.e2e-user-table')
+      .contains('.e2e-user-table-row', 'admin@citizenlab.co')
+      .find('.e2e-more-actions')
+      .click()
+      .parent()
+      .contains('Block')
+      .should('not.exist');
   });
 });
