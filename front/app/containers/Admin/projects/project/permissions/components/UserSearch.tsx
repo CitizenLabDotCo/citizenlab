@@ -193,12 +193,14 @@ const UserSearch = memo(({ projectId }: Props) => {
           processing={processing}
         />
       </Box>
-      <AddCollaboratorsModal
-        addModerators={handleOnAddModeratorsClick}
-        showModal={showModal}
-        closeModal={closeModal}
-        noOfCollaboratorSeatsToAdd={selection.length}
-      />
+      {hasSeatBasedBillingEnabled && (
+        <AddCollaboratorsModal
+          addModerators={handleOnAddModeratorsClick}
+          showModal={showModal}
+          closeModal={closeModal}
+          noOfCollaboratorSeatsToAdd={selection.length}
+        />
+      )}
     </Box>
   );
 });
