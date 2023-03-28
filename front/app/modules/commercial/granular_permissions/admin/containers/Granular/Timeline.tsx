@@ -69,12 +69,11 @@ const Timeline = ({ projectId }: InputProps) => {
                 <Title
                   variant="h3"
                   color="primary"
-                  my="16px"
+                  my="20px"
                   style={{ fontWeight: 500 }}
                 >
                   <FormattedMessage {...messages.phase} />
-                  {i + 1}
-                  {' : '}
+                  {` ${i + 1}: `}
                   <T value={phase.attributes.title_multiloc} />
                 </Title>
               }
