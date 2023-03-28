@@ -1,4 +1,4 @@
-describe('/admin/users/ page', () => {
+describe('Block user', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.visit('/admin/users');
