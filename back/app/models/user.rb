@@ -224,7 +224,7 @@ class User < ApplicationRecord
   scope :not_project_moderator, lambda { |project_id = nil|
     if project_id
       project = Project.find(project_id)
-      if project.folder.id
+      if project.folder
         where.not(id: project_moderator(project_id)).and(where(id: not_project_folder_moderator(project.folder.id)))
       else
         where.not(id: project_moderator(project_id))

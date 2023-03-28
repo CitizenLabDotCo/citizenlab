@@ -487,6 +487,31 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe '.not_project_moderator' do
+    let(:admin) { create(:admin) }
+    let!(:project) { create(:project) }
+    let!(:project_folder) { create(:project_folder, projects: [project]) }
+    let(:project_moderator) { create(:user, roles: [{ type: 'project_moderator', project_id: project.id }]) }
+    let(:project_folder_moderator) { create(:user, roles: [{ type: 'project_folder_moderator', project_folder_id: project_folder.id }]) }
+
+    # before do
+    #   # The after create hook for project_folder changes records, so reload.
+    #   folder.reload
+    #   project.reload
+    #   user.reload
+    # end
+
+    context 'when a project ID is provided' do
+      it 'does not include project moderator of project' do
+        expect(described_class.not_project_moderator(project.id)).not_to include(project_moderator)
+      end
+
+      it 'does not include folder moderator of project folder' do
+        expect(described_class.not_project_moderator(project.id)).not_to include(project_folder_moderator)
+      end
+    end
+  end
+
   describe 'add_role' do
     it 'gives a user moderator rights for a project' do
       usr = create(:user, roles: [])
