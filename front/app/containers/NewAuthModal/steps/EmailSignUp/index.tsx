@@ -1,5 +1,8 @@
 import React, { useMemo } from 'react';
 
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 // components
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
@@ -33,6 +36,8 @@ const DEFAULT_VALUES: Partial<FormValues> = {
 };
 
 const EmailSignUp = ({ onSubmit, onSwitchToSSO }: Props) => {
+  const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
+
   const { formatMessage } = useIntl();
 
   const schema = useMemo(
@@ -57,25 +62,27 @@ const EmailSignUp = ({ onSubmit, onSwitchToSSO }: Props) => {
 
   return (
     <>
-      <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(handleSubmit)}>
-          <Text mt="0px" mb="32px">
-            {formatMessage(messages.enterYourEmailAddress)}
-          </Text>
-          <Box>
-            <Input
-              name="email"
-              type="email"
-              label={formatMessage(messages.email)}
-            />
-          </Box>
-          <Box w="100%" display="flex" mt="32px">
-            <Button type="submit" width="100%">
-              {formatMessage(sharedMessages.continue)}
-            </Button>
-          </Box>
-        </form>
-      </FormProvider>
+      {passwordLoginEnabled && (
+        <FormProvider {...methods}>
+          <form onSubmit={methods.handleSubmit(handleSubmit)}>
+            <Text mt="0px" mb="32px">
+              {formatMessage(messages.enterYourEmailAddress)}
+            </Text>
+            <Box>
+              <Input
+                name="email"
+                type="email"
+                label={formatMessage(messages.email)}
+              />
+            </Box>
+            <Box w="100%" display="flex" mt="32px">
+              <Button type="submit" width="100%">
+                {formatMessage(sharedMessages.continue)}
+              </Button>
+            </Box>
+          </form>
+        </FormProvider>
+      )}
       <SSOButtons onClickSSO={onSwitchToSSO} />
     </>
   );

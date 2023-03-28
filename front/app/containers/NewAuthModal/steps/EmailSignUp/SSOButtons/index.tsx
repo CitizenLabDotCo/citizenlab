@@ -4,9 +4,14 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import SSOButton from './SSOButton';
 import Or from 'components/UI/Or';
+import Error from 'components/UI/Error';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+// i18n
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 // typings
 import { SSOProviderWithoutVienna } from 'containers/NewAuthModal/typings';
@@ -16,6 +21,9 @@ interface Props {
 }
 
 const SSOButtons = (props: Props) => {
+  const { formatMessage } = useIntl();
+
+  const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
   const googleLoginEnabled = useFeatureFlag({ name: 'google_login' });
   const facebookLoginEnabled = useFeatureFlag({ name: 'facebook_login' });
   const franceconnectLoginEnabled = useFeatureFlag({
@@ -29,15 +37,24 @@ const SSOButtons = (props: Props) => {
     !franceconnectLoginEnabled &&
     !azureAdLoginEnabled
   ) {
-    return null;
+    if (passwordLoginEnabled) {
+      return null;
+    }
+
+    // This should never actually happen
+    return (
+      <Error text={formatMessage(messages.noAuthenticationMethodsEnabled)} />
+    );
   }
 
   return (
     <>
-      <Box mt="32px">
-        <Or />
-      </Box>
-      <Box mt="20px">
+      {passwordLoginEnabled && (
+        <Box mt="32px" mb="20px">
+          <Or />
+        </Box>
+      )}
+      <Box>
         {googleLoginEnabled && <SSOButton ssoProvider="google" {...props} />}
         {facebookLoginEnabled && (
           <SSOButton ssoProvider="facebook" {...props} />
