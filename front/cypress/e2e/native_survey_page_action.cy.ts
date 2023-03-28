@@ -9,19 +9,17 @@ describe('Native survey project page actions', () => {
   const userLastName = randomString(10);
   const userPassword = randomString(10);
   const userEmail = randomEmail();
-  const user2Password = randomString(10);
-  const user2Email = randomEmail();
   const inTwoDays = moment().add(2, 'days').format('DD/MM/YYYY');
   const inTwoMonths = moment().add(2, 'month').format('DD/MM/YYYY');
   const phaseFutureTitle = 'Future survey phase';
   let projectIdContinuous: string;
   let projectSlugContinous: string;
+  let projectSlugPostingDisabled: string;
   let projectIdArchived: string;
   let projectSlugArchived: string;
   let projectIdTimeline: string;
   let projectSlugTimeline: string;
   let userId: string;
-  let user2Id: string;
 
   before(() => {
     // Create active continuous project
@@ -35,6 +33,19 @@ describe('Native survey project page actions', () => {
     }).then((project) => {
       projectIdContinuous = project.body.data.id;
       projectSlugContinous = project.body.data.attributes.slug;
+    });
+
+    // Create active continuous project with posting disabled
+    cy.apiCreateProject({
+      type: 'continuous',
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: projectDescription,
+      publicationStatus: 'published',
+      participationMethod: 'native_survey',
+      postingEnabled: false,
+    }).then((project) => {
+      projectSlugPostingDisabled = project.body.data.attributes.slug;
     });
 
     // Create archived continuous project
@@ -73,15 +84,10 @@ describe('Native survey project page actions', () => {
       );
     });
 
-    // create regular users
+    // create a regular user
     cy.apiSignup(userFirstName, userLastName, userEmail, userPassword).then(
       (response) => {
         userId = response.body.data.id;
-      }
-    );
-    cy.apiSignup(userFirstName, userLastName, user2Email, user2Password).then(
-      (response) => {
-        user2Id = response.body.data.id;
       }
     );
   });
@@ -101,6 +107,7 @@ describe('Native survey project page actions', () => {
     // Action as admin user
     cy.setAdminLoginCookie();
     cy.visit(`/projects/${projectSlugContinous}`);
+    cy.get('#e2e-cta-button').should('be.visible');
     cy.get('#e2e-cta-button').find('button').click({ force: true });
     cy.url().should('include', `/projects/${projectSlugContinous}/ideas/new`);
   });
@@ -124,6 +131,7 @@ describe('Native survey project page actions', () => {
     // Visit timeline project
     cy.visit(`/projects/${projectSlugTimeline}`);
     // Check that correct text and actions shown
+    cy.get('#e2e-cta-button').should('be.visible');
     cy.get('#e2e-cta-button').find('button').click({ force: true });
     cy.contains('New submissions can only be added in active phases.').should(
       'exist'
@@ -131,19 +139,14 @@ describe('Native survey project page actions', () => {
   });
 
   it('tests actions when survey is not accepting submissions', () => {
-    // Login as admin
-    cy.setAdminLoginCookie();
-    // Visit admin project settings
-    cy.visit(`admin/projects/${projectIdContinuous}/native-survey`);
-    // Disable accepting submissions
-    cy.get('[type="checkbox"]').check();
     // Login as regular user
-    cy.setLoginCookie(user2Email, user2Password);
+    cy.setLoginCookie(userEmail, userPassword);
     // Visit timeline project
-    cy.visit(`/projects/${projectSlugTimeline}`);
+    cy.visit(`/projects/${projectSlugPostingDisabled}`);
     // Check that correct text and actions shown
+    cy.get('#e2e-cta-button').should('be.visible');
     cy.get('#e2e-cta-button').find('button').click({ force: true });
-    cy.contains('New submissions can only be added in active phases.').should(
+    cy.contains('New submissions are not currently being accepted').should(
       'exist'
     );
   });
@@ -172,6 +175,5 @@ describe('Native survey project page actions', () => {
     cy.apiRemoveProject(projectIdContinuous);
     cy.apiRemoveProject(projectIdArchived);
     cy.apiRemoveUser(userId);
-    cy.apiRemoveUser(user2Id);
   });
 });

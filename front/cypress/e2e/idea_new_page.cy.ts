@@ -19,13 +19,9 @@ describe('Idea new page for continuous project', () => {
   });
 
   it('shows an error when no title is provided', () => {
-    const value = randomString(9);
     cy.get('#idea-form');
-    cy.get('#e2e-idea-description-input .ql-editor').type(value);
-    cy.get('#e2e-idea-description-input .ql-editor').contains(value);
-    cy.wait(1000);
     cy.get('.e2e-submit-idea-form').click();
-    cy.get('#e2e-idea-title-input .e2e-error-message');
+    cy.get('#e2e-idea-title-input .e2e-error-message').should('exist');
   });
 
   it('shows a back button to navigate to the projects page', () => {
