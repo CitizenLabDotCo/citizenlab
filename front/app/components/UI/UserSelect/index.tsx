@@ -22,6 +22,8 @@ interface InputProps {
   id: string;
   inputId: string;
   hideAvatar?: boolean;
+  isNotProjectModerator?: string;
+  isNotFolderModerator?: string;
 }
 
 interface Props extends DataProps, InputProps {}
@@ -131,12 +133,21 @@ const UserSelect = ({
   );
 };
 
-const Data = adopt<DataProps>({
-  users: <GetUsers pageSize={5} sort="last_name" />,
+const Data = adopt<DataProps, InputProps>({
+  users: ({ isNotProjectModerator, isNotFolderModerator, render }) => (
+    <GetUsers
+      pageSize={5}
+      sort="last_name"
+      isNotProjectModerator={isNotProjectModerator}
+      isNotFolderModerator={isNotFolderModerator}
+    >
+      {render}
+    </GetUsers>
+  ),
 });
 
-export default (props: InputProps) => (
-  <Data>
-    {(dataProps: DataProps) => <UserSelect {...dataProps} {...props} />}
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {(dataProps: DataProps) => <UserSelect {...dataProps} {...inputProps} />}
   </Data>
 );

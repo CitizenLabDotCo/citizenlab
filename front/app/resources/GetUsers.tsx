@@ -41,6 +41,8 @@ export interface InputProps {
   notCitizenlabMember?: boolean;
   // Not used
   includeInactive?: boolean;
+  isNotProjectModerator?: string;
+  isNotFolderModerator?: string;
 }
 
 interface IQueryParameters {
@@ -54,6 +56,12 @@ interface IQueryParameters {
   can_admin?: boolean;
   not_citizenlab_member?: boolean;
   include_inactive?: boolean;
+  // Pass project id to exclude all users who can moderate
+  // the project
+  is_not_project_moderator?: string;
+  // Pass folder id to exclude all users who can moderate
+  // the folder
+  is_not_folder_moderator?: string;
 }
 
 type children = (obj: GetUsersChildProps) => JSX.Element | null;

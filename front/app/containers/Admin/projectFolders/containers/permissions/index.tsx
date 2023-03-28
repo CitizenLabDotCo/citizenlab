@@ -117,6 +117,7 @@ const FolderPermissions = () => {
                 onChange={handleOnChange}
                 placeholder={formatMessage(messages.searchFolderManager)}
                 hideAvatar
+                isNotFolderModerator={projectFolderId}
               />
             </Box>
             <AddButton
