@@ -18,9 +18,4 @@ export default defineMessages({
     id: 'app.containers.NewAuthModal.steps.EmailSignUp.emailMissingError',
     defaultMessage: 'Provide an email address',
   },
-  byContinuing: {
-    id: 'app.containers.NewAuthModal.steps.EmailSignUp.byContinuing',
-    defaultMessage:
-      "By continuing, you agree to receive emails from this platform. You can select which emails you wish to receive in the 'My Settings' page.",
-  },
 });

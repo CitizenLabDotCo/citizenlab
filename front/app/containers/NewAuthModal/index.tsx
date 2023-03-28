@@ -7,6 +7,7 @@ import useSteps from './useSteps';
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 import EmailSignUp from './steps/EmailSignUp';
+import EmailPolicies from './steps/AcceptPolicies/EmailPolicies';
 import EmailConfirmation from './steps/EmailConfirmation';
 import Password from './steps/Password';
 import Success from './steps/Success';
@@ -24,6 +25,7 @@ import { ErrorCode } from './typings';
 
 const getHeaderMessage = (step: ReturnType<typeof useSteps>['currentStep']) => {
   if (step === 'email-registration') return messages.beforeYouParticipate;
+  if (step === 'email-policies') return messages.beforeYouParticipate;
   if (step === 'email-confirmation') return messages.confirmYourEmail;
   if (step === 'enter-password') return messages.logIn;
   return null;
@@ -44,6 +46,7 @@ const AuthModal = () => {
 
   const closable =
     currentStep === 'email-registration' ||
+    currentStep === 'email-policies' ||
     currentStep === 'email-confirmation' ||
     currentStep === 'enter-password';
 
@@ -78,10 +81,16 @@ const AuthModal = () => {
 
         {currentStep === 'email-registration' && (
           <EmailSignUp
-            status={status}
-            error={error}
             onSubmit={transition(currentStep, 'SUBMIT_EMAIL')}
             onSwitchToSSO={transition(currentStep, 'CONTINUE_WITH_SSO')}
+          />
+        )}
+
+        {currentStep === 'email-policies' && (
+          <EmailPolicies
+            state={state}
+            status={status}
+            onAcceptEmailPolicies={transition(currentStep, 'ACCEPT_POLICIES')}
           />
         )}
 

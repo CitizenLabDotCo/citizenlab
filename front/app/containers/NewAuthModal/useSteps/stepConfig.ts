@@ -23,6 +23,7 @@ import { Locale } from 'typings';
 type Step =
   | 'closed'
   | 'email-registration'
+  | 'email-policies'
   | 'email-confirmation'
   | 'enter-password'
   | 'success';
@@ -55,7 +56,21 @@ export const getStepConfig = (
     'email-registration': {
       CLOSE: () => setCurrentStep('closed'),
 
-      SUBMIT_EMAIL: async (email: string, locale: Locale) => {
+      SUBMIT_EMAIL: (email: string) => {
+        updateState({ email });
+        setCurrentStep('email-policies');
+      },
+
+      CONTINUE_WITH_SSO: (ssoProvider: SSOProviderWithoutVienna) => {
+        const authenticationData = getAuthenticationData();
+        handleOnSSOClick(ssoProvider, authenticationData);
+      },
+    },
+
+    'email-policies': {
+      CLOSE: () => setCurrentStep('closed'),
+
+      ACCEPT_POLICIES: async (email: string, locale: Locale) => {
         setStatus('pending');
         updateState({ email });
 
@@ -75,11 +90,6 @@ export const getStepConfig = (
           setStatus('error');
           setError('account_creation_failed');
         }
-      },
-
-      CONTINUE_WITH_SSO: (ssoProvider: SSOProviderWithoutVienna) => {
-        const authenticationData = getAuthenticationData();
-        handleOnSSOClick(ssoProvider, authenticationData);
       },
     },
 
