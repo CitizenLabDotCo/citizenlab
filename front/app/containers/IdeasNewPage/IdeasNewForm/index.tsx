@@ -21,7 +21,7 @@ import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
 
 import PageContainer from 'components/UI/PageContainer';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
-import { Heading } from 'containers/IdeasNewPage/WithJSONForm/Heading';
+import { Heading } from './Heading';
 import useAddIdea from 'api/ideas/useAddIdea';
 import { geocode, reverseGeocode } from 'utils/locationTools';
 

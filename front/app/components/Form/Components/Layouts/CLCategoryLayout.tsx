@@ -9,7 +9,6 @@ import { JsonFormsDispatch, withJsonFormsLayoutProps } from '@jsonforms/react';
 import { Box, fontSizes, media } from '@citizenlab/cl2-component-library';
 import { FormSection } from 'components/UI/FormComponents';
 import styled, { useTheme } from 'styled-components';
-import { FormElement } from 'components/IdeaForm';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const StyledFormSection = styled(FormSection)`
@@ -65,7 +64,7 @@ const CLCategoryLayout = memo(
               </Box>
             )}
             {e.elements.map((e, index) => (
-              <FormElement key={index}>
+              <Box w="100%" mb="40px" key={index}>
                 <JsonFormsDispatch
                   renderers={renderers}
                   cells={cells}
@@ -74,7 +73,7 @@ const CLCategoryLayout = memo(
                   path={path}
                   enabled={enabled}
                 />
-              </FormElement>
+              </Box>
             ))}
           </StyledFormSection>
         ))}

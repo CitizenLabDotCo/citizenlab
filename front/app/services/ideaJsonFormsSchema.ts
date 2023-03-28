@@ -2,7 +2,15 @@ import { Layout } from '@jsonforms/core';
 import { API_PATH } from 'containers/App/constants';
 import { Locale } from 'typings';
 import streams, { IStreamParams } from 'utils/streams';
-import { CustomFieldCodes } from './ideaCustomFieldsSchemas';
+
+export type CustomFieldCodes =
+  | 'title_multiloc'
+  | 'body_multiloc'
+  | 'topic_ids'
+  | 'location_description'
+  | 'idea_images_attributes'
+  | 'idea_files_attributes'
+  | 'proposed_budget';
 
 export interface JSONSFormsSchemaObject {
   title: string;
