@@ -8,6 +8,7 @@ import {
   userModeratesFolder,
 } from 'services/permissions/rules/projectFolderPermissions';
 import { useParams } from 'react-router-dom';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 // utils
 import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
 
@@ -32,6 +33,7 @@ import Avatar from 'components/Avatar';
 import selectStyles from 'components/UI/MultipleSelect/styles';
 import { isAdmin } from 'services/permissions/roles';
 import AddCollaboratorsModal from 'components/admin/AddCollaboratorsModal';
+import SeatInfo from 'components/SeatInfo';
 
 const StyledA = styled.a`
   &:hover {
@@ -56,6 +58,9 @@ const FolderPermissions = () => {
   const { projectFolderId } = useParams() as { projectFolderId: string };
   const { formatMessage } = useIntl();
   const folderModerators = useProjectFolderModerators(projectFolderId);
+  const hasSeatBasedBillingEnabled = useFeatureFlag({
+    name: 'seat_based_billing',
+  });
 
   const [selectedUserOptions, setSelectedUserOptions] = useState<IOption[]>([]);
   const [searchInput, setSearchInput] = useState<string>('');
@@ -249,6 +254,11 @@ const FolderPermissions = () => {
           </>
         </List>
       </Box>
+      {!hasSeatBasedBillingEnabled && (
+        <Box width="516px" py="32px">
+          <SeatInfo seatType="collaborator" />
+        </Box>
+      )}
     </Box>
   );
 };
