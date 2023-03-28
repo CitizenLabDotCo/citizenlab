@@ -20,6 +20,7 @@ interface Props {
   showModal: boolean;
   closeModal: () => void;
   addModerators: () => void;
+  // Could maybe be deleted if we stick to single select to add mods
   noOfCollaboratorSeatsToAdd: number;
 }
 
