@@ -1,14 +1,15 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import { adopt } from 'react-adopt';
 import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 import ReactSelect, { OptionTypeBase } from 'react-select';
 import selectStyles from 'components/UI/MultipleSelect/styles';
-import { Box, Icon } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 import styled from 'styled-components';
 import { IUserData } from 'services/users';
 import useUser from 'hooks/useUser';
 import Button from 'components/UI/Button';
+import Avatar from './Avatar';
 
 interface DataProps {
   users: GetUsersChildProps;
@@ -25,27 +26,6 @@ interface InputProps {
 
 interface Props extends DataProps, InputProps {}
 
-export const AvatarImage = styled.img`
-  flex: 0 0 30px;
-  width: 30px;
-  height: 30px;
-  fill: #596b7a;
-  padding: 15px;
-  border-radius: 50%;
-  background: white;
-  margin-right: 0.5rem;
-`;
-
-const AvatarIcon = styled(Icon)`
-  flex: 0 0 30px;
-  width: 30px;
-  height: 30px;
-  background: white;
-  border-radius: 50%;
-  fill: #596b7a;
-  margin-right: 0.5rem;
-`;
-
 const UserOption = styled.div`
   display: flex;
   align-items: center;
@@ -59,7 +39,7 @@ const UserSelect = ({
   className,
   id,
   inputId,
-}: DataProps & Props): ReactElement => {
+}: DataProps & Props) => {
   const canLoadMore = users.lastPage !== users.currentPage;
   const selectedUser = useUser({ userId: value });
   const usersList: IUserData[] = Array.isArray(users.usersList)
@@ -86,21 +66,6 @@ const UserSelect = ({
 
   const handleLoadMore = () => {
     users.onLoadMore();
-  };
-
-  const Avatar = ({ userId }: { userId: string }) => {
-    const user = usersList.find((user) => user.id === userId);
-    const avatarSrc =
-      user?.attributes?.avatar?.medium || user?.attributes?.avatar?.small;
-    return (
-      <>
-        {avatarSrc ? (
-          <AvatarImage className="avatarImage" src={avatarSrc} alt="" />
-        ) : (
-          <AvatarIcon className="avatarIcon" name="user-circle" />
-        )}
-      </>
-    );
   };
 
   const getOptionLabel = (option: OptionTypeBase) => {
@@ -162,7 +127,6 @@ const UserSelect = ({
         styles={selectStyles}
         onMenuScrollToBottom={handleMenuScrollToBottom}
         onMenuOpen={handleClear}
-        // isMulti
       />
     </Box>
   );
