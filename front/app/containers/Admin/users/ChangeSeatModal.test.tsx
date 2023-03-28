@@ -56,10 +56,11 @@ let mockFeatureFlagData = true;
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
 
 describe('ChangeSeatModal', () => {
+  const closeModal = jest.fn();
+  const toggleAdmin = jest.fn();
+  const mockUser = makeUser();
+
   it('shows confirm in button when seats are not full and admin is adding another admin', () => {
-    const closeModal = jest.fn();
-    const toggleAdmin = jest.fn();
-    const mockUser = makeUser();
     render(
       <ChangeSeatModal
         showModal
@@ -79,9 +80,7 @@ describe('ChangeSeatModal', () => {
 
   it('shows buy an additional seat in button when seats are full and admin is trying to add another', () => {
     mockUserSeatsData.data.attributes.admins_number = 7;
-    const closeModal = jest.fn();
-    const toggleAdmin = jest.fn();
-    const mockUser = makeUser();
+
     render(
       <ChangeSeatModal
         showModal
@@ -102,9 +101,7 @@ describe('ChangeSeatModal', () => {
   it('shows confirm text in button when seat_based_billing is off, seats are full and admin is trying to add another admin ', () => {
     mockFeatureFlagData = false;
     mockUserSeatsData.data.attributes.admins_number = 7;
-    const closeModal = jest.fn();
-    const toggleAdmin = jest.fn();
-    const mockUser = makeUser();
+
     render(
       <ChangeSeatModal
         showModal
@@ -123,13 +120,12 @@ describe('ChangeSeatModal', () => {
   });
 
   it('shows confirm in button when changing to a normal user', () => {
-    const closeModal = jest.fn();
-    const toggleAdmin = jest.fn();
-    const mockUser = makeAdmin();
+    const mockAdmin = makeAdmin();
+
     render(
       <ChangeSeatModal
         showModal
-        userToChangeSeat={mockUser.data}
+        userToChangeSeat={mockAdmin.data}
         toggleAdmin={toggleAdmin}
         closeModal={closeModal}
       />
