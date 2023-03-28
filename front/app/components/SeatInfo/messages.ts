@@ -17,32 +17,32 @@ export default defineMessages({
     id: 'app.components.SeatInfo.additionalSeats',
     defaultMessage: 'Additional seats',
   },
-  adminMessageWithBilling: {
-    id: 'app.components.SeatInfo.adminMessageWithBilling',
+  adminInfoTextWithBilling: {
+    id: 'app.components.SeatInfo.adminInfoTextWithBilling',
     defaultMessage:
       "Your plan has {adminSeatsIncluded}. Once you've used all the seats, you agree on us billing the additional seats according to your license.",
   },
-  adminMessageWithoutBilling: {
-    id: 'app.components.SeatTrackerInfo.adminMessageWithoutBilling',
+  adminInfoTextWithoutBilling: {
+    id: 'app.components.SeatTrackerInfo.adminInfoTextWithoutBilling',
     defaultMessage:
       "Your plan has {adminSeatsIncluded}. Once you’ve used all the seats, extra seats will be added under 'Additional seats'.",
   },
-  adminSeatsIncludedSubText: {
-    id: 'app.components.SeatInfo.adminSeatsIncludedSubText',
+  adminSeatsIncludedText: {
+    id: 'app.components.SeatInfo.adminSeatsIncludedText',
     defaultMessage: '{adminSeats} admin seats included',
   },
-  collaboratorMessageWithBilling: {
-    id: 'app.components.SeatInfo.collaboratorMessage',
+  collaboratorInfoTextWithBilling: {
+    id: 'app.components.SeatInfo.collaboratorInfoTextWithBilling',
     defaultMessage:
-      "Your plan has {adminSeatsIncluded}, eligible for folder managers and project managers. Once you've used all the seats, you agree on us billing the additional seats according to your license.",
+      "Your plan has {collaboratorSeatsIncluded}, eligible for folder managers and project managers. Once you've used all the seats, you agree on us billing the additional seats according to your license.",
   },
-  collaboratorMessageWithoutBilling: {
-    id: 'app.components.SeatTrackerInfo.collaboratorMessageWithoutBilling',
+  collaboratorInfoTextWithoutBilling: {
+    id: 'app.components.SeatTrackerInfo.collaboratorInfoTextWithoutBilling',
     defaultMessage:
-      "Your plan has {adminSeatsIncluded}, eligible for folder managers and project managers. Once you’ve used all the seats, extra seats will be added under 'Additional seats'.",
+      "Your plan has {collaboratorSeatsIncluded}, eligible for folder managers and project managers. Once you’ve used all the seats, extra seats will be added under 'Additional seats'.",
   },
-  collaboratorsIncludedSubText: {
-    id: 'app.components.SeatInfo.collaboratorsIncludedSubText',
+  collaboratorsIncludedText: {
+    id: 'app.components.SeatInfo.collaboratorsIncludedText',
     defaultMessage: '{managerSeats} manager seats included',
   },
   includedAdminToolTip: {

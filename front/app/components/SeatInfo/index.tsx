@@ -89,20 +89,23 @@ const SeatInfo = ({ seatType }: SeatInfoProps) => {
   };
   const tooltipMessage = tooltipMessages[seatType];
 
+  const seatTypeInfoMessage = {
+    admin: hasSeatBasedBillingEnabled
+      ? messages.adminInfoTextWithBilling
+      : messages.adminInfoTextWithoutBilling,
+    collaborator: hasSeatBasedBillingEnabled
+      ? messages.collaboratorInfoTextWithBilling
+      : messages.collaboratorInfoTextWithoutBilling,
+  }[seatType];
+
+  const additionalSeatsText = hasSeatBasedBillingEnabled
+    ? `${additionalSeats}/${maximumAdditionalSeats}`
+    : additionalSeats;
+
   // Show maximum number of seats if user has used more for this value
   if (currentSeatNumber >= maximumSeatNumber) {
     currentSeatNumber = maximumSeatNumber;
   }
-
-  const adminMessage = hasSeatBasedBillingEnabled
-    ? messages.adminMessageWithBilling
-    : messages.adminMessageWithoutBilling;
-  const collaboratorMessage = hasSeatBasedBillingEnabled
-    ? messages.collaboratorMessageWithBilling
-    : messages.collaboratorMessageWithoutBilling;
-  const additionalSeatsText = hasSeatBasedBillingEnabled
-    ? `${additionalSeats}/${maximumAdditionalSeats}`
-    : additionalSeats;
 
   return (
     <Box
@@ -158,11 +161,11 @@ const SeatInfo = ({ seatType }: SeatInfoProps) => {
         {seatType === 'collaborator' ? (
           <Text my="0px" variant="bodyS">
             <FormattedMessage
-              {...collaboratorMessage}
+              {...seatTypeInfoMessage}
               values={{
-                adminSeatsIncluded: (
+                collaboratorSeatsIncluded: (
                   <Text as="span" fontWeight="bold" variant="bodyS">
-                    {formatMessage(messages.collaboratorsIncludedSubText, {
+                    {formatMessage(messages.collaboratorsIncludedText, {
                       managerSeats: maximumSeatNumber,
                     })}
                   </Text>
@@ -173,11 +176,11 @@ const SeatInfo = ({ seatType }: SeatInfoProps) => {
         ) : (
           <Text my="0px" variant="bodyS">
             <FormattedMessage
-              {...adminMessage}
+              {...seatTypeInfoMessage}
               values={{
                 adminSeatsIncluded: (
                   <Text as="span" fontWeight="bold" variant="bodyS">
-                    {formatMessage(messages.adminSeatsIncludedSubText, {
+                    {formatMessage(messages.adminSeatsIncludedText, {
                       adminSeats: maximumSeatNumber,
                     })}
                   </Text>
