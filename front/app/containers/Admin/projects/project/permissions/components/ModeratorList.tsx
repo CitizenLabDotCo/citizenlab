@@ -6,7 +6,6 @@ import { List } from 'components/admin/ResourceList';
 import { isNilOrError } from 'utils/helperUtils';
 import ModeratorListRow from './ModeratorListRow';
 import useProjectModerators from 'hooks/useProjectModerators';
-import useAuthUser from 'hooks/useAuthUser';
 import { Box } from '@citizenlab/cl2-component-library';
 
 interface Props {
@@ -15,13 +14,12 @@ interface Props {
 
 const ModeratorList = memo(({ projectId }: Props) => {
   const moderators = useProjectModerators(projectId);
-  const authUser = useAuthUser();
 
   if (isError(moderators)) {
     return <FormattedMessage {...messages.moderatorsNotFound} />;
   }
 
-  if (!isNilOrError(authUser) && !isNilOrError(moderators)) {
+  if (!isNilOrError(moderators)) {
     return (
       <Box mb="20px">
         <List>

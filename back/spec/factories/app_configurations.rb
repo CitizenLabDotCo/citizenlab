@@ -30,9 +30,7 @@ FactoryBot.define do
           'color_main' => '#335533',
           'color_secondary' => Faker::Color.hex_color,
           'color_text' => Faker::Color.hex_color,
-          'authentication_token_lifetime_in_days' => 30,
-          'maximum_admins_number' => 10,
-          'maximum_moderators_number' => 10
+          'authentication_token_lifetime_in_days' => 30
         },
         'initiatives' => {
           'enabled' => true,
