@@ -1,3 +1,4 @@
+import { TPhase } from 'hooks/usePhase';
 import { TPhases } from 'hooks/usePhases';
 import {
   IGlobalPermissionAction,
@@ -14,6 +15,7 @@ type GetPermissionActionMessageProps = {
   postType: 'defaultInput' | 'nativeSurvey' | 'initiative';
   project: IProjectData | null | undefined;
   phases: TPhases;
+  phase?: TPhase;
 };
 
 export const getPermissionActionMessage = ({
@@ -76,17 +78,19 @@ export const getPermissionActionSectionSubtitle = ({
   postType,
   project,
   phases,
+  phase,
 }: GetPermissionActionMessageProps) => {
   if (postType !== 'initiative' && !isNilOrError(project)) {
     const inputTerm = getInputTerm(
       project.attributes.process_type,
       project,
-      phases
+      phases,
+      phase
     );
     return {
       posting_idea:
         postType === 'nativeSurvey'
-          ? messages.permissionAction_take_survey
+          ? messages.permissionAction_take_survey_subtitle
           : getInputTermMessage(inputTerm, {
               idea: messages.permissionAction_submit_idea_subtitle,
               project: messages.permissionAction_submit_project_subtitle,

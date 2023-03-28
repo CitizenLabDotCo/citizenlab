@@ -133,9 +133,11 @@ const ActionsForm = memo(
                   projectType={postType}
                   onChange={handlePermissionChange(permission)}
                 />
-                <Box mt="42px" mb="20px">
-                  <UserFieldSelection permission={permission} />
-                </Box>
+                {permission.attributes.permitted_by !== 'everyone' && (
+                  <Box mt="42px" mb="20px">
+                    <UserFieldSelection permission={permission} />
+                  </Box>
+                )}
               </ActionPermissionWrapper>
             );
           })}

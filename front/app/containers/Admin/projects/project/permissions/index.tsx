@@ -82,12 +82,7 @@ const ProjectPermissions = memo(
           >
             {(outletComponents) =>
               outletComponents.length > 0 ? (
-                <StyledSection>
-                  <StyledSectionTitle>
-                    <FormattedMessage {...messages.moderationRightsTitle} />
-                  </StyledSectionTitle>
-                  {outletComponents}
-                </StyledSection>
+                <StyledSection>{outletComponents}</StyledSection>
               ) : null
             }
           </Outlet>

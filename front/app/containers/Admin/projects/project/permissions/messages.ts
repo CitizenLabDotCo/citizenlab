@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.containers.admin.project.permissions.permissionsAnyoneLabel',
     defaultMessage: 'Anyone',
   },
+  permissionsAnyoneLabelDescription: {
+    id: 'app.containers.admin.project.permissions.permissionsAnyoneLabelDescription',
+    defaultMessage: 'Anyone including unregistered users can participate.',
+  },
   permissionsEmailConfirmLabel: {
     id: 'app.containers.admin.project.permissions.permissionsEmailConfirmLabel',
     defaultMessage: 'Users with confirmed email',

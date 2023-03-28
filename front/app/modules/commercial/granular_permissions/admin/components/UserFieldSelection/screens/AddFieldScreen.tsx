@@ -77,12 +77,12 @@ export const AddFieldScreen = ({
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {
-      const result = await addCustomFieldForUsers({
+      const newField = await addCustomFieldForUsers({
         ...formValues,
       });
-      // if (result) {
-      //   setShowAddFieldPage(false);
-      // }
+      if (newField.data.id) {
+        setShowAddFieldPage(false);
+      }
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }

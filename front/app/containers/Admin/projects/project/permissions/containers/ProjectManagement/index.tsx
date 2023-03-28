@@ -10,7 +10,7 @@ import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';
 
 // components
-import { IconTooltip } from '@citizenlab/cl2-component-library';
+import { IconTooltip, Title } from '@citizenlab/cl2-component-library';
 import ModeratorList from '../../components/ModeratorList';
 import UserSearch from '../../components/UserSearch';
 
@@ -35,8 +35,11 @@ const ProjectManagement = ({
   return (
     <ModeratorSubSection>
       <SubSectionTitle>
-        <FormattedMessage {...messages.moderatorsSectionTitle} />
+        <Title variant="h2" color="primary">
+          <FormattedMessage {...messages.projectManagementTitle} />
+        </Title>
         <IconTooltip
+          my="auto"
           content={
             <FormattedMessage
               {...messages.projectManagerTooltipContent}

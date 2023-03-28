@@ -113,17 +113,12 @@ const ActionForm = ({
         {/* TODO: Take a decision on which action we should use for native surveys versus ideation. One or separate? 
         If separate, we will need to update code where we check for attributes.posting_idea */}
         {(action === 'taking_survey' || projectType === 'nativeSurvey') && (
-          <Radio
-            name={`permittedBy-${permissionId}`}
-            value="everyone"
-            currentValue={permittedBy}
-            label={
-              <FormattedMessage
-                {...permissionsMessages.permissionsAnyoneLabel}
-              />
-            }
-            onChange={handlePermittedByUpdate('everyone')}
-            id={`participation-permission-everyone-${permissionId}`}
+          <PermissionCardButton
+            iconName="user"
+            title={permissionsMessages.permissionsAnyoneLabel}
+            subtitle={permissionsMessages.permissionsAnyoneLabelDescription}
+            onClick={handlePermittedByUpdate('everyone')}
+            selected={permittedBy === 'everyone'}
           />
         )}
         {emailConfirmPermissionEnabled && (
@@ -145,7 +140,7 @@ const ActionForm = ({
           selected={permittedBy === 'users'}
         />
         <PermissionCardButton
-          iconName="sidebar-users"
+          iconName="group"
           title={permissionsMessages.permissionsSelectionLabel}
           subtitle={permissionsMessages.permissionsSelectionLabelDescription}
           onClick={handlePermittedByUpdate('groups')}
@@ -165,7 +160,7 @@ const ActionForm = ({
           />
         </Box>
       )}
-      {permittedBy === 'everyone' && (
+      {permittedBy === 'everyone_confirmed_email' && (
         <Box mt="16px" maxWidth="620px">
           <Warning>
             {formatMessage(messages.permissionEveryoneEmailWarning)}

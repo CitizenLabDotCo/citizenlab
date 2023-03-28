@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  moderatorsSectionTitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle',
-    defaultMessage: 'Who can moderate this project?',
+  projectManagementTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectManagementTitle',
+    defaultMessage: 'Project management',
   },
   projectManagerTooltipContent: {
     id: 'app.containers.AdminPage.ProjectEdit.projectManagerTooltipContent',
