@@ -23,9 +23,9 @@ export default defineMessages({
       "Your plan has {adminSeatsIncluded}. Once you've used all the seats, you agree on us billing the additional seats according to your license.",
   },
   adminInfoTextWithoutBilling: {
-    id: 'app.components.SeatTrackerInfo.adminInfoTextWithoutBilling',
+    id: 'app.components.SeatTrackerInfo.adminInfoTextWithoutBilling2',
     defaultMessage:
-      "Your plan has {adminSeatsIncluded}. Once you’ve used all the seats, extra seats will be added under 'Additional seats'.",
+      "Your plan has {adminSeatsIncluded}. Once you've used all the seats, extra seats will be added under 'Additional seats'.",
   },
   adminSeatsIncludedText: {
     id: 'app.components.SeatInfo.adminSeatsIncludedText',
