@@ -8,6 +8,8 @@ import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 import EmailSignUp from './steps/EmailSignUp';
 import EmailPolicies from './steps/AcceptPolicies/EmailPolicies';
+import GooglePolicies from './steps/AcceptPolicies/GooglePolicies';
+import FacebookPolicies from './steps/AcceptPolicies/FacebookPolicies';
 import EmailConfirmation from './steps/EmailConfirmation';
 import Password from './steps/Password';
 import Success from './steps/Success';
@@ -25,7 +27,7 @@ import { ErrorCode } from './typings';
 
 const getHeaderMessage = (step: ReturnType<typeof useSteps>['currentStep']) => {
   if (step === 'email-registration') return messages.beforeYouParticipate;
-  if (step === 'email-policies') return messages.beforeYouParticipate;
+  if (step.endsWith('policies')) return messages.beforeYouParticipate;
   if (step === 'email-confirmation') return messages.confirmYourEmail;
   if (step === 'enter-password') return messages.logIn;
   return null;
@@ -44,11 +46,7 @@ const AuthModal = () => {
   const smallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
 
-  const closable =
-    currentStep === 'email-registration' ||
-    currentStep === 'email-policies' ||
-    currentStep === 'email-confirmation' ||
-    currentStep === 'enter-password';
+  const closable = currentStep !== 'closed' && currentStep !== 'success';
 
   const headerMessage = getHeaderMessage(currentStep);
 
@@ -90,7 +88,21 @@ const AuthModal = () => {
           <EmailPolicies
             state={state}
             status={status}
-            onAcceptEmailPolicies={transition(currentStep, 'ACCEPT_POLICIES')}
+            onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
+          />
+        )}
+
+        {currentStep === 'google-policies' && (
+          <GooglePolicies
+            status={status}
+            onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
+          />
+        )}
+
+        {currentStep === 'facebook-policies' && (
+          <FacebookPolicies
+            status={status}
+            onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
         )}
 

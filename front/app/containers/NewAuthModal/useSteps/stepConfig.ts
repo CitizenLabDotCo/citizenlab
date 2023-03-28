@@ -24,6 +24,8 @@ type Step =
   | 'closed'
   | 'email-registration'
   | 'email-policies'
+  | 'google-policies'
+  | 'facebook-policies'
   | 'email-confirmation'
   | 'enter-password'
   | 'success';
@@ -62,8 +64,16 @@ export const getStepConfig = (
       },
 
       CONTINUE_WITH_SSO: (ssoProvider: SSOProviderWithoutVienna) => {
-        const authenticationData = getAuthenticationData();
-        handleOnSSOClick(ssoProvider, authenticationData);
+        switch (ssoProvider) {
+          case 'google':
+            setCurrentStep('google-policies');
+            break;
+          case 'facebook':
+            setCurrentStep('facebook-policies');
+            break;
+          default:
+            break;
+        }
       },
     },
 
@@ -90,6 +100,24 @@ export const getStepConfig = (
           setStatus('error');
           setError('account_creation_failed');
         }
+      },
+    },
+
+    'google-policies': {
+      CLOSE: () => setCurrentStep('closed'),
+
+      ACCEPT_POLICIES: () => {
+        const authenticationData = getAuthenticationData();
+        handleOnSSOClick('google', authenticationData);
+      },
+    },
+
+    'facebook-policies': {
+      CLOSE: () => setCurrentStep('closed'),
+
+      ACCEPT_POLICIES: () => {
+        const authenticationData = getAuthenticationData();
+        handleOnSSOClick('facebook', authenticationData);
       },
     },
 
