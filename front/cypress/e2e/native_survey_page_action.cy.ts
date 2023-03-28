@@ -9,6 +9,8 @@ describe('Native survey project page actions', () => {
   const userLastName = randomString(10);
   const userPassword = randomString(10);
   const userEmail = randomEmail();
+  const user2Password = randomString(10);
+  const user2Email = randomEmail();
   const inTwoDays = moment().add(2, 'days').format('DD/MM/YYYY');
   const inTwoMonths = moment().add(2, 'month').format('DD/MM/YYYY');
   const phaseFutureTitle = 'Future survey phase';
@@ -19,6 +21,7 @@ describe('Native survey project page actions', () => {
   let projectIdTimeline: string;
   let projectSlugTimeline: string;
   let userId: string;
+  let user2Id: string;
 
   before(() => {
     // Create active continuous project
@@ -70,10 +73,15 @@ describe('Native survey project page actions', () => {
       );
     });
 
-    // create a regular user
+    // create regular users
     cy.apiSignup(userFirstName, userLastName, userEmail, userPassword).then(
       (response) => {
         userId = response.body.data.id;
+      }
+    );
+    cy.apiSignup(userFirstName, userLastName, user2Email, user2Password).then(
+      (response) => {
+        user2Id = response.body.data.id;
       }
     );
   });
@@ -130,7 +138,7 @@ describe('Native survey project page actions', () => {
     // Disable accepting submissions
     cy.get('[type="checkbox"]').check();
     // Login as regular user
-    cy.setLoginCookie(userEmail, userPassword);
+    cy.setLoginCookie(user2Email, user2Password);
     // Visit timeline project
     cy.visit(`/projects/${projectSlugTimeline}`);
     // Check that correct text and actions shown
@@ -164,5 +172,6 @@ describe('Native survey project page actions', () => {
     cy.apiRemoveProject(projectIdContinuous);
     cy.apiRemoveProject(projectIdArchived);
     cy.apiRemoveUser(userId);
+    cy.apiRemoveUser(user2Id);
   });
 });
