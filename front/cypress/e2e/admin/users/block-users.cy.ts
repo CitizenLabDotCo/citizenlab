@@ -1,5 +1,24 @@
 describe('Block user', () => {
   beforeEach(() => {
+    cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+      const adminJwt = response.body.jwt;
+      cy.request({
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminJwt}`,
+        },
+        method: 'PATCH',
+        url: `web_api/v1/app_configuration`,
+        body: {
+          settings: {
+            user_blocking: {
+              enabled: true,
+              allowed: true,
+            },
+          },
+        },
+      });
+    });
     cy.setAdminLoginCookie();
     cy.visit('/admin/users');
   });

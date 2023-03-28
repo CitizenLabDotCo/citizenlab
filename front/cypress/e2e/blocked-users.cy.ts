@@ -17,6 +17,22 @@ describe('Blocked user', () => {
             Authorization: `Bearer ${adminJwt}`,
           },
           method: 'PATCH',
+          url: `web_api/v1/app_configuration`,
+          body: {
+            settings: {
+              user_blocking: {
+                enabled: true,
+                allowed: true,
+              },
+            },
+          },
+        });
+        cy.request({
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${adminJwt}`,
+          },
+          method: 'PATCH',
           url: `web_api/v1/users/${unverifiedId}/block`,
           body: {
             block_reason: 'Test block reason',
