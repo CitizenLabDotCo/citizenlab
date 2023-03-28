@@ -3,14 +3,15 @@ import React, { useState } from 'react';
 // Components
 import { Box, Button, Text, Checkbox } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
-import SeatInfo, { TSeatType } from 'components/SeatInfo';
+import SeatInfo, {
+  SeatTypeMessageDescriptor,
+  TSeatType,
+} from 'components/SeatInfo';
 import Error from 'components/UI/Error';
 
 // Translation
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
-
-import { SeatTypeMessageDescriptor } from 'components/SeatInfo/SeatBillingInfo';
 
 interface InviteUsersWithSeatsModalProps {
   showModal: boolean;
