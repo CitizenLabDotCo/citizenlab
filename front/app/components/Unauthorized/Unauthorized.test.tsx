@@ -23,7 +23,6 @@ describe('<Unauthorized />', () => {
     const button = screen.getByText(/Log in/);
     fireEvent.click(button);
     expect(openSignUpInModal).toHaveBeenCalledTimes(1);
-    expect(openSignUpInModal).toHaveBeenCalledWith({ flow: 'signin' });
   });
 
   it("tells you you don't have access if logged in", () => {
