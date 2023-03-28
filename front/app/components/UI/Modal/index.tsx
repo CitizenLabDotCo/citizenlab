@@ -108,13 +108,19 @@ const StyledCloseIconButton = styled(CloseIconButton)<{
 `;
 
 const StyledCloseIconButton2 = styled(CloseIconButton)`
+  position: absolute;
+  top: 17px;
   z-index: 2000;
   border-radius: 50%;
   border: solid 1px transparent;
   transition: all 100ms ease-out;
   outline: none !important;
-  width: 50px;
-  height: 50px;
+  padding: 10px;
+  right: 22px;
+
+  ${media.phone`
+    right: 6px;
+  `}
 
   &:hover {
     background: #e0e0e0;
@@ -123,6 +129,10 @@ const StyledCloseIconButton2 = styled(CloseIconButton)`
   &.focus-visible {
     ${defaultOutline};
   }
+  ${isRtl`
+    right: auto;
+    left: 25px;
+  `}
 `;
 
 // copy of the styled FocusOn container below
@@ -642,23 +652,24 @@ class Modal extends PureComponent<Props, State> {
                  * (Luuc)
                  */}
                 {header && niceHeader && (
-                  <Box
-                    display="flex"
-                    flexDirection="row"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    w="100%"
-                    p="8px"
-                    borderBottom={`solid 1px ${colors.divider}`}
-                  >
+                  <>
                     <Box
-                      h="100%"
                       display="flex"
+                      flexDirection="row"
                       alignItems="center"
-                      ml={smallerThanSmallTablet ? '16px' : '24px'}
-                      minHeight="66px"
+                      w="100%"
+                      py="8px"
+                      borderBottom={`solid 1px ${colors.divider}`}
                     >
-                      {header}
+                      <Box
+                        w="100%"
+                        h="100%"
+                        display="flex"
+                        alignItems="center"
+                        minHeight="66px"
+                      >
+                        {header}
+                      </Box>
                     </Box>
                     {!hideCloseButton && (
                       <Box mr={smallerThanSmallTablet ? '0px' : '8px'}>
@@ -671,7 +682,7 @@ class Modal extends PureComponent<Props, State> {
                         />
                       </Box>
                     )}
-                  </Box>
+                  </>
                 )}
 
                 <ModalContentContainer

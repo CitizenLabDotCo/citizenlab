@@ -2,6 +2,7 @@ import React from 'react';
 
 // hooks
 import useSteps from './useSteps';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
@@ -48,6 +49,9 @@ const AuthModal = () => {
   const { currentStep, transition, error, status, state } = useSteps();
   const smallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
+  const fullscreenModalEnabled = useFeatureFlag({
+    name: 'franceconnect_login',
+  });
 
   const closable = currentStep !== 'closed' && currentStep !== 'success';
 
@@ -58,22 +62,43 @@ const AuthModal = () => {
     transition(currentStep, 'CLOSE')();
   };
 
+  const marginX = smallerThanPhone ? '16px' : '32px';
+
   return (
     <Modal
+      fullScreen={fullscreenModalEnabled}
+      zIndex={fullscreenModalEnabled ? 400 : 10000001}
       width="580px"
       opened={currentStep !== 'closed'}
       close={handleClose}
       hideCloseButton={!closable}
       header={
         headerMessage ? (
-          <Title variant="h3" as="h1" mt="0px" mb="0px">
-            {formatMessage(headerMessage)}
-          </Title>
+          <>
+            {fullscreenModalEnabled ? (
+              <Box
+                w="100%"
+                display="flex"
+                justifyContent="center"
+                className="BLA"
+              >
+                <Box w="580px" px={marginX}>
+                  <Title variant="h3" as="h1" mt="0px" mb="0px">
+                    {formatMessage(headerMessage)}
+                  </Title>
+                </Box>
+              </Box>
+            ) : (
+              <Title variant="h3" as="h1" mt="0px" mb="0px" ml={marginX}>
+                {formatMessage(headerMessage)}
+              </Title>
+            )}
+          </>
         ) : undefined
       }
       niceHeader
     >
-      <Box px={smallerThanPhone ? '16px' : '32px'} py="32px" w="100%">
+      <Box px={marginX} py="32px" w={fullscreenModalEnabled ? '580px' : '100%'}>
         {error && (
           <Box mb="16px">
             <Error text={formatMessage(ERROR_CODE_MESSAGES[error])} />
