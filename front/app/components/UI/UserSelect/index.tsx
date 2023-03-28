@@ -21,6 +21,7 @@ interface InputProps {
   className?: string;
   id: string;
   inputId: string;
+  hideAvatar?: boolean;
 }
 
 interface Props extends DataProps, InputProps {}
@@ -38,6 +39,7 @@ const UserSelect = ({
   className,
   id,
   inputId,
+  hideAvatar = false,
 }: DataProps & Props) => {
   const canLoadMore = users.lastPage !== users.currentPage;
   const usersList: IUserData[] = Array.isArray(users.usersList)
@@ -83,7 +85,7 @@ const UserSelect = ({
     } else if (option.attributes) {
       return (
         <UserOption>
-          <Avatar user={option} />
+          {!hideAvatar && <Avatar user={option} />}
           {option.attributes.last_name}, {option.attributes.first_name} (
           {option.attributes.email})
         </UserOption>

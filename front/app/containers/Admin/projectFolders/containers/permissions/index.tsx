@@ -116,6 +116,7 @@ const FolderPermissions = () => {
                 selectedUserId={moderatorToAdd}
                 onChange={handleOnChange}
                 placeholder={formatMessage(messages.searchFolderManager)}
+                hideAvatar
               />
             </Box>
             <AddButton

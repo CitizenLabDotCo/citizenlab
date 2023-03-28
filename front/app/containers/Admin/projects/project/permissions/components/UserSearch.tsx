@@ -67,6 +67,7 @@ const UserSearch = memo(({ projectId }: Props) => {
             selectedUserId={moderatorToAdd}
             onChange={handleOnChange}
             placeholder={formatMessage(messages.searchUsers)}
+            hideAvatar
           />
         </Box>
 
