@@ -26,6 +26,7 @@ type Step =
   | 'email-policies'
   | 'google-policies'
   | 'facebook-policies'
+  | 'azure-ad-policies'
   | 'email-confirmation'
   | 'enter-password'
   | 'success';
@@ -57,12 +58,10 @@ export const getStepConfig = (
 
     'email-registration': {
       CLOSE: () => setCurrentStep('closed'),
-
       SUBMIT_EMAIL: (email: string) => {
         updateState({ email });
         setCurrentStep('email-policies');
       },
-
       CONTINUE_WITH_SSO: (ssoProvider: SSOProviderWithoutVienna) => {
         switch (ssoProvider) {
           case 'google':
@@ -70,6 +69,9 @@ export const getStepConfig = (
             break;
           case 'facebook':
             setCurrentStep('facebook-policies');
+            break;
+          case 'azureactivedirectory':
+            setCurrentStep('azure-ad-policies');
             break;
           default:
             break;
@@ -79,7 +81,6 @@ export const getStepConfig = (
 
     'email-policies': {
       CLOSE: () => setCurrentStep('closed'),
-
       ACCEPT_POLICIES: async (email: string, locale: Locale) => {
         setStatus('pending');
         updateState({ email });
@@ -105,7 +106,6 @@ export const getStepConfig = (
 
     'google-policies': {
       CLOSE: () => setCurrentStep('closed'),
-
       ACCEPT_POLICIES: () => {
         const authenticationData = getAuthenticationData();
         handleOnSSOClick('google', authenticationData);
@@ -114,16 +114,22 @@ export const getStepConfig = (
 
     'facebook-policies': {
       CLOSE: () => setCurrentStep('closed'),
-
       ACCEPT_POLICIES: () => {
         const authenticationData = getAuthenticationData();
         handleOnSSOClick('facebook', authenticationData);
       },
     },
 
+    'azure-ad-policies': {
+      CLOSE: () => setCurrentStep('closed'),
+      ACCEPT_POLICIES: () => {
+        const authenticationData = getAuthenticationData();
+        handleOnSSOClick('azureactivedirectory', authenticationData);
+      },
+    },
+
     'email-confirmation': {
       CLOSE: () => setCurrentStep('closed'),
-
       CHANGE_EMAIL: async () => {
         setStatus('pending');
 
@@ -134,7 +140,6 @@ export const getStepConfig = (
         setCurrentStep('email-registration');
         setStatus('ok');
       },
-
       SUBMIT_CODE: async (code: string) => {
         setStatus('pending');
 
@@ -156,7 +161,6 @@ export const getStepConfig = (
 
     'enter-password': {
       CLOSE: () => setCurrentStep('closed'),
-
       SUBMIT_PASSWORD: async (
         email: string,
         password: string,

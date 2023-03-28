@@ -44,6 +44,11 @@ const ICON_MAP = {
   azureactivedirectory: 'microsoft-windows',
 } as const;
 
+const COLOR_MAP = {
+  facebook: colors.facebook,
+  azureactivedirectory: colors.teal400,
+};
+
 const MESSAGE_MAP = {
   facebook: oldMessages.continueWithFacebook,
   google: oldMessages.continueWithGoogle,
@@ -69,10 +74,8 @@ const SSOButton = ({ ssoProvider, onClickSSO }: Props) => {
     <Container>
       <Button
         icon={ICON_MAP[ssoProvider]}
-        iconColor={ssoProvider === 'facebook' ? colors.facebook : undefined}
-        iconHoverColor={
-          ssoProvider === 'facebook' ? colors.facebook : undefined
-        }
+        iconColor={COLOR_MAP[ssoProvider]}
+        iconHoverColor={COLOR_MAP[ssoProvider]}
         buttonStyle="white"
         iconSize="22px"
         fullWidth={true}

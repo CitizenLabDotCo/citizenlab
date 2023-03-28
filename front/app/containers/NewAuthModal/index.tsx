@@ -10,6 +10,7 @@ import EmailSignUp from './steps/EmailSignUp';
 import EmailPolicies from './steps/AcceptPolicies/EmailPolicies';
 import GooglePolicies from './steps/AcceptPolicies/GooglePolicies';
 import FacebookPolicies from './steps/AcceptPolicies/FacebookPolicies';
+import AzureAdPolicies from './steps/AcceptPolicies/AzureAdPolicies';
 import EmailConfirmation from './steps/EmailConfirmation';
 import Password from './steps/Password';
 import Success from './steps/Success';
@@ -101,6 +102,13 @@ const AuthModal = () => {
 
         {currentStep === 'facebook-policies' && (
           <FacebookPolicies
+            status={status}
+            onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
+          />
+        )}
+
+        {currentStep === 'azure-ad-policies' && (
+          <AzureAdPolicies
             status={status}
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
