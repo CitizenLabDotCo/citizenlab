@@ -407,7 +407,7 @@ module MultiTenancy
             },
             seat_based_billing: {
               enabled: true,
-              allowed: true,
+              allowed: true
             }
           })
         )

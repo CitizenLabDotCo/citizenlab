@@ -327,7 +327,7 @@ namespace :cl2_back do
         },
         seat_based_billing: {
           enabled: true,
-          allowed: true,
+          allowed: true
         }
       }
     )
