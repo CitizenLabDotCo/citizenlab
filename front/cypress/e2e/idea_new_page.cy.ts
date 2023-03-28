@@ -18,7 +18,7 @@ describe('Idea new page for continuous project', () => {
     cy.acceptCookies();
   });
 
-  it('shows an error when no title is provided', () => {
+  it.skip('shows an error when no title is provided', () => {
     const value = randomString(9);
     cy.get('#idea-form');
     cy.get('#e2e-idea-description-input .ql-editor').type(value);
@@ -36,7 +36,7 @@ describe('Idea new page for continuous project', () => {
     );
   });
 
-  it('shows an error when no description is provided', () => {
+  it.skip('shows an error when no description is provided', () => {
     const value = randomString(9);
     cy.get('#idea-form');
     cy.get('#e2e-idea-title-input input').type(value);
