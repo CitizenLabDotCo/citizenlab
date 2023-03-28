@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
 import { IAppConfigurationSettingsCore } from 'api/app_configuration/types';
 
-import SeatInfo from './';
+import SeatInfo from '.';
 
 type MockAppConfigurationType = {
   data: {
