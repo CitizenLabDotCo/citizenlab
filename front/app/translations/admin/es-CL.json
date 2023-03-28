@@ -561,7 +561,7 @@
   "app.containers.Admin.Users.userBlockModal.reasonLabelTooltip": "Esto se comunicará al usuario bloqueado.",
   "app.containers.Admin.Users.userBlockModal.subtitle": "El usuario seleccionado no podrá acceder a la plataforma para {ninetyDays}. Si deseas revertir esta situación, puedes desbloquearlo de la lista de usuarios bloqueados.",
   "app.containers.Admin.Users.userBlockModal.unblockAction": "Desbloquear",
-  "app.containers.Admin.Users.userBlockModal.unblockActionConfirmation": "Yes, I want to unblock this user",
+  "app.containers.Admin.Users.userBlockModal.unblockActionConfirmation": "Sí, quiero desbloquear a este usuario",
   "app.containers.Admin.Users.userDeletionConfirmation": "¿Eliminar permanentemente este usuario?",
   "app.containers.Admin.Users.userDeletionFailed": "Error al borrar este usuario, por favor, inténtelo de nuevo.",
   "app.containers.Admin.Users.userExportFileName": "usuarios_export",
