@@ -35,7 +35,7 @@ const DEFAULT_VALUES: Partial<FormValues> = {
   email: undefined,
 };
 
-const EmailSignUp = ({ onSubmit, onSwitchToSSO }: Props) => {
+const LightFlowStart = ({ onSubmit, onSwitchToSSO }: Props) => {
   const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
 
   const { formatMessage } = useIntl();
@@ -88,4 +88,4 @@ const EmailSignUp = ({ onSubmit, onSwitchToSSO }: Props) => {
   );
 };
 
-export default EmailSignUp;
+export default LightFlowStart;

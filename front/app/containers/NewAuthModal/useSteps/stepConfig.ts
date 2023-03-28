@@ -22,7 +22,7 @@ import { Locale } from 'typings';
 
 type Step =
   | 'closed'
-  | 'email-registration'
+  | 'light-flow-start'
   | 'email-policies'
   | 'google-policies'
   | 'facebook-policies'
@@ -52,12 +52,12 @@ export const getStepConfig = (
         if (requirements.built_in.email === 'satisfied') {
           setCurrentStep('email-confirmation');
         } else {
-          setCurrentStep('email-registration');
+          setCurrentStep('light-flow-start');
         }
       },
     },
 
-    'email-registration': {
+    'light-flow-start': {
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT_EMAIL: (email: string) => {
         updateState({ email });
@@ -109,6 +109,7 @@ export const getStepConfig = (
     'google-policies': {
       CLOSE: () => setCurrentStep('closed'),
       ACCEPT_POLICIES: () => {
+        setStatus('pending');
         const authenticationData = getAuthenticationData();
         handleOnSSOClick('google', authenticationData);
       },
@@ -117,6 +118,7 @@ export const getStepConfig = (
     'facebook-policies': {
       CLOSE: () => setCurrentStep('closed'),
       ACCEPT_POLICIES: () => {
+        setStatus('pending');
         const authenticationData = getAuthenticationData();
         handleOnSSOClick('facebook', authenticationData);
       },
@@ -125,6 +127,7 @@ export const getStepConfig = (
     'azure-ad-policies': {
       CLOSE: () => setCurrentStep('closed'),
       ACCEPT_POLICIES: () => {
+        setStatus('pending');
         const authenticationData = getAuthenticationData();
         handleOnSSOClick('azureactivedirectory', authenticationData);
       },
@@ -133,6 +136,7 @@ export const getStepConfig = (
     'france-connect-login': {
       CLOSE: () => setCurrentStep('closed'),
       LOGIN: () => {
+        setStatus('pending');
         const authenticationData = getAuthenticationData();
         handleOnSSOClick('franceconnect', authenticationData);
       },
@@ -147,7 +151,7 @@ export const getStepConfig = (
 
         updateState({ email: null });
 
-        setCurrentStep('email-registration');
+        setCurrentStep('light-flow-start');
         setStatus('ok');
       },
       SUBMIT_CODE: async (code: string) => {
@@ -211,7 +215,7 @@ export const getStepConfig = (
         setCurrentStep('closed');
 
         const { onSuccess } = getAuthenticationData();
-        onSuccess && onSuccess();
+        onSuccess?.();
       },
     },
   };

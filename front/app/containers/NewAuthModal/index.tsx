@@ -6,12 +6,12 @@ import useSteps from './useSteps';
 // components
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
-import EmailSignUp from './steps/EmailSignUp';
-import EmailPolicies from './steps/AcceptPolicies/EmailPolicies';
-import GooglePolicies from './steps/AcceptPolicies/GooglePolicies';
-import FacebookPolicies from './steps/AcceptPolicies/FacebookPolicies';
-import AzureAdPolicies from './steps/AcceptPolicies/AzureAdPolicies';
-import FranceConnectLogin from './steps/AcceptPolicies/FranceConnectLogin';
+import LightFlowStart from './steps/LightFlowStart';
+import EmailPolicies from './steps/Policies/EmailPolicies';
+import GooglePolicies from './steps/Policies/GooglePolicies';
+import FacebookPolicies from './steps/Policies/FacebookPolicies';
+import AzureAdPolicies from './steps/Policies/AzureAdPolicies';
+import FranceConnectLogin from './steps/Policies/FranceConnectLogin';
 import EmailConfirmation from './steps/EmailConfirmation';
 import Password from './steps/Password';
 import Success from './steps/Success';
@@ -28,7 +28,7 @@ import errorMessages from 'components/UI/Error/messages';
 import { ErrorCode } from './typings';
 
 const getHeaderMessage = (step: ReturnType<typeof useSteps>['currentStep']) => {
-  if (step === 'email-registration') return messages.beforeYouParticipate;
+  if (step === 'light-flow-start') return messages.beforeYouParticipate;
   if (step.endsWith('policies')) return messages.beforeYouParticipate;
   if (step === 'france-connect-login') return messages.beforeYouParticipate;
   if (step === 'email-confirmation') return messages.confirmYourEmail;
@@ -80,8 +80,8 @@ const AuthModal = () => {
           </Box>
         )}
 
-        {currentStep === 'email-registration' && (
-          <EmailSignUp
+        {currentStep === 'light-flow-start' && (
+          <LightFlowStart
             onSubmit={transition(currentStep, 'SUBMIT_EMAIL')}
             onSwitchToSSO={transition(currentStep, 'CONTINUE_WITH_SSO')}
           />

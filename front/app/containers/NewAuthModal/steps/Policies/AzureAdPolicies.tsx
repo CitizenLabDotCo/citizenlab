@@ -4,7 +4,7 @@ import React from 'react';
 import PoliciesForm from './PoliciesForm';
 
 // typings
-import { Status } from '../..//typings';
+import { Status } from '../../typings';
 
 interface Props {
   status: Status;
