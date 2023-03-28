@@ -132,7 +132,7 @@ describe('Native survey project page actions', () => {
     cy.visit(`/projects/${projectSlugTimeline}`);
     // Check that correct text and actions shown
     cy.get('#e2e-cta-button').should('be.visible');
-    cy.get('#e2e-cta-button').find('button').click({ force: true });
+    cy.get('#e2e-cta-button').trigger('mouseenter');
     cy.contains('New submissions can only be added in active phases.').should(
       'exist'
     );
@@ -145,7 +145,7 @@ describe('Native survey project page actions', () => {
     cy.visit(`/projects/${projectSlugPostingDisabled}`);
     // Check that correct text and actions shown
     cy.get('#e2e-cta-button').should('be.visible');
-    cy.get('#e2e-cta-button').find('button').click({ force: true });
+    cy.get('#e2e-cta-button').trigger('mouseenter');
     cy.contains('New submissions are not currently being accepted').should(
       'exist'
     );
@@ -166,8 +166,8 @@ describe('Native survey project page actions', () => {
     // Visit the project page
     cy.visit(`/projects/${projectSlugContinous}`);
     // Check that correct text and actions shown
-    cy.get('#e2e-cta-button').should('be.visible');
-    cy.get('#e2e-cta-button').find('button').click({ force: true });
+    cy.get('#e2e-cta-button').should('exist');
+    cy.get('#e2e-cta-button').first().click();
     cy.url().should('include', `/projects/${projectSlugContinous}/ideas/new`);
   });
 
