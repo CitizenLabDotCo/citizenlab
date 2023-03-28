@@ -21,12 +21,19 @@ const Container = styled.div`
 interface Props extends Omit<IQueryParameters, 'projectIds'> {
   project?: string | null;
   feedbackNeeded?: boolean;
+  ideaStatusId?: string;
 }
 
-const IdeasCount = ({ project, feedbackNeeded, ...otherProps }: Props) => {
+const IdeasCount = ({
+  project,
+  ideaStatusId,
+  feedbackNeeded,
+  ...otherProps
+}: Props) => {
   const { data: ideasCount } = useIdeasCount({
     ...otherProps,
     feedback_needed: feedbackNeeded,
+    idea_status_id: ideaStatusId,
     projects: project ? [project] : undefined,
   });
 
