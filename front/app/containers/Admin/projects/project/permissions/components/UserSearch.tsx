@@ -9,6 +9,7 @@ import { IGroupMembershipsFoundUserData } from 'services/groupMemberships';
 
 // hooks
 import useProjectModerators from 'hooks/useProjectModerators';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -51,6 +52,9 @@ interface UserOption extends IOption {
 
 const UserSearch = memo(({ projectId }: Props) => {
   const { formatMessage } = useIntl();
+  const hasSeatBasedBillingEnabled = useFeatureFlag({
+    name: 'seat_based_billing',
+  });
   const [selection, setSelection] = useState<UserOption[]>([]);
   const [loading, setLoading] = useState(false);
   const [processing, setProcessing] = useState(false);
@@ -59,9 +63,6 @@ const UserSearch = memo(({ projectId }: Props) => {
   const [showModal, setShowModal] = useState(false);
   const closeModal = () => {
     setShowModal(false);
-  };
-  const openModal = () => {
-    setShowModal(true);
   };
 
   const getOptions = (users: IGroupMembershipsFoundUserData[]) => {
@@ -142,6 +143,14 @@ const UserSearch = memo(({ projectId }: Props) => {
     return formatMessage(messages.noOptions);
   };
 
+  const handleAddClick = () => {
+    if (hasSeatBasedBillingEnabled) {
+      setShowModal(true);
+    } else {
+      handleOnAddModeratorsClick();
+    }
+  };
+
   const isDropdownIconHidden = !isNonEmptyString(searchInput);
 
   return (
@@ -179,7 +188,7 @@ const UserSearch = memo(({ projectId }: Props) => {
           buttonStyle="cl-blue"
           icon="plus-circle"
           padding="13px 16px"
-          onClick={openModal}
+          onClick={handleAddClick}
           disabled={!selection || selection.length === 0}
           processing={processing}
         />
