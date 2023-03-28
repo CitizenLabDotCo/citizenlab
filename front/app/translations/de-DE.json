@@ -421,7 +421,6 @@
   "app.components.QuillEditor.videoPrompt": "Füge ein Video hinzu:",
   "app.components.QuillEditor.visitPrompt": "Besuche den Link:",
   "app.components.SeatInfo.additionalSeats": "Zusätzliche Admin-Zugänge",
-  "app.components.SeatInfo.adminSeatsIncludedSubText": "{adminSeats} enthaltene Admin-Zugänge",
   "app.components.SeatInfo.currentAdminSeatsTitle": "Aktuelle Anzahl an Admin-Zugängen",
   "app.components.SeatInfo.currentCollaboratorSeatsTitle": "Aktuelle Zugänge für Mitarbeitende",
   "app.components.SeatInfo.includedAdminToolTip": "Hier wird die Anzahl der verfügbaren Zugänge für Admins angezeigt, die in Ihrer Lizenz enthalten sind.",
