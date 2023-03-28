@@ -194,7 +194,7 @@ export const getStepConfig = (
             setCurrentStep('closed');
 
             const { onSuccess } = getAuthenticationData();
-            onSuccess && onSuccess();
+            onSuccess?.();
           }
 
           setStatus('ok');
