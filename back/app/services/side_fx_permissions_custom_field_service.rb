@@ -20,7 +20,7 @@ class SideFxPermissionsCustomFieldService
   def after_destroy(frozen_permissions_custom_field, user)
     serialized_permissions_custom_field = clean_time_attributes frozen_permissions_custom_field.attributes
     LogActivityJob.perform_later(
-      encode_frozen_resource(serialized_permissions_custom_field),
+      encode_frozen_resource(frozen_permissions_custom_field),
       'deleted',
       user,
       Time.now.to_i,

@@ -68,6 +68,7 @@ class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
   private
 
   def permissions_custom_field
+    # permissions_custom_field as method name does not work
     @permissions_custom_field ||= authorize PermissionsCustomField.find(params[:id])
   end
 
