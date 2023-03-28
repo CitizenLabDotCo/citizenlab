@@ -37,9 +37,9 @@ export default defineMessages({
       "Your plan has {collaboratorSeatsIncluded}, eligible for folder managers and project managers. Once you've used all the seats, you agree on us billing the additional seats according to your license.",
   },
   collaboratorInfoTextWithoutBilling: {
-    id: 'app.components.SeatTrackerInfo.collaboratorInfoTextWithoutBilling',
+    id: 'app.components.SeatTrackerInfo.collaboratorInfoTextWithoutBilling2',
     defaultMessage:
-      "Your plan has {collaboratorSeatsIncluded}, eligible for folder managers and project managers. Once you’ve used all the seats, extra seats will be added under 'Additional seats'.",
+      "Your plan has {collaboratorSeatsIncluded}, eligible for folder managers and project managers. Once you've used all the seats, extra seats will be added under 'Additional seats'.",
   },
   collaboratorsIncludedText: {
     id: 'app.components.SeatInfo.collaboratorsIncludedText',
