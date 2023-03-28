@@ -524,7 +524,7 @@ RSpec.describe User, type: :model do
     end
 
     context 'when a project ID is not provided' do
-      it 'includes all users without a project moderator role' do
+      it 'includes only users without a project moderator role' do
         expect(described_class.not_project_moderator)
           .to match_array([user, admin, project_folder_moderator, moderator_of_other_folder])
       end
@@ -557,7 +557,7 @@ RSpec.describe User, type: :model do
     end
 
     context 'when a folder ID is not provided' do
-      it 'includes all users without a folder moderator role' do
+      it 'includes only users without a folder moderator role' do
         expect(described_class.not_project_moderator).to match_array([user, admin])
       end
     end
