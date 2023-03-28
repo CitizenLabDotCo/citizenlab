@@ -55,7 +55,15 @@ jest.mock('api/seats/useSeats', () => () => {
   };
 });
 
+let mockFeatureFlagData = true;
+
+jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
+
 describe('SeatInfo', () => {
+  beforeEach(() => {
+    mockFeatureFlagData = true;
+  });
+
   it('shows correct numbers of seat usage for admins', () => {
     render(<SeatInfo seatType="admin" />);
     expect(screen.getByText('Current admin seats')).toBeInTheDocument();
@@ -70,7 +78,7 @@ describe('SeatInfo', () => {
     expect(screen.queryByText('Additional seats')).not.toBeInTheDocument();
   });
 
-  it('shows collaborators additional seats when user has used more', () => {
+  it('shows correct collaborators additional seats as fraction when user has used more and seat_based_billing is on', () => {
     mockUserSeatsData.data.attributes.project_moderators_number = 15;
     mockAppConfiguration.data.attributes.settings.core.additional_moderators_number = 7;
     render(<SeatInfo seatType="collaborator" />);
@@ -83,7 +91,22 @@ describe('SeatInfo', () => {
     expect(screen.getByText('6/7')).toBeInTheDocument();
   });
 
-  it('shows admin additional seats when user has used more', () => {
+  it('shows correct collaborators additional seats as one number when user has used more and seat_based_billing is off', () => {
+    mockFeatureFlagData = false;
+    mockUserSeatsData.data.attributes.project_moderators_number = 15;
+    mockAppConfiguration.data.attributes.settings.core.additional_moderators_number = 7;
+    render(<SeatInfo seatType="collaborator" />);
+
+    expect(screen.getByText('Current collaborator seats')).toBeInTheDocument();
+    expect(screen.getByText('9/9')).toBeInTheDocument();
+
+    expect(screen.queryByText('Additional seats')).toBeInTheDocument();
+    // We expect 6/7 because the user has used 15 seats, and they have a maximum of 9 seats in maximum_moderators_number. They have 7 additional seats, and they have used 6 of them.
+    expect(screen.getByText('6')).toBeInTheDocument();
+    expect(screen.queryByText('6/7')).not.toBeInTheDocument();
+  });
+
+  it('shows correct admin additional seats as fraction when user has used more and seat_based_billing is on', () => {
     mockUserSeatsData.data.attributes.admins_number = 10;
     mockAppConfiguration.data.attributes.settings.core.additional_admins_number = 7;
     render(<SeatInfo seatType="admin" />);
@@ -94,6 +117,21 @@ describe('SeatInfo', () => {
     expect(screen.queryByText('Additional seats')).toBeInTheDocument();
     // We expect 4/7 because the user has used 10 seats, and they have a maximum of 6 seats in maximum_admins_number. They have 7 additional seats, and they have used 4 of them.
     expect(screen.getByText('4/7')).toBeInTheDocument();
+  });
+
+  it('shows correct admin additional seats as one number when user has used more and seat_based_billing is off', () => {
+    mockFeatureFlagData = false;
+    mockUserSeatsData.data.attributes.admins_number = 10;
+    mockAppConfiguration.data.attributes.settings.core.additional_admins_number = 7;
+    render(<SeatInfo seatType="admin" />);
+
+    expect(screen.getByText('Current admin seats')).toBeInTheDocument();
+    expect(screen.getByText('6/6')).toBeInTheDocument();
+
+    expect(screen.queryByText('Additional seats')).toBeInTheDocument();
+    // We expect 4/7 because the user has used 10 seats, and they have a maximum of 6 seats in maximum_admins_number. They have 7 additional seats, and they have used 4 of them.
+    expect(screen.getByText('4')).toBeInTheDocument();
+    expect(screen.queryByText('4/7')).not.toBeInTheDocument();
   });
 
   it('shows nothing for admin seats when maximum_admins_number is null', () => {
