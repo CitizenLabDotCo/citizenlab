@@ -20,15 +20,12 @@ interface Props {
   showModal: boolean;
   closeModal: () => void;
   addModerators: () => void;
-  // Could maybe be deleted if we stick to single select to add mods
-  noOfCollaboratorSeatsToAdd: number;
 }
 
 const AddCollaboratorsModal = ({
   showModal,
   closeModal,
   addModerators,
-  noOfCollaboratorSeatsToAdd,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
@@ -44,9 +41,7 @@ const AddCollaboratorsModal = ({
     !isNil(maximumCollaborators) &&
     currentCollaboratorSeats >= maximumCollaborators;
   const buttonText = hasReachedLimit
-    ? formatMessage(messages.buyAdditionalSeats, {
-        noOfSeats: noOfCollaboratorSeatsToAdd,
-      })
+    ? formatMessage(messages.buyAdditionalSeats)
     : formatMessage(messages.confirmButtonText);
 
   return (
@@ -65,19 +60,9 @@ const AddCollaboratorsModal = ({
         <Box>
           <Text color="textPrimary" fontSize="m" my="0px">
             {hasReachedLimit ? (
-              <FormattedMessage
-                {...messages.reachedLimitText}
-                values={{
-                  noOfSeats: noOfCollaboratorSeatsToAdd,
-                }}
-              />
+              <FormattedMessage {...messages.reachedLimitText} />
             ) : (
-              <FormattedMessage
-                {...messages.confirmMessage}
-                values={{
-                  noOfPeople: noOfCollaboratorSeatsToAdd,
-                }}
-              />
+              <FormattedMessage {...messages.confirmMessage} />
             )}
           </Text>
           <Box py="32px">

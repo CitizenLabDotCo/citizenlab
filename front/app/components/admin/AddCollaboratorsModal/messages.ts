@@ -6,19 +6,18 @@ export default defineMessages({
     defaultMessage: 'Give collaborator rights',
   },
   reachedLimitText: {
-    id: 'app.containers.admin.addCollaboratorsModal.reachedLimitText',
+    id: 'app.containers.admin.addCollaboratorsModal.reachedLimitText1',
     defaultMessage:
-      'You have reached the limit of included seats within your plan, {noOfSeats} additional {noOfSeats, plural, one {seat} other {seats}} will be added.',
+      'You have reached the limit of included seats within your plan, 1 additional seat will be added.',
   },
   buyAdditionalSeats: {
-    id: 'app.containers.admin.addCollaboratorsModal.buyAdditionalSeats',
-    defaultMessage:
-      'Buy {noOfSeats} additional {noOfSeats, plural, one {seat} other {seats}}',
+    id: 'app.containers.admin.addCollaboratorsModal.buyAdditionalSeats1',
+    defaultMessage: 'Buy 1 additional seat',
   },
   confirmMessage: {
-    id: 'app.containers.admin.addCollaboratorsModal.confirmMessage',
+    id: 'app.containers.admin.addCollaboratorsModal.confirmMessage1',
     defaultMessage:
-      'Are you sure you want to give {noOfPeople} {noOfPeople, plural, one {person} other {people}} collaborator rights?',
+      'Are you sure you want to give 1 person collaborator rights?',
   },
   confirmButtonText: {
     id: 'app.containers.admin.addCollaboratorsModal.confirmButtonText',

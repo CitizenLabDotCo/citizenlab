@@ -130,7 +130,6 @@ const FolderPermissions = () => {
             addModerators={handleOnAddFolderModeratorsClick}
             showModal={showModal}
             closeModal={closeModal}
-            noOfCollaboratorSeatsToAdd={1}
           />
         </UserSelectSection>
 

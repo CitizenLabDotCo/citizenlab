@@ -86,7 +86,6 @@ const UserSearch = memo(({ projectId }: Props) => {
         addModerators={handleOnAddModeratorsClick}
         showModal={showModal}
         closeModal={closeModal}
-        noOfCollaboratorSeatsToAdd={1}
       />
     </Box>
   );
