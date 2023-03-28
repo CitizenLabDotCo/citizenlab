@@ -104,48 +104,48 @@ const IdeasNewPageWithJSONForm = () => {
     }
 
     location_point_geojson = await getLocationGeojson(initialFormData, data);
-    if (!isNilOrError(authUser)) {
-      addIdea(
-        {
-          ...data,
-          location_point_geojson,
-          project_id: project?.id,
-          publication_status: 'published',
-          phase_ids:
-            phaseId && isModerator({ data: authUser }) ? [phaseId] : null,
-        },
-        {
-          onSuccess: (idea) => {
-            const ideaId = idea.data.id;
+    addIdea(
+      {
+        ...data,
+        location_point_geojson,
+        project_id: project?.id,
+        publication_status: 'published',
+        phase_ids:
+          phaseId && !isNilOrError(authUser) && isModerator({ data: authUser })
+            ? [phaseId]
+            : null,
+      },
+      {
+        onSuccess: (idea) => {
+          const ideaId = idea.data.id;
 
-            // Check ParticipationMethodConfig for form submission action
-            if (
-              project?.attributes.process_type === 'timeline' &&
-              !isNilOrError(phases)
-            ) {
-              // Check if URL contains specific phase_id
-              const phaseUsed =
-                phases.find((phase) => phase.id === phaseId) ||
-                getCurrentPhase(phases);
-              if (!isNilOrError(phaseUsed)) {
-                getMethodConfig(
-                  phaseUsed?.attributes?.participation_method
-                ).onFormSubmission({
-                  project,
-                  ideaId,
-                  idea,
-                  phaseId: phaseUsed.id,
-                });
-              }
-            } else if (!isNilOrError(project)) {
+          // Check ParticipationMethodConfig for form submission action
+          if (
+            project?.attributes.process_type === 'timeline' &&
+            !isNilOrError(phases)
+          ) {
+            // Check if URL contains specific phase_id
+            const phaseUsed =
+              phases.find((phase) => phase.id === phaseId) ||
+              getCurrentPhase(phases);
+            if (!isNilOrError(phaseUsed)) {
               getMethodConfig(
-                project?.attributes.participation_method
-              ).onFormSubmission({ project, ideaId, idea });
+                phaseUsed?.attributes?.participation_method
+              ).onFormSubmission({
+                project,
+                ideaId,
+                idea,
+                phaseId: phaseUsed.id,
+              });
             }
-          },
-        }
-      );
-    }
+          } else if (!isNilOrError(project)) {
+            getMethodConfig(
+              project?.attributes.participation_method
+            ).onFormSubmission({ project, ideaId, idea });
+          }
+        },
+      }
+    );
   };
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(
