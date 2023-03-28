@@ -1089,6 +1089,18 @@
         }
       },
 
+      "seat_based_billing": {
+        "type": "object",
+        "title": "Seat based billing",
+        "description":  "Enables seat-based billing.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }
+      },
+
       "visitors_dashboard": {
         "type": "object",
         "title": "Visitors dashboard",
