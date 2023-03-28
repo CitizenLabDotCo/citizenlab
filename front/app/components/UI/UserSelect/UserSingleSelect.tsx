@@ -7,7 +7,6 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 import styled from 'styled-components';
 import { IUserData } from 'services/users';
-import useUser from 'hooks/useUser';
 import Button from 'components/UI/Button';
 import Avatar from './Avatar';
 
@@ -41,7 +40,6 @@ const UserSingleSelect = ({
   inputId,
 }: DataProps & Props) => {
   const canLoadMore = users.lastPage !== users.currentPage;
-  const selectedUser = useUser({ userId: value });
   const usersList: IUserData[] = Array.isArray(users.usersList)
     ? users.usersList
     : [];
@@ -98,12 +96,6 @@ const UserSingleSelect = ({
 
   const getOptionId = (option: OptionTypeBase) => option.id;
 
-  const filterOption = () => true;
-
-  const options = canLoadMore
-    ? [...usersList, { value: 'loadMore' }]
-    : usersList;
-
   return (
     <Box id="e2e-user-select">
       <ReactSelect
@@ -115,10 +107,12 @@ const UserSingleSelect = ({
         backspaceRemovesValue={false}
         menuShouldScrollIntoView={false}
         isClearable
-        filterOption={filterOption}
-        value={selectedUser}
+        filterOption={() => true}
+        value={value}
         placeholder={placeholder}
-        options={options}
+        options={
+          canLoadMore ? [...usersList, { value: 'loadMore' }] : usersList
+        }
         getOptionValue={getOptionId}
         getOptionLabel={getOptionLabel}
         onChange={handleChange}
