@@ -411,11 +411,11 @@ const Invitations = ({ projects, locale, tenantLocales, groups }: Props) => {
 
   const handleSubmitAction = (event: React.FormEvent) => {
     event.preventDefault();
-    const showConfimrationModal =
+    const showConfirmationModal =
       hasSeatBasedBillingEnabled &&
       (inviteesWillHaveAdminRights || inviteesWillHaveModeratorRights);
 
-    if (showConfimrationModal) {
+    if (showConfirmationModal) {
       setShowModal(true);
     } else {
       onSubmit();
