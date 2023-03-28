@@ -101,7 +101,7 @@ describe('SeatInfo', () => {
     expect(screen.getByText('9/9')).toBeInTheDocument();
 
     expect(screen.queryByText('Additional seats')).toBeInTheDocument();
-    // We expect 6/7 because the user has used 15 seats, and they have a maximum of 9 seats in maximum_moderators_number. They have 7 additional seats, and they have used 6 of them.
+    // We expect 6 because the user has used 15 seats, and they have a maximum of 9 seats in maximum_moderators_number. They have 7 additional seats, and they have used 6 of them.
     expect(screen.getByText('6')).toBeInTheDocument();
     expect(screen.queryByText('6/7')).not.toBeInTheDocument();
   });
@@ -129,7 +129,7 @@ describe('SeatInfo', () => {
     expect(screen.getByText('6/6')).toBeInTheDocument();
 
     expect(screen.queryByText('Additional seats')).toBeInTheDocument();
-    // We expect 4/7 because the user has used 10 seats, and they have a maximum of 6 seats in maximum_admins_number. They have 7 additional seats, and they have used 4 of them.
+    // We expect 4 because the user has used 10 seats, and they have a maximum of 6 seats in maximum_admins_number. They have 7 additional seats, and they have used 4 of them.
     expect(screen.getByText('4')).toBeInTheDocument();
     expect(screen.queryByText('4/7')).not.toBeInTheDocument();
   });
