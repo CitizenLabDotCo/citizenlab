@@ -23,8 +23,8 @@ import {
   media,
   stylingConsts,
   useBreakpoint,
+  Button,
 } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
 import ButtonBar from './Components/ButtonBar';
 
 import useObserveEvent from 'hooks/useObserveEvent';
@@ -39,6 +39,7 @@ import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
 import { selectRenderers } from './formConfig';
 import { getFormSchemaAndData } from './utils';
+import messages from './messages';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`
@@ -96,6 +97,7 @@ interface Props {
   inputId?: string;
   formSubmitText?: MessageDescriptor;
   config?: 'default' | 'input' | 'survey';
+  layout?: 'inline' | 'fullpage';
 }
 
 const Form = memo(
@@ -112,6 +114,7 @@ const Form = memo(
     getAjvErrorMessage,
     getApiErrorMessage,
     config,
+    layout,
   }: Props) => {
     const { formatMessage } = useIntl();
     const [data, setData] = useState<FormData>(initialFormData);
@@ -223,7 +226,11 @@ const Form = memo(
       [formatMessage, getAjvErrorMessage]
     );
 
-    const layoutType = isCategorization(uiSchema) ? 'fullpage' : 'inline';
+    const layoutType = layout
+      ? layout
+      : isCategorization(uiSchema)
+      ? 'fullpage'
+      : 'inline';
     const renderers = selectRenderers(config || 'default');
 
     return (
@@ -305,7 +312,9 @@ const Form = memo(
             ) : submitOnEvent ? (
               <InvisibleSubmitButton onClick={handleSubmit} />
             ) : (
-              <Button onClick={handleSubmit}>Button</Button>
+              <Button onClick={handleSubmit}>
+                {formatMessage(messages.save)}
+              </Button>
             )}
           </>
         )}

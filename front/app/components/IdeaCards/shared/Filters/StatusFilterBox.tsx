@@ -22,7 +22,10 @@ const StatusFilterBox = ({
   selectedIdeaFilters,
 }: Props) => {
   const { data: ideaStatuses } = useIdeaStatuses();
-  const { data: ideasFilterCounts } = useIdeasFilterCounts(selectedIdeaFilters);
+  const { data: ideasFilterCounts } = useIdeasFilterCounts({
+    ...selectedIdeaFilters,
+    idea_status: undefined,
+  });
 
   const handleOnChange = (nextSelectedStatusId: string | null) => {
     onChange(nextSelectedStatusId);
