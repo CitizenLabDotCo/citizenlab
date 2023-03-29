@@ -1,7 +1,8 @@
-import networkKeys from './keys';
+import { networkKeys, networkTaskKeys } from './keys';
 import { Keys } from 'utils/cl-react-query/types';
 
 export type NetworkKeys = Keys<typeof networkKeys>;
+export type NetworkTaskKeys = Keys<typeof networkTaskKeys>;
 export interface IInsightsTextNetworkAnalysisTasksData {
   id: string;
   type: 'text_network_analysis_task';

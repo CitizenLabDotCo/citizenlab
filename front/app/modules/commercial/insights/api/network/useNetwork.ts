@@ -2,11 +2,12 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import networkKeys from './keys';
+import { networkKeys, networkTaskKeys } from './keys';
 import {
   IInsightsNetwork,
   IInsightsTextNetworkAnalysisTasks,
   NetworkKeys,
+  NetworkTaskKeys,
 } from './types';
 
 const fetchTasks = (viewId: string) =>
@@ -30,9 +31,9 @@ const useNetwork = (viewId: string) => {
     IInsightsTextNetworkAnalysisTasks,
     CLErrors,
     IInsightsTextNetworkAnalysisTasks,
-    NetworkKeys
+    NetworkTaskKeys
   >({
-    queryKey: networkKeys.tasks(viewId),
+    queryKey: networkTaskKeys.list({ viewId }),
     queryFn: async () => {
       const response = await fetchTasks(viewId);
       setTasks(response);
@@ -44,7 +45,7 @@ const useNetwork = (viewId: string) => {
   });
 
   return useQuery<IInsightsNetwork, CLErrors, IInsightsNetwork, NetworkKeys>({
-    queryKey: networkKeys.network(viewId),
+    queryKey: networkKeys.item({ viewId }),
     queryFn: () => fetchNetwork(viewId),
     enabled: tasks && tasks.data.length === 0 ? true : false,
     retry: false,

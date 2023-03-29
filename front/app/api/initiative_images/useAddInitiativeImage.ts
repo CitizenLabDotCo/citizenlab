@@ -20,7 +20,9 @@ const useAddInitiativeImage = () => {
     mutationFn: addInitiativeImage,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: initiativeImagesKeys.list(variables.initiativeId),
+        queryKey: initiativeImagesKeys.list({
+          initiativeId: variables.initiativeId,
+        }),
       });
     },
   });

@@ -4,7 +4,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import categoriesKeys from './keys';
 import { CategoriesKeys, IInsightsCategories } from './types';
 
-const fetchCategories = (viewId: string) =>
+const fetchCategories = ({ viewId }: { viewId: string }) =>
   fetcher<IInsightsCategories>({
     path: `/insights/views/${viewId}/categories`,
     action: 'get',
@@ -17,8 +17,8 @@ const useCategories = (viewId: string) => {
     IInsightsCategories,
     CategoriesKeys
   >({
-    queryKey: categoriesKeys.list(viewId),
-    queryFn: () => fetchCategories(viewId),
+    queryKey: categoriesKeys.list({ viewId }),
+    queryFn: () => fetchCategories({ viewId }),
   });
 };
 

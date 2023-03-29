@@ -20,7 +20,9 @@ const useAddInitiativeFile = () => {
     mutationFn: addInitiativeFile,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: initiativeFilesKeys.list(variables.initiativeId),
+        queryKey: initiativeFilesKeys.list({
+          initiativeId: variables.initiativeId,
+        }),
       });
     },
   });

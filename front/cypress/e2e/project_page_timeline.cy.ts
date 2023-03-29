@@ -74,7 +74,7 @@ describe('New timeline project', () => {
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
-      publicationStatus: 'published',
+      publicationStatus: 'draft',
     }).then((project) => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
@@ -112,11 +112,20 @@ describe('New timeline project', () => {
         true,
         `description ${phaseFutureTitle}`
       );
+      return cy.apiCreateEvent({
+        projectId,
+        title: 'Some event',
+        location: 'Some location',
+        description: 'This is some event',
+        startDate: new Date(),
+        endDate: new Date(),
+      });
     });
   });
 
   beforeEach(() => {
     // navigate to project
+    cy.setAdminLoginCookie();
     const path = `/projects/${projectSlug}`;
     cy.visit(path);
     cy.wait(1000);
@@ -181,6 +190,10 @@ describe('New timeline project', () => {
     cy.get('.e2e-project-process-page').contains(
       `description ${phaseFutureTitle}`
     );
+  });
+
+  it('shows the events viewer even in draft projects', () => {
+    cy.get('[data-testid="EventInformation"]').should('exist');
   });
 
   after(() => {
