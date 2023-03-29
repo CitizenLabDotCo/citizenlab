@@ -25,9 +25,7 @@ export default function useOpenAuthModal({ onSuccess, waitIf }: Params = {}) {
     if (waitIf) return;
 
     const subscription = flowCompletedStream.subscribe((flowCompleted) => {
-      // console.log({ flowCompleted })
       if (flowCompleted) {
-        // console.log('calling onSuccess')
         onSuccess?.();
         flowCompletedStream.next(false);
       }
