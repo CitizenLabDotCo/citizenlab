@@ -257,7 +257,8 @@ export const IdeasShow = ({
     const titleMultiloc = idea.data.attributes.title_multiloc;
     const ideaTitle = localize(titleMultiloc);
     const statusId = idea.data.relationships?.idea_status?.data?.id;
-    const ideaImageLarge = ideaImages?.[0]?.attributes?.versions?.large || null;
+    const ideaImageLarge =
+      ideaImages?.data[0]?.attributes?.versions?.large || null;
     const ideaId = idea.data.id;
     const proposedBudget = idea.data.attributes?.proposed_budget;
     const ideaBody = localize(idea.data.attributes?.body_multiloc);

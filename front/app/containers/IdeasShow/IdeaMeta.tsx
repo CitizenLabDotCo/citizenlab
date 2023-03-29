@@ -58,7 +58,7 @@ const IdeaMeta = ({
     const ideaDescription = stripHtml(localize(body_multiloc), 250);
 
     const ideaImage =
-      !isNilOrError(ideaImages) && ideaImages.data.length > 0
+      ideaImages && ideaImages.data.length > 0
         ? ideaImages.data[0].attributes.versions.fb
         : null;
     const ideaUrl = window.location.href;

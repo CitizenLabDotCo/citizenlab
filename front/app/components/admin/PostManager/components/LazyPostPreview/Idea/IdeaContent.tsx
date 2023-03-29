@@ -204,7 +204,7 @@ const IdeaContent = ({
     const ideaTitle = localize(idea.attributes.title_multiloc);
     const ideaImageLarge =
       ideaImages && ideaImages.data.length > 0
-        ? ideaImages[0].attributes.versions.large
+        ? ideaImages.data[0].attributes.versions.large
         : null;
     const ideaGeoPosition = idea.attributes.location_point_geojson || null;
     const ideaAddress = getAddressOrFallbackDMS(
