@@ -51,8 +51,5 @@ export async function addFolderModerator(
 
   invalidateSeatsCache();
 
-  // await streams.fetchAllWith({
-  //   apiEndpoint: [indexPath(projectFolderId)],
-  // });
   return response;
 }

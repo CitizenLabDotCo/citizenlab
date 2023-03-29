@@ -34,7 +34,6 @@ export interface InputProps {
   // A project id is passed to this to only return users who are
   // moderator for the project (includes admins)
   canModerateProject?: string;
-  // What is the use of this one?
   canModerate?: boolean;
   // Doesn't work with false
   canAdmin?: boolean;
