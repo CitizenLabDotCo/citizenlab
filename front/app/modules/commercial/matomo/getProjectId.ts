@@ -93,5 +93,7 @@ export const extractIdeaSlug = (path: string) => {
 };
 
 const getIdea = async (slug: string) => {
-  return queryClient.fetchQuery(ideasKeys.item(slug), () => fetchIdea(slug));
+  return queryClient.fetchQuery(ideasKeys.item({ slug }), () =>
+    fetchIdea({ slug })
+  );
 };

@@ -1,16 +1,26 @@
+import { QueryKeys } from 'utils/cl-react-query/types';
 import { QueryParameters } from './types';
 
+const baseKey = {
+  type: 'category_suggestion_task',
+};
 const categorySuggestionsKeys = {
-  all: () => [{ type: 'category_suggestion_task' }],
-  tasks: (viewId: string, filters?: QueryParameters) => [
+  all: () => [baseKey],
+  lists: () => [{ ...baseKey, operation: 'list' }],
+  list: ({
+    viewId,
+    filters,
+  }: {
+    viewId: string;
+    filters?: QueryParameters;
+  }) => [
     {
-      ...categorySuggestionsKeys.all[0],
+      ...baseKey,
       type: 'category_suggestion_task',
-      operation: 'item',
-      viewId,
-      ...filters,
+      operation: 'list',
+      parameters: { viewId, ...filters },
     },
   ],
-} as const;
+} satisfies QueryKeys;
 
 export default categorySuggestionsKeys;

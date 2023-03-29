@@ -20,7 +20,7 @@ const useAddVolunteer = () => {
         queryKey: causeKeys.lists(),
       });
       queryClient.invalidateQueries({
-        queryKey: causeKeys.item(causeId),
+        queryKey: causeKeys.item({ id: causeId }),
       });
     },
   });

@@ -20,7 +20,7 @@ const StatusChangeOfYourIdeaNotification = memo<Props>((props) => {
       isRead={!!notification.attributes.read_at}
     >
       <FormattedMessage
-        {...messages.statusChangedOfYourIdea}
+        {...messages.statusChangedOfIdea}
         values={{
           status: (
             <T value={notification.attributes.idea_status_title_multiloc} />

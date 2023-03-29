@@ -21,7 +21,7 @@ const useDeleteInitiativeVote = () => {
     mutationFn: deleteInitiativeVote,
     onSuccess: (_data, { initiativeId }) => {
       queryClient.invalidateQueries({
-        queryKey: initiativesKeys.item(initiativeId),
+        queryKey: initiativesKeys.item({ id: initiativeId }),
       });
     },
   });
