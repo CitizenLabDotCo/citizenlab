@@ -221,6 +221,7 @@ resource 'Permissions' do
 
     get 'web_api/v1/phases/:phase_id/permissions/:action/requirements' do
       before do
+        SettingsService.new.activate_feature! 'user_confirmation'
         @permission = @phase.permissions.first
         @permission.update!(permitted_by: 'everyone_confirmed_email')
         create :custom_field_birthyear, required: true
