@@ -40,8 +40,6 @@ export default function openSignUpInModalIfNecessary(
       error_code,
     } = urlSearchParams;
 
-    console.log(urlSearchParams);
-
     if (isAuthError || isInvitation) {
       // remove all url params from the url as relevant params have already been captured in the code above.
       // this avoids possbile polution by any remaining url params later on in the process.
