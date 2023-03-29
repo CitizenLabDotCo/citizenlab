@@ -108,6 +108,8 @@ export default class GetUsers extends React.Component<Props, State> {
         can_admin: undefined,
         not_citizenlab_member: undefined,
         include_inactive: undefined,
+        is_not_project_moderator: undefined,
+        is_not_folder_moderator: undefined,
       },
       usersList: undefined,
       sortAttribute: getSortAttribute<Sort, SortAttribute>(initialSort),
@@ -188,6 +190,8 @@ export default class GetUsers extends React.Component<Props, State> {
           can_admin: props.canAdmin,
           not_citizenlab_member: props.notCitizenlabMember,
           include_inactive: props.includeInactive,
+          is_not_project_moderator: props.isNotProjectModerator,
+          is_not_folder_moderator: props.isNotFolderModerator,
         },
         isNil
       ),
