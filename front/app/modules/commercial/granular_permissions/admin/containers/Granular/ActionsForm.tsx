@@ -3,10 +3,15 @@ import styled from 'styled-components';
 import { isEmpty } from 'lodash-es';
 
 // services
-import { IPermissionData } from 'services/actionPermissions';
+import {
+  IGlobalPermissionAction,
+  IPermissionData,
+} from 'services/actionPermissions';
 
 // components
 import ActionForm from './ActionForm';
+import UserFieldSelection from '../../components/UserFieldSelection/UserFieldSelection';
+import { Box, colors, Title } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -15,17 +20,17 @@ import messages from './messages';
 // hooks
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
-import { Box, colors, Title } from '@citizenlab/cl2-component-library';
 
 // utils
 import {
   getPermissionActionMessage,
   getPermissionActionSectionSubtitle,
 } from './utils';
-import UserFieldSelection from '../../components/UserFieldSelection/UserFieldSelection';
+import { IPCAction } from 'typings';
 
 const ActionPermissionWrapper = styled.div`
   margin-bottom: 30px;
+  margin-left: 20px;
 
   &.last {
     margin-bottom: 0;
@@ -68,6 +73,21 @@ type SharedProps = {
   ) => void;
 };
 
+const showDivider = (
+  action: IPCAction | IGlobalPermissionAction,
+  postType: 'defaultInput' | 'nativeSurvey' | 'initiative'
+) => {
+  if (postType === 'nativeSurvey') return false;
+
+  switch (action) {
+    case 'taking_poll':
+    case 'taking_survey':
+      return false;
+    default:
+      return true;
+  }
+};
+
 type Props = PostTypeProps & SharedProps;
 
 const ActionsForm = memo(
@@ -101,20 +121,23 @@ const ActionsForm = memo(
                   index === permissions.length - 1 ? 'last' : ''
                 }`}
               >
-                <StyledTitle
-                  className="title-with-line"
-                  variant="h5"
-                  color="coolGrey600"
-                >
-                  <FormattedMessage
-                    {...getPermissionActionMessage({
-                      permissionAction,
-                      project,
-                      phases,
-                      postType,
-                    })}
-                  />
-                </StyledTitle>
+                {showDivider(permissionAction, postType) && (
+                  <StyledTitle
+                    className="title-with-line"
+                    variant="h5"
+                    color="coolGrey600"
+                  >
+                    <FormattedMessage
+                      {...getPermissionActionMessage({
+                        permissionAction,
+                        project,
+                        phases,
+                        postType,
+                      })}
+                    />
+                  </StyledTitle>
+                )}
+
                 <Title variant="h4" color="primary">
                   <FormattedMessage
                     {...getPermissionActionSectionSubtitle({
