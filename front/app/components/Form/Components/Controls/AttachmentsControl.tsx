@@ -14,10 +14,11 @@ import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import { FormContext } from 'components/Form/contexts';
 import { isNilOrError } from 'utils/helperUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
-import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
 import { Box } from '@citizenlab/cl2-component-library';
 import { getSubtextElement } from './controlUtils';
 import useIdeaFiles from 'api/idea_files/useIdeaFiles';
+import useAddIdeaFile from 'api/idea_files/useAddIdeaFile';
+import useDeleteIdeaFile from 'api/idea_files/useDeleteIdeaFile';
 
 const AttachmentsControl = ({
   uischema,
@@ -32,6 +33,8 @@ const AttachmentsControl = ({
 }: ControlProps) => {
   const { inputId } = useContext(FormContext);
   const { data: remoteFiles } = useIdeaFiles(inputId);
+  const { mutate: addIdeaFile } = useAddIdeaFile();
+  const { mutate: deleteIdeaFile } = useDeleteIdeaFile();
 
   const [didBlur, setDidBlur] = useState(false);
   const [files, setFiles] = useState<UploadFile[]>([]);
@@ -39,8 +42,20 @@ const AttachmentsControl = ({
   const handleFileOnAdd = async (fileToAdd: UploadFile) => {
     const oldData = data ?? [];
     if (inputId) {
-      addIdeaFile(inputId, fileToAdd.base64, fileToAdd.name);
-      handleChange(path, [...oldData, fileToAdd]);
+      addIdeaFile(
+        {
+          ideaId: inputId,
+          file: {
+            file: fileToAdd.base64,
+            name: fileToAdd.name,
+          },
+        },
+        {
+          onSuccess: () => {
+            handleChange(path, [...oldData, fileToAdd]);
+          },
+        }
+      );
     } else {
       handleChange(path, [
         ...oldData,
@@ -58,12 +73,18 @@ const AttachmentsControl = ({
   };
   const handleFileOnRemove = (fileToRemove: UploadFile) => {
     if (inputId && fileToRemove.remote) {
-      deleteIdeaFile(inputId, fileToRemove.id as string);
-      handleChange(
-        path,
-        data?.length === 1
-          ? undefined
-          : data.filter((file) => file.id !== fileToRemove.id)
+      deleteIdeaFile(
+        { ideaId: inputId, fileId: fileToRemove.id as string },
+        {
+          onSuccess: () => {
+            handleChange(
+              path,
+              data?.length === 1
+                ? undefined
+                : data.filter((file) => file.id !== fileToRemove.id)
+            );
+          },
+        }
       );
     } else {
       handleChange(

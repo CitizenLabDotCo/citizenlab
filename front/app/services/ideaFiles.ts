@@ -1,7 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
-
-const apiEndpoint = `${API_PATH}/ideas`;
+import streams from 'utils/streams';
 
 export interface IIdeaFileData {
   id: string;
@@ -26,33 +24,8 @@ export interface IIdeaFiles {
   data: IIdeaFileData[];
 }
 
-export function ideaFilesStream(
-  ideaId: string,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IIdeaFiles>({
-    apiEndpoint: `${apiEndpoint}/${ideaId}/files`,
-    ...streamParams,
-  });
-}
-
-export function addIdeaFile(
-  ideaId: string,
-  base64: string,
-  name: string,
-  ordering: number | null = null
-) {
-  return streams.add<IIdeaFile>(`${apiEndpoint}/${ideaId}/files`, {
-    file: { name, ordering, file: base64 },
-  });
-}
-
 export function addIdeaImportFile(base64: string) {
   return streams.add<IIdeaFile>(`${API_PATH}/import_ideas/bulk_create_xlsx`, {
     import_ideas: { xlsx: base64 },
   });
-}
-
-export function deleteIdeaFile(ideaId: string, fileId: string) {
-  return streams.delete(`${apiEndpoint}/${ideaId}/files/${fileId}`, fileId);
 }
