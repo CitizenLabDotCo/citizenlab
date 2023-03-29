@@ -22,10 +22,3 @@ export interface IIdeaImage {
 export interface IIdeaImages {
   data: IIdeaImageData[];
 }
-
-export interface AddIdeaImageObject {
-  ideaId: string;
-  image: {
-    image: string;
-  };
-}
