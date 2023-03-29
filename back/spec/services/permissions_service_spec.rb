@@ -178,7 +178,7 @@ describe PermissionsService do
       context 'when light confirmed resident' do
         before { user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {}) }
 
-        it { expect(denied_reason).to be_nil } # TODO: change to missing_data when applying the new implementation to all permitted_by's
+        it { expect(denied_reason).to eq 'missing_data' }
       end
 
       context 'when light confirmed inactive resident' do

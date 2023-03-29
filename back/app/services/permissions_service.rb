@@ -44,11 +44,7 @@ class PermissionsService
   end
 
   def denied_reason_for_permission(permission, user)
-    if permission.permitted_by == 'everyone_confirmed_email'
-      denied_reason permission, user
-    else
-      old_denied_reason permission, user
-    end
+    denied_reason permission, user
   end
 
   def requirements(permission, user)
@@ -83,35 +79,21 @@ class PermissionsService
     actions - Permission.where(permission_scope: scope).pluck(:action)
   end
 
-  def old_denied_reason(permission, user)
-    return if permission.permitted_by == 'everyone'
-    return DENIED_REASONS[:not_signed_in] if !user
-    return DENIED_REASONS[:not_active] if !user.active?
-
-    return if UserRoleService.new.can_moderate? permission.permission_scope, user
-
-    reason = case permission.permitted_by
-    when 'users' then :not_signed_in unless user
-    when 'admins_moderators' then :not_permitted
-    when 'groups' then denied_when_permitted_by_groups?(permission, user)
-    else
-      raise "Unsupported permitted_by: '#{permission.permitted_by}'."
-    end
-
-    DENIED_REASONS[reason]
-  end
-
   def denied_reason(permission, user)
     if permission.permitted_by == 'everyone'
       user ||= User.new
-    elsif !user
-      return DENIED_REASONS[:not_signed_in]
-    elsif user.confirmation_required?
-      return DENIED_REASONS[:missing_data]
-    elsif !user.active?
-      return DENIED_REASONS[:not_active]
-    end
+    else
+      return DENIED_REASONS[:not_signed_in] if !user
+      return DENIED_REASONS[:missing_data] if user.confirmation_required?
+      return DENIED_REASONS[:not_active] if !user.active?
+      return if UserRoleService.new.can_moderate? permission.permission_scope, user
+      return DENIED_REASONS[:not_permitted] if permission.permitted_by == 'admins_moderators'
 
+      if permission.permitted_by == 'groups'
+        reason = denied_when_permitted_by_groups?(permission, user)
+        return DENIED_REASONS[reason] if reason.present?
+      end
+    end
     return if requirements(permission, user)[:permitted]
 
     DENIED_REASONS[:missing_data]
