@@ -12,9 +12,10 @@ import ideaFormMessages from 'containers/IdeasNewPage/messages';
 import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
 
 // services
-import { deleteIdeaImage } from 'services/ideaImages';
 import { usePermission } from 'services/permissions';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
+import useDeleteIdeaImage from 'api/idea_images/useDeleteIdeaImage';
+
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'hooks/useAuthUser';
@@ -45,6 +46,7 @@ const AdminIdeaEdit = ({
   const previousPathName = useContext(PreviousPathnameContext);
   const authUser = useAuthUser();
   const { data: idea } = useIdeaById(ideaId);
+  const { mutate: deleteIdeaImage } = useDeleteIdeaImage();
   const granted = usePermission({
     item: idea?.data || null,
     action: 'edit',
@@ -129,12 +131,11 @@ const AdminIdeaEdit = ({
       idea_images_attributes !== initialFormData?.idea_images_attributes;
 
     // Delete a remote image only on submission
-    if (isImageNew && initialFormData?.idea_images_attributes !== undefined) {
-      try {
-        deleteIdeaImage(ideaId, initialFormData?.idea_images_attributes[0].id);
-      } catch (e) {
-        // TODO: Add graceful error handling
-      }
+    if (isImageNew && initialFormData?.idea_images_attributes[0]?.id) {
+      deleteIdeaImage({
+        ideaId,
+        imageId: initialFormData.idea_images_attributes[0].id,
+      });
     }
 
     const payload = {
