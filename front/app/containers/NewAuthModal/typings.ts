@@ -20,9 +20,7 @@ export interface State {
 
 export type UpdateState = (state: Partial<State>) => void;
 
-export type GetRequirements = () => Promise<
-  AuthenticationRequirements['requirements']
->;
+export type GetRequirements = () => Promise<AuthenticationRequirements>;
 
 export type StepConfig = ReturnType<typeof getStepConfig>;
 export type Step = keyof StepConfig;

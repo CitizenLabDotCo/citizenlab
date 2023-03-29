@@ -16,12 +16,16 @@ export default function useOpenAuthModal({ onSuccess, waitIf }: Params = {}) {
 
     return openSignUpInModal({
       ...metaData,
-      onSuccess: () => setExecuteSuccess(true),
+      onSuccess: () => {
+        setExecuteSuccess(true);
+      },
     });
   }, []);
 
   useEffect(() => {
-    if (waitIf || !executeSuccess) return;
+    if (waitIf) return;
+    if (!executeSuccess) return;
+
     onSuccess?.();
     setExecuteSuccess(false);
   }, [executeSuccess, waitIf, onSuccess]);

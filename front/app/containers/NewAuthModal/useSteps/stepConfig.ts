@@ -47,7 +47,12 @@ export const getStepConfig = (
       TRIGGER_REGISTRATION_FLOW: async () => {
         updateState({ email: null });
 
-        const requirements = await getRequirements();
+        const { permitted, requirements } = await getRequirements();
+
+        if (permitted) {
+          setCurrentStep('success');
+          return;
+        }
 
         if (requirements.built_in.email === 'satisfied') {
           setCurrentStep('email-confirmation');
@@ -186,7 +191,7 @@ export const getStepConfig = (
         try {
           await signIn({ email, password, rememberMe, tokenLifetime });
 
-          const requirements = await getRequirements();
+          const { requirements } = await getRequirements();
 
           if (requirements.special.confirmation === 'require') {
             setCurrentStep('email-confirmation');
