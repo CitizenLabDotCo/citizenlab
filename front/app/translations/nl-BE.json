@@ -173,7 +173,7 @@
   "app.components.IdeasShow.reportAsSpam": "Rapporteer als spam",
   "app.components.IdeasShow.send": "Verzenden",
   "app.components.IdeasShow.skipSharing": "Sla deze stap over, en deel het later",
-  "app.components.IdeasShowPage.signIn2": "Log in",
+  "app.components.IdeasShowPage.signIn2": "Inloggen",
   "app.components.IdeasShowPage.sorryNoAccess": "Excuus, je hebt geen toegang tot deze pagina. Je moet mogelijk opnieuw inloggen of je aanmelden om toegang te krijgen.",
   "app.components.InitiativeCard.xComments": "{commentsCount, plural, =0 {geen reacties} one {1 reactie} other {# reacties}}",
   "app.components.InitiativeCard.xVotesOfY": "{xVotes} van de {votingThreshold}",
