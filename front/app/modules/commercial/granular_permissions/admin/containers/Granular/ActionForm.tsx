@@ -159,7 +159,7 @@ const ActionForm = ({
         </Box>
       )}
       {permittedBy === 'everyone_confirmed_email' && (
-        <Box mt="16px" maxWidth="620px">
+        <Box mt="16px" maxWidth="740px">
           <Warning>
             {formatMessage(messages.permissionEveryoneEmailWarning)}
           </Warning>
