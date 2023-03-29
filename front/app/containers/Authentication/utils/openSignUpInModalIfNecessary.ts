@@ -4,6 +4,7 @@ import { openSignUpInModal } from 'events/openSignUpInModal';
 import { SSOParams } from 'services/singleSignOn';
 import clHistory from 'utils/cl-router/history';
 import { TAuthUser } from 'hooks/useAuthUser';
+import { AuthenticationContext } from 'api/authentication_requirements/types';
 
 export default function openSignUpInModalIfNecessary(
   authUser: TAuthUser,
@@ -38,6 +39,8 @@ export default function openSignUpInModalIfNecessary(
       sso_verification_type,
       error_code,
     } = urlSearchParams;
+
+    console.log(urlSearchParams);
 
     if (isAuthError || isInvitation) {
       // remove all url params from the url as relevant params have already been captured in the code above.
@@ -88,15 +91,12 @@ export default function openSignUpInModalIfNecessary(
           error: isAuthError ? { code: error_code || 'general' } : undefined,
           verification: !!sso_verification,
           context:
-            sso_verification &&
-            sso_verification_action &&
-            sso_verification_id &&
-            sso_verification_type
-              ? {
-                  action: sso_verification_action as any,
-                  id: sso_verification_id as any,
-                  type: sso_verification_type as any,
-                }
+            sso_verification_action && sso_verification_type
+              ? ({
+                  action: sso_verification_action,
+                  id: sso_verification_id,
+                  type: sso_verification_type,
+                } as AuthenticationContext)
               : undefined,
         });
       }
