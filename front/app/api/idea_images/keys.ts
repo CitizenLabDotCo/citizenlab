@@ -9,7 +9,7 @@ const ideaImagesKeys = {
     { ...baseKey, operation: 'list', parameters: { ideaId } },
   ],
   items: () => [{ ...baseKey, operation: 'item' }],
-  item: ({ ideaId, imageId }: { ideaId: string; imageId: string }) => [
+  item: ({ ideaId, imageId }: { ideaId: string; imageId?: string }) => [
     {
       ...baseKey,
       operation: 'item',

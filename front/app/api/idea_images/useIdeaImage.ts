@@ -9,14 +9,14 @@ const fetchIdeaImage = ({
   imageId,
 }: {
   ideaId: string;
-  imageId: string;
+  imageId?: string;
 }) =>
   fetcher<IIdeaImage>({
     path: `/ideas/${ideaId}/images/${imageId}`,
     action: 'get',
   });
 
-const useIdeaImage = (ideaId: string, imageId: string) => {
+const useIdeaImage = (ideaId: string, imageId?: string) => {
   return useQuery<IIdeaImage, CLErrors, IIdeaImage, IdeaImagesKeys>({
     queryKey: ideaImagesKeys.item({ ideaId, imageId }),
     queryFn: () => fetchIdeaImage({ ideaId, imageId }),
