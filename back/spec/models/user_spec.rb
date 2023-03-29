@@ -487,7 +487,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe do
+  describe 'not moderator scopes' do
     let(:user) { create(:user) }
     let(:admin) { create(:admin) }
     let!(:project) { create(:project) }
