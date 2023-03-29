@@ -1,17 +1,23 @@
-const categoriesKeys = {
-  all: () => [{ type: 'category' }] as const,
-  lists: () => [{ ...categoriesKeys.all()[0], operation: 'list' }] as const,
-  list: (viewId: string) =>
-    [{ ...categoriesKeys.all()[0], operation: 'list', viewId }] as const,
-  items: () => [{ ...categoriesKeys.all()[0], operation: 'item' }] as const,
-  item: (viewId: string, id: string) =>
-    [
-      {
-        ...categoriesKeys.items()[0],
-        viewId,
-        id,
-      },
-    ] as const,
+import { QueryKeys } from 'utils/cl-react-query/types';
+
+const baseKey = {
+  type: 'category',
 };
+
+const categoriesKeys = {
+  all: () => [baseKey],
+  lists: () => [{ ...baseKey, operation: 'list' }],
+  list: ({ viewId }: { viewId: string }) => [
+    { ...baseKey, operation: 'list', parameters: { viewId } },
+  ],
+  items: () => [{ ...baseKey, operation: 'item' }],
+  item: ({ viewId, id }: { viewId: string; id: string }) => [
+    {
+      ...baseKey,
+      operation: 'item',
+      parameters: { viewId, id },
+    },
+  ],
+} satisfies QueryKeys;
 
 export default categoriesKeys;

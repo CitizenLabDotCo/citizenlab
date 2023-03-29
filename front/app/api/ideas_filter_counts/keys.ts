@@ -1,11 +1,17 @@
+import { QueryKeys } from 'utils/cl-react-query/types';
 import { IIdeasFilterCountsQueryParameters } from './types';
 
-const ideaFilterCountsKeys = {
-  all: () => [{ type: 'filter_counts', variant: 'idea' }],
-  items: () => [{ ...ideaFilterCountsKeys.all()[0], operation: 'item' }],
-  item: (filters: IIdeasFilterCountsQueryParameters) => [
-    { ...ideaFilterCountsKeys.items()[0], ...filters },
-  ],
+const baseKey = {
+  type: 'filter_counts',
+  variant: 'idea',
 };
+
+const ideaFilterCountsKeys = {
+  all: () => [baseKey],
+  items: () => [{ ...baseKey, operation: 'item' }],
+  item: (parameters: IIdeasFilterCountsQueryParameters) => [
+    { ...baseKey, operation: 'item', parameters },
+  ],
+} satisfies QueryKeys;
 
 export default ideaFilterCountsKeys;
