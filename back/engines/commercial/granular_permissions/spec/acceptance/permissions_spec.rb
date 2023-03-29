@@ -227,19 +227,19 @@ resource 'Permissions' do
         create :custom_field_gender, required: false
         create :custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field'
 
+        @user.reset_confirmation_with_no_password
         @user.update!(
           email: 'my@email.com',
           first_name: 'Jack',
           last_name: nil,
           password_digest: nil,
-          email_confirmed_at: nil,
           custom_field_values: { 'gender' => 'male' }
         )
       end
 
       let(:action) { @permission.action }
 
-      example_request 'Get the participation requirements of a user in a timeline phase' do
+      example_request 'Get the participation requirements of a user requiring confirmation in a timeline phase' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :requirements)).to eq({
