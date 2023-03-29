@@ -534,6 +534,7 @@
   "app.components.form.ErrorDisplay.guidelinesLinkText": "eis Richtlinnen",
   "app.components.form.ErrorDisplay.next": "Weider",
   "app.components.form.ErrorDisplay.previous": "Zeréck",
+  "app.components.form.ErrorDisplay.save": "Späicheren",
   "app.components.form.ErrorDisplay.submitSurvey": "Ëmfro areechen",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Fänkt un ze tippen, fir no Benotzer-E-Mail oder Numm ze sichen......",
   "app.components.form.blockedVerified": "Dir kënnt dëst Feld editéieren, well et verifizéiert Informatiounen enthält",
