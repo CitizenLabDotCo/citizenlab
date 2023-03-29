@@ -65,12 +65,21 @@ export default function openSignUpInModalIfNecessary(
         !authUser.attributes.verified &&
         sso_verification;
 
+      const shouldFinishRegistrationAfterSSO =
+        sso_response &&
+        sso_flow === 'signup' &&
+        !isNilOrError(authUser) &&
+        !authUser.attributes.registration_completed_at;
+
       // we do not open the modal when the user gets sent to the '/sign-up' or '/sign-in' urls because
       // on those pages we show the sign-up-in flow directly on the page and not as a modal.
       // otherwise, when any of the above-defined conditions is set to true, we do trigger the modal
       if (
         !endsWith(sso_pathname, ['sign-up', 'sign-in']) &&
-        (isAuthError || shouldVerify || isInvitation)
+        (isAuthError ||
+          shouldVerify ||
+          isInvitation ||
+          shouldFinishRegistrationAfterSSO)
       ) {
         openSignUpInModal({
           isInvitation,
