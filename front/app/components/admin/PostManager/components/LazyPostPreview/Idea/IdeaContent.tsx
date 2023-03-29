@@ -32,7 +32,7 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPermission, {
   GetPermissionChildProps,
 } from 'resources/GetPermission';
-import useIdeaImages from 'hooks/useIdeaImages';
+import useIdeaImages from 'api/idea_images/useIdeaImages';
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 
 // utils
@@ -183,7 +183,7 @@ const IdeaContent = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const ideaImages = useIdeaImages(ideaId);
+  const { data: ideaImages } = useIdeaImages(ideaId);
   const { mutate: deleteIdea } = useDeleteIdea();
 
   const handleClickDelete = (processType: ProcessType) => () => {
@@ -203,7 +203,7 @@ const IdeaContent = ({
     const ideaId = idea.id;
     const ideaTitle = localize(idea.attributes.title_multiloc);
     const ideaImageLarge =
-      !isNilOrError(ideaImages) && ideaImages.length > 0
+      ideaImages && ideaImages.data.length > 0
         ? ideaImages[0].attributes.versions.large
         : null;
     const ideaGeoPosition = idea.attributes.location_point_geojson || null;

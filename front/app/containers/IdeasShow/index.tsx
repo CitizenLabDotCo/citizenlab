@@ -72,7 +72,7 @@ import usePhases from 'hooks/usePhases';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
 import { useSearchParams } from 'react-router-dom';
-import useIdeaImages from 'hooks/useIdeaImages';
+import useIdeaImages from 'api/idea_images/useIdeaImages';
 import useLocalize from 'hooks/useLocalize';
 
 const contentFadeInDuration = 250;
@@ -186,7 +186,7 @@ export const IdeasShow = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const ideaImages = useIdeaImages(ideaId);
+  const { data: ideaImages } = useIdeaImages(ideaId);
   const [newIdeaId, setNewIdeaId] = useState<string | null>(null);
   const [translateButtonIsClicked, setTranslateButtonIsClicked] =
     useState<boolean>(false);

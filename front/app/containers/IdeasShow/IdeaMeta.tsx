@@ -12,7 +12,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetIdeaById, { GetIdeaByIdChildProps } from 'resources/GetIdeaById';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
-import useIdeaImages from 'hooks/useIdeaImages';
+import useIdeaImages from 'api/idea_images/useIdeaImages';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
@@ -41,7 +41,7 @@ interface Props extends InputProps, DataProps {}
 
 const IdeaMeta = memo<Props>(
   ({ idea, locale, tenant, authUser, author, project, ideaId }) => {
-    const ideaImages = useIdeaImages(ideaId);
+    const { data: ideaImages } = useIdeaImages(ideaId);
     const localize = useLocalize();
 
     if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(idea)) {
@@ -50,7 +50,7 @@ const IdeaMeta = memo<Props>(
       const localizedTitle = localize(title_multiloc, { maxChar: 50 });
       const ideaDescription = stripHtml(localize(body_multiloc), 250);
       const ideaImage =
-        !isNilOrError(ideaImages) && ideaImages.length > 0
+        !isNilOrError(ideaImages) && ideaImages.data.length > 0
           ? ideaImages[0].attributes.versions.fb
           : null;
       const ideaUrl = window.location.href;

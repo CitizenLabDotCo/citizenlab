@@ -20,7 +20,7 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
 import useInputSchema from 'hooks/useInputSchema';
-import useIdeaImages from 'hooks/useIdeaImages';
+import useIdeaImages from 'api/idea_images/useIdeaImages';
 import useResourceFiles from 'hooks/useResourceFiles';
 
 // intl
@@ -57,7 +57,7 @@ const AdminIdeaEdit = ({
       ? null
       : idea.data.relationships.project.data.id,
   });
-  const remoteImages = useIdeaImages(ideaId);
+  const { data: remoteImages } = useIdeaImages(ideaId);
   const remoteFiles = useResourceFiles({
     resourceId: ideaId,
     resourceType: 'idea',
@@ -95,7 +95,7 @@ const AdminIdeaEdit = ({
               prop === 'idea_images_attributes' &&
               Array.isArray(idea.data.relationships?.idea_images?.data)
             ) {
-              return [prop, remoteImages];
+              return [prop, remoteImages?.data];
             } else if (prop === 'idea_files_attributes') {
               const attachmentsValue =
                 !isNilOrError(remoteFiles) && remoteFiles.length > 0
