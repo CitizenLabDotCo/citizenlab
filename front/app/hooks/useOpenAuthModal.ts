@@ -1,4 +1,5 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
+import { BehaviorSubject } from 'rxjs';
 import { openSignUpInModal, ISignUpInMetaData } from 'events/openSignUpInModal';
 
 interface Params {
@@ -8,27 +9,32 @@ interface Params {
 
 type OpenAuthModalParams = Partial<Omit<ISignUpInMetaData, 'onSuccess'>>;
 
+const flowCompletedStream = new BehaviorSubject(false);
+
 export default function useOpenAuthModal({ onSuccess, waitIf }: Params = {}) {
-  const [executeSuccess, setExecuteSuccess] = useState(false);
-
   const openAuthModal = useCallback((metaData?: OpenAuthModalParams) => {
-    setExecuteSuccess(false);
-
     return openSignUpInModal({
       ...metaData,
       onSuccess: () => {
-        setExecuteSuccess(true);
+        flowCompletedStream.next(true);
       },
     });
   }, []);
 
   useEffect(() => {
     if (waitIf) return;
-    if (!executeSuccess) return;
 
-    onSuccess?.();
-    setExecuteSuccess(false);
-  }, [executeSuccess, waitIf, onSuccess]);
+    const subscription = flowCompletedStream.subscribe((flowCompleted) => {
+      // console.log({ flowCompleted })
+      if (flowCompleted) {
+        // console.log('calling onSuccess')
+        onSuccess?.();
+        flowCompletedStream.next(false);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [waitIf, onSuccess]);
 
   return openAuthModal;
 }

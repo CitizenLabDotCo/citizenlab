@@ -131,7 +131,7 @@ const CommentVote = ({
 
     if (postType === 'idea') {
       // Wondering why 'comment_voting_idea' and not 'commenting_idea'?
-      // See /Users/work/Projects/citizenlab/front/app/api/ideas/types.ts
+      // See front/app/api/ideas/types.ts
       const commentVotingDisabledReason = get(
         post,
         'attributes.action_descriptor.comment_voting_idea.disabled_reason'
@@ -141,7 +141,7 @@ const CommentVote = ({
         !isNilOrError(authUser) && authUser.attributes.verified;
 
       // Wondering why 'commenting_idea' and not 'comment_voting_idea'?
-      // See /Users/work/Projects/citizenlab/front/app/api/ideas/types.ts
+      // See front/app/api/ideas/types.ts
       const context = {
         type: 'idea',
         action: 'commenting_idea',
