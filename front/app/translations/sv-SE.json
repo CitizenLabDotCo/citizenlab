@@ -421,7 +421,6 @@
   "app.components.QuillEditor.videoPrompt": "Ange video:",
   "app.components.QuillEditor.visitPrompt": "Besök länk:",
   "app.components.SeatInfo.additionalSeats": "Ytterligare platser",
-  "app.components.SeatInfo.adminSeatsIncludedSubText": "{adminSeats} administratörsplatser ingår",
   "app.components.SeatInfo.currentAdminSeatsTitle": "Nuvarande administratörsplatser",
   "app.components.SeatInfo.currentCollaboratorSeatsTitle": "Nuvarande platser för samarbetspartner",
   "app.components.SeatInfo.includedAdminToolTip": "Här visas antalet tillgängliga platser för administratörer som ingår i årsavtalet.",

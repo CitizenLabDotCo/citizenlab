@@ -421,7 +421,6 @@
   "app.components.QuillEditor.videoPrompt": "Indtast video:",
   "app.components.QuillEditor.visitPrompt": "Besøg link:",
   "app.components.SeatInfo.additionalSeats": "Yderligere pladser",
-  "app.components.SeatInfo.adminSeatsIncludedSubText": "{adminSeats} adminpladser inkluderet",
   "app.components.SeatInfo.currentAdminSeatsTitle": "Nuværende administratorpladser",
   "app.components.SeatInfo.currentCollaboratorSeatsTitle": "Nuværende antal projektleder pladser",
   "app.components.SeatInfo.includedAdminToolTip": "Dette tal viser antallet af ledige pladser for administratorer, der er inkluderet i den årlige kontrakt.",

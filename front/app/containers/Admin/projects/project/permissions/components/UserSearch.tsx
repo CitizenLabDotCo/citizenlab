@@ -4,6 +4,9 @@ import React, { memo, useState } from 'react';
 // Services
 import { addMembership } from 'services/projectModerators';
 
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 // i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
@@ -28,6 +31,9 @@ interface Props {
 
 const UserSearch = memo(({ projectId }: Props) => {
   const { formatMessage } = useIntl();
+  const hasSeatBasedBillingEnabled = useFeatureFlag({
+    name: 'seat_based_billing',
+  });
   const [processing, setProcessing] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [moderatorToAdd, setModeratorToAdd] = useState<string | null>(null);
@@ -40,10 +46,6 @@ const UserSearch = memo(({ projectId }: Props) => {
     setShowModal(true);
   };
 
-  const onClickAddButton = () => {
-    openModal();
-  };
-
   const handleOnChange = (userId: string) => {
     setModeratorToAdd(userId);
   };
@@ -54,6 +56,14 @@ const UserSearch = memo(({ projectId }: Props) => {
       await addMembership(projectId, moderatorToAdd);
       setProcessing(false);
       setModeratorToAdd(null);
+    }
+  };
+
+  const handleAddClick = () => {
+    if (hasSeatBasedBillingEnabled) {
+      openModal();
+    } else {
+      handleOnAddModeratorsClick();
     }
   };
 
@@ -77,16 +87,18 @@ const UserSearch = memo(({ projectId }: Props) => {
           buttonStyle="cl-blue"
           icon="plus-circle"
           padding="10px 16px"
-          onClick={onClickAddButton}
+          onClick={handleAddClick}
           disabled={!moderatorToAdd}
           processing={processing}
         />
       </Box>
-      <AddCollaboratorsModal
-        addModerators={handleOnAddModeratorsClick}
-        showModal={showModal}
-        closeModal={closeModal}
-      />
+      {hasSeatBasedBillingEnabled && (
+        <AddCollaboratorsModal
+          addModerators={handleOnAddModeratorsClick}
+          showModal={showModal}
+          closeModal={closeModal}
+        />
+      )}
     </Box>
   );
 });

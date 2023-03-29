@@ -12,6 +12,7 @@ import messages from './messages';
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useSeats from 'api/seats/useSeats';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // Utils
 import { isNil } from 'utils/helperUtils';
@@ -36,11 +37,12 @@ const getInfoText = (
 const getButtonText = (
   isUserAdmin: boolean,
   maximumAdmins: number | null | undefined,
-  currentAdminSeats: number
+  currentAdminSeats: number,
+  hasSeatBasedBillingEnabled: boolean
 ): MessageDescriptor => {
   const buttonText = messages.confirm;
 
-  if (isUserAdmin) {
+  if (isUserAdmin || !hasSeatBasedBillingEnabled) {
     return buttonText;
   }
 
@@ -64,6 +66,9 @@ const ChangeSeatModal = ({
 }: Props) => {
   const isUserAdmin = isAdmin({ data: userToChangeSeat });
   const { formatMessage } = useIntl();
+  const hasSeatBasedBillingEnabled = useFeatureFlag({
+    name: 'seat_based_billing',
+  });
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
   if (!appConfiguration || !seats) return null;
@@ -83,7 +88,8 @@ const ChangeSeatModal = ({
   const buttonText = getButtonText(
     isUserAdmin,
     maximumAdmins,
-    currentAdminSeats
+    currentAdminSeats,
+    hasSeatBasedBillingEnabled
   );
 
   return (

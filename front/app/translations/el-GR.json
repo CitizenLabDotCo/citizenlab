@@ -421,7 +421,6 @@
   "app.components.QuillEditor.videoPrompt": "Εισαγωγή βίντεο:",
   "app.components.QuillEditor.visitPrompt": "Επισκεφθείτε το σύνδεσμο:",
   "app.components.SeatInfo.additionalSeats": "Πρόσθετες θέσεις",
-  "app.components.SeatInfo.adminSeatsIncludedSubText": "{adminSeats} συμπεριλαμβάνονται θέσεις διαχειριστή",
   "app.components.SeatInfo.currentAdminSeatsTitle": "Τρέχουσες θέσεις διαχειριστή",
   "app.components.SeatInfo.currentCollaboratorSeatsTitle": "Τρέχουσες θέσεις συνεργατών",
   "app.components.SeatInfo.includedAdminToolTip": "Αυτό δείχνει τον αριθμό των διαθέσιμων θέσεων για διαχειριστές που περιλαμβάνονται στο ετήσιο συμβόλαιο.",

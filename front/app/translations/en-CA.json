@@ -421,7 +421,6 @@
   "app.components.QuillEditor.videoPrompt": "Enter video:",
   "app.components.QuillEditor.visitPrompt": "Visit link:",
   "app.components.SeatInfo.additionalSeats": "Additional seats",
-  "app.components.SeatInfo.adminSeatsIncludedSubText": "{adminSeats} admin seats included",
   "app.components.SeatInfo.currentAdminSeatsTitle": "Current admin seats",
   "app.components.SeatInfo.currentCollaboratorSeatsTitle": "Current collaborator seats",
   "app.components.SeatInfo.includedAdminToolTip": "This shows the number of available seats for admins included in the yearly contract.",

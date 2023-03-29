@@ -1,17 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
 
-// components
-import { Section, SubSectionTitle } from 'components/admin/Section';
-
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
-import { IconTooltip } from '@citizenlab/cl2-component-library';
+import { IconTooltip, Box } from '@citizenlab/cl2-component-library';
 import ModeratorList from '../../components/ModeratorList';
 import UserSearch from '../../components/UserSearch';
+import SeatInfo from 'components/SeatInfo';
+import { Section, SubSectionTitle } from 'components/admin/Section';
+
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const ModeratorSubSection = styled(Section)`
   margin-bottom: 30px;
@@ -29,6 +31,9 @@ interface Props {
 
 const ProjectManagement = ({ projectId }: Props) => {
   const { formatMessage } = useIntl();
+  const hasSeatBasedBillingEnabled = useFeatureFlag({
+    name: 'seat_based_billing',
+  });
 
   return (
     <ModeratorSubSection>
@@ -56,6 +61,11 @@ const ProjectManagement = ({ projectId }: Props) => {
       </SubSectionTitle>
       <UserSearch projectId={projectId} />
       <ModeratorList projectId={projectId} />
+      {!hasSeatBasedBillingEnabled && (
+        <Box width="516px">
+          <SeatInfo seatType="collaborator" />
+        </Box>
+      )}
     </ModeratorSubSection>
   );
 };

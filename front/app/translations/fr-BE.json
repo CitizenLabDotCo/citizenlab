@@ -420,7 +420,6 @@
   "app.components.QuillEditor.videoPrompt": "Entrer la vidéo :",
   "app.components.QuillEditor.visitPrompt": "Visiter le lien :",
   "app.components.SeatInfo.additionalSeats": "Sièges supplémentaires",
-  "app.components.SeatInfo.adminSeatsIncludedSubText": "{adminSeats} sièges administrateurs inclus",
   "app.components.SeatInfo.currentAdminSeatsTitle": "Sièges d'administrateur actuels",
   "app.components.SeatInfo.currentCollaboratorSeatsTitle": "Sièges des collaborateurs actuels",
   "app.components.SeatInfo.includedAdminToolTip": "Ceci montre le nombre de sièges disponibles pour les administrateurs inclus dans le contrat annuel.",

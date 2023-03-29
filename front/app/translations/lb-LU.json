@@ -421,7 +421,6 @@
   "app.components.QuillEditor.videoPrompt": "Video aginn:",
   "app.components.QuillEditor.visitPrompt": "Gidd op de Link: ",
   "app.components.SeatInfo.additionalSeats": "Zousätzlech Plazen",
-  "app.components.SeatInfo.adminSeatsIncludedSubText": "{adminSeats} Verwalterplazen abegraff",
   "app.components.SeatInfo.currentAdminSeatsTitle": "Aktuell Verwalterplazen",
   "app.components.SeatInfo.currentCollaboratorSeatsTitle": "Plaze fir aktuell Collaborateuren",
   "app.components.SeatInfo.includedAdminToolTip": "Dëst weist Unzuel vun disponibel Plazen fir Verwalter, déi am järleche Kontrakt abegraff sinn.",

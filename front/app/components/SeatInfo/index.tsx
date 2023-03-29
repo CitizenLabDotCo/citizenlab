@@ -11,13 +11,15 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 // Hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useSeats from 'api/seats/useSeats';
+
 import { TSeatNumber } from 'api/app_configuration/types';
 
 // Intl
-import messages from './messages';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 // Utils
 import { isNil } from 'utils/helperUtils';
@@ -29,15 +31,18 @@ export type SeatTypeMessageDescriptor = {
   [key in TSeatType]: MessageDescriptor;
 };
 
-type SeatNumbersType = {
+export type SeatNumbersType = {
   [key in TSeatType]: TSeatNumber;
 };
 
-type Props = {
+export type SeatInfoProps = {
   seatType: TSeatType;
 };
 
-const SeatInfo = ({ seatType }: Props) => {
+const SeatInfo = ({ seatType }: SeatInfoProps) => {
+  const hasSeatBasedBillingEnabled = useFeatureFlag({
+    name: 'seat_based_billing',
+  });
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
@@ -83,6 +88,19 @@ const SeatInfo = ({ seatType }: Props) => {
     collaborator: messages.includedCollaboratorToolTip,
   };
   const tooltipMessage = tooltipMessages[seatType];
+
+  const seatTypeInfoMessage = {
+    admin: hasSeatBasedBillingEnabled
+      ? messages.adminInfoTextWithBilling
+      : messages.adminInfoTextWithoutBilling,
+    collaborator: hasSeatBasedBillingEnabled
+      ? messages.collaboratorInfoTextWithBilling
+      : messages.collaboratorInfoTextWithoutBilling,
+  }[seatType];
+
+  const additionalSeatsText = hasSeatBasedBillingEnabled
+    ? `${additionalSeats}/${maximumAdditionalSeats}`
+    : additionalSeats;
 
   // Show maximum number of seats if user has used more for this value
   if (currentSeatNumber >= maximumSeatNumber) {
@@ -132,7 +150,7 @@ const SeatInfo = ({ seatType }: Props) => {
                 />
               </Box>
               <Text fontSize="xl" color="textPrimary" my="0px">
-                {`${additionalSeats}/${maximumAdditionalSeats}`}
+                {additionalSeatsText}
               </Text>
             </Box>
           </>
@@ -143,11 +161,11 @@ const SeatInfo = ({ seatType }: Props) => {
         {seatType === 'collaborator' ? (
           <Text my="0px" variant="bodyS">
             <FormattedMessage
-              {...messages.collaboratorMessage}
+              {...seatTypeInfoMessage}
               values={{
-                adminSeatsIncluded: (
+                collaboratorSeatsIncluded: (
                   <Text as="span" fontWeight="bold" variant="bodyS">
-                    {formatMessage(messages.collaboratorsIncludedSubText, {
+                    {formatMessage(messages.collaboratorsIncludedText, {
                       managerSeats: maximumSeatNumber,
                     })}
                   </Text>
@@ -158,11 +176,11 @@ const SeatInfo = ({ seatType }: Props) => {
         ) : (
           <Text my="0px" variant="bodyS">
             <FormattedMessage
-              {...messages.adminMessage}
+              {...seatTypeInfoMessage}
               values={{
                 adminSeatsIncluded: (
                   <Text as="span" fontWeight="bold" variant="bodyS">
-                    {formatMessage(messages.adminSeatsIncludedSubText, {
+                    {formatMessage(messages.adminSeatsIncludedText, {
                       adminSeats: maximumSeatNumber,
                     })}
                   </Text>

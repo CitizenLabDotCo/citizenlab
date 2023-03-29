@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -23,6 +24,7 @@ import { List, Row } from 'components/admin/ResourceList';
 import Avatar from 'components/Avatar';
 import AddCollaboratorsModal from 'components/admin/AddCollaboratorsModal';
 import UserSelect from 'components/UI/UserSelect';
+import SeatInfo from 'components/SeatInfo';
 
 const StyledA = styled.a`
   &:hover {
@@ -42,6 +44,9 @@ const AddButton = styled(Button)`
 const FolderPermissions = () => {
   const { projectFolderId } = useParams() as { projectFolderId: string };
   const { formatMessage } = useIntl();
+  const hasSeatBasedBillingEnabled = useFeatureFlag({
+    name: 'seat_based_billing',
+  });
   const folderModerators = useProjectFolderModerators(projectFolderId);
   const [processing, setProcessing] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -49,9 +54,6 @@ const FolderPermissions = () => {
 
   const closeModal = () => {
     setShowModal(false);
-  };
-  const openModal = () => {
-    setShowModal(true);
   };
 
   const handleOnChange = (userId: string) => {
@@ -69,6 +71,14 @@ const FolderPermissions = () => {
 
   const handleDeleteFolderModeratorClick = (moderatorId: string) => () => {
     deleteFolderModerator(projectFolderId, moderatorId);
+  };
+
+  const handleAddClick = () => {
+    if (hasSeatBasedBillingEnabled) {
+      setShowModal(true);
+    } else {
+      handleOnAddFolderModeratorsClick();
+    }
   };
 
   return (
@@ -121,16 +131,18 @@ const FolderPermissions = () => {
               buttonStyle="cl-blue"
               icon="plus-circle"
               padding="10px 16px"
-              onClick={openModal}
+              onClick={handleAddClick}
               disabled={!moderatorToAdd}
               processing={processing}
             />
           </Box>
-          <AddCollaboratorsModal
-            addModerators={handleOnAddFolderModeratorsClick}
-            showModal={showModal}
-            closeModal={closeModal}
-          />
+          {hasSeatBasedBillingEnabled && (
+            <AddCollaboratorsModal
+              addModerators={handleOnAddFolderModeratorsClick}
+              showModal={showModal}
+              closeModal={closeModal}
+            />
+          )}
         </UserSelectSection>
 
         <List>
@@ -168,6 +180,11 @@ const FolderPermissions = () => {
           </>
         </List>
       </Box>
+      {!hasSeatBasedBillingEnabled && (
+        <Box width="516px" py="32px">
+          <SeatInfo seatType="collaborator" />
+        </Box>
+      )}
     </Box>
   );
 };
