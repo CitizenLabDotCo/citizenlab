@@ -8,14 +8,14 @@ RSpec.describe EmailCampaigns::Campaigns::InviteReceived, type: :model do
     let(:invite) { create(:invite, invitee_id: invitee.id) }
     let(:activity) { create(:activity, item: invite, action: 'created', user: create(:user)) }
 
-    it 'does not include invited users without an email' do
+    it 'excludes users with pending invite and no email' do
       result = described_class.new.filter_recipient(User.all, activity: activity)
 
       expect(result.to_json).not_to include invitee.first_name
       expect(result.count).to eq 0
     end
 
-    it 'does include invited users with an email' do
+    it 'includes users with pending invite and with an email' do
       invitee.update(email: 'valid@g.com')
       result = described_class.new.filter_recipient(User.all, activity: activity)
 
