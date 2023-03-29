@@ -25,11 +25,13 @@ const Import = () => {
     isLoading,
     error,
     isSuccess,
+    reset,
   } = useImportIdeas();
   const [file, setFile] = useState<UploadFile | undefined>(undefined);
 
   const handleFileOnAdd = async (fileToAdd: UploadFile) => {
     setFile(fileToAdd);
+    reset();
   };
 
   const handleFileImport = async () => {
@@ -75,6 +77,7 @@ const Import = () => {
           id={'bulk_idea_import'}
           onFileRemove={() => {
             setFile(undefined);
+            reset();
           }}
           onFileAdd={handleFileOnAdd}
           apiErrors={error}
