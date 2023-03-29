@@ -534,6 +534,7 @@
   "app.components.form.ErrorDisplay.guidelinesLinkText": "naše smjernice",
   "app.components.form.ErrorDisplay.next": "Sljedeći",
   "app.components.form.ErrorDisplay.previous": "Natrag",
+  "app.components.form.ErrorDisplay.save": "Uštedjeti",
   "app.components.form.ErrorDisplay.submitSurvey": "Pošaljite upitnik",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Započnite pretragu unosom korisnikove e-pošte ili imena...",
   "app.components.form.blockedVerified": "Ne možete urediti ovo polje jer sadrži potvrđene informacije",
